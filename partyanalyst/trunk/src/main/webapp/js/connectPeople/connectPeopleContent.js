@@ -186,7 +186,7 @@ function buildConnectUsersContentOfDistrict(connectedPeopleData,divId,locationTy
 			else
 				bodyStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeopleData[i].id+'"><img src="pictures/profiles/'+connectedPeopleData[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/></a>';
 			
-			bodyStr+='<span class="membercard"><h3 id="connectDiv"><a target="_blank" href="userProfile.action?profileId='+connectedPeopleData[i].id+'">'+connectedPeopleData[i].candidateName+'</a></span></h3>';
+			bodyStr+='<span class="membercard"><h3 id="connectDiv" style="height:30px;background:none repeat scroll 0 0 inactivecaptiontext;"><a target="_blank" href="userProfile.action?profileId='+connectedPeopleData[i].id+'">'+connectedPeopleData[i].candidateName+'</a></span></h3>';
 					
 			bodyStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeopleData[i].noOfFriends+'</b>)</a>';
 			bodyStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeopleData[i].noOfPosts+'</b>)</a>';
@@ -245,11 +245,11 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 				memberStr+='<div style="float: left; word-wrap: break-word; width: 105px;">';		
 				memberStr+='<li>';
 				if(connectedPeople[i].image == null || connectedPeople[i].image == '')
-					memberStr+='<img src="images/icons/connectPeople/member.png" />';
+					memberStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'"><img src="images/icons/connectPeople/member.png" /></a>';
 				else
-					memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/>';
+					memberStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'"><img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/></a>';
 
-				memberStr+='<span class="membercard"><h3 id="connectDiv">'+connectedPeople[i].candidateName+'</span></h3>';
+				memberStr+='<span class="membercard"><h3 id="connectDiv" style="height:30px;background:none repeat scroll 0 0 inactivecaptiontext;"><a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'">'+connectedPeople[i].candidateName+'</a></span></h3>';
 						
 				memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].noOfFriends+'</b>)</a>';
 				memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
@@ -269,7 +269,7 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 						memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Request Pending</a>';
 				}
 				memberStr+='</li>';
-				memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
+				memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;"><a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'">'+connectedPeople[i].candidateName+'</a></span>';
 				memberStr+='</div>';
 			}
 			if(connectedPeople.length>5)
@@ -289,17 +289,17 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 					memberStr+='<li>';
 					++count;
 					if(connectedPeople[i].image == null || connectedPeople[i].image == '')
-						memberStr+='<img src="images/icons/connectPeople/member.png" />';
+						memberStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'"><img src="images/icons/connectPeople/member.png" /></a>';
 					else
-						memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/>';
+						memberStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'"><img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/></a>';
 
-					memberStr+='<span class="membercard"><h3 id="connectDiv">'+connectedPeople[i].candidateName+'</span></h3>';
+					memberStr+='<span class="membercard"><h3 id="connectDiv" style="height:30px;background:none repeat scroll 0 0 inactivecaptiontext;"><a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'">'+connectedPeople[i].candidateName+'</a></span></h3>';
 							
 					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].noOfFriends+'</b>)</a>';
 					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
 					memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connected</a>';
 					memberStr+='</li>';
-					memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
+					memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;"><a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'">'+connectedPeople[i].candidateName+'</a></span>';
 					memberStr+='</div>';
 				}
 				
@@ -324,17 +324,17 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 					memberStr+='<li>';
 					++count;
 					if(connectedPeople[i].image == null || connectedPeople[i].image == '')
-						memberStr+='<img src="images/icons/connectPeople/member.png" />';
+						memberStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'"><img src="images/icons/connectPeople/member.png" /></a>';
 					else
-						memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/>';
+						memberStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'"><img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/></a>';
 
-					memberStr+='<span class="membercard"><h3 id="connectDiv">'+connectedPeople[i].candidateName+'</span></h3>';
+					memberStr+='<span class="membercard"><h3 id="connectDiv" style="height:30px;background:none repeat scroll 0 0 inactivecaptiontext;"><a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'">'+connectedPeople[i].candidateName+'</a></span></h3>';
 							
 					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].noOfFriends+'</b>)</a>';
 					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
 					memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Request Pending</a>';
 					memberStr+='</li>';
-					memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
+					memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;"><a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'">'+connectedPeople[i].candidateName+'</a></span>';
 					memberStr+='</div>';
 				}
 			}
@@ -358,17 +358,17 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 					memberStr+='<li>';
 					++count;
 					if(connectedPeople[i].image == null || connectedPeople[i].image == '')
-						memberStr+='<img src="images/icons/connectPeople/member.png" />';
+						memberStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'"><img src="images/icons/connectPeople/member.png" /></a>';
 					else
-						memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/>';
+						memberStr+='<a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'"><img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;" onerror="setDefaultImg(this)"/></a>';
 
-					memberStr+='<span class="membercard"><h3 id="connectDiv">'+connectedPeople[i].candidateName+'</span></h3>';
+					memberStr+='<span class="membercard"><h3 id="connectDiv" style="height:30px;background:none repeat scroll 0 0 inactivecaptiontext;"><a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'">'+connectedPeople[i].candidateName+'</a></span></h3>';
 							
 					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].noOfFriends+'</b>)</a>';
 					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
 					memberStr+='<a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeople[i].id+'\',\''+connectedPeople[i].candidateName+'\',\''+connectedPeople[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connect Now</a>';
 					memberStr+='</li>';
-					memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;">'+connectedPeople[i].candidateName+'</span>';
+					memberStr+='<span style="clear: left;text-transform: capitalize; font-size: 12px; text-align: center; font-family: arial; font-weight: bold; color: #272582;"><a target="_blank" href="userProfile.action?profileId='+connectedPeople[i].id+'">'+connectedPeople[i].candidateName+'</a></span>';
 					memberStr+='</div>';
 				}
 			}
@@ -587,7 +587,7 @@ function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginI
 			title:"People Connected to "+locationName+" "+locationType,
 			autoOpen: false,
 			show: "blind",
-			width: 790,
+			width: 810,
 			minHeight:500,
 			modal: true,
 			hide: "explode"
@@ -625,7 +625,7 @@ function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginI
 		};
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getAllConnectedUsersByFilterViewAction.action?"+rparam;
+		var url = "getAllConnectedUserByFilterViewAction.action?"+rparam;
 	}	
 	else{
 		var jsObj ={
@@ -656,13 +656,13 @@ function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginI
 function showAllConnectedUsersInPanel(jsObj, results){
 	var str = '';	
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
-	var totalResultsCount = results.totalResultsCount;
+	var totalResultsCount = results.constituencyUsersCount;
 	var connectedPeopleCount = results.connectedPeopleCount;
 	var notConnectedPeopleCount;	
 	if(loginconstiId != connectedConstId)
-		notConnectedPeopleCount = results.totalResultsCount - results.connectedPeopleCount;		
+		notConnectedPeopleCount = totalResultsCount - connectedPeopleCount;		
 	else 
-		notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount-1);
+		notConnectedPeopleCount = (totalResultsCount - connectedPeopleCount-1);
 
 	var users = results.candidateVO;
 
@@ -800,13 +800,13 @@ function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
 {
 	var str = '';	
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
-	var totalResultsCount = results.totalResultsCount;
+	var totalResultsCount = results.constituencyUsersCount;
 	var connectedPeopleCount = results.connectedPeopleCount;
 	var notConnectedPeopleCount ='';
 		if (userDistrictId == districtId)
-			notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount)-1;
+			notConnectedPeopleCount = (totalResultsCount - connectedPeopleCount)-1;
 		else
-			notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
+			notConnectedPeopleCount = (totalResultsCount - connectedPeopleCount);
 
 	var users = results.candidateVO;
 
@@ -824,7 +824,7 @@ function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
 	}
 
 	str	+= '<div id="allConnectPeople_Head">';
-	str += '<div class="allConnectPeople_Head_content">';
+	str += '<div class="allConnectPeople_Head_content" style="width:790px;">';
 	str += '<table width="100%">';
 	str += '<tr>';
 	str += '<td align="left">Total People - '+totalResultsCount+'</td>';
@@ -873,7 +873,7 @@ function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
 	
 	str += '</div>';	
 	str += '</div>';
-	str	+= '<div id="allConnectPeople_body">';	
+	str	+= '<div id="allConnectPeople_body" style="width:795px;">';	
 		str += buildAllConnectUserStringOfDistrict(users);
 	str	+= '</div>';
 	
@@ -1102,14 +1102,14 @@ function buildAllConnectUserStringOfDistrict(users)
 	var str = '';
 	for(var i=0; i<users.length; i++){
 			var imageStr = "pictures/profiles/"+users[i].image;
-			str+='<span class="memberCardViewAll" style=" width:220px;">';
-			str+='<h3 id="connectDiv"><div style="float:left;width:60px;height:60px;">';
+			str+='<span class="memberCardViewAll" style=" width:235px;">';
+			str+='<h3 id="connectDiv" style="height:105px;"><div style="float:left;width:60px;height:60px;">';
 			if(users[i].image == null)
 				str+='<a target="_blank" href="userProfile.action?profileId='+users[i].id+'"><img src="images/icons/connectPeople/member.png" /></a>';
 			else
 				str+='<a target="_blank" href="userProfile.action?profileId='+users[i].id+'"><img  src="'+imageStr+'" style="width:60px;height:60px;" onerror="setDefaultImg(this)"/></a>';		
 			
-			str+='</div><div style="float:right;width:100px;height:30px;margin-left:5px;"><span style="text-transform:capitalize;width: 120px; font-size: 15px; margin-top: 0px;"><a target="_blank" href="userProfile.action?profileId='+users[i].id+'">'+users[i].candidateName+'</a></span>';		
+			str+='</div><div style="float:right;width:100px;height:30px;margin-left:5px;"><span style="text-transform:capitalize;width: 120px; font-size: 15px; margin-top: 0px; padding-right: 40px;"><a target="_blank" href="userProfile.action?profileId='+users[i].id+'">'+users[i].candidateName+'</a></span>';		
 			
 			str+='</div></h3>';
 		if(users[i].status == "CONNECTED"){
@@ -1141,8 +1141,7 @@ function buildAllConnectUserStringOfDistrict(users)
 		}
 		str+='</span>';
 	}	
-	str += '<div class="custom_paginator_class"></div>';
-
+	str += '<div class="custom_paginator_class"></div>';	
 	return str;
 }
 
@@ -1296,7 +1295,7 @@ function getAllConnectedUsersByFilterView(locationType, userId)
 			 };
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllConnectedUsersByFilterViewAction.action?"+rparam;					
+	var url = "getAllConnectedUserByFilterViewAction.action?"+rparam;					
 
 	custom_paginator.paginator({
 		startIndex:0,
