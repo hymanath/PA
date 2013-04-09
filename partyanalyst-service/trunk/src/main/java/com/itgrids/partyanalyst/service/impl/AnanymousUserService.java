@@ -3101,6 +3101,7 @@ public DataTransferVO getAllConnectedUsersBasedonLocationType(List<Long> locatio
 			dataTransferVO.setCandidateVO(candidateDetails);
 			
 			dataTransferVO.setTotalResultsCount(getAllUsersCountInSelectedLocationsInFilterView(loginId, locationIds, locationType, status, nameString, connectedAndPendingUserIdsList).toString());
+			dataTransferVO.setConstituencyUsersCount(userDAO.getAllUsersCountInSelectedLocations(locationIds,locationType,nameString).toString());
 			List userLocations = userDAO.getAnanymousUserLocationDetailsByIds(userIds);
 			if(userLocations !=null && userLocations.size()>0){
 				Object[] values = (Object[])userLocations.get(0);
