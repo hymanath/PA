@@ -38,6 +38,7 @@ public class VoterModificationVO implements Serializable{
 	private Long maleVotersRelocated = 0L;
 	private Long femaleVotersRelocated = 0L;
 	private Long voterStatusId;
+	private Long partNo;
 	
 
 	public Long getLocationId() {
@@ -263,6 +264,14 @@ public class VoterModificationVO implements Serializable{
 
 	public void setVoterStatusId(Long voterStatusId) {
 		this.voterStatusId = voterStatusId;
+	}
+
+	public Long getPartNo() {
+		return partNo;
+	}
+
+	public void setPartNo(Long partNo) {
+		this.partNo = partNo;
 	}
 	
 	
