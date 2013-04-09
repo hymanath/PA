@@ -473,7 +473,7 @@ function showVoterInfo(results,jsObj)
 
 	var str = '';
 	str +='<div class="voterinfoHeading"><h2 style="height: 35px;padding-bottom: 12px;">Voters Basic Information In '+locationName+' '+locationTypeVar+'';
-	str +='<button  id="helpbutt" value="Help" style="float: right;width: 40px;" onClick="PopUpForHelp()" title="Click To View Help"><img alt="" src="./images/help.jpeg"></button>';
+	str +='<button  id="helpbutt" value="Help" style="float: right;width: 30px;" onClick="PopUpForHelp()" title="Click To View Help"><img alt="" src="./images/help.jpeg"></button>';
 	str +='<input type="button" style="float: right;" id="boothWiseVoterModificationInfo" href="javascript:{}" value="View Booth Wise Voter Modification Details" class="btn btn-info">';
 	str +='</h2>';
 	str +='</div>';	
