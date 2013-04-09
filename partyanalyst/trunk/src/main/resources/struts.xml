@@ -4750,6 +4750,15 @@
 		<action name="voterFamilyInfoAction" class="voterFamilyInfoAction">
 		  <result name="success">/jsp/voterFamilyDetails.jsp</result>
 		</action>
+		
+		<action name="getVoterDetailsInitialRequest" class="voterFamilyInfoAction" method="getVoterDetailsInitialRequest">
+			<result name="success">/jsp/voterDetails.jsp</result>
+		</action>
+		
+		<action name="voterDetailsAction" class="voterFamilyInfoAction" method="getVoterDetails">
+			<result name="success">/jsp/voterDetails.jsp</result>
+		</action>
+		
 		<action name="boothWiseModifiedVoterInfoAction" class="boothWiseModifiedVoterInfoAction">
 		 	<result name="success">/jsp/boothWiseVoterModificationInfo.jsp</result>
 		 	<result name="error">/jsp/loginForm.jsp?src=votersAnalysisNewAction</result>
