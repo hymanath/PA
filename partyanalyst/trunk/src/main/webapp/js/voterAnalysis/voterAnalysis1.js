@@ -422,6 +422,16 @@ function showReportLevel(value)
 
 function buildVotersByLocBoothDataTable(id)
 {
+//sasi
+var boothId = mainreqid;
+var publicationDateId = mainpublicationId;
+
+var urlstr = "getVoterDetailsInitialRequest.action?publicationId="+publicationDateId+"&boothId="+boothId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=booth";
+
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+browser1.focus();
+
+return;
 
 var boothId = mainreqid;
 var publicationDateId = mainpublicationId;
@@ -533,7 +543,7 @@ oPayload.totalRecords = oResponse.meta.totalRecords;
 return oPayload;
 }
 
-                   $("#votersOuterDiv1").dialog({ 
+                  /* $("#votersOuterDiv1").dialog({ 
 	                            title:'Voters Details',
 	                            height: 'auto',
 								width: 950,
@@ -548,7 +558,7 @@ return oPayload;
 							   "Close":function() {$(this).dialog("close")}
 								   }	
 
-     });
+     });*/
 
 return {
 oDS: votersByLocBoothDataSource,
@@ -559,9 +569,16 @@ oDT: votersByLocBoothDataTable
 
 function buildVotersByLocPanchayatDataTable(id)
 {
-
 var publicationId = mainpublicationId;
 var panchaytId =  mainreqid;
+
+var urlstr = "getVoterDetailsInitialRequest.action?publicationId="+publicationId+"&panchaytId="+panchaytId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=panchayat";
+
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+browser1.focus();
+
+return;
+
 
 if(panchaytId == "0" || publicationId == "0")
 	return false;
@@ -649,7 +666,7 @@ var votersByLocBoothColumnDefs = [
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
 
-var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?publicationId="+publicationId+"&panchaytId="+panchaytId+"&");
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("voterDetailsAction.action?publicationId="+publicationId+"&panchaytId="+panchaytId+"&");
 votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
@@ -680,7 +697,7 @@ return oPayload;
 }
 
 
-	   $("#votersOuterDiv1").dialog({ 
+	  /* $("#votersOuterDiv1").dialog({ 
 					title:'Voters Details',
 					height: 'auto',
 					width: 950,
@@ -691,7 +708,7 @@ return oPayload;
 				   "Close":function() {$(this).dialog("close")}
 					   }	
 
-	   });
+	   });*/
 
 return {
 oDS: votersByLocBoothDataSource,
@@ -4993,7 +5010,7 @@ chart.draw(data, options);
 }
 
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
-{ alert(123435);
+{ 
       $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
 	  
@@ -7495,6 +7512,13 @@ function getVotersCastInfoTest(id,publicationId,type)
 function buildVotersByLocHamletTestDataTable(publicationId,hamletId)
 {
 
+
+var urlstr = "getVoterDetailsInitialRequest.action?publicationId="+publicationId+"&hamletId="+hamletId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=hamlet";
+
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+browser1.focus();
+
+return;
 
 YAHOO.widget.DataTable.ActionLink = function(elLiner, oRecord, oColumn, oData)
 {
