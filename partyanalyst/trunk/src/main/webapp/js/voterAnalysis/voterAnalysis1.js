@@ -1506,7 +1506,9 @@ function addToPolitician(voterId,name)
 								 }
 								   if(jsObj.type=="hamlet")
 								 {
-								 hideAjaxImgDiv("ajaxImageDiv1");								 
+								 hideAjaxImgDiv("ajaxImageDiv1");	
+                                  if( jsObj.resultFor == "booth")
+                                  $("#assAndUnass").html('');  								  
 								 }
 								    if(myResults != null)
 									  buildVotersBasicInfo(myResults,jsObj);
@@ -2481,6 +2483,9 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		else
 		str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
 			}
+			else if(type == "booth")
+		str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In '+typeName+' </h4>';
+		
 		
 		str+='<thead>';
 		str+='<tr>';
