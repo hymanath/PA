@@ -533,6 +533,11 @@ Quick Links</h2>
 				<img src="images/RIT_Act_Tham.gif" style="opacity: 0.8;"><a href="righttoinformation.action" class="btn btn-small btn-primary pull-right inline" style="  bottom: 6px;position: absolute; right: 10px;" alt="Right To Information  Image">R T I</a>
 				
 				</div></div>
+					<div class="widget blue videogallery">
+				<h2 style="font-size:14px;">PartyAnalyst-2.0 Services</h2>
+				<a  href="specialPageAction.action?specialPageId=1&contentId=31753" rel="KeN4RHwpVAc" >
+				<img width="236px;" class="thumbnail" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; border: 1px solid #ccc;margin-top:7px; " title="Explaining the Indian Election System " src="http://img.youtube.com/vi/KeN4RHwpVAc/1.jpg"></a>
+				</div> 
 				
 				<!-----------Hot Topics--------------->
 				<div class="widget red hottopics">
