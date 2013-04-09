@@ -171,15 +171,15 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 <br>
 
-<div id="impFamilesnfoForHamletByBooth">
+<div id="impFamilesnfoForHamletByBooth" class="widget blue whitegloss">
        <div id ="impFamilesBasicInfoSubChartDivForHamletsByBooths" style="border:1px solid black"></div>
 			<div id ="emprtyData"></div>
 		<!--<div id = "assigAndUnassig"></div>-->
 		<div id ="impFamilesBasicSubDetailsForHamletByBoothTitle" style="margin-top:20px;margin-bottom:8px;color:steelblue;"></div>	
 		<div id ="impFamilesBasicSubDetailsForHamletByBooth" style="border:1px solid black"></div>
-		<div id="descriptionDiv1" ></div>
+		<div id="descriptionDiv2" ></div> 
 		<div id="impFamPancBothDtlsAgxImgForHamletByBooth" style="display:none;margin-top:15px;text-align:center;"><img src="images/icons/goldAjaxLoad.gif"/></div>
-		<div id="importantFamiliesForBooth"></div>
+		<div id="importantFamiliesForBooth"  style="font-size:12px;overflow-x:scroll;"></div>
 	   </div>
 
 
@@ -203,7 +203,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 <div id="descriptionDiv" ></div>
 		<div id="impFamPancBothDtlsAgxImg" style="display:none;margin-left:361px;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
-		<div id="impFamPancBothDtls"></div>
+		<div id="impFamPancBothDtls" class="widget blue whitegloss" style="width:960px;margin-top:50px;margin-left:auto;margin-right:auto;"></div>
 	   
 		
 		<div id="NoteDiv" class="breadcrumb"></div>
@@ -278,7 +278,19 @@ var publicationYear = "${publicationYear}";
 var impFamiliesEditArray = new Array();
 var requestFor = '${requestFor}';
 
-
+if((maintype == 'booth'&& requestFor == 'hamletBooth') || (maintype == 'hamlet'&& requestFor == 'booth') )
+{
+$("#impFamilesnfoForHamletByBooth").show();
+}else{
+$("#impFamilesnfoForHamletByBooth").hide();
+}if(maintype != 'booth')
+$('#impFamilesBasicInfoSubChartDivForHamletsByBooths').hide();
+else
+$('#impFamilesBasicInfoSubChartDivForHamletsByBooths').show();
+if( maintype == 'booth'&& requestFor != 'hamletBooth' )
+{
+$('#impFamilesBasicSubDetailsDiv').css('display','none');
+}
 function getImpFamiliesVotersForHamlet()
 {
 	var jsObj1=
@@ -465,12 +477,17 @@ function callAjax(jsObj,url)
 									myResults = YAHOO.lang.JSON.parse(o.responseText);					
 								if(jsObj.task == "importantFamiliesinfo")
 								{ 
+								//debugger;
 									
 									buildImpFamilesChart(myResults);
+							//18111	
+							     if(maintype == "mandal" || maintype =="constituency" )
 									buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
-									 if(requestFor == "booth")
+									 if(requestFor == "booth"){
 									buildTableForImpFamilesForHamletByBooth(myResults.subList,myResults.name,myResults.type);
-
+                                 // buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
+									impFamilesVariableDescription2('descriptionDiv2');
+									}
 									 if(jsObj.buildType == "booth" && myResults.subList != null && myResults.subList.length > 0)
 							  		  {
 
@@ -491,14 +508,12 @@ function callAjax(jsObj,url)
 
 									
 								}
-
-								else if(jsObj.task == "importantFamiliesinfo1")
-								{ 
-								 buildFamilyMembersForAnil(myResults,jsObj.publicationDateId,jsObj.type);
+								else if(jsObj.taskType == "gettotalimpfamliesForHamletsByBooth")
+								{
+									$('#impFamPancBothDtlsAgxImgForHamletByBooth').hide();
+								    buildFamilyMembersForBooth(myResults,jsObj,jsObj.type);
 								}
-
-
-
+				
 								else if(jsObj.task == "gettotalimpfamlies"  )
 								{  
 								 $("#impFamPancBothDtlsAgxImg").hide();
@@ -526,9 +541,11 @@ function callAjax(jsObj,url)
 									buildCategories(myResults);
 								}
 								else if(jsObj.task == "importantFamiliesinfoForHamletsByBooth"){
+									//debugger;//descriptionDiv2
+										//buildImpFamilesChart(myResults);
 									buildImpFamilesChartForHamletsByBooth(myResults);
 								buildTableForImpFamilesForHamletByBooth(myResults.subList,myResults.name,myResults.type);
-
+ 
 								}
 
 								else if(jsObj.task == "getVotersInAFamily")
@@ -536,6 +553,7 @@ function callAjax(jsObj,url)
 								    buildVotersInFamily(myResults,jsObj.hno);
 									pResults = myResults;
 								}
+								
 								}catch (e) {
 								//console.log(e);
 							    // $("#votersEditSaveAjaxImg").hide();
@@ -752,66 +770,6 @@ function impFamilesStaticTable(myresults,jsObj)
 	//$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
 	}
 }
-
- function buildFamilyMembersForAnil(impFamilesData,publicationDateId,type){
- 
-	var impFamiList = new Array();
-  for(var i in impFamilesData){
-     var data={};
-	 
-	 data["name"] = impFamilesData[i].name;  
-	 data["below3"] = impFamilesData[i].below3;
-	 data["below3perc"] = impFamilesData[i].below3perc;
-	 data["betwn4to6"] = impFamilesData[i].betwn4to6;
-	 data["betwn4to6perc"] = impFamilesData[i].betwn4to6perc;
-	 data["betwn7to10"] = impFamilesData[i].betwn7to10;
-	 data["betwn7to10perc"] = impFamilesData[i].betwn7to10perc;
-	 data["above10"] = impFamilesData[i].above10;
-	 data["above10perc"] = impFamilesData[i].above10perc;
-	 data["totalVoters"] =  impFamilesData[i].totalVoters;
-	 data["totalFemaleVoters"] = impFamilesData[i].totalFemaleVoters;
-	 data["totalMaleVoters"] = impFamilesData[i].totalMaleVoters;
-	 impFamiList.push(data);
-  }
-  var reqtytle ="Name";
-  for(var t in impFamilesData){
-     if(impFamilesData[t].type != null)
-	   reqtytle = impFamilesData[t].type;
-  }
-  $("#impFamilesBasicSubDetailsTitle").html(reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
-  
-  var impFamilesColumnDefs = [
-    {key:"name", label: ""+reqtytle+"", sortable: true},
-	{key:"totalVoters", label:"Total",sortable: true},
-	{key:"totalMaleVoters", label:"Male Voters",sortable: true},
-	{key:"totalFemaleVoters", label:"Female Voters",sortable: true},
-    {key:"below3", label: "<3", formatter:"number", sortable: true},
-    {key:"below3perc", label: "<3 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
-    {key:"betwn4to6", label: "4 to 6", formatter:"number", sortable: true},
-    {key:"betwn4to6perc", label: "4 to 6%", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
-    {key:"betwn7to10", label: "7 to 10", formatter:"number", sortable: true},
-    {key:"betwn7to10perc", label: "7 to 10 %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
-    {key:"above10", label: ">10", formatter:"number",sortable:true},
-    {key:"above10perc", label: ">10 %", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}
-  ];
-var impFamilesDataSource = new YAHOO.util.DataSource(impFamiList);
-impFamilesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-impFamilesDataSource.responseSchema = {
-fields: [{key:"name"},{key:"below3", parser:"number"},{key:"totalVoters"},{key:"totalMaleVoters"},{key:"totalFemaleVoters"},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
-};
-var myConfigs = {
-};
-var impFamilesDataTable = new YAHOO.widget.DataTable("impFamilesBasicSubDetails", impFamilesColumnDefs,
-impFamilesDataSource, myConfigs);
-return {
-oDS: impFamilesDataSource,
-oDT: impFamilesDataTable
-};
-  } 
-
-
-
-
 function  buildFamilyMembers(result,jsObj,type){
 	
 	var publicationDateId =   jsObj.publicationDateId;
@@ -892,7 +850,7 @@ function  buildFamilyMembers(result,jsObj,type){
 		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
 	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
               $('#impFamPancBothDtlsAgxImgForHamlet').hide();
-		  if((jsObj.buildType =="hamlet" && type == "panchayat") || (type == "hamlet"))
+		  if((jsObj.buildType =="hamlet" && type == "panchayat") || (type == "hamlet" && requestFor !="booth"))
 	       {
 			  $('#impFamPancBothDtlsForHamlet').html(str);
 			  $('#hamletDiv').show();
@@ -913,8 +871,19 @@ function  buildFamilyMembers(result,jsObj,type){
 			});
 	      }
 		  else{
+		  //debugger;
 	       $("#impFamPancBothDtls").html(str);
-	  
+	          $('#hamletDiv').hide();//impFamilesBasicSubDetailsDiv,impFamilesBasicSubDetailsTitle
+			 // $('#impFamPancBothDtlsAgxImgForHamlet').hide();hamletBooth
+			if(type == "hamlet" && requestFor =="booth")
+			$('#impFamilesBasicSubDetailsDiv').css('display','none');
+			else
+			if(maintype == "booth" && requestFor != "hamletBooth")
+			{
+			$('#impFamilesBasicSubDetailsDiv').css('display','none');
+			$('#impFamilesnfoForHamletByBooth').hide();
+			}else
+			$('#impFamilesBasicSubDetailsDiv').css('display','block');
 	  	$('#impfamilydatatable').dataTable({
 		"aaSorting": [[ 1, "desc" ]],
 		"bDestroy": true,
@@ -928,10 +897,6 @@ function  buildFamilyMembers(result,jsObj,type){
 		});
 		}
   }
-
-
-
-
 /*function editSelectedFamilies(){
 
 
@@ -987,8 +952,6 @@ var urlstr = "voterFamilyEditAction.action"
 var browser2 = window.open(urlstr,"browser2","scrollbars=yes,height=600,width=800,left=200,top=200");	
 		browser2.focus();
 }
-
-
 function getVotersInAFamily(id,publicationDateId,hno)
 {
 
@@ -996,10 +959,7 @@ var urlstr = "voterFamilyEditAction.action?id="+id+"&publicationDateId="+publica
 var browser2 = window.open(urlstr,"browser2","scrollbars=yes,height=600,width=800,left=200,top=200");	
 		browser2.focus();
 }
-
-
-
-  function clearAllCheckBoxes()
+ function clearAllCheckBoxes()
 {
 	impFamiliesEditArray = new Array();
 	$('.impFamilMulSel').each(function(){
@@ -1016,9 +976,6 @@ function hideBoothDivs()
 $("#impFamPancBothDtls").html("");
  
 }
-
-
-
 function impFamilesAllInfoForHamletPopUp(){
 	$('#impFamPancBothDtlsAgxImgForHamlet').show();
     /* $("#impFamilesAllInfoForHamletPopUp").dialog({
@@ -1044,7 +1001,6 @@ function impFamilesAllInfoForHamletPopUp(){
 			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
 		callAjax(jsObj2,url2); 
 		}
-
 function buildVotersInFamily(results){
 	  getUserCategories();
 
@@ -1106,7 +1062,6 @@ function buildVotersInFamily(results){
            
         });
 }
-
 function getUserCategories(){
 
 	var jsObj=
@@ -1119,19 +1074,16 @@ function getUserCategories(){
 		callAjax(jsObj,url);
 
 }
-
 function selectAll(id){
 	 $('.'+id).each(function() {
             $(this).attr('checked','checked');
         });
 }
-
 function deSelectAll(id){
     $('.'+id).each(function() {
      $(this).removeAttr('checked');
 	});
 }
-
 function getAllVoterFamiliesForEdit(){
   var impFamiliesEditInfo = new Array();
 	 $('.familyMemberCheck').each(function() {
@@ -1177,8 +1129,6 @@ function getAllVoterFamiliesForEdit(){
 		callAjax(jsObj,url);*/
 	}
 }
-
-
 function checkForAttributesToDisplay(){
 
 
@@ -1195,7 +1145,6 @@ function checkForAttributesToDisplay(){
 		   buildVotersInFamilyWithRetrievedResults();
 
 }
-
 function getvotersBasicInfo(){
 
 if(type == "mandal" || type=="constituency")
@@ -1207,9 +1156,10 @@ $("#hamletDiv").hide();
 if(type == "panchayat" && buildType =="hamlet")
 $("#hamletDiv").hide();
 $("#NoteDiv").hide();
-if(type == "booth"){
+if(type == "booth"){//impFamilesBasicSubDetailsDiv,impFamilesBasicSubDetailsTitle
 $("#impFamilesBasicSubDetailsDiv").hide();
 $("#hamletDiv").hide();
+
 }
 else
 $("#impFamilesBasicSubDetailsDiv").show();
@@ -1239,8 +1189,8 @@ $("#impFamilesBasicSubDetailsDiv").show();
 				typename:impFamltypename,
 				constituencyId:constituencyId,
 				buildType:buildType,
-				requestFor:"hamletBooth",
-
+				//1818requestFor:"hamletBooth",
+                requestFor:requestFor,
 				task:"importantFamiliesinfo"
 	
 			}
@@ -1251,7 +1201,6 @@ $("#impFamilesBasicSubDetailsDiv").show();
 									
 		callAjax(jsObj1,url1);
 }
-
 function getvotersBasicInfoForBooth(){
 
    $('#hamletDiv , #impFamilesBasicSubDetailsDiv').hide();
@@ -1341,16 +1290,32 @@ function impFamilesVariableDescription1()
   $("#descriptionDiv1").append(div).css("display","block");
 
 }
+function impFamilesVariableDescription2(divid)
+{ 
+ $('#'+divid).html('');
+  var div = $('<div class="descriptionInnerDiv"></div>');
+  div.append('<span> <b>3 -</b> Families Below 3 Voters</span>');
+  div.append('<span> <b>3% -</b> Families Below 3% Voters</span>');
+  div.append('<span> <b>4 to 6 -</b> Families Between 4 to 6 Voters</span>');
+  div.append('<span> <b>4 to 6 % -</b> Families Between 4-6 % Voters</span>');
+  div.append('<span> <b>7 to 10 -</b> Families Between 7 to 10 Voters</span>');
+  div.append('<span> <b>7 to 10 % -</b> Families Between 7-10 % Voters</span>');
+  div.append('<span> <b>10 - </b> Families Above 10 Voters</span>');
+  div.append('<span> <b>10% -</b> Families Above 10% Voters</span>');
+  $('#'+divid).append(div).css("display","block");
+
+}
 if(maintype != "hamlet")
 {
 
-if(requestFor == "hamletBooth")
+if(requestFor == "hamletBooth"){
  getvotersBasicInfoForBooth();
-else
+ getImpFamiliesVotersForHamletBooth();}
+else{
 	getvotersBasicInfo();
 
 
-getImpFamiliesVotersToShow();
+getImpFamiliesVotersToShow();}
 }
 if(maintype == "hamlet" && requestFor != "booth"){
 //getImpFamiliesVotersToShowForBooth();
@@ -1400,7 +1365,8 @@ $('#impFamPancBothDtlsAgxImg').show();
 			// Instantiate and draw our chart, passing in some options.
 			var chart = new google.visualization.PieChart(document.getElementById('impFamilesBasicInfoSubChartDivForHamletsByBooths'));
 			chart.draw(data, options);
-
+      $("#impFamilesnfoForHamletByBooth").css('display','block');
+	  $("#impFamilesBasicInfoSubChartDivForHamletsByBooths").css('display','block');
 		}
 
 
@@ -1464,6 +1430,102 @@ function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
 }
 if(requestFor == "booth")
 getImpFamiliesVotersToShowForBooth();
+
+		function getImpFamiliesVotersForHamletBooth()
+		{
+			$('#impFamPancBothDtlsAgxImgForHamletByBooth').show();
+		
+
+			var jsObj2=
+				{
+						
+					type:"pollingstation",
+					id:id,
+					publicationDateId:publicationDateId,
+					typename:"",
+					buildType:buildType,
+		            constituencyId:constituencyId,
+					requestFor:"hamletBooth",
+					task:"gettotalimpfamlies",
+					taskType:"gettotalimpfamliesForHamletsByBooth"
+
+				}
+		   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+				var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
+			callAjax(jsObj2,url2);
+
+
+		}
+		function buildFamilyMembersForBooth(result,jsObj,type)
+		{
+			
+		 if($("impfamilydatatable_wrapper"))
+		  $("impfamilydatatable_wrapper").remove();
+
+			var publicationDateId =   jsObj.publicationDateId;
+			 impFamiliesEditArray = new Array();
+			//var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
+			//hideAjaxImgDiv('ajaxImageDiv');
+		    var name = "";
+		     if(type == "panchayat")
+			    name = $("#panchayatField option:selected").text();
+			 else
+			   name = $("#pollingStationField option:selected").text();
+			
+		      var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</div>';
+			      str+=' <div><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+		          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
+				  str+=' <table id="impfamilydatatableForBooth" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
+		          str+='  <thead>';
+		          str+='   <tr>';
+				  str+='     <th>Select</th>';
+				  str+='     <th>Hamlet</th>';		  
+		          str+='     <th>House No</th>';
+		          str+='     <th>Members In Family</th>';
+				  str +='	 <th>Caste</th>';
+				  str+='	 <th class="widthStyle">Eldest Person</th>';
+				  str+='	 <th>Gender</th>';
+				  str+='	 <th>Age</th>';
+		          str+='     <th class="widthStyle">Youngest Person</th>';
+				  str+='	 <th>Gender</th>';
+				  str+='	 <th>Age</th>';
+		          str+='   </tr>';
+		          str+='  </thead>';
+		          str+='  <tbody>';
+
+			 for(var i in result){
+			   var sno = parseInt(i)+1;
+			      str +='<tr>';
+				  str +='<td><input class="impFamilMulSel" id="impFamilSel'+sno+'" type="checkbox" onclick="populate(this.id,'+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\');"/></td>';
+				  str+='<td>'+result[i].hamletName+'</td>';
+		          str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
+		          str +='		<td>'+result[i].numberOfPeople+'</td>';
+				  str +='       <td>'+result[i].cast+'</td>';
+		          str +='		<td class="widthStyle">'+result[i].elder+'</td>';
+				  str +='		<td>'+result[i].elderGender+'</td>';
+				  str +='		<td>'+result[i].elderAge+'</td>';
+		          str +='		<td class="widthStyle">'+result[i].younger+'</td>';
+				  str +='		<td>'+result[i].youngerGender+'</td>';
+				  str +='		<td>'+result[i].youngerAge+'</td>';
+		          str+='   </tr>';
+			 }
+		          str+='  </tbody>';
+		          str+=' </table>';
+				  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+			      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
+				 
+					  $('#importantFamiliesForBooth').html(str);
+					  //$('#impFamPancBothDtlsAgxImgForHamle').hide();
+			      
+			  
+			  	$('#impfamilydatatableForBooth').dataTable({
+				"aaSorting": [[ 1, "desc" ]],
+				"bDestroy": true,
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				
+				});
+		}
 </script>
 </body>
 </html>
