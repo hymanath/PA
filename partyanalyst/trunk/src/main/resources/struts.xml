@@ -415,6 +415,12 @@
 			</result> 
 		</action>
 		
+		<action name="partyPerformanceDistricts" class="partyPerformanceAction" method="getNominatedDistrictsByState" >
+			<result type="json" name="success">
+				<param name="root">districts</param>
+			</result> 
+		</action>
+		
 		<!-- <action name="partyPerformanceAjax" class="partyPerformanceAction" method="getJSON" >
 			<result type="json" name="success"/>
 		</action>-->
@@ -3762,7 +3768,9 @@
 			</result> 
 		</action>
 		
-		<action name="boothPublicationUploadAction"><result>/jsp/boothPublicationMapper.jsp</result></action>
+		<action name="boothPublicationUploadAction">
+			<result>/jsp/boothPublicationMapper.jsp</result>
+		</action>
 		
 		<action name="boothPublicationMapAction" class="villageBoothElectionMapAction" method="uploadMappingForPublication">
 			<result name="success">/jsp/boothPublicationMapper.jsp</result>					
