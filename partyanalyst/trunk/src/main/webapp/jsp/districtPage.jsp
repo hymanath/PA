@@ -60,7 +60,9 @@
 <link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" /> 
 
 	<style type="text/css">
-	
+	.membercard{
+	text-transform: capitalize;
+	}
 	#mp_body {border-bottom: 1px solid #D3D3D3;border-collapse: collapse;border-left: 1px solid #D3D3D3;border-right: 1px solid #D3D3D3;width: 96.3%;}	
 	#mla_body{border-collapse:collapse;border-bottom: 1px solid #D3D3D3;border-left: 1px solid #D3D3D3;border-right: 1px solid #D3D3D3;width:96.25%;}
 	#mpsInfoDivBody > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
@@ -136,8 +138,12 @@
 	  font-size: 12px;
 	 }
 	 .paginatorElmtClass{background:lightBlue;padding:3px;border-radius:3px;}
-.paginatorElmtClass a{padding:3px;
-background:white;border-radius:50%; margin:0px 10px;}
+.paginatorElmtClass a{padding:3px;background:white;
+border-radius:50%; margin:0px 10px;}
+
+.paginatorElmtClass >.btn-success{
+background:none repeat scroll 0 0 green;
+}
 .paginatorElmtClass a:hover, .paginatorElmtClass a.selectedpage{background:#fff;box-shadow:0px 0px 5px #000;}
 	 .cl-sub-fields-sec {
     width: 600px;
