@@ -161,6 +161,14 @@ google.load("visualization", "1", {packages:["corechart"]});
 		margin-bottom: 20px;
 		font-weight: bold;
 	}
+#impfamilydatatableForBooth th {
+    background-color: #CDE6FC;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+}
 </style>
 </head>
 
