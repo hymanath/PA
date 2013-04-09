@@ -48,8 +48,10 @@
 	width: 96%;
 	}
 	#subLevelDiv{overflow-x: scroll;}
-	#subLevelVotersTable{margin-bottom: 20px;}
+	#subLevelVotersTable{margin-bottom: 14px;}
 	#subLevelsErrorMsgDiv{height: 50px; text-align: center; font-size: 18px; margin-top: 15px;}
+	#subLevelVotersTable_info{ margin-bottom: 16px;}
+	#subLevelVotersTable_wrapper{ padding-top: 10px;}
   </style>
   <script type="text/javascript">
 
@@ -73,7 +75,7 @@
 
 </div>
 
-<script>
+<script type="text/javascript">
   getBoothWiseVoterModificationDetails();
 </script>
 </body>

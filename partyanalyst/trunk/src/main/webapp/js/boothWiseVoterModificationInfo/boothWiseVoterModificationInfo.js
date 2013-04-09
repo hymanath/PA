@@ -104,7 +104,7 @@ function buildBoothWiseVoterInfo(myResults,jsObj)
 		var locationType1 = myResults.modifiedVotersList[i].locationType;
 		var locationId1 =  myResults.modifiedVotersList[i].id;
 		  str+='<tr>';
-		  str+='<td style="text-align:left;"><a class="voterInfoLinksCLS" title="Click Here to View '+myResults.modifiedVotersList[i].name+' '+myResults.modifiedVotersList[i].locationType+' wise Added / Deleted Voters Info " href="javascript:{}" onclick="openNewWindow(\''+myResults.modifiedVotersList[i].locationType+'\',\''+myResults.modifiedVotersList[i].id+'\')">'+myResults.modifiedVotersList[i].name+'</a></td>';
+		  str+='<td style="text-align:left;"><a class="voterInfoLinksCLS" title="Click Here to View '+myResults.modifiedVotersList[i].name+' '+myResults.modifiedVotersList[i].locationType+' wise Added / Deleted Voters Info " href="javascript:{}" onclick="openNewWindow(\''+myResults.modifiedVotersList[i].locationType+'\',\''+myResults.modifiedVotersList[i].id+'\')">'+myResults.modifiedVotersList[i].partNo+'</a></td>';
 
 			for(var k in publicationList)
 			  str +='<td>'+publicationList[k].id+'</td>';
@@ -125,64 +125,64 @@ function buildBoothWiseVoterInfo(myResults,jsObj)
 			
 
 		 if(myResults.modifiedVotersList[i].addedCount!=0)
-		    str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'1\',\'Added\')}">'+myResults.modifiedVotersList[i].addedCount+'</a></td>';
+		    str+='<td><a title="'+myResults.modifiedVotersList[i].addedCount+' voters are added in booth-'+myResults.modifiedVotersList[i].name+'" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'1\',\'Added\')}">'+myResults.modifiedVotersList[i].addedCount+'</a></td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].addedCount+'</td>';
 		    
 		if(myResults.modifiedVotersList[i].deletedCount!=0)
-			str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'2\',\'Deleted\')}">'+myResults.modifiedVotersList[i].deletedCount+'</td>';
+			str+='<td><a title="'+myResults.modifiedVotersList[i].deletedCount+' voters are deleted in booth-'+myResults.modifiedVotersList[i].name+'" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'2\',\'Deleted\')}">'+myResults.modifiedVotersList[i].deletedCount+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].deletedCount+'</td>';
 
 		if(myResults.modifiedVotersList[i].movedCount!=0)
-			str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'3\',\'Moved\')}">'+myResults.modifiedVotersList[i].movedCount+'</td>';
+			str+='<td><a title="'+myResults.modifiedVotersList[i].movedCount+' voters are moved to other booth from booth-'+myResults.modifiedVotersList[i].name+'" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'3\',\'Moved\')}">'+myResults.modifiedVotersList[i].movedCount+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].movedCount+'</td>';
 
 		if(myResults.modifiedVotersList[i].relocatedCount!=0)
-			str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'4\',\'Relocated\')}">'+myResults.modifiedVotersList[i].relocatedCount+'</td>';
+			str+='<td><a title="'+myResults.modifiedVotersList[i].relocatedCount+' voters are added to '+myResults.modifiedVotersList[i].name+' booth from other Booths" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'TOTAL\',\'4\',\'Relocated\')}">'+myResults.modifiedVotersList[i].relocatedCount+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].relocatedCount+'</td>';
 			 
 		if(myResults.modifiedVotersList[i].maleVotersAdded!=0)	 
-			str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'1\',\'Added\')}">'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
+			str+='<td><a title="'+myResults.modifiedVotersList[i].maleVotersAdded+' male voters are added in booth-'+myResults.modifiedVotersList[i].name+'" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'1\',\'Added\')}">'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].maleVotersAdded+'</td>';
 			
 		if(myResults.modifiedVotersList[i].maleVotersDeleted!=0)	
-		    str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'2\',\'Deleted\')}">'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
+		    str+='<td><a title="'+myResults.modifiedVotersList[i].maleVotersDeleted+' male voters are deleted in booth-'+myResults.modifiedVotersList[i].name+'" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'2\',\'Deleted\')}">'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].maleVotersDeleted+'</td>';
 			
 		if(myResults.modifiedVotersList[i].maleVotersMoved!=0)	 
-			str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'3\',\'Moved\')}">'+myResults.modifiedVotersList[i].maleVotersMoved+'</td>';
+			str+='<td><a title="'+myResults.modifiedVotersList[i].maleVotersMoved+' male voters are moved to other booth from booth-'+myResults.modifiedVotersList[i].name+'" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'3\',\'Moved\')}">'+myResults.modifiedVotersList[i].maleVotersMoved+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].maleVotersMoved+'</td>';
 			
 		if(myResults.modifiedVotersList[i].maleVotersRelocated!=0)	
-		    str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'4\',\'Relocated\')}">'+myResults.modifiedVotersList[i].maleVotersRelocated+'</td>';
+		    str+='<td><a title="'+myResults.modifiedVotersList[i].maleVotersRelocated+' male voters are added to '+myResults.modifiedVotersList[i].name+' booth from other booths" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'M\',\'4\',\'Relocated\')}">'+myResults.modifiedVotersList[i].maleVotersRelocated+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].maleVotersRelocated+'</td>';
 
 		
 		if(myResults.modifiedVotersList[i].femaleVotersAdded!=0)
-            str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'1\',\'Added\')}">'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
+            str+='<td><a title="'+myResults.modifiedVotersList[i].femaleVotersAdded+' female voters are added in booth-'+myResults.modifiedVotersList[i].name+'" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'1\',\'Added\')}">'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersAdded+'</td>';
 		
 		if(myResults.modifiedVotersList[i].femaleVotersDeleted!=0)
-		    str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'2\',\'Deleted\')}">'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
+		    str+='<td><a title="'+myResults.modifiedVotersList[i].femaleVotersDeleted+' female voters are deleted in booth-'+myResults.modifiedVotersList[i].name+'" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'2\',\'Deleted\')}">'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersDeleted+'</td>';
 
 
 		if(myResults.modifiedVotersList[i].femaleVotersMoved!=0)
-            str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'3\',\'Moved\')}">'+myResults.modifiedVotersList[i].femaleVotersMoved+'</td>';
+            str+='<td><a title="'+myResults.modifiedVotersList[i].femaleVotersMoved+' female voters are moved to other booth from booth-'+myResults.modifiedVotersList[i].name+'" href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'3\',\'Moved\')}">'+myResults.modifiedVotersList[i].femaleVotersMoved+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersMoved+'</td>';
 		
 		if(myResults.modifiedVotersList[i].femaleVotersRelocated!=0)
-		    str+='<td><a href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'4\',\'Relocated\')}">'+myResults.modifiedVotersList[i].femaleVotersRelocated+'</td>';
+		    str+='<td><a title="'+myResults.modifiedVotersList[i].femaleVotersRelocated+' female voters are added to '+myResults.modifiedVotersList[i].name+' booth from other booths"  href="javaScript:{getGenderWiseVoterDetails(\''+locationId1+'\',\''+locationType1+'\','+'\'F\',\'4\',\'Relocated\')}">'+myResults.modifiedVotersList[i].femaleVotersRelocated+'</td>';
 		else
 			str+='<td>'+myResults.modifiedVotersList[i].femaleVotersRelocated+'</td>';
 	 str+='</tr>';
@@ -194,13 +194,13 @@ function buildBoothWiseVoterInfo(myResults,jsObj)
 	
 	$('#subLevelDiv').html(str);
 
-	$('#subLevelVotersTable').dataTable({
+	//$('#ageWiseDetailsTable').dataTable();
+	 $('#subLevelVotersTable').dataTable({
 		"aaSorting": [[ 1, "desc" ]],
 		"iDisplayLength":50,
 		"aLengthMenu": [[50, 100, 200, 500,1000,-1], [50, 100, 200, 500,1000,"All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null,null
-		] 
+		  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null,null] 
 		});
 }
 

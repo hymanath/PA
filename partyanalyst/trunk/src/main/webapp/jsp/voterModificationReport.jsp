@@ -105,6 +105,7 @@
 }
 #subLevelDiv{overflow-x: scroll;width:98%;}
 #subLevelVotersTable{margin-bottom: 20px;}
+#helpbutt{margin-left: 6px;}
 </style>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/voterModificationReport/voterModificationReport.js"></script>
