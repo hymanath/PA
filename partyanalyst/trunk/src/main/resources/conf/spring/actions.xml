@@ -1099,7 +1099,7 @@
 		<property name="partyCandidateSpecialPageScheduleService" ref="partyCandidateSpecialPageScheduleService" />
 	</bean>
 	<bean id="voterFamilyInfoAction" class="com.itgrids.partyanalyst.web.action.VoterFamilyInfoAction" singleton="false">	
-		
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
 	</bean>
 		
 	<bean id="boothWiseModifiedVoterInfoAction" class="com.itgrids.partyanalyst.web.action.BoothWiseModifiedVoterInfoAction" singleton="false">	
