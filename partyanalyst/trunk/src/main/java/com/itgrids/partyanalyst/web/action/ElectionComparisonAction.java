@@ -157,15 +157,38 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			Long scopeID = jObj.getLong("stateId");
+			Long stateId = jObj.getLong("stateId");
+			Long electionTypeId = jObj.getLong("electionTypeId");
 			if(jObj.getString("task").equals("getPartiesInState")){
 				
-				partyList = staticDataService.getStaticPartiesListFromElectionScope(scopeID);
+				//partyList = staticDataService.getStaticPartiesListFromElectionScope(scopeID);
 				//partyList = staticDataService.getStaticPartiesListForAState(stateId);
+				partyList = staticDataService.getPartyNamesInAState(stateId,electionTypeId);
 				Collections.sort(partyList);
 			}
 		}
 		
+		return SUCCESS;
+	}
+	public String getPartiesInAState()
+	{
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			Long stateId = jObj.getLong("stateId");
+			Long electionTypeId = jObj.getLong("electionTypeId");
+			if(jObj.getString("task").equals("getPartiesInState")){
+				
+				//partyList = staticDataService.getStaticPartiesListFromElectionScope(scopeID);
+				//partyList = staticDataService.getStaticPartiesListForAState(stateId);
+				partyList = staticDataService.getPartyNamesInAState(stateId,electionTypeId);
+				Collections.sort(partyList);
+			}
+		}
 		return SUCCESS;
 	}
 
