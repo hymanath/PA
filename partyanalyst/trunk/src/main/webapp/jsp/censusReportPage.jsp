@@ -1166,11 +1166,15 @@ select
         	str += '<td>'+results.constituenciesResults[j].censusReportPercent+'</td>';
 			str += '<td>'+results.constituenciesResults[j].votingPercentage+'</td>';
         	for(var k in results.constituenciesResults[j].partyResultsVO)
-            	if(results.constituenciesResults[j].partyResultsVO[k].percentage != null)
-        			str += '<td>'+results.constituenciesResults[j].partyResultsVO[k].votesPercent+'</td>';
-        		else
-        			str += '<td></td>';
-        	str += '</tr>';
+            	if(results.constituenciesResults[j].partyResultsVO[k].percentage != null){
+				
+					if(results.constituenciesResults[j].partyResultsVO[k].votesPercent == null){
+							str +='<td>0</td>';
+						}else 
+        					str += '<td>'+results.constituenciesResults[j].partyResultsVO[k].votesPercent+'</td>';
+					}else
+        				str += '<td></td>';
+        			str += '</tr>';
         }
         str += '</table>';
 		constituencyWiseElmt.innerHTML = str;
