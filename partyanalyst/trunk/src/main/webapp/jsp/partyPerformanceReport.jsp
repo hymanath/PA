@@ -467,7 +467,7 @@ function buildPartyPositionDataTable(info,rank)
 							paginator : new YAHOO.widget.Paginator({ 
 								rowsPerPage    : 10,
 								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
-								rowsPerPageOptions: [20,40,60], 
+								rowsPerPageOptions: [10,20,40,60], 
 							    pageLinks: 20 
 								})
 						}); 	
@@ -516,7 +516,7 @@ function buildPartyPositionDataTable(info,rank)
 							paginator : new YAHOO.widget.Paginator({ 
 								rowsPerPage    : 10,
 								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
-								rowsPerPageOptions: [20,40,60], 
+								rowsPerPageOptions: [10,20,40,60], 
 							    pageLinks: 20 
 								})
 						}); 	
