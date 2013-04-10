@@ -45,6 +45,8 @@ ServletRequestAware ,ServletContextAware{
 	private String status;
 	private Long srcId;
 	private String title;
+	
+	private String typename;
 	/*For castWiseVoterDetails */
 	
 	private Long id;
@@ -54,13 +56,7 @@ ServletRequestAware ,ServletContextAware{
 	
 	
 	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 
 	public String getTypeName() {
 		return typeName;
@@ -85,6 +81,7 @@ ServletRequestAware ,ServletContextAware{
 	public void setQueryType(String queryType) {
 		this.queryType = queryType;
 	}
+
 
 	public void setServletContext(ServletContext context) {
 		 this.context =context;	
@@ -283,6 +280,23 @@ ServletRequestAware ,ServletContextAware{
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTypename() {
+		return typename;
+	}
+
+	public void setTypename(String typename) {
+		this.typename = typename;
 	}
 
 	public String execute()

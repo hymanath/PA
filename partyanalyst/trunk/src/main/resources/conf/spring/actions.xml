@@ -1112,6 +1112,9 @@
 	<bean id="voterFamilyEditAction" class="com.itgrids.partyanalyst.web.action.VoterFamilyEditAction" singleton="false">	
 		
 	</bean>
+	<bean id="boothWiseVoterModificationInfoAction" class="com.itgrids.partyanalyst.web.action.BoothWiseVoterModificationInfoAction" singleton="false">	
+		
+	</bean>
 	
 </beans>	
 	

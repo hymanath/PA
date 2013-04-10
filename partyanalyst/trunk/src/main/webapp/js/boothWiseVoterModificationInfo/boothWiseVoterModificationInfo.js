@@ -227,7 +227,9 @@ function buildBoothWiseVoterInfo(myResults,jsObj)
 
 function getGenderWiseVoterDetails(locationId1,locationType1,gender,voterStatusId,status)
 {
-$.blockUI({ message: '<h4><img src="./images/icons/search.gif" />  Request Processing...</h4>' }); 
+		var reqBrowser = window.open("boothWiseVoterModificationInfoAction.action?locationType="+locationType1+"&locationValue="+locationId1+"&constituencyId="+constituencyId+"&fromPublicationDateId="+fromPublicationDateId+"&toPublicationDateId="+toPublicationDateId+"&forGender='true'&status="+status+"&voterStatusId="+voterStatusId+"&ageRangeId=0&gender="+gender+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	   reqBrowser.focus();
+/*$.blockUI({ message: '<h4><img src="./images/icons/search.gif" />  Request Processing...</h4>' }); 
 	var jObj=
 	{
 			locationType:locationType1,
@@ -245,7 +247,7 @@ $.blockUI({ message: '<h4><img src="./images/icons/search.gif" />  Request Proce
 	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
 	var url = "getSelectedGenderBasedVoterDetails.action?"+rparam;	
 
-	callAjax(jObj,url);
+	callAjax(jObj,url);*/
 
 
 }
