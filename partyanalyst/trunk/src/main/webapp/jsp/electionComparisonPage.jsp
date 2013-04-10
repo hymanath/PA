@@ -163,16 +163,19 @@ var yearsPopulation={
 
 		function getPartiesInState(elmtId)
 		{
+			var electionTypeId = $("#electionTypeSelect option:selected").val();
+			
 			removeErrorMessage();
 			var jsObj=
 			{
 					elmtId:elmtId,
 					stateId: selectedElectionScopeId,
+					electionTypeId:electionTypeId,
 					task:"getPartiesInState"						
 			};
 			
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/getPartiesForState.action?"+rparam;						
+			var url = "<%=request.getContextPath()%>/getPartiesInState.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
 		}
 		function storeYears(results){
