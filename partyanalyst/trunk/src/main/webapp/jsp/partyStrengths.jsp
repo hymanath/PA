@@ -159,7 +159,7 @@
 	{
 		width:100%;
 	}
-	.districtPageRoundedHeaders_center{width:805px;}
+	.districtPageRoundedHeaders_center{width:814px;}
 </style>
 
 <script type="text/javascript">
@@ -1066,7 +1066,7 @@
 			 resizeable:true
 		}, {
 			key : "count",
-			label : "Won Seats",
+		    label : "No of Times Won",
 			sortable : true,
 			 resizeable:true
 		}];
