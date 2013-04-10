@@ -92,7 +92,7 @@ google.load("visualization", "1", {packages:["corechart"]});
     text-align: left;
 }
 #impFamilesBasicSubDetails table a,#impFamilesBasicSubDetailsForHamlet a,#impfamilydatatable.dataTable a,#impFamilesBasicSubDetailsForHamletByBooth table a{color:#0088CC;text-decoration:none;}
-#impFamilesBasicSubDetails table td,#impFamilesBasicSubDetailsForHamlet table td ,#impFamilesBasicSubDetailsForHamletByBooth table td{
+#impFamilesBasicSubDetails table td,#impFamilesBasicSubDetailsForHamlet table td ,#impFamilesBasicSubDetailsForHamletByBooth table td,#importantFamiliesForBooth table td{
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
