@@ -746,7 +746,7 @@ IUserVoterDetailsDAO{
 						"BoothPublicationVoter model2 where model1.voter.voterId = model2.voter.voterId and " +
 						"model2.booth.publicationDate.publicationDateId = :publicationDateId and " +
 						"model1.user.userId = :userId and model2.booth.boothId = :boothId and " +
-						"model2.booth.constituency.constituencyId = :constituencyId");
+						"model2.booth.constituency.constituencyId = :constituencyId and model1.hamlet.hamletId is not null ");
 				
 				
 				query.setParameter("publicationDateId", publicationDateId);
