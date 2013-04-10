@@ -86,7 +86,7 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetPartiesBasicResultForAnElection()
+	/*public void testGetPartiesBasicResultForAnElection()
 	{
 		List<Long> partiesList = new ArrayList<Long>(0);
 		
@@ -116,6 +116,14 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 			//System.out.println(list.getTotalConstiParticipated());
 		}
 			
+	}*/
+	
+	public void testGetPartiesParticipatedMoreThanOnce()
+	{
+		List<Object[]> partiesList = partyElectionResultDAO.getPartiesParticipatedMoreThanOnce(1l,IConstants.PARLIAMENT_ELECTION_TYPE);
+		System.out.println(partiesList.size());
+		for(Object[] params : partiesList)
+			System.out.println(params[0]+" -- "+params[1]);
 	}
 	
 }

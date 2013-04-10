@@ -7810,6 +7810,59 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return resultStatus;
 	}
+
+	/**
+	 * This Service is used for getting all parties in state which particapites more 
+	 * than once in the main elections
+	 * @param Long stateId
+	 * @param Long electionTypeId
+	 * @return List<SelectOptionVO>
+	 * @date 08/04/2013
+	 */
+	public List<SelectOptionVO> getPartyNamesInAState(Long stateId,
+			Long electionTypeId) {
+		List<Object[]> partiesList = null;
+		String electionType = "";
+		List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO = null;
+		ElectionScope electionScope = null;
+		Long stateIds = null;
+		if(electionTypeId == 2)
+		{
+			electionScope = electionScopeDAO.get(stateId);
+		
+			if(electionScope != null)
+			{
+				stateIds = electionScope.getState().getStateId();
+			}
+		}
+		if(electionTypeId == 1)
+		{
+			electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			partiesList = partyElectionResultDAO.getPartiesParticipatedMoreThanOnce(stateIds,electionType);
+		}
+		else
+		{
+			electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			partiesList = partyElectionResultDAO.getPartiesParticipatedMoreThanOnce(stateIds,electionType);
+		}
+		
+		
+		if(partiesList != null && partiesList.size() > 0)
+		{
+			for (Object[] parms : partiesList) {
+				selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long)parms[0]);
+				selectOptionVO.setName(parms[1].toString());
+				if(!selectOptionVO.getName().equalsIgnoreCase("IND"))
+				{
+					selectOptionVOs.add(selectOptionVO);
+				}
+				
+			}
+		}		
+		return selectOptionVOs;
+	}
 	
 }
 
