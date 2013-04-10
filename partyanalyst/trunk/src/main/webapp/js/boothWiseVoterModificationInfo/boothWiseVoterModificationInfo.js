@@ -1,3 +1,21 @@
+$(document).ready(function ()
+{
+jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "num-html-pre": function ( a ) {
+        var x = String(a).replace( /<[\s\S]*?>/g, "" );
+        return parseFloat( x );
+    },
+ 
+    "num-html-asc": function ( a, b ) {
+        return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+    },
+ 
+    "num-html-desc": function ( a, b ) {
+        return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+    }
+} );
+});
+
 function getBoothWiseVoterModificationDetails()
 {
 	$('#subLevelAjaxImageDiv').css('display','block');
@@ -81,18 +99,18 @@ function buildBoothWiseVoterInfo(myResults,jsObj)
 		 for(var j in publicationName)
 			 str +='<th>'+publicationName[j].name+'</th>';
 			
-		str +='<th>Added</th>';
-		str +='<th>Deleted</th>';
+		str +='<th>Ad</th>';
+		str +='<th>Del</th>';
 		str +='<th>Moved</th>';
-		str +='<th>Relocated</th>';
-		str +='<th>Added</th>';
-		str +='<th>Deleted</th>';
+		str +='<th>Reloc</th>';
+		str +='<th>Ad</th>';
+		str +='<th>Del</th>';
 		str +='<th>Moved</th>';
-		str +='<th>Relocated</th>';
-		str +='<th>Added</th>';
-		str +='<th>Deleted</th>';
+		str +='<th>Reloc</th>';
+		str +='<th>Ad</th>';
+		str +='<th>Del</th>';
 		str +='<th>Moved</th>';
-		str +='<th>Relocated</th>';
+		str +='<th>Reloc</th>';
 	str +='</tr>';
     str+='</thead>';
 	 str+='<tbody>';
@@ -196,11 +214,13 @@ function buildBoothWiseVoterInfo(myResults,jsObj)
 
 	//$('#ageWiseDetailsTable').dataTable();
 	 $('#subLevelVotersTable').dataTable({
-		"aaSorting": [[ 1, "desc" ]],
+		"aaSorting": [[ 0, "asc" ]],
 		"iDisplayLength":50,
 		"aLengthMenu": [[50, 100, 200, 500,1000,-1], [50, 100, 200, 500,1000,"All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null,null] 
+		"bSort": true,
+		 "aoColumns": [{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" },{ "sType": "num-html" }
+		] 
 		});
 }
 
