@@ -636,6 +636,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		List<Object[]> serialNosList = new ArrayList<Object[]>(0);
 		try {  
 			
+			if(columnName != null && columnName.equalsIgnoreCase("firstName"))
+				columnName = "name";
 			if(hamletId != null && hamletId.longValue() != 0)
 			{
 				List<?> votersList1 = userVoterDetailsDAO.getVotersDetailsByHamletPublication(hamletId, userId,startIndex,maxRecords,order,columnName);
@@ -689,8 +691,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					voterVO.setHouseNo(voter.getHouseNo());
 					voterVO.setRelativeFirstName(voter.getRelativeName());
 					voterVO.setRelationshipType(voter.getRelationshipType());
-					voterVO.setCast(voter.getCast());
-					voterVO.setCastCatagery(voter.getCastCatagery());
 					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
 					voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :" ");
 					voterVO.setSerialNo(serialNoMap.get(voter.getVoterId()));
@@ -2258,8 +2258,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
 	    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
 	    	
-	    	voterHouseInfoVO.setCast(voter.getCast());
-	    	voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
 	    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 	    	voterHouseInfoVO.setBoothId(boothId);
 	    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : " ");
@@ -2313,8 +2311,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
 		    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
 		    	
-		    	voterHouseInfoVO.setCast(voter.getCast());
-		    	voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
 		    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 		    	voterHouseInfoVO.setBoothId(boothId);
 		    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : " ");
@@ -2494,8 +2490,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				//voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
 				voterHouseInfoVO.setGaurdian(voter.getRelativeName());
 				voterHouseInfoVO.setRelationship(voter.getRelationshipType());
-				voterHouseInfoVO.setCast(voter.getCast());
-				voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
 				voterHouseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo());
 				voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : "N/A");
 				votersList.add(voterHouseInfoVO);
@@ -4951,9 +4945,9 @@ public VoterHouseInfoVO getVoterFullInformation(Long voterId){
 
 public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserVoterDetails userVoterDetails,VoterCategoryValue voterCategoryValues,UserVoterCategoryValue categoryValues){
 	// userVoterDetailsDAO = null;
-	if(voterHouseInfoVO.getCast() != null && !voterHouseInfoVO.getCast().equalsIgnoreCase("")){
+	/*if(voterHouseInfoVO.getCast() != null && !voterHouseInfoVO.getCast().equalsIgnoreCase("")){
 		voter.setCast(voterHouseInfoVO.getCast());
-	}
+	}*/
 	if(voterHouseInfoVO.getPartyId() != null && !voterHouseInfoVO.getPartyId().equals(0)){
 		
 		userVoterDetails.setParty(partyDAO.get(voterHouseInfoVO.getPartyId()));
@@ -5005,11 +4999,11 @@ public void saveVoterDetails(VoterHouseInfoVO voterHouseInfoVO,Voter voter,UserV
 public void getVoterDetails(Long voterId,VoterHouseInfoVO voterHouseInfoVO){
 	
 	List<Voter> voterDetails=voterDAO.getVoterPersonalDetailsByVoterId(voterId);
-	if(voterDetails.size()>0){
+	/*if(voterDetails.size()>0){
 		for(Voter voterInfo:voterDetails){
 			voterHouseInfoVO.setCast(voterInfo.getCast());
 		}	
-	}	
+	}*/	
 	
 }
 
@@ -5080,7 +5074,6 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 						voter.setRelationshipType(voterTemp.getRelationShip());
 						voter.setGender(voterTemp.getSex().equalsIgnoreCase("Male") ? IConstants.MALE : IConstants.FEMALE);
 						voter.setAge(Long.parseLong(voterTemp.getAge().trim()));
-						voter.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						voter = voterDAO.save(voter);
 					}
 					else
@@ -5696,7 +5689,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
 		
 		 try{
-			
+				
 		 //	List<Object> listId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(lclElecBodyId);
 		//List<Object[]> wards =  constituencyDAO.getWardsInMuncipality(lclElecBodyId);
 	//List<Object[]> wards = wardDAO.findByWardsByAssemblyLocalElectionBodyId(lclElecBodyId, publicationDateId);
@@ -7697,8 +7690,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				return constituencyList;
 			}
 		}
-	  
-	  
+		  
+		  
 		public List<SelectOptionVO> getAllElectionsInAConsti(Long electionTypeId,Long constiId){
 			List<SelectOptionVO> options = new ArrayList<SelectOptionVO>();
 			SelectOptionVO selectOptionVO = null;
@@ -10464,8 +10457,8 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 		 }
 		 return votersInfo;
 	 }
-		 
-		 
+	 
+	 
 	/**
 	 * This method will return all the categories exist for logged in user
 	 * @author Samba Penugonda
@@ -11261,8 +11254,6 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					voterVO.setHouseNo(params.getVoter().getHouseNo());
 					voterVO.setRelativeFirstName(params.getVoter().getRelativeName());
 					voterVO.setRelationshipType(params.getVoter().getRelationshipType());
-					voterVO.setCast(params.getVoter().getCast());
-					voterVO.setCastCatagery(params.getVoter().getCastCatagery());
 					voterVO.setVoterIDCardNo(params.getVoter().getVoterIDCardNo());
 					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
 					if(type.equalsIgnoreCase("BOOTH"))
@@ -11323,8 +11314,6 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 					voterVO.setHouseNo(params.getVoter().getHouseNo());
 					voterVO.setRelativeFirstName(params.getVoter().getRelativeName());
 					voterVO.setRelationshipType(params.getVoter().getRelationshipType());
-					voterVO.setCast(params.getVoter().getCast());
-					voterVO.setCastCatagery(params.getVoter().getCastCatagery());
 					voterVO.setVoterIDCardNo(params.getVoter().getVoterIDCardNo());
 					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
 					if(type.equalsIgnoreCase("BOOTH"))
@@ -13085,8 +13074,6 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
 			    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
 			    	
-			    	voterHouseInfoVO.setCast(voter.getCast());
-			    	voterHouseInfoVO.setCastCategory(voter.getCastCatagery());
 			    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 			    	voterHouseInfoVO.setBoothId((Long)boothDAO.getBoothIdByPartNo(partNo.toString()).get(0));
 			    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : " ");
@@ -13185,7 +13172,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				return selectOptionVOList;
 			}
 		}
-			
+		
 		
 		public void getVoterDetailsForHamletsByBooths(Long hamletId,VotersInfoForMandalVO votersInfoForMandalVO1,Long publicationDateId, Long userId)
 		{  

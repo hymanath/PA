@@ -47,7 +47,6 @@ public class Hamlet extends BaseModel implements Serializable {
 	private String panchayatCode;
 	private String panchayatName;
 	private String mppCode;
-	private Set<Voter> voters = new HashSet<Voter>(0);
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 	private Set<HamletBoothElection> hamletBoothElections = new HashSet<HamletBoothElection>(0);
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
@@ -78,7 +77,6 @@ public class Hamlet extends BaseModel implements Serializable {
 		this.panchayatCode = panchayatCode;
 		this.panchayatName = panchayatName;
 		this.mppCode = mppCode;
-		this.voters = voters;
 		this.problemLocations = problemLocations;
 		this.localGroupRegion = localGroupRegion;
 	}
@@ -151,14 +149,6 @@ public class Hamlet extends BaseModel implements Serializable {
 		this.mppCode = mppCode;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "hamlet")
-	public Set<Voter> getVoters() {
-		return voters;
-	}
-
-	public void setVoters(Set<Voter> voters) {
-		this.voters = voters;
-	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "hamlet")
 	public Set<ProblemLocation> getProblemLocations() {

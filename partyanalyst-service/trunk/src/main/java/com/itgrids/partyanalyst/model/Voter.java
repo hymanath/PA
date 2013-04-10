@@ -37,23 +37,13 @@ public class Voter extends BaseModel implements Serializable {
 	
 	private String name;
 	
-	private String firstName;
-	private String lastName;
 	private String relationshipType;
 	private String relativeName;
-	private String relativeFirstName;
-	private String relativeLastName;
-	private String cast;
-	private String castCatagery;
-	private String castSubCatagery;
 	private String gender;
 	private Long age;
-	private String localArea;
 	private String voterIDCardNo;
 	private String insertionDate;
-	private Hamlet hamlet;
 	private Date dateOfBirth;
-	private Date insertedTime;
 	private String mobileNo;
 	
 	public Voter(){
@@ -65,26 +55,15 @@ public class Voter extends BaseModel implements Serializable {
 		this.voterId = voterId;
 	}
 
-	public Voter(String houseNo, String firstName, String lastName,
-			String relationshipType, String relativeFirstName, String relativeLastName,
-			String cast, String castCatagery, String castSubCatagery, String gender,
-			Long age, String voterIDCardNo, String localArea, String insertionDate, Hamlet hamlet,
+	public Voter(String houseNo,
+			String relationshipType, String gender,
+			Long age, String voterIDCardNo, 
 			Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters) {
 		this.houseNo = houseNo;
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.relationshipType = relationshipType;
-		this.relativeFirstName = relativeFirstName;
-		this.relativeLastName = relativeLastName;
-		this.cast = cast;
-		this.castCatagery = castCatagery;
-		this.castSubCatagery = castSubCatagery;
-		this.gender = gender;
 		this.age = age;
 		this.voterIDCardNo = voterIDCardNo;
 		this.insertionDate = insertionDate;
-		this.hamlet = hamlet;
-		this.localArea = localArea;
 	}
 
 	@Id
@@ -107,23 +86,6 @@ public class Voter extends BaseModel implements Serializable {
 		this.houseNo = houseNo;
 	}
 
-	@Column(name = "first_name", length = 50)
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	@Column(name = "last_name", length = 50)
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 	@Column(name = "relationship_type", length = 50)
 	public String getRelationshipType() {
@@ -132,51 +94,6 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setRelationshipType(String relationshipType) {
 		this.relationshipType = relationshipType;
-	}
-
-	@Column(name = "relative_first_name", length = 50)
-	public String getRelativeFirstName() {
-		return relativeFirstName;
-	}
-
-	public void setRelativeFirstName(String relativeFirstName) {
-		this.relativeFirstName = relativeFirstName;
-	}
-
-	@Column(name = "relative_last_name", length = 50)
-	public String getRelativeLastName() {
-		return relativeLastName;
-	}
-
-	public void setRelativeLastName(String relativeLastName) {
-		this.relativeLastName = relativeLastName;
-	}
-
-	@Column(name = "cast", length = 25)
-	public String getCast() {
-		return cast;
-	}
-
-	public void setCast(String cast) {
-		this.cast = cast;
-	}
-
-	@Column(name = "cast_catagery", length = 25)
-	public String getCastCatagery() {
-		return castCatagery;
-	}
-
-	public void setCastCatagery(String castCatagery) {
-		this.castCatagery = castCatagery;
-	}
-
-	@Column(name = "cast_subcatagery", length = 25)
-	public String getCastSubCatagery() {
-		return castSubCatagery;
-	}
-
-	public void setCastSubCatagery(String castSubCatagery) {
-		this.castSubCatagery = castSubCatagery;
 	}
 
 	@Column(name = "gender", length = 25)
@@ -215,26 +132,6 @@ public class Voter extends BaseModel implements Serializable {
 		this.insertionDate = insertionDate;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "hamlet_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Hamlet getHamlet() {
-		return hamlet;
-	}
-
-	public void setHamlet(Hamlet hamlet) {
-		this.hamlet = hamlet;
-	}
-
-	@Column(name = "local_area", length = 50)
-	public String getLocalArea() {
-		return localArea;
-	}
-
-	public void setLocalArea(String localArea) {
-		this.localArea = localArea;
-	}
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date_of_birth", length = 10)
@@ -263,14 +160,6 @@ public class Voter extends BaseModel implements Serializable {
 		this.relativeName = relativeName;
 	}
 
-	@Column(name = "inserted_time", length = 20)
-	public Date getInsertedTime() {
-		return insertedTime;
-	}
-
-	public void setInsertedTime(Date insertedTime) {
-		this.insertedTime = insertedTime;
-	}
 	
 	@Column(name="mobile_no",length = 15)
 	public String getMobileNo() {

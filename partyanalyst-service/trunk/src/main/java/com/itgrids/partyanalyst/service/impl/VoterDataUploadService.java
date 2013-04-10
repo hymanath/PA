@@ -343,9 +343,8 @@ public class VoterDataUploadService implements IVoterDataUploadService{
 	    			gender = voterVO.getGender();
 	    			age = voterVO.getAge();
 	    			voterIDCardNo = voterVO.getVoterIDCardNo();
-	    			voter = new Voter(houseNo, voterFirstName, voterlastName, relationshipType,
-	    					relativeFirstName, relativeLastName, cast, castCatagery, castSubcatagery, gender, 
-	    					age, voterIDCardNo, localArea, null, hamlet, null);
+	    			voter = new Voter(houseNo, relationshipType,gender, 
+	    					age, voterIDCardNo, null);
 	    			
 	    			
 	    			
@@ -374,15 +373,15 @@ public class VoterDataUploadService implements IVoterDataUploadService{
 
 	
 	private Voter checkAndInsertVoterData(Voter voter){
-		List<Voter> voters = voterDAO.findByVoterFirstNameLastNameRelativeFirstNameLastNameAndVoterIdNo(voter.getFirstName(), 
-				voter.getLastName(), voter.getRelativeFirstName(), voter.getRelativeLastName(), voter.getVoterIDCardNo());
+		/*List<Voter> voters = voterDAO.findByVoterFirstNameLastNameRelativeFirstNameLastNameAndVoterIdNo(voter.getFirstName(), 
+				voter.getLastName(),voter.getRelativeFirstName(), voter.getRelativeLastName(), voter.getVoterIDCardNo());
 		if(voters.size() > 0 ){
 			if(log.isDebugEnabled()){
 				log.debug("Voter Already Exists Name:"+voter.getFirstName()+" "+voter.getLastName()+" and Voter ID:"+voter.getVoterIDCardNo());
 			}
 			return voters.get(0);
 		}		
-		  voter = voterDAO.save(voter);
+		  voter = voterDAO.save(voter);*/
 	
 		return voter;
 	}
