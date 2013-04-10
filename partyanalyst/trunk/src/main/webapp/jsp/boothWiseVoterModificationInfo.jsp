@@ -7,13 +7,14 @@
 	<title>Booth Wise Voter Modification Report</title>
 
 <script type="text/javascript" src="js/boothWiseVoterModificationInfo/boothWiseVoterModificationInfo.js"></script>
-
+<script type="text/javascript" src="js/boothWiseVoterModificationInfo/numericComma.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="js/blockui.js"></script>
 
   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
   <style type="text/css">
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
    #boothWiseVoterModifMainDiv{width:990px;margin-left:auto;margin-right:auto;float:none;}
 
 	.voterInfoTable{border-collapse: collapse;
