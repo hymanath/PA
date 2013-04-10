@@ -2375,14 +2375,17 @@ function getVotersCastInfo(id,publicationId,type)
 }
 
 function getPartyWiseCastInfo(){
-  $("#partyWiseLocalCastStatsTab").dialog({
+
+	var reqBrowser = window.open("casteAndPartyWindowAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&type="+maintype+"&typename="+mainname+"&id="+mainreqid+"","newBrowser","width=700,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	   reqBrowser.focus();
+  /* $("#partyWiseLocalCastStatsTab").dialog({
             modal: true,
             title: "<b>Caste V/s Party Analysis</b>",
 			width: 970,
             height: 500
            
         });
-		$("#partyWiseLocalCastStatsTab").html('<div style="margin-left:375px;margin-top:70px;"><img style="clear: both; display: block;" src="images/icons/goldAjaxLoad.gif" ></div>');
+		$("#partyWiseLocalCastStatsTab").html('<div style="margin-left:375px;margin-top:70px;"><img style="clear: both; display: block;" src="images/icons/goldAjaxLoad.gif" ></div>'); 
   var typename=mainname;
 		var jsObj=
 			{
@@ -2396,7 +2399,7 @@ function getPartyWiseCastInfo(){
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getvotersCastInfoByConstituency.action?"+rparam;						
-		callAjax(jsObj,url);
+		callAjax(jsObj,url);*/
 }
 
 function showAjaxImgDiv(id)

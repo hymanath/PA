@@ -49,11 +49,8 @@
 	width: 96%;
 	}
 	#subLevelDiv{overflow-x: scroll;}
-	#subLevelVotersTable{margin-bottom: 14px;}
+	#subLevelVotersTable{margin-bottom: 20px;}
 	#subLevelsErrorMsgDiv{height: 50px; text-align: center; font-size: 18px; margin-top: 15px;}
-	#subLevelVotersTable_info{ margin-bottom: 16px;}
-	#subLevelVotersTable_wrapper{ padding-top: 10px;}
-	table.dataTable thead th{ padding: 3px 6px 3px 10px;}
   </style>
   <script type="text/javascript">
 

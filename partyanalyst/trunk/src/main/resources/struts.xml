@@ -4813,5 +4813,19 @@
 			<result name="success">/jsp/voterBasicInfo.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
+		
+		<action name="getPartiesInState" class="electionComparisonAction" method="getPartiesInAState" >
+			<result type="json" name="success">
+				 <param name="root">partyList</param> 
+			</result>
+		</action>
+		<action name="casteAndPartyWindowAction" class="ageWiseVoterDetailsAction" >
+			<result name="success">/jsp/casteVsPartyDetails.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		<action name="boothWiseVoterModificationInfoAction" class="boothWiseVoterModificationInfoAction" >
+			<result name="success">/jsp/boothWiseVoterInfoWindow.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
 		</package>
 </struts>      
