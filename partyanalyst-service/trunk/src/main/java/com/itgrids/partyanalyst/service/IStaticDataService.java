@@ -341,4 +341,7 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getElectionIdsAndYearsInTehsil(Long electionType,Long tehsilId);
 		
 		public String getLatestAssemblyElectionId();
+		
+		public List<SelectOptionVO> getPartyNamesInAState(Long stateId , Long electionTypeId);
+		
 }

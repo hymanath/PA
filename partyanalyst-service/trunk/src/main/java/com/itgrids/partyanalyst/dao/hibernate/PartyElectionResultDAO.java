@@ -98,4 +98,43 @@ public class PartyElectionResultDAO extends GenericDaoHibernate<PartyElectionRes
 				" and model.election.electionScope.electionType.electionType =? and " +
 				" model.election.elecSubtype = '"+IConstants.ELECTION_SUBTYPE_MAIN+"' ",params);
 	}
+
+	/**
+	 * This DAO Is used for getting the parties which are participated more tan once in a main elections
+	 * @param Long stateId
+	 * @param String electionType
+	 * @return List<Object[]>
+	 * @date 08/04/2013
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartiesParticipatedMoreThanOnce(Long stateId, String electionType)
+	{
+		Query query = null;
+		if(electionType == IConstants.ASSEMBLY_ELECTION_TYPE)
+		{
+		query = getSession().createQuery("select distinct model.party.partyId, model.party.shortName " +
+				"from PartyElectionResult model where model.election.electionScope.state.stateId = :stateId " +
+				" and model.election.electionScope.electionType.electionType = :electionType and " +
+				"model.election.elecSubtype = :elecSubtype and cast(model.totalSeatsWon, int)>=1 " +
+				"group by  model.party.partyId having count(model.party.partyId) >= 2");
+		query.setParameter("stateId",stateId);
+		query.setParameter("electionType",electionType);
+		query.setParameter("elecSubtype",IConstants.ELECTION_SUBTYPE_MAIN);
+		
+		}
+		else
+		{
+			query = getSession().createQuery("select distinct model.party.partyId, model.party.shortName " +
+					"from PartyElectionResult model where  " +
+					" model.election.electionScope.electionType.electionType = :electionType and " +
+					"model.election.elecSubtype = :elecSubtype and cast(model.totalSeatsWon, int)>=10 " +
+					"group by  model.party.partyId having count(model.party.partyId) >= 2");
+			//query.setParameter("stateId",stateId);
+			query.setParameter("electionType",electionType);
+			query.setParameter("elecSubtype",IConstants.ELECTION_SUBTYPE_MAIN);
+		}
+		return query.list();
+	}
+	
+	
 }
