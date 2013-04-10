@@ -208,7 +208,8 @@
 							if(results.partyName=="All Parties"){
 								initializeResultsTable(results,"dataTableId","dataTableMainDiv","others");
 								//initializeTable(results);
-							}else{
+							}
+							else{
 								initializeResultsTable2(results,"dataTableId","dataTableMainDiv");
 								//initializeTable(results);
 							}
@@ -1084,7 +1085,17 @@
 	{
 		buildSearchCriteria(selectedElmt);
 		
-		electionType = selectedElmt;		
+		electionType = selectedElmt;
+		//updated here
+		var jsObj=
+		{		
+				electionType :selectedElmt,		
+				task:"getStatesAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getStatesAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
 		var jsObj=
 		{	
 			stateId : 1,
@@ -1094,15 +1105,17 @@
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getAllElectionsAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
-		
+		//updated here
 		var jsObj=
 		{		
-				electionType :selectedElmt,		
-				task:"getStatesAjaxAction"				
+				stateId : 1,
+				electionType :electionType,		
+				task:"getAllPartiesData"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getStatesAjaxAction.action?"+rparam;						
-		callAjax(jsObj,url);
+		var url = "<%=request.getContextPath()%>/getAllPartiesMatchingCriteria.action?"+rparam;						
+		callAjax(jsObj,url);	
+		
 	}
 
 	function getStatesOfAp(selectedElmt)
@@ -1120,7 +1133,7 @@
 	}
 
 	function getFrequencyOfYears(selectedState)
-	{		
+	{	
 		selectedStateElmts = selectedState;
 		var jsObj=
 		{		
@@ -1203,6 +1216,7 @@
 		}
 		populateAllPartiesData+='</select>';
 		allPartiesData.innerHTML = populateAllPartiesData;
+
 	}
 	
 	function buildDefaultElectionYears(results)
@@ -1218,6 +1232,8 @@
 	
 	function buildElectionYearsTable(results)
 	{
+		
+		$('#partySelect').val('0');//updated here
 
 		var showElections = document.getElementById("electionTypeTd");
 		
@@ -1560,7 +1576,7 @@
 	}
 
 	function validateAndForwardToAction()
-	{	
+	{		
 		$('#searchByDistrictData').val('');
 		$('#searchByConstituencyData').val('');		
 		$('#noDataDiv').css('display','none');
@@ -1568,7 +1584,7 @@
 		var stateSelect = document.getElementById("stateSelect").value;
 		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
 		var partySelect = document.getElementById("partySelect").value;
-				
+		
 		getElectionDetailsForSelectedCriteria(electionTypeSelect,stateSelect,electionYearsSelect,partySelect);	
 	}
 
@@ -1647,7 +1663,7 @@
 						
 							<td align="left" id="selectStateId" class="tdStyle">Select State</td>
 							<td align="left" id="stateTd">
-								<select id="stateSelect" name="state" class = "selectWidth">																
+								<select id="stateSelect" name="state" class = "selectWidth">								
 										<option value="1">Andhra Pradesh</option>									
 								</select>
 							</td>
@@ -1662,7 +1678,7 @@
 							<td align="left" class="tdStyle">Select Party</td>
 							<td align="left" id="partySelectTd">												
 								<select id="partySelect" name="party" class = "selectWidth">																
-									<option value="0">All Party</option>									
+									 <option value="0">All Party</option>								
 								</select>
 							</td>
 						</tr>
