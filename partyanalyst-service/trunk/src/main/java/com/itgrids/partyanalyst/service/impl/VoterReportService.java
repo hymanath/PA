@@ -1300,11 +1300,11 @@ public class VoterReportService implements IVoterReportService{
 								  if(voters.getRelationshipType()!= null)
 								  voterVO.setRelationshipType(voters.getRelationshipType());
 
-								  if(voters.getCast()!= null)
+								 /* if(voters.getCast()!= null)
 								  voterVO.setCast(voters.getCast());
 
 								  if(voters.getCastCatagery()!= null)
-								  voterVO.setCastCatagery(voters.getCastCatagery());
+								  voterVO.setCastCatagery(voters.getCastCatagery());*/
 
 								  if(voters.getVoterIDCardNo()!= null)
 								  voterVO.setVoterIDCardNo(voters.getVoterIDCardNo());
@@ -1396,8 +1396,8 @@ public class VoterReportService implements IVoterReportService{
 						 voterHouseInfoVO.setHouseNo(list.getVoter().getHouseNo());
 						 if( list.getVoter().getAge() != null)
 						 voterHouseInfoVO.setAge(new Long(list.getVoter().getAge()));
-						 if( list.getVoter().getCast() != null)
-						 voterHouseInfoVO.setCast(list.getVoter().getCast());
+						 /*if( list.getVoter().getCast() != null)
+						 voterHouseInfoVO.setCast(list.getVoter().getCast());*/
 						 if( list.getVoter().getVoterId() != null)
 						 voterHouseInfoVO.setVoterId(new Long(list.getVoter().getVoterId()));
 						 if( list.getVoter().getGender() != null)
