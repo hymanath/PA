@@ -98,4 +98,6 @@ public interface IAnanymousUserService {
 	
 	public DataTransferVO getAllConnectedUsersBasedonLocationType(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status,Long startIndex,String nameString);
 	
+	public Long getAllUsersCountInSelectedLocationsInFilterView(Long userId,List<Long> locationIds,String locationType,String status,String nameString, List<Long> connectedAndPendingUserIdsList);
+	
 }	
