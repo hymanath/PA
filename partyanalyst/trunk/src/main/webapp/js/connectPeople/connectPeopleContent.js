@@ -50,7 +50,7 @@ connectDivId = divId;
 	//bodyStr+='<span><img height="20" width="25" src="images/icons/constituencyPage/groups.png" style="margin-top: -15px;"></img></span>';
 	bodyStr+='<h4 style="font-weight:normal; text-align:center;font-size:16px;padding:5px;"> '+connectedPeopleData.length+' people connected from <br/> '+locationName+' Constituency</h4>';
 	bodyStr+='</div>';
-	bodyStr+='<div id="connectedPersonsDiv"  class="btn" style="font-size:13px;font-family:verdana;text-transform:capitalize;">';
+	bodyStr+='<div id="connectedPersonsDiv"  class="btn" style="font-size:13px;font-family:verdana;text-transform:capitalize;cursor:default;">';
 	bodyStr+='<table width="100%">';
 	for(var i =0; i<connectedPeopleData.length; i++)
 	{
@@ -58,7 +58,7 @@ connectDivId = divId;
 			break;
 		bodyStr+='<tr>';
 		bodyStr+='<td>';
-		bodyStr+='<table width="100%" class="btn">';
+		bodyStr+='<table class="btn" style="width: 250px;cursor:default;">';
 		bodyStr+='<tr>';
 		
 		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
@@ -68,7 +68,7 @@ connectDivId = divId;
 		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass"><a href="userProfile.action?profileId='+connectedPeopleData[i].id+'"  target="_blank" style="text-transform: capitalize;">'+connectedPeopleData[i].candidateName+'</a></span></td>';
 		bodyStr+='</tr>';
 		bodyStr+='<tr>';	
-		bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass" style="margin-right:94px;">';
+		bodyStr+='<td align="left"><span class="groupPersonMessageSpanClass">';
 		if(userLoginStatus == "false")
 			bodyStr+='<a href="connectPeopleAction.action?redirectLoc='+locationType+'&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'"><i class="icon-plus-sign opacityFilter-50"></i></a>';
 		else
@@ -1152,11 +1152,11 @@ function showMailPopup(id,name,type)
 	str += '<div id="ErrorMsgDivId" style="margin-left: 85px; margin-bottom: 8px; margin-top: 5px;"></div>';
 	str += '<table width="100%">';
 	str += '<tr>';
-	str += '<th>Message</th>';
-	str += '<td><textarea id="connectMessageText" cols="35" rows="4" style="background:#ffffff;"></textarea></td>';
+	str += '<th></th>';
+	str += '<td><textarea id="connectMessageText" cols="35" rows="4" style="background:#ffffff;width: 450px; height: 120px;" placeholder="Enter Your Message Here..."></textarea></td>';
 	str += '</tr>';
 	str += '<tr>';	
-	str += '<td><input type="button" name="connectButton" value="Send" id="sendMessageButtonId" onclick="sendMessageToConnectedUser(\''+id+'\',\''+type+'\')"></td>';
+	str += '<td><input class ="btn" type="button" name="connectButton" value="Send" id="sendMessageButtonId" onclick="sendMessageToConnectedUser(\''+id+'\',\''+type+'\')" style="float: right; position: absolute; margin-left: 400px;"></td>';
 	str += '</tr>';	
 	str += '</table>';
 	str += '<table style="text-align:center;width:100%;"><tr><td><div id="confirmationMsg"></div></td></tr></table>';
@@ -1164,11 +1164,11 @@ function showMailPopup(id,name,type)
 	str	+= '</div>';
 
 	$( "#connectPeoplePopup" ).dialog({
-			title:"Send Message to "+name,
+			title:"Send Message to <span style='text-transform:capitalize'>"+name+"</span>",
 			autoOpen: true,
 			show: "blind",
-			width: "auto",
-			minHeight:300,
+			width: 500,
+			minHeight:250,
 			modal: true,
 			hide: "explode"
 		});
