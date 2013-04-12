@@ -277,8 +277,8 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 				queryObject = getSession().createQuery(query.toString());
 			}
 			if(constituencyType.equalsIgnoreCase("NOTSAME")){
-				query.append(" and (model.userSource.userId in (select model2.userId from User model2 where  model2.constituency.constituencyId = :locationIds)");
-				query.append(" or model.userTarget.userId in (select model2.userId from User model2 where  model2.constituency.constituencyId = :locationIds))");
+				query.append(" and (model.userSource.userId in (select model2.userId from User model2 where  model2.constituency.constituencyId in(:locationIds))");
+				query.append(" or model.userTarget.userId in (select model2.userId from User model2 where  model2.constituency.constituencyId in(:locationIds)))");
 				queryObject = getSession().createQuery(query.toString());
 				queryObject.setParameterList("locationIds", locationIds);
 				queryObject.setParameterList("locationIds", locationIds);
