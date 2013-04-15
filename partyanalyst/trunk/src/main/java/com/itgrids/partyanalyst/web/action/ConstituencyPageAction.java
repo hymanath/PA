@@ -892,11 +892,12 @@ public class ConstituencyPageAction extends ActionSupport implements
    		Long startIndex = 0L;
    		String nameString = "";
    		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-   		
+   		listOfConstituencies = ananymousUserService.getParliamentConstituencies(listOfConstituencies,IConstants.CONSTITUENCY);
+   		Long connectedUsers = ananymousUserService.getAllUsersCountInSelectedLocationsInFilterView(0L, listOfConstituencies, IConstants.CONSTITUENCY_LEVEL, IConstants.ALL, "", null);
    		if(user==null){
-   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,0l,IConstants.ALL,startIndex,nameString);	
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,connectedUsers,0l,IConstants.ALL,startIndex,nameString);	
    		}else{
-   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,user.getRegistrationID(),IConstants.ALL,startIndex,nameString);
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,connectedUsers,user.getRegistrationID(),IConstants.ALL,startIndex,nameString);
    		}
    		
    		//	Free User
