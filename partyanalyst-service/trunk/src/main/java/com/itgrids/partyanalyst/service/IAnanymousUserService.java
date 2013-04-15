@@ -100,4 +100,6 @@ public interface IAnanymousUserService {
 	
 	public Long getAllUsersCountInSelectedLocationsInFilterView(Long userId,List<Long> locationIds,String locationType,String status,String nameString, List<Long> connectedAndPendingUserIdsList);
 	
+	public List getParliamentConstituencies(List<Long> locationIds,String locationType);
+	
 }	
