@@ -257,7 +257,7 @@
 	}
 
 	function buildWardsList(results,jsObj)
-	{ 	alert(results.length);
+	{
 	if(results.length == 1)
 		$("#msgDiv").html('Data not available');
 		var selectElmt =jsObj.selectElmt;
