@@ -25,7 +25,6 @@
 			str +='<tr id="tableRowC">';
 			str +='<td class="tdWidth1">Assembly Constituency : <font id="requiredValue" class="requiredFont">*</font></td>';
 			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="getMandalList(this.options[this.selectedIndex].value);">';
-			str+='<option value="0"> Select Constituency </option>';
 			 for(var i in locationDetails.constituencyArr)
 				{
 			str+='<option value='+locationDetails.constituencyArr[i].id+'>'+locationDetails.constituencyArr[i].value+'</option>';
