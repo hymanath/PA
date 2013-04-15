@@ -623,7 +623,7 @@ function showImportantFamiliesDiv()
 			var selectname = mandalId.options[mandalId.selectedIndex].text;
 			var flag= selectname.search("MUNCIPALITY");
 		}
-		 if(value1 == 0)
+		 if(value1 !='' && value1 == 0)
 		{
 			alertEl.innerHTML ='<P>Please Select Mandal</P>';
 			return;
@@ -937,18 +937,20 @@ function showImportantFamiliesDiv()
 	removeSelectElements(selectedElmt);
 	for(var val in results)
 	{
-		var opElmt = document.createElement('option');
-		opElmt.value=results[val].id;
-		opElmt.text=results[val].name;
-
-		try
+		if(results[val].id > 0)
 		{
-			selectedElmt.add(opElmt,null); // standards compliant
+			var opElmt = document.createElement('option');
+			opElmt.value=results[val].id;
+			opElmt.text=results[val].name;
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}
 		}
-		catch(ex)
-		{
-			selectedElmt.add(opElmt); // IE only
-		}	
 	}
 }
 $(document).ready(function(){
