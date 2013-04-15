@@ -3138,4 +3138,16 @@ public DataTransferVO getAllConnectedUsersBasedonLocationType(List<Long> locatio
 		}
 	return dataTransferVO;
 	} 
+
+	public List<Long> getParliamentConstituencies(List<Long> locationIds,String locationType){
+		if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			List<Long> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+			if(list!=null && list.size()!=0){
+				for(int i=0; i<list.size(); i++){					
+					locationIds.add((Long)list.get(i));
+				}
+			}
+		}
+	return locationIds;
+	}
 }
