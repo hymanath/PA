@@ -225,7 +225,6 @@ $("#pageDownBtn").live("click",function(){
   $('html,body').animate({scrollTop: $(document).height()-800},1000);
 	
 });
-
 $("#pageUpBtn").live("click",function(){
 	$("html, body").animate({scrollTop:600}, 1000);
 });
@@ -330,105 +329,128 @@ $("#pageUpBtn").live("click",function(){
   });
   var isMuncipality;
   function getVotersInfo(){
-
-	  $("#scrollBtnDiv").css("display","block");
-	
+	$("#scrollBtnDiv").css("display","block");
 	showAlert();
-	isMuncipality=false;
-	if($('#mandalField').val().slice(0,1)==1){
-		isMuncipality=true;
-	}
+	isMuncipality=false;	
 	$('#errorMessageDiv').hide();
     $("#multipleVoterFamiliesEditDiv").html("");
 	$("#errorMsgAlert").html("");
     var level = $("#reportLevel").val();
 	 selectedLevel=level;
-	var publicationDateId = $("#publicationDateList").val();
-	publicationId=publicationDateId;
 	var type = '';
 	var id='';
+	var publicationDateId ='';
 	var flag =true;
 		var str ='';
-	if(level == 1){
-	type = 'constituency';
 	id = $("#constituencyList").val();
-	selectedType=type;
-	selectedTypeId=id;
 	if(id == 0 ||id == null)
-		{
+	{
 		str +='<div>Please Select Constituency</div>';
-		flag =false;
+		$("#errorMsgAlert").html(str);
+		return;
+	}
+	if(level == 1){
+		type = 'constituency';
+		selectedType=type;
+		selectedTypeId=id;	
+	}
+	if(level == 2 || level == 3 || level == 4 || level == 5 || level == 6 ){
+	id = $("#mandalField").val();
+			if(id == 0 || id == null)
+			{
+				str +='<div>Please Select Mandal</div>';
+				$("#errorMsgAlert").html(str);
+				return;
+			}	
+    }
+    if(level == 3 || level == 6){
+	  id = $("#panchayatField").val();
+		if(id == 0 || id == null)
+		{
+			str +='<div>Please Select Panchayat</div>';
+			$("#errorMsgAlert").html(str);
+			return;
 		}
 	}
-	else if(level == 2){
-	type = 'mandal';
-	id = $("#mandalField").val();
-	
-	selectedType=type;
-	selectedTypeId=id.substring(1);
-	if(id.charAt(0) =="1"){
-		 selectedType = "muncipality";
-		madalType = "muncipality";
-					}
-	if(id == 0 || id == null)
-	{
-	str +='<div>Please Select Mandal</div>';
-	flag =false;
+	if(level == 4){
+	  id = $("#pollingStationField").val();
+        if(id == 0 || id == null)
+		{
+			str +='<div>Please Select Polling Station</div>';
+			$("#errorMsgAlert").html(str);
+			return;
+		}
 	}
+	if(level == 5){		
+		 id = $("#wardField").val();
+			if(id == 0 || id == null)
+			{
+				str +='<div>Please Select Ward</div>';
+				$("#errorMsgAlert").html(str);
+				return;
+			}		
+    }
+	if(level == 6){
+		id = $("#hamletField").val();
+        if(id == 0 || id == null)
+		{
+			str +='<div>Please Select Hamlet</div>';
+			$("#errorMsgAlert").html(str);
+			return;
+		}
+	}
+	
+	publicationDateId = $("#publicationDateList").val();
+	publicationId=publicationDateId;
+	if(publicationDateId == 0 || publicationDateId == null){
+	    str +='<div>Please Select Publication Date</div>';
+		$("#errorMsgAlert").html(str);
+		return;
+	}
+	
+	if(level == 1){
+		type = 'constituency';
+		id = $("#constituencyList").val();
+		selectedType=type;
+		selectedTypeId=id;	
+	}
+	else if(level == 2){
+		type = 'mandal';
+		id = $("#mandalField").val();
+			if(id.slice(0,1)==1){
+				isMuncipality=true;
+			}
+		selectedType=type;
+		selectedTypeId=id.substring(1);
+			if(id.charAt(0) =="1"){
+				 selectedType = "muncipality";
+				madalType = "muncipality";
+			}		
    }
-	else if(level == 3){
+   else if(level == 3){
 	  type = 'panchayat';
 	  id = $("#panchayatField").val();
 	  selectedType=type;
-	  selectedTypeId=id;
-		
-	 if(id == 0 || id == null)
-			{
-				str +='<div>Please Select Panchayat</div>';
-				flag =false;
-			}
+	  selectedTypeId=id;	
 	}
 	else if(level == 4){
-
 		 type = 'booth';
 		 id = $("#pollingStationField").val();
 		 selectedType=type;
-	     selectedTypeId=id;
-		 
-          if(id == 0 || id == null)
-			{
-			str +='<div>Please Select Polling Station</div>';
-			flag =false;
-			}
+	     selectedTypeId=id;	
 	}
 	else if(level == 5){
-
 		 type = 'ward';
 		 id = $("#wardField").val();
-		 selectedType=type;
-	     selectedTypeId=id;
-          if(id == 0 || id == null)
-			{
-			str +='<div>Please Select Ward</div>';
-			flag =false;
-			}
+		 selectedType=type;	
 	}
 	else if(level == 6){
-
 		 type = 'hamlet';
 		 id = $("#hamletField").val();
 		 selectedType=type;
 	     selectedTypeId=id;
-          if(id == 0 || id == null)
-			{
-			str +='<div>Please Select Hamlet</div>';
-			flag =false;
-			}
 	}
-	if(publicationDateId == 0 || publicationDateId == null){
-	       str +='<div>Please Select Publication Date</div>';
-			flag =false;
-	}
+	
 	var voterCardId = '';
 	var voterName = '';
 	var voterNameType = '';
@@ -2594,7 +2616,25 @@ function showAlert()
 		  $('#noteDiv').html('');
 	}
 
-
+	function clearFieldsData(){
+		$("#errorMsgAlert").html("");
+		var mandalId=document.getElementById("mandalField");
+		var publicationDateId=document.getElementById("publicationDateList");
+		var panchayatFieldId=document.getElementById("panchayatField");
+		var wardFieldId=document.getElementById("wardField");
+		var hamletFieldId=document.getElementById("hamletField");
+		var pollingStationFieldId=document.getElementById("pollingStationField");
+		removeSelectElements(pollingStationFieldId);
+		removeSelectElements(hamletFieldId);
+		removeSelectElements(mandalId);
+		removeSelectElements(wardFieldId);
+		removeSelectElements(publicationDateId);
+		removeSelectElements(panchayatFieldId);
+		$('#constituencyList').val(0);
+	}
+	function clearErrDiv(){
+	$("#errorMsgAlert").html("");
+	}
 </script>
 </head>
 <body>
@@ -2612,7 +2652,7 @@ function showAlert()
       <div class="titleHeading">VOTERS SEARCH</div>
 	  <fieldset id="mainFieldset">
       <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
-	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;"></div>
+	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;height: 40px;"></div>
      <!--  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;">
 	   updations are possible only through panchayat and polling station
 	   </div> --> 
@@ -2633,7 +2673,7 @@ function showAlert()
       </div>
 	   </div>
 	    </div> -->
-	  <div id="reportLevelDiv" class="selectDiv">Select Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:76px;width:165px;" name="constituencyList" onchange="showReportLevel(this.options[this.selectedIndex].value);">
+	  <div id="reportLevelDiv" class="selectDiv">Select Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:76px;width:165px;" name="constituencyList" onchange="clearFieldsData(),showReportLevel(this.options[this.selectedIndex].value);">
 		<option value=1>Constituency</option>
 		<option value=2>Mandal</option>
 		<option value=5>Ward</option>
@@ -2647,29 +2687,29 @@ function showAlert()
 	
 	
 	  <div id="ConstituencyDiv" class="selectDiv">
-	     Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;	
+	     Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;	
 	     Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:180px;" name="publicationDateList" >
 		</select>  <span style='display:none;float: right;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>		
 	  </div>
 	  
 	  <div id="mandalDiv" class="selectDiv" style="display:none;">
 	     Select Mandal<font class="requiredFont">*</font>
-		 <select id="mandalField" class="selectWidth" name="state" onchange="getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstationByPublication','pollingStationField');getPanchayatList('ward','wardField')" style="margin-left:60px;width:165px;"></select>
+		 <select id="mandalField" class="selectWidth" name="state" onchange="clearErrDiv(),getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstationByPublication','pollingStationField');getPanchayatList('ward','wardField')" style="margin-left:60px;width:165px;"></select>
 	  </div>
 	   <div id="wardDiv" class="selectDiv" style="display:none;">
-	    Select Ward<font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:70px;width:165px;"></select> 
+	    Select Ward<font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:70px;width:165px;"></select> 
 	  </div>
 		
 	  <div id="panchayatDiv" class="selectDiv" style="display:none;">
 	    Select Panchayat<font class="requiredFont">*</font> 	
-	    <select id="panchayatField" class="selectWidth" name="state" onchange="getHamletsList('hamlet','hamletField');" style="margin-left:39px;width:165px;"></select>
+	    <select id="panchayatField" class="selectWidth" name="state" onchange="clearErrDiv(),getHamletsList('hamlet','hamletField');" style="margin-left:39px;width:165px;"></select>
 	  </div>
 	   <div id="hamletDiv" class="selectDiv" style="display:none;">
-	    Select Hamlet<font class="requiredFont">*</font> <select id="hamletField" class="selectWidth" name="state" onchange="getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select> 
+	    Select Hamlet<font class="requiredFont">*</font> <select id="hamletField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select> 
 	 </div>
 	
 	  <div id="pollingStationDiv" class="selectDiv" style="display:none;">
-	    Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:20px;width:165px;"></select>
+	    Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:20px;width:165px;" onchange="clearErrDiv();"></select>
 	  </div>
 	  <div id="localityDiv" class="selectDiv" style="display:none;">
 	   Select Locality<font class="requiredFont">*</font> <select id="localityField" class="selectWidth" name="state" onchange="getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select> 
