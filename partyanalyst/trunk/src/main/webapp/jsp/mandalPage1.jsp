@@ -54,6 +54,15 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
+
+<script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+	<!--<script type="text/javascript" src="js/highcharts/js/modules/exporting.js"></script>-->
+	
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	
+	<script>// Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+	</script>
 <!-- YUI Dependency files (End) -->
 
 	<!-- Sam Skin CSS for TabView -->
@@ -417,6 +426,16 @@ var partyDetailsTable = '';
 var candidateElectionResultPanel;
 var allACPCElecInfo = new Array();
 var allZPTCMPTCElecInfo = new Array();
+var linechart = [];
+var linechartDataArr =[];
+ <c:forEach var="entry" items="${partyResultMapPrcnt}" varStatus="loop">
+		     var obj = {
+				name: '${entry.key}',
+				data:${entry.value}
+
+			  }
+			  linechart.push(obj);
+		    </c:forEach>
 	<c:forEach var="zptcMptcElection" items="${mptcZptcElectionResultsVO}" >
 		var zptcMptcElec = {
 				year:'${zptcMptcElection.electionYear}',
@@ -1407,7 +1426,8 @@ function getElectionYearsInMandal(id,name){
 		str+='<td style="vertical-align:top"><div id="mandalGraphDiv"></div></td>';		
 		str+='</tr>';
 		str+='<tr>';
-		str+='<td style="vertical-align:top"><div id="graphDataDiv" align="center"><img src="charts/allPartiesMandalWisePerformanceInAllElections_${mandalId}.png"/></div></td>';
+		//str+='<td style="vertical-align:top"><div id="graphDataDiv" align="center"><img src="charts/allPartiesMandalWisePerformanceInAllElections_${mandalId}.png"/></div></td>';
+		str+='<td><div id="chartDiv"></div></td>';
 		str+='</tr>';
 		str+='</table>';		
 		str+='</div>';
@@ -1630,11 +1650,80 @@ function getElectionYearsInMandal(id,name){
 
 <script type="text/javascript">
 
+ var chart;
+    
+function buildLineChart(){
+
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'chartDiv',
+                type: 'line',
+             
+            },
+            title: {
+                text: 'All Parties Performance In Diff Elections Of ${mandalInfoVO.mandalName}',
+                x: -20 
+            },
+           
+                       xAxis: {
+                categories: ${xaxisList},
+             labels: {
+                    rotation: -35,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Votes Percent( % )'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +'%';
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+            series: 
+			[
+			  <c:forEach var="entry" items="${partyResultMapPrcnt}" varStatus="loop">
+		      {
+				name: '<c:out value="${entry.key}"/>',
+				data: <c:out value="${entry.value}"/>
+			  }<c:if test="${!loop.last}">,</c:if>
+		    </c:forEach>
+       ]
+		 });
+		
+		$('tspan:last').hide();
+    }
+  
+
+
+
 
 	buildTabNavigator();
 	showMPTCZPTCResults();
 	showElectionResultsInPopup();
 	buildCensusDataTable();
+	buildLineChart();
+
 	
 </script>
 </body>
