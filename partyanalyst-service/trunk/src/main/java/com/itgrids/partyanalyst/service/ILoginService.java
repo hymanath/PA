@@ -28,5 +28,6 @@ public interface ILoginService {
 	public RegistrationVO getUserBasicDetails(Long userId);
 	
 	public SelectOptionVO getUserNameAndPWDByUserId(Long userId);
+	public boolean checkForAccess(final RegistrationVO registrationVO , String IpAddress);
 	
 }
