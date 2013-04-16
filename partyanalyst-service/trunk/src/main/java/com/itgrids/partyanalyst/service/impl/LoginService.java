@@ -2,11 +2,22 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
+
+import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
+import org.apache.velocity.app.VelocityEngine;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
@@ -16,6 +27,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGroupEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserAcessIpAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -23,6 +35,8 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
+import com.itgrids.partyanalyst.dto.DailyUpdatesVO;
+import com.itgrids.partyanalyst.dto.EmailNotificationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -40,8 +54,10 @@ import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
 import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.IJobConstants;
 
 public class LoginService implements ILoginService{
 	
@@ -62,6 +78,36 @@ public class LoginService implements ILoginService{
 	private static Logger log = Logger.getLogger(LoginService.class);
 	private IUserRolesDAO userRolesDAO;
 	private IUserDAO userDAO;
+   private IUserAcessIpAddressDAO userAcessIpAddressDAO;
+	private VelocityEngine velocityEngine;
+
+	private IMailService mailService;
+	
+	
+	public VelocityEngine getVelocityEngine() {
+		return velocityEngine;
+	}
+
+	public void setVelocityEngine(VelocityEngine velocityEngine) {
+		this.velocityEngine = velocityEngine;
+	}
+
+	public IMailService getMailService() {
+		return mailService;
+	}
+
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
+
+	public IUserAcessIpAddressDAO getUserAcessIpAddressDAO() {
+		return userAcessIpAddressDAO;
+	}
+
+	public void setUserAcessIpAddressDAO(
+			IUserAcessIpAddressDAO userAcessIpAddressDAO) {
+		this.userAcessIpAddressDAO = userAcessIpAddressDAO;
+	}
 	
 	
 	public IUserRolesDAO getUserRolesDAO() {
@@ -217,7 +263,7 @@ public class LoginService implements ILoginService{
 			regVO.setFirstName(user.getFirstName());
 			regVO.setLastName(user.getLastName());
 			regVO.setUserName(user.getUserName());
-			
+			regVO.set_loginRestriction(user.get_loginRestriction());
 			List<String> userRoles = userRolesDAO.getUserRolesOfAUser(userId);
 			regVO.setUserRoles(userRoles);
 			
@@ -605,4 +651,58 @@ public class LoginService implements ILoginService{
 			return selectOptionVO;
 		}
 	}
+	public boolean checkForAccess(final RegistrationVO registrationVO , String IpAddress)
+	{
+		List<?> li=userAcessIpAddressDAO.checkForAccess(registrationVO, IpAddress);
+		if(li !=null && li.size() >0){
+
+				return true;
+		}else
+		{
+			sendMailToAdminGroup(registrationVO,IpAddress);
+			return false;	
+		}
+	}
+
+	
+
+	private void sendMailToAdminGroup(final RegistrationVO registrationVO ,final String ipAddress){
+		
+	       try{
+	    	   log.info("sendMailToAdminGroup() Execution started");
+				JavaMailSenderImpl javamailsender = new JavaMailSenderImpl();
+				javamailsender.setSession(mailService.getSessionObject(IConstants.SERVER));
+				MimeMessagePreparator preparator = new MimeMessagePreparator() {
+			         public void prepare(MimeMessage mimeMessage) throws Exception {
+			        	 SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+			        	 dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
+
+			        	 //Local time zone   
+			        	 SimpleDateFormat dateFormatLocal = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+
+			        	 //Time in GMT
+			        	String  date= dateFormatGmt.format(new Date());
+
+//	String  date= dateFormatGmt.format(new Date());
+			            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+			              message.setTo(IJobConstants.ADMIN_GROUP_IDS);
+			           // message.setTo(new String[]{"anil.itgrids.hyd@gmail.com","kamalakardandu@gmail.com"});
+			            Map model = new HashMap();
+			   		    model.put("myDate", date);
+			   		    model.put("registrationVO", registrationVO);
+			   		    model.put("ipAddress", ipAddress);
+			            String text = VelocityEngineUtils.mergeTemplateIntoString(
+			 	               velocityEngine,"userAccessIpViolation.vm", model);
+			            message.setText(text, true);
+			            message.setSubject("PartyAnalyst Accessed From UnAuthorized IpAdress ");
+			            message.setFrom(IConstants.FROMEMAILID);
+			         }
+			      };
+			      javamailsender.send(preparator);  
+			      log.info("sendMailToAdmin() Execution completed successfully");
+		     }catch(Exception e){
+			log.error("Exception Rised in sendMailToAdmin : ", e);
+		}
+		}
+	
 }
