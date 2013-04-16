@@ -25,5 +25,9 @@ public interface IPartyElectionStateResultDAO extends GenericDao<PartyElectionSt
 	public List<PartyElectionStateResult> getResultsInAllStatesForAParty(Long electionId,Long partyId);
 	
 	public List findStatewiseResultsForPartyElectionAndCountry(Long partyId, Long countryId, Long electionId);
+	
 	public List<PartyElectionStateResult> getParticipatedPartiesDetailsInStates(Long electionId , List<Long> stateIdList);
+	
+	public List<PartyElectionStateResult> getByPartyIdsElectionIdsAndStateIds(Long partyId,Long electionId,Long stateId);
+	
 }
