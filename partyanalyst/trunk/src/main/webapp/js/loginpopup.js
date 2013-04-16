@@ -104,6 +104,10 @@ function callHomePageAjax11(jsObj,url){
 								if(myResults=="success"){
 									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
 									window.location.reload();
+								}else if(myResults=="IPFAILURE"){
+									$("#ajaxcallimage").hide();
+
+									$("#LoginErrorMessageDiv").html('You DO Not Have Permission to Access Site From This IP ');
 								}
 								
 								else{
