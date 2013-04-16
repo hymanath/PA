@@ -479,7 +479,13 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("checkedTypeValue", userType);
 			return INPUT;
 		}	
-		
+		boolean b=	userIpCheck(regVO);
+		if(!b){
+			session.setAttribute("loginStatus", "in");
+			addActionError(" You DO Not Have Permission to Access Site From This IP  ");
+			session.setAttribute("checkedTypeValue", userType);
+			return INPUT;
+			}
 		int hiden = 0;
 		
 		userFullName = regVO.getFirstName() + " " + regVO.getLastName();
@@ -609,7 +615,16 @@ public String ajaxCallForLoginPopup(){
 				resultForAjax=FAILURE;
 				return Action.SUCCESS;
 			}	
+					
 			
+			
+		boolean b=	userIpCheck( regVO);
+		if(!b){
+			resultForAjax="IPFAILURE";
+			return Action.SUCCESS;
+			}
+		
+			//end
 			int hiden = 0;
 			
 			userFullName = regVO.getFirstName() + " " + regVO.getLastName();
@@ -651,7 +666,20 @@ public String ajaxCallForLoginPopup(){
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
+	
 	return Action.SUCCESS;
+}
+public boolean userIpCheck(RegistrationVO regVO) 
+{
+	//start
+	String access=regVO.get_loginRestriction();
+	if(access.equalsIgnoreCase("true")){
+	//read ip address of current request
+	String ipAddrs=request.getRemoteAddr();
+	//check with user  assigned ipAddress
+boolean b=	loginService.checkForAccess( regVO,ipAddrs);
+return b;
+	}else return true;
 }
 
 
