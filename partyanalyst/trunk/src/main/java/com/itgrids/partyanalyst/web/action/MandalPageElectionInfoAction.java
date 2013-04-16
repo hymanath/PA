@@ -82,7 +82,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private Map<String, List<ElectionResultVO>> partyResultMapPrcnt1;
 	
 	private List<String> partiesForChart;
-	private List<SelectOptionVO> electionsForChart;
+
 	private Map<String,List<String>> partiesResultsForChart;
 	
 	private Map<String,PartyResultVO> partyElectionresults;
@@ -330,14 +330,6 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		this.partiesResultsForChart = partiesResultsForChart;
 	}
 
-	public List<SelectOptionVO> getElectionsForChart() {
-		return electionsForChart;
-	}
-
-	public void setElectionsForChart(List<SelectOptionVO> electionsForChart) {
-		this.electionsForChart = electionsForChart;
-	}
-
 	public String execute()throws Exception{
 		
 		String cPath = request.getContextPath();
@@ -400,8 +392,6 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		   }
 		}
 		List<ElectionResultVO> elections = null;
-		
-		electionsForChart = new ArrayList<SelectOptionVO>();
 		for(PartyResultVO partyResultVO:mptcZptcElectionResultsForParties){
 			elections = resultMap.get(partyResultVO);
 			if(elections == null)
@@ -419,28 +409,20 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 			allElectionResults.add(entry.getKey());
 		}
 		
-
+		//x-axis List for Line chart
 		if(allElectionResults != null && allElectionResults.size() > 0)
 		{
 			xaxisList = new ArrayList<String>();
 			 for(PartyResultVO partyResultVO:allElectionResults)
 			 {
-		        	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
-		        		
-				electionsForChart.add(new SelectOptionVO(new Long(result.getElectionYear()),result.getElectionType()));
-				
-				xaxisList.add("\"" +result.getElectionYear() +" " +result.getElectionType()+"\"");
-				
-		 }
-			 }
-		
-		xaxisList = removeDuplicates(xaxisList);
-
+		       for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
+		       xaxisList.add("\"" +result.getElectionYear() +" " +result.getElectionType()+"\"");
+			}
 		}
+		xaxisList = removeDuplicates(xaxisList);
+	}
 		
-
-
-	    List<ElectionResultVO> list = new ArrayList<ElectionResultVO>();
+		List<ElectionResultVO> list = new ArrayList<ElectionResultVO>();
 	    String chartPath="";
 		String chartName = "allPartiesMandalWisePerformanceInAllElections_"+mandalId+".png";
 		if(cPath.contains("PartyAnalyst"))
@@ -457,9 +439,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		if(partiesInMandalWiseElections != null && partiesInMandalWiseElections.size() > 0)
 		for(SelectOptionVO selectOptionVO : partiesInMandalWiseElections)
 		{
-			
 			partiesForChart.add(selectOptionVO.getName());
-		
 		}
 		
 		//All Parties Performance Line chart in mandal page
@@ -478,7 +458,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 							if(partyResultVO.getPartyName() != null)
 							if(party.equalsIgnoreCase(partyResultVO.getPartyName()))
 							{
-								if(electionsForChart != null && electionsForChart.size() > 0)
+								if(xaxisList != null && xaxisList.size() > 0)
 								for(String election : xaxisList)
 								{
 									if(partyResultVO.getElectionWiseResults() != null)
@@ -488,30 +468,27 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 										percentages.add(electionResultVO.getPercentage());
 										flag=true;
 										}
-																	
 									}
 									if(flag==false)
 									percentages.add("null");
-									
 									else
-										flag=false;
+									flag=false;
 								}
 							}
 						}
 						partyResultMapPrcnt.put(party,percentages);
 					}
-					
 			}
 				
-				
 		return SUCCESS;
-		
 	}
 	public List<String> removeDuplicates(List<String> list) {
 		HashSet<String> listToSet = new HashSet<String>(list);
         list.clear();
         list.addAll(listToSet);
+        Collections.sort(list);
 		return list;
+		
 }
 	public String getElectionIdsAndYears(){
 		if(task != null){

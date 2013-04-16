@@ -1421,14 +1421,12 @@ function getElectionYearsInMandal(id,name){
 		var allZMElmt = document.getElementById("allzptcmptcElectionsInfoMainDiv");
 		var str = '';
 		str+='<div>';
+		str+='<div id="chartDiv" style="margin-top:7px;"></div>';
 		str+='<table>';
 		str+='<tr>';
 		str+='<td style="vertical-align:top"><div id="mandalGraphDiv"></div></td>';		
 		str+='</tr>';
-		str+='<tr>';
-		//str+='<td style="vertical-align:top"><div id="graphDataDiv" align="center"><img src="charts/allPartiesMandalWisePerformanceInAllElections_${mandalId}.png"/></div></td>';
-		str+='<td><div id="chartDiv"></div></td>';
-		str+='</tr>';
+		
 		str+='</table>';		
 		str+='</div>';
 		for(var i in allZPTCMPTCElecInfo){
@@ -1722,8 +1720,9 @@ function buildLineChart(){
 	showMPTCZPTCResults();
 	showElectionResultsInPopup();
 	buildCensusDataTable();
+	<c:if test='${xaxisList != null}'>
 	buildLineChart();
-
+	</c:if>
 	
 </script>
 </body>
