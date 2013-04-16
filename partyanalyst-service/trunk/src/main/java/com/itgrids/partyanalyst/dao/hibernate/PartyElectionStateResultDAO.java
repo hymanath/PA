@@ -69,4 +69,9 @@ public class PartyElectionStateResultDAO extends GenericDaoHibernate<PartyElecti
 		
 	}
 	
+	public List getByPartyIdsElectionIdsAndStateIds(Long partyId, Long electionId, Long stateId) {
+		Object[] params = {partyId,electionId,stateId};
+		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName,model.totalSeatsWon," +
+				"model.totalConstiParticipated from PartyElectionStateResult model where model.party.partyId = ? and model.election.electionId = ? and model.state.stateId = ?",params);
+	}
 }
