@@ -4,10 +4,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -73,6 +75,71 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	
 	private ICandidateDetailsService candidateDetailsService; 
 	
+	private Map<String, List<ElectionResultVO>> partyResultMap;
+	
+	private Map<String, List<String>> partyResultMapPrcnt;
+	
+	private Map<String, List<ElectionResultVO>> partyResultMapPrcnt1;
+	
+	private List<String> partiesForChart;
+	private List<SelectOptionVO> electionsForChart;
+	private Map<String,List<String>> partiesResultsForChart;
+	
+	private Map<String,PartyResultVO> partyElectionresults;
+	List<ElectionResultVO> elections;
+	
+	private List<String> xaxisList;
+	
+	public List<String> getXaxisList() {
+		return xaxisList;
+	}
+
+	public void setXaxisList(List<String> xaxisList) {
+		this.xaxisList = xaxisList;
+	}
+
+	public List<ElectionResultVO> getElections() {
+		return elections;
+	}
+
+	public void setElections(List<ElectionResultVO> elections) {
+		this.elections = elections;
+	}
+
+	public Map<String, PartyResultVO> getPartyElectionresults() {
+		return partyElectionresults;
+	}
+
+	public void setPartyElectionresults(
+			Map<String, PartyResultVO> partyElectionresults) {
+		this.partyElectionresults = partyElectionresults;
+	}
+
+	public Map<String, List<String>> getPartyResultMapPrcnt() {
+		return partyResultMapPrcnt;
+	}
+
+	public void setPartyResultMapPrcnt(Map<String, List<String>> partyResultMapPrcnt) {
+		this.partyResultMapPrcnt = partyResultMapPrcnt;
+	}
+
+	public Map<String, List<ElectionResultVO>> getPartyResultMapPrcnt1() {
+		return partyResultMapPrcnt1;
+	}
+
+	public void setPartyResultMapPrcnt1(
+			Map<String, List<ElectionResultVO>> partyResultMapPrcnt1) {
+		this.partyResultMapPrcnt1 = partyResultMapPrcnt1;
+	}
+
+	public Map<String, List<ElectionResultVO>> getPartyResultMap() {
+		return partyResultMap;
+	}
+
+	public void setPartyResultMap(Map<String, List<ElectionResultVO>> partyResultMap) {
+		this.partyResultMap = partyResultMap;
+	}
+
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
 	}
@@ -246,6 +313,31 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		this.entitlementsHelper = entitlementsHelper;
 	}
 
+	public List<String> getPartiesForChart() {
+		return partiesForChart;
+	}
+
+	public void setPartiesForChart(List<String> partiesForChart) {
+		this.partiesForChart = partiesForChart;
+	}
+
+	public Map<String, List<String>> getPartiesResultsForChart() {
+		return partiesResultsForChart;
+	}
+
+	public void setPartiesResultsForChart(
+			Map<String, List<String>> partiesResultsForChart) {
+		this.partiesResultsForChart = partiesResultsForChart;
+	}
+
+	public List<SelectOptionVO> getElectionsForChart() {
+		return electionsForChart;
+	}
+
+	public void setElectionsForChart(List<SelectOptionVO> electionsForChart) {
+		this.electionsForChart = electionsForChart;
+	}
+
 	public String execute()throws Exception{
 		
 		String cPath = request.getContextPath();
@@ -308,13 +400,17 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		   }
 		}
 		List<ElectionResultVO> elections = null;
+		
+		electionsForChart = new ArrayList<SelectOptionVO>();
 		for(PartyResultVO partyResultVO:mptcZptcElectionResultsForParties){
 			elections = resultMap.get(partyResultVO);
 			if(elections == null)
 				resultMap.put(partyResultVO, elections);
 			else
 				elections.addAll(partyResultVO.getElectionWiseResults());
+			
 		}
+		
 		System.out.println(resultMap.size());
 		
 		allElectionResults = new ArrayList<PartyResultVO>();
@@ -322,7 +418,30 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		for(Map.Entry<PartyResultVO, List<ElectionResultVO>> entry:resultMap.entrySet()){
 			allElectionResults.add(entry.getKey());
 		}
-		String chartPath="";
+		
+
+		if(allElectionResults != null && allElectionResults.size() > 0)
+		{
+			xaxisList = new ArrayList<String>();
+			 for(PartyResultVO partyResultVO:allElectionResults)
+			 {
+		        	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
+		        		
+				electionsForChart.add(new SelectOptionVO(new Long(result.getElectionYear()),result.getElectionType()));
+				
+				xaxisList.add("\"" +result.getElectionYear() +" " +result.getElectionType()+"\"");
+				
+		 }
+			 }
+		
+		xaxisList = removeDuplicates(xaxisList);
+
+		}
+		
+
+
+	    List<ElectionResultVO> list = new ArrayList<ElectionResultVO>();
+	    String chartPath="";
 		String chartName = "allPartiesMandalWisePerformanceInAllElections_"+mandalId+".png";
 		if(cPath.contains("PartyAnalyst"))
              chartPath = context.getRealPath("/")+ "charts\\" + chartName;
@@ -333,11 +452,67 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+"", "Elections", "Percentages", createDataset(allElectionResults, paritesInChart), chartPath,400,700, ChartUtils.getLineChartColors(paritesInChart) ,true);
 				
 		navigationVO = staticDataService.findHirarchiForNavigation(new Long(mandalId), IConstants.TEHSIL_LEVEL);
+		List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
+		partiesForChart = new ArrayList<String>();
+		if(partiesInMandalWiseElections != null && partiesInMandalWiseElections.size() > 0)
+		for(SelectOptionVO selectOptionVO : partiesInMandalWiseElections)
+		{
+			
+			partiesForChart.add(selectOptionVO.getName());
 		
+		}
+		
+		//All Parties Performance Line chart in mandal page
+				if(allElectionResults != null && allElectionResults.size() > 0)
+				{
+					partyResultMapPrcnt = new HashMap<String, List<String>>();
+					
+					boolean flag=false;
+					List<String> percentages = null;
+					if(partiesForChart != null && partiesForChart.size() > 0)
+					for(String party : partiesForChart)
+					{
+						percentages = new ArrayList<String>();
+						for(PartyResultVO partyResultVO : allElectionResults)
+						{
+							if(partyResultVO.getPartyName() != null)
+							if(party.equalsIgnoreCase(partyResultVO.getPartyName()))
+							{
+								if(electionsForChart != null && electionsForChart.size() > 0)
+								for(String election : xaxisList)
+								{
+									if(partyResultVO.getElectionWiseResults() != null)
+									for(ElectionResultVO electionResultVO : partyResultVO.getElectionWiseResults())
+									{
+										if(election.equals("\"" +electionResultVO.getElectionYear()+" " +electionResultVO.getElectionType()+"\"")){
+										percentages.add(electionResultVO.getPercentage());
+										flag=true;
+										}
+																	
+									}
+									if(flag==false)
+									percentages.add("null");
+									
+									else
+										flag=false;
+								}
+							}
+						}
+						partyResultMapPrcnt.put(party,percentages);
+					}
+					
+			}
+				
+				
 		return SUCCESS;
 		
 	}
-	
+	public List<String> removeDuplicates(List<String> list) {
+		HashSet<String> listToSet = new HashSet<String>(list);
+        list.clear();
+        list.addAll(listToSet);
+		return list;
+}
 	public String getElectionIdsAndYears(){
 		if(task != null){
 			try{
