@@ -42,6 +42,7 @@
 		<class>com.itgrids.partyanalyst.model.ContentNotes</class>
 		<class>com.itgrids.partyanalyst.model.NewsFlag</class>
 		<class>com.itgrids.partyanalyst.model.NewsProblem</class>
+	
 		
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
