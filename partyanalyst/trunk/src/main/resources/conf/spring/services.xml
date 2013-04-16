@@ -243,7 +243,10 @@
 		<property name="userLoginDetailsDAO" ref="userLoginDetailsDAO" />
 		<property name="userRolesDAO" ref="userRolesDAO" />
 		<property name="userDAO" ref="userDAO" />
-	</bean>
+		<property name="userAcessIpAddressDAO" ref="userAcessIpAddressDAO" />
+	    <property name="mailService" ref="mailService"/>
+		<property name="velocityEngine" ref="velocityEngine" />
+	  </bean>
 	
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
 		<property name="partyDAO" ref="partyDAO" />

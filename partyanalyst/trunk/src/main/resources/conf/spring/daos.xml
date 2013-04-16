@@ -1122,6 +1122,9 @@
 	<bean id="voterModificationInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterModificationInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
+	<bean id="userAcessIpAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAcessIpAddressDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
 	
 	
 </beans>		
