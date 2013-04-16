@@ -345,6 +345,7 @@
 				<value>com.itgrids.partyanalyst.model.VoterModificationAgeInfo</value>		
 				<value>com.itgrids.partyanalyst.model.VoterStatus</value>
 				<value>com.itgrids.partyanalyst.model.VoterModificationInfo</value>
+				<value>com.itgrids.partyanalyst.model.UserAcessIpAddress</value>
 			</list>
 		</property>
 	</bean>
@@ -1786,6 +1787,9 @@
 	</bean>
 	
 	<bean id="contentNotesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ContentNotesDAO">
+	     <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userAcessIpAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAcessIpAddressDAO">
 	     <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
