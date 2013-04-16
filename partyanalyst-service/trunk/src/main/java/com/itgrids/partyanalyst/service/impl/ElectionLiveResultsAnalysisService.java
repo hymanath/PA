@@ -729,9 +729,9 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				}
 			}
 			Collections.sort(resultList,sortData);
-			List<ElectionLiveResultVO> resultList1 = resultList;
-			Collections.reverse(resultList1);
-			return resultList1;
+			//List<ElectionLiveResultVO> resultList1 = resultList;
+			Collections.reverse(resultList);
+			return resultList;
 		}catch (Exception e){
 			log.error("Exception occured in getPartiesGainAndLossInfo() Method, Exception is - "+e);
 			return null;
