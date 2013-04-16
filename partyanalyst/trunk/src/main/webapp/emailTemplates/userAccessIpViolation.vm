@@ -1,0 +1,19 @@
+
+   Hi Admin group,<br/>
+   <p>The Following Candidate Try to Access Site From UnAuthroized IPAddress($ipAddress) on ${myDate} </p><br/>
+   
+  <div style='font-weight:bold;'>User Details</div>
+    <b>Name :</b> 
+     $registrationVO.firstName $registrationVO.lastName 
+   <br />
+   <b>userId :</b> 
+     $registrationVO.registrationID
+      <br />
+	<b>IP Address :</b> 
+   $ipAddress
+  
+    <br/>
+
+  
+ 
+ 
