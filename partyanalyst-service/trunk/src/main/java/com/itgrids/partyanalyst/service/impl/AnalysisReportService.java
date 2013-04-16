@@ -61,10 +61,21 @@ public class AnalysisReportService implements IAnalysisReportService {
 	private IPartyElectionResultDAO partyElectionResultDAO;
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO; 
+	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
 	
 	
 	private static final Logger log = Logger.getLogger(AnalysisReportService.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+
+	
+	public IPartyElectionStateResultDAO getPartyElectionStateResultDAO() {
+		return partyElectionStateResultDAO;
+	}
+
+	public void setPartyElectionStateResultDAO(
+			IPartyElectionStateResultDAO partyElectionStateResultDAO) {
+		this.partyElectionStateResultDAO = partyElectionStateResultDAO;
+	}
 
 	public ICandidateResultDAO getCandidateResultDAO() {
 		return candidateResultDAO;
@@ -179,7 +190,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				
 			//analysis basic info for main party
 			if(partyId != null && electionId != null && electionType != null && electionYear != null){
-			PartyAnalysisBasicVO basicAnalysisForMainParty = getPartyAnalysisBasicInformation(partyId,electionId,electionType,electionYear);
+			PartyAnalysisBasicVO basicAnalysisForMainParty = getPartyAnalysisBasicInformation(partyId,electionId,electionType,electionYear,stateId);
 			partyAnalysisReportVO.setPartyId(partyId);
 			
 			//check for party short name
@@ -201,7 +212,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				List<PartyAnalysisBasicVO> basicAnalysisForAlliancPartys = new ArrayList<PartyAnalysisBasicVO>();
 				for(SelectOptionVO partyOption:allianceParties){
 					if(!partyOption.getId().equals(partyId)){
-						PartyAnalysisBasicVO basicAnalysisForAlliancParty = getPartyAnalysisBasicInformation(partyOption.getId(),electionId,electionType,electionYear);
+						PartyAnalysisBasicVO basicAnalysisForAlliancParty = getPartyAnalysisBasicInformation(partyOption.getId(),electionId,electionType,electionYear,stateId);
 						basicAnalysisForAlliancPartys.add(basicAnalysisForAlliancParty);
 					}
 				}
@@ -224,7 +235,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 * This Method Returns Basic Analysis Details For A Party
 	 */
 	@SuppressWarnings("unchecked")
-	public PartyAnalysisBasicVO getPartyAnalysisBasicInformation(Long partyId,Long electionId,String electionType,String electionYear){
+	public PartyAnalysisBasicVO getPartyAnalysisBasicInformation(Long partyId,Long electionId,String electionType,String electionYear,Long stateId){
 		
 		log.debug("Inside getPartyAnalysisBasicInformation Method..... ");
 		
@@ -233,11 +244,17 @@ public class AnalysisReportService implements IAnalysisReportService {
 			List basicResults = null;
 			partyAnalysisBasicVO = new PartyAnalysisBasicVO();
 			Long constiParticipated = new Long(0);
-			
-			basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
+			if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY_TYPE))
+				basicResults = partyElectionStateResultDAO.getByPartyIdsElectionIdsAndStateIds(partyId, electionId, stateId);
+			else
+				basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
 			if(basicResults == null || basicResults.size() == 0){
 				staticDataService.savePartyElectionResultForAPartyForAElection(electionId, partyId);
-				basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
+				if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY_TYPE))
+					basicResults = partyElectionStateResultDAO.getByPartyIdsElectionIdsAndStateIds(partyId, electionId, stateId);
+				else
+					basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
+				
 			}
 			
 			//processing basic results list and set to VO
@@ -415,10 +432,16 @@ public class AnalysisReportService implements IAnalysisReportService {
 		//block without alliance parties
 		else if(includeAllianc.equals(false)){
 			if(partyId != null && electionId != null){
-				basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
+				if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY_TYPE))
+					basicResults = partyElectionStateResultDAO.getByPartyIdsElectionIdsAndStateIds(partyId, electionId, stateId);
+				else
+					basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
 				if(basicResults == null || basicResults.size() == 0){
 					staticDataService.savePartyElectionResultForAPartyForAElection(electionId, partyId);
-					basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
+					if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY_TYPE))
+						basicResults = partyElectionStateResultDAO.getByPartyIdsElectionIdsAndStateIds(partyId, electionId, stateId);
+					else
+						basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
 				}
 				
 				//analysis results
