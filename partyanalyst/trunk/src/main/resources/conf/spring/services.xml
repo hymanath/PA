@@ -868,6 +868,7 @@
 	    <property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
 	    <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 	    <property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
+	    <property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO" />
 	</bean>
 	
 	<bean id="villageBoothDataPopulationService" class="com.itgrids.partyanalyst.service.impl.VillageBoothDataPopulationService" >
