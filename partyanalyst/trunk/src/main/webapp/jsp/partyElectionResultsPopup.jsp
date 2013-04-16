@@ -144,6 +144,8 @@
 </style>
 
 <SCRIPT type="text/javascript">
+
+var electionType = "${electionType}";
 var labelResources = { <%		
 		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
 		
@@ -389,9 +391,18 @@ function backtopage() {
 		
 	function buildCandidateElectionResultsDataTable(resultsArray)
 	{	
+
+		if(electionType == "Assembly" || electionType == "Parliament")
+			var name = "Constituency"; 
+		else if(electionType == "Zptc") 
+			name = "Zptc Name";
+		else if(electionType == "Mptc")
+		name = "Mptc Name";
+		else
+		name = "Ward";
 		var candidateElectionResultsColumnDefs = [
-									{key: "candidateName", label: "<%=candidate%>", sortable:true},										
-			              	 	    {key: "constituencyName", label: "<%=constituency%>", sortable:true},
+									{key: "candidateName", label: "<%=candidate%>", sortable:true},									//{key: "constituencyName", label: "<%=constituency%>", sortable:true},
+									 {key: "constituencyName", label:name, sortable:true},
 			              	 	 	{key: "totalValidVotes", label: "<%=validVotes%>",formatter:"number", sortable:true},
 			              	 	 	{key: "totalVotesEarned", label: "<%=votesEarned%>",formatter:"number", sortable:true},
 			              	 	 	{key: "votesPercentage", label: "<%=votesPercentage%>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
