@@ -112,6 +112,8 @@ public class User extends BaseModel implements Serializable{
 	
 	private Set<Locality> Localities = new HashSet<Locality>(0);
 	
+	private String _loginRestriction;
+	
 	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -901,6 +903,14 @@ public class User extends BaseModel implements Serializable{
 
 	public void setLocalities(Set<Locality> localities) {
 		Localities = localities;
+	}
+	@Column(name = "login_restriction", length = 10,nullable=false)
+	public String get_loginRestriction() {
+		return _loginRestriction;
+	}
+	
+	public void set_loginRestriction(String _loginRestriction) {
+		this._loginRestriction = _loginRestriction;
 	}
 	
 	
