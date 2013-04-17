@@ -831,7 +831,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	
 	public List findFamiliesVotersInfoForPanchayat(Long id,Long publicationDateId) {
 		Object[] params = {publicationDateId,id};
-		return getHibernateTemplate().find("select model.voter.name,model.voter.houseNo, model.voter.age,model.voter.cast,model.booth.boothId ,model.voter.voterId, " +
+		return getHibernateTemplate().find("select model.voter.name,model.voter.houseNo, model.voter.age,model.booth.boothId ,model.voter.voterId, " +
 				" model.voter.gender,model.voter.age,model.booth.partNo from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = ? and " +
 				" model.booth.panchayat.panchayatId = ? order by model.voter.voterId ",params) ;
 	
@@ -842,7 +842,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	{
 		
 		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
-				" model.voter.cast,model.booth.boothId ,model.voter.voterId , " +
+				" model.booth.boothId ,model.voter.voterId , " +
 				" model.voter.gender,model.voter.age,model.booth.partNo from BoothPublicationVoter model where  " +
 				" model.booth.publicationDate.publicationDateId =:publicationDateId and  " +
 				" model.voter.voterId in(:voterIds) "+
@@ -858,7 +858,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	public List<Object[]> findFamiliesVotersInfoForPanchayatByHamlet(List<Long> hamletIds,Long publicationDateId) {
 
      String queryString = "select model.voter.name,model.voter.houseNo," +
-				" model.voter.age,model.voter.cast,model.booth.boothId ,model.voter.voterId, " +
+				" model.voter.age,model.booth.boothId ,model.voter.voterId, " +
 				" model.voter.gender,model.voter.age,model.booth.partNo from BoothPublicationVoter model ," +
 				"UserVoterDetails model1 where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
 				" model1.hamlet.hamletId in(:hamletIds) = :hamletIds and model.voter.voterId = model1.voter.voterId " +
@@ -2271,7 +2271,7 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 	public List<Object[]> getVoterDetailsByPanchayatIds(Long panchayatId,Long publicationDateId,Long userId)
 	{
 		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
-				" model.voter.cast,model.booth.boothId ,model.voter.voterId, " +
+				" model.booth.boothId ,model.voter.voterId, " +
 				" model.voter.gender,model.voter.age,model.booth.partNo,model1.hamlet.hamletName  from BoothPublicationVoter model , UserVoterDetails model1 , " +
 				"PanchayatHamlet model2 where  " +
 				"model1.hamlet.hamletId = model2.hamlet.hamletId and "+
@@ -2289,7 +2289,7 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 	public List<Object[]> getVoterDetailsByHamletId(Long hamletId,Long publicationDateId,Long userId)
 	{
 		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
-				" model.voter.cast,model.booth.boothId ,model.voter.voterId, " +
+				" model.booth.boothId ,model.voter.voterId, " +
 				" model.voter.gender,model.voter.age,model.booth.partNo,model1.locality.name  from BoothPublicationVoter model , UserVoterDetails model1  " +
 				" where  " +
 				" model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId =:publicationDateId and " +
@@ -2447,7 +2447,7 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 	{
 		
 		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
-				" model.voter.cast,model.booth.boothId ,model.voter.voterId,model.voter.gender," +
+				" model.booth.boothId ,model.voter.voterId,model.voter.gender," +
 				" model.voter.age,model.booth.partNo from BoothPublicationVoter model , " +
 				" UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId and " +
 				" model1.user.userId = :userId and model1.hamlet.hamletId = :hamletId " +
@@ -2543,7 +2543,7 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
    public List<Object[]> findFamiliesVotersInfoForBoothForUser(Long id,Long publicationDateId,Long userId){
 		
 		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
-				" model.voter.cast,model.booth.boothId ,model.voter.voterId,model.voter.gender," +
+				" model.booth.boothId ,model.voter.voterId,model.voter.gender," +
 				" model.voter.age,model.booth.partNo,model1.hamlet.hamletName from BoothPublicationVoter model , " +
 				" UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId and " +
 				" model1.user.userId = :userId and model.booth.boothId = :boothId " +
