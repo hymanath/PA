@@ -751,6 +751,60 @@ function buildContentDetailsOfSelected(preId,selId)
 
 	buildContentDetails();
 }
+/* 
+	This method for same news in different source updated by Srishailam (Mahesh) 
+*/
+
+function showNewAnotherSource(fileSourceLanguageId,type)
+{
+     var str1 ='';
+	   if(type != 'video')
+	     str1 += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	   else 
+         str1 += '<center><table><tr><td><b>Same Video in another sources</b></td></tr></table></center>';	   
+		 str1 += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+  for(var m in selectedContentFile.fileVOList)
+  {
+    if(selectedContentFile.fileVOList[m].fileSourceLanguageId == fileSourceLanguageId)
+	{
+	  if(document.getElementById("sourceChangeSpan") != null)
+	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
+	  if(type != 'video')
+	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" align="middle"  style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" />';
+	  else
+	    var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" frameborder="0" allowfullscreen="true"></iframe>';
+	  document.getElementById("nextPartImage").innerHTML = str;
+	
+	   str = '<center><table><tr>';
+
+	    for(var j=1;j<selectedContentFile.fileVOList[m].fileVOList.length;j++)
+	     {
+		    if(type != 'video')
+	         str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[m].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+			else 
+			 str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[m].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+	     }
+		 
+	   str += '  </tr></table>';
+	   str +='</center>';
+	  document.getElementById("buildNewSourceParts").innerHTML = str;
+	}
+    else
+	{
+	   if(type != 'video')
+	    str1 += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[m].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[m].source+'</a></td>';	             	          	
+	   else
+	    str1 += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[m].fileSourceLanguageId+',\'video\')">'+selectedContentFile.fileVOList[m].source+'</a></td>';
+	}
+  }
+     	str1 += '  </tr></table>';
+	    str1 +='</center>';
+     if(document.getElementById("buildNewSources") != null)
+       document.getElementById("buildNewSources").innerHTML = str1;
+	 else
+	   document.getElementById("buildVideoNewSources").innerHTML = str1;
+}
+
 $(document).ready(function(){
 $(".dateField").live("click", function(){
 $(this).datepicker({
