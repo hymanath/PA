@@ -86,6 +86,7 @@
 		<pattern>/getVoterDetailsInitialRequest*</pattern>
 	    <pattern>/casteAndPartyWindowAction.action*</pattern>
 	    <pattern>/boothWiseVoterModificationInfoAction.action*</pattern>
+		<pattern>/newsGallaryDisplayWindowAction.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
