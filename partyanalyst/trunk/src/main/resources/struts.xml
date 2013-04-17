@@ -4827,5 +4827,10 @@
 			<result name="success">/jsp/boothWiseVoterInfoWindow.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
+		
+		<action name="newsGallaryDisplayWindowAction" class="ageWiseVoterDetailsAction" >
+			<result name="success">/jsp/newsGallaryDisplayWindow.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
 		</package>
 </struts>      

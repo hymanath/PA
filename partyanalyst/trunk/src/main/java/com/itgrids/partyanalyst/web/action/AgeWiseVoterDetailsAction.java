@@ -54,10 +54,13 @@ ServletRequestAware ,ServletContextAware{
 	private String resultFor;
 	private String queryType;
 	
-	
-	
-	
-
+	private Long contentId;
+	public Long getContentId() {
+		return contentId;
+	}
+	public void setContentId(Long contentId) {
+		this.contentId = contentId;
+	}
 	public String getTypeName() {
 		return typeName;
 	}

@@ -29,7 +29,10 @@
 <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
+<!--<script type="text/javascript" src="js/newsGallaryDisplayWindow.js" ></script>-->
+
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
 <style type="text/css">
 
 .ui-dialog .ui-dialog-title {
@@ -75,125 +78,66 @@
     font-size: 15px;
     margin: 0.5em 0.4em 0.5em 0;
 }
+#MainDiv{
+margin-left:auto;
+margin-right:auto;
+width:980px;
+margin-top:5px;
+margin-bottom:20px;
+}
+.main-mbg{background-color: #06ABEA; clear: both;
+    color: #FFFFFF;
+    margin-bottom: 5px;
+    padding: 10px;
+    text-align: left;
+    text-transform: uppercase;
+    }
+#showContentHeaderDiv{margin-left:auto;margin-right:width:900px;border-radius:5px 5px 5px 5px;margin-top:10px;margin-bottom:10px;}
 </style>
-<title>News Glance</title>
+</head>
+<body>
+<div id="MainDiv" style="background:#fff;">
+<div class="widget green">
+<div id="showContentDiv">
+<div id="showAjaxImgForNews" style="display:none;"><img src="images/icons/goldAjaxLoad.gif"/></div>
+<div id="showContentDivInnerDiv" style="font-family:verdana,sans-serif; font-size: 17px;"></div>
+</div>
+</div>
+</div>
 <script type="text/javascript">
-/*
-	These are the Global variables for Accessing these values any where in the application
-*/
-var  categoryId    = '${categoryId}';
-var  importanceId  = '${importanceId}';
-var  locationId    = '${locationId}'; 
-var  locationValue = '${locationValue}';
-var  publicationId = '${publicationId}';
-var  count         = '${count}';
-var displayStr;
-var categoryStr;
-var startIndex;
-var lastIndex;
+var categoryId    = '${categoryId}';
+var importanceId  = '${importanceId}';
+var contentId    = '${contentId}'; 
+var locationId = '${locationId}';
+var locationValue = '${locationValue}';
 var result;
 var showContentResultList;
+
+var startIndex;
+var lastIndex;
 var commentsObject = new Object();
-
-/*
-	This Method is Used For Getting The New Glance Type i.e
-	those are Problems , Development Activity etc...
-*/
-function getNews1(count){
-    startIndex = 0;
-	lastIndex = 10;
-var noNews = false;
-	if(count== null){
-	alert("No news Exist");
-	noNews = true;
-	} 
-	categoryStr='';
-	categoryStr+=' Category :';
-	categoryStr+='<font style="color:red;">';
-	 
-	if(categoryId == 1) 
-		categoryStr+="Problems";
-	else if(categoryId == 2)
-		categoryStr+="Development Activity";
-	else if(categoryId == 3)
-		categoryStr+="Political Movements ";
-	else if(categoryId == 4)
-		categoryStr+="Political Movements - Opp Parties";
-	else if(categoryId == 5)
-		categoryStr+="Events";
-	else if(categoryId == 6)
-		categoryStr+="Profile News";
-	categoryStr+='</font>';
-
-	categoryStr+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-	
-
-    displayStr='';
-	if(importanceId == 3){
-	displayStr+='Impact Level :<span style="color:red;">High</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Count </span>:<font style="color:red;">'+count+'</font>';;
-	}
-	else if (importanceId == 2){
-	displayStr+='Impact Level :<span style="color:red;">Medium</span>&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;<span>Count </span>:<font style="color:red;">'+count+'</font>';;
-	}
-	else if (importanceId == 1){
-	displayStr+='Impact Level :<span style="color:red;">Low</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Count </span>:<font style="color:red;">'+count+'</font>';
-	}
-	
-
-	if(noNews == false){
-	$('#newsAjaxImage').css('display','block');
-		getNewsGlanceDetails();
-	}
-
-}
-
-/*
-	This Method is Used For the Logic of Previous button working strategy
-*/
-function decrementStartEndIndexes(){
-
-	startIndex = startIndex - 10;
-	lastIndex =  10 ; 
-
-	getNewsGlanceDetails();
-}
-
-/*
-	This Method is Used For the Logic of Next button working strategy
-*/
-function incrementStartEndIndexes(){
-
-	startIndex = startIndex + 10;
-	lastIndex =  10 ; 
-
-	getNewsGlanceDetails();
-
-}
-/*
-	This Method is Used for making a ajax Call For getting News Glance Details
-*/
-function getNewsGlanceDetails()
-{
+function getNewsOfLocation(){
+	 $("#showAjaxImgForNews").show();
 	var jObj=
 	{
 		locationValue:locationValue,
 		locationId:locationId,
-		publicationId:0,
-		importanceId:importanceId,
-		categoryId:categoryId,
-		startIndex:startIndex,
-	    lastIndex:lastIndex,
-		task:"getNewsByLocation"
+		imprtanceId:importanceId,
+		ctgryId:categoryId,
+		contentid:contentId,
+		requestFrom : 'Candidate Page',
+		requestPageId :'0',
+		isCustomer:'true',
+		task:"getNewsOfLocationInPopup"
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
-	var url = "getNewsByLocation.action?"+rparam;	
+	var url = "getNewsByLocationAndCategoryInPopup.action?"+rparam;	
 
 	callAjaxToShowNewsDetails(jObj,url);
-} 
 
-/*
-	This Method is used for handling the ajax calls and calling respective methods to build the data
-*/
+}
+
+
 function callAjaxToShowNewsDetails(jObj,url){
 		var myResults;
         var callback = {			
@@ -202,10 +146,10 @@ function callAjaxToShowNewsDetails(jObj,url){
 		myResults = YAHOO.lang.JSON.parse(o.responseText);
 		if(jObj.task == "getNewsByLocation"){
         displayNewsByImportance(jObj,myResults);
-        $('#newsAjaxImage').css('display','none');
+        //$('#newsAjaxImage').css('display','none');
 		}
 		else if(jObj.task="getNewsOfLocationInPopup"){
-		 $("#showAjaxImgForNews").hide();
+		// $("#showAjaxImgForNews").hide();
 		showContentResultList = myResults;
 		buildContentDetails();
 		}
@@ -222,10 +166,9 @@ function callAjaxToShowNewsDetails(jObj,url){
  		YAHOO.util.Connect.asyncRequest('POST', url, callback); 	
 
 	}
-/*
-	This method is used for building the news Glance details of the particular link is clicked
-*/
-function displayNewsByImportance(jObj,results){
+
+
+	function displayNewsByImportance(jObj,results){
 	
 	var importanceId = jObj.importanceId;
 	var  categoryId = jObj.categoryId;
@@ -296,105 +239,12 @@ function displayNewsByImportance(jObj,results){
   $('#newsDisplayDiv').html(str);
   
 }
-/*
-	This Method is used for change the news glance details into problem
-*/
-function changeToProblem(contentId){
-
-	var str='';
-	str+='<div>';
-	str+='<div id="errorDiv"></div>';
-	str+='<div id="successMsgDiv"></div>';
-	str+='<span style="font-family: arial; font-size: 16px;">Existing From:<input type="text" name="date" class="dateField" id="existingFrom" readonly/></span>';
-	//str+='<span>Visibility:<input type="text" id="visibility"></input></span>';
-	str+='<span style="float: left; margin: 6px; font-family: arial; font-size: 16px;">Visibility:</span>&nbsp;&nbsp;&nbsp;&nbsp;';
-	str+='<div><label title="This problem is not visible to public" style="float:left;margin:6px;font-family: arial;font-size: 16px;"><input style="margin:0px; " checked type="radio" name="visibility" value="private"/> Private </label>';
-	str+='<label title="This problem is  visible to public" style="float:left;margin:6px; font-family: arial;font-size: 16px;"><input style="margin:0px;" type="radio" name="visibility" value="public"/> Public </label></div>';
-	str+='</div>';
 
 
-   $('#problemInnerDiv').html(str);
-
-   $("#problemOuterDiv").dialog({ 
-	                            title:'Add Problem',
-	                            height: 'auto',
-								width: 400,
-								closeOnEscape: false,
-								show: "blind",
-								hide: "explode",
-								modal: true,
-								maxWidth : 850,
-								overlay: { opacity: 0.5, background: 'black'},
-	                             buttons: {
- 							   "Add":function() {callAjaxToChangeToProblem(contentId)},
-							   "Close":function() {$(this).dialog("close")}
-								   }	
-
-     });
-
-}
-/*
-	this method is used for building the popup for particular news glance is clicked
-*/
-function getNewsInPopup(cntntId,imprtanceId,ctgryId)
-{
-	  $.fx.speeds._default = 1000;
-	  $("#showContentDiv").dialog({ stack: false,
-								height: 'auto',
-								width: 950,
-								closeOnEscape: true,
-								position:[30,30],
-								show: "blind",
-								hide: "explode",
-								modal: true,
-								maxWidth : 950,
-								minHeight: 650,
-								overlay: { opacity: 0.5, background: 'black'},
-								close: function(event, ui) {
-								document.getElementById("showContentDivInnerDiv").innerHTML ='';
-							 }
-		  
-								});
-		$("#showContentDiv").dialog();
-		getNewsOfLocation(cntntId,imprtanceId,ctgryId);
-}
-
-function getNewsInPopupWindow(cntntId,imprtanceId,ctgryId)
-{
-	var urlstr = "newsGallaryDisplayWindowAction.action?contentId="+cntntId+"&importanceId="+imprtanceId+"&categoryId="+ctgryId+"&locationValue="+locationValue+"&locationId="+locationId+" "
-
-	var browser1 = window.open(urlstr,"newsDetails","scrollbars=yes,height=600,width=800,left=200,top=200");	
-		browser1.focus();
-}
-/*
-	This Method is used for making the ajax call for getting the clicked news details 
-*/
-function getNewsOfLocation(cntntId,imprtanceId,ctgryId){
-	 $("#showAjaxImgForNews").show();
-	var jObj=
-	{
-		locationValue:locationValue,
-		locationId:locationId,
-		imprtanceId:imprtanceId,
-		ctgryId:ctgryId,
-		contentid:cntntId,
-		requestFrom : 'Candidate Page',
-		requestPageId :'0',
-		isCustomer:'true',
-		task:"getNewsOfLocationInPopup"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
-	var url = "getNewsByLocationAndCategoryInPopup.action?"+rparam;	
-
-	callAjaxToShowNewsDetails(jObj,url);
-
-}
-/*
-	This Method is used for building the Clicked news glance details in a popup for detailed report
-*/
 function buildContentDetails()
 {
   $("#showAjaxImgForNews").hide();
+
 	result = showContentResultList;
 	if(result == null)
 		return;
@@ -409,18 +259,13 @@ function buildContentDetails()
 	var totSize = null;
 	var commentText="" ;
     var fileId1  = null;
-	document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>'+result.contentType;
-
 	str += '<Div><center>';
 	str += '<div class="main-title-sec" style="clear:both;">';
-	str += '<div id="showContentHeaderDiv" class="main-mbg" style="width:900px;border-radius:5px 5px 5px 5px;"></div><div class="main-bbg"/></div>';
+	str += '<div id="showContentHeaderDiv" class="main-mbg"></div><div class="main-bbg"/></div>';
 
-	
 	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 	{
-
-		
 	    selectedContentFile = result.relatedGalleries[0].filesList[i];
 		titleStr = result.relatedGalleries[0].filesList[i].title;
 		pathStr = result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path;
@@ -428,12 +273,9 @@ function buildContentDetails()
 		preContentId = result.relatedGalleries[0].filesList[i].contentId;
 		curPos = i+1;
 		totSize = result.relatedGalleries[0].filesList.length;
-
-
-
 		if(result.contentType == 'Video Gallary' || result.contentType == 'News Gallary')
 		{
-			 str+='<div style="width:850px;font-family:verdana;">';
+			 /*str+='<div style="width:850px;font-family:verdana;">';
            
 				 str+='<div style="float:left;font-family: arial;">';
 				   str+='<span>CategoryType :</span>';
@@ -443,10 +285,10 @@ function buildContentDetails()
   				   str+='<span  style="color: red; font-family: arial; font-size: 17px;">'+result.relatedGalleries[0].filesList[i].categoryType+'</span>';
 				 str+='</div>';
 
-				 str+='<div style="font-family: arial;">';
+				 str+='<div style="font-family: arial;margin-top:10px;margin-bottom:10px;">';
 				   if(result.relatedGalleries[0].filesList[i].locationScopeValue != null){
 					   str+='<span>RegionScope :</span>';
-				       str+='<span  style="color: red; font-family: arial; font-size: 17px;">'+result.relatedGalleries[0].filesList[i].locationScopeValue+'('+result.relatedGalleries[0].filesList[i].locationName+')</span>';
+				       str+='<span style="color: red; font-family: arial; font-size: 17px;">'+result.relatedGalleries[0].filesList[i].locationScopeValue+'('+result.relatedGalleries[0].filesList[i].locationName+')</span>';
 				   }
 
 				 str+='</div>';
@@ -467,9 +309,33 @@ function buildContentDetails()
   				   str+='<span  style="color: red; font-family: arial; font-size: 17px;">'+result.relatedGalleries[0].filesList[i].fileDate+'</span>';
 				 str+='</div>';
 
-			 str+='</div>';
+			 str+='</div>';*/
+			str+='<table style="display: -moz-inline-box;font-size:15px;font-family:verdana;">';
+			str+='<tr>';
+			str+='<td>';
 
+			
 
+			if(result.relatedGalleries[0].filesList[i].categoryType != null)
+				str+='<B>CategoryType</B>:<font color="#FF4500"><span id="sourceChangeSpan1">'+result.relatedGalleries[0].filesList[i].categoryType+'</span></font>';
+			 str+='</td>';
+
+			str+='<td>';
+			if(result.relatedGalleries[0].filesList[i].locationScopeValue != null)
+				str+='<B>Region Scope</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].locationScopeValue+'('+result.relatedGalleries[0].filesList[i].locationName+')</font>';
+			 str+='</td>';
+
+			 str+='<td>';
+			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
+				str+='<B>Source</B>:<font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font>';
+			 str+='</td>';
+
+			 str+='<td>';
+			if(result.relatedGalleries[0].filesList[i].fileDate != null)
+				str+='<B>Date</B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
+			 str+='</td>';
+			 str+='</tr>';
+			 str+='</table>';
 
 		}
 	}
@@ -611,7 +477,7 @@ function buildContentDetails()
 
 		
 		str += '<div>';
-		str += '<table>';
+		str += '<table style="font-size:15px;">';
 		str += '<tr><td>Description : <b>'+descriptionStr+'</b></td></tr>';
 		str += '</table>';
 		str += '</div>';
@@ -658,87 +524,6 @@ function buildContentDetails()
 	document.getElementById("showContentHeaderDiv").innerHTML=str;
 	
 }
-/*
-	This Method is used for making a alax call for adding news glance details into problem
-*/
-function callAjaxToChangeToProblem(contentId){
-
-	$('#errorDiv').html('');
-
-
-	if($('#existingFrom').val() == ""){
-		$('#errorDiv').html('<span style="color:red;">Existing from date is required</span>');
-	 return false;
-	}
-
-	var visibility = $('input:radio[name=visibility]:checked').val();
-
-
-	var jObj=
-	{
-		existingFrom:$('#existingFrom').val(),
-		//visibility:$('#visibility').val(),
-		visibility:visibility,
-		contentId:contentId,
-		//contentId:12327,
-		task:"convertNewsToProblem"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
-	var url = "convertNewsToProblem.action?"+rparam;	
-
-	callAjaxToConvertNewsToProblem(jObj,url);
-}
-/*
-	This method is used for Showing weather the new glance details are added as a problen or not
-*/
-function callAjaxToConvertNewsToProblem(jObj,url){
-		
-			 var myResults;
-
-			 var callback = {			
- 		              success : function( o ) {
-					try {
-						
-				         myResults = YAHOO.lang.JSON.parse(o.responseText);
-                          //alert("News successfully added as problem ");
-						  var cssObj = {    
-				           'font-weight' : 'bold',
-				           'color' : 'green'
-			              }
-						 $('#successMsgDiv').text("News successfully added as problem").css(cssObj).show().delay(2000).fadeOut(400);
-                          setTimeout(function(){
-                                 $("#problemOuterDiv").dialog('close');
-                      }, 2000);
-
-						
-						 $('#notAdded'+myResults.contentId).css('display','none');
- 						 $('#added'+myResults.contentId).css('display','block');
-						 $('#added'+myResults.contentId).html('<span>Added as problem&nbsp;<a href="javaScript:{showProblemDetails('+myResults.problemId+')}"><img src="images/icons/details.png"></img></a></span>');
-							
-					    }catch (e) {
-						//alert('error');
-					    }  
- 		                },
- 		                  scope : this,
- 		                  failure : function( o ) {
-						  // alert('error');
- 		                }
- 		               };
-
- 		YAHOO.util.Connect.asyncRequest('POST', url, callback); 	
-
-}
-/*
-	This method is used for showing the problem details in new window
-*/
-function showProblemDetails(problemId)
-{
-  window.open("completeProblemDetailsAction.action?problemId="+problemId, '_blank');
-  window.focus();
-}
-/*
-	This Method is used for showing the details of nexe news
-*/
 function buildContentDetailsOfSelected(preId,selId)
 {
 	for(var i=0;i<showContentResultList.relatedGalleries[0].filesList.length;i++)
@@ -751,30 +536,10 @@ function buildContentDetailsOfSelected(preId,selId)
 
 	buildContentDetails();
 }
-$(document).ready(function(){
-$(".dateField").live("click", function(){
-$(this).datepicker({
-dateFormat: "dd/mm/yy",
-changeMonth: true,
-changeYear: true,
-maxDate: new Date()
-}).datepicker("show");
-});
-});
-getNews1(count);
 
 </script>
-</head>
-<body>
-
-<div id="newsDisplayDiv" style=""></div>
-<div id="problemOuterDiv">
-<div id="problemInnerDiv">
-</div>
-</div>
-<div id="showContentDiv">
-<div id="showAjaxImgForNews" style="display:none"><img src="images/icons/goldAjaxLoad.gif"/></div>
-<div id="showContentDivInnerDiv" style="font-family: arial; font-size: 17px;"></div>
-</div>
+<script type="text/javascript">
+getNewsOfLocation();
+</script>
 </body>
 </html>
