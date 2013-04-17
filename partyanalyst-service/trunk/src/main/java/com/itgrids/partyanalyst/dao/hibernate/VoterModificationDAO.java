@@ -581,4 +581,55 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		return query.executeUpdate();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getBoothWiseVotersDataByBoothIds(Long constituencyId,Long publicationDateId,List<Long> partNosList)
+	{
+		Query queryObj = getSession().createQuery("select count(model.voter.voterId), model.voterStatus.status,model.partNo,model2.booth.boothId,model2.booth.villagesCovered " +
+				" from VoterModification model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and model.partNo = model2.booth.partNo and model.publicationDate.publicationDateId =:publicationDateId " +
+				" and model.partNo in(:partNosList) and model.constituency.constituencyId =:constituencyId " +
+				" group by model.partNo,model.voterStatus.voterStatusId ");
+		
+		queryObj.setParameterList("partNosList", partNosList);
+		queryObj.setParameter("constituencyId", constituencyId);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		
+		return queryObj.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSelectedVotersDetails(Long constituencyId, List<Long> publicationIdsList, List<Long> partNo, Long voterStatusId){
+		
+	     StringBuffer str = new StringBuffer();
+			str.append(" select model.voter.voterId,model.voter.name,model.voter.gender, model.voter.age, model.voter.relativeName, model.voter.relationshipType, ");
+			str.append(" model2.booth.boothId, model2.booth.partNo, model2.booth.villagesCovered, model.voter.houseNo,model.voter.voterIDCardNo,model.voter.relativeName ");
+			str.append(" from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
+			str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo and ");
+			str.append(" model.partNo in(:partNo) and model.constituency.constituencyId =:constituencyId ");
+			str.append(" and model.voterStatus.voterStatusId =:voterStatusId ");
+	     
+	     Query query = getSession().createQuery(str.toString());
+	     
+	     query.setParameterList("partNo", partNo);
+	     query.setParameterList("publicationIdsList", publicationIdsList);
+	     query.setParameter("voterStatusId", voterStatusId);
+	     query.setParameter("constituencyId", constituencyId);
+	     
+			return query.list();
+			
+		}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPartNoForMovedOrRelocatedVoter(Long voterId, Long publicationDateId, Long constituencyId, Long voterStatusId)
+	{
+		Query queryObj = getSession().createQuery("select model.partNo from VoterModification model where model.voter.voterId =:voterId " +
+				"  and model.publicationDate.publicationDateId =:publicationDateId and model.constituency.constituencyId =:constituencyId and model.voterStatus.voterStatusId =:voterStatusId ");
+		
+		queryObj.setParameter("voterId", voterId);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("voterStatusId", voterStatusId);
+		queryObj.setParameter("constituencyId", constituencyId);
+	     
+		return queryObj.list();
+	}
+	
 }

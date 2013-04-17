@@ -159,22 +159,26 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		} 
 	}*/
 	
-	public void testgetSublevelVoterModificationDetailsByLocationValues()
+	/*public void testgetSublevelVoterModificationDetailsByLocationValues()
 	{
 		List<Long> publicationIdsList = new ArrayList<Long>(0);
 		publicationIdsList.add(8l);
 		
 		String queryStr = "select count(model.voter.voterId),model.status,model.voter.gender,model2.booth.partNo ";
 		List<Long> locationValuesList = new ArrayList<Long>(0);
-		locationValuesList.add(347l);
-		
- 		List<Object[]> list = voterModificationDAO.getSublevelVoterModificationDetailsByLocationValues(347l, publicationIdsList, locationValuesList, "constituency", queryStr);
+		locationValuesList.add(122923l);
+		locationValuesList.add(122924l);
+ 		List<Object[]> list = voterModificationDAO.getSublevelVoterModificationDetailsByLocationValues(232l, publicationIdsList, locationValuesList, "booth", queryStr);
 		
  		System.out.println(list.size());
  		
  		for(Object[] params : list)
- 			System.out.println(params[3]);
-	}
+ 		{
+ 			if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+ 				System.out.println("deleted - "+params[0]);
+ 		}
+ 			
+	}*/
 	
 	/*public void testgetVoterModificationsByConstituencyId()
 	{
@@ -183,4 +187,61 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		int list = voterModificationDAO.updateVoterStatus(1l,ids);
 		System.out.println(list);
 	}*/
+	
+	public void testGetBoothWiseVotersDataByBoothIds()
+	{
+		List<Long> partNosList = new ArrayList<Long>(0);
+		
+		partNosList.add(127l);
+		List<Object[]> list = voterModificationDAO.getBoothWiseVotersDataByBoothIds(299l, 8l, partNosList);
+		System.out.println(list.size());
+		Long added = 0l;
+		Long deleted = 0l;
+		Long moved = 0l;
+		Long relocated = 0l;
+		for(Object[] params:list)
+		{
+			if(params[1].toString().equalsIgnoreCase("Added"))
+				added = (Long)params[0];
+			if(params[1].toString().equalsIgnoreCase("Deleted"))
+				deleted = (Long)params[0];
+			if(params[1].toString().equalsIgnoreCase("Moved"))
+				moved = (Long)params[0];
+			if(params[1].toString().equalsIgnoreCase("Relocated"))
+				relocated = (Long)params[0];
+			
+			System.out.println("added - "+added);
+			System.out.println("deleted - "+deleted);
+			System.out.println(" moved - "+ moved);
+			System.out.println("relocated- "+relocated);
+			System.out.println("partno- "+params[2]);
+			System.out.println("boothid- "+params[3]);
+			System.out.println("villages- "+params[4]);
+		}
+	}
+	
+	
+	/*public void testgetSelectedVotersDetails()
+	{
+		List<Long> partNosList = new ArrayList<Long>(0);
+		
+		partNosList.add(127l);
+		partNosList.add(126l);
+		List<Long> publicationIdsList = new ArrayList<Long>(0);
+		publicationIdsList.add(8l);
+		
+		List<Object[]> list = voterModificationDAO.getSelectedVotersDetails(299l, publicationIdsList, partNosList, 1l);
+		System.out.println(list.size());
+		for(Object[] params:list)
+		{
+			System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]+" "+params[4]+" "+params[5]);
+		}
+	}*/
+	
+	public void testgetPartNoForMovedOrRelocatedVoter()
+	{
+		List<Long> list = voterModificationDAO.getPartNoForMovedOrRelocatedVoter(225017l, 8l, 299l, 4l);
+		if(list != null && list.size() > 0)
+			System.out.println(list.get(0));
+	}
 }
