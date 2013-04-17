@@ -39,7 +39,9 @@ public class VoterModificationVO implements Serializable{
 	private Long femaleVotersRelocated = 0L;
 	private Long voterStatusId;
 	private Long partNo;
-	
+	private String villageCovered;
+	private List<VoterVO> movedVoterVOsList;
+	private List<VoterVO> relocatedVoterVOsList;
 
 	public Long getLocationId() {
 		return locationId;
@@ -272,6 +274,30 @@ public class VoterModificationVO implements Serializable{
 
 	public void setPartNo(Long partNo) {
 		this.partNo = partNo;
+	}
+
+	public String getVillageCovered() {
+		return villageCovered;
+	}
+
+	public void setVillageCovered(String villageCovered) {
+		this.villageCovered = villageCovered;
+	}
+
+	public List<VoterVO> getMovedVoterVOsList() {
+		return movedVoterVOsList;
+	}
+
+	public void setMovedVoterVOsList(List<VoterVO> movedVoterVOsList) {
+		this.movedVoterVOsList = movedVoterVOsList;
+	}
+
+	public List<VoterVO> getRelocatedVoterVOsList() {
+		return relocatedVoterVOsList;
+	}
+
+	public void setRelocatedVoterVOsList(List<VoterVO> relocatedVoterVOsList) {
+		this.relocatedVoterVOsList = relocatedVoterVOsList;
 	}
 	
 	
