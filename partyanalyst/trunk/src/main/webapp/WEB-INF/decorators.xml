@@ -211,6 +211,7 @@
 		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
 		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
 		<pattern>/voterBasicInfoAction*</pattern>
+		<pattern>/boothWiseModificationsCompleteInfo*</pattern>
     	 </decorator>
 
 </decorators>

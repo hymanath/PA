@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -156,7 +158,6 @@
   </div></div> 
 <div id="voterModReportMainDiv">
 
-
   <div id="voterModReportInnerDiv">
 		<div id="voterInfoDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;">
 			<span id="voterInfoAjaxImg" style="display:none;float: right;clear:both;">
@@ -307,6 +308,14 @@ $("document").ready(function(){
 	$("#boothWiseVoterModificationInfo").live("click",function(){
 
 		var urlStr = "boothWiseModifiedVoterInfoAction.action?constituencyId="+constituencyId+"&fromPublicationDateId="+fromPublicationDateId+"&toPublicationDateId="+toPublicationDateId+"&locationType="+locationType+"&locationValue="+locationValue+"";
+		window.open(urlStr,'_blank');
+	    window.focus();
+		
+	});
+
+	$("#boothWiseCompleteInfo").live("click",function(){
+
+		var urlStr = "boothWiseModificationsCompleteInfo.action?constituencyId="+constituencyId+"&fromPublicationDateId="+fromPublicationDateId+"&toPublicationDateId="+toPublicationDateId+"&locationType="+locationType+"&locationValue="+locationValue+"";
 		window.open(urlStr,'_blank');
 	    window.focus();
 		
