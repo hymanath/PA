@@ -1409,7 +1409,7 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 		List<Long> localElectionBodyIds = null;
 				
 		if(tehsilIds != null&& tehsilIds.size()  != 1)
-				localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
+			localElectionBodyIds = localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIds);
 		else
 			localElectionBodyIds = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByConstituency(constituencyVal);
 	
