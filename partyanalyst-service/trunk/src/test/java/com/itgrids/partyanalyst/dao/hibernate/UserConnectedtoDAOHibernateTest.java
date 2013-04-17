@@ -101,14 +101,14 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 	{
 		System.out.println(userConnectedtoDAO.getConnectedMembersCountForAFreeUser(2444l));
 	}*/
-	
-/*	public void testGetConnectedUsersCountForAUserInAFilterView()
+	/*
+	public void testGetConnectedUsersCountForAUserInAFilterView()
 	{
 		List<Long> locationIds = new ArrayList<Long>(0);
 		locationIds.add(18l);
 		System.out.println(userConnectedtoDAO.getConnectedUsersCountForAUserInAFilterView(611l,locationIds,IConstants.DISTRICT_LEVEL,""));
-	}*/
-
+	}
+*/
 	/*public void testGetConnectedUsersInSelectedLocations()
 	{
 		List<Long> locationIds = new ArrayList<Long>(0);
@@ -215,8 +215,20 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		List<Long> userIds = new ArrayList<Long>();
 		userIds.add(611l);
 		List<Long> locationIDs = new ArrayList<Long>();
-		locationIDs.add(7l);
-		List<Object[]> userIdses= userConnectedtoDAO.getCountOfAllConnectedPeopleForUserByDistrict(userIds,locationIDs,"district","notsame");
+		locationIDs.add(221l);
+		locationIDs.add(222l); 
+		locationIDs.add(223l);
+		locationIDs.add(228l);
+		locationIDs.add(218l);
+		locationIDs.add(219l);
+		locationIDs.add(229l);
+		locationIDs.add(227l);
+		locationIDs.add(226l);
+		locationIDs.add(225l);
+		locationIDs.add(224l);
+		locationIDs.add(344l);
+		
+		List<Object[]> userIdses= userConnectedtoDAO.getCountOfAllConnectedPeopleForUserByDistrict(userIds,locationIDs,"constituency","notsame");
 		
 		System.out.println(userIdses.size());
 		
