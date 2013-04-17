@@ -1116,5 +1116,10 @@
 		
 	</bean>
 	
+	<bean id="boothWiseModificationsCompleteInfoAction" class="com.itgrids.partyanalyst.web.action.BoothWiseModificationsCompleteInfoAction" singleton="false">	
+		<property name="voterModificationService" ref="voterModificationService" />
+	</bean>
+	
+	
 </beans>	
 	

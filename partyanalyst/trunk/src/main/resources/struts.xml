@@ -4832,5 +4832,17 @@
 			<result name="success">/jsp/newsGallaryDisplayWindow.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
+		
+		 <action name="boothWiseModificationsCompleteInfo" class="boothWiseModificationsCompleteInfoAction">
+			<result name="success">/jsp/boothWiseModificationsCompleteInfo.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		 </action>
+		 
+		 <action name="boothWiseCompleteInfoAction" class="boothWiseModificationsCompleteInfoAction" method="ajaxHandler">
+		   <result type="json" name="success">
+				<param name="root">voterModificationVOList</param>	
+		   </result>
+		</action>
+		 
 		</package>
 </struts>      

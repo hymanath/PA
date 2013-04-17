@@ -474,7 +474,9 @@ function showVoterInfo(results,jsObj)
 	var str = '';
 	str +='<div class="voterinfoHeading"><h2 style="height: 35px;padding-bottom: 12px;">Voters Basic Information In '+locationName+' '+locationTypeVar+'';
 	str +='<button  id="helpbutt" value="Help" style="float: right;width: 30px;" onClick="PopUpForHelp()" title="Click To View Help"><img alt="" src="./images/help.jpeg"></button>';
-	str +='<input type="button" style="float: right;" id="boothWiseVoterModificationInfo" href="javascript:{}" value="View Booth Wise Voter Modification Details" class="btn btn-info">';
+	str +='<input type="button" style="float: right;" id="boothWiseVoterModificationInfo" href="javascript:{}" value="Booth Wise Voter Details" class="btn btn-info">';
+	if(jsObj.locationType == 'panchayat' || jsObj.locationType == 'booth')
+		str +='<div style="float: right;margin-right: 10px;"><input type="button" style="" id="boothWiseCompleteInfo" href="javascript:{}" value="Booth Wise Relocated Info" class="btn btn-info"></div>';
 	str +='</h2>';
 	str +='</div>';	
 	if(results != null)
