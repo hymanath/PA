@@ -238,7 +238,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		}
 			
 	}*/
-	public void testGetAnanymousUserLocationDetailsByIds()
+	/*public void testGetAnanymousUserLocationDetailsByIds()
 	{
 		List<Long> userIds = new ArrayList<Long>();
 		userIds.add(611l); 
@@ -258,7 +258,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		}
 	
 			
-	}
+	}*/
 	
 	/*public void testGetUserEmailByUserId()
 	{
@@ -307,11 +307,11 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	/*public void testgetAllUsersInSelectedLocations()
+	public void testgetAllUsersInSelectedLocations()
 	{
 		List<Long> locationIds = new ArrayList<Long>();
-		locationIds.add(10l);
-		List<Object> list = userDAO.getAllUsersInSelectedLocations(locationIds, "DISTRICT", 2l, 0l, null);
+		locationIds.add(228l);
+		List<Object> list = userDAO.getAllUsersInSelectedLocations(locationIds, "constituency", 100l, 0l, null);
 		System.out.println(list.size());
 		if(list != null && list.size() > 0)
 		{
@@ -324,7 +324,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 	}
-	public void testgetNotConnectedUsersInSelectedLocations()
+	/*public void testgetNotConnectedUsersInSelectedLocations()
 	{
 		List<Long> locationIds = new ArrayList<Long>();
 		locationIds.add(10l);
@@ -353,7 +353,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[0]+" "+params[1]);
 	}*/
 	
-	
+/*	
 	public void testgetAllUsersCountInSelectedLocations()
 	{
 		List<Long> locationIds = new ArrayList<Long>(0);
@@ -368,5 +368,5 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		locationIds.add(219l);
 		Long count = userDAO.getAllUsersCountInSelectedLocations(locationIds,IConstants.CONSTITUENCY_LEVEL,"");
 		System.out.println(count);
-	}
+	}*/
 }
