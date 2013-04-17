@@ -408,7 +408,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testGetBoothIdsByLocalValuesList()
+	/*public void testGetBoothIdsByLocalValuesList()
 	{
 		List<Long> publicationDateIdsList = new ArrayList<Long>(0);
 		//publicationDateIdsList.add(7l);
@@ -418,6 +418,15 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		for(Long boothId:boothIdsList)
 			System.out.println(boothId);
 		
+	}*/
+	
+	public void testGetPartNosByBoothIdsList()
+	{
+		List<Long> boothIdsList = new ArrayList<Long>(0);
+		boothIdsList.add(121328l);
+		List<String> list = boothDAO.getPartNosByBoothIdsList(299l, 8l, boothIdsList);
+		for(String params : list)
+			System.out.println(params);
 	}
 	
 }
