@@ -804,6 +804,43 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	 else
 	   document.getElementById("buildVideoNewSources").innerHTML = str1;
 }
+/*
+	This method used to same news in more than two pages like part1 , part2, ..... updated by srishailam
+*/
+
+function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
+{
+  for(var i in selectedContentFile.fileVOList)
+  {
+    if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
+	{
+	  if(type != 'video')
+	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" align="middle" style="max-width:780px;max-length:800px;" src="'+path+'" />';
+	  else
+	   var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe>';
+	  document.getElementById("nextPartImage").innerHTML = str;
+	
+	   str = '<center><table><tr>';
+
+	    for(var j=0;j<selectedContentFile.fileVOList[i].fileVOList.length;j++)
+	     {
+		   if(selectedContentFile.fileVOList[i].fileVOList[j].orderNo != orderNo)
+		    {
+			  if(type != 'video')
+	             str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'other\')"><img width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" src="'+selectedContentFile.fileVOList[i].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+	          else
+			     str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[i].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+		    }
+		 }
+		 
+	   str += '  </tr></table>';
+	   str +='</center>';
+	  document.getElementById("buildNewSourceParts").innerHTML = str;
+	}
+  
+  }
+
+}
 
 $(document).ready(function(){
 $(".dateField").live("click", function(){
