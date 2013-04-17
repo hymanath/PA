@@ -50,8 +50,10 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private Long statusId;
 	private Long hamletId;
 	private Long localAreaId;
+	private Long movedOrRelocatedBoothId;
+	private Long movedOrRelocatedPartNo;
+	private String relativeName;
 	
-		
 	public Long getLocalAreaId() {
 		return localAreaId;
 	}
@@ -513,4 +515,30 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	public void setPartNo(Long partNo) {
 		this.partNo = partNo;
 	}
+
+	public Long getMovedOrRelocatedBoothId() {
+		return movedOrRelocatedBoothId;
+	}
+
+	public void setMovedOrRelocatedBoothId(Long movedOrRelocatedBoothId) {
+		this.movedOrRelocatedBoothId = movedOrRelocatedBoothId;
+	}
+
+	public Long getMovedOrRelocatedPartNo() {
+		return movedOrRelocatedPartNo;
+	}
+
+	public void setMovedOrRelocatedPartNo(Long movedOrRelocatedPartNo) {
+		this.movedOrRelocatedPartNo = movedOrRelocatedPartNo;
+	}
+
+	public String getRelativeName() {
+		return relativeName;
+	}
+
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
+	
+	
 }
