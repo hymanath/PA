@@ -4357,7 +4357,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		
 		if(voters != null && voters.size() > 0)
 		for(Object[] voter : (List<Object[]>)voters)
-		voterIdsList.add((Long)voter[5]);
+		voterIdsList.add((Long)voter[4]);
 		
 		if(voterIdsList.size() > 0)
 		{
@@ -4395,26 +4395,26 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			voterVO = new VoterVO();
 			voterVO.setFirstName(voter[0].toString());
 			voterVO.setAge((Long)voter[2]);
-			voterVO.setCast(voter[3] != null ? voter[3].toString() : "");
-			voterVO.setBoothNo((Long)voter[4]);
-			voterVO.setVoterId(voter[5].toString());
-			voterVO.setGender(voter[6].toString());
-			voterVO.setAge(voter[7] != null ? (Long)voter[7]:18l);
-			voterVO.setBoothName(voter[8].toString());
+			//voterVO.setCast(voter[3] != null ? voter[3].toString() : "");
+			voterVO.setBoothNo((Long)voter[3]);
+			voterVO.setVoterId(voter[4].toString());
+			voterVO.setGender(voter[5].toString());
+			voterVO.setAge(voter[6] != null ? (Long)voter[6]:18l);
+			voterVO.setBoothName(voter[7].toString());
 			if(!requestFor.equalsIgnoreCase("booth")){
 				if( checkedEle.equalsIgnoreCase("panchayat") && buildType.equalsIgnoreCase("hamlet"))
-					voterVO.setHamlet(voter[9].toString());
+					voterVO.setHamlet(voter[8].toString());
 				if( checkedEle.equalsIgnoreCase("hamlet") )
-					voterVO.setLocalArea(voter[9].toString());
+					voterVO.setLocalArea(voter[8].toString());
 			}/*else
 				voterVO.setHamlet("HamletName");*/
 			if(requestFor.equalsIgnoreCase("hamletBooth"))
-				voterVO.setHamlet(voter[9].toString());
-				voterVO.setCast(getCasteNameByVoterID(casteList,(Long)voter[5]));
-			voterByHouseNoMap = boothMap.get((Long)voter[4]);
+				voterVO.setHamlet(voter[8].toString());
+				voterVO.setCast(getCasteNameByVoterID(casteList,(Long)voter[4]));
+			voterByHouseNoMap = boothMap.get((Long)voter[3]);
 			if( voterByHouseNoMap == null){
 				voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
-				boothMap.put((Long)voter[4], voterByHouseNoMap);
+				boothMap.put((Long)voter[3], voterByHouseNoMap);
 			}
 			voterVOs = voterByHouseNoMap.get(houseNo);
 			if(voterVOs ==null){
@@ -11206,7 +11206,7 @@ try{
   }
 return voters;
 
-		
+
 }
 
 public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> locationValues,String type,Integer startIndex,Integer maxRecords,String name)
