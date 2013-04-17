@@ -2333,4 +2333,130 @@ public class VoterModificationService implements IVoterModificationService{
 			 return voterModificationVO;
 		}
 	 }
+	 public List<VoterModificationVO> getBoothWiseModificationsCompleteDetails(Long constituencyId, Long locationValue, Long publicationDateId, String locationType)
+	 {
+		 List<VoterModificationVO> voterModificationVOsList = new ArrayList<VoterModificationVO>(0);
+		 try{
+			 
+			 List<Long> publicationIdsList = new ArrayList<Long>(0);
+			 publicationIdsList.add(publicationDateId);
+			      
+			 List<Long> boothIds = new ArrayList<Long>(0);
+			 
+			 List<String> partNosList = new ArrayList<String>(0);
+			 List<Long> partNo = new ArrayList<Long>(0);
+			 
+			 
+			 if(locationType != null && !locationType.equalsIgnoreCase("booth"))
+			   boothIds = boothDAO.getBoothIdsByLocalValuesList(locationType, locationValue, constituencyId, publicationIdsList);
+			 else
+				 boothIds.add(locationValue);
+			 
+			 partNosList = boothDAO.getPartNosByBoothIdsList(constituencyId, publicationDateId, boothIds);
+			 for(String no : partNosList)
+				 partNo.add(new Long(no));
+			     VoterModificationVO voterModificationVO = null;
+				  
+				 List<Object[]> statusList = voterModificationDAO.getBoothWiseVotersDataByBoothIds(constituencyId, publicationDateId, partNo);
+					 if(statusList != null && statusList.size() > 0)
+					  {
+						for(Object[] status : statusList)
+						{
+							voterModificationVO = checkForvoterModificationVO(new Long(status[2].toString()),voterModificationVOsList);
+							
+							if(voterModificationVO == null)
+							{
+								voterModificationVO = new VoterModificationVO();
+								voterModificationVO.setId((Long)status[3]);
+								voterModificationVO.setPartNo(new Long(status[2].toString()));
+								voterModificationVO.setVillageCovered(status[4] != null ? status[4].toString() : "");
+								voterModificationVOsList.add(voterModificationVO);
+							}
+							 
+						      if(status[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+								voterModificationVO.setAddedCount((Long)status[0]);
+							  else if(status[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+								voterModificationVO.setDeletedCount((Long)status[0]);
+							  else if(status[1].toString().equalsIgnoreCase(IConstants.STATUS_MOVED))
+								voterModificationVO.setMovedCount((Long)status[0]);
+							  else if(status[1].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED))
+								voterModificationVO.setRelocatedCount((Long)status[0]);
+						}
+					}
+					 
+					 if(voterModificationVOsList != null && voterModificationVOsList.size() > 0)
+						{
+							for(VoterModificationVO modificationVO : voterModificationVOsList)
+							 {
+								 if(modificationVO.getMovedCount() != null && modificationVO.getMovedCount()>0)
+								 {
+									 List<Object[]> movedVotersList =  voterModificationDAO.getSelectedVotersDetails(constituencyId, publicationIdsList, partNo, voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_MOVED));
+									 if(movedVotersList != null && movedVotersList.size() > 0)
+										 modificationVO.setMovedVoterVOsList(setMovedRelocatedVoterDetails(movedVotersList,IConstants.STATUS_RELOCATED,publicationDateId,constituencyId,modificationVO));
+								 }
+								 if(modificationVO.getRelocatedCount() != null && modificationVO.getRelocatedCount() > 0)
+								 {
+									 List<Object[]> relocatedVotersList =  voterModificationDAO.getSelectedVotersDetails(constituencyId, publicationIdsList, partNo, voterStatusDAO.getVoterStatusIdByStatus(IConstants.STATUS_RELOCATED));
+										 if(relocatedVotersList != null && relocatedVotersList.size() > 0)
+											 modificationVO.setRelocatedVoterVOsList(setMovedRelocatedVoterDetails(relocatedVotersList,IConstants.STATUS_MOVED,publicationDateId,constituencyId,modificationVO));
+								}
+									
+						     }
+						}
+				 
+			 return voterModificationVOsList;
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in getBoothWiseModificationsCompleteDetails() Method, Exception - "+e);
+			 return voterModificationVOsList;
+		}
+	 }
+	 
+	 public VoterModificationVO checkForvoterModificationVO(Long partNo, List<VoterModificationVO> list)
+	 {
+		 try{
+			 if(list == null || list.size() == 0)
+				 return null;
+			 for(VoterModificationVO modificationVO : list)
+				 if(modificationVO.getPartNo().equals(partNo))
+					 return modificationVO;
+			 return null;
+		 }catch (Exception e) {
+			 LOG.error("Exception Occured in checkForvoterModificationVO() method, Exception - "+e);
+			 return null;
+		 }
+	 }
+	public List<VoterVO> setMovedRelocatedVoterDetails(List<Object[]> list,String status,Long publicationDateId,Long constituencyId,VoterModificationVO modificationVO)
+	 {
+		 List<VoterVO> voterVOs = new ArrayList<VoterVO>(0);;
+		 try{
+			 for(Object[] params : list)
+			 {
+				 
+				 VoterVO voterVO = new VoterVO();
+				 voterVO.setFirstName(params[1] != null ?params[1].toString() :"");
+				 voterVO.setVoterId(params[0] != null ?params[0].toString() : "");
+				 voterVO.setGender(params[2] != null ?params[2].toString() : "");
+				 voterVO.setAge(params[3] != null ?(Long)params[3] : 0l);
+				 voterVO.setRelationshipType(params[5] != null ?params[5].toString():"");
+				 voterVO.setVillagesCovered(params[8] != null ?params[8].toString():"");
+				 voterVO.setBoothId((Long)params[6]);
+				 voterVO.setPartNo(new Long(params[7].toString()));
+				 voterVO.setHouseNo(params[9] !=null?params[9].toString():"");
+				 voterVO.setVoterIDCardNo(params[10] !=null?params[10].toString():"");
+				 voterVO.setRelativeName(params[11] !=null?params[11].toString():"");
+				 
+				 List<Long> list1 = voterModificationDAO.getPartNoForMovedOrRelocatedVoter((Long)params[0], publicationDateId, constituencyId, voterStatusDAO.getVoterStatusIdByStatus(status));
+				 if(list1 != null && list1.size() > 0)
+					 voterVO.setMovedOrRelocatedPartNo((Long)list1.get(0));
+					 
+				 voterVOs.add(voterVO);
+			 }
+			 return voterVOs;
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in setMovedRelocatedVoterDetails() Method, Exception - "+e);
+			 return voterVOs;
+		}
+	 }
+	 
 }
