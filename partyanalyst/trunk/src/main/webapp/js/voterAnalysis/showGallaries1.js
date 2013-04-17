@@ -998,7 +998,7 @@ if(results == null || results.length == 0){
 	for(var i=0;i<results.length;i++){
 
 		 var categoryId = results[i].categoryId;
-	   str+='<div class="span3 btn" style="margin:10px 17px;">';
+	   str+='<div class="span3 btn" style="margin:10px 17px;width:240px;">';
 
 	   str+='<h5 class="widget-block" style="font-size:16px;padding:5px 5px;padding-right:0px;margin-top:0px;">';
 	   str+='<a style="color:#555;">'+results[i].categoryName+'</a>';
