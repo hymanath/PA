@@ -79,7 +79,7 @@
 #voterDetails_info , #voterDetails_paginate { margin-bottom: 14px;margin-top: 10px;}
 #subLevelVotersTable_wrapper{padding-top: 15px;}
 #genderWiseVoterModifiMainDiv{padding-bottom: 15px;}
-#subLevelVotersTable_info,#subLevelVotersTable_paginate{margin-top: 5px;}
+#subLevelVotersTable_info,#subLevelVotersTable_paginate{margin-top: 10px;margin-bottom: 10px;}
 .voterInfoLinksCLS:hover{text-decoration:none;}
 
 #voterimpFamDtls table{ border: 1px solid #D3D3D3;
@@ -106,7 +106,6 @@
     color: #FFFFFF;
 }
 #subLevelDiv{overflow-x: scroll;width:98%;}
-#subLevelVotersTable{margin-bottom: 20px;}
 #helpbutt{margin-left: 6px;}
 </style>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
