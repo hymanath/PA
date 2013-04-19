@@ -135,7 +135,7 @@ margin-top: 3px !important;
 	float:left;
 	margin: 0 0 3px;
 	/*padding: 0 0 0 26px;*/
-	background: url("js/jtransform/checkbox.png") no-repeat;
+	background: url("js/jtransform/checkbox.png");
 	cursor: default;
 	text-align:left;
 }
@@ -145,6 +145,8 @@ margin-top: 3px !important;
 .checkbox input.show,.radio input.show {
 	display: inline;
 }
+
+
 .selected {
 	background-position: 0 -52px;
 }
@@ -267,6 +269,7 @@ table.gridtable1 td {
 	 color:#333333;
 
  }
+ .checked1{background-position: 0 -50px ! important;}
    /*
  fieldset,#votersMainOuterDiv1,#votersMainOuterDiv2,
 	 #votersMainOuterDiv3,#votersMainOuterDiv4{
