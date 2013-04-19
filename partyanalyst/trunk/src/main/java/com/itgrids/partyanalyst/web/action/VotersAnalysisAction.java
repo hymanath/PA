@@ -451,7 +451,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		{
 			Long selectedId = jObj.getLong("selected");
 			Long PublicationId = jObj.getLong("publicationValue");
-	       namesList = votersAnalysisService.getWards(selectedId,PublicationId);
+			Long constituencyId = jObj.getLong("constituencyId");
+	       namesList = votersAnalysisService.getWards(selectedId,PublicationId,constituencyId);
 			//namesList.add(0, new SelectOptionVO(0L,"Select"));
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getHamletsList"))
