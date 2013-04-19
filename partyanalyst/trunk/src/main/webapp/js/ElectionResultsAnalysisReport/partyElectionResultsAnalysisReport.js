@@ -252,9 +252,18 @@ function showNotAnalyzedDetails(jsObj,results)
 
 function buildCandidateElectionResultsDataTable(notAnalyzedCandidatesResults)
 {	
+
+if(electionType == "Assembly" || electionType == "Parliament")
+			var name = "Constituency"; 
+		else if(electionType == "Zptc") 
+			name = "Zptc Name";
+		else if(electionType == "Mptc")
+		name = "Mptc Name";
+		else
+		name = "Ward";
 	var candidateElectionResultsColumnDefs = [
 								{key: "candidateName", label: "Candidate", sortable:true},										
-								{key: "constituencyName", label: "Constituency", sortable:true},								
+								{key: "constituencyName", label:name, sortable:true},								
 								{key: "totalVotesEarned", label: "Votes Earned",formatter:"number", sortable:true},
 								{key: "votesPercentage", label: "Votes Percentage",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
 								{key: "rank", label:"Rank", sortable:true},
