@@ -244,7 +244,7 @@ width:100%;
 {
 	padding:5px;
 	/*background-color:#728194;*/
-	background-color:steelblue;
+	background-color:slategrey;
 	color:#FFFFFF;
 }
 .commonVotersTableClass td
