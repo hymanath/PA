@@ -7330,9 +7330,12 @@ function buildInfluencingPeopleCount(results,jsObj)
 	str+='</div>';
 	divEle.innerHTML=str;
 }
-
 function getInfluencingPeopleVotersDetails(locationValue,typeValue,publicationDateId,btnName)
 {
+var reqBrowser = window.open("cadreDisplayWindowAction.action?locationValue="+locationValue+"&typeValue="+typeValue+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&mainreqid="+mainreqid+"&maintype="+maintype+"","newBrowser","width=900,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+reqBrowser.focus();
+
+/*
 	if(btnName == "Politician")
 	{
 YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
@@ -7442,7 +7445,7 @@ return oPayload;
 return {
 oDS: votersByLocBoothDataSource,
 oDT: votersByLocBoothDataTable
-};
+};*/
 }
 
 /*
@@ -8564,3 +8567,9 @@ var urlstr = "voterFamilyInfoAction.action?type=booth&id="+selectedId+"&publicat
 			var reqBrowser = window.open("ageWiseVoterDetailsActionForCast.action?&type="+maintype+"&id="+mainreqid+"&typeName="+mainname+"&publicationDateId="+publicationDateId+"&constituencyId="+constituencyId+"&buildType="+buildType+"&queryType='sub' ","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 			reqBrowser.focus();
 	}
+
+	$(".checkbox").live("click",function()
+	{
+		$('.checkbox').removeClass('checked1');
+		$(this).addClass("checked1");
+	});
