@@ -4314,6 +4314,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		List<Long> voterIdsList = new ArrayList<Long>(0);
 		List<SelectOptionVO> casteList = new ArrayList<SelectOptionVO>();
 		SelectOptionVO caste = null;
+		Map<Long,VoterVO> votersMap = new HashMap<Long, VoterVO>();
 		if(checkedEle.equalsIgnoreCase("panchayat"))
 		{
 			
@@ -4422,9 +4423,45 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				voterByHouseNoMap.put(houseNo, voterVOs);
 			}
 			voterVOs.add(voterVO);
+			votersMap.put(new Long(voter[5].toString()), voterVO);
 			//voterByHouseNoMap.put(houseNo, voterVOs);
 			
 		}
+		List<Long> influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIdsList,userId);
+		if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+		{
+			for (Long influencingPeople : influencingPeopleList) {
+			   voterVO = votersMap.get(influencingPeople);
+				if(voterVO != null)
+				{
+					voterVO.setInfluencePerson(true);
+				}
+			}
+		}
+		
+		List<Long> cadrePeopleList = cadreDAO.findCadrePeopleDetails(voterIdsList,userId);
+		if(cadrePeopleList != null && cadrePeopleList.size() > 0)
+		{
+			for (Long cadrePeople : cadrePeopleList) {
+				voterVO = votersMap.get(cadrePeople);
+				if(voterVO != null)
+				{
+					voterVO.setIsCadrePerson(true);
+				}
+			}
+		}
+		List<Long> candidatePeopleList = candidateDAO.findCandidatePeopleDetails(voterIdsList);
+		if(candidatePeopleList != null && candidatePeopleList.size() > 0)
+		{
+			for (Long candidatePeople : candidatePeopleList) {
+				voterVO = votersMap.get(candidatePeople);
+				if(voterVO != null)
+				{
+					voterVO.setIsPoliticion(true);
+				}
+			}
+		}
+		
 		Set<Long> keys = boothMap.keySet();
 		for(Long key:keys){
 			voterByHouseNoMap = boothMap.get(key);
@@ -4444,6 +4481,15 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			voterHouseInfoVO.setElderGender(voterVOs.get(voterVOs.size()-1).getGender());
 			voterHouseInfoVO.setElderAge(voterVOs.get(voterVOs.size()-1).getAge());
 			voterHouseInfoVO.setElder(voterVOs.get(voterVOs.size()-1).getFirstName());
+			
+			for(int i=0;i<voterVOs.size();i++){
+			if(voterVOs.get(i).getIsInfluencePerson() != null &&voterVOs.get(i).getIsInfluencePerson())
+				voterHouseInfoVO.setIsInfluencePerson(voterVOs.get(i).getIsInfluencePerson());
+			if(voterVOs.get(i).getIsCadrePerson()!= null &&  voterVOs.get(i).getIsCadrePerson())
+				voterHouseInfoVO.setIsCadrePerson(voterVOs.get(i).getIsCadrePerson());
+			if(voterVOs.get(i).getIsPoliticion() != null && voterVOs.get(i).getIsPoliticion())
+				voterHouseInfoVO.setIsPoliticion(voterVOs.get(i).getIsPoliticion());
+			}
 			if( checkedEle.equalsIgnoreCase("panchayat") && buildType.equalsIgnoreCase("hamlet"))
 				voterHouseInfoVO.setHamletName(voterVOs.get(voterVOs.size()-1).getHamlet());
 			if( checkedEle.equalsIgnoreCase("hamlet") )
@@ -10867,9 +10913,9 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			    return localitiesList;
 		}
 		
-	public List<SelectOptionVO> getWards(Long muncipalityId,Long publicationId)
+	public List<SelectOptionVO> getWards(Long muncipalityId,Long publicationId,Long constituencyId)
 		{
-			List<Object[]> wards= findByWardsByAssemblyLocalElectionBodyId(muncipalityId,publicationId);
+			List<Object[]> wards= findByWardsByAssemblyLocalElectionBodyId(muncipalityId,publicationId,constituencyId);
 			 List<SelectOptionVO> localitiesList = new ArrayList<SelectOptionVO>();
 			utilBusinessDelegator(wards,localitiesList,false);
 			return localitiesList;
@@ -10897,9 +10943,9 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 		{
 		return   boothDAO.getWardsInMuncipality(mincipalityId, PublicationId);	
 		}
-		public List<Object[]>  findByWardsByAssemblyLocalElectionBodyId(Long mincipalityId, Long publicationId)
+		public List<Object[]>  findByWardsByAssemblyLocalElectionBodyId(Long mincipalityId, Long publicationId, Long constituencyId)
 		{
-		return   wardDAO.findByWardsByAssemblyLocalElectionBodyId(mincipalityId, publicationId);	
+		return   wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(mincipalityId, publicationId,constituencyId);	
 		}
 		public List<Object[]>  getHamletsOfAPanchayat(Long panchayatId)
 		{
