@@ -54,6 +54,10 @@ ServletRequestAware ,ServletContextAware{
 	private String resultFor;
 	private String queryType;
 	
+	private String btnName;
+	private String typeValue;
+	private String maintype;
+	private Long mainreqid;
 	private Long contentId;
 	public Long getContentId() {
 		return contentId;
@@ -61,6 +65,38 @@ ServletRequestAware ,ServletContextAware{
 	public void setContentId(Long contentId) {
 		this.contentId = contentId;
 	}
+	public String getBtnName() {
+		return btnName;
+	}
+
+	public void setBtnName(String btnName) {
+		this.btnName = btnName;
+	}
+
+	public String getTypeValue() {
+		return typeValue;
+	}
+
+	public void setTypeValue(String typeValue) {
+		this.typeValue = typeValue;
+	}
+
+	public String getMaintype() {
+		return maintype;
+	}
+
+	public void setMaintype(String maintype) {
+		this.maintype = maintype;
+	}
+
+	public Long getMainreqid() {
+		return mainreqid;
+	}
+
+	public void setMainreqid(Long mainreqid) {
+		this.mainreqid = mainreqid;
+	}
+
 	public String getTypeName() {
 		return typeName;
 	}
