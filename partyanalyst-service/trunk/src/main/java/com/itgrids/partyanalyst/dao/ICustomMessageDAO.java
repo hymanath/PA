@@ -36,4 +36,6 @@ public interface ICustomMessageDAO extends GenericDao<CustomMessage, Long> {
 	public Integer updateIsSender(Long userId,Long senderId,Long typeId,Long customMessageId);
 
 	public List<Object> getAllMessagesForUser(List<Long> senderId,String messageType,Integer startIndex, Integer maxResults);
+	
+	public List<Object> getAllSentMessagesForUser(List<Long> senderId,String messageType,Integer startIndex, Integer maxResults);
 }
