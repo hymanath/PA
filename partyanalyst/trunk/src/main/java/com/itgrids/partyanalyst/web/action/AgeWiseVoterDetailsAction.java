@@ -59,6 +59,8 @@ ServletRequestAware ,ServletContextAware{
 	private String maintype;
 	private Long mainreqid;
 	private Long contentId;
+	private String publicationDate;
+	
 	public Long getContentId() {
 		return contentId;
 	}
@@ -337,7 +339,12 @@ ServletRequestAware ,ServletContextAware{
 	public void setTypename(String typename) {
 		this.typename = typename;
 	}
-
+	public String getPublicationDate() {
+		return publicationDate;
+	}
+	public void setPublicationDate(String publicationDate) {
+		this.publicationDate = publicationDate;
+	}
 	public String execute()
 	{
 		HttpSession session = request.getSession();
