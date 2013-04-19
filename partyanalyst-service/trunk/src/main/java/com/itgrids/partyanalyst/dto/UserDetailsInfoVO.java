@@ -27,10 +27,19 @@ public class UserDetailsInfoVO implements Serializable {
 	private Long userAccessRegionId;
 	private String userAccessRegion;
 	
+	private String ipAddress;
+	
 	//Getters and Setters
+	public String getIpAddress() {
+		return ipAddress;
+	}
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
 	public Long getUserId() {
 		return userId;
 	}
+	
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}

@@ -16,7 +16,6 @@ public class UserAcessIpAddressDAO extends GenericDaoHibernate<UserAcessIpAddres
 		
 	}
 
-	@Override
 	public List<?> checkForAccess(RegistrationVO registrationVO,
 			String IpAddress) {
 		
@@ -31,6 +30,26 @@ public class UserAcessIpAddressDAO extends GenericDaoHibernate<UserAcessIpAddres
 		query.setParameter("ipId", IpAddress);
 		
 		return query.list();
+	}
+	public List<Long> checkDuplicateIpForUser(Long userId,String Ip)
+	{
+		Query query = getSession().createQuery("select model._userAcessIpAddressId from UserAcessIpAddress model where model._userId.userId =:userId and model.ipAddress =:Ip");
+		query.setParameter("userId",userId);
+		query.setParameter("Ip", Ip);
+		return query.list();
+	}
+	
+	public List<Object[]> getAllIpAddressByUser(Long userId)
+	{
+		return getHibernateTemplate().find("select model.ipAddress,model._userAcessIpAddressId from UserAcessIpAddress model where model._userId.userId =?",userId);
+	}
+	
+	public Integer deleteUserIpAddressById(Long userAcessIpAddressId)
+	{
+		Query query = getSession().createQuery("delete from UserAcessIpAddress model where model._userAcessIpAddressId =:userAcessIpAddressId");
+		query.setParameter("userAcessIpAddressId",userAcessIpAddressId);
+		return query.executeUpdate();
+		
 	}
 	
 	

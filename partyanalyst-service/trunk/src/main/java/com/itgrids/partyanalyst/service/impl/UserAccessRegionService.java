@@ -7,17 +7,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IUserAcessIpAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserAccessRegionVO;
+import com.itgrids.partyanalyst.dto.UserDetailsInfoVO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.model.UserAcessIpAddress;
 import com.itgrids.partyanalyst.model.UserConstituencyAccessInfo;
 import com.itgrids.partyanalyst.model.UserCountryAccessInfo;
 import com.itgrids.partyanalyst.model.UserDistrictAccessInfo;
@@ -27,7 +37,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class UserAccessRegionService implements IUserAccessRegionService{
-	
+private static final Logger Log = Logger.getLogger(VotersAnalysisService.class);	
 private	IUserCountryAccessInfoDAO userCountryAccessInfoDAO;
 private IUserStateAccessInfoDAO userStateAccessInfoDAO;
 private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
@@ -37,6 +47,33 @@ private IStateDAO stateDAO;
 private IDistrictDAO districtDAO;
 private IConstituencyDAO constituencyDAO;
 private IUserDAO userDAO;
+
+private IUserRolesDAO userRolesDAO;
+private IUserAcessIpAddressDAO userAcessIpAddressDAO;
+
+
+
+
+public IUserAcessIpAddressDAO getUserAcessIpAddressDAO() {
+	return userAcessIpAddressDAO;
+}
+
+
+public void setUserAcessIpAddressDAO(
+		IUserAcessIpAddressDAO userAcessIpAddressDAO) {
+	this.userAcessIpAddressDAO = userAcessIpAddressDAO;
+}
+
+
+public IUserRolesDAO getUserRolesDAO() {
+	return userRolesDAO;
+}
+
+
+public void setUserRolesDAO(IUserRolesDAO userRolesDAO) {
+	this.userRolesDAO = userRolesDAO;
+}
+
 
 public IConstituencyDAO getConstituencyDAO() {
 	return constituencyDAO;
@@ -592,5 +629,156 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId)
 		}
    	
     }
-
+   
+   public List<SelectOptionVO> getAllRestrictedUsers()
+   {
+	   List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+	   List<Object[]> users = new ArrayList<Object[]>(0);
+	   try{
+		  users = userRolesDAO.getAllRestrictedUsers();
+		   if(users != null && users.size() > 0)
+			   for(Object[] params : users)
+			   {
+				   if(params[1] == null)
+					   params[1] = "";
+				   if(params[2] == null)
+					   params[2] = "";
+			   resultList.add(new SelectOptionVO((Long)params[0],params[1].toString() + " "+params[2].toString()));
+			   }
+			   
+	   }
+	   catch(Exception e)
+	   {
+		   Log.error("Exception Occured - "+e);
+	   }
+	return resultList;
+   }
+   
+   public ResultStatus saveRestrictedUser(Long userID)
+   {
+	   ResultStatus resultStatus = new ResultStatus();
+	   try{
+		   if(userID != null)
+		   {
+		   User user = userDAO.get(userID);
+		   user.set_loginRestriction("true");
+		   userDAO.save(user);
+		   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		   }
+		   else
+		   resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	   }
+	   catch(Exception e)
+	   {
+		   resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		   e.printStackTrace();
+		   
+	   }
+	return resultStatus;
+   }
+   public List<SelectOptionVO> getAllUsers()
+   {
+	   List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+	   List<Object[]> users = new ArrayList<Object[]>(0);
+	   try{
+		  users = userRolesDAO.getAllUsers();
+		   if(users != null && users.size() > 0)
+			   for(Object[] params : users)
+			   {
+				   if(params[1] == null)
+					   params[1] = "";
+				   if(params[2] == null)
+					   params[2] = "";
+			   resultList.add(new SelectOptionVO((Long)params[0],params[1].toString() + " "+params[2].toString()));
+			   }
+			   
+	   }
+	   catch(Exception e)
+	   {
+		   Log.error("Exception Occured - "+e);
+	   }
+	return resultList;
+   }
+   public ResultStatus saveUserInUserAccessIpAddress(Long userID,String IpAddress)
+   {
+	   ResultStatus resultStatus = new ResultStatus();
+	   try{
+		   // check duplicate IpAddress
+		   List<Long> value = userAcessIpAddressDAO.checkDuplicateIpForUser(userID,IpAddress);
+		   if(value.size() > 0)
+		   {
+			  resultStatus.setResultCode(ResultCodeMapper.FAILURE); 
+			  return resultStatus;
+		   }
+		   else
+		   {
+		   if(userID != null)
+		   {
+			   UserAcessIpAddress userAcessIpAddress = new UserAcessIpAddress();
+			   userAcessIpAddress.set_userId(userDAO.get(userID));
+			   if(IpAddress != null)
+			   userAcessIpAddress.setIpAddress(IpAddress);
+			   userAcessIpAddressDAO.save(userAcessIpAddress);
+			   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		   }
+		   else
+		   resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	   }
+	   }
+	   catch(Exception e)
+	   {
+		   resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		   e.printStackTrace();
+		   
+	   }
+	return resultStatus;
+   }
+   
+   public List<UserDetailsInfoVO> getAllIpAddressForUser(Long userId)
+   {
+	   List<Object[]> list = null;
+	  UserDetailsInfoVO userDetailsInfoVO = null;
+	   List<UserDetailsInfoVO> resultList = new ArrayList<UserDetailsInfoVO>();
+	   try{
+		 list = userAcessIpAddressDAO.getAllIpAddressByUser(userId);
+		if(list!= null && list.size() > 0)
+		{
+			for(Object[] params :list)
+			{
+				userDetailsInfoVO = new UserDetailsInfoVO();
+				userDetailsInfoVO.setUserAccessRegionId((Long)params[1]);
+				userDetailsInfoVO.setIpAddress(params[0] != null ? params[0].toString(): "");
+				resultList.add(userDetailsInfoVO);
+			}
+		}
+	   }
+	   catch(Exception e)
+	   {
+		   Log.error("Exception Occured in getAllIpAddressForUser() method -"+e);
+	   }
+	return resultList;
+   }
+   
+   public ResultStatus deleteUserIpAddress(List<UserDetailsInfoVO> list)
+   {
+	   ResultStatus resultStatus = new ResultStatus();
+	   try{
+		   if(list!= null && list.size() > 0)
+		   {
+		   for(UserDetailsInfoVO IpAddr : list)
+		   {
+			   userAcessIpAddressDAO.deleteUserIpAddressById(IpAddr.getUserAccessRegionId());
+			   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		   }
+		   }
+		   else
+			   resultStatus.setResultCode(ResultCodeMapper.FAILURE);  
+	   }
+	   catch(Exception e)
+	   {
+		   Log.error("Exception Occured in deleteUserIpAddress() method -"+e);
+	   }
+	return resultStatus;
+   }
+   
 }
