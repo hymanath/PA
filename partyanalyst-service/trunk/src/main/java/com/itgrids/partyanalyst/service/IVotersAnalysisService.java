@@ -188,7 +188,7 @@ public interface IVotersAnalysisService {
 	public List<SelectOptionVO> getLocalities(Long hamletId);
 	public List<SelectOptionVO> getLocalities(Long hamletId,Long userId);
 	
-	public List<SelectOptionVO> getWards(Long muncipalityId,Long publicationId);
+	public List<SelectOptionVO> getWards(Long muncipalityId,Long publicationId,Long constituencyId);
 	
 	public List<SelectOptionVO> getHamlets(Long panchayatId);
 	//Updated by gayathri to get HamletLevel VotersBasicInfo
