@@ -4843,20 +4843,29 @@
 				<param name="root">voterModificationVOList</param>	
 		   </result>
 		</action>
-		 
-		<action name="cadreDisplayWindowAction" class="ageWiseVoterDetailsAction" >
+		 <action name="cadreDisplayWindowAction" class="ageWiseVoterDetailsAction" >
 			<result name="success">/jsp/cadreDisplayWindow.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
-		 
-		 <action name="boothWiseCasteInfoAction" class="ageWiseVoterDetailsAction" >
-			<result name="success">/jsp/boothWiseCasteInfo.jsp</result>
+		<action name="setUserRestrictionAction" class="setUserRestrictionAction" >
+			<result name="success">/jsp/userRestriction.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
+		<action name="saveRestrictedUserAction" class="setUserRestrictionAction" method="saveRestrictedUser" >
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result> 			
+		</action>
+		<action name="getAllIpAddressForUserAction" class="setUserRestrictionAction" method="getAllIpAddressForUser" >
+			<result type="json" name="success">
+				 <param name="root">IpList</param> 
+			</result>
+		</action>
 		
-		 <action name="localAreaWiseVotersInfoAction" class="ageWiseVoterDetailsAction" >
-			<result name="success">/jsp/localAreaWiseVotersInfo.jsp</result>
-			<result name="error">/jsp/loginForm.jsp</result>
+		<action name="getAllUserListAjaxAction" class="setUserRestrictionAction" method="getAllUserListAjax" >
+			<result type="json" name="success">
+				 <param name="root">usersList</param> 
+			</result>
 		</action>
 		
 		</package>

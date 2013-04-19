@@ -1121,5 +1121,9 @@
 	</bean>
 	
 	
+	<bean id="setUserRestrictionAction" class="com.itgrids.partyanalyst.web.action.SetUserRestrictionAction" singleton="false">	
+		<property name="userAccessRegionService" ref="userAccessRegionService" />	
+	</bean>
+	
 </beans>	
 	
