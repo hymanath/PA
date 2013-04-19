@@ -819,6 +819,9 @@ function  buildFamilyMembers(result,jsObj,type){
 		  str+='     <th>Booth</th>';
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
+		  str+='     <th>Influencing People</th>';
+		  str+='     <th>Cadre People</th>';
+		  str+='     <th>Politician People</th>';
 		  str +='	 <th>Caste</th>';
 		  str+='	 <th class="widthStyle">Eldest Person</th>';
 		  str+='	 <th>Gender</th>';
@@ -842,7 +845,21 @@ function  buildFamilyMembers(result,jsObj,type){
 		  str +='		<td>'+result[i].boothName+'</td>';
           str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str +='		<td>'+result[i].numberOfPeople+'</td>';
-
+		if(result[i].isInfluencePerson == true){
+		 str+='<td><img title="InfluencingPeople" alt="InfluencePerson" src="./images/icons/influencing.png"/></td>';
+		 }else{
+		  str+='       <td></td>';
+		 }
+		 if(result[i].isCadrePerson == true){
+		  str+='<td><img title="Cadre" alt="CadrePerson" src="./images/icons/cadre.png"/></td>';
+		 }else{
+		  str+='       <td></td>';
+		 }
+		 if(result[i].isPoliticion == true){
+		  str+='<td><img title="Politician" alt="Politicion" src="./images/icons/politican.png"/></td>';
+		 }else{
+		  str+='       <td></td>';
+		 }
 		  str +='       <td>'+result[i].cast+'</td>';
           str +='		<td class="widthStyle">'+result[i].elder+'</td>';
 		  str +='		<td>'+result[i].elderGender+'</td>';
@@ -872,7 +889,7 @@ function  buildFamilyMembers(result,jsObj,type){
 			"iDisplayLength": 15,
 			"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 			//"bFilter": false,"bInfo": false
-			  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null
+			  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
 		 
 		  
 		] 
@@ -898,7 +915,7 @@ function  buildFamilyMembers(result,jsObj,type){
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null
+		  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null,null
      
 	  
     ] 
