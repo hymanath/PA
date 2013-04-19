@@ -60,11 +60,17 @@ public class UserRolesDAOHibernateTest extends BaseDaoTestCase{
 		
 		}*/
 	
-	public void testgetUsersForSendingEmails()
+	/*public void testgetUsersForSendingEmails()
 	{
 		 List<Object[]> roles = userRolesDAO.getUsersForSendingEmails(1l,1l,1l,1l,1l);
 		System.out.println(roles.size());
 		
-		}
+		}*/
+	
+	/*public void test()
+	{
+		 List<Object[]> list = userRolesDAO.getAllRestrictedUsers();
+		 System.out.println(list.size());
+	}*/
 	
 }
