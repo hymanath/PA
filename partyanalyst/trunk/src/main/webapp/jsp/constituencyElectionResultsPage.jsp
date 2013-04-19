@@ -211,11 +211,11 @@ function buildDataForConstituencyResults()
 	 
 	 var oppCandInfo={
 			         candidateId:'${oppCandResults.candidateId}',
-			         candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${oppCandResults.candidateId}" onclick="window.opener.location.href=this.href;window.blur();return false;"> ${oppCandResults.candidateLastName}</a>',	
+			         candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${oppCandResults.candidateId}" onclick="window.opener.location.href=this.this.href;window.blur();return false;"> ${oppCandResults.candidateLastName}</a>',	
 					 partyId:'${oppCandResults.partyElectionDetails.partyId}',
 			         partyName:
 					
-					 '<c:if test="${oppCandResults.partyElectionDetails.partyShortName != \'IND\'}"><a href="partyPageAction.action?partyId=${oppCandResults.partyElectionDetails.partyId}" onclick="window.opener.location.href=this.href;window.blur();return false;">${oppCandResults.partyElectionDetails.partyShortName}</a></c:if><c:if test="${oppCandResults.partyElectionDetails.partyShortName == \'IND\'}"><a href="javascript:{}">${oppCandResults.partyElectionDetails.partyShortName}</a></c:if>',
+					 '<c:if test="${oppCandResults.partyElectionDetails.partyShortName != \'IND\'}"><a href="partyPageAction.action?partyId=${oppCandResults.partyElectionDetails.partyId}" onclick="window.opener.location.href=this.this.href;window.blur();return false;">${oppCandResults.partyElectionDetails.partyShortName}</a></c:if><c:if test="${oppCandResults.partyElectionDetails.partyShortName == \'IND\'}"><a href="javascript:{}">${oppCandResults.partyElectionDetails.partyShortName}</a></c:if>',
 					 partyFlag:partyFlg,
 			         votesEarned:'${oppCandResults.candidateVotesEarned}',
 			         votesPercent:'${oppCandResults.votesPercentAsString}',
@@ -272,7 +272,7 @@ function displayConstituencyElectionResults()
 		if(constituencyElecMainObj.constituencyBasicInfo.districtName == "" || constituencyElecMainObj.constituencyBasicInfo.districtName == null)
 			str+='<td> -- </td>';
 		else
-		str+='<td><a href="districtPageAction.action?districtId='+constituencyElecMainObj.constituencyBasicInfo.districtId+'&districtName='+constituencyElecMainObj.constituencyBasicInfo.districtName+'" onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.constituencyBasicInfo.districtName+'</a></td>';
+		str+='<td><a href="districtPageAction.action?districtId='+constituencyElecMainObj.constituencyBasicInfo.districtId+'&districtName='+constituencyElecMainObj.constituencyBasicInfo.districtName+'" onclick="window.opener.location.href=this.this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.constituencyBasicInfo.districtName+'</a></td>';
 		str+='<th>Total Voters</th>';
 		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.totalVotes+'</td>';	
 		str+='</tr>';	
@@ -282,7 +282,7 @@ function displayConstituencyElectionResults()
 				
 		str+='</tr>';
 		str+='<th>State </th>';
-		str+='<td><a href="statePageAction.action?stateId='+constituencyElecMainObj.constituencyBasicInfo.stateId+'" onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.constituencyBasicInfo.stateName+'</a></td>';
+		str+='<td><a href="statePageAction.action?stateId='+constituencyElecMainObj.constituencyBasicInfo.stateId+'" onclick="window.opener.location.href=this.this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.constituencyBasicInfo.stateName+'</a></td>';
 		str+='<th>Total Polled Votes</th>';
 		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.totalPolledVotes+'</td>';
 		str+='<tr>';
@@ -309,7 +309,7 @@ function displayConstituencyElectionResults()
 
 		str+='<tr>';
 		str+='<th>Name</th>';
-		str+='<td><a href="candidateElectionResultsAction.action?candidateId='+constituencyElecMainObj.wonCandidateInfo.candidateId+'" onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.wonCandidateInfo.candidateName+'</a></td>';	
+		str+='<td><a href="candidateElectionResultsAction.action?candidateId='+constituencyElecMainObj.wonCandidateInfo.candidateId+'" onclick="window.opener.location.href=this.this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.wonCandidateInfo.candidateName+'</a></td>';	
 		str+='<th>Votes Percentage</th>';
 		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.votesPercent+' %</td>'
 		str+='</tr>';
@@ -321,7 +321,7 @@ function displayConstituencyElectionResults()
 		
 		if(constituencyElecMainObj.wonCandidateInfo.partyName != 'IND')
 		{
-			str += '<a href="partyPageAction.action?partyId='+constituencyElecMainObj.wonCandidateInfo.partyId+'"  onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;">'+constituencyElecMainObj.wonCandidateInfo.partyName+'</a>';
+			str += '<a href="partyPageAction.action?partyId='+constituencyElecMainObj.wonCandidateInfo.partyId+'"  onclick="window.opener.location.href=this.this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;">'+constituencyElecMainObj.wonCandidateInfo.partyName+'</a>';
 		}
 		
 		else
