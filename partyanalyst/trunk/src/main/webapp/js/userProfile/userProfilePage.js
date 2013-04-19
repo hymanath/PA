@@ -175,7 +175,7 @@ $('#connectMessageText').live("keyup",function() {
 
 		custom_paginator1.paginator({
 		   startIndex:0,
-		   resultsCount:3,
+		   resultsCount:10,
 		   jsObj:jsObj,
 		   ajaxCallURL:url,
 		   paginatorElmt:"custom_paginator_class",
@@ -209,7 +209,20 @@ $('#connectMessageText').live("keyup",function() {
 		$("#impdatesDiv").hide();
 		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
-		callAjax1(jsObj,url);
+		
+		custom_paginator1.paginator({
+		   startIndex:0,
+		   resultsCount:10,
+		   jsObj:jsObj,
+		   ajaxCallURL:url,
+		   paginatorElmt:"custom_paginator_class",
+		   callBackFunction:function(){
+		 
+	          buildSentDetailsByStatus(jsObj,results);
+		   }
+	     });	
+	   
+	   custom_paginator1.initialize();	
 	});
 	
 	
@@ -1013,8 +1026,8 @@ function callAjax1(jsObj,url){
 					/*else if(jsObj.task == "getRequestMessagesForUser")
 						showRequestedMessagesForAUser(results);*/
 						
-					else if(jsObj.task == "getSentBoxMessagesForUser")
-						showSentBoxMessagesForAUser(results);
+					/*else if(jsObj.task == "getSentBoxMessagesForUser")
+						showSentBoxMessagesForAUser(results);*/
 						
 					else if(jsObj.task == "updateReadMessageInDB")
 						updatedInfo(results);
@@ -3755,6 +3768,53 @@ for(var i in results.candidateVO)
 		var viewMore = $('<div style="padding: 5px;" class="custom_paginator_class" id="custom_paginator_class"></div>');
 		viewMore.appendTo('.placeholderCenterDiv');
 
+}
+function buildSentDetailsByStatus(jsObj,results)
+{
+debugger;
+	$("#headerDiv").html('');
+	$(".placeholderCenterDiv").html('');
+	$(".placeholderCenterDiv").children().remove();
+	clearAllSubscriptionDivs();
+	clearAllFavoriteLinkDivs();
+	if(results.resultStatus.resultCode !="0")
+	{
+		$("#headerDiv").html("Data could not be retrived due to some technical difficulties.");
+		return;
+	}
+	else if(results.candidateVO == null || results.candidateVO.length == 0)
+	{
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		$(".placeholderCenterDiv").html("No messages has been sent by you.");
+		return;
+	}
+		
+		
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
+		for(var i in results.candidateVO)
+		{
+		var template = $(".templateDivMsg");
+		var templateClone = template.clone();
+		templateClone.removeClass("templateDivMsg");
+		templateClone.find(".reply").remove();
+		templateClone.find(".messageFrom").html(''+results.candidateVO[i].candidateName+'');
+			templateClone.find(".message").html(''+results.candidateVO[i].message+'');
+			//templateClone.find('.imgClass').html('<img height="45" width="45" src="images/icons/indexPage/human.jpg"/>');
+			//templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" href="#" name ="sentBox" class="btn" style="color:black;" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'sentBox\','+results.candidateVO[i].costumMessageId+')">Delete</a>');
+			templateClone.find(".delete").html('<a data-placement="top" rel="tooltip" data-original-title="remove Message" name="sentBox" onclick="deleteMail('+results.candidateVO[i].id+',\'Message\',\'sentBox\','+results.candidateVO[i].costumMessageId+')"><img class="deleteImg" id="deleteImg_1" src="images/icons/delete.png" alt="deleteImg" width="13" height="13"></a>');
+			templateClone.find(".dateAndTimeReceived").html(''+results.candidateVO[i].postedDate+'');
+			if(results.candidateVO[i].profileImg!=""){
+			var imageStr = "pictures/profiles/"+results.candidateVO[i].profileImg;
+			templateClone.find('.imgClass').html('<img height="30" width="30" src='+imageStr+'></img>');
+			}
+			else{
+				templateClone.find('.imgClass').html('<img height="30" width="30" src="images/icons/indexPage/human.jpg"/>');
+			}
+			
+		templateClone.appendTo(".placeholderCenterDiv");
+		}
+		var viewMore = $('<div style="padding: 5px;" class="custom_paginator_class" id="custom_paginator_class"></div>');
+		viewMore.appendTo('.placeholderCenterDiv');
 }
 function copyId(id)
 {
