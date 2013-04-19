@@ -155,6 +155,8 @@ table {
 
 <div id="localAreaWiseVoterInfoMainDiv">
 
+<div id="ajaxImageDiv" style="margin-top:30px;margin-left:50px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
+
 	<div id="votersBasicInfoMainDiv">
 	<div id="titleDiv"></div>
 		<div id="votersBasicInfoMsgDiv"></div>
@@ -164,8 +166,7 @@ table {
 		<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
 
 </div>
-	<div id="ajaxImageDiv" style="position: absolute; right: 2px;top:200px;
-    z-index: 100;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
+	
 </div>
 
 <script type="text/javascript">
