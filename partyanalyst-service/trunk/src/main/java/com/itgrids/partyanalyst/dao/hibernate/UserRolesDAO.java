@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.model.UserRoles;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserRolesDAO extends GenericDaoHibernate<UserRoles, Long>
 		implements IUserRolesDAO {
@@ -191,5 +192,17 @@ public class UserRolesDAO extends GenericDaoHibernate<UserRoles, Long>
 	return query1.list();
 	
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllRestrictedUsers()
+	{
+		return getHibernateTemplate().find("select model.user.userId,model.user.firstName,model.user.lastName from UserRoles model where model.user._loginRestriction='"+IConstants.FALSE+"' and model.role.roleType ='PARTY_ANALYST_USER' ");
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllUsers()
+	{
+		return getHibernateTemplate().find("select model.user.userId,model.user.firstName,model.user.lastName from UserRoles model where model.user._loginRestriction='"+IConstants.TRUE+"' and model.role.roleType ='PARTY_ANALYST_USER' ");
+	}
+	
 
 }

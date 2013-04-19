@@ -9,5 +9,11 @@ import com.itgrids.partyanalyst.model.UserAcessIpAddress;
 
 public interface IUserAcessIpAddressDAO extends GenericDao<UserAcessIpAddress, Long> {
 public List<?> checkForAccess(final RegistrationVO registrationVO , String IpAddress); 
+
+public List<Long> checkDuplicateIpForUser(Long userId,String Ip);
+
+public List<Object[]> getAllIpAddressByUser(Long userId);
+
+public Integer deleteUserIpAddressById(Long userAcessIpAddressId);
 	
 }

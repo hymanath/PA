@@ -19,4 +19,8 @@ public interface IUserRolesDAO extends GenericDao<UserRoles,Long>{
 	public List<Object> getAllMobilenosAsUnique();
 	public List<Object[]> getUsersForSendingEmails(Long selectedState,Long selectedDistrict, Long selectedConstituency, Long userType,Long locationScope);
 	
+	public List<Object[]> getAllRestrictedUsers();
+	
+	public List<Object[]> getAllUsers();
+	
 }

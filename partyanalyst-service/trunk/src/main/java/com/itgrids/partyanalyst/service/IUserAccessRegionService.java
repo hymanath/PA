@@ -1,6 +1,11 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.List;
+
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserAccessRegionVO;
+import com.itgrids.partyanalyst.dto.UserDetailsInfoVO;
 
 public interface IUserAccessRegionService {
 
@@ -29,5 +34,15 @@ public interface IUserAccessRegionService {
 	 public UserAccessRegionVO saveUserAssemblyConstituencyAccessDetail(Long userId,Long stateId,String constituencyIds);
 	 
 	 public UserAccessRegionVO saveUserParliamentConstituencyAccessDetail(Long userId,String constituencyIds);
+	 
+	 public List<SelectOptionVO> getAllRestrictedUsers();
+	 
+	 public ResultStatus saveRestrictedUser(Long userID);
+	 public List<SelectOptionVO> getAllUsers();
+	 public ResultStatus saveUserInUserAccessIpAddress(Long userID,String IpAddress);
+	  
+	 public List<UserDetailsInfoVO> getAllIpAddressForUser(Long userId);
+	 
+	 public ResultStatus deleteUserIpAddress(List<UserDetailsInfoVO> list);
 	
 }
