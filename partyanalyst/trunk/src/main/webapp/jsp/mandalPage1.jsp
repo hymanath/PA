@@ -161,7 +161,8 @@ table.gridtable td {
 }
 fieldset
 {
-	background-color:#F3F6F7;
+	/*background-color:#F3F6F7;*/
+	background-color:#fff;
 	border:4px solid #CFD6DF;
 	margin-bottom:10px;
 	margin-top:20px;
@@ -169,7 +170,8 @@ fieldset
 
 legend
 {
-background-color:#567AAF;
+/*background-color:#567AAF;*/
+background-color:steelblue;
 color:#FFFFFF;
 font-size:12px;
 padding:5px;
@@ -241,7 +243,8 @@ width:100%;
 .commonVotersTableClass th
 {
 	padding:5px;
-	background-color:#728194;
+	/*background-color:#728194;*/
+	background-color:steelblue;
 	color:#FFFFFF;
 }
 .commonVotersTableClass td
@@ -268,8 +271,11 @@ width:100%;
 .partyInfoClass
 {
 	/*font-weight:bold;*/	
-	background-color:#F3F6F7;
+	/*background-color:#F3F6F7;*/
+	background-color:#fff;
 	margin-top:10px;
+	font-family:arial,sans-serif;
+	 border-radius: 5px;
 	
 	width:expression(document.body.clientWidth > 700? "700px": "auto" );
 }
@@ -408,7 +414,8 @@ font-family: arial,sans-serif;
     width: 100%;
 }
 .yui-dt-liner a{
-	color:#669900;
+	/*color:#669900;*/
+	color:royalblue;
 }
 .revenueVillageinfoDiv a{
 color:#669900;
@@ -1463,7 +1470,7 @@ function getElectionYearsInMandal(id,name){
 					str += '</tr>';
 				}
 				str += '</table>';
-				str += '</div></div>';
+				str += '</div><br></div>';
 			}
 			str += '</div>';
 		}
