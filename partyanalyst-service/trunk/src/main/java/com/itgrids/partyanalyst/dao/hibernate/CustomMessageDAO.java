@@ -297,4 +297,22 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		return queryObject.list();
 	}
 	
+	public List<Object> getAllSentMessagesForUser(List<Long> senderId,String messageType,Integer startIndex, Integer maxResults){
+		StringBuilder query = new StringBuilder();				
+		query.append(" select model.subject, model.recepient.userId, model.recepient.firstName, model.recepient.lastName, ");
+		query.append(" model.recepient.state.stateName, model.recepient.district.districtName, model.recepient.constituency.name, " +
+				"model.customMessageId, model.status, model.sentDate, model.sender.userId ,model.recepient.profileImg from CustomMessage");//7,8,9
+		query.append(" model where model.messageType.messageType = ? and model.sender.userId in (:senderId) and (model.isSenderDeleted is null or model.isSenderDeleted ='"+IConstants.FALSE+"')");
+		query.append(" and model.recepient.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role ) ");
+		query.append(" and model.sender.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) ");
+		query.append(" order by model.customMessageId desc ");
+		Query queryObject = getSession().createQuery(query.toString());	
+		queryObject.setString(0,messageType);
+		queryObject.setParameterList("senderId", senderId);
+		queryObject.setParameter("role", IConstants.FREE_USER);
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(maxResults);
+		
+		return queryObject.list();
+	}
 }
