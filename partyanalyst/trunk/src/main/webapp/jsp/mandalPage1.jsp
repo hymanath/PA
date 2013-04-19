@@ -238,7 +238,7 @@ width:100%;
 }
 .boothDatatable table
 {
-	width:100%;
+	width:100%; 
 }
 .commonVotersTableClass th
 {

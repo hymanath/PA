@@ -512,6 +512,17 @@
 										</a>
 									</span><br>
 									</fieldset></td>
+								
+
+								<td>
+								<fieldset class="f2">
+									<legend class="l2">Restrict User</legend>
+									<span class="fontStyle">
+										Restrict User :&nbsp;
+										<a class="alinkstyle" href="<s:url action="setUserRestrictionAction"/>"> Restrict User
+										</a>
+									</span><br>
+									</fieldset></td>
 								<td></td>
 								</tr>
 						</table>

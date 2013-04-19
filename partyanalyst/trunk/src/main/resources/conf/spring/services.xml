@@ -1059,6 +1059,10 @@
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="userRolesDAO" ref="userRolesDAO"/>
+		<property name="userDAO" ref="userDAO" />
+		<property name="userAcessIpAddressDAO" ref="userAcessIpAddressDAO" />
+		
 	</bean>
 	
 	<bean name="callCenterService" class="com.itgrids.partyanalyst.service.impl.CallCenterService">

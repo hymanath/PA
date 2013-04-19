@@ -216,6 +216,7 @@
 		<pattern>/voterBasicInfoAction*</pattern>
 		<pattern>/boothWiseModificationsCompleteInfo*</pattern>
 		<pattern>/cadreDisplayWindowAction*</pattern>
+		<pattern>/setUserRestrictionAction*</pattern>
     	 </decorator>
 
 </decorators>
