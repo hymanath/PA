@@ -176,6 +176,8 @@ table {
 
 <div id="casteInfoMainDiv">
 
+<div id="voterCasteAjaxImg" style="margin-top:30px;margin-left:50px;display:none;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
+
 	<div id="localCastStatsVotersPopUpDiv">
 	    <div id ="localCastStatsVotersTitle" ></div>
 	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div>
@@ -220,6 +222,7 @@ var constMgmtMainObj={
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		 var url = "getvotersCastInfoByConstituency.action?"+rparam;						
 		 callAjax(jsObj,url);
+		 $("#voterCasteAjaxImg").css("display","block");
 		 }
 }
 
@@ -233,7 +236,7 @@ function callAjax(jsObj,url)
 									myResults = YAHOO.lang.JSON.parse(o.responseText);					
 								 if(jsObj.task == "getCastInfoForsubLevels")
 								 {  
-									 //$("#votersDiv2").show();
+									  $("#voterCasteAjaxImg").css("display","none");
 									 buildCastInfoForSubLevels(myResults,jsObj);
 								 }
 								 else if(jsObj.task =="getVotersInACaste")
@@ -268,7 +271,7 @@ function callAjax(jsObj,url)
 	{
 	if(mainreqid == jsObj.id){
 
-		//$("#voterCasteAjaxImg").css("display","none");
+		$("#voterCasteAjaxImg").css("display","none");
 		
 		var str ='';
 		//$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
