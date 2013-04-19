@@ -602,6 +602,7 @@ function showImportantFamiliesDiv()
 	function getPanchayatList(checkedele,selectedEle)
 	{
 		showNewsDetails();
+		var constituencyId = $("#constituencyList").val();
 		var reportLevel = $("#reportLevel").val();
 		var mandalId=document.getElementById("mandalField");
 		var value1 = '';
@@ -622,6 +623,13 @@ function showImportantFamiliesDiv()
 		{
 			var selectname = mandalId.options[mandalId.selectedIndex].text;
 			var flag= selectname.search("MUNCIPALITY");
+		}
+		if(flag == -1){
+		if(mandalId.selectedIndex != -1 && mandalId != 0)
+		{
+			var selectname = mandalId.options[mandalId.selectedIndex].text;
+			var flag= selectname.search("Corp");
+		}
 		}
 		 if(value1 !='' && value1 == 0)
 		{
@@ -669,7 +677,7 @@ function showImportantFamiliesDiv()
 		
 		var jsObj=
 			{
-					
+				constituencyId:constituencyId,	
 				selected:value,
 				checkedele:checkedele,
 				selectedEle:selectedEle,
