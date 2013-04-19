@@ -1216,6 +1216,7 @@ $("#impFamilesBasicSubDetailsDiv").show();
 				buildType:buildType,
 				//1818requestFor:"hamletBooth",
                 requestFor:requestFor,
+				constituencyType:"assembly",
 				task:"importantFamiliesinfo"
 	
 			}

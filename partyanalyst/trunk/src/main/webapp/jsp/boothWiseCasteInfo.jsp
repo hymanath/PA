@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> 
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> 
 
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -27,9 +29,9 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<!--<script type="text/javascript" src="js/voterAnalysis/voterAnalysis1.js"></script>
-	<script type="text/javascript" src="js/voterAnalysis/showGallaries1.js"></script>-->
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+	<!-- <script type="text/javascript" src="js/voterAnalysis/voterAnalysis1.js"></script>
+	<script type="text/javascript" src="js/voterAnalysis/showGallaries1.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>-->
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
@@ -44,7 +46,8 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
 	<!-- YUI Dependency files (End) -->
-   <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
    <%--  <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/facescroll.js"></script>
 	   <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/jquery.ui.touch-punch.min.js"></script> --%>
 
@@ -59,47 +62,17 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
-<title>Cast Wise Voter Details</title>
-</head>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+
+
+<title>Booth Wise Caste Info</title>
 <style type="text/css">
-
-#voterCasteAjaxImg{clear: both; display: block; margin-left: auto; margin-right: auto; float: none;}
-
-.localCastStatsVotersTitle{border-radius: 3px 3px 3px 3px;
-    color: #FFFFFF !important;
-    font-family: verdana;
-    font-size: 15px !important;
-    font-weight: bold;
-    padding: 5px;
-    width: 650px;}
-
-	#sublevelHeading{background: none repeat scroll 0 0 #06ABEA;
-    border-radius: 3px;
-    color: #FFFFFF;
-    font-size: 14px;
-    margin-top: 8px;
-    padding: 4px;
-    width: 550px;}
-
-
-	.localCastStatsVotersTitle{background:#06ABEA;}
-
-	#localCastStatsTabContent_subbody caption{
-    color: #000;
-    font-size: 13px;
-    font-style: normal;
-	font-family: verdana,sans-serif;
-   }
-
-
-#subLevelTable,#localCastStatsTabContent_subbody1 table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
-
-#subLevelTable tr:nth-child(even),#localCastStatsTabContent_subbody1 table tr:nth-child(even){background:#EdF5FF;}
-
-#subLevelTable td,#localCastStatsTabContent_subbody1 table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
-
-#subLevelTable th,#localCastStatsTabContent_subbody1 table th{
+#localCastStatsTabContent_subbody1 table,#localCastStatsTabContentsubbody1 table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#localCastStatsTabContent_subbody1 table tr:nth-child(even),#localCastStatsTabContentsubbody1 table tr:nth-child(even){background:#EdF5FF;}
+#localCastStatsTabContent_subbody1 table td,#localCastStatsTabContentsubbody1 table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#localCastStatsTabContent_subbody1 table th,#localCastStatsTabContentsubbody1 table th{
 	background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -110,89 +83,52 @@
     text-align: left;
 	color:#333333;
 	}
-
-	#localCastStatsTabContent_subbody1 table th a{
+	#localCastStatsTabContent_subbody1 table th a,#localCastStatsTabContentsubbody1 table th a{
 color:#333333;
 }
-
-#subLevelTable_info,#subLevelTable_paginate,{
-	font-family: verdana;
-    font-size: 12px;
-    margin-top: 12px;
-	
-}
-
-table.dataTable tr.odd {
-    background-color: #ffffff;
-}
-table.dataTable tr.even {
-    background-color:#EdF5FF;
-}
-table.dataTable tr.odd td.sorting_1 {
-    background-color: #ffffff;
-}
-table.dataTable tr.even td.sorting_1 {
-    background-color: #EdF5FF;
-}
-
-.popupcontainer {		
-    	background-color: #FFFFFF;
-    	margin: 9px auto 10px;
-    	max-width: 780px;
-    	padding: 10px;
-		box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
-}
-.main-mbg {
-    -moz-border-radius: 6px 6px 6px 6px;
-	border-radius :6px;
-    background-color: #06ABEA;
-    clear: both;
-    color: #FFFFFF;
-    float: left;
-    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
-    height: 35px;
-    margin-bottom: 5px;
-    padding-left: 13px;
+#subLevelTable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#subLevelTable tr:nth-child(even){background:#EdF5FF;}
+#subLevelTable td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#subLevelTable th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
     text-align: left;
-    text-transform: uppercase;
-    width: 974px;
-}
-.yui-skin-sam .yui-pg-container {
-    display: block;
-    margin: 6px 0;
-    margin-left: 183px;
-    margin-top: 48px;
-    white-space: nowrap;
-}
+	color:#333333;
+	}
+	.localCastStatsVotersTitle{border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF !important;
+    font-family: verdana;
+    font-size: 15px !important;
+    font-weight: bold;
+    padding: 5px;
+    width: 650px;}
+.localCastStatsVotersTitle{background:#06ABEA;}
 
-#sse2
-{
-    /*You can decorate the menu's container, such as adding background images through this block*/
-    background-color: #0088CC;
-    height: 38px;
-    padding: 15px;
-    border-radius: 6px;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-}
-#sses2
-{
-    margin:0 auto;/*This will make the menu center-aligned. Removing this line will make the menu align left.*/
-}
-#sses2 ul 
-{ 
-    position: relative;
-    list-style-type: none;
-    float:left;
-    padding:0;margin:0;
-}
-#sses2 li
-{
-    float:left;
-    list-style-type: none;
-    padding:0;margin:0;background-image:none;
-}
+#sublevelHeading{
+		color:steelblue;
+		font-size:1.1em;
+		font-family:arial;
+		margin-bottom: 20px;
+		font-weight: bold;
+	}
 
+#sublevelHeading{background: none repeat scroll 0 0 #06ABEA;
+    border-radius: 3px;
+    color: #FFFFFF;
+    font-size: 14px;
+    margin-top: 8px;
+    padding: 4px;
+    width: 550px;}
+	.localCastStatsVotersTitle{background:#06ABEA;}
+	.imageSize{
+	   height:11px;
+	   width:11px;
+	}
 #openProblemEditFormId{cursor:pointer;}
 
 .ui-widget {
@@ -223,18 +159,37 @@ table {
     padding: 4px 10px;
     width: 65px;
 }
-
 </style>
 
 <script type="text/javascript">
 
-var type               =  "${type}";
-var id				   =  "${id}";
-var typeName		   =  "${typeName}";
-var constituencyId     =  "${constituencyId}";
-var publicationDateId  =  "${publicationDateId}";
-var buildType          =  "${buildType}";
-var	queryType		   =  "${queryType}";
+ var mainreqid = '${id}';
+ var type = '${type}';
+ var publicationId = '${publicationId}';
+ var resultFor = '${resultFor}';
+ var constituencyId = '${constituencyId}';
+ var typeName = '${typeName}';
+ var buildType = '${buildType}';
+ </script>
+</head>
+<body>
+
+<div id="casteInfoMainDiv">
+
+	<div id="localCastStatsVotersPopUpDiv">
+	    <div id ="localCastStatsVotersTitle" ></div>
+	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div>
+	</div>
+	<div id='localCastStatsTabContent_subbody'></div>	
+
+
+	<div id="localCastVotersPopUpDiv">
+	    <div id ="localCastVotersTitle" ></div>
+	    <div id='localCastStatsTabContentsubbody1'  class="yui-skin-sam yui-dt-sortable"></div>
+	</div>
+
+</div>
+<script type="text/javascript">
 
 var constMgmtMainObj={
 							
@@ -242,126 +197,31 @@ var constMgmtMainObj={
 							castStatssubArray:[],
 					 };
 
-getCastInfoForsubLevel(id,publicationDateId,type,"");
-/* This Method is used to get Updated CastInfo */
-function getLatestCastsSubcategoryWise(){
-	
-  $("#voterCasteAjaxImg").css("display","block");
-  $("#localCastStatsTabContent_subbody").html("");
-  var jsObj=
-		{		
-				type:type,	
-				id:id,
-				typeName:typeName,
-				publicationDateId:publicationDateId,
-				constituencyId:constituencyId,
-                buildType:buildType,
-                queryType:"main",
-				task:"getCastInfoForsubLevels"				
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getvotersCastInfoByConstituency.action?"+rparam;						
-		callAjax(jsObj,url);
-}
-
-/*This Methid is Used for to send ajaxcall and get castWiseVotersDetails */
-
-function getCastInfoForsubLevel(id,publicationId,type,resultFor)
+	function getCastInfoForsubLevel()
 	{
-	//document.getElementById("localCastStatsVotersTitle").innerHTML='';
-	//document.getElementById("localCastStatsTabContent_subbody").innerHTML='';
-	//document.getElementById("localCastStatsTabContent_subbody1").innerHTML='';
-	//var typeName=mainname;
-	/*var publicationDateId = $("#publicationDateList").val();
-	var level = $("#reportLevel").val();
-	var type = '';
-	var id='';
-	var typeName='';
-	var mandalId='';
-	var validflag =0;
-	var str ='';
-	var flag = true;
-	if(level == 1){
-	type = 'constituency';
-	id = $("#constituencyList").val();
-	typeName = $("#constituencyList :selected").text();
-	if(id == 0 || id == null)
-	{
-	flag =false;
-	}
-	}
-	else if(level == 2 ||id == null){
-	type = 'mandal';
-	id = $("#mandalField").val();
-	var mandalText = $('#mandalField :selected').text();
-	var validflag= mandalText.search("MUNCIPALITY");
-	typeName = $("#mandalField :selected").text();
-	if(id == 0)
-	{
-	flag =false;
-	}
-	else if(validflag != -1)
-	{
-	flag =false;
-	}
-	}
-	else if(level == 3 || id == null){
-	type = 'panchayat';
-	id = $("#panchayatField").val();
-	mandalid = $("#mandalField").val();
-	typeName = $("#panchayatField :selected").text();
-	var mandalText = $('#mandalField :selected').text();
-	 validflag= mandalText.search("MUNCIPALITY");
-	 if(mandalid == 0)
-		{
-		 flag =false;
-		}
-	else if(validflag != -1)
-		{
-		flag=false;
-		}
-	  else if(id == 0)
-		{
-		flag =false;
-		}
-		
-	}
-	else if(level == 4 || id == null)
-	{
-	
-		return false;
-	}
-	if(publicationDateId == 0|| publicationDateId == null)
-		{
-		flag =false;
-		}*/
+	  document.getElementById('localCastStatsVotersTitle').innerHTML='';
+	  document.getElementById('localCastStatsTabContent_subbody').innerHTML='';
+	  document.getElementById('localCastStatsTabContent_subbody1').innerHTML='';
 		
 		if(true)
 		{
-		var jsObj=
-		{		
+		  var jsObj=
+		  {		
 				type:type,	
-				id:id,
-				typeName:typeName,
+				id:mainreqid,
+				typeName:'${typename}',
 				publicationDateId:publicationId,
 				constituencyId:constituencyId,
                 buildType:buildType,
 				resultFor:resultFor,
                 queryType:"sub",
 				task:"getCastInfoForsubLevels"				
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getvotersCastInfoByConstituency.action?"+rparam;						
-		callAjax(jsObj,url);
-		$("#voterCasteAjaxImg").css("display","block");
-		}
+		  };
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		 callAjax(jsObj,url);
+		 }
 }
-
-
-
-/*
-	This Method is used for ajax call handling for given responce
-*/
 
 function callAjax(jsObj,url)
 		{
@@ -370,15 +230,16 @@ function callAjax(jsObj,url)
 			 var callback = {			
  		               success : function( o ) {
 							try {												
-									myResults = YAHOO.lang.JSON.parse(o.responseText);
-									 if(jsObj.task == "getCastInfoForsubLevels")
-									{   $("#votersDiv2").show();
-									buildCastInfoForSubLevels(myResults,jsObj);
-									}
-									else if(jsObj.task =="getVotersInACaste")
+									myResults = YAHOO.lang.JSON.parse(o.responseText);					
+								 if(jsObj.task == "getCastInfoForsubLevels")
+								 {  
+									 //$("#votersDiv2").show();
+									 buildCastInfoForSubLevels(myResults,jsObj);
+								 }
+								 else if(jsObj.task =="getVotersInACaste")
 								{
-								    
-						              $("#localCastStatsVotersPopUpDiv").dialog({
+								   
+						              $("#localCastVotersPopUpDiv").dialog({
 											modal: true,
 											title: "<b>Voters Details</b>",
 											width: 970,
@@ -387,65 +248,30 @@ function callAjax(jsObj,url)
 										});
 									buildVotersInACaste(myResults,jsObj);
 								}
-									
-								}catch (e) {}  
- 		},
- 		scope : this,
- 		failure : function( o ) {
- 		    //alert( "Failed to load result" + o.status + " " + o.statusText);
-        }
- 		};
+
+								
+							}catch (e) {
+							     
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
 
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
-}
+ 	}
+	
 
-function getVotersInACaste(id,publicationDateId,caste,type,Name,casteStateId,casteCategory)
-{
-	$("#localCastStatsVotersTitle").html("");
-	$("#localCastStatsTabContent_subbody1").html("");
-	var level = $("#reportLevel").val();
-	if(level == 2)
-	var typename = $('#mandalField :selected').text();
-	if(level == 3)
-	var typename = $('#panchayatField :selected').text()+ ' Panchayat ';
-	if(level == 4)
-	var typename = $('#pollingStationField :selected').text();
-	var publicationDateVal=$('#publicationDateList :selected').text();
-	var year=publicationDateVal.substr(publicationDateVal.length - 4)
-	var jsObj={
-			id:id,
-			publicationDateId:publicationDateId,
-			//caste:"32",
-			caste:casteStateId,
-			casteName:caste,
-			typename:typename,
-			type:type,
-			publicationDate:year,
-			Name:Name,
-            buildType:buildType,
-			constituencyId:$("#constituencyList").val(),
-			casteCategory:casteCategory,
-			task:"getVotersInACaste"
-		}
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getvotersCastInfoByConstituency.action?"+rparam;				
-	callAjax(jsObj,url);
-}
+	function buildCastInfoForSubLevels(myresults,jsObj)
+	{
+	if(mainreqid == jsObj.id){
 
-/*This method is used for building the data table for  votercastInfo details */
-
-function buildCastInfoForSubLevels(myresults,jsObj)
-	{	 
-		var type = '${type}';
-		$("#voterCasteAjaxImg").css("display","none");
-
-		if((type =="hamlet" && buildType == "hamlet") || (type == "booth" && buildType == "hamlet") || (type =="panchayat" && buildType == "hamlet"))
-		  $("#getLatestCastsSubcategoryWise").css("display","none");
-		else
-		 $("#getLatestCastsSubcategoryWise").css("display","block");
-
+		//$("#voterCasteAjaxImg").css("display","none");
+		
 		var str ='';
-		$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
+		//$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
 		var divId=document.getElementById('localCastStatsTabContent_subbody');
 		var publicationDateId = jsObj.publicationDateId;
 		var type=jsObj.type;
@@ -453,6 +279,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		var cast = myresults.castVosList;
 		var typeName=jsObj.typeName;
 		var res=jsObj.resultFor;
+		var restype=jsObj.buildType;
 		for(var i in cast)
 		{
 		if(cast[i].voterCastInfoVO != null)
@@ -490,7 +317,6 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
 		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0){
 		  $("#localCastStatsTabContent_subbody").html("<b style='margin-left: 350px;'>No Data Available</b>");
-		  $("#getLatestCastsSubcategoryWise").css("display","none");
 		  return;
 		}  
 		//if(type != 'booth')
@@ -500,29 +326,23 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+' Constituency</h4>';
 		else if(type == "mandal")
 		str+='<h4 id="sublevelHeading">Panchayat wise Caste Statistics In '+typeName+' </h4>';
-		else if(type =="panchayat")
-		{
-			var temp = "";
-		  if(buildType == "hamlet")
-			temp = "Hamlet";
-		  else
-			temp = "Booth";
-
-		 str+='<h4 id="sublevelHeading">'+temp+' wise Caste Statistics In '+typeName+' Panchayat</h4>';
+        else if(type =="panchayat"){
+		 if(restype== "booth")  
+		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Panchayat</h4>';
+		else 
+		str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In '+typeName+' </h4>';
 		}
 		else if(type =="ward")
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
-		else if(type == "booth")
-		{
-		 str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In'+typeName+'Booth</h4>';	
-		}
-		
 		else if(type =="hamlet"){
 		   if(res == "booth")
 		   str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Hamlet</h4>';
 		else
 		str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
 			}
+			else if(type == "booth")
+		str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In '+typeName+' </h4>';
+		
 		
 		str+='<thead>';
 		str+='<tr>';
@@ -531,12 +351,11 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str +='<th>Mandal</th>';
 		if(type == "mandal")
 		str +='<th>Panchayat</th>';
-		if(type =="panchayat")
-		{
-		  if(buildType == "hamlet")
-			str +='<th>Hamlet</th>';
-		  else
-			str +='<th>Booth</th>';
+		if(type =="panchayat"){
+		if(restype== "booth")  
+		str +='<th>Booth</th>';
+		else 
+		str +='<th>Hamlet</th>';
 		}
 		if(type =="ward")
 		str +='<th>Booth</th>';
@@ -578,7 +397,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		}
 		else if(type =="panchayat" && buildType == "hamlet")
 		{
-		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\'Hamlet - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else if(type =="hamlet")
 		{
@@ -586,7 +405,9 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 				str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+constMgmtMainObj.castStatssubArray[i].locationId+','+jsObj.id+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\''+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 
 		else
-		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+','+constMgmtMainObj.castStatssubArray[i].castStateId+',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\''+constMgmtMainObj.castStatssubArray[i].locationId+'\',\'Locality\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+			str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+','+constMgmtMainObj.castStatssubArray[i].castStateId+',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\''+constMgmtMainObj.castStatssubArray[i].locationId+'\',\'Locality\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+
+		//str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].hamletId+','+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}else if(type =="booth")
 		{
 		
@@ -622,38 +443,42 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str +='</table>';
 
 		divId.innerHTML = str;
+
 		$('#subLevelTable').dataTable({
 		"aaSorting": [[ 1, "desc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null,null,null
-		] 
+		  "aoColumns": [null,null,null,null,null,null,null,null] 
 		});
 	$('#subLevelTable tr').removeClass("odd");
 	$('#subLevelTable tr').removeClass("even");
 	$('#subLevelTable td').removeClass("sorting_1");
 	//}
-	
+	}	
 	}
+	//caste Popup
+
+function getVotersInACasteForDidffrentLevels(mainId,id,publicationDateId,caste,type,Name,casteStateId,casteCategory)
+{
+	$("#localCastVotersTitle").html("");
+	$("#localCastStatsTabContentsubbody1").html("");
 
 
-	function getVotersInACasteForLocality(id , publicationDateId , casteStateId,casteCategory,caste,localityId,name)
-	{
-	var publicationDateVal=$('#publicationDateList :selected').text();
-	var year=publicationDateVal.substr(publicationDateVal.length - 4)
-	var jsObj={
-			id:id,
+var jsObj={ hamletId:id,
+			id:mainId,
 			publicationDateId:publicationDateId,
+			//caste:"32",
 			caste:casteStateId,
-			hamletId:'${id}',
-			type:"locality",
-            buildType:"",
-			task:"getVotersInACaste",
-			casteCategory:casteCategory,
-			Name:name+"-"+localityId,
-			publicationDate:year,
 			casteName:caste,
+			typename:'${typename}',
+			type:type,
+			publicationDate:"${publicationDate}",
+			Name:Name,
+            buildType:buildType,
+			constituencyId:constituencyId,
+			casteCategory:casteCategory,
+			task:"getVotersInACaste"
 
 		}
 
@@ -669,9 +494,9 @@ function buildVotersInACaste(results,jsObj)
 var result = results;
 
 	if(results.votersByHouseNos != null)
-		$("#localCastStatsVotersTitle").addClass("localCastStatsVotersTitle").html(" "+jsObj.casteName+"("+jsObj.casteCategory+") Caste voters Details In " +jsObj.Name+" in "+jsObj.publicationDate+" ");
+		$("#localCastVotersTitle").addClass("localCastStatsVotersTitle").html(" "+jsObj.casteName+"("+jsObj.casteCategory+") Caste voters Details In " +jsObj.Name+" in "+jsObj.publicationDate+" ");
 	else
-		$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
+		$("#localCastVotersTitle").removeClass("localCastStatsVotersTitle");
 
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
@@ -709,43 +534,8 @@ var result = results;
 						 fields : ["name","gender","age","houseNo","gaurdian","relationship","voterId","boothId","voterIdCardNo"]
 					};
 
-		var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1", votersResultColumnDefs,myDataSource, myConfigs);
+		var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContentsubbody1", votersResultColumnDefs,myDataSource, myConfigs);
 
-
-}
-function getVotersInACasteForDidffrentLevels(mainId,id,publicationDateId,caste,type,Name,casteStateId,casteCategory)
-{
-$("#localCastStatsVotersTitle").html("");
-$("#localCastStatsTabContent_subbody1").html("");
-var level = $("#reportLevel").val();
-if(level == 2)
-var typename = $('#mandalField :selected').text();
-if(level == 3)
-var typename = $('#panchayatField :selected').text()+ ' Panchayat ';
-if(level == 4)
-var typename = $('#pollingStationField :selected').text();
-var publicationDateVal=$('#publicationDateList :selected').text();
-var year=publicationDateVal.substr(publicationDateVal.length - 4)
-var jsObj={ hamletId:id,
-			id:mainId,
-			publicationDateId:publicationDateId,
-			//caste:"32",
-			caste:casteStateId,
-			casteName:caste,
-			typename:typename,
-			type:type,
-			publicationDate:year,
-			Name:Name,
-            buildType:buildType,
-			constituencyId:$("#constituencyList").val(),
-			casteCategory:casteCategory,
-			task:"getVotersInACaste"
-
-		}
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getvotersCastInfoByConstituency.action?"+rparam;				
-	callAjax(jsObj,url);
 
 }
 
@@ -758,24 +548,7 @@ function openProblemEditForm(id,boothId)
 }	
 
 
-
+getCastInfoForsubLevel();
 </script>
-<body>
-<div id="errorDiv" align="center"></div>
-
-<div id="localCastStatsVotersPopUpDiv" style="display:none;">
-	    <div id ="localCastStatsVotersTitle" ></div>
-	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div>
-	</div>
-
- <!--<div id="maindiv" class="widget blue whitegloss"  style="display:inline-block;width: 96%;color:#000;position:relative;background:#fff;">-->
-<div id="getLatestCastsSubcategoryWise"  style="float:right;"><input  type="button" onclick="getLatestCastsSubcategoryWise();" style="background: none repeat scroll 0 0 #06ABEA; border-radius: 8px;color: #FFFFFF; font-size: 16px;
-    padding: 4px;width:206px" value="Get Updated Caste Info"/></div>
-	
-<div style="margin-top: 10px; margin-bottom: 15px;"><img id="voterCasteAjaxImg" src="./images/icons/goldAjaxLoad.gif" style=" clear: both; display:none;"/></div>
-
-	
-<div id="localCastStatsTabContent_subbody"></div>	
-<!--<div>-->
 </body>
 </html>

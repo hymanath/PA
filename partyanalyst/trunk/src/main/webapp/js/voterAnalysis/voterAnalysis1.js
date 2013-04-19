@@ -1359,7 +1359,18 @@ function addToPolitician(voterId,name)
 	}
 	function ShowCastSubLevelPopupDiv(resultFor){
 	
-	 getCastInfoForsubLevel(mainreqid,$("#publicationDateList").val(),maintype,resultFor);
+	var publicationDateVal=$('#publicationDateList :selected').text();
+
+	var year=publicationDateVal.substr(publicationDateVal.length - 4)
+
+	var urlstr = "boothWiseCasteInfoAction.action?id="+mainreqid+"&publicationId="+$("#publicationDateList").val()+"&type="+maintype+"&resultFor="+resultFor+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&typename="+mainname+"&publicationDate="+year+"&";
+
+	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+		browser1.focus();
+	//var browser1 = window.open("boothWiseCasteInfoAction.action?id="+mainreqid+"&publicationId="+$("#publicationDateList").val()+"&type="+maintype+"&resultFor="+resultFor+"&","scrollbars=yes,height=600,width=750,left=200,top=200");
+   // browser1.focus();
+
+	  /* getCastInfoForsubLevel(mainreqid,$("#publicationDateList").val(),maintype,resultFor);
 
 	    $("#castPartyPopupDiv").dialog({
             modal: true,
@@ -1368,7 +1379,7 @@ function addToPolitician(voterId,name)
             height: 600
            
         });
-		$("#voterCasteAjaxImg").css("display","block");
+		$("#voterCasteAjaxImg").css("display","block");*/
 	}
 		
 	function getMandalList(selectElmt)
@@ -1622,7 +1633,7 @@ function addToPolitician(voterId,name)
 											height: 600
 										   
 										});
-									buildVotersInACaste(myResults,jsObj)
+									buildVotersInACaste(myResults,jsObj);
 								}
 								else if(jsObj.task =="editAllFamilies"){
 								    if(myResults == "notLogged"){
@@ -2664,6 +2675,17 @@ var jsObj={
 	callAjax(jsObj,url);
 
 }
+
+function getvotersBasicInfoWindow(buttonType,id,publicationId,type,hresult)
+{
+	var publicationDateVal=$('#publicationDateList :selected').text();
+	var year=publicationDateVal.substr(publicationDateVal.length - 4)
+	var urlstr = "localAreaWiseVotersInfoAction.action?id="+mainreqid+"&publicationId="+$("#publicationDateList").val()+"&type="+maintype+"&resultFor="+hresult+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&typename="+mainname+"&publicationDate="+year+"";
+	var browser1 = window.open(urlstr,"localAreaWiseVotersDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+		browser1.focus();
+
+}
+
 function getvotersBasicInfo(buttonType,id,publicationId,type){
 	if(buttonType == "voters"){
       $("#votersByLocationTabContentDiv_body").html("");
@@ -2801,7 +2823,9 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 	hresult="localArea";
 	}
    if(buttonType == "voters"){
-	  showAjaxImgDiv('ajaxImageDiv');
+	
+	getvotersBasicInfoWindow(buttonType,id,publicationId,type,hresult);
+	  /* showAjaxImgDiv('ajaxImageDiv');
 	var jsObj=
 			{
 				
@@ -2821,7 +2845,8 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 			var url = "getVotersCountInfoAction.action?"+rparam;	
     if(type=="hamlet")
 	 showAjaxImgDiv('ajaxImageDiv1');
-		callAjax(jsObj,url);
+		callAjax(jsObj,url);*/
+
 	}
 	if(buttonType == "impFamilies"){
 	    $("#impFamiliesMoreInfoButn").show();
@@ -3600,7 +3625,6 @@ function buildPartyWisePiechart(myResults,jsObj)
   $("impfamilydatatable_wrapper").remove();
   }
 	var publicationDateId =   jsObj.publicationDateId;
- //debugger;
  //alert("ok");
 	 impFamiliesEditArray = new Array();
 	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
@@ -7895,7 +7919,6 @@ function mybuildMenu(){
 
  var m = document.getElementById('sses2');
             if (!m) return;
-		//	debugger;
             var ul = m.getElementsByTagName("ul")[0];
             m.style.width = ul.offsetWidth + 1 + "px";
             var items = m.getElementsByTagName("li");
