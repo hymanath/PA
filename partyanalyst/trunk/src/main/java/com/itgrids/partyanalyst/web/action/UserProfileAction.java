@@ -638,9 +638,11 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		if(user==null){
 			return IConstants.NOT_LOGGED_IN;
 		}
+		String startIndex    = request.getParameter("startIndex");
+		String resultsCount  = request.getParameter("resultsCount");
 		List<Long> userId = new ArrayList<Long>();
 		userId.add(user.getRegistrationID());
-		dataTransferVO = ananymousUserService.getAllSentMessagesForLoggedUser(userId,IConstants.COMMENTS);
+		dataTransferVO = ananymousUserService.getAllSentMessagesForLoggedUser(userId,IConstants.COMMENTS, Integer.parseInt(startIndex), Integer.parseInt(resultsCount));
 		return Action.SUCCESS;
 				
 	}
