@@ -4844,5 +4844,9 @@
 		   </result>
 		</action>
 		 
+		<action name="cadreDisplayWindowAction" class="ageWiseVoterDetailsAction" >
+			<result name="success">/jsp/cadreDisplayWindow.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
 		</package>
 </struts>      
