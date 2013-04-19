@@ -2409,7 +2409,7 @@ public DataTransferVO getAllMessagesForLoggedUser(List<Long> userId,String messa
 	return dataTransferVO;
 }
 //getAllMessagesForUser
-public DataTransferVO getAllSentMessagesForLoggedUser(List<Long> userId,String messageType)
+public DataTransferVO getAllSentMessagesForLoggedUser(List<Long> userId,String messageType, Integer startIndex, Integer maxResults)
 {
 	ResultStatus resultStatus = new ResultStatus();
 	List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
@@ -2419,9 +2419,10 @@ public DataTransferVO getAllSentMessagesForLoggedUser(List<Long> userId,String m
 	String message,data;
 	try{
 		final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-		List<Object> result = customMessageDAO.getAllSentMessagesForUser(userId,messageType);
+		List<Object> result = customMessageDAO.getAllSentMessagesForUser(userId,messageType, startIndex, maxResults);
 		if(result!=null && result.size()!=0){
-			totalMsgCount = new Long(result.size());
+			List<Object> totalresult=  customMessageDAO.getAllSentMessagesForUser(userId,messageType);
+			totalMsgCount = new Long(totalresult.size());
 			for(int i=0;i<result.size();i++){
 				Object[] parms = (Object[])result.get(i);
 				CandidateVO candidateResults = new CandidateVO();
