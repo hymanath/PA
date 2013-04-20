@@ -141,7 +141,11 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 			
 		constituencyList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){
-			Long userID = user.getRegistrationID();
+			Long userID;
+			if(user.getParentUserId()!=null)
+				userID=user.getMainAccountId();
+			else	
+				userID = user.getRegistrationID();
 			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
