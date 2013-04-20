@@ -240,6 +240,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			electionDataVO = new ElectionDataVO();
 			Long stateId = jObj.getLong("stateId");
 			List<SelectOptionVO> parties = staticDataService.getStaticPartiesListForAState(stateId);
+			//List<SelectOptionVO> parties = staticDataService.getAllPartiesParticapatedInMainElectionsService(stateId);
 			Collections.sort(parties, new SelectOptionVOComparator());
 			electionDataVO.setParties(new LinkedHashSet<SelectOptionVO>(parties));
 			return Action.SUCCESS;

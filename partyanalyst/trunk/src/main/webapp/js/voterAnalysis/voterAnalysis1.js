@@ -426,9 +426,9 @@ function buildVotersByLocBoothDataTable(id)
 var boothId = mainreqid;
 var publicationDateId = mainpublicationId;
 
-var urlstr = "getVoterDetailsInitialRequest.action?publicationId="+publicationDateId+"&boothId="+boothId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=booth";
+var urlstr = "getVoterDetailsInitialRequest.action?constituencyId="+constituencyId+"&publicationId="+publicationDateId+"&name="+mainname+"&boothId="+boothId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=booth";
 
-var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
 browser1.focus();
 
 return;
@@ -572,9 +572,9 @@ function buildVotersByLocPanchayatDataTable(id)
 var publicationId = mainpublicationId;
 var panchaytId =  mainreqid;
 
-var urlstr = "getVoterDetailsInitialRequest.action?publicationId="+publicationId+"&panchaytId="+panchaytId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=panchayat";
+var urlstr = "getVoterDetailsInitialRequest.action?constituencyId="+constituencyId+"&name="+mainname+"&publicationId="+publicationId+"&panchaytId="+panchaytId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=panchayat";
 
-var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
 browser1.focus();
 
 return;
@@ -7548,9 +7548,9 @@ function buildVotersByLocHamletTestDataTable(publicationId,hamletId)
 {
 
 
-var urlstr = "getVoterDetailsInitialRequest.action?publicationId="+publicationId+"&hamletId="+hamletId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=hamlet";
+var urlstr = "getVoterDetailsInitialRequest.action?constituencyId="+constituencyId+"&publicationId="+publicationId+"&hamletId="+hamletId+"&name="+mainname+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=hamlet";
 
-var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
 browser1.focus();
 
 return;
