@@ -60,14 +60,14 @@ public class RegistrationVO extends BaseDTO{
 	private String freeuser;
 	private Long constituencyId;
 	private List<SelectOptionVO> userAccessVoterConstituencies = new ArrayList<SelectOptionVO>();
-	private String _loginRestriction;
+	private String loginRestriction;
 	
-	public String get_loginRestriction() {
-		return _loginRestriction;
+	public String getLoginRestriction() {
+		return loginRestriction;
 	}
 
-	public void set_loginRestriction(String _loginRestriction) {
-		this._loginRestriction = _loginRestriction;
+	public void setLoginRestriction(String loginRestriction) {
+		this.loginRestriction = loginRestriction;
 	}
 
 	public Long getConstituencyId() {

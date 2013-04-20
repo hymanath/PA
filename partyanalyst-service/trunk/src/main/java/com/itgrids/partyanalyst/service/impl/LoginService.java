@@ -27,7 +27,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGroupEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dao.IUserAcessIpAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserAccessIpAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -78,7 +78,7 @@ public class LoginService implements ILoginService{
 	private static Logger log = Logger.getLogger(LoginService.class);
 	private IUserRolesDAO userRolesDAO;
 	private IUserDAO userDAO;
-   private IUserAcessIpAddressDAO userAcessIpAddressDAO;
+	private IUserAccessIpAddressDAO userAccessIpAddressDAO;
 	private VelocityEngine velocityEngine;
 
 	private IMailService mailService;
@@ -100,16 +100,15 @@ public class LoginService implements ILoginService{
 		this.mailService = mailService;
 	}
 
-	public IUserAcessIpAddressDAO getUserAcessIpAddressDAO() {
-		return userAcessIpAddressDAO;
+	public IUserAccessIpAddressDAO getUserAccessIpAddressDAO() {
+		return userAccessIpAddressDAO;
 	}
 
-	public void setUserAcessIpAddressDAO(
-			IUserAcessIpAddressDAO userAcessIpAddressDAO) {
-		this.userAcessIpAddressDAO = userAcessIpAddressDAO;
+	public void setUserAccessIpAddressDAO(
+			IUserAccessIpAddressDAO userAccessIpAddressDAO) {
+		this.userAccessIpAddressDAO = userAccessIpAddressDAO;
 	}
-	
-	
+
 	public IUserRolesDAO getUserRolesDAO() {
 		return userRolesDAO;
 	}
@@ -263,7 +262,7 @@ public class LoginService implements ILoginService{
 			regVO.setFirstName(user.getFirstName());
 			regVO.setLastName(user.getLastName());
 			regVO.setUserName(user.getUserName());
-			regVO.set_loginRestriction(user.get_loginRestriction());
+			regVO.setLoginRestriction(user.get_loginRestriction());
 			List<String> userRoles = userRolesDAO.getUserRolesOfAUser(userId);
 			regVO.setUserRoles(userRoles);
 			
@@ -651,22 +650,25 @@ public class LoginService implements ILoginService{
 			return selectOptionVO;
 		}
 	}
-	public boolean checkForAccess(final RegistrationVO registrationVO , String IpAddress)
+	
+	public Boolean checkForUserAccessIPAddress(Long userId, String ipAddress)
 	{
-		List<?> li=userAcessIpAddressDAO.checkForAccess(registrationVO, IpAddress);
-		if(li !=null && li.size() >0){
-
-				return true;
-		}else
-		{
-			sendMailToAdminGroup(registrationVO,IpAddress);
-			return false;	
+		try{
+			Long count = userAccessIpAddressDAO.checkForUserAccessIPAddress(userId, ipAddress);
+		if(count != null && count.longValue() > 0)
+			return true;
+		else
+			//sendMailToAdminGroup(registrationVO,IpAddress);
+			return false;
+		}catch (Exception e) {
+			log.error("Exception Occured in checkForUserAccessIPAddress() Method, Exception - "+e);
+			return false;
 		}
+		
 	}
 
-	
-
-	private void sendMailToAdminGroup(final RegistrationVO registrationVO ,final String ipAddress){
+	public void sendMailToAdminGroup(final RegistrationVO registrationVO ,final String ipAddress)
+	{
 		
 	       try{
 	    	   log.info("sendMailToAdminGroup() Execution started");

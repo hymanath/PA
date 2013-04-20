@@ -13,7 +13,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
-import com.itgrids.partyanalyst.dao.IUserAcessIpAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserAccessIpAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -27,7 +27,7 @@ import com.itgrids.partyanalyst.dto.UserAccessRegionVO;
 import com.itgrids.partyanalyst.dto.UserDetailsInfoVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.User;
-import com.itgrids.partyanalyst.model.UserAcessIpAddress;
+import com.itgrids.partyanalyst.model.UserAccessIpAddress;
 import com.itgrids.partyanalyst.model.UserConstituencyAccessInfo;
 import com.itgrids.partyanalyst.model.UserCountryAccessInfo;
 import com.itgrids.partyanalyst.model.UserDistrictAccessInfo;
@@ -49,19 +49,16 @@ private IConstituencyDAO constituencyDAO;
 private IUserDAO userDAO;
 
 private IUserRolesDAO userRolesDAO;
-private IUserAcessIpAddressDAO userAcessIpAddressDAO;
+private IUserAccessIpAddressDAO userAccessIpAddressDAO;
 
-
-
-
-public IUserAcessIpAddressDAO getUserAcessIpAddressDAO() {
-	return userAcessIpAddressDAO;
+public IUserAccessIpAddressDAO getUserAccessIpAddressDAO() {
+	return userAccessIpAddressDAO;
 }
 
 
-public void setUserAcessIpAddressDAO(
-		IUserAcessIpAddressDAO userAcessIpAddressDAO) {
-	this.userAcessIpAddressDAO = userAcessIpAddressDAO;
+public void setUserAccessIpAddressDAO(
+		IUserAccessIpAddressDAO userAccessIpAddressDAO) {
+	this.userAccessIpAddressDAO = userAccessIpAddressDAO;
 }
 
 
@@ -704,7 +701,7 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId)
 	   ResultStatus resultStatus = new ResultStatus();
 	   try{
 		   // check duplicate IpAddress
-		   List<Long> value = userAcessIpAddressDAO.checkDuplicateIpForUser(userID,IpAddress);
+		   List<Long> value = userAccessIpAddressDAO.checkDuplicateIpForUser(userID,IpAddress);
 		   if(value.size() > 0)
 		   {
 			  resultStatus.setResultCode(ResultCodeMapper.FAILURE); 
@@ -714,11 +711,11 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId)
 		   {
 		   if(userID != null)
 		   {
-			   UserAcessIpAddress userAcessIpAddress = new UserAcessIpAddress();
-			   userAcessIpAddress.set_userId(userDAO.get(userID));
+			   UserAccessIpAddress userAcessIpAddress = new UserAccessIpAddress();
+			   userAcessIpAddress.setUser(userDAO.get(userID));
 			   if(IpAddress != null)
 			   userAcessIpAddress.setIpAddress(IpAddress);
-			   userAcessIpAddressDAO.save(userAcessIpAddress);
+			   userAccessIpAddressDAO.save(userAcessIpAddress);
 			   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		   }
 		   else
@@ -740,7 +737,7 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId)
 	  UserDetailsInfoVO userDetailsInfoVO = null;
 	   List<UserDetailsInfoVO> resultList = new ArrayList<UserDetailsInfoVO>();
 	   try{
-		 list = userAcessIpAddressDAO.getAllIpAddressByUser(userId);
+		 list = userAccessIpAddressDAO.getAllIpAddressByUser(userId);
 		if(list!= null && list.size() > 0)
 		{
 			for(Object[] params :list)
@@ -767,7 +764,7 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId)
 		   {
 		   for(UserDetailsInfoVO IpAddr : list)
 		   {
-			   userAcessIpAddressDAO.deleteUserIpAddressById(IpAddr.getUserAccessRegionId());
+			   userAccessIpAddressDAO.deleteUserIpAddressById(IpAddr.getUserAccessRegionId());
 			   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		   }
 		   }
