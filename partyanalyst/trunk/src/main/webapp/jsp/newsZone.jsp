@@ -600,27 +600,29 @@ function onYouTubePlayerReady(playerId)
 
 </head>
 <body>
-<div>
-	<table>
+<div align="center">
+<div style="width: 900px;">
+	
+	<table style="margin-left: -305px;">
 	<tr>
-		<td><div style="padding:3px;width:33%;" id="ytVideoPlayer"></div></td>
+		<td style="float:left"><div style="padding:3px;width:33%;" id="ytVideoPlayer"></div></td>
 		<td><div style="padding:3px;width:33%;" id="ytVideoPlayer1"></div></td>
 		<td><div style="padding:3px;width:33%;" id="ytVideoPlayer2"></div></td>
-	</tr>
+	</tr>	
 	</table>
 </div>
-<div>
-<table>
-	<tr>
-	<td><div id="newsDiv" style="width:300px;height:206px;"></div></td>
-		<td><div id="newsDiv1" style="top:-40px;width:300px;height:206px;"></div></td>
-		<td><div id="newsDiv2"  style="top:-40px;width:300px;height:206px;"></div></td>
-	</tr><tr></tr>
-</table>
-</div><BR><BR>
 
-<div>
-<table border="2" valign="top" width="95%">
+	<div>
+	<table>
+		<tr>
+		<td><div id="newsDiv" style="width:300px;height:206px;"></div></td>
+			<td><div id="newsDiv1" style="top:-40px;width:300px;height:206px;"></div></td>
+			<td><div id="newsDiv2"  style="top:-40px;width:300px;height:206px;"></div></td>
+		</tr><tr></tr>
+	</table>
+	</div>
+	<div style="width: 910px; margin-top: 40px;">
+<table border="2" valign="top" style="width: 905px;">
 	<tr>
 		<td valign="top" width="200">
 			<table width="190"><tr><td>
@@ -633,7 +635,7 @@ function onYouTubePlayerReady(playerId)
 			</td></tr></table>
 		</td>
 		<td colspan="3" align="center">
-			<table border="2">
+			<table border="2" style="width: 560px;">
 			<tr>
 				<td style="font-family:sans-serif;font-size:large">Anti Corruption, Scams</td>
 			</tr>
@@ -663,9 +665,8 @@ function onYouTubePlayerReady(playerId)
 	</tr>
 </table>
 
-</div>	
-
-
+</div>
+</div>
 <script type="text/javascript">
 	buildCandidateNews();
 	handleDistPapersTabClick();
