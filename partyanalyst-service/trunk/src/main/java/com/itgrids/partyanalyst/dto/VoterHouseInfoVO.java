@@ -74,8 +74,35 @@ public class VoterHouseInfoVO {
 	private Boolean isPoliticion;
 	private Long subLocalityId;
 	private Long count;
-	
-	
+	private List<SelectOptionVO> userCategoriesList;
+	private List<SelectOptionVO> subLocalities;	
+	private String partNo;
+		
+
+	public String getPartNo() {
+		return partNo;
+	}
+
+	public void setPartNo(String partNo) {
+		this.partNo = partNo;
+	}
+
+	public List<SelectOptionVO> getSubLocalities() {
+		return subLocalities;
+	}
+
+	public void setSubLocalities(List<SelectOptionVO> subLocalities) {
+		this.subLocalities = subLocalities;
+	}
+
+	public List<SelectOptionVO> getUserCategoriesList() {
+		return userCategoriesList;
+	}
+
+	public void setUserCategoriesList(List<SelectOptionVO> userCategoriesList) {
+		this.userCategoriesList = userCategoriesList;
+	}
+
 	public Long getSubLocalityId() {
 		return subLocalityId;
 	}
