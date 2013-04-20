@@ -683,6 +683,113 @@ public String saveLocality()
 		 return Action.SUCCESS;
 	 }
 	 
+	 public String updateAllSelectedVotersInformation()
+	 {
+		 try
+		 {
+			 jObj = new JSONObject(getTask());
+			 HttpSession session = request.getSession();
+             RegistrationVO user=(RegistrationVO) session.getAttribute("USER");			 
+			 Long userId = null;
+				if(user != null && user.getRegistrationID() != null)
+				    userId = user.getRegistrationID();
+				else 
+				  return "error";
+				
+			 org.json.JSONArray votersJSONArray = jObj.getJSONArray("selectedVoters");
+			 Long totalCategoriesCount = jObj.getLong("total");
+			 List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
+			 
+			 for(int i = 0;i<votersJSONArray.length();i++){
+					JSONObject jSONObject= votersJSONArray.getJSONObject(i);
+					voterHouseInfoVO = new VoterHouseInfoVO();
+					voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
+					voterHouseInfoVO.setCasteStateId(jSONObject.getLong("casteId"));
+					voterHouseInfoVO.setHamletId(jSONObject.getLong("hamletId"));
+					voterHouseInfoVO.setLocalitityId(jSONObject.getLong("localityHamletId"));
+
+					
+					voterHouseInfoVO.setUserId(userId);
+					voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
+					
+					VoterHouseInfoVO category = null;
+					List<VoterHouseInfoVO> categoriesList = new ArrayList<VoterHouseInfoVO>();					
+					
+					for(int j=0;j<totalCategoriesCount;j++){
+						category = new VoterHouseInfoVO();
+						String[] categVal = jSONObject.getString("categ"+j).split("-");
+						category.setUserCategoryValueId(new Long(categVal[0]));
+						category.setCategoryValuesId(new Long(categVal[1]));
+						categoriesList.add(category);					
+					}
+					
+					voterHouseInfoVO.setCategoriesList(categoriesList);
+					
+					votersList.add(voterHouseInfoVO);
+				}
+			 
+			 
+			status =  votersAnalysisService.updateAllSelectedVotersDetails(votersList);
+			return "update";
+			 
+		 }catch(Exception e)
+		 {
+			 e.printStackTrace();
+			 
+		 }
+		 return Action.SUCCESS;
+		 
+	 }
+	 
+	 public String getVotersFamiliesForEditFormAction()
+	 {
+		 
+		 try{
+			 jObj = new JSONObject(getTask());
+			 HttpSession session = request.getSession();
+			 RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			 
+			 Long userId = null;
+				if(user != null && user.getRegistrationID() != null)
+				    userId = user.getRegistrationID();
+				else 
+				  return "error";
+			
+			    VoterHouseInfoVO parameters = new VoterHouseInfoVO();
+			
+			    parameters.setSelectedType(jObj.getString("selectedType"));
+		       	parameters.setSelectedTypeId(jObj.getLong("selectedTypeId"));
+		       	parameters.setPublicationId(jObj.getLong("publicationId"));
+		       	parameters.setUserId(userId);
+
+	    	org.json.JSONArray votersJSONArray = jObj.getJSONArray("votersIds");
+		    List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
+			VoterHouseInfoVO voterHouseInfoVO = null;
+			for(int i = 0;i<votersJSONArray.length();i++){
+				JSONObject jSONObject= votersJSONArray.getJSONObject(i);
+				voterHouseInfoVO = new VoterHouseInfoVO();
+				voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
+				voterHouseInfoVO.setBoothId(jSONObject.getLong("boothId"));
+				votersList.add(voterHouseInfoVO);
+			}
+			//voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptionsForIndividual(votersList,parameters);
+			voterHouseInfoVO1 = votersAnalysisService.getSelectedVotersDetails(votersList , parameters);
+	    
+			 
+		 }catch(Exception e)
+		 {
+			 e.printStackTrace();
+			 
+		 }
+		 return Action.SUCCESS;
+		 
+	 }
+	 
+	 public String updateAllSelectedVoters(){
+		 return Action.SUCCESS;
+		 
+	 }
+	 
 	 public String getMultipleFamilesInfoForEditWithSelection(){
 			try{
 				    jObj = new JSONObject(getTask());
