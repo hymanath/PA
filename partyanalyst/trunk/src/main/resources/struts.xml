@@ -355,45 +355,45 @@
 			<result name="error">/jsp/PartyInfluenceReportError.jsp</result>
 		</action>
 				
-		<action name="electionResultsAnalysisAction" class="electionResultsAnalysisAction">
+		<action name="electionResultsAnalysisAction" class="electionResultsAnalysisReportAction">
             <result name="success">/jsp/electionResultsAnalysisReport.jsp</result>
             <result name="error">/jsp/entitlementErrorPage.jsp</result>
             <result name="input">/jsp/loginForm.jsp?src=electionResultsAnalysisAction</result>
         </action>
-        <action name="electionTypesAjaxAction" class="electionResultsAnalysisAction" method="getElectionTypesForAState"> 
+        <action name="electionTypesAjaxAction" class="electionResultsAnalysisReportAction" method="getElectionTypesForAState"> 
               <result type="json" name="success">
            		<param name="root">electionTypes</param>
         	</result>       		
         </action>
-        <action name="electionYearsAjaxAction" class="electionResultsAnalysisAction" method="getElectionYearsForAnElectionTypeAndState"> 
+        <action name="electionYearsAjaxAction" class="electionResultsAnalysisReportAction" method="getElectionYearsForAnElectionTypeAndState"> 
               <result type="json" name="success">
            		<param name="root">electionYears</param>
         	</result>       		
         </action>
         
-         <action name="electionYearsForstateAndElectionTypeAction" class="electionResultsAnalysisAction" method="electionYearsForstateAndElectionType"> 
+         <action name="electionYearsForstateAndElectionTypeAction" class="electionResultsAnalysisReportAction" method="electionYearsForstateAndElectionType"> 
               <result type="json" name="success">
            		<param name="root">electionYears</param>
         	</result>       		
         </action>
         
-        <action name="partiesAjaxAction" class="electionResultsAnalysisAction" method="getPartysInAState"> 
+        <action name="partiesAjaxAction" class="electionResultsAnalysisReportAction" method="getPartysInAState"> 
               <result type="json" name="success">
            		<param name="root">partiesList</param>
         	</result>       		
         </action>
-        <action name="electionResultsAnalysisAjaxAction" class="electionResultsAnalysisAction" method="ajaxCallHandler"> 
+        <action name="electionResultsAnalysisAjaxAction" class="electionResultsAnalysisReportAction" method="ajaxCallHandler"> 
               <result type="json" name="success">
            		<param name="root">partyAnalysisReportVO</param>
         	</result>       		
         </action>
         
-        <action name="analysisCategoryResultForAPartyInAnElection" class="electionResultsAnalysisAction" method="getAnalysisCategoryResults"> 
+        <action name="analysisCategoryResultForAPartyInAnElection" class="electionResultsAnalysisReportAction" method="getAnalysisCategoryResults"> 
               <result type="json" name="success">
            		<param name="root">partyPositionAnalysisResultVO</param>
         	</result>       		
         </action> 
-        <action name="votesMaringInfoForMainPartyInAnElection" class="electionResultsAnalysisAction" method="getVotesMarginInfoForMainParty"> 
+        <action name="votesMaringInfoForMainPartyInAnElection" class="electionResultsAnalysisReportAction" method="getVotesMarginInfoForMainParty"> 
               <result type="json" name="success">
            		<param name="root">votesMarginAnalysisVO</param>
         	</result>       		
