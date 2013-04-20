@@ -520,7 +520,7 @@
 			<property name="commentsDataService" ref="commentsDataService" />
 	</bean>
 	
-	<bean id="electionResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.ElectionResultsAnalysisReportAction" singleton="false">
+	<bean id="electionResultsAnalysisReportAction" class="com.itgrids.partyanalyst.web.action.ElectionResultsAnalysisReportAction" singleton="false">
 		<property name="analysisReportService" ref="analysisReportService" />
 			<property name="staticDataService" ref="staticDataService" />
 			<property name="entitlementsHelper" ref="entitlementsHelper" />
