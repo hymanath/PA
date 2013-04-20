@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class VotersSearchAndEditAction extends ActionSupport implements ServletRequestAware{
@@ -150,6 +151,11 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 		}
 		return SUCCESS;
 		
+	}
+	
+	public String updateSelectedVoters()
+	{
+		return Action.SUCCESS;		
 	}
 
 }
