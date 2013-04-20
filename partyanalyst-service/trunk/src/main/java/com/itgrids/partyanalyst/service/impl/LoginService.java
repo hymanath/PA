@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
 import com.itgrids.partyanalyst.model.UserRoles;
+import com.itgrids.partyanalyst.security.EncryptDecrypt;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -249,7 +250,23 @@ public class LoginService implements ILoginService{
 		Set<SelectOptionVO> parliaments = new HashSet<SelectOptionVO>(0);
 
 		try{
-			user = userDAO.findByUserNameAndPassword(userName, password);
+			
+			List<String> secretKeyList = userDAO.getEncryptedKeyByUserName(userName);
+			String secretKey = null;
+			if(secretKeyList != null && secretKeyList.size() > 0){
+				
+				secretKey = secretKeyList.get(0);
+				
+				 EncryptDecrypt phash = new EncryptDecrypt(secretKey);
+				String encrptdPassword = phash.encryptText(password);;
+				List<User> userList = userDAO.checkUsernameAndEncryptedPasswordForUser(userName,
+						encrptdPassword);
+				
+				if(userList != null  && userList.size() >0)
+					user = userList.get(0);
+			}
+
+			//user = userDAO.findByUserNameAndPassword(userName, password);
 			
 			if(user == null ||  user.getUserId() <= 0)
 				return regVO;
@@ -540,7 +557,8 @@ public class LoginService implements ILoginService{
 		}
 	}
 	
-	public ResultStatus changePasswordOfANewUser(String crntpassword,String newpassword,String userName)
+	
+	/*public ResultStatus changePasswordOfANewUser(String crntpassword,String newpassword,String userName)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		try{
@@ -567,9 +585,92 @@ public class LoginService implements ILoginService{
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			return resultStatus;
 		}
+	}*/
+	
+	public ResultStatus changePasswordOfANewUser(String crntpassword,String newpassword,String userName)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List<User> list = userDAO.getUserByUserName(userName);
+			User user = null;
+			String secretKey = null;
+			String presentEncryptedPassword = null;
+			String savedEncryptedPassword = null;
+			
+			
+			if(list != null && list.size() > 0){
+				user = list.get(0);
+				secretKey = user.getHashKeyTxt();
+				 savedEncryptedPassword = user.getPasswdHashTxt();
+				EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);
+				presentEncryptedPassword = encryptDecrypt.encryptText(crntpassword);
+				
+			}
+			
+			if(user != null && user.getUserId() > 0 && savedEncryptedPassword.equals(presentEncryptedPassword))
+			{
+				// secretKey = user.getHashKeyTxt();
+				EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);
+				String encryptedPassword = encryptDecrypt.encryptText(newpassword);				
+				user.setPasswdHashTxt(encryptedPassword);
+				
+				//user.setPassword(newpassword);
+				user.setIsPwdChanged(IConstants.TRUE);
+				user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+				user = userDAO.save(user);
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			}
+			else
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception Occured During change password of a new User - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
+	//BY SAMBA
+	
+	public String checkUserCurrentPassword(String crntpassword,String userName)
+	{
+		
+		boolean userExist = false;
+		List<User> userList = userDAO.getUserByUserName(userName);
+		
+		if(userList!= null && userList.size() >0)
+		{
+			User user = userList.get(0);
+			
+			String secretKey = user.getHashKeyTxt();
+			String savedPassword = user.getPasswdHashTxt();
+			
+			EncryptDecrypt phash = new EncryptDecrypt(secretKey);
+			String encryptedPassword = phash.encryptText(crntpassword);
+			
+			if(encryptedPassword.equalsIgnoreCase(savedPassword))
+				userExist = true;
+		}
+		
+		if(userExist == true)
+			return IConstants.YesPassword;
+		else
+			return IConstants.NoPassword;
+			
+		
+		
+		/*List<Object> userId = userDAO.getUserIdByUserName(userName);
+		Long registrationId = (Long) userId.get(0);
+		List chkpwd = userDAO.checkUserPassword(crntpassword,registrationId);
+		if(chkpwd.size() == 0)
+			return IConstants.NoPassword;
+		else 
+			return IConstants.YesPassword;*/
+		
 	}
 		
-	public String checkUserCurrentPassword(String crntpassword,String userName)
+	/*public String checkUserCurrentPassword(String crntpassword,String userName)
 	{
 		List<Object> userId = userDAO.getUserIdByUserName(userName);
 		Long registrationId = (Long) userId.get(0);
@@ -579,7 +680,7 @@ public class LoginService implements ILoginService{
 		else 
 			return IConstants.YesPassword;
 		
-	}
+	}*/
 	
 	/**
 	 * This method will return User's Basic Details

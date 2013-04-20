@@ -100,4 +100,10 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	
 	public List<Object[]> getUserNameAndPwdByUserId(Long userId);
 	
+	
+	public List<String> getEncryptedKeyByUserName(String userName);
+	
+	public List<User> checkUsernameAndEncryptedPasswordForUser(String userName, String encryptedPassword);
+	public List<User> updateAllUsersPasswords();
+
 }
