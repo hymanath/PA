@@ -245,4 +245,8 @@ public interface IVotersAnalysisService {
 	 
 	 public ResultStatus updateVoterStatusInVoterModification(Long constituencyId);
 	 
+	 public VoterHouseInfoVO getSelectedVotersDetails(List<VoterHouseInfoVO> votersDetails , VoterHouseInfoVO parameters);
+	 
+	 public boolean updateAllSelectedVotersDetails(List<VoterHouseInfoVO> votersDetailsList);
+	 
 }
