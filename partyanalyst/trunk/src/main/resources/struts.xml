@@ -4868,7 +4868,7 @@
 			</result>
 		</action>
 		
-		 <action name="boothWiseCasteInfoAction" class="ageWiseVoterDetailsAction" >
+		<action name="boothWiseCasteInfoAction" class="ageWiseVoterDetailsAction" >
 			<result name="success">/jsp/boothWiseCasteInfo.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
@@ -4876,6 +4876,40 @@
 		 <action name="localAreaWiseVotersInfoAction" class="ageWiseVoterDetailsAction" >
 			<result name="success">/jsp/localAreaWiseVotersInfo.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="updateSelectedVotersAction" class="votersSearchAndEditAction" method="updateSelectedVoters">
+			<result name="success">/jsp/updateVotersDetails.jsp</result>
+         </action>
+
+		<action name="getVotersFamiliesForEditFormAction" class="votersEditAction" method="getVotersFamiliesForEditFormAction">
+			<result type="json" name="success">
+				 <param name="root">voterHouseInfoVO1</param>
+			</result>
+			<result type="json" name="error">
+				 <param name="root">"notLogged"</param>
+			</result>
+			<result type="json" name="update">
+				 <param name="root">status</param>
+			</result>
+			<result type="json" name="exception">
+				 <param name="root">"exception"</param>
+			</result>		
+		</action>
+				
+		<action name="updateAllSelectedVotersInformation" class="votersEditAction" method="updateAllSelectedVotersInformation">
+			<result type="json" name="success">
+				 <param name="root">voterHouseInfoVO1</param>
+			</result>
+			<result type="json" name="error">
+				 <param name="root">"notLogged"</param>
+			</result>
+			<result type="json" name="update">
+				 <param name="root">status</param>
+			</result>
+			<result type="json" name="exception">
+				 <param name="root">"exception"</param>
+			</result>		
 		</action>
 		
 		</package>
