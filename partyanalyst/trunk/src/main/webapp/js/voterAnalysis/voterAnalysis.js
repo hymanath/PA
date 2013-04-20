@@ -828,6 +828,10 @@ function showImportantFamiliesDiv()
 								{
 								   buildWardsList(myResults,jsObj);
 								}
+								else if(jsObj.taskType == "getLocalities")
+								{
+									buildSubLocalities(myResults,jsObj);
+								}
                                  else if(jsObj.task == "getLocalities")
 								{
 								   populatedataTodiv(myResults,jsObj);
@@ -3532,7 +3536,7 @@ function getCountsForConstituency()
 {
 
 $("#reportLevelheading").html("");
-
+if ($('#reportLevelCountDiv').length )
 document.getElementById('reportLevelCountDiv').style.display = 'none';
 
 var level =  $("#reportLevel").val();
@@ -3776,6 +3780,7 @@ if(isMuncipality)
 
 	function getLocalitiesList(selectboxId,divId,familyId)
 	{ 
+		
 if(isMuncipality)
 		{
 			$('#localitylocationdiv').hide();
@@ -3831,6 +3836,35 @@ if(isMuncipality)
 		return;
 		}
 		
+	}
+
+	function getLocalitiesListFOrHamlet(value , voterId)
+	{
+		var jsObj=
+			{
+					
+				selected:value,
+				voterId:voterId,	
+				taskType:"getLocalities",
+				task:"getLocalities"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "voterAnalysisAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		
+	}
+
+	function buildSubLocalities(results,jobj)
+	{
+		var id = '#sublocality'+jobj.voterId;
+		
+
+		$(id).find('option').remove();
+
+		for(var i in results)
+		$(id).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+
 	}
 	function populatedataTodiv(results,jobj)
 	{ 	
