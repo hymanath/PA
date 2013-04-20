@@ -479,13 +479,15 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("checkedTypeValue", userType);
 			return INPUT;
 		}	
-		boolean b=	userIpCheck(regVO);
-		if(!b){
+		
+		if(!userIpCheck(regVO))
+		{
 			session.setAttribute("loginStatus", "in");
-			addActionError(" You DO Not Have Permission to Access Site From This IP  ");
+			addActionError(" You do not have Permission to Access Site From this Network  ");
 			session.setAttribute("checkedTypeValue", userType);
 			return INPUT;
-			}
+		}
+		
 		int hiden = 0;
 		
 		userFullName = regVO.getFirstName() + " " + regVO.getLastName();
@@ -617,11 +619,10 @@ public String ajaxCallForLoginPopup(){
 			}	
 					
 			
-			
-		boolean b=	userIpCheck( regVO);
-		if(!b){
-			resultForAjax="IPFAILURE";
-			return Action.SUCCESS;
+			if(!userIpCheck(regVO))
+			{
+				resultForAjax="IPFAILURE";
+				return Action.SUCCESS;
 			}
 		
 			//end
@@ -669,18 +670,25 @@ public String ajaxCallForLoginPopup(){
 	
 	return Action.SUCCESS;
 }
-public boolean userIpCheck(RegistrationVO regVO) 
-{
-	//start
-	String access=regVO.get_loginRestriction();
-	if(access.equalsIgnoreCase("true")){
-	//read ip address of current request
-	String ipAddrs=request.getRemoteAddr();
-	//check with user  assigned ipAddress
-boolean b=	loginService.checkForAccess( regVO,ipAddrs);
-return b;
-	}else return true;
-}
+	public boolean userIpCheck(RegistrationVO regVO) 
+	{
+		try{
+		String restiction = regVO.getLoginRestriction();
+		
+		if(restiction.equalsIgnoreCase("true"))
+		{
+			String ipAddress = request.getRemoteAddr();
+			boolean result = loginService.checkForUserAccessIPAddress(regVO.getRegistrationID(),ipAddress);
+			
+			if(!result)
+				loginService.sendMailToAdminGroup(regVO,ipAddress);
+			
+			return result;
+		}else return true;
+		}catch (Exception e) {
+			return false;
+		}
+	}
 
 
 }
