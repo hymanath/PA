@@ -32,6 +32,16 @@ public class VoterCategoryValueDAO extends GenericDaoHibernate<VoterCategoryValu
 		return getHibernateTemplate().find("select model.userVoterCategoryValue.userVoterCategoryValueId from VoterCategoryValue model " +
 				" where model.user.userId =? and model.voter.voterId = ? and model.userVoterCategoryValue.userVoterCategory.userVoterCategoryId = ?",values);
 	}
+	
+	public List<VoterCategoryValue> getVoterAllCategoryValues(Long userId , Long voterId){
+		
+		Object[] values = {userId , voterId};
+		
+		return getHibernateTemplate().find("select model from VoterCategoryValue model where " +
+				"model.user.userId = ? and model.voter.voterId = ?",values);
+		
+		
+	}
     
 	public List<VoterCategoryValue> getVoterCategoryValues(Long userId,Long voterId,Long categoryId){
 		Object[] values = {userId,voterId,categoryId};
@@ -45,5 +55,15 @@ public class VoterCategoryValueDAO extends GenericDaoHibernate<VoterCategoryValu
 		query.setParameterList("voterIds", voterIds);
 		query.setParameter("userId",userId);
 		return query.list();
+	}
+	
+	public void removeVoterCategoryValue(Long id)
+	{
+		Query query = getSession().createQuery("delete from VoterCategoryValue model where model.voterCategoryValueId = ?");
+		
+		query.setParameter(0, id);
+
+        query.executeUpdate();
+		
 	}
 }
