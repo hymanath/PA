@@ -4869,7 +4869,7 @@
 		</action>
 		
 		<action name="boothWiseCasteInfoAction" class="ageWiseVoterDetailsAction" >
-			<result name="success">/jsp/boothWiseCasteInfo.jsp</result>
+			<result name="success">/jsp/castWiseVoterDetails.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		
