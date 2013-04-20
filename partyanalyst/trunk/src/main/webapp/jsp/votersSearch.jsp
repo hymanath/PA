@@ -7,6 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Voters Search</title>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
 <script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -42,6 +44,11 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 <style type="text/css">
+
+.labelClass{
+float:left;
+margin:3px 7px 0px 0px;
+}
  .selectDiv{
 	 width:80%;
 	 padding-top:10px;
@@ -205,7 +212,9 @@ body {
 		
 		}
 </style>
+
 <script type="text/javascript">
+var totalCount = 0;
 var selectedType="";
 var selectedTypeId="";
 var publicationId="";
@@ -221,10 +230,36 @@ var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName
 var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
  $(document).ready(function(){
 
+
+	 $('.fields').live("click",function(){
+		 //var indextoShow = $('#votersDetailsTable th:contains("'+$(this).val()+'")').index();
+		 var value = $(this).val();
+
+		 var indextoShow = $('#votersDetailsTable tr th').filter(
+           function(){
+           return $(this).text() == value;
+          }).index();
+
+		 if($(this).is(":checked")){	 
+            $('#votersDetailsTable  th').eq(indextoShow).show();
+			$('#votersDetailsTable tbody tr').each(function() {
+                $(this).find("td").eq(indextoShow).show();            
+            });
+			
+		 }else{
+			  $('#votersDetailsTable  th').eq(indextoShow).hide();
+			 $('#votersDetailsTable tbody tr').each(function() {
+                $(this).find("td").eq(indextoShow).hide();            
+            });
+		 }
+			  
+	 });
+
 $("#pageDownBtn").live("click",function(){
   $('html,body').animate({scrollTop: $(document).height()-800},1000);
 	
 });
+
 $("#pageUpBtn").live("click",function(){
 	$("html, body").animate({scrollTop:600}, 1000);
 });
@@ -330,6 +365,15 @@ $("#pageUpBtn").live("click",function(){
   var isMuncipality;
   function getVotersInfo(){
 	$("#scrollBtnDiv").css("display","block");
+
+	  if($('#reportLevel').val() == 3 || $('#reportLevel').val() == 4){		  
+	      $('#updateBtn').show();
+		  $('#updateBtnInNewWndow').show();
+	  }
+	  else{
+		  $('#updateBtn').hide();
+		  $('#updateBtnInNewWndow').hide();
+	  }
 	showAlert();
 	isMuncipality=false;	
 	$('#errorMessageDiv').hide();
@@ -2638,8 +2682,22 @@ function showAlert()
 </script>
 </head>
 <body>
+
+    <!--BY SAMBA START-->
+	  <form id="updateSelectedVoters" method="post" action="updateAllSelectedVotersInformation.action" name="updateSelectedVoters">
+	   <input type="hidden" name="task" id="updateAllVotersFormValues" />
+	 </form>
+
+     <!--BY SAMBA END-->
+	 	 <!--BY SAMBA START-->
+
+	 <form id="getAllVoterFamiliesForEditForm1" method="post" action="getVotersFamiliesForEditFormAction.action" name="getAllVoterFamiliesForEditForm1">
+	   <input type="hidden" name="task" id="getAllVoterFamiliesForEditFormValues1" />
+	 </form>
+
+	  <!--BY SAMBA END-->
+
   <div style="width:960px;margin-left:auto;margin-right:auto;">
-  
  <div id="scrollBtnDiv" style="display:none;">
 	<div style="position: fixed; left :0px; top: 190px;">
 	   <img src="images/up_Arrow .png" id="pageUpBtn" width="30" title="click here to scroll up page"/>
@@ -2647,6 +2705,11 @@ function showAlert()
 	<div style="position: fixed; left :0px; top: 240px;">
 		<img src="images/down_Arrow.png" id="pageDownBtn" width="30" title="click here to scroll down page"/>
 	</div>
+
+	 <!-- <a id="updateBtn" style="position: fixed; left :0px; top: 290px;" href="javascript:{getAllSelectedVotersDetails();}" class="btn btn-primary">Update voter details</a>
+
+	   <a id="updateBtnInNewWndow" style="position: fixed; left :0px; top: 320px;" href="javascript:{getAllSelectedVotersDetails1();}" class="btn btn-primary">Update voter details in new window</a>-->
+	   <a id="updateBtnInNewWndow" style="position: fixed; left :0px; top: 320px;" href="javascript:{getAllSelectedVotersDetails1();}" class="btn btn-primary">Update voter details</a>
  </div>
 
       <div class="titleHeading">VOTERS SEARCH</div>
@@ -2682,8 +2745,6 @@ function showAlert()
         <option value=4>PollingStation</option>
 		</select>
       </div>
-	 
-   
 	
 	
 	  <div id="ConstituencyDiv" class="selectDiv">
@@ -2842,5 +2903,297 @@ function showAlert()
 	
 </script>
 </div>
+
+
+<!--CHANGES BY SAMBA START-->
+<script>
+
+function getAllSelectedVotersDetails()
+{
+	if(selectedVotersArr.length == 0)
+		 alert("Please select atleast one voter to update");
+	else if(selectedVotersArr.length > 20)
+		 alert("Please select 20 voters atmost to update");
+	else 
+		getAllVoterFamiliesForEditWithSelection11();
+
+}
+
+
+ function getAllVoterFamiliesForEditWithSelection11(){
+
+	 $('#voterEditDetailsShowDIV').html("<img id=votersEditSaveAjaxImg' style='width: 20px; padding-left: 230px;' src='images/icons/ajaxImg.gif'>");
+
+	 $("#voterDetailsPopUp").dialog({ 
+	                            title:"Update Voters",
+	                            height: 'auto',
+								width:1000,								
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+									resizable:true,							
+								overlay: { opacity: 0.5, background: 'black'},
+	                             buttons: {
+ 							   "Update":function() {updateAllSelectedVotersDetails();},
+							   "Close":function() {$(this).dialog("close")}
+								   }	
+
+        });
+		 
+
+		var jsObj=
+				{		           
+					votersIds:selectedVotersArr,
+					selectedType:selectedType,
+					selectedTypeId:selectedTypeId,
+					publicationId:publicationId
+					
+				}
+				$("#getAllVoterFamiliesForEditFormValues1").val(YAHOO.lang.JSON.stringify(jsObj));
+				var uploadHandler = {
+				   success : function( o ) {
+					          var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+                             buildSelectedVotersData(uploadResult);
+						}									
+			};
+
+		
+		YAHOO.util.Connect.setForm('getAllVoterFamiliesForEditForm1',false);
+		YAHOO.util.Connect.asyncRequest('POST','getVotersFamiliesForEditFormAction.action?save=',uploadHandler);
+     }
+var totalCategoriesCount = 0;
+ var votersToUpdate = new Array();
+function buildSelectedVotersData(results)
+{
+		 votersToUpdate = new Array();
+            
+
+	 var str='';
+
+		str+='<div><label class="labelClass"><input type="checkbox" value="SerialNo" class="fields" checked="true" style="margin:0px;"/>SerialNo</label>';
+
+		str+='<label class="labelClass"><input type="checkbox" value="Voter Name" class="fields" checked="true" style="margin:0px;"/>VoterName</label>';
+
+		str+='<label class="labelClass"><input type="checkbox" value="Caste" class="fields" checked="true" style="margin:0px;"/>Caste</label>';
+
+		str+='<label class="labelClass"><input type="checkbox" value="Party" class="fields" checked="true" style="margin:0px;"/>Party</label>';
+
+		str+='<label class="labelClass"><input type="checkbox" value="Locality Name" class="fields" checked="true" style="margin:0px;"/>LocalityName</label>';
+
+		str+='<label class="labelClass"><input type="checkbox" value="Sub Locality Name" class="fields" checked="true" style="margin:0px;"/>SubLocalityName</label>';
+
+
+       for(var id in results.userCategoriesList)		   
+		str+='<label class="labelClass"><input type="checkbox" value="'+results.userCategoriesList[id].name+'" class="fields" checked="true" style="margin:0px;"/>'+results.userCategoriesList[id].name+'</label>';
+	   str+='<br>';
+
+		
+          str+='<table id="votersDetailsTable">';
+		  str+='<thead>';
+		   str+='<tr>';
+		    str+='<th style="text-align:justify;">SerialNo</th>';
+		    str+='<th style="text-align:justify;">Voter Name</th>';
+			str+='<th style="text-align:justify;">Caste</th>';
+			str+='<th style="text-align:justify;">Party</th>';
+            str+='<th style="text-align:justify;">Locality Name</th>';
+			str+='<th style="text-align:justify;">Sub Locality Name</th>';
+             totalCategoriesCount = results.userCategoriesList.length;
+			for(var id in results.userCategoriesList)		   
+			str+='<th style="text-align:justify;">'+results.userCategoriesList[id].name+'</th>';
+		
+		   str+='</tr>';
+		   str+='</thead>';
+
+	  for(var i in results.boothsList){
+
+		  var family = results.boothsList[i].familiesList;
+
+          
+		    var k = 0;		
+		  for(var j in family){
+			   var voters = family[j].votersList;
+
+			  str+='<tr>';
+			    str+='<td><input type="hidden" id="voterId" value="'+voters[k].voterId+'"/>'+voters[k].fromSno+'</td>';
+		        str+='<td>'+voters[k].name+'</td>';
+
+                 votersToUpdate.push(voters[k].voterId);
+
+			    str+='<td>';
+				 str+='<select id="caste'+voters[k].voterId+'" style="width:100px;">';
+				    for(var l in results.casteGroupNameList){
+						   if(voters[k].casteStateId != results.casteGroupNameList[l].id)
+							str+="<option value="+results.casteGroupNameList[l].id+">"+results.casteGroupNameList[l].name+"</option>";
+						   else
+							str+="<option value="+results.casteGroupNameList[l].id+" selected='selected'>"+results.casteGroupNameList[l].name+"</option>";			
+					 }
+				 str+='</select>';
+				str+='</td>';
+
+			    str+='<td>';
+				 str+='<select id="party'+voters[k].voterId+'" style="width:100px;">';
+				    for(var l in results.parties){
+						   if(voters[k].partyId != results.parties[l].id)
+							str+="<option value="+results.parties[l].id+">"+results.parties[l].name+"</option>";
+						   else
+							str+="<option value="+results.parties[l].id+" selected='selected'>"+results.parties[l].name+"</option>";			
+						 }
+				 str+='</select>';
+				str+='</td>';
+
+				str+='<td>';
+				 str+='<select id="locality'+voters[k].voterId+'" style="width:100px;"  onChange="getLocalitiesListFOrHamlet(this.value , '+voters[k].voterId+');">';
+
+
+				  for(var l in results.localitiesList){
+					if(voters[k].hamletId != results.localitiesList[l].id) 
+						str+="<option value="+results.localitiesList[l].id+">"+results.localitiesList[l].value+"</option>";
+					 else{
+							  selectedValue = results.localitiesList[l].id;
+						  str+="<option selected='selected' value="+results.localitiesList[l].id+">"+results.localitiesList[l].value+"</option>";
+					 }
+				  }
+                      
+ 				str+='</select>';
+				str+='</td>';
+				str+='<td>';
+				
+				if(voters[k].hamletId != null)
+			    {
+                  str+='<select id="sublocality'+voters[k].voterId+'" style="width:100px;">';
+				  for(var l in voters[k].subLocalities){					 
+					 
+					if(voters[k].subLocalityId !=  voters[k].subLocalities[l].id)								   
+						 str+="<option value="+voters[k].subLocalities[l].id+">"+voters[k].subLocalities[l].value+"</option>";
+
+					     else
+
+						 str+="<option selected='selected' value="+voters[k].subLocalities[l].id+">"+voters[k].subLocalities[l].value+"</option>";						
+						 
+				  }                      
+ 				 str+='</select>';				
+				}
+				else				
+					str+='<select id="sublocality'+voters[k].voterId+'" style="width:100px;">';
+					str+='</select>';				
+
+				str+='</td>';				
+
+
+				for(var m in voters[k].categoriesList){
+
+
+						str+='<td><input type="hidden" id="'+voters[k].voterId+'categ'+m+'" class="categ'+m+'" value="'+voters[k].categoriesList[m].userCategoryValueId+'"/>';
+                          str+='<select id="'+voters[k].voterId+'categVal'+m+'" style="width:100px;">';
+						    for(var l in voters[k].categoriesList[m].category)
+								{
+							   if(voters[k].categoriesList[m].categoryValuesId != voters[k].categoriesList[m].category[l].id)
+								str+="<option value="+voters[k].categoriesList[m].category[l].id+">"+voters[k].categoriesList[m].category[l].name+"</option>";
+							   else
+								str+="<option value="+voters[k].categoriesList[m].category[l].id+" selected='selected'>"+voters[k].categoriesList[m].category[l].name+"</option>";			
+							 }
+						  str+='</select>';
+						str+='</td>';
+
+				}
+
+  			  str+='</tr>';
+		  }
+	  }
+	  str+='</table>';
+	  str+='<div id="successMessageDiv"></div>'; 
+
+	  $('#voterEditDetailsShowDIV').html(str);
+
+	 }
+	
+
+	 function updateAllSelectedVotersDetails()
+	 {
+
+		allVotersToUpdate = new Array();
+
+         for(var i in votersToUpdate)
+		 {
+             var obj={
+			 };
+			 obj["partyId"] = $('#party'+votersToUpdate[i]).val();
+			 obj["casteId"] = $('#caste'+votersToUpdate[i]).val();
+			 obj["voterId"] = votersToUpdate[i];
+
+			 if ($('#locality'+votersToUpdate[i]).length )
+                obj["hamletId"] = $('#locality'+votersToUpdate[i]).val();
+             else
+	            obj["hamletId"] = 0;
+
+			 if ($('#sublocality'+votersToUpdate[i]).length ){
+
+				 var localityHamletId = $('#sublocality'+votersToUpdate[i]).val();
+				
+				 if(localityHamletId == null || localityHamletId == 0)
+                  obj["localityHamletId"] = 0;
+				 else
+					 obj["localityHamletId"] = localityHamletId;
+
+			 }
+             else
+	          obj["localityHamletId"] = 0;
+			 
+
+			 for(var j = 0 ; j<3 ;j++){
+
+				 obj["categ"+j] = $('#'+votersToUpdate[i]+'categ'+j).val()+"-"+$('#'+votersToUpdate[i]+'categVal'+j).val();
+			 }
+			 allVotersToUpdate.push(obj);
+
+		 }
+
+		 var jsObj=
+		        {
+					total:totalCategoriesCount,
+					selectedVoters:allVotersToUpdate,
+					task:"updateIndividuls"
+		      };
+			  $("#updateAllVotersFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
+			  
+			  var uploadHandler = {
+				success: function(o) {
+					var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+
+					var cssObj = {    
+				       'font-weight' : 'bold',
+				       'color' : 'green',
+                       'margin-left':'400px'
+			        }
+			
+
+			$('#successMessageDiv').text("Voters details updated successfully...").css(cssObj).show().delay(2000).fadeOut(400);
+			setTimeout(function() { $("#voterDetailsPopUp").dialog('close') }, 2000);
+			
+
+
+					//$('#successMessageDiv').html('updated successfully');
+				}
+			};
+
+		
+		YAHOO.util.Connect.setForm('updateSelectedVoters',false);
+		YAHOO.util.Connect.asyncRequest('POST','updateAllSelectedVotersInformation.action?save=',uploadHandler);
+	 }
+
+function getAllSelectedVotersDetails1()
+{
+
+	if(selectedVotersArr.length <= 0)
+		alert("Please select atleast one recore to update");
+	else
+	window.open("updateSelectedVotersAction.action","editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");
+	
+
+
+}
+</script>
+<!--CHANGE BY SAMBA END-->
 </body>
 </html>
