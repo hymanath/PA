@@ -374,9 +374,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	}
 	
 	public String getDistrictsList(){
-		String param = request.getParameter("stateId");
+		String stateId = request.getParameter("stateId");
+		/*
 		districts = getStaticDataService().getDistricts(new Long(param));
-		
+		*/
+		String electionYear= request.getParameter("electionYear");
+		String partyId = request.getParameter("partyId");
+		districts = staticDataService.getDistrictsByPartyNomination(Long.parseLong(stateId),Long.parseLong(partyId),Long.parseLong(electionYear));
 		return Action.SUCCESS;
 	}
 
