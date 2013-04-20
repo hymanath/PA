@@ -772,7 +772,7 @@ function openProblemEditForm(id,boothId)
 <div id="getLatestCastsSubcategoryWise"  style="float:right;"><input  type="button" onclick="getLatestCastsSubcategoryWise();" style="background: none repeat scroll 0 0 #06ABEA; border-radius: 8px;color: #FFFFFF; font-size: 16px;
     padding: 4px;width:206px" value="Get Updated Caste Info"/></div>
 	
-<div style="margin-top: 10px; margin-bottom: 15px;"><img id="voterCasteAjaxImg" src="./images/icons/goldAjaxLoad.gif" style=" clear: both; display:none;"/></div>
+<div style="margin-top: 10px; margin-bottom: 15px;"><img id="voterCasteAjaxImg" src="./images/icons/goldAjaxLoad.gif" style=" clear: both;"/></div>
 
 	
 <div id="localCastStatsTabContent_subbody"></div>	
