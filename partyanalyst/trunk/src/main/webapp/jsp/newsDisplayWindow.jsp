@@ -30,8 +30,24 @@
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
 <style type="text/css">
 
+ .yui-dt-liner{
+ text-transform: capitalize; 
+ }
+th {
+    background-color: #CDE6FC;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+}
+.yui-skin-sam thead .yui-dt-sortable {
+    background: none repeat scroll 0 0 lightblue;
+    cursor: pointer;
+}
 .ui-dialog .ui-dialog-title {
     float: left;
     font-family: arial;
@@ -101,7 +117,7 @@ var commentsObject = new Object();
 */
 function getNews1(count){
     startIndex = 0;
-	lastIndex = 10;
+	lastIndex = count;
 var noNews = false;
 	if(count== null){
 	alert("No news Exist");
@@ -222,9 +238,106 @@ function callAjaxToShowNewsDetails(jObj,url){
  		YAHOO.util.Connect.asyncRequest('POST', url, callback); 	
 
 	}
+	
+	/*
+	the db data fetching into an Array to build YUI Table (for Pagination) Updated by srishailam
+	*/
+	var dataArr;
+	function displayNewsByImportance(jObj,results){
+	var importanceId = jObj.importanceId;
+	var  categoryId = jObj.categoryId;
+	var contentID = '';
+	var actions = '';
+	var str='';
+	str+='<div style="margin: 13px; font-family: verdana,sans-serif; font-size: 17px;"><b>'+categoryStr+' '+displayStr+'</b></div>';
+	$('#newsDisplayDiv1').html(str);
+	dataArr=new Array();
+	for(var i in results){
+	contentID = results[i].contentId;
+	if(categoryId == "1"){
+	actions = '<a id=notAdded'+contentID+' href="javaScript:{changeToProblem('+contentID+')}">Post As Problem </a>';
+	}
+	var obj = {
+					title:'<a href="javascript:{}" onclick="getNewsInPopupWindow('+contentID+','+importanceId+','+categoryId+');">'+results[i].title.substring(0,100)+'</a>',
+					source:results[i].source,
+					fileDate:results[i].fileDate+'<br>'+results[i].locationName.toLowerCase()+' ('+results[i].locationScopeValue.toLowerCase()+')',					
+					action:actions
+	};
+	dataArr.push(obj);
+  }
+				buildProblemsTable(categoryId);
+}
+	
+	function buildProblemsTable(categoryId){
+	if(categoryId == 1)
+	{
+		var resultsColumnDefs = [		
+		{
+			key : "title",
+			label : "Problem Title",
+			width: 420
+		},
+		{
+			key : "source",
+			label : "Source",
+			width: 130,
+			height:50
+		},
+		{
+			key : "fileDate",
+			label : "Date & Location",
+			width: 150,
+			height:50
+		},	
+		{
+			key : "action",
+			label : "action",
+			width: 150,
+			height:50
+		}
+		];
+	}
+	else
+	{
+	var resultsColumnDefs = [		
+		{
+			key : "title",
+			label : "Problem Title",
+			width: 420
+		},
+		{
+			key : "source",
+			label : "Source",
+			width: 130,
+			height:50
+		},
+		{
+			key : "fileDate",
+			label : "Date & Location",
+			width: 150,
+			height:50
+		}
+		];
+	
+	}
+	
+	var myConfigs = {  
+						paginator : new YAHOO.widget.Paginator({ 
+						rowsPerPage    : 10,		        
+						template: "{PageLinks} Show {RowsPerPageDropdown} News Per Page",
+						rowsPerPageOptions: [10,20,30,50], 
+						pageLinks: 10
+						})						
+					};	
+	var myDataSource = new YAHOO.util.DataSource(dataArr);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "title" , "source" ,"fileDate","action"]
+					};
+	var myDataTable = new YAHOO.widget.DataTable("newsDisplayDiv",resultsColumnDefs, myDataSource,myConfigs);					
+	}
+	
 /*
-	This method is used for building the news Glance details of the particular link is clicked
-*/
 function displayNewsByImportance(jObj,results){
 	
 	var importanceId = jObj.importanceId;
@@ -295,7 +408,86 @@ function displayNewsByImportance(jObj,results){
 	
   $('#newsDisplayDiv').html(str);
   
-}
+} */
+
+/*
+	This method is used for building the news Glance details of the particular link is clicked
+*/
+
+/*
+function displayNewsByImportance(jObj,results){
+	
+	var importanceId = jObj.importanceId;
+	var  categoryId = jObj.categoryId;
+	var str='';
+	str+='<div style="margin:13px;"><b>'+categoryStr+' '+displayStr+'</b></div>';
+  
+	for(var i=0;i<results.length;i++){
+	var description=results[i].description;
+
+	str+='<div style="height:50px;margin-bottom:4px;"  class="alert alert-info">';
+
+    str+='<div style="height: 50px; float: left; width: 480px;">';
+	 str+='<span style="color:black">';
+
+	if(results[i].title.length > 100)
+	//str+='<a style="font-family:verdana;color:#686868;font-size:14px;font-weight:bold;" title="'+description+'" href="javaScript:{getNewsInPopup('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title.substring(0,100)+'...</a>';
+	str+='<a style="font-family:verdana;color:#686868;font-size:14px;font-weight:bold;" title="'+description+'" href="javaScript:{getNewsInPopupWindow('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title.substring(0,100)+'...</a>';
+	else
+ 	//str+='<a style="font-family:verdana;color:#686868;font-size:14px;font-weight:bold;" title="'+description+'" href="javaScript:{getNewsInPopup('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title+'</a>';
+	str+='<a style="font-family:verdana;color:#686868;font-size:14px;font-weight:bold;" title="'+description+'" href="javaScript:{getNewsInPopupWindow('+results[i].contentId+','+importanceId+','+categoryId+');}">'+results[i].title+'</a>';
+	str+='</span>';
+    str+='</div>';
+
+    if(categoryId == "1"){
+	 str+='<div style="height: 50px; width: 181px; float: left;">';
+	}else{
+		str+='<div style="height: 50px; width: 181px; float: right;">';
+	}
+	str+='<span style="float: left; clear: right;">';
+	str+='<span style="color:sienna;font-size:13px;">'+results[i].source+'  ('+results[i].fileDate+')</span>';
+    str+='</span>';
+
+	if(results[i].locationScopeValue != "MUNICIPAL-CORP-GMC")
+	str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:13px;font-weight:bold;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">'+results[i].locationScopeValue.toLowerCase()+'</span></span>';
+	else
+ 	str+='<span style="float: left; clear: left;text-transform:capitalize;font-size:13px;font-weight:bold;">'+results[i].locationName.toLowerCase()+'-<span style="color:currentcolor;font-weight:bold;">Muncipality</span></span>';
+	str+='</div>';
+
+	str+='<div style="float: right; height: 50px; width: 178px; ">';
+	  if(categoryId == "1"){
+
+	     if(results[i].isProblem == "false"){
+	       str+='<a id=notAdded'+results[i].contentId+' style="float: right; color: green;" href="javaScript:{changeToProblem('+results[i].contentId+')}">Post as problem</a>';
+   		   str+='<span style="margin-left:18px;" id=added'+results[i].contentId+'> <a   title="Click here to view  problem details" style="float:right;color:red;display:none;" href="javaScript:{}">&nbsp;&nbsp;<img src="images/icons/details.png"></img></a></span>';
+
+		 }else{
+		   str+='<a  style="display:none;" id=notAdded'+results[i].contentId+' style="float:right;color:red;" href="javaScript:{changeToProblem('+results[i].contentId+')}" style="color:green;">Make it as problem</a>';
+
+		   str+='<a  id=added'+results[i].contentId+' title="Click here to view problem details" style="float:right;color:red;" href="javaScript:{showProblemDetails('+results[i].problemId+');}" style="color:green;">Added as problem &nbsp;<img src="images/icons/details.png"></img></a>';
+
+
+		 }
+
+	  }
+	str+='</div>';
+  str+='</div>';
+
+  }
+    if(startIndex > 1){
+	
+		str+='<h6 style="margin:5px;text-align:center;"><a class="nextOrPrvButton" style="float:left;" href="javaScript:{decrementStartEndIndexes();}"> << Previous </a></h6>';
+	}
+	if(results.length >=10)
+	{
+		str+='<h6 style="margin:5px;text-align:center;"><a class="nextOrPrvButton" style="float:right;" href="javaScript:{incrementStartEndIndexes();}">Next>></a></h6>';
+	}
+	
+  $('#newsDisplayDiv').html(str);
+  
+}*/
+	
+
 /*
 	This Method is used for change the news glance details into problem
 */
@@ -355,7 +547,7 @@ function getNewsInPopup(cntntId,imprtanceId,ctgryId)
 							 }
 		  
 								});
-		$("#showContentDiv").dialog();
+		//$("#showContentDiv").dialog();
 		getNewsOfLocation(cntntId,imprtanceId,ctgryId);
 }
 
@@ -858,7 +1050,8 @@ getNews1(count);
 </head>
 <body>
 
-<div id="newsDisplayDiv" style=""></div>
+<div id="newsDisplayDiv1"></div>
+<div id="newsDisplayDiv" align="center" class="yui-skin-sam yui-dt-sortable yui-dt"></div>
 <div id="problemOuterDiv">
 <div id="problemInnerDiv">
 </div>
