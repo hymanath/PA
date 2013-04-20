@@ -96,6 +96,7 @@ var selectOption = document.getElementById("users");
 function buildusersInList(results)
 {
 	var selectOption = document.getElementById("usersList");
+	removeSelectElements(selectOption);
 	for(var i in results)
 		{
 			if(results[i] == null)
@@ -114,6 +115,19 @@ function buildusersInList(results)
 				}
 		}
 }
+
+function removeSelectElements(elmt)
+	{
+		if(!elmt)
+			return;
+
+		var len=elmt.length;			
+		for(i=len-1;i>=0;i--)
+		{
+			elmt.remove(i);
+		}	
+	}
+	
 function showStatusForUser(result)
 {
 if(result.resultCode == 0)
