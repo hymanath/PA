@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,40 +22,55 @@ import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "user_access_ip_address")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class UserAcessIpAddress {
+public class UserAccessIpAddress  extends BaseModel implements Serializable{
 
-	private Long _userAcessIpAddressId;
-	private User _userId;
+	private static final long serialVersionUID = 487218426412629176L;
+	
+	private Long userAccessIpAddressId;
+	private User user;
 	private String ipAddress;
 	
+	public UserAccessIpAddress()
+	{}
+	
+	public UserAccessIpAddress(User user, String ipAddress)
+	{
+		this.user = user;
+		this.ipAddress = ipAddress;
+	}
+
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="user_access_ip_address_id", unique=true, nullable=false)
+	public Long getUserAccessIpAddressId() {
+		return userAccessIpAddressId;
+	}
 
-	public Long get_userAcessIpAddressId() {
-		return _userAcessIpAddressId;
+	public void setUserAccessIpAddressId(Long userAccessIpAddressId) {
+		this.userAccessIpAddressId = userAccessIpAddressId;
 	}
-	public void set_userAcessIpAddressId(Long _userAcessIpAddress) {
-		this._userAcessIpAddressId = _userAcessIpAddress;
-	}
+
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User get_userId() {
-		return _userId;
+	public User getUser() {
+		return user;
 	}
-	public void set_userId(User _userId) {
-		this._userId = _userId;
+
+	public void setUser(User user) {
+		this.user = user;
 	}
-	@Column(name = "ip_address", length = 20)
+
+	@Column(name="ip_address",length=20)
 	public String getIpAddress() {
 		return ipAddress;
 	}
+
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
-	
 	
 
 }
