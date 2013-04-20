@@ -111,9 +111,13 @@ public class User extends BaseModel implements Serializable{
 	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
 	
 	private Set<Locality> Localities = new HashSet<Locality>(0);
-	
 	private String _loginRestriction;
 	
+	private String passwdHashTxt;
+	private String hashKeyTxt;
+
+	
+
 	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -912,6 +916,24 @@ public class User extends BaseModel implements Serializable{
 	public void set_loginRestriction(String _loginRestriction) {
 		this._loginRestriction = _loginRestriction;
 	}
-	
+
+	@Column(name = "passwd_hash_txt", nullable = false, length = 250)
+	public String getPasswdHashTxt() {
+		return passwdHashTxt;
+	}
+
+	public void setPasswdHashTxt(String passwdHashTxt) {
+		this.passwdHashTxt = passwdHashTxt;
+	}
+
+
+	@Column(name = "hash_key_txt", nullable = false, length = 250)
+	public String getHashKeyTxt() {
+		return hashKeyTxt;
+	}
+
+	public void setHashKeyTxt(String hashKeyTxt) {
+		this.hashKeyTxt = hashKeyTxt;
+	}
 	
 }

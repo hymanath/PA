@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Role;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserRoles;
+import com.itgrids.partyanalyst.security.EncryptDecrypt;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
@@ -256,7 +257,20 @@ public class RegistrationService implements IRegistrationService{
 			user.setLastName(values.getLastName());
 			user.setGender(values.getGender());
 			user.setUserName(values.getUserName());
-			user.setPassword(values.getPassword());
+			
+			String secretKey = EncryptDecrypt.getSecretKey();
+			
+			EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);
+			
+			user.setPasswdHashTxt(encryptDecrypt.encryptText(values.getPassword()));
+			user.setHashKeyTxt(secretKey);
+			
+			
+			
+			
+			//user.setPassword(values.getPassword());
+			
+			
 			user.setParty(partyDAO.get(values.getParty()));
 			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 			Date date = null;

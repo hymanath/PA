@@ -3,15 +3,13 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Assert;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.User;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.security.EncryptDecrypt;
 
 public class UserDAOHibernateTest extends BaseDaoTestCase{
 
@@ -369,4 +367,27 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		Long count = userDAO.getAllUsersCountInSelectedLocations(locationIds,IConstants.CONSTITUENCY_LEVEL,"");
 		System.out.println(count);
 	}*/
+	
+	public void testupdateAllUsersPasswords()
+	{	System.out.println(new Date());
+		List<User> users  =userDAO.updateAllUsersPasswords();
+		
+		
+		int i = 0;
+		System.out.println(new Date());
+		System.out.println(users.size());
+		for(User user:users){
+			String secretKey = EncryptDecrypt.getSecretKey();
+			EncryptDecrypt phash = new EncryptDecrypt(secretKey);
+			String encryptedPassword = phash.encryptText(user.getPassword());
+			
+			user.setHashKeyTxt(secretKey);
+			user.setPasswdHashTxt(encryptedPassword);
+			userDAO.save(user);			
+			i++;
+	
+			System.out.println("UPDATE USER SET hash_key_txt = '"+secretKey +"',passwd_hash_txt = '"+encryptedPassword+"' WHERE user_id = "+user.getUserId()+";");
+		}
+		
+	}
 }

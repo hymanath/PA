@@ -73,6 +73,7 @@ import com.itgrids.partyanalyst.model.UserPrivacySettings;
 import com.itgrids.partyanalyst.model.UserProfileOpts;
 import com.itgrids.partyanalyst.model.UserReferralEmails;
 import com.itgrids.partyanalyst.model.UserRoles;
+import com.itgrids.partyanalyst.security.EncryptDecrypt;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
@@ -400,11 +401,15 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				User user = null;
 				ProfileOpts profileOpts = null;
 				String imageName =null;
+				String hashKey = null;
 				
-				if(!isUpdate)
+				if(!isUpdate){
 					user = new User();
+					hashKey = EncryptDecrypt.getSecretKey();
+				}
 				else{
 					user = userDAO.get(userDetails.getRegistrationID());
+					//hashKey = user.getHashKeyTxt();
 					userProfileOptsDAO.removeOptsOfExistingUser(userDetails.getRegistrationID());
 				}
 				
@@ -414,9 +419,19 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					{
 						String str = ((Long)System.currentTimeMillis()).toString();
 						String pwd = str.substring(str.length()-7,str.length());
+						
+						user.setHashKeyTxt(hashKey);
+						
+						EncryptDecrypt encryptDecrypt = new EncryptDecrypt(hashKey);
+						user.setPasswdHashTxt(encryptDecrypt.encryptText(pwd));
+						
+												
 						userDetails.setPassword(getPassword(pwd));
 						user.setUserName(userDetails.getEmail());
-						user.setPassword(userDetails.getPassword());
+						//user.setPassword(userDetails.getPassword());
+						
+						
+						
 						user.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
 						user.setEmail(userDetails.getEmail());
 						user.setIsPwdChanged(IConstants.FALSE);
@@ -1684,7 +1699,17 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			
 			registrationVO.setRegistrationID(registrationId);
 			registrationVO.setUserName(user.getUserName());
-			registrationVO.setPassword(user.getPassword());
+			
+			String secretKey = user.getHashKeyTxt();
+			EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);
+			
+			
+			registrationVO.setPassword(encryptDecrypt.decryptText(user.getPasswdHashTxt()));
+			
+			//registrationVO.setPassword(user.getPassword());
+			
+			
+			
 			registrationVO.setGender(user.getGender());
 			registrationVO.setEmail(user.getEmail());
 			registrationVO.setPhone(user.getPhone());
@@ -2122,7 +2147,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		}
 	}
 	
-	
+/*	
 
 public RegistrationVO getUserDetailsToRecoverPassword(String userName){
 	
@@ -2140,6 +2165,42 @@ public RegistrationVO getUserDetailsToRecoverPassword(String userName){
 				registrationVO.setPassword((String)ananymousUserObj[1]);
 				registrationVO.setFirstName((String)ananymousUserObj[2]);
 				registrationVO.setLastName((String)ananymousUserObj[3]);
+			}
+			else
+				registrationVO.setEmail(null);
+			
+			registrationVO.setUserName(userName);
+			}
+	}catch(Exception e){
+		e.printStackTrace();
+		return null;
+	}
+	return registrationVO;
+}*/
+
+public RegistrationVO getUserDetailsToRecoverPassword(String userName){
+	
+	List<User> usersList = null;
+	RegistrationVO registrationVO=new RegistrationVO();
+	try{
+		usersList = userDAO.getUserByUserName(userName);
+	
+		if(usersList!=null && usersList.size()!=0){
+			User userDetails = usersList.get(0);
+			
+			registrationVO.setEmail(userDetails.getEmail());
+			
+			if(registrationVO.getEmail() != null && registrationVO.getEmail().trim().length() > 0)
+			{
+				String secretKey =userDetails.getHashKeyTxt();
+				
+				EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);		
+				
+				registrationVO.setPassword(encryptDecrypt.decryptText(userDetails.getPasswdHashTxt()));
+				
+				//registrationVO.setPassword((String)ananymousUserObj[1]);
+				registrationVO.setFirstName(userDetails.getFirstName());
+				registrationVO.setLastName(userDetails.getLastName());
 			}
 			else
 				registrationVO.setEmail(null);
@@ -2180,9 +2241,49 @@ public String getPassword(String password){
 	}
 	return password;
 }
+/**
+ * This method is used to change the cuurrent password for logged in user
+ * @param crntpassword ,  current password of the user
+ * @param newpassword ,  new password of the user which we need to save
+ * @param regId , registration id of user
+ * @param , userName of user
+ */
 @SuppressWarnings("unchecked")
 public String changeUserPassword(String crntpassword,String newpassword,Long regId,String userName)
 {   
+	log.debug("Entered into the  changeUserPassword service method");
+	try
+	{
+       User user = userDAO.get(regId);
+       
+       String savedSecretKey = user.getHashKeyTxt();
+       String encryptedPassword = user.getPasswdHashTxt();
+       
+       EncryptDecrypt encryptDecrypt = new EncryptDecrypt(savedSecretKey);
+       String presentEncryptedPassword = encryptDecrypt.encryptText(crntpassword);
+       
+       if(!encryptedPassword.equalsIgnoreCase(presentEncryptedPassword))
+    	   return IConstants.NoPassword;
+       else
+       {
+    	   String secretKey = EncryptDecrypt.getSecretKey();
+    	   EncryptDecrypt phash1 = new EncryptDecrypt(secretKey);
+    	   String encryptPassword = phash1.encryptText(newpassword);
+    	   
+    	   user.setPasswdHashTxt(encryptPassword);
+    	   user.setHashKeyTxt(secretKey);
+    	   
+    	   userDAO.save(user);
+    	   
+    	  return IConstants.YesPassword;
+    	   
+       }
+	}catch(Exception e){
+		log.error("Exception raised in  changeUserPassword service method");		
+		return null;
+	}
+       
+	/*
 	
 	if(regId == 0l)
 	{
@@ -2195,7 +2296,7 @@ public String changeUserPassword(String crntpassword,String newpassword,Long reg
 	if(chkpwd.size() == 0)
 		return IConstants.NoPassword;
 	Integer chkPwdVals = userDAO.changeUserPassword(newpassword, regId, IConstants.TRUE, dateUtilService.getCurrentDateAndTime());
-	return IConstants.YesPassword;
+	return IConstants.YesPassword;*/
 }
 
 

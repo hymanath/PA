@@ -434,4 +434,34 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return getHibernateTemplate().find("select model.userName, model.password from User model where model.userId = ? ", userId);
 	}
 	
+	public List<String> getEncryptedKeyByUserName(String userName)
+	{
+		Query query = getSession().createQuery("select model.hashKeyTxt from User model where model.userName = ?");
+		
+		query.setParameter(0, userName);
+		
+		return query.list();
+		
+	}
+	
+	public List<User> checkUsernameAndEncryptedPasswordForUser(String userName, String encryptedPassword)
+	{
+		Query query = getSession().createQuery("select model from User model where model.userName = ? and model.passwdHashTxt = ?");
+		
+		query.setParameter(0, userName);
+		query.setParameter(1, encryptedPassword);
+		
+		return query.list();
+		
+	}
+	
+	
+	public List<User> updateAllUsersPasswords()
+	{
+	
+		Query query = getSession().createQuery("select model from User model order by model.userId");		
+		
+		return query.list();
+	}
+	
 }
