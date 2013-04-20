@@ -435,6 +435,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						user.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
 						user.setEmail(userDetails.getEmail());
 						user.setIsPwdChanged(IConstants.FALSE);
+						user.set_loginRestriction(IConstants.FALSE);
 						
 					}
 					

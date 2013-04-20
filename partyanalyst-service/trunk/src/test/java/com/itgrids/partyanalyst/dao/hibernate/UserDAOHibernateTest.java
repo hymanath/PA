@@ -305,7 +305,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testgetAllUsersInSelectedLocations()
+	/*public void testgetAllUsersInSelectedLocations()
 	{
 		List<Long> locationIds = new ArrayList<Long>();
 		locationIds.add(228l);
@@ -321,7 +321,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 				
 			}
 		}
-	}
+	}*/
 	/*public void testgetNotConnectedUsersInSelectedLocations()
 	{
 		List<Long> locationIds = new ArrayList<Long>();
@@ -376,6 +376,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		int i = 0;
 		System.out.println(new Date());
 		System.out.println(users.size());
+		
 		for(User user:users){
 			String secretKey = EncryptDecrypt.getSecretKey();
 			EncryptDecrypt phash = new EncryptDecrypt(secretKey);
@@ -385,8 +386,9 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			user.setPasswdHashTxt(encryptedPassword);
 			userDAO.save(user);			
 			i++;
-	
-			System.out.println("UPDATE USER SET hash_key_txt = '"+secretKey +"',passwd_hash_txt = '"+encryptedPassword+"' WHERE user_id = "+user.getUserId()+";");
+			
+			if(i >= 2500)
+			System.out.println("UPDATE user SET hash_key_txt = '"+secretKey +"',passwd_hash_txt = '"+encryptedPassword+"' WHERE user_id = "+user.getUserId()+";");
 		}
 		
 	}
