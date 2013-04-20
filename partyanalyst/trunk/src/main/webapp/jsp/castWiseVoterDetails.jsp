@@ -236,6 +236,7 @@ var constituencyId     =  "${constituencyId}";
 var publicationDateId  =  "${publicationDateId}";
 var buildType          =  "${buildType}";
 var	queryType		   =  "${queryType}";
+ var resultFor = '${resultFor}';
 //myBtn
 
 if(/panchayat/i.test(type) && /hamlet/i.test(buildType))
@@ -253,7 +254,7 @@ var constMgmtMainObj={
 							castStatssubArray:[],
 					 };
 
-getCastInfoForsubLevel(id,publicationDateId,type,"");
+getCastInfoForsubLevel(id,publicationDateId,type,resultFor);
 /* This Method is used to get Updated CastInfo */
 function getLatestCastsSubcategoryWise(){
 	
@@ -1018,7 +1019,7 @@ function buildHamletWiseCastResultsGraph()
             },
             yAxis: {
                 title: {
-                    text: 'Votes'
+                    text: 'No of Voters'
                 } /*,
                 plotLines: [{
                     value: 0,
