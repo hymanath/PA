@@ -60,6 +60,36 @@
 		{
 			margin-right: 3px;
 		}
+		.marginClass{
+
+	margin:5px;
+}
+	.selectBoxWidth {
+	    padding: 2px;
+	    width: 250px;
+	}
+	.span2{
+	    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		font-weight: bold;
+		margin-top: 8px;	
+	}
+	select {
+	    background-color: #FFFFFF;
+	    border: 1px solid #CCCCCC;
+	    width: 250px;
+	}
+	
+	select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,#fromDate,#toDate {
+	    border-radius: 4px 4px 4px 4px;
+		color: #000000;
+	    display: inline-block;
+	    font-size: 13px;
+	    line-height: 18px;
+	    padding: 4px;
+	}
+	input, button, select, textarea {
+	    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	}
 	</style>
 	<script type="text/javascript">
 	var labelResources = { <%		
@@ -292,7 +322,9 @@
  	}
 
  	function getDistricts(level, flag){
- 	 	
+ 	var partyId = $('#partyList').val();
+	var stateVal = $('#stateList').val();
+	var electionYear = $('#yearList').val();
  	 	if(level == 2){
  	 		var stateListEl = document.getElementById("stateList");
  	 		var partyListEl = document.getElementById("partyList");
@@ -302,7 +334,7 @@
 	 	 	var stateId = document.getElementById("stateList").options[index].value;
 	 	 	
 	 	 	var url = "<%=request.getContextPath()%>/partyPerformanceDistrict.action?";
-			pprCallAjax("stateId="+stateId, url);
+			pprCallAjax("stateId="+stateVal+"&partyId="+partyId+"&electionYear="+electionYear, url);
  	 	}
 		if(level == 3){
 			document.getElementById("alliances").disabled=true;
@@ -322,20 +354,23 @@
 			document.getElementById("alliances").disabled=false;
 			var stateListEl = document.getElementById("stateList");
 			stateListEl.disabled=false;
-				
-			
  	 	}
-		
  	}
 
- 	function fetchDistricts(id,val)
+	function isEnable(value){
+		if(value == 1)
+ 	 	document.getElementById("districtList").disabled= true; 
+		if(value == 2)
+		document.getElementById("districtList").disabled= false; 
+	}
+ 	function fetchDistricts(id)
 	{
  		
 		var elmt = document.getElementById("stateNameHiddenId");
 		if(!elmt)
 			return;
 
-		elmt.value=val;		
+		//elmt.value=val;		
 		var yearsSelectEl = document.getElementById("yearList");
 		var yearsSelectElOptions = yearsSelectEl.options; 
 		if(yearsSelectElOptions.length > 0)
@@ -348,7 +383,7 @@
  	 	 		getDistricts(i+1);
  	 	 	}
  	 	}
-		fetchPartiesInState(id);
+	//	fetchPartiesInState(id);
  	}
 
     function fetchPartiesInState(id)
@@ -500,7 +535,7 @@
 		 }
 		
 	}
-	window.history.forward(1);
+	window.history.forward(1);	
   </script>
 </head> 
 <body>
@@ -523,14 +558,14 @@
 					<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="doAjax(this.value);" style="margin-right: 3px;"/>Parliament
 					</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<th align="left"><%=reportLevel%></th>
-					<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></div></td>
-			</tr>	
+					<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onchange="isEnable(this.value);"/></div></td>
+			</tr>	-->
 			<tr>
 				<th align="left"><%=state%></th>
 				<td>
-					<div><s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:150px;" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"/></div>
+					<div><s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:150px;" listKey="id" listValue="name" onchange="fetchPartiesInState(this.options[this.selectedIndex].value);"/></div><!-- // onchange="fetchDistricts(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"/>-->
 					<input type="hidden" id="stateNameHiddenId" name="stateNameHidden" style="margin-right: 3px;"/>
 					<div class="ajaxImageStyle"><img id="stateSelectAjaxImgId" class="ajaxImgClass" style="display: none;" src="images/icons/search.gif"></div>
 				</td>
@@ -553,10 +588,10 @@
 				</td>
 			</tr>
 			
-			<!--<tr>
+			<tr>
 				<th align="left"><%=reportLevel%></th>
 				<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></div></td>
-			</tr>-->	
+			</tr>	
 			<tr>		
 				<th align="left"><%=dist%></th>
 				<td>
