@@ -340,7 +340,10 @@ public String saveVoterDetails(){
 	RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 	Long userId = null;
 	if(user != null && user.getRegistrationID() != null)
-	    userId = user.getRegistrationID();
+		if(user.getParentUserId()!=null)
+			userId=user.getMainAccountId();
+		else
+			userId = user.getRegistrationID();
 	else 
 	  return "error";
 	voterHouseInfoVO.setUserId(userId);
@@ -622,7 +625,10 @@ public String saveLocality()
 			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 			Long userId = null;
 			if(user != null && user.getRegistrationID() != null)
-			    userId = user.getRegistrationID();
+				if(user.getParentUserId()!=null)
+					userId=user.getMainAccountId();
+				else
+					userId = user.getRegistrationID();
 			else 
 			  return "error";
 		  if(request.getParameter("task").equalsIgnoreCase("votersData")){
@@ -797,8 +803,12 @@ public String saveLocality()
 				    HttpSession session = request.getSession();
 					RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 					Long userId = null;
-					if(user != null && user.getRegistrationID() != null)
-					    userId = user.getRegistrationID();
+					if(user != null && user.getRegistrationID() != null){
+						if(user.getParentUserId()!=null)
+							userId=user.getMainAccountId();
+						else	
+							userId = user.getRegistrationID();
+					}
 					else 
 					  return "error";
 					org.json.JSONArray jSONArray = jObj.getJSONArray("selectedVoters");
