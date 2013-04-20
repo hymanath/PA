@@ -810,7 +810,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		  queryObj.setParameter("constituencyId", constituencyId);
 		 return queryObj.list();
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		public List<String> getPartNosByBoothIdsList(Long constituencyId, Long publicationDateId, List<Long> boothIdsList)
 		{
@@ -822,6 +822,21 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			queryObj.setParameterList("boothIds", boothIdsList);
 			
 			return queryObj.list();
+		}
+	
+		public Long getBoothsInPanchayatDAO(long panchayatId)
+		{
+			Query query = getSession().createQuery("select count(distinct model.partNo) from Booth model " +
+					" where model.panchayat.panchayatId = :panchayatId");
+			query.setParameter("panchayatId", panchayatId);
+			return (Long) query.uniqueResult();
+			
+		}
+		
+		public List<?> getVoterCountInPanchayat(Long panchayatId , Long publicationid,List<Long> boothIds)
+		{
+			return getHibernateTemplate().find("");
+			
 		}
 		
 }

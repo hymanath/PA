@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Voter;
 
@@ -179,6 +180,8 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List getBoothIdByPartNo(String partNo);
 	
 	public List<Long> getBoothIdsByLocalValuesList(String locationType,Long locationValue,Long constituencyId,List<Long> publicationDateIdsList);
+	
+	public Long getBoothsInPanchayatDAO(long panchayatId);
 	
 	public List<String> getPartNosByBoothIdsList(Long constituencyId, Long publicationDateId, List<Long> boothIdsList);
 	

@@ -38,19 +38,36 @@ public class BoothPublicationVoterDAO extends
 		}
 	 
 	 
-	 public List<Voter> getVotersDetailsByBoothId(Long boothId, Integer startIndex,
+	 public List<Object[]> getVotersDetailsByBoothId(Long boothId, Integer startIndex,
 				Integer maxRecords, String order, String columnName) {  
+		 Query query = null;
 		 
-			String queryString = "select model.voter from BoothPublicationVoter model " +
-					"where model.booth.boothId = ? order by model.voter."+columnName+" "+order;
+		 if("initial".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select model.voter,model.booth.partNo,model.serialNo from BoothPublicationVoter model " +
+					"where model.booth.boothId = ? order by cast(model.booth.partNo , int),model.serialNo,model.voter.houseNo");
+		 }
+		 else if("partNo".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select model.voter,model.booth.partNo,model.serialNo from BoothPublicationVoter model " +
+						"where model.booth.boothId = ? order by cast(model.booth.partNo , int) "+order); 
+		 }
+		 else if("serialNo".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select model.voter,model.booth.partNo,model.serialNo from BoothPublicationVoter model " +
+						"where model.booth.boothId = ? order by model.serialNo  "+order); 
+		 }
+		 else
+		 {
+			 query = getSession().createQuery("select model.voter,model.booth.partNo,model.serialNo from BoothPublicationVoter model " +
+						"where model.booth.boothId = ? order by model.voter."+columnName+" "+order); 
+		 }
 
-			Query query = getSession().createQuery(queryString);
+		 query.setParameter(0, boothId);
+		 query.setFirstResult(startIndex);
+		 query.setMaxResults(maxRecords);
 
-			query.setParameter(0, boothId);
-			query.setFirstResult(startIndex);
-			query.setMaxResults(maxRecords);
-
-			return query.list();
+		 return query.list();
 		 
 	 }  
 
@@ -73,16 +90,31 @@ public class BoothPublicationVoterDAO extends
 			query.setMaxResults(maxRecords);
 			return query.list();
 		}*/
-	 public List<Voter> getVotersDetailsForPanchayatByPublicationId(
+	 public List<Object[]> getVotersDetailsForPanchayatByPublicationId(
 				Long panchayatId, Long publicationDateId, Integer startIndex,
 				Integer maxRecords, String order, String columnName) {
-			
-			 Query query = getSession().createQuery("select BPV.voter from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.booth.panchayat.panchayatId = :panchayatId  order by BPV.voter."+columnName+" "+order) ;
-	 			  query.setParameter("publicationDateId", publicationDateId);
-	 			  query.setParameter("panchayatId", panchayatId);
-	 			query.setFirstResult(startIndex);
-	 			query.setMaxResults(maxRecords);
-	 			return query.list();
+		 Query query = null;
+		 if("initial".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select BPV.voter, BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.booth.panchayat.panchayatId = :panchayatId  order by cast(BPV.booth.partNo , int),BPV.serialNo,BPV.voter.houseNo") ;
+		 }
+		 else if("partNo".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.booth.panchayat.panchayatId = :panchayatId  order by cast(BPV.booth.partNo , int) "+order) ; 
+		 }
+		 else if("serialNo".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.booth.panchayat.panchayatId = :panchayatId  order by BPV.serialNo  "+order) ; 
+		 }
+		 else 
+		 {
+			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.booth.panchayat.panchayatId = :panchayatId  order by BPV.voter."+columnName+" "+order) ;
+		 }
+	 	query.setParameter("publicationDateId", publicationDateId);
+	 	query.setParameter("panchayatId", panchayatId);
+	 	query.setFirstResult(startIndex);
+	 	query.setMaxResults(maxRecords);
+	 	return query.list();
 		}
 		
 		/*public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId){
@@ -1561,7 +1593,7 @@ public List<Object[]> getPoliticianDetails(List<Long> locationValue,Long publica
 {
 	StringBuilder query = new StringBuilder();
 	
-	query.append("select model.voter.name,model.voter.voterId,model.voter.gender,model.voter.mobileNo,model.voter.relativeName,model.voter.age,model.voter.houseNo,model.voter.relationshipType,model.voter.voterIDCardNo,model.voter.cast,model.voter.castCatagery,model2.candidateId from BoothPublicationVoter model,Candidate model2"); 
+	query.append("select model.voter.name,model.voter.voterId,model.voter.gender,model.voter.mobileNo,model.voter.relativeName,model.voter.age,model.voter.houseNo,model.voter.relationshipType,model.voter.voterIDCardNo,model2.candidateId from BoothPublicationVoter model,Candidate model2"); 
 	if(type.equalsIgnoreCase("CONSTITUENCY"))
 	query.append(" where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId in (:locationValue)");
 	else if(type.equalsIgnoreCase("MANDAL"))
@@ -2557,5 +2589,31 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		return query.list();
 		
 	}
+public List<Object[]> getVoterDataForPanchayat(Long panchayatId, Long publicationId,
+		Long startIndex, Long maxIndex, String sort, String order) {
+	Query query = getSession().createQuery("select model.voter,model.booth.partNo from BoothPublicationVoter model where model.booth.panchayat.panchayatId = :panchayatId " +
+			" and model.booth.publicationDate.publicationDateId = :publicationId order by model.voter."+sort+" "+order );
+	
+	query.setParameter("publicationId", publicationId);
+	query.setParameter("panchayatId", panchayatId);
+	query.setFirstResult(startIndex.intValue());
+	query.setMaxResults(maxIndex.intValue());
+	
+	return query.list();
+}
+public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
+		Long startIndex, Long maxIndex, String sort, String order) {
+	
+	Query query = getSession().createQuery("select model.voter,model.booth.partNo from BoothPublicationVoter model where model.booth.boothId = :boothId " +
+			"  order by model.voter."+sort+" "+order );
+	
+	//query.setParameter("publicationId", publicationId);
+	query.setParameter("boothId", boothId);
+	query.setFirstResult(startIndex.intValue());
+	query.setMaxResults(maxIndex.intValue());
+	
+	return query.list();
+}
+
 
 }

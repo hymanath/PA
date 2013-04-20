@@ -136,5 +136,30 @@ public class PartyElectionResultDAO extends GenericDaoHibernate<PartyElectionRes
 		return query.list();
 	}
 	
+	/**
+	 *  This DAO is used for getting all parties particapted in states main elections
+	 *  @param Long stateId
+	 *  @param String electionType
+	 *  @param String elecSubtype
+	 *  @return List<Object[]>
+	 *  @date 12/04/2013
+	 *//*
+	public List<Object[]> getAllPartiesParticapatedInMainElections(Long stateId)
+	{
+		Query query = null;
+		
+		query = getSession().createQuery("select distinct model.party.partyId, model.party.shortName " +
+				"from PartyElectionResult model where model.election.electionScope.state.stateId = :stateId " +
+				" and model.election.electionScope.electionType.electionType = :electionType and " +
+				"model.election.elecSubtype = :elecSubtype and cast(model.totalSeatsWon, int)>=5 " +
+				"group by  model.party.partyId ");
+		query.setParameter("stateId",stateId);
+		query.setParameter("electionType",IConstants.ASSEMBLY_ELECTION_TYPE);
+		query.setParameter("elecSubtype",IConstants.ELECTION_SUBTYPE_MAIN);
+		
+		return query.list(); 
+		
+	}*/
+	
 	
 }

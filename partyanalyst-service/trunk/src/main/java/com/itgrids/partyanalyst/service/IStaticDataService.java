@@ -344,4 +344,6 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getPartyNamesInAState(Long stateId , Long electionTypeId);
 		
+		//public List<SelectOptionVO> getAllPartiesParticapatedInMainElectionsService(Long stateId);
+		
 }
