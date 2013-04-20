@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -13553,5 +13554,370 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			
 			
 		}
+	}
+	
+	 public VoterHouseInfoVO getSelectedVotersDetails(List<VoterHouseInfoVO> votersDetails , VoterHouseInfoVO parameters)
+	 { 
+		 log.debug("Entered into the getSelectedVotersDetails service method");
+		 
+		 VoterHouseInfoVO votersHouseInfoVO = parameters;		 
+		 try
+		 {
+			 Map<Long,Map<String, List<VoterHouseInfoVO>>> boothMap = new HashMap<Long,Map<String, List<VoterHouseInfoVO>>>();
+			 Map<String, List<VoterHouseInfoVO>> voterByHouseNoMap = null;
+			 List<VoterHouseInfoVO> voterVOs = null;
+			 
+			 VoterHouseInfoVO voterHouseInfoVO = null;
+			 
+			 //GETTING  LOCALITIES DETAILS START			 
+			    SelectOptionVO defaultSelectOptionVO1 = new SelectOptionVO();
+	 		    defaultSelectOptionVO1.setId(0l);
+		 	    defaultSelectOptionVO1.setName("0l");
+		 	    defaultSelectOptionVO1.setValue("select");		 	    
+			    buildLocalitiesBasedOnTypeAndId(parameters, votersDetails
+					.get(0).getVoterId(), parameters.getUserId(), defaultSelectOptionVO1);			
+			 //GETTING  LOCALITIES DETAILS END
+			
+			
+			//GETTING PARTIES AND CASTE  DETAILS START
+			    SelectOptionVO defaultSelectOptionVO = new SelectOptionVO();
+		 	    defaultSelectOptionVO.setId(0l);
+		 	    defaultSelectOptionVO.setName("Select");		 	    
+			    getPartiesAndCastsInVotersState(votersHouseInfoVO, votersDetails.get(0)
+					.getVoterId(), parameters.getUserId(),defaultSelectOptionVO);
+			//GETTING PARTIES AND CASTE  DETAILS END
+			
+			
+			//GETTING USER CATEGORIES DETAIS START			
+			   List<Object[]> userCategoryValuesList =  userVoterCategoryDAO
+					.getCategoryValuesList(parameters.getUserId());
+			
+			   List<SelectOptionVO> categoriesList1 = new ArrayList<SelectOptionVO>();			
+			   for(Object[] obj:userCategoryValuesList){
+				SelectOptionVO vo = new SelectOptionVO();
+				vo.setId((Long)obj[0]);
+				vo.setName(obj[1].toString());				
+				categoriesList1.add(vo);
+			   }			
+			   votersHouseInfoVO.setUserCategoriesList(categoriesList1);			
+			//GETTING USER CATEGORIES DETAIS END
+			
+			 
+			 for(VoterHouseInfoVO voter : votersDetails){
+				 
+				 voterHouseInfoVO = new VoterHouseInfoVO();
+				/* getVoterBasicInfo1(voterHouseInfoVO,voter.getVoterId(),parameters.getPublicationId());
+				 
+				 voterByHouseNoMap = boothMap.get(voter.getBoothId());
+				 
+				 if(voterByHouseNoMap == null){
+					 voterByHouseNoMap = new HashMap<String, List<VoterHouseInfoVO>>();
+					 boothMap.put(voter.getBoothId(), voterByHouseNoMap);
+				 }
+				 
+				 voterVOs =  voterByHouseNoMap.get(voterHouseInfoVO.getHouseNo());
+				 
+				 if(voterVOs == null){						 
+					 voterVOs = new ArrayList<VoterHouseInfoVO>();
+					 voterByHouseNoMap.put(voter.getHouseNo(), voterVOs);					 
+				 }
+					 
+				 voterVOs.add(voterHouseInfoVO);*/
+				 
+				 getVoterBasicInfo1(voterHouseInfoVO,voter.getVoterId(),parameters.getPublicationId());
+			 	   
+			 	    voterByHouseNoMap = boothMap.get(voter.getBoothId());
+					if( voterByHouseNoMap == null){
+						voterByHouseNoMap = new HashMap<String, List<VoterHouseInfoVO>>();
+						boothMap.put(voter.getBoothId(), voterByHouseNoMap);
+					}
+					voterVOs = voterByHouseNoMap.get(voterHouseInfoVO.getHouseNo());
+					if(voterVOs ==null){
+						voterVOs = new ArrayList<VoterHouseInfoVO>();
+						voterByHouseNoMap.put(voterHouseInfoVO.getHouseNo(), voterVOs);
+					}
+					voterVOs.add(voterHouseInfoVO);
+				 
+		 	    // voterSelectedCastAndPartyDetails(voterHouseInfoVO,voter.getVoterId(),parameters.getUserId());
+				 voterSelectedCastAndPartyDetailsWithSubLocalities(voterHouseInfoVO,voter.getVoterId(),parameters.getUserId());
+		 	     
+		 	     
+		 	    List<VoterHouseInfoVO> categoriesList = new ArrayList<VoterHouseInfoVO>();
+		 	  // List<Object[]> selectedUserCategoryValuesList = new ArrayList<Object[]>();
+			 	   
+				getVoterSelectedCategoryValues(userCategoryValuesList,
+						defaultSelectOptionVO, parameters.getUserId(), voter.getVoterId(),
+						categoriesList);
+		 	   
+		 	     voterHouseInfoVO.setCategoriesList(categoriesList);
+		 	     
+		 	     
+		 	    List<VoterHouseInfoVO> boothsList = new ArrayList<VoterHouseInfoVO>();
+			 	  List<VoterHouseInfoVO> familiesList = null;
+			 	    for(Long key:boothMap.keySet()){
+			 	    	VoterHouseInfoVO booth = new VoterHouseInfoVO();
+			 	    	boothsList.add(booth);
+			 	    	booth.setBoothId(key);
+			 	    	VoterHouseInfoVO boothInfo = getBoothDetailsForVoter(key);
+			 	    	booth.setBoothName(boothInfo.getBoothName());
+			 	    	booth.setPartNo(boothDAO.getPartNoByBoothId(key).get(0).toString());
+
+			 	    	booth.setVilliageCovered(boothInfo.getVilliageCovered());
+			 	    	booth.setPanchayatName(boothInfo.getPanchayatName());
+			 	    	Map<String, List<VoterHouseInfoVO>> families = boothMap.get(key);
+			 	    	familiesList = new ArrayList<VoterHouseInfoVO>();
+			 	    	for(String familyKey:families.keySet()){
+			 	    		VoterHouseInfoVO family = new VoterHouseInfoVO();
+			 	    		familiesList.add(family);
+			 	    		family.setHouseNo(familyKey);
+			 	    		family.setVotersList(families.get(familyKey));
+			 	    	}
+			 	    	booth.setFamiliesList(familiesList);
+			 	    }
+			 	    
+			 	   votersHouseInfoVO.setBoothsList(boothsList);
+			 }
+		 }
+		 catch(Exception e)
+		 {	
+			 log.error("Exception raised in  getSelectedVotersDetails service method");
+
+		 }
+		 return votersHouseInfoVO;
+	 
+	 }
+	
+	
+	public boolean updateAllSelectedVotersDetails(List<VoterHouseInfoVO> votersDetailsList)
+	  {	
+		  log.debug("Entered into the updateAllSelectedVotersDetails service method");
+		  try
+		  {		  
+			  for(VoterHouseInfoVO voterDetails:votersDetailsList)
+				  updateVoterInformation(voterDetails);
+			  
+		  }catch(Exception e)
+		  {	 
+			  log.debug("Exception raised in updateAllSelectedVotersDetails service method");
+			 e.printStackTrace(); 
+			 return false;
+		  }
+		  return true;
+	  }
+
+
+	  public void updateVoterInformation(VoterHouseInfoVO votersDetails) throws Exception
+	  {
+		  log.debug("Entered into the updateVoterInformation service method");
+		  try
+		  {
+			   Voter voter = voterDAO.get(votersDetails.getVoterId());
+			   User user = userDAO.get(votersDetails.getUserId());
+			   
+			   //SAVING user_voter_details TABLE DETAILS START
+			  
+				List<UserVoterDetails> userVoterDetailsList = userVoterDetailsDAO
+						.getUserVoterDetails(votersDetails.getVoterId(),
+								votersDetails.getUserId());
+				
+				UserVoterDetails userVoterDetails = null;
+				if(userVoterDetailsList != null && userVoterDetailsList.size() >0)			
+					 userVoterDetails = userVoterDetailsList.get(0);
+				else
+					userVoterDetails = new UserVoterDetails();
+					
+					userVoterDetails.setVoter(voter);
+					userVoterDetails.setUser(user);
+					
+					if(votersDetails.getCasteStateId() != null && votersDetails.getCasteStateId().longValue() != 0)
+					 userVoterDetails.setCasteState(casteStateDAO.get(votersDetails.getCasteStateId()));
+					else
+					 userVoterDetails.setCasteState(null);
+					
+					if(votersDetails.getLocalitityId() != null && votersDetails.getLocalitityId().longValue() != 0)
+					 userVoterDetails.setLocality(localityDAO.get(votersDetails.getLocalitityId()));
+					else
+					 userVoterDetails.setLocality(null);
+					
+					if(votersDetails.getHamletId() != null && votersDetails.getHamletId().longValue() != 0)
+					 userVoterDetails.setHamlet(hamletDAO.get(votersDetails.getHamletId()));
+					else
+					 userVoterDetails.setHamlet(null);
+					
+					if(votersDetails.getPartyId() != null && votersDetails.getPartyId().longValue() != 0)
+						userVoterDetails.setParty(partyDAO.get(votersDetails.getPartyId()));
+					else
+					 userVoterDetails.setParty(null);
+					userVoterDetailsDAO.save(userVoterDetails);
+					
+				//SAVING user_voter_details TABLE DETAILS END
+					
+				//SAVING voter_category_value TABLE DETAILS START
+					
+				Map<Long ,VoterCategoryValue > savedDetails = new HashMap<Long, VoterCategoryValue>();
+					
+				List<VoterCategoryValue> voterAllSavedCategories = voterCategoryValueDAO
+						.getVoterAllCategoryValues(votersDetails.getUserId(),
+								votersDetails.getVoterId());
+				
+				for(VoterCategoryValue category:voterAllSavedCategories)
+					savedDetails.put(category.getUserVoterCategoryValue().getUserVoterCategoryValueId(), category);
+				
+				Map<Long ,VoterHouseInfoVO > newDetails = new HashMap<Long, VoterHouseInfoVO>();
+				
+				for(VoterHouseInfoVO voterVO:votersDetails.getCategoriesList()){
+					if(voterVO.getCategoryValuesId().longValue() != 0)
+					newDetails.put(voterVO.getCategoryValuesId(), voterVO);
+				}
+				
+				//CHECKING ALL THE SAVED CATEGORIES ARE EXIST OTHER WISE DELETE THOSE 
+				removeOrUpdateTheSavedVoterCategoryValues(savedDetails ,newDetails , voter , user );
+				
+				//SAVE NEWLY ADDED CATEGORY VALUES DETAILS
+				
+				saveNewlySelectedVoterCategoryValues(savedDetails ,newDetails , voter , user );
+				
+				
+				//SAVING voter_category_value TABLE DETAILS END
+				
+		  }
+		  catch(Exception e)
+		  {
+			  log.error("Exception raised in  updateVoterInformation service method");
+			  e.printStackTrace();
+			  throw new Exception();
+			  
+		  }
+		  
+	  }
+
+	  public void removeOrUpdateTheSavedVoterCategoryValues(
+				Map<Long, VoterCategoryValue> savedDetails,
+				Map<Long, VoterHouseInfoVO> newDetails, Voter voter, User user)  throws Exception{
+			
+			log.debug("Entered into the removeOrUpdateTheSavedVoterCategoryValues service method");
+			
+			try
+			{	  
+		        Set<Long> savedSet = savedDetails.keySet();
+			
+				for(Long voterCategoryValue:savedSet){
+					
+					VoterHouseInfoVO vo = newDetails.get(voterCategoryValue);
+					/*if(vo != null)
+					{
+						VoterCategoryValue voterCategoryVal = savedDetails.get(voterCategoryValue);
+						voterCategoryVal.setUser(user);
+						voterCategoryVal.setVoter(voter);
+						voterCategoryVal.setUserVoterCategoryValue(userVoterCategoryValueDAO.get(voterCategoryValue));
+						voterCategoryValueDAO.save(voterCategoryVal);
+						
+					}
+					else*/
+					if(vo == null)
+						//voterCategoryValueDAO.remove(savedDetails.get(voterCategoryValue).getVoterCategoryValueId());
+						voterCategoryValueDAO.removeVoterCategoryValue(savedDetails.get(voterCategoryValue).getVoterCategoryValueId());
+					
+					newDetails.remove(voterCategoryValue);				
+
+				}
+			}
+			catch(Exception e)
+			{
+				log.error("Exception raised in  removeOrUpdateTheSavedVoterCategoryValues service method");
+				e.printStackTrace();
+				throw new Exception();
+				
+			}
+	  }
+
+	   public void saveNewlySelectedVoterCategoryValues(
+				Map<Long, VoterCategoryValue> savedDetails,
+				Map<Long, VoterHouseInfoVO> newDetails, Voter voter, User user)  throws Exception
+	  {
+		  log.debug("Entered into the saveNewlySelectedVoterCategoryValues service method");
+		  try
+		  {
+		
+		    Set<Long> newSet = newDetails.keySet();
+			
+			for(Long categoryValueId:newSet){
+				
+				  VoterHouseInfoVO vo = newDetails.get(categoryValueId);
+				
+				  VoterCategoryValue voterCategoryVal = new VoterCategoryValue();
+				  voterCategoryVal.setUser(user);
+				  voterCategoryVal.setVoter(voter);
+				  voterCategoryVal.setUserVoterCategoryValue(userVoterCategoryValueDAO.get(categoryValueId));
+				  voterCategoryValueDAO.save(voterCategoryVal);
+			}
+		  }
+		  catch(Exception e)
+		  {
+			  log.error("Exception raised in saveNewlySelectedVoterCategoryValues service method");
+			  e.printStackTrace();
+			  throw new Exception();
+		  }
+		  
+	  }
+
+	  public void voterSelectedCastAndPartyDetailsWithSubLocalities(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId){
+		
+		  List<UserVoterDetails> userVoterDetailsList = userVoterDetailsDAO.getUserVoterDetails(voterId,userId);
+			if(userVoterDetailsList != null && userVoterDetailsList.size() >0){
+				UserVoterDetails userVoterDetails = userVoterDetailsList.get(0);
+				if(userVoterDetails.getParty() != null){
+					voterHouseInfoVO.setPartyId(userVoterDetails.getParty().getPartyId());
+				}else{
+					voterHouseInfoVO.setPartyId(0l);
+				}
+				if(userVoterDetails.getCasteState() != null){
+					voterHouseInfoVO.setCasteStateId(userVoterDetails.getCasteState().getCasteStateId());
+				}
+				
+				if(userVoterDetails.getHamlet() !=null)
+				{
+					voterHouseInfoVO.setHamletId(userVoterDetails.getHamlet().getHamletId());
+					
+					List<Object[]> localities =   getLocalitiesForHamlet(userVoterDetails.getHamlet().getHamletId(),userId);
+					 List<SelectOptionVO> localitiesList = new ArrayList<SelectOptionVO>();
+					 processLocalities1(localities, localitiesList);
+					 
+					 SelectOptionVO defaultSelectOptionVO = new SelectOptionVO();
+					   defaultSelectOptionVO.setId(0l);
+					   defaultSelectOptionVO.setName("Select");
+					   defaultSelectOptionVO.setValue("Select");
+					   
+					   sortSelectionOptionVoList(localitiesList);
+					   localitiesList.add(0, defaultSelectOptionVO);
+					   
+					   voterHouseInfoVO.setSubLocalities(localitiesList);
+					
+				}/*else
+					voterHouseInfoVO.setCasteStateId(0l);*/
+				
+				if(userVoterDetails.getLocality() != null)
+					voterHouseInfoVO.setSubLocalityId(userVoterDetails.getLocality().getLocalityId());
+				
+				
+			}else{
+				
+				voterHouseInfoVO.setPartyId(0l);
+				voterHouseInfoVO.setCasteStateId(0l);
+			}
+	} 
+	  
+	  public void processLocalities1(List<Object[]> localities , List<SelectOptionVO> localitiesList ){
+			
+		  for (Object[] a : localities)
+		    {  SelectOptionVO sv =new  SelectOptionVO();
+			   // a[0]="x"+a[0];
+			   // sv.setId((Long)a[0]);
+		       sv.setId(new BigInteger(a[0].toString()).longValue());
+			    sv.setName(a[1]!=null?a[1].toString():"");
+			    sv.setValue(a[1]!=null?a[1].toString():"");
+			    localitiesList.add(sv);
+			 
+	        	}
 	}
 }
