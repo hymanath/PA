@@ -14,7 +14,9 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -48,6 +50,7 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private SelectOptionVO selectOptionVO,casteVO;
 	private String save;
 	private Long userId;
+	private VoterVO voterVO;
 	//private String windowTask = null;
 	private ResultStatus resultStatus;
 	private List<VoterHouseInfoVO> votersFamilyInfo;
@@ -61,6 +64,8 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private RegionServiceDataImp regionServiceDataImp;
 	
 	private List<SelectOptionVO> hamlets;
+	
+	private List<VoterVO> votersData , voterDetails;
 	
 	public List<SelectOptionVO> getHamlets() {
 		return hamlets;
@@ -296,6 +301,35 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 		this.constituencyList = constituencyList;
 	}
 	
+	
+	
+
+	public List<VoterVO> getVotersData() {
+		return votersData;
+	}
+
+	public void setVotersData(List<VoterVO> votersData) {
+		this.votersData = votersData;
+	}
+
+	
+	public List<VoterVO> getVoterDetails() {
+		return voterDetails;
+	}
+
+	public void setVoterDetails(List<VoterVO> voterDetails) {
+		this.voterDetails = voterDetails;
+	}
+
+	
+	public VoterVO getVoterVO() {
+		return voterVO;
+	}
+
+	public void setVoterVO(VoterVO voterVO) {
+		this.voterVO = voterVO;
+	}
+
 	public String execute() throws Exception{
 		
 		
@@ -1023,5 +1057,63 @@ public String saveLocality()
 				e.printStackTrace();
 			}
 			return Action.SUCCESS;  
+	   }
+	   
+	   public String getVoterData()
+	   {
+		  // String param = null;
+			//param = getTask();
+			try {
+				LOG.debug("Entered into the getvoterData() method in VotersEditAction");
+				//jObj = new JSONObject(param);
+				session = request.getSession();
+				RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+				Long userId = null;
+				if(user != null && user.getRegistrationID() != null)
+				userId = user.getRegistrationID();
+				String constituencyId = request.getParameter("constituencyId");
+				String ids = request.getParameter("id");
+				String publicationId = request.getParameter("publicationId");
+				String startIndex = request.getParameter("startIndex");
+				String maxIndex = request.getParameter("results");
+				String buildType = request.getParameter("buildType");
+				String sort = request.getParameter("sort");
+				String dir = request.getParameter("dir");
+				//String task = jObj.getString("getVoterData");
+				VoterDataVO voterDataVO = new VoterDataVO();
+				voterDataVO.setConstituencyId(Long.valueOf(constituencyId));
+				voterDataVO.setId(Long.valueOf(ids));
+				voterDataVO.setPublicationId(Long.valueOf(publicationId));
+				voterDataVO.setStartIndex(Long.valueOf(startIndex));
+				voterDataVO.setMaxIndex(Long.valueOf(maxIndex));
+				voterDataVO.setDir(dir);
+				voterDataVO.setBuildType(buildType);
+				voterDataVO.setSort(sort);
+				List<Long> categories = new ArrayList<Long>();
+				if(request.getParameter("reqfields").trim().length() >0){
+					String[] idsArray = request.getParameter("reqfields").trim().split(",");
+				    for(String id : idsArray){
+	                   if(id.equalsIgnoreCase("party")){
+	                	   voterDataVO.setPartyPresent(true);
+				    	}else if(id.equalsIgnoreCase("cast")){
+				    		voterDataVO.setCastePresent(true);
+				    	}
+				    	else{
+				    		categories.add(new Long(id));
+				    	}
+				    }
+				} 
+				votersData = votersAnalysisService.getVoterData(voterDataVO , userId , categories);
+				voterVO = new VoterVO();
+				if(votersData != null & votersData.size() > 0)
+				{
+					voterVO.setVotersList(votersData);
+					voterVO.setTotalVoters(votersData.get(0).getTotalVoters());
+				}
+				
+			} catch (Exception e) {
+				LOG.error("Error occured in the getvoterData() method in VotersEditAction", e);
+			}
+		   return Action.SUCCESS;
 	   }
    }

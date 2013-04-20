@@ -80,6 +80,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private List<SelectOptionVO> constituencies;
     private IRegionServiceData regionServiceDataImp;
     private ILoginService loginService;
+    
+    private String status;
  
 	public IMailService getMailService() {
 		return mailService;
@@ -377,13 +379,19 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	}
 	
 	
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public String execute()
 	{
 		session = request.getSession();
 		String sPath = (String)session.getAttribute("imagePath");
 		Boolean savedSuccessfully;
 		BufferedImage imageFile = null;
-		
 		String  imageName=null;
 		String constiName[]=null; 
 		String fileName=null;; 
@@ -491,7 +499,13 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			return getRedirectPageDetails();
 		
 		else if("".equalsIgnoreCase(redirectLoc))
+		{
+			
+			status = "success";
+			session.setAttribute("status", status);
 			return "connect";
+		}
+			
 			
 		return SUCCESS;
 	}

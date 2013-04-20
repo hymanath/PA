@@ -27,7 +27,7 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 	private Long id;
 	private String type;
 	private String typename;
-	
+	private String name;
 	private String maintype;
 	
 	private Long constituencyId;
@@ -49,6 +49,7 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 	private Long boothId;
 	private Long PanchaytId;
 	private Long hamletId;
+	private List<Long> count;
 	
 	public String getRequestFor() {
 		return requestFor;
@@ -216,6 +217,24 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 		
 	}
 	
+	
+	public List<Long> getCount() {
+		return count;
+	}
+
+	public void setCount(List<Long> count) {
+		this.count = count;
+	}
+
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String execute() throws Exception
 	{
 		
@@ -240,6 +259,12 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 		Long publicationId = request.getParameter("publicationId") != null ?Long.parseLong(request.getParameter("publicationId")):0L;
 		Long boothId = request.getParameter("boothId") != null ? Long.parseLong(request.getParameter("boothId")):0L;
 		Long panchaytId = request.getParameter("panchaytId") != null? Long.parseLong(request.getParameter("panchaytId")) :0L;
+		
+		Long constituencyId = request.getParameter("constituencyId") != null? Long.parseLong(request.getParameter("constituencyId")) :0L;
+		
+		String name = request.getParameter("name") ;
+		
+		
 		
 		return SUCCESS;
 	}
@@ -311,4 +336,20 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 			return Action.SUCCESS;
 			
 		}
+	
+	public String getHamletAndBoothCount()
+	{
+		try {
+			log.debug("Executing getVoterDetails() Method");
+			
+			String param;
+			param = getTask();
+			jObj = new JSONObject(param);
+			count = votersAnalysisService.getCountOfHamletAndBoothsInAPanchayat(jObj.getLong("panchaytId"));
+		} catch (Exception e) {
+			log.error("Error Occured in the getHamletAndBoothCount() method in VoterFamilyInfo", e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }

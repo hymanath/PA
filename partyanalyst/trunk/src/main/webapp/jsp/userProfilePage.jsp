@@ -48,6 +48,7 @@ var userStatusType = "${dataTransferVO.userStatusType}";
 var hasNewsMonitoring = "${hasNewsMonitoring == true}";
 
 
+
 <%
       String environment = "local";
 	  if(request.getRequestURL().indexOf("partyanalyst.com") != -1)
@@ -867,7 +868,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 	$('#myModal').modal('show');
 }
  
-    
 
 <c:if test="${hasNewsMonitoring == false}">
 getInitialUpdates();
@@ -1343,7 +1343,18 @@ function closeDialog(){
 $('#userSettingsDialog').dialog('close');
 }
 
+function checkForUserStatus()
+{
+	var status = "${sessionScope.status}";
+	if(status != null && status.trim().length > 0)
+	{
+		$('#headerDiv').html('<span style="color:green;">Updated Successfully</span>');
+		
+		<c:remove var="status" scope="session" />  
+	}
+}
 getPeopleYouMayKnowDetails();
+checkForUserStatus();
 </script>
 </body>
 </html>
