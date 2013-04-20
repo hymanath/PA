@@ -78,7 +78,7 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds);
 	 public List<?> getVotersDetailsByHamletPublication(Long hamletId, Long userId, Integer startIndex,
 				Integer maxRecords, String order, String columnName);
-	 public List<?> getVotersBasedOnVoterIdsAndPublication(Long publicationDateId , List<?> voterIds);
+	 public List<?> getVotersBasedOnVoterIdsAndPublication(Long publicationDateId , List<?> voterIds,String coloumName , String order);
 	 public List<?> getVotersCountByHamlet(Long hamletId,Long userID);
 	 
 	 public List<Object[]> getTotalVotersCountInABooth(Long userId ,Long boothId,Long publicationDateId);
@@ -88,6 +88,9 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	 public List<Voter> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId,long publicationId);
 	 public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId,String type );
 	 public List<Long> getHamletsExistedInABoothForUser(Long userId,Long  id,Long  publicationDateId,Long  constituencyId);
+	 
+	 public List<Object[]> getVoterDataForHamlet(Long hamletId , Long publicationId ,Long startIndex, Long maxIndex , String sort,String order );
+
 
 
 }

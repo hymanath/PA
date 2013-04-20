@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.VoterDataVO;
+
 
 public class VoterVO implements Serializable , Comparable<VoterVO>{
 	
@@ -53,7 +55,8 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private Long movedOrRelocatedBoothId;
 	private Long movedOrRelocatedPartNo;
 	private String relativeName;
-	
+	private String partyName;
+	private String casteName;
 	public Long getLocalAreaId() {
 		return localAreaId;
 	}
@@ -147,6 +150,10 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String influencePerson;
 	private Boolean isCadrePerson;
 	private Boolean isPoliticion;
+	private List<VoterVO> categoriesList;
+	private Long CategoryValuesId;
+	private String name;
+	
 	public String getInfluencePerson() {
 		return influencePerson;
 	}
@@ -179,6 +186,7 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 		this.votersList = votersList;
 	}
 
+	
 	public VoterVO(){
 		
 	}
@@ -516,6 +524,7 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 		this.partNo = partNo;
 	}
 
+
 	public Long getMovedOrRelocatedBoothId() {
 		return movedOrRelocatedBoothId;
 	}
@@ -538,6 +547,47 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 
 	public void setRelativeName(String relativeName) {
 		this.relativeName = relativeName;
+	}
+	
+
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
+	public String getCasteName() {
+		return casteName;
+	}
+
+	public void setCasteName(String casteName) {
+		this.casteName = casteName;
+	}
+
+	public List<VoterVO> getCategoriesList() {
+		return categoriesList;
+	}
+
+	public void setCategoriesList(List<VoterVO> categoriesList) {
+		this.categoriesList = categoriesList;
+	}
+
+	public Long getCategoryValuesId() {
+		return CategoryValuesId;
+	}
+
+	public void setCategoryValuesId(Long categoryValuesId) {
+		CategoryValuesId = categoryValuesId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

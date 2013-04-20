@@ -7850,6 +7850,7 @@ public class StaticDataService implements IStaticDataService {
 		
 		if(partiesList != null && partiesList.size() > 0)
 		{
+			
 			for (Object[] parms : partiesList) {
 				selectOptionVO = new SelectOptionVO();
 				selectOptionVO.setId((Long)parms[0]);
@@ -7863,6 +7864,37 @@ public class StaticDataService implements IStaticDataService {
 		}		
 		return selectOptionVOs;
 	}
+	
+	/**
+	 *  This Service is used for getting all parties particapted in states main elections
+	 *  @param Long stateId
+	 *  @return List<SelectOptionVO>
+	 *  @date 12/04/2013
+	 *//*
+	public List<SelectOptionVO> getAllPartiesParticapatedInMainElectionsService(Long stateId)
+	{
+		List<SelectOptionVO> partiecList = new ArrayList<SelectOptionVO>();
+		List<Object[]> parties = null;
+		SelectOptionVO selectOptionVO = null;
+		parties = partyElectionResultDAO.getAllPartiesParticapatedInMainElections(stateId);
+		if(parties != null && parties.size() > 0)
+		{
+			
+			for (Object[] parms : parties)
+			{
+				selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long)parms[0]);
+				selectOptionVO.setName(parms[1].toString());
+				if(!selectOptionVO.getName().equalsIgnoreCase("IND")  && !selectOptionVO.getName().equalsIgnoreCase("INC(I)") && !selectOptionVO.getName().equalsIgnoreCase("JNP"))
+				{
+					partiecList.add(selectOptionVO);
+				}
+			}
+			
+			
+		}
+		return partiecList;
+	}*/
 	
 }
 

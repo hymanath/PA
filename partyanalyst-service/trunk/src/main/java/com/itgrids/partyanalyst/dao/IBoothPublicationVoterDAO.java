@@ -15,10 +15,10 @@ public interface IBoothPublicationVoterDAO extends
 	public List<BoothPublicationVoter> checkForVoterExistenceInBoothPublicationVoter(
 			Long boothId, Long voterId);
 	
-	public List<Voter> getVotersDetailsByBoothId(Long boothId, Integer startIndex,
+	public List<Object[]> getVotersDetailsByBoothId(Long boothId, Integer startIndex,
 			Integer maxRecords, String order, String columnName);
 	
-	public List<Voter> getVotersDetailsForPanchayatByPublicationId(
+	public List<Object[]> getVotersDetailsForPanchayatByPublicationId(
 			Long panchayatId, Long publicationDateId, Integer startIndex,
 			Integer maxRecords, String order, String columnName);
 	
@@ -284,8 +284,11 @@ public interface IBoothPublicationVoterDAO extends
 		public List<Voter> getVoterDetailsByHamletForUser(Long userId,Long id,Long publicationDateId);
 		
   public List<Object[]> findFamiliesVotersInfoForBoothForUser(Long id,Long publicationDateId,Long userId);
+  
+  public List<Object[]> getVoterDataForPanchayat(Long panchayatId , Long publicationId ,Long startIndex, Long maxIndex , String sort,String order );
+  
+  public List<Object[]> getVoterDataForBooth(Long boothId , Long publicationId ,Long startIndex, Long maxIndex , String sort,String order );
 
-
-
+ 
 		
 }

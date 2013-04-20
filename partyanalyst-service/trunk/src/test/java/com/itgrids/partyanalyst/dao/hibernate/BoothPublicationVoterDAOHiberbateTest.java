@@ -448,5 +448,14 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		System.out.println(values.size());
 	}*/
 	
-	
+	/*public void testGetVoterData()
+	{
+		List<Voter> voter = boothPublicationVoterDAO.getVoterDataForPanchayat(4l, 7l,0l, 100l, "voterId", "asc");
+		System.out.println(voter.size());
+	}*/
+	public void testGetVoterData()
+	{
+		List<Object[]> voter = boothPublicationVoterDAO.getVoterDataForBooth(123020l, 7l,0l, 100l, "voterId", "asc");
+		System.out.println(voter.size());
+	}
 }

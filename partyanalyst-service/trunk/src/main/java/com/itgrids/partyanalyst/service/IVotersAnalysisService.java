@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
@@ -248,5 +249,9 @@ public interface IVotersAnalysisService {
 	 public VoterHouseInfoVO getSelectedVotersDetails(List<VoterHouseInfoVO> votersDetails , VoterHouseInfoVO parameters);
 	 
 	 public boolean updateAllSelectedVotersDetails(List<VoterHouseInfoVO> votersDetailsList);
+	 
+	 public List<Long> getCountOfHamletAndBoothsInAPanchayat(Long panchayatId);
+	 
+	 public List<VoterVO> getVoterData(VoterDataVO voterDataVO ,Long userId , List<Long> categories);
 	 
 }

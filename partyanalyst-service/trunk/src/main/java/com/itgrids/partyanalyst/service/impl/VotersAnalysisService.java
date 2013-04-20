@@ -91,6 +91,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
@@ -628,8 +629,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			log.debug("Excecuting getVoterDetails() method in RegionServiceDataImp service");
 
 		Map<Long,VoterVO> voters = new HashMap<Long, VoterVO>();
-		List<VoterVO> returnValue = null;
-		List<Voter> votersList = new ArrayList<Voter>();;
+		List<VoterVO> returnValue = new ArrayList<VoterVO>();
+		List<Object[]> votersList = new ArrayList<Object[]>();;
 		Long totalCount = 0L;
 		VoterVO voterVO = null;
 		List<Long> votersIdsList = new ArrayList<Long>(0);
@@ -638,11 +639,17 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		try {  
 			
 			if(columnName != null && columnName.equalsIgnoreCase("firstName"))
+			{
 				columnName = "name";
+			}
+			if(columnName != null && columnName.equalsIgnoreCase("relativeFirstName"))
+			{
+				columnName = "relativeName";
+			}
 			if(hamletId != null && hamletId.longValue() != 0)
 			{
 				List<?> votersList1 = userVoterDetailsDAO.getVotersDetailsByHamletPublication(hamletId, userId,startIndex,maxRecords,order,columnName);
-				 votersList =( List<Voter>)userVoterDetailsDAO.getVotersBasedOnVoterIdsAndPublication(publicationDateId,votersList1);
+				 votersList =(List<Object[]>) userVoterDetailsDAO.getVotersBasedOnVoterIdsAndPublication(publicationDateId,votersList1,columnName,order);
 				 totalCount=(Long) userVoterDetailsDAO.getVotersCountByHamlet(hamletId,userId).get(0);
 			}
 			else
@@ -665,8 +672,11 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			}
 				if(votersList != null && votersList.size() > 0)
 				{
-					for(Voter voter : votersList)
+					for(Object[] voterDetails : votersList)
+					{
+						Voter voter = (Voter)voterDetails[0];
 						votersIdsList.add(voter.getVoterId());
+					}
 					
 				}
 				if(votersIdsList != null && votersIdsList.size() > 0)
@@ -680,12 +690,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				Long count = new Long(startIndex);
 				List<Long> voterIdsList = new ArrayList<Long>();
 				
-				for (Voter voter : votersList) {
-	
+				for (Object[] voterDetails : votersList) {
+					
+					Voter voter = (Voter)voterDetails[0];
 					voterVO = new VoterVO();
 					voterVO.setVoterIds(voter.getVoterId());
 					voterIdsList.add(voter.getVoterId());
-					voterVO.setVoterId((++count)+"");
+					voterVO.setVoterId((Long.valueOf(++count).toString()));
+					
 					voterVO.setFirstName(voter.getName());
 					voterVO.setAge(voter.getAge());
 					voterVO.setGender(voter.getGender());
@@ -694,7 +706,20 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					voterVO.setRelationshipType(voter.getRelationshipType());
 					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
 					voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :" ");
-					voterVO.setSerialNo(serialNoMap.get(voter.getVoterId()));
+					
+					
+					
+					if(!(hamletId != null && hamletId.longValue() != 0))
+					{
+						voterVO.setPartNo(Long.valueOf(voterDetails[1].toString()));
+						voterVO.setSerialNo((Long)voterDetails[2]);
+					}
+					else
+					{
+						//voterVO.setSerialNo(serialNoMap.get(voter.getVoterId()));
+						voterVO.setPartNo(Long.valueOf(voterDetails[1].toString()));
+						voterVO.setSerialNo((Long)voterDetails[2]);
+					}
 					
 					/*if(voter.getInfluencingPeople() != null){
 						voterVO.setInfluencePerson(true);
@@ -704,7 +729,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 						voterVO.setInfluencePerson(false);
 						voterVO.setInfluencePerson("false");
 					}*/
+					
 					voters.put(voter.getVoterId(), voterVO);
+					
+					returnValue.add(voterVO);
 	
 				}
 				List<Long> influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIdsList,userId);
@@ -742,7 +770,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				}
 				if(voters != null && voters.size() > 0)
 				{
-					returnValue = new ArrayList<VoterVO>(voters.values());
 					returnValue.get(0).setTotalVoters(totalCount);
 				}
 		} catch (Exception e) {
@@ -11411,11 +11438,11 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					voterVO.setHouseNo(params[6]!=null ? params[6].toString() : " ");
 					voterVO.setRelativeFirstName(params[4]!=null ? params[4].toString() : " ");
 					voterVO.setRelationshipType(params[7]!=null ? params[7].toString() : " ");
-					voterVO.setCast(params[9]!=null ? params[9].toString() : " ");
-					voterVO.setCastCatagery(params[10]!=null ? params[10].toString() : " ");
+					//voterVO.setCast(params[9]!=null ? params[9].toString() : " ");
+					//voterVO.setCastCatagery(params[10]!=null ? params[10].toString() : " ");
 					voterVO.setVoterIDCardNo(params[8]!=null ? params[8].toString() : " ");
 					voterVO.setMobileNo(params[3]!=null ? params[3].toString() :" ");
-					voterVO.setCandidateId((Long) params[11]);
+					voterVO.setCandidateId((Long) params[9]);
 						voterVO.setLocalArea(name);	
 					voters.add(voterVO);
 				}
@@ -13919,5 +13946,166 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			    localitiesList.add(sv);
 			 
 	        	}
+	}
+	
+	public List<Long> getCountOfHamletAndBoothsInAPanchayat(Long panchayatId)
+	{
+		List<Long> count  = new ArrayList<Long>();
+		Long boothsCount = null;
+		List<Object> hamletsCount = null;
+		boothsCount = boothDAO.getBoothsInPanchayatDAO(panchayatId);
+		if(boothsCount != null)
+		{
+			count.add(boothsCount);
+		}
+		else
+			count.add(0l);
+		hamletsCount = panchayatHamletDAO.getHamletsCountOfAPanchayat(panchayatId);
+		if(hamletsCount != null && hamletsCount.size() > 0)
+		{
+			Long hCount = (Long)(hamletsCount.get(0));
+			count.add(hCount);
+		}
+		else
+			count.add(0l);
+		return count;
+		
+	}
+	
+	@SuppressWarnings({ "unused", "unchecked" })
+	public List<VoterVO> getVoterData(VoterDataVO voterDataVO , Long userId , List<Long> categories)
+	{
+		List<VoterVO> voterData = new ArrayList<VoterVO>();
+		List<Object[]> voters = null;
+		VoterVO voterVO = null;
+		List<Long> voterIds = new ArrayList<Long>();
+		Long totalCount = 0l;
+		Map<Long , VoterVO> voterMap = new HashMap<Long, VoterVO>();
+		try {
+			log.debug("entered into the getVoterData() method in VotersAnalysisSevice");
+			if(voterDataVO.getBuildType().equalsIgnoreCase("panchayat"))
+			{
+				voters     = new ArrayList<Object[]>();
+				voters     = boothPublicationVoterDAO.getVotersDetailsForPanchayatByPublicationId(voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() );
+				totalCount = (Long) boothPublicationVoterDAO.getVotersCountForPanchayat(voterDataVO.getId() , voterDataVO.getPublicationId()).get(0);
+				
+			}
+			else if(voterDataVO.getBuildType().equalsIgnoreCase("booth"))
+			{
+				voters     = new ArrayList<Object[]>();
+				voters     = boothPublicationVoterDAO.getVotersDetailsByBoothId(voterDataVO.getId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort());
+				totalCount = (Long) boothPublicationVoterDAO.getVotersCountByBoothId(voterDataVO.getId()).get(0);
+			}
+			else if (voterDataVO.getBuildType().equalsIgnoreCase("hamlet"))
+			{
+				voters     =  new ArrayList<Object[]>();
+				List<?> votersList1 = userVoterDetailsDAO.getVotersDetailsByHamletPublication(voterDataVO.getId(), userId,voterDataVO.getStartIndex().intValue(),voterDataVO.getMaxIndex().intValue(),voterDataVO.getDir(),voterDataVO.getSort());
+				voters     =  (List<Object[]>) userVoterDetailsDAO.getVotersBasedOnVoterIdsAndPublication(voterDataVO.getPublicationId(),votersList1,voterDataVO.getSort(),voterDataVO.getDir());
+				totalCount =  (Long) userVoterDetailsDAO.getVotersCountByHamlet(voterDataVO.getId(),userId).get(0);
+			}
+			
+			if(voters != null && voters.size() > 0)
+			{
+				for (Object[] voterDetails : voters) {
+					Voter voterInfo = (Voter) voterDetails[0];
+					
+					voterVO = new VoterVO();
+					voterVO.setVoterId(voterInfo.getVoterIDCardNo());
+					voterVO.setName(voterInfo.getName());
+					voterVO.setGender(voterInfo.getGender());
+					voterVO.setAge(voterInfo.getAge());
+					voterVO.setHouseNo(voterInfo.getHouseNo());
+					voterVO.setMobileNo(voterInfo.getMobileNo());
+					voterVO.setRelativeFirstName(voterInfo.getRelativeName());
+					voterVO.setPartNo(Long.valueOf(voterDetails[1].toString()));
+					voterVO.setTotalVoters(totalCount);
+					voterVO.setVoterIds(voterInfo.getVoterId());
+					voterIds.add(voterInfo.getVoterId());
+					voterMap.put(voterInfo.getVoterId(), voterVO);
+					voterData.add(voterVO);
+					//voterVO.setPartNo(Long.valueOf(voterDetails[1].toString()));
+					voterVO.setSerialNo((Long)voterDetails[2]);
+				}
+			}
+			
+			List<Long> influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIds,userId);
+			if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+			{
+				
+				for (Long influencingPeople : influencingPeopleList) {
+					if(influencingPeople != null)
+					{
+						voterVO = voterMap.get(influencingPeople);
+						voterVO.setInfluencePerson(true);
+					}
+				}
+			}
+			
+			List<Long> cadrePeopleList = cadreDAO.findCadrePeopleDetails(voterIds,userId);
+			if(cadrePeopleList != null && cadrePeopleList.size() > 0)
+			{
+				for (Long cadrePeople : cadrePeopleList) {
+					if(cadrePeople != null)
+					{
+						voterVO = voterMap.get(cadrePeople);
+						voterVO.setIsCadrePerson(true);
+					}
+				}
+			}
+			
+			List<Long> candidatePeopleList = candidateDAO.findCandidatePeopleDetails(voterIds);
+			if(candidatePeopleList != null && candidatePeopleList.size() > 0)
+			{
+				for (Long candidatePeople : candidatePeopleList) {
+					if(candidatePeople != null)
+					{
+						voterVO = voterMap.get(candidatePeople);
+						voterVO.setIsPoliticion(true);
+					}
+				}
+			}
+			if(voterDataVO.getPartyPresent() || voterDataVO.getCastePresent())
+			{
+				List<UserVoterDetails> votersPartyCastList = userVoterDetailsDAO.getAllUserVoterDetails(voterIds,userId);
+				if(votersPartyCastList != null && votersPartyCastList.size() > 0)
+				{
+					for (UserVoterDetails voterPartyAndCasteDetails : votersPartyCastList) {
+						voterVO = voterMap.get(voterPartyAndCasteDetails.getVoter().getVoterId());
+						if(voterPartyAndCasteDetails != null)
+						{
+							
+							voterVO.setPartyName(voterPartyAndCasteDetails.getParty()!=null ? voterPartyAndCasteDetails.getParty().getShortName():"");
+							voterVO.setCasteName(voterPartyAndCasteDetails.getCasteState().getCaste() != null ? voterPartyAndCasteDetails.getCasteState().getCaste().getCasteName():"");
+						}
+						else
+						{
+							voterVO.setPartyName("");
+							voterVO.setCasteName("");
+						}
+					}
+				}
+			}
+			if(categories != null && categories.size() > 0){
+				VoterVO category = null;
+				 List<Object[]> votersPartyCastList = voterCategoryValueDAO.getVoterCategoryValuesForVoters(userId,voterIds);
+			     for(Object[] voterDetails:votersPartyCastList){
+			    	 VoterVO voterObj = voterMap.get((Long)voterDetails[0]);
+			    	 if(voterObj != null){
+			    		 List<VoterVO> categoriesList = voterObj.getCategoriesList();
+			    		 if(categoriesList == null){
+			    			 categoriesList = new ArrayList<VoterVO>();
+			    			 voterObj.setCategoriesList(categoriesList);
+			    		 }
+			    		  category = new VoterVO();
+			    		  categoriesList.add(category);
+			    		  category.setCategoryValuesId((Long)voterDetails[1]);
+			    		  category.setName(voterDetails[2]!=null?voterDetails[2].toString():"");
+			    	 }
+			     }
+			 }
+		} catch (Exception e) {
+			log.error("error occured in the getVoterData() method in VotersAnalysis" , e) ;
+		}
+		return voterData;
 	}
 }

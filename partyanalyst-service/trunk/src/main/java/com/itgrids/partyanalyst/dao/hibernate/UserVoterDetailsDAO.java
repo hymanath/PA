@@ -220,7 +220,7 @@ IUserVoterDetailsDAO{
 				Integer maxRecords, String order, String columnName) {  
 		 
 			String queryString = "select model.voter.voterId from UserVoterDetails model " +
-					"where model.hamlet.hamletId = ? and model.user.userId = ? order by model.voter."+columnName+" "+order;
+					"where model.hamlet.hamletId = ? and model.user.userId = ? ";
 
 			Query query = getSession().createQuery(queryString);
 
@@ -428,13 +428,37 @@ IUserVoterDetailsDAO{
 		
 	}
 	public List<?> getVotersBasedOnVoterIdsAndPublication(
-			 Long publicationDateId , List<?> voterIds) {		
+			 Long publicationDateId , List<?> voterIds,String columnName ,String order) {		
 			
-			
-		Query query = getSession().createQuery("select distinct b.voter " +
+		Query query = null;
+		if("initial".equalsIgnoreCase(columnName))
+		 {
+			query = getSession().createQuery("select distinct b.voter,b.booth.partNo,b.serialNo " +
 				" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
-				"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " 
-								) ;
+				"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " +
+				"order by cast(b.booth.partNo , int),b.serialNo,b.voter.houseNo");
+		 }
+		 else if("partNo".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select distinct b.voter,b.booth.partNo,b.serialNo " +
+						" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
+						"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " +
+						"order by cast(b.booth.partNo , int) "+order); 
+		 }
+		 else if("serialNo".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select distinct b.voter,b.booth.partNo,b.serialNo " +
+						" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
+						"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " +
+						" order by b.serialNo  "+order); 
+		 }
+		 else
+		 {
+			 query = getSession().createQuery("select distinct b.voter,b.booth.partNo,b.serialNo " +
+						" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
+						"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " +
+						" order by b.voter."+columnName+" "+order);
+		 }
 		query.setParameter("publicationDateId",publicationDateId);
 		query.setParameterList("voterIds", voterIds);	
 		  return query.list();
@@ -756,5 +780,20 @@ IUserVoterDetailsDAO{
 				
 				return query.list();
 				
+			}
+
+			@SuppressWarnings("unchecked")
+			public List<Object[]> getVoterDataForHamlet(Long hamletId,
+					Long userId, Long startIndex, Long maxIndex,
+					String sort, String order) {
+				
+				Query query = getSession().createQuery("select model.voter from UserVoterDetails model where " +
+						"model.hamlet.hamletId = :hamletId and model.user.userId = :userId order by model.voter."+sort+" "+order);
+				
+				query.setParameter("userId", userId);
+				query.setParameter("hamletId", hamletId);
+				query.setFirstResult(startIndex.intValue());
+				query.setMaxResults(maxIndex.intValue());
+				return query.list();
 			}
 }
