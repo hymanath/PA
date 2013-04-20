@@ -205,7 +205,7 @@ function buildNotes(jsObj , results){
 
 	str+='<div><textarea placeholder="Enter your notes" id="notes'+jsObj.contentId+'" style="width:700px;height:70px;margin:3px;"></textarea></div>';
 
-	str+='<div> <a  style="float:right;margin-right:105px;"href="javaScript:{saveContentNotes('+jsObj.contentId+')}" class="btn btn-primary" >Save Notes</a></div>';
+	str+='</br><div> <a  style="float:right;margin-right:105px;"href="javaScript:{saveContentNotes('+jsObj.contentId+')}" class="btn btn-primary" >Save Notes</a></div></br></br>';
 
 	str+='</div>';
 

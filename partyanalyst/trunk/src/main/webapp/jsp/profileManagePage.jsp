@@ -1179,6 +1179,7 @@ function uploadNewsFromProfilePage()
 		
 		YAHOO.util.Connect.setForm('uploadNewsForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','uploadFilesAction.action',uploadHandler);
+		return;
 	}
 	else
 		return;
@@ -1199,8 +1200,8 @@ function validateFileUpload()
 	var fileDate = document.getElementById("existingFromTextPhoto").value;
 	var flag = true;
 
-	fileTitle = removeAllUnwantedCharacters(fileTitle);	
-	fileDesc = removeAllUnwantedCharacters(fileDesc);
+	fileTitle = removeAllUnwantedCharacters1(fileTitle);	
+	fileDesc = removeAllUnwantedCharacters1(fileDesc);
 	document.getElementById('fileTitleId').value = fileTitle;
 	document.getElementById('fileDescId').value = fileDesc;
 
@@ -1281,6 +1282,14 @@ function validateFileUpload()
 
 	return flag;
 }
+
+function removeAllUnwantedCharacters1(str)
+{
+   var strng = str.replace(/[\\\%\&\#\"+"]/g," ");
+  
+   return replaceEnterKey(strng,"  ");
+} 
+
 function validateNewsFileUpload()
 {
 	var fileDate = document.getElementById("existingFromTextNews").value;
@@ -1295,8 +1304,8 @@ function validateNewsFileUpload()
 	var scope = document.getElementById("scopeDiv").value;
 	var flag = true;
 
-	fileTitle = removeAllUnwantedCharacters(fileTitle);
-	fileDesc = removeAllUnwantedCharacters(fileDesc);
+	fileTitle = removeAllUnwantedCharacters1(fileTitle);
+	fileDesc = removeAllUnwantedCharacters1(fileDesc);
 	document.getElementById('fileTitle').value = fileTitle;
 	document.getElementById('fileDescription').value = fileDesc;
 	
