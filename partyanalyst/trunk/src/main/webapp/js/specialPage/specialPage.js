@@ -1874,8 +1874,8 @@ function validateNewsFileUpload()
 	var scope = document.getElementById("scopeDiv").value;
 	var flag = true;
 
-	fileTitle = removeAllUnwantedCharacters(fileTitle);
-	fileDesc = removeAllUnwantedCharacters(fileDesc);
+	fileTitle = removeAllUnwantedCharacters1(fileTitle);
+	fileDesc = removeAllUnwantedCharacters1(fileDesc);
 	document.getElementById('fileTitle').value = fileTitle;
 	document.getElementById('fileDescription').value = fileDesc;
 
@@ -2078,6 +2078,14 @@ function validateNewsFileUpload()
 
 	return flag;
 }
+
+function removeAllUnwantedCharacters1(str)
+{
+   var strng = str.replace(/[\\\%\&\#\"+"]/g," ");
+  
+   return replaceEnterKey(strng,"  ");
+} 
+
 
 function getScopes(){
   
