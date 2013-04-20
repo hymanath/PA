@@ -908,7 +908,7 @@ public class User extends BaseModel implements Serializable{
 	public void setLocalities(Set<Locality> localities) {
 		Localities = localities;
 	}
-	@Column(name = "login_restriction", length = 10,nullable=false)
+	@Column(name = "login_restriction", length = 10)
 	public String get_loginRestriction() {
 		return _loginRestriction;
 	}
