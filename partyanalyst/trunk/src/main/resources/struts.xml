@@ -4868,5 +4868,15 @@
 			</result>
 		</action>
 		
+		 <action name="boothWiseCasteInfoAction" class="ageWiseVoterDetailsAction" >
+			<result name="success">/jsp/boothWiseCasteInfo.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		 <action name="localAreaWiseVotersInfoAction" class="ageWiseVoterDetailsAction" >
+			<result name="success">/jsp/localAreaWiseVotersInfo.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
 		</package>
 </struts>      
