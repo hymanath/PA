@@ -1363,7 +1363,7 @@ function addToPolitician(voterId,name)
 
 	var year=publicationDateVal.substr(publicationDateVal.length - 4)
 
-	var urlstr = "boothWiseCasteInfoAction.action?id="+mainreqid+"&publicationId="+$("#publicationDateList").val()+"&type="+maintype+"&resultFor="+resultFor+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&typename="+mainname+"&publicationDate="+year+"&";
+	var urlstr = "boothWiseCasteInfoAction.action?id="+mainreqid+"&publicationDateId="+$("#publicationDateList").val()+"&type="+maintype+"&resultFor="+resultFor+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&typename="+mainname+"&publicationDate="+year+"&";
 
 	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
 		browser1.focus();
