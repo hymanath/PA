@@ -243,7 +243,7 @@
 		<property name="userLoginDetailsDAO" ref="userLoginDetailsDAO" />
 		<property name="userRolesDAO" ref="userRolesDAO" />
 		<property name="userDAO" ref="userDAO" />
-		<property name="userAcessIpAddressDAO" ref="userAcessIpAddressDAO" />
+		<property name="userAccessIpAddressDAO" ref="userAccessIpAddressDAO" />
 	    <property name="mailService" ref="mailService"/>
 		<property name="velocityEngine" ref="velocityEngine" />
 	  </bean>
@@ -1061,7 +1061,7 @@
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="userRolesDAO" ref="userRolesDAO"/>
 		<property name="userDAO" ref="userDAO" />
-		<property name="userAcessIpAddressDAO" ref="userAcessIpAddressDAO" />
+		<property name="userAccessIpAddressDAO" ref="userAccessIpAddressDAO" />
 		
 	</bean>
 	
