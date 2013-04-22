@@ -28,6 +28,7 @@ var buildType = "hamlet";
 var assemblyLocalEleBodyId;
 var selectedId;
 var isLocalityDataExist = "true";
+var isMuncipalityExist = "false";
 
 function populate(id,boothId,publicationId,houseNo){
 
@@ -937,6 +938,7 @@ function addToPolitician(voterId,name)
             $("#selectedBoothInfo").hide('');			
 			$("#reportLevelCountDiv1").removeAttr('style');
 			$("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" in "+publicationYear+" ");
+			$("#castPopupShowBtn").css("display","block");
 	   $("#votersDiv4").show();
        if(type == "booth" || type == "hamlet"){
          $("#casteRefreshButtonDiv").hide();
@@ -962,6 +964,8 @@ function addToPolitician(voterId,name)
 		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span id='areaId'>"+area+"</span> Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show values</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
 		  $("#votersShareBtn1").css('display','none');
 		  checkForLocalBodyElection();
+		  $("#castPopupShowBtn").attr("value","Mandal/Muncipality wise Caste Info");
+
 	   }
 	   //updated by sasi for getting ward related headings
 	   else if(type == "ward"){
@@ -970,7 +974,7 @@ function addToPolitician(voterId,name)
 			$("#votersBasicInfoBtnDiv").show();
 			
 		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
-	   
+	   $("#castPopupShowBtn").attr("value","Booth wise Caste Info");
 	   
 	   }
 	   else if(type == "booth"){
@@ -978,6 +982,8 @@ function addToPolitician(voterId,name)
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		  $("#votersBasicInfoBtnDiv").show();
 		 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		$("#castPopupShowBtn").attr("value","Hamlet wise Caste Info");
+
 	   }else if(type == "hamlet"){
 		   $("#votersBasicInfoBtnDiv").show();
 		// $("#cnstHeading").html();
@@ -994,10 +1000,14 @@ function addToPolitician(voterId,name)
 	     // $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		//  $("#votersBasicInfoBtnDiv").hide();
 		$("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
+	   $("#castPopupShowBtn").attr("value","Locality wise Caste Info");
+
 	   }
 	   else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
+		  $("#castPopupShowBtn").attr("value","Panchayat wise Caste Info");
 	   }else if(type=="panchayat"){
+		   $("#castPopupShowBtn").attr("value","Booth wise Caste Info");
 	     if(buildType == "hamlet"){
 		 $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View Hamlet Wise Family Details");
@@ -1104,6 +1114,19 @@ function addToPolitician(voterId,name)
 		  $("#impFamiliesMoreInfoButn").show();
 		  $("#castPartyPopupShowBtn").show();
 		}
+
+		  if(type == "mandal" && mainreqid.substring(0,1) == "1")
+		  {
+			 if(isMuncipalityExist =="true")
+			  {
+				$("#castPopupShowBtn").css("display","block");
+				$("#castPopupShowBtn").attr("value","Ward wise Caste Info");
+			  }
+			 else 
+				$("#castPopupShowBtn").css("display","none");
+			
+		  }
+			
 	
 	}
 	function getModifiedVotersCountBetweenPublications(locationType,locationValue,fromPublicationDateId,toPublicationDateId){
@@ -5996,6 +6019,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		  if(menudata[0].localbodiesList!=null){
 		  	$.each(menudata[0].localbodiesList, function(iter,municipality){
 			if( municipality.selectOptionsList != null){
+				isMuncipalityExist = "true";
 		  	str+='<li><a onClick="" dest-atr="ward"  data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+' " ><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i>'+municipality.name.replace('Greater Municipal Corp','')+'</a></li>';
 		  } else if(municipality.selectOptionsList1 != null){
 		  	str+='<li><a onClick="" dest-atr="booth" data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+' "><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i>'+municipality.name.replace('Greater Municipal Corp','')+'</a></li>';
@@ -6301,7 +6325,8 @@ buildType="hamlet";
 	  $("#impFamiliesMoreInfoButn").attr("value","View Hamlet Wise Family Details");
        $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
        $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
-	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
+	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");
+		$("#castPopupShowBtn").attr("value","Hamlet wise Caste Info");
 	 }
 
 });
@@ -6313,7 +6338,8 @@ buildType="booth";
 
 $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
-	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");	
+	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");
+	$("#castPopupShowBtn").attr("value","Booth wise Caste Info");
  }
 });
 
