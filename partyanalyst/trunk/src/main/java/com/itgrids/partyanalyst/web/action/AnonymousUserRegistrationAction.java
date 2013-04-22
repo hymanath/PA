@@ -460,27 +460,27 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			
             if(savedSuccessfully)
             {	
-            	SelectOptionVO optionVO = loginService.getUserNameAndPWDByUserId(registrationId);
-            	
-				regVO = loginService.checkForValidUser(optionVO.getName(), optionVO.getUrl());
-				HttpSession session = request.getSession();			
-				String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
-				//regVO.setUserStatus(IConstants.FREE_USER);
-				session.setAttribute(IConstants.USER,regVO);
-				//session.setAttribute("UserName", userFullName);
-				//session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
-				//session.setAttribute("UserType", "FreeUser");
-				
-				//session.setAttribute("loginStatus", "out");
-				//session.setAttribute("HiddenCount", 0);
-				//session.removeAttribute("districts");
-				//session.removeAttribute("constituencies");
-				session.setAttribute("userName", regVO.getEmail());
-				session.setAttribute("name", userFullName);
-				session.setAttribute("password", regVO.getPassword());
-				//session.setAttribute("userName", userName);
-				//session.setAttribute("password", password);
-				
+            	if(registrationId != null && registrationId > 0)
+            	{
+            		SelectOptionVO optionVO = loginService.getUserNameAndPWDByUserId(registrationId);
+            		regVO = loginService.checkForValidUser(optionVO.getName(), optionVO.getUrl());
+            	}
+            	else
+            	{
+					HttpSession session = request.getSession();			
+					String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
+					regVO.setUserStatus(IConstants.FREE_USER);
+					
+					session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
+					session.setAttribute("UserType", "FreeUser");
+					session.setAttribute("loginStatus", "out");
+					session.setAttribute("HiddenCount", 0);
+					//session.removeAttribute("districts");
+					//session.removeAttribute("constituencies");
+					session.setAttribute("userName",userName);
+					session.setAttribute("name", userFullName);
+            	}
+            	session.setAttribute(IConstants.USER,regVO);
 			}
 			 
 		 }
