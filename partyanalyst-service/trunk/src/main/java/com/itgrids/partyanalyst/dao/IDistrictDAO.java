@@ -68,4 +68,6 @@ public interface IDistrictDAO extends GenericDao<District, Long>{
 	public List<Object[]> getAllDistrictDetails(Long stateId);
 	
 	public List<Object[]> getAllDistrictInfoDetails();
+	
+	public List<Object[]> findByPartyNominationDetails(Long stateId,Long partyId,List findByPartyNomination);
 }
