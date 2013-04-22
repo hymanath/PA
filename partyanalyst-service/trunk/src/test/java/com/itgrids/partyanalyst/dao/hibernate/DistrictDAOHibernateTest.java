@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class DistrictDAOHibernateTest  extends BaseDaoTestCase{
 		}
 	}*/
 	
-	@SuppressWarnings("unchecked")
+/*	@SuppressWarnings("unchecked")
 	public void testGetDistrictIdAndNameByState()
 	{
 		List<District> list2 = districtDAO.findByStateId(1l);
@@ -40,11 +41,26 @@ public class DistrictDAOHibernateTest  extends BaseDaoTestCase{
 		for(Object[] params : list)
 			System.out.println(params[0]+"-------"+params[1]);
 	}
-	
+	*/
 	/*public void testGetDistrictNameById()
 	{
 		Object object = districtDAO.getDistrictNameById(3l);
 		System.out.println(object.toString());
-	}*/
+//	}*/
 	
+	public void testfindByPartyNomination()
+	{
+		List ids = new ArrayList();
+		ids.add(17l);
+		ids.add(38l);
+		ids.add(63l);
+		List<Object[]> values = districtDAO.findByPartyNominationDetails(1l,72l,ids);
+		System.out.println(values.size());
+		System.out.println(values.toString());
+		for (Object[] district : values) {
+			System.out.println(district[0]);
+			System.out.println(district[1]);
+		}
+		
+	}
 }
