@@ -7896,6 +7896,25 @@ public class StaticDataService implements IStaticDataService {
 		return partiecList;
 	}*/
 	
+	/**
+	 * This method is used for getting district details, only nominated districts 
+	 * based on state,party and year.
+	 * @author srishailam
+	 * @param Long stateId
+	 * @param Long partyId
+	 * @param Long electionYear
+	 * @return List<SelectOptionVO>
+	 * @date 20th April,2013
+	 */
+	public List<SelectOptionVO> getDistrictsByPartyNomination(Long stateId,Long partyId,Long electionYear) {
+		List<Long> electionIDs = electionDAO.getElectionDetailsByYear(electionYear.toString());		
+		List<Object[]> list = districtDAO.findByPartyNominationDetails(stateId,partyId,electionIDs);
+		List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>();
+		for (Object[] district : list) {
+			districts.add(new SelectOptionVO((Long) district[0],district[1].toString()));
+		}
+		return districts;
+	}
 }
 
 
