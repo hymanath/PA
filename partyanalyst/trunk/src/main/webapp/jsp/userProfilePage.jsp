@@ -445,10 +445,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 							</div>
 							<div class="constituencyDivMain ">
 								<div style="background:#2D6987;border-radius:5px 5px 5px 5px;" class="favouriteLinksHeading constituencyDivheading constituencyHeadingCls"></div>
-								<h2 id="assemblyDiv" style="margin:0px 0px 5px 0px;">Assembly</h2>
+								<h2 id="assemblyDiv" style="margin:0px 0px 5px 0px;display:none;" >Assembly</h2>
 								<div class="constituencyDivInnerFav">
 								</div>
-								<h2 id="paliamentDiv" style="margin:0px 0px 5px 0px;">Parliament</h2>
+								<h2 id="paliamentDiv" style="margin:0px 0px 5px 0px;display:none;">Parliament</h2>
 								<div class="constituencyDivInnerFav1"></div>
 
 							</div>
