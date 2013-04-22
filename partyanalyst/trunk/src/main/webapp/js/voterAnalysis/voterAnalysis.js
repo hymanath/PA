@@ -898,7 +898,6 @@ function showImportantFamiliesDiv()
 		
 	function buildPanchayatData(results,jsObj)
 		{
-	
 		var reportLevel = $("#reportLevel").val();
 		var checkedEle = jsObj.checkedele;
 		var selectedEle = jsObj.selectedEle;
@@ -921,7 +920,9 @@ function showImportantFamiliesDiv()
 			var opElmt=document.createElement('option');
 			opElmt.value=results[i].id;
 			opElmt.text=results[i].name;
-		
+			if(reportLevel == 4){
+			opElmt.title= results[i].location  +"   "+  results[i].villageCovered;
+			}
 			try
 				{
 				select.add(opElmt,null); // standards compliant
