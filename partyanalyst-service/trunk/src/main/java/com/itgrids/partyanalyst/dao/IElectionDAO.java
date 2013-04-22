@@ -195,5 +195,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List<Election> getElectionDetailsForElections(List<Long> electionIds);
 	
 	public List getCountOfElectionYearsForAssembly(Long stateId,String electionType,String elecSubType);
+	
+	public List<Long> getElectionDetailsByYear(String year);
 		
 }
