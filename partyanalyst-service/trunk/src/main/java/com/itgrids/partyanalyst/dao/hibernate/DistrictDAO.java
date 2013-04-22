@@ -120,5 +120,27 @@ public List<Object[]> getAllDistrictInfoDetails(){
 	
 	
 }
+/**
+ * This method is used for getting district details, only nominated districts 
+ * based on state,party and electionIds.
+ * @author srishailam
+ * @param Long stateId
+ * @param Long partyId
+ * @param List<Long> electionIds
+ * @return List<Object[]>
+ * @date 20th April,2013
+ */
+@SuppressWarnings("unchecked")
+public List<Object[]> findByPartyNominationDetails(Long stateId,Long partyId,List electionIds){
+	StringBuilder query = new StringBuilder();
+	query.append("select model.districtId , model.districtName from District model where model.state.stateId = :stateId ");
+	query.append(" and model.districtId in( select distinct model1.district.districtId from PartyElectionDistrictResult model1 ");
+	query.append(" where model1.party.partyId = :partyId and model1.election.electionId in (:electionIds) )");
+	Query queryObject = getSession().createQuery(query.toString());
+	queryObject.setParameter("stateId", stateId);
+	queryObject.setParameter("partyId", partyId);
+	queryObject.setParameterList("electionIds", electionIds);
+	return queryObject.list();
+}
 
 }
