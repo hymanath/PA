@@ -7,7 +7,6 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -350,14 +349,27 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 	}*/
-	public void testFindElectionYearsForElectionTypeAndState()
+	/*public void testFindElectionYearsForElectionTypeAndState()
 	{
 		List<Object[]> result = electionDAO.findElectionYearsForElectionTypeAndState(6l,1l);
 		for (Object[] election : result) {
 			System.out.println(election[0]);
 			System.out.println(election[1]);
 		}
+	}*/
+/*
+	public void testgetElectionDetailsByYear()
+	{
+		@SuppressWarnings("unchecked")
+		Object[] values = null;
+		List<Long> electionIDs = electionDAO.getElectionDetailsByYear("2009");
+		System.out.println(electionIDs.size());
+		System.out.println(electionIDs.toString());
+		
+	}*/
+	public void testFindElection(){
+		List<Election> election = electionDAO.findByElectionTypeYearAndState(new Long(2), "2009", new Long(1), new Long(1));
+		System.out.println("Election ::"  + election.get(0).getElectionId());
 	}
-
 }
 
