@@ -5745,10 +5745,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 for(Object[] booth:booths){
 			 selectOptionVO = new SelectOptionVO();
 			 selectOptionVO.setId((Long)booth[0]);
-			 selectOptionVO.setName(booth[1]!=null?booth[1].toString():"");
-			 selectOptionVO.setValue(booth[1].toString());
-			 selectOptionVO.setLocation(booth[2] != null?booth[2].toString():"");
-			 selectOptionVO.setVillageCovered(booth[3] != null?booth[3].toString():"");
+			 selectOptionVO.setName("Booth No- "+booth[1]!=null?"Booth No- "+booth[1].toString():"");
+			 selectOptionVO.setValue("Booth No- "+booth[1].toString());
+			 selectOptionVO.setLocation("Booth Location:"+booth[2]!= null?"Booth Location:"+booth[2].toString():"");
+			 selectOptionVO.setVillageCovered("Areas Covered :"+booth[3] != null?"Areas Covered :"+booth[3].toString():"");
 			 list.add(selectOptionVO);
 		 }
 		 Collections.sort(list,arraySort);
