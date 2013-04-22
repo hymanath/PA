@@ -60,6 +60,15 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 		this.id = id;
 		this.name = name;	
 	}
+	
+	public SelectOptionVO(Long id, String name,String location,String villageCovered)
+	{
+		this.id = id;
+		this.name = name;
+		this.location = location;	
+		this.villageCovered = villageCovered;	
+	}
+	
 	public SelectOptionVO(Long id, String name,String url){
 		this.id = id;
 		this.name = name;
