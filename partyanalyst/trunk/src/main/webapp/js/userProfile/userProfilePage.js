@@ -1252,6 +1252,8 @@ function buildAvailFavIds(results){
 
 function buildFavouriteLinks(results){
 
+$("#assemblyDiv").css("display","block");
+$("#paliamentDiv").css("display","block");
 $(".placeholderCenterDiv").children().remove();
 $("#headerDiv").html('');
 $(".specialPageDivInnerFav").children().remove();
@@ -2673,6 +2675,7 @@ function clearAllSubscriptionDivs()
 	$("#caderInfo").children().remove();
 	$("#impEvents").html('');
 	$("#impEvents").children().remove();
+
 	//$("#announcementsDiv").html('');
 	//$("#announcementsDiv").children().remove();
 
@@ -2878,6 +2881,9 @@ function clearAllFavoriteLinkDivs()
 	$(".districtDivInnerFav").children().remove();
 	$(".specialPageDivheading").children().remove();
 	$(".specialPageDivInnerFav").children().remove();
+	$("#assemblyDiv").css("display","none");
+	$("#paliamentDiv").css("display","none");
+
 }
 
 function getPeopleYouMayKnowDetails()
