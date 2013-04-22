@@ -2461,7 +2461,7 @@ public class StaticDataService implements IStaticDataService {
 			for(Object[] params : list)
 			{
 				try{
-				result.add(new SelectOptionVO((Long)params[0],"Booth No- "+params[1].toString()));
+				result.add(new SelectOptionVO((Long)params[0],"Booth No- "+params[1].toString(),"Booth Location:"+params[2].toString(),"Areas Covered :"+params[3].toString()));
 				}catch (Exception e){}
 			}
 			return result;
