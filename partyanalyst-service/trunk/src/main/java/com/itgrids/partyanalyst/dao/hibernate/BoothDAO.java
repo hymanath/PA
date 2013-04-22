@@ -705,7 +705,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		public List<Object[]> getBoothsInAMandalByPublicationAndConstId(Long mandalId, Long publicationId, Long constituencyId)
 		{	
 			Object[] params = {mandalId,publicationId,constituencyId};
-			return getHibernateTemplate().find(" select model.boothId,model.partNo from Booth model where model.tehsil.tehsilId = ? and model.publicationDate.publicationDateId = ? " +
+			return getHibernateTemplate().find(" select model.boothId,model.partNo,model.location,model.villagesCovered from Booth model where model.tehsil.tehsilId = ? and model.publicationDate.publicationDateId = ? " +
 					" and model.constituency.constituencyId = ?",params);
 		}
 		
