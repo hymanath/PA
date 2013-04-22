@@ -146,7 +146,7 @@ $('#connectMessageText').live("keyup",function() {
 	
 	$(".messagesLink").click(function(){
 	    
-				
+			clearDiv1();	
 		if($("#headerDiv").find("#Inbox").length<1) {
 		$('#headerDiv').prepend("<ul class='nav nav-tabs'><li class='active' ><a id='Inbox' href='' >Inbox</a></li><li><a id='SentBox' href=''>Sent</a></li></ul>"); }
 		$("#impdatesDiv").hide();
@@ -242,6 +242,7 @@ $('#connectMessageText').live("keyup",function() {
 
    $("#FavouriteLinks").click(function(){
    
+	
 	 var jsObj ={
 			task:"getFavouriteLinks"
 		};
@@ -275,6 +276,7 @@ $('#connectMessageText').live("keyup",function() {
 	$('.assessPoliticianLink').live("click",function(){
 	    $("#subscriptionsStreamingMoreDiv").hide();
 		$("#subscriptionsStreamingData").html('');
+		clearDiv1();
 		var type = $(this).parent().find('.politicalReasTypeVar').val();
 		var linkType = "assessPoliticianLink";
 		startIndex = 0;
@@ -1252,12 +1254,11 @@ function buildAvailFavIds(results){
 
 function buildFavouriteLinks(results){
 
-$("#assemblyDiv").css("display","block");
-$("#paliamentDiv").css("display","block");
 $(".placeholderCenterDiv").children().remove();
 $("#headerDiv").html('');
 $(".specialPageDivInnerFav").children().remove();
 $('.constituencyDivInnerFav').children().remove();
+$('.constituencyDivInnerFav1').children().remove();
 $('.districtDivInnerFav').children().remove();
 $('.stateDivInnerFav').children().remove();
 $('.constituencyDivheading').children().remove();
@@ -1266,7 +1267,8 @@ $('.districtDivheading').children().remove();
 $('.specialPageDivheading').children().remove();
 
  clearAllSubscriptionDivs();
-
+$("#assemblyDiv").css("display","block");
+$("#paliamentDiv").css("display","block");
 var constituency = false;
 var state = false;
 var district = false;
@@ -1533,6 +1535,7 @@ function getInitialUpdates(){
   getSubscriptionDetails("main");
 }
 function getSubscriptionDetails(type){
+	clearDiv1();
    $("#subscriptionsStreamingMoreDiv").show();
    var task ="";
    if(type == "main")
@@ -1558,6 +1561,7 @@ function showAllRequestMessagesForUser(results,jsObj){
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
+	//clearDiv1();
 	if(results.friendRequest ==null)
 	{
 		$("#headerDiv").html('You have 0 Requests');
@@ -2875,14 +2879,15 @@ function clearAllFavoriteLinkDivs()
 {
 	$(".constituencyDivheading").children().remove();
 	$(".constituencyDivInnerFav").children().remove();
+	$(".constituencyDivInnerFav1").children().remove();
 	$(".stateDivheading").children().remove();
 	$(".stateDivInnerFav").children().remove();
 	$(".districtDivheading").children().remove();
 	$(".districtDivInnerFav").children().remove();
 	$(".specialPageDivheading").children().remove();
 	$(".specialPageDivInnerFav").children().remove();
-	$("#assemblyDiv").css("display","none");
-	$("#paliamentDiv").css("display","none");
+	clearDiv1();
+
 
 }
 
@@ -3587,7 +3592,9 @@ function buildCadreInfoTable(results)
 	$(".placeholderCenterDiv").children().remove();
 	$('#placeholderCenterDivId').html('');
 	$('#headerDiv').html('');
-	$('.FavoriteLinksDiv').html('');
+	//$('.FavoriteLinksDiv').html('');
+	$("#assemblyDiv").css("display","none");
+	$("#paliamentDiv").css("display","none");
 	$('#headerDiv').html('<b>Cadre Information</b>');
 	var str='';
 	
@@ -3660,10 +3667,11 @@ function buildUserImpEvents(results)
 	var str='';
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
+	
 	$(".placeholderCenterDiv").children().remove();
 	$('#placeholderCenterDivId').html('');
 	$('#headerDiv').html('');
-	$('.FavoriteLinksDiv').html('');
+	//$('.FavoriteLinksDiv').html('');
 	$('#headerDiv').html('<b>Important Events</b>');
 	str+='<div id="impEventsDiv_head">';
 	str+='<table><tr>';
@@ -3712,7 +3720,8 @@ function clearDivs()
 	$("#impdatesDiv").hide();
 	$("#impEvents").hide();
 	$("#announcementsDiv").hide();
-	$('#placeholderCenterDivId').html('')
+	//$('#placeholderCenterDivId').html('')
+	//clearDiv1();
 	
 }
 
@@ -3934,4 +3943,11 @@ var custom_paginator1 = {
 };
 function getReqData(countIndex,eleid){
 custom_paginator1.doAjaxCall(countIndex,eleid);
+}
+
+function clearDiv1()
+{
+	$("#assemblyDiv").css("display","none");
+	
+	$("#paliamentDiv").css("display","none");
 }
