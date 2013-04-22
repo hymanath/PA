@@ -740,5 +740,17 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select count(model) from Election model " +
 				"where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and model.elecSubtype = ? and (model.isPartial is null or model.isPartial = ?)", params);
 	}
-	
+	/**
+	 * This method is used for getting electionIds details based on year.
+	 * @author srishailam
+	 * @param Long electionYear
+	 * @return List<Long>
+	 * @date 20th April,2013
+	 */
+	public List<Long> getElectionDetailsByYear(String year){
+		Query query = getSession().createQuery("select model.electionId from Election model where " +
+				"model.electionYear in (:year)");		
+		query.setParameter("year", year);		
+		return query.list();
+	}
 }
