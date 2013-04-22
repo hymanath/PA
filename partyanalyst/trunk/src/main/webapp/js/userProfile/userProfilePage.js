@@ -1314,11 +1314,22 @@ $("#headerDiv").html('<h5 style="font-weight: bold; font-family: &quot;Helvetica
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				//templateClone.find('.titleClass').html("<b><a class='problemTitle' href="+results[i].favouriteLink+">"+results[i].favouriteLinkTitle+"</a></b>");
-
+				var flag =results[i].name.search(" Assembly");
+				
+				if(flag !=-1)
+				{
 				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[i].favouriteLinkTitle+"' href="+results[i].favouriteLink+">"+results[i].name+"</a></b>");
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
 
 				templateClone.appendTo('.constituencyDivInnerFav');
+				}
+				else
+				{
+				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[i].favouriteLinkTitle+"' href="+results[i].favouriteLink+">"+results[i].name+"</a></b>");
+				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
+
+				templateClone.appendTo('.constituencyDivInnerFav1');
+				}
 			}
 
 			}
