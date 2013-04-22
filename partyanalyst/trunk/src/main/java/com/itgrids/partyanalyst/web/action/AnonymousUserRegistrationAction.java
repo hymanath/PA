@@ -477,7 +477,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 					session.setAttribute("HiddenCount", 0);
 					//session.removeAttribute("districts");
 					//session.removeAttribute("constituencies");
-					session.setAttribute("userName",userName);
+					session.setAttribute("userName",regVO.getEmail());
 					session.setAttribute("name", userFullName);
             	}
             	session.setAttribute(IConstants.USER,regVO);
