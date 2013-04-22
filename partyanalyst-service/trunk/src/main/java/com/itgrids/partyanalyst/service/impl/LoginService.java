@@ -738,12 +738,9 @@ public class LoginService implements ILoginService{
 	{
 		SelectOptionVO selectOptionVO = new SelectOptionVO();
 		try{
-			List<Object[]> list = userDAO.getUserNameAndPwdByUserId(userId);
-			if(list != null && list.size() > 0)
-			{
-				selectOptionVO.setName(list.get(0)[0].toString());
-				selectOptionVO.setUrl(list.get(0)[1].toString());
-			}
+			User user = userDAO.get(userId);
+			selectOptionVO.setName(user.getUserName());
+			selectOptionVO.setUrl((new EncryptDecrypt(user.getHashKeyTxt())).decryptText(user.getPasswdHashTxt()));
 			return selectOptionVO;
 		}catch (Exception e) {
 			e.printStackTrace();
