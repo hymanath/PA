@@ -2554,7 +2554,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				if(filter == null || filter.size()==0)
 					   return new ArrayList<VotersDetailsVO>();
 				
-				List<Object[]> list = userVoterDetailsDAO.getAgeWiseInfoForUser(filter);
+				//List<Object[]> list = userVoterDetailsDAO.getAgeWiseInfoForUser(filter);
+				List<Object[]> list = userVoterDetailsDAO.getAgeWiseInfoForUser(filter,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 				
 				if(list == null || list.size()==0)	
 				{   
@@ -12165,7 +12166,8 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				   return new ArrayList<VotersDetailsVO>();
 			
 			
-			List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter);
+			//List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter);
+		    List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 		    if(list == null || list.size()==0)	
 			{   
 				return boothVotersList;	
@@ -12249,7 +12251,8 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			if(filter == null || filter.size()==0)
 				   return new ArrayList<VotersDetailsVO>();
 			
-			List<Object[]> hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter);
+			//List<Object[]> hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter);
+			  List<Object[]> hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 		   
 			
 			//Long [] hamlets =(Long[]) hamlets;
@@ -13410,7 +13413,8 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		
 		
 		
-		List<Object[]> list=    userVoterDetailsDAO.getAgeDataForBoothByHamlets(userId,publicationDateId,boothId,type);
+		//List<Object[]> list=    userVoterDetailsDAO.getAgeDataForBoothByHamlets(userId,publicationDateId,boothId,type);
+		List<Object[]> list=    userVoterDetailsDAO.getAgeDataForBoothByHamlets(userId,publicationDateId,boothId,type,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 	    if(list == null || list.size()==0)	
 		{   
 			return boothVotersList;	
