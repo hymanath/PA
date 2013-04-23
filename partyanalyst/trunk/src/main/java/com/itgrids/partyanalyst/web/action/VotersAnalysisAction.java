@@ -974,7 +974,7 @@ public String getCountsForLevel()
 		Long publicationDateId= jObj.getLong("publicationDateId");
 		Long id = jObj.getLong("id");
 		String type = jObj.getString("type");
-		countList = votersAnalysisService.getCountList(publicationDateId,id,type, jObj.getLong("constituencyId"));
+		countList = votersAnalysisService.getCountList(publicationDateId,id,type, jObj.getLong("constituencyId"),jObj.getLong("tehsilId"));
 		}
 	}
 	
