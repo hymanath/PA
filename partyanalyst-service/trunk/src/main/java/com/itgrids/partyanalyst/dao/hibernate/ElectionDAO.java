@@ -724,6 +724,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public List<Election> getElectionDetailsForElections(List<Long> electionIds){
 		
 		Query query = getSession().createQuery("select model from Election model where " +
