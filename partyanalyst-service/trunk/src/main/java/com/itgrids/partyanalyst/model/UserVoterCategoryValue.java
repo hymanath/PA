@@ -32,6 +32,7 @@ public class UserVoterCategoryValue extends BaseModel implements Serializable{
 	private UserVoterCategory userVoterCategory;
 	private String categoryValue;
 	private User user;
+	private Long orderNo;
 	
 	private Set<VoterCategoryValue> voterCategoryValue = new HashSet<VoterCategoryValue>();
 	
@@ -92,6 +93,14 @@ public class UserVoterCategoryValue extends BaseModel implements Serializable{
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	@Column(name = "order_no", length = 3)
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 	
