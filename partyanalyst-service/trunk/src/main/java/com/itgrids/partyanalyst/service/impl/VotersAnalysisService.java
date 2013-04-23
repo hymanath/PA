@@ -4451,7 +4451,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				voterByHouseNoMap.put(houseNo, voterVOs);
 			}
 			voterVOs.add(voterVO);
-			votersMap.put(new Long(voter[5].toString()), voterVO);
+			votersMap.put((Long)voter[4], voterVO);
 			//voterByHouseNoMap.put(houseNo, voterVOs);
 			
 		}
