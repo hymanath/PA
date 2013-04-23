@@ -91,6 +91,12 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	 
 	 public List<Object[]> getVoterDataForHamlet(Long hamletId , Long publicationId ,Long startIndex, Long maxIndex , String sort,String order );
 
-
+	 public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,String male,String female,long ...age);
+	 
+	 public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId ,String type,String male,String female,long ...ages);
+	 
+	 public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds,String male,String female,long ...ages);
+	 
+	 public List<Object[]> getLocalityIdsForUser(Long hamletId , Long userId,List<?> voterIds,String male,String female,long ...ages);
 
 }
