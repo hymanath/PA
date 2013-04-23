@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
-import org.springframework.util.StringUtils;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
@@ -22,7 +21,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
@@ -46,6 +45,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	private List<BoothInfo> boothsCompleteDetails;
 	private Set<RegionalMappingInfoVO> regions;
 	private List<SelectOptionVO> parliamentConstituencies;
+	CadreManagementService cadreManagementService;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -125,6 +125,15 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 
 	public void setRegions(Set<RegionalMappingInfoVO> regions) {
 		this.regions = regions;
+	}
+
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
 	}
 
 	public String execute() throws Exception {
@@ -270,9 +279,10 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 				if(jObj.getString("isParliament").equals("true"))
 				{
 					parliamentConstituencies = getRegionServiceDataImp().getAllParliamentConstituenciesForAState(1l,stateId);
-					parliamentConstituencies.add(0,new SelectOptionVO(0l,"Select Location"));
+					
 					setRegionsList(parliamentConstituencies);
 					Collections.sort(parliamentConstituencies);
+					parliamentConstituencies.add(0,new SelectOptionVO(0l,"Select Location"));
 				}
 				else if(!jObj.getString("isParliament").equals("true"))
 				{
@@ -577,5 +587,20 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	public String getParlmentAndAssemblyConstis(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			System.out.println(jObj);
+		 if(jObj.getString("task").equalsIgnoreCase("getParliamentConstituenciesInADistrict")){
+			regionsList = cadreManagementService.getParliamentConstituenciesInADistrict(jObj.getString("districtId"));
+		 }else{
+			 regionsList = cadreManagementService.getAssemblyConstiForParlInADistrict(jObj.getString("districtId"),jObj.getLong("parliamentId")); 
+		 }
+		} catch (ParseException e) {
+			log.error("Exception rised in getParlmentAndAssemblyConstis ",e);
+		}	
+		return Action.SUCCESS;
+	}
 	
 }

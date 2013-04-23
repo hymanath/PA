@@ -91,7 +91,11 @@
 			if(scopeLevelElVal == 9 && selectedBooth != 0)
 			{
 				hiddenEl.value = selectedBooth;
-			}				
+			}
+            if(scopeLevelElVal == 10)
+			{
+				hiddenEl.value = selectedConstituency;
+			}			
 			
 		} else if(source == 'onLoad'){
 			if(value != '0')
@@ -227,22 +231,22 @@
 		{	
 				sameAsCAFlagEl.value = true;
 				optElements.style.display = 'none';
-				clearOptionsListForSelectElmtId("pdistrictField");
-				clearOptionsListForSelectElmtId("pconstituencyField");
-				clearOptionsListForSelectElmtId("pmandalField");
-				clearOptionsListForSelectElmtId("pvillageField");
+				//clearOptionsListForSelectElmtId("pdistrictField");
+				//clearOptionsListForSelectElmtId("pconstituencyField");
+				//clearOptionsListForSelectElmtId("pmandalField");
+				//clearOptionsListForSelectElmtId("pvillageField");
 				
 				var optionsArray = new Array();
 				var obj = {
 						id : 1,
 						name:'Please Select '
 						};
-				optionsArray.push(obj);
-				createOptionsForSelectElmtId("pdistrictField",optionsArray);
-				createOptionsForSelectElmtId("pconstituencyField",optionsArray);
-				createOptionsForSelectElmtId("pmandalField",optionsArray);
-				createOptionsForSelectElmtId("pvillageField",optionsArray);
-				pstateFieldEl.selectedIndex = '1';										
+				//optionsArray.push(obj);
+				//createOptionsForSelectElmtId("pdistrictField",optionsArray);
+				//createOptionsForSelectElmtId("pconstituencyField",optionsArray);
+				//createOptionsForSelectElmtId("pmandalField",optionsArray);
+				//createOptionsForSelectElmtId("pvillageField",optionsArray);
+				//pstateFieldEl.selectedIndex = '1';										
 		
 		}  else
 		{
@@ -252,7 +256,7 @@
 			{
 				optElements.style.display = '';
 			}
-			clearOptionsListForSelectElmtId("pdistrictField");
+			/*clearOptionsListForSelectElmtId("pdistrictField");
 			clearOptionsListForSelectElmtId("pconstituencyField");
 			clearOptionsListForSelectElmtId("pmandalField");
 			clearOptionsListForSelectElmtId("pvillageField");
@@ -265,7 +269,7 @@
 			createOptionsForSelectElmtId("pconstituencyField",optionsArr);
 			createOptionsForSelectElmtId("pmandalField",optionsArr);
 			createOptionsForSelectElmtId("pvillageField",optionsArr);
-			pstateFieldEl.selectedIndex = '0';			
+			pstateFieldEl.selectedIndex = '0';	*/		
 		}	
 	}	
 	function manageDOBOptions(source)
@@ -316,7 +320,10 @@
 	function cleanOptionsList(string)
 	{
 		if(string == "state")
-		{
+		{   
+		    <c:if test="${sessionScope.USER.accessType  != 'MP'}"> 
+			 $("#parlConstituencyField option").remove();
+			</c:if>
 			clearOptionsListForSelectElmtId("constituencyField");
 			clearOptionsListForSelectElmtId("mandalField");
 			clearOptionsListForSelectElmtId("villageField");
@@ -325,6 +332,7 @@
 
 		else if(string == "district")
 		{
+		    clearOptionsListForSelectElmtId("constituencyField");
 			clearOptionsListForSelectElmtId("mandalField");
 			clearOptionsListForSelectElmtId("villageField");
 		}
@@ -336,6 +344,9 @@
 
 		if(string == "pstate")
 		{
+		    <c:if test="${sessionScope.USER.accessType  != 'MP'}"> 
+		     $("#parlConstituencyField_o option").remove();
+			</c:if>
 			clearOptionsListForSelectElmtId("pconstituencyField");
 			clearOptionsListForSelectElmtId("pmandalField");
 			clearOptionsListForSelectElmtId("pvillageField");		
@@ -343,6 +354,7 @@
 
 		else if(string == "pdistrict")
 		{
+		    clearOptionsListForSelectElmtId("pconstituencyField");
 			clearOptionsListForSelectElmtId("pmandalField");
 			clearOptionsListForSelectElmtId("pvillageField");
 		}
@@ -581,7 +593,15 @@
 				row3El.style.display = '';
 			if(row4El.style.display == 'none')
 				row4El.style.display = '';			
-		}	 
+		}
+       else if(value == 10)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';	
+			$("#stateField_s").val(0);
+		} 		
 	}
 	
 	function showFamilyDetailsTable()
@@ -636,6 +656,7 @@
 		var genderLength = $(gender).size();
 		var state = $('#stateField').val();
 		var district = $('#districtField').val();
+		var pconstituency = $('#parlConstituencyField').val();
 		var mandal = $('#mandalField').val();
 		var constituency = $('#constituencyField').val();
 		var village  = $('#villageField').val();
@@ -702,11 +723,20 @@
 			$('#errorDiv').html('<div>Please select the State</div>')
 			return false;
 		}
+		<c:if test="${sessionScope.USER.accessType  != 'MP'}"> 
 		if(district == 0 || district == null)
 		{
 			$('#errorDiv').html('<div>Please select the District</div>')
 			return false;
 		}
+		</c:if>
+		
+		if(pconstituency == 0 || pconstituency == null)
+		{
+			$('#errorDiv').html('<div>Please select the Parliament Constituency</div>')
+			return false;
+		}
+		
 		if(constituency == 0 || constituency == null)
 		{
 			$('#errorDiv').html('<div>Please select the Constituency</div>')
@@ -750,7 +780,7 @@
 			var stateName = $('#stateField_s').val();
 			if(stateName == 0 || stateName == null)
 			{
-			$('#errorDiv').html('<div>Please select the State</div>')
+			$('#errorDiv').html('<div>Please select the State for Cadre Level Details</div>')
 			return false;
 			}
 		}
@@ -759,7 +789,7 @@
 			var distName = $('#districtField_s').val();
 			if(distName == 0 || distName == null)
 			{
-			$('#errorDiv').html('<div>Please select the District</div>')
+			$('#errorDiv').html('<div>Please select the District for Cadre Level Details</div>')
 			return false;
 			}
 		}
@@ -768,7 +798,7 @@
 			var constName = $('#constituencyField_s').val();
 			if(constName == 0 || constName == null)
 			{
-			$('#errorDiv').html('<div>Please select the Constituency</div>')
+			$('#errorDiv').html('<div>Please select the Constituency for Cadre Level Details</div>')
 			return false;
 			}
 		}
@@ -777,7 +807,7 @@
 			var mandalName = $('#mandalField_s').val();
 			if(mandalName == 0 || mandalName == null)
 			{
-			$('#errorDiv').html('<div>Please select the Mandal/Municipality/Corp/GMC </div>')
+			$('#errorDiv').html('<div>Please select the Mandal/Municipality/Corp/GMC for Cadre Level Details</div>')
 			return false;
 			}
 		}
@@ -786,11 +816,55 @@
 			var vilName = $('#hamletField_s').val();
 			if(vilName == 0 || vilName == null)
 			{
-			$('#errorDiv').html('<div>Please select the Village/Ward/Division</div>')
+			$('#errorDiv').html('<div>Please select the Village/Ward/Division for Cadre Level Details</div>')
+			return false;
+			}
+		}
+		if(cadreLevel == 10)
+		{
+			var vilName = $('#constituencyField_s').val();
+			if(vilName == 0 || vilName == null)
+			{
+			$('#errorDiv').html('<div>Please select the Constituency for Cadre Level Details</div>')
 			return false;
 			}
 		}
 		}
+			if(!$('#sameAsCA').is(':checked')){
+				 var stateId = $('#pstateField').val();
+				 var districtId = $('#pdistrictField').val();
+				 var parlId = $('#parlConstituencyField_o').val();
+				 var assemblyId = $('#pconstituencyField').val();
+				 var mandalId = $('#pmandalField').val();
+				 var villageId = $('#pvillageField').val();
+				 
+				 if(stateId == 0 || stateId == null){
+				   $('#errorDiv').html('<div>Please select State in Official Address</div>')
+					return false;
+				 }
+				 <c:if test="${sessionScope.USER.accessType  != 'MP'}"> 
+					 if(districtId == 0 || districtId == null){
+					   $('#errorDiv').html('<div>Please select District  in Official Address</div>')
+						return false;
+					 }
+				 </c:if>
+				 if(parlId == 0 || parlId == null){
+				   $('#errorDiv').html('<div>Please select Parliament Constituency in Official Address</div>')
+					return false;
+				 }
+				 if(assemblyId == 0 || assemblyId == null){
+				   $('#errorDiv').html('<div>Please select Constituency in Official Address</div>')
+					return false;
+				 }
+				 if(mandalId == 0 || mandalId == null){
+				   $('#errorDiv').html('<div>Please select Mandal/Municipality/Corp/GMC in Official Address</div>')
+					return false;
+				 }
+				 if(villageId == 0 || villageId == null){
+				   $('#errorDiv').html('<div>Please select  Village/Ward/Division in Official Address</div>')
+					return false;
+				 }
+		    }
 	   //alert("Please Select Valid Location");
 	   //refreshingParentWindow();
 		var memberTypeNormal = document.getElementById('memberTypeNormal');
@@ -809,6 +883,11 @@
 	
     }
 $(document).ready(function(){
+     var stateid = $("#pstateField").val();
+	 if(stateid == 0)
+	 {
+	   $("#pstateField").val(1);
+	 }
 	var successMsg = '${successMsg}';
 	if(successMsg.trim().length > 0)
 	{
@@ -819,6 +898,12 @@ function refreshingParentWindow()
  {
 	setTimeout(window.opener.refreshingchildWindowWindow(),18000);
     return false;
+ }
+ function getReqValues(id){
+    if($("#scopeLevel").val() == 10 || $("#scopeLevel").val() == "10")
+	 getLocationHierarchies(id,'districtsInState','cadreReg','constituencyField_s','cadreLevel', 'null',null,true);
+	else
+	 getLocationHierarchies(id,'districtsInState','cadreReg','districtField_s','cadreLevel', 'null');
  }
 </script>
 <style type="text/css">
@@ -1179,21 +1264,54 @@ function refreshingParentWindow()
 				<td width="165px"><s:label for="streetField" id="streetLabel"  value="%{getText('street')}" /></td>
 				<td align="left" width="165px"><s:textfield id="streetField" name="street" maxlength="100" size="25" />  </td>
 			</tr>
+			<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
 			<tr>
 				<td width="165px"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px"><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreReg','districtField','currentAdd');cleanOptionsList('state')"></s:select></td>
-				<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
+				
 					<td><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-						<s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','constituencyField','currentAdd');cleanOptionsList('district')" ></s:select>
+						<s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getParliamentConstituenciesInADistrict(this.options[this.selectedIndex].value,'parlConstituencyField');cleanOptionsList('district')" ></s:select>
 					</td>
-				</c:if>
-				<c:if test="${sessionScope.USER.accessType == 'MP'}"> 
-					<td><s:label for="parlConstituencyField" id="parlConstituencyLabel"  value="%{getText('PCONSTITUENCY')}" /><font class="requiredFont"> * </font></td>
-					<td align="left">
-						<s:select id="parlConstituencyField" cssClass="regionSelect" name="parliament" list="#session.p_constituencies" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','cadreReg','constituencyField','currentAdd','null');cleanOptionsList('district')" ></s:select>
-					</td>
-				</c:if>				
+				
+				
+					
+							
+			</tr>
+			<tr>
+			    <td><s:label for="parlConstituencyField" id="parlConstituencyLabel"  value="%{getText('PCONSTITUENCY')}" /><font class="requiredFont"> * </font></td>
+				<td align="left">
+						<s:select id="parlConstituencyField" cssClass="regionSelect" name="parliament" list="#session.p_constituencies" listKey="id" listValue="name" onchange="getAssemblyConstiForParlInADistrict(this.options[this.selectedIndex].value,'districtField','constituencyField');cleanOptionsList('district')" ></s:select>
+				</td>
+				<td width="165px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
+				<td align="left" width="165px">
+					<s:select id="constituencyField" cssClass="regionSelect" name="constituencyID" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','mandalField','currentAdd', 'null');cleanOptionsList('constituency')"></s:select> 
+				</td>
+				
+			</tr>
+			<tr>
+			    <td width="165px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
+				<td align="left" width="165px">
+					<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','villageField','currentAdd','null');getBooths('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')"></s:select>				 
+				</td>
+				<td width="165px"><s:label for="villageField" id="villageLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
+				<td align="left" width="165px">
+					<s:select id="villageField" cssClass="regionSelect" name="village" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>				
+				</td>
+			</tr>
+			<tr>
+			    <td width="165px"><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
+				<td align="left" width="165px"><s:textfield id="pinCodeField" name="pinCode" maxlength="6" size="25" />  </td>
+			</tr>
+			</c:if>
+			<c:if test="${sessionScope.USER.accessType == 'MP'}"> 
+			<tr>
+				<td width="165px"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
+				<td align="left" width="165px"><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreReg','districtField','currentAdd');cleanOptionsList('state')"></s:select></td>
+				<td><s:label for="parlConstituencyField" id="parlConstituencyLabel"  value="%{getText('PCONSTITUENCY')}" /><font class="requiredFont"> * </font></td>
+				<td align="left">
+					<s:select id="parlConstituencyField" cssClass="regionSelect" name="parliament" list="#session.p_constituencies" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','cadreReg','constituencyField','currentAdd','null');cleanOptionsList('district')" ></s:select>
+				</td>		
 			</tr>
 			<tr>
 				<td width="165px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
@@ -1213,6 +1331,7 @@ function refreshingParentWindow()
 				<td width="165px"><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
 				<td align="left" width="165px"><s:textfield id="pinCodeField" name="pinCode" maxlength="6" size="25" />  </td>
 			</tr>
+			</c:if>
 			<tr>
 				<th colspan="4"><u>Booth details are not compulsory</u></th>
 			</tr>			
@@ -1250,28 +1369,55 @@ function refreshingParentWindow()
 				<td width="165px"><s:label for="pstreetField" id="pstreetLabel"  value="%{getText('street')}" /></td>
 				<td align="left" width="165px"><s:textfield id="pstreetField" name="pstreet" maxlength="100" size="25" /></td>
 			</tr>
-			<tr>				
-			<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
+							
+			<c:if test="${sessionScope.USER.accessType != 'MP'}">
+             <tr>			
 				<td width="165px"><s:label for="pstateField" id="pstateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pstateField" cssClass="regionSelect" name="pstate" list="#session.statesList_c" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreReg','pdistrictField','OfficialAdd');cleanOptionsList('pstate')"></s:select>
+					<s:select id="pstateField" cssClass="regionSelect" name="pstate" list="#session.statesList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreReg','pdistrictField','OfficialAdd');cleanOptionsList('pstate')"></s:select>
 				</td>
 				<td><s:label for="pdistrictField" id="pdistrictLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-						<s:select id="pdistrictField" cssClass="regionSelect" name="pdistrict" list="#session.districtsList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','pconstituencyField','OfficialAdd');cleanOptionsList('pdistrict')"></s:select>
+						<s:select id="pdistrictField" cssClass="regionSelect" name="pdistrict" list="#session.districtsList_o" listKey="id" listValue="name" onchange="getParliamentConstituenciesInADistrict(this.options[this.selectedIndex].value,'parlConstituencyField_o');cleanOptionsList('pdistrict')"></s:select>
 					</td>
+			<tr>
+			<tr>
+			    <td><s:label for="parlConstituencyField_o" id="parlConstituencyLabel_o"  value="%{getText('PCONSTITUENCY')}" /><font class="requiredFont"> * </font></td>
+					<td align="left">
+						<s:select id="parlConstituencyField_o" cssClass="regionSelect" name="pParliament" list="#session.p_constituencies_o" listKey="id" listValue="name" onchange="getAssemblyConstiForParlInADistrict(this.options[this.selectedIndex].value,'pdistrictField','pconstituencyField');cleanOptionsList('pdistrict')" ></s:select>
+				</td>
+				<td width="165px"><s:label for="pconstituencyField" id="pconstituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
+				<td align="left" width="165px">
+					<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituencyID" list="#session.constituenciesList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','pmandalField','OfficialAdd', 'null');cleanOptionsList('pconstituency')"></s:select> 
+				</td>
+				
+			</tr>
+			<tr>
+			    <td width="165px"><s:label for="pmandalField" id="pmandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
+				<td align="left" width="165px">
+					<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalsList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','pvillageField','OfficialAdd');getBooths('currentAdd','pconstituencyField','pboothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')"></s:select>				 
+				</td>
+				<td width="165px" ><s:label for="pvillageField" id="pvillageLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
+				<td align="left" width="165px">
+					<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villagesList_o" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','pconstituencyField','pboothField',this.options[this.selectedIndex].value,'cadreReg','pmandalField')"></s:select>				
+				</td>
+			</tr>
+			<tr>
+				<td width="165px"><s:label for="ppinCodeField" id="ppinCodeLabel"  value="%{getText('pincode')}" /></td>
+				<td align="left" width="165px"><s:textfield id="ppinCodeField" name="pPinCode" maxlength="6" size="25" />  </td>
+			</tr>
 			</c:if>
-			<c:if test="${sessionScope.USER.accessType == 'MP'}"> 
+			<c:if test="${sessionScope.USER.accessType == 'MP'}">
+             <tr>			
 					<td width="165px"><s:label for="pstateField" id="pstateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 					<td align="left" width="165px">
 					<s:select id="pstateField" cssClass="regionSelect" name="pstate" list="#session.statesList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','cadreReg','parlConstituencyField_o','OfficialAdd');cleanOptionsList('pstate')"></s:select>
 					</td>
 					<td><s:label for="parlConstituencyField_o" id="parlConstituencyLabel_o"  value="%{getText('PCONSTITUENCY')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-						<s:select id="parlConstituencyField_o" cssClass="regionSelect" name="pParliament" list="#session.p_constituencies_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','cadreReg','pconstituencyField','currentAdd');cleanOptionsList('district')" ></s:select>
+						<s:select id="parlConstituencyField_o" cssClass="regionSelect" name="pParliament" list="#session.p_constituencies_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','cadreReg','pconstituencyField','currentAdd');cleanOptionsList('pdistrict')" ></s:select>
 					</td>
-				</c:if>
-			</tr>
+			</tr>	
 			<tr>
 				<td width="165px"><s:label for="pconstituencyField" id="pconstituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
@@ -1289,7 +1435,10 @@ function refreshingParentWindow()
 				</td>
 				<td width="165px"><s:label for="ppinCodeField" id="ppinCodeLabel"  value="%{getText('pincode')}" /></td>
 				<td align="left" width="165px"><s:textfield id="ppinCodeField" name="pPinCode" maxlength="6" size="25" />  </td>
-			</tr>
+			</tr>	
+			</c:if>
+			
+			
 			<tr>
 				<th colspan="4"><u>Booth details are not compulsory</u></th>
 			</tr>			
@@ -1377,7 +1526,7 @@ function refreshingParentWindow()
 		<tr id="row1" style="display:none;">
 			<td width="200"><s:label for="stateField_s" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="stateField_s" cssClass="regionSelect" name="cadreLevelState" value="defaultStateId" list="#session.statesList_c" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreReg','districtField_s','cadreLevel', 'null');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="stateField_s" cssClass="regionSelect" name="cadreLevelState" value="defaultStateId" list="#session.statesList_c" listKey="id" listValue="name" onchange="getReqValues(this.options[this.selectedIndex].value);setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row2" style="display:none;">
@@ -1575,7 +1724,69 @@ function displayTheDateText(type, args, obj) {
 		return false;
 	}
 }
+function callAjaxToGetParlConstis( jsObj, url){
+		var myResults;			
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {
+								myResults = YAHOO.lang.JSON.parse(o.responseText);	
+								
+								if(jsObj.task == "getParliamentConstituenciesInADistrict")
+								{
+									buildAllOptions(myResults,jsObj.id);
+								} 
+								else if(jsObj.task == "getAssemblyConstiForParlInADistrict")
+								{
+								    buildAllOptions(myResults,jsObj.id);
+                                }								
+							}catch (e) {   
+							   
+							}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			
+ 		                         }
+ 		               };
 
+ 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+ 	}
+	
+	function buildAllOptions(result,id){
+	  $("#"+id+" option").remove();
+	  for(var i in result){
+	   $("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	  }
+    }
+	
+	function getParliamentConstituenciesInADistrict(value,id){
+   
+		var jsObj=
+		{
+				task:"getParliamentConstituenciesInADistrict",				
+				districtId:value,
+                id:id				
+		}
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);					
+		var url = "<%=request.getContextPath()%>/getParlConstiForDistrictAction.action?"+rparam;	
+		callAjaxToGetParlConstis(jsObj, url);
+  }
+  function getAssemblyConstiForParlInADistrict(parliamentId,districtId,id)
+  {
+   
+		var jsObj=
+		{
+				task:"getAssemblyConstiForParlInADistrict",				
+				districtId:$("#"+districtId).val(),
+				parliamentId:parliamentId,
+                id:id				
+		}
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);					
+		var url = "<%=request.getContextPath()%>/getParlConstiForDistrictAction.action?"+rparam;	
+		callAjaxToGetParlConstis(jsObj, url);
+	}
 </script>
 </body>
 </html>

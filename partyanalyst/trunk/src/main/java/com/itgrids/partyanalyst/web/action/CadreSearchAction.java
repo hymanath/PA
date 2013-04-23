@@ -288,6 +288,8 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
 			constituencyList = constituencyInfoVO.getAssembyConstituencies();
 			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			if(parliamentConstituencyList == null)
+			parliamentConstituencyList = new ArrayList<SelectOptionVO>();
 			parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
 			
 		}

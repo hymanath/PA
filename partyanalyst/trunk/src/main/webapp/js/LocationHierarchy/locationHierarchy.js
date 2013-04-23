@@ -30,9 +30,11 @@ function hideBusyImgWithId(elmtId)
 	if(spanElmt)
 		spanElmt.style.display = "none";
 }
-function getLocationHierarchies(selectedId, task, module, elementId, addressType, areaType, constituencyId)
+function getLocationHierarchies(selectedId, task, module, elementId, addressType, areaType, constituencyId,parl)
 {	
 	var isParliament = null;
+	if(parl == true)
+	  isParliament = "true";
 	//showBusyImgWithId('ajaxImgId');
 	/*if(selectedId ==0)
 	{
@@ -42,7 +44,7 @@ function getLocationHierarchies(selectedId, task, module, elementId, addressType
 	 
 	var parliRadioEle = document.getElementById('10');
 
-	if(parliRadioEle != null)
+	if(parliRadioEle != null && parliRadioEle.checked == true)
 	{
 		isParliament = "true";
 	}

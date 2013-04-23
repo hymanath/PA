@@ -327,6 +327,7 @@
 	<bean id="cadreSMSAction" class="com.itgrids.partyanalyst.web.action.CadreSMSAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 	<bean id="userGroupsMainAction" class="com.itgrids.partyanalyst.web.action.UserGroupsMainAction" singleton="false">		
@@ -699,6 +700,7 @@
 	<bean id="locationsHierarchyAction" class="com.itgrids.partyanalyst.web.action.LocationsHierarchyAction" singleton="false">
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="cadreManagementService" ref="cadreManagementService" />
 	</bean>
 	
 	<bean id="viewFeaturesAction" class="com.itgrids.partyanalyst.web.action.ViewFeaturesAction" singleton="false">

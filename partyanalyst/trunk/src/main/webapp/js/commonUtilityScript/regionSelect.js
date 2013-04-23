@@ -389,7 +389,8 @@ function getLevelWiseRangeDetails()
    //rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="1"/> Country';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="2"/> State';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="3"/> District';
-   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="4"/> Constituency';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="10"/> Parliament Constituency';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="4"/> Assembly Constituency';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="5"/> Mandal';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="6"/> Village';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="7"/> MUNICIPAL-CORP-GMC';
@@ -1551,7 +1552,25 @@ function buildRegionsSelectBoxes(jsObj,results)
 		regionStr+='<option value="0"> Select District</option>';
 	}
 	regionStr+='</select>';
-	
+	if(results.parliamentConstituencys != "" && results.parliamentConstituencys.length > 0 && document.getElementById("parliamentConstituencyField_s") != null)
+	{
+	     
+		for(var consti in results.parliamentConstituencys)
+		{
+		     var elmt = document.getElementById("parliamentConstituencyField_s");
+		     var option = document.createElement('option');
+		     option.value=results.parliamentConstituencys[consti].id;
+		     option.text=results.parliamentConstituencys[consti].name;
+				try
+				{
+					elmt.add(option,null); // standards compliant
+				}
+				catch(ex)
+				{
+					elmt.add(option); // IE only
+				}
+		}
+	}
 		
 	regionStr+='<select id="constituencySelectBox" class="regionsSelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,\'mandalSelectBox\')">';
 	if(results.constituencies != "")

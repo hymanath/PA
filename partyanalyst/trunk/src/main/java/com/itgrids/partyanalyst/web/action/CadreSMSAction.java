@@ -10,11 +10,13 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.helper.CadreSMSVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
@@ -34,6 +36,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 	private CadreManagementService cadreManagementService = null;
 	private IRegionServiceData regionServiceDataImp;
 	private List<SelectOptionVO> parliamentConstituencies;
+	private IStaticDataService staticDataService; 
 
 	private static final Logger log = Logger.getLogger(CadreSMSAction.class);
 	
@@ -88,6 +91,14 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 	}
 
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public String execute() throws Exception{
 		if(log.isDebugEnabled())
 			log.debug("CadreSMSMessage.execute() started");
@@ -134,13 +145,14 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>();
 			regions.add(new SelectOptionVO(2L,"STATE"));
 			regions.add(new SelectOptionVO(3L,"DISTRICT"));
+			regions.add(new SelectOptionVO(10L,"PARLIAMENT CONSTITUENCY"));
 			regions.add(new SelectOptionVO(4L,"ASSEMBLY CONSTITUENCY"));
 			regions.add(new SelectOptionVO(5L,"MANDAL/TEHSIL"));
 			regions.add(new SelectOptionVO(6L,"VILLAGE"));
 			regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
 			regions.add(new SelectOptionVO(8L,"WARD"));
 			regions.add(new SelectOptionVO(9L,"BOOTH"));
-			regions.add(new SelectOptionVO(10L,"PARLIAMENT CONSTITUENCY"));
+			
 			cadreSMSVO.setRegions(regions);
 			SelectOptionVO object = new SelectOptionVO();
 			String name = cadreManagementService.getStateName(new Long(accessValue));
@@ -190,6 +202,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 				cadreSMSVO.setRegions(regions);
 			} else
 			{
+				regions.add(new SelectOptionVO(10L,"PARLIAMENT CONSTITUENCY"));
 				regions.add(new SelectOptionVO(4L,"ASSEMBLY CONSTITUENCY"));
 				regions.add(new SelectOptionVO(5L,"MANDAL/TEHSIL"));
 				regions.add(new SelectOptionVO(6L,"VILLAGE"));
@@ -197,18 +210,40 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 				regions.add(new SelectOptionVO(8L,"WARD"));
 				regions.add(new SelectOptionVO(9L,"BOOTH"));
 				cadreSMSVO.setRegions(regions);
-			}			
-			List<SelectOptionVO> stateDistrictConstituency = cadreManagementService.getStateDistricConstituencytByConstituencyID(id);
-			states.add(stateDistrictConstituency.get(0));
-			cadreSMSVO.setStates(states);
-			districts.add(stateDistrictConstituency.get(1));
-			cadreSMSVO.setDistricts(districts);
-			constituencies.add(stateDistrictConstituency.get(2));
-			cadreSMSVO.setConstituencies(constituencies);
-			//mandals = cadreManagementService.getUserAccessMandals(userID);
-			mandals = regionServiceDataImp.getMandalsByConstituencyID(stateDistrictConstituency.get(2).getId());
-			mandals.add(0,new SelectOptionVO(0L,"Select Mandal"));
-			cadreSMSVO.setMandals(mandals);
+			}
+			try{
+			  if("MLA".equals(accessType)){
+				List<SelectOptionVO> stateDistrictConstituency = cadreManagementService.getStateDistricConstituencytByConstituencyID(id);
+				states.add(stateDistrictConstituency.get(0));
+				cadreSMSVO.setStates(states);
+				districts.add(stateDistrictConstituency.get(1));
+				cadreSMSVO.setDistricts(districts);
+				constituencies.add(stateDistrictConstituency.get(2));
+				cadreSMSVO.setConstituencies(constituencies);
+				//mandals = cadreManagementService.getUserAccessMandals(userID);
+				mandals = regionServiceDataImp.getMandalsByConstituencyID(stateDistrictConstituency.get(2).getId());
+				mandals.add(0,new SelectOptionVO(0L,"Select Mandal"));
+				cadreSMSVO.setMandals(mandals);
+			  }else{
+				  regions = new ArrayList<SelectOptionVO>();
+				    regions.add(new SelectOptionVO(10L,"PARLIAMENT CONSTITUENCY"));
+				    regions.add(new SelectOptionVO(4L,"ASSEMBLY CONSTITUENCY"));
+					regions.add(new SelectOptionVO(5L,"MANDAL/TEHSIL"));
+					regions.add(new SelectOptionVO(6L,"VILLAGE"));
+					regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
+					regions.add(new SelectOptionVO(8L,"WARD"));
+					regions.add(new SelectOptionVO(9L,"BOOTH"));
+					cadreSMSVO.setRegions(regions);
+				cadreSMSVO.setStates(regionServiceDataImp.getStateByParliamentConstituencyID(new Long(accessValue)));
+				ConstituencyInfoVO constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(new Long(accessValue));
+				 if(constituencyInfoVO != null){
+				     cadreSMSVO.setConstituencies(constituencyInfoVO.getAssembyConstituencies());
+				     cadreSMSVO.getParliamentConstituencys().add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
+				 }
+			  }
+			}catch(Exception e){
+				log.error("Exception rised in getUserLocationWiseData",e);
+			}
 		}
 		return SUCCESS;
 	}

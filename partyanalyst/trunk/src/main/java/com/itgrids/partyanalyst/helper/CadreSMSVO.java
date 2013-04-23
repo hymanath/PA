@@ -22,6 +22,7 @@ public class CadreSMSVO implements Serializable{
 	private List<SelectOptionVO> regions = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> partyCommitee = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> commiteeDesignation = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> parliamentConstituencys = new ArrayList<SelectOptionVO>();
 	
 	public List<SelectOptionVO> getStates() {
 		return states;
@@ -70,6 +71,13 @@ public class CadreSMSVO implements Serializable{
 	}
 	public void setCommiteeDesignation(List<SelectOptionVO> commiteeDesignation) {
 		this.commiteeDesignation = commiteeDesignation;
+	}
+	public List<SelectOptionVO> getParliamentConstituencys() {
+		return parliamentConstituencys;
+	}
+	public void setParliamentConstituencys(
+			List<SelectOptionVO> parliamentConstituencys) {
+		this.parliamentConstituencys = parliamentConstituencys;
 	}
 	
 	
