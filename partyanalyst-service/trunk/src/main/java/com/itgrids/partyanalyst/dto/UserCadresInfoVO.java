@@ -44,6 +44,7 @@ public class UserCadresInfoVO implements Serializable{
 	private Map<Long, String> userAccessStates = null;
 	private Map<Long, String> userAccessDistricts = null;
 	private Map<Long, String> userAccessConstituencies = null;
+	private Map<Long, String> userAccessParlConstituencies = null;
 	private Map<Long, String> userAccessMandals = null;
 	private Map<Long, String> userAccessVillages = null;
 	private Map<Long, String> userAccessHamlets = null;
@@ -56,6 +57,7 @@ public class UserCadresInfoVO implements Serializable{
 	private Map<Long, String> zeroCadreStates = null;
 	private Map<Long, String> zeroCadreDistricts = null;
 	private Map<Long, String> zeroCadreConstituencies = null;
+	private Map<Long, String> zeroCadreParlConstituencies = null;
 	private Map<Long, String> zeroCadreMandals = null;
 	private Map<Long, String> zeroCadreVillages = null;
 	private Map<Long, String> zeroCadreHamlets = null;
@@ -307,6 +309,20 @@ public class UserCadresInfoVO implements Serializable{
 	}
 	public void setIsParent(Boolean isParent) {
 		this.isParent = isParent;
+	}
+	public Map<Long, String> getUserAccessParlConstituencies() {
+		return userAccessParlConstituencies;
+	}
+	public void setUserAccessParlConstituencies(
+			Map<Long, String> userAccessParlConstituencies) {
+		this.userAccessParlConstituencies = userAccessParlConstituencies;
+	}
+	public Map<Long, String> getZeroCadreParlConstituencies() {
+		return zeroCadreParlConstituencies;
+	}
+	public void setZeroCadreParlConstituencies(
+			Map<Long, String> zeroCadreParlConstituencies) {
+		this.zeroCadreParlConstituencies = zeroCadreParlConstituencies;
 	}
 	
 	

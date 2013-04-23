@@ -33,9 +33,9 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	}
 
 	
-	/*public void testFindCadresByLevels()
+	public void testFindCadresByLevels()
 	{
-		List result = cadreDAO.findCadresByLevels(7l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		List result = cadreDAO.findCadresByLevels(1l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		for(int i=0;i<result.size();i++){
 			Object[] parms = (Object[])result.get(i);
 			System.out.print(parms[0].toString());
@@ -43,7 +43,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 		
-	}*/
+	}
 	
 	/*@SuppressWarnings("unchecked")
 	public void testFindCadreSearchCriteria(){
@@ -351,9 +351,9 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}			
 	}*/
 	
-	@SuppressWarnings("unchecked")
-	public void testFindCadreForSMS()
-	{
+	//@SuppressWarnings("unchecked")
+	//public void testFindCadreForSMS()
+	//{
 		/*String s = "and model.currentAddress.state.stateId = 1";
 		//String s = "and model.currentAddress.district.districtId = 19";
 		//String s = "and model.currentAddress.constituency.constituencyId = 231";
@@ -429,7 +429,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	//	List<Long> y = cadreDAO.findTotalCadreCountForSms(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,roleStr);
 		//System.out.println(y.get(0).toString());
 		
-	}
+	//}
  /*	@SuppressWarnings("unchecked")
 	public void testFindNormalCadre()
 	{
@@ -500,14 +500,14 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-	public void testgetInfluencingPeopleCount() 
+	/*public void testgetInfluencingPeopleCount() 
 	{
 		List<Long> locationValue = new ArrayList<Long>(0);
 		locationValue.add(232l);
 		
 		List<Cadre> values = cadreDAO.getCadreVoterIDs(1l,locationValue,"CONSTITUENCY",1,3);
 		System.out.println(values);
-	}
+	}*/
 }
 	
 

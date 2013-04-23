@@ -158,4 +158,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List getNameByInfluenceScopeValue(Long locationValue,String type);
 	
 	public String getLocalBodyElectionTypeByConstituencyId(Long constituencyId);
+	
+	public List<Object[]> getStateToConstituencyByParlConstituency(String constituencyIds);
 }

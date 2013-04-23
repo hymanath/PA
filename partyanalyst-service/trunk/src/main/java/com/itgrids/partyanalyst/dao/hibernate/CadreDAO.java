@@ -60,7 +60,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		Object[] params = {userID, cadreType, locationId};
 		List totalCadresByLevel = getHibernateTemplate().find("SELECT model.cadreLevel.level,count(model.cadreId) " +
 				" FROM Cadre model WHERE model.user.userId = ? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? "+
-				" group by model.cadreLevel.level order by model.cadreLevel.cadreLevelID", params); 
+				" group by model.cadreLevel.level order by model.cadreLevel.orderNo", params); 
 		return totalCadresByLevel;
 		
 	}
@@ -70,7 +70,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		Object[] params = {userID, cadreType};
 		List totalCadresByLevel = getHibernateTemplate().find("SELECT model.cadreLevel.level,count(model.cadreLevel.level) " +
 				" FROM Cadre model WHERE model.user.userId = ? and model.memberType = ? group by model.cadreLevel.level " +
-				" order by model.cadreLevel.cadreLevelID", params); 
+				" order by model.cadreLevel.orderNo", params); 
 		return totalCadresByLevel;
 	}
 	@SuppressWarnings("unchecked")
@@ -887,5 +887,19 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 	}
 	
+	public Long findCadreSizeConstituencywise(List<Long> constituencyIds,Long userId) {
+		Query query = getSession().createQuery("Select  count(model.currentAddress.constituency.constituencyId)from Cadre model " +
+				" where model.user.userId = :userId and model.currentAddress.constituency.constituencyId in(:constituencyIds)");
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameter("userId", userId);
+		return (Long)query.uniqueResult();
+	}
 	
+	public List findCadreSizeConstituencywise(Long userId,List<Long> constiIds) {
+		Query query = getSession().createQuery("Select model.currentAddress.constituency.constituencyId, count(model.currentAddress.constituency.constituencyId)from Cadre model " +
+				" where model.user.userId = :userId and model.currentAddress.constituency.constituencyId in(:constiIds) and model.currentAddress.constituency.constituencyId is not null group by model.currentAddress.constituency.constituencyId");
+		query.setParameterList("constiIds", constiIds);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }
