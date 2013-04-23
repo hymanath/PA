@@ -169,6 +169,7 @@ google.load("visualization", "1", {packages:["corechart"]});
     padding: 10px;
     text-align: left;
 }
+.dataTables_length{margin-bottom:5px;}
 </style>
 </head>
 
@@ -211,7 +212,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 <div id="descriptionDiv" ></div>
 		<div id="impFamPancBothDtlsAgxImg" style="display:none;margin-left:361px;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
-		<div id="impFamPancBothDtls" class="widget blue whitegloss" style="width:960px;margin-top:50px;margin-left:auto;margin-right:auto;"></div>
+		<div id="impFamPancBothDtls" class="widget blue whitegloss" style="width:959px;margin-top:50px;margin-left:auto;margin-right:auto;"></div>
 	   
 		
 		<div id="NoteDiv" class="breadcrumb"></div>
@@ -802,7 +803,7 @@ function  buildFamilyMembers(result,jsObj,type){
       var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' '+type+' in '+publicationYear+'</div>';
 	
 	  str+=' <div><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
-          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
+          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div><br>';
 
 		
           str+='<div style="overflow-x:scroll;">';
@@ -873,7 +874,7 @@ function  buildFamilyMembers(result,jsObj,type){
           str+=' </table>';
 		  str+=' </div>';
 		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
-	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
+	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div><br>';
               $('#impFamPancBothDtlsAgxImgForHamlet').hide();
 		  if((jsObj.buildType =="hamlet" && type == "panchayat") || (type == "hamlet" && requestFor !="booth"))
 	       {
@@ -884,6 +885,9 @@ function  buildFamilyMembers(result,jsObj,type){
 			  
 			  
 				  $('#impfamilydatatable').dataTable({
+				"sScrollX": "100%",
+			"sScrollXInner": "100%",
+			"bScrollCollapse": true,
 			"aaSorting": [[ 1, "desc" ]],
 			"bDestroy": true,
 			"iDisplayLength": 15,
@@ -910,10 +914,13 @@ function  buildFamilyMembers(result,jsObj,type){
 			}else
 			$('#impFamilesBasicSubDetailsDiv').css('display','block');
 	  	$('#impfamilydatatable').dataTable({
+			"sScrollX": "100%",
+		"sScrollXInner": "100%",
+		"bScrollCollapse": true,
 		"aaSorting": [[ 1, "desc" ]],
 		"bDestroy": true,
-		"iDisplayLength": 15,
-		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		"iDisplayLength": 30,
+		"aLengthMenu": [[30, 90, -1], [30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
 		  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null,null
      
@@ -1500,7 +1507,7 @@ getImpFamiliesVotersToShowForBooth();
 			
 		      var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</div>';
 			      str+=' <div><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
-		          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
+		          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div><br>';
 				  str+=' <table id="impfamilydatatableForBooth" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
 		          str+='  <thead>';
 		          str+='   <tr>';
@@ -1538,7 +1545,7 @@ getImpFamiliesVotersToShowForBooth();
 		          str+='  </tbody>';
 		          str+=' </table>';
 				  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
-			      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div>';
+			      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div><br>';
 				 
 					  $('#importantFamiliesForBooth').html(str);
 					  //$('#impFamPancBothDtlsAgxImgForHamle').hide();
@@ -1547,8 +1554,8 @@ getImpFamiliesVotersToShowForBooth();
 			  	$('#impfamilydatatableForBooth').dataTable({
 				"aaSorting": [[ 1, "desc" ]],
 				"bDestroy": true,
-				"iDisplayLength": 15,
-				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				"iDisplayLength": 30,
+				"aLengthMenu": [[30, 90, -1], [30, 90, "All"]]
 				
 				});
 		}
