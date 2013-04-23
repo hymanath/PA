@@ -21,6 +21,7 @@ public class CadreLevel extends BaseModel implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Long cadreLevelID;
 	private String level;
+	private Long orderNo;
 
 	
 	public CadreLevel(){
@@ -50,6 +51,15 @@ public class CadreLevel extends BaseModel implements Serializable{
 	
 	public void setLevel(String level) {
 		this.level = level;
+	}
+	
+	@Column(name="order_no", length = 40)
+	public Long getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 
 }

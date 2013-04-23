@@ -126,4 +126,22 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		
 		return query.list();
 	} 
+	
+	public List<Object[]> findLatestParliamentForAssembly(List<Long> assemblyIds){
+		Query query = getSession().createQuery("select distinct model.delimitationConstituency.constituency.constituencyId,model.constituency.constituencyId,model.delimitationConstituency.constituency.name" +
+				" ,model.constituency.name from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) and model.constituency.constituencyId in(:assemblyIds)");
+		query.setParameterList("assemblyIds", assemblyIds);
+		return query.list();
+	} 
+	
+	public List<Object[]> findLatestAssemblyForParliament(List<Long> assemblyIds,Long parliamentId){
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name " +
+				"  from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) and model.constituency.constituencyId in(:assemblyIds) " +
+				" and model.delimitationConstituency.constituency.constituencyId = :parliamentId ");
+		query.setParameterList("assemblyIds", assemblyIds);
+		query.setParameter("parliamentId", parliamentId);
+		return query.list();
+	} 
 }

@@ -10102,23 +10102,35 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 						if(boothPublicationVoter.getBooth().getConstituency().getState() != null)
 						{
 							cadreInfo.setState(boothPublicationVoter.getBooth().getConstituency().getState().getStateId().toString());
+							cadreInfo.setPstate(cadreInfo.getState());
 							cadreInfo.setStateName(boothPublicationVoter.getBooth().getConstituency().getState().getStateName());
 						}
 						if(boothPublicationVoter.getBooth().getConstituency().getDistrict() != null)
 						{
 							cadreInfo.setDistrict(boothPublicationVoter.getBooth().getConstituency().getDistrict().getDistrictId().toString());
+							cadreInfo.setPdistrict(cadreInfo.getDistrict());
 							cadreInfo.setDistrictName(boothPublicationVoter.getBooth().getConstituency().getDistrict().getDistrictName());
 						}
 						if(boothPublicationVoter.getBooth().getConstituency() != null)
 						{
 							cadreInfo.setConstituencyID(boothPublicationVoter.getBooth().getConstituency().getConstituencyId());
+							cadreInfo.setPconstituencyID(cadreInfo.getConstituencyID());
 							cadreInfo.setConstituencyName(boothPublicationVoter.getBooth().getConstituency().getName());
+							List parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(cadreInfo.getConstituencyID());
+							if(parliamentList != null && parliamentList.size() > 0){
+						    	   Object[] parliament = (Object[])(parliamentList.get(0));
+						    	   cadreInfo.setParliament(parliament[0] != null?parliament[0].toString():"0");
+						    	   cadreInfo.setPParliament(parliament[0] != null?parliament[0].toString():"0");
+									cadreInfo.setParliamentName(parliament[1]!=null?parliament[1].toString()+" (Parliament)":"");
+						
+							}
 						}
 						if(boothPublicationVoter.getBooth().getTehsil() != null)
 						{
 						  if(boothPublicationVoter.getBooth().getLocalBody() == null)
 							{
 							  cadreInfo.setMandal(IConstants.RURAL_TYPE+boothPublicationVoter.getBooth().getTehsil().getTehsilId().toString());
+							  cadreInfo.setPmandal(cadreInfo.getMandal());
 							  cadreInfo.setMandalName(boothPublicationVoter.getBooth().getTehsil().getTehsilName());
 							}
 						  else
@@ -10129,6 +10141,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 							 {
 								for (Object[] assemblyLocalElectionBodyIds : assemblyLocalElectionBodyId) {
 									cadreInfo.setMandal(IConstants.URBAN_TYPE+assemblyLocalElectionBodyIds[0].toString());
+									cadreInfo.setPmandal(cadreInfo.getMandal());
 									cadreInfo.setMandalName(assemblyLocalElectionBodyIds[1]+"assemblyLocalElectionBodyIds[2]");
 								} 
 							 }
@@ -10142,11 +10155,13 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 							if(hamletBoothPublication.getBooth().getLocalBody() == null)
 							{
 								cadreInfo.setVillage(IConstants.RURAL_TYPE+hamletBoothPublication.getHamlet().getHamletId().toString());
+								cadreInfo.setPvillage(cadreInfo.getVillage());
 								cadreInfo.setVillageName(hamletBoothPublication.getHamlet().getHamletName().toString());
 							}
 							else
 							{
 								cadreInfo.setVillage(IConstants.URBAN_TYPE+hamletBoothPublication.getHamlet().getHamletId().toString());
+								cadreInfo.setPvillage(cadreInfo.getVillage());
 								cadreInfo.setVillageName(hamletBoothPublication.getHamlet().getHamletName().toString());
 							}
 						}
