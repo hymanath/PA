@@ -89,11 +89,70 @@ for (Object[] objects : list) {
 		}
 		}    */
 		
-		public void testGetVoterDataForHamlet()
+		/*public void testGetVoterDataForHamlet()
 		{
 			List<Object[]> voters = userVoterDetailsDAO.getVoterDataForHamlet(29l, 1l,0l, 1000l, "voterId", "asc");
 			
 			System.out.println(voters.size());
 		}
-		
+		*/
+/*		public void testGetAgeDataForPanchayatUser()
+		{
+			List<Object> hamlets =  userVoterDetailsDAO.getHamletsIdsForUserByPanchayat(4l, 1l);
+			List hh = userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(8l,hamlets);
+			//List<Object[]> voters = userVoterDetailsDAO.getAgeDataForPanchayatUser(hh);
+			List<Object[]> voters = userVoterDetailsDAO.getAgeDataForPanchayatUser(hh,IConstants.MALE,IConstants.FEMALE,18l,25l,26l,35l,36l,45l,46l,60l);
+			System.out.println(voters.size());
+			System.out.println(voters);
+			for (Object[] objects : voters) {
+			System.out.println(objects[0]);
+			System.out.println(objects[1]);	
+			System.out.println(objects[2]);
+			}
+		}
+		*/
+
+	/*	public void testgetAgeDataForBoothByHamlets()
+			{
+			//List<Object[]> voters = userVoterDetailsDAO.getAgeDataForBoothByHamlets(1l,8l,123020l,"boothHamlets");
+				List<Object[]> voters = userVoterDetailsDAO.getAgeDataForBoothByHamlets(1l,8l,123020l,"boothHamlets",IConstants.MALE,IConstants.FEMALE,18l,25l,26l,35l,36l,45l,46l,60l);
+				System.out.println(voters.size());
+				System.out.println(voters);
+				for (Object[] objects : voters) {
+				System.out.println(objects[0]);
+				System.out.println(objects[1]);	
+				System.out.println(objects[2]);
+				}
+			}
+		*/
+		/*	public void testgetAgeWiseInfoForUser()
+		{
+			List<Object> hamlets =  userVoterDetailsDAO.getHamletsIdsForUserByPanchayat(4l, 1l);
+			List hh = userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(8l,hamlets);
+			//List<Object[]> voters = userVoterDetailsDAO.getAgeWiseInfoForUser(hh);
+			List<Object[]> voters = userVoterDetailsDAO.getAgeWiseInfoForUser(hh,IConstants.MALE,IConstants.FEMALE,18l,25l,26l,35l,36l,45l,46l,60l);
+			System.out.println(voters.size());
+			System.out.println(voters);
+			for (Object[] objects : voters) {
+			System.out.println(objects[0]);
+			System.out.println(objects[1]);	
+			System.out.println(objects[2]);
+			}
+		}
+	*/
+	/*	public void testgetAgeWiseInfoForUser()
+		{
+			List<Object> hamlets =  userVoterDetailsDAO.getHamletsIdsForUserByPanchayat(4l, 1l);
+			//System.out.println(hamlets);
+			List hh = userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(8l,hamlets);
+			//List<Object[]> voters = userVoterDetailsDAO.getLocalityIdsForUser(28l,1l,hh);
+			List<Object[]> voters = userVoterDetailsDAO.getLocalityIdsForUser(28l,1l,hh,IConstants.MALE,IConstants.FEMALE,18l,25l,26l,35l,36l,45l,46l,60l);
+			System.out.println(voters.size());
+			System.out.println(voters);
+			for (Object[] objects : voters) {
+			System.out.println(objects[0]);
+			System.out.println(objects[1]);	
+			System.out.println(objects[2]);
+			}
+		}*/
 }
