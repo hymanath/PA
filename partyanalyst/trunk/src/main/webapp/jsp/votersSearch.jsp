@@ -3188,7 +3188,7 @@ function getAllSelectedVotersDetails1()
 	if(selectedVotersArr.length <= 0)
 		alert("Please select atleast one recore to update");
 	else
-	window.open("updateSelectedVotersAction.action","editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");
+	window.open("updateSelectedVotersAction.action","editAnnouncement","scrollbars=yes,height=1000,width=1000");
 	
 
 
