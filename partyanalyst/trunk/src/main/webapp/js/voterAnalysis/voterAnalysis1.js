@@ -29,6 +29,7 @@ var assemblyLocalEleBodyId;
 var selectedId;
 var isLocalityDataExist = "true";
 var isMuncipalityExist = "false";
+var muncipalityBooths = "false";
 
 function populate(id,boothId,publicationId,houseNo){
 
@@ -978,12 +979,25 @@ function addToPolitician(voterId,name)
 	   
 	   }
 	   else if(type == "booth"){
-	     $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		  $("#votersBasicInfoBtnDiv").show();
-		 $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
-		$("#castPopupShowBtn").attr("value","Hamlet wise Caste Info");
 
+		if(muncipalityBooths == "true")
+		{
+		  $("#ageLink").css("display","none");
+		  $("#votersShareBtn1").css("display","none");
+		  $("#castPopupShowBtn").css("display","none");
+		}
+		else
+		 {
+		  $("#ageLink").css("display","block");
+		  $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
+		  $("#votersShareBtn1").css("display","block");
+		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		  $("#castPopupShowBtn").attr("value","Hamlet wise Caste Info");
+		 }
+		  
+		
 	   }else if(type == "hamlet"){
 		   $("#votersBasicInfoBtnDiv").show();
 		// $("#cnstHeading").html();
@@ -6022,6 +6036,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 				isMuncipalityExist = "true";
 		  	str+='<li><a onClick="" dest-atr="ward"  data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+' " ><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i>'+municipality.name.replace('Greater Municipal Corp','')+'</a></li>';
 		  } else if(municipality.selectOptionsList1 != null){
+			  muncipalityBooths = "true";
 		  	str+='<li><a onClick="" dest-atr="booth" data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+' "><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i>'+municipality.name.replace('Greater Municipal Corp','')+'</a></li>';
 		  }
 		  }); }
@@ -6069,6 +6084,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			}
 		  });
 		  $(".rightNav-Booths").hide();
+		   muncipalityBooths = "false";
 		 break;
 		 
 		case 4: // Build Booths Menu For Munucipalities
@@ -6084,6 +6100,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			$(".middleNav").hide();
 			
 			$(this).closest(".rightNav").css("width","720px");	
+			muncipalityBooths = "true";
 		 break;
 	      case 5: // Build Wards Menu
 		     $.each(menudata[0].localbodiesList, function(iter,municipality){
@@ -6114,6 +6131,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			}
 			  });
 		   $(".rightNav-Booths").show();
+		   muncipalityBooths = "true";
 		 break;
 		 
 		
