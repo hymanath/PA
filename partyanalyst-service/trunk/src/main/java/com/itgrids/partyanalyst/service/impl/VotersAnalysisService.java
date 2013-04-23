@@ -2035,6 +2035,23 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 		}
 		
+		/**
+		 * @author Sravanthi
+		 */
+		public List<SelectOptionVO> getBoothsByPanchayatIdandConstituencyId(Long id,Long publicationDateId,Long constituencyId,String type,Long tehsilId)
+		{
+			List<SelectOptionVO> booths = new ArrayList<SelectOptionVO>();
+			//List<Object[]> PollingBooths = hamletBoothPublicationDAO.getBoothsInPanchayatByPublicationId(id,publicationDateId);
+			List<Object[]> PollingBooths =  boothDAO.getBoothsInAPanchayatUsingConstituencyId(id,publicationDateId,constituencyId,type,tehsilId);
+			SelectOptionVO hamlet = null;
+			for (Object[] panchayat : PollingBooths) {
+				hamlet = new SelectOptionVO((Long)panchayat[0],panchayat[1].toString());
+				hamlet.setLocation(panchayat[2] != null?panchayat[2].toString():"");
+				hamlet.setVillageCovered(panchayat[3] != null?panchayat[3].toString():"");
+				booths.add(hamlet);
+			}
+			return booths;	
+		}
 		public List<SelectOptionVO> getBoothsByPanchayatId(Long id,Long publicationDateId)
 		{
 			List<SelectOptionVO> booths = new ArrayList<SelectOptionVO>();
@@ -6491,7 +6508,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					}
 				 }
 				 
-				 public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type,Long constituencyId)
+				 public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type,Long constituencyId,Long tehsilId)
 				 {
 					 List<SelectOptionVO> namesList = new ArrayList<SelectOptionVO>(0);
 					 List<SelectOptionVO> mandalList = new ArrayList<SelectOptionVO>(0);
@@ -6557,8 +6574,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 										
 									for(SelectOptionVO panchayats : panchayatList1)
 									{   
-										hamlets=      getHamletsForPanchayat((Long)panchayats.getId(), publicationDateId);
-										 boothsList1 = getBoothsByPanchayatId((Long)panchayats.getId(),publicationDateId);
+										hamlets= getHamletsForPanchayat((Long)panchayats.getId(), publicationDateId);
+										 boothsList1 = getBoothsByPanchayatIdandConstituencyId((Long)panchayats.getId(),publicationDateId,constituencyId,type,new Long(mandals.getId().toString().substring(1)));
 										 if(hamlets  != null && hamlets.size() >0)
 										 {
 											    panchayats.setSelectOptionsList1(hamlets);	
@@ -6605,12 +6622,12 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								}
 								
 				 }
-					
 					 if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody") && !type.equalsIgnoreCase("ward") && !type.equalsIgnoreCase("hamlet"))
 					 {
 						    List<Object[]> panchayatiesList1 = null;
 						    try{
-							 panchayatiesList1 = panchayatDAO.getPanchayatiesCount(id,type,publicationDateId);
+						    	 panchayatiesList1 = panchayatDAO.getPanchayatiesCount(id,type,publicationDateId);
+
 						    }catch(Exception e){
 						    	log.error("Exception Occured in getting panchayaties  - ",e);
 						    }
@@ -6623,10 +6640,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							 }
 							 for(SelectOptionVO panchayats : panchayatiesList)
 								{
-									 boothsList1 = getBoothsByPanchayatId((Long)panchayats.getId(),publicationDateId);
-									
+								 if(!type.equalsIgnoreCase("constituency")){
+									 boothsList1 = getBoothsByPanchayatIdandConstituencyId((Long)panchayats.getId(),publicationDateId,constituencyId,type,id);
 									 panchayats.setSelectOptionsList(boothsList1);	
-								
+								 }
 								 }
 							 votersDetailsVO.setPanchayatList(panchayatiesList);
 							 votersDetailsVO.setTotalPanchayats(new Long(panchayatiesList.size()));
@@ -6645,7 +6662,13 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							 }
 					 
 					 if(!type.equalsIgnoreCase("hamlet")){
-					List<Object[]> booths = boothDAO.getBoothsCount(id,publicationDateId,type,constituencyId);
+						 List<Object[]> booths = null;
+						 if(tehsilId != 0){
+							 booths = boothDAO.getBoothsCount(id,publicationDateId,type,constituencyId,new Long(tehsilId.toString().substring(1)));
+						 }
+					 	if(tehsilId == 0){
+					 		booths = boothDAO.getBoothsCount(id,publicationDateId,type,constituencyId,tehsilId);
+					 	}
 					if(booths != null && booths.size() > 0)
 					{
 						for(Object[] params :booths)
