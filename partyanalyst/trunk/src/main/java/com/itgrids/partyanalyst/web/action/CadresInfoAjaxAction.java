@@ -633,6 +633,12 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 				 if(keys.length()>0)
 					 cadreDetailsInfoVO.setZeroCadresRegion1(cadreManagementService.getStateToDistrictByDistrict(keys));
 					 
+			}else if(region.equalsIgnoreCase("PARLIAMENT CONSTITUENCY"))
+			{
+				 zeroLevelCadres=userCadresInfoVo.getZeroCadreParlConstituencies();
+				 String keys = getIDs(zeroLevelCadres);
+				 if(keys.length()>0)
+					 cadreDetailsInfoVO.setZeroCadresRegion1(cadreManagementService.getStateToConstituencyByParlConstituency(keys));					 
 			}else if(region.equalsIgnoreCase("CONSTITUENCY"))
 			{
 				 zeroLevelCadres=userCadresInfoVo.getZeroCadreConstituencies();

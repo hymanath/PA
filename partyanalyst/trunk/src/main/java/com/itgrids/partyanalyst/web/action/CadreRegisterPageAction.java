@@ -487,12 +487,14 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		cadreLevelsList = new ArrayList<SelectOptionVO>();
 		cadreLevelsList.add(new SelectOptionVO(2l,"STATE"));
 		cadreLevelsList.add(new SelectOptionVO(3l,"DISTRICT"));
+		cadreLevelsList.add(new SelectOptionVO(10l,"PARLIAMENT CONSTITUENCY"));
 		cadreLevelsList.add(new SelectOptionVO(4l,"CONSTITUENCY"));
 		cadreLevelsList.add(new SelectOptionVO(5l,"MANDAL"));
 		cadreLevelsList.add(new SelectOptionVO(6l,"VILLAGE"));
 		cadreLevelsList.add(new SelectOptionVO(7l,"MUNICIPAL-CORP-GMC"));
 		cadreLevelsList.add(new SelectOptionVO(8l,"WARD"));
 		cadreLevelsList.add(new SelectOptionVO(9l,"BOOTH"));
+		
 		if(windowTask.equals(IConstants.CREATE_NEW))
 		{	
 			if("MLA".equals(accessType))
@@ -505,7 +507,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				constituencyList.add(list.get(2));
 				mandalList = regionServiceDataImp.getSubRegionsInConstituency(accessValue, IConstants.PRESENT_YEAR, null);
 				mandalList.add(0,new SelectOptionVO(0l,"Select Location"));
-				
+				parliamentConstituencyList = cadreManagementService.findLatestParliamentForAssembly(accessValue);
 				districtList_c = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
 				constituencyList_c = regionServiceDataImp.getConstituenciesByDistrictID(list.get(1).getId());
 				//session.setAttribute(ISessionConstants.STATES, stateList);
@@ -549,6 +551,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
 				stateList.add(list.get(0));
 				districtList.add(list.get(1));
+				parliamentConstituencyList = cadreManagementService.getParliamentConstituenciesInADistrict(accessValue.toString());
+				//parliamentConstituencyList.add(0,new SelectOptionVO(0l,"Select Location"));
 				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
 				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 				districtList_c = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
@@ -593,9 +597,23 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			
 		} else if(windowTask.equals(IConstants.UPDATE_EXISTING))
 		{
-			
-			session.setAttribute(ISessionConstants.STATES, stateList_o);	
-			session.setAttribute(ISessionConstants.STATES_O, stateList_o);
+			 session.setAttribute(ISessionConstants.STATES_O, stateList_o);
+			if("COUNTRY".equals(accessType)){
+			  session.setAttribute(ISessionConstants.STATES, stateList_o);	
+			 
+			}else{
+				if(cadreInfo.getState() != null){
+					String name = cadreManagementService.getStateName(new Long(cadreInfo.getState()));
+					SelectOptionVO obj2 = new SelectOptionVO();
+					obj2.setId(new Long(cadreInfo.getState()));
+					obj2.setName(name);
+					stateList = new ArrayList<SelectOptionVO>();
+					stateList.add(obj2);
+				    session.setAttribute(ISessionConstants.STATES, stateList);	
+				}else{
+					session.setAttribute(ISessionConstants.STATES, stateList_o);	
+				}
+			}
 			setDefaultCadreLevelId(cadreInfo.getCadreLevel());
 			setSameAsCAFlag(cadreInfo.getSameAsCA());			
 		}
@@ -691,10 +709,22 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
     		session = request.getSession();
     		System.out.println("inside method populate const");
     		List<SelectOptionVO> pConstituencyList = new ArrayList<SelectOptionVO>();
+    		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+    		String accessType =regVO.getAccessType();
+    		List<SelectOptionVO> pConstituencyList_o = new ArrayList<SelectOptionVO>();
+    		List<SelectOptionVO> constituencynames_o = new ArrayList<SelectOptionVO>();
+    		List<SelectOptionVO> districtNames_o = new ArrayList<SelectOptionVO>();
     		//get districts
-    		List<SelectOptionVO> districtNames_c=cadreManagementService.findDistrictsByState(cadreInfo.getState());			
-    		SelectOptionVO obj = new SelectOptionVO(0L,"Select District");
-    		districtNames_c.add(0, obj);
+    		List<SelectOptionVO> districtNames_c = new ArrayList<SelectOptionVO>();
+    		if("MP".equals(accessType) || "COUNTRY".equals(accessType) || "STATE".equals(accessType)){
+	    		 districtNames_c=cadreManagementService.findDistrictsByState(cadreInfo.getState());			
+	    		SelectOptionVO obj = new SelectOptionVO(0L,"Select District");
+	    		districtNames_c.add(0, obj);
+    		}else{
+    			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(new Long(cadreInfo.getDistrict()));
+				
+				districtNames_c.add(list.get(1));
+    		}
     		
     		session.setAttribute(ISessionConstants.DISTRICTS, districtNames_c);
 			
@@ -708,12 +738,27 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
     		}
     		if(cadreInfo.getParliament() != null)
     		{
-    			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
-    			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(new Long(cadreInfo.getParliament()));
-    			pConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
-    			constituencynames_c=constituencyInfoVO.getAssembyConstituencies();	
-    			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
-    			constituencynames_c.add(0, obj1);
+    			if(cadreInfo.getDistrict() == null){
+	    			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+	    			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(new Long(cadreInfo.getParliament()));
+	    			pConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
+	    			constituencynames_c=constituencyInfoVO.getAssembyConstituencies();	
+	    			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
+	    			constituencynames_c.add(0, obj1);
+	    			
+    			}else{
+    				if("DISTRICT".equals(accessType) || "COUNTRY".equals(accessType) || "STATE".equals(accessType)){
+    					pConstituencyList = cadreManagementService.getParliamentConstituenciesInADistrict(cadreInfo.getDistrict());
+    					constituencynames_c = cadreManagementService.getAssemblyConstiForParlInADistrict(cadreInfo.getDistrict(),new Long(cadreInfo.getParliament()));
+    					//SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
+    	    			//constituencynames_c.add(0, obj1);
+    				}else{
+    					pConstituencyList =  cadreManagementService.findLatestParliamentForAssembly(cadreInfo.getConstituencyID());
+    					List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(new Long(cadreInfo.getConstituencyID()));
+    					constituencynames_c = new ArrayList<SelectOptionVO>();
+    					constituencynames_c.add(list.get(2));
+    				}
+    			}
     			session.setAttribute(ISessionConstants.P_CONSTITUENCIES, pConstituencyList);
     		}
     					
@@ -736,25 +781,93 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				boothsList_c = getRegionServiceDataImp().getboothsInWard(new Long(cadreInfo.getVillage()),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(cadreInfo.getConstituencyID()));
 			else 
 				boothsList_c = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(cadreInfo.getMandal()),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(cadreInfo.getConstituencyID()));
+			if(boothsList_c != null){
+				SelectOptionVO obj = new SelectOptionVO(0L,"Select Location");
+				boothsList_c.add(0, obj);
+			}
 			session.setAttribute(ISessionConstants.BOOTHS, boothsList_c);
-
-		if(cadreInfo.getSameAsCA() == false)
-		{
-    		//get districts
+			//get districts
 			System.out.println("same as ca false");
-    		List<SelectOptionVO> districtNames_o=cadreManagementService.findDistrictsByState(cadreInfo.getPstate());			
+    		 districtNames_o=cadreManagementService.findDistrictsByState(cadreInfo.getPstate());			
     		SelectOptionVO obj4 = new SelectOptionVO(0L,"Select District");
     		districtNames_o.add(0, obj4);
     		
     		session.setAttribute(ISessionConstants.DISTRICTS_O, districtNames_o);
-					
+    		
+    		if(cadreInfo.getPdistrict() != null){
+    			pConstituencyList_o = cadreManagementService.getParliamentConstituenciesInADistrict(cadreInfo.getPdistrict());
+    			constituencynames_o = cadreManagementService.getAssemblyConstiForParlInADistrict(cadreInfo.getPdistrict(),new Long(cadreInfo.getPParliament()));
+    		}else{
+    			pConstituencyList_o = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,new Long(cadreInfo.getPstate())).getConstituencies();
+    			pConstituencyList_o.add(0, new SelectOptionVO(0l,"Select Location"));
+    			ConstituencyInfoVO constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(new Long(cadreInfo.getPParliament()));
+    			constituencynames_o=constituencyInfoVO.getAssembyConstituencies();	
+    		}
+    		session.setAttribute(ISessionConstants.P_CONSTITUENCIES_O, pConstituencyList_o);
+    		session.setAttribute(ISessionConstants.CONSTITUENCIES_O, constituencynames_o);
+
+		if(cadreInfo.getSameAsCA() == false)
+		{
+			//get districts
+    		//List<SelectOptionVO> districtNames_o = new ArrayList<SelectOptionVO>();
+    		
+    		/*if("MP".equals(accessType) || "COUNTRY".equals(accessType) || "STATE".equals(accessType)){
+    			districtNames_o=cadreManagementService.findDistrictsByState(cadreInfo.getPstate());			
+	    		SelectOptionVO obj = new SelectOptionVO(0L,"Select District");
+	    		districtNames_o.add(0, obj);
+    		}else{
+    			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(new Long(cadreInfo.getPdistrict()));
+				
+    			districtNames_o.add(list.get(1));
+    		}
+    		
+    		session.setAttribute(ISessionConstants.DISTRICTS_O, districtNames_o);*/
+			
+    		//get constituencies
+    		/*List<SelectOptionVO> constituencynames_o = new ArrayList<SelectOptionVO>();
+    		if(cadreInfo.getPdistrict() != null)
+    		{
+    			constituencynames_o=regionServiceDataImp.getConstituenciesByDistrictID(new Long(cadreInfo.getPdistrict()));	
+    			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
+    			constituencynames_o.add(0, obj1);        		
+    		}
+    		if(cadreInfo.getPParliament() != null)
+    		{
+    			if(cadreInfo.getPdistrict() == null){
+	    			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+	    			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(new Long(cadreInfo.getPParliament()));
+	    			pConstituencyList_o.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
+	    			constituencynames_o=constituencyInfoVO.getAssembyConstituencies();	
+	    			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
+	    			constituencynames_o.add(0, obj1);
+	    			
+    			}else{
+    				if("DISTRICT".equals(accessType) || "COUNTRY".equals(accessType) || "STATE".equals(accessType)){
+    					pConstituencyList_o = cadreManagementService.getParliamentConstituenciesInADistrict(cadreInfo.getPdistrict());
+    					constituencynames_o = cadreManagementService.getAssemblyConstiForParlInADistrict(cadreInfo.getPdistrict(),new Long(cadreInfo.getPParliament()));
+    					//SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
+    					//constituencynames_o.add(0, obj1);
+    				}else{
+    					pConstituencyList_o =  cadreManagementService.findLatestParliamentForAssembly(cadreInfo.getPconstituencyID());
+    					List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(new Long(cadreInfo.getPconstituencyID()));
+    					constituencynames_o.add(list.get(2));
+    				}
+    			}
+    			session.setAttribute(ISessionConstants.P_CONSTITUENCIES_O, pConstituencyList_o);
+    		}
+    					
+    		session.setAttribute(ISessionConstants.CONSTITUENCIES_O, constituencynames_o);
+			*/
+			
+    		
+			/*		
     		//get constituencies
     		List<SelectOptionVO> constituencynames_o=regionServiceDataImp.getConstituenciesByDistrictID(new Long(cadreInfo.getPdistrict()));	
 			SelectOptionVO obj5 = new SelectOptionVO(0L,"Select Constituency");
 			constituencynames_o.add(0, obj5);
     					
 			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, constituencynames_o);
-			
+			*/
 			
 			//get Mandals/local bodies
 			List<SelectOptionVO> mandals_o=regionServiceDataImp.getSubRegionsInConstituency(new Long(cadreInfo.getPconstituencyID()),IConstants.PRESENT_YEAR,null);	
@@ -770,20 +883,24 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			session.setAttribute(ISessionConstants.VILLAGES_O, villageNames_o);	
 			
 			// get booths 
-			List<SelectOptionVO> boothsList_o;
+			List<SelectOptionVO> boothsList_o = new ArrayList<SelectOptionVO>();
 			if(cadreInfo.getPmandalName().contains(IConstants.GREATER_ELECTION_TYPE))
 				
 				boothsList_o = getRegionServiceDataImp().getboothsInWard(new Long(cadreInfo.getPvillage()),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(cadreInfo.getPconstituencyID()));
 			else 
 				boothsList_o = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(cadreInfo.getPmandal()),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(cadreInfo.getPconstituencyID()));
+			if(boothsList_o != null){
+				SelectOptionVO obj = new SelectOptionVO(0L,"Select Location");
+				boothsList_o.add(0, obj);
+			}
 			session.setAttribute(ISessionConstants.BOOTHS_O, boothsList_o);
 			
 		} else if(cadreInfo.getSameAsCA() == true)
 		{
 			System.out.println("same as ca true");
-			session.setAttribute(ISessionConstants.DISTRICTS_O, districtNames_c);
-			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, constituencynames_c);
-			session.setAttribute(ISessionConstants.P_CONSTITUENCIES_O, pConstituencyList);
+			session.setAttribute(ISessionConstants.DISTRICTS_O, districtNames_o);
+			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, constituencynames_o);
+			session.setAttribute(ISessionConstants.P_CONSTITUENCIES_O, pConstituencyList_o);
 			session.setAttribute(ISessionConstants.MANDALS_O, mandals_c);
 			session.setAttribute(ISessionConstants.VILLAGES_O, villageNames_c);
 			session.setAttribute(ISessionConstants.BOOTHS_O, boothsList_c);

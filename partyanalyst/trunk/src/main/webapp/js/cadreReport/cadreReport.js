@@ -168,7 +168,9 @@ function buildZeroCadreTable(myResults, cadreData)
 	if(myResults.region=='DISTRICT')
 		buildZeroCadreTableDistrict(myResults, cadreData);
 	if(myResults.region=='CONSTITUENCY')
-		buildZeroCadreTableConstituency(myResults, cadreData);	
+		buildZeroCadreTableConstituency(myResults, cadreData);
+    if(myResults.region=='PARLIAMENT CONSTITUENCY')
+		buildZeroCadreTableForPArlConstituency(myResults, cadreData);			
 	if(myResults.region=='STATE')
 		buildZeroCadreTableState(myResults, cadreData);
 	if(myResults.region=='MUNICIPAL/CORP/GMC')
@@ -404,6 +406,42 @@ function buildZeroCadreTableConstituency(myResults, cadreData)
 
 
 	getCadrePopup(myColumnDefs,myDataSource,configs,title);
+}
+function buildZeroCadreTableForPArlConstituency(myResults, cadreData)
+{
+   
+	var localArr = new Array();
+	var title='';
+	for(var i in myResults.zeroCadresRegion)
+	{
+		var obj = {
+					state:cadreData[i].state.name,
+					constituency:cadreData[i].constituency.name
+				  };
+		localArr.push(obj);
+	}
+
+	
+	  var myColumnDefs = [
+			{key:"state",label:"State", sortable:true},
+			{key:"constituency",label:"Constituency",sortable:true}
+		];
+		
+		var configs = {
+							paginator: new YAHOO.widget.Paginator({ 
+							rowsPerPage    : 10			        
+							})
+					   };
+		var myDataSource = new YAHOO.util.DataSource(localArr);
+		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		myDataSource.responseSchema = {
+			fields: ["state","constituency"]
+		};					
+
+
+
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);
+ 
 }
 function buildZeroCadreTableVillage(myResults, cadreData)
 {

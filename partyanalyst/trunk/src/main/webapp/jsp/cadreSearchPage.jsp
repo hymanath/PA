@@ -84,7 +84,7 @@ function populateLocations(val,source)
 	var row7El = document.getElementById("row7");
 	var stateFieldEl = document.getElementById("stateField_s");
 	var districtFieldEl = document.getElementById("districtField_s"); 
-	var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
+	var selectedDistrict = $("#districtField_s").val(); 
 	var constituencyFieldEl = document.getElementById("constituencyField_s");
 	var mandalFieldEl = document.getElementById("mandalField_s");
 	var hamletFieldEl = document.getElementById("hamletField_s");		
@@ -108,13 +108,20 @@ function populateLocations(val,source)
 		mandalFieldEl.selectedIndex = '0';
 		hamletFieldEl.selectedIndex = '0';
 		boothFieldEl.selectedIndex = '0';
-	} else if(accessType == 'DISTRICT' || accessType == 'MP')
+	} else if(accessType == 'DISTRICT')
 	{
 		constituencyFieldEl.selectedIndex = '0';
 		mandalFieldEl.selectedIndex = '0';
 		hamletFieldEl.selectedIndex = '0';
 		boothFieldEl.selectedIndex = '0';
 		getSubRegionsInDistrict(selectedDistrict,'cadreSearch','constituencyField_s','cadreSearch')
+	}else if( accessType == 'MP')
+	{
+		constituencyFieldEl.selectedIndex = '0';
+		mandalFieldEl.selectedIndex = '0';
+		hamletFieldEl.selectedIndex = '0';
+		boothFieldEl.selectedIndex = '0';
+		//getSubRegionsInDistrict(selectedDistrict,'cadreSearch','constituencyField_s','cadreSearch')
 	} else if(accessType == 'MLA')
 	{
 		mandalFieldEl.selectedIndex = '0';
@@ -245,6 +252,9 @@ function populateLocations(val,source)
 			row1El.style.display = '';
 		if(row7El.style.display == 'none')
 			row7El.style.display = '';
+	}
+	if( accessType == 'MP'){
+	  row2El.style.display = 'none';
 	}
 			 
 }
