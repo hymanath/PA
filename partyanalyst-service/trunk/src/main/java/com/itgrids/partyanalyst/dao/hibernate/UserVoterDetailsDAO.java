@@ -796,4 +796,207 @@ IUserVoterDetailsDAO{
 				query.setMaxResults(maxIndex.intValue());
 				return query.list();
 			}
+			
+	/**
+ 	* getAgeDataForPanchayatUser method is an overload method is used to get panchayathWise 
+	* voters total count based on ages
+	* @author srishailam
+	* @param List<?>
+	* @param String
+	* @param String
+	* @param Long varargs array[]
+	* @return Object[]  
+	*/
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,String male,String female,long ...ages){
+		StringBuilder query = new StringBuilder();
+		Query queryObject = null;
+		query.append("select distinct model.hamlet.hamletId,model.hamlet.hamletName ," +
+					"count( distinct model.voter.voterId), ");
+		query.append(getAgeQuery(null,"GENDER"));	
+		if(ages.length%2==0)
+			for(int i=0;i<ages.length;){				
+				query.append(getAgeQuery("AGE"+ages[i],"AGE"+ages[i+1]));
+				i=i+2;
+			}			
+		query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
+		query.append(getAllAgesQuery(ages));
+		query.append("from UserVoterDetails model  where  model.voter.voterId in(:voterIds) " +
+					" and model.hamlet.hamletId is not null group by model.hamlet.hamletId order by model.hamlet.hamletName");
+							
+		queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter("male", male);
+		queryObject.setParameter("female", female);			
+		queryObject.setParameterList("voterIds", voterIds);
+		for(int i=0;i<ages.length;i++)
+				queryObject.setParameter("AGE"+ages[i], ages[i]);
+		return queryObject.list();
+	}
+	/**
+	 * getAgeDataForBoothByHamlets this method is an overload method is used to get BoothByHamlet Wise 
+	 * voters total count based on ages
+	 * @author srishailam
+	 * @param Long
+	 * @param Long
+	 * @param Long
+	 * @param String
+	 * @param String
+	 * @param String
+	 * @param Long varargs array[]
+	 * @return Object[]  
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId ,String type,String male,String female,long ...ages) {
+		  StringBuilder query = new StringBuilder();
+		  if(type.equalsIgnoreCase("boothHamlets"))
+			  query.append("select distinct model.hamlet.hamletId,model.hamlet.hamletName ,");
+		  else if(type.equalsIgnoreCase("hamletBooths"))
+			  query.append("select distinct model1.booth.boothId,concat('Booth-',model1.booth.partNo),");
+			  query.append("count( distinct model.voter.voterId), " );
+			  query.append(getAgeQuery(null,"GENDER"));	
+			  if(ages.length%2==0)
+				for(int i=0;i<ages.length;){				
+					query.append(getAgeQuery("AGE"+ages[i],"AGE"+ages[i+1]));
+					i=i+2;
+				}			
+			query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
+			query.append(getAllAgesQuery(ages));		
+			query.append("from UserVoterDetails model , " );
+			query.append("BoothPublicationVoter model1 " );
+		  if(type.equalsIgnoreCase("boothHamlets"))
+			query.append(" join model.hamlet " );
+		  else if(type.equalsIgnoreCase("hamletBooths"))
+			query.append(" join model1.booth " );
+			query.append(" where model.voter.voterId = model1.voter.voterId and " );
+			query.append(" model1.booth.publicationDate.publicationDateId = :publicationDateId and " );
+				  
+		  if(type.equalsIgnoreCase("boothHamlets"))
+			query.append(" model1.booth.boothId = :boothId " );
+		 else if(type.equalsIgnoreCase("hamletBooths"))
+			query.append(" model.hamlet.hamletId = :boothId " );
+
+			query.append("and model.user.userId = :userId " );
+				   
+		if(type.equalsIgnoreCase("boothHamlets")){
+			query.append("and model.hamlet.hamletId is not null ");
+			query.append("group by model.hamlet.hamletId order by model.hamlet.hamletName");
+		}
+		else if(type.equalsIgnoreCase("hamletBooths"))
+			query.append("group by model1.booth.boothId order by model1.booth.partNo");
+
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("boothId", boothId);
+		queryObj.setParameter("userId", userId);
+		queryObj.setParameter("male", male);
+		queryObj.setParameter("female", female);	
+		for(int i=0;i<ages.length;i++)
+			queryObj.setParameter("AGE"+ages[i], ages[i]);
+		return queryObj.list();
+	}
+	/**
+	 * getAgeWiseInfoForUser method is an overload method is used to get AgeWiseInfoForUser 
+	 * voters total count based on ages
+	 * @author srishailam
+	 * @param List<?>
+	 * @param String
+	 * @param String
+	 * @param Long varargs array[]
+	 * @return Object[]  
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds,String male,String female,long ...ages) {
+		StringBuilder query = new StringBuilder();
+		query.append(" select count( distinct model.voter.voterId), ");
+			if(ages.length%2==0)
+				for(int i=0;i<ages.length;){				
+					query.append(getAgeQuery("AGE"+ages[i],"AGE"+ages[i+1]));
+					i=i+2;
+			}			
+			query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
+			query.append(getAllAgesQuery(ages));							
+			query.append(" from UserVoterDetails model  where  model.voter.voterId in(:voterIds) ");
+			Query queryObject = getSession().createQuery(query.toString());		
+			queryObject.setParameterList("voterIds", voterIds);
+			queryObject.setParameter("male", male);
+			queryObject.setParameter("female", female);
+			for(int i=0;i<ages.length;i++)
+				queryObject.setParameter("AGE"+ages[i], ages[i]);
+		return queryObject.list();					
+	}
+	/**
+	 * getLocalityIdsForUser method is an overload method is used to get LocalityWise 
+	 * voters total count based on ages
+	 * @author srishailam
+	 * @param Long
+	 * @param Long
+	 * @param List<?>
+	 * @param String
+	 * @param String
+	 * @param Long varargs array[]
+	 * @return Object[]  
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalityIdsForUser(Long hamletId , Long userId,List<?> voterIds,String male,String female,long ...ages) {
+		StringBuilder query = new StringBuilder();
+		query.append(" select distinct model.locality.localityId,model.locality.name , count( distinct model.voter.voterId), " );
+		query.append(getAgeQuery(null,"GENDER"));	
+		if(ages.length%2==0)
+				for(int i=0;i<ages.length;){				
+					query.append(getAgeQuery("AGE"+ages[i],"AGE"+ages[i+1]));
+					i=i+2;
+			}			
+			query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
+			query.append(getAllAgesQuery(ages));						
+		
+			query.append(" from UserVoterDetails model  where  model.voter.voterId in(:voterIds) " +
+						" and model.locality.localityId is not null group by model.locality.localityId order by model.locality.name");
+			Query queryObject = getSession().createQuery(query.toString());
+			queryObject.setParameter("male", male);
+			queryObject.setParameter("female", female);			
+			queryObject.setParameterList("voterIds", voterIds);
+			for(int i=0;i<ages.length;i++)
+					queryObject.setParameter("AGE"+ages[i], ages[i]);
+			return queryObject.list();	
+	}
+	
+	/**
+	 * getAgeQuery(String age1,String age2) method is used to get query for  between two ages
+	 * @author srishialam
+	 * @param long
+	 * @param long
+	 * @return String
+	 */
+	public String getAgeQuery(String age1,String age2){	
+		String query =null;
+		if(age1 != null && age2 != null)
+			query=" SUM( CASE WHEN model.voter.gender=:female and model.voter.age BETWEEN  :"+age1+" and :"+age2+" THEN 1 ELSE 0 END) as ageCount , " +	
+					" SUM( CASE WHEN model.voter.gender=:male and model.voter.age BETWEEN  :"+age1+" and :"+age2+" THEN 1 ELSE 0 END) as ageCount , " +	
+					" SUM( CASE WHEN model.voter.gender !=:male and model.voter.gender !=:female and model.voter.age BETWEEN  :"+age1+" and :"+age2+"  THEN 1 ELSE 0 END) as malecoun , ";
+		else if(age1!= null && age2 == null)
+			query =" SUM( CASE WHEN model.voter.gender=:female and model.voter.age > :"+age1+"  THEN 1 ELSE 0 END) as ageCount , " +	
+					" SUM( CASE WHEN model.voter.gender=:male and model.voter.age > :"+age1+"  THEN 1 ELSE 0 END) as ageCount , " +
+					" SUM( CASE WHEN model.voter.gender !=:male and model.voter.gender !=:female and model.voter.age > :"+age1+"  THEN 1 ELSE 0 END) as malecoun , " ;
+		else if(age1== null && age2 != null)
+			query = " SUM( CASE WHEN model.voter.gender=:female THEN 1 ELSE 0 END) as femalecount ," +
+					" SUM( CASE WHEN model.voter.gender=:male THEN 1 ELSE 0 END) as malecount , " +
+					" SUM( CASE WHEN model.voter.gender !=:male and model.voter.gender != :female  THEN 1 ELSE 0 END) as malecoun , ";
+		return query;
+	}
+	/**
+	 * getAllAgesQuery(long ...ages) method is used to get query for all ages
+	 * @author Srishailam
+	 * @param long[] (varargs array)
+	 * @return String
+	 */
+	public String getAllAgesQuery(long ...ages){
+		StringBuilder query = new StringBuilder();
+		if(ages != null && ages.length>0)
+			for(int i=0;i<ages.length;){
+				query.append(" SUM( CASE WHEN model.voter.age BETWEEN  :AGE"+ages[i]+" and :AGE"+ages[i+1]+" THEN 1 ELSE 0 END) as ageCount , ") ;
+				i=i+2;
+			}
+		query.append(" SUM( CASE WHEN model.voter.age > :AGE"+ages[ages.length-1]+" THEN 1 ELSE 0 END) as ageC ");
+		return query.toString();
+	}
 }
