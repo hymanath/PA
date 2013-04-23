@@ -409,7 +409,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	    	return getHibernateTemplate().find("select model.boothId,model.partNo from Booth model where model.panchayat.panchayatId = ? and model.year = ?",params);
 	    }
 	    
-	    public List<Object[]> getBoothsCount(Long id,Long publicationDateId,String type,Long constituencyId)
+	    public List<Object[]> getBoothsCount(Long id,Long publicationDateId,String type,Long constituencyId,Long tehsilId)
 		  {
 			  
 			 
@@ -424,7 +424,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			  else if(type.equalsIgnoreCase("localElectionBody"))
 				  str.append(" model.localBody.localElectionBodyId = :id and model.constituency.constituencyId = :constituencyId ");
 			  else if(type.equalsIgnoreCase("panchayat"))
-			    str.append(" model.panchayat.panchayatId = :id ");
+			    str.append(" model.panchayat.panchayatId = :id and model.constituency.constituencyId = :constituencyId and model.tehsil.tehsilId = :tehsilId ");
 			  else if(type.equalsIgnoreCase("ward"))
 				  str.append(" model.localBodyWard.constituencyId = :id ");
 			  Query query =getSession().createQuery(str.toString());
@@ -432,6 +432,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			  query.setParameter("publicationDateId",publicationDateId);
 			  if(type.equalsIgnoreCase("localElectionBody") || type.equalsIgnoreCase("mandal"))
 				  query.setParameter("constituencyId",constituencyId);
+			  if(type.equalsIgnoreCase("panchayat")){
+				  query.setParameter("constituencyId",constituencyId);
+				  query.setParameter("tehsilId",tehsilId);
+			  }
 			return query.list();
 			  
 		  }
@@ -839,4 +843,27 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 		}
 		
+		/**
+		 * @author Sravanthi
+		 */
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getBoothsInAPanchayatUsingConstituencyId(Long panchayatId,Long publicationDateId,Long constituencyId,String type,Long tehsilId){
+			Object[] params={panchayatId,publicationDateId,constituencyId,tehsilId};
+			
+			 StringBuilder stringBuilder = new StringBuilder();
+			  stringBuilder.append("select model.boothId,model.partNo,model.location,model.villagesCovered from Booth model where  model.panchayat.panchayatId =:panchayatId and model.publicationDate.publicationDateId = :publicationDateId");
+			  if(type.equalsIgnoreCase("Constituency"))
+				  stringBuilder.append(" and model.tehsil.tehsilId = :tehsilId and model.constituency.constituencyId = :constituencyId");
+			  if(type.equalsIgnoreCase("Mandal"))
+				  stringBuilder.append(" and model.tehsil.tehsilId = :tehsilId and model.constituency.constituencyId = :constituencyId");
+			 /* else if(type.equalsIgnoreCase("panchayat"))
+				  stringBuilder.append(" and model.panchayat.panchayatId = :panchayatId and model.constituency.constituencyId = :constituencyId and model.tehsil.tehsilId = :tehsilId  ");*/
+			 Query queryobj = getSession().createQuery(stringBuilder.toString());	    		
+			 queryobj.setParameter("panchayatId", panchayatId);
+	    	queryobj.setParameter("publicationDateId", publicationDateId);
+	    	queryobj.setParameter("constituencyId", constituencyId);
+	    	//if(type.equalsIgnoreCase("Mandal"))
+	    	  queryobj.setParameter("tehsilId", tehsilId);
+			return queryobj.list();
+	    }
 }
