@@ -1267,14 +1267,14 @@ $('.districtDivheading').children().remove();
 $('.specialPageDivheading').children().remove();
 
  clearAllSubscriptionDivs();
-$("#assemblyDiv").css("display","block");
-$("#paliamentDiv").css("display","block");
+
 var constituency = false;
 var state = false;
 var district = false;
 var specialpage=false;
 if(results == null || results.lenght == 0)
 {
+
 	$("#headerDiv").html('<h5>No Favourite Links has been added.</h5><br>');
 	$("#headerDiv").append('<h5 style="font-weight: bold; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-size: 14px;margin-top: -14px;"><small style="font-size: 14px; color: rgb(74, 90, 85);">Add Your Interested</small> State/District/Constituency/Special Pages</h5><input type="button" style="margin-right:5px; margin-top: -31px;" class="btn btn-primary pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 	return;
@@ -1322,6 +1322,8 @@ $("#headerDiv").html('<h5 style="font-weight: bold; font-family: &quot;Helvetica
 				
 				if(flag !=-1)
 				{
+					$("#assemblyDiv").css("display","block");
+
 				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[i].favouriteLinkTitle+"' href="+results[i].favouriteLink+">"+results[i].name+"</a></b>");
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
 
@@ -1329,6 +1331,7 @@ $("#headerDiv").html('<h5 style="font-weight: bold; font-family: &quot;Helvetica
 				}
 				else
 				{
+					$("#paliamentDiv").css("display","block");
 				templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[i].favouriteLinkTitle+"' href="+results[i].favouriteLink+">"+results[i].name+"</a></b>");
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[i].userFavoriteLinksId+")}'>Remove</a></b>");
 
