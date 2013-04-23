@@ -59,6 +59,7 @@
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 
 <title>Cast Wise Voter Details</title>
 </head>
@@ -224,7 +225,24 @@ table {
     padding: 4px 10px;
     width: 65px;
 }
-
+#casteSelectDiv{margin-top:20px;margin-bottom:30px;}
+#casteSelectDiv {
+    margin-bottom: 15px;
+    margin-left: 150px;
+    margin-right: 150px;
+    padding: 5px;
+    width: 700px;
+	 padding-bottom: 10px;
+}
+.casteSelectDivCls{border: 2px solid #4499EE;}
+#castSelectdId{height:55px;}
+#castAllRadio,#castSelectRadio{margin-right: 4px;margin-top: 0;}
+#castSelectRadio,#castAllRadio{ margin-left: 16px;}
+#castErrorDiv{color: red;font-family: verdana;text-align: center;}
+#casteHideAndShowOptionsDiv{ margin-left: 188px;
+    margin-top: -21px;}
+#casteSelectDiv h4{ margin-bottom: 13px;margin-top: 5px; font-size: 15px;text-align:center;}
+#notePara{margin-left: 172px; font-weight: bold; margin-top: -27px; font-family: verdana;}
 </style>
 
 <script type="text/javascript">
@@ -385,7 +403,8 @@ function callAjax(jsObj,url)
 									myResults = YAHOO.lang.JSON.parse(o.responseText);
 									 if(jsObj.task == "getCastInfoForsubLevels")
 									{   $("#voterCasteAjaxImg").hide();
-									buildCastInfoForSubLevels(myResults,jsObj);
+									 buildCastInfoForSubLevels(myResults,jsObj);
+									 buildCastSubLevelsDiv(myResults);
 									}
 									else if(jsObj.task =="getVotersInACaste")
 								{
@@ -686,7 +705,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	$('#subLevelTable tr').removeClass("even");
 	$('#subLevelTable td').removeClass("sorting_1");
 	//}
-	buildHamletWiseCastResultsGraph();
+	buildHamletWiseCastResultsGraph(null);
 	}
 
 
@@ -811,13 +830,16 @@ function openProblemEditForm(id,boothId)
 
 
 
-function buildHamletWiseCastResultsGraph()
+function buildHamletWiseCastResultsGraph(selectedCast)
 {  
 	var myChart1 = new Array();
 	
-	
-	var castMain = sort_unique(castTemp);
-	
+
+	if(selectedCast == null)
+	  var castMain = sort_unique(castTemp);
+	else
+	 var castMain = sort_unique(selectedCast);
+
 	 var avgCal = new Array();
 	 var mySort = new Array();
 	 var newCast = new Array();
@@ -1058,9 +1080,90 @@ function sort_unique(a) {
     return r;
 }
 
+function buildCastSubLevelsDiv(myResults)
+{
+	var castStateIdsArr = new Array();
+	var str ='';
+	$("#casteSelectDiv").html('');
+	if(myResults != null && myResults.castVosList.length > 0)
+	{
+		$("#casteSelectDiv").addClass('casteSelectDivCls');
+		str +='<div>';
+		str +='<div id="castErrorDiv"></div>';
+		str +='<h4>Select Options To View Caste Wise Voter Analysis</h4>';
+		
+		str +='<input id="castSelectRadio" type="radio" checked="true" name="castTypeRadio" value="All" onclick="buildCastInfoBasedOnOptions(\'all\')" /><b>All</b>';
+
+		str +='<input id="castAllRadio" type="radio" name="castTypeRadio" value="castWise" onclick="buildCastInfoBasedOnOptions(\'selected\')" /><b>Caste Wise</b>';
+		
+		str += '<div id="casteHideAndShowOptionsDiv" style="display:none;">';
+		 str += '<select class="selectBoxStyle" id="castSelectdId" multiple="multiple">';
+		 var casteInfo = myResults.castVosList;
+		 var casteIdsArray = new Array();
+		 
+		 for(var i=0;i<casteInfo.length;i++)
+		 {
+		   if(casteInfo[i].voterCastInfoVO.castVOs != null && 
+			   casteInfo[i].voterCastInfoVO.castVOs.length > 0)
+			 {
+				for(var j=0;j<casteInfo[i].voterCastInfoVO.castVOs.length;j++)
+				 {
+					if(casteIdsArray.indexOf(casteInfo[i].voterCastInfoVO.castVOs[j].castStateId) == -1)
+					 {
+						casteIdsArray.push(casteInfo[i].voterCastInfoVO.castVOs[j].castStateId);
+						str += '<option value="'+casteInfo[i].voterCastInfoVO.castVOs[j].castStateId+'">'+casteInfo[i].voterCastInfoVO.castVOs[j].castName+'</option>';
+					 }
+				 }
+			 }
+		 }
+		  str += '</select>';
+		  str +='<input type="button" style="margin-left: 24px;font-weight:bold;margin-top: -33px;" onclick="buildCastWiseChart()" value="View" class="btn btn-info">';
+		  str +='<p id="notePara">Press Ctrl Key To Select Multiple Castes</p>';
+		  str +='</div>';
+		  str +='</div>';
+		  $("#casteSelectDiv").html(str);
+	}
+}
+
+function buildCastWiseChart()
+{
+	$("#castErrorDiv").html('');
+	var selectedCastArray = new Array();
+	var selecteObj = document.getElementById('castSelectdId');
+	for(var i=0;i<selecteObj.options.length;i++)
+	{
+		if(selecteObj.options[i].selected)
+		{
+		  selectedCastArray.push(selecteObj.options[i].text);
+		}
+	}
+	if(selectedCastArray.length == 0)
+	{
+		$("#castErrorDiv").html('Pleases select at least one caste.');
+		return;
+	}
+	
+	  buildHamletWiseCastResultsGraph(selectedCastArray);
+}
+
+function buildCastInfoBasedOnOptions(option)
+{
+	
+	if(option == "all")
+	{
+		$("#casteHideAndShowOptionsDiv").css('display','none');
+		buildHamletWiseCastResultsGraph(null);
+	}
+	else
+		$("#casteHideAndShowOptionsDiv").css('display','block');
+	
+		
+}
+
 </script>
 <body>
 <div id="voterCasteAjaxImg" style=" display:block;margin-top:100px;margin-left:300px;margin-right:auto;"><img  src="./images/icons/goldAjaxLoad.gif" /></div>
+<div id="casteSelectDiv"></div>
 <div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
 <div id="castGrid" style="height: 500px; display: none; overflow-x: auto;"></div>	
 <div id="errorDiv" align="center"></div>
