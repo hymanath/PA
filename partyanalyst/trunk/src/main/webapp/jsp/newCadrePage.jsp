@@ -924,7 +924,7 @@ function refreshingParentWindow()
 	#registrationMainDiv
 	{
 		text-align: left;
-		margin-left: 70px;
+		/*margin-left: 70px;*/
 	}
 	.bodyStyle {
 		font-family: verdana;
