@@ -5470,7 +5470,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 
 function getCountsForConstituency()
 {
-
+var tehsilId=0;
 $("#reportLevelheading").html("");
 
 document.getElementById('reportLevelCountDiv').style.display = 'none';
@@ -5485,6 +5485,7 @@ typeName = $('#constituencyList :selected').text() + ' Constituency ';
 
 var jsObj=
 		{
+			tehsilId:tehsilId,
 			type:type,	
 			id:id,
 			typeName:typeName,
@@ -5501,6 +5502,11 @@ var jsObj=
 function getCounts(id,publicationId,type)
 {
 var typeName = mainname;
+var tehsilId=0;
+if(type == 'panchayat')
+{
+tehsilId = $("#middleNav-Panchayats-list a .checkbox").closest("a").attr("data-mandalid");
+}
 /*$("#reportLevelheading1").html("");
 document.getElementById('reportLevelCountDiv1').style.display = 'none';
 var level =  $("#reportLevel").val();
@@ -5530,6 +5536,7 @@ return;
 }
 var jsObj=
 		{
+			tehsilId:tehsilId,
 			type:type,	
 			id:id,
 			typeName:typeName,
