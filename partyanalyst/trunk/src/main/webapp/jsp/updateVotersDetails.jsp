@@ -354,7 +354,7 @@ function buildSelectedVotersData(results)
                  votersToUpdate.push(voters[k].voterId);
 
 			    str+='<td>';
-				 str+='<div class="row" style="width:149px;"><select class="casteClass caste'+i+j+'" id="caste'+voters[k].voterId+'" style="width:100px;">';
+				 str+='<div class="row" style="width:149px;"><select class="casteClass caste'+i+j+'" id="caste'+voters[k].voterId+'" title="Select caste to the voter:'+voters[k].name+'" style="width:100px;">';
 				    for(var l in results.casteGroupNameList){
 						   if(voters[k].casteStateId != results.casteGroupNameList[l].id)
 							str+="<option value="+results.casteGroupNameList[l].id+">"+results.casteGroupNameList[l].name+"</option>";
@@ -367,7 +367,7 @@ function buildSelectedVotersData(results)
 				str+='</div></td>';
 
 			    str+='<td>';
-				 str+='<div class="row" style="width:149px;"><select class="partyClass party'+i+j+'" id="party'+voters[k].voterId+'" style="width:100px;">';
+				 str+='<div class="row" style="width:149px;"><select title="Select party to the voter:'+voters[k].name+'" class="partyClass party'+i+j+'" id="party'+voters[k].voterId+'" style="width:100px;">';
 				    for(var l in results.parties){
 						   if(voters[k].partyId != results.parties[l].id)
 							str+="<option value="+results.parties[l].id+">"+results.parties[l].name+"</option>";
@@ -380,7 +380,7 @@ function buildSelectedVotersData(results)
 				str+='</div></td>';
 
 				str+='<td>';
-				 str+='<div class="row" style="width:149px;"><select id="locality'+voters[k].voterId+'" class="localityClass locality'+i+j+'" style="width:100px;"  onChange="getLocalitiesListForHamlet(this.value , '+voters[k].voterId+',\'single\');">';
+				 str+='<div class="row" style="width:149px;"><select id="locality'+voters[k].voterId+'" class="localityClass locality'+i+j+'" style="width:100px;"  onChange="getLocalitiesListForHamlet(this.value , '+voters[k].voterId+',\'single\');" title="Select locality to the voter:'+voters[k].name+'">';
 
 
 				  for(var l in results.localitiesList){
@@ -400,7 +400,7 @@ function buildSelectedVotersData(results)
 				
 				if(voters[k].hamletId != null)
 			    {
-                  str+='<div class="row" style="width:149px;"><select id="sublocality'+voters[k].voterId+'" style="width:100px;">';
+                  str+='<div class="row" style="width:149px;"><select id="sublocality'+voters[k].voterId+'" title="Select sub locality to the voter:'+voters[k].name+'" style="width:100px;">';
 				  for(var l in voters[k].subLocalities){					 
 					 
 					if(voters[k].subLocalityId !=  voters[k].subLocalities[l].id)								   
@@ -422,9 +422,9 @@ function buildSelectedVotersData(results)
 
 				for(var m in voters[k].categoriesList){
 
-
 						str+='<td><div class="row" style="width:149px;"><input type="hidden" id="'+voters[k].voterId+'categ'+m+'" class="categ'+m+'" value="'+voters[k].categoriesList[m].userCategoryValueId+'"/>';
-                          str+='<select id="'+voters[k].voterId+'categVal'+m+'" style="width:100px;" class="categClass'+m+' categ'+i+j+m+'">';
+                          str+='<select id="'+voters[k].voterId+'categVal'+m+'" style="width:100px;" class="categClass'+m+' categ'+i+j+m+'" title="Select '+results.userCategoriesList[m].name
++' to the voter:'+voters[k].name+'">';
 						    for(var l in voters[k].categoriesList[m].category)
 								{
 							   if(voters[k].categoriesList[m].categoryValuesId != voters[k].categoriesList[m].category[l].id)
