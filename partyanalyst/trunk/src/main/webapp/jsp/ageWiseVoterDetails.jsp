@@ -6,6 +6,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <!-- YUI Dependency files (Start) -->
 <script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script>  
@@ -23,13 +24,15 @@
 <link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 <link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 <!-- YUI Dependency files (End) -->
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/highcharts/js/highcharts.js"></script>
+
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+<script type="text/javascript" src="js/myCustChart.js"></script>
 <style type="text/css">
 #voterDetailsNote{
   margin-bottom:5px;
@@ -379,6 +382,11 @@ function buildVoterDetailsTable(result,type,retrieveType){
 		$('#voterDetailsNote').css('display','block');
 	}
 }
+var yaxisOpt = new Array();
+var xaxisOpt =  new Array("18-25","26-35","36-45","46-60","60-Above");
+
+var YDataObject = new Array();
+
 /*
 	This method is used for building the data table for  voter age details and there percentage range
 */
@@ -452,7 +460,10 @@ function buildAgewiseDetails(results , obj){
 	else if( type="booth" && obj.type == "boothHamlets"){
 		str+='<th rowspan="2">HamletName</th>';
 	}
-	   
+	
+	
+//18111	 
+  
 	str+='<th  rowspan="2">Total Voters</th>';
 	str+='<th colspan="2">18-25</th>';
 	str+='<th colspan="2">26-35</th>';
@@ -474,7 +485,12 @@ function buildAgewiseDetails(results , obj){
 	str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
+	
+		  var oldstr ="";
+
 for(var i=0;i<innerResults.length;i++){
+
+var YDataObjectTemp = new Object();
   if(innerResults[i].totalVotersFor18To25 != null){
 	str+='<tr>';
 
@@ -495,7 +511,29 @@ for(var i=0;i<innerResults.length;i++){
 	   str+='<td>'+innerResults[i].localityName+'</td>';
 	    else if((type="hamlet" && obj.type == "hamletBooths") ||(type="booth" && obj.type == "boothHamlets") )
 	   str+='<td>'+innerResults[i].hamletName+'</td>';
+	  
+	  /*  var mystr = str;
+	  
+       if(i != 0)
+	   {
 	   
+     mystr= mystr.replace(oldstr);
+	 oldstr = str;
+	   } else
+	     oldstr=mystr; */
+	   	 var str4 = str.match(/(<tr><td>(.*?)<\/td>)/g);
+		
+       var str2 = str4[i].replace("<tr><td>","").replace("</td>","");
+	   YDataObjectTemp['name'] = str2;
+	   var ageTemp = new Object();
+	 
+	   ageTemp['18-25']   =      innerResults[i].totalVotersFor18To25;
+	   ageTemp['26-35']   =      innerResults[i].totalVotersFor26To35;
+		ageTemp['36-45']  =	   innerResults[i].totalVotersFor36To45;
+		ageTemp['46-60']   =   innerResults[i].totalVotersFor46To60;
+		ageTemp['60-Above'] =	   innerResults[i].totalVotersForAbove60;
+	   YDataObjectTemp['data'] = ageTemp;
+	   YDataObject.push(YDataObjectTemp);
 	   
 	str+='<td>'+innerResults[i].totalVoters+'</td>';
 	str+='<td>'+innerResults[i].totalVotersFor18To25+'</td>';
@@ -513,16 +551,34 @@ for(var i=0;i<innerResults.length;i++){
 }
 str+='</tbody>';
 str+='</table>';
+var res = str.match(/(<tr><td>(.*?)<\/td>)/g);
+for (var k in res )
+{
+yaxisOpt.push(res[k].replace("<tr><td>","").replace("</td>",""));
+}
 
 $('#agewiseDetails').html(str);
 
 $('#mandalWiseVoterAgeTable').dataTable({
 		"aaSorting": [[ 1, "desc" ]]
 		});
+	var utilObject = new Object();
+		utilObject['title'] = noteString;
+		utilObject['ytitle'] = 'No of Voters';
+		utilObject['tooltipText'] = ' Voters';
+		
+		//alert(xaxisOpt);
+		// build linechart based on avarage 
+	var newXaxis = buildHamletWiseCastResultsGraph( xaxisOpt,YDataObject);
+	
+	var newYaxis = buildColumnsForLineChart(newXaxis , YDataObject );
+	
+	var myChart  = buildMyLineChart(newXaxis , newYaxis , utilObject ,"ageGrid");
 }
 /*
 	This method is used for building the data table for  voter age details and gender details
 */
+
 function buildAgeAndGenderWiseDetails(results , obj){
     var type = obj.type;
 	
@@ -833,6 +889,8 @@ $("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <s
 </head>
 <body>
 <div id="errorDiv" align="center"></div>
+<div id="ageGrid" align="center"></div>
+
 <div id="ageWiseVotersDetailsOuterDiv">
 	<div id='ageWiseInfoDiv' class=""  style="height:500px;">
 	<br><br>
