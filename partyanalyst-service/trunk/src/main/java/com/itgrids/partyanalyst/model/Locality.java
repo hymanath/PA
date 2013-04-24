@@ -17,7 +17,9 @@
 	
 	import org.hibernate.annotations.Cache;
 	import org.hibernate.annotations.CacheConcurrencyStrategy;
-	import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 	
 	@Entity
 	@Table(name = "locality")
@@ -33,7 +35,7 @@
 	private LocalElectionBody localElectionBody;
 	
 	private User user;
-	
+	private Constituency ward;
 	private String isGlobal;
 	
 	private Set<UserVoterDetails> uservoterdetails = new HashSet<UserVoterDetails>(0);
@@ -107,6 +109,17 @@
 	}
 	public void setUservoterdetails(Set<UserVoterDetails> uservoterdetails) {
 		this.uservoterdetails = uservoterdetails;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="ward_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getWard() {
+		return ward;
+	}
+	public void setWard(Constituency ward) {
+		this.ward = ward;
 	}
 	
 	}
