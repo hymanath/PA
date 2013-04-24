@@ -136,7 +136,8 @@ public interface IVotersAnalysisService {
 	
 	public CrossVotingConsolidateVO getCrossVotingReportByMandalIdAndEleYear(String type, Long id, String year, String includeAliance);
 	
-	public ResultStatus saveLocality(Long userId,Long hamletId,String name,Long localbody);
+	//public ResultStatus saveLocality(Long userId,Long hamletId,String name,Long localbody);
+	public ResultStatus saveLocality(Long userId,Long hamletId,String name,Long localbody,Long wardId);
 
 	public ResultStatus deleteVotersDataFromIntermediateTables(Long reportLevelValue, Long publicationDateId);
 	

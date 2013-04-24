@@ -80,4 +80,6 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getBoothsInAPanchayatByPublicationId(Long panchayatId , Long publicationId);
 	public List<SelectOptionVO> getboothsInWardByPublicationId(Long wardId, Long constituencyId , Long publicationId);
 	public List<SelectOptionVO> getTehsilsInConstituency(Long constituencyId);
+	
+	public List<SelectOptionVO> getWardsInALocalElectionBodyByID(Long assemblyLocalBody);
 }
