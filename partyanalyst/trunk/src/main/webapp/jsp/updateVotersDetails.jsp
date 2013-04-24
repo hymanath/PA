@@ -6,12 +6,59 @@
 <html>
  <head>
   <title> Update voters details </title>
-  <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> 
+
   <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> 
+  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
+<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+		
+ 
+ <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/tabview/assets/skins/sam/tabview.css"> 
+	 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+
    <script type="text/javascript" src="js/blockui.js"></script>
-  <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
   <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+	
+	<script src="js/combobox.js" type="text/javascript"></script>
 <style>
+
+.ui-autocomplete {
+		max-height: 200px;
+		overflow-y: auto;
+		/* prevent horizontal scrollbar */
+		overflow-x: hidden;
+       max-width:200px;
+		/* add padding to account for vertical scrollbar */
+		padding-right: 20px;
+	}
+	/* IE 6 doesn't support max-height
+	 * we use height instead, but this forces the menu to always be this tall
+	 */
+	* html .ui-autocomplete {
+		height: 200px;
+	}
+
+	.ui-autocomplete-input { border-radius:3px;margin: 0; height:25px; position:relative; width:133px; -moz-border-radius:0px 0px 0px 0px;border:1px solid #CCCCCC;margin-bottom:8px;}
 tr.labelClass1 td{background-color:#c3c3c3;}
 .labelClass{float:left;margin:3px 7px 0px 0px;}
 #voterEditDetailsShowDIV table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color:#676A67;}
@@ -24,12 +71,14 @@ tr.labelClass1 td{background-color:#c3c3c3;}
 width:100%;background:#EdF5FF;padding:8px;padding-left:10px;font-weight:normal;
 font:small-caption;color: #676A67;}
 tr.diffColor td { background-color: yellow;}
-#directionsDiv{display:none;position:fixed;z-index:1;background-color:yellow;border-radius:4px;margin:70px;}
+#directionsDiv{display:none;position:fixed;z-index:1;background-color:yellow;border-radius:4px;margin:70px;margin-top:91px;}
 #updateBtn{position:fixed;top:175px;right:0px; z-index: 999;}
 .noMargin{margin:0px}
 </style>
 </head>
 <body>
+
+<h2 style="text-align:center;">Update voter details</h2>
 
 <div id="directionsDiv" >
  <div  style="float:left;margin-top:10px;" title="Click on the image to move left">
@@ -54,7 +103,8 @@ tr.diffColor td { background-color: yellow;}
 	   <input type="hidden" name="task" id="getAllVoterFamiliesForEditFormValues1" />
    </form>
 
- <div id="voterEditDetailsShowDIV" style="width:auto;overflow:auto;"></div>				
+ <div id="voterEditDetailsShowDIV" style="width:auto;overflow:auto;"></div>				 
+
 			
  <a id="updateBtn" class="btn btn-info" title="click here to update voter details" href="javascript:{updatedetailsBasedOnSelection();}">Click here to update<a>		
 	
@@ -63,6 +113,8 @@ tr.diffColor td { background-color: yellow;}
 <script>
 var selectedVotersNewArr = new Array();
  $(document).ready(function(){
+
+	  $('.casteClass').combobox();
 
 	  $(".topDivBtn").live("click",function() {
         $("html,body").animate({scrollTop: $("#bottomDiv").offset().top});
@@ -246,24 +298,31 @@ function invertSelection()
 
 	   });
 }
-
 var totalCategoriesCount = 0;
 var votersToUpdate = new Array();
+var votersCasteName = new Array();
 var selectedVotersToUpdate = new Array();
 var totalNoOfVoters = 0;
 function buildSelectedVotersData(results)
 {
+	if(results.boothsList == null || results.boothsList.length == 0 ){
+		alert("No data avialable");
+		 $.unblockUI();
+		return false;
+	}
+	
+	for(var t=0;t<results.boothsList.length;t++){
+		$('#boothsList').append('<option value="'+results.boothsList[t].partNo+'">'+results.boothsList[t].partNo+'</option>');
+
+	}
 	
 	votersToUpdate = new Array();
+	votersCasteName = new Array();
             
 
-	 var str='';	
-	   
+	 var str='';
 
-		
-	
-
-        str+='<label class="labelClass"><input type="checkbox" value="Voter Name" class="allFieldsCheck noMargin" checked="true"/>&nbsp;Select All</label>';
+        str+='<div style="background-color: seashell; margin: 15px; border:1px solid #535353; display: inline-block;padding:3px;border-radius:3px;"><label class="labelClass"><input type="checkbox" value="Voter Name" class="allFieldsCheck noMargin" checked="true"/>&nbsp;Select All</label>';
 
 		str+='<label class="labelClass"><input type="checkbox" value="Voter Name" class="allFieldsUnCheck noMargin"/>&nbsp;Unselect All</label>';
 
@@ -271,28 +330,30 @@ function buildSelectedVotersData(results)
 
 		str+='<label class="labelClass"><input type="checkbox" value="House No" class="fields noMargin" checked="true"/>&nbsp;House No</label>';
 
-		str+='<label class="labelClass"><input type="checkbox" value="Gaurdian Name" class="fields noMargin" checked="true"/>&nbsp;Gaurdian Name</label>';
+		str+='<label class="labelClass"><input type="checkbox" value="Gaurdian Name" class="fields noMargin"/>&nbsp;Gaurdian Name</label>';
 		
 
-		str+='<label class="labelClass"><input type="checkbox" value="Relationship" class="fields noMargin" checked="true" style="margin:0px;"/>&nbsp;Relationship</label>';
+		str+='<label class="labelClass"><input type="checkbox" value="Relation" class="fields noMargin"  style="margin:0px;"/>&nbsp;Relation</label>';
 
-		str+='<label class="labelClass"><input type="checkbox" value="Age" class="fields" checked="true" style="margin:0px;"/>&nbsp;Age</label>';
+		str+='<label class="labelClass"><input type="checkbox" value="Age" class="fields"  style="margin:0px;"/>&nbsp;Age</label>';
 
-		str+='<label class="labelClass"><input type="checkbox" value="Gender" class="fields" checked="true" style="margin:0px;"/>&nbsp;Gender</label>';
+		str+='<label class="labelClass"><input type="checkbox" value="Gender" class="fields"  style="margin:0px;"/>&nbsp;Gender</label>';
 
 		str+='<label class="labelClass"><input type="checkbox" value="Caste" class="fields" checked="true" style="margin:0px;"/>&nbsp;Caste</label>';
 
 		str+='<label class="labelClass"><input type="checkbox" value="Party" class="fields" checked="true" style="margin:0px;"/>&nbsp;Party</label>';
 
-		str+='<label class="labelClass"><input type="checkbox" value="Locality Name" class="fields" checked="true" style="margin:0px;"/>&nbsp;LocalityName</label>';
 
-		str+='<label class="labelClass"><input type="checkbox" value="Sub Locality Name" class="fields" checked="true" style="margin:0px;"/>&nbsp;SubLocalityName</label>';
+
+		str+='<label class="labelClass"><input type="checkbox" value="'+window.opener.ColType1+'" class="fields" checked="true" style="margin:0px;"/>&nbsp;'+window.opener.ColType1+'</label>';
+
+		str+='<label class="labelClass"><input type="checkbox" value="Local Area" class="fields" checked="true" style="margin:0px;"/>&nbsp;Local Area</label>';
 
      
 
        for(var id in results.userCategoriesList)		   
 		str+='<label class="labelClass"><input type="checkbox" value="'+results.userCategoriesList[id].name+'" class="fields" checked="true" style="margin:0px;"/>&nbsp;'+results.userCategoriesList[id].name+'</label>';
-	   str+='<br>';
+	   str+='</div>';
 
 	       
 		str+='<div style="clear: both; margin-top: 28px; margin-left: 295px;"><label style="float:left;margin:0px 10px 0px 0px;"><h5><input style="margin:0px;" type="radio" value="All" checked name="type" class="selectionType"/>&nbsp;Update all</h5></label>';
@@ -300,7 +361,9 @@ function buildSelectedVotersData(results)
 
 		str+='<div id="selectedOptionsDiv" style="clear:both;display:none;margin: 10px 0px 0px 386px;"><a class="btn btn-info" style="margin:3px;" href="javascript:{unSelectAllSelectedRows();}">Unselect all</a><a class="btn btn-inverse" href="javascript:{invertSelection();}">Invert selection</a></div>';
 
-		str+='<div id="mainDiv" style="overflow: auto; width: 980px;">';
+		str+='<div style="clear:both;"><b>NOTE </b><u>Relation codes</u> : <b>E</b> - Elector <b>F</b>  - Father <b>H</b> - Husband <b>M</b> - Mother <b>O </b>-Other</div>';
+
+		str+='<div id="mainDiv" style="overflow: auto; width:auto">';
 		str+='<div id="topDiv"></div>';
 		str+='<b><a class="topDivBtn pull-right" href="javascript:{}" class="btn">Move To Bottom</a></b>';
 		
@@ -313,14 +376,14 @@ function buildSelectedVotersData(results)
 		    str+='<th style="text-align:justify;">Voter Name</th>';
 			str+='<th style="text-align:justify;">House No</th>';
 			str+='<th style="text-align:justify;">Gaurdian Name</th>';
-			str+='<th style="text-align:justify;">Relationship</th>';
+			str+='<th style="text-align:justify;">Relation</th>';
 			
 			str+='<th style="text-align:justify;">Age</th>';
 			str+='<th style="text-align:justify;">Gender</th>';			
 			str+='<th style="text-align:justify;">Caste</th>';
 			str+='<th style="text-align:justify;">Party</th>';
-            str+='<th style="text-align:justify;">Locality Name</th>';
-			str+='<th style="text-align:justify;">Sub Locality Name</th>';
+            str+='<th style="text-align:justify;">'+window.opener.ColType1+'</th>';
+			str+='<th style="text-align:justify;">Local Area</th>';
              totalCategoriesCount = results.userCategoriesList.length;
 			for(var id in results.userCategoriesList)		   
 			str+='<th style="text-align:justify;">'+results.userCategoriesList[id].name+'</th>';
@@ -346,7 +409,21 @@ function buildSelectedVotersData(results)
 		        str+='<td>'+voters[k].name+'</td>';
 				str+='<td>'+voters[k].houseNo+'</td>';
 				str+='<td>'+voters[k].gaurdian+'</td>';
-			    str+='<td>'+voters[k].relationship+'</td>';				
+
+				if(voters[k].relationship == "Father")
+					str+='<td>F</td>';	
+				else if(voters[k].relationship == "Husband")
+					str+='<td>H</td>';	
+				else if(voters[k].relationship == "Mother")
+					str+='<td>M</td>';	
+				else if(voters[k].relationship == "Other")
+					str+='<td>O</td>';	
+				else if(voters[k].relationship == "Elector")
+					str+='<td>E</td>';	
+				else 
+					str+='<td></td>';	
+				
+			   // str+='<td>'+voters[k].relationship+'</td>';				
 			    str+='<td>'+voters[k].age+'</td>';
 				str+='<td>'+voters[k].gender+'</td>';
 
@@ -354,16 +431,22 @@ function buildSelectedVotersData(results)
                  votersToUpdate.push(voters[k].voterId);
 
 			    str+='<td>';
-				 str+='<div class="row" style="width:149px;"><select class="casteClass caste'+i+j+'" id="caste'+voters[k].voterId+'" title="Select caste to the voter:'+voters[k].name+'(SNo:'+voters[k].fromSno+')" style="width:100px;">';
+				 str+='<div class="row" style="width:171px;"><select class="casteClass caste'+i+j+'" id="caste'+voters[k].voterId+'" title="Select caste to the voter:'+voters[k].name+'(SNo:'+voters[k].fromSno+')" style="width:100px;">';
 				    for(var l in results.casteGroupNameList){
 						   if(voters[k].casteStateId != results.casteGroupNameList[l].id)
 							str+="<option value="+results.casteGroupNameList[l].id+">"+results.casteGroupNameList[l].name+"</option>";
-						   else
-							str+="<option value="+results.casteGroupNameList[l].id+" selected='selected'>"+results.casteGroupNameList[l].name+"</option>";			
+						   else{
+							str+="<option value="+results.casteGroupNameList[l].id+" selected='selected'>"+results.casteGroupNameList[l].name+"</option>";	
+							 votersCasteName.push(results.casteGroupNameList[l].name);
+						   }
 					 }
 				 str+='</select>';
-				 str+='<a  title="Apply  this to current family" href="javascript:{applyValue(\'caste'+voters[k].voterId+'\',\'caste'+i+j+'\');}"><i class="icon-ok"></i></a>';
-				 str+='<a  title= "Apply this to  all families" href="javascript:{applyValue(\'caste'+voters[k].voterId+'\',\'casteClass\');}"><i class="icon-ok-sign"></i></a>';
+
+				
+
+				
+				 str+='<a  title="Apply  this to current family" href="javascript:{applyCasteValue(\'caste'+voters[k].voterId+'\',\'caste'+i+j+'\');}"><i class="icon-ok"></i></a>';
+				 str+='<a  title= "Apply this to  all families" href="javascript:{applyCasteValue(\'caste'+voters[k].voterId+'\',\'casteClass\');}"><i class="icon-ok-sign"></i></a>';
 				str+='</div></td>';
 
 			    str+='<td>';
@@ -452,11 +535,44 @@ function buildSelectedVotersData(results)
 	  $('#directionsDiv').show();
 
 	  $('#votersDetailsTable').dataTable({
-		  "iDisplayLength" : totalNoOfVoters
+		  "iDisplayLength" : totalNoOfVoters		
 	  });
 
-		   $('#votersDetailsTable_length').hide();
+
+
+		  var values = ["Gender","Relation","Age","Gaurdian Name","Money","Residing"];
+
+		  for(var i=0;i<values.length;i++){
+
+		 var indextoShow = $('#votersDetailsTable tr th').filter(
+           function(){
+           return $(this).text() == values[i];
+          }).index();
+
+			  $('#votersDetailsTable  th').eq(indextoShow).hide();
+			 $('#votersDetailsTable tbody tr').each(function() {
+                $(this).find("td").eq(indextoShow).hide();            
+            });
+		  }
+		 
+
+
+
+		$('#votersDetailsTable_length').hide();
             $.unblockUI();
+
+				$( function() { 
+
+
+				for(var i =0;i<votersToUpdate.length;i++){
+                  $('#caste'+votersToUpdate[i]).combobox();	
+				  $('#caste'+votersToUpdate[i]).next().val(votersCasteName[i]);
+				}
+		
+		  });
+
+	
+			
 }
 
 function applyValueForLocality(id,className)
@@ -466,6 +582,19 @@ function applyValueForLocality(id,className)
 	//$('.'+className).val(selectedValue);
 	$('.'+className).each(function(index,value){
        $(this).val(selectedValue);
+	});
+
+}
+
+function applyCasteValue(id,className)
+{
+	var selectedtext = $("option:selected", '#'+id).text();
+	$('.'+className).each(function(index,value){
+		//var id = $(this).attr('id');
+		//	console.log($("option:selected", this).text());
+//alert($('#'+id).val());
+        $(this).val($('#'+id).val());
+	    $(this).next().val(selectedtext);
 	});
 
 }
@@ -561,7 +690,7 @@ function updateAllSelectedVotersDetails1()
 				   'margin-left':'400px'
 				}
 		
-
+          alert("Voters details updated successfully...");
 		$('#successMessageDiv').text("Voters details updated successfully...").css(cssObj).show().delay(2000).fadeOut(400);
 			}
 		};
@@ -692,7 +821,6 @@ function callAjax(jsObj,url)
 					try {												
 							myResults = YAHOO.lang.JSON.parse(o.responseText);					
 						if(jsObj.task == "getLocalities"){	
-							debugger;
 							if(jsObj.type == "single")
 							 buildSubLocalities(myResults,jsObj);
 							else
