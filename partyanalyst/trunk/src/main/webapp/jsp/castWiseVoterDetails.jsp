@@ -1139,7 +1139,7 @@ function buildCastWiseChart()
 	}
 	if(selectedCastArray.length == 0)
 	{
-		$("#castErrorDiv").html('Pleases select at least one caste.');
+		$("#castErrorDiv").html('Please select at least one caste.');
 		return;
 	}
 	
