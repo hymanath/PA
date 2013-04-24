@@ -104,6 +104,11 @@ function callAjax(jsObj,url)
 								buildTehsilList(myResults,jsObj);
 										
 							}
+
+							else if(jsObj.task == "getWardList")
+							{
+							buildwardList(myResults,jsObj);	
+							}
 							else if(jsObj.task == "saveLocality")
 							{
 								showLocalityStatus(myResults);
@@ -384,6 +389,13 @@ if(result.resultCode == 0)
 		
 		<b>Select Hamlet</b><font style="color:red">*</font> <select id="hamletField" class="selectWidth" name="hamlet" style="margin-left:66px;"></select>
 		</div>
+		
+		<div id="wardDiv" class="selectDiv" style="display:none;">
+		
+		<b>Select Ward</b><font style="color:red">*</font> <select id="wardField" class="selectWidth" name="ward" style="margin-left:78px;"></select>
+		</div>
+		
+		
 			<div id="localityNameDiv"><b>Name</b><span style="color:red">*</span>
 				
 			 <input type="text" id="localityId" style="width: 175px;margin-left:123px;"></input>
@@ -483,35 +495,38 @@ $(document).ready(function() {
 		var errorDiv = document.getElementById('errorMsg');
 		errorDiv.innerHTML ='';
 		var mandalField = document.getElementById("mandalField");
-		
+		var task ;
 		var tehsilId=mandalField.options[mandalField.selectedIndex].value;
 			
 		var choice=false;
-		
+		var type;
 		if(tehsilId == 0)
 		{
 			return false;
 		}
 		if(tehsilId.charAt(0) == "1")
 		{
-			
-			
 			document.getElementById("tehsilDiv").style.display = 'none';
-			return;
+			document.getElementById("wardDiv").style.display = 'block';
+			task = "getWardList";
+			
 			
 		}
 		if(tehsilId.charAt(0) == "2")
 		{
 			
 			document.getElementById("tehsilDiv").style.display = 'block';
+			document.getElementById("wardDiv").style.display = 'none';
+			task="getHamletList";
+			
 		}
 		tehsilId = tehsilId.substring(1);
 		var jsObj=
 			{
 					
 					tehsilId:tehsilId,
-					
-					task:"getHamletList"
+					type:type,
+					task:task
 			};
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -519,6 +534,9 @@ $(document).ready(function() {
 		callAjax(jsObj,url);
 		
 	}
+	
+	
+	
 	
 	function buildMandalList(results,jsObj)
 	{
@@ -565,6 +583,29 @@ $(document).ready(function() {
 			}	
 		}
 	}
+
+	function buildwardList(results,jsObj)
+	{
+		
+		var selectElmt =document.getElementById("wardField");
+		
+		removeSelectElements(selectElmt);
+		for(var val in results)
+		{
+			var opElmt = document.createElement('option');
+			opElmt.value=results[val].id;
+			opElmt.text=results[val].name;
+
+			try
+			{
+				selectElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectElmt.add(opElmt); // IE only
+			}	
+		}
+	}
 	function removeSelectElements(selectedElmt)
 	{
 		var len = selectedElmt.length;
@@ -580,12 +621,17 @@ $(document).ready(function() {
 	var str ='';
 	var localbodyId = $("#mandalField").val();
 	var hamletID = 0;
+	var wardID =0;
 	var name =$("#localityId").val();
 	var errorDiv = document.getElementById('errorMsg');
 	if(localbodyId.charAt(0) == "2")
 		{
 	 hamletID = $("#hamletField").val();
 
+		}
+	else if(localbodyId.charAt(0) == "1")
+		{
+		wardID = $("#wardField").val();
 		}
 		if(localbodyId == 0)
 		{
@@ -609,6 +655,7 @@ $(document).ready(function() {
 		localbodyId     : localbodyId,
 		name            : name,
 		hamlet			: hamletID,
+		ward			: wardID,
 		task			: "saveLocality"
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);

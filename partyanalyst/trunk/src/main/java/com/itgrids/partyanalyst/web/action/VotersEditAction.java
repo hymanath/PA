@@ -512,7 +512,9 @@ public String saveLocality()
 			String name = jObj.getString("name");
 			Long hamlet = jObj.getLong("hamlet");
 			Long localbodyId = jObj.getLong("localbodyId");
-			resultStatus = votersAnalysisService.saveLocality(userId,hamlet,name,localbodyId);
+			Long wardId = jObj.getLong("ward");
+			
+			resultStatus = votersAnalysisService.saveLocality(userId,hamlet,name,localbodyId,wardId);
 		}catch (Exception e) {
 			Log.error("Exception Occured in saveCasteName() Method, Exception - ",e);
 		}
@@ -1047,10 +1049,18 @@ public String saveLocality()
 	   public String getHamletsInATehsil()
 	   {
 		   String param = null;
+		   
 			param = getTask();
 			try {
 				jObj = new JSONObject(param);
+				if(jObj.getString("task").equalsIgnoreCase("getHamletList"))
+				
 				hamlets = regionServiceDataImp.getHamletsInATehsil(jObj.getLong("tehsilId"));
+				else if(jObj.getString("task").equalsIgnoreCase("getWardList"))
+				{
+					
+				hamlets = regionServiceDataImp.getWardsInALocalElectionBodyByID(jObj.getLong("tehsilId"));
+				}
 				System.out.println(jObj);
 			} catch (ParseException e) {
 				Log.error("Exception Occured in getElectionsInAConsti() Method, Exception - ",e);
