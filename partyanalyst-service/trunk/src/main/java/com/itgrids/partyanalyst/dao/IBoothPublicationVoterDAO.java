@@ -289,6 +289,8 @@ public interface IBoothPublicationVoterDAO extends
   
   public List<Object[]> getVoterDataForBooth(Long boothId , Long publicationId ,Long startIndex, Long maxIndex , String sort,String order );
 
- 
+  public List<Object[]> getVoterAttributeDetails(Long userId,List<Long> attributeIds,String locationType,Long locationValue,Long constituencyId,Long publicationId);
+  
+  public List<Object[]> getVoterAttributeDetailsForHamlet(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
 		
 }

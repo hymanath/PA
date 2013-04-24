@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
@@ -77,6 +78,7 @@ public class VoterReportService implements IVoterReportService{
 	private IVoterModificationDAO voterModificationDAO;
 	private IVoterDAO voterDAO;
 	private IWardDAO wardDAO;
+	IUserVoterCategoryValueDAO userVoterCategoryValueDAO;
 	
 	public IWardDAO getWardDAO() {
 		return wardDAO;
@@ -246,6 +248,15 @@ public class VoterReportService implements IVoterReportService{
 
 		public void setPartyDAO(IPartyDAO partyDAO) {
 			this.partyDAO = partyDAO;
+		}
+
+	    public IUserVoterCategoryValueDAO getUserVoterCategoryValueDAO() {
+			return userVoterCategoryValueDAO;
+		}
+
+		public void setUserVoterCategoryValueDAO(
+				IUserVoterCategoryValueDAO userVoterCategoryValueDAO) {
+			this.userVoterCategoryValueDAO = userVoterCategoryValueDAO;
 		}
 
 	public VoterReportVO getVoterDetailsInaLocation(String range,Long rangeValue)
@@ -1479,5 +1490,122 @@ public class VoterReportService implements IVoterReportService{
 				}
 				 return list;
 				 
+			 }
+			 
+			 public List<VoterCastInfoVO> getVoterAttributeDetails(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId){
+				 Map<Long,VoterCastInfoVO> category = new HashMap<Long,VoterCastInfoVO>();
+				 try{
+					 Map<Long,Map<Long,VoterCastInfoVO>> categoryValues = new HashMap<Long,Map<Long,VoterCastInfoVO>>();
+					 List<Object[]> categoriesAndValues = userVoterCategoryValueDAO.getCatergoryAndValues(attributeIds,userId);
+					 String locationType1 = locationType;
+					 Long totalVoters = 0l;
+					 if(locationType.equalsIgnoreCase("mandal"))
+						{
+							String mandalId= locationId.toString();
+							String id=mandalId.substring(1);
+							locationId = new Long(id);
+							if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+								locationType = "mandal";
+								locationType1 = "mandal";
+							}else if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+								locationType = "localElectionBody";
+								locationType1 = IConstants.LOCALELECTIONBODY;
+								List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationId);
+								locationId = (Long) list.get(0);
+							}
+						}
+					 if(locationType.equalsIgnoreCase("hamlet")){
+							
+							List<Long> hamlets = new ArrayList<Long>();
+							hamlets.add(locationId);
+						List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+					    if(voterIds != null && voterIds.size() >0){	
+						    List<Long> countList = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationId);
+						    if(countList != null && countList.size() >0)
+							 totalVoters = countList.get(0);
+					    }
+					}
+					 
+					 
+					 if(!locationType.equalsIgnoreCase("hamlet")){
+					  Long reportLvlId = votersAnalysisService.getReportLevelId(locationType1);
+					  totalVoters = voterInfoDAO.getVotersCountInALocation(reportLvlId,locationId,publicationId,constituencyId);
+					 }
+					 
+					  Map<Long,VoterCastInfoVO> categoryValue = null;
+					 VoterCastInfoVO voterCastInfoVO = null;
+					 
+					 for(Object[] value:categoriesAndValues){
+						 if(categoryValues.get((Long)value[0]) == null){
+							 voterCastInfoVO = new VoterCastInfoVO();
+							 voterCastInfoVO.setId((Long)value[0]);
+							 voterCastInfoVO.setName(value[1] != null?value[1].toString():"");
+							 if(totalVoters != null)
+							 voterCastInfoVO.setTotalVoters(totalVoters);
+							 category.put((Long)value[0],voterCastInfoVO);
+							 categoryValue = new HashMap<Long,VoterCastInfoVO>();
+							 categoryValues.put((Long)value[0], categoryValue);
+						 }else{
+							 categoryValue = categoryValues.get((Long)value[0]);
+						 }
+						 
+						 if(categoryValue.get((Long)value[2]) == null){
+							 voterCastInfoVO = new VoterCastInfoVO();
+							 categoryValue.put((Long)value[2], voterCastInfoVO);
+						 }else{
+							 voterCastInfoVO =  categoryValue.get((Long)value[2]);
+						 }
+						 
+						 voterCastInfoVO.setId((Long)value[2]);
+						 voterCastInfoVO.setName(value[3] != null?value[3].toString():"");
+					 }
+					 
+					 List<Object[]> attributeValuesList = new ArrayList<Object[]>();
+					 if(!locationType.equalsIgnoreCase("hamlet")){
+						 attributeValuesList = boothPublicationVoterDAO.getVoterAttributeDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId);
+					 }else{
+						 attributeValuesList = boothPublicationVoterDAO.getVoterAttributeDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId);
+					 }
+					 
+					 for(Object[] value:attributeValuesList){
+						 categoryValue = categoryValues.get((Long)value[1]);
+						 if(categoryValue != null){
+							 voterCastInfoVO = categoryValue.get((Long)value[2]);
+							 if(voterCastInfoVO != null){
+								 if(value[3] != null){
+									 if("M".equalsIgnoreCase(value[3].toString()) || "Male".equalsIgnoreCase(value[3].toString())){
+										 voterCastInfoVO.setMaleVoters((Long)value[0]);
+									 }
+									 else if("F".equalsIgnoreCase(value[3].toString()) || "Female".equalsIgnoreCase(value[3].toString())){
+										 voterCastInfoVO.setFemaleVoters((Long)value[0]);
+									 }
+								 }
+								 voterCastInfoVO.setTotalVoters(voterCastInfoVO.getTotalVoters()+(Long)value[0]);
+								 voterCastInfoVO = category.get((Long)value[1]);
+								 if(voterCastInfoVO != null){
+									 voterCastInfoVO.setPartyWiseAssignedVoters(voterCastInfoVO.getPartyWiseAssignedVoters()+(Long)value[0]);
+								 }
+							 }
+						 }
+					 }
+					 
+					 for(Long categoryKey:categoryValues.keySet()){
+						 Map<Long,VoterCastInfoVO> mainCategory1 = categoryValues.get(categoryKey);
+						 VoterCastInfoVO mainCategory2 = category.get(categoryKey);
+						 mainCategory2.setPartyWiseNotAssignedVoters(mainCategory2.getTotalVoters().longValue() - mainCategory2.getPartyWiseAssignedVoters());
+						 for(Long categoryValueKey:mainCategory1.keySet()){
+							 voterCastInfoVO = mainCategory1.get(categoryValueKey);
+							 if( mainCategory2.getPartyWiseAssignedVoters().longValue() > 0l){
+								 voterCastInfoVO.setPartyPercentage(Double.parseDouble((new BigDecimal(voterCastInfoVO.getTotalVoters()*(100.0)/mainCategory2.getPartyWiseAssignedVoters().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+							 }else{
+								 voterCastInfoVO.setPartyPercentage(Double.parseDouble("0.00"));
+							 }
+						 }
+						 mainCategory2.setPartyWisevoterCastInfoVOList(new ArrayList<VoterCastInfoVO>(mainCategory1.values()));
+					 }
+				 }catch(Exception e){
+					 LOG.error("Exception rised in getVoterAttributeDetails ",e);
+				 }
+				 return new ArrayList<VoterCastInfoVO>(category.values());
 			 }
 }
