@@ -6148,7 +6148,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				    			 if(voterDetails.getHamlet()!= null && voterDetails.getHamlet().getHamletName() !=null )
 				    			 voterObj.setHamletName(voterDetails.getHamlet().getHamletName());
 				    						   
-				    		
+				    			 if(voterDetails.getWard() != null && voterDetails.getWard().getName() != null)
+				    				 voterObj.setWardName(voterDetails.getWard().getName());
+
 				    			 
 				    	 }
 				     }
@@ -6176,6 +6178,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				  sortVotersList(votersList, searchInfo.getSortBy());
 			  if(searchInfo.getSortByColum().equalsIgnoreCase("Hamlet") )
 				  sortVotersList1(votersList, searchInfo.getSortBy());
+			  if(searchInfo.getSortByColum().equalsIgnoreCase("Ward"))
+				  sortVotersWardList(votersList, searchInfo.getSortBy());
+
 			/*  if(searchInfo.getSortByColum().equalsIgnoreCase("LocalArea") && searchInfo.getSortBy().equalsIgnoreCase("desc"))
 				  sortVotersListDesc(votersList);
 			  */
@@ -6228,6 +6233,24 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					}   
 				});
 		}
+	 
+	 public void sortVotersWardList(List<VoterHouseInfoVO> wardList,final String order)
+	 {
+		 Collections.sort(wardList, new Comparator<VoterHouseInfoVO>() {
+
+			 public int compare(VoterHouseInfoVO arg0,
+					 	VoterHouseInfoVO arg1) {
+				 	String a =arg0.getWardName();
+				 	String b =arg1.getWardName();
+				 	if(a==null)a=""; if(b==null)b="";
+				 	if(order.equalsIgnoreCase("asc"))
+				 	return a.trim().toUpperCase().compareTo(b.trim().toUpperCase());
+				 	else
+				 		return b.trim().toUpperCase().compareTo(a.trim().toUpperCase());
+			 	}
+		 	});
+	 }
+	 
 	 public void sortVotersListDesc(List<VoterHouseInfoVO> localitiesList)
 		{
 			 Collections.sort(localitiesList, new Comparator<VoterHouseInfoVO>() {
@@ -9857,10 +9880,23 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 		
 		public static Comparator<SelectOptionVO> arraySort = new Comparator<SelectOptionVO>()
 				{	  
-						  public int compare(SelectOptionVO arg1,SelectOptionVO arg2)
-							{
-							   return (new Integer(arg1.getValue()).intValue()) - (new Integer(arg2.getValue()).intValue());
-							}
+					public int compare(SelectOptionVO arg1,SelectOptionVO arg2)
+					{
+						Integer num1 ;
+						Integer num2 ;
+
+						if(arg1.getValue().contains("Booth No- "))
+							num1 = new Integer(arg1.getValue().replaceAll("Booth No- ", "").trim());
+						else
+							 num1 = new Integer(arg1.getValue());
+						 if(arg2.getValue().contains("Booth No- "))
+							  num2 = new Integer(arg2.getValue().replaceAll("Booth No- ", "").trim());
+						 else
+							  num2 = new Integer(arg2.getValue());
+
+							  return num1 - num2;
+
+						}
 				};
 				public static Comparator<SelectOptionVO> arraySort1 = new Comparator<SelectOptionVO>()
 						{	  
