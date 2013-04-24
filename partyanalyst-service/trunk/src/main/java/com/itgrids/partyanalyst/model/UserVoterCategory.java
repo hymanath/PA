@@ -32,7 +32,7 @@ public class UserVoterCategory  extends BaseModel implements Serializable{
 	private String categoryName;
 	private String description;
 	private User user;
-	private Set<UserVoterCategory> userVoterCategory = new HashSet<UserVoterCategory>();
+	private Set<UserVoterCategoryValue> userVoterCategoryValue = new HashSet<UserVoterCategoryValue>();
 	
 	public UserVoterCategory(){
 		
@@ -72,11 +72,13 @@ public class UserVoterCategory  extends BaseModel implements Serializable{
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userVoterCategory")
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Set<UserVoterCategory> getUserVoterCategory() {
-		return userVoterCategory;
+	public Set<UserVoterCategoryValue> getUserVoterCategoryValue() {
+		return userVoterCategoryValue;
 	}
-	public void setUserVoterCategory(Set<UserVoterCategory> userVoterCategory) {
-		this.userVoterCategory = userVoterCategory;
+	
+	public void setUserVoterCategoryValue(
+			Set<UserVoterCategoryValue> userVoterCategoryValue) {
+		this.userVoterCategoryValue = userVoterCategoryValue;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
