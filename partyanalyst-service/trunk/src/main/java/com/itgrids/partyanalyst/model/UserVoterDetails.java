@@ -30,7 +30,7 @@ public class UserVoterDetails implements java.io.Serializable{
 	private Party party;
 	private CasteState casteState;
 	private Constituency ward;
-	
+	private Constituency constituency;
 	private Locality locality;
 	
 	private Hamlet hamlet;
@@ -132,6 +132,20 @@ public class UserVoterDetails implements java.io.Serializable{
 	public void setWard(Constituency ward) {
 		this.ward = ward;
 	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="constituency_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
+	
+	
 	
 	
 }
