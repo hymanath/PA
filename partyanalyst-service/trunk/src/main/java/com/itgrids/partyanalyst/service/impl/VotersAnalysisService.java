@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -5763,8 +5764,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 for(Object[] booth:booths){
 			 selectOptionVO = new SelectOptionVO();
 			 selectOptionVO.setId((Long)booth[0]);
-			 selectOptionVO.setName("Booth No- "+booth[1]!=null?"Booth No- "+booth[1].toString():"");
-			 selectOptionVO.setValue("Booth No- "+booth[1].toString());
+			 selectOptionVO.setName(booth[1]!=null?booth[1].toString():"");
+			 selectOptionVO.setValue(booth[1].toString());
 			 selectOptionVO.setLocation("Booth Location:"+booth[2]!= null?"Booth Location:"+booth[2].toString():"");
 			 selectOptionVO.setVillageCovered("Areas Covered :"+booth[3] != null?"Areas Covered :"+booth[3].toString():"");
 			 list.add(selectOptionVO);
