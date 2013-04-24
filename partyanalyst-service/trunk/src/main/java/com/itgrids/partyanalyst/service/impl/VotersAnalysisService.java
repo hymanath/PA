@@ -5703,24 +5703,24 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		}
 		
 	}
-	public ResultStatus saveLocality(Long userId,Long hamletId,String name,Long localbody)
+	public ResultStatus saveLocality(Long userId,Long hamletId,String name,Long localbody,Long wardId)
 	{
 	ResultStatus resultStatus = new ResultStatus();
 	Locality locality = null;
-	if(hamletId == 0)
-		hamletId = null;
-	if(localbody.toString().substring(0,1).trim().equalsIgnoreCase("2"))
-		localbody = null;
+	
 	try{
 		locality = new Locality();
-		locality.setIsGlobal("false");
-		if(hamletId != null)
+		if(hamletId > 0)
 		locality.setHamlet(hamletDAO.get(hamletId));
-		if(localbody != null)
+		if(wardId > 0)
+		 locality.setWard(constituencyDAO.get(wardId));
+	
+		if(localbody.toString().substring(0,1).trim().equalsIgnoreCase("1"))
 		{
 		localbody = new Long(localbody.toString().substring(1));
 		locality.setLocalElectionBody(assemblylocalElectionBodyDAO.get(localbody).getLocalElectionBody());
 		}
+		locality.setIsGlobal("false");
 		locality.setUser(userDAO.get(userId));
 		locality.setName(name);
 		localityDAO.save(locality);
