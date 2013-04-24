@@ -110,7 +110,7 @@ public class UserVoterDetails implements java.io.Serializable{
 		this.locality = locality;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="ward_id")
+	@JoinColumn(name="hamlet_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Hamlet getHamlet() {
