@@ -363,7 +363,17 @@ $("#pageUpBtn").live("click",function(){
 	   });
   });
   var isMuncipality;
+    var ColType1="";
+  var ColType="";
   function getVotersInfo(){
+	
+  var id7 = $("#mandalField").val();
+	       		  
+				if(type !=  "ward" && id7.charAt(0) !="1"){
+                  ColType1 = "Hamlet";
+				}else{
+                 ColType1 = "Ward";
+				}
 	$("#scrollBtnDiv").css("display","block");
 
 	  if($('#reportLevel').val() == 3 || $('#reportLevel').val() == 4){		  
@@ -558,6 +568,7 @@ $("#pageUpBtn").live("click",function(){
 	     toSno = endSno;
 	   }
 	}
+
 	if(flag){
 	  var reqfields = "";
 	   var reqfieldsArr = new Array();
@@ -568,8 +579,12 @@ $("#pageUpBtn").live("click",function(){
 				{
 				var id2 = $("#mandalField").val();
 	       		  
-				if(type !=  "ward" && id2.charAt(0) !="1")
+				if(type !=  "ward" && id2.charAt(0) !="1"){
 				reqfieldsArr.push("Hamlet,Hamlet");
+                  ColType = "Hamlet";
+				}else{
+                 ColType = "Ward";
+				}
 				reqfieldsArr.push("LocalArea,LocalArea");
 		        reqfields = reqfields+","+ids[0];
 				
