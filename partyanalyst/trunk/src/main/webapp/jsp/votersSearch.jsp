@@ -583,6 +583,7 @@ $("#pageUpBtn").live("click",function(){
 				reqfieldsArr.push("Hamlet,Hamlet");
                   ColType = "Hamlet";
 				}else{
+				reqfieldsArr.push("Ward,Ward");
                  ColType = "Ward";
 				}
 				reqfieldsArr.push("LocalArea,LocalArea");
@@ -747,6 +748,12 @@ $("#pageUpBtn").live("click",function(){
 			  if(oRecord.getData("localAreaName") != null)
 			  val = oRecord.getData("localAreaName");
 			}
+
+			else if(ids[0] == "Ward"){
+			
+			  if(oRecord.getData("wardName") != null)
+			  val = oRecord.getData("wardName");
+			}
 		    else{
 			  for(var i in categ){
 			    if(categ[i].categoryValuesId == ids[0])
@@ -805,7 +812,7 @@ $("#pageUpBtn").live("click",function(){
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
 		resultsList: "votersList",
-		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName","fromSno","isInfluencePerson","isCadrePerson","isPoliticion"],
+		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName","fromSno","isInfluencePerson","isCadrePerson","isPoliticion","wardName"],
 		metaFields: {
 		totalRecords: "totalHousesCount" // Access to value in the server response
 		}
