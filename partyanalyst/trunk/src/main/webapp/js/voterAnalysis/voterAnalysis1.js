@@ -1141,7 +1141,7 @@ function addToPolitician(voterId,name)
 			
 		  }
 			
-	
+	   $("#categoriesValuesDiv").html("");
 	}
 	function getModifiedVotersCountBetweenPublications(locationType,locationValue,fromPublicationDateId,toPublicationDateId){
 	$("#votersCountModifyAjaxDiv").css("display","block");
@@ -1805,11 +1805,13 @@ function addToPolitician(voterId,name)
 								}
 								else if(jsObj.task == "getAssemblyLocalEleBodyId")
 									assemblyLocalEleBodyId = myResults;
-								else if(jsObj.task == "checkLocalityData")
+								else if(jsObj.task == "checkLocalityData"){
 								try{
 								  hideAndShowLocalityDIvs(myResults,jsObj);
 									}catch(e){$("#sse2").css("display","block");}								
-									
+								}else if(jsObj.task == "getCategoryWiseDetails"){
+								   buildCategoryWiseDetails(myResults,jsObj);
+                                 }								
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -8677,6 +8679,7 @@ function buildCategoriesDiv(result)
 		var divId=document.getElementById("categoriesDiv");
 		str +='<h4>Voter Analysis Based On Custom Attributes</h4>';
 		str +='<div style="font-family: verdana,sans-serif;color:#222;">';
+		str +='<div id="categoriesErrMsgDiv" style="color:red;margin:5px;"></div>';
 		str +='<table>';
 		
 		for(var i in result)
@@ -8684,11 +8687,10 @@ function buildCategoriesDiv(result)
 		if(i%6==0)
 		str +='<tr>';
 				
-		str +='<td><input type="checkbox" name="type" class="categorycheckbox">&nbsp;&nbsp;&nbsp;';
+		str +='<td><input type="checkbox" name="type" value="'+result[i].id+'" class="categorycheckbox">&nbsp;&nbsp;'+result[i].name+'&nbsp;&nbsp;';
 		
 		str +='<input type="hidden" name="useraccessIp" id="categoryId" value='+result[i].id+' style="display:none;">';
 			str +='</td>';
-		str +='<td>'+result[i].name+'&nbsp;&nbsp;&nbsp;</td>';
 		if((i%6)+1==0)
 		str +='</tr>';
 		}
@@ -8698,10 +8700,11 @@ function buildCategoriesDiv(result)
 		
 		str +='</div><br>';
 		str +='<table style="width:45%;">';
-		str +='<tr><td><input type="checkbox" name="type" class="selectAll" onclick="selectAllcategorycheckbox();"></td> <td>Select All</td>';
-		str +='<td><input type="checkbox" name="type" class="unselectAll" onclick="clearAllCheckBoxs();"></td><td>UnSelect All</td>';
-		str+='<td><input class="btn btn-success" type="button" value="submit"></td></tr>';
+		str +='<tr><td style="width: 95px;"><input type="checkbox" name="type" class="selectAll" onclick="selectAllcategorycheckbox();"> &nbsp;Select All</td>';
+		str +='<td style="width: 106px;"><input type="checkbox" name="type" class="unselectAll" onclick="clearAllCheckBoxs();"> &nbsp;UnSelect All</td>';
+		str+='<td><input class="btn btn-success" type="button" onclick="callMethodToGetData();" value="submit"></td><td><img style="display:none;" id="categoriesAjximgMsgDiv" alt="Processing Image" src="images/icons/search.gif"></td></tr>';
 		str +='</table><br>';
+		str +='<div id="categoriesValuesDiv" style="padding-bottom:1px;"></div>';
 		divId.innerHTML=str;
 	}
 }

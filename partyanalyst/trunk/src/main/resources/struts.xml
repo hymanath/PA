@@ -4924,6 +4924,7 @@
 				 <param name="root">voterVO</param>
 			</result>			
 		</action>
+		
 		<action name="getParlConstiForDistrictAction" class="locationsHierarchyAction" method="getParlmentAndAssemblyConstis">
 		   <result type="json" name="success">
 				<param name="root">regionsList</param>	
@@ -4935,5 +4936,10 @@
 		   </result>
 		</action>
 		
+		<action name="getCategoryWiseDetailsAction" class="votersAnalysisAction" method="getCategoryWiseDetails">
+		   <result type="json" name="success">
+				<param name="root">castList</param>	
+		   </result>
+		</action>
 		</package>
 </struts>      
