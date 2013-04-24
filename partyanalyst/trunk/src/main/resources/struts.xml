@@ -4929,6 +4929,11 @@
 				<param name="root">regionsList</param>	
 		   </result>
 		</action>
+		<action name="getUserVoterCategoriesAction" class="ageWiseVoterDetailsAction" method="getUserVoterCategoryList">
+		   <result type="json" name="success">
+				<param name="root">resultList</param>	
+		   </result>
+		</action>
 		
 		</package>
 </struts>      

@@ -1478,7 +1478,7 @@
 	<property name="userDAO" ref="userDAO" />	
     </bean>
     <bean name="userVoterService" class="com.itgrids.partyanalyst.service.impl.UserVoterService">
-	
+	<property name="userVoterCategoryDAO" ref="userVoterCategoryDAO" />	
     </bean>
     
 </beans>		

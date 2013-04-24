@@ -1075,7 +1075,7 @@ maxDate: new Date()
 </div>
 <div id="AlertMsg"></div>
 <div id="ConstituencyDiv" class="selectDiv">
-	 Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate();getConstituencyResults(this.value)"/> &nbsp;&nbsp;
+	 Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate();getConstituencyResults(this.value);getUserVoterCategories();"/> &nbsp;&nbsp;
 
 		
 	 Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
@@ -1587,6 +1587,9 @@ for  body3 start    result  -->
 	  
 	  <span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>
 	</div>
+
+	<!-- user voter categories div -->
+	
 	<div id="castPartyPopupDiv" style="display:none"> 
 	 <div id="getLatestCastsSubcategoryWise"  style="float:right;"><input type="button" onclick="getLatestCastsSubcategoryWise();" value="Get Updated Caste Info" class="btn btn-info" /></div>
 	<div style="margin-top: 10px; margin-bottom: 15px;"><img id="voterCasteAjaxImg" src="./images/icons/goldAjaxLoad.gif" style=" clear: both; display:none;"/></div>
@@ -1603,6 +1606,9 @@ for  body3 start    result  -->
 
 </div>
 </div><!-- for  body 2 end    result  -->
+
+
+<div id="categoriesDiv" class="widget blue whitegloss" style="display:none;"></div>
 </div><!-- for  body 2 end >
 
 <!-- for  body 3 end    result  -->
@@ -1874,12 +1880,11 @@ var urlstr = "voterFamilyInfoAction.action?buildType="+buildType+"&publicationDa
 
 	function getImpFamiliesVotersForBooth()
 	{
-		var space = "";
+	
 var mainreqid = $("#constituencyList").val()
 var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type=hamlet&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+"&buildType="+buildType+" "
-
-	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
-		browser1.focus();
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+browser1.focus();
 	}
 
 	function getImpFamiliesVotersForBooth1()
@@ -1887,9 +1892,8 @@ var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicatio
 
 var mainreqid = $("#constituencyList").val()
 var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type=hamlet&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+"&buildType="+buildType+"&requestFor=booth "
-
-	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
-		browser1.focus();
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+browser1.focus();
 	}
 
 	
