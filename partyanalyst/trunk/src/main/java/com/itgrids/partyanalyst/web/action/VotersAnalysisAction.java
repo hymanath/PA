@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
+import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
@@ -62,7 +63,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private ImportantFamiliesInfoVo importantFamiliesInfoVo;
 	private ProblemBeanVO problemBean;
 	
-
+    private IVoterReportService voterReportService;
 
 	private List<VoterHouseInfoVO> votersFamilyInfo;
 	private PartyVotesEarnedVO partyVotesEarnedVO;
@@ -91,6 +92,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
     private EntitlementsHelper entitlementsHelper;
     private String isLocalityExist;
+    
+    private List<VoterCastInfoVO> castList;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -389,6 +392,22 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setIsLocalityExist(String isLocalityExist) {
 		this.isLocalityExist = isLocalityExist;
+	}
+
+	public IVoterReportService getVoterReportService() {
+		return voterReportService;
+	}
+
+	public void setVoterReportService(IVoterReportService voterReportService) {
+		this.voterReportService = voterReportService;
+	}
+
+	public List<VoterCastInfoVO> getCastList() {
+		return castList;
+	}
+
+	public void setCastList(List<VoterCastInfoVO> castList) {
+		this.castList = castList;
 	}
 
 	public String execute() throws Exception
@@ -1471,4 +1490,23 @@ return Action.SUCCESS;
 		return Action.SUCCESS;
 	}
 	
+	public String getCategoryWiseDetails(){
+	  try{
+		jObj = new JSONObject(getTask());
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO == null)
+			return ERROR;
+		Long userId =  regVO.getRegistrationID();
+		String[] ids = jObj.getString("attributeIds").split(",");
+		List<Long> attributeIds = new ArrayList<Long>();
+		for(String id:ids){
+			attributeIds.add(new Long(id.trim()));
+		}
+		castList = voterReportService.getVoterAttributeDetails(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
+	  }catch(Exception e){
+		  log.error("Exception Occured in getCategoryWiseDetails() Method, Exception - ",e);
+	  }
+		return Action.SUCCESS;
+	}
 }

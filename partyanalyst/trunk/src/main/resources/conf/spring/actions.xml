@@ -1001,6 +1001,7 @@
 		<property name="cadreManagementService" ref="cadreManagementService" />	
 		<property name="voterModificationService" ref="voterModificationService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="voterReportService" ref="voterReportService" />
 	</bean>
 	
 	<bean id="publicProfileAction" class="com.itgrids.partyanalyst.web.action.PublicProfileAction">

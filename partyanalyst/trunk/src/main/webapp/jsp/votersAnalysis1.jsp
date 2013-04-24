@@ -1608,7 +1608,8 @@ for  body3 start    result  -->
 </div><!-- for  body 2 end    result  -->
 
 
-<div id="categoriesDiv" class="widget blue whitegloss" style="display:none;"></div>
+<div id="categoriesDiv" class="widget whitegloss" style="background:#fff;display:none;"></div>
+
 </div><!-- for  body 2 end >
 
 <!-- for  body 3 end    result  -->
@@ -1896,7 +1897,72 @@ var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600
 browser1.focus();
 	}
 
+	function callMethodToGetData(){
+	  var str ='';
+	   $("#categoriesErrMsgDiv").html("");
+	   $('.categorycheckbox').each(function() {
+	        if($(this).is(':checked')){
+		       str = str+","+$(this).val();
+            }
+        });
+		if(str.length == 0){
+		   $("#categoriesErrMsgDiv").html("Please Check atleast one custom attribute to analyse");
+		  return;
+		}
+		str = str.slice(1);
+		$("#categoriesAjximgMsgDiv").show();
+	   var jsObj = {
+	        attributeIds:str,
+			locationType:maintype,
+			locationId:mainreqid,
+			constituencyId:$("#constituencyList").val(),
+			publicationId:mainpublicationId,
+			task:"getCategoryWiseDetails"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getCategoryWiseDetailsAction.action?"+rparam;
+		callAjax(jsObj, url);
+	}
 	
+	function buildCategoryWiseDetails(results,jsObj){
+	 $("#categoriesAjximgMsgDiv").hide();
+	 var str = "";
+	  if(results != null && results.length >0){
+	      str+= "<div style='margin-bottom:5px;'><b style='font-size:13px;'>Total Voters : </b>"+results[0].totalVoters+"</div>";
+	     for(var i in results){
+		  if(results[i].partyWisevoterCastInfoVOList != null && results[i].partyWisevoterCastInfoVOList.length > 0){
+			   str+="<div style='border:1px solid #d3d3d3;padding:5px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;'>";
+			   str+= "<h2 id='subHeading' style='margin-left:-5px;width:97%;'><b>"+results[i].name+" Attribute Wise Voters Analysis</b></h2>";
+			   str+= "<div style='margin-top:5px;'><span><b style='font-size:13px;'>"+results[i].name+" assigned voters : </b>"+results[i].partyWiseAssignedVoters+"  </span>&nbsp;&nbsp;<span><b style='font-size:13px;'>   "+results[i].name+" not assigned voters : </b>"+results[i].partyWiseNotAssignedVoters+"</span></div>";
+			   
+			   
+			   str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;'>";
+			   str+="<thead class='info'>"
+			   str+="  <tr>";
+			   str+="     <th>"+results[i].name+"</th>";
+			   str+="     <th>Total Voters</th>";
+			   str+="     <th>Male Voters</th>";
+			   str+="     <th>Female Voters</th>";
+			   str+="     <th>Voters %</th>";
+			   str+="  </tr>";
+			   str+="</thead>"
+			   for(var j in results[i].partyWisevoterCastInfoVOList){
+			     var obj = results[i].partyWisevoterCastInfoVOList[j];
+				  str+="  <tr>";
+			      str+="     <td>"+obj.name+"</td>";
+			      str+="     <td>"+obj.totalVoters+"</td>";
+			      str+="     <td>"+obj.maleVoters+"</td>";
+			      str+="     <td>"+obj.femaleVoters+"</td>";
+			      str+="     <td>"+obj.partyPercentage+"</td>";
+			      str+="  </tr>";
+			   }
+			   str+="</table>";
+			   str+="</div>";
+		   }
+		 }
+		 $("#categoriesValuesDiv").html(str);
+	  }
+	}
 </script>
 </body>
 </html>
