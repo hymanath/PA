@@ -66,4 +66,13 @@ public class VoterCategoryValueDAO extends GenericDaoHibernate<VoterCategoryValu
         query.executeUpdate();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUserVoterCategories(List<Long> userId)
+	{
+		Query query = getSession().createQuery("select distinct model.userVoterCategoryValue.userVoterCategory.userVoterCategoryId, model.userVoterCategoryValue.userVoterCategory.categoryName " +
+				" from VoterCategoryValue model where model.user.userId in(:userId) order by model.userVoterCategoryValue.userVoterCategory.categoryName ");
+		query.setParameterList("userId", userId);
+		return query.list();
+	}
 }
