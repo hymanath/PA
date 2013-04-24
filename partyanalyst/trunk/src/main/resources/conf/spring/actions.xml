@@ -1109,7 +1109,7 @@
 	</bean>
 		
 	<bean id="ageWiseVoterDetailsAction" class="com.itgrids.partyanalyst.web.action.AgeWiseVoterDetailsAction" singleton="false">	
-		
+ <property name="userVoterService" ref="userVoterService" />
 	</bean>
 	<bean id="voterFamilyEditAction" class="com.itgrids.partyanalyst.web.action.VoterFamilyEditAction" singleton="false">	
 		

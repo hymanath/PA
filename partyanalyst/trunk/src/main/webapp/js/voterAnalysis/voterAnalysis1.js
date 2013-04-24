@@ -1799,7 +1799,10 @@ function addToPolitician(voterId,name)
 								    $("#permanentlyUpdateDiv").removeAttr("disabled");
 								    getVotersCastInfo(mainreqid,mainpublicationId,maintype);
 								}
-
+								else if(jsObj.task == "getVoterCategories")
+								{
+									buildCategoriesDiv(myResults);
+								}
 								else if(jsObj.task == "getAssemblyLocalEleBodyId")
 									assemblyLocalEleBodyId = myResults;
 								else if(jsObj.task == "checkLocalityData")
@@ -8647,3 +8650,76 @@ var urlstr = "voterFamilyInfoAction.action?type=booth&id="+selectedId+"&publicat
 		$('.checkbox').removeClass('checked1');
 		$(this).addClass("checked1");
 	});
+
+
+	function getUserVoterCategories()
+	{
+ var jsObj=
+	{
+		
+		task:"getVoterCategories"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getUserVoterCategoriesAction.action?"+rparam;	
+
+	callAjax(jsObj,url);
+}
+function buildCategoriesDiv(result)
+{
+	
+	if(result == '')
+		return;
+	if(result !=null)
+	{
+		$("#categoriesDiv").css("display","block");
+	var str ='';
+		
+		var divId=document.getElementById("categoriesDiv");
+		str +='<h4>Voter Analysis Based On Custom Attributes</h4>';
+		str +='<div style="font-family: verdana,sans-serif;color:#222;">';
+		str +='<table>';
+		
+		for(var i in result)
+		{
+		if(i%6==0)
+		str +='<tr>';
+				
+		str +='<td><input type="checkbox" name="type" class="categorycheckbox">&nbsp;&nbsp;&nbsp;';
+		
+		str +='<input type="hidden" name="useraccessIp" id="categoryId" value='+result[i].id+' style="display:none;">';
+			str +='</td>';
+		str +='<td>'+result[i].name+'&nbsp;&nbsp;&nbsp;</td>';
+		if((i%6)+1==0)
+		str +='</tr>';
+		}
+		
+		str +='</table>';
+		
+		
+		str +='</div><br>';
+		str +='<table style="width:45%;">';
+		str +='<tr><td><input type="checkbox" name="type" class="selectAll" onclick="selectAllcategorycheckbox();"></td> <td>Select All</td>';
+		str +='<td><input type="checkbox" name="type" class="unselectAll" onclick="clearAllCheckBoxs();"></td><td>UnSelect All</td>';
+		str+='<td><input class="btn btn-success" type="button" value="submit"></td></tr>';
+		str +='</table><br>';
+		divId.innerHTML=str;
+	}
+}
+
+function clearAllCheckBoxs()
+{
+	$('.selectAll').attr("checked",false);
+	$('.categorycheckbox').each(function(){
+		$(this).attr("checked",false);
+	});
+	
+}
+
+function selectAllcategorycheckbox()
+{
+	$('.unselectAll').attr("checked",false);
+	$(".categorycheckbox").each(function()
+	{
+		$(this).attr("checked",true);
+	});
+}

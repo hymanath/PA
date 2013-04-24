@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -7,8 +10,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dao.IUserVoterCategoryDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IUserVoterService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -22,6 +29,8 @@ ServletRequestAware ,ServletContextAware{
 	private ServletContext context;
 	private HttpServletRequest request;
 	private HttpServletResponse responce;
+	private HttpSession session;
+	
 	private Long constituencyId;
 	private Long publicationDateId;
 	private Long mandalId;
@@ -60,7 +69,34 @@ ServletRequestAware ,ServletContextAware{
 	private Long mainreqid;
 	private Long contentId;
 	private String publicationDate;
+	private String task;
+	JSONObject jObj;
+	private IUserVoterService userVoterService;
 	
+	private List<SelectOptionVO> resultList;
+	
+	
+	
+	
+	public IUserVoterService getUserVoterService() {
+		return userVoterService;
+	}
+	public void setUserVoterService(IUserVoterService userVoterService) {
+		this.userVoterService = userVoterService;
+	}
+	public List<SelectOptionVO> getResultList() {
+		return resultList;
+	}
+	public void setResultList(List<SelectOptionVO> resultList) {
+		this.resultList = resultList;
+	}
+	
+	public HttpSession getSession() {
+		return session;
+	}
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
 	public Long getContentId() {
 		return contentId;
 	}
@@ -375,6 +411,36 @@ ServletRequestAware ,ServletContextAware{
 		}
 		
 		
+	}
+	public String getTask() {
+		return task;
+	}
+	public void setTask(String task) {
+		this.task = task;
+	}
+	public JSONObject getjObj() {
+		return jObj;
+	}
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+	public String getUserVoterCategoryList()
+	{
+		try{
+			List<Long> userIds = new ArrayList<Long>(0);
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return ERROR;
+			Long userId =  regVO.getRegistrationID();
+			userIds.add(userId);
+			resultList = userVoterService.getUserVoterCategoryList(userIds);
+		}catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		return SUCCESS;
 	}
 
 }
