@@ -141,9 +141,8 @@ public class VoterHouseInfoVO {
 	private List<SelectOptionVO> localAreaIds; 
 	private String hamletName;
 	private String localAreaName;
-	
-	
-	
+	private String wardName;
+
 	public String getHamletName() {
 		return hamletName;
 	}
@@ -817,6 +816,14 @@ public class VoterHouseInfoVO {
 
 	public void setIsPoliticion(Boolean isPoliticion) {
 		this.isPoliticion = isPoliticion;
+	}
+
+	public String getWardName() {
+		return wardName;
+	}
+
+	public void setWardName(String wardName) {
+		this.wardName = wardName;
 	}
 
 
