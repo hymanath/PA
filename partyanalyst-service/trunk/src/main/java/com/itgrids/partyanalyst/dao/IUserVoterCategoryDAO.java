@@ -12,4 +12,6 @@ public interface IUserVoterCategoryDAO extends GenericDao<UserVoterCategory, Lon
 	public List<Long> checkCategoryExist(Long userId,String name);
 	public List<Object[]> getCategoryValuesList(Long userId);
 	public List<UserVoterCategory> getUserCategoriesByUserId(Long userId);
+	
+	public List<Object[]> getUserCategoriesByUserList(List<Long> userId);
 }
