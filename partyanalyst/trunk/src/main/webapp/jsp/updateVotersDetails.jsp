@@ -78,7 +78,7 @@ tr.diffColor td { background-color: yellow;}
 </head>
 <body>
 
-<h2 style="text-align:center;">Update voter details</h2>
+<h2 style="text-align:center;">Update Voter Details</h2>
 
 <div id="directionsDiv" >
  <div  style="float:left;margin-top:10px;" title="Click on the image to move left">
@@ -727,14 +727,15 @@ function updateAllSelectedVotersDetails1()
 		 else
 			obj["hamletId"] = 0;
 
-		 if ($('#sublocality'+votersToUpdate[i]).length ){
 
+		 if ($('#sublocality'+votersToUpdate[i]).length ){
+alert($('#sublocality'+votersToUpdate[i]).val());
 			 var localityHamletId = $('#sublocality'+votersToUpdate[i]).val();
 			
 			 if(localityHamletId == null || localityHamletId == 0)
 			  obj["localityHamletId"] = 0;
 			 else
-				 obj["localityHamletId"] = localityHamletId;
+			  obj["localityHamletId"] = localityHamletId;
 
 		 }
 		 else
