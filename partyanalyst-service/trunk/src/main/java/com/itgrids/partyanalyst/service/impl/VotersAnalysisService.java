@@ -26,6 +26,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.google.gdata.data.introspection.IServiceDocument;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -14050,7 +14051,15 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		return count;
 		
 	}
-	
+
+	/**
+	 * this service is used for getting all voter data for populating the voter details in panchayat ,booth and hamlet lavel
+	 * @param VoterDataVO voterDataVO
+	 * @param Long userId
+	 * @param List<Long> categories
+	 * @return List<VoterVO>
+	 * @date 20-04-2013
+	 */
 	@SuppressWarnings({ "unused", "unchecked" })
 	public List<VoterVO> getVoterData(VoterDataVO voterDataVO , Long userId , List<Long> categories)
 	{
@@ -14186,5 +14195,129 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			log.error("error occured in the getVoterData() method in VotersAnalysis" , e) ;
 		}
 		return voterData;
+	}
+	/**
+	 * This service is used for getting all categoery values for given user id and categoeri id
+	 * @param Long userId
+	 * @param Long categoeryId
+	 * @return List<SelectOptionVO>
+	 * @date 24-04-2013
+	 */
+	public List<SelectOptionVO> getCategoeryValuesService(Long userId,Long categoeryId)
+	{
+		SelectOptionVO selectOptionVO =  null;
+		List<SelectOptionVO> retuenValue = new ArrayList<SelectOptionVO>();
+		List<Object[]> categoeryValues = userVoterCategoryValueDAO.getCategoeryValuesDAO(userId, categoeryId);
+		if(categoeryValues != null && categoeryValues.size() > 0)
+		{
+			for (Object[] parms : categoeryValues) {
+				selectOptionVO =  new SelectOptionVO();
+				selectOptionVO.setId((Long)parms[0]);
+				selectOptionVO.setName(parms[1].toString());
+				selectOptionVO.setOrderId((Long) parms[2]);
+				retuenValue.add(selectOptionVO);
+			}
+		}
+		return retuenValue;
+	}
+	/**
+	 * This Service is used for storing list of categoery values 
+	 * @param List<SelectOptionVO>
+	 * @param Long
+	 * @param Long
+	 * @return ResultStatus
+	 * @date 24-04-2013
+	 */
+	public ResultStatus storeCategoeryData(List<SelectOptionVO> categoeryValues,Long userId,Long categoeryId) {
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+			log.debug("Entered into the storeCategoeryData() of VotersAnalysis Service Class");
+			if(categoeryValues != null)
+			{
+				for (SelectOptionVO parms : categoeryValues) {
+				UserVoterCategoryValue userVoterCategoryValue = null;
+				if(parms.getId() != null && parms.getId() > 0l)
+				{
+					userVoterCategoryValue = userVoterCategoryValueDAO.get(parms.getId());
+					
+				}
+					
+				else
+				{
+					userVoterCategoryValue = new UserVoterCategoryValue();
+				}
+				
+					userVoterCategoryValue.setUserVoterCategoryValueId(parms.getId());
+					userVoterCategoryValue.setCategoryValue(parms.getValue());
+					userVoterCategoryValue.setOrderNo(parms.getOrderId());
+					userVoterCategoryValue.setUser(userDAO.get(userId));
+					userVoterCategoryValue.setUserVoterCategory(userVoterCategoryDAO.get(categoeryId));
+					userVoterCategoryValueDAO.save(userVoterCategoryValue);
+				
+				}
+				
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			resultStatus.setMessage("Categoery Values Saved Successfully");
+			return resultStatus;
+		} catch (Exception e) {
+			log.error("Exception raised in getCategoeryValuesService() method in VotersAnalysis Service", e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setMessage("Categoery Values Not Saved");
+			return resultStatus;
+		}
+		
+	}
+	/**
+	 * This Service is used for checking the categoery values are alredy assigned to voter or not if not 
+	 * assigned then delete those categores
+	 * @param List<SelectOptionVO>
+	 * @param Long
+	 * @return List<SelectOptionVO>
+	 * @date 24-04-2013
+	 */
+	public List<SelectOptionVO> checkForCategoeryValues(List<SelectOptionVO> categoeryValuesList , Long userId)
+	{
+		List<SelectOptionVO> returnValues = new ArrayList<SelectOptionVO>();
+		try {
+			log.debug("enterd into the checkForCategoeryValues() method in VotersAnalysis Service");
+			SelectOptionVO selectOptionVO = null;
+			List<Long> categoeryIds = new ArrayList<Long>();
+			for (SelectOptionVO categoeryList : categoeryValuesList) {
+				
+				categoeryIds.add(categoeryList.getId());
+			}
+			List<Long> categoeryValuesIds = new ArrayList<Long>();
+			List<Long> delCategoeryIds = new ArrayList<Long>();
+			List<Object[]> categoeryList = voterCategoryValueDAO.checkCategoeryValues(categoeryIds, userId);
+			if(categoeryList != null && categoeryList.size() > 0)
+			{
+				for (Object[] parms : categoeryList) {
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setName(parms[0].toString());
+					categoeryValuesIds.add((Long)parms[1]);
+					returnValues.add(selectOptionVO);
+				}
+				categoeryIds.removeAll(categoeryValuesIds);
+				for (Long list : categoeryIds) {
+					delCategoeryIds.add(list);
+				}
+				if(delCategoeryIds != null && delCategoeryIds.size() > 0)
+				{
+					userVoterCategoryValueDAO.deleteCategoeryValues(delCategoeryIds);
+				}
+			}
+			else
+			{
+				userVoterCategoryValueDAO.deleteCategoeryValues(categoeryIds);
+				selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setValue("deleted");
+				returnValues.add(selectOptionVO);
+			}
+		} catch (Exception e) {
+			log.error("Exception Raised in the checkForCategoeryValues() method in VotersAnalysis Service" , e);
+		}
+		
+		return returnValues;
 	}
 }

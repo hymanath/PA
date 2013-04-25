@@ -18,7 +18,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private boolean hampletPresent;
 	private String partno;
 	private List<Long> locationValuesList;
-	
+	private Long orderId;
 
 
 	public String getPartno() {
@@ -150,6 +150,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setVillageCovered(String villageCovered) {
 		this.villageCovered = villageCovered;
+	}
+
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 
 	public boolean isHampletPresent() {

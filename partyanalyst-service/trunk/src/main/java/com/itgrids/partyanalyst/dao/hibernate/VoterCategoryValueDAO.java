@@ -75,4 +75,20 @@ public class VoterCategoryValueDAO extends GenericDaoHibernate<VoterCategoryValu
 		query.setParameterList("userId", userId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> checkCategoeryValues(List<Long> categoeryIds , Long userId)
+	{
+		Query query = getSession().createQuery("Select model.userVoterCategoryValue.categoryValue," +
+				" model.userVoterCategoryValue.userVoterCategoryValueId ," +
+				" count(model.userVoterCategoryValue.userVoterCategoryValueId) from VoterCategoryValue model " +
+				"where model.userVoterCategoryValue.userVoterCategoryValueId in (:categoeryIds)" +
+				" and model.user.userId =:userId group by model.userVoterCategoryValue.userVoterCategoryValueId");
+		query.setParameterList("categoeryIds", categoeryIds);
+		query.setParameter("userId", userId);
+		return query.list();
+		
+	}
+	
+	
 }
