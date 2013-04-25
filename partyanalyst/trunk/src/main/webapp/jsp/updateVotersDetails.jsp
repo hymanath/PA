@@ -191,12 +191,12 @@ var selectedVotersNewArr = new Array();
 			  });
 		}else{
 			
-              $('.allFieldsUnCheck').attr('checked',true); 
+             /* $('.allFieldsUnCheck').attr('checked',true);*/ 
 			  
 			  $('.fields').each(function(index,value){
 			    $(this).attr('disabled',false);
-                $(this).attr('checked',false);
-			    $(this).trigger('change')
+               //$(this).attr('checked',false);
+			   // $(this).trigger('change')
 		      });
 
 		}
@@ -322,7 +322,7 @@ function buildSelectedVotersData(results)
 
 	 var str='';
 
-        str+='<div style="background-color: seashell; margin: 15px; border:1px solid #535353; display: inline-block;padding:3px;border-radius:3px;"><label class="labelClass"><input type="checkbox" value="Voter Name" class="allFieldsCheck noMargin" checked="true"/>&nbsp;Select All</label>';
+        str+='<div style="background-color: seashell; margin: 15px; border:1px solid #535353; display: inline-block;padding:3px;border-radius:3px;"><label class="labelClass"><input type="checkbox" value="Voter Name" class="allFieldsCheck noMargin" />&nbsp;Select All</label>';
 
 		str+='<label class="labelClass"><input type="checkbox" value="Voter Name" class="allFieldsUnCheck noMargin"/>&nbsp;Unselect All</label>';
 
@@ -352,11 +352,9 @@ function buildSelectedVotersData(results)
      
 
        for(var id in results.userCategoriesList)
-		   if(results.userCategoriesList[id].name == "Money" || results.userCategoriesList[id].name == "Residing")
-
+		   
 		   str+='<label class="labelClass"><input type="checkbox" value="'+results.userCategoriesList[id].name+'" class="fields" style="margin:0px;"/>&nbsp;'+results.userCategoriesList[id].name+'</label>';
-	      else
-		   str+='<label class="labelClass"><input type="checkbox" value="'+results.userCategoriesList[id].name+'" class="fields" checked="true" style="margin:0px;"/>&nbsp;'+results.userCategoriesList[id].name+'</label>';
+	    
 	   str+='</div>';
 
 	       
@@ -367,7 +365,7 @@ function buildSelectedVotersData(results)
 
 		str+='<div style="clear:both;"><b>NOTE </b><u>Relation codes</u> : <b>E</b> - Elector <b>F</b>  - Father <b>H</b> - Husband <b>M</b> - Mother <b>O </b>-Other</div>';
 
-		str+='<div id="mainDiv" style="overflow: auto; width:auto">';
+		str+='<div id="mainDiv" style="overflow: auto; width:990px">';
 		str+='<div id="topDiv"></div>';
 		str+='<b><a class="topDivBtn pull-right" href="javascript:{}" class="btn">Move To Bottom</a></b>';
 		
@@ -541,10 +539,10 @@ function buildSelectedVotersData(results)
 	  $('#votersDetailsTable').dataTable({
 		  "iDisplayLength" : totalNoOfVoters		
 	  });
+		  var values = ["Gender","Relation","Age","Gaurdian Name"];
 
-
-
-		  var values = ["Gender","Relation","Age","Gaurdian Name","Money","Residing"];
+		   for(var id in results.userCategoriesList)
+			   values.push(results.userCategoriesList[id].name);
 
 		  for(var i=0;i<values.length;i++){
 
@@ -558,9 +556,6 @@ function buildSelectedVotersData(results)
                 $(this).find("td").eq(indextoShow).hide();            
             });
 		  }
-		 
-
-
 
 		$('#votersDetailsTable_length').hide();
             $.unblockUI();
