@@ -373,12 +373,14 @@ function callAjaxToGetData(jsObj,url)
 								else if(jsObj.task == "createEvent"){
 									 $("#successmsg").html("Event created Successfully");
 									 $('html, body').animate({ scrollTop: $("#successmsg").offset().top }, "slow");
-									 setTimeout(function() { window.opener.location.reload();window.close(); }, 3000);
+									 
+										window.opener.refreshParent();
+									
 								}
 								else if(jsObj.task == "updateCreateEvent"){
 									 $("#successmsg").html("Event updated Successfully");
 									 $('html, body').animate({ scrollTop: $("#successmsg").offset().top }, "slow");
-									 setTimeout(function() { window.opener.location.reload();window.close(); }, 3000);
+									 window.opener.refreshParent();
 								}
 							}catch (e) {   
 							   	//alert("Invalid JSON result" + e);   

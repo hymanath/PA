@@ -2,13 +2,16 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.jfree.util.Log;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -42,7 +45,7 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private Long voterId;
 	private ResultStatus result;
 	private IStaticDataService staticDataService;
-	private List<SelectOptionVO> partyGroupList, castCategoryGroupList,userAccessStates;
+	private List<SelectOptionVO> partyGroupList, castCategoryGroupList,userAccessStates,categoerysList;
 	
 	private List<VoterHouseInfoVO> userCategorysList;
 	private String resultStr;
@@ -330,6 +333,15 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 		this.voterVO = voterVO;
 	}
 
+	
+	public List<SelectOptionVO> getCategoerysList() {
+		return categoerysList;
+	}
+
+	public void setCategoerysList(List<SelectOptionVO> categoerysList) {
+		this.categoerysList = categoerysList;
+	}
+
 	public String execute() throws Exception{
 		
 		
@@ -474,8 +486,75 @@ public String saveVoterDetails(){
 				selectOptionVO = votersAnalysisService.storeCategoryVakues(user.getRegistrationID(),name,id);
 				return  "category";
 		}
-		
+		else if(jObj.getString("task").equalsIgnoreCase("getCategoeryValues"))
+		{
+				//String name =  jObj.getString("categoryValue");
+				Long id = jObj.getLong("categoryId");
+				HttpSession session = request.getSession();
+				RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				if(user == null)
+				return ERROR;
+				
+				castCategoryGroupList = votersAnalysisService.getCategoeryValuesService(user.getRegistrationID(),id);
+				return  "categoryList";
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("saveCategoeryValues"))
+		{
 			
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			return ERROR;
+			JSONArray jsonArray = jObj.getJSONArray("categoryValues");
+			Long categoeryId    = jObj.getLong("categoeryId");
+			Map<Long , SelectOptionVO> categoryMap = new HashMap<Long , SelectOptionVO>();
+			SelectOptionVO selectOptionVO = null;
+			List<SelectOptionVO> categoeryValues = new ArrayList<SelectOptionVO>();
+			for(int i = 0 ; i < jsonArray.length() ; i++)
+			{
+				if(!jsonArray.isNull(i))
+				{
+					selectOptionVO = new SelectOptionVO();
+					JSONObject jSONObject= jsonArray.getJSONObject(i);
+					Long cateId     = jSONObject.getLong("categoryId");
+					String categoeryName = jSONObject.getString("categoryname");
+					Long orderId         = jSONObject.getLong("orderNos");
+					selectOptionVO.setId(cateId);
+					selectOptionVO.setValue(categoeryName);
+					selectOptionVO.setOrderId(orderId);
+					categoeryValues.add(selectOptionVO);
+					categoryMap.put(categoeryId, selectOptionVO);
+				}
+			}
+			resultStatus = votersAnalysisService.storeCategoeryData(categoeryValues,user.getRegistrationID(),categoeryId);
+			
+				return "savedStatus";
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("deleteCategoeryValues"))
+		{
+			
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			return ERROR;
+			JSONArray jsonArray = jObj.getJSONArray("categoryValues");
+			Long categoeryId    = jObj.getLong("categoryId");
+			Map<Long , SelectOptionVO> categoryMap = new HashMap<Long , SelectOptionVO>();
+			List<SelectOptionVO> categoeryValues = new ArrayList<SelectOptionVO>();
+			SelectOptionVO selectOptionVO = null;
+			for(int i = 0 ; i < jsonArray.length() ; i++)
+			{
+				selectOptionVO = new SelectOptionVO();
+				JSONObject jSONObject= jsonArray.getJSONObject(i);
+				Long cateId     = jSONObject.getLong("categoeryId");
+				selectOptionVO.setId(cateId);
+				categoeryValues.add(selectOptionVO);
+				categoryMap.put(categoeryId, selectOptionVO);
+			}
+			categoerysList = votersAnalysisService.checkForCategoeryValues(categoeryValues,user.getRegistrationID());
+			
+				return "deletedStatus";
+		}
 		return Action.SUCCESS;
 	}
 	

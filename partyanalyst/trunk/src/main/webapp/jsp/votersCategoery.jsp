@@ -23,23 +23,15 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
 <style>
-#valuesDisplayDiv , #casteCreation,#localityDiv{
+#valuesDisplayDiv, #casteCreation,#localityDiv ,#catrgoeryValuesMainDiv ,#groupCreation{
 border:1px solid #a1a1a1;
 padding:10px 40px; 
-width:540px;
+width:560px;
 border-radius:10px;
 -moz-border-radius:25px;
 margin-left:15px;
 }
-#groupCreation
-{
-border:1px solid #a1a1a1;
-padding:10px 40px;
-height:116px; 
-border-radius:10px;
--moz-border-radius:25px;
-margin-left:15px;
-}
+
 #casteCreation,#localityDiv{margin-bottom:30px;}
 </style>
 <script type="text/javascript">
@@ -81,10 +73,15 @@ function callAjax(jsObj,url)
 							{
 								getCategoryValues(myResults);
 							}
+							else if(jsObj.task == "getCategoeryValues")
+							{
+								buildCategoeryValues(myResults);
+							}
 							else if(jsObj.task == "storeCategoeryValues")
 							{
 								$("#catrgoeryValue").val('');
-                                $("#groupValueCreationMsg").html("Group value added successfully");								
+                                $("#groupValueCreationMsg").html("Group value added successfully");
+								getCategoeryValues();
 							}
 							else if(jsObj.task == "storeVoterDate")
 							{
@@ -114,7 +111,14 @@ function callAjax(jsObj,url)
 								showLocalityStatus(myResults);
 										
 							}
-								
+							else if(jsObj.task == "saveCategoeryValues")
+							{
+								showStatusOfCategoeryValues(myResults);			
+							}	
+							else if(jsObj.task == "deleteCategoeryValues")
+							{
+								showStatusOfDeletedCategores(myResults);		
+							}
 							}catch(e){   
 							alert("Invalid JSON result" + e);   
 						}  
@@ -327,13 +331,21 @@ if(result.resultCode == 0)
 		<div id="valuesDisplayDiv" >
 		   <h4>Add Values To Group</h4>
 		   <div style="margin-bottom:5px;"><b>NOTE :</b> Group Value should not contain any special characters</div>
-		   <div style="color:red" id="groupValueCreationErr">&nbsp;</div>
-		   <div style="color:green" id="groupValueCreationMsg"></div>
-			<b>Select Group<span style="color:red">*</span> :</b><select id="selectType" style="width:187px;margin-left:32px;"></select>
-			</br>
-			<b>Group value<span style="color:red">*</span> :</b> <input type = "text" id="catrgoeryValue" style="width: 175px;margin-left:33px;"></input>
-			</br>
-			<input class="btn btn-success" type="submit" value="Add" onClick="storeCategoryValues();" style ="float:right;margin-top:-30px"></input>
+		   
+			<div><b>Select Group<span style="color:red">*</span> :</b><select id="selectType" style="width:187px;margin-left:32px;" onChange="getCategoeryValues();"></select></div>
+		</div>
+		<div id="catrgoeryValuesMainDiv" style="margin-top:30px;display:none;">
+			<div style="color:red" id="groupValueCreationErr">&nbsp;</div>
+			<div style="color:green" id="groupValueCreationMsg"></div>
+			<div id="catrgoeryValuesDiv"></div>
+			<div><!--<b>Group value<span style="color:red">*</span> :</b> <input type = "text" id="catrgoeryValue" style="width: 175px;margin-left:33px;"></input>
+			<b>Order No<span style="color:red">*</span> :</b>
+			<input type="text" id="orderNumberId" style="width:20px"></input>-->
+			<input class="btn btn-success" type="submit" value="Add More" onClick="getMoreRecoredsToStore();" style ="float:right;margin-top:-30px;margin-right:143px;"></input></div>
+			<div>
+			<input type="submit" class="btn btn-success" value="submit" onClick="validationForCategoeryValues();"></input>
+			<input type="button" class="btn btn-success" value="Delete" onClick="deleteAllCategoeryValues();"></input>
+			</div>
 		</div>
 
 		<br><br>
@@ -661,6 +673,400 @@ $(document).ready(function() {
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "saveLocalityAction.action?"+rparam;						
 		callAjax(jsObj,url);
+	}
+	
+	/*
+		This Method is used For making a ajax call to get All Categoery Values
+	*/
+	function getCategoeryValues()
+	{
+		var categoryId = $('#selectType').val();
+		//var categoryValue = $('#catrgoeryValue').val();
+		var jsObj =
+		{
+			categoryId:categoryId,
+			//categoryValue:categoryValue,
+			task:"getCategoeryValues"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getVotersCategoryAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	/*
+		This method is used for building the categoery values in table formet
+	*/
+	function buildCategoeryValues(myResults)
+	{
+		if(myResults != null && myResults.length > 0)
+		{
+			$('#catrgoeryValuesMainDiv').show();
+			var str = "";
+			var catgegoeryString = document.getElementById('catrgoeryValuesDiv');
+			str += '<table>';
+			str += '<tr><div><th style="margin-left:20px;"><span>Select</span></th>';
+			str += '<th style="margin-left:20px;"><span>Group Values</span></th>';
+			str += '<th><span>Order No</span></th></div></tr>';
+			str += '</br>';
+			for(var i in myResults)
+			{
+				str += '<tr class="categoerysList"><div>';
+				str += '<td><span><input type="checkbox" class="selectedValuesChk" checked="true" value="'+myResults[i].id+'"> </input></span></td>';
+				if(myResults[i].name != null)
+				{
+					str += '<td><span><input type="text" class="groupValueId" value="'+myResults[i].name+'" style="width:150px;" ></input></span></td>';
+				}
+				else
+				{
+					str += '<td><span><input type="text" class="groupValueId" value="" style="width:150px;" ></input></span></td>';
+				}
+				if(myResults[i].orderId != null)
+				{
+					str += '<td><span><input type="text" class="orderId" value="'+myResults[i].orderId+'" style="width:20px" ></input></span></td></div></tr>';
+				}
+				else
+				{
+					str += '<td><span><input type="text" class="orderId" value="" style="width:20px" ></input></span></td></div></tr>';
+				}
+			}
+			str += '</table>';
+			catgegoeryString.innerHTML = str;
+		}
+		else
+		{
+			$('#catrgoeryValuesMainDiv').show();
+			var str = "";
+			var catgegoeryString = document.getElementById('catrgoeryValuesDiv');
+			str += '<table>';
+			str += '<tr><div><th><span>Select</span></th>';
+			str += '<th><span>Group Values</span></th>';
+			str += '<th><span>Order No</span></th></div></tr>';
+			str += '</br></table>';
+			catgegoeryString.innerHTML = str;
+			getMoreRecoredsToStore();
+		}
+		
+	}
+	/*
+		This Method is used For making a ajax call to store selected Categoery Values
+	*/
+	function storeAllCategoeryValues()
+	{
+		var categoryValues = new Array();
+		var id = $('#selectType').val();
+		$('.categoerysList').each(function () {
+		
+		var categoryCheckVal  = $(this).closest("tr").find(".selectedValuesChk").is(':checked');
+		if(categoryCheckVal == true)
+		{
+			var categoryId = $(this).closest("tr").find(".selectedValuesChk").val();
+			var categoryname = $(this).closest("tr").find(".groupValueId").val();
+			var orderNos     = $(this).closest("tr").find(".orderId").val();
+			var categoeryDetails = {
+			categoryId   : categoryId,
+			categoryname : categoryname,
+			orderNos     : orderNos
+		}
+		categoryValues.push(categoeryDetails);
+		}
+		
+		
+		});
+		var jsObj=
+		{
+			categoryValues       : categoryValues,
+			categoeryId          : id,
+			task	             : "saveCategoeryValues"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getVotersCategoryAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	/*
+		This Method is used For making a ajax call to Delete selected Categoery Values
+	*/
+	function deleteAllCategoeryValues()
+	{
+		var categoryId = $('#selectType').val();
+		var categoryValues = new Array();
+		$('.categoerysList').each(function () {
+		var categoryCheckVal  = $(this).closest("tr").find(".selectedValuesChk").is(':checked');
+			if(categoryCheckVal == true)
+			{
+				var categoeryId =  $(this).closest("tr").find(".selectedValuesChk").val();
+			
+				var categoeryDetails = {
+				categoeryId : categoeryId
+				}
+				categoryValues.push(categoeryDetails);
+			}
+		});
+		var jsObj=
+		{
+			categoryValues       : categoryValues,
+			categoryId           : categoryId,
+			task	             : "deleteCategoeryValues"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getVotersCategoryAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	/*
+		this method is used for show the result state of a selected categoery values for delete
+	*/
+	function showStatusOfDeletedCategores(results)
+	{
+		if(results != null && results.length > 0)
+		{
+			var str = "";
+			if(results[0].value == null)
+			{
+				
+				for(var i in results)
+				{
+					str += '<div>';
+					str += '<span>Group Value </span>';
+					str += '<span style="color:red;">'+results[i].name+'</span>';
+					str += '<span> is Already Assigned  To Voter.</span>';
+					str += '<div>';
+				}
+				$('#groupValueCreationMsg').html(str);
+				$('#groupValueCreationMsg').show().delay("5000").hide('slow');
+			}
+			else
+			{
+				str += '<div>';
+				str += '<span style="color:red">Successfully Deleted</span>';
+				str += '</div>';
+
+				$('#groupValueCreationMsg').html(str);
+				$('#groupValueCreationMsg').show().delay("1000").hide('slow');
+			}
+		}
+	}
+	/*
+		This method is used for adding more records for adding new caregoery values.
+	*/
+	function getMoreRecoredsToStore()
+	{
+		
+		var categoryId = $('#selectType').val();
+		if(categoryId != 0)
+		{
+			var str = "";
+			for( var i = 0 ; i < 1 ; i++)
+			{
+				str += '<tr class="categoerysList"><div>';
+					str += '<td><span><input type="checkbox" class="selectedValuesChk" checked="true" value="0"> </input></span></td>';
+					str += '<td><span><input type="text" class="groupValueId"  style="width:150px;margin-left:30px;" ></input></span></td>';
+					str += '<td><span><input type="text" class="orderId"  style="width:20px" ></input></span></td>';
+					str += '</div></tr>';
+			}
+			str += '</table>';
+			$('#catrgoeryValuesDiv').append(str);
+		}
+		else
+		{
+			$('#catrgoeryValuesMainDiv').hide();
+		}
+	}
+	/*
+		This method is used for validating the all fields to submit the categorey values.
+	*/
+	function validationForCategoeryValues()
+	{
+		var str = "";
+		var flag = true;
+		var count = 0;
+		$('.categoerysList').each(function () {
+		var categoryCheckVal  = $(this).closest("tr").find(".selectedValuesChk").is(':checked');
+		if(categoryCheckVal == true)
+		{
+			count++;
+			var categoryname = $(this).closest("tr").find(".groupValueId").val();
+			var orderNo     = $(this).closest("tr").find(".orderId").val();
+			if(categoryname == '')
+			{
+				/* $('#groupValueCreationErr').html('<span>please enter Group Value</span>');
+				$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
+				str += '<span>please enter Group Value</span></br>';
+				flag = false;
+			}
+			if(categoryname.length > 0)
+			{
+				if(/[^a-z A-Z]/.test(categoryname))
+				{
+					/* $('#groupValueCreationErr').html('<span>Group Value Accepts Only Characters</span>');
+					$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
+					str += '<span>Group Value Accepts Only Characters</span></br>';
+					flag = false;
+				}
+				
+			}
+			
+			if($.trim(orderNo) == '')
+			{
+				/* $('#groupValueCreationErr').html('<span>please enter Order No</span>');
+				$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
+				str += '<span>please enter Order No</span></br>';
+				flag = false;
+			}
+			
+			if(isNaN(orderNo) == true)
+			{
+				/* $('#groupValueCreationErr').html('<span>Order No Accepts Only Numbers</span>');
+				$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
+				str += '<span>Order No Accepts Only Numbers</span></br>';
+				flag = false;
+			}
+			if($.trim(orderNo) < 1)
+			{
+					str += '<span>Please Enter a Valid Order Number.</span></br>';
+				flag = false;
+			}
+			if($.trim(orderNo).length > 2)
+			{
+				/* $('#groupValueCreationErr').html('<span>Order No Accepts Only Two Digits</span>');
+				$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
+				str += '<span>Order No Accepts Only Two Digits</span></br>';
+				flag = false;
+			}
+			/* if(categoryname.length > 0)
+			{
+			   if(!checkForDuplicateGroupValues())
+			    flag = false;
+			}
+			if(orderNo.length > 0)
+			{
+				if(!ckeckForDuplicateOrderIds())
+				flag = false;
+			} */
+			
+		}
+		});
+		if(!checkForDuplicateGroupValues())
+		{
+			str += '<span>Group Name is Already Exists</span></br>';
+			flag = false;
+		}
+		if(!ckeckForDuplicateOrderIds())
+		{
+			str += '<span>Order No is Already Exists</span></br>';
+			flag = false;
+		}
+		if(!chechForOrderNumbers())
+		{
+			str += '<span>Please Enter Order Numbers in a Serial Manner</span></br>';
+			flag = false;
+		}
+		if(count == 0)
+		{
+			/* $('#groupValueCreationErr').html('<span>Please Select Atleast one Check Box</span>');
+			$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
+			str += '<span>Please Select Atleast one Check Box</span></br>';
+				flag = false;
+		}
+		$('#groupValueCreationErr').html(str);
+		if(flag)
+		{
+			storeAllCategoeryValues();
+		} 
+	}
+	/*
+		this method is used for show the saved status of a categoery values.
+	*/
+	function showStatusOfCategoeryValues(results)
+	{
+		if(results.resultCode == 0)
+		{
+			$('#groupValueCreationMsg').html('<span>Successfully Saved</span>');
+			$('#groupValueCreationMsg').show().delay("1000").hide('slow');
+		}
+	}
+	/*
+		this method is used for checking for duplicate Group names in the list of all group names.
+	*/
+	function checkForDuplicateGroupValues()
+	{
+		var groupName = new Array();
+		$('.categoerysList').each(function () {
+		var categoryCheckVal  = $(this).closest("tr").find(".selectedValuesChk").is(':checked');
+		var categoryname = $(this).closest("tr").find(".groupValueId").val();
+		groupName.push($.trim(categoryname));
+		});
+		for(var i = 0 ; i < groupName.length ; i++)
+		{
+			for(var j = 0 ; j < groupName.length ; j++)
+			{
+				if(i != j)
+				{
+					if(groupName[i] == groupName[j])
+					{
+						/* $('#groupValueCreationErr').html('<span>Group Name is Already Exists</span>'); */
+						
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+	/*
+		this method is used for checking for duplicate Order numbers in the list of selected Order numbers..
+	*/
+	function ckeckForDuplicateOrderIds()
+	{
+		var orderIdsArray = new Array();
+		$('.categoerysList').each(function () {
+		var categoryCheckVal  = $(this).closest("tr").find(".selectedValuesChk").is(':checked');
+		var orderId = $(this).closest("tr").find(".orderId").val();
+		orderIdsArray.push($.trim(orderId));
+		});
+		for(var i = 0 ; i < orderIdsArray.length ; i++)
+		{
+			for(var j = 0 ; j < orderIdsArray.length ; j++)
+			{
+				if(i != j)
+				{
+					if(orderIdsArray[i] == orderIdsArray[j])
+					{
+						/* $('#groupValueCreationErr').html('<span>Order No is Already Exists</span>'); */
+						
+						return false;
+					}
+				}
+			}
+		}
+		
+		return true;
+	}
+	/*
+		This method is used for checking for order numbers in a serial number or not....
+	*/
+	function chechForOrderNumbers()
+	{
+		var flag = true;
+		var orderIdsArray = new Array();
+		$('.categoerysList').each(function () {
+		var categoryCheckVal  = $(this).closest("tr").find(".selectedValuesChk").is(':checked');
+		if(categoryCheckVal == true)
+		{
+			var orderId = $(this).closest("tr").find(".orderId").val();
+			orderIdsArray.push($.trim(orderId));
+		}
+		});
+		for(var i = 0 ; i < orderIdsArray.length ; i++)
+		{
+			if(orderIdsArray[i] > orderIdsArray.length)
+			{
+				flag = false;
+			}
+			/* if(orderIdsArray.indexOf(orderIdsArray[i]) == -1)
+			{
+				flag = false;
+			} */
+			
+		}
+		return flag;
 	}
 </script>
 </body>

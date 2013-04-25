@@ -4105,7 +4105,15 @@
 			<result type="json" name="category">
 				<param name="root">selectOptionVO</param>
 			</result>
-			
+			<result type="json" name="categoryList">
+				<param name="root">castCategoryGroupList</param>
+			</result>
+			<result type="json" name="savedStatus">
+				<param name="root">resultStatus</param>
+			</result>
+			<result type="json" name="deletedStatus">
+				<param name="root">categoerysList</param>
+			</result>
 		</action>
 			
 	<action name="votersCategoeryAction" class="votersEditAction">
