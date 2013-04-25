@@ -176,7 +176,7 @@ function callAjax(param,jsObj,url){
 					if(jsObj.task == "addNewPosition"){
 
 					clearOptionsListForSelectElmtId("position");
-					createOptionsForSelectElmtId("position",myResults);
+					createOptionsForSelectElmtId1("position",myResults);
 	                document.getElementById("positionId").innerHTML='';
 					}
 					
@@ -451,8 +451,10 @@ function addPosition(value){
 	var positionIdElmt = document.getElementById("positionId");
 	positionIdElmt.innerHTML = str;
 	if(value =='Others'){
-	str+='<td><input type="text" id="posId" name="position" onblur="showText()" onclick="hideText()" value="Enter Position"/></td>';
-	str+='<td><input type="button" value="Add Position To List" onclick="addPositionAjaxCall()"><td>';
+		str+='<div style="width: 180px;">';
+	str+='&nbsp;<td><input type="text" id="posId" name="position" onblur="showText()" onclick="hideText()" value="Enter Position" style="width: 105px;"/></td>&nbsp;&nbsp;';
+	str+='<td><input type="button" value="Add" onclick="addPositionAjaxCall()"><td>';
+	str+='</div>';
 	positionIdElmt.innerHTML = str;
 	}
 }
@@ -460,6 +462,10 @@ function addPosition(value){
 function addPositionAjaxCall(){
   if($("#posId").val() == "Enter Position"){
 		$("#posId").val("");
+		return;
+	}
+	if($("#posId").val() ==""){
+		$("#errorMsgDiv").html("Please enter any position").css("color","red");
 		return;
 	}
 	var position = document.getElementById("posId").value;
