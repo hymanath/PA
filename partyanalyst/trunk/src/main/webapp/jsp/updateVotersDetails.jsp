@@ -351,8 +351,12 @@ function buildSelectedVotersData(results)
 
      
 
-       for(var id in results.userCategoriesList)		   
-		str+='<label class="labelClass"><input type="checkbox" value="'+results.userCategoriesList[id].name+'" class="fields" checked="true" style="margin:0px;"/>&nbsp;'+results.userCategoriesList[id].name+'</label>';
+       for(var id in results.userCategoriesList)
+		   if(results.userCategoriesList[id].name == "Money" || results.userCategoriesList[id].name == "Residing")
+
+		   str+='<label class="labelClass"><input type="checkbox" value="'+results.userCategoriesList[id].name+'" class="fields" style="margin:0px;"/>&nbsp;'+results.userCategoriesList[id].name+'</label>';
+	      else
+		   str+='<label class="labelClass"><input type="checkbox" value="'+results.userCategoriesList[id].name+'" class="fields" checked="true" style="margin:0px;"/>&nbsp;'+results.userCategoriesList[id].name+'</label>';
 	   str+='</div>';
 
 	       
@@ -682,6 +686,7 @@ function updateAllSelectedVotersDetails1()
 		  
 		  var uploadHandler = {
 			success: function(o) {
+				alert("Voters details updated successfully...");
 				var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
 
 				var cssObj = {    
@@ -690,7 +695,7 @@ function updateAllSelectedVotersDetails1()
 				   'margin-left':'400px'
 				}
 		
-          alert("Voters details updated successfully...");
+          
 		$('#successMessageDiv').text("Voters details updated successfully...").css(cssObj).show().delay(2000).fadeOut(400);
 			}
 		};
@@ -761,7 +766,7 @@ function updateAllSelectedVotersDetails1()
 				   'color' : 'green',
 				   'margin-left':'400px'
 				}
-		
+		alert("Voters details updated successfully...");
 
 		$('#successMessageDiv').text("Voters details updated successfully...").css(cssObj).show().delay(2000).fadeOut(400);
 			}
