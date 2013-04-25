@@ -1436,7 +1436,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	{
 		List<SelectOptionVO> wards = new ArrayList<SelectOptionVO>();
 		try{
-		List<Object> list2 = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(assemblyLocalBody.toString().trim().substring(1)));
+		List<Object> list2 = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(assemblyLocalBody);
 		Long id = (Long)list2.get(0);
 		List<Constituency> wardObjs = constituencyDAO.findWardsAndIdsInMuncipality(id);
 		if(wardObjs != null && wardObjs.size() > 0)
