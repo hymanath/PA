@@ -437,7 +437,7 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 		
 		var configs = {
 							paginator: new YAHOO.widget.Paginator({ 
-							rowsPerPage    : 10			        
+							rowsPerPage    : 20			        
 							})
 					   };
 		var myDataSource = new YAHOO.util.DataSource(localArr);
@@ -456,7 +456,7 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 	 {
 		  	var contentStr = '';
 		 	contentStr +='<div class="yui-skin-sam"><div id="boothsDetailsDiv"></div></div>';
-		 	 var myPanel = new YAHOO.widget.Dialog("boothDetailsPopup", {             
+		 	/*  var myPanel = new YAHOO.widget.Dialog("boothDetailsPopup", {             
 		    
 		 		 fixedcenter : true, 
 		 		 visible : true,  
@@ -468,10 +468,28 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 		 	   });
 		 	   myPanel.setHeader("Booth Complete Details");
 		 	   myPanel.setBody(contentStr);
-		 	   myPanel.render();
+		 	   myPanel.render(); */
+			   
+				
+			   	$('#boothDetailsPopup').dialog({ 
+	                            title:'Booth Complete Details',
+	                            height: 'auto',
+								width: 600,
+								height:600,
+								closeOnEscape: false,
+								show: "blind",
+								hide: "explode",
+								modal: true,
+	                             buttons: {
+							   "Close":function() {$(this).dialog("close")}
+								   }	
 
+				});
+				$('#boothDetailsPopup').html(contentStr);
 		 	   var myDataTable = new YAHOO.widget.DataTable("boothsDetailsDiv",
 		 				myColumnDefs, myDataSource,configs);
+						
+				
 		 
 	 }
 

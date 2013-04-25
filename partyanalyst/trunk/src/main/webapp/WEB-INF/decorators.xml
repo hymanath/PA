@@ -165,6 +165,7 @@
 		<pattern>/assigningCandidatesToVoterAction*</pattern>
 		<pattern>/sitemapAction*</pattern>
 		<pattern>/newsZoneAction*</pattern>
+		
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
@@ -219,7 +220,7 @@
 		<pattern>/boothWiseModificationsCompleteInfo*</pattern>
 		<pattern>/cadreDisplayWindowAction*</pattern>		
 		<pattern>/updateSelectedVotersAction*</pattern>
-		
+		<pattern>/userGroupAction*</pattern>
 		<pattern>/setUserRestrictionAction*</pattern>
     	 </decorator>
 

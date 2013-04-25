@@ -3439,6 +3439,20 @@ function showNewEventPopup()
 		newEventDialog.show();		
 }
 
+function refreshParent()
+{
+	
+	var date = new Date();
+									
+		var jsObj1={
+		monthVal:date.getMonth(),
+		yearval:date.getFullYear(),
+		task:'nextMonthEvents'
+	   };
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+		var url = "<%=request.getContextPath()%>/getNextMonthDatesEvents.action?"+rparam;	
+		callAjax(jsObj1,url);
+}
 function handleSubmit()
 {
 		var eventNameVal = document.getElementById("eventNameText").value;
