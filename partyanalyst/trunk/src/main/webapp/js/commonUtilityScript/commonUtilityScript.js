@@ -573,3 +573,27 @@ function closeFeedbackwindow()
 {
 	$("#feedback_window").dialog("destroy");
 }
+
+function createOptionsForSelectElmtId1(elmtId,optionsList)
+{
+	var elmt = document.getElementById(elmtId);
+	if( !elmt || optionsList == null)
+		return;
+	
+	for(var i in optionsList[0].selectOptionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[0].selectOptionsList[i].id;
+		option.text=optionsList[0].selectOptionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+//for given value population
+$("option[value='"+optionsList[0].populateId+"']").attr('selected', 'selected');
+}
