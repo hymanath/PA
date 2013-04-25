@@ -51,4 +51,34 @@ public class UserVoterCategoryValueDAO extends GenericDaoHibernate<UserVoterCate
 		return query.list();
 		
 	}
+	
+	/**
+	 * This dao is used for getting all the categoery values 
+	 * @param Long userId
+	 * @param Long categoeryId
+	 * @return List<Object[]>
+	 * @date 24-04-2013
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCategoeryValuesDAO(Long userId , Long categoeryId)
+	{
+		Object[] parms = {userId , categoeryId};
+		return getHibernateTemplate().find("select model.userVoterCategoryValueId , model.categoryValue , " +
+				"model.orderNo from UserVoterCategoryValue model where model.user.userId = ? and model.userVoterCategory.userVoterCategoryId=? " +
+				"order by model.orderNo",parms);
+	}
+	/**
+	 * This dao is used for deleting the categoery values.
+	 * @param List<Long> categoeryIds
+	 * @return void
+	 * @date 24-04-2013
+	 */
+	public void deleteCategoeryValues(List<Long> categoeryIds)
+	{
+		Query query = getSession().createQuery("delete from UserVoterCategoryValue model where model.userVoterCategoryValueId in (:categoeryIds)");
+		
+		query.setParameterList("categoeryIds", categoeryIds);
+
+        query.executeUpdate();
+	}
 }

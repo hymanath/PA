@@ -255,4 +255,10 @@ public interface IVotersAnalysisService {
 	 
 	 public List<VoterVO> getVoterData(VoterDataVO voterDataVO ,Long userId , List<Long> categories);
 	 
+	 public List<SelectOptionVO> getCategoeryValuesService(Long userId,Long categoeryId);
+	 
+	 public ResultStatus storeCategoeryData(List<SelectOptionVO> categoeryValues,Long userId,Long categoeryId);
+	 
+	 public List<SelectOptionVO> checkForCategoeryValues(List<SelectOptionVO> categoeryValuesList , Long userId);
+	 
 }

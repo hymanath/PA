@@ -16,5 +16,9 @@ public interface IUserVoterCategoryValueDAO  extends GenericDao<UserVoterCategor
 	
 	public List<Object[]> getCategoryValuesByUserIdCategId(Long userId,Long userCategoryValueId);
 	
+	public List<Object[]> getCategoeryValuesDAO(Long userId , Long categoeryId);
+	
+	void deleteCategoeryValues(List<Long> categoeryIds);
+	
 	public List<Object[]> getCatergoryAndValues(List<Long> categories,Long userId);
 }
