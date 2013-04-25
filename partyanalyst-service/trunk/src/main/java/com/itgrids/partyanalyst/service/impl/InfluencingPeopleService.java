@@ -3645,18 +3645,20 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	}*/
 	public List<SelectOptionVO> saveNewPositionForInfluencingPeople(final String newPosition){
 		List<SelectOptionVO> positionsList = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> positionsList1 = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO = new SelectOptionVO();
 		InfluencingPeoplePosition userPosition= (InfluencingPeoplePosition)transactionTemplate.execute(new TransactionCallback() {
-
+				
 			public Object doInTransaction(TransactionStatus status) {
 				
 				InfluencingPeoplePosition userPosition = new InfluencingPeoplePosition();
-				
+			
 				try{
 					
 					userPosition.setPosition(newPosition);
 					
 					userPosition.setUpdatedDate(getCurrentDate());
-					influencingPeoplePositionDAO.save(userPosition);
+					userPosition = influencingPeoplePositionDAO.save(userPosition);
 
 				}catch(Exception ex){
 					log.error("Exception Raised In New Position Adding :" + ex);
@@ -3664,11 +3666,15 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					status.setRollbackOnly();
 				}
 				
-			 return userPosition;
+				return userPosition;
 			}
 			
 		});
-		positionsList =getAllInfluencePeoplePositions();
+		
+		positionsList1 =getAllInfluencePeoplePositions();
+		selectOptionVO.setSelectOptionsList(positionsList1);
+		selectOptionVO.setPopulateId(userPosition.getInfluencingPeoplePositionId());
+		positionsList.add(selectOptionVO);
 		return positionsList;
 	}
 	
