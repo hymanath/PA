@@ -18,8 +18,17 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private boolean hampletPresent;
 	private String partno;
 	private List<Long> locationValuesList;
+	private Long populateId;
 	private Long orderId;
 
+
+	public Long getPopulateId() {
+		return populateId;
+	}
+
+	public void setPopulateId(Long populateId) {
+		this.populateId = populateId;
+	}
 
 	public String getPartno() {
 		return partno;
