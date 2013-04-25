@@ -724,7 +724,6 @@ function updateAllSelectedVotersDetails1()
 
 
 		 if ($('#sublocality'+votersToUpdate[i]).length ){
-alert($('#sublocality'+votersToUpdate[i]).val());
 			 var localityHamletId = $('#sublocality'+votersToUpdate[i]).val();
 			
 			 if(localityHamletId == null || localityHamletId == 0)
