@@ -828,11 +828,12 @@ function showImportantFamiliesDiv()
 								{
 								   buildWardsList(myResults,jsObj);
 								}
-								else if(jsObj.taskType == "getLocalities")
+								else if(jsObj.taskType == "getLocalities" )
 								{
 									buildSubLocalities(myResults,jsObj);
 								}
-                                 else if(jsObj.task == "getLocalities")
+								
+                                else if(jsObj.task == "getLocalities" || jsObj.task == "getLocalitiesForWards")
 								{
 								   populatedataTodiv(myResults,jsObj);
 								}								
@@ -3755,6 +3756,14 @@ if(isMuncipality)
 			//alertEl.innerHTML ='<P>Please Select Mandal</P>';
 			return;
 		}
+
+       var task = "";
+
+		if(selType == "muncipality")
+			task = "getLocalitiesForWards";
+		else
+			task = "getLocalities";
+
 		var jsObj=
 			{
 					
@@ -3766,7 +3775,7 @@ if(isMuncipality)
 				subLocalityId:subLocalityId,			
 				type:type,
 				publicationValue : publicationValue,
-				task:"getLocalities"
+				task:task
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3781,8 +3790,19 @@ if(isMuncipality)
 
 	function getLocalitiesList(selectboxId,divId,familyId)
 	{ 
+
+
+		//var task = "";
+		var task = "";
+
+		if(selType == "muncipality")
+			task = "getLocalitiesForWards";
+		else
+			task = "getLocalities";
 		
-if(isMuncipality)
+
+		
+       if(isMuncipality)
 		{
 			$('#localitylocationdiv').hide();
 			return;
@@ -3824,10 +3844,11 @@ if(isMuncipality)
 				selectBoxId:selectboxId,
 				familyType: family,
 				familyId: familyId,
-			
+				//taskType:taskType,			
 				type:type,
 				publicationValue : publicationValue,
-				task:"getLocalities"
+				task:task
+				//task:"getLocalitiesForWards"
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);

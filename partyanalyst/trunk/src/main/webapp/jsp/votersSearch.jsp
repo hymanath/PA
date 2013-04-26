@@ -1147,6 +1147,17 @@ function buildCategoriesListInit(result){
 		}
 	  }
 	  function getVotersInfoToEditAllUser(ids,votersIds){
+
+
+		  if($('#reportLevel').val() == 4){
+
+                selType = "muncipality";
+			if($("#mandalField").val().substring(0,1) == 2)
+				 selType = 'mandal';
+			else
+				selTypeId = $("#mandalField").val().substring(1);
+        }
+		
 		var jsObj=
 				{
 					task:"getAllVoters",
@@ -1156,7 +1167,9 @@ function buildCategoriesListInit(result){
 					votersIds:votersIds,
 					selectedType:selectedType,
 					selectedTypeId:selectedTypeId,
-					publicationId:publicationId
+					publicationId:publicationId,
+					selType:selType,
+					selTypeId:selTypeId
 					
 				}
 				$("#getAllVoterFamiliesForEditFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
@@ -1186,7 +1199,21 @@ function buildCategoriesListInit(result){
 			  } 
 	 }
 	 
-	  function getVotersInfoToEditAUser(ids,voterId){
+    var selType = "" ;
+	var selTypeId = 0;
+	function getVotersInfoToEditAUser(ids,voterId){
+
+		if($('#reportLevel').val() == 4){
+
+                selType = "muncipality";
+			if($("#mandalField").val().substring(0,1) == 2)
+				 selType = 'mandal';
+			else
+				selTypeId = $("#mandalField").val().substring(1);
+        }
+
+
+
 		var jsObj=
 				{
 					task:"getAllVoters",
@@ -1196,7 +1223,9 @@ function buildCategoriesListInit(result){
 					voterId:voterId,
 					selectedType:selectedType,
 					selectedTypeId:selectedTypeId,
-					publicationId:publicationId
+					publicationId:publicationId,
+					selType:selType,
+                    selTypeId:selTypeId 
 					
 				}
 	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1389,10 +1418,9 @@ function callAjaxForCandSearch(jsObj,url)
 			  if(localityPresent){
 			  var hamletId=$("#localityForAll").val();
 			  var localityId= $("#localitylocationdiv").val();
-			  	//alert(mandalType);
 				if(mandalType == "muncipality" ){
-				 obj["localityHamletId"] = hamletId;
-				 obj["hamletId"] = 0;
+				 obj["localityHamletId"] = $('#localitylocationdiv').val();
+				 obj["hamletId"] = hamletId;
 				 }else{
 				obj["hamletId"] = hamletId;
 			    obj["localityHamletId"] = localityId;
@@ -1418,7 +1446,9 @@ function callAjaxForCandSearch(jsObj,url)
 			localityPresent:localityPresent,
 			voterIds:voterIds,
 			selectedVoters:votersEditInfo,
-			task:"updateAllVoters"
+			task:"updateAllVoters",
+            selType:selType,
+			wardId:$('#localitylocationdiv').val()	 
 		  };
 		  $("#getSelectedVoterFamiliesForEditFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
 			  
@@ -1500,7 +1530,10 @@ function callAjaxForCandSearch(jsObj,url)
 					castPresent:castPresent,
 					localityPresent:localityPresent,
 					selectedVoters:votersEditInfo,
-					task:"updateIndividuls"
+					task:"updateIndividuls",
+					wardId:$('#localitylocationdiv1').val(),
+					selType:selType
+
 		      };
 			  $("#saveAllVotersFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
 			  
@@ -3163,7 +3196,7 @@ function buildSelectedVotersData(results)
 	          obj["localityHamletId"] = 0;
 			 
 
-			 for(var j = 0 ; j<totalCategoriesCount ;j++){
+			 for(var j = 0 ; j< totalCategoriesCount ;j++){
 
 				 obj["categ"+j] = $('#'+votersToUpdate[i]+'categ'+j).val()+"-"+$('#'+votersToUpdate[i]+'categVal'+j).val();
 			 }
@@ -3203,9 +3236,19 @@ function buildSelectedVotersData(results)
 		YAHOO.util.Connect.setForm('updateSelectedVoters',false);
 		YAHOO.util.Connect.asyncRequest('POST','updateAllSelectedVotersInformation.action?save=',uploadHandler);
 	 }
-
+var isMuncipalitySelected = "";
+var muncipalitySelectedId = 0;
 function getAllSelectedVotersDetails1()
 {
+
+	if($('#reportLevel').val() == 4){
+
+                isMuncipalitySelected = "muncipality";
+			if($("#mandalField").val().substring(0,1) == 2)
+				 isMuncipalitySelected = 'mandal';
+			else
+				muncipalitySelectedId = $("#mandalField").val().substring(1);
+	}
 
 	if(selectedVotersArr.length <= 0)
 		alert("Please select atleast one recore to update");
