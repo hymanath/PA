@@ -78,7 +78,7 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 	}*/
 	
 	
-	public void testGetLatestMandalsForAConstituency()
+	/*public void testGetLatestMandalsForAConstituency()
 	{
 		List<Object[]> mandals = delimitationConstituencyMandalDAO.getLatestMandalsForAConstituency(234l);
 		
@@ -89,6 +89,14 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 				System.out.print("     "+y.toString());
 			}
 			System.out.println();
+		}
+	}*/
+	
+	public void testGetAllMandalesInAConstituency()
+	{
+		List<Long> values = delimitationConstituencyMandalDAO.getConstituencyIdByMandalID(844l);
+		for (Long parms : values) {
+			System.out.println(parms);
 		}
 	}
 }

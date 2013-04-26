@@ -1218,6 +1218,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		  }
 			return populateDataToVotersInfoForMandalVO(votersCountList,id,constituencyDAO.get(id).getName(),"Ward");
 	}
+	public VotersInfoForMandalVO getVotersCountForCustomWard(Long id,Long publicationDateId,String reqType ){
+		 VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
+		 votersInfoForMandalVO.setDatapresent(false);
+
+			List<Object[]> votersCountList = userVoterDetailsDAO.getGenderWiseVoterDetailsForCustomWard(id,publicationDateId);
+			return populateDataToVotersInfoForMandalVO(votersCountList,id,constituencyDAO.get(id).getName(),"customWard");
+	}
 	
 	public void getVotersCountForMultipleMandal(List<SelectOptionVO> mandalsList,Long publicationDateId,VotersInfoForMandalVO votersInfoForMandalVO,Long constituencyId){
 		 for(SelectOptionVO mandal : mandalsList){
@@ -3985,6 +3992,13 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				 importantFamiliesInfoVo = getImportantFamiliesForWard(id,publicationDateId,"main",constituencyId);
 				return importantFamiliesInfoVo;
 			}
+			else if(type.equalsIgnoreCase("customWard"))
+			{
+				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForWard(id,publicationDateId,"main",constituencyId);
+				if(!importantFamiliesInfoVo.isDataPresent());
+				importantFamiliesInfoVo = getImportantFamiliesForCustomWard(id,publicationDateId,"main",constituencyId);
+				return importantFamiliesInfoVo;
+			}
 		}catch(Exception e){
 			log.error("Exception rised in getImportantFamiliesInfo method : ",e);
 		}
@@ -4077,7 +4091,8 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			totalFamiliesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationId(id,publicationDateId,query);
 		else if(queryToexe.equalsIgnoreCase("ward"))
 			totalFamiliesList = boothPublicationVoterDAO.getImpFamilesForWard(ids,publicationDateId,query);
-		
+		else if(queryToexe.equalsIgnoreCase("customward"))
+			totalFamiliesList = userVoterDetailsDAO.getImpFamilesForCustomWard(ids,publicationDateId,query);
 		if(!totalFamiliesList.isEmpty() && totalFamiliesList.get(0)[1] != null){
 	    	count[0] = new Long(totalFamiliesList.size());
 	       if(query != null){
@@ -4351,6 +4366,21 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		 return importantFamiliesInfoVo;
 	}
 	
+	public ImportantFamiliesInfoVo getImportantFamiliesForCustomWard(Long id,Long publicationDateId,String reqType,Long constituencyId){
+		ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+		importantFamiliesInfoVo.setType("customWard");
+		importantFamiliesInfoVo.setName(constituencyDAO.get(id).getName());
+		List<Long> wardIds = new ArrayList<Long>();
+		wardIds.add(id);
+		VotersInfoForMandalVO votersInfoForWard = getVotersCountForCustomWard(id, publicationDateId, "sub");
+		importantFamiliesInfoVo.setTotalMaleVoters(votersInfoForWard.getTotalMaleVoters());
+		importantFamiliesInfoVo.setTotalFemaleVoters(votersInfoForWard.getTotalFemaleVoters());
+		importantFamiliesInfoVo.setUnKnowVoters(votersInfoForWard.getUnKnowVoters());
+		importantFamiliesInfoVo.setTotalVoters(votersInfoForWard.getTotVoters().longValue());
+		 getImpFamilesInfo("",id,publicationDateId,importantFamiliesInfoVo,"customward",reqType,wardIds,constituencyId);
+		 
+		 return importantFamiliesInfoVo;
+	}
 	public void calculatePercentage(ImportantFamiliesInfoVo importantFamiliesInfoVo){
 		 DecimalFormat df = new DecimalFormat("#.##");
 		if(importantFamiliesInfoVo.getTotalVoters() != null && importantFamiliesInfoVo.getTotalVoters() > 0){

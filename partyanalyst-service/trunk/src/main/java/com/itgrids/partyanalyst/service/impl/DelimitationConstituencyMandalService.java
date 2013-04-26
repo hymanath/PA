@@ -759,4 +759,12 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		addTotal(voterAgeRangeVOList);
 		return genderAgeWiseVoters;
 	}
+	
+	public Long getConstituencyIdBasedOnMandel(Long mandalId)
+	{
+		
+		Long constituencyId = null;
+		constituencyId = delimitationConstituencyMandalDAO.getConstituencyIdByMandalID(mandalId).get(0);
+		return constituencyId;
+	}
 }
