@@ -1368,8 +1368,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public VoterCastInfoVO getVotersCastWiseDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId,String queryType)
 	{
 		List<String> types = new ArrayList<String>();
-		types.add("hamlet");
-		types.add("customWard");
+		types.add(IConstants.HAMLET);
+		types.add(IConstants.CUSTOMWARD);
 		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 		String locationType1 = locationType;
 		try{
@@ -1436,8 +1436,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public VoterCastInfoVO getVotersPartyDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId,String queryType)
 	{
 		List<String> types = new ArrayList<String>();
-		types.add("hamlet");
-		types.add("customWard");
+		types.add(IConstants.HAMLET);
+		types.add(IConstants.CUSTOMWARD);
 		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 		String locationType1 = locationType;
 		try{
@@ -2578,7 +2578,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			if(type.equalsIgnoreCase("ward")){
 				 boothsList = boothDAO.getBoothIdsForWard(panchayatId,publicationDateId);
 			}
-			if(type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase("customWard") )
+			if(type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase(IConstants.CUSTOMWARD) )
 			{ 
 			
 				boothsList =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(panchayatId, boothId ,type);
@@ -5832,7 +5832,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		  Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(lclElecBodyId).get(0);
 			 String type=	localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(lid);
 			 List<Object[]> wards = null;
-	 if(type.equalsIgnoreCase("Greater Municipal Corp"))
+	 if(type.equalsIgnoreCase(IConstants.GHMC))
 	{
 		int y=0;
 	
