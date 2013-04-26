@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+import com.itgrids.partyanalyst.service.IUserVoterService;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -94,7 +95,30 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
     private String isLocalityExist;
     
     private List<VoterCastInfoVO> castList;
+    
+    private List<VotersDetailsVO> ageRangeList;
+    
+    private IUserVoterService userVoterService;
 	
+	
+
+
+	public List<VotersDetailsVO> getAgeRangeList() {
+		return ageRangeList;
+	}
+
+	public void setAgeRangeList(List<VotersDetailsVO> ageRangeList) {
+		this.ageRangeList = ageRangeList;
+	}
+
+	public IUserVoterService getUserVoterService() {
+		return userVoterService;
+	}
+
+	public void setUserVoterService(IUserVoterService userVoterService) {
+		this.userVoterService = userVoterService;
+	}
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -1120,7 +1144,7 @@ return Action.SUCCESS;
 			 
 			votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,panchayatId , userId1, publicationDateId,myType);	
 		
-		}else 
+		}else  
 			if(!type.equalsIgnoreCase("hamletLocalArea") ){
 			
 		votersDeatailsForConstituency = votersAnalysisService.getVoterAgeWiseDetails(constituencyId, mandalId,
@@ -1534,4 +1558,28 @@ return Action.SUCCESS;
 	  }
 		return Action.SUCCESS;
 	}
+	
+	public String getAgeWiseWiseDetails()
+	{
+	try{
+		jObj = new JSONObject(getTask());
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO == null)
+			return ERROR;
+		Long userId =  regVO.getRegistrationID();
+		String[] ids = jObj.getString("attributeIds").split(",");
+		List<Long> attributeIds = new ArrayList<Long>();
+		for(String id:ids){
+			attributeIds.add(new Long(id.trim()));
+		}
+		ageRangeList = userVoterService.getAgeRangeByUserVoterCategory(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
+	}
+	catch(Exception e)
+	{
+		log.error("Exception Occured in getAgeWiseWiseDetails() Method, Exception - ",e);	
+	}
+	return Action.SUCCESS;
+	}
+	
 }

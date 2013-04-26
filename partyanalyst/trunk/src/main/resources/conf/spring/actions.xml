@@ -1003,6 +1003,7 @@
 		<property name="voterModificationService" ref="voterModificationService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 		<property name="voterReportService" ref="voterReportService" />
+		<property name="userVoterService" ref="userVoterService" />
 	</bean>
 	
 	<bean id="publicProfileAction" class="com.itgrids.partyanalyst.web.action.PublicProfileAction">

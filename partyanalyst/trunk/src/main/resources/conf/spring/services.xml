@@ -1480,6 +1480,12 @@
     </bean>
     <bean name="userVoterService" class="com.itgrids.partyanalyst.service.impl.UserVoterService">
 	  <property name="voterCategoryValueDAO" ref="voterCategoryValueDAO" />
+	  <property name="userVoterCategoryValueDAO" ref="userVoterCategoryValueDAO" />
+	  <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+	  <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+	  <property name="voterInfoDAO" ref="voterInfoDAO" />
+	  <property name="votersAnalysisService" ref="votersAnalysisService" />
+	  	
 	
     </bean>
     
