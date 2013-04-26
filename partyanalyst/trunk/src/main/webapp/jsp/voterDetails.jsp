@@ -141,6 +141,7 @@
 </style>
 <body>
 <div id="headingDiv" align="center" >${name} Voter Details</div>
+<div id="ajaxImageDiv" align="center" style="margin-top: 50px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="mainDiv"  style="display:none;">
 <div id="votersCountId"></div>
 <div id="hamletAndBoothCount"></div>
@@ -217,7 +218,7 @@ var limit = 100;
 var confTrue = false;
 function getVoterDetails()
 {
-	
+	 $("#ajaxImageDiv").css('display','none');
 	$('.requiredAttrClass').each(function(){
 	  $(this).attr('checked','checked');
     });
@@ -251,6 +252,7 @@ function buildVotersByLocPanchayatDataTable1()
 {
 //publicationId = mainpublicationId;
 //panchaytId =  mainreqid;
+
 	$('#votersByLocationTabContentDiv_body').show();
 if(panchaytId == "0" || publicationId == "0")
 	return false;
