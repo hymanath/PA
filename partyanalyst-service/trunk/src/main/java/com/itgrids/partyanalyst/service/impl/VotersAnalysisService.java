@@ -1360,6 +1360,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	
 	public VoterCastInfoVO getVotersCastWiseDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId,String queryType)
 	{
+		List<String> types = new ArrayList<String>();
+		types.add("hamlet");
+		types.add("customWard");
 		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 		String locationType1 = locationType;
 		try{
@@ -1386,21 +1389,22 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			}
 			 Long votesConsidered = 0L;
 			
-			if(locationType.equalsIgnoreCase("hamlet")){
+			if(types.contains(locationType)){
 				
 				List<Long> hamlets = new ArrayList<Long>();
 				hamlets.add(locationId);
-			List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
-				
-		    List<Long> countList = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
+			//List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+				  List<Long> voterIds  =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(locationId, userId ,locationType);		
+		   
+				  List<Long> countList = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
 		   if(countList != null && countList.size() >0)
 			 totalVoters = countList.get(0);
 			}
 						
-			if(!"main".equalsIgnoreCase(queryType) && !"booth".equalsIgnoreCase(locationType1) && !"hamlet".equalsIgnoreCase(locationType1))
+			if(!"main".equalsIgnoreCase(queryType) && !"booth".equalsIgnoreCase(locationType1) && !types.contains(locationType))
 				   voterReportService.getVotersCastWiseDetailsInALocationFromIntermediateTable(userId, reportLvlId, locationId, publicationDateId, constituencyId, voterCastInfoVO);
 				
-				if("main".equalsIgnoreCase(queryType) || "booth".equalsIgnoreCase(locationType1) || "hamlet".equalsIgnoreCase(locationType1)){
+				if("main".equalsIgnoreCase(queryType) || "booth".equalsIgnoreCase(locationType1) || types.contains(locationType)){
 				   voterCastInfoVO.setCastCategoryWiseVotersList(getCastCategoryWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
 				   voterCastInfoVO.setVoterCastInfoVOList(getCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
 				}
@@ -1424,6 +1428,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	
 	public VoterCastInfoVO getVotersPartyDetailsInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId,String queryType)
 	{
+		List<String> types = new ArrayList<String>();
+		types.add("hamlet");
+		types.add("customWard");
 		VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 		String locationType1 = locationType;
 		try{
@@ -1446,12 +1453,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			Long reportLvlId = getReportLevelId(locationType1);
 			Long totalVoters = 0l;//voterInfoDAO.getVotersCountInALocation(reportLvlId,locationId,publicationDateId,constituencyId);
 			
-			if(locationType.equalsIgnoreCase("hamlet")){
+			if(types.contains(locationType) ){//18111party
 				
 				 List<Long> hamlets = new ArrayList<Long>();
 				  hamlets.add(locationId);
-			  List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
-				
+			 // List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+				  List<Long> voterIds  =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(locationId, userId ,locationType);	
 		       List<Long> countList = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
 		      if(countList != null && countList.size() >0)
 			  totalVoters = countList.get(0);
@@ -1459,10 +1466,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			else
 			 totalVoters = voterInfoDAO.getVotersCountInALocation(reportLvlId,locationId,publicationDateId,constituencyId);
 			
-			if(!"main".equalsIgnoreCase(queryType) && !"booth".equalsIgnoreCase(locationType1) && !"hamlet".equalsIgnoreCase(locationType1)){
+			if(!"main".equalsIgnoreCase(queryType) && !"booth".equalsIgnoreCase(locationType1) && !types.contains(locationType)){
 				voterReportService.getPartyNGenderWiseVotersCountByPublIdInALocFromIntermedTable(userId, reportLvlId, locationId, publicationDateId, constituencyId, voterCastInfoVO);
 			   }
-			   if("main".equalsIgnoreCase(queryType) || "booth".equalsIgnoreCase(locationType1) || "hamlet".equalsIgnoreCase(locationType1) ){
+			   if("main".equalsIgnoreCase(queryType) || "booth".equalsIgnoreCase(locationType1) || types.contains(locationType) ){
 				  voterCastInfoVO.setPartyWisevoterCastInfoVOList(getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(userId,locationType,locationId,publicationDateId,constituencyId));
 			   }
 			    for(VoterCastInfoVO partyWisecastInfoVO : voterCastInfoVO.getPartyWisevoterCastInfoVOList())
@@ -2564,9 +2571,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			if(type.equalsIgnoreCase("ward")){
 				 boothsList = boothDAO.getBoothIdsForWard(panchayatId,publicationDateId);
 			}
-			if(type.equalsIgnoreCase(IConstants.HAMLET))
-			{
-				boothsList =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(panchayatId, boothId);
+			if(type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase("customWard") )
+			{ 
+			
+				boothsList =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(panchayatId, boothId ,type);
+			
+				
 				if(boothsList == null || boothsList.size()==0)
 					   return new ArrayList<VotersDetailsVO>();
 				
@@ -5780,26 +5790,40 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 
 	 }
 	 
-	 public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId, Long constituencyId){
+	 public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId, Long constituencyId ,Long userId){
 		 List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
 		
 		 try{
-				
+				//18111
 		 //	List<Object> listId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(lclElecBodyId);
 		//List<Object[]> wards =  constituencyDAO.getWardsInMuncipality(lclElecBodyId);
 	//List<Object[]> wards = wardDAO.findByWardsByAssemblyLocalElectionBodyId(lclElecBodyId, publicationDateId);
+	   // get type of election based on id of local election 
+		  Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(lclElecBodyId).get(0);
+			 String type=	localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(lid);
+			 List<Object[]> wards = null;
+	 if(type.equalsIgnoreCase("Greater Municipal Corp"))
+	{
+		int y=0;
 	
-		List<Object[]> wards = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(lclElecBodyId, publicationDateId,constituencyId);		 
+			 wards = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(lclElecBodyId, publicationDateId,constituencyId);		 
+	}else //if(type.equalsIgnoreCase("MUNCIPALITY") || type.equalsIgnoreCase("CORPORATION") )
+	{
+		
+		wards = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(lid, publicationDateId, userId);
+		
+	}
 			 for(Object[] ward:wards){
 		 SelectOptionVO  selectOptionVO = new SelectOptionVO();
-		
+		 selectOptionVO.setType(type);
 		 selectOptionVO.setId((Long)ward[0]);
 		 selectOptionVO.setName(ward[1]!=null? ward[1].toString():"");
 		 selectOptionVO.setValue(ward[1].toString());
+		 if(type.equalsIgnoreCase("Greater Municipal Corp")){
 		 List<SelectOptionVO> list2=	getBoothForWard((Long)ward[0],publicationDateId);
 			if(list2 != null && list2.size()>0)
 				selectOptionVO.setSelectOptionsList(list2);
-			
+		 }
 				 list.add(selectOptionVO);
 	 }
 			/* List<Object[]> wards = boothDAO.getWardsInMuncipality(lclElecBodyId, publicationDateId);
@@ -6534,7 +6558,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					}
 				 }
 				 
-				 public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type,Long constituencyId,Long tehsilId)
+				 public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type,Long constituencyId,Long tehsilId,Long userId)
 				 {
 					 List<SelectOptionVO> namesList = new ArrayList<SelectOptionVO>(0);
 					 List<SelectOptionVO> mandalList = new ArrayList<SelectOptionVO>(0);
@@ -6628,16 +6652,21 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									int totalWards=0;
 								for(SelectOptionVO localbody : muncipalityList)
 								{
-									localbody1 = getWardsMunicipality(new Long(localbody.getId().toString().substring(1)),publicationDateId, constituencyId);
-									if(localbody1 ==null ||localbody1.size()<=0 )
+									localbody1 = getWardsMunicipality(new Long(localbody.getId().toString().substring(1)),publicationDateId, constituencyId , userId);
+									if(localbody1 ==null ||localbody1.size()<=0  )
 									localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
-									if(localbody1!= null && localbody1.size() > 0)
-									{
+									else {
+									if(!localbody1.get(0).getType().equalsIgnoreCase("Greater Municipal Corp") )
+										localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
+									
+									/*if(localbody1!= null && localbody1.size() > 0)
+									{*/
 									localbody.setSelectOptionsList(localbody1);	
 									totalWards = totalWards +localbody1.size();
 									localbody.setValue(new Long(localbody1.size()).toString());
+									localbody.setType(localbody1.get(0).getType());
 									}
-									else if(localbody2!= null && localbody2.size() > 0){
+									if(localbody2!= null && localbody2.size() > 0){
 										localbody.setSelectOptionsList1(localbody2);
 									 localbody.setValue(new Long(localbody2.size()).toString()); }
 									else
@@ -12486,19 +12515,21 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		
 		//Updated by gayathri to get HamletLevel VotersBasicInfo
 		
-				public List<VotersInfoForMandalVO>  getPreviousVotersCountDetailsForHamlet( Long constituencyId, Long mandalId,Long  panchayatId,Long boothId ,Long hamletId,Long userID){
+				public List<VotersInfoForMandalVO>  getPreviousVotersCountDetailsForHamlet( Long constituencyId, Long mandalId,Long  panchayatId,Long boothId ,Long hamletId,Long userID ,String type){
 					log.debug("Entered into the getPreviousVotersCountDetailsForHamlet service method");	
 					List<VotersInfoForMandalVO> votersInfoForMandalVOListHamlet = new ArrayList<VotersInfoForMandalVO>();
-
+//1111
 					try{
 						List<VoterVO> previousDetailsListHamlet = null;
 						previousDetailsListHamlet =  getAllPublicationsForHamlet(constituencyId);
 							
-						
+						List<Object>  votersIdList = null;
 						VotersInfoForMandalVO votersInfoForMandalVOHamlet = null;
+						
 						// For getting VotersDetails For HamletLevel
-						List<Object> votersIdList =  userVoterDetailsDAO.getVoterIdsBasedOnHamletId(hamletId,userID);
-							for(VoterVO voterVO:previousDetailsListHamlet){
+						// votersIdList =  userVoterDetailsDAO.getVoterIdsBasedOnHamletId(hamletId,userID);
+						votersIdList  =(List<Object>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(hamletId, userID ,type);	
+						for(VoterVO voterVO:previousDetailsListHamlet){
 							 if(voterVO.getType().equalsIgnoreCase("Publication")){
 								 if(votersIdList != null && votersIdList.size()>0){
 								 votersInfoForMandalVOHamlet = getVoterDetailsByVoterIdForHamlet(voterVO,votersIdList);
