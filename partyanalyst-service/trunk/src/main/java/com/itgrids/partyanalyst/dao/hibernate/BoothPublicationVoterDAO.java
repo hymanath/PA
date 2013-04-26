@@ -2676,4 +2676,59 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getAgeWiseDetails(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId,Long startAge,
+			Long endAge){
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select count(BPV.voter.voterId),BPV.voter.gender,UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,UVCV.categoryValue  from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
+				"BoothPublicationVoter BPV where VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId and  " +
+				" VCV.voter.voterId = BPV.voter.voterId  and UVCV.userVoterCategory.userVoterCategoryId in (:attributeIds)  " +
+				" and VCV.user.userId = :userId and UVCV.user.userId = :userId and BPV.booth.publicationDate.publicationDateId = :publicationId and BPV.voter.age >="+startAge+" and BPV.voter.age <="+endAge+" and ");
+		
+		if(locationType.equalsIgnoreCase("constituency"))
+			queryString.append(" BPV.booth.constituency.constituencyId = :locationId ");
+		else if(locationType.equalsIgnoreCase("mandal"))
+			queryString.append(" BPV.booth.tehsil.tehsilId = :locationId and BPV.booth.localBody is null and BPV.booth.constituency.constituencyId = :constituencyId ");
+		else if(locationType.equalsIgnoreCase("booth"))
+			queryString.append(" BPV.booth.boothId = :locationId ");
+		else if(locationType.equalsIgnoreCase("panchayat"))
+			queryString.append(" BPV.booth.panchayat.panchayatId = :locationId ");
+		else if(locationType.equalsIgnoreCase("localElectionBody") || "Local Election Body".equalsIgnoreCase(locationType))
+			queryString.append(" BPV.booth.localBody.localElectionBodyId = :locationId and BPV.booth.constituency.constituencyId = :constituencyId ");
+		else if(locationType.equalsIgnoreCase("ward"))
+			queryString.append(" BPV.booth.localBodyWard.constituencyId = :locationId ");
+		
+		queryString.append("  group by UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender ");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("locationId", locationId);
+		query.setParameterList("attributeIds", attributeIds);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		if(locationType.equalsIgnoreCase("mandal") || locationType.equalsIgnoreCase("localElectionBody") ||  "Local Election Body".equalsIgnoreCase(locationType)){
+			query.setParameter("constituencyId", constituencyId);
+		}
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getAgeWiseDetailsForHamlet(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId,Long startAge,
+			Long endAge){
+		StringBuilder queryString = new StringBuilder();
+	
+		queryString.append("select count(BPV.voter.voterId),BPV.voter.gender,UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,UVCV.categoryValue from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
+				"BoothPublicationVoter BPV,UserVoterDetails UVD where VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId and  " +
+			" VCV.voter.voterId = BPV.voter.voterId and BPV.voter.voterId = UVD.voter.voterId and UVCV.userVoterCategory.userVoterCategoryId in (:attributeIds)  " +
+			" and UVD.user.userId = :userId and VCV.user.userId = :userId and UVCV.user.userId = :userId and BPV.booth.publicationDate.publicationDateId = :publicationId and " +
+			" UVD.hamlet.hamletId = :locationId and BPV.voter.age >="+startAge+" and BPV.voter.age <="+endAge+"  group by UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender ");
+	
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("locationId", locationId);
+		query.setParameterList("attributeIds", attributeIds);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	
 }
