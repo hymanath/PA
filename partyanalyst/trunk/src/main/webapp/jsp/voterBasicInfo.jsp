@@ -360,7 +360,7 @@ var mainname = '${typeName}';
 
 getvotersBasicInfo("voters",id,publicationId,type);
 function getvotersBasicInfo(buttonType,id,publicationId,type){
-   var ajaxImageDiv =  document.getElementById('ImpFamwiseAjaxDiv');
+  // var ajaxImageDiv =  document.getElementById('ImpFamwiseAjaxDiv');
     var level = $("#reportLevel").val();
 	var flag =true;
 	var typename=mainname;
@@ -425,10 +425,10 @@ function callAjax(jsObj,url)
 
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 {
-      $("#votersBasicInfoSubChartDiv").html('');
+	  $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
-	  
-	var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
+	  $("#ajaxImageDiv").css('display','none');
+	//var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	//hideAjaxImgDiv('ajaxImageDiv');
 	$("#votersInfoAjaxImg").css("display","none");
 	  //$("#votersBasicInfoSubChartDiv").removeAttr('style');
@@ -662,16 +662,14 @@ function buildVotersChart(chartInfo,reqTitle)
 </script>
 </head>
 <body>
-
+<div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="votersBasicInfoMainDiv">
 	<div id="votersBasicInfoTitleDiv"></div>
 	<div id="votersBasicInfoMsgDiv"></div>
 	<div id="votersBasicInfoSubChartDiv"></div>
 	</br>
 	<div id="assAndUnass"></div>
-	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
-	<div id="ajaxImageDiv" style="display:none; position: absolute; right: 2px;top:200px;
-    z-index: 100;"><img src="./images/icons/search.gif" alt="Processing Image"/> </div>
+	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>	
 </div>
 </body>
 

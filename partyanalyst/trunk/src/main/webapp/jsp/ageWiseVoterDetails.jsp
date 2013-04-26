@@ -725,9 +725,11 @@ $('#mandalWiseAgeAndGenderTable').dataTable({
 	This method is used for building the data table for  voter age details and gender details in terms of percentage
 */
 function buildAgeAndGenderWiseDetailsForPercent(results , obj){
-     var type = obj.type;
+
+    var type = obj.type;
 	var innerResults;
 	var noteString;
+	$("#ajaxImageDiv").css('display','none');
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
 		noteString = "Mandal wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
@@ -890,7 +892,7 @@ $("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <s
 <body>
 <div id="errorDiv" align="center"></div>
 <div id="ageGrid" align="center"></div>
-
+<div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="ageWiseVotersDetailsOuterDiv">
 	<div id='ageWiseInfoDiv' class=""  style="height:500px;">
 	<br><br>

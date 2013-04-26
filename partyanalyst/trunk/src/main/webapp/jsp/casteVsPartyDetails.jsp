@@ -109,6 +109,7 @@ function getPartyWiseCastInfo()
 */
 function buildPartyWiseCastDetailsTable(myresults,jsObj)
 {
+	$("#ajaxImageDiv").css('display','none');
 	if(myresults != null && myresults.voterCastInfodetails != null && myresults.voterCastInfodetails.castVOs != null && myresults.voterCastInfodetails.castVOs.length > 0){
 	var result = myresults.voterCastInfodetails.castVOs;
 	var str ='<div>';
@@ -191,6 +192,7 @@ getPartyWiseCastInfo();
 </script>
 </head>
 <body>
+ <div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" >	</div>
 </body>
 </html>

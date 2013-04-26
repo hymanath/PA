@@ -1028,7 +1028,7 @@ function getMoreResults(elecYear,elecType,constiId)
 	var ptypeSelectElmt;
 	var pyearSelectElmt;
 	function showPanchayatInfo(resultVO,req){
-		
+		 $("#ajaxImageDiv").css('display','none');
 		ptypeSelectElmt = document.getElementById("electionTypeSelectId");
 		pyearSelectElmt = document.getElementById("electionYearSelectId");		
 
@@ -1493,6 +1493,7 @@ function getMoreResults(elecYear,elecType,constiId)
 	</script>
 </head>
 <body> 
+<div id="ajaxImageDiv" align="center" style="margin-top: 50px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/></div>
 <c:if test='${empty mandalInfoVO}'>
 <div id="mainDiv">
 No Data Aailable
@@ -1555,6 +1556,7 @@ No Data Aailable
 		</div>
 		
 	</div>
+
 	</c:if>
 	<br/><br/>
 	<div id="villageCensusDiv" style="display: none;">

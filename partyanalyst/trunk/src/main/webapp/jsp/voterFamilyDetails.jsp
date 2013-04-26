@@ -174,7 +174,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 </head>
 
 <body>
-
+<div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="mainDiv" style="width:960px;margin-top:50px;margin-left:auto;margin-right:auto;">
 <div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid #d3d3d3;"></div>
 
@@ -187,7 +187,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 		<div id ="impFamilesBasicSubDetailsForHamletByBoothTitle" style="margin-top:20px;margin-bottom:8px;color:steelblue;"></div>	
 		<div id ="impFamilesBasicSubDetailsForHamletByBooth" style="border:1px solid black"></div>
 		<div id="descriptionDiv2" ></div> 
-		<div id="impFamPancBothDtlsAgxImgForHamletByBooth" style="display:none;margin-top:15px;text-align:center;"><img src="images/icons/goldAjaxLoad.gif"/></div>
+		<div id="impFamPancBothDtlsAgxImgForHamletByBooth"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/></div>
 		<div id="importantFamiliesForBooth"  style="font-size:12px;overflow-x:scroll;"></div>
 	   </div>
 
@@ -196,7 +196,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 <div id ="impFamilesBasicSubDetailsForHamletTitle" style="margin-top:20px;margin-bottom:8px;color:steelblue;"></div>	
 		<div id ="impFamilesBasicSubDetailsForHamlet" ></div>
 		<div id="descriptionDiv1" ></div>
-		<div id="impFamPancBothDtlsAgxImgForHamlet" style="display:none;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
+		<div id="impFamPancBothDtlsAgxImgForHamlet" ><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/></div>
 		<div id="impFamPancBothDtlsForHamlet" style="font-size:12px;overflow-x:scroll;"></div>
 	   </div>
 
@@ -355,7 +355,7 @@ function getImpFamiliesVotersToShow(){
 
 	function buildImpFamilesForHamletChart(chartInfo)
 {
-
+$("#ajaxImageDiv").css('display','none');
 	//console.log(chartInfo);
 // Create the data table.
 	var ImpFamwiseAjaxDiv =  document.getElementById('ImpFamwiseAjaxDiv');
@@ -379,6 +379,7 @@ function getImpFamiliesVotersToShow(){
 }
 function buildTableForImpFamilesForHamlets(impFamilesData,name,type,results)
 {
+	$("#ajaxImageDiv").css('display','none');
  $('#impFamPancBothDtlsAgxImgForHamlet').hide();
 //Updated by sasi for assigned and unassigned voters count
 	if(type=="Panchayat"){
@@ -579,7 +580,7 @@ function callAjax(jsObj,url)
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
  	}
 	function buildCategories(results){
-
+	$("#ajaxImageDiv").css('display','none');
     var str='';
 
 	for(var i in results){
@@ -592,7 +593,7 @@ function callAjax(jsObj,url)
 }
 function buildImpFamilesChart(chartInfo)
 {
-
+$("#ajaxImageDiv").css('display','none');
 	var data = google.visualization.arrayToDataTable([
 			  ['Task', 'Percentage'],
 			  ['Families Below 3 Voters',  chartInfo.below3perc],
@@ -613,9 +614,8 @@ function buildImpFamilesChart(chartInfo)
 
 function buildTableForImpFamilesMandal(impFamilesData,name,type)
 {
-	
-
-  var impFamiList = new Array();
+	$("#ajaxImageDiv").css('display','none');
+	var impFamiList = new Array();
   for(var i in impFamilesData){
      var data={};
 	 
@@ -1034,6 +1034,7 @@ function impFamilesAllInfoForHamletPopUp(){
 		callAjax(jsObj2,url2); 
 		}
 function buildVotersInFamily(results){
+	$("#ajaxImageDiv").css('display','none');
 	  getUserCategories();
 
 	$('.requiredAttrClass').each(function(){
@@ -1336,7 +1337,7 @@ function impFamilesVariableDescription2(divid)
   div.append('<span> <b>10 - </b> Families Above 10 Voters</span>');
   div.append('<span> <b>10% -</b> Families Above 10% Voters</span>');
   $('#'+divid).append(div).css("display","block");
-
+ $("#impFamPancBothDtlsAgxImgForHamletByBooth").css('display','none');
 }
 if(maintype != "hamlet")
 {
@@ -1361,7 +1362,7 @@ $('#impFamPancBothDtlsAgxImg').show();
 
 	  function buildImpFamilesChartForHamletsByBooth(chartInfo)
 		{
-			
+			$("#ajaxImageDiv").css('display','none');
 			var totalCount = 0;
 			var below3 = 0;
 			var between4And6 = 0;
@@ -1405,7 +1406,7 @@ $('#impFamPancBothDtlsAgxImg').show();
 
 function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
 		{
-		
+		$("#ajaxImageDiv").css('display','none');
 		var impFamiList = new Array();
 		  for(var i in impFamilesData){
 		     var data={};
@@ -1491,7 +1492,7 @@ getImpFamiliesVotersToShowForBooth();
 		}
 		function buildFamilyMembersForBooth(result,jsObj,type)
 		{
-			
+			$("#ajaxImageDiv").css('display','none');
 		 if($("impfamilydatatable_wrapper"))
 		  $("impfamilydatatable_wrapper").remove();
 
