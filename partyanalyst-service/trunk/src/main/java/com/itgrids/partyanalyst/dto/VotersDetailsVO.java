@@ -56,6 +56,7 @@ public class VotersDetailsVO implements Serializable{
 	private Long totalFemaleVoters;
 	private Long totalUnknownVoters;
 	private Long totalVoters;
+	private Long totalAssignedCount;
 	
 
 	private Float totalMaleVotersPercent;
@@ -114,6 +115,27 @@ public class VotersDetailsVO implements Serializable{
 	
 	private String localityName;
 	
+	
+	private Long userVoterCategoryId;
+	
+	private Long userVoterCategoryValueId; 
+	
+	private Long id;
+	private String name;
+	private List<VotersDetailsVO> votersDetailsVOList;
+	
+	public Long getUserVoterCategoryValueId() {
+		return userVoterCategoryValueId;
+	}
+	public void setUserVoterCategoryValueId(Long userVoterCategoryValueId) {
+		this.userVoterCategoryValueId = userVoterCategoryValueId;
+	}
+	public Long getUserVoterCategoryId() {
+		return userVoterCategoryId;
+	}
+	public void setUserVoterCategoryId(Long userVoterCategoryId) {
+		this.userVoterCategoryId = userVoterCategoryId;
+	}
 	public String getLocalityName() {
 		return localityName;
 	}
@@ -593,6 +615,30 @@ public class VotersDetailsVO implements Serializable{
 	}
 	public void setAreaType(String areaType) {
 		this.areaType = areaType;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public List<VotersDetailsVO> getVotersDetailsVOList() {
+		return votersDetailsVOList;
+	}
+	public void setVotersDetailsVOList(List<VotersDetailsVO> votersDetailsVOList) {
+		this.votersDetailsVOList = votersDetailsVOList;
+	}
+	public Long getTotalAssignedCount() {
+		return totalAssignedCount;
+	}
+	public void setTotalAssignedCount(Long totalAssignedCount) {
+		this.totalAssignedCount = totalAssignedCount;
 	}
 	
 	
