@@ -3163,7 +3163,7 @@ function buildSelectedVotersData(results)
 	          obj["localityHamletId"] = 0;
 			 
 
-			 for(var j = 0 ; j<3 ;j++){
+			 for(var j = 0 ; j<totalCategoriesCount ;j++){
 
 				 obj["categ"+j] = $('#'+votersToUpdate[i]+'categ'+j).val()+"-"+$('#'+votersToUpdate[i]+'categVal'+j).val();
 			 }
