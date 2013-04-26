@@ -91,7 +91,7 @@
 		<pattern>/boothWiseCasteInfoAction.action*</pattern>
 		<pattern>/localAreaWiseVotersInfoAction*</pattern>
 		<pattern>/updateSelectedVotersAction*</pattern>
-		
+		<pattern>/customCategoryWiseVoterDetailsAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">

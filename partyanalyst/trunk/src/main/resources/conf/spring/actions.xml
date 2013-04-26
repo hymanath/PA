@@ -1130,5 +1130,9 @@
 		<property name="userAccessRegionService" ref="userAccessRegionService" />	
 	</bean>
 	
+	<bean id="customCategoryWiseVoterDetailsAction" class="com.itgrids.partyanalyst.web.action.CustomCategoryWiseVoterDetailsAction" singleton="false">	
+		<property name="userVoterService" ref="userVoterService" />
+	</bean>
+	
 </beans>	
 	

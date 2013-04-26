@@ -4967,8 +4967,17 @@
 				<param name="root">ageRangeList</param>	
 		   </result>
 		</action>
+				
+		<action name="customCategoryWiseVoterDetailsAction" class="customCategoryWiseVoterDetailsAction" >
+			<result name="success">/jsp/customCategoryWiseVoterDetails.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="getVoterCategoryData" class="customCategoryWiseVoterDetailsAction" method="getVoterCategoryData">
+		    <result type="json" name="success">
+				 <param name="root">voterVO</param>
+			</result>			
+		</action>
+		
 		</package>
-		
-		
-		
 </struts>      
