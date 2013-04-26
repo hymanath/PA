@@ -159,7 +159,7 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Object[]> getPartNoAndVoterIdByConstituencyInAPublication(Long constituencyId,Long publicationDateId);
   
-	 public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId);
+	 public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId , String type);
 	 public List<Object[]> getVotersBasedOnVoterIdsAndPublication(
 			 Long publicationDateId , Long startAge, Long endAge, List<?> voterIds);
 	 
