@@ -12,6 +12,7 @@ import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -19,6 +20,7 @@ import org.hsqldb.lib.HashSet;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
@@ -27,8 +29,10 @@ import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IWebConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class MandalRevenueVillagesElecAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
@@ -55,9 +59,11 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private List<PartyResultVO> partiesResults;
 	private Map<String,List<PartyResultVO>> partyResultMap;
 	private Map<String,List<String>> partyResultMapPrcnt;
-	
-	
-	
+	JSONObject jObj = null;
+	private Long constituencyId;
+	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
+	private String task = null;
+	private HttpSession session;
 	public Map<String, List<String>> getPartyResultMapPrcnt() {
 		return partyResultMapPrcnt;
 	}
@@ -183,6 +189,34 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 
 	public void setResultType(String resultType) {
 		this.resultType = resultType;
+	}
+
+	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	
+	public IDelimitationConstituencyMandalService getDelimitationConstituencyMandalService() {
+		return delimitationConstituencyMandalService;
+	}
+
+	public void setDelimitationConstituencyMandalService(
+			IDelimitationConstituencyMandalService delimitationConstituencyMandalService) {
+		this.delimitationConstituencyMandalService = delimitationConstituencyMandalService;
+	}
+
+	
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
 	}
 
 	public String execute(){
@@ -329,5 +363,23 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		this.context = context;
 	}
 	
-
+	public String getConstituencyByMandalId()
+	{
+		session = request.getSession();
+		String param = null;
+		param = getTask();
+		try {
+			LOG.debug("Entered into getConstituencyByMandalId() method in MandalRevenueVillagesElecAction Action");
+			jObj = new JSONObject(param);
+			if(jObj.getString("task").equalsIgnoreCase("getConstituencyId"))
+			{
+				Long maldalId = jObj.getLong("id");
+				constituencyId = delimitationConstituencyMandalService.getConstituencyIdBasedOnMandel(maldalId);
+			}
+		} catch (Exception e) {
+			LOG.error("exception raised in getConstituencyByMandalId() method in MandalRevenueVillagesElecAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

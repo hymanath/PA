@@ -118,8 +118,9 @@
 	var chartDataArr=[];
 	var linechartDataArr=[];
 	var constituency_name;
-	
-				
+	var mandalId = '${tehsilId}';
+	var tehsilId = '';
+	var constituencyId = '';
 	$(document).ready(function(){
 	  var checkedType = '${checkedType}';
 	  if(checkedType == "panchayat"){
@@ -191,6 +192,95 @@
 		}
 	}
 
+	function getConstituencyIds()
+	{
+		var jsObj=
+             {
+			     id:mandalId,
+				 task:"getConstituencyId",
+			 }
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/getConstituencyByMandalIdAction.action?"+rparam;
+
+		callAjax(jsObj, url);
+
+	}
+	function getConstituencieSubs(constituencyId)
+	{
+		var jsObj=
+             {
+			     id:constituencyId,
+				 task:"subRegionsInConstituency",
+				 taskType:"",
+				 address:"",
+				 areaType:"RURAL",
+				 isParliament:"true"
+			 }
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/locationsHierarchiesAjaxAction.action?"+rparam;
+
+		callAjax(jsObj, url);
+	}
+
+	function callAjax(jsObj,url)
+	{			
+		
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {
+								myResults = YAHOO.lang.JSON.parse(o.responseText);	
+								if(jsObj.task == "subRegionsInConstituency"){
+									buildMandals(myResults);
+								}
+								else if(jsObj.task == "getConstituencyId"){
+									constituencyId = myResults;
+									if(constituencyId != null && constituencyId != "null")
+									getConstituencieSubs(constituencyId);
+								}
+							}catch (e) {   
+							   	//alert("Invalid JSON result" + e);   
+							}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+	function buildMandals(result)
+	{
+		if(result != null && result.length > 0)
+		{
+			for(var i in result)
+			{
+				if(result[i].id != 0)
+				{
+					var id = new String(result[i].id);
+					tehsilId = parseInt(id.substring(1));
+					
+						$('#mandalSelectId').append('<option value='+tehsilId+'>'+result[i].name+'</option>');
+					$('#mandalSelectId').val(mandalId);
+				}
+			}
+			$('#mandalShowHideDiv').show();
+		}
+		else
+		{
+			$('#mandalShowHideDiv').hide();
+		}
+		
+	} 
+	function getReqTehsilIds()
+	{
+		tehsilId =  $('#mandalSelectId').val();
+		var name  = $("#mandalSelectId option:selected").text();
+		var tehsilName = name.replace("MANDAL","");
+		$('#reqtehsilId').val(tehsilId);
+		$('#reqtehsilName').val(tehsilName);
+	}
+	getConstituencyIds();
 </script>
 </head>
 <body>
@@ -214,8 +304,12 @@
 	<div class="hero-unit" style="width:750px;margin-left:auto;margin-right:auto;">
 	<c:if test="${! empty mandalVO}">
 		<s:form action="mandalRevenueVillagesElecViewAction" name="MandalRevenueVillagesElecViewAction" method="GET" enctype="multipart/form-data">
-		
+		<div id="mandalShowHideDiv">
+			<span>Select Mandal : </span>
+			<span><select id="mandalSelectId" onChange="getReqTehsilIds();"></select></span>
+		</div>
 		<table id="partiesTrendzInputTable">
+				
 			    <tr>
 					<th align="left">Show Result : </th>
 					<th colspan="2" align="left"><input type="radio" value="revenueVillage" name="resultType" checked="checked">Revenue Villages Wise <input type="radio" id="panchayatChk" value="panchayat" name="resultType" > Panchayat Wise</th>
@@ -241,8 +335,9 @@
 					
 				</tr>
 				<tr>
-					<td><input type="hidden" name="tehsilId" value="${tehsilId}"/></td>
-					<td><input type="hidden" name="tehsilName" value="${tehsilName}"/></td>
+					<td><input type="hidden" name="tehsilId" id="reqtehsilId" value="${tehsilId}"/></td>
+					<td><input type="hidden" name="tehsilName" id="reqtehsilName" value="${tehsilName}"/></td>
+					<td><input type="hidden" name="constituencyId" value="${constituencyId}"/></td>
 				</tr>
 				<tr><td colspan="2" align="center"></tr>
 			</table>

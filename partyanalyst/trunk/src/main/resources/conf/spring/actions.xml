@@ -616,7 +616,8 @@
 	<bean id="mandalRevenueVillagesElecAction" class="com.itgrids.partyanalyst.web.action.MandalRevenueVillagesElecAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />		
 		<property name="biElectionPageService" ref="biElectionPageService" />
-		<property name="constituencyPageService" ref="constituencyPageService" />							
+		<property name="constituencyPageService" ref="constituencyPageService" />
+		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService"></property>							
 	</bean>
 	
 	<bean id="byeElectionResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.ByeElectionResultsAnalysisAction" singleton="false">
