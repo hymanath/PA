@@ -96,7 +96,7 @@ public interface IVotersAnalysisService {
 	
 	public List<PartyVotesEarnedVO> getPreviousElectionVotingTrends(Long id, Long publicationDateId,Long constituencyId, String type);
 
-	public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type,Long constituencyId,Long tehsilId);
+	public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type,Long constituencyId,Long tehsilId, Long userId);
 	
 	public List<SelectOptionVO> getConstituenciesFromBoothPublicationVoter();
 	
@@ -199,7 +199,7 @@ public interface IVotersAnalysisService {
 		
 		public List<VoterVO> getAllPublicationsForHamlet(Long constituencyId);
 		
-		 public List<VotersInfoForMandalVO>  getPreviousVotersCountDetailsForHamlet( Long constituencyId, Long mandalId,Long  panchayatId,Long boothId,Long hamletId,Long userID);
+		 public List<VotersInfoForMandalVO>  getPreviousVotersCountDetailsForHamlet( Long constituencyId, Long mandalId,Long  panchayatId,Long boothId,Long hamletId,Long userID ,String type);
 		
 	public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Long publicationDateId,Long userId);
 	public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByPanchayatId(Long panchayatId,Long publicationDateId,Long userId);
