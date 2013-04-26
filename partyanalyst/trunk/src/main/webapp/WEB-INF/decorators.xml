@@ -165,7 +165,7 @@
 		<pattern>/assigningCandidatesToVoterAction*</pattern>
 		<pattern>/sitemapAction*</pattern>
 		<pattern>/newsZoneAction*</pattern>
-		
+		<pattern>/partyPerformanceJasper*</pattern>
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
