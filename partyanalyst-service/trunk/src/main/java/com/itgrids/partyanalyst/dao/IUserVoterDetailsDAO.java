@@ -104,4 +104,9 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	 public List<Object[]> getImpFamilesForCustomWard(List<Long> wardIds,Long publicationDateId,String queryString);
 
 	 public List<Object[]> getWardsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId);
+	 
+	    public void updateUserVoterDetails2WithWard(Long voterId,Long userId,Long partyId,Long localitityId,Long wardId);
+		public void updateUserVoterDetailsWithWard(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long wardId);
+		public void updateUserVoterDetails3WithWard(Long voterId,Long userId,Long castStateId,Long localitityId,Long wardId);
+		public void updateUserVoterDetailsForLocalityWithWard(Long voterId,Long userId,Long localitityId, Long wardId);
 }

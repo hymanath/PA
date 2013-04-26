@@ -530,4 +530,15 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 				"from Constituency  model where model.constituencyId in("+constituencyIds+") ");
 		
 	}
+	
+	public List<Object[]> getWardsInMuncipalityFomConstituency(Long localBodyid)
+	{
+		
+		Query query = getSession().createQuery("select model.constituencyId , model.name  from Constituency model" +
+				" where model.localElectionBody.localElectionBodyId = ?");
+		
+		query.setParameter(0, localBodyid);
+		
+		return query.list();
+	}
 }

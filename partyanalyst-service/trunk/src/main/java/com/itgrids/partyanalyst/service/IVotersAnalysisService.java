@@ -249,7 +249,7 @@ public interface IVotersAnalysisService {
 	 
 	 public VoterHouseInfoVO getSelectedVotersDetails(List<VoterHouseInfoVO> votersDetails , VoterHouseInfoVO parameters);
 	 
-	 public boolean updateAllSelectedVotersDetails(List<VoterHouseInfoVO> votersDetailsList);
+	public boolean updateAllSelectedVotersDetails(List<VoterHouseInfoVO> votersDetailsList , String isMuncipality);
 	 
 	 public List<Long> getCountOfHamletAndBoothsInAPanchayat(Long panchayatId);
 	 
@@ -260,5 +260,8 @@ public interface IVotersAnalysisService {
 	 public ResultStatus storeCategoeryData(List<SelectOptionVO> categoeryValues,Long userId,Long categoeryId);
 	 
 	 public List<SelectOptionVO> checkForCategoeryValues(List<SelectOptionVO> categoeryValuesList , Long userId);
+
+	 
+	 public List<SelectOptionVO> getLocalitiesForWards(Long wardId , Long userId);
 	 
 }

@@ -4914,6 +4914,16 @@ public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Lo
 			}else
 				voterHouseInfoVO.setCasteStateId(0l);
 			
+			if(userVoterDetails.getWard() != null)
+			{
+				voterHouseInfoVO.setHamletId(userVoterDetails.getWard().getConstituencyId());
+				
+				List<SelectOptionVO> localities =   getLocalitiesForWards(userVoterDetails.getWard().getConstituencyId(),userId);					
+				   
+				   voterHouseInfoVO.setSubLocalities(localities);
+				
+			}
+			
 			if(userVoterDetails.getLocality() != null)
 				voterHouseInfoVO.setSubLocalityId(userVoterDetails.getLocality().getLocalityId());
 			
@@ -5008,24 +5018,54 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 			if(hamletId != null &&  hamletId.longValue() == 0l)
 				hamletId = null;
 			if(userVoterDetailsList != null && userVoterDetailsList.size() > 0){
-			   if(partyCast.equalsIgnoreCase("all"))
-				   userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId,localitityId,hamletId);
-			   else if(partyCast.equalsIgnoreCase("partyCast"))
-				   userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);
-				   else if(partyCast.equalsIgnoreCase("partyLocality"))
-					   userVoterDetailsDAO.updateUserVoterDetails2(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,localitityId,hamletId); 
-					   else if(partyCast.equalsIgnoreCase("castLocality"))
-						   userVoterDetailsDAO.updateUserVoterDetails3(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),casteStateId,localitityId,hamletId);   
+			   if(partyCast.equalsIgnoreCase("all")){
+				   
+				   if(voterHouseInfoVO.getSelType().equalsIgnoreCase("muncipality"))
+					 userVoterDetailsDAO.updateUserVoterDetailsWithWard(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId,localitityId,hamletId);
+				   else
+				     userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId,localitityId,hamletId);
+			   }
+		   else if(partyCast.equalsIgnoreCase("partyCast"))
+		       userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);
+		   else if(partyCast.equalsIgnoreCase("partyLocality")){
+			   if(voterHouseInfoVO.getSelType().equalsIgnoreCase("muncipality"))
+				   userVoterDetailsDAO.updateUserVoterDetails2WithWard(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,localitityId,hamletId);
+			   else
+			       userVoterDetailsDAO.updateUserVoterDetails2(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,localitityId,hamletId);
+		   }
+		   else if(partyCast.equalsIgnoreCase("castLocality")){
+			   if(voterHouseInfoVO.getSelType().equalsIgnoreCase("muncipality"))
+				   userVoterDetailsDAO.updateUserVoterDetails3WithWard(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),casteStateId,localitityId,hamletId);
+			   else
+			    userVoterDetailsDAO.updateUserVoterDetails3(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),casteStateId,localitityId,hamletId);
+		   }
 			       else if(partyCast.equalsIgnoreCase("party")){
 				   userVoterDetailsDAO.updateUserVoterPartyDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);  
 			   }else if(partyCast.equalsIgnoreCase("cast")){
 				   userVoterDetailsDAO.updateUserVoterCastDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);
 			   }else if(partyCast.equalsIgnoreCase("localityPresent")  ){
-				   userVoterDetailsDAO.updateUserVoterDetailsForLocality(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),localitityId,hamletId);
+				   if(voterHouseInfoVO.getSelType().equalsIgnoreCase("muncipality"))
+					   userVoterDetailsDAO.updateUserVoterDetailsForLocalityWithWard(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),localitityId,hamletId);
+				   else
+					userVoterDetailsDAO.updateUserVoterDetailsForLocality(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),localitityId,hamletId);
 				    }
 			}else{
-				    Long locality = voterHouseInfoVO.getLocalitityId();
-				    Long hamlet = voterHouseInfoVO.getHamletId();
+				
+				Long locality = null;
+				Long hamlet = null;
+				Long ward = null;
+				
+				 if(voterHouseInfoVO.getSelType().equalsIgnoreCase("muncipality")){
+					 
+					 locality = voterHouseInfoVO.getSelTypeId();
+				     ward = localitityId;
+					 
+				 }else{
+				     locality = voterHouseInfoVO.getLocalitityId();
+				     hamlet = voterHouseInfoVO.getHamletId();
+				 }
+				    
+				    
 				if(casteStateId != null || partyId != null || voterHouseInfoVO.getLocalitityId()!= null || voterHouseInfoVO.getHamletId()!=null){
 				 UserVoterDetails userVoterDtls = new UserVoterDetails();
 				 userVoterDtls.setUser(user);
@@ -5038,6 +5078,9 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 					 userVoterDtls.setLocality(localityDAO.get(locality));
 				 if(hamlet !=null)
 					 userVoterDtls.setHamlet(hamletDAO.get(hamlet));
+				 
+				 if(ward !=null)
+					 userVoterDtls.setWard(constituencyDAO.get(ward));
 				 
 				 userVoterDetailsDAO.save(userVoterDtls);
 				}
@@ -7179,7 +7222,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			 	    defaultSelectOptionVO1.setId(0l);
 			 	    defaultSelectOptionVO1.setName("0l");
 			 	   defaultSelectOptionVO1.setValue("select");
-		 		 buildLocalitiesBasedOnTypeAndId(votersHouseInfoVO,parameters.getVoterId(),parameters.getUserId(),defaultSelectOptionVO1);  
+			 	   if(parameters.getSelType().equalsIgnoreCase("muncipality") && parameters.getSelectedType().equalsIgnoreCase("booth"))
+				 	 buildLocalitiesBasedOnTypeAndIdForMuncipality(votersHouseInfoVO,parameters.getVoterId(),parameters.getUserId(),defaultSelectOptionVO1);  
+  		 	       else
+		 		     buildLocalitiesBasedOnTypeAndId(votersHouseInfoVO,parameters.getVoterId(),parameters.getUserId(),defaultSelectOptionVO1);  
 		 		  
 		 	   }
 		 	    if(parameters.isPartyPresent() || parameters.isCastPresent() || parameters.isAll() || parameters.isLocalityPresent())
@@ -7227,7 +7273,12 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 		    defaultSelectOptionVO1.setId(0l);
 			 	    defaultSelectOptionVO1.setName("0l");
 			 	    defaultSelectOptionVO1.setValue("select");
-		 		 buildLocalitiesBasedOnTypeAndId(votersHouseInfoVO,voterIds.get(0).getVoterId(),parameters.getUserId(),defaultSelectOptionVO1);  
+ 
+			 	     
+			 	 if(parameters.getSelType().equalsIgnoreCase("muncipality") && parameters.getSelectedType().equalsIgnoreCase("booth"))
+					 buildLocalitiesBasedOnTypeAndIdForMuncipality(votersHouseInfoVO,parameters.getVoterId(),parameters.getUserId(),defaultSelectOptionVO1);  
+	  		 	 else   
+		 		     buildLocalitiesBasedOnTypeAndId(votersHouseInfoVO,voterIds.get(0).getVoterId(),parameters.getUserId(),defaultSelectOptionVO1);  
 		 		
 		 	   }
 		 	   if(parameters.isPartyPresent() || parameters.isCastPresent() || parameters.isAll() || parameters.isLocalityPresent())
@@ -10915,6 +10966,13 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			 log.error("Exception raised in getLocalElectionResults",e);
 		 }
 		}
+		
+		public void buildLocalitiesBasedOnTypeAndIdForMuncipality(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId,SelectOptionVO defaultSelectOptionVO)
+		{
+			 if(voterHouseInfoVO.getSelType().equalsIgnoreCase("muncipality"))
+				   getWardsForMuncipalities(voterHouseInfoVO,voterHouseInfoVO.getSelTypeId(),defaultSelectOptionVO);	
+			
+		}
 
 		
 		public void buildLocalitiesBasedOnTypeAndId(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId,SelectOptionVO defaultSelectOptionVO)
@@ -11036,6 +11094,44 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
   
 			   
 			   }
+		}
+		
+		public void  getWardsForMuncipalities(VoterHouseInfoVO voterHouseInfoVO , Long muncipalityId , SelectOptionVO defaultSelectOptionVO){
+			
+		 List<SelectOptionVO> localitiesList = new ArrayList<SelectOptionVO>();
+
+			Long localBodyId = assemblylocalElectionBodyDAO.get(31L).getLocalElectionBody().getLocalElectionBodyId();
+			
+			//List<Object[]> localities = constituencyDAO.getWardsInMuncipality(muncipalityId);
+		 
+		 List<Object[]> localities = constituencyDAO.getWardsInMuncipalityFomConstituency(localBodyId);
+			
+			  processLocalities(localities, localitiesList);
+			  
+			   localitiesList.add(0, defaultSelectOptionVO);
+			   voterHouseInfoVO.setLocalitiesList(localitiesList);
+			
+		}
+		
+		public List<SelectOptionVO> getLocalitiesForWards(Long wardId , Long userId)
+		{
+			List<Object[]> localities =  localityDAO. getLocalitiesForWard(wardId , userId);
+			
+			 List<SelectOptionVO> localitiesList = new ArrayList<SelectOptionVO>();
+			   //List<Object[]> hamlets =null;
+			   if(localities !=null && localities.size()>0){
+					
+				   processLocalities(localities, localitiesList);
+					   }
+			   SelectOptionVO defaultSelectOptionVO = new SelectOptionVO();
+			   defaultSelectOptionVO.setId(0l);
+			   defaultSelectOptionVO.setName("Select");
+			   defaultSelectOptionVO.setValue("Select");
+			   
+			   sortSelectionOptionVoList(localitiesList);
+			   localitiesList.add(0, defaultSelectOptionVO);
+			   
+			    return localitiesList;
 		}
 
 		
@@ -13742,8 +13838,14 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			    SelectOptionVO defaultSelectOptionVO1 = new SelectOptionVO();
 	 		    defaultSelectOptionVO1.setId(0l);
 		 	    defaultSelectOptionVO1.setName("0l");
-		 	    defaultSelectOptionVO1.setValue("select");		 	    
-			    buildLocalitiesBasedOnTypeAndId(parameters, votersDetails
+		 	    defaultSelectOptionVO1.setValue("select");
+		 	    
+		 	    if(parameters.getSelType().equalsIgnoreCase("muncipality"))
+			     buildLocalitiesBasedOnTypeAndIdForMuncipality(votersHouseInfoVO,
+					parameters.getVoterId(), parameters.getUserId(),
+					defaultSelectOptionVO1);
+		 	    else			 	 
+			      buildLocalitiesBasedOnTypeAndId(parameters, votersDetails
 					.get(0).getVoterId(), parameters.getUserId(), defaultSelectOptionVO1);			
 			 //GETTING  LOCALITIES DETAILS END
 			
@@ -13857,13 +13959,13 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 	 }
 	
 	
-	public boolean updateAllSelectedVotersDetails(List<VoterHouseInfoVO> votersDetailsList)
+	public boolean updateAllSelectedVotersDetails(List<VoterHouseInfoVO> votersDetailsList , String isMuncipality)
 	  {	
 		  log.debug("Entered into the updateAllSelectedVotersDetails service method");
 		  try
 		  {		  
 			  for(VoterHouseInfoVO voterDetails:votersDetailsList)
-				  updateVoterInformation(voterDetails);
+				  updateVoterInformation(voterDetails , isMuncipality);
 			  
 		  }catch(Exception e)
 		  {	 
@@ -13875,7 +13977,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 	  }
 
 
-	  public void updateVoterInformation(VoterHouseInfoVO votersDetails) throws Exception
+	  public void updateVoterInformation(VoterHouseInfoVO votersDetails,String isMuncipality) throws Exception
 	  {
 		  log.debug("Entered into the updateVoterInformation service method");
 		  try
@@ -13908,8 +14010,16 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					else
 					 userVoterDetails.setLocality(null);
 					
-					if(votersDetails.getHamletId() != null && votersDetails.getHamletId().longValue() != 0)
-					 userVoterDetails.setHamlet(hamletDAO.get(votersDetails.getHamletId()));
+					if(votersDetails.getHamletId() != null && votersDetails.getHamletId().longValue() != 0){
+						if(isMuncipality.equalsIgnoreCase("muncipality")){
+							userVoterDetails.setWard(constituencyDAO.get(votersDetails.getHamletId()));
+							 userVoterDetails.setHamlet(null);
+						}
+						else{							
+					       userVoterDetails.setHamlet(hamletDAO.get(votersDetails.getHamletId()));
+					       userVoterDetails.setWard(null);
+						}
+					}
 					else
 					 userVoterDetails.setHamlet(null);
 					
@@ -14062,7 +14172,21 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					   
 					   voterHouseInfoVO.setSubLocalities(localitiesList);
 					
-				}/*else
+				}
+				
+				if(userVoterDetails.getWard() != null)
+				{
+					voterHouseInfoVO.setHamletId(userVoterDetails.getWard().getConstituencyId());
+					
+					List<SelectOptionVO> localities =   getLocalitiesForWards(userVoterDetails.getWard().getConstituencyId(),userId);					
+					   
+					   voterHouseInfoVO.setSubLocalities(localities);
+					
+				
+					
+				}
+				
+				/*else
 					voterHouseInfoVO.setCasteStateId(0l);*/
 				
 				if(userVoterDetails.getLocality() != null)
