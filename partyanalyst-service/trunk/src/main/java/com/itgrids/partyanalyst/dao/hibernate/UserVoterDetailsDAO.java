@@ -1015,5 +1015,49 @@ IUserVoterDetailsDAO{
 		 return query.list();
 		 
 	 }
-	 
+	
+	/**
+	 * This DAO is Uesd For Getting all voter gender details count for a customward
+	 * @param Long id
+	 * @param Long publicationDateId
+	 * @return List<Object[]>
+	 * @date 25-04-2014
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGenderWiseVoterDetailsForCustomWard(Long id , Long publicationDateId)
+	{
+		String queryString = "select count(*) , model.voter.gender  from UserVoterDetails model " +
+				",BoothPublicationVoter BPV where model.voter.voterId = BPV.voter.voterId and " +
+				"model.ward.constituencyId = :id and " +
+				"BPV.booth.publicationDate.publicationDateId = :publicationDateId group by model.voter.gender";
+				
+		Query query = getSession().createQuery(queryString);
+		query.setParameter("id", id);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+	}
+
+	/**
+	 * This DAO is Uesd For Getting all voters count in a family
+	 * @param List<Long> wardIds
+	 * @param Long publicationDateId
+	 * @param String queryString
+	 * @return List<Object[]>
+	 * @date 25-04-2014
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getImpFamilesForCustomWard(List<Long> wardIds,
+			Long publicationDateId, String queryString) {
+		StringBuilder query = new StringBuilder();
+		query.append("select count(model.voter.voterId),model.voter.houseNo from UserVoterDetails UVD ,BoothPublicationVoter model " +
+				"where UVD.voter.voterId = model.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				"UVD.ward.constituencyId in (:wardIds)  group by model.voter.houseNo ") ;
+		if(queryString != null)
+			query.append(queryString);
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameterList("wardIds",wardIds);
+		  return queryObj.list();
+	}
 }

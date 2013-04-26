@@ -98,6 +98,10 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	 public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds,String male,String female,long ...ages);
 	 
 	 public List<Object[]> getLocalityIdsForUser(Long hamletId , Long userId,List<?> voterIds,String male,String female,long ...ages);
+	 
+	 public List<Object[]> getGenderWiseVoterDetailsForCustomWard(Long id , Long publicationDateId);
+	 
+	 public List<Object[]> getImpFamilesForCustomWard(List<Long> wardIds,Long publicationDateId,String queryString);
 
 	 public List<Object[]> getWardsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId);
 }

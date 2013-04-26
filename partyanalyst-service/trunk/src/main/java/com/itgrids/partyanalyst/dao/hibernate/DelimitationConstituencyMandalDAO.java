@@ -132,4 +132,13 @@ IDelimitationConstituencyMandalDAO {
 	
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getConstituencyIdByMandalID(Long mandalId)
+	{
+		return getHibernateTemplate().find("select model.delimitationConstituency.constituency.constituencyId " +
+				" from DelimitationConstituencyMandal model where model.tehsil.tehsilId = ? and " +
+				"model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1)",mandalId);
+	}
+	
+	
 }
