@@ -150,7 +150,7 @@
 								   fillPartiesInState(jsObj.elmtId, resultVO);
 								   hidePartySelectAjaxImage("state");
 							    }
-								if(jsObj.task == "checkPartyPerformance")
+								/*if(jsObj.task == "checkPartyPerformance")
 							    {
 									var errorMsg = document.getElementById("errorsDiv");
 									errorMsg.innerHTML = '';								
@@ -159,7 +159,7 @@
 									else {	
 											document.performanceReport.submit();
 										}
-							    }
+							    }*/
 						}catch (e)  {   
 							//alert("Invalid JSON result" + e);   
 						}  
@@ -492,6 +492,7 @@
 	}
 	function validateClientSide()
 	{			
+		var flag;
 		var	electionYearElValuesSelected;
 		var electionYearEl = document.getElementById("yearList");
 		var electionYearElValues = electionYearEl.options;
@@ -503,18 +504,18 @@
 		if(electionYearEl == null || electionYearElValues.length == 0 || electionYearElValuesSelected == 'Select')
 		{
 			errorMsg.innerHTML = 'Invalid Input Selection';
-			//flag= false;
+			flag= false;
 		} 
 		else  
 		{
-			//flag = true;
-			checkPartyPerformanceDetails();
+			flag = true;
+			//checkPartyPerformanceDetails();
 		}
-		//return flag;
-		return false;
+		return flag;
+		//return false;
 	}
-
-	var partyName = '';
+	
+	/* var partyName = '';
 	function checkPartyPerformanceDetails(){
 		
 		var flag = false;
@@ -530,26 +531,30 @@
 		var remember = document.getElementById('alliances');
 			stateId = $('#stateList').val();
 			districtId=$('#districtList').val();
-			if(assemblyRadio.checked)
-				electionType = 1;
-			if(parliamentRadio.checked)
-					electionType = 2;
+			if(assemblyRadio.checked){
+				electionType = 2;
+				}
+			if(parliamentRadio.checked){
+					electionType = 1;
+				}
 			if(stateId == null)
 				stateId = 0;				
 			if(districtId == null)
 				districtId = 0;
 			if(assemblyRadio.checked){
-				if(partyPerformanceReport_12.checked)
+				if(partyPerformanceReport_11.checked)
 							reportLevel=1;
 				else if(partyPerformanceReport_12.checked)
 							reportLevel=2;
 			}
-					
+			if(parliamentRadio.checked){
+				if(stateRadio.checked)
+							reportLevel=1;
+			}
 			 if (remember.checked)
-				flag = true;
-			
-		var jsObj=
-			{     
+				flag = true;	
+				
+		var jsObj={     
 				district:districtId,
 				country:countryId,
 				reportLevel:reportLevel,
@@ -565,6 +570,7 @@
 		var url = "<%=request.getContextPath()%>/partyPerformanceReportAction.action?"+rparam;	
 		callAjax(jsObj,url);
 	}
+	*/
 	function showPartySelectAjaxImage(decide)
 	{
          if(decide=="state")
@@ -666,7 +672,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" align="center"><s:submit theme="simple" type="submit" value="View Report"  style="width: 100px; height: 30px;"/></td>
+				<td colspan="2" align="center"><s:submit theme="simple" action="partyPerformanceReport" type="submit" value="View Report" /></td>
 			</tr>
 		</table>
    </s:form>
