@@ -993,7 +993,12 @@ public String getCountsForLevel()
 		Long publicationDateId= jObj.getLong("publicationDateId");
 		Long id = jObj.getLong("id");
 		String type = jObj.getString("type");
-		countList = votersAnalysisService.getCountList(publicationDateId,id,type, jObj.getLong("constituencyId"),jObj.getLong("tehsilId"));
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		Long userId =  regVO.getRegistrationID();
+	
+		
+		countList = votersAnalysisService.getCountList(publicationDateId,id,type, jObj.getLong("constituencyId"),jObj.getLong("tehsilId"),userId);
 		}
 	}
 	
@@ -1095,10 +1100,20 @@ return Action.SUCCESS;
 		
 		List<VotersDetailsVO> votersDeatailsForConstituency =null;
 		
+		String myType ="";
 		
-		if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase("hamletLocalArea") || type.equalsIgnoreCase("hamletBooths")  )
-			votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,panchayatId , userId1, publicationDateId,"hamlet");	
-		else 
+		
+		if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase("hamletLocalArea") || type.equalsIgnoreCase("hamletBooths") || type.equalsIgnoreCase("customWard")  )
+		{ 	 
+			myType=type;
+			if(!myType.equalsIgnoreCase("customWard"))
+		  { myType = "hamlet";
+			  
+		  }
+			 
+			votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,panchayatId , userId1, publicationDateId,myType);	
+		
+		}else 
 			if(!type.equalsIgnoreCase("hamletLocalArea") ){
 			
 		votersDeatailsForConstituency = votersAnalysisService.getVoterAgeWiseDetails(constituencyId, mandalId,
@@ -1138,7 +1153,8 @@ return Action.SUCCESS;
 			
 			//boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByPanchayatId(panchayatId,publicationDateId, type,constituencyId);
 			//if(boothVotersDetails == null || boothVotersDetails.size() == 0)
-			boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForLocalAreaByHamletId(panchayatId,publicationDateId,userId1);
+			
+	    	  boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForLocalAreaByHamletId(panchayatId,publicationDateId,userId1);
 		
 			constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 			}
@@ -1161,6 +1177,7 @@ return Action.SUCCESS;
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForWardsByLocalElectionBodyId(mandalId,publicationDateId,constituencyId);
 		constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 		}
+		
 		constituencyManagementVO.setVotersDetailsVO(votersDeatailsForConstituency);
 		
 		
@@ -1361,11 +1378,12 @@ return Action.SUCCESS;
 	Long boothId = jObj.getLong("boothId");
 	//Long publicationId = jObj.getLong("publicationId");
 	Long hamletId = jObj.getLong("hamletId");
+	String type = jObj.getString("type");
 	
 	
 	
 	previousDetailsListForHamlet = votersAnalysisService.getPreviousVotersCountDetailsForHamlet(
-			 constituencyId,mandalId, panchayatId, boothId,hamletId,userID);
+			 constituencyId,mandalId, panchayatId, boothId,hamletId,userID,type);
 	
 	  // votersInfo = votersAnalysisService.getVotersCount(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"));
 
