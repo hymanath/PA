@@ -140,19 +140,19 @@ for (Object[] objects : list) {
 			}
 		}
 	*/
-	/*	public void testgetAgeWiseInfoForUser()
+		public void testgetAgeWiseInfoForUser()
 		{
-			List<Object> hamlets =  userVoterDetailsDAO.getHamletsIdsForUserByPanchayat(4l, 1l);
+		/*	List<Object> hamlets =  userVoterDetailsDAO.getHamletsIdsForUserByPanchayat(4l, 1l);
 			//System.out.println(hamlets);
 			List hh = userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(8l,hamlets);
 			//List<Object[]> voters = userVoterDetailsDAO.getLocalityIdsForUser(28l,1l,hh);
-			List<Object[]> voters = userVoterDetailsDAO.getLocalityIdsForUser(28l,1l,hh,IConstants.MALE,IConstants.FEMALE,18l,25l,26l,35l,36l,45l,46l,60l);
+*/			List<Object[]> voters = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(83l,8l,1l);
 			System.out.println(voters.size());
 			System.out.println(voters);
 			for (Object[] objects : voters) {
 			System.out.println(objects[0]);
 			System.out.println(objects[1]);	
-			System.out.println(objects[2]);
+			
 			}
-		}*/
+		}
 }
