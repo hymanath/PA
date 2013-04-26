@@ -1547,12 +1547,18 @@ return Action.SUCCESS;
 		if(regVO == null)
 			return ERROR;
 		Long userId =  regVO.getRegistrationID();
-		String[] ids = jObj.getString("attributeIds").split(",");
-		List<Long> attributeIds = new ArrayList<Long>();
-		for(String id:ids){
-			attributeIds.add(new Long(id.trim()));
+		if(jObj.getString("task").equalsIgnoreCase("getCategoryWiseDetails")){
+			String[] ids = jObj.getString("attributeIds").split(",");
+			List<Long> attributeIds = new ArrayList<Long>();
+			for(String id:ids){
+				attributeIds.add(new Long(id.trim()));
+			}
+			castList = voterReportService.getVoterAttributeDetails(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
+		}else if(jObj.getString("task").equalsIgnoreCase("getCategoryWiseSubDetails")){
+			List<Long> attributeIds = new ArrayList<Long>();
+			attributeIds.add(jObj.getLong("attributeId"));
+			castList = voterReportService.getVoterAttributeSubDetails(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
 		}
-		castList = voterReportService.getVoterAttributeDetails(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
 	  }catch(Exception e){
 		  log.error("Exception Occured in getCategoryWiseDetails() Method, Exception - ",e);
 	  }

@@ -92,6 +92,7 @@
 		<pattern>/localAreaWiseVotersInfoAction*</pattern>
 		<pattern>/updateSelectedVotersAction*</pattern>
 		<pattern>/customCategoryWiseVoterDetailsAction*</pattern>
+		<pattern>/categorySubWiseVoterDetailsAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">

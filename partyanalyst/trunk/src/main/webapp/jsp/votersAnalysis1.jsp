@@ -1926,12 +1926,16 @@ browser1.focus();
 	
 	function buildCategoryWiseDetails(results,jsObj){
 	 $("#categoriesAjximgMsgDiv").hide();
+	  if(results == "notLogged"){
+	    openDialogForLoginWindow();
+	    return;
+	  }
 	 var str = "";
 	  if(results != null && results.length >0){
 	      str+= "<div style='margin-bottom:5px;'><b style='font-size:13px;'>Total Voters : </b>"+results[0].totalVoters+"</div>";
 	     for(var i in results){
 		  if(results[i].partyWisevoterCastInfoVOList != null && results[i].partyWisevoterCastInfoVOList.length > 0){
-			   str+="<div style='border:1px solid #d3d3d3;padding:5px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;'>";
+			   str+="<div style='border:1px solid #d3d3d3;padding:5px 5px 31px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;'>";
 			   str+= "<h2 id='subHeading' style='margin-left:-5px;width:97%;'><b>"+results[i].name+" Attribute Wise Voters Analysis</b></h2>";
 			   str+= "<div style='margin-top:5px;'><span><b style='font-size:13px;'>"+results[i].name+" assigned voters : </b>"+results[i].partyWiseAssignedVoters+"  </span>&nbsp;&nbsp;<span><b style='font-size:13px;'>   "+results[i].name+" not assigned voters : </b>"+results[i].partyWiseNotAssignedVoters+"</span></div>";
 			   
@@ -1957,6 +1961,8 @@ browser1.focus();
 			      str+="  </tr>";
 			   }
 			   str+="</table>";
+			   if(jsObj.locationType != "booth" && jsObj.locationType != "hamlet" && results[i].partyWiseAssignedVoters > 0)
+			   str+="<div style='float:right;'><input type='button' class='btn btn-success' value='View More Details' onclick='getCategorySubDetails("+results[i].id+","+jsObj.constituencyId+");' /></div>";
 			   str+="</div>";
 		   }
 		 }
@@ -1995,7 +2001,24 @@ function getAgewiseInfoForVoterCategory(){
 
 
 
+	
+	function getCategorySubDetails(attrId,constituencyId){
+	   var urlstr = "categorySubWiseVoterDetailsAction.action?id="+attrId+"&retrieveType="+maintype+"&locationId="+mainreqid+"&constituencyId="+constituencyId+"&publicationId="+mainpublicationId+"&task=getCategoryWiseSubDetails";
 
+     var browser1 = window.open(urlstr,"categorySubWiseVoterDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+	   /*var jsObj = {
+	        attributeId:attrId,
+			locationType:maintype,
+			locationId:mainreqid,
+			constituencyId:constituencyId,
+			publicationId:mainpublicationId,
+			task:"getCategoryWiseSubDetails"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getCategoryWiseDetailsAction.action?"+rparam;
+		callAjax(jsObj, url);*/
+	}
 </script>
 </body>
 </html>
