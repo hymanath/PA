@@ -475,4 +475,26 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		}
 		 
 	}
+	
+	/*public void testGetVoterData()
+	{
+		List<Object[]> voter = boothPublicationVoterDAO.getCategoryWiseVoterDetailsByCategoryId("Panchayat", 1l, 232l, 5l, 8l, 1l, 1, 100, "asc", "name");
+		System.out.println(voter.size());
+		if(voter != null && voter.size() > 0)
+		{
+			for(Object[] params : voter)
+			{
+				System.out.println(params[1]+" "+params[2]);
+			}
+		}
+	}*/
+	
+	/*public void testGetcategoryWiseVotersCount()
+	{
+		List voter = boothPublicationVoterDAO.getcategoryWiseVotersCount("Panchayat", 1l, 232l, 5l, 8l, 1l);
+		System.out.println(voter.get(0));
+		
+	}*/
+	
+	
 }
