@@ -27,6 +27,7 @@ public class VoterDataVO implements Serializable{
 	private Long CategoryValuesId;
 	private String name;
 	private Long id;
+	private Long categoryId;
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -135,6 +136,12 @@ public class VoterDataVO implements Serializable{
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Long getCategoryId() {
+		return categoryId;
+	}
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 	
 	
