@@ -8659,7 +8659,7 @@ function buildCategoriesDiv(result)
 		str+='<td><input class="btn btn-success" type="button" onclick="callMethodToGetData();getAgewiseInfoForVoterCategory();" value="submit"></td><td><img style="display:none;" id="categoriesAjximgMsgDiv" alt="Processing Image" src="images/icons/search.gif"></td></tr>';
 		str +='</table><br>';
 		str +='<div id="categoriesValuesDiv" style="padding-bottom:1px;"></div>';
-		str +='<div id="agerangeDiv" >dfhghjh dgfhghgjhj</div>';
+		str +='<div id="agerangeDiv" ></div>';
 		divId.innerHTML=str;
 	}
 }

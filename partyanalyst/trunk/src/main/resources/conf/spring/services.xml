@@ -27,6 +27,7 @@
 		<property name="voterModificationDAO" ref="voterModificationDAO" />
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="userVoterCategoryValueDAO" ref="userVoterCategoryValueDAO" />
+		<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >

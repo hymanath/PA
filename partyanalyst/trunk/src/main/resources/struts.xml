@@ -4954,6 +4954,13 @@
 		   <result type="json" name="success">
 				<param name="root">castList</param>	
 		   </result>
+		   <result type="json" name="error">
+				 <param name="root">"notLogged"</param>
+			</result>
+		</action>
+		<action name="categorySubWiseVoterDetailsAction" class="ageWiseVoterDetailsAction" >
+			<result name="success">/jsp/categorySubWiseVoterDetails.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 				
 		<action name="getConstituencyByMandalIdAction" class="mandalRevenueVillagesElecAction" method="getConstituencyByMandalId">
