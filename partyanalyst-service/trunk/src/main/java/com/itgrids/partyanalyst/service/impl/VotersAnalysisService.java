@@ -1817,7 +1817,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			totalVoters = totalVoters + (Long) voterInfo[0];
 			
 			String gender = (String)voterInfo[1];
-			cast = (String) voterInfo[2];
+			//cast = (String) voterInfo[2];
+			cast = "";
 			if(cast != null)
 			{
 			if(cast.equals(""))
