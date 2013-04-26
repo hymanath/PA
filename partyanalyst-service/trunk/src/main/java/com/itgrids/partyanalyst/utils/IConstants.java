@@ -602,4 +602,9 @@ public interface IConstants {
 	
 	public final static String ASSEMBLY_CONSTITUENCY_TYPE = "Assembly";
 	public final static String PARLIAMENT_CONSTITUENCY_TYPE = "Parliament";
+	
+	public final static String CUSTOMWARD = "customWard";
+	public final static String GHMC = "Greater Municipal Corp";
+
+	
 }
