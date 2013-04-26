@@ -150,6 +150,16 @@
 								   fillPartiesInState(jsObj.elmtId, resultVO);
 								   hidePartySelectAjaxImage("state");
 							    }
+								if(jsObj.task == "checkPartyPerformance")
+							    {
+									var errorMsg = document.getElementById("errorsDiv");
+									errorMsg.innerHTML = '';								
+									if(!resultVO)	
+										errorMsg.innerHTML ='<span style="font-size: 13px;">'+ partyName+' party doesnot have any seats,So we cannot analyse on this view </span>';
+									else {	
+											document.performanceReport.submit();
+										}
+							    }
 						}catch (e)  {   
 							//alert("Invalid JSON result" + e);   
 						}  
@@ -277,8 +287,8 @@
 
 		var str='';
 		
-		str+='<input type="radio" checked="checked" name="1" value="'+results[0].id+'" onclick="getDistricts(this.value);">'+results[0].name+'</input>';
-		str+='<input type="radio" name="1" value="'+results[1].id+'" onclick="getDistricts(this.value);">'+results[1].name+'</input>';
+		str+='<input type="radio" id="stateRadio" checked="checked" name="1" value="'+results[0].id+'" onclick="getDistricts(this.value);">'+results[0].name+'</input>';
+		str+='<input type="radio" id="countryRadio"" name="1" value="'+results[1].id+'" onclick="getDistricts(this.value);">'+results[1].name+'</input>';
 				
 		if(divElmt)
 			divElmt.innerHTML=str;
@@ -481,9 +491,7 @@
 			callAjax(jsObj,url);
 	}
 	function validateClientSide()
-	{
-		
-		var flag;
+	{			
 		var	electionYearElValuesSelected;
 		var electionYearEl = document.getElementById("yearList");
 		var electionYearElValues = electionYearEl.options;
@@ -495,15 +503,68 @@
 		if(electionYearEl == null || electionYearElValues.length == 0 || electionYearElValuesSelected == 'Select')
 		{
 			errorMsg.innerHTML = 'Invalid Input Selection';
-			flag= false;
+			//flag= false;
 		} 
 		else  
 		{
-			flag = true;
+			//flag = true;
+			checkPartyPerformanceDetails();
 		}
-		return flag;
+		//return flag;
+		return false;
 	}
 
+	var partyName = '';
+	function checkPartyPerformanceDetails(){
+		
+		var flag = false;
+		var electionType='';
+		var reportLevel=3;
+		var countryId = 1;		
+		var stateId = null;
+		var districtId =null;
+		var index = document.getElementById("partyList").selectedIndex;
+		partyName = document.getElementById('partyList').options[index].text;
+		var partyId =$('#partyList').val();
+		var year = $('#yearList').val();
+		var remember = document.getElementById('alliances');
+			stateId = $('#stateList').val();
+			districtId=$('#districtList').val();
+			if(assemblyRadio.checked)
+				electionType = 1;
+			if(parliamentRadio.checked)
+					electionType = 2;
+			if(stateId == null)
+				stateId = 0;				
+			if(districtId == null)
+				districtId = 0;
+			if(assemblyRadio.checked){
+				if(partyPerformanceReport_12.checked)
+							reportLevel=1;
+				else if(partyPerformanceReport_12.checked)
+							reportLevel=2;
+			}
+					
+			 if (remember.checked)
+				flag = true;
+			
+		var jsObj=
+			{     
+				district:districtId,
+				country:countryId,
+				reportLevel:reportLevel,
+				party:partyId,
+				electionType:electionType,
+				year:year,
+				state:stateId,
+				alliances:flag,
+				task:"checkPartyPerformance"						
+			};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);		
+		var url = "<%=request.getContextPath()%>/partyPerformanceReportAction.action?"+rparam;	
+		callAjax(jsObj,url);
+	}
 	function showPartySelectAjaxImage(decide)
 	{
          if(decide=="state")
@@ -605,7 +666,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" align="center"><s:submit theme="simple" action="partyPerformanceReport" type="submit" value="View Report" /></td>
+				<td colspan="2" align="center"><s:submit theme="simple" type="submit" value="View Report"  style="width: 100px; height: 30px;"/></td>
 			</tr>
 		</table>
    </s:form>
