@@ -48,4 +48,11 @@ public List<Object[]> getCategoryValuesList(Long userId) {
 		return query.list();
 	}
 	
+	public String getCategoryNameByCategoryId(Long userVoterCategoryId)
+	{
+		Query queryObj = getSession().createQuery("select model.categoryName from UserVoterCategory model where model.userVoterCategoryId =:userVoterCategoryId ");
+		queryObj.setParameter("userVoterCategoryId", userVoterCategoryId);
+		return (String) queryObj.uniqueResult();
+	}
+	
 }

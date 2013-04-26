@@ -36,7 +36,12 @@ public class UserVoterCategoryDAOHibernateTest  extends BaseDaoTestCase{
 		
 	}*/
 
-     public void test(){
+    /* public void test(){
     	 userVoterCategoryDAO.getAll();
-     }
+     }*/
+	
+	public void testGetCategoryNameByCategoryId()
+	{
+		System.out.println(userVoterCategoryDAO.getCategoryNameByCategoryId(2l));
+	}
 }
