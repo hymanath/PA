@@ -1813,7 +1813,12 @@ function addToPolitician(voterId,name)
 									}catch(e){$("#sse2").css("display","block");}								
 								}else if(jsObj.task == "getCategoryWiseDetails"){
 								   buildCategoryWiseDetails(myResults,jsObj);
-                                 }								
+                                 }	
+								 
+								 else if(jsObj.task == "getAgeWiseWiseDetails")
+								{
+									buildAgeWiseWiseDetails(myResults,jsObj);
+								}
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -8651,9 +8656,10 @@ function buildCategoriesDiv(result)
 		str +='<table style="width:45%;">';
 		str +='<tr><td style="width: 95px;"><input type="checkbox" name="type" class="selectAll" onclick="selectAllcategorycheckbox();"> &nbsp;Select All</td>';
 		str +='<td style="width: 106px;"><input type="checkbox" name="type" class="unselectAll" onclick="clearAllCheckBoxs();"> &nbsp;UnSelect All</td>';
-		str+='<td><input class="btn btn-success" type="button" onclick="callMethodToGetData();" value="submit"></td><td><img style="display:none;" id="categoriesAjximgMsgDiv" alt="Processing Image" src="images/icons/search.gif"></td></tr>';
+		str+='<td><input class="btn btn-success" type="button" onclick="callMethodToGetData();getAgewiseInfoForVoterCategory();" value="submit"></td><td><img style="display:none;" id="categoriesAjximgMsgDiv" alt="Processing Image" src="images/icons/search.gif"></td></tr>';
 		str +='</table><br>';
 		str +='<div id="categoriesValuesDiv" style="padding-bottom:1px;"></div>';
+		str +='<div id="agerangeDiv" >dfhghjh dgfhghgjhj</div>';
 		divId.innerHTML=str;
 	}
 }
@@ -8674,4 +8680,76 @@ function selectAllcategorycheckbox()
 	{
 		$(this).attr("checked",true);
 	});
+}
+
+function buildAgeWiseWiseDetails(result,jobj)
+{
+	
+
+var str = '';
+if(result != null && result.length >0){
+
+str +='<div>';
+for(var i in result)
+	{
+
+str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;'>";
+str+="<thead class='info'>";
+str  +='<tr>';
+str+="<th>"+result[i].name+"</th>";
+str+=" <th>18-25</th>";
+str+=" <th>25-36</th>";
+str+=" <th>36-45</th>";
+str+=" <th>46-60</th>";
+str+=" <th>60</th>";
+str+="</thead>";
+str  +='</tr>';
+
+for(var j in result[i].votersDetailsVOList)
+	{
+	var obj = result[i].votersDetailsVOList[j];
+str +='<tr>';
+if(obj.maleVotersCountBetween18To25 == null)
+	 obj.maleVotersCountBetween18To25 =0;
+else if(obj.femaleVotersCountBetween18To25 == null)
+	obj.femaleVotersCountBetween18To25 =0;
+else if(obj.maleVotersCountBetween26To35 == null)
+	obj.maleVotersCountBetween26To35 =0;
+else if(obj.femaleVotersCountBetween26To35 == null)
+	obj.femaleVotersCountBetween26To35 =0;
+else if(obj.maleVotersCountBetween36To45 == null)
+	obj.maleVotersCountBetween36To45 =0;
+else if(obj.femaleVotersCountBetween36To45 == null)
+	obj.femaleVotersCountBetween36To45 =0;
+else if(obj.maleVotersCountBetween46To60 == null)
+	obj.maleVotersCountBetween46To60 =0;
+else if(obj.femaleVotersCountBetween46To60 == null)
+	obj.femaleVotersCountBetween46To60 =0;
+else if(obj.maleVotersCountAbove60 == null)
+	obj.maleVotersCountAbove60 =0;
+else if(obj.femaleVotersCountAbove60 == null)
+	obj.femaleVotersCountAbove60 =0;
+
+var totalFor18To25 = obj.maleVotersCountBetween18To25+obj.femaleVotersCountBetween18To25;
+var totalFor26To35 = obj.maleVotersCountBetween26To35+obj.femaleVotersCountBetween26To35;
+var totalFor36To45 = obj.maleVotersCountBetween36To45+obj.femaleVotersCountBetween36To45;
+var totalFor46To60 =obj.maleVotersCountBetween46To60+obj.femaleVotersCountBetween46To60;
+var totalFor60 = obj.maleVotersCountAbove60+obj.femaleVotersCountAbove60;
+
+str +='<td>'+obj.name+'</td>';
+str +='<td>'+totalFor18To25+'</td>';
+str +='<td>'+totalFor26To35+'</td>';
+str +='<td>'+totalFor36To45+'</td>';
+str +='<td>'+totalFor46To60+'</td>';
+str +='<td>'+totalFor60+'</td>';
+
+
+str +='</tr>';
+
+	}
+ str+="</table>";
+str+="</div>";
+	}
+	}
+	$("#agerangeDiv").html(str);
 }
