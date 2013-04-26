@@ -1100,6 +1100,7 @@ function buildCastSubLevelsDiv(myResults)
 		 str += '<select class="selectBoxStyle" id="castSelectdId" multiple="multiple">';
 		 var casteInfo = myResults.castVosList;
 		 var casteIdsArray = new Array();
+		 var castesSortedArray= [];
 		 
 		 for(var i=0;i<casteInfo.length;i++)
 		 {
@@ -1111,11 +1112,30 @@ function buildCastSubLevelsDiv(myResults)
 					if(casteIdsArray.indexOf(casteInfo[i].voterCastInfoVO.castVOs[j].castStateId) == -1)
 					 {
 						casteIdsArray.push(casteInfo[i].voterCastInfoVO.castVOs[j].castStateId);
-						str += '<option value="'+casteInfo[i].voterCastInfoVO.castVOs[j].castStateId+'">'+casteInfo[i].voterCastInfoVO.castVOs[j].castName+'</option>';
+						
+						var obj={
+							caste:casteInfo[i].voterCastInfoVO.castVOs[j].castName,
+							id:casteInfo[i].voterCastInfoVO.castVOs[j].castStateId
+						}
+						castesSortedArray.push(obj);
+					
+						/*castesSortedArray.sort(sort_by('caste', true, function(a){return a.toUpperCase()}));
+				
+									
+						str += '<option value="'+casteInfo[i].voterCastInfoVO.castVOs[j].castStateId+'">'+casteInfo[i].voterCastInfoVO.castVOs[j].castName+'</option>';*/
 					 }
 				 }
 			 }
 		 }
+
+		 castesSortedArray.sort(sort_by('caste', true, function(a){return a.toUpperCase()}));
+				
+		for(var k=0;k<castesSortedArray.length;k++)
+		{
+			str += '<option value="'+castesSortedArray[k].Id+'">'+castesSortedArray[k].caste+'</option>';
+		}
+
+		
 		  str += '</select>';
 		  str +='<input type="button" style="margin-left: 24px;font-weight:bold;margin-top: -33px;" onclick="buildCastWiseChart()" value="View" class="btn btn-info">';
 		  str +='<p id="notePara">Press Ctrl Key To Select Multiple Castes</p>';
@@ -1123,6 +1143,17 @@ function buildCastSubLevelsDiv(myResults)
 		  str +='</div>';
 		  $("#casteSelectDiv").html(str);
 	}
+}
+
+var sort_by = function(field, reverse, primer){
+
+   var key = function (x) {return primer ? primer(x[field]) : x[field]};
+
+   return function (a,b) {
+       var A = key(a), B = key(b);
+       return ((A < B) ? -1 :
+               (A > B) ? +1 : 0) * [-1,1][+!!reverse];                  
+   }
 }
 
 function buildCastWiseChart()
@@ -1164,6 +1195,7 @@ function buildCastInfoBasedOnOptions(option)
 <body>
 <div id="voterCasteAjaxImg" style=" display:block;margin-top:100px;margin-left:300px;margin-right:auto;"><img  src="./images/icons/goldAjaxLoad.gif" /></div>
 <div id="casteSelectDiv"></div>
+
 <div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
 <div id="castGrid" style="height: 500px; display: none; overflow-x: auto;"></div>	
 <div id="errorDiv" align="center"></div>
