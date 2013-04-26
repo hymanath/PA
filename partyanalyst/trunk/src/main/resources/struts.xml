@@ -238,6 +238,12 @@
 			<result name="failure">/jsp/reportsErrorPage.jsp</result>
 		</action>
 		
+		<action name="partyPerformanceReportAction" class="partyPerformanceAction" method="checkPartyPerformance">
+			<result type="json" name="success">
+				 <param name="root">hasAllianceParties</param> 
+			</result>
+		</action>
+		
 		<action name="partyPerformanceReportPopup" class="partyPerformanceAction" method="getReport">
 			<result name="input">/jsp/entitlementErrorPage.jsp</result>
 			<result name="success">/jsp/partyPerformanceReport.jsp</result>
