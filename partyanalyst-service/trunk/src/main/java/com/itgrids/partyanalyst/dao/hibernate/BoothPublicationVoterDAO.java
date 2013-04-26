@@ -593,7 +593,7 @@ public class BoothPublicationVoterDAO extends
 
 	public List findVotersCastInfoByMandalAndPublicationDate(Long mandalId, Long publicationDate){
 	Object[] params = {mandalId, publicationDate};
-	return getHibernateTemplate().find("select count(model.voter.voterId),model.voter.gender,model.voter.cast from BoothPublicationVoter model where model.booth.tehsil.tehsilId = ? and model.booth.localBody is null and model.booth.publicationDate.publicationDateId = ? group by model.voter.cast,model.voter.gender order by model.voter.cast ", params);
+	return getHibernateTemplate().find("select count(model.voter.voterId),model.voter.gender from BoothPublicationVoter model where model.booth.tehsil.tehsilId = ? and model.booth.localBody is null and model.booth.publicationDate.publicationDateId = ? group by model.voter.gender ", params);
 	}		
 	
 	
@@ -621,8 +621,8 @@ public class BoothPublicationVoterDAO extends
 public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Long publicationDateId){
 		
 
-		Query query = getSession().createQuery("select count(BPV.voter.voterId),BPV.voter.gender,BPV.voter.cast from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
-				" BPV.booth.panchayat.panchayatId = :panchayatId  group by BPV.voter.cast,BPV.voter.gender order by BPV.voter.cast ") ;
+		Query query = getSession().createQuery("select count(BPV.voter.voterId),BPV.voter.gender from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" BPV.booth.panchayat.panchayatId = :panchayatId  group by BPV.voter.gender ") ;
 		query.setParameter("panchayatId", panchayatId);
 		query.setParameter("publicationDateId", publicationDateId);
 		  return query.list();
@@ -632,7 +632,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	//caste info for PollingStation
 		public List findVotersCastInfoByBoothIdAndPublicationDate(Long boothId, Long publicationDateId){
 			Object[] params = {boothId, publicationDateId};
-			return getHibernateTemplate().find("select count(model.voter.voterId),model.voter.gender,model.voter.cast from BoothPublicationVoter model where model.booth.boothId= ? and model.booth.publicationDate.publicationDateId = ? group by model.voter.cast,model.voter.gender order by model.voter.cast", params);
+			return getHibernateTemplate().find("select count(model.voter.voterId),model.voter.gender from BoothPublicationVoter model where model.booth.boothId= ? and model.booth.publicationDate.publicationDateId = ? group by model.voter.gender ", params);
 		}	
 		
 		//caste info for Constituency
@@ -641,7 +641,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		public List getGenderWiseCountInConstituency(Long constituencyId, Long publicationDate)
 		{
 			Object[] params = {constituencyId, publicationDate};
-			Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.gender,model.voter.cast from BoothPublicationVoter model where model.booth.constituency.constituencyId = ? and model.booth.publicationDate.publicationDateId = ? group by model.voter.cast,model.voter.gender order by model.voter.cast");
+			Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.gender from BoothPublicationVoter model where model.booth.constituency.constituencyId = ? and model.booth.publicationDate.publicationDateId = ? group by model.voter.gender ");
 			query.setParameter(0,constituencyId);
 			query.setParameter(1, publicationDate);
 			return query.list();	
@@ -929,8 +929,8 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	//caste Info For Municipality
 	public List getVotersCastInfoFromLocalElectionBody(Long lclElecBodyId,Long publicationDateId)
 	{
-		Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.gender,model.voter.cast from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
-				" model.booth.localBody.localElectionBodyId =:lclElecBodyId group by model.voter.cast,model.voter.gender order by model.voter.cast");
+		Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.gender from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.booth.localBody.localElectionBodyId =:lclElecBodyId group by model.voter.gender");
 		 query.setParameter("publicationDateId", publicationDateId);
 		 query.setParameter("lclElecBodyId", lclElecBodyId);
 		  return query.list();
@@ -1749,7 +1749,7 @@ public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationD
 
 public List findVotersCastInfoByBoothIdAndPublicationDateForHamlet(Long hamletId, Long publicationDateId){
 	Object[] params = {hamletId, publicationDateId};
-	return getHibernateTemplate().find("select count(model.voter.voterId),model.voter.gender,model.voter.cast from BoothPublicationVoter model where model.booth.boothId= ? and model.booth.publicationDate.publicationDateId = ? group by model.voter.cast,model.voter.gender order by model.voter.cast", params);
+	return getHibernateTemplate().find("select count(model.voter.voterId),model.voter.gender from BoothPublicationVoter model where model.booth.boothId= ? and model.booth.publicationDate.publicationDateId = ? group by model.voter.gender ", params);
 }	
 
 
