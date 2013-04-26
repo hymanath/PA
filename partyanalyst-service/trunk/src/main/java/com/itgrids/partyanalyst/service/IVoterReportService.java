@@ -40,4 +40,6 @@ public interface IVoterReportService {
 	public List<SelectOptionVO> getWardsInMunicipality(Long lclElecBodyId,Long publicationDateId);
 	
 	public List<VoterCastInfoVO> getVoterAttributeDetails(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
+	
+	public List<VoterCastInfoVO> getVoterAttributeSubDetails(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
 }

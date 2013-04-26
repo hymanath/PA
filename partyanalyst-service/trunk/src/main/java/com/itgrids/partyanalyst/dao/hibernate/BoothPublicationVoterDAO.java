@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -2667,8 +2668,13 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		queryString.append("select count(*),UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
 				"BoothPublicationVoter BPV,UserVoterDetails UVD where VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId and  " +
 				" VCV.voter.voterId = BPV.voter.voterId and BPV.voter.voterId = UVD.voter.voterId and UVCV.userVoterCategory.userVoterCategoryId in (:attributeIds)  " +
-				" and UVD.user.userId = :userId and VCV.user.userId = :userId and UVCV.user.userId = :userId and BPV.booth.publicationDate.publicationDateId = :publicationId and " +
-				" UVD.hamlet.hamletId = :locationId group by UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender ");
+				" and UVD.user.userId = :userId and VCV.user.userId = :userId and UVCV.user.userId = :userId and BPV.booth.publicationDate.publicationDateId = :publicationId and ");
+		if("hamlet".equalsIgnoreCase(locationType))
+		  queryString.append(" UVD.hamlet.hamletId = :locationId ");
+		else
+		  queryString.append(" UVD.ward.constituencyId = :locationId ");
+		
+		queryString.append("  group by UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender ");
 		Query query = getSession().createQuery(queryString.toString());
 		query.setParameter("locationId", locationId);
 		query.setParameterList("attributeIds", attributeIds);
@@ -2831,5 +2837,58 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		return query.list();
 
 	}
+		
+	public List<Object[]> getVoterAttributeDetailsForDifferentLocations(Long userId,Long attributeId,String locationType,Set<Long> locationIds,Long constituencyId,Long publicationId){
+		StringBuilder queryString = new StringBuilder();
+		String str = ",UVCV.userVoterCategoryValueId,BPV.voter.gender from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
+				"BoothPublicationVoter BPV where VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId and  " +
+				" VCV.voter.voterId = BPV.voter.voterId  and UVCV.userVoterCategory.userVoterCategoryId = :attributeId " +
+				" and VCV.user.userId = :userId and UVCV.user.userId = :userId and BPV.booth.publicationDate.publicationDateId = :publicationId and ";
+		
+		if(locationType.equalsIgnoreCase("constituency"))
+			queryString.append("select count(*),BPV.booth.constituency.constituencyId"+str+" BPV.booth.constituency.constituencyId in (:locationIds) group by BPV.booth.constituency.constituencyId,");
+		else if(locationType.equalsIgnoreCase("mandal"))
+			queryString.append("select count(*),BPV.booth.tehsil.tehsilId"+str+" BPV.booth.tehsil.tehsilId in (:locationIds) and BPV.booth.localBody is null and BPV.booth.constituency.constituencyId = :constituencyId group by BPV.booth.constituency.constituencyId,");
+		else if(locationType.equalsIgnoreCase("booth"))
+			queryString.append("select count(*),BPV.booth.boothId"+str+" BPV.booth.boothId in (:locationIds) group by BPV.booth.boothId,");
+		else if(locationType.equalsIgnoreCase("panchayat"))
+			queryString.append("select count(*),BPV.booth.panchayat.panchayatId"+str+" BPV.booth.panchayat.panchayatId in (:locationIds) group by BPV.booth.panchayat.panchayatId,");
+		else if(locationType.equalsIgnoreCase("localElectionBody") || "Local Election Body".equalsIgnoreCase(locationType))
+			queryString.append("select count(*),BPV.booth.localBody.localElectionBodyId"+str+" BPV.booth.localBody.localElectionBodyId in (:locationIds) and BPV.booth.constituency.constituencyId = :constituencyId  group by BPV.booth.localBody.localElectionBodyId,");
+		else if(locationType.equalsIgnoreCase("ward"))
+			queryString.append("select count(*),BPV.booth.localBodyWard.constituencyId"+str+" BPV.booth.localBodyWard.constituencyId in (:locationIds)  group by BPV.booth.localBodyWard.constituencyId,");
+		
+		queryString.append(" UVCV.userVoterCategoryValueId,BPV.voter.gender ");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameterList("locationIds", locationIds);
+		query.setParameter("attributeId", attributeId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		if(locationType.equalsIgnoreCase("mandal") || locationType.equalsIgnoreCase("localElectionBody") ||  "Local Election Body".equalsIgnoreCase(locationType)){
+			query.setParameter("constituencyId", constituencyId);
+		}
+		return query.list();
+	}
 	
+	public List<Object[]> getVoterAttributeDetailsForHamletForDifferentLocations(Long userId,Long attributeId,String locationType,Set<Long> locationIds,Long constituencyId,Long publicationId){
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select count(*),UVD.hamlet.hamletId,UVCV.userVoterCategoryValueId,BPV.voter.gender from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
+				"BoothPublicationVoter BPV,UserVoterDetails UVD where VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId and  " +
+				" VCV.voter.voterId = BPV.voter.voterId and BPV.voter.voterId = UVD.voter.voterId and UVCV.userVoterCategory.userVoterCategoryId = :attributeId  " +
+				" and UVD.user.userId = :userId and VCV.user.userId = :userId and UVCV.user.userId = :userId and BPV.booth.publicationDate.publicationDateId = :publicationId and ");
+		    
+		    if("hamlet".equalsIgnoreCase(locationType))
+			  queryString.append(" UVD.hamlet.hamletId in (:locationIds)  group by UVD.hamlet.hamletId,");
+			else
+			  queryString.append(" UVD.ward.constituencyId in (:locationIds)  group by UVD.ward.constituencyId,");
+			
+			queryString.append("  UVCV.userVoterCategoryValueId,BPV.voter.gender ");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameterList("locationIds", locationIds);
+		query.setParameter("attributeId", attributeId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }
