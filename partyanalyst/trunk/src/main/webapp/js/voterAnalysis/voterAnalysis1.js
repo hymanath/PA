@@ -985,8 +985,10 @@ function addToPolitician(voterId,name)
 		if(muncipalityBooths == "true")
 		{
 		  $("#ageLink").css("display","none");
+		  $("#ageLink").html('');
 		  $("#votersShareBtn1").css("display","none");
 		  $("#castPopupShowBtn").css("display","none");
+		  $("#impFamiliesForHamletsByBooth").css("display","none");
 		}
 		else
 		 {
@@ -995,6 +997,7 @@ function addToPolitician(voterId,name)
 		  $("#votersShareBtn1").css("display","block");
 		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 		  $("#castPopupShowBtn").attr("value","Hamlet wise Caste Info");
+		  $("#impFamiliesForHamletsByBooth").css("display","block");
 		 }
 		  
 		
