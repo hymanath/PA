@@ -2730,5 +2730,106 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		return query.list();
 	}
 	
+		
+	public List<Object[]> getCategoryWiseVoterDetailsByCategoryId(String locationType, Long locationValue, Long constituencyId, Long categoryId,Long publicationId,Long userId,Integer startIndex,
+			Integer maxRecords, String order, String columnName)
+	{
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select BPV.voter,BPV.serialNo,BPV.booth.partNo from BoothPublicationVoter BPV, VoterCategoryValue VCV ");
+		queryString.append(" where BPV.voter.voterId = VCV.voter.voterId  and VCV.userVoterCategoryValue.userVoterCategory.userVoterCategoryId =:categoryId ");
+		queryString.append(" and VCV.user.userId =:userId and BPV.booth.constituency.constituencyId =:constituencyId and BPV.booth.publicationDate.publicationDateId =:publicationId ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			queryString.append(" and BPV.booth.panchayat.panchayatId =:locationValue ");
+		else if(locationType.equalsIgnoreCase(IConstants.WARD))
+			queryString.append(" and BPV.booth.localBodyWard.constituencyId =:locationValue ");
+		else if(locationType.equalsIgnoreCase(IConstants.BOOTH))
+			queryString.append(" and BPV.booth.boothId =:locationValue ");
+				
+		if(columnName.equalsIgnoreCase("initial"))
+			queryString.append(" order by cast(BPV.booth.partNo , int),BPV.serialNo,BPV.voter.houseNo");
+		else if(columnName.equalsIgnoreCase("serialNo"))
+		  queryString.append(" order by BPV.serialNo "+order+"");
+		else if(columnName.equalsIgnoreCase("partNo"))
+			queryString.append(" order by BPV.booth.partNo "+order+"");
+		else
+			queryString.append(" order by BPV.voter."+columnName+" "+order+"");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("categoryId", categoryId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxRecords);
+		 
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getCategoryWiseVoterDetailsByHamletId(Long locationValue, Long constituencyId, Long categoryId,Long publicationId,Long userId,Integer startIndex,
+			Integer maxRecords, String order, String columnName)
+	{
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select BPV.voter,BPV.serialNo,BPV.booth.partNo from BoothPublicationVoter BPV, VoterCategoryValue VCV,UserVoterDetails UVD ");
+		queryString.append(" where BPV.voter.voterId = VCV.voter.voterId and BPV.voter.voterId = UVD.voter.voterId and VCV.userVoterCategoryValue.userVoterCategory.userVoterCategoryId =:categoryId ");
+		queryString.append(" and VCV.user.userId=UVD.user.userId and VCV.user.userId =:userId and BPV.booth.constituency.constituencyId =:constituencyId and BPV.booth.publicationDate.publicationDateId =:publicationId ");
+		queryString.append(" and UVD.hamlet.hamletId =:locationValue ");
+		
+		if(columnName.equalsIgnoreCase("initial"))
+			queryString.append(" order by cast(BPV.booth.partNo , int),BPV.serialNo,BPV.voter.houseNo");
+		else if(columnName.equalsIgnoreCase("serialNo"))
+		  queryString.append(" order by BPV.serialNo "+order+"");
+		else if(columnName.equalsIgnoreCase("partNo"))
+			queryString.append(" order by BPV.booth.partNo "+order+"");
+		else
+			queryString.append(" order by BPV.voter."+columnName+" "+order+"");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("categoryId", categoryId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxRecords);
+		 
+		return query.list();
+	}
+	
+	
+	 public List getcategoryWiseVotersCount(String locationType, Long locationValue, Long constituencyId, Long categoryId,Long publicationId,Long userId){
+			
+		 StringBuilder queryString = new StringBuilder();
+			queryString.append("select count(BPV.voter.voterId) from BoothPublicationVoter BPV, VoterCategoryValue VCV,UserVoterDetails UVD ");
+			queryString.append(" where BPV.voter.voterId = VCV.voter.voterId and BPV.voter.voterId = UVD.voter.voterId and VCV.userVoterCategoryValue.userVoterCategory.userVoterCategoryId =:categoryId ");
+			queryString.append(" and VCV.user.userId =:userId and BPV.booth.constituency.constituencyId =:constituencyId and BPV.booth.publicationDate.publicationDateId =:publicationId ");
+			
+			if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+				queryString.append(" and BPV.booth.panchayat.panchayatId =:locationValue ");
+			else if(locationType.equalsIgnoreCase(IConstants.WARD))
+				queryString.append(" and BPV.booth.localBodyWard.constituencyId =:locationValue ");
+			else if(locationType.equalsIgnoreCase(IConstants.BOOTH))
+				queryString.append(" and BPV.booth.boothId =:locationValue ");
+			else if(locationType.equalsIgnoreCase(IConstants.HAMLET))
+				queryString.append(" and UVD.hamlet.hamletId =:locationValue ");
+			
+			
+			Query query = getSession().createQuery(queryString.toString());
+			
+		  query.setParameter("locationValue", locationValue);
+		  query.setParameter("constituencyId", constituencyId);
+		  query.setParameter("categoryId", categoryId);
+		  query.setParameter("publicationId", publicationId);
+		  query.setParameter("userId", userId);
+				
+		return query.list();
+
+	}
 	
 }
