@@ -27,5 +27,18 @@ public class LocalityDAO extends GenericDaoHibernate<Locality, Long> implements 
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getLocalitiesForWard(Long wardId, Long userId)
+	{
+		Query query = getSession().createQuery("select model.localityId , model.name from Locality model " +
+				" where model.ward.constituencyId = ?  and model.user.userId = ?");
+		
+		query.setParameter(0, wardId);
+		query.setParameter(1, userId);
+		
+		return query.list();
+		
+		
+	}
 
 }

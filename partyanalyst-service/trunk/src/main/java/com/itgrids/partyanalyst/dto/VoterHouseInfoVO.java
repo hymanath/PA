@@ -77,7 +77,25 @@ public class VoterHouseInfoVO {
 	private List<SelectOptionVO> userCategoriesList;
 	private List<SelectOptionVO> subLocalities;	
 	private String partNo;
+	private String selType = "";
+	private Long selTypeId;
 		
+
+	public Long getSelTypeId() {
+		return selTypeId;
+	}
+
+	public void setSelTypeId(Long selTypeId) {
+		this.selTypeId = selTypeId;
+	}
+
+	public String getSelType() {
+		return selType;
+	}
+
+	public void setSelType(String selType) {
+		this.selType = selType;
+	}
 
 	public String getPartNo() {
 		return partNo;
