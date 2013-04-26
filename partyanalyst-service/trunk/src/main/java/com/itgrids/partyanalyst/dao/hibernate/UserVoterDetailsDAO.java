@@ -999,4 +999,21 @@ IUserVoterDetailsDAO{
 		query.append(" SUM( CASE WHEN model.voter.age > :AGE"+ages[ages.length-1]+" THEN 1 ELSE 0 END) as ageC ");
 		return query.toString();
 	}
+	 public List<Object[]> getWardsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId)
+	 {
+		 Query query = getSession().createQuery("select distinct model.ward.constituencyId , model.ward.name " +
+					" from UserVoterDetails model," +
+					" BoothPublicationVoter model1 "+					
+					" where model.user.userId = :userId and model.voter.voterId = model1.voter.voterId and " +
+					"  model1.booth.publicationDate.publicationDateId = :publicationDateId and model.ward.localElectionBody.localElectionBodyId = :id and " +
+					" model.ward.constituencyId is not null order by model.ward.name ");
+		 
+		 query.setParameter("publicationDateId", publicationId);
+		 query.setParameter("id", id);
+		 query.setParameter("userId", userId);
+		 
+		 return query.list();
+		 
+	 }
+	 
 }
