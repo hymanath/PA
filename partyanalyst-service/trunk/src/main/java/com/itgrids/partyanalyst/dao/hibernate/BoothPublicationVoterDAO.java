@@ -406,7 +406,8 @@ public class BoothPublicationVoterDAO extends
 			//str.append(" model.booth.localBodyWard.constituencyId = :locationId ");
 		else if(locationType.equalsIgnoreCase("hamlet"))
 			str.append(" model2.hamlet.hamletId = :locationId");
-		
+		else if(locationType.equalsIgnoreCase("customWard"))
+			str.append(" model2.ward.constituencyId = :locationId ");
 		str.append(" group by model2.casteState.casteCategoryGroup.casteCategory.casteCategoryId order by model2.casteState.casteCategoryGroup.casteCategory.categoryName ");
 		
 		Query query = getSession().createQuery(str.toString()) ;
@@ -446,6 +447,8 @@ public class BoothPublicationVoterDAO extends
 			//str.append(" model.booth.localBodyWard.constituencyId = :locationId ");
 		else if(locationType.equalsIgnoreCase("hamlet"))
 			str.append(" model2.hamlet.hamletId = :locationId ");
+		else if(locationType.equalsIgnoreCase("customWard"))
+			str.append(" model2.ward.constituencyId = :locationId ");
 		
 		str.append(" group by model2.casteState.caste.casteId,model.voter.gender order by model2.casteState.caste.casteName ");
 		
@@ -539,6 +542,8 @@ public class BoothPublicationVoterDAO extends
 			//str.append(" model.booth.localBodyWard.constituencyId = :locationId ");
 		else if(locationType.equalsIgnoreCase("hamlet"))
 			str.append(" model2.hamlet.hamletId = :locationId ");
+		else if(locationType.equalsIgnoreCase("customWard"))
+			str.append(" model2.ward.constituencyId = :locationId ");
 		str.append("group by model2.party.partyId,model.voter.gender order by model2.party.shortName ");
 		Query query =getSession().createQuery(str.toString());
 		query.setParameter("userId", userId);
@@ -1987,11 +1992,21 @@ public List<Object[]> getUnassignedVotersInPanchayat(Long userId){
 }
 
 
-public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId)
-{
+public List<Object> getVoterIdsBasedOnHamletId(Long hamletId, Long userId , String type)
+{  
+
+	
+	StringBuilder  query = new StringBuilder();
+	query.append("select distinct model.voter.voterId from UserVoterDetails model  where ");
+	if(type.equalsIgnoreCase(IConstants.HAMLET))
+	query.append("model.hamlet.hamletId = ?  ");
+	else
+	query.append("model.ward.constituencyId = ?  ");
+	query.append("and model.user.userId = ? ");
 	Object[] param = {hamletId,userId};
-	return getHibernateTemplate().find("select distinct model.voter.voterId " +
-						"from UserVoterDetails model  where  model.hamlet.hamletId = ? and model.user.userId = ? ",param);
+	return getHibernateTemplate().find(query.toString(),param);
+/*	return getHibernateTemplate().find("select distinct model.voter.voterId " +
+						"from UserVoterDetails model  where  model.hamlet.hamletId = ? and model.user.userId = ? ",param);*/
 }
 @SuppressWarnings("unchecked")
 public List getCadreMobileDetails(Long userId,List<Long> scopeId,String scope)
