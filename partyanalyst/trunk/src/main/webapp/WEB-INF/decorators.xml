@@ -90,7 +90,6 @@
 		<pattern>/cadreDisplayWindowAction.action*</pattern>
 		<pattern>/boothWiseCasteInfoAction.action*</pattern>
 		<pattern>/localAreaWiseVotersInfoAction*</pattern>
-		<pattern>/updateSelectedVotersAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -166,6 +165,7 @@
 		<pattern>/assigningCandidatesToVoterAction*</pattern>
 		<pattern>/sitemapAction*</pattern>
 		<pattern>/newsZoneAction*</pattern>
+		<pattern>/partyPerformanceJasper*</pattern>
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
@@ -219,7 +219,8 @@
 		<pattern>/voterBasicInfoAction*</pattern>
 		<pattern>/boothWiseModificationsCompleteInfo*</pattern>
 		<pattern>/cadreDisplayWindowAction*</pattern>		
-		
+		<pattern>/updateSelectedVotersAction*</pattern>
+		<pattern>/userGroupAction*</pattern>
 		<pattern>/setUserRestrictionAction*</pattern>
     	 </decorator>
 
