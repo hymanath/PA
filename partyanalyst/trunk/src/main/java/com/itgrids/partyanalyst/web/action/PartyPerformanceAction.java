@@ -423,16 +423,15 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		String cPath = request.getContextPath();
 		
 		log.debug("partyPerformanceReport action started...");
-		
 		String param = null;
-		param=request.getParameter("task");
+		param = getTask();
 		try {
-			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
 		} catch (ParseException e) {
-			
 			e.printStackTrace();
-		}			
+		}
 		String district = "0";
 		String country =jObj.getString("country");
 		String reportLevel = jObj.getString("reportLevel");
