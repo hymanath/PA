@@ -99,4 +99,5 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	 
 	 public List<Object[]> getLocalityIdsForUser(Long hamletId , Long userId,List<?> voterIds,String male,String female,long ...ages);
 
+	 public List<Object[]> getWardsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId);
 }
