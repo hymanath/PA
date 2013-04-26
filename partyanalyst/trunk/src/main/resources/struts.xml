@@ -4955,11 +4955,20 @@
 				<param name="root">castList</param>	
 		   </result>
 		</action>
-		
+				
 		<action name="getConstituencyByMandalIdAction" class="mandalRevenueVillagesElecAction" method="getConstituencyByMandalId">
 		   <result type="json" name="success">
 				<param name="root">constituencyId</param>	
 		   </result>
 		</action>
+		
+		<action name="getAgeWiseWiseDetailsAction" class="votersAnalysisAction" method="getAgeWiseWiseDetails">
+		   <result type="json" name="success">
+				<param name="root">ageRangeList</param>	
+		   </result>
+		</action>
 		</package>
+		
+		
+		
 </struts>      

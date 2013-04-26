@@ -1963,6 +1963,39 @@ browser1.focus();
 		 $("#categoriesValuesDiv").html(str);
 	  }
 	}
+
+
+	
+function getAgewiseInfoForVoterCategory(){
+	  var str ='';
+	  // $("#categoriesErrMsgDiv").html("");
+	   $('.categorycheckbox').each(function() {
+	        if($(this).is(':checked')){
+		       str = str+","+$(this).val();
+            }
+        });
+		/*if(str.length == 0){
+		   $("#categoriesErrMsgDiv").html("Please Check atleast one custom attribute to analyse");
+		  return;
+		}*/
+		str = str.slice(1);
+		//$("#categoriesAjximgMsgDiv").show();
+	   var jsObj = {
+	        attributeIds:str,
+			locationType:maintype,
+			locationId:mainreqid,
+			constituencyId:$("#constituencyList").val(),
+			publicationId:mainpublicationId,
+			task:"getAgeWiseWiseDetails"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getAgeWiseWiseDetailsAction.action?"+rparam;
+		callAjax(jsObj, url);
+	}
+
+
+
+
 </script>
 </body>
 </html>
