@@ -271,6 +271,7 @@ function callAjax(jsObj,url)
 					buildAgeAndGenderWiseDetailsForPercent(myResults,jsObj);
 				}
 			}
+			$("#ajaxImageDiv").css('display','none');
 		}
 		}catch (e) {}  
  		},
