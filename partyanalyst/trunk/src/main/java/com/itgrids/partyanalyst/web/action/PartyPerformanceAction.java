@@ -412,6 +412,47 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		return Action.SUCCESS;
 	} 
+	public String checkPartyPerformance(){
+		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_PERFORMANCE_REPORT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
+			return ERROR;
+		
+		String cPath = request.getContextPath();
+		
+		log.debug("partyPerformanceReport action started...");
+		
+		String param = null;
+		param=request.getParameter("task");
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}			
+		String district = "0";
+		String country =jObj.getString("country");
+		String reportLevel = jObj.getString("reportLevel");
+		String party = jObj.getString("party");
+		String electionType = jObj.getString("electionType");
+		String year = jObj.getString("year");
+		String state = jObj.getString("state");
+		Boolean alliances = new Boolean(jObj.getString("alliances"));
+		
+		if("2".equals(reportLevel)){
+			district = jObj.getString("district");
+		}
+		log.debug("Report Level :: " + reportLevel);
+		
+		if(state == null)
+			state="0";
+		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(Constants.MAJAR_BRAND), new BigDecimal(Constants.MINOR_BRAND), alliances,reportLevel);
+		hasAllianceParties = reportVO.getReportSuccessOrFailure();
+		return Action.SUCCESS;
+	}
 	@JSON (serialize= false )   
 	public String getReport() {
 		
