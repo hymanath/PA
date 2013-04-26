@@ -103,7 +103,7 @@ tr.diffColor td { background-color: yellow;}
 	   <input type="hidden" name="task" id="getAllVoterFamiliesForEditFormValues1" />
    </form>
 
- <div id="voterEditDetailsShowDIV" style="width:auto;overflow:auto;"></div>				 
+ <div id="voterEditDetailsShowDIV" style="width:auto;overflow:auto;margin-left:10px;"></div>				 
 
 			
  <a id="updateBtn" class="btn btn-info" title="click here to update voter details" href="javascript:{updatedetailsBasedOnSelection();}">Click here to update<a>		
@@ -259,7 +259,10 @@ function getAllVoterFamiliesForEditWithSelection11(){
 				votersIds:selectedVotersNewArr,
 				selectedType:window.opener.selectedType,
 				selectedTypeId:window.opener.selectedTypeId,
-				publicationId:window.opener.RpublicationDateId
+				publicationId:window.opener.RpublicationDateId,
+				isMuncipalitySelected:window.opener.isMuncipalitySelected,
+				muncipalitySelectedId:window.opener.muncipalitySelectedId
+                 
 				
 			}
 			$("#getAllVoterFamiliesForEditFormValues1").val(YAHOO.lang.JSON.stringify(jsObj));
@@ -671,10 +674,13 @@ function updateAllSelectedVotersDetails1()
 
 	 }
 
+
 	 var jsObj=
 			{
 				total:totalCategoriesCount,
 				selectedVoters:allVotersToUpdate,
+				isMuncipalitySelected:window.opener.isMuncipalitySelected,
+				muncipalitySelectedId:window.opener.muncipalitySelectedId,
 				task:"updateIndividuls"
 		  };
 		  $("#updateAllVotersFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
@@ -748,6 +754,8 @@ function updateAllSelectedVotersDetails1()
 			{
 				total:totalCategoriesCount,
 				selectedVoters:allVotersToUpdate,
+				isMuncipalitySelected:window.opener.isMuncipalitySelected,
+				muncipalitySelectedId:window.opener.muncipalitySelectedId,
 				task:"updateIndividuls"
 		  };
 		  $("#updateAllVotersFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
@@ -774,13 +782,22 @@ function updateAllSelectedVotersDetails1()
 
  function getLocalitiesListForHamlet(value , voterId , type)
 	{
+
+		var task = "";
+
+		if(window.opener.isMuncipalitySelected == "muncipality")
+			task = "getLocalitiesForWards";
+		else
+			task = "getLocalities";
+
 		var jsObj=
 			{
 					
 				selected:value,
 				voterId:voterId,
-				type:type,	
-				task:"getLocalities"
+				type:type,
+				isMuncipalitySelected:window.opener.isMuncipalitySelected,
+				task:task
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -820,7 +837,7 @@ function callAjax(jsObj,url)
 			   success : function( o ) {
 					try {												
 							myResults = YAHOO.lang.JSON.parse(o.responseText);					
-						if(jsObj.task == "getLocalities"){	
+						if(jsObj.task == "getLocalities" || jsObj.task == "getLocalitiesForWards"){	
 							if(jsObj.type == "single")
 							 buildSubLocalities(myResults,jsObj);
 							else

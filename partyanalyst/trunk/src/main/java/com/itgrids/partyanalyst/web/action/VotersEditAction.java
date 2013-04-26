@@ -819,6 +819,8 @@ public String saveLocality()
 				
 			 org.json.JSONArray votersJSONArray = jObj.getJSONArray("selectedVoters");
 			 Long totalCategoriesCount = jObj.getLong("total");
+			 String isMuncipality = jObj.getString("isMuncipalitySelected");
+			 
 			 List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
 			 
 			 for(int i = 0;i<votersJSONArray.length();i++){
@@ -850,7 +852,7 @@ public String saveLocality()
 				}
 			 
 			 
-			status =  votersAnalysisService.updateAllSelectedVotersDetails(votersList);
+			status =  votersAnalysisService.updateAllSelectedVotersDetails(votersList , isMuncipality);
 			return "update";
 			 
 		 }catch(Exception e)
@@ -881,6 +883,10 @@ public String saveLocality()
 			    parameters.setSelectedType(jObj.getString("selectedType"));
 		       	parameters.setSelectedTypeId(jObj.getLong("selectedTypeId"));
 		       	parameters.setPublicationId(jObj.getLong("publicationId"));
+		       	
+		       	parameters.setSelType(jObj.getString("isMuncipalitySelected"));
+		       	parameters.setSelTypeId(jObj.getLong("muncipalitySelectedId"));
+		       	
 		       	parameters.setUserId(userId);
 
 	    	org.json.JSONArray votersJSONArray = jObj.getJSONArray("votersIds");
@@ -963,9 +969,27 @@ public String saveLocality()
 								voterHouseInfoVO.setBoothId(jSONObject.getLong("boothId"));
 								votersList.add(voterHouseInfoVO);
 							}
+							
+							 try
+						        {
+						    	  parameters.setSelType(jObj.getString("selType"));
+						    	  parameters.setSelTypeId(jObj.getLong("selTypeId"));
+						    	}
+						        catch(Exception e){					    		
+						        	 parameters.setSelTypeId(0L);
+						    	}
 							voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptionsForIndividual(votersList,parameters);
 					    }else{   
 					    	parameters.setVoterId(jObj.getLong("voterId"));
+					    	
+					        try
+					        {
+					    	  parameters.setSelType(jObj.getString("selType"));
+					    	  parameters.setSelTypeId(jObj.getLong("selTypeId"));
+					    	}
+					        catch(Exception e){					    		
+					        	 parameters.setSelTypeId(0L);
+					    	}
 					    	
 						  voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptions(parameters);
 						  //
@@ -1034,6 +1058,19 @@ public String saveLocality()
 							else if(localityPresent){
 								type ="localityPresent";
 						}
+						
+						if(localityPresent){
+						
+						 try
+					        {
+							 voterHouseInfoVO.setSelType(jObj.getString("selType"));
+							 voterHouseInfoVO.setSelTypeId(jObj.getLong("hamletId"));
+					    	}
+					        catch(Exception e){					    		
+					        	 parameters.setSelTypeId(0L);
+					    	}
+						 
+						}
 						String[] voters = jObj.getString("voterIds").split(",");
 						 votersAnalysisService.updateSelectedFieldsForAllVoters(voterHouseInfoVO,voters,type);
 						return "update";
@@ -1101,6 +1138,19 @@ public String saveLocality()
 							else if(localityPresent){
 								type ="localityPresent";
 						}
+						
+						if(localityPresent){
+							
+							 try
+						        {
+								 voterHouseInfoVO.setSelType(jObj.getString("selType"));
+								 voterHouseInfoVO.setSelTypeId(jObj.getLong("wardId"));
+						    	}
+						        catch(Exception e){					    		
+						        	 parameters.setSelTypeId(0L);
+						    	}
+							 
+							}
 					  status = votersAnalysisService.updateMultipleVoterDetails(votersList,type);
 					  return "update";
 				  }
