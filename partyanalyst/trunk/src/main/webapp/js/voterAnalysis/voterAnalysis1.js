@@ -1,6 +1,4 @@
 
-
-
 var constMgmtMainObj={
 							
 							castStatsArray:[],
@@ -30,6 +28,7 @@ var selectedId;
 var isLocalityDataExist = "true";
 var isMuncipalityExist = "false";
 var muncipalityBooths = "false";
+var muncipalityType   = "" ;
 
 function populate(id,boothId,publicationId,houseNo){
 
@@ -1194,13 +1193,13 @@ function addToPolitician(voterId,name)
 			boothId = mainreqid;
 			getPrevioesVotersDetailsForWard();
 		}
-		else if(maintype == "hamlet"){
+		else if(maintype == "hamlet"  || maintype == "customWard" ){
 			boothId = mainreqid;
-			getPreviousVotersDetailsForhamlet();
+			getPreviousVotersDetailsForhamlet(maintype);
 		}
 	}
 	//updated by gayathri to get hamlet basic info
-	function getPreviousVotersDetailsForhamlet(){
+	function getPreviousVotersDetailsForhamlet(type){
 		//alert('11111');
 		
 	var jsObj=
@@ -1210,7 +1209,7 @@ function addToPolitician(voterId,name)
 						boothId:0,
 						panchayatId:0,
 						hamletId:mainreqid,
-						type:"hamlet",
+						type:type,
 						task:"getVotersCountForAllElectionsForHamlet"
 					};
 						var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -2367,8 +2366,8 @@ function callCorrespondingAjaxCall(retrieveType){
 		getVoterDetailsForPanchayat(retrieveType);
 	else if(maintype == "booth")
 		getVoterDetailsForBooth(retrieveType);
-	else if(maintype == "ward")
-		getVoterDetailsForWard(retrieveType);
+	else if(maintype == "ward" || maintype == "customWard" )
+		getVoterDetailsForWard(retrieveType,maintype);
 		else if(maintype == "hamlet")
 		getVoterDetailsForHamlet(retrieveType);
 }
@@ -2761,92 +2760,6 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 	//var publicationDateText =$("#publicationDateList option:selected").text();
 	//var year=publicationDateText.substr(publicationDateText.length - 4);
 	var typename=mainname;
-	/*if(level == 1){
-	   type = 'constituency';
-	   id = $("#constituencyList").val();
-	   typename =$("#constituencyList :selected").text() + ' Constituency';
-	   if(id == 0 ||id == null)
-		{
-		  str +='Please Select Constituency';
-		  flag=false;
-		}
-
-	}else if(level == 2){
-	  type = 'mandal';
-	  id = $("#mandalField").val();
-	  typename =$("#mandalField :selected").text();
-	   if(id == 0 ||id == null)
-		{
-		  str +='Please Select Mandal';
-		  flag=false;
-		}
-    }else if(level == 3){
-		var constituencyValue =$("#constituencyList").val(); 
-		var mandalValue = $("#mandalField").val();
-		var mandalText = $('#mandalField :selected').text();
-		var validflag= mandalText.search("MUNCIPALITY");
-		type = 'panchayat';
-		id = $("#panchayatField").val();
-		typename =$("#panchayatField :selected").text()+' Panchayat';
-	 if(constituencyValue == 0 || constituencyValue == null)
-		{
-				str +='Please Select Constituency';
-				flag =false;
-		}
-		else if(mandalValue == 0 || mandalValue == null)
-		{
-				str +='Please Select Mandal';
-				flag =false;
-		}
-	  else if(validflag != -1)
-		{
-				str +='There are No Panchayats In Muncipality,Select Other Report Level to view Report';
-				flag =false;
-				
-		}
-	   else if(id == 0 ||id == null)
-		{
-		  str +='Please Select Panchayat';
-		  flag=false;
-		}
-	}else if(level == 4){
-	var constituencyValue =$("#constituencyList").val(); 
-	var mandalValue = $("#mandalField").val();
-	var mandalText = $('#mandalField :selected').text();
-	var validflag = -1;
-	//var validflag= mandalText.search("MUNCIPALITY");
-
-	  type = 'booth';
-	  id = $("#pollingStationField").val();
-	  typename =$("#pollingStationField :selected").text();
-	  if(constituencyValue == 0 || constituencyValue == null)
-		{
-				str +='Please Select Constituency';
-				flag =false;
-		}
-	else if(validflag != -1)
-		{
-				str +='There are No Panchayats In Muncipality,Select Other Report Level to view Report';
-				flag =false;
-				
-		}
-		else if(mandalValue == 0 || mandalValue == null)
-		{
-				str +='Please Select Mandal';
-				flag =false;
-		}
-	   else if(id == 0 || id == null)
-		{
-		  str +='Please Select Booth';
-		  flag=false;
-		}
-	}
-	if(publicationDateId == 0 || publicationDateId == null)
-	{
-		str +='<br>Please Select Publication Date';
-		flag = false;
-	}
-	errorDivEle.innerHTML = str;*/
 	var hresult="";
 	if(true)
 	{
@@ -3530,7 +3443,8 @@ function buildPartyWisePiechart(myResults,jsObj)
 	}
 	var voters= '';
 	var str = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;">';
-	
+	var res = parseInt(results.partyWiseNotAssignedVoters)+parseInt(results.partyWiseAssignedVoters);
+	   
 	str += '<span>Party Assigned Voters : '+results.partyWiseAssignedVoters+'</span>';
 	str += '<span style="padding-left:40px;">Party Not Assigned Voters : '+results.partyWiseNotAssignedVoters+'</span>';
 	str += '<br><br>';
@@ -3563,6 +3477,10 @@ function buildPartyWisePiechart(myResults,jsObj)
 	var chart = new google.visualization.PieChart(document.getElementById('partyWiseChatDiv'));
 		chart.draw(data, {width: 450, height: 300,legend:'right',legendTextStyle:{fontSize:12}, title:'Party wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
 	});
+	if(res > 0)
+	   {
+	   $("#votersMainOuterDiv2").show();
+	   }
 }
    function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId,type)
 	{
@@ -4238,7 +4156,7 @@ function getVoterDetailsForPanchayat(retrieveType){
 	} 
 }
 
-function getVoterDetailsForWard(retrieveType){
+function getVoterDetailsForWard(retrieveType ,type){
    $("#AgeWiseNoteDiv").css("display","none"); 
 	$("#AgeWiseNoteDiv").html("");
 	var name = mainname;
@@ -4251,7 +4169,7 @@ function getVoterDetailsForWard(retrieveType){
 					boothId:'0',
 					name:name,
 					retrieveType:retrieveType,
-					type:"ward",
+					type:type,
 				};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -6018,7 +5936,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 
 
 	/*** FUNCTIONS FOR NAVIGATIONS START***/
-
+var typeofMuncipality="";
 (function($) {
   $.fn.customMenu = function(menudata,menutype,mandalid,panchayatid,municipalityid) {
   /* menudata= resultset of the consistuency data upto booth 
@@ -6045,11 +5963,17 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		 break;
 		
 		 case 1: // Build municipality Menu	
+			if(menudata[0].localbodiesList!=null)
+			typeofMuncipality=menudata[0].localbodiesList[0].name;//To know weather GHMC or other
+		 
 		  if(menudata[0].localbodiesList!=null){
 		  	$.each(menudata[0].localbodiesList, function(iter,municipality){
 			if( municipality.selectOptionsList != null){
 				isMuncipalityExist = "true";
-		  	str+='<li><a onClick="" dest-atr="ward"  data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+' " ><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i>'+municipality.name.replace('Greater Municipal Corp','')+'</a></li>';
+				
+				muncipalityType = municipality.selectOptionsList[0].type;
+         // console.log(muncipalityType)
+		  	str+='<li><a onClick="" dest-atr="ward" data-type="'+municipality.selectOptionsList[0].type+'" data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+' " ><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i>'+municipality.name.replace('Greater Municipal Corp','')+'</a></li>';
 		  } else if(municipality.selectOptionsList1 != null){
 			  muncipalityBooths = "true";
 		  	str+='<li><a onClick="" dest-atr="booth" data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+' "><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i>'+municipality.name.replace('Greater Municipal Corp','')+'</a></li>';
@@ -6149,6 +6073,18 @@ function buildPreviousVotersDetails(myResults,jsObj){
 		   muncipalityBooths = "true";
 		 break;
 		 
+		 //created by sasi
+		  case 7: // Build Booths Menu for Muncipalities other than GHMC 
+		   $.each(menudata[0].localbodiesList, function(iter,municipality){
+		     if(municipalityid==municipality.id && municipality.selectOptionsList1 != null){
+					  $.each(municipality.selectOptionsList1,function(iter,booths){
+									str+='<li class="nav nav-pills"><a class="btn"  data-municipalityid="'+ municipality.id+'" data-municipalityid="'+ municipality.id+'" data-boothid="'+ booths.id+'" name-booth="Booth-'+booths.name+'" href="javascript:{}" style="width:44px;"><span class="checkbox"><input type="radio" data-mandalid="'+ municipality.id+'" id="Chk-'+booths.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booths.name+'</a></li>';
+									 });
+								}
+			});
+		   $(".rightNav-Booths").show();
+		 break;
+		 
 		
 			}	
 		
@@ -6220,6 +6156,8 @@ var dest=$(this).attr("dest-atr");
 	//$("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Ward Wise Age Details</a>');
 	$("#tabContainer").css({ display: "none" });
 	}
+	if(typeofMuncipality!="GHMC Greater Municipal Corp")
+	$("#rightNav-Booths-list").customMenu(resultDataForNav,7,0,0,$(this).attr("data-municipalityid"));
 });
 
 
@@ -6233,6 +6171,7 @@ showMyTabs();
 
 $("#middleNav-Wards-list a").live("click",function(){
 $(this).closest("li").addClass("active").siblings().removeClass("active");
+if(typeofMuncipality=="GHMC Greater Municipal Corp")
 $("#rightNav-Booths-list").customMenu(resultDataForNav,6,$(this).attr("name-muncipal"),$(this).attr("data-wardid"),$(this).attr("data-municipalityid"));
 });
 
@@ -6307,13 +6246,20 @@ var panchayatid=$(this).closest("a").attr("data-wardid");
 var levelId =3;
 mainreqid = panchayatid;
 mainpublicationId = $("#publicationDateList").val();
-maintype = 'ward';
+
 mainname = $(this).closest("a").attr("name-ward");
+if( muncipalityType == "Greater Municipal Corp"){
+maintype = 'ward';
 getAllTabs(panchayatid,$("#publicationDateList").val(),'ward');
+}else{
+maintype = 'customWard';
+getAllTabs(panchayatid,$("#publicationDateList").val(),'customWard');
 //alert("SHOW Panchayat DATA");
 //getvotersSubBasicInfo(panchayatid,"panchayat-name","panchayat");
 //howSubNewsDetails(panchayatid,"Panchayat");
 //buildVotersByPanchayatDataTable(panchayatid);
+}
+
 });
 
 //Booths CLICKED
