@@ -1136,7 +1136,8 @@ function addToPolitician(voterId,name)
 			 if(isMuncipalityExist =="true")
 			  {
 				$("#castPopupShowBtn").css("display","block");
-				$("#castPopupShowBtn").attr("value","Ward wise Caste Info");
+				//$("#castPopupShowBtn").attr("value","Ward wise Caste Info");
+				$("#castPopupShowBtn").attr("value","Booth wise Caste Info");
 			  }
 			 else 
 				$("#castPopupShowBtn").css("display","none");
