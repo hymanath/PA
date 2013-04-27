@@ -15,21 +15,25 @@ public class ConstituencyManagementVO {
 	private List<PoliticalChangesVO> politicalChanges;
 	private List<HamletProblemVO> hamletProblems;
 	private TotalMPTCMandalLeaderVO totalMPTCMandalLeaderVO;
-	private List<VoterCastInfoVO> castVosList;	
-	
-
+	private List<VoterCastInfoVO> castVosList;
+	private List<SelectOptionVO> castPercent;
 	private List<Long> votersCount;
 	private List<Long> agewisevotersCount;
-	
 	private List<VoterVO> mandalAgewiseVotersList ;
 	private List<VoterVO> boothVotersList;
 	private List<VotersDetailsVO> mandalAgeAndGenderwiseVotersList;
 	private List<VotersDetailsVO> votersDetailsVO;
-	
 	private List<VotersDetailsVO> mandalsVotersDetails;
 	private List<VotersDetailsVO> panchayatVotersDetails;
 	private List<VotersDetailsVO> boothVotersDetails;
 	
+	public List<SelectOptionVO> getCastPercent() {
+		return castPercent;
+	}
+
+	public void setCastPercent(List<SelectOptionVO> castPercent) {
+		this.castPercent = castPercent;
+	}
 	
 	public List<VotersDetailsVO> getVotersDetailsVO() {
 		return votersDetailsVO;
