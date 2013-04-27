@@ -70,6 +70,21 @@
 
 
 <style type="text/css">
+#casteDivs li>a {
+	display: block;
+    height: 2em;
+    line-height: 2em;
+    padding: 0 1.5em;
+    text-decoration: none;
+}
+#casteDivs ul {
+    position: absolute;
+    display: none;
+	z-index: 999;
+}
+#casteDivs li:hover ul {
+    display: block;
+}
 .dataTables_wrapper{
 	padding-top: 19px !important;
 }
@@ -1026,6 +1041,7 @@ locationDetails.constituencyArr.push(ob);
 </c:forEach>		
 
 $(document).ready(function(){
+	$('#constituencyList').val(0);
 	$("#newsCountDiv").css("display","none");
 	$("#problemsCountDiv").css("display","none");
 	$("#InfluencingPeopleCountDiv").css("display","none");
@@ -1038,6 +1054,14 @@ maxDate: new Date()
 
 }).datepicker("show");
 });
+$('.castDivs').hover(
+    function () {
+        $(this).css({"background-color":"slategrey"});
+    }, 
+    function () {
+        $(this).css({"background-color":"#49AFCD"});
+    }
+);
 });
 
 
@@ -1296,21 +1320,50 @@ for  body3 start    result  -->
 	    <div id="votersBasicInfoSubDivForLclCastSts" class="yui-skin-sam yui-dt-sortable"></div>	
     </div>-->
 	
-	<span id="castewiseAjaxDiv" style="display: block; position:absolute;top:20px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+	<span id="castewiseAjaxDiv" style="display: block; position:absolute;top:10px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
 	<div id='LocalCastDiv'>
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
+	<div style="margin-left:695px;">
+	<ul id="casteDivs">
+    <li>
+		<input type="button" value="Refresh Caste And Party Information" class="btn btn-info" style="width:240px;margin-top: 10px;"/>		
+        <ul>
+		<li><a class="castDivs" href="javascript:{}" onclick="getUpdatedCastePartyInfo();" style="background:#49AFCD;width:200px;color: rgb(255, 255, 255);"><span style="margin-left:-15px;" title="click here to get latest updated Caste and Party Information">Get Updated  Caste And Party Info</span></a>
+		</li>
+         <li><a id="permanentlyUpdateDiv" class="castDivs" href="javascript:{}"onclick="permanentlyUpdateCastePartyInfo();" style="background:#49AFCD;width:200px;color: rgb(255, 255, 255);"><span style="margin-left:-15px;" title="click here to get latest Caste and Party Information and Save this data">Update Caste And Party Info</span></a>
+		 </li>            
+        </ul>
+    </li>    
+	</ul>
+	</div>
+	
+	<!--
 	<div style="float:right;">
 	   <div id="permanentlyUpdateButtonDiv" ><input id="permanentlyUpdateDiv" type="button" onclick="permanentlyUpdateCastePartyInfo();" value="Update Caste And Party Info" class="btn btn-info" /></div>
 	   <div id="casteRefreshButtonDiv" style="margin-top: 10px;"><input type="button" onclick="getUpdatedCastePartyInfo();" value="Get Updated Caste And Party Info" class="btn btn-info" /></div>
 	</div>
+	-->
 	<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;"></div>
-	
+	<!-- 
 	<div id='localCastStatsTabContent_header' style="width:48%;float:left;"></div>
 	<div class="castDetailsMainDiv" style="width:48%;float:left;">
 		<div id="localCastDetailsDiv" style="margin-bottom:0px;"></div>
 		<div id="localCastChatDiv"></div>
 	</div>
-	
+	-->	
+	<div id"castInfoDiv">
+	<table style="width:970px;">
+	 <tr>
+	 <td style="width: 308px;">
+	<div id='localCastStatsTabContent_header' ></div>
+	</td><td style="width:180px;">
+	<span id="localCastDetailsDiv" ></span>
+	</td><td style="position: absolute;width:450px;">
+	<span id="localCastChatDiv" ></span>
+	</td>
+	</tr>
+	</table>
+	</div>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div>
 	<div id='castTab'></div>
 	<div id='localityTab'></div>
