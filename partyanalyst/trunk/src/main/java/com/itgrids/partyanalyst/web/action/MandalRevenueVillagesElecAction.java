@@ -223,6 +223,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(new Long(tehsilId));
 		String cPath = request.getContextPath();
 		String chartLocation="";
+		tehsilName = staticDataService.getTehsilNameByTehsilId(new Long(tehsilId));
 		if(parties != null){
 			//List<PartyResultVO> partiesResults = null;
 			if("panchayat".equalsIgnoreCase(resultType)){
