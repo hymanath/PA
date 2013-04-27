@@ -1099,6 +1099,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				//getBoothsComparisionInfo(electionIds,id,publicationDateId,votersInfoForMandalVO);
 				return votersInfoForMandalVO;
 			}
+			else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+			{
+				VotersInfoForMandalVO votersInfoForMandalVO = getVotersCountForCustomWardBooths(id,publicationDateId,constituencyId,userId);
+				return votersInfoForMandalVO;
+			}
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("Exception rised in getVotersCount method : ",e);
@@ -14533,4 +14539,81 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		
 		return returnValues;
 	}
+	
+	public VotersInfoForMandalVO getVotersCountForCustomWardBooths(Long wardId,Long publicationDateId,Long constituencyId,Long userId)
+	{
+		VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
+		try{
+			List<VotersInfoForMandalVO> votersInfoForMandalVOList = new ArrayList<VotersInfoForMandalVO>(0);
+			List<Object[]> list = boothPublicationVoterDAO.getVotersCountForCustomWardBooths(constituencyId, wardId, publicationDateId, userId);
+			Long wardTotalVoters = 0L ;	
+			if(list != null && list.size() > 0)
+				{
+					VotersInfoForMandalVO mandalVO = null;
+					for(Object[] params : list)
+					{
+						mandalVO = checkVotersInfoForMandalVOExist(params[3].toString(),votersInfoForMandalVOList);
+						if(mandalVO == null)
+						{
+							mandalVO = new VotersInfoForMandalVO();
+							mandalVO.setName(params[3] != null ?"booth-"+params[3].toString():"");
+							mandalVO.setId((Long)params[2]);
+							mandalVO.setType("Booth");
+							votersInfoForMandalVOList.add(mandalVO);
+						}
+						if(params[1] != null && params[1].toString().equalsIgnoreCase("M"))
+						  mandalVO.setTotalMaleVoters(params[0] != null ?params[0].toString():"0");
+						else if(params[1] != null && params[1].toString().equalsIgnoreCase("F"))
+						  mandalVO.setTotalFemaleVoters(params[0] != null ?params[0].toString():"0");
+						else
+						  mandalVO.setUnKnowVoters(params[0] != null ?params[0].toString():"0");
+				    }
+					
+					votersInfoForMandalVO.setVotersInfoForMandalVOList(votersInfoForMandalVOList);
+					
+					for(VotersInfoForMandalVO vO :votersInfoForMandalVOList)
+					{
+						Long maleVotersCount = 0L;
+						Long femaleVoters = 0L;
+						Long unknowVoters = 0L;
+						if(vO.getTotalMaleVoters() != null)
+							maleVotersCount = new Long(vO.getTotalMaleVoters());
+						if(vO.getTotalFemaleVoters() != null)
+							femaleVoters = new Long(vO.getTotalFemaleVoters());
+						if(vO.getUnKnowVoters() != null)
+							unknowVoters = new Long(vO.getUnKnowVoters());
+						
+						vO.setTotVoters(new BigDecimal(maleVotersCount.longValue()+femaleVoters.longValue()+ unknowVoters.longValue()));
+						wardTotalVoters += (maleVotersCount.longValue()+femaleVoters.longValue()+ unknowVoters.longValue());
+					}
+				}
+				votersInfoForMandalVO.setName(constituencyDAO.get(wardId).getName());
+				votersInfoForMandalVO.setType("Ward");
+				votersInfoForMandalVO.setTotalVoters(wardTotalVoters.toString());
+				votersInfoForMandalVO.setTotVoters(new BigDecimal(wardTotalVoters.longValue()));
+				calculatePercentage(votersInfoForMandalVO);
+		return votersInfoForMandalVO;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getVotersCountForCustomWardBooths() Method, Exception is - "+e);
+			return votersInfoForMandalVO;
+		}
+	}
+	
+	public VotersInfoForMandalVO checkVotersInfoForMandalVOExist(String partNo, List<VotersInfoForMandalVO> list)
+	{
+		try{
+			if(list == null || list.size() == 0)
+				return null;
+			for(VotersInfoForMandalVO mandalVO : list)
+				if(mandalVO.getName() != null && mandalVO.getName().equalsIgnoreCase("booth-"+partNo))
+					return mandalVO;
+			return null;
+		}catch (Exception e) {
+			log.error("Exception Occured in checkVotersInfoForMandalVOExist() method, Exception - "+e);
+			return null;
+		}
+	}
+	
 }
