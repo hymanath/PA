@@ -1148,6 +1148,7 @@ function addToPolitician(voterId,name)
 		  }
 			
 	   $("#categoriesValuesDiv").html("");
+	   $("#agerangeDiv").html("");
 	}
 	function getModifiedVotersCountBetweenPublications(locationType,locationValue,fromPublicationDateId,toPublicationDateId){
 	$("#votersCountModifyAjaxDiv").css("display","block");
