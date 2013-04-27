@@ -62,7 +62,7 @@
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-
+<script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 
 
@@ -1321,7 +1321,7 @@ for  body3 start    result  -->
     </div>-->
 	
 	<span id="castewiseAjaxDiv" style="display: block; position:absolute;top:10px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
-	<div id='LocalCastDiv'>
+	<div id='LocalCastDiv' style="margin-bottom:65px;">
 	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
 	<div style="margin-left:695px;">
 	<ul id="casteDivs">
@@ -1369,6 +1369,8 @@ for  body3 start    result  -->
 	<div id='localityTab'></div>
 <span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>
 	</div>
+	
+	<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto;display:none;"></div>
 	</div>
 	
 	
