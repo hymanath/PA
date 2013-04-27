@@ -33,19 +33,9 @@
 							self._trigger( "selected", event, {
 								item: ui.item.option
 							});
-
-                            /*To clear the error message when enter text in the autocompleter field*/
-                                // if(select.val() != "")
-								//select.next().next().html('');								
-								
-
-							//callForId(select.attr('id'));
-							//callAjaxForgetInstnDetails($(select).attr('id'),$(ui.item).val());
-							
 						},						
 						change: function( event, ui ) {								
 						
-							//setEdiIndicator($(select).attr('id').substr(12));		
 							if ( !ui.item ) {
 								var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
 								valid = false;
@@ -58,17 +48,9 @@
 								
 
 								/*If user enters new text that is not available in the autocompleter then this block will be execute*/
-								if(!valid ){	
-									
-
-									 /*To clear the error message when enter text in the autocompleter field*/
-									    if(select.val() != "")
-								           select.next().next().html('');	
-										
-									//$(select).append('<option value="New" selected>'+$(this).val()+'</option>');
-									//callForId(select.attr('id'));	
-									
-									//callAjaxForgetInstnDetails($(select).attr('id'),$(ui.item).val());
+								if(!valid ){
+								  $(select).val(0);
+									$(select).next().val('Select');
 									return false;
 								}							
 							}
