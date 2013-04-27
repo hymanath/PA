@@ -567,8 +567,18 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str +='<table id="subLevelTable">';
 		if(type == 'constituency')
 		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+' Constituency</h4>';
-		else if(type == "mandal")
+		else if(type == "mandal"){
+
+			if(jsObj.id.substring(0,1) == "1"){
+				var muncipalType = myresults.castVosList[0].muncipalityType;
+
+                if( muncipalType == "MUNCIPALITY" || muncipalType == "CORPORATION")
+				 str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' </h4>';
+				else
+				 str+='<h4 id="sublevelHeading">Ward wise Caste Statistics In '+typeName+' </h4>';
+			}else
 		str+='<h4 id="sublevelHeading">Panchayat wise Caste Statistics In '+typeName+' </h4>';
+		}
 		else if(type =="panchayat")
 		{
 			var temp = "";
@@ -598,8 +608,21 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		
 		if(type == "constituency")
 		str +='<th>Mandal</th>';
-		if(type == "mandal")
-		str +='<th>Panchayat</th>';
+		if(type == "mandal"){
+
+			if(jsObj.id.substring(0,1) == "1"){
+				var muncipalType = myresults.castVosList[0].muncipalityType;
+				
+
+                if( muncipalType == "MUNCIPALITY" || muncipalType == "CORPORATION")
+				 str +='<th>Booth</th>';
+				else
+				 str +='<th>Ward</th>';
+			}else
+		    str +='<th>Panchayat</th>';
+		}
+
+
 		if(type =="panchayat")
 		{
 		  if(buildType == "hamlet")
