@@ -204,6 +204,9 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 <!--<div id ="impFamilesBasicSubDetailsTitle" ></div>-->
 <div id="impFamilesBasicSubDetailsDiv" class="widget blue whitegloss" style="width:926px;margin-left:15px;">
+
+<div id="ajaxImageDiv1" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="margin-left: 230px;"/> </div>
+
 <h4 id="impFamilesBasicSubDetailsTitle"></h4>
 <div id ="impFamilesBasicSubDetails" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;"></div>
 </div>
@@ -615,6 +618,7 @@ $("#ajaxImageDiv").css('display','none');
 function buildTableForImpFamilesMandal(impFamilesData,name,type)
 {
 	$("#ajaxImageDiv").css('display','none');
+	$("#ajaxImageDiv1").css('display','none');
 	var impFamiList = new Array();
   for(var i in impFamilesData){
      var data={};
@@ -820,9 +824,6 @@ function  buildFamilyMembers(result,jsObj,type){
 		  str+='     <th>Booth</th>';
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
-		  str+='     <th>Influencing People</th>';
-		  str+='     <th>Cadre People</th>';
-		  str+='     <th>Politician People</th>';
 		  str +='	 <th>Caste</th>';
 		  str+='	 <th class="widthStyle">Eldest Person</th>';
 		  str+='	 <th>Gender</th>';
@@ -830,6 +831,7 @@ function  buildFamilyMembers(result,jsObj,type){
           str+='     <th class="widthStyle">Youngest Person</th>';
 		  str+='	 <th>Gender</th>';
 		  str+='	 <th>Age</th>';
+		  str+='     <th>Type</th>';
           str+='   </tr>';
           str+='  </thead>';
           str+='  <tbody>';
@@ -846,7 +848,7 @@ function  buildFamilyMembers(result,jsObj,type){
 		  str +='		<td>'+result[i].boothName+'</td>';
           str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str +='		<td>'+result[i].numberOfPeople+'</td>';
-		if(result[i].isInfluencePerson == true){
+		/*if(result[i].isInfluencePerson == true){
 		 str+='<td><img title="InfluencingPeople" alt="InfluencePerson" src="./images/icons/influencing.png"/></td>';
 		 }else{
 		  str+='       <td></td>';
@@ -860,7 +862,7 @@ function  buildFamilyMembers(result,jsObj,type){
 		  str+='<td><img title="Politician" alt="Politicion" src="./images/icons/politican.png"/></td>';
 		 }else{
 		  str+='       <td></td>';
-		 }
+		 }*/
 		  str +='       <td>'+result[i].cast+'</td>';
           str +='		<td class="widthStyle">'+result[i].elder+'</td>';
 		  str +='		<td>'+result[i].elderGender+'</td>';
@@ -868,6 +870,20 @@ function  buildFamilyMembers(result,jsObj,type){
           str +='		<td class="widthStyle">'+result[i].younger+'</td>';
 		  str +='		<td>'+result[i].youngerGender+'</td>';
 		  str +='		<td>'+result[i].youngerAge+'</td>';
+		  if(result[i].isInfluencePerson == true || result[i].isCadrePerson == true || result[i].isPoliticion == true){
+			  var temp = "";
+			 if(result[i].isInfluencePerson == true)
+				temp = "Influence";
+			 if(result[i].isCadrePerson == true)
+				temp = "Cadre";
+			 if(result[i].isPoliticion == true)
+				temp = "Politicion";
+
+		   str+='<td><img title="'+result[i].name+': '+temp+'" alt="'+result[i].name+'" src="./images/icons/politican.png" class ="mouseOver"/></td>';
+
+		  }else{
+			str +='		<td></td>';
+		  }
           str+='   </tr>';
 	 }
           str+='  </tbody>';
@@ -893,7 +909,7 @@ function  buildFamilyMembers(result,jsObj,type){
 			"iDisplayLength": 15,
 			"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 			//"bFilter": false,"bInfo": false
-			  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
+			  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null
 		 
 		  
 		] 
@@ -922,7 +938,7 @@ function  buildFamilyMembers(result,jsObj,type){
 		"iDisplayLength": 30,
 		"aLengthMenu": [[30, 90, -1], [30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null,null,null
+		  "aoColumns": [null,null,null,null,null,null,null,null,null,null,null,null
      
 	  
     ] 
