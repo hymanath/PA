@@ -70,6 +70,10 @@
 
 
 <style type="text/css">
+.dataTables_wrapper{
+	padding-top: 19px !important;
+}
+
 #emprtyData
 {
 
@@ -1569,17 +1573,28 @@ for  body3 start    result  -->
 	   <div id="permanentlyUpdateButtonDiv" ><input id="permanentlyUpdateDiv" type="button" onclick="permanentlyUpdateCastePartyInfo();" value="Update Caste And Party Info" class="btn btn-info" /></div>
 	   <div id="casteRefreshButtonDiv" style="margin-top: 10px;"><input type="button" onclick="getUpdatedCastePartyInfo();" value="Get Updated Caste And Party Info" class="btn btn-info" /></div>
 	</div>
-	<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;"></div>
+	<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;margin-top: 21px;"></div>
 	
-	<div id='localCastStatsTabContent_header' style="width:48%;float:left;"></div>
-	<div class="castDetailsMainDiv" style="width:48%;float:left;">
-		<div id="localCastDetailsDiv" style="margin-bottom:0px;"></div>
-		<div id="localCastChatDiv"></div>
+	
+	<div>
+	<table style="width:970px;">
+	 <tr>
+	 <td style="width: 308px;">
+<div id='localCastStatsTabContent_header' ></div>
+	</td><td style="width:180px;">
+	<span id="localCastDetailsDiv" ></span>
+	</td><td style="width:480px;">
+	<span id="localCastChatDiv" ></span>
+	</td>
+	</tr>
+	</table>
 	</div>
 	
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div>
 	<div id='castTab'></div>
 	<div id='localityTab'></div>
+	
+	<span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>
 
 	<hr>
 	<div id='partyBasicInfoStatsTabNewTitle' style="clear:both;"></div>
@@ -1594,9 +1609,9 @@ for  body3 start    result  -->
 	</div>
 	<div style="clear:both;">
 	  <span id="castPartyNewPopupShowBtn"><input type="button" class="btn btn-info" value="View Castes Vs Party Analysis" style="float:left;margin-top:7px;margin-bottom:5px;" onclick="getPartyWiseCastInfo();"/></span>
-	  	 <!-- <span id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="ShowCastPartyPopupDiv();"/></span>-->
+	  	 <!-- <span id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="ShowCastPartyPopupDiv();"/></span>
 	  
-	  <span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>
+	  <span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>-->
 	</div>
 
 	<!-- user voter categories div -->
