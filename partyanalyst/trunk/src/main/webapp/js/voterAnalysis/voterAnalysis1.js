@@ -4291,8 +4291,13 @@ function callAjaxorVoterDetails(jsObj,url){
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);
 					  
 					  if(jsObj.retrieveType == "brief"){
-						  if(jsObj.type == maintype || jsObj.type == "hamletLocalArea" )
+
+						  if(jsObj.type == "localElectionBody")
+							  jsObj.type = "mandal";
+						 
+						  if(jsObj.type == maintype || jsObj.type == "hamletLocalArea" ){
 						  buildVoterDetailsTable(myResults,jsObj.type,jsObj.retrieveType);
+						  }
 					  }else if(jsObj.retrieveType == "all"){
 
 						 // buildVoterDetailsTable(myResults,jsObj.type);
