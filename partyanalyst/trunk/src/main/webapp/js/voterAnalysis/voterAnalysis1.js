@@ -1571,6 +1571,7 @@ function addToPolitician(voterId,name)
 							    else if(jsObj.task == "getCastInfo")
 								{
 								    $("#votersDiv2").show();
+									 $("#casteDiv").show();
 									buildCastInfoData(myResults,jsObj);
 									buildCastPiechart(myResults,jsObj);
 								}
@@ -1593,6 +1594,8 @@ function addToPolitician(voterId,name)
 								}
 								else if(jsObj.task == "getCastInfoForsubLevels")
 								{   $("#votersDiv2").show();
+								$("#casteDiv").show();
+								
 									buildCastInfoForSubLevels(myResults,jsObj);
 								}
 								else if(jsObj.task == "importantFamiliesinfoForHamletsByBooth"){
@@ -1992,7 +1995,6 @@ function addToPolitician(voterId,name)
 			showConst=false;
 		}
 	});
-	
 	$('#ShowConstMenu1').live('click',function(){
 	if(showConst) {
 			$("#newsCountDiv").hide();
@@ -2012,7 +2014,7 @@ function addToPolitician(voterId,name)
 			showConst=true;
 		}
 	});
-
+	
 	function showDetailedElectionResult(id,conid,elYear)
 	{
 	var index = id.substring((id.indexOf('_')+1),id.length);
@@ -3234,7 +3236,7 @@ function buildVotersInFamily(results){
 
 function buildCastInfoData(myresults,jsObj)
 {
-	//alert('234');
+
 	 if(mainreqid == jsObj.id)
   {
 	$('#localCastDetailsHeadingDiv').html('');
@@ -3251,8 +3253,10 @@ function buildCastInfoData(myresults,jsObj)
 	var voters = '';
 	if(totalVoters == 0){
 		$('#votersMainOuterDiv2').hide();
+		$('#casteDiv').hide();
 		return false;
 	}
+	$('#casteDiv').show();
 	$('#votersMainOuterDiv2').show();
 	if(result.maleVoters > 0){
 		
@@ -3260,7 +3264,8 @@ function buildCastInfoData(myresults,jsObj)
         $("#castPartyPopupShowBtn").hide();
 	   else
 		   $("#castPartyPopupShowBtn").show();
-		$("#partyBasicInfoStatsTabNewTitle").html("<div id='partyDiv'><h2 id='subHeading'>Party Wise Voters Details</h2><input type='button' value='Graphical Representation Of Party Wise Voters Details' class='btn btn-info pull-right' onClick='showPartyWiseDetailsInGraph()' id='partyGraphButtonId'/></div>");
+		   $("#partywiseCasteTitle").html("Party Wise Caste Statistics In "+jsObj.typename+" ");
+		$("#partyBasicInfoStatsTabNewTitle").html("<div id='partyDiv'><input type='button' value='Graphical Representation Of Party Wise Voters Details' class='btn btn-info pull-right' onClick='showPartyWiseDetailsInGraph()' id='partyGraphButtonId'/></div>");
 	    $("#LocalCastDiv").css('padding-bottom','20px');
 	}
 	else{
@@ -3504,6 +3509,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	});
 	if(res > 0)
 	   {
+	   $("#casteDiv").show();
 	   $("#votersMainOuterDiv2").show();
 	   }
 }
@@ -8706,7 +8712,6 @@ function selectAllcategorycheckbox()
 function buildAgeWiseWiseDetails(result,jobj)
 {
 	
-
 var str = '';
 if(result != null && result.length >0){
 
@@ -8714,45 +8719,69 @@ str +='<div>';
 for(var i in result)
 	{
 
-
 str+="<div style='border:1px solid #d3d3d3;padding:5px 5px 31px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;'>";
 str+= "<h2 id='subHeading' style='margin-left:-5px;width:97%;'><b>"+result[i].name+" Attribute Age Wise Voters Analysis</b></h2>";
 str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;'>";
 str+="<thead class='info'>";
 str  +='<tr>';
-str+="<th>"+result[i].name+"</th>";
-str+=" <th>18-25</th>";
-str+=" <th>25-36</th>";
-str+=" <th>36-45</th>";
-str+=" <th>46-60</th>";
-str+=" <th>60</th>";
+str+="<th rowspan=3>"+result[i].name+"</th>";
+str+=" <th colspan=3>18-25</th>";
+str+=" <th colspan=3>25-36</th>";
+str+=" <th colspan=3>36-45</th>";
+str+=" <th colspan=3>46-60</th>";
+str+=" <th colspan=3>60-Above</th>";
+str+='</tr>';
+
+
+str  +='<tr>';
+
+str+=" <th>Male</th>";
+str+=" <th>Female</th>";
+str+=" <th>Total</th>";
+str+=" <th>Male</th>";
+str+=" <th>Female</th>";
+str+=" <th>Total</th>";
+str+=" <th>Male</th>";
+str+=" <th>Female</th>";
+str+=" <th>Total</th>";
+str+=" <th>Male</th>";
+str+=" <th>Female</th>";
+str+=" <th>Total</th>";
+str+=" <th>Male</th>";
+str+=" <th>Female</th>";
+str+=" <th>Total</th>";
+
+str+='</tr>';
 str+="</thead>";
-str  +='</tr>';
+
+
 
 for(var j in result[i].votersDetailsVOList)
 	{
 	var obj = result[i].votersDetailsVOList[j];
+
 str +='<tr>';
 if(obj.maleVotersCountBetween18To25 == null)
 	 obj.maleVotersCountBetween18To25 =0;
-else if(obj.femaleVotersCountBetween18To25 == null)
+if(obj.femaleVotersCountBetween18To25 == null)
 	obj.femaleVotersCountBetween18To25 =0;
-else if(obj.maleVotersCountBetween26To35 == null)
+if(obj.maleVotersCountBetween26To35 == null)
 	obj.maleVotersCountBetween26To35 =0;
-else if(obj.femaleVotersCountBetween26To35 == null)
+if(obj.femaleVotersCountBetween26To35 == null)
 	obj.femaleVotersCountBetween26To35 =0;
-else if(obj.maleVotersCountBetween36To45 == null)
+if(obj.maleVotersCountBetween36To45 == null)
 	obj.maleVotersCountBetween36To45 =0;
-else if(obj.femaleVotersCountBetween36To45 == null)
+if(obj.femaleVotersCountBetween36To45 == null)
 	obj.femaleVotersCountBetween36To45 =0;
-else if(obj.maleVotersCountBetween46To60 == null)
-	obj.maleVotersCountBetween46To60 =0;
-else if(obj.femaleVotersCountBetween46To60 == null)
-	obj.femaleVotersCountBetween46To60 =0;
-else if(obj.maleVotersCountAbove60 == null)
-	obj.maleVotersCountAbove60 =0;
-else if(obj.femaleVotersCountAbove60 == null)
-	obj.femaleVotersCountAbove60 =0;
+if(obj.maleVotersCountBetween46To60 == null)
+	obj.maleVotersCountBetween46To60 = 0;
+if(obj.femaleVotersCountBetween46To60 == null)
+	obj.femaleVotersCountBetween46To60 = 0;
+if(obj.maleVotersCountAbove60 == null)
+	obj.maleVotersCountAbove60 = 0;
+
+if(obj.femaleVotersCountAbove60 == null)
+	obj.femaleVotersCountAbove60 = 0;
 
 var totalFor18To25 = obj.maleVotersCountBetween18To25+obj.femaleVotersCountBetween18To25;
 var totalFor26To35 = obj.maleVotersCountBetween26To35+obj.femaleVotersCountBetween26To35;
@@ -8761,10 +8790,27 @@ var totalFor46To60 =obj.maleVotersCountBetween46To60+obj.femaleVotersCountBetwee
 var totalFor60 = obj.maleVotersCountAbove60+obj.femaleVotersCountAbove60;
 
 str +='<td>'+obj.name+'</td>';
+
+str +='<td>'+obj.maleVotersCountBetween18To25+'</td>';
+
+str +='<td>'+obj.femaleVotersCountBetween18To25+'</td>';
+
 str +='<td>'+totalFor18To25+'</td>';
+str +='<td>'+obj.maleVotersCountBetween26To35+'</td>';
+
+str +='<td>'+obj.femaleVotersCountBetween26To35+'</td>';
 str +='<td>'+totalFor26To35+'</td>';
+str +='<td>'+obj.maleVotersCountBetween36To45+'</td>';
+
+str +='<td>'+obj.femaleVotersCountBetween36To45+'</td>';
 str +='<td>'+totalFor36To45+'</td>';
+str +='<td>'+obj.maleVotersCountBetween46To60+'</td>';
+
+str +='<td>'+obj.femaleVotersCountBetween46To60+'</td>';
 str +='<td>'+totalFor46To60+'</td>';
+str +='<td>'+obj.maleVotersCountAbove60+'</td>';
+
+str +='<td>'+obj.femaleVotersCountAbove60+'</td>';
 str +='<td>'+totalFor60+'</td>';
 
 
