@@ -414,6 +414,16 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 	
 	function buildBoothsTable(results)
 	{
+			var partN0 = $("#boothField :selected").text();
+			var value = partN0.substring(9);
+			var pageNumber = 0;
+			var index = 0;
+			for(var i=0;i<results.length;i++){
+			if(results[i].partNo == value)
+				index = i+1;
+			}
+		pageNumber = Math.ceil(index/10);
+		
 		var localArr = new Array();
 		
 		for(var i in myResults)
@@ -427,17 +437,32 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 			localArr.push(obj);
 		}
 
+		YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
+	{
+		var str ='';
+		var id=oRecord.getData("partNo");
+        if(id == value)
+ 		 str+='<div  id="testRow">'+id+'</div>';
+		else
+		  str+='<div>'+id+'</div>';
+		elLiner.innerHTML =str;
+	}
+
 		var myColumnDefs = [
 		
-		{key:"partNo",label:"Booth Part No",sortable:true, resizeable:true},	
+		//{key:"partNo",label:"Booth Part No",sortable:true, resizeable:true},	
+		{key:"partNo", label: "Booth Part No",sortable:true, resizeable:true,formatter:YAHOO.widget.DataTable.Type},
 		{key:"location",label:"Booth Location", resizeable:true},
 		{key:"villagesCovered",label:"Villages Covered", resizeable:true},
 		{key:"mandal",label:"Mandal/Municipal/Corp/GMC",sortable:true, resizeable:true},
+			
 		];
 		
 		var configs = {
 							paginator: new YAHOO.widget.Paginator({ 
-							rowsPerPage    : 20			        
+							rowsPerPage    : 10	,
+							totalRecords:results.length,
+							initialPage:pageNumber
 							})
 					   };
 		var myDataSource = new YAHOO.util.DataSource(localArr);
@@ -456,7 +481,7 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 	 {
 		  	var contentStr = '';
 		 	contentStr +='<div class="yui-skin-sam"><div id="boothsDetailsDiv"></div></div>';
-		 	/*  var myPanel = new YAHOO.widget.Dialog("boothDetailsPopup", {             
+		 	/* var myPanel = new YAHOO.widget.Dialog("boothDetailsPopup", {             
 		    
 		 		 fixedcenter : true, 
 		 		 visible : true,  
@@ -468,14 +493,12 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 		 	   });
 		 	   myPanel.setHeader("Booth Complete Details");
 		 	   myPanel.setBody(contentStr);
-		 	   myPanel.render(); */
-			   
+		 	   myPanel.render();*/
 				
 			   	$('#boothDetailsPopup').dialog({ 
 	                            title:'Booth Complete Details',
 	                            height: 'auto',
-								width: 600,
-								height:600,
+								width: 800,
 								closeOnEscape: false,
 								show: "blind",
 								hide: "explode",
@@ -486,10 +509,10 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 
 				});
 				$('#boothDetailsPopup').html(contentStr);
-		 	   var myDataTable = new YAHOO.widget.DataTable("boothsDetailsDiv",
+				
+				var myDataTable = new YAHOO.widget.DataTable("boothsDetailsDiv",
 		 				myColumnDefs, myDataSource,configs);
 						
-				
-		 
+			$('#testRow').closest('tr').css('background-color','red');
 	 }
 
