@@ -8713,6 +8713,9 @@ str +='<div>';
 for(var i in result)
 	{
 
+
+str+="<div style='border:1px solid #d3d3d3;padding:5px 5px 31px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;'>";
+str+= "<h2 id='subHeading' style='margin-left:-5px;width:97%;'><b>"+result[i].name+" Attribute Age Wise Voters Analysis</b></h2>";
 str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;'>";
 str+="<thead class='info'>";
 str  +='<tr>';
@@ -8768,6 +8771,7 @@ str +='</tr>';
 
 	}
  str+="</table>";
+ str+='</div>';
 str+="</div>";
 	}
 	}
