@@ -60,13 +60,13 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
-
 <title>Cast Wise Voter Details</title>
 </head>
 
 <style type="text/css">
 
 
+#amount{width:90%;text-align:center;}
 
 .localCastStatsVotersTitle{border-radius: 3px 3px 3px 3px;
     color: #FFFFFF !important;
@@ -256,6 +256,7 @@ var buildType          =  "${buildType}";
 var	queryType		   =  "${queryType}";
  var resultFor = '${resultFor}';
 //myBtn
+var castePercent = null;
 
 if(/panchayat/i.test(type) && /hamlet/i.test(buildType))
 {//alert('ok');
@@ -365,7 +366,6 @@ function getCastInfoForsubLevel(id,publicationId,type,resultFor)
 		{
 		flag =false;
 		}*/
-		
 		if(true)
 		{
 		var jsObj=
@@ -405,6 +405,7 @@ function callAjax(jsObj,url)
 									{   $("#voterCasteAjaxImg").hide();
 									 buildCastInfoForSubLevels(myResults,jsObj);
 									 buildCastSubLevelsDiv(myResults);
+									 castePercent = myResults.castPercent;
 									}
 									else if(jsObj.task =="getVotersInACaste")
 								{
@@ -728,7 +729,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	$('#subLevelTable tr').removeClass("even");
 	$('#subLevelTable td').removeClass("sorting_1");
 	//}
-	buildHamletWiseCastResultsGraph(null);
+	buildHamletWiseCastResultsGraph(null,null);
 	}
 
 
@@ -853,20 +854,66 @@ function openProblemEditForm(id,boothId)
 
 
 
-function buildHamletWiseCastResultsGraph(selectedCast)
-{  
+/*var selectValue;
+$("input:radio[name=castTypeRadio]:checked").live("change",function(){
+ if ($(this).is(":checked"))
+    {
+        selectValue = $(this).val();
+    }
+});*/
+
+
+
+function buildHamletWiseCastResultsGraph(selectedCast,percentage)
+{
 	var myChart1 = new Array();
+	var castMain = null;
 	
-
+	//debugger;
 	if(selectedCast == null)
-	  var castMain = sort_unique(castTemp);
-	else
-	 var castMain = sort_unique(selectedCast);
+	{
+		castMain = sort_unique(castTemp);
+		var radios = document.getElementsByName('castTypeRadio');
+		
+		if(radios != null && radios.length > 0)
+		{
+			var selectValue;
+			for (var r=0;r<radios.length;r++) 
+			{
+				if (radios[r].checked) 
+					selectValue=radios[r].value;
+				if(selectValue != 'All')
+				{
+					castMain=[];
+					$("#castSelectdId option:selected").each(function()
+					{
+						castMain.push($(this).text());
+					});
+				}
+			}
+		}
+    }
 
-	 var avgCal = new Array();
-	 var mySort = new Array();
-	 var newCast = new Array();
-	 
+	else
+      castMain = sort_unique(selectedCast);
+	
+		//console.log(castMain);
+	if(percentage != null)
+	{
+		for(var per=0;per<castePercent.length;per++)
+		{
+			if(castePercent[per].id < percentage)
+			{
+				var cIndex = castMain.indexOf(castePercent[per].name);
+				if(cIndex != -1)
+					castMain.splice(cIndex,1);
+			}
+		}
+	}
+
+	var avgCal = new Array();
+	var mySort = new Array();
+	var newCast = new Array();
 	var newhamletMainPie = new Array();
 	var countColor = 0;
 		
@@ -878,79 +925,86 @@ function buildHamletWiseCastResultsGraph(selectedCast)
   
 	for( var k in castMain )
 	{ 
-	var custSort = new Object();
-	custSort["cast"] = castMain[k];
-	 var avgData = 0;
-	 var count = 0;
+		var custSort = new Object();
+		custSort["cast"] = castMain[k];
+		var avgData = 0;
+		var count = 0;
    
-	for(var l in myChart) 
-	{
-	var reqObj1 = myChart[l];
-	var dataObj1 = reqObj1['data'];
-	if(dataObj1[castMain[k]]){
-	count++;
-	 avgData = parseInt(avgData)+parseInt(dataObj1[castMain[k]]);
+		for(var l in myChart) 
+		{
+			var reqObj1 = myChart[l];
+			var dataObj1 = reqObj1['data'];
+			
+			if(dataObj1[castMain[k]])
+			{
+				count++;
+				avgData = parseInt(avgData)+parseInt(dataObj1[castMain[k]]);
+			}
+			
+		}
 	
-	} else{
-	 	 }
+		avgCal.push(avgData/parseInt(hamletMainPie.length));//(count));
+		custSort["avg"] = avgData/(hamletMainPie.length);//(count));
+		mySort.push(custSort);
 	}
-	avgCal.push(avgData/parseInt(hamletMainPie.length));//(count));
-	custSort["avg"] = avgData/(hamletMainPie.length);//(count));
-	mySort.push(custSort);
-	}
+	
 	mySort.sort(function(a,b) { return parseFloat(b.avg) - parseFloat(a.avg) } );
 	avgCal.sort(function(a,b) { return parseFloat(b) - parseFloat(a) } );
   
 	avgTemp['data'] = avgCal;
 	myChart1.push(avgTemp);
 	
-	//sorting x axis
 	var gruopCast =new Array();
+	
 	for (var p in mySort)
 	{
-	var myObj = mySort[p];
-	newCast.push(myObj['cast']);
-	
+		var myObj = mySort[p];
+		newCast.push(myObj['cast']);
 	}
+
  	var dataGrouping1 = {
     groupPixelWidth: 40,
     units: [[
         'name',
         [1, 2, 3,4,5,6,7]
         ]]
-};
+	};
+
 	var tempLine = new Array();
 
-	// building column
-  for(var i in myChart) 
+	for(var i in myChart) 
 	{
-	var clmTemp = new Object();
-	var reqObj = myChart[i];
-	//clmTemp['type'] = 'column';
-	clmTemp['name'] = reqObj['name'];
-	//loop for getting same colors for piechart and bars
-	for (var g in hamletMainPie )
-	{ 
-	  var newHamletTemp = hamletMainPie[g];
-	if(newHamletTemp['name'] == reqObj['name'])
-	{ 
-	countColor = countColor + 1;
-	newHamletTemp['color']  = Highcharts.getOptions().colors[countColor];
-	newhamletMainPie.push(hamletMainPie[g]);
-	}
-	}
-	 var dataObj= reqObj['data'];
-	 var newdataObj = new Array();
-	for( var j in newCast )
-	{ 
-	 if(dataObj[newCast[j]])
-	 newdataObj.push(dataObj[newCast[j]]);
-	 else{
-	 	 newdataObj.push(0);
-	 }
-	}
-	clmTemp['data'] = newdataObj;
-	//clmTemp['dataGrouping'] = dataGrouping1;
+		var clmTemp = new Object();
+		var reqObj = myChart[i];
+		
+		clmTemp['name'] = reqObj['name'];
+	
+		//loop for getting same colors for piechart and bars
+		for (var g in hamletMainPie )
+		{ 
+			var newHamletTemp = hamletMainPie[g];
+			if(newHamletTemp['name'] == reqObj['name'])
+			{ 
+				countColor = countColor + 1;
+				newHamletTemp['color']  = Highcharts.getOptions().colors[countColor];
+				newhamletMainPie.push(hamletMainPie[g]);
+			}
+		}
+		
+		var dataObj= reqObj['data'];
+		var newdataObj = new Array();
+		
+		for( var j in newCast )
+		{ 
+			if(dataObj[newCast[j]])
+			newdataObj.push(dataObj[newCast[j]]);
+			else
+			{
+	 			newdataObj.push(0);
+			}
+		}
+		
+		clmTemp['data'] = newdataObj;
 	    tempLine.push(clmTemp);
 		myChart1.push(clmTemp);
 	}
@@ -1197,7 +1251,7 @@ function buildCastWiseChart()
 		return;
 	}
 	
-	  buildHamletWiseCastResultsGraph(selectedCastArray);
+	  buildHamletWiseCastResultsGraph(selectedCastArray,null);
 }
 
 function buildCastInfoBasedOnOptions(option)
@@ -1206,19 +1260,62 @@ function buildCastInfoBasedOnOptions(option)
 	if(option == "all")
 	{
 		$("#casteHideAndShowOptionsDiv").css('display','none');
-		buildHamletWiseCastResultsGraph(null);
+		buildHamletWiseCastResultsGraph(null,null);
 	}
 	else
 		$("#casteHideAndShowOptionsDiv").css('display','block');
 	
 		
 }
+// The function is for slider value -- Created by sasi -- START
+var votersRange;
+$(function() {
+$( "#slider" ).slider({
+value:0,
+min: 0,
+max: 50,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+},
+change: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+votersRange=ui.value;
+buildGraphBySlide();
+}
+});
+votersRange=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
+votersRange=$( "#slider" ).slider( "value" );
+});
+
+function buildGraphBySlide(){
+buildHamletWiseCastResultsGraph(null,votersRange);
+}
+
+// The function is for slider value -- Created by sasi -- END
+
+//To Hide the Range Slider when Particular Casted Selected
+/*$('#castSelectRadio').live("click",function(){
+	$('#rangeSliderDiv').css('display','block');
+});
+$('#castAllRadio').live("click",function(){
+	$('#rangeSliderDiv').css('display','none');
+});*/
+
 
 </script>
 <body>
 <div id="voterCasteAjaxImg" style=" display:block;margin-top:100px;margin-left:300px;margin-right:auto;"><img  src="./images/icons/goldAjaxLoad.gif" /></div>
 <div id="casteSelectDiv"></div>
 
+<div id="rangeSliderDiv" style="width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:10px 20px;" >
+<h5>Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
+<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
+
+<p>
+<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+</p>
+</div>
 <div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
 <div id="castGrid" style="height: 500px; display: none; overflow-x: auto;"></div>	
 <div id="errorDiv" align="center"></div>
