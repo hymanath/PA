@@ -747,6 +747,7 @@ public String getVotersCastInfoByConstituency()
 			else buildType="localArea";
 		}
 		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(new Long(id), new Long(publicationId),type,userId,jObj.getLong("constituencyId"),buildType,jObj.getString("queryType"));
+		constituencyManagementVO.setCastPercent(votersAnalysisService.getCasteWisePercentage(sublevelCastDetails));
 		constituencyManagementVO.setCastVosList(sublevelCastDetails);
 	
 		
