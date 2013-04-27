@@ -793,7 +793,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					for(int i=0;i<boothsList.size();i++)
 					{
 						Object[] obj = (Object[])boothsList.get(i);
-						regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No - "+ obj[1]));
+						regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No "+ obj[1]));
 					}
 				}	
 		} else if(areaFlag.equalsIgnoreCase(IConstants.RURAL_TYPE))
@@ -822,7 +822,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			for(int j=0;j<boothsList.size();j++)
 			{
 				Object[] obj = (Object[])boothsList.get(j);
-				regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No" + obj[1]));
+				regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No " + obj[1]));
 			}
 		}
 		return regionsList;		
