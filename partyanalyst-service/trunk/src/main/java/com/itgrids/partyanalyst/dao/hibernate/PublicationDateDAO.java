@@ -40,4 +40,10 @@ public class PublicationDateDAO extends
 		query.setParameter("publicationDateId", publicationDateId);
 		return (String) query.uniqueResult();
 	}
+	
+	public Long getLatestPublicationId(){
+		Query query = getSession().createQuery("select model.publicationDateId from PublicationDate model where model.date = (select max(model1.date) from PublicationDate model1)");
+		
+		return (Long) query.uniqueResult();
+	}
 }
