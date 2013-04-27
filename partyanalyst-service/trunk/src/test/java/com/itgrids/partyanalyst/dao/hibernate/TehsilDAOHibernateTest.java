@@ -64,13 +64,18 @@ public class TehsilDAOHibernateTest extends BaseDaoTestCase {
 		Assert.assertEquals(57, tehsil.size());
 	}*/
 	
-	public void testfindTehsilsByConstituencyIdAndPublicationDateId()
+	/*public void testfindTehsilsByConstituencyIdAndPublicationDateId()
 	{
 		List<Object[]> list = tehsilDAO.findTehsilsByConstituencyIdAndPublicationDateId(232l, 7l);
 		for(Object[] params : list)
 		{
 			System.out.println(params[0]);
 		}
+	}*/
+	
+	public void testGetTehsilNameByTehsilId()
+	{
+		System.out.println(tehsilDAO.getTehsilNameByTehsilId(844l));
 	}
 	
 }
