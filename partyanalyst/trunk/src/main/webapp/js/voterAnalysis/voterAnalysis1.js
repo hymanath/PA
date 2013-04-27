@@ -1993,12 +1993,12 @@ function addToPolitician(voterId,name)
 	});
 	
 	$('#ShowConstMenu1').live('click',function(){
-	if(!showConst) {
+	if(showConst) {
 			$("#newsCountDiv").hide();
 			$("#problemsCountDiv").hide();
 			$("#InfluencingPeopleCountDiv").hide();
 			$(this).html('Show <i class="icon-chevron-down"></i>'); 
-			showConst=true;
+			showConst=false;
 		}
 		else {
 			showNewsDetails(id,publicationId,type);
@@ -2008,7 +2008,7 @@ function addToPolitician(voterId,name)
 			$("#problemsCountDiv").css("display","block");
 			$("#InfluencingPeopleCountDiv").css("display","block");
 			$(this).html('Hide <i class="icon-chevron-up"></i>');
-			showConst=false;
+			showConst=true;
 		}
 	});
 
