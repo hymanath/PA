@@ -4605,12 +4605,18 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			voterHouseInfoVO.setElder(voterVOs.get(voterVOs.size()-1).getFirstName());
 			
 			for(int i=0;i<voterVOs.size();i++){
-			if(voterVOs.get(i).getIsInfluencePerson() != null &&voterVOs.get(i).getIsInfluencePerson())
+			if(voterVOs.get(i).getIsInfluencePerson() != null &&voterVOs.get(i).getIsInfluencePerson()){
 				voterHouseInfoVO.setIsInfluencePerson(voterVOs.get(i).getIsInfluencePerson());
-			if(voterVOs.get(i).getIsCadrePerson()!= null &&  voterVOs.get(i).getIsCadrePerson())
+				voterHouseInfoVO.setName(voterVOs.get(i).getFirstName());
+			}
+			if(voterVOs.get(i).getIsCadrePerson()!= null &&  voterVOs.get(i).getIsCadrePerson()){
 				voterHouseInfoVO.setIsCadrePerson(voterVOs.get(i).getIsCadrePerson());
-			if(voterVOs.get(i).getIsPoliticion() != null && voterVOs.get(i).getIsPoliticion())
+				voterHouseInfoVO.setName(voterVOs.get(i).getFirstName());
+			}
+			if(voterVOs.get(i).getIsPoliticion() != null && voterVOs.get(i).getIsPoliticion()){
 				voterHouseInfoVO.setIsPoliticion(voterVOs.get(i).getIsPoliticion());
+				voterHouseInfoVO.setName(voterVOs.get(i).getFirstName());
+			}
 			}
 			if( checkedEle.equalsIgnoreCase("panchayat") && buildType.equalsIgnoreCase("hamlet"))
 				voterHouseInfoVO.setHamletName(voterVOs.get(voterVOs.size()-1).getHamlet());
