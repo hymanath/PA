@@ -1953,21 +1953,48 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					}    
 				}else{
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().substring(1)));
-					List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
-					if(!"main".equalsIgnoreCase(queryType)){
-						List<SelectOptionVO> wards = new ArrayList<SelectOptionVO>();
-						SelectOptionVO optionVO = null;
-						for(Object[] ward:wardsList){
-							optionVO = new SelectOptionVO();
-							optionVO.setName(ward[1] != null?ward[1].toString():"");
-							optionVO.setId((Long)ward[0]);
-							wards.add(optionVO);
+					
+					String electionType = localElectionBodyDAO.get((Long) list.get(0)).getElectionType().getElectionType();
+					
+					if(electionType.equalsIgnoreCase(IConstants.GHMC)){
+					
+						List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
+						if(!"main".equalsIgnoreCase(queryType)){
+							List<SelectOptionVO> wards = new ArrayList<SelectOptionVO>();
+							SelectOptionVO optionVO = null;
+							for(Object[] ward:wardsList){
+								optionVO = new SelectOptionVO();
+								optionVO.setName(ward[1] != null?ward[1].toString():"");
+								optionVO.setId((Long)ward[0]);
+								wards.add(optionVO);
+							}
+						   mandalCasts = voterReportService.getVotersCastInfoForMultipleValues(wards,publicationDateId,userId,constituencyId,getReportLevelId("Ward"));
 						}
-					   mandalCasts = voterReportService.getVotersCastInfoForMultipleValues(wards,publicationDateId,userId,constituencyId,getReportLevelId("Ward"));
-					}
-					if("main".equalsIgnoreCase(queryType)){
-						Long castCount = boothPublicationVoterDAO.getTotalCastCountInALocation(userId, "localElectionBody", id, publicationDateId, constituencyId);
-					   mandalCasts = getVotersCastInfoForMultipleWards(wardsList,publicationDateId,userId,castCount,constituencyId);
+						if("main".equalsIgnoreCase(queryType)){
+							Long castCount = boothPublicationVoterDAO.getTotalCastCountInALocation(userId, "localElectionBody", id, publicationDateId, constituencyId);
+						   mandalCasts = getVotersCastInfoForMultipleWards(wardsList,publicationDateId,userId,castCount,constituencyId);
+						}
+					}else{
+						
+						Long castCount = boothPublicationVoterDAO.getTotalCastCountInALocation(userId, "localElectionBody", (Long) list.get(0), publicationDateId, constituencyId);
+
+						
+
+						List<Object[]> boothsList = boothDAO.getBoothsInAMunicipality((Long) list.get(0),publicationDateId,constituencyId);
+						
+						List<SelectOptionVO> localities = new ArrayList<SelectOptionVO>();
+						SelectOptionVO option = null;
+						for(Object[] booth:boothsList){
+							option = new SelectOptionVO();
+							option.setId((Long)booth[0]);
+							option.setName(booth[1]!=null?booth[1].toString():"");
+							localities.add(option);
+						}                                     
+						mandalCasts = getVotersCastInfoForMultipleBooths(localities,publicationDateId,userId,castCount,constituencyId);
+						
+						if(mandalCasts != null && mandalCasts.size() >0)
+						mandalCasts.get(0).setMuncipalityType(electionType);
+						
 					}
 				}				
 			}
