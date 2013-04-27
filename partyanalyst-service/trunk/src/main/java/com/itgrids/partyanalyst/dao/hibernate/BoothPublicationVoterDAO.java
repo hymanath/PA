@@ -2891,4 +2891,19 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	public List<Object[]> getVotersCountForCustomWardBooths(Long constituencyId,Long wardId,Long publicationDateId,Long userId)
+	{
+		Query queryObj = getSession().createQuery("select count(model.voter.voterId),model.voter.gender,model.booth.boothId,model.booth.partNo from BoothPublicationVoter model,UserVoterDetails model2 " +
+				" where model.voter.voterId = model2.voter.voterId and model2.user.userId =:userId and model2.ward.constituencyId =:wardId and model.booth.publicationDate.publicationDateId =:publicationDateId " +
+				" and model.booth.constituency.constituencyId =:constituencyId group by model.booth.boothId, model.voter.gender");
+		
+		queryObj.setParameter("constituencyId", constituencyId);
+		queryObj.setParameter("wardId", wardId);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("userId", userId);
+		
+		return queryObj.list();
+	}
+	
 }

@@ -459,7 +459,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		System.out.println(voter.size());
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		List<Long> attributeIds = new ArrayList<Long>();
 		attributeIds.add(5l);
@@ -474,7 +474,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 			
 		}
 		 
-	}
+	}*/
 	
 	/*public void testGetVoterData()
 	{
@@ -496,5 +496,23 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		
 	}*/
 	
+	/*public void testGetCategoryWiseVoterDetailsByHamletId()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getCategoryWiseVoterDetailsByHamletId(42l, 232l, 5l, 8l, 1l, 0, 100, "asc", "name");
+		System.out.println(list.size());
+	}*/
+	
+	
+	public void testGetVotersCountForCustomWard()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getVotersCountForCustomWardBooths(232l, 28858l, 8l, 1l);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params :list)
+				System.out.println(params[1]);
+		}
+		
+	}
 	
 }
