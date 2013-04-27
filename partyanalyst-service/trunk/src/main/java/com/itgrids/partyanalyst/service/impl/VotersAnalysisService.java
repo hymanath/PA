@@ -3863,6 +3863,13 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				if(!importantFamiliesInfoVo.isDataPresent())
 					importantFamiliesInfoVo = getImportantFamiliesForMandal(type,id,publicationDateId,"main",constituencyId);
 				return importantFamiliesInfoVo;
+			}else if(type.equalsIgnoreCase("localBody")){
+				
+				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForMandal(type,id,publicationDateId,"main",constituencyId);
+				if(!importantFamiliesInfoVo.isDataPresent())
+					importantFamiliesInfoVo = getImportantFamiliesForMandal(type,id,publicationDateId,"main",constituencyId);
+				return importantFamiliesInfoVo;
+				
 			}
 			else if(type.equalsIgnoreCase("booth")){
 				
@@ -4181,10 +4188,18 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			 importantFamiliesInfoVo.setTotalFemaleVoters(votersInfoForMandal.getTotalFemaleVoters());
 			 importantFamiliesInfoVo.setUnKnowVoters(votersInfoForMandal.getUnKnowVoters());
 			 if(exeType.equalsIgnoreCase("main") && importantFamiliesInfoVo.isDataPresent()){
+				 
+				 if(reqName[1].toString().equalsIgnoreCase(IConstants.GHMC)){
 					List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long)list.get(0),publicationDateId,constituencyId);
 					for (Object[] ward : wardsList){
 						importantFamiliesInfoVo.getSubList().add(getImportantFamiliesForWard((Long)ward[0],publicationDateId,"sub",constituencyId));
 					}
+				 }else{
+					List<Object[]> boothsList = boothDAO.getBoothsInAMunicipality((Long) list.get(0),publicationDateId,constituencyId);
+				     for(Object[] booth : boothsList){
+				    	 importantFamiliesInfoVo.getSubList().add(getImportantFamiliesForBooth("booth",(Long)booth[0],publicationDateId,"sub",constituencyId));
+				     }
+				 }
 			  }
 			 return importantFamiliesInfoVo;
 		}
@@ -9056,14 +9071,30 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 					
 					if(exeType.equalsIgnoreCase("main")&& importantFamiliesInfoVo.isDataPresent())
 					{
-						List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
-					
-						Map<Long,String> wardIds = new HashMap<Long,String>();
-						for (Object[] ward : wardsList){
-							wardIds.put((Long)ward[0], ward[1]!= null?ward[1].toString():"");
+						
+						if(reqName[1].toString().equalsIgnoreCase(IConstants.GHMC)){
+							  List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
+						
+							Map<Long,String> wardIds = new HashMap<Long,String>();
+							for (Object[] ward : wardsList){
+								wardIds.put((Long)ward[0], ward[1]!= null?ward[1].toString():"");
+							}
+							if(wardIds.size() > 0)
+								importantFamiliesInfoVo.setSubList(getImportantFamilyInfoForMultiple(getReportLevelId("Ward"),wardIds, publicationDateId,"Ward",constituencyId));
+						}else{
+								
+							List<Object[]> boothsList = boothDAO.getBoothsInAMunicipality((Long) list.get(0),publicationDateId,constituencyId);
+
+						
+							Map<Long,String> boothIds = new HashMap<Long,String>();
+							
+							for (Object[] booth : boothsList)
+								boothIds.put((Long)booth[0], booth[1]!= null?("booth-"+booth[1].toString()):"");
+
+							if(boothIds.size() > 0)
+								importantFamiliesInfoVo.setSubList(getImportantFamilyInfoForMultiple(getReportLevelId(IConstants.BOOTH),boothIds, publicationDateId,"Booth",constituencyId));
+						
 						}
-						if(wardIds.size() > 0)
-							importantFamiliesInfoVo.setSubList(getImportantFamilyInfoForMultiple(getReportLevelId("Ward"),wardIds, publicationDateId,"Ward",constituencyId));
 
 					}
 					return importantFamiliesInfoVo;
