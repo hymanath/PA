@@ -3336,6 +3336,7 @@ function buildCastInfoData(myresults,jsObj)
 		else{
 		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 		$('.localCastStatsVotersTitle').css("backgrond","#FFF;");
+		$('#container').css('display','none');
 		}
   }
 
@@ -3520,6 +3521,11 @@ function buildPartyWisePiechart(myResults,jsObj)
 }
    function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId,type)
 	{
+	var castesArr=[];
+	var totalVotersArr=[];
+	var maleVotersArr=[];
+	var femaleVotersArr=[];
+	
 	 if(constMgmtMainObj.castStatsArray == null || constMgmtMainObj.castStatsArray.length == 0)
 	    return;
 	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
@@ -3537,6 +3543,26 @@ function buildPartyWisePiechart(myResults,jsObj)
           str+='   </tr>';
           str+='  </thead>';
           str+='  <tbody>';
+	   
+	  // console.log(castArray);//sasi caste
+	
+	
+
+	$.each(castArray, function( key, value ) {
+		castesArr.push(value.caste);
+		totalVotersArr.push(value.castePopulation);
+		maleVotersArr.push(value.malePopulation);
+		femaleVotersArr.push(value.femalePopulation);
+	});
+	
+	//console.log(castesArr);
+	//console.log(totalVotersArr);
+	//console.log(maleVotersArr);
+	//console.log(femaleVotersArr);
+
+	buildCasteVotersChart(castesArr,totalVotersArr,maleVotersArr,femaleVotersArr);
+	   
+	   
 	   for(var i in castArray){
 	      str +='   <tr>';
 		  //str +='		<td>'+castArray[i].caste+'</td>';
@@ -8837,3 +8863,63 @@ str+="</div>";
 	}
 	$("#agerangeDiv").html(str);
 }
+
+function buildCasteVotersChart(cs,tv,mv,fv)
+ {
+ 
+ $('#container').css('display','block');
+        $('#container').highcharts({
+            chart: {
+                type: 'line',
+                marginRight: 130,
+                marginBottom: 25
+            },
+            title: {
+                text: 'Caste Wise Voters Analysis',
+                x: -20 //center
+            },
+            xAxis: {
+                categories:cs,
+				labels: {
+                    rotation: -35,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Voters'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valueSuffix: ''
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+            series: [{
+                name: 'Total Voters',
+                data:tv
+            }, {
+                name: 'Male Voters',
+                data: mv
+            }, {
+                name: 'Female Voters',
+                data: fv
+            }, ]
+        });
+		$('tspan:last').hide();
+    }
