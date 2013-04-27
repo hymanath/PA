@@ -214,8 +214,10 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 
 <div id="descriptionDiv" ></div>
+		
+		<div id="impFamPancBothDtls" class="widget blue whitegloss" style="width:959px;margin-top:50px;margin-left:auto;margin-right:auto;">
 		<div id="impFamPancBothDtlsAgxImg" style="display:none;margin-left:361px;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
-		<div id="impFamPancBothDtls" class="widget blue whitegloss" style="width:959px;margin-top:50px;margin-left:auto;margin-right:auto;"></div>
+		</div>
 	   
 		
 		<div id="NoteDiv" class="breadcrumb"></div>
@@ -327,16 +329,18 @@ var buttonType ="impFamilies";
 
 
 function getImpFamiliesVotersToShow(){
-
+		
 	 $("#descriptionDiv").show();
 	 if(type == 'panchayat' || type == 'booth' ){
-	   
+	
+		$("#impFamPancBothDtlsAgxImg").show();
+
 	 var reqtype = type;
 	 if(type == 'booth'){
 	    reqtype = 'pollingstation';
 	 }
 	 //showAjaxImgDiv('ajaxImageDiv');
-	// $("#impFamPancBothDtlsAgxImg").show();
+	 //$("#impFamPancBothDtlsAgxImg").show();
 	    var jsObj2=
 			{
 					
@@ -351,6 +355,7 @@ function getImpFamiliesVotersToShow(){
 	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
 			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
 		callAjax(jsObj2,url2);
+	
 	}
 		
 	
@@ -358,9 +363,9 @@ function getImpFamiliesVotersToShow(){
 
 	function buildImpFamilesForHamletChart(chartInfo)
 {
-$("#ajaxImageDiv").css('display','none');
+	$("#ajaxImageDiv").css('display','none');
 	//console.log(chartInfo);
-// Create the data table.
+	// Create the data table.
 	var ImpFamwiseAjaxDiv =  document.getElementById('ImpFamwiseAjaxDiv');
 	hideAjaxImgDiv('ImpFamwiseAjaxDiv');
 	var data = google.visualization.arrayToDataTable([
@@ -384,7 +389,7 @@ function buildTableForImpFamilesForHamlets(impFamilesData,name,type,results)
 {
 	$("#ajaxImageDiv").css('display','none');
  $('#impFamPancBothDtlsAgxImgForHamlet').hide();
-//Updated by sasi for assigned and unassigned voters count
+	//Updated by sasi for assigned and unassigned voters count
 	if(type=="Panchayat"){
 		if(buildType=="hamlet"){
 			
@@ -1277,6 +1282,7 @@ function getvotersBasicInfoForBooth(){
 }
 function getImpFamiliesVotersToShowForBooth(){
 
+
 	 var jsObj1=
 			{
 					
@@ -1295,6 +1301,7 @@ function getImpFamiliesVotersToShowForBooth(){
 	
          var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
 		callAjax(jsObj1,url1);
+		
 	
      $("#descriptionDiv").show();
 
@@ -1503,7 +1510,7 @@ getImpFamiliesVotersToShowForBooth();
 		   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
 				var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
 			callAjax(jsObj2,url2);
-
+			
 
 		}
 		function buildFamilyMembersForBooth(result,jsObj,type)
