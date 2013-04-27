@@ -1539,6 +1539,7 @@ getImpFamiliesVotersToShowForBooth();
 		          str+='     <th class="widthStyle">Youngest Person</th>';
 				  str+='	 <th>Gender</th>';
 				  str+='	 <th>Age</th>';
+				  str+='	 <th>Type</th>';
 		          str+='   </tr>';
 		          str+='  </thead>';
 		          str+='  <tbody>';
@@ -1557,6 +1558,20 @@ getImpFamiliesVotersToShowForBooth();
 		          str +='		<td class="widthStyle">'+result[i].younger+'</td>';
 				  str +='		<td>'+result[i].youngerGender+'</td>';
 				  str +='		<td>'+result[i].youngerAge+'</td>';
+				   if(result[i].isInfluencePerson == true || result[i].isCadrePerson == true || result[i].isPoliticion == true){
+			  		var temp = "";
+				 if(result[i].isInfluencePerson == true)
+					temp = "Influence";
+				 if(result[i].isCadrePerson == true)
+					temp = "Cadre";
+				 if(result[i].isPoliticion == true)
+					temp = "Politicion";
+
+		   			str+='<td><img title="'+result[i].name+': '+temp+'" alt="'+result[i].name+'" src="./images/icons/politican.png" class ="mouseOver"/></td>';
+
+		  		}else{
+					str +='		<td></td>';
+		  		}
 		          str+='   </tr>';
 			 }
 		          str+='  </tbody>';
