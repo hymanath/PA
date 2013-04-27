@@ -2002,9 +2002,9 @@ function addToPolitician(voterId,name)
 			showConst=false;
 		}
 		else {
-			showNewsDetails(id,publicationId,type);
-			getProblemsByLocation(id,publicationId,type);
-			getInfluencingPeopleCount(id,type);
+			showNewsDetails(mainreqid,publicationId,maintype);
+			getProblemsByLocation(mainreqid,publicationId,maintype);
+			getInfluencingPeopleCount(mainreqid,maintype);
 			$("#newsCountDiv").css("display","block");
 			$("#problemsCountDiv").css("display","block");
 			$("#InfluencingPeopleCountDiv").css("display","block");
