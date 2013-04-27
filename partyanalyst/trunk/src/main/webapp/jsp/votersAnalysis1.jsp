@@ -1359,7 +1359,7 @@ for  body3 start    result  -->
 	</td><td style="width:180px;">
 	<span id="localCastDetailsDiv" ></span>
 	</td><td style="position: absolute;width:450px;">
-	<span id="localCastChatDiv" ></span>
+	<span id="localCastChatDiv"  style="position:inherit;"></span>
 	</td>
 	</tr>
 	</table>
