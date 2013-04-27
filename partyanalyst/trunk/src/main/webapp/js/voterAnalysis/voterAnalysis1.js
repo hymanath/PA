@@ -4292,11 +4292,12 @@ function callAjaxorVoterDetails(jsObj,url){
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);
 					  
 					  if(jsObj.retrieveType == "brief"){
+						  var type1 = "";
 
 						  if(jsObj.type == "localElectionBody")
-							  jsObj.type = "mandal";
+							 type1 = "localElectionBody";
 						 
-						  if(jsObj.type == maintype || jsObj.type == "hamletLocalArea" ){
+						  if(type1 == "localElectionBody" || jsObj.type == maintype || jsObj.type == "hamletLocalArea" ){
 						  buildVoterDetailsTable(myResults,jsObj.type,jsObj.retrieveType);
 						  }
 					  }else if(jsObj.retrieveType == "all"){
