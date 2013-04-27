@@ -4986,5 +4986,11 @@
 			</result>			
 		</action>
 		
+		<action name="getLatestPublicationIdAction" class="votersAnalysisAction" method="getPublicationId">
+		    <result type="json" name="success">
+				 <param name="root">latestPublicationId</param>
+			</result>			
+		</action>
+		
 		</package>
 </struts>      

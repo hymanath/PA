@@ -100,6 +100,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
     
     private IUserVoterService userVoterService;
 	
+    private Long latestPublicationId;
 	
 
 
@@ -432,6 +433,14 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setCastList(List<VoterCastInfoVO> castList) {
 		this.castList = castList;
+	}
+
+	public Long getLatestPublicationId() {
+		return latestPublicationId;
+	}
+
+	public void setLatestPublicationId(Long latestPublicationId) {
+		this.latestPublicationId = latestPublicationId;
 	}
 
 	public String execute() throws Exception
@@ -1587,5 +1596,9 @@ return Action.SUCCESS;
 	}
 	return Action.SUCCESS;
 	}
-	
+	public String getPublicationId()
+	{
+		latestPublicationId = votersAnalysisService.getLatestPublicationId();
+	   return Action.SUCCESS;
+	}
 }
