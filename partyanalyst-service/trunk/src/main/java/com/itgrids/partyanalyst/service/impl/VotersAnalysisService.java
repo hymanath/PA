@@ -14652,7 +14652,15 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			return null;
 		}
 	}
-	
+		
+	public Long getLatestPublicationId(){
+		try{
+		return publicationDateDAO.getLatestPublicationId();
+		}catch(Exception e){
+			log.error("Exception Raised in the getLatestPublicationId() method in VotersAnalysis Service" , e);
+			return 8l;
+		}
+	}
 	public List<SelectOptionVO> getCasteWisePercentage(List<VoterCastInfoVO> list)
 	{
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(0);

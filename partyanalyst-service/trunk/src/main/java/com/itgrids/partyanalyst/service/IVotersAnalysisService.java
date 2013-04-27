@@ -266,5 +266,6 @@ public interface IVotersAnalysisService {
 	 public VotersInfoForMandalVO getVotersCountForCustomWard(Long id,Long publicationDateId,String reqType);
 	 
 	 public List<SelectOptionVO> getCasteWisePercentage(List<VoterCastInfoVO> list);
-	 
+		 
+	 public Long getLatestPublicationId();
 }
