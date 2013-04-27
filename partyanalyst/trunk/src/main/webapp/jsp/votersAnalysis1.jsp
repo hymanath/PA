@@ -1022,6 +1022,9 @@ locationDetails.constituencyArr.push(ob);
 </c:forEach>		
 
 $(document).ready(function(){
+	$("#newsCountDiv").css("display","none");
+	$("#problemsCountDiv").css("display","none");
+	$("#InfluencingPeopleCountDiv").css("display","none");
 $(".dateField").live("click", function(){
 $(this).datepicker({
 dateFormat: "dd/mm/yy",
@@ -1236,7 +1239,15 @@ for  body3 start    result  -->
 <div id="scrollToHere"></div>	
 <h5 id="reportLevelheading1" style="display:none;"></h5> <!-- Not in USe -->
 <div id="selectedBoothInfo" style="color:#000000;padding-bottom:5px;" class="widget blue whitegloss"></div>
-	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 96%;color:#000000;"></div>
+
+<div class="widget blue">
+<div class="widget-block" style="margin-top: -6px; clear: both; display: block; height: 35px;">
+<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:500px;color: black;">News Glance,Problems and Influencing People Details</h4>
+<a id="ShowConstMenu1" class="btn pull-right" style="margin-top:-35px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a>
+</div>
+</div>
+
+	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 96%;color:#000000; margin-top: 51px;"></div>
 	
 	   <div id="newsDisplayOuterDiv">
 		<div id="newsDisplayDiv" style=""></div>
