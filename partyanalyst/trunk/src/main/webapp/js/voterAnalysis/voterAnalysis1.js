@@ -1572,6 +1572,7 @@ function addToPolitician(voterId,name)
 								{
 								    $("#votersDiv2").show();
 									buildCastInfoData(myResults,jsObj);
+									buildCastPiechart(myResults,jsObj);
 								}
 								else if(jsObj.task == "getPartyInfo")
 								{
@@ -3233,7 +3234,8 @@ function buildVotersInFamily(results){
 
 function buildCastInfoData(myresults,jsObj)
 {
-  if(mainreqid == jsObj.id)
+	//alert('234');
+	 if(mainreqid == jsObj.id)
   {
 	$('#localCastDetailsHeadingDiv').html('');
 	$('.localCastStatsVotersTitle').html('');
@@ -3292,7 +3294,6 @@ function buildCastInfoData(myresults,jsObj)
 	localCastStatsTabContent += '</div>';
 	$('#localCastDetailsDiv').html(voters);
 	localCastStatsTabContent_headerEl.innerHTML = localCastStatsTabContent;
-
 	var typeName = jsObj.typename;	
 	var publicationDateId=jsObj.publicationDateId;
 	var boothId=jsObj.id;
@@ -3327,6 +3328,7 @@ function buildCastInfoData(myresults,jsObj)
 		$('.localCastStatsVotersTitle').css("backgrond","#FFF;");
 		}
   }
+
 }
 
 	function buildPartyWiseCastDetailsTable(myresults,jsObj){
@@ -3424,9 +3426,7 @@ function buildPartyWiseCastData(results,typeName,publicationDateId,boothId,type)
 }
 
 function buildCastPiechart(myResults,jsObj)
-{
-
-	
+{	//alert('chat');
 	$('#localCastChatDiv').html('');
 	var results = myResults.voterCastInfodetails;
 	if(results.castCategoryWiseVotersList.length == 0)
@@ -3435,7 +3435,7 @@ function buildCastPiechart(myResults,jsObj)
 		$(".castDetailsMainDiv").css("border","none")
 		return;
 	}
-	$(".castDetailsMainDiv").css("border","1px solid #CCC")
+	//$(".castDetailsMainDiv").css("border","1px solid #CCC")
 	var data = new google.visualization.DataTable();
 	data.addColumn('string','cast');
 	data.addColumn('number','percentage');
@@ -3448,7 +3448,7 @@ function buildCastPiechart(myResults,jsObj)
 	} 
 
 	var chart = new google.visualization.PieChart(document.getElementById('localCastChatDiv'));
-		chart.draw(data, {width: 400, height: 230,legend:'right',legendTextStyle:{fontSize:12}, title:'Caste category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
+		chart.draw(data, {width: 300, height: 150,legend:'right',legendTextStyle:{fontSize:12}, title:'Caste category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
 	});
 }
 function buildPartyWisePiechart(myResults,jsObj)
@@ -3564,6 +3564,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	  
     ] 
 		});
+	
 	}
 
 	function buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId)
