@@ -683,7 +683,7 @@ h5{font-family : Arial;}
 		font-weight: bold;
 		width:80%;
   }
-  #votersDiv1,#votersDiv2{
+  #votersDiv1,#votersDiv2,#casteDiv{
     display:none;
   }
   #partyWiseDetailsDiv{
@@ -812,8 +812,8 @@ h5{font-family : Arial;}
 #partyGraphButtonId
 {
 float: right;
-    margin-right: -494px;
-    margin-top: -24px;
+    margin-right: -548px;
+    margin-top: -4px;
 }
 .yui-skin-sam .yui-dt-liner {
     margin: 0;
@@ -1287,6 +1287,44 @@ for  body3 start    result  -->
  	<div id="newsDiv" style="clear:both;">
   	</div>
 
+	<div id="casteDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+	<h4 class=""  id="localCastStatsTabContentTitle" ></h4>
+	<!--<input type="button" id="lclCastStsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
+    <div id="votersbasicinfoForLclCastSts" >
+        <div id="votersBasicInfoDivForLclCastSts"></div>
+	    <div id="votersBasicInfoSubChartDivForLclCastSts"></div>
+	    <div id="votersBasicInfoSubDivForLclCastSts" class="yui-skin-sam yui-dt-sortable"></div>	
+    </div>-->
+	
+	<span id="castewiseAjaxDiv" style="display: block; position:absolute;top:20px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+	<div id='LocalCastDiv'>
+	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
+	<div style="float:right;">
+	   <div id="permanentlyUpdateButtonDiv" ><input id="permanentlyUpdateDiv" type="button" onclick="permanentlyUpdateCastePartyInfo();" value="Update Caste And Party Info" class="btn btn-info" /></div>
+	   <div id="casteRefreshButtonDiv" style="margin-top: 10px;"><input type="button" onclick="getUpdatedCastePartyInfo();" value="Get Updated Caste And Party Info" class="btn btn-info" /></div>
+	</div>
+	<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;"></div>
+	
+	<div id='localCastStatsTabContent_header' style="width:48%;float:left;"></div>
+	<div class="castDetailsMainDiv" style="width:48%;float:left;">
+		<div id="localCastDetailsDiv" style="margin-bottom:0px;"></div>
+		<div id="localCastChatDiv"></div>
+	</div>
+	
+	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div>
+	<div id='castTab'></div>
+	<div id='localityTab'></div>
+<span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>
+	</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
 	
    <div  id="votersBasicInformationDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
 	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;position:absolute;top:20px;right:20px;"/>
@@ -1558,46 +1596,8 @@ for  body3 start    result  -->
 				</table>
 	</div> -->
 <div id='votersMainOuterDiv2'  class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;background:#fff;">
-<h4 class=""  id="localCastStatsTabContentTitle" ></h4>
-	<!--<input type="button" id="lclCastStsShowBasicInfo" class="buttonStyle" value="View Basic Voter Details" style="margin-top:5px;"/>
-    <div id="votersbasicinfoForLclCastSts" >
-        <div id="votersBasicInfoDivForLclCastSts"></div>
-	    <div id="votersBasicInfoSubChartDivForLclCastSts"></div>
-	    <div id="votersBasicInfoSubDivForLclCastSts" class="yui-skin-sam yui-dt-sortable"></div>	
-    </div>-->
-	
-	<span id="castewiseAjaxDiv" style="display: block; position:absolute;top:20px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
-	<div id='LocalCastDiv'>
-	<!--<div id ="localCastStatsTabContentTitle" ></div>-->
-	<div style="float:right;">
-	   <div id="permanentlyUpdateButtonDiv" ><input id="permanentlyUpdateDiv" type="button" onclick="permanentlyUpdateCastePartyInfo();" value="Update Caste And Party Info" class="btn btn-info" /></div>
-	   <div id="casteRefreshButtonDiv" style="margin-top: 10px;"><input type="button" onclick="getUpdatedCastePartyInfo();" value="Get Updated Caste And Party Info" class="btn btn-info" /></div>
-	</div>
-	<div id="localCastDetailsHeadingDiv" class="localCastDetailsHeadingDiv" style="margin-bottom: 0px;margin-top: 21px;"></div>
-	
-	
-	<div>
-	<table style="width:970px;">
-	 <tr>
-	 <td style="width: 308px;">
-<div id='localCastStatsTabContent_header' ></div>
-	</td><td style="width:180px;">
-	<span id="localCastDetailsDiv" ></span>
-	</td><td style="width:480px;">
-	<span id="localCastChatDiv" ></span>
-	</td>
-	</tr>
-	</table>
-	</div>
-	
-	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div>
-	<div id='castTab'></div>
-	<div id='localityTab'></div>
-	
-	<span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>
-
-	<hr>
-	<div id='partyBasicInfoStatsTabNewTitle' style="clear:both;"></div>
+<h4 class="" id="partywiseCasteTitle" ></h4>
+<div id='partyBasicInfoStatsTabNewTitle' style="clear:both;"></div>
 	<div id='partyBasicInfoStatsTab' style="clear:both;"></div>
 	<div id="partyWiselocalcastDiv" style="margin-top:20px;margin-bottom:50px;"></div>
 	<div id='partyWiseLocalCastStatsTab' class="yui-skin-sam yui-dt-sortable" style="display:none;">	</div>
