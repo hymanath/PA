@@ -67,4 +67,6 @@ public List<Object[]> getAllTehsilInfoDetails();
 	
 	public List<Object[]> findAllLocalElecBodyByConstituencyIdAndPublicationDateId(
 			Long constituencyId, Long publicationDateId);
+	
+	public String getTehsilNameByTehsilId(Long tehsilId);
 }
