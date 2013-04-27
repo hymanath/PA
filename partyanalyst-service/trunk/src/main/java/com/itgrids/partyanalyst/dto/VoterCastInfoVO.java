@@ -48,6 +48,17 @@ public class VoterCastInfoVO {
     private Long id;
     private String name;
     private Long orderNo;
+    
+    private String muncipalityType;
+
+	
+	public String getMuncipalityType() {
+		return muncipalityType;
+	}
+
+	public void setMuncipalityType(String muncipalityType) {
+		this.muncipalityType = muncipalityType;
+	}
 
 	public Long getHamletId() {
 		return hamletId;
