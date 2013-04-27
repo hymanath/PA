@@ -347,4 +347,6 @@ public interface IStaticDataService {
 		//public List<SelectOptionVO> getAllPartiesParticapatedInMainElectionsService(Long stateId);
 		
 		public List<SelectOptionVO> getDistrictsByPartyNomination(Long stateId,Long partyId,Long year);
+		
+		public String getTehsilNameByTehsilId(Long tehsilId);
 }
