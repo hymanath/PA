@@ -1096,13 +1096,13 @@ function addToPolitician(voterId,name)
 		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
 		//--
-		showNewsDetails(id,publicationId,type);
+		//showNewsDetails(id,publicationId,type);
 		 //getProblemsByLocation(id,publicationId,type);
 		//--
-		getProblemsByLocation(id,publicationId,type);
+		//getProblemsByLocation(id,publicationId,type);
 		 //--
 		// if(type != "hamlet")
-		 getInfluencingPeopleCount(id,type);
+		// getInfluencingPeopleCount(id,type);
 		//-- 
 		getCounts(id,publicationId,type);
 		getVotersCastInfo(id,publicationId,type);
@@ -1992,6 +1992,26 @@ function addToPolitician(voterId,name)
 		}
 	});
 	
+	$('#ShowConstMenu1').live('click',function(){
+	if(!showConst) {
+			$("#newsCountDiv").hide();
+			$("#problemsCountDiv").hide();
+			$("#InfluencingPeopleCountDiv").hide();
+			$(this).html('Show <i class="icon-chevron-down"></i>'); 
+			showConst=true;
+		}
+		else {
+			showNewsDetails(id,publicationId,type);
+			getProblemsByLocation(id,publicationId,type);
+			getInfluencingPeopleCount(id,type);
+			$("#newsCountDiv").css("display","block");
+			$("#problemsCountDiv").css("display","block");
+			$("#InfluencingPeopleCountDiv").css("display","block");
+			$(this).html('Hide <i class="icon-chevron-up"></i>');
+			showConst=false;
+		}
+	});
+
 	function showDetailedElectionResult(id,conid,elYear)
 	{
 	var index = id.substring((id.indexOf('_')+1),id.length);
