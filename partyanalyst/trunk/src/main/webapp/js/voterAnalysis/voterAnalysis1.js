@@ -3276,7 +3276,7 @@ function buildCastInfoData(myresults,jsObj)
 	   		$("#partyBasicInfoStatsTabNewTitle").html("").css("background","#ffffff");
 	}
 	var localCastStatsTabContent = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span class="" style="padding:10px;"> Total Voters : '+totalVoters+'</span>';
-	localCastStatsTabContent += '<span class="">Total Casts : '+totalCasts+'</span>';
+	localCastStatsTabContent += '<span class="">Total Castes : '+totalCasts+'</span>';
 	//localCastStatsTabContent += 'Total Male Voters : '+totalMale+'&nbsp;&nbsp;&nbsp;';
 	//localCastStatsTabContent += 'Total Female Voters : '+totalFemale+'<br><br>';
 	localCastStatsTabContent += '<span class="">Caste Assigned Voters : '+result.maleVoters+'</span>';
@@ -3457,7 +3457,7 @@ function buildCastPiechart(myResults,jsObj)
 	} 
 
 	var chart = new google.visualization.PieChart(document.getElementById('localCastChatDiv'));
-		chart.draw(data, {width: 300, height: 150,legend:'right',legendTextStyle:{fontSize:12}, title:'Caste category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
+		chart.draw(data, {width: 500, height: 200,legend:'right',legendTextStyle:{fontSize:12}, title:'Caste category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
 	});
 }
 function buildPartyWisePiechart(myResults,jsObj)
@@ -7852,12 +7852,13 @@ function impFamilesVariableDescription1()
 }
 
 function getUpdatedCastePartyInfo(){
-    $("#localCastStatsTabContent_header").html("");
-    $("#localCastStatsTabContentTitle").html("");
+	$("#localCastStatsTabContent_header").html("");
+    //$("#localCastStatsTabContentTitle").html("");
     $("#localCastStatsTabContent_body").html("");
 	$("#localCastDetailsDiv").html("");
 	$("#partyBasicInfoStatsTab").html("");
 	$("#partyWiselocalcastDiv").html("");
+	$("#localCastChatDiv").html("");	
   var typename=mainname;
   var castewiseAjaxDiv =  document.getElementById('castewiseAjaxDiv');
 		showAjaxImgDiv('castewiseAjaxDiv');
@@ -7916,11 +7917,12 @@ function permanentlyUpdateCastePartyInfo(){
        {
 	    $("#permanentlyUpdateDiv").attr("disabled", "disabled");
 	    $("#localCastStatsTabContent_header").html("");
-        $("#localCastStatsTabContentTitle").html("");
+        //$("#localCastStatsTabContentTitle").html("");
         $("#localCastStatsTabContent_body").html("");
 	    $("#localCastDetailsDiv").html("");
 	    $("#partyBasicInfoStatsTab").html("");
 	    $("#partyWiselocalcastDiv").html("");
+		$("#localCastChatDiv").html("");
 		showAjaxImgDiv('castewiseAjaxDiv');
 		var jsObj=
 		{
