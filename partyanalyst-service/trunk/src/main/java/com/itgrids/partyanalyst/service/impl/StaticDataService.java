@@ -7915,6 +7915,15 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return districts;
 	}
+	
+	public String getTehsilNameByTehsilId(Long tehsilId)
+	{
+		try{
+			return tehsilDAO.getTehsilNameByTehsilId(tehsilId);
+		}catch (Exception e) {
+			return "";
+		}
+	}
 }
 
 
