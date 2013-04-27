@@ -14622,4 +14622,37 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		}
 	}
 	
+	public List<SelectOptionVO> getCasteWisePercentage(List<VoterCastInfoVO> list)
+	{
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(0);
+		try{
+			if(list == null || list.size() == 0)
+				return result;
+			Map<String,Long> castVotes = new HashMap<String, Long>(0);
+			Long totalVoters = 0L;
+			for(VoterCastInfoVO voterCastInfoVO : list)
+			{
+				for(CastVO castVO : voterCastInfoVO.getVoterCastInfoVO().getCastVOs())
+				{
+					Long casteCount = castVotes.get(castVO.getCastName());
+					totalVoters = totalVoters + castVO.getCastCount();
+					if(casteCount == null)
+						castVotes.put(castVO.getCastName(), castVO.getCastCount());
+					else
+						castVotes.put(castVO.getCastName(), castVO.getCastCount().longValue()
+								+casteCount.longValue());
+				}
+			}
+			
+			for(Map.Entry<String,Long> values : castVotes.entrySet())
+			{
+				result.add(new SelectOptionVO(values.getValue()*100/totalVoters,values.getKey()));
+			}
+			return result;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCasteWisePercentage() Method",e);
+			return result;
+		}
+	}
+	
 }
