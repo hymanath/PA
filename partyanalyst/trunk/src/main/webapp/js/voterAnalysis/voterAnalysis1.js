@@ -1137,7 +1137,10 @@ function addToPolitician(voterId,name)
 			  {
 				$("#castPopupShowBtn").css("display","block");
 				//$("#castPopupShowBtn").attr("value","Ward wise Caste Info");
-				$("#castPopupShowBtn").attr("value","Booth wise Caste Info");
+				if( typeofMuncipality == "GHMC Greater Municipal Corp")
+				 $("#castPopupShowBtn").attr("value","Ward wise Caste Info");
+				else
+				 $("#castPopupShowBtn").attr("value","Booth wise Caste Info");
 			  }
 			 else 
 				$("#castPopupShowBtn").css("display","none");
