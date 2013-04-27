@@ -1233,6 +1233,13 @@ $("#impFamilesBasicSubDetailsDiv").show();
 	type="hamlet";
 	hresult="localArea";
 	}
+
+	if(type == "mandal"){
+		 
+		 if(id.substring(0,1) == "1")
+			 type="localBody";
+
+	}
    
 	   var jsObj1=
 			{
