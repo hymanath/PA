@@ -261,8 +261,10 @@ public interface IVotersAnalysisService {
 	 
 	 public List<SelectOptionVO> checkForCategoeryValues(List<SelectOptionVO> categoeryValuesList , Long userId);
 
-	 
 	 public List<SelectOptionVO> getLocalitiesForWards(Long wardId , Long userId);
 	 
 	 public VotersInfoForMandalVO getVotersCountForCustomWard(Long id,Long publicationDateId,String reqType);
+	 
+	 public List<SelectOptionVO> getCasteWisePercentage(List<VoterCastInfoVO> list);
+	 
 }
