@@ -1323,15 +1323,22 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			boothIdList.add(Long.parseLong(str.nextToken()));
 		}
 		List<Object[]> list = candidateBoothResultDAO.findBoothResultsForBoothsAndElection(boothIdList,electionId);
+		
 		List<PartyVotesEarnedVO> partyResults = new ArrayList<PartyVotesEarnedVO>();
 		PartyVotesEarnedVO partyVotesEarnedVO = null;
+		int i=0;
 		for(Object[] params : list)
 		{
 			partyVotesEarnedVO = new PartyVotesEarnedVO();
 			partyVotesEarnedVO.setPartyId((Long)params[0]);
 			partyVotesEarnedVO.setPartyName(params[1].toString());
 			partyVotesEarnedVO.setVotesEarned((Long)params[2]);
+			
+			if(i == 0)
+				partyVotesEarnedVO.setWonStatus(true);
+			
 			partyResults.add(partyVotesEarnedVO);
+			i++;				
 		}
 		return partyResults;
 	}
