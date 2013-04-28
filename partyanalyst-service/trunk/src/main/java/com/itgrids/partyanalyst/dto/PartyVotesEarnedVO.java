@@ -18,6 +18,16 @@ public class PartyVotesEarnedVO {
 	private String reqType;
 	private Integer totalBooths = 0;
 	
+	private boolean wonStatus = false;	
+
+	public boolean isWonStatus() {
+		return wonStatus;
+	}
+
+	public void setWonStatus(boolean wonStatus) {
+		this.wonStatus = wonStatus;
+	}
+
 	public Long getPartyId() {
 		return partyId;
 	}
