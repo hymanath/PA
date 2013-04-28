@@ -85,10 +85,10 @@ function getInteractiveChart(chartResultDiv,constituencyResults,partiesList,cons
       var ctitle='';
 	  if(constituencyType == 'Parliament')
 	  {
-	    ctitle = "Assembly Constituency Wise Election Results Chart For constiName constiType Constituency In electionYear";
+	    ctitle = "Assembly Constituency Wise Election Results Chart ";
 	  }else
 	  {
-         ctitle = "Mandal Wise Election Results Chart For constiName constiType Constituency In electionYear";
+         ctitle = "Mandal Wise Election Results Chart ";
 	  }
        
       //static colors for parties
@@ -217,11 +217,11 @@ function buildCensusChartForAConstituency(myResults)
 
 	if(constituencyType == 'Assembly')
 	{
-		ctitle = "Mandal Wise Election Results V/S Census Chart For constituencyName";
+		ctitle = "Mandal Wise Election Results V/S Census Chart";
 	}
 	if(constituencyType == 'Parliament')
 	{
-		ctitle = "Assembly Constituency Wise Election Results V/S Census Chart For constituencyName";
+		ctitle = "Assembly Constituency Wise Election Results V/S Census Chart";
 	}
 	
 	var staticColors = setStaticColorsForInteractiveChartsForCensusAndPartiesArray(partiesArray);
@@ -702,27 +702,6 @@ function buildParliamentResults(parlyear,results){
 				parliamentDivElmt.style.display = "block";
 			}
 			var str = '';
-			str += '<table  style="padding-left:11px;padding-top:20px;">';
-		    str += '<tr>';
-		    str += '<th>To Compare Mandal Wise Election Results With Census, Select Any Census Parameter:';
-		    
-		    str += '&nbsp;&nbsp;';
-		    str += '<select id="censusSelectForParl" onchange = "getParliamentResultsForCensus(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'+parlyear+')">';
-		    str += '<option value=\'0\'>Select Census</option>';
-		    str += '<option value=\'1\'>SC Population</option>';
-		    str += '<option value=\'2\'>ST Population</option>';
-		    str += '<option value=\'3\'>Literates</option>';
-		    str += '<option value=\'4\'>illiterates</option>';
-		    str += '<option value=\'5\'>Working People</option>';
-		    str += '<option value=\'6\'>Non Working People</option>';
-		    str += '</select>';
-		    str += '</th>'
-		    str += '<td><div id="censusAjaxImgDivForParl" align="center" style="display:none;"><img width="16px" height="16px" src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
-		    str += '</tr>';
-		    str += '<tr>';
-		    str += '<td><b>(In the graph Census Details are in Percentages, these Percentages Calculated Over Total Population)</b></td>';
-		    str += '</tr>';
-		    str += '</table>';
 			str+='<span id="heading"></span>';
 			str += '<div id="newCensusSelForConParl">';
 			str += '<table  style="margin-left: 13px; margin-bottom: -43px;">';
@@ -763,8 +742,9 @@ function buildParliamentResults(parlyear,results){
 
 	/*detailsDIV += '<div><input type="button" class="button" onclick="showDetailedChart(\''+parliamentResult.detailedChartPath+'\')" value="Detailed Chart For Paliament"></div>';	*/
 	//$("#heading").html("Mandal Wise Election Results For "+parliamentResult.constituencyName+" Parliament In "+parliamentResult.electionYear+"");
-
+    str += '<div id="parliamentChartDiv"><img src="charts/'+parliamentResult.chartPath+'"></div>';
 	str += '<div id="parliamentElecResDiv" style="margin-top:20px;">';
+	
 	str += '<table id = "parliamentElecResTable" width="80%">';
 	for(var j in parliamentResult.constituencyOrMandalWiseElectionVO){
 		str += '<tr>';
@@ -782,7 +762,7 @@ function buildParliamentResults(parlyear,results){
 	}
 	str += '</table>';
 	str += '</div>';
-	str += '<div id="parliamentChartDiv"><img src="charts/'+parliamentResult.chartPath+'"></div>';
+	
 
 	parliamentDiv.innerHTML = str;
 	if(counter!=0){
