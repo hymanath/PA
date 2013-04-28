@@ -489,6 +489,8 @@ public class BoothPublicationVoterDAO extends
 			//str.append(" model.booth.localBodyWard.constituencyId = :locationId ");
 		else if(locationType.equalsIgnoreCase("hamlet"))
 			str.append(" model2.hamlet.hamletId = :locationId ");
+		else if(locationType.equalsIgnoreCase("customWard"))
+			str.append(" model2.ward.constituencyId =  :locationId ");
 		
 		Query query = getSession().createQuery(str.toString()) ;
 		query.setParameter("userId", userId);
@@ -1040,7 +1042,9 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 			else if(locationType.equalsIgnoreCase("ward"))
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBodyWard.constituencyId = :locationId  and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			else if(locationType.equalsIgnoreCase("hamlet"))
-				str.append("model2.hamlet.hamletId = :locationId ");
+				str.append(" model2.hamlet.hamletId = :locationId ");
+			else if(locationType.equalsIgnoreCase(IConstants.CUSTOMWARD))
+				str.append(" model2.ward.constituencyId = :locationId ");
 
 				
 			str.append("group by model2.casteState.caste.casteName order by model2.casteState.caste.casteName ");
@@ -1085,6 +1089,8 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 				str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBodyWard.constituencyId = :locationId  and model3.publicationDate.publicationDateId = :publicationDateId ) ");
 			else if(locationType.equalsIgnoreCase("hamlet"))
 				str.append("model2.hamlet.hamletId = :locationId ");
+			else if( locationType.equalsIgnoreCase(IConstants.CUSTOMWARD))
+				str.append(" model2.ward.constituencyId = :locationId " );
 			
 			
 			str.append("group by model2.casteState.caste.casteName,model2.party.partyId order by model2.casteState.caste.casteName,model2.party.shortName ");
@@ -2265,7 +2271,7 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 				"    from BoothPublicationVoter model join model.booth.constituency c join model.booth.publicationDate p where " +
 				" c.constituencyId = ? order by p.year desc)",constituencyId);
 	}
-	public Long getTotalVotersCountForHamletByBooth(Long userId , Long id,Long publicationDateId,String type , Long boothId){
+	public Long getTotalVotersCountForHamletByBooth(Long userId , Long id,Long publicationDateId,String type , Long boothId ,String myType){
 		StringBuilder query = new StringBuilder();
 		
 		query.append("select count( distinct model.voter.voterId) from UserVoterDetails model , " +
@@ -2273,8 +2279,12 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 				" where model.voter.voterId = model1.voter.voterId and " +
 				" model1.booth.publicationDate.publicationDateId = :publicationDateId" +
 				" and model.user.userId = :userId and " +
-				" model1.booth.boothId = :boothId and "+
-				"model.hamlet.hamletId = :id");
+				" model1.booth.boothId = :boothId and ");
+		if(myType.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase("booth") )
+			query.append("  model.hamlet.hamletId= :id  ");
+			else 
+				query.append("  model.ward.constituencyId = :id  ");	
+			//	"model.hamlet.hamletId = :id");
 		
 		
 		
@@ -2286,13 +2296,18 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		return (Long)queryObj.uniqueResult();
 
 	}
-	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdInALocationByBooth(Long userId,String locationType,Long locationId,Long publicationDateId,Long boothId)
+	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdInALocationByBooth(Long userId,String locationType,Long locationId,Long publicationDateId,Long boothId, String type)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model2.casteState.caste.casteName,model.voter.gender,count(model.voter.voterId),model2.casteState.casteStateId,model2.casteState.casteCategoryGroup.casteCategory.categoryName from BoothPublicationVoter model,UserVoterDetails model2 ");
 		str.append(" where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
 		str.append("  model.booth.boothId= :boothId and ");
+		
+		if(type.equalsIgnoreCase(IConstants.HAMLET) || locationType.equalsIgnoreCase("booth") )
 		str.append("  model2.hamlet.hamletId= :locationId  ");
+		else 
+		str.append("  model2.ward.constituencyId = :locationId  ");	
+		
 		str.append(" group by model2.casteState.caste.casteId,model.voter.gender order by model2.casteState.caste.casteName ");
 		
 		Query query = getSession().createQuery(str.toString()) ;
@@ -2468,42 +2483,42 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 	
 	
 	
-	public List<Object[]> getFamiliesInBooth(Long userId, Long hamletId , Long boothId,Long publicationDateId , Long constituencyId)
+	public List<Object[]> getFamiliesInBooth(Long userId, Long hamletId , Long boothId,Long publicationDateId , Long constituencyId , String cond)
 	{
 		
-		Query query = getSession().createQuery("select count( distinct model1.voter.voterId),model1.voter.houseNo " +
-				" from BoothPublicationVoter model ,UserVoterDetails model1 " +
-				"where model.booth.publicationDate.publicationDateId = :publicationDateId " +
+		Query query = getSession().createQuery("select count( distinct model.voter.voterId),model.voter.houseNo " +
+				" from BoothPublicationVoter model1 ,UserVoterDetails model " +
+				"where model1.booth.publicationDate.publicationDateId = :publicationDateId " +
 				" and model.voter.voterId = model1.voter.voterId and " +
-				" model1.user.userId = :userId and " +
-				" model.booth.boothId = :boothId and " +
-				" model1.hamlet.hamletId = :hamletId " +
-				"and model.booth.constituency.constituencyId = :constituencyId group by model1.voter.houseNo ");
+				" model.user.userId = :userId and " +
+				" model1.booth.boothId = :boothId and " +
+				" " +cond+
+				" and model1.booth.constituency.constituencyId = :constituencyId group by model.voter.houseNo ");
 		
 		query.setParameter("userId", userId);
 		query.setParameter("publicationDateId", publicationDateId);
 		query.setParameter("boothId", boothId);
 		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("hamletId", hamletId);
+		query.setParameter("id", hamletId);
 		
 		return query.list();
 		
 	}
 	
 	
-	public List<Voter> getVoterDetailsByHamletForUser(Long userId,Long id,Long publicationDateId)
+	public List<Voter> getVoterDetailsByHamletForUser(Long userId,Long id,Long publicationDateId ,String cond)
 	{
 		
 		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
 				" model.booth.boothId ,model.voter.voterId,model.voter.gender," +
 				" model.voter.age,model.booth.partNo from BoothPublicationVoter model , " +
 				" UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId and " +
-				" model1.user.userId = :userId and model1.hamlet.hamletId = :hamletId " +
+				" model1.user.userId = :userId and " +cond+
 				" and model.booth.publicationDate.publicationDateId = :publicationDateId");
 		
 		
 		query.setParameter("userId", userId);
-		query.setParameter("hamletId", id);
+		query.setParameter("id", id);
 		query.setParameter("publicationDateId", publicationDateId);
 		
 		return query.list();
@@ -2511,23 +2526,23 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		
 	}
 	
-	public List<Object[]> getVotersCountByGenderInBooth(Long userId ,Long hametId , Long  boothId ,Long  publicationDateId,Long constituencyId)
+	public List<Object[]> getVotersCountByGenderInBooth(Long userId ,Long hametId , Long  boothId ,Long  publicationDateId,Long constituencyId ,String cond)
 	{
 		
-		Query query = getSession().createQuery("select count(model1.voter.voterId),model1.voter.gender " +
-				" from BoothPublicationVoter model ,UserVoterDetails model1 " +
-				"where model.booth.publicationDate.publicationDateId = :publicationDateId " +
+		Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.gender " +
+				" from BoothPublicationVoter model1 ,UserVoterDetails model " +
+				"where model1.booth.publicationDate.publicationDateId = :publicationDateId " +
 				" and model.voter.voterId = model1.voter.voterId and" +
-				" model1.user.userId = :userId and " +
-				" model.booth.boothId = :boothId  and" +
-				" model1.hamlet.hamletId = :hamletId " +
-				"and model.booth.constituency.constituencyId = :constituencyId group by model1.voter.gender");
+				" model.user.userId = :userId and " +
+				" model1.booth.boothId = :boothId  and" +
+				" " +cond+
+				" and model1.booth.constituency.constituencyId = :constituencyId group by model.voter.gender");
 		
 		query.setParameter("userId", userId);
 		query.setParameter("publicationDateId", publicationDateId);
 		query.setParameter("boothId", boothId);
 		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("hamletId", hametId);
+		query.setParameter("id", hametId);
 		
 		return query.list();
 		
@@ -2535,22 +2550,22 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 	}
 	
 	
-	public List<Long> getAllBoothsInHamletByUser(Long userId,Long hamletId,Long publicationDateId , Long constituencyId)
+	public List<Long> getAllBoothsInHamletByUser(Long userId,Long hamletId,Long publicationDateId , Long constituencyId ,String query1)
 	{
 		
 		Query query = getSession().createQuery("select " +
-				"distinct(model.booth.boothId)" +
-				" from BoothPublicationVoter model ,UserVoterDetails model1 " +
-				" where model.booth.publicationDate.publicationDateId = :publicationDateId " +
+				"distinct(model1.booth.boothId)" +
+				" from BoothPublicationVoter model1 ,UserVoterDetails model " +
+				" where model1.booth.publicationDate.publicationDateId = :publicationDateId " +
 				" and model.voter.voterId = model1.voter.voterId and" +
-				" model1.user.userId = :userId and " +
-				"model1.hamlet.hamletId = :hamletId " +
-				"and model.booth.constituency.constituencyId = :constituencyId");
+				" model.user.userId = :userId and " +
+				""+query1+
+				" and model1.booth.constituency.constituencyId = :constituencyId");
 		
 		
 		query.setParameter("publicationDateId", publicationDateId);
 		query.setParameter("userId", userId);
-		query.setParameter("hamletId", hamletId);
+		query.setParameter("id", hamletId);
 		query.setParameter("constituencyId", constituencyId);
 		
 		
