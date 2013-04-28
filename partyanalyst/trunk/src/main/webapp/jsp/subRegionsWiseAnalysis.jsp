@@ -1325,7 +1325,7 @@ $('#localCastStatsTabContent_subbody').html(str);
 	}
 var startNumber        =  2;
 var retrieveType = "all";
-var mandalId = 0;
+var mandalId = id.substring(1);
 function getAgewiseVoterDetails(){
 
 
