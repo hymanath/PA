@@ -6,7 +6,12 @@
 <html>
 <head>
  <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-<!-- YUI Dependency files (Start) -->
+ <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+ <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+<script type="text/javaScript" >
+google.load("visualization", "1", {packages:["corechart"]});
+</script>
+ <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
@@ -343,12 +348,11 @@ color:#333333;
 
 
 
- <script type="text/javascript" src="http://www.google.com/jsapi"></script>
- <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+ 
 
 <!--<script type="text/javascript" language="javascript" src="js/jQuery.min.js"></script>-->
-<script type="text/javascript">
-google.load("visualization", "1", {packages:["corechart"]});
+<script type="text/javaScript" >
+
 var id= "${id}";
 var publicationId= "${publicationDateId}";
 var type= "${type}";
@@ -411,6 +415,8 @@ function callAjax(jsObj,url)
 									buildVotersBasicInfo(myResults,jsObj);
 								}
 								}catch (e) {
+								//console.log(e);
+								//alert(e);
 								}  
  		               },
  		               scope : this,
