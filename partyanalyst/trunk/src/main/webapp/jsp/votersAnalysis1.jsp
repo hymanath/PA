@@ -70,6 +70,8 @@
 
 
 <style type="text/css">
+#amount{width:90%;text-align:center;}
+
 #casteDivs li>a {
 	display: block;
     height: 2em;
@@ -1355,37 +1357,41 @@ for  body3 start    result  -->
 		<div id="localCastChatDiv"></div>
 	</div>
 	-->	
-	<div id"castInfoDiv">
+	<div id="castInfoDiv">
 	<table style="width:970px;">
 	 <tr>
 	 <td style="width: 308px;">
 	<div id='localCastStatsTabContent_header' ></div>
 	</td><td style="width:180px;">
 	<span id="localCastDetailsDiv" ></span>
-	</td><td style="position: absolute;width:450px;">
+	</td><td style="width:450px;">
 	<span id="localCastChatDiv"  style="position:inherit;max-width:450px;"></span>
 	</td>
 	</tr>
 	</table>
+	</div>
+	<div id="castContainerChart">
+		<div><input type='button' id='hideshow' value='hide/show Caste Wise Analysis Chart' class="btn btn-inverse pull-right" style="margin-top:10px;margin-bottom:10px;margin-right:10px;"></div>
+		<div id="castContainerChartInner" style="border:1px solid;">
+		<div id="rangeSliderDiv" style="width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;" >
+			<h5 style="text-align:center;">Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
+			<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
+			</div>
+				<p style="padding-bottom:2px;">
+					<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+				</p>
+		</div>
+		<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto;"></div>
+		</div>
 	</div>
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div>
 	<div id='castTab'></div>
 	<div id='localityTab'></div>
 <span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>
 	</div>
-	
-	<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto;display:none;"></div>
 	</div>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-   <div  id="votersBasicInformationDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
+	<div  id="votersBasicInformationDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
 	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;position:absolute;top:20px;right:20px;"/>
 	<div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
