@@ -67,7 +67,7 @@
 
 <style>
 
-#impFamDtls table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#impFamDtls table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;clear:both;}
 #impFamDtls table a{color:#0088CC;text-decoration:none;}
 
 #impFamDtls table tr:nth-child(even){background:#EdF5FF;}
@@ -102,6 +102,37 @@
     margin-top: 10px;
     padding-left: 10px;
 }
+
+
+.btn {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #F5F5F5;
+    background-image: linear-gradient(to bottom, #FFFFFF, #E6E6E6);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) #A2A2A2;
+    border-image: none;
+    border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 0;
+    padding: 4px 12px;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+}
+a {
+    color: #0088CC;
+    text-decoration: none;
+}
 </style>
 </head>
 <body>
@@ -114,7 +145,7 @@
 <div class="widget blue whitegloss">
  <h5>Check Required Fields To Show</h5>
 
-          <div id="impFamilySelectedDetails" style="padding:10px 0 10px 27px;border:1px solid #c3c3c3;border-radius:5px;">
+          <div id="impFamilySelectedDetails" style="padding:10px 0 10px 27px;border:1px solid #c3c3c3;border-radius:5px;height:100px;">
 
            
 
@@ -137,7 +168,7 @@
 			<!--<label style="float:left;margin:2px;"><input type="checkbox" class="voterAttributes" id="moneyId">Money</input></label>-->
 			<div id="impFamilySelectedDetails1"></div>
 
-			<a class="btn" href="javaScript:{checkForAttributesToDisplay();}">Show Details</a>
+			<div style="float:right;margin-top:-2px;margin-right:10px;"><a class="btn" href="javaScript:{checkForAttributesToDisplay();}">Show Details</a></div>
 		  </div>
 
            

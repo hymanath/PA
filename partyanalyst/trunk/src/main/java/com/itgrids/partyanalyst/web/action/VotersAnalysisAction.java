@@ -563,7 +563,8 @@ public String getVoterDetails(){
 		Long publicationId = request.getParameter("publicationId") != null ?Long.parseLong(request.getParameter("publicationId")):0L;
 		Long boothId = request.getParameter("boothId") != null ? Long.parseLong(request.getParameter("boothId")):0L;
 		Long panchaytId = request.getParameter("panchaytId") != null? Long.parseLong(request.getParameter("panchaytId")) :0L;
-		
+		Long customwardId = request.getParameter("customwardId") != null?Long.parseLong(request.getParameter("customwardId")) :0L;
+		Long constiId =request.getParameter("constiId") != null?Long.parseLong(request.getParameter("constiId")) :0L;
 		Long hamletId = 0L;
 		
 		if(request.getParameter("hamletId") != null)
@@ -574,18 +575,23 @@ public String getVoterDetails(){
 			if(hamletId.longValue() != 0){
 				votersList = votersAnalysisService.getVoterDetails(
 						publicationId, null, panchaytId,hamletId, startIndex,
-						maxRecords, order, columnName,userId);
+						maxRecords, order, columnName,userId,customwardId,constiId);
 				
 			}else{
 			
 				if(boothId == 0 && panchaytId != 0)			
 					votersList = votersAnalysisService.getVoterDetails(
 							publicationId, null, panchaytId,null, startIndex,
-							maxRecords, order, columnName,userId);
+							maxRecords, order, columnName,userId,customwardId,constiId);
 				else if(boothId != 0 && panchaytId == 0)
 					votersList = votersAnalysisService.getVoterDetails(
 							publicationId, boothId , null,null, startIndex, maxRecords,
-							order, columnName,userId);
+							order, columnName,userId,customwardId,constiId);
+				
+				else if(customwardId != 0 && panchaytId == 0 && boothId == 0)
+					votersList = votersAnalysisService.getVoterDetails(
+							publicationId, boothId , null,null, startIndex, maxRecords,
+							order, columnName,userId,customwardId,constiId);
 			}
 
 		

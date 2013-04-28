@@ -150,11 +150,6 @@ google.load("visualization", "1", {packages:["corechart"]});
 #impfamilydatatable table tr:nth-child(odd){background:#ffffff;}
 
 #impFamPancBothDtlstitle{
-   font-size: 16px;
-    margin-left: 0px;
-    margin-top: 35px;
-}
-#impFamPancBothDtlstitle{
 		color:steelblue;
 		font-size:1.1em;
 		font-family:arial;
@@ -203,7 +198,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 	</div> 
 
 <!--<div id ="impFamilesBasicSubDetailsTitle" ></div>-->
-<div id="impFamilesBasicSubDetailsDiv" class="widget blue whitegloss" style="width:926px;margin-left:15px;">
+<div id="impFamilesBasicSubDetailsDiv" class="widget blue whitegloss" style="width:926px;margin-left:auto;margin-right:auto;">
 
 <div id="ajaxImageDiv1" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="margin-left: 230px;"/> </div>
 
@@ -216,6 +211,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 <div id="descriptionDiv" ></div>
 		
 		<div id="impFamPancBothDtls" class="widget blue whitegloss" style="width:959px;margin-top:50px;margin-left:auto;margin-right:auto;">
+		
 		<div id="impFamPancBothDtlsAgxImg" style="display:none;margin-left:361px;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
 		</div>
 	   
@@ -806,13 +802,13 @@ function  buildFamilyMembers(result,jsObj,type){
 	 }*/
 
 	 if(type == "panchayat")
-		 var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' in '+publicationYear+'</div>';
+		 var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' in '+publicationYear+'</h4>';
 
 	 else
-      var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' '+type+' in '+publicationYear+'</div>';
+      var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' '+type+' in '+publicationYear+'</h4>';
 	
-	  str+=' <div><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
-          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div><br>';
+	  str+=' <div style="padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
 
 		
           str+='<div style="overflow-x:scroll;">';
@@ -894,7 +890,7 @@ function  buildFamilyMembers(result,jsObj,type){
           str+='  </tbody>';
           str+=' </table>';
 		  str+=' </div>';
-		  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+		  str+=' <div style="clear:both;padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
 	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div><br>';
               $('#impFamPancBothDtlsAgxImgForHamlet').hide();
 		  if((jsObj.buildType =="hamlet" && type == "panchayat") || (type == "hamlet" && requestFor !="booth"))
@@ -1536,8 +1532,8 @@ getImpFamiliesVotersToShowForBooth();
 			 else
 			   name = $("#pollingStationField option:selected").text();
 			
-		      var str ='<div id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</div>';
-			      str+=' <div><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+		      var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</h4>';
+			      str+=' <div style="padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
 		          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div><br>';
 				  str+=' <table id="impfamilydatatableForBooth" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
 		          str+='  <thead>';
@@ -1590,7 +1586,7 @@ getImpFamiliesVotersToShowForBooth();
 			 }
 		          str+='  </tbody>';
 		          str+=' </table>';
-				  str+=' <div style="clear:both;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+				  str+=' <div style="clear:both;padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
 			      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div><br>';
 				 
 					  $('#importantFamiliesForBooth').html(str);
