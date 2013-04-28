@@ -413,7 +413,10 @@ function buildAgewiseDetails(results , obj){
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Ward wise voter age details of "+obj.name+" in "+publicationYear;
+		if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
+		   noteString = "Ward wise voter age details of "+obj.name+" in "+publicationYear;
+		else
+			 noteString = "Booth wise voter age details of "+obj.name+" in "+publicationYear;
 	}
    else if(type == "ward"){
 		innerResults = results.boothVotersDetails;
@@ -451,8 +454,12 @@ function buildAgewiseDetails(results , obj){
 		str+='<th rowspan="2">HamletName</th>';
 		else
 	  str+='<th rowspan="2">Booth No</th>';
-	else if(type == "localElectionBody")
-	   str+='<th rowspan="2">Ward</th>';
+	else if(type == "localElectionBody"){
+		if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
+	     str+='<th rowspan="2">Ward</th>';
+		else
+ 		 str+='<th rowspan="2">Booth</th>';
+	}
 	else if(type == "ward" || (type="hamlet" && obj.type == "hamletBooths"))
 	   str+='<th rowspan="2">Booth No</th>';
 	   else if(type="hamlet" && obj.type == "hamletLocalArea")
@@ -605,7 +612,11 @@ function buildAgeAndGenderWiseDetails(results , obj){
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Ward wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+
+		if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
+		  noteString = "Ward wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+		else
+ 		 noteString = "Booth wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
      else if(type == "ward"){
 		innerResults = results.boothVotersDetails;
@@ -643,8 +654,14 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		 str+='<th rowspan="2">HamletName</th>';
 		 else
 	  str+='<th rowspan="2">Booth No</th>';
-	else if(type == "localElectionBody")
+	else if(type == "localElectionBody"){
+
+    if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
 	   str+='<th rowspan="2">Ward</th>';
+	else
+		str+='<th rowspan="2">Booth</th>';
+
+	}
 	else if(type == "ward" || (type="hamlet" && obj.type == "hamletBooths"))
 	   str+='<th rowspan="2">Booth No</th>';
 	    else if(type="hamlet" && obj.type == "hamletLocalArea")
@@ -749,7 +766,10 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Ward wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		 if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
+		  noteString = "Ward wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		 else
+		 noteString = "Booth wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "ward"){
 		innerResults = results.boothVotersDetails;
@@ -788,8 +808,13 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	 str+='<th rowspan="2">Hamlet Name</th>';
 	else
 	   str+='<th rowspan="2">Booth No</th>';
-	else if(type == "localElectionBody")
-	   str+='<th rowspan="2">Ward</th>';
+	else if(type == "localElectionBody"){
+
+		 if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
+	       str+='<th rowspan="2">Ward</th>';
+		 else
+			 str+='<th rowspan="2">Booth</th>';
+	}
 	else if(type == "ward" ||(type="booth" && obj.type == "boothHamlets"))
 	   str+='<th rowspan="2">Booth</th>';  
 	       else if(type="hamlet" && obj.type == "hamletLocalArea")

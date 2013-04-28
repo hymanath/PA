@@ -1022,7 +1022,8 @@ function addToPolitician(voterId,name)
 	   else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
 		  $("#castPopupShowBtn").attr("value","Panchayat wise Caste Info");
-	   }else if(type=="panchayat"){
+	   }
+	   else if(type=="panchayat"){
 		   $("#castPopupShowBtn").attr("value","Booth wise Caste Info");
 	     if(buildType == "hamlet"){
 		 $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
@@ -1037,7 +1038,10 @@ function addToPolitician(voterId,name)
 		 }
 		  $("#votersBasicInfoBtnDiv").show();
 	   }else if(type == "mandal" && mainreqid.substring(0,1) == "1"){
-	      $("#impFamiliesMoreInfoButn").attr("value","View Ward Wise Family Details");
+         if(typeofMuncipality == "GHMC Greater Municipal Corp")
+	       $("#impFamiliesMoreInfoButn").attr("value","View Ward Wise Family Details");
+		 else
+			 $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
 	   }else if(type == "localElectionBody"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Ward Wise Family Details");
 	   }else{
@@ -1057,6 +1061,14 @@ function addToPolitician(voterId,name)
 	    else{
            $("#revenueVillageWiseElecResults").hide();
 	    }
+
+		 if(type == "mandal" && mainreqid.substring(0,1) == "1"){
+			 if( typeofMuncipality == "GHMC Greater Municipal Corp")
+			  $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Ward Wise Age Details</a>');
+			 else
+			  $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
+
+		 }
 	   if(type == "panchayat" || type == "booth" || type == "hamlet" ){
 	      $("#votersInfoMoreShowHide").show();
 		 }else{
@@ -2135,8 +2147,13 @@ function addToPolitician(voterId,name)
 	var selectedElmt=document.getElementById("publicationDateList");
 	//var selectElmt =jsObj.selectElmt;
 	removeSelectElements(selectedElmt);
+
+	var  publicationIdsArray = new Array();
+
 	for(var val in results)
-	{
+	{	
+	publicationIdsArray.push(results[val].id);
+
 		var opElmt = document.createElement('option');
 		opElmt.value=results[val].id;
 		opElmt.text=results[val].name;
@@ -2150,6 +2167,12 @@ function addToPolitician(voterId,name)
 			selectedElmt.add(opElmt); // IE only
 		}	
 	}
+
+	var largest = Math.max.apply(Math, publicationIdsArray);
+
+	$('#publicationDateList').val(largest);
+	$('#publicationDateList').trigger("change");
+
 }
 var fromOnChange=false;
 $(document).ready(function(){
