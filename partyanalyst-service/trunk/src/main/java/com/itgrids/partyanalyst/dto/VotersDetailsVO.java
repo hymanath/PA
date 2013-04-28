@@ -120,6 +120,14 @@ public class VotersDetailsVO implements Serializable{
 	
 	private Long userVoterCategoryValueId; 
 	
+	private String muncipalityType;
+	
+	public String getMuncipalityType() {
+		return muncipalityType;
+	}
+	public void setMuncipalityType(String muncipalityType) {
+		this.muncipalityType = muncipalityType;
+	}
 	private Long id;
 	private String name;
 	private List<VotersDetailsVO> votersDetailsVOList;
