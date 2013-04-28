@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICensusDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
@@ -40,6 +41,7 @@ import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.enums.DelimitationConstituencyType;
 import com.itgrids.partyanalyst.model.Census;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ConstituencyCensusDetails;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
 import com.itgrids.partyanalyst.model.ElectionType;
@@ -61,6 +63,7 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	private IVoterDAO voterDAO;
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
+	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO; 
 	private static final Logger log = Logger.getLogger(DelimitationConstituencyMandalService.class);
 
 	public void setBoothConstituencyElectionVoterDAO(
@@ -115,6 +118,15 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	public void setVillageBoothElectionDAO(
 			IVillageBoothElectionDAO villageBoothElectionDAO) {
 		this.villageBoothElectionDAO = villageBoothElectionDAO;
+	}
+
+	public IConstituencyCensusDetailsDAO getConstituencyCensusDetailsDAO() {
+		return constituencyCensusDetailsDAO;
+	}
+
+	public void setConstituencyCensusDetailsDAO(
+			IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO) {
+		this.constituencyCensusDetailsDAO = constituencyCensusDetailsDAO;
 	}
 
 	public DelimitationConstituencyMandalResultVO getMandalsForDelConstituency(Long constituencyID){
@@ -214,6 +226,28 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		return mandalInfoList;
 	}
 	
+	public List<MandalInfoVO> getCensusInfoForConstituency(Long constituencyId)
+	{	
+		List<MandalInfoVO> mandalInfoList = null;
+		try{
+		List<ConstituencyCensusDetails> censusDetails = constituencyCensusDetailsDAO.getCensusConstituencyByConstituencyId(constituencyId);
+		
+		if(censusDetails != null && censusDetails.size() > 0)
+		{
+			mandalInfoList = new ArrayList<MandalInfoVO>();
+			for(ConstituencyCensusDetails mandalCensus : censusDetails)
+			{
+				MandalInfoVO obj = new MandalInfoVO();
+				convertConstituencyCensusTOMandalInfo(mandalCensus, obj);
+				mandalInfoList.add(obj);
+			}
+		}
+		return mandalInfoList;
+		}catch (Exception e) {
+			return null;
+		}
+	}
+	
 	public MandalInfoVO convertCensusTOMandalInfo(Census mandalCensus, MandalInfoVO obj){
 		Long tehsilID = mandalCensus.getTehsilId();
 		
@@ -243,6 +277,35 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		obj.setTotalWorkingPersons(mandalCensus.getWorkingPopulation());
 		obj.setTotalWorkingFemalePersons(mandalCensus.getWorkingFemale());
 		obj.setTotalWorkingMalePersons(mandalCensus.getWorkingMale());
+		return obj;
+	}
+	
+	public MandalInfoVO convertConstituencyCensusTOMandalInfo(ConstituencyCensusDetails census, MandalInfoVO obj)
+	{
+		obj.setTotalPersons(census.getTotalPopulation());
+		obj.setTotalMalePersons(census.getTotalMalePopulation());
+		obj.setTotalFemalePersons(census.getTotalFemalePopulation());
+		
+		obj.setTotalSCPersons(census.getPopulationSC());
+		obj.setTotalSCFemalePersons(census.getFemaleSC());
+		obj.setTotalSCMalePersons(census.getMaleSC());
+
+		obj.setTotalSTPersons(census.getPopulationST());
+		obj.setTotalSTFemalePersons(census.getFemaleST());
+		obj.setTotalSTMalePersons(census.getMaleST());
+
+		obj.setTotalLiteratePersons(census.getPopulationLiterates());
+		obj.setTotalLiterateFemalePersons(census.getFemaleLiterates());
+		obj.setTotalLiterateMalePersons(census.getMaleLiterates());
+
+		obj.setTotalIlliteratePersons(census.getPopulationIlliterates());
+		obj.setTotalIlliterateFemalePersons(census.getFemaleIlliterates());
+		obj.setTotalIlliterateMalePersons(census.getMaleIlliterates());
+
+
+		obj.setTotalWorkingPersons(census.getWorkingPopulation());
+		obj.setTotalWorkingFemalePersons(census.getWorkingFemale());
+		obj.setTotalWorkingMalePersons(census.getWorkingMale());
 		return obj;
 	}
 	
