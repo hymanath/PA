@@ -5510,8 +5510,13 @@ function showPreviousEleVotingTrends(results,jsObj)
 						 
 						  if(partyVotesEarnedVOs[k].votesEarned == 0)
 						 str +='<td style="text-align:center">-</td>';
-						  else
-				         str +='<td>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
+						  else{
+
+							  if(partyVotesEarnedVOs[k].wonStatus == true)
+								  str +='<td style="background-color:green;color:white;">'+partyVotesEarnedVOs[k].votesEarned+'</td>';
+							  else
+								  str +='<td>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
+						  }
 					}
 						
 					     str +='</tr>';
