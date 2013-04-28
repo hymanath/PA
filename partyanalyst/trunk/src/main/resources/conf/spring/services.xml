@@ -667,6 +667,7 @@
 		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO" />
 		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 		<property name="constituencyCensusDetailsDAO" ref="constituencyCensusDetailsDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
 	</bean>
 	
 	 <bean id="crossVotingEstimationService" class="com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService">
@@ -1493,6 +1494,7 @@
 	  <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
 	  <property name="userVoterCategoryDAO" ref="userVoterCategoryDAO" />
 	  <property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
+	  <property name="regionServiceDataImp" ref="regionServiceDataImp" />
     </bean>
     
 </beans>		
