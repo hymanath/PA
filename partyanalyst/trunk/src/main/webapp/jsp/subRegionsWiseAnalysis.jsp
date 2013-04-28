@@ -59,6 +59,16 @@
 	  <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
 	  <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 <style type="text/css">
+
+.headings{
+	background: none repeat scroll 0% 0% #4285F4;
+	color: rgb(255, 255, 255);
+	padding: 5px; border-radius: 5px 5px 5px 5px;
+	text-align: center; 
+	margin: 10px;
+	border-top-width: 40px;
+}
+
 #emprtyData
 {
 
@@ -420,16 +430,16 @@ $(document).ready(function(){
 	
 </div>
 
-<div id="voterDetailsNote" class="noteDiv thumbnail breadcrumb" style="display:none;text-align:center;"></div>
+<div id="voterDetailsNote" class="noteDiv " style="display:none;text-align:center;"></div>
 <div id="tableDiv" style="padding:10px;display:none;overflow-x:scroll" class="voterDetails"></div>
 
-<div id="voterAgewiseDetailsNote" class="noteDiv thumbnail breadcrumb" style="text-align:center;color:#3F3636;"></div>
+<div id="voterAgewiseDetailsNote" class="noteDiv" style="text-align:center;color:#3F3636;"></div>
 <div id="agewiseDetails" style="padding:10px;overflow-x:scroll;" class="voterDetails"></div>
 
-<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv thumbnail breadcrumb" style="text-align:center;"></div>
+<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv" style="text-align:center;"></div>
 <div id="ageAndgenderWiseDetails" style="padding:10px;overflow-x:scroll;" class="voterDetails"> </div>
 
-<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv thumbnail breadcrumb" style="text-align:center;"></div>
+<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv " style="text-align:center;"></div>
 <div id="voterAgeAngGenderwiseDetailsInPercent" style="overflow-x:scroll;padding:10px;" class="voterDetails"></div>
 
 
@@ -1658,7 +1668,7 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	else 
 		noteString = name;
 
-	$('#voterDetailsNote').html('<div align="center"><h4 id="headingId">'+noteString+" "+"voters details"+' in '+publicationYear+'</h4></div>');
+	$('#voterDetailsNote').html('<div align="center"><h3 class="headings" id="headingId">'+noteString+" "+"voters details"+' in '+publicationYear+'</h3></div>');
 	
 	var str='';
 	str+='<table class="ageTable table table-bordered table-hover" id="ageWiseDetailsTable" >';
@@ -1777,7 +1787,7 @@ function buildAgewiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgewiseDetailsNote').html('<div align="center"><h4 id="headingId">'+noteString+'</h4></div>');
+	$('#voterAgewiseDetailsNote').html('<div align="center"><h3  class="headings"  id="headingId">'+noteString+'</h3></div>');
 
 	var str='';
 	str+='<table  class="ageTable table table-bordered table-hover" id="mandalWiseVoterAgeTable" >';
@@ -1973,7 +1983,7 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNote').html('<div align="center"><h4 id="headingId">'+noteString+'</h4></div>');
+	$('#voterAgeAngGenderwiseDetailsNote').html('<div align="center"><h34 class="headings"  id="headingId">'+noteString+'</h3></div>');
 
 	var str='';
 
@@ -2125,7 +2135,7 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<div align="center"><h4 id="headingId">'+noteString+'</h4></div>');
+	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<div align="center"><h3 class="headings"  id="headingId">'+noteString+'</h3></div>');
 
 	var str='';
 
