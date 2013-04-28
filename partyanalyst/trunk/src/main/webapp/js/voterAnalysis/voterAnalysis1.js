@@ -1759,7 +1759,8 @@ function addToPolitician(voterId,name)
 
 								else if(jsObj.task =="getPreviousEleVotingTrends")
 								{
-									showPreviousEleVotingTrends(myResults,jsObj);	
+									showPreviousEleVotingTrends(myResults,jsObj);
+									PreviousEleVotingTrendsHighChat(myResults,jsObj);
 								}
                                 else if(jsObj.task == "getVotersInAFamilySearch")
 								{
@@ -5533,6 +5534,90 @@ function showPreviousEleVotingTrends(results,jsObj)
 		}
 	 }
 	}
+
+
+function getDataResultsForTotalVoters(resultsArr)
+{
+	var tempLine = new Array();
+
+	// building column
+    for(var i in resultsArr) 
+	{
+		var clmTemp = new Object();
+		var reqObj = resultsArr[i];
+		clmTemp['name'] = reqObj['reqType'] + reqObj['electionYear'];
+		
+		var newdataObj = new Array();
+
+		for( var j in resultsArr[i].partyVotesEarnedVOs)
+		{ 
+		  newdataObj.push(resultsArr[i].partyVotesEarnedVOs[j].votesEarned);	 
+		}
+		clmTemp['data'] = newdataObj;
+			tempLine.push(clmTemp);	
+	}
+	
+	return tempLine;	
+}
+
+function PreviousEleVotingTrendsHighChat(results,jsObj){
+	
+	var dataResultArr = getDataResultsForTotalVoters(results);
+	$('#previousEleVotingTrendsChatDiv').highcharts({
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'Election Voting Trendz in ' +jsObj.name
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories:results[0].partiesList,
+				
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Votes',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' Votes'
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -100,
+                y: 10,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: '#FFFFFF',
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: dataResultArr
+        });
+}
+
 
 function getCountsForConstituency()
 {
