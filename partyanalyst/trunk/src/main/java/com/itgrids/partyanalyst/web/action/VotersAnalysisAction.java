@@ -95,7 +95,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
     private String isLocalityExist;
     
     private List<VoterCastInfoVO> castList;
-    
+	
     private List<VotersDetailsVO> ageRangeList;
     
     private IUserVoterService userVoterService;
@@ -450,7 +450,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		if(user == null)
 		return INPUT;
 	
-		if(session.getAttribute(IConstants.USER) == null && 
+	if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
@@ -736,10 +736,8 @@ public String getVotersCastInfoByConstituency()
 		String type = jObj.getString("type");
 		String publicationId = jObj.getString("publicationDateId");
 		String buildType = jObj.getString("buildType");
-	
-		
-		
-		if(type.equalsIgnoreCase("hamlet"))
+			
+			if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase("customWard") )
 		{
 			String res=jObj.getString("resultFor");
 			if(res.equalsIgnoreCase("booth"))
@@ -1022,6 +1020,7 @@ public void setVotersFamilyInfo(List<VoterHouseInfoVO> votersFamilyInfo) {
 }
 
 
+
 public String getCountsForLevel()
 {
 	try{
@@ -1144,6 +1143,7 @@ return Action.SUCCESS;
 		String myType ="";
 		
 		
+		
 		if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase("hamletLocalArea") || type.equalsIgnoreCase("hamletBooths") || type.equalsIgnoreCase("customWard")  )
 		{ 	 
 			myType=type;
@@ -1154,7 +1154,7 @@ return Action.SUCCESS;
 			 
 			votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,panchayatId , userId1, publicationDateId,myType);	
 		
-		}else  
+		}else 
 			if(!type.equalsIgnoreCase("hamletLocalArea") ){
 			
 		votersDeatailsForConstituency = votersAnalysisService.getVoterAgeWiseDetails(constituencyId, mandalId,
@@ -1205,7 +1205,12 @@ return Action.SUCCESS;
 				boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForHamletByBoothId(panchayatId,publicationDateId,userId1,type);
 			
 				constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
-				}
+				} else if (type.equalsIgnoreCase("wardBooths")  ){
+					
+					boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForHamletByBoothId(panchayatId,publicationDateId,userId1,type);
+				
+					constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
+					}
 		else if (type.equalsIgnoreCase("ward")){
 		boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByWardId(panchayatId,publicationDateId,constituencyId);
 		if(boothVotersDetails == null || boothVotersDetails.size() == 0)
@@ -1513,6 +1518,7 @@ return Action.SUCCESS;
 		}
 		return Action.SUCCESS;
 	}
+	
 	public String getVotersFamilyDetailsByConstituencyId(){
 		try{
 			String param;
@@ -1558,12 +1564,12 @@ return Action.SUCCESS;
 			return ERROR;
 		Long userId =  regVO.getRegistrationID();
 		if(jObj.getString("task").equalsIgnoreCase("getCategoryWiseDetails")){
-			String[] ids = jObj.getString("attributeIds").split(",");
-			List<Long> attributeIds = new ArrayList<Long>();
-			for(String id:ids){
-				attributeIds.add(new Long(id.trim()));
-			}
-			castList = voterReportService.getVoterAttributeDetails(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
+		String[] ids = jObj.getString("attributeIds").split(",");
+		List<Long> attributeIds = new ArrayList<Long>();
+		for(String id:ids){
+			attributeIds.add(new Long(id.trim()));
+		}
+		castList = voterReportService.getVoterAttributeDetails(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
 		}else if(jObj.getString("task").equalsIgnoreCase("getCategoryWiseSubDetails")){
 			List<Long> attributeIds = new ArrayList<Long>();
 			attributeIds.add(jObj.getLong("attributeId"));
