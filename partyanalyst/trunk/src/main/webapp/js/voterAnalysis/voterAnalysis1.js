@@ -3627,7 +3627,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	});
 	
 	
-	buildCasteVotersChart(castesArr,totalVotersArr,maleVotersArr,femaleVotersArr,castPercentageArr);
+	/*buildCasteVotersChart(castesArr,totalVotersArr,maleVotersArr,femaleVotersArr,castPercentageArr); */
 	   
 	   
 	   for(var i in castArray){
@@ -3668,7 +3668,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	  
     ] 
 		});
-	
+	buildGraphBySlide();
 	}
 
 	function buildLocalCastStatisticsDataTableForAssembly(typeName,publicationDateId,boothId)
