@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
@@ -16,5 +17,7 @@ public interface IUserVoterService {
 	public List<VoterVO> getCategoryWiseVoterData(VoterDataVO voterDataVO , Long userId , List<Long> categories);
 	
 	public String getCategoryNameByCategoryId(Long userVoterCategoryId);
+	
+	public List<MandalInfoVO> getCensusDetailsInALocation(String locationType, Long locationValue, Long constituencyId);
 	
 }
