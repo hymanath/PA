@@ -55,7 +55,10 @@
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>		
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 	<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
-	  <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
 	<script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 	<!--<script type="text/javascript" src="js/highcharts/js/modules/exporting.js"></script>-->
 	
@@ -123,6 +126,7 @@
 	var tehsilId = '';
 	var constituencyId = '';
 	var publicationId = 8;
+	var castePercent=[];
 	
 var constMgmtMainObj={
 							
@@ -231,17 +235,29 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	buildHamletWiseCastResultsGraph(null);
 	}
 
-
-function buildHamletWiseCastResultsGraph(selectedCast)
+var percentage;
+function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 {  
 	var myChart1 = new Array();
 	
-
 	if(selectedCast == null)
 	  var castMain = sort_unique(castTemp);
 	else
 	 var castMain = sort_unique(selectedCast);
 
+	 if(percentage != null)
+	{
+		for(var per=0;per<castePercent.length;per++)
+		{
+			if(castePercent[per].id < percentage)
+			{
+				var cIndex = castMain.indexOf(castePercent[per].name);
+				if(cIndex != -1)
+					castMain.splice(cIndex,1);
+			}
+		}
+	}
+	 
 	 var avgCal = new Array();
 	 var mySort = new Array();
 	 var newCast = new Array();
@@ -398,11 +414,36 @@ function buildHamletWiseCastResultsGraph(selectedCast)
            
             series: tempLine //myChart1 
         });
-		
-	
-	
-	
 }
+
+// The function is for slider value -- Created by sasi -- START
+var votersRange;
+$(function() {
+$( "#slider" ).slider({
+value:0,
+min: 0,
+max: 50,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+},
+change: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+votersRange=ui.value;
+buildGraphBySlide();
+}
+});
+votersRange=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
+votersRange=$( "#slider" ).slider( "value" );
+});
+
+function buildGraphBySlide(){
+buildHamletWiseCastResultsGraph(null,votersRange);
+}
+
+// The function is for slider value -- Created by sasi -- END
+
+
 function sort_unique(a) {
      var temp = {};
     for (var i = 0; i < a.length; i++)
@@ -411,18 +452,6 @@ function sort_unique(a) {
     for (var k in temp)
         r.push(k);
     return r;
-}
-
-
-var sort_by = function(field, reverse, primer){
-
-   var key = function (x) {return primer ? primer(x[field]) : x[field]};
-
-   return function (a,b) {
-       var A = key(a), B = key(b);
-       return ((A < B) ? -1 :
-               (A > B) ? +1 : 0) * [-1,1][+!!reverse];                  
-   }
 }
 
 function getAllPublicationDates(){
@@ -558,6 +587,9 @@ var checkedType = '${checkedType}';
 									  }
 									}
 								}else if(jsObj.task == "getCastInfoForsubLevels"){
+								
+								castePercent = myResults.castPercent;
+								
 								$("#castGrid1Title").html("Cast Details By Panchayat Wise In  ${tehsilName} Mandal");
 								if(myResults.castVosList != null && myResults.castVosList.length > 0)
 								 buildCastInfoForSubLevels(myResults,jsObj);
@@ -685,6 +717,15 @@ var checkedType = '${checkedType}';
 			<div id="container1" style="width:800px;margin-left:auto;margin-right:auto;background:violet"></div>
 		</c:if>
 		   <div id="castGrid1Title" style='font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;font-size:16px;color:#274b6d;fill:#274b6d;'></div>
+		   <div id="rangeSliderDiv" style="width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;" >
+			<h5 style="text-align:center;">Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
+			<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
+			</div>
+				<p style="padding-bottom:2px;">
+					<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+				</p>
+		</div>
+	
 		   <div id="castGrid1" style="padding-bottom:10px;"></div>
 	</div>
 	
@@ -746,7 +787,6 @@ var checkedType = '${checkedType}';
 		</table>
 		
 	</div>	
-	
 	
 	<script type="text/javascript">
 	buildVotesPolledDataTable();
