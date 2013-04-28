@@ -363,6 +363,7 @@ label{display:inline-block;}
 
 #labelRadioDiv{font-family:verdana;font-size:11px;}
 #mainDiv{margin-left:auto;margin-right:auto;width:990px;}
+
 </style>
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -385,6 +386,7 @@ var counter = 0;
 
 $(document).ready(function(){
   if(type == "mandal"){
+       $("#mandalElecResultsDiv").show();
        var jsObj=
 			{
 				
@@ -395,6 +397,8 @@ $(document).ready(function(){
 			var url = "getPanchayatWiseElectionResultsAction.action?"+rparam;	
    
 		callAjax(jsObj,url);
+  }else if(type == "constituency"){
+    getConstituencyElections();
   }
 });
 </script>
@@ -1177,8 +1181,8 @@ function buildConstituencyElectionResultsDataTable(value)
 function getConstituencyResults(elecYear){
 	
 	var jsObj = {
-			constituencyId:232,
-			electionYear:2009,
+			constituencyId:id,
+			electionYear:elecYear,
 			chartHeight: 350,
 			chartWidth: 500,
 			others:true,
@@ -1193,7 +1197,7 @@ function getConstituencyResults(elecYear){
 	function getConstituencyElections(){
 
 	var jsObj = {
-			constituencyId:232,
+			constituencyId:id,
 			task:"getConstituencyElections"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -2251,13 +2255,12 @@ $("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <s
 
 getvotersBasicInfo("voters",id,publicationId,type);
 getCensusInfoForSubLevels();
-getConstituencyElections();
 getLatestCastsSubcategoryWise();
 getAgewiseVoterDetails();
 
 </script>
 
-<div id="mandalElecResultsDiv" style="margin-top:10px;" >
+<div id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
   <div class="hero-unit" >
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
     <div id="mandalElecResultsParties"></div>
