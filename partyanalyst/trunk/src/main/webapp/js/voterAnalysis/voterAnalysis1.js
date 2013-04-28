@@ -866,8 +866,8 @@ function addToPolitician(voterId,name)
 	
 	function getAllTabs(id,publicationId,type){
 		selectedId = id;
-
-       if(type == "hamlet")
+       
+       if(type == "hamlet" || /customWard/i.test(type))
 		  $('#impFamiliesForBooths').show();
 	   else
 		   $('#impFamiliesForBooths').hide();
@@ -1022,8 +1022,7 @@ function addToPolitician(voterId,name)
 	   else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
 		  $("#castPopupShowBtn").attr("value","Panchayat wise Caste Info");
-	   }
-	   else if(type=="panchayat"){
+	   }else if(type=="panchayat"){
 		   $("#castPopupShowBtn").attr("value","Booth wise Caste Info");
 	     if(buildType == "hamlet"){
 		 $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
@@ -1044,7 +1043,9 @@ function addToPolitician(voterId,name)
 			 $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
 	   }else if(type == "localElectionBody"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Ward Wise Family Details");
-	   }else{
+	   }else if(/customWard1/i.test(type))
+		 $("#impFamiliesMoreInfoButn").attr("value","View Locality Wise Family Details");
+	   else {
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 	   }
 	   if(type == "mandal" && mainreqid.substring(0,1) == "2"){
@@ -1082,13 +1083,18 @@ function addToPolitician(voterId,name)
 			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 			
 		 }
-		 if(type != "hamlet")
+		 if(type != "hamlet" )
 		 {
 		 $("#castTab").html('');
 		  $("#previousEleVotingTrendsDiv").css('display','block');
 		 }
+		 if(/customWard/i.test(type))
+	   {
+	   $("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
+	   $("#impFamiliesMoreInfoButn").css('display','none');
+	   }
 
-		  if(type == "hamlet")
+		  if(type == "hamlet" || /customWard/i.test(type) )
 		  {    $("#ageLinkForHamletBooths").css('display','block');
 			  $("#previousEleVotingTrendsDiv1").css('display','none');
 			  $("#permanentlyUpdateDiv").css('display','none');
@@ -1102,7 +1108,14 @@ function addToPolitician(voterId,name)
 		
 		 $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
-		 //--
+		  	if(type == "customWard" || type == "hamlet" ){
+						 getVotersCastInfo(id,publicationId,type);
+
+			//getvotersBasicInfo("impFamilies",id,publicationId,type);
+			// getPreviousVotersDetails1();
+		callCorrespondingAjaxCall('brief');
+}
+		 /* //--
 		 getPreviousVotersDetails1();
 		    // getPreviousVotersDetails();
 		//getvotersBasicInfo("voters",id,publicationId,type);
@@ -2863,6 +2876,7 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 
 	}
 	if(buttonType == "impFamilies"){
+	   if(type != "customWard")
 	    $("#impFamiliesMoreInfoButn").show();
 	    if(type == 'panchayat' || type == 'booth'){
 		   
@@ -5778,7 +5792,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			str+='<table id="voterBasicInfoTable" class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
 			 str+='<thead class="info"><tr>';
 			  str+='<th>Year</th>';
-			 if(jsObj.type != "booth" && jsObj.type != "hamlet")
+			 if(jsObj.type != "booth" && jsObj.type != "hamlet" &&  jsObj.type != "customWard")
 			  str+='<th>Booths</th>';
 		      str+='<th>Total</th>';
 		 	  str+='<th>Male</th>';
@@ -5797,7 +5811,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			    str+='<td><span title='+myResults[i-1].electionDate+'>'+myResults[i-1].electinYear+'</span><b style="color:red">&nbsp;(E)<b></td>';
 			  else 
 				str+='<td><span title='+myResults[i-1].publicationDate+'>'+myResults[i-1].electinYear+'</span><b style="color:red">&nbsp;(P)<b></td>';
-              if(jsObj.type != "booth" && jsObj.type != "hamlet")
+              if(jsObj.type != "booth" && jsObj.type != "hamlet" &&  jsObj.type != "customWard" )
 			  str+='<td>'+myResults[i-1].totalBooths+'</td>';
 		      str+='<td>'+myResults[i-1].totVoters+'</td>';
 		 	  str+='<td>'+myResults[i-1].totalMaleVoters+'</td>';
@@ -6344,6 +6358,8 @@ if( muncipalityType == "Greater Municipal Corp"){
 maintype = 'ward';
 getAllTabs(panchayatid,$("#publicationDateList").val(),'ward');
 }else{
+scrollToNewsDiv();
+
 maintype = 'customWard';
 getAllTabs(panchayatid,$("#publicationDateList").val(),'customWard');
 //alert("SHOW Panchayat DATA");
