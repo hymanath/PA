@@ -56,7 +56,7 @@
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-
+<script type="text/javascript" src="js/subRegionsWiseAnalysis.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 <style type="text/css">
 #emprtyData
@@ -352,6 +352,15 @@ color:#333333;
     margin-left: 4px;
     padding-top: 11px;
     width: 947px;}
+#parliamentElecResDiv{margin-top:56px !important;}
+#parliamentElecResDiv > table,#elecResDiv > table{border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
+#parliamentElecResDiv > table * td,#elecResDiv > table * td{padding:3px;padding-left:5px;font-weight:normal;border:1px solid #d3d3d3;}
+#parliamentElecResDiv > table * th,#elecResDiv > table * th{height:20px;text-align:left;background-color:#cde6fc; padding:5px;font-weight:bold;border:1px solid #d3d3d3;}
+#parliamentElecResDiv > table * tr:nth-child(even),#elecResDiv > table * tr:nth-child(even){background:#f9f9f9;}
+#parliamentElecResDiv > table * a,#elecResDiv > table * a{text-decoration:none;color:#3d3d3d;font-weight:bold;}
+
+#labelRadioDiv{font-family:verdana;font-size:11px;}
+#mainDiv{margin-left:auto;margin-right:auto;width:990px;}
 </style>
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -368,10 +377,17 @@ var publicationYear= "${publicationYear}";
 var buildType= "${buildType}";
 var constituencyId= "${constituencyId}";
 var mainname = '${typeName}';
+var constituencyResults,createGroupDialog;;
+var constituencyType = 'Assembly';
+var parliamentResult;
+var counter = 0;
+
+
 </script>
 
 </head>
 <body>
+<div id="mainDiv">
 <div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="votersBasicInfoMainDiv">
 	<div id="censusReportMainDiv">
@@ -386,11 +402,39 @@ var mainname = '${typeName}';
 	
 </div>
 
+<div id="votingTrendzDiv" class="widget blue">
+	 <div class="clear"></div>
+	
+	<div id="detailedChartDIV" class="yui-skin-sam"></div>
+<div id="MandalwiseVotingTrendz" class="rounded" >
+			  <div id="mandalwisevotingTrendz"class="trenzCss">
+				<div class="corner topLeft"></div>
+				<div class="corner topRight"></div>
+				<div class="corner bottomLeft"></div>
+				<div class="corner bottomRight"></div>
+				<div id="MandalVotingTrendz_head"></div>
+				<div id="electionIdsSelectDiv"></div>
+			
+				<div id="parliamentElectionResultsDivNew" style="display:none;overflow:auto;margin-top:10px;"></div>
+				<div id="censusSelectDiv"></div>
+				<div id="censusErrorMsgDiv" style="padding-left:10px;"></div>
+				<div id="mandalOrConstiElecResultDiv">
+				<div id="parliamentElectionResultsDiv" style="overflow:auto;margin-top:10px;"></div>
+				<div id="electionResultsInConstituencyDiv" style="margin-top: -1px;"></div>
+				<div id="labelRadioDiv"></div>			
+				<div id="resultsDataTableDiv"></div>
+				<div id="missingDataInfoDiv"></div>
+				
+				</div>
+						
+			</div>
+			</div>
+			
+			</div>
+			
+</div>			
+
 <script type="text/javascript">
-getvotersBasicInfo("voters",id,publicationId,type);
-getCensusInfoForSubLevels();
-
-
 function getvotersBasicInfo(buttonType,id,publicationId,type){
   // var ajaxImageDiv =  document.getElementById('ImpFamwiseAjaxDiv');
     var level = $("#reportLevel").val();
@@ -446,6 +490,41 @@ function callAjax(jsObj,url)
 								{
 								  showSubLevelWiseCensusReport(myResults,jsObj);
 								}
+								else if(jsObj.task == "getConstituencyResultsBySubLocations")
+								{	
+                                   
+									constituencyResults = myResults;
+									buildCensusSelect(constituencyResults);
+									buildConstituencyElecResultsDataTable("number");
+									buiidElecResultRadioSelect();
+									buildConstituencyElectionResultsDataTable("number");
+									
+								}
+								
+								else if(jsObj.task == "getConstituencyElections")
+								{		
+									buildElectionsSelectBox(myResults);									
+								}
+								
+								else if(jsObj.task == "getCensusDetailsForAConstituency")
+								{
+								    document.getElementById("censusAjaxImgDiv").style.display="none";
+									censusResult = myResults;
+									buildCensusChartForAConstituency(myResults);
+									buiidCensusRadioSelect();	
+									buildConstituencyElectionResultsDataTableWithCensus(myResults,"number");
+								}
+								
+								else if(jsObj.task == "getConstituencyElectionsYersForAss"){
+								    buildConstituencyElectionsYersForAss(myResults);
+								}
+								else if(jsObj.task == "getParliamentConstituencyElectionResults")
+								{		
+								   document.getElementById("censusAjaxImgDivForParlinit").style.display ="none";	
+									parliamentResult = myResults;
+									buildParliamentResults(jsObj.electionYear,myResults);			
+								}
+				
 								}catch (e) {
 								}  
  		               },
@@ -731,7 +810,283 @@ function showSubLevelWiseCensusReport(result,jsObj)
 }
 
 
+function buildElectionsSelectBox(myResults){
+	var selectDiv = document.getElementById("electionIdsSelectDiv");
+	var electionYearSelect = '';	
+	var selectDivEl = document.getElementById("MandalwiseVotingTrendz");
+	if(myResults.length == 0){
+		if(selectDivEl){
+			selectDivEl.style.display = 'none';
+		}
+			
+		
+		return;
+	}
+
+	var headingDiv = document.getElementById("MandalVotingTrendz_head");
+	var str='';
+	if(headingDiv == null)
+		return;
+	if(constituencyType == 'Assembly'){
+		//headingDiv.innerHTML = ' Mandal Wise Voting Trendz ';
+	str +='<h1 class="topfour"></h1>';
+	str +='<h1 class="gre-title">';
+	str +='<h4>Mandal Wise Voting Trendz</h4>';
+		str +='</h1>';
+	headingDiv.innerHTML=str;
+	}
+	if(constituencyType == 'Parliament')
+		{
+		//headingDiv.innerHTML = ' Assembly Wise Voting Trendz '; 
+	str +='<h1 class="topfour"></h1>';
+	str +='<h1 class="gre-title">';
+	str +='<h4> Assembly Wise Voting Trendz</h4>';
+	str +='</h1>';
+		headingDiv.innerHTML = str;
+	str+='<br>';
+	str+='<br>';
+	}
+	electionYearSelect += '<table>';
+	if(constituencyType == 'Assembly')
+		  electionYearSelect += '<th>Select Assembly Election Year :</th>';
+		else
+		  electionYearSelect += '<th>Select Parliament Election Year :</th>';
+	electionYearSelect += '<th>';
+	electionYearSelect += '<select id="electionYearSelect" class = "selectWidth" onchange = "getConstituencyResults(this.options[this.selectedIndex].text)">';
+	for(var i in myResults)
+	{			
+		electionYearSelect += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+	}
+	electionYearSelect += '</select>';
+	electionYearSelect += '</th>';
+	electionYearSelect += '<td><div id="AjaxImgDiv" align="center" style="display:none;"><img width="5" height="5" src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
+	electionYearSelect += '<td><div id="parliamentResultsButtonDiv"></td>';
+	electionYearSelect += '<td><div id="detailsDiv"></td>';
+	electionYearSelect += '</table>';
+	selectDiv.innerHTML = electionYearSelect; 
+	getConstituencyResults(myResults[0].name);
+	}
+
+function buildConstituencyElectionResultsDataTable(value)
+	{
+
+	var resultDiv = document.getElementById("resultsDataTableDiv");	
+	var str = '';
+	str += '<div id="elecResDiv" style="width:900px;overflow-x:auto;margin-top:20px;">';
+	str += '<table id = "elecResTable">';
+	for(var i in constituencyResults.constituencyOrMandalWiseElectionVO){
+		str += '<tr>';
+		if(constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName == 'Others *' || 
+				!constituencyResults.constituencyOrMandalWiseElectionVO[i].showLink)
+			str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</td>';
+		else
+		if(constituencyResults.electionType == 'Assembly'){
+			if(constituencyResults.constituencyOrMandalWiseElectionVO[i].isUrban)
+				str += '<td><a  href="localBodyElectionAction.action?stateId=1&localBodyElectionTypeId=5&localBodyId='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationId+'">'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
+			else
+				str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationId+'&MANDAL_NAME='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'">'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
+		}
+		else
+			str += '<td><a href="constituencyPageAction.action?constituencyId='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationId+'">'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
+		for(var j in constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs){
+			if(value == 'number')
+				str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesEarned+'</td>';
+			else
+				str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesPercentage+'</td>';
+		}
+		str += '</tr>';
+	}		
+	str += '</table>';
+	str += '</div>';
+	resultDiv.innerHTML = str;
+
+	var resultDiv = document.getElementById("missingDataInfoDiv");	
+	var missingVotesDiv = '';
+	missingVotesDiv+='<b>';
+	missingVotesDiv += '<font color="Red"><b>*</b></font>';		
+	missingVotesDiv += ' Others Include Postal Ballet Votes';
+	missingVotesDiv+='</b>';
+	resultDiv.innerHTML = missingVotesDiv;
+
+	 var myColumnDefs = new Array();
+	 var myFields = new Array();
+	 
+	 if(constituencyResults.electionType == 'Assembly'){
+		 var villageHead = {
+		 			key:"Mandal",
+		 			lable: "Mandal",
+		 			sortable:true
+			   }
+
+		 var villageValue = {key:"Mandal"}
+	
+		 myColumnDefs.push(villageHead);
+		 myFields.push(villageValue);
+	 }else{
+		 var villageHead = {
+		 			key:"Assembly Constituency",
+		 			lable: "Assembly Constituency",
+		 			sortable:true
+			   }
+
+		 var villageValue = {key:"Assembly Constituency"}
+	
+		 myColumnDefs.push(villageHead);
+		 myFields.push(villageValue);
+	 }
+	 
+
+	 for(var i in constituencyResults.candidateNamePartyAndStatus){
+		var obj1 = {
+					key:constituencyResults.candidateNamePartyAndStatus[i].party +'['+constituencyResults.candidateNamePartyAndStatus[i].rank+']',
+					label:constituencyResults.candidateNamePartyAndStatus[i].party +'['+constituencyResults.candidateNamePartyAndStatus[i].rank+']',
+					sortable:true
+				}
+		var obj2 = {
+					key:constituencyResults.candidateNamePartyAndStatus[i].party +'['+constituencyResults.candidateNamePartyAndStatus[i].rank+']',
+					parser:"number"
+				}
+		myColumnDefs.push(obj1);
+		myFields.push(obj2);
+	 }
+
+	 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get("elecResTable")); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+	 myDataSource.responseSchema = { 
+							            fields:myFields    
+							        };
+
+	 if(constituencyResults.electionType == 'Parliament'){
+		var extraInfoDiv = document.getElementById("missingDataInfoDiv");
+		var str = '';
+		str += '<br>';
+		str += '<table>';
+		str += '<tr>';
+		str += '<td>';
+		str += '<font color="Red"><b>*</b></font>';				
+		str += '</td>';
+		str += '<td><b>';
+			if(constituencyResults.isDataInsufficient){
+				str += ' Others Include Postal Ballet Votes, ';
+				for(var i in constituencyResults.missingConstituencies)
+					str += '<a href="constituencyPageAction.action?constituencyId='+constituencyResults.missingConstituencies[i].id+'">'+constituencyResults.missingConstituencies[i].name + '</a> Assembly ,';
+				str = str.substring(0,str.length-1);
+				str += ' Wise  Election Results';
+			}else{
+				str += ' Others Include Postal Ballet Votes';
+			}
+		str += '</b></td>';
+		str += '</tr>';
+		str += '</table>';		
+		extraInfoDiv.innerHTML = str;		
+	 }
+	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource,{caption:"Mandal Wise Election Results For  Constituency In "+constituencyResults.electionYear+" "});
+	}
+	
+
+function getConstituencyResults(elecYear){
+	
+	var jsObj = {
+			constituencyId:232,
+			electionYear:2009,
+			chartHeight: 350,
+			chartWidth: 500,
+			others:true,
+			task:"getConstituencyResultsBySubLocations"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "<%=request.getContextPath()%>/assemblyWiseParliamentResultAction.action?"+rparam;
+	callAjax(jsObj, url);
+	}
+
+	
+	function getConstituencyElections(){
+
+	var jsObj = {
+			constituencyId:232,
+			task:"getConstituencyElections"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "<%=request.getContextPath()%>/getElectionYearsAction.action?"+rparam;
+	callAjax(jsObj, url);
+	}
+	
+	
+function getConstiElecYearsForAss(){
+   var jsObj = {
+			constituencyId:495,
+			task:"getConstituencyElectionsYersForAss"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "<%=request.getContextPath()%>/getElectionYearsAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getParliamentResults(elecYear){
+		if(elecYear == 0 || elecYear == '0')
+		 return;
+		counter++;
+	    document.getElementById("censusAjaxImgDivForParlinit").style.display ="block";	
+		var jsObj = {
+				constituencyId:232,
+				electionYear:2012,
+				censusYear:'',
+				delimitationYear:'',
+				seletedIndex:'',
+				seletedText:'',
+				task:"getParliamentConstituencyElectionResults"
+			};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getParliamentMandalResultsAction.action?"+rparam;
+		callAjax(jsObj, url);
+		}
+
+
+
+	function getCensusDetailsForAConstituency(constituencyId,index,text)
+	{
+	if(index == 0)
+			return;
+
+	var imgElmt = document.getElementById('censusAjaxImgDiv');
+	
+	if(imgElmt.style.display == "none")
+	{
+          imgElmt.style.display = "block";
+	}
+	
+	var electionSelectEle = document.getElementById("electionYearSelect");
+	var electionYear      = electionSelectEle.options[electionSelectEle.selectedIndex].text;
+	//var constituencyType  = '${constituencyDetails.constituencyType}';
+
+		var jsObj = {
+			constituencyId  : 232,
+			censusYear      : 2001,
+			delimitationYear: 2009,
+			seletedIndex    : index,
+			seletedText     : text,
+			electionYear    : 2009,
+			constituencyType: constituencyType,
+			others          : false,
+			task:"getCensusDetailsForAConstituency"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "<%=request.getContextPath()%>/getCensusDetailsForAConstituency.action?"+rparam;
+	callAjax(jsObj, url);
+	}
+
 </script>
+
+
+<script type="text/javascript">
+
+getvotersBasicInfo("voters",id,publicationId,type);
+getCensusInfoForSubLevels();
+getConstituencyElections();
+
+</script>
+
 </body>
 
 
