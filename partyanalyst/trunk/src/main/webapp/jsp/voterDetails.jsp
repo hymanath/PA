@@ -149,7 +149,7 @@
 </div>
 
 <div id="atterHeadingDiv" style="display:none;margin-left:20px"><h5>Check Required Fields To Show</h5></div>
-<div id="impFamilySelectedDetails" style="padding:10px 0 10px 27px;border:1px solid #c3c3c3;border-radius:5px; display:none;margin-left:20px;margin-right: 20px;height:50px">
+<div id="impFamilySelectedDetails" style="padding:10px 0 10px 27px;border:1px solid #c3c3c3;border-radius:5px; display:none;margin-left:20px;margin-right: 20px;height:100px;">
 		
 <label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="snoId">S NO</input></label>
 		
@@ -211,6 +211,7 @@ var panchaytId="${panchaytId}";
 var maintype="${maintype}";
 var hamletId="${hamletId}";
 var constituencyId = "${constituencyId}";
+var customwardId = "${customwardId}";
 var name = "${name}";
 var pResults;
 var id;
@@ -245,6 +246,12 @@ function getVoterDetails()
 		id = hamletId;
 		buildVotersByLocHamletTestDataTable1();
 	}
+	if(maintype=="customWard")
+	{
+		id = customwardId;
+		buildVotersByLocCustomWardDataTable1();
+	}
+
 }
 
 
@@ -325,7 +332,7 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
 {key:"firstName", label: "Name",width:100, sortable: true},
-{key:"voterIDCardNo", label: "voter ID",width:120,sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
 {key:"gender", label: "Gen", width:15, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
@@ -378,7 +385,134 @@ oDT: votersByLocBoothDataTable
 
 }
 
+function buildVotersByLocCustomWardDataTable1()
+{
 
+
+	$('#votersByLocationTabContentDiv_body').show();
+if(customwardId == "0" || customwardId == "0")
+	return false;
+YAHOO.widget.DataTable.ActionLink = function(elLiner, oRecord, oColumn, oData)
+{
+var str ='';
+var id=oRecord.getData("voterIds");
+var name = oRecord.getData("firstName");
+var influencePerson=oRecord.getData("influencePerson");
+
+str += '<ul class="dd_menu">';
+str += ' <li><i class="icon-th-list"></i>';
+str += ' <ul>';
+str += ' <li>';
+str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\',\''+name+'\');">Create New Cadre</a>';
+str += ' </li>';
+str += ' <li>';
+str += ' <a href= "javascript:{};"  onclick="openCadreSearchWindow('+id+');">Add To Existing Cadre</a>';
+str += ' </li>';
+str += ' <li>';
+str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\',\''+name+'\');">Create New Influencing People</a>';
+str += ' </li>';
+str += ' <li>';
+str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
+str += ' </li>';
+str += ' <li>';
+str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\',\''+name+'\');">Add To Politician</a>';
+str += ' </li>';
+str += ' </ul>';
+str += ' </li>';
+str += ' </ul>';
+elLiner.innerHTML =str;
+}
+YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
+	{
+		var str ='';
+		var id=oRecord.getData("voterIds");
+		var isInfluencePerson=oRecord.getData("isInfluencePerson");
+		var isCadere = oRecord.getData("isCadrePerson");
+		var isPolitician = oRecord.getData("isPoliticion");
+		if(isInfluencePerson == true)
+		{
+			str+='<img title="InfluencingPeople" alt="InfluencePerson" src="./images/icons/influencing.png"/>';
+		}
+		if(isCadere == true)
+		{
+			str+='<img title="Cadre" alt="CadrePerson" src="./images/icons/cadre.png"/>';
+		}
+		if(isPolitician == true)
+		{
+			str+='<img title="Politician" alt="Politicion" src="./images/icons/politican.png"/>';
+		}
+		elLiner.innerHTML =str;
+	}
+YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		var name = oData;
+		var voterId= oRecord.getData("voterIds");
+
+
+		str+='<a href="javaScript:{getInfluencePeopleOfAnUser('+voterId+');}">Click here</a>';
+		//var boothId=oRecord.getData("boothId"); 
+		//elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+id+"'/><input type='hidden' class='selectedBoothId' value='"+boothId+"'/>";
+		//elLiner.innerHTML=id;
+		elLiner.innerHTML=str;
+					
+	};
+
+var votersByLocBoothColumnDefs = [
+{key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
+{key:"firstName", label: "Name",width:100, sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
+{key:"partNo", label: "Booth No",width:30, sortable:true},
+{key:"gender", label: "Gen", width:15, sortable: true},
+{key:"age", label: "Age",  width:15,sortable:true},
+{key:"houseNo", label: "HNO",width:20, sortable:true},
+{key:"relativeFirstName", label: "Guardian Name", width:70,sortable:true},
+{key:"Type", label: "Type", width:60,formatter:YAHOO.widget.DataTable.Type},
+//{key:"relationshipType", label: "Relationship", sortable:true},
+{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
+{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
+//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
+
+];
+
+//var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
+
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?publicationId="+publicationId+"&customwardId="+customwardId+"&constiId="+constituencyId+"&");
+votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+votersByLocBoothDataSource.responseSchema = {
+resultsList: "voterDetails",
+fields: [{key:"serialNo", parser:"number"},
+"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo","voterIds","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson","partNo"],
+
+metaFields: {
+totalRecords: "voterDetailsCount" // Access to value in the server response
+},
+};
+var myConfigs = {
+initialRequest: "sort=initial&dir=asc&startIndex=0&results=100", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"serialNo", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 100 
+			    })  // Enables pagination
+};
+
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body",
+votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+
+votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+pResults = oResponse.results;
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+}
+
+return {
+oDS: votersByLocBoothDataSource,
+oDT: votersByLocBoothDataTable
+};
+
+
+}
 
 
 function buildVotersByLocBoothDataTable1()
@@ -442,7 +576,7 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
 {key:"firstName", label: "Name",width:100, sortable: true},
-{key:"voterIDCardNo", label: "voter ID",width:120,sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
 {key:"gender", label: "Gen", width:15, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
@@ -574,7 +708,7 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
 {key:"firstName", label: "Name",width:80, sortable: true},
-{key:"voterIDCardNo", label: "voter ID",width:120,sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
 {key:"gender", label: "Gen", width:20, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
@@ -683,6 +817,28 @@ function getImpFamilyDetails()
 		var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
 		callAjax(jsObj,url1);
 	}
+
+else if(maintype == "customWard")
+	{
+		var jsObj=
+			{
+					
+				type:maintype,
+				id:customwardId,
+				publicationDateId:publicationId,
+				typename:name,
+				constituencyId:constituencyId,
+				buildType:'customWard',
+				requestFor:"",
+				task:"importantFamiliesinfo"
+	
+			}
+		var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			
+		var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
+		callAjax(jsObj,url1);
+	}
+
 	else
 	{
 		var jsObj=
@@ -1829,7 +1985,11 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 getImpFamilyDetails();
 getUserCategories();
 getCountOfHamletsAndBoothsInPanchayat();
-   
+ if(maintype=="customWard")
+	{
+		
+		getVoterDetails();
+	}  
    
 </script>
 </body>

@@ -568,6 +568,27 @@ oDT: votersByLocBoothDataTable
 
 }
 
+function buildVotersForCustomWard(publicationId,customwardId)
+{
+
+
+var urlstr = "getVoterDetailsInitialRequest.action?constituencyId="+constituencyId+"&publicationId="+publicationId+"&name="+mainname+"&customwardId="+customwardId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=customWard";
+
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+browser1.focus();
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
 function buildVotersByLocPanchayatDataTable(id)
 {
 var publicationId = mainpublicationId;
@@ -1070,7 +1091,7 @@ function addToPolitician(voterId,name)
 			  $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 
 		 }
-	   if(type == "panchayat" || type == "booth" || type == "hamlet" ){
+	   if(type == "panchayat" || type == "booth" || type == "hamlet" || type=="customWard" ){
 	      $("#votersInfoMoreShowHide").show();
 		 }else{
 		  $("#votersInfoMoreShowHide").hide();
@@ -2445,6 +2466,10 @@ function getVotersData(){
 	}else if(maintype == "hamlet")
 	{
 	buildVotersByLocHamletTestDataTable(mainpublicationId,mainreqid);
+	}
+	else if(maintype == "customWard")
+	{
+		buildVotersForCustomWard(mainpublicationId,mainreqid);
 	}
 	else{
 	  $("#votersByLocationTabContentDiv_body").removeAttr('style'); 
