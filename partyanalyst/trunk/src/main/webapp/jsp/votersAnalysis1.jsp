@@ -2156,6 +2156,13 @@ function getAgewiseInfoForVoterCategory(){
 		var url = "<%=request.getContextPath()%>/getCategoryWiseDetailsAction.action?"+rparam;
 		callAjax(jsObj, url);*/
 	}
+	function getAllSubDetails(){
+	   var constiId = $("#constituencyList").val();
+	   var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+mainpublicationId+"&type="+maintype+"&publicationYear="+publicationYear+"&buildType=&constituencyId="+constiId+"&typeName="+mainname;
+
+     var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+	}
 	function refreshConstituencyData(){
 		$('#publicationDateList').trigger('change')
 	}
