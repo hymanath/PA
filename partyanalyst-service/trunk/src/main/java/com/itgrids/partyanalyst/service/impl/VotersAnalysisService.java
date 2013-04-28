@@ -7176,11 +7176,14 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									{
 										PartyVotesEarnedVO partyResult = new PartyVotesEarnedVO();
 										partyResult.setPartyName(partyInList);
-										partyResult.setVotesEarned(0L);
+										partyResult.setVotesEarned(0L);										
 										for(PartyVotesEarnedVO  partiesResult : votesEarnedVO.getPartyVotesEarnedVOs())
 										{
-											if(partiesResult.getPartyName().equalsIgnoreCase(partyInList))
-												partyResult.setVotesEarned(partiesResult.getVotesEarned()); 
+											if(partiesResult.getPartyName().equalsIgnoreCase(partyInList)){
+												partyResult.setVotesEarned(partiesResult.getVotesEarned());		
+												partyResult.setWonStatus(partiesResult.isWonStatus());
+											}
+											
 										}
 										resultList.add(partyResult);
 									}
@@ -7195,7 +7198,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							return null;
 						}
 						
-					}				
+					}
+					
+		
 	 public void getBoothsComparisionInfo(List<Election> electionIds,Long panchayatId,Long publicationDateId,VotersInfoForMandalVO votersInfoForMandalVO){
 		try{ 
 		 List<Object[]> presentBoothsList = boothDAO.getBoothsInAPanchayat(panchayatId,publicationDateId);
