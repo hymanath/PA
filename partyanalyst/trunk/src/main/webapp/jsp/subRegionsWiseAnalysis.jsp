@@ -388,6 +388,9 @@ var counter = 0;
 </head>
 <body>
 <div id="mainDiv">
+
+ <div id='localCastStatsTabContent_subbody'  class="yui-skin-sam yui-dt-sortable"></div>
+
 <div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="votersBasicInfoMainDiv">
 	<div id="censusReportMainDiv">
@@ -523,6 +526,10 @@ function callAjax(jsObj,url)
 								   document.getElementById("censusAjaxImgDivForParlinit").style.display ="none";	
 									parliamentResult = myResults;
 									buildParliamentResults(jsObj.electionYear,myResults);			
+								}
+								else if(jsObj.task == "getCastInfoForsubLevels")
+								{  
+									buildCastInfoForSubLevels(myResults,jsObj);
 								}
 				
 								}catch (e) {
@@ -1076,6 +1083,229 @@ function getParliamentResults(elecYear){
 	callAjax(jsObj, url);
 	}
 
+	
+//GET CAST DATA START
+function getLatestCastsSubcategoryWise(){
+  $("#voterCasteAjaxImg").css("display","block");
+  $("#localCastStatsTabContent_subbody").html("");
+
+  var jsObj=
+		{		
+				type:type,	
+				id:id,
+				typeName:mainname,
+				publicationDateId:publicationId,
+				constituencyId:constituencyId,
+                buildType:"hamlet",
+                queryType:"sub",
+				task:"getCastInfoForsubLevels"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+		callAjax(jsObj,url);
+}
+
+var constMgmtMainObj={
+							
+							castStatsArray:[],
+							castStatssubArray:[],
+					 };
+
+function buildCastInfoForSubLevels(myresults,jsObj)
+	{
+
+		$("#voterCasteAjaxImg").css("display","none");
+		
+		var str ='';
+		$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
+
+		var divId=document.getElementById('localCastStatsTabContent_subbody');
+		var publicationDateId = jsObj.publicationDateId;
+		var type=jsObj.type;
+		var	subLevelcastInfo = new Array();
+		var cast = myresults.castVosList;
+		var typeName=jsObj.typeName;
+		var res=jsObj.resultFor;
+		var restype=jsObj.buildType;
+		for(var i in cast)
+		{
+		if(cast[i].voterCastInfoVO != null)
+		{
+		var subLevelcastData = cast[i].voterCastInfoVO; 
+		if(cast[i].mandalName != null)
+		var name = cast[i].mandalName;
+		else
+		var name ="";
+		if(cast[i].locationId != null)
+		var locationId=cast[i].locationId;
+		else
+		locationId = 0;
+		var totalVoters=subLevelcastData.totalVoters;
+		var cast1 =subLevelcastData.castVOs;
+			
+			for(var k in cast1)
+			{
+		var castStats1 = {
+			mandal : name,
+			locationId:locationId,
+			caste : cast1[k].castName,
+			casteCategory:cast1[k].casteCategoryName,
+			castePopulation : cast1[k].castCount,
+			malePopulation : cast1[k].malevoters,
+			femalePopulation : cast1[k].femalevoters,
+			castePercentage:cast1[k].castPercentage,
+			totalVoters:totalVoters,
+			castStateId:cast1[k].castStateId,
+			};
+		subLevelcastInfo.push(castStats1);
+			}
+		   }
+		 }
+
+		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
+		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0){
+		  $("#localCastStatsTabContent_subbody").html("<b style='margin-left: 350px;'>No Data Available</b>");
+		  return;
+		}  
+		str +='<table id="subLevelTable">';
+		if(type == 'constituency')
+		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+' Constituency</h4>';
+		else if(type == "mandal")
+		str+='<h4 id="sublevelHeading">Panchayat wise Caste Statistics In '+typeName+' </h4>';
+        else if(type =="panchayat"){
+		 if(restype== "booth")  
+		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Panchayat</h4>';
+		else 
+		str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In '+typeName+' </h4>';
+		}
+		else if(type =="ward")
+		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
+		else if(type =="hamlet"){
+		   if(res == "booth")
+		   str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Hamlet</h4>';
+		else
+		str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
+			}
+			else if(type == "booth")
+		str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In '+typeName+' </h4>';
+
+		
+		str+='<thead>';
+		str+='<tr>';
+
+		if(type == "constituency")
+		str +='<th>Mandal</th>';
+		if(type == "mandal")
+		str +='<th>Panchayat</th>';
+		if(type =="panchayat"){
+		if(restype== "booth")  
+		str +='<th>Booth</th>';
+		else 
+		str +='<th>Hamlet</th>';
+		}
+		if(type =="ward")
+		str +='<th>Booth</th>';
+		if(type =="hamlet")
+		{ if(res == "booth")
+		str +='<th>Booth</th>';
+		else
+	    str +='<th>Locality</th>';
+		
+		}
+		if(type =="booth")
+	    str +='<th>Hamlet</th>';
+
+		str +='<th>Caste</th>';
+		str+='<th>Caste Category</th>';
+		str +='<th>Total Voters</th>';
+		str +='<th>Caste Voters</th>';
+		str +='<th>Male Voters</th>';
+		str +='<th>Female Voters</th>';
+		str +='<th>Caste Percentage</th>';
+		
+		str+='</tr>';
+		str+='</thead>';
+
+		str+='<tbody>';
+		for(var i in constMgmtMainObj.castStatssubArray)
+		{
+		str+='<tr>';
+		
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
+		if(type == "mandal")
+		{
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\''+constMgmtMainObj.castStatssubArray[i].mandal+' Panchayat\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		}
+		else if(type =="panchayat" && buildType != "hamlet")
+		{
+		
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'booth\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		}
+		else if(type =="panchayat" && buildType == "hamlet")
+		{
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\'Hamlet - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		}
+		else if(type =="hamlet")
+		{
+		if(jsObj.resultFor == "booth")
+				str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+constMgmtMainObj.castStatssubArray[i].locationId+','+jsObj.id+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\''+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+
+		else
+			str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+','+constMgmtMainObj.castStatssubArray[i].castStateId+',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\''+constMgmtMainObj.castStatssubArray[i].locationId+'\',\'Locality\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+
+		//str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].hamletId+','+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		}else if(type =="booth")
+		{
+		
+		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+jsObj.id+','+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\'Hamlet - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		}
+		else
+		{
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].caste+'</td>';
+		}
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].casteCategory+'</td>';
+		str +='<td>'+constMgmtMainObj.castStatssubArray[i].totalVoters+'</td>';
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePopulation+'</td>';
+		if(constMgmtMainObj.castStatssubArray[i].malePopulation ==null)
+		str+='<td>'+0+'</td>';
+		else
+		{
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].malePopulation+'</td>';
+		}
+		if(constMgmtMainObj.castStatssubArray[i].femalePopulation ==null)
+		{
+			str+='<td>'+0+'</td>';
+		}
+		else
+		{
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].femalePopulation+'</td>';
+		}
+		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePercentage+'</td>';
+	
+		}
+		
+		str +='</tr>';
+		str+='</tbody>';
+		str +='</table>';
+
+$('#localCastStatsTabContent_subbody').html(str);
+		//divId.innerHTML = str;
+		$('#subLevelTable').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null,null,null,null
+		] 
+		});
+	$('#subLevelTable tr').removeClass("odd");
+	$('#subLevelTable tr').removeClass("even");
+	$('#subLevelTable td').removeClass("sorting_1");
+	//}
+	
+	}
+
+
 </script>
 
 
@@ -1084,6 +1314,7 @@ function getParliamentResults(elecYear){
 getvotersBasicInfo("voters",id,publicationId,type);
 getCensusInfoForSubLevels();
 getConstituencyElections();
+getLatestCastsSubcategoryWise();
 
 </script>
 
