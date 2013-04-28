@@ -215,7 +215,7 @@ else if(type == "ward")
 /*
 	This Condition is used for checking for Hamlet level Age wise analysis
 */
-else if(type == "hamletLocalArea" || type == "hamletBooths" || type == "boothHamlets")
+else if(type == "hamletLocalArea" || type == "hamletBooths" || type == "boothHamlets" || type == "wardBooths")
 {
 	var jsObj=
 				{
@@ -249,7 +249,7 @@ function callAjax(jsObj,url)
 
 			if(jsObj.type != "booth" && jsObj.type!= "hamlet" )
 			{
-				if(jsObj.type == "panchayat" || jsObj.type == "localElectionBody" || jsObj.type == "ward"|| jsObj.type == "hamletLocalArea"  || jsObj.type == "hamletBooths")
+				if(jsObj.type == "panchayat" || jsObj.type == "localElectionBody" || jsObj.type == "ward"|| jsObj.type == "hamletLocalArea"  || jsObj.type == "hamletBooths" || jsObj.type == "wardBooths" )
 				{
 					if(myResults.boothVotersDetails!=null && myResults.boothVotersDetails.length!=0)
 					{
@@ -426,7 +426,7 @@ function buildAgewiseDetails(results , obj){
 		innerResults = results.boothVotersDetails;
 		noteString = "LocalArea wise voter age details of "+obj.name+" in "+publicationYear;
 	}
-	else if( type="hamlet" && obj.type == "hamletBooths"){
+	else if( (type="hamlet" && obj.type == "hamletBooths") || obj.type == "wardBooths"){
 		innerResults = results.boothVotersDetails;
 		noteString = "Booth wise voter age details of "+obj.name+" in "+publicationYear;
 	}
@@ -460,7 +460,7 @@ function buildAgewiseDetails(results , obj){
 		else
  		 str+='<th rowspan="2">Booth</th>';
 	}
-	else if(type == "ward" || (type="hamlet" && obj.type == "hamletBooths"))
+	else if(type == "ward" || (type="hamlet" && obj.type == "hamletBooths") || obj.type == "wardBooths" )
 	   str+='<th rowspan="2">Booth No</th>';
 	   else if(type="hamlet" && obj.type == "hamletLocalArea")
 	   str+='<th rowspan="2">LocalArea</th>';
@@ -517,7 +517,7 @@ var YDataObjectTemp = new Object();
 	 str+='<td>'+innerResults[i].boothName+'</td>';
       else if(type="hamlet" && obj.type == "hamletLocalArea")
 	   str+='<td>'+innerResults[i].localityName+'</td>';
-	    else if((type="hamlet" && obj.type == "hamletBooths") ||(type="booth" && obj.type == "boothHamlets") )
+	    else if((type="hamlet" && obj.type == "hamletBooths") ||(type="booth" && obj.type == "boothHamlets") || obj.type == "wardBooths" )
 	   str+='<td>'+innerResults[i].hamletName+'</td>';
 	  
 	  /*  var mystr = str;
@@ -626,7 +626,7 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		innerResults = results.boothVotersDetails;
 		noteString = "LocalArea wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
-	else if( type="hamlet" && obj.type == "hamletBooths"){
+	else if( (type="hamlet" && obj.type == "hamletBooths" )|| obj.type == "wardBooths"){
 		innerResults = results.boothVotersDetails;
 		noteString = "Booth wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
@@ -662,7 +662,7 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		str+='<th rowspan="2">Booth</th>';
 
 	}
-	else if(type == "ward" || (type="hamlet" && obj.type == "hamletBooths"))
+	else if(type == "ward" || (type="hamlet" && obj.type == "hamletBooths") || obj.type == "wardBooths")
 	   str+='<th rowspan="2">Booth No</th>';
 	    else if(type="hamlet" && obj.type == "hamletLocalArea")
 	   str+='<th rowspan="2">LocalArea</th>';
@@ -710,7 +710,7 @@ for(var i=0;i<innerResults.length;i++){
 	str+='<td>'+innerResults[i].boothName+'</td>';
 	 else if(type="hamlet" && obj.type == "hamletLocalArea")
 	   str+='<td>'+innerResults[i].localityName+'</td>';
-	    else if((type="hamlet" && obj.type == "hamletBooths")||(type="booth" && obj.type == "boothHamlets"))
+	    else if((type="hamlet" && obj.type == "hamletBooths")||(type="booth" && obj.type == "boothHamlets") || obj.type == "wardBooths")
 	   str+='<td>'+innerResults[i].hamletName+'</td>';
 	   
 	str+='<td>'+innerResults[i].totalMaleVotesFor18To25+'</td>';
@@ -779,7 +779,7 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 		innerResults = results.boothVotersDetails;
 		noteString = "LocalArea wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
-	else if( type="hamlet" && obj.type == "hamletBooths"){
+	else if( (type="hamlet" && obj.type == "hamletBooths") || obj.type == "wardBooths"){
 		innerResults = results.boothVotersDetails;
 		noteString = "Booth wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
@@ -815,11 +815,11 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 		 else
 			 str+='<th rowspan="2">Booth</th>';
 	}
-	else if(type == "ward" ||(type="booth" && obj.type == "boothHamlets"))
+	else if(type == "ward" || ( type="hamlet" && obj.type == "hamletBooths") || obj.type == "wardBooths" )
 	   str+='<th rowspan="2">Booth</th>';  
 	       else if(type="hamlet" && obj.type == "hamletLocalArea")
 	   str+='<th rowspan="2">LocalArea</th>';
-	   else if( type="hamlet" && obj.type == "hamletBooths"){
+	   else if(type="booth" && obj.type == "boothHamlets"){
 		
 		  str+='<th rowspan="2">Hamlet Name</th>';
 	}
@@ -868,7 +868,7 @@ for(var i=0;i<innerResults.length;i++){
 	str+='<td>'+innerResults[i].boothName+'</td>';
 	 else if(type="hamlet" && obj.type == "hamletLocalArea")
 	   str+='<td>'+innerResults[i].localityName+'</td>';
-	    else if((type="hamlet" && obj.type == "hamletBooths")||(type="booth" && obj.type == "boothHamlets"))
+	    else if((type="hamlet" && obj.type == "hamletBooths")||(type="booth" && obj.type == "boothHamlets") || obj.type == "wardBooths")
 	   str+='<td>'+innerResults[i].hamletName+'</td>';
 
     str+='<td>'+innerResults[i].totalVotersFor18To25+'</td>';
