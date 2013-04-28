@@ -5008,6 +5008,15 @@
 				 <param name="root">mandalInfoVOsList</param>
 			</result>
 		</action>
-	
+				
+		<action name="getPanchayatWiseElectionResultsAction" class="mandalRevenueVillagesElecAction" method="getPanchayatWiseElectionResultsForMandal">
+		    <result type="json" name="success">
+				 <param name="root">electionResults</param>
+			</result>
+			<result type="json" name="mandalVO">
+				 <param name="root">mandalVO</param>
+			</result>				
+		</action>
+		
 		</package>
 </struts>      

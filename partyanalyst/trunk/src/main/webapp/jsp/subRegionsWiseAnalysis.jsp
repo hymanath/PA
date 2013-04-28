@@ -42,8 +42,6 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
 	<!-- YUI Dependency files (End) -->
-   <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
    
   <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
   <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
@@ -58,6 +56,8 @@
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="js/subRegionsWiseAnalysis.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+	  <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
+	  <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 <style type="text/css">
 #emprtyData
 {
@@ -339,7 +339,9 @@ color:#333333;
 #censusTab{width:98%;}
 #censusTab th{background:#d9edf7; color:#454545;}
 #censusTab td{color:#000;}
-
+label{display:inline-block;}
+		input[type="radio"], input[type="checkbox"] {margin:5px;}
+		.hero-unit{padding:22px;color:black;font-size:15px;}
 #censusTab{clear: both;margin-bottom: 10px;
     margin-top: 8px;}
 	#censusReportMainDiv{padding-bottom:1px;}
@@ -372,7 +374,6 @@ google.load("visualization", "1", {packages:["corechart"]});
 var id= "${id}";
 var publicationId= "${publicationDateId}";
 var type= "${type}";
-var mainname= "${typename}";
 var publicationYear= "${publicationYear}";
 var buildType= "${buildType}";
 var constituencyId= "${constituencyId}";
@@ -382,7 +383,20 @@ var constituencyType = 'Assembly';
 var parliamentResult;
 var counter = 0;
 
-
+$(document).ready(function(){
+  if(type == "mandal"){
+       var jsObj=
+			{
+				
+				tehsilId:id.substr(1),
+				task:"getElectionsAndParties"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getPanchayatWiseElectionResultsAction.action?"+rparam;	
+   
+		callAjax(jsObj,url);
+  }
+});
 </script>
 
 </head>
@@ -500,10 +514,15 @@ function callAjax(jsObj,url)
 							try {												
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
 								
-								if(jsObj.task == "votersbasicinfo")
-								{
-									buildVotersBasicInfo(myResults,jsObj);
-								}
+									if(jsObj.task == "votersbasicinfo")
+									{
+										buildVotersBasicInfo(myResults,jsObj);
+									}else if(jsObj.task == "getElectionsAndParties"){
+									  buildElectionsAndParty(myResults);
+									}else if(jsObj.task == "getResults"){
+									  buildLineChart(myResults);
+									 
+									}
 								else if(jsObj.task == "getCensusInfo")
 								{
 								  showSubLevelWiseCensusReport(myResults,jsObj);
@@ -564,8 +583,150 @@ function callAjax(jsObj,url)
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 
+  function buildElectionsAndParty(myResults){
+      if(myResults != null && myResults.partiesInMandal != null && myResults.partiesInMandal.length > 0  && myResults.electionsInMandal != null && myResults.electionsInMandal.length > 0){
+	     var str='';
+		 str+='<table><tr><th align="left">Parties : </th><td>';
+		 for(var i in myResults.partiesInMandal){
+		  str+='<input id="parties-'+i+'" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
+		 }
+		 str+='</td></tr>';
+	     
+		 str+='<tr><th align="left">Elections  : </th><td>';
+		 for(var i in myResults.electionsInMandal){
+		  str+='<input id="elections-'+i+'" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label>';
+		 }
+		 str+='</td></tr></table>';
+	     $("#mandalElecResultsElections").html(str);
+		 $("#mandalElecResultsButton").html("<input id='includeAlliancesDiv' type='checkbox' /><label  for='includeAlliancesDiv'><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type='button'  class='btn' value='Submit' onclick='getPanchayatData();'>");
+	  }
+  }
 
-
+  function getPanchayatData(){
+  var parties = '';
+  var elections = '';
+  var str = '';
+    $("#mandalElecResultsErrMsg").html("");
+    $('.partySelForPanc').each(function(){
+	  if($(this).is(':checked'))
+	    parties+=','+$(this).val();
+    });
+	$('.elecSelForPanc').each(function(){
+	  if($(this).is(':checked'))
+	    elections+=','+$(this).val();
+    });
+	 
+	 var invalid = false;
+	 if(parties.length == 0)
+	 {
+	   invalid = true;
+	   str+="<div>Please check atleast one party</div>";
+	 }
+	 if(elections.length == 0)
+	 {
+	   invalid = true;
+	   str+="<div>Please check atleast one election</div>";
+	 }
+	 if(invalid){
+	   $("#mandalElecResultsErrMsg").html(str);
+	   return;
+	 }
+	 $("#container").html('<img alt="Processing Image" src="./images/icons/goldAjaxLoad.gif"/>');
+     var jsObj=
+			{
+				
+				tehsilId:id.substr(1),
+				parties:parties.substr(1),
+				elections:elections.substr(1),
+				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
+				task:"getResults"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getPanchayatWiseElectionResultsAction.action?tehsilId="+id.substr(1)+"&"+rparam;	
+   
+		callAjax(jsObj,url);
+  }
+  
+  var chart;
+  var linechartDataArr = new Array();
+  var data = new Array();
+	function buildLineChart(myResults){
+	  if(myResults[0].length == 0 || myResults[1].length == 0) {
+             $("#container").html("<b>Data Not Available</b>");
+             return;
+       }
+	   
+	    for(var i in myResults[0]){
+	      if(linechartDataArr.indexOf(myResults[0][i].constituencyName) == -1)
+				linechartDataArr.push(myResults[0][i].constituencyName);
+					
+		}		
+	      results = myResults[1];
+         for(var i in results){	
+           var obj = {};
+           var obj1 = new Array();		   
+           obj["name"] = i;	
+		   for(var j in results[i]){
+		     obj1.push(parseFloat(results[i][j]));
+		   }
+           	obj["data"] = obj1;	 
+            data.push(obj);			
+	    }
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',
+                type: 'line',
+               /* marginRight: 130,
+                marginBottom: 25 */
+            },
+            title: {
+                text: 'Panchayat Wise Voting Percentages in ${typeName} Mandal',
+                x: -20 //center
+            },
+            xAxis: {
+                categories: linechartDataArr,
+				
+				 labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Votes Percent( % )'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +'%';
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+            series: data
+        });
+		
+		$('tspan:last').hide();
+    }
+  
+  
+  
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 {
 	  $("#votersBasicInfoSubChartDiv").html('');
@@ -2096,6 +2257,17 @@ getAgewiseVoterDetails();
 
 </script>
 
+<div id="mandalElecResultsDiv" style="margin-top:10px;" >
+  <div class="hero-unit" >
+    <div id="mandalElecResultsErrMsg" style="color:red;"></div>
+    <div id="mandalElecResultsParties"></div>
+    <div id="mandalElecResultsElections"></div>
+    <div id="mandalElecResultsButton" style='margin-left:81px;'></div>
+  </div>
+  <div align="center">
+    <div id="container"></div>
+  </div>
+</div>
 </body>
 
 

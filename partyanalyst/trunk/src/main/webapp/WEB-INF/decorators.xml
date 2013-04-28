@@ -95,6 +95,7 @@
 		<pattern>/categorySubWiseVoterDetailsAction*</pattern>
 		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
 		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
+		<pattern>/subRegionsWiseAnalysisAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -226,7 +227,6 @@
 		<pattern>/cadreDisplayWindowAction*</pattern>		
 		<pattern>/userGroupAction*</pattern>
 		<pattern>/setUserRestrictionAction*</pattern>
-		<pattern>/subRegionsWiseAnalysisAction*</pattern>
     	 </decorator>
 
 </decorators>
