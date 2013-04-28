@@ -3347,7 +3347,7 @@ function buildCastInfoData(myresults,jsObj)
 	localCastStatsTabContent += '<span class="">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
 
 	if(result.voterCastInfoVOList != null && result.voterCastInfoVOList.length > 0)
-	  $('#localCastDetailsHeadingDiv').html('<h2 id="subHeading">Caste category wise voters details</h2>');
+	  $('#localCastDetailsHeadingDiv').html('<h2 id="subHeading">Caste Category wise voters details</h2>');
 	else
      	$('#localCastDetailsHeadingDiv').html('').css("background","#ffffff");
 	 voters +='<table><tr>';
@@ -3603,7 +3603,7 @@ function buildPartyWisePiechart(myResults,jsObj)
           str+='  <thead>';
           str+='   <tr>';
           str+='     <th>Caste</th>';
-		  str+='	 <th>Caste category</th>';
+		  str+='	 <th>Caste Category</th>';
 		  str+='     <th>Voters</th>';
           str+='     <th>Male Voters</th>';
           str+='     <th>Female Voters</th>';
