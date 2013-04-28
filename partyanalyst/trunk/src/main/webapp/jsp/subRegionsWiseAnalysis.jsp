@@ -449,43 +449,6 @@ $(document).ready(function(){
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>	
 	</div>
 </div>
-
-<div style="border:1px solid;">
-<div id="rangeSliderDiv" style="width:500px;margin:20px auto;border:1px solid #ccc;padding:10px 20px;" >
-<h5>Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
-<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
-
-<p>
-<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
-</p>
-</div>
-<div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
-</div>
-<div class="widget blue">
-<div id="voterDetailsNote" class="noteDiv" style="display:none;text-align:center;"></div>
-<div id="tableDiv" style="padding:10px;display:none;overflow-x:scroll" class="voterDetails"></div>
-</div>
-
-<div class="widget blue">
-<div id="voterAgewiseDetailsNote" class="noteDiv" style="text-align:center;color:#3F3636;"></div>
-<div id="agewiseDetails" style="padding:10px;overflow-x:scroll;" class="voterDetails"></div>
-</div>
-
-<div class="widget blue">
-<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv " style="text-align:center;"></div>
-<div id="ageAndgenderWiseDetails" style="padding:10px;overflow-x:scroll;" class="voterDetails"> </div>
-</div>
-
-<div class="widget blue">
-<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv" style="text-align:center;"></div>
-<div id="voterAgeAngGenderwiseDetailsInPercent" style="overflow-x:scroll;padding:10px;" class="voterDetails "></div>
-</div>
-
- <div id='localCastStatsTabContent_subbody'  class="yui-skin-sam yui-dt-sortable widget blue"></div>
-
-<div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
-
-
 <div id="votingTrendzDiv" class="widget blue">
 	 <div class="clear"></div>
 	
@@ -515,6 +478,55 @@ $(document).ready(function(){
 			</div>
 			
 			</div>
+<div class="widget blue" id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
+   <h4 id="sublevelHeading">Panchayat Wise Voting Trendz </h4>
+  <div class="hero-unit" >
+    <div id="mandalElecResultsErrMsg" style="color:red;"></div>
+    <div id="mandalElecResultsParties"></div>
+    <div id="mandalElecResultsElections"></div>
+    <div id="mandalElecResultsButton" style='margin-left:81px;'></div>
+  </div>
+  <div align="center">
+    <div id="container"></div>
+  </div>
+</div>
+<div style="border:1px solid;">
+<div id="rangeSliderDiv" style="width:500px;margin:20px auto;border:1px solid #ccc;padding:10px 20px;" >
+<h5>Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
+<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
+
+<p>
+<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+</p>
+</div>
+<div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
+</div>
+<div  style="display:none;"  class="widget blue">
+<div id="voterDetailsNote" class="noteDiv" style="display:none;text-align:center;"></div>
+<div id="tableDiv" style="padding:10px;display:none;overflow-x:scroll" class="voterDetails"></div>
+</div>
+
+
+
+<div  style="display:none;" class="widget blue">
+<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv " style="text-align:center;"></div>
+<div id="ageAndgenderWiseDetails" style="padding:10px;overflow-x:scroll;" class="voterDetails"> </div>
+</div>
+
+<div style="display:none;" class="widget blue">
+<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv" style="text-align:center;"></div>
+<div id="voterAgeAngGenderwiseDetailsInPercent" style="overflow-x:scroll;padding:10px;" class="voterDetails "></div>
+</div>
+
+ <div id='localCastStatsTabContent_subbody'  class="yui-skin-sam yui-dt-sortable widget blue"></div>
+
+<div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
+
+<div class="widget blue">
+<div id="voterAgewiseDetailsNote" class="noteDiv" style="text-align:center;color:#3F3636;"></div>
+<div id="agewiseDetails" style="padding:10px;overflow-x:scroll;" class="voterDetails"></div>
+</div>
+
 			
 </div>			
 
@@ -2186,11 +2198,11 @@ function buildAgewiseDetails(results , obj){
    var noteString;
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
-		noteString = "Mandal wise voters age details of "+obj.name+" in "+publicationYear;
+		noteString = "Mandal wise voters age details ";
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-			noteString = "Panchayat wise voters age details of "+obj.name+" in "+publicationYear;
+			noteString = "Panchayat wise voters age details ";
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
@@ -2227,7 +2239,7 @@ function buildAgewiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgewiseDetailsNote').html('<div align="center"><h3>'+noteString+'</h3></div>');
+	$('#voterAgewiseDetailsNote').html('<div ><h3>'+noteString+'</h3></div>');
 
 	var str='';
 	str+='<table  class="ageTable table table-bordered table-hover" id="mandalWiseVoterAgeTable" >';
@@ -2733,18 +2745,7 @@ getAgewiseVoterDetails();
 
 </script>
 
-<div class="widget blue" id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
-   <h4 id="sublevelHeading">Panchayat Wise Voting Trendz </h4>
-  <div class="hero-unit" >
-    <div id="mandalElecResultsErrMsg" style="color:red;"></div>
-    <div id="mandalElecResultsParties"></div>
-    <div id="mandalElecResultsElections"></div>
-    <div id="mandalElecResultsButton" style='margin-left:81px;'></div>
-  </div>
-  <div align="center">
-    <div id="container"></div>
-  </div>
-</div>
+
 </body>
 
 
