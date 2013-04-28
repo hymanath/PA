@@ -23,9 +23,11 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.CastTotalVotersVO;
 import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
@@ -64,6 +66,8 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO; 
+	private ITehsilDAO tehsilDAO;
+	
 	private static final Logger log = Logger.getLogger(DelimitationConstituencyMandalService.class);
 
 	public void setBoothConstituencyElectionVoterDAO(
@@ -127,6 +131,13 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	public void setConstituencyCensusDetailsDAO(
 			IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO) {
 		this.constituencyCensusDetailsDAO = constituencyCensusDetailsDAO;
+	}
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
 	}
 
 	public DelimitationConstituencyMandalResultVO getMandalsForDelConstituency(Long constituencyID){
@@ -252,7 +263,7 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		Long tehsilID = mandalCensus.getTehsilId();
 		
 		obj.setMandalID(tehsilID);
-		
+		obj.setMandalName(tehsilDAO.get(tehsilID).getTehsilName());
 		obj.setTotalPersons(mandalCensus.getTotalPopulation());
 		obj.setTotalMalePersons(mandalCensus.getTotalMalePopulation());
 		obj.setTotalFemalePersons(mandalCensus.getTotalFemalePopulation());
