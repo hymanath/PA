@@ -1427,7 +1427,7 @@ for  body3 start    result  -->
 	<!--<div id="previousEleVotingTrendsDiv"></div>-->
 	<div style="margin-bottom: 15px;" id="revenueVillageWiseElecResults" class="widget blue">
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
-	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn btn-info pull-right" value="View Panchayat Wise Census,Election Results & Voting Trendz"/>
+	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShowCast();" class="btn btn-info pull-right" value="View Panchayt Wise Election Results & Castes"/><input style="margin-left:30px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn btn-info pull-right" value="View Panchayat Wise Election Results"/>
 	</div>
 	<!-- <div id="votersBasicInfoSubChartDiv" style="border:1px solid black"></div>
 	</br>
@@ -1910,7 +1910,11 @@ function showAllAgewiseDetailsForHamlet(){
 		reqBrowser.focus();
 }
 
-
+function openwindowForPanchayatsToShowCast(){
+		//var brow1 = window.open("panchayatWiseElectionResultsAction.action?mandalId="+mainreqid.slice(1)+"&electionId="+selElectionId+"&mandalName="+mainname.replace("MANDAL","")+"&electionType=Assembly&electionYear="+selElecyear+"&resultFor=panchayats","browser2","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("mandalRevenueVillagesElecInputAction.action?tehsilId="+mainreqid.slice(1),"newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		reqBrowser.focus();
+}
 function showBasicAgewiseDetails(){
    callCorrespondingAjaxCall('brief');
 }
