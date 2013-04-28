@@ -21,4 +21,5 @@ public interface IDelimitationConstituencyMandalService {
 	public CastWiseElectionVotersVO findCastWiseVoterForHamlet(Long hamletID, String year, String electionType);
 	public GenderAgeWiseVotersVO findAgeWiseVotersForHamlet(Long hamletID, String year, String electionType);
 	public Long getConstituencyIdBasedOnMandel(Long mandalId);
+	public List<MandalInfoVO> getCensusInfoForConstituency(Long constituencyId);
 }
