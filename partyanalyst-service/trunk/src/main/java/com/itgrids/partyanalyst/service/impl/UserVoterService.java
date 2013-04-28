@@ -13,8 +13,10 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
+import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IUserVoterService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -49,7 +51,9 @@ public class UserVoterService implements IUserVoterService{
     private ICandidateDAO candidateDAO;
     private IUserVoterDetailsDAO userVoterDetailsDAO;
     private IUserVoterCategoryDAO userVoterCategoryDAO;
-	
+    private IDelimitationConstituencyMandalService delimitationConstituencyMandalService; 
+    private MandalInfoVO mandalInfoVO;
+    
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
 	}
@@ -142,6 +146,23 @@ public class UserVoterService implements IUserVoterService{
 
 	public void setUserVoterCategoryDAO(IUserVoterCategoryDAO userVoterCategoryDAO) {
 		this.userVoterCategoryDAO = userVoterCategoryDAO;
+	}
+
+	public IDelimitationConstituencyMandalService getDelimitationConstituencyMandalService() {
+		return delimitationConstituencyMandalService;
+	}
+
+	public void setDelimitationConstituencyMandalService(
+			IDelimitationConstituencyMandalService delimitationConstituencyMandalService) {
+		this.delimitationConstituencyMandalService = delimitationConstituencyMandalService;
+	}
+	
+	public MandalInfoVO getMandalInfoVO() {
+		return mandalInfoVO;
+	}
+
+	public void setMandalInfoVO(MandalInfoVO mandalInfoVO) {
+		this.mandalInfoVO = mandalInfoVO;
 	}
 
 	public List<SelectOptionVO> getUserVoterCategoryList(List<Long> userIdsList)
@@ -502,4 +523,25 @@ public class UserVoterService implements IUserVoterService{
 			return null;
 		}
 	}
+	
+	public List<MandalInfoVO> getCensusDetailsInALocation(String locationType, Long locationValue, Long constituencyId)
+	{
+		List<MandalInfoVO> mandalInfoVOList = null;
+		try{
+			if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				mandalInfoVOList = delimitationConstituencyMandalService.getCensusInfoForConstituency(constituencyId);
+			else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+			{
+				if(locationValue.toString().substring(0, 1).equalsIgnoreCase("2"))
+				  mandalInfoVOList = delimitationConstituencyMandalService.getCensusInfoForMandals(locationValue.toString().substring(1));
+			}
+			
+			return mandalInfoVOList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getCensusDetailsInALocation() method,Exception - "+e);
+			return mandalInfoVOList;
+		}
+	}
+	
 }
