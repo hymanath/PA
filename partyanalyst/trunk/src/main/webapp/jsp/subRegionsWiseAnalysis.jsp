@@ -378,6 +378,19 @@ label{display:inline-block;}
 .dataTables_wrapper{
    margin-bottom: 20px;
 }
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #EDF5FF;
+}
+table.dataTable tr.odd {
+    background-color: #EDF5FF;
+}
+table.dataTable tr.even td.sorting_1 {
+    background-color: #EDF5FF;
+}
+table.dataTable thead th {
+    border-bottom: 1px none #D3D3D3;
+	background-color: #CDE6FC;
+}
 </style>
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
