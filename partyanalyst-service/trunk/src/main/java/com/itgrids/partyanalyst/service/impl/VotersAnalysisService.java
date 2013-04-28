@@ -5167,8 +5167,8 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 				
 				 if(voterHouseInfoVO.getSelType().equalsIgnoreCase("muncipality")){
 					 
-					 locality = voterHouseInfoVO.getSelTypeId();
-				     ward = localitityId;
+					 locality = voterHouseInfoVO.getLocalitityId();
+				     ward = voterHouseInfoVO.getHamletId();
 					 
 				 }else{
 				     locality = voterHouseInfoVO.getLocalitityId();
