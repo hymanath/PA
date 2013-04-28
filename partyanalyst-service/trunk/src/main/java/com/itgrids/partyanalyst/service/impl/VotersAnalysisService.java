@@ -672,7 +672,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 							  
 					 totalCount = (Long) boothPublicationVoterDAO.getVotersCountByBoothId(boothId).get(0);
 					 
-				}else if(boothId == null && panchayatId != null){
+				}else if(boothId == null && panchayatId != null && panchayatId.longValue() > 0 ){
 					 votersList = boothPublicationVoterDAO
 							.getVotersDetailsForPanchayatByPublicationId(
 									 panchayatId,  publicationDateId,  startIndex,
@@ -11496,14 +11496,18 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				
 				politicianValues.add(locationValue);
 				List<Object[]> booths = boothDAO.getBoothsInAPanchayat(locationValue,publicationDateId);
+				List<Object[]> hamlets = userVoterDetailsDAO.getHamletsIdsForUser(locationValue, userId);
 				if(booths != null && booths.size() > 0)
 				{
 					for (Object[] booth : booths){
-						if(booth[1] != null)
-							locationValues.add(booth[1].toString());
+						/*if(booth[1] != null)
+							locationValues.add(booth[1].toString());*/
 						
 						cadreLevelValues.add(new Long(booth[1].toString()));
-						 
+					}
+					for(Object[] hamlet : hamlets)
+					{
+						locationValues.add(hamlet[0].toString());
 					}
 				}
 				
@@ -11520,7 +11524,19 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			}
 			if(locationValues != null)
 			{
-			List<Long> influencingPeopleCount =  influencingPeopleDAO.getInfluencingPeopleCountByLocation(userId,locationValues,type);
+			List<Long> influencingPeopleCount = null;
+			
+			if(type.equalsIgnoreCase("panchayat"))
+			{
+				List<Long> locValues = new ArrayList<Long>(0);
+				locValues.add(0L);
+				for(String locStr : locationValues)
+					locValues.add(Long.valueOf(locStr));
+				influencingPeopleCount =  influencingPeopleDAO.getInfluencingPeopleCountInHamlets(userId,locValues);
+			}
+			else
+				influencingPeopleCount =  influencingPeopleDAO.getInfluencingPeopleCountByLocation(userId,locationValues,type);
+			
 		    List<Long> cadreCount = cadreDAO. getCadreCountByCadreLevel(userId,cadreLevelValues,type);
 		    
 		    List<Long> politicians = boothPublicationVoterDAO.getCandidateCount(politicianValues, publicationDateId,type);

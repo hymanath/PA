@@ -547,7 +547,13 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		
 	}
 	
-	
+	public List<Long> getInfluencingPeopleCountInHamlets(Long userId,List<Long> locationValue)
+	{
+		Query query = getSession().createQuery("select count(model.influencingPeopleId) from InfluencingPeople model where model.user.userId=:userId and model.userAddress.hamlet.hamletId in(:locationValue) ");
+		query.setParameterList("locationValue", locationValue);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 	
 	public List<InfluencingPeople> getInfluencingPeopleVoterIDs(Long userId,List<String> locationValue,String type,Integer startIndex,
 			Integer maxRecords)
