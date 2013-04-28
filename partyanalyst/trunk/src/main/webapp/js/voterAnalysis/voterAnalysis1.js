@@ -1108,14 +1108,7 @@ function addToPolitician(voterId,name)
 		
 		 $("#votersHeaderDiv3").hide();
 		  $("#votersMainOuterDiv3").show();
-		  	if(type == "customWard" || type == "hamlet" ){
-						 getVotersCastInfo(id,publicationId,type);
-
-			//getvotersBasicInfo("impFamilies",id,publicationId,type);
-			// getPreviousVotersDetails1();
-		callCorrespondingAjaxCall('brief');
-}
-		 /* //--
+		//--
 		 getPreviousVotersDetails1();
 		    // getPreviousVotersDetails();
 		//getvotersBasicInfo("voters",id,publicationId,type);
