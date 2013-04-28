@@ -7006,7 +7006,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							}
 							if(!constituencyIdsList.contains(constituencyId))
 								constituencyIdsList.add(constituencyId);
-							if(type.equalsIgnoreCase(IConstants.CONSTITUENCY) || "booth".equalsIgnoreCase(type) || "ward".equalsIgnoreCase(type))
+							if(type.equalsIgnoreCase(IConstants.CONSTITUENCY) || "booth".equalsIgnoreCase(type) || "ward".equalsIgnoreCase(type) || type.equalsIgnoreCase(IConstants.CUSTOMWARD))
 							{
 								if(constituencyIdsList != null && constituencyIdsList.size() > 0)
 									list = constituencyElectionDAO.findAllEleHappendInAConstituency(constituencyIdsList);
@@ -7044,7 +7044,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							else if(type.equalsIgnoreCase("panchayat"))
 							 list = hamletBoothElectionDAO.findAllElectionsHappendInAPanchayat(id);
 							
-							if(type.equalsIgnoreCase("ward")){
+							if(type.equalsIgnoreCase("ward") || type.equalsIgnoreCase(IConstants.CUSTOMWARD)){
 								wardIds = new ArrayList<Long>();
 								wardIds.add(id);
 								localEleclist = constituencyElectionDAO.findAllLocalEleHappendInAConstituency(wardIds);	
@@ -7111,11 +7111,15 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 										Booth booth = boothDAO.get(id);
 										boothIdsList = boothConstituencyElectionDAO.getBoothIdsByConstituencyIdPartNo(constituencyId,(Long)params[0],booth.getPartNo());
 									}
-									else if(type.equalsIgnoreCase("ward"))
+									else if(type.equalsIgnoreCase("ward") || type.equalsIgnoreCase(IConstants.CUSTOMWARD))
 									{  
 										if("Parliament".equalsIgnoreCase(elecType) || "Assembly".equalsIgnoreCase(elecType)){
 											 try{
-												boothIdsList = boothConstituencyElectionDAO.getBoothIdsByWardId(id, (Long)params[0],constituencyId);
+												 if(type.equalsIgnoreCase("ward"))
+												   boothIdsList = boothConstituencyElectionDAO.getBoothIdsByWardId(id, (Long)params[0],constituencyId);
+												 else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+													 boothIdsList = userVoterDetailsDAO.getBoothIdsByCustomWardId(id, constituencyId, publicationDateId);
+												 
 											 }catch(Exception e){}
 										 }else{	
 											getLocalElectionResults((Long)params[0],wardIds,null,partyVotesEarnedVO,partiesList);
