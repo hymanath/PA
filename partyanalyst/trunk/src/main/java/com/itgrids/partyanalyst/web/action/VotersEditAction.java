@@ -1244,7 +1244,7 @@ public String saveLocality()
 				} 
 				votersData = votersAnalysisService.getVoterData(voterDataVO , userId , categories);
 				voterVO = new VoterVO();
-				if(votersData != null & votersData.size() > 0)
+				if(votersData != null && votersData.size() > 0)
 				{
 					voterVO.setVotersList(votersData);
 					voterVO.setTotalVoters(votersData.get(0).getTotalVoters());
