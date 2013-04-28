@@ -6053,7 +6053,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							{  
 							  String first = arg1.getName().trim().toUpperCase();
 							  String last = arg2.getName().trim().toUpperCase();
-							  
+							  if(first.indexOf("WARD-") != 0)
+								  return 0;
 								return new Integer(Integer.parseInt(first.substring(first.indexOf("-")+1))).compareTo(Integer.parseInt(last.substring(last.indexOf("-")+1)));
 							
 							}
