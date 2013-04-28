@@ -83,7 +83,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 #impFamilesBasicSubDetails table,#impFamilesBasicSubDetailsForHamlet table,#impfamilydatatable,#impFamilesBasicSubDetailsForHamletByBooth table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;margin-top:5px;margin-bottom:5px;}
 #impFamilesBasicSubDetails table tr:nth-child(even),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(even),#impfamilydatatable tr:nth-child(even),#impFamilesBasicSubDetailsForHamletByBooth tr:nth-child(even){background:#EdF5FF;}
 #impFamilesBasicSubDetails table tr:nth-child(odd),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(odd),#impfamilydatatable tr:nth-child(odd){background:#ffffff;}
-	#impfamilydatatable th,#impFamilesBasicSubDetails table th,#impFamilesBasicSubDetailsForHamlet table th ,#impFamilesBasicSubDetailsForHamletByBooth table th {
+	#impfamilydatatable th,#impFamilesBasicSubDetails table th,#impFamilesBasicSubDetailsForHamlet table th ,#impFamilesBasicSubDetailsForHamletByBooth table th ,#impFamPancBothDtlsForHamlet table th,#impFamPancBothDtls table th {
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -292,7 +292,7 @@ var publicationYear = "${publicationYear}";
 var impFamiliesEditArray = new Array();
 var requestFor = '${requestFor}';
 
-if((maintype == 'booth'&& requestFor == 'hamletBooth') || (maintype == 'hamlet'&& requestFor == 'booth') )
+if((maintype == 'booth'&& requestFor == 'hamletBooth') || (maintype == 'hamlet'&& requestFor == 'booth') ||(maintype == 'customWard'&& requestFor == 'booth') )
 {
 $("#impFamilesnfoForHamletByBooth").show();
 }else{
@@ -925,7 +925,7 @@ function  buildFamilyMembers(result,jsObj,type){
 	       $("#impFamPancBothDtls").html(str);
 	          $('#hamletDiv').hide();//impFamilesBasicSubDetailsDiv,impFamilesBasicSubDetailsTitle
 			 // $('#impFamPancBothDtlsAgxImgForHamlet').hide();hamletBooth
-			if(type == "hamlet" && requestFor =="booth")
+			if((type == "hamlet" && requestFor =="booth") || (type == "customWard" && requestFor =="booth"))
 			$('#impFamilesBasicSubDetailsDiv').css('display','none');
 			else
 			if(maintype == "booth" && requestFor != "hamletBooth")
@@ -1008,7 +1008,7 @@ var browser2 = window.open(urlstr,"browser2","scrollbars=yes,height=600,width=80
 function getVotersInAFamily(id,publicationDateId,hno)
 {
 
-var urlstr = "voterFamilyEditAction.action?id="+id+"&publicationDateId="+publicationDateId+"&hno="+hno+""
+var urlstr = "voterFamilyEditAction.action?id="+id+"&publicationDateId="+publicationDateId+"&hno="+hno+"&type="+maintype+""
 var browser2 = window.open(urlstr,"browser2","scrollbars=yes,height=600,width=800,left=200,top=200");	
 		browser2.focus();
 }
@@ -1293,7 +1293,7 @@ function getImpFamiliesVotersToShowForBooth(){
 	 var jsObj1=
 			{
 					
-				type:"hamlet",
+				type:maintype,
 				id:id,
 				publicationDateId:publicationDateId,
 				typename:"",
@@ -1325,7 +1325,7 @@ function getImpFamiliesVotersToShowForBooth(){
 	    var jsObj2=
 			{
 					
-				type:"hamlet",
+				type:maintype,
 				id:id,
 				publicationDateId:publicationDateId,
 				typename:"",
