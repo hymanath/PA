@@ -1310,6 +1310,16 @@ for  body3 start    result  -->
 	<div id="influencyPopupDiv">
 	<div id="InfluencingPeopleDetailsDiv" class="yui-skin-sam yui-dt-sortable"></div>
 	 </div>
+
+
+	 <div  id="votersBasicInformationDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
+	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;position:absolute;top:20px;right:20px;"/>
+	<div id="votersBasicInfoDiv1"></div>
+	<div id="votersBasicInfoDiv"></div>
+	<div id="votersInfoMoreShowHide" style="display:none;"><span class="btn btn-info pull-right" href="javaScript:{};" onclick="getVotersDetails();" style="margin-top:5px;">Click here for voters details</span></div>
+
+  </div>
+
 	   <div id="previousEleVotingTrendsDiv1" class="widget blue whitegloss" style="display: none; width: 96%; color: rgb(0, 0, 0);">
 	   <div style="float: right; margin-top: 11px; margin-bottom: -30px;"><img src="images/icons/search.gif" id="previousEleAjaxImg" style="display:none;"/></div>
 	   <div id="previousEleVotingTrendsDiv" class="widget-block" style="margin-top:-6px;clear:both;"></div></div>
@@ -1391,15 +1401,15 @@ for  body3 start    result  -->
 	</div>
 	</div>
 	
-	<div  id="votersBasicInformationDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
+	<!--<div  id="votersBasicInformationDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Basic Information</h4>
 	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;position:absolute;top:20px;right:20px;"/>
 	<div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
 	<div id="votersInfoMoreShowHide" style="display:none;"><span class="btn btn-info pull-right" href="javaScript:{};" onclick="getVotersDetails();" style="margin-top:5px;">Click here for voters details</span></div>
 
-  </div>
+  </div>-->
 
-  <div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+ <!-- <div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;">View Added / Deleted Voter info Between Publications</h4>
 	<div style="margin-top:10px;" class='breadcrumb'>
 		Previous Publication Date<font class="requiredFont">*</font> <select id="prevpublicationDateIdsList" class="selectWidth" style="width:172px;height:25px;" name="prevpublicationDateList" >
@@ -1408,11 +1418,11 @@ for  body3 start    result  -->
 		Present Publication Date<font class="requiredFont">*</font> <select id="prespublicationDateIdsList" class="selectWidth" style="width:172px;height:25px;" name="prespublicationDateList">
 		</select>
 		<span class="btn" id='voterDetailedReportId'>View Detailed Report</span>
-	<div id="errorMsgDiv"></div>	<!--onClick="getModifiedVotersCountBetweenPublications(previousPublication,presentPublicationId,locationValue,locationType)"-->
-	</div>
+	<div id="errorMsgDiv"></div>-->	<!--onClick="getModifiedVotersCountBetweenPublications(previousPublication,presentPublicationId,locationValue,locationType)"-->
+	<!--</div>
 	
 	<span id="votersCountModifyAjaxDiv" style="display:none;position:absolute;top:10px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
-  </div>
+  </div>-->
 <!--<div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;">Voters Count Vary between Publication Dates</h4>
 	<div style="margin-top:10px;" class='breadcrumb'>
@@ -1648,6 +1658,24 @@ for  body3 start    result  -->
 </div><!-- for  body 1 end    result  -->
 
 </div><!-- for  body 1 end -->
+
+
+<div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+  <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;">View Added / Deleted Voter info Between Publications</h4>
+	<div style="margin-top:10px;" class='breadcrumb'>
+		Previous Publication Date<font class="requiredFont">*</font> <select id="prevpublicationDateIdsList" class="selectWidth" style="width:172px;height:25px;" name="prevpublicationDateList" >
+		</select>
+		
+		Present Publication Date<font class="requiredFont">*</font> <select id="prespublicationDateIdsList" class="selectWidth" style="width:172px;height:25px;" name="prespublicationDateList">
+		</select>
+		<span class="btn" id='voterDetailedReportId'>View Detailed Report</span>
+	<div id="errorMsgDiv"></div>	<!--onClick="getModifiedVotersCountBetweenPublications(previousPublication,presentPublicationId,locationValue,locationType)"-->
+	</div>
+	
+	<span id="votersCountModifyAjaxDiv" style="display:none;position:absolute;top:10px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+  </div>
+
+
 <!-- for  body 2 start    result  -->
 <div id="votersDiv2" >
 <!--
