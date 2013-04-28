@@ -1302,9 +1302,16 @@ for  body3 start    result  -->
 	<div id="problemsCountDiv" class="widget blue whitegloss">
 	
 	</div>
+
+	<div id="InfluencingPeopleAjaxImg" style="display:none;float:right;">
+	<img src="./images/icons/search.gif" /></div>
+	<div id="InfluencingPeopleCountDiv" class="widget blue whitegloss">
+	 </div>
 	<div id="censusReportMainDiv" class="widget blue whitegloss">
 	  <div id="censusReportDiv"></div>
 	</div>
+
+
 
 	<div id="problemPopUp" style="background:#EEEEEE;">
 	
@@ -1315,10 +1322,10 @@ for  body3 start    result  -->
 	<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
 		
 	</div>
-	<div id="InfluencingPeopleAjaxImg" style="display:none;float:right;">
+	<!--<div id="InfluencingPeopleAjaxImg" style="display:none;float:right;">
 	<img src="./images/icons/search.gif" /></div>
 	<div id="InfluencingPeopleCountDiv" class="widget blue whitegloss">
-	 </div>
+	 </div>-->
 	<div id="influencyPopupDiv">
 	<div id="InfluencingPeopleDetailsDiv" class="yui-skin-sam yui-dt-sortable"></div>
 	 </div>
@@ -1349,8 +1356,12 @@ for  body3 start    result  -->
 
 	   <div id="previousEleVotingTrendsDiv1" class="widget blue whitegloss" style="display: none; width: 96%; color: rgb(0, 0, 0);">
 	   <div style="float: right; margin-top: 11px; margin-bottom: -30px;"><img src="images/icons/search.gif" id="previousEleAjaxImg" style="display:none;"/></div>
+
+	   <div id="previousEleVotingTrendsDiv" class="widget-block" style="margin-top:-6px;clear:both;"></div>
+
+
 	   <div id="previousEleVotingTrendsChatDiv"></div>
-	   <div id="previousEleVotingTrendsDiv" class="widget-block" style="margin-top:-6px;clear:both;"></div></div>
+	   </div>
 	<!--<div id="showHideLink" style="float:right;margin-right:15px;"><a href="javaScript:{showHideDiv();}">Show/Hide News Details</a></div>-->
  	<div id="newsDiv" style="clear:both;">
   	</div>
