@@ -69,9 +69,18 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-public void testgetVotersMobileDetailsByConstituencyId(){
+	/*public void testgetVotersMobileDetailsByConstituencyId(){
 		
 		List list =influencingPeopleDAO.getVotersMobileDetailsByConstituencyId(1l,"1013","MANDAL");
 		System.out.println(list);
+	}*/
+	
+	public void testGetInfluencingPeopleCountInHamlets()
+	{
+		List<Long> locationValue = new ArrayList<Long>(0);
+		locationValue.add(1l);
+		List list =influencingPeopleDAO.getInfluencingPeopleCountInHamlets(1l, locationValue);
+		System.out.println(list);
 	}
+	
 }
