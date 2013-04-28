@@ -752,7 +752,7 @@ h5{font-family : Arial;}
   background-color:#2E9AFE;color:#fff;padding:5px;border-radius:3px;
 }
 .paginatorElmtClass a{padding:5px;}
-.table thead.info th,.impFamilesMainDiv th{background:#d9edf7; color:#454545;}
+.table thead.info th,.impFamilesMainDiv th,#censusTab th{background:#d9edf7; color:#454545;}
 #tableDiv1 th{text-align:center;width:14%;}
 #tableDiv1 td{text-align:center;}
 .whitegloss h5.whitegloss{margin: 0px -20px; padding: 10px 10px 10px 20px;clear:both;}
@@ -1017,6 +1017,15 @@ highlight11
 li > p{
 color:#2A4F97;
 }
+#censusTab td{color:#000;}
+#censusReportDiv h4{
+    font-size: 14px;
+    color:#000;
+	font-size:14px;
+}
+#censusTab{clear: both;margin-bottom: 10px;
+    margin-top: 8px;}
+	#censusReportMainDiv{padding-bottom:1px;}
 </style>
 
 </SCRIPT>
@@ -1293,7 +1302,10 @@ for  body3 start    result  -->
 	<div id="problemsCountDiv" class="widget blue whitegloss">
 	
 	</div>
-	
+	<div id="censusReportMainDiv" class="widget blue whitegloss">
+	  <div id="censusReportDiv"></div>
+	</div>
+
 	<div id="problemPopUp" style="background:#EEEEEE;">
 	
 	<div id="problemsShowDIV">

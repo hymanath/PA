@@ -1148,7 +1148,7 @@ function addToPolitician(voterId,name)
 		getVotersCastInfo(id,publicationId,type);
        //getCastInfoForsubLevel(id,publicationId,type);
        getvotersBasicInfo("impFamilies",id,publicationId,type);
-				
+		getCensusDetailsInALocation();		
 		//-- callCorrespondingAjaxCall();
 		//-- 
 		 if(type != "hamlet")
@@ -1874,6 +1874,10 @@ function addToPolitician(voterId,name)
 								 else if(jsObj.task == "getAgeWiseWiseDetails")
 								{
 									buildAgeWiseWiseDetails(myResults,jsObj);
+								}
+								else if(jsObj.task == "getCensusDetails")
+								{
+									showCensusReportInALocation(myResults,jsObj);
 								}
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
@@ -9101,3 +9105,80 @@ $(document).ready(function(){
 	
 });
 
+
+	function getCensusDetailsInALocation()
+	{
+		
+		var jsObj=
+
+		{		typeName:mainname,
+				type:maintype,	
+				id:mainreqid,
+				constituencyId:$("#constituencyList").val(),
+                task:"getCensusDetails"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getCensusDetailsInALocationAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+
+	function showCensusReportInALocation(result,jsObj)
+	{
+		$("#censusReportDiv").html('');
+		if(result == null)
+		{
+			$("#censusReportMainDiv").css("display","none");
+			return;
+		}
+		$("#censusReportMainDiv").css("display","block");
+
+		var name = jsObj.typeName;
+		if(jsObj.type == "constituency")
+			name += " Constituency";
+		var str = '';
+		str +='<h4>Census Information in '+name+'</h4>';
+		str +='<table id="censusTab" class="table table-bordered table-striped table-hover">';
+		str +='<tr>';
+		str +='<th></th>';
+		str +='<th>Population</th>';
+		str +='<th>SC Population</th>';
+		str +='<th>ST Population</th>';
+		str +='<th>Literate Populations</th>';
+		str +='<th>Illiterate Population</th>';
+		str +='<th>Working Population</th>';
+		str +='</tr>';
+
+		str +='<tr>';
+		str +='<th>Male</th>';
+		str +='<td>'+result[0].totalMalePersons+'</td>';
+		str +='<td>'+result[0].totalSCMalePersons+'</td>';
+		str +='<td>'+result[0].totalSTMalePersons+'</td>';
+		str +='<td>'+result[0].totalLiterateMalePersons+'</td>';
+		str +='<td>'+result[0].totalIlliterateMalePersons+'</td>';
+		str +='<td>'+result[0].totalWorkingMalePersons+'</td>';
+		str +='</tr>';
+
+		str +='<tr>';
+		str +='<th>Female</th>';
+		str +='<td>'+result[0].totalFemalePersons+'</td>';
+        str +='<td>'+result[0].totalSCFemalePersons+'</td>';
+		str +='<td>'+result[0].totalSTFemalePersons+'</td>';
+		str +='<td>'+result[0].totalLiterateFemalePersons+'</td>';
+		str +='<td>'+result[0].totalIlliterateFemalePersons+'</td>';
+		str +='<td>'+result[0].totalWorkingFemalePersons+'</td>';
+		str +='	</tr>';
+
+		str +='<tr>';
+		str +='<th>Total</th>';
+		str +='<td>'+result[0].totalPersons+'</td>';
+		str +='<td>'+result[0].totalSCPersons+'</td>';
+		str +='<td>'+result[0].totalSTPersons+'</td>';
+		str +='<td>'+result[0].totalLiteratePersons+'</td>';
+		str +='<td>'+result[0].totalIlliteratePersons+'</td>';
+		str +='<td>'+result[0].totalWorkingPersons+'</td>';
+		str +='</tr>';
+		str +='</table>';
+		$("#censusReportDiv").html(str);
+
+
+	}
