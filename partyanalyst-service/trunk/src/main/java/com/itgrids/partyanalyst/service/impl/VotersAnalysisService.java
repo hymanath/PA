@@ -7125,8 +7125,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 											 try{
 												 if(type.equalsIgnoreCase("ward"))
 												   boothIdsList = boothConstituencyElectionDAO.getBoothIdsByWardId(id, (Long)params[0],constituencyId);
-												 else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
-													 boothIdsList = userVoterDetailsDAO.getBoothIdsByCustomWardId(id, constituencyId, publicationDateId);
+												 /*else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+													 boothIdsList = userVoterDetailsDAO.getBoothIdsByCustomWardId(id, constituencyId, publicationDateId);*/
 												 
 											 }catch(Exception e){}
 										 }else{	
