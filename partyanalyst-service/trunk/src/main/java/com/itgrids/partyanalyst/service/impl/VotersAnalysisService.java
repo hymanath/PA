@@ -5997,11 +5997,13 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		wards = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(lid, publicationDateId, userId);
 		
 	}
+	 
 			 for(Object[] ward:wards){
 		 SelectOptionVO  selectOptionVO = new SelectOptionVO();
 		 selectOptionVO.setType(type);
 		 selectOptionVO.setId((Long)ward[0]);
 		 selectOptionVO.setName(ward[1]!=null? ward[1].toString():"");
+		
 		 selectOptionVO.setValue(ward[1].toString());
 		 if(type.equalsIgnoreCase("Greater Municipal Corp")){
 		 List<SelectOptionVO> list2=	getBoothForWard((Long)ward[0],publicationDateId);
@@ -6038,12 +6040,27 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 }
 		 Collections.sort(list,arraySort1);
 		*/
+			 Collections.sort(list,wardsSort);
 		 }catch(Exception e){
 			log.error("Exception rised in getwardsInMunicipality ",e);
 		}
 		 return list;
 		 
-	 }/*
+	 }
+	 public static Comparator<SelectOptionVO> wardsSort = new Comparator<SelectOptionVO>()
+				{	  
+						  public int compare(SelectOptionVO arg1,SelectOptionVO arg2)
+							{  
+							  String first = arg1.getName().trim().toUpperCase();
+							  String last = arg2.getName().trim().toUpperCase();
+							  
+								return new Integer(Integer.parseInt(first.substring(first.indexOf("-")+1))).compareTo(Integer.parseInt(last.substring(last.indexOf("-")+1)));
+							
+							}
+				};
+	 
+	 
+	 /*
 	   *This method gives hamlets and as well as booths for that hamlet
 	 */
 	 public List<SelectOptionVO> getHamletsForPanchayat(Long panchatayId,Long publicationDateId){
