@@ -1189,6 +1189,12 @@ function buildConstituencyElectionResultsDataTable(value)
 	
 
 function getConstituencyResults(elecYear){
+          $("#censusSelectDiv").show();
+         $("#electionResultsInConstituencyDiv").show();
+         $("#labelRadioDiv").show();
+         $("#resultsDataTableDiv").show();
+
+         $("#parliamentElectionResultsDivNew").hide();
 	
 	var jsObj = {
 			constituencyId:id,
@@ -1229,11 +1235,17 @@ function getConstiElecYearsForAss(){
 function getParliamentResults(elecYear){
 		if(elecYear == 0 || elecYear == '0')
 		 return;
+		 $("#censusSelectDiv").hide();
+         $("#electionResultsInConstituencyDiv").hide();
+         $("#labelRadioDiv").hide();
+         $("#resultsDataTableDiv").hide();
+
+         $("#parliamentElectionResultsDivNew").show();
 		counter++;
 	    document.getElementById("censusAjaxImgDivForParlinit").style.display ="block";	
 		var jsObj = {
-				constituencyId:232,
-				electionYear:2012,
+				constituencyId:id,
+				electionYear:elecYear,
 				censusYear:'',
 				delimitationYear:'',
 				seletedIndex:'',
