@@ -5176,7 +5176,7 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 				 }
 				    
 				    
-				if(casteStateId != null || partyId != null || voterHouseInfoVO.getLocalitityId()!= null || voterHouseInfoVO.getHamletId()!=null){
+				if(casteStateId != null || partyId != null || voterHouseInfoVO.getLocalitityId()!= null || voterHouseInfoVO.getHamletId()!=null || ward !=null ){
 				 UserVoterDetails userVoterDtls = new UserVoterDetails();
 				 userVoterDtls.setUser(user);
 				 userVoterDtls.setVoter(voter);
