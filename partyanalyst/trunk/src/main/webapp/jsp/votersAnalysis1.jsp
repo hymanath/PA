@@ -1111,7 +1111,11 @@ $('.castDivs').hover(
 		
 	 Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
-	<img id="publicationAjaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;margin-right:165px;"/>	
+	<img id="publicationAjaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;margin-right:165px;"/>
+	
+	 <div id="refreshImg"  style="display:none;float:right;margin-right:160px;">
+	<a href="javaScript:{refreshConstituencyData();}"><img src="./images/icons/refreshImg.png" alt="Processing Image" title="Click Here To See Constituency Level Data"/></a>
+	</div>
 	</div>
 	
 	
@@ -2099,6 +2103,9 @@ function getAgewiseInfoForVoterCategory(){
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "<%=request.getContextPath()%>/getCategoryWiseDetailsAction.action?"+rparam;
 		callAjax(jsObj, url);*/
+	}
+	function refreshConstituencyData(){
+		$('#publicationDateList').trigger('change')
 	}
 </script>
 </body>
