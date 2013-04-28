@@ -2907,6 +2907,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		return query.list();
 	}
 	
+	
 	public List<Object[]> getVotersCountForCustomWardBooths(Long constituencyId,Long wardId,Long publicationDateId,Long userId)
 	{
 		Query queryObj = getSession().createQuery("select count(model.voter.voterId),model.voter.gender,model.booth.boothId,model.booth.partNo from BoothPublicationVoter model,UserVoterDetails model2 " +
@@ -2920,5 +2921,54 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		
 		return queryObj.list();
 	}
+	
+
+	
+	public List<Object[]> getVotersCountForCustomWardByPublicationId(Long customwardId,Long publicationDateId,Long constituencyId,Long userId){
+		Query query = getSession().createQuery("select count(BPV.voter.voterId),BPV.voter.gender from BoothPublicationVoter BPV,UserVoterDetails UVD where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" UVD.ward.constituencyId = :customwardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId group by BPV.voter.gender ") ;
+		  query.setParameter("publicationDateId", publicationDateId);
+		  query.setParameter("customwardId", customwardId);
+		  query.setParameter("constituencyId", constituencyId);
+		  query.setParameter("userId", userId);
+		  return query.list();
+	}
+	
+	
+	 public List<Object[]> getVotersDetailsByCustomWardId(Long wardId,Long publicationDateId,Long constituencyId,Long userId, Integer startIndex,
+				Integer maxRecords, String order, String columnName) {  
+		 Query query = null;
+		 
+		 if("initial".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV,UserVoterDetails UVD " +
+					"where UVD.ward.constituencyId =:wardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by cast(BPV.booth.partNo , int),BPV.serialNo,BPV.voter.houseNo");
+		 }
+		 else if("partNo".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV " +
+						"where UVD.ward.constituencyId =:wardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by cast(BPV.booth.partNo , int) "+order); 
+		 }
+		 else if("serialNo".equalsIgnoreCase(columnName))
+		 {
+			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV " +
+						"where UVD.ward.constituencyId =:wardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by BPV.serialNo  "+order); 
+		 }
+		 else
+		 {
+			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV " +
+						"where UVD.ward.constituencyId =:wardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by BPV.voter."+columnName+" "+order); 
+		 }
+
+		 query.setParameter("wardId", wardId);
+		 query.setParameter("userId", userId);
+		 query.setParameter("constituencyId", constituencyId);
+		 query.setParameter("publicationDateId", publicationDateId);
+		 query.setFirstResult(startIndex);
+		 query.setMaxResults(maxRecords);
+
+		 return query.list();
+		 
+	 }  
 	
 }

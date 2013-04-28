@@ -622,10 +622,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		this.voterReportService = voterReportService;
 	}
 
-	//  @Override
+//  @Override
 	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
 			Long panchayatId, Long hamletId,Integer startIndex , Integer maxRecords , String order,
-			String columnName,Long userId) {
+			String columnName,Long userId,Long customwardId,Long constiId) {
 
 		if (log.isDebugEnabled())
 			log.debug("Excecuting getVoterDetails() method in RegionServiceDataImp service");
@@ -654,6 +654,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				 votersList =(List<Object[]>) userVoterDetailsDAO.getVotersBasedOnVoterIdsAndPublication(publicationDateId,votersList1,columnName,order);
 				 totalCount=(Long) userVoterDetailsDAO.getVotersCountByHamlet(hamletId,userId).get(0);
 			}
+			
+			if(customwardId != null && customwardId.longValue() != 0)
+			{
+				
+				 votersList = boothPublicationVoterDAO
+							.getVotersDetailsByCustomWardId(customwardId,publicationDateId,constiId,userId,startIndex, maxRecords, order, columnName);
+				 totalCount=new Long(votersList.size());
+			}
+			
 			else
 			{
 				if(boothId != null && panchayatId == null){
@@ -781,7 +790,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 		return returnValue;
 	}
-
 	/**
 	 * @return publicationDetails
 	 * @author prasad Thiragabathina
