@@ -375,7 +375,9 @@ label{display:inline-block;}
 
 #labelRadioDiv{font-family:verdana;font-size:11px;}
 #mainDiv{margin-left:auto;margin-right:auto;width:990px;}
-
+.dataTables_wrapper{
+   margin-bottom: 20px;
+}
 </style>
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -399,6 +401,7 @@ var counter = 0;
 $(document).ready(function(){
   if(type == "mandal"){
        $("#mandalElecResultsDiv").show();
+	   $("#votingTrendzDiv").hide();
        var jsObj=
 			{
 				
@@ -410,6 +413,7 @@ $(document).ready(function(){
    
 		callAjax(jsObj,url);
   }else if(type == "constituency"){
+  $("#votingTrendzDiv").show();
     getConstituencyElections();
   }
 });
