@@ -3764,11 +3764,60 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		List<VotersDetailsVO> wardWiseVotersDetails = new ArrayList<VotersDetailsVO>();
 		 try{
 			 List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(assemblyLocalBodyId);
-			 List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
-			for (Object[] ward : wardsList){
-			  List<VotersDetailsVO> wareData = getVotersDetailsByAgewiseNew(constituencyId,null,(Long)ward[0],null,publicationDateId,"ward");
-			  wardWiseVotersDetails.addAll(wareData);
-			}
+			 
+			 if(localElectionBodyDAO.get((Long) list.get(0)).getElectionType().getElectionType().equalsIgnoreCase(IConstants.GHMC)){
+			
+				 List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
+				for (Object[] ward : wardsList){
+				  List<VotersDetailsVO> wareData = getVotersDetailsByAgewiseNew(constituencyId,null,(Long)ward[0],null,publicationDateId,"ward");
+				  wardWiseVotersDetails.addAll(wareData);
+				  
+				  if(wareData != null && wareData.size() >0)
+					  wareData.get(0).setMuncipalityType(IConstants.GHMC);
+				}
+			 }else{
+				 List<Object[]> boothsList = boothDAO.getBoothsInAMunicipality((Long) list.get(0),publicationDateId,constituencyId);				List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
+
+				 
+				 for(Object[] obj:boothsList){
+						
+						VotersDetailsVO voterDetailsVO = new VotersDetailsVO();
+						
+						
+						getDetailsOfVotersHasAgeBetween18And25(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth",null);
+						getDetailsOfVotersHasAgeBetween26And35(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth",null);			
+						getDetailsOfVotersHasAgeBetween36And45(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth",null);		
+						getDetailsOfVotersHasAgeBetween46And60(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth",null);       
+						getDetailsOfVotersHasAgeAbove60(null,null,null,(Long)obj[0], publicationDateId,voterDetailsVO,"booth",null);
+						
+						voterDetailsVO.setBoothName(obj[1].toString());
+						Long totalVoters = 0l;
+						  if(voterDetailsVO.getTotalVotersFor18To25() != null)
+						   totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor18To25();
+						  if(voterDetailsVO.getTotalVotersFor26To35() != null)
+						    totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor26To35();
+						  if(voterDetailsVO.getTotalVotersFor36To45() != null)
+							totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor36To45();
+						  if(voterDetailsVO.getTotalVotersFor46To60() != null)
+							totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor46To60();
+						  if(voterDetailsVO.getTotalVotersForAbove60() != null)
+							totalVoters = totalVoters+voterDetailsVO.getTotalVotersForAbove60();
+						
+						voterDetailsVO.setTotalVoters(totalVoters);
+						
+						
+						
+						voterDetailsVO.setVotersPercentFor18To25(voterDetailsVO.getTotalVotersFor18To25() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters) :"0.00");
+						voterDetailsVO.setVotersPercentFor26To35(voterDetailsVO.getTotalVotersFor26To35() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters):"0.00");
+						voterDetailsVO.setVotersPercentFor36To45(voterDetailsVO.getTotalVotersFor36To45() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters):"0.00");
+						voterDetailsVO.setVotersPercentFor46To60(voterDetailsVO.getTotalVotersFor46To60() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters) :"0.00");
+						voterDetailsVO.setVotersPercentForAbove60(voterDetailsVO.getTotalVotersForAbove60() != null? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters):"0.00");
+						wardWiseVotersDetails.add(voterDetailsVO);
+						
+					}
+				 
+				 
+			 }
 		 }catch(Exception e){
 			 log.error("Exception rised in getAgewiseVotersDetailsForWardsByLocalElectionBodyId method : ",e);
 		 }
@@ -8784,19 +8833,46 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			try{
 				List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
 				List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(localElectionBodyId);
-				List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
-				if(wardsList != null && wardsList.size() >0)
-				{
-					
-					Map<Long,String> wardIds = new HashMap<Long,String>();
-					for (Object[] ward : wardsList){
-						wardIds.put((Long)ward[0], ward[1]!= null?ward[1].toString():"");
-					}
-					if(wardIds.size() > 0)
-						boothVotersList = getAllAgesWiseVotersDetails(getReportLevelId("Ward"), wardIds, publicationDateId,"Ward",constituencyId);
 				
+				
+				if(localElectionBodyDAO.get((Long) list.get(0)).getElectionType().getElectionType().equalsIgnoreCase(IConstants.GHMC)){
+					
+				
+					List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
+					if(wardsList != null && wardsList.size() >0)
+					{
+						
+						Map<Long,String> wardIds = new HashMap<Long,String>();
+						for (Object[] ward : wardsList){
+							wardIds.put((Long)ward[0], ward[1]!= null?ward[1].toString():"");
+						}
+						if(wardIds.size() > 0)
+							boothVotersList = getAllAgesWiseVotersDetails(getReportLevelId("Ward"), wardIds, publicationDateId,"Ward",constituencyId);
+						
+						if(boothVotersList != null && boothVotersList.size() >0)
+							boothVotersList.get(0).setMuncipalityType(IConstants.GHMC);
+					
+					}
+				}else{
+					
+					List<Object[]> boothsList = boothDAO.getBoothsInAMunicipality((Long) list.get(0),publicationDateId,constituencyId);
+					if(boothsList != null && boothsList.size() >0)
+					{
+						
+						Map<Long,String> boothIds = new HashMap<Long,String>();
+						for (Object[] booth : boothsList){
+							boothIds.put((Long)booth[0], booth[1]!= null?("booth-"+booth[1].toString()):"");
+						}
+						if(boothIds.size() > 0)
+							boothVotersList = getAllAgesWiseVotersDetails(getReportLevelId(IConstants.BOOTH), boothIds, publicationDateId,"Booth",constituencyId);
+					
+					}
+					
+					
+						
 				}
 				return boothVotersList;
+
 				}catch (Exception e) {
 				e.printStackTrace();
 				log.error("Exception Occured in getAgewiseVotersDetForBoothsByLocalElectionBodyId() Method, Exception - "+e);
