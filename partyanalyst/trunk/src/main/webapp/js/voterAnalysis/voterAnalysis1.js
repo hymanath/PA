@@ -3659,7 +3659,7 @@ function buildPartyWisePiechart(myResults,jsObj)
 	  $("#localCastStatsTabContent_body").html(str);
 	  $("#localCastStatsTabContent_body").css("margin-bottom","35px").css("margin-top","10px");
 	  	$('#localCastStatsJqTable').dataTable({
-		"aaSorting": [[ 1, "asc" ]],
+		"aaSorting": [[ 2, "desc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
