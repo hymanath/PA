@@ -20,4 +20,6 @@ public interface IUserVoterService {
 	
 	public List<MandalInfoVO> getCensusDetailsInALocation(String locationType, Long locationValue, Long constituencyId);
 	
+	public List<MandalInfoVO> getCensusReportForSubLevels(String locationType,Long locationValue,Long constituencyId);
+	
 }

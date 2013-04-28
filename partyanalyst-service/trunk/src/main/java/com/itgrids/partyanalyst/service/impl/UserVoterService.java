@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IUserVoterService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -53,6 +54,7 @@ public class UserVoterService implements IUserVoterService{
     private IUserVoterCategoryDAO userVoterCategoryDAO;
     private IDelimitationConstituencyMandalService delimitationConstituencyMandalService; 
     private MandalInfoVO mandalInfoVO;
+    private IRegionServiceData regionServiceDataImp;
     
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
@@ -163,6 +165,13 @@ public class UserVoterService implements IUserVoterService{
 
 	public void setMandalInfoVO(MandalInfoVO mandalInfoVO) {
 		this.mandalInfoVO = mandalInfoVO;
+	}
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
 	}
 
 	public List<SelectOptionVO> getUserVoterCategoryList(List<Long> userIdsList)
@@ -540,6 +549,37 @@ public class UserVoterService implements IUserVoterService{
 		}catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception Occured in getCensusDetailsInALocation() method,Exception - "+e);
+			return mandalInfoVOList;
+		}
+	}
+	
+	
+	public List<MandalInfoVO> getCensusReportForSubLevels(String locationType,Long locationValue,Long constituencyId)
+	{
+		List<MandalInfoVO> mandalInfoVOList = null;
+		String mandalIdsString = "";
+		try{
+			if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(locationValue ,IConstants.PRESENT_YEAR, null);
+				if(mandalsList == null || mandalsList.size() == 0)
+					return mandalInfoVOList;
+				for(SelectOptionVO selectOptionVO : mandalsList)
+				{
+					if(selectOptionVO.getId().toString().substring(0, 1).equalsIgnoreCase(IConstants.RURAL_TYPE))
+						mandalIdsString = mandalIdsString+selectOptionVO.getId().toString().substring(1)+",";
+				}
+				if(!mandalIdsString.isEmpty())
+				{
+				    mandalIdsString = mandalIdsString.substring(0,mandalIdsString.length()-1);
+					mandalInfoVOList = delimitationConstituencyMandalService.getCensusInfoForMandals(mandalIdsString);
+				}
+			}
+			
+			return mandalInfoVOList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getCensusReportForSubLevels() method,Exception - "+e);
 			return mandalInfoVOList;
 		}
 	}
