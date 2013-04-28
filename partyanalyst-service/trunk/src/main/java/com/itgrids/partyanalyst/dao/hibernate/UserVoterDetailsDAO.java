@@ -1120,4 +1120,17 @@ IUserVoterDetailsDAO{
 		queryObj.setParameterList("wardIds",wardIds);
 		  return queryObj.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getBoothIdsByCustomWardId(Long customWardId,Long constituencyId, Long publicationDateId)
+	{
+		Query query = getSession().createQuery(" select distinct BPV.booth.boothId from BoothPublicationVoter BPV, UserVoterDetails UVD where " +
+				" BPV.voter.voterId = UVD.voter.voterId and BPV.booth.constituency.constituencyId = :constituencyId and " +
+				" BPV.booth.publicationDate.publicationDateId = :publicationDateId and UVD.ward.constituencyId = :customWardId ");
+		query.setParameter("customWardId",customWardId);
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
+	
 }
