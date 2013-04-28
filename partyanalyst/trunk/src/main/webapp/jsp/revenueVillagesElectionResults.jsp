@@ -54,7 +54,8 @@
 
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>		
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
-	
+	<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
+	  <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
 	<script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 	<!--<script type="text/javascript" src="js/highcharts/js/modules/exporting.js"></script>-->
 	
@@ -433,13 +434,14 @@ function getAllPublicationDates(){
 		var url = "getLatestPublicationIdAction.action?"+rparam;						
 		callAjax(jsObj,url);
 }
-
+var checkedType = '${checkedType}';
 	$(document).ready(function(){
-	  var checkedType = '${checkedType}';
+	  
 	  if(checkedType == "panchayat"){
-	      getAllPublicationDates();
 	     $("#panchayatChk").attr("checked","checked");
-		 $("#castGridButton").show();
+		 
+	  }else if(checkedType == "revenueVillage"){
+	     $("#revenueVillageChk").attr("checked","checked");
 	  }
 	});
 		function buildVotesPolledDataTable() {
@@ -549,9 +551,14 @@ function getAllPublicationDates(){
 								}
 								else if(jsObj.task == "getConstituencyId"){
 									constituencyId = myResults;
-									if(constituencyId != null && constituencyId != "null")
+									if(constituencyId != null && constituencyId != "null"){
 									getConstituencieSubs(constituencyId);
+									 if(checkedType == "panchayat"){
+	                                   getAllPublicationDates();
+									  }
+									}
 								}else if(jsObj.task == "getCastInfoForsubLevels"){
+								$("#castGrid1Title").html("Cast Details By Panchayat Wise In  ${tehsilName} Mandal");
 								if(myResults.castVosList != null && myResults.castVosList.length > 0)
 								 buildCastInfoForSubLevels(myResults,jsObj);
 								else
@@ -559,6 +566,7 @@ function getAllPublicationDates(){
 									 //buildCastSubLevelsDiv(myResults);
 								}else if(jsObj.task == "getAllPublicationDates"){
 								  publicationId = myResults;
+								  getCastInfoForsubLevel();
 								}
 							}catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
@@ -623,8 +631,8 @@ function getAllPublicationDates(){
 			</td>
 			<!--<td width="14%" align="right"><img src="images/icons/homePage/pa_logo.jpg"></td>
 		</tr>
-	</tbody></table>-->
-	<div align="center"><h3>All Parties Results In All Elections</h3></div>
+	</tbody></table>
+	<div align="center"><h3>All Parties Results In All Elections</h3></div>-->
 	<div style="color:#247CD4;font-size:19px;font-weight:bold;margin-bottom:23px;margin-top:36px;text-align:center;">All Parties Trends In All Elections Of ${tehsilName } Mandal</div>
 	<div class="hero-unit" style="width:750px;margin-left:auto;margin-right:auto;">
 	<c:if test="${! empty mandalVO}">
@@ -637,7 +645,7 @@ function getAllPublicationDates(){
 				
 			    <tr>
 					<th align="left">Show Result : </th>
-					<th colspan="2" align="left"><input type="radio" value="revenueVillage" name="resultType" checked="checked">Revenue Villages Wise <input type="radio" id="panchayatChk" value="panchayat" name="resultType" > Panchayat Wise</th>
+					<th colspan="2" align="left"><input type="radio" id="revenueVillageChk" value="revenueVillage" name="resultType" >Revenue Villages Wise <input type="radio" id="panchayatChk" value="panchayat" name="resultType" checked="checked"> Panchayat Wise</th>
 				</tr>
 				<tr>
 					<th align="left">Parties : </th>
@@ -676,7 +684,7 @@ function getAllPublicationDates(){
 			<div id="container" style="min-width: 400px; height: 600px; margin: 0 auto"></div>
 			<div id="container1" style="width:800px;margin-left:auto;margin-right:auto;background:violet"></div>
 		</c:if>
-		   <div id="castGridButton" style="margin-left:706px;display:none;padding-bottom:10px;"><input class="btn btn-success" onclick="getCastInfoForsubLevel()" type="button" value="Compare Election Results With Caste" /></div>
+		   <div id="castGrid1Title" style='font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;font-size:16px;color:#274b6d;fill:#274b6d;'></div>
 		   <div id="castGrid1" style="padding-bottom:10px;"></div>
 	</div>
 	
