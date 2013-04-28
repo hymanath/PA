@@ -1119,6 +1119,19 @@ public String saveLocality()
 								
 							}
 							voterHouseInfoVO.setCategoriesList(categoriesList);
+							
+							if(localityPresent){
+								
+								 try
+							        {
+									 voterHouseInfoVO.setSelType(jObj.getString("selType"));
+									 voterHouseInfoVO.setSelTypeId(jObj.getLong("wardId"));
+							    	}
+							        catch(Exception e){					    		
+							        	 parameters.setSelTypeId(0L);
+							    	}
+								 
+								}
 							votersList.add(voterHouseInfoVO);
 						}
 						String type = null;
@@ -1139,18 +1152,7 @@ public String saveLocality()
 								type ="localityPresent";
 						}
 						
-						if(localityPresent){
-							
-							 try
-						        {
-								 voterHouseInfoVO.setSelType(jObj.getString("selType"));
-								 voterHouseInfoVO.setSelTypeId(jObj.getLong("wardId"));
-						    	}
-						        catch(Exception e){					    		
-						        	 parameters.setSelTypeId(0L);
-						    	}
-							 
-							}
+						
 					  status = votersAnalysisService.updateMultipleVoterDetails(votersList,type);
 					  return "update";
 				  }
