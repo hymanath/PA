@@ -3385,13 +3385,13 @@ function buildCastInfoData(myresults,jsObj)
 		if(cast != '')
 	{
 		buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId,type);	
-
+		$('#castContainerChart').css('display','block');
 	}
 		
 		else{
 		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
 		$('.localCastStatsVotersTitle').css("backgrond","#FFF;");
-		$('#container').css('display','none');
+		$('#castContainerChart').css('display','none');
 		}
   }
 
@@ -3514,7 +3514,7 @@ function buildCastPiechart(myResults,jsObj)
 	} 
 
 	var chart = new google.visualization.PieChart(document.getElementById('localCastChatDiv'));
-		chart.draw(data, {width: 400, height: 200,legend:'right',legendTextStyle:{fontSize:12}, title:'Caste category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
+		chart.draw(data, {width: 500, height: 200,legend:'right',legendTextStyle:{fontSize:12}, title:'Caste category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
 	});
 }
 function buildPartyWisePiechart(myResults,jsObj)
@@ -3574,17 +3574,22 @@ function buildPartyWisePiechart(myResults,jsObj)
 	   $("#votersMainOuterDiv2").show();
 	   }
 }
-   function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId,type)
-	{
-	var castesArr=[];
+
+
+//The Variable are for Caste Chart -- Created By sasi
+    var castesArr=[];
 	var totalVotersArr=[];
 	var maleVotersArr=[];
 	var femaleVotersArr=[];
-	
+	var castPercentageArr=[];
+	var castArray=[];
+   
+   function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId,type)
+	{
 	 if(constMgmtMainObj.castStatsArray == null || constMgmtMainObj.castStatsArray.length == 0)
 	    return;
 	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
-	 var castArray = constMgmtMainObj.castStatsArray;
+	 castArray = constMgmtMainObj.castStatsArray;
 	$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
          var str =' <table id="localCastStatsJqTable" cellpadding="0" cellspacing="0" border="0" width="100%">';
           str+='  <thead>';
@@ -3599,23 +3604,18 @@ function buildPartyWisePiechart(myResults,jsObj)
           str+='  </thead>';
           str+='  <tbody>';
 	   
-	  // console.log(castArray);//sasi caste
-	
-	
-
 	$.each(castArray, function( key, value ) {
-		castesArr.push(value.caste);
-		totalVotersArr.push(value.castePopulation);
-		maleVotersArr.push(value.malePopulation);
-		femaleVotersArr.push(value.femalePopulation);
+		if(value.castePercentage>=1){
+			castesArr.push(value.caste);
+			totalVotersArr.push(value.castePopulation);
+			maleVotersArr.push(value.malePopulation);
+			femaleVotersArr.push(value.femalePopulation);
+			castPercentageArr.push(parseFloat(value.castePercentage));
+		}
 	});
 	
-	//console.log(castesArr);
-	//console.log(totalVotersArr);
-	//console.log(maleVotersArr);
-	//console.log(femaleVotersArr);
-
-	buildCasteVotersChart(castesArr,totalVotersArr,maleVotersArr,femaleVotersArr);
+	
+	buildCasteVotersChart(castesArr,totalVotersArr,maleVotersArr,femaleVotersArr,castPercentageArr);
 	   
 	   
 	   for(var i in castArray){
@@ -4373,12 +4373,11 @@ function callAjaxorVoterDetails(jsObj,url){
 					  myResults =  YAHOO.lang.JSON.parse(o.responseText);
 					  
 					  if(jsObj.retrieveType == "brief"){
-						  var type1 = "";
 
 						  if(jsObj.type == "localElectionBody")
-							 type1 = "localElectionBody";
+							  jsObj.type = "mandal";
 						 
-						  if(type1 == "localElectionBody" || jsObj.type == maintype || jsObj.type == "hamletLocalArea" ){
+						  if(jsObj.type == maintype || jsObj.type == "hamletLocalArea" ){
 						  buildVoterDetailsTable(myResults,jsObj.type,jsObj.retrieveType);
 						  }
 					  }else if(jsObj.retrieveType == "all"){
@@ -8921,62 +8920,171 @@ str+="</div>";
 	$("#agerangeDiv").html(str);
 }
 
-function buildCasteVotersChart(cs,tv,mv,fv)
+function buildCasteVotersChart(cs,tv,mv,fv,cp)
  {
  
- $('#container').css('display','block');
-        $('#container').highcharts({
+ 
+   $('#container').highcharts({
             chart: {
-                type: 'line',
-                marginRight: 130,
-                marginBottom: 25
+                zoomType: 'xy',
+				marginRight: 130,
+                marginBottom: 80,
+				width:890,height:390
             },
+			
             title: {
-                text: 'Caste Wise Voters Analysis',
-                x: -20 //center
+                text: 'Caste Wise Analysis'
             },
-            xAxis: {
-                categories:cs,
+            
+            xAxis: [{
+                categories: cs,
 				labels: {
-                    rotation: -35,
-                    align: 'right',
+                                align:'right',
+                                style: {
+                                      cursor: 'pointer',
+                                      fontSize: '14px',
+                                      //fontWeight:'bold'
+                                },
+                                rotation:300, 
+                            } 
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    formatter: function() {
+                        return this.value +'';
+                    },
                     style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
+                        color: '#89A54E'
+                    }
+                },
+                title: {
+                    text: 'caste Percentage ',
+                    style: {
+                        color: '#89A54E'
+                    }
+                },
+                opposite: true
+    
+            }, { // Secondary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Caste Percentage/Total Voters',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value +'';
+                    },
+                    style: {
+                        color: '#4572A7'
                     }
                 }
-            },
-            yAxis: {
+    
+            }, { // Tertiary yAxis
+                gridLineWidth: 0,
                 title: {
-                    text: 'Voters'
+                    text: 'Total Voters',
+                    style: {
+                        color: '#AA4643'
+                    }
                 },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
+                labels: {
+                    formatter: function() {
+                        return this.value +'';
+                    },
+                    style: {
+                        color: '#AA4643'
+                    }
+                },
+                opposite: true
+            }],
             tooltip: {
-                valueSuffix: ''
+                shared: true
             },
             legend: {
                 layout: 'vertical',
-                align: 'right',
+                align: 'left',
+                x: 600,
                 verticalAlign: 'top',
-                x: -10,
-                y: 100,
-                borderWidth: 0
+                y: 40,
+                floating: true,
+                backgroundColor: '#FFFFFF'
             },
-            series: [{
+            series: [ {
                 name: 'Total Voters',
-                data:tv
+                type: 'spline',
+                color: '#AA4643',
+                yAxis: 2,
+                data: tv,
+               /* marker: {
+                    enabled: false
+                },*/
+                //dashStyle: 'shortdot',
+                tooltip: {
+                    valueSuffix: ''
+                }
+    
             }, {
-                name: 'Male Voters',
-                data: mv
-            }, {
-                name: 'Female Voters',
-                data: fv
-            }, ]
+                name: 'Caste Percentage',
+                color: '#89A54E',
+                type: 'spline',
+                data: cp,
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }]
         });
 		$('tspan:last').hide();
     }
+	
+
+var casteRange;	
+$(function() {
+$( "#slider" ).slider({
+value:1,
+min: 1,
+max: 40,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+},
+change: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+casteRange=ui.value;
+buildGraphBySlide(casteRange);
+}
+});
+casteRange=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
+casteRange=$( "#slider" ).slider( "value" );
+});
+
+function buildGraphBySlide(){
+	castesArr=[];
+	totalVotersArr=[];
+	maleVotersArr=[];
+	femaleVotersArr=[];
+	castPercentageArr=[];
+	
+	$.each(castArray, function( key, value ) {
+		if(value.castePercentage>=casteRange){
+			castesArr.push(value.caste);
+			totalVotersArr.push(value.castePopulation);
+			maleVotersArr.push(value.malePopulation);
+			femaleVotersArr.push(value.femalePopulation);
+			castPercentageArr.push(parseFloat(value.castePercentage));
+		}
+	});
+buildCasteVotersChart(castesArr,totalVotersArr,maleVotersArr,femaleVotersArr,castPercentageArr);
+}
+
+$(document).ready(function(){
+    $('#hideshow').live('click', function(event) {        
+         $('#castContainerChartInner').toggle('show');
+		 //$(this).val(if($((this).val()))
+    });
+	
+	
+});
+
