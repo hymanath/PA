@@ -53,6 +53,8 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
@@ -334,14 +336,23 @@ color:#333333;
     margin-right: auto;
     width:100%;
 }
+#censusTab{width:98%;}
+#censusTab th{background:#d9edf7; color:#454545;}
+#censusTab td{color:#000;}
 
+#censusTab{clear: both;margin-bottom: 10px;
+    margin-top: 8px;}
+	#censusReportMainDiv{padding-bottom:1px;}
+
+#censusReportDiv h4{background-color: #05A8E9;
+    border-radius: 4px 4px 4px 4px;
+    color: snow;
+    font-family: arial;
+    height: 27px;
+    margin-left: 4px;
+    padding-top: 11px;
+    width: 947px;}
 </style>
-
-
-
-
-
-
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
@@ -357,8 +368,29 @@ var publicationYear= "${publicationYear}";
 var buildType= "${buildType}";
 var constituencyId= "${constituencyId}";
 var mainname = '${typeName}';
+</script>
 
+</head>
+<body>
+<div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
+<div id="votersBasicInfoMainDiv">
+	<div id="censusReportMainDiv">
+	   <div id="censusReportDiv"></div>
+	</div>
+	<div id="votersBasicInfoTitleDiv"></div>
+	<div id="votersBasicInfoMsgDiv"></div>
+	<div id="votersBasicInfoSubChartDiv"></div>
+	</br>
+	<div id="assAndUnass"></div>
+	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>	
+	
+</div>
+
+<script type="text/javascript">
 getvotersBasicInfo("voters",id,publicationId,type);
+getCensusInfoForSubLevels();
+
+
 function getvotersBasicInfo(buttonType,id,publicationId,type){
   // var ajaxImageDiv =  document.getElementById('ImpFamwiseAjaxDiv');
     var level = $("#reportLevel").val();
@@ -409,6 +441,10 @@ function callAjax(jsObj,url)
 								if(jsObj.task == "votersbasicinfo")
 								{
 									buildVotersBasicInfo(myResults,jsObj);
+								}
+								else if(jsObj.task == "getCensusInfo")
+								{
+								  showSubLevelWiseCensusReport(myResults,jsObj);
 								}
 								}catch (e) {
 								}  
@@ -633,20 +669,69 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	}
 }
 
+function getCensusInfoForSubLevels()
+{
+	var jsObj=
+			{
+				type:type,
+				id:id,
+				typename:mainname,
+				constituencyId:constituencyId,
+                task:"getCensusInfo"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getCensusReportForSubLevelsAction.action?"+rparam;	
+   
+		callAjax(jsObj,url);
+	
+}
+
+function showSubLevelWiseCensusReport(result,jsObj)
+{
+	
+	$("#censusReportDiv").html('');
+		if(result == null)
+		{
+			$("#censusReportMainDiv").css("display","none");
+			return;
+		}
+		$("#censusReportMainDiv").css("display","block");
+
+		var name = jsObj.typename;
+		if(jsObj.type == "constituency")
+			name += " Constituency";
+		var str = '';
+		str +='<h4>Mandal Wise Census Information in '+name+'</h4>';
+		str +='<table id="censusTab" class="table table-bordered table-striped table-hover">';
+		str +='<tr>';
+		str +='<th>Mandal</th>';
+		str +='<th>Population</th>';
+		str +='<th>SC Population</th>';
+		str +='<th>ST Population</th>';
+		str +='<th>Literate Populations</th>';
+		str +='<th>Illiterate Population</th>';
+		str +='<th>Working Population</th>';
+		str +='</tr>';
+
+		for(var i in result)
+		{
+			str +='<tr>';
+			str +='<td>'+result[i].mandalName+'</td>';
+			str +='<td>'+result[i].totalPersons+'</td>';
+			str +='<td>'+result[i].totalSCPersons+'</td>';
+			str +='<td>'+result[i].totalSTPersons+'</td>';
+			str +='<td>'+result[i].totalLiteratePersons+'</td>';
+			str +='<td>'+result[i].totalIlliteratePersons+'</td>';
+			str +='<td>'+result[i].totalWorkingPersons+'</td>';
+			str +='</tr>';
+		}
+		str +='</table>';
+		$("#censusReportDiv").html(str);
+
+}
 
 
 </script>
-</head>
-<body>
-<div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
-<div id="votersBasicInfoMainDiv">
-	<div id="votersBasicInfoTitleDiv"></div>
-	<div id="votersBasicInfoMsgDiv"></div>
-	<div id="votersBasicInfoSubChartDiv"></div>
-	</br>
-	<div id="assAndUnass"></div>
-	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>	
-</div>
 </body>
 
 

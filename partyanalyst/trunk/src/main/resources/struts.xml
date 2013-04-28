@@ -5002,6 +5002,12 @@
 				 <param name="root">mandalInfoVOsList</param>
 			</result>
 		</action>
+		
+		<action name="getCensusReportForSubLevelsAction" class="subRegionsWiseAnalysisAction" method="getCensusReportForSubLevels">
+			<result type="json" name="success">
+				 <param name="root">mandalInfoVOsList</param>
+			</result>
+		</action>
 	
 		</package>
 </struts>      
