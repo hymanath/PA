@@ -226,6 +226,7 @@
 		<pattern>/cadreDisplayWindowAction*</pattern>		
 		<pattern>/userGroupAction*</pattern>
 		<pattern>/setUserRestrictionAction*</pattern>
+		<pattern>/subRegionsWiseAnalysisAction*</pattern>
     	 </decorator>
 
 </decorators>
