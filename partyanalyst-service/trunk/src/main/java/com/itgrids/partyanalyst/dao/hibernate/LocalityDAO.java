@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ILocalityDAO;
 import com.itgrids.partyanalyst.model.Locality;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class LocalityDAO extends GenericDaoHibernate<Locality, Long> implements ILocalityDAO{
 
@@ -16,6 +17,24 @@ public class LocalityDAO extends GenericDaoHibernate<Locality, Long> implements 
 	}
 	
 	
+	public List<Object[]> getAllLocalitiesForHamlet(Long userId , Long id ,String type ,String condition )
+	{
+		StringBuilder sb = new StringBuilder("select model.localityId , model.name from Locality model where ");
+		/*if(type.equalsIgnoreCase(IConstants.HAMLET))
+		sb.append("model.hamlet.hamletId = :id ");
+		else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+		sb.append("model.ward.constituencyId = :id ");	*/
+		sb.append(condition);
+		
+		sb.append(" and model.user.userId = :userId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("id", id);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
 	public List<Object[]> getAllLocalitiesForHamlet(Long userId , Long hamletId)
 	{
 		

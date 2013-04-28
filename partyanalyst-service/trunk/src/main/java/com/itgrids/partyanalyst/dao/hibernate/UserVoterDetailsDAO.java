@@ -305,15 +305,18 @@ IUserVoterDetailsDAO{
 		
 		return query.list();
 	}
-	public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId)
+	public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId ,String query1 , Long publicationDateId )
 	{
-		Query query = getSession().createQuery("select count(*) from UserVoterDetails model where model.hamlet.hamletId = :hamletId and" +
-				" model.user.userId = :userId and model.locality.localityId = :localityId");
+		Query query = getSession().createQuery("select count(*) from UserVoterDetails model , BoothPublicationVoter model1 " +
+				" where model.voter.voterId = model1.voter.voterId and "+ query1+" and " +
+				"model.locality.localityId = :localityId and  model.user.userId = :userId and model1.booth.publicationDate.publicationDateId = :publicationDateId ");
 		
-		query.setParameter("hamletId", hamletId);
+		query.setParameter("id", hamletId);
 		query.setParameter("localityId", id);
 		query.setParameter("userId", userId);
-		
+		query.setParameter("publicationDateId", publicationDateId);
+
+	
 		
 		return query.list();
 		
@@ -334,15 +337,20 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
-	public List<Object[]> getVotersCountByGenderForLocalityInHamlet(Long userId , Long hamletId , Long localityId)
+	public List<Object[]> getVotersCountByGenderForLocalityInHamlet(Long userId , Long hamletId , Long localityId,Long publicationDateId,String query1)
 	{
-		Query query = getSession().createQuery("select count(*),model.voter.gender   from UserVoterDetails model " +
-				"where model.hamlet.hamletId = ? and model.user.userId =? and model.locality.localityId = ? " +
+		Query query = getSession().createQuery("select count(*),model.voter.gender   from UserVoterDetails model,BoothPublicationVoter model1 " +
+				" where model.voter.voterId = model1.voter.voterId and "+ query1+" and " +
+				"model.locality.localityId = :localityId and  model.user.userId = :userId and model1.booth.publicationDate.publicationDateId = :publicationDateId "+
 				"group by model.voter.gender ");
 		
-		query.setParameter(0, hamletId);
-		query.setParameter(1, userId);
-		query.setParameter(2, localityId);
+		
+		query.setParameter("id", hamletId);
+		query.setParameter("localityId", localityId);
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+
+	
 		
 		return query.list();
 		
@@ -712,17 +720,17 @@ IUserVoterDetailsDAO{
 		
 				
 			}
-			public List<Long> getUserBoothsByHamletId(Long userId , Long hamletId , Long pubId)
+		 
+			public List<Long> getUserBoothsByHamletId(Long userId , Long hamletId , Long pubId ,String con)
 			{
 				
-				
+				//18111pending
 				Query query = getSession().createQuery("select distinct model1.booth.boothId" +
 						" from UserVoterDetails model," +
 						"BoothPublicationVoter model1 "+					
 						" where model.user.userId = :userId and model.voter.voterId = model1.voter.voterId and " +
 						" model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
-						"model.hamlet.hamletId is not null and "+
-						" model.hamlet.hamletId = :hamletId");
+						" "+con );
 				
 				query.setParameter("userId", userId);
 				query.setParameter("hamletId", hamletId);
@@ -910,7 +918,7 @@ IUserVoterDetailsDAO{
 		  StringBuilder query = new StringBuilder();
 		  if(type.equalsIgnoreCase("boothHamlets"))
 			  query.append("select distinct model.hamlet.hamletId,model.hamlet.hamletName ,");
-		  else if(type.equalsIgnoreCase("hamletBooths"))
+		  else if(type.equalsIgnoreCase("hamletBooths") || type.equalsIgnoreCase("wardBooths") )
 			  query.append("select distinct model1.booth.boothId,concat('Booth-',model1.booth.partNo),");
 			  query.append("count( distinct model.voter.voterId), " );
 			  query.append(getAgeQuery(null,"GENDER"));	
@@ -925,7 +933,7 @@ IUserVoterDetailsDAO{
 			query.append("BoothPublicationVoter model1 " );
 		  if(type.equalsIgnoreCase("boothHamlets"))
 			query.append(" join model.hamlet " );
-		  else if(type.equalsIgnoreCase("hamletBooths"))
+		  else if(type.equalsIgnoreCase("hamletBooths")  || type.equalsIgnoreCase("wardBooths"))
 			query.append(" join model1.booth " );
 			query.append(" where model.voter.voterId = model1.voter.voterId and " );
 			query.append(" model1.booth.publicationDate.publicationDateId = :publicationDateId and " );
@@ -934,6 +942,8 @@ IUserVoterDetailsDAO{
 			query.append(" model1.booth.boothId = :boothId " );
 		 else if(type.equalsIgnoreCase("hamletBooths"))
 			query.append(" model.hamlet.hamletId = :boothId " );
+		 else if( type.equalsIgnoreCase("wardBooths"))
+			 query.append(" model.ward.constituencyId = :boothId " );
 
 			query.append("and model.user.userId = :userId " );
 				   
@@ -1084,16 +1094,17 @@ IUserVoterDetailsDAO{
 	 * @date 25-04-2014
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getGenderWiseVoterDetailsForCustomWard(Long id , Long publicationDateId)
+	public List<Object[]> getGenderWiseVoterDetailsForCustomWard(Long id , Long publicationDateId , Long userId )
 	{
 		String queryString = "select count(*) , model.voter.gender  from UserVoterDetails model " +
-				",BoothPublicationVoter BPV where model.voter.voterId = BPV.voter.voterId and " +
+				",BoothPublicationVoter BPV where model.user.userId = :userId and model.voter.voterId = BPV.voter.voterId and " +
 				"model.ward.constituencyId = :id and " +
 				"BPV.booth.publicationDate.publicationDateId = :publicationDateId group by model.voter.gender";
 				
-		Query query = getSession().createQuery(queryString);
-		query.setParameter("id", id);
-		query.setParameter("publicationDateId", publicationDateId);
+		 Query query = getSession().createQuery(queryString);
+		 query.setParameter("id", id);
+		 query.setParameter("publicationDateId", publicationDateId);
+		 query.setParameter("userId", userId);
 		return query.list();
 	}
 
@@ -1107,10 +1118,10 @@ IUserVoterDetailsDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getImpFamilesForCustomWard(List<Long> wardIds,
-			Long publicationDateId, String queryString) {
+			Long publicationDateId, String queryString , Long userId) {
 		StringBuilder query = new StringBuilder();
 		query.append("select count(model.voter.voterId),model.voter.houseNo from UserVoterDetails UVD ,BoothPublicationVoter model " +
-				"where UVD.voter.voterId = model.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				"where model.user.userId = :userId and UVD.voter.voterId = model.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and " +
 				"UVD.ward.constituencyId in (:wardIds)  group by model.voter.houseNo ") ;
 		if(queryString != null)
 			query.append(queryString);
@@ -1118,6 +1129,7 @@ IUserVoterDetailsDAO{
 		Query queryObj = getSession().createQuery(query.toString()) ;
 		queryObj.setParameter("publicationDateId", publicationDateId);
 		queryObj.setParameterList("wardIds",wardIds);
+		queryObj.setParameter("userId", userId);
 		  return queryObj.list();
 	}
 	
