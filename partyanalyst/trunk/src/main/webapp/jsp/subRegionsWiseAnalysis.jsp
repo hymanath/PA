@@ -389,6 +389,19 @@ var counter = 0;
 <body>
 <div id="mainDiv">
 
+<div id="votersBasicInfoMainDiv">
+	<div id="censusReportMainDiv">
+	   <div id="censusReportDiv"></div>
+	</div>
+	<div id="votersBasicInfoTitleDiv"></div>
+	<div id="votersBasicInfoMsgDiv"></div>
+	<div id="votersBasicInfoSubChartDiv"></div>
+	</br>
+	<div id="assAndUnass"></div>
+	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>	
+	
+</div>
+
 <div id="voterDetailsNote" class="noteDiv thumbnail breadcrumb" style="display:none;text-align:center;"></div>
 <div id="tableDiv" style="padding:10px;display:none;overflow-x:scroll" class="voterDetails"></div>
 
@@ -405,18 +418,7 @@ var counter = 0;
  <div id='localCastStatsTabContent_subbody'  class="yui-skin-sam yui-dt-sortable"></div>
 
 <div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
-<div id="votersBasicInfoMainDiv">
-	<div id="censusReportMainDiv">
-	   <div id="censusReportDiv"></div>
-	</div>
-	<div id="votersBasicInfoTitleDiv"></div>
-	<div id="votersBasicInfoMsgDiv"></div>
-	<div id="votersBasicInfoSubChartDiv"></div>
-	</br>
-	<div id="assAndUnass"></div>
-	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>	
-	
-</div>
+
 
 <div id="votingTrendzDiv" class="widget blue">
 	 <div class="clear"></div>
