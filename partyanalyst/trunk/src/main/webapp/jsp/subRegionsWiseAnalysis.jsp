@@ -69,6 +69,8 @@
 	border-top-width: 40px;
 }
 
+
+#amount{width:90%;text-align:center;}
 #emprtyData
 {
 
@@ -430,6 +432,17 @@ $(document).ready(function(){
 	
 </div>
 
+<div style="border:1px solid;">
+<div id="rangeSliderDiv" style="width:500px;margin:20px auto;border:1px solid #ccc;padding:10px 20px;" >
+<h5>Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
+<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
+
+<p>
+<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+</p>
+</div>
+<div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
+</div>
 <div id="voterDetailsNote" class="noteDiv " style="display:none;text-align:center;"></div>
 <div id="tableDiv" style="padding:10px;display:none;overflow-x:scroll" class="voterDetails"></div>
 
@@ -577,7 +590,9 @@ function callAjax(jsObj,url)
 								}
 								else if(jsObj.task == "getCastInfoForsubLevels")
 								{  
+									castePercent = myResults.castPercent;
 									buildCastInfoForSubLevels(myResults,jsObj);
+									
 								}
 								else if(jsObj.task == "getAgewiseVoterDetails"){
 					buildVoterDetailsTable(myResults,jsObj.type,jsObj.retrieveType);
@@ -587,6 +602,7 @@ function callAjax(jsObj,url)
 								}
 				
 								}catch (e) {
+								console.log(e);
 								}  
  		               },
  		               scope : this,
@@ -1319,14 +1335,325 @@ var constMgmtMainObj={
 							castStatssubArray:[],
 					 };
 
-function buildCastInfoForSubLevels(myresults,jsObj)
+					 
+					 
+					 
+					 
+function buildHamletWiseCastResultsGraph(selectedCast,percentage)
+{
+	var myChart1 = new Array();
+	var castMain = null;
+	
+	if(selectedCast == null)
 	{
-
-		$("#voterCasteAjaxImg").css("display","none");
+		castMain = sort_unique(castTemp);
+		var radios = document.getElementsByName('castTypeRadio');
 		
+		if(radios != null && radios.length > 0)
+		{
+			var selectValue;
+			for (var r=0;r<radios.length;r++) 
+			{
+				if (radios[r].checked) 
+					selectValue=radios[r].value;
+				if(selectValue != 'All')
+				{
+					castMain=[];
+					$("#castSelectdId option:selected").each(function()
+					{
+						castMain.push($(this).text());
+					});
+				}
+			}
+		}
+    }
+
+	else
+      castMain = sort_unique(selectedCast);
+	
+		//console.log(castMain);
+	if(percentage != null)
+	{
+		for(var per=0;per<castePercent.length;per++)
+		{
+			if(castePercent[per].id < percentage)
+			{
+				var cIndex = castMain.indexOf(castePercent[per].name);
+				if(cIndex != -1)
+					castMain.splice(cIndex,1);
+			}
+		}
+	}
+
+	var avgCal = new Array();
+	var mySort = new Array();
+	var newCast = new Array();
+	var newhamletMainPie = new Array();
+	var countColor = 0;
+		
+	//for average calculation
+	var avgTemp = new Object();
+	avgTemp['type'] = 'spline';
+	avgTemp['name'] = 'Average';
+	
+  
+	for( var k in castMain )
+	{ 
+		var custSort = new Object();
+		custSort["cast"] = castMain[k];
+		var avgData = 0;
+		var count = 0;
+   
+		for(var l in myChart) 
+		{
+			var reqObj1 = myChart[l];
+			var dataObj1 = reqObj1['data'];
+			
+			if(dataObj1[castMain[k]])
+			{
+				count++;
+				avgData = parseInt(avgData)+parseInt(dataObj1[castMain[k]]);
+			}
+			
+		}
+	
+		avgCal.push(avgData/parseInt(hamletMainPie.length));//(count));
+		custSort["avg"] = avgData/(hamletMainPie.length);//(count));
+		mySort.push(custSort);
+	}
+	
+	mySort.sort(function(a,b) { return parseFloat(b.avg) - parseFloat(a.avg) } );
+	avgCal.sort(function(a,b) { return parseFloat(b) - parseFloat(a) } );
+  
+	avgTemp['data'] = avgCal;
+	myChart1.push(avgTemp);
+	
+	var gruopCast =new Array();
+	
+	for (var p in mySort)
+	{
+		var myObj = mySort[p];
+		newCast.push(myObj['cast']);
+	}
+
+ 	var dataGrouping1 = {
+    groupPixelWidth: 40,
+    units: [[
+        'name',
+        [1, 2, 3,4,5,6,7]
+        ]]
+	};
+
+	var tempLine = new Array();
+
+	for(var i in myChart) 
+	{
+		var clmTemp = new Object();
+		var reqObj = myChart[i];
+		
+		clmTemp['name'] = reqObj['name'];
+	
+		//loop for getting same colors for piechart and bars
+		for (var g in hamletMainPie )
+		{ 
+			var newHamletTemp = hamletMainPie[g];
+			if(newHamletTemp['name'] == reqObj['name'])
+			{ 
+				countColor = countColor + 1;
+				newHamletTemp['color']  = Highcharts.getOptions().colors[countColor];
+				newhamletMainPie.push(hamletMainPie[g]);
+			}
+		}
+		
+		var dataObj= reqObj['data'];
+		var newdataObj = new Array();
+		
+		for( var j in newCast )
+		{ 
+			if(dataObj[newCast[j]])
+			newdataObj.push(dataObj[newCast[j]]);
+			else
+			{
+	 			newdataObj.push(0);
+			}
+		}
+		
+		clmTemp['data'] = newdataObj;
+	    tempLine.push(clmTemp);
+		myChart1.push(clmTemp);
+	}
+	
+   //building pie chart
+	var objForPie = {
+	         type: 'pie',
+	         name: 'Total Hamlets',
+	         data: newhamletMainPie,
+	         center: [800, 50],
+	         size: 150,
+	         showInLegend: false,
+	         dataLabels: {
+	            enabled: false
+	         }
+	      };
+		  myChart1.push(objForPie);
+      // building highchart
+	/* var chart;
+	   chart = new Highcharts.Chart({
+	      chart: {
+	         renderTo: 'castGrid',
+			 //width : 4000,
+			     zoomType: 'x',
+                        events: {
+                            click: function() {
+                                this.xAxis[0].setExtremes();
+								                       }
+                        }
+	      },
+	      title: {
+	         text: 'Hamlet Wise Cast Statastics In Panchayat'
+	      },
+	      xAxis: {
+	         categories: newCast,
+			  minRange: 1,
+			    labels: {
+            rotation: -90,
+            align: 'right',
+            style: {
+                font: 'normal 9px Verdana, sans-serif'
+            },
+            formatter: function() {
+            return this.value;                
+            }
+
+         }
+			 
+	      },
+	      tooltip: {
+	         formatter: function() {
+	            var s;
+	            if (this.point.name) { // the pie chart
+	               s = ''+
+	                  this.point.name +': '+ this.y +' Cast Voters';
+	            } else {
+	               s = ''+
+	                  this.x  +': '+ this.y;
+	            }
+	            return s;
+	         }
+	      },
+	      labels: {
+	         items: [{
+	            html: 'Hamlet Wise Cast',
+	            style: {
+	               left: '40px',
+	               top: '8px',
+	               color: 'black'            
+	            }
+	         }]
+	      },
+	      series: myChart1,
+		  
+	   }); */var titleString= $("#sublevelHeading").text();
+	
+	   //alert(myChart[0]['name']+"---"+myChart[0]['data'].length);
+	   var chart1;
+	   
+	    chart1 = new Highcharts.Chart({
+            chart: {
+                renderTo: 'castGrid1',
+                type: 'line',
+				 zoomType: 'x',
+                        events: {
+                            click: function() {
+                                this.xAxis[0].setExtremes();
+								                       }
+                        }
+              
+            },
+            title: {
+                text: titleString,
+                x: -20 //center
+            },
+            subtitle: {
+                text: 'Drag Between Any 3 Castes To See In Zoom',
+                x: -20
+            },
+            xAxis: {
+               categories: newCast,
+				
+				 labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                } 
+            },
+            yAxis: {
+                title: {
+                    text: 'No of Voters'
+                } /*,
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]*/
+            }, 
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y + ' Voters';
+                }
+            },
+            /* legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            }, */
+            series: tempLine //myChart1 
+        });
+	$('tspan:last').hide();	
+	
+}
+function sort_unique(a) {
+     var temp = {};
+    for (var i = 0; i < a.length; i++)
+        temp[a[i]] = true;
+    var r = [];
+    for (var k in temp)
+        r.push(k);
+    return r;
+}
+
+var castTemp = new Array();
+var hamletTemp = new Array();
+
+var hamletMain = new Array();
+var hamletMainPie =  new Array();
+
+var myChart = new Array();
+
+					 
+function buildCastInfoForSubLevels(myresults,jsObj)
+	{	 hamletMainPie=[];
+	      myChart=[];
+		  castTemp=[];
+		//$("#voterCasteAjaxImg").css("display","none");
+		
+      	var type = '${type}';
+		//$("#voterCasteAjaxImg").css("display","none");
+
+		if((type =="hamlet" && buildType == "hamlet") || (type == "booth" && buildType == "hamlet") || (type =="panchayat" && buildType == "hamlet"))
+		  $("#getLatestCastsSubcategoryWise").css("display","none");
+		else
+		 $("#getLatestCastsSubcategoryWise").css("display","block");
+
 		var str ='';
 		$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
-
 		var divId=document.getElementById('localCastStatsTabContent_subbody');
 		var publicationDateId = jsObj.publicationDateId;
 		var type=jsObj.type;
@@ -1334,14 +1661,24 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		var cast = myresults.castVosList;
 		var typeName=jsObj.typeName;
 		var res=jsObj.resultFor;
-		var restype=jsObj.buildType;
 		for(var i in cast)
 		{
 		if(cast[i].voterCastInfoVO != null)
 		{
+		  //for build pie chart
+		var hamletTempPie =new Object();
+		var castSum = 0;
+		  //for build columns
+		  var hamletTempColumn =  new Object();
+		  
 		var subLevelcastData = cast[i].voterCastInfoVO; 
-		if(cast[i].mandalName != null)
+		
+		if(cast[i].mandalName != null){
+		hamletTempColumn['type'] = 'column';
 		var name = cast[i].mandalName;
+		hamletTempPie['name'] = cast[i].mandalName;
+		hamletTempColumn['name'] = cast[i].mandalName;
+		}
 		else
 		var name ="";
 		if(cast[i].locationId != null)
@@ -1350,9 +1687,10 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		locationId = 0;
 		var totalVoters=subLevelcastData.totalVoters;
 		var cast1 =subLevelcastData.castVOs;
-			
+			var castData = new Object();
 			for(var k in cast1)
 			{
+			
 		var castStats1 = {
 			mandal : name,
 			locationId:locationId,
@@ -1366,50 +1704,101 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 			castStateId:cast1[k].castStateId,
 			};
 		subLevelcastInfo.push(castStats1);
+		castSum = parseInt(castSum)+parseInt( cast1[k].castCount);
+		
+		castData[cast1[k].castName] = cast1[k].castCount;
+		
 			}
+			hamletTempColumn['data'] = castData;
+			//alert(hamletTempColumn['name']);
+			
+			hamletTempPie['y'] = castSum;
+			//hamletTempPie['color']  = Highcharts.getOptions().colors[i];
+			hamletMainPie.push(hamletTempPie);
+			
+			myChart.push(hamletTempColumn);
+            
 		   }
 		 }
-
 		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
 		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0){
 		  $("#localCastStatsTabContent_subbody").html("<b style='margin-left: 350px;'>No Data Available</b>");
+		  $("#getLatestCastsSubcategoryWise").css("display","none");
 		  return;
 		}  
+		//if(type != 'booth')
+		//{
 		str +='<table id="subLevelTable">';
 		if(type == 'constituency')
 		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+' Constituency</h4>';
-		else if(type == "mandal")
+		else if(type == "mandal"){
+
+			if(jsObj.id.substring(0,1) == "1"){
+				var muncipalType = myresults.castVosList[0].muncipalityType;
+
+                if( muncipalType == "MUNCIPALITY" || muncipalType == "CORPORATION")
+				 str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' </h4>';
+				else
+				 str+='<h4 id="sublevelHeading">Ward wise Caste Statistics In '+typeName+' </h4>';
+			}else
 		str+='<h4 id="sublevelHeading">Panchayat wise Caste Statistics In '+typeName+' </h4>';
-        else if(type =="panchayat"){
-		 if(restype== "booth")  
-		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Panchayat</h4>';
-		else 
-		str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In '+typeName+' </h4>';
+		}
+		else if(type =="panchayat")
+		{
+			var temp = "";
+		  if(buildType == "hamlet")
+			temp = "Hamlet";
+		  else
+			temp = "Booth";
+
+		 str+='<h4 id="sublevelHeading">'+temp+' wise Caste Statistics In '+typeName+' </h4>';
 		}
 		else if(type =="ward")
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
+		else if(type == "booth")
+		{
+		 str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In'+typeName+'Booth</h4>';	
+		}
+		
 		else if(type =="hamlet"){
 		   if(res == "booth")
 		   str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Hamlet</h4>';
 		else
 		str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
 			}
-			else if(type == "booth")
-		str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In '+typeName+' </h4>';
-
+			else if(type =="customWard"){
+		   if(res == "booth")
+		   str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
+		//else
+		//str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
+			}
 		
 		str+='<thead>';
 		str+='<tr>';
-
+		
 		if(type == "constituency")
 		str +='<th>Mandal</th>';
-		if(type == "mandal")
-		str +='<th>Panchayat</th>';
-		if(type =="panchayat"){
-		if(restype== "booth")  
-		str +='<th>Booth</th>';
-		else 
-		str +='<th>Hamlet</th>';
+		if(type == "mandal"){
+
+			if(jsObj.id.substring(0,1) == "1"){
+				var muncipalType = myresults.castVosList[0].muncipalityType;
+				
+
+                if( muncipalType == "MUNCIPALITY" || muncipalType == "CORPORATION")
+				 str +='<th>Booth</th>';
+				else
+				 str +='<th>Ward</th>';
+			}else
+		    str +='<th>Panchayat</th>';
+		}
+
+
+		if(type =="panchayat")
+		{
+		  if(buildType == "hamlet")
+			str +='<th>Hamlet</th>';
+		  else
+			str +='<th>Booth</th>';
 		}
 		if(type =="ward")
 		str +='<th>Booth</th>';
@@ -1420,6 +1809,12 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	    str +='<th>Locality</th>';
 		
 		}
+		else if(type =="customWard"){
+		   if(res == "booth")
+		   str +='<th>Booth</th>';
+		//else
+		//str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
+			}
 		if(type =="booth")
 	    str +='<th>Hamlet</th>';
 
@@ -1433,13 +1828,15 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		
 		str+='</tr>';
 		str+='</thead>';
-
+		
 		str+='<tbody>';
 		for(var i in constMgmtMainObj.castStatssubArray)
 		{
 		str+='<tr>';
 		
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
+		castTemp.push(constMgmtMainObj.castStatssubArray[i].caste);
+		hamletTemp.push(constMgmtMainObj.castStatssubArray[i].mandal);
 		if(type == "mandal")
 		{
 		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\''+constMgmtMainObj.castStatssubArray[i].mandal+' Panchayat\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
@@ -1451,7 +1848,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		}
 		else if(type =="panchayat" && buildType == "hamlet")
 		{
-		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\'Hamlet - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else if(type =="hamlet")
 		{
@@ -1459,10 +1856,15 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 				str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+constMgmtMainObj.castStatssubArray[i].locationId+','+jsObj.id+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\''+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 
 		else
-			str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+','+constMgmtMainObj.castStatssubArray[i].castStateId+',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\''+constMgmtMainObj.castStatssubArray[i].locationId+'\',\'Locality\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+','+constMgmtMainObj.castStatssubArray[i].castStateId+',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\''+constMgmtMainObj.castStatssubArray[i].locationId+'\',\'Locality\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		}else if(type =="customWard"){
+		   if(res == "booth")
+		   	str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+constMgmtMainObj.castStatssubArray[i].locationId+','+jsObj.id+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\''+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 
-		//str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].hamletId+','+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
-		}else if(type =="booth")
+		else
+		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForLocality('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+','+constMgmtMainObj.castStatssubArray[i].castStateId+',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\''+constMgmtMainObj.castStatssubArray[i].locationId+'\',\'Locality\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+			}
+		else if(type =="booth")
 		{
 		
 		str+='<td><a href="javascript:{}" onclick="getVotersInACasteForDidffrentLevels('+jsObj.id+','+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'boothHamlet\',\'Hamlet - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
@@ -1496,8 +1898,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='</tbody>';
 		str +='</table>';
 
-$('#localCastStatsTabContent_subbody').html(str);
-		//divId.innerHTML = str;
+		divId.innerHTML = str;
 		$('#subLevelTable').dataTable({
 		"aaSorting": [[ 1, "desc" ]],
 		"iDisplayLength": 15,
@@ -1510,8 +1911,10 @@ $('#localCastStatsTabContent_subbody').html(str);
 	$('#subLevelTable tr').removeClass("even");
 	$('#subLevelTable td').removeClass("sorting_1");
 	//}
-	
+	buildHamletWiseCastResultsGraph(null,null);
 	}
+	
+	
 var startNumber        =  2;
 var retrieveType = "all";
 var mandalId = id.substring(1);
@@ -2268,7 +2671,30 @@ $("#AgeWiseNoteDiv").css("display","block");
 $("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
 }
 }
+// The function is for slider value -- Created by sasi -- START
+var votersRange;
+$(function() {
+$( "#slider" ).slider({
+value:0,
+min: 0,
+max: 50,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+},
+change: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+votersRange=ui.value;
+buildGraphBySlide();
+}
+});
+votersRange=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
+votersRange=$( "#slider" ).slider( "value" );
+});
 
+function buildGraphBySlide(){
+buildHamletWiseCastResultsGraph(null,votersRange);
+}
 
 </script>
 
