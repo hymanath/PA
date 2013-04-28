@@ -4992,5 +4992,10 @@
 			</result>			
 		</action>
 		
+		<action name="subRegionsWiseAnalysisAction" class="subRegionsWiseAnalysisAction" >
+			<result name="success">/jsp/subRegionsWiseAnalysis.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
 		</package>
 </struts>      

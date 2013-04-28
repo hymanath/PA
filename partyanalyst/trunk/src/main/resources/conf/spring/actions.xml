@@ -1134,5 +1134,8 @@
 		<property name="userVoterService" ref="userVoterService" />
 	</bean>
 	
+	<bean id="subRegionsWiseAnalysisAction" class="com.itgrids.partyanalyst.web.action.SubRegionsWiseAnalysisAction" singleton="false">	
+		
+	</bean>
 </beans>	
 	
