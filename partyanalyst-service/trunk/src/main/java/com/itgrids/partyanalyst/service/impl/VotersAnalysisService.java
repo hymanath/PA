@@ -14410,6 +14410,16 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				totalCount =  (Long) userVoterDetailsDAO.getVotersCountByHamlet(voterDataVO.getId(),userId).get(0);
 			}
 			
+			else if(voterDataVO.getBuildType().equalsIgnoreCase("customWard"))
+			{
+				
+				
+				voters = boothPublicationVoterDAO
+							.getVotersDetailsByCustomWardId(voterDataVO.getId(),voterDataVO.getPublicationId(),voterDataVO.getConstituencyId(),userId,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue(), voterDataVO.getDir(), voterDataVO.getSort());
+				 totalCount=new Long(voters.size());
+			}
+			
+			
 			if(voters != null && voters.size() > 0)
 			{
 				for (Object[] voterDetails : voters) {
