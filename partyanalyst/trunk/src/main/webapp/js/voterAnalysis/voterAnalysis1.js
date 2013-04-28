@@ -1038,7 +1038,6 @@ function addToPolitician(voterId,name)
 		//  $("#votersBasicInfoBtnDiv").hide();
 		$("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
 	   $("#castPopupShowBtn").attr("value","Locality wise Caste Info");
-
 	   }
 	   else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
@@ -1119,9 +1118,11 @@ function addToPolitician(voterId,name)
 		  {    $("#ageLinkForHamletBooths").css('display','block');
 			  $("#previousEleVotingTrendsDiv1").css('display','none');
 			  $("#permanentlyUpdateDiv").css('display','none');
-		  }
+		         $("#casteDivs").hide();
+
+		 }
 		  else
-		  {
+		  {     $("#casteDivs").show();
 		       $("#ageLinkForHamletBooths").css('display','none');
 			  $("#previousEleVotingTrendsDiv1").css('display','block');
 			  $("#permanentlyUpdateDiv").css('display','block');
@@ -1163,12 +1164,19 @@ function addToPolitician(voterId,name)
 			
 		if(type == "hamlet")
 		 checkLocalityDataExist();
-		else
+		else if(/customWard/i.test(type)){
+		$("#ageLink").hide();
+		 $("#impFamiliesMoreInfoButn").css('display','none');
+		 $("#castPopupShowBtn").css('display','none');
+		 $("#casteDivs").hide();
+		}
+		else 
 		{
 		  $("#ageLink").show();
 		  $("#impFamiliesMoreInfoButn").show();
 		  $("#castPartyPopupShowBtn").show();
-		}
+		} 
+	   
 
 		  if(type == "mandal" && mainreqid.substring(0,1) == "1")
 		  {
