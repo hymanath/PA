@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -101,8 +102,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
     private IUserVoterService userVoterService;
 	
     private Long latestPublicationId;
-	
-
+    private List<MandalInfoVO> mandalInfoVOsList;
 
 	public List<VotersDetailsVO> getAgeRangeList() {
 		return ageRangeList;
@@ -441,6 +441,14 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setLatestPublicationId(Long latestPublicationId) {
 		this.latestPublicationId = latestPublicationId;
+	}
+
+	public List<MandalInfoVO> getMandalInfoVOsList() {
+		return mandalInfoVOsList;
+	}
+
+	public void setMandalInfoVOsList(List<MandalInfoVO> mandalInfoVOsList) {
+		this.mandalInfoVOsList = mandalInfoVOsList;
 	}
 
 	public String execute() throws Exception
@@ -1613,5 +1621,21 @@ return Action.SUCCESS;
 	{
 		latestPublicationId = votersAnalysisService.getLatestPublicationId();
 	   return Action.SUCCESS;
+	}
+	
+	public String getCensusDetailsInALocation()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return ERROR;
+			
+			mandalInfoVOsList = userVoterService.getCensusDetailsInALocation(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("constituencyId"));
+		}catch (Exception e) {
+			log.error("Exception Occured in getCensusDetailsInALocation() Method, Exception - ",e);
+		}
+		return Action.SUCCESS;
 	}
 }

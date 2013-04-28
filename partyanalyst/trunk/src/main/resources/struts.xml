@@ -4997,5 +4997,11 @@
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		
+		<action name="getCensusDetailsInALocationAction" class="votersAnalysisAction" method="getCensusDetailsInALocation">
+			 <result type="json" name="success">
+				 <param name="root">mandalInfoVOsList</param>
+			</result>
+		</action>
+	
 		</package>
 </struts>      
