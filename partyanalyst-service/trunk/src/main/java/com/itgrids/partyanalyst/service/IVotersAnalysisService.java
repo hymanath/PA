@@ -23,9 +23,12 @@ public interface IVotersAnalysisService {
 	
 	public List<SelectOptionVO> publicationDetailsBasedOnConstituency(Long constituencyId);
 	
-	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
+	/*public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
 			Long panchayatId ,Long hamletId , Integer startIndex , Integer maxRecords , String order,
-			String columnName,Long userId);
+			String columnName,Long userId);*/
+	public List<VoterVO> getVoterDetails(Long publicationDateId, Long boothId,
+			Long panchayatId, Long hamletId,Integer startIndex , Integer maxRecords , String order,
+			String columnName,Long userId,Long customwardId,Long constiId);
 	
 	public List<Long> getImpFamiles(Long id,Long publicationDateId,String name);
 	
