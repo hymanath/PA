@@ -17,7 +17,6 @@ function buildConstituencyElecResultsDataTable(value){
         str += '<td><div style="display:none" id="constituencyParlYearsDiv"><b>Select Parliament Election Year :&nbsp;<select id="constituencyParlYears" onchange="getParliamentResults(this.options[this.selectedIndex].value)"/> <option value="0">Select Year</option></select></div></td>';
 		str += '<td><div id="censusAjaxImgDivForParlinit" align="center" style="display:none;"><img width="16px" height="16px" src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
 		
-		str += '<td><div class="view-all"><a  href="municipalWardsAssemblyBoothsMapperAction.action?windowTask=update&constituencyId='+constituencyId+'" >Map Municipal/Corp/GMC to Assembly</a></div></td>';
 		str += "</tr></table>";
 		parliamentButtonDiv.innerHTML = str;		
 
