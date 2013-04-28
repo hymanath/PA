@@ -2946,17 +2946,17 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		 }
 		 else if("partNo".equalsIgnoreCase(columnName))
 		 {
-			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV " +
+			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV,UserVoterDetails UVD " +
 						"where UVD.ward.constituencyId =:wardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by cast(BPV.booth.partNo , int) "+order); 
 		 }
 		 else if("serialNo".equalsIgnoreCase(columnName))
 		 {
-			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV " +
+			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV,UserVoterDetails UVD " +
 						"where UVD.ward.constituencyId =:wardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by BPV.serialNo  "+order); 
 		 }
 		 else
 		 {
-			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV " +
+			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV,UserVoterDetails UVD " +
 						"where UVD.ward.constituencyId =:wardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by BPV.voter."+columnName+" "+order); 
 		 }
 
