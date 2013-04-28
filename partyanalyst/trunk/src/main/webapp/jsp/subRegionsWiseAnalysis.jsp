@@ -353,7 +353,7 @@ color:#333333;
 #censusTab td{color:#000;}
 label{display:inline-block;}
 		input[type="radio"], input[type="checkbox"] {margin:5px;}
-		.hero-unit{padding:22px;color:black;font-size:15px;}
+		.hero-unit{padding:22px;color:black;font-size:15px;margin-bottom: 5px;margin-top: 10px;}
 #censusTab{clear: both;margin-bottom: 10px;
     margin-top: 8px;}
 	#censusReportMainDiv{padding-bottom:1px;}
@@ -425,15 +425,16 @@ $(document).ready(function(){
 
 <div id="votersBasicInfoMainDiv">
 	<div id="censusReportMainDiv">
-	   <div id="censusReportDiv"></div>
+	   <div id="censusReportDiv" class="widget blue"></div>
 	</div>
+	
+	<div class="widget blue">
 	<div id="votersBasicInfoTitleDiv"></div>
-	<div id="votersBasicInfoMsgDiv"></div>
-	<div id="votersBasicInfoSubChartDiv"></div>
-	</br>
+	<!--<div id="votersBasicInfoMsgDiv" class="widget blue"></div>
+	<div id="votersBasicInfoSubChartDiv" class="widget blue"></div>-->
 	<div id="assAndUnass"></div>
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>	
-	
+	</div>
 </div>
 
 <div style="border:1px solid;">
@@ -447,20 +448,27 @@ $(document).ready(function(){
 </div>
 <div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
 </div>
-<div id="voterDetailsNote" class="noteDiv " style="display:none;text-align:center;"></div>
+<div class="widget blue">
+<div id="voterDetailsNote" class="noteDiv" style="display:none;text-align:center;"></div>
 <div id="tableDiv" style="padding:10px;display:none;overflow-x:scroll" class="voterDetails"></div>
+</div>
 
+<div class="widget blue">
 <div id="voterAgewiseDetailsNote" class="noteDiv" style="text-align:center;color:#3F3636;"></div>
 <div id="agewiseDetails" style="padding:10px;overflow-x:scroll;" class="voterDetails"></div>
+</div>
 
-<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv" style="text-align:center;"></div>
+<div class="widget blue">
+<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv " style="text-align:center;"></div>
 <div id="ageAndgenderWiseDetails" style="padding:10px;overflow-x:scroll;" class="voterDetails"> </div>
+</div>
 
-<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv " style="text-align:center;"></div>
-<div id="voterAgeAngGenderwiseDetailsInPercent" style="overflow-x:scroll;padding:10px;" class="voterDetails"></div>
+<div class="widget blue">
+<div id="voterAgeAngGenderwiseDetailsNoteInPercent" class="noteDiv" style="text-align:center;"></div>
+<div id="voterAgeAngGenderwiseDetailsInPercent" style="overflow-x:scroll;padding:10px;" class="voterDetails "></div>
+</div>
 
-
- <div id='localCastStatsTabContent_subbody'  class="yui-skin-sam yui-dt-sortable"></div>
+ <div id='localCastStatsTabContent_subbody'  class="yui-skin-sam yui-dt-sortable widget blue"></div>
 
 <div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 
@@ -778,11 +786,11 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	{
 		if(jsObj.type == "constituency"){
 			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" Constituency";
-		$("#votersBasicInfoTitleDiv").append('<h3 style="background: none repeat scroll 0% 0% #4285F4; color: rgb(255, 255, 255); padding: 5px; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px;">'+title+'</h3>');
+		$("#votersBasicInfoTitleDiv").append('<h3>'+title+'</h3>');
 		}
 		else{
 		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" ";
-		 $("#votersBasicInfoTitleDiv").append('<h3 style="background: none repeat scroll 0% 0% #4285F4; color: rgb(255, 255, 255); padding: 5px; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px;">'+title+'</h3>');
+		 $("#votersBasicInfoTitleDiv").append('<h3>'+title+'</h3>');
 		}
 	}
 
@@ -791,7 +799,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
 		//$("#votersTitle").html(jsObj.typename);
 			$("#votersBasicInfoSubChartDiv").css('border','1px solid #FFF');
-			$("#votersBasicInfoSubDiv").css('border','1px solid #FFF');
+			//$("#votersBasicInfoSubDiv").css('border','1px solid #FFF');
 
 			$("#votersBasicInfoMsgDiv").html("<span id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</span>");
 		 return;
@@ -800,7 +808,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	{
 		
 		$("#votersBasicInfoSubChartDiv").css('border','1px solid black');
-		$("#votersBasicInfoSubDiv").css('border','1px solid black');
+		///$("#votersBasicInfoSubDiv").css('border','1px solid black');
 		$("#votersBasicInfoMsgDiv").html('');
 		//$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
 		//$("#votersTitle").html(jsObj.typename);
@@ -930,7 +938,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		//$("#votersBasicInfoDiv").html(str);
 			if(jsObj.type != "booth"){
 			  $("#votersBasicInfoSubChartDiv").css("border","1px solid black"); 
-	          $("#votersBasicInfoSubDiv").css("border","1px solid black");
+	          //$("#votersBasicInfoSubDiv").css("border","1px solid black");
 			 }
 		
 		str = '';
@@ -1003,7 +1011,7 @@ function showSubLevelWiseCensusReport(result,jsObj)
 		if(jsObj.type == "constituency")
 			name += " Constituency";
 		var str = '';
-		str +='<h4>Mandal Wise Census Information in '+name+'</h4>';
+		str +='<h3>Mandal Wise Census Information in '+name+'</h3>';
 		str +='<table id="censusTab" class="table table-bordered table-striped table-hover">';
 		str +='<tr>';
 		str +='<th>Mandal</th>';
@@ -1054,7 +1062,7 @@ function buildElectionsSelectBox(myResults){
 		//headingDiv.innerHTML = ' Mandal Wise Voting Trendz ';
 	str +='<h1 class="topfour"></h1>';
 	str +='<h1 class="gre-title">';
-	str +='<h4>Mandal Wise Voting Trendz</h4>';
+	str +='<h3>Mandal Wise Voting Trendz</h3>';
 		str +='</h1>';
 	headingDiv.innerHTML=str;
 	}
@@ -1734,7 +1742,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		//{
 		str +='<table id="subLevelTable">';
 		if(type == 'constituency')
-		str+='<h4 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+' Constituency</h4>';
+		str+='<h3 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+' Constituency</h3>';
 		else if(type == "mandal"){
 
 			if(jsObj.id.substring(0,1) == "1"){
@@ -2087,7 +2095,7 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	else 
 		noteString = name;
 
-	$('#voterDetailsNote').html('<div align="center"><h3 class="headings" id="headingId">'+noteString+" "+"voters details"+' in '+publicationYear+'</h3></div>');
+	$('#voterDetailsNote').html('<div align="center"><h3>'+noteString+" "+"voters details"+' in '+publicationYear+'</h3></div>');
 	
 	var str='';
 	str+='<table class="ageTable table table-bordered table-hover" id="ageWiseDetailsTable" >';
@@ -2206,7 +2214,7 @@ function buildAgewiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgewiseDetailsNote').html('<div align="center"><h3  class="headings"  id="headingId">'+noteString+'</h3></div>');
+	$('#voterAgewiseDetailsNote').html('<div align="center"><h3>'+noteString+'</h3></div>');
 
 	var str='';
 	str+='<table  class="ageTable table table-bordered table-hover" id="mandalWiseVoterAgeTable" >';
@@ -2402,7 +2410,7 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNote').html('<div align="center"><h34 class="headings"  id="headingId">'+noteString+'</h3></div>');
+	$('#voterAgeAngGenderwiseDetailsNote').html('<div align="center"><h3>'+noteString+'</h3></div>');
 
 	var str='';
 
@@ -2554,7 +2562,7 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 		return false;
 	}
 
-	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<div align="center"><h3 class="headings"  id="headingId">'+noteString+'</h3></div>');
+	$('#voterAgeAngGenderwiseDetailsNoteInPercent').html('<div align="center"><h3>'+noteString+'</h3></div>');
 
 	var str='';
 
@@ -2712,7 +2720,8 @@ getAgewiseVoterDetails();
 
 </script>
 
-<div id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
+<div class="widget blue" id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
+   <h4 id="sublevelHeading">Panchayat Wise Voting Trendz </h4>
   <div class="hero-unit" >
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
     <div id="mandalElecResultsParties"></div>
