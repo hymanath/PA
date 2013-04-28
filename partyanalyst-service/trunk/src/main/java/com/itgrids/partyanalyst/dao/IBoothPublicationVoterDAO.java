@@ -256,8 +256,8 @@ public interface IBoothPublicationVoterDAO extends
 	public List<BoothPublicationVoter> getAllVoterDetailsByVoterIds(List<Long> voterIds,Long publicationDateId);
 	 public List<Object[]> getPublicationDetailsBasedOnConstituencyId(Long constituencyId);
 
-	 public Long getTotalVotersCountForHamletByBooth(Long userId , Long id,Long publicationDateId,String type , Long boothId);
-	 public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdInALocationByBooth(Long userId,String locationType,Long locationId,Long publicationDateId,Long boothId);
+	 public Long getTotalVotersCountForHamletByBooth(Long userId , Long id,Long publicationDateId,String type , Long boothId ,String myType);
+	 public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdInALocationByBooth(Long userId,String locationType,Long locationId,Long publicationDateId,Long boothId,String type);
 	 public List<Object[]> getVoterDetailsByPanchayatIds(Long panchayatId,Long publicationDateId,Long userId);
 	 public List<Object[]> getVoterDetailsByHamletId(Long hamletId,Long publicationDateId,Long userId);	 
 	 public List<Object[]> getVoterPersonalDetailsByVoterIdAndPuclicationId(Long voterId,Long publicationDateId);
@@ -276,13 +276,13 @@ public interface IBoothPublicationVoterDAO extends
 		
 	    public List<Voter> findFamiliesInfoForLocalBody(Long hamletId,Long boothId,Long publicationDateId,String houseNo);
 	    
-		public List<Long> getAllBoothsInHamletByUser(Long userId,Long hamletId,Long publicationDateId , Long constituencyId);
+		public List<Long> getAllBoothsInHamletByUser(Long userId,Long hamletId,Long publicationDateId , Long constituencyId ,String cond);
 
-		public List<Object[]> getFamiliesInBooth(Long userId,Long hamletId,Long boothId , Long publicationDateId , Long constituencyId);
+		public List<Object[]> getFamiliesInBooth(Long userId,Long hamletId,Long boothId , Long publicationDateId , Long constituencyId ,String cond);
 		
-		public List<Object[]> getVotersCountByGenderInBooth(Long userId ,Long hamletId , Long  boothId ,Long  publicationDateId,Long constituencyId);
+		public List<Object[]> getVotersCountByGenderInBooth(Long userId ,Long hamletId , Long  boothId ,Long  publicationDateId,Long constituencyId,String cond);
 		
-		public List<Voter> getVoterDetailsByHamletForUser(Long userId,Long id,Long publicationDateId);
+		public List<Voter> getVoterDetailsByHamletForUser(Long userId,Long id,Long publicationDateId,String cond);
 		
   public List<Object[]> findFamiliesVotersInfoForBoothForUser(Long id,Long publicationDateId,Long userId);
   

@@ -58,9 +58,9 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public void updateUserVoterDetails3(Long voterId,Long userId,Long castStateId,Long localitityId,Long hamletId);
 	public void updateUserVoterDetailsForLocality(Long voterId,Long userId,Long localitityId, Long hamletId);
    
-public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
+    public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId, String query , Long publicationId);
 	
-	public List<Object[]> getVotersCountByGenderForLocalityInHamlet(Long userId , Long hamletId , Long localityId);
+	public List<Object[]> getVotersCountByGenderForLocalityInHamlet(Long userId , Long hamletId , Long localityId,Long publicationDateId,String query1);
 	public List<Long> getVoterIdsBasedOnHamletAndLocality(Long hamletId ,Long localityId , Long userId);
 	
 	public Long getTotalVotersCountInALocality(Long userId ,Long hamletId,Long localityId,Long publicationDateId);
@@ -84,7 +84,7 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	 public List<Object[]> getTotalVotersCountInABooth(Long userId ,Long boothId,Long publicationDateId);
 	 public List<Long> getUserHamletsByBoothId(Long userId , Long boothId , Long pubId);
 	 public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long hamleId,Long publicationDateId);
-	 public List<Long> getUserBoothsByHamletId(Long userId , Long hamletId , Long pubId);
+	 public List<Long> getUserBoothsByHamletId(Long userId , Long hamletId , Long pubId , String condition);
 	 public List<Voter> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId,long publicationId);
 	 public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId,String type );
 	 public List<Long> getHamletsExistedInABoothForUser(Long userId,Long  id,Long  publicationDateId,Long  constituencyId);
@@ -99,11 +99,13 @@ public List<Long> getVotersCountForALocality(Long hamletId,Long id,Long userId);
 	 
 	 public List<Object[]> getLocalityIdsForUser(Long hamletId , Long userId,List<?> voterIds,String male,String female,long ...ages);
 	 
-	 public List<Object[]> getGenderWiseVoterDetailsForCustomWard(Long id , Long publicationDateId);
+	 public List<Object[]> getGenderWiseVoterDetailsForCustomWard(Long id , Long publicationDateId ,Long userId);
 	 
-	 public List<Object[]> getImpFamilesForCustomWard(List<Long> wardIds,Long publicationDateId,String queryString);
+	 public List<Object[]> getImpFamilesForCustomWard(List<Long> wardIds,Long publicationDateId,String queryString,Long userId );
 
 	 public List<Object[]> getWardsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId);
+	 
+	 
 	 
 	public void updateUserVoterDetails2WithWard(Long voterId,Long userId,Long partyId,Long localitityId,Long wardId);
 	
