@@ -93,6 +93,8 @@
 		<pattern>/updateSelectedVotersAction*</pattern>
 		<pattern>/customCategoryWiseVoterDetailsAction*</pattern>
 		<pattern>/categorySubWiseVoterDetailsAction*</pattern>
+		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
+		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
