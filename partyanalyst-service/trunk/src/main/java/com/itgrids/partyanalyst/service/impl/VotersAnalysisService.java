@@ -5192,6 +5192,7 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 				 if(ward !=null)
 					 userVoterDtls.setWard(constituencyDAO.get(ward));
 				 
+				 
 				 userVoterDetailsDAO.save(userVoterDtls);
 				}
 			}
