@@ -64,6 +64,8 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	private String task = null;
 	private HttpSession session;
+	private List<Object> electionResults;
+	
 	public Map<String, List<String>> getPartyResultMapPrcnt() {
 		return partyResultMapPrcnt;
 	}
@@ -217,6 +219,14 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 
 	public void setTask(String task) {
 		this.task = task;
+	}
+
+	public List<Object> getElectionResults() {
+		return electionResults;
+	}
+
+	public void setElectionResults(List<Object> electionResults) {
+		this.electionResults = electionResults;
 	}
 
 	public String execute(){
@@ -383,4 +393,51 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		return Action.SUCCESS;
 	}
 	
+   public String getPanchayatWiseElectionResultsForMandal(){
+	try{
+		
+		String param = getTask();
+		jObj = new JSONObject(param);
+		if(jObj.getString("task").equalsIgnoreCase("getElectionsAndParties")){
+		  mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(jObj.getLong("tehsilId"));
+		  return "mandalVO";
+		}else{
+			electionResults = new ArrayList<Object>();
+			partiesResults = constituencyPageService.findPanchayatsWiseResultsInElectionsOfMandal(new Long(tehsilId), jObj.getString("parties"),jObj.getString("elections"), new Boolean(jObj.getString("includeAlliance")));
+			electionResults.add(partiesResults);
+			partyResultMap=new HashMap<String, List<PartyResultVO>>();
+		        
+		    for(PartyResultVO prtyrslts:partiesResults){
+		       String partyName=prtyrslts.getPartyName();
+		       List<PartyResultVO> volist=new ArrayList<PartyResultVO>();
+		        	
+		       if(partyResultMap.containsKey(partyName)){
+		         partyResultMap.get(partyName).add(prtyrslts);
+		       }
+		       else{
+		        volist.add(prtyrslts);
+		        partyResultMap.put(partyName, volist);	
+		       }
+		    }
+		    
+		    partyResultMapPrcnt=new HashMap<String,List<String>>();
+		    for(Entry<String, List<PartyResultVO>> entry : partyResultMap.entrySet()) {
+		      String key = entry.getKey();
+		      List<String> percentage=new ArrayList<String>();
+		      List<PartyResultVO> value = entry.getValue();
+		      for(PartyResultVO aString : value){
+		        String prcnt=aString.getVotesPercent();
+		        percentage.add(prcnt);
+		      }
+		      partyResultMapPrcnt.put(key, percentage);
+		    }
+		    electionResults.add(partyResultMapPrcnt);
+		}
+		 
+	}catch(Exception e){
+	  LOG.error("exception raised in getPanchayatWiseElectionResultsForMandal() ",e);
+	}
+	 return Action.SUCCESS;
+  }
+   
 }
