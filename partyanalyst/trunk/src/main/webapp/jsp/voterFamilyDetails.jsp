@@ -595,6 +595,7 @@ function callAjax(jsObj,url)
 	$('#impFamilySelectedDetails1').html(str);
 
 }
+var customWardName = '';
 function buildImpFamilesChart(chartInfo)
 {
 $("#ajaxImageDiv").css('display','none');
@@ -607,7 +608,13 @@ $("#ajaxImageDiv").css('display','none');
 			]);
 
 	// Set chart options
-	var title = " Family wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
+	var title ='';
+	if(chartInfo.type == 'customWard'){		
+		customWardName = chartInfo.name;
+		title= " Family wise Voters details chart of "+chartInfo.name+" in "+publicationYear+"";
+		}
+	else
+		title= " Family wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
 	var options = {'title':title,
 	'width':958,
 	'height':280};
@@ -784,6 +791,7 @@ function impFamilesStaticTable(myresults,jsObj)
 	//$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
 	}
 }
+var customWardName='';
 function  buildFamilyMembers(result,jsObj,type){
 	
 	var publicationDateId =   jsObj.publicationDateId;
@@ -803,7 +811,8 @@ function  buildFamilyMembers(result,jsObj,type){
 
 	 if(type == "panchayat")
 		 var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' in '+publicationYear+'</h4>';
-
+	else if(type == 'customWard')
+		var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+customWardName+' in '+publicationYear+'</h4>';
 	 else
       var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' '+type+' in '+publicationYear+'</h4>';
 	
