@@ -385,7 +385,8 @@ table.dataTable tr.odd {
     background-color: #EDF5FF;
 }
 table.dataTable tr.even td.sorting_1 {
-    background-color: #EDF5FF;
+    background-color: #DAEDFF;
+	<!-- background-color: #EDF5FF; -->
 }
 table.dataTable thead th {
     border-bottom: 1px none #D3D3D3;
@@ -1954,16 +1955,16 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 
 		divId.innerHTML = str;
 		$('#subLevelTable').dataTable({
-		"aaSorting": [[ 1, "desc" ]],
+		"aaSorting": [[ 3, "desc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
 		  "aoColumns": [null,null,null,null,null,null,null,null
 		] 
 		});
-	$('#subLevelTable tr').removeClass("odd");
-	$('#subLevelTable tr').removeClass("even");
-	$('#subLevelTable td').removeClass("sorting_1");
+	//$('#subLevelTable tr').removeClass("odd");
+	//$('#subLevelTable tr').removeClass("even");
+	//$('#subLevelTable td').removeClass("sorting_1");
 	//}
 	buildHamletWiseCastResultsGraph(null,null);
 	}
