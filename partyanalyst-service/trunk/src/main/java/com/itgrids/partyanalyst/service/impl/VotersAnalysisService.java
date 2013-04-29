@@ -11095,6 +11095,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 		 try{
 			 List<PartyVotesEarnedVO> partyResults = new ArrayList<PartyVotesEarnedVO>();
 				PartyVotesEarnedVO partyVotesVO = null;
+				 boolean firstIterationFlag = true ;
 				partyVotesEarnedVO.setTotalBooths(wardIds.size());
 			   //boothConstituencyElectionDAO.getBoothIdsByElectionIdWardIds(electionId,wardIds);
 			   List<Object[]> partiesResultsList = nominationDAO.getLocalBodyWiseResultsOfAllPartiesInLocalElectionBodies(localElecBodyId,electionId,wardIds);	
@@ -11110,6 +11111,10 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 					   partyVotesVO.setPartyId((Long)params[0]);
 					   partyVotesVO.setPartyName(params[1].toString());
 					   partyVotesVO.setVotesEarned(((Double)params[2]).longValue());
+					   if(firstIterationFlag){
+						   firstIterationFlag = false ;
+						   partyVotesVO.setWonStatus(true);
+					   }
 					   partyResults.add(partyVotesVO);
 					   if(!partiesList.contains(params[1].toString()))
 							partiesList.add(params[1].toString());
