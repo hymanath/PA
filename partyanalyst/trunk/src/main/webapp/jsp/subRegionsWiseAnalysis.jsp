@@ -1237,7 +1237,7 @@ function buildConstituencyElectionResultsDataTable(value)
 		str += '</table>';		
 		extraInfoDiv.innerHTML = str;		
 	 }
-	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource,{caption:"Mandal Wise Election Results For  Constituency In "+constituencyResults.electionYear+" "});
+	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource,{caption:"Mandal Wise Election Results For  "+mainname+" "+type+" In "+constituencyResults.electionYear+" "});
 	}
 	
 
