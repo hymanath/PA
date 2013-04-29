@@ -9149,8 +9149,8 @@ function buildCasteVotersChart(cs,tv,mv,fv,cp)
 var casteRange;	
 $(function() {
 $( "#slider" ).slider({
-value:0,
-min: 0,
+value:1,
+min: 1,
 max: 40,
 step: 1,
 slide: function( event, ui ) {
