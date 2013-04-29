@@ -249,7 +249,7 @@ table {
 
 var type               =  "${type}";
 var id				   =  "${id}";
-var typeName		   =  "${typeName}";
+var typeName		   =  "${typename}";
 var constituencyId     =  "${constituencyId}";
 var publicationDateId  =  "${publicationDateId}";
 var buildType          =  "${buildType}";
