@@ -652,20 +652,31 @@ function callAjax(jsObj,url)
 
   function buildElectionsAndParty(myResults){
       if(myResults != null && myResults.partiesInMandal != null && myResults.partiesInMandal.length > 0  && myResults.electionsInMandal != null && myResults.electionsInMandal.length > 0){
+		  var electionsLength = myResults.electionsInMandal.length;
 	     var str='';
 		 str+='<table><tr><th align="left">Parties : </th><td>';
 		 for(var i in myResults.partiesInMandal){
-		  str+='<input id="parties-'+i+'" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
+		  str+='<input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
 		 }
 		 str+='</td></tr>';
 	     
 		 str+='<tr><th align="left">Elections  : </th><td>';
 		 for(var i in myResults.electionsInMandal){
-		  str+='<input id="elections-'+i+'" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label>';
+			
+			if(i == electionsLength-1)
+			 {
+				str+='<input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label>';
+			 }
+		  else{
+			  str+='<input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label>';
+		   }
 		 }
 		 str+='</td></tr></table>';
 	     $("#mandalElecResultsElections").html(str);
 		 $("#mandalElecResultsButton").html("<input id='includeAlliancesDiv' type='checkbox' /><label  for='includeAlliancesDiv'><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type='button'  class='btn' value='Submit' onclick='getPanchayatData();'>");
+		 
+		 getPanchayatData();
+		
 	  }
   }
 
@@ -715,9 +726,10 @@ function callAjax(jsObj,url)
   }
   
   var chart;
-  var linechartDataArr = new Array();
-  var data = new Array();
+  
 	function buildLineChart(myResults){
+	var linechartDataArr = new Array();
+	var data = new Array();
 	  if(myResults[0].length == 0 || myResults[1].length == 0) {
              $("#container").html("<b>Data Not Available</b>");
              return;
