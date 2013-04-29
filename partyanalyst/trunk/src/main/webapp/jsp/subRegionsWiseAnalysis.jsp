@@ -479,7 +479,7 @@ $(document).ready(function(){
 			
 			</div>
 <div class="widget blue" id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
-   <!--<h4 id="sublevelHeading">Panchayat Wise Voting Trendz </h4>-->
+   <h4 id="sublevelHeading">Caste Wise Voters Analysis</h4>
   <div class="hero-unit" >
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
     <div id="mandalElecResultsParties"></div>
@@ -1394,6 +1394,9 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 {
 	var myChart1 = new Array();
 	var castMain = null;
+	
+	if(percentage==null)
+		percentage=1;
 	
 	if(selectedCast == null)
 	{
@@ -2726,7 +2729,7 @@ $("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <s
 var votersRange;
 $(function() {
 $( "#slider" ).slider({
-value:0,
+value:1,
 min: 0,
 max: 50,
 step: 1,
