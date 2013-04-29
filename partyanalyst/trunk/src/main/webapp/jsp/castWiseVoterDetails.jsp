@@ -403,9 +403,10 @@ function callAjax(jsObj,url)
 									myResults = YAHOO.lang.JSON.parse(o.responseText);
 									 if(jsObj.task == "getCastInfoForsubLevels")
 									{   $("#voterCasteAjaxImg").hide();
+									 castePercent = myResults.castPercent;
 									 buildCastInfoForSubLevels(myResults,jsObj);
 									 buildCastSubLevelsDiv(myResults);
-									 castePercent = myResults.castPercent;
+									 
 									}
 									else if(jsObj.task =="getVotersInACaste")
 								{
@@ -885,6 +886,9 @@ $("input:radio[name=castTypeRadio]:checked").live("change",function(){
 
 function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 {
+	if(percentage==null)
+		percentage=1;
+	
 	var myChart1 = new Array();
 	var castMain = null;
 	
@@ -1290,7 +1294,7 @@ function buildCastInfoBasedOnOptions(option)
 var votersRange;
 $(function() {
 $( "#slider" ).slider({
-value:0,
+value:1,
 min: 0,
 max: 50,
 step: 1,
