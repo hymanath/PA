@@ -1407,7 +1407,7 @@ for  body3 start    result  -->
 	</div>
 	-->	
 	<div id="castInfoDiv">
-	<table style="width:970px;">
+	<table style="width:950px;">
 	 <tr>
 	 <td style="width: 308px;">
 	<div id='localCastStatsTabContent_header' ></div>
