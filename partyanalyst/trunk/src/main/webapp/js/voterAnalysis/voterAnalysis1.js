@@ -2024,8 +2024,9 @@ function addToPolitician(voterId,name)
 		var conid=jsObj.conId;
 		var str='';
 		
-		str+='<div id="cnstHeading" class="thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:left;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a></div>';
-		str+='<div id="constituencyResultsInner" style="padding-bottom:25px;">';
+		//str+='<div id="cnstHeading" class="thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:left;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a></div>';
+		str+='<div id="cnstHeading" class="thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:left;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a></div>';
+		str+='<div id="constituencyResultsInner" style="padding-bottom:25px;display:none;">';
 		str+='<table class="table table-bordered table-hover"><thead><tr class="" style="background:#E6E6E6;"><th>Election Year</th><th>Won Candidate</th><th>Majority</th><th>Lost Candidate</th></tr></thead>';
         for(var i in results){
 		elecType=results[i].electionType;
@@ -2042,15 +2043,16 @@ function addToPolitician(voterId,name)
 	var showConst=false;
 	
 	$('#ShowConstMenu').live('click',function(){
-	if(!showConst) {
+		
+	if(showConst) {
 			$("#constituencyResultsInner").hide();
 			$(this).html('Show <i class="icon-chevron-down"></i>'); 
-			showConst=true;
+			showConst=false;
 		}
 		else {
 			$("#constituencyResultsInner").css("display","block");
 			$(this).html('Hide <i class="icon-chevron-up"></i>');
-			showConst=false;
+			showConst=true;
 		}
 	});
 	$('#ShowConstMenu1').live('click',function(){
@@ -6330,6 +6332,7 @@ $("#ShowMenu").click(function(){
 	if(showflag||fromOnChange) {
 		showConst=false;
 		$("#ShowConstMenu").trigger('click');
+		
 		$(".customMenu").css("display","inline-block");
 		
 		$(this).html('Hide Menu <i class="icon-chevron-up"></i>');
