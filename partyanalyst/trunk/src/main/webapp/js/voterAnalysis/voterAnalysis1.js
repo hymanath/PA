@@ -886,6 +886,12 @@ function addToPolitician(voterId,name)
 	}*/
 	
 	function getAllTabs(id,publicationId,type){
+
+		if(type == "constituency")
+			$('#refreshImg').hide();
+		else
+			$('#refreshImg').show();
+
 		selectedId = id;
        
        if(type == "hamlet" || /customWard/i.test(type))
