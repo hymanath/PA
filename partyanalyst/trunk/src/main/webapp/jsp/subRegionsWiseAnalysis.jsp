@@ -479,7 +479,7 @@ $(document).ready(function(){
 			
 			</div>
 <div class="widget blue" id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
-   <h4 id="sublevelHeading">Panchayat Wise Voting Trendz </h4>
+   <!--<h4 id="sublevelHeading">Panchayat Wise Voting Trendz </h4>-->
   <div class="hero-unit" >
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
     <div id="mandalElecResultsParties"></div>
@@ -1361,7 +1361,9 @@ function getParliamentResults(elecYear){
 function getLatestCastsSubcategoryWise(){
   $("#voterCasteAjaxImg").css("display","block");
   $("#localCastStatsTabContent_subbody").html("");
-
+  var buildType = "hamlet";
+  if(type == "panchayat")
+  buildType = "booth";
   var jsObj=
 		{		
 				type:type,	
@@ -1369,7 +1371,7 @@ function getLatestCastsSubcategoryWise(){
 				typeName:mainname,
 				publicationDateId:publicationId,
 				constituencyId:constituencyId,
-                buildType:"hamlet",
+                buildType:buildType,
                 queryType:"sub",
 				task:"getCastInfoForsubLevels"				
 		};
