@@ -1284,11 +1284,11 @@ for  body3 start    result  -->
 <div id="selectedBoothInfo" style="color:#000000;padding-bottom:5px;" class="widget blue whitegloss"></div>
 
 <div class="widget blue">
-<div class="widget-block" style="margin-top: -6px; clear: both; display: block; height: 35px;">
+<div class="widget-block" style="margin-top: -6px; clear: both; display: block; height: 35px;padding-bottom:1px;">
 <h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:500px;color: black;">News Glance,Problems and Influencing People Details</h4>
 <a id="ShowConstMenu1" class="btn pull-right" style="margin-top:-35px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a>
 </div>
-</div>
+
 
 	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 96%;color:#000000; margin-top: 51px;"></div>
 	
@@ -1305,7 +1305,9 @@ for  body3 start    result  -->
 
 	<div id="InfluencingPeopleAjaxImg" style="display:none;float:right;">
 	<img src="./images/icons/search.gif" /></div>
-	<div id="InfluencingPeopleCountDiv" class="widget blue whitegloss">
+	<div id="InfluencingPeopleCountDiv" class="widget blue whitegloss" style="">
+	 </div>
+	 
 	 </div>
 	<div id="censusReportMainDiv" class="widget blue whitegloss">
 	  <div id="censusReportDiv"></div>
