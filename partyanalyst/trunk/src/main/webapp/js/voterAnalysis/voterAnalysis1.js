@@ -9156,7 +9156,7 @@ var casteRange;
 $(function() {
 $( "#slider" ).slider({
 value:1,
-min: 1,
+min: 0,
 max: 40,
 step: 1,
 slide: function( event, ui ) {
