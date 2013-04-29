@@ -240,6 +240,10 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 {  
 	var myChart1 = new Array();
 	
+	if(percentage==null)
+		percentage=1;
+	
+	
 	if(selectedCast == null)
 	  var castMain = sort_unique(castTemp);
 	else
@@ -420,7 +424,7 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 var votersRange;
 $(function() {
 $( "#slider" ).slider({
-value:0,
+value:1,
 min: 0,
 max: 50,
 step: 1,
