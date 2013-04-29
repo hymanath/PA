@@ -3553,6 +3553,9 @@ function buildPartyWisePiechart(myResults,jsObj)
 		   $("#castPartyPopupShowBtn").show();
 
 	   $("#LocalCastDiv").css('padding','20px');
+	    $("#votersMainOuterDiv2").show();
+	}else{
+		$("#votersMainOuterDiv2").hide();
 	}
 	var voters= '';
 	var str = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;">';
