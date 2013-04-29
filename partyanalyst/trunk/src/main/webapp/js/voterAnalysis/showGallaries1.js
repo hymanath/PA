@@ -1393,7 +1393,7 @@ function buildProblemsCountByLocation(results,jsObj)
 	
 	//str+='</div>';
 	//str+='</div>';
-	str+='<div class="alert alert-danger" style="display:inline-block;margin-top:10px;padding-bottom:12px;" >';
+	str+='<div class="alert alert-danger" style="display:inline-block;margin-top:10px;padding:8px;" >';
 	//str+='<div class="row-fluid"> ';
 	str +='<h6 style="display:inline-block;padding-right:15px;">Newly Posted Problems</h6>';
 	if(results[0].cadreProblems != 0)
