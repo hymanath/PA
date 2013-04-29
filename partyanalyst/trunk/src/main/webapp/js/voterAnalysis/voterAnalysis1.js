@@ -2061,7 +2061,9 @@ function addToPolitician(voterId,name)
 			showConst=true;
 		}
 	});
+	
 	$('#ShowConstMenu1').live('click',function(){
+	
 	if(showConst) {
 			$("#newsCountDiv").hide();
 			$("#problemsCountDiv").hide();
@@ -2073,8 +2075,8 @@ function addToPolitician(voterId,name)
 			showNewsDetails(mainreqid,publicationId,maintype);
 			getProblemsByLocation(mainreqid,publicationId,maintype);
 			getInfluencingPeopleCount(mainreqid,maintype);
-			$("#newsCountDiv").css("display","block");
-			$("#problemsCountDiv").css("display","block");
+			$("#newsCountDiv").css("display","inline-block");
+			$("#problemsCountDiv").css("display","inline-block");
 			$("#InfluencingPeopleCountDiv").css("display","block");
 			$(this).html('Hide <i class="icon-chevron-up"></i>');
 			showConst=true;
@@ -6436,6 +6438,8 @@ maintype = 'mandal';
 mainname = $(this).closest("a").attr("name-mandal"); 
 scrollToNewsDiv();
 getAllTabs(mandalid,$("#publicationDateList").val(),'mandal');
+
+showHideNewsProblems();
 //getvotersSubBasicInfo(mandalid,"mandal-name","mandal");
 //showSubNewsDetails(mandalid,"Mandal");
 });
@@ -6455,6 +6459,8 @@ getAllTabs(municipalityid,$("#publicationDateList").val(),'mandal');
 //alert("SHOW Municipality DATA");
 //getvotersSubBasicInfo(municipalityid,"mun-name","mandal");
 //showSubNewsDetails(municipalityid,"localbody");
+
+showHideNewsProblems();
 });
 
 //Panchayats CLICKED
@@ -6475,6 +6481,8 @@ getAllTabs(panchayatid,$("#publicationDateList").val(),'panchayat');
 //getvotersSubBasicInfo(panchayatid,"panchayat-name","panchayat");
 //howSubNewsDetails(panchayatid,"Panchayat");
 //buildVotersByPanchayatDataTable(panchayatid);
+
+showHideNewsProblems();
 });
 //wardclicked
 $("#middleNav-Wards-list a .checkbox").live("click",function(){
@@ -6499,7 +6507,7 @@ getAllTabs(panchayatid,$("#publicationDateList").val(),'customWard');
 //howSubNewsDetails(panchayatid,"Panchayat");
 //buildVotersByPanchayatDataTable(panchayatid);
 }
-
+showHideNewsProblems();
 });
 
 //Booths CLICKED
@@ -6519,13 +6527,16 @@ getAllTabs(boothid,$("#publicationDateList").val(),'booth');
 
 //getvotersSubBasicInfo(boothid,"booth-name","booth");
 //buildVotersByBoothDataTable(boothid);
+showHideNewsProblems();
 });
 $("#rightNav-Booths-list2 a .checkbox").live("click",function(){
 buildForBooths(this);
+showHideNewsProblems();
 });
 //hamlets clicked
 $("#rightNav-Booths-list1 a .checkbox").live("click",function(){
 buildForHamlets(this);
+showHideNewsProblems();
 });
 
 });
@@ -9278,6 +9289,11 @@ $(document).ready(function(){
 		str +='</tr>';
 		str +='</table>';
 		$("#censusReportDiv").html(str);
-
-
+	}
+	
+	
+	//Function is for Hiding defaultly when the Sublevel constituency is selected--Sasi
+	function showHideNewsProblems(){
+		showConst=true;
+		$('#ShowConstMenu1').trigger('click');
 	}
