@@ -1525,7 +1525,7 @@ for  body3 start    result  -->
 
 <!--<a href="javaScript:{showBasicAgewiseDetails()}">Click here to get Agewise Details</a>-->
 <span id="agewiseAjaxDiv" style="display:none;position:absolute;bottom:20px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
-<div id="voterDetailsNote1" class="noteDiv"></div>
+<div id="voterDetailsNote1" class=""></div>
 
 <div id="tableDiv1"></div>
 <input id="ageLinkForHamletBooths1" type="button" value="View Booth Wise Age Details" onclick="showAllAgewiseDetailsForHamlet();" class="btn btn-info" style="display:none;float:right;margin-left:10px;" />
