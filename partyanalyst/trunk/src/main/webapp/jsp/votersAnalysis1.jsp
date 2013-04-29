@@ -1420,7 +1420,7 @@ for  body3 start    result  -->
 	</table>
 	</div>
 	<div id="castContainerChart">
-		<div><input type='button' id='hideshow' value='hide/show Caste Wise Analysis Chart' class="btn btn-inverse pull-right" style="margin-top:10px;margin-bottom:10px;margin-right:10px;"></div>
+		<div><input type='button' id='hideshow' value='Hide/Show Caste Wise Analysis Chart' class="btn btn-inverse pull-right" style="margin-top:10px;margin-bottom:10px;margin-right:10px;"></div>
 		<div id="castContainerChartInner" style="border:1px solid;">
 		<div id="rangeSliderDiv" style="width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;" >
 			<h5 style="text-align:center;">Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
