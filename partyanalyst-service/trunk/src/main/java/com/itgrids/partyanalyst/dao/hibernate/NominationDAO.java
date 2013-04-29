@@ -3702,7 +3702,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		     if(localBodyId != null)
 			   queryStr.append(" and model.constituencyElection.constituency.localElectionBody.localElectionBodyId = :localBodyId");
 				  
-			 queryStr.append(" and model.constituencyElection.election.electionId = :electionId group by model.party.partyId ");
+			 queryStr.append(" and model.constituencyElection.election.electionId = :electionId group by model.party.partyId ORDER BY sum(model.candidateResult.votesEarned) DESC ");
 			
 		Query query = getSession().createQuery(queryStr.toString());
 		
