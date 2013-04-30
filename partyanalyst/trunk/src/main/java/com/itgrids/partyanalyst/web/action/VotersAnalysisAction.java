@@ -1561,7 +1561,7 @@ return Action.SUCCESS;
 			if(regVO == null)
 				return ERROR;
 			Long userId =  regVO.getRegistrationID();
-			isLocalityExist = votersAnalysisService.checkLocalityDataExist(jObj.getLong("id"),userId);
+			isLocalityExist = votersAnalysisService.checkLocalityDataExist(jObj.getLong("id"),userId,jObj.getString("type"));
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Occured in checkLocalityDataExist() Method, Exception - "+e);
