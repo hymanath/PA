@@ -1119,7 +1119,7 @@ public String saveLocality()
 								
 							}
 							voterHouseInfoVO.setCategoriesList(categoriesList);
-							
+													
 							if(localityPresent){
 								
 								 try
@@ -1132,6 +1132,7 @@ public String saveLocality()
 							    	}
 								 
 								}
+						
 							votersList.add(voterHouseInfoVO);
 						}
 						String type = null;
@@ -1152,7 +1153,7 @@ public String saveLocality()
 								type ="localityPresent";
 						}
 						
-						
+					
 					  status = votersAnalysisService.updateMultipleVoterDetails(votersList,type);
 					  return "update";
 				  }
