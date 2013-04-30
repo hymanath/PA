@@ -1286,7 +1286,11 @@ for  body3 start    result  -->
 <div class="widget blue">
 <div class="widget-block" style="margin-top: -6px; clear: both; display: block; height: 35px;padding-bottom:1px;">
 <h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:500px;color: black;">News Glance,Problems and Influencing People Details</h4>
-<a id="ShowConstMenu1" class="btn pull-right" style="margin-top:-35px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a>
+<a id="ShowConstMenu1" class="btn pull-right" style="margin-top:-35px;margin-right: 28px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a>
+
+<div id="allAjaxImg" style="display:none;float:right;margin-top:-27px;">
+	<img src="./images/icons/search.gif" /></div>
+
 </div>
 
 
