@@ -440,4 +440,52 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	 return Action.SUCCESS;
   }
    
+   public String getBoothWiseElectionResultsForMandal()
+   {
+	   try{
+			
+			String param = getTask();
+			jObj = new JSONObject(param);
+			if(jObj.getString("task").equalsIgnoreCase("getPanchayatElectionsAndParties")){
+			  mandalVO = staticDataService.findListOfElectionsAndPartiesInPanchayat(jObj.getLong("panchayatId"));
+			  return "mandalVO";
+			}else{
+				electionResults = new ArrayList<Object>();
+				partiesResults = constituencyPageService.findBoothsWiseResultsInElectionsOfPanchayat(new Long(tehsilId), jObj.getString("parties"),jObj.getString("elections"), new Boolean(jObj.getString("includeAlliance")));
+				electionResults.add(partiesResults);
+				partyResultMap=new HashMap<String, List<PartyResultVO>>();
+			        
+			    for(PartyResultVO prtyrslts:partiesResults){
+			       String partyName=prtyrslts.getPartyName();
+			       List<PartyResultVO> volist=new ArrayList<PartyResultVO>();
+			        	
+			       if(partyResultMap.containsKey(partyName)){
+			         partyResultMap.get(partyName).add(prtyrslts);
+			       }
+			       else{
+			        volist.add(prtyrslts);
+			        partyResultMap.put(partyName, volist);	
+			       }
+			    }
+			    
+			    partyResultMapPrcnt=new HashMap<String,List<String>>();
+			    for(Entry<String, List<PartyResultVO>> entry : partyResultMap.entrySet()) {
+			      String key = entry.getKey();
+			      List<String> percentage=new ArrayList<String>();
+			      List<PartyResultVO> value = entry.getValue();
+			      for(PartyResultVO aString : value){
+			        String prcnt=aString.getVotesPercent();
+			        percentage.add(prcnt);
+			      }
+			      partyResultMapPrcnt.put(key, percentage);
+			    }
+			    electionResults.add(partyResultMapPrcnt);
+			}
+			 
+		}catch(Exception e){
+		  LOG.error("exception raised in getPanchayatWiseElectionResultsForMandal() ",e);
+		}
+		 return Action.SUCCESS;  
+   }
+   
 }

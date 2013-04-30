@@ -5018,5 +5018,14 @@
 			</result>				
 		</action>
 		
+		<action name="getBoothWiseElectionResultsAction" class="mandalRevenueVillagesElecAction" method="getBoothWiseElectionResultsForMandal">
+		    <result type="json" name="success">
+				 <param name="root">electionResults</param>
+			</result>
+			<result type="json" name="mandalVO">
+				 <param name="root">mandalVO</param>
+			</result>				
+		</action>
+		
 		</package>
 </struts>      
