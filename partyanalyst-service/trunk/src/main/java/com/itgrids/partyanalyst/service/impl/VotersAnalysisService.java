@@ -4382,7 +4382,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		importantFamiliesInfoVo.setTotalFemaleVoters(votersInfoForBooth.getTotalFemaleVoters());
 		importantFamiliesInfoVo.setUnKnowVoters(votersInfoForBooth.getUnKnowVoters());
 		
-		getImpFamilesInfoForLocality(userId,hamletId,id,publicationDateId,importantFamiliesInfoVo,"",exeType,null,constituencyId);
+		getImpFamilesInfoForLocality(userId,hamletId,id,publicationDateId,importantFamiliesInfoVo,query,exeType,null,constituencyId);
 		 return importantFamiliesInfoVo;
 	}
 	
@@ -4517,16 +4517,17 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		}
 		if(checkedEle.equalsIgnoreCase("hamlet") || checkedEle.equalsIgnoreCase(IConstants.CUSTOMWARD) )
 		{
-			if(requestFor.equalsIgnoreCase("booth")){
-				String queryCond ="";
-				if(checkedEle.equalsIgnoreCase(IConstants.HAMLET)){
-					queryCond =" model1.hamlet.hamletId = :id ";
+			String queryCond ="";
+			if(checkedEle.equalsIgnoreCase(IConstants.HAMLET)){
+				queryCond =" model1.hamlet.hamletId = :id ";
+				
+			}
+				else if(checkedEle.equalsIgnoreCase(IConstants.CUSTOMWARD)){
+					queryCond =" model1.ward.constituencyId = :id ";	
 					
 				}
-					else if(checkedEle.equalsIgnoreCase(IConstants.CUSTOMWARD)){
-						queryCond =" model1.ward.constituencyId = :id ";	
-						
-					}
+			if(requestFor.equalsIgnoreCase("booth")){
+				
 			voters = boothPublicationVoterDAO.getVoterDetailsByHamletForUser(userId,id,publicationDateId,queryCond);
 	      /*  List<?> boothsList =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(id, userId ,checkedEle);
 			
@@ -4538,7 +4539,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			}
 			else
 		//	List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletForLocalities(userId , id);			
-			voters = boothPublicationVoterDAO.getVoterDetailsByHamletId(id,publicationDateId,userId);
+			voters = boothPublicationVoterDAO.getVoterDetailsByHamletId(id,publicationDateId,userId,queryCond);
 			
 		}
 		Map<Long,Map<String, List<VoterVO>>> boothMap = new HashMap<Long,Map<String, List<VoterVO>>>();
@@ -4598,7 +4599,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			if(!requestFor.equalsIgnoreCase("booth")){
 				if( checkedEle.equalsIgnoreCase("panchayat") && buildType.equalsIgnoreCase("hamlet"))
 					voterVO.setHamlet(voter[8].toString());
-				if( checkedEle.equalsIgnoreCase("hamlet") )
+				if( checkedEle.equalsIgnoreCase("hamlet")  || checkedEle.equalsIgnoreCase("customWard") )
 					voterVO.setLocalArea(voter[8].toString());
 			}/*else
 				voterVO.setHamlet("HamletName");*/
@@ -4691,7 +4692,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			}
 			if( checkedEle.equalsIgnoreCase("panchayat") && buildType.equalsIgnoreCase("hamlet"))
 				voterHouseInfoVO.setHamletName(voterVOs.get(voterVOs.size()-1).getHamlet());
-			if( checkedEle.equalsIgnoreCase("hamlet") )
+			if( checkedEle.equalsIgnoreCase(IConstants.HAMLET) || checkedEle.equalsIgnoreCase(IConstants.CUSTOMWARD) )
 				voterHouseInfoVO.setLocalAreaName(voterVOs.get(voterVOs.size()-1).getLocalArea());
 			VoterVO younger = null;
 			if( requestFor.equalsIgnoreCase("hamletBooth") )
@@ -5028,7 +5029,7 @@ public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Lo
 			{
 				voterHouseInfoVO.setHamletId(userVoterDetails.getWard().getConstituencyId());
 				
-				List<SelectOptionVO> localities =   getLocalitiesForWards(userVoterDetails.getWard().getConstituencyId(),userId);					
+				List<SelectOptionVO> localities =   getLocalitiesForWards(userVoterDetails.getWard().getLocalElectionBody().getLocalElectionBodyId(),userId," model.localElectionBody.localElectionBodyId =:id " );					
 				   
 				   voterHouseInfoVO.setSubLocalities(localities);
 				
@@ -11272,9 +11273,12 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			
 		}
 		
-		public List<SelectOptionVO> getLocalitiesForWards(Long wardId , Long userId)
+		public List<SelectOptionVO> getLocalitiesForWards(Long wardId , Long userId ,String query)
 		{
-			List<Object[]> localities =  localityDAO. getLocalitiesForWard(wardId , userId);
+			/*String queryCondition="model.localElectionBody.localElectionBodyId in(select a.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody a " +
+					" where a.assemblyLocalElectionBodyId = :id) ";*/
+			//List<Object[]> localities =  localityDAO. getLocalitiesForWard(wardId , userId);
+			List<Object[]>  localities        =      localityDAO.getAllLocalitiesForHamlet( userId , wardId ,"" ,query);
 			
 			 List<SelectOptionVO> localitiesList = new ArrayList<SelectOptionVO>();
 			   //List<Object[]> hamlets =null;
@@ -11960,7 +11964,8 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		
     public void getImpFamilesInfoForLocality(Long userId ,Long hamletId,Long id,Long publicationDateId,ImportantFamiliesInfoVo importantFamiliesInfoVo,String queryToexe,String exeType,List<Long> ids,Long constituencyId){
 			
-	        String query = "";
+	      
+    	String query = "";
 	        Long[] totalFamilies = getFamiliesCountForLocality(userId,hamletId,id,publicationDateId,null,queryToexe,exeType,ids,constituencyId);
 			if(totalFamilies != null){
 	          importantFamiliesInfoVo.setTotalFamalies(totalFamilies[0]);
@@ -12060,7 +12065,8 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			Long[] count = {0l,0l};
 			List<Object[]> totalFamiliesList = new ArrayList<Object[]>();
 				//totalFamiliesList = boothPublicationVoterDAO.getImpFamilesForHamlet(userId,id,publicationDateId,query);
-			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsBasedOnHamletAndLocality(hamletId, id,userId);
+			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsBasedOnHamletAndLocality(hamletId, id,userId,queryToexe);
+		//	  List<Long> voterIds  =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(locationId, userId ,locationType);		
 			if(voterIds!= null && voterIds.size() >0){
 			totalFamiliesList = boothPublicationVoterDAO.getFamilyDetailsForHamlet(userId,voterIds,publicationDateId,query);
 			}
@@ -14371,7 +14377,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				{
 					voterHouseInfoVO.setHamletId(userVoterDetails.getWard().getConstituencyId());
 					
-					List<SelectOptionVO> localities =   getLocalitiesForWards(userVoterDetails.getWard().getConstituencyId(),userId);					
+					List<SelectOptionVO> localities =   getLocalitiesForWards(userVoterDetails.getWard().getLocalElectionBody().getLocalElectionBodyId(),userId,"model.localElectionBody.localElectionBodyId =:id");					
 					   
 					   voterHouseInfoVO.setSubLocalities(localities);
 					
