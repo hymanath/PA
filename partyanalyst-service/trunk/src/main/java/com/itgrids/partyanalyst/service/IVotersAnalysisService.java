@@ -264,7 +264,7 @@ public interface IVotersAnalysisService {
 	 
 	 public List<SelectOptionVO> checkForCategoeryValues(List<SelectOptionVO> categoeryValuesList , Long userId);
 
-	 public List<SelectOptionVO> getLocalitiesForWards(Long wardId , Long userId);
+	 public List<SelectOptionVO> getLocalitiesForWards(Long wardId , Long userId ,String Query);
 	 
 	 public VotersInfoForMandalVO getVotersCountForCustomWard(Long id,Long publicationDateId,String reqType);
 	 
