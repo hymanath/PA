@@ -136,4 +136,6 @@ public interface IConstituencyPageService {
 	public String getLocalBodyElectionTypeByConstituencyId(Long constituencyId);
 	
 	public List<PartyResultVO> findPanchayatsWiseResultsInElectionsOfMandal(Long tehsilId, String parties,String elections, Boolean includeAlliance);
+	public List<PartyResultVO> findBoothsWiseResultsInElectionsOfPanchayat(Long panchayatId, String parties,String elections, Boolean includeAlliance);
+	
 }

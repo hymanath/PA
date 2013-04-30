@@ -2651,7 +2651,6 @@ public class StaticDataService implements IStaticDataService {
 
 		return partiesAndIdsInMandal;
 	}
-
 	public Set<SelectOptionVO> getAllPartiesParticipatedInRevenueVillage(
 			Long townshipId) {
 		Set<SelectOptionVO> partiesAndIdsInVillage = new HashSet<SelectOptionVO>();
@@ -4160,6 +4159,24 @@ public class StaticDataService implements IStaticDataService {
 			}
 			return null;
 		}
+	}
+	
+	public List<SelectOptionVO> getAllParties()
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> partyNames = partyDAO.findAllPartyNames();
+			
+			for(Object[] party :partyNames)
+			{
+				resultList.add(new SelectOptionVO((Long)party[0],party[1].toString()));
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return resultList;
 	}
 
 	/**
@@ -7924,7 +7941,59 @@ public class StaticDataService implements IStaticDataService {
 			return "";
 		}
 	}
+	
+	
+	public MandalVO findListOfElectionsAndPartiesInPanchayat(Long panchayatId)
+	{
+		try{
+		MandalVO mandalVO = new MandalVO();
+		List<Object[]> electionIdsList = new ArrayList<Object[]>(0);
+		
+		List<SelectOptionVO> partiesInMandal = new ArrayList<SelectOptionVO>();
+		List<Long> boothIds = new ArrayList<Long>();
+		Set<SelectOptionVO> elections = new HashSet<SelectOptionVO>();
+		
+		List electionsInMandal = hamletBoothElectionDAO
+				.findPolledVotesInAllElectionsOfPanchayat(panchayatId);
+		for (Object[] values : (List<Object[]>) electionsInMandal)
+		
+			elections.add(new SelectOptionVO((Long) values[0],
+					(values[1] + " " + values[2])));
+		
+		List<Object[]> booths = boothDAO.getBoothsInPanchayat(panchayatId);
+		for(Object[] params : booths)
+		{
+			boothIds.add(new Long(params[1].toString()));
+		}
+		for(Object[] params1 : (List<Object[]>)electionsInMandal)
+		{
+			
+		 electionIdsList = candidateBoothResultDAO.findBoothResultsForBoothsAndElection(boothIds,(Long)params1[0]);
+		
+		if(electionIdsList != null && electionIdsList.size() > 0)
+		for(Object[] parties : electionIdsList)
+		{
+			partiesInMandal.add(new SelectOptionVO((Long)parties[0],parties[1].toString()));
+			
+		}
+		}
+		
+		mandalVO.setPartiesInMandal(partiesInMandal);
+		removeDuplicates(mandalVO.getPartiesInMandal());
+		mandalVO.setElectionsInMandal(elections);
+		return mandalVO;
+		}catch (Exception e) {
+			return null;
+		}
+	}
+
+
+public List<SelectOptionVO> removeDuplicates(List<SelectOptionVO> list) {
+	HashSet<SelectOptionVO> listToSet = new HashSet<SelectOptionVO>(list);
+    list.clear();
+    list.addAll(listToSet);
+    Collections.sort(list);
+	return list;
+	
 }
-
-
-
+}

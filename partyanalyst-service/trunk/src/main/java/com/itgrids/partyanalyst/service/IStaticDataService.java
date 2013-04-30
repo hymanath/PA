@@ -349,4 +349,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getDistrictsByPartyNomination(Long stateId,Long partyId,Long year);
 		
 		public String getTehsilNameByTehsilId(Long tehsilId);
+		
+		public MandalVO findListOfElectionsAndPartiesInPanchayat(Long panchayatId);
 }
