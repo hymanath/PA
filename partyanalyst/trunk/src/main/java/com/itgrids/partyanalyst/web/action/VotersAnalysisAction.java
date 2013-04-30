@@ -524,9 +524,13 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getLocalitiesForWards"))
 		{
-			Long selectedId = jObj.getLong("selected");
 		
-		 namesList = votersAnalysisService.getLocalitiesForWards(selectedId , userID);
+			
+			Long selectedId = jObj.getLong("selected");
+			Long mainValue = jObj.getLong("mainValue");
+			String queryCondition=" model.localElectionBody.localElectionBodyId in(select a.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody a " +
+					" where a.assemblyLocalElectionBodyId = :id ) ";
+		 namesList = votersAnalysisService.getLocalitiesForWards(mainValue , userID,queryCondition);
 			//namesList.add(0, new SelectOptionVO(0L,"Select"));
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getLocalities"))
