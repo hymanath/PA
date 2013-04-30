@@ -488,7 +488,7 @@ $(document).ready(function(){
 			
 			</div>
 <div class="widget blue" id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
-   <h4 id="sublevelHeading">Caste Wise Voters Analysis</h4>
+   <!--<h4 id="sublevelHeading">Caste Wise Voters Analysis</h4>-->
   <div class="hero-unit" >
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
     <div id="mandalElecResultsParties"></div>
@@ -920,7 +920,7 @@ function callAjax(jsObj,url)
             },
 			
             title: {
-                text: 'Panchayat Wise Voting Percentages in  ${typeName}Mandal',
+                text: 'Panchayat Wise Voting Percentages in  ${typeName}',
                 x: -20 //center
             },
 			
