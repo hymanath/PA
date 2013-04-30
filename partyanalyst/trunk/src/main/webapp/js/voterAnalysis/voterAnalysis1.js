@@ -2068,6 +2068,7 @@ function addToPolitician(voterId,name)
 			$("#newsCountDiv").hide();
 			$("#problemsCountDiv").hide();
 			$("#InfluencingPeopleCountDiv").hide();
+			$("#allAjaxImg").css("display","none");
 			$(this).html('Show <i class="icon-chevron-down"></i>'); 
 			showConst=false;
 		}
@@ -2075,12 +2076,14 @@ function addToPolitician(voterId,name)
 			showNewsDetails(mainreqid,publicationId,maintype);
 			getProblemsByLocation(mainreqid,publicationId,maintype);
 			getInfluencingPeopleCount(mainreqid,maintype);
+			$("#allAjaxImg").css("display","block");
 			$("#newsCountDiv").css("display","inline-block");
 			$("#problemsCountDiv").css("display","inline-block");
 			$("#InfluencingPeopleCountDiv").css("display","block");
 			$(this).html('Hide <i class="icon-chevron-up"></i>');
-			showConst=true;
+			showConst=true;	
 		}
+		
 	});
 	
 	function showDetailedElectionResult(id,conid,elYear)

@@ -752,7 +752,7 @@ function showNewAnotherSource(fileSourceLanguageId,type)
  var  publicationId;
  var newsString ;
  var titleString;
-function showNewsDetails(id,publicationId,type){
+function showNewsDetails(id,publicationId,type){	
 locationValue = id;
 
 /*$('#newsCountDiv').html('');
@@ -881,7 +881,7 @@ function callAjaxToShowNewsDetails(jObj,url){
 						  $('#newsAjaxImage').css('display','none');
 					   }
 					   else if(jObj.task == "newsForALocation")
-					      buildProblemsCount(myResults);
+						   buildProblemsCount(myResults);
 					   else if(jObj.task="getNewsOfLocationInPopup"){
 					        $("#showAjaxImgForNews").hide();
 							//buildNewsOfLocation(jObj,myResults);
@@ -959,7 +959,7 @@ function callAjaxToShowNewsDetails(jObj,url){
 
 
 function  buildProblemsCount(results){
-	
+$("#allAjaxImg").css("display","none");	
 	if(results.length == 0)
        $('#newsCountDiv').hide();
 	else
