@@ -426,10 +426,18 @@ $(document).ready(function(){
 			var url = "getPanchayatWiseElectionResultsAction.action?"+rparam;	
    
 		callAjax(jsObj,url);
-  }else if(type == "constituency"){
+  }
+  else if(type == "panchayat")
+  {
+   $("#mandalElecResultsDiv").show();
+    $("#votingTrendzDiv").hide();
+  getBoothPArtiesAndElections();
+  }
+  else if(type == "constituency"){
   $("#votingTrendzDiv").show();
     getConstituencyElections();
   }
+
 });
 </script>
 
@@ -540,6 +548,8 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 	var hresult="";
 	if(true)
 	{
+	if(type == "panchayat")
+	buildType="booth";
 	if(type == "booth")
 	buildType="hamlet";
 	
@@ -570,6 +580,145 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 		callAjax(jsObj,url);
 	}
 }
+	
+var startNumber =  2;
+var retrieveType = "all";
+var mandalId = id.substring(1);
+function getAgewiseVoterDetails(){
+	if(type == "constituency")
+	{
+	var jsObj=
+				{					
+					constituencyId:constituencyId,
+					publicationDateId:publicationId,
+					mandalId:'0',
+					boothId:'0',
+					panchayatId:'0',
+					name:name,
+					retrieveType:retrieveType,
+					task:"getAgewiseVoterDetails",
+				    type:"constituency",
+				};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgewiseVoterDetails.action?"+rparam;						
+		
+		callAjax(jsObj,url);
+}
+/*
+	This Condition is used for checking for Mandal level Age wise analysis
+*/
+ else if(type == "mandal")
+{
+	if(id.charAt(0) == "2"){
+
+			var jsObj=
+					{
+						constituencyId:constituencyId,
+						publicationDateId:publicationId,
+						mandalId:mandalId,
+						boothId:'0',
+						panchayatId:'0',
+						name:name,
+						retrieveType:retrieveType,
+						task:"getAgewiseVoterDetails",
+						type:"mandal"
+						
+					};
+		}else if(id.charAt(0) == "1"){
+
+			var jsObj=
+					{
+					constituencyId:constituencyId,
+					mandalId:mandalId,
+					publicationDateId:publicationId,
+					name:name,
+					boothId:0,
+					panchayatId:'0',
+					retrieveType:retrieveType,
+					task:"getAgewiseVoterDetails",
+					type:"localElectionBody"
+						
+					};
+		}
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgewiseVoterDetails.action?"+rparam;
+
+		callAjax(jsObj,url);
+}
+/*
+	This Condition is used for checking for Panchayat level Age wise analysis
+*/
+ else if(type == "panchayat")
+{
+	var jsObj=
+				{
+			        constituencyId:constituencyId,
+					mandalId:'0',
+					boothId:'0',
+					panchayatId:id,
+					publicationDateId:publicationId,
+					name:name,
+					retrieveType:retrieveType,
+					buildType:buildType,
+					task:"getAgewiseVoterDetails",
+					type:"panchayat"
+				};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgewiseVoterDetails.action?"+rparam;
+
+      callAjax(jsObj,url);
+} 
+/*
+	This Condition is used for checking for Ward level Age wise analysis
+*/
+ else if(type == "ward")
+{
+	var jsObj=
+				{
+			        constituencyId:constituencyId,
+					mandalId:'0',
+					boothId:'0',
+					panchayatId:id,
+					publicationDateId:publicationDateId,
+					name:name,
+					retrieveType:retrieveType,
+					task:"getAgewiseVoterDetails",
+					type:"ward"
+				};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgewiseVoterDetails.action?"+rparam;
+
+      callAjax(jsObj,url);
+}
+/*
+	This Condition is used for checking for Hamlet level Age wise analysis
+*/
+else if(type == "hamletLocalArea" || type == "hamletBooths" || type == "boothHamlets" || type == "wardBooths")
+{
+	var jsObj=
+				{
+			        constituencyId:constituencyId,
+					mandalId:'0',
+					boothId:'0',
+					panchayatId:panchayatId,
+					publicationDateId:publicationDateId,
+					name:name,
+					retrieveType:retrieveType,
+					task:"getAgewiseVoterDetails",
+					type:type
+				};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgewiseVoterDetails.action?"+rparam;
+
+      callAjax(jsObj,url);
+}
+
+}
 
 function callAjax(jsObj,url)
 {
@@ -582,11 +731,15 @@ function callAjax(jsObj,url)
 									if(jsObj.task == "votersbasicinfo")
 									{
 										buildVotersBasicInfo(myResults,jsObj);
-									}else if(jsObj.task == "getElectionsAndParties"){
+									}else if(jsObj.task == "getElectionsAndParties" || jsObj.task == "getPanchayatElectionsAndParties"){
 									  buildElectionsAndParty(myResults);
 									}else if(jsObj.task == "getResults"){
 									  buildLineChart(myResults);
 									 
+									}
+									else if(jsObj.task == "getResultsForBooth")
+									{
+									buildLineChartForBooth(myResults);
 									}
 								else if(jsObj.task == "getCensusInfo")
 								{
@@ -674,10 +827,16 @@ function callAjax(jsObj,url)
 		 }
 		 str+='</td></tr></table>';
 	     $("#mandalElecResultsElections").html(str);
+		 if(type == "mandal")
+		 {
 		 $("#mandalElecResultsButton").html("<input id='includeAlliancesDiv' type='checkbox' /><label  for='includeAlliancesDiv'><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type='button'  class='btn' value='Submit' onclick='getPanchayatData();'>");
-		 
-		 getPanchayatData();
-		
+		  getPanchayatData();
+		 }
+		 if(type == "panchayat")
+		 {
+		  $("#mandalElecResultsButton").html("<input id='includeAlliancesDiv' type='checkbox' /><label  for='includeAlliancesDiv'><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type='button'  class='btn' value='Submit' onclick='getResultsForBooths();'>");
+		   getResultsForBooths();
+		}
 	  }
   }
 
@@ -731,7 +890,7 @@ function callAjax(jsObj,url)
 	function buildLineChart(myResults){
 	var linechartDataArr = new Array();
 	var data = new Array();
-	  if(myResults[0].length == 0 || myResults[1].length == 0) {
+	 if(myResults[0].length == 0 || myResults[1].length == 0) {
              $("#container").html("<b>Data Not Available</b>");
              return;
        }
@@ -759,10 +918,13 @@ function callAjax(jsObj,url)
                /* marginRight: 130,
                 marginBottom: 25 */
             },
+			
             title: {
-                text: 'Panchayat Wise Voting Percentages in ${typeName} Mandal',
+                text: 'Panchayat Wise Voting Percentages in  ${typeName}Mandal',
                 x: -20 //center
             },
+			
+			 
             xAxis: {
                 categories: linechartDataArr,
 				
@@ -805,7 +967,88 @@ function callAjax(jsObj,url)
 		$('tspan:last').hide();
     }
   
-  
+  function buildLineChartForBooth(myResults){
+	var linechartDataArr = new Array();
+	var data = new Array();
+	var title ;
+	
+	
+	  if(myResults[0].length == 0 || myResults[1].length == 0) {
+             $("#container").html("<b>Data Not Available</b>");
+             return;
+       }
+	   
+	    for(var i in myResults[0]){
+	      if(linechartDataArr.indexOf(myResults[0][i].constituencyName) == -1)
+				linechartDataArr.push(myResults[0][i].constituencyName);
+					
+		}		
+	      results = myResults[1];
+         for(var i in results){	
+           var obj = {};
+           var obj1 = new Array();		   
+           obj["name"] = i;	
+		   for(var j in results[i]){
+		     obj1.push(parseFloat(results[i][j]));
+		   }
+           	obj["data"] = obj1;	 
+            data.push(obj);			
+	    }
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',
+                type: 'line',
+               /* marginRight: 130,
+                marginBottom: 25 */
+            },
+			
+            title: {
+                text: 'Booth Wise Voting Percentages in  ${typeName}',
+                x: -20 //center
+            },
+			
+			 
+            xAxis: {
+                categories: linechartDataArr,
+				
+				 labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Votes Percent( % )'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +'%';
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+            series: data
+        });
+		
+		$('tspan:last').hide();
+    }
   
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 {
@@ -1969,147 +2212,6 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	buildHamletWiseCastResultsGraph(null,null);
 	}
 	
-	
-var startNumber        =  2;
-var retrieveType = "all";
-var mandalId = id.substring(1);
-function getAgewiseVoterDetails(){
-
-
-	if(type == "constituency")
-{
-	var jsObj=
-				{					
-					constituencyId:constituencyId,
-					publicationDateId:publicationId,
-					mandalId:'0',
-					boothId:'0',
-					panchayatId:'0',
-					name:name,
-					retrieveType:retrieveType,
-					task:"getAgewiseVoterDetails",
-				    type:"constituency",
-				};
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getAgewiseVoterDetails.action?"+rparam;						
-		
-		callAjax(jsObj,url);
-}
-/*
-	This Condition is used for checking for Mandal level Age wise analysis
-*/
-else if(type == "mandal")
-{
-	if(startNumber == "2"){
-
-			var jsObj=
-					{
-						constituencyId:constituencyId,
-						publicationDateId:publicationId,
-						mandalId:mandalId,
-						boothId:'0',
-						panchayatId:'0',
-						name:name,
-						retrieveType:retrieveType,
-						task:"getAgewiseVoterDetails",
-						type:"mandal"
-						
-					};
-		}else if(startNumber == "1"){
-
-			var jsObj=
-					{
-					constituencyId:constituencyId,
-					mandalId:mandalId,
-					publicationDateId:publicationId,
-					name:name,
-					boothId:0,
-					panchayatId:'0',
-					retrieveType:retrieveType,
-					task:"getAgewiseVoterDetails",
-					type:"localElectionBody"
-						
-					};
-		}
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getAgewiseVoterDetails.action?"+rparam;
-
-		callAjax(jsObj,url);
-}
-/*
-	This Condition is used for checking for Panchayat level Age wise analysis
-*/
-else if(type == "panchayat")
-{
-	var jsObj=
-				{
-			        constituencyId:constituencyId,
-					mandalId:'0',
-					boothId:'0',
-					panchayatId:panchayatId,
-					publicationDateId:publicationId,
-					name:name,
-					retrieveType:retrieveType,
-					buildType:buildType,
-					task:"getAgewiseVoterDetails",
-					type:"panchayat"
-				};
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getAgewiseVoterDetails.action?"+rparam;
-
-      callAjax(jsObj,url);
-} 
-/*
-	This Condition is used for checking for Ward level Age wise analysis
-*/
-else if(type == "ward")
-{
-	var jsObj=
-				{
-			        constituencyId:constituencyId,
-					mandalId:'0',
-					boothId:'0',
-					panchayatId:panchayatId,
-					publicationDateId:publicationDateId,
-					name:name,
-					retrieveType:retrieveType,
-					task:"getAgewiseVoterDetails",
-					type:"ward"
-				};
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getAgewiseVoterDetails.action?"+rparam;
-
-      callAjax(jsObj,url);
-}
-/*
-	This Condition is used for checking for Hamlet level Age wise analysis
-*/
-else if(type == "hamletLocalArea" || type == "hamletBooths" || type == "boothHamlets" || type == "wardBooths")
-{
-	var jsObj=
-				{
-			        constituencyId:constituencyId,
-					mandalId:'0',
-					boothId:'0',
-					panchayatId:panchayatId,
-					publicationDateId:publicationDateId,
-					name:name,
-					retrieveType:retrieveType,
-					task:"getAgewiseVoterDetails",
-					type:type
-				};
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getAgewiseVoterDetails.action?"+rparam;
-
-      callAjax(jsObj,url);
-}
-
-}
 
 function buildVoterDetailsTable(result,type,retrieveType){
 
@@ -2216,41 +2318,41 @@ function buildAgewiseDetails(results , obj){
    var noteString;
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
-		noteString = "Mandal wise voters age details ";
+		noteString = "Mandal wise voters age details";
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-			noteString = "Panchayat wise voters age details ";
+			noteString = "Panchayat wise voters age details";
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
 		if(buildType == "hamlet")
-		noteString = "Hamlet wise voters age details of "+obj.name+" in "+publicationYear;
+		noteString = "Hamlet wise voters age details";
 		else
-	  	noteString = "Booth wise voters age details of "+obj.name+" in "+publicationYear;
+	  	noteString = "Booth wise voters age details";
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
 		if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
-		   noteString = "Ward wise voter age details of "+obj.name+" in "+publicationYear;
+		   noteString = "Ward wise voter age details";
 		else
-			 noteString = "Booth wise voter age details of "+obj.name+" in "+publicationYear;
+			 noteString = "Booth wise voter age details";
 	}
    else if(type == "ward"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise voter age details of "+obj.name+" in "+publicationYear;
+		noteString = "Booth wise voter age details" ;
 	}
 	else if(type="hamlet" && obj.type == "hamletLocalArea"){
 		innerResults = results.boothVotersDetails;
-		noteString = "LocalArea wise voter age details of "+obj.name+" in "+publicationYear;
+		noteString = "LocalArea wise voter age details" ;
 	}
 	else if( (type="hamlet" && obj.type == "hamletBooths") || obj.type == "wardBooths"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise voter age details of "+obj.name+" in "+publicationYear;
+		noteString = "Booth wise voter age details";
 	}
 	else if( type="booth" && obj.type == "boothHamlets"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Hamlet wise voter age details of "+obj.name+" in "+publicationYear;
+		noteString = "Hamlet wise voter age details";
 	}
 
 	if(innerResults.length == 0){
@@ -2751,6 +2853,69 @@ function buildGraphBySlide(){
 buildHamletWiseCastResultsGraph(null,votersRange);
 }
 
+function getBoothPArtiesAndElections()
+{
+
+var jsObj=
+			{
+				
+				panchayatId:id,
+				task:"getPanchayatElectionsAndParties"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getBoothWiseElectionResultsAction.action?"+rparam;	
+   
+		callAjax(jsObj,url);
+}
+
+
+
+function getResultsForBooths()
+{
+ var parties = '';
+  var elections = '';
+  var str = '';
+    $("#mandalElecResultsErrMsg").html("");
+    $('.partySelForPanc').each(function(){
+	  if($(this).is(':checked'))
+	    parties+=','+$(this).val();
+    });
+	$('.elecSelForPanc').each(function(){
+	  if($(this).is(':checked'))
+	    elections+=','+$(this).val();
+    });
+	 
+	 var invalid = false;
+	 if(parties.length == 0)
+	 {
+	   invalid = true;
+	   str+="<div>Please check atleast one party</div>";
+	 }
+	 if(elections.length == 0)
+	 {
+	   invalid = true;
+	   str+="<div>Please check atleast one election</div>";
+	 }
+	 if(invalid){
+	   $("#mandalElecResultsErrMsg").html(str);
+	   return;
+	 }
+	 $("#container").html('<img alt="Processing Image" src="./images/icons/goldAjaxLoad.gif"/>');
+var jsObj=
+			{
+				
+				tehsilId:id,
+				parties:parties.substr(1),
+				elections:elections.substr(1),
+				includeAlliance:false,
+				task:"getResultsForBooth"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getBoothWiseElectionResultsAction.action?tehsilId="+id+"&"+rparam;	
+   
+		callAjax(jsObj,url);
+  }
+  
 </script>
 
 
@@ -2760,6 +2925,7 @@ getvotersBasicInfo("voters",id,publicationId,type);
 getCensusInfoForSubLevels();
 getLatestCastsSubcategoryWise();
 getAgewiseVoterDetails();
+
 
 </script>
 
