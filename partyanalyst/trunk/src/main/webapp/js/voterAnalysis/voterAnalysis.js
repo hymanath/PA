@@ -3840,6 +3840,7 @@ if(isMuncipality)
 			{
 					
 				selected:value,
+				mainValue:muniId,
 				divToBuild:localityDiv,
 				selectBoxId:selectboxId,
 				familyType: family,
