@@ -451,6 +451,8 @@ $(document).ready(function(){
 	</div>
 	
 	<div class="widget blue">
+	
+	<div id="basicInfoAjaxDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 	<div id="votersBasicInfoTitleDiv"></div>
 	<!--<div id="votersBasicInfoMsgDiv" class="widget blue"></div>
 	<div id="votersBasicInfoSubChartDiv" class="widget blue"></div>-->
@@ -541,7 +543,8 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 function getvotersBasicInfo(buttonType,id,publicationId,type){
-  // var ajaxImageDiv =  document.getElementById('ImpFamwiseAjaxDiv');
+//var ajaxImageDiv =  document.getElementById('basicInfoAjaxDiv');
+	$("#basicInfoAjaxDiv").show();
     var level = $("#reportLevel").val();
 	var flag =true;
 	var typename=mainname;
@@ -1052,15 +1055,10 @@ function callAjax(jsObj,url)
   
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 {
-	  $("#votersBasicInfoSubChartDiv").html('');
-	  $("#votersBasicInfoSubDiv").html('');
-	  $("#ajaxImageDiv").css('display','none');
-	//var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
-	//hideAjaxImgDiv('ajaxImageDiv');
+	$("#votersBasicInfoSubChartDiv").html('');
+	$("#votersBasicInfoSubDiv").html('');
+	$("#basicInfoAjaxDiv").css('display','none');
 	$("#votersInfoAjaxImg").css("display","none");
-	  //$("#votersBasicInfoSubChartDiv").removeAttr('style');
-	  //$("#votersBasicInfoSubDiv").removeAttr('style');
-
 	var str = '<div id="votersBasicInfoDivSub">';
 	var title = " Voters Basic Information of "+jsObj.typename+" in "+jsObj.year+"";
 	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0)
