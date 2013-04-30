@@ -794,6 +794,7 @@ function updateAllSelectedVotersDetails1()
 			{
 					
 				selected:value,
+				mainValue:window.opener.muniId ,
 				voterId:voterId,
 				type:type,
 				isMuncipalitySelected:window.opener.isMuncipalitySelected,

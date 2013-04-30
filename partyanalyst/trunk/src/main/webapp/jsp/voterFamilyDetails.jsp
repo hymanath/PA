@@ -287,7 +287,7 @@ var constituencyId ="${constituencyId}";
 var publicationYear = "${publicationYear}";
 var impFamiliesEditArray = new Array();
 var requestFor = '${requestFor}';
-
+var pat= /^(hamlet|customWard)$/i;
 if((maintype == 'booth'&& requestFor == 'hamletBooth') || (maintype == 'hamlet'&& requestFor == 'booth') ||(maintype == 'customWard'&& requestFor == 'booth') )
 {
 $("#impFamilesnfoForHamletByBooth").show();
@@ -401,7 +401,7 @@ function buildTableForImpFamilesForHamlets(impFamilesData,name,type,results)
 			$("#assigAndUnassig").html('');
 			}
 		}
-		else if(type=="Hamlet"){
+		else if(pat.test(type)){//18111test2 pat
 			
 			var totalvoterlclbdis=results.assignedVotersForLocalBodies+results.unassignedVotersForLocalBodies;
 			strl ='';
@@ -595,7 +595,6 @@ function callAjax(jsObj,url)
 	$('#impFamilySelectedDetails1').html(str);
 
 }
-var customWardName = '';
 function buildImpFamilesChart(chartInfo)
 {
 $("#ajaxImageDiv").css('display','none');
@@ -796,6 +795,10 @@ function  buildFamilyMembers(result,jsObj,type){
 	
 	var publicationDateId =   jsObj.publicationDateId;
 	var requestFor = jsObj.requestFor;
+	//var pat=/^(hamlet|customWard)$/i;
+	if(!requestFor)
+	{requestFor = "";
+	}
  //debugger;
  //alert("ok");
 	/* impFamiliesEditArray = new Array();
@@ -828,7 +831,7 @@ function  buildFamilyMembers(result,jsObj,type){
          // str+='     <th>SNo</th>';
 		 if(type == "panchayat" && jsObj.buildType =="hamlet" )
 		  str+='     <th>Hamlet</th>';
-		   if(type == "hamlet" && requestFor !="booth")
+		   if(pat.test(type) && requestFor !="booth")
 		  str+='     <th>LocalArea</th>';
 		  
 		  str+='     <th>Booth</th>';
@@ -850,11 +853,16 @@ function  buildFamilyMembers(result,jsObj,type){
 	      str +='   <tr>';
 		  str +='		<td><input class="impFamilMulSel" id="impFamilSel'+sno+'" type="checkbox" onclick="populate(this.id,'+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\');"/></td>';
          // str +='		<td>'+sno+'</td>';
-		  if(type == "panchayat" && jsObj.buildType =="hamlet" )
+		  if(type == "panchayat" && jsObj.buildType =="hamlet" ){
 		  str +='		<td>'+result[i].hamletName+'</td>';
-		    if(type == "hamlet" && requestFor !="booth")
-		  str +='		<td>'+result[i].localAreaName+'</td>';
+		  }
 		  
+		 // alert( pat.test(type) && requestFor !="booth" )
+		 
+		  if( pat.test(type) &&  requestFor !="booth" ){
+		//  alert('in');
+		  str +='		<td>'+result[i].localAreaName+'</td>';
+		  }
 		  str +='		<td>'+result[i].boothName+'</td>';
           str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str +='		<td>'+result[i].numberOfPeople+'</td>';
@@ -902,8 +910,8 @@ function  buildFamilyMembers(result,jsObj,type){
 		  str+=' <div style="clear:both;padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
 	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div><br>';
               $('#impFamPancBothDtlsAgxImgForHamlet').hide();
-		  if((jsObj.buildType =="hamlet" && type == "panchayat") || (type == "hamlet" && requestFor !="booth"))
-	       {
+		  if((jsObj.buildType =="hamlet" && type == "panchayat") || ( pat.test(type) && requestFor !="booth" ) )
+	       {//alert(112);
 			  $('#impFamPancBothDtlsForHamlet').html(str);
 			  $('#hamletDiv').show();
 			  $('#impFamPancBothDtlsAgxImgForHamlet').hide();
@@ -1374,7 +1382,9 @@ function impFamilesVariableDescription2(divid)
   $('#'+divid).append(div).css("display","block");
  $("#impFamPancBothDtlsAgxImgForHamletByBooth").css('display','none');
 }
-if(maintype != "hamlet")
+//if(maintype != "hamlet" && maintype != "customWard")
+
+if( ! pat.test(maintype) )
 {
 
 if(requestFor == "hamletBooth"){
@@ -1386,12 +1396,12 @@ else{
 
 getImpFamiliesVotersToShow();}
 }
-if(maintype == "hamlet" && requestFor != "booth"){
+if((maintype == "hamlet" && requestFor != "booth") || (maintype == "customWard"  && requestFor != "booth")){
 //getImpFamiliesVotersToShowForBooth();
 $('#impFamPancBothDtlsAgxImg').show();
-	  getvotersBasicInfo();
+	 getvotersBasicInfo();
 
-  impFamilesAllInfoForHamletPopUp();
+ impFamilesAllInfoForHamletPopUp();
 
 	  }
 

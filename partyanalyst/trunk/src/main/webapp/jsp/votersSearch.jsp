@@ -220,7 +220,8 @@ var selectedTypeId="";
 var publicationId="";
 var madalType="";
 var selectedLevel="";
-
+var myId=0;
+var muniId = 0;
 var votersLimitExist = false;
 var limit = 1000;
 var confTrue = false;
@@ -373,6 +374,7 @@ $("#pageUpBtn").live("click",function(){
                   ColType1 = "Hamlet";
 				}else{
                  ColType1 = "Ward";
+				 muniId = $("#mandalField").val().substring(1);
 				}
 	$("#scrollBtnDiv").css("display","block");
 
@@ -1208,8 +1210,10 @@ function buildCategoriesListInit(result){
                 selType = "muncipality";
 			if($("#mandalField").val().substring(0,1) == 2)
 				 selType = 'mandal';
-			else
+			else{
 				selTypeId = $("#mandalField").val().substring(1);
+				myId = $("#mandalField").val().substring(1);
+				}
         }
 
 
@@ -3246,8 +3250,10 @@ function getAllSelectedVotersDetails1()
                 isMuncipalitySelected = "muncipality";
 			if($("#mandalField").val().substring(0,1) == 2)
 				 isMuncipalitySelected = 'mandal';
-			else
+			else{
 				muncipalitySelectedId = $("#mandalField").val().substring(1);
+				muniId = $("#mandalField").val().substring(1);
+				}
 	}
 
 	if(selectedVotersArr.length <= 0)
