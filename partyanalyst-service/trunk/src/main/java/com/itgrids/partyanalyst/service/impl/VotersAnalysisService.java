@@ -11644,7 +11644,8 @@ try{
 		politicianValues.add(locationValue);
 		Id = locationValue;
 		List<Object[]> booths = boothDAO.getBoothsInAPanchayat(locationValue,publicationId);
-		if(booths != null && booths.size() > 0)
+		
+		/*if(booths != null && booths.size() > 0)
 		{
 			for (Object[] booth : booths){
 				if(booth[1] != null)
@@ -11652,7 +11653,23 @@ try{
 					cadreLevelValues.add(new Long(booth[1].toString()));
 					
 				}
+		}*/
+		
+		List<Object[]> hamlets = userVoterDetailsDAO.getHamletsIdsForUser(locationValue, userId);
+		if(booths != null && booths.size() > 0)
+		{
+			for (Object[] booth : booths){
+				/*if(booth[1] != null)
+					locationValues.add(booth[1].toString());*/
+				
+				cadreLevelValues.add(new Long(booth[1].toString()));
+			}
+			for(Object[] hamlet : hamlets)
+			{
+				locationValues.add(hamlet[0].toString());
+			}
 		}
+		
 				
 	}
 
