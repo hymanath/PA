@@ -322,17 +322,17 @@ IUserVoterDetailsDAO{
 		
 	}
 	
-	public List<Long> getVoterIdsBasedOnHamletAndLocality(Long hamletId ,Long localityId , Long userId)
+	public List<Long> getVoterIdsBasedOnHamletAndLocality(Long hamletId ,Long localityId , Long userId ,String cond )
 	{
 		
 		
 		Query query = getSession().createQuery("select distinct model.voter.voterId " +
-							"from UserVoterDetails model  where  model.hamlet.hamletId = ? " +
-							"and model.locality.localityId = ? and model.user.userId = ? ");
+							"from UserVoterDetails model join model.locality  where  " +cond+  
+							" and model.locality.localityId = :locId and model.user.userId = :userId and  model.locality.localityId is not null");
 		
-		query.setParameter(0, hamletId);
-		query.setParameter(1, localityId);
-		query.setParameter(2, userId);
+		query.setParameter("id", hamletId);
+		query.setParameter("locId", localityId);
+		query.setParameter("userId", userId);
 		
 		return query.list();
 	}
