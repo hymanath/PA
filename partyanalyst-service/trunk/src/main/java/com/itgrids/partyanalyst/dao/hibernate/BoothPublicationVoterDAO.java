@@ -2349,17 +2349,17 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		return query.list();
 		
 	}
-	public List<Object[]> getVoterDetailsByHamletId(Long hamletId,Long publicationDateId,Long userId)
+	public List<Object[]> getVoterDetailsByHamletId(Long hamletId,Long publicationDateId,Long userId ,String cond)
 	{
 		Query query = getSession().createQuery("select model.voter.name,model.voter.houseNo, model.voter.age," +
 				" model.booth.boothId ,model.voter.voterId, " +
 				" model.voter.gender,model.voter.age,model.booth.partNo,model1.locality.name  from BoothPublicationVoter model , UserVoterDetails model1  " +
 				" where  " +
-				" model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId =:publicationDateId and " +
-				"model1.hamlet.hamletId = :hamletId and model1.user.userId = :userId "+
-				" order by model1.hamlet.hamletName");
+				" model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId =:publicationDateId and " 
+				+cond+" and model1.user.userId = :userId "+
+				" order by model1.locality.name");
 		
-		query.setParameter("hamletId", hamletId);
+		query.setParameter("id", hamletId);
 		query.setParameter("userId", userId);
 		query.setParameter("publicationDateId", publicationDateId);
 		
