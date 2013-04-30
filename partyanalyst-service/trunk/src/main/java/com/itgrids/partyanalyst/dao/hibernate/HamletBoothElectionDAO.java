@@ -193,4 +193,32 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 				" and model.boothConstituencyElection.constituencyElection.election.electionId = ? group by model.boothConstituencyElection.booth.boothId order by model.boothConstituencyElection.constituencyElection.constituency.name," +
 				" model4.panchayat.panchayatName,model.hamlet.hamletName, model.boothConstituencyElection.booth.boothId ",params);
 	}	
+	
+	//All Elections For Panchayat
+	public List findPolledVotesInAllElectionsOfPanchayat(Long panchayatId){
+	return getHibernateTemplate().find("select model.boothConstituencyElection.constituencyElection.election.electionId," +
+	"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType, " +
+	"model.boothConstituencyElection.constituencyElection.election.electionYear, " +
+	"sum(model.boothConstituencyElection.boothResult.validVotes) " +
+	"from HamletBoothElection model where model.hamlet.hamletId in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ?)group by " +
+	" model.boothConstituencyElection.constituencyElection.election.electionId order by " +
+	"model.boothConstituencyElection.constituencyElection.election.electionYear desc, " +
+	"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType",panchayatId);
+		}
+				
+	
+	public List<Object[]> getBoothDetailsByPanchayat(Long panchayatId,Long electionId)
+	{
+		Object[] params = {panchayatId, electionId};
+		
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.boothId,model.boothConstituencyElection.booth.partNo," +
+				" model.boothConstituencyElection.booth.totalVoters,model.boothConstituencyElection.boothResult.validVotes from HamletBoothElection model where model.hamlet.hamletId " +
+				" in(select model1.hamlet.hamletId from PanchayatHamlet model1 where model1.panchayat.panchayatId = ?) " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionId = ? group by model.boothConstituencyElection.booth.boothId order by model.boothConstituencyElection.constituencyElection.constituency.name," +
+				" model.hamlet.hamletName, model.boothConstituencyElection.booth.partNo ",params);
+	}	
+				
+		
+	
+	
 }
