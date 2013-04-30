@@ -535,7 +535,8 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	public List<Long> getInfluencingPeopleCountByLocation(Long userId,List<String> locationValue,String type)
 	{
 			if(type.equalsIgnoreCase("panchayat"))
-				type = "BOOTH";
+				/*type = "BOOTH";*/
+				type =IConstants.VILLAGE;
 			if(type.equalsIgnoreCase("hamlet"))
 				type =IConstants.VILLAGE;
 			
@@ -560,7 +561,8 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	{
 	
 		if(type.equalsIgnoreCase("panchayat"))
-			type = "BOOTH";
+			/*type = "BOOTH";*/
+			type =IConstants.VILLAGE;
 		if(type.equalsIgnoreCase("hamlet"))
 			type =IConstants.VILLAGE;
 		Query query = getSession().createQuery("from InfluencingPeople model where model.user.userId=:userId and model.influencingScopeValue in(:locationValue) and model.influencingScope = :type");
