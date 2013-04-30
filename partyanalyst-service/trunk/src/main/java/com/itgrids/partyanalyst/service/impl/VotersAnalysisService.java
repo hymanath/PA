@@ -13789,7 +13789,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		   }else return;
 	}
 	
-	public String checkLocalityDataExist(Long hamletId, Long userId)
+	public String checkLocalityDataExist(Long hamletId, Long userId,String type)
 	{
 		try{
 			List<Object[]> list = localityDAO.getAllLocalitiesForHamlet(userId, hamletId);
