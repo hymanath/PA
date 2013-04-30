@@ -902,23 +902,7 @@ function addToPolitician(voterId,name)
 		    $('#impFamiliesForHamletsByBooth').show();
 	   else
 		   	$('#impFamiliesForHamletsByBooth').hide();
-  //$("#votersbasicinfoForImpFam").hide();
-		  //$("#votersBasicInfoDivForImpFam").html("");
-		  //$("#votersBasicInfoSubChartDivForImpFam").html("");
-		  //$("#votersBasicInfoSubDivForImpFam").html("");
-		  //$("#impFamShowBasicInfo").val("View Basic Voter Details");
-
-		  //$("#votersbasicinfoForLclCastSts").hide();
-		  //$("#votersBasicInfoDivForLclCastSts").html("");
-		  //$("#votersBasicInfoSubChartDivForLclCastSts").html("");
-		  //$("#votersBasicInfoSubDivForLclCastSts").html("");
-		 // $("#lclCastStsShowBasicInfo").val("View Basic Voter Details");
 		  $("#localCastStatsVotersTitle").css({"background":"none repeat scroll 0 0 #FFF;"});
-		  //$("#votersbasicinfoForAgeWiseDetls").hide();
-			//$("#votersBasicInfoDivForAgeWiseDetls").html("");
-			//$("#votersBasicInfoSubChartDivForAgeWiseDetls").html("");
-			//$("#votersBasicInfoSubDivForAgeWiseDetls").html("");
-			//$("#ageWiseDetlsShowBasicInfo").val("View Basic Voter Details");
 			$("#votersTitle").html("");
 			$("#partyWiselocalcastDiv").html("");
 			$("#previousEleVotingTrendsDiv").html("");
@@ -1069,7 +1053,7 @@ function addToPolitician(voterId,name)
 			 $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
 	   }else if(type == "localElectionBody"){
 	      $("#impFamiliesMoreInfoButn").attr("value","View Ward Wise Family Details");
-	   }else if(/customWard1/i.test(type))
+	   }else if(/customWard/i.test(type))
 		 $("#impFamiliesMoreInfoButn").attr("value","View Locality Wise Family Details");
 	   else {
 	      $("#impFamiliesMoreInfoButn").attr("value","View More Details");
@@ -1116,6 +1100,7 @@ function addToPolitician(voterId,name)
 		 }
 		 if(/customWard/i.test(type))
 	   {
+	    $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Localities Wise Age Details</a>');
 	   $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 	   $("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
 	   $("#impFamiliesMoreInfoButn").css('display','none');
