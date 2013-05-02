@@ -1026,6 +1026,7 @@ color:#2A4F97;
 #censusTab{clear: both;margin-bottom: 10px;
     margin-top: 8px;}
 	#censusReportMainDiv{padding-bottom:1px;}
+	#castPopupShowBtn{margin-right: 4px;}
 </style>
 
 </SCRIPT>
