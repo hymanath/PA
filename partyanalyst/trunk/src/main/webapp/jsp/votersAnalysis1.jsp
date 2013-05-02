@@ -1026,7 +1026,6 @@ color:#2A4F97;
 #censusTab{clear: both;margin-bottom: 10px;
     margin-top: 8px;}
 	#censusReportMainDiv{padding-bottom:1px;}
-	#castPopupShowBtn{margin-right: 4px;}
 </style>
 
 </SCRIPT>
@@ -1940,7 +1939,7 @@ function showAllAgewiseDetails(){
    else if(pattern.test(maintype))
    {
 	
-		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='"+type+"'LocalArea'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='"+maintype+"LocalArea'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
    }
    
