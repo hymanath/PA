@@ -502,7 +502,7 @@ $(document).ready(function(){
   </div>
 </div>
 <div style="border:1px solid;">
-<div id="casteSelectDiv"></div>
+<div id="casteSelectDiv" style="text-align:center;border:1px solid #ccc;"></div>
 <div id="rangeSliderDiv" style="width:500px;margin:20px auto;border:1px solid #ccc;padding:10px 20px;" >
 <h5>Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
 <div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
