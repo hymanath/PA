@@ -27,7 +27,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	}
 	*/
 	public void testGetVotersCountForPanchayatByPublicationId(){
-		 boothPublicationVoterDAO.getPublicationUserCount(1l,8l,29l);
+		 boothPublicationVoterDAO.getPublicationUserCount(1l,8l,29l,IConstants.HAMLET);
 		//stem.out.println(count.size());
 		//System.out.println(count.get(0)+" ");
 		//System.out.println(count);

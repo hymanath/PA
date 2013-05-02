@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserVoterDetailsDAO extends GenericDaoHibernate<UserVoterDetails, Long> implements 
 IUserVoterDetailsDAO{
@@ -466,16 +467,20 @@ IUserVoterDetailsDAO{
 							" and model.locality.localityId is not null group by model.locality.localityId order by model.locality.name","ids",voterIds);
 	}
 	
-	public List<?> getVotersIdsByHamletId(Long hamletId,Long userId)
+	public List<?> getVotersIdsByHamletId(Long hamletId,Long userId,String locationType)
 	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.voter.voterId from UserVoterDetails model where model.user.userId = ? ");
 		
-		Query query = getSession().createQuery("select model.voter.voterId from UserVoterDetails model where" +
-				" model.hamlet.hamletId = ? and model.user.userId = ? ");
+		if(locationType.equalsIgnoreCase(IConstants.HAMLET))
+			queryStr.append(" and model.hamlet.hamletId = ? ");
+		else if(locationType.equalsIgnoreCase(IConstants.CUSTOMWARD))
+			queryStr.append(" and model.ward.constituencyId = ? ");
 		
-		query.setParameter(0, hamletId);
-		query.setParameter(1, userId);
-	
+		Query query = getSession().createQuery(queryStr.toString());
 		
+		query.setParameter(0, userId);
+		query.setParameter(1, hamletId);
 		
 		//return query.list();
 		
@@ -693,28 +698,25 @@ IUserVoterDetailsDAO{
 			
 			return query.list();
 		}
-		 public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long hamleId,Long publicationDateId)
+		 @SuppressWarnings("unchecked")
+		public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long id,Long publicationDateId,String type)
 			{
-				
 				StringBuilder query = new StringBuilder();
+				query.append("select distinct concat('Booth-',model1.booth.partNo) ,SUM( CASE WHEN model1.voter.gender='F' THEN 1 ELSE 0 END) as femalecount , ");
+				query.append(" SUM( CASE WHEN model1.voter.gender='M' THEN 1 ELSE 0 END) as malecount ");
+				query.append(" from UserVoterDetails model , BoothPublicationVoter model1 join model1.booth ");
+				query.append(" where model.voter.voterId = model1.voter.voterId and model.user.userId = :userId and ");
+				query.append(" model1.booth.publicationDate.publicationDateId = :publicationDateId and ");
+				if(type.equalsIgnoreCase(IConstants.HAMLET))
+				 query.append(" model.hamlet.hamletId = :id ");
+				else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+					query.append(" model.ward.constituencyId = :id ");
 				
-				query.append("select distinct concat('Booth-',model1.booth.partNo) , " +
-						"SUM( CASE WHEN model1.voter.gender='F' THEN 1 ELSE 0 END) as femalecount ," +
-						"SUM( CASE WHEN model1.voter.gender='M' THEN 1 ELSE 0 END) as malecount " +
-						"from UserVoterDetails model , " +
-						"BoothPublicationVoter model1 " +
-						   " join model1.booth " +
-						" where model.voter.voterId = model1.voter.voterId and " +
-						" model1.booth.publicationDate.publicationDateId = :publicationDateId and " +
-						" model.hamlet.hamletId = :hamletId " +
-						"and model.user.userId = :userId " +
-						"group by model1.booth.partNo ");
-				
-				
+				query.append(" group by model1.booth.partNo");
 				
 				Query queryObj = getSession().createQuery(query.toString()) ;
 				queryObj.setParameter("publicationDateId", publicationDateId);
-				queryObj.setParameter("hamletId", hamleId);
+				queryObj.setParameter("id", id);
 				queryObj.setParameter("userId", userId);
 				return queryObj.list();
 		
@@ -1143,6 +1145,22 @@ IUserVoterDetailsDAO{
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId",publicationDateId);
 		return query.list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllLocalitiesForHamletOrWard(Long userId, Long id,Long publicationDateId,String queryCond)
+	{
+		StringBuilder queryString = new StringBuilder();
+		queryString.append(" select distinct model.locality.localityId,model.locality.name from UserVoterDetails model,BoothPublicationVoter model1 where model.user.userId =:userId and ");
+		queryString.append(" model1.voter.voterId = model.voter.voterId and model1.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		queryString.append( queryCond);
+		Query queryObj = getSession().createQuery(queryString.toString());
+		queryObj.setParameter("id", id);
+		queryObj.setParameter("userId", userId);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		return queryObj.list();
+		
 	}
 	
 }
