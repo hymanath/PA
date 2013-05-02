@@ -637,7 +637,7 @@ public String getVoterDetails(){
 			String res=	jObj.getString("buildType");
 		String type=jObj.getString("type");
 		
-		if(type.equalsIgnoreCase("hamlet"))
+		if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase(IConstants.CUSTOMWARD))
 		{
 			res=jObj.getString("resultFor");
 		}
@@ -1565,7 +1565,7 @@ return Action.SUCCESS;
 			if(regVO == null)
 				return ERROR;
 			Long userId =  regVO.getRegistrationID();
-			isLocalityExist = votersAnalysisService.checkLocalityDataExist(jObj.getLong("id"),userId,jObj.getString("type"));
+			isLocalityExist = votersAnalysisService.checkLocalityDataExist(jObj.getLong("id"),userId,jObj.getString("type"),jObj.getLong("publicationDateId"));
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Occured in checkLocalityDataExist() Method, Exception - "+e);
