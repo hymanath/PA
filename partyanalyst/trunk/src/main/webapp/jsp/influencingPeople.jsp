@@ -52,7 +52,11 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
     <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
 <!-- YUI Dependency files (End) -->
-<script type="text/javascript" src="js/jQuery/jquery-1.5.2.js"></script>
+<!--<script type="text/javascript" src="js/jQuery/jquery-1.5.2.js"></script> -->
+<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
 <link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
