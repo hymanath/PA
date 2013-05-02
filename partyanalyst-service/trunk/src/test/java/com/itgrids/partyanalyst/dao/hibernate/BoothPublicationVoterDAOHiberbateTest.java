@@ -8,6 +8,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 
@@ -426,7 +427,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 	/*
 	 * public void tests(){ List<Object[]>
 	 * objlist=boothPublicationVoterDAO.getAssignedAndUnassignedVtrsOfLclBdy
-	 * (42l,1l); if(objlist != null && objlist.size() > 0) { for(Object[] params
+	 * (42l,1l,IConstants.HAMLET); if(objlist != null && objlist.size() > 0) { for(Object[] params
 	 * : objlist)
 	 * System.out.println(params[0].toString()+" "+params[1].toString()); }
 	 * 
