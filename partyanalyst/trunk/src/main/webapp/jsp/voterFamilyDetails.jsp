@@ -7,6 +7,8 @@
 <html>
 <head>
 
+<title>Family wise Voters details</title>
+
  <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> 
 
 <!-- YUI Dependency files (Start) -->
