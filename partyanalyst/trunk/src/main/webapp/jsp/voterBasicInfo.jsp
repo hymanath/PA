@@ -382,6 +382,14 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 	type="hamlet";
 	hresult="localArea";
 	}
+	if(type == "wardBooth"){
+	 hresult="booth";
+	type="customWard";
+	}
+	if(type == "wardLocal"){
+	type="customWard";
+	hresult="localArea";
+	}
   
 	var jsObj=
 			{

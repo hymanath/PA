@@ -485,7 +485,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
       	var type = '${type}';
 		//$("#voterCasteAjaxImg").css("display","none");
 
-		if((type =="hamlet" && buildType == "hamlet") || (type == "booth" && buildType == "hamlet") || (type =="panchayat" && buildType == "hamlet"))
+		if((type =="hamlet" && buildType == "hamlet") || (type == "booth" && buildType == "hamlet") || (type =="panchayat" && buildType == "hamlet") || (type =="customWard" && buildType == "hamlet"))
 		  $("#getLatestCastsSubcategoryWise").css("display","none");
 		else
 		 $("#getLatestCastsSubcategoryWise").css("display","block");
@@ -650,6 +650,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		else if(type =="customWard"){
 		   if(res == "booth")
 		   str +='<th>Booth</th>';
+		   else
+			str +='<th>Locality</th>';
 		//else
 		//str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
 			}
