@@ -8878,18 +8878,33 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			try{
 				List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
 				List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(localElectionBodyId);
-				List<Object[]> wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
-				if(wardsList != null && wardsList.size() >0)
-				{
-					
-					Map<Long,String> wardIds = new HashMap<Long,String>();
-					for (Object[] ward : wardsList){
-						wardIds.put((Long)ward[0], ward[1]!= null?ward[1].toString():"");
-					}
-					if(wardIds.size() > 0)
-						boothVotersList = getAllAgesWiseVotersDetails(getReportLevelId("Ward"), wardIds, publicationDateId,"Ward",constituencyId);
 				
+				String electionType = localElectionBodyDAO.get((Long) list.get(0)).getElectionType().getElectionType();
+				List<Object[]> wardsList = null;
+				String tempTypeVar = "";
+				if(electionType.equalsIgnoreCase(IConstants.GHMC))
+				{
+					wardsList = boothDAO.getWardsByLocalElecBodyId((Long) list.get(0),publicationDateId,constituencyId);
+					tempTypeVar = "ward";
 				}
+				else
+				{
+					wardsList = boothDAO.getBoothIdsByLocalEleBodyId((Long) list.get(0),publicationDateId,constituencyId);
+					tempTypeVar = "booth";
+				}
+				  if(wardsList != null && wardsList.size() >0)
+				  {
+					
+					  Map<Long,String> wardIds = new HashMap<Long,String>();
+					  for (Object[] ward : wardsList)
+					  {
+					    wardIds.put((Long)ward[0], ward[1]!= null?ward[1].toString():"");
+					  }
+					  if(wardIds.size() > 0)
+						boothVotersList = getAllAgesWiseVotersDetails(getReportLevelId(tempTypeVar), wardIds, publicationDateId,tempTypeVar,constituencyId);
+				
+				  }
+				
 				return boothVotersList;
 				}catch (Exception e) {
 				e.printStackTrace();
