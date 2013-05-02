@@ -220,7 +220,7 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Object[]> getVotersListInPanchayat(Long publicationDateId,Long panchayatId,Long userId);
 	
-	public List<Object[]> getAssignedAndUnassignedVtrsOfLclBdy(Long hamletId,Long userId);
+	public List<Object[]> getAssignedAndUnassignedVtrsOfLclBdy(Long id,Long userId,String type);
 	
 	public Integer deleteByIdsList(List<Long> idsList);
 
@@ -230,7 +230,7 @@ public interface IBoothPublicationVoterDAO extends
 	 public Long getLatestpublicationDate();
 	 public List<Long > getVoterIdsForuserByHamletForLocalities(Long userId,Long hamletIds);
 	 
-		public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForLocality(Long userId,Long localityId,Long  hamletId,Long  publicationDateId);
+		public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForLocality(Long userId,Long localityId,Long  hamletId,Long  publicationDateId,String type);
 		
 		public List<Voter> getVoterDetailsByCasteStateForPanchayatByHamlet(List<Long> voterIds,Long publicationDateId);
 		 public List<Object[]> getConstituenciesToMapPublicationData(Long fromPubliationId,Long toPublicationId);
@@ -270,7 +270,7 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	 public List<Object[]> findAllImpFamilesForParliament(List<Long> assemblyIdsList, Long publicationDateId, String queryString);
 	 
-	 public List<Object[]> getPublicationUserCount(Long userId,Long publicationDateId , Long Id);
+	 public List<Object[]> getPublicationUserCount(Long userId,Long publicationDateId , Long Id,String type);
 	 
 		public List<Voter> findFamiliesInfoForHamlet(Long hamletId,Long boothId,Long publicationDateId,String houseNo);
 		

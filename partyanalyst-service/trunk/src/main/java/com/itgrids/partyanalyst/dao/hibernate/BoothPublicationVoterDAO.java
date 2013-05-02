@@ -504,13 +504,18 @@ public class BoothPublicationVoterDAO extends
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForLocality(Long userId,Long localityId,Long  hamletId,Long  publicationDateId)
+	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForLocality(Long userId,Long localityId,Long  hamletId,Long  publicationDateId,String type)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model2.casteState.caste.casteName,model.voter.gender,count(model.voter.voterId),model2.casteState.casteStateId,model2.casteState.casteCategoryGroup.casteCategory.categoryName from BoothPublicationVoter model,UserVoterDetails model2 ");
 		str.append(" where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
-		str.append(" model2.hamlet.hamletId = :hamletId and ");	
-		str.append(" model2.locality.localityId = :localityId ");	
+		
+		str.append("  model2.locality.localityId = :localityId and ");	
+		if(type.equalsIgnoreCase(IConstants.HAMLET))
+			str.append(" model2.hamlet.hamletId = :hamletId  ");	
+		else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+			str.append(" model2.ward.constituencyId = :hamletId  ");
+		
 		str.append(" group by model2.casteState.caste.casteId,model.voter.gender order by model2.casteState.caste.casteName ");
 		
 		Query query = getSession().createQuery(str.toString()) ;
@@ -1743,13 +1748,13 @@ public List<Object[]> getVotersCountByPublicationIdForPanchayatByHamlets(Long us
 public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationDateId,String type){
 	StringBuilder query = new StringBuilder();
 	
-	query.append("select count(model.voter.voterId) from UserVoterDetails model , " +
-			"BoothPublicationVoter model1 " +
-			" where model.voter.voterId = model1.voter.voterId and " +
-			" model1.booth.publicationDate.publicationDateId = :publicationDateId" +
-			" and model.user.userId = :userId and model.hamlet.hamletId = :id");
-	
-	
+	query.append("select count(model.voter.voterId) from UserVoterDetails model , BoothPublicationVoter model1 ");
+	query.append(" where model.voter.voterId = model1.voter.voterId and model1.booth.publicationDate.publicationDateId = :publicationDateId ");
+	query.append(" and model.user.userId = :userId and ");
+	if(type.equalsIgnoreCase(IConstants.HAMLET))
+	 query.append(" model.hamlet.hamletId = :id ");
+	else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+	 query.append(" model.ward.constituencyId = :id ");
 	
 	Query queryObj = getSession().createQuery(query.toString()) ;
 	queryObj.setParameter("publicationDateId", publicationDateId);
@@ -2076,12 +2081,20 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		return (Long)queryObj.uniqueResult();
 	}
 	
-	public List<Object[]> getAssignedAndUnassignedVtrsOfLclBdy(Long hamletId,Long userId){ 
-		Query query =getSession().createQuery("select "+
-				" SUM( CASE when u.locality.localityId is not NULL THEN 1 else 0 END ) as result1 ,"+
-				" SUM( CASE when u.locality.localityId is NULL THEN 1 else 0 END) as result2 from UserVoterDetails u"+
-				" where u.hamlet.hamletId = :hamletId and u.user.userId = :userId");
-		query.setParameter("hamletId", hamletId);
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAssignedAndUnassignedVtrsOfLclBdy(Long id,Long userId,String type){ 
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select SUM( CASE when u.locality.localityId is not NULL THEN 1 else 0 END ) as result1 ,");
+		str.append(" SUM( CASE when u.locality.localityId is NULL THEN 1 else 0 END) as result2 from UserVoterDetails u ");
+		str.append(" where u.user.userId = :userId and ");
+		if(type.equalsIgnoreCase(IConstants.HAMLET))
+			str.append(" u.hamlet.hamletId = :id ");
+		else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+			str.append(" u.ward.constituencyId = :id ");
+		
+		Query query =getSession().createQuery(str.toString());
+		query.setParameter("id", id);
 		query.setParameter("userId", userId);
 		return query.list();
 		
@@ -2463,17 +2476,20 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		
 	  return queryObj.list();
 	}
-	public List<Object[]> getPublicationUserCount(Long userId,Long publicationDateId , Long Id)
+	public List<Object[]> getPublicationUserCount(Long userId,Long publicationDateId , Long Id,String type)
 	{
-		Query query = getSession().createQuery(
-				"select  count(b.voter.voterId) ," +
-						" SUM( CASE when u.locality.localityId is not NULL THEN 1 else 0 END ) as result1 ,"+
-						" SUM( CASE when u.locality.localityId is NULL THEN 1 else 0 END) as result2 "+
-				"from BoothPublicationVoter b , UserVoterDetails u join b.booth bb where " +
-	            " b.voter.voterId=u.voter.voterId and  u.hamlet.hamletId = :hamletId and u.user.userId = :userId and bb.publicationDate.publicationDateId = :publicationDateId " 
-				);
+		StringBuilder str = new StringBuilder();
+		str.append(" select  count(b.voter.voterId) , SUM( CASE when u.locality.localityId is not NULL THEN 1 else 0 END ) as result1 , ");
+		str.append(" SUM( CASE when u.locality.localityId is NULL THEN 1 else 0 END) as result2 from BoothPublicationVoter b , UserVoterDetails u ");
+		str.append(" join b.booth bb where b.voter.voterId=u.voter.voterId and u.user.userId = :userId and bb.publicationDate.publicationDateId = :publicationDateId and ");
+		if(type.equalsIgnoreCase(IConstants.HAMLET))
+			str.append(" u.hamlet.hamletId = :id ");
+		else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+			str.append(" u.ward.constituencyId = :id ");
 		
-		query.setParameter("hamletId", Id);
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("id", Id);
 		query.setParameter("userId", userId);
 		query.setParameter("publicationDateId", publicationDateId);
 		
