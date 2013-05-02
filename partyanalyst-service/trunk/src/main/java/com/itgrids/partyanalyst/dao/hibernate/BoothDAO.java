@@ -875,4 +875,18 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 			return query.list();
 		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getBoothIdsByLocalEleBodyId(Long id,Long publicationId,Long constituencyId)
+		{
+			Query queryObj = getSession().createQuery("select model.boothId,model.partNo from Booth model where model.localBody.localElectionBodyId =:id " +
+					" and model.publicationDate.publicationDateId =:publicationDateId and model.constituency.constituencyId =:constituencyId ");
+			
+			queryObj.setParameter("id", id);
+			queryObj.setParameter("publicationDateId", publicationId);
+			queryObj.setParameter("constituencyId", constituencyId);
+			
+			return queryObj.list();
+			
+		}
 }
