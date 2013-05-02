@@ -7,6 +7,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 	
@@ -34,7 +35,7 @@ public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 				List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,boothsList);
 			 * 
 			
-			  List<?> anil=	userVoterDetailsDAO.getVotersIdsByHamletId(42l,1l);
+			  List<?> anil=	userVoterDetailsDAO.getVotersIdsByHamletId(42l,1l,IConstants.HAMLET);
 			 List<?> hh =              userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(7l,anil);
 			 List<Object[]> list = userVoterDetailsDAO.getVotersCountByGenderForLocalAreas(hh);
 			System.out.println(list.size());
@@ -43,7 +44,7 @@ public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 				//System.out.println(objects[1]);
 				//System.out.println(objects[2]);
 			}
-		List<?> anil=	userVoterDetailsDAO.getVotersIdsByHamletId(42l,1l);
+		List<?> anil=	userVoterDetailsDAO.getVotersIdsByHamletId(42l,1l,IConstants.HAMLET);
 		 List<?> hh =              userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(7l,anil);
 		 List<Object[]> list = userVoterDetailsDAO.getAgeWiseInfoForUser(hh);
 			 for (Object[] objects : list) {
@@ -156,9 +157,18 @@ for (Object[] objects : list) {
 			}
 		}*/
 		
-		public void testGetBoothIdsByCustomWardId()
+		/*public void testGetBoothIdsByCustomWardId()
 		{
 			List<Long> list = userVoterDetailsDAO.getBoothIdsByCustomWardId(28858l,232l,8l);
 			System.out.println(list.size());
+		}*/
+		
+		public void testGetAllLocalitiesForHamletOrWard()
+		{
+			String queryStr = "model.ward.constituencyId = :id ";
+			List<Object[]> list = userVoterDetailsDAO.getAllLocalitiesForHamletOrWard(1l, 28858l,8l, IConstants.CUSTOMWARD);
+			System.out.println(list.size());
+			for(Object[] params : list)
+			 System.out.println(params[0]+" "+params[1]);
 		}
 }

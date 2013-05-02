@@ -70,7 +70,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getLocalityIdsForUser(Long hamletId , Long userId,List<?> voterIds);
 	public List<?> getVoterIdsBasedOnVoterIdsAndPublication(
 			 Long publicationDateId , List<?> voterIds);
-	public List<?> getVotersIdsByHamletId(Long hamletId,Long userId);
+	public List<?> getVotersIdsByHamletId(Long hamletId,Long userId,String locationType);
 	
 	public List<Long> getVoterIdsByLocalityForUser(Long localisyId,Long hamletId,Long userId,Long casteStateId);
 	public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds);
@@ -83,7 +83,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	 
 	 public List<Object[]> getTotalVotersCountInABooth(Long userId ,Long boothId,Long publicationDateId);
 	 public List<Long> getUserHamletsByBoothId(Long userId , Long boothId , Long pubId);
-	 public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long hamleId,Long publicationDateId);
+	 public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long id,Long publicationDateId,String type);
 	 public List<Long> getUserBoothsByHamletId(Long userId , Long hamletId , Long pubId , String condition);
 	 public List<Voter> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId,long publicationId);
 	 public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId,String type );
@@ -116,4 +116,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public void updateUserVoterDetailsForLocalityWithWard(Long voterId,Long userId,Long localitityId, Long wardId);
 	
 	public List<Long> getBoothIdsByCustomWardId(Long customWardId,Long constituencyId, Long publicationDateId);
+	
+	public List<Object[]> getAllLocalitiesForHamletOrWard(Long userId, Long id,Long publicationDateId,String queryCond);
+	
 }
