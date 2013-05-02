@@ -538,15 +538,17 @@ IUserVoterDetailsDAO{
 		
 	}
 	
-	public List<Long> getVoterIdsByLocalityForUser(Long localityId,Long hamletId,Long userId,Long casteStateId)
+	public List<Long> getVoterIdsByLocalityForUser(Long localityId,Long hamletId,Long userId,Long casteStateId,String queryStr)
 	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.voter.voterId from UserVoterDetails model where model.locality.localityId = :localityId and ");
+		str.append(" model.user.userId = :userId and model.casteState.casteStateId = :casteStateId and ");
+		str.append(queryStr);
 		
-		Query query = getSession().createQuery("select distinct model.voter.voterId from UserVoterDetails model" +
-				" where model.locality.localityId = :localityId and " +
-				"model.hamlet.hamletId = :hamletId and model.user.userId = :userId and model.casteState.casteStateId = :casteStateId");
+		Query query = getSession().createQuery(str.toString());
 		
 		query.setParameter("localityId", localityId);
-		query.setParameter("hamletId", hamletId);
+		query.setParameter("id", hamletId);
 		query.setParameter("userId", userId);
 		query.setParameter("casteStateId", casteStateId);
 		

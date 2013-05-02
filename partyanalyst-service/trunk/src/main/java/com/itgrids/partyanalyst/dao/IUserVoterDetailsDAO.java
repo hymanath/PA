@@ -72,7 +72,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 			 Long publicationDateId , List<?> voterIds);
 	public List<?> getVotersIdsByHamletId(Long hamletId,Long userId,String locationType);
 	
-	public List<Long> getVoterIdsByLocalityForUser(Long localisyId,Long hamletId,Long userId,Long casteStateId);
+	public List<Long> getVoterIdsByLocalityForUser(Long localisyId,Long hamletId,Long userId,Long casteStateId,String queryStr);
 	public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds);
 	public List<Object> getHamletsIdsForUserByPanchayat(Long panchayatId , Long userId );
 	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds);
