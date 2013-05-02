@@ -2552,7 +2552,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	
 	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type,String buildType,Long userId,Long hamletId)
 	{
-		
+		String queryStr = null;
 		List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
 		List<Voter> list = null;
 		//List<Voter> list = boothPublicationVoterDAO.getVoterDetailsByCaste(id, publicationDateId, caste);
@@ -2563,10 +2563,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		if(type.equalsIgnoreCase("booth"))
 		{
 		 list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId);
-		}else if(type.equalsIgnoreCase("locality"))
+		}else if(type.equalsIgnoreCase("hamletLocality") || type.equalsIgnoreCase("wardLocality"))
 		{
+			if(type.equalsIgnoreCase("hamletLocality"))
+				queryStr = " model.hamlet.hamletId = :id ";
+			else if(type.equalsIgnoreCase("wardLocality"))
+				queryStr = " model.ward.constituencyId = :id ";
 			
-			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsByLocalityForUser(id,hamletId,userId,casteStateId);
+			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsByLocalityForUser(id,hamletId,userId,casteStateId,queryStr);
 			
 			list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
 			
