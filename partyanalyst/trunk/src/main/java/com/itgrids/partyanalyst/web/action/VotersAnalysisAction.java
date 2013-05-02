@@ -1129,6 +1129,8 @@ return Action.SUCCESS;
 }
 
 	public String getAgewiseVoterDetails(){
+		
+               
 	 Long userId1 =null;
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
@@ -1162,18 +1164,19 @@ return Action.SUCCESS;
 		
 		
 		
-		if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase("hamletLocalArea") || type.equalsIgnoreCase("hamletBooths") || type.equalsIgnoreCase("customWard")  )
+		if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase("hamletLocalArea") || type.equalsIgnoreCase("hamletBooths") || type.equalsIgnoreCase("customWard") || type.equalsIgnoreCase("customWardLocalArea")  )
 		{ 	 
 			myType=type;
-			if(!myType.equalsIgnoreCase("customWard"))
-		  { myType = "hamlet";
+			if(!(myType.equalsIgnoreCase("customWard") || type.equalsIgnoreCase("customWardLocalArea")) )
+		  {
+				myType = "hamlet";
 			  
-		  }
+		  }else if(type.equalsIgnoreCase("customWardLocalArea")) myType = IConstants.CUSTOMWARD;
 			 
 			votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,panchayatId , userId1, publicationDateId,myType);	
 		
 		}else 
-			if(!type.equalsIgnoreCase("hamletLocalArea") ){
+			if(!(type.equalsIgnoreCase("hamletLocalArea") || type.equalsIgnoreCase("customWardLocalArea")) ){
 			
 		votersDeatailsForConstituency = votersAnalysisService.getVoterAgeWiseDetails(constituencyId, mandalId,
 		panchayatId , boothId, publicationDateId,type);
@@ -1208,12 +1211,14 @@ return Action.SUCCESS;
 				constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 				}
 		
-	      else if (type.equalsIgnoreCase("hamletLocalArea")){
+	    
+		else if (type.equalsIgnoreCase("hamletLocalArea") || type.equalsIgnoreCase("customWardLocalArea") ){
 			
 			//boothVotersDetails = votersAnalysisService.getAgewiseVotersDetForBoothsByPanchayatId(panchayatId,publicationDateId, type,constituencyId);
 			//if(boothVotersDetails == null || boothVotersDetails.size() == 0)
 			
-	    	  boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForLocalAreaByHamletId(panchayatId,publicationDateId,userId1);
+	    
+			boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForLocalAreaByHamletId(panchayatId,publicationDateId,userId1,type);
 		
 			constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 			}
