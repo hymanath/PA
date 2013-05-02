@@ -225,7 +225,7 @@ public interface IVotersAnalysisService {
 	
     public List<SelectOptionVO> getConstituenciesToMapPublicationData(Long fromPublicationId,Long toPublicationId);
     
-    public List<VotersDetailsVO> getAgewiseVotersDetailsForLocalAreaByHamletId(Long hamletId,Long publicationDateId,Long userId);
+    public List<VotersDetailsVO> getAgewiseVotersDetailsForLocalAreaByHamletId(Long hamletId,Long publicationDateId,Long userId ,String type);
     
 	public List<String> storeVoterDetails(Map<String , VoterVO> votersMap , Long boothId);
 	
