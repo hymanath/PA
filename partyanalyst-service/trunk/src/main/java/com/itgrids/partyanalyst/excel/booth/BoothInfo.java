@@ -12,6 +12,18 @@ public class BoothInfo {
 	private String totalVoters;
 	private String censusCode;
 	
+	private Long boothId;
+	
+	
+	
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+
 	public BoothInfo(){
 		
 	}
@@ -20,7 +32,7 @@ public class BoothInfo {
 			String partName, String location, String villagesCovered,
 			String mandalName, String maleVoters, String femaleVoters,
 			String totalVoters, String constituencyName, String constituencyNo,
-			String censusCode) {
+			String censusCode,Long boothId) {
 		super();
 		this.partNo = partNo;
 		this.partName = partName;
@@ -31,6 +43,7 @@ public class BoothInfo {
 		this.femaleVoters = femaleVoters;
 		this.totalVoters = totalVoters;
 		this.censusCode = censusCode;
+		this.boothId = boothId;
 	}
 
 	public String getPartNo() {
