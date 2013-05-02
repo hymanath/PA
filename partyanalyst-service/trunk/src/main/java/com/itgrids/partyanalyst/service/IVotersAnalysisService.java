@@ -244,7 +244,7 @@ public interface IVotersAnalysisService {
 	 public List<VoterHouseInfoVO> getMultipleFamiliesInformationForHamlet(
 				List<VoterHouseInfoVO> familiesList, Long userId, String selectType);
 	 
-	 public String checkLocalityDataExist(Long hamletId, Long userId,String type);
+	 public String checkLocalityDataExist(Long hamletId, Long userId,String type,Long publicationDateId);
 	 
 	 public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByBoothId(Long boothId,Long publicationDateId,Long userId,String Type);
 	 
