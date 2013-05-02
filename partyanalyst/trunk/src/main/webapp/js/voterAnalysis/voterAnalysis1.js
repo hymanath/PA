@@ -1157,7 +1157,7 @@ function addToPolitician(voterId,name)
 		if(type == "hamlet")
 		 checkLocalityDataExist();
 		else if(/customWard/i.test(type)){
-		$("#ageLink").hide();
+		//$("#ageLink").hide();
 		 $("#impFamiliesMoreInfoButn").css('display','none');
 		 //$("#castPopupShowBtn").css('display','none');
 		 $("#castPopupShowBtn").attr("value","Locality wise Caste Info");
