@@ -5550,9 +5550,46 @@ function showPreviousEleVotingTrends(results,jsObj)
 	}
 
 
+	var electionYearsForChrt=[];
 function getDataResultsForTotalVoters(resultsArr)
 {
-	var tempLine = new Array();
+	var partiesListArr=resultsArr[0].partiesList
+	var party;
+	var partyResultArr;
+	var electionResult=[];
+	
+	var electionYr;
+	
+	var clmTemp ;
+	var partyIn;
+	//clmTemp['name'] = reqObj['reqType'] + reqObj['electionYear'];
+	//debugger;
+			for(var k in resultsArr[0].partiesList){
+			    clmTemp = new Object();
+				party=resultsArr[0].partiesList[k];
+				partyResultArr=[];
+				clmTemp['name']=party;
+				for(var i in resultsArr){
+					var reqObj = resultsArr[i];
+					electionYr = reqObj['reqType'] + reqObj['electionYear'];
+					if($.inArray(electionYr, electionYearsForChrt)==-1){
+						electionYearsForChrt.push(electionYr);
+					}
+					
+					for( var j in reqObj.partyVotesEarnedVOs){
+						partyIn=reqObj.partyVotesEarnedVOs[j].partyName;
+						if(partyIn==party){
+
+							partyResultArr.push(reqObj.partyVotesEarnedVOs[j].votesEarned);
+						}
+					}
+				}
+				clmTemp['data'] = partyResultArr;
+				electionResult.push(clmTemp);
+			}
+			return electionResult;
+	
+	/*var tempLine = new Array();
 
 	// building column
     for(var i in resultsArr) 
@@ -5571,7 +5608,7 @@ function getDataResultsForTotalVoters(resultsArr)
 			tempLine.push(clmTemp);	
 	}
 	
-	return tempLine;	
+	return tempLine;	*/
 }
 
 function PreviousEleVotingTrendsHighChat(results,jsObj){
@@ -5588,7 +5625,7 @@ function PreviousEleVotingTrendsHighChat(results,jsObj){
                 text: ''
             },
             xAxis: {
-                categories:results[0].partiesList,
+                categories:electionYearsForChrt,
 				
                 title: {
                     text: null

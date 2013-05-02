@@ -502,6 +502,7 @@ $(document).ready(function(){
   </div>
 </div>
 <div style="border:1px solid;">
+<div id="casteSelectDiv"></div>
 <div id="rangeSliderDiv" style="width:500px;margin:20px auto;border:1px solid #ccc;padding:10px 20px;" >
 <h5>Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
 <div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
@@ -786,6 +787,7 @@ function callAjax(jsObj,url)
 								{  
 									castePercent = myResults.castPercent;
 									buildCastInfoForSubLevels(myResults,jsObj);
+									buildCastSubLevelsDiv(myResults);
 									
 								}
 								else if(jsObj.task == "getAgewiseVoterDetails"){
@@ -2849,6 +2851,118 @@ votersRange=$( "#slider" ).slider( "value" );
 
 function buildGraphBySlide(){
 buildHamletWiseCastResultsGraph(null,votersRange);
+}
+
+//Selecting individual castes For Chart
+function buildCastSubLevelsDiv(myResults)
+{
+	var castStateIdsArr = new Array();
+	var str ='';
+	$("#casteSelectDiv").html('');
+	if(myResults != null && myResults.castVosList.length > 0)
+	{
+		$("#casteSelectDiv").addClass('casteSelectDivCls');
+		str +='<div>';
+		str +='<div id="castErrorDiv"></div>';
+		str +='<h4>Select Options To View Caste Wise Voter Analysis</h4>';
+		
+		str +='<input id="castSelectRadio" type="radio" checked="true" name="castTypeRadio" value="All" onclick="buildCastInfoBasedOnOptions(\'all\')" /><b>All</b>';
+
+		str +='<input id="castAllRadio" type="radio" name="castTypeRadio" value="castWise" onclick="buildCastInfoBasedOnOptions(\'selected\')" /><b>Caste Wise</b>';
+		
+		str += '<div id="casteHideAndShowOptionsDiv" style="display:none;">';
+		 str += '<select class="selectBoxStyle" id="castSelectdId" multiple="multiple">';
+		 var casteInfo = myResults.castVosList;
+		 var casteIdsArray = new Array();
+		 var castesSortedArray= [];
+		 
+		 for(var i=0;i<casteInfo.length;i++)
+		 {
+		   if(casteInfo[i].voterCastInfoVO.castVOs != null && 
+			   casteInfo[i].voterCastInfoVO.castVOs.length > 0)
+			 {
+				for(var j=0;j<casteInfo[i].voterCastInfoVO.castVOs.length;j++)
+				 {
+					if(casteIdsArray.indexOf(casteInfo[i].voterCastInfoVO.castVOs[j].castStateId) == -1)
+					 {
+						casteIdsArray.push(casteInfo[i].voterCastInfoVO.castVOs[j].castStateId);
+						
+						var obj={
+							caste:casteInfo[i].voterCastInfoVO.castVOs[j].castName,
+							id:casteInfo[i].voterCastInfoVO.castVOs[j].castStateId
+						}
+						castesSortedArray.push(obj);
+					
+						/*castesSortedArray.sort(sort_by('caste', true, function(a){return a.toUpperCase()}));
+				
+									
+						str += '<option value="'+casteInfo[i].voterCastInfoVO.castVOs[j].castStateId+'">'+casteInfo[i].voterCastInfoVO.castVOs[j].castName+'</option>';*/
+					 }
+				 }
+			 }
+		 }
+
+		 castesSortedArray.sort(sort_by('caste', true, function(a){return a.toUpperCase()}));
+				
+		for(var k=0;k<castesSortedArray.length;k++)
+		{
+			str += '<option value="'+castesSortedArray[k].Id+'">'+castesSortedArray[k].caste+'</option>';
+		}
+
+		
+		  str += '</select>';
+		  str +='<input type="button" style="margin-left: 24px;font-weight:bold;margin-top: -33px;" onclick="buildCastWiseChart()" value="View" class="btn btn-info">';
+		  str +='<p id="notePara">Press Ctrl Key To Select Multiple Castes</p>';
+		  str +='</div>';
+		  str +='</div>';
+		  $("#casteSelectDiv").html(str);
+	}
+}
+
+var sort_by = function(field, reverse, primer){
+
+   var key = function (x) {return primer ? primer(x[field]) : x[field]};
+
+   return function (a,b) {
+       var A = key(a), B = key(b);
+       return ((A < B) ? -1 :
+               (A > B) ? +1 : 0) * [-1,1][+!!reverse];                  
+   }
+}
+
+function buildCastInfoBasedOnOptions(option)
+{
+	
+	if(option == "all")
+	{
+		$("#casteHideAndShowOptionsDiv").css('display','none');
+		buildHamletWiseCastResultsGraph(null,null);
+	}
+	else
+		$("#casteHideAndShowOptionsDiv").css('display','block');
+	
+		
+}
+
+function buildCastWiseChart()
+{
+	$("#castErrorDiv").html('');
+	var selectedCastArray = new Array();
+	var selecteObj = document.getElementById('castSelectdId');
+	for(var i=0;i<selecteObj.options.length;i++)
+	{
+		if(selecteObj.options[i].selected)
+		{
+		  selectedCastArray.push(selecteObj.options[i].text);
+		}
+	}
+	if(selectedCastArray.length == 0)
+	{
+		$("#castErrorDiv").html('Please select at least one caste.');
+		return;
+	}
+	
+	  buildHamletWiseCastResultsGraph(selectedCastArray,null);
 }
 
 function getBoothPArtiesAndElections()
