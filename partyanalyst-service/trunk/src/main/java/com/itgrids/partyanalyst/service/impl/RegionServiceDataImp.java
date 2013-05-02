@@ -907,6 +907,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			for (int i = 0; i < resultsList.size(); i++) {
 				Object[] obj = (Object[]) resultsList.get(i);
 				BoothInfo boothInfo = new BoothInfo();
+				boothInfo.setBoothId((Long)obj[2]);
 				boothInfo.setPartNo(obj[3].toString());
 				boothInfo.setLocation(obj[4].toString());
 				boothInfo.setVillagesCovered(obj[5].toString());
