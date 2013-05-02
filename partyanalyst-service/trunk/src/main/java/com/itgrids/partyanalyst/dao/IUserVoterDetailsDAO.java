@@ -66,7 +66,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public Long getTotalVotersCountInALocality(Long userId ,Long hamletId,Long localityId,Long publicationDateId);
 	public List<Long> getVoterIdsForuserByHamletIdsByCaste(Long userId ,Long hamletId,Long casteStateId);
 	
-	public List<Object[]> getVotersCountByGenderForLocalAreas(List<?> voterIds);
+	public List<Object[]> getVotersCountByGenderForLocalAreas(List<?> voterIds , Long userId);
 	public List<Object[]> getLocalityIdsForUser(Long hamletId , Long userId,List<?> voterIds);
 	public List<?> getVoterIdsBasedOnVoterIdsAndPublication(
 			 Long publicationDateId , List<?> voterIds);
@@ -75,7 +75,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Long> getVoterIdsByLocalityForUser(Long localisyId,Long hamletId,Long userId,Long casteStateId,String queryStr);
 	public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds);
 	public List<Object> getHamletsIdsForUserByPanchayat(Long panchayatId , Long userId );
-	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds);
+	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds );
 	 public List<?> getVotersDetailsByHamletPublication(Long hamletId, Long userId, Integer startIndex,
 				Integer maxRecords, String order, String columnName);
 	 public List<?> getVotersBasedOnVoterIdsAndPublication(Long publicationDateId , List<?> voterIds,String coloumName , String order);
@@ -91,11 +91,11 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	 
 	 public List<Object[]> getVoterDataForHamlet(Long hamletId , Long publicationId ,Long startIndex, Long maxIndex , String sort,String order );
 
-	 public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,String male,String female,long ...age);
+	 public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,Long userId,String male,String female,long ...age);
 	 
 	 public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId ,String type,String male,String female,long ...ages);
 	 
-	 public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds,String male,String female,long ...ages);
+	 public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds,Long userId,String male,String female,long ...ages);
 	 
 	 public List<Object[]> getLocalityIdsForUser(Long hamletId , Long userId,List<?> voterIds,String male,String female,long ...ages);
 	 
