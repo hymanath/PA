@@ -361,7 +361,6 @@ function getBoothsInWard(address, constituencyField, boothField, id, module, mun
  */
 function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 {  
-
 	var boothsSelectEl = document.getElementById(boothSelectEl);
 	var boothsSelectElOptions = boothsSelectEl.options; 
 	var boothIdsStr = '';	
@@ -428,7 +427,7 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 		
 		for(var i in myResults)
 		{
-			var obj = {				
+			var obj = {	RadioCheck:"<input type='radio'  id='boothIdRadio' name='boothIdRadio' value="+results[i].boothId+">",			
 						mandal : results[i].mandalName,
 						partNo: results[i].partNo,
 						location: results[i].location,
@@ -450,7 +449,8 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 
 		var myColumnDefs = [
 		
-		//{key:"partNo",label:"Booth Part No",sortable:true, resizeable:true},	
+		//{key:"partNo",label:"Booth Part No",sortable:true, resizeable:true},
+		{key:"RadioCheck",label:"Select"},
 		{key:"partNo", label: "Booth Part No",sortable:true, resizeable:true,formatter:YAHOO.widget.DataTable.Type},
 		{key:"location",label:"Booth Location", resizeable:true},
 		{key:"villagesCovered",label:"Villages Covered", resizeable:true},
@@ -468,7 +468,7 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 		var myDataSource = new YAHOO.util.DataSource(localArr);
 		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 		myDataSource.responseSchema = {
-			fields: ["mandal","partNo","location", "villagesCovered"]
+			fields: ["RadioCheck","mandal","partNo","location", "villagesCovered"]
 		};					
 
 		buildBoothCompleteDetailsPanel(myColumnDefs,myDataSource,configs);
@@ -479,6 +479,9 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 	
 	 function buildBoothCompleteDetailsPanel(myColumnDefs,myDataSource,configs)
 	 {
+
+			var elmtsValue = '';
+			var elmts = '';
 		  	var contentStr = '';
 		 	contentStr +='<div class="yui-skin-sam"><div id="boothsDetailsDiv"></div></div>';
 		 	/* var myPanel = new YAHOO.widget.Dialog("boothDetailsPopup", {             
@@ -503,10 +506,29 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 								show: "blind",
 								hide: "explode",
 								modal: true,
-	                             buttons: {
-							   "Close":function() {$(this).dialog("close")}
-								   }	
+								
+	                             buttons:[ 
+								
+								 {	text: "Add",
+									"click":function(){
+								/*UPdated Here For getting populate in Booth SelectBox */
+								   elmts = document.getElementsByName("boothIdRadio");
+								   for(var i=0; i<elmts.length; i++){
+										if(elmts[i].checked == true){
+										elmtsValue = elmts[i].value;
+										$("#boothField option[value='" + elmtsValue + "']").attr("selected", "selected");
+										}
+								   }
+								}    
+							},
 
+							{	text:"Close",
+								"click":function() {		
+								  $(this).dialog("close");
+								  }
+								  },	 
+						],
+					
 				});
 				$('#boothDetailsPopup').html(contentStr);
 				
