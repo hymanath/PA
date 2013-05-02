@@ -410,7 +410,7 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
-	public List<Object[]> getVotersCountByGenderForLocalAreas(List<?> voterIds)
+	public List<Object[]> getVotersCountByGenderForLocalAreas(List<?> voterIds , Long userId)
 	{
 		
 		Query query = getSession().createQuery("select distinct model.locality.name," +
@@ -418,9 +418,10 @@ IUserVoterDetailsDAO{
 				"SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount " +
 				" from UserVoterDetails model  " +
 		        " join model.locality " +
-				"where model.voter.voterId in(:voterIds)    group by model.locality.name ");
+				"where model.voter.voterId in(:voterIds) and model.user.userId = :id    group by model.locality.name ");
 		
 		query.setParameterList("voterIds", voterIds);
+		query.setParameter("id", userId);
 		
 		return query.list();
 		
@@ -880,7 +881,7 @@ IUserVoterDetailsDAO{
 	* @return Object[]  
 	*/
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,String male,String female,long ...ages){
+	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,Long userId,String male,String female,long ...ages){
 		StringBuilder query = new StringBuilder();
 		Query queryObject = null;
 		query.append("select distinct model.hamlet.hamletId,model.hamlet.hamletName ," +
@@ -893,13 +894,14 @@ IUserVoterDetailsDAO{
 			}			
 		query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
 		query.append(getAllAgesQuery(ages));
-		query.append("from UserVoterDetails model  where  model.voter.voterId in(:voterIds) " +
+		query.append("from UserVoterDetails model  where  model.voter.voterId in(:voterIds) and model.user.userId = :id " +
 					" and model.hamlet.hamletId is not null group by model.hamlet.hamletId order by model.hamlet.hamletName");
 							
 		queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter("male", male);
 		queryObject.setParameter("female", female);			
 		queryObject.setParameterList("voterIds", voterIds);
+		queryObject.setParameter("id", userId);		
 		for(int i=0;i<ages.length;i++)
 				queryObject.setParameter("AGE"+ages[i], ages[i]);
 		return queryObject.list();
@@ -979,7 +981,7 @@ IUserVoterDetailsDAO{
 	 * @return Object[]  
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds,String male,String female,long ...ages) {
+	public List<Object[]> getAgeWiseInfoForUser(List<?> voterIds,Long userId,String male,String female,long ...ages) {
 		StringBuilder query = new StringBuilder();
 		query.append(" select count( distinct model.voter.voterId), ");
 			if(ages.length%2==0)
@@ -989,11 +991,12 @@ IUserVoterDetailsDAO{
 			}			
 			query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
 			query.append(getAllAgesQuery(ages));							
-			query.append(" from UserVoterDetails model  where  model.voter.voterId in(:voterIds) ");
+			query.append(" from UserVoterDetails model  where  model.voter.voterId in(:voterIds)  and model.user.userId = :id ");
 			Query queryObject = getSession().createQuery(query.toString());		
 			queryObject.setParameterList("voterIds", voterIds);
 			queryObject.setParameter("male", male);
 			queryObject.setParameter("female", female);
+			queryObject.setParameter("id", userId);
 			for(int i=0;i<ages.length;i++)
 				queryObject.setParameter("AGE"+ages[i], ages[i]);
 		return queryObject.list();					
@@ -1023,12 +1026,13 @@ IUserVoterDetailsDAO{
 			query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
 			query.append(getAllAgesQuery(ages));						
 		
-			query.append(" from UserVoterDetails model  where  model.voter.voterId in(:voterIds) " +
+			query.append(" from UserVoterDetails model  where  model.voter.voterId in(:voterIds) and  model.user.userId = :id " +
 						" and model.locality.localityId is not null group by model.locality.localityId order by model.locality.name");
 			Query queryObject = getSession().createQuery(query.toString());
 			queryObject.setParameter("male", male);
 			queryObject.setParameter("female", female);			
 			queryObject.setParameterList("voterIds", voterIds);
+			queryObject.setParameter("id", userId);
 			for(int i=0;i<ages.length;i++)
 					queryObject.setParameter("AGE"+ages[i], ages[i]);
 			return queryObject.list();	
