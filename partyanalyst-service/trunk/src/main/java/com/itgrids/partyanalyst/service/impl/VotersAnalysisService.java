@@ -12180,7 +12180,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			importantFamiliesInfoVo.setType("Hamlet");
 			//importantFamiliesInfoVo.setName("booth-"+boothDAO.get(id).getPartNo());
 			importantFamiliesInfoVo.setName(hamletDAO.get(id).getHamletName());
-			importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCountForHamlet(userId , id,publicationDateId,"booth"));
+			importantFamiliesInfoVo.setTotalVoters(boothPublicationVoterDAO.getTotalVotersCountForHamlet(userId , id,publicationDateId,"hamlet"));
 			
 			
 			VotersInfoForMandalVO votersInfoForBooth = getVotersCountDetailsForHamlet(userId , type, id, publicationDateId, exeType);
