@@ -2653,7 +2653,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					   return new ArrayList<VotersDetailsVO>();
 				
 				//List<Object[]> list = userVoterDetailsDAO.getAgeWiseInfoForUser(filter);
-				List<Object[]> list = userVoterDetailsDAO.getAgeWiseInfoForUser(filter,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+				List<Object[]> list = userVoterDetailsDAO.getAgeWiseInfoForUser(filter,boothId,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 				
 				if(list == null || list.size()==0)	
 				{   
@@ -12606,7 +12606,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			
 			
 			//List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter);
-		    List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+		    List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter,userId,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 		    if(list == null || list.size()==0)	
 			{   
 				return boothVotersList;	
@@ -12675,21 +12675,29 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			
 		}
 		
-		public List<VotersDetailsVO> getAgewiseVotersDetailsForLocalAreaByHamletId(Long hamletId,Long publicationDateId,Long userId){
+		public List<VotersDetailsVO> getAgewiseVotersDetailsForLocalAreaByHamletId(Long hamletId,Long publicationDateId,Long userId ,String type){
 			//[];
 			//List<Object[]> booths = boothDAO.getBoothsInAPanchayat(panchayatId, publicationDateId);
 			                        
 		   // List<Object[]> hamlets =  userVoterDetailsDAO.getHamletsIdsForUser(hamletId, userId);
+		
+			Map m =new HashMap();
+			    m.put("hamletLocalArea",IConstants.HAMLET);
+			    m.put("customWardLocalArea", IConstants.CUSTOMWARD);
+			   if(!m.containsKey(type))
+				   return null;
 			
-			 List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
+			List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
 			
-			List<?> voterIds=	userVoterDetailsDAO.getVotersIdsByHamletId(hamletId,userId,IConstants.HAMLET);
+			List<?> voterIds= null;//	userVoterDetailsDAO.getVotersIdsByHamletId(hamletId,userId);
+			
+			voterIds  =   boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(hamletId, userId,(String) m.get(type));
 			   if(voterIds == null || voterIds.size()==0)
 				   return new ArrayList<VotersDetailsVO>();
 			List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,voterIds);
 			if(filter == null || filter.size()==0)
 				   return new ArrayList<VotersDetailsVO>();
-			
+		    	
 			//List<Object[]> hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter);
 			  List<Object[]> hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 		   
@@ -13147,7 +13155,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			List<Long> hamletIds = new ArrayList<Long>();
 			
 			
-			List<Object[]> hamletsList = userVoterDetailsDAO.getVotersCountByGenderForLocalAreas(filter);
+			List<Object[]> hamletsList = userVoterDetailsDAO.getVotersCountByGenderForLocalAreas(filter,userId);
 			
 			int totalFemaleVoters = 0;
 			int totalMaleVoters = 0;
