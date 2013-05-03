@@ -58,7 +58,7 @@
 		height: 200px;
 	}
 
-	.ui-autocomplete-input { border-radius:3px;margin: 0; height:25px; position:relative; width:133px; -moz-border-radius:0px 0px 0px 0px;border:1px solid #CCCCCC;margin-bottom:8px;}
+	.ui-autocomplete-input { border-radius:3px;margin: 0; height:25px; position:relative; width:120px; -moz-border-radius:0px 0px 0px 0px;border:1px solid #CCCCCC;margin: 0 5px 8px;}
 tr.labelClass1 td{background-color:#c3c3c3;}
 .labelClass{float:left;margin:3px 7px 0px 0px;}
 #voterEditDetailsShowDIV table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color:#676A67;}
@@ -74,6 +74,7 @@ tr.diffColor td { background-color: yellow;}
 #directionsDiv{display:none;position:fixed;z-index:1;background-color:yellow;border-radius:4px;margin:70px;margin-top:91px;}
 #updateBtn{position:fixed;top:175px;right:0px; z-index: 999;}
 .noMargin{margin:0px}
+
 </style>
 </head>
 <body>
@@ -228,12 +229,12 @@ var selectedVotersNewArr = new Array();
 	 $('.fields').live("change",function(){
 		
 		 var value = $(this).val();
-
+				
 		 var indextoShow = $('#votersDetailsTable tr th').filter(
            function(){
            return $(this).text() == value;
           }).index();
-
+		  
 		 if($(this).is(":checked")){	 
             $('#votersDetailsTable  th').eq(indextoShow).show();
 			$('#votersDetailsTable tbody tr').each(function() {
@@ -352,7 +353,7 @@ function buildSelectedVotersData(results)
 
 		str+='<label class="labelClass"><input type="checkbox" value="Local Area" class="fields" checked="true" style="margin:0px;"/>&nbsp;Local Area</label>';
 
-     
+		str+='<label class="labelClass"><input type="checkbox" value="Mobile No" class="fields noMargin"  style="margin:0px;"/>&nbsp;Mobile No</label>';
 
        for(var id in results.userCategoriesList)
 		   
@@ -382,7 +383,7 @@ function buildSelectedVotersData(results)
 			str+='<th style="text-align:justify;">House No</th>';
 			str+='<th style="text-align:justify;">Gaurdian Name</th>';
 			str+='<th style="text-align:justify;">Relation</th>';
-			
+			str+='<th style="text-align:center;">Mobile No</th>';
 			str+='<th style="text-align:justify;">Age</th>';
 			str+='<th style="text-align:justify;">Gender</th>';			
 			str+='<th style="text-align:justify;">Caste</th>';
@@ -426,8 +427,19 @@ function buildSelectedVotersData(results)
 				else if(voters[k].relationship == "Elector")
 					str+='<td>E</td>';	
 				else 
-					str+='<td></td>';	
-				
+					str+='<td></td>';
+				 if(voters[k].mobileNo== null)
+				{
+					str+='<td>';
+					str+='<input type="text" id="mobileNo'+voters[k].voterId+'"style="width:80px; margin-right: 12px;" class="mobileSelect"></input>';
+					str+='</td>';
+				}
+				else
+				{
+					str+='<td>';
+					str+='<input type="text" id="mobileNo'+voters[k].voterId+'"style="width:80px; margin-right: 12px;" class="mobileSelect" value="'+voters[k].mobileNo+'"></input>';
+					str+='</td>';
+				} 
 			   // str+='<td>'+voters[k].relationship+'</td>';				
 			    str+='<td>'+voters[k].age+'</td>';
 				str+='<td>'+voters[k].gender+'</td>';
@@ -542,7 +554,7 @@ function buildSelectedVotersData(results)
 	  $('#votersDetailsTable').dataTable({
 		  "iDisplayLength" : totalNoOfVoters		
 	  });
-		  var values = ["Gender","Relation","Age","Gaurdian Name"];
+		  var values = ["Gender","Relation","Age","Gaurdian Name","Mobile No"];
 
 		   for(var id in results.userCategoriesList)
 			   values.push(results.userCategoriesList[id].name);
@@ -631,7 +643,6 @@ function updatedetailsBasedOnSelection()
 
 function updateAllSelectedVotersDetails1()
 {
-
 	if(selectedVotersToUpdate.length == 0){
 		alert("Select atleast one recore to update");
 		return false;
@@ -646,7 +657,8 @@ function updateAllSelectedVotersDetails1()
 		 obj["partyId"] = $('#party'+selectedVotersToUpdate[i]).val();
 		 obj["casteId"] = $('#caste'+selectedVotersToUpdate[i]).val();
 		 obj["voterId"] = selectedVotersToUpdate[i];
-
+		 
+		 
 		 if ($('#locality'+selectedVotersToUpdate[i]).length )
 			obj["hamletId"] = $('#locality'+selectedVotersToUpdate[i]).val();
 		 else
@@ -722,7 +734,7 @@ function updateAllSelectedVotersDetails1()
 		 obj["partyId"] = $('#party'+votersToUpdate[i]).val();
 		 obj["casteId"] = $('#caste'+votersToUpdate[i]).val();
 		 obj["voterId"] = votersToUpdate[i];
-
+		 obj["mobileId"]= $('#mobileNo'+votersToUpdate[i]).val();
 		 if ($('#locality'+votersToUpdate[i]).length )
 			obj["hamletId"] = $('#locality'+votersToUpdate[i]).val();
 		 else
