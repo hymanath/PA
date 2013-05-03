@@ -7942,6 +7942,24 @@ public class StaticDataService implements IStaticDataService {
 		}
 	}
 	
+	public List<SelectOptionVO> getLatestConstituenciesByStateIdAndType(Long stateId,String locationType) {
+		List<SelectOptionVO> data = new ArrayList<SelectOptionVO>();
+		try {
+			List result = constituencyDAO.getLatestConstituenciesByStateId(
+					locationType, stateId);
+			for (int i = 0; i < result.size(); i++) {
+				Object[] parms = (Object[]) result.get(i);
+				SelectOptionVO vo = new SelectOptionVO();
+				vo.setId((Long) parms[0]);
+				vo.setName(parms[1].toString());
+				data.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
+	
 	
 	public MandalVO findListOfElectionsAndPartiesInPanchayat(Long panchayatId)
 	{

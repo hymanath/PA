@@ -548,13 +548,21 @@ public class CadreManagementService {
 				currentAddress.setStreet(cadreInfo.getStreet());
 				currentAddress.setPinCode(cadreInfo.getPinCode());
 				currentAddress.setState(stateDAO.get(new Long(cadreInfo.getState())));
-				if("MP".equals(cadreInfo.getAccessType()))
+				if("MP".equals(cadreInfo.getAccessType()) || cadreInfo.isCadreParliamentWise())
 				{
 					currentAddress.setParliamentConstituency(constituencyDAO.get(new Long(cadreInfo.getParliament())));
-					currentAddress.setDistrict(null);					
+					currentAddress.setDistrict(null);
+					if(cadreInfo.isCadreParliamentWise()){
+						currentAddress.setDistrict(constituencyDAO.get(cadreInfo.getConstituencyID()).getDistrict());
+					}
 				} else {
-					currentAddress.setParliamentConstituency(constituencyDAO.get(new Long(cadreInfo.getParliament())));
-					currentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
+					//currentAddress.setParliamentConstituency(constituencyDAO.get(new Long(cadreInfo.getParliament())));
+					if(cadreInfo.getDistrict() != null)
+					 currentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
+					else{
+						currentAddress.setDistrict(constituencyDAO.get(cadreInfo.getConstituencyID()).getDistrict());
+					}
+					 
 				}
 				
 				currentAddress.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
@@ -608,13 +616,20 @@ public class CadreManagementService {
 					permanentAddress.setStreet(cadreInfo.getPstreet());
 					permanentAddress.setPinCode(cadreInfo.getPpinCode());
 					permanentAddress.setState(stateDAO.get(new Long(cadreInfo.getPstate())));
-					if("MP".equals(cadreInfo.getAccessType()))
+					if("MP".equals(cadreInfo.getAccessType()) || cadreInfo.isCadreParliamentWise())
 					{
 						permanentAddress.setParliamentConstituency(constituencyDAO.get(new Long(cadreInfo.getPParliament())));
-						permanentAddress.setDistrict(null);					
-					} else {
+						permanentAddress.setDistrict(null);
 						permanentAddress.setParliamentConstituency(constituencyDAO.get(new Long(cadreInfo.getPParliament())));
-						permanentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getPdistrict())));
+						if(cadreInfo.isCadreParliamentWise()){
+							permanentAddress.setDistrict(constituencyDAO.get(cadreInfo.getPconstituencyID()).getDistrict());
+						}
+					} else {
+						//permanentAddress.setParliamentConstituency(constituencyDAO.get(new Long(cadreInfo.getPParliament())));
+						if(cadreInfo.getPdistrict() != null)
+						 permanentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getPdistrict())));
+						else
+							permanentAddress.setDistrict(constituencyDAO.get(cadreInfo.getPconstituencyID()).getDistrict());
 					}					
 					permanentAddress.setConstituency(constituencyDAO.get(cadreInfo.getPconstituencyID()));
 					
@@ -4939,4 +4954,20 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	    }
 	   return returnVal;
 	}
+	
+	public boolean checkAssemblyBelongsToParliament(Long assemblyId,Long parliamentId){
+		try{
+		List<Long>assemblyIds = new ArrayList<Long>();
+		assemblyIds.add(assemblyId);
+		List<Object[]> assIdsList = delimitationConstituencyAssemblyDetailsDAO.findLatestAssemblyForParliament(assemblyIds,parliamentId);
+		if(assIdsList != null && assIdsList.size() > 0)
+			return true;
+		else
+			return false;
+		}catch(Exception e){
+			log.error("Exception occured in checkAssemblyBelongsToParliament() - ",e);
+			return false;
+		}
+	}
+	
 }

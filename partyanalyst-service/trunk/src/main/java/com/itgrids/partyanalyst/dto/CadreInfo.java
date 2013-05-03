@@ -119,6 +119,7 @@ public class CadreInfo implements Serializable{
 	private String bloodGroupStr;
 	private Long onlineRegistrationId;
 	private Long voterId;
+	private boolean cadreParliamentWise;
 	
 	private String note;
 	
@@ -127,7 +128,7 @@ public class CadreInfo implements Serializable{
 	}
 	public void setNote(String note) {
 		this.note = note;
-	}
+	}	
 	public String getBloodGroupStr() {
 		return bloodGroupStr;
 	}
@@ -787,6 +788,12 @@ public class CadreInfo implements Serializable{
 	}
 	public void setVoterId(Long voterId) {
 		this.voterId = voterId;
+	}
+	public boolean isCadreParliamentWise() {
+		return cadreParliamentWise;
+	}
+	public void setCadreParliamentWise(boolean cadreParliamentWise) {
+		this.cadreParliamentWise = cadreParliamentWise;
 	}
 	
 }

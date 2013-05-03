@@ -331,6 +331,10 @@ public class LoginService implements ILoginService{
 					regVO.setIsAdmin(IConstants.TRUE);	
 				else
 					regVO.setIsAdmin(IConstants.FALSE);	
+				
+				if(entitlements.contains(IConstants.CADRE_PARLIAMENT_WISE)){
+					regVO.setCadreParliamentWise(true);
+				}
 			}
 			
 			
