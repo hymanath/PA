@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
@@ -105,13 +106,17 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Caste;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.HamletBoothPublication;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PublicationDate;
+import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterCategory;
 import com.itgrids.partyanalyst.model.UserVoterCategoryValue;
@@ -199,8 +204,17 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterCastBasicInfoDAO voterCastBasicInfoDAO;
     private IVoterReportService voterReportService;
     private IVoterStatusDAO voterStatusDAO;
+    private IDistrictDAO districtDAO;
     
-    public IVoterStatusDAO getVoterStatusDAO() {
+    public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IVoterStatusDAO getVoterStatusDAO() {
 		return voterStatusDAO;
 	}
 
@@ -11473,13 +11487,12 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();
 			List<InfluencingPeopleBeanVO> result = new ArrayList<InfluencingPeopleBeanVO>(0);
 			InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
-			
+			List<Long> locationIds = new ArrayList<Long>();
 			
 		try{
 			if(type.equalsIgnoreCase("constituency"))
 			{
 				locationValues.add(locationValue.toString());
-				
 				cadreLevelValues.add(locationValue);
 				politicianValues.add(locationValue);
 			}
@@ -11516,7 +11529,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				
 			}
 			
-			else if(type.equalsIgnoreCase("ward"))
+			else if(type.equalsIgnoreCase("ward")||type.equalsIgnoreCase("customWard"))
 			{
 				locationValues.add(locationValue.toString());
 				
@@ -11569,7 +11582,15 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				influencingPeopleCount =  influencingPeopleDAO.getInfluencingPeopleCountInHamlets(userId,locValues);
 			}
 			else
-				influencingPeopleCount =  influencingPeopleDAO.getInfluencingPeopleCountByLocation(userId,locationValues,type);
+			{
+				
+				for (String parms : locationValues) {
+					Long values = Long.valueOf(parms);
+					locationIds.add(values);
+				}
+				influencingPeopleCount =  influencingPeopleDAO.getInfluencingPeopleCount(userId,locationIds,type);
+			}
+				
 			
 		    List<Long> cadreCount = cadreDAO. getCadreCountByCadreLevel(userId,cadreLevelValues,type);
 		    
@@ -11601,7 +11622,7 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 }
 		
 public List<VoterVO> getInfluencingPeopleVoterDetails(Long userId,Long locationValue,String type,String buttonName,
-	Long publicationId,Integer startIndex , Integer maxRecords)
+	Long publicationId,Integer startIndex , Integer maxRecords,String columnName,String order)
 {
 List<String> locationValues = new ArrayList<String>(0);
 List<VoterVO> voters = new ArrayList<VoterVO>();
@@ -11657,7 +11678,7 @@ try{
 		cadreLevelValues.add(new Long(partNo.get(0).toString()));
 		politicianValues.add(locationValue);
 	}
-	else if(type.equalsIgnoreCase("ward"))
+	else if(type.equalsIgnoreCase("ward")||type.equalsIgnoreCase("customWard"))
 	{
 		locationValues.add(locationValue.toString());
 		
@@ -11719,7 +11740,7 @@ try{
 		name = hamletDAO.get(Id).getHamletName().toString();
 	
 	if(buttonName.equalsIgnoreCase("InfluencePeople"))
-		voters = getInfluencePeopleDetails(userId,locationValues,type,startIndex,maxRecords,name);
+		voters = getInfluencePeopleDetails(userId,locationValues,type,startIndex,maxRecords,name,columnName,order);
 	 if(buttonName.equalsIgnoreCase("Cadre"))
 		 voters =  getCadrePeopleDetails(userId,cadreLevelValues,type,startIndex,maxRecords,name);
 	 if(buttonName.equalsIgnoreCase("Politician"))
@@ -11736,22 +11757,46 @@ return voters;
 
 }
 
-public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> locationValues,String type,Integer startIndex,Integer maxRecords,String name)
+public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> locationValues,String type,Integer startIndex,Integer maxRecords,String name,String columnName,String order)
 {
 	List<VoterVO> voters = new ArrayList<VoterVO>();
 	List<Voter> votersList = new ArrayList<Voter>();;
 	Long totalCount = 0L;
 	List<InfluencingPeople> influencingDetails = new ArrayList<InfluencingPeople>();
+	List<Long> locationIds = new ArrayList<Long>();
+	List<Long> influencyDetailsCount = new ArrayList<Long>();
+	if(columnName.equalsIgnoreCase("relativeFirstName"))
+	{
+		columnName = "relativeName";
+	}
+	else if(columnName.equalsIgnoreCase("mobileNo"))
+	{
+		columnName = "phoneNo";
+	}
+	else if(columnName.equalsIgnoreCase("influencingRange"))
+	{
+		columnName = "influencingScope";
+	}
+	for (String parms : locationValues) {
+		Long id = Long.valueOf(parms);
+		locationIds.add(id);
+	}
 	if(locationValues != null)
-		influencingDetails =  influencingPeopleDAO.getInfluencingPeopleVoterIDs(userId,locationValues,type,startIndex, maxRecords);
+		influencingDetails =  influencingPeopleDAO.getAllDetailsOfInfluencingPeople(userId,locationIds,type,startIndex, maxRecords,columnName,order);
+		//influencingDetails =  influencingPeopleDAO.getInfluencingPeopleVoterIDs(userId,locationValues,type,startIndex, maxRecords);
 		Long count = new Long(startIndex);
+		
 		if(influencingDetails != null)
 		{
 			//Influencing people voter Details (VoterIds not avilable) 
 			for(InfluencingPeople params : influencingDetails)
 				{
 				//Influencing people voter Details Count
-				List<Long> influencyDetailsCount = influencingPeopleDAO.getInfluencingPeopleCountByLocation(userId,locationValues,type);
+				//List<Long> influencyDetailsCount = influencingPeopleDAO.getInfluencingPeopleCountByLocation(userId,locationValues,type);
+				if(type.equalsIgnoreCase("panchayat"))
+					influencyDetailsCount = influencingPeopleDAO.getInfluencingPeopleCountInHamlets(userId,locationIds);	
+				else
+					influencyDetailsCount = influencingPeopleDAO.getInfluencingPeopleCount(userId,locationIds,type);
 				totalCount =new Long(influencyDetailsCount.get(0));
 				VoterVO voterVO = new VoterVO();
 				if(params.getVoter() == null)
@@ -11762,6 +11807,7 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					voterVO.setHouseNo(params.getUserAddress().getHouseNo());
 					voterVO.setCast(params.getCaste());
 					voterVO.setMobileNo(params.getPhoneNo()!=null ? params.getPhoneNo() :" ");
+					voterVO.setInfluencingRange(params.getInfluencingScope());
 					
 					if(type.equalsIgnoreCase("BOOTH"))
 					voterVO.setLocalArea("Booth " + params.getInfluencingScopeValue());	
@@ -11782,13 +11828,19 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					voterVO.setRelativeFirstName(params.getVoter().getRelativeName());
 					voterVO.setRelationshipType(params.getVoter().getRelationshipType());
 					voterVO.setVoterIDCardNo(params.getVoter().getVoterIDCardNo());
+					
 					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
 					if(type.equalsIgnoreCase("BOOTH"))
 						voterVO.setLocalArea("Booth " + params.getInfluencingScopeValue());	
 					else
 						voterVO.setLocalArea(name);	
 					}
+				 	String infScope = params.getInfluencingScope();
+					String infScopeValue = params.getInfluencingScopeValue();
+					voterVO.setInfluencingRange(params.getInfluencingScope());
+					voterVO.setInfluencingRegion(getRegionNameBasedOnScope(infScope,infScopeValue));
 			        voters.add(voterVO);
+			       
 				}
 			if(voters != null)
 				if(voters.size() > 0)
@@ -11798,6 +11850,39 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 	
 }
 
+public String getRegionNameBasedOnScope(String infScope,String regionId){
+	
+	if(infScope.equalsIgnoreCase(IConstants.STATE)){
+		State state = stateDAO.get(new Long(regionId));
+		return state.getStateName();
+	}else if(infScope.equalsIgnoreCase(IConstants.DISTRICT)){
+		District district = districtDAO.get(new Long(regionId));
+		return district.getDistrictName();
+	}else if(infScope.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+		Constituency constituency = constituencyDAO.get(new Long(regionId));
+		return constituency.getName();
+	}else if(infScope.equalsIgnoreCase("MUNCIPALITY/CORPORATION") || infScope.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION)){
+		LocalElectionBody localBody = localElectionBodyDAO.get(new Long(regionId));
+		String localBodyName = localBody.getName() + " (" + localBody.getElectionType().getElectionType() + " )";
+		return localBodyName;
+	}else if(infScope.equalsIgnoreCase(IConstants.MANDAL) || infScope.equalsIgnoreCase(IConstants.TEHSIL)){
+		if(regionId.length() !=0 && regionId != null)
+		{
+			Tehsil tehsil = tehsilDAO.get(new Long(regionId));
+			return tehsil.getTehsilName();
+		}
+	}else if(infScope.equalsIgnoreCase(IConstants.VILLAGE) || infScope.equalsIgnoreCase(IConstants.HAMLET)){
+		Hamlet hamlet = hamletDAO.get(new Long(regionId));
+		return hamlet.getHamletName();
+	}else if(infScope.equalsIgnoreCase(IConstants.WARD)){
+		Constituency constituency = constituencyDAO.get(new Long(regionId));
+		return constituency.getName();
+	}else if(infScope.equalsIgnoreCase(IConstants.BOOTH)){
+		Booth booth = boothDAO.get(new Long(regionId));
+		return booth.getPartNo().toString()+" Booth";
+	}
+ return null;
+}
 public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues,String type,Integer startIndex,Integer maxRecords,String name)
 {
 	List<VoterVO> voters = new ArrayList<VoterVO>();

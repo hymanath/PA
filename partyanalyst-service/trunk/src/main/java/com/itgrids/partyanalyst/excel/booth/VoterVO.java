@@ -57,6 +57,9 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String relativeName;
 	private String partyName;
 	private String casteName;
+	private String influencingRange;
+	private String influencingRegion;
+	
 	public Long getLocalAreaId() {
 		return localAreaId;
 	}
@@ -589,6 +592,23 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getInfluencingRange() {
+		return influencingRange;
+	}
+
+	public void setInfluencingRange(String influencingRange) {
+		this.influencingRange = influencingRange;
+	}
+
+	public String getInfluencingRegion() {
+		return influencingRegion;
+	}
+
+	public void setInfluencingRegion(String influencingRegion) {
+		this.influencingRegion = influencingRegion;
+	}
+	
 	
 	
 }

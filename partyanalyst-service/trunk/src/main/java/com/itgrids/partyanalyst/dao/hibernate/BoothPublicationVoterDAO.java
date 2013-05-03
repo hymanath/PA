@@ -1589,7 +1589,7 @@ public List<Long> getCandidateCount(List<Long> locationValue,Long publicationDat
 		query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.panchayat.panchayatId in (:locationValue)");
 	else if(type.equalsIgnoreCase("BOOTH"))
 		query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.boothId in (:locationValue)");
-	else if(type.equalsIgnoreCase("WARD"))
+	else if(type.equalsIgnoreCase("WARD")||type.equalsIgnoreCase("customWard"))
 		query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2 where model.voter.voterId = model2.voter.voterId and model.booth.localBodyWard.constituencyId =(:locationValue)");
 	else if(type.equalsIgnoreCase("hamlet"))
 		query.append(" select count(model.voter.voterId) from BoothPublicationVoter model,Candidate model2,UserVoterDetails model3 where model3.voter.voterId = model.voter.voterId and model.voter.voterId = model2.voter.voterId and " +

@@ -20,7 +20,7 @@ public class PanchayatHamletDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testGetHamletsOfAPanchayat()
 	{
-		List<Object[]> list = panchayatHamletDAO.getHamletsOfAPanchayat(1l);
+		List<Object[]> list = panchayatHamletDAO.getHamletsOfAPanchayat(4l);
 		
 		System.out.println(list.size());
 		
