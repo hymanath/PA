@@ -285,6 +285,8 @@ public interface IConstants {
     public static final String DISTRICTWISE_LIVE_RESULTS_ANALYSIS = "DISTRICTWISE_LIVE_RESULTS_ANALYSIS";
     public static final String VOTER_SEARCH_AND_EDIT = "VOTER_SEARCH_AND_EDIT";
     public static final String VOTER_ANALYSIS = "VOTER_ANALYSIS";
+    public static final String CADRE_PARLIAMENT_WISE = "CADRE_PARLIAMENT_WISE";
+    
     
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
     public static final String ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION = "ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION";
