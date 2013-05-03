@@ -1489,8 +1489,11 @@ function refreshingParentWindow()
 			<td colspan="5">
 				<table>
 					<tr>
-						<td><s:checkboxlist list="#session.CadreRolesList"  name="cadreRoles" listKey="id" listValue="name"></s:checkboxlist></td>
-					</tr>	
+						<td><s:checkboxlist list="#session.CadreRolesList"  name="cadreRoles" listKey="id" listValue="name"></s:checkboxlist></td>	
+					</tr>
+					<tr>
+						<td><span>Note:</span><textarea id="note" name="note" value=""  style="width: 209px; height: 42px;background-color:white">${cadreInfo.note}</textarea></td>
+					</tr>
 				</table>
 			</td>
 		</tr>
