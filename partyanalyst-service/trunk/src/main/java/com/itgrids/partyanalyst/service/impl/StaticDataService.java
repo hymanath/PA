@@ -7964,40 +7964,24 @@ public class StaticDataService implements IStaticDataService {
 	public MandalVO findListOfElectionsAndPartiesInPanchayat(Long panchayatId)
 	{
 		try{
-		MandalVO mandalVO = new MandalVO();
-		List<Object[]> electionIdsList = new ArrayList<Object[]>(0);
 		
+		MandalVO mandalVO = new MandalVO();
 		List<SelectOptionVO> partiesInMandal = new ArrayList<SelectOptionVO>();
-		List<Long> boothIds = new ArrayList<Long>();
 		Set<SelectOptionVO> elections = new HashSet<SelectOptionVO>();
 		
-		List electionsInMandal = hamletBoothElectionDAO
-				.findPolledVotesInAllElectionsOfPanchayat(panchayatId);
-		for (Object[] values : (List<Object[]>) electionsInMandal)
+		List<Object[]> electionsInMandal = hamletBoothElectionDAO.getElectionsHappendinPanchayat(panchayatId);
 		
-			elections.add(new SelectOptionVO((Long) values[0],
-					(values[1] + " " + values[2])));
+		for (Object[] params : electionsInMandal)
+			elections.add(new SelectOptionVO((Long) params[0],(params[1] + " " + params[2])));
 		
-		List<Object[]> booths = boothDAO.getBoothsInPanchayat(panchayatId);
-		for(Object[] params : booths)
+		List<Object[]> partiesList = hamletBoothElectionDAO.getPartiesParticipatedInAllElectionOfAPanchayat(panchayatId);
+		
+		if(partiesList != null && partiesList.size() > 0)
 		{
-			boothIds.add(new Long(params[1].toString()));
+			for(Object[] params : partiesList)
+				partiesInMandal.add(new SelectOptionVO((Long)params[0],params[1].toString()));
 		}
-		for(Object[] params1 : (List<Object[]>)electionsInMandal)
-		{
-			
-		 electionIdsList = candidateBoothResultDAO.findBoothResultsForBoothsAndElection(boothIds,(Long)params1[0]);
-		
-		if(electionIdsList != null && electionIdsList.size() > 0)
-		for(Object[] parties : electionIdsList)
-		{
-			partiesInMandal.add(new SelectOptionVO((Long)parties[0],parties[1].toString()));
-			
-		}
-		}
-		
 		mandalVO.setPartiesInMandal(partiesInMandal);
-		removeDuplicates(mandalVO.getPartiesInMandal());
 		mandalVO.setElectionsInMandal(elections);
 		return mandalVO;
 		}catch (Exception e) {

@@ -219,6 +219,19 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 	}	
 				
 		
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getElectionsHappendinPanchayat(Long panchayatId)
+	{
+		return getHibernateTemplate().find(" select distinct model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType, " +
+				" model.boothConstituencyElection.constituencyElection.election.electionYear from HamletBoothElection model, PanchayatHamlet model2 where model.hamlet.hamletId = model2.hamlet.hamletId and model2.panchayat.panchayatId = ? " +
+				" order by model.boothConstituencyElection.constituencyElection.election.electionYear ",panchayatId);
+	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartiesParticipatedInAllElectionOfAPanchayat(Long panchayatId)
+	{
+		return getHibernateTemplate().find(" select distinct CBR.nomination.party.partyId, CBR.nomination.party.shortName from CandidateBoothResult CBR, HamletBoothElection HBE, PanchayatHamlet PH " +
+				" where CBR.boothConstituencyElection.booth.boothId = HBE.boothConstituencyElection.booth.boothId and HBE.hamlet.hamletId = PH.hamlet.hamletId and PH.panchayat.panchayatId = ? " +
+				" order by CBR.nomination.party.shortName ",panchayatId);
+	}
 }
