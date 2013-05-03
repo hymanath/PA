@@ -45,6 +45,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	private List<BoothInfo> boothsCompleteDetails;
 	private Set<RegionalMappingInfoVO> regions;
 	private List<SelectOptionVO> parliamentConstituencies;
+	private List<Object> constituencies;
 	CadreManagementService cadreManagementService;
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -152,6 +153,14 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	}
 	
 	
+	public List<Object> getConstituencies() {
+		return constituencies;
+	}
+
+	public void setConstituencies(List<Object> constituencies) {
+		this.constituencies = constituencies;
+	}
+
 	public String getLocationsById(){
 		
 		session = request.getSession();
@@ -603,4 +612,23 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+    public String getParlmentAndAssemblyConstisByStateId(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			List<SelectOptionVO> parliamentConstituencyList = staticDataService.getLatestConstituenciesByStateIdAndType(jObj.getLong("stateId"),IConstants.PARLIAMENT_CONSTITUENCY_TYPE);
+			  parliamentConstituencyList.add(0,new SelectOptionVO(0l,"Select Location"));
+			List<SelectOptionVO> constituencyList = staticDataService.getLatestConstituenciesByStateIdAndType(jObj.getLong("stateId"),IConstants.ASSEMBLY_ELECTION_TYPE);
+			  constituencyList.add(0,new SelectOptionVO(0l,"Select Location"));
+			
+			constituencies = new ArrayList<Object>();
+			
+			constituencies.add(parliamentConstituencyList);
+			constituencies.add(constituencyList);
+			
+		} catch (Exception e) {
+			log.error("Exception rised in getParlmentAndAssemblyConstisByStateId ",e);
+		}	
+		return Action.SUCCESS;
+	}
 }

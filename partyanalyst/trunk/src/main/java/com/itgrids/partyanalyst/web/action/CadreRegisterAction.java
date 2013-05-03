@@ -905,7 +905,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		session = request.getSession();
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		
+		cadreInfo.setCadreParliamentWise(regVO.isCadreParliamentWise());
 		cadreInfo.setUserID(regVO.getParentUserId() == null ? regVO.getRegistrationID() : regVO.getParentUserId());
 		cadreInfo.setUserType(regVO.getUserType());
 		cadreInfo.setUserPartyName(regVO.getPartyShortName());
@@ -1104,7 +1104,22 @@ public class CadreRegisterAction extends ActionSupport implements
 		  }
 			
 		}
-		
+		if(regVO.isCadreParliamentWise()){
+			Long parliamentId = new Long(getParliament().trim());
+			Long assemblyId = new Long(getConstituencyID().trim());
+			 boolean status = cadreManagementService.checkAssemblyBelongsToParliament(assemblyId,parliamentId);
+			 if(!status){
+				 addFieldError("constituencyID","Please Select valid assembly constituency for parliament constituency");
+			 }
+			 if(!getSameAsCA()){
+				     parliamentId = new Long(getPParliament().trim());
+					 assemblyId = new Long(getPconstituencyID().trim());
+					  status = cadreManagementService.checkAssemblyBelongsToParliament(assemblyId,parliamentId);
+					 if(!status){
+						 addFieldError("pconstituencyID","Please Select valid assembly constituency for parliament constituency in Official Address ");
+					 }
+			 }
+		}
 	}
 
 }

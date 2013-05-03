@@ -202,7 +202,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 				cadreSMSVO.setRegions(regions);
 			} else
 			{
-				regions.add(new SelectOptionVO(10L,"PARLIAMENT CONSTITUENCY"));
+				//regions.add(new SelectOptionVO(10L,"PARLIAMENT CONSTITUENCY"));
 				regions.add(new SelectOptionVO(4L,"ASSEMBLY CONSTITUENCY"));
 				regions.add(new SelectOptionVO(5L,"MANDAL/TEHSIL"));
 				regions.add(new SelectOptionVO(6L,"VILLAGE"));

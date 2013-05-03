@@ -468,6 +468,14 @@ function buildCadreInfo(jsObj,results)
 	str += '			<th>:</th>';
 	str += '			<td>'+results.memberType+'</td>';
 	str += '		</tr>';	
+	str += '		<tr>';
+	str += '			<th style="width:125px">Remarks</th>';
+	str += '			<th>:</th>';
+	if(results.note != null)
+	 str += '			<td>'+results.note+'</td>';
+	else
+	 str += '			<td></td>';
+	str += '		</tr>';
 	if(results.memberType == "Active")
 	{
 	str += '		<tr>';
