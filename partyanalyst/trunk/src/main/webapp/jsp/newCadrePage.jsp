@@ -1052,15 +1052,7 @@ function refreshingParentWindow()
 	input, textarea, .uneditable-input { width: 150px;}
 	
 	#cadreRegistrationTable{width:920px;margin-left:auto;margin-right:auto;}  
-textarea {
-    background-color: #AAAAAA;
-    border: 1px solid #CCCCCC !important;
-    color: #000000;
-    font: 12px/17px "Trebuchet MS",Arial,Helvetica,sans-serif;
-    height: 78px;
-    padding: 5px 0 5px 10px;
-    width: 296px;
-}	
+	
 </style>
 </head>
 <body class="bodyStyle" onunload="closeWindow();">
@@ -1531,7 +1523,7 @@ textarea {
 						<td><s:checkboxlist list="#session.CadreRolesList"  name="cadreRoles" listKey="id" listValue="name"></s:checkboxlist></td>	
 					</tr>
 					<tr>
-						<td><span>Remarks:&nbsp;&nbsp;&nbsp;</span><textarea maxlength="600" id="note" name="note" value=""  style="width: 209px; height: 42px;margin-left:100px;background-color:white;border:1px solid #CCCCCC;">${cadreInfo.note}</textarea><br/><span style="margin-left: 172px;">Maximum 600 characters</span></td>
+						<td><span>Remarks:&nbsp;&nbsp;&nbsp;</span><textarea maxlength="600" id="note" name="note" value=""  style="width: 209px; height: 42px;margin-left:100px;background-color:white;border:1px solid #CCCCCC !important;">${cadreInfo.note}</textarea><br/><span style="margin-left: 172px;">Maximum 600 characters</span></td>
 					</tr>
 				</table>
 			</td>
