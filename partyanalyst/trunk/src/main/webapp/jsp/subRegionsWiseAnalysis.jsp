@@ -1246,17 +1246,17 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		var votersResultColumnDefs = [ 		    	             
 		    	            
 							{key:"name", label: votersbasicinfo.votersInfoForMandalVOList[0].type, sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
-		    	           	{key:"totalMaleVoters", label: "Male Voters", sortable: true},
+		    	           	{key:"maleVoters", label: "Male Voters", sortable: true},
 							
-							{key:"totalFemaleVoters", label: "Female Voters", sortable: true},
+							{key:"femaleVoters", label: "Female Voters", sortable: true},
 		    				{key:"totVoters", label: "Total Voters",sortable:true},
-							{key:"percent", label: votersbasicinfo.votersInfoForMandalVOList[0].type+" % Share", sortable: true}
+							{key:"totPercent", label: votersbasicinfo.votersInfoForMandalVOList[0].type+" % Share", sortable: true}
 		    	        ]; 
 		var myConfigs = {};
 		var myDataSource = new YAHOO.util.DataSource(votersbasicinfo.votersInfoForMandalVOList);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "name","totalMaleVoters","totalFemaleVoters","totVoters","percent"]
+						 fields : [ "name","maleVoters","femaleVoters","totVoters","totPercent"]
 					};
 
 		var impFamliesResultDataSource = new YAHOO.widget.DataTable('votersBasicInfoSubDiv', votersResultColumnDefs,myDataSource, myConfigs);
