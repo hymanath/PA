@@ -414,12 +414,27 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 	function buildBoothsTable(results)
 	{
 			var partN0 = $("#boothField :selected").text();
+			var ptNoForSmeAdr = $("#pboothField :selected").text();
+			var ptNoForLevel = $("#boothField_s :selected").text();
+
 			var value = partN0.substring(9);
+			var valueForSmeAdr = ptNoForSmeAdr.substring(9);
+			var valueForLevel = ptNoForLevel.substring(9);
+
+
 			var pageNumber = 0;
 			var index = 0;
 			for(var i=0;i<results.length;i++){
-			if(results[i].partNo == value)
+			if(results[i].partNo == value){
 				index = i+1;
+			}
+			else if(results[i].partNo == valueForSmeAdr)
+			{
+					index = i+1;
+			}
+			else if(results[i].partNo == valueForLevel){
+				index = i+1;
+			}
 			}
 		pageNumber = Math.ceil(index/10);
 		
@@ -440,8 +455,15 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 	{
 		var str ='';
 		var id=oRecord.getData("partNo");
-        if(id == value)
+        if(id == value){
  		 str+='<div  id="testRow">'+id+'</div>';
+		}
+		else if(id == valueForSmeAdr){
+			str+='<div  id="testRow">'+id+'</div>';
+		}
+		else if(id == valueForLevel){
+			str+='<div  id="testRow">'+id+'</div>';
+		}
 		else
 		  str+='<div>'+id+'</div>';
 		elLiner.innerHTML =str;
@@ -517,6 +539,9 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 										if(elmts[i].checked == true){
 										elmtsValue = elmts[i].value;
 										$("#boothField option[value='" + elmtsValue + "']").attr("selected", "selected");
+										$("#pboothField option[value='" + elmtsValue + "']").attr("selected", "selected");
+										$("#boothField_s option[value='" + elmtsValue + "']").attr("selected", "selected");
+									
 										}
 								   }
 								}    
