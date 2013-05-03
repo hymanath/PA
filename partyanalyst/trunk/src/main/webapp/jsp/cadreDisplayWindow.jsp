@@ -56,11 +56,17 @@ color:#333333;text-decoration:none;
 	font-size: 13px;
     margin-top: 20px;
 	padding: 10px 10px 10px 15px;
+	 overflow-x: scroll;
 }
 #InfluencingPeopleDetailsDiv table th {padding:5px !important;}
 #InfluencingPeopleDetailsDiv{padding-left: 2px !important; }
 #InfluencingPeopleDetailsDiv table td{padding-right:3px !important;}
 #impFamilesnfoForHamletByBooth  table tr:nth-child(even){background:#EdF5FF;}
+.yui-skin-sam .yui-pg-container {
+    display: block;
+    margin: 6px 0 6px 333px;
+    white-space: nowrap;
+}
 </style>
 <title>cadre</title>
 <script type="text/javascript">
@@ -93,6 +99,8 @@ YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData)
 	//{key:"relationshipType", label: "Relationship", sortable:true},
 	{key:"mobileNo",label:"MobileNo",sortable:true},
 	{key:"localArea", label: "Location", sortable: true},
+	{key:"influencingRange", label: "Influencing Range", sortable: true},
+	{key:"influencingRegion", label: "Influencing Region", sortable: true}
 	//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 	//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 ];
@@ -102,7 +110,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","candidateId"],
+"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","candidateId","influencingRange","influencingRegion"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -111,7 +119,7 @@ totalRecords: "voterDetailsCount" // Access to value in the server response
 	if(btnName != "Politician")
 	{
 var votersByLocBoothColumnDefs = [
-{key:"voterId", label: "SNo",width:20,sortable: true},
+{key:"voterId", label: "SNo",width:20},
 	{key:"firstName", label: "Name",width:80, sortable: true},
 	{key:"voterIDCardNo", label: "voter ID",sortable: true},
 	{key:"gender", label: "Gender", width:50, sortable: true},
@@ -121,7 +129,9 @@ var votersByLocBoothColumnDefs = [
 	//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 	//{key:"relationshipType", label: "Relationship", sortable:true},
 	{key:"mobileNo",label:"MobileNo",sortable:true},
-	{key:"localArea", label: "Location", sortable: true},
+	{key:"localArea", label: "Location"},
+	{key:"influencingRange", label: "Influencing Range", sortable: true},
+	{key:"influencingRegion", label: "Influencing Region"}
 	//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 	//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
@@ -132,7 +142,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"voterId", parser:"number"},
-"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea"],
+"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","influencingRange","influencingRegion"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -141,11 +151,11 @@ totalRecords: "voterDetailsCount" // Access to value in the server response
 
 
 var myConfigs = {
-initialRequest: "sort=voterId&dir=asc&startIndex=0&results=3", // Initial request for first page of data
+initialRequest: "sort=firstName&dir=asc&startIndex=0&results=10", // Initial request for first page of data
 dynamicData: true, // Enables dynamic server-driven data
-sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+sortedBy : {key:"firstName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 3 
+		        rowsPerPage    : 10 
 			    })  // Enables pagination
 };
 

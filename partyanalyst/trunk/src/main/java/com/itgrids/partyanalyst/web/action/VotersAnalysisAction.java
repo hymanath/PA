@@ -1507,7 +1507,7 @@ return Action.SUCCESS;
 			votersList = new ArrayList<VoterVO>();
 			votersList = votersAnalysisService.getInfluencingPeopleVoterDetails(
 						userId,locationValue,type,buttonName,
-						publicationId,startIndex ,maxRecords);
+						publicationId,startIndex ,maxRecords,columnName,order);
 
 			constituencyManagementVO.setVoterDetails(votersList);
 			if(votersList.size() > 0 )
