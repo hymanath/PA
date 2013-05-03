@@ -81,6 +81,8 @@ public class Cadre extends BaseModel{
 	 private Set<AssignedProblemProgress> problemProgress = new HashSet<AssignedProblemProgress>(0);
 	 private Set<CadreProblems> cadreProblems = new HashSet<CadreProblems>(0);
 	 private Set<ProblemAssignedCadre> problemAssignedCadres = new HashSet<ProblemAssignedCadre>(0);
+	 
+	 private String note;
 	 	
 	 
 	 @Id
@@ -526,4 +528,16 @@ public class Cadre extends BaseModel{
 	public void setVoter(Voter voter) {
 	this.voter = voter;
 	}
+
+	@Column(name = "note")
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	
+	
  }

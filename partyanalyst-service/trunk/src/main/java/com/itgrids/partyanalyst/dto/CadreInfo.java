@@ -119,6 +119,15 @@ public class CadreInfo implements Serializable{
 	private String bloodGroupStr;
 	private Long onlineRegistrationId;
 	private Long voterId;
+	
+	private String note;
+	
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 	public String getBloodGroupStr() {
 		return bloodGroupStr;
 	}
