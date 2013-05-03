@@ -7688,7 +7688,7 @@ function buildInfluencingPeopleCount(results,jsObj)
 }
 function getInfluencingPeopleVotersDetails(locationValue,typeValue,publicationDateId,btnName)
 {
-var reqBrowser = window.open("cadreDisplayWindowAction.action?locationValue="+locationValue+"&typeValue="+typeValue+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&mainreqid="+mainreqid+"&maintype="+maintype+"","newBrowser","width=900,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+var reqBrowser = window.open("cadreDisplayWindowAction.action?locationValue="+locationValue+"&typeValue="+typeValue+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&mainreqid="+mainreqid+"&maintype="+maintype+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 reqBrowser.focus();
 
 /*
