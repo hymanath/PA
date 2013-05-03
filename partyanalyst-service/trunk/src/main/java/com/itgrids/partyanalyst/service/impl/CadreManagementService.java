@@ -536,6 +536,7 @@ public class CadreManagementService {
 				cadre.setNoOfFamilyMembers(cadreInfo.getNoOfFamilyMembers());
 				cadre.setNoOfVoters(cadreInfo.getNoOfVoters());
 				cadre.setBloodGroupId(cadreInfo.getBloodGroup() != 0 ? cadreInfo.getBloodGroup() : null);
+				cadre.setNote(cadreInfo.getNote());
 				if(cadreInfo.getVoterId() != null)
 				{
 					cadre.setVoter(voterDAO.get(cadreInfo.getVoterId()));
@@ -2001,6 +2002,7 @@ public class CadreManagementService {
 		
 		cadreInfo.setCadreID(cadre.getCadreId());
 		cadreInfo.setFirstName(cadre.getFirstName());
+		cadreInfo.setNote(cadre.getNote());
 		cadreInfo.setMiddleName(cadre.getMiddleName());
 		cadreInfo.setLastName(cadre.getLastName());
 		cadreInfo.setBloodGroup(cadre.getBloodGroup() != null ? cadre.getBloodGroup().getBloodGroupId() : null);
@@ -4697,6 +4699,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				cadreInfo.setCasteCategoryStr(cadre.getCasteCategory().getCategory());
 				cadreInfo.setMobile(cadre.getMobile()!= null ? cadre.getMobile() :"");
 				cadreInfo.setImage(cadre.getImage() != null ? cadre.getImage() : "human.jpg");
+				cadreInfo.setNote(cadre.getNote());
 				
 				if(cadre.getCadreLevelValue() != null)
 					cadreInfo.setStrCadreLevel(getCadreLevelValueStr(cadre.getCadreLevel().getLevel(),cadre.getCadreLevelValue()));
