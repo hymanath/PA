@@ -1531,7 +1531,7 @@ textarea {
 						<td><s:checkboxlist list="#session.CadreRolesList"  name="cadreRoles" listKey="id" listValue="name"></s:checkboxlist></td>	
 					</tr>
 					<tr>
-						<td><span>Remarks:&nbsp;&nbsp;&nbsp;</span><textarea maxlength="600" id="note" name="note" value=""  style="width: 209px; height: 42px;margin-left:100px;background-color:white;border:1px solid #CCCCCC;">${cadreInfo.note}</textarea><br/><span style="margin-left: 172px;">Max of 600 characters</span></td>
+						<td><span>Remarks:&nbsp;&nbsp;&nbsp;</span><textarea maxlength="600" id="note" name="note" value=""  style="width: 209px; height: 42px;margin-left:100px;background-color:white;border:1px solid #CCCCCC;">${cadreInfo.note}</textarea><br/><span style="margin-left: 172px;">Maximum 600 characters</span></td>
 					</tr>
 				</table>
 			</td>
