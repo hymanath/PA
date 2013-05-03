@@ -115,7 +115,7 @@ function getInfluencingPeopleVotersDetails()
 		}
 		};
 	}
-	else if(btnName == "cadre")
+	else if(btnName == "Cadre")
 	{
 		var votersByLocBoothColumnDefs = [
 		{key:"voterId", label: "SNo",width:20},
@@ -139,7 +139,7 @@ function getInfluencingPeopleVotersDetails()
 		resultsList: "voterDetails",
 		fields: [
 		{key:"voterId", parser:"number"},
-		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","influencingRange","influencingRegion"],
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea"],
 		metaFields: {
 		totalRecords: "voterDetailsCount" // Access to value in the server response
 		}
