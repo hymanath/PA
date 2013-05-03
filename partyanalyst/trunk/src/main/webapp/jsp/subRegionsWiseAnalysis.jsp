@@ -786,8 +786,8 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "getCastInfoForsubLevels")
 								{  
 									castePercent = myResults.castPercent;
-									buildCastInfoForSubLevels(myResults,jsObj);
-									buildCastSubLevelsDiv(myResults);
+									buildCastInfoForSubLevels(myResults,jsObj,null);
+									buildCastSubLevelsDiv(myResults,jsObj);
 									
 								}
 								else if(jsObj.task == "getAgewiseVoterDetails"){
@@ -1936,7 +1936,7 @@ var hamletMainPie =  new Array();
 var myChart = new Array();
 
 					 
-function buildCastInfoForSubLevels(myresults,jsObj)
+function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 	{	 hamletMainPie=[];
 	      myChart=[];
 		  castTemp=[];
@@ -2128,7 +2128,11 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='</thead>';
 		
 		str+='<tbody>';
+		
 		for(var i in constMgmtMainObj.castStatssubArray)
+		{
+		//console.log(constMgmtMainObj.castStatssubArray);//sasir
+		if(castesSlctdList == null|| (castesSlctdList != null && castesSlctdList.indexOf(constMgmtMainObj.castStatssubArray[i].caste)!= -1))
 		{
 		str+='<tr>';
 		
@@ -2190,9 +2194,9 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		}
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePercentage+'</td>';
 	
-		}
-		
 		str +='</tr>';
+		}
+		}
 		str+='</tbody>';
 		str +='</table>';
 
@@ -2854,8 +2858,15 @@ buildHamletWiseCastResultsGraph(null,votersRange);
 }
 
 //Selecting individual castes For Chart
-function buildCastSubLevelsDiv(myResults)
+
+//global variable tempObj to call buildCastWiseChart chart that consists ajax returned results and jsobj--created by sasi
+var tempObj;
+function buildCastSubLevelsDiv(myResults,jsObj)
 {
+	tempObj={
+		result:myResults,
+		jsobj:jsObj
+	}
 	var castStateIdsArr = new Array();
 	var str ='';
 	$("#casteSelectDiv").html('');
@@ -2909,9 +2920,8 @@ function buildCastSubLevelsDiv(myResults)
 			str += '<option value="'+castesSortedArray[k].Id+'">'+castesSortedArray[k].caste+'</option>';
 		}
 
-		
 		  str += '</select>';
-		  str +='<input type="button" style="margin-left: 24px;font-weight:bold;margin-top: -33px;" onclick="buildCastWiseChart()" value="View" class="btn btn-info">';
+		  str +='<input type="button" style="margin-left: 24px;font-weight:bold;margin-top: -33px;" onclick="buildCastWiseChart(tempObj)" value="View" class="btn btn-info">';
 		  str +='<p id="notePara">Press Ctrl Key To Select Multiple Castes</p>';
 		  str +='</div>';
 		  str +='</div>';
@@ -2935,17 +2945,25 @@ function buildCastInfoBasedOnOptions(option)
 	
 	if(option == "all")
 	{
+		//used tempObj globla variable to get the json returned results and json object for calling the buildCastInfoForSubLevels() function -- sasi
+		
+		var myResults_slctd=tempObj.result;
+		var jsObj_slctd=tempObj.jsobj;
+		
+		//called this function for changing the castTemp variable to store all the castes -- sasi
+		buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,null);
+		
 		$("#casteHideAndShowOptionsDiv").css('display','none');
 		buildHamletWiseCastResultsGraph(null,null);
 	}
 	else
 		$("#casteHideAndShowOptionsDiv").css('display','block');
-	
-		
 }
 
-function buildCastWiseChart()
+function buildCastWiseChart(temp)
 {
+var myResults_slctd=temp.result;
+var jsObj_slctd=temp.jsobj;
 	$("#castErrorDiv").html('');
 	var selectedCastArray = new Array();
 	var selecteObj = document.getElementById('castSelectdId');
@@ -2961,8 +2979,9 @@ function buildCastWiseChart()
 		$("#castErrorDiv").html('Please select at least one caste.');
 		return;
 	}
-	
+	//console.log(selectedCastArray);
 	  buildHamletWiseCastResultsGraph(selectedCastArray,null);
+	  buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,selectedCastArray);
 }
 
 function getBoothPArtiesAndElections()
@@ -3037,7 +3056,6 @@ getvotersBasicInfo("voters",id,publicationId,type);
 getCensusInfoForSubLevels();
 getLatestCastsSubcategoryWise();
 getAgewiseVoterDetails();
-
 
 </script>
 
