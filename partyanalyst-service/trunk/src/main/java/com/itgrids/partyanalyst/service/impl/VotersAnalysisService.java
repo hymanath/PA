@@ -8604,6 +8604,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  for(Long key : reportLevelValues.keySet()){
 				  votersDetailsVO = new VotersDetailsVO();
 				  votersDetailsVO.setTotalVoters(0l);
+				  votersDetailsVO.setId(key);
+				  votersDetailsVO.setAreaType(type);
 				  if(type.equalsIgnoreCase("booth") || type.equalsIgnoreCase("ward")){
 				      votersDetailsVO.setBoothName(reportLevelValues.get(key));
 				      votersDetailsVO.setTehsilName(reportLevelValues.get(key));
@@ -12765,7 +12767,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			//List<Object[]> booths = boothDAO.getBoothsInAPanchayat(panchayatId, publicationDateId);
 			                        
 		   // List<Object[]> hamlets =  userVoterDetailsDAO.getHamletsIdsForUser(hamletId, userId);
-		
+			
 			Map m =new HashMap();
 			    m.put("hamletLocalArea",IConstants.HAMLET);
 			    m.put("customWardLocalArea", IConstants.CUSTOMWARD);
