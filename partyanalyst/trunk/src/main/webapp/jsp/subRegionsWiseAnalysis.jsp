@@ -512,6 +512,10 @@ $(document).ready(function(){
 </p>
 </div>
 <div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
+  <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
+	<span class="label label-info" style="padding:5px;">Show All <input type="radio" name="show_hide" value="show" checked="checked"></span>
+	<span class="label label-info" style="padding:5px;">Hide All <input type="radio" name="show_hide" value="hide"></span>
+  </div>
 </div>
 <div  style="display:none;"  class="widget blue">
 <div id="voterDetailsNote" class="noteDiv" style="display:none;text-align:center;"></div>
@@ -1948,6 +1952,39 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
             series: tempLine //myChart1 
         });
 	$('tspan:last').hide();	
+	
+	
+	
+	 var chart = $('#castGrid1').highcharts();
+     var series = chart.series;
+	 $('input[name="show_hide"]').click(function(){
+        if(this.value === "show")
+            $.each(series, function(index, series1) {
+                      series1.show();
+                    });
+        else if (this.value === "hide")
+            $.each(series, function(index, series1) {
+                      series1.hide();
+                    });
+    });
+	
+	
+	
+	/*$('#btn_hide').click(function() {  
+        var chart = $('#castGrid1').highcharts();
+        var series = chart.series;
+        $.each(series, function(index, series1) {
+                      series1.hide();
+                    });
+    });
+    
+    $('#btn_show').click(function() {
+       var chart = $('#castGrid1').highcharts();
+        var series = chart.series;
+        $.each(series, function(index, series1) {
+                      series1.show();
+                    });
+    });*/
 	
 }
 function sort_unique(a) {
