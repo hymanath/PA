@@ -770,10 +770,10 @@ $("#pageUpBtn").live("click",function(){
 		 
 		var votersByLocBoothColumnDefs = [
 			{key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
-			
+			{key:"boothName", label: "Booth No", sortable:true},
+			{key:"fromSno", label: "Serial Number", sortable:true},
 			{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
 			{key:"houseNo", label: "House No", sortable:true,formatter:YAHOO.widget.DataTable.voterLink},
-			{key:"boothName", label: "Booth No", sortable:true},
 			{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 			{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 		];
@@ -797,10 +797,10 @@ $("#pageUpBtn").live("click",function(){
 		    obj = {key:"relationship", label: "Relationship", sortable:true};
 			votersByLocBoothColumnDefs.push(obj);
 		}
-		if($("#serialnumbrCol").is(':checked')){
+		/*if($("#serialnumbrCol").is(':checked')){
 		    obj = {key:"fromSno", label: "Serial Number", sortable:true};
 			votersByLocBoothColumnDefs.push(obj);
-		}
+		}*/
 		 for(var i in reqfieldsArr){
 		    var ids1 = reqfieldsArr[i].split(",");
 		     
@@ -823,9 +823,9 @@ $("#pageUpBtn").live("click",function(){
 		
 //end
 		var myConfigs = {
-		initialRequest: "sort=name&dir=asc&startIndex=0&results="+limit, // Initial request for first page of data
+		initialRequest: "sort=fromSno&dir=asc&startIndex=0&results="+limit, // Initial request for first page of data
 		dynamicData: true, // Enables dynamic server-driven data
-		sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+		sortedBy : {key:"fromSno", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 		   paginator : new YAHOO.widget.Paginator({ 
 						rowsPerPage    : limit 
 						})  // Enables pagination
@@ -840,7 +840,7 @@ $("#pageUpBtn").live("click",function(){
 						totalRecords:totalReq
 						}) 
 		  }catch(e){}
-		 myConfigs["initialRequest"] ="sort=name&dir=asc&startIndex="+stindx+"&results="+limit+"&initialPage ="+$('.yui-pg-current-page').html();
+		 myConfigs["initialRequest"] ="sort=fromSno&dir=asc&startIndex="+stindx+"&results="+limit+"&initialPage ="+$('.yui-pg-current-page').html();
 		}
 		var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersBySearchTabContentDiv_body",
 		votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
@@ -995,12 +995,12 @@ function buildCategoriesListInit(result){
 		str+='   <td style="padding-left:20px;"><input type="checkbox" id="gaurdianColum" />  GuardName</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" id="relationShipCol" />  Relationship</td>';
 	    str+='</tr><tr>';
-		str+='   <td style="padding-left:20px;"><input type="checkbox" id="serialnumbrCol" />  Serial Number</td>';
+		/*str+='   <td style="padding-left:20px;"><input type="checkbox" id="serialnumbrCol" />  Serial Number</td>';*/
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="cast,Caste"/>  Caste</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" id="localityCheckBox" onClick="showAlert()" value="locality,Locality"/>  Locality</td>';
 		
-		var x = 4;
+		var x = 3;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
 		   if(x%5 == 0)
