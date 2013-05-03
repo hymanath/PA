@@ -975,7 +975,7 @@ table {
     padding:0;margin:0;background-image:none;
 }
 /*CSS for background bubble*/
-#sses2 li.highlight
+#sses2 li .highlight
 {
     background: #003366 url("./styles/images/rak.gif") no-repeat center bottom;; 
     top:0px;
@@ -1026,6 +1026,12 @@ color:#2A4F97;
 #censusTab{clear: both;margin-bottom: 10px;
     margin-top: 8px;}
 	#censusReportMainDiv{padding-bottom:1px;}
+
+.votersInfoCls{background: #003366;  border-radius: 8px;
+    padding-left: 15px;
+    padding-right: 15px;}
+
+	#sses2 ul{margin-left: 210px;}
 </style>
 
 </SCRIPT>
@@ -1053,6 +1059,15 @@ locationDetails.constituencyArr.push(ob);
 </c:forEach>		
 
 $(document).ready(function(){
+
+$(".votersInfoLi2").live("mouseover",function(){
+	
+	$(".votersInfoLi2").removeClass("votersInfoCls");
+	$(this).addClass("votersInfoCls");
+
+});
+
+
 	$('#constituencyList').val(0);
 	$("#newsCountDiv").css("display","none");
 	$("#problemsCountDiv").css("display","none");
