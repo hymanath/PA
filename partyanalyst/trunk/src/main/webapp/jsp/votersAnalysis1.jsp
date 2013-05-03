@@ -1032,6 +1032,7 @@ color:#2A4F97;
     padding-right: 15px;}
 
 	#sses2 ul{margin-left: 210px;}
+	#castPopupShowBtn{margin-right: 3px;}
 </style>
 
 </SCRIPT>
