@@ -6664,8 +6664,8 @@ scrollToNewsDiv();
              astr += "<div id='sse2' style='display:none' >";
              astr += "<div id='sses2'>";
              astr += "<ul>";
-			   astr += "<li class='btn btn-success btn-small highlight11' style=' margin-left:300px;' align='center' ><a href='javascript:{getvotersBasicInfo1(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
-            astr += "<li id='myli' style='display:none;'><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
+			   astr += "<li style=' margin-left:300px;' align='center' ><a class='votersInfoLi2 votersInfoCls' href='javascript:{getvotersBasicInfo1(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
+            astr += "<li id='myli' style='display:none;'><a class='votersInfoLi2' href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
 			astr += "<span style='display:none;margin-bottom: 12px;' id='ajaxImageDiv1'><img src='./images/icons/search.gif' /></span>";
 			astr += "</div>";
@@ -6697,8 +6697,8 @@ maintype = 'customWard';
              astr += "<div id='sse2' style='display:none'>";
              astr += "<div id='sses2'>";
              astr += "<ul>";
-			   astr += "<li class='btn btn-success btn-small highlight11' style=' margin-left:300px;' align='center' ><a href='javascript:{getvotersBasicInfo1(\"voters\","+mainreqid+","+mainpublicationId+",\"wardBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
-            astr += "<li id='myli' style='display:none'><a href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"wardLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
+			   astr += "<li  style=' margin-left:300px;' align='center' ><a class='votersInfoLi2 votersInfoCls' href='javascript:{getvotersBasicInfo1(\"voters\","+mainreqid+","+mainpublicationId+",\"wardBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
+            astr += "<li  id='myli' style='display:none'><a class='votersInfoLi2' href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"wardLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
 			astr += "<span style='display:none;margin-bottom: 12px;' id='ajaxImageDiv1'><img src='./images/icons/search.gif' /></span>";
 			astr += "</div>";
@@ -8676,7 +8676,7 @@ function  buildFamilyMembers1(result,jsObj,type){
 				  try{
 				  $("#myli").css('display','block');
 					  $("#myli").siblings().removeAttr('style class align');
-						 mybuildMenu();
+						 //mybuildMenu();
 				}catch(e){
 				//console.log(e);
 				}
