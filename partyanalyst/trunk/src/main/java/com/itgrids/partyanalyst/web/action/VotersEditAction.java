@@ -830,7 +830,7 @@ public String saveLocality()
 					voterHouseInfoVO.setCasteStateId(jSONObject.getLong("casteId"));
 					voterHouseInfoVO.setHamletId(jSONObject.getLong("hamletId"));
 					voterHouseInfoVO.setLocalitityId(jSONObject.getLong("localityHamletId"));
-
+					voterHouseInfoVO.setMobileNo(jSONObject.getString("mobileId"));
 					
 					voterHouseInfoVO.setUserId(userId);
 					voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
