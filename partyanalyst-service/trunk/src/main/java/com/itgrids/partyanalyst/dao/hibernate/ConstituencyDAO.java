@@ -511,6 +511,8 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		query.append("select model.localElectionBody.name from Constituency model where model.localElectionBody.localElectionBodyId=:locationValue");
 		if(type.equalsIgnoreCase("WARD"))
 			query.append("select model.localElectionBodyWard.wardName from Constituency model where model.localElectionBodyWard.constituency.constituencyId=:locationValue");
+		if(type.equalsIgnoreCase("customWard"))
+			query.append("select model.name from Constituency model where model.constituencyId=:locationValue");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter("locationValue", locationValue);
 		return queryObject.list();	

@@ -211,7 +211,7 @@ public interface IVotersAnalysisService {
 	public List<InfluencingPeopleBeanVO> getInfluencingPeopleCount(Long userId,Long locationValue,String type,Long publicationId);
 	
 	public List<VoterVO> getInfluencingPeopleVoterDetails(Long userId,Long locationValue,String type,String buttonName,
-			Long publicationId,Integer startIndex , Integer maxRecords);
+			Long publicationId,Integer startIndex , Integer maxRecords,String columnName,String order);
 	
 	public ImportantFamiliesInfoVo getImportantFamaliesDetailsForPanchayatByHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId);
 	public ResultStatus deleteVotersCastDataFromIntermediateTables(Long id,Long publicationDateId,Long userId);

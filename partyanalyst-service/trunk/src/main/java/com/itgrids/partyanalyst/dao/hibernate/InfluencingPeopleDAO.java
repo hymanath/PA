@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -7,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -587,5 +589,103 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 
 	}
 
+	public List<Long> getInfluencingPeopleCount(Long userId , List<Long> ids,String type )
+	{
+		
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select count(model.influencingPeopleId) from InfluencingPeople model " +
+				"where model.user.userId = :userId ");
+		if(type.equalsIgnoreCase("constituency"))
+		{
+			queryString.append("and model.userAddress.constituency.constituencyId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("mandal"))
+		{
+			queryString.append("and model.userAddress.tehsil.tehsilId in (:ids) ");
+		}
+		/*else if(type.equalsIgnoreCase("panchayat"))
+		{
+			queryString.append("and model.userAddress.hamlet.hamletId in (:ids) ");
+		}*/
+		else if(type.equalsIgnoreCase("booth"))
+		{
+			queryString.append("and model.userAddress.booth.boothId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("hamlet"))
+		{
+			queryString.append("and model.userAddress.hamlet.hamletId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+		{
+			queryString.append("and model.userAddress.ward.localElectionBody.localElectionBodyId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("ward"))
+		{
+			queryString.append("and model.userAddress.ward.constituencyId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("customWard"))
+		{
+			queryString.append("and model.userAddress.ward.constituencyId in (:ids) ");
+		}
+		Query query = getSession().createQuery(queryString.toString());
+		
+		query.setParameter("userId", userId);
+		
+		
+		query.setParameterList("ids",ids);
+		return query.list();
+	}
+	
+	public List<InfluencingPeople> getAllDetailsOfInfluencingPeople(Long userId,List<Long> ids,String type,Integer startIndex,
+			Integer maxRecords,String columnName,String order)
+	{
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select model from InfluencingPeople model " +
+				"where model.user.userId = :userId ");
+		if(type.equalsIgnoreCase("constituency"))
+		{
+			queryString.append("and model.userAddress.constituency.constituencyId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("mandal"))
+		{
+			queryString.append("and model.userAddress.tehsil.tehsilId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("panchayat"))
+		{
+			queryString.append("and model.userAddress.hamlet.hamletId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("booth"))
+		{
+			queryString.append("and model.userAddress.booth.boothId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("hamlet"))
+		{
+			queryString.append("and model.userAddress.hamlet.hamletId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+		{
+			queryString.append("and model.userAddress.ward.localElectionBody.localElectionBodyId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("ward"))
+		{
+			queryString.append("and model.userAddress.ward.constituencyId in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase("customWard"))
+		{
+			queryString.append("and model.userAddress.ward.constituencyId in (:ids)");
+		}
+		if(columnName.equalsIgnoreCase("voterIDCardNo")||columnName.equalsIgnoreCase("age")||columnName.equalsIgnoreCase("gender")||columnName.equalsIgnoreCase("houseNo")||columnName.equalsIgnoreCase("relativeName"))
+			queryString.append("order by model.voter."+columnName+" "+order);
+		else
+		queryString.append("order by model."+columnName+" "+order);
+		Query query = getSession().createQuery(queryString.toString());
+		
+		query.setParameter("userId", userId);
+		query.setParameterList("ids",ids);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxRecords);
+		
+		return query.list();
+	}
 		
 }

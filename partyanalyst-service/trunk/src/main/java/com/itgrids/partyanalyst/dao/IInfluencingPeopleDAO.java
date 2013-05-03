@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
 
@@ -148,4 +149,9 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getVotersMobileDetailsByConstituencyId(Long userId,String locationValue,String type);
 	
 	public List<Long> getInfluencingPeopleCountInHamlets(Long userId,List<Long> locationValue);
+	
+	public List<Long> getInfluencingPeopleCount(Long userId,List<Long> locationValues,String type);
+	
+	public List<InfluencingPeople> getAllDetailsOfInfluencingPeople(Long userId,List<Long> ids,String type,Integer startIndex,
+			Integer maxRecords,String columnName,String order);
 }
