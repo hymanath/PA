@@ -505,34 +505,31 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 
 $(".changePwdLink").live("click",function(){
 	
-	$("#allConnectedUsersDisplay_main").children().remove();
+	 $("#allConnectedUsersDisplay_main").children().remove();
 	
-	$("#connectPeoplePopup").dialog({
-			resizable:false,
+	 $("#connectPeoplePopup").dialog({
+            modal: true,
+            title: "<b>Change Password</b>",
 			width: 600,
-			minHeight:225,
-			show:'slide',
-			modal:true
-		});	
-		$(".ui-dialog-titlebar").hide();
-		$(".ui-widget-overlay").css("width","1000px");
-
+            height: 225
+           
+        });
 		var elmt = $("#allConnectedUsersDisplay_main");
 		var div = $("<div class='changePwdDiv'></div>");
-		div.append('<div id="password_window" style=" background-color: #7898BC; color: #FFFFFF;font-weight: bold;padding: 5px;">Change Password</div>');
+
 		div.append('<div id="password_window_errorMsg"></div>');
 		div.append('<img src="images/icons/infoicon.png" />');
 		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span>');
-		div.append('<div style="margin-top: 10px;"><font color="red">*</font> <span>Current Password</span> <input type="password" id="currentPwdId" name="currentPassword"/></div>');
-		div.append('<div><font color="red">*</font> <span>New Password</span> <input type="password" id="newPwdId" name="newPassword"/></div>');
-		div.append('<div style="margin-bottom: 10px;"><font color="red">*</font> <span>Confirm Password</span> <input type="password" id="confirmPwdId" name="confirmPassword"/></div>');
-		div.append('<input class="btn-info btn-small" id="changePWDButton" type="button" value="Change Password"></input>');
-		div.append('<input class="btn-info btn-small" id="cancelButtonID" type="button" value="No"></input>');
+		div.append('<div align="center"> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px;"/></div>');
+		div.append('<div align="center"> <span>New Password</span><font color="red"> *</font> <input type="password" id="newPwdId" name="newPassword" style="height: 18px; width: 160px; margin-top: 10px;margin-left: 38px;"/></div>');
+		div.append('<div align="center"> <span>Confirm Password</span><font color="red"> *</font> <input type="password" id="confirmPwdId" name="confirmPassword" style="height: 18px; width: 160px; margin-top: 10px;"/></div>');
+        div.append('<div style="margin-left: auto; margin-right: auto; width: 550px;"><input class="btn-info btn-small" id="changePWDButton" type="button" value="Change Password"></input><input class="btn-info btn-small" id="cancelButtonID" type="button" value="Cancel"></input></div>');
+
 		elmt.append(div);
 		$("#impdatesDiv").hide();
 		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
-  });
+	});
 
    $("#cancelButtonID").live("click",function(){
 	 $("#connectPeoplePopup").dialog("destroy");
