@@ -4985,7 +4985,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 		 voterHouseInfoVO.setGaurdian(voterInfo.getRelativeName());
 		 voterHouseInfoVO.setRelationship(voterInfo.getRelationshipType());
 		 voterHouseInfoVO.setFromSno(serialNo);
-		
+		 voterHouseInfoVO.setMobileNo(voterInfo.getMobileNo());
 		}
 		
 	  }
@@ -14279,7 +14279,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		 }
 		 catch(Exception e)
 		 {	
-			 log.error("Exception raised in  getSelectedVotersDetails service method");
+			 log.error("Exception raised in  getSelectedVotersDetails service method",e);
 
 		 }
 		 return votersHouseInfoVO;
@@ -14311,6 +14311,8 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		  try
 		  {
 			   Voter voter = voterDAO.get(votersDetails.getVoterId());
+			   voter.setMobileNo(votersDetails.getMobileNo());
+			   voterDAO.save(voter);
 			   User user = userDAO.get(votersDetails.getUserId());
 			   
 			   //SAVING user_voter_details TABLE DETAILS START
@@ -14505,13 +14507,14 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				if(userVoterDetails.getWard() != null)
 				{
 					voterHouseInfoVO.setHamletId(userVoterDetails.getWard().getConstituencyId());
-					
+					if(userVoterDetails.getWard().getLocalElectionBody() != null)
+					{
 					List<SelectOptionVO> localities =   getLocalitiesForWards(userVoterDetails.getWard().getLocalElectionBody().getLocalElectionBodyId(),userId,"model.localElectionBody.localElectionBodyId =:id");					
 					   
 					   voterHouseInfoVO.setSubLocalities(localities);
 					
 				
-					
+					}
 				}
 				
 				/*else
