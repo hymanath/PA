@@ -5027,5 +5027,11 @@
 			</result>				
 		</action>
 		
+		<action name="getAssemblyParliamentConstisAction" class="locationsHierarchyAction" method="getParlmentAndAssemblyConstisByStateId">
+			<result type="json" name="success">
+				<param name="root">constituencies</param>				
+			</result>		
+		</action>
+		
 		</package>
 </struts>      
