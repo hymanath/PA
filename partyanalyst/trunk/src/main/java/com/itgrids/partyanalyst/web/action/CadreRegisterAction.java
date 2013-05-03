@@ -133,6 +133,17 @@ public class CadreRegisterAction extends ActionSupport implements
 	private Boolean sameAsCAFlag;
 	private Long bloodGroup;
 	
+	private String note;
+	
+	
+	public String getNote() {
+		return this.cadreInfo.getNote();
+	}
+
+	public void setNote(String note) {
+		this.cadreInfo.setNote(note);
+	}
+
 	public Long getBloodGroup() {
 		return this.cadreInfo.getBloodGroup();
 	}
