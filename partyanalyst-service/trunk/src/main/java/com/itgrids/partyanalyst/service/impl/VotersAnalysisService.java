@@ -1311,6 +1311,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    votersInfoForMandalVO.setTotalMaleVoters(maleVotersCount.toString());
 	    votersInfoForMandalVO.setTotalFemaleVoters(femaleVotersCount.toString());
 	    votersInfoForMandalVO.setUnKnowVoters(unknownsCount.toString());
+	    votersInfoForMandalVO.setMaleVoters(maleVotersCount);
+	    votersInfoForMandalVO.setFemaleVoters(femaleVotersCount);
 	    votersInfoForMandalVO.setId(id);
 		votersInfoForMandalVO.setName(name);
 		votersInfoForMandalVO.setType(type);
@@ -1381,9 +1383,11 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					  Double votes = Double.valueOf(vo.getTotVoters().toString());
 					  Double totalVotes = Double.valueOf(votersInfoForMandalVO.getTotVoters().toString());
 					  vo.setPercent(new BigDecimal(votes*(100.0)/totalVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					  vo.setTotPercent(new BigDecimal(votes*(100.0)/totalVotes).setScale(2, BigDecimal.ROUND_HALF_UP));
 				  }
 				  else{
-					  vo.setPercent("0");  
+					  vo.setPercent("0");
+					  vo.setTotPercent(new BigDecimal("0.00"));
 				  }
 			  }
 			}
@@ -7596,6 +7600,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						votersInfoForMandalVO.setTotalMalePercentage(voterDetails.getMaleVotersPercentage() != null ? voterDetails.getMaleVotersPercentage().toString():"0.00");
 						votersInfoForMandalVO.setUnKnowVoters(unknowCount != null ? unknowCount.toString(): "0.00");
 						votersInfoForMandalVO.setPercent(voterDetails.getTotalVotersPercentage() != null?voterDetails.getTotalVotersPercentage().toString():"0.00");
+						votersInfoForMandalVO.setMaleVoters(voterDetails.getMaleVoters());
+						votersInfoForMandalVO.setFemaleVoters(voterDetails.getFemaleVoters());
+						votersInfoForMandalVO.setTotPercent(voterDetails.getTotalVotersPercentage()!=null?(new BigDecimal(voterDetails.getTotalVotersPercentage()).setScale(2, BigDecimal.ROUND_HALF_UP)):new BigDecimal("0.00") );
 						votersInfoForMandalVO.setType(type);
 						votersInfoForMandalVO.setName(name);
 						votersInfoForMandalVO.setDatapresent(true);
@@ -9888,10 +9895,13 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 						votersInfoForMandalVO.setTotalFemalePercentage(voterDetails.getFemaleVotersPercentage() != null? voterDetails.getFemaleVotersPercentage().toString():"0.00");
 						votersInfoForMandalVO.setTotalMalePercentage(voterDetails.getMaleVotersPercentage() != null ? voterDetails.getMaleVotersPercentage().toString():"0.00");
 						votersInfoForMandalVO.setUnKnowVoters(unknowCount != null ? unknowCount.toString(): "0.00");
+						votersInfoForMandalVO.setMaleVoters(voterDetails.getMaleVoters());
+						votersInfoForMandalVO.setFemaleVoters(voterDetails.getFemaleVoters());
 						votersInfoForMandalVO.setType(type);
 						votersInfoForMandalVO.setName(reportLevelValueIds.get(voterDetails.getReportLevelValue()));
 						votersInfoForMandalVO.setId(voterDetails.getReportLevelValue());
 						votersInfoForMandalVO.setPercent(voterDetails.getTotalVotersPercentage() != null?voterDetails.getTotalVotersPercentage().toString():"0.00");
+						votersInfoForMandalVO.setTotPercent(voterDetails.getTotalVotersPercentage()!=null?(new BigDecimal(voterDetails.getTotalVotersPercentage()).setScale(2, BigDecimal.ROUND_HALF_UP)):new BigDecimal("0.00") );
 						votersInfoForMandalVOList.add(votersInfoForMandalVO);
 					}
 				}
@@ -12593,9 +12603,11 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 						  Double votes = Double.valueOf(vo.getTotVoters().toString());
 						  Double totalVotes = Double.valueOf(totalVoters.toString());
 						  vo.setPercent(new BigDecimal(votes*(100.0)/totalVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						  vo.setTotPercent(new BigDecimal(votes*(100.0)/totalVotes).setScale(2, BigDecimal.ROUND_HALF_UP));
 					  }
 					  else{
-						  vo.setPercent("0");  
+						  vo.setPercent("0"); 
+						  vo.setTotPercent(new BigDecimal("0.00"));
 					  }
 				  }
 				}

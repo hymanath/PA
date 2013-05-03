@@ -9,10 +9,13 @@ public class VotersInfoForMandalVO {
 	private String mandalId;
 	private String mandalName;
 	private String totalMaleVoters;
+	private Long maleVoters;
+	private Long femaleVoters;
 	private String totalFemaleVoters;
 	private String totalVoters;
 	private String isPartial;
 	private String percent;
+	private BigDecimal totPercent;
 	private BigDecimal totVoters;
 	private Boolean isMandal = false;
 	private String unKnowVoters;
@@ -356,6 +359,24 @@ public class VotersInfoForMandalVO {
 	}
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+	public Long getMaleVoters() {
+		return maleVoters;
+	}
+	public void setMaleVoters(Long maleVoters) {
+		this.maleVoters = maleVoters;
+	}
+	public Long getFemaleVoters() {
+		return femaleVoters;
+	}
+	public void setFemaleVoters(Long femaleVoters) {
+		this.femaleVoters = femaleVoters;
+	}
+	public BigDecimal getTotPercent() {
+		return totPercent;
+	}
+	public void setTotPercent(BigDecimal totPercent) {
+		this.totPercent = totPercent;
 	}
 	
 	
