@@ -68,7 +68,13 @@
 	margin: 10px;
 	border-top-width: 40px;
 }
-
+#headingDiv1
+{
+	background-color: #05A8E9;
+    border-radius: 4px 4px 4px 4px;
+    color:snow;
+    padding: 2px;
+}
 
 #amount{width:90%;text-align:center;}
 #emprtyData
@@ -446,6 +452,7 @@ $(document).ready(function(){
 <div id="mainDiv">
 
 <div id="votersBasicInfoMainDiv">
+<div id="headingDiv1" align="center"></div>
 	<div id="censusReportMainDiv">
 	   <div id="censusReportDiv" class="widget blue"></div>
 	</div>
@@ -1071,11 +1078,15 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	{
 		if(jsObj.type == "constituency"){
 			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" Constituency";
+			heading = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Analysis of "+jsObj.typename+" ";
 		$("#votersBasicInfoTitleDiv").append('<h3>'+title+'</h3>');
+		$("#headingDiv1").append('<h3>'+heading+'</h3>');
 		}
 		else{
 		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" ";
+		 heading = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Analysis of "+jsObj.typename+" ";
 		 $("#votersBasicInfoTitleDiv").append('<h3>'+title+'</h3>');
+		 $("#headingDiv1").append('<h3>'+heading+'</h3>');
 		}
 	}
 
