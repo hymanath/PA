@@ -881,11 +881,18 @@ IUserVoterDetailsDAO{
 	* @return Object[]  
 	*/
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,Long userId,String male,String female,long ...ages){
+	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,Long userId,String type,String male,String female,long ...ages){
 		StringBuilder query = new StringBuilder();
 		Query queryObject = null;
-		query.append("select distinct model.hamlet.hamletId,model.hamlet.hamletName ," +
-					"count( distinct model.voter.voterId), ");
+		  if(type.equalsIgnoreCase(IConstants.HAMLET))
+				
+				query.append("select distinct model.hamlet.hamletId,model.hamlet.hamletName ," );
+						
+				   else if (type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+					   query.append("select distinct model.ward.constituencyId,model.ward.name ,");
+							  
+		  query.append(" count( distinct model.voter.voterId), ");	   
+		
 		query.append(getAgeQuery(null,"GENDER"));	
 		if(ages.length%2==0)
 			for(int i=0;i<ages.length;){				
@@ -894,9 +901,11 @@ IUserVoterDetailsDAO{
 			}			
 		query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
 		query.append(getAllAgesQuery(ages));
-		query.append("from UserVoterDetails model  where  model.voter.voterId in(:voterIds) and model.user.userId = :id " +
-					" and model.hamlet.hamletId is not null group by model.hamlet.hamletId order by model.hamlet.hamletName");
-							
+		query.append(" from UserVoterDetails model  where  model.voter.voterId in(:voterIds) and model.user.userId = :id and ");
+		 if(type.equalsIgnoreCase(IConstants.HAMLET))
+		query.append(" model.hamlet.hamletId is not null group by model.hamlet.hamletId order by model.hamlet.hamletName");
+		  else if (type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+		query.append(" model.ward.constituencyId is not null group by model.ward.constituencyId order by model.ward.name");	
 		queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter("male", male);
 		queryObject.setParameter("female", female);			
@@ -1093,6 +1102,23 @@ IUserVoterDetailsDAO{
 		 return query.list();
 		 
 	 }
+	 
+	 public List<?> getVoterIdsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId ,String type)
+	 {
+		 Query query = getSession().createQuery("select distinct model.voter.voterId " +
+					" from UserVoterDetails model," +
+					" BoothPublicationVoter model1 "+					
+					" where model.user.userId = :userId and model.voter.voterId = model1.voter.voterId and " +
+					"  model1.booth.publicationDate.publicationDateId = :publicationDateId and model.ward.localElectionBody.localElectionBodyId = :id and " +
+					" model.ward.constituencyId is not null ");
+		 
+		 query.setParameter("publicationDateId", publicationId);
+		 query.setParameter("id", id);
+		 query.setParameter("userId", userId);
+		 
+		 return query.list();
+		 
+	 }
 	
 	/**
 	 * This DAO is Uesd For Getting all voter gender details count for a customward
@@ -1167,6 +1193,31 @@ IUserVoterDetailsDAO{
 		queryObj.setParameter("publicationDateId", publicationDateId);
 		return queryObj.list();
 		
+	}
+	public List<Object[]> getAgeDataForWARDUser(List<?> voterIds,Long userId,String male,String female,long ...ages){
+		StringBuilder query = new StringBuilder();
+		Query queryObject = null;
+		query.append("select distinct model.ward.constituencyId,model.ward.name ," +
+					"count( distinct model.voter.voterId), ");
+		query.append(getAgeQuery(null,"GENDER"));	
+		if(ages.length%2==0)
+			for(int i=0;i<ages.length;){				
+				query.append(getAgeQuery("AGE"+ages[i],"AGE"+ages[i+1]));
+				i=i+2;
+			}			
+		query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
+		query.append(getAllAgesQuery(ages));
+		query.append("from UserVoterDetails model  where  model.voter.voterId in(:voterIds) and model.user.userId = :id " +
+					" and model.ward.constituencyId is not null group by model.ward.constituencyId order by model.ward.name");
+							
+		queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter("male", male);
+		queryObject.setParameter("female", female);			
+		queryObject.setParameterList("voterIds", voterIds);
+		queryObject.setParameter("id", userId);		
+		for(int i=0;i<ages.length;i++)
+				queryObject.setParameter("AGE"+ages[i], ages[i]);
+		return queryObject.list();
 	}
 	
 }

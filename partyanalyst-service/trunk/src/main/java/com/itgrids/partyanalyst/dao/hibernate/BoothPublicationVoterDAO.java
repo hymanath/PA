@@ -2986,5 +2986,69 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		 return query.list();
 		 
 	 }  
+		/**
+		 * This  is Uesd For Getting all voter in a house  count for a customward good for muncipality Level
+		 *  
+		 * @author Anilkumar Ravula
+		 * @param Long userId
+		 * @param Long id
+		 * @param Long publicationDateId
+		 * @param Long constituencyId
+		 * @param String type 
+		 * @return List<Object[]>
+		 */
+		public List<Object[]> getFamiliesInWard(Long userId, Long id ,Long publicationDateId , Long constituencyId , String type)
+		{
+			
+			Query query = getSession().createQuery("select count( distinct model.voter.voterId),model.voter.houseNo " +
+					" from BoothPublicationVoter model1 ,UserVoterDetails model " +
+					"where model1.booth.publicationDate.publicationDateId = :publicationDateId " +
+					" and model.voter.voterId = model1.voter.voterId and " +
+					" model.user.userId = :userId and " +
+					" model.ward.constituencyId = :id "+
+					" and model1.booth.constituency.constituencyId = :constituencyId group by model.voter.houseNo ");
+			
+			query.setParameter("userId", userId);
+			query.setParameter("publicationDateId", publicationDateId);
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("id", id);
+			
+			return query.list();
+			
+		}
+		/**
+		 * This  is Uesd For getting male and female count
+		 *  
+		 * @author Anilkumar Ravula
+		 * @param Long userId
+		 * @param Long id
+		 * @param Long publicationDateId
+		 * @param Long constituencyId
+		 * @param String type 
+		 * @return List<Object[]>
+		 */
+		
+		public List<Object[]> getVotersCountByGender(Long userId ,Long id ,Long  publicationDateId,Long constituencyId ,String type)
+		{
+			
+			Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.gender " +
+					" from BoothPublicationVoter model1 ,UserVoterDetails model " +
+					"where model1.booth.publicationDate.publicationDateId = :publicationDateId " +
+					" and model.voter.voterId = model1.voter.voterId and" +
+					" model.user.userId = :userId and " +
+					" model.ward.constituencyId = :id "+
+					" and model1.booth.constituency.constituencyId = :constituencyId group by model.voter.gender");
+			
+			query.setParameter("userId", userId);
+			query.setParameter("publicationDateId", publicationDateId);
+		
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("id", id);
+			
+			return query.list();
+			
+			
+		}
 	
 }
