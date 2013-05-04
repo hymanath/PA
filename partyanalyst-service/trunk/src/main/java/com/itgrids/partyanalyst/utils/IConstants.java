@@ -607,6 +607,8 @@ public interface IConstants {
 	
 	public final static String CUSTOMWARD = "customWard";
 	public final static String GHMC = "Greater Municipal Corp";
+	public final static String MUNCIPALITYWARDS = "muncipalityWards";
+	
 
 	
 }
