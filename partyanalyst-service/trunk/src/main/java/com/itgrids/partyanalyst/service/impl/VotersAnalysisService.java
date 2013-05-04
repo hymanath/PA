@@ -12698,12 +12698,19 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			}*/
 			return constituencyVotersList;
 		}
-		
-		public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByPanchayatId(Long panchayatId,Long publicationDateId,Long userId){
+		//18111 family
+		public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByPanchayatId(Long panchayatId,Long publicationDateId,Long userId , String type){
 			List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
-			
-			List<Object> hamlets =  userVoterDetailsDAO.getHamletsIdsForUserByPanchayat(panchayatId, userId);
-			
+			List<Object> hamlets = null;
+			   if(type.equalsIgnoreCase(IConstants.HAMLET))
+			 hamlets =  userVoterDetailsDAO.getHamletsIdsForUserByPanchayat(panchayatId, userId);
+			  
+			   else if (type.equalsIgnoreCase(IConstants.CUSTOMWARD)){
+				   Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(panchayatId).get(0);
+				 //  List<Object[]> hanletIds =  userVoterDetailsDAO.getWardsBYLocalElectionBodyId(lid,publicationDateId,userId);
+			      // hamlets = boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(lid, userId ,type);
+				   hamlets =(List<Object>)  userVoterDetailsDAO.getVoterIdsBYLocalElectionBodyId(lid, publicationDateId ,userId ,type);
+			   }
 			List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,hamlets);
 		   
 			if(filter == null || filter.size()==0)
@@ -12711,7 +12718,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			
 			
 			//List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter);
-		    List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter,userId,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+		    List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter,userId,type,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 		    if(list == null || list.size()==0)	
 			{   
 				return boothVotersList;	
@@ -14996,4 +15003,105 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		}
 		return list;
 	}
+
+	public ImportantFamiliesInfoVo getImportantFamiliesDetailsForWardFromMuncipality(
+			Long userId, Long id, Long publicationDateId, Long constituencyId ,String  type) {
+		
+		 ImportantFamiliesInfoVo importantFamiliesInfoVo  = new ImportantFamiliesInfoVo();
+		
+		log.debug("Entered into the getImportantFamiliesDetailsForWardFromMuncipality service method");
+		
+		try{
+			
+			importantFamiliesInfoVo.setType("MuniciPality");
+			      
+			  Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(id).get(0);
+
+		    importantFamiliesInfoVo.setName(localElectionBodyDAO.get(lid).getName());
+		    
+		    
+		   List<Object[]> hanletIds =  userVoterDetailsDAO.getWardsBYLocalElectionBodyId(lid,publicationDateId,userId);
+		   
+		   for(Object[] hamletId1 :hanletIds){
+            Long hamletId =(Long) hamletId1[0];
+			   
+				  List<Object[]> boothFamilyDetails =  boothPublicationVoterDAO.getFamiliesInWard(userId ,hamletId,  publicationDateId,constituencyId,type);
+				  
+				  ImportantFamiliesInfoVo importantFamiliesInfoVo1 = new ImportantFamiliesInfoVo();
+				  
+				  long upTo3 = 0;
+				  long upTo3Count = 0;
+				  long between4And6 = 0;
+				  long between4And6Count = 0;
+				  long between7And10 = 0;
+				  long between7And10Count = 0;
+				  long above10 = 0;
+				  long above10Count = 0;						     
+
+				  
+				  for(Object[] details:boothFamilyDetails){
+					  
+					  long count =(Long)details[0];
+					  
+					  if(count <= 3 ){
+						  upTo3++;
+						  upTo3Count = upTo3Count + count;
+					  }
+					  else if(count > 3 && count <=6){
+					      between4And6++;
+					      between4And6Count = between4And6Count + count;
+					  }
+					  else if(count > 6 && count <10){
+						  between7And10++;
+						  between7And10Count =between7And10Count + count;
+					  }
+					  else{
+					    above10++;
+					    above10Count=above10Count + count;
+					  }
+					  
+				  }
+				  
+	     List<Object[]> votersCount =  boothPublicationVoterDAO.getVotersCountByGender(userId , hamletId , publicationDateId,constituencyId,type);
+	     
+	     
+				      for(Object[] obj1:votersCount){
+				    	  
+				    	  if(obj1[1].toString().equalsIgnoreCase("M"))
+				    		  importantFamiliesInfoVo1.setTotalMaleVoters(obj1[0].toString());
+				    	  else if(obj1[1].toString().equalsIgnoreCase("F"))
+				    		  importantFamiliesInfoVo1.setTotalFemaleVoters(obj1[0].toString());						    	  
+				    	  
+				      }
+
+				  
+				     importantFamiliesInfoVo1.setBelow3(upTo3);
+				     importantFamiliesInfoVo1.setBelow3Popul(upTo3Count);					     
+				     importantFamiliesInfoVo1.setBetwn4to6(between4And6);
+				     importantFamiliesInfoVo1.setBetwn4to6Popul(between4And6Count);
+				     importantFamiliesInfoVo1.setBetwn7to10(between7And10);
+				     importantFamiliesInfoVo1.setBetwn7to10Popul(between7And10Count);
+				     importantFamiliesInfoVo1.setAbove10(above10);
+				     importantFamiliesInfoVo1.setAbove10Popul(above10Count);
+				     
+				     importantFamiliesInfoVo1.setTotalVoters(upTo3Count + between4And6Count + between7And10Count + above10Count);
+				     
+				     importantFamiliesInfoVo1.setName(constituencyDAO.get(hamletId).getName());
+				     importantFamiliesInfoVo1.setType("Ward");
+				     
+				     calculatePercentage(importantFamiliesInfoVo1);
+				     
+				     importantFamiliesInfoVo.getSubList().add(importantFamiliesInfoVo1);;
+				
+			   
+		   }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("Exception raised in  getImportantFamiliesDetailsForHamletFromBooth service method");		
+		}
+		
+		return importantFamiliesInfoVo;
+    }
+	
 }
