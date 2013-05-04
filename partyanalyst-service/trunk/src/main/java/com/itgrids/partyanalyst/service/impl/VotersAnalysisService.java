@@ -14982,5 +14982,18 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			return result;
 		}
 	}
-	
+	public List<SelectOptionVO> getMandalsInConstituency(Long constituencyId)
+	{
+		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+		try{
+			list = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+			if(list != null && list.size() > 0)
+				list = getMandals(list);
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured in getCasteWisePercentage() Method",e);
+		}
+		return list;
+	}
 }

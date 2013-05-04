@@ -271,4 +271,7 @@ public interface IVotersAnalysisService {
 	 public List<SelectOptionVO> getCasteWisePercentage(List<VoterCastInfoVO> list);
 		 
 	 public Long getLatestPublicationId();
+	 
+	 public List<SelectOptionVO> getMandalsInConstituency(Long constituencyId);
+		
 }
