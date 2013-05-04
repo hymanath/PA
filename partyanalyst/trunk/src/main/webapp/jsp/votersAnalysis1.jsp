@@ -1142,7 +1142,7 @@ $('.castDivs').hover(
 	<img id="publicationAjaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;margin-right:165px;"/>
 	
 	 <div id="refreshImg"  style="display:none;float:right;margin-right:160px;">
-	<a href="javaScript:{refreshConstituencyData();}"><img src="./images/icons/refreshImg.png" alt="Processing Image" title="Click Here To See Constituency Level Data"/></a>
+	<a id="refreshId" href="javaScript:{refreshConstituencyData();}"><img src="./images/icons/refreshImg.png" alt="Processing Image" title="Click Here To See Constituency Level Data"/></a>
 	</div>
 	</div>
 	
