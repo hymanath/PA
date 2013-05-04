@@ -2033,6 +2033,13 @@ function addToPolitician(voterId,name)
 		str+='</div>'
         $('#constituencyResults').html(str);
 	}
+
+	$("#refreshId").live("click",function()
+	{
+		$('#ShowConstMenu').html('Show <i class="icon-chevron-down"></i>');
+		$("#constituencyResultsInner").css("display","none");
+	});
+
 	var showConst=false;
 	
 	$('#ShowConstMenu').live('click',function(){
@@ -6379,7 +6386,7 @@ $(document).ready(function(){
 $("#ShowMenu").click(function(){
 	if(showflag||fromOnChange) {
 		showConst=false;
-		$("#ShowConstMenu").trigger('click');
+		//$("#ShowConstMenu").trigger('click');
 		
 		$(".customMenu").css("display","inline-block");
 		
