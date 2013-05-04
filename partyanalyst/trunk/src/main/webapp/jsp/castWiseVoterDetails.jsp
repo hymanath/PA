@@ -249,12 +249,17 @@ table {
 
 var type               =  "${type}";
 var id				   =  "${id}";
-var typeName		   =  "${typename}";
+var typeName		   =  "${typeName}";
 var constituencyId     =  "${constituencyId}";
 var publicationDateId  =  "${publicationDateId}";
+var publicationyear    =  "${importanceId}";
 var buildType          =  "${buildType}";
 var	queryType		   =  "${queryType}";
  var resultFor = '${resultFor}';
+	if(typeName.length <=0)
+		typeName = "${typename}";
+	if(publicationyear.length <=0)
+		publicationyear = "${publicationDate}";
 //myBtn
 var castePercent = null;
 
@@ -444,7 +449,14 @@ function getVotersInACaste(id,publicationDateId,caste,type,Name,casteStateId,cas
 	if(level == 4)
 	var typename = $('#pollingStationField :selected').text();
 	var publicationDateVal=$('#publicationDateList :selected').text();
-	var year=publicationDateVal.substr(publicationDateVal.length - 4)
+	//var year=publicationDateVal.substr(publicationDateVal.length - 4);
+	var mainId = 0;
+	var buildTypes = buildType;
+	var year = publicationyear;
+	var urlStr="allVotersInAcasteAction.action?hamletId="+id+"&mainId="+mainId+"&publicationDateId="+publicationDateId+"&caste="+caste+"&type="+type+"&Name="+Name+"&casteStateId="+casteStateId+"&casteCategory="+casteCategory+"&typename="+typename+"&year="+year+"&buildTypes="+buildTypes+"&constituencyId="+constituencyId+" ";
+	var updateBrowser = window.open(urlStr,"allVoterDetailsInAcaste","scrollbars=yes,height=600,width=700,left=200,top=200");	
+	updateBrowser.focus();
+	/*
 	var jsObj={
 			id:id,
 			publicationDateId:publicationDateId,
@@ -462,7 +474,7 @@ function getVotersInACaste(id,publicationDateId,caste,type,Name,casteStateId,cas
 		}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getvotersCastInfoByConstituency.action?"+rparam;				
-	callAjax(jsObj,url);
+	callAjax(jsObj,url);*/
 }
 
 var castTemp = new Array();
@@ -595,7 +607,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
 		else if(type == "booth")
 		{
-		 str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In'+typeName+'Booth</h4>';	
+		 str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In '+typeName+' Booth</h4>';	
 		}
 		
 		else if(type =="hamlet"){
@@ -607,8 +619,8 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 			else if(type =="customWard"){
 		   if(res == "booth")
 		   str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
-		//else
-		//str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
+		else
+			str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' </h4>';
 			}
 		
 		str+='<thead>';
@@ -759,7 +771,15 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 	{
 	var publicationDateVal=$('#publicationDateList :selected').text();
 	var year=publicationDateVal.substr(publicationDateVal.length - 4)
-	var jsObj={
+	
+	var year = publicationyear;
+	var hamletId = '${id}';
+	var type="Locality"+"-"+localityId;
+	var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&publicationDateId="+publicationDateId+"&caste="+caste+"&Name="+name+"&type="+type+"&casteStateId="+casteStateId+"&casteCategory="+casteCategory+"&year="+year+" ";
+	var updateBrowser = window.open(urlStr,"allVotersDetailsInAcast","scrollbars=yes,height=600,width=1000,left=200,top=200");	
+	updateBrowser.focus();
+
+/*	var jsObj={
 			id:id,
 			publicationDateId:publicationDateId,
 			caste:casteStateId,
@@ -776,7 +796,7 @@ function buildCastInfoForSubLevels(myresults,jsObj)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getvotersCastInfoByConstituency.action?"+rparam;				
-	callAjax(jsObj,url);
+	callAjax(jsObj,url);*/
 
 }
 
@@ -834,15 +854,22 @@ function getVotersInACasteForDidffrentLevels(mainId,id,publicationDateId,caste,t
 {
 $("#localCastStatsVotersTitle").html("");
 $("#localCastStatsTabContent_subbody1").html("");
+var buildTypes = buildType;
+var typename = 'hamlet';
 var level = $("#reportLevel").val();
 if(level == 2)
-var typename = $('#mandalField :selected').text();
+	typename = $('#mandalField :selected').text();
 if(level == 3)
-var typename = $('#panchayatField :selected').text()+ ' Panchayat ';
+	typename = $('#panchayatField :selected').text()+ ' Panchayat ';
 if(level == 4)
-var typename = $('#pollingStationField :selected').text();
+	typename = $('#pollingStationField :selected').text();
 var publicationDateVal=$('#publicationDateList :selected').text();
-var year=publicationDateVal.substr(publicationDateVal.length - 4)
+//var year=publicationDateVal.substr(publicationDateVal.length - 4);
+var year = publicationyear;
+	var urlStr="allVotersInAcasteAction.action?hamletId="+id+"&mainId="+mainId+"&publicationDateId="+publicationDateId+"&caste="+caste+"&type="+type+"&Name="+Name+"&casteStateId="+casteStateId+"&casteCategory="+casteCategory+"&typename="+typename+"&year="+year+"&buildTypes="+buildTypes+"&constituencyId="+constituencyId+" ";
+	var updateBrowser = window.open(urlStr,"allVotersDetailsInAcaste","scrollbars=yes,height=600,width=1000,left=200,top=200");	
+	updateBrowser.focus();
+/*
 var jsObj={ hamletId:id,
 			id:mainId,
 			publicationDateId:publicationDateId,
@@ -863,7 +890,7 @@ var jsObj={ hamletId:id,
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getvotersCastInfoByConstituency.action?"+rparam;				
 	callAjax(jsObj,url);
-
+*/
 }
 
 function openProblemEditForm(id,boothId)
