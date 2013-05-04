@@ -137,6 +137,7 @@ import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IElectionAnalyzeService;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.CandidateElecResultVOComparator;
 import com.itgrids.partyanalyst.utils.ConstituencyNamesComparator;
@@ -204,7 +205,16 @@ public class StaticDataService implements IStaticDataService {
 	private IUserStateAccessInfoDAO userStateAccessInfoDAO;
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private IRegionServiceData regionServiceDataImp;
 	
+
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
 
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
@@ -7988,14 +7998,5 @@ public class StaticDataService implements IStaticDataService {
 			return null;
 		}
 	}
-
-
-public List<SelectOptionVO> removeDuplicates(List<SelectOptionVO> list) {
-	HashSet<SelectOptionVO> listToSet = new HashSet<SelectOptionVO>(list);
-    list.clear();
-    list.addAll(listToSet);
-    Collections.sort(list);
-	return list;
 	
-}
 }
