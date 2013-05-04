@@ -205,7 +205,7 @@ public interface IVotersAnalysisService {
 		 public List<VotersInfoForMandalVO>  getPreviousVotersCountDetailsForHamlet( Long constituencyId, Long mandalId,Long  panchayatId,Long boothId,Long hamletId,Long userID ,String type);
 		
 	public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Long publicationDateId,Long userId);
-	public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByPanchayatId(Long panchayatId,Long publicationDateId,Long userId);
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByPanchayatId(Long panchayatId,Long publicationDateId,Long userId , String Type);
 	
 	public ResultStatus updateSerialNo(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults);
 	public List<InfluencingPeopleBeanVO> getInfluencingPeopleCount(Long userId,Long locationValue,String type,Long publicationId);
