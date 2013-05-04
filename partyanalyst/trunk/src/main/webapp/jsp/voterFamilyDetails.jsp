@@ -194,7 +194,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 		<div id ="impFamilesBasicSubDetailsForHamlet" ></div>
 		<div id="descriptionDiv1" ></div>
 		<div id="impFamPancBothDtlsAgxImgForHamlet" ><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/></div>
-		<div id="impFamPancBothDtlsForHamlet" style="font-size:12px;overflow-x:scroll;"></div>
+		<div id="impFamPancBothDtlsForHamlet" style="font-size:12px;"></div>
 	   </div>
 
 	</div> 
@@ -206,11 +206,12 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 <h4 id="impFamilesBasicSubDetailsTitle"></h4>
 <div id ="impFamilesBasicSubDetails" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;"></div>
+<div id="descriptionDiv" ></div>
 </div>
 
 
 
-<div id="descriptionDiv" ></div>
+
 		
 		<div id="impFamPancBothDtls" class="widget blue whitegloss" style="width:959px;margin-top:50px;margin-left:auto;margin-right:auto;">
 		
@@ -443,7 +444,10 @@ function buildTableForImpFamilesForHamlets(impFamilesData,name,type,results)
      if(impFamilesData[t].type != null)
 	   reqtytle = impFamilesData[t].type;
   }
-  $("#impFamilesBasicSubDetailsForHamletTitle").html("<h4>"+reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"</h4>");
+  if(type == 'customWard')
+	$("#impFamilesBasicSubDetailsForHamletTitle").html("<h4>"+reqtytle+" wise Voters Family analysis of "+name+" in "+publicationYear+"</h4>");
+  else 
+	$("#impFamilesBasicSubDetailsForHamletTitle").html("<h4>"+reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"</h4>");
   
   var impFamilesColumnDefs = [
     {key:"name", label: ""+reqtytle+"", sortable: true},
@@ -793,6 +797,7 @@ function impFamilesStaticTable(myresults,jsObj)
 	}
 }
 var customWardName='';
+var locationName='';
 function  buildFamilyMembers(result,jsObj,type){
 	
 	var publicationDateId =   jsObj.publicationDateId;
@@ -818,8 +823,10 @@ function  buildFamilyMembers(result,jsObj,type){
 		 var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' in '+publicationYear+'</h4>';
 	else if(type == 'customWard')
 		var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+customWardName+' in '+publicationYear+'</h4>';
+	else if(type =="pollingstation")
+		 var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' '+locationName+' in '+publicationYear+'</h4>';
 	 else
-      var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' '+type+' in '+publicationYear+'</h4>';
+      var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' '+locationName+' '+type+' in '+publicationYear+'</h4>';
 	
 	  str+=' <div style="padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
           str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
@@ -1453,6 +1460,7 @@ $('#impFamPancBothDtlsAgxImg').show();
 
 function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
 		{
+		locationName = name;
 		$("#ajaxImageDiv").css('display','none');
 		var impFamiList = new Array();
 		  for(var i in impFamilesData){
@@ -1477,8 +1485,10 @@ function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
 		     if(impFamilesData[t].type != null)
 			   reqtytle = impFamilesData[t].type;
 		  }
+		  if(type == 'customWard')
+			type="";
 		  if(requestFor=="booth")
-		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Booth wise voters family analysis of "+name+" in "+publicationYear+"</b>");
+		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Booth wise voters family analysis of "+name+" "+type+" in "+publicationYear+"</b>");
 		  else
 		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Hamlet wise voters family analysis of "+name+" in "+publicationYear+"</b>");
 		  var impFamilesColumnDefs = [
@@ -1550,6 +1560,8 @@ getImpFamiliesVotersToShowForBooth();
 		    var name = "";
 		     if(type == "panchayat")
 			    name = $("#panchayatField option:selected").text();
+			else if(type =="pollingstation")
+				type = locationName;
 			 else
 			   name = $("#pollingStationField option:selected").text();
 			
