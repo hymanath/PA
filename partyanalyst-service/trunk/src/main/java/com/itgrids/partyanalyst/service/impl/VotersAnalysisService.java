@@ -2574,6 +2574,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
 		List<Voter> list = null;
 		//List<Voter> list = boothPublicationVoterDAO.getVoterDetailsByCaste(id, publicationDateId, caste);
+		try{
 		if(type.equalsIgnoreCase("boothHamlet"))
 		{
 		 list = userVoterDetailsDAO.getVoterIdsForuserinHamletByBoothsandByCasteId(userId,hamletId,casteStateId,id.longValue(),publicationDateId.longValue());
@@ -2637,7 +2638,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				sno = sno + 1;
 			}
 		}
-		return votersList;
+			return votersList;
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error(" Exception Occured in getVoterDetailsByCaste() Method, Exception - "+e);
+			return votersList;
+		}
 	}
 	/**
 	 * This method will get overview voters details for a constituency or for a mandal
