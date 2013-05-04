@@ -3791,6 +3791,11 @@
 				<param name="root">constituencyManagementVO</param>				
 			</result> 
 		</action>
+		
+		<action name="allVotersInAcasteAction" class="allVotersInAcasteAction">
+			<result name="success">/jsp/allVotersInACaste.jsp</result>
+		</action>
+		
 		 <action name="getvotersCastInfoByConstituency" class="votersAnalysisAction" method="getVotersCastInfoByConstituency">
            <result type="json" name="success">
            		<param name="root">constituencyManagementVO</param>
