@@ -59,6 +59,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private List<PartyResultVO> partiesResults;
 	private Map<String,List<PartyResultVO>> partyResultMap;
 	private Map<String,List<String>> partyResultMapPrcnt;
+	private Map<String,List<String>> partyResultMapVotes;
 	JSONObject jObj = null;
 	private Long constituencyId;
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
@@ -66,6 +67,14 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private HttpSession session;
 	private List<Object> electionResults;
 	
+	public Map<String, List<String>> getPartyResultMapVotes() {
+		return partyResultMapVotes;
+	}
+
+	public void setPartyResultMapVotes(Map<String, List<String>> partyResultMapVotes) {
+		this.partyResultMapVotes = partyResultMapVotes;
+	}
+
 	public Map<String, List<String>> getPartyResultMapPrcnt() {
 		return partyResultMapPrcnt;
 	}
@@ -406,7 +415,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			partiesResults = constituencyPageService.findPanchayatsWiseResultsInElectionsOfMandal(new Long(tehsilId), jObj.getString("parties"),jObj.getString("elections"), new Boolean(jObj.getString("includeAlliance")));
 			electionResults.add(partiesResults);
 			partyResultMap=new HashMap<String, List<PartyResultVO>>();
-		        
+			
 		    for(PartyResultVO prtyrslts:partiesResults){
 		       String partyName=prtyrslts.getPartyName();
 		       List<PartyResultVO> volist=new ArrayList<PartyResultVO>();
@@ -421,17 +430,23 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		    }
 		    
 		    partyResultMapPrcnt=new HashMap<String,List<String>>();
+		    partyResultMapVotes =new HashMap<String, List<String>>();  
 		    for(Entry<String, List<PartyResultVO>> entry : partyResultMap.entrySet()) {
 		      String key = entry.getKey();
 		      List<String> percentage=new ArrayList<String>();
+		      List<String> validVotes=new ArrayList<String>();
 		      List<PartyResultVO> value = entry.getValue();
 		      for(PartyResultVO aString : value){
 		        String prcnt=aString.getVotesPercent();
 		        percentage.add(prcnt);
+		        validVotes.add(aString.getValidVotes().toString()); 
 		      }
+		      
+		      partyResultMapVotes.put(key,validVotes);
 		      partyResultMapPrcnt.put(key, percentage);
 		    }
 		    electionResults.add(partyResultMapPrcnt);
+		    electionResults.add(partyResultMapVotes);
 		}
 		 
 	}catch(Exception e){
@@ -469,17 +484,23 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			    }
 			    
 			    partyResultMapPrcnt=new HashMap<String,List<String>>();
+			    partyResultMapVotes = new HashMap<String, List<String>>();
 			    for(Entry<String, List<PartyResultVO>> entry : partyResultMap.entrySet()) {
 			      String key = entry.getKey();
 			      List<String> percentage=new ArrayList<String>();
+			      List<String> validVotes=new ArrayList<String>();
 			      List<PartyResultVO> value = entry.getValue();
 			      for(PartyResultVO aString : value){
 			        String prcnt=aString.getVotesPercent();
+			        validVotes.add(aString.getValidVotes().toString()); 
 			        percentage.add(prcnt);
+			       
 			      }
 			      partyResultMapPrcnt.put(key, percentage);
+			      partyResultMapVotes.put(key, validVotes);
 			    }
 			    electionResults.add(partyResultMapPrcnt);
+			    electionResults.add(partyResultMapVotes);
 			}
 			 
 		}catch(Exception e){
