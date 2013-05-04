@@ -4968,8 +4968,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					  partyVO.setPartyName(partyData[1].toString()+" IN "+election.getElectionScope().getElectionType().getElectionType()+" "+election.getElectionYear());
 					  partyVO.setConstituencyName(partyResultVO.getConstituencyName());
 					  if(partyResultVO.getValidVotes() != null && partyResultVO.getValidVotes() > 0 && partyData[2] != null && ((Long)partyData[2]).longValue() > 0){
-						  partyVO.setVotesPercent(new BigDecimal((Long)partyData[2]*100.0/partyResultVO.getValidVotes()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						  partyVO.setValidVotes((Long)partyData[2]);
+						 partyVO.setVotesPercent(new BigDecimal((Long)partyData[2]*100.0/partyResultVO.getValidVotes()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 						}else{
+							 partyVO.setValidVotes(0l);
 							partyVO.setVotesPercent("0.0");
 						}
 					
@@ -5048,8 +5050,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						  partyVO.setPartyName(alliance);
 						  partyVO.setConstituencyName(partyResultVO.getConstituencyName());
 						  if(partyResultVO.getValidVotes() != null && partyResultVO.getValidVotes() > 0){
+							  partyVO.setValidVotes(count);
 							  partyVO.setVotesPercent(new BigDecimal(count*100.0/partyResultVO.getValidVotes()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 							}else{
+								 partyVO.setValidVotes(0l);
 								partyVO.setVotesPercent("0.0");
 							}
 						
@@ -5110,8 +5114,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					  partyVO.setPartyName(partyData[1].toString()+" IN "+election.getElectionScope().getElectionType().getElectionType()+" "+election.getElectionYear());
 					  partyVO.setConstituencyName(partyResultVO.getConstituencyName());
 					  if(partyResultVO.getValidVotes() != null && partyResultVO.getValidVotes() > 0 && partyData[2] != null && ((Long)partyData[2]).longValue() > 0){
+						  partyVO.setValidVotes((Long)partyData[2]);
 						  partyVO.setVotesPercent(new BigDecimal((Long)partyData[2]*100.0/partyResultVO.getValidVotes()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 						}else{
+							 partyVO.setValidVotes(0l);
 							partyVO.setVotesPercent("0.0");
 						}
 					
@@ -5192,7 +5198,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					partyResultVO.setValidVotes(0l);
 				}
 				partyResultVO.getBoothIds().add((Long)boothsData[2]);
-				partyResultVO.setValidVotes(partyResultVO.getValidVotes()+(Long)boothsData[5]);
+				partyResultVO.setValidVotes(partyResultVO.getValidVotes()+(Long)boothsData[3]);
 			}
 			
 			for(Long key:bootIdsForPanchayat.keySet()){
@@ -5205,8 +5211,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						  partyVO.setPartyName(alliance);
 						  partyVO.setConstituencyName(partyResultVO.getConstituencyName());
 						  if(partyResultVO.getValidVotes() != null && partyResultVO.getValidVotes() > 0){
+							  partyVO.setValidVotes(count);
 							  partyVO.setVotesPercent(new BigDecimal(count*100.0/partyResultVO.getValidVotes()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 							}else{
+								partyVO.setValidVotes(0l);
 								partyVO.setVotesPercent("0.0");
 							}
 						
