@@ -1026,7 +1026,7 @@ function addToPolitician(voterId,name)
 		 $("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" Hamlet in "+publicationYear+" ");
 	     // $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		//  $("#votersBasicInfoBtnDiv").hide();
-		$("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
+		$("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;margin-left: 20px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
 	   $("#castPopupShowBtn").attr("value","Locality wise Caste Info");
 	   }
 	   else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
@@ -1102,7 +1102,7 @@ function addToPolitician(voterId,name)
 	   {
 	    $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Localities Wise Age Details</a>');
 	  // $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
-	   $("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
+	   $("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;margin-left: 20px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
 	   $("#impFamiliesMoreInfoButn").css('display','none');
 	   }
 
@@ -2804,8 +2804,14 @@ var typename = $('#panchayatField :selected').text()+ ' Panchayat ';
 if(level == 4)
 var typename = $('#pollingStationField :selected').text();
 var publicationDateVal=$('#publicationDateList :selected').text();
-var year=publicationDateVal.substr(publicationDateVal.length - 4)
-var jsObj={
+var year=publicationDateVal.substr(publicationDateVal.length - 4);
+var mainId = 0;
+var buildTypes = buildType;
+var urlStr="allVotersInAcasteAction.action?hamletId="+id+"&mainId="+mainId+"&publicationDateId="+publicationDateId+"&caste="+caste+"&type="+type+"&Name="+Name+"&casteStateId="+casteStateId+"&casteCategory="+casteCategory+"&typename="+typename+"&year="+year+"&buildTypes="+buildTypes+"&constituencyId="+constituencyId+" ";
+var updateBrowser = window.open(urlStr,"allVoterDetailsInAcaste","scrollbars=yes,height=600,width=1000,left=200,top=200");	
+updateBrowser.focus();
+/*
+ * var jsObj={
 			id:id,
 			publicationDateId:publicationDateId,
 			//caste:"32",
@@ -2825,6 +2831,7 @@ var jsObj={
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getvotersCastInfoByConstituency.action?"+rparam;				
 	callAjax(jsObj,url);
+	*/
 
 }
 
@@ -8930,7 +8937,7 @@ var urlstr = "voterFamilyInfoAction.action?type=booth&id="+selectedId+"&publicat
 		
 			publicationDateId = $("#publicationDateList").val();
 			constituencyId = $("#constituencyList").val();
-			var reqBrowser = window.open("ageWiseVoterDetailsActionForCast.action?&type="+maintype+"&id="+mainreqid+"&typeName="+mainname+"&publicationDateId="+publicationDateId+"&constituencyId="+constituencyId+"&buildType="+buildType+"&queryType='sub' ","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+			var reqBrowser = window.open("ageWiseVoterDetailsActionForCast.action?&importanceId="+publicationYear+"&type="+maintype+"&id="+mainreqid+"&typeName="+mainname+"&publicationDateId="+publicationDateId+"&constituencyId="+constituencyId+"&buildType="+buildType+"&queryType='sub' ","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 			reqBrowser.focus();
 	}
 
