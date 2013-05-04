@@ -1112,7 +1112,7 @@
 	</bean>
 		
 	<bean id="ageWiseVoterDetailsAction" class="com.itgrids.partyanalyst.web.action.AgeWiseVoterDetailsAction" singleton="false">	
- <property name="userVoterService" ref="userVoterService" />
+ 	<property name="userVoterService" ref="userVoterService" />
 	</bean>
 	<bean id="voterFamilyEditAction" class="com.itgrids.partyanalyst.web.action.VoterFamilyEditAction" singleton="false">	
 		
@@ -1136,6 +1136,9 @@
 	
 	<bean id="subRegionsWiseAnalysisAction" class="com.itgrids.partyanalyst.web.action.SubRegionsWiseAnalysisAction" singleton="false">	
 		<property name="userVoterService" ref="userVoterService" />	
+	</bean>
+	
+	<bean id="allVotersInAcasteAction" class="com.itgrids.partyanalyst.web.action.AllVotersInAcasteAction" singleton="false">	
 	</bean>
 </beans>	
 	
