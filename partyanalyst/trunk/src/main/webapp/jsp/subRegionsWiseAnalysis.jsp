@@ -398,6 +398,15 @@ table.dataTable thead th {
     border-bottom: 1px none #D3D3D3;
 	background-color: #CDE6FC;
 }
+.selectDiv{
+	 width:80%;
+	 padding-top:10px;
+	 padding-bottom:10px;
+	 font-size: 12px;
+	 font-weight:bold;
+	 color:#333333;
+
+ }
 </style>
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -417,6 +426,7 @@ var constituencyResults,createGroupDialog;;
 var constituencyType = 'Assembly';
 var parliamentResult;
 var counter = 0;
+var tehsilId = '${mandalId}';
 
 $(document).ready(function(){
   if(type == "mandal"){
@@ -445,6 +455,24 @@ $(document).ready(function(){
   }
 
 });
+
+
+$('#mandals').live("change",function() {
+	var mainreqid =$('#mandals').val();
+	var mainname =$("#mandals option:selected").text();
+	
+var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+publicationId+"&type="+type+"&publicationYear="+publicationYear+"&buildType=&constituencyId="+constituencyId+"&typeName="+mainname;
+  var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+});
+$("#panchayats").live("change",function(){
+	
+	var mainreqid =$('#panchayats').val();
+	var mainname =$("#panchayats option:selected").text()+" Panchayat";
+	   var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+publicationId+"&type="+type+"&publicationYear="+publicationYear+"&buildType=&constituencyId="+constituencyId+"&typeName="+mainname+"&mandalId="+tehsilId;
+	    var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+});
 </script>
 
 </head>
@@ -460,6 +488,20 @@ $(document).ready(function(){
 	<div class="widget blue">
 	
 	<div id="basicInfoAjaxDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
+
+	<c:if test="${type == 'mandal'}">
+	<div id="otherMandalDiv" style=" margin-left:484px;
+    margin-top: 5px;width: 169px;"><input type="button" class="btn" id="othersDiv" value="View Other Mandal Info" onclick="getothersSelectDiv();"/></div>
+	
+	<div id="othersmandalDiv" style="display:none;float:right;margin-top:-21px;">Select Mandal : <select id="mandals"></select></div>
+	</c:if>
+	<c:if test="${type == 'panchayat'}">
+	<div id="otherPanchayatDiv" style=" margin-left:449px;
+    margin-top: 5px;width: 169px;"><input type="button" class="btn" id="othersDiv" value="View Other Panchayat Info" onclick="getothersSelectDiv();"/></div>
+	
+	<div id="othersPanchayatDiv" style="display:none;float:right;margin-top:-21px;">Select Panchayat : <select id="panchayats"></select></div>
+	</c:if>
+	<br>
 	<div id="votersBasicInfoTitleDiv"></div>
 	<!--<div id="votersBasicInfoMsgDiv" class="widget blue"></div>
 	<div id="votersBasicInfoSubChartDiv" class="widget blue"></div>-->
@@ -503,6 +545,7 @@ $(document).ready(function(){
     <div id="mandalElecResultsParties"></div>
     <div id="mandalElecResultsElections"></div>
     <div id="mandalElecResultsButton" style='margin-left:81px;'></div>
+	<div id="mandalElecResultsButton1" style='margin-left:81px;'></div>
   </div>
   <div align="center">
     <div id="container"></div>
@@ -749,12 +792,12 @@ function callAjax(jsObj,url)
 									}else if(jsObj.task == "getElectionsAndParties" || jsObj.task == "getPanchayatElectionsAndParties"){
 									  buildElectionsAndParty(myResults);
 									}else if(jsObj.task == "getResults"){
-									  buildLineChart(myResults);
+									  buildLineChart(myResults,jsObj);
 									 
 									}
 									else if(jsObj.task == "getResultsForBooth")
 									{
-									buildLineChartForBooth(myResults);
+									buildLineChartForBooth(myResults,jsObj);
 									}
 								else if(jsObj.task == "getCensusInfo")
 								{
@@ -807,6 +850,14 @@ function callAjax(jsObj,url)
 					buildAgeAndGenderWiseDetails(myResults,jsObj);
 					buildAgeAndGenderWiseDetailsForPercent(myResults,jsObj)
 								}
+						else if(jsObj.task == "getMandals")
+								{
+						buildMandals(myResults);
+								}
+								else if(jsObj.task == "getPanchayatsByMandalId")
+								{
+								buildPanchayats(myResults);
+								}
 				
 								}catch (e) {
 								console.log(e);
@@ -821,7 +872,11 @@ function callAjax(jsObj,url)
 }
 
   function buildElectionsAndParty(myResults){
+	  
+	  if(myResults.electionsInMandal.length == 0)
+		  $("#mandalElecResultsDiv").css("display","none");
       if(myResults != null && myResults.partiesInMandal != null && myResults.partiesInMandal.length > 0  && myResults.electionsInMandal != null && myResults.electionsInMandal.length > 0){
+		   $("#mandalElecResultsDiv").css("display","block");
 		  var electionsLength = myResults.electionsInMandal.length;
 	     var str='';
 		 str+='<table><tr><th align="left">Parties : </th><td>';
@@ -845,13 +900,18 @@ function callAjax(jsObj,url)
 	     $("#mandalElecResultsElections").html(str);
 		 if(type == "mandal")
 		 {
-		 $("#mandalElecResultsButton").html("<input id='includeAlliancesDiv' type='checkbox' /><label  for='includeAlliancesDiv'><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type='button'  class='btn' value='Submit' onclick='getPanchayatData();'>");
+		 $("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getPanchayatData()">');
+		 $("#mandalElecResultsButton1").html('<input type="radio" name="votes"  class="btn" value="percentage" id="votingPercentageID" checked="true" onclick="getPanchayatData()"/> Voting Percentage&nbsp;<input type="radio" name="votes"  class="btn" value="validvotes" id="votingValuesID" onclick="getPanchayatData()"/>Valid Votes');
 		  getPanchayatData();
 		 }
 		 if(type == "panchayat")
 		 {
-		  $("#mandalElecResultsButton").html("<input id='includeAlliancesDiv' type='checkbox' /><label  for='includeAlliancesDiv'><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type='button'  class='btn' value='Submit' onclick='getResultsForBooths();'>");
-		   getResultsForBooths();
+
+		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForBooths()">');
+		 $("#mandalElecResultsButton1").html('<input type="radio" name="boothvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForBooths()"/> Voting Percentage&nbsp;<input type="radio"  name="boothvotes" class="btn" value="validvotes" id="boothvotingValuesID" onclick="getResultsForBooths()"/>Valid Votes');
+		  getResultsForBooths();
+
+		 
 		}
 	  }
   }
@@ -869,7 +929,7 @@ function callAjax(jsObj,url)
 	  if($(this).is(':checked'))
 	    elections+=','+$(this).val();
     });
-	 
+	var btnName=$('input:radio[name=votes]:checked').val();
 	 var invalid = false;
 	 if(parties.length == 0)
 	 {
@@ -892,6 +952,7 @@ function callAjax(jsObj,url)
 				tehsilId:id.substr(1),
 				parties:parties.substr(1),
 				elections:elections.substr(1),
+				btnName:btnName,
 				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
 				task:"getResults"
 			}
@@ -903,8 +964,10 @@ function callAjax(jsObj,url)
   
   var chart;
   
-	function buildLineChart(myResults){
+	function buildLineChart(myResults,jsObj){
+
 	var linechartDataArr = new Array();
+	var results = new Array();
 	var data = new Array();
 	 if(myResults[0].length == 0 || myResults[1].length == 0) {
              $("#container").html("<b>Data Not Available</b>");
@@ -915,8 +978,13 @@ function callAjax(jsObj,url)
 	      if(linechartDataArr.indexOf(myResults[0][i].constituencyName) == -1)
 				linechartDataArr.push(myResults[0][i].constituencyName);
 					
-		}		
-	      results = myResults[1];
+		}
+			if(jsObj.btnName == "percentage")
+		 results = myResults[1];
+		if(jsObj.btnName == "validvotes")
+	   results = myResults[2];
+	
+	
          for(var i in results){	
            var obj = {};
            var obj1 = new Array();		   
@@ -927,6 +995,8 @@ function callAjax(jsObj,url)
            	obj["data"] = obj1;	 
             data.push(obj);			
 	    }
+		
+		
         chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'container',
@@ -965,10 +1035,15 @@ function callAjax(jsObj,url)
             },
             tooltip: {
                 formatter: function() {
+						if(jsObj.btnName == "percentage")
                         return '<b>'+ this.series.name +'</b><br/>'+
                         this.x +': '+ this.y +'%';
+						else
+						return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +' Valid Votes';
                 }
             },
+			
             legend: {
                 layout: 'vertical',
                 align: 'right',
@@ -983,7 +1058,7 @@ function callAjax(jsObj,url)
 		$('tspan:last').hide();
     }
   
-  function buildLineChartForBooth(myResults){
+  function buildLineChartForBooth(myResults,jsObj){
 	var linechartDataArr = new Array();
 	var data = new Array();
 	var title ;
@@ -998,8 +1073,14 @@ function callAjax(jsObj,url)
 	      if(linechartDataArr.indexOf(myResults[0][i].constituencyName) == -1)
 				linechartDataArr.push(myResults[0][i].constituencyName);
 					
-		}		
-	      results = myResults[1];
+		}	
+		
+	   if(jsObj.btnName == "percentage")
+		 results = myResults[1];
+		if(jsObj.btnName == "validvotes")
+	   results = myResults[2];
+	
+	
          for(var i in results){	
            var obj = {};
            var obj1 = new Array();		   
@@ -1010,6 +1091,7 @@ function callAjax(jsObj,url)
            	obj["data"] = obj1;	 
             data.push(obj);			
 	    }
+		
         chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'container',
@@ -1048,8 +1130,12 @@ function callAjax(jsObj,url)
             },
             tooltip: {
                 formatter: function() {
+						if(jsObj.btnName == "percentage")
                         return '<b>'+ this.series.name +'</b><br/>'+
                         this.x +': '+ this.y +'%';
+						else
+						return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +' Valid Votes';
                 }
             },
             legend: {
@@ -3096,7 +3182,7 @@ function getResultsForBooths()
 	  if($(this).is(':checked'))
 	    elections+=','+$(this).val();
     });
-	 
+	var btnName=$('input:radio[name=boothvotes]:checked').val();
 	 var invalid = false;
 	 if(parties.length == 0)
 	 {
@@ -3119,7 +3205,8 @@ var jsObj=
 				tehsilId:id,
 				parties:parties.substr(1),
 				elections:elections.substr(1),
-				includeAlliance:false,
+				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
+				btnName:btnName,
 				task:"getResultsForBooth"
 			}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3127,7 +3214,89 @@ var jsObj=
    
 		callAjax(jsObj,url);
   }
-  
+
+  function getothersSelectDiv()
+  {
+  if(type == "mandal")
+  {
+	 var jsObj = {
+		 constituencyId : constituencyId,
+		
+		 task : "getMandals"
+	 };
+}
+if(type == "panchayat")
+{
+
+var jsObj = {
+		 mandalId : '${mandalId}',
+		
+		 task : "getPanchayatsByMandalId"
+	 };
+}
+	 
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getMandalsAction.action?"+rparam;	
+   callAjax(jsObj,url);
+  }
+  function buildMandals(result)
+  {
+	  if(result != null)
+	$("#othersmandalDiv").css("display","block");
+	var selectedElmt=document.getElementById("mandals");
+		removeSelectElements(selectedElmt);
+		
+		for(var val in result)
+		{
+		
+			var opElmt = document.createElement('option');
+			opElmt.value=result[val].id;
+			opElmt.text=result[val].name;
+
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}
+		}
+  }
+  function buildPanchayats(result)
+  {
+	  if(result != null)
+	$("#othersPanchayatDiv").css("display","block");
+	var selectedElmt=document.getElementById("panchayats");
+		removeSelectElements(selectedElmt);
+		
+		for(var val in result)
+		{
+		
+			var opElmt = document.createElement('option');
+			opElmt.value=result[val].id;
+			opElmt.text=result[val].name;
+
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}
+		}
+  }
+
+  function removeSelectElements(selectedElmt)
+  {
+	  var len = selectedElmt.length;
+	  for(var i=len-1;i>=0;i--)
+		{
+			selectedElmt.remove(i);
+		}
+  }
+
 </script>
 
 

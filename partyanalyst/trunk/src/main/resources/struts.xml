@@ -5037,6 +5037,12 @@
 				<param name="root">constituencies</param>				
 			</result>		
 		</action>
+		<action name="getMandalsAction" class="subRegionsWiseAnalysisAction" method="getMandalsForConstituency">
+			<result type="json" name="success">
+				<param name="root">resultList</param>				
+			</result>		
+		</action>
+		
 		
 		</package>
 </struts>      

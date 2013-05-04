@@ -11,7 +11,10 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserVoterService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -30,8 +33,53 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 	JSONObject jObj = null;
 	private IUserVoterService userVoterService;
 	private String task;
+	private List<SelectOptionVO> resultList;
+	private IVotersAnalysisService votersAnalysisService;
+	private IStaticDataService staticDataService;
+	private Long mandalId;
 	
-	 public Long getId() {
+	public Long getMandalId() {
+		return mandalId;
+	}
+
+
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+
+	public List<SelectOptionVO> getResultList() {
+		return resultList;
+	}
+
+
+	public void setResultList(List<SelectOptionVO> resultList) {
+		this.resultList = resultList;
+	}
+
+
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+
+
+	public Long getId() {
 		return id;
 	}
 
@@ -164,4 +212,26 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 		}
 		return Action.SUCCESS;
 	}
+	
+	 public String getMandalsForConstituency()
+	   {
+		 String param = null;
+		   try{
+			  param = getTask();
+			 jObj = new JSONObject(param);
+			 if(jObj.getString("task").equalsIgnoreCase("getMandals"))
+				 resultList = votersAnalysisService.getMandalsInConstituency(jObj.getLong("constituencyId")); 
+			 else if(jObj.getString("task").equalsIgnoreCase("getPanchayatsByMandalId"))
+			 {
+				
+				 resultList = staticDataService.getPanchayatiesByMandalId(new Long(jObj.getString("mandalId")));
+			 }
+		   }
+		   catch(Exception e)
+		   {
+			   e.printStackTrace();
+		   }
+		   return Action.SUCCESS;
+	   }
+	 
 }

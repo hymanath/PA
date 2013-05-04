@@ -1136,6 +1136,9 @@
 	
 	<bean id="subRegionsWiseAnalysisAction" class="com.itgrids.partyanalyst.web.action.SubRegionsWiseAnalysisAction" singleton="false">	
 		<property name="userVoterService" ref="userVoterService" />	
+		<property name="votersAnalysisService" ref="votersAnalysisService"></property>	
+		<property name="staticDataService" ref="staticDataService" />
+		
 	</bean>
 	
 	<bean id="allVotersInAcasteAction" class="com.itgrids.partyanalyst.web.action.AllVotersInAcasteAction" singleton="false">	
