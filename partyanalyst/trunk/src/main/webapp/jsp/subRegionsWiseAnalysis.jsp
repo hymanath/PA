@@ -456,22 +456,28 @@ $(document).ready(function(){
 
 });
 
-
 $('#mandals').live("change",function() {
+       
 	var mainreqid =$('#mandals').val();
+	if(mainreqid == 0)
+	return;
 	var mainname =$("#mandals option:selected").text();
 	
 var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+publicationId+"&type="+type+"&publicationYear="+publicationYear+"&buildType=&constituencyId="+constituencyId+"&typeName="+mainname;
-  var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-     browser1.focus();
+  //var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     //browser1.focus();
+	 window.location.href = urlstr;
 });
 $("#panchayats").live("change",function(){
 	
 	var mainreqid =$('#panchayats').val();
+	if(mainreqid == 0)
+	return;
 	var mainname =$("#panchayats option:selected").text()+" Panchayat";
 	   var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+publicationId+"&type="+type+"&publicationYear="+publicationYear+"&buildType=&constituencyId="+constituencyId+"&typeName="+mainname+"&mandalId="+tehsilId;
-	    var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-     browser1.focus();
+	   // var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     //browser1.focus();
+	 window.location.href = urlstr;
 });
 </script>
 
@@ -1373,6 +1379,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 }
 
 function openCompleteInfoForm(id,name,type){
+var mndId = 0;
 if(type == "Mandal" || type == "mandal")
 {
 id="2"+id;
@@ -1380,6 +1387,8 @@ type = "mandal";
 }
 if(type == "Panchayat" || type == "panchayat")
 {
+    var reqId = "${id}";
+    mndId = reqId.substr(1);
 	name=name +" "+ type;
 	type = "panchayat";
 }
@@ -1387,7 +1396,7 @@ if(type == "LOCAL ELECTION BODY" || type == "localElec")
 {
 return;
 }
-var urlStr="subRegionsWiseAnalysisAction.action?id="+id+"&publicationDateId=${publicationDateId}&type="+type+"&publicationYear=${publicationYear}&buildType=&constituencyId=${constituencyId}&typeName="+name+"";
+var urlStr="subRegionsWiseAnalysisAction.action?id="+id+"&mandalId="+mndId+"&publicationDateId=${publicationDateId}&type="+type+"&publicationYear=${publicationYear}&buildType=&constituencyId=${constituencyId}&typeName="+name+"";
 var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();	
 }
@@ -3245,7 +3254,18 @@ var jsObj = {
 	$("#othersmandalDiv").css("display","block");
 	var selectedElmt=document.getElementById("mandals");
 		removeSelectElements(selectedElmt);
-		
+		var opElmt = document.createElement('option');
+			opElmt.value=0;
+			opElmt.text="Select Location";
+
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}
 		for(var val in result)
 		{
 		
@@ -3269,7 +3289,18 @@ var jsObj = {
 	$("#othersPanchayatDiv").css("display","block");
 	var selectedElmt=document.getElementById("panchayats");
 		removeSelectElements(selectedElmt);
-		
+		var opElmt = document.createElement('option');
+			opElmt.value=0;
+			opElmt.text="Select Location";
+
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}
 		for(var val in result)
 		{
 		
