@@ -96,6 +96,7 @@
 		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
 		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
 		<pattern>/subRegionsWiseAnalysisAction*</pattern>
+		<pattern>/allVotersInAcasteAction.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
