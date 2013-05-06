@@ -788,6 +788,8 @@ public String saveLocality()
 			    		searchInfo.setCastPresent(true);
 			    	}else if(id.equalsIgnoreCase("locality")){
 			    		searchInfo.setLocalityPresent(true);
+			    	}else if(id.equalsIgnoreCase("mobileNo")){
+			    		searchInfo.setMobileNoPresent(true);
 			    	}
 			    	else{
 			    		categories.add(new Long(id));
@@ -944,13 +946,16 @@ public String saveLocality()
 					    		parameters.setPartyPresent(true);
 					    		parameters.setCastPresent(true);
 					    		parameters.setLocalityPresent(true);
+					    		parameters.setMobileNoPresent(true);
 					    	}else if(id.equalsIgnoreCase("party")){
 					    		parameters.setPartyPresent(true);
 					    	}else if(id.equalsIgnoreCase("cast")){
 					    		parameters.setCastPresent(true);
 					    	}else if(id.equalsIgnoreCase("locality")){
 					    		parameters.setLocalityPresent(true);
-					    	} 	
+					    	}else if(id.equalsIgnoreCase("mobileNo")){
+					    		parameters.setMobileNoPresent(true);
+					    	} 
 					    	else{
 					    		categories.add(new Long(id));
 					    	}
@@ -1002,6 +1007,7 @@ public String saveLocality()
 						boolean partyPresent = jObj.getBoolean("partyPresent");
 						boolean castPresent = jObj.getBoolean("castPresent");
 						boolean localityPresent = jObj.getBoolean("localityPresent");
+						boolean mobileNoPresent = jObj.getBoolean("mobileNoPresent");
 						for(int i = 0;i<jSONArray.length();i++){
 							JSONObject jSONObject= jSONArray.getJSONObject(i);
 							//voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
@@ -1009,6 +1015,11 @@ public String saveLocality()
 							  voterHouseInfoVO.setCasteStateId(jSONObject.getLong("castId"));
 							if(partyPresent)
 							  voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
+							if(mobileNoPresent)
+							{
+								voterHouseInfoVO.setMobileNo(jSONObject.getString("mobileId"));
+								voterHouseInfoVO.setMobileNoPresent(true);
+							}
 							if(localityPresent){
 								Long hamletId=jSONObject.getLong("hamletId");
 								Long locId=jSONObject.getLong("localityHamletId");
@@ -1082,6 +1093,7 @@ public String saveLocality()
 						boolean partyPresent = jObj.getBoolean("partyPresent");
 						boolean castPresent = jObj.getBoolean("castPresent");
 						boolean localityPresent = jObj.getBoolean("localityPresent");
+						boolean mobileNoPresent = jObj.getBoolean("mobileNoPresent");
 						for(int i = 0;i<jSONArray.length();i++){
 							JSONObject jSONObject= jSONArray.getJSONObject(i);
 							voterHouseInfoVO = new VoterHouseInfoVO();
@@ -1104,6 +1116,11 @@ public String saveLocality()
 									voterHouseInfoVO.setHamletId(hamletId);
 								}else if(locId !=0l && locId!=null)
 									voterHouseInfoVO.setLocalitityId(locId);		
+							}
+							if(mobileNoPresent)
+							{
+								voterHouseInfoVO.setMobileNo(jSONObject.getString("mobileId"));
+								voterHouseInfoVO.setMobileNoPresent(true);
 							}
 							voterHouseInfoVO.setUserId(userId);
 							categoriesList = new ArrayList<VoterHouseInfoVO>();

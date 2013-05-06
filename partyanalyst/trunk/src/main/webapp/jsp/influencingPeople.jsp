@@ -495,19 +495,19 @@ function hideText(){
 	}
 
 }
-$(document).ready(function(){
+/* $(document).ready(function(){
 	var successMsg = '${successMsg}';
 	if(successMsg.trim().length > 0)
 	{
 		refreshingParentWindow();
 	}
-});
-function refreshParent()
+}); */
+/* function refreshParent()
 {
 	<c:if test="${ empty voterId}">
 	setTimeout(window.opener.location.reload(true),8000);
 	</c:if>
-}
+} */
 function validationCheck()
 {
 	var firstName           = $('#firstNameField').val();
@@ -721,11 +721,11 @@ function validationCheck()
 		}
 	}
 
-refreshParent();
+//getRefreshParentWindow();
 
 }
 
-function setTimer()
+/* function setTimer()
 {	
 	$("#successMsg").delay("2000");
 	$("#successMsg").hide("slow");
@@ -735,7 +735,7 @@ function refreshingParentWindow()
 	window.opener.refreshingchildWindowWindow();
     return false;
 }
-</script>
+ */</script>
 
 <body onLoad="executeOnload()" class="bodyStyle">
  	<center>
@@ -979,14 +979,14 @@ function refreshingParentWindow()
 		<c:if test="${ empty voterId}">
 		<div id="saveDiv" align="center">
 		<s:submit cssClass="button" value="Save" name="Save"></s:submit>
-		<input type="button" value="Exit" class="button" onClick="refreshParentWindow();"/>
+		<input type="button" value="Exit" class="button" />
 		</div>
 		</c:if>
 	</c:if>
 	<c:if test="${windowTask == 'new'}">
 		<div id="saveDiv" align="center">
 		<s:submit cssClass="button" value="Save" name="Save"></s:submit>
-		<input type="button" value="Exit" class="button" onClick="refreshParentWindow();"/>
+		<input type="button" value="Exit" class="button"/>
 		</div>
 	</c:if>
 
@@ -998,15 +998,32 @@ function refreshingParentWindow()
 
 </div>	
 <script type="text/javascript">
-function refreshWindow()
+/* function refreshWindow()
 {
 	
 	window.opener.location.reload(true);
 }
 <c:if test="${message == 'update'}">
 refreshWindow();
-</c:if>
-	setTimer();
+</c:if> */
+//setTimer();
+	var successMsg = '${successMsg}';
+	var message = '${message}';
+	var windowTask = '${windowTask}';
+	var voterId = '${voterId}';
+	if(successMsg.trim().length > 0)
+	{
+		if(windowTask == '')
+		{
+			window.opener.getRefreshCurrentChanges();
+		}	
+		else if(message == 'update')
+		{
+			window.opener.refreshingchildWindowWindow();
+		}	
+		
+	}
+	
 </script>	
 </body>
 </html> 

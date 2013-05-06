@@ -490,7 +490,9 @@ else
 										if(jsObj.task == "deleteInfluencingPerson"){
 											alert("Succesfully Deleted");
 											//window.opener.document.location.reload(true);
-											window.location.reload(true);
+											//window.location.reload(true);
+											location.reload();
+											window.opener.getRefreshCurrentChanges();
 										}
 									}
 								catch (e)
@@ -519,7 +521,7 @@ else
 				var type='edit';
 				var browser2 = window.open("<s:url action="influencingPeopleAction.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
 			    browser2.focus();
-				window.opener.location.reload(true);
+				//window.opener.location.reload(true);
 			}
 
 			function deletePersonDetails(id)
@@ -605,7 +607,7 @@ else
 				$("#showResultsId").css({"background":"none repeat scroll 0 0 #487aea"});
 		
 			}
-			window.opener.location.reload(true);
+			//window.opener.location.reload(true);
 	</script>
 </head>
 <body>
@@ -682,6 +684,10 @@ else
 	<script type="text/javascript">
 		tabHighLightForViewResults();
 		buildDataTable();
+		function refreshingchildWindowWindow()
+		{
+			location.reload();
+		}
 	</script>
 </body>
 </html>
