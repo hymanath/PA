@@ -3367,11 +3367,57 @@ var jsObj = {
 		</c:forEach>
 		allZPTCMPTCElecInfo.push(zptcMptcElec);
 	</c:forEach>
-var categories1 = [];
+	
+	//These Global Variables are used for Building chart for Local Body Elections
+  var categories1 = [];//This globla variable is for making X-Axis elements
+  var partiesInLocalElec=[];
+  var partyObj;
+  var partyWiseResArray=[];
+function getLocalEleArraysForChart(allZPTCMPTCElecInfo){
+	var partyName;
+	var partyPercArry;
+	for(var i in allZPTCMPTCElecInfo){
+	   categories1.push(allZPTCMPTCElecInfo[i].type+" "+allZPTCMPTCElecInfo[i].year);
+
+	   for(var j in allZPTCMPTCElecInfo[i].parties){
+		if($.inArray(allZPTCMPTCElecInfo[i].parties[j].partyName,partiesInLocalElec) == -1)
+			partiesInLocalElec.push(allZPTCMPTCElecInfo[i].parties[j].partyName);
+		}
+	}
+	
+	partiesInLocalElec.sort();
+	
+	for(var k in partiesInLocalElec){
+		partyPercArry=[];
+		partyObj={};
+		
+	for(var i in allZPTCMPTCElecInfo){
+		var prtyParticipated=false;
+	   partyName=partiesInLocalElec[k];
+	   partyObj['name']=partyName;
+			for(var j in allZPTCMPTCElecInfo[i].parties){
+				if(allZPTCMPTCElecInfo[i].parties[j].partyName == partyName){
+					partyPercArry.push(parseFloat(allZPTCMPTCElecInfo[i].parties[j].percentage));
+					prtyParticipated=true;
+				}
+			}
+			if(!prtyParticipated){
+				partyPercArry.push(null);
+			}
+		}
+		partyObj['data']=partyPercArry;
+		partyWiseResArray.push(partyObj);
+	}
+	
+	
+	return partyWiseResArray;
+}
 function showMPTCZPTCResults()
 {
+	var dataResultlocalele=getLocalEleArraysForChart(allZPTCMPTCElecInfo);
+	var title='${typeName}';
 	
-	  var str='';
+	var str='';
 
 	  str+='';
 
@@ -3388,14 +3434,12 @@ function showMPTCZPTCResults()
 			str += '<th>Votes Polled</th>';
 			str += '<th>Percentage</th>';
 		  str += '</thead>';
+		  
      for(var i in allZPTCMPTCElecInfo){
-
-
-	  // str +='<h4>'+ allZPTCMPTCElecInfo[i].type + "  " +allZPTCMPTCElecInfo[i].year+'</h4>';
-        categories1.push(allZPTCMPTCElecInfo[i].type+" "+allZPTCMPTCElecInfo[i].year);
-
+	  
 	   for(var j in allZPTCMPTCElecInfo[i].parties){
-		   str+='<tr>';
+		
+		str+='<tr>';
 		    str +='<td>'+ allZPTCMPTCElecInfo[i].type +" "+allZPTCMPTCElecInfo[i].year+'</td>';
 			str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].partyName+'</td>';
 			str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].participated+'</td>';
@@ -3408,76 +3452,33 @@ function showMPTCZPTCResults()
 	   }
   }
     str+='</table>';
+	str+='<div id="localEleRsltsChart"></div>';
+	
 	 $('#electionResultsDiv').html(str);
 	 $('#mptcZptcTable').dataTable();
 
-	// buildChart();
-
+	buildChart(dataResultlocalele,title);
 }
-/*var finalSeries = new Array();
-function buildChart()
-{
 
-		//console.log(allZPTCMPTCElecInfo[i].parties[j].percentage+" "+allZPTCMPTCElecInfo[i].parties[j].partyName);
-
-	for(var i in allZPTCMPTCElecInfo)
-	 for(var j in allZPTCMPTCElecInfo[i].parties){
-      var existIndex = 0;
-
-      for(var k in finalSeries){
-
-      if(finalSeries[k].name == allZPTCMPTCElecInfo[i].parties[j].partyName)
-		  existIndex = k;
-
-	  }
-
-      if(existIndex == 0){
-
-		   var obj = {};
-           var obj1 = new Array();		   
-           obj["name"] = allZPTCMPTCElecInfo[i].parties[j].partyName;
-		   	obj1.push(allZPTCMPTCElecInfo[i].parties[j].percentage);
-		  
-           	obj["data"] = obj1;	 
-            finalSeries.push(obj);		
-
-
-		 //console.log(finalSeries);
-
-	  }else{
-
-		 // console.log(allZPTCMPTCElecInfo[i].parties[j].partyName);
-		  finalSeries[existIndex].data.push(allZPTCMPTCElecInfo[i].parties[j].percentage);
-
-	  }
-
-	
-	}	  console.log(finalSeries);
-
-
-   $(function () {
-        $('#container1').highcharts({
+	function buildChart(result,title){
+		
+	 $('#localEleRsltsChart').highcharts({
             chart: {
                 type: 'line',
                 marginRight: 130,
                 marginBottom: 25
             },
             title: {
-                text: 'Monthly Average Temperature',
+                text: 'MPTC & ZPTC Election Trends in '+title+'',
                 x: -20 //center
             },
-            subtitle: {
-                text: 'Source: WorldClimate.com',
-                x: -20
-            },
+            
             xAxis: {
-                categories:// ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    //'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-				   categories1
+                categories: categories1
             },
             yAxis: {
                 title: {
-                    text: ''
+                    text: 'Votes Percentages'
                 },
                 plotLines: [{
                     value: 0,
@@ -3486,7 +3487,7 @@ function buildChart()
                 }]
             },
             tooltip: {
-                valueSuffix: ''
+                valueSuffix: '%'
             },
             legend: {
                 layout: 'vertical',
@@ -3496,24 +3497,10 @@ function buildChart()
                 y: 100,
                 borderWidth: 0
             },
-          /*  series: [{
-                name: 'CPM',
-                data: [7.0, 6.9, 9.5, 14.5]
-            }, {
-                name: 'IND',
-                data: [-0.2, 0.8, 5.7, 11.3]
-            }, {
-                name: 'INC',
-                data: [-0.9, 0.6, 3.5, 8.4]
-            }, {
-                name: 'TDP',
-                data: [3.9, 4.2, 5.7, 8.5]
-            }]*/
-			/*series:finalSeries
+            series: result
         });
-    });
-
-}*/
+	}
+	
 </script>
 
 
