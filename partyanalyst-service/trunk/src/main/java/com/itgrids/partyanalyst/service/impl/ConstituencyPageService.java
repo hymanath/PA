@@ -5223,6 +5223,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				    }
 				}
 			}
+			Collections.sort(returnVal,sortData);
 		}
 	   }catch(Exception e){
 		   log.error("Exception rised in findPanchayatsWiseResultsInElectionsOfMandalWithAlliance",e);
