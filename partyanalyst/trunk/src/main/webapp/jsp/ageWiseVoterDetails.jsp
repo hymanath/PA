@@ -216,8 +216,9 @@ else if(type == "ward")
 /*
 	This Condition is used for checking for Hamlet level Age wise analysis
 */
-else if(agePattern.test(type) || type == "hamletBooths" || type == "boothHamlets" || type == "wardBooths"  )
+else if(agePattern.test(type) || type == "hamletBooths" || type == "boothHamlets" || type == "wardBooths" || type == "muncipalityWards"  )
 {
+	
 	var jsObj=
 				{
 			        constituencyId:constituencyId,
@@ -250,7 +251,7 @@ function callAjax(jsObj,url)
 
 			if(jsObj.type != "booth" && jsObj.type!= "hamlet" )
 			{
-				if(jsObj.type == "panchayat" || jsObj.type == "localElectionBody" || jsObj.type == "ward"||  jsObj.type == "hamletBooths" || jsObj.type == "wardBooths" || agePattern.test(jsObj.type) )
+				if(jsObj.type == "panchayat" || jsObj.type == "localElectionBody" || jsObj.type == "ward"||  jsObj.type == "hamletBooths" || jsObj.type == "wardBooths" || agePattern.test(jsObj.type) || jsObj.type == "muncipalityWards"  )
 				{
 					if(myResults.boothVotersDetails!=null && myResults.boothVotersDetails.length!=0)
 					{
@@ -393,6 +394,7 @@ var YDataObject = new Array();
 	This method is used for building the data table for  voter age details and there percentage range
 */
 function buildAgewiseDetails(results , obj){
+  		  var subType = "muncipalityWards";
 
    var type = obj.type;
    var innerResults;
@@ -433,9 +435,13 @@ function buildAgewiseDetails(results , obj){
 	}
 	else if( type="booth" && obj.type == "boothHamlets"){
 		innerResults = results.boothVotersDetails;
+
 		noteString = "Hamlet wise voter age details of "+obj.name+" in "+publicationYear;
 	}
-
+	else if( obj.type == subType)
+	{  noteString = "Ward wise voter age details of "+obj.name+" in "+publicationYear;
+		innerResults = results.boothVotersDetails;
+}
 	if(innerResults.length == 0){
 		return false;
 	}
@@ -468,7 +474,8 @@ function buildAgewiseDetails(results , obj){
 	   
 	else if( type="booth" && obj.type == "boothHamlets"){
 		str+='<th rowspan="2">HamletName</th>';
-	}
+	} if( obj.type == subType)
+	str+='<th rowspan="2">Ward</th>';
 	
 	
 //18111	 
@@ -520,7 +527,8 @@ var YDataObjectTemp = new Object();
 	   str+='<td>'+innerResults[i].localityName+'</td>';
 	    else if((type="hamlet" && obj.type == "hamletBooths") ||(type="booth" && obj.type == "boothHamlets") || obj.type == "wardBooths" )
 	   str+='<td>'+innerResults[i].hamletName+'</td>';
-	  
+	   if(obj.type == subType)
+	  str+='<td>'+innerResults[i].hamletName+'</td>';
 	  /*  var mystr = str;
 	  
        if(i != 0)
@@ -593,7 +601,8 @@ function buildAgeAndGenderWiseDetails(results , obj){
 	
 	var innerResults;
 	var noteString;
-
+    
+     var subType = "muncipalityWards";
 
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
@@ -635,6 +644,11 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		innerResults = results.boothVotersDetails;
 		noteString = "Hamlet wise  voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
+	if( obj.type == subType){
+	   noteString = "Ward wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+	   innerResults = results.boothVotersDetails;
+
+	}
 	if(innerResults.length == 0){
 		return false;
 	}
@@ -671,7 +685,9 @@ function buildAgeAndGenderWiseDetails(results , obj){
 	else if( type="booth" && obj.type == "boothHamlets"){
 		 str+='<th rowspan="2">HamletName</th>';
 	}
-	   
+	if( obj.type == subType)
+	 str+='<th rowspan="2">Ward</th>';   
+	 
 	str+='<th colspan="2">18-25</th>';
 	str+='<th colspan="2">26-35</th>';
 	str+='<th colspan="2">36-45</th>';
@@ -711,8 +727,11 @@ for(var i=0;i<innerResults.length;i++){
 	str+='<td>'+innerResults[i].boothName+'</td>';
 	 else if(agePattern.test(obj.type))
 	   str+='<td>'+innerResults[i].localityName+'</td>';
-	    else if((type="hamlet" && obj.type == "hamletBooths")||(type="booth" && obj.type == "boothHamlets") || obj.type == "wardBooths")
+	    else if((type="hamlet" && obj.type == "hamletBooths")||(type="booth" && obj.type == "boothHamlets") || obj.type == "wardBooths" || obj.type == subType )
 	   str+='<td>'+innerResults[i].hamletName+'</td>';
+	 
+ 
+	   
 	   
 	str+='<td>'+innerResults[i].totalMaleVotesFor18To25+'</td>';
 	str+='<td>'+innerResults[i].totalFemaleVotersFor18To25+'</td>';
@@ -744,6 +763,7 @@ $('#mandalWiseAgeAndGenderTable').dataTable({
 	This method is used for building the data table for  voter age details and gender details in terms of percentage
 */
 function buildAgeAndGenderWiseDetailsForPercent(results , obj){
+      var subType = "muncipalityWards";
 
     var type = obj.type;
 	var innerResults;
@@ -787,8 +807,10 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	else if( type="booth" && obj.type == "boothHamlets"){
 		innerResults = results.boothVotersDetails;
 		noteString = "Hamlet wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
-	}
-
+	}else if( obj.type == subType){
+              noteString = "Ward wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+              innerResults = results.boothVotersDetails;
+			  }
 	if(innerResults.length == 0){
 		return false;
 	}
@@ -823,7 +845,8 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	   else if(type="booth" && obj.type == "boothHamlets"){
 		
 		  str+='<th rowspan="2">Hamlet Name</th>';
-	}
+	}else if( obj.type == subType)
+	         str+='<th rowspan="2">Ward</th>';
 	   
 	str+='<th colspan="3">18-25</th>';
 	str+='<th colspan="3">26-35</th>';
@@ -869,7 +892,7 @@ for(var i=0;i<innerResults.length;i++){
 	str+='<td>'+innerResults[i].boothName+'</td>';
 	 else if(agePattern.test(obj.type))
 	   str+='<td>'+innerResults[i].localityName+'</td>';
-	    else if((type="hamlet" && obj.type == "hamletBooths")||(type="booth" && obj.type == "boothHamlets") || obj.type == "wardBooths")
+	    else if((type="hamlet" && obj.type == "hamletBooths")||(type="booth" && obj.type == "boothHamlets") || obj.type == "wardBooths" || obj.type == subType )
 	   str+='<td>'+innerResults[i].hamletName+'</td>';
 
     str+='<td>'+innerResults[i].totalVotersFor18To25+'</td>';

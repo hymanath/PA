@@ -206,12 +206,12 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 <h4 id="impFamilesBasicSubDetailsTitle"></h4>
 <div id ="impFamilesBasicSubDetails" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;"></div>
-<div id="descriptionDiv" ></div>
+
 </div>
 
 
 
-
+<div id="descriptionDiv"  style="width:926px;margin-left:auto;margin-right:auto;"></div>
 		
 		<div id="impFamPancBothDtls" class="widget blue whitegloss" style="width:959px;margin-top:50px;margin-left:auto;margin-right:auto;">
 		
@@ -291,6 +291,9 @@ var publicationYear = "${publicationYear}";
 var impFamiliesEditArray = new Array();
 var requestFor = '${requestFor}';
 var pat= /^(hamlet|customWard)$/i;
+var requestForPattern= /^(booth|muncipalityWards)$/i;
+
+
 if((maintype == 'booth'&& requestFor == 'hamletBooth') || (maintype == 'hamlet'&& requestFor == 'booth') ||(maintype == 'customWard'&& requestFor == 'booth') )
 {
 $("#impFamilesnfoForHamletByBooth").show();
@@ -498,12 +501,19 @@ function callAjax(jsObj,url)
 								if(jsObj.task == "importantFamiliesinfo")
 								{ 
 								//debugger;
-									
+									if(requestForPattern.test(requestFor) && maintype == "mandal")
+									{ 
+									buildImpFamilesChartForHamletsByBooth(myResults);
+									$("#hamletDiv").hide();
+									$("#impFamPancBothDtlsAgxImgForHamletByBooth").hide();
+									impFamilesVariableDescription();
+								//buildTableForImpFamilesForHamletByBooth(myResults.subList,myResults.name,myResults.type);
+									}else
 									buildImpFamilesChart(myResults);
 							//18111	
 							     if(maintype == "mandal" || maintype =="constituency" )
 									buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
-									 if(requestFor == "booth"){
+									 if(requestFor == "booth" ){
 									buildTableForImpFamilesForHamletByBooth(myResults.subList,myResults.name,myResults.type);
                                  // buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
 									impFamilesVariableDescription2('descriptionDiv2');
@@ -1309,19 +1319,25 @@ function getvotersBasicInfoForBooth(){
 									
 		callAjax(jsObj1,url1);
 }
-function getImpFamiliesVotersToShowForBooth(){
-
-
+function getImpFamiliesVotersToShowForBooth(dest){
+   var myType = '';
+   if(dest == "muncipalityWards"){
+   myId = id.substring(1);
+   mytype= "localBody";
+   }else{
+   myId = id;
+   mytype = maintype;
+  }
 	 var jsObj1=
 			{
 					
-				type:maintype,
-				id:id,
+				type:mytype,
+				id:myId,
 				publicationDateId:publicationDateId,
 				typename:"",
 				constituencyId:constituencyId,
 				buildType:"",
-				requestFor:"booth",
+				requestFor:dest,
 				task:"importantFamiliesinfo"
 	
 			}
@@ -1344,6 +1360,7 @@ function getImpFamiliesVotersToShowForBooth(){
 	
 	 //showAjaxImgDiv('ajaxImageDiv');
 	// $("#impFamPancBothDtlsAgxImg").show();
+	if(dest == "booth"){
 	    var jsObj2=
 			{
 					
@@ -1359,7 +1376,7 @@ function getImpFamiliesVotersToShowForBooth(){
 	   var rparam2 ="task="+YAHOO.lang.JSON.stringify(jsObj2);
 			var url2 = "votersFamilyDetailsAction.action?"+rparam2;						
 		callAjax(jsObj2,url2);
-	
+	}
 	}
 function impFamilesVariableDescription1()
 { 
@@ -1393,9 +1410,11 @@ function impFamilesVariableDescription2(divid)
 }
 //if(maintype != "hamlet" && maintype != "customWard")
 
-if( ! pat.test(maintype) )
+if( ! pat.test(maintype)  )
 {
-
+if(!requestForPattern.test(requestFor) )
+{
+//alert('ok');
 if(requestFor == "hamletBooth"){
  getvotersBasicInfoForBooth();
  getImpFamiliesVotersForHamletBooth();}
@@ -1404,6 +1423,7 @@ else{
 
 
 getImpFamiliesVotersToShow();}
+}
 }
 if((maintype == "hamlet" && requestFor != "booth") || (maintype == "customWard"  && requestFor != "booth")){
 //getImpFamiliesVotersToShowForBooth();
@@ -1519,8 +1539,8 @@ function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
 		oDT: impFamilesDataTable
 		};
 }
-if(requestFor == "booth")
-getImpFamiliesVotersToShowForBooth();
+if(requestFor == "booth" || requestForPattern.test(requestFor))
+getImpFamiliesVotersToShowForBooth(requestFor);
 
 		function getImpFamiliesVotersForHamletBooth()
 		{
