@@ -1480,7 +1480,7 @@ function addToPolitician(voterId,name)
 
 	var urlstr = "boothWiseCasteInfoAction.action?id="+mainreqid+"&publicationDateId="+$("#publicationDateList").val()+"&type="+maintype+"&resultFor="+resultFor+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&typename="+mainname+"&publicationDate="+year+"&";
 
-	var browser1 = window.open(urlstr,"familyWiseDetails"+mainreqid,"scrollbars=yes,height=600,width=700,left=200,top=200");	
+	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
 		browser1.focus();
 	//var browser1 = window.open("boothWiseCasteInfoAction.action?id="+mainreqid+"&publicationId="+$("#publicationDateList").val()+"&type="+maintype+"&resultFor="+resultFor+"&","scrollbars=yes,height=600,width=750,left=200,top=200");
    // browser1.focus();
@@ -2569,7 +2569,7 @@ function getVotersCastInfo(id,publicationId,type)
 
 function getPartyWiseCastInfo(){
 
-	var reqBrowser = window.open("casteAndPartyWindowAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&type="+maintype+"&typename="+mainname+"&id="+mainreqid+"","casteAndParty"+maintype,"width=700,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	var reqBrowser = window.open("casteAndPartyWindowAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&type="+maintype+"&typename="+mainname+"&id="+mainreqid+"","newBrowser","width=700,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
   /* $("#partyWiseLocalCastStatsTab").dialog({
             modal: true,
@@ -5639,6 +5639,7 @@ function getDataResultsForTotalVoters(resultsArr)
 					}
 				}
 				clmTemp['data'] = partyResultArr;
+				clmTemp['type'] = 'spline';
 				electionResult.push(clmTemp);
 			}
 			return electionResult;
@@ -5705,7 +5706,7 @@ function PreviousEleVotingTrendsHighChat(results,jsObj){
                     }
                 }
             },
-            legend: {
+            /*legend: {
                 layout: 'vertical',
                 align: 'right',
                 verticalAlign: 'top',
@@ -5715,7 +5716,7 @@ function PreviousEleVotingTrendsHighChat(results,jsObj){
                 borderWidth: 1,
                 backgroundColor: '#FFFFFF',
                 shadow: true
-            },
+            },*/
             credits: {
                 enabled: false
             },
@@ -6522,7 +6523,6 @@ var levelId =2;
 var mandalid=$(this).closest("a").attr("data-mandalid");
 var mandalName =$(this).closest("a").attr("data-mandalid"); 
 //alert("SHOW Mandal DATA");
-myCorpType = "mandal";
 hideMyTabs();
 mainreqid = mandalid;
 mainpublicationId = $("#publicationDateList").val();
@@ -9445,7 +9445,7 @@ $(document).ready(function(){
 	mainpublicationId = $("#publicationDateList").val();
 	
 	 $("#votersShareBtn1").css('display','block');
-	  // $("#impFamiliesMoreInfoButn").attr("value","View Localities Wise Family Details");
+	   $("#impFamiliesMoreInfoButn").attr("value","View Localities Wise Family Details");
       $("#votersShareBtn1").html("");  
  		var astr="";
 			 astr += "<div id='tabsForWardLocal' class='thumbnail1' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>";
