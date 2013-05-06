@@ -1480,7 +1480,7 @@ function addToPolitician(voterId,name)
 
 	var urlstr = "boothWiseCasteInfoAction.action?id="+mainreqid+"&publicationDateId="+$("#publicationDateList").val()+"&type="+maintype+"&resultFor="+resultFor+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&typename="+mainname+"&publicationDate="+year+"&";
 
-	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+	var browser1 = window.open(urlstr,"familyWiseDetails"+mainreqid,"scrollbars=yes,height=600,width=700,left=200,top=200");	
 		browser1.focus();
 	//var browser1 = window.open("boothWiseCasteInfoAction.action?id="+mainreqid+"&publicationId="+$("#publicationDateList").val()+"&type="+maintype+"&resultFor="+resultFor+"&","scrollbars=yes,height=600,width=750,left=200,top=200");
    // browser1.focus();
@@ -2569,7 +2569,7 @@ function getVotersCastInfo(id,publicationId,type)
 
 function getPartyWiseCastInfo(){
 
-	var reqBrowser = window.open("casteAndPartyWindowAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&type="+maintype+"&typename="+mainname+"&id="+mainreqid+"","newBrowser","width=700,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	var reqBrowser = window.open("casteAndPartyWindowAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&type="+maintype+"&typename="+mainname+"&id="+mainreqid+"","casteAndParty"+maintype,"width=700,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
   /* $("#partyWiseLocalCastStatsTab").dialog({
             modal: true,
