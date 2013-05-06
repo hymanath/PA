@@ -29,6 +29,7 @@ var isLocalityDataExist = "true";
 var isMuncipalityExist = "false";
 var muncipalityBooths = "false";
 var muncipalityType   = "" ;
+var myCorpType ="";
 
 function populate(id,boothId,publicationId,houseNo){
 
@@ -886,6 +887,13 @@ function addToPolitician(voterId,name)
 	}*/
 	
 	function getAllTabs(id,publicationId,type){
+       // alert(type +'---'+muncipalityType+'----'+myCorpType);
+		
+		/* if (typeof jQuery != 'undefined') {  
+    // jQuery is loaded => print the version
+    alert(jQuery.fn.jquery);
+    } */
+
 
 		if(type == "constituency")
 			$('#refreshImg').hide();
@@ -894,10 +902,18 @@ function addToPolitician(voterId,name)
 
 		selectedId = id;
        
-       if(type == "hamlet" || /customWard/i.test(type))
+       if(type == "hamlet" || /customWard/i.test(type)){
 		  $('#impFamiliesForBooths').show();
-	   else
-		   $('#impFamiliesForBooths').hide();
+		   $('#impFamiliesForBooths').prop('value','View Booth Wise Family Details');
+		   }
+	   else if(type == "mandal" && muncipalityPattern.test(myCorpType) ){
+	       $('#impFamiliesForBooths').show();
+		   $('#impFamiliesForBooths').prop('value','View Ward Wise Family Details')
+		 }
+     else $('#impFamiliesForBooths').hide();
+		 
+		   
+		   
 	   if(type == "booth")
 		    $('#impFamiliesForHamletsByBooth').show();
 	   else
@@ -1108,10 +1124,15 @@ function addToPolitician(voterId,name)
 
 		  if(type == "hamlet" || /customWard/i.test(type) )
 		  {    $("#ageLinkForHamletBooths").css('display','block');
+		       $("#ageLinkForHamletBooths > a ").text("View Booth Wise Age Details");                              
 			  $("#previousEleVotingTrendsDiv1").css('display','none');
 			  $("#permanentlyUpdateDiv").css('display','none');
 		         $("#casteDivs").hide();
 
+		 }  else if(type == "mandal" && muncipalityPattern.test(myCorpType) )
+		 {
+		       $("#ageLinkForHamletBooths").css('display','block');
+		       $("#ageLinkForHamletBooths > a ").text("View Ward Wise Age Details");    
 		 }
 		  else
 		  {     $("#casteDivs").show();
@@ -6499,6 +6520,7 @@ showHideNewsProblems();
 $("#leftNav-Municipalities-list a .checkbox").live("click",function(){
 $(this).find("input").attr("checked",true);
 var municipalityid=$(this).closest("a").attr("data-municipalityid");
+ myCorpType= $(this).closest("a").attr("data-type");
 var levelId =2;
 mainreqid = municipalityid;
 mainpublicationId = $("#publicationDateList").val();
@@ -6548,11 +6570,9 @@ mainname = $(this).closest("a").attr("name-ward");
 if( muncipalityType == "Greater Municipal Corp"){
 maintype = 'ward';
 getAllTabs(panchayatid,$("#publicationDateList").val(),'ward');
-
-
 }else{
 scrollToNewsDiv();
-buildBtnForCustomWard(this);
+
 maintype = 'customWard';
 getAllTabs(panchayatid,$("#publicationDateList").val(),'customWard');
 //alert("SHOW Panchayat DATA");
@@ -6561,6 +6581,7 @@ getAllTabs(panchayatid,$("#publicationDateList").val(),'customWard');
 //buildVotersByPanchayatDataTable(panchayatid);
 }
 showHideNewsProblems();
+buildBtnForCustomWard(this);
 
 });
 
