@@ -5064,10 +5064,12 @@ public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Lo
 			if(userVoterDetails.getWard() != null)
 			{
 				voterHouseInfoVO.setHamletId(userVoterDetails.getWard().getConstituencyId());
-				
-				List<SelectOptionVO> localities =   getLocalitiesForWards(userVoterDetails.getWard().getLocalElectionBody().getLocalElectionBodyId(),userId," model.localElectionBody.localElectionBodyId =:id " );					
+				if(userVoterDetails.getWard().getLocalElectionBody()!= null)
+				{
+					List<SelectOptionVO> localities =   getLocalitiesForWards(userVoterDetails.getWard().getLocalElectionBody().getLocalElectionBodyId(),userId," model.localElectionBody.localElectionBodyId =:id " );					
 				   
 				   voterHouseInfoVO.setSubLocalities(localities);
+				}
 				
 			}
 			
@@ -5123,9 +5125,12 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 					
 		Voter voter =  voterDAO.get(voterHouseInfoVO.getVoterId());
 		User user =  userDAO.get(voterHouseInfoVO.getUserId());
+		if(voterHouseInfoVO.isMobileNoPresent())
+		{
 		String mobileNo = voterHouseInfoVO.getMobileNo();
-		voterDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
 		
+		voterDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
+		}
 		if(voterHouseInfoVO.getCategoriesList() != null && voterHouseInfoVO.getCategoriesList().size() >0){
 			for(VoterHouseInfoVO category : voterHouseInfoVO.getCategoriesList()){
 				
@@ -6380,7 +6385,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		    	//voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
 		    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
 		    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
-		    	
+		    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ?voter.getMobileNo():"");
 		    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 		    	voterIds.add(voter.getVoterId());
 		    	voterHouseInfoVO.setBoothId((Long)voters[1]);

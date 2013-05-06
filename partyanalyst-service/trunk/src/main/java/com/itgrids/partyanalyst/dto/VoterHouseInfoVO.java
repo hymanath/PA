@@ -79,7 +79,7 @@ public class VoterHouseInfoVO {
 	private String partNo;
 	private String selType = "";
 	private Long selTypeId;
-		
+	private boolean mobileNoPresent;
 
 	public Long getSelTypeId() {
 		return selTypeId;
@@ -842,6 +842,14 @@ public class VoterHouseInfoVO {
 
 	public void setWardName(String wardName) {
 		this.wardName = wardName;
+	}
+
+	public boolean isMobileNoPresent() {
+		return mobileNoPresent;
+	}
+
+	public void setMobileNoPresent(boolean mobileNoPresent) {
+		this.mobileNoPresent = mobileNoPresent;
 	}
 
 
