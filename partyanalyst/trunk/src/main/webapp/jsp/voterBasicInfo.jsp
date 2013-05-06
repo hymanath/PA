@@ -390,7 +390,9 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 	type="customWard";
 	hresult="localArea";
 	}
-  
+	if(type == "mandal"){
+	hresult="localElectionBodyBooths";
+	}
 	var jsObj=
 			{
 				type:type,
