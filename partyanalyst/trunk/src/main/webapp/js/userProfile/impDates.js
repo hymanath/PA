@@ -214,6 +214,8 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 		}
 	     
 	};
+	var selYear ;
+	var selMonth;
 	function changePageHandler(type,args,obj)
 	{
 		
@@ -224,6 +226,8 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 		dateObj.dateVal = '1';
 		dateObj.monthVal = date.getMonth();
 		dateObj.yearVal = date.getFullYear();
+		selMonth = date.getMonth();
+		selYear = date.getFullYear();
 		var nameOfMonth = monthname[month];
 		$('#headerDiv').html('<b><font color="blue">'+year+' '+nameOfMonth+'</font> Month Important Dates</b>');
 		var jsObj={
@@ -496,8 +500,8 @@ function buildNewImpDatePopup()
 									var date = new Date();
 									
 									var jsObj1={
-									monthVal:date.getMonth(),
-									yearval:date.getFullYear(),
+									monthVal:selMonth,
+									yearval:selYear,
 									task:'nextMonthEvents'
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
@@ -515,8 +519,8 @@ function buildNewImpDatePopup()
 									var date = new Date();
 									
 									var jsObj1={
-									monthVal:date.getMonth(),
-									yearval:date.getFullYear(),
+									monthVal:selMonth,
+									yearval:selYear,
 									task:'nextMonthEvents'
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
@@ -552,8 +556,8 @@ function buildNewImpDatePopup()
 									var date = new Date();
 									
 									var jsObj1={
-									monthVal:date.getMonth(),
-									yearval:date.getFullYear(),
+									monthVal:selMonth,
+									yearval:selYear,
 									task:'nextMonthEvents'
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
