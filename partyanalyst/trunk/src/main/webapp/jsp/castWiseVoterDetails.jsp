@@ -373,6 +373,9 @@ function getCastInfoForsubLevel(id,publicationId,type,resultFor)
 		}*/
 		if(true)
 		{
+			if(resultFor == "muncipalityCustomWard")
+				buildType = resultFor;
+
 		var jsObj=
 		{		
 				type:type,	

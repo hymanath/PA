@@ -1209,6 +1209,12 @@ function addToPolitician(voterId,name)
 			
 		  }
 			
+			
+		   if(type == "mandal" && muncipalityPattern.test(myCorpType) ){
+			checkLocalityDataExist();
+			buildBtnForLocalEleBody();
+		  }
+			
 	   $("#categoriesValuesDiv").html("");
 	   $("#agerangeDiv").html("");
 	}
@@ -2926,6 +2932,13 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 	type="customWard";
 	hresult="localArea";
 	}
+
+	if(type== "muncipalityLocal")
+	{
+		type = "mandal";
+		hresult = "muncipalityCustomWard";
+	}
+
    if(buttonType == "voters"){
 	
 	getvotersBasicInfoWindow(buttonType,id,publicationId,type,hresult);
@@ -6572,7 +6585,7 @@ maintype = 'ward';
 getAllTabs(panchayatid,$("#publicationDateList").val(),'ward');
 }else{
 scrollToNewsDiv();
-
+buildBtnForCustomWard(this);
 maintype = 'customWard';
 getAllTabs(panchayatid,$("#publicationDateList").val(),'customWard');
 //alert("SHOW Panchayat DATA");
@@ -6581,7 +6594,6 @@ getAllTabs(panchayatid,$("#publicationDateList").val(),'customWard');
 //buildVotersByPanchayatDataTable(panchayatid);
 }
 showHideNewsProblems();
-buildBtnForCustomWard(this);
 
 });
 
@@ -6700,7 +6712,7 @@ scrollToNewsDiv();
              astr += "<div id='sse2' style='display:none' >";
              astr += "<div id='sses2'>";
              astr += "<ul>";
-			   astr += "<li style=' margin-left:300px;' align='center' ><a class='votersInfoLi2 votersInfoCls' href='javascript:{getvotersBasicInfo1(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
+			   astr += "<li><a class='votersInfoLi2 votersInfoCls' href='javascript:{getvotersBasicInfo1(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
             astr += "<li id='myli' style='display:none;'><a class='votersInfoLi2' href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
 			astr += "<span style='display:none;margin-bottom: 12px;' id='ajaxImageDiv1'><img src='./images/icons/search.gif' /></span>";
@@ -6733,7 +6745,7 @@ maintype = 'customWard';
              astr += "<div id='sse2' style='display:none'>";
              astr += "<div id='sses2'>";
              astr += "<ul>";
-			   astr += "<li  style=' margin-left:300px;' align='center' ><a class='votersInfoLi2 votersInfoCls' href='javascript:{getvotersBasicInfo1(\"voters\","+mainreqid+","+mainpublicationId+",\"wardBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
+			   astr += "<li><a class='votersInfoLi2 votersInfoCls' href='javascript:{getvotersBasicInfo1(\"voters\","+mainreqid+","+mainpublicationId+",\"wardBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
             astr += "<li  id='myli' style='display:none'><a class='votersInfoLi2' href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"wardLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
 			astr += "<span style='display:none;margin-bottom: 12px;' id='ajaxImageDiv1'><img src='./images/icons/search.gif' /></span>";
@@ -8677,11 +8689,15 @@ function  buildFamilyMembers1(result,jsObj,type){
   }
 		function checkLocalityDataExist()
 		{
-			if(maintype == 'hamlet' || maintype == 'customWard')
+			var type = maintype;
+			if(type == "mandal" && mainreqid.substring(0,1) == "1")
+				type = "muncipalityCustomWard";
+
+			if(maintype == 'hamlet' || maintype == 'customWard' || maintype == "mandal" && mainreqid.substring(0,1) == "1")
 			{
 			 var jsObj=
 			 {		
-				type:maintype,	
+				type:type,	
 				id:mainreqid,
 				publicationDateId:mainpublicationId,
 				task:"checkLocalityData"				
@@ -8695,20 +8711,23 @@ function  buildFamilyMembers1(result,jsObj,type){
 		function hideAndShowLocalityDIvs(result,jsObj)
 		{  
 			isLocalityDataExist = result;
-			if(maintype == jsObj.type)
+			if(maintype == jsObj.type || ((maintype == "mandal" && mainreqid.substring(0,1) == "1")&& jsObj.type == "muncipalityCustomWard"))
             {
-				if((maintype == "hamlet" || maintype == 'customWard')&& result != null && result == "false"){
+				if((maintype == "hamlet" || maintype == 'customWard' || (maintype == "mandal" && mainreqid.substring(0,1) == "1"))&& result != null && result == "false"){
 					$("#ageLink").hide();
 					$("#impFamiliesMoreInfoButn").hide();
 					
 					$("#castPartyPopupShowBtn").css("display","none");
 	            $("#sse2").css("display","block");
-				
+				//$("#castTab").html('');
+				$(".mylicls").css("display","none");
 				}else{
 				$("#sse2").css("display","block");
 				  $("#ageLink").show();
 				  $("#impFamiliesMoreInfoButn").show();
 				  $("#castPartyPopupShowBtn").css("display","block");
+				  $("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'muncipalityCustomWard\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Ward Wise Caste Info of '+mainname+'" class="btn btn-info">');
+				  $(".mylicls").css("display","block");
 				  try{
 				  $("#myli").css('display','block');
 					  $("#myli").siblings().removeAttr('style class align');
@@ -9410,3 +9429,32 @@ $(document).ready(function(){
 		showConst=true;
 		$('#ShowConstMenu1').trigger('click');
 	}
+
+	function buildBtnForLocalEleBody(Obj)
+	{
+	
+	scrollToNewsDiv();
+
+	mainpublicationId = $("#publicationDateList").val();
+	
+	 $("#votersShareBtn1").css('display','block');
+	   $("#impFamiliesMoreInfoButn").attr("value","View Localities Wise Family Details");
+      $("#votersShareBtn1").html("");  
+ 		var astr="";
+			 astr += "<div id='tabsForWardLocal' class='thumbnail1' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>";
+             astr += "<div id='sse2' style='display:none'>";
+             astr += "<div id='sses2'>";
+             astr += "<ul>";
+			 astr += "<li><a class='votersInfoLi2 votersInfoCls' href='javascript:{}' id='votersShareBtnss'>Booth Wise Voters Info of "+mainname+"</a></li>";
+            astr += "<li id='myli'><a class='votersInfoLi2 mylicls' href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"muncipalityLocal\")}'>Ward Wise Voters Info of "+mainname+"</a></li>";
+            astr += "</ul>";
+			astr += "<span style='display:none;margin-bottom: 12px;' id='ajaxImageDiv1'><img src='./images/icons/search.gif' /></span>";
+			astr += "</div>";
+			astr += "</div>";
+			astr += "</div>";
+			$("#votersShareBtn1").html(astr);	
+			
+	 
+//getAllTabs(mainreqid,mainpublicationId,maintype);
+
+}

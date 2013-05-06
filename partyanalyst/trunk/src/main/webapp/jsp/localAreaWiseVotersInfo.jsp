@@ -170,10 +170,13 @@ table {
 </div>
 
 <script type="text/javascript">
+var temp = '${resultFor}';
 
 function getLocalAreaWiseVotersInfo()
 {
-	
+	if(temp == "muncipalityCustomWard")
+		buildType = temp;
+
   var jsObj=
 			{
 				type:type,
