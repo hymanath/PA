@@ -6548,9 +6548,11 @@ mainname = $(this).closest("a").attr("name-ward");
 if( muncipalityType == "Greater Municipal Corp"){
 maintype = 'ward';
 getAllTabs(panchayatid,$("#publicationDateList").val(),'ward');
+
+
 }else{
 scrollToNewsDiv();
-
+buildBtnForCustomWard(this);
 maintype = 'customWard';
 getAllTabs(panchayatid,$("#publicationDateList").val(),'customWard');
 //alert("SHOW Panchayat DATA");
@@ -6559,7 +6561,6 @@ getAllTabs(panchayatid,$("#publicationDateList").val(),'customWard');
 //buildVotersByPanchayatDataTable(panchayatid);
 }
 showHideNewsProblems();
-buildBtnForCustomWard(this);
 
 });
 
