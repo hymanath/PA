@@ -1274,7 +1274,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				 votersCountList =  boothPublicationVoterDAO.getVotersCountByPublicationId("mandal",new Long(id.substring(1).trim()),publicationDateId,constituencyId);
 			 }
 			 if(reqType.equalsIgnoreCase("main")){
-				 if(!votersCountList.isEmpty() && votersCountList.get(0)[1] != null){
+				 if(votersCountList !=null && !votersCountList.isEmpty() && votersCountList.get(0)[1] != null){
 				   return populateDataToVotersInfoForMandalVO(votersCountList,new Long(id),name,"Mandal");
 				 }else{
 					 VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
@@ -3916,6 +3916,9 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 					importantFamiliesInfoVo = getImportantFamiliesForMandal(type,id,publicationDateId,"main",constituencyId);
 				return importantFamiliesInfoVo;
 			}else if(type.equalsIgnoreCase("localBody")){
+				
+				 if(requestFor.equalsIgnoreCase(IConstants.MUNCIPALITYWARDS))
+						return  getImportantFamiliesDetailsForWardFromMuncipality(userId, id, publicationDateId, constituencyId, type);
 				
 				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForMandal(type,id,publicationDateId,"main",constituencyId);
 				if(!importantFamiliesInfoVo.isDataPresent())
