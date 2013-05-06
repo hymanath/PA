@@ -637,7 +637,7 @@ public String getVoterDetails(){
 			String res=	jObj.getString("buildType");
 		String type=jObj.getString("type");
 		
-		if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+		if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase(IConstants.CUSTOMWARD) || type.equalsIgnoreCase("mandal"))
 		{
 			res=jObj.getString("resultFor");
 		}
