@@ -165,8 +165,8 @@ for (Object[] objects : list) {
 		
 		public void testGetAllLocalitiesForHamletOrWard()
 		{
-			String queryStr = "model.ward.constituencyId = :id ";
-			List<Object[]> list = userVoterDetailsDAO.getAllLocalitiesForHamletOrWard(1l, 28858l,8l, IConstants.CUSTOMWARD);
+			String queryStr = " model.ward.localElectionBody.localElectionBodyId =:id ";
+			List<Object[]> list = userVoterDetailsDAO.getAllLocalitiesForHamletOrWard("muncipalityCustomWard",1l, 83l,8l, queryStr);
 			System.out.println(list.size());
 			for(Object[] params : list)
 			 System.out.println(params[0]+" "+params[1]);

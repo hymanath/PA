@@ -1028,12 +1028,20 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				return votersInfoForMandalVO;
 			}
 			else if(type.equalsIgnoreCase("mandal")){
-				VotersInfoForMandalVO votersInfoForMandalVO = getVotersBasicInfoForMandal(type, id, publicationDateId, "main",constituencyId);
-				if(!votersInfoForMandalVO.isDatapresent())
-					 votersInfoForMandalVO = getVotersCountForMandal(type,id,publicationDateId,constituencyId);
-				if(electionIds != null && electionIds.size() > 0)
-					getPrevElectVotersCount(electionIds,id,votersInfoForMandalVO,"mandal",constituencyId);
-				return votersInfoForMandalVO;
+				if(resultFor.equalsIgnoreCase("muncipalityCustomWard"))
+				{
+					VotersInfoForMandalVO votersInfoForMandalVO = getCustomWardWiseVotersCount(constituencyId, id, publicationDateId, userId);
+					return votersInfoForMandalVO;
+				}
+				else
+				{
+					VotersInfoForMandalVO votersInfoForMandalVO = getVotersBasicInfoForMandal(type, id, publicationDateId, "main",constituencyId);
+						if(!votersInfoForMandalVO.isDatapresent())
+							votersInfoForMandalVO = getVotersCountForMandal(type,id,publicationDateId,constituencyId);
+						if(electionIds != null && electionIds.size() > 0)
+							getPrevElectVotersCount(electionIds,id,votersInfoForMandalVO,"mandal",constituencyId);
+						return votersInfoForMandalVO;
+				}
 			}
 			else if(type.equalsIgnoreCase("booth")){
 				VotersInfoForMandalVO  votersInfoForMandalVO = null;
@@ -1971,7 +1979,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					}
 			}
 			
-			if(type.equalsIgnoreCase("mandal"))
+			if(type.equalsIgnoreCase("mandal") && !buildType.equalsIgnoreCase("muncipalityCustomWard"))
 			{
 				if(id.toString().substring(0,1).trim().equalsIgnoreCase("2"))
 				{
@@ -2092,7 +2100,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					if(type.equalsIgnoreCase(IConstants.HAMLET))
 						localitiesList = localityDAO.getAllLocalitiesForHamlet(userId, id,type);
 					else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
-						localitiesList = userVoterDetailsDAO.getAllLocalitiesForHamletOrWard(userId, id,publicationDateId,queryCond);
+						localitiesList = userVoterDetailsDAO.getAllLocalitiesForHamletOrWard(type,userId, id,publicationDateId,queryCond);
 				
 				List<SelectOptionVO> localities = new ArrayList<SelectOptionVO>();
 				SelectOptionVO option = null;
@@ -2122,6 +2130,24 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 				
 				
+			}
+			if(type.equalsIgnoreCase("mandal") && buildType.equalsIgnoreCase("muncipalityCustomWard"))
+			{
+				if(id.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().substring(1)));
+					
+					Long castCount = boothPublicationVoterDAO.getCasteCountForLocalEleBody(userId, publicationDateId, constituencyId, (Long) list.get(0));
+					
+					List<Object[]> wardsList = boothPublicationVoterDAO.getWardsByLocalEleBodyIdId(userId, publicationDateId, (Long) list.get(0), constituencyId);
+					List<SelectOptionVO> Wards = new ArrayList<SelectOptionVO>();
+					if(wardsList != null && wardsList.size() > 0)
+					{
+					  for(Object[] ward:wardsList)
+						Wards.add(new SelectOptionVO((Long)ward[0],ward[1]!=null?ward[1].toString():""));
+					
+					mandalCasts = getVotersCastInfoForMultipleLocalities(Wards,publicationDateId,userId,(Long) list.get(0),castCount,"muncipalityCustomWard");
+					}
+				  }
 			}
 			return mandalCasts;
 			
@@ -5118,19 +5144,19 @@ public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Lo
   }
 public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCast){
 	
-   if(voterHouseInfoVO != null){
-	try{
-		if(voterHouseInfoVO.getVoterId() == null || voterHouseInfoVO.getUserId() == null )
-			return ;
-					
-		Voter voter =  voterDAO.get(voterHouseInfoVO.getVoterId());
-		User user =  userDAO.get(voterHouseInfoVO.getUserId());
-		if(voterHouseInfoVO.isMobileNoPresent())
-		{
-		String mobileNo = voterHouseInfoVO.getMobileNo();
-		
-		voterDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
-		}
+	   if(voterHouseInfoVO != null){
+			try{
+				if(voterHouseInfoVO.getVoterId() == null || voterHouseInfoVO.getUserId() == null )
+					return ;
+							
+				Voter voter =  voterDAO.get(voterHouseInfoVO.getVoterId());
+				User user =  userDAO.get(voterHouseInfoVO.getUserId());
+				if(voterHouseInfoVO.isMobileNoPresent())
+				{
+				String mobileNo = voterHouseInfoVO.getMobileNo();
+				
+				voterDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
+				}
 		if(voterHouseInfoVO.getCategoriesList() != null && voterHouseInfoVO.getCategoriesList().size() >0){
 			for(VoterHouseInfoVO category : voterHouseInfoVO.getCategoriesList()){
 				
@@ -13971,13 +13997,19 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			if(type.equalsIgnoreCase(IConstants.HAMLET))
 				queryCond =" model.hamlet.hamletId = :id ";
 		    else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
-					queryCond =" model.ward.constituencyId = :id ";	
+					queryCond =" model.ward.constituencyId = :id ";
+		    else if(type.equalsIgnoreCase("muncipalityCustomWard"))
+		    {
+		    	List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(hamletId.toString().substring(1)));
+		    	hamletId = (Long)list.get(0);
+		    	queryCond =" model.ward.localElectionBody.localElectionBodyId =:id ";
+		    }
 					
 			List<Object[]> list = null;
 			if(type.equalsIgnoreCase(IConstants.HAMLET))
 			 list = localityDAO.getAllLocalitiesForHamlet(userId, hamletId,IConstants.HAMLET);
-			else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
-				list = userVoterDetailsDAO.getAllLocalitiesForHamletOrWard(userId, hamletId,publicationDateId, queryCond);
+			else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD) || type.equalsIgnoreCase("muncipalityCustomWard"))
+				list = userVoterDetailsDAO.getAllLocalitiesForHamletOrWard(type,userId, hamletId,publicationDateId, queryCond);
 			if(list == null || list.size() == 0)
 				return "false";
 				return "true";
@@ -15111,5 +15143,93 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		
 		return importantFamiliesInfoVo;
     }
+	
+	public VotersInfoForMandalVO getCustomWardWiseVotersCount(Long constituencyId,Long localEleBodyId,Long publicationId,Long userId)
+	{
+		VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
+		
+		if(localEleBodyId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+			List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(localEleBodyId.toString().substring(1)));
+			localEleBodyId = (Long) list.get(0);
+			}
+		try{
+			List<VotersInfoForMandalVO> votersInfoForMandalVOList = new ArrayList<VotersInfoForMandalVO>(0);
+			List<Object[]> list = boothPublicationVoterDAO.getCustomWardWiseVotersInfoByLocalEleId(constituencyId, publicationId, localEleBodyId, userId);
+			Long muncipalityTotal = 0l;
+			if(list != null && list.size() > 0)
+			{
+				VotersInfoForMandalVO mandalVO = null;
+				
+				for(Object[] params : list)
+				{
+					mandalVO = checkVotersInfoForMandalVOIsExist((Long)params[0],votersInfoForMandalVOList);
+					if(mandalVO == null)
+					{
+						mandalVO = new VotersInfoForMandalVO();
+						mandalVO.setId((Long)params[0]);
+						mandalVO.setName(params[1].toString());
+						mandalVO.setType("CustomWard");
+						votersInfoForMandalVOList.add(mandalVO);
+					}
+					
+					if(params[3] != null && params[3].toString().equalsIgnoreCase("M"))
+						mandalVO.setTotalMaleVoters(params[2] != null ?params[2].toString() :"0");
+					else if(params[3] != null && params[3].toString().equalsIgnoreCase("F"))
+						mandalVO.setTotalFemaleVoters(params[2] != null ?params[2].toString() :"0");
+					else 
+						mandalVO.setUnKnowVoters(params[2] != null ?params[2].toString() :"0");
+					
+				}
+				
+				votersInfoForMandalVO.setVotersInfoForMandalVOList(votersInfoForMandalVOList);
+				
+				for(VotersInfoForMandalVO vO :votersInfoForMandalVOList)
+				{
+					Long maleVotersCount = 0L;
+					Long femaleVoters = 0L;
+					Long unknowVoters = 0L;
+					if(vO.getTotalMaleVoters() != null)
+						maleVotersCount = new Long(vO.getTotalMaleVoters());
+					if(vO.getTotalFemaleVoters() != null)
+						femaleVoters = new Long(vO.getTotalFemaleVoters());
+					if(vO.getUnKnowVoters() != null)
+						unknowVoters = new Long(vO.getUnKnowVoters());
+					
+					vO.setTotVoters(new BigDecimal(maleVotersCount.longValue()+femaleVoters.longValue()+ unknowVoters.longValue()));
+					muncipalityTotal += (maleVotersCount.longValue()+femaleVoters.longValue()+ unknowVoters.longValue()); 
+				}
+				
+				
+			}
+			
+			votersInfoForMandalVO.setName(localElectionBodyDAO.get(localEleBodyId).getName());
+			votersInfoForMandalVO.setType("Muncipality");
+			votersInfoForMandalVO.setTotalVoters(muncipalityTotal.toString());
+			votersInfoForMandalVO.setTotVoters(new BigDecimal(muncipalityTotal.longValue()));
+			calculatePercentage(votersInfoForMandalVO);
+			
+			return votersInfoForMandalVO;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getCustomWardWiseVotersCount() method,Exception - "+e);
+			return votersInfoForMandalVO;
+		}
+	}
+	
+	public VotersInfoForMandalVO checkVotersInfoForMandalVOIsExist(Long id,List<VotersInfoForMandalVO> list)
+	{
+		try{
+			if(list == null || list.size() == 0)
+				return null;
+			for(VotersInfoForMandalVO mandalVO : list)
+				if(mandalVO.getId() != null && mandalVO.getId().equals(id))
+					return mandalVO;
+			return null;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in checkVotersInfoForMandalVOIsExist() method, Exception - "+e);
+			return null;
+		}
+	}
 	
 }

@@ -117,7 +117,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<Long> getBoothIdsByCustomWardId(Long customWardId,Long constituencyId, Long publicationDateId);
 	
-	public List<Object[]> getAllLocalitiesForHamletOrWard(Long userId, Long id,Long publicationDateId,String queryCond);
+	public List<Object[]> getAllLocalitiesForHamletOrWard(String type,Long userId, Long id,Long publicationDateId,String queryCond);
 	
 	
 	 public List<?> getVoterIdsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId ,String type);

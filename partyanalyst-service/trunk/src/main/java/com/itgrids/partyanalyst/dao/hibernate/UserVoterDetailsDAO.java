@@ -1181,10 +1181,15 @@ IUserVoterDetailsDAO{
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAllLocalitiesForHamletOrWard(Long userId, Long id,Long publicationDateId,String queryCond)
+	public List<Object[]> getAllLocalitiesForHamletOrWard(String type,Long userId, Long id,Long publicationDateId,String queryCond)
 	{
 		StringBuilder queryString = new StringBuilder();
-		queryString.append(" select distinct model.locality.localityId,model.locality.name from UserVoterDetails model,BoothPublicationVoter model1 where model.user.userId =:userId and ");
+		if(type.equalsIgnoreCase("muncipalityCustomWard"))
+			queryString.append(" select distinct model.ward.constituencyId,model.ward.name ");
+		else
+			queryString.append(" select distinct model.locality.localityId,model.locality.name ");
+		
+		queryString.append(" from UserVoterDetails model,BoothPublicationVoter model1 where model.user.userId =:userId and ");
 		queryString.append(" model1.voter.voterId = model.voter.voterId and model1.booth.publicationDate.publicationDateId = :publicationDateId and ");
 		queryString.append( queryCond);
 		Query queryObj = getSession().createQuery(queryString.toString());
