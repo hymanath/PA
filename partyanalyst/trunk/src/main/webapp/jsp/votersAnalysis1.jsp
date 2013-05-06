@@ -1931,39 +1931,39 @@ function showAllAgewiseDetails(){
    publicationYear = publicationYear;
    if(maintype == "constituency")
    {
-	   var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&name="+mainname+"&retrieveType='all'&type='constituency'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	   var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&name="+mainname+"&retrieveType='all'&type='constituency'","newBrowser"+maintype,"width=700,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
    }
    else if(maintype == "mandal")
    {
 		var startNumber = mainreqid.substring(0,1);
 		mandalId = mainreqid.substring(1);
-		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&mandalId="+mandalId+"&name="+mainname+"&retrieveType='all'&&startNumber="+startNumber+"&type='mandal'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&mandalId="+mandalId+"&name="+mainname+"&retrieveType='all'&&startNumber="+startNumber+"&type='mandal'","newBrowser"+maintype,"width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
    }
    else if(maintype == "panchayat")
    {
 		
-		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='panchayat'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='panchayat'","newBrowser"+maintype,"width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
    }
    else if(maintype == "ward")
    {
 		
-		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='ward'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='ward'","newBrowser"+maintype,"width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
    }
    else if(pattern.test(maintype))
    {
 	
-		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='"+maintype+"LocalArea'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='"+maintype+"LocalArea'","newBrowser"+maintype,"width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
    }
    
     else if(maintype == "booth")
    {
 		
-		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='boothHamlets'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='boothHamlets'","newBrowser"+maintype,"width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
    }
 }
@@ -1984,7 +1984,7 @@ function showAllAgewiseDetailsForHamlet(){
 		  myId = mainreqid.substring(1);
 		  }else
 		  myId = mainreqid;
-		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+myId+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='"+subType+"'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+myId+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='"+subType+"'","ageWiseVoterDetails","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
    }
    
@@ -1993,13 +1993,13 @@ function showAllAgewiseDetailsForHamlet(){
 		var selElectionId = $("#revenueVillageWiseElecId").val();
 		var selElecyear = $("#revenueVillageWiseElecId option:selected").text() ;
 		//var brow1 = window.open("panchayatWiseElectionResultsAction.action?mandalId="+mainreqid.slice(1)+"&electionId="+selElectionId+"&mandalName="+mainname.replace("MANDAL","")+"&electionType=Assembly&electionYear="+selElecyear+"&resultFor=panchayats","browser2","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
-		var reqBrowser = window.open("panchayatWiseMandalElectionInfoAction.action?MANDAL_ID="+mainreqid.slice(1)+"&election_id="+selElectionId+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("panchayatWiseMandalElectionInfoAction.action?MANDAL_ID="+mainreqid.slice(1)+"&election_id="+selElectionId+"","newBrowser"+mainreqid.slice(1),"width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		reqBrowser.focus();
 }
 
 function openwindowForPanchayatsToShowCast(){
 		//var brow1 = window.open("panchayatWiseElectionResultsAction.action?mandalId="+mainreqid.slice(1)+"&electionId="+selElectionId+"&mandalName="+mainname.replace("MANDAL","")+"&electionType=Assembly&electionYear="+selElecyear+"&resultFor=panchayats","browser2","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
-		var reqBrowser = window.open("mandalRevenueVillagesElecInputAction.action?tehsilId="+mainreqid.slice(1),"newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("mandalRevenueVillagesElecInputAction.action?tehsilId="+mainreqid.slice(1),"newBrowsser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		reqBrowser.focus();
 }
 function showBasicAgewiseDetails(){
@@ -2053,7 +2053,7 @@ function getImpFamiliesVoters()
 	var mainreqid = $("#constituencyList").val()
 var urlstr = "voterFamilyInfoAction.action?buildType="+buildType+"&publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type="+impFamltype+"&typename="+impFamltypename+"&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+" "
 
-	var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+	var browser1 = window.open(urlstr,"familyWiseDetail"+impFamlId,"scrollbars=yes,height=600,width=700,left=200,top=200");	
 		browser1.focus();
 	}
 
@@ -2063,7 +2063,7 @@ var urlstr = "voterFamilyInfoAction.action?buildType="+buildType+"&publicationDa
 	
 var mainreqid = $("#constituencyList").val()
 var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type=hamlet&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+"&buildType="+buildType+" "
-var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+var browser1 = window.open(urlstr,"familyWiseDetail"+impFamlId,"scrollbars=yes,height=600,width=700,left=200,top=200");	
 browser1.focus();
 	}
 
@@ -2075,7 +2075,7 @@ dest = "muncipalityWards";
 dest = "booth";
 var mainreqid = $("#constituencyList").val()
 var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type="+maintype+"&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+"&buildType="+buildType+"&requestFor="+dest
-var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
+var browser1 = window.open(urlstr,"familyWiseDetail"+dest,"scrollbars=yes,height=600,width=700,left=200,top=200");	
 browser1.focus();
 	}
 
