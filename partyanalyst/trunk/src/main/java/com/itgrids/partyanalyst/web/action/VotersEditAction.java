@@ -813,11 +813,15 @@ public String saveLocality()
 			 jObj = new JSONObject(getTask());
 			 HttpSession session = request.getSession();
              RegistrationVO user=(RegistrationVO) session.getAttribute("USER");			 
-			 Long userId = null;
-				if(user != null && user.getRegistrationID() != null)
-				    userId = user.getRegistrationID();
-				else 
-				  return "error";
+             
+             Long userId = null;
+ 			 if(user != null && user.getRegistrationID() != null)
+ 				if(user.getParentUserId()!=null)
+ 					userId=user.getMainAccountId();
+ 				else
+ 					userId = user.getRegistrationID();
+ 			else 
+ 			  return "error";
 				
 			 org.json.JSONArray votersJSONArray = jObj.getJSONArray("selectedVoters");
 			 Long totalCategoriesCount = jObj.getLong("total");
@@ -874,11 +878,14 @@ public String saveLocality()
 			 HttpSession session = request.getSession();
 			 RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 			 
-			 Long userId = null;
-				if(user != null && user.getRegistrationID() != null)
-				    userId = user.getRegistrationID();
-				else 
-				  return "error";
+			Long userId = null;
+			if(user != null && user.getRegistrationID() != null)
+				if(user.getParentUserId()!= null)
+					userId=user.getMainAccountId();
+				else
+					userId = user.getRegistrationID();
+			else 
+			  return "error";
 			
 			    VoterHouseInfoVO parameters = new VoterHouseInfoVO();
 			
