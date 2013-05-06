@@ -46,8 +46,8 @@ buildString+='from:'+partyTweets[i];
 
 var fileref = document.createElement('script');
 fileref.setAttribute("type","text/javascript");
-//fileref.setAttribute("src", "http://search.twitter.com/search.json?q="+buildString+"&callback=TweetTick&rpp=50");
-fileref.setAttribute("src", "https://search.twitter.com/search.json?q=from:@JaiTDP+OR+from:null+OR+from:@youthBJP+OR+from:null+OR+from:@tgten+OR+from:null+OR+from:null+OR+from:@narendramodi+OR+from:null+OR+from:@trsharish+OR+from:null+OR+from:@theleaderysjmr+OR+from:null+OR+from:@SushmaSwarajbjp+OR+from:null+OR+from:@naralokesh&callback=TweetTick&rpp=50");
+fileref.setAttribute("src", "http://search.twitter.com/search.json?q="+buildString+"&callback=TweetTick&rpp=50");
+//fileref.setAttribute("src", "https://search.twitter.com/search.json?q=from:@JaiTDP+OR+from:null+OR+from:@youthBJP+OR+from:null+OR+from:@tgten+OR+from:null+OR+from:null+OR+from:@narendramodi+OR+from:null+OR+from:@trsharish+OR+from:null+OR+from:@theleaderysjmr+OR+from:null+OR+from:@SushmaSwarajbjp+OR+from:null+OR+from:@naralokesh&callback=TweetTick&rpp=50");
 
 document.getElementsByTagName("head")[0].appendChild(fileref);
 }
