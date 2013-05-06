@@ -326,8 +326,8 @@ function callAjax(jsObj,url)
 									var date = new Date();
 									
 									var jsObj1={
-									monthVal:date.getMonth(),
-									yearval:date.getFullYear(),
+									monthVal:selMonth,
+									yearval:selYear,
 									task:'nextMonthEvents'
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
@@ -376,8 +376,8 @@ function callAjax(jsObj,url)
 									removeDeletedElement(myResults,jsObj);var date = new Date();
 									
 									var jsObj1={
-									monthVal:date.getMonth(),
-									yearval:date.getFullYear(),
+									monthVal:selMonth,
+									yearval:selYear,
 									task:'nextMonthEvents'
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
@@ -390,8 +390,8 @@ function callAjax(jsObj,url)
 									var date = new Date();
 									
 									var jsObj1={
-									monthVal:date.getMonth(),
-									yearval:date.getFullYear(),
+									monthVal:selMonth,
+									yearval:selYear,
 									task:'nextMonthEvents'
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
@@ -2480,7 +2480,8 @@ function buildCalendarControl()
 		mainEventCalendar.changePageEvent.subscribe(changePageHandler, mainEventCalendar, true); 
 		mainEventCalendar.render(); 
 }
-	
+	var selYear ;
+	var selMonth;
 function changePageHandler(type,args,obj)
 {		
 		var current = args[1];
@@ -2491,7 +2492,8 @@ function changePageHandler(type,args,obj)
 		dateObj.dateVal = '1';
 		dateObj.monthVal = date.getMonth();
 		dateObj.yearVal = date.getFullYear();
-
+		selMonth = date.getMonth();
+		selYear = date.getFullYear();
 		var jsObj={
 					monthVal:month,
 					yearval:year,
