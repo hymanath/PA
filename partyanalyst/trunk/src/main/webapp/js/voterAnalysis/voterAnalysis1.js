@@ -5627,8 +5627,11 @@ function getDataResultsForTotalVoters(resultsArr)
 					for( var j in reqObj.partyVotesEarnedVOs){
 						partyIn=reqObj.partyVotesEarnedVOs[j].partyName;
 						if(partyIn==party){
-
-							partyResultArr.push(reqObj.partyVotesEarnedVOs[j].votesEarned);
+							if(reqObj.partyVotesEarnedVOs[j].votesEarned!=0)
+								partyResultArr.push(reqObj.partyVotesEarnedVOs[j].votesEarned);
+								
+							else
+								partyResultArr.push(null);
 						}
 					}
 				}
