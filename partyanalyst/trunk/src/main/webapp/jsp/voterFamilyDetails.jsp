@@ -511,8 +511,10 @@ function callAjax(jsObj,url)
 									}else
 									buildImpFamilesChart(myResults);
 							//18111	
-							     if(maintype == "mandal" || maintype =="constituency" )
+							     if(maintype == "mandal" || maintype =="constituency" ){
 									buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
+									impFamilesVariableDescription();
+									}
 									 if(requestFor == "booth" ){
 									buildTableForImpFamilesForHamletByBooth(myResults.subList,myResults.name,myResults.type);
                                  // buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
