@@ -1042,7 +1042,7 @@ function addToPolitician(voterId,name)
 		 $("#AgeWisetitle").html("Age Wise Voters Information Of "+mainname+" Hamlet in "+publicationYear+" ");
 	     // $("#impFamiliesMoreInfoButn").attr("value","View More Details");
 		//  $("#votersBasicInfoBtnDiv").hide();
-		$("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;margin-left: 20px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
+		$("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
 	   $("#castPopupShowBtn").attr("value","Locality wise Caste Info");
 	   }
 	   else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
@@ -1106,6 +1106,9 @@ function addToPolitician(voterId,name)
 		 if(type == "mandal" && mainreqid.substring(0,1) == "1")
 		 {
 			$("#votersBasicInfoBtnDiv").show();
+			if(muncipalityType == 'Greater Municipal Corp')
+			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Ward Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Ward Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+			else 
 			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 			
 		 }
@@ -1118,7 +1121,7 @@ function addToPolitician(voterId,name)
 	   {
 	    $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Localities Wise Age Details</a>');
 	  // $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
-	   $("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;margin-left: 20px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
+	   $("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'booth\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Booth Wise Caste Info of '+mainname+'" class="btn btn-info">');
 	   $("#impFamiliesMoreInfoButn").css('display','none');
 	   }
 
@@ -5706,7 +5709,7 @@ function PreviousEleVotingTrendsHighChat(results,jsObj){
                 layout: 'vertical',
                 align: 'right',
                 verticalAlign: 'top',
-                x: -100,
+                x: -30,
                 y: 10,
                 floating: true,
                 borderWidth: 1,
