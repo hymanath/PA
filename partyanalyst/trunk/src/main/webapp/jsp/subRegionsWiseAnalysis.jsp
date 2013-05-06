@@ -483,6 +483,7 @@ $("#panchayats").live("change",function(){
 
 </head>
 <body>
+
 <div id="mainDiv">
 
 <div id="votersBasicInfoMainDiv">
@@ -600,7 +601,12 @@ $("#panchayats").live("change",function(){
 </div>
 
 			
-</div>			
+</div>
+
+<div id="container1"></div>
+
+<div id="electionResultsDiv" class="widget blue"></div>
+
 
 <script type="text/javascript">
 function getvotersBasicInfo(buttonType,id,publicationId,type){
@@ -3328,6 +3334,186 @@ var jsObj = {
 		}
   }
 
+  var allZPTCMPTCElecInfo = new Array();
+<c:forEach var="zptcMptcElection" items="${mptcZptcElectionResultsVO}" >
+
+		var zptcMptcElec = {
+				year:'${zptcMptcElection.electionYear}',
+				type:'${zptcMptcElection.electionType}',
+				parties:[]		
+		};	
+		<c:forEach var="party" items="${zptcMptcElection.partyResultsVO}">
+			var party = {
+					partyName:'${party.partyName}',
+					participated:'${party.seatsParticipated}',
+					seatsWon:'${party.totalSeatsWon}',
+					votesEarned:'${party.votesEarned}',
+					polledVotes:'${party.totalPolledVotes}',
+					percentage:'${party.percentage}',
+					constituencies:[]
+			};
+			<c:forEach var="constituency" items="${party.constituencyWisePatiesInfoVOs}">
+				var constituency = {
+						name:'${constituency.constituencyName}',
+						candidate:'${constituency.candidateName}',
+						rank:'${constituency.rank}',
+						votesEarned:'${constituency.votesEarned}',
+						percentage:'${constituency.percentage}',
+						results:'<a href="javascript:{}" class="anchorStyle" title="Click to view more results"  onclick=getMoreResults('+zptcMptcElec.year+',\''+zptcMptcElec.type+'\','+${constituency.constituencyId}+')> More Results </a>'
+				};
+				party.constituencies.push(constituency); 
+			</c:forEach>	
+			zptcMptcElec.parties.push(party);	
+		</c:forEach>
+		allZPTCMPTCElecInfo.push(zptcMptcElec);
+	</c:forEach>
+var categories1 = [];
+function showMPTCZPTCResults()
+{
+	
+	  var str='';
+
+	  str+='';
+
+	  str+='<h4>MPTC & ZPTC Results of '+ '${typeName}'+'</h4>';
+
+	   str+='<table border="1" class="gridtable" id="mptcZptcTable">';
+
+		 str+='<thead>';
+		    str += '<th>Election</th>';
+			str += '<th>Party</th>';
+			str += '<th>Participated</th>';
+			str += '<th>Seats Won</th>';
+			str += '<th>Votes Earned</th>';
+			str += '<th>Votes Polled</th>';
+			str += '<th>Percentage</th>';
+		  str += '</thead>';
+     for(var i in allZPTCMPTCElecInfo){
+
+
+	  // str +='<h4>'+ allZPTCMPTCElecInfo[i].type + "  " +allZPTCMPTCElecInfo[i].year+'</h4>';
+        categories1.push(allZPTCMPTCElecInfo[i].type+" "+allZPTCMPTCElecInfo[i].year);
+
+	   for(var j in allZPTCMPTCElecInfo[i].parties){
+		   str+='<tr>';
+		    str +='<td>'+ allZPTCMPTCElecInfo[i].type +" "+allZPTCMPTCElecInfo[i].year+'</td>';
+			str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].partyName+'</td>';
+			str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].participated+'</td>';
+			str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].seatsWon+'</td>';
+			str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].votesEarned+'</td>';
+			str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].polledVotes+'</td>';
+			str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].percentage+'</td>';
+		  str += '</tr>';
+
+	   }
+  }
+    str+='</table>';
+	 $('#electionResultsDiv').html(str);
+	 $('#mptcZptcTable').dataTable();
+
+	// buildChart();
+
+}
+/*var finalSeries = new Array();
+function buildChart()
+{
+
+		//console.log(allZPTCMPTCElecInfo[i].parties[j].percentage+" "+allZPTCMPTCElecInfo[i].parties[j].partyName);
+
+	for(var i in allZPTCMPTCElecInfo)
+	 for(var j in allZPTCMPTCElecInfo[i].parties){
+      var existIndex = 0;
+
+      for(var k in finalSeries){
+
+      if(finalSeries[k].name == allZPTCMPTCElecInfo[i].parties[j].partyName)
+		  existIndex = k;
+
+	  }
+
+      if(existIndex == 0){
+
+		   var obj = {};
+           var obj1 = new Array();		   
+           obj["name"] = allZPTCMPTCElecInfo[i].parties[j].partyName;
+		   	obj1.push(allZPTCMPTCElecInfo[i].parties[j].percentage);
+		  
+           	obj["data"] = obj1;	 
+            finalSeries.push(obj);		
+
+
+		 //console.log(finalSeries);
+
+	  }else{
+
+		 // console.log(allZPTCMPTCElecInfo[i].parties[j].partyName);
+		  finalSeries[existIndex].data.push(allZPTCMPTCElecInfo[i].parties[j].percentage);
+
+	  }
+
+	
+	}	  console.log(finalSeries);
+
+
+   $(function () {
+        $('#container1').highcharts({
+            chart: {
+                type: 'line',
+                marginRight: 130,
+                marginBottom: 25
+            },
+            title: {
+                text: 'Monthly Average Temperature',
+                x: -20 //center
+            },
+            subtitle: {
+                text: 'Source: WorldClimate.com',
+                x: -20
+            },
+            xAxis: {
+                categories:// ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                    //'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+				   categories1
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valueSuffix: ''
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+          /*  series: [{
+                name: 'CPM',
+                data: [7.0, 6.9, 9.5, 14.5]
+            }, {
+                name: 'IND',
+                data: [-0.2, 0.8, 5.7, 11.3]
+            }, {
+                name: 'INC',
+                data: [-0.9, 0.6, 3.5, 8.4]
+            }, {
+                name: 'TDP',
+                data: [3.9, 4.2, 5.7, 8.5]
+            }]*/
+			/*series:finalSeries
+        });
+    });
+
+}*/
 </script>
 
 
@@ -3337,6 +3523,8 @@ getvotersBasicInfo("voters",id,publicationId,type);
 getCensusInfoForSubLevels();
 getLatestCastsSubcategoryWise();
 getAgewiseVoterDetails();
+if('${type}' == "mandal")
+showMPTCZPTCResults();
 
 </script>
 
