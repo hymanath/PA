@@ -9,6 +9,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.jfree.util.Log;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -17,6 +19,7 @@ import com.itgrids.partyanalyst.service.IUserVoterService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 
 public class SubRegionsWiseAnalysisAction extends ActionSupport implements ServletRequestAware{
 	
@@ -32,6 +35,30 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 	private HttpSession session;
 	JSONObject jObj = null;
 	private IUserVoterService userVoterService;
+	private List<ElectionWiseMandalPartyResultVO> mptcZptcElectionResultsVO;
+	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
+	
+	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
+		return partyBoothWiseResultsService;
+	}
+
+
+	public void setPartyBoothWiseResultsService(
+			IPartyBoothWiseResultsService partyBoothWiseResultsService) {
+		this.partyBoothWiseResultsService = partyBoothWiseResultsService;
+	}
+
+
+	public List<ElectionWiseMandalPartyResultVO> getMptcZptcElectionResultsVO() {
+		return mptcZptcElectionResultsVO;
+	}
+
+
+	public void setMptcZptcElectionResultsVO(
+			List<ElectionWiseMandalPartyResultVO> mptcZptcElectionResultsVO) {
+		this.mptcZptcElectionResultsVO = mptcZptcElectionResultsVO;
+	}
+
 	private String task;
 	private List<SelectOptionVO> resultList;
 	private IVotersAnalysisService votersAnalysisService;
@@ -187,6 +214,12 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 
 
 	public String execute(){
+		
+		if(type.equalsIgnoreCase("mandal")){
+		
+		ElectionWiseMandalPartyResultListVO mptcZptcResultListVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(new Long(id.toString().substring(1)));
+		mptcZptcElectionResultsVO = mptcZptcResultListVO.getPartyWiseElectionResultsVOList();
+		}
 		 
 		 return Action.SUCCESS;
 	 }
