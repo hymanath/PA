@@ -519,6 +519,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		session.setAttribute(ISessionConstants.GENDERS, gender);
 	
 		successMsg = request.getParameter("successMsg");
+		request.setAttribute("successMsg", "saved successfully");
 		return Action.SUCCESS;
 	}
 	

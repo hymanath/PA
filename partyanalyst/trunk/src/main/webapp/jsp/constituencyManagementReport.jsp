@@ -1088,6 +1088,10 @@
 		}
 	}
 	
+	function getRefreshCurrentChanges()
+	{
+		getInfluencingPeopleInAConstituency();
+	}
 	function removeSelectElements(elmt)
 	{
 		if(!elmt)

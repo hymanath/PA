@@ -756,6 +756,11 @@ $("#pageUpBtn").live("click",function(){
 			  if(oRecord.getData("wardName") != null)
 			  val = oRecord.getData("wardName");
 			}
+			else if(ids[0] == "mobileNo"){
+			
+			  if(oRecord.getData("mobileNo") != null)
+			  val = oRecord.getData("mobileNo");
+			}
 		    else{
 			  for(var i in categ){
 			    if(categ[i].categoryValuesId == ids[0])
@@ -814,7 +819,7 @@ $("#pageUpBtn").live("click",function(){
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
 		resultsList: "votersList",
-		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName","fromSno","isInfluencePerson","isCadrePerson","isPoliticion","wardName"],
+		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName","fromSno","isInfluencePerson","isCadrePerson","isPoliticion","wardName","mobileNo"],
 		metaFields: {
 		totalRecords: "totalHousesCount" // Access to value in the server response
 		}
@@ -999,8 +1004,8 @@ function buildCategoriesListInit(result){
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="cast,Caste"/>  Caste</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" id="localityCheckBox" onClick="showAlert()" value="locality,Locality"/>  Locality</td>';
-		
-		var x = 3;
+		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="mobileNo,Mobile No"/> Mobile</td>';
+		var x = 4;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
 		   if(x%5 == 0)
@@ -1028,7 +1033,8 @@ function buildCategoriesListInit(result){
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="party"/>  Party</td>';
 		 if( selectedLevel == 3 || selectedLevel == 4 )
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="Locality"/>  Locality</td>'; 
-		 var x = 3;
+		str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="mobileNo" id= "mobileNo"/>  Mobile No</td>'; 
+		 var x = 4;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
 		   if(x%5 == 0)
@@ -1051,7 +1057,8 @@ function buildCategoriesListInit(result){
 		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="party"/>  Party</td>';
 			if( selectedLevel == 3 || selectedLevel == 4 )
 		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="Locality"/>  Locality</td>'; 
-		var x = 3;
+		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="mobileNo" id="mobileNo"/>  Mobile No</td>';
+		var x = 4;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
 		   if(x%5 == 0)
@@ -1379,6 +1386,14 @@ function callAjaxForCandSearch(jsObj,url)
 			  str+="<td><div id='locationdiv' ></td> ";
 			  str+="</tr>";                       
 		   }  
+		   if(results.mobileNoPresent)
+				{
+					mobileNoPresent = true;
+					str+="<tr>";	
+					str+="<td><b>Mobile No</b></td>";
+					str+="<td><input type='text' value='' style='width:141px;' id='mobileForAll'></input></td>";
+					str+="</tr>";
+				}
            if(results.categoriesList != null && results.categoriesList.length > 0){
 		      totalCategCount = results.categoriesList.length;
 			  for(var m in results.categoriesList){
@@ -1395,12 +1410,12 @@ function callAjaxForCandSearch(jsObj,url)
 		    }   	
 		   str+="</table>";	
            str+="</fieldset>";	
-           str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForAll("+castPresent+","+partyPresent+","+localityPresent+","+totalCategCount+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
+           str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForAll("+castPresent+","+partyPresent+","+localityPresent+","+totalCategCount+","+results.mobileNoPresent+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
 	    $("#multipleVoterFamiliesEditDiv").html(str);		   
 		}
 	   
 	}
-	 function updateAllSelectedVotersForAll(castPresent,partyPresent,localityPresent,count){
+	 function updateAllSelectedVotersForAll(castPresent,partyPresent,localityPresent,count,mobileNoPresent){
 	     var votersEditInfo = new Array();
 		 var voterIds = '';
 		 if(selectedVotersArr.length > 1000){
@@ -1419,6 +1434,10 @@ function callAjaxForCandSearch(jsObj,url)
 			  obj["castId"] = $("#castSelForAll").val();
 			  if(partyPresent)
 			  obj["partyId"] = $("#partySelForAll").val();
+			  if(mobileNoPresent)
+			  {
+				obj["mobileId"] = $('#mobileForAll').val();
+			  }
 			  if(localityPresent){
 			  var hamletId=$("#localityForAll").val();
 			  var localityId= $("#localitylocationdiv").val();
@@ -1448,6 +1467,7 @@ function callAjaxForCandSearch(jsObj,url)
 			partyPresent:partyPresent,
 			castPresent:castPresent,
 			localityPresent:localityPresent,
+			mobileNoPresent:mobileNoPresent,
 			voterIds:voterIds,
 			selectedVoters:votersEditInfo,
 			task:"updateAllVoters",
@@ -1484,7 +1504,7 @@ function callAjaxForCandSearch(jsObj,url)
 		    alert("Updated Successfully");
 	 }
 	 
-	 function updateAllSelectedVotersForIndividule(castPresent,partyPresent,localityPresent,count){
+	 function updateAllSelectedVotersForIndividule(castPresent,partyPresent,localityPresent,count,mobileNoPresent){
 	    var votersEditInfo = new Array();
      $('.familyVoterEditId').each(function(){
 	        var obj={
@@ -1495,6 +1515,10 @@ function callAjaxForCandSearch(jsObj,url)
 			  obj["castId"] = $(this).closest("table").find(".castallfamily").val();
 			  if(partyPresent)
 			  obj["partyId"] = $(this).closest("table").find(".partyallfamily").val();
+			  if(mobileNoPresent)
+			  {
+				obj["mobileId"] = $(this).closest("table").find(".mobileAllSelect").val();
+			  }
 			   if(localityPresent)
 			  obj["hamletId"] =  $(this).closest("table").find(".localityallfamily").val();
 			 
@@ -1534,6 +1558,7 @@ function callAjaxForCandSearch(jsObj,url)
 					castPresent:castPresent,
 					localityPresent:localityPresent,
 					selectedVoters:votersEditInfo,
+					mobileNoPresent:mobileNoPresent,
 					task:"updateIndividuls",
 					wardId:$('#localitylocationdiv1').val(),
 					selType:selType
@@ -1656,6 +1681,24 @@ function callAjaxForCandSearch(jsObj,url)
 				  str+="<td><div id='locationdiv"+localid+"' ></td> "; 
 				   str+="   </tr>";
 				}
+				if(results.mobileNoPresent)
+				{
+					mobileNoPresent = true;
+					if(voters[k].mobileNo == null)
+					{
+						str+="<tr>";	
+						str+="<td><b>Mobile No : </b></td>";
+						str+="<td><input type='text' value='' style='width:141px;' id='mobileId"+localid+"' class='mobileAllSelect'></input></td>";
+						str+="</tr>";
+					}
+					else
+					{
+						str+="<tr>";	
+						str+="<td><b>Mobile No : </b></td>";
+						str+="<td><input type='text' value='"+voters[k].mobileNo+"' style='width:141px;' id='mobileId"+localid+"' class='mobileAllSelect'></input></td>";
+						str+="</tr>";	
+					}
+				}
                  if(voters[k].categoriesList != null){
                     categCount = voters[k].categoriesList.length;
                   }				 
@@ -1688,7 +1731,7 @@ function callAjaxForCandSearch(jsObj,url)
 			}
 		 
 		}
-		 str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForIndividule("+results.castPresent+","+results.partyPresent+","+results.localityPresent+","+categCount+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
+		 str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForIndividule("+results.castPresent+","+results.partyPresent+","+results.localityPresent+","+categCount+","+results.mobileNoPresent+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
 		 $("#multipleVoterFamiliesEditDiv").html(str);
 	   }
 	}
@@ -3170,7 +3213,6 @@ function buildSelectedVotersData(results)
 
 	 function updateAllSelectedVotersDetails()
 	 {
-
 		allVotersToUpdate = new Array();
 
          for(var i in votersToUpdate)
@@ -3180,7 +3222,8 @@ function buildSelectedVotersData(results)
 			 obj["partyId"] = $('#party'+votersToUpdate[i]).val();
 			 obj["casteId"] = $('#caste'+votersToUpdate[i]).val();
 			 obj["voterId"] = votersToUpdate[i];
-
+			 /* obj["mobileId"] = $('#mobileId'+votersToUpdate[i]).val();
+			 alert(obj["mobileId"]); */
 			 if ($('#locality'+votersToUpdate[i]).length )
                 obj["hamletId"] = $('#locality'+votersToUpdate[i]).val();
              else
