@@ -182,7 +182,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 			<div id ="emprtyData"></div>
 		<!--<div id = "assigAndUnassig"></div>-->
 		<div id ="impFamilesBasicSubDetailsForHamletByBoothTitle" style="margin-top:20px;margin-bottom:8px;color:steelblue;"></div>	
-		<div id ="impFamilesBasicSubDetailsForHamletByBooth" style="border:1px solid black"></div>
+		<div id ="impFamilesBasicSubDetailsForHamletByBooth"></div>
 		<div id="descriptionDiv2" ></div> 
 		<div id="impFamPancBothDtlsAgxImgForHamletByBooth"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/></div>
 		<div id="importantFamiliesForBooth"  style="font-size:12px;overflow-x:scroll;"></div>
