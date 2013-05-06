@@ -1040,6 +1040,7 @@ color:#2A4F97;
 google.load("visualization", "1", {packages:["corechart"]});
 	var votersLimitExist = false;
 	var pattern= /^(hamlet|customWard)$/i;
+	var  muncipalityPattern = /MUNCIPALITY/i;
 var Localization = { <%
 			
 			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -1971,13 +1972,19 @@ function showAllAgewiseDetailsForHamlet(){
    constituencyId = $("#constituencyList").val();
    publicationYear = publicationYear;
 
-   if(maintype == "hamlet" || maintype == "customWard")
+   if(maintype == "hamlet" || maintype == "customWard" || maintype == "mandal")
    {     var subType ="";
+         var  myId="";
    if(maintype == "hamlet")
 		subType = "hamletBooths";
-		else
+		else if(maintype == "customWard")
 		subType = "wardBooths";
-		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+mainreqid+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='"+subType+"'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		if(maintype == "mandal"){
+		  subType = "muncipalityWards";
+		  myId = mainreqid.substring(1);
+		  }else
+		  myId = mainreqid;
+		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&panchayatId="+myId+"&buildType="+buildType+"&name="+mainname+"&retrieveType='all'&type='"+subType+"'","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
    }
    
@@ -2061,10 +2068,13 @@ browser1.focus();
 	}
 
 	function getImpFamiliesVotersForBooth1()
-	{
-
+	{var dest = "";
+if(maintype == "mandal" && muncipalityPattern.test(myCorpType) )
+dest = "muncipalityWards";
+ else 
+dest = "booth";
 var mainreqid = $("#constituencyList").val()
-var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type="+maintype+"&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+"&buildType="+buildType+"&requestFor=booth "
+var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type="+maintype+"&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+"&buildType="+buildType+"&requestFor="+dest
 var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=700,left=200,top=200");	
 browser1.focus();
 	}
