@@ -504,7 +504,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-	public void testGetVotersCountForCustomWard()
+	/*public void testGetVotersCountForCustomWard()
 	{
 		List<Object[]> list = boothPublicationVoterDAO.getVotersCountForCustomWardBooths(232l, 28858l, 8l, 1l);
 		System.out.println(list.size());
@@ -514,6 +514,26 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 				System.out.println(params[1]);
 		}
 		
+	}*/
+	
+	/*public void testgetCustomWardWiseVotersInfoByLocalEleId()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getCustomWardWiseVotersInfoByLocalEleId(232l, 8l, 83l, 1l);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testgetCasteCountForLocalEleBody()
+	{
+		System.out.println(boothPublicationVoterDAO.getCasteCountForLocalEleBody(1l, 8l, 232l, 83l));
+	}*/
+	
+	public void testGetWardsByLocalEleBodyIdId()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getWardsByLocalEleBodyIdId(1l, 8l, 83l, 232l);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+			for(Object[] params : list)
+				System.out.println(params[0]+" "+params[1]);
 	}
 	
 }

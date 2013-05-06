@@ -510,7 +510,12 @@ public class BoothPublicationVoterDAO extends
 		str.append("select model2.casteState.caste.casteName,model.voter.gender,count(model.voter.voterId),model2.casteState.casteStateId,model2.casteState.casteCategoryGroup.casteCategory.categoryName from BoothPublicationVoter model,UserVoterDetails model2 ");
 		str.append(" where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
 		
-		str.append("  model2.locality.localityId = :localityId and ");	
+		if(type.equalsIgnoreCase("muncipalityCustomWard"))
+			str.append(" model2.ward.localElectionBody.localElectionBodyId =:hamletId and model2.ward.constituencyId = :localityId ");
+		else
+		  str.append("  model2.locality.localityId = :localityId and ");
+		
+		
 		if(type.equalsIgnoreCase(IConstants.HAMLET))
 			str.append(" model2.hamlet.hamletId = :hamletId  ");	
 		else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
@@ -1755,7 +1760,9 @@ public Long getTotalVotersCountForHamlet(Long userId , Long id,Long publicationD
 	 query.append(" model.hamlet.hamletId = :id ");
 	else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
 	 query.append(" model.ward.constituencyId = :id ");
-	
+	else if(type.equalsIgnoreCase("muncipalityCustomWard"))
+	 query.append(" model.ward.localElectionBody.localElectionBodyId = :id ");
+		
 	Query queryObj = getSession().createQuery(query.toString()) ;
 	queryObj.setParameter("publicationDateId", publicationDateId);
 	queryObj.setParameter("id", id);
@@ -3050,5 +3057,47 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 			
 		}
+	 public List<Object[]> getCustomWardWiseVotersInfoByLocalEleId(Long constituencyId,Long publicationId,Long localEleBodyId,Long userId)
+	 {
+		 Query queryObj = getSession().createQuery("select UVD.ward.constituencyId,UVD.ward.name, count(BPV.voter.voterId)," +
+		 		" BPV.voter.gender from BoothPublicationVoter BPV,UserVoterDetails UVD where UVD.voter.voterId = BPV.voter.voterId " +
+		 		" and BPV.booth.publicationDate.publicationDateId =:publicationId and BPV.booth.constituency.constituencyId =:constituencyId " +
+		 		" and UVD.ward.localElectionBody.localElectionBodyId =:localEleBodyId and UVD.user.userId =:userId group by UVD.ward.constituencyId,UVD.voter.gender ");
+		 
+		 queryObj.setParameter("constituencyId", constituencyId);
+		 queryObj.setParameter("publicationId", publicationId);
+		 queryObj.setParameter("localEleBodyId", localEleBodyId);
+		 queryObj.setParameter("userId", userId);
+		 
+		 return queryObj.list();
+	 }
+	 
+	 public Long getCasteCountForLocalEleBody(Long userId,Long publicationId,Long constituencyId,Long localEleBodyId)
+	 {
+		 Query queryObj = getSession().createQuery("select count(UVD.casteState.casteStateId) from BoothPublicationVoter BPV,UserVoterDetails UVD where UVD.voter.voterId = BPV.voter.voterId " +
+				 " and BPV.booth.publicationDate.publicationDateId =:publicationId and BPV.booth.constituency.constituencyId =:constituencyId " +
+			 		" and UVD.ward.localElectionBody.localElectionBodyId =:localEleBodyId and UVD.user.userId =:userId ");
+		 
+		 queryObj.setParameter("constituencyId", constituencyId);
+		 queryObj.setParameter("publicationId", publicationId);
+		 queryObj.setParameter("localEleBodyId", localEleBodyId);
+		 queryObj.setParameter("userId", userId);
+		 
+		 return (Long) queryObj.uniqueResult();
+	 }
+	 
+	  public List<Object[]> getWardsByLocalEleBodyIdId(Long userId,Long publicationId,Long localEleBodyId,Long constituencyId)
+	  {
+		  Query queryObj = getSession().createQuery("select distinct UVD.ward.constituencyId,UVD.ward.name from BoothPublicationVoter BPV,UserVoterDetails UVD where " +
+		  		" UVD.voter.voterId = BPV.voter.voterId and UVD.user.userId =:userId and BPV.booth.constituency.constituencyId =:constituencyId and " +
+		  		" UVD.ward.localElectionBody.localElectionBodyId =:localEleBodyId and BPV.booth.publicationDate.publicationDateId =:publicationDateId order by UVD.ward.name ");
+		  
+		  queryObj.setParameter("userId", userId);
+		  queryObj.setParameter("publicationDateId", publicationId);
+		  queryObj.setParameter("constituencyId", constituencyId);
+		  queryObj.setParameter("localEleBodyId", localEleBodyId);
+			
+		  return queryObj.list();
+	  }
 	
 }
