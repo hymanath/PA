@@ -676,9 +676,9 @@ public class UserVoterService implements IUserVoterService{
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			User user = userDAO.get(selectedUserId);
-			if(parentuserId != null && parentuserId != 0)
+			if(parentuserId != null && parentuserId > 0)
 				user.setParentUser(userDAO.get(parentuserId));
-			if(mainAccountId != null && mainAccountId != 0)
+			if(mainAccountId != null && mainAccountId > 0)
 				user.setMainAccountUser(userDAO.get(mainAccountId));
 			userDAO.save(user);
 			
