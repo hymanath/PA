@@ -1144,7 +1144,7 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 	    chart1 = new Highcharts.Chart({
             chart: {
                 renderTo: 'castGrid1',
-                type: 'column',
+                type: 'line',
 				 zoomType: 'x',
                         events: {
                             click: function() {
