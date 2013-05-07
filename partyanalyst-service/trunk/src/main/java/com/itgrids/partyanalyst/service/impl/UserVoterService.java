@@ -678,8 +678,12 @@ public class UserVoterService implements IUserVoterService{
 			User user = userDAO.get(selectedUserId);
 			if(parentuserId != null && parentuserId > 0)
 				user.setParentUser(userDAO.get(parentuserId));
+			else
+				user.setParentUser(null);
 			if(mainAccountId != null && mainAccountId > 0)
 				user.setMainAccountUser(userDAO.get(mainAccountId));
+			else 
+				user.setMainAccountUser(null);
 			userDAO.save(user);
 			
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
