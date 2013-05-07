@@ -8734,7 +8734,10 @@ function  buildFamilyMembers1(result,jsObj,type){
 				  $("#ageLink").show();
 				  $("#impFamiliesMoreInfoButn").show();
 				  $("#castPartyPopupShowBtn").css("display","block");
-				  $("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'muncipalityCustomWard\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Ward Wise Caste Info of '+mainname+'" class="btn btn-info">');
+				  
+				  if(jsObj.type == "muncipalityCustomWard")
+				    $("#castTab").html('<input type="button" onclick="ShowCastSubLevelPopupDiv(\'muncipalityCustomWard\');" style="float:right;margin-top:7px;margin-bottom:5px;" value="Ward Wise Caste Info of '+mainname+'" class="btn btn-info">');
+
 				  $(".mylicls").css("display","block");
 				  try{
 				  $("#myli").css('display','block');
