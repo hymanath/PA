@@ -499,8 +499,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		
       	var type = '${type}';
 		//$("#voterCasteAjaxImg").css("display","none");
-
-		if((type =="hamlet" && buildType == "hamlet") || (type == "booth" && buildType == "hamlet") || (type =="panchayat" && buildType == "hamlet"))
+		if((type =="hamlet" && buildType == "hamlet") || (type == "booth" && buildType == "hamlet") || (type =="panchayat" && buildType == "hamlet") || (type =="mandal" && resultFor == "muncipalityCustomWard"))
 		  $("#getLatestCastsSubcategoryWise").css("display","none");
 		else
 		 $("#getLatestCastsSubcategoryWise").css("display","block");
