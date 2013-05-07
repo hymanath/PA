@@ -228,6 +228,7 @@
 		<pattern>/cadreDisplayWindowAction*</pattern>		
 		<pattern>/userGroupAction*</pattern>
 		<pattern>/setUserRestrictionAction*</pattern>
+		<pattern>/assignSubUserAction*</pattern>
     	 </decorator>
 
 </decorators>

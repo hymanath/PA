@@ -5043,6 +5043,28 @@
 			</result>		
 		</action>
 		
+		<action name="assignSubUserAction" class="assignSubUserAction">
+		 <result name="success">/jsp/assignSubUser.jsp</result>
+		 <result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="getAllPAUsersAction" class="assignSubUserAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		    <param name="root">usersList</param>
+		  </result>
+		</action>
+		
+		<action name="getAllParentUsersAction" class="assignSubUserAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		    <param name="root">selectOptionVO</param>
+		  </result>
+		</action>
+		
+		<action name="assignParentUserAction" class="assignSubUserAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">resultStatus</param>
+		 </result>
+		</action>
 		
 		</package>
 </struts>      
