@@ -552,6 +552,7 @@ function buildSelectedVotersData(results)
 	  $('#directionsDiv').show();
 
 	  $('#votersDetailsTable').dataTable({
+		  "aaSorting": [[ 1, "asc" ]],
 		  "iDisplayLength" : totalNoOfVoters		
 	  });
 		  var values = ["Gender","Relation","Age","Gaurdian Name","Mobile No"];
