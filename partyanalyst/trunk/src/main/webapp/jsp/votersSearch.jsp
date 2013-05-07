@@ -2756,7 +2756,7 @@ function showAlert()
 		var ele = document.getElementById('localityCheckBox');
 		if(ele.checked && (level == 1 || level == 2 || level == 5 || level == 6))
 		{
-		  $('#noteDiv').html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To Update Locality Wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+		  $('#noteDiv').html('<strong>Note : </strong><font style="font-family:verdana;font-size:12px;color:#06ABEA"> To Update Locality Wise Voter Details Select Report Level Panchayat/Polling Station</font>');
 		}
 		else
 		  $('#noteDiv').html('');
