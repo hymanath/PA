@@ -1144,5 +1144,9 @@
 	
 	<bean id="allVotersInAcasteAction" class="com.itgrids.partyanalyst.web.action.AllVotersInAcasteAction" singleton="false">	
 	</bean>
+	
+	<bean id="assignSubUserAction" class="com.itgrids.partyanalyst.web.action.AssignSubUserAction" singleton="false">
+		<property name="userVoterService" ref="userVoterService" />
+	</bean>
 </beans>	
 	
