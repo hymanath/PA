@@ -408,10 +408,10 @@ function buildSelectedVotersData(results)
 			   for(var k in voters){
 
 			totalNoOfVoters = totalNoOfVoters +1;
-
 			  str+='<tr>';
-			     str+='<td>'+results.boothsList[i].partNo+'</td>';
-			    str+='<td><input type="hidden" id="voterId" value="'+voters[k].voterId+'"/>'+voters[k].fromSno+'</td>';
+			    str+='<td>'+results.boothsList[i].partNo+'</td>';
+				str+='<input type="hidden" id="voterId" value="'+voters[k].voterId+'"/>';
+			    str+='<td>'+voters[k].fromSno+'</td>';
 		        str+='<td>'+voters[k].name+'</td>';
 				str+='<td>'+voters[k].houseNo+'</td>';
 				str+='<td>'+voters[k].gaurdian+'</td>';
