@@ -229,6 +229,7 @@
 		<pattern>/userGroupAction*</pattern>
 		<pattern>/setUserRestrictionAction*</pattern>
 		<pattern>/assignSubUserAction*</pattern>
+		<pattern>/casteAndElectionResultsComparisonAction*</pattern>
     	 </decorator>
 
 </decorators>

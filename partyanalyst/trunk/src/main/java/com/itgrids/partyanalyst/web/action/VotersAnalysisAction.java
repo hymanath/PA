@@ -1652,4 +1652,23 @@ return Action.SUCCESS;
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getPanchayatAndBoothDetails()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return ERROR;
+			if(jObj.getString("task").equalsIgnoreCase("getPanchayatsByTehsilId"))
+			    namesList = voterReportService.getPanchayatsByTehsilId(jObj.getLong("tehsilId"));
+			else if(jObj.getString("task").equalsIgnoreCase("getBoothsByPanchayatID"))
+				namesList = voterReportService.getBoothsByPanchayatIDConstiId(jObj.getLong("panchayatId"),jObj.getLong("constituencyId"));
+			
+		}catch (Exception e) {
+			log.error("Exception Occured in getPanchayatAndBoothDetails() Method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
