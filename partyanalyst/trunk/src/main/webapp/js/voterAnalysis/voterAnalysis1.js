@@ -6523,6 +6523,7 @@ var levelId =2;
 var mandalid=$(this).closest("a").attr("data-mandalid");
 var mandalName =$(this).closest("a").attr("data-mandalid"); 
 //alert("SHOW Mandal DATA");
+myCorpType = "mandal";
 hideMyTabs();
 mainreqid = mandalid;
 mainpublicationId = $("#publicationDateList").val();
@@ -9445,7 +9446,7 @@ $(document).ready(function(){
 	mainpublicationId = $("#publicationDateList").val();
 	
 	 $("#votersShareBtn1").css('display','block');
-	   $("#impFamiliesMoreInfoButn").attr("value","View Localities Wise Family Details");
+	  // $("#impFamiliesMoreInfoButn").attr("value","View Localities Wise Family Details");
       $("#votersShareBtn1").html("");  
  		var astr="";
 			 astr += "<div id='tabsForWardLocal' class='thumbnail1' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>";
