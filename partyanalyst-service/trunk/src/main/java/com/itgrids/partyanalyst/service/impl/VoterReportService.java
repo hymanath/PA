@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
@@ -83,6 +84,7 @@ public class VoterReportService implements IVoterReportService{
 	private IVoterDAO voterDAO;
 	private IWardDAO wardDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
+	private IPublicationDateDAO publicationDateDAO;
 	
 	IUserVoterCategoryValueDAO userVoterCategoryValueDAO;
 	
@@ -271,6 +273,15 @@ public class VoterReportService implements IVoterReportService{
 
 		public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
 			this.userVoterDetailsDAO = userVoterDetailsDAO;
+		}
+
+		
+	    public IPublicationDateDAO getPublicationDateDAO() {
+			return publicationDateDAO;
+		}
+
+		public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
+			this.publicationDateDAO = publicationDateDAO;
 		}
 
 	public VoterReportVO getVoterDetailsInaLocation(String range,Long rangeValue)
@@ -1821,4 +1832,41 @@ public class VoterReportService implements IVoterReportService{
 		           return voterCastInfoVO1.getName().compareTo(voterCastInfoVO2.getName());
 			    }
 			 };
+			 
+		public List<SelectOptionVO> getPanchayatsByTehsilId(Long tehsilId){
+			 List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+			 SelectOptionVO selectOptionVO = null;
+			 try{
+				 List<Object[]> panchayatiesList = panchayatDAO.getPanchayatsByTehsilId(tehsilId);
+				 for(Object[] panchayat:panchayatiesList){
+					 selectOptionVO = new SelectOptionVO((Long)panchayat[0],panchayat[1].toString());
+					 returnVal.add(selectOptionVO);
+				 }
+			 }catch(Exception e){
+				 LOG.error("Exception rised in getPanchayatsByTehsilId ",e);
+			 }
+			 returnVal.add(0,new SelectOptionVO(0l,"Select Location"));
+			 return returnVal;
+		}
+		
+		public List<SelectOptionVO> getBoothsByPanchayatIDConstiId(Long panchayatId,Long constituencyId){
+			 List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+			 SelectOptionVO selectOptionVO = null;
+			 try{
+				 Long publicationId = getLatestPublicationIdByConstiId(constituencyId);
+				 List<Object[]> boothsList = boothDAO.getBoothsByPanchayatIDConstiId(panchayatId,constituencyId,publicationId);
+				 for(Object[] booth : boothsList){
+					 selectOptionVO = new SelectOptionVO((Long)booth[0],"Booth-"+booth[1].toString());
+					 returnVal.add(selectOptionVO);
+				 }
+			 }catch(Exception e){
+				 LOG.error("Exception rised in getBoothsByPanchayatIDConstiId ",e);
+			 }
+			 returnVal.add(0,new SelectOptionVO(0l,"Select Location"));
+			 return returnVal;
+		}
+		
+		public Long getLatestPublicationIdByConstiId(Long constituencyId){
+			 return publicationDateDAO.getLatestPublicationIdByConstiId(constituencyId);
+		}
 }
