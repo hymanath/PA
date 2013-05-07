@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserRolesDAOHibernateTest extends BaseDaoTestCase{
 
@@ -72,5 +73,13 @@ public class UserRolesDAOHibernateTest extends BaseDaoTestCase{
 		 List<Object[]> list = userRolesDAO.getAllRestrictedUsers();
 		 System.out.println(list.size());
 	}*/
+	
+	public void testgetAllUsersByRoleType()
+	{
+		List<Object[]> list = userRolesDAO.getAllUsersByRoleType(IConstants.PARTY_ANALYST_USER);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		System.out.println(params[0]+"----- "+params[1]+" "+params[2]);
+	}
 	
 }
