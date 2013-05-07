@@ -43,6 +43,9 @@ function callAjax(jsObj,url)
 										buildResults(myResults,jsObj);
 										
 								    }
+									else if(jsObj.task == "getAgeWiseWiseDetails")
+									  buildAgeWiseWiseDetails(myResults,jsObj);
+								
                                 }catch (e) {
 							    
 								}  
@@ -108,11 +111,140 @@ function callAjax(jsObj,url)
 	   }
 
    } 
-   
+
+   function getAgewiseInfoForVoterCategory(){
+	  var str = ${attributeIds};
+		var jsObj = {
+	        attributeIds: ''+str+'',
+			locationType:'${retrieveType}',
+			locationId:${locationId},
+			constituencyId:${constituencyId},
+			publicationId:${publicationId},
+			task:"getAgeWiseWiseDetails"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getAgeWiseWiseDetailsAction.action?"+rparam;
+		callAjax(jsObj, url);
+		$("#ajaxImage").css("display","block");
+	}
+
+ function buildAgeWiseWiseDetails(result,jobj)
+ {
+	$("#ajaxImage").css("display","none");
+	var str = '';
+	if(result != null && result.length >0)
+	{
+		str +='<div>';
+		for(var i in result)
+		{
+		 str+="<div style='border:1px solid #d3d3d3;padding:5px 5px 31px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;'>";
+		 str+= "<h2 id='subHeading' style='margin-left:-5px;width:97%;'><b>"+result[i].name+" Attribute Age Wise Voters Analysis</b></h2>";
+		 str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;'>";
+		 str+="<thead class='info'>";
+		 str  +='<tr>';
+		 str+="<th rowspan=3>"+result[i].name+"</th>";
+		 str+=" <th colspan=3>18-25</th>";
+		 str+=" <th colspan=3>25-36</th>";
+		 str+=" <th colspan=3>36-45</th>";
+		 str+=" <th colspan=3>46-60</th>";
+		 str+=" <th colspan=3>60-Above</th>";
+		 str+='</tr>';
+		 str  +='<tr>';
+		 str+=" <th>Male</th>";
+		 str+=" <th>Female</th>";
+		 str+=" <th>Total</th>";
+		 str+=" <th>Male</th>";
+		 str+=" <th>Female</th>";
+		 str+=" <th>Total</th>";
+		 str+=" <th>Male</th>";
+		 str+=" <th>Female</th>";
+		 str+=" <th>Total</th>";
+		 str+=" <th>Male</th>";
+		 str+=" <th>Female</th>";
+		 str+=" <th>Total</th>";
+		 str+=" <th>Male</th>";
+		 str+=" <th>Female</th>";
+		 str+=" <th>Total</th>";
+		 str+='</tr>';
+		 str+="</thead>";
+	 for(var j in result[i].votersDetailsVOList)
+	 {
+	   var obj = result[i].votersDetailsVOList[j];
+
+		str +='<tr>';
+		if(obj.maleVotersCountBetween18To25 == null)
+	 	  obj.maleVotersCountBetween18To25 =0;
+		if(obj.femaleVotersCountBetween18To25 == null)
+		 obj.femaleVotersCountBetween18To25 =0;
+		if(obj.maleVotersCountBetween26To35 == null)
+		 obj.maleVotersCountBetween26To35 =0;
+		if(obj.femaleVotersCountBetween26To35 == null)
+		 obj.femaleVotersCountBetween26To35 =0;
+		if(obj.maleVotersCountBetween36To45 == null)
+		 obj.maleVotersCountBetween36To45 =0;
+		if(obj.femaleVotersCountBetween36To45 == null)
+		 obj.femaleVotersCountBetween36To45 =0;
+		if(obj.maleVotersCountBetween46To60 == null)
+		 obj.maleVotersCountBetween46To60 = 0;
+		if(obj.femaleVotersCountBetween46To60 == null)
+		 obj.femaleVotersCountBetween46To60 = 0;
+		if(obj.maleVotersCountAbove60 == null)
+		 obj.maleVotersCountAbove60 = 0;
+
+		if(obj.femaleVotersCountAbove60 == null)
+	     obj.femaleVotersCountAbove60 = 0;
+
+		var totalFor18To25 = obj.maleVotersCountBetween18To25+obj.femaleVotersCountBetween18To25;
+		var totalFor26To35 = obj.maleVotersCountBetween26To35+obj.femaleVotersCountBetween26To35;
+		var totalFor36To45 = obj.maleVotersCountBetween36To45+obj.femaleVotersCountBetween36To45;
+		var totalFor46To60 =obj.maleVotersCountBetween46To60+obj.femaleVotersCountBetween46To60;
+		var totalFor60 = obj.maleVotersCountAbove60+obj.femaleVotersCountAbove60;
+
+		str +='<td>'+obj.name+'</td>';
+
+		str +='<td>'+obj.maleVotersCountBetween18To25+'</td>';
+
+		str +='<td>'+obj.femaleVotersCountBetween18To25+'</td>';
+
+		str +='<td>'+totalFor18To25+'</td>';
+		str +='<td>'+obj.maleVotersCountBetween26To35+'</td>';
+
+		str +='<td>'+obj.femaleVotersCountBetween26To35+'</td>';
+		str +='<td>'+totalFor26To35+'</td>';
+		str +='<td>'+obj.maleVotersCountBetween36To45+'</td>';
+
+		str +='<td>'+obj.femaleVotersCountBetween36To45+'</td>';
+		str +='<td>'+totalFor36To45+'</td>';
+		str +='<td>'+obj.maleVotersCountBetween46To60+'</td>';
+
+		str +='<td>'+obj.femaleVotersCountBetween46To60+'</td>';
+		str +='<td>'+totalFor46To60+'</td>';
+		str +='<td>'+obj.maleVotersCountAbove60+'</td>';
+
+		str +='<td>'+obj.femaleVotersCountAbove60+'</td>';
+		str +='<td>'+totalFor60+'</td>';
+
+
+		str +='</tr>';
+
+		}
+ 		str+="</table>";
+		str+='</div>';
+		str+="</div>";
+	   }
+	 }
+	$("#agerangeDiv").html(str);
+}
+
 </script>
 <div id="categorySubtable" style='overflow-x:scroll;'></div>
+<br><br>
+<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;"/>
+
+<div id="agerangeDiv"></div>
 <script type="text/javascript">
    getCategorySubDetails();
+   getAgewiseInfoForVoterCategory();
 </script>
 </body>
 </html>
