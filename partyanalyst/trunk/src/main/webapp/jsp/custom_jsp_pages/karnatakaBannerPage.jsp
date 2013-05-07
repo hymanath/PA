@@ -170,7 +170,7 @@ font-size:11px;
 Compare Present election live results with previous election results,  
 Analyze the party's performances in gaining and losing of seats from other parties 
 Party's performances in the new constituencies.
-<a class="btn btn-success pull-right" href="electionLiveResultsAnalysisAction.action?electionId=229&electionType=2&stateId=7">Compare Now !!</a>
+<a class="btn btn-success pull-right" href="electionLiveResultsAnalysisAction.action?electionId=229&electionType=2&stateId=12">Compare Now !!</a>
 </p>
 
 </div>
@@ -178,16 +178,16 @@ Party's performances in the new constituencies.
 <div class="span4 popover" style="width: 275px;">
 <h4 class="popover-title" style="width: 262px;">State Ministers Trend </h4>
 <p class="popover-content" style="width: 264px;">
-Analyze the present status of Gujarat state ministers for 2007-2012 duration.
-<a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=229&electionType=2&stateId=7&eventType=ministers">Analyze Now !!</a>
+Analyze the present status of Karnataka state ministers for 2008-2013 duration.
+<a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=229&electionType=2&stateId=12&eventType=ministers">Analyze Now !!</a>
 </p>
 
 </div>
 <div class="span4 popover" style="width: 279px; left: 13px;">
 <h4 class="popover-title">Key Candidates Present Status</h4>
 <p class="popover-content">
-Analyze the present status of key candidates from Gujarat State
-<a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=229&electionType=2&stateId=7&eventType=impCandidates">View Now !!</a>
+Analyze the present status of key candidates from Karnataka State
+<a class="btn btn-success pull-right" href="ministerAnalysisAction.action?electionId=229&electionType=2&stateId=12&eventType=impCandidates">View Now !!</a>
 </p>
 
 </div>
@@ -200,7 +200,7 @@ Analyze the present status of key candidates from Gujarat State
 </div>
 	
 <div id="districtWiseElectionResultDiv" style="margin-top:40px;clear:both;margin-bottom:40px">
-<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;border-radius:3px 3px 0px 0px;width: 100%;">DISTRICT WISE Party Wise Results Of Karnataka Vidhan Sabha 2012</h3></div>
+<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;border-radius:3px 3px 0px 0px;width: 100%;">DISTRICT WISE Party Wise Results Of Karnataka Assembly Elections 2013</h3></div>
   <div style="background:#EDF9FF;width:100%;padding:4px;">
 	<select id="selectDistrictWise" style="margin-top:10px;width:200px;margin-bottom:10px;margin-left:20px;"  onchange="getDistrictWiseElectionResults()">
 		<option value="120">Bagalkot</option>
@@ -237,7 +237,7 @@ Analyze the present status of key candidates from Gujarat State
 
 
 <div id="candidateWinLeadElectionResultDiv" style="margin-top:40px;clear:both;margin-bottom:40px">
-<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">WINNING/LEADING CANDIDATES INFO FOR KARNATAKA VIDHAN SABHA 2012</h3></div>
+<div><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">WINNING/LEADING CANDIDATES INFO FOR KARNATAKA  ASSEMBLY ELECTIONS 2013</h3></div>
   <div style="background:#EDF9FF;width:100%;padding:4px;">
   <div id="candidateWinLeadResultDisplayDiv"></div>
   </div>
@@ -774,13 +774,28 @@ Analyze the present status of key candidates from Gujarat State
 </div>
 
 <script type="text/javascript">
+ function showDetails(){
+
+	 $('#showLink').hide();
+	 $('#hideLink').show();
+	 $('#refreshDiv').show();
+
+
+	 $('.importantPersonsDivClass').show();
+
+ }
+ function hideDetails(){
+
+	$('#showLink').show();
+	$('#hideLink').hide();
+	$('#refreshDiv').hide();
+
+	$('.importantPersonsDivClass').hide('slow');
+
+ }
 function buildSpecialPageHightLights(results)
 {
-	
-	//alert(123);
 	var str ='';
-	//var specialPageHighLight = //document.getElementById('specialPageHighLight');
-	
 	str +='<fieldset  style="verdana,sans-serif;font-weight:bold;margin-top:14px;">';
 	str +='<legend style="border-radius: 3px;background:#21B2ED;font-family: verdana;">Karnataka HighLights</legend>';
 	str +='<div class="hglgts">';
@@ -1066,7 +1081,7 @@ function buildGujaratElectionResult(myResults)
 	var electionResult= '';	
 	electionResult+='<div id="gujratResultsHeader">';
 	electionResult+='<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 100%;">';
-	electionResult+='Party Wise Results Of Karnataka Vidhan Sabha 2013</h3>';
+	electionResult+='Party Wise Results Of Karnataka Assembly Elections 2013</h3>';
 	electionResult+='</div>';
 	electionResult+='<div id="KarnatakaResultBody" >';
 	electionResult+='<span id="gujratResultsBody1" style ="width:450px;float:left;margin:11px;">';
@@ -1152,7 +1167,6 @@ var str='';
 	  return;
 	}
 
-$('#importantCandidateHeadingDiv').css("display","block");
 	for(var i in results){
 
 		 str+='<div class="importantPersonsDivClass">';
@@ -1176,16 +1190,28 @@ $('#importantCandidateHeadingDiv').css("display","block");
 
 			str+='<div class="alignCenter"><span style="color: red; font-weight: bold; text-align: center;">'+results[i].constituency+'</span></div>';
 
-			str+='</div>';
-	}
-	str+='</div>';
-	$('#importantPersonsDiv').html(str);
-	setTimeout(getImportantCandidatesInfo, 120000);
+
+        str+='</div>';
+
+		
 	}
 	
-	getElectionInfo();
-	getDistrictWiseElectionResults();
-	getWonLeadCandidates();
-	getSpecialPageHighLights();
-	getImportantCandidatesInfo();
+
+
+	str+='</div>';
+
+
+	$('#importantPersonsDiv').html(str);
+
+setTimeout(getImportantCandidatesInfo, 120000);
+
+}
+
+getElectionInfo();
+getDistrictWiseElectionResults();
+getWonLeadCandidates();
+getSpecialPageHighLights();
+getImportantCandidatesInfo();
+
+
 </script>
