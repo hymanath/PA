@@ -200,6 +200,14 @@
 									</span><br>
 									<span class="fontStyle">Assign Party To User&nbsp;:&nbsp;&nbsp;
 										<a class="alinkstyle" href="<s:url action="assigningPartyToUserAction"/>">Assign</a>
+									</span><br>
+									<span class="fontStyle">
+										Restrict User :&nbsp;
+										<a class="alinkstyle" href="<s:url action="setUserRestrictionAction"/>"> Restrict User
+										</a>
+									</span><br>
+									<span class="fontStyle">Assign Sub User&nbsp;:&nbsp;&nbsp;
+										<a class="alinkstyle" href="<s:url action="assignSubUserAction"/>">Assign</a>
 									</span>
 									</fieldset>
 								</td>
@@ -514,7 +522,7 @@
 									</fieldset></td>
 								
 
-								<td>
+								<!-- <td>
 								<fieldset class="f2">
 									<legend class="l2">Restrict User</legend>
 									<span class="fontStyle">
@@ -522,7 +530,7 @@
 										<a class="alinkstyle" href="<s:url action="setUserRestrictionAction"/>"> Restrict User
 										</a>
 									</span><br>
-									</fieldset></td>
+									</fieldset></td>-->
 								<td></td>
 								</tr>
 						</table>

@@ -8,6 +8,8 @@
 
 
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 
 <style type="text/css">
 
@@ -16,6 +18,16 @@
     margin-right: auto;
     margin-top: 35px;
     width: 980px;}
+.subUserCls p{ 
+	margin-bottom: 9px;
+    padding-bottom: 0;}
+.subUserCls{padding-bottom: 25px;}
+.selectedDiv{text-align:center;}
+#errorMsgDiv {font-size:13px;margin-bottom: 5px;}
+#PAUsersList{margin-left: 16px;}
+#parentUsersList{margin-left: 14px;}
+#mainAccountUsersList{margin-left: 4px;}
+#assignParentUser{margin-top: 12px;}
 </style>
 <script type="text/javascript">
 
@@ -26,13 +38,19 @@
 <div id="subUserMainDiv">
 
  <div id="subUserInnerDiv">
- <div id="errorMsgDiv"></div>
-	<p><span>Select User : </span><select id="PAUsersList"></select></p>
-	<p><span>Parent User : </span><select id="parentUsersList"></select></p>
-	<p><span>Main Account : </span><select id="mainAccountUsersList"></select></p>
+  <div class="widget blue subUserCls">
+	
+	<h4 class="headingCls" style="margin-bottom: 10px;">Assign Sub Users</h4>
+	<div class="selectedDiv">
+	<div id="errorMsgDiv"></div>
+		<p><span>Select User : </span><select id="PAUsersList"></select></p>
+		<p><span>Parent User : </span><select id="parentUsersList"></select></p>
+		<p><span>Main Account : </span><select id="mainAccountUsersList"></select></p>
 
-	<input type="button" value="update" id="assignParentUser"/>
-
+		<input type="button" value="update" id="assignParentUser" class="btn btn-info"/>
+		<span><img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/></span>
+	</div>
+  </div>
  </div>
 
 
@@ -133,9 +151,7 @@ function callAjax(jsObj,url)
 	}
 	function showAllMainAccountUsers(result,mainAccountId)
 	{
-		
-		
-		var elmt = document.getElementById("mainAccountUsersList");
+	  var elmt = document.getElementById("mainAccountUsersList");
 		removeSelectElements(elmt);
 
 		if(elmt == null || result == null)
@@ -164,7 +180,7 @@ function callAjax(jsObj,url)
 
 
 function removeSelectElements(selectedElmt)
-	{
+{
 
 		var len = selectedElmt.length;
 		
@@ -172,11 +188,13 @@ function removeSelectElements(selectedElmt)
 		{
 			selectedElmt.remove(i);
 		}
-	}
-$(document).ready(function(){
+}
+
+ $(document).ready(function(){
 	
 	$("#PAUsersList").change(function(){
-		
+		$("#errorMsgDiv").html("");
+
 		var userId = $("#PAUsersList").val();
 		var jsObj = {
 		id : userId,
@@ -191,10 +209,20 @@ $(document).ready(function(){
 
 	$("#assignParentUser").click(function(){
 		
+		$("#errorMsgDiv").html("");
 		var userId = $("#PAUsersList").val();
 		var parentUserId = $("#parentUsersList").val();
 		var mainAccountId = $("#mainAccountUsersList").val();
-
+			
+		if(userId == null || userId == "0")
+			return;
+		if((parentUserId == null || parentUserId == "0") && (mainAccountId == null || mainAccountId == "0"))
+		{
+		  $("#errorMsgDiv").html("Please Select Parent User Or Main Account.");
+		  return;
+		}
+		
+		$("#ajaxImage").css("display"," inline-block");
 		var jsObj = {
 		id : userId,
 		parentUserId:parentUserId,
@@ -211,6 +239,8 @@ $(document).ready(function(){
 
 function showSuccessMsg(result)
 {
+	$("#ajaxImage").css("display","none");
+	$("#errorMsgDiv").html("");
 	if(result.resultCode == 0)
 	{
 		$("#errorMsgDiv").html("Updated Successfully").css("color","green");
