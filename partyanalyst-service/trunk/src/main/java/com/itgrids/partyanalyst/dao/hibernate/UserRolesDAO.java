@@ -204,5 +204,11 @@ public class UserRolesDAO extends GenericDaoHibernate<UserRoles, Long>
 		return getHibernateTemplate().find("select model.user.userId,model.user.firstName,model.user.lastName from UserRoles model where model.user._loginRestriction='"+IConstants.TRUE+"' and model.role.roleType ='PARTY_ANALYST_USER' ");
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllUsersByRoleType(String roleType)
+	{
+		return getHibernateTemplate().find(" select distinct model.user.userId,model.user.firstName,model.user.lastName from UserRoles model where model.role.roleType = ? order by model.user.firstName ",roleType);
+	}
+	
 
 }

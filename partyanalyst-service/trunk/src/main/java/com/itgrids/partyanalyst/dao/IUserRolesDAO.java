@@ -23,4 +23,6 @@ public interface IUserRolesDAO extends GenericDao<UserRoles,Long>{
 	
 	public List<Object[]> getAllUsers();
 	
+	public List<Object[]> getAllUsersByRoleType(String roleType);
+	
 }
