@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
@@ -21,5 +22,12 @@ public interface IUserVoterService {
 	public List<MandalInfoVO> getCensusDetailsInALocation(String locationType, Long locationValue, Long constituencyId);
 	
 	public List<MandalInfoVO> getCensusReportForSubLevels(String locationType,Long locationValue,Long constituencyId);
+	
+	public List<SelectOptionVO> getAllPAUsers();
+	
+	public SelectOptionVO getAllParentUsers(Long userId);
+	
+	public ResultStatus assignParentUser(Long selectedUserId,Long parentuserId,Long mainAccountId);
+	
 	
 }
