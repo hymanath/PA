@@ -25,6 +25,7 @@
 	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
 	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+ <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
  
 <script type="text/javascript">
 	var currentTask = '${windowTask}';
@@ -1855,6 +1856,13 @@ function callAjaxToGetParlConstis( jsObj, url){
 	    $("#"+jsObj.assemblyId).append('<option value='+assResult[i].id+'>'+assResult[i].name+'</option>');
 	}
 	
+</script>
+<script type="text/javaScript">
+	<c:if test="${windowTask == 'update_existing'}">
+		<c:if test="${rs.resultCode !=  '' && rs.resultCode == '0'}">	
+				getCadresResults1('search');
+		</c:if>
+	</c:if>	
 </script>
 </body>
 </html>
