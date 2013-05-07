@@ -20,6 +20,8 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private List<Long> locationValuesList;
 	private Long populateId;
 	private Long orderId;
+	private Long parentUserId;
+	private Long mainAccountId;
 
 
 	public Long getPopulateId() {
@@ -183,6 +185,22 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setLocationValuesList(List<Long> locationValuesList) {
 		this.locationValuesList = locationValuesList;
+	}
+
+	public Long getParentUserId() {
+		return parentUserId;
+	}
+
+	public void setParentUserId(Long parentUserId) {
+		this.parentUserId = parentUserId;
+	}
+
+	public Long getMainAccountId() {
+		return mainAccountId;
+	}
+
+	public void setMainAccountId(Long mainAccountId) {
+		this.mainAccountId = mainAccountId;
 	}
 	
 	

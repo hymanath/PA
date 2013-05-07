@@ -10,10 +10,14 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
@@ -28,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IUserVoterCategoryDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 
@@ -55,6 +60,8 @@ public class UserVoterService implements IUserVoterService{
     private IDelimitationConstituencyMandalService delimitationConstituencyMandalService; 
     private MandalInfoVO mandalInfoVO;
     private IRegionServiceData regionServiceDataImp;
+    private IUserRolesDAO userRolesDAO; 
+    private IUserDAO userDAO;
     
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
@@ -172,6 +179,20 @@ public class UserVoterService implements IUserVoterService{
 
 	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
+	}
+	public IUserRolesDAO getUserRolesDAO() {
+		return userRolesDAO;
+	}
+
+	public void setUserRolesDAO(IUserRolesDAO userRolesDAO) {
+		this.userRolesDAO = userRolesDAO;
+	}
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
 	}
 
 	public List<SelectOptionVO> getUserVoterCategoryList(List<Long> userIdsList)
@@ -581,6 +602,91 @@ public class UserVoterService implements IUserVoterService{
 			e.printStackTrace();
 			LOG.error("Exception Occured in getCensusReportForSubLevels() method,Exception - "+e);
 			return mandalInfoVOList;
+		}
+	}
+	
+	public List<SelectOptionVO> getAllPAUsers()
+	{
+		List<SelectOptionVO> optionVOList = new ArrayList<SelectOptionVO>(0);
+		try{
+			
+			List<Object[]> list = userRolesDAO.getAllUsersByRoleType(IConstants.PARTY_ANALYST_USER);
+			if(list != null && list.size() > 0)
+				for(Object[] params : list)
+				{
+					String name = "";
+					if(params[1] != null)
+						name += params[1].toString();
+					if(params[2] != null)
+						name += " "+params[2].toString();
+				  optionVOList.add(new SelectOptionVO((Long)params[0],name));
+				}
+			
+			return optionVOList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getAllPAUsers() methos,Exception - "+e);
+			return optionVOList;
+		}
+	}
+	
+	public SelectOptionVO getAllParentUsers(Long userId)
+	{
+		SelectOptionVO selectOptionVO = null;
+		try{
+			List<Object[]> list = userRolesDAO.getAllUsersByRoleType(IConstants.PARTY_ANALYST_USER);
+			if(list != null && list.size() > 0)
+			{
+				selectOptionVO = new SelectOptionVO();
+				List<SelectOptionVO> optionVOList = new ArrayList<SelectOptionVO>(0);
+				List<SelectOptionVO> optionVOList1 = new ArrayList<SelectOptionVO>(0);
+				optionVOList.add(new SelectOptionVO(0l,"select"));
+				optionVOList1.add(new SelectOptionVO(0l,"select"));
+				for(Object[] params : list)
+				{
+					if(!userId.equals((Long)params[0]))
+					{
+						String name = "";
+						if(params[1] != null)
+							name += params[1].toString();
+						if(params[2] != null)
+							name += " "+params[2].toString();
+					  optionVOList.add(new SelectOptionVO((Long)params[0],name));
+					  optionVOList1.add(new SelectOptionVO((Long)params[0],name));
+					  
+					}
+				}
+				selectOptionVO.setSelectOptionsList(optionVOList);
+				selectOptionVO.setSelectOptionsList1(optionVOList1);
+				
+				selectOptionVO.setParentUserId(userDAO.get(userId).getParentUser() != null ? userDAO.get(userId).getParentUser().getUserId():0l);
+				selectOptionVO.setMainAccountId(userDAO.get(userId).getMainAccountUser() != null ?userDAO.get(userId).getMainAccountUser().getUserId():0l);
+			}
+			
+			return selectOptionVO;
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getAllParentUsers() method,Exception - "+e);
+			return selectOptionVO;
+		}
+	}
+	
+	public ResultStatus assignParentUser(Long selectedUserId,Long parentuserId,Long mainAccountId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			User user = userDAO.get(selectedUserId);
+			if(parentuserId != null && parentuserId != 0)
+				user.setParentUser(userDAO.get(parentuserId));
+			if(mainAccountId != null && mainAccountId != 0)
+				user.setMainAccountUser(userDAO.get(mainAccountId));
+			userDAO.save(user);
+			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
 		}
 	}
 	
