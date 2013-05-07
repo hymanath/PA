@@ -216,11 +216,11 @@ function removeSelectElements(selectedElmt)
 			
 		if(userId == null || userId == "0")
 			return;
-		if((parentUserId == null || parentUserId == "0") && (mainAccountId == null || mainAccountId == "0"))
+		/* if((parentUserId == null || parentUserId == "0") && (mainAccountId == null || mainAccountId == "0"))
 		{
 		  $("#errorMsgDiv").html("Please Select Parent User Or Main Account.").css("color","red");
 		  return;
-		}
+		}*/
 		
 		$("#ajaxImage").css("display"," inline-block");
 		var jsObj = {
