@@ -126,7 +126,7 @@ public class PartyService implements IPartyService {
 											presentElectionTotalPercentageOfVotesWon.doubleValue() - 
 											prevElectionTotalPercentageOfVotesWon.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP);
 		boolean positiveVotesFlowFlag = true;
-		if(diffOfTotalPercentageWinWithPrevElection.doubleValue()<0)
+		if(diffOfTotalPercentageWinWithPrevElection.doubleValue()<=0)
 			positiveVotesFlowFlag = false;
 		Map<String, String> partyVotesFlown = new LinkedHashMap<String, String>();
 		
