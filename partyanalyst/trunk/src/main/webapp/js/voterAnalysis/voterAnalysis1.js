@@ -9045,7 +9045,7 @@ function buildCategoriesDiv(result)
 		str +='<table style="width:45%;">';
 		str +='<tr><td style="width: 95px;"><input type="checkbox" name="type" class="selectAll" onclick="selectAllcategorycheckbox();"> &nbsp;Select All</td>';
 		str +='<td style="width: 106px;"><input type="checkbox" name="type" class="unselectAll" onclick="clearAllCheckBoxs();"> &nbsp;UnSelect All</td>';
-		str+='<td><input class="btn btn-success" type="button" onclick="callMethodToGetData();getAgewiseInfoForVoterCategory();" value="submit"></td><td><img style="display:none;" id="categoriesAjximgMsgDiv" alt="Processing Image" src="images/icons/search.gif"></td></tr>';
+		str+='<td><input class="btn btn-success" type="button" onclick="callMethodToGetData();" value="submit"></td><td><img style="display:none;" id="categoriesAjximgMsgDiv" alt="Processing Image" src="images/icons/search.gif"></td></tr>';
 		str +='</table><br>';
 		str +='<div id="categoriesValuesDiv" style="padding-bottom:1px;"></div>';
 		str +='<div id="agerangeDiv" ></div>';

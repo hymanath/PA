@@ -2185,7 +2185,19 @@ function getAgewiseInfoForVoterCategory(){
 
 	
 	function getCategorySubDetails(attrId,constituencyId){
-	   var urlstr = "categorySubWiseVoterDetailsAction.action?id="+attrId+"&retrieveType="+maintype+"&locationId="+mainreqid+"&constituencyId="+constituencyId+"&publicationId="+mainpublicationId+"&task=getCategoryWiseSubDetails";
+		var str ='';
+	 
+	   $('.categorycheckbox').each(function() {
+	        if($(this).is(':checked')){
+		       str = str+","+$(this).val();
+            }
+        });
+		
+		str = str.slice(1);
+
+	   var urlstr = "categorySubWiseVoterDetailsAction.action?id="+attrId+"&retrieveType="+maintype+"&locationId="+mainreqid+"&constituencyId="+constituencyId+"&publicationId="+mainpublicationId+"&task=getCategoryWiseSubDetails&attributeIds=["+str+"]&";
+
+
 
      var browser1 = window.open(urlstr,"categorySubWiseVoterDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();

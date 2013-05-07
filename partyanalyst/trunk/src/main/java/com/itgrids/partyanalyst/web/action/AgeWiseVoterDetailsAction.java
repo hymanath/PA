@@ -74,7 +74,7 @@ ServletRequestAware ,ServletContextAware{
 	private IUserVoterService userVoterService;
 	
 	private List<SelectOptionVO> resultList;
-	
+	private String attributeIds;
 	
 	
 	
@@ -380,6 +380,12 @@ ServletRequestAware ,ServletContextAware{
 	}
 	public void setPublicationDate(String publicationDate) {
 		this.publicationDate = publicationDate;
+	}
+	public String getAttributeIds() {
+		return attributeIds;
+	}
+	public void setAttributeIds(String attributeIds) {
+		this.attributeIds = attributeIds;
 	}
 	public String execute()
 	{
