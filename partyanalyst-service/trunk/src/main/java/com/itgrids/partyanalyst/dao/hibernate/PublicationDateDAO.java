@@ -46,4 +46,10 @@ public class PublicationDateDAO extends
 		
 		return (Long) query.uniqueResult();
 	}
+	public Long getLatestPublicationIdByConstiId(Long constituencyId){
+       Query query = getSession().createQuery("select model.publicationDateId from PublicationDate model where model.date = (select max(model1.booth.publicationDate.date) from BoothPublicationVoter model1 where model1.booth.constituency.constituencyId = :constituencyId )");
+       query.setParameter("constituencyId", constituencyId);
+		return (Long) query.uniqueResult();
+		
+	}
 }

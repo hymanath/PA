@@ -42,4 +42,10 @@ public interface IVoterReportService {
 	public List<VoterCastInfoVO> getVoterAttributeDetails(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
 	
 	public List<VoterCastInfoVO> getVoterAttributeSubDetails(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
+	
+	public List<SelectOptionVO> getPanchayatsByTehsilId(Long tehsilId);
+	
+	public List<SelectOptionVO> getBoothsByPanchayatIDConstiId(Long panchayatId,Long constituencyId);
+	
+	public Long getLatestPublicationIdByConstiId(Long constituencyId);
 }
