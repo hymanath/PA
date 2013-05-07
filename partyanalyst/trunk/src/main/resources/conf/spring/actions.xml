@@ -1143,6 +1143,11 @@
 	</bean>
 	
 	<bean id="allVotersInAcasteAction" class="com.itgrids.partyanalyst.web.action.AllVotersInAcasteAction" singleton="false">	
+	</bean>	
+	
+	<bean id="casteAndElectionResultsComparisonAction" class="com.itgrids.partyanalyst.web.action.CasteAndElectionResultsComparisonAction" singleton="false">	
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
 	</bean>
 	
 	<bean id="assignSubUserAction" class="com.itgrids.partyanalyst.web.action.AssignSubUserAction" singleton="false">

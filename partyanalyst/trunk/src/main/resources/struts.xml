@@ -5065,6 +5065,20 @@
 		   <param name="root">resultStatus</param>
 		 </result>
 		</action>
+					
+		<action name="casteAndElectionResultsComparisonAction" class="casteAndElectionResultsComparisonAction" >
+			<result name="success">/jsp/casteAndElectionResultsComparison.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="getPanchayatAndBoothDetailsAction" class="votersAnalysisAction" method="getPanchayatAndBoothDetails">
+			<result type="json" name="success">
+				<param name="root">namesList</param>				
+			</result>
+			<result type="json" name="error">
+				<param name="root">"notLogged"</param>				
+			</result>		
+		</action>
 		
 		</package>
 </struts>      
