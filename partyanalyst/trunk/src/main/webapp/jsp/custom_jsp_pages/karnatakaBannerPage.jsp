@@ -1206,6 +1206,10 @@ var str='';
 setTimeout(getImportantCandidatesInfo, 120000);
 
 }
+function setImage(img)
+{
+  img.src = "pictures/profiles/member.jpg";
+}
 
 getElectionInfo();
 getDistrictWiseElectionResults();
