@@ -865,6 +865,234 @@ function getCadresResults(btnType)
 	
 }
 
+function getCadresResults1(btnType)
+{
+	var jsObj1=
+		{	extra				:"one",
+			reportLevel				: 2,
+			reportLocationValue		: "1",
+			socialStatus			: false,
+			socialStatusArray		: [],
+			cadreType				: "all",
+			cadreName				: "",
+			searchType				: "location",
+			gender					: "allGenders",
+			searchCriteria			: "all",
+			searchCriteriaArray		: [],
+			searchCriteriaValue		: "0",
+			performSearch			: "and",
+			txtAreaValue			: "",
+			includeCadreName		: "NO",
+			bloodGroupId			: "0",
+			taskType				: "search",
+			senderName				: "",
+			nameSearchTYpe			: "StartingWith", 
+			cadreRegTypeRadioValue	: "allCadres",	
+			task					: "cadreSearch"	
+		}
+	
+	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+
+	if(btnType == "search")
+	{
+		var search = "forTotalCount";
+		var url = "getCadreDetailsForSMSAjaxAction.action?"+rparam1+"&windowTask=Search&sort=total&startIndex=0&results=-5";
+		callAjaxForRegionSelect(jsObj1,url);
+		//alert(jsObj1.extra);
+		buildCadreSearchResultDataTable1(rparam1);
+		//var url = "getCadresDetailsAjaxAction.action?"+rparam;
+	}
+}
+
+function buildCadreSearchResultDataTable(rparam)
+{
+	var searchResult1 = document.getElementById("searchResult");
+	YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var id= oRecord.getData("cadreId");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='openRegistrationForm("+id+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
+		
+  };
+
+  YAHOO.widget.DataTable.deleteCadre = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var id= oRecord.getData("cadreId");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='deleteCadre("+id+",\"search\")'><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a>";
+		
+  };
+
+   YAHOO.widget.DataTable.viewDetails = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var fname = oData;
+	var id= oRecord.getData("cadreId");
+	var lname= oRecord.getData("lastName");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='getCadreInfo("+id+")'>"+fname+" "+lname+" </a>";
+  };
+
+  YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var name = oData;
+	var id= oRecord.getData("cadreId");
+	var mobile= oRecord.getData("mobile");
+	var firstName= oRecord.getData("firstName");
+	elLiner.innerHTML="<input type='checkbox' onClick='getCadreId(this)' name='cadreResult_check' value='"+id+"_"+mobile+"_"+firstName+"'>";
+				
+  };
+
+  YAHOO.widget.DataTable.image = function(elLiner, oRecord, oColumn, oData) 
+  {
+	elLiner.innerHTML ="<img height='85px' width='85px' src='images/cadre_images/"+oData+"'/>";
+  };
+  
+  var CadreSearchResultColumnDefs = [ 
+		    	            {key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
+							{key:"firstName", label: "Name",sortable: true, formatter:YAHOO.widget.DataTable.viewDetails} ,
+							{key:"image", label: "Image",formatter:YAHOO.widget.DataTable.image}, 
+		    	            {key:"mobile", label: "Mobile", sortable: true}, 
+		    	           	{key:"strCadreLevel", label: "Cadre Level", sortable: true},
+							{key:"email", label: "Address"},
+		    				{key:"memberType", label: "Cadre Type",sortable:true},
+							{key:"educationStr", label: "Education",sortable:true},
+		    				{key:"professionStr", label: "Occupation",sortable:true},
+							{key:"casteCategoryStr", label: "Caste Category",sortable:true},
+							{key:"edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit},
+							{key:"Delete", label: "Delete",formatter:YAHOO.widget.DataTable.deleteCadre}
+		    	        ]; 
+	var CadreSearchResultDataSource = new YAHOO.util.DataSource("getCadreDetailsForSMSAjaxAction.action?"+rparam+"&windowTask=Search&"); 
+	CadreSearchResultDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
+	
+	CadreSearchResultDataSource.responseSchema = { 
+            resultsList:"cadreInfo", 
+		fields: [
+				{key:"firstName"},
+				"lastName","image","mobile", "strCadreLevel","memberType",
+				"educationStr","professionStr","casteCategoryStr","cadreId","email","pincode"
+				],
+		metaFields: {
+			totalRecords: "totalSearchCount" // Access to value in the server response
+		}         
+        };
+
+
+    var myConfigs = {
+			        initialRequest: "sort=firstName&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+			        dynamicData: true, // Enables dynamic server-driven data
+			        sortedBy : {key:"firstName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+			        paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
+		};
+
+		var CadreSearchResultDataTable = new YAHOO.widget.DataTable(searchResult1, CadreSearchResultColumnDefs,CadreSearchResultDataSource, myConfigs);
+
+		CadreSearchResultDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) 
+		{		
+		        oPayload.totalRecords = oResponse.meta.totalRecords;
+		        return oPayload;
+		}
+		//function calling to build Result
+		return {
+			oDS: CadreSearchResultDataSource,
+			oDT: CadreSearchResultDataTable,
+    	};
+	}
+
+function buildCadreSearchResultDataTable1(rparam)
+{
+	var searchResult1 = window.opener.document.getElementById("searchResult");
+	YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var id= oRecord.getData("cadreId");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='openRegistrationForm("+id+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
+		
+  };
+
+  YAHOO.widget.DataTable.deleteCadre = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var id= oRecord.getData("cadreId");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='deleteCadre("+id+",\"search\")'><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a>";
+		
+  };
+
+   YAHOO.widget.DataTable.viewDetails = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var fname = oData;
+	var id= oRecord.getData("cadreId");
+	var lname= oRecord.getData("lastName");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='getCadreInfo("+id+")'>"+fname+" "+lname+" </a>";
+  };
+
+  YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var name = oData;
+	var id= oRecord.getData("cadreId");
+	var mobile= oRecord.getData("mobile");
+	var firstName= oRecord.getData("firstName");
+	elLiner.innerHTML="<input type='checkbox' onClick='getCadreId(this)' name='cadreResult_check' value='"+id+"_"+mobile+"_"+firstName+"'>";
+				
+  };
+
+  YAHOO.widget.DataTable.image = function(elLiner, oRecord, oColumn, oData) 
+  {
+	elLiner.innerHTML ="<img height='85px' width='85px' src='images/cadre_images/"+oData+"'/>";
+  };
+  
+  var CadreSearchResultColumnDefs = [ 
+		    	            {key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
+							{key:"firstName", label: "Name",sortable: true, formatter:YAHOO.widget.DataTable.viewDetails} ,
+							{key:"image", label: "Image",formatter:YAHOO.widget.DataTable.image}, 
+		    	            {key:"mobile", label: "Mobile", sortable: true}, 
+		    	           	{key:"strCadreLevel", label: "Cadre Level", sortable: true},
+							{key:"email", label: "Address"},
+		    				{key:"memberType", label: "Cadre Type",sortable:true},
+							{key:"educationStr", label: "Education",sortable:true},
+		    				{key:"professionStr", label: "Occupation",sortable:true},
+							{key:"casteCategoryStr", label: "Caste Category",sortable:true},
+							{key:"edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit},
+							{key:"Delete", label: "Delete",formatter:YAHOO.widget.DataTable.deleteCadre}
+		    	        ]; 
+	var CadreSearchResultDataSource = new YAHOO.util.DataSource("getCadreDetailsForSMSAjaxAction.action?"+rparam+"&windowTask=Search&"); 
+	CadreSearchResultDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
+	
+	CadreSearchResultDataSource.responseSchema = { 
+            resultsList:"cadreInfo", 
+		fields: [
+				{key:"firstName"},
+				"lastName","image","mobile", "strCadreLevel","memberType",
+				"educationStr","professionStr","casteCategoryStr","cadreId","email","pincode"
+				],
+		metaFields: {
+			totalRecords: "totalSearchCount" // Access to value in the server response
+		}         
+        };
+
+
+    var myConfigs = {
+			        initialRequest: "sort=firstName&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+			        dynamicData: true, // Enables dynamic server-driven data
+			        sortedBy : {key:"firstName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+			        paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
+		};
+
+		var CadreSearchResultDataTable = new YAHOO.widget.DataTable(searchResult1, CadreSearchResultColumnDefs,CadreSearchResultDataSource, myConfigs);
+
+		CadreSearchResultDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) 
+		{		
+		        oPayload.totalRecords = oResponse.meta.totalRecords;
+		        return oPayload;
+		}
+		//function calling to build Result
+		return {
+			oDS: CadreSearchResultDataSource,
+			oDT: CadreSearchResultDataTable,
+    	};
+	}
+
+
+
+
 function getVillagesComboBoxForAMandal(value,elmtId)
 {
 	var jsObj=
@@ -1384,8 +1612,7 @@ function callAjaxForRegionSelect(jsObj,url)
 							else if(jsObj.task == "cadreSearch" && jsObj.taskType == "search")
 							{
 								//showCadreSearchResults(jsObj,myResults);
-								showCadreSearchResults(myResults.totalSearchCount);
-
+								showCadreSearchResults(myResults.totalSearchCount,jsObj);
 							}
 							else if(jsObj.task == "cadreSearch" && jsObj.taskType == "sms")
 							{
@@ -1423,6 +1650,84 @@ function callAjaxForRegionSelect(jsObj,url)
 				   };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function showCadreSearchResults(searchCount,jsObj)
+ {
+	var totalSearchCount = searchCount;
+	//For refreshing the response in parent window
+	if(jsObj.extra=="one"){
+	var headElmt = window.opener.document.getElementById("searchResultsDiv_head");
+	var bodySearchElmt = window.opener.document.getElementById("searchResult");
+	var footerElmt =  window.opener.document.getElementById("searchResultsDiv_footer");
+	var resultsCountEl = window.opener.document.getElementById("resultsCount");
+	}else{
+	var headElmt = document.getElementById("searchResultsDiv_head");
+	var bodySearchElmt = document.getElementById("searchResult");
+	var footerElmt =  document.getElementById("searchResultsDiv_footer");
+	var resultsCountEl = document.getElementById("resultsCount");
+	}
+	/*if(!headElmt || !bodySearchElmt || !footerElmt)
+		return;*/
+	
+	bodySearchElmt.style.display = 'block';
+	resultsCountEl.innerHTML ='';
+	headElmt.innerHTML = 'Search Results';
+		
+	if(totalSearchCount == 0)
+	{
+		bodySearchElmt.innerHTML = '<div style="color:#C0566F;font-size:12px;">No Search results found.</div>';
+		footerElmt.style.display = 'none';
+		return;
+		
+	} 
+	else 
+	{
+	resultsCountEl.innerHTML = '<span>'+totalSearchCount+'</span> cadres found with this selection criteria';
+
+	var fStr = '';
+	fStr += '<span><input type="button" class="btnClass" onclick="selectCheckBox()" value="Select All"/></span>';
+	fStr += '<span><input type="button" class="btnClass" onclick="deSelectCheckBox()" value="DeSelect All"/></span>';
+	fStr += '<span><input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/></span><BR><BR><BR>';
+	fStr += '<span id="smsStatusTextSpan"></span>';
+	footerElmt.innerHTML = fStr;
+	footerElmt.style.display = '';
+	}
+	
+	if(isProblemAdding != null && isProblemAdding == true)
+	{
+		footerElmt.style.display = 'none';
+		if(jsObj.extra=="one"){
+		var cadreProbDivEle =  window.opener.document.getElementById("cadreProblemSelectDiv");
+		}else{
+		var cadreProbDivEle = document.getElementById("cadreProblemSelectDiv");
+		}
+		var cadreProbStr = '';
+		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setCadreIdToProblem()" value="Add Selected cadre"/><BR><BR></span>';
+		cadreProbDivEle.innerHTML = cadreProbStr;
+	}
+	if(isProblemAdding != null && isProblemAdding == false)
+	{
+		footerElmt.style.display = 'none';
+		if(jsObj.extra=="one"){
+		var cadreProbDivEle = window.opener.document.getElementById("cadreProblemSelectDiv");
+		}else{
+		var cadreProbDivEle = document.getElementById("cadreProblemSelectDiv");
+		}
+		var cadreProbStr = '';
+		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setOrganizers()" value="Add Organizers"/><BR><BR></span>';
+		cadreProbDivEle.innerHTML = cadreProbStr;
+	}
+	if(voterId !== ''){
+	   footerElmt.style.display = 'none';
+		if(jsObj.extra=="one"){
+		var cadreProbDivEle = window.opener.document.getElementById("cadreProblemSelectDiv");
+		}else{
+		var cadreProbDivEle = document.getElementById("cadreProblemSelectDiv");
+		}
+		var cadreProbStr = '';
+		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setCadreToVoter()" value="Add Selected cadre"/><BR><BR></span>';
+		cadreProbDivEle.innerHTML = cadreProbStr;
+	}
 }
 
 function displayRegionsSelect(val,regTask)
