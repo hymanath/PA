@@ -23,7 +23,7 @@
     padding-bottom: 0;}
 .subUserCls{padding-bottom: 25px;}
 .selectedDiv{text-align:center;}
-#errorMsgDiv {font-size:13px;margin-bottom: 5px;}
+#errorMsgDiv {font-size:13px;margin-bottom: 5px;color:red;}
 #PAUsersList{margin-left: 16px;}
 #parentUsersList{margin-left: 14px;}
 #mainAccountUsersList{margin-left: 4px;}
@@ -218,7 +218,7 @@ function removeSelectElements(selectedElmt)
 			return;
 		if((parentUserId == null || parentUserId == "0") && (mainAccountId == null || mainAccountId == "0"))
 		{
-		  $("#errorMsgDiv").html("Please Select Parent User Or Main Account.");
+		  $("#errorMsgDiv").html("Please Select Parent User Or Main Account.").css("color","red");
 		  return;
 		}
 		
