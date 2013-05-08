@@ -41,6 +41,7 @@ public class PartyResultVO {
 	private Long totalSeatsParticipated;
 	private Integer totalSeatsOwn;
 	private List<Long> boothIds;
+	private Long boothId;
 	
 	
 	private List<SelectOptionVO> votesRange;
@@ -48,6 +49,12 @@ public class PartyResultVO {
 	private String range;
 	private String chartName;
 		
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
 	public String getRange() {
 		return range;
 	}

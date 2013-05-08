@@ -7999,4 +7999,63 @@ public class StaticDataService implements IStaticDataService {
 		}
 	}
 	
+	public MandalVO getElectionYearsAndPartiesForConstituency(Long constituencyId)
+	{
+		MandalVO mandalVO = new MandalVO();
+		Set<SelectOptionVO> elections = new HashSet<SelectOptionVO>();
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		List list =null;
+		Long parliamentConstiId = 0l;
+		try{
+			parliamentConstiId	= getParliamentIdByAssembly(constituencyId);
+			
+			list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(constituencyId);
+			getAllElectionIds(list,elections);
+			list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(parliamentConstiId);
+			getAllElectionIds(list,elections);
+			List<Object[]> partiesList = candidateBoothResultDAO.getParticipatedPartiesInConstituency(constituencyId);
+			if(partiesList != null && partiesList.size() > 0)
+			{
+				for(Object[] params : partiesList)
+				parties.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			}
+			
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured in getElectionYearsAndPartiesForConstituency() method -"+e) ;
+		}
+		mandalVO.setPartiesInMandal(parties);
+		mandalVO.setElectionsInMandal(elections);
+		return mandalVO;
+	}
+	
+	
+	public void getAllElectionIds(List list,Set<SelectOptionVO> elections)
+	{
+		
+		if(list!=null && list.size() > 0)
+			for(Object[] params :(List<Object[]>)list)
+			{
+				elections.add(new SelectOptionVO((Long)params[0],params[1].toString()+" "+params[2].toString()));	
+			}	
+	}
+	public Long getParliamentIdByAssembly(Long constituencyId)
+	{
+		Long parliamentId =0l;
+		List<Long> list = new ArrayList<Long>();
+		try{
+		list =delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(constituencyId);
+			if(list != null && list.size() > 0)
+		parliamentId = list.get(0);
+		}
+		
+		catch(Exception e)
+		{
+			log.error("Exception Occured in getElectionYearsAndPartiesForConstituency() method -"+e) ;
+		}
+		return parliamentId;
+	}
+
+	
 }
