@@ -3099,5 +3099,19 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 		  return queryObj.list();
 	  }
+	  
+	  public List<Voter> getVoterDetailsForCustomWard(Long wardId, Long publicationDateId, Long userId,Long casteStateId)
+	  {
+		  Query query = getSession().createQuery("select BPV.voter from BoothPublicationVoter BPV , UserVoterDetails UVD where BPV.voter.voterId = UVD.voter.voterId and " +
+		  		"  BPV.booth.publicationDate.publicationDateId =:publicationDateId and UVD.user.userId =:userId and " +
+		  		" UVD.casteState.casteStateId =:casteStateId and UVD.ward.constituencyId =:wardId ");
+		  
+		  query.setParameter("wardId", wardId);
+		  query.setParameter("publicationDateId", publicationDateId);
+		  query.setParameter("userId", userId);
+		  query.setParameter("casteStateId", casteStateId);
+		  
+		  return query.list();
+	  }
 	
 }
