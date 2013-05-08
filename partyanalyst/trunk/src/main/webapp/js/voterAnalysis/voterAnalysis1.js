@@ -8989,6 +8989,10 @@ var urlstr = "voterFamilyInfoAction.action?type=booth&id="+selectedId+"&publicat
 		
 			publicationDateId = $("#publicationDateList").val();
 			constituencyId = $("#constituencyList").val();
+
+			if(maintype == 'customWard')
+				buildType = "customWardBooths";
+
 			var reqBrowser = window.open("ageWiseVoterDetailsActionForCast.action?&importanceId="+publicationYear+"&type="+maintype+"&id="+mainreqid+"&typeName="+mainname+"&publicationDateId="+publicationDateId+"&constituencyId="+constituencyId+"&buildType="+buildType+"&queryType='sub' ","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 			reqBrowser.focus();
 	}
