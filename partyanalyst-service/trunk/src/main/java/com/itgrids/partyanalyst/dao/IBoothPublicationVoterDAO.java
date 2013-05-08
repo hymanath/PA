@@ -329,4 +329,6 @@ public interface IBoothPublicationVoterDAO extends
   
   public List<Voter> getVoterDetailsForCustomWard(Long wardId, Long publicationDateId, Long userId,Long casteStateId);
   
+  public List<Voter> getVoterDetailsForCustomWardBooths(Long customWardId,Long boothId,Long userId,Long publicationDateId,Long casteStateId);
+  
 }

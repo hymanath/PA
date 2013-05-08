@@ -961,6 +961,7 @@ public class VoterReportService implements IVoterReportService{
 								voterCastInfoVO1.setTotalVoters(voterInfoDAO.getVotersCountInALocation(reportLvlId,voterCastInfo.getReportLevelValue(),publicationDateId,constituencyId));
 								voterCastInfoVO.setVoterCastInfoVO(voterCastInfoVO1);
 								voterCastInfoVO.setMandalName(mandalIds.get(voterCastInfo.getReportLevelValue()));
+								voterCastInfoVO.setLocationId(voterCastInfo.getReportLevelValue());
 								mandalMap.put(voterCastInfo.getReportLevelValue(), voterCastInfoVO);
 							}else{
 								voterCastInfoVO1 = voterCastInfoVO.getVoterCastInfoVO();

@@ -2605,10 +2605,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		{
 		 list = userVoterDetailsDAO.getVoterIdsForuserinHamletByBoothsandByCasteId(userId,hamletId,casteStateId,id.longValue(),publicationDateId.longValue());
 		}else
-		if(type.equalsIgnoreCase("booth"))
+		if(type.equalsIgnoreCase("booth") && !buildType.equalsIgnoreCase("customWardBooths"))
 		{
 		 list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId);
-		}else if(type.equalsIgnoreCase("hamletLocality") || type.equalsIgnoreCase("wardLocality"))
+		}
+		else if(type.equalsIgnoreCase("booth") && buildType.equalsIgnoreCase("customWardBooths"))
+			list = boothPublicationVoterDAO.getVoterDetailsForCustomWardBooths(hamletId, id, userId, publicationDateId, casteStateId);
+		
+		else if(type.equalsIgnoreCase("hamletLocality") || type.equalsIgnoreCase("wardLocality"))
 		{
 			if(type.equalsIgnoreCase("hamletLocality"))
 				queryStr = " model.hamlet.hamletId = :id ";

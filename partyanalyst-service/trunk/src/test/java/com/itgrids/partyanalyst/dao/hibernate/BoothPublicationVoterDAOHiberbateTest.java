@@ -536,9 +536,16 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 				System.out.println(params[0]+" "+params[1]);
 	}*/
 	
-	public void testGetVoterDetailsForCustomWard()
+	/*public void testGetVoterDetailsForCustomWard()
 	{
 		List<Voter> votersList = boothPublicationVoterDAO.getVoterDetailsForCustomWard(28858l, 8l, 1l, 285l);
+		System.out.println(votersList.size());
+		
+	}*/
+	
+	public void testGetVoterDetailsForCustomWardBooths()
+	{
+		List<Voter> votersList = boothPublicationVoterDAO.getVoterDetailsForCustomWardBooths(28858l, 122829l, 1l, 8l, 296l);
 		System.out.println(votersList.size());
 		
 	}

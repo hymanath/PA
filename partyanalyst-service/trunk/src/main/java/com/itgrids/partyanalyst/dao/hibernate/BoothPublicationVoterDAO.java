@@ -3102,7 +3102,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	  
 	  public List<Voter> getVoterDetailsForCustomWard(Long wardId, Long publicationDateId, Long userId,Long casteStateId)
 	  {
-		  Query query = getSession().createQuery("select BPV.voter from BoothPublicationVoter BPV , UserVoterDetails UVD where BPV.voter.voterId = UVD.voter.voterId and " +
+		  Query query = getSession().createQuery("select distinct BPV.voter from BoothPublicationVoter BPV , UserVoterDetails UVD where BPV.voter.voterId = UVD.voter.voterId and " +
 		  		"  BPV.booth.publicationDate.publicationDateId =:publicationDateId and UVD.user.userId =:userId and " +
 		  		" UVD.casteState.casteStateId =:casteStateId and UVD.ward.constituencyId =:wardId ");
 		  
@@ -3112,6 +3112,21 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		  query.setParameter("casteStateId", casteStateId);
 		  
 		  return query.list();
+	  }
+	  
+	  public List<Voter> getVoterDetailsForCustomWardBooths(Long customWardId,Long boothId,Long userId,Long publicationDateId,Long casteStateId)
+	  {
+		  Query queryObj = getSession().createQuery("select distinct BPV.voter from BoothPublicationVoter BPV, UserVoterDetails UVD where BPV.voter.voterId = UVD.voter.voterId and " +
+		  		" BPV.booth.publicationDate.publicationDateId =:publicationDateId and UVD.user.userId =:userId and UVD.casteState.casteStateId =:casteStateId and UVD.ward.constituencyId =:wardId " +
+		  		" and BPV.booth.boothId =:boothId ");
+		  
+		  queryObj.setParameter("casteStateId",casteStateId);
+		  queryObj.setParameter("boothId", boothId);
+		  queryObj.setParameter("userId", userId);
+		  queryObj.setParameter("publicationDateId", publicationDateId);
+		  queryObj.setParameter("wardId", customWardId);
+		  
+		  return queryObj.list();
 	  }
 	
 }
