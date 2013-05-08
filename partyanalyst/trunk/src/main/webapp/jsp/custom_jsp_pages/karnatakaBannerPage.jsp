@@ -1134,7 +1134,7 @@ function buildGujaratElectionResult(myResults)
 		data.setValue(j,1,myResults.electionLiveResultVOList[j].wonOrLeadCount);
 	}
 	var chart = new google.visualization.PieChart(document.getElementById('GujaratResultGraph')); 
-	chart.draw(data,{width:400, height: 250, title:'Meghalaya Vidhan Sabha Election 2013 Lead/Won Chart'});
+	chart.draw(data,{width:400, height: 250, title:'Karnataka Assembly Election 2013 Lead/Won Chart'});
 	}
 }
 
