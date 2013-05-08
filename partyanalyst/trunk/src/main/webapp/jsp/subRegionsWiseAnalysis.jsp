@@ -556,6 +556,10 @@ $("#panchayats").live("change",function(){
   </div>
   <div align="center">
     <div id="container"></div>
+	<div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;" id="show_hide_votes">
+		<span class="label label-info" style="padding:5px;margin:5px;">Show All <input type="radio" name="show_hide_votes" value="show" checked="checked"></span>
+		<span class="label label-info" style="padding:5px;margin:5px;">Hide All <input type="radio" name="show_hide_votes" value="hide"></span>
+	</div>
   </div>
 </div>
 <div style="border:1px solid;">
@@ -912,8 +916,8 @@ function callAjax(jsObj,url)
 	     $("#mandalElecResultsElections").html(str);
 		 if(type == "mandal")
 		 {
-		 $("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getPanchayatData()">');
-		 $("#mandalElecResultsButton1").html('<input type="radio" name="votes"  class="btn" value="percentage" id="votingPercentageID" checked="true" onclick="getPanchayatData()"/> Voting Percentage&nbsp;<input type="radio" name="votes"  class="btn" value="validvotes" id="votingValuesID" onclick="getPanchayatData()"/>Valid Votes');
+		 //$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getPanchayatData()">');
+		// $("#mandalElecResultsButton1").html('<input type="radio" name="votes"  class="btn" value="percentage" id="votingPercentageID" checked="true" onclick="getPanchayatData()"/> Voting Percentage&nbsp;<input type="radio" name="votes"  class="btn" value="validvotes" id="votingValuesID" onclick="getPanchayatData()"/>Valid Votes');
 		  getPanchayatData();
 		 }
 		 if(type == "panchayat")
@@ -921,6 +925,9 @@ function callAjax(jsObj,url)
 
 		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForBooths()">');
 		 $("#mandalElecResultsButton1").html('<input type="radio" name="boothvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForBooths()"/> Voting Percentage&nbsp;<input type="radio"  name="boothvotes" class="btn" value="validvotes" id="boothvotingValuesID" onclick="getResultsForBooths()"/>Valid Votes');
+		 
+		 $('#show_hide_votes').hide();
+		 
 		  getResultsForBooths();
 
 		 
@@ -980,6 +987,9 @@ function callAjax(jsObj,url)
 
 	var linechartDataArr = new Array();
 	var results = new Array();
+	var data_perc=[];
+	var data_vv=[];
+	
 	var data = new Array();
 	 if(myResults[0].length == 0 || myResults[1].length == 0) {
              $("#container").html("<b>Data Not Available</b>");
@@ -991,83 +1001,136 @@ function callAjax(jsObj,url)
 				linechartDataArr.push(myResults[0][i].constituencyName);
 					
 		}
-			if(jsObj.btnName == "percentage")
+		
+		//if(jsObj.btnName == "percentage")
 		 results = myResults[1];
-		if(jsObj.btnName == "validvotes")
-	   results = myResults[2];
+		//if(jsObj.btnName == "validvotes")
+	     results1 = myResults[2];
 	
-	
-         for(var i in results){	
+
+        for(var i in results){	
            var obj = {};
+		   var tooltipobj={valueSuffix: '%'};
+		   
+		   
            var obj1 = new Array();		   
-           obj["name"] = i;	
+           obj["name"] = i +' Percentage';	
 		   for(var j in results[i]){
 		     obj1.push(parseFloat(results[i][j]));
 		   }
+		    obj['type']='spline';
+			//obj['color']='#AA4643';
+			obj['yAxis']=1;
+			obj['tooltip']=tooltipobj;
            	obj["data"] = obj1;	 
-            data.push(obj);			
+            data_perc.push(obj);			
 	    }
 		
+
+		for(var i in results1){	
+           var obj = {};
+           var obj1 = new Array();		   
+           obj["name"] = i +' Voter';	
+		   for(var j in results1[i]){
+		     obj1.push(parseFloat(results1[i][j]));
+		   }
+			obj['type']='spline';
+			//obj['color']='#89A544';
+           	obj["data"] = obj1;	 
+            data_vv.push(obj);			
+	    }
 		
-        chart = new Highcharts.Chart({
+		for(var i=0;i<data_perc.length;i++){
+			var ob=data_perc[i];
+			var ob1=data_vv[i];
+			
+			data.push(ob1);
+			data.push(ob);
+			
+		}
+		
+		$('#container').highcharts({
             chart: {
-                renderTo: 'container',
                 type: 'line',
-               /* marginRight: 130,
-                marginBottom: 25 */
+                marginRight: 130,
+                marginBottom:180 ,
+				height:500,
+				zoomType: 'xy'
             },
 			
-            title: {
-                text: 'Panchayat Wise Voting Percentages in  ${typeName}',
-                x: -20 //center
+			title: {
+                text: 'Percentage and Votes Analysis'
             },
-			
-			 
-            xAxis: {
-                categories: linechartDataArr,
-				
-				 labels: {
-                    rotation: -45,
-                    align: 'right',
+            
+            xAxis: [{
+                categories:linechartDataArr,
+				labels: {
+                                align:'right',
+                                style: {
+                                      cursor: 'pointer',
+                                      fontSize: '12px',
+                                },
+                                rotation: -45,
+                            } 
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    formatter: function() {
+                        return this.value +'';
+                    },
                     style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
+                        color: '#89A54E'
                     }
-                }
-            },
-            yAxis: {
-                title: {
-                    text: 'Votes Percent( % )'
                 },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                formatter: function() {
-						if(jsObj.btnName == "percentage")
-                        return '<b>'+ this.series.name +'</b><br/>'+
-                        this.x +': '+ this.y +'%';
-						else
-						return '<b>'+ this.series.name +'</b><br/>'+
-                        this.x +': '+ this.y +' Valid Votes';
-                }
-            },
+                title: {
+                    text: 'Votes',
+                    style: {
+                        color: '#89A54E'
+                    }
+                },
+                opposite: true
+    
+            }, { // Secondary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Percentage',
+                    style: {
+                        color: '#AA4643'
+                    }
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value +'%';
+                    },
+                    style: {
+                        color: '#AA4643'
+                    }
+                },
+                opposite: true
+            }],
 			
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'top',
-                x: -10,
-                y: 100,
-                borderWidth: 0
+			colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
+			
+            tooltip: {
+                shared: true
             },
-            series: data
+            series:data
+			
+			
         });
 		
-		$('tspan:last').hide();
+		var chart = $('#container').highcharts();
+		var series = chart.series;
+		$('input[name="show_hide_votes"]').click(function(){
+			if(this.value === "show")
+				$.each(series, function(index, series1) {
+                    series1.show();
+                });
+			else if (this.value === "hide")
+				$.each(series, function(index, series1) {
+                   series1.hide();
+                });
+		});
     }
   
   function buildLineChartForBooth(myResults,jsObj){
