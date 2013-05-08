@@ -179,4 +179,10 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 		
 	public List<Long> checkForElectionDetails(Long constituencyId,List<Long> localElectionId);
 	
+	public List getAllElectionsInConstituency(Long constituencyId);
+	
+	public List<Object[]> getAllElectionsInConstituency1(Long constituencyId);
+	
+	
+	
 }

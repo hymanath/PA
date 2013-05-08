@@ -29,6 +29,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -105,6 +106,7 @@ import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.VillageBoothElection;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.CandidatePartyInfoVOComparator;
 import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparator;
@@ -154,8 +156,28 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IPanchayatDAO panchayatDAO;
 	private IHamletBoothElectionDAO hamletBoothElectionDAO;
 	private IPartyDAO partyDAO;
+	private IRegionServiceData regionServiceDataImp;
 	
+	private IAllianceGroupDAO allianceGroupDAO;
 		
+	
+	
+	public IAllianceGroupDAO getAllianceGroupDAO() {
+		return allianceGroupDAO;
+	}
+
+	public void setAllianceGroupDAO(IAllianceGroupDAO allianceGroupDAO) {
+		this.allianceGroupDAO = allianceGroupDAO;
+	}
+
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
 	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
 		return hamletBoothElectionDAO;
 	}
@@ -1937,6 +1959,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			constituencyVOs.add(new SelectOptionVO(constituency.getConstituencyId(), constituency.getName().toUpperCase()));
 		return constituencyVOs;
 	}
+	
+	
 	
 	/** 
 	 * This method returns a VO containing all the information regarding the
@@ -5234,6 +5258,206 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	
 	
 	
+	public List<PartyResultVO> getMandalwiseEleInfoOfConstituency(Long constituencyId,String parties,String elections,Boolean includealliance)
 	
+	{
+		
+		if(includealliance)
+		{
+			return getMandalwiseEleInfoOfConstituencywithAlliance(constituencyId,parties,elections);
+		}
+		String[] partiesarr =parties.split(",");
+		String[] electionsArr = elections.split(",");
+		List<Long> electionIds = new ArrayList<Long>();
+		List<Long> partyIds = new ArrayList<Long>();
+		List<PartyResultVO> result = new ArrayList<PartyResultVO>();
+		List<Object[]>  list = null;
+		List<Object[]> count = null;
+		PartyResultVO partyResultVO = null;
+		PartyResultVO partyVO = null;
+		
+	try{
+		
+		for(String party : partiesarr)
+			partyIds.add(new Long(party));
+		for(String election : electionsArr)
+			electionIds.add(new Long(election));
+		
+			Constituency constituency = constituencyDAO.get(new Long(constituencyId));
+			
+			 count= candidateBoothResultDAO.getMandalValidvotes(constituencyId,electionIds);
+			list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituency(constituencyId,electionIds,partyIds);
+			getsublevelsForConstituency(list,"mandal",result,count);
+			
+			
+			if(!IConstants.CONST_TYPE_URBAN.equalsIgnoreCase(constituency.getAreaType()))
+			{
+				count= candidateBoothResultDAO.getLocalbodyValidvotes(constituencyId,electionIds);
+			 list = candidateBoothResultDAO.getLocalbodyResultsForElectionAndConstituency(constituencyId,electionIds,partyIds);
+			
+			getsublevelsForConstituency(list,"localbody",result,count);
+			}
+			else
+			{
+				count= candidateBoothResultDAO.getlocalbodywardValidvotes(constituencyId,electionIds);
+			 list = candidateBoothResultDAO.getlocalbodywardResults(constituencyId,electionIds,partyIds);
+			
+			getsublevelsForConstituency(list,"greter",result,count);
+			
+			}
+		}
+	catch(Exception e)
+	{
+		log.error("Exception Occured in getMandalwiseEleInfoOfConstituency() method - "+e);
+	}
+	Collections.sort(result,sortData);
+	return result;
 	
 }
+	public List<PartyResultVO> getMandalwiseEleInfoOfConstituencywithAlliance(Long constituencyId,String parties,String elections)
+	{
+		List<PartyResultVO> result = new ArrayList<PartyResultVO>();
+		List<Long> partyIds = new ArrayList<Long>();
+		String[] electionIds = elections.split(",");
+		String[] partyArray = parties.split(",");
+		List<Object[]>  list = null;
+		List<Long> electionIdsList = new ArrayList<Long>();
+		List<Object[]> count = null;
+		try{
+		for(String party : partyArray){
+			partyIds.add(new Long(party.trim()));
+		}
+		for(String electionId:electionIds){
+			electionIdsList.add(new Long(electionId.trim()));
+			String electionType = "";
+			String electionYear = "";
+			Election election = electionDAO.get(new Long(electionId.trim()));
+			electionType = election.getElectionScope().getElectionType().getElectionType();
+			electionYear = election.getElectionYear();
+			Set<Long> alreadyAddedIds = new HashSet<Long>();
+			Map<String,List<Long>> allianceParties = new HashMap<String,List<Long>>();
+			for(Long id : partyIds){
+			  if(!alreadyAddedIds.contains(id)){
+				  AlliancePartyResultsVO allianceGroup = staticDataService.getAlliancePartiesByElectionAndParty(new Long(electionId.trim()), id);
+				  List<Long> partyIdsList = new ArrayList<Long>();
+				  if(allianceGroup == null){
+					  alreadyAddedIds.add(id);
+					  partyIdsList.add(id);
+					  allianceParties.put(partyDAO.get(id).getShortName()+" IN "+electionType+" "+electionYear, partyIdsList);
+				  }else{
+					  for(SelectOptionVO party:allianceGroup.getAllianceParties()){
+						  alreadyAddedIds.add(party.getId());
+						  partyIdsList.add(party.getId());
+					  }
+					  allianceParties.put(allianceGroup.getAllianceGroupName()+" IN "+electionType+" "+electionYear, partyIdsList);
+				  }
+			  }
+			}
+			
+				Constituency constituency = constituencyDAO.get(new Long(constituencyId));
+				 for(String alliance : allianceParties.keySet()){
+					 
+				count= candidateBoothResultDAO.getMandalValidvotes(constituencyId,electionIdsList);
+				list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituencywithAlliance(constituencyId,new Long(electionId.trim()),allianceParties.get(alliance));
+				getsublevelsForConstituencywithalliance(list,"mandal",result,alliance,count);
+			
+				if(!IConstants.CONST_TYPE_URBAN.equalsIgnoreCase(constituency.getAreaType()))
+				{
+				count= candidateBoothResultDAO.getLocalbodyValidvotes(constituencyId,electionIdsList);
+				 list = candidateBoothResultDAO.getLocalbodyResultsForElectionAndConstituencywithAlliance(constituencyId,new Long(electionId.trim()),allianceParties.get(alliance));
+				 getsublevelsForConstituencywithalliance(list,"localbody",result,alliance,count);
+				}
+				else
+				{
+				count= candidateBoothResultDAO.getlocalbodywardValidvotes(constituencyId,electionIdsList);
+				 list = candidateBoothResultDAO.getlocalbodywardResultswithAlliance(constituencyId,new Long(electionId.trim()),allianceParties.get(alliance));
+				 getsublevelsForConstituencywithalliance(list,"greter",result,alliance,count);
+				}
+			}
+		
+	}
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+		Collections.sort(result,sortData);
+	return result;
+		   	
+}
+		
+	public void getsublevelsForConstituency(List<Object[]> list ,String type,List<PartyResultVO> result,List<Object[]> count)
+	{
+		
+		Map<Long,Long> totalVotesForAMandal = new HashMap<Long,Long>(0);
+		PartyResultVO partyResultVO = null;
+		 
+		for(Object[] params : count)
+		{
+			Long val = totalVotesForAMandal.get(params[0]);
+		if(val != null)
+			val = (Long)params[2];
+		else
+			val = (Long)params[2];
+		totalVotesForAMandal.put((Long)params[0],val);
+		}
+		if(list != null && list.size() > 0)
+		{
+			Long totalVotes =0l;
+			
+			
+			for(Object[] params : list)
+			{
+			partyResultVO =new PartyResultVO();
+			Long val = totalVotesForAMandal.get(params[0]);
+				if(type.equalsIgnoreCase("mandal"))
+				partyResultVO.setConstituencyName(params[1].toString());
+				else if(type.equalsIgnoreCase("localbody"))
+					partyResultVO.setConstituencyName(params[1].toString() + "Muncipality");
+				else
+					partyResultVO.setConstituencyName("GHMC "+params[1].toString());
+				partyResultVO.setConstituencyId((Long)params[0]);
+				partyResultVO.setPartyName(params[2].toString()+" IN "+params[4].toString()+" "+params[5].toString());
+				partyResultVO.setValidVotes((Long)params[3]);
+				partyResultVO.setVotesPercent(new BigDecimal((Long)params[3]*100.0/val).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				result.add(partyResultVO);
+		}
+		
+	}
+		
+ }
+	
+	public void getsublevelsForConstituencywithalliance(List<Object[]> list ,String type,List<PartyResultVO> result,String partyname,List<Object[]> count)
+	{
+		PartyResultVO partyResultVO = null;
+		Map<Long,Long> totalVotesForAMandal = new HashMap<Long,Long>(0);
+		
+		for(Object[] params : count)
+		{
+			Long val = totalVotesForAMandal.get(params[0]);
+		if(val != null)
+			val = (Long)params[2];
+		else
+			val = (Long)params[2];
+		totalVotesForAMandal.put((Long)params[0],val);
+		}
+		for(Object[] params : list)
+		{
+			
+		partyResultVO =new PartyResultVO();
+		Long val = totalVotesForAMandal.get(params[0]);
+			if(type.equalsIgnoreCase("mandal"))
+			partyResultVO.setConstituencyName(params[1].toString());
+			else if(type.equalsIgnoreCase("localbody"))
+				partyResultVO.setConstituencyName(params[1].toString() + "Muncipality");
+			else
+				partyResultVO.setConstituencyName("GHMC "+params[1].toString());
+			partyResultVO.setConstituencyId((Long)params[0]);
+			partyResultVO.setPartyName(partyname);
+			partyResultVO.setValidVotes((Long)params[2]);
+			partyResultVO.setVotesPercent(new BigDecimal((Long)params[2]*100.0/val).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			result.add(partyResultVO);
+	}
+	}
+}
+

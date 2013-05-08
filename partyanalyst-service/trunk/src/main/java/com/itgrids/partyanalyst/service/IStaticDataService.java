@@ -353,4 +353,8 @@ public interface IStaticDataService {
 		public MandalVO findListOfElectionsAndPartiesInPanchayat(Long panchayatId);
 		
 		public List<SelectOptionVO> getLatestConstituenciesByStateIdAndType(Long stateId,String locationType);
+		
+		public MandalVO getElectionYearsAndPartiesForConstituency(Long constituencyId);
+		
+		public Long getParliamentIdByAssembly(Long constituencyId);
 }
