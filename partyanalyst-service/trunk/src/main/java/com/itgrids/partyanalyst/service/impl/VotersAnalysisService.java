@@ -2625,6 +2625,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 
 		    list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
 			}
+		
+		else if(type.equalsIgnoreCase("ward") && buildType.equalsIgnoreCase("muncipalityCustomWard"))
+		  	list = boothPublicationVoterDAO.getVoterDetailsForCustomWard(id, publicationDateId, userId, casteStateId);
 		else
 		{
 			
