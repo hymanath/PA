@@ -429,9 +429,9 @@ var counter = 0;
 var tehsilId = '${mandalId}';
 
 $(document).ready(function(){
-  if(type == "mandal"){
+ if(type == "mandal"){
        $("#mandalElecResultsDiv").show();
-	   $("#votingTrendzDiv").hide();
+	   //$("#votingTrendzDiv").hide();
        var jsObj=
 			{
 				
@@ -443,15 +443,16 @@ $(document).ready(function(){
    
 		callAjax(jsObj,url);
   }
-  else if(type == "panchayat")
+ if(type == "panchayat")
   {
    $("#mandalElecResultsDiv").show();
-    $("#votingTrendzDiv").hide();
+   // $("#votingTrendzDiv").hide();
   getBoothPArtiesAndElections();
   }
-  else if(type == "constituency"){
-  $("#votingTrendzDiv").show();
-    getConstituencyElections();
+ else if(type == "constituency"){
+ //$("#votingTrendzDiv").show();
+   // getConstituencyElections();
+   getConstituencyEleAndParties();
   }
 
 });
@@ -516,7 +517,7 @@ $("#panchayats").live("change",function(){
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>	
 	</div>
 </div>
-<div id="votingTrendzDiv" class="widget blue">
+<!--<div id="votingTrendzDiv" class="widget blue">
 	 <div class="clear"></div>
 	
 	<div id="detailedChartDIV" class="yui-skin-sam"></div>
@@ -544,7 +545,7 @@ $("#panchayats").live("change",function(){
 			</div>
 			</div>
 			
-			</div>
+			</div>-->
 <div class="widget blue" id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
    <!--<h4 id="sublevelHeading">Caste Wise Voters Analysis</h4>-->
   <div class="hero-unit" >
@@ -805,9 +806,11 @@ function callAjax(jsObj,url)
 									if(jsObj.task == "votersbasicinfo")
 									{
 										buildVotersBasicInfo(myResults,jsObj);
-									}else if(jsObj.task == "getElectionsAndParties" || jsObj.task == "getPanchayatElectionsAndParties"){
+									}else if(jsObj.task == "getElectionsAndParties" || jsObj.task == "getPanchayatElectionsAndParties" || jsObj.task == "getConstiEleAndParties"){
 									  buildElectionsAndParty(myResults);
-									}else if(jsObj.task == "getResults"){
+									}
+									
+									else if(jsObj.task == "getResults"){
 									  buildLineChart(myResults,jsObj);
 									 
 									}
@@ -815,6 +818,11 @@ function callAjax(jsObj,url)
 									{
 									buildLineChartForBooth(myResults,jsObj);
 									}
+									else if(jsObj.task == "getResultsForConstituency")
+									{
+									buildLineChartForConstituency(myResults,jsObj);
+									}
+									
 								else if(jsObj.task == "getCensusInfo")
 								{
 								  showSubLevelWiseCensusReport(myResults,jsObj);
@@ -912,23 +920,31 @@ function callAjax(jsObj,url)
 			  str+='<input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label>';
 		   }
 		 }
-		 str+='</td></tr></table>';
+		 str+='</td></tr>';
+		
+		 str+='</table>';
 	     $("#mandalElecResultsElections").html(str);
 		 if(type == "mandal")
 		 {
-		 //$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getPanchayatData()">');
-		// $("#mandalElecResultsButton1").html('<input type="radio" name="votes"  class="btn" value="percentage" id="votingPercentageID" checked="true" onclick="getPanchayatData()"/> Voting Percentage&nbsp;<input type="radio" name="votes"  class="btn" value="validvotes" id="votingValuesID" onclick="getPanchayatData()"/>Valid Votes');
+		 $("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getPanchayatData()">');
+		 $("#mandalElecResultsButton1").html('<input type="radio" name="votes"  class="btn" value="percentage" id="votingPercentageID" checked="true" onclick="getPanchayatData()"/> Voting Percentage&nbsp;<input type="radio" name="votes"  class="btn" value="validvotes" id="votingValuesID" onclick="getPanchayatData()"/>Valid Votes');
 		  getPanchayatData();
 		 }
 		 if(type == "panchayat")
 		 {
 
 		//$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForBooths()">');
-		//$("#mandalElecResultsButton1").html('<input type="radio" name="boothvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForBooths()"/> Voting Percentage&nbsp;<input type="radio"  name="boothvotes" class="btn" value="validvotes" id="boothvotingValuesID" onclick="getResultsForBooths()"/>Valid Votes');
-		 
-		 getResultsForBooths();
+		 //$("#mandalElecResultsButton1").html('<input type="radio" name="boothvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForBooths()"/> Voting Percentage&nbsp;<input type="radio"  name="boothvotes" class="btn" value="validvotes" id="boothvotingValuesID" onclick="getResultsForBooths()"/>Valid Votes');
+		  getResultsForBooths();
 
 		 
+		}
+		
+		if(type =="constituency")
+		{
+		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForConstituency()">');
+		 $("#mandalElecResultsButton1").html('<input type="radio" name="constituencyvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForConstituency()"/> Voting Percentage&nbsp;<input type="radio"  name="constituencyvotes" class="btn" value="validvotes" id="constivotingValuesID" onclick="getResultsForConstituency()"/>Valid Votes');
+		  getResultsForConstituency();
 		}
 	  }
   }
@@ -1281,7 +1297,100 @@ function callAjax(jsObj,url)
                 });
 		});
     }
-  
+ function buildLineChartForConstituency(myResults,jsObj){
+	var linechartDataArr = new Array();
+	var data = new Array();
+	var title ;
+	
+	
+	  if(myResults[0].length == 0 || myResults[1].length == 0) {
+             $("#container").html("<b>Data Not Available</b>");
+             return;
+       }
+	   
+	    for(var i in myResults[0]){
+	      if(linechartDataArr.indexOf(myResults[0][i].constituencyName) == -1)
+				linechartDataArr.push(myResults[0][i].constituencyName);
+					
+		}	
+		
+	   if(jsObj.btnName == "percentage")
+		 results = myResults[1];
+		if(jsObj.btnName == "validvotes")
+	   results = myResults[2];
+	
+	
+         for(var i in results){	
+           var obj = {};
+           var obj1 = new Array();		   
+           obj["name"] = i;	
+		   for(var j in results[i]){
+		     obj1.push(parseFloat(results[i][j]));
+		   }
+           	obj["data"] = obj1;	 
+            data.push(obj);			
+	    }
+		
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',
+                type: 'line',
+               /* marginRight: 130,
+                marginBottom: 25 */
+            },
+			
+            title: {
+                text: 'Mandal Wise Voting Percentages in  ${typeName} Constituency',
+                x: -20 //center
+            },
+			
+			 
+            xAxis: {
+                categories: linechartDataArr,
+				
+				 labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Votes Percent( % )'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+						if(jsObj.btnName == "percentage")
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +'%';
+						else
+						return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +' Valid Votes';
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+            series: data
+        });
+		
+		$('tspan:last').hide();
+    }
+
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 {
 	$("#votersBasicInfoSubChartDiv").html('');
@@ -1789,7 +1898,7 @@ function getConstituencyResults(elecYear){
 	function getConstituencyElections(){
 
 	var jsObj = {
-			constituencyId:id,
+			constituencyId:constituencyId,
 			task:"getConstituencyElections"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -1800,7 +1909,7 @@ function getConstituencyResults(elecYear){
 	
 function getConstiElecYearsForAss(){
    var jsObj = {
-			constituencyId:495,
+			constituencyId:'${parliamentConstituencyId}',
 			task:"getConstituencyElectionsYersForAss"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -3298,6 +3407,17 @@ var jsObj=
    
 		callAjax(jsObj,url);
 }
+function getConstituencyEleAndParties()
+{
+	var jsObj= {
+		constituencyId : constituencyId,
+			task:"getConstiEleAndParties"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getConstituencyElectionYearsAction.action?"+rparam;	
+   
+	callAjax(jsObj,url);
+}
 
 
 
@@ -3347,7 +3467,37 @@ var jsObj=
    
 		callAjax(jsObj,url);
   }
-
+function getResultsForConstituency()
+{
+var parties = '';
+  var elections = '';
+  var census = '';
+$('.partySelForPanc').each(function(){
+	  if($(this).is(':checked'))
+	    parties+=','+$(this).val();
+    });
+	$('.elecSelForPanc').each(function(){
+	  if($(this).is(':checked'))
+	    elections+=','+$(this).val();
+    });
+	
+	var btnName=$('input:radio[name=constituencyvotes]:checked').val();
+var jsObj=
+			{
+				
+				constituencyId:constituencyId,
+				parties:parties.substr(1),
+				elections:elections.substr(1),
+				
+				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
+				btnName:btnName,
+				task:"getResultsForConstituency"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getConstituencyElectionYearsAction.action?"+rparam;	
+   
+		callAjax(jsObj,url);
+}
   function getothersSelectDiv()
   {
   if(type == "mandal")
@@ -3406,6 +3556,7 @@ var jsObj = {
 				selectedElmt.add(opElmt); // IE only
 			}
 		}
+		 // $("option[value="+id+"]").attr('selected', 'selected');
   }
   function buildPanchayats(result)
   {
@@ -3452,7 +3603,7 @@ var jsObj = {
 		}
   }
 
-  var allZPTCMPTCElecInfo = new Array();
+   var allZPTCMPTCElecInfo = new Array();
 <c:forEach var="zptcMptcElection" items="${mptcZptcElectionResultsVO}" >
 
 		var zptcMptcElec = {
@@ -3577,7 +3728,6 @@ function showMPTCZPTCResults()
 
 	buildChart(dataResultlocalele,title);
 }
-
 	function buildChart(result,title){
 		
 	 $('#localEleRsltsChart').highcharts({
@@ -3629,6 +3779,7 @@ getCensusInfoForSubLevels();
 getLatestCastsSubcategoryWise();
 getAgewiseVoterDetails();
 if('${type}' == "mandal")
+
 showMPTCZPTCResults();
 
 </script>
