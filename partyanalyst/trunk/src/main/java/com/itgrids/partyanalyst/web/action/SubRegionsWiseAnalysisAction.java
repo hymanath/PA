@@ -38,6 +38,18 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 	private List<ElectionWiseMandalPartyResultVO> mptcZptcElectionResultsVO;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	
+	private Long parliamentConstituencyId;
+	
+	public Long getParliamentConstituencyId() {
+		return parliamentConstituencyId;
+	}
+
+
+	public void setParliamentConstituencyId(Long parliamentConstituencyId) {
+		this.parliamentConstituencyId = parliamentConstituencyId;
+	}
+
+
 	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
 		return partyBoothWiseResultsService;
 	}
@@ -220,6 +232,8 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 		ElectionWiseMandalPartyResultListVO mptcZptcResultListVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(new Long(id.toString().substring(1)));
 		mptcZptcElectionResultsVO = mptcZptcResultListVO.getPartyWiseElectionResultsVOList();
 		}
+		//latest Parliament ConstituencyId
+	  parliamentConstituencyId = staticDataService.getParliamentIdByAssembly(constituencyId);
 		 
 		 return Action.SUCCESS;
 	 }

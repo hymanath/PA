@@ -5042,7 +5042,6 @@
 				<param name="root">resultList</param>				
 			</result>		
 		</action>
-		
 		<action name="assignSubUserAction" class="assignSubUserAction">
 		 <result name="success">/jsp/assignSubUser.jsp</result>
 		 <result name="error">/jsp/loginForm.jsp</result>
@@ -5078,6 +5077,14 @@
 			<result type="json" name="error">
 				<param name="root">"notLogged"</param>				
 			</result>		
+		</action>
+		<action name="getConstituencyElectionYearsAction" class="mandalRevenueVillagesElecAction" method="getConstituencyElectionResults">
+		    <result type="json" name="success">
+				 <param name="root">electionResults</param>
+			</result>
+			<result type="json" name="mandalVO">
+				 <param name="root">mandalVO</param>
+			</result>				
 		</action>
 		
 		</package>
