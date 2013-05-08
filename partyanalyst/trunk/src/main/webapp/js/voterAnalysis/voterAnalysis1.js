@@ -2097,12 +2097,12 @@ function addToPolitician(voterId,name)
 			showConst=false;
 		}
 		else {
+			$("#problemsCountDiv").css("display","inline-block");
 			showNewsDetails(mainreqid,publicationId,maintype);
 			getProblemsByLocation(mainreqid,publicationId,maintype);
 			getInfluencingPeopleCount(mainreqid,maintype);
 			$("#allAjaxImg").css("display","block");
 			$("#newsCountDiv").css("display","inline-block");
-			$("#problemsCountDiv").css("display","inline-block");
 			$("#InfluencingPeopleCountDiv").css("display","block");
 			$(this).html('Hide <i class="icon-chevron-up"></i>');
 			showConst=true;	
