@@ -1028,7 +1028,7 @@ function callAjax(jsObj,url)
 		for(var i in results1){	
            var obj = {};
            var obj1 = new Array();		   
-           obj["name"] = i +' Voter';	
+           obj["name"] = i +' Votes';	
 		   for(var j in results1[i]){
 		     obj1.push(parseFloat(results1[i][j]));
 		   }
@@ -1179,7 +1179,7 @@ function callAjax(jsObj,url)
 		for(var i in results1){	
            var obj = {};
            var obj1 = new Array();		   
-           obj["name"] = i +' Voter';	
+           obj["name"] = i +' Votes';	
 		   for(var j in results1[i]){
 		     obj1.push(parseFloat(results1[i][j]));
 		   }
