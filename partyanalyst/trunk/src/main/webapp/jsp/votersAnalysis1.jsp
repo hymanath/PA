@@ -1530,6 +1530,7 @@ for  body3 start    result  -->
 	<!--<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>-->
 	<div id="votersDiv4" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top:40px;">
 					<h4 id="AgeWisetitle" class="" > </h4>
+					<a id="refreshIdAge" href="javaScript:{refreshAgeWiseData();}" style="float:right;margin-top: -28px;"><img src="./images/icons/refreshImg.png" alt="Processing Image" title="Click Here To See Age Wise Voters Details"/></a>
 					<!-- for  body4 start    result  -->
 
 <div id='votersMainOuterDiv4' class="widget-block whitegloss" style="display:inline-block;width: 100%;">
@@ -2230,6 +2231,11 @@ function getAgewiseInfoForVoterCategory(){
 	}
 	function refreshConstituencyData(){
 		$('#publicationDateList').trigger('change')
+	}
+
+	function refreshAgeWiseData(){
+		callCorrespondingAjaxCall('brief');
+	
 	}
 </script>
 </body>
