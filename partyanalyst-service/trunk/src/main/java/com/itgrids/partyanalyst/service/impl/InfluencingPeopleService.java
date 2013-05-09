@@ -3647,7 +3647,16 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		List<SelectOptionVO> positionsList = new ArrayList<SelectOptionVO>();
 		List<SelectOptionVO> positionsList1 = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO = new SelectOptionVO();
-		InfluencingPeoplePosition userPosition= (InfluencingPeoplePosition)transactionTemplate.execute(new TransactionCallback() {
+		List<InfluencingPeoplePosition>  positionsList2 = new ArrayList<InfluencingPeoplePosition>();
+		boolean flag = false;
+		InfluencingPeoplePosition userPosition = null;
+		positionsList2 = influencingPeoplePositionDAO.findByStaticPosition(newPosition);
+		if(positionsList2.size()>0)
+			flag = true;
+
+		if(flag == false)
+		{
+		 userPosition= (InfluencingPeoplePosition)transactionTemplate.execute(new TransactionCallback() {
 				
 			public Object doInTransaction(TransactionStatus status) {
 				
@@ -3670,10 +3679,12 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			}
 			
 		});
-		
+		}
 		positionsList1 =getAllInfluencePeoplePositions();
 		selectOptionVO.setSelectOptionsList(positionsList1);
+		if(userPosition != null)
 		selectOptionVO.setPopulateId(userPosition.getInfluencingPeoplePositionId());
+		selectOptionVO.setFlag(flag);
 		positionsList.add(selectOptionVO);
 		return positionsList;
 	}
