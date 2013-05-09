@@ -910,16 +910,21 @@ function callAjax(jsObj,url)
 		 str+='</td></tr>';
 	     
 		 str+='<tr><th align="left">Elections  : </th><td>';
+		 str+='<table>';
 		 for(var i in myResults.electionsInMandal){
-			
+			if(i%6==0)
+				str+='<tr>';
 			if(i == electionsLength-1)
 			 {
-				str+='<input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label>';
+				str+='<td><input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
 			 }
-		  else{
-			  str+='<input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label>';
+			else{
+	 str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
 		   }
+			if((i%6)+1==0)
+		   str+='</tr>';
 		 }
+		 str+='</table>';
 		 str+='</td></tr>';
 		
 		 str+='</table>';
@@ -1378,11 +1383,15 @@ function callAjax(jsObj,url)
 		$('#container').highcharts({
             chart: {
                 type: 'line',
-                marginRight: 130,
-                marginBottom:180 ,
-				height:500,
+                //marginRight: 130,
+                //marginBottom:180 ,
+				//height:500,
 				zoomType: 'xy'
             },
+			
+			legend:{
+				margin:20
+			},
 			
 			title: {
                 text: 'Percentage and Votes Analysis'
@@ -1440,14 +1449,17 @@ function callAjax(jsObj,url)
             /*tooltip: {
                 shared: true
             },*/
+				
             series:data
 			
 			
         });
 		
-		var chart = $('#container').highcharts();
-		var series = chart.series;
+		
 		$('input[name="show_hide_votes"]').click(function(){
+			var chart = $('#container').highcharts();
+			var series = chart.series;
+		
 			if(this.value === "show")
 				$.each(series, function(index, series1) {
                     series1.show();
