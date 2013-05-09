@@ -6416,6 +6416,7 @@ var typeofMuncipality="";
 								}
 			});
 		   $(".rightNav-Booths").show();
+		   muncipalityBooths = "true"
 		 break;
 		 
 		
