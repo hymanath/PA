@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.excel.booth;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -40,8 +41,8 @@ public class VoterModificationVO implements Serializable{
 	private Long voterStatusId;
 	private Long partNo;
 	private String villageCovered;
-	private List<VoterVO> movedVoterVOsList;
-	private List<VoterVO> relocatedVoterVOsList;
+	private List<VoterVO> movedVoterVOsList = new ArrayList<VoterVO>(0);
+	private List<VoterVO> relocatedVoterVOsList = new ArrayList<VoterVO>(0);
 
 	public Long getLocationId() {
 		return locationId;
