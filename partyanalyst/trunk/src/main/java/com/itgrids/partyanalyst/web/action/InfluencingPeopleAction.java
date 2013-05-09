@@ -438,7 +438,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(influencingPeopleBeanVO.getDistrict()));
 				mandalList = regionServiceDataImp.getSubRegionsInConstituency(new Long(influencingPeopleBeanVO.getConstituency()), IConstants.PRESENT_YEAR,"currentAdd");
 				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(influencingPeopleBeanVO.getMandal()), IConstants.PRESENT_YEAR);
-				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(influencingPeopleBeanVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(influencingPeopleBeanVO.getConstituency()));
+				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(influencingPeopleBeanVO.getMandal()),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(influencingPeopleBeanVO.getConstituency()));
 				setDefaultInfluenceRange(new Long(influencingPeopleBeanVO.getInfluencingRange()));	
 			}
 			
@@ -459,7 +459,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(influencingPeopleBeanVO.getDistrict()));
 				mandalList = regionServiceDataImp.getSubRegionsInConstituency(new Long(influencingPeopleBeanVO.getConstituency()), IConstants.PRESENT_YEAR,"currentAdd");
 				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(influencingPeopleBeanVO.getMandal()), IConstants.PRESENT_YEAR);
-				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(influencingPeopleBeanVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(influencingPeopleBeanVO.getConstituency()));
+				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(influencingPeopleBeanVO.getMandal()),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(influencingPeopleBeanVO.getConstituency()));
 				setDefaultInfluenceRange(new Long(influencingPeopleBeanVO.getInfluencingRange()));
 				setDefaultConstituency(new Long(influencingPeopleBeanVO.getConstituency()));
 				setDefaultMandal(new Long(influencingPeopleBeanVO.getMandal()));
