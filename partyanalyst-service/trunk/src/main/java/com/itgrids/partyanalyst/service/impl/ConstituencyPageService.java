@@ -5417,7 +5417,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				else
 					partyResultVO.setConstituencyName("GHMC "+params[1].toString());
 				partyResultVO.setConstituencyId((Long)params[0]);
-				partyResultVO.setPartyName(params[2].toString()+" IN "+params[4].toString()+" "+params[5].toString());
+				partyResultVO.setPartyName(params[2].toString()+" IN "+params[5].toString()+" "+params[4].toString());
 				partyResultVO.setValidVotes((Long)params[3]);
 				partyResultVO.setVotesPercent(new BigDecimal((Long)params[3]*100.0/val).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				result.add(partyResultVO);
