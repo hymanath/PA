@@ -8013,6 +8013,10 @@ public class StaticDataService implements IStaticDataService {
 			getAllElectionIds(list,elections);
 			list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(parliamentConstiId);
 			getAllElectionIds(list,elections);
+			list = electionDAO.findElectionYearsForElectionTypeAndState(4l, 1l);//Zptc Elections
+			getAllElectionIds(list,elections);
+			list = electionDAO.findElectionYearsForElectionTypeAndState(3l, 1l);//Mptc Elections
+			getAllElectionIds(list,elections);
 			List<Object[]> partiesList = candidateBoothResultDAO.getParticipatedPartiesInConstituency(constituencyId);
 			if(partiesList != null && partiesList.size() > 0)
 			{
