@@ -1453,6 +1453,29 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		
 	}
 	
+	public List<SelectOptionVO> getMandals(List<SelectOptionVO> list)
+	{
+	List<SelectOptionVO> resultlist = new ArrayList<SelectOptionVO>();
+	try{
+	if(list != null && list.size() > 0)
+	{
+	for(SelectOptionVO params : list)
+	{
+		if(params.getId().toString().substring(0,1).trim().equalsIgnoreCase("2"))
+			resultlist.add(new SelectOptionVO(params.getId(),params.getName().toString()));	
+	}
+	}
+	return resultlist;
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+		log.error("Exception Occured in getMandals() - "+e);
+		return resultlist;
+	}
+	
+	}
+	
 }
 	
  

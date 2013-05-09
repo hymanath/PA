@@ -5275,21 +5275,28 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		List<Object[]> count = null;
 		PartyResultVO partyResultVO = null;
 		PartyResultVO partyVO = null;
-		
+		List<Long> tehsilIds = new ArrayList<Long>();
+		List<SelectOptionVO> mandals = new ArrayList<SelectOptionVO>();
 	try{
-		
+		mandals =regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+		mandals =regionServiceDataImp.getMandals(mandals);
+		if(mandals != null && mandals.size() > 0)
+		{
+		for(SelectOptionVO mandalId : mandals)
+			tehsilIds.add(new Long(mandalId.getId().toString().substring(1)));
+		}
 		for(String party : partiesarr)
 			partyIds.add(new Long(party));
 		for(String election : electionsArr)
 			electionIds.add(new Long(election));
 		
 			Constituency constituency = constituencyDAO.get(new Long(constituencyId));
-			
+			// Mandal 
 			 count= candidateBoothResultDAO.getMandalValidvotes(constituencyId,electionIds);
 			list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituency(constituencyId,electionIds,partyIds);
 			getsublevelsForConstituency(list,"mandal",result,count);
 			
-			
+			//Muncipality
 			if(!IConstants.CONST_TYPE_URBAN.equalsIgnoreCase(constituency.getAreaType()))
 			{
 				count= candidateBoothResultDAO.getLocalbodyValidvotes(constituencyId,electionIds);
@@ -5297,6 +5304,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			
 			getsublevelsForConstituency(list,"localbody",result,count);
 			}
+			//GHMC
 			else
 			{
 				count= candidateBoothResultDAO.getlocalbodywardValidvotes(constituencyId,electionIds);
@@ -5305,6 +5313,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			getsublevelsForConstituency(list,"greter",result,count);
 			
 			}
+			//Zptc
+			
+			list = nominationDAO.findAllMptcAndZptcElectionsInfoInMandal1(electionIds,tehsilIds,partyIds);
+			getsublevelsForConstituency(list,"zptc",result,count);
 		}
 	catch(Exception e)
 	{
@@ -5391,26 +5403,26 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 		Map<Long,Long> totalVotesForAMandal = new HashMap<Long,Long>(0);
 		PartyResultVO partyResultVO = null;
-		 
+		if(!type.equalsIgnoreCase("zptc")) 
+		{
 		for(Object[] params : count)
 		{
-			Long val = totalVotesForAMandal.get(params[0]);
+		Long val = totalVotesForAMandal.get(params[0]);
 		if(val != null)
 			val = (Long)params[2];
 		else
 			val = (Long)params[2];
 		totalVotesForAMandal.put((Long)params[0],val);
 		}
+		}
 		if(list != null && list.size() > 0)
 		{
 			Long totalVotes =0l;
 			
-			
 			for(Object[] params : list)
 			{
 			partyResultVO =new PartyResultVO();
-			Long val = totalVotesForAMandal.get(params[0]);
-				if(type.equalsIgnoreCase("mandal"))
+			if(type.equalsIgnoreCase("mandal") || type.equalsIgnoreCase("zptc"))
 				partyResultVO.setConstituencyName(params[1].toString());
 				else if(type.equalsIgnoreCase("localbody"))
 					partyResultVO.setConstituencyName(params[1].toString() + "Muncipality");
@@ -5418,8 +5430,18 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					partyResultVO.setConstituencyName("GHMC "+params[1].toString());
 				partyResultVO.setConstituencyId((Long)params[0]);
 				partyResultVO.setPartyName(params[2].toString()+" IN "+params[5].toString()+" "+params[4].toString());
+				
+				if(!type.equalsIgnoreCase("zptc"))
+				{
 				partyResultVO.setValidVotes((Long)params[3]);
+				Long val = totalVotesForAMandal.get(params[0]);
 				partyResultVO.setVotesPercent(new BigDecimal((Long)params[3]*100.0/val).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+				else
+				{
+					partyResultVO.setValidVotes(((Double)params[3]).longValue());
+					partyResultVO.setVotesPercent(new BigDecimal(((Double)params[3]).longValue()*100.0/((Double)params[6]).longValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
 				result.add(partyResultVO);
 		}
 		
