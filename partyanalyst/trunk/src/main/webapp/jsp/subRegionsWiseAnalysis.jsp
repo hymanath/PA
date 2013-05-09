@@ -556,7 +556,7 @@ $("#panchayats").live("change",function(){
 	<div id="mandalElecResultsButton1" style='margin-left:81px;'></div>
   </div>
   <div align="center">
-    <div id="container"></div>
+    <div id="container" style="height:600px;"></div>
 	<div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;" id="show_hide_votes">
 		<span class="label label-info" style="padding:5px;margin:5px;">Show All <input type="radio" name="show_hide_votes" value="show" checked="checked"></span>
 		<span class="label label-info" style="padding:5px;margin:5px;">Hide All <input type="radio" name="show_hide_votes" value="hide"></span>
@@ -1066,9 +1066,9 @@ function callAjax(jsObj,url)
 		$('#container').highcharts({
             chart: {
                 type: 'line',
-                marginRight: 130,
-                marginBottom:180 ,
-				height:500,
+               // marginRight: 130,
+               // marginBottom:240 ,
+			   // height:500,
 				zoomType: 'xy'
             },
 			
@@ -1125,6 +1125,10 @@ function callAjax(jsObj,url)
 			
 			colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
 			
+			legend: {
+					margin:20
+				},
+			
             /*tooltip: {
                 shared: true
             },*/
@@ -1133,9 +1137,9 @@ function callAjax(jsObj,url)
 			
         });
 		
+		$('input[name="show_hide_votes"]').click(function(){
 		var chart = $('#container').highcharts();
 		var series = chart.series;
-		$('input[name="show_hide_votes"]').click(function(){
 			if(this.value === "show")
 				$.each(series, function(index, series1) {
                     series1.show();
@@ -1217,11 +1221,15 @@ function callAjax(jsObj,url)
 		$('#container').highcharts({
             chart: {
                 type: 'line',
-                marginRight: 130,
-                marginBottom:180 ,
-				height:500,
+                //marginRight: 130,
+                //marginBottom:180 ,
+				//height:500,
 				zoomType: 'xy'
             },
+			
+			legend:{
+				margin:20
+			},
 			
 			title: {
                 text: 'Percentage and Votes Analysis'
@@ -1279,14 +1287,17 @@ function callAjax(jsObj,url)
             /*tooltip: {
                 shared: true
             },*/
+				
             series:data
 			
 			
         });
 		
-		var chart = $('#container').highcharts();
-		var series = chart.series;
+		
 		$('input[name="show_hide_votes"]').click(function(){
+			var chart = $('#container').highcharts();
+			var series = chart.series;
+		
 			if(this.value === "show")
 				$.each(series, function(index, series1) {
                     series1.show();
