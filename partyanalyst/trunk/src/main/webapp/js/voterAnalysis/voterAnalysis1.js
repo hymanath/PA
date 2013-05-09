@@ -5879,14 +5879,16 @@ document.getElementById('reportLevelCountDiv').style.display = 'inline-block';
 	str +='<span class="btn btn-success btn-small">'+results[0].totalmandals+'</span><span class="help-inline f2">Mandals</span>';
 	if(results[0].noOfLocalBodies !=null && results[0].noOfLocalBodies!=0 )
 	str +='<span class="btn btn-info btn-small">'+results[0].noOfLocalBodies+'</span><span class="help-inline f2">Muncipalities</span>';
+	if(results[0].totalPanchayats !=null && results[0].totalPanchayats!=0 ){
+	str +='<span class="btn btn-info btn-small">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+	}
 	 if(results[0].totalNoOfWards !=null && results[0].totalNoOfWards!=0 )
 	str +='<span class="btn btn-info btn-small">'+results[0].totalNoOfWards+'</span><span class="help-inline f2">Wards</span>';
-	if(results[0].totalPanchayats !=null && results[0].totalPanchayats!=0 ){
-	
-	str +='<span class="btn btn-info btn-small">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
-	str +='<span class="btn btn-info btn-small">'+results[0].totalNoOfHamlets+'</span><span class="help-inline f2">Hamlets</span>';
-	}if(results[0].totalBooths !=null && results[0].totalBooths!=0 )
+	 if(results[0].totalBooths !=null && results[0].totalBooths!=0 )
 	str +='<span class="btn btn-info btn-small">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	if(results[0].totalPanchayats !=null && results[0].totalPanchayats!=0 ){
+	str +='<span class="btn btn-info btn-small">'+results[0].totalNoOfHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	}
    
 str+='</div>';
 divEle.innerHTML = str;
