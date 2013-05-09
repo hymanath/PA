@@ -91,7 +91,11 @@
 						 str +='<td> </td>';
 						str +='<td>'+movedList[j].age+'</td>';
 						str +='<td>'+movedList[j].gender+'</td>';
-						str +='<td><a style="cursor:pointer;color:#3392C2;" title="Click Here to know All the Family Members In this House" onclick="getVotersInAFamilyByPublication('+movedList[j].movedOrRelocatedPartNo+','+fromPublicationDateId+','+toPublicationDateId+','+constituencyId+',\''+movedList[j].houseNo+'\')">'+movedList[j].houseNo+'</a></td>';
+						
+						if(movedList[j].houseNo != null)
+						 str +='<td><a style="cursor:pointer;color:#3392C2;" title="Click Here to know All the Family Members In this House" onclick="getVotersInAFamilyByPublication('+movedList[j].movedOrRelocatedPartNo+','+fromPublicationDateId+','+toPublicationDateId+','+constituencyId+',\''+movedList[j].houseNo+'\')">'+movedList[j].houseNo+'</a></td>';
+						else
+						 str +='<td></td>';
 						str +='<td>'+movedList[j].voterIDCardNo+'</td>';
 						str +='<td>'+movedList[j].relativeName+'</td>';
 						str +='</tr>';
@@ -121,8 +125,11 @@
 						 str +='<td> </td>';
 						str +='<td>'+relocatedList[j].age+'</td>';
 						str +='<td>'+relocatedList[j].gender+'</td>';
-						str +='<td><a style="cursor:pointer;color:#3392C2;" title="Click Here to know All the Family Members In this House" onclick="getVotersInAFamilyByPublication('+relocatedList[j].movedOrRelocatedPartNo+','+fromPublicationDateId+','+toPublicationDateId+','+constituencyId+',\''+movedList[j].houseNo+'\')">'+relocatedList[j].houseNo+'</a></td>';
 						
+						if(relocatedList[j].houseNo != null)
+							str +='<td><a style="cursor:pointer;color:#3392C2;" title="Click Here to know All the Family Members In this House" onclick="getVotersInAFamilyByPublication('+relocatedList[j].movedOrRelocatedPartNo+','+fromPublicationDateId+','+toPublicationDateId+','+constituencyId+',\''+relocatedList[j].houseNo+'\')">'+relocatedList[j].houseNo+'</a></td>';
+						else
+							str +='<td></td>';
 						 str +='<td>'+relocatedList[j].voterIDCardNo+'</td>';
 						 str +='<td>'+relocatedList[j].relativeName+'</td>';
 						str +='</tr>';
