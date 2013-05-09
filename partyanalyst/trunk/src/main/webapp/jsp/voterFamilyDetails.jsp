@@ -511,7 +511,7 @@ function callAjax(jsObj,url)
 									}else
 									buildImpFamilesChart(myResults);
 							//18111	
-							     if(maintype == "mandal" || maintype =="constituency" ){
+							     if(maintype == "mandal" || maintype =="constituency" || maintype =="ward"){
 									buildTableForImpFamilesMandal(myResults.subList,myResults.name,myResults.type);
 									impFamilesVariableDescription();
 									}
@@ -1235,7 +1235,7 @@ function checkForAttributesToDisplay(){
 }
 function getvotersBasicInfo(){
 
-if(type == "mandal" || type=="constituency")
+if(type == "mandal" || type=="constituency" || type == "ward")
 	$("#hamletDiv").hide();
 else
 $("#hamletDiv").show();
