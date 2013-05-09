@@ -576,6 +576,13 @@ function closeFeedbackwindow()
 
 function createOptionsForSelectElmtId1(elmtId,optionsList)
 {
+	var errorElmt = document.getElementById("errorDiv");
+	if(optionsList[0].flag == true){
+		errorElmt.innerHTML = '<font size="2" color="red">Entered value already existed</font>';
+	}
+	else{
+	errorElmt.innerHTML = '';
+	}
 	var elmt = document.getElementById(elmtId);
 	if( !elmt || optionsList == null)
 		return;
