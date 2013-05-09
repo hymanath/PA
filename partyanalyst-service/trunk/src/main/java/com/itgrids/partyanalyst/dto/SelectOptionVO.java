@@ -22,7 +22,15 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long orderId;
 	private Long parentUserId;
 	private Long mainAccountId;
+	private boolean flag;
 
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
 
 	public Long getPopulateId() {
 		return populateId;
