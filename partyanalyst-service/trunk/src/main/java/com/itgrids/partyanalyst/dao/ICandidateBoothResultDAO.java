@@ -171,10 +171,6 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	
 	public Long findBoothResultsForBoothsAndElectionForPartiesWithAlliance(List<Long> boothslist, Long electionId,List<Long> partyIds);
 	
-	public List<Object[]> getMandalResult(Long constituencyId,Long electionId);
-	
-	public List<Object[]> getmandalEleAndPartiesResults(List<Long> mandalIds,Long electionId,List<Long> partyIds);
-	
 	public List<Object[]> getMandalResultsForElectionAndConstituency(Long constituencyId, List<Long> electionIds,List<Long> partyIds);
 	
 	public List<Object[]> getLocalbodyResultsForElectionAndConstituency(Long constituencyId, List<Long> electionIds,List<Long> partyIds);
