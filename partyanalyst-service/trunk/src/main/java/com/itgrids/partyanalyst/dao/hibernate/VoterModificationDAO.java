@@ -632,4 +632,22 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		return queryObj.list();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getMovedOrRelocatedVoterDetails(Long constituencyId, Long publicationDateId, List<Long> partNosList)
+	{
+		Query queryObj = getSession().createQuery(" select model.voter.voterId,model.voter.name,model.voter.gender,model.voter.age,model.voter.relativeName, model.voter.relationshipType," +
+				" model2.booth.boothId, model2.booth.partNo, model2.booth.villagesCovered, model.voter.houseNo,model.voter.voterIDCardNo,model.voter.relativeName,model.voterStatus.status from VoterModification model, " +
+				" BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and model.publicationDate.publicationDateId = :publicationDateId and model.partNo = model2.booth.partNo " +
+				" and model.partNo in (:partNosList) and model.constituency.constituencyId =:constituencyId and " +
+				" (model.voterStatus.status = '"+IConstants.STATUS_MOVED+"' or model.voterStatus.status = '"+IConstants.STATUS_RELOCATED+"') ");
+		
+		queryObj.setParameter("constituencyId", constituencyId);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameterList("partNosList", partNosList);
+		
+		return queryObj.list();
+		
+	}
+	
 }

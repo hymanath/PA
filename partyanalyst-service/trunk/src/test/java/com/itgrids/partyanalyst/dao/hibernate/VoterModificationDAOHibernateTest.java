@@ -188,7 +188,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list);
 	}*/
 	
-	public void testGetBoothWiseVotersDataByBoothIds()
+	/*public void testGetBoothWiseVotersDataByBoothIds()
 	{
 		List<Long> partNosList = new ArrayList<Long>(0);
 		
@@ -219,7 +219,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println("villages- "+params[4]);
 		}
 	}
-	
+	*/
 	
 	/*public void testgetSelectedVotersDetails()
 	{
@@ -238,10 +238,23 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetPartNoForMovedOrRelocatedVoter()
+	/*public void testgetPartNoForMovedOrRelocatedVoter()
 	{
 		List<Long> list = voterModificationDAO.getPartNoForMovedOrRelocatedVoter(225017l, 8l, 299l, 4l);
 		if(list != null && list.size() > 0)
 			System.out.println(list.get(0));
+	}*/
+	
+	
+	public void testGetMovedOrRelocatedVoterDetails()
+	{
+		List<Long> partNosList = new ArrayList<Long>(0);
+		partNosList.add(93l);
+		
+		List<Object[]> list = voterModificationDAO.getMovedOrRelocatedVoterDetails(232l, 8l, partNosList);
+		System.out.println(list.size());
+		
 	}
+	
+	
 }
