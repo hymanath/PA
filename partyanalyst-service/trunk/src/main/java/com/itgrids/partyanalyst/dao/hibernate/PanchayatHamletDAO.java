@@ -52,5 +52,11 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 	{
 		return getHibernateTemplate().find("select count(distinct model.hamlet.hamletId) from PanchayatHamlet model where model.panchayat.panchayatId = ?   ",panchayatId);
 	}
+	
+	public List<Object> getAssignedVotersCountDetails(Long panchayatId)
+	{
+		return getHibernateTemplate().find("select count(UV.voter.voterId) from PanchayatHamlet PH,UserVoterDetails UV where PH.hamlet.hamletId =UV.hamlet.hamletId and PH.panchayat.panchayatId = ? ",panchayatId);
+	}
+	
 
 }
