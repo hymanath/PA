@@ -48,4 +48,12 @@ public interface IVoterReportService {
 	public List<SelectOptionVO> getBoothsByPanchayatIDConstiId(Long panchayatId,Long constituencyId);
 	
 	public Long getLatestPublicationIdByConstiId(Long constituencyId);
+	
+	public List<SelectOptionVO> getSelectedUserCategoeryDetails(Long userId,List<Long> ids , String type,String status,Long constituencyId);
+	
+	public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId);
+	
+	public List<SelectOptionVO> getUserCategoeryValuesForWards(Long userId,Long constituencyId,List<Long> ids ,String status);
+	
+	public List<SelectOptionVO> getAllBoothsForSelectedWards(List<Long> ids);
 }

@@ -331,4 +331,11 @@ public interface IBoothPublicationVoterDAO extends
   
   public List<Voter> getVoterDetailsForCustomWardBooths(Long customWardId,Long boothId,Long userId,Long publicationDateId,Long casteStateId);
   
+  public List<Object[]> getPartysOrCatstesForSelectedLevel(Long userId,List<Long> ids ,String type,String status);
+  
+  public List<Object[]> getCastesListForSelectedMuncipality(Long userId , Long id,Long constituencyId,String status);
+  
+  public List<Object[]> getAllCastesOrPartesForSelectedWards(Long userId , List<Long> ids ,Long constituencyId,String status);
+  
+  
 }

@@ -111,6 +111,7 @@ import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
@@ -132,6 +133,7 @@ import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.SocialCategory;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
@@ -7998,7 +8000,6 @@ public class StaticDataService implements IStaticDataService {
 			return null;
 		}
 	}
-	
 	public MandalVO getElectionYearsAndPartiesForConstituency(Long constituencyId)
 	{
 		MandalVO mandalVO = new MandalVO();
@@ -8061,5 +8062,152 @@ public class StaticDataService implements IStaticDataService {
 		return parliamentId;
 	}
 
+		
+	public List<SelectOptionVO> getSelectedLevelDetails(String type , Long level, long id)
+	{
+		List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
+		try {
+			
+			List<Object[]> boothDetails = null;
+			List<Object[]> panchayatDetails = null;
+			List<Long> mandalIds = new ArrayList<Long>();
+			log.debug("entered into getConstiReltaedData() method in StaticDataService Service");
+			if(type.equalsIgnoreCase("mandal"))
+			{
+				List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(id);
+				Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+				List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
+				if(mandals != null && mandals.size() > 0)
+				{
+					SelectOptionVO selectOptionVO = null;
+					for (Tehsil tehsil : mandals) 
+					{
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId(tehsil.getTehsilId());
+						selectOptionVO.setName(tehsil.getTehsilName());
+						resultData.add(selectOptionVO);
+					}
+				}
+			}
+			else if(type.equalsIgnoreCase("panchayat"))
+			{
+				if(level == 1)
+				{
+					List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(id);
+					Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+					List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
+					if(mandals != null && mandals.size() > 0)
+					{
+						SelectOptionVO selectOptionVO = null;
+						for (Tehsil tehsil : mandals)
+						{
+							selectOptionVO = new SelectOptionVO();
+							selectOptionVO.setId(tehsil.getTehsilId());
+							mandalIds.add(selectOptionVO.getId());
+						}
+					}
+					panchayatDetails = panchayatDAO.getAllPanchaytesInAConstituency(mandalIds);
+				}
+				else if(level == 2)
+				{
+					panchayatDetails = panchayatDAO.getPanchayatsInAMandal(id);
+				}
+				
+				if(panchayatDetails != null && panchayatDetails.size() > 0)
+		    	{
+		    		SelectOptionVO selectOptionVO = null;
+		    		for (Object[] parms : panchayatDetails) {
+		    			selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long) parms[0]);
+						selectOptionVO.setName( parms[1].toString());
+						resultData.add(selectOptionVO);
+					}
+		    	}
+			}
+			else if(type.equalsIgnoreCase("booth"))
+			{
+				boothDetails = boothDAO.getAllBoothsInSelectedType(id,level);
+				if(boothDetails != null && boothDetails.size() > 0)
+				{
+					SelectOptionVO selectOptionVO = null;
+					for (Object[] parms : boothDetails) {
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long) parms[0]);
+						String name = "BOOTH-"+parms[1].toString();
+						selectOptionVO.setName(name);
+						resultData.add(selectOptionVO);
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error("exception raised in getConstiReltaedData() method in StaticDataService Service",e);
+		}
+		return resultData;
+	}
+	
+	public List<SelectOptionVO> getPanchayatsOrBoothsForSelectedLevel(String type , Long level ,List<Long> ids)
+	{
+		List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
+		try {
+			log.debug("entered into getPanchayatsOrBoothsForSelectedLevel() method in StaticDataService Service");
+			List<Object[]> panchayatOrBoothDetails = null;
+			if(level == 2)
+			{
+				panchayatOrBoothDetails = panchayatDAO.getAllPanchayatsInAListOfMandals(ids);
+				if(panchayatOrBoothDetails != null && panchayatOrBoothDetails.size() > 0)
+				{
+					SelectOptionVO selectOptionVO = null;
+					for (Object[] parms : panchayatOrBoothDetails) {
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)parms[0]);
+						selectOptionVO.setName(parms[1].toString());
+						selectOptionVO.setLocation(parms[2].toString());
+						resultData.add(selectOptionVO);
+					}
+				}
+			}
+			else if(level == 3)
+			{
+				panchayatOrBoothDetails = boothDAO.getAllBoothsForPanchayatsOrMandals(type,ids);
+				if(panchayatOrBoothDetails != null && panchayatOrBoothDetails.size() > 0)
+				{
+					SelectOptionVO selectOptionVO = null;
+					for (Object[] parms : panchayatOrBoothDetails) {
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)parms[0]);
+						String name = "BOOTH-"+parms[1].toString();
+						selectOptionVO.setName(name);
+						selectOptionVO.setLocation(parms[2].toString());
+						resultData.add(selectOptionVO);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			log.error("exception raised in getPanchayatsOrBoothsForSelectedLevel() method in StaticDataService Service",e);
+		}
+		return resultData;
+		
+	}
+	
+	public List<SelectOptionVO> getConstituencyType(Long constituencyId)
+	{
+		List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();;
+		List<Object[]> constituencyType = constituencyDAO.getConstituencyType(constituencyId);
+		if(constituencyType != null && constituencyType.size() > 0)
+		{
+			SelectOptionVO selectOptionVO = null;
+			for (Object[] parms : constituencyType) {
+				selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long) parms[0]);
+				selectOptionVO.setName(parms[1].toString());
+				returnData.add(selectOptionVO);
+			}
+		}
+		return returnData;
+	}
+	
+	
+	
 	
 }

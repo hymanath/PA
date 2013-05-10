@@ -3129,4 +3129,78 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		  return queryObj.list();
 	  }
 	
+	  
+	  public List<Object[]> getPartysOrCatstesForSelectedLevel(Long userId,List<Long> ids ,String type,String status)
+	  {
+		  StringBuffer queryString = new StringBuffer();
+		  if(status.equalsIgnoreCase("cast"))
+		  {
+			  queryString.append("select distinct(UVD.casteState.casteStateId) ,UVD.casteState.caste.casteName from  UserVoterDetails UVD ,BoothPublicationVoter BPV " +
+		  		" where UVD.voter.voterId = BPV.voter.voterId and UVD.user.userId =:userId and ");
+		  }
+		  else if(status.equalsIgnoreCase("party"))
+		  {
+			  queryString.append("select distinct(UVD.party.partyId) ,UVD.party.shortName from  UserVoterDetails UVD ,BoothPublicationVoter BPV " +
+				  		" where UVD.voter.voterId = BPV.voter.voterId and UVD.user.userId =:userId and "); 
+		  }
+		  if(type.equalsIgnoreCase("mandal"))
+		  {
+			  queryString.append("BPV.booth.tehsil.tehsilId in (:ids)");
+		  }
+		  else if(type.equalsIgnoreCase("panchayat"))
+		  {
+			  queryString.append("BPV.booth.panchayat.panchayatId in (:ids)");
+		  }
+		  else if(type.equalsIgnoreCase("booth"))
+		  {
+			  queryString.append("BPV.booth.boothId in (:ids)");
+		  }
+		  Query query = getSession().createQuery(queryString.toString());
+		  query.setParameter("userId", userId);
+		 query.setParameterList("ids", ids);
+		  return query.list(); 
+	  }
+	  
+	  public List<Object[]> getCastesListForSelectedMuncipality(Long userId , Long id,Long constituencyId,String status)
+	  {
+		  StringBuffer queryString = new StringBuffer();
+		  if(status.equalsIgnoreCase("cast"))
+		  {
+			  queryString.append("select distinct(UVD.casteState.casteStateId) ,UVD.casteState.caste.casteName from  UserVoterDetails UVD ,BoothPublicationVoter BPV ");  
+		  }
+		  else if(status.equalsIgnoreCase("party"))
+		  {
+			  queryString.append("select distinct(UVD.party.partyId) ,UVD.party.shortName from  UserVoterDetails UVD ,BoothPublicationVoter BPV " );  
+		  }
+		  queryString.append(" where UVD.voter.voterId = BPV.voter.voterId and UVD.user.userId =:userId and BPV.booth.localBody.localElectionBodyId = :id " +
+			  		" and BPV.booth.constituency.constituencyId = :constituencyId");
+		  
+		  Query query = getSession().createQuery(queryString.toString());
+		  query.setParameter("userId", userId);
+		  query.setParameter("id", id);
+		  query.setParameter("constituencyId", constituencyId);
+		  return query.list();
+		  
+	  }
+	  
+	  public List<Object[]> getAllCastesOrPartesForSelectedWards(Long userId , List<Long> ids ,Long constituencyId,String status)
+	  {
+		  StringBuffer queryString = new StringBuffer();
+		  if(status.equalsIgnoreCase("cast"))
+		  {
+			  queryString.append("select distinct(UVD.casteState.casteStateId) ,UVD.casteState.caste.casteName from  UserVoterDetails UVD ,BoothPublicationVoter BPV ");  
+		  }
+		  else if(status.equalsIgnoreCase("party"))
+		  {
+			  queryString.append("select distinct(UVD.party.partyId) ,UVD.party.shortName from  UserVoterDetails UVD ,BoothPublicationVoter BPV " );  
+		  }
+		  queryString.append(" where UVD.voter.voterId = BPV.voter.voterId and UVD.user.userId =:userId and BPV.booth.localBodyWard.constituencyId in (:ids) " +
+			  		" and BPV.booth.constituency.constituencyId = :constituencyId");
+		  
+		  Query query = getSession().createQuery(queryString.toString());
+		  query.setParameter("userId", userId);
+		  query.setParameterList("ids", ids);
+		  query.setParameter("constituencyId", constituencyId);
+		  return query.list(); 
+	  }
 }

@@ -543,4 +543,12 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyType(Long constituencyId)
+	{
+		return getHibernateTemplate().find("select model.constituencyId,model.areaType from Constituency model " +
+				" where model.constituencyId = ?",constituencyId);
+				
+	}
 }

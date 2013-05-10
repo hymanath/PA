@@ -357,4 +357,12 @@ public interface IStaticDataService {
 		public MandalVO getElectionYearsAndPartiesForConstituency(Long constituencyId);
 		
 		public Long getParliamentIdByAssembly(Long constituencyId);
+		
+		public List<SelectOptionVO> getSelectedLevelDetails(String type , Long level, long id);
+		
+		public List<SelectOptionVO> getPanchayatsOrBoothsForSelectedLevel(String type , Long level ,List<Long> ids);
+		
+		public List<SelectOptionVO> getConstituencyType(Long constituencyId);
+		
+		//public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId);
 }

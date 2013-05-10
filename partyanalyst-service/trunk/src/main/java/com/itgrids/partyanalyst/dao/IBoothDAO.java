@@ -193,4 +193,10 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Object[]> getBoothsByPanchayatIDConstiId(Long panchayatId,Long constituencyId,Long publicationId);
 	
+	public List<Object[]> getAllBoothsInSelectedType(Long id, Long level);
+	
+	public List<Object[]> getAllBoothsForPanchayatsOrMandals(String type,List<Long> ids);
+	
+	public List<Object[]> getBoothsForSelectedWards(List<Long> ids);
+	
 }

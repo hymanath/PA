@@ -20,6 +20,8 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
@@ -48,7 +50,9 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
@@ -1872,5 +1876,162 @@ public class VoterReportService implements IVoterReportService{
 		
 		public Long getLatestPublicationIdByConstiId(Long constituencyId){
 			 return publicationDateDAO.getLatestPublicationIdByConstiId(constituencyId);
+		}
+		
+		public List<SelectOptionVO> getSelectedUserCategoeryDetails(Long userId,List<Long> ids , String type,String status,Long constituencyId)
+		{
+			List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
+			SelectOptionVO selectOptionVO = null;
+			try {
+				LOG.debug("entered into getSelectedUserCategoeryDetails() method in VoterReportService");
+				
+				
+				if(status.equalsIgnoreCase("cast") || status.equalsIgnoreCase("party"))
+				{
+					if(type.equalsIgnoreCase("mandal"))
+					{
+						List<Long> mandalIds      = new ArrayList<Long>();
+						Long muncipalityId = 0l;
+						for (Long values : ids) {
+							Long mandalid = 0l;
+							
+							if(values.toString().substring(0,1).trim().equalsIgnoreCase("1"))
+							{
+								muncipalityId = Long.valueOf(values.toString().substring(1).trim());
+							}
+							else
+							{
+								mandalid =Long.valueOf(values.toString().substring(1).trim());
+								mandalIds.add(mandalid);
+							}
+						}
+						if(mandalIds != null && mandalIds.size() > 0)
+						{
+							List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,mandalIds,type,status);
+							
+							if(castOrPartyDetails != null && castOrPartyDetails.size() > 0)
+							{
+								
+								for (Object[] parms : castOrPartyDetails) {
+									selectOptionVO = new SelectOptionVO();
+									selectOptionVO.setId((Long)parms[0]);
+									selectOptionVO.setName(parms[1].toString());
+									resultData.add(selectOptionVO);
+								}
+							}
+						}
+						if(muncipalityId != null && muncipalityId > 0)
+						{
+							List list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(muncipalityId);
+							if(list != null)
+							{
+								Long localBodyId = (Long)list.get(0);
+								List<Object[]> castesList = boothPublicationVoterDAO.getCastesListForSelectedMuncipality(userId, localBodyId, constituencyId,status);
+								for (Object[] parms : castesList) {
+									selectOptionVO = new SelectOptionVO();
+									selectOptionVO.setId((Long)parms[0]);
+									selectOptionVO.setName(parms[1].toString());
+									resultData.add(selectOptionVO);
+								}
+							}
+						}
+					}
+					else
+					{
+						List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,ids,type,status);
+						
+						if(castOrPartyDetails != null && castOrPartyDetails.size() > 0)
+						{
+							
+							for (Object[] parms : castOrPartyDetails) {
+								selectOptionVO = new SelectOptionVO();
+								selectOptionVO.setId((Long)parms[0]);
+								selectOptionVO.setName(parms[1].toString());
+								resultData.add(selectOptionVO);
+							}
+						}
+					}
+					
+					
+					
+				}
+				else
+				{
+					Long categoeryId = Long.valueOf(status); 
+					List<Object[]> categoeryValues = userVoterCategoryValueDAO.getCategoeryValuesDAO(userId, categoeryId);
+					if(categoeryValues != null && categoeryValues.size() >0)
+					{
+						for (Object[] parms : categoeryValues) {
+							selectOptionVO = new SelectOptionVO();
+							selectOptionVO.setId((Long)parms[0]);
+							selectOptionVO.setName(parms[1].toString());
+							resultData.add(selectOptionVO);
+						}
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("exception raised in  getSelectedUserCategoeryDetails() method in VoterReportService",e);
+			}
+			return resultData;
+		}
+		
+		public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId)
+		{
+			List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
+			List result = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId);
+			Object[] localBodyObject = (Object[]) result.get(0);
+			Long localBodyId = (Long) localBodyObject[0];
+				List<Object[]> wardsList = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(localBodyId,8l,constituencyId);
+				if(wardsList != null && wardsList.size() > 0)
+				{
+					SelectOptionVO selectOptionVO = null;
+					for (Object[] parms : wardsList) {
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)parms[0]);
+						selectOptionVO.setName(parms[1].toString());
+						returnData.add(selectOptionVO);
+					}
+					
+				}
+			
+			return returnData;
+		}
+		
+		public List<SelectOptionVO> getUserCategoeryValuesForWards(Long userId,Long constituencyId,List<Long> ids ,String status)
+		{
+			List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
+			List<Object[]> userCategoeres = boothPublicationVoterDAO.getAllCastesOrPartesForSelectedWards(userId,ids,constituencyId,status);
+			if(userCategoeres != null && userCategoeres.size() > 0)
+			{
+				SelectOptionVO selectOptionVO = null;
+				for (Object[] parms : userCategoeres) {
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					returnData.add(selectOptionVO);
+				}
+			}
+			return returnData;
+			
+		}
+		
+		public List<SelectOptionVO> getAllBoothsForSelectedWards(List<Long> ids)
+		{
+			List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
+			List<Object[]> boothsList = boothDAO.getBoothsForSelectedWards(ids);
+			{
+				if(boothsList != null && boothsList.size() > 0)
+				{
+					SelectOptionVO selectOptionVO = null;
+					for (Object[] parms : boothsList) {
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)parms[0]);
+						String name = "BOOTH-"+parms[1].toString();
+						selectOptionVO.setName(name);
+						returnData.add(selectOptionVO);
+					}
+				}
+			}
+			return returnData;
 		}
 }
