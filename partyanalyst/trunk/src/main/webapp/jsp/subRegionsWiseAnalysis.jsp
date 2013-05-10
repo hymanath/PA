@@ -574,9 +574,13 @@ $("#panchayats").live("change",function(){
 </p>
 </div>
 <div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
-  <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
+ <!-- <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
 	<span class="label label-info" style="padding:5px;">Show All <input type="radio" name="show_hide" value="show" checked="checked"></span>
 	<span class="label label-info" style="padding:5px;">Hide All <input type="radio" name="show_hide" value="hide"></span>
+  </div>-->
+  <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
+	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_show">Show All </span>
+	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide">Hide All </span>
   </div>
 </div>
 <div  style="display:none;"  class="widget blue">
@@ -857,7 +861,7 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "getCastInfoForsubLevels")
 								{  
 									castePercent = myResults.castPercent;
-									buildCastInfoForSubLevels(myResults,jsObj,null);
+									buildCastInfoForSubLevels(myResults,jsObj,null,null);
 									buildCastSubLevelsDiv(myResults,jsObj);
 									
 								}
@@ -941,7 +945,7 @@ function callAjax(jsObj,url)
 		if(type =="constituency")
 		{
 		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForConstituency()">');
-		// $("#mandalElecResultsButton1").html('<input type="radio" name="constituencyvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForConstituency()"/> Voting Percentage&nbsp;<input type="radio"  name="constituencyvotes" class="btn" value="validvotes" id="constivotingValuesID" onclick="getResultsForConstituency()"/>Valid Votes');
+		 $("#mandalElecResultsButton1").html('<input type="radio" name="constituencyvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForConstituency()"/> Voting Percentage&nbsp;<input type="radio"  name="constituencyvotes" class="btn" value="validvotes" id="constivotingValuesID" onclick="getResultsForConstituency()"/>Valid Votes');
 		  getResultsForConstituency();
 		}
 	  }
@@ -1126,8 +1130,8 @@ function callAjax(jsObj,url)
 			legend: {
 					margin:20
 				},
-			
-            /*tooltip: {
+				
+			/*tooltip: {
                 shared: true
             },*/
             series:data
@@ -1990,7 +1994,8 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 	
 	   //alert(myChart[0]['name']+"---"+myChart[0]['data'].length);
 	   var chart1;
-	   
+	   var invisib;
+	   var isinvisib=false;
 	    chart1 = new Highcharts.Chart({
             chart: {
                 renderTo: 'castGrid1',
@@ -2039,6 +2044,49 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
                         this.x +': '+ this.y + ' Voters';
                 }
             },
+			plotOptions: {
+				series: {
+					events: {
+						legendItemClick: function(event) {
+							isinvisib=true;
+							var currEleVisib=false;
+							var series = this.chart.series;
+							var seriesIndex = this.index;
+							var thisSeriesName=this.name;
+							invisib=[];
+							//invisib.push(thisSeriesName);
+							
+							var visibility = this.visible ? 'visible' : 'hidden';
+							
+							if(this.visible){
+								currEleVisib=true;
+							}
+							
+							for (var i = 0; i < series.length; i++){
+								if(seriesIndex!=series[i].index){
+									if(series[i].visible==false){
+										invisib.push(series[i].name);
+									}
+								}
+							}
+							
+							if(currEleVisib==true){
+								invisib.push(thisSeriesName);
+							}
+							
+							/*if(series.length==invisib.length && invisib.length!=0)
+								$('input:radio[value=hide]').attr('checked', 'checked');
+							
+							if(invisib.length<series.length || invisib.length==0)
+								$('input:radio[value=show]').attr('checked', 'checked');*/
+														
+							rebuiltDataTable(invisib);
+							
+						}
+					}
+				}
+			},
+
             /* legend: {
                 layout: 'vertical',
                 align: 'right',
@@ -2049,13 +2097,12 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
             }, */
             series: tempLine //myChart1 
         });
+		
+		
 	$('tspan:last').hide();	
 	
 	
-	
-	 var chart = $('#castGrid1').highcharts();
-     var series = chart.series;
-	 $('input[name="show_hide"]').click(function(){
+	/*$('input[name="show_hide"]').click(function(){
         if(this.value === "show")
             $.each(series, function(index, series1) {
                       series1.show();
@@ -2064,9 +2111,33 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
             $.each(series, function(index, series1) {
                       series1.hide();
                     });
-    });
+    });*/
 	
+	$('#show_hide_show').click(function(){
+		var chart = $('#castGrid1').highcharts();
+		var series = chart.series;
+		
+		$.each(series, function(index, series1) {
+            series1.show();
+        });
+		
+		rebuiltDataTable(null);
+	});
 	
+	$('#show_hide_hide').click(function(){
+		var chart = $('#castGrid1').highcharts();
+		var series = chart.series;
+		var totalSeriesName=[];
+		
+		$.each(series, function(index, series1) {
+            series1.hide();
+        });
+		for (var i = 0; i < series.length; i++){
+				totalSeriesName.push(series[i].name);
+		}
+		
+		rebuiltDataTable(totalSeriesName);
+	});
 	
 	/*$('#btn_hide').click(function() {  
         var chart = $('#castGrid1').highcharts();
@@ -2104,8 +2175,9 @@ var hamletMainPie =  new Array();
 var myChart = new Array();
 
 					 
-function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
-	{	 hamletMainPie=[];
+function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd)
+	{	 
+		  hamletMainPie=[];
 	      myChart=[];
 		  castTemp=[];
 		//$("#voterCasteAjaxImg").css("display","none");
@@ -2302,8 +2374,9 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		//console.log(constMgmtMainObj.castStatssubArray);//sasir
 		if(castesSlctdList == null|| (castesSlctdList != null && castesSlctdList.indexOf(constMgmtMainObj.castStatssubArray[i].caste)!= -1))
 		{
+		if(lgndItemSlctd == null|| (lgndItemSlctd != null && lgndItemSlctd.indexOf(constMgmtMainObj.castStatssubArray[i].mandal)== -1))
+		{
 		str+='<tr>';
-		
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
 		castTemp.push(constMgmtMainObj.castStatssubArray[i].caste);
 		hamletTemp.push(constMgmtMainObj.castStatssubArray[i].mandal);
@@ -2365,6 +2438,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		str +='</tr>';
 		}
 		}
+		}
 		str+='</tbody>';
 		str +='</table>';
 
@@ -2381,7 +2455,9 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 	//$('#subLevelTable tr').removeClass("even");
 	//$('#subLevelTable td').removeClass("sorting_1");
 	//}
-	buildHamletWiseCastResultsGraph(null,null);
+	
+		if(lgndItemSlctd==null)
+			buildHamletWiseCastResultsGraph(null,null);
 	}
 	
 
@@ -3108,18 +3184,21 @@ var sort_by = function(field, reverse, primer){
    }
 }
 
+
+var selectedCastArray=[];
 function buildCastInfoBasedOnOptions(option)
 {
 	
 	if(option == "all")
 	{
 		//used tempObj globla variable to get the json returned results and json object for calling the buildCastInfoForSubLevels() function -- sasi
-		
 		var myResults_slctd=tempObj.result;
 		var jsObj_slctd=tempObj.jsobj;
 		
+		selectedCastArray = [];
+		
 		//called this function for changing the castTemp variable to store all the castes -- sasi
-		buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,null);
+		buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,null,null);
 		
 		$("#casteHideAndShowOptionsDiv").css('display','none');
 		buildHamletWiseCastResultsGraph(null,null);
@@ -3128,12 +3207,13 @@ function buildCastInfoBasedOnOptions(option)
 		$("#casteHideAndShowOptionsDiv").css('display','block');
 }
 
+
 function buildCastWiseChart(temp)
 {
 var myResults_slctd=temp.result;
 var jsObj_slctd=temp.jsobj;
 	$("#castErrorDiv").html('');
-	var selectedCastArray = new Array();
+	selectedCastArray = [];
 	var selecteObj = document.getElementById('castSelectdId');
 	for(var i=0;i<selecteObj.options.length;i++)
 	{
@@ -3149,7 +3229,7 @@ var jsObj_slctd=temp.jsobj;
 	}
 	//console.log(selectedCastArray);
 	  buildHamletWiseCastResultsGraph(selectedCastArray,null);
-	  buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,selectedCastArray);
+	  buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,selectedCastArray,null);
 }
 
 function getBoothPArtiesAndElections()
@@ -3526,6 +3606,17 @@ function showMPTCZPTCResults()
             },
             series: result
         });
+	}
+	
+	function rebuiltDataTable(invisib){
+		var myResults_slctd=tempObj.result;
+		var jsObj_slctd=tempObj.jsobj;
+		
+		if(selectedCastArray.length != 0)
+		buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,selectedCastArray,invisib);
+		
+		else
+		buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,null,invisib);
 	}
 	
 </script>
