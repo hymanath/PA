@@ -3724,7 +3724,6 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		 
 		 return query.list();
 	}
-	
 	public List<Object[]> getMptcAndZptcCandidateNamesByTehsilIds(List<Long> tehsilIds , Long electionScopeId)
 	{
 		
@@ -3738,6 +3737,23 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return query.list();
 		
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findAllMptcAndZptcElectionsInfoInMandal1withAlliance(List<Long> tehsilIds,List<Long> partyIds,Long electionId){
+		
+		Query query = getSession().createQuery("select model.constituencyElection.constituency.tehsil.tehsilId," +
+				" model.constituencyElection.constituency.tehsil.tehsilName, " +
+				" sum(model.candidateResult.votesEarned),model.constituencyElection.election.electionYear,model.constituencyElection.election.electionScope.electionType.electionType,sum(model.constituencyElection.constituencyElectionResult.validVotes) from Nomination" +
+				" model where " +
+				" model.constituencyElection.constituency.tehsil.tehsilId in( :tehsilIds) and " +
+				" model.constituencyElection.election.electionId =:electionId and model.party.partyId in( :partyIds)" +
+				" group by model.constituencyElection.constituency.tehsil.tehsilId, model.party.partyId");
+		query.setParameterList("tehsilIds", tehsilIds);
+		query.setParameterList("partyIds", partyIds);
+		query.setParameter("electionId", electionId);
+
+		return query.list();
+}
+	
 	
 	
 	
