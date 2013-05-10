@@ -678,8 +678,9 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	$("#connectPeoplePopup").dialog({
 		resizable:false,
 		width: 582,
-		minHeight:200,
-		show:'slide',
+		height:'auto',
+		/*minHeight:200,
+		show:'slide',*/
 		modal:true
 	});
 	
@@ -698,17 +699,17 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '	<table width="100%" class="uploadPic_string_table">';
 	str += '	<tr>';
 	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
-	str += '	<td>Select a image from your computer.</td>';
+	str += '	<td style="font-size:11px;">Select a image from your computer.</td>';
 	str += '	</tr>';
 
 	str += '	<tr>';
 	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
-	str += '	<td>Image size should be less than 2MB.</td>';
+	str += '	<td style="font-size:11px;">Image size should be less than 2MB.</td>';
 	str += '	</tr>';
 
 	str += '	<tr>';
 	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
-	str += '	<td>Image should be .jpg or.png or .gif formats only.</td>';
+	str += '	<td style="font-size:11px;">Image should be .jpg or.png or .gif formats only.</td>';
 	str += '	</tr>';
 
 	str += '	</table>';	
@@ -741,7 +742,7 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '</tr>';
 	str += '</table>';	
 	str += '</div>';
-	str += '<div style="width:300px;height:300px;" id="Imgpreview2"><img style="width:300px;height:300px;" width="300" height="300" id="Imgpreview1"  src=""></div>';
+	str += '<div style="width:300px;" id="Imgpreview2"><img style="width:300px;height:300px;" width="300" height="300" id="Imgpreview1"  src=""></div>';
 	div.append(str);
 	elmt.append(div);
 	
