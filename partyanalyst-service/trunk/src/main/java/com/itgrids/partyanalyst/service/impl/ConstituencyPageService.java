@@ -5383,14 +5383,16 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				localbodycount= candidateBoothResultDAO.getLocalbodyValidvotes(constituencyId,electionIdsList);
 				ghmccount= candidateBoothResultDAO.getlocalbodywardValidvotes(constituencyId,electionIdsList);
 				 for(String alliance : allianceParties.keySet()){
+				//mandal	 
 			    list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituencywithAlliance(constituencyId,new Long(electionId.trim()),allianceParties.get(alliance));
 				getsublevelsForConstituencywithalliance(list,"mandal",result,alliance,mandalcount);
-			
+				//muncipality
 				if(!IConstants.CONST_TYPE_URBAN.equalsIgnoreCase(constituency.getAreaType()))
 				{
 				 list = candidateBoothResultDAO.getLocalbodyResultsForElectionAndConstituencywithAlliance(constituencyId,new Long(electionId.trim()),allianceParties.get(alliance));
 				 getsublevelsForConstituencywithalliance(list,"localbody",result,alliance,localbodycount);
 				}
+				//ghmc
 				else
 				{
 				list = candidateBoothResultDAO.getlocalbodywardResultswithAlliance(constituencyId,new Long(electionId.trim()),allianceParties.get(alliance));
