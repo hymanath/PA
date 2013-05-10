@@ -218,7 +218,9 @@ height:30px;
 width: 42px;
 }
 #basicInfo td{padding:5px;}
-
+#unSelectAllBtn{margin-left: 20px;}
+#smssending{margin-top: 33px;}
+#selectAndUnselectDiv{margin-left: 132px; clear: both; width: 220px; margin-top: -32px;}
 </style>
 </head>
 
@@ -428,6 +430,7 @@ function setReferenceNo(refNo){
 }
 function searchCallTrackingProblem(){
 		$("#smssending").css("display","block");
+		$("#selectAndUnselectDiv").css("display","block");
        document.getElementById("errorNameDiv").innerHTML='';
 	   document.getElementById("errorMobileDiv").innerHTML='';
 	   document.getElementById("errorProblemPurposeDiv").innerHTML='';
@@ -857,7 +860,7 @@ function showSearchDetails(result){
 		//var name = oData;
 		//var id= oRecord.getData("voterId");
 		//var boothId=oRecord.getData("boothId"); 
-		elLiner.innerHTML="<input type='checkbox'/>";
+		elLiner.innerHTML="<input type='checkbox' class='checkBoxCls' />";
 					
 	  };
   
@@ -1130,8 +1133,9 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
 </div>
 <div id="callTrackingTotalCountDiv" style="padding-top:20px;"></div>
 
-<div id="callTrackingCurrentDiv" class="yui-skin-sam yui-dt" align="center">
-
+<div>
+  <div id="callTrackingCurrentDiv" class="yui-skin-sam yui-dt" align="center"></div>
+  <div id="selectAndUnselectDiv" style="display:none;"><input type="button" value="SelectAll" id="selectAllBtn" class="btn"/><input type="button" value="UnSelectAll" id="unSelectAllBtn" class="btn"/></div>
 </div>
 
 <!--dummy sms code by sasi-->
@@ -1320,7 +1324,15 @@ $(function() {
 
 	</script>
 
-
+<script type="text/javascript">
+$("#selectAllBtn").live("click",function(){
+	$(".checkBoxCls").attr('checked','checked');
+	
+});
+$("#unSelectAllBtn").live("click",function(){
+	$(".checkBoxCls").attr('checked',false);
+});
+</script>
 
 
 </body>
