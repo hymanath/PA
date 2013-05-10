@@ -163,12 +163,23 @@ for (Object[] objects : list) {
 			System.out.println(list.size());
 		}*/
 		
-		public void testGetAllLocalitiesForHamletOrWard()
+		/*public void testGetAllLocalitiesForHamletOrWard()
 		{
 			String queryStr = " model.ward.localElectionBody.localElectionBodyId =:id ";
 			List<Object[]> list = userVoterDetailsDAO.getAllLocalitiesForHamletOrWard("muncipalityCustomWard",1l, 83l,8l, queryStr);
 			System.out.println(list.size());
 			for(Object[] params : list)
 			 System.out.println(params[0]+" "+params[1]);
+		}*/
+		public void testGetPanchayatWiseHamletsAssignedDetailsInAConstituency()
+		{
+			List<Object[]> list = userVoterDetailsDAO.getPanchayatWiseHamletsAssignedDetailsInAConstituency(232l,8l);
+			System.out.println(list.size());
+			for(Object[] params : list)
+			{
+				System.out.println();
+				for(Object object : params)
+					System.out.print("\t"+object);
+			}
 		}
 }
