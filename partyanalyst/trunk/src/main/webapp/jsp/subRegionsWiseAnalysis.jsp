@@ -552,6 +552,10 @@ $("#panchayats").live("change",function(){
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
     <div id="mandalElecResultsParties"></div>
     <div id="mandalElecResultsElections"></div>
+    <div id="selectionDiv" style="margin-left:81px;">
+    <input type="checkbox" id="selectAll"  onclick="selectAll()" name="selection"><span>Select All</span>
+	<input type="checkbox" id="deSelectAll" onclick="deSelectAll()" name="selection"><span>Unselect All</span>
+	</div>
     <div id="mandalElecResultsButton" style='margin-left:81px;'></div>
 	<div id="mandalElecResultsButton1" style='margin-left:81px;'></div>
   </div>
@@ -3617,6 +3621,53 @@ function showMPTCZPTCResults()
 		
 		else
 		buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,null,invisib);
+	}
+	
+	
+
+	function selectAll(){
+		var elmts = document.getElementById('selectAll');
+		var deSelect = document.getElementById('deSelectAll');
+			if(elmts.checked == true){
+				deSelect.checked = false;
+				selectAllCheckBoxes(); 
+			}
+	}
+
+	function selectAllCheckBoxes(){
+		var elmts = document.getElementsByName('parties');
+		if(elmts.length == 0)
+				return;
+			for(var i=0; i<elmts.length; i++)
+			{
+				if(elmts[i].type == "checkbox" && !elmts[i].checked)
+					elmts[i].checked = true;
+			}
+	
+	}
+
+
+	function deSelectAll(){
+	
+		var elmts = document.getElementById('deSelectAll');
+		var elmt = document.getElementById('selectAll');
+			if(elmts.checked == true){
+					elmt.checked = false;
+					deSelectAllCheckBoxes(); 
+			
+			}
+	}
+
+	function deSelectAllCheckBoxes(){
+		var elmts = document.getElementsByName('parties');
+			if(elmts.length == 0)
+				return;
+			for(var i=0; i<elmts.length; i++)
+			{
+				if(elmts[i].type == "checkbox" && elmts[i].checked)
+					elmts[i].checked = false;
+			}
+	
 	}
 	
 </script>
