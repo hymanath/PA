@@ -445,9 +445,15 @@ $(document).ready(function(){
   }
  if(type == "panchayat")
   {
-   $("#mandalElecResultsDiv").show();
+   
    // $("#votingTrendzDiv").hide();
-  getBoothPArtiesAndElections();
+
+   if(buildtype="hamlet"){
+	   $('#mandalElecResultsDiv').hide();
+   }else{
+	   $("#mandalElecResultsDiv").show();
+     getBoothPArtiesAndElections();
+   }
   }
  else if(type == "constituency"){
  //$("#votingTrendzDiv").show();
@@ -475,7 +481,7 @@ $("#panchayats").live("change",function(){
 	if(mainreqid == 0)
 	return;
 	var mainname =$("#panchayats option:selected").text()+" Panchayat";
-	   var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+publicationId+"&type="+type+"&publicationYear="+publicationYear+"&buildType=&constituencyId="+constituencyId+"&typeName="+mainname+"&mandalId="+tehsilId;
+	   var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+publicationId+"&type="+type+"&publicationYear="+publicationYear+"&buildType="+buildType+"&constituencyId="+constituencyId+"&typeName="+mainname+"&mandalId="+tehsilId;
 	   // var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      //browser1.focus();
 	 window.location.href = urlstr;
@@ -567,7 +573,7 @@ $("#panchayats").live("change",function(){
 	</div>
   </div>
 </div>
-<div style="border:1px solid;">
+<div style="border:1px solid;" id="casteDetailsDiv">
 <div id="casteSelectDiv" style="text-align:center;border:1px solid #ccc;"></div>
 <div id="rangeSliderDiv" style="width:500px;margin:20px auto;border:1px solid #ccc;padding:10px 20px;" >
 <h5>Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
@@ -632,7 +638,8 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 	if(true)
 	{
 	if(type == "panchayat")
-	buildType="booth";
+	//buildType="booth";
+		buildType=buildType;
 	if(type == "booth")
 	buildType="hamlet";
 	
@@ -870,6 +877,7 @@ function callAjax(jsObj,url)
 									
 								}
 								else if(jsObj.task == "getAgewiseVoterDetails"){
+									$("#ajaxImageDiv").css('display','none');
 					buildVoterDetailsTable(myResults,jsObj.type,jsObj.retrieveType);
 				    buildAgewiseDetails(myResults,jsObj);
 					buildAgeAndGenderWiseDetails(myResults,jsObj);
@@ -1293,12 +1301,12 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		if(jsObj.type=="panchayat"){
 		if(buildType=="hamlet"){
 			var totalvoter=votersbasicinfo.assignedVotersByUser+votersbasicinfo.unassignedVotersByUser;
-			strl ='';
-    			strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th style="text-align:center;">Total Voters</th><th style="text-align:center;">Assigned by User</th><th style="text-align:center;">UnAssigned Voters</th></thead>';
-    			strl += '<tbody><td style="text-align:center;">'+totalvoter+'</td><td style="text-align:center;">'+votersbasicinfo.assignedVotersByUser+'</td><td style="text-align:center;">'+votersbasicinfo.unassignedVotersByUser+'</td></tbody>';
+			//strl ='';
+    		//	strl += '<table class="table tableas table-bordered" style="margin-top:20px;"><thead><th style="text-align:center;">Total Voters</th><th style="text-align:center;">Assigned by User</th><th style="text-align:center;">UnAssigned Voters</th></thead>';
+    		//	strl += '<tbody><td style="text-align:center;">'+totalvoter+'</td><td style="text-align:center;">'+votersbasicinfo.assignedVotersByUser+'</td><td style="text-align:center;">'+votersbasicinfo.unassignedVotersByUser+'</td></tbody>';
 			
-			strl += '</table>';
-			$("#assAndUnass").html(strl);
+			//strl += '</table>';
+			//$("#assAndUnass").html(strl);
 			}
 			else{
 			$("#assAndUnass").html('');
@@ -1349,9 +1357,9 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		var votersResultColumnDefs = [ 		    	             
 		    	            
 							{key:"name", label: votersbasicinfo.votersInfoForMandalVOList[0].type, sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
-		    	           	{key:"maleVoters", label: "Male Voters", sortable: true},
+		    	           	{key:"totalMaleVoters", label: "Male Voters", sortable: true},
 							
-							{key:"femaleVoters", label: "Female Voters", sortable: true},
+							{key:"totalFemaleVoters", label: "Female Voters", sortable: true},
 		    				{key:"totVoters", label: "Total Voters",sortable:true},
 							{key:"totPercent", label: votersbasicinfo.votersInfoForMandalVOList[0].type+" % Share", sortable: true}
 		    	        ]; 
@@ -1750,7 +1758,7 @@ function getLatestCastsSubcategoryWise(){
   $("#localCastStatsTabContent_subbody").html("");
   var buildType = "hamlet";
   if(type == "panchayat")
-  buildType = "booth";
+	  buildType = "${buildType}";
   var jsObj=
 		{		
 				type:type,	
@@ -2266,6 +2274,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0){
 		  $("#localCastStatsTabContent_subbody").html("<b style='margin-left: 350px;'>No Data Available</b>");
 		  $("#getLatestCastsSubcategoryWise").css("display","none");
+		  $('#casteDetailsDiv').hide();
 		  return;
 		}  
 		//if(type != 'booth')
@@ -2467,7 +2476,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 
 function buildVoterDetailsTable(result,type,retrieveType){
 
-	if(result.votersDetailsVO.length == 0){
+	if(result.votersDetailsVO == null || result.votersDetailsVO.length == 0){
 		$('#votersDiv4').hide();
 		return false;
 	}
@@ -3677,10 +3686,10 @@ function showMPTCZPTCResults()
 
 getvotersBasicInfo("voters",id,publicationId,type);
 getCensusInfoForSubLevels();
+
 getLatestCastsSubcategoryWise();
 getAgewiseVoterDetails();
 if('${type}' == "mandal")
-
 showMPTCZPTCResults();
 
 </script>
