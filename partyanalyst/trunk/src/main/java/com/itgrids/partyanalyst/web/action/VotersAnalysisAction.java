@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -1603,12 +1605,32 @@ return Action.SUCCESS;
 			attributeIds.add(jObj.getLong("attributeId"));
 			castList = voterReportService.getVoterAttributeSubDetails(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
 		}
+		for(int i=0;i<castList.size();i++)
+		{
+			if(castList.get(i).getPartyWisevoterCastInfoVOList() != null && castList.get(i).getPartyWisevoterCastInfoVOList().size() > 0){
+			Collections.sort(castList.get(i).getPartyWisevoterCastInfoVOList(),sortByOrder);
+			}
+		}
+		
 	  }catch(Exception e){
 		  log.error("Exception Occured in getCategoryWiseDetails() Method, Exception - ",e);
 	  }
 		return Action.SUCCESS;
 	}
-	
+	 public static Comparator<VoterCastInfoVO> sortByOrder = new Comparator<VoterCastInfoVO>()
+			    {
+			   
+			        public int compare(VoterCastInfoVO resultList1, VoterCastInfoVO resultList2)
+			        {
+			        	if(resultList1.getOrderNo() == null || resultList2.getOrderNo() == null){
+			        		return 0;
+			        	}
+			        	else{
+			            return (resultList1.getOrderNo()).compareTo(resultList2.getOrderNo());
+			        	}
+			        }
+			    };
+			    
 	public String getAgeWiseWiseDetails()
 	{
 	try{
@@ -1624,6 +1646,12 @@ return Action.SUCCESS;
 			attributeIds.add(new Long(id.trim()));
 		}
 		ageRangeList = userVoterService.getAgeRangeByUserVoterCategory(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
+		for(int i=0;i<ageRangeList.size();i++)
+		{
+			if(ageRangeList.get(i).getVotersDetailsVOList() != null && ageRangeList.get(i).getVotersDetailsVOList().size() > 0){
+			Collections.sort(ageRangeList.get(i).getVotersDetailsVOList(),sortByOrderNo);
+			}
+		}
 	}
 	catch(Exception e)
 	{
@@ -1631,6 +1659,21 @@ return Action.SUCCESS;
 	}
 	return Action.SUCCESS;
 	}
+	
+	 public static Comparator<VotersDetailsVO> sortByOrderNo = new Comparator<VotersDetailsVO>()
+			    {
+			   
+			        public int compare(VotersDetailsVO resultList1, VotersDetailsVO resultList2)
+			        {
+			        	if(resultList1.getOrderNo() == null || resultList2.getOrderNo() == null){
+			        		return 0;
+			        	}
+			        	else{
+			            return (resultList1.getOrderNo()).compareTo(resultList2.getOrderNo());
+			        	}
+			        }
+			    };
+			    
 	public String getPublicationId()
 	{
 		latestPublicationId = votersAnalysisService.getLatestPublicationId();
