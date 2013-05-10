@@ -114,7 +114,7 @@ public class VotersDetailsVO implements Serializable{
 	private Long userId;
 	
 	private String localityName;
-	
+	 private Long orderNo;
 	
 	private Long userVoterCategoryId;
 	
@@ -122,6 +122,12 @@ public class VotersDetailsVO implements Serializable{
 	
 	private String muncipalityType;
 	
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
 	public String getMuncipalityType() {
 		return muncipalityType;
 	}
