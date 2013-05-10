@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.ICustomPageDAO;
 import com.itgrids.partyanalyst.dao.ICustomPageTypeDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
@@ -214,10 +215,21 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
 	private IVoterDAO voterDAO;
 	
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+
 	public IVoterDAO getVoterDAO() {
 		return voterDAO;
 	}
+
 
 	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
@@ -5141,12 +5153,42 @@ public PdfGenerationVO generatePdf(List<FileVO> filesList , PdfGenerationVO pdfG
  * @return List<SelectOptionVO>
 */
 public List<SelectOptionVO> getCandidateDetailsBySearch(String gender,
-		String name, Long constituencyId, Long stateId) {
+		String name, Long constituencyId, Long stateId,String selectedType) {
 	List<SelectOptionVO> returnValue = new ArrayList<SelectOptionVO>();
 	try
 	{
 		log.debug("Entered into the getCandidateDetailsBySearch() method");
-	   List<Object[]> results = candidateDAO.getCandidateDetailsBySearch(gender,name,constituencyId,stateId);
+		List<Object[]> results = null;
+		
+		if(selectedType.equalsIgnoreCase("") || selectedType.equalsIgnoreCase("assembly") || selectedType.equalsIgnoreCase("parliament"))
+	      results = candidateDAO.getCandidateDetailsBySearch(gender,name,constituencyId,stateId,selectedType);
+		else{
+			
+			List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId);
+			
+			List<Long> tehsilIds = new ArrayList<Long>();
+			
+			for(Object obj:list){
+				
+				Object[] obj1 = (Object[])obj;
+				tehsilIds.add((Long)obj1[0]);
+			}
+			
+			Long electionScopeId = null;
+			
+			if(selectedType.equalsIgnoreCase("mptc"))
+					electionScopeId = IConstants.MPTC_ELCTION_TYPE_ID;
+			else if(selectedType.equalsIgnoreCase("zptc"))
+			electionScopeId = IConstants.ZPTC_ELCTION_TYPE_ID;
+					
+			
+			
+			results = nominationDAO.getMptcAndZptcCandidateNamesByTehsilIds(tehsilIds,electionScopeId);
+				
+	
+			
+			
+		}
 	   for(Object[] candidateDetails: results)
 	   {
 		  SelectOptionVO selectOptionVO = new SelectOptionVO();

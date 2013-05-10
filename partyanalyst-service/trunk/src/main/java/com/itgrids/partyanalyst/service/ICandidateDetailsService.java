@@ -210,7 +210,7 @@ public interface ICandidateDetailsService {
 	 
 	 public List<SelectOptionVO> getCandidateGallariesByCategory(Long categoryId , Long registrationId);
 	 
-	 public List<SelectOptionVO> getCandidateDetailsBySearch(String gender,String name,Long constituencyId,Long stateId);
+	 public List<SelectOptionVO> getCandidateDetailsBySearch(String gender,String name,Long constituencyId,Long stateId,String selectedType);
 	 
 	 public ResultStatus saveCandidateVoterDetails(Long CandidateId,Long voterId);
 }

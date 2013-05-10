@@ -241,7 +241,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	 * @return List<Object[]>
 	 */
 	public List<Object[]> getCandidateDetailsBySearch(String gender,
-			String name, Long constituencyId, Long stateId) {
+			String name, Long constituencyId, Long stateId,String selectedType) {
 		
 		StringBuilder query = new StringBuilder();
 		query.append("select distinct model.candidate.candidateId,model.candidate.lastname ,model.constituencyElection.constituency.name from Nomination model " +
@@ -259,6 +259,11 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		if(stateId!= null && stateId>0L)
 			query.append("  and model.constituencyElection.constituency.state.stateId=:stateId ");
 		
+		if(selectedType.equalsIgnoreCase("mptc") || selectedType.equalsIgnoreCase("zptc"))
+			query.append("  and model.constituencyElection.election.electionScope.electionType.electionTypeId = :elctionTypeId");
+	
+		
+		
 		query.append("  order by model.candidate.lastname asc ");	
 		
 		 Query queryObject = getSession().createQuery(query.toString());
@@ -271,6 +276,12 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		 
 		 if(stateId!= null && stateId>0L)
 			 queryObject.setLong("stateId", stateId);	 
+		 
+		 if(selectedType.equalsIgnoreCase("mptc"))
+			 queryObject.setParameter("elctionTypeId", IConstants.MPTC_ELCTION_TYPE_ID);
+		 else if(selectedType.equalsIgnoreCase("zptc"))
+			 queryObject.setParameter("elctionTypeId", IConstants.ZPTC_ELCTION_TYPE_ID);
+		
 		 
 		 return	queryObject.list();
 	}

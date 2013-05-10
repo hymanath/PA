@@ -610,6 +610,10 @@ public interface IConstants {
 	public final static String MUNCIPALITYWARDS = "muncipalityWards";
 	public final static String LOCAL_ELECTION_BODY_BOOTHS = "localElectionBodyBooths";
 	
+	
+	public static final long MPTC_ELCTION_TYPE_ID = 3L;
+	public static final long ZPTC_ELCTION_TYPE_ID = 4L;
+	
 
 	
 }
