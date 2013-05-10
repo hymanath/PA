@@ -75,7 +75,7 @@
 					
 					str +='<div><table id="movedTable" class="table table-bordered table-hover" border="1">';
 					str +='<tr><th>Name</th>';
-					str +='<th>Part No</th>';
+					str +='<th>Moved Booth</th>';
 					str +='<th>Age</th>';
 					str +='<th>Gender</th>';
 					str +='<th>House No</th>';
@@ -109,7 +109,7 @@
 					str +='<div>Relocated Voters Info Report For '+result[i].partNo+' Booth</div>';
 					str +='<div><table id="relocatedTable" class="table table-bordered table-hover" border="1">';
 					str +='<tr><th>Name</th>';
-					str +='<th>Part No</th>';
+					str +='<th>Relocated Booth</th>';
 					str +='<th>Age</th>';
 					str +='<th>Gender</th>';
 					str +='<th>House No</th>';
