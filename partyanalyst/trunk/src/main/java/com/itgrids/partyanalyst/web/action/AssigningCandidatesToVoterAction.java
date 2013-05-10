@@ -109,6 +109,7 @@ public class AssigningCandidatesToVoterAction extends ActionSupport implements S
 		String gender = null;
 		Long candidateId = null;
 		Long voterId = null;
+		String selectedType = "";
 		
 		try 
 		{
@@ -126,7 +127,10 @@ public class AssigningCandidatesToVoterAction extends ActionSupport implements S
 				if(jObj.getString("constituencyId")!= null && jObj.getString("constituencyId").trim().length()>0 )
 					constituencyId = jObj.getLong("constituencyId");
 				
-				selectOptionVO  = candidateDetailsService.getCandidateDetailsBySearch(gender,name,constituencyId,jObj.getLong("stateId"));
+				if(jObj.getString("selectedType") != null)
+					selectedType = jObj.getString("selectedType");
+				
+				selectOptionVO  = candidateDetailsService.getCandidateDetailsBySearch(gender,name,constituencyId,jObj.getLong("stateId"),selectedType);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("saveUserCandidateRelation"))
 			{

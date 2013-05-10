@@ -400,7 +400,7 @@ function getCandidatesBySearchCriteria()
    var constituencyIdElm = document.getElementById("constituencySelect")
    var constituencyId = constituencyIdElm.options[constituencyIdElm.selectedIndex].value;
    var stateId ='';
-   if(document.getElementById("assemblyCons").checked==true)
+   if(document.getElementById("assemblyCons").checked==true || document.getElementById("mptc").checked==true || document.getElementById("zptc").checked==true)
      {
 	   var stateElm = document.getElementById("stateSelect")
        stateId = stateElm.options[stateElm.selectedIndex].value;
@@ -415,6 +415,7 @@ function getCandidatesBySearchCriteria()
 			stateId:stateId,
 			name: name,
 			gender: gender,
+            selectedType:$('input:radio[name=constituency]:checked').val(), 
 			task: "getCandidateDetailsBySearchCriteria",
 			constituencyId: constituencyId		
 	}
@@ -607,6 +608,10 @@ function getCandidatesBySearchCriteria()
 			<td><span style="margin-left: -59px;">Select Level</span><font style="color:red"> *</font></td>
 	      <td><input type="radio" name="constituency" id="assemblyCons" value="assembly" onclick="showAssemblyData();" class="radioClass"/>Assembly</td>
 	      <td><input type="radio" name="constituency" id="parliamentCons"  value="parliament"  onclick="showParliamentData();" class="radioClass"/>Parliament</td>
+
+	<td><input type="radio" name="constituency" id="mptc"  value="mptc"  onclick="showAssemblyData();" class="radioClass"/>Mptc</td>
+
+	<td><input type="radio" name="constituency" id="zptc"  value="zptc"  onclick="showAssemblyData();" class="radioClass"/>Zptc</td>
 	  </tr>
    </table>
    <table>
