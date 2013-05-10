@@ -385,6 +385,8 @@
 	    <property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO"/>
 		<property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO"/>
 		<property name="voterDAO" ref="voterDAO" />
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
+		
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
@@ -1499,8 +1501,6 @@
 	  <property name="userVoterCategoryDAO" ref="userVoterCategoryDAO" />
 	  <property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
 	  <property name="regionServiceDataImp" ref="regionServiceDataImp" />
-	  <property name="userRolesDAO" ref="userRolesDAO" />
-	  <property name="userDAO" ref="userDAO" />
     </bean>
     
 </beans>		
