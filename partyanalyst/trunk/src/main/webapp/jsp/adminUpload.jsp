@@ -520,17 +520,15 @@
 										</a>
 									</span><br>
 									</fieldset></td>
-								
-
-								<!-- <td>
+								<td>
 								<fieldset class="f2">
-									<legend class="l2">Restrict User</legend>
+									<legend class="l2">Voter's	Validation tool</legend>
 									<span class="fontStyle">
-										Restrict User :&nbsp;
-										<a class="alinkstyle" href="<s:url action="setUserRestrictionAction"/>"> Restrict User
-										</a>
+										Voter's	Validation tool:&nbsp;
+										<a class="alinkstyle" href="<s:url action="validationToolsAction"/>"> Voter's	Validation tool	</a>
 									</span><br>
-									</fieldset></td>-->
+									</fieldset></td>
+								
 								<td></td>
 								</tr>
 						</table>

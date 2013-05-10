@@ -5086,7 +5086,6 @@
 				 <param name="root">mandalVO</param>
 			</result>				
 		</action>
-		
 		<action name="getReportLevelDetails" class="cadreRegisterAjaxAction" method="getReportLevelDetails">
 			 <result type="json" name="success">
 			   <param name="root">resultList</param>
@@ -5098,6 +5097,17 @@
 			   <param name="root">resultData</param>
 			 </result>
 		</action>
+		
+		<action name="validationToolsAction" class="validationToolsAction">
+		<result name="success">/jsp/validationTools.jsp</result>
+		<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+			<action name="getSubLevelInfoAction" class="validationToolsAction" method="AjaxHandler">
+			 <result type="json" name="success">
+				 <param name="root">resultList</param>
+			</result>
+		</action>
+		
 		
 		</package>
 </struts>      

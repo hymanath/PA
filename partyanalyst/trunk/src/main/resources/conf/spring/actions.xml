@@ -1153,5 +1153,11 @@
 	<bean id="assignSubUserAction" class="com.itgrids.partyanalyst.web.action.AssignSubUserAction" singleton="false">
 		<property name="userVoterService" ref="userVoterService" />
 	</bean>
+	<bean id="validationToolsAction" class="com.itgrids.partyanalyst.web.action.ValidationToolsAction" singleton="false">
+	<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
+	<property name="votersAnalysisService" ref="votersAnalysisService" />
+	<property name="dataValidationService" ref="dataValidationService" />
+	</bean>
+	
 </beans>	
 	
