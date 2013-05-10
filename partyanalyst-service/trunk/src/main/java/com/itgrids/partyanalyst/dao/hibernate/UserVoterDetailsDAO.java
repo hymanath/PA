@@ -1237,4 +1237,6 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
+	
+	
 }
