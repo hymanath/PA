@@ -355,10 +355,10 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	
 	
 	public void testfindConstituencyByDistrictElectionType(){
-		List<Object[]> list = constituencyDAO.findConstituencyByDistrictElectionType(18l,"Assembly");
+		List<Object[]> list = constituencyDAO.getConstituencyType(347l);
 		System.out.println(list.size());
 		for (Object[] objects : list) {
-			System.out.println(objects[0]);
+			System.out.println(objects[0] +":"+ objects[1]);
 		}
 	
 	}

@@ -99,10 +99,19 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetPanchayatIdsListByMandalId()
 	{
-		List<Long> list = panchayatDAO.getPanchayatIdsListByMandalId(836l);
-		for(Long id : list)
-			System.out.println(id);
-		
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(844l);
+		/*ids.add(836l);
+		ids.add(843l);*/
+		ids.add(835l);
+		List<Object[]> values = panchayatDAO.getAllPanchayatsInAListOfMandals(ids);
+	
+		System.out.println(values.size());
+		for (Object[] parms : values) {
+			
+			System.out.println(parms[0] +":"+ parms[1] +":"+ parms[2]);
+			
+		}
 	}
 	
 }

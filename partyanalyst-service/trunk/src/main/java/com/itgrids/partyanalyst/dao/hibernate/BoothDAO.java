@@ -900,4 +900,56 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 			return queryObj.list();
 		}
+		
+		public List<Object[]> getAllBoothsInSelectedType(Long id, Long level)
+		{
+			StringBuilder queryString = new StringBuilder();
+			queryString.append("select b.boothId,b.partNo from Booth b where   ");
+			if(level == 1)
+			{
+				queryString.append("b.constituency.constituencyId = :id");
+			}
+			else if(level == 2)
+			{
+				queryString.append("b.tehsil.tehsilId = :id");
+			}
+			else if(level == 3)
+			{
+				queryString.append("b.panchayat.panchayatId = :id");
+			}
+			queryString.append(" and b.publicationDate.date = (select max(p.date) from PublicationDate p)" );
+			
+			Query query = getSession().createQuery(queryString.toString());
+			query.setParameter("id", id);
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getAllBoothsForPanchayatsOrMandals(String type,List<Long> ids)
+		{
+			StringBuilder queryString = new StringBuilder();
+			queryString.append("select b.boothId,b.partNo, ");
+			if(type.equalsIgnoreCase("mandal"))
+			{
+				queryString.append("b.tehsil.tehsilName from Booth b where  b.tehsil.tehsilId in (:ids)");
+			}
+			else if(type.equalsIgnoreCase("panchayat"))
+			{
+				queryString.append("b.panchayat.panchayatName from Booth b where b.panchayat.panchayatId in (:ids)");
+			}
+			queryString.append(" and b.publicationDate.date = (select max(p.date) from PublicationDate p)" );
+			Query query = getSession().createQuery(queryString.toString());
+			query.setParameterList("ids", ids);
+			return query.list();
+		}
+		
+		public List<Object[]> getBoothsForSelectedWards(List<Long> ids)
+		{
+			StringBuffer queryString = new StringBuffer();
+			queryString.append("select distinct model.boothId,model.partNo from Booth model " +
+			 		"where model.localBodyWard.constituencyId in (:ids)");
+			Query query = getSession().createQuery(queryString.toString());
+			query.setParameterList("ids", ids);
+			return query.list();
+		}
 }
