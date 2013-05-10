@@ -77,7 +77,7 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{
 	
 	public Integer findNameInsertionInCandidate(String candidateName,Long candidateId);
 	
-	public List<Object[]> getCandidateDetailsBySearch(String gender,String name,Long constituencyId,Long stateId);
+	public List<Object[]> getCandidateDetailsBySearch(String gender,String name,Long constituencyId,Long stateId,String selectedType);
 	
 	public List<Long> getinfluencingPeopleVoterId(Long voterId);
 	
