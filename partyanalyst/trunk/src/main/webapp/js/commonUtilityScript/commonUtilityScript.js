@@ -43,7 +43,9 @@ function createOptionsForSelectElmtIdWithSelectOption(elmtId,optionsList)
 			elmt.add(option); // IE only
 		}
 	}
+	if(specific == true){
 	$("#partySelect").append(new Option('IND','366',false,false));
+	}
 }
 /**
  * This method takes element id as input and populates the select box with select item
