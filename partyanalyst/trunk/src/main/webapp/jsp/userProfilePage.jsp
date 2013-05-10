@@ -57,9 +57,9 @@ var hasNewsMonitoring = "${hasNewsMonitoring == true}";
 environment = '<%=environment%>';
 </script>
 <style>
-#connectPeoplePopup{
+/*#connectPeoplePopup{
  height: 230px !important;
-}
+}*/
 #changePWDButton{
 margin-right:5px !important;
 }
