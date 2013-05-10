@@ -44,7 +44,7 @@ public class UserVoterCategoryValueDAO extends GenericDaoHibernate<UserVoterCate
 	}
 	
 	public List<Object[]> getCatergoryAndValues(List<Long> categories,Long userId){
-		Query query = getSession().createQuery("select model.userVoterCategory.userVoterCategoryId,model.userVoterCategory.categoryName,model.userVoterCategoryValueId,model.categoryValue from UserVoterCategoryValue  " +
+		Query query = getSession().createQuery("select model.userVoterCategory.userVoterCategoryId,model.userVoterCategory.categoryName,model.userVoterCategoryValueId,model.categoryValue,model.orderNo from UserVoterCategoryValue  " +
 				" model where model.user.userId = :userId and  model.userVoterCategory.userVoterCategoryId in (:categories) ");
 		query.setParameterList("categories", categories);
 		query.setParameter("userId", userId);
