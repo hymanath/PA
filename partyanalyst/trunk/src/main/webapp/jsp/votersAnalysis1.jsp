@@ -2224,7 +2224,7 @@ function getAgewiseInfoForVoterCategory(){
 		{
 		var tehsilId = $("#middleNav-Panchayats-list a .checkbox").closest("a").attr("data-mandalid");
 		tehsilId = tehsilId.substring(1);
-	   var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+mainpublicationId+"&type="+maintype+"&publicationYear="+publicationYear+"&buildType=&constituencyId="+constiId+"&typeName="+mainname+"&mandalId="+tehsilId;
+	   var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+mainpublicationId+"&type="+maintype+"&publicationYear="+publicationYear+"&buildType="+buildType+"&constituencyId="+constiId+"&typeName="+mainname+"&mandalId="+tehsilId;
 		}
      var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
