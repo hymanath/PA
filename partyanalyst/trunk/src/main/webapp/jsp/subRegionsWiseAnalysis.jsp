@@ -355,7 +355,7 @@ color:#333333;
     width:100%;
 }
 #censusTab{width:98%;}
-#censusTab th{background:#d9edf7; color:#454545;}
+#censusTab th{background:#cde6fc; color:#454545;}
 #censusTab td{color:#000;}
 label{display:inline-block;}
 		input[type="radio"], input[type="checkbox"] {margin:5px;}
