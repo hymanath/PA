@@ -1225,4 +1225,16 @@ IUserVoterDetailsDAO{
 		return queryObject.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPanchayatWiseHamletsAssignedDetailsInAConstituency(Long constituencyId,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select B.tehsil.tehsilId, B.tehsil.tehsilName, B.panchayat.panchayatId, B.panchayat.panchayatName,VI.totalVoters, count(UVD.voter.voterId) from UserVoterDetails UVD, Booth B, VoterInfo VI, " +
+				" PanchayatHamlet PH where B.panchayat.panchayatId = PH.panchayat.panchayatId and PH.hamlet.hamletId = UVD.hamlet.hamletId and B.panchayat.panchayatId = VI.reportLevelValue and B.constituency.constituencyId = :constituencyId " +
+				" and VI.voterReportLevel.reportLevel = :reportLevel and B.publicationDate.publicationDateId = :publicationDateId group by B.panchayat.panchayatId ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("reportLevel","panchayat");
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
+	
 }
