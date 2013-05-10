@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dao.IVoterPartyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -1591,6 +1592,8 @@ public class VoterReportService implements IVoterReportService{
 						 
 						 voterCastInfoVO.setId((Long)value[2]);
 						 voterCastInfoVO.setName(value[3] != null?value[3].toString():"");
+						 if(value[4] != null)
+						 voterCastInfoVO.setOrderNo(new Long(value[4].toString()));
 					 }
 					 
 					 List<Object[]> attributeValuesList = new ArrayList<Object[]>();
