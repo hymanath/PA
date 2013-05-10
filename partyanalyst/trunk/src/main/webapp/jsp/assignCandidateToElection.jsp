@@ -199,7 +199,7 @@ width:591px;
 </fieldset>
 </div>
 <script type="text/javascript">
-
+var specific = false;
 function getMoreParties()
 {
 	var electionTypeEle = document.getElementById('electionTypeId');
@@ -532,6 +532,7 @@ function hideBusyImgWithId(elmtId)
 		 }
 		 else if(jObj.task == "getStaticParties"){
 		     clearOptionsListForSelectElmtId("partySelect");
+			specific = true;	
 			createOptionsForSelectElmtIdWithSelectOption("partySelect",myResults);
 		 }
 		 else if(jObj.task == "getPartiesWithAtleatOneWinningSeat"){
