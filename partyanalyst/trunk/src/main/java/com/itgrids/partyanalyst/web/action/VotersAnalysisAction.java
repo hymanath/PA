@@ -105,6 +105,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
     private Long latestPublicationId;
     private List<MandalInfoVO> mandalInfoVOsList;
+    
+    private List<SelectOptionVO> resultData;
 
 	public List<VotersDetailsVO> getAgeRangeList() {
 		return ageRangeList;
@@ -451,6 +453,15 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setMandalInfoVOsList(List<MandalInfoVO> mandalInfoVOsList) {
 		this.mandalInfoVOsList = mandalInfoVOsList;
+	}
+
+	
+	public List<SelectOptionVO> getResultData() {
+		return resultData;
+	}
+
+	public void setResultData(List<SelectOptionVO> resultData) {
+		this.resultData = resultData;
 	}
 
 	public String execute() throws Exception
@@ -1711,6 +1722,60 @@ return Action.SUCCESS;
 			
 		}catch (Exception e) {
 			log.error("Exception Occured in getPanchayatAndBoothDetails() Method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getUserCategoeryValues()
+	{
+		try {
+			log.debug("entered into getUserCategoeryValues() method in VotersAnalysisAction Action Class");
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return ERROR;
+			Long userId             = regVO.getRegistrationID();
+			if(jObj.getString("task").equalsIgnoreCase("getUserCategoeryValues"))
+			{
+				String status           = jObj.getString("status");
+				String type             = jObj.getString("type");
+				Long constituencyId     = jObj.getLong("constituencyId");
+				String[] selectedValues = jObj.getString("selectedValues").split(",");
+				List<Long> ids = new ArrayList<Long>();
+				for (String parm : selectedValues) {
+					ids.add(Long.valueOf(parm.trim()));
+				}
+				resultData = voterReportService.getSelectedUserCategoeryDetails(userId,ids,type,status,constituencyId);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getAllWards"))
+			{
+				Long constituencyId = jObj.getLong("id");
+				resultData = voterReportService.getAllWardsInUrbanConstituency(constituencyId);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getUserCatgValuesForWard"))	
+			{
+				Long constituencyId = jObj.getLong("constituencyId");
+				String status = jObj.getString("status");
+				String[] selectedValues = jObj.getString("values").split(",");
+				List<Long> ids = new ArrayList<Long>();
+				for (String parm : selectedValues) {
+					ids.add(Long.valueOf(parm.trim()));
+				}
+				resultData = voterReportService.getUserCategoeryValuesForWards(userId,constituencyId,ids,status);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getAllBoothsInAWard"))	
+			{
+				String[] selectedValues = jObj.getString("values").split(",");
+				List<Long> ids = new ArrayList<Long>();
+				for (String parm : selectedValues) {
+					ids.add(Long.valueOf(parm.trim()));
+				}
+				resultData = voterReportService.getAllBoothsForSelectedWards(ids);
+			}
+		
+		} catch (Exception e) {
+			log.error("Exception raised in getUserCategoeryValues() method in VotersAnalysisAction Action Class",e);
 		}
 		return Action.SUCCESS;
 	}

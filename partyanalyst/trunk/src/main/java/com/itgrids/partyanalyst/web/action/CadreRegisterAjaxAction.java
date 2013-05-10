@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -42,6 +43,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 	private IVotersAnalysisService votersAnalysisService;
 	private IStaticDataService staticDataService;
 	private HttpSession session;
+	private List<SelectOptionVO> resultList;
 	private static final Logger log = Logger.getLogger(CadreRegisterAjaxAction.class);
 	
 	
@@ -112,6 +114,17 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 	public void setVotersAnalysisService(
 			IVotersAnalysisService votersAnalysisService) {
 		this.votersAnalysisService = votersAnalysisService;
+	}
+
+	
+	
+
+	public List<SelectOptionVO> getResultList() {
+		return resultList;
+	}
+
+	public void setResultList(List<SelectOptionVO> resultList) {
+		this.resultList = resultList;
 	}
 
 	public String execute() throws Exception
@@ -431,4 +444,47 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		}
 		return SUCCESS;
 	}
+	
+	public String getReportLevelDetails()
+	
+	{
+		String param=null;
+		
+		param=getTask();
+		session = request.getSession();
+		
+		try {
+			log.debug("entered into getConstiReltaedData() in CadreRegistrationAjaxAction");
+			jObj=new JSONObject(param);
+			if(jObj.getString("task").equalsIgnoreCase("getReportLevelDetails"))
+			{
+				String type   = jObj.getString("type");
+				Long level    = jObj.getLong("level");
+				Long id       = jObj.getLong("id");
+				resultList    = staticDataService.getSelectedLevelDetails(type,level,id);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getSelectedMandalOrPanchayatData"))
+			{
+				String type   = jObj.getString("type");
+				Long level    = jObj.getLong("level");
+				String[] selectedValues = jObj.getString("values").split(",");
+				List<Long> ids = new ArrayList<Long>();
+				for (String parm : selectedValues) {
+					ids.add(Long.valueOf(parm.trim()));
+				}
+				resultList    = staticDataService.getPanchayatsOrBoothsForSelectedLevel(type,level,ids);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getConstituencyType"))
+			{
+				Long constituencyId = jObj.getLong("constituencyId");
+				resultList = staticDataService.getConstituencyType(constituencyId);
+			}
+			
+		}
+		catch (Exception e) {
+			log.error("exception raised in getConstiReltaedData() in CadreRegistrationAjaxAction", e);
+		}
+		return SUCCESS;
+	}
+	
 }

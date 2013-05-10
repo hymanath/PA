@@ -5087,5 +5087,17 @@
 			</result>				
 		</action>
 		
+		<action name="getReportLevelDetails" class="cadreRegisterAjaxAction" method="getReportLevelDetails">
+			 <result type="json" name="success">
+			   <param name="root">resultList</param>
+			 </result>
+		</action>
+		
+		<action name="getUserCategoeryValues" class="votersAnalysisAction" method="getUserCategoeryValues">
+			 <result type="json" name="success">
+			   <param name="root">resultData</param>
+			 </result>
+		</action>
+		
 		</package>
 </struts>      
