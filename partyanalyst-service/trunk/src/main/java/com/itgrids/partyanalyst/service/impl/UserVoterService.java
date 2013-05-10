@@ -267,6 +267,8 @@ public class UserVoterService implements IUserVoterService{
 				 
 				 votersDetailsVO.setId((Long)value[2]);
 				 votersDetailsVO.setName(value[3] != null?value[3].toString():"");
+				 if(value[4] != null)
+				 votersDetailsVO.setOrderNo(new Long(value[4].toString()));
 			 }
 			 if(!locationType.equalsIgnoreCase("hamlet"))
 			 {
