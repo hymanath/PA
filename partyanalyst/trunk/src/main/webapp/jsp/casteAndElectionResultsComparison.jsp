@@ -12,6 +12,10 @@
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 
  <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css" />
  <style>
    .blue {
       color:black;
@@ -64,6 +68,8 @@
  <script type="text/javascript">
   var locationSelected = "mandal";
   var mainStr = "";
+  var substr = "";
+  var attrPerc;
     function showHideLocations(type){
 	     locationSelected = type;
 	       $("#constituencyList").val(0);
@@ -324,7 +330,9 @@
 	  }
 	   function checkAndGetData(type,nameVal,selected)
 	   {
+		
 			$('#selUserCatgId').show();
+			$('#rangeSliderDiv').show();
 			var name = "";
 			if(selected == "ward")
 			{
@@ -383,14 +391,22 @@
 				}	
 				else
 				{
-					if(selected == "booth")
+					if(selected == "booth" && substr == "RURAL")
 					{
 						
-						name = $("#urbanIds option:selected").text();
+						name = $("#levelId option:selected").text();
+					}
+					else if(selected == "panchayat")
+					{
+						name = $("#levelId option:selected").text();
+					}
+					else if(selected == "")
+					{
+						name = $("#levelId option:selected").text();
 					}
 					else
 					{
-						 name = $("#levelId option:selected").text();
+						 name = $("#urbanIds option:selected").text();
 					}
 					
 					var id = $("#constituencyList option:selected").val();
@@ -903,12 +919,13 @@
 
 			callAjaxToGetData(jsObj,url);
 	}
-	
+
 	function buildConstituencyRelatedList(result)
 	{
 		$('#levelId').val(0);
 		if(result[0].name == "URBAN")
 		{
+			substr = "URBAN";
 			$('#urbanConstituency').show();
 			$('#ruralConstituency').hide();
 			$('#selLevelId').hide();
@@ -920,6 +937,7 @@
 		}
 		else
 		{
+			substr = "RURAL";
 			$('#ruralConstituency').show();
 			$('#urbanConstituency').hide();
 			$('#selLevelId').hide();
@@ -1106,6 +1124,7 @@
 	
 	}
 function getCastWiseElectionResults(){
+alert(type);
      var parties = '';
      var elections = '';
      var locationIds = '';
@@ -1142,7 +1161,7 @@ function getCastWiseElectionResults(){
 			  constituencyId:$("#constituencyList option:selected").val(),
 			  type:type,
 			  attributeType:"caste",
-			  attrPerc:"5",
+			  attrPerc:attrPerc,
 			  task:"buildChart"
 			}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1349,6 +1368,27 @@ function getCastWiseElectionResults(){
 		});
     
  }
+ 
+
+	
+$(function() {
+$( "#slider" ).slider({
+value:1,
+min: 0,
+max: 50,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+},
+change: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+attrPerc=ui.value;
+//buildGraphBySlide(casteRange);
+}
+});
+attrPerc=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
+attrPerc=$( "#slider" ).slider( "value" );
+});
  </script>
 </head>
 <body>
@@ -1412,6 +1452,15 @@ function getCastWiseElectionResults(){
 	</tr>
 	
 	</table>
+	
+	<div id="rangeSliderDiv" style="width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;display:none;" >
+			<h5 style="text-align:center;">Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
+			<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
+			</div>
+				<p style="padding-bottom:2px;">
+					<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;width: 255px;" />
+				</p>
+		</div>
 	<div class="hero-unit" style="display:none;">
 	<div id="mandalElecResultsElections"></div>
 	<div id="selectionDiv" align="left" style="margin-left: 138px;" >
@@ -1426,5 +1475,6 @@ function getCastWiseElectionResults(){
 		<span class="label label-info" style="padding:5px;margin:5px;">Show All <input type="radio" name="show_hide_votes" value="show" checked="checked"></span>
 		<span class="label label-info" style="padding:5px;margin:5px;">Hide All <input type="radio" name="show_hide_votes" value="hide"></span>
 	</div>
+	
   </body>
 </html>
