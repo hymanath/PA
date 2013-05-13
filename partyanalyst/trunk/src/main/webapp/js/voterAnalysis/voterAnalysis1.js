@@ -6419,6 +6419,19 @@ var typeofMuncipality="";
 		   muncipalityBooths = "true"
 		 break;
 		 
+		 case 8:
+			$.each(menudata[0].localbodiesList, function(iter,municipality){
+		     if(municipalityid == municipality.id && municipality.selectOptionsList != null){
+			    $.each(municipality.selectOptionsList,function(iter,customWard){
+				  if(panchayatid ==customWard.id && customWard.selectOptionsList != null){
+					$.each(customWard.selectOptionsList,function(iter,booth){
+						str+='<li class="nav nav-pills "><a class="btn" data-municipalityid="'+ customWard.id+'" data-municipalityid="'+ customWard.id+'" data-boothid="'+ booth.id+'" name-booth="'+booth.name+'" href="javascript:{}" style="width:44px;"><span class="checkbox marg"><input type="radio" data-municipalityid="'+ customWard.id+'" id="Chk-'+booth.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span>'+booth.name+'</a></li>';
+					});
+				  }
+				});
+			  }
+			});
+			break;
 		
 			}	
 		
@@ -6507,7 +6520,9 @@ showMyTabs();
 $("#middleNav-Wards-list a").live("click",function(){
 $(this).closest("li").addClass("active").siblings().removeClass("active");
 if(typeofMuncipality=="GHMC Greater Municipal Corp")
-$("#rightNav-Booths-list").customMenu(resultDataForNav,6,$(this).attr("name-muncipal"),$(this).attr("data-wardid"),$(this).attr("data-municipalityid"));
+	$("#rightNav-Booths-list").customMenu(resultDataForNav,6,$(this).attr("name-muncipal"),$(this).attr("data-wardid"),$(this).attr("data-municipalityid"));
+else
+  $("#rightNav-Booths-list").customMenu(resultDataForNav,8,0,$(this).attr("data-wardid"),$(this).attr("data-municipalityid"));
 });
 
 $("#rightNav-Booths-list a").live("click",function(){
