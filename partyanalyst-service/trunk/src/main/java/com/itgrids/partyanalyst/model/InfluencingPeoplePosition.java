@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,6 +20,9 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "influencing_people_position")
@@ -32,6 +37,7 @@ public class InfluencingPeoplePosition extends BaseModel{
 	private Set<InfluencingPeople> influencingPeoples = new HashSet<InfluencingPeople>();
 	private String isGlobal;
 	private Long userId;
+	private User user;
 	
 	public InfluencingPeoplePosition(){
 		
@@ -109,6 +115,18 @@ public class InfluencingPeoplePosition extends BaseModel{
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 }
