@@ -20,6 +20,14 @@ public class DataValidationService implements IDataValidationService{
 	private IVoterInfoDAO voterInfoDAO;
 	private IPanchayatHamletDAO panchayatHamletDAO;
 	
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+
+	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
+		this.voterInfoDAO = voterInfoDAO;
+	}
+
 	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
 		return userVoterDetailsDAO;
 	}
