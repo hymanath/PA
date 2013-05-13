@@ -1699,7 +1699,7 @@ function showSentBoxMessagesForAUser(results)
 
 function deleteMail(senderId,type,btnName,customMessageId)
 {
-if (confirm("Are you sure you wato to Delete"))
+if (confirm("Are you sure want to Delete?"))
 	{
 var jsObj ={
 				loginUserId:loginUserId,
