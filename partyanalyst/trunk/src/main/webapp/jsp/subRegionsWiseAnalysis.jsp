@@ -2620,7 +2620,8 @@ function buildAgewiseDetails(results , obj){
 		return false;
 	}
 
-	$('#voterAgewiseDetailsNote').html('<div ><h3>'+noteString+'</h3></div>');
+	//$('#voterAgewiseDetailsNote').html('<div ><h3>'+noteString+'</h3></div>');
+$('#voterAgewiseDetailsNote').html('<div><h4 id="sublevelHeading">'+noteString+'</h4></div>');
 
 	var str='';
 	str+='<table  class="ageTable table table-bordered table-hover" id="mandalWiseVoterAgeTable" >';
@@ -3693,9 +3694,5 @@ if('${type}' == "mandal")
 showMPTCZPTCResults();
 
 </script>
-
-
 </body>
-
-
 </html>
