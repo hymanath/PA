@@ -448,7 +448,7 @@ $(document).ready(function(){
    
    // $("#votingTrendzDiv").hide();
 
-   if(buildtype="hamlet"){
+   if( "${buildType}" == "hamlet"){
 	   $('#mandalElecResultsDiv').hide();
    }else{
 	   $("#mandalElecResultsDiv").show();
