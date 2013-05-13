@@ -1502,10 +1502,11 @@
 	  <property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
 	  <property name="regionServiceDataImp" ref="regionServiceDataImp" />
     </bean>
+    
     <bean name="dataValidationService" class="com.itgrids.partyanalyst.service.impl.DataValidationService">
-    <property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
-    <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
-	
+	    <property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
+	    <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
+	    <property name="voterInfoDAO" ref="voterInfoDAO" />
     </bean>
     
     
