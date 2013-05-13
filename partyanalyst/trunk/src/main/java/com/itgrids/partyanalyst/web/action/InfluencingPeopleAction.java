@@ -603,7 +603,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		}
 		Long userId = regVO.getRegistrationID();
 		String newPosition = jObj.getString("position");
-		positionsList = influencingPeopleService.saveNewPositionForInfluencingPeople(newPosition,userId);
+		positionsList = influencingPeopleService.saveNewPositionForInfluencingPeople(newPosition.trim(),userId);
 		return SUCCESS;
 	}
 }
