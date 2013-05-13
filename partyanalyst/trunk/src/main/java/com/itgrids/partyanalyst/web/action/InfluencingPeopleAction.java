@@ -8,9 +8,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
-import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
@@ -35,6 +35,8 @@ public class InfluencingPeopleAction extends ActionSupport implements
 
 	
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOG = Logger.getLogger(InfluencingPeopleAction.class);
+	
 	private HttpServletRequest request;
 	private HttpSession session;
 	private ServletContext context;
@@ -356,8 +358,9 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			return ERROR;
 		String accessType =regVO.getAccessType();
 		Long accessValue= new Long(regVO.getAccessValue());
+		Long userId = regVO.getRegistrationID();
 		
-		positionsList = influencingPeopleService.getAllInfluencePeoplePositions();
+		positionsList = influencingPeopleService.getAllInfluencePeoplePositions(userId);
 		positionsList.add(0, new SelectOptionVO(0l,"Select Position"));
 		positionSize =  positionsList.size();
 		//staticParties = staticDataService.getStaticParties();
@@ -582,19 +585,25 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		Long influencingPeopleId = jObj.getLong("influencingPeopleId");
 		
 		Integer rows = influencingPeopleService.deleteInfluencingPeople(influencingPeopleId);
-		Log.debug("rows:"+rows);
+		LOG.debug("rows:"+rows);
 		
 	}
 	public String ajaxCallHandler(){
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO == null)
+			return ERROR;
+		
 		try {
 			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
+		Long userId = regVO.getRegistrationID();
 		String newPosition = jObj.getString("position");
-		positionsList = influencingPeopleService.saveNewPositionForInfluencingPeople(newPosition);
+		positionsList = influencingPeopleService.saveNewPositionForInfluencingPeople(newPosition,userId);
 		return SUCCESS;
 	}
 }

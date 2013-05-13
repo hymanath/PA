@@ -382,6 +382,8 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PROBLEM_MANAGEMENT_ENTITLEMENT))
 			return ERROR;
 		
+		Long userId = user.getRegistrationID();
+		
 		accessType = user.getAccessType();
 		accessValue = new Long(user.getAccessValue());
 		if("MLA".equals(accessType))
@@ -478,7 +480,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			}else if(jObj.getString("task").equals("getParties")){
 				result = staticDataService.getStaticParties();
 			}else if(jObj.getString("task").equals("getPositions")){
-				result = influencingPeopleService.getAllInfluencePeoplePositions();
+				result = influencingPeopleService.getAllInfluencePeoplePositions(userId);
 			}else if(jObj.getString("task").equals("getInfluencingRange")){
 				result = influencingPeopleService.getInfluenceRange();
 			}else if(jObj.getString("task").equals("getProblemsBySelection")){

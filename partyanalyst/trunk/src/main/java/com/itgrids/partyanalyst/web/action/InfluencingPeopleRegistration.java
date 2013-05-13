@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -108,8 +109,10 @@ public class InfluencingPeopleRegistration extends ActionSupport implements
 		staticParties = new ArrayList<SelectOptionVO>();
 		influenceRange = new ArrayList<SelectOptionVO>();
 		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		Long userId = user.getRegistrationID();
 		
-		positionsList = influencingPeopleService.getAllInfluencePeoplePositions();
+		positionsList = influencingPeopleService.getAllInfluencePeoplePositions(userId);
 		positionSize =  positionsList.size();
 		staticParties = staticDataService.getStaticParties();
 		influenceRange = influencingPeopleService.getInfluenceRange();
