@@ -365,4 +365,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getConstituencyType(Long constituencyId);
 		
 		//public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId);
+		
+		public MandalVO getElectionYearsAndPartiesForSelectedConstituency(Long constituencyId);
 }
