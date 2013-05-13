@@ -468,7 +468,7 @@ function addPositionAjaxCall(){
 		$("#posId").val("");
 		return;
 	}
-	if($("#posId").val() ==""){
+	if($.trim($("#posId").val()) ==""){
 		$("#errorMsgDiv").html("Please enter any position").css("color","red");
 		return;
 	}
