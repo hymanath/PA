@@ -1237,7 +1237,6 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
-		
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getBoothsForCustomWard(Long wardId,Long constituencyId,Long publicationDateId,Long userId)
 	{
@@ -1252,5 +1251,18 @@ IUserVoterDetailsDAO{
 		
 		return queryObj.list();
 	}
-	 
+	
+	public List<Object[]> getPanchayatWiseHamletsAssignedDetails(Long constituencyId,Long publicationDateId,Long userId)
+	{
+		Query query = getSession().createQuery("select B.panchayat.panchayatId,B.panchayat.panchayatName,UVD.hamlet.hamletId,UVD.hamlet.hamletName,Count(UVD.voter.voterId) from UserVoterDetails UVD, BoothPublicationVoter BPV, Booth B where " +
+				" UVD.voter.voterId = BPV.voter.voterId and BPV.booth.boothId = B.boothId and UVD.hamlet is not null and UVD.user.userId = :userId and B.constituency.constituencyId = :constituencyId and B.publicationDate.publicationDateId = :publicationDateId " +
+				" group by UVD.hamlet.hamletId order by B.tehsil.tehsilName,B.panchayat.panchayatName,UVD.hamlet.hamletName ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("userId",userId);
+		return query.list();
+	}
+	
+	
+	
 }
