@@ -37,6 +37,28 @@
    {
 		height: 56px;
    }
+   .hero-unit{padding:22px;color:black;font-size:15px;margin-bottom: 5px;margin-top: 10px;}
+   .hero-unit {
+    color: black;
+    font-size: 15px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    padding: 22px;
+	}
+   label {
+    display: inline-block;
+	}
+	label {
+		margin-bottom: 5px;
+	}
+	label, input, button, select, textarea {
+		font-size: 13px;
+		font-weight: normal;
+		line-height: 18px;
+	}
+	input[type="radio"], input[type="checkbox"] {
+    margin: 5px;
+}
  </style>
  <script type="text/javascript">
   var locationSelected = "mandal";
@@ -221,6 +243,7 @@
 									}
 									else if(jsObj.task == "getConstituencyType")
 									{
+										
 										buildConstituencyRelatedList(myResults);
 									}
 									else if(jsObj.task == "getAllWards")
@@ -233,6 +256,11 @@
 										{
 											buildAllWards(myResults,jsObj);
 										}
+									}
+									else if(jsObj.task == "getConstiEleAndPartiesForSelected")
+									{
+										
+										buildElectionAndPartyDetails(myResults);
 									}
 								}catch (e) {
 								
@@ -395,12 +423,12 @@
 			$('#userSelCatgListValue').html(value);
 			
 	   }
-	  function unselectAll(){
+	 /*  function unselectAll(){
 		  $('.attributeTypeClassIni').each(function() {
             $(this).removeAttr('checked');
           });
 	  }
-	   
+	    */
 	function getRespectiveSelection()
 	{
 		var selecetd =  $("#levelListId option:selected").val();
@@ -408,7 +436,7 @@
 	}
 	var type;
 	function getRespectiveValues(constituencyType)
-	{
+	{	
 		var checkedStatus = $('.radioCheck').is('ckecked');
 		if(checkedStatus == false)
 		{
@@ -899,7 +927,7 @@
 			
 		}
 		
-		
+		getConstituencyEleAndParties();
 	}
 	
 	function getWardsAConstituency()
@@ -977,6 +1005,103 @@
 		callAjaxToGetData(jsObj,url);
 		
 	}
+	
+	function getConstituencyEleAndParties()
+	{
+		var constituencyId = $("#constituencyList option:selected").val();
+			var jsObj= {
+				constituencyId : constituencyId,
+					task:"getConstiEleAndPartiesForSelected"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getConstituencyElectionYearsAction.action?"+rparam;	
+		   
+			callAjaxToGetData(jsObj,url);
+	}
+	
+	function buildElectionAndPartyDetails(myResults)
+	{
+		$('.hero-unit').show();
+		if(myResults.electionsInMandal.length == 0)
+		$("#mandalElecResultsDiv").css("display","none");
+      if(myResults != null && myResults.partiesInMandal != null && myResults.partiesInMandal.length > 0  && myResults.electionsInMandal != null && myResults.electionsInMandal.length > 0){
+		   $("#mandalElecResultsDiv").css("display","block");
+		  var electionsLength = myResults.electionsInMandal.length;
+	     var str='';
+		 str+='<table><tr><th align="left">Parties : </th><td>';
+		 for(var i in myResults.partiesInMandal){
+		  str+='<input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
+		 }
+		 str+='</td></tr>';
+	     
+		 str+='<tr><th align="left">Elections  : </th><td>';
+		 str+='<table>';
+		 for(var i in myResults.electionsInMandal){
+			if(i%6==0)
+				str+='<tr>';
+			if(i == electionsLength-1)
+			 {
+				str+='<td><input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
+			 }
+			else{
+	 str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
+		   }
+			if((i%6)+1==0)
+		   str+='</tr>';
+		 }
+		 str+='</table>';
+		 str+='</td></tr>';
+		
+		 str+='</table>';
+	    
+			$("#mandalElecResultsElections").html(str);
+		}
+	}
+	
+	function selectAll(){
+		var elmts = document.getElementById('selectAll');
+		var deSelect = document.getElementById('deSelectAll');
+			if(elmts.checked == true){
+				deSelect.checked = false;
+				selectAllCheckBoxes(); 
+			}
+	}
+
+	function selectAllCheckBoxes(){
+		var elmts = document.getElementsByName('parties');
+		if(elmts.length == 0)
+				return;
+			for(var i=0; i<elmts.length; i++)
+			{
+				if(elmts[i].type == "checkbox" && !elmts[i].checked)
+					elmts[i].checked = true;
+			}
+	
+	}
+
+
+	function deSelectAll(){
+	
+		var elmts = document.getElementById('deSelectAll');
+		var elmt = document.getElementById('selectAll');
+			if(elmts.checked == true){
+					elmt.checked = false;
+					deSelectAllCheckBoxes(); 
+			
+			}
+	}
+
+	function deSelectAllCheckBoxes(){
+		var elmts = document.getElementsByName('parties');
+			if(elmts.length == 0)
+				return;
+			for(var i=0; i<elmts.length; i++)
+			{
+				if(elmts[i].type == "checkbox" && elmts[i].checked)
+					elmts[i].checked = false;
+			}
+	
+	}
  </script>
 </head>
 <body>
@@ -984,7 +1109,7 @@
   <div  class="widget blue" id="votersBasicInformationDiv" align="center" style="font-family: verdana;font-size: 12px;">
   <div id="errorDiv" style="color:red;display:none"></div>
 	
-	<table style="width: 328px;">
+	<table style="">
 	<tr class="tableRow" >
 	<div id="constituencyDiv" class="selectDiv">
 	<td><b>Constituency </b><font class="requiredFont" style="color:red">*</font></td><td>
@@ -1023,12 +1148,7 @@
 	<td><div id="specificMandalName" style="display:none;"></div></td>
 	<td><div id="specificMandalValue" style="display:none;"></div></td>
 	</tr>
-	
-	<!--<tr class="tableRow" id="selMandalId">
-	<td><div id="specificMandalName" style="display:none;"></div></td>
-	<td><div id="specificMandalValue" style="display:none;"></div></td>
-	</tr>-->
-	
+		
 	<tr class="tableRow" id="selPanchayatRow">
 	<td><div id="specificPanchayatName" style="display:none;"></div></td>
 	<td><div id="specificPanchayatValue" style="display:none;"></div></td>
@@ -1045,6 +1165,14 @@
 	</tr>
 	
 	</table>
+	<div class="hero-unit" style="display:none;">
+	<div id="mandalElecResultsElections"></div>
+	<div id="selectionDiv" align="left" style="margin-left: 138px;" >
+    <input type="checkbox" id="selectAll"  onclick="selectAll()" name="selection"><span>Select All</span>
+	<input type="checkbox" id="deSelectAll" onclick="deSelectAll()" name="selection"><span>Unselect All</span>
+	</div>
+	<div id="submitbtn"><input type="button" class="btn" value="Submit"></input></div>
+	</div>
   </div>
   
   </body>
