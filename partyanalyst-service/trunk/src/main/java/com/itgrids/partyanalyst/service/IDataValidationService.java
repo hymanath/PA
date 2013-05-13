@@ -6,6 +6,6 @@ import com.itgrids.partyanalyst.excel.booth.DataValidationVO;
 
 public interface IDataValidationService {
 	
-	public List<DataValidationVO> getHamletsAssignedValidation(Long constituencyId,Long publicationDateId);
+	public List<DataValidationVO> getHamletsAssignedValidation(Long constituencyId,Long publicationDateId,Long userId);
 
 }
