@@ -6847,6 +6847,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					 List<SelectOptionVO> localbody1 = new ArrayList<SelectOptionVO>(0);
 					 List<SelectOptionVO> localbody2 = new ArrayList<SelectOptionVO>(0);
 					 List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>(0);
+					 List<SelectOptionVO> customWardBooths = new ArrayList<SelectOptionVO>(0);
+					 
 					 SelectOptionVO panchayat;
 					 SelectOptionVO booth = null;
 					 VotersDetailsVO votersDetailsVO = new VotersDetailsVO();
@@ -6936,8 +6938,15 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									if(!localbody1.get(0).getType().equalsIgnoreCase("Greater Municipal Corp") )
 										localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
 									
-									/*if(localbody1!= null && localbody1.size() > 0)
-									{*/
+									if(localbody1!= null && localbody1.size() > 0)
+									{
+									   for(SelectOptionVO customWardId : localbody1)
+									   {
+										   customWardBooths = getCustomWardBooths(customWardId.getId(), constituencyId, userId, publicationDateId);
+										   if(customWardBooths != null && customWardBooths.size() > 0)
+											   customWardId.setSelectOptionsList(customWardBooths);
+									   }
+									}
 									localbody.setSelectOptionsList(localbody1);	
 									totalWards = totalWards +localbody1.size();
 									localbody.setValue(new Long(localbody1.size()).toString());
@@ -7040,6 +7049,27 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					}
 					
 			}
+		 
+				 public List<SelectOptionVO> getCustomWardBooths(Long wardId,Long constituencyId, Long userId,Long publicationDateId)
+				 {
+					 List<SelectOptionVO> selectOptionVOList = null;
+					 try{
+						 List<Object[]> list = userVoterDetailsDAO.getBoothsForCustomWard(wardId, constituencyId, publicationDateId, userId);
+						 if(list != null && list.size() > 0)
+						 {
+							 selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+							 for(Object[] params : list)
+								 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+							
+						 }
+						 return selectOptionVOList;
+					 }catch (Exception e) {
+						e.printStackTrace();
+						log.error("Exception Occured in getCustomWardBooths() method,Exception - "+e);
+						return selectOptionVOList;
+					}
+					 
+				 }
 					public List<SelectOptionVO> getMandals(List<SelectOptionVO> list)
 					{
 					List<SelectOptionVO> resultlist = new ArrayList<SelectOptionVO>();
@@ -12759,22 +12789,22 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			      // hamlets = boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(lid, userId ,type);
 				   hamlets =(List<Object>)  userVoterDetailsDAO.getVoterIdsBYLocalElectionBodyId(lid, publicationDateId ,userId ,type);
 			   }
-			List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,hamlets);
-		   
-			if(filter == null || filter.size()==0)
-				   return new ArrayList<VotersDetailsVO>();
-			
-			
-			//List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter);
-		    List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter,userId,type,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
-		    if(list == null || list.size()==0)	
-			{   
-				return boothVotersList;	
-			}else
-			{
-				helperBusinessDelegator(list,boothVotersList);
-				//return boothVotersList;	
-			}
+				List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,hamlets);
+				   
+				if(filter == null || filter.size()==0)
+					   return new ArrayList<VotersDetailsVO>();
+				
+				
+				//List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter);
+			    List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter,userId,type,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+			    if(list == null || list.size()==0)
+				{   
+					return boothVotersList;
+				}else
+				{
+					helperBusinessDelegator(list,boothVotersList);
+					//return boothVotersList;	
+				}
 		/*	
 			
 			//List<Object[]> booths = boothDAO.getBoothsInAPanchayat(panchayatId, publicationDateId);
