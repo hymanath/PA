@@ -11,6 +11,7 @@
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 
+ <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
  <style>
    .blue {
       color:black;
@@ -256,6 +257,8 @@
 										{
 											buildAllWards(myResults,jsObj);
 										}
+									}else if(jsObj.task == "buildChart"){
+									  buildChart(myResults,jsObj);
 									}
 									else if(jsObj.task == "getConstiEleAndPartiesForSelected")
 									{
@@ -1102,6 +1105,250 @@
 			}
 	
 	}
+function getCastWiseElectionResults(){
+     var parties = '';
+     var elections = '';
+     var locationIds = '';
+     var attributeIds = '';	 
+    $('.elecSelForPanc').each(function(){
+	  if($(this).is(':checked'))
+	    elections+=','+$(this).val();
+    });
+	$('.partySelForPanc').each(function(){
+	  if($(this).is(':checked'))
+	    parties+=','+$(this).val();
+    });
+	$('#multipleSelect :selected').each(function(i, selected){ 
+	   locationIds+=','+$(selected).val();
+    });
+	$('#selCategoeryList :selected').each(function(i, selected){ 
+	   attributeIds+=','+$(selected).val();
+    });
+	var type = 'mandal';
+	var lvlId = $("#levelId option:selected").val();
+	if(lvlId == 1){
+	  type = 'mandal';
+	}else if(lvlId == 2){
+	  type = 'panchayat';
+	}else if(lvlId == 3){
+	  type = 'booth';
+	}
+	var jsObj=
+			{
+		      electionIds:elections.substr(1),
+			  partyIds:parties.substr(1),
+			  locationIds:locationIds.substr(1),
+			  attributeIds:attributeIds.substr(1),
+			  constituencyId:$("#constituencyList option:selected").val(),
+			  type:type,
+			  attributeType:"caste",
+			  attrPerc:"5",
+			  task:"buildChart"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getAttributeWiseElecResultsAction.action?"+rparam;	
+   
+		callAjaxToGetData(jsObj,url);
+	}
+ function buildChart(result){
+  $("#show_hide_votes").show();
+ var linechartDataArr = new Array();
+	var results = new Array();
+	var results1 = new Array();
+	var results2 = new Array();
+	var results3 = new Array();
+	var data_perc=[];
+	var data_vv=[];
+	var attr_perc=[];
+	var attr_vv=[];
+	
+	var data = new Array();
+	   
+	    for(var i in result.locationNames){
+	   linechartDataArr.push(result.locationNames[i]);
+	 }
+		
+	results2 = result.locationResults;
+	results = result.attributeResults;
+	results3 = result.locationPercnts;
+	results1 = result.attributePercnts;
+ 
+        for(var i in results){	
+           var obj = {};
+            obj["name"] = i ;	
+		    obj['type']='spline';
+           	obj["data"] = results[i];	 
+            attr_vv.push(obj);			
+	    }
+		for(var i in results1){	
+           var obj = {};  
+            obj["name"] = i ;	
+			obj['type']='spline';
+			obj['yAxis']=1;
+           	obj["data"] = results1[i];	 
+            attr_perc.push(obj);			
+	    }
+		for(var i in results2){	
+           var obj = {};
+            obj["name"] = i ;	
+		    obj['type']='spline';
+			obj['yAxis']=2;
+           	obj["data"] = results2[i];	 
+            data_vv.push(obj);			
+	    }
+		for(var i in results3){	
+           var obj = {};  
+            obj["name"] = i ;	
+			obj['type']='spline';
+			obj['yAxis']=3;
+           	obj["data"] = results3[i];	 
+            data_perc.push(obj);			
+	    }
+		/*var dataSize = data_perc.length;
+		var attrSize = attr_vv.length;
+		var size = 0;
+		if(dataSize >= attrSize )
+		 size = dataSize;
+		else
+		 size = attrSize;*/
+		for(var i=0;i<attr_vv.length;i++){
+			var ob=attr_vv[i];
+			var ob1=attr_perc[i];
+			
+			data.push(ob1);
+			data.push(ob);
+			
+		}
+		for(var i=0;i<data_vv.length;i++){
+			var ob=data_vv[i];
+			var ob1=data_perc[i];
+			
+			data.push(ob1);
+			data.push(ob);
+			
+		}
+		$('#container').highcharts({
+            chart: {
+                type: 'line',
+               // marginRight: 130,
+               // marginBottom:240 ,
+			   // height:500,
+				zoomType: 'xy'
+            },
+			
+			title: {
+                text: 'Cast Percentage Wise Votes Analysis'
+            },
+            
+            xAxis: [{
+                categories:linechartDataArr,
+				labels: {
+                                align:'right',
+                                style: {
+                                      cursor: 'pointer',
+                                      fontSize: '12px',
+                                },
+                                rotation: -45,
+                            } 
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    formatter: function() {
+                        return this.value +'';
+                    },
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                title: {
+                    text: 'Caste',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                opposite: true
+    
+            },{ // Secondary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Caste %',
+                    style: {
+                        color: '#7C4088'
+                    }
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value +'%';
+                    },
+                    style: {
+                        color: '#7C4088'
+                    }
+                },
+                opposite: true
+            },{ // ter yAxis
+                labels: {
+                    formatter: function() {
+                        return this.value +'';
+                    },
+                    style: {
+                        color: '#89A54E'
+                    }
+                },
+                title: {
+                    text: 'Votes',
+                    style: {
+                        color: '#89A54E'
+                    }
+                },
+                opposite: true
+    
+            }, { // aux yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Votes %',
+                    style: {
+                        color: '#AA4643'
+                    }
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value +'%';
+                    },
+                    style: {
+                        color: '#AA4643'
+                    }
+                },
+                opposite: true
+            }],
+			
+			colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
+			
+			legend: {
+					margin:20
+				},
+				
+			/*tooltip: {
+                shared: true
+            },*/
+            series:data
+			
+			
+        });
+		
+		$('input[name="show_hide_votes"]').click(function(){
+		var chart = $('#container').highcharts();
+		var series = chart.series;
+			if(this.value === "show")
+				$.each(series, function(index, series1) {
+                    series1.show();
+                });
+			else if (this.value === "hide")
+				$.each(series, function(index, series1) {
+                   series1.hide();
+                });
+		});
+    
+ }
  </script>
 </head>
 <body>
@@ -1171,9 +1418,13 @@
     <input type="checkbox" id="selectAll"  onclick="selectAll()" name="selection"><span>Select All</span>
 	<input type="checkbox" id="deSelectAll" onclick="deSelectAll()" name="selection"><span>Unselect All</span>
 	</div>
-	<div id="submitbtn"><input type="button" class="btn" value="Submit"></input></div>
+	<div id="submitbtn"><input type="button" class="btn" value="Submit" onclick="getCastWiseElectionResults();"></input></div>
 	</div>
   </div>
-  
+  <div id="container"> </div>
+  <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;display:none;" id="show_hide_votes">
+		<span class="label label-info" style="padding:5px;margin:5px;">Show All <input type="radio" name="show_hide_votes" value="show" checked="checked"></span>
+		<span class="label label-info" style="padding:5px;margin:5px;">Hide All <input type="radio" name="show_hide_votes" value="hide"></span>
+	</div>
   </body>
 </html>
