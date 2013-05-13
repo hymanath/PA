@@ -519,6 +519,11 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			  mandalVO = staticDataService.getElectionYearsAndPartiesForConstituency(jObj.getLong("constituencyId"));
 			  return "mandalVO";
 			}
+			else if(jObj.getString("task").equalsIgnoreCase("getConstiEleAndPartiesForSelected"))
+			{
+				  mandalVO = staticDataService.getElectionYearsAndPartiesForSelectedConstituency(jObj.getLong("constituencyId"));
+				  return "mandalVO";
+			}
 			else{
 				electionResults = new ArrayList<Object>();
 				partiesResults = constituencyPageService.getMandalwiseEleInfoOfConstituency(jObj.getLong("constituencyId"), jObj.getString("parties"),jObj.getString("elections"), new Boolean(jObj.getString("includeAlliance")));
