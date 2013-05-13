@@ -94,12 +94,26 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 			  System.out.println(id);
 	}*/
 	
-	public void testgetPreviousPublicationIds()
+	/*public void testgetPreviousPublicationIds()
 	{
 		List<Long> list = voterInfoDAO.getPreviousPublicationIds(8l);
 		
 		if(list != null && list.size() > 0)
 			for(Long id : list)
 				System.out.println(id);
+	}*/
+	
+	public void testGetPanchayatWiseVotersCount()
+	{
+		List<Object[]> list = voterInfoDAO.getPanchayatWiseVotersCount(232l,8l);
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object object :params)
+				System.out.print("\t"+object.toString());
+		}
 	}
+	
 }

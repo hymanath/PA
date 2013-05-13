@@ -180,15 +180,26 @@ for (Object[] objects : list) {
 				System.out.println();
 				for(Object object : params)
 					System.out.print("\t"+object);
-			}*/
-
+			}
+		}*/
 		
-		public void testGetBoothsForCustomWard()
+		/*public void testGetBoothsForCustomWard()
 		{
 			List<Object[]> list = userVoterDetailsDAO.getBoothsForCustomWard(28858l, 232l, 8l, 1l);
 			if(list!= null && list.size() > 0)
 				for(Object[] params : list)
 					System.out.println(params[0]+"------ "+params[1]);
 			
+		}*/
+		public void testGetPanchayatWiseHamletsAssignedDetails()
+		{
+			List<Object[]> list = userVoterDetailsDAO.getPanchayatWiseHamletsAssignedDetails(232l,8l, 1l);
+			System.out.println(list.size());
+			for(Object[] params : list)
+			{
+				System.out.println();
+				for(Object object : params)
+					System.out.print("\t"+object);
+			}
 		}
 }
