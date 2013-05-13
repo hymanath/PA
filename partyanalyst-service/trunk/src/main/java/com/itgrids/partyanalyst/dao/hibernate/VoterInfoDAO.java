@@ -177,9 +177,9 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPanchayatWiseVotersCount(Long constituencyId, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("select B.tehsil.tehsilId,B.tehsil.tehsilName,B.panchayat.panchayatId,B.panchayat.panchayatName,VI.totalVoters from " +
-				" Booth B, VoterInfo VI where B.panchayat.panchayatId = VI.reportLevelValue and B.constituency.constituencyId = :constituencyId and B.publicationDate.publicationDateId = :publicationDateId " +
-				" and VI.voterReportLevel.reportLevel = :reportLevel order by B.tehsil.tehsilName,B.panchayat.panchayatName ");
+		Query query = getSession().createQuery("select P.tehsil.tehsilId,P.tehsil.tehsilName,P.panchayatId,P.panchayatName,VI.totalVoters from " +
+				" VoterInfo VI, Panchayat P where P.panchayatId = VI.reportLevelValue and VI.constituencyId = :constituencyId and " +
+				" VI.publicationDate.publicationDateId = :publicationDateId and VI.voterReportLevel.reportLevel = :reportLevel order by P.tehsil.tehsilName,P.panchayatName ");
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId",publicationDateId);
 		query.setParameter("reportLevel","Panchayat");
