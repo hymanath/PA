@@ -187,8 +187,9 @@ $(function(){
 	<div id="allFilesDiv" style="width: 725px; height: 25px; float: right;" align="center" ><label ><input type="checkbox" id="allFileInd" onchange="dateMadeNull(),hideOptionsDiv();"><b>With All Files</b></input></label></div>
 
 
-<input type="button" class="btn btn-info pull-right" name="Pdf" onClick="generatePdfForSelectedGallary();" value="Generate Pdf"/>
+<input type="button"  style="margin-right: 44px;" class="btn btn-info pull-right" name="Pdf" onClick="generatePdfForSelectedGallary();" value="Generate Pdf"/>
 
+<div id="processingImg" style="display:none;"><img src="./images/icons/search.gif" alt="Processing Image" style="margin-bottom: -64px;margin-left: 111px;"/> </div>
 
 </div>
 
