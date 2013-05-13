@@ -173,5 +173,17 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		query.setParameter("publicationDateId",publicationDateId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPanchayatWiseVotersCount(Long constituencyId, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select B.tehsil.tehsilId,B.tehsil.tehsilName,B.panchayat.panchayatId,B.panchayat.panchayatName,VI.totalVoters from " +
+				" Booth B, VoterInfo VI where B.panchayat.panchayatId = VI.reportLevelValue and B.constituency.constituencyId = :constituencyId and B.publicationDate.publicationDateId = :publicationDateId " +
+				" and VI.voterReportLevel.reportLevel = :reportLevel order by B.tehsil.tehsilName,B.panchayat.panchayatName ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("reportLevel","Panchayat");
+		return query.list();
+	}
 
 }
