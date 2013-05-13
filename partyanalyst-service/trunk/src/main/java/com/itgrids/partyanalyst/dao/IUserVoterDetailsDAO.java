@@ -122,8 +122,10 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getPanchayatWiseHamletsAssignedDetailsInAConstituency(Long constituencyId,Long publicationDateId);
 	
 	public List<?> getVoterIdsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId ,String type);
-	 
-	 public List<Object[]> getBoothsForCustomWard(Long wardId,Long constituencyId,Long publicationDateId,Long userId);
+	
+	public List<Object[]> getBoothsForCustomWard(Long wardId,Long constituencyId,Long publicationDateId,Long userId);
+	
+	public List<Object[]> getPanchayatWiseHamletsAssignedDetails(Long constituencyId,Long publicationDateId,Long userId);
 
 	
 }
