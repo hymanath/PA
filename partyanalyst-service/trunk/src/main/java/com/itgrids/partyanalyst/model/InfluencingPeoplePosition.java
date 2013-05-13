@@ -30,6 +30,8 @@ public class InfluencingPeoplePosition extends BaseModel{
 	private String description;
 	private Date updatedDate;
 	private Set<InfluencingPeople> influencingPeoples = new HashSet<InfluencingPeople>();
+	private String isGlobal;
+	private Long userId;
 	
 	public InfluencingPeoplePosition(){
 		
@@ -93,7 +95,20 @@ public class InfluencingPeoplePosition extends BaseModel{
 
 	public void setInfluencingPeoples(Set<InfluencingPeople> influencingPeoples) {
 		this.influencingPeoples = influencingPeoples;
-	}	
-
+	}
+	@Column(name = "is_global",length = 20)
+	public String getIsGlobal() {
+		return isGlobal;
+	}
+	public void setIsGlobal(String isGlobal) {
+		this.isGlobal = isGlobal;
+	}
+	@Column(name = "user_id",length = 15)
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	
 }

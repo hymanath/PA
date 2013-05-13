@@ -418,10 +418,11 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		}
 	}
 	
-	public List<SelectOptionVO> getAllInfluencePeoplePositions(){
+	public List<SelectOptionVO> getAllInfluencePeoplePositions(Long userId){
 		try{
 			List<SelectOptionVO> selectOptionList = new ArrayList<SelectOptionVO>(0);
-			List<InfluencingPeoplePosition>  result = influencingPeoplePositionDAO.getAll();
+			//List<InfluencingPeoplePosition>  result = influencingPeoplePositionDAO.getAll();
+			List<InfluencingPeoplePosition>  result = influencingPeoplePositionDAO.getPositionNameByUserId(userId);
 			
 			for(InfluencingPeoplePosition influencingPeoplePosition : result){
 				SelectOptionVO selectOption = new SelectOptionVO();
@@ -3643,14 +3644,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		}
 		return constituencies;
 	}*/
-	public List<SelectOptionVO> saveNewPositionForInfluencingPeople(final String newPosition){
+	public List<SelectOptionVO> saveNewPositionForInfluencingPeople(final String newPosition,final Long userId){
 		List<SelectOptionVO> positionsList = new ArrayList<SelectOptionVO>();
 		List<SelectOptionVO> positionsList1 = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO = new SelectOptionVO();
 		List<InfluencingPeoplePosition>  positionsList2 = new ArrayList<InfluencingPeoplePosition>();
 		boolean flag = false;
 		InfluencingPeoplePosition userPosition = null;
-		positionsList2 = influencingPeoplePositionDAO.findByStaticPosition(newPosition);
+		positionsList2 = influencingPeoplePositionDAO.findByStaticPosition(newPosition,userId);
 		if(positionsList2.size()>0)
 			flag = true;
 
@@ -3667,6 +3668,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					userPosition.setPosition(newPosition);
 					
 					userPosition.setUpdatedDate(getCurrentDate());
+					userPosition.setUserId(userId);
+					userPosition.setIsGlobal(IConstants.FALSE);
 					userPosition = influencingPeoplePositionDAO.save(userPosition);
 
 				}catch(Exception ex){
@@ -3680,7 +3683,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 		});
 		}
-		positionsList1 =getAllInfluencePeoplePositions();
+		positionsList1 =getAllInfluencePeoplePositions(userId);
 		selectOptionVO.setSelectOptionsList(positionsList1);
 		if(userPosition != null)
 		selectOptionVO.setPopulateId(userPosition.getInfluencingPeoplePositionId());

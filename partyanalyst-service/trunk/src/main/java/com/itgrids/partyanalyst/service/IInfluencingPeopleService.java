@@ -21,7 +21,7 @@ public interface IInfluencingPeopleService {
 	
 	public Long saveInfluencePeople(InfluencingPeopleVO influencingPeopleVO);
 	
-	public List<SelectOptionVO> getAllInfluencePeoplePositions();
+	public List<SelectOptionVO> getAllInfluencePeoplePositions(Long userId);
 	
 	public List<SelectOptionVO> getInfluenceRange();
 	
@@ -79,7 +79,7 @@ public interface IInfluencingPeopleService {
     
     public Long getStateIdOfAUser(String accessType,Long accessValue);
     
-    public List<SelectOptionVO> saveNewPositionForInfluencingPeople(final String newPosition);
+    public List<SelectOptionVO> saveNewPositionForInfluencingPeople(final String newPosition,final Long userId);
    
     public List<SelectOptionVO> saveNewGroupCatagory(final String group ,final Long userId);
     
