@@ -499,6 +499,9 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		if(user == null)
 		return ERROR;
 		Long userID = user.getRegistrationID();
+		if(user.getMainAccountId() != null){
+			userID = user.getMainAccountId();
+		}
 		try{
 			jObj = new JSONObject(param);	
 			
