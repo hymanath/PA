@@ -1510,5 +1510,18 @@
     </bean>
     
     
+    <bean name="attributeWiseElectionResultComparisonService" class="com.itgrids.partyanalyst.service.impl.AttributeWiseElectionResultComparisonService">
+	  <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+	  <property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
+	  <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+	  <property name="boothDAO" ref="boothDAO" />
+	  <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+	  <property name="publicationDateDAO" ref="publicationDateDAO" />
+	  <property name="tehsilDAO" ref="tehsilDAO" />
+	  <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+	  <property name="voterCastInfoDAO" ref="voterCastInfoDAO" />
+	  <property name="voterReportLevelDAO" ref="voterReportLevelDAO" />
+	  <property name="voterPartyInfoDAO" ref="voterPartyInfoDAO" />
+    </bean>
 </beans>		
 	

@@ -5109,5 +5109,14 @@
 		</action>
 		
 		
+		<action name="getAttributeWiseElecResultsAction" class="casteAndElectionResultsComparisonAction" method="getAttributesWiseElectionResults">
+			<result type="json" name="success">
+				<param name="root">partyResultsVO</param>				
+			</result>
+			<result type="json" name="error">
+				<param name="root">"notLogged"</param>				
+			</result>		
+		</action>
+		
 		</package>
 </struts>      
