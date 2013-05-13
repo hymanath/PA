@@ -76,31 +76,54 @@ public class DataValidationService implements IDataValidationService{
 				}
 				
 				List<Object[]> panchayatsHamletsList = panchayatHamletDAO.getHamletsByPanchayatsList(panchayatsList);
+				
+				List<SelectOptionVO> assignedHamletsList = null;
+				List<SelectOptionVO> hamletsList = null;
+				List<Long> assignedHamletsIdsList = null;
+				List<SelectOptionVO> notAssignedHamletsList = null;
+				
 				for(Object[] params : panchayatsHamletsList)
 				{
 					dataValidationVO = getDataValidationVOFromList(result,(Long)params[0]);
-					dataValidationVO.getHamletsList().add(new SelectOptionVO((Long)params[2],params[3].toString()));
+					hamletsList = dataValidationVO.getHamletsList();
+					hamletsList.add(new SelectOptionVO((Long)params[2],params[3].toString()));
+					dataValidationVO.setHamletsList(hamletsList);
 				}
 				
 				List<Object[]> villageResult = userVoterDetailsDAO.getPanchayatWiseHamletsAssignedDetails(constituencyId,publicationDateId,userId);
 				SelectOptionVO selectOptionVO = null;
+				
 				for(Object[] params : villageResult)
 				{
-					dataValidationVO = getDataValidationVOFromList(result,(Long)params[0]);
+					DataValidationVO validationVO = getDataValidationVOFromList(result,(Long)params[0]);
+					if(validationVO == null)
+						continue;
 					selectOptionVO = new SelectOptionVO();
 					selectOptionVO.setId((Long)params[2]);
 					selectOptionVO.setName(params[3].toString());
 					selectOptionVO.setPopulateId((Long)params[4]);
-					dataValidationVO.getHamletsList().add(selectOptionVO);
-					dataValidationVO.getAssignedHamletsIdsList().add((Long)params[2]);
-					dataValidationVO.setHamletAssignedVoters(dataValidationVO.getHamletAssignedVoters()+(Long)params[4]);
+					
+					assignedHamletsList = dataValidationVO.getAssignedHamletsList();
+					assignedHamletsList.add(selectOptionVO);
+					validationVO.setAssignedHamletsList(assignedHamletsList);
+					
+					assignedHamletsIdsList = dataValidationVO.getAssignedHamletsIdsList();
+					assignedHamletsIdsList.add((Long)params[2]);
+					validationVO.setAssignedHamletsIdsList(assignedHamletsIdsList);
+					
+					validationVO.setHamletAssignedVoters(dataValidationVO.getHamletAssignedVoters()+(Long)params[4]);
 				}
-				for(DataValidationVO validationVO : result)
+				for(DataValidationVO validationVO2 : result)
 				{
-					validationVO.setHamletsNotAssignedVoters(validationVO.getTotalVoters()-validationVO.getHamletAssignedVoters());
-					for(SelectOptionVO optionVO : validationVO.getHamletsList())
-						if(!validationVO.getAssignedHamletsIdsList().contains(optionVO.getId()))
-							validationVO.getNotAssignedHamletsList().add(optionVO);
+					validationVO2.setHamletsNotAssignedVoters(validationVO2.getTotalVoters()-validationVO2.getHamletAssignedVoters());
+					for(SelectOptionVO optionVO : validationVO2.getHamletsList())
+						if(!validationVO2.getAssignedHamletsIdsList().contains(optionVO.getId()))
+						{
+							notAssignedHamletsList = validationVO2.getNotAssignedHamletsList();
+							notAssignedHamletsList.add(optionVO);
+							validationVO2.setNotAssignedHamletsList(notAssignedHamletsList);
+						}
+							
 				}
 			}
 			return result;
