@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public class PartyResultsVO {
 
@@ -32,6 +33,12 @@ public class PartyResultsVO {
 	private Long ballotVotes;
 	private String diffPercent;
 	private String type;
+	private List<PartyResultsVO> partyResultsVOList;
+	private Map<String,List<Long>> locationResults;
+	private Map<String,List<Long>> attributeResults;
+	private Map<String,List<BigDecimal>> locationPercnts;
+	private Map<String,List<BigDecimal>> attributePercnts;
+	private List<String> locationNames;
 	
 	// getters and setters
 	
@@ -207,6 +214,54 @@ public class PartyResultsVO {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public List<PartyResultsVO> getPartyResultsVOList() {
+		return partyResultsVOList;
+	}
+
+	public void setPartyResultsVOList(List<PartyResultsVO> partyResultsVOList) {
+		this.partyResultsVOList = partyResultsVOList;
+	}
+
+	public Map<String, List<Long>> getLocationResults() {
+		return locationResults;
+	}
+
+	public void setLocationResults(Map<String, List<Long>> locationResults) {
+		this.locationResults = locationResults;
+	}
+
+	public Map<String, List<Long>> getAttributeResults() {
+		return attributeResults;
+	}
+
+	public void setAttributeResults(Map<String, List<Long>> attributeResults) {
+		this.attributeResults = attributeResults;
+	}
+
+	public List<String> getLocationNames() {
+		return locationNames;
+	}
+
+	public void setLocationNames(List<String> locationNames) {
+		this.locationNames = locationNames;
+	}
+
+	public Map<String, List<BigDecimal>> getLocationPercnts() {
+		return locationPercnts;
+	}
+
+	public void setLocationPercnts(Map<String, List<BigDecimal>> locationPercnts) {
+		this.locationPercnts = locationPercnts;
+	}
+
+	public Map<String, List<BigDecimal>> getAttributePercnts() {
+		return attributePercnts;
+	}
+
+	public void setAttributePercnts(Map<String, List<BigDecimal>> attributePercnts) {
+		this.attributePercnts = attributePercnts;
 	}
 	
 }

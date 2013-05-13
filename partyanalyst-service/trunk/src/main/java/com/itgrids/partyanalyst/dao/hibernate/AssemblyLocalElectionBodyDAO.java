@@ -128,7 +128,7 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 	
 	public List<Object[]> getLocalElecBodyName(String assemblyLocalElectionBodyId){
 		
-		return getHibernateTemplate().find("select model.localElectionBody.name , model.localElectionBody.electionType.electionType from AssemblyLocalElectionBody  model where model.assemblyLocalElectionBodyId = "+assemblyLocalElectionBodyId+"");
+		return getHibernateTemplate().find("select model.localElectionBody.name , model.localElectionBody.electionType.electionType,model.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody  model where model.assemblyLocalElectionBodyId = "+assemblyLocalElectionBodyId+"");
 	}
 	
 	public List<Long> getLocalElectionBodyIdByConstituency(Long constituencyId){

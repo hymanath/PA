@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -1188,5 +1189,103 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		query.setParameterList("electionIds", electionIds);
 	
 		return query.list();
-}
+}	
+	public List<Object[]> findBoothResultsForMultipleBoothsAndElectionsForParties(Set<Long> boothslist, List<Long> electionIds,List<Long> partyIds){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.boothId,model.nomination.party.partyId, model.nomination.party.shortName,"+
+				" model.votesEarned ,model.boothConstituencyElection.constituencyElection.election.electionYear,model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType from CandidateBoothResult model where   " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId in(:electionIds) and model.nomination.party.partyId in(:partyIds) and model.boothConstituencyElection.booth.boothId in(:boothslist) ");
+		
+		query.setParameterList("electionIds",electionIds);
+		query.setParameterList("partyIds",partyIds);
+		query.setParameterList("boothslist",boothslist);
+		return query.list();
+	}
+	
+	public List<Object[]> findBoothCountForMultipleBoothsAndElectionsForParties(Set<Long> boothslist, List<Long> electionIds){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.boothId,"+
+				" model.votesEarned  from CandidateBoothResult model where   " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId in(:electionIds) and model.boothConstituencyElection.booth.boothId in(:boothslist) ");
+		
+		query.setParameterList("electionIds",electionIds);
+		query.setParameterList("boothslist",boothslist);
+		return query.list();
+	}
+	
+	public List<Object[]> findBoothResultsForMultipleBoothsInElections(Long constituencyId,List<Long> partNos, List<Long> electionIds,List<Long> partyIds){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.partNo,model.nomination.party.partyId, model.nomination.party.shortName,"+
+				" model.votesEarned ,model.boothConstituencyElection.constituencyElection.election.electionYear,model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,model.boothConstituencyElection.booth.partNo   " +
+				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId in(:electionIds) and model.nomination.party.partyId in(:partyIds) and model.boothConstituencyElection.booth.partNo in(:partNos) and " +
+				" model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId ");
+		
+		query.setParameterList("electionIds",electionIds);
+		query.setParameterList("partyIds",partyIds);
+		query.setParameterList("partNos",partNos);
+		query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> findBoothCountForMultipleBoothsInElections(Long constituencyId,List<Long> partNos, List<Long> electionIds){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.partNo,"+
+				" model.votesEarned from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId in(:electionIds)  and model.boothConstituencyElection.booth.partNo in(:partNos) and " +
+				" model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId ");
+		
+		query.setParameterList("electionIds",electionIds);
+		query.setParameterList("partNos",partNos);
+		query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
+	public List<Object[]> getMandalResultsForElectionAndMandals(Long constituencyId,List<Long> tehsilIds, List<Long> electionIds,List<Long> partyIds){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.tehsil.tehsilId,model.nomination.party.partyId," +
+				" model.nomination.party.shortName,sum(model.votesEarned),model.boothConstituencyElection.constituencyElection.election.electionYear,model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType " +
+				"  from CandidateBoothResult model where   model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId  and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId  in( :electionIds) and model.nomination.party.partyId in( :partyIds) and " +
+				" model.boothConstituencyElection.booth.localBody is null and model.boothConstituencyElection.booth.tehsil.tehsilId in(:tehsilIds) " +
+				" group by model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.tehsil.tehsilId, " +
+				" model.nomination.party.partyId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("electionIds", electionIds);
+		query.setParameterList("partyIds", partyIds);
+		query.setParameterList("tehsilIds",tehsilIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getMandalCountForElectionAndMandals(Long constituencyId,List<Long> tehsilIds, List<Long> electionIds){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.tehsil.tehsilId," +
+				" sum(model.votesEarned) from CandidateBoothResult model where   model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId  and" +
+				
+				" model.boothConstituencyElection.constituencyElection.election.electionId  in( :electionIds) and " +
+				" model.boothConstituencyElection.booth.localBody is null and model.boothConstituencyElection.booth.tehsil.tehsilId in(:tehsilIds) " +
+				" group by model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.tehsil.tehsilId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("electionIds", electionIds);
+		query.setParameterList("tehsilIds",tehsilIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getLocalbodyResultsForElectionAndByIds(Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds,List<Long> partyIds){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.localBody.localElectionBodyId,model.nomination.party.partyId," +
+				" model.nomination.party.shortName, sum(model.votesEarned),model.boothConstituencyElection.constituencyElection.election.electionYear,model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType " +
+				"  from CandidateBoothResult model where   model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId  and " +
+				"   model.boothConstituencyElection.booth.localBody.localElectionBodyId in(:lclBodyIds) and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId in( :electionIds) and model.nomination.party.partyId in( :partyIds)" +
+				" group by model.boothConstituencyElection.constituencyElection.election.electionId, model.boothConstituencyElection.booth.localBody.localElectionBodyId, " +
+				" model.nomination.party.partyId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("electionIds", electionIds);
+		query.setParameterList("partyIds", partyIds);
+		query.setParameterList("lclBodyIds", lclBodyIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getLocalbodyCountForElectionAndByIds(Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.localBody.localElectionBodyId," +
+				" sum(model.votesEarned)  from CandidateBoothResult model where   model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId  and " +
+				"   model.boothConstituencyElection.booth.localBody.localElectionBodyId in(:lclBodyIds) and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId in( :electionIds) " +
+				" group by model.boothConstituencyElection.constituencyElection.election.electionId, model.boothConstituencyElection.booth.localBody.localElectionBodyId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("electionIds", electionIds);
+		query.setParameterList("lclBodyIds", lclBodyIds);
+		return query.list();
+	}
 }

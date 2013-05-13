@@ -16,4 +16,6 @@ public interface IVoterPartyInfoDAO extends GenericDao<VoterPartyInfo, Long>{
 	public Long getRecordsCountToCheckDataPresent(Long constituencyId);
 	
 	public void saveAllObjects(List<VoterPartyInfo> voterPartyInfos);
+	
+	public List<VoterPartyInfo>  getVotersPartyInfoByMultipleLevelValuesAndPartyIds(Long levelId,List<Long> levelValues,List<Long> partyIds,Long constituencyId,Long publicationId,Long userId);
 }

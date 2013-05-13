@@ -234,4 +234,27 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 				" where CBR.boothConstituencyElection.booth.boothId = HBE.boothConstituencyElection.booth.boothId and HBE.hamlet.hamletId = PH.hamlet.hamletId and PH.panchayat.panchayatId = ? " +
 				" order by CBR.nomination.party.shortName ",panchayatId);
 	}
+	
+	public List<Object[]> getPanchayatBoothDetailsByPanchayatIds(List<Long> panchayatIds,List<Long> electionIds,List<Long> partyIds)
+	{
+		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model4.panchayat.panchayatId,model4.panchayat.panchayatName,model3.nomination.party.partyId,model3.nomination.party.shortName," +
+				" sum(model3.votesEarned) from HamletBoothElection model,PanchayatHamlet model4,CandidateBoothResult model3 where model4.hamlet.hamletId = model.hamlet.hamletId " +
+				" and model.hamlet.hamletId in(select model2.hamlet.hamletId from PanchayatHamlet model2 where model2.panchayat.panchayatId in(:panchayatIds)) and model.boothConstituencyElection.boothConstituencyElectionId = model3.boothConstituencyElection.boothConstituencyElectionId" +
+				" and model.boothConstituencyElection.constituencyElection.election.electionId in (:electionIds) and model3.nomination.party.partyId in(:partyIds) group by model.boothConstituencyElection.constituencyElection.election.electionId,model4.panchayat.panchayatId,model3.nomination.party.partyId  ");
+		query.setParameterList("panchayatIds", panchayatIds);
+		query.setParameterList("electionIds",electionIds);
+		query.setParameterList("partyIds",partyIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayatBoothDetailsByPanchayat(List<Long> panchayatIds,List<Long> electionIds)
+	{
+		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model4.panchayat.panchayatId,model4.panchayat.panchayatName,model.boothConstituencyElection.booth.boothId," +
+				" model.boothConstituencyElection.booth.partNo from HamletBoothElection model,PanchayatHamlet model4 where model4.hamlet.hamletId = model.hamlet.hamletId " +
+				" and model.hamlet.hamletId in(select model2.hamlet.hamletId from PanchayatHamlet model2 where model2.panchayat.panchayatId in(:panchayatIds)) " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionId in (:electionIds) order by model.boothConstituencyElection.constituencyElection.election.electionId,model4.panchayat.panchayatId");
+		query.setParameterList("panchayatIds", panchayatIds);
+		query.setParameterList("electionIds",electionIds);
+		return query.list();
+	}	
 }
