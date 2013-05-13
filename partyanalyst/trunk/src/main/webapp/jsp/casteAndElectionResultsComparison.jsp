@@ -40,6 +40,7 @@
  </style>
  <script type="text/javascript">
   var locationSelected = "mandal";
+  var mainStr = "";
     function showHideLocations(type){
 	     locationSelected = type;
 	       $("#constituencyList").val(0);
@@ -93,26 +94,13 @@
 	}
 	function buildMandalList(result)
 	{
-		
-		$('#multiSelectLevelsHeading').show();
-		$('#multiSelectLevelsValues').show();
-		$('#specificMandalName').hide();
-		$('#specificMandalValue').hide();
-		$('#fourthRow').hide();
-		$('#specificPanchayatName').hide();
-		$('#specificPanchayatValue').hide();
-		$('#fifthRow').hide();
-		$('#userSelCatgListHeading').hide();
-		$('#userSelCatgListValue').hide();
-		$('#seventhRow').hide();
-
 		var name = "";
 		
 		name += '<b>Mandals </b><font class="requiredFont" style="color:red">*</font>';
 		$('#multiSelectLevelsHeading').html(name);
 		
 		var value = "";
-		value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'\');" class="multipleSelect" multiple >';
+		value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'mandal\');" class="multipleSelect" multiple >';
 		if(result != null)
 		{
 			
@@ -209,6 +197,10 @@
 									{
 										buildUserCategoerySelectedValues(myResults,jsObj);
 									}
+									else if(jsObj.task == "getUserCatgValuesForWard")
+									{
+										buildUserCategoerySelectedValues(myResults,jsObj);
+									}
 									else if(jsObj.task == "getCategoriesForAUser")
 									{
 									   buildCategoriesListInit(myResults);
@@ -220,6 +212,11 @@
 									else if(jsObj.task == "hamletsOrWardsInRegion")
 									{
 										buildPanchayatsOrMandalsList(myResults,jsObj ,'muncipality');
+										
+									}
+									else if(jsObj.task == "getAllBoothsInAWard")
+									{
+										buildPanchayatsOrMandalsList(myResults,jsObj ,'wards');
 										
 									}
 									else if(jsObj.task == "getConstituencyType")
@@ -268,7 +265,7 @@
 	  var value = "";
 		name +='<b>Select Type</b>';
 		$("#requiredFieldsToCheckName").html(name);
-		value +='<select id="selectdUserCatgId" onChange="checkAndGetData(\'cast\',\'Cast\');"><option value="0">Select Type</ortion>';
+		value +='<select id="selectdUserCatgId" onChange="checkAndGetData(\'cast\',\'Cast\',mainStr);"><option value="0">Select Type</ortion>';
 		value +='<option value="1">Caste</option>';
 		value +='</select>';
 		 $("#requiredFieldsToCheckValue").html(value);
@@ -294,41 +291,77 @@
 	    
 	   
 	  }
-	   function checkAndGetData(type,nameVal)
+	   function checkAndGetData(type,nameVal,selected)
 	   {
-		
-			var selectedValues = $('.multipleSelect').val();
-			var values = "";
-			var checkVal = "";
-			for(var i in selectedValues)
+			$('#selUserCatgId').show();
+			var name = "";
+			if(selected == "ward")
 			{
-				checkVal = values+","+selectedValues[i];
-				values = values+","+selectedValues[i];
+				getUserCategoeryValuesForSelecetdWards();
 			}
-			var name = $("#levelId option:selected").text();
-			if(name == 'Mandal')
+			
+			else
 			{
-				if(checkVal.charAt(1) == 1)
+				var selectedValues = $('.multipleSelect').val();
+				var values = "";
+				var checkVal = "";
+				for(var i in selectedValues)
 				{
-					var constituencyId = $("#constituencyList option:selected").val();
-					var jsObj=
-						{
-							constituencyId   : constituencyId,
-							status           : type,
-							selectedValues   : checkVal.slice(1),
-							type             : "muncipality",
-							nameVal          : nameVal,
-							task             : "getUserCategoeryValuesForWard"
-						}
-						var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-						var url = "getUserCategoeryValues.action?"+rparam;	
+					checkVal = values+","+selectedValues[i];
+					values = values+","+selectedValues[i];
+				}
+				 name = $("#levelId option:selected").text();
+				if(name == 'Mandal')
+				{
+					if(checkVal.charAt(1) == 1)
+					{
+						var constituencyId = $("#constituencyList option:selected").val();
+						var jsObj=
+							{
+								constituencyId   : constituencyId,
+								status           : type,
+								selectedValues   : checkVal.slice(1),
+								type             : "muncipality",
+								nameVal          : nameVal,
+								task             : "getUserCategoeryValuesForWard"
+							}
+							var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+							var url = "getUserCategoeryValues.action?"+rparam;	
 
-					callAjaxToGetData(jsObj,url);
-				} 
+						callAjaxToGetData(jsObj,url);
+					} 
+					else
+					{
+					
+						 name = $("#levelId option:selected").text();
+						var id = $("#constituencyList option:selected").val();
+						var jsObj=
+							{
+								constituencyId   : id,
+								status           : type,
+								selectedValues   : values.slice(1),
+								type             : name,
+								nameVal          : nameVal,
+								task             : "getUserCategoeryValues"
+							}
+							var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+							var url = "getUserCategoeryValues.action?"+rparam;	
+
+						callAjaxToGetData(jsObj,url);
+					}
+				}	
 				else
 				{
-				
-					var name = $("#levelId option:selected").text();
+					if(selected == "booth")
+					{
+						
+						name = $("#urbanIds option:selected").text();
+					}
+					else
+					{
+						 name = $("#levelId option:selected").text();
+					}
+					
 					var id = $("#constituencyList option:selected").val();
 					var jsObj=
 						{
@@ -345,31 +378,10 @@
 					callAjaxToGetData(jsObj,url);
 				}
 			}	
-			else
-			{
-				var name = $("#levelId option:selected").text();
-				var id = $("#constituencyList option:selected").val();
-				var jsObj=
-					{
-						constituencyId   : id,
-						status           : type,
-						selectedValues   : values.slice(1),
-						type             : name,
-						nameVal          : nameVal,
-						task             : "getUserCategoeryValues"
-					}
-					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-					var url = "getUserCategoeryValues.action?"+rparam;	
-
-				callAjaxToGetData(jsObj,url);
-			}
 	   }
 	   
 	   function buildUserCategoerySelectedValues(result,jsObj)
 	   {
-			$('#userSelCatgListHeading').show();
-			$('#userSelCatgListValue').show();
-			$('#seventhRow').show();
 			var name = "";
 			var value = "";
 			name+= '<b>'+jsObj.nameVal+' </b><font class="requiredFont" style="color:red">*</font> ';
@@ -397,11 +409,21 @@
 	var type;
 	function getRespectiveValues(constituencyType)
 	{
-		$('#requiredFieldsToCheckName').hide();
-		$('#requiredFieldsToCheckValue').hide();
+		var checkedStatus = $('.radioCheck').is('ckecked');
+		if(checkedStatus == false)
+		{
+			$('.radioCheck').prop('checked', false);
+			$('#specificPanchayatValue').hide();
+			$('#specificMandalValue').hide();
+		}
+		
+		$('#selReqFileldId').hide();
+		$('#selUserCatgId').hide();
 		var id = $("#constituencyList option:selected").val();
 		if(constituencyType == 'urban')
 		{
+			$('#selLevelId').hide();
+			$('#selMandalId').show();
 			type = $("#urbanIds option:selected").text();
 		}
 		else
@@ -410,6 +432,8 @@
 		}
 		if(type == 'Mandal')
 		{
+			$('#selLevelId').show();
+			$('#selMandalId').show();
 			getMandals();
 		}
 		else if(type == "Ward")
@@ -428,6 +452,8 @@
 		}
 		else
 		{
+			$('#selLevelId').show();
+			$('#selPanchayatRow').show();
 			var value = 1;
 			var jsObj=
 					{
@@ -453,29 +479,28 @@
 		{
 			$('#multiSelectLevelsHeading').show();
 			$('#multiSelectLevelsValues').show();
-			$('#specificMandalName').show();
+			$('#specificMandalName').show(); 
+			$('#selPanchayatRow').hide(); 
 			name += '<b>Booths </b><font class="requiredFont" style="color:red">*</font> ';
 			$('#multiSelectLevelsHeading').html(name);
-			mandal += '<input type="radio" onClick="getWardsAConstituency();" class="mandalCheck"></input>';
+			mandal += '<input type="radio" onClick="getWardsAConstituency();" class="mandalCheck,radioCheck"></input>';
 			mandal +='<b class="space">Specific Ward</b>';
 			$('#specificMandalName').html(mandal);
+			var value = "";
+				value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'booth\');" class="multipleSelect" multiple >';
+				if(result != null)
+				{
+					for(var i in result)
+					{
+						value += '<option value='+result[i].id+'>'+result[i].name+'</option>';
+					}
+					
+				}
+				value += '</select>';
+				$('#multiSelectLevelsValues').html(value);
 		}
 		else
 		{
-			$('#multiSelectLevelsHeading').show();
-			$('#multiSelectLevelsValues').show();
-			$('#specificMandalName').hide();
-			$('#specificMandalValue').hide();
-			$('#fourthRow').hide();
-			$('#thirdRow').show();
-			$('#specificPanchayatName').hide();
-			$('#specificPanchayatValue').hide();
-			$('#fifthRow').hide();
-			$('#wardsRow').hide();
-			$('#userSelCatgListHeading').hide();
-			$('#userSelCatgListValue').hide();
-			$('#seventhRow').hide();
-
 			var name = "";
 			var mandal ="";
 			var panchayat = "";
@@ -485,53 +510,60 @@
 			}
 			else if(jsObj.type == "Panchayat")
 			{
+				$('#selMandalId').show();
+				$('#selPanchayatRow').hide();
+				$('#specificMandalName').show();
 				name += '<b>Panchayats </b><font class="requiredFont" style="color:red">*</font> ';
+
 				
-				mandal += '<input type="radio" onClick="getAllMandalsInAConstituency();" class="mandalCheck"></input>';
+				mandal += '<input type="radio" onClick="getAllMandalsInAConstituency();" class="mandalCheck,radioCheck"></input>';
 				mandal +='<b>Specific Mandal</b>';
+				$('#specificMandalName').html(mandal);
+				$('#multiSelectLevelsHeading').html(name);
+				var value = "";
+				value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'panchayat\');" class="multipleSelect" multiple >';
+				if(result != null)
+				{
+					for(var i in result)
+					{
+						value += '<option value='+result[i].id+'>'+result[i].name+'</option>';
+					}
+					
+				}
+				value += '</select>';
+				$('#multiSelectLevelsValues').html(value);
 			}
 			else if(jsObj.type == "Booth")
 			{
+				$('#selPanchayatRow').show();
+				$('#specificPanchayatName').show();
 				name += '<b>Booths </b><font class="requiredFont" style="color:red">*</font> ';
 				
-				mandal += '<input type="radio" onClick="getAllMandalsInAConstituency();" class="mandalCheck"></input>';
+				mandal += '<input type="radio" onClick="getAllMandalsInAConstituency();" class="mandalCheck ,radioCheck"></input>';
 				mandal +='<b class="space">Specific Mandal</b>';
-				panchayat += '<input type="radio" onClick="getAllPancayatsInAConstituency();" class="panchayatCkeck"></input>';
+				panchayat += '<input type="radio" onClick="getAllPancayatsInAConstituency();" class="panchayatCkeck,radioCheck"></input>';
 				panchayat +='<b>Specific Panchayat</b>';
-			}
-			$('#multiSelectLevelsHeading').html(name);
-			
-			if(jsObj.type == "Booth")
-			{
-				$('#specificMandalName').show();
-				$('#specificMandalValue').show();
-				$('#fourthRow').show();
-				$('#specificPanchayatName').show();
-				$('#fifthRow').show();
-				$('#specificPanchayatValue').show();
-				$('#specificMandalName').html(mandal);
 				$('#specificPanchayatName').html(panchayat);
-			}
-			else if(jsObj.type == "Panchayat")
-			{
-				$('#specificMandalName').show();
-				$('#specificMandalValue').show();
-				$('#fourthRow').show();
-				$('#specificMandalName').html(mandal);
-			}
-		}
-		var value = "";
-		value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'\');" class="multipleSelect" multiple >';
-		if(result != null)
-		{
-			for(var i in result)
-			{
-				value += '<option value='+result[i].id+'>'+result[i].name+'</option>';
+				$('#multiSelectLevelsHeading').html(name);
+				var value = "";
+				value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'booth\');" class="multipleSelect" multiple >';
+				if(result != null)
+				{
+					for(var i in result)
+					{
+						value += '<option value='+result[i].id+'>'+result[i].name+'</option>';
+					}
+					
+				}
+				value += '</select>';
+				$('#multiSelectLevelsValues').html(value);
+				
 			}
 			
+			
+			
 		}
-		value += '</select>';
-		$('#multiSelectLevelsValues').html(value);
+		
 		
 	}
 	function buildMandals(results)
@@ -576,8 +608,7 @@
 	}
 	function getAllPancayatsInAConstituency()
 	{
-		$('#requiredFieldsToCheckName').hide();
-		$('#requiredFieldsToCheckValue').hide();
+		$('#specificPanchayatValue').show();
 		var id = $("#constituencyList option:selected").val();
 		var jsObj=
 				{
@@ -594,8 +625,7 @@
 	}
 	function getAllMandalsInAConstituency()
 	{
-		$('#requiredFieldsToCheckName').hide();
-		$('#requiredFieldsToCheckValue').hide();
+		$('#specificMandalValue').show();
 		var value =  $("#constituencyList option:selected").val();
 		var jsObj=
 			{
@@ -632,15 +662,11 @@
 		{
 			if(type == "ward")
 			{
-				$('#specificWardValue').show();
-				$('#specificWardName').show();
-				$('#wardsRow').show();
-				$('#thirdRow').hide();
-				$('#fourthRow').hide();
-				$('#fifthRow').hide();
+				$('#specificMandalName').show();
+				$('#specificMandalValue').show();
 				var name="";
 				name += '<b>Wards</b><font class="requiredFont" style="color:red">*</font>';
-				$('#specificWardName').html(name);
+				$('#specificMandalName').html(name);
 				var value = "";
 				value+= '<select id="wardsList"  onChange="getUserCategoersFoeSelect(\'ward\');" class="multipleSelect" multiple>';
 				for(var i in result)
@@ -648,13 +674,12 @@
 					value+= '<option value='+result[i].id+'>'+result[i].name+'</option>';
 				}
 				value+= '</select>';
-				$('#specificWardValue').html(value);
+				$('#specificMandalValue').html(value);
 			
 			}
 			else
 			{
-				$('#specificPanchayatValue').hide();
-				$('#specificMandalValue').show();
+				
 				$('.panchayatCkeck').prop('checked', false);
 				var mandalStr = "";
 				mandalStr+= '<select id="maldalsList" onChange="getSelectedPanchayatsOrBooths(\'mandal\');" multiple>';
@@ -672,8 +697,7 @@
 	}
 	function buildAllPanchayats(result,jsObj)
 	{
-		$('#specificMandalValue').hide();
-		$('#specificPanchayatValue').show();
+		
 		$('.mandalCheck').prop('checked', false);
 		if(result != null)
 		{
@@ -744,13 +768,8 @@
 			callAjaxToGetData(jsObj,url);
 		}
 	}
-	var mainStr = "";
 	function buildPanchayatsOrMandalsList(result,jsObj,type)
 	{
-		$('#requiredFieldsToCheckName').show();
-		$('#requiredFieldsToCheckValue').show();
-		$('#requiredFieldsToCheckName').hide();
-		$('#requiredFieldsToCheckValue').hide();
 		mainStr = type;
 		var name = "";
 		var value = "";
@@ -782,7 +801,7 @@
 			{
 				name += '<b>Wards</b><font class="requiredFont" style="color:red">*</font>';
 				$('#multiSelectLevelsHeading').html(name);
-				value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'\');" class="multipleSelect" multiple>';
+				value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'muncipality\');" class="multipleSelect" multiple>';
 				for(var i in result)
 				{
 					if(i > 0)
@@ -793,24 +812,47 @@
 				value+='</select>';
 					$('#multiSelectLevelsValues').html(value);
 			}
+			else
+			{
+				name += '<b>Booths</b><font class="requiredFont" style="color:red">*</font>';
+				$('#multiSelectLevelsHeading').html(name);
+				value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'booth\');" class="multipleSelect" multiple>';
+				for(var i in result)
+				{
+					value += '<option value='+result[i].id+'>'+result[i].name+'</option>';
+				}
+				value+='</select>';
+					$('#multiSelectLevelsValues').html(value);
+			}
 		}
 	}
-	
 	function getUserCategoersFoeSelect(type)
 	{
+		$('#selReqFileldId').show();
+		mainStr = type;
+		$('#selReqFileldId').show();
 		if(type == "ward")
 		{
-			$('#wardsRow').show();
-			getUserCategoeryValuesForSelecetdWards();
+			$('#selMandalId').show();
+			
+		}
+		else if(type == "mandal")
+		{
+			$('#selMandalId').hide();
+		}
+		else if(type == "panchayat")
+		{
+			$('#selPanchayatRow').hide();
 		}
 		else
 		{
-			$('#wardsRow').hide();
+			$('#selPanchayatRow').hide();
 		}
+		
 		var value = $("#selectdUserCatgId option:selected").val();
 		if(value > 0)
 		{  
-			checkAndGetData('cast','Cast');
+			checkAndGetData('cast','Cast',type);
 		}
 		$('#requiredFieldsToCheckValue').show();
 		$('#requiredFieldsToCheckName').show();
@@ -818,6 +860,7 @@
 	
 	function getConstituencyType()
 	{
+		
 		var constituencyId = $("#constituencyList option:selected").val();
 		var jsObj=
 				{
@@ -832,17 +875,28 @@
 	
 	function buildConstituencyRelatedList(result)
 	{
+		$('#levelId').val(0);
 		if(result[0].name == "URBAN")
 		{
-			$('#SelectLevelDiv2').show();
 			$('#urbanConstituency').show();
-			$('#secondRow').hide();
+			$('#ruralConstituency').hide();
+			$('#selLevelId').hide();
+			$('#selMandalId').hide();
+			$('#selPanchayatRow').hide();
+			$('#selReqFileldId').hide();
+			$('#selUserCatgId').hide();
+			
 		}
 		else
 		{
-			$('#SelectLevelDiv').show();
+			$('#ruralConstituency').show();
 			$('#urbanConstituency').hide();
-			$('#secondRow').show();
+			$('#selLevelId').hide();
+			$('#selMandalId').hide();
+			$('#selPanchayatRow').hide();
+			$('#selReqFileldId').hide();
+			$('#selUserCatgId').hide();
+			
 		}
 		
 		
@@ -931,13 +985,13 @@
   <div id="errorDiv" style="color:red;display:none"></div>
 	
 	<table style="width: 328px;">
-	<tr class="tableRow" id="firstRow">
+	<tr class="tableRow" >
 	<div id="constituencyDiv" class="selectDiv">
 	<td><b>Constituency </b><font class="requiredFont" style="color:red">*</font></td><td>
 	<s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getConstituencyType()"/></td>
 	</div></tr>
 	
-	<tr class="tableRow" id="secondRow" style="display:none;">
+	<tr class="tableRow" id="ruralConstituency" style="display:none;">
 	<div id="SelectLevelDiv" class="selectDiv">
 	<td><b>Level</b><font class="requiredFont" style="color:red">*</font></td>
 	<td><select id="levelId" onChange="getRespectiveValues('');" >
@@ -960,34 +1014,34 @@
 	</div>
 	</tr>
 	
-	<tr class="tableRow" id="thirdRow">
-	<td><div id="multiSelectLevelsHeading" style="display:none;"></div></td>
-	<td><div id="multiSelectLevelsValues" style="display:none;"></div></td>
+	<tr class="tableRow" id="selLevelId">
+	<td><div id="multiSelectLevelsHeading" ></div></td>
+	<td><div id="multiSelectLevelsValues" ></div></td>
 	</tr>
 	
-	<tr class="tableRow" id="fourthRow">
+	<tr class="tableRow" id="selMandalId">
 	<td><div id="specificMandalName" style="display:none;"></div></td>
 	<td><div id="specificMandalValue" style="display:none;"></div></td>
 	</tr>
 	
-	<tr class="tableRow" id="wardsRow">
-	<td><div id="specificWardName" style="display:none;"></div></td>
-	<td><div id="specificWardValue" style="display:none;"></div></td>
-	</tr>
+	<!--<tr class="tableRow" id="selMandalId">
+	<td><div id="specificMandalName" style="display:none;"></div></td>
+	<td><div id="specificMandalValue" style="display:none;"></div></td>
+	</tr>-->
 	
-	<tr class="tableRow" id="fifthRow">
+	<tr class="tableRow" id="selPanchayatRow">
 	<td><div id="specificPanchayatName" style="display:none;"></div></td>
 	<td><div id="specificPanchayatValue" style="display:none;"></div></td>
 	</tr>
 	
-	<tr id="sixthRow" class="tableRow">
-	<td><div id="requiredFieldsToCheckName" style="display:none;"></div></td>
-	<td><div id="requiredFieldsToCheckValue" style="display:none;"></div></td>
+	<tr id="selReqFileldId" class="tableRow" style="display:none;">
+	<td><div id="requiredFieldsToCheckName" ></div></td>
+	<td><div id="requiredFieldsToCheckValue" ></div></td>
 	</tr>
 	
-	<tr id="seventhRow" class="tableRow">
-	<td><div id="userSelCatgListHeading" style="display:none;"></div></td>
-	<td><div id="userSelCatgListValue" style="display:none;"></div></td>
+	<tr id="selUserCatgId" class="tableRow">
+	<td><div id="userSelCatgListHeading" ></div></td>
+	<td><div id="userSelCatgListValue" ></div></td>
 	</tr>
 	
 	</table>
