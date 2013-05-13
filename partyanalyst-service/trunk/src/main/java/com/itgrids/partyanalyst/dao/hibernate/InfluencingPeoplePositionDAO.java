@@ -18,7 +18,7 @@ public class InfluencingPeoplePositionDAO extends GenericDaoHibernate<Influencin
 	@SuppressWarnings("unchecked")
 	public List<InfluencingPeoplePosition> findByStaticPosition(
 			String staticPosition,Long userId) {
-		Query query = getSession().createQuery("from InfluencingPeoplePosition model where model.position =:position and (model.userId =:userId " +
+		Query query = getSession().createQuery("from InfluencingPeoplePosition model where model.position =:position and (model.user.userId =:userId " +
 				" or model.isGlobal =:isGlobal) ");
 		query.setParameter("position", staticPosition);
 		query.setParameter("userId", userId);
