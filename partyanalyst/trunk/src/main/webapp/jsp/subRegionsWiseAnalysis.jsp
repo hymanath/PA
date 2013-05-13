@@ -954,10 +954,10 @@ function callAjax(jsObj,url)
 		 
 		}
 		
-		if(type =="constituency")
+		if(type == "constituency")
 		{
 		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForConstituency()">');
-		 $("#mandalElecResultsButton1").html('<input type="radio" name="constituencyvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForConstituency()"/> Voting Percentage&nbsp;<input type="radio"  name="constituencyvotes" class="btn" value="validvotes" id="constivotingValuesID" onclick="getResultsForConstituency()"/>Valid Votes');
+		// $("#mandalElecResultsButton1").html('<input type="radio" name="constituencyvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForConstituency()"/> Voting Percentage&nbsp;<input type="radio"  name="constituencyvotes" class="btn" value="validvotes" id="constivotingValuesID" onclick="getResultsForConstituency()"/>Valid Votes');
 		  getResultsForConstituency();
 		}
 	  }
@@ -976,7 +976,7 @@ function callAjax(jsObj,url)
 	  if($(this).is(':checked'))
 	    elections+=','+$(this).val();
     });
-	var btnName=$('input:radio[name=votes]:checked').val();
+	//var btnName=$('input:radio[name=votes]:checked').val();
 	 var invalid = false;
 	 if(parties.length == 0)
 	 {
@@ -999,7 +999,7 @@ function callAjax(jsObj,url)
 				tehsilId:id.substr(1),
 				parties:parties.substr(1),
 				elections:elections.substr(1),
-				btnName:btnName,
+				//btnName:btnName,
 				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
 				task:"getResults"
 			}
@@ -3288,7 +3288,7 @@ function getResultsForBooths()
 	  if($(this).is(':checked'))
 	    elections+=','+$(this).val();
     });
-	var btnName=$('input:radio[name=boothvotes]:checked').val();
+	//var btnName=$('input:radio[name=boothvotes]:checked').val();
 	 var invalid = false;
 	 if(parties.length == 0)
 	 {
@@ -3312,7 +3312,7 @@ var jsObj=
 				parties:parties.substr(1),
 				elections:elections.substr(1),
 				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
-				btnName:btnName,
+				//btnName:btnName,
 				task:"getResultsForBooth"
 			}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3334,7 +3334,7 @@ $('.partySelForPanc').each(function(){
 	    elections+=','+$(this).val();
     });
 	
-	var btnName=$('input:radio[name=constituencyvotes]:checked').val();
+	//var btnName=$('input:radio[name=constituencyvotes]:checked').val();
 var jsObj=
 			{
 				
@@ -3343,7 +3343,7 @@ var jsObj=
 				elections:elections.substr(1),
 				
 				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
-				btnName:btnName,
+				//btnName:btnName,
 				task:"getResultsForConstituency"
 			}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
