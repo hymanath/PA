@@ -464,12 +464,17 @@ function addPosition(value){
 }
 
 function addPositionAjaxCall(){
+
+  $("#errorMsgDiv").html("");
   if($("#posId").val() == "Enter Position"){
 		$("#posId").val("");
+		$("#errorMsgDiv").html("Please enter any position").css("color","red");
+		$("html, body").animate({ scrollTop: 0 }, "slow");
 		return;
 	}
 	if($.trim($("#posId").val()) ==""){
 		$("#errorMsgDiv").html("Please enter any position").css("color","red");
+		$("html, body").animate({ scrollTop: 0 }, "slow");
 		return;
 	}
 	var position = document.getElementById("posId").value;
@@ -532,7 +537,8 @@ function validationCheck()
 	var infl_constituency    = $('#constituencyField').val();
 	var infl_thesil          = $('#mandalField').val();
 	var infl_village         = $('#hamletField_s').val();
-	var infl_booth			 = $('#boothField_s').val();	
+	var infl_booth			 = $('#boothField_s').val();
+	$('#errorDiv').html('');
 		$('#errorDiv').html('&nbsp;');
 	if(firstName == '')
 	{
