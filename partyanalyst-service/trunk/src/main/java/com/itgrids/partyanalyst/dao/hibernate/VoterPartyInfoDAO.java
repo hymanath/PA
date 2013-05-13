@@ -49,4 +49,20 @@ public class VoterPartyInfoDAO extends GenericDaoHibernate<VoterPartyInfo, Long>
     	
     	getHibernateTemplate().saveOrUpdateAll(voterPartyInfos);
     }
+    
+public List<VoterPartyInfo>  getVotersPartyInfoByMultipleLevelValuesAndPartyIds(Long levelId,List<Long> levelValues,List<Long> partyIds,Long constituencyId,Long publicationId,Long userId){
+		
+		Query query = getSession().createQuery("from VoterPartyInfo model where model.voterReportLevel.voterReportLevelId = :levelId and " +
+				"model.reportLevelValue in(:levelValues) and model.constituencyId = :constituencyId and model.publicationDateId = :publicationId " +
+				" and model.userId = :userId and model.party.partyId in(:partyIds)");
+		
+		query.setParameter("levelId", levelId);
+		query.setParameterList("levelValues", levelValues);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		query.setParameterList("partyIds", partyIds);
+		
+		return query.list();
+	}
 }

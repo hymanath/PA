@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -186,7 +187,19 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List<Object[]> getLocalbodyValidvotes(Long constituencyId, List<Long> electionIds);
 	public List<Object[]> getlocalbodywardValidvotes(Long constituencyId, List<Long> electionIds);
 	
+	public List<Object[]> findBoothResultsForMultipleBoothsAndElectionsForParties(Set<Long> boothslist, List<Long> electionIds,List<Long> partyIds);
 	
-
-		
+	public List<Object[]> findBoothResultsForMultipleBoothsInElections(Long constituencyId,List<Long> partNos, List<Long> electionIds,List<Long> partyIds);
+	
+	public List<Object[]> getMandalResultsForElectionAndMandals(Long constituencyId,List<Long> tehsilIds, List<Long> electionIds,List<Long> partyIds);
+	
+	public List<Object[]> getLocalbodyResultsForElectionAndByIds(Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds,List<Long> partyIds);
+	
+	public List<Object[]> getMandalCountForElectionAndMandals(Long constituencyId,List<Long> tehsilIds, List<Long> electionIds);
+	
+	public List<Object[]> getLocalbodyCountForElectionAndByIds(Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds);
+	
+	public List<Object[]> findBoothCountForMultipleBoothsAndElectionsForParties(Set<Long> boothslist, List<Long> electionIds);
+	
+	public List<Object[]> findBoothCountForMultipleBoothsInElections(Long constituencyId,List<Long> partNos, List<Long> electionIds);
 }
