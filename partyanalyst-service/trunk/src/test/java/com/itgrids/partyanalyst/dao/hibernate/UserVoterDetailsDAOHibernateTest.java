@@ -171,7 +171,7 @@ for (Object[] objects : list) {
 			for(Object[] params : list)
 			 System.out.println(params[0]+" "+params[1]);
 		}*/
-		public void testGetPanchayatWiseHamletsAssignedDetailsInAConstituency()
+		/*public void testGetPanchayatWiseHamletsAssignedDetailsInAConstituency()
 		{
 			List<Object[]> list = userVoterDetailsDAO.getPanchayatWiseHamletsAssignedDetailsInAConstituency(232l,8l);
 			System.out.println(list.size());
@@ -180,6 +180,15 @@ for (Object[] objects : list) {
 				System.out.println();
 				for(Object object : params)
 					System.out.print("\t"+object);
-			}
+			}*/
+
+		
+		public void testGetBoothsForCustomWard()
+		{
+			List<Object[]> list = userVoterDetailsDAO.getBoothsForCustomWard(28858l, 232l, 8l, 1l);
+			if(list!= null && list.size() > 0)
+				for(Object[] params : list)
+					System.out.println(params[0]+"------ "+params[1]);
+			
 		}
 }
