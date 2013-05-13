@@ -21,7 +21,7 @@ public class InfluencingPeoplePositionDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 	/*public void testFindByStaticPosition(){
-		List result = influencingPeoplePositionDAO.findByStaticPosition("mptc");
+		List result = influencingPeoplePositionDAO.findByStaticPosition("mptc",1l);
 		System.out.println(result.size());
 	}	
 
@@ -33,11 +33,20 @@ public class InfluencingPeoplePositionDAOHibernateTest extends BaseDaoTestCase {
 	}
 	*/
 	
-	public void testGetPositionNameAndId(){
+	/*public void testGetPositionNameAndId(){
 		List<InfluencingPeoplePosition>  result = influencingPeoplePositionDAO.getAll();
 		for(InfluencingPeoplePosition influencingPeoplePosition : result){
 			System.out.println(influencingPeoplePosition.getInfluencingPeoplePositionId()+"\t\t"+influencingPeoplePosition.getPosition());
 		}
-	}
+	}*/
 	
+	public void testGetPositionNameByUserId()
+	{
+		List<InfluencingPeoplePosition>  result = influencingPeoplePositionDAO.getPositionNameByUserId(1l);
+		System.out.println(result.size());
+		if(result != null && result.size() > 0)
+		for(InfluencingPeoplePosition influencingPeoplePosition : result){
+			System.out.println(influencingPeoplePosition.getInfluencingPeoplePositionId()+"\t\t"+influencingPeoplePosition.getPosition());
+		}
+	}
 }
