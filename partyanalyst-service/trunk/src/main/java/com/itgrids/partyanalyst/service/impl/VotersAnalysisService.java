@@ -11639,7 +11639,8 @@ public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 				
 				politicianValues.add(locationValue);
 				List<Object[]> booths = boothDAO.getBoothsInAPanchayat(locationValue,publicationDateId);
-				List<Object[]> hamlets = userVoterDetailsDAO.getHamletsIdsForUser(locationValue, userId);
+				//List<Object[]> hamlets = userVoterDetailsDAO.getHamletsIdsForUser(locationValue, userId);
+				List<Object[]> hamlets = panchayatHamletDAO.getHamletsOfAPanchayat(locationValue);
 				if(booths != null && booths.size() > 0)
 				{
 					for (Object[] booth : booths){
