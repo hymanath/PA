@@ -558,6 +558,10 @@ $("#panchayats").live("change",function(){
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
     <div id="mandalElecResultsParties"></div>
     <div id="mandalElecResultsElections"></div>
+    <div id="selectionDiv" style="margin-left:81px;">
+    <input type="checkbox" id="selectAll"  onclick="selectAll()" name="selection"><span>Select All</span>
+	<input type="checkbox" id="deSelectAll" onclick="deSelectAll()" name="selection"><span>Unselect All</span>
+	</div>
     <div id="mandalElecResultsButton" style='margin-left:81px;'></div>
 	<div id="mandalElecResultsButton1" style='margin-left:81px;'></div>
   </div>
@@ -908,26 +912,13 @@ function callAjax(jsObj,url)
 		   $("#mandalElecResultsDiv").css("display","block");
 		  var electionsLength = myResults.electionsInMandal.length;
 	     var str='';
-		 str+='<table><tr><th align="left">Parties : </th><td style="padding-bottom: 15px;">';
-		  str+='<table>';
+		 str+='<table><tr><th align="left">Parties : </th><td>';
 		 for(var i in myResults.partiesInMandal){
-			 if(i%12==0)
-				str+='<tr>';
-			
-		  str+='<td><input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label></td>';
-		  if((i%12)+1==0)
-		   str+='</tr>';
+		  str+='<input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
 		 }
-		 str+='</table>';
-		
-		/* str+='<input type="checkbox" id="selectAll"  onclick="selectAllCheckBoxes()" name="selection"><span>Select All Parties</span>';
-		 str+='<input type="checkbox" id="deSelectAll" onclick="deSelectAllCheckBoxes()" name="selection"><span>Unselect All Parties</span>';*/
-		str+='<input type="button" class="btn" style="margin-right: 12px;" id="selectAll" value="Select All Parties"  onclick="selectAllCheckBoxes(this.value)">';
-		str+='<input type="button" class="btn" id="deSelectAll" value="Unselect All Parties" onclick="deSelectAllCheckBoxes(this.value)">';
-
-		str+='</td></tr>';
+		 str+='</td></tr>';
 	     
-		 str+='<tr><th align="left">Elections  : </th><td style="padding-bottom:15px;">';
+		 str+='<tr><th align="left">Elections  : </th><td>';
 		 str+='<table>';
 		 for(var i in myResults.electionsInMandal){
 			if(i%6==0)
@@ -937,33 +928,26 @@ function callAjax(jsObj,url)
 				str+='<td><input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
 			 }
 			else{
-			str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
+	 str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
 		   }
 			if((i%6)+1==0)
 		   str+='</tr>';
 		 }
-
 		 str+='</table>';
-		 /*str+='<input type="checkbox" id="selectAllEle"  onclick="selectAllCheckBoxes()" name="selection"><span>Select All Elections</span>';
-		 str+='<input type="checkbox" id="deSelectAllEle" onclick="deSelectAllCheckBoxes()" name="selection"><span>Unselect All Elections</span>';*/
-			
-		str+='<input type="button" class="btn" style="margin-right: 12px;" id="selectAllEle" value="Select All Elections" onclick="selectAllCheckBoxes(this.value)">';
-		str+='<input type="button" class="btn" id="deSelectAllEle" value="Unselect All Elections" onclick="deSelectAllCheckBoxes(this.value)">';
 		 str+='</td></tr>';
 		
 		 str+='</table>';
 	     $("#mandalElecResultsElections").html(str);
 		 if(type == "mandal")
 		 {
-		 $("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getPanchayatData()">');
-		 //$("#mandalElecResultsButton1").html('<input type="radio" name="votes"  class="btn" value="percentage" id="votingPercentageID" checked="true" onclick="getPanchayatData()"/> Voting Percentage&nbsp;<input type="radio" name="votes"  class="btn" value="validvotes" id="votingValuesID" onclick="getPanchayatData()"/>Valid Votes');
+		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getPanchayatData()">');
+		 $("#mandalElecResultsButton1").html('<input type="radio" name="votes"  class="btn" value="percentage" id="votingPercentageID" checked="true" onclick="getPanchayatData()"/>By Percentage&nbsp;<input type="radio" name="votes"  class="btn" value="validvotes" id="votingValuesID" onclick="getPanchayatData()"/>By Votes');
 		  getPanchayatData();
 		 }
 		 if(type == "panchayat")
 		 {
-
 		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForBooths()">');
-		 //$("#mandalElecResultsButton1").html('<input type="radio" name="boothvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForBooths()"/> Voting Percentage&nbsp;<input type="radio"  name="boothvotes" class="btn" value="validvotes" id="boothvotingValuesID" onclick="getResultsForBooths()"/>Valid Votes');
+		 $("#mandalElecResultsButton1").html('<input type="radio" name="boothvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForBooths()"/>By Percentage&nbsp;<input type="radio"  name="boothvotes" class="btn" value="validvotes" id="boothvotingValuesID" onclick="getResultsForBooths()"/>By Votes');
 		  getResultsForBooths();
 
 		 
@@ -972,7 +956,7 @@ function callAjax(jsObj,url)
 		if(type == "constituency")
 		{
 		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForConstituency()">');
-		// $("#mandalElecResultsButton1").html('<input type="radio" name="constituencyvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForConstituency()"/> Voting Percentage&nbsp;<input type="radio"  name="constituencyvotes" class="btn" value="validvotes" id="constivotingValuesID" onclick="getResultsForConstituency()"/>Valid Votes');
+		 $("#mandalElecResultsButton1").html('<input type="radio" name="constituencyvotes" class="btn" value="percentage" id="constituencyvotingPercentageID" checked="true" onclick="getResultsForConstituency()"/>By Percentage&nbsp;<input type="radio"  name="constituencyvotes" class="btn" value="validvotes" id="constituencyvotingValuesID" onclick="getResultsForConstituency()"/>By Votes');
 		  getResultsForConstituency();
 		}
 	  }
@@ -991,7 +975,7 @@ function callAjax(jsObj,url)
 	  if($(this).is(':checked'))
 	    elections+=','+$(this).val();
     });
-	//var btnName=$('input:radio[name=votes]:checked').val();
+	var btnName=$('input:radio[name=votes]:checked').val();
 	 var invalid = false;
 	 if(parties.length == 0)
 	 {
@@ -1014,7 +998,7 @@ function callAjax(jsObj,url)
 				tehsilId:id.substr(1),
 				parties:parties.substr(1),
 				elections:elections.substr(1),
-				//btnName:btnName,
+				btnName:btnName,
 				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
 				task:"getResults"
 			}
@@ -1025,14 +1009,10 @@ function callAjax(jsObj,url)
   }
   
   var chart;
-  
-	function buildLineChart(myResults,jsObj){
+  function buildLineChart(myResults,jsObj){
 
 	var linechartDataArr = new Array();
 	var results = new Array();
-	var data_perc=[];
-	var data_vv=[];
-	
 	var data = new Array();
 	 if(myResults[0].length == 0 || myResults[1].length == 0) {
              $("#container").html("<b>Data Not Available</b>");
@@ -1044,128 +1024,86 @@ function callAjax(jsObj,url)
 				linechartDataArr.push(myResults[0][i].constituencyName);
 					
 		}
-		
-		//if(jsObj.btnName == "percentage")
-		 results = myResults[1];
-		//if(jsObj.btnName == "validvotes")
-	     results1 = myResults[2];
+			if(jsObj.btnName == "percentage"){
+			 results = myResults[1];
+			var textValue = 'Votes Percent( % )';
+			}
+		if(jsObj.btnName == "validvotes"){
+			results = myResults[2];
+			var textValue = 'Voters Votes';
+		}
 	
-
-        for(var i in results){	
+         for(var i in results){	
            var obj = {};
-		   var tooltipobj={valueSuffix: '%'};
-		   
-		   
            var obj1 = new Array();		   
-           obj["name"] = i +' Percentage';	
+           obj["name"] = i;	
 		   for(var j in results[i]){
 		     obj1.push(parseFloat(results[i][j]));
 		   }
-		    obj['type']='spline';
-			//obj['color']='#AA4643';
-			obj['yAxis']=1;
-			obj['tooltip']=tooltipobj;
            	obj["data"] = obj1;	 
-            data_perc.push(obj);			
+            data.push(obj);			
 	    }
 		
-
-		for(var i in results1){	
-           var obj = {};
-           var obj1 = new Array();		   
-           obj["name"] = i +' Votes';	
-		   for(var j in results1[i]){
-		     obj1.push(parseFloat(results1[i][j]));
-		   }
-			obj['type']='spline';
-			//obj['color']='#89A544';
-           	obj["data"] = obj1;	 
-            data_vv.push(obj);			
-	    }
 		
-		for(var i=0;i<data_perc.length;i++){
-			var ob=data_perc[i];
-			var ob1=data_vv[i];
-			
-			data.push(ob1);
-			data.push(ob);
-			
-		}
-		
-		$('#container').highcharts({
+        chart = new Highcharts.Chart({
             chart: {
+                renderTo: 'container',
                 type: 'line',
-               // marginRight: 130,
-               // marginBottom:240 ,
-			   // height:500,
-				zoomType: 'xy'
+               /* marginRight: 130,
+                marginBottom: 25 */
             },
 			
-			title: {
+            title: {
                 text: 'Percentage and Votes Analysis'
             },
-            
-            xAxis: [{
-                categories:linechartDataArr,
-				labels: {
-                                align:'right',
-                                style: {
-                                      cursor: 'pointer',
-                                      fontSize: '12px',
-                                },
-                                rotation: -45,
-                            } 
-            }],
-            yAxis: [{ // Primary yAxis
-                labels: {
-                    formatter: function() {
-                        return this.value +'';
-                    },
-                    style: {
-                        color: '#89A54E'
-                    }
-                },
-                title: {
-                    text: 'Votes',
-                    style: {
-                        color: '#89A54E'
-                    }
-                },
-                opposite: true
-    
-            }, { // Secondary yAxis
-                gridLineWidth: 0,
-                title: {
-                    text: 'Percentage',
-                    style: {
-                        color: '#AA4643'
-                    }
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value +'%';
-                    },
-                    style: {
-                        color: '#AA4643'
-                    }
-                },
-                opposite: true
-            }],
 			
-			colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
-			
-			legend: {
-					margin:20
-				},
+			 
+            xAxis: {
+                categories: linechartDataArr,
 				
-			/*tooltip: {
-                shared: true
+				 labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: textValue
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+						if(jsObj.btnName == "percentage")
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +'%';
+						else
+						return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +' Valid Votes';
+                }
+            },
+			
+           /* legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
             },*/
-            series:data
-			
-			
+            series: data
         });
 		
+		$('tspan:last').hide();
+
 		$('input[name="show_hide_votes"]').click(function(){
 		var chart = $('#container').highcharts();
 		var series = chart.series;
@@ -1178,7 +1116,7 @@ function callAjax(jsObj,url)
                    series1.hide();
                 });
 		});
-    }
+  }
   
  
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
@@ -3303,7 +3241,7 @@ function getResultsForBooths()
 	  if($(this).is(':checked'))
 	    elections+=','+$(this).val();
     });
-	//var btnName=$('input:radio[name=boothvotes]:checked').val();
+	var btnName=$('input:radio[name=boothvotes]:checked').val();
 	 var invalid = false;
 	 if(parties.length == 0)
 	 {
@@ -3326,7 +3264,7 @@ var jsObj=
 				tehsilId:id,
 				parties:parties.substr(1),
 				elections:elections.substr(1),
-				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
+				btnName:btnName,	includeAlliance:$("#includeAlliancesDiv").is(':checked'),
 				//btnName:btnName,
 				task:"getResultsForBooth"
 			}
@@ -3349,7 +3287,7 @@ $('.partySelForPanc').each(function(){
 	    elections+=','+$(this).val();
     });
 	
-	//var btnName=$('input:radio[name=constituencyvotes]:checked').val();
+	var btnName=$('input:radio[name=constituencyvotes]:checked').val();
 var jsObj=
 			{
 				
@@ -3358,7 +3296,7 @@ var jsObj=
 				elections:elections.substr(1),
 				
 				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
-				//btnName:btnName,
+				btnName:btnName,
 				task:"getResultsForConstituency"
 			}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3648,64 +3586,52 @@ function showMPTCZPTCResults()
 		buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,null,invisib);
 	}
 	
-	function selectAllCheckBoxes(value){
-		//var elmts = document.getElementById('selectAll');
-		//var deSelect = document.getElementById('deSelectAll');
-		//var elections = document.getElementById('selectAllEle');
-		//var deSelectEle = document.getElementById('deSelectAllEle');
-			var elmtValue = value;
-			/*if(elmts.checked == true){
-				deSelect.checked = false;*/
-			//For Parties SelectAll
-			if(elmtValue == 'Select All Parties'){
-			$('.partySelForPanc').each(function(){
-			 if(!$(this).is(':checked'))
-			$(this).attr("checked", "checked");
-			});
+	
+
+	function selectAll(){
+		var elmts = document.getElementById('selectAll');
+		var deSelect = document.getElementById('deSelectAll');
+			if(elmts.checked == true){
+				deSelect.checked = false;
+				selectAllCheckBoxes(); 
 			}
-			//For Elections SelectAll
-			/*if(elections.checked == true){
-			deSelectEle.checked = false;*/
-			if(elmtValue == 'Select All Elections'){
-			$('.elecSelForPanc').each(function(){
-			if(!$(this).is(':checked'))
-		 $(this).attr("checked", "checked");
-		 });
-		}		
+	}
+
+	function selectAllCheckBoxes(){
+		var elmts = document.getElementsByName('parties');
+		if(elmts.length == 0)
+				return;
+			for(var i=0; i<elmts.length; i++)
+			{
+				if(elmts[i].type == "checkbox" && !elmts[i].checked)
+					elmts[i].checked = true;
+			}
 	
 	}
 
 
-	function deSelectAllCheckBoxes(value){
-		
-		//var elmts = document.getElementById('deSelectAll');
-		//var elmt = document.getElementById('selectAll');
-		//var elections = document.getElementById('selectAllEle');
-		//var deSelectEle = document.getElementById('deSelectAllEle');
-		var elmtValue = value;
-			//For Parties UnSelectAll
-			/*if(elmts.checked == true){
-					elmt.checked = false;*/
-			if(elmtValue == 'Unselect All Parties'){
-			$('.partySelForPanc').each(function(){
-			 if($(this).is(':checked'))
-			 $(this).removeAttr('checked')
-			});
-			}
+	function deSelectAll(){
+	
+		var elmts = document.getElementById('deSelectAll');
+		var elmt = document.getElementById('selectAll');
+			if(elmts.checked == true){
+					elmt.checked = false;
+					deSelectAllCheckBoxes(); 
 			
-			//For Elections UnSelectAll
-			/*if(deSelectEle.checked == true){
-				elections.checked = false;*/
-				if(elmtValue == 'Unselect All Elections'){
-			$('.elecSelForPanc').each(function(){
-			if($(this).is(':checked'))
-			$(this).removeAttr('checked')
-			});
 			}
 	}
 
-
+	function deSelectAllCheckBoxes(){
+		var elmts = document.getElementsByName('parties');
+			if(elmts.length == 0)
+				return;
+			for(var i=0; i<elmts.length; i++)
+			{
+				if(elmts[i].type == "checkbox" && elmts[i].checked)
+					elmts[i].checked = false;
+			}
 	
+	}
 	
 </script>
 
