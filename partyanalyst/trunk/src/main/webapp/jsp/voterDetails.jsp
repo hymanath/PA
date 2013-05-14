@@ -1077,7 +1077,14 @@ function refreshingchildWindowWindow()
 	}
 	else
 	{
-		getVoterDetails();
+		//getVoterDetails();
+		if(maintype == "panchayt"){
+			id="${panchaytId}";
+		}
+		if(maintype == "booth"){
+			id="${boothId}";
+		}
+		getInfluencingPeopleCount(id);
 	}
 	
 }
