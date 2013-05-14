@@ -212,35 +212,54 @@ function removeSelectElements(selectedElmt)
 		}
 	}
 	
-	function buildData(results)
-	{
+
+function buildData(results)
+{
 	$("#ajaxImgId").hide();
 	var str = '';
 	var divele = document.getElementById("subLevelInfo");
+	
 	str +='<table id="sublevel" class="table table-bordered table-striped table-hover">';
-	str+='<tr>'
-	str+='<th>MandalName</th>';
-	str+='<th>PanchayatName</th>';
-	str+='<th>TotalVoters</th>';
-	str+='<th>HamletAssigned Voters</th>';
-	str+='<th>HamletNotAssigned Voters</th>';
-	str+='<th>Total Hamlets</th>';
-	str+='</tr>';
+	str += '<tr>'
+	str += '<th>Mandal</th>';
+	str += '<th>Panchayat</th>';
+	str += '<th>Total Voters</th>';
+	str += '<th>Assigned Voters</th>';
+	str += '<th>Not Assigned Voters</th>';
+	str += '<th>Total Hamlets</th>';
+	str += '<th>Hamlets Assigned</th>';
+	str += '<th>Hamlets Not Assigned</th>';
+	str += '</tr>';
+
 	for(var i in results)
 	{
-	str +='<tr>';	
-	str +='<td>'+results[i].tehsilName+'</td>';
-	str +='<td>'+results[i].panchayatName+'</td>';
-	str +='<td>'+results[i].totalVoters+'</td>';
-	str +='<td>'+results[i].hamletAssignedVoters+'</td>';
-	str +='<td>'+results[i].hamletsNotAssignedVoters+'</td>';
-	str +='<td>'+results[i].totalHamlets+'</td>';
-	str +='</tr>';	
+		str += '<tr>';	
+		str += '<td>'+results[i].tehsilName+'</td>';
+		str += '<td>'+results[i].panchayatName+'</td>';
+		str += '<td>'+results[i].totalVoters+'</td>';
+		str += '<td>'+results[i].hamletAssignedVoters+'</td>';
+		str += '<td>'+results[i].hamletsNotAssignedVoters+'</td>';
+
+		str += '<td>';
+		for(var j in results[i].hamletsList)
+			str += ''+results[i].hamletsList[j].name+'<br>';
+		str += '</td>';
 	
+		str += '<td>';
+		for(var k in results[i].assignedHamletsList)
+			str += ''+results[i].assignedHamletsList[k].name+'('+results[i].assignedHamletsList[k].populateId+')<br>';
+		str += '</td>';
+
+		str += '<td>';
+		for(var l in results[i].notAssignedHamletsList)
+			str += ''+results[i].notAssignedHamletsList[l].name+'<br>';
+		str += '</td>';
+
+		str += '</tr>';	
 	}
-		str +='</table>';
+	str +='</table>';
 	divele.innerHTML = str;
-	}
+}
 </script>
 </body>
 </html>
