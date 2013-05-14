@@ -77,17 +77,12 @@ public class DataValidationService implements IDataValidationService{
 				
 				List<Object[]> panchayatsHamletsList = panchayatHamletDAO.getHamletsByPanchayatsList(panchayatsList);
 				
-				List<SelectOptionVO> assignedHamletsList = null;
-				List<SelectOptionVO> hamletsList = null;
-				List<Long> assignedHamletsIdsList = null;
-				List<SelectOptionVO> notAssignedHamletsList = null;
-				
 				for(Object[] params : panchayatsHamletsList)
 				{
-					dataValidationVO = getDataValidationVOFromList(result,(Long)params[0]);
-					hamletsList = dataValidationVO.getHamletsList();
+					DataValidationVO dataValidationVO2 = getDataValidationVOFromList(result,(Long)params[0]);
+					List<SelectOptionVO> hamletsList = dataValidationVO2.getHamletsList();
 					hamletsList.add(new SelectOptionVO((Long)params[2],params[3].toString()));
-					dataValidationVO.setHamletsList(hamletsList);
+					dataValidationVO2.setHamletsList(hamletsList);
 				}
 				
 				List<Object[]> villageResult = userVoterDetailsDAO.getPanchayatWiseHamletsAssignedDetails(constituencyId,publicationDateId,userId);
@@ -103,15 +98,15 @@ public class DataValidationService implements IDataValidationService{
 					selectOptionVO.setName(params[3].toString());
 					selectOptionVO.setPopulateId((Long)params[4]);
 					
-					assignedHamletsList = dataValidationVO.getAssignedHamletsList();
+					List<SelectOptionVO> assignedHamletsList = validationVO.getAssignedHamletsList();
 					assignedHamletsList.add(selectOptionVO);
 					validationVO.setAssignedHamletsList(assignedHamletsList);
 					
-					assignedHamletsIdsList = dataValidationVO.getAssignedHamletsIdsList();
+					List<Long> assignedHamletsIdsList = validationVO.getAssignedHamletsIdsList();
 					assignedHamletsIdsList.add((Long)params[2]);
 					validationVO.setAssignedHamletsIdsList(assignedHamletsIdsList);
 					
-					validationVO.setHamletAssignedVoters(dataValidationVO.getHamletAssignedVoters()+(Long)params[4]);
+					validationVO.setHamletAssignedVoters(validationVO.getHamletAssignedVoters()+(Long)params[4]);
 				}
 				for(DataValidationVO validationVO2 : result)
 				{
@@ -119,7 +114,7 @@ public class DataValidationService implements IDataValidationService{
 					for(SelectOptionVO optionVO : validationVO2.getHamletsList())
 						if(!validationVO2.getAssignedHamletsIdsList().contains(optionVO.getId()))
 						{
-							notAssignedHamletsList = validationVO2.getNotAssignedHamletsList();
+							List<SelectOptionVO> notAssignedHamletsList = validationVO2.getNotAssignedHamletsList();
 							notAssignedHamletsList.add(optionVO);
 							validationVO2.setNotAssignedHamletsList(notAssignedHamletsList);
 						}
