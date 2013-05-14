@@ -1776,6 +1776,17 @@ return Action.SUCCESS;
 				}
 				resultData = voterReportService.getAllBoothsForSelectedWards(ids);
 			}
+			else if(jObj.getString("task").equalsIgnoreCase("getCategValuesForMuncipalWard"))
+			{
+				Long constituencyId     = jObj.getLong("constituencyId");
+				String status           = jObj.getString("status");
+				String[] selectedValues = jObj.getString("selectedValues").split(",");
+				List<Long> ids = new ArrayList<Long>();
+				for (String parm : selectedValues) {
+					ids.add(Long.valueOf(parm.trim()));
+				}
+				resultData = voterReportService.getUserCategoeryValuesForMuncipalWards(userId, constituencyId, status, ids);
+			}
 		
 		} catch (Exception e) {
 			log.error("Exception raised in getUserCategoeryValues() method in VotersAnalysisAction Action Class",e);

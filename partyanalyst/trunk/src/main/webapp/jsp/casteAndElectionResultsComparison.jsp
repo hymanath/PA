@@ -219,10 +219,12 @@
 									}
 									else if(jsObj.task == "getUserCategoeryValues")
 									{
+										$('#processingImg').hide();
 										buildUserCategoerySelectedValues(myResults,jsObj);
 									}
 									else if(jsObj.task == "getUserCatgValuesForWard")
 									{
+										$('#processingImg').hide();
 										buildUserCategoerySelectedValues(myResults,jsObj);
 									}
 									else if(jsObj.task == "getUserCategoeryValuesForWard")
@@ -267,7 +269,10 @@
 									}
 									else if(jsObj.task == "getConstiEleAndPartiesForSelected")
 									{
-										
+										buildElectionAndPartyDetails(myResults);
+									}
+									else if(jsObj.task == "getCategValuesForMuncipalWard")
+									{
 										buildElectionAndPartyDetails(myResults);
 									}
 								}catch (e) {
@@ -303,7 +308,7 @@
 		$("#requiredFieldsToCheckName").html(name);
 		value +='<select id="selectdUserCatgId" onChange="checkAndGetData(\'cast\',\'Cast\',mainStr);"><option value="0">Select Type</ortion>';
 		value +='<option value="1">Caste</option>';
-		value +='</select>';
+		value +='</select><span><img alt="Processing Image" src="./images/icons/search.gif" id="processingImg" style="display:none"></span>';
 		 $("#requiredFieldsToCheckValue").html(value);
 	    //str+='<input type="" onclick="checkAndGetData(\'cast\',\'Cast\');" name="attributesRadio" class="attributeTypeClassIni" value="cast,Caste"/>  Caste';
 		/* str+='   <td style="padding-left:20px;"><input type="radio" onclick="checkAndGetData(\'party\',\'Party\');" name="attributesRadio" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
@@ -330,84 +335,58 @@
 	   function checkAndGetData(type,nameVal,selected)
 	   {
 		
+		var categId = $('#selectdUserCatgId').val();
+		if(categId == 0)
+		{
+			$('#selUserCatgId').hide();
+		}
+		else
+		{
 			$('#selUserCatgId').show();
-			$('#rangeSliderDiv').show();
-			var name = "";
-			if(selected == "ward")
-			{
-				getUserCategoeryValuesForSelecetdWards();
-			}
+		}
 			
-			else
+		$('#rangeSliderDiv').show();
+		$('#processingImg').show();
+		var name = "";
+		if(selected == "ward")
+		{
+			getUserCategoeryValuesForSelecetdWards();
+		}
+		
+		else
+		{
+			var selectedValues = $('.multipleSelect').val();
+			var values = "";
+			var checkVal = "";
+			for(var i in selectedValues)
 			{
-				var selectedValues = $('.multipleSelect').val();
-				var values = "";
-				var checkVal = "";
-				for(var i in selectedValues)
+				checkVal = values+","+selectedValues[i];
+				values = values+","+selectedValues[i];
+			}
+			 name = $("#levelId option:selected").text();
+			if(name == 'Mandal')
+			{
+				if(checkVal.charAt(1) == 1)
 				{
-					checkVal = values+","+selectedValues[i];
-					values = values+","+selectedValues[i];
-				}
-				 name = $("#levelId option:selected").text();
-				if(name == 'Mandal')
-				{
-					if(checkVal.charAt(1) == 1)
-					{
-						var constituencyId = $("#constituencyList option:selected").val();
-						var jsObj=
-							{
-								constituencyId   : constituencyId,
-								status           : type,
-								selectedValues   : values.slice(1),
-								type             : "mandal",
-								nameVal          : nameVal,
-								task             : "getUserCategoeryValues"
-							}
-							var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-							var url = "getUserCategoeryValues.action?"+rparam;	
+					var constituencyId = $("#constituencyList option:selected").val();
+					var jsObj=
+						{
+							constituencyId   : constituencyId,
+							status           : type,
+							selectedValues   : values.slice(1),
+							type             : "mandal",
+							nameVal          : nameVal,
+							task             : "getUserCategoeryValues"
+						}
+						var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+						var url = "getUserCategoeryValues.action?"+rparam;	
 
-						callAjaxToGetData(jsObj,url);
-					} 
-					else
-					{
-					
-						 name = $("#levelId option:selected").text();
-						var id = $("#constituencyList option:selected").val();
-						var jsObj=
-							{
-								constituencyId   : id,
-								status           : type,
-								selectedValues   : values.slice(1),
-								type             : name,
-								nameVal          : nameVal,
-								task             : "getUserCategoeryValues"
-							}
-							var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-							var url = "getUserCategoeryValues.action?"+rparam;	
-
-						callAjaxToGetData(jsObj,url);
-					}
-				}	
+					callAjaxToGetData(jsObj,url);
+				} 
 				else
 				{
-					if(selected == "booth" && substr == "RURAL")
-					{
-						
-						name = $("#levelId option:selected").text();
-					}
-					else if(selected == "panchayat")
-					{
-						name = $("#levelId option:selected").text();
-					}
-					else if(selected == "")
-					{
-						name = $("#levelId option:selected").text();
-					}
-					else
-					{
-						 name = $("#urbanIds option:selected").text();
-					}
-					
+				
+					 name = $("#levelId option:selected").text();
 					var id = $("#constituencyList option:selected").val();
 					var jsObj=
 						{
@@ -424,6 +403,42 @@
 					callAjaxToGetData(jsObj,url);
 				}
 			}	
+			else
+			{
+				if(selected == "booth" && substr == "RURAL")
+				{
+					
+					name = $("#levelId option:selected").text();
+				}
+				else if(selected == "panchayat")
+				{
+					name = $("#levelId option:selected").text();
+				}
+				else if(selected == "")
+				{
+					name = $("#levelId option:selected").text();
+				}
+				else
+				{
+					 name = $("#urbanIds option:selected").text();
+				}
+				
+				var id = $("#constituencyList option:selected").val();
+				var jsObj=
+					{
+						constituencyId   : id,
+						status           : type,
+						selectedValues   : values.slice(1),
+						type             : name,
+						nameVal          : nameVal,
+						task             : "getUserCategoeryValues"
+					}
+					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+					var url = "getUserCategoeryValues.action?"+rparam;	
+
+				callAjaxToGetData(jsObj,url);
+			}
+		}	
 	   }
 	   
 	   function buildUserCategoerySelectedValues(result,jsObj)
@@ -479,7 +494,8 @@
 		if(type == 'Mandal')
 		{
 			$('#selLevelId').show();
-			$('#selMandalId').show();
+			$('#selMandalId').hide();
+			$('#selPanchayatRow').hide();
 			getMandals();
 		}
 		else if(type == "Ward")
@@ -500,6 +516,7 @@
 		{
 			$('#selLevelId').show();
 			$('#selPanchayatRow').show();
+			$('#specificMandalValue').hide();
 			var value = 1;
 			var jsObj=
 					{
@@ -879,6 +896,7 @@
 	}
 	function getUserCategoersFoeSelect(type)
 	{
+		
 		$('#selReqFileldId').show();
 		mainStr = type;
 		$('#selReqFileldId').show();
@@ -897,7 +915,29 @@
 		}
 		else if (type == "")
 		{
-			$('#selPanchayatRow').show();
+			$('#selPanchayatRow').hide();
+		}
+		else if(type == "muncipality")
+		{
+			var selectedValues = $('.multipleSelect').val();
+			var values = "";
+			var checkVal = "";
+			for(var i in selectedValues)
+			{
+				values = values+","+selectedValues[i];
+			}
+			var constituencyId = $("#constituencyList option:selected").val();
+				var jsObj=
+				{
+					constituencyId   : constituencyId,
+					status           : type,
+					selectedValues   : values.slice(1),
+					task             : "getCategValuesForMuncipalWard"
+				}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getUserCategoeryValues.action?"+rparam;	
+
+			callAjaxToGetData(jsObj,url);
 		}
 		else
 		{
@@ -1025,6 +1065,7 @@
 					constituencyId    :constituencyId,
 					values            : values.slice(1),
 					status            : "cast",
+					nameVal           : "Cast",
 					task              : "getUserCatgValuesForWard"
 				}
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1058,8 +1099,7 @@
 	     var str='';
 		 str+='<table><tr><th align="left">Parties : </th><td>';
 		 for(var i in myResults.partiesInMandal){
-		  if(myResults.partiesInMandal[i].id != 366)
-		     str+='<input id="parties-'+i+'" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
+		  str+='<input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
 		 }
 		 str+='</td></tr>';
 	     
@@ -1068,9 +1108,13 @@
 		 for(var i in myResults.electionsInMandal){
 			if(i%6==0)
 				str+='<tr>';
-			
-	             str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
-		   
+			if(i == electionsLength-1)
+			 {
+				str+='<td><input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
+			 }
+			else{
+	 str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
+		   }
 			if((i%6)+1==0)
 		   str+='</tr>';
 		 }
@@ -1084,9 +1128,12 @@
 	}
 	
 	function selectAll(){
-		
-	   selectAllCheckBoxes(); 
-	
+		var elmts = document.getElementById('selectAll');
+		var deSelect = document.getElementById('deSelectAll');
+			if(elmts.checked == true){
+				deSelect.checked = false;
+				selectAllCheckBoxes(); 
+			}
 	}
 
 	function selectAllCheckBoxes(){
@@ -1104,9 +1151,13 @@
 
 	function deSelectAll(){
 	
-		
-		deSelectAllCheckBoxes(); 
-
+		var elmts = document.getElementById('deSelectAll');
+		var elmt = document.getElementById('selectAll');
+			if(elmts.checked == true){
+					elmt.checked = false;
+					deSelectAllCheckBoxes(); 
+			
+			}
 	}
 
 	function deSelectAllCheckBoxes(){
@@ -1121,6 +1172,8 @@
 	
 	}
 function getCastWiseElectionResults(){
+
+	
      var parties = '';
      var elections = '';
      var locationIds = '';
@@ -1489,15 +1542,14 @@ attrPerc=$( "#slider" ).slider( "value" );
 	<div class="hero-unit" style="display:none;">
 	<div id="mandalElecResultsElections"></div>
 	<div id="selectionDiv" align="left" style="margin-left: 138px;" >
-     <input type="button" class="btn" id="selectAll"  onclick="selectAll();" name="selection" value="Select All"></input>
-	 <input type="button" class="btn" id="deSelectAll" onclick="deSelectAll();" name="selection" value="Unselect All"></input>
-	 <input type="button" class="btn" value="Submit" onclick="getCastWiseElectionResults();"></input>
+    <input type="checkbox" id="selectAll"  onclick="selectAll()" name="selection"><span>Select All</span>
+	<input type="checkbox" id="deSelectAll" onclick="deSelectAll()" name="selection"><span>Unselect All</span>
 	</div>
-	<!--<div id="submitbtn"><input type="button" class="btn" value="Submit" onclick="getCastWiseElectionResults();"></input></div>
-	</div>-->
+	<div id="submitbtn"><input type="button" class="btn" value="Submit" onclick="getCastWiseElectionResults();"></input></div>
+	</div>
   </div>
-  <div id="container" style="min-height:600px;"> </div>
-  <div style="margin-left:auto;margin-right:auto;width:250px;margin-bottom:10px;display:none;" id="show_hide_votes">
+  <div id="container"> </div>
+  <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;display:none;" id="show_hide_votes">
 		<span class="label label-info" style="padding:5px;margin:5px;">Show All <input type="radio" name="show_hide_votes" value="show" checked="checked"></span>
 		<span class="label label-info" style="padding:5px;margin:5px;">Hide All <input type="radio" name="show_hide_votes" value="hide"></span>
 	</div>
