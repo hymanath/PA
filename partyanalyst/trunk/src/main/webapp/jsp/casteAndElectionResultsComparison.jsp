@@ -222,11 +222,11 @@
 									{
 										buildUserCategoerySelectedValues(myResults,jsObj);
 									}
-									else if(jsObj.task == "getUserCategoeryValuesForWard")
+									else if(jsObj.task == "getUserCatgValuesForWard")
 									{
 										buildUserCategoerySelectedValues(myResults,jsObj);
 									}
-									else if(jsObj.task == "getUserCatgValuesForWard")
+									else if(jsObj.task == "getUserCategoeryValuesForWard")
 									{
 										buildUserCategoerySelectedValues(myResults,jsObj);
 									}
@@ -359,10 +359,10 @@
 							{
 								constituencyId   : constituencyId,
 								status           : type,
-								selectedValues   : checkVal.slice(1),
-								type             : "muncipality",
+								selectedValues   : values.slice(1),
+								type             : "mandal",
 								nameVal          : nameVal,
-								task             : "getUserCategoeryValuesForWard"
+								task             : "getUserCategoeryValues"
 							}
 							var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 							var url = "getUserCategoeryValues.action?"+rparam;	
@@ -455,14 +455,14 @@
 	}
 	var type;
 	function getRespectiveValues(constituencyType)
-	{	
+	{	/* 
 		var checkedStatus = $('.radioCheck').is('ckecked');
 		if(checkedStatus == false)
 		{
 			$('.radioCheck').prop('checked', false);
 			$('#specificPanchayatValue').hide();
 			$('#specificMandalValue').hide();
-		}
+		} */
 		
 		$('#selReqFileldId').hide();
 		$('#selUserCatgId').hide();
@@ -584,13 +584,16 @@
 			{
 				$('#selPanchayatRow').show();
 				$('#specificPanchayatName').show();
+				$('#selMandalId').show();
+				$('#specificMandalName').show();
 				name += '<b>Booths </b><font class="requiredFont" style="color:red">*</font> ';
 				
-				mandal += '<input type="radio" onClick="getAllMandalsInAConstituency();" class="mandalCheck ,radioCheck"></input>';
+				mandal += '<input type="radio" onClick="getAllMandalsInAConstituency();" class="mandalCheck "></input>';
 				mandal +='<b class="space">Specific Mandal</b>';
-				panchayat += '<input type="radio" onClick="getAllPancayatsInAConstituency();" class="panchayatCkeck,radioCheck"></input>';
+				panchayat += '<input type="radio" onClick="getAllPancayatsInAConstituency();" class="panchayatCkeck"></input>';
 				panchayat +='<b>Specific Panchayat</b>';
 				$('#specificPanchayatName').html(panchayat);
+				$('#specificMandalName').html(mandal);
 				$('#multiSelectLevelsHeading').html(name);
 				var value = "";
 				value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'booth\');" class="multipleSelect" multiple >';
@@ -656,6 +659,7 @@
 	function getAllPancayatsInAConstituency()
 	{
 		$('#specificPanchayatValue').show();
+		$('#specificMandalValue').hide();
 		var id = $("#constituencyList option:selected").val();
 		var jsObj=
 				{
@@ -673,6 +677,7 @@
 	function getAllMandalsInAConstituency()
 	{
 		$('#specificMandalValue').show();
+		$('#specificPanchayatValue').hide();
 		var value =  $("#constituencyList option:selected").val();
 		var jsObj=
 			{
@@ -891,6 +896,10 @@
 		{
 			$('#selPanchayatRow').hide();
 		}
+		else if (type == "")
+		{
+			$('#selPanchayatRow').show();
+		}
 		else
 		{
 			$('#selPanchayatRow').hide();
@@ -1014,9 +1023,8 @@
 		}
 		var jsObj=
 				{
-					
-					values            : values.slice(1),
 					constituencyId    :constituencyId,
+					values            : values.slice(1),
 					status            : "cast",
 					task              : "getUserCatgValuesForWard"
 				}
@@ -1126,20 +1134,49 @@ function getCastWiseElectionResults(){
 	  if($(this).is(':checked'))
 	    parties+=','+$(this).val();
     });
-	$('#multipleSelect :selected').each(function(i, selected){ 
+	$('.multipleSelect :selected').each(function(i, selected){ 
 	   locationIds+=','+$(selected).val();
     });
 	$('#selCategoeryList :selected').each(function(i, selected){ 
 	   attributeIds+=','+$(selected).val();
     });
-	var type = 'mandal';
-	var lvlId = $("#levelId option:selected").val();
-	if(lvlId == 1){
-	  type = 'mandal';
-	}else if(lvlId == 2){
-	  type = 'panchayat';
-	}else if(lvlId == 3){
-	  type = 'booth';
+	var type ;
+	if(substr == "URBAN")
+	{
+		var lvlId = $("#urbanIds option:selected").val();
+		if(lvlId == 4)
+		{
+			type = 'ward';
+		}
+		else
+		{
+			type = 'booth';
+		}
+	}
+	else if(substr == "RURAL")
+	{
+		var lvlId = $("#levelId option:selected").val();
+		if(lvlId == 1){
+			var selectedValues = $('.multipleSelect').val();
+			var values = "";
+			for(var i in selectedValues)
+			{
+				values = values+","+selectedValues[i];
+			}
+			var mandalIds = values.slice(1);
+			if(mandalIds.charAt(0) == 1)
+			{
+				 type = 'ward';
+			}
+			if(mandalIds.charAt(0) == 2)
+			{
+				 type = 'mandal';
+			}
+		}else if(lvlId == 2){
+		  type = 'panchayat';
+		}else if(lvlId == 3){
+		  type = 'booth';
+		}
 	}
 	var jsObj=
 			{
