@@ -3227,13 +3227,13 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			 if(locationType.equalsIgnoreCase("mandal"))
 				queryString.append("select count(*),BPV.booth.tehsil.tehsilId,BPV.booth.tehsil.tehsilName "+queryString1+" and BPV.booth.tehsil.tehsilId in (:locationIds) and BPV.booth.localBody is null and BPV.booth.constituency.constituencyId = :constituencyId group by "+var+" BPV.booth.tehsil.tehsilId ");
 			else if(locationType.equalsIgnoreCase("booth"))
-				queryString.append("select count(*),BPV.booth.partNo,BPV.booth.partNo,UVD.casteState.casteStateId "+queryString1+"  and BPV.booth.partNo in (:locationIds) group by "+var+" BPV.booth.partNo ");
+				queryString.append("select count(*),BPV.booth.partNo,BPV.booth.partNo "+queryString1+"  and BPV.booth.partNo in (:locationIds) group by "+var+" BPV.booth.partNo ");
 			else if(locationType.equalsIgnoreCase("panchayat"))
-				queryString.append("select count(*),BPV.booth.panchayat.panchayatId,BPV.booth.panchayat.panchayatName,UVD.casteState.casteStateId "+queryString1+" and BPV.booth.panchayat.panchayatId in (:locationIds) group by "+var+" BPV.booth.panchayat.panchayatId ");
+				queryString.append("select count(*),BPV.booth.panchayat.panchayatId,BPV.booth.panchayat.panchayatName "+queryString1+" and BPV.booth.panchayat.panchayatId in (:locationIds) group by "+var+" BPV.booth.panchayat.panchayatId ");
 			else if(locationType.equalsIgnoreCase("ward"))
-				queryString.append("select count(*),BPV.booth.localBodyWard.constituencyId,BPV.booth.localBodyWard.name,UVD.casteState.casteStateId "+queryString1+" and BPV.booth.localBodyWard.constituencyId in (:locationIds) and BPV.booth.constituency.constituencyId = :constituencyId group by "+var+" BPV.booth.localBodyWard.constituencyId ");
+				queryString.append("select count(*),BPV.booth.localBodyWard.constituencyId,BPV.booth.localBodyWard.name "+queryString1+" and BPV.booth.localBodyWard.constituencyId in (:locationIds) and BPV.booth.constituency.constituencyId = :constituencyId group by "+var+" BPV.booth.localBodyWard.constituencyId ");
 			else if(locationType.equalsIgnoreCase("localElectionBody"))
-				queryString.append("select count(*),BPV.booth.localBody.localElectionBodyId,BPV.booth.localBody.name,UVD.casteState.casteStateId "+queryString1+" and BPV.booth.localBody.localElectionBodyId in (:locationIds) and BPV.booth.constituency.constituencyId = :constituencyId  group by "+var+" BPV.booth.localBody.localElectionBodyId ");
+				queryString.append("select count(*),BPV.booth.localBody.localElectionBodyId,BPV.booth.localBody.name "+queryString1+" and BPV.booth.localBody.localElectionBodyId in (:locationIds) and BPV.booth.constituency.constituencyId = :constituencyId  group by "+var+" BPV.booth.localBody.localElectionBodyId ");
 			
 			 
 			Query query = getSession().createQuery(queryString.toString());

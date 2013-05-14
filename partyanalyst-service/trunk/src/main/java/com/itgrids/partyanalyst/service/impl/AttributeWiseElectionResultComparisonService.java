@@ -221,12 +221,14 @@ public class AttributeWiseElectionResultComparisonService implements
 			else if("booth".equalsIgnoreCase(type)){
 				List<String> partNos = boothDAO.getPartNosForBooths(ids);
 				List<Long> locationIds = getAttributesCount(dataList,countList,userId,constituencyId,publicationId,type,ids,attributeType,attributeIds,attrPerc,attributesMap,attributeNames,locationNames,partNos);
-				 if(locationIds.size() > 0){
+				 List<String> prtNos = new ArrayList<String>();
+				if(locationIds.size() > 0){
 					 for(Long locId:locationIds){
 						 locationNames.put(locId, "Booth-"+locId);
+						 prtNos.add(locId.toString());
 					 }
-					 List<Object[]> results = candidateBoothResultDAO.findBoothResultsForMultipleBoothsInElections(constituencyId,locationIds,electionIds,partyIds);
-					 List<Object[]> resultsCount = candidateBoothResultDAO.findBoothCountForMultipleBoothsInElections(constituencyId,locationIds,electionIds);
+					 List<Object[]> results = candidateBoothResultDAO.findBoothResultsForMultipleBoothsInElections(constituencyId,prtNos,electionIds,partyIds);
+					 List<Object[]> resultsCount = candidateBoothResultDAO.findBoothCountForMultipleBoothsInElections(constituencyId,prtNos,electionIds);
 					 //Map<Long,Map<Long,Map<Long,PartyResultsVO>>> electionResultsMap = new HashMap<Long,Map<Long,Map<Long,PartyResultsVO>>>();//Map<electionId,Map<partyId,Map<boothId,boothObj>>>
 
 					 populateDataToVos(electionCount,results,resultsCount,electionResultsMap,electionNames,partyNames,null,false);
@@ -297,17 +299,17 @@ public class AttributeWiseElectionResultComparisonService implements
 				locationMap = new HashMap<Long,PartyResultsVO>();
 				attributeNames.put((Long)count[3], count[4].toString());
 				attributesMap.put((Long)count[3], locationMap);
-				locationNames.put((Long)count[1], count[2].toString());
+				locationNames.put(new Long(count[1].toString().trim()), count[2].toString());
 			}
-			if(locationIds.contains((Long)count[1])){
-				obj = locationMap.get((Long)count[1]);
+			if(locationIds.contains(new Long(count[1].toString().trim()))){
+				obj = locationMap.get(new Long(count[1].toString().trim()));
 				if(obj == null){
 					obj = new PartyResultsVO();
 					obj.setValidVotes((Long)count[0]);
-					if(locationCountMap.get((Long)count[1]) != null && locationCountMap.get((Long)count[1]) > 0 ){
-						obj.setVotesPercent(new BigDecimal((Long)count[0]/locationCountMap.get((Long)count[1]).doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP));
+					if(locationCountMap.get(new Long(count[1].toString().trim())) != null && locationCountMap.get(new Long(count[1].toString().trim())) > 0 ){
+						obj.setVotesPercent(new BigDecimal((Long)count[0]/locationCountMap.get(new Long(count[1].toString().trim())).doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP));
 					}
-					locationMap.put((Long)count[1], obj);
+					locationMap.put(new Long(count[1].toString().trim()), obj);
 				}
 			}
 		}
