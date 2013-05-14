@@ -189,7 +189,7 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	
 	public List<Object[]> findBoothResultsForMultipleBoothsAndElectionsForParties(Set<Long> boothslist, List<Long> electionIds,List<Long> partyIds);
 	
-	public List<Object[]> findBoothResultsForMultipleBoothsInElections(Long constituencyId,List<Long> partNos, List<Long> electionIds,List<Long> partyIds);
+	public List<Object[]> findBoothResultsForMultipleBoothsInElections(Long constituencyId,List<String> partNos, List<Long> electionIds,List<Long> partyIds);
 	
 	public List<Object[]> getMandalResultsForElectionAndMandals(Long constituencyId,List<Long> tehsilIds, List<Long> electionIds,List<Long> partyIds);
 	
@@ -201,5 +201,5 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	
 	public List<Object[]> findBoothCountForMultipleBoothsAndElectionsForParties(Set<Long> boothslist, List<Long> electionIds);
 	
-	public List<Object[]> findBoothCountForMultipleBoothsInElections(Long constituencyId,List<Long> partNos, List<Long> electionIds);
+	public List<Object[]> findBoothCountForMultipleBoothsInElections(Long constituencyId,List<String> partNos, List<Long> electionIds);
 }

@@ -1211,7 +1211,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		return query.list();
 	}
 	
-	public List<Object[]> findBoothResultsForMultipleBoothsInElections(Long constituencyId,List<Long> partNos, List<Long> electionIds,List<Long> partyIds){
+	public List<Object[]> findBoothResultsForMultipleBoothsInElections(Long constituencyId,List<String> partNos, List<Long> electionIds,List<Long> partyIds){
 		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.partNo,model.nomination.party.partyId, model.nomination.party.shortName,"+
 				" model.votesEarned ,model.boothConstituencyElection.constituencyElection.election.electionYear,model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,model.boothConstituencyElection.booth.partNo   " +
 				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId in(:electionIds) and model.nomination.party.partyId in(:partyIds) and model.boothConstituencyElection.booth.partNo in(:partNos) and " +
@@ -1224,7 +1224,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		return query.list();
 	}
 	
-	public List<Object[]> findBoothCountForMultipleBoothsInElections(Long constituencyId,List<Long> partNos, List<Long> electionIds){
+	public List<Object[]> findBoothCountForMultipleBoothsInElections(Long constituencyId,List<String> partNos, List<Long> electionIds){
 		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.partNo,"+
 				" model.votesEarned from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId in(:electionIds)  and model.boothConstituencyElection.booth.partNo in(:partNos) and " +
 				" model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId ");
