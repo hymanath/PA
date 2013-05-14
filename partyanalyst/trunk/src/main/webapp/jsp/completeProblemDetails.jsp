@@ -1819,7 +1819,7 @@ function displayDateText(type, args, obj) {
 
 <div class="container" ><!-- Container Opening -->
 
-<h2 class="h1header"> Your Locality Problems</h2>
+<h2 class="h1header"> Your Locality Problems&nbsp;</h2>
 <s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.isProblemDel != 'true' ">
 <s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.noAccess != 'true' ">
 <s:if test="completeProblemDetailsVO.userStatus == 'both' && completeProblemDetailsVO.isTaken == 'true' && completeProblemDetailsVO.changedToPrivate == 'true' ">
@@ -1853,7 +1853,7 @@ function displayDateText(type, args, obj) {
 <div class="span1 pull-left m0-left" id="userdiv">
 			<div class="userdesc">
 			
-			 <h5>${completeProblemDetailsVO.firstName}&nbsp; ${completeProblemDetailsVO.lastName}</h5>
+			 <h5>${completeProblemDetailsVO.firstName}&nbsp; ${completeProblemDetailsVO.lastName}&nbsp;</h5>
 			   <!-- <span>Friends(25)</span>
 				<s:if test=" (completeProblemDetailsVO.userStatus == 'both' || completeProblemDetailsVO.userStatus == 'freeuser') && completeProblemDetailsVO.isConnectPeopleReq !='false' ">
 			      <a href="#"><i class="icon-plus-sign"></i>Connect Now</a>
@@ -1872,7 +1872,7 @@ function displayDateText(type, args, obj) {
 		  <!--<a class="label">Posted by: <b>${completeProblemDetailsVO.firstName}&nbsp; ${completeProblemDetailsVO.lastName}</b></a>-->
 </div>
 <div class="span7 subheader-problem">
-      <h2 class="span5 pull-left">${completeProblemDetailsVO.problemTitle} </h2>
+      <h2 class="span5 pull-left">${completeProblemDetailsVO.problemTitle} &nbsp;</h2>
 <div id="errorMsgDivEle"></div>
 <!--
 <c:if test="${completeProblemDetailsVO.isOwner && completeProblemDetailsVO.userStatus != 'NOT_LOGGED_IN'}">
@@ -1901,7 +1901,7 @@ function displayDateText(type, args, obj) {
           <ul class="dropdown-menu pull-right">
             <li><div style="padding-left:15px;"><a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/completeProblemDetailsAction.action?problemId=${completeProblemDetailsVO.problemId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a></div></li>
 			<li><div style="padding-left:30px;"><a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/completeProblemDetailsAction.action?problemId=${completeProblemDetailsVO.problemId}">
-				Tweet</a></div>
+				Tweet&nbsp;</a></div>
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 			</script> </li>
 			<li><div style="padding-left:30px;margin-top: 5px;">
@@ -1940,16 +1940,16 @@ function displayDateText(type, args, obj) {
             <div class="span5"><h5>${completeProblemDetailsVO.problemCompleteLoc}</h5></div>
           </div>
           <div>
-           <div id="postedon" style="margin-right: 24px;">Posted On : ${completeProblemDetailsVO.identifiedOn}</div>
-           <div style="">Existing From : ${completeProblemDetailsVO.existingFrom}</div>
-		   <div  style="float: right; margin-top: -20px; clear: both; margin-right: 29px;">Ref NO : ${completeProblemDetailsVO.referenceNo}</div>
+           <div id="postedon" style="margin-right: 24px;">Posted On : ${completeProblemDetailsVO.identifiedOn}&nbsp;</div>
+           <div style="">Existing From : ${completeProblemDetailsVO.existingFrom}&nbsp;</div>
+		   <div  style="float: right; margin-top: -20px; clear: both; margin-right: 29px;">Ref NO : ${completeProblemDetailsVO.referenceNo}&nbsp;&nbsp;</div>
           </div>
       </div>
 
 
 <div class="row clear-b" style="margin: 5px; padding: 20px 5px 5px;">
 		<div class="span pull-left">
-                     <p>${completeProblemDetailsVO.problemDesc}</p>
+                     <p>${completeProblemDetailsVO.problemDesc}&nbsp;</p>
 					
 	</div>
 </div>	
