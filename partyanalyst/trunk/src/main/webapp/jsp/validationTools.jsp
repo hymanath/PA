@@ -93,13 +93,13 @@
 	</div>
 <div id="ajaxImgId" style="display:none;margin-right:427px;float:right;"><img src="./images/icons/search.gif" alt="Processing Image"/></div>	
 <div style="margin-top:10px;margin-bottom:10px;text-align: center;clear:both;">
-<input type="button" style="position: absolute:top: 50%;" value="View" class="btn btn-success" onclick="getSubLevelInfo();">
+<input type="button" style="position: absolute:top: 50%;" value="Get Hamlet Assigned Info" class="btn btn-success" onclick="getSubLevelInfo();">
 
 </div>
 <br>
 </div>
 <div class="widget blue" id="subLevelDataId" style="display:none;">
-<div id="subLevelInfo">
+<div id="subLevelInfo" style="overflow-x:scroll;">
 </div>
 </div>
 </div>
