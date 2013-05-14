@@ -289,7 +289,7 @@ public class AttributeWiseElectionResultComparisonService implements
 		Map<Long,Long> locationCountMap = new HashMap<Long,Long>();
 		//Map<Long,String> attributeNames = new HashMap<Long,String>();
 		for(Object[] totalVoters:countList){
-			locationCountMap.put((Long)totalVoters[1],(Long)totalVoters[0]);
+			locationCountMap.put(new Long(totalVoters[1].toString().trim()),(Long)totalVoters[0]);
 		}
 		for(Object[] count:dataList){
 			locationMap = attributesMap.get((Long)count[3]);
