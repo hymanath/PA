@@ -119,6 +119,7 @@ function callAjax(jsObj,url)
 							{
 								showStatusOfDeletedCategores(myResults);		
 							}
+							
 							}catch(e){   
 							alert("Invalid JSON result" + e);   
 						}  
@@ -420,6 +421,20 @@ if(result.resultCode == 0)
 	 </div>
 	 <!-- Locality Div End-->
 
+	 
+	  <!-- Validation Div start-->
+	 <div id="popupDiv" style="float: right;clear:both;">
+	
+	
+		
+		 <a href="validationToolsAction.action"><input type="button" value="Get Hamlet Assigned Info" class="btn btn-success" style="clear: both; float: right; margin-top: -26px;" id="getHamletInfo"></input></a>
+	
+	 
+	 </div>
+	 <br>
+	 <!-- Validation Div End-->
+	 
+	 
 	</div>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -1068,6 +1083,8 @@ $(document).ready(function() {
 		}
 		return flag;
 	}
+	
+	
 </script>
 </body>
 </html>
