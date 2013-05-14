@@ -538,6 +538,8 @@ function validationCheck()
 	var infl_thesil          = $('#mandalField').val();
 	var infl_village         = $('#hamletField_s').val();
 	var infl_booth			 = $('#boothField_s').val();
+	var email				 = $('#emailField').val();
+	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
 	$('#errorDiv').html('');
 		$('#errorDiv').html('&nbsp;');
 	if(firstName == '')
@@ -587,6 +589,17 @@ function validationCheck()
 	{
 		$('#errorDiv').html('<div>Please enter the mobile no</div>');
 		return false;
+	}
+	else if(!(mobileNo.length == 0 || (mobileNo.length >=10 && mobileNo.length<=12)))
+			{
+			$('#errorDiv').html('<div>Enter valid MobileNo</div>');
+			return false;
+			}
+	if(!(email.length == 0)){
+	if(!email.match(emailExp)){
+		$('#errorDiv').html('<div>Invalid Email</div>');
+		return false;
+	}
 	}
 	if(district == 0 || district == null)
 	{
