@@ -56,4 +56,6 @@ public interface IVoterReportService {
 	public List<SelectOptionVO> getUserCategoeryValuesForWards(Long userId,Long constituencyId,List<Long> ids ,String status);
 	
 	public List<SelectOptionVO> getAllBoothsForSelectedWards(List<Long> ids);
+	
+	public List<SelectOptionVO> getUserCategoeryValuesForMuncipalWards(Long userId,Long constituencyId,String type,List<Long> ids);
 }
