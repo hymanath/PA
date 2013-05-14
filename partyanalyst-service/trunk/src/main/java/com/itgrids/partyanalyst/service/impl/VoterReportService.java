@@ -1907,8 +1907,8 @@ public class VoterReportService implements IVoterReportService{
 						}
 						if(mandalIds != null && mandalIds.size() > 0)
 						{
-							List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,mandalIds,type,status);
-							
+							//List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,mandalIds,type,status);
+							List<Object[]> castOrPartyDetails = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,2l,mandalIds);
 							if(castOrPartyDetails != null && castOrPartyDetails.size() > 0)
 							{
 								
@@ -1926,7 +1926,10 @@ public class VoterReportService implements IVoterReportService{
 							if(list != null)
 							{
 								Long localBodyId = (Long)list.get(0);
-								List<Object[]> castesList = boothPublicationVoterDAO.getCastesListForSelectedMuncipality(userId, localBodyId, constituencyId,status);
+								List<Long> localBodyIds = new ArrayList<Long>();
+								localBodyIds.add(localBodyId);
+								//List<Object[]> castesList = boothPublicationVoterDAO.getCastesListForSelectedMuncipality(userId, localBodyId, constituencyId,status);
+								List<Object[]> castesList = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId, 5l, localBodyIds);
 								for (Object[] parms : castesList) {
 									selectOptionVO = new SelectOptionVO();
 									selectOptionVO.setId((Long)parms[0]);
@@ -1936,10 +1939,10 @@ public class VoterReportService implements IVoterReportService{
 							}
 						}
 					}
-					else
+					else if(type.equalsIgnoreCase("panchayat"))
 					{
-						List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,ids,type,status);
-						
+						//List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,ids,type,status);
+						List<Object[]> castOrPartyDetails = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,3l,ids);
 						if(castOrPartyDetails != null && castOrPartyDetails.size() > 0)
 						{
 							
@@ -1951,7 +1954,21 @@ public class VoterReportService implements IVoterReportService{
 							}
 						}
 					}
-					
+					else if(type.equalsIgnoreCase("booth"))
+					{
+						List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,ids,type,status);
+						//List<Object[]> castOrPartyDetails = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,3l,ids);
+						if(castOrPartyDetails != null && castOrPartyDetails.size() > 0)
+						{
+							
+							for (Object[] parms : castOrPartyDetails) {
+								selectOptionVO = new SelectOptionVO();
+								selectOptionVO.setId((Long)parms[0]);
+								selectOptionVO.setName(parms[1].toString());
+								resultData.add(selectOptionVO);
+							}
+						}
+					}
 					
 					
 				}
@@ -2000,7 +2017,8 @@ public class VoterReportService implements IVoterReportService{
 		public List<SelectOptionVO> getUserCategoeryValuesForWards(Long userId,Long constituencyId,List<Long> ids ,String status)
 		{
 			List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
-			List<Object[]> userCategoeres = boothPublicationVoterDAO.getAllCastesOrPartesForSelectedWards(userId,ids,constituencyId,status);
+			//List<Object[]> userCategoeres = boothPublicationVoterDAO.getAllCastesOrPartesForSelectedWards(userId,ids,constituencyId,status);
+			List<Object[]> userCategoeres = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,6l,ids);
 			if(userCategoeres != null && userCategoeres.size() > 0)
 			{
 				SelectOptionVO selectOptionVO = null;
@@ -2033,5 +2051,11 @@ public class VoterReportService implements IVoterReportService{
 				}
 			}
 			return returnData;
+		}
+		
+		public List<SelectOptionVO> getUserCategoeryValuesForMuncipalWards(Long userId,Long constituencyId,String type,List<Long> ids)
+		{
+			List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
+			return resultData;
 		}
 }

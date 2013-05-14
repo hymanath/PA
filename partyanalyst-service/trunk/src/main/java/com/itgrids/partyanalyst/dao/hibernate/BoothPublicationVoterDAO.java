@@ -3153,8 +3153,9 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		  }
 		  else if(type.equalsIgnoreCase("booth"))
 		  {
-			  queryString.append("BPV.booth.boothId in (:ids)");
+			  queryString.append("BPV.booth.boothId in (:ids) ");
 		  }
+		  queryString.append("order by UVD.casteState.caste.casteName");
 		  Query query = getSession().createQuery(queryString.toString());
 		  query.setParameter("userId", userId);
 		 query.setParameterList("ids", ids);
@@ -3374,4 +3375,17 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 			return query.list();
 		}*/
+	  
+	  public List<Object[]> getUserCategValuesForSelectedMuncipalWards(Long userId,Long constituencyId,String type,List<Long>  ids)
+	  {
+		  Query query = getSession().createQuery("select distinct(UVD.casteState.casteStateId) ," +
+		  		"UVD.casteState.caste.casteName from  UserVoterDetails UVD ,BoothPublicationVoter BPV  " +
+		  		"where UVD.voter.voterId = BPV.voter.voterId and UVD.user.userId =:userId " +
+		  		"and BPV.booth.localBodyWard.constituencyId in (:ids) " +
+			  		"  ");
+		  query.setParameter("userId", userId);
+		  //query.setParameter("constituencyId", constituencyId);
+		  query.setParameterList("ids", ids);
+		  return query.list();
+	  }
 }

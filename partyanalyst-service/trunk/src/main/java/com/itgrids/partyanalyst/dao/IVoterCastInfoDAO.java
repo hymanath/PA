@@ -24,4 +24,6 @@ public interface IVoterCastInfoDAO extends GenericDao<VoterCastInfo,Long>{
 	public void flushAndclearSession();
 	
 	public List<VoterCastInfo> getVotersCastInfoByMultipleLevelValuesAndCastIds(Long levelId,Set<Long> levelValues,List<Long> castStateIds,Long constituencyId,Long publicationId,Long userId);
+	
+	public List<Object[]> getCastAndPartyForSelectedLevel(Long userId,Long reportId ,List<Long> ids);
 }
