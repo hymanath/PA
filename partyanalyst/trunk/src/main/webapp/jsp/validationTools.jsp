@@ -247,7 +247,7 @@ function buildData(results)
 	
 		str += '<td>';
 		for(var k in results[i].assignedHamletsList)
-			str += ''+results[i].assignedHamletsList[k].name+'('+results[i].assignedHamletsList[k].populateId+')<br>';
+			str += ''+results[i].assignedHamletsList[k].name+' ('+results[i].assignedHamletsList[k].populateId+')<br>';
 		str += '</td>';
 
 		str += '<td>';
