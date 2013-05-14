@@ -3227,9 +3227,9 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			 if(locationType.equalsIgnoreCase("mandal"))
 				queryString.append("select count(*),BPV.booth.tehsil.tehsilId,BPV.booth.tehsil.tehsilName "+queryString1+" and BPV.booth.tehsil.tehsilId in (:locationIds) and BPV.booth.localBody is null and BPV.booth.constituency.constituencyId = :constituencyId group by "+var+" BPV.booth.tehsil.tehsilId ");
 			else if(locationType.equalsIgnoreCase("booth"))
-				queryString.append("select count(*),BPV.booth.partNo,BPV.booth.partNo "+queryString1+"  and BPV.booth.partNo in (:locationIds) group by "+var+" BPV.booth.partNo ");
+				queryString.append("select count(*),BPV.booth.partNo,BPV.booth.partNo "+queryString1+"  and BPV.booth.partNo in (:locationIds) and BPV.booth.constituency.constituencyId = :constituencyId group by "+var+" BPV.booth.partNo ");
 			else if(locationType.equalsIgnoreCase("panchayat"))
-				queryString.append("select count(*),BPV.booth.panchayat.panchayatId,BPV.booth.panchayat.panchayatName "+queryString1+" and BPV.booth.panchayat.panchayatId in (:locationIds) group by "+var+" BPV.booth.panchayat.panchayatId ");
+				queryString.append("select count(*),BPV.booth.panchayat.panchayatId,BPV.booth.panchayat.panchayatName "+queryString1+" and BPV.booth.panchayat.panchayatId in (:locationIds)  group by "+var+" BPV.booth.panchayat.panchayatId ");
 			else if(locationType.equalsIgnoreCase("ward"))
 				queryString.append("select count(*),BPV.booth.localBodyWard.constituencyId,BPV.booth.localBodyWard.name "+queryString1+" and BPV.booth.localBodyWard.constituencyId in (:locationIds) and BPV.booth.constituency.constituencyId = :constituencyId group by "+var+" BPV.booth.localBodyWard.constituencyId ");
 			else if(locationType.equalsIgnoreCase("localElectionBody"))
@@ -3247,7 +3247,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			query.setParameterList("attributeIds", attributeIds);	
 			query.setParameter("publicationId", publicationId);
 			query.setParameter("userId", userId);
-			if(locationType.equalsIgnoreCase("mandal") || locationType.equalsIgnoreCase("ward") || locationType.equalsIgnoreCase("localElectionBody")){
+			if(locationType.equalsIgnoreCase("booth") || locationType.equalsIgnoreCase("mandal") || locationType.equalsIgnoreCase("ward") || locationType.equalsIgnoreCase("localElectionBody")){
 				query.setParameter("constituencyId", constituencyId);
 			}
 			return query.list();
@@ -3267,7 +3267,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			 if(locationType.equalsIgnoreCase("mandal"))
 				queryString.append("select count(*),BPV.booth.tehsil.tehsilId,BPV.booth.tehsil.tehsilName "+queryString1+" and BPV.booth.tehsil.tehsilId in (:locationIds) and BPV.booth.localBody is null and BPV.booth.constituency.constituencyId = :constituencyId group by BPV.booth.tehsil.tehsilId ");
 			else if(locationType.equalsIgnoreCase("booth"))
-				queryString.append("select count(*),BPV.booth.partNo,BPV.booth.partNo "+queryString1+"  and BPV.booth.partNo in (:locationIds) group by BPV.booth.partNo ");
+				queryString.append("select count(*),BPV.booth.partNo,BPV.booth.partNo "+queryString1+"  and BPV.booth.partNo in (:locationIds) and BPV.booth.constituency.constituencyId = :constituencyId group by BPV.booth.partNo ");
 			else if(locationType.equalsIgnoreCase("panchayat"))
 				queryString.append("select count(*),BPV.booth.panchayat.panchayatId,BPV.booth.panchayat.panchayatName "+queryString1+" and BPV.booth.panchayat.panchayatId in (:locationIds) group by BPV.booth.panchayat.panchayatId ");
 			else if(locationType.equalsIgnoreCase("ward"))
@@ -3285,7 +3285,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 			query.setParameter("publicationId", publicationId);
 			query.setParameter("userId", userId);
-			if(locationType.equalsIgnoreCase("mandal") || locationType.equalsIgnoreCase("ward") || locationType.equalsIgnoreCase("localElectionBody")){
+			if(locationType.equalsIgnoreCase("booth") || locationType.equalsIgnoreCase("mandal") || locationType.equalsIgnoreCase("ward") || locationType.equalsIgnoreCase("localElectionBody")){
 				query.setParameter("constituencyId", constituencyId);
 			}
 			return query.list();
@@ -3355,4 +3355,23 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			}
 			return query.list();
 		}
+	  
+	  /*public List<Object[]> test1(Long userId,List<Long> attributeIds,String locationType,List<Long> locationIds,Long constituencyId,Long publicationId,String type,List<String> partNos){
+			StringBuilder queryString = new StringBuilder();
+			
+			    queryString.append("select count(*),BPV.booth.partNo,BPV.booth.partNo,UVD.casteState.casteStateId,UVD.casteState.caste.casteName");
+				queryString.append("  from UserVoterDetails UVD,BoothPublicationVoter BPV " +
+					" where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationId  and BPV.booth.constituency.constituencyId = :constituencyId ");
+				queryString.append(" and UVD.casteState is not null and UVD.casteState.casteStateId in(:attributeIds) ");
+				queryString.append(" and BPV.booth.partNo in (:locationIds) group by UVD.casteState.casteStateId, BPV.booth.partNo ");
+			    Query query = getSession().createQuery(queryString.toString());
+			
+				query.setParameterList("locationIds",partNos);
+			    query.setParameterList("attributeIds", attributeIds);	
+			    query.setParameter("publicationId", publicationId);
+			    query.setParameter("userId", userId);
+			    query.setParameter("constituencyId", constituencyId);
+			
+			return query.list();
+		}*/
 }
