@@ -810,6 +810,19 @@
 			}
 			if(checkVal.charAt(1) == 1)
 			{
+				if(type == "Booth")
+				{
+				var id = $("#constituencyList option:selected").val();
+					var jsObj =
+					{
+						selectedValues : id,
+						task           : "getBoothsInMuncipality"
+					}
+					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+					var url = "getReportLevelDetails.action?"+rparam;
+					callAjaxToGetData(jsObj,url);
+				}
+				else
 				{
 					var timeST = new Date().getTime();
 					var jsObj =
@@ -1163,11 +1176,13 @@
 
 	function getCastWiseElectionResults(){
 
-	$('#ajaxImg').show();
+	
      var parties = '';
      var elections = '';
      var locationIds = '';
      var attributeIds = '';	 
+	 var flag = true;
+	 var errorMsg = "";
     $('.elecSelForPanc').each(function(){
 	  if($(this).is(':checked'))
 	    elections+=','+$(this).val();
@@ -1220,22 +1235,41 @@
 		  type = 'booth';
 		}
 	}
-	var jsObj=
-			{
-		      electionIds:elections.substr(1),
-			  partyIds:parties.substr(1),
-			  locationIds:locationIds.substr(1),
-			  attributeIds:attributeIds.substr(1),
-			  constituencyId:$("#constituencyList option:selected").val(),
-			  type:type,
-			  attributeType:"caste",
-			  attrPerc:attrPerc,
-			  task:"buildChart"
-			}
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "getAttributeWiseElecResultsAction.action?"+rparam;	
-   
-		callAjaxToGetData(jsObj,url);
+		if(parties.length == 0)
+		{
+			errorMsg += '<b>Please Select Atleast One Party</b>';
+			flag = false;
+		}
+		else if(elections.length == 0)
+		{
+			errorMsg += '<b>Please Select Atleast One Election</b>';
+			flag = false;
+		}
+		if(!flag)
+		{
+			$('#errorMsgDiv').html(errorMsg);
+			$('#errorMsgDiv').show().delay("3000").hide('slow');
+			$('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
+		}
+		else
+		{
+			$('#ajaxImg').show();
+			var jsObj=
+					{
+					  electionIds:elections.substr(1),
+					  partyIds:parties.substr(1),
+					  locationIds:locationIds.substr(1),
+					  attributeIds:attributeIds.substr(1),
+					  constituencyId:$("#constituencyList option:selected").val(),
+					  type:type,
+					  attributeType:"caste",
+					  attrPerc:attrPerc,
+					  task:"buildChart"
+					}
+					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+					var url = "getAttributeWiseElecResultsAction.action?"+rparam;	
+		   
+		}		callAjaxToGetData(jsObj,url);
 	}
 	
 	
@@ -1389,28 +1423,28 @@
 		var categId          = $("#selectdUserCatgId option:selected").val();
 		if(constituencyId == 0)
 		{
-			errorMsg += 'Please Select Constituency';
+			errorMsg += '<b>Please Select Constituency</b>';
 			flag = false;
 		}
 		else if(level == 0 && substr == 'RURAL')
 		{
-			errorMsg += 'Please Select Level';
+			errorMsg += '<b>Please Select Level</b>';
 			flag = false;
 		}
 		
 		else if(mandalIds == undefined)
 		{
-			errorMsg += 'Please Select '+name+'';
+			errorMsg += '<b>Please Select '+name+'</b>';
 			flag = false;
 		}
 		else if(categId == 0)
 		{
-			errorMsg += 'Please Select Type';
+			errorMsg += '<b>Please Select Type</b>';
 			flag = false;
 		}
 		else if(castIds == undefined)
 		{
-			errorMsg += 'Please Select Caste';
+			errorMsg += '<b>Please Select Caste</b>';
 			flag = false;
 		}
 	
@@ -1419,7 +1453,8 @@
 		if(!flag)
 		{
 			$('#errorMsgDiv').html(errorMsg);
-			$('#errorMsgDiv').show().delay("2000").hide('slow');
+			$('#errorMsgDiv').show().delay("3000").hide('slow');
+			 $('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
 		}
 		else
 		{
