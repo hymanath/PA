@@ -91,7 +91,9 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	 
 	 public List<Object[]> getVoterDataForHamlet(Long hamletId , Long publicationId ,Long startIndex, Long maxIndex , String sort,String order );
 
-	 public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,Long userId,String type,String male,String female,long ...age);
+	// public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,Long userId,String type,String male,String female,long ...age);
+	public List<Object[]> getAgeDataForPanchayatUser(List<Long> id ,Long publicationDateId , List<?> voterIds,Long userId,String type,String male,String female,long ...ages);
+
 	 
 	 public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId ,String type,String male,String female,long ...ages);
 	 

@@ -12781,23 +12781,36 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByPanchayatId(Long panchayatId,Long publicationDateId,Long userId , String type){
 			List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
 			List<Object> hamlets = null;
-			   if(type.equalsIgnoreCase(IConstants.HAMLET))
-			 hamlets =  userVoterDetailsDAO.getHamletsIdsForUserByPanchayat(panchayatId, userId);
+			List<Long> ids = new ArrayList<Long>(); 
+			   if(type.equalsIgnoreCase(IConstants.HAMLET)){
+				  List<Long> list =  new ArrayList<Long>();
+				  list.add(panchayatId);
+				    ids = panchayatHamletDAO.getHamletsOfPanchayitis(list);
+			 //hamlets =  userVoterDetailsDAO.getHamletsIdsForUserByPanchayat(panchayatId, userId);
+			   }
 			  
 			   else if (type.equalsIgnoreCase(IConstants.CUSTOMWARD)){
-				   Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(panchayatId).get(0);
+				   Long  lId = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(panchayatId).get(0);
+				    
+				    List<Object[]> list1 = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(lId,publicationDateId , userId);
+				    
+				    for(Object[] obj:list1)
+				    	ids.add((Long)obj[0]);
+				    	
+				    
 				 //  List<Object[]> hanletIds =  userVoterDetailsDAO.getWardsBYLocalElectionBodyId(lid,publicationDateId,userId);
 			      // hamlets = boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(lid, userId ,type);
-				   hamlets =(List<Object>)  userVoterDetailsDAO.getVoterIdsBYLocalElectionBodyId(lid, publicationDateId ,userId ,type);
+				   //hamlets =(List<Object>)  userVoterDetailsDAO.getVoterIdsBYLocalElectionBodyId(lid, publicationDateId ,userId ,type);
 			   }
-				List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,hamlets);
+				/*List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,hamlets);
 				   
 				if(filter == null || filter.size()==0)
-					   return new ArrayList<VotersDetailsVO>();
+					   return new ArrayList<VotersDetailsVO>();*/
 				
 				
 				//List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter);
-			    List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter,userId,type,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+			   // List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(filter,userId,type,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+				 List<Object[]> list=    userVoterDetailsDAO.getAgeDataForPanchayatUser(ids,publicationDateId,hamlets,userId,type,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 			    if(list == null || list.size()==0)
 				{   
 					return boothVotersList;
