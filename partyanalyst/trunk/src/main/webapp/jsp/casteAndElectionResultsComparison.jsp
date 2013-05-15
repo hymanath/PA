@@ -323,7 +323,7 @@
 		value +='<option value="1">Caste</option>';
 		value +='</select><span><img alt="Processing Image" src="./images/icons/search.gif" id="processingImg" style="display:none"></span>';
 		 $("#requiredFieldsToCheckValue").html(value);
-	    //str+='<input type="" onclick="checkAndGetData(\'cast\',\'Cast\');" name="attributesRadio" class="attributeTypeClassIni" value="cast,Caste"/>  Caste';
+	    //str+='<input type="" onclick="checkAndGetData(\'cast\',\'Caste\');" name="attributesRadio" class="attributeTypeClassIni" value="cast,Caste"/>  Caste';
 		/* str+='   <td style="padding-left:20px;"><input type="radio" onclick="checkAndGetData(\'party\',\'Party\');" name="attributesRadio" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
 		var x = 2;
 		if(result != null && result.category != null && result.category.length > 0){
@@ -470,12 +470,6 @@
 			$('#userSelCatgListValue').html(value);
 			
 	   }
-	 /*  function unselectAll(){
-		  $('.attributeTypeClassIni').each(function() {
-            $(this).removeAttr('checked');
-          });
-	  }
-	    */
 	function getRespectiveSelection()
 	{
 		var selecetd =  $("#levelListId option:selected").val();
@@ -483,15 +477,7 @@
 	}
 	
 	function getRespectiveValues(constituencyType)
-	{	/* 
-		var checkedStatus = $('.radioCheck').is('ckecked');
-		if(checkedStatus == false)
-		{
-			$('.radioCheck').prop('checked', false);
-			$('#specificPanchayatValue').hide();
-			$('#specificMandalValue').hide();
-		} */
-		
+	{	
 		$('#selReqFileldId').hide();
 		$('#selUserCatgId').hide();
 		var id = $("#constituencyList option:selected").val();
@@ -721,20 +707,6 @@
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "voterAnalysisAjaxAction.action?"+rparam;						
 		callAjaxToGetData(jsObj,url);
-		/* 
-		var id = $("#constituencyList option:selected").val();
-		var jsObj=
-				{
-					type  : "Mandal",
-					level : 1,
-					id    :id,
-					str   : "mandal",
-					task  :"getReportLevelDetails"
-				}
-				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-				var url = "getReportLevelDetails.action?"+rparam;	
-
-			callAjaxToGetData(jsObj,url); */
 	}
 	function buildAllMandals(result,jsObj,type)
 	{
@@ -1316,7 +1288,6 @@
 		   var obj = {};
 			obj["name"] = i ;	
 			obj['type']='spline';
-			obj['yAxis']=1;
 			obj["data"] = results2[i];	 
 			data_vv.push(obj);			
 		}
@@ -1324,7 +1295,6 @@
 		   var obj = {};  
 			obj["name"] = i ;	
 			obj['type']='spline';
-			obj['yAxis']=1;
 			obj["data"] = results3[i];	 
 			data_perc.push(obj);			
 		}
@@ -1492,14 +1462,14 @@
 				}
 			},
 			title: {
-				text: 'Caste',
+				text: 'Voters Wise',
 				style: {
 					color: '#4572A7'
 				}
 			},
 			opposite: true
 
-		},{ // ter yAxis
+		}],/* ,{ // ter yAxis
 			labels: {
 				formatter: function() {
 					return this.value +'';
@@ -1516,7 +1486,7 @@
 			},
 			opposite: true
 
-		},],
+		} */
 		
 		colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
 		
@@ -1558,7 +1528,7 @@
 			// Secondary yAxis
 			gridLineWidth: 0,
 			title: {
-				text: 'Caste %',
+				text: 'Percentage Wise',
 				style: {
 					color: '#7C4088'
 				}
@@ -1572,7 +1542,7 @@
 				}
 			},
 			opposite: true
-		},{ // aux yAxis
+		}],/* ,{ // aux yAxis
 			gridLineWidth: 0,
 			title: {
 				text: 'Votes %',
@@ -1589,7 +1559,7 @@
 				}
 			},
 			opposite: true
-		}],
+		} */
 		
 		colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
 		
