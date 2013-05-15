@@ -367,4 +367,6 @@ public interface IStaticDataService {
 		//public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId);
 		
 		public MandalVO getElectionYearsAndPartiesForSelectedConstituency(Long constituencyId);
+		
+		public List<SelectOptionVO> getBoothsInMuncipality(Long id);
 }

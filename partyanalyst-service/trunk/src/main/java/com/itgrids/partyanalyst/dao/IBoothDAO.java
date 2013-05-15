@@ -200,4 +200,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Object[]> getBoothsForSelectedWards(List<Long> ids);
 		
 	public List<String> getPartNosForBooths(List<Long> locationIds);
+	
+	public List<Object[]> getAllBoothsInAMuncipality(Long localBodyId);
 }
