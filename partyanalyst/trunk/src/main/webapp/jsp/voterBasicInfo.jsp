@@ -61,6 +61,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <style type="text/css">
 #emprtyData
 {
