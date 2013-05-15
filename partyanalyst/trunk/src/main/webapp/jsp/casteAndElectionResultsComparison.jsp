@@ -1355,7 +1355,7 @@
 	$( "#slider" ).slider({
 	value:1,
 	min: 0,
-	max: 50,
+	max: 100,
 	step: 1,
 	slide: function( event, ui ) {
 	$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
