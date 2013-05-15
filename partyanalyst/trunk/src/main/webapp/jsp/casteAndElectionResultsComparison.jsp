@@ -1113,7 +1113,8 @@
 	     var str='';
 		 str+='<table><tr><th align="left">Parties : </th><td>';
 		 for(var i in myResults.partiesInMandal){
-		  str+='<input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
+		 if(myResults.partiesInMandal[i].id != 366)
+		  str+='<input id="parties-'+i+'"  class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
 		 }
 		 str+='</td></tr>';
 	     
@@ -1122,13 +1123,9 @@
 		 for(var i in myResults.electionsInMandal){
 			if(i%6==0)
 				str+='<tr>';
-			if(i == electionsLength-1)
-			 {
-				str+='<td><input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
-			 }
-			else{
-	 str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
-		   }
+			
+	          str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
+		   
 			if((i%6)+1==0)
 		   str+='</tr>';
 		 }
