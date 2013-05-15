@@ -1333,6 +1333,7 @@
 			$('#voterSelDiv').show();
 			if(buildType == "voterscount")
 			{
+				$("#votersByCount").attr('checked', 'checked');
 				for(var i=0;i<attr_vv.length;i++){
 					data.push(attr_vv[i]);
 				}		
@@ -1343,6 +1344,7 @@
 			}
 			else
 			{
+				$("#votersByPerc").attr('checked', 'checked');
 				for(var i=0;i<attr_perc.length;i++){
 					data.push(attr_perc[i]);			
 				}		
