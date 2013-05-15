@@ -802,19 +802,21 @@
 		var level = $('#levelId').val();
 		if(title == "mandal")
 		{
+		
 			selectedValues	= $('#maldalsList').val();
 		}
 		else if(title == "panchayat")
 		{
 			selectedValues	= $('#panchayatsList').val();
 		}
-		for(var i in selectedValues)
-		{
-			checkVal = values+","+selectedValues[i];
-			values = values+","+selectedValues[i].substr(1);
-		}
+		
 		if(title == "panchayat")
 		{
+			for(var i in selectedValues)
+			{
+				checkVal = values+","+selectedValues[i];
+				values = values+","+selectedValues[i];
+			}
 			var jsObj=
 				{
 					type   : title,
@@ -829,21 +831,13 @@
 		}
 		else if(title == "mandal")
 		{
+			for(var i in selectedValues)
+			{
+				checkVal = values+","+selectedValues[i];
+				values = values+","+selectedValues[i].substr(1);
+			}
 			if(checkVal.charAt(1) == 1)
 			{
-				if(type == "Booth")
-				{
-				var id = $("#constituencyList option:selected").val();
-					var jsObj =
-					{
-						selectedValues : id,
-						task           : "getBoothsInMuncipality"
-					}
-					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-					var url = "getReportLevelDetails.action?"+rparam;
-					callAjaxToGetData(jsObj,url);
-				}
-				else
 				{
 					var timeST = new Date().getTime();
 					var jsObj =
@@ -877,7 +871,6 @@
 
 				callAjaxToGetData(jsObj,url);
 			}
-		
 		}
 		
 	}
@@ -1148,8 +1141,7 @@
 	     var str='';
 		 str+='<table><tr><th align="left">Parties : </th><td>';
 		 for(var i in myResults.partiesInMandal){
-		 if(myResults.partiesInMandal[i].id != 366)
-		  str+='<input id="parties-'+i+'"  class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
+		  str+='<input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
 		 }
 		 str+='</td></tr>';
 	     
@@ -1158,9 +1150,13 @@
 		 for(var i in myResults.electionsInMandal){
 			if(i%6==0)
 				str+='<tr>';
-			
-	             str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
-		   
+			if(i == electionsLength-1)
+			 {
+				str+='<td><input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
+			 }
+			else{
+	 str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
+		   }
 			if((i%6)+1==0)
 		   str+='</tr>';
 		 }
