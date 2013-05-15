@@ -6369,8 +6369,13 @@ public class StaticDataService implements IStaticDataService {
 
 	public MandalVO findListOfElectionsAndPartiesInMandal(Long tehsilId) {
 		MandalVO mandalVO = new MandalVO();
-		List<SelectOptionVO> parties = Collections
-				.synchronizedList(getStaticParties());
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		List<Object[]> partiesList = partyDAO.getParticipatedPartiesInMandal(tehsilId);
+		if(partiesList != null && partiesList.size() > 0)
+		{
+			for(Object[] params : partiesList)
+			parties.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+		}
 		List<SelectOptionVO> partiesInMandal = new ArrayList<SelectOptionVO>();
 		for (SelectOptionVO party : parties)
 			if (!"'AIMIM'".contains(party.getName()))
@@ -6382,7 +6387,7 @@ public class StaticDataService implements IStaticDataService {
 			elections.add(new SelectOptionVO((Long) values[0],
 					(values[2] + " " + values[1])));
 		// partiesInMandal.add(new SelectOptionVO(0l, "Others"));
-		//For election year wise sorting 
+		//For latest election year wise sorting 
 		 List listOfNames = new ArrayList(elections);
 		 Collections.sort(listOfNames);
 		 Collections.reverse(listOfNames);
@@ -8000,7 +8005,7 @@ public class StaticDataService implements IStaticDataService {
 			for(Object[] params : partiesList)
 				partiesInMandal.add(new SelectOptionVO((Long)params[0],params[1].toString()));
 		}
-		//For election year wise sorting 
+		//For latest election year wise sorting 
 		List listOfNames = new ArrayList(elections);
 		 Collections.sort(listOfNames);
 		 Collections.reverse(listOfNames);
@@ -8042,7 +8047,7 @@ public class StaticDataService implements IStaticDataService {
 		{
 			log.error("Exception Occured in getElectionYearsAndPartiesForConstituency() method -"+e) ;
 		}
-		//For election year wise sorting 
+		//For latest election year wise sorting 
 		 List listOfNames = new ArrayList(elections);
 		 Collections.sort(listOfNames);
 		 Collections.reverse(listOfNames);
