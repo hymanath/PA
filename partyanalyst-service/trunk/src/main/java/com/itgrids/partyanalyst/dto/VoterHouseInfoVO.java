@@ -80,6 +80,35 @@ public class VoterHouseInfoVO {
 	private String selType = "";
 	private Long selTypeId;
 	private boolean mobileNoPresent;
+	
+	private List<String> influenceNames;
+	private List<String>  cadreNames;
+	private List<String>  politicianNames;
+	
+
+	public List<String> getCadreNames() {
+		return cadreNames;
+	}
+
+	public void setCadreNames(List<String> cadreNames) {
+		this.cadreNames = cadreNames;
+	}
+
+	public List<String> getPoliticianNames() {
+		return politicianNames;
+	}
+
+	public void setPoliticianNames(List<String> politicianNames) {
+		this.politicianNames = politicianNames;
+	}
+
+	public List<String> getInfluenceNames() {
+		return influenceNames;
+	}
+
+	public void setInfluenceNames(List<String> influenceNames) {
+		this.influenceNames = influenceNames;
+	}
 
 	public Long getSelTypeId() {
 		return selTypeId;
