@@ -159,6 +159,7 @@
 			<result type="redirect" name="hamletBoothMapperAction">hamletBoothMapperAction.action</result>
 			<result type="redirect" name="profileManagePageAction">profileManagePageAction.action</result>
 			<result type="redirect" name="voterAnalysisAction">votersAnalysisAction.action</result>
+			<result type="redirect" name="casteAndElectionResultsComparisonAction">casteAndElectionResultsComparisonAction.action</result>
 			<result type="redirect" name="votersAnalysisNewAction">votersAnalysisNewAction.action</result>
 			<result type="redirect" name="votersSearchAndEditAction">votersSearchAction.action</result>
 			<result type="redirect" name="VOTER_SEARCH_AND_EDIT">votersSearchAction.action</result>
@@ -5067,7 +5068,8 @@
 					
 		<action name="casteAndElectionResultsComparisonAction" class="casteAndElectionResultsComparisonAction" >
 			<result name="success">/jsp/casteAndElectionResultsComparison.jsp</result>
-			<result name="error">/jsp/loginForm.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=casteAndElectionResultsComparisonAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 		</action>
 		
 		<action name="getPanchayatAndBoothDetailsAction" class="votersAnalysisAction" method="getPanchayatAndBoothDetails">
