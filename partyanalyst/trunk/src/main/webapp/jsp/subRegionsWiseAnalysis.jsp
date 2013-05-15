@@ -554,6 +554,7 @@ $("#panchayats").live("change",function(){
 			</div>-->
 <div class="widget blue" id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
    <!--<h4 id="sublevelHeading">Caste Wise Voters Analysis</h4>-->
+   <div id="sublevelHeading"> </div>
   <div class="hero-unit" >
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
     <div id="mandalElecResultsParties"></div>
@@ -1130,12 +1131,15 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0)
 	{
 		if(jsObj.type == "constituency"){
+		/* sublevelHeading updated by srishailam */
+		$('#sublevelHeading').html('<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Party Performance Analysis in Different Elections of '+jsObj.typename+' Constituency</h4>');	
 			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" Constituency";
 			heading = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Analysis of "+jsObj.typename+" ";
 		$("#votersBasicInfoTitleDiv").append('<h3>'+title+'</h3>');
 		$("#headingDiv1").append('<h3>'+heading+'</h3>');
 		}
 		else{
+		$('#sublevelHeading').html('<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Party Performance Analysis in Different Elections of '+jsObj.typename+'</h4>');	
 		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" ";
 		 heading = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Analysis of "+jsObj.typename+" ";
 		 $("#votersBasicInfoTitleDiv").append('<h3>'+title+'</h3>');
