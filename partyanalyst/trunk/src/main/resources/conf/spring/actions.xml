@@ -1149,6 +1149,7 @@
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 		<property name="attributeWiseElectionResultComparisonService" ref="attributeWiseElectionResultComparisonService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<bean id="assignSubUserAction" class="com.itgrids.partyanalyst.web.action.AssignSubUserAction" singleton="false">
