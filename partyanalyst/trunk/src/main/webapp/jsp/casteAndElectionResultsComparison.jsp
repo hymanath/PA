@@ -319,7 +319,7 @@
 	  var value = "";
 		name +='<b>Select Type</b>';
 		$("#requiredFieldsToCheckName").html(name);
-		value +='<select id="selectdUserCatgId" onChange="checkAndGetData(\'cast\',\'Cast\',mainStr);"><option value="0">Select Type</ortion>';
+		value +='<select id="selectdUserCatgId" onChange="checkAndGetData(\'cast\',\'Caste\',mainStr);"><option value="0">Select Type</ortion>';
 		value +='<option value="1">Caste</option>';
 		value +='</select><span><img alt="Processing Image" src="./images/icons/search.gif" id="processingImg" style="display:none"></span>';
 		 $("#requiredFieldsToCheckValue").html(value);
@@ -988,7 +988,7 @@
 		var value = $("#selectdUserCatgId option:selected").val();
 		if(value > 0)
 		{  
-			checkAndGetData('cast','Cast',type);
+			checkAndGetData('cast','Caste',type);
 		}
 		$('#requiredFieldsToCheckValue').show();
 		$('#requiredFieldsToCheckName').show();
@@ -1106,7 +1106,7 @@
 					constituencyId    :constituencyId,
 					values            : values.slice(1),
 					status            : "cast",
-					nameVal           : "Cast",
+					nameVal           : "Caste",
 					task              : "getUserCatgValuesForWard"
 				}
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
