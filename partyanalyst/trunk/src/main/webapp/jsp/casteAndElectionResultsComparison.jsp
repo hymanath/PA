@@ -76,6 +76,7 @@
   var substr = "";
   var attrPerc;
   var resultsData;
+  var type;
     function showHideLocations(type){
 	     locationSelected = type;
 	       $("#constituencyList").val(0);
@@ -253,8 +254,11 @@
 									}
 									else if(jsObj.task == "getAllBoothsInAWard")
 									{
-										buildPanchayatsOrMandalsList(myResults,jsObj ,'wards');
-										
+										buildPanchayatsOrMandalsList(myResults,jsObj ,'wards');	
+									}
+									else if(jsObj.task == "getBoothsInMuncipality")
+									{
+										buildPanchayatsOrMandalsList(myResults,jsObj ,'');
 									}
 									else if(jsObj.task == "getConstituencyType")
 									{
@@ -477,7 +481,7 @@
 		var selecetd =  $("#levelListId option:selected").val();
 		getRespectiveFields(selecetd);
 	}
-	var type;
+	
 	function getRespectiveValues(constituencyType)
 	{	/* 
 		var checkedStatus = $('.radioCheck').is('ckecked');
@@ -790,18 +794,17 @@
 		}
 	}
 	
-	function getSelectedPanchayatsOrBooths(type)
+	function getSelectedPanchayatsOrBooths(title)
 	{
 		var selectedValues ;
 		var values = "";
 		var checkVal = "";
 		var level = $('#levelId').val();
-		if(type == "mandal")
+		if(title == "mandal")
 		{
-		
 			selectedValues	= $('#maldalsList').val();
 		}
-		else if(type == "panchayat")
+		else if(title == "panchayat")
 		{
 			selectedValues	= $('#panchayatsList').val();
 		}
@@ -810,11 +813,11 @@
 			checkVal = values+","+selectedValues[i];
 			values = values+","+selectedValues[i].substr(1);
 		}
-		if(type == "panchayat")
+		if(title == "panchayat")
 		{
 			var jsObj=
 				{
-					type   : type,
+					type   : title,
 					level  : level,
 					values : values.slice(1),
 					task   : "getSelectedMandalOrPanchayatData"
@@ -824,10 +827,23 @@
 
 			callAjaxToGetData(jsObj,url);
 		}
-		else if(type == "mandal")
+		else if(title == "mandal")
 		{
 			if(checkVal.charAt(1) == 1)
 			{
+				if(type == "Booth")
+				{
+				var id = $("#constituencyList option:selected").val();
+					var jsObj =
+					{
+						selectedValues : id,
+						task           : "getBoothsInMuncipality"
+					}
+					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+					var url = "getReportLevelDetails.action?"+rparam;
+					callAjaxToGetData(jsObj,url);
+				}
+				else
 				{
 					var timeST = new Date().getTime();
 					var jsObj =
@@ -851,7 +867,7 @@
 			{
 				var jsObj=
 					{
-						type   : type,
+						type   : title,
 						level  : level,
 						values : values.slice(1),
 						task   : "getSelectedMandalOrPanchayatData"
@@ -861,6 +877,7 @@
 
 				callAjaxToGetData(jsObj,url);
 			}
+		
 		}
 		
 	}
