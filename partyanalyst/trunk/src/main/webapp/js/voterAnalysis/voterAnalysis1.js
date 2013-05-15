@@ -2981,7 +2981,7 @@ function getvotersBasicInfo(buttonType,id,publicationId,type){
 		}else{
 		   //$("#impFamiliesMoreInfoButn").hide();
 		}
-		showAjaxImgDiv('ajaxImageDiv');
+		showAjaxImgDiv('ImpFamwiseAjaxDiv');
 	   var jsObj1=
 			{
 					
