@@ -186,9 +186,9 @@
 </div>
 <div id="votersInnerDiv1" style="height:auto">
 <div id="imgDescriptionDiv" style="margin-top: 30px; display:none;margin-left:20px;float:left;">
-<b style="margin-left: 5px">Influencing People</b>:<img title="Politician" alt="Politicion" src="./images/icons/influencing.png" style="margin-bottom: 10px;
+<b style="margin-left: 5px">Influencing People</b>:<img title="Influencing People" alt="Influencing People" src="./images/icons/influencing.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
-<b style="margin-left: 50px">Cadre</b>:<img title="Cadre" alt="Politicion" src="./images/icons/cadre.png" style="margin-bottom: 10px;
+<b style="margin-left: 50px">Cadre</b>:<img title="Cadre" alt="Cadre" src="./images/icons/cadre.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
 <b style="margin-left: 50px">Politician</b>:<img title="Politician" alt="Politicion" src="./images/icons/politican.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
