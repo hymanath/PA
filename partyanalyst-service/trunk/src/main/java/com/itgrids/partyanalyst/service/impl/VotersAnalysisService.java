@@ -4653,6 +4653,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				}
 			}
 		}
+		
 		if(voters != null)
 		for(Object[] voter : (List<Object[]>)voters){
 			houseNo = voter[1].toString();
@@ -4693,8 +4694,9 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		List<Long> influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIdsList,userId);
 		if(influencingPeopleList != null && influencingPeopleList.size() > 0)
 		{
+			
 			for (Long influencingPeople : influencingPeopleList) {
-			   voterVO = votersMap.get(influencingPeople);
+				voterVO = votersMap.get(influencingPeople);
 				if(voterVO != null)
 				{
 					voterVO.setInfluencePerson(true);
@@ -4744,19 +4746,24 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			voterHouseInfoVO.setElderGender(voterVOs.get(voterVOs.size()-1).getGender());
 			voterHouseInfoVO.setElderAge(voterVOs.get(voterVOs.size()-1).getAge());
 			voterHouseInfoVO.setElder(voterVOs.get(voterVOs.size()-1).getFirstName());
-			
+			List<String> names = new ArrayList<String>();
+			List<String> names1 = new ArrayList<String>();
+			List<String> names2 = new ArrayList<String>();
 			for(int i=0;i<voterVOs.size();i++){
-			if(voterVOs.get(i).getIsInfluencePerson() != null &&voterVOs.get(i).getIsInfluencePerson()){
-				voterHouseInfoVO.setIsInfluencePerson(voterVOs.get(i).getIsInfluencePerson());
-				voterHouseInfoVO.setName(voterVOs.get(i).getFirstName());
+			if(voterVOs.get(i).getIsInfluencePerson() != null && voterVOs.get(i).getIsInfluencePerson()){
+				voterHouseInfoVO.setIsInfluencePerson(voterVOs.get(i).getIsInfluencePerson()); 
+				names.add(voterVOs.get(i).getFirstName());
+				voterHouseInfoVO.setInfluenceNames(names);
 			}
 			if(voterVOs.get(i).getIsCadrePerson()!= null &&  voterVOs.get(i).getIsCadrePerson()){
 				voterHouseInfoVO.setIsCadrePerson(voterVOs.get(i).getIsCadrePerson());
-				voterHouseInfoVO.setName(voterVOs.get(i).getFirstName());
+				names1.add(voterVOs.get(i).getFirstName());
+				voterHouseInfoVO.setCadreNames(names1);
 			}
 			if(voterVOs.get(i).getIsPoliticion() != null && voterVOs.get(i).getIsPoliticion()){
 				voterHouseInfoVO.setIsPoliticion(voterVOs.get(i).getIsPoliticion());
-				voterHouseInfoVO.setName(voterVOs.get(i).getFirstName());
+				names2.add(voterVOs.get(i).getFirstName());
+				voterHouseInfoVO.setPoliticianNames(names2);
 			}
 			}
 			if( checkedEle.equalsIgnoreCase("panchayat") && buildType.equalsIgnoreCase("hamlet"))
