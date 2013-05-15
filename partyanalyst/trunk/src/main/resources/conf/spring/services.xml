@@ -187,6 +187,7 @@
 		<property name="userStateAccessInfoDAO" ref="userStateAccessInfoDAO" />
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 	</bean>
 	
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >

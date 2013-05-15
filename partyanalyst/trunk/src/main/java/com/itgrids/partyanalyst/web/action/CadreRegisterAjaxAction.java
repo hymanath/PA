@@ -480,6 +480,12 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 				resultList = staticDataService.getConstituencyType(constituencyId);
 			}
 			
+			else if(jObj.getString("task").equalsIgnoreCase("getBoothsInMuncipality"))
+			{
+				Long id = jObj.getLong("selectedValues");
+				resultList = staticDataService.getBoothsInMuncipality(id);
+			}
+			
 		}
 		catch (Exception e) {
 			log.error("exception raised in getConstiReltaedData() in CadreRegistrationAjaxAction", e);
