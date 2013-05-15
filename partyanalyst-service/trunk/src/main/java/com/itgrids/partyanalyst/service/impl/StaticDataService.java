@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -107,6 +108,7 @@ import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -6378,10 +6380,15 @@ public class StaticDataService implements IStaticDataService {
 				.findPolledVotesInAllElectionsOfMandalByRevenueVillages(tehsilId);
 		for (Object[] values : (List<Object[]>) electionsInMandal)
 			elections.add(new SelectOptionVO((Long) values[0],
-					(values[1] + " " + values[2])));
+					(values[2] + " " + values[1])));
 		// partiesInMandal.add(new SelectOptionVO(0l, "Others"));
+		//For election year wise sorting 
+		 List listOfNames = new ArrayList(elections);
+		 Collections.sort(listOfNames);
+		 Collections.reverse(listOfNames);
+		 Set mySet = new HashSet(Arrays.asList(listOfNames)); 
 		mandalVO.setPartiesInMandal(partiesInMandal);
-		mandalVO.setElectionsInMandal(elections);
+		mandalVO.setElectionsInMandal(mySet);
 		return mandalVO;
 	}
 
@@ -7984,7 +7991,7 @@ public class StaticDataService implements IStaticDataService {
 		List<Object[]> electionsInMandal = hamletBoothElectionDAO.getElectionsHappendinPanchayat(panchayatId);
 		
 		for (Object[] params : electionsInMandal)
-			elections.add(new SelectOptionVO((Long) params[0],(params[1] + " " + params[2])));
+			elections.add(new SelectOptionVO((Long) params[0],(params[2] + " " + params[1])));
 		
 		List<Object[]> partiesList = hamletBoothElectionDAO.getPartiesParticipatedInAllElectionOfAPanchayat(panchayatId);
 		
@@ -7993,8 +8000,13 @@ public class StaticDataService implements IStaticDataService {
 			for(Object[] params : partiesList)
 				partiesInMandal.add(new SelectOptionVO((Long)params[0],params[1].toString()));
 		}
+		//For election year wise sorting 
+		List listOfNames = new ArrayList(elections);
+		 Collections.sort(listOfNames);
+		 Collections.reverse(listOfNames);
+		 Set mySet = new HashSet(Arrays.asList(listOfNames));
 		mandalVO.setPartiesInMandal(partiesInMandal);
-		mandalVO.setElectionsInMandal(elections);
+		mandalVO.setElectionsInMandal(mySet);
 		return mandalVO;
 		}catch (Exception e) {
 			return null;
@@ -8030,8 +8042,14 @@ public class StaticDataService implements IStaticDataService {
 		{
 			log.error("Exception Occured in getElectionYearsAndPartiesForConstituency() method -"+e) ;
 		}
+		//For election year wise sorting 
+		 List listOfNames = new ArrayList(elections);
+		 Collections.sort(listOfNames);
+		 Collections.reverse(listOfNames);
+		 Set mySet = new HashSet(Arrays.asList(listOfNames)); 
 		mandalVO.setPartiesInMandal(parties);
-		mandalVO.setElectionsInMandal(elections);
+		mandalVO.setElectionsInMandal(mySet);
+		
 		return mandalVO;
 	}
 	public MandalVO getElectionYearsAndPartiesForSelectedConstituency(Long constituencyId)
