@@ -8236,7 +8236,26 @@ public class StaticDataService implements IStaticDataService {
 		return returnData;
 	}
 	
-	
+	public List<SelectOptionVO> getBoothsInMuncipality(Long id)
+	{
+		List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
+		List result = assemblyLocalElectionBodyDAO.findByConstituencyId(id);
+		Object[] localBodyObject = (Object[]) result.get(0);
+		Long localBodyId = (Long) localBodyObject[4];
+		List<Object[]> boothsList = boothDAO.getAllBoothsInAMuncipality(localBodyId);
+		if(boothsList != null && boothsList.size() > 0)
+		{
+			SelectOptionVO selectOptionVO = null;
+			for (Object[] parms : boothsList) {
+				selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long) parms[0]);
+				String name = "BOOTH-"+parms[1].toString();
+				selectOptionVO.setName(name);
+				returnData.add(selectOptionVO);
+			}
+		}
+		return returnData;
+	}
 	
 	
 }

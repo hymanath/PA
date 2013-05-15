@@ -491,7 +491,7 @@ public class AttributeWiseElectionResultComparisonService implements
 		ids.addAll(levelValues);
 		List<VoterCastInfo> castInfoList = voterCastInfoDAO.getVotersCastInfoByMultipleLevelValuesAndCastIds(levelId,ids,attributeIds,constituencyId,publicationId,userId);
 		for(VoterCastInfo castInfo:castInfoList){
-			if(attrPerc >= castInfo.getCastePercentage()){
+			if(castInfo.getCastePercentage() >= attrPerc  ){
 				locIds.add(castInfo.getReportLevelValue());
 			}
 		}
