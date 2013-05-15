@@ -150,7 +150,7 @@
 								   fillPartiesInState(jsObj.elmtId, resultVO);
 								   hidePartySelectAjaxImage("state");
 							    }
-								/*if(jsObj.task == "checkPartyPerformance")
+								if(jsObj.task == "checkPartyPerformance")
 							    {
 									var errorMsg = document.getElementById("errorsDiv");
 									errorMsg.innerHTML = '';								
@@ -159,7 +159,7 @@
 									else {	
 											document.performanceReport.submit();
 										}
-							    }*/
+							    }
 						}catch (e)  {   
 							//alert("Invalid JSON result" + e);   
 						}  
@@ -492,7 +492,7 @@
 	}
 	function validateClientSide()
 	{			
-		var flag;
+		//var flag;
 		var	electionYearElValuesSelected;
 		var electionYearEl = document.getElementById("yearList");
 		var electionYearElValues = electionYearEl.options;
@@ -504,18 +504,18 @@
 		if(electionYearEl == null || electionYearElValues.length == 0 || electionYearElValuesSelected == 'Select')
 		{
 			errorMsg.innerHTML = 'Invalid Input Selection';
-			flag= false;
+			//flag= false;
 		} 
 		else  
 		{
-			flag = true;
-			//checkPartyPerformanceDetails();
+			//flag = true;
+			checkPartyPerformanceDetails();
 		}
-		return flag;
-		//return false;
+		//return flag;
+		return false;
 	}
 	
-	/* var partyName = '';
+	var partyName = '';
 	function checkPartyPerformanceDetails(){
 		
 		var flag = false;
@@ -570,7 +570,7 @@
 		var url = "<%=request.getContextPath()%>/partyPerformanceReportAction.action?"+rparam;	
 		callAjax(jsObj,url);
 	}
-	*/
+	
 	function showPartySelectAjaxImage(decide)
 	{
          if(decide=="state")
