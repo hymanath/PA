@@ -84,4 +84,11 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 		
 		return getHibernateTemplate().find("from Party model where model.partyId = ?", partyId);
 	}	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getParticipatedPartiesInMandal(Long tehsilId){
+		
+		return getHibernateTemplate().find("select distinct model.nomination.party.partyId, model.nomination.party.shortName from CandidateBoothResult model where model.boothConstituencyElection.booth.tehsil.tehsilId =? order by model.nomination.party.shortName ",tehsilId);
+	}
+	
 }
