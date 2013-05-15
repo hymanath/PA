@@ -881,7 +881,7 @@ IUserVoterDetailsDAO{
 	* @return Object[]  
 	*/
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAgeDataForPanchayatUser(List<?> voterIds,Long userId,String type,String male,String female,long ...ages){
+	public List<Object[]> getAgeDataForPanchayatUser(List<Long> ids , Long publicationDateId , List<?> voterIds,Long userId,String type,String male,String female,long ...ages){
 		StringBuilder query = new StringBuilder();
 		Query queryObject = null;
 		  if(type.equalsIgnoreCase(IConstants.HAMLET))
@@ -901,16 +901,18 @@ IUserVoterDetailsDAO{
 			}			
 		query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
 		query.append(getAllAgesQuery(ages));
-		query.append(" from UserVoterDetails model  where  model.voter.voterId in(:voterIds) and model.user.userId = :id and ");
+		query.append(" from UserVoterDetails model  ,BoothPublicationVoter model1 where   model.user.userId = :userid and model.voter.voterId = model1.voter.voterId and model1.booth.publicationDate.publicationDateId = :publicationDateId and");
 		 if(type.equalsIgnoreCase(IConstants.HAMLET))
-		query.append(" model.hamlet.hamletId is not null group by model.hamlet.hamletId order by model.hamlet.hamletName");
+		query.append(" model.hamlet.hamletId in(:ids) and  model.hamlet.hamletId is not null group by model.hamlet.hamletId order by model.hamlet.hamletName");
 		  else if (type.equalsIgnoreCase(IConstants.CUSTOMWARD))
-		query.append(" model.ward.constituencyId is not null group by model.ward.constituencyId order by model.ward.name");	
+		query.append(" model.ward.constituencyId in(:ids) and model.ward.constituencyId is not null group by model.ward.constituencyId order by model.ward.name");	
 		queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter("male", male);
 		queryObject.setParameter("female", female);			
-		queryObject.setParameterList("voterIds", voterIds);
-		queryObject.setParameter("id", userId);		
+		//queryObject.setParameterList("voterIds", voterIds);
+		queryObject.setParameter("userid", userId);	
+		queryObject.setParameterList("ids", ids);	
+		queryObject.setParameter("publicationDateId", publicationDateId);
 		for(int i=0;i<ages.length;i++)
 				queryObject.setParameter("AGE"+ages[i], ages[i]);
 		return queryObject.list();
