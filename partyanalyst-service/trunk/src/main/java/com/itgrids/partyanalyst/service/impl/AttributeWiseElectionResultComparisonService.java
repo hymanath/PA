@@ -263,6 +263,37 @@ public class AttributeWiseElectionResultComparisonService implements
 		    getAttributeResults(attributesMap, attributeNames, locIds,attrMap,attrPercMap);
 		    partyResults.setAttributeResults(attrMap);
 		    partyResults.setAttributePercnts(attrPercMap);
+		    Set<String> attrMapRemoveKeys = new HashSet<String>();
+		    Set<String> attrPercMapRemoveKeys = new HashSet<String>();
+		    for(String key:attrMap.keySet()){
+		    	boolean noDataPresent = true;
+		    	for(Long value:attrMap.get(key)){
+		    		if(value != null){
+		    			noDataPresent = false;
+		    		}
+		    	}
+		    	if(noDataPresent){
+		    		attrMapRemoveKeys.add(key);
+		    	}
+		    }
+		    for(String key:attrPercMap.keySet()){
+		    	boolean noDataPresent = true;
+		    	for(BigDecimal value:attrPercMap.get(key)){
+		    		if(value != null){
+		    			noDataPresent = false;
+		    		}
+		    	}
+		    	if(noDataPresent){
+		    		attrPercMapRemoveKeys.add(key);
+		    	}
+		    }
+		    
+		    for(String key:attrMapRemoveKeys)
+		    	attrMap.remove(key);
+		    
+		    for(String key:attrPercMapRemoveKeys)
+		    	attrPercMap.remove(key);
+		    
 		    List<String> names = new ArrayList<String>();
 		    for(Long locId:locIds){
 		    	names.add(locationNames.get(locId));
@@ -311,6 +342,10 @@ public class AttributeWiseElectionResultComparisonService implements
 					obj.setValidVotes((Long)count[0]);
 					if(locationCountMap.get(new Long(count[1].toString().trim())) != null && locationCountMap.get(new Long(count[1].toString().trim())) > 0 ){
 						obj.setVotesPercent(new BigDecimal((Long)count[0]/locationCountMap.get(new Long(count[1].toString().trim())).doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP));
+					}
+					if(obj.getVotesPercent() == null || obj.getVotesPercent().longValue() < attrPerc){
+						obj.setValidVotes(null);
+						obj.setVotesPercent(null);
 					}
 					locationMap.put(new Long(count[1].toString().trim()), obj);
 				}
@@ -511,9 +546,11 @@ public class AttributeWiseElectionResultComparisonService implements
 				obj = locationMap.get(castInfo.getReportLevelValue());
 				if(obj == null){
 					obj = new PartyResultsVO();
-					obj.setValidVotes(castInfo.getCasteVoters());
-					obj.setVotesPercent(castInfo.getCastePercentage()!=null?new BigDecimal(castInfo.getCastePercentage()):null);
-					locationMap.put(castInfo.getReportLevelValue(), obj);
+					if(castInfo.getCastePercentage() != null && castInfo.getCastePercentage()  >= attrPerc){
+					  obj.setValidVotes(castInfo.getCasteVoters());
+					  obj.setVotesPercent(castInfo.getCastePercentage()!=null?new BigDecimal(castInfo.getCastePercentage()):null);
+					}
+					 locationMap.put(castInfo.getReportLevelValue(), obj);
 				}
 			}
 		}

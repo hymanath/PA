@@ -1215,7 +1215,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.partNo,model.nomination.party.partyId, model.nomination.party.shortName,"+
 				" model.votesEarned ,model.boothConstituencyElection.constituencyElection.election.electionYear,model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,model.boothConstituencyElection.booth.partNo   " +
 				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId in(:electionIds) and model.nomination.party.partyId in(:partyIds) and model.boothConstituencyElection.booth.partNo in(:partNos) and " +
-				" model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId ");
+				" model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId ");
 		
 		query.setParameterList("electionIds",electionIds);
 		query.setParameterList("partyIds",partyIds);
@@ -1227,7 +1227,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 	public List<Object[]> findBoothCountForMultipleBoothsInElections(Long constituencyId,List<String> partNos, List<Long> electionIds){
 		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.partNo,"+
 				" model.votesEarned from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId in(:electionIds)  and model.boothConstituencyElection.booth.partNo in(:partNos) and " +
-				" model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId ");
+				" model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId ");
 		
 		query.setParameterList("electionIds",electionIds);
 		query.setParameterList("partNos",partNos);
