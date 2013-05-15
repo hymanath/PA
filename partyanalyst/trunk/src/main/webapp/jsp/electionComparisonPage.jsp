@@ -217,9 +217,11 @@ var yearsPopulation={
 									    yearsPopulation.remainingYearsArray = emptyArr;
 									    	
 										clearOptionsListForSelectElmtId("electionYearSelect1");
+										
+										storeYears(resultVO);
 										createOptionsForSelectElmtIdWithSelectOption("electionYearSelect1",resultVO);		
 										clearOptionsListForSelectElmtId("electionYearSelect2");	
-										storeYears(resultVO);
+										
 										hideBusyImgWithId(jsObj.elmtId);
 									}				
 							}catch (e)  {   
