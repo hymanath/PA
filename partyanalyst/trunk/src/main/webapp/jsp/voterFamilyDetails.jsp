@@ -214,7 +214,6 @@ google.load("visualization", "1", {packages:["corechart"]});
 <div id="descriptionDiv"  style="width:926px;margin-left:auto;margin-right:auto;"></div>
 		
 		<div id="impFamPancBothDtls" class="widget blue whitegloss" style="width:959px;margin-top:50px;margin-left:auto;margin-right:auto;">
-		
 		<div id="impFamPancBothDtlsAgxImg" style="display:none;margin-left:361px;margin-top:10px;"><img src="images/icons/goldAjaxLoad.gif"/></div>
 		</div>
 	   
@@ -840,8 +839,15 @@ function  buildFamilyMembers(result,jsObj,type){
 	 else
       var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+impFamltypename+' '+locationName+' '+type+' in '+publicationYear+'</h4>';
 	
-	  str+=' <div style="padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
-          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
+	//Updated here
+	str+='<div id="imgDescriptionDiv" style="margin-top: 4px; display:block;margin-left:5px;float:left;">';
+	str+='<b style="margin-left: 5px">Influencing People</b>:<img title="Influencing People" alt="Influencing People" src="./images/icons/influencing.png" style="margin-bottom: 10px;margin-left: 16px;"/>';
+	str+='<b style="margin-left: 50px">Cadre</b>:<img title="Cadre" alt="Cadre" src="./images/icons/cadre.png" style="margin-bottom: 10px;margin-left: 16px;"/>';
+	str+='<b style="margin-left: 50px">Politician</b>:<img title="Politician" alt="Politicion" src="./images/icons/politican.png" style="margin-bottom: 10px;margin-left: 16px;"/>';
+	str+='</div>';
+
+	  str+=' <div style="padding-bottom:4px;margin-top: 65px;margin-left: 5px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 5px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
 
 		
           str+='<div style="overflow-x:scroll;">';
@@ -910,16 +916,21 @@ function  buildFamilyMembers(result,jsObj,type){
 		  str +='		<td>'+result[i].youngerGender+'</td>';
 		  str +='		<td>'+result[i].youngerAge+'</td>';
 		  if(result[i].isInfluencePerson == true || result[i].isCadrePerson == true || result[i].isPoliticion == true){
+			  str+='<td>';
 			  var temp = "";
-			 if(result[i].isInfluencePerson == true)
-				temp = "Influence";
-			 if(result[i].isCadrePerson == true)
+			 if(result[i].isInfluencePerson == true){
+				temp = "Influencing People";
+				str+='<img title="'+result[i].influenceNames+': '+temp+'" alt="'+result[i].influenceNames+'" src="./images/icons/influencing.png" class ="mouseOver"/>';
+			 }
+			 if(result[i].isCadrePerson == true){
 				temp = "Cadre";
-			 if(result[i].isPoliticion == true)
+				str+='<img title="'+result[i].cadreNames+': '+temp+'" alt="'+result[i].cadreNames+'" src="./images/icons/cadre.png" class ="mouseOver"/>';
+			 }
+			 if(result[i].isPoliticion == true){
 				temp = "Politicion";
-
-		   str+='<td><img title="'+result[i].name+': '+temp+'" alt="'+result[i].name+'" src="./images/icons/politican.png" class ="mouseOver"/></td>';
-
+		   str+='<img title="'+result[i].politicianNames+': '+temp+'" alt="'+result[i].politicianNames+'" src="./images/icons/politican.png" class ="mouseOver"/>';
+			 }
+         str+='</td>';
 		  }else{
 			str +='		<td></td>';
 		  }
