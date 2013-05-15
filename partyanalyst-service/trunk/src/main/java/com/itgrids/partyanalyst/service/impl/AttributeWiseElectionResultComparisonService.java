@@ -136,11 +136,11 @@ public class AttributeWiseElectionResultComparisonService implements
 	}
 
 	public PartyResultsVO getElectionResultsByAttributeWise(List<Long> electionIds,List<Long> partyIds,Long userId,Long constituencyId,String type,List<Long> ids,String attributeType,List<Long> attributeIds,Long attrPerc){
-		    List<Object[]> dataList = new ArrayList<Object[]>();
-		    List<Object[]> countList = new ArrayList<Object[]>();
+		    List<Object[]> dataList = new ArrayList<Object[]>();//contains location wise attributes(caste,party etc) count
+		    List<Object[]> countList = new ArrayList<Object[]>();//contains location wise  total count
 		    PartyResultsVO partyResults = new PartyResultsVO();
 		    Map<Long,Map<Long,PartyResultsVO>> attributesMap = new HashMap<Long,Map<Long,PartyResultsVO>>();//Map<attributeId,Map<locationId,count>>
-		    Map<Long,String> attributeNames = new HashMap<Long,String>();
+		    Map<Long,String> attributeNames = new HashMap<Long,String>();//contains Map<attributeId,attributeName(ex caste name,party name)>
 		    Map<Long,Map<Long,Long>> electionCount = new HashMap<Long,Map<Long,Long>>();
 		    Map<String,List<Long>> votesMap = new HashMap<String,List<Long>>();
 		    Map<String,List<Long>> attrMap = new HashMap<String,List<Long>>();
@@ -255,9 +255,11 @@ public class AttributeWiseElectionResultComparisonService implements
 					}
 				}
 			}
+		    //populating votes count(votesMap) and percent(votesPercMap) location wise
 		    arrangeObjects(electionResultsMap,electionNames,partyNames,locIds,electionCount,votesMap,votesPercMap);
 			partyResults.setLocationResults(votesMap);
 			partyResults.setLocationPercnts(votesPercMap);
+			//populating attributes count(attrMap) and percent(attrPercMap) location wise
 		    getAttributeResults(attributesMap, attributeNames, locIds,attrMap,attrPercMap);
 		    partyResults.setAttributeResults(attrMap);
 		    partyResults.setAttributePercnts(attrPercMap);
@@ -275,6 +277,7 @@ public class AttributeWiseElectionResultComparisonService implements
 				dataList  = boothPublicationVoterDAO.getVoterCastAndPartyCountForDifferentLocations(userId,attributeIds,type,ids,constituencyId,publicationId,attributeType,partNos);
 				countList = boothPublicationVoterDAO.getVoterCastAndPartyCount(userId,attributeIds,type,ids,constituencyId,publicationId,attributeType,partNos);
 			}else{
+				//getting data from intermediate table
 				if("caste".equalsIgnoreCase(attributeType))
 				  return getCasteWiseVotersCount(type,attributeIds,ids,constituencyId,publicationId,userId,attrPerc,attributesMap,attributeNames);
 				else
