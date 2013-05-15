@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created using an evaluation version of JasperAssistant (http://www.jasperassistant.com) -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Unnamed" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Unnamed" pageWidth="700" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
 	<property name="com.jasperassistant.designer.DataSource" value="MyDataSource"/>
 	<property name="com.jasperassistant.designer.Grid" value="true"/>
 	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
@@ -60,24 +60,24 @@
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource()]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{CONTEXT_PATH}+"/jasper/partyPerformance/partypositions.jasper"]]></subreportExpression>
 			</subreport>
-			<image scaleImage="FillFrame" hAlign="Center" isUsingCache="false" hyperlinkType="None">
+			<!-- <image scaleImage="FillFrame" hAlign="Center" isUsingCache="false" hyperlinkType="None">
 				<reportElement x="175" y="103" width="180" height="110"/>
 				<imageExpression class="java.lang.String"><![CDATA[$P{CONTEXT_PATH} + $P{REPORT_DIR}]]></imageExpression>
-			</image>
+			</image> -->
 			
 			<staticText>
-				<reportElement positionType="Float" x="60" y="110" width="329" height="15"/>
+				<reportElement positionType="Float" x="60" y="15" width="329" height="15"/>
 				<textElement/>
 				<text><![CDATA[Your votes are flown to any one of the below parties:]]></text>
 			</staticText>
 			<subreport>
-				<reportElement positionType="Float" x="7" y="100" width="515" height="15"  />
+				<reportElement positionType="Float" x="7" y="16" width="515" height="15"  />
 				<dataSourceExpression><![CDATA[new com.itgrids.partyanalyst.jasper.dataSource.MapDataSource($F{toPartySwing})]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{CONTEXT_PATH}+"/jasper/partyPerformance/partySwing_report.jasper"]]></subreportExpression>
 			</subreport>
 
 			<subreport>
-				<reportElement  x="40" y="260" width="515" height="10"   />
+				<reportElement  x="40" y="170" width="700" height="10"   />
 				<subreportParameter name="CONTEXT_PATH">
 					<subreportParameterExpression><![CDATA[$P{CONTEXT_PATH}]]></subreportParameterExpression>
 				</subreportParameter>
