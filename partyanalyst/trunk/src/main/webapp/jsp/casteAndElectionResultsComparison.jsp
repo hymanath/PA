@@ -62,13 +62,20 @@
 	}
 	input[type="radio"], input[type="checkbox"] {
     margin: 5px;
-}
+	}
+	#errorMsgDiv {
+    color: red;
+    font-size: 14px;
+    margin-left: -117px;
+    margin-top: 10px;
+	}
  </style>
  <script type="text/javascript">
   var locationSelected = "mandal";
   var mainStr = "";
   var substr = "";
   var attrPerc;
+  var resultsData;
     function showHideLocations(type){
 	     locationSelected = type;
 	       $("#constituencyList").val(0);
@@ -265,7 +272,9 @@
 											buildAllWards(myResults,jsObj);
 										}
 									}else if(jsObj.task == "buildChart"){
-									  buildChart(myResults,jsObj);
+									  
+									  resultsData = myResults;
+									  buildChart("voterscount");
 									}
 									else if(jsObj.task == "getConstiEleAndPartiesForSelected")
 									{
@@ -343,50 +352,86 @@
 		else
 		{
 			$('#selUserCatgId').show();
-		}
-			
-		$('#rangeSliderDiv').show();
-		$('#processingImg').show();
-		var name = "";
-		if(selected == "ward")
-		{
-			getUserCategoeryValuesForSelecetdWards();
-		}
 		
-		else
-		{
-			var selectedValues = $('.multipleSelect').val();
-			var values = "";
-			var checkVal = "";
-			for(var i in selectedValues)
+			
+			$('#rangeSliderDiv').show();
+			$('#processingImg').show();
+			var name = "";
+			if(selected == "ward")
 			{
-				checkVal = values+","+selectedValues[i];
-				values = values+","+selectedValues[i];
+				getUserCategoeryValuesForSelecetdWards();
 			}
-			 name = $("#levelId option:selected").text();
-			if(name == 'Mandal')
+			
+			else
 			{
-				if(checkVal.charAt(1) == 1)
+				var selectedValues = $('.multipleSelect').val();
+				var values = "";
+				var checkVal = "";
+				for(var i in selectedValues)
 				{
-					var constituencyId = $("#constituencyList option:selected").val();
-					var jsObj=
-						{
-							constituencyId   : constituencyId,
-							status           : type,
-							selectedValues   : values.slice(1),
-							type             : "mandal",
-							nameVal          : nameVal,
-							task             : "getUserCategoeryValues"
-						}
-						var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-						var url = "getUserCategoeryValues.action?"+rparam;	
+					checkVal = values+","+selectedValues[i];
+					values = values+","+selectedValues[i];
+				}
+				 name = $("#levelId option:selected").text();
+				if(name == 'Mandal')
+				{
+					if(checkVal.charAt(1) == 1)
+					{
+						var constituencyId = $("#constituencyList option:selected").val();
+						var jsObj=
+							{
+								constituencyId   : constituencyId,
+								status           : type,
+								selectedValues   : values.slice(1),
+								type             : "mandal",
+								nameVal          : nameVal,
+								task             : "getUserCategoeryValues"
+							}
+							var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+							var url = "getUserCategoeryValues.action?"+rparam;	
 
-					callAjaxToGetData(jsObj,url);
-				} 
+						callAjaxToGetData(jsObj,url);
+					} 
+					else
+					{
+					
+						 name = $("#levelId option:selected").text();
+						var id = $("#constituencyList option:selected").val();
+						var jsObj=
+							{
+								constituencyId   : id,
+								status           : type,
+								selectedValues   : values.slice(1),
+								type             : name,
+								nameVal          : nameVal,
+								task             : "getUserCategoeryValues"
+							}
+							var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+							var url = "getUserCategoeryValues.action?"+rparam;	
+
+						callAjaxToGetData(jsObj,url);
+					}
+				}	
 				else
 				{
-				
-					 name = $("#levelId option:selected").text();
+					if(selected == "booth" && substr == "RURAL")
+					{
+						
+						name = $("#levelId option:selected").text();
+					}
+					else if(selected == "panchayat")
+					{
+						name = $("#levelId option:selected").text();
+					}
+					else if(selected == "")
+					{
+						name = $("#levelId option:selected").text();
+					}
+					else
+					{
+						 name = $("#urbanIds option:selected").text();
+					}
+					
 					var id = $("#constituencyList option:selected").val();
 					var jsObj=
 						{
@@ -403,42 +448,7 @@
 					callAjaxToGetData(jsObj,url);
 				}
 			}	
-			else
-			{
-				if(selected == "booth" && substr == "RURAL")
-				{
-					
-					name = $("#levelId option:selected").text();
-				}
-				else if(selected == "panchayat")
-				{
-					name = $("#levelId option:selected").text();
-				}
-				else if(selected == "")
-				{
-					name = $("#levelId option:selected").text();
-				}
-				else
-				{
-					 name = $("#urbanIds option:selected").text();
-				}
-				
-				var id = $("#constituencyList option:selected").val();
-				var jsObj=
-					{
-						constituencyId   : id,
-						status           : type,
-						selectedValues   : values.slice(1),
-						type             : name,
-						nameVal          : nameVal,
-						task             : "getUserCategoeryValues"
-					}
-					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-					var url = "getUserCategoeryValues.action?"+rparam;	
-
-				callAjaxToGetData(jsObj,url);
-			}
-		}	
+		}
 	   }
 	   
 	   function buildUserCategoerySelectedValues(result,jsObj)
@@ -782,6 +792,7 @@
 	
 	function getSelectedPanchayatsOrBooths(type)
 	{
+		alert(type);
 		var selectedValues ;
 		var values = "";
 		var checkVal = "";
@@ -800,28 +811,7 @@
 			checkVal = values+","+selectedValues[i];
 			values = values+","+selectedValues[i].substr(1);
 		}
-		if(checkVal.charAt(1) == 1)
-		{
-			{
-				var timeST = new Date().getTime();
-				var jsObj =
-				{ 
-					time : timeST,
-					id:checkVal.slice(1),
-					task:"hamletsOrWardsInRegion",
-					taskType:"",
-					selectElementId:"",
-					address:"",
-					areaType:"",
-					constId:""
-					
-				};
-				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-				var url = "locationsHierarchiesAjaxAction.action?"+rparam;
-				callAjaxToGetData(jsObj,url);
-			}
-		}
-		else
+		if(type == "panchayat")
 		{
 			var jsObj=
 				{
@@ -835,6 +825,45 @@
 
 			callAjaxToGetData(jsObj,url);
 		}
+		else if(type == "mandal")
+		{
+			if(checkVal.charAt(1) == 1)
+			{
+				{
+					var timeST = new Date().getTime();
+					var jsObj =
+					{ 
+						time : timeST,
+						id:checkVal.slice(1),
+						task:"hamletsOrWardsInRegion",
+						taskType:"",
+						selectElementId:"",
+						address:"",
+						areaType:"",
+						constId:""
+						
+					};
+					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+					var url = "locationsHierarchiesAjaxAction.action?"+rparam;
+					callAjaxToGetData(jsObj,url);
+				}
+			}
+			else
+			{
+				var jsObj=
+					{
+						type   : type,
+						level  : level,
+						values : values.slice(1),
+						task   : "getSelectedMandalOrPanchayatData"
+					}
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+				var url = "getReportLevelDetails.action?"+rparam;	
+
+				callAjaxToGetData(jsObj,url);
+			}
+		}
+		
 	}
 	function buildPanchayatsOrMandalsList(result,jsObj,type)
 	{
@@ -896,7 +925,6 @@
 	}
 	function getUserCategoersFoeSelect(type)
 	{
-		
 		$('#selReqFileldId').show();
 		mainStr = type;
 		$('#selReqFileldId').show();
@@ -915,7 +943,11 @@
 		}
 		else if (type == "")
 		{
-			$('#selPanchayatRow').hide();
+			$('#selPanchayatRow').show();
+		}
+		else if (type == "booth")
+		{
+			$('#selPanchayatRow').show();
 		}
 		else if(type == "muncipality")
 		{
@@ -1091,6 +1123,7 @@
 	function buildElectionAndPartyDetails(myResults)
 	{
 		$('.hero-unit').show();
+		$('#voterSelDiv').show();
 		if(myResults.electionsInMandal.length == 0)
 		$("#mandalElecResultsDiv").css("display","none");
       if(myResults != null && myResults.partiesInMandal != null && myResults.partiesInMandal.length > 0  && myResults.electionsInMandal != null && myResults.electionsInMandal.length > 0){
@@ -1128,52 +1161,31 @@
 	}
 	
 	function selectAll(){
-		var elmts = document.getElementById('selectAll');
-		var deSelect = document.getElementById('deSelectAll');
-			if(elmts.checked == true){
-				deSelect.checked = false;
-				selectAllCheckBoxes(); 
-			}
-	}
-
-	function selectAllCheckBoxes(){
 		var elmts = document.getElementsByName('parties');
 		if(elmts.length == 0)
-				return;
+			return;
 			for(var i=0; i<elmts.length; i++)
 			{
 				if(elmts[i].type == "checkbox" && !elmts[i].checked)
 					elmts[i].checked = true;
 			}
-	
 	}
-
 
 	function deSelectAll(){
 	
-		var elmts = document.getElementById('deSelectAll');
-		var elmt = document.getElementById('selectAll');
-			if(elmts.checked == true){
-					elmt.checked = false;
-					deSelectAllCheckBoxes(); 
-			
-			}
-	}
-
-	function deSelectAllCheckBoxes(){
 		var elmts = document.getElementsByName('parties');
-			if(elmts.length == 0)
-				return;
-			for(var i=0; i<elmts.length; i++)
-			{
-				if(elmts[i].type == "checkbox" && elmts[i].checked)
-					elmts[i].checked = false;
-			}
-	
+		if(elmts.length == 0)
+			return;
+		for(var i=0; i<elmts.length; i++)
+		{
+			if(elmts[i].type == "checkbox" && elmts[i].checked)
+				elmts[i].checked = false;
+		}
 	}
-function getCastWiseElectionResults(){
 
-	
+	function getCastWiseElectionResults(){
+
+	$('#ajaxImg').show();
      var parties = '';
      var elections = '';
      var locationIds = '';
@@ -1247,233 +1259,348 @@ function getCastWiseElectionResults(){
    
 		callAjaxToGetData(jsObj,url);
 	}
- function buildChart(result){
-  $("#show_hide_votes").show();
- var linechartDataArr = new Array();
-	var results = new Array();
-	var results1 = new Array();
-	var results2 = new Array();
-	var results3 = new Array();
-	var data_perc=[];
-	var data_vv=[];
-	var attr_perc=[];
-	var attr_vv=[];
 	
-	var data = new Array();
-	   
-	    for(var i in result.locationNames){
-	   linechartDataArr.push(result.locationNames[i]);
-	 }
-		
-	results2 = result.locationResults;
-	results = result.attributeResults;
-	results3 = result.locationPercnts;
-	results1 = result.attributePercnts;
+	
+ function buildChart(buildType){
  
-        for(var i in results){	
-           var obj = {};
-            obj["name"] = i ;	
-		    obj['type']='spline';
-           	obj["data"] = results[i];	 
-            attr_vv.push(obj);			
-	    }
+	var result = resultsData;
+	$('#noDataAvaliableDiv').hide();
+	$("#show_hide_votes").show();
+	$('#container').show();
+	$('#ajaxImg').hide();
+		var linechartDataArr = new Array();
+		var results = new Array();
+		var results1 = new Array();
+		var results2 = new Array();
+		var results3 = new Array();
+		var data_perc=[];
+		var data_vv=[];
+		var attr_perc=[];
+		var attr_vv=[];
+		var data = new Array();
+		$("#show_hide_votes").show();
+		for(var i in result.locationNames){
+		linechartDataArr.push(result.locationNames[i]);
+		 }
+		results2 = result.locationResults;
+		results = result.attributeResults;
+		results3 = result.locationPercnts;
+		results1 = result.attributePercnts;
+		var x = 0;
+		for(var i in results){	
+			x = x+1;
+		   var obj = {};
+			obj["name"] = i ;	
+			obj['type']='spline';
+			obj["data"] = results[i];	 
+			attr_vv.push(obj);			
+		}
 		for(var i in results1){	
-           var obj = {};  
-            obj["name"] = i ;	
+			x = x+1;
+		   var obj = {};  
+			obj["name"] = i ;	
+			obj['type']='spline';
+			obj["data"] = results1[i];	 
+			attr_perc.push(obj);			
+		}
+		for(var i in results2){	
+		   var obj = {};
+			obj["name"] = i ;	
 			obj['type']='spline';
 			obj['yAxis']=1;
-           	obj["data"] = results1[i];	 
-            attr_perc.push(obj);			
-	    }
-		for(var i in results2){	
-           var obj = {};
-            obj["name"] = i ;	
-		    obj['type']='spline';
-			obj['yAxis']=2;
-           	obj["data"] = results2[i];	 
-            data_vv.push(obj);			
-	    }
+			obj["data"] = results2[i];	 
+			data_vv.push(obj);			
+		}
 		for(var i in results3){	
-           var obj = {};  
-            obj["name"] = i ;	
+		   var obj = {};  
+			obj["name"] = i ;	
 			obj['type']='spline';
-			obj['yAxis']=3;
-           	obj["data"] = results3[i];	 
-            data_perc.push(obj);			
-	    }
-		/*var dataSize = data_perc.length;
-		var attrSize = attr_vv.length;
-		var size = 0;
-		if(dataSize >= attrSize )
-		 size = dataSize;
+			obj['yAxis']=1;
+			obj["data"] = results3[i];	 
+			data_perc.push(obj);			
+		}
+		if(x > 0)
+		{	
+			$('#voterSelDiv').show();
+			if(buildType == "voterscount")
+			{
+				for(var i=0;i<attr_vv.length;i++){
+					data.push(attr_vv[i]);
+				}		
+				for(var i=0;i<data_vv.length;i++){
+					data.push(data_vv[i]);	
+				}
+				buildVoterChart(data,linechartDataArr);
+			}
+			else
+			{
+				for(var i=0;i<attr_perc.length;i++){
+					data.push(attr_perc[i]);			
+				}		
+				for(var i=0;i<data_perc.length;i++){
+					data.push(data_perc[i]);	
+				}
+				buildVoterPercChart(data,linechartDataArr);
+			}
+		}
 		else
-		 size = attrSize;*/
-		for(var i=0;i<attr_vv.length;i++){
-			var ob=attr_vv[i];
-			var ob1=attr_perc[i];
-			
-			data.push(ob1);
-			data.push(ob);
-			
+		{
+			var str = "";
+			str += '<b style="color:red">No Data Avaliable For Your Selection</b>';
+			$('#voterSelDiv').hide();
+			$('#noDataAvaliableDiv').show();
+			$('#container').hide();
+			$('#noDataAvaliableDiv').html(str);
+			$("#show_hide_votes").hide();
 		}
-		for(var i=0;i<data_vv.length;i++){
-			var ob=data_vv[i];
-			var ob1=data_perc[i];
-			
-			data.push(ob1);
-			data.push(ob);
-			
-		}
-		$('#container').highcharts({
-            chart: {
-                type: 'line',
-               // marginRight: 130,
-               // marginBottom:240 ,
-			   // height:500,
-				zoomType: 'xy'
-            },
-			
-			title: {
-                text: 'Cast Percentage Wise Votes Analysis'
-            },
-            
-            xAxis: [{
-                categories:linechartDataArr,
-				labels: {
-                                align:'right',
-                                style: {
-                                      cursor: 'pointer',
-                                      fontSize: '12px',
-                                },
-                                rotation: -45,
-                            } 
-            }],
-            yAxis: [{ // Primary yAxis
-                labels: {
-                    formatter: function() {
-                        return this.value +'';
-                    },
-                    style: {
-                        color: '#4572A7'
-                    }
-                },
-                title: {
-                    text: 'Caste',
-                    style: {
-                        color: '#4572A7'
-                    }
-                },
-                opposite: true
-    
-            },{ // Secondary yAxis
-                gridLineWidth: 0,
-                title: {
-                    text: 'Caste %',
-                    style: {
-                        color: '#7C4088'
-                    }
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value +'%';
-                    },
-                    style: {
-                        color: '#7C4088'
-                    }
-                },
-                opposite: true
-            },{ // ter yAxis
-                labels: {
-                    formatter: function() {
-                        return this.value +'';
-                    },
-                    style: {
-                        color: '#89A54E'
-                    }
-                },
-                title: {
-                    text: 'Votes',
-                    style: {
-                        color: '#89A54E'
-                    }
-                },
-                opposite: true
-    
-            }, { // aux yAxis
-                gridLineWidth: 0,
-                title: {
-                    text: 'Votes %',
-                    style: {
-                        color: '#AA4643'
-                    }
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value +'%';
-                    },
-                    style: {
-                        color: '#AA4643'
-                    }
-                },
-                opposite: true
-            }],
-			
-			colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
-			
-			legend: {
-					margin:20
-				},
-				
-			/*tooltip: {
-                shared: true
-            },*/
-            series:data
-			
-			
-        });
+			$('input[name="show_hide_votes"]').click(function(){
+			var chart = $('#container').highcharts();
+			var series = chart.series;
+				if(this.value === "show")
+					$.each(series, function(index, series1) {
+						series1.show();
+					});
+				else if (this.value === "hide")
+					$.each(series, function(index, series1) {
+					   series1.hide();
+					});
+			});
 		
-		$('input[name="show_hide_votes"]').click(function(){
-		var chart = $('#container').highcharts();
-		var series = chart.series;
-			if(this.value === "show")
-				$.each(series, function(index, series1) {
-                    series1.show();
-                });
-			else if (this.value === "hide")
-				$.each(series, function(index, series1) {
-                   series1.hide();
-                });
-		});
-    
  }
  
 
 	
-$(function() {
-$( "#slider" ).slider({
-value:1,
-min: 0,
-max: 50,
-step: 1,
-slide: function( event, ui ) {
-$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
-},
-change: function( event, ui ) {
-$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
-attrPerc=ui.value;
-//buildGraphBySlide(casteRange);
-}
-});
-attrPerc=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
-attrPerc=$( "#slider" ).slider( "value" );
-});
+	$(function() {
+	$( "#slider" ).slider({
+	value:1,
+	min: 0,
+	max: 50,
+	step: 1,
+	slide: function( event, ui ) {
+	$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+	},
+	change: function( event, ui ) {
+	$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+	attrPerc=ui.value;
+	//buildGraphBySlide(casteRange);
+	}
+	});
+	attrPerc=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
+	attrPerc=$( "#slider" ).slider( "value" );
+	});
+	
+	function validationCheck()
+	{
+		var flag = true;
+		var errorMsg = "";
+		var constituencyId   = $("#constituencyList option:selected").val();
+		var level ;
+		var name  ;
+		if(substr == "RURAL")
+		{
+			level            = $("#levelId option:selected").val();
+			name             = $("#levelId option:selected").text();
+		}
+		else
+		{
+			level            = $("#urbanIds option:selected").val();
+			name             = $("#urbanIds option:selected").text();
+		}
+		var mandalIds        = $(".multipleSelect option:selected").val();
+		var castIds          = $("#selCategoeryList option:selected").val();
+		var categId          = $("#selectdUserCatgId option:selected").val();
+		if(constituencyId == 0)
+		{
+			errorMsg += 'Please Select Constituency';
+			flag = false;
+		}
+		else if(level == 0 && substr == 'RURAL')
+		{
+			errorMsg += 'Please Select Level';
+			flag = false;
+		}
+		
+		else if(mandalIds == undefined)
+		{
+			errorMsg += 'Please Select '+name+'';
+			flag = false;
+		}
+		else if(categId == 0)
+		{
+			errorMsg += 'Please Select Type';
+			flag = false;
+		}
+		else if(castIds == undefined)
+		{
+			errorMsg += 'Please Select Caste';
+			flag = false;
+		}
+	
+	
+		
+		if(!flag)
+		{
+			$('#errorMsgDiv').html(errorMsg);
+			$('#errorMsgDiv').show().delay("2000").hide('slow');
+		}
+		else
+		{
+			getCastWiseElectionResults();
+		}
+	}
+	function buildVoterChart(data,linechartDataArr)
+	{
+		$('#container').highcharts({
+		chart: {
+			type: 'line',
+			zoomType: 'xy'
+		},
+		
+		title: {
+			text: 'Cast Percentage Wise Votes Analysis'
+		},
+		
+		xAxis: [{
+			categories:linechartDataArr,
+			labels: {
+							align:'right',
+							style: {
+								  cursor: 'pointer',
+								  fontSize: '12px',
+							},
+							rotation: -45,
+						} 
+		}],
+		yAxis: [{ // Primary yAxis
+			labels: {
+				formatter: function() {
+					return this.value +'';
+				},
+				style: {
+					color: '#4572A7'
+				}
+			},
+			title: {
+				text: 'Caste',
+				style: {
+					color: '#4572A7'
+				}
+			},
+			opposite: true
+
+		},{ // ter yAxis
+			labels: {
+				formatter: function() {
+					return this.value +'';
+				},
+				style: {
+					color: '#89A54E'
+				}
+			},
+			title: {
+				text: 'Votes',
+				style: {
+					color: '#89A54E'
+				}
+			},
+			opposite: true
+
+		},],
+		
+		colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
+		
+		legend: {
+				margin:20
+			},
+		series:data
+		
+		
+	});
+	}
+	function buildVoterPercChart(data,linechartDataArr)
+	{
+		$('#container').highcharts({
+		chart: {
+			type: 'line',
+		   // marginRight: 130,
+		   // marginBottom:240 ,
+		   // height:500,
+			zoomType: 'xy'
+		},
+		
+		title: {
+			text: 'Cast Percentage Wise Votes Analysis'
+		},
+		
+		xAxis: [{
+			categories:linechartDataArr,
+			labels: {
+							align:'right',
+							style: {
+								  cursor: 'pointer',
+								  fontSize: '12px',
+							},
+							rotation: -45,
+						} 
+		}],
+		yAxis: [{ // Primary yAxis
+			// Secondary yAxis
+			gridLineWidth: 0,
+			title: {
+				text: 'Caste %',
+				style: {
+					color: '#7C4088'
+				}
+			},
+			labels: {
+				formatter: function() {
+					return this.value +'%';
+				},
+				style: {
+					color: '#7C4088'
+				}
+			},
+			opposite: true
+		},{ // aux yAxis
+			gridLineWidth: 0,
+			title: {
+				text: 'Votes %',
+				style: {
+					color: '#AA4643'
+				}
+			},
+			labels: {
+				formatter: function() {
+					return this.value +'%';
+				},
+				style: {
+					color: '#AA4643'
+				}
+			},
+			opposite: true
+		}],
+		
+		colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
+		
+		legend: {
+				margin:20
+			},
+			
+		/*tooltip: {
+			shared: true
+		},*/
+		series:data
+		
+		
+	});
+	}
  </script>
 </head>
 <body>
 	
   <div  class="widget blue" id="votersBasicInformationDiv" align="center" style="font-family: verdana;font-size: 12px;">
   <div id="errorDiv" style="color:red;display:none"></div>
-	
+	<div id="errorMsgDiv"></div>
 	<table style="">
 	<tr class="tableRow" >
 	<div id="constituencyDiv" class="selectDiv">
@@ -1542,11 +1669,16 @@ attrPerc=$( "#slider" ).slider( "value" );
 	<div class="hero-unit" style="display:none;">
 	<div id="mandalElecResultsElections"></div>
 	<div id="selectionDiv" align="left" style="margin-left: 138px;" >
-    <input type="checkbox" id="selectAll"  onclick="selectAll()" name="selection"><span>Select All</span>
-	<input type="checkbox" id="deSelectAll" onclick="deSelectAll()" name="selection"><span>Unselect All</span>
+    <input type="button" id="selectAll"  class="btn" onclick="selectAll()" name="selection" value="Select All"><span></span>
+	<input type="button" id="deSelectAll" class="btn" onclick="deSelectAll()" name="selection" value="Unselect All"><span></span>
 	</div>
-	<div id="submitbtn"><input type="button" class="btn" value="Submit" onclick="getCastWiseElectionResults();"></input></div>
+	<div id="submitbtn"><input type="button" class="btn" value="Submit" onclick="validationCheck();" style="margin-top: -25px; margin-left: -179px;"></input><span><img alt="Processing Image" src="./images/icons/search.gif" id="ajaxImg" style="float: right; margin-right: 473px; margin-top: -21px;display:none;"></span></div>
 	</div>
+	<div id="voterSelDiv"  style="font-family: verdana; font-size: 16px; float: left; margin-left: 162px; font-weight: bolder;display:none;">
+	<input type="radio" id="votersByCount" value="voter" checked="true" name="voter" onClick="buildChart('voterscount')">Voters Wise</input>
+	<input type="radio" id="votersByPerc" value="voter %" name="voter" onClick="buildChart('votersperc')">Percentage Wise</input>
+	</div>
+	<div id="noDataAvaliableDiv"></div>
   </div>
   <div id="container"> </div>
   <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;display:none;" id="show_hide_votes">
