@@ -921,15 +921,15 @@ function callAjax(jsObj,url)
 	     
 		 str+='<tr><th align="left">Elections  : </th><td>';
 		 str+='<table>';
-		 for(var i in myResults.electionsInMandal){
+		 for(var i in myResults.electionsInMandal[0]){
 			if(i%6==0)
 				str+='<tr>';
 			if(i == electionsLength-1)
 			 {
-				str+='<td><input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
+				str+='<td><input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[0][i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[0][i].name+'</label></td>';
 			 }
 			else{
-	 str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[i].name+'</label></td>';
+	 str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[0][i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[0][i].name+'</label></td>';
 		   }
 			if((i%6)+1==0)
 		   str+='</tr>';
