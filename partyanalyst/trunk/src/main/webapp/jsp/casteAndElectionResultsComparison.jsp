@@ -1693,7 +1693,7 @@
 	</div>
 	<div id="noDataAvaliableDiv"></div>
   </div>
-  <div id="container"> </div>
+  <div id="container" style="height:700px;display:none;"> </div>
   <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;display:none;" id="show_hide_votes">
 		<span class="label label-info" style="padding:5px;margin:5px;">Show All <input type="radio" name="show_hide_votes" value="show" checked="checked"></span>
 		<span class="label label-info" style="padding:5px;margin:5px;">Hide All <input type="radio" name="show_hide_votes" value="hide"></span>
