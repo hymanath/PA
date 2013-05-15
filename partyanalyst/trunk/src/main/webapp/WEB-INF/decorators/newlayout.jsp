@@ -323,6 +323,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
         <li><a href="callCenterAction.action"><span>Call Center</span></a></li>
 		<li><a href="votersAnalysisNewAction.action"><span>Constituency Analysis</span></a></li>
 		<li><a href="votersSearchAction.action"><span>Voters Search & Report</span></a></li>
+		<li><a href="casteAndElectionResultsComparisonAction.action"><span>Caste Percentage Wise Election Results Comparison</span></a></li>
 	
 	 </ul></div>
 
