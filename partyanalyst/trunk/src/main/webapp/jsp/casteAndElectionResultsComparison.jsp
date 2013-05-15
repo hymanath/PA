@@ -792,7 +792,6 @@
 	
 	function getSelectedPanchayatsOrBooths(type)
 	{
-		alert(type);
 		var selectedValues ;
 		var values = "";
 		var checkVal = "";
