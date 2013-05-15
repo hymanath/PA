@@ -559,10 +559,6 @@ $("#panchayats").live("change",function(){
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
     <div id="mandalElecResultsParties"></div>
     <div id="mandalElecResultsElections"></div>
-    <div id="selectionDiv" style="margin-left:81px;">
-    <input type="checkbox" id="selectAll"  onclick="selectAll()" name="selection"><span>Select All</span>
-	<input type="checkbox" id="deSelectAll" onclick="deSelectAll()" name="selection"><span>Unselect All</span>
-	</div>
     <div id="mandalElecResultsButton" style='margin-left:81px;'></div>
 	<div id="mandalElecResultsButton1" style='margin-left:81px;'></div>
   </div>
@@ -910,16 +906,31 @@ function callAjax(jsObj,url)
 	  if(myResults.electionsInMandal.length == 0)
 		  $("#mandalElecResultsDiv").css("display","none");
       if(myResults != null && myResults.partiesInMandal != null && myResults.partiesInMandal.length > 0  && myResults.electionsInMandal != null && myResults.electionsInMandal.length > 0){
-		   $("#mandalElecResultsDiv").css("display","block");
+			$("#mandalElecResultsDiv").css("display","block");
 		  var electionsLength = myResults.electionsInMandal.length;
 	     var str='';
-		 str+='<table><tr><th align="left">Parties : </th><td>';
+		 str+='<table><tr><th align="left">Parties : </th><td style="padding-bottom: 15px;">';
+		  str+='<table>';
 		 for(var i in myResults.partiesInMandal){
-		  str+='<input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
+			 if(i%12==0)
+			str+='<tr>';
+
+		  str+='<td><input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label></td>';
+		  
+		  if((i%12)+1==0)
+		   str+='</tr>';
 		 }
+		  str+='</table>';
+
+		 /* str+='<input type="checkbox" id="selectAll"  onclick="selectAllCheckBoxes()" name="selection"><span>Select All Parties</span>';
+		 str+='<input type="checkbox" id="deSelectAll" onclick="deSelectAllCheckBoxes()" name="selection"><span>Unselect All Parties</span>';*/
+
+		str+='<input type="button" class="btn" style="margin-right: 12px;" id="selectAll" value="Select All Parties"  onclick="selectAllCheckBoxes(this.value)">';
+		str+='<input type="button" class="btn" id="deSelectAll" value="Unselect All Parties" onclick="deSelectAllCheckBoxes(this.value)">';
+
 		 str+='</td></tr>';
-	     
-		 str+='<tr><th align="left">Elections  : </th><td>';
+   
+		 str+='<tr><th align="left">Elections  : </th><td style="padding-bottom:15px;">';
 		 str+='<table>';
 		 for(var i in myResults.electionsInMandal[0]){
 			if(i%6==0)
@@ -935,6 +946,12 @@ function callAjax(jsObj,url)
 		   str+='</tr>';
 		 }
 		 str+='</table>';
+
+		 /*str+='<input type="checkbox" id="selectAllEle"  onclick="selectAllCheckBoxes()" name="selection"><span>Select All Elections</span>';
+		 str+='<input type="checkbox" id="deSelectAllEle" onclick="deSelectAllCheckBoxes()" name="selection"><span>Unselect All Elections</span>';*/
+			
+		str+='<input type="button" class="btn" style="margin-right: 12px;" id="selectAllEle" value="Select All Elections" onclick="selectAllCheckBoxes(this.value)">';
+		str+='<input type="button" class="btn" id="deSelectAllEle" value="Unselect All Elections" onclick="deSelectAllCheckBoxes(this.value)">';
 		 str+='</td></tr>';
 		
 		 str+='</table>';
@@ -3592,50 +3609,62 @@ function showMPTCZPTCResults()
 	
 	
 
-	function selectAll(){
-		var elmts = document.getElementById('selectAll');
-		var deSelect = document.getElementById('deSelectAll');
-			if(elmts.checked == true){
-				deSelect.checked = false;
-				selectAllCheckBoxes(); 
+	function selectAllCheckBoxes(value){
+		//var elmts = document.getElementById('selectAll');
+		//var deSelect = document.getElementById('deSelectAll');
+		//var elections = document.getElementById('selectAllEle');
+		//var deSelectEle = document.getElementById('deSelectAllEle');
+			var elmtValue = value;
+			/*if(elmts.checked == true){
+				deSelect.checked = false;*/
+			//For Parties SelectAll
+			if(elmtValue == 'Select All Parties'){
+			$('.partySelForPanc').each(function(){
+			 if(!$(this).is(':checked'))
+			$(this).attr("checked", "checked");
+			});
 			}
-	}
-
-	function selectAllCheckBoxes(){
-		var elmts = document.getElementsByName('parties');
-		if(elmts.length == 0)
-				return;
-			for(var i=0; i<elmts.length; i++)
-			{
-				if(elmts[i].type == "checkbox" && !elmts[i].checked)
-					elmts[i].checked = true;
-			}
+			//For Elections SelectAll
+			/*if(elections.checked == true){
+			deSelectEle.checked = false;*/
+			if(elmtValue == 'Select All Elections'){
+			$('.elecSelForPanc').each(function(){
+			if(!$(this).is(':checked'))
+		 $(this).attr("checked", "checked");
+		 });
+		}		
 	
 	}
 
 
-	function deSelectAll(){
-	
-		var elmts = document.getElementById('deSelectAll');
-		var elmt = document.getElementById('selectAll');
-			if(elmts.checked == true){
-					elmt.checked = false;
-					deSelectAllCheckBoxes(); 
+	function deSelectAllCheckBoxes(value){
+		
+		//var elmts = document.getElementById('deSelectAll');
+		//var elmt = document.getElementById('selectAll');
+		//var elections = document.getElementById('selectAllEle');
+		//var deSelectEle = document.getElementById('deSelectAllEle');
+		var elmtValue = value;
+			//For Parties UnSelectAll
+			/*if(elmts.checked == true){
+					elmt.checked = false;*/
+			if(elmtValue == 'Unselect All Parties'){
+			$('.partySelForPanc').each(function(){
+			 if($(this).is(':checked'))
+			 $(this).removeAttr('checked')
+			});
+			}
 			
+			//For Elections UnSelectAll
+			/*if(deSelectEle.checked == true){
+				elections.checked = false;*/
+				if(elmtValue == 'Unselect All Elections'){
+			$('.elecSelForPanc').each(function(){
+			if($(this).is(':checked'))
+			$(this).removeAttr('checked')
+			});
 			}
 	}
 
-	function deSelectAllCheckBoxes(){
-		var elmts = document.getElementsByName('parties');
-			if(elmts.length == 0)
-				return;
-			for(var i=0; i<elmts.length; i++)
-			{
-				if(elmts[i].type == "checkbox" && elmts[i].checked)
-					elmts[i].checked = false;
-			}
-	
-	}
 	
 </script>
 
