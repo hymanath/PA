@@ -12,6 +12,9 @@
 
 function createOptionsForSelectElmtIdWithSelectOption(elmtId,optionsList)
 {	
+	$('#electionTypeSelect_ImgSpan').hide();
+	$('#electionScopeSelect_ImgSpan').hide();
+	$('#partyList_ImgSpan').hide();
 	var elmt = document.getElementById(elmtId);
 	
 	if( !elmt || optionsList == null)
