@@ -244,7 +244,7 @@ public class AttributeWiseElectionResultComparisonService implements
 	
 					for(Object[] boothsData:list){
 						boothIds.put((Long)boothsData[2],(Long)boothsData[1]);
-						locationNames.put((Long)boothsData[2],boothsData[3].toString());
+						locationNames.put((Long)boothsData[1],boothsData[3].toString());
 					}
 					//Map<Long,Map<Long,Map<Long,PartyResultsVO>>> electionResultsMap = new HashMap<Long,Map<Long,Map<Long,PartyResultsVO>>>();//Map<electionId,Map<partyId,Map<panchayatid,panchayatObj>>>
 					if(boothIds.size() > 0){
