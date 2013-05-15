@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IAttributeWiseElectionResultComparisonService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -44,6 +45,8 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 	JSONObject jObj;
 	
 	private PartyResultsVO partyResultsVO;
+	
+	private EntitlementsHelper entitlementsHelper;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		
@@ -119,9 +122,22 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 		this.partyResultsVO = partyResultsVO;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute(){
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
+			return ERROR;
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(user.getRegistrationID(),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
