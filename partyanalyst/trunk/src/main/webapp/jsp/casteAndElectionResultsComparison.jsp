@@ -1237,12 +1237,12 @@
 	}
 		if(parties.length == 0)
 		{
-			errorMsg += '<b>Please Select Atleast One Party</b>';
+			errorMsg += '<b>Please Check Atleast One Party</b>';
 			flag = false;
 		}
 		else if(elections.length == 0)
 		{
-			errorMsg += '<b>Please Select Atleast One Election</b>';
+			errorMsg += '<b>Please Check Atleast One Election</b>';
 			flag = false;
 		}
 		if(!flag)
