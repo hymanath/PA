@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -18,6 +20,12 @@ public class VoterFamilyRangeDAO extends GenericDaoHibernate<VoterFamilyRange, L
 		Query queryObj = getSession().createQuery("select model.voterFamilyRangeId from VoterFamilyRange model where model.familyRange =:familyRange ");
 		queryObj.setParameter("familyRange", familyRange);
 		return (Long) queryObj.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getVoterFamilyRangeDetails()
+	{
+		return getHibernateTemplate().find("select count(model.voterFamilyRangeId) from VoterFamilyRange model");
 	}
 	
 }

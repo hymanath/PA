@@ -22,4 +22,9 @@ public interface IVoterAgeInfoDAO extends GenericDao<VoterAgeInfo, Long>{
 	public Integer deleteVoterAgeInfoByConstituencyIdAndReportLevelValue(Long reportLevelId,Long constituencyId, Long publicationDateId);
 	
 	public Integer deleteVoterAgeInfoByConstituencyId(Long constituencyId, Long publicationDateId);
+	
+	public List<Long> getVoterAgeInfoByConstituencyId(Long constituencyId, Long publicationDateId,Long voterReportLevel);
+	
+	public List<Object[]> getVoterAgeDetails(Long constituencyId, Long publicationDateId,Long voterReportLevel);
+	
 }

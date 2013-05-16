@@ -97,4 +97,28 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 		return  query.executeUpdate();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getVoterAgeInfoByConstituencyId(Long constituencyId, Long publicationDateId,Long voterReportLevel)
+	{
+		Query query = getSession().createQuery("select distinct model.reportLevelValue from VoterAgeInfo model where model.constituencyId=:constituencyId and " +
+				" model.publicationDate.publicationDateId = :publicationDateId and model.voterReportLevel.voterReportLevelId =:reportLevelId ");
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("reportLevelId", voterReportLevel);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterAgeDetails(Long constituencyId, Long publicationDateId,Long voterReportLevel)
+	{
+		Query query = getSession().createQuery("select model.reportLevelValue,count(model.voterAgeRange.voterAgeRangeId) from VoterAgeInfo model where model.constituencyId=:constituencyId and " +
+				" model.publicationDate.publicationDateId = :publicationDateId and model.voterReportLevel.voterReportLevelId =:reportLevelId group by model.reportLevelValue ");
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("reportLevelId", voterReportLevel);
+		return query.list();
+	}
+	
 }

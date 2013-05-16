@@ -69,4 +69,7 @@ public List<Object[]> getAllTehsilInfoDetails();
 			Long constituencyId, Long publicationDateId);
 	
 	public String getTehsilNameByTehsilId(Long tehsilId);
+	
+	public List<Object[]> getTehsilNameByTehsilIdsList(List<Long> tehsilIdsList);
+	
 }

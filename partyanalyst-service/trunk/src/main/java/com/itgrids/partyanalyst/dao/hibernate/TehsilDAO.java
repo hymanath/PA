@@ -150,6 +150,12 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		return (String)query.uniqueResult();
 	}
 	
-
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTehsilNameByTehsilIdsList(List<Long> tehsilIdsList)
+	{
+		Query query = getSession().createQuery("select model.tehsilId,model.tehsilName from Tehsil model where model.tehsilId in (:tehsilIdsList) order by model.tehsilName ");
+		query.setParameterList("tehsilIdsList", tehsilIdsList);
+		return query.list();
+	}
 	
 }
