@@ -24,5 +24,9 @@ public interface IVoterModificationInfoDAO extends GenericDao<VoterModificationI
 	public List<Object[]> getGenderWiseVoterModificationsForEachPublication(Long locationLvl,Long locationValue,Long constituencyId,List<Long> publicationIdsList);
 	
 	public List<Object[]> getVoterModificationGenderDetailsByLocationValuesList(List<Long> locationValuesList, List<Long> publicationIdsList, Long constituencyId, Long reportLevelId);
+	
+	public List<Long> getReportLevelValueByReportLevelId(Long constituencyId,Long publicationDateId,Long reportLevelId);
+	
+	public List<Object[]> getModificationDetailsByConstituencyId(Long constituencyId,Long publicationDateId,Long reportLevelId);
 
 }

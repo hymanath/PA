@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
@@ -17,8 +19,14 @@ private IVoterFamilyRangeDAO voterFamilyRangeDAO;
 		voterFamilyRangeDAO.getAll();
 	}*/
 	
-	public void testGetVoterFamilyRangeIdByFamilyRange()
+	/*public void testGetVoterFamilyRangeIdByFamilyRange()
 	{
 		System.out.println(voterFamilyRangeDAO.getVoterFamilyRangeIdByFamilyRange("7-10"));
+	}*/
+	
+	public void testgetVoterFamilyRangeDetails()
+	{
+		List<Long> list = voterFamilyRangeDAO.getVoterFamilyRangeDetails();
+		System.out.println(list.size());
 	}
 }

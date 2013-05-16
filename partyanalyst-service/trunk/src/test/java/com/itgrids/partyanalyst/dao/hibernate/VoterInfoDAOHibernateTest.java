@@ -103,7 +103,7 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(id);
 	}*/
 	
-	public void testGetPanchayatWiseVotersCount()
+	/*public void testGetPanchayatWiseVotersCount()
 	{
 		List<Object[]> list = voterInfoDAO.getPanchayatWiseVotersCount(232l,8l);
 		System.out.println(list.size());
@@ -114,6 +114,13 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 			for(Object object :params)
 				System.out.print("\t"+object.toString());
 		}
+	}*/
+	
+	public void testGetReportLevelValueByConstituencyId()
+	{
+		List<Long> list = voterInfoDAO.getReportLevelValueByConstituencyId(299l, 8l, 3l);
+		System.out.println(list.get(0));
+		
 	}
 	
 }
