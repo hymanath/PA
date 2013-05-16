@@ -29,4 +29,10 @@ public class VoterAgeRangeDAO extends GenericDaoHibernate<VoterAgeRange, Long> i
 		return getHibernateTemplate().find("select model.ageRange from VoterAgeRange model");
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getVoterAgeRangeDetails()
+	{
+		return getHibernateTemplate().find("select count(model.voterAgeRangeId) from VoterAgeRange model");
+	}
+	
 }
