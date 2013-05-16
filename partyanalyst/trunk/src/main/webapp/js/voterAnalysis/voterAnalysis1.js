@@ -55,7 +55,7 @@ var selectType="";
 function populateForHamlets(id,hamletId ,boothId,publicationId,houseNo){
 
 
-	console.log("hamletId"+hamletId);
+	//console.log("hamletId"+hamletId);
 
 
      if($('#'+id).is(':checked')){
@@ -5603,7 +5603,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 
 	var electionYearsForChrt=[];
 function getDataResultsForTotalVoters(resultsArr)
-{
+{    electionYearsForChrt=[];
 	var partiesListArr=resultsArr[0].partiesList
 	var party;
 	var partyResultArr;
@@ -5669,6 +5669,7 @@ function getDataResultsForTotalVoters(resultsArr)
 function PreviousEleVotingTrendsHighChat(results,jsObj){
 	
 	var dataResultArr = getDataResultsForTotalVoters(results);
+	//console.log(electionYearsForChrt);
 	$('#previousEleVotingTrendsChatDiv').highcharts({
             chart: {
                 type: 'line'
