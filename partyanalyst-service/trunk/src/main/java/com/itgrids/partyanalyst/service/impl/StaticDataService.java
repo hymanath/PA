@@ -954,7 +954,8 @@ public class StaticDataService implements IStaticDataService {
 				stateList.add(option);
 			}
 		}
-
+		Collections.sort(stateList);
+		
 		return stateList;
 	}
 	
