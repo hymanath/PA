@@ -568,4 +568,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 
 	public List<Object[]> getMptcAndZptcCandidateNamesByTehsilIds(List<Long> tehsilIds , Long electionScopeId);
 	public List<Object[]> findAllMptcAndZptcElectionsInfoInMandal1withAlliance(List<Long> tehsilIds,List<Long> partyIds,Long electionId);
+	
+	public List<Object[]> findAllMptcAndZptcElectionsInfoByelectionId(Long electionId,List<Long> tehsilIds);
+	
 }
