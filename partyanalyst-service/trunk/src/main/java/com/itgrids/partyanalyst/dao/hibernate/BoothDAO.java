@@ -992,4 +992,95 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameter("publicationId", publicationId);
 			return query.list();
 		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getMandalsListByConstituencyId(Long constituencyId,Long publicationId)
+		{
+			Query query = getSession().createQuery(" select distinct model.tehsil.tehsilId from Booth model " +
+					" where model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId ");
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getPanchayatsListByConstituencyId(Long constituencyId,Long publicationId)
+		{
+			Query query = getSession().createQuery("select distinct model.panchayat.panchayatId from Booth model " +
+					" where model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId and model.panchayat is not null ");
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			return query.list();
+			
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getMuncipalitiesListByConstituencyId(Long constituencyId,Long publicationId)
+		{
+			Query query = getSession().createQuery("select distinct model.localBody.localElectionBodyId from Booth model " +
+					" where model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId and model.localBody is not null ");
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getBoothsListByConstituencyId(Long constituencyId,Long publicationId)
+		{
+			Query query = getSession().createQuery("select distinct model.boothId from Booth model " +
+					" where model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId ");
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getWardsListByConstituencyId(Long constituencyId,Long publicationId)
+		{
+			Query query = getSession().createQuery(" select distinct model.localBodyWard.constituencyId from Booth model " +
+					" where model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId " +
+					" and model.localBodyWard.constituencyId is not null ");
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getBoothsByBoothIdsList(List<Long> boothIdsList)
+		{
+			Query query = getSession().createQuery("select model.boothId,model.partNo from Booth model where model.boothId in (:boothIdsList)");
+			query.setParameterList("boothIdsList", boothIdsList);
+			return query.list();
+			
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getMuncipalitiesByMuncipalityIdsList(Long constituencyId,Long publicationId,List<Long> muncipalityIdsList)
+		{
+			Query query = getSession().createQuery("select distinct model.localBody.localElectionBodyId,model.localBody.name from Booth model " +
+					" where model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId and model.localBody.localElectionBodyId in (:muncipalityIdsList) and model.localBody is not null order by model.localBody.name ");
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			query.setParameterList("muncipalityIdsList", muncipalityIdsList);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getWardsByWardIdsList(Long constituencyId,Long publicationId,List<Long> wardIdsList)
+		{
+			Query query = getSession().createQuery(" select distinct model.localBodyWard.constituencyId,model.localBodyWard.name from Booth model " +
+					" where model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId and " +
+					" model.localBodyWard.constituencyId in (:wardIdsList) and model.localBodyWard.constituencyId is not null order by model.localBodyWard.name ");
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			query.setParameterList("wardIdsList", wardIdsList);
+			return query.list();
+		}
 }

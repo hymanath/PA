@@ -202,4 +202,21 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<String> getPartNosForBooths(List<Long> locationIds);
 	
 	public List<Object[]> getAllBoothsInAMuncipality(Long localBodyId,Long publicationId);
+	
+	public List<Long> getMandalsListByConstituencyId(Long constituencyId,Long publicationId);
+	
+	public List<Long> getPanchayatsListByConstituencyId(Long constituencyId,Long publicationId);
+	
+	public List<Long> getMuncipalitiesListByConstituencyId(Long constituencyId,Long publicationId);
+	
+	public List<Long> getBoothsListByConstituencyId(Long constituencyId,Long publicationId);
+	
+	public List<Long> getWardsListByConstituencyId(Long constituencyId,Long publicationId);
+	
+	public List<Object[]> getBoothsByBoothIdsList(List<Long> boothIdsList);
+	
+	public List<Object[]> getMuncipalitiesByMuncipalityIdsList(Long constituencyId,Long publicationId,List<Long> muncipalityIdsList);
+	
+	public List<Object[]> getWardsByWardIdsList(Long constituencyId,Long publicationId,List<Long> wardIdsList);
+	
 }
