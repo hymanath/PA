@@ -1735,51 +1735,56 @@ return Action.SUCCESS;
 			Long userId             = regVO.getRegistrationID();
 			if(jObj.getString("task").equalsIgnoreCase("getUserCategoeryValues"))
 			{
-				String status           = jObj.getString("status");
-				String type             = jObj.getString("type");
-				Long constituencyId     = jObj.getLong("constituencyId");
-				String[] selectedValues = jObj.getString("selectedValues").split(",");
+				String status                 = jObj.getString("status");
+				String type                   = jObj.getString("type");
+				Long constituencyId           = jObj.getLong("constituencyId");
+				Long publicationId            = jObj.getLong("publicationId");
+				String[] selectedValues       = jObj.getString("selectedValues").split(",");
 				List<Long> ids = new ArrayList<Long>();
 				for (String parm : selectedValues) {
 					ids.add(Long.valueOf(parm.trim()));
 				}
-				resultData = voterReportService.getSelectedUserCategoeryDetails(userId,ids,type,status,constituencyId);
+				resultData                    = voterReportService.getSelectedUserCategoeryDetails(userId,ids,type,status,constituencyId,publicationId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllWards"))
 			{
-				Long constituencyId = jObj.getLong("id");
-				resultData = voterReportService.getAllWardsInUrbanConstituency(constituencyId);
+				Long constituencyId           = jObj.getLong("id");
+				Long publicationId            = jObj.getLong("publicationId");
+				resultData                    = voterReportService.getAllWardsInUrbanConstituency(constituencyId,publicationId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getUserCatgValuesForWard"))	
 			{
-				Long constituencyId = jObj.getLong("constituencyId");
-				String status = jObj.getString("status");
-				String[] selectedValues = jObj.getString("values").split(",");
+				Long constituencyId           = jObj.getLong("constituencyId");
+				String status                 = jObj.getString("status");
+				Long publicationId            = jObj.getLong("publicationId");
+				String[] selectedValues       = jObj.getString("values").split(",");
 				List<Long> ids = new ArrayList<Long>();
 				for (String parm : selectedValues) {
 					ids.add(Long.valueOf(parm.trim()));
 				}
-				resultData = voterReportService.getUserCategoeryValuesForWards(userId,constituencyId,ids,status);
+				resultData                    = voterReportService.getUserCategoeryValuesForWards(userId,constituencyId,ids,status,publicationId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllBoothsInAWard"))	
 			{
-				String[] selectedValues = jObj.getString("values").split(",");
+				Long publicationId            = jObj.getLong("publicationId");
+				String[] selectedValues       = jObj.getString("values").split(",");
 				List<Long> ids = new ArrayList<Long>();
 				for (String parm : selectedValues) {
 					ids.add(Long.valueOf(parm.trim()));
 				}
-				resultData = voterReportService.getAllBoothsForSelectedWards(ids);
+				resultData                    = voterReportService.getAllBoothsForSelectedWards(ids,publicationId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getCategValuesForMuncipalWard"))
 			{
-				Long constituencyId     = jObj.getLong("constituencyId");
-				String status           = jObj.getString("status");
-				String[] selectedValues = jObj.getString("selectedValues").split(",");
+				Long constituencyId           = jObj.getLong("constituencyId");
+				String status                 = jObj.getString("status");
+				Long publicationId            = jObj.getLong("publicationId");
+				String[] selectedValues       = jObj.getString("selectedValues").split(",");
 				List<Long> ids = new ArrayList<Long>();
 				for (String parm : selectedValues) {
 					ids.add(Long.valueOf(parm.trim()));
 				}
-				resultData = voterReportService.getUserCategoeryValuesForMuncipalWards(userId, constituencyId, status, ids);
+				resultData                    = voterReportService.getUserCategoeryValuesForMuncipalWards(userId, constituencyId, status, ids,publicationId);
 			}
 		
 		} catch (Exception e) {

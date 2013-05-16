@@ -77,6 +77,7 @@
   var attrPerc;
   var resultsData;
   var type;
+  var publicationId;
     function showHideLocations(type){
 	     locationSelected = type;
 	       $("#constituencyList").val(0);
@@ -288,6 +289,10 @@
 									{
 										buildElectionAndPartyDetails(myResults);
 									}
+									else if(jsObj.task == "getPublicationDate")
+									{
+										buildPublicationDateList(myResults);
+									}
 								}catch (e) {
 								
 								}  
@@ -317,7 +322,7 @@
    function buildCategoriesListInit(result){
 	  var name ='';
 	  var value = "";
-		name +='<b>Select Type</b>';
+		name +='<b>Select Type</b><font class="requiredFont" style="color:red">*</font>';
 		$("#requiredFieldsToCheckName").html(name);
 		value +='<select id="selectdUserCatgId" onChange="checkAndGetData(\'cast\',\'Caste\',mainStr);"><option value="0">Select Type</ortion>';
 		value +='<option value="1">Caste</option>';
@@ -389,6 +394,7 @@
 								selectedValues   : values.slice(1),
 								type             : "mandal",
 								nameVal          : nameVal,
+								publicationId    : publicationId,
 								task             : "getUserCategoeryValues"
 							}
 							var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -408,6 +414,7 @@
 								selectedValues   : values.slice(1),
 								type             : name,
 								nameVal          : nameVal,
+								publicationId    : publicationId,
 								task             : "getUserCategoeryValues"
 							}
 							var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -444,6 +451,7 @@
 							selectedValues   : values.slice(1),
 							type             : name,
 							nameVal          : nameVal,
+							publicationId    : publicationId,
 							task             : "getUserCategoeryValues"
 						}
 						var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -480,6 +488,7 @@
 	{	
 		$('#selReqFileldId').hide();
 		$('#selUserCatgId').hide();
+		publicationId = $('#publicationId').val();
 		var id = $("#constituencyList option:selected").val();
 		if(constituencyType == 'urban')
 		{
@@ -505,6 +514,7 @@
 						
 						id    : id,
 						type  : "main",
+						publicationId : publicationId,
 						task  : "getAllWards"
 					}
 					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -524,6 +534,7 @@
 						level : value,
 						id    : id,
 						str   : "all",
+						publicationId : publicationId,
 						constituencyType:constituencyType,
 						task  : "getReportLevelDetails"
 					}
@@ -683,6 +694,7 @@
 					level : 1,
 					id    : id,
 					str   : "panchayat",
+					publicationId : publicationId,
 					task  : "getReportLevelDetails"
 				}
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -701,6 +713,7 @@
 					selected:value,
 					selectElmt:"mandalField",
 					str   : "mandal",
+					publicationId : publicationId,
 					task:"getMandalList"
 			};
 		
@@ -794,6 +807,7 @@
 					type   : title,
 					level  : level,
 					values : values.slice(1),
+					publicationId:publicationId,
 					task   : "getSelectedMandalOrPanchayatData"
 				}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -816,6 +830,7 @@
 					var jsObj =
 					{
 						selectedValues : id,
+						publicationId  : publicationId,
 						task           : "getBoothsInMuncipality"
 					}
 					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -849,6 +864,7 @@
 						type   : title,
 						level  : level,
 						values : values.slice(1),
+						publicationId : publicationId,
 						task   : "getSelectedMandalOrPanchayatData"
 					}
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -941,7 +957,14 @@
 		}
 		else if (type == "booth")
 		{
-			$('#selPanchayatRow').show();
+			if(substr == 'RURAL')
+			{
+				$('#selPanchayatRow').show();
+			}
+			else
+			{
+				$('#selPanchayatRow').hide();
+			}
 		}
 		else if(type == "muncipality")
 		{
@@ -958,6 +981,7 @@
 					constituencyId   : constituencyId,
 					status           : type,
 					selectedValues   : values.slice(1),
+					publicationId    : publicationId,
 					task             : "getCategValuesForMuncipalWard"
 				}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -983,9 +1007,11 @@
 	{
 		
 		var constituencyId = $("#constituencyList option:selected").val();
+		publicationId = $('#publicationId').val();
 		var jsObj=
 				{
 					constituencyId : constituencyId,
+					publicationId  : publicationId,
 					task           : "getConstituencyType"
 				}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1033,6 +1059,7 @@
 						
 						id    : id,
 						type  : "sub",
+						publicationId : publicationId,
 						task  : "getAllWards"
 					}
 					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1069,6 +1096,7 @@
 				{
 					
 					values    : values.slice(1),
+					publicationId : publicationId,
 					task      : "getAllBoothsInAWard"
 				}
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1092,6 +1120,7 @@
 					values            : values.slice(1),
 					status            : "cast",
 					nameVal           : "Caste",
+					publicationId     : publicationId,
 					task              : "getUserCatgValuesForWard"
 				}
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1237,12 +1266,12 @@
 	}
 		if(parties.length == 0)
 		{
-			errorMsg += '<b>Please Check Atleast One Party</b>';
+			errorMsg += '<span>Please Check Atleast One Party</span></br>';
 			flag = false;
 		}
-		else if(elections.length == 0)
+		if(elections.length == 0)
 		{
-			errorMsg += '<b>Please Check Atleast One Election</b>';
+			errorMsg += '<span>Please Check Atleast One Election<span>';
 			flag = false;
 		}
 		if(!flag)
@@ -1264,6 +1293,7 @@
 					  type:type,
 					  attributeType:"caste",
 					  attrPerc:attrPerc,
+					  publicationId : publicationId,
 					  task:"buildChart"
 					}
 					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1273,13 +1303,13 @@
 	}
 	
 	
- function buildChart(buildType){
- 
-	var result = resultsData;
-	$('#noDataAvaliableDiv').hide();
-	$("#show_hide_votes").show();
-	$('#container').show();
-	$('#ajaxImg').hide();
+	function buildChart(buildType)
+	{
+ 		var result = resultsData;
+		$('#noDataAvaliableDiv').hide();
+		$("#show_hide_votes").show();
+		$('#container').show();
+		$('#ajaxImg').hide();
 		var linechartDataArr = new Array();
 		var results = new Array();
 		var results1 = new Array();
@@ -1378,7 +1408,7 @@
 					});
 			});
 		
- }
+	}
  
 
 	
@@ -1423,28 +1453,28 @@
 		var categId          = $("#selectdUserCatgId option:selected").val();
 		if(constituencyId == 0)
 		{
-			errorMsg += '<b>Please Select Constituency</b>';
+			errorMsg += '<span>Please Select Constituency</span>';
 			flag = false;
 		}
 		else if(level == 0 && substr == 'RURAL')
 		{
-			errorMsg += '<b>Please Select Level</b>';
+			errorMsg += '<span>Please Select Level</span>';
 			flag = false;
 		}
 		
 		else if(mandalIds == undefined)
 		{
-			errorMsg += '<b>Please Select '+name+'</b>';
+			errorMsg += '<span>Please Select '+name+'</span>';
 			flag = false;
 		}
 		else if(categId == 0)
 		{
-			errorMsg += '<b>Please Select Type</b>';
+			errorMsg += '<span>Please Select Type</span>';
 			flag = false;
 		}
 		else if(castIds == undefined)
 		{
-			errorMsg += '<b>Please Select Caste</b>';
+			errorMsg += '<span>Please Select Caste</span>';
 			flag = false;
 		}
 	
@@ -1461,6 +1491,7 @@
 			getCastWiseElectionResults();
 		}
 	}
+	
 	function buildVoterChart(data,linechartDataArr)
 	{
 		$('#container').highcharts({
@@ -1530,6 +1561,7 @@
 		
 	});
 	}
+	
 	function buildVoterPercChart(data,linechartDataArr)
 	{
 		$('#container').highcharts({
@@ -1607,19 +1639,78 @@
 		
 	});
 	}
- </script>
-</head>
-<body>
 	
-  <div  class="widget blue" id="votersBasicInformationDiv" align="center" style="font-family: verdana;font-size: 12px;">
-  <div id="errorDiv" style="color:red;display:none"></div>
+	function getPublicationDate()
+	{
+		if(substr = "URBAN")
+		{
+			$('#urbanConstituency').hide();
+			$('#publicationRow').show();
+			$('#ruralConstituency').hide();
+			$('#selLevelId').hide();
+			$('#selMandalId').hide();
+			$('#selPanchayatRow').hide();
+			$('#selReqFileldId').hide();
+			$('#selUserCatgId').hide();
+		}
+		else
+		{
+			$('#ruralConstituency').hide();
+			$('#publicationRow').show();
+			$('#urbanConstituency').hide();
+			$('#selLevelId').hide();
+			$('#selMandalId').hide();
+			$('#selPanchayatRow').hide();
+			$('#selReqFileldId').hide();
+			$('#selUserCatgId').hide();
+		}
+		
+		var value =  $("#constituencyList option:selected").val();
+		var jsObj=
+		{
+			selected:value,
+			task:"getPublicationDate"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "voterAnalysisAjaxAction.action?"+rparam;	
+
+		$('#publicationAjaxImage').css('display','block');
+		callAjaxToGetData(jsObj,url);
+	}
+
+	function buildPublicationDateList(result)
+	{
+			
+		if(result != null)
+		{
+			$("#publicationId option").remove();
+			for(var i in result)
+			{
+				$('#publicationId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+		}
+	}
+	</script>
+	</head>
+	<body>
+	
+	<div  class="widget blue" id="votersBasicInformationDiv" align="center" style="font-family: verdana;font-size: 12px;">
+	<div id="errorDiv" style="color:red;display:none"></div>
 	<div id="errorMsgDiv"></div>
 	<table style="">
+	
 	<tr class="tableRow" >
 	<div id="constituencyDiv" class="selectDiv">
 	<td><b>Constituency </b><font class="requiredFont" style="color:red">*</font></td><td>
-	<s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getConstituencyType()"/></td>
+	<s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate();"/></td>
 	</div></tr>
+	
+	<tr class="tableRow" id="publicationRow" style="display:none;">
+	<div id="publicationDiv" class = "selectDiv">
+	<td><b>Publication Date</b><font class="requiredFont" style="color:red">*</font></td>
+	<td><select id="publicationId" onChange="getConstituencyType()" >
+	</select></td></div>
+	</tr>
 	
 	<tr class="tableRow" id="ruralConstituency" style="display:none;">
 	<div id="SelectLevelDiv" class="selectDiv">
@@ -1678,7 +1769,8 @@
 				<p style="padding-bottom:2px;">
 					<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;width: 255px;" />
 				</p>
-		</div>
+	</div>
+		
 	<div class="hero-unit" style="display:none;">
 	<div id="mandalElecResultsElections"></div>
 	<div id="selectionDiv" align="left" style="margin-left: 138px;" >
@@ -1687,17 +1779,22 @@
 	</div>
 	<div id="submitbtn"><input type="button" class="btn" value="Submit" onclick="validationCheck();" style="margin-top: -25px; margin-left: -179px;"></input><span><img alt="Processing Image" src="./images/icons/search.gif" id="ajaxImg" style="float: right; margin-right: 473px; margin-top: -21px;display:none;"></span></div>
 	</div>
-	<div id="voterSelDiv"  style="font-family: verdana; font-size: 16px; float: left; margin-left: 162px; font-weight: bolder;display:none;">
+	
+	<div id="voterSelDiv"  style="float: left; margin-left: 117px; font-family: arial; font-weight: 900; font-size: 13px;display:none;">
 	<input type="radio" id="votersByCount" value="voter" checked="true" name="voter" onClick="buildChart('voterscount')">Voters Wise</input>
 	<input type="radio" id="votersByPerc" value="voter %" name="voter" onClick="buildChart('votersperc')">Percentage Wise</input>
 	</div>
+	
 	<div id="noDataAvaliableDiv"></div>
-  </div>
-  <div id="container" style="height:700px;display:none;"> </div>
-  <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;display:none;" id="show_hide_votes">
+	
+    </div>
+	
+    <div id="container" style="height:700px;display:none;"> </div>
+	
+    <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;display:none;" id="show_hide_votes">
 		<span class="label label-info" style="padding:5px;margin:5px;">Show All <input type="radio" name="show_hide_votes" value="show" checked="checked"></span>
 		<span class="label label-info" style="padding:5px;margin:5px;">Hide All <input type="radio" name="show_hide_votes" value="hide"></span>
 	</div>
 	
-  </body>
-</html>
+	</body>
+	</html>

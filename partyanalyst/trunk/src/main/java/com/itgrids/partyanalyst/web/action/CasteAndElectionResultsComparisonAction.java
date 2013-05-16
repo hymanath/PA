@@ -161,6 +161,7 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 			String type = jObj.getString("type");
 			String attributeType = jObj.getString("attributeType");
 			Long attrPerc = jObj.getLong("attrPerc");
+			Long publicationId = jObj.getLong("publicationId");
 			
 			String[] elecIds = jObj.getString("electionIds").split(",");
 			for(String elecId:elecIds){
@@ -182,7 +183,7 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 				attributeIds.add(new Long(attrId.trim()));
 			}
 			
-			partyResultsVO = attributeWiseElectionResultComparisonService.getElectionResultsByAttributeWise(electionIds,partyIds,user.getRegistrationID(),constituencyId,type,ids,attributeType,attributeIds,attrPerc);
+			partyResultsVO = attributeWiseElectionResultComparisonService.getElectionResultsByAttributeWise(electionIds,partyIds,user.getRegistrationID(),constituencyId,type,ids,attributeType,attributeIds,attrPerc,publicationId);
 			
 		}
 		catch(Exception e)
