@@ -40,7 +40,7 @@ public interface IVotersAnalysisService {
 	
 	public List<VotersDetailsVO> getVotersDetailsByAgewise(Long constituencyId, Long tehsilId,Long panchayatId,Long boothId,
 			 Long publicationDateId , String type);
-	public ImportantFamiliesInfoVo getImportantFamiliesInfo(Long userId,String type,Long id,Long publicationDateId,Long constituencyId ,String resultFor);
+	public ImportantFamiliesInfoVo getImportantFamiliesInfo(Long userId,String type,Long id,Long publicationDateId,Long constituencyId ,String resultFor,String buildType);
 	
 	//public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long id, Long publicationDateId,String checkedEle);
 	public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long userId,Long id, Long publicationDateId,String checkedEle,String buildType,String requestFor);
