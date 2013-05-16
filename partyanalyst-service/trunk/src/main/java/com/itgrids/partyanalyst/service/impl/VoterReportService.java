@@ -1877,7 +1877,15 @@ public class VoterReportService implements IVoterReportService{
 		public Long getLatestPublicationIdByConstiId(Long constituencyId){
 			 return publicationDateDAO.getLatestPublicationIdByConstiId(constituencyId);
 		}
-		
+		/**
+		 * This Service is used for Getting All Selected User Categoery Volues Based on Selection
+		 * @param Long userId
+		 * @param List<Long> ids
+		 * @param String type
+		 * @param String status
+		 * @param Long constituencyId
+		 * @return List<SelectOptionVO>
+		 */
 		public List<SelectOptionVO> getSelectedUserCategoeryDetails(Long userId,List<Long> ids , String type,String status,Long constituencyId)
 		{
 			List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
@@ -1991,7 +1999,11 @@ public class VoterReportService implements IVoterReportService{
 			}
 			return resultData;
 		}
-		
+		/**
+		 * This Service is Used For Getting All Wards in a Urban Constituency Selection
+		 * @param Long constituencyId
+		 * @return List<SelectOptionVO>
+		 */
 		public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId)
 		{
 			List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
@@ -2013,7 +2025,14 @@ public class VoterReportService implements IVoterReportService{
 			
 			return returnData;
 		}
-		
+		/**
+		 * This Service is used for getting All User Categiery Values for Selected Wards
+		 * @param Long userId
+		 * @param Long constituencyId
+		 * @param List<Long> ids
+		 * @param String status
+		 * @return List<SelectOptionVO>
+		 */
 		public List<SelectOptionVO> getUserCategoeryValuesForWards(Long userId,Long constituencyId,List<Long> ids ,String status)
 		{
 			List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
@@ -2032,7 +2051,11 @@ public class VoterReportService implements IVoterReportService{
 			return returnData;
 			
 		}
-		
+		/**
+		 * This Service is used for Getting All Booths In a Selectd Wards in Urban Constituency
+		 * @param List<Long> ids
+		 * @return List<SelectOptionVO>
+		 */
 		public List<SelectOptionVO> getAllBoothsForSelectedWards(List<Long> ids)
 		{
 			List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
@@ -2052,10 +2075,28 @@ public class VoterReportService implements IVoterReportService{
 			}
 			return returnData;
 		}
-		
+		/**
+		 * This Service is used For Getting All User Categoery values in a Selected Muncipal wards
+		 * @param Long userId
+		 * @param Long constituencyId
+		 * @param String type
+		 * @param List<Long> ids
+		 * @return List<SelectOptionVO>
+		 */
 		public List<SelectOptionVO> getUserCategoeryValuesForMuncipalWards(Long userId,Long constituencyId,String type,List<Long> ids)
 		{
 			List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
+			List<Object[]> userCategValues = boothPublicationVoterDAO.getUserCategValuesForSelectedMuncipalWards(userId,constituencyId,type,ids);
+			if(userCategValues != null && userCategValues.size() > 0)
+			{
+				SelectOptionVO selectOptionVO = null;
+				for (Object[] parms : userCategValues) {
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					resultData.add(selectOptionVO);
+				}
+			}
 			return resultData;
 		}
 }
