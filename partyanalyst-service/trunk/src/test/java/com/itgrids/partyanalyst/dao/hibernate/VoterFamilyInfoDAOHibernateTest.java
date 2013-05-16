@@ -32,12 +32,12 @@ public class VoterFamilyInfoDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testDeleteVoterFamilyDetByReportLevelValAndVoterAgeRange()
+	/*public void testDeleteVoterFamilyDetByReportLevelValAndVoterAgeRange()
 	{
 		List<Long> reportLevelValue = new ArrayList<Long>(0);
 		reportLevelValue.add(232l);
 		System.out.println(voterFamilyInfoDAO.deleteVoterFamilyDetByReportLevelValAndVoterAgeRange(1l, reportLevelValue, 7l));
-	}
+	}*/
 	
 	/*public void testGetTotalFamiliesCountByReportLevelValue()
 	{
@@ -46,6 +46,28 @@ public class VoterFamilyInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(totalFalies.size());
 		if(totalFalies != null && totalFalies.size() > 0)
 			System.out.println(totalFalies.get(0));
+	}*/
+	
+	/*public void testgetVoterReportLevelValueByReportLevelId()
+	{
+		List<Long> list = voterFamilyInfoDAO.getVoterReportLevelValueByReportLevelId(232l, 8l, 3l);
+		System.out.println(list.size());
+	}*/
+	
+	public void testgetVoterReportLevelValueByConstituencyId()
+	{
+		
+		List<Object[]> list = voterFamilyInfoDAO.getVoterReportLevelValueByConstituencyId(232l, 8l, 2l);
+		for(Object[] params : list)
+			System.out.println(params[0]+" "+params[1]); 
+			
+		System.out.println(list.size());
+	}
+	
+	/*public void testgetVoterFamilyDetailsByConstituencyId()
+	{
+		List<Object[]> list = voterFamilyInfoDAO.getVoterFamilyDetailsByConstituencyId(232l, 8l, 3l);
+		System.out.println(list.size());
 	}*/
 	
 }

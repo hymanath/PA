@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -73,9 +74,19 @@ public class TehsilDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetTehsilNameByTehsilId()
+	/*public void testGetTehsilNameByTehsilId()
 	{
 		System.out.println(tehsilDAO.getTehsilNameByTehsilId(844l));
+	}*/
+	
+	public void testGetTehsilNameByTehsilIdsList()
+	{
+		List<Long> tehsilIdsList = new ArrayList<Long>(0);
+		tehsilIdsList.add(844l);
+		
+		List<Object[]> list = tehsilDAO.getTehsilNameByTehsilIdsList(tehsilIdsList);
+		for(Object[] params : list)
+			System.out.println(params[0]+" "+params[1]);
 	}
 	
 }

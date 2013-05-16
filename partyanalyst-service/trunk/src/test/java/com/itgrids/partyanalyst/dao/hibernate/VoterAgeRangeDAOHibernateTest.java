@@ -28,10 +28,18 @@ private IVoterAgeRangeDAO voterAgeRangeDAO;
 		System.out.println(voterAgeRangeDAO.getVoterAgeRangeIdByType("18-25"));
 	}*/
 	
-	public void testGetAllVoterAgeRanges()
+	/*public void testGetAllVoterAgeRanges()
 	{
 		List<String> list = voterAgeRangeDAO.getAllVoterAgeRanges();
 		for(String str : list)
 			System.out.println(str);
+	}*/
+	
+	public void testgetVoterAgeRangeDetails()
+	{
+		List<Long> list = voterAgeRangeDAO.getVoterAgeRangeDetails();
+		
+			System.out.println(list.size());
 	}
+	
 }
