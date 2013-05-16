@@ -1303,7 +1303,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	     }
 	}
 	
-	public VotersInfoForMandalVO populateDataToVotersInfoForMandalVO(List<Object[]> votersCountList,Long id,String name,String type){
+	public VotersInfoForMandalVO populateDataToVotersInfoForMandalVO(List<Object[]> votersCountList,Long id,String name,String type)
+	{	
+		VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
+		try{
 		Long maleVotersCount = 0l;
 		Long femaleVotersCount = 0l;
 		Long unknownsCount = 0l;
@@ -1316,7 +1319,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    		unknownsCount = (Long)votersCount[0];
 	    	}
 	    }
-	    VotersInfoForMandalVO votersInfoForMandalVO = new VotersInfoForMandalVO();
 	    votersInfoForMandalVO.setTotalMaleVoters(maleVotersCount.toString());
 	    votersInfoForMandalVO.setTotalFemaleVoters(femaleVotersCount.toString());
 	    votersInfoForMandalVO.setUnKnowVoters(unknownsCount.toString());
@@ -1329,6 +1331,11 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    votersInfoForMandalVO.setTotVoters(totalCount);
 	    
 	    return votersInfoForMandalVO;
+		}catch (Exception e) {
+			log.error("Exception occured in populateDataToVotersInfoForMandalVO() Method",e);
+			return votersInfoForMandalVO;
+		}
+		
 	}
 	
 	
@@ -4093,7 +4100,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			else if(type.equalsIgnoreCase("panchayat"))
 			{
 				ImportantFamiliesInfoVo importantFamiliesInfoVo = getImpFamiliesForPanchayat(id,publicationDateId,"","main",constituencyId);
-				
+				try{
 				if(!importantFamiliesInfoVo.isDataPresent())
 					importantFamiliesInfoVo = getImportantFamiliesForPanchayat1(userId ,id,publicationDateId,"","main",constituencyId);
 				
@@ -4113,6 +4120,10 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				for(Long  hamletId:hamlets)			
 					 importantFamiliesInfoVo.getSubListForHamlets().add(getImportantFamiliesDetailsForHamlet(userId , "hamlet",hamletId,publicationDateId,"sub",constituencyId));
 				return importantFamiliesInfoVo;
+				}catch (Exception e) {
+					log.error("Exception occured - ",e);
+					return importantFamiliesInfoVo;
+				}
 			}
 			else if(type.equalsIgnoreCase("ward"))
 			{
@@ -12336,8 +12347,9 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		  }
 		}
        
-		public VotersInfoForMandalVO getVotersCountDetailsForHamlet(Long userId , String type,Long id,Long publicationDateId,String reqType){
-			
+		public VotersInfoForMandalVO getVotersCountDetailsForHamlet(Long userId , String type,Long id,Long publicationDateId,String reqType)
+		{
+			try{
 			List<Object[]> votersCountList = boothPublicationVoterDAO.getVotersCountForHamlet(id,userId,publicationDateId);
 			
 			if((!votersCountList.isEmpty() && votersCountList.get(0)[1] != null) || reqType.equalsIgnoreCase("sub")){
@@ -12347,6 +12359,10 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				   votersInfoForMandalVO.setDatapresent(false);
 				   return votersInfoForMandalVO;
 			   }
+			}catch (Exception e) {
+				log.error("Exception Occured in getVotersCountDetailsForHamlet()",e);
+				return null;
+			}
 		}
 		
 /*		public ImportantFamiliesInfoVo getImportantFamaliesDetailsForHamlet(Long userId,String type,Long id,Long publicationDateId,Long constituencyId)
@@ -12404,8 +12420,9 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		     
 		}
 		
-		public void getImpFamilesInfoForHamlet(Long userId , String type,Long id,Long publicationDateId,ImportantFamiliesInfoVo importantFamiliesInfoVo,String queryToexe,String exeType,List<Long> ids,Long constituencyId){
-			
+		public void getImpFamilesInfoForHamlet(Long userId , String type,Long id,Long publicationDateId,ImportantFamiliesInfoVo importantFamiliesInfoVo,String queryToexe,String exeType,List<Long> ids,Long constituencyId)
+		{
+			try{
 	        String query = "";
 	        Long[] totalFamilies = getFamiliesCountForHamlet(userId,type,id,publicationDateId,null,queryToexe,exeType,ids,constituencyId);
 			if(totalFamilies != null){
@@ -12436,17 +12453,40 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		     
 		     if(importantFamiliesInfoVo.getTotalVoters() > 0)
 		       calculatePercentage(importantFamiliesInfoVo);
+			}catch(Exception e)
+			{
+				log.error("Exception Occured - ",e);
+			}
 		     
 		}
 		
-		public Long[] getFamiliesCountForHamlet(Long userId , String type,Long id,Long publicationDateId,String query,String queryToexe,String exeType,List<Long> ids,Long constituencyId){
-			
+		public Long[] getFamiliesCountForHamlet(Long userId , String type,Long id,Long publicationDateId,String query,String queryToexe,String exeType,List<Long> ids,Long constituencyId)
+		{
 			Long[] count = {0l,0l};
+			try{
 			List<Object[]> totalFamiliesList = new ArrayList<Object[]>();
 				//totalFamiliesList = boothPublicationVoterDAO.getImpFamilesForHamlet(userId,id,publicationDateId,query);
 			List<Long> voterIds = boothPublicationVoterDAO.getVotersInHamletForUser(userId,id);
 			if(voterIds!= null && voterIds.size() >0){
-			totalFamiliesList = boothPublicationVoterDAO.getFamilyDetailsForHamlet(userId,voterIds,publicationDateId,query);
+				
+				if(voterIds.size() > 1000)
+				{
+					int fromIndex = 0;
+					int toIndex = 999;
+					while(fromIndex <= toIndex)
+					{
+						List<Object[]> tFList = boothPublicationVoterDAO.getFamilyDetailsForHamlet(userId,voterIds.subList(fromIndex,toIndex),publicationDateId,query);
+						totalFamiliesList.addAll(tFList);
+						fromIndex += 1000;
+						toIndex += 1000;
+						if(toIndex >= voterIds.size())
+							toIndex = voterIds.size()-1;
+					}
+				}
+				else
+				{
+					totalFamiliesList = boothPublicationVoterDAO.getFamilyDetailsForHamlet(userId,voterIds,publicationDateId,query);
+				}
 			}
 			if(!totalFamiliesList.isEmpty() && totalFamiliesList.get(0)[1] != null){
 		    	count[0] = new Long(totalFamiliesList.size());
@@ -12464,6 +12504,10 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				return null;
 			}
 		    return count;
+			}catch (Exception e) {
+				log.error("Exception ocuured in getFamiliesCountForHamlet() Method ",e);
+				return null;
+			}
 		}
 		
     public Long[] getFamiliesCountForLocality(Long userId ,Long hamletId,Long id,Long publicationDateId,String query,String queryToexe,String exeType,List<Long> ids,Long constituencyId){
@@ -12557,8 +12601,10 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		}
 		
 		
-		public ImportantFamiliesInfoVo getImportantFamiliesDetailsForHamlet(Long userId , String type,Long id,Long publicationDateId,String exeType,Long constituencyId){
+		public ImportantFamiliesInfoVo getImportantFamiliesDetailsForHamlet(Long userId , String type,Long id,Long publicationDateId,String exeType,Long constituencyId)
+		{
 			ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+			try{
 			importantFamiliesInfoVo.setType("Hamlet");
 			//importantFamiliesInfoVo.setName("booth-"+boothDAO.get(id).getPartNo());
 			importantFamiliesInfoVo.setName(hamletDAO.get(id).getHamletName());
@@ -12572,6 +12618,10 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			
 			getImpFamilesInfoForHamlet(userId,type,id,publicationDateId,importantFamiliesInfoVo,"",exeType,null,constituencyId);
 			 return importantFamiliesInfoVo;
+			}catch (Exception e) {
+				log.error("Exception Occured in getImportantFamiliesDetailsForHamlet() ",e);
+				return importantFamiliesInfoVo;
+			}
 		}
 		
 		@SuppressWarnings("unchecked")
