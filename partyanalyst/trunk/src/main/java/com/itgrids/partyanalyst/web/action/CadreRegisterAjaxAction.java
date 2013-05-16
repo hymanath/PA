@@ -458,32 +458,36 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			jObj=new JSONObject(param);
 			if(jObj.getString("task").equalsIgnoreCase("getReportLevelDetails"))
 			{
-				String type   = jObj.getString("type");
-				Long level    = jObj.getLong("level");
-				Long id       = jObj.getLong("id");
-				resultList    = staticDataService.getSelectedLevelDetails(type,level,id);
+				String type         		  = jObj.getString("type");
+				Long level         			  = jObj.getLong("level");
+				Long id             		  = jObj.getLong("id");
+				Long publicationId  		  = jObj.getLong("publicationId");
+				resultList   	    		  = staticDataService.getSelectedLevelDetails(type,level,id,publicationId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getSelectedMandalOrPanchayatData"))
 			{
-				String type   = jObj.getString("type");
-				Long level    = jObj.getLong("level");
-				String[] selectedValues = jObj.getString("values").split(",");
+				String type                   = jObj.getString("type");
+				Long level                    = jObj.getLong("level");
+				Long publicationId            = jObj.getLong("publicationId");
+				String[] selectedValues       = jObj.getString("values").split(",");
 				List<Long> ids = new ArrayList<Long>();
 				for (String parm : selectedValues) {
 					ids.add(Long.valueOf(parm.trim()));
 				}
-				resultList    = staticDataService.getPanchayatsOrBoothsForSelectedLevel(type,level,ids);
+				resultList                    = staticDataService.getPanchayatsOrBoothsForSelectedLevel(type,level,ids,publicationId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getConstituencyType"))
 			{
-				Long constituencyId = jObj.getLong("constituencyId");
-				resultList = staticDataService.getConstituencyType(constituencyId);
+				Long constituencyId           = jObj.getLong("constituencyId");
+				Long publicationId            = jObj.getLong("publicationId");
+				resultList                    = staticDataService.getConstituencyType(constituencyId,publicationId);
 			}
 			
 			else if(jObj.getString("task").equalsIgnoreCase("getBoothsInMuncipality"))
 			{
-				Long id = jObj.getLong("selectedValues");
-				resultList = staticDataService.getBoothsInMuncipality(id);
+				Long id                       = jObj.getLong("selectedValues");
+				Long publicationId            = jObj.getLong("publicationId");
+				resultList                    = staticDataService.getBoothsInMuncipality(id,publicationId);
 			}
 			
 		}
