@@ -443,28 +443,28 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[0]+" "+params[1]);
 	}*/
 	
-	/*public void testGetAllBoothsInAConstituency()
+	public void testGetAllBoothsInAConstituency()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(31809l);
 		ids.add(31806l);
 		ids.add(31808l);
-		List<Object[]> values = boothDAO.getBoothsForSelectedWards(ids);
+		List<Object[]> values = boothDAO.getBoothsForSelectedWards(ids,8l);
 		System.out.println(values.size());
 		for (Object[] parms : values) {
-			System.out.println(parms[0] +":"+ parms[1]);
-			
-		}
-	}*/
-	
-	public void testGetAllBoothsInAMuncipality()
-	{
-		List<Object[]> values = boothDAO.getAllBoothsInAMuncipality(31l);
-		System.out.println(values.size());
-		for (Object[] parms : values) {
-			
 			System.out.println(parms[0] +":"+ parms[1]);
 			
 		}
 	}
+	
+	/*public void testGetAllBoothsInAMuncipality()
+	{
+		List<Object[]> values = boothDAO.getAllBoothsInAMuncipality(31l,8l);
+		System.out.println(values.size());
+		for (Object[] parms : values) {
+			
+			System.out.println(parms[0] +":"+ parms[1]);
+			
+		}
+	}*/
 }

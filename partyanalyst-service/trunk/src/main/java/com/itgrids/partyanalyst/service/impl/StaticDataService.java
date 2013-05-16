@@ -8114,8 +8114,16 @@ public class StaticDataService implements IStaticDataService {
 		return parliamentId;
 	}
 
-		
-	public List<SelectOptionVO> getSelectedLevelDetails(String type , Long level, long id)
+	/**
+	 * Thie Service is used to get All Details Of Selcted (constituenct,mandal,panchayat) level i.e 
+	 * if selected level is booth Then we display all booths in selected constituency.
+	 * @param String type
+	 * @param Long level
+	 * @param long id
+	 * @param Long publicationId
+	 * @return List<SelectOptionVO>
+	 */
+	public List<SelectOptionVO> getSelectedLevelDetails(String type , Long level, long id,Long publicationId)
 	{
 		List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
 		try {
@@ -8178,7 +8186,7 @@ public class StaticDataService implements IStaticDataService {
 			}
 			else if(type.equalsIgnoreCase("booth"))
 			{
-				boothDetails = boothDAO.getAllBoothsInSelectedType(id,level);
+				boothDetails = boothDAO.getAllBoothsInSelectedType(id,level,publicationId);
 				if(boothDetails != null && boothDetails.size() > 0)
 				{
 					SelectOptionVO selectOptionVO = null;
@@ -8196,8 +8204,15 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return resultData;
 	}
-	
-	public List<SelectOptionVO> getPanchayatsOrBoothsForSelectedLevel(String type , Long level ,List<Long> ids)
+	/**
+	 * This Service is used for getting all panchaytes or booths For Selected level mandal
+	 * @param String type
+	 * @param Long level
+	 * @param List<Long> ids
+	 * @param Long publicationId
+	 * @return List<SelectOptionVO>
+	 */
+	public List<SelectOptionVO> getPanchayatsOrBoothsForSelectedLevel(String type , Long level ,List<Long> ids,Long publicationId)
 	{
 		List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
 		try {
@@ -8220,7 +8235,7 @@ public class StaticDataService implements IStaticDataService {
 			}
 			else if(level == 3)
 			{
-				panchayatOrBoothDetails = boothDAO.getAllBoothsForPanchayatsOrMandals(type,ids);
+				panchayatOrBoothDetails = boothDAO.getAllBoothsForPanchayatsOrMandals(type,ids,publicationId);
 				if(panchayatOrBoothDetails != null && panchayatOrBoothDetails.size() > 0)
 				{
 					SelectOptionVO selectOptionVO = null;
@@ -8241,8 +8256,13 @@ public class StaticDataService implements IStaticDataService {
 		return resultData;
 		
 	}
-	
-	public List<SelectOptionVO> getConstituencyType(Long constituencyId)
+	/**
+	 * This Service is used for knowing the constituency type
+	 * @param Long constituencyId
+	 * @param Long publicationId
+	 * @return List<SelectOptionVO>
+	 */
+	public List<SelectOptionVO> getConstituencyType(Long constituencyId,Long publicationId)
 	{
 		List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();;
 		List<Object[]> constituencyType = constituencyDAO.getConstituencyType(constituencyId);
@@ -8258,14 +8278,18 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return returnData;
 	}
-	
-	public List<SelectOptionVO> getBoothsInMuncipality(Long id)
+	/**
+	 * Thie Service is used for getting all wards in a selected muncipality
+	 * @param Long id
+	 * @param Long publicationId
+	 */
+	public List<SelectOptionVO> getBoothsInMuncipality(Long id,Long publicationId)
 	{
 		List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
 		List result = assemblyLocalElectionBodyDAO.findByConstituencyId(id);
 		Object[] localBodyObject = (Object[]) result.get(0);
 		Long localBodyId = (Long) localBodyObject[4];
-		List<Object[]> boothsList = boothDAO.getAllBoothsInAMuncipality(localBodyId);
+		List<Object[]> boothsList = boothDAO.getAllBoothsInAMuncipality(localBodyId,publicationId);
 		if(boothsList != null && boothsList.size() > 0)
 		{
 			SelectOptionVO selectOptionVO = null;
