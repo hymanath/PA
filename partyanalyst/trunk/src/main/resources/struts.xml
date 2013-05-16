@@ -5119,6 +5119,10 @@
 				<param name="root">"notLogged"</param>				
 			</result>		
 		</action>
-		
+		<action name="checkVotersBasicInfoAction" class="validationToolsAction" method="AjaxHandler">
+		  <result type="json" name="success">
+				 <param name="root">dataVerificationVO</param>
+			</result>
+		</action>
 		</package>
 </struts>      

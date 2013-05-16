@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.DataVerificationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.DataValidationVO;
@@ -32,6 +33,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 	private IDataValidationService dataValidationService;
 	private List<DataValidationVO> resultList;
 	private EntitlementsHelper entitlementsHelper;
+	private  DataVerificationVO dataVerificationVO;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -115,6 +117,12 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 	public void setResultList(List<DataValidationVO> resultList) {
 		this.resultList = resultList;
 	}
+	public DataVerificationVO getDataVerificationVO() {
+		return dataVerificationVO;
+	}
+	public void setDataVerificationVO(DataVerificationVO dataVerificationVO) {
+		this.dataVerificationVO = dataVerificationVO;
+	}
 	public String execute()
 	{
 		HttpSession session = request.getSession();
@@ -166,6 +174,9 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 		{
 			resultList = dataValidationService.getHamletsAssignedValidation(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),userId);
 		}
+		if(jObj.getString("task").equalsIgnoreCase("checkVotersBasicInfo"))
+			dataVerificationVO = dataValidationService.validateVotersBasicInfo(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),userId);
+			
 		return SUCCESS;
 		
 	}

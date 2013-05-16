@@ -1508,6 +1508,16 @@
 	    <property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
 	    <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
 	    <property name="voterInfoDAO" ref="voterInfoDAO" />
+	    <property name="constituencyDAO" ref="constituencyDAO" />
+	    <property name="boothDAO" ref="boothDAO" />
+	    <property name="votersAnalysisService" ref="votersAnalysisService" />
+	    <property name="tehsilDAO" ref="tehsilDAO" />
+	    <property name="panchayatDAO" ref="panchayatDAO" />
+	    <property name="voterFamilyInfoDAO" ref="voterFamilyInfoDAO" />
+	    <property name="voterFamilyRangeDAO" ref="voterFamilyRangeDAO" />
+	    <property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
+	    <property name="voterAgeRangeDAO" ref="voterAgeRangeDAO" />
+	    <property name="voterModificationInfoDAO" ref="voterModificationInfoDAO" />
     </bean>
     
     
