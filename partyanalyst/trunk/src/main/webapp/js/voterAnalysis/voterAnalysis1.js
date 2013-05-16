@@ -4560,15 +4560,24 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	//$("#ageLink").hide();
 	return;
 }
+	var greatestValue = 0;
+	var lowestValue ;
 	for(var i in result.votersDetailsVO){
-
-	
+	lowestValue = result.votersDetailsVO[i].totalVotersPercent.toFixed(2);
+		if(greatestValue < lowestValue)
+			greatestValue = lowestValue;
+	}
+	for(var i in result.votersDetailsVO){
 	str+='<tr>';
 	str+='<td>'+result.votersDetailsVO[i].ageRange+'</td>';
 	str+='<td>'+result.votersDetailsVO[i].totalVoters+'</td>';
 
-	if(result.votersDetailsVO[i].totalVotersPercent != null)
-		 str+='<td>'+result.votersDetailsVO[i].totalVotersPercent.toFixed(2)+'</td>';	 
+	if(result.votersDetailsVO[i].totalVotersPercent != null){
+		if(result.votersDetailsVO[i].totalVotersPercent.toFixed(2) == greatestValue)
+		 str+='<td style="background-color:green;color:white;">'+result.votersDetailsVO[i].totalVotersPercent.toFixed(2)+'</td>';
+		else
+		str+='<td>'+result.votersDetailsVO[i].totalVotersPercent.toFixed(2)+'</td>';
+	}
 	else
 		str+='<td>0.00</td>';
 	
