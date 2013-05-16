@@ -3942,7 +3942,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 	}*/
 	
 	//Retrieving important families information
-	public ImportantFamiliesInfoVo getImportantFamiliesInfo(Long userId , String type,Long id,Long publicationDateId,Long constituencyId ,String requestFor){	
+	public ImportantFamiliesInfoVo getImportantFamiliesInfo(Long userId , String type,Long id,Long publicationDateId,Long constituencyId ,String requestFor,String buildType){	
 		try{
 			if(type.equalsIgnoreCase("constituency"))
 			{
@@ -4103,6 +4103,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				try{
 				if(!importantFamiliesInfoVo.isDataPresent())
 					importantFamiliesInfoVo = getImportantFamiliesForPanchayat1(userId ,id,publicationDateId,"","main",constituencyId);
+				if(buildType.equalsIgnoreCase(IConstants.HAMLET)){
 				
 				List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
 				
@@ -4119,6 +4120,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				
 				for(Long  hamletId:hamlets)			
 					 importantFamiliesInfoVo.getSubListForHamlets().add(getImportantFamiliesDetailsForHamlet(userId , "hamlet",hamletId,publicationDateId,"sub",constituencyId));
+				}
 				return importantFamiliesInfoVo;
 				}catch (Exception e) {
 					log.error("Exception occured - ",e);
