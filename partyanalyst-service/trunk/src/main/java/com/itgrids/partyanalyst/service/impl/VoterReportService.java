@@ -1886,7 +1886,7 @@ public class VoterReportService implements IVoterReportService{
 		 * @param Long constituencyId
 		 * @return List<SelectOptionVO>
 		 */
-		public List<SelectOptionVO> getSelectedUserCategoeryDetails(Long userId,List<Long> ids , String type,String status,Long constituencyId)
+		public List<SelectOptionVO> getSelectedUserCategoeryDetails(Long userId,List<Long> ids , String type,String status,Long constituencyId,Long publicationId)
 		{
 			List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
 			SelectOptionVO selectOptionVO = null;
@@ -1916,7 +1916,7 @@ public class VoterReportService implements IVoterReportService{
 						if(mandalIds != null && mandalIds.size() > 0)
 						{
 							//List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,mandalIds,type,status);
-							List<Object[]> castOrPartyDetails = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,2l,mandalIds);
+							List<Object[]> castOrPartyDetails = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,2l,mandalIds,publicationId);
 							if(castOrPartyDetails != null && castOrPartyDetails.size() > 0)
 							{
 								
@@ -1937,7 +1937,7 @@ public class VoterReportService implements IVoterReportService{
 								List<Long> localBodyIds = new ArrayList<Long>();
 								localBodyIds.add(localBodyId);
 								//List<Object[]> castesList = boothPublicationVoterDAO.getCastesListForSelectedMuncipality(userId, localBodyId, constituencyId,status);
-								List<Object[]> castesList = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId, 5l, localBodyIds);
+								List<Object[]> castesList = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId, 5l, localBodyIds,publicationId);
 								for (Object[] parms : castesList) {
 									selectOptionVO = new SelectOptionVO();
 									selectOptionVO.setId((Long)parms[0]);
@@ -1950,7 +1950,7 @@ public class VoterReportService implements IVoterReportService{
 					else if(type.equalsIgnoreCase("panchayat"))
 					{
 						//List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,ids,type,status);
-						List<Object[]> castOrPartyDetails = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,3l,ids);
+						List<Object[]> castOrPartyDetails = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,3l,ids,publicationId);
 						if(castOrPartyDetails != null && castOrPartyDetails.size() > 0)
 						{
 							
@@ -1964,7 +1964,7 @@ public class VoterReportService implements IVoterReportService{
 					}
 					else if(type.equalsIgnoreCase("booth"))
 					{
-						List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,ids,type,status);
+						List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,ids,type,status,publicationId);
 						//List<Object[]> castOrPartyDetails = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,3l,ids);
 						if(castOrPartyDetails != null && castOrPartyDetails.size() > 0)
 						{
@@ -2004,7 +2004,7 @@ public class VoterReportService implements IVoterReportService{
 		 * @param Long constituencyId
 		 * @return List<SelectOptionVO>
 		 */
-		public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId)
+		public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId,Long publicationId)
 		{
 			List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
 			List result = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId);
@@ -2033,11 +2033,11 @@ public class VoterReportService implements IVoterReportService{
 		 * @param String status
 		 * @return List<SelectOptionVO>
 		 */
-		public List<SelectOptionVO> getUserCategoeryValuesForWards(Long userId,Long constituencyId,List<Long> ids ,String status)
+		public List<SelectOptionVO> getUserCategoeryValuesForWards(Long userId,Long constituencyId,List<Long> ids ,String status,Long publicationId)
 		{
 			List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
 			//List<Object[]> userCategoeres = boothPublicationVoterDAO.getAllCastesOrPartesForSelectedWards(userId,ids,constituencyId,status);
-			List<Object[]> userCategoeres = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,6l,ids);
+			List<Object[]> userCategoeres = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,6l,ids,publicationId);
 			if(userCategoeres != null && userCategoeres.size() > 0)
 			{
 				SelectOptionVO selectOptionVO = null;
@@ -2056,10 +2056,10 @@ public class VoterReportService implements IVoterReportService{
 		 * @param List<Long> ids
 		 * @return List<SelectOptionVO>
 		 */
-		public List<SelectOptionVO> getAllBoothsForSelectedWards(List<Long> ids)
+		public List<SelectOptionVO> getAllBoothsForSelectedWards(List<Long> ids,Long publicationId)
 		{
 			List<SelectOptionVO> returnData = new ArrayList<SelectOptionVO>();
-			List<Object[]> boothsList = boothDAO.getBoothsForSelectedWards(ids);
+			List<Object[]> boothsList = boothDAO.getBoothsForSelectedWards(ids,publicationId);
 			{
 				if(boothsList != null && boothsList.size() > 0)
 				{
@@ -2083,10 +2083,10 @@ public class VoterReportService implements IVoterReportService{
 		 * @param List<Long> ids
 		 * @return List<SelectOptionVO>
 		 */
-		public List<SelectOptionVO> getUserCategoeryValuesForMuncipalWards(Long userId,Long constituencyId,String type,List<Long> ids)
+		public List<SelectOptionVO> getUserCategoeryValuesForMuncipalWards(Long userId,Long constituencyId,String type,List<Long> ids,Long publicationId)
 		{
 			List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
-			List<Object[]> userCategValues = boothPublicationVoterDAO.getUserCategValuesForSelectedMuncipalWards(userId,constituencyId,type,ids);
+			List<Object[]> userCategValues = boothPublicationVoterDAO.getUserCategValuesForSelectedMuncipalWards(userId,constituencyId,type,ids,publicationId);
 			if(userCategValues != null && userCategValues.size() > 0)
 			{
 				SelectOptionVO selectOptionVO = null;

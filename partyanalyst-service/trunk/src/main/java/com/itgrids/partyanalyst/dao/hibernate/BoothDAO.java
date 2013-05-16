@@ -900,8 +900,14 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 			return queryObj.list();
 		}
-		
-		public List<Object[]> getAllBoothsInSelectedType(Long id, Long level)
+		/**
+		 * This DAO is used for getting all booths in a selected level (Constituency ,Mandal , panchayat) 
+		 * @param Long id
+		 * @param Long level
+		 * @param Long publicationId
+		 * @return List<Object[]>
+		 */
+		public List<Object[]> getAllBoothsInSelectedType(Long id, Long level,Long publicationId)
 		{
 			StringBuilder queryString = new StringBuilder();
 			queryString.append("select b.boothId,b.partNo from Booth b where   ");
@@ -917,39 +923,52 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			{
 				queryString.append("b.panchayat.panchayatId = :id");
 			}
-			queryString.append(" and b.publicationDate.date = (select max(p.date) from PublicationDate p)" );
+			queryString.append(" and b.publicationDate.publicationDateId = :publicationId" );
 			
 			Query query = getSession().createQuery(queryString.toString());
 			query.setParameter("id", id);
+			query.setParameter("publicationId", publicationId);
 			return query.list();
 			
 		}
-		
-		public List<Object[]> getAllBoothsForPanchayatsOrMandals(String type,List<Long> ids)
+		/**
+		 * This DAO is used for getting all booths in a selected level (Mandal , panchayat) 
+		 * @param String type
+		 * @param List<Long> ids
+		 * @param Long publicationId
+		 * @return List<Object[]>
+		 */
+		public List<Object[]> getAllBoothsForPanchayatsOrMandals(String type,List<Long> ids,Long publicationId)
 		{
 			StringBuilder queryString = new StringBuilder();
 			queryString.append("select b.boothId,b.partNo, ");
 			if(type.equalsIgnoreCase("mandal"))
 			{
-				queryString.append("b.tehsil.tehsilName from Booth b where  b.tehsil.tehsilId in (:ids)");
+				queryString.append("b.tehsil.tehsilName from Booth b where  b.tehsil.tehsilId in (:ids) and b.localBody.localElectionBodyId is null ");
 			}
 			else if(type.equalsIgnoreCase("panchayat"))
 			{
 				queryString.append("b.panchayat.panchayatName from Booth b where b.panchayat.panchayatId in (:ids)");
 			}
-			queryString.append(" and b.publicationDate.date = (select max(p.date) from PublicationDate p)" );
+			queryString.append(" and  b.publicationDate.publicationDateId = :publicationId" );
 			Query query = getSession().createQuery(queryString.toString());
 			query.setParameterList("ids", ids);
+			query.setParameter("publicationId", publicationId);
 			return query.list();
 		}
-		
-		public List<Object[]> getBoothsForSelectedWards(List<Long> ids)
+		/**
+		 * This DAO is used for getting all booths in a selected wards 
+		 * List<Long> ids
+		 * @return List<Object[]>
+		 */
+		public List<Object[]> getBoothsForSelectedWards(List<Long> ids,Long publicationId)
 		{
 			StringBuffer queryString = new StringBuffer();
 			queryString.append("select distinct model.boothId,model.partNo from Booth model " +
-			 		"where model.localBodyWard.constituencyId in (:ids)");
+			 		"where model.localBodyWard.constituencyId in (:ids)  ");
 			Query query = getSession().createQuery(queryString.toString());
 			query.setParameterList("ids", ids);
+			//query.setParameter("publicationId", publicationId);
 			return query.list();
 		}
 		
@@ -958,13 +977,19 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			queryObj.setParameterList("locationIds", locationIds);
 			return queryObj.list();
 		}
-		
-		public List<Object[]> getAllBoothsInAMuncipality(Long localBodyId)
+		/**
+		 * This DAO is used for getting all booths in a muncipality
+		 * @param Long localBodyId
+		 * @param Long publicationId
+		 * @return List<Object[]>
+		 */
+		public List<Object[]> getAllBoothsInAMuncipality(Long localBodyId,Long publicationId)
 		{
 			Query query = getSession().createQuery("select model.boothId,model.partNo from Booth model " +
 					" where model.localBody.localElectionBodyId = :localBodyId and " +
-					"  model.publicationDate.date = (select max(p.date) from PublicationDate p)");
+					"  model.publicationDate.publicationDateId = :publicationId");
 			query.setParameter("localBodyId", localBodyId);
+			query.setParameter("publicationId", publicationId);
 			return query.list();
 		}
 }

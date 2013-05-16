@@ -358,15 +358,15 @@ public interface IStaticDataService {
 		
 		public Long getParliamentIdByAssembly(Long constituencyId);
 		
-		public List<SelectOptionVO> getSelectedLevelDetails(String type , Long level, long id);
+		public List<SelectOptionVO> getSelectedLevelDetails(String type , Long level, long id,Long publicationId);
 		
-		public List<SelectOptionVO> getPanchayatsOrBoothsForSelectedLevel(String type , Long level ,List<Long> ids);
+		public List<SelectOptionVO> getPanchayatsOrBoothsForSelectedLevel(String type , Long level ,List<Long> ids,Long publicationId);
 		
-		public List<SelectOptionVO> getConstituencyType(Long constituencyId);
+		public List<SelectOptionVO> getConstituencyType(Long constituencyId,Long publicationId);
 		
 		//public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId);
 		
 		public MandalVO getElectionYearsAndPartiesForSelectedConstituency(Long constituencyId);
 		
-		public List<SelectOptionVO> getBoothsInMuncipality(Long id);
+		public List<SelectOptionVO> getBoothsInMuncipality(Long id,Long publicationId);
 }

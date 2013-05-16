@@ -135,7 +135,7 @@ public class AttributeWiseElectionResultComparisonService implements
 		this.voterPartyInfoDAO = voterPartyInfoDAO;
 	}
 
-	public PartyResultsVO getElectionResultsByAttributeWise(List<Long> electionIds,List<Long> partyIds,Long userId,Long constituencyId,String type,List<Long> ids,String attributeType,List<Long> attributeIds,Long attrPerc){
+	public PartyResultsVO getElectionResultsByAttributeWise(List<Long> electionIds,List<Long> partyIds,Long userId,Long constituencyId,String type,List<Long> ids,String attributeType,List<Long> attributeIds,Long attrPerc,Long publicationId){
 		    List<Object[]> dataList = new ArrayList<Object[]>();//contains location wise attributes(caste,party etc) count
 		    List<Object[]> countList = new ArrayList<Object[]>();//contains location wise  total count
 		    PartyResultsVO partyResults = new PartyResultsVO();
@@ -152,7 +152,7 @@ public class AttributeWiseElectionResultComparisonService implements
 			List<Long> locIds = new ArrayList<Long>();
 			Map<Long,String> locationNames = new HashMap<Long,String>();
 			
-			Long publicationId = publicationDateDAO.getLatestPublicationId();
+			//Long publicationId = publicationDateDAO.getLatestPublicationId();
 			
 		    if("mandal".equalsIgnoreCase(type)){
 				List<Long> tehsilIds = new ArrayList<Long>();

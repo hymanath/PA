@@ -3130,7 +3130,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	  }
 	
 	  
-	  public List<Object[]> getPartysOrCatstesForSelectedLevel(Long userId,List<Long> ids ,String type,String status)
+	  public List<Object[]> getPartysOrCatstesForSelectedLevel(Long userId,List<Long> ids ,String type,String status,Long publicationId)
 	  {
 		  StringBuffer queryString = new StringBuffer();
 		  if(status.equalsIgnoreCase("cast"))
@@ -3155,9 +3155,10 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		  {
 			  queryString.append("BPV.booth.boothId in (:ids) ");
 		  }
-		  queryString.append("order by UVD.casteState.caste.casteName");
+		  queryString.append(" and BPV.booth.publicationDate.publicationDateId = :publicationId order by UVD.casteState.caste.casteName");
 		  Query query = getSession().createQuery(queryString.toString());
 		  query.setParameter("userId", userId);
+		  query.setParameter("publicationId", publicationId);
 		 query.setParameterList("ids", ids);
 		  return query.list(); 
 	  }
@@ -3376,14 +3377,15 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return query.list();
 		}*/
 	  
-	  public List<Object[]> getUserCategValuesForSelectedMuncipalWards(Long userId,Long constituencyId,String type,List<Long>  ids)
+	  public List<Object[]> getUserCategValuesForSelectedMuncipalWards(Long userId,Long constituencyId,String type,List<Long>  ids,Long publicationId)
 	  {
 		  Query query = getSession().createQuery("select distinct(UVD.casteState.casteStateId) ," +
 		  		"UVD.casteState.caste.casteName from  UserVoterDetails UVD ,BoothPublicationVoter BPV  " +
 		  		"where UVD.voter.voterId = BPV.voter.voterId and UVD.user.userId =:userId " +
 		  		"and BPV.booth.localBodyWard.constituencyId in (:ids) " +
-			  		"  ");
+			  		" and BPV.booth.publicationDate.publicationDateId = :publicationId    ");
 		  query.setParameter("userId", userId);
+		  query.setParameter("publicationId", publicationId);
 		  //query.setParameter("constituencyId", constituencyId);
 		  query.setParameterList("ids", ids);
 		  return query.list();

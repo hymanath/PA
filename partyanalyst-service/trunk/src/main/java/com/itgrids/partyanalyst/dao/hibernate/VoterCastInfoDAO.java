@@ -103,14 +103,15 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
  		return query.list();
  	}
      
-     public List<Object[]> getCastAndPartyForSelectedLevel(Long userId,Long reportId ,List<Long> ids)
+     public List<Object[]> getCastAndPartyForSelectedLevel(Long userId,Long reportId ,List<Long> ids,Long publicationId)
      {
     	 Query query = getSession().createQuery("select distinct(model.casteState.casteStateId) , model.casteState.caste.casteName " +
     	 		" from VoterCastInfo model where model.userId = :userId and model.voterReportLevel.voterReportLevelId = :reportId " +
-    	 		" and model.reportLevelValue in (:ids) order by model.casteState.caste.casteName" );
+    	 		" and model.reportLevelValue in (:ids) and model.publicationDateId = :publicationId order by model.casteState.caste.casteName " );
     	 query.setParameter("userId", userId);
     	 query.setParameter("reportId", reportId);
     	 query.setParameterList("ids", ids);
+    	 query.setParameter("publicationId", publicationId);
     	 return query.list();
      }
 }

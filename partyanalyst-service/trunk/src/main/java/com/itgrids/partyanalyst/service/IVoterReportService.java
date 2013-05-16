@@ -49,13 +49,13 @@ public interface IVoterReportService {
 	
 	public Long getLatestPublicationIdByConstiId(Long constituencyId);
 	
-	public List<SelectOptionVO> getSelectedUserCategoeryDetails(Long userId,List<Long> ids , String type,String status,Long constituencyId);
+	public List<SelectOptionVO> getSelectedUserCategoeryDetails(Long userId,List<Long> ids , String type,String status,Long constituencyId,Long publicationId);
 	
-	public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId);
+	public List<SelectOptionVO> getAllWardsInUrbanConstituency(Long constituencyId,Long publicationId);
 	
-	public List<SelectOptionVO> getUserCategoeryValuesForWards(Long userId,Long constituencyId,List<Long> ids ,String status);
+	public List<SelectOptionVO> getUserCategoeryValuesForWards(Long userId,Long constituencyId,List<Long> ids ,String status,Long publicationId);
 	
-	public List<SelectOptionVO> getAllBoothsForSelectedWards(List<Long> ids);
+	public List<SelectOptionVO> getAllBoothsForSelectedWards(List<Long> ids,Long publicationId);
 	
-	public List<SelectOptionVO> getUserCategoeryValuesForMuncipalWards(Long userId,Long constituencyId,String type,List<Long> ids);
+	public List<SelectOptionVO> getUserCategoeryValuesForMuncipalWards(Long userId,Long constituencyId,String type,List<Long> ids,Long publicationId);
 }
