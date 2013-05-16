@@ -65,7 +65,7 @@
     height: 27px;
     margin-left: 4px;
     padding-top: 11px;
-    width: 947px;
+    width: auto;
 }
 table.dataTable tr.odd {
     background-color: #ffffff;
@@ -88,6 +88,9 @@ table.dataTable td {
     font-size: 16px;
     font-weight: normal;
     padding: 3px 10px;
+}
+#mandalWiseVoterAgeTable,#mandalWiseAgeAndGenderTable,#mandalWiseAgePercentageTable{
+	width: 100% !important;
 }
 </style>
 <title>Age Wise Voters Details</title>
@@ -964,7 +967,7 @@ $("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <s
 	<div id="voterAgeAngGenderwiseDetailsInPercent" style="overflow-x:scroll;padding:10px;" class="voterDetails"></div>
 	</div>
 	<div id="AgeWiseNoteDiv" style="border: 1px solid #D3D3D3;
-    display: block;margin-bottom: 14px;margin-left: 9px;    margin-top: 33px;padding: 19px;width: 851px;"></div>
+    display: block;margin-bottom: 14px;margin-left: 9px;    margin-top: 33px;padding: 19px;"></div>
 	<div id="tableDiv"></div>
 </div>
 </div> </div>
