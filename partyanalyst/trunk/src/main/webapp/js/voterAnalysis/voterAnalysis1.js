@@ -5572,6 +5572,10 @@ function showPreviousEleVotingTrends(results,jsObj)
 				  str += '<td>'+results[j].electionYear+'</td>';
 				  if(jsObj.type != "booth")
                   str += '<td>'+results[j].totalBooths+'</td>';
+				 
+				  if(results[j].reqType == "MPTC" || results[j].reqType == "ZPTC")
+					str +='<td style="text-align:center"> - </td>';
+					  else
 				  str +='<td>'+results[j].totalVotes+'</td>';
 					str +='<td>'+results[j].polledVotes+'</td>';
 					var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
