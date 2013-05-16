@@ -916,28 +916,28 @@ function callAjax(jsObj,url)
 			$("#mandalElecResultsDiv").css("display","block");
 		  var electionsLength = myResults.electionsInMandal.length;
 	     var str='';
-		 str+='<table><tr><th align="left">Parties : </th><td style="padding-bottom: 15px;">';
+		 str+='<table><tr><th align="left">Parties : </th><td>';
 		  str+='<table>';
 		 for(var i in myResults.partiesInMandal){
-			 if(i%12==0)
+			 if(i%12== 0)
 			str+='<tr>';
 
 		  str+='<td><input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label></td>';
 		  
-		  if((i%12)+1==0)
-		   str+='</tr>';
+			if((i%12)+1 == 0)
+			str+='</tr>';
 		 }
-		  str+='</table>';
+		 
+		 str+='<td></td>';
 
-		 /* str+='<input type="checkbox" id="selectAll"  onclick="selectAllCheckBoxes()" name="selection"><span>Select All Parties</span>';
-		 str+='<input type="checkbox" id="deSelectAll" onclick="deSelectAllCheckBoxes()" name="selection"><span>Unselect All Parties</span>';*/
+		 str+='<td colspan="3"><input type="radio"  id="selectAll" value="Select All Parties" name="partiesSel"  onclick="selectAllCheckBoxes(this.value)"><label style=" font-weight: bold;color:blue;">Select All</label></td>';
+		 str+='<td  colspan="3"><input type="radio" id="deSelectAll" value="Unselect All Parties"  name="partiesSel"  onclick="deSelectAllCheckBoxes(this.value)"><label style=" font-weight: bold;color:blue;">Unselect All</label></td>';
+		
 
-		str+='<input type="button" class="btn" style="margin-right: 12px;" id="selectAll" value="Select All Parties"  onclick="selectAllCheckBoxes(this.value)">';
-		str+='<input type="button" class="btn" id="deSelectAll" value="Unselect All Parties" onclick="deSelectAllCheckBoxes(this.value)">';
-
+		 str+='</table>'; 
 		 str+='</td></tr>';
    
-		 str+='<tr><th align="left">Elections  : </th><td style="padding-bottom:15px;">';
+		 str+='<tr><th align="left">Elections  : </th><td>';
 		 str+='<table>';
 		 for(var i in myResults.electionsInMandal[0]){
 			if(i%6==0)
@@ -947,18 +947,17 @@ function callAjax(jsObj,url)
 				str+='<td><input id="elections-'+i+'" checked="true" type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[0][i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[0][i].name+'</label></td>';
 			 }
 			else{
-	 str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[0][i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[0][i].name+'</label></td>';
+				 str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[0][i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[0][i].name+'</label></td>';
 		   }
 			if((i%6)+1==0)
 		   str+='</tr>';
 		 }
+		  str+='<td></td>';
+
+		 str+='<td colspan="2"><input type="radio"  id="selectAllEle" name="electionsSle" value="Select All Elections" onclick="selectAllCheckBoxes(this.value)"><label style="font-weight: bold;color:blue;">Select All</label>';
+		str+='<input type="radio" id="deSelectAllEle" name="electionsSle" value="Unselect All Elections" onclick="deSelectAllCheckBoxes(this.value)"><label style=" font-weight: bold;color:blue;">Unselect All</label></td>';
 		 str+='</table>';
 
-		 /*str+='<input type="checkbox" id="selectAllEle"  onclick="selectAllCheckBoxes()" name="selection"><span>Select All Elections</span>';
-		 str+='<input type="checkbox" id="deSelectAllEle" onclick="deSelectAllCheckBoxes()" name="selection"><span>Unselect All Elections</span>';*/
-			
-		str+='<input type="button" class="btn" style="margin-right: 12px;" id="selectAllEle" value="Select All Elections" onclick="selectAllCheckBoxes(this.value)">';
-		str+='<input type="button" class="btn" id="deSelectAllEle" value="Unselect All Elections" onclick="deSelectAllCheckBoxes(this.value)">';
 		 str+='</td></tr>';
 		
 		 str+='</table>';
