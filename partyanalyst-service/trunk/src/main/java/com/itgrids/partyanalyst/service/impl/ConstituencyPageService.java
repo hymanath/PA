@@ -1367,6 +1367,42 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return partyResults;
 	}
 	
+	
+	public List<PartyVotesEarnedVO> getPanchayatWiseElectionsForTehsilforPreviousEle(String boothIdStr,Long electionId,String eletype,List<Long> tehsilIds)
+	{
+		StringTokenizer str = new StringTokenizer(boothIdStr,",");
+		List<Long> boothIdList = new ArrayList<Long>(0);
+		List<Object[]> list = null;
+		while(str.hasMoreTokens())
+		{
+			boothIdList.add(Long.parseLong(str.nextToken()));
+		}
+		if(!(eletype.equalsIgnoreCase("ZPTC") || eletype.equalsIgnoreCase("MPTC")))
+		 list = candidateBoothResultDAO.findBoothResultsForBoothsAndElection(boothIdList,electionId);
+		else
+		list = nominationDAO.findAllMptcAndZptcElectionsInfoByelectionId(electionId,tehsilIds);	
+		List<PartyVotesEarnedVO> partyResults = new ArrayList<PartyVotesEarnedVO>();
+		PartyVotesEarnedVO partyVotesEarnedVO = null;
+		int i=0;
+		for(Object[] params : list)
+		{
+			partyVotesEarnedVO = new PartyVotesEarnedVO();
+			partyVotesEarnedVO.setPartyId((Long)params[0]);
+			partyVotesEarnedVO.setPartyName(params[1].toString());
+			if(!(eletype.equalsIgnoreCase("ZPTC") || eletype.equalsIgnoreCase("MPTC")))
+			partyVotesEarnedVO.setVotesEarned((Long)params[2]);
+			else
+				partyVotesEarnedVO.setVotesEarned(((Double)params[2]).longValue());
+			
+			if(i == 0)
+				partyVotesEarnedVO.setWonStatus(true);
+			
+			partyResults.add(partyVotesEarnedVO);
+			i++;				
+		}
+		return partyResults;
+	}
+	
 	public List<CandidatePartyInfoVO> getPanchayatWiseElectionsForPartiesInATehsil(List<Long> boothIdList,Long electionId)
 	{
 		List<Object[]> list = candidateBoothResultDAO.findBoothResultsForBoothsAndElectionWithParty(boothIdList,electionId);
@@ -2736,7 +2772,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 * @return
 	 */
 	public List<TeshilPartyInfoVO> getTehsilPartyInfoForAConstituency(StringBuilder tehsilIds,String electionYear,String electionType,Long constituencyId){
-	
+		
 		try{
 			log.debug("Entered in to getTehsilPartyInfoForAConstituency() method..");
 			BigDecimal percentage = new BigDecimal(0.0);

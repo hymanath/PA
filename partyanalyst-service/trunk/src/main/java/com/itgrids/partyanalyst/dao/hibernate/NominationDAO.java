@@ -3754,7 +3754,15 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return query.list();
 }
 	
-	
-	
-	
+	public List<Object[]> findAllMptcAndZptcElectionsInfoByelectionId(Long electionId,List<Long> tehsilIds) {
+		Query query = getSession().createQuery("select model.party.partyId,model.party.shortName,sum(model.candidateResult.votesEarned), " +
+				"model.constituencyElection.election.electionYear,model.constituencyElection.election.electionScope.electionType.electionType,sum(model.constituencyElection.constituencyElectionResult.validVotes),model.constituencyElection.election.elecSubtype from Nomination model where " +
+				" model.constituencyElection.constituency.tehsil.tehsilId in( :tehsilIds) and model.constituencyElection.election.electionId = :electionId group by model.party.partyId order by sum(model.candidateResult.votesEarned) desc");
+		 query.setParameter("electionId", electionId);
+		query.setParameterList("tehsilIds", tehsilIds);
+
+		 
+		 return query.list();
+	}	
+		
 }

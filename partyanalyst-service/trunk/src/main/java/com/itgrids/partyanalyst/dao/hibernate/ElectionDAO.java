@@ -754,4 +754,8 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		query.setParameter("year", year);		
 		return query.list();
 	}
+	public List<Object[]> findMptcZptcElections(Long stateId)
+	{
+	return getHibernateTemplate().find("select model.electionId,model.elecSubtype,model.electionYear,model.electionScope.electionType.electionType from Election model where model.electionScope.electionType.electionTypeId in (3,4) and model.electionScope.state.stateId = ? ",stateId);
+	}
 }

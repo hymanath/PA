@@ -92,6 +92,7 @@ import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
@@ -7130,9 +7131,23 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						try{
 							List<Object[]> list = null;
 							List<Object[]> localEleclist = null;
+							List<Object[]> mptczptcList = null;
+							Constituency constituency = constituencyDAO.get(constituencyId);
 							String type2 = null;
                             List<Long> constituencyIdsList = new ArrayList<Long>(0);
-							
+                            List<Long> tehsilIds = new ArrayList<Long>();
+    						List<SelectOptionVO> mandals = new ArrayList<SelectOptionVO>();
+    						if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+    						{
+                            mandals =regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+    						mandals =regionServiceDataImp.getMandals(mandals);
+    						if(mandals != null && mandals.size() > 0)
+    						{
+    						for(SelectOptionVO mandalId : mandals)
+    							tehsilIds.add(new Long(mandalId.getId().toString().substring(1)));
+    						}
+						}
+						
 							List parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constituencyId);
 							if(parliamentList != null && parliamentList.size() > 0)
 							{
@@ -7144,11 +7159,23 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							}
 							if(!constituencyIdsList.contains(constituencyId))
 								constituencyIdsList.add(constituencyId);
-							if(type.equalsIgnoreCase(IConstants.CONSTITUENCY) || "booth".equalsIgnoreCase(type) || "ward".equalsIgnoreCase(type) || type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+							/*if(type.equalsIgnoreCase(IConstants.CONSTITUENCY) || "booth".equalsIgnoreCase(type) || "ward".equalsIgnoreCase(type) || type.equalsIgnoreCase(IConstants.CUSTOMWARD))
 							{
 								if(constituencyIdsList != null && constituencyIdsList.size() > 0)
 									list = constituencyElectionDAO.findAllEleHappendInAConstituency(constituencyIdsList);
 								
+							}*/
+							if("booth".equalsIgnoreCase(type) || "ward".equalsIgnoreCase(type) || type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+							{
+								if(constituencyIdsList != null && constituencyIdsList.size() > 0)
+									list = constituencyElectionDAO.findAllEleHappendInAConstituency(constituencyIdsList);
+								
+							}
+							else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+							{
+							list = constituencyElectionDAO.findAllEleHappendInAConstituency(constituencyIdsList);
+							mptczptcList = electionDAO.findMptcZptcElections(constituency.getState().getStateId());
+							list.addAll(mptczptcList);
 							}
 							else if(type.equalsIgnoreCase(IConstants.MANDAL))
 							{
@@ -7156,7 +7183,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								{
 									id = new Long(id.toString().trim().substring(1));
 									list = hamletBoothElectionDAO.findAllElectionsHappendInAMandal(id,constituencyIdsList);
+									mptczptcList = electionDAO.findMptcZptcElections(constituency.getState().getStateId());
+									list.addAll(mptczptcList);
 									type2 = IConstants.RURAL;
+									tehsilIds.add(id);
 								}
 								else if(id.toString().trim().substring(0, 1).equalsIgnoreCase("1"))
 								{
@@ -7194,7 +7224,6 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								
 							}
 								
-							
 							if(list != null && list.size() > 0)
 							{
 								PartyVotesEarnedVO partyVotesEarnedVO = null;
@@ -7222,7 +7251,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									String boothIdStr = "";
 									
 									List<Long> boothIdsList = null;
-									if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+									if(type.equalsIgnoreCase(IConstants.CONSTITUENCY) )
 										boothIdsList =  boothConstituencyElectionDAO.getBoothIdsByConstituencyId(id, (Long)params[0]);
 									
 									else if(type.equalsIgnoreCase(IConstants.MANDAL))
@@ -7275,13 +7304,21 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 											totalVoters = boothDAO.getTotalaVotesByBoothIds(boothIdsList);
 									}
 									
-									if(boothIdStr.isEmpty())
+									if(boothIdStr.isEmpty() && !elecType.equalsIgnoreCase("MPTC") && !elecType.equalsIgnoreCase("ZPTC"))
 										continue;
 									
-									if(totalVoters != null && totalVoters.size() > 0 && !totalVoters.isEmpty())
+									if(totalVoters != null && totalVoters.size() > 0 && !totalVoters.isEmpty() && !elecType.equalsIgnoreCase("MPTC") && !elecType.equalsIgnoreCase("ZPTC"))
 										partyVotesEarnedVO.setTotalVotes(totalVoters.get(0));
 											
-									List<PartyVotesEarnedVO> votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsil(boothIdStr,(Long)params[0]);
+									//List<PartyVotesEarnedVO> votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsil(boothIdStr,(Long)params[0]);
+									if(elecType.equalsIgnoreCase("MPTC") || elecType.equalsIgnoreCase("ZPTC"))
+									{
+										boothIdStr = "";
+										
+										partyVotesEarnedVO.setTotalVotes(0l);
+									}
+									List<PartyVotesEarnedVO> votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsilforPreviousEle(boothIdStr,(Long)params[0],elecType,tehsilIds);
+									
 									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
 									{
 										if(!partiesList.contains(partyVoters.getPartyName()))
@@ -7317,10 +7354,12 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 										}
 										resultList.add(partyResult);
 									}
+									
 									votesEarnedVO.setPartyVotesEarnedVOs(resultList);
 								}
-							}
-							
+								}
+								
+
 							return partyVotesEarnedVOList;
 						}catch (Exception e) {
 							e.printStackTrace();
@@ -7330,7 +7369,52 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						
 					}
 					
-		
+					/*public void addMptcResultToPreviousElectionVoting(List<Object[]> mptczptcList,List<PartyVotesEarnedVO> resultList,Long constituencyId)
+					{
+						Constituency constituency = constituencyDAO.get(constituencyId);
+						List<String> partiesList = new ArrayList<String>(0);
+						List<String> partiesList1 = new ArrayList<String>(0);
+						List<Long> tehsilIds = new ArrayList<Long>();
+						List<Long> electionIds = new ArrayList<Long>();
+						List<SelectOptionVO> mandals = new ArrayList<SelectOptionVO>();
+						List<Object[]> result = null;
+						mandals =regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+						mandals =regionServiceDataImp.getMandals(mandals);
+						if(mandals != null && mandals.size() > 0)
+						{
+						for(SelectOptionVO mandalId : mandals)
+							tehsilIds.add(new Long(mandalId.getId().toString().substring(1)));
+						}
+						if(mptczptcList != null && mptczptcList.size() > 0)
+						{
+						for(Object[] params : mptczptcList)
+							electionIds.add((Long)params[0]);
+						}
+						for(Object[] params : mptczptcList)
+						result = nominationDAO.findAllMptcAndZptcElectionsInfo(electionIds,tehsilIds);
+						
+					
+						if(result != null && result.size() > 0)
+							for(Object[] params : result)
+							{
+							PartyVotesEarnedVO partyResult = new PartyVotesEarnedVO();
+							partyResult.setTotalBooths(0);
+							partyResult.setTotalVotes(0l);
+							partyResult.setPolledVotes(0l);
+							partyResult.setPartyName(params[0].toString());
+							partyResult.setElectionType(params[5].toString());									
+							partyResult.setVotesEarned(((Double)params[1]).longValue());	
+							partyResult.setReqType(params[3].toString() +"(" +params[5].toString() + ")");
+							partyResult.setElectionYear(params[2].toString());
+							partyResult.setPartyId((Long)params[6]);
+							partyResult.setPartiesList(resultList.get(0).getPartiesList());
+							resultList.add(partyResult);
+							}
+						
+					
+					}
+					
+		*/
 	 public void getBoothsComparisionInfo(List<Election> electionIds,Long panchayatId,Long publicationDateId,VotersInfoForMandalVO votersInfoForMandalVO){
 		try{ 
 		 List<Object[]> presentBoothsList = boothDAO.getBoothsInAPanchayat(panchayatId,publicationDateId);

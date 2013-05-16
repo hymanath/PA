@@ -36,8 +36,14 @@ public class TeshilPartyInfoVO {
 	private String partiPartiVotesPercent;
 	private Long totalConstiValidVotes;
 	private Long partyParticipatedValidVotes;
+	private String electionType;
 	
-	
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
 	public String getTotalVotersInConstituency() {
 		return totalVotersInConstituency;
 	}
