@@ -6,12 +6,25 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
+import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
+import com.itgrids.partyanalyst.dto.DataVerificationInfoVO;
+import com.itgrids.partyanalyst.dto.DataVerificationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.DataValidationVO;
 import com.itgrids.partyanalyst.service.IDataValidationService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class DataValidationService implements IDataValidationService{
 	private static final Logger LOG = Logger.getLogger(DataValidationService.class);
@@ -19,6 +32,16 @@ public class DataValidationService implements IDataValidationService{
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IVoterInfoDAO voterInfoDAO;
 	private IPanchayatHamletDAO panchayatHamletDAO;
+	private IConstituencyDAO constituencyDAO;
+	private IBoothDAO boothDAO;
+	private IVotersAnalysisService votersAnalysisService;
+	private ITehsilDAO tehsilDAO;
+	private IPanchayatDAO panchayatDAO;
+	private IVoterFamilyInfoDAO voterFamilyInfoDAO;
+	private IVoterFamilyRangeDAO voterFamilyRangeDAO;
+	private IVoterAgeInfoDAO voterAgeInfoDAO;
+	private IVoterAgeRangeDAO voterAgeRangeDAO;
+	private IVoterModificationInfoDAO voterModificationInfoDAO;
 	
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
@@ -43,6 +66,86 @@ public class DataValidationService implements IDataValidationService{
 	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
 		this.panchayatHamletDAO = panchayatHamletDAO;
 	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+	
+	public IVoterFamilyInfoDAO getVoterFamilyInfoDAO() {
+		return voterFamilyInfoDAO;
+	}
+
+	public void setVoterFamilyInfoDAO(IVoterFamilyInfoDAO voterFamilyInfoDAO) {
+		this.voterFamilyInfoDAO = voterFamilyInfoDAO;
+	}
+
+	public IVoterFamilyRangeDAO getVoterFamilyRangeDAO() {
+		return voterFamilyRangeDAO;
+	}
+
+	public void setVoterFamilyRangeDAO(IVoterFamilyRangeDAO voterFamilyRangeDAO) {
+		this.voterFamilyRangeDAO = voterFamilyRangeDAO;
+	}
+
+	public IVoterAgeInfoDAO getVoterAgeInfoDAO() {
+		return voterAgeInfoDAO;
+	}
+
+	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
+		this.voterAgeInfoDAO = voterAgeInfoDAO;
+	}
+
+	public IVoterAgeRangeDAO getVoterAgeRangeDAO() {
+		return voterAgeRangeDAO;
+	}
+
+	public void setVoterAgeRangeDAO(IVoterAgeRangeDAO voterAgeRangeDAO) {
+		this.voterAgeRangeDAO = voterAgeRangeDAO;
+	}
+
+	public IVoterModificationInfoDAO getVoterModificationInfoDAO() {
+		return voterModificationInfoDAO;
+	}
+
+	public void setVoterModificationInfoDAO(
+			IVoterModificationInfoDAO voterModificationInfoDAO) {
+		this.voterModificationInfoDAO = voterModificationInfoDAO;
+	}
+
 
 	public static Comparator<DataValidationVO> sortData = new Comparator<DataValidationVO>()
     {
@@ -140,5 +243,1122 @@ public class DataValidationService implements IDataValidationService{
     		return null;
     	}
     }
-		
+    
+    public DataVerificationVO validateVotersBasicInfo(Long constituencyId,Long publicationId,Long userId)
+    {
+    	DataVerificationVO dataVerificationVO = null;
+    	try{
+    		
+    		List<Long> constituencyList = new ArrayList<Long>(0);
+    		constituencyList.add(constituencyId);
+    		
+    		dataVerificationVO = new DataVerificationVO();
+    		String areaType = constituencyDAO.get(constituencyId).getAreaType();
+    		dataVerificationVO.setAreaType(areaType);
+    		
+    		dataVerificationVO.setConstituencyIdsList(constituencyList);
+    		dataVerificationVO.setTotalConstituencies(new Long(constituencyList.size()));
+    		
+    		if(areaType.equalsIgnoreCase(IConstants.RURAL) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
+    		{
+    			List<Long> mandalIdsList = boothDAO.getMandalsListByConstituencyId(constituencyId, publicationId);
+    			List<Long> panchayatList = boothDAO.getPanchayatsListByConstituencyId(constituencyId, publicationId);
+    			
+    			if(mandalIdsList != null && mandalIdsList.size() > 0)
+    				dataVerificationVO.setTotalmandals(new Long(mandalIdsList.size()));
+    			
+    			if(panchayatList != null && panchayatList.size() > 0)
+    				dataVerificationVO.setTotalPanchayats(new Long(panchayatList.size()));
+    			
+    			dataVerificationVO.setMandalIdsList(mandalIdsList);
+    			dataVerificationVO.setPanchayatIdsList(panchayatList);
+    			
+    		}
+    		if(areaType.equalsIgnoreCase(IConstants.URBAN) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
+    		{
+    			List<Long> muncipalitiesList = boothDAO.getMuncipalitiesListByConstituencyId(constituencyId, publicationId);
+    			List<Long> wardsList = boothDAO.getWardsListByConstituencyId(constituencyId, publicationId);
+    			
+    			if(muncipalitiesList != null && muncipalitiesList.size() > 0)
+    				dataVerificationVO.setTotalMuncipalities(new Long(muncipalitiesList.size()));
+    			
+    			if(wardsList != null && wardsList.size() > 0)
+    				dataVerificationVO.setTotalWards(new Long(wardsList.size()));
+    			
+    			dataVerificationVO.setMuncipalityIdsList(muncipalitiesList);
+    			dataVerificationVO.setWardIdsList(wardsList);
+    			
+    		}
+    		
+    		List<Long> boothsList = boothDAO.getBoothsListByConstituencyId(constituencyId, publicationId);
+    		
+    		dataVerificationVO.setBoothIdsList(boothsList);
+    		if(boothsList != null && boothsList.size() > 0)
+    		  dataVerificationVO.setTotalBooths(new Long(boothsList.size()));
+    		
+    		dataVerificationVO.setConstituencyId(constituencyId);
+    		dataVerificationVO.setPublicationId(publicationId);
+    		
+    		checkVotersDataInVoterInfoTable(dataVerificationVO);
+    		
+    		return dataVerificationVO;
+    	}catch (Exception e) {
+    		LOG.error("Exception Occured in validateVotersBasicInfo() method, Exception - "+e);
+    		return dataVerificationVO;
+		}
+    }
+    
+    
+    public void checkVotersDataInVoterInfoTable(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		
+    		 checkConstituencyWiseVotersData(dataVerificationVO);
+    		 checkConstituencyWiseVotersFamilyData(dataVerificationVO);
+    		 checkConstituencyWiseVotersAgeData(dataVerificationVO);
+    		 checkConstituencyWiseVoterModificationData(dataVerificationVO);
+    		 
+    		if(dataVerificationVO.getAreaType().equalsIgnoreCase(IConstants.RURAL) || dataVerificationVO.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN))
+    		{
+    			checkMandalWiseVotersData(dataVerificationVO);
+    			checkPanchayatWiseVotersData(dataVerificationVO);
+    			
+    			checkMandalWiseVotersFamilyData(dataVerificationVO);
+    			checkPanchayatWiseVotersFamilyData(dataVerificationVO);
+    			
+    			checkMandalWiseVotersAgeData(dataVerificationVO);
+    			checkPanchayatWiseVotersAgeData(dataVerificationVO);
+    			
+    			checkMandalWiseVoterModificationData(dataVerificationVO);
+    			checkPanchayatWiseVoterModificationData(dataVerificationVO);
+    			
+    		}
+    		
+    		if(dataVerificationVO.getAreaType().equalsIgnoreCase(IConstants.URBAN) || dataVerificationVO.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN))
+    		{
+    			checkMuncipalityWiseVotersData(dataVerificationVO);
+    			checkWardWiseVotersData(dataVerificationVO);
+    			
+    			checkMuncipalityWiseVotersFamilyData(dataVerificationVO);
+    			checkWardWiseVotersFamilyData(dataVerificationVO);
+    			
+    			checkMuncipalityWiseVotersAgeData(dataVerificationVO);
+    			checkWardWiseVotersAgeData(dataVerificationVO);
+    			
+    			checkMuncipalityWiseVoterModificationData(dataVerificationVO);
+    			checkWardWiseVoterModificationData(dataVerificationVO);
+    		}
+    		
+    		checkBoothWiseVotersData(dataVerificationVO);
+    		checkBoothWiseVotersFamilyData(dataVerificationVO);
+    		checkBoothWiseVotersAgeData(dataVerificationVO);
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkVotersDataInVoterInfoTable() method, Exception - "+e);
+		}
+    }
+    
+    public void checkConstituencyWiseVotersData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		 DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getVoterInfo();
+    		 List<Long> constituencyList = voterInfoDAO.getReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(), dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.CONSTITUENCY));
+    		 setConstituencyVoterData(dataVerificationVO, dataVerificationInfoVO, constituencyList);
+    		
+    		 dataVerificationVO.setVoterInfo(dataVerificationInfoVO);
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkConstituencyWiseVotersData() method, Exception - "+e);
+		}
+    }
+    
+    public void setConstituencyVoterData(DataVerificationVO dataVerificationVO, DataVerificationInfoVO dataVerificationInfoVO, List<Long> constituencyList)
+    {
+    	try{
+    		
+    		List<Long> missedConstituencyIdsList = new ArrayList<Long>(0);
+    		List<Long> repeatedConstituencyIdsList = new ArrayList<Long>(0);
+    		if(constituencyList != null && constituencyList.size() > 0)
+  		    {
+  			if(dataVerificationVO.getTotalConstituencies()!= null)
+  			{
+  			   for(Long constituencyId : dataVerificationVO.getConstituencyIdsList())
+  				if(!constituencyList.contains(constituencyId))
+  					missedConstituencyIdsList.add(constituencyId);
+  			   
+  			   for(Long constituencyId : constituencyList)
+  				 if(!dataVerificationVO.getConstituencyIdsList().contains(constituencyId))
+  					repeatedConstituencyIdsList.add(constituencyId); 
+  			 }
+  			dataVerificationInfoVO.setSavedConstituencyCount(new Long(constituencyList.size()));
+  			
+  		  }
+  		  else
+  			missedConstituencyIdsList.addAll(dataVerificationVO.getConstituencyIdsList());
+    		
+    		if(missedConstituencyIdsList != null && missedConstituencyIdsList.size() > 0)
+    		  {
+    			  dataVerificationInfoVO.setMissedConstituencyCount(new Long(missedConstituencyIdsList.size()));
+    			  List<Object[]> missedConstituencyList = constituencyDAO.getConstituencyNameByConstituencyIdsList(missedConstituencyIdsList);
+    			  dataVerificationInfoVO.setMissedConstituencyList(getLocationNameAndIds(missedConstituencyList)) ;
+    		  }
+    		  
+    		  if(repeatedConstituencyIdsList != null && repeatedConstituencyIdsList.size() > 0)
+    		  {
+    			  dataVerificationInfoVO.setRepeatedConstituencyCount(new Long(repeatedConstituencyIdsList.size()));
+    			  List<Object[]> repeatedConstituencyList = constituencyDAO.getConstituencyNameByConstituencyIdsList(repeatedConstituencyIdsList);
+    			  dataVerificationInfoVO.setRepeatedConstituencyList(getLocationNameAndIds(repeatedConstituencyList));
+    		  }
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in setConstituencyVoterData() method, Exception - "+e);
+		}
+    }
+    
+    
+    public void checkMandalWiseVotersData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getVoterInfo();
+    		
+    		List<Long> mandalList = voterInfoDAO.getReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(), dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.MANDAL));
+    		setMandalsVoterData(dataVerificationVO, dataVerificationInfoVO, mandalList);
+    		
+    		dataVerificationVO.setVoterInfo(dataVerificationInfoVO);
+    			  
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    		LOG.error("Exception Occured in checkMandalWiseVotersData() method,Exception - "+e);
+		}
+    }
+    
+    public void setMandalsVoterData(DataVerificationVO dataVerificationVO,DataVerificationInfoVO dataVerificationInfoVO,List<Long> mandalList)
+    {
+    	try{
+    		List<Long> missedMandalIdsList = new ArrayList<Long>(0);
+    		List<Long> repeatedMandalIdsList = new ArrayList<Long>(0);
+    		if(mandalList != null && mandalList.size() > 0)
+  		  {
+  			if(dataVerificationVO.getTotalmandals()!= null)
+  			{
+  			   for(Long mandalId : dataVerificationVO.getMandalIdsList())
+  				if(!mandalList.contains(mandalId))
+  				  missedMandalIdsList.add(mandalId);
+  			   
+  			   for(Long mandalId : mandalList)
+  				 if(!dataVerificationVO.getMandalIdsList().contains(mandalId))
+  					 repeatedMandalIdsList.add(mandalId); 
+  			 }
+  			dataVerificationInfoVO.setSavedMandalsCount(new Long(mandalList.size()));
+  			
+  		  }
+  		  else
+  		   missedMandalIdsList.addAll(dataVerificationVO.getMandalIdsList());
+  		  
+  		  if(missedMandalIdsList != null && missedMandalIdsList.size() > 0)
+  		  {
+  			  dataVerificationInfoVO.setMissedMandalsCount(new Long(missedMandalIdsList.size()));
+  			  List<Object[]> missedMandalList = tehsilDAO.getTehsilNameByTehsilIdsList(missedMandalIdsList);
+  			  dataVerificationInfoVO.setMissedMandalList(getLocationNameAndIds(missedMandalList)) ;
+  		  }
+  		  
+  		  if(repeatedMandalIdsList != null && repeatedMandalIdsList.size() > 0)
+  		  {
+  			  dataVerificationInfoVO.setRepeatedMandalsCount(new Long(repeatedMandalIdsList.size()));
+  			  List<Object[]> repeatedMandalList = tehsilDAO.getTehsilNameByTehsilIdsList(repeatedMandalIdsList);
+  			  dataVerificationInfoVO.setRepeatedMandalList(getLocationNameAndIds(repeatedMandalList));
+  		  }
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in setMandalsVoterData() method, Exception - "+e);
+		}
+    }
+    
+    public List<SelectOptionVO> getLocationNameAndIds(List<Object[]> list)
+    {
+    	List<SelectOptionVO> selectOptionVOList = null;
+    	try{
+    		if(list != null && list.size() > 0)
+    		{
+    			selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+    			for(Object[] params : list)
+    			 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null ?params[1].toString() :" "));
+    		}
+    		
+    		return selectOptionVOList;
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getMandalDetailsByMandalIdsList() method, Exception - "+e);
+			return selectOptionVOList;
+		}
+    }
+    
+    
+    public void checkPanchayatWiseVotersData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getVoterInfo();
+    		List<Long> panchayatList = voterInfoDAO.getReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(), dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.PANCHAYAT));
+    		setPanchayatVotersData(dataVerificationVO, dataVerificationInfoVO, panchayatList);
+ 		  
+    		dataVerificationVO.setVoterInfo(dataVerificationInfoVO);	
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    		LOG.error("Exception Occured in checkPanchayatWiseVotersData() method, Exception - "+e);
+		}
+    }
+    
+    public void setPanchayatVotersData(DataVerificationVO dataVerificationVO,DataVerificationInfoVO dataVerificationInfoVO,List<Long> panchayatList)
+    {
+    	try{
+    		List<Long> missedPanchayatIdsList = new ArrayList<Long>(0);
+    		List<Long> repeatedPanchayatIdsList = new ArrayList<Long>(0);
+    		
+    		if(panchayatList != null && panchayatList.size() > 0)
+ 		    {
+ 		      if(dataVerificationVO.getTotalPanchayats() != null)
+ 		      {
+ 			    for(Long panchayatId : dataVerificationVO.getPanchayatIdsList())
+   				  if(!panchayatList.contains(panchayatId))
+   				    missedPanchayatIdsList.add(panchayatId);
+ 			    
+ 			    for(Long panchayatId : panchayatList)
+ 			     if(!dataVerificationVO.getPanchayatIdsList().contains(panchayatId))
+ 			    	repeatedPanchayatIdsList.add(panchayatId);
+ 		      }
+ 		     dataVerificationInfoVO.setSavedPanchayatsCount(new Long(panchayatList.size()));
+ 		    }
+ 			else
+ 			  missedPanchayatIdsList.addAll(dataVerificationVO.getPanchayatIdsList());
+ 		    
+ 		    if(missedPanchayatIdsList != null && missedPanchayatIdsList.size() > 0)
+ 		    {
+ 		    	dataVerificationInfoVO.setMissedPanchayatsCount(new Long(missedPanchayatIdsList.size()));
+ 		    	List<Object[]> missedPanchayats = panchayatDAO.getPanchayatsByPanchayatIdsList(missedPanchayatIdsList);
+ 		    	dataVerificationInfoVO.setMissedPanchayatList(getLocationNameAndIds(missedPanchayats));
+ 		    }
+ 		    
+ 		   if(repeatedPanchayatIdsList != null && repeatedPanchayatIdsList.size() > 0)
+		    {
+ 			  dataVerificationInfoVO.setRepeatedPanchayatsCount(new Long(repeatedPanchayatIdsList.size()));
+		    	List<Object[]> repeatedPanchayats = panchayatDAO.getPanchayatsByPanchayatIdsList(repeatedPanchayatIdsList);
+		    	dataVerificationInfoVO.setRepeatedPanchayatList(getLocationNameAndIds(repeatedPanchayats));
+		    }
+ 		    
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in setPanchayatVotersData() method, Exception - "+e);
+		}
+    }
+    
+    public void checkBoothWiseVotersData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getVoterInfo();
+    		
+    		List<Long> boothsList = voterInfoDAO.getReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(), dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.BOOTH));
+    		setBoothWiseVotersData(dataVerificationVO, dataVerificationInfoVO, boothsList);
+    		dataVerificationVO.setVoterInfo(dataVerificationInfoVO);
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkBoothWiseVotersData() method, Exception - "+e);
+		}
+    }
+	
+    
+    public void setBoothWiseVotersData(DataVerificationVO dataVerificationVO,DataVerificationInfoVO dataVerificationInfoVO,List<Long> boothsList)
+    {
+    	try{
+    		List<Long> missedBoothIdsList = new ArrayList<Long>(0);
+    		List<Long> extraBoothIdsList = new ArrayList<Long>(0);
+    		if(boothsList != null && boothsList.size() > 0)
+    		{
+    			if(dataVerificationVO.getTotalBooths() != null)
+    			{
+				  for(Long boothId :dataVerificationVO.getBoothIdsList())
+					if(!boothsList.contains(boothId))
+						missedBoothIdsList.add(boothId);
+				  
+				  for(Long boothId :boothsList)
+					if(!dataVerificationVO.getBoothIdsList().contains(boothId))
+						extraBoothIdsList.add(boothId);
+				}
+    			dataVerificationInfoVO.setSavedBoothsCount(new Long(boothsList.size()));
+    		}
+    			else
+    				missedBoothIdsList.addAll(dataVerificationVO.getBoothIdsList());
+    		
+    		if(missedBoothIdsList != null && missedBoothIdsList.size() > 0)
+    		{
+    			dataVerificationInfoVO.setMissedBoothsCount(new Long(missedBoothIdsList.size()));
+    			List<Object[]> missedBoothList = boothDAO.getBoothsByBoothIdsList(missedBoothIdsList);
+    			dataVerificationInfoVO.setMissedBoothsList(getLocationNameAndIds(missedBoothList));
+    		}
+    		
+    		if(extraBoothIdsList != null && extraBoothIdsList.size() > 0)
+    		{
+    			dataVerificationInfoVO.setRepeatedBoothsCount(new Long(extraBoothIdsList.size()));
+    			List<Object[]> extraBoothList = boothDAO.getBoothsByBoothIdsList(extraBoothIdsList);
+    			dataVerificationInfoVO.setRepeatedBoothsList(getLocationNameAndIds(extraBoothList));
+    		}
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in setBoothWiseVotersData() method, Exception - "+e);
+		}
+    }
+    
+    public void checkMuncipalityWiseVotersData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getVoterInfo();
+    		
+    		List<Long> muncipalityList = voterInfoDAO.getReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(), dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.LOCALELECTIONBODY));
+    		setMuncipalityWiseVotersData(dataVerificationVO, dataVerificationInfoVO, muncipalityList);
+    		dataVerificationVO.setVoterInfo(dataVerificationInfoVO);
+			
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkMuncipalityWiseVotersData() method, Exception - "+e);
+		}
+    }
+    
+    
+    public void setMuncipalityWiseVotersData(DataVerificationVO dataVerificationVO,DataVerificationInfoVO dataVerificationInfoVO,List<Long> muncipalityList)
+    {
+    	try{
+    		List<Long> missedMuncipalityIdsList = new ArrayList<Long>(0);
+    		List<Long> extraMuncipalityIdsList = new ArrayList<Long>(0);
+    		if(muncipalityList != null && muncipalityList.size() > 0)
+			{
+				if(dataVerificationVO.getTotalMuncipalities() != null)
+				{
+				  for(Long muncipalityId : dataVerificationVO.getMuncipalityIdsList())
+					if(!muncipalityList.contains(muncipalityId))
+						missedMuncipalityIdsList.add(muncipalityId);
+				  
+				  for(Long muncipalityId : muncipalityList)
+					if(!dataVerificationVO.getMuncipalityIdsList().contains(muncipalityId))
+						extraMuncipalityIdsList.add(muncipalityId);
+				  
+				}
+				dataVerificationInfoVO.setSavedMuncipalitiesCount(new Long(muncipalityList.size()));
+			}
+			else
+				missedMuncipalityIdsList.addAll(dataVerificationVO.getMuncipalityIdsList());
+			
+			if(missedMuncipalityIdsList != null && missedMuncipalityIdsList.size() > 0)
+    		{
+				dataVerificationInfoVO.setMissedMuncipalitiesCount(new Long(missedMuncipalityIdsList.size()));
+    			List<Object[]> missedBoothList = boothDAO.getMuncipalitiesByMuncipalityIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),missedMuncipalityIdsList);
+    			dataVerificationInfoVO.setMissedMuncipalityList(getLocationNameAndIds(missedBoothList));
+    		}
+    		
+    		if(extraMuncipalityIdsList != null && extraMuncipalityIdsList.size() > 0)
+    		{
+    			dataVerificationInfoVO.setRepeatedMandalsCount(new Long(extraMuncipalityIdsList.size()));
+    			List<Object[]> extraBoothList = boothDAO.getMuncipalitiesByMuncipalityIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),extraMuncipalityIdsList);
+    			dataVerificationInfoVO.setRepeatedMuncipalityList(getLocationNameAndIds(extraBoothList));
+    		}
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in setMuncipalityWiseVotersData() method, Exception - "+e);
+		}
+    }
+    public void checkWardWiseVotersData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getVoterInfo();
+    		
+    		List<Long> wardList = voterInfoDAO.getReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.WARD));
+    		setWardWiseVotersData(dataVerificationVO, dataVerificationInfoVO, wardList);
+    		dataVerificationVO.setVoterInfo(dataVerificationInfoVO);
+			
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkWardWiseVotersData() method, Exception - "+e);
+		}
+    }
+    
+    public void setWardWiseVotersData(DataVerificationVO dataVerificationVO,DataVerificationInfoVO dataVerificationInfoVO,List<Long> wardList)
+    {
+    	try{
+    		List<Long> missedWardIdsList = new ArrayList<Long>(0);
+    		List<Long> extraWardIdsList = new ArrayList<Long>(0);
+    		Long noOfWards = new Long(dataVerificationVO.getTotalWards());
+    		if(wardList != null && wardList.size() > 0)
+			{
+			  if(noOfWards != null && noOfWards.equals(wardList.size()))
+			  {
+				  for(Long wardId : dataVerificationVO.getWardIdsList())
+  					if(!wardList.contains(wardId))
+  						missedWardIdsList.add(wardId);
+			  
+				  for(Long wardId : wardList)
+  					if(!dataVerificationVO.getWardIdsList().contains(wardId))
+  						extraWardIdsList.add(wardId);
+			  }
+			  dataVerificationInfoVO.setSavedWardsCount(new Long(wardList.size()));
+			}
+			else
+				missedWardIdsList.addAll(dataVerificationVO.getWardIdsList());
+			
+			if(missedWardIdsList != null && missedWardIdsList.size() > 0)
+    		{
+				dataVerificationInfoVO.setMissedWardsCount(new Long(missedWardIdsList.size()));
+    			List<Object[]> missedWardList = boothDAO.getWardsByWardIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),missedWardIdsList);
+    			dataVerificationInfoVO.setMissedWardList(getLocationNameAndIds(missedWardList));
+    		}
+    		
+    		if(extraWardIdsList != null && extraWardIdsList.size() > 0)
+    		{
+    			dataVerificationInfoVO.setRepeatedWardsCount(new Long(extraWardIdsList.size()));
+    			List<Object[]> extraWardList = boothDAO.getWardsByWardIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),extraWardIdsList);
+    			dataVerificationInfoVO.setRepeatedWardList(getLocationNameAndIds(extraWardList));
+    		}
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in setWardWiseVotersData() method, Exception - "+e);
+		}
+    }
+    
+    /* Voters Basic data verification End in VoterInfo table */
+    
+   /* Family wise VotersData verification Start in VoterFamilyInfo table */
+    
+    public void checkConstituencyWiseVotersFamilyData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		
+    	  DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getFamilyInfo();
+      	  List<Long> missedFamilyRangeConIds = new ArrayList<Long>(0);
+      	  
+      	  List<Long> constituencyList = voterFamilyInfoDAO.getVoterReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.CONSTITUENCY));
+      	  setConstituencyVoterData(dataVerificationVO, dataVerificationInfoVO, constituencyList);
+      	  
+      	List<Object[]> voterFamilyList = voterFamilyInfoDAO.getVoterReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.CONSTITUENCY));
+		  if(voterFamilyList != null && voterFamilyList.size() > 0)
+		  {
+			  Long familyRange = voterFamilyRangeDAO.getVoterFamilyRangeDetails().get(0);
+			  for(Object[] params : voterFamilyList)
+			  {
+			     if(dataVerificationVO.getConstituencyIdsList().contains((Long)params[0]))
+				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(familyRange.toString())))
+					   missedFamilyRangeConIds.add((Long)params[0]);
+			  }
+		  }
+		  
+		  	if(missedFamilyRangeConIds != null && missedFamilyRangeConIds.size() > 0)
+		  	{
+		  		dataVerificationInfoVO.setFamilyConstituencyCount(new Long(missedFamilyRangeConIds.size()));
+		  	    List<Object[]> consList = constituencyDAO.getConstituencyNameByConstituencyIdsList(missedFamilyRangeConIds);
+		  	    dataVerificationInfoVO.setFamilyConstituencyList(getLocationNameAndIds(consList));
+		  	}
+		  
+  		dataVerificationVO.setFamilyInfo(dataVerificationInfoVO);
+  		
+    		
+    	}catch (Exception e) {
+    	  e.printStackTrace();
+		  LOG.error("Exception Occured in checkConstituencyWiseVotersFamilyData() method, Exception - "+e);
+		}
+    }
+    
+    //Mandal wise Verification in VoterFamilyInfo table
+    public void checkMandalWiseVotersFamilyData(DataVerificationVO dataVerificationVO)
+    {
+       try{
+    	  DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getFamilyInfo();
+    	  List<Long> missedFamilyRangeManIds = new ArrayList<Long>(0);
+    	  
+    	  List<Long> mandalList = voterFamilyInfoDAO.getVoterReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.MANDAL));
+    	  setMandalsVoterData(dataVerificationVO, dataVerificationInfoVO, mandalList);
+    		
+  		  List<Object[]> voterFamilyList = voterFamilyInfoDAO.getVoterReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.MANDAL));
+  		  if(voterFamilyList != null && voterFamilyList.size() > 0)
+  		  {
+  			  Long familyRange = voterFamilyRangeDAO.getVoterFamilyRangeDetails().get(0);
+  			  for(Object[] params : voterFamilyList)
+  			  {
+  			     if(dataVerificationVO.getMandalIdsList().contains((Long)params[0]))
+  				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(familyRange.toString())))
+  					  missedFamilyRangeManIds.add((Long)params[0]);
+  			  }
+  		  }
+  		  
+  		  	if(missedFamilyRangeManIds != null && missedFamilyRangeManIds.size() > 0)
+  		  	{
+  		  		dataVerificationInfoVO.setFamilyMandalCount(new Long(missedFamilyRangeManIds.size()));
+  		  	    List<Object[]>mandalsList = tehsilDAO.getTehsilNameByTehsilIdsList(missedFamilyRangeManIds);
+  		  	    dataVerificationInfoVO.setFamilyMandalsList(getLocationNameAndIds(mandalsList));
+  		  	}
+  		  
+    		dataVerificationVO.setFamilyInfo(dataVerificationInfoVO);
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkMandalWiseVotersFamilyData() method, Exception - "+e);
+		}
+    }
+    
+    //panchayat wise
+    
+    public void checkPanchayatWiseVotersFamilyData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getFamilyInfo();
+      	  List<Long> missedPanchayatIds = new ArrayList<Long>(0);
+      	  
+      	  List<Long> panchayatList = voterFamilyInfoDAO.getVoterReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.PANCHAYAT));
+      	  setPanchayatVotersData(dataVerificationVO, dataVerificationInfoVO, panchayatList);
+      	  
+      	List<Object[]> voterFamilyList = voterFamilyInfoDAO.getVoterReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.PANCHAYAT));
+		  if(voterFamilyList != null && voterFamilyList.size() > 0)
+		  {
+			  Long familyRange = voterFamilyRangeDAO.getVoterFamilyRangeDetails().get(0);
+			  for(Object[] params : voterFamilyList)
+			  {
+			     if(dataVerificationVO.getPanchayatIdsList().contains((Long)params[0]))
+				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(familyRange.toString())))
+					   missedPanchayatIds.add((Long)params[0]);
+			  }
+		  }
+		  
+		  	if(missedPanchayatIds != null && missedPanchayatIds.size() > 0)
+		  	{
+		  		dataVerificationInfoVO.setFamilyPanchayatCount(new Long(missedPanchayatIds.size()));
+		  	    List<Object[]> panchayatsList = panchayatDAO.getPanchayatsByPanchayatIdsList(missedPanchayatIds);
+		  	    dataVerificationInfoVO.setFamilyPanchayatsList(getLocationNameAndIds(panchayatsList));
+		  	}
+		  
+  		  dataVerificationVO.setFamilyInfo(dataVerificationInfoVO);
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkPanchayatWiseVotersFamilyData() method, Exception - "+e);
+		}
+    }
+    
+    //booth wise
+    
+    public void checkBoothWiseVotersFamilyData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getFamilyInfo();
+      	    List<Long> missedBoothIds = new ArrayList<Long>(0);
+      	  
+      	  List<Long> boothList = voterFamilyInfoDAO.getVoterReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.BOOTH));
+      	  setBoothWiseVotersData(dataVerificationVO, dataVerificationInfoVO, boothList);
+      	  
+      	List<Object[]> voterFamilyList = voterFamilyInfoDAO.getVoterReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.BOOTH));
+		  if(voterFamilyList != null && voterFamilyList.size() > 0)
+		  {
+			  Long familyRange = voterFamilyRangeDAO.getVoterFamilyRangeDetails().get(0);
+			  for(Object[] params : voterFamilyList)
+			  {
+			     if(dataVerificationVO.getBoothIdsList().contains((Long)params[0]))
+				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(familyRange.toString())))
+					   missedBoothIds.add((Long)params[0]);
+			  }
+		  }
+		  	if(missedBoothIds != null && missedBoothIds.size() > 0)
+		  	{
+		  		dataVerificationInfoVO.setFamilyBoothCount(new Long(missedBoothIds.size()));
+		  	    List<Object[]> boothsList = boothDAO.getBoothsByBoothIdsList(missedBoothIds);
+		  	    dataVerificationInfoVO.setFamilyBoothsList(getLocationNameAndIds(boothsList));
+		  	}
+		  	dataVerificationVO.setFamilyInfo(dataVerificationInfoVO);
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkBoothWiseVotersFamilyData() method, Exception - "+e);
+		}
+    }
+    
+    //muncipality wise
+    
+    public void checkMuncipalityWiseVotersFamilyData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    	 DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getFamilyInfo();
+      	 List<Long> missedMuncipalityIds = new ArrayList<Long>(0);
+      	  
+      	 List<Long> MuncipalityList = voterFamilyInfoDAO.getVoterReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.LOCALELECTIONBODY));
+      	 setMuncipalityWiseVotersData(dataVerificationVO, dataVerificationInfoVO, MuncipalityList);
+      	  
+      	 List<Object[]> voterFamilyList = voterFamilyInfoDAO.getVoterReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.LOCALELECTIONBODY));
+      	 
+		  if(voterFamilyList != null && voterFamilyList.size() > 0)
+		  {
+			  Long familyRange = voterFamilyRangeDAO.getVoterFamilyRangeDetails().get(0);
+			  for(Object[] params : voterFamilyList)
+			  {
+			     if(dataVerificationVO.getMuncipalityIdsList().contains((Long)params[0]))
+				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(familyRange.toString())))
+					   missedMuncipalityIds.add((Long)params[0]);
+			  }
+		  }
+		  	if(missedMuncipalityIds != null && missedMuncipalityIds.size() > 0)
+		  	{
+		  		dataVerificationInfoVO.setFamilyMuncipalityCount(new Long(missedMuncipalityIds.size()));
+		  	    List<Object[]> boothsList = boothDAO.getMuncipalitiesByMuncipalityIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),missedMuncipalityIds);
+		  	    dataVerificationInfoVO.setFamilyMuncipalitiesList(getLocationNameAndIds(boothsList));
+		  	}
+		  	dataVerificationVO.setFamilyInfo(dataVerificationInfoVO);
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkMuncipalityWiseVotersFamilyData() method, Exception - "+e);
+		}
+    }
+    
+    //ward wise 
+    
+    public void checkWardWiseVotersFamilyData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getFamilyInfo();
+         	 List<Long> missedWardIds = new ArrayList<Long>(0);
+         	  
+         	 List<Long> wardList = voterFamilyInfoDAO.getVoterReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.WARD));
+         	 setWardWiseVotersData(dataVerificationVO, dataVerificationInfoVO, wardList);
+         	  
+         	 List<Object[]> voterFamilyList = voterFamilyInfoDAO.getVoterReportLevelValueByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.WARD));
+         	 
+         	if(voterFamilyList != null && voterFamilyList.size() > 0)
+  		  {
+  			  Long familyRange = voterFamilyRangeDAO.getVoterFamilyRangeDetails().get(0);
+  			  for(Object[] params : voterFamilyList)
+  			  {
+  			     if(dataVerificationVO.getWardIdsList().contains((Long)params[0]))
+  				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(familyRange.toString())))
+  					 missedWardIds.add((Long)params[0]);
+  			  }
+  		  }  		  
+  		  	if(missedWardIds != null && missedWardIds.size() > 0)
+  		  	{
+  		  		dataVerificationInfoVO.setFamilyWardCount(new Long(missedWardIds.size()));
+  		  	    List<Object[]> boothsList = boothDAO.getWardsByWardIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),missedWardIds);
+  		  	    dataVerificationInfoVO.setFamilyWardsList(getLocationNameAndIds(boothsList));
+  		  	}
+  		  dataVerificationVO.setFamilyInfo(dataVerificationInfoVO);
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkWardWiseVotersFamilyData() method, Exception - "+e);
+		}
+    }
+    
+    /* Family wise VotersData verification End in VoterFamilyInfo table */
+    
+    /* Age wise VotersData verification Start in VoterAgeInfo table */
+    
+    public void checkConstituencyWiseVotersAgeData(DataVerificationVO dataVerificationVO)
+    {
+       try{
+    	  DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getAgeInfo();
+    	  List<Long> missedFamilyRangeConIds = new ArrayList<Long>(0);
+    	  
+    	  List<Long> consList = voterAgeInfoDAO.getVoterAgeInfoByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.CONSTITUENCY));
+    	  setConstituencyVoterData(dataVerificationVO, dataVerificationInfoVO, consList);
+    		
+  		  List<Object[]> voterAgeList = voterAgeInfoDAO.getVoterAgeDetails(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.CONSTITUENCY));
+  		  if(voterAgeList != null && voterAgeList.size() > 0)
+  		  {
+  			  Long ageRange = voterAgeRangeDAO.getVoterAgeRangeDetails().get(0);
+  			  for(Object[] params : voterAgeList)
+  			  {
+  			     if(dataVerificationVO.getConstituencyIdsList().contains((Long)params[0]))
+  				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(ageRange.toString())))
+  					 missedFamilyRangeConIds.add((Long)params[0]);
+  			  }
+  		  }
+  		  
+  		  	if(missedFamilyRangeConIds != null && missedFamilyRangeConIds.size() > 0)
+  		  	{
+  		  		dataVerificationInfoVO.setAgeWiseConstituencyCount(new Long(missedFamilyRangeConIds.size()));
+  		  	    List<Object[]> constsList = constituencyDAO.getConstituencyNameByConstituencyIdsList(missedFamilyRangeConIds);
+  		  	    dataVerificationInfoVO.setAgeWiseConstituencyList(getLocationNameAndIds(constsList));
+  		  	}
+  		  
+    		dataVerificationVO.setAgeInfo(dataVerificationInfoVO);
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkMandalWiseVotersAgeData() method, Exception - "+e);
+		}
+    }
+    
+    
+    //Mandal wise Verification in VoterFamilyInfo table
+    public void checkMandalWiseVotersAgeData(DataVerificationVO dataVerificationVO)
+    {
+       try{
+    	  DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getAgeInfo();
+    	  List<Long> missedFamilyRangeManIds = new ArrayList<Long>(0);
+    	  
+    	  List<Long> mandalList = voterAgeInfoDAO.getVoterAgeInfoByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.MANDAL));
+    	  setMandalsVoterData(dataVerificationVO, dataVerificationInfoVO, mandalList);
+    		
+  		  List<Object[]> voterAgeList = voterAgeInfoDAO.getVoterAgeDetails(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.MANDAL));
+  		  if(voterAgeList != null && voterAgeList.size() > 0)
+  		  {
+  			  Long ageRange = voterAgeRangeDAO.getVoterAgeRangeDetails().get(0);
+  			  for(Object[] params : voterAgeList)
+  			  {
+  			     if(dataVerificationVO.getMandalIdsList().contains((Long)params[0]))
+  				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(ageRange.toString())))
+  					  missedFamilyRangeManIds.add((Long)params[0]);
+  			  }
+  		  }  		  
+  		  	if(missedFamilyRangeManIds != null && missedFamilyRangeManIds.size() > 0)
+  		  	{
+  		  		dataVerificationInfoVO.setAgeWiseMandalCount(new Long(missedFamilyRangeManIds.size()));
+  		  	    List<Object[]>mandalsList = tehsilDAO.getTehsilNameByTehsilIdsList(missedFamilyRangeManIds);
+  		  	    dataVerificationInfoVO.setAgeWiseMandalsList(getLocationNameAndIds(mandalsList));
+  		  	}
+  		  
+    		dataVerificationVO.setAgeInfo(dataVerificationInfoVO);
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkMandalWiseVotersAgeData() method, Exception - "+e);
+		}
+    }
+    
+    //panchayat wise
+    
+    public void checkPanchayatWiseVotersAgeData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getAgeInfo();
+      	  List<Long> missedPanchayatIds = new ArrayList<Long>(0);
+      	  
+      	  List<Long> panchayatList = voterAgeInfoDAO.getVoterAgeInfoByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.PANCHAYAT));
+      	  setPanchayatVotersData(dataVerificationVO, dataVerificationInfoVO, panchayatList);
+      	  
+      	List<Object[]> voterAgeList = voterAgeInfoDAO.getVoterAgeDetails(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.PANCHAYAT));
+		  if(voterAgeList != null && voterAgeList.size() > 0)
+		  {
+			  Long ageRange = voterAgeRangeDAO.getVoterAgeRangeDetails().get(0);
+			  for(Object[] params : voterAgeList)
+			  {
+			     if(dataVerificationVO.getPanchayatIdsList().contains((Long)params[0]))
+				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(ageRange.toString())))
+					   missedPanchayatIds.add((Long)params[0]);
+			  }
+		  }
+		  	if(missedPanchayatIds != null && missedPanchayatIds.size() > 0)
+		  	{
+		  		dataVerificationInfoVO.setAgeWisePanchayatCount(new Long(missedPanchayatIds.size()));
+		  	    List<Object[]> panchayatsList = panchayatDAO.getPanchayatsByPanchayatIdsList(missedPanchayatIds);
+		  	    dataVerificationInfoVO.setAgeWisePanchayatsList(getLocationNameAndIds(panchayatsList));
+		  	}
+		  
+  		  dataVerificationVO.setAgeInfo(dataVerificationInfoVO);
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkPanchayatWiseVotersAgeData() method, Exception - "+e);
+		}
+    }
+    
+    //booth wise
+    
+    public void checkBoothWiseVotersAgeData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getAgeInfo();
+      	    List<Long> missedBoothIds = new ArrayList<Long>(0);
+      	  
+      	  List<Long> boothList = voterAgeInfoDAO.getVoterAgeInfoByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.BOOTH));
+      	  setBoothWiseVotersData(dataVerificationVO, dataVerificationInfoVO, boothList);
+      	  
+      	List<Object[]> voterAgeList = voterAgeInfoDAO.getVoterAgeDetails(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.BOOTH));
+		  if(voterAgeList != null && voterAgeList.size() > 0)
+		  {
+			  Long ageRange = voterAgeRangeDAO.getVoterAgeRangeDetails().get(0);
+			  for(Object[] params : voterAgeList)
+			  {
+			     if(dataVerificationVO.getBoothIdsList().contains((Long)params[0]))
+				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(ageRange.toString())))
+					   missedBoothIds.add((Long)params[0]);
+			  }
+		  }
+		  	if(missedBoothIds != null && missedBoothIds.size() > 0)
+		  	{
+		  		dataVerificationInfoVO.setAgeWiseBoothCount(new Long(missedBoothIds.size()));
+		  	    List<Object[]> boothsList = boothDAO.getBoothsByBoothIdsList(missedBoothIds);
+		  	    dataVerificationInfoVO.setAgeWiseBoothsList(getLocationNameAndIds(boothsList));
+		  	}
+		  	dataVerificationVO.setAgeInfo(dataVerificationInfoVO);
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkBoothWiseVotersAgeData() method, Exception - "+e);
+		}
+    }
+    
+    //muncipality wise
+    public void checkMuncipalityWiseVotersAgeData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    	 DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getAgeInfo();
+      	 List<Long> missedMuncipalityIds = new ArrayList<Long>(0);
+      	  
+      	 List<Long> MuncipalityList = voterAgeInfoDAO.getVoterAgeInfoByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.LOCALELECTIONBODY));
+      	 setMuncipalityWiseVotersData(dataVerificationVO, dataVerificationInfoVO, MuncipalityList);
+      	  
+      	 List<Object[]> voterAgeList = voterAgeInfoDAO.getVoterAgeDetails(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.LOCALELECTIONBODY));
+      	 
+		  if(voterAgeList != null && voterAgeList.size() > 0)
+		  {
+			  Long ageRange = voterAgeRangeDAO.getVoterAgeRangeDetails().get(0);
+			  for(Object[] params : voterAgeList)
+			  {
+			     if(dataVerificationVO.getMuncipalityIdsList().contains((Long)params[0]))
+				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(ageRange.toString())))
+					   missedMuncipalityIds.add((Long)params[0]);
+			  }
+		  }
+		  
+		  	if(missedMuncipalityIds != null && missedMuncipalityIds.size() > 0)
+		  	{
+		  		dataVerificationInfoVO.setAgeWiseMuncipalityCount(new Long(missedMuncipalityIds.size()));
+		  	    List<Object[]> boothsList = boothDAO.getMuncipalitiesByMuncipalityIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),missedMuncipalityIds);
+		  	    dataVerificationInfoVO.setAgeWiseMuncipalitiesList(getLocationNameAndIds(boothsList));
+		  	}
+		  	dataVerificationVO.setAgeInfo(dataVerificationInfoVO);
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkMuncipalityWiseVotersAgeData() method, Exception - "+e);
+		}
+    }
+    
+    //ward info
+    public void checkWardWiseVotersAgeData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getAgeInfo();
+         	 List<Long> missedWardIds = new ArrayList<Long>(0);
+         	  
+         	 List<Long> wardList = voterAgeInfoDAO.getVoterAgeInfoByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.WARD));
+         	 setWardWiseVotersData(dataVerificationVO, dataVerificationInfoVO, wardList);
+         	  
+         	 List<Object[]> voterAgeList = voterAgeInfoDAO.getVoterAgeDetails(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.WARD));
+         	 
+         	if(voterAgeList != null && voterAgeList.size() > 0)
+         	{
+         		 Long ageRange = voterAgeRangeDAO.getVoterAgeRangeDetails().get(0);
+  			  for(Object[] params : voterAgeList)
+  			  {
+  			     if(dataVerificationVO.getWardIdsList().contains((Long)params[0]))
+  				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase(ageRange.toString())))
+  					 missedWardIds.add((Long)params[0]);
+  			  }
+  		  }
+  		  	if(missedWardIds != null && missedWardIds.size() > 0)
+  		  	{
+  		  		dataVerificationInfoVO.setAgeWiseWardCount(new Long(missedWardIds.size()));
+  		  	    List<Object[]> boothsList = boothDAO.getWardsByWardIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),missedWardIds);
+  		  	    dataVerificationInfoVO.setAgeWiseWardsList(getLocationNameAndIds(boothsList));
+  		  	}
+  		  dataVerificationVO.setAgeInfo(dataVerificationInfoVO);
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkWardWiseVotersAgeData() method, Exception - "+e);
+		}
+    }
+    
+    
+    /* Age wise VotersData verification End in VoterAgeInfo table */
+    
+    
+    /* Status(Added/deleted) Wise votersData verification Start in VoterModificationInfo table */
+    
+    public void checkConstituencyWiseVoterModificationData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getModificationInfo();
+    		List<Long> constituencyList = voterModificationInfoDAO.getReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.CONSTITUENCY));
+    		
+    		List<Long> missedStatusConIds = new ArrayList<Long>(0);
+      	  	setConstituencyVoterData(dataVerificationVO, dataVerificationInfoVO, constituencyList);
+      		
+    		  List<Object[]> voterModificationList = voterModificationInfoDAO.getModificationDetailsByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.CONSTITUENCY));
+    		  if(voterModificationList != null && voterModificationList.size() > 0)
+    		  {
+    			  for(Object[] params : voterModificationList)
+    			  {
+    			     if(dataVerificationVO.getConstituencyIdsList().contains((Long)params[0]))
+    				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase("2")))
+    					   missedStatusConIds.add((Long)params[0]);
+    			  }
+    		  }
+    		  
+    		  	if(missedStatusConIds != null && missedStatusConIds.size() > 0)
+    		  	{
+    		  		dataVerificationInfoVO.setStatusWiseConstituencyCount(new Long(missedStatusConIds.size()));
+    		  	    List<Object[]> constitList = constituencyDAO.getConstituencyNameByConstituencyIdsList(missedStatusConIds);
+    		  	    dataVerificationInfoVO.setStatusWiseConstituencyList(getLocationNameAndIds(constitList));
+    		  	}
+    		  
+      		dataVerificationVO.setModificationInfo(dataVerificationInfoVO);
+      		
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkConstituencyWiseVoterModificationData() method, Exception - "+e);
+		}
+    }
+    //mandal Info
+    public void checkMandalWiseVoterModificationData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getModificationInfo();
+    		List<Long> mandalList = voterModificationInfoDAO.getReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.MANDAL));
+    		
+    		List<Long> missedStatusManIds = new ArrayList<Long>(0);
+      	  	setMandalsVoterData(dataVerificationVO, dataVerificationInfoVO, mandalList);
+      		
+    		  List<Object[]> voterModificationList = voterModificationInfoDAO.getModificationDetailsByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.MANDAL));
+    		  if(voterModificationList != null && voterModificationList.size() > 0)
+    		  {
+    			  for(Object[] params : voterModificationList)
+    			  {
+    			     if(dataVerificationVO.getMandalIdsList().contains((Long)params[0]))
+    				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase("2")))
+    					   missedStatusManIds.add((Long)params[0]);
+    			  }
+    		  }
+    		  
+    		  	if(missedStatusManIds != null && missedStatusManIds.size() > 0)
+    		  	{
+    		  		dataVerificationInfoVO.setStatusWiseMandalCount(new Long(missedStatusManIds.size()));
+    		  	    List<Object[]>mandalsList = tehsilDAO.getTehsilNameByTehsilIdsList(missedStatusManIds);
+    		  	    dataVerificationInfoVO.setStatusWiseMandalsList(getLocationNameAndIds(mandalsList));
+    		  	}
+    		  
+      		dataVerificationVO.setModificationInfo(dataVerificationInfoVO);
+      		
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkMandalWiseVoterModificationData() method, Exception - "+e);
+		}
+    }
+    
+    //panchayat info
+    
+    public void checkPanchayatWiseVoterModificationData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getModificationInfo();
+      	  List<Long> missedPanchayatIds = new ArrayList<Long>(0);
+      	  
+      	  List<Long> panchayatList = voterModificationInfoDAO.getReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.PANCHAYAT));
+      	  setPanchayatVotersData(dataVerificationVO, dataVerificationInfoVO, panchayatList);
+      	  
+      	 List<Object[]> voterModificationList = voterModificationInfoDAO.getModificationDetailsByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.PANCHAYAT));
+		  if(voterModificationList != null && voterModificationList.size() > 0)
+		  {
+			  for(Object[] params : voterModificationList)
+			  {
+			     if(dataVerificationVO.getPanchayatIdsList().contains((Long)params[0]))
+				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase("2")))
+					   missedPanchayatIds.add((Long)params[0]);
+			  }
+		  }
+		  
+		  	if(missedPanchayatIds != null && missedPanchayatIds.size() > 0)
+		  	{
+		  		dataVerificationInfoVO.setStatusWisePanchayatCount(new Long(missedPanchayatIds.size()));
+		  	    List<Object[]> panchayatsList = panchayatDAO.getPanchayatsByPanchayatIdsList(missedPanchayatIds);
+		  	    dataVerificationInfoVO.setStatusWisePanchayatsList(getLocationNameAndIds(panchayatsList));
+		  	}
+		  
+  		  dataVerificationVO.setModificationInfo(dataVerificationInfoVO);
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkPanchayatWiseVoterModificationData() method, Exception - "+e);
+		}
+    }
+    
+    //muncipality wise
+    public void checkMuncipalityWiseVoterModificationData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    	 DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getModificationInfo();
+      	 List<Long> missedMuncipalityIds = new ArrayList<Long>(0);
+      	  
+      	 List<Long> MuncipalityList = voterModificationInfoDAO.getReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.LOCALELECTIONBODY));
+      	 setMuncipalityWiseVotersData(dataVerificationVO, dataVerificationInfoVO, MuncipalityList);
+      	  
+      	List<Object[]> voterModificationList = voterModificationInfoDAO.getModificationDetailsByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.LOCALELECTIONBODY));
+      	 
+		  if(voterModificationList != null && voterModificationList.size() > 0)
+		  {
+			  for(Object[] params : voterModificationList)
+			  {
+			     if(dataVerificationVO.getMuncipalityIdsList().contains((Long)params[0]))
+				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase("2")))
+					   missedMuncipalityIds.add((Long)params[0]);
+			  }
+		  }
+		  
+		  	if(missedMuncipalityIds != null && missedMuncipalityIds.size() > 0)
+		  	{
+		  		dataVerificationInfoVO.setStatusWiseMuncipalityCount(new Long(missedMuncipalityIds.size()));
+		  	    List<Object[]> boothsList = boothDAO.getMuncipalitiesByMuncipalityIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),missedMuncipalityIds);
+		  	    dataVerificationInfoVO.setStatusWiseMuncipalitiesList(getLocationNameAndIds(boothsList));
+		  	}
+		  	dataVerificationVO.setModificationInfo(dataVerificationInfoVO);
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkMuncipalityWiseVoterModificationData() method, Exception - "+e);
+		}
+    }
+    
+    
+    //ward info
+    public void checkWardWiseVoterModificationData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getModificationInfo();
+         	 List<Long> missedWardIds = new ArrayList<Long>(0);
+         	  
+         	 List<Long> wardList = voterModificationInfoDAO.getReportLevelValueByReportLevelId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.WARD));
+         	 setWardWiseVotersData(dataVerificationVO, dataVerificationInfoVO, wardList);
+         	  
+         	 List<Object[]> voterModificationList = voterModificationInfoDAO.getModificationDetailsByConstituencyId(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(), votersAnalysisService.getReportLevelId(IConstants.WARD));
+         	 
+         	if(voterModificationList != null && voterModificationList.size() > 0)
+         	{
+  			  for(Object[] params : voterModificationList)
+  			  {
+  			     if(dataVerificationVO.getWardIdsList().contains((Long)params[0]))
+  				   if(!(params[1]!= null && params[1].toString().equalsIgnoreCase("2")))
+  					 missedWardIds.add((Long)params[0]);
+  			  }
+  		  }
+  		  
+  		  	if(missedWardIds != null && missedWardIds.size() > 0)
+  		  	{
+  		  		dataVerificationInfoVO.setStatusWiseWardCount(new Long(missedWardIds.size()));
+  		  	    List<Object[]> boothsList = boothDAO.getWardsByWardIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),missedWardIds);
+  		  	    dataVerificationInfoVO.setStatusWiseWardsList(getLocationNameAndIds(boothsList));
+  		  	}
+  		  dataVerificationVO.setModificationInfo(dataVerificationInfoVO);
+    	}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkWardWiseVoterModificationData() method, Exception - "+e);
+		}
+    }
+    
 }
