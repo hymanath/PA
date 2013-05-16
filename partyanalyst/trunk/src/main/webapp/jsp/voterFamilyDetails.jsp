@@ -171,7 +171,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 </head>
 
 <body>
-<div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
+<div id="ajaxImageDiv" style="margin-top: 100px;margin-left:383px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="mainDiv" style="width:960px;margin-top:50px;margin-left:auto;margin-right:auto;">
 <div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid #d3d3d3;"></div>
 
@@ -202,7 +202,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 <!--<div id ="impFamilesBasicSubDetailsTitle" ></div>-->
 <div id="impFamilesBasicSubDetailsDiv" class="widget blue whitegloss" style="width:926px;margin-left:auto;margin-right:auto;">
 
-<div id="ajaxImageDiv1" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="margin-left: 230px;"/> </div>
+<div id="ajaxImageDiv1" style="margin-top: 100px;margin-left: 355px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 
 <h4 id="impFamilesBasicSubDetailsTitle"></h4>
 <div id ="impFamilesBasicSubDetails" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;"></div>
