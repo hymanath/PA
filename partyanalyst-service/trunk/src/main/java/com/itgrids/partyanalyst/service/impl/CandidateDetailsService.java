@@ -4943,10 +4943,15 @@ private PdfGenerationVO preparePdfWithMatchedFilesContentReturnFilePath(String q
 				 for(FileSourceLanguage fileSource :file.getFileSourceLanguage()){
 							 
 					FileVO fileSourceLanguage = new FileVO();
-							 
 					fileSourceLanguage.setSource(fileSource.getSource().getSource());
 					fileSourceLanguage.setSourceId(fileSource.getSource().getSourceId());
-						   
+					String locationName =  getLocationDetails(fileSource.getFile().getRegionScopes().getRegionScopesId(), fileSource.getFile().getLocationValue());		 
+						if(locationName!=null)
+							fileSourceLanguage.setLocationScopeValue(fileSource.getFile().getRegionScopes().getScope()+" " +
+							"("+locationName+")");	 
+						else
+							fileSourceLanguage.setLocationScopeValue(fileSource.getFile().getRegionScopes().getScope());
+						
 					List<FileVO> filePathList = new ArrayList<FileVO>();	
 						       
 						for(FilePaths filePath :fileSource.getFilePaths()){					   
@@ -5089,6 +5094,10 @@ public PdfGenerationVO generatePdf(List<FileVO> filesList , PdfGenerationVO pdfG
 							+ fileSource.getSource(), new Font(
 							Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL,
 							BaseColor.DARK_GRAY)));
+					sourcePage.add(new Paragraph("REGION SCOPE : "+fileSource.getLocationScopeValue(),new Font(
+								Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL,
+								BaseColor.DARK_GRAY)));
+				
 				
 				//sourcePage.add("DATE:"+mainFile.getFileDateAsString());
 				//sourcePage.add("                              ");
