@@ -369,4 +369,6 @@ public interface IStaticDataService {
 		public MandalVO getElectionYearsAndPartiesForSelectedConstituency(Long constituencyId);
 		
 		public List<SelectOptionVO> getBoothsInMuncipality(Long id,Long publicationId);
+		
+		public List<Object[]> getVotersCountInAPanchayatForAnElection(Long electionId, Long panchayatId);
 }
