@@ -6936,8 +6936,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									//each Mandal PanchayatList
 								for(SelectOptionVO mandals: mandalList)
 								{
-									
-									panchayatList1= staticDataService.getPanchayatiesByMandalId(new Long(mandals.getId().toString().substring(1)));
+									panchayatList1= staticDataService.getPanchayatiesByMandalIdAndConstId(constituencyId,new Long(mandals.getId().toString().substring(1)),publicationDateId);
 									if(panchayatList1 != null && panchayatList1.size() > 0)
 									{
 									mandals.setSelectOptionsList(panchayatList1);
@@ -7016,8 +7015,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					 {
 						    List<Object[]> panchayatiesList1 = null;
 						    try{
-						    	 panchayatiesList1 = panchayatDAO.getPanchayatiesCount(id,type,publicationDateId);
-
+						    	 //panchayatiesList1 = panchayatDAO.getPanchayatiesCount(id,type,publicationDateId);
+						    	 panchayatiesList1 = boothDAO.getPanchayatiesCountByTahsilAndConstituencyId(constituencyId,id,publicationDateId,type);
 						    }catch(Exception e){
 						    	log.error("Exception Occured in getting panchayaties  - ",e);
 						    }

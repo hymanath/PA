@@ -2442,6 +2442,18 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return hamlets;	
 	}
+	
+	public List<SelectOptionVO> getPanchayatiesByMandalIdAndConstId(Long constituencyId,Long id,Long publicationDateId)
+	{
+		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
+		List<Object[]> panchayaties = boothDAO.getPanchayatiesCountByTahsilAndConstituencyId(constituencyId,id,publicationDateId,"mandal");
+		SelectOptionVO hamlet = null;
+		for (Object[] panchayat : panchayaties) {
+			hamlet = new SelectOptionVO((Long)panchayat[0],panchayat[1].toString());
+			hamlets.add(hamlet);
+		}
+		return hamlets;	
+	}
 	public List<SelectOptionVO> getPanchayatiesByConstituencyId(Long constituencyId)
 	{
 		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
