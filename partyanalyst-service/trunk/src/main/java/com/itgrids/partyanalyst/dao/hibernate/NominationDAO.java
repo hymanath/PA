@@ -1555,23 +1555,43 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 
 	@SuppressWarnings("unchecked")
 	public List findElectionResultsByElectionIdAndPartyIdAndRank(
-			Long electionId, Long partyId, Long rank) {
+			Long electionId, Long partyId, Long rank,Long stateId) {
+		if(stateId.equals(0)){
 	    Object[] params = {electionId,partyId,rank};
 	    return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname,model.constituencyElection.constituency.constituencyId,"+
 	    		"model.constituencyElection.constituency.name,model.constituencyElection.constituencyElectionResult.validVotes,"+
 	    		"model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.nominationId from Nomination model where "+
 	    		"model.constituencyElection.election.electionId = ? and model.party.partyId = ? "+
 	    		"and model.candidateResult.rank = ? order by model.constituencyElection.constituency.constituencyId",params);
+		}
+		else{
+		    Object[] params = {electionId,partyId,rank,stateId};
+		    return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname,model.constituencyElection.constituency.constituencyId,"+
+		    		"model.constituencyElection.constituency.name,model.constituencyElection.constituencyElectionResult.validVotes,"+
+		    		"model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.nominationId from Nomination model where "+
+		    		"model.constituencyElection.election.electionId = ? and model.party.partyId = ? "+
+		    		"and model.candidateResult.rank = ? and model.constituencyElection.constituency.state.stateId = ? order by model.constituencyElection.constituency.constituencyId",params);
+			}
 	}
 	@SuppressWarnings("unchecked")
 	public List findElectionResultsByElectionIdAndPartyIdAndLostRank(
-			Long electionId, Long partyId, Long rank) {
+			Long electionId, Long partyId, Long rank,Long stateId) {
+		if(stateId.equals(0)){
 	    Object[] params = {electionId,partyId,rank};
 	    return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname,model.constituencyElection.constituency.constituencyId,"+
 	    		"model.constituencyElection.constituency.name,model.constituencyElection.constituencyElectionResult.validVotes,"+
 	    		"model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.candidateResult.rank from Nomination model where "+
 	    		"model.constituencyElection.election.electionId = ? and model.party.partyId = ? "+
 	    		"and model.candidateResult.rank != ?",params);
+		}
+		else{
+		    Object[] params = {electionId,partyId,rank,stateId};
+		    return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname,model.constituencyElection.constituency.constituencyId,"+
+		    		"model.constituencyElection.constituency.name,model.constituencyElection.constituencyElectionResult.validVotes,"+
+		    		"model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.candidateResult.rank from Nomination model where "+
+		    		"model.constituencyElection.election.electionId = ? and model.party.partyId = ? "+
+		    		"and model.candidateResult.rank != ? and model.constituencyElection.constituency.state.stateId = ? ",params);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
