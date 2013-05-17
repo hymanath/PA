@@ -2215,10 +2215,15 @@ function getAgewiseInfoForVoterCategory(){
 		callAjax(jsObj, url);*/
 	}
 	function getAllSubDetails(){
+		if(typeofMuncipality == "GHMC Greater Municipal Corp")
+			isGhmc = true;
+		else
+			isGhmc = false;
+
 	   var constiId = $("#constituencyList").val();
 	   if(maintype !="panchayat")
 		{
-	   var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+mainpublicationId+"&type="+maintype+"&publicationYear="+publicationYear+"&buildType=&constituencyId="+constiId+"&typeName="+mainname;
+	   var urlstr = "subRegionsWiseAnalysisAction.action?id="+mainreqid+"&publicationDateId="+mainpublicationId+"&type="+maintype+"&publicationYear="+publicationYear+"&buildType=&constituencyId="+constiId+"&typeName="+mainname+"&ghmc="+isGhmc;
 		}
 	if(maintype =="panchayat")
 		{

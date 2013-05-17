@@ -2,12 +2,10 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
@@ -16,7 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
-import org.hsqldb.lib.HashSet;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -24,7 +21,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
-import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
@@ -47,6 +44,8 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private HttpServletRequest request;
 	private ServletContext context;
 	private String parties;
+	
+
 	private String includeAlliance;
 	private String elections;
 	private MandalVO mandalVO;
@@ -66,7 +65,29 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private String task = null;
 	private HttpSession session;
 	private List<Object> electionResults;
+	private List<SelectOptionVO> delimitationMandalDetails;
+	private SelectOptionVO delimitationConstituencyDetails;
 	
+	
+	
+	public SelectOptionVO getDelimitationConstituencyDetails() {
+		return delimitationConstituencyDetails;
+	}
+
+	public void setDelimitationConstituencyDetails(
+			SelectOptionVO delimitationConstituencyDetails) {
+		this.delimitationConstituencyDetails = delimitationConstituencyDetails;
+	}
+
+	public List<SelectOptionVO> getDelimitationMandalDetails() {
+		return delimitationMandalDetails;
+	}
+
+	public void setDelimitationMandalDetails(
+			List<SelectOptionVO> delimitationMandalDetails) {
+		this.delimitationMandalDetails = delimitationMandalDetails;
+	}
+
 	public Map<String, List<String>> getPartyResultMapVotes() {
 		return partyResultMapVotes;
 	}
@@ -526,7 +547,16 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			}
 			else{
 				electionResults = new ArrayList<Object>();
-				partiesResults = constituencyPageService.getMandalwiseEleInfoOfConstituency(jObj.getLong("constituencyId"), jObj.getString("parties"),jObj.getString("elections"), new Boolean(jObj.getString("includeAlliance")));
+				String resultType ="";
+				
+				try{					
+					resultType = jObj.getString("resultType");
+				}catch(Exception e){
+					e.printStackTrace();
+					
+				}
+						
+				partiesResults = constituencyPageService.getMandalwiseEleInfoOfConstituency(jObj.getLong("constituencyId"), jObj.getString("parties"),jObj.getString("elections"), new Boolean(jObj.getString("includeAlliance")),resultType);
 				electionResults.add(partiesResults);
 				partyResultMap=new HashMap<String, List<PartyResultVO>>();
 			        
@@ -567,5 +597,38 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		  LOG.error("exception raised in getPanchayatWiseElectionResultsForMandal() ",e);
 		}
 		 return Action.SUCCESS;  
+   }
+   
+   public String getConstituencyMandalDetailsForAllDelimitations()
+   {
+		String param = null;
+		param = getTask();
+		try {
+			
+			jObj = new JSONObject(param);
+			
+			delimitationMandalDetails = staticDataService.getConstituencyMandalDetailsForAllDelimitations(jObj.getLong("constituencyId"));
+			
+		} catch (Exception e) {
+		}
+		return Action.SUCCESS;
+   }
+   
+   
+   public String checkDelimitationYearsAndMandalsForConstituency()
+   {
+		String param = null;
+		param = getTask();
+		try {
+			
+			jObj = new JSONObject(param);
+			
+			delimitationConstituencyDetails =  staticDataService.checkDelimitationYearsAndMandalsForConstituency(jObj.getLong("constituencyId"));
+			
+		} catch (Exception e) {
+		}
+		return Action.SUCCESS;
+	   
+	   
    }
 }
