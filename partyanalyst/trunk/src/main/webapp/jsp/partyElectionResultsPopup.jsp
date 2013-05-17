@@ -327,8 +327,7 @@ function backtopage() {
 	var electionTypeId = '${electionTypeId}';
     var locationId="${locationId}";
 	var reportLevel="${reportLevel}";
-
-
+	var stateId = "${stateId}";
 	var partyElectionResultsObj={
 		candidateResultsArr:[]
 	};
@@ -455,7 +454,8 @@ function backtopage() {
 		{		
 		 	electionId: electionId,
 		 	partyId: partyId,
-		 	rank:rank,				
+		 	rank:rank,
+		 	stateId:stateId,
 			task:"getConstituencyResults"		
 		}
 		
@@ -703,6 +703,7 @@ function backtopage() {
 			clickIndex:index,
 			reportLevel:reportLvl,
 			locationId:loctnId,
+			stateId:stateId,
 			task:"getConstituencyStatusAnalysisForVotesMarginWindow"		
 		}
 		
