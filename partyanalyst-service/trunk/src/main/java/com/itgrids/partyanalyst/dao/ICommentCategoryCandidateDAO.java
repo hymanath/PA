@@ -32,10 +32,10 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List getCommentsCountForAPartyInAnElection(Long electionId,Long partyId);
 	
 	@SuppressWarnings("unchecked")
-	public List getCommentsResultsForAPartyInAnElection(Long electionId,Long partyId);
+	public List getCommentsResultsForAPartyInAnElection(Long electionId,Long partyId,Long stateId);
 	
 	@SuppressWarnings("unchecked")
-	public List getCommentsResultsForAPartyInAnElection(Long electionId,Long partyId,String category);
+	public List getCommentsResultsForAPartyInAnElection(Long electionId,Long partyId,String category,Long stateId);
 	
 	@SuppressWarnings("unchecked")
 	public List getCommentsCountForACandidateInAConstituencyInAnELection(Long electionId,Long candidateId,Long constituencyId);
@@ -65,7 +65,7 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List getNominationsForCandidateHavingComments(Long electionId,Long partyId,String category);
 	
 	@SuppressWarnings("unchecked")
-	public List getCommentsResultsForAPartyInAnElection(Long electionId,Long partyId,String category,Long categoryTypeId);
+	public List getCommentsResultsForAPartyInAnElection(Long electionId,Long partyId,String category,Long categoryTypeId,Long stateId);
 	
 	@SuppressWarnings("unchecked")
 	public List getCommentResultsForCandidateNominations(List<Long> nominationIds);
