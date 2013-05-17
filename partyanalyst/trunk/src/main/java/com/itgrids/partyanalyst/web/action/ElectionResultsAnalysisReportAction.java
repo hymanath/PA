@@ -558,14 +558,14 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		Long electionId = new Long(jObj.getString("electionId"));
 		Long partyId = new Long(jObj.getString("partyId"));
 		String status = jObj.getString("status");
-		
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
 		String category = null;
 		if(status.equalsIgnoreCase("WON"))
 			category = IConstants.CANDIDATE_COMMENTS_WON;
 		else if(status.equalsIgnoreCase("LOST"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category,0L,0L) ;
+		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category,stateId,0L) ;
 		
 		
 		return Action.SUCCESS;
