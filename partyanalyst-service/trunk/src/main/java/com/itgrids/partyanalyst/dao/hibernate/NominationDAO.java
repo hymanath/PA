@@ -1576,7 +1576,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	@SuppressWarnings("unchecked")
 	public List findElectionResultsByElectionIdAndPartyIdAndLostRank(
 			Long electionId, Long partyId, Long rank,Long stateId) {
-		if(stateId.equals(0)){
+		if(stateId == null || stateId.equals(0))
+		{
 	    Object[] params = {electionId,partyId,rank};
 	    return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname,model.constituencyElection.constituency.constituencyId,"+
 	    		"model.constituencyElection.constituency.name,model.constituencyElection.constituencyElectionResult.validVotes,"+
