@@ -21,13 +21,13 @@ public interface IAnalysisReportService {
 	
     public PartyAnalysisReportVO getAnalysisReportForAPartyInAnElection(String electionType,String electionYear,Long stateId,Long partyId,Long electionId);
     
-    public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(Long electionId,Long partyId);
+    public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(Long electionId,Long partyId,Long stateId);
     
  	public PartyPositionAnalysisResultVO getAnalysisCategoryResultForAPartyInAnElection(String electionType,String electionYear,Long electionId,Long stateId,Long partyId,String analysisCategory,Boolean includeAllianc);
  	
  	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(Long electionId, Long partyId,Long stateId);
  	
- 	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(Long electionId,Long partyId,String category,Long categoryTypeId);
+ 	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(Long electionId,Long partyId,String category,Long categoryTypeId,Long stateId);
  	
  	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(Long electionId, Long partyId,Long stateId,String category);
  	
