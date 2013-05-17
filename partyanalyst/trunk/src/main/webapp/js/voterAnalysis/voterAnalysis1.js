@@ -6293,7 +6293,7 @@ var typeofMuncipality="";
   $.fn.customMenu = function(menudata,menutype,mandalid,panchayatid,municipalityid) {
   /* menudata= resultset of the consistuency data upto booth 
      menutype= 0-Mandals, 1-Municipalities, 2-Panchayats, 3-Wards/Booths */
-	 
+	typeofMuncipality = ""; 
   var str="";
   var str1="";
 		 switch(menutype)

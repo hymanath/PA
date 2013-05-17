@@ -427,8 +427,13 @@ var constituencyType = 'Assembly';
 var parliamentResult;
 var counter = 0;
 var tehsilId = '${mandalId}';
+var isGhmc = '${ghmc}';
 
 $(document).ready(function(){
+
+	$('.delimitation').change(function(){
+		getResultsForConstituency();
+	});
  if(type == "mandal"){
        $("#mandalElecResultsDiv").show();
 	   //$("#votingTrendzDiv").hide();
@@ -555,7 +560,18 @@ $("#panchayats").live("change",function(){
 <div class="widget blue" id="mandalElecResultsDiv" style="margin-top:10px;display:none;" >
    <!--<h4 id="sublevelHeading">Caste Wise Voters Analysis</h4>-->
    <div id="sublevelHeading"> </div>
-  <div class="hero-unit" >
+
+ <div id="dialogDiv" style="margin-left:20px;"></div>
+<div id="delimitationOptionsDiv" class="hero-unit" style="padding:2px;text-align:center;display:none;">
+<span style="font-weight:bold;margin-left:60px;">Compare Results With - </span>
+<label><input type='radio' name="election" value="previous" class="delimitation"/>Previous Delimitation</label>
+<label><input type='radio' name="election" value="present" class="delimitation" checked />Latest Delimitation</label>
+<label><input type='radio' name="election" value="all" class="delimitation"/>Both</label>
+
+<a  style="float:right;font-size:13px;font-weight:bold;margin-right:15px;" href="javascript:{callAjaxToShowTehsilDetails()}">Show All Delimitation Mandal Details</a>
+</div>
+
+<div class="hero-unit" >
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
     <div id="mandalElecResultsParties"></div>
     <div id="mandalElecResultsElections"></div>
@@ -894,7 +910,14 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "getPanchayatsByMandalId")
 								{
 								buildPanchayats(myResults);
-								}
+								}else if(jsObj.task == "getTehsilDetailsForAllDelimitations"){
+
+									
+									showAllTehsilDetailsForAllDelimitations(myResults);
+								}else if(jsObj.task == "checkDelimitationYearsAndMandalsForConstituency")
+									if(myResults.oneDelimitation != "true" && myResults.sameMandals != "true")
+									$('#delimitationOptionsDiv').show();
+
 				
 								}catch (e) {
 								console.log(e);
@@ -3251,6 +3274,7 @@ function getConstituencyEleAndParties()
 {
 	var jsObj= {
 		constituencyId : constituencyId,
+			delimitationType:"present",
 			task:"getConstiEleAndParties"
 	}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3328,7 +3352,7 @@ var jsObj=
 				constituencyId:constituencyId,
 				parties:parties.substr(1),
 				elections:elections.substr(1),
-				
+                resultType:$('input:radio[name=election]:checked').val(),
 				includeAlliance:$("#includeAlliancesDiv").is(':checked'),
 				btnName:btnName,
 				task:"getResultsForConstituency"
@@ -3678,6 +3702,62 @@ function showMPTCZPTCResults()
 			}
 	}
 
+function callAjaxToShowTehsilDetails()
+{
+
+  var jsObj=
+			{				
+				constituencyId:id,
+				task:"getTehsilDetailsForAllDelimitations"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getConstituencyMandalDetailsForAllDelimitations.action?"+rparam;	
+   
+		callAjax(jsObj,url);
+
+}
+
+function callAjaxToCheckDelimitationYears()
+{
+
+var jsObj=
+			{				
+				constituencyId:id,
+				task:"checkDelimitationYearsAndMandalsForConstituency"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "checkDelimitationYearsAndMandalsForConstituency.action?"+rparam;	
+   
+		callAjax(jsObj,url);
+
+}
+
+function showAllTehsilDetailsForAllDelimitations(results)
+{
+
+   var str='';
+
+   for(var i in results){
+    str+='<div style="float:left;margin:8px;">';
+	  str+='<u><h6>'+results[i].year+'</h6></u>';
+	   for(var j in results[i].names)
+		    str+='<span>'+results[i].names[j]+'</span><br>';
+	str+='</div>';
+   }
+
+   $('#dialogDiv').html(str);
+   $('#dialogDiv').dialog({
+	   title:'Mandal Details For All Delimitations',
+	   height:'auto',
+       width:'auto',
+       show:'blind',
+  	   hide:'blind',
+	  buttons: { "Ok": function() { $(this).dialog("close"); } } 
+
+   });
+
+}
+
 	
 </script>
 
@@ -3691,6 +3771,10 @@ getLatestCastsSubcategoryWise();
 getAgewiseVoterDetails();
 if('${type}' == "mandal")
 showMPTCZPTCResults();
+
+if('${type}' != "constituency" || isGhmc == "true")
+$('#delimitationOptionsDiv').hide();
+callAjaxToCheckDelimitationYears();
 
 </script>
 </body>

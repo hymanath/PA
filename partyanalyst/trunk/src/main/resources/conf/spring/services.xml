@@ -330,6 +330,7 @@
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >

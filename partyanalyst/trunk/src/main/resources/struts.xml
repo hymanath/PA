@@ -5124,5 +5124,22 @@
 				 <param name="root">dataVerificationVO</param>
 			</result>
 		</action>
+		
+		
+		<action name="getConstituencyMandalDetailsForAllDelimitations" class="mandalRevenueVillagesElecAction" method="getConstituencyMandalDetailsForAllDelimitations">
+		
+		  <result type="json" name="success">
+				 <param name="root">delimitationMandalDetails</param>
+			</result>
+		</action>
+		
+		<action name="checkDelimitationYearsAndMandalsForConstituency" class="mandalRevenueVillagesElecAction" method="checkDelimitationYearsAndMandalsForConstituency">
+		
+		  <result type="json" name="success">
+				 <param name="root">delimitationConstituencyDetails</param>
+			</result>
+		</action>
+		
+		
 		</package>
 </struts>      

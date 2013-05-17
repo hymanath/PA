@@ -38,6 +38,17 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 	private List<ElectionWiseMandalPartyResultVO> mptcZptcElectionResultsVO;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	
+	private String ghmc;
+	
+	public String getGhmc() {
+		return ghmc;
+	}
+
+
+	public void setGhmc(String ghmc) {
+		this.ghmc = ghmc;
+	}
+
 	private Long parliamentConstituencyId;
 	
 	public Long getParliamentConstituencyId() {
