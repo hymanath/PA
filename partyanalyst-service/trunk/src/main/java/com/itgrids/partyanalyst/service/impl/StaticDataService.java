@@ -8305,5 +8305,35 @@ public class StaticDataService implements IStaticDataService {
 		return returnData;
 	}
 	
-	
+	public List<Object[]> getVotersCountInAPanchayatForAnElection(Long electionId, Long panchayatId)
+	{
+		List<Object[]> resultList = new ArrayList<Object[]>(0);
+		try{
+			List<Object[]> list = hamletBoothElectionDAO.getBoothWiseVotersCountInAPanchayat(electionId, panchayatId);
+			
+			if(list != null && list.size() > 0)
+			{
+				Object[] result = new Object[4];
+				Long totalVoters = 0L;
+				Long maleVoters = 0L;
+				Long femaleVoters = 0L;
+				
+				for(Object[] params : list)
+				{
+					maleVoters += (Long)params[0];
+					femaleVoters += (Long)params[1];
+					totalVoters += (Long)params[2];
+				}
+				result[0] = maleVoters;
+				result[1] = femaleVoters;
+				result[2] = totalVoters;
+				result[3] = Integer.valueOf(list.size()).longValue();
+				resultList.add(result);
+			}
+			return resultList;
+		}catch (Exception e) {
+			log.error("Exception occured in getVotersCountInAPanchayatForAnElection() Method, ",e);
+			return resultList;
+		}
+	}
 }
