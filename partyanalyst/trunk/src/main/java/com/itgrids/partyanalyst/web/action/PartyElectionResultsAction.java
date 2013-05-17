@@ -47,7 +47,16 @@ public class PartyElectionResultsAction extends ActionSupport implements Servlet
 	private String resultStatus;
 	private String locationId;
 	private String reportLevel;
+	private Long stateId;
 		
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
 
 	public String getResultStatus() {
 		return resultStatus;
@@ -239,6 +248,7 @@ public String ajaxCallHandler() throws Exception{
 			Long electionId = new Long(jObj.getString("electionId"));
 			Long partyId = new Long(jObj.getString("partyId"));
 			Long rank = new Long(jObj.getString("rank"));
+			Long stateId = new Long(jObj.getString("stateId"));
 			if(log.isInfoEnabled())
 			{
 				log.debug("Entered in to Action");
@@ -249,7 +259,7 @@ public String ajaxCallHandler() throws Exception{
 			}
 			
 			electionResultPartyVO = new ElectionResultPartyVO();
-			electionResultPartyVO = staticDataService.getElectionResultForAPartyInAnElection(electionId, partyId, rank);
+			electionResultPartyVO = staticDataService.getElectionResultForAPartyInAnElection(electionId, partyId, rank,stateId);
 		}		
 		
 		return Action.SUCCESS;
