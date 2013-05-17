@@ -373,6 +373,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getConstituencyMandalDetailsForAllDelimitations(Long constituencyId);
 		public SelectOptionVO checkDelimitationYearsAndMandalsForConstituency(Long constituencyId);
 		public List<Object[]> getVotersCountInAPanchayatForAnElection(Long electionId, Long panchayatId);
-
-
+	
+		public List<SelectOptionVO> getPanchayatiesByMandalIdAndConstId(Long constituencyId,Long id,Long publicationDateId);
 }

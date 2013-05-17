@@ -1044,7 +1044,6 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			Query query = getSession().createQuery(" select distinct model.localBodyWard.constituencyId from Booth model " +
 					" where model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId " +
 					" and model.localBodyWard.constituencyId is not null ");
-			
 			query.setParameter("constituencyId", constituencyId);
 			query.setParameter("publicationDateId", publicationId);
 			return query.list();
@@ -1081,6 +1080,22 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameter("constituencyId", constituencyId);
 			query.setParameter("publicationDateId", publicationId);
 			query.setParameterList("wardIdsList", wardIdsList);
+			return query.list();
+		}
+		
+		public List<Object[]> getPanchayatiesCountByTahsilAndConstituencyId(Long constituencyId,Long tehsilId,Long publicationId,String type){
+			StringBuilder str = new StringBuilder();
+			str.append("select distinct model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model where model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationId");
+			
+			if(type.equalsIgnoreCase("mandal"))
+				str.append(" and model.tehsil.tehsilId =:tehsilId ");
+			
+			Query query =getSession().createQuery(str.toString());
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationId", publicationId);
+			if(type.equalsIgnoreCase("mandal"))
+			query.setParameter("tehsilId", tehsilId);
+			
 			return query.list();
 		}
 }

@@ -443,7 +443,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[0]+" "+params[1]);
 	}*/
 	
-	public void testGetAllBoothsInAConstituency()
+	/*public void testGetAllBoothsInAConstituency()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(31809l);
@@ -455,7 +455,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(parms[0] +":"+ parms[1]);
 			
 		}
-	}
+	}*/
 	
 	/*public void testGetAllBoothsInAMuncipality()
 	{
@@ -521,13 +521,22 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[0]+" "+params[1]);
 	}*/
 	
-	public void testGetMuncipalitiesByMuncipalityIdsList()
+	/*public void testGetMuncipalitiesByMuncipalityIdsList()
 	{
 		List<Long> wardIdsList = new ArrayList<Long>(0);
 		wardIdsList.add(31805l);
 		List<Object[]> list = boothDAO.getWardsByWardIdsList(347l, 8l, wardIdsList);
 		for(Object[] params :list)
 			System.out.println(params[0]+" "+params[1]);
+	}*/
+	
+	public void testgetPanchayatiesCountByTahsilAndConstituencyId(){
+		List<Object[]> list = boothDAO.getPanchayatiesCountByTahsilAndConstituencyId(232l,844l,8l,"mandal");
+		System.out.println(list.size());
+		for(Object[] params :list)
+		{
+			System.out.println(params[0]+" "+params[1]);
+		}
 	}
 	
 }
