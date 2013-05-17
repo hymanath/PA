@@ -3411,7 +3411,7 @@ function buildCastInfoData(myresults,jsObj)
 	//localCastStatsTabContent += 'Total Male Voters : '+totalMale+'&nbsp;&nbsp;&nbsp;';
 	//localCastStatsTabContent += 'Total Female Voters : '+totalFemale+'<br><br>';
 	localCastStatsTabContent += '<span class="">Caste Assigned Voters : '+result.maleVoters+'</span>';
-	localCastStatsTabContent += '<span class="">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
+	//localCastStatsTabContent += '<span class="">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
 
 	if(result.voterCastInfoVOList != null && result.voterCastInfoVOList.length > 0)
 	  $('#localCastDetailsHeadingDiv').html('<h2 id="subHeading">Caste Category wise voters details</h2>');
