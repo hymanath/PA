@@ -71,6 +71,14 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Object[]> getBoothWiseVotersCountInAPanchayat(Long electionId,Long panchayatId)
+	{
+		Object[] params = {electionId, panchayatId};
+		return getHibernateTemplate().find("select HBE.boothConstituencyElection.booth.maleVoters,HBE.boothConstituencyElection.booth.femaleVoters,HBE.boothConstituencyElection.booth.totalVoters,HBE.boothConstituencyElection.booth.boothId from HamletBoothElection HBE, PanchayatHamlet PH where HBE.hamlet.hamletId = PH.hamlet.hamletId and " +
+				" HBE.boothConstituencyElection.constituencyElection.election.electionId = ? and PH.panchayat.panchayatId = ? group by HBE.boothConstituencyElection.booth.boothId ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Long> getBoothIdsByPanchayatId(Long PanchayatId, Long electionId)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
