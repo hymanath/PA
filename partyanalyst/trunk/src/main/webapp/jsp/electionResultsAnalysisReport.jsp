@@ -322,7 +322,7 @@ function ajaxCallForBasicAnalysisDetails(electionYear,stateId,electionType,elect
 function openPartyElectionResultsWindow(electionId,partyId,rank,partyName,electionType,stateName,electionYear,electionTypeId)
 { 
 	
-var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&partyId="+partyId+"&rank="+rank+"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&windowTask=partyElectionResultsPopup";
+var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&partyId="+partyId+"&stateId="+$('#stateSelectEl').val()+"&rank="+rank+"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&windowTask=partyElectionResultsPopup";
 
 	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1300,left=200,top=200");
 	
@@ -400,7 +400,8 @@ function buildVotesMarginInfo(electionId,partyId,status)
 	{
 	 	electionId: electionId,
 		partyId: partyId,
-		status: status,		
+		status: status,
+		stateId: $('#stateSelectEl').val(),
 		task:"getVotesMarginInfo"		
 	}
 	
@@ -418,7 +419,7 @@ function showMarginCountAnalysisForConstituenciesPopup(index,partyId,status)
 	else if(status == "LOST")
 		rank = 0;
 
-	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&electionType="+electionType+"&partyId="+partyId+"&rank="+rank+"&clickIndex="+index+"&resultStatus="+status+"&windowTask=mainPartyMarginCountAnalysisPopup";
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&stateId="+$('#stateSelectEl').val()+"&electionType="+electionType+"&partyId="+partyId+"&rank="+rank+"&clickIndex="+index+"&resultStatus="+status+"&windowTask=mainPartyMarginCountAnalysisPopup";
 	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1300,left=200,top=200");
 	
 	browser1.focus();
