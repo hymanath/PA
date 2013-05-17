@@ -2188,15 +2188,15 @@ function getAgewiseInfoForVoterCategory(){
 	function getCategorySubDetails(attrId,constituencyId){
 		var str ='';
 	 
-	   $('.categorycheckbox').each(function() {
+	  /* $('.categorycheckbox').each(function() {
 	        if($(this).is(':checked')){
 		       str = str+","+$(this).val();
             }
         });
 		
-		str = str.slice(1);
+		str = str.slice(1);*/
 
-	   var urlstr = "categorySubWiseVoterDetailsAction.action?id="+attrId+"&retrieveType="+maintype+"&locationId="+mainreqid+"&constituencyId="+constituencyId+"&publicationId="+mainpublicationId+"&task=getCategoryWiseSubDetails&attributeIds=["+str+"]&";
+	   var urlstr = "categorySubWiseVoterDetailsAction.action?id="+attrId+"&retrieveType="+maintype+"&locationId="+mainreqid+"&constituencyId="+constituencyId+"&publicationId="+mainpublicationId+"&task=getCategoryWiseSubDetails&attributeIds=["+attrId+"]&";
 
 
 
