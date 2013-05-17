@@ -331,6 +331,7 @@ function getCommentsClassifications(rank)
 	{ 
 		var jsObj={
 				rank: rank,
+				stateId:stateId,
 				task: "getCommentsClassificationsList"				
 			  }	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -357,7 +358,8 @@ function getCommentsClassifications(rank)
 				candidateId: candidateId,
 				constituencyId: constituencyId,
 				constituencyName: constituencyName,
-				partyName: partyName,			
+				partyName: partyName,
+				stateId:stateId,				
 				task:"getPreviousComments"				
 			  }
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -425,6 +427,7 @@ function getCommentsClassifications(rank)
 					category: category,
 					commentCategoryId: commentCategoryId,
 					reasonSeverityvalue: reasonSeverityvalue,
+					stateId:stateId,
 					task:"addNewComment"				
 				  }	 
 				
