@@ -61,16 +61,16 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 				System.out.print("\t"+obj.toString());
 		}
 	}*/
-	/*public void testGetVotersCountInAPanchayat()
+	public void testGetVotersCountInAPanchayat()
 	{
 		List<Object[]> list = hamletBoothElectionDAO.getVotersCountInAPanchayat(38l,1l);
 		System.out.println(list.size());
 		
 		for(Object[] data : list)
 		{
-			System.out.println(data[0]+" - "+data[1]+" - "+data[2]);
+			System.out.println(data[0]+"\t"+data[1]+"\t"+data[2]+"\t"+data[3]);
 		}
-	}	*/
+	}	
 	/*public void testGetBoothIdsByPanchayatId()
 	{
 		List<Long> list = hamletBoothElectionDAO.getBoothIdsByPanchayatId(1l, 116l);
@@ -101,7 +101,7 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testFindAllElectionsHappendInAPanchayat()
+	/*public void testFindAllElectionsHappendInAPanchayat()
 	{
 		List<Long> constiIds = new ArrayList<Long>();
 		constiIds.add(476l);
@@ -113,7 +113,7 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(params[0]+"  "+params[1]);
 		}
-	}
+	}*/
 	
 	/*public void testGetBoothIdsByMandalId()
 	{
