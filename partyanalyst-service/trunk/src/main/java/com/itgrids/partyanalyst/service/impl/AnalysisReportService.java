@@ -287,7 +287,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(
-			Long electionId, Long partyId) {
+			Long electionId, Long partyId,Long stateId) {
 		
 		log.debug("Inside getCandidateCommentDetailsInAnElection Method..... ");
 		
@@ -300,7 +300,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				electionBasicCommentsVO = new ArrayList<ElectionBasicCommentsVO>();
 				commentsDataMap = new HashMap<Long,List<CandidateCommentsVO>>();
 				
-				List commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId);
+				List commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId,stateId);
 				Party party = partyDAO.get(partyId);
 				
 				if(commentsDetails != null && commentsDetails.size() > 0){
@@ -710,7 +710,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(
-			Long electionId, Long partyId, String category,Long categoryTypeId) {
+			Long electionId, Long partyId, String category,Long categoryTypeId,Long stateId) {
 		
         log.debug("Inside getCandidateCommentDetailsInAnElection Method..... ");
 		
@@ -726,9 +726,9 @@ public class AnalysisReportService implements IAnalysisReportService {
 				
 				//List commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId);
 				if(categoryTypeId == null || categoryTypeId.equals(new Long(0)))
-				    commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId,category);
+				    commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId,category,stateId);
 				else 
-					commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId,category,categoryTypeId);	
+					commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId,category,categoryTypeId,stateId);	
 				
 				Party party = partyDAO.get(partyId);
 				
@@ -802,9 +802,9 @@ public class AnalysisReportService implements IAnalysisReportService {
 			List<Nomination> partyNominations = null;
 			
 			if(category.equals(IConstants.CANDIDATE_COMMENTS_WON))
-			    partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1));
+			    partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1),stateId);
 			else if(category.equals(IConstants.CANDIDATE_COMMENTS_LOST))
-				partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId,partyId,new Long(1));
+				partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId,partyId,new Long(1),stateId);
 				
 			if(partyNominations != null && partyNominations.size() > 0){
 				for(Nomination nominations:partyNominations){
