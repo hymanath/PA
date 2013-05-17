@@ -4785,7 +4785,7 @@ public class StaticDataService implements IStaticDataService {
 
 	@SuppressWarnings("unchecked")
 	public ElectionResultPartyVO getElectionResultForAPartyInAnElection(
-			Long electionId, Long partyId, Long rank,Long stateId) {
+			Long electionId, Long partyId, Long rank) {
 
 		log.debug(" Inside getElectionResultForAPartyInAnElection Method.... ");
 
@@ -4803,11 +4803,11 @@ public class StaticDataService implements IStaticDataService {
 				if (!rank.equals(new Long(0)))
 					electionResultsList = nominationDAO
 							.findElectionResultsByElectionIdAndPartyIdAndRank(
-									electionId, partyId, rank,stateId);
+									electionId, partyId, rank);
 				else if (rank.equals(new Long(0)))
 					electionResultsList = nominationDAO
 							.findElectionResultsByElectionIdAndPartyIdAndLostRank(
-									electionId, partyId, new Long(1),stateId);
+									electionId, partyId, new Long(1));
 
 				if (electionResultsList != null
 						&& electionResultsList.size() > 0) {
@@ -8336,4 +8336,90 @@ public class StaticDataService implements IStaticDataService {
 			return resultList;
 		}
 	}
+	
+	public List<SelectOptionVO> getConstituencyMandalDetailsForAllDelimitations(Long constituencyId)
+	{
+		List<SelectOptionVO> resultList =new ArrayList<SelectOptionVO>();
+		try{
+			List<DelimitationConstituency> delimitationConstituencies = delimitationConstituencyDAO
+					.findDelimitationConstituencyByConstituencyID(constituencyId);
+			
+			for(DelimitationConstituency obj:delimitationConstituencies)
+			{
+				SelectOptionVO vo =new SelectOptionVO();
+				Set<String> tehsilNames = new HashSet<String>();
+				
+				vo.setYear(obj.getYear());
+				
+				List<Tehsil> tehsils = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(obj.getDelimitationConstituencyID());
+				
+				List<SelectOptionVO> tehsilDetails = new ArrayList<SelectOptionVO>();
+				for(Tehsil tehsil:tehsils){
+					tehsilNames.add(tehsil.getTehsilName());
+				}
+				vo.setSelectOptionsList(tehsilDetails);	
+				vo.setNames(tehsilNames);
+				resultList.add(vo);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		
+		return resultList;
+	}
+	
+	
+	public SelectOptionVO checkDelimitationYearsAndMandalsForConstituency(Long constituencyId)
+	{
+		SelectOptionVO vo = new SelectOptionVO();
+		try
+		{
+			List<DelimitationConstituency> list = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyId);
+			
+			 if(list.size()  == 1){
+          	   vo.setOneDelimitation("true");
+          	   return vo;
+             }
+			
+			List<Long> ids = new ArrayList<Long>();
+			
+			for(DelimitationConstituency obj:list)
+				ids.add(obj.getDelimitationConstituencyID());				
+			
+			
+			List<Object[]> mandalsList = delimitationConstituencyMandalDAO.getMadalDtlsByDelimitationConstituencyIds(ids);
+			
+			List<Long> previousList = new ArrayList<Long>();
+			List<Long> presentList = new ArrayList<Long>();
+			
+			for(Object[] obj:mandalsList){
+				
+				if(((Long)obj[2]).longValue() == Long.parseLong(IConstants.PRESENT_ELECTION_YEAR))
+				 presentList.add((Long)obj[0]);
+				else if(((Long)obj[2]).longValue() == Long.parseLong(IConstants.PREVIOUS_ELECTION_YEAR))
+				 previousList.add((Long)obj[0]);
+			}
+			
+			if(previousList.size() != presentList.size()){
+				vo.setSameMandals("false");
+				return vo;
+			}
+			
+			Collections.sort(presentList);
+			Collections.sort(previousList);
+			
+			if(presentList.equals(previousList))
+				vo.setSameMandals("true");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return vo;
+	}
+
 }

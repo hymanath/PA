@@ -42,6 +42,17 @@ IDelimitationConstituencyMandalDAO {
 				delimitationConstituencyID);
 	}
 	
+	
+	public List<Tehsil> getTehsilsByDelimitationConstituencyIds(List<Long> delimitationConstituencyIds) {
+		
+		Query query = getSession().createQuery("Select model.tehsil from DelimitationConstituencyMandal model where " +
+				"model.delimitationConstituency.delimitationConstituencyID in(:delimitationConstituencyIds) order by model.tehsil.tehsilName");
+
+
+		 query.setParameterList("delimitationConstituencyIds", delimitationConstituencyIds);
+		 return query.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List getStateDistConstituencyMandalByMandalID(Long mandalID){
 		return getHibernateTemplate().find("Select model.tehsil.district.state.stateId, model.tehsil.district.state.stateName," +
@@ -138,6 +149,31 @@ IDelimitationConstituencyMandalDAO {
 		return getHibernateTemplate().find("select model.delimitationConstituency.constituency.constituencyId " +
 				" from DelimitationConstituencyMandal model where model.tehsil.tehsilId = ? and " +
 				"model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1)",mandalId);
+	}
+	
+	
+	public List<Long> getMadalDetailsByDelimitationConstituencyIds(List<Long> delimitationConstituencyIds)
+	{
+		
+		Query query = getSession().createQuery("select distinct(model.tehsil.tehsilId) from DelimitationConstituencyMandal model " +
+				"where model.delimitationConstituency.delimitationConstituencyID in(:delimitationConstituencyIds)");
+		
+		query.setParameterList("delimitationConstituencyIds", delimitationConstituencyIds);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getMadalDtlsByDelimitationConstituencyIds(List<Long> delimitationConstituencyIds)
+	{
+		
+		Query query = getSession().createQuery("select distinct(model.tehsil.tehsilId) , model.delimitationConstituency.delimitationConstituencyID,model.delimitationConstituency.year from DelimitationConstituencyMandal model " +
+				"where model.delimitationConstituency.delimitationConstituencyID in(:delimitationConstituencyIds)");
+		
+		query.setParameterList("delimitationConstituencyIds", delimitationConstituencyIds);
+		
+		return query.list();
+		
 	}
 	
 	

@@ -1052,6 +1052,22 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		return query.list();
 	}
 	
+	public List<Object[]> getMandalResultsForElectionAndConstituencyByTehsilIds(List<Long> mandalIds, List<Long> electionIds,List<Long> partyIds){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.booth.tehsil.tehsilId," +
+				" model.boothConstituencyElection.booth.tehsil.tehsilName,  " +
+				" model.nomination.party.shortName, sum(model.votesEarned),model.boothConstituencyElection.constituencyElection.election.electionYear,model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType," +
+				" model.nomination.party.partyId from CandidateBoothResult model where  " +
+				"  model.boothConstituencyElection.booth.tehsil.tehsilId in(:mandalIds) and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId  in( :electionIds) and model.nomination.party.partyId in( :partyIds) and " +
+				" model.boothConstituencyElection.booth.localBody is null " +
+				" group by model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.tehsil.tehsilId, " +
+				" model.nomination.party.partyId");
+		query.setParameterList("mandalIds", mandalIds);
+		query.setParameterList("electionIds", electionIds);
+		query.setParameterList("partyIds", partyIds);
+		return query.list();
+	}
+	
 	public List<Object[]> getLocalbodyResultsForElectionAndConstituency(Long constituencyId, List<Long> electionIds,List<Long> partyIds){
 		Query query = getSession().createQuery("select model.boothConstituencyElection.booth.localBody.localElectionBodyId," +
 				" model.boothConstituencyElection.booth.localBody.name,  " +
@@ -1092,6 +1108,17 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		return getHibernateTemplate().find("select distinct model.nomination.party.partyId, model.nomination.party.shortName from CandidateBoothResult model where model.boothConstituencyElection.booth.constituency.constituencyId =? order by model.nomination.party.shortName ",constituencyId);
 	}
 	
+	
+	public List<Object[]> getParticipatedPartiesByTehsilIds(List<Long> tehsilIds)
+	{
+		Query query = getSession().createQuery("select distinct model.nomination.party.partyId, model.nomination.party.shortName from CandidateBoothResult model where model.boothConstituencyElection.booth.tehsil.tehsilId in(:tehsilIds) order by model.nomination.party.shortName");
+		
+		query.setParameterList("tehsilIds", tehsilIds);
+		
+		return query.list();
+		
+	}
+	
 	public List<Object[]> getMandalResultsForElectionAndConstituencywithAlliance(Long constituencyId,Long electionId,List<Long> partyIds)
 	{
 		Query query = getSession().createQuery("select model.boothConstituencyElection.booth.tehsil.tehsilId," +
@@ -1103,6 +1130,24 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" model.boothConstituencyElection.booth.localBody is null " +
 				" group by model.boothConstituencyElection.booth.tehsil.tehsilId");
 		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("electionId", electionId);
+		query.setParameterList("partyIds", partyIds);
+		return query.list();
+	}
+	
+	
+	
+	public List<Object[]> getMandalResultsForElectionAndTehsilIdswithAlliance(List<Long> tehsilIds,Long electionId,List<Long> partyIds)
+	{
+		Query query = getSession().createQuery("select model.boothConstituencyElection.booth.tehsil.tehsilId," +
+				" model.boothConstituencyElection.booth.tehsil.tehsilName,  " +
+				"  sum(model.votesEarned),model.boothConstituencyElection.constituencyElection.election.electionYear,model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType" +
+				"  from CandidateBoothResult model where  " +
+				"  model.boothConstituencyElection.booth.tehsil.tehsilId  in(:tehsilIds) and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId=:electionId and model.nomination.party.partyId in( :partyIds) and " +
+				" model.boothConstituencyElection.booth.localBody is null " +
+				" group by model.boothConstituencyElection.booth.tehsil.tehsilId");
+		query.setParameterList("tehsilIds", tehsilIds);
 		query.setParameter("electionId", electionId);
 		query.setParameterList("partyIds", partyIds);
 		return query.list();
@@ -1155,6 +1200,21 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" and model.boothConstituencyElection.booth.localBody is null " +
 				" group by model.boothConstituencyElection.booth.tehsil.tehsilId");
 		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("electionIds", electionIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getMandalValidvotesByTehsilIds(List<Long> tehsilIds,List<Long> electionIds)
+	{
+		Query query = getSession().createQuery("select model.boothConstituencyElection.booth.tehsil.tehsilId," +
+				" model.boothConstituencyElection.booth.tehsil.tehsilName,  " +
+				"  sum(model.votesEarned) from CandidateBoothResult model where  " +
+				"  model.boothConstituencyElection.booth.tehsil.tehsilId in(:tehsilIds) and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId in( :electionIds)" +
+				" and model.boothConstituencyElection.booth.localBody is null " +
+				" group by model.boothConstituencyElection.booth.tehsil.tehsilId");
+		query.setParameterList("tehsilIds", tehsilIds);
 		query.setParameterList("electionIds", electionIds);
 		
 		return query.list();

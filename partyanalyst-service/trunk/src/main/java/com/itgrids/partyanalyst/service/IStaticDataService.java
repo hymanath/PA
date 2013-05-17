@@ -121,7 +121,7 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport(Long stateId);
 		
-		public ElectionResultPartyVO getElectionResultForAPartyInAnElection(Long electionId,Long partyId,Long rank,Long StateId);
+		public ElectionResultPartyVO getElectionResultForAPartyInAnElection(Long electionId,Long partyId,Long rank);
 		
 		public TeshilPartyInfoVO getAllPartyTrendsForAllMuncipalitiesInADistrict(String electionType,Long districtId);
 		
@@ -370,5 +370,9 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getBoothsInMuncipality(Long id,Long publicationId);
 		
+		public List<SelectOptionVO> getConstituencyMandalDetailsForAllDelimitations(Long constituencyId);
+		public SelectOptionVO checkDelimitationYearsAndMandalsForConstituency(Long constituencyId);
 		public List<Object[]> getVotersCountInAPanchayatForAnElection(Long electionId, Long panchayatId);
+
+
 }
