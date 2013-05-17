@@ -10125,7 +10125,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 					  
 						  }
 					}else if(type.equalsIgnoreCase("panchayat"))						
-						votersCountDetails =  hamletBoothElectionDAO.getVotersCountInAPanchayat(
+						votersCountDetails =  staticDataService.getVotersCountInAPanchayatForAnElection(
 							 voterVO.getElectionId(),panchayatId);
 					else if(type.equalsIgnoreCase("booth")){						
 						 Booth booth = boothDAO.get(boothId);
