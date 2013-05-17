@@ -233,10 +233,10 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Nomination> findByElectionIdAndRank(Long electionId,Long rank,List<Long> constituencyIds);
 	
 	@SuppressWarnings("unchecked")
-	public List findElectionResultsByElectionIdAndPartyIdAndRank(Long electionId,Long partyId,Long rank);
+	public List findElectionResultsByElectionIdAndPartyIdAndRank(Long electionId,Long partyId,Long rank,Long stateId);
 	
 	@SuppressWarnings("unchecked")
-	public List findElectionResultsByElectionIdAndPartyIdAndLostRank(Long electionId,Long partyId,Long rank);
+	public List findElectionResultsByElectionIdAndPartyIdAndLostRank(Long electionId,Long partyId,Long rank,Long stateId);
 	
 	public List getMuncipalityCandidateDetails(String electionType,Long districtId);
 	
