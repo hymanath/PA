@@ -4815,11 +4815,11 @@ public class StaticDataService implements IStaticDataService {
 				if (!rank.equals(new Long(0)))
 					electionResultsList = nominationDAO
 							.findElectionResultsByElectionIdAndPartyIdAndRank(
-									electionId, partyId, rank);
+									electionId, partyId, rank, null);
 				else if (rank.equals(new Long(0)))
 					electionResultsList = nominationDAO
 							.findElectionResultsByElectionIdAndPartyIdAndLostRank(
-									electionId, partyId, new Long(1));
+									electionId, partyId, new Long(1), null);
 
 				if (electionResultsList != null
 						&& electionResultsList.size() > 0) {
