@@ -97,7 +97,7 @@ table.searchresultsTable td {
 	
 		<div id="headingDiv" style="background:#06ABEA;margin-left: 12px;">
 		
-			<c:out value="${selectedPartyShortName}"/>  Party Results for          <c:out value="${selectedElectionTypeName}"/> Elections   In   <c:out value="${selectedLocationName}"/>   <c:out value="${reportLevel}"/> 
+			<c:out value="${selectedPartyShortName}"/>  Party Results for          <c:out value="${selectedElectionTypeName}"/> Elections   In   <c:out value="${selectedLocationName}"/>&nbsp;   <c:out value="${reportLevel}"/> 
 
 			<span style="float:right;">
 				<g:plusone size="medium"></g:plusone>
