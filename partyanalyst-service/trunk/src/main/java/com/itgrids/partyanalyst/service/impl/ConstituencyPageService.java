@@ -24,12 +24,14 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -99,6 +101,7 @@ import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyCensusDetails;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -159,9 +162,19 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IRegionServiceData regionServiceDataImp;
 	
 	private IAllianceGroupDAO allianceGroupDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 		
 	
 	
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
 	public IAllianceGroupDAO getAllianceGroupDAO() {
 		return allianceGroupDAO;
 	}
@@ -5294,13 +5307,13 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	
 	
 	
-	public List<PartyResultVO> getMandalwiseEleInfoOfConstituency(Long constituencyId,String parties,String elections,Boolean includealliance)
+	
+	public List<PartyResultVO> getMandalwiseEleInfoOfConstituency(Long constituencyId,String parties,String elections,Boolean includealliance,String delimitationType)
 	
 	{
-		
 		if(includealliance)
 		{
-			return getMandalwiseEleInfoOfConstituencywithAlliance(constituencyId,parties,elections);
+			return getMandalwiseEleInfoOfConstituencywithAlliance(constituencyId,parties,elections,delimitationType);
 		}
 		String[] partiesarr =parties.split(",");
 		String[] electionsArr = elections.split(",");
@@ -5314,8 +5327,18 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		List<Long> tehsilIds = new ArrayList<Long>();
 		List<SelectOptionVO> mandals = new ArrayList<SelectOptionVO>();
 	try{
-		mandals =regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
-		mandals =regionServiceDataImp.getMandals(mandals);
+		
+		
+		if(delimitationType.equalsIgnoreCase("previous") || delimitationType.equalsIgnoreCase("present"))
+		{
+		  mandals =getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null,delimitationType);
+		  mandals =regionServiceDataImp.getMandals(mandals);
+		}else{		
+		  mandals =getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR,null, delimitationType);
+		  mandals =regionServiceDataImp.getMandals(mandals);
+		}
+		
+		
 		if(mandals != null && mandals.size() > 0)
 		{
 		for(SelectOptionVO mandalId : mandals)
@@ -5328,8 +5351,13 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 			Constituency constituency = constituencyDAO.get(new Long(constituencyId));
 			// Mandal 
-			 count= candidateBoothResultDAO.getMandalValidvotes(constituencyId,electionIds);
-			list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituency(constituencyId,electionIds,partyIds);
+			 //count= candidateBoothResultDAO.getMandalValidvotes(constituencyId,electionIds);
+			
+			count= candidateBoothResultDAO.getMandalValidvotesByTehsilIds(tehsilIds,electionIds);
+			 
+			 
+			//list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituency(constituencyId,electionIds,partyIds);
+			 list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituencyByTehsilIds(tehsilIds,electionIds,partyIds);
 			getsublevelsForConstituency(list,"mandal",result,count);
 			
 			//Muncipality
@@ -5358,11 +5386,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	{
 		log.error("Exception Occured in getMandalwiseEleInfoOfConstituency() method - "+e);
 	}
-	Collections.sort(result,sortData);
+	Collections.sort(result,sortData1);
 	return result;
 	
 }
-	public List<PartyResultVO> getMandalwiseEleInfoOfConstituencywithAlliance(Long constituencyId,String parties,String elections)
+	public List<PartyResultVO> getMandalwiseEleInfoOfConstituencywithAlliance(Long constituencyId,String parties,String elections,String delimitationType)
 	{
 		List<PartyResultVO> result = new ArrayList<PartyResultVO>();
 		List<Long> partyIds = new ArrayList<Long>();
@@ -5377,8 +5405,16 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		List<Object[]> count=null;
 		List<SelectOptionVO> mandals = new ArrayList<SelectOptionVO>();
 		try{
-			mandals =regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
-			mandals =regionServiceDataImp.getMandals(mandals);
+			
+			if(delimitationType.equalsIgnoreCase("previous") || delimitationType.equalsIgnoreCase("present"))
+			{
+			  mandals =getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null,delimitationType);
+			  mandals =regionServiceDataImp.getMandals(mandals);
+			}else{		
+			  mandals =getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR,null, delimitationType);
+			  mandals =regionServiceDataImp.getMandals(mandals);
+			}
+			
 			if(mandals != null && mandals.size() > 0)
 			{
 			for(SelectOptionVO mandalId : mandals)
@@ -5415,12 +5451,18 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			}
 			
 				Constituency constituency = constituencyDAO.get(new Long(constituencyId));
-				mandalcount= candidateBoothResultDAO.getMandalValidvotes(constituencyId,electionIdsList);
+				
+				
+				//mandalcount= candidateBoothResultDAO.getMandalValidvotes(constituencyId,electionIdsList);
+				mandalcount= candidateBoothResultDAO.getMandalValidvotesByTehsilIds(tehsilIds,electionIdsList);
+				
+				
 				localbodycount= candidateBoothResultDAO.getLocalbodyValidvotes(constituencyId,electionIdsList);
 				ghmccount= candidateBoothResultDAO.getlocalbodywardValidvotes(constituencyId,electionIdsList);
 				 for(String alliance : allianceParties.keySet()){
 				//mandal	 
-			    list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituencywithAlliance(constituencyId,new Long(electionId.trim()),allianceParties.get(alliance));
+			   // list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituencywithAlliance(constituencyId,new Long(electionId.trim()),allianceParties.get(alliance));
+					 list = candidateBoothResultDAO.getMandalResultsForElectionAndTehsilIdswithAlliance(tehsilIds,new Long(electionId.trim()),allianceParties.get(alliance));
 				getsublevelsForConstituencywithalliance(list,"mandal",result,alliance,mandalcount);
 				//muncipality
 				if(!IConstants.CONST_TYPE_URBAN.equalsIgnoreCase(constituency.getAreaType()))
@@ -5547,5 +5589,149 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			result.add(partyResultVO);
 	}
 	}
+	
+	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String year, String scope , String delimitationType) {
+		Constituency constituency = constituencyDAO.get(constituencyId);
+		List<SelectOptionVO> subRegionsList = new ArrayList<SelectOptionVO>();
+		
+		if(constituency.getAreaType() == null)
+		return subRegionsList;			
+		String areaType = constituency.getAreaType();
+		
+		
+		if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+		{
+			subRegionsList = getTehsilsInConstituency(constituencyId,delimitationType);
+		} else if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+		{
+			subRegionsList = getLocalElectionBodies(constituencyId, year);
+			
+			
+		} else if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
+		{
+			if(scope != null && scope.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+			{
+				subRegionsList = getTehsilsInConstituency(constituencyId,delimitationType);
+			} else if(scope != null && scope.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+			{
+				subRegionsList = getLocalElectionBodies(constituencyId, year);
+			} else {
+				subRegionsList = getTehsilsInConstituency(constituencyId,delimitationType);
+				List<SelectOptionVO> localElectionBodiesList = getLocalElectionBodies(constituencyId, year);
+				if(localElectionBodiesList.size() != 0)
+				{
+					subRegionsList.addAll(localElectionBodiesList);				
+				}
+			} 						
+		}
+		return subRegionsList;
+	}
+	
+	public List<SelectOptionVO> getTehsilsInConstituency(Long constituencyId,String delimitationType)
+	{
+		List<SelectOptionVO> list = getMandalsByConstituencyID(constituencyId,delimitationType);
+		List<SelectOptionVO> tehsilsList = new ArrayList<SelectOptionVO>();
+		for(SelectOptionVO selectOptionVO:list)
+		{
+			tehsilsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+selectOptionVO.getId()),WordUtils.capitalize(selectOptionVO.getName().toLowerCase()+ " " + IConstants.MANDAL)));
+		}
+		return tehsilsList;
+	}
+	
+	public  List<SelectOptionVO> getLocalElectionBodies(Long constituencyId, String year)
+	{
+		log.debug("Inside getLocalElectionBodies method in RegionServiceDataImp Class");
+		List<SelectOptionVO> localElectionBodiesList = new ArrayList<SelectOptionVO>(); 
+		try
+		{
+			List result = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId);
+			for(int i=0; i<result.size(); i++){
+				Object[] obj = (Object[]) result.get(i);
+				localElectionBodiesList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+obj[0].toString()),obj[1].toString()+" "+ (obj[2])));
+			}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			log.debug("Exception arised while retrieving local election bodies");
+		}
+		
+		return localElectionBodiesList;
+	}
+	
+	public List<SelectOptionVO> getMandalsByConstituencyID(Long constituencyID,String delimitationType){
+		List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
+		Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+		
+		List<Tehsil> mandals = null;
+		Long delimConstiId = null;
+		List<Long> delimConstiIds = new ArrayList<Long>();
+		
+		if(delimitationType.equalsIgnoreCase("previous")){
+			
+			for(DelimitationConstituency obj:delimitationConstituency){
+				if(obj.getYear().longValue() == Long.parseLong(IConstants.PREVIOUS_ELECTION_YEAR))
+					delimConstiId = obj.getDelimitationConstituencyID();
+			}
+				
+			 mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimConstiId);
+		}
+		else if (delimitationType.equalsIgnoreCase("present")){
+			
+			for(DelimitationConstituency obj:delimitationConstituency){
+				if(obj.getYear().longValue() == Long.parseLong(IConstants.PRESENT_ELECTION_YEAR))
+					delimConstiId = obj.getDelimitationConstituencyID();
+			}
+		 mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimConstiId);
+		}
+		else if (delimitationType.equalsIgnoreCase("all")){
+			
+		
+			for(DelimitationConstituency obj:delimitationConstituency){
+				delimConstiIds.add(obj.getDelimitationConstituencyID());
+			
+		 mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyIds(delimConstiIds);
+		}
+		}
+		Constituency constituency = constituencyDAO.get(constituencyID);
+		
+		List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
+		
+		if(constituency.getAreaType() == null)
+		return mandalNames;			
+		String areaType = constituency.getAreaType();
+				
+		if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+		{
+			if(delimitationType.equalsIgnoreCase("previous"))
+			 mandalNames = getLocalElectionBodies(constituencyID, IConstants.PREVIOUS_ELECTION_YEAR);
+			else if(delimitationType.equalsIgnoreCase("present"))
+			 mandalNames = getLocalElectionBodies(constituencyID, IConstants.PRESENT_ELECTION_YEAR);
+		}
+		for(Tehsil tehsil : mandals){
+			SelectOptionVO objVO = new SelectOptionVO();
+			objVO.setId(tehsil.getTehsilId());
+			objVO.setName(tehsil.getTehsilName());
+			mandalNames.add(objVO);
+		}		
+				
+		return mandalNames;
+	}
+	
+	 public static Comparator<PartyResultVO> sortData1 = new Comparator<PartyResultVO>()
+			    {
+		        	public int compare(PartyResultVO vo1, PartyResultVO vo2) {
+		                if (vo1.getConstituencyName().contains("Muncipality")) {
+		                     if (vo2.getConstituencyName().contains("Muncipality")) {
+		                         return 0;
+		                     } else {
+		                         return 1;
+		                     }
+		                }
+		                else if (vo2.getConstituencyName().contains("Muncipality")) {
+		                     return -1;
+		                }
+		                return (vo1.getConstituencyName()).compareTo(vo2.getConstituencyName());
+		            }
+			    }; 
 }
 

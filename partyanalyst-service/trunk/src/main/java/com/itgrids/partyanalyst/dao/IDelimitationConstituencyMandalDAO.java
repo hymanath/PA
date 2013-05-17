@@ -40,4 +40,11 @@ public interface IDelimitationConstituencyMandalDAO extends GenericDao<Delimitat
 	public List<Constituency> getConstituencyByTehsilId(Long tehsilId);
 	
 	public List<Long> getConstituencyIdByMandalID(Long mandalId);
+	public List<Tehsil> getTehsilsByDelimitationConstituencyIds(List<Long> delimitationConstituencyIds) ;
+	
+	public List<Long> getMadalDetailsByDelimitationConstituencyIds(List<Long> delimitationConstituencyIds);
+	public List<Object[]> getMadalDtlsByDelimitationConstituencyIds(List<Long> delimitationConstituencyIds);
+
+
+
 }

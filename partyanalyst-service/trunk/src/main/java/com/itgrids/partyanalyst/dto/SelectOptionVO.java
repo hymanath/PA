@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> {
 	
@@ -23,6 +24,42 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long parentUserId;
 	private Long mainAccountId;
 	private boolean flag;
+	private Long year;
+	private Set<String> names;
+	private String oneDelimitation;
+	private String sameMandals;
+
+	public String getSameMandals() {
+		return sameMandals;
+	}
+
+	public void setSameMandals(String sameMandals) {
+		this.sameMandals = sameMandals;
+	}
+
+	public String getOneDelimitation() {
+		return oneDelimitation;
+	}
+
+	public void setOneDelimitation(String oneDelimitation) {
+		this.oneDelimitation = oneDelimitation;
+	}
+
+	public Set<String> getNames() {
+		return names;
+	}
+
+	public void setNames(Set<String> names) {
+		this.names = names;
+	}
+
+	public Long getYear() {
+		return year;
+	}
+
+	public void setYear(Long year) {
+		this.year = year;
+	}
 
 	public boolean isFlag() {
 		return flag;

@@ -138,7 +138,7 @@ public interface IConstituencyPageService {
 	public List<PartyResultVO> findPanchayatsWiseResultsInElectionsOfMandal(Long tehsilId, String parties,String elections, Boolean includeAlliance);
 	public List<PartyResultVO> findBoothsWiseResultsInElectionsOfPanchayat(Long panchayatId, String parties,String elections, Boolean includeAlliance);
 	
-	public List<PartyResultVO> getMandalwiseEleInfoOfConstituency(Long constituencyId,String parties,String elections,Boolean includealliance);
+	public List<PartyResultVO> getMandalwiseEleInfoOfConstituency(Long constituencyId,String parties,String elections,Boolean includealliance,String resulltType);
 	
 	public List<PartyVotesEarnedVO> getPanchayatWiseElectionsForTehsilforPreviousEle(String boothIdStr,Long electionId,String eletype,List<Long> tehsilIds);
 	
