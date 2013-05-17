@@ -1090,6 +1090,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			if(type.equalsIgnoreCase("mandal"))
 				str.append(" and model.tehsil.tehsilId =:tehsilId ");
 			
+			str.append(" order by model.panchayat.panchayatName ");
 			Query query =getSession().createQuery(str.toString());
 			query.setParameter("constituencyId", constituencyId);
 			query.setParameter("publicationId", publicationId);
