@@ -311,6 +311,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		{
 			Long electionId = new Long(jObj.getString("electionId"));
 			Long partyId = new Long(jObj.getString("partyId"));
+			Long stateId = new Long(jObj.getString("stateId"));
 			if(log.isDebugEnabled())
 			{
 				log.debug("Entered in to Action");
@@ -320,7 +321,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		
 		
 			electionBasicCommentsVOList = new ArrayList<ElectionBasicCommentsVO>();
-			electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId);
+			electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,stateId);
 				
 		}
 		
@@ -366,6 +367,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		Long electionId = new Long(jObj.getString("electionId"));
 		Long partyId = new Long(jObj.getString("partyId"));
 		String position = jObj.getString("position");
+		Long stateId = new Long(jObj.getString("stateId"));
 		
 		String category = null;
 		if(position.equals("Won"))
@@ -373,7 +375,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		else if(position.equals("Lost"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 			
-		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,new Long(0));
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,new Long(0),stateId);
 		return Action.SUCCESS;
 	}
 	
@@ -434,7 +436,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		else if(position.equals("Lost"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,categoryTypeId);
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,categoryTypeId,stateId);
 		
 		return Action.SUCCESS;
 	}
@@ -464,7 +466,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
 		
-		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,categoryTypeId);
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,categoryTypeId,stateId);
 		return Action.SUCCESS;
 	
 	}
@@ -490,7 +492,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		Long clickIndex = new Long(jObj.getString("clickIndex"));	
 		Long locationId= new Long(jObj.getString("locationId"));
 		Long reportLevel = new Long(jObj.getString("reportLevel"));
-		Long stateId = new Long(0);
+		Long stateId = new Long(jObj.getString("stateId"));;
 		Long districtId = new Long(0);
 		
 		if(reportLevel != null && reportLevel.equals(1L))
