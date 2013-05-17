@@ -407,6 +407,14 @@ table.dataTable thead th {
 	 color:#333333;
 
  }
+ .ourGuideLine
+ {
+ font-size:18px;
+ color:#FF0000;
+ margin-top:5px;
+ margin-bottom: 5px;
+ 
+ }
 </style>
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -585,6 +593,56 @@ $("#panchayats").live("change",function(){
 		<span class="label label-info" style="padding:5px;margin:5px;">Hide All <input type="radio" name="show_hide_votes" value="hide"></span>
 	</div>
   </div>
+</div>
+ <div id="mainDev">
+  <div align="center" id = "subDev1">
+	   <div id="selectYoptionId" ></div>
+	   <table>
+	   <th><span class ='noteString'> Select Latest Party Results </span></th>
+	   <th><span class ='noteString'> Select Party Results </span></th>
+	   <th></th>
+		<tr>
+		  <td>
+	          <select multiple  id="selId1" style="width:182px;" ></select>  
+	      </td>
+		  <td>
+	          <select multiple id="selId2" style="width:182px;" ></select> 
+	      </td>
+		 <td>
+	         <input type="button"  id ="meanClick" style="margin-left: 18px;  height: 39px;" value="Compare Results" class="btn btn-info">
+	     </td>
+		</tr>
+		<tr>
+		  <td>
+		         <input type="button"  id ="reverseClick1"  selid ="selId1" style="" value="Reverse Input sOf Box1" class="btn btn-info">
+	        </td>
+		  <td>
+			    <input type="button"  id ="reverseClick2" selid = "selId2" style="" value="Reverse Inputs Of Box2" class="btn btn-info">
+		
+	      </td>
+		   </tr>
+		 
+	   <select multiple  id="selId3" style="width:182px;display:none;"></select> 
+	  
+	    </table>
+		<table>
+		
+		 <tr>
+		    <td >
+		  <span class="ourGuideLine" >  </span>
+		    </td>
+		  </tr> 
+		  </table>
+		
+      <div id="deviation1" style=""></div>
+	  
+	</div>
+   
+	  <div align="center" id = "subDev2" >
+      <div id="deviation2" style="height:600px;"></div>
+	  </div>
+	  
+ 	  
 </div>
 <div style="border:1px solid;" id="casteDetailsDiv">
 <div id="casteSelectDiv" style="text-align:center;border:1px solid #ccc;"></div>
@@ -1010,6 +1068,7 @@ function callAjax(jsObj,url)
   }
 
   function getPanchayatData(){
+  	emptyDivs();
   var parties = '';
   var elections = '';
   var str = '';
@@ -1056,6 +1115,8 @@ function callAjax(jsObj,url)
   }
   
   var chart;
+    var globalResultes;
+
   function buildLineChart(myResults,jsObj){
 
 	var linechartDataArr = new Array();
@@ -1163,7 +1224,275 @@ function callAjax(jsObj,url)
                    series1.hide();
                 });
 		});
+		
+	
+		globalResultes =  myResults;
+		buildSelectBoxes(myResults ,jsObj );
   }
+  /*
+   * this method  used to build deviation graph basedon parties gained votes percentage .
+   * selObj1 and selObj2 as of now length must be same 
+   * myResults  are depend to party permonace report see globalResultes object 
+  */
+  function buildDeviationChart(myResults ,selObj1 , selObj2 ){
+    
+
+	$('#deviation2').html("");
+     
+	
+	
+	var linechartDataArr = new Array();
+	var results = new Array();
+	var data_perc=[];
+	var data_vv=[];
+		   var data = new Array();
+		   var myArray = ['ALLUR','BATRAKAGOLLU']; 
+		  var newResults = new Object();
+     
+	    for(var i in myResults[0]){
+	      if(linechartDataArr.indexOf(myResults[0][i].constituencyName) == -1){
+				linechartDataArr.push(myResults[0][i].constituencyName);
+				 //  $("#selId3").append('<option value="' +myResults[0][i].constituencyName+'">' +myResults[0][i].constituencyName+ '</option>');	 
+		}
+		
+		/*  for (var j in myArray)
+		 { 
+		 if(myResults[0][i].constituencyName.toUpperCase().trim() == myArray[j].toUpperCase().trim() ){
+		//alert( myResults[0][i].constituencyName.toUpperCase());
+		 var pname = myResults[0][i].partyName ;
+          var aryObj = newResults[pname];
+          if(aryObj)
+		  { 
+		  aryObj.push(myResults[0][i].votesPercent);
+		  }else
+		  {
+		  var valObj = new Array();
+		  valObj.push(myResults[0][i].votesPercent);
+		  newResults[myResults[0][i].partyName] = valObj;
+		   }
+		
+		}
+		} 
+		 */
+		}
+		
+		
+		 results = myResults[1];
+		
+	    
+   
+		   var obj1 = new Array();	
+		   var obj2 = new Array();	
+		   var obj = {};
+	
+		var selectedOptions = new  Array();
+		
+		if(selObj1 != null)
+		selectedOptions = selObj1;
+		else
+		return;
+		
+		for(var k = 0 ; k < selectedOptions.length-1 ; k++ ) 
+		{  
+		for(var l in results[selectedOptions[k]]){
+		     obj1.push(parseFloat(results[selectedOptions[k]][l]) - parseFloat(results[selectedOptions[k+1]][l]) );
+		   }
+		
+		}
+		
+		 var selectedOptions1 = new  Array();
+	
+		if(selObj2 != null)
+		selectedOptions1 = selObj2;
+		for(var k = 0 ; k < selectedOptions1.length-1 ; k++ ) 
+		{  
+		for(var l in results[selectedOptions1[k]]){
+		     obj2.push(parseFloat(results[selectedOptions1[k]][l]) - parseFloat(results[selectedOptions1[k+1]][l]) );
+		   }
+		
+		} 
+		    $(".ourGuideLine").text("You Are Seeing How   "+selectedOptions[0]+" Got Variations By Comparing With "+selectedOptions[1]);
+		   //  thise data used for deviation between any party in diff elections or two parties in same election 
+		    obj['name']='Deviation Beetween'+selectedOptions[0]+' '+selectedOptions[1];
+		    obj['type']='column';
+			obj['color']='#2f7ed8';
+			//obj['yAxis']=1;
+			//obj['tooltip']=tooltipobj;
+           	obj["data"] = obj1;	 
+            data_perc.push(obj);
+			if( selObj2 != null ) {
+			
+			//  thise data used for deviation between  two parties in comparision with another two parties
+			var  obj3 = {};
+			 obj3['name']='Deviation Beetween'+selectedOptions1[0]+' '+selectedOptions1[1];
+		    obj3['type']='column';
+			obj['color']='#AA4643';
+			//obj['yAxis']=1;
+			//obj['tooltip']=tooltipobj;
+           	obj3["data"] = obj2;	 
+           data_perc.push(obj3); 
+		   
+         }
+		 if(selObj2 != null)
+		 {
+		  $(".ourGuideLine").text("We Are Comparing  voter pencentage variation between two elections("+selectedOptions[0]+' ,  '+selectedOptions[1]+") with variation of ("+selectedOptions1[0]+' ,  '+selectedOptions1[1]+") ");
+		 
+		 
+		 }
+       
+	   // not that much best 
+		for(var i=0;i<data_perc.length;i++){
+			var ob=data_perc[i];
+			
+			
+			//data.push(ob1);
+			data.push(ob);
+			
+		} 
+	
+		 $('#deviation2').highcharts({
+            chart: {
+                type: 'column',
+             
+				zoomType: 'xy'
+            },
+			
+			title: {
+                text: 'Deviation  Analysis Based on VotesPercentage Gained '
+            },
+            
+            xAxis: [{
+                categories:linechartDataArr,
+				labels: {
+                                align:'right',
+                                style: {
+                                      cursor: 'pointer',
+                                      fontSize: '12px',
+                                },
+                                rotation: -45,
+                            } 
+            }],
+            yAxis: [{ // Secondary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Percentage',
+                    style: {
+                        color: '#AA4643'
+                    }
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value +'%';
+                    },
+                    style: {
+                        color: '#AA4643'
+                    }
+                },
+                opposite: true
+            }],
+			
+			colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
+			
+			legend: {
+					margin:20
+				},
+				
+		
+            series:data
+			
+			
+        });  
+				
+    }
+ function emptyDivs()
+ {
+           $('#deviation2').html("");
+           $("#selId1").empty();
+		   $("#selId2").empty();
+		   $("#selId3").empty();
+           $(".ourGuideLine").text("");
+ }
+ function buildSelectBoxes(myResults , jsObj)
+ {
+       var results = new Array();
+		 emptyDivs();
+			results = myResults[1];
+	   for(var i in results)
+		   {
+		    $("#selId1").append('<option value="' + i + '">' +i+ '</option>');
+		    $("#selId2").append('<option value="' + i + '">' +i+ '</option>');
+           }
+		  var size = Object.size(results);
+		 if(size == 2)
+		 {
+		  $("#selId1").find('option')[0].selected = 'selected';
+		  $("#selId2").find('option')[1].selected = 'selected';
+		 getSelected();
+		 }
+  }
+  Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
+
+ $("#meanClick").live('click',
+ function(){
+ 
+ getSelected();
+ });
+ $("#reverseClick1,#reverseClick2").live('click',
+ function(event){
+  reverseArrayElements(this.attributes.selid.value);
+ });
+
+
+ function getSelected()
+  {  
+        var a1=   $("#selId1").val();
+		var a2 =    $("#selId2").val();
+		var selObj1 = new Array();
+	
+	
+  if( (a1 != null && a2 != null) && a1.length == a2.length)
+  {
+  if(a1.length == 1)
+  {
+  selObj1.push(a1);
+  selObj1.push(a2);
+  buildDeviationChart(globalResultes,selObj1,null);
+  
+  }else if(a1.length == 2 )
+  {
+  //alert(a1+'----'+a2);
+   buildDeviationChart(globalResultes,a1,a2);
+  
+  }
+  
+  
+  }else
+  {
+  alert('invalid selection');
+  
+  }
+  
+  }
+  function reverseArrayElements(divId)
+  {
+    var options = $('#'+divId).find('option');
+		//alert(options+'======'+options.length)
+		  $('#'+divId).empty();
+		for(var i = parseInt(options.length) -1 ; i >=0 ;i--)
+		{
+		     
+			 
+			    $('#'+divId).append(options[i]);
+				
+		}
+    }
   
  
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
