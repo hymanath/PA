@@ -552,6 +552,17 @@ $("#pageUpBtn").live("click",function(){
 	     endAge = ageEnd;
 	   }
 	}
+	
+	if(ageStart.length > 0 && ageEnd.length > 0){
+		if(ageStart > ageEnd || (ageStart == 0 && ageEnd == 0)){
+			str +='<div>Please Enter Valid Ege Range</div>';
+			flag =false;
+		}
+	}
+	if(ageStart.length > 0 && ageEnd.length == 0){
+		str +='<div>Please Enter Ege Age</div>';
+		flag =false;
+	}
 	var startSno = $.trim($("#fromSno").val());
 	var endSno = $.trim($("#toSno").val());
 	if(startSno.length > 0){
