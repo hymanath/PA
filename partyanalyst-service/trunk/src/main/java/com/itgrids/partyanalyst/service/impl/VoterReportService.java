@@ -1888,6 +1888,7 @@ public class VoterReportService implements IVoterReportService{
 		 */
 		public List<SelectOptionVO> getSelectedUserCategoeryDetails(Long userId,List<Long> ids , String type,String status,Long constituencyId,Long publicationId)
 		{
+			Map<Long,Long> attributeKeys = new HashMap<Long,Long>();
 			List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
 			SelectOptionVO selectOptionVO = null;
 			try {
@@ -1921,10 +1922,13 @@ public class VoterReportService implements IVoterReportService{
 							{
 								
 								for (Object[] parms : castOrPartyDetails) {
+								  if(attributeKeys.get((Long)parms[0]) == null){
 									selectOptionVO = new SelectOptionVO();
 									selectOptionVO.setId((Long)parms[0]);
+									attributeKeys.put((Long)parms[0], (Long)parms[0]);
 									selectOptionVO.setName(parms[1].toString());
 									resultData.add(selectOptionVO);
+								  }
 								}
 							}
 						}
@@ -1939,10 +1943,13 @@ public class VoterReportService implements IVoterReportService{
 								//List<Object[]> castesList = boothPublicationVoterDAO.getCastesListForSelectedMuncipality(userId, localBodyId, constituencyId,status);
 								List<Object[]> castesList = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId, 5l, localBodyIds,publicationId);
 								for (Object[] parms : castesList) {
+								 if(attributeKeys.get((Long)parms[0]) == null){
+									 attributeKeys.put((Long)parms[0], (Long)parms[0]);
 									selectOptionVO = new SelectOptionVO();
 									selectOptionVO.setId((Long)parms[0]);
 									selectOptionVO.setName(parms[1].toString());
 									resultData.add(selectOptionVO);
+								 }
 								}
 							}
 						}
@@ -1955,10 +1962,13 @@ public class VoterReportService implements IVoterReportService{
 						{
 							
 							for (Object[] parms : castOrPartyDetails) {
+							  if(attributeKeys.get((Long)parms[0]) == null){
+								 attributeKeys.put((Long)parms[0], (Long)parms[0]);
 								selectOptionVO = new SelectOptionVO();
 								selectOptionVO.setId((Long)parms[0]);
 								selectOptionVO.setName(parms[1].toString());
 								resultData.add(selectOptionVO);
+							  }
 							}
 						}
 					}
@@ -1970,10 +1980,13 @@ public class VoterReportService implements IVoterReportService{
 						{
 							
 							for (Object[] parms : castOrPartyDetails) {
+							 if(attributeKeys.get((Long)parms[0]) == null){
+								attributeKeys.put((Long)parms[0], (Long)parms[0]);
 								selectOptionVO = new SelectOptionVO();
 								selectOptionVO.setId((Long)parms[0]);
 								selectOptionVO.setName(parms[1].toString());
 								resultData.add(selectOptionVO);
+							 }
 							}
 						}
 					}
@@ -1987,16 +2000,20 @@ public class VoterReportService implements IVoterReportService{
 					if(categoeryValues != null && categoeryValues.size() >0)
 					{
 						for (Object[] parms : categoeryValues) {
+						 if(attributeKeys.get((Long)parms[0]) == null){
+							attributeKeys.put((Long)parms[0], (Long)parms[0]);
 							selectOptionVO = new SelectOptionVO();
 							selectOptionVO.setId((Long)parms[0]);
 							selectOptionVO.setName(parms[1].toString());
 							resultData.add(selectOptionVO);
+						 }
 						}
 					}
 				}
 			} catch (Exception e) {
 				LOG.error("exception raised in  getSelectedUserCategoeryDetails() method in VoterReportService",e);
 			}
+			Collections.sort(resultData);
 			return resultData;
 		}
 		/**

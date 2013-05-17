@@ -141,7 +141,7 @@ public class AttributeWiseElectionResultComparisonService implements
 		    PartyResultsVO partyResults = new PartyResultsVO();
 		    Map<Long,Map<Long,PartyResultsVO>> attributesMap = new HashMap<Long,Map<Long,PartyResultsVO>>();//Map<attributeId,Map<locationId,count>>
 		    Map<Long,String> attributeNames = new HashMap<Long,String>();//contains Map<attributeId,attributeName(ex caste name,party name)>
-		    Map<Long,Map<Long,Long>> electionCount = new HashMap<Long,Map<Long,Long>>();
+		    Map<Long,Map<Long,Long>> electionCount = new HashMap<Long,Map<Long,Long>>();//Map<electionId,Map<locationId(panchayat booth),total polled votes in location>>
 		    Map<String,List<Long>> votesMap = new HashMap<String,List<Long>>();
 		    Map<String,List<Long>> attrMap = new HashMap<String,List<Long>>();
 		    Map<String,List<BigDecimal>> votesPercMap = new HashMap<String,List<BigDecimal>>();
@@ -150,7 +150,7 @@ public class AttributeWiseElectionResultComparisonService implements
 			Map<Long,String> electionNames = new HashMap<Long,String>();
 			Map<Long,Map<Long,Map<Long,PartyResultsVO>>> electionResultsMap = new HashMap<Long,Map<Long,Map<Long,PartyResultsVO>>>();//Map<electionId,Map<partyId,Map<panchayatid,panchayatObj>>>
 			List<Long> locIds = new ArrayList<Long>();
-			Map<Long,String> locationNames = new HashMap<Long,String>();
+			Map<Long,String> locationNames = new HashMap<Long,String>(); //contains Map<locationId,location Name>
 			
 			//Long publicationId = publicationDateDAO.getLatestPublicationId();
 			
@@ -257,7 +257,7 @@ public class AttributeWiseElectionResultComparisonService implements
 			}
 		    //populating votes count(votesMap) and percent(votesPercMap) location wise
 		    arrangeObjects(electionResultsMap,electionNames,partyNames,locIds,electionCount,votesMap,votesPercMap);
-			partyResults.setLocationResults(votesMap);
+		    partyResults.setLocationResults(votesMap);
 			partyResults.setLocationPercnts(votesPercMap);
 			//populating attributes count(attrMap) and percent(attrPercMap) location wise
 		    getAttributeResults(attributesMap, attributeNames, locIds,attrMap,attrPercMap);
@@ -458,6 +458,7 @@ public class AttributeWiseElectionResultComparisonService implements
 				locationResultMap = partiesMap.get(partyId);
 				partyResultsVO = new PartyResultsVO();
 				partyResultsVO.setPartyName(partyNames.get(partyId)+" "+electionNames.get(electionId));
+				partyResultsVO.setType("Polled Votes In "+electionNames.get(electionId) );
 				List<PartyResultsVO> listVos = new ArrayList<PartyResultsVO>();
 				for(Long panchayatId:locationResultMap.keySet()){
 					PartyResultsVO locationVO = locationResultMap.get(panchayatId);
@@ -475,21 +476,26 @@ public class AttributeWiseElectionResultComparisonService implements
 			List<PartyResultsVO> valuesList = vo.getPartyResultsVOList();
 			if(valuesList != null && valuesList.size() > 0){
 				List<Long> votesList = new ArrayList<Long>();
+				List<Long> votesLocPolledVotesList = new ArrayList<Long>();
 				List<BigDecimal> votesPercList = new ArrayList<BigDecimal>();
 				for(Long id:locIds){
 					Long votes = null;
 					BigDecimal perc = null;
+					Long totalPolledvotes = null;
 				   	for(PartyResultsVO value:valuesList){
 				   		if(value.getPartyId().longValue() == id.longValue()){
 				   			votes = value.getVotesEarned();
+				   			totalPolledvotes = value.getTotalPolledVotes();
 				   			if(votes != null && value.getTotalPolledVotes() != null && value.getTotalPolledVotes() >0)
 				   				perc = new BigDecimal(votes/value.getTotalPolledVotes().doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP);
 				   		}
 				   	}
 				   	votesList.add(votes);
+				   	votesLocPolledVotesList.add(totalPolledvotes);
 				   	votesPercList.add(perc);
 				}
 				votesMap.put(vo.getPartyName()+" Votes",votesList);
+				votesMap.put(vo.getType(),votesLocPolledVotesList);
 				votesPercMap.put(vo.getPartyName()+" Percentage",votesPercList);
 			}
 		}
