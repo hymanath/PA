@@ -1529,6 +1529,30 @@ str+='<span class="ui-icon ui-icon-circle-check" style="float: left; "></span>';
  str+= 'INC IN Assembly 2004 ]';
  str+='</span>';
  str+= ' Deviation. ';
+ 
+str+='</p>';
+str+='<p align="center">';
+ str+= ' OR ';
+ str+='</p>';
+  str+='<p>';
+ str+= ' LIKE ';
+ str+='<span class="myTittle">'
+ str+= '[TDP IN Parliament 2012 ';
+ str+='</span>';
+ str+= ' AND ';
+ str+='<span class="myTittle">'
+ str+= 'INC IN Parliament 2012] ';
+ str+='</span>';
+ str+= ' Deviation With  ';
+  str+='<span class="myTittle">'
+ str+= '[TDP IN Parliament 2012 ';
+ str+='</span>';
+ str+= ' AND ';
+ str+='<span class="myTittle">'
+ str+= 'YSRC  IN Parliament 2012 ]';
+ str+='</span>';
+ str+= ' Deviation. ';
+ 
 str+='</p>';
  
  str+='</p>';
