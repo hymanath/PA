@@ -601,6 +601,7 @@ $("#panchayats").live("change",function(){
 	   <table>
 	   <th><span class ='noteString'> Select Latest Party Results </span></th>
 	   <th><span class ='noteString'> Select Party Results </span></th>
+	   <th><span class ='noteString'> Select Areas </span></th>
 	   <th></th>
 		<tr>
 		  <td>
@@ -609,6 +610,9 @@ $("#panchayats").live("change",function(){
 		  <td>
 	          <select multiple id="selId2" style="width:182px;" ></select> 
 	      </td>
+		  <td>
+		  	   <select multiple  id="selId3" style="width:182px;"></select> 
+          </td>
 		 <td>
 	         <input type="button"  id ="meanClick" style="margin-left: 18px;  height: 39px;" value="Compare Results" class="btn btn-info">
 	     </td>
@@ -623,7 +627,6 @@ $("#panchayats").live("change",function(){
 	      </td>
 		   </tr>
 		 
-	   <select multiple  id="selId3" style="width:182px;display:none;"></select> 
 	  
 	    </table>
 		<table>
@@ -1228,14 +1231,16 @@ function callAjax(jsObj,url)
 		
 	
 		globalResultes =  myResults;
+		try{
 		buildSelectBoxes(myResults ,jsObj );
+		}catch(e){}
   }
   /*
    * this method  used to build deviation graph basedon parties gained votes percentage .
    * selObj1 and selObj2 as of now length must be same 
    * myResults  are depend to party permonace report see globalResultes object 
   */
-  function buildDeviationChart(myResults ,selObj1 , selObj2 ){
+  function buildDeviationChart(myResults ,selObj1 , selObj2 ,myArray){
     
 
 	$('#deviation2').html("");
@@ -1247,7 +1252,7 @@ function callAjax(jsObj,url)
 	var data_perc=[];
 	var data_vv=[];
 		   var data = new Array();
-		   var myArray = ['ALLUR','BATRAKAGOLLU']; 
+		 //  var myArray = ['ALLUR','BATRAKAGOLLU']; 
 		  var newResults = new Object();
      
 	    for(var i in myResults[0]){
@@ -1255,8 +1260,8 @@ function callAjax(jsObj,url)
 				linechartDataArr.push(myResults[0][i].constituencyName);
 				 //  $("#selId3").append('<option value="' +myResults[0][i].constituencyName+'">' +myResults[0][i].constituencyName+ '</option>');	 
 		}
-		
-		/*  for (var j in myArray)
+		 if (myArray != null  )
+		 for (var j in myArray)
 		 { 
 		 if(myResults[0][i].constituencyName.toUpperCase().trim() == myArray[j].toUpperCase().trim() ){
 		//alert( myResults[0][i].constituencyName.toUpperCase());
@@ -1274,10 +1279,12 @@ function callAjax(jsObj,url)
 		
 		}
 		} 
-		 */
+		 
 		}
 		
-		
+		if(myArray != null)
+		results = newResults;
+		else
 		 results = myResults[1];
 		
 	    
@@ -1359,7 +1366,7 @@ function callAjax(jsObj,url)
             },
 			
 			title: {
-                text: 'Deviation  Analysis Based on VotesPercentage Gained '
+                text: 'Deviation  Analysis Based on Votes Percentage Gained '
             },
             
             xAxis: [{
@@ -1414,10 +1421,16 @@ function callAjax(jsObj,url)
            $(".ourGuideLine").text("");
  }
  function buildSelectBoxes(myResults , jsObj)
- {
+ {     var linechartDataArr = new Array();
        var results = new Array();
 		 emptyDivs();
 			results = myResults[1];
+			 for(var i in myResults[0]){
+	      if(linechartDataArr.indexOf(myResults[0][i].constituencyName) == -1){
+				linechartDataArr.push(myResults[0][i].constituencyName);
+				 $("#selId3").append('<option value="' +myResults[0][i].constituencyName+'">' +myResults[0][i].constituencyName+ '</option>');	 
+		}
+		}	
 	   for(var i in results)
 		   {
 		    $("#selId1").append('<option value="' + i + '">' +i+ '</option>');
@@ -1453,30 +1466,43 @@ function callAjax(jsObj,url)
 
  function getSelected()
   {  
-        var a1=   $("#selId1").val();
-		var a2 =    $("#selId2").val();
+        var a1   =       $("#selId1").val();
+		var a2   =      $("#selId2").val();
+		 var a3  =      $("#selId3").val();
+		 var destObj = new Array();
 		var selObj1 = new Array();
+		var selObj2 = new Array();
+		
+	if(a3 == null )
+	destObj = null;
+	else if(a3.length == 1)
+	destObj.push(a3+"")
+	else if(a3.length > 1)
+	destObj = a3;
 	
-	
-  if( (a1 != null && a2 != null) && a1.length == a2.length)
+
+  if( (a1 != null && a2 != null) && a1.length == a2.length   )
   {
-  if(a1.length == 1)
+  if(a1.length == 1 &&  a1+"" != a2+"")
   {
   selObj1.push(a1);
   selObj1.push(a2);
-  buildDeviationChart(globalResultes,selObj1,null);
+  
+  buildDeviationChart(globalResultes,selObj1,null,destObj);
   
   }else if(a1.length == 2 )
   {
   //alert(a1+'----'+a2);
-   buildDeviationChart(globalResultes,a1,a2);
+   buildDeviationChart(globalResultes,a1,a2,destObj);
   
+  }else{
+   alert('Invalid Selection');
   }
   
   
   }else
   {
-  alert('invalid selection');
+  alert('Invalid Selection');
   
   }
   
