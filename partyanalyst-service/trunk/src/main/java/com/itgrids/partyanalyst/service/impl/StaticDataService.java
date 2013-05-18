@@ -4797,7 +4797,7 @@ public class StaticDataService implements IStaticDataService {
 
 	@SuppressWarnings("unchecked")
 	public ElectionResultPartyVO getElectionResultForAPartyInAnElection(
-			Long electionId, Long partyId, Long rank) {
+			Long electionId, Long partyId, Long rank,Long stateId) {
 
 		log.debug(" Inside getElectionResultForAPartyInAnElection Method.... ");
 
@@ -4815,11 +4815,11 @@ public class StaticDataService implements IStaticDataService {
 				if (!rank.equals(new Long(0)))
 					electionResultsList = nominationDAO
 							.findElectionResultsByElectionIdAndPartyIdAndRank(
-									electionId, partyId, rank, null);
+									electionId, partyId, rank, stateId);
 				else if (rank.equals(new Long(0)))
 					electionResultsList = nominationDAO
 							.findElectionResultsByElectionIdAndPartyIdAndLostRank(
-									electionId, partyId, new Long(1), null);
+									electionId, partyId, new Long(1), stateId);
 
 				if (electionResultsList != null
 						&& electionResultsList.size() > 0) {
