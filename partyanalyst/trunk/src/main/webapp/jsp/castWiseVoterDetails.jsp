@@ -60,7 +60,7 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
-<title>Cast Wise Voter Details</title>
+<title>Caste Wise Voter Details</title>
 </head>
 
 <style type="text/css">
@@ -585,18 +585,18 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		//{
 		str +='<table id="subLevelTable">';
 		if(type == 'constituency')
-		str+='<h3 id="sublevelHeading">Mandal/Muncipality wise Caste Statistics In '+typeName+' Constituency</h3>';
+		str+='<h3 id="sublevelHeading">Mandal/Muncipality Wise Caste Statistics In '+typeName+' Constituency</h3>';
 		else if(type == "mandal"){
 
 			if(jsObj.id.substring(0,1) == "1"){
 				var muncipalType = myresults.castVosList[0].muncipalityType;
 
                 if( muncipalType == "MUNCIPALITY" || muncipalType == "CORPORATION")
-				 str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' </h4>';
+				 str+='<h4 id="sublevelHeading">Booth Wise Caste Statistics In '+typeName+' </h4>';
 				else
-				 str+='<h4 id="sublevelHeading">Ward wise Caste Statistics In '+typeName+' </h4>';
+				 str+='<h4 id="sublevelHeading">Ward Wise Caste Statistics In '+typeName+' </h4>';
 			}else
-		str+='<h4 id="sublevelHeading">Panchayat wise Caste Statistics In '+typeName+' </h4>';
+		str+='<h4 id="sublevelHeading">Panchayat Wise Caste Statistics In '+typeName+' </h4>';
 		}
 		else if(type =="panchayat")
 		{
@@ -606,33 +606,33 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		  else
 			temp = "Booth";
 
-		 str+='<h4 id="sublevelHeading">'+temp+' wise Caste Statistics In '+typeName+' </h4>';
+		 str+='<h4 id="sublevelHeading">'+temp+' Wise Caste Statistics In '+typeName+' </h4>';
 		}
 		else if(type =="ward")
-		str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
+		str+='<h4 id="sublevelHeading">Booth Wise Caste Statistics In '+typeName+' Ward</h4>';
 		else if(type == "booth")
 		{
-		 str+='<h4 id="sublevelHeading">Hamlet wise Caste Statistics In '+typeName+' Booth</h4>';	
+		 str+='<h4 id="sublevelHeading">Hamlet Wise Caste Statistics In '+typeName+' Booth</h4>';	
 		}
 		
 		else if(type =="hamlet"){
 		   if(res == "booth")
-		   str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Hamlet</h4>';
+		   str+='<h4 id="sublevelHeading">Booth Wise Caste Statistics In '+typeName+' Hamlet</h4>';
 		else
-		str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
+		str+='<h4 id="sublevelHeading">Locality Wise Caste Statistics In '+typeName+' Hamlet</h4>';
 			}
 			else if(type =="customWard"){
 		   if(res == "booth")
-		   str+='<h4 id="sublevelHeading">Booth wise Caste Statistics In '+typeName+' Ward</h4>';
+		   str+='<h4 id="sublevelHeading">Booth Wise Caste Statistics In '+typeName+' Ward</h4>';
 		else
-			str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' </h4>';
+			str+='<h4 id="sublevelHeading">Locality Wise Caste Statistics In '+typeName+' </h4>';
 			}
 		
 		str+='<thead>';
 		str+='<tr>';
 		
 		if(type == "constituency")
-		str +='<th>Mandal</th>';
+		str +='<th>Mandal/Muncipality</th>';
 		if(type == "mandal"){
 
 			if(jsObj.id.substring(0,1) == "1"){
@@ -670,7 +670,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		   else
 	       str +='<th>Locality</th>';
 		//else
-		//str+='<h4 id="sublevelHeading">Locality wise Caste Statistics In '+typeName+' Hamlet</h4>';
+		//str+='<h4 id="sublevelHeading">Locality Wise Caste Statistics In '+typeName+' Hamlet</h4>';
 			}
 		if(type =="booth")
 	    str +='<th>Hamlet</th>';
