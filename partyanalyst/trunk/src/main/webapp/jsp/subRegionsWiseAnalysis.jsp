@@ -1321,7 +1321,7 @@ function callAjax(jsObj,url)
 		} 
 		    $(".ourGuideLine").text("You Are Seeing How   "+selectedOptions[0]+" Got Variations By Comparing With "+selectedOptions[1]);
 		   //  thise data used for deviation between any party in diff elections or two parties in same election 
-		    obj['name']='Deviation Beetween'+selectedOptions[0]+' '+selectedOptions[1];
+		    obj['name']='Deviation Between '+selectedOptions[0]+' And '+selectedOptions[1];
 		    obj['type']='column';
 			obj['color']='#2f7ed8';
 			//obj['yAxis']=1;
@@ -1332,7 +1332,7 @@ function callAjax(jsObj,url)
 			
 			//  thise data used for deviation between  two parties in comparision with another two parties
 			var  obj3 = {};
-			 obj3['name']='Deviation Beetween'+selectedOptions1[0]+' '+selectedOptions1[1];
+			 obj3['name']='Deviation Between'+selectedOptions1[0]+' And '+selectedOptions1[1];
 		    obj3['type']='column';
 			obj['color']='#AA4643';
 			//obj['yAxis']=1;
@@ -1343,7 +1343,7 @@ function callAjax(jsObj,url)
          }
 		 if(selObj2 != null)
 		 {
-		  $(".ourGuideLine").text("We Are Comparing  voter pencentage variation between two elections("+selectedOptions[0]+' ,  '+selectedOptions[1]+") with variation of ("+selectedOptions1[0]+' ,  '+selectedOptions1[1]+") ");
+		  $(".ourGuideLine").text("We Are Comparing  voter pencentage variation Between Two Elections("+selectedOptions[0]+' ,  '+selectedOptions[1]+") with variation of ("+selectedOptions1[0]+' ,  '+selectedOptions1[1]+") ");
 		 
 		 
 		 }
