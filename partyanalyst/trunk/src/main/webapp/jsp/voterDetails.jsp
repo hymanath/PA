@@ -780,41 +780,31 @@ function getImpFamilyDetails()
 	if(maintype == "booth")
 	{
 		var jsObj=
-			{
-					
-				type:maintype,
+			{				
 				id:boothId,
+				reportLevel:maintype,
 				publicationDateId:publicationId,
-				typename:name,
 				constituencyId:constituencyId,
-				buildType:'hamlet',
-				requestFor:"",
-				task:"importantFamiliesinfo"
-	
+				task:"getimportantFamiliesinfo"	
 			}
 		var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			
-		var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
+		var url1 = "getImportantsFamiliesInfoAction.action?"+rparam1;
 		callAjax(jsObj,url1);
 	}
 	else if(maintype == "hamlet")
 	{
 		var jsObj=
 			{
-					
-				type:maintype,
 				id:hamletId,
+				reportLevel:maintype,
 				publicationDateId:publicationId,
-				typename:name,
 				constituencyId:constituencyId,
-				buildType:'hamlet',
-				requestFor:"",
-				task:"importantFamiliesinfo"
-	
+				task:"getimportantFamiliesinfo"	
 			}
 		var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			
-		var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
+		var url1 = "getImportantsFamiliesInfoAction.action?"+rparam1;
 		callAjax(jsObj,url1);
 	}
 
@@ -822,20 +812,15 @@ else if(maintype == "customWard")
 	{
 		var jsObj=
 			{
-					
-				type:maintype,
 				id:customwardId,
+				reportLevel:maintype,
 				publicationDateId:publicationId,
-				typename:name,
 				constituencyId:constituencyId,
-				buildType:'customWard',
-				requestFor:"",
-				task:"importantFamiliesinfo"
-	
+				task:"getimportantFamiliesinfo"	
 			}
 		var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			
-		var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
+		var url1 = "getImportantsFamiliesInfoAction.action?"+rparam1;
 		callAjax(jsObj,url1);
 	}
 
@@ -843,20 +828,15 @@ else if(maintype == "customWard")
 	{
 		var jsObj=
 			{
-					
-				type:maintype,
 				id:panchaytId,
+				reportLevel:maintype,
 				publicationDateId:publicationId,
-				typename:name,
-				constituencyId:constituencyId,
-				buildType:'booth',
-				requestFor:"",
-				task:"importantFamiliesinfo"
-	
+				constituencyId:constituencyId,				
+				task:"getimportantFamiliesinfo"	
 			}
 		var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			
-		var url1 = "getImportantFamiliesInfoAction.action?"+rparam1;
+		var url1 = "getImportantsFamiliesInfoAction.action?"+rparam1;
 		callAjax(jsObj,url1);
 	}
 	
@@ -872,7 +852,7 @@ function callAjax(jsObj,url)
 		{
 		try {												
 			myResults = YAHOO.lang.JSON.parse(o.responseText);					
-			if(jsObj.task == "importantFamiliesinfo")
+			if(jsObj.task == "getimportantFamiliesinfo")
 			{
 				$('#mainDiv').show();
 				buildVotersCount(myResults,jsObj);
@@ -947,7 +927,7 @@ function buildVotersCount(myResults,jsObj)
 {
 	if(myResults != null)
 	{
-		 $('#votersCountId').html('<span id="totCount">Total Voters : </span><span><b style="color:navy">'+myResults.totalVoters+'</b></span><span id="maleCount" style="margin-left: 10px;">Male Voters : </span><span><b style="color:navy">'+myResults.totalMaleVoters+' </b></span><span id="femaleCount" style="margin-left: 10px;">Female Voters : </span><span><b style="color:navy">'+myResults.totalFemaleVoters+'</b></span>'); 
+		 $('#votersCountId').html('<span id="totCount">Total Voters : </span><span><b style="color:navy">'+myResults.totalVoters+'</b></span><span id="maleCount" style="margin-left: 10px;">Male Voters : </span><span><b style="color:navy">'+myResults.maleVoters+' </b></span><span id="femaleCount" style="margin-left: 10px;">Female Voters : </span><span><b style="color:navy">'+myResults.femaleVoters+'</b></span>'); 
 		/* $('#votersCountId').html('<table class="table table-bordered table-striped table-hover"> <tr><th>Total Voters</th><td>'+myResults.totalVoters+'</td></tr><tr><th>Male Voters</th><td>'+myResults.totalMaleVoters+'</td></tr><tr><th>Female Voters</th><td>'+myResults.totalFemaleVoters+'</td></tr></table>'); */
 	}
 	getInfluencingPeopleCount(jsObj.id);
