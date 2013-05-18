@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Sai Krishna
@@ -30,6 +31,53 @@ public class DelimitationUploadValidationVO implements Serializable {
 	private List<SelectOptionVO> mandalsToSave;
 		
 	private Boolean canSave;
+	
+	private Long year;
+	private Set<String> names;
+	private String oneDelimitation;
+	private String sameMandals;
+	private List<SelectOptionVO> selectOptionsList;
+
+
+	public List<SelectOptionVO> getSelectOptionsList() {
+		return selectOptionsList;
+	}
+
+	public void setSelectOptionsList(List<SelectOptionVO> selectOptionsList) {
+		this.selectOptionsList = selectOptionsList;
+	}
+
+	public Long getYear() {
+		return year;
+	}
+
+	public void setYear(Long year) {
+		this.year = year;
+	}
+
+	public Set<String> getNames() {
+		return names;
+	}
+
+	public void setNames(Set<String> names) {
+		this.names = names;
+	}
+
+	public String getOneDelimitation() {
+		return oneDelimitation;
+	}
+
+	public void setOneDelimitation(String oneDelimitation) {
+		this.oneDelimitation = oneDelimitation;
+	}
+
+	public String getSameMandals() {
+		return sameMandals;
+	}
+
+	public void setSameMandals(String sameMandals) {
+		this.sameMandals = sameMandals;
+	}
 
 	/**
 	 * @return the state
