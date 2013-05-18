@@ -680,10 +680,10 @@ $("#panchayats").live("change",function(){
 </div>
 <div style="border:1px solid;display:none;" id="castGrid2Outer">
 <div id="castGrid2" style="height: 500px; overflow-x: auto;"></div>	
-<!--<div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
+<div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_show1">Show All </span>
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide1">Hide All </span>
-</div>-->
+</div>
 </div>
 
 <div  style="display:none;"  class="widget blue">
@@ -2594,13 +2594,19 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
                     });
     });*/
 	
-	$('#show_hide_show').click(function(){
+     $('#show_hide_show').click(function(){
 		var chart = $('#castGrid1').highcharts();
 		var series = chart.series;
+		
+		var _redraw = chart.redraw;
+		chart.redraw = function(){};
 		
 		$.each(series, function(index, series1) {
             series1.show();
         });
+		
+		chart.redraw = _redraw;
+		chart.redraw();
 		
 		rebuiltDataTable(null);
 	});
@@ -2610,9 +2616,15 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 		var series = chart.series;
 		var totalSeriesName=[];
 		
+		var _redraw = chart.redraw;
+		chart.redraw = function(){};
+		
 		$.each(series, function(index, series1) {
             series1.hide();
         });
+		
+		chart.redraw = _redraw;
+		chart.redraw();
 		for (var i = 0; i < series.length; i++){
 				totalSeriesName.push(series[i].name);
 		}
@@ -2623,24 +2635,33 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 	$('#show_hide_show1').click(function(){
 		var chart = $('#castGrid2').highcharts();
 		var series = chart.series;
+		
+		var _redraw = chart.redraw;
+		chart.redraw = function(){};
+		
 		$.each(series, function(index, series1) {
             series1.show();
         });
+		
+		chart.redraw = _redraw;
+		chart.redraw();
 		
 	});
 	
 	$('#show_hide_hide1').click(function(){
 		var chart = $('#castGrid2').highcharts();
 		var series = chart.series;
-		var totalSeriesName=[];
+		
+		var _redraw = chart.redraw;
+		chart.redraw = function(){};
 		
 		$.each(series, function(index, series1) {
             series1.hide();
         });
 		
-		for (var i = 0; i < series.length; i++){
-				totalSeriesName.push(series[i].name);
-		}
+		chart.redraw = _redraw;
+		chart.redraw();
+		
 		
 	});
 	
