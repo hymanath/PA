@@ -672,11 +672,20 @@ $("#panchayats").live("change",function(){
 	<span class="label label-info" style="padding:5px;">Show All <input type="radio" name="show_hide" value="show" checked="checked"></span>
 	<span class="label label-info" style="padding:5px;">Hide All <input type="radio" name="show_hide" value="hide"></span>
   </div>-->
-  <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
-	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_show">Show All </span>
+  <div style="margin-left:auto;margin-right:auto;width:250px;margin-bottom:10px;">
+	<span class="label label-info btn btn-info" style="padding:5px;margin-left:45px;" id="show_hide_show">Show All </span>
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide">Hide All </span>
+	<span class="btn" id="castesAsPerLocId" style="margin-top:2px"> Show/Hide  Castes As Per Location</span>
   </div>
 </div>
+<div style="border:1px solid;display:none;" id="castGrid2Outer">
+<div id="castGrid2" style="height: 500px; overflow-x: auto;"></div>	
+<!--<div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
+	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_show1">Show All </span>
+	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide1">Hide All </span>
+</div>-->
+</div>
+
 <div  style="display:none;"  class="widget blue">
 <div id="voterDetailsNote" class="noteDiv" style="display:none;text-align:center;"></div>
 <div id="tableDiv" style="padding:10px;display:none;overflow-x:scroll" class="voterDetails"></div>
@@ -2567,14 +2576,6 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 				}
 			},
 
-            /* legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'top',
-                x: -10,
-                y: 100,
-                borderWidth: 0
-            }, */
             series: tempLine //myChart1 
         });
 		
@@ -2619,6 +2620,30 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 		rebuiltDataTable(totalSeriesName);
 	});
 	
+	$('#show_hide_show1').click(function(){
+		var chart = $('#castGrid2').highcharts();
+		var series = chart.series;
+		$.each(series, function(index, series1) {
+            series1.show();
+        });
+		
+	});
+	
+	$('#show_hide_hide1').click(function(){
+		var chart = $('#castGrid2').highcharts();
+		var series = chart.series;
+		var totalSeriesName=[];
+		
+		$.each(series, function(index, series1) {
+            series1.hide();
+        });
+		
+		for (var i = 0; i < series.length; i++){
+				totalSeriesName.push(series[i].name);
+		}
+		
+	});
+	
 	/*$('#btn_hide').click(function() {  
         var chart = $('#castGrid1').highcharts();
         var series = chart.series;
@@ -2654,9 +2679,25 @@ var hamletMainPie =  new Array();
 
 var myChart = new Array();
 
-					 
+var locationsForXAxis=[];
+var dataForChart=[];					 
 function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd)
 	{	 
+	
+		
+		locationsForXAxis=myresults.constituencyManagementVO.locations;
+		var data=myresults.constituencyManagementVO.locWiseCastePrcts;
+		
+		//console.log(data);
+		var dataObj;
+		$.each(data, function( key, value ) {
+			dataObj={};
+			dataObj['name']=value.caste;
+			dataObj['data']=value.locationWisePercentages
+			//console.log(value.caste+""+value.locationWisePercentages);
+			dataForChart.push(dataObj);
+		});	
+		
 		  hamletMainPie=[];
 	      myChart=[];
 		  castTemp=[];
@@ -2941,7 +2982,47 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 			buildHamletWiseCastResultsGraph(null,null);
 	}
 	
-
+$('#castesAsPerLocId').click(function(){
+	castGrid2();
+});
+function castGrid2(){
+$('#castGrid2Outer').toggle();
+ $('#castGrid2').highcharts({
+            chart: {
+                type: 'line',
+            },
+            title: {
+                text: 'Castes As Per Location',
+                x: -20 //center
+            },
+            
+            xAxis: {
+                categories: locationsForXAxis,
+				labels: {
+                                align:'right',
+                                style: {
+                                      cursor: 'pointer',
+                                      fontSize: '12px',
+                                },
+                                rotation: -45,
+                            } 
+            },
+            yAxis: {
+                title: {
+                    text: 'Voters Percentage'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valueSuffix: ' %'
+            },
+            series: dataForChart
+        });
+}
 function buildVoterDetailsTable(result,type,retrieveType){
 
 	if(result.votersDetailsVO == null || result.votersDetailsVO.length == 0){
