@@ -15541,4 +15541,29 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		}
 	}
 	
+	public VoterInfo getTotalVotersDetailsbyLocation(Long userId,Long reportLevelValue,String locationType,Long publicationDateId,Long constituencyId){
+		VoterInfo voterInfo = new VoterInfo();
+		if(locationType.equalsIgnoreCase(IConstants.HAMLET)){
+			 List<Object[]> votersCount =  boothPublicationVoterDAO.getVotersCountByGenderInHamlet(userId,reportLevelValue,publicationDateId,constituencyId);
+		      for(Object[] obj1:votersCount){
+		    	  if(obj1[1].toString().equalsIgnoreCase("M"))
+		    		  voterInfo.setMaleVoters((Long) obj1[0]);
+		    	  else if(obj1[1].toString().equalsIgnoreCase("F"))
+		    		  voterInfo.setFemaleVoters((Long) obj1[0]);						    	  
+		      }
+		      voterInfo.setTotalVoters(voterInfo.getMaleVoters()+voterInfo.getFemaleVoters());
+		}
+		else{
+			Long reportLvlId= getReportLevelId(locationType);		
+		List<Object[]> votersDetailesCount = voterInfoDAO.getVoterDetailedCountByLocation(reportLvlId,reportLevelValue,publicationDateId,constituencyId);
+			if(votersDetailesCount!=null && votersDetailesCount.size()>0){
+				for (Object[] objects : votersDetailesCount) {
+					voterInfo.setTotalVoters((Long) objects[0]);
+					voterInfo.setMaleVoters((Long) objects[1]);
+					voterInfo.setFemaleVoters((Long)objects[2]);
+				}
+			}
+		}
+		return voterInfo;		
+	}
 }
