@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -82,7 +83,9 @@ import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dto.CastLocationVO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
@@ -15338,6 +15341,81 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			return result;
 		}
 	}
+	public ConstituencyManagementVO getCasteWisePercentsInLocations(List<VoterCastInfoVO> list){
+		CastLocationVO castLocationVO;
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(0);
+		ConstituencyManagementVO constituencyManagementVO=new ConstituencyManagementVO();
+		List<String> castes_unique=new ArrayList<String>();
+		List<Long> castes_uniqueId=new ArrayList<Long>();
+		List<String> locNames=new ArrayList<String>();
+		List<Double> castPercentages_unique=null;
+		boolean castExist;
+		List<CastLocationVO> castLocationVOs=new ArrayList<CastLocationVO>();
+		
+		try{
+			
+			if(list != null || list.size() != 0)
+			{
+			for(VoterCastInfoVO voterCastInfoVO : list)
+			{
+				locNames.add(voterCastInfoVO.getMandalName());
+				for(CastVO castVO : voterCastInfoVO.getVoterCastInfoVO().getCastVOs())
+				{
+					//castes_unique.add(castVO.getCastName());
+					castes_uniqueId.add(castVO.getCastStateId());
+				}
+			}
+			
+			HashSet hs = new HashSet();
+			hs.addAll(castes_uniqueId);
+			castes_uniqueId.clear();
+			castes_uniqueId.addAll(hs);
+			
+			
+			for(Long cstId:castes_uniqueId){
+				castPercentages_unique=new ArrayList<Double>();
+				String caste="";
+				for(String location:locNames){
+					for(VoterCastInfoVO voterCastInfoVO:list){
+						if(voterCastInfoVO.getMandalName().equalsIgnoreCase(location)){
+							castExist=false;
+							for(CastVO castVO : voterCastInfoVO.getVoterCastInfoVO().getCastVOs())
+							{
+								if(castVO.getCastStateId().equals(cstId)){
+									castPercentages_unique.add(Double.parseDouble(castVO.getCastPercentage()));
+									castes_unique.add(castVO.getCastName());
+									caste=castVO.getCastName();
+									castExist=true;
+								}
+							}
+							if(!castExist){
+								castPercentages_unique.add(null);
+							}
+						}
+					}
+					
+				}
+				castLocationVO = new CastLocationVO();
+				castes_unique.add(caste);
+				castLocationVO.setCaste(caste);
+				castLocationVO.setLocationWisePercentages(castPercentages_unique);
+				castLocationVOs.add(castLocationVO);
+			}
+
+			
+			constituencyManagementVO.setLocations(locNames);
+			constituencyManagementVO.setCastes(castes_unique);
+			constituencyManagementVO.setLocWiseCastePrcts(castLocationVOs);
+			
+			//result.add(new SelectOptionVO(locNames,castes_unique,cstePrcntInLoc));
+			//constituencyManagementVO.setCstWisePrcntsInLctns(result);
+			}
+		}catch (Exception e) {
+			log.error("Exception Occured in getCasteWisePercentage() Method",e);
+		}
+		return constituencyManagementVO;
+	}
+	
 	public List<SelectOptionVO> getMandalsInConstituency(Long constituencyId)
 	{
 		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
