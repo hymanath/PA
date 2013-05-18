@@ -1675,7 +1675,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
        
 		YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
-		var name = oRecord.getData("name").replace('MANDAL','');
+		var name = oRecord.getData("name");
 		var id = oRecord.getData("id");
 		var type = oRecord.getData("type");
 		
@@ -2730,7 +2730,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 		if(lgndItemSlctd == null|| (lgndItemSlctd != null && lgndItemSlctd.indexOf(constMgmtMainObj.castStatssubArray[i].mandal)== -1))
 		{
 		str+='<tr>';
-		str+='<td>'+(constMgmtMainObj.castStatssubArray[i].mandal).replace('MANDAL','')+'</td>';
+		str+='<td>'+(constMgmtMainObj.castStatssubArray[i].mandal)+'</td>';
 		castTemp.push(constMgmtMainObj.castStatssubArray[i].caste);
 		hamletTemp.push(constMgmtMainObj.castStatssubArray[i].mandal);
 		if(type == "mandal")
