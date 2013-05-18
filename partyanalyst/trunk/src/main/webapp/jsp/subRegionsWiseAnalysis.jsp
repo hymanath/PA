@@ -415,6 +415,11 @@ table.dataTable thead th {
  margin-bottom: 5px;
  
  }
+ .myTittle
+ {
+ color:#62C462;
+ 
+ }
 </style>
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -603,6 +608,7 @@ $("#panchayats").live("change",function(){
 	   <th><span class ='noteString'> Select Party Results </span></th>
 	   <th><span class ='noteString'> Select Areas </span></th>
 	   <th></th>
+	   <th></th>
 		<tr>
 		  <td>
 	          <select multiple  id="selId1" style="width:182px;" ></select>  
@@ -615,6 +621,9 @@ $("#panchayats").live("change",function(){
           </td>
 		 <td>
 	         <input type="button"  id ="meanClick" style="margin-left: 18px;  height: 39px;" value="Compare Results" class="btn btn-info">
+	     </td>
+		 <td>
+	         <input type="button"  id ="guideClick" style="margin-left: 18px; " value=" Instructions " class="btn btn-success">
 	     </td>
 		</tr>
 		<tr>
@@ -701,6 +710,7 @@ $("#panchayats").live("change",function(){
 
 <div id="electionResultsDiv" class="widget blue"></div>
 
+<div id="instructionDialog" ></div>
 
 <script type="text/javascript">
 function getvotersBasicInfo(buttonType,id,publicationId,type){
@@ -1457,6 +1467,74 @@ function callAjax(jsObj,url)
  function(){
  
  getSelected();
+ });
+ $("#guideClick").live('click',
+ function(){
+ var str='';
+  str+='<p>';
+str+='<span class="ui-icon ui-icon-circle-check" style="float: left; " ></span>';
+ str+= ' Selecting Area is Optional.';
+
+str+='</p>';
+ str+='<p>';
+str+='<span class="ui-icon ui-icon-circle-check" style="float: left;"></span>';
+ str+= ' We Can Compare One Party Deviation In TWO Elections.';
+  str+='<p >';
+ str+= ' LIKE ';
+ str+='<span class="myTittle">'
+ str+= 'TDP IN Assembly 2009 ';
+ str+='</span>';
+ str+= ' AND ';
+ str+='<span class="myTittle">'
+ str+= 'TDP IN Assembly 2004 ';
+ str+='</span>';	 
+str+='</p>';
+
+
+str+='</p>';
+str+='<p>';
+ str+='<p>';
+str+='<span class="ui-icon ui-icon-circle-check" style="float: left;"></span>';
+ str+= ' We Can Compare One Party Deviation With  Other Party In Same Election .';
+  str+='<p >';
+ str+= ' LIKE ';
+ str+='<span class="myTittle">'
+ str+= 'TDP IN Assembly 2009 ';
+ str+='</span>';
+ str+= ' AND ';
+ str+='<span class="myTittle">'
+ str+= 'INC IN Assembly 2009 ';
+ str+='</span>';	 
+str+='</p>';
+str+='</p>';
+str+='<p>';
+ str+='<p>';
+str+='<span class="ui-icon ui-icon-circle-check" style="float: left; "></span>';
+ str+= ' We Can Compare One Party Deviation In TWO Elections  with Other Party  Deviation In SAME TWO Elections/Difeerent TWO ELECTIONS.';
+ str+='<p>';
+ str+= ' LIKE ';
+ str+='<span class="myTittle">'
+ str+= '[TDP IN Assembly 2009 ';
+ str+='</span>';
+ str+= ' AND ';
+ str+='<span class="myTittle">'
+ str+= 'TDP IN Assembly 2004] ';
+ str+='</span>';
+ str+= ' Deviation With  ';
+  str+='<span class="myTittle">'
+ str+= '[INC IN Assembly 2009 ';
+ str+='</span>';
+ str+= ' AND ';
+ str+='<span class="myTittle">'
+ str+= 'INC IN Assembly 2004 ]';
+ str+='</span>';
+ str+= ' Deviation. ';
+str+='</p>';
+ 
+ str+='</p>';
+
+    $("#instructionDialog" ).html(str);
+ $("#instructionDialog" ).dialog({width: 600} );
  });
  $("#reverseClick1,#reverseClick2").live('click',
  function(event){
