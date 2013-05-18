@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.model.VoterInfo;
 
 public interface IVotersAnalysisService {
 	
@@ -274,4 +275,5 @@ public interface IVotersAnalysisService {
 	 
 	 public List<SelectOptionVO> getMandalsInConstituency(Long constituencyId);
 		
+	 public VoterInfo getTotalVotersDetailsbyLocation(Long userId,Long reportLevelValue,String locationType,Long publicationDateId,Long constituencyId);
 }
