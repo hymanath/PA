@@ -19,6 +19,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.DelimitationUploadValidationVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -65,26 +66,28 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private String task = null;
 	private HttpSession session;
 	private List<Object> electionResults;
-	private List<SelectOptionVO> delimitationMandalDetails;
-	private SelectOptionVO delimitationConstituencyDetails;
+	List<DelimitationUploadValidationVO> delimitationMandalDetails;
+	private DelimitationUploadValidationVO delimitationConstituencyDetails;
 	
 	
 	
-	public SelectOptionVO getDelimitationConstituencyDetails() {
+	public DelimitationUploadValidationVO getDelimitationConstituencyDetails() {
 		return delimitationConstituencyDetails;
 	}
 
 	public void setDelimitationConstituencyDetails(
-			SelectOptionVO delimitationConstituencyDetails) {
+			DelimitationUploadValidationVO delimitationConstituencyDetails) {
 		this.delimitationConstituencyDetails = delimitationConstituencyDetails;
 	}
 
-	public List<SelectOptionVO> getDelimitationMandalDetails() {
+	
+
+	public List<DelimitationUploadValidationVO> getDelimitationMandalDetails() {
 		return delimitationMandalDetails;
 	}
 
 	public void setDelimitationMandalDetails(
-			List<SelectOptionVO> delimitationMandalDetails) {
+			List<DelimitationUploadValidationVO> delimitationMandalDetails) {
 		this.delimitationMandalDetails = delimitationMandalDetails;
 	}
 
