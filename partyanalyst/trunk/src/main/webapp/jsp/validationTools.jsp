@@ -61,6 +61,7 @@
 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+ <script type="text/javascript" src="js/validationTools/validationTools.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 
 
@@ -88,7 +89,7 @@
 }
 .voterInfoDiv{margin-top: 10px;}
 
-#votersBasicInfoInnerDiv table th ,#votersInfoDiv table th,#voterFamilyInfoDiv table th,#voterAgeInfoDiv table th,#voterModificationDiv table th{
+#votersBasicInfoInnerDiv table th ,#votersInfoDiv table th,#voterFamilyInfoDiv table th,#voterAgeInfoDiv table th,#voterModificationDiv table th,#constituencyVotesTab th,#mandalTab th{
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -96,7 +97,7 @@
     padding: 10px;
     text-align: left;
 }
-#votersBasicInfoInnerDiv table td ,#votersInfoDiv table td,#voterFamilyInfoDiv table td,#voterAgeInfoDiv table td,#voterModificationDiv table td{
+#votersBasicInfoInnerDiv table td ,#votersInfoDiv table td,#voterFamilyInfoDiv table td,#voterAgeInfoDiv table td,#voterModificationDiv table td,#mandalTab td,#constituencyVotesTab td{
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
@@ -108,6 +109,24 @@
     font-size: 13px;
     margin-top: 10px;
     text-align: center;
+}
+#electionResultsDiv{padding-bottom: 25px;}
+#electionTypeDiv{padding-top: 14px;}
+#eleErrorMsgDiv{color:red;}
+.tdCls{vertical-align: top;}
+.constituencyDiv{max-height: 300px;
+    overflow-y: scroll;}
+#constituencyVotesTab{ margin-left: 23px;margin-top: 15px;width: 95%;}
+#electionTypeId{margin-left: 45px;}
+#stateId{margin-left: 51px;}
+#electionYear{margin-left: 6px;}
+#eleBtnId{margin-left: 75px; margin-bottom: 21px; margin-top: 9px;}
+#eleResAjaxImg{margin-left: 10px;margin-top: -10px;}
+#boothResDiv{margin-top: 24px;}
+.paraCls{color: #676A67;font: small-caption;margin-left: 25px;}
+
+#conTotalVotesDiv > span,#conValidVotesDiv > span {
+    line-height: 1.8em;
 }
 </style>
 </head>
@@ -150,6 +169,39 @@
    <div id="voterModificationDiv"></div>
    
  </div>
+
+
+ <!-- election Results -->
+	<div id="electionResultsDiv" class="widget blue">
+	<h4>Election Results Validation</h4>
+	<div id="eleErrorMsgDiv"></div>
+	  <div id="electionTypeDiv">
+
+		<p> Election Type : <select id="electionTypeId">
+		  <option value="0">Select Type</option>
+		  <option value="2">Assembly</option>
+		  <option value="1">Parliament</option>
+	    </select></p>
+
+		<p id="statesDiv">
+		 Select State : <select id="stateId"></select>
+		</p>
+		<p>Select Election Year : <select id="electionYear"></select></p>
+
+		<input type="button" value="Election validation" id="eleBtnId" class="btn btn-info"/>
+	    <img src="./images/icons/search.gif" id="eleResAjaxImg" style="display:none;"/>
+	  </div>
+	  <div id="constResDiv">
+	    <h4 id="conEleHeading" style="display:none;"></h4>
+		<div id="constResMainDiv"></div>
+	  </div>
+	 <div id="boothResDiv">
+		<h4 id="boothEleHeading" style="display:none;"></h4>
+		<div id="boothResMainDiv"></div>
+	</div>
+	</div>
+
+ <!-- election results -->
 </div>
 
 <script type="text/javascript">
@@ -199,8 +251,18 @@ function callAjax(jsObj,url)
 								 showVoterAgeData(myResults,jsObj);
 								 showVoterModificationData(myResults,jsObj);
 								}
-
-
+								 else if(jsObj.task == "getStates")
+								  buildStates(myResults);
+								
+								else if(jsObj.task == 'getElectionYearsForAState')
+							      buildElectionYears(myResults);
+								else if(jsObj.task == "validateEleResults")
+								{
+								  $("#eleResAjaxImg").css("display","none");
+								  showConstituencyWiseEleResults(myResults,jsObj);
+								  showBoothWiseEleResults(myResults,jsObj);
+								}
+							
 							}catch (e) {
 							    //alert(Exception);
 								}  
@@ -1287,10 +1349,8 @@ function showVoterModificationData(myResults,jsObj)
 		
 	}
 	    
-		$("#voterModificationDiv").html(str);
-  
-}
-
+	$("#voterModificationDiv").html(str);
+ }
 
 </script>
 
