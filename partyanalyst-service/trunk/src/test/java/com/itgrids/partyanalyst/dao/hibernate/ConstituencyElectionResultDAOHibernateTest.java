@@ -132,7 +132,7 @@ public class ConstituencyElectionResultDAOHibernateTest extends BaseDaoTestCase 
 			System.out.println(params[0]+"---"+params[1]+"---"+params[2]+"---"+params[3]);
 	}*/
 	
-	public void testGetTotalSeatsCastWise()
+	/*public void testGetTotalSeatsCastWise()
 	{
 		List<Object[]> list = constituencyElectionResultDAO.getTotalSeatsCastWise(38l);
 		
@@ -140,5 +140,22 @@ public class ConstituencyElectionResultDAOHibernateTest extends BaseDaoTestCase 
 		
 		for(Object[] params : list)
 			System.out.println(params[0]+"---"+params[1]);
+	}*/
+	
+	/*public void testGetConsDetsBasedOnValidVotesGreaterTotVotesByElectionId()
+	{
+		List<Object[]> list = constituencyElectionResultDAO.getConsDetsBasedOnValidVotesGreaterTotVotesByElectionId(40l);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		  for(Object[] params : list)
+			System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]+" "+params[4]);
+	}*/
+	
+	public void testgetConstituencyDetsBasedOnvalidOrTotVotesNullOrZeroByEleId()
+	{
+		List<Object[]> list = constituencyElectionResultDAO.getConstituencyDetsBasedOnvalidOrTotVotesNullOrZeroByEleId(40l, "totalVotes");
+		System.out.println(list.size());
+		for(Object[] params : list)
+			System.out.println(params[0]+" "+params[1]);
 	}
 }
