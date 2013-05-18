@@ -3821,6 +3821,12 @@
 			</result> 
 		</action>
 		
+		<action name="getImportantsFamiliesInfoAction" class="votersAnalysisAction" method="getTotalVotersDetailsbyLocation">
+			<result type="json" name="success">
+				<param name="root">voterInfo</param>				
+			</result> 
+		</action>
+		
 		<action name="getImportantFamaliesDetailsForHamlet" class="votersAnalysisAction" method="getImportantFamaliesDetailsForHamlet">
 			<result type="json" name="success">
 				<param name="root">importantFamiliesInfoVo</param>				
