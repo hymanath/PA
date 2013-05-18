@@ -594,7 +594,8 @@ $("#panchayats").live("change",function(){
 	</div>
   </div>
 </div>
- <div id="mainDev">
+ <div id="mainDev" class="widget blue">
+  <div id="sublevelHeading"><h4> Analysis Based On Votes Percentage Difference</h4></div>
   <div align="center" id = "subDev1">
 	   <div id="selectYoptionId" ></div>
 	   <table>
@@ -614,7 +615,7 @@ $("#panchayats").live("change",function(){
 		</tr>
 		<tr>
 		  <td>
-		         <input type="button"  id ="reverseClick1"  selid ="selId1" style="" value="Reverse Input sOf Box1" class="btn btn-info">
+		         <input type="button"  id ="reverseClick1"  selid ="selId1" style="" value="Reverse Inputs Of Box1" class="btn btn-info">
 	        </td>
 		  <td>
 			    <input type="button"  id ="reverseClick2" selid = "selId2" style="" value="Reverse Inputs Of Box2" class="btn btn-info">
@@ -638,7 +639,7 @@ $("#panchayats").live("change",function(){
 	  
 	</div>
    
-	  <div align="center" id = "subDev2" >
+	  <div align="center" id = "subDev2" style="display:none;">
       <div id="deviation2" style="height:600px;"></div>
 	  </div>
 	  
@@ -1238,7 +1239,7 @@ function callAjax(jsObj,url)
     
 
 	$('#deviation2').html("");
-     
+     $('#subDev2').show();
 	
 	
 	var linechartDataArr = new Array();
