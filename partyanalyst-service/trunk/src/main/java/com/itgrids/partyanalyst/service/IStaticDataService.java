@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyResultsInElectionVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
+import com.itgrids.partyanalyst.dto.DelimitationUploadValidationVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
@@ -370,8 +371,8 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getBoothsInMuncipality(Long id,Long publicationId);
 		
-		public List<SelectOptionVO> getConstituencyMandalDetailsForAllDelimitations(Long constituencyId);
-		public SelectOptionVO checkDelimitationYearsAndMandalsForConstituency(Long constituencyId);
+		public List<DelimitationUploadValidationVO> getConstituencyMandalDetailsForAllDelimitations(Long constituencyId);
+		public DelimitationUploadValidationVO checkDelimitationYearsAndMandalsForConstituency(Long constituencyId);
 		public List<Object[]> getVotersCountInAPanchayatForAnElection(Long electionId, Long panchayatId);
 	
 		public List<SelectOptionVO> getPanchayatiesByMandalIdAndConstId(Long constituencyId,Long id,Long publicationDateId);

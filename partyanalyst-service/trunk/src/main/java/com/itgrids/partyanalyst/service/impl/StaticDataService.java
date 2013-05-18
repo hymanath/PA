@@ -70,7 +70,6 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ElectionDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -85,6 +84,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyResultsInElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWinnerInfoVO;
+import com.itgrids.partyanalyst.dto.DelimitationUploadValidationVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInformationVO;
@@ -108,7 +108,6 @@ import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
-import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -8349,16 +8348,16 @@ public class StaticDataService implements IStaticDataService {
 		}
 	}
 	
-	public List<SelectOptionVO> getConstituencyMandalDetailsForAllDelimitations(Long constituencyId)
+	public List<DelimitationUploadValidationVO> getConstituencyMandalDetailsForAllDelimitations(Long constituencyId)
 	{
-		List<SelectOptionVO> resultList =new ArrayList<SelectOptionVO>();
+		List<DelimitationUploadValidationVO> resultList =new ArrayList<DelimitationUploadValidationVO>();
 		try{
 			List<DelimitationConstituency> delimitationConstituencies = delimitationConstituencyDAO
 					.findDelimitationConstituencyByConstituencyID(constituencyId);
 			
 			for(DelimitationConstituency obj:delimitationConstituencies)
 			{
-				SelectOptionVO vo =new SelectOptionVO();
+				DelimitationUploadValidationVO vo =new DelimitationUploadValidationVO();
 				Set<String> tehsilNames = new HashSet<String>();
 				
 				vo.setYear(obj.getYear());
@@ -8384,9 +8383,9 @@ public class StaticDataService implements IStaticDataService {
 	}
 	
 	
-	public SelectOptionVO checkDelimitationYearsAndMandalsForConstituency(Long constituencyId)
+	public DelimitationUploadValidationVO checkDelimitationYearsAndMandalsForConstituency(Long constituencyId)
 	{
-		SelectOptionVO vo = new SelectOptionVO();
+		DelimitationUploadValidationVO vo = new DelimitationUploadValidationVO();
 		try
 		{
 			List<DelimitationConstituency> list = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyId);
