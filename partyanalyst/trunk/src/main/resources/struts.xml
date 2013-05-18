@@ -5140,6 +5140,10 @@
 			</result>
 		</action>
 		
-		
+		<action name="validateEleResultsAction" class="validationToolsAction" method="AjaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">electionResultsVerificationVO</param>
+		 </result>
+		</action>
 		</package>
 </struts>      

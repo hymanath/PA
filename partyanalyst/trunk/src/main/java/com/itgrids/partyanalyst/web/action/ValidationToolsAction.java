@@ -9,6 +9,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.DataVerificationVO;
+import com.itgrids.partyanalyst.dto.ElectionResultsVerificationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.DataValidationVO;
@@ -34,6 +35,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 	private List<DataValidationVO> resultList;
 	private EntitlementsHelper entitlementsHelper;
 	private  DataVerificationVO dataVerificationVO;
+	private ElectionResultsVerificationVO electionResultsVerificationVO;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -123,6 +125,14 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 	public void setDataVerificationVO(DataVerificationVO dataVerificationVO) {
 		this.dataVerificationVO = dataVerificationVO;
 	}
+	
+	public ElectionResultsVerificationVO getElectionResultsVerificationVO() {
+		return electionResultsVerificationVO;
+	}
+	public void setElectionResultsVerificationVO(
+			ElectionResultsVerificationVO electionResultsVerificationVO) {
+		this.electionResultsVerificationVO = electionResultsVerificationVO;
+	}
 	public String execute()
 	{
 		HttpSession session = request.getSession();
@@ -176,6 +186,8 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 		}
 		if(jObj.getString("task").equalsIgnoreCase("checkVotersBasicInfo"))
 			dataVerificationVO = dataValidationService.validateVotersBasicInfo(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),userId);
+		else if(jObj.getString("task").equalsIgnoreCase("validateEleResults"))
+			electionResultsVerificationVO = dataValidationService.validateConstituencyEleResults(jObj.getLong("electionId"));
 			
 		return SUCCESS;
 		
