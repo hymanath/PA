@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
@@ -26,7 +27,45 @@ public class ConstituencyManagementVO {
 	private List<VotersDetailsVO> mandalsVotersDetails;
 	private List<VotersDetailsVO> panchayatVotersDetails;
 	private List<VotersDetailsVO> boothVotersDetails;
+	private ConstituencyManagementVO constituencyManagementVO;
+	private List<String> locations;
+	private List<String> castes;
+	private List<CastLocationVO> locWiseCastePrcts;
 	
+			
+	public List<String> getLocations() {
+		return locations;
+	}
+
+	public void setLocations(List<String> locations) {
+		this.locations = locations;
+	}
+
+	public List<String> getCastes() {
+		return castes;
+	}
+
+	public void setCastes(List<String> castes) {
+		this.castes = castes;
+	}
+
+	public List<CastLocationVO> getLocWiseCastePrcts() {
+		return locWiseCastePrcts;
+	}
+
+	public void setLocWiseCastePrcts(List<CastLocationVO> locWiseCastePrcts) {
+		this.locWiseCastePrcts = locWiseCastePrcts;
+	}
+
+	public ConstituencyManagementVO getConstituencyManagementVO() {
+		return constituencyManagementVO;
+	}
+
+	public void setConstituencyManagementVO(
+			ConstituencyManagementVO constituencyManagementVO) {
+		this.constituencyManagementVO = constituencyManagementVO;
+	}
+
 	public List<SelectOptionVO> getCastPercent() {
 		return castPercent;
 	}
