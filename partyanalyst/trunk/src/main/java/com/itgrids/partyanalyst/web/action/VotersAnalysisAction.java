@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IUserVoterService;
@@ -65,12 +66,15 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private VotersInfoForMandalVO votersInfo;
 	
 	private ImportantFamiliesInfoVo importantFamiliesInfoVo;
+	
 	private ProblemBeanVO problemBean;
 	
     private IVoterReportService voterReportService;
 
 	private List<VoterHouseInfoVO> votersFamilyInfo;
+	
 	private PartyVotesEarnedVO partyVotesEarnedVO;
+	
 	private List<PartyVotesEarnedVO> partyVotesEarnedVOList;
 	
 	public List<VotersDetailsVO> countList;
@@ -80,21 +84,31 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private ProblemBeanVO problemBeanVO;
 	
 	private List<VotersInfoForMandalVO> previousDetailsList;
+	
 	private List<SelectOptionVO> electionYearsList; 
+	
 	private CrossVotingConsolidateVO crossVotingConsolidateVO;
+	
 	private Long parliamentConstituencyId;
 	
 	private List<SelectOptionVO> userCategoriesList;
+	
 	private List<InfluencingPeopleVO> influencingPeopleList;
+	
 	private ResultStatus resultStatus;
+	
 	private List<InfluencingPeopleBeanVO> influencingPeopleCount;
 	
 	private SelectOptionVO selectOptionVO;
+	
 	private CadreManagementService cadreManagementService;
+	
 	private Long assemblyLocalEleBodyId;
+	
 	private IVoterModificationService voterModificationService;
 	
     private EntitlementsHelper entitlementsHelper;
+    
     private String isLocalityExist;
     
     private List<VoterCastInfoVO> castList;
@@ -104,9 +118,20 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
     private IUserVoterService userVoterService;
 	
     private Long latestPublicationId;
+    
     private List<MandalInfoVO> mandalInfoVOsList;
     
     private List<SelectOptionVO> resultData;
+    
+    private VoterInfo voterInfo;
+    
+	public VoterInfo getVoterInfo() {
+		return voterInfo;
+	}
+
+	public void setVoterInfo(VoterInfo voterInfo) {
+		this.voterInfo = voterInfo;
+	}
 
 	public List<VotersDetailsVO> getAgeRangeList() {
 		return ageRangeList;
@@ -1790,6 +1815,23 @@ return Action.SUCCESS;
 		} catch (Exception e) {
 			log.error("Exception raised in getUserCategoeryValues() method in VotersAnalysisAction Action Class",e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String getTotalVotersDetailsbyLocation(){		
+		try {
+			log.debug("entered into getTotalVotersDetailsbyLocation() method in VotersAnalysisAction Action Class");
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			Long userId =  regVO.getRegistrationID();
+			if(regVO == null)
+				return ERROR;
+			voterInfo = votersAnalysisService.getTotalVotersDetailsbyLocation(userId,jObj.getLong("id"),jObj.getString("reportLevel"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
+		} catch (ParseException e) {
+			log.error("Exception raised in getTotalVotersDetailsbyLocation() method in VotersAnalysisAction Action Class",e);
+		}
+		
 		return Action.SUCCESS;
 	}
 }
