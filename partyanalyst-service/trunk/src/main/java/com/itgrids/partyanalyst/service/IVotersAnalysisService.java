@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
@@ -274,6 +275,8 @@ public interface IVotersAnalysisService {
 	 public Long getLatestPublicationId();
 	 
 	 public List<SelectOptionVO> getMandalsInConstituency(Long constituencyId);
+	 
+	 public ConstituencyManagementVO getCasteWisePercentsInLocations(List<VoterCastInfoVO> list);
 		
 	 public VoterInfo getTotalVotersDetailsbyLocation(Long userId,Long reportLevelValue,String locationType,Long publicationDateId,Long constituencyId);
 }
