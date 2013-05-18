@@ -33,6 +33,7 @@
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <script type="text/javascript" src="js/myCustChart.js"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <style type="text/css">
 #voterDetailsNote{
   margin-bottom:5px;
@@ -110,7 +111,7 @@ var publicationYear    =  '${publicationYear}';
 var startNumber        =  '${startNumber}';
 var agePattern         = /^(hamletLocalArea|customWardLocalArea)$/i;
 /*
-	This Condition is used for checking for Constituency level Age wise analysis
+	This Condition is used for checking for Constituency level Age Wise analysis
 */
 if(type == "constituency")
 {
@@ -132,7 +133,7 @@ if(type == "constituency")
 		callAjax(jsObj,url);
 }
 /*
-	This Condition is used for checking for Mandal level Age wise analysis
+	This Condition is used for checking for Mandal level Age Wise analysis
 */
 else if(type == "mandal")
 {
@@ -172,7 +173,7 @@ else if(type == "mandal")
 		callAjax(jsObj,url);
 }
 /*
-	This Condition is used for checking for Panchayat level Age wise analysis
+	This Condition is used for checking for Panchayat level Age Wise analysis
 */
 else if(type == "panchayat")
 {
@@ -195,7 +196,7 @@ else if(type == "panchayat")
       callAjax(jsObj,url);
 } 
 /*
-	This Condition is used for checking for Ward level Age wise analysis
+	This Condition is used for checking for Ward level Age Wise analysis
 */
 else if(type == "ward")
 {
@@ -217,7 +218,7 @@ else if(type == "ward")
       callAjax(jsObj,url);
 }
 /*
-	This Condition is used for checking for Hamlet level Age wise analysis
+	This Condition is used for checking for Hamlet level Age Wise analysis
 */
 else if(agePattern.test(type) || type == "hamletBooths" || type == "boothHamlets" || type == "wardBooths" || type == "muncipalityWards"  )
 {
@@ -404,45 +405,45 @@ function buildAgewiseDetails(results , obj){
    var noteString;
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
-		noteString = "Mandal wise voters age details of "+obj.name+" in "+publicationYear;
+		noteString = "Mandal/Muncipality Wise voters age details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-			noteString = "Panchayat wise voters age details of "+obj.name+" in "+publicationYear;
+			noteString = "Panchayat Wise voters age details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
 		if(buildType == "hamlet")
-		noteString = "Hamlet wise voters age details of "+obj.name+" in "+publicationYear;
+		noteString = "Hamlet Wise voters age details of "+obj.name+" in "+publicationYear;
 		else
-	  	noteString = "Booth wise voters age details of "+obj.name+" in "+publicationYear;
+	  	noteString = "Booth Wise voters age details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
 		if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
-		   noteString = "Ward wise voter age details of "+obj.name+" in "+publicationYear;
+		   noteString = "Ward Wise voter age details of "+obj.name+" in "+publicationYear;
 		else
-			 noteString = "Booth wise voter age details of "+obj.name+" in "+publicationYear;
+			 noteString = "Booth Wise voter age details of "+obj.name+" in "+publicationYear;
 	}
    else if(type == "ward"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise voter age details of "+obj.name+" in "+publicationYear;
+		noteString = "Booth Wise voter age details of "+obj.name+" in "+publicationYear;
 	}
 	else if(agePattern.test(obj.type)){
 		innerResults = results.boothVotersDetails;
-		noteString = "LocalArea wise voter age details of "+obj.name+" in "+publicationYear;
+		noteString = "LocalArea Wise voter age details of "+obj.name+" in "+publicationYear;
 	}
 	else if( (type="hamlet" && obj.type == "hamletBooths") || obj.type == "wardBooths"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise voter age details of "+obj.name+" in "+publicationYear;
+		noteString = "Booth Wise voter age details of "+obj.name+" in "+publicationYear;
 	}
 	else if( type="booth" && obj.type == "boothHamlets"){
 		innerResults = results.boothVotersDetails;
 
-		noteString = "Hamlet wise voter age details of "+obj.name+" in "+publicationYear;
+		noteString = "Hamlet Wise voter age details of "+obj.name+" in "+publicationYear;
 	}
 	else if( obj.type == subType)
-	{  noteString = "Ward wise voter age details of "+obj.name+" in "+publicationYear;
+	{  noteString = "Ward Wise voter age details of "+obj.name+" in "+publicationYear;
 		innerResults = results.boothVotersDetails;
 }
 	if(innerResults.length == 0){
@@ -456,7 +457,7 @@ function buildAgewiseDetails(results , obj){
 	str+='<thead class="info">';
 	str+='<tr>';
 	if(type == "constituency")
-	   str+='<th rowspan="2">Mandal Name</th>';
+	   str+='<th rowspan="2">Mandal/Muncipality</th>';
 	else if(type == "mandal")
 	   str+='<th rowspan="2">Panchayat Name</th>';
 	else if(type == "panchayat")
@@ -513,8 +514,12 @@ var YDataObjectTemp = new Object();
   if(innerResults[i].totalVotersFor18To25 != null){
 	str+='<tr>';
 
-	if(type == "constituency")
-	 str+='<td>'+innerResults[i].tehsilName+'</td>';
+	if(type == "constituency"){
+		if((innerResults[i].tehsilName).contains('MUNCIPALITY')!=0)
+			str+='<td>'+innerResults[i].tehsilName+'</td>';
+		else
+			str+='<td>'+innerResults[i].tehsilName+' Mandal</td>';
+	 }
 	else if(type == "mandal")
 	 str+='<td>'+innerResults[i].panchayatname+'</td>';
 	else if(type == "panchayat")
@@ -609,46 +614,46 @@ function buildAgeAndGenderWiseDetails(results , obj){
 
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
-		noteString = "Mandal wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+		noteString = "Mandal/Muncipality Wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-		noteString = "Panchayat wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+		noteString = "Panchayat Wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
 		if(buildType == "hamlet")
-		noteString = "Hamlet wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+		noteString = "Hamlet Wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 		else
-	   	noteString = "Booth wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+	   	noteString = "Booth Wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
 
 		if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
-		  noteString = "Ward wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+		  noteString = "Ward Wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 		else
- 		 noteString = "Booth wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+ 		 noteString = "Booth Wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
      else if(type == "ward"){
 		innerResults = results.boothVotersDetails;
-	   	noteString = "Booth wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+	   	noteString = "Booth Wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
 		else if(agePattern.test(obj.type)){
 		innerResults = results.boothVotersDetails;
-		noteString = "LocalArea wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+		noteString = "LocalArea Wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
 	else if( (type="hamlet" && obj.type == "hamletBooths" )|| obj.type == "wardBooths"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+		noteString = "Booth Wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
 	else if( type="booth" && obj.type == "boothHamlets"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Hamlet wise  voters Age and gender details of "+obj.name+" in "+publicationYear;
+		noteString = "Hamlet Wise  voters Age and gender details of "+obj.name+" in "+publicationYear;
 	}
 	if( obj.type == subType){
-	   noteString = "Ward wise voters Age and gender details of "+obj.name+" in "+publicationYear;
+	   noteString = "Ward Wise voters Age and gender details of "+obj.name+" in "+publicationYear;
 	   innerResults = results.boothVotersDetails;
 
 	}
@@ -664,7 +669,7 @@ function buildAgeAndGenderWiseDetails(results , obj){
 	str+='<thead class="info">';
 	str+='<tr>';
 	if(type == "constituency")
-	   str+='<th rowspan="2">Mandal Name</th>';
+	   str+='<th rowspan="2">Mandal/Muncipality</th>';
 	else if(type == "mandal")
 	   str+='<th rowspan="2">Panchayat Name</th>';
 	else if(type == "panchayat")
@@ -715,8 +720,12 @@ function buildAgeAndGenderWiseDetails(results , obj){
 for(var i=0;i<innerResults.length;i++){
   if(innerResults[i].totalMaleVotesFor18To25 != null){
 	str+='<tr>';
-	if(type == "constituency")
-	str+='<td>'+innerResults[i].tehsilName+'</td>';
+	if(type == "constituency"){
+		if((innerResults[i].tehsilName).contains('MUNCIPALITY')!=0)
+			str+='<td>'+innerResults[i].tehsilName+'</td>';
+		else
+			str+='<td>'+innerResults[i].tehsilName+' Mandal</td>';
+	 }
 	else if(type == "mandal")
 	str+='<td>'+innerResults[i].panchayatname+'</td>';
 	else if(type == "panchayat")
@@ -774,44 +783,44 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	$("#ajaxImageDiv").css('display','none');
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
-		noteString = "Mandal wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		noteString = "Mandal/Muncipality Wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-		noteString = "Panchayat wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		noteString = "Panchayat Wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
 	   		if(buildType == "hamlet")
-			noteString = "Hamlet wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+			noteString = "Hamlet Wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 			else
-		noteString = "Booth wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		noteString = "Booth Wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
 		 if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
-		  noteString = "Ward wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		  noteString = "Ward Wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 		 else
-		 noteString = "Booth wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		 noteString = "Booth Wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
 	else if(type == "ward"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		noteString = "Booth Wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
 	else if(agePattern.test(obj.type)){
 		innerResults = results.boothVotersDetails;
-		noteString = "LocalArea wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		noteString = "LocalArea Wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
 	else if( (type="hamlet" && obj.type == "hamletBooths") || obj.type == "wardBooths"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		noteString = "Booth Wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}
 	else if( type="booth" && obj.type == "boothHamlets"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Hamlet wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+		noteString = "Hamlet Wise voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
 	}else if( obj.type == subType){
-              noteString = "Ward wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
+              noteString = "Ward Wise  voters Age and gender(Percentage) details of "+obj.name+" in "+publicationYear;
               innerResults = results.boothVotersDetails;
 			  }
 	if(innerResults.length == 0){
@@ -826,7 +835,7 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	str+='<thead class="info">';
 	str+='<tr>';
 	if(type == "constituency")
-	   str+='<th rowspan="2">Mandal Name</th>';
+	   str+='<th rowspan="2">Mandal/Muncipality</th>';
 	else if(type == "mandal")
 	   str+='<th rowspan="2">Panchayat Name</th>';
 	else if(type == "panchayat")
@@ -880,8 +889,12 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 for(var i=0;i<innerResults.length;i++){
  if(innerResults[i].totalVotersFor18To25 != null){
 	str+='<tr>';
-	if(type == "constituency")
-	str+='<td>'+innerResults[i].tehsilName+'</td>';
+	if(type == "constituency"){
+		if((innerResults[i].tehsilName).contains('MUNCIPALITY')!=0)
+			str+='<td>'+innerResults[i].tehsilName+'</td>';
+		else
+			str+='<td>'+innerResults[i].tehsilName+' Mandal</td>';
+	 }
 	else if(type == "mandal")
 	str+='<td>'+innerResults[i].panchayatname+'</td>';
 	else if(type == "panchayat")
@@ -937,7 +950,7 @@ if(obj.retrieveType == "all"){
 if(type == "constituency" || type == "mandal")
 {
 $("#AgeWiseNoteDiv").css("display","block"); 
-$("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+$("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family Wise Voter Details Select Report Level Panchayat/Polling Station</font>');
 }
 }
 </script>
