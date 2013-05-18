@@ -259,7 +259,7 @@ public String ajaxCallHandler() throws Exception{
 			}
 			
 			electionResultPartyVO = new ElectionResultPartyVO();
-			electionResultPartyVO = staticDataService.getElectionResultForAPartyInAnElection(electionId, partyId, rank);
+			electionResultPartyVO = staticDataService.getElectionResultForAPartyInAnElection(electionId, partyId, rank,stateId);
 		}		
 		
 		return Action.SUCCESS;
