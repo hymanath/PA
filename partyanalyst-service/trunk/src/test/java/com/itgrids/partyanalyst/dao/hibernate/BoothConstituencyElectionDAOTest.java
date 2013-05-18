@@ -171,13 +171,13 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		System.out.println(boothConstituencyElectionDAO.getElectionIdInMandal(844l,IConstants.ASSEMBLY_ELECTION_TYPE,"2009"));
 	}*/
 	
-	public void testGetVotersCountInAConstituency()
+	/*public void testGetVotersCountInAConstituency()
 	{
 		List<Object[]> dataList = boothConstituencyElectionDAO.getVotersCountInAConstituency(18l,241l);
 		for(Object[] data:dataList){
 			System.out.println(data[0]+" - "+data[1]+" - "+data[2]+" - "+data[3]);
 		}
-	}
+	}*/
 	
 	/*public void testGetVotersCountInAMandal()
 	{
@@ -245,10 +245,62 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testgetVotersCountInAConstituencyByParliamentConsId()
+	/*public void testgetVotersCountInAConstituencyByParliamentConsId()
 	{
 		List<Object[]> list = boothConstituencyElectionDAO.getVotersCountInAConstituencyByParliamentConsId(38l, 232l, 495l);
 		
+	}*/
+	
+	/*public void testGetBoothResultsBasedOnTotVotesIsNullByElectionId()
+	{
+		List<Object[]> list = boothConstituencyElectionDAO.getBoothResultsBasedOnTotVotesIsNullByElectionId(3l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object object : params)
+				System.out.print("\t"+object.toString());
+		}
+		
+	}*/
+	
+	/*public void testGetBoothResultsBasedOnValidVotesIsNullByElectionId()
+	{
+		List<Object[]> list = boothConstituencyElectionDAO.getBoothResultsBasedOnValidVotesIsNullByElectionId(17l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object object : params)
+				System.out.print("\t"+object.toString());
+		}
+		
+	}*/
+	
+	/*public void testGetBoothResultsBasedOnTotVotesGreaterValidVotesByElectionId()
+	{
+		List<Object[]> list = boothConstituencyElectionDAO.getBoothResultsBasedOnTotVotesGreaterValidVotesByElectionId(3l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object object : params)
+				System.out.print("\t"+object.toString());
+		}
+		
+	}*/
+	public void testGetBoothResultsBasedOnMaleAndFemaleVotesByElectionId()
+	{
+		List<Object[]> list = boothConstituencyElectionDAO.getBoothResultsBasedOnMaleAndFemaleVotesByElectionId(3l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object object : params)
+				System.out.print("\t"+object.toString());
+		}
+		
 	}
+	
 	
 }
