@@ -456,11 +456,11 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0)
 	{
 		if(jsObj.type == "constituency"){
-			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" Constituency";
+			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Voters Information in "+jsObj.typename+" Constituency";
 		$("#votersBasicInfoTitleDiv").append('<h3 style="background: none repeat scroll 0% 0% #4285F4; color: rgb(255, 255, 255); padding: 5px; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px;">'+title+'</h3>');
 		}
 		else{
-		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" wise Voters Information in "+jsObj.typename+" ";
+		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" Wise Voters Information in "+jsObj.typename+" ";
 		 $("#votersBasicInfoTitleDiv").append('<h3 style="background: none repeat scroll 0% 0% #4285F4; color: rgb(255, 255, 255); padding: 5px; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px;">'+title+'</h3>');
 		}
 	}
@@ -617,10 +617,12 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
        
 		buildVotersChart(votersbasicinfo.votersInfoForMandalVOList,jsObj.typename);
 
-	    	 
+	    var areaType = votersbasicinfo.votersInfoForMandalVOList[0].type;
+			if(areaType == 'Mandal')
+				areaType = votersbasicinfo.votersInfoForMandalVOList[0].type+'/Muncipality';
 		var votersResultColumnDefs = [ 		    	             
 		    	            
-							{key:"name", label: votersbasicinfo.votersInfoForMandalVOList[0].type, sortable: true},
+							{key:"name", label: areaType, sortable: true},
 		    	           	{key:"totalMaleVoters", label: "Male Voters", sortable: true},
 							
 							{key:"totalFemaleVoters", label: "Female Voters", sortable: true},
@@ -659,14 +661,14 @@ function buildVotersChart(chartInfo,reqTitle)
         data.addColumn('number', 'value');
 		data.addRows(chartInfo.length);
 
-		for(var i = 0 ; i< chartInfo.length ; i++){
+		for(var i = 0 ; i< chartInfo.length ; i++){		
 		var name = chartInfo[i].name;
 		var val = parseFloat(chartInfo[i].percent);
 		  data.setValue(i,0,name);
 		  data.setValue(i,1,val);
 		}
         // Set chart options
-		var title = chartInfo[0].type+' wise Voters % Share in '+reqTitle; 
+		var title = chartInfo[0].type+' Wise Voters % Share in '+reqTitle; 
         var options = {'title':title,
                        'width':800,
                        'height':300};
