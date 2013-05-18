@@ -601,4 +601,47 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
     	query.setParameter("constituencyId", constituencyId);
     	return query.list();
     }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getBoothResultsBasedOnTotVotesIsNullByElectionId(Long electionId)
+	{
+		Query query = getSession().createQuery("select model.constituencyElection.constituency.name, model.booth.partNo,model.booth.boothId from BoothConstituencyElection model " +
+				" where model.constituencyElection.election.electionId = :electionId and (model.booth.totalVoters is null or model.booth.totalVoters = 0) " +
+				" order by model.constituencyElection.constituency.name, model.booth.boothId ");
+		query.setParameter("electionId",electionId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getBoothResultsBasedOnValidVotesIsNullByElectionId(Long electionId)
+	{
+		Query query = getSession().createQuery("select model.constituencyElection.constituency.name, model.booth.partNo,model.booth.boothId from BoothConstituencyElection model " +
+				" where model.constituencyElection.election.electionId = :electionId and (model.boothResult.validVotes is null or model.boothResult.validVotes = 0) " +
+				" order by model.constituencyElection.constituency.name, model.booth.boothId ");
+		query.setParameter("electionId",electionId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getBoothResultsBasedOnTotVotesGreaterValidVotesByElectionId(Long electionId)
+	{
+		Query query = getSession().createQuery("select model.constituencyElection.constituency.name, model.booth.partNo,model.booth.totalVoters,model.boothResult.validVotes,model.booth.boothId " +
+				" from BoothConstituencyElection model where model.constituencyElection.election.electionId = :electionId " +
+				"  and model.boothResult.validVotes > model.booth.totalVoters order by model.constituencyElection.constituency.name, model.booth.boothId " );
+		
+		query.setParameter("electionId",electionId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getBoothResultsBasedOnMaleAndFemaleVotesByElectionId(Long electionId)
+	{
+		Query query = getSession().createQuery("select model.constituencyElection.constituency.name, model.booth.partNo,model.booth.totalVoters,model.booth.maleVoters,model.booth.femaleVoters ,model.boothResult.validVotes " +
+				" from BoothConstituencyElection model where model.constituencyElection.election.electionId = :electionId " +
+				"  and (model.booth.maleVoters + model.booth.femaleVoters) != model.booth.totalVoters order by model.constituencyElection.constituency.name, model.booth.boothId " );
+		
+		query.setParameter("electionId",electionId);
+		return query.list();
+	}
+	
 }
