@@ -209,6 +209,17 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List<Object[]> getParticipatedPartiesByTehsilIds(List<Long> tehsilIds);
 	
 	public List<Object[]> getMandalResultsForElectionAndTehsilIdswithAlliance(List<Long> tehsilIds,Long electionId,List<Long> partyIds);
+	
+	public List<Object[]> getMandalValidvotesByTehsilIds1(List<Long> tehsilIds,List<Long> electionIds);
+	public List<Object[]> getLocalbodyValidvotes1(Long constituencyId, List<Long> electionIds);
+	public List<Object[]> getLocalbodyResultsForElectionAndConstituency1(Long constituencyId, List<Long> electionIds,List<Long> partyIds);
+    public List<Object[]> getlocalbodywardValidvotes1(Long constituencyId, List<Long> electionIds);
+    public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> electionIds,List<Long> partyIds);
+
+
+
+
+
 
 
 
