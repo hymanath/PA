@@ -203,4 +203,37 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 		return getHibernateTemplate().find("select count(model.reservationZone),model.reservationZone " +
 				" from ConstituencyElection model where model.election.electionId = ? group by model.reservationZone ",electionId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConsDetsBasedOnValidVotesGreaterTotVotesByElectionId(Long electionId)
+	{
+		Query query = getSession().createQuery("select distinct model.constituencyElection.constituency.constituencyId, " +
+				" model.constituencyElection.constituency.name,model.totalVotes,model.validVotes, model.constituencyElection.election.electionScope.electionType.electionType," +
+				" model.constituencyElection.election.elecSubtype,model.constituencyElection.election.electionYear " +
+				" from ConstituencyElectionResult model where model.constituencyElection.election.electionId =:electionId " +
+				" and model.totalVotes < model.validVotes order by model.constituencyElection.constituency.name " );
+						
+		 query.setParameter("electionId", electionId);
+		 
+		return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyDetsBasedOnvalidOrTotVotesNullOrZeroByEleId(Long electionId,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.constituencyElection.constituency.constituencyId, model.constituencyElection.constituency.name from ConstituencyElectionResult model ");
+		str.append(" where model.constituencyElection.election.electionId =:electionId and ");
+		if(type.equalsIgnoreCase("totalVotes"))
+			str.append(" (model.totalVotes is null or model.totalVotes = 0 )");
+		else if(type.equalsIgnoreCase("validVotes"))
+			str.append(" (model.validVotes is null or model.validVotes = 0 )");
+		str.append(" order by model.constituencyElection.constituency.name ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("electionId", electionId);
+		
+		return query.list();
+	}
 }

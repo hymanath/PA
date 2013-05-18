@@ -6,8 +6,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -20,6 +22,8 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dto.DataVerificationInfoVO;
 import com.itgrids.partyanalyst.dto.DataVerificationVO;
+import com.itgrids.partyanalyst.dto.ElectionResultsVerificationInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionResultsVerificationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.DataValidationVO;
 import com.itgrids.partyanalyst.service.IDataValidationService;
@@ -42,6 +46,8 @@ public class DataValidationService implements IDataValidationService{
 	private IVoterAgeInfoDAO voterAgeInfoDAO;
 	private IVoterAgeRangeDAO voterAgeRangeDAO;
 	private IVoterModificationInfoDAO voterModificationInfoDAO;
+	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
+	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
@@ -145,7 +151,23 @@ public class DataValidationService implements IDataValidationService{
 			IVoterModificationInfoDAO voterModificationInfoDAO) {
 		this.voterModificationInfoDAO = voterModificationInfoDAO;
 	}
+	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
+		return constituencyElectionResultDAO;
+	}
 
+	public void setConstituencyElectionResultDAO(
+			IConstituencyElectionResultDAO constituencyElectionResultDAO) {
+		this.constituencyElectionResultDAO = constituencyElectionResultDAO;
+	}
+
+	public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
+		return boothConstituencyElectionDAO;
+	}
+
+	public void setBoothConstituencyElectionDAO(
+			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
+		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
+	}
 
 	public static Comparator<DataValidationVO> sortData = new Comparator<DataValidationVO>()
     {
@@ -1358,6 +1380,164 @@ public class DataValidationService implements IDataValidationService{
     	}catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception Occured in checkWardWiseVoterModificationData() method, Exception - "+e);
+		}
+    }
+    
+    /* Status(Added/deleted) Wise votersData verification End in VoterModificationInfo table */
+    
+    
+    public ElectionResultsVerificationVO validateConstituencyEleResults(Long electionId)
+    {
+    	ElectionResultsVerificationVO electionResultsVerificationVO = new ElectionResultsVerificationVO() ;
+    	try{
+    		List<Long> constituencyIdsList = new ArrayList<Long>(0);
+    		
+    		electionResultsVerificationVO.setElectionId(electionId);
+    		
+    		//get Zero or null valid votes Constituencies
+    		List<Object[]> list2 = constituencyElectionResultDAO.getConstituencyDetsBasedOnvalidOrTotVotesNullOrZeroByEleId(electionId,"validVotes");
+    		if(list2 != null && list2.size() > 0)
+    		{
+    			List<ElectionResultsVerificationInfoVO> EleResVerificationInfoVO = new ArrayList<ElectionResultsVerificationInfoVO>(0);
+    			for(Object[] params : list2)
+    			{
+    				ElectionResultsVerificationInfoVO verificationInfoVO = new ElectionResultsVerificationInfoVO();
+    				verificationInfoVO.setConstituencyId((Long)params[0]);
+    				verificationInfoVO.setConstituencyName(params[1] != null ?params[1].toString():" ");
+    				EleResVerificationInfoVO.add(verificationInfoVO);
+    			}
+    			
+    			electionResultsVerificationVO.setConsValidVotesVO(EleResVerificationInfoVO);
+    		}
+    		
+    		//get Zero or null total votes Constituencies
+    		
+    		List<Object[]> list3 = constituencyElectionResultDAO.getConstituencyDetsBasedOnvalidOrTotVotesNullOrZeroByEleId(electionId,"totalVotes");
+    		if(list3 != null && list3.size() > 0)
+    		{
+    			List<ElectionResultsVerificationInfoVO> EleResVerificationInfoVO = new ArrayList<ElectionResultsVerificationInfoVO>(0);
+    			for(Object[] params : list3)
+    			{
+    				constituencyIdsList.add((Long)params[0]);
+    				ElectionResultsVerificationInfoVO verificationInfoVO = new ElectionResultsVerificationInfoVO();
+    				verificationInfoVO.setConstituencyId((Long)params[0]);
+    				verificationInfoVO.setConstituencyName(params[1] != null ?params[1].toString():" ");
+    				EleResVerificationInfoVO.add(verificationInfoVO);
+    			}
+    			
+    			electionResultsVerificationVO.setConTotalVotesVO(EleResVerificationInfoVO);
+    		}
+    		
+    		//get totalVotes < validVotes constituencies
+    		List<Object[]> list = constituencyElectionResultDAO.getConsDetsBasedOnValidVotesGreaterTotVotesByElectionId(electionId);
+    		if(list != null && list.size() > 0)
+    		{
+    			List<ElectionResultsVerificationInfoVO> EleResVerificationInfoVO = new ArrayList<ElectionResultsVerificationInfoVO>(0);
+    			for(Object[] params : list)
+    			{
+    				if(!constituencyIdsList.contains((Long)params[0]))
+    				{	
+    				  ElectionResultsVerificationInfoVO verificationInfoVO = new ElectionResultsVerificationInfoVO();
+    				  verificationInfoVO.setConstituencyId((Long)params[0]);
+    				  verificationInfoVO.setConstituencyName(params[1] != null ?params[1].toString():" ");
+    				  verificationInfoVO.setTotalVotes(params[2] != null ?new Double((Double)params[2]).longValue():0L);
+    				  verificationInfoVO.setValidVotes(params[3] != null ?new Double((Double) params[3]).longValue():0L);
+    				  EleResVerificationInfoVO.add(verificationInfoVO);
+    				}
+    			}
+    			
+    			electionResultsVerificationVO.setConsValidVotesGreaterTotVotesVO(EleResVerificationInfoVO);
+    		}
+    		
+    		validateBoothWiseEleResults(electionResultsVerificationVO);
+    	   return electionResultsVerificationVO;
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    		LOG.error("Exception Occured in validateConstituencyElectionData() method, Exception - "+e);
+    		return electionResultsVerificationVO;
+		}
+    }
+    
+  
+    
+    public void validateBoothWiseEleResults(ElectionResultsVerificationVO resultsVerificationVO)
+    {
+    	try{
+    		
+    	List<Long> boothIds = new ArrayList<Long>(0);
+    	List<Object[]> list = boothConstituencyElectionDAO.getBoothResultsBasedOnTotVotesIsNullByElectionId(resultsVerificationVO.getElectionId());
+    	if(list != null && list.size() > 0)
+    	{
+    	  List<ElectionResultsVerificationInfoVO> boothTotalVotesVOList = new ArrayList<ElectionResultsVerificationInfoVO>(0);
+    	  for(Object[] params : list)
+    	  {
+    		  boothIds.add((Long)params[2]);
+    		  ElectionResultsVerificationInfoVO infoVO = new ElectionResultsVerificationInfoVO();
+    		  infoVO.setConstituencyName(params[0] != null ? params[0].toString():" ");
+    		  infoVO.setPartNo(params[1] != null ? params[1].toString():"");
+    		  boothTotalVotesVOList.add(infoVO);
+    	  }
+    	  resultsVerificationVO.setBoothTotalVotesVO(boothTotalVotesVOList);
+    	  
+    	}
+    	
+    	List<Object[]> list2 = boothConstituencyElectionDAO.getBoothResultsBasedOnValidVotesIsNullByElectionId(resultsVerificationVO.getElectionId());
+    	if(list2 != null && list2.size() > 0)
+    	{
+    	  List<ElectionResultsVerificationInfoVO> boothTotalVotesVOList = new ArrayList<ElectionResultsVerificationInfoVO>(0);
+    	  for(Object[] params : list2)
+    	  {
+    		  ElectionResultsVerificationInfoVO infoVO = new ElectionResultsVerificationInfoVO();
+    		  infoVO.setConstituencyName(params[0] != null ? params[0].toString():" ");
+    		  infoVO.setPartNo(params[1] != null ? params[1].toString():"");
+    		  boothTotalVotesVOList.add(infoVO);
+    	  }
+    	  resultsVerificationVO.setBoothValidVotesVO(boothTotalVotesVOList);
+    	  
+    	}
+    	
+    	List<Object[]> list3 = boothConstituencyElectionDAO.getBoothResultsBasedOnTotVotesGreaterValidVotesByElectionId(resultsVerificationVO.getElectionId());
+    	if(list3 != null && list3.size() > 0)
+    	{
+    	  List<ElectionResultsVerificationInfoVO> boothTotalVotesVOList = new ArrayList<ElectionResultsVerificationInfoVO>(0);
+    	  for(Object[] params : list3)
+    	  {
+    		  if(!boothIds.contains((Long)params[4]))
+    		  {
+    		    ElectionResultsVerificationInfoVO infoVO = new ElectionResultsVerificationInfoVO();
+    		   infoVO.setConstituencyName(params[0] != null ? params[0].toString():" ");
+    		   infoVO.setPartNo(params[1] != null ? params[1].toString():"");
+    		   infoVO.setTotalVotes((Long)params[2]);
+    		   infoVO.setValidVotes((Long)params[3]);
+    		   boothTotalVotesVOList.add(infoVO);
+    		  }
+    	  }
+    	  resultsVerificationVO.setBoothValidVotesGreaterTotVotesVO(boothTotalVotesVOList);
+    	  
+    	}
+    	
+    	List<Object[]> list4 = boothConstituencyElectionDAO.getBoothResultsBasedOnMaleAndFemaleVotesByElectionId(resultsVerificationVO.getElectionId());
+    	if(list4 != null && list4.size() > 0)
+    	{
+    	  List<ElectionResultsVerificationInfoVO> boothTotalVotesVOList = new ArrayList<ElectionResultsVerificationInfoVO>(0);
+    	  for(Object[] params : list4)
+    	  {
+    		  ElectionResultsVerificationInfoVO infoVO = new ElectionResultsVerificationInfoVO();
+    		  infoVO.setConstituencyName(params[0] != null ? params[0].toString():" ");
+    		  infoVO.setPartNo(params[1] != null ? params[1].toString():"");
+    		  infoVO.setTotalVotes((Long)params[2]);
+    		  infoVO.setMaleVotes((Long)params[3]);
+    		  infoVO.setFeMaleVotes((Long)params[4]);
+    		  infoVO.setValidVotes((Long)params[5]);
+    		  boothTotalVotesVOList.add(infoVO);
+    	  }
+    	  resultsVerificationVO.setBoothTotWithMaleAndFemaleVO(boothTotalVotesVOList);
+    	  
+    	}
+    	
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    		LOG.error("Exception Occured in validateBoothWiseEleResults() method, Exception - "+e);
 		}
     }
     
