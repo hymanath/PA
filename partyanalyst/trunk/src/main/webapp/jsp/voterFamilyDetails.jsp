@@ -7,7 +7,7 @@
 <html>
 <head>
 
-<title>Family wise Voters details</title>
+<title>Family Wise Voters details</title>
 
  <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> 
 
@@ -205,7 +205,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 <div id="ajaxImageDiv1" style="margin-top: 100px;margin-left: 355px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 
 <h4 id="impFamilesBasicSubDetailsTitle"></h4>
-<div id ="impFamilesBasicSubDetails" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;"></div>
+<div id ="impFamilesBasicSubDetails" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top: 0px;margin-left: -17px; width: 960px;"></div>
 
 </div>
 
@@ -378,7 +378,7 @@ function getImpFamiliesVotersToShow(){
 			]);
 
 	// Set chart options
-	var title = " Family wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
+	var title = " Family Wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
 	var options = {'title':title,
 	'width':800,
 	'height':280};
@@ -447,9 +447,9 @@ function buildTableForImpFamilesForHamlets(impFamilesData,name,type,results)
 	   reqtytle = impFamilesData[t].type;
   }
   if(type == 'customWard')
-	$("#impFamilesBasicSubDetailsForHamletTitle").html("<h4>"+reqtytle+" wise Voters Family analysis of "+name+" in "+publicationYear+"</h4>");
+	$("#impFamilesBasicSubDetailsForHamletTitle").html("<h4>"+reqtytle+" Wise Voters Family analysis of "+name+" in "+publicationYear+"</h4>");
   else 
-	$("#impFamilesBasicSubDetailsForHamletTitle").html("<h4>"+reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"</h4>");
+	$("#impFamilesBasicSubDetailsForHamletTitle").html("<h4>"+reqtytle+" Wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"</h4>");
   
   var impFamilesColumnDefs = [
     {key:"name", label: ""+reqtytle+"", sortable: true},
@@ -484,7 +484,7 @@ oDT: impFamilesDataTable
 if(type == "constituency" || type == "Mandal/Tehsil")
 	{
 	$("#NoteDiv").css("display","block"); 
-	$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+	$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family Wise Voter Details Select Report Level Panchayat/Polling Station</font>');
 	}
 }
 	
@@ -627,10 +627,10 @@ $("#ajaxImageDiv").css('display','none');
 	var title ='';
 	if(chartInfo.type == 'customWard'){		
 		customWardName = chartInfo.name;
-		title= " Family wise Voters details chart of "+chartInfo.name+" in "+publicationYear+"";
+		title= " Family Wise Voters details chart of "+chartInfo.name+" in "+publicationYear+"";
 		}
 	else
-		title= " Family wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
+		title= " Family Wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
 	var options = {'title':title,
 	'width':958,
 	'height':280};
@@ -666,7 +666,12 @@ function buildTableForImpFamilesMandal(impFamilesData,name,type)
      if(impFamilesData[t].type != null)
 	   reqtytle = impFamilesData[t].type;
   }
-  $("#impFamilesBasicSubDetailsTitle").html(reqtytle+" wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
+  if(type == 'Constituency' || type == 'constituency'){
+	$("#impFamilesBasicSubDetailsTitle").html(reqtytle+"/Muncipality Wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
+	reqtytle = reqtytle+"/Muncipality";
+  }
+  else
+	$("#impFamilesBasicSubDetailsTitle").html(reqtytle+" Wise Voters Family analysis of "+name+" "+type+" in "+publicationYear+"");
   
   var impFamilesColumnDefs = [
     {key:"name", label: ""+reqtytle+"", sortable: true},
@@ -700,7 +705,7 @@ if(type == "constituency" || type == "Mandal/Tehsil")
 	//$("#NoteDiv").css("display","block"); 
 	$("#NoteDiv").show(); 
 
-	$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+	$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family Wise Voter Details Select Report Level Panchayat/Polling Station</font>');
 	}
 
 }
@@ -804,7 +809,7 @@ function impFamilesStaticTable(myresults,jsObj)
 	if(type == "constituency" || type == "mandal")
 	{
 	//$("#NoteDiv").css("display","block"); 
-	//$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family wise Voter Details Select Report Level Panchayat/Polling Station</font>');
+	//$("#NoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <strong>Note : </strong> To View Family Wise Voter Details Select Report Level Panchayat/Polling Station</font>');
 	}
 }
 var customWardName='';
@@ -1479,7 +1484,7 @@ $('#impFamPancBothDtlsAgxImg').show();
 					]);
 
 			// Set chart options
-			var title = " Family wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
+			var title = " Family Wise Voters details chart of "+chartInfo.name+" "+chartInfo.type+" in "+publicationYear+"";
 			var options = {'title':title,
 			'width':800,
 			'height':280};
@@ -1521,9 +1526,9 @@ function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
 		  if(type == 'customWard')
 			type="";
 		  if(requestFor=="booth")
-		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Booth wise voters family analysis of "+name+" "+type+" in "+publicationYear+"</b>");
+		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Booth Wise voters family analysis of "+name+" "+type+" in "+publicationYear+"</b>");
 		  else
-		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Hamlet wise voters family analysis of "+name+" in "+publicationYear+"</b>");
+		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Hamlet Wise voters family analysis of "+name+" in "+publicationYear+"</b>");
 		  var impFamilesColumnDefs = [
 		    {key:"name", label: ""+reqtytle+"", sortable: true},
 			{key:"totalVoters", label:"Total",sortable: true},
