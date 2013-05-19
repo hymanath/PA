@@ -264,13 +264,7 @@ public class RegistrationService implements IRegistrationService{
 			
 			user.setPasswdHashTxt(encryptDecrypt.encryptText(values.getPassword()));
 			user.setHashKeyTxt(secretKey);
-			
-			
-			
-			
-			//user.setPassword(values.getPassword());
-			
-			
+
 			user.setParty(partyDAO.get(values.getParty()));
 			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 			Date date = null;
@@ -287,6 +281,8 @@ public class RegistrationService implements IRegistrationService{
 			user.setUserType(values.getUserType());
 			user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 			user.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
+			user.set_loginRestriction(IConstants.FALSE);
+			
 			if(values.getParentUserId() != null)
 				user.setParentUser(userDAO.get(values.getParentUserId()));
 			if(values.getMainAccountId() != null)
