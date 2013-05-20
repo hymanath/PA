@@ -230,7 +230,8 @@
 		<pattern>/setUserRestrictionAction*</pattern>
 		<pattern>/assignSubUserAction*</pattern>
 		<pattern>/casteAndElectionResultsComparisonAction*</pattern>
-			<pattern>/validationToolsAction*</pattern>
+		<pattern>/validationToolsAction*</pattern>
+		<pattern>/cadreOnlineRegisterPageAction*</pattern>
     	 </decorator>
 
 </decorators>

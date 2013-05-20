@@ -89,6 +89,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private ISpecialPageService specialPageService;
 	private String homePageLoadingFirstTime;
 	
+	private Long onlineRegId;
+	
 	public List<SelectOptionVO> getStates() {
 		return states;
 	}
@@ -342,8 +344,17 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setSpecialPageService(ISpecialPageService specialPageService) {
 		this.specialPageService = specialPageService;
 	}
+	
+	
+	public Long getOnlineRegId() {
+		return onlineRegId;
+	}
+	public void setOnlineRegId(Long onlineRegId) {
+		this.onlineRegId = onlineRegId;
+	}
 	public String execute()
 	{	
+		
 		
 		request.setAttribute("feedback", feedback);
 		session = request.getSession();
@@ -443,7 +454,16 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 				
 		
 				}
-		
+				if(onlineRegId != null)
+				{
+					session.removeAttribute("loginStatus");
+					session.removeAttribute("checkedTypeValue");
+					session.removeAttribute("HiddenCount");
+					session.removeAttribute("UserName");
+					session.removeAttribute(IConstants.USER);
+					session.removeAttribute(IWebConstants.FREE_USER_ROLE);
+					return "cadreOnlineReg";
+				} 
 		
 		
 		return Action.SUCCESS;

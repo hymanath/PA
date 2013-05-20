@@ -1163,5 +1163,13 @@
 		<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	</bean>
 	
+	<bean id="cadreOnlineRegisterPageAction" class ="com.itgrids.partyanalyst.web.action.CadreOnlineRegistrationAction" singleton="false">
+		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
+		<property name="partyStrengthService" ref="partyStrengthService" />	
+	</bean>
 </beans>	
 	

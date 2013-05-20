@@ -61,6 +61,7 @@
 		
 		<action name="homePage" class="homePageAction"> 
 		    <result>/jsp/newhomePage.jsp</result>
+		    <result name="cadreOnlineReg" type="redirect" >cadreOnlineRegisterPageAction.action?cadreId=0&amp;windowTask=new&amp;onlineRegId=${onlineRegId}</result>
 		</action>
 	
 		<action name="loginInputAction" class="loginInputAction">
@@ -5150,6 +5151,11 @@
 		 <result type="json" name="success">
 		   <param name="root">electionResultsVerificationVO</param>
 		 </result>
+		</action>	
+			
+		<action name="cadreOnlineRegisterPageAction" class="cadreOnlineRegisterPageAction">
+			<result name="success">/jsp/newCadrePage.jsp</result>
+			<result name="error">jsp/globalError.jsp</result>		
 		</action>
 		</package>
 </struts>      

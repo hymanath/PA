@@ -469,12 +469,13 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 				String type                   = jObj.getString("type");
 				Long level                    = jObj.getLong("level");
 				Long publicationId            = jObj.getLong("publicationId");
+				Long constituencyId           = jObj.getLong("constituencyId");
 				String[] selectedValues       = jObj.getString("values").split(",");
 				List<Long> ids = new ArrayList<Long>();
 				for (String parm : selectedValues) {
 					ids.add(Long.valueOf(parm.trim()));
 				}
-				resultList                    = staticDataService.getPanchayatsOrBoothsForSelectedLevel(type,level,ids,publicationId);
+				resultList                    = staticDataService.getPanchayatsOrBoothsForSelectedLevel(type,level,ids,publicationId,constituencyId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getConstituencyType"))
 			{
