@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
-
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -12,7 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -27,7 +25,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.google.gdata.data.introspection.IServiceDocument;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -95,7 +92,6 @@ import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
@@ -15345,12 +15341,13 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		CastLocationVO castLocationVO;
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(0);
 		ConstituencyManagementVO constituencyManagementVO=new ConstituencyManagementVO();
-		List<String> castes_unique=new ArrayList<String>();
 		List<Long> castes_uniqueId=new ArrayList<Long>();
+		
 		List<String> locNames=new ArrayList<String>();
 		List<Long> castCount_unique=null;
 		boolean castExist;
 		List<CastLocationVO> castLocationVOs=new ArrayList<CastLocationVO>();
+		List<CastLocationVO> castLocationVOsForSort=new ArrayList<CastLocationVO>();
 		
 		try{
 			
@@ -15359,20 +15356,28 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			for(VoterCastInfoVO voterCastInfoVO : list)
 			{
 				locNames.add(voterCastInfoVO.getMandalName());
+								
 				for(CastVO castVO : voterCastInfoVO.getVoterCastInfoVO().getCastVOs())
 				{
 					//castes_unique.add(castVO.getCastName());
-					castes_uniqueId.add(castVO.getCastStateId());
+					if(!castes_uniqueId.contains(castVO.getCastStateId())){
+						castes_uniqueId.add(castVO.getCastStateId());
+						castLocationVO=new CastLocationVO();
+						castLocationVO.setCaste(castVO.getCastName());
+						castLocationVO.setCasteStateId(castVO.getCastStateId());
+						castLocationVOsForSort.add(castLocationVO);
+					}
 				}
 			}
 			
-			HashSet hs = new HashSet();
-			hs.addAll(castes_uniqueId);
-			castes_uniqueId.clear();
-			castes_uniqueId.addAll(hs);
+			Collections.sort(castLocationVOsForSort,sortCaste);			
+			Collections.sort(locNames);
 			
-			
-			for(Long cstId:castes_uniqueId){
+			Long cstId=null;
+			String cstName="";
+			for(CastLocationVO cstLocationVO:castLocationVOsForSort){
+				cstId=cstLocationVO.getCasteStateId();
+				cstName=cstLocationVO.getCaste();
 				castCount_unique=new ArrayList<Long>();
 				String caste="";
 				for(String location:locNames){
@@ -15383,7 +15388,6 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 							{
 								if(castVO.getCastStateId().equals(cstId)){
 									castCount_unique.add(castVO.getCastCount());
-									castes_unique.add(castVO.getCastName());
 									caste=castVO.getCastName();
 									castExist=true;
 								}
@@ -15396,7 +15400,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					
 				}
 				castLocationVO = new CastLocationVO();
-				castes_unique.add(caste);
+				//castes_unique.add(caste);
 				castLocationVO.setCaste(caste);
 				castLocationVO.setLocationWiseCastesCount(castCount_unique);
 				castLocationVOs.add(castLocationVO);
@@ -15404,7 +15408,6 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 
 			
 			constituencyManagementVO.setLocations(locNames);
-			constituencyManagementVO.setCastes(castes_unique);
 			constituencyManagementVO.setLocWiseCastePrcts(castLocationVOs);
 			
 			//result.add(new SelectOptionVO(locNames,castes_unique,cstePrcntInLoc));
@@ -15644,4 +15647,12 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		}
 		return voterInfo;		
 	}
+	
+	public static Comparator<CastLocationVO> sortCaste = new Comparator<CastLocationVO>()
+		    {
+		        public int compare(CastLocationVO castVo1, CastLocationVO castVo2)
+		        {
+		        	 return castVo1.getCaste().compareToIgnoreCase(castVo2.getCaste());
+		        }
+		    };
 }
