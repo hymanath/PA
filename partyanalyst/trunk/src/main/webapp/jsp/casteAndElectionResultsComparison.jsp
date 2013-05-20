@@ -1547,6 +1547,7 @@
 						} 
 		}],
 		yAxis: [{ // Primary yAxis
+			min:0,
 			labels: {
 				formatter: function() {
 					return this.value +'';
@@ -1621,6 +1622,7 @@
 		}],
 		yAxis: [{ // Primary yAxis
 			// Secondary yAxis
+			min:0,
 			gridLineWidth: 0,
 			title: {
 				text: 'Percentage Wise',
