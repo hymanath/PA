@@ -1644,7 +1644,7 @@ function getCountOfHamletsAndBoothsInPanchayat()
 
 function buildHamletAndBoothCount(result)
 {
-	 $('#hamletAndBoothCount').html('<span>Total Hamlets : </span><span ><b style="color:navy;">'+result[0]+'</b></span><span id="totalBooths" style=" margin-left: 10px;">Total Booths : </span><span><b style="color:navy;">'+result[1]+'</b></span>'); 
+	 $('#hamletAndBoothCount').html('<span>Total Hamlets : </span><span ><b style="color:navy;">'+result[1]+'</b></span><span id="totalBooths" style=" margin-left: 10px;">Total Booths : </span><span><b style="color:navy;">'+result[0]+'</b></span>'); 
 	/* $('#hamletAndBoothCount').html('<table class="table table-bordered table-striped table-hover"><tr><th>Total Hamlets</th><th>Total Booths</th></tr><tr><td>'+result[0]+'</td><td>'+result[1]+'</td></tr></table>'); */
 }
 
