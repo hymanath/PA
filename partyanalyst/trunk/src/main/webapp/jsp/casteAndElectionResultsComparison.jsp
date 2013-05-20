@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Cast Wise Election Results Analysis</title>
+<title>Caste Wise Election Results Analysis</title>
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
   <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
@@ -68,6 +68,10 @@
     font-size: 14px;
     margin-left: -117px;
     margin-top: 10px;
+	}
+	.processingImg , #processingImg 
+	{
+		margin-left: 10px;
 	}
  </style>
  <script type="text/javascript">
@@ -153,6 +157,7 @@
 		}
 		value += '</select>';
 		$('#multiSelectLevelsValues').html(value);
+		$('#selectAndUnselectmandal').show();
 
 	}
 	function getPanchayaths(){
@@ -246,19 +251,23 @@
 									}
 									else if(jsObj.task == "getSelectedMandalOrPanchayatData")
 									{
+										$('.processingImg').hide();
 									    buildPanchayatsOrMandalsList(myResults,jsObj,'mandal');
 									}
 									else if(jsObj.task == "hamletsOrWardsInRegion")
 									{
+										$('.processingImg').hide();
 										buildPanchayatsOrMandalsList(myResults,jsObj ,'muncipality');
 										
 									}
 									else if(jsObj.task == "getAllBoothsInAWard")
 									{
+										$('.processingImg').hide();
 										buildPanchayatsOrMandalsList(myResults,jsObj ,'wards');	
 									}
 									else if(jsObj.task == "getBoothsInMuncipality")
 									{
+										$('.processingImg').hide();
 										buildPanchayatsOrMandalsList(myResults,jsObj ,'');
 									}
 									else if(jsObj.task == "getConstituencyType")
@@ -362,7 +371,7 @@
 		{
 			$('#selUserCatgId').show();
 		
-			
+									
 			$('#rangeSliderDiv').show();
 			$('#processingImg').show();
 			var name = "";
@@ -425,12 +434,12 @@
 				}	
 				else
 				{
-					if(selected == "booth" && substr == "RURAL")
+					if(selected == "booth" && substr == "RURAL" || selected == "Booth" && substr == "RURAL")
 					{
 						
 						name = $("#levelId option:selected").text();
 					}
-					else if(selected == "panchayat")
+					else if(selected == "panchayat" || selected == "Panchayat")
 					{
 						name = $("#levelId option:selected").text();
 					}
@@ -485,7 +494,9 @@
 	}
 	
 	function getRespectiveValues(constituencyType)
-	{	
+	{
+		$('#selectAndUnselectWards').hide();
+		$("input:radio").attr("checked", false);
 		$('#selReqFileldId').hide();
 		$('#selUserCatgId').hide();
 		publicationId = $('#publicationId').val();
@@ -524,6 +535,7 @@
 		}
 		else
 		{
+			
 			$('#selLevelId').show();
 			$('#selPanchayatRow').show();
 			$('#specificMandalValue').hide();
@@ -553,6 +565,7 @@
 		{
 			$('#multiSelectLevelsHeading').show();
 			$('#multiSelectLevelsValues').show();
+			//$('#selectAndUnselectmandal').show();
 			$('#specificMandalName').show(); 
 			$('#selPanchayatRow').hide(); 
 			name += '<b>Booths </b><font class="requiredFont" style="color:red">*</font> ';
@@ -572,6 +585,7 @@
 				}
 				value += '</select>';
 				$('#multiSelectLevelsValues').html(value);
+				$('#selectAndUnselectmandal').show();
 		}
 		else
 		{
@@ -606,6 +620,7 @@
 				}
 				value += '</select>';
 				$('#multiSelectLevelsValues').html(value);
+				$('#selectAndUnselectmandal').show();
 			}
 			else if(jsObj.type == "Booth")
 			{
@@ -634,6 +649,7 @@
 				}
 				value += '</select>';
 				$('#multiSelectLevelsValues').html(value);
+				$('#selectAndUnselectmandal').show();
 				
 			}
 			
@@ -723,8 +739,6 @@
 	}
 	function buildAllMandals(result,jsObj,type)
 	{
-		
-		
 		if(result != null)
 		{
 			if(type == "ward")
@@ -740,8 +754,9 @@
 				{
 					value+= '<option value='+result[i].id+'>'+result[i].name+'</option>';
 				}
-				value+= '</select>';
+				value+= '</select><span><img alt="Processing Image" src="./images/icons/search.gif"  class="processingImg" style="display:none"></span>';
 				$('#specificMandalValue').html(value);
+				$('#selectAndUnselectWards').show();
 			
 			}
 			else
@@ -757,7 +772,7 @@
 						mandalStr+= '<option value='+result[i].id+'>'+result[i].name+'</option>';
 					}
 				}
-				mandalStr+= '</select>';
+				mandalStr+= '</select><span><img alt="Processing Image" src="./images/icons/search.gif"   class="processingImg" style="display:none"></span>';
 				$('#specificMandalValue').html(mandalStr);
 			}
 		}
@@ -774,16 +789,19 @@
 			{
 				panchayatStr+= '<option value='+result[i].id+'>'+result[i].name+'</option>';
 			}
-			panchayatStr+= '</select>';
+			panchayatStr+= '</select><span><img alt="Processing Image" src="./images/icons/search.gif"  class="processingImg" style="display:none"></span>';
 			$('#specificPanchayatValue').html(panchayatStr);
 		}
 	}
 	
 	function getSelectedPanchayatsOrBooths(title)
 	{
+		$('.processingImg').show();
+		$('#selectAllMandals').removeAttr('checked');
 		var selectedValues ;
 		var values = "";
 		var checkVal = "";
+		var constituencyId = $("#constituencyList option:selected").val();
 		var level = $('#levelId').val();
 		if(title == "mandal")
 		{
@@ -808,6 +826,7 @@
 					level  : level,
 					values : values.slice(1),
 					publicationId:publicationId,
+					constituencyId: constituencyId,
 					task   : "getSelectedMandalOrPanchayatData"
 				}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -820,7 +839,7 @@
 			for(var i in selectedValues)
 			{
 				checkVal = values+","+selectedValues[i];
-				values = values+","+selectedValues[i].substr(1);
+				values = values+","+selectedValues[i];
 			}
 			if(checkVal.charAt(1) == 1)
 			{
@@ -865,6 +884,7 @@
 						level  : level,
 						values : values.slice(1),
 						publicationId : publicationId,
+						constituencyId:constituencyId,
 						task   : "getSelectedMandalOrPanchayatData"
 					}
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -901,6 +921,7 @@
 				}
 				value+='</select>';
 				$('#multiSelectLevelsValues').html(value);
+				$('#selectAndUnselectmandal').show();
 			}
 			
 		
@@ -918,6 +939,7 @@
 				}
 				value+='</select>';
 					$('#multiSelectLevelsValues').html(value);
+					$('#selectAndUnselectmandal').show();
 			}
 			else
 			{
@@ -930,6 +952,8 @@
 				}
 				value+='</select>';
 					$('#multiSelectLevelsValues').html(value);
+					$('#selectAndUnselectmandal').show();
+					
 			}
 		}
 	}
@@ -938,16 +962,16 @@
 		$('#selReqFileldId').show();
 		mainStr = type;
 		$('#selReqFileldId').show();
-		if(type == "ward")
+		if(type == "ward" || type == "Ward")
 		{
 			$('#selMandalId').show();
 			
 		}
-		else if(type == "mandal")
+		else if(type == "mandal" || type == "Mandal")
 		{
 			$('#selMandalId').hide();
 		}
-		else if(type == "panchayat")
+		else if(type == "panchayat" || type == "Panchayat")
 		{
 			$('#selPanchayatRow').hide();
 		}
@@ -955,7 +979,7 @@
 		{
 			$('#selPanchayatRow').show();
 		}
-		else if (type == "booth")
+		else if (type == "booth" || type == "Booth")
 		{
 			if(substr == 'RURAL')
 			{
@@ -966,7 +990,7 @@
 				$('#selPanchayatRow').hide();
 			}
 		}
-		else if(type == "muncipality")
+		else if(type == "muncipality" || type == "Muncipality")
 		{
 			var selectedValues = $('.multipleSelect').val();
 			var values = "";
@@ -1080,12 +1104,13 @@
 						mandalStr+= '<option value='+result[i].id+'>'+result[i].name+'</option>';
 					}
 				}
-				mandalStr+= '</select>';
+				mandalStr+= '</select><img alt="Processing Image" src="./images/icons/search.gif"  class="processingImg" style="display:none"></span>';
 				$('#specificMandalValue').html(mandalStr);
 	}
 	
 	function getSelectedBoothsForAWard()
 	{
+		$('.processingImg').show();
 		var selectedValues = $('#wardsList').val();
 		var values = "";
 		for(var i in selectedValues)
@@ -1107,6 +1132,7 @@
 	
 	function getUserCategoeryValuesForSelecetdWards()
 	{
+		$('.processingImg').show();
 		var selectedValues = $('#wardsList').val();
 		var values = "";
 		var constituencyId = $("#constituencyList option:selected").val();
@@ -1532,7 +1558,7 @@
 		},
 		
 		title: {
-			text: 'Cast Percentage Wise Votes Analysis'
+			text: 'Caste Wise Votes Analysis'
 		},
 		
 		xAxis: [{
@@ -1606,7 +1632,7 @@
 		},
 		
 		title: {
-			text: 'Cast Percentage Wise Votes Analysis'
+			text: 'Caste Percentage Wise Votes Analysis'
 		},
 		
 		xAxis: [{
@@ -1719,9 +1745,11 @@
 			$("#publicationId option").remove();
 			for(var i in result)
 			{
+				if(i > 0)
 				$('#publicationId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
 		}
+		getConstituencyType();
 	}
 	function selectAllCastes(){
 	  $('#selCategoeryList option').attr('selected', 'selected');
@@ -1729,11 +1757,24 @@
 	function unSelectAllCastes(){
 	   $("#selCategoeryList").val([]);
 	}
+	
+	function selectAllMandals()
+	{
+		$('.multipleSelect option').attr('selected', 'selected');
+		getUserCategoersFoeSelect(type);
+	}
+	
+	function unSelectAllMandal()
+	{
+		$(".multipleSelect").val([]);
+	}
+	
 	</script>
 	</head>
 	<body>
 	<div style="width:950px;margin-left:auto;margin-right:auto;">
 	<div  class="widget blue" id="votersBasicInformationDiv" style="font-family: verdana;font-size: 12px;margin-left:-11px;">
+	<div id="headingDiv"   style="border: 1px solid; background-color: rgb(73, 175, 205); border-radius: 4px 4px 4px 4px; font-family: verdana; font-size: 16px; color: white; margin-top: 10px; font-weight: bolder; height: 26px; padding-top: 8px;"><span style="margin-left:280px;">Caste Wise Election Results Analysis</span></div>
 	<div style="margin-left:280px;">
 		<div id="errorDiv" style="color:red;display:none"></div>
 		<div id="errorMsgDiv" style="margin-left:1px;"></div>
@@ -1748,7 +1789,7 @@
 		<tr class="tableRow" id="publicationRow" style="display:none;">
 		<div id="publicationDiv" class = "selectDiv">
 		<td><b>Publication Date</b><font class="requiredFont" style="color:red">*</font></td>
-		<td><select id="publicationId" onChange="getConstituencyType()" >
+		<td><select id="publicationId" onChange="" >
 		</select></td></div>
 		</tr>
 		
@@ -1778,11 +1819,13 @@
 		<tr class="tableRow" id="selLevelId">
 		<td><div id="multiSelectLevelsHeading" ></div></td>
 		<td><div id="multiSelectLevelsValues" ></div></td>
+		<td id="selectAndUnselectmandal" style="display:none;"><input type="radio" name="selectAndUnselectmandal" onclick="selectAllMandals();" id="selectAllMandals"/><b>Select All</b><input type="radio" name="selectAndUnselectmandal"  onclick="unSelectAllMandal();"  id="unSelectAllMandal"/><b>UnSelect All</b></td>
 		</tr>
 		
 		<tr class="tableRow" id="selMandalId">
 		<td><div id="specificMandalName" style="display:none;"></div></td>
 		<td><div id="specificMandalValue" style="display:none;"></div></td>
+		<td id="selectAndUnselectWards" style="display:none;"><input type="radio" name="selectAndUnselectWards" onclick="selectAllMandals();" id="selectAllMandals"/><b>Select All</b><input type="radio" name="selectAndUnselectWards"  onclick="unSelectAllMandal();"  id="unSelectAllMandal"/><b>UnSelect All</b></td>
 		</tr>
 			
 		<tr class="tableRow" id="selPanchayatRow">
@@ -1818,7 +1861,7 @@
     <input type="button" id="selectAll"  class="btn" onclick="selectAll()" name="selection" value="Select All"><span></span>
 	<input type="button" id="deSelectAll" class="btn" onclick="deSelectAll()" name="selection" value="Unselect All"><span></span>
 	</div>
-	<div id="submitbtn" style="margin-left:25px;"><input type="button" class="btn" value="Submit" onclick="validationCheck();" style="margin-top: -27px; margin-left: -193px;"></input><span><img alt="Processing Image" src="./images/icons/search.gif" id="ajaxImg" style="float: right; margin-right: 473px; margin-top: -21px;display:none;"></span></div>
+	<div id="submitbtn" style="margin-left:25px;"><input type="button" class="btn" value="Submit" onclick="validationCheck();" style="margin-top: -27px; margin-left: -193px;"></input><span><img alt="Processing Image" src="./images/icons/search.gif" id="ajaxImg" style="float: right; margin-right: 450px; margin-top: -21px;display:none;"></span></div>
 	</div>
 	
 	<div id="voterSelDiv"  style="float: left; margin-left: 117px; font-family: arial; font-weight: 900; font-size: 13px;display:none;">
