@@ -405,6 +405,7 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
                 } 
             },
             yAxis: {
+				min:0,
                 title: {
                     text: 'No of Voters'
                 } 
@@ -867,6 +868,7 @@ var checkedType = '${checkedType}';
                 }
             },
             yAxis: {
+				min:0,
                 title: {
                     text: 'Votes Percent( % )'
                 },
