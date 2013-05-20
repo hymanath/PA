@@ -2647,10 +2647,15 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 		var series = chart.series;
 		
 		
+		var _redraw = chart.redraw;
+		chart.redraw = function(){};
+		
 		$.each(series, function(index, series1) {
-            //series1.show();
-			 this.setVisible(true, false);
+            series1.show();
         });
+		
+		chart.redraw = _redraw;
+		chart.redraw();
 		
 		
 		rebuiltDataTable(null);
@@ -2662,9 +2667,15 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 		var totalSeriesName=[];
 		
 		
+		var _redraw = chart.redraw;
+		chart.redraw = function(){};
+		
 		$.each(series, function(index, series1) {
-            this.setVisible(false, false);
+            series1.hide();
         });
+		
+		chart.redraw = _redraw;
+		chart.redraw();
 		
 		for (var i = 0; i < series.length; i++){
 				totalSeriesName.push(series[i].name);
