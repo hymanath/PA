@@ -679,7 +679,7 @@ $("#panchayats").live("change",function(){
   </div>
 </div>
 <div style="border-bottom:1px solid;border-left:1px solid;border-right:1px solid;display:none;" id="castGrid2Outer">
-<div id="castGrid2" style="height: 650px; overflow-x: auto;"></div>	
+<div id="castGrid2" style="height: 750px; overflow-x: auto;"></div>	
 <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_show1">Show All </span>
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide1">Hide All </span>
@@ -2754,12 +2754,11 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 		locationsForXAxis=myresults.constituencyManagementVO.locations;
 		var data=myresults.constituencyManagementVO.locWiseCastePrcts;
 		
-		//console.log(data);
 		var dataObj;
 		$.each(data, function( key, value ) {
 			dataObj={};
 			dataObj['name']=value.caste;
-			dataObj['data']=value.locationWisePercentages
+			dataObj['data']=value.locationWiseCastesCount
 			//console.log(value.caste+""+value.locationWisePercentages);
 			dataForChart.push(dataObj);
 		});	
@@ -3049,9 +3048,9 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 	}
 	
 $('#castesAsPerLocId').click(function(){
-	castGrid2();
+	buildCastGrid2();
 });
-function castGrid2(){
+function buildCastGrid2(){
 $('#castGrid2Outer').toggle();
  $('#castGrid2').highcharts({
             chart: {
@@ -3075,7 +3074,7 @@ $('#castGrid2Outer').toggle();
             },
             yAxis: {
                 title: {
-                    text: 'Voters Percentage'
+                    text: 'No Of Voters'
                 },
                 plotLines: [{
                     value: 0,
@@ -3084,7 +3083,7 @@ $('#castGrid2Outer').toggle();
                 }]
             },
             tooltip: {
-                valueSuffix: ' %'
+                valueSuffix: ' voters'
             },
             series: dataForChart
         });
