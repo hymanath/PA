@@ -6,6 +6,8 @@ import java.util.List;
 public class CastLocationVO implements Serializable{
 	private String caste;
 	private List<Long> locationWiseCastesCount;
+	private Long casteStateId;
+	
 	public String getCaste() {
 		return caste;
 	}
@@ -18,6 +20,12 @@ public class CastLocationVO implements Serializable{
 	public void setLocationWiseCastesCount(List<Long> locationWiseCastesCount) {
 		this.locationWiseCastesCount = locationWiseCastesCount;
 	}
-	
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+		
 	
 }
