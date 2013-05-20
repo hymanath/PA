@@ -1,6 +1,6 @@
 /**
  * Gray theme for Highcharts JS
- * @author Torstein HÃ¸nsi
+ * @author Torstein Hønsi
  */
 
 Highcharts.theme = {
@@ -50,6 +50,7 @@ Highcharts.theme = {
 		}
 	},
 	yAxis: {
+		min:0,
 		alternateGridColor: null,
 		minorTickInterval: null,
 		gridLineColor: 'rgba(255, 255, 255, .1)',

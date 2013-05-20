@@ -1,6 +1,6 @@
 /**
  * Grid theme for Highcharts JS
- * @author Torstein HÃ¸nsi
+ * @author Torstein Hønsi
  */
 
 Highcharts.theme = {
@@ -52,6 +52,7 @@ Highcharts.theme = {
 		}
 	},
 	yAxis: {
+		min:0,
 		minorTickInterval: 'auto',
 		lineColor: '#000',
 		lineWidth: 1,

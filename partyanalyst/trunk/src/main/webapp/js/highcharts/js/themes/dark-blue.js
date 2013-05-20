@@ -1,6 +1,6 @@
 /**
  * Dark blue theme for Highcharts JS
- * @author Torstein HÃ¸nsi
+ * @author Torstein Hønsi
  */
 
 Highcharts.theme = {
@@ -54,6 +54,7 @@ Highcharts.theme = {
 		}
 	},
 	yAxis: {
+		min:0,
 		gridLineColor: '#333333',
 		labels: {
 			style: {
