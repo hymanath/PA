@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
@@ -92,6 +94,7 @@ import com.itgrids.partyanalyst.dto.ElectionInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -209,7 +212,18 @@ public class StaticDataService implements IStaticDataService {
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IRegionServiceData regionServiceDataImp;
+	private  IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	
+
+	
+	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
+		return assemblyLocalElectionBodyWardDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyWardDAO(
+			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
+		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
+	}
 
 	public IRegionServiceData getRegionServiceDataImp() {
 		return regionServiceDataImp;
@@ -939,8 +953,8 @@ public class StaticDataService implements IStaticDataService {
 		if (IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj.getElectionType())|| IConstants.CORPORATION_ELECTION_TYPE.equals(electionTypeObj.getElectionType()) || IConstants.GREATER_ELECTION_TYPE.equals(electionTypeObj.getElectionType())) {
 			resultsList = electionDAO.findStatesByElectionType(electionType);
 		} else {
-			//resultsList = constituencyElectionDAO.getParticipatedStateDetailsForAnElectionType(electionType);
-			resultsList = electionDAO.getStatesBasedOnElectionTypeId(electionType, IConstants.ASSEMBLY_ELECTION_TYPE);
+			resultsList = constituencyElectionDAO.getParticipatedStateDetailsForAnElectionType(electionType);
+			//resultsList = electionDAO.getStatesBasedOnElectionTypeId(electionType, IConstants.ASSEMBLY_ELECTION_TYPE);
 		}
 		if (resultsList != null && resultsList.size() > 0) {
 			Iterator listIt = resultsList.listIterator();
@@ -8224,7 +8238,7 @@ public class StaticDataService implements IStaticDataService {
 	 * @param Long publicationId
 	 * @return List<SelectOptionVO>
 	 */
-	public List<SelectOptionVO> getPanchayatsOrBoothsForSelectedLevel(String type , Long level ,List<Long> ids,Long publicationId)
+	public List<SelectOptionVO> getPanchayatsOrBoothsForSelectedLevel(String type , Long level ,List<Long> ids,Long publicationId,Long constituencyId)
 	{
 		List<SelectOptionVO> resultData = new ArrayList<SelectOptionVO>();
 		try {
@@ -8232,35 +8246,123 @@ public class StaticDataService implements IStaticDataService {
 			List<Object[]> panchayatOrBoothDetails = null;
 			if(level == 2)
 			{
-				panchayatOrBoothDetails = panchayatDAO.getAllPanchayatsInAListOfMandals(ids);
-				if(panchayatOrBoothDetails != null && panchayatOrBoothDetails.size() > 0)
-				{
-					SelectOptionVO selectOptionVO = null;
-					for (Object[] parms : panchayatOrBoothDetails) {
-						selectOptionVO = new SelectOptionVO();
-						selectOptionVO.setId((Long)parms[0]);
-						selectOptionVO.setName(parms[1].toString());
-						selectOptionVO.setLocation(parms[2].toString());
-						resultData.add(selectOptionVO);
+				List<Long> mandalIds      = new ArrayList<Long>();
+				Long muncipalityId = 0l;
+					for (Long values : ids) 
+					{
+						Long mandalid = 0l;
+						
+						if(values.toString().substring(0,1).trim().equalsIgnoreCase("1"))
+						{
+							muncipalityId = Long.valueOf(values.toString().substring(1).trim());
+						}
+						else
+						{
+							mandalid =Long.valueOf(values.toString().substring(1).trim());
+							mandalIds.add(mandalid);
+						}
 					}
-				}
+					if(mandalIds != null && mandalIds.size() > 0)
+					{
+						panchayatOrBoothDetails = panchayatDAO.getAllPanchayatsInAListOfMandals(mandalIds);
+						if(panchayatOrBoothDetails != null && panchayatOrBoothDetails.size() > 0)
+						{
+							SelectOptionVO selectOptionVO = null;
+							for (Object[] parms : panchayatOrBoothDetails) 
+							{
+								selectOptionVO = new SelectOptionVO();
+								selectOptionVO.setId((Long)parms[0]);
+								selectOptionVO.setName(parms[1].toString());
+								selectOptionVO.setLocation(parms[2].toString());
+								selectOptionVO.setOrderId((Long)parms[0]);
+								resultData.add(selectOptionVO);
+							}
+						}
+					}
+					if(muncipalityId != null && muncipalityId > 0 )
+					{
+						List<Object[]> wardsList  = (List<Object[]>)assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(muncipalityId, IConstants.PRESENT_YEAR);
+						if(wardsList != null && wardsList.size() > 0)
+						{
+							SelectOptionVO selectOptionVO = null;
+							for (Object[] parms : wardsList) {
+								selectOptionVO = new SelectOptionVO();
+								selectOptionVO.setId((Long)parms[0]);
+								Constituency constituency = (Constituency)parms[1];
+								String wardName = constituency.getLocalElectionBodyWard() != null?constituency.getLocalElectionBodyWard().getWardName().
+										concat("( ").concat(constituency.getName().toUpperCase()).concat(" )"):constituency.getName().toUpperCase();
+								selectOptionVO.setName(wardName);
+								selectOptionVO.setOrderId((Long)parms[0]);
+								resultData.add(selectOptionVO);
+							}
+						}
+					}
+				
+					
 			}
 			else if(level == 3)
 			{
-				panchayatOrBoothDetails = boothDAO.getAllBoothsForPanchayatsOrMandals(type,ids,publicationId);
-				if(panchayatOrBoothDetails != null && panchayatOrBoothDetails.size() > 0)
+				if(type.equalsIgnoreCase("mandal"))
 				{
-					SelectOptionVO selectOptionVO = null;
-					for (Object[] parms : panchayatOrBoothDetails) {
-						selectOptionVO = new SelectOptionVO();
-						selectOptionVO.setId((Long)parms[0]);
-						String name = "BOOTH-"+parms[1].toString();
-						selectOptionVO.setName(name);
-						selectOptionVO.setLocation(parms[2].toString());
-						resultData.add(selectOptionVO);
+					List<Long> mandalIds      = new ArrayList<Long>();
+					Long muncipalityId = 0l;
+						for (Long values : ids) 
+						{
+							Long mandalid = 0l;
+							
+							if(values.toString().substring(0,1).trim().equalsIgnoreCase("1"))
+							{
+								muncipalityId = Long.valueOf(values.toString().substring(1).trim());
+							}
+							else
+							{
+								mandalid =Long.valueOf(values.toString().substring(1).trim());
+								mandalIds.add(mandalid);
+							}
+						}
+						if(mandalIds != null && mandalIds.size() > 0)
+						{
+							panchayatOrBoothDetails = boothDAO.getAllBoothsForPanchayatsOrMandals(type,mandalIds,publicationId);
+							if(panchayatOrBoothDetails != null && panchayatOrBoothDetails.size() > 0)
+							{
+								SelectOptionVO selectOptionVO = null;
+								for (Object[] parms : panchayatOrBoothDetails) {
+									selectOptionVO = new SelectOptionVO();
+									selectOptionVO.setId((Long)parms[0]);
+									String name = "BOOTH-"+parms[1].toString();
+									selectOptionVO.setName(name);
+									selectOptionVO.setLocation(parms[2].toString());
+									selectOptionVO.setOrderId(Long.valueOf(parms[1].toString().trim()));
+									resultData.add(selectOptionVO);
+								}
+							}
+						}
+						if(muncipalityId != null && muncipalityId > 0)
+						{
+							resultData.addAll(getBoothsInMuncipality(constituencyId,publicationId));
+						}
+						Comparator<Long> comparator = Collections.reverseOrder();
+					Collections.sort(resultData,resultDataSort);
+				}
+				else
+				{
+					panchayatOrBoothDetails = boothDAO.getAllBoothsForPanchayatsOrMandals(type,ids,publicationId);
+					if(panchayatOrBoothDetails != null && panchayatOrBoothDetails.size() > 0)
+					{
+						SelectOptionVO selectOptionVO = null;
+						for (Object[] parms : panchayatOrBoothDetails) {
+							selectOptionVO = new SelectOptionVO();
+							selectOptionVO.setId((Long)parms[0]);
+							String name = "BOOTH-"+parms[1].toString();
+							selectOptionVO.setName(name);
+							selectOptionVO.setLocation(parms[2].toString());
+							selectOptionVO.setOrderId(Long.valueOf(parms[1].toString().trim()));
+							resultData.add(selectOptionVO);
+						}
 					}
 				}
-			}
+				}
+				
 			
 		} catch (Exception e) {
 			log.error("exception raised in getPanchayatsOrBoothsForSelectedLevel() method in StaticDataService Service",e);
@@ -8268,6 +8370,14 @@ public class StaticDataService implements IStaticDataService {
 		return resultData;
 		
 	}
+	 public static Comparator<SelectOptionVO> resultDataSort = new Comparator<SelectOptionVO>()
+				{
+					  
+				  public int compare(SelectOptionVO resultDataSort1, SelectOptionVO resultDataSort2)
+					{
+					   return (resultDataSort1.getOrderId().intValue()) - (resultDataSort2.getOrderId().intValue());
+					}
+			  };
 	/**
 	 * This Service is used for knowing the constituency type
 	 * @param Long constituencyId
@@ -8310,6 +8420,7 @@ public class StaticDataService implements IStaticDataService {
 				selectOptionVO.setId((Long) parms[0]);
 				String name = "BOOTH-"+parms[1].toString();
 				selectOptionVO.setName(name);
+				selectOptionVO.setOrderId(Long.valueOf(parms[1].toString().trim()));
 				returnData.add(selectOptionVO);
 			}
 		}

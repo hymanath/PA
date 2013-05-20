@@ -120,6 +120,7 @@ public class CadreInfo implements Serializable{
 	private Long onlineRegistrationId;
 	private Long voterId;
 	private boolean cadreParliamentWise;
+	private Long cadreOnlineRegId;
 	
 	private String note;
 	
@@ -795,5 +796,12 @@ public class CadreInfo implements Serializable{
 	public void setCadreParliamentWise(boolean cadreParliamentWise) {
 		this.cadreParliamentWise = cadreParliamentWise;
 	}
+	public Long getCadreOnlineRegId() {
+		return cadreOnlineRegId;
+	}
+	public void setCadreOnlineRegId(Long cadreOnlineRegId) {
+		this.cadreOnlineRegId = cadreOnlineRegId;
+	}
+	
 	
 }

@@ -361,7 +361,7 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getSelectedLevelDetails(String type , Long level, long id,Long publicationId);
 		
-		public List<SelectOptionVO> getPanchayatsOrBoothsForSelectedLevel(String type , Long level ,List<Long> ids,Long publicationId);
+		public List<SelectOptionVO> getPanchayatsOrBoothsForSelectedLevel(String type , Long level ,List<Long> ids,Long publicationId,Long constituencyId);
 		
 		public List<SelectOptionVO> getConstituencyType(Long constituencyId,Long publicationId);
 		
