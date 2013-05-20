@@ -1395,7 +1395,7 @@
 			$('#noDataAvaliableDiv').html(str);
 			$("#show_hide_votes").hide();
 		}
-			$('input[name="show_hide_votes"]').click(function(){
+			/*$('input[name="show_hide_votes"]').click(function(){
 			var chart = $('#container').highcharts();
 			var series = chart.series;
 				if(this.value === "show")
@@ -1406,12 +1406,43 @@
 					$.each(series, function(index, series1) {
 					   series1.hide();
 					});
+			});*/
+			
+			$('#show_votes').click(function(){
+			var chart = $('#container').highcharts();
+			var series = chart.series;
+		
+			var _redraw = chart.redraw;
+			chart.redraw = function(){};
+		
+			$.each(series, function(index, series1) {
+				series1.show();
 			});
 		
+			chart.redraw = _redraw;
+			chart.redraw();
+		
+		});
+	
+		$('#hide_votes').click(function(){
+			var chart = $('#container').highcharts();
+			var series = chart.series;
+		
+			var _redraw = chart.redraw;
+			chart.redraw = function(){};
+		
+			$.each(series, function(index, series1) {
+				series1.hide();
+			});
+		
+			chart.redraw = _redraw;
+			chart.redraw();
+		});
 	}
  
 
 	
+		
 	$(function() {
 	$( "#slider" ).slider({
 	value:1,
@@ -1799,10 +1830,16 @@
 	
     <div id="container" style="height:700px;display:none;"> </div>
 	
-    <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;display:none;" id="show_hide_votes">
+   <!-- <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;display:none;" id="show_hide_votes">
 		<span class="label label-info" style="padding:5px;margin:5px;">Show All <input type="radio" name="show_hide_votes" value="show" checked="checked"></span>
 		<span class="label label-info" style="padding:5px;margin:5px;">Hide All <input type="radio" name="show_hide_votes" value="hide"></span>
+	</div>-->
+	
+	<div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;display:none;" id="show_hide_votes">
+		<span class="label label-info btn btn-info" style="padding:5px;" id="show_votes">Show All </span>
+		<span class="label label-info btn btn-info" style="padding:5px;" id="hide_votes">Hide All 	</span>
 	</div>
+	
 	<div>
 	</body>
 	</html>
