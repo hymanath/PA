@@ -4376,8 +4376,9 @@ getAgewiseVoterDetails();
 if('${type}' == "mandal")
 showMPTCZPTCResults();
 
-if('${type}' != "constituency" || isGhmc == "true")
-$('#delimitationOptionsDiv').hide();
+if('${type}' != "constituency" || isGhmc == "true"){
+  $('#delimitationOptionsDiv').hide();
+}else
 callAjaxToCheckDelimitationYears();
 
 </script>
