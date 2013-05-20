@@ -1214,6 +1214,7 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
                 } 
             },
             yAxis: {
+				min:0,
                 title: {
                     text: 'No of Voters'
                 } /*,
