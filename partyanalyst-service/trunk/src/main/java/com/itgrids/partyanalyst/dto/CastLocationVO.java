@@ -5,18 +5,18 @@ import java.util.List;
 
 public class CastLocationVO implements Serializable{
 	private String caste;
-	private List<Double> locationWisePercentages;
+	private List<Long> locationWiseCastesCount;
 	public String getCaste() {
 		return caste;
 	}
 	public void setCaste(String caste) {
 		this.caste = caste;
 	}
-	public List<Double> getLocationWisePercentages() {
-		return locationWisePercentages;
+	public List<Long> getLocationWiseCastesCount() {
+		return locationWiseCastesCount;
 	}
-	public void setLocationWisePercentages(List<Double> locationWisePercentages) {
-		this.locationWisePercentages = locationWisePercentages;
+	public void setLocationWiseCastesCount(List<Long> locationWiseCastesCount) {
+		this.locationWiseCastesCount = locationWiseCastesCount;
 	}
 	
 	
