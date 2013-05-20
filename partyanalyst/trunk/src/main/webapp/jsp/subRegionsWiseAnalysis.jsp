@@ -672,10 +672,10 @@ $("#panchayats").live("change",function(){
 	<span class="label label-info" style="padding:5px;">Show All <input type="radio" name="show_hide" value="show" checked="checked"></span>
 	<span class="label label-info" style="padding:5px;">Hide All <input type="radio" name="show_hide" value="hide"></span>
   </div>-->
-  <div style="margin-left:auto;margin-right:auto;width:250px;margin-bottom:10px;">
-	<span class="label label-info btn btn-info" style="padding:5px;margin-left:45px;" id="show_hide_show">Show All </span>
+  <div style="margin-left:auto;margin-right:auto;width:350px;margin-bottom:10px;">
+	<span class="label label-info btn btn-info" style="padding:5px;margin-left:85px;" id="show_hide_show">Show All </span>
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide">Hide All </span>
-	<span class="btn" id="castesAsPerLocId" style="margin-top:2px"> Show/Hide  Castes As Per Location</span>
+	<span class="btn" id="castesAsPerLocId" style="margin-top:2px"> Show/Hide  Caste Wise Voters As Per Location</span>
   </div>
 </div>
 <div style="border-bottom:1px solid;border-left:1px solid;border-right:1px solid;display:none;" id="castGrid2Outer">
@@ -2646,15 +2646,12 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 		var chart = $('#castGrid1').highcharts();
 		var series = chart.series;
 		
-		var _redraw = chart.redraw;
-		chart.redraw = function(){};
 		
 		$.each(series, function(index, series1) {
-            series1.show();
+            //series1.show();
+			 this.setVisible(true, false);
         });
 		
-		chart.redraw = _redraw;
-		chart.redraw();
 		
 		rebuiltDataTable(null);
 	});
@@ -2664,15 +2661,11 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 		var series = chart.series;
 		var totalSeriesName=[];
 		
-		var _redraw = chart.redraw;
-		chart.redraw = function(){};
 		
 		$.each(series, function(index, series1) {
-            series1.hide();
+            this.setVisible(false, false);
         });
 		
-		chart.redraw = _redraw;
-		chart.redraw();
 		for (var i = 0; i < series.length; i++){
 				totalSeriesName.push(series[i].name);
 		}
@@ -3060,7 +3053,7 @@ $('#castGrid2Outer').toggle();
                 type: 'line',
             },
             title: {
-                text: 'Castes As Per Location',
+                text: 'Caste Wise Voters As Per Location',
                 x: -20 //center
             },
             
