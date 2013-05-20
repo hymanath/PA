@@ -593,9 +593,9 @@ $("#panchayats").live("change",function(){
   </div>
   <div align="center">
     <div id="container" style="height:600px;"></div>
-	<div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;" id="show_hide_votes">
-		<span class="label label-info" style="padding:5px;margin:5px;">Show All <input type="radio" name="show_hide_votes" value="show" checked="checked"></span>
-		<span class="label label-info" style="padding:5px;margin:5px;">Hide All <input type="radio" name="show_hide_votes" value="hide"></span>
+	<div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
+		<span class="label label-info btn btn-info" style="padding:5px;" id="show_votes">Show All </span>
+		<span class="label label-info btn btn-info" style="padding:5px;" id="hide_votes">Hide All 	</span>
 	</div>
   </div>
 </div>
@@ -678,8 +678,8 @@ $("#panchayats").live("change",function(){
 	<span class="btn" id="castesAsPerLocId" style="margin-top:2px"> Show/Hide  Castes As Per Location</span>
   </div>
 </div>
-<div style="border:1px solid;display:none;" id="castGrid2Outer">
-<div id="castGrid2" style="height: 500px; overflow-x: auto;"></div>	
+<div style="border-bottom:1px solid;border-left:1px solid;border-right:1px solid;display:none;" id="castGrid2Outer">
+<div id="castGrid2" style="height: 650px; overflow-x: auto;"></div>	
 <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_show1">Show All </span>
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide1">Hide All </span>
@@ -1235,20 +1235,65 @@ function callAjax(jsObj,url)
 		
 		$('tspan:last').hide();
 
-		$('input[name="show_hide_votes"]').click(function(){
+		
+		$('#show_votes').click(function(){
+			var chart = $('#container').highcharts();
+			var series = chart.series;
+		
+			var _redraw = chart.redraw;
+			chart.redraw = function(){};
+		
+			$.each(series, function(index, series1) {
+				series1.show();
+			});
+		
+			chart.redraw = _redraw;
+			chart.redraw();
+		
+		});
+	
+		$('#hide_votes').click(function(){
+			var chart = $('#container').highcharts();
+			var series = chart.series;
+		
+			var _redraw = chart.redraw;
+			chart.redraw = function(){};
+		
+			$.each(series, function(index, series1) {
+				series1.hide();
+			});
+		
+			chart.redraw = _redraw;
+			chart.redraw();
+		});
+	
+		/*$('input[name="show_hide_votes"]').click(function(){
 		var chart = $('#container').highcharts();
 		var series = chart.series;
-			if(this.value === "show")
+			if(this.value === "show"){
+				var _redraw = chart.redraw;
+				chart.redraw = function(){};
+
 				$.each(series, function(index, series1) {
                     series1.show();
                 });
-			else if (this.value === "hide")
+				
+				chart.redraw = _redraw;
+				chart.redraw();
+			}
+			else if (this.value === "hide"){
+				var _redraw = chart.redraw;
+				chart.redraw = function(){};
+				
 				$.each(series, function(index, series1) {
                    series1.hide();
                 });
-		});
-		
-	
+				
+				chart.redraw = _redraw;
+				chart.redraw();
+			}
+		});*/
+			
 		globalResultes =  myResults;
 		try{
 		buildSelectBoxes(myResults ,jsObj );
