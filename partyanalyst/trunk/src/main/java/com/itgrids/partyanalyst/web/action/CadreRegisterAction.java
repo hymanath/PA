@@ -910,6 +910,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		cadreInfo.setUserType(regVO.getUserType());
 		cadreInfo.setUserPartyName(regVO.getPartyShortName());
 		cadreInfo.setAccessType(regVO.getAccessType());
+		cadreInfo.setCadreOnlineRegId(regVO.getCadreOnlineRegId());
 		
 		rs = cadreManagementService.saveCader(cadreInfo, skills,windowTask);
 		

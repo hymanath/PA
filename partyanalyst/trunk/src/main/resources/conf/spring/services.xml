@@ -188,6 +188,7 @@
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 	</bean>
 	
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
@@ -507,6 +508,7 @@
 		<property name="userDAO" ref="userDAO" />
 		<property name="bloodGroupDAO" ref="bloodGroupDAO" />
 		<property name="voterDAO" ref="voterDAO" />
+		<property name="cadreOnlineRegistrationDAO" ref="cadreOnlineRegistrationDAO" />
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >

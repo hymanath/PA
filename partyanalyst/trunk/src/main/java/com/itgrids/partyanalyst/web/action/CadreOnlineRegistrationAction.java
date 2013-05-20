@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
@@ -28,14 +29,14 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-public class CadreRegisterPageAction extends ActionSupport implements ServletRequestAware,ServletContextAware, ModelDriven, Preparable{
+public class CadreOnlineRegistrationAction extends ActionSupport implements ServletRequestAware,ServletContextAware, ModelDriven, Preparable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private CadreManagementService cadreManagementService;
-	private static final Logger log = Logger.getLogger(CadreRegisterPageAction.class);
+	private static final Logger log = Logger.getLogger(CadreOnlineRegistrationAction.class);
 	
 	private ServletContext context;
 	private HttpServletRequest request;
@@ -460,10 +461,22 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			log.debug("CadreRegisterPageAction.execute() start");
 		
 		session = request.getSession();
-		
-		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		if(regVO==null)
-			return ERROR;
+    	RegistrationVO regVO = cadreManagementService.getUserDetailsByOnlineRegId(onlineRegId);
+    	if(regVO == null)
+    	{
+    		return ERROR;
+    	}
+    	session.removeAttribute("loginStatus");
+		session.removeAttribute("checkedTypeValue");
+		session.removeAttribute("HiddenCount");
+		session.removeAttribute("UserName");
+		session.removeAttribute(IConstants.USER);
+		session.removeAttribute(IWebConstants.FREE_USER_ROLE);
+    	session.setAttribute("USER", regVO);
+    	 if( "0".equals(cadreId)) {
+         	cadreInfo = new CadreInfo();
+         	cadreLevelsList = cadreManagementService.getAllCadreLevels();
+         }
 		String accessType =regVO.getAccessType();
 		boolean isCadreParliamentWise = regVO.isCadreParliamentWise();
 		Long accessValue= new Long(regVO.getAccessValue());
@@ -712,6 +725,16 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	}
 
 	public void prepare() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Object getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*public void prepare() throws Exception {
 		cadreId = request.getParameter("cadreId");
 		if(request.getParameter("voterId") != null)
 		voterId = Long.parseLong(request.getParameter("voterId"));
@@ -866,7 +889,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			//get districts
     		//List<SelectOptionVO> districtNames_o = new ArrayList<SelectOptionVO>();
     		
-    		/*if("MP".equals(accessType) || "COUNTRY".equals(accessType) || "STATE".equals(accessType)){
+    		if("MP".equals(accessType) || "COUNTRY".equals(accessType) || "STATE".equals(accessType)){
     			districtNames_o=cadreManagementService.findDistrictsByState(cadreInfo.getPstate());			
 	    		SelectOptionVO obj = new SelectOptionVO(0L,"Select District");
 	    		districtNames_o.add(0, obj);
@@ -876,10 +899,10 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
     			districtNames_o.add(list.get(1));
     		}
     		
-    		session.setAttribute(ISessionConstants.DISTRICTS_O, districtNames_o);*/
+    		session.setAttribute(ISessionConstants.DISTRICTS_O, districtNames_o);
 			
     		//get constituencies
-    		/*List<SelectOptionVO> constituencynames_o = new ArrayList<SelectOptionVO>();
+    		List<SelectOptionVO> constituencynames_o = new ArrayList<SelectOptionVO>();
     		if(cadreInfo.getPdistrict() != null)
     		{
     			constituencynames_o=regionServiceDataImp.getConstituenciesByDistrictID(new Long(cadreInfo.getPdistrict()));	
@@ -912,17 +935,17 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
     		}
     					
     		session.setAttribute(ISessionConstants.CONSTITUENCIES_O, constituencynames_o);
-			*/
+			
 			
     		
-			/*		
+					
     		//get constituencies
     		List<SelectOptionVO> constituencynames_o=regionServiceDataImp.getConstituenciesByDistrictID(new Long(cadreInfo.getPdistrict()));	
 			SelectOptionVO obj5 = new SelectOptionVO(0L,"Select Constituency");
 			constituencynames_o.add(0, obj5);
     					
 			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, constituencynames_o);
-			*/
+			
 			
 			//get Mandals/local bodies
 			List<SelectOptionVO> mandals_o=regionServiceDataImp.getSubRegionsInConstituency(new Long(cadreInfo.getPconstituencyID()),IConstants.PRESENT_YEAR,null);	
@@ -964,7 +987,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			designationsList = cadreManagementService.getDesignationsInCommittee(cadreInfo.getPartyCommittee());
 		
 			
-	}
+	}*/
 
     
 
