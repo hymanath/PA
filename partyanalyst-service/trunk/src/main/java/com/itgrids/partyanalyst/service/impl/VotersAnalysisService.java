@@ -15348,7 +15348,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		List<String> castes_unique=new ArrayList<String>();
 		List<Long> castes_uniqueId=new ArrayList<Long>();
 		List<String> locNames=new ArrayList<String>();
-		List<Double> castPercentages_unique=null;
+		List<Long> castCount_unique=null;
 		boolean castExist;
 		List<CastLocationVO> castLocationVOs=new ArrayList<CastLocationVO>();
 		
@@ -15373,7 +15373,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			
 			
 			for(Long cstId:castes_uniqueId){
-				castPercentages_unique=new ArrayList<Double>();
+				castCount_unique=new ArrayList<Long>();
 				String caste="";
 				for(String location:locNames){
 					for(VoterCastInfoVO voterCastInfoVO:list){
@@ -15382,14 +15382,14 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 							for(CastVO castVO : voterCastInfoVO.getVoterCastInfoVO().getCastVOs())
 							{
 								if(castVO.getCastStateId().equals(cstId)){
-									castPercentages_unique.add(Double.parseDouble(castVO.getCastPercentage()));
+									castCount_unique.add(castVO.getCastCount());
 									castes_unique.add(castVO.getCastName());
 									caste=castVO.getCastName();
 									castExist=true;
 								}
 							}
 							if(!castExist){
-								castPercentages_unique.add(null);
+								castCount_unique.add(null);
 							}
 						}
 					}
@@ -15398,7 +15398,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				castLocationVO = new CastLocationVO();
 				castes_unique.add(caste);
 				castLocationVO.setCaste(caste);
-				castLocationVO.setLocationWisePercentages(castPercentages_unique);
+				castLocationVO.setLocationWiseCastesCount(castCount_unique);
 				castLocationVOs.add(castLocationVO);
 			}
 
