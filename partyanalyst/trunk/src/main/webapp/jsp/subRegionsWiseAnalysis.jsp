@@ -1202,6 +1202,7 @@ function callAjax(jsObj,url)
                 }
             },
             yAxis: {
+				min: 0,
                 title: {
                     text: textValue
                 },
@@ -1445,6 +1446,7 @@ function callAjax(jsObj,url)
                             } 
             }],
             yAxis: [{ // Secondary yAxis
+				min: 0,
                 gridLineWidth: 0,
                 title: {
                     text: 'Percentage',
@@ -2563,6 +2565,7 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
                 } 
             },
             yAxis: {
+				min: 0,
                 title: {
                     text: 'No of Voters'
                 } /*,
@@ -3073,6 +3076,7 @@ $('#castGrid2Outer').toggle();
                             } 
             },
             yAxis: {
+				min: 0,
                 title: {
                     text: 'No Of Voters'
                 },
@@ -4213,6 +4217,7 @@ function showMPTCZPTCResults()
                 categories: categories1
             },
             yAxis: {
+				min: 0,
                 title: {
                     text: 'Votes Percentages'
                 },
