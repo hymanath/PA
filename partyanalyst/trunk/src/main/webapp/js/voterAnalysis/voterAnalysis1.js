@@ -9262,6 +9262,7 @@ function buildCasteVotersChart(cs,tv,mv,fv,cp)
                             } 
             }],
             yAxis: [{ // Primary yAxis
+				min: 0,
                 labels: {
                     formatter: function() {
                         return this.value +'';
