@@ -117,6 +117,7 @@
                 } 
             },
             yAxis: {
+				min:0,
                 title: {
                     text: utilObject.ytitle 
                 }
