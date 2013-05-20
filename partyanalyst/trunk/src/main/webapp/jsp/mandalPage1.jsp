@@ -1682,6 +1682,7 @@ function buildLineChart(){
                 }
             },
             yAxis: {
+				min:0,
                 title: {
                     text: 'Votes Percent( % )'
                 },
