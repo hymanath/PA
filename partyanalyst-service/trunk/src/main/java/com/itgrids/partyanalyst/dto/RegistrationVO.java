@@ -62,6 +62,8 @@ public class RegistrationVO extends BaseDTO{
 	private List<SelectOptionVO> userAccessVoterConstituencies = new ArrayList<SelectOptionVO>();
 	private String loginRestriction;
 	private boolean cadreParliamentWise;
+	private boolean cadreOnline;
+	private Long cadreOnlineRegId;
 	
 	public String getLoginRestriction() {
 		return loginRestriction;
@@ -435,6 +437,22 @@ public class RegistrationVO extends BaseDTO{
 
 	public void setCadreParliamentWise(boolean cadreParliamentWise) {
 		this.cadreParliamentWise = cadreParliamentWise;
+	}
+
+	public boolean isCadreOnline() {
+		return cadreOnline;
+	}
+
+	public void setCadreOnline(boolean cadreOnline) {
+		this.cadreOnline = cadreOnline;
+	}
+
+	public Long getCadreOnlineRegId() {
+		return cadreOnlineRegId;
+	}
+
+	public void setCadreOnlineRegId(Long cadreOnlineRegId) {
+		this.cadreOnlineRegId = cadreOnlineRegId;
 	}
 
 	

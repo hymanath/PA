@@ -87,6 +87,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Language;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
@@ -98,6 +99,8 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.UserGroupEntitlement;
+import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.model.UserRelation;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -537,6 +540,7 @@ public class CadreManagementService {
 				cadre.setNoOfVoters(cadreInfo.getNoOfVoters());
 				cadre.setBloodGroupId(cadreInfo.getBloodGroup() != 0 ? cadreInfo.getBloodGroup() : null);
 				cadre.setNote(cadreInfo.getNote());
+				cadre.setCadreOnlineRegistrationId(cadreInfo.getCadreOnlineRegId());
 				if(cadreInfo.getVoterId() != null)
 				{
 					cadre.setVoter(voterDAO.get(cadreInfo.getVoterId()));
@@ -4969,5 +4973,43 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			return false;
 		}
 	}
+	
+	public RegistrationVO getUserDetailsByOnlineRegId(Long onlineRegId){
+        RegistrationVO registrationVO = null;
+        try{
+            CadreOnlineRegistration cadreOnlineRegistration = cadreOnlineRegistrationDAO.getAllDetailsBasedOnOnlineRegId(onlineRegId);
+            if(cadreOnlineRegistration != null){
+                registrationVO = new RegistrationVO();
+                registrationVO.setAccessType(cadreOnlineRegistration.getUser().getAccessType());
+                registrationVO.setAccessValue(cadreOnlineRegistration.getUser().getAccessValue());
+                registrationVO.setRegistrationID(cadreOnlineRegistration.getUser().getUserId());
+                registrationVO.setCadreOnlineRegId(cadreOnlineRegistration.getCadreOnlineRegistrationId());
+                registrationVO.setUserType("");
+                Set<UserGroupRelation> userGroups = cadreOnlineRegistration.getUser().getUserGroupRelations();
+                Set<UserGroupEntitlement> groupEntitlements = null;
+                Set<GroupEntitlementRelation> entitlementsModel = null;
+                for(UserGroupRelation groupRelation:userGroups){
+                    groupEntitlements = groupRelation.getUserGroup().getUserGroupEntitlement();
+                    for(UserGroupEntitlement userGroupEntitlement:groupEntitlements){
+                        entitlementsModel = userGroupEntitlement.getGroupEntitlement().getGroupEntitlementRelations();
+                        for(GroupEntitlementRelation entitlement:entitlementsModel){
+                            if(entitlement.getEntitlement().getEntitlementType().equals(IConstants.CADRE_PARLIAMENT_WISE)){
+                                registrationVO.setCadreParliamentWise(true);
+                            }
+                            if(registrationVO.isCadreParliamentWise())
+                             break;
+                        }
+                        if(registrationVO.isCadreParliamentWise())
+                             break;
+                    }
+                    if(registrationVO.isCadreParliamentWise())
+                         break;
+                }
+            }
+        }catch(Exception e){
+            log.error("Exception occured in getUserDetailsByOnlineRegId - ",e);
+        }
+        return registrationVO;
+    }
 	
 }
