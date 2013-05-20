@@ -1239,18 +1239,38 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
             }, */
             series: tempLine //myChart1 
         });
-	 var chart = $('#castGrid1').highcharts();
-     var series = chart.series;
-	 $('input[name="show_hide"]').click(function(){
-        if(this.value === "show")
-            $.each(series, function(index, series1) {
-                      series1.show();
-                    });
-        else if (this.value === "hide")
-            $.each(series, function(index, series1) {
-                      series1.hide();
-                    });
-    });
+	
+	
+		$('#show_hide_show').click(function(){
+			var chart = $('#castGrid1').highcharts();
+			var series = chart.series;
+		
+			var _redraw = chart.redraw;
+			chart.redraw = function(){};
+		
+			$.each(series, function(index, series1) {
+				series1.show();
+			});
+		
+			chart.redraw = _redraw;
+			chart.redraw();
+		
+		});
+	
+		$('#show_hide_hide').click(function(){
+			var chart = $('#castGrid1').highcharts();
+			var series = chart.series;
+		
+			var _redraw = chart.redraw;
+			chart.redraw = function(){};
+		
+			$.each(series, function(index, series1) {
+				series1.hide();
+			});
+		
+			chart.redraw = _redraw;
+			chart.redraw();
+		});
 	
 	
 }
@@ -1434,10 +1454,11 @@ $('#castAllRadio').live("click",function(){
 </p>
 </div>
 <div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
-<div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
-	<span class="label label-info" style="padding:5px;">Show All <input type="radio" name="show_hide" value="show" checked="checked"></span>
-	<span class="label label-info" style="padding:5px;">Hide All <input type="radio" name="show_hide" value="hide"></span>
-  </div>
+
+  <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
+	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_show">Show All </span>
+	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide">Hide All </span>
+</div>
 <div id="castGrid" style="height: 500px; display: none; overflow-x: auto;"></div>	
 <div id="errorDiv" align="center"></div>
 
