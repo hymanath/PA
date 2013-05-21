@@ -5527,6 +5527,8 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 		//Because booth doesnt consists the results iam hiding the PreviousElections results div by calling the function
 		
 		  $("#previousEleAjaxImg").css("display","block");
+		  $("#previousEleVotingTrendsChatDiv").html("");
+		  
 		var jsObj=
 		{
 			id                :id,
@@ -5543,79 +5545,86 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 	 }
 
 function showPreviousEleVotingTrends(results,jsObj)
-{
+{	
 	 $("#previousEleAjaxImg").css("display","none");
-	if(mainreqid == jsObj.id)
-	{	
-	 var flag = false;
-	 $("#previousEleVotingTrendsDiv1").css({'display':'block','width':'96%','color':'#000'});
-	 $("#previousEleVotingTrendsDiv").html('');
-      for(var i in results)
-		 if(results[i].partyVotesEarnedVOs != null && results[i].partyVotesEarnedVOs .length > 0)
-		   flag = true;
-
-		if(flag)
-		{
-		  var str = '';
-			$("#previousEleVotingTrendsDiv").append('<h4 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">Previous Election Voting Trends in '+jsObj.name+' </h4>');
-				str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
-				str +='<thead class="info"><tr>';
-				str +='<th>Election Type</th>';
-				str +='<th>Year</th>';
-				if(jsObj.type != "booth"){
-				   if((jsObj.type == 'mandal' && jsObj.id.substring(0,1) == "1") || jsObj.type == 'ward')
-				    str +='<th>Total Booths/Wards</th>';
-				   else
-				     str +='<th>Total Booths</th>';
-				}
-				str +='<th>Total Voters</th>';
-				  str +='<th>Votes Polled</th>';
-			   for(var i in results[0].partiesList)
-			     str +='<th>'+results[0].partiesList[i]+'</th>';
-			     str +='</tr></thead><tbody>';
-				
-				for(var j in results)
-				{
-				  str +='<tr>';
-				  str += '<td>'+results[j].reqType+'</td>';
-				  str += '<td>'+results[j].electionYear+'</td>';
-				  /*if(jsObj.type != "booth")
-                  str += '<td>'+results[j].totalBooths+'</td>';*/
-				  if(results[j].reqType == "MPTC" || results[j].reqType == "ZPTC")
-					str += '<td>-</td>';
-				  else if(jsObj.type != "booth")
-                  str += '<td>'+results[j].totalBooths+'</td>';
-
-				 
-				  if(results[j].reqType == "MPTC" || results[j].reqType == "ZPTC")
-					str +='<td style="text-align:center"> - </td>';
-					  else
-				  str +='<td>'+results[j].totalVotes+'</td>';
-					str +='<td>'+results[j].polledVotes+'</td>';
-					var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
-					  for(var k in partyVotesEarnedVOs)
-					{
-						 
-						  if(partyVotesEarnedVOs[k].votesEarned == 0)
-						 str +='<td style="text-align:center">-</td>';
-						  else{
-
-							  if(partyVotesEarnedVOs[k].wonStatus == true)
-								  str +='<td style="background-color:green;color:white;">'+partyVotesEarnedVOs[k].votesEarned+'</td>';
-							  else
-								  str +='<td>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
-						  }
-					}
-						
-					     str +='</tr>';
-		 			
-				}
-			 
-			 str +='</tbody></table>';
-			 $("#previousEleVotingTrendsDiv").append(str);
-			 
-		}
+	 if(results.length == 0){
+		$("#previousEleVotingTrendsDiv1").css("display","none");
+	
 	 }
+	 else{
+		if(mainreqid == jsObj.id)
+		{	
+		 var flag = false;
+		 $("#previousEleVotingTrendsDiv1").css({'display':'block','width':'96%','color':'#000'});
+		 $("#previousEleVotingTrendsDiv").html('');
+		  for(var i in results)
+			 if(results[i].partyVotesEarnedVOs != null && results[i].partyVotesEarnedVOs .length > 0)
+			   flag = true;
+
+			if(flag)
+			{
+			  var str = '';
+				$("#previousEleVotingTrendsDiv").append('<h4 id="prevVotTrendHeadingSpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">Previous Election Voting Trends in '+jsObj.name+' </h4>');
+					str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;">';
+					str +='<thead class="info"><tr>';
+					str +='<th>Election Type</th>';
+					str +='<th>Year</th>';
+					if(jsObj.type != "booth"){
+					   if((jsObj.type == 'mandal' && jsObj.id.substring(0,1) == "1") || jsObj.type == 'ward')
+						str +='<th>Total Booths/Wards</th>';
+					   else
+						 str +='<th>Total Booths</th>';
+					}
+					str +='<th>Total Voters</th>';
+					  str +='<th>Votes Polled</th>';
+				   for(var i in results[0].partiesList)
+					 str +='<th>'+results[0].partiesList[i]+'</th>';
+					 str +='</tr></thead><tbody>';
+					
+					for(var j in results)
+					{
+					  str +='<tr>';
+					  str += '<td>'+results[j].reqType+'</td>';
+					  str += '<td>'+results[j].electionYear+'</td>';
+					  /*if(jsObj.type != "booth")
+					  str += '<td>'+results[j].totalBooths+'</td>';*/
+					  if(results[j].reqType == "MPTC" || results[j].reqType == "ZPTC")
+						str += '<td>-</td>';
+					  else if(jsObj.type != "booth")
+					  str += '<td>'+results[j].totalBooths+'</td>';
+
+					 
+					  if(results[j].reqType == "MPTC" || results[j].reqType == "ZPTC")
+						str +='<td style="text-align:center"> - </td>';
+						  else
+					  str +='<td>'+results[j].totalVotes+'</td>';
+						str +='<td>'+results[j].polledVotes+'</td>';
+						var partyVotesEarnedVOs = results[j].partyVotesEarnedVOs;
+						  for(var k in partyVotesEarnedVOs)
+						{
+							 
+							  if(partyVotesEarnedVOs[k].votesEarned == 0)
+							 str +='<td style="text-align:center">-</td>';
+							  else{
+
+								  if(partyVotesEarnedVOs[k].wonStatus == true)
+									  str +='<td style="background-color:green;color:white;">'+partyVotesEarnedVOs[k].votesEarned+'</td>';
+								  else
+									  str +='<td>'+partyVotesEarnedVOs[k].votesEarned+'</td>';
+							  }
+						}
+							
+							 str +='</tr>';
+						
+					}
+				 
+				 str +='</tbody></table>';
+				 $("#previousEleVotingTrendsDiv").append(str);
+				 
+			}
+		 }
+	 }
+	
 	}
 
 
@@ -6321,6 +6330,11 @@ var typeofMuncipality="";
 		 
 		  if(menudata[0].localbodiesList!=null){
 		  	$.each(menudata[0].localbodiesList, function(iter,municipality){
+		  		
+		  		if(municipality.selectOptionsList1 == null &&  municipality.selectOptionsList == null){
+					str+='<li><a onClick="" dest-atr="ward" data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+'"><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i> '+municipality.name.replace('Greater Municipal Corp','')+'</a></li>';
+					}
+
 			if( municipality.selectOptionsList != null){
 				isMuncipalityExist = "true";
 				
