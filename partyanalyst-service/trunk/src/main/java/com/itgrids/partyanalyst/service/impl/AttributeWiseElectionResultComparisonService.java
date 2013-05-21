@@ -245,7 +245,7 @@ public class AttributeWiseElectionResultComparisonService implements
 					if(locationIds1.size() > 0){
 						List<Object[]> results1 =  candidateBoothResultDAO.getLocalbodyResultsForElectionAndByIds(constituencyId,locationIds1,electionIds,partyIds);
 						List<Object[]> resultsCount1 =  candidateBoothResultDAO.getLocalbodyCountForElectionAndByIds(constituencyId,locationIds1,electionIds);
-						getAllLocalBodyLocationVoters(totalVotersMap,constituencyId,lclBodyIds,electionIds);
+						getAllLocalBodyLocationVoters(totalVotersMap,constituencyId,lclBodyIds,electionIds,"localElectionBody",null);
 						populateDataToVos(electionCount,results1,resultsCount1,electionResultsMap,electionNames,partyNames,null,false);
 						locIds.addAll(locationIds1);
 					}
@@ -295,19 +295,7 @@ public class AttributeWiseElectionResultComparisonService implements
 					 List<Object[]> results = candidateBoothResultDAO.findBoothResultsForMultipleBoothsInElections(constituencyId,prtNos,electionIds,partyIds);
 					 List<Object[]> resultsCount = candidateBoothResultDAO.findBoothCountForMultipleBoothsInElections(constituencyId,prtNos,electionIds);
 					 //Map<Long,Map<Long,Map<Long,PartyResultsVO>>> electionResultsMap = new HashMap<Long,Map<Long,Map<Long,PartyResultsVO>>>();//Map<electionId,Map<partyId,Map<boothId,boothObj>>>
-					 for(Object[] boothsData:resultsCount){
-							Map<Long,Long> elecMap = totalVotersMap.get((Long)boothsData[0]);
-							if(elecMap == null){
-								elecMap = new HashMap<Long,Long>();
-								totalVotersMap.put((Long)boothsData[0], elecMap);
-							}
-							Long total = elecMap.get(new Long(boothsData[1].toString().trim()));
-							if(total == null){
-								elecMap.put(new Long(boothsData[1].toString().trim()),(Long)boothsData[3]);
-							}else{
-								elecMap.put(new Long(boothsData[1].toString().trim()),total+(Long)boothsData[3]);
-							}
-						}
+					 getAllLocalBodyLocationVoters(totalVotersMap,constituencyId,null,electionIds,"booth",prtNos);
 					 populateDataToVos(electionCount,results,resultsCount,electionResultsMap,electionNames,partyNames,null,false);
 					 locIds.addAll(locationIds);
 				}
@@ -782,9 +770,9 @@ public class AttributeWiseElectionResultComparisonService implements
 		}
 	 }
 	
-	public void getAllLocalBodyLocationVoters(Map<Long,Map<Long,Long>> totalVotersMap,Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds){
+	public void getAllLocalBodyLocationVoters(Map<Long,Map<Long,Long>> totalVotersMap,Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds,String type,List<String> partNos){
 		Map<Long,Map<Long,List<Long>>> boothsInLocation = new HashMap<Long,Map<Long,List<Long>>>();
-		List<Object[]> electionWiseBooths = candidateBoothResultDAO.getLocalbodyBoothIdsForElectionAndByIds(constituencyId,lclBodyIds,electionIds);
+		List<Object[]> electionWiseBooths = candidateBoothResultDAO.getLocalbodyBoothIdsForElectionAndByIds(constituencyId,lclBodyIds,electionIds,type,partNos);
 		
 		for(Object[] booth:electionWiseBooths){
 			Map<Long,List<Long>> locationBooths = boothsInLocation.get((Long)booth[0]);
@@ -792,10 +780,10 @@ public class AttributeWiseElectionResultComparisonService implements
 				locationBooths = new HashMap<Long,List<Long>>();
 				boothsInLocation.put((Long)booth[0],locationBooths);
 			}
-			List<Long> booths = locationBooths.get((Long)booth[1]);
+			List<Long> booths = locationBooths.get(new Long(booth[1].toString().trim()));
 			if(booths == null){
 				booths = new ArrayList<Long>();
-				locationBooths.put((Long)booth[1],booths);
+				locationBooths.put(new Long(booth[1].toString().trim()),booths);
 			}
 			booths.add((Long)booth[2]);
 		}

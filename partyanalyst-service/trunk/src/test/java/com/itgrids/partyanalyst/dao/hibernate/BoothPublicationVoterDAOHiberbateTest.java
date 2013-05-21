@@ -543,11 +543,23 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testGetVoterDetailsForCustomWardBooths()
+	/*public void testGetVoterDetailsForCustomWardBooths()
 	{
 		List<Voter> votersList = boothPublicationVoterDAO.getVoterDetailsForCustomWardBooths(28858l, 122829l, 1l, 8l, 296l);
 		System.out.println(votersList.size());
 		
+	}*/
+	public void testGetVoterCastAndPartyCountForDifferentLocations()
+	{   List<Long> attributeIds = new ArrayList<Long>();
+	    List<Long> ids = new ArrayList<Long>();
+	    List<String> partNos = new ArrayList<String>();
+		attributeIds.add(296l);attributeIds.add(284l);attributeIds.add(10l);attributeIds.add(87l);attributeIds.add(290l);attributeIds.add(91l);attributeIds.add(34l);attributeIds.add(95l);attributeIds.add(189l);attributeIds.add(211l);attributeIds.add(38l);attributeIds.add(292l);attributeIds.add(285l);attributeIds.add(283l);attributeIds.add(62l);attributeIds.add(118l);attributeIds.add(161l);attributeIds.add(280l);
+		partNos.add("25");partNos.add("29");partNos.add("1");partNos.add("2");partNos.add("3");
+
+
+		List<Object[]> votersList = boothPublicationVoterDAO.getVoterCastAndPartyCountForDifferentLocations(1l,attributeIds,"booth",ids,232l,8l,"caste",partNos);
+
+
+		
 	}
-	
 }
