@@ -1099,4 +1099,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 			return query.list();
 		}
+		
+		public Long getTotalVotersInBooths(List<Long> boothIds){
+			Query query = getSession().createQuery("select sum(model.totalVoters) from Booth model where model.boothId in(:boothIds)");
+			query.setParameterList("boothIds", boothIds);
+			return (Long)query.uniqueResult();
+		}
 }

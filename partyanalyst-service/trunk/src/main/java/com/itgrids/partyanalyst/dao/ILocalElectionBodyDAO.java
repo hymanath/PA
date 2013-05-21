@@ -34,4 +34,5 @@ public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Lon
 	
 	public String getLocationTypeForLocalEleBodyByLocalEleBodyId(Long localEleBodyId);
 	
+	public List<Object[]> findByLocalElecBodyIds(List<Long> lclElecBodyIds);
 }
