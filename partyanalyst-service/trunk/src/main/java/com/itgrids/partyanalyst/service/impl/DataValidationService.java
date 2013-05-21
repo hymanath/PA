@@ -454,7 +454,7 @@ public class DataValidationService implements IDataValidationService{
     			  for(Long constituencyId : repeatedConstituencyIdsList)
     			  {
     				  if(constituencyDAO.getConstituencyNameByConstituencyId(constituencyId) == null)
-    					  selectOptionVOsList.add(new SelectOptionVO(constituencyId,"unKnow"));
+    					  selectOptionVOsList.add(new SelectOptionVO(constituencyId,"unKnown"));
     				  else
     					  selectOptionVOsList.add(new SelectOptionVO(constituencyId,constituencyDAO.get(constituencyId).getName())); 
     			  }
@@ -524,7 +524,7 @@ public class DataValidationService implements IDataValidationService{
   			  for(Long id:repeatedMandalIdsList)
   			  {
   				  if(tehsilDAO.getTehsilNameById(id) == null)
-  					extraMandals.add(new SelectOptionVO(id,"unKnow")); 
+  					extraMandals.add(new SelectOptionVO(id,"unKnown")); 
   				  else
   					  extraMandals.add(new SelectOptionVO(id,tehsilDAO.getTehsilNameById(id)));
   			  }
@@ -613,7 +613,7 @@ public class DataValidationService implements IDataValidationService{
  				  for(Long id : repeatedPanchayatIdsList)
  				  {
  					if(panchayatDAO.getPanchayatNameById(id) == null)
- 						extraPanchayatList.add(new SelectOptionVO(id,"Unknow"));
+ 						extraPanchayatList.add(new SelectOptionVO(id,"unknown"));
  					else
  					  extraPanchayatList.add(new SelectOptionVO(id,panchayatDAO.get(id).getPanchayatName()));	
  				  }
@@ -682,7 +682,7 @@ public class DataValidationService implements IDataValidationService{
     			for(Long id :extraBoothIdsList)
     			{
     				if(boothDAO.getBoothPartNoByBoothId(id) == null)
-    					extraBoothsList.add(new SelectOptionVO(id,"unKnow"));
+    					extraBoothsList.add(new SelectOptionVO(id,"unKnown"));
     				else
     					extraBoothsList.add(new SelectOptionVO(id,boothDAO.getBoothPartNoByBoothId(id)));
     			}
@@ -753,7 +753,7 @@ public class DataValidationService implements IDataValidationService{
     			for(Long id : extraMuncipalityIdsList)
     			{
     			  if(localElectionBodyDAO.getMuncipalityNameById(id)==null)
-    				extraMuncipalities.add(new SelectOptionVO(id,"unKnow")); 
+    				extraMuncipalities.add(new SelectOptionVO(id,"unKnown")); 
     			  else
     				  extraMuncipalities.add(new SelectOptionVO(id,localElectionBodyDAO.getMuncipalityNameById(id))); 
     			}
@@ -819,7 +819,7 @@ public class DataValidationService implements IDataValidationService{
     			for(Long id:extraWardIdsList)
     			{
     			  if(constituencyDAO.getConstituencyNameByConstituencyId(id)==null)
-    				extraWards.add(new SelectOptionVO(id,"unKnow"));
+    				extraWards.add(new SelectOptionVO(id,"unKnown"));
     			  else
     				extraWards.add(new SelectOptionVO(id,constituencyDAO.getConstituencyNameByConstituencyId(id)));
     			}
