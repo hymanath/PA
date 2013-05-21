@@ -44,4 +44,13 @@ public class VoterModificationAgeInfoDAO extends GenericDaoHibernate<VoterModifi
 		query.setParameterList("ageRangeIds", ageRangeIds);
 		return query.list();
 	}
+		
+	@SuppressWarnings("unchecked")
+	public List<Long> getVoterModificationIds(List<Long> modificationIdsList)
+	{
+		Query query = getSession().createQuery("select distinct model.voterModificationInfo.voterModificationInfoId from VoterModificationAgeInfo model where " +
+				" model.voterModificationInfo.voterModificationInfoId in (:modificationIdsList) ");
+		query.setParameterList("modificationIdsList", modificationIdsList);
+		return query.list();
+	}
 }
