@@ -162,12 +162,16 @@
 </div>
 </div>
  <div id="votersBasicInfo" class="widget blue" style="display:none;">
+  <span id="hideAndShow"><a href="javascript:{}" class="btn pull-right" id="hideMenu">Hide<i class="icon-chevron-up"></i></a></span>
+  <h4 id="voterInfoHeading"></h4>
+  <div id="votersBasicInnerDiv">
    <div id="votersBasicInfoInnerDiv"></div>
    <div id="votersInfoDiv"></div>
    <div id="voterFamilyInfoDiv"></div>
    <div id="voterAgeInfoDiv"></div>
    <div id="voterModificationDiv"></div>
-   
+   <div id="voterModificationAgeDiv"></div>
+   </div>
  </div>
 
 
@@ -250,6 +254,7 @@ function callAjax(jsObj,url)
 								 showVoterFamilyData(myResults,jsObj);
 								 showVoterAgeData(myResults,jsObj);
 								 showVoterModificationData(myResults,jsObj);
+								 showVoterModificationAgeData(myResults,jsObj);
 								}
 								 else if(jsObj.task == "getStates")
 								  buildStates(myResults);
@@ -392,9 +397,9 @@ function showVotersBasicInfo(result,jsObj)
 	if(result == null)
 		return;
 	
-
+	$("#voterInfoHeading").html(''+jsObj.name+' Constituency Information');
 	var str = '';
-	str +='<h4 id="voterInfoHeading">'+jsObj.name+' Constituency Information</h4>';
+	//str +='<h4 id="voterInfoHeading">'+jsObj.name+' Constituency Information</h4>';
 	if(result.areaType == "RURAL-URBAN" || result.areaType == "RURAL")
 	{
 	  str +='<span class="btn btn-info btn-small">'+result.totalmandals+'</span><span class="help-inline f2">Mandals</span>';
@@ -1352,6 +1357,38 @@ function showVoterModificationData(myResults,jsObj)
 	$("#voterModificationDiv").html(str);
  }
 
+
+function showVoterModificationAgeData(myResults,jsObj)
+{
+  var result = myResults.modificationAgeInfo.modificationAgeInfoList;
+
+  var str='';
+   str +='<h4>Voter Modification Age Details</h4>';
+   if(result == null || result.length == 0)
+	   str +='<p class="paraCls">There is no conflicts in saved data.</p>';
+	if(result != null && result.length > 0)
+	{
+	   str +='<div class="voterInfoDiv">';
+	   str +='<table class="table table-bordered table-striped table-hover" id="mandalTab">';
+	   str +='<tr>';
+	   str +='<th>Type</th>';
+	   str +='<th>Incomplete Data Saved Locations</th>';
+	   str +='</tr>';
+	  
+	   for(var i in result)
+	   {
+		str +='<tr>';
+		str +='<td>'+result[i].url+'</td>';
+		str +='<td>'+result[i].name+'</td>';
+		str +='</tr>';
+	   }
+	   str +='</table>';
+	   str +='</div>';
+	}
+		
+	$("#voterModificationAgeDiv").html(str);
+}
+
 </script>
 
 <script type="text/javascript">
@@ -1359,6 +1396,7 @@ $(document).ready(function(){
 	$("#votersBasicInfoId").click(function(){
 		
 	$("#errorMsgDiv").html('');
+	$("#votersBasicInnerDiv").css('display','block');
 	$("#votersBasicInfo").css('display','block');
 	
 	$("#subLevelDataId").hide();
@@ -1387,8 +1425,20 @@ $(document).ready(function(){
 		var url = "checkVotersBasicInfoAction.action?"+rparam;						
 		callAjax(jsObj,url);
 
-		
 	});
+
+		
+	$("#hideMenu").live("click",function(){
+		$("#votersBasicInnerDiv").css("display","none");
+		$("#hideAndShow").html('<a id="showMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+	});
+
+
+	$("#showMenu").live("click",function(){
+		$("#votersBasicInnerDiv").css("display","block");
+		$("#hideAndShow").html('<a id="hideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
+	});
+
 	
 });
 </script>
