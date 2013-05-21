@@ -15,6 +15,7 @@ public class MandalVO extends ResultStatus{
 	private Long electionTypeId;
 	private List<SelectOptionVO> partiesInMandal;
 	private Set<SelectOptionVO> electionsInMandal;
+	private List<SelectOptionVO> electionsInMandalList;
 	private String chartName;
 	private String isPartial;
 	private List<PartyElectionResultsVO> wardwiseResultsForParty;; 
@@ -111,6 +112,14 @@ public class MandalVO extends ResultStatus{
 
 	public void setElectionTypeId(Long electionTypeId) {
 		this.electionTypeId = electionTypeId;
+	}
+
+	public List<SelectOptionVO> getElectionsInMandalList() {
+		return electionsInMandalList;
+	}
+
+	public void setElectionsInMandalList(List<SelectOptionVO> electionsInMandalList) {
+		this.electionsInMandalList = electionsInMandalList;
 	}
 
 	

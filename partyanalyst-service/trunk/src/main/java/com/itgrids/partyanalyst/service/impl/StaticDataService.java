@@ -6420,6 +6420,7 @@ public class StaticDataService implements IStaticDataService {
 		 Set mySet = new HashSet(Arrays.asList(listOfNames)); 
 		mandalVO.setPartiesInMandal(partiesInMandal);
 		mandalVO.setElectionsInMandal(mySet);
+		mandalVO.setElectionsInMandalList(listOfNames);
 		return mandalVO;
 	}
 
