@@ -1,13 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itextpdf.text.log.SysoLogger;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.model.VoterInfo;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 
@@ -116,11 +115,25 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetReportLevelValueByConstituencyId()
+/*	public void testGetReportLevelValueByConstituencyId()
 	{
 		List<Long> list = voterInfoDAO.getReportLevelValueByConstituencyId(299l, 8l, 3l);
 		System.out.println(list.get(0));
 		
 	}
-	
+	*/
+	public void testGetgetVoterDetailedCountByLocation()
+	{
+		VoterInfo voterInfo = null;
+		List<Object[]> votersDetailesCount = voterInfoDAO.getVoterDetailedCountByLocation(3l,4l,8l,232l);
+		System.out.println(votersDetailesCount.size());
+		if(votersDetailesCount!=null && votersDetailesCount.size()>0){
+		voterInfo = new VoterInfo();
+		for (Object[] objects : votersDetailesCount) {
+			System.out.println((Long) objects[0]);
+			System.out.println((Long) objects[1]);
+			System.out.println((Long) objects[2]);
+		}
+	}
+	}
 }
