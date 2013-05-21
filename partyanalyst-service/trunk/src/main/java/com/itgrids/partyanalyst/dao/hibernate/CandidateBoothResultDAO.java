@@ -1427,14 +1427,26 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 		return query.list();
 	}
 	
-	public List<Object[]> getLocalbodyBoothIdsForElectionAndByIds(Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds){
-		Query query = getSession().createQuery("select distinct model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.localBody.localElectionBodyId,model.boothConstituencyElection.booth.boothId" +
-				"   from CandidateBoothResult model where   model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId  and " +
-				"   model.boothConstituencyElection.booth.localBody.localElectionBodyId in(:lclBodyIds) and " +
+	public List<Object[]> getLocalbodyBoothIdsForElectionAndByIds(Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds,String type,List<String> partNos){
+		StringBuilder queryString = new StringBuilder();
+		if("booth".equalsIgnoreCase(type)){
+			queryString.append("select distinct model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.partNo,model.boothConstituencyElection.booth.boothId ");
+		}else
+		queryString.append("select distinct model.boothConstituencyElection.constituencyElection.election.electionId,model.boothConstituencyElection.booth.localBody.localElectionBodyId,model.boothConstituencyElection.booth.boothId" );
+				queryString.append("   from CandidateBoothResult model where   model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId  and " +
 				" model.boothConstituencyElection.constituencyElection.election.electionId in( :electionIds) ");
+		if(!"booth".equalsIgnoreCase(type)){
+			queryString.append(" and model.boothConstituencyElection.booth.localBody.localElectionBodyId in(:lclBodyIds) ");
+		}else{
+			queryString.append(" and model.boothConstituencyElection.booth.partNo in(:partNos) ");
+		}
+		Query query = getSession().createQuery(queryString.toString());
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameterList("electionIds", electionIds);
-		query.setParameterList("lclBodyIds", lclBodyIds);
+		if(!"booth".equalsIgnoreCase(type))
+		  query.setParameterList("lclBodyIds", lclBodyIds);
+		else
+		  query.setParameterList("partNos", partNos);
 		return query.list();
 	}
 }

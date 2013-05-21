@@ -257,7 +257,7 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 	
 	public List<Object[]> getPanchayatBoothDetailsByPanchayat(List<Long> panchayatIds,List<Long> electionIds)
 	{
-		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model4.panchayat.panchayatId,model4.panchayat.panchayatName,model.boothConstituencyElection.booth.boothId," +
+		Query query = getSession().createQuery("select distinct model.boothConstituencyElection.constituencyElection.election.electionId,model4.panchayat.panchayatId,model4.panchayat.panchayatName,model.boothConstituencyElection.booth.boothId," +
 				" model.boothConstituencyElection.booth.partNo,model.boothConstituencyElection.booth.totalVoters from HamletBoothElection model,PanchayatHamlet model4 where model4.hamlet.hamletId = model.hamlet.hamletId " +
 				" and model.hamlet.hamletId in(select model2.hamlet.hamletId from PanchayatHamlet model2 where model2.panchayat.panchayatId in(:panchayatIds)) " +
 				" and model.boothConstituencyElection.constituencyElection.election.electionId in (:electionIds) order by model.boothConstituencyElection.constituencyElection.election.electionId,model4.panchayat.panchayatId");
