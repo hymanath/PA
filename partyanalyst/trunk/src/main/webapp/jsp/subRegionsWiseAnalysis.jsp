@@ -58,6 +58,7 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 	  <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
 	  <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+	  <script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 <style type="text/css">
 
 .headings{
@@ -479,6 +480,17 @@ $(document).ready(function(){
    getConstituencyEleAndParties();
   }
 
+	$('#ShowConstMenu').live('click',function(){
+		$("#ShowConstMenu").css("display","none");
+		$("#ShowConstMenu1").css("display","block");
+		$('#dataDiv').toggle();
+	});
+	$('#ShowConstMenu1').live('click',function(){
+		$("#ShowConstMenu").css("display","block");
+		$("#ShowConstMenu1").css("display","none");
+		 $('#dataDiv').toggle();
+	});
+  
 });
 
 $('#mandals').live("change",function() {
@@ -601,6 +613,9 @@ $("#panchayats").live("change",function(){
 </div>
  <div id="mainDev" class="widget blue">
   <div id="sublevelHeading"><h4> Analysis Based On Votes Percentage Difference</h4></div>
+  <a id="ShowConstMenu" class="btn pull-right" style="margin-top:-30px;margin-right: 30px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a>
+  <a id="ShowConstMenu1" class="btn pull-right" style="margin-top:-30px;margin-right: 30px;display:none;" href="javascript:{}" >Show<i class="icon-chevron-down"></i></a>
+  <div id="dataDiv">
   <div align="center" id = "subDev1">
 	   <div id="selectYoptionId" ></div>
 	   <table>
@@ -654,6 +669,7 @@ $("#panchayats").live("change",function(){
 	  <div align="center" id = "subDev2" style="display:none;">
       <div id="deviation2" style="height:600px;"></div>
 	  </div>
+	 </div>
 	  
  	  
 </div>
@@ -1068,13 +1084,13 @@ function callAjax(jsObj,url)
 	     $("#mandalElecResultsElections").html(str);
 		 if(type == "mandal")
 		 {
-		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getPanchayatData()">');
+		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn btn-success" value="Submit" onclick="getPanchayatData()">');
 		 $("#mandalElecResultsButton1").html('<input type="radio" name="votes"  class="btn" value="percentage" id="votingPercentageID" checked="true" onclick="getPanchayatData()"/>By Percentage&nbsp;<input type="radio" name="votes"  class="btn" value="validvotes" id="votingValuesID" onclick="getPanchayatData()"/>By Votes');
 		  getPanchayatData();
 		 }
 		 if(type == "panchayat")
 		 {
-		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForBooths()">');
+		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn btn-success" value="Submit" onclick="getResultsForBooths()">');
 		 $("#mandalElecResultsButton1").html('<input type="radio" name="boothvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForBooths()"/>By Percentage&nbsp;<input type="radio"  name="boothvotes" class="btn" value="validvotes" id="boothvotingValuesID" onclick="getResultsForBooths()"/>By Votes');
 		  getResultsForBooths();
 
@@ -1083,7 +1099,7 @@ function callAjax(jsObj,url)
 		
 		if(type == "constituency")
 		{
-		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForConstituency()">');
+		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn btn-success" value="Submit" onclick="getResultsForConstituency()">');
 		 $("#mandalElecResultsButton1").html('<input type="radio" name="constituencyvotes" class="btn" value="percentage" id="constituencyvotingPercentageID" checked="true" onclick="getResultsForConstituency()"/>By Percentage&nbsp;<input type="radio"  name="constituencyvotes" class="btn" value="validvotes" id="constituencyvotingValuesID" onclick="getResultsForConstituency()"/>By Votes');
 		  getResultsForConstituency();
 		}
@@ -1167,6 +1183,7 @@ function callAjax(jsObj,url)
          for(var i in results){	
            var obj = {};
            var obj1 = new Array();		   
+           obj["color"] = getColorCodeForParty(i);		   
            obj["name"] = i;	
 		   for(var j in results[i]){
 		     obj1.push(parseFloat(results[i][j]));
