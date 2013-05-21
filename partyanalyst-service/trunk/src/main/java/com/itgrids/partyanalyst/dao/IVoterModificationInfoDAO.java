@@ -28,5 +28,10 @@ public interface IVoterModificationInfoDAO extends GenericDao<VoterModificationI
 	public List<Long> getReportLevelValueByReportLevelId(Long constituencyId,Long publicationDateId,Long reportLevelId);
 	
 	public List<Object[]> getModificationDetailsByConstituencyId(Long constituencyId,Long publicationDateId,Long reportLevelId);
+	
+	public List<Long> getVoterModificationIdsByReportLevelValue(Long constituencyId,Long publicationDateId,Long reportLevelId,List<Long> reportLevelValueList);
+	
+	public List<Object[]> getVoterModificationDetailsByModificationIdsList(List<Long> modificationIdsList);
+	
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itextpdf.text.log.SysoLogger;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 
 public class VoterModificationInfoDAOHibernateTest extends BaseDaoTestCase{
@@ -66,9 +67,32 @@ public class VoterModificationInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetModificationDetailsByConstituencyId()
+	/*public void testgetModificationDetailsByConstituencyId()
 	{
 		List<Object[]> list = voterModificationInfoDAO.getModificationDetailsByConstituencyId(232l, 8l, 2l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+			System.out.println(params[0]+" "+params[1]);
+		
+	}*/
+	
+	/*public void testGetVoterModificationIdsByReportLevelValue()
+	{
+		List<Long> reportLevelValueList = new ArrayList<Long>(0);
+		reportLevelValueList.add(232l);
+		List<Long> list = voterModificationInfoDAO.getVoterModificationIdsByReportLevelValue(232l, 8l, 1l, reportLevelValueList);
+		System.out.println(list.size());
+	
+	}*/
+	
+	public void testGetVoterModificationDetailsByModificationIdsList()
+	{
+		List<Long> modificationIdsList = new ArrayList<Long>(0);
+		modificationIdsList.add(1l);
+		modificationIdsList.add(2l);
+		modificationIdsList.add(413l);
+		modificationIdsList.add(414l);
+		List<Object[]> list = voterModificationInfoDAO.getVoterModificationDetailsByModificationIdsList(modificationIdsList);
 		System.out.println(list.size());
 		for(Object[] params : list)
 			System.out.println(params[0]+" "+params[1]);
