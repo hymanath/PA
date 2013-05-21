@@ -28,6 +28,7 @@ public class DataVerificationVO implements Serializable{
 	private DataVerificationInfoVO familyInfo = new DataVerificationInfoVO();
 	private DataVerificationInfoVO ageInfo = new DataVerificationInfoVO();
 	private DataVerificationInfoVO modificationInfo = new DataVerificationInfoVO();
+	private DataVerificationInfoVO modificationAgeInfo = new DataVerificationInfoVO();
 	
 	public DataVerificationInfoVO getVoterInfo() {
 		return voterInfo;
@@ -142,6 +143,12 @@ public class DataVerificationVO implements Serializable{
 	}
 	public void setTotalConstituencies(Long totalConstituencies) {
 		this.totalConstituencies = totalConstituencies;
+	}
+	public DataVerificationInfoVO getModificationAgeInfo() {
+		return modificationAgeInfo;
+	}
+	public void setModificationAgeInfo(DataVerificationInfoVO modificationAgeInfo) {
+		this.modificationAgeInfo = modificationAgeInfo;
 	}
 	
 	

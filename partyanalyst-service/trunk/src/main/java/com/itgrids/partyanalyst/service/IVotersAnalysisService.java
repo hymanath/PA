@@ -279,4 +279,7 @@ public interface IVotersAnalysisService {
 	 public ConstituencyManagementVO getCasteWisePercentsInLocations(List<VoterCastInfoVO> list);
 		
 	 public VoterInfo getTotalVotersDetailsbyLocation(Long userId,Long reportLevelValue,String locationType,Long publicationDateId,Long constituencyId);
+	 
+	 public String getReportLevelById(Long id);
+	 
 }
