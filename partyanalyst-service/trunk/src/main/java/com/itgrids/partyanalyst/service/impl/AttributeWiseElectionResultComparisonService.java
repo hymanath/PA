@@ -185,7 +185,9 @@ public class AttributeWiseElectionResultComparisonService implements
 			List<Long> locIds = new ArrayList<Long>();
 			Map<Long,String> locationNames = new HashMap<Long,String>(); //contains Map<locationId,location Name>
 			Map<Long,Map<Long,Long>> totalVotersMap = new HashMap<Long,Map<Long,Long>>();//contains totalvoters locations wise Map<electionId,Map<locationId,totalVoters in that location>>
-			
+			Map<String,List<Long>> polledVotesMap = new HashMap<String, List<Long>>();
+			Map<String,List<Long>> totalVotesMap = new HashMap<String, List<Long>>();
+			Map<String, List<BigDecimal>> polledVotesPercentageMap = new HashMap<String, List<BigDecimal>>();
 			//Long publicationId = publicationDateDAO.getLatestPublicationId();
 			
 		    if("mandal".equalsIgnoreCase(type)){
@@ -376,7 +378,7 @@ public class AttributeWiseElectionResultComparisonService implements
 			    locIds = orderedLocIds;
 		    }
 		    //populating votes count(votesMap) and percent(votesPercMap) location wise
-		    arrangeObjects(electionResultsMap,electionNames,partyNames,locIds,electionCount,votesMap,votesPercMap,totalVotersMap);
+		    arrangeObjects(electionResultsMap,electionNames,partyNames,locIds,electionCount,votesMap,votesPercMap,totalVotersMap,polledVotesMap,totalVotesMap,polledVotesPercentageMap);
 		    partyResults.setLocationResults(votesMap);
 			partyResults.setLocationPercnts(votesPercMap);
 			
@@ -384,6 +386,10 @@ public class AttributeWiseElectionResultComparisonService implements
 		    getAttributeResults(attributesMap, attributeNames, locIds,attrMap,attrPercMap);
 		    partyResults.setAttributeResults(attrMap);
 		    partyResults.setAttributePercnts(attrPercMap);
+		    
+		    partyResults.setTotalVotes(totalVotesMap);
+		    partyResults.setPolledVotes(polledVotesMap);
+		    partyResults.setPolledVotesPercnts(polledVotesPercentageMap);
 		    
 		    //starting process of removing data from maps if all the locations for a election contains null values
 		    Set<String> attrMapRemoveKeys = new HashSet<String>();
@@ -569,7 +575,7 @@ public class AttributeWiseElectionResultComparisonService implements
 		
 	}
 	
-	public void arrangeObjects(Map<Long,Map<Long,Map<Long,PartyResultsVO>>> electionResultsMap,Map<Long,String> electionNames,Map<Long,String> partyNames,List<Long> locIds,Map<Long,Map<Long,Long>> electionCount,Map<String,List<Long>> votesMap,Map<String,List<BigDecimal>> votesPercMap,Map<Long,Map<Long,Long>> totalVotersMap){
+	public void arrangeObjects(Map<Long,Map<Long,Map<Long,PartyResultsVO>>> electionResultsMap,Map<Long,String> electionNames,Map<Long,String> partyNames,List<Long> locIds,Map<Long,Map<Long,Long>> electionCount,Map<String,List<Long>> votesMap,Map<String,List<BigDecimal>> votesPercMap,Map<Long,Map<Long,Long>> totalVotersMap,Map<String,List<Long>> polledVotesMap,Map<String,List<Long>> totalVotesMap,Map<String,List<BigDecimal>> polledVotesPercntsMap){
 		Map<Long,Map<Long,PartyResultsVO>> partiesMap = null;
 		Map<Long,PartyResultsVO> locationResultMap = null;
 		List<PartyResultsVO> returnVal = new ArrayList<PartyResultsVO>();
@@ -632,9 +638,12 @@ public class AttributeWiseElectionResultComparisonService implements
 				   	polledVotesPercList.add(polledVotesPerc);
 				}
 				votesMap.put(vo.getPartyName()+" Votes",votesList);
-				votesMap.put("Polled Votes In "+vo.getType(),votesLocPolledVotesList);
-				votesMap.put("Total Voters In "+vo.getType(),votesLocTotalVotesList);
-				votesPercMap.put("Polled Votes Percentage In "+vo.getType(),polledVotesPercList);
+				//votesMap.put("Polled Votes In "+vo.getType(),votesLocPolledVotesList);
+				polledVotesMap.put("Polled Votes In "+vo.getType(),votesLocPolledVotesList);
+				//votesMap.put("Total Voters In "+vo.getType(),votesLocTotalVotesList);
+				totalVotesMap.put("Total Voters In "+vo.getType(),votesLocTotalVotesList);
+				//votesPercMap.put("Polled Votes Percentage In "+vo.getType(),polledVotesPercList);
+				polledVotesPercntsMap.put("Polled Votes Percentage In "+vo.getType(),polledVotesPercList);
 				votesPercMap.put(vo.getPartyName()+" Percentage",votesPercList);
 			}
 		}

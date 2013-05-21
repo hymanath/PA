@@ -38,6 +38,9 @@ public class PartyResultsVO {
 	private Map<String,List<Long>> attributeResults;
 	private Map<String,List<BigDecimal>> locationPercnts;
 	private Map<String,List<BigDecimal>> attributePercnts;
+	private Map<String,List<Long>> polledVotes;
+	private Map<String,List<Long>> totalVotes;
+	private Map<String,List<BigDecimal>> polledVotesPercnts;
 	private List<String> locationNames;
 	
 	// getters and setters
@@ -263,5 +266,31 @@ public class PartyResultsVO {
 	public void setAttributePercnts(Map<String, List<BigDecimal>> attributePercnts) {
 		this.attributePercnts = attributePercnts;
 	}
+
+	public Map<String, List<Long>> getPolledVotes() {
+		return polledVotes;
+	}
+
+	public void setPolledVotes(Map<String, List<Long>> polledVotes) {
+		this.polledVotes = polledVotes;
+	}
+
+	public Map<String, List<Long>> getTotalVotes() {
+		return totalVotes;
+	}
+
+	public void setTotalVotes(Map<String, List<Long>> totalVotes) {
+		this.totalVotes = totalVotes;
+	}
+
+	public Map<String, List<BigDecimal>> getPolledVotesPercnts() {
+		return polledVotesPercnts;
+	}
+
+	public void setPolledVotesPercnts(
+			Map<String, List<BigDecimal>> polledVotesPercnts) {
+		this.polledVotesPercnts = polledVotesPercnts;
+	}
+	
 	
 }
