@@ -23,10 +23,25 @@
 </head>
 <body>
 <style>
+
+#mainDiv{margin-left:auto;margin-right:auto;width:980px;}
  .table thead.info th{
     background: none repeat scroll 0 0 #D9EDF7;
     color: #454545;
    }
+  
+ #subHeading{ border-bottom: 1px solid #C0C0C0;
+    font-family: sans-serif,Helvetica;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+	margin-left:-6px;
+	width:940px;
+    padding: 5px 20px;
+    text-rendering: optimizelegibility;
+    text-transform: uppercase;
+	font-family:sans-serif,Helvetica;
+}  
 </style>
 <script type="text/javascript">
 
@@ -45,8 +60,11 @@ function callAjax(jsObj,url)
 								    }
 									else if(jsObj.task == "getAgeWiseWiseDetails")
 									  buildAgeWiseWiseDetails(myResults,jsObj);
-								
-                                }catch (e) {
+								else if(jsObj.task == "getCategoryWiseDetails")
+								   buildCategoryWiseDetails(myResults,jsObj);
+                               
+                                }
+								catch (e) {
 							    
 								}  
  		               },
@@ -60,6 +78,7 @@ function callAjax(jsObj,url)
  	}
 	
    function getCategorySubDetails(){
+    $("#busyImage").show();
 	   var jsObj = {
 	        attributeId:${id},
 			locationType:'${retrieveType}',
@@ -72,11 +91,55 @@ function callAjax(jsObj,url)
 		var url = "<%=request.getContextPath()%>/getCategoryWiseDetailsAction.action?"+rparam;
 		callAjax(jsObj, url);
 	}
-   
+	
+	
+   function buildCategoryWiseDetails(results,jsObj){
+	
+	 var str = "";
+	  if(results != null && results.length >0){
+	  $("#busyImage").hide();
+	     // str+= "<div style='margin-bottom:5px;'><b style='font-size:13px;'>Total Voters : </b>"+results[0].totalVoters+"</div>";
+	     for(var i in results){
+		  if(results[i].partyWisevoterCastInfoVOList != null && results[i].partyWisevoterCastInfoVOList.length > 0){
+			   str+="<div style='border:1px solid #d3d3d3;padding:5px 5px 31px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;'>";
+			   str+= "<h2 id='subHeading'><b>"+results[i].name+" Attribute Wise Voters Analysis</b></h2>";
+			   str+= "<div style='margin-top:5px;'><span><b style='font-size:14px;'>Total Voters : </b>"+results[0].totalVoters+"</span>&nbsp;&nbsp;<span><b style='font-size:14px;'>"+results[i].name+" assigned voters : </b>"+results[i].partyWiseAssignedVoters+"  </span>&nbsp;&nbsp;<span><b style='font-size:14px;'>   "+results[i].name+" not assigned voters : </b>"+results[i].partyWiseNotAssignedVoters+"</span></div>";
+			   
+			   
+			   str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;'>";
+			   str+="<thead class='info'>"
+			   str+="  <tr>";
+			   str+="     <th>"+results[i].name+"</th>";
+			   str+="     <th>Total Voters</th>";
+			   str+="     <th>Male Voters</th>";
+			   str+="     <th>Female Voters</th>";
+			   str+="     <th>Voters %</th>";
+			   str+="  </tr>";
+			   str+="</thead>"
+			   for(var j in results[i].partyWisevoterCastInfoVOList){
+			     var obj = results[i].partyWisevoterCastInfoVOList[j];
+				  str+="  <tr>";
+			      str+="     <td>"+obj.name+"</td>";
+			      str+="     <td>"+obj.totalVoters+"</td>";
+			      str+="     <td>"+obj.maleVoters+"</td>";
+			      str+="     <td>"+obj.femaleVoters+"</td>";
+			      str+="     <td>"+obj.partyPercentage+"</td>";
+			      str+="  </tr>";
+			   }
+			   str+="</table>";
+			  
+			   str+="</div>";
+		   }
+		 }
+		 $("#categoriesValuesDiv").html(str);
+	  }
+	}
+
+
    function buildResults(results,jsObj){
         if(results != null && results.length >0 && results[0].partyWisevoterCastInfoVOList != null && results[0].partyWisevoterCastInfoVOList.length > 0){
 	      var str = "";
-		  str+= "<h2 id='subHeading' style='font-size:21px;'><b>"+results[0].mandalName+" Wise "+results[0].castName+" Attribute Analysis</b></h2>";
+		  str+= "<h2 id='subHeading'><b>"+results[0].mandalName+" Wise "+results[0].castName+" Attribute Analysis</b></h2>";
 		  str+="<table class='table table-bordered table-striped table-hover'>";
 		  str+="<thead class='info'>";
 		  str+="   <tr>";
@@ -138,7 +201,7 @@ function callAjax(jsObj,url)
 		for(var i in result)
 		{
 		 str+="<div style='border:1px solid #d3d3d3;padding:5px 5px 31px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;'>";
-		 str+= "<h2 id='subHeading' style='margin-left:-5px;width:97%;'><b>"+result[i].name+" Attribute Age Wise Voters Analysis</b></h2>";
+		 str+= "<h2 id='subHeading'><b>"+result[i].name+" Attribute Age Wise Voters Analysis</b></h2>";
 		 str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;'>";
 		 str+="<thead class='info'>";
 		 str  +='<tr>';
@@ -236,15 +299,39 @@ function callAjax(jsObj,url)
 	$("#agerangeDiv").html(str);
 }
 
+function callMethodToGetData(){
+ var str = ${attributeIds};
+	   
+		$("#categoriesAjximgMsgDiv").show();
+	   var jsObj = {
+	        attributeIds:''+str+'',
+			locationType:'${retrieveType}',
+			locationId:'${locationId}',
+			constituencyId:'${constituencyId}',
+			publicationId:'${publicationId}',
+			task:"getCategoryWiseDetails"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getCategoryWiseDetailsAction.action?"+rparam;
+		callAjax(jsObj, url);
+	}
+	
+
 </script>
+<div id="mainDiv">
+<div id="categoriesValuesDiv"></div><br>
+<img id="busyImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;"/>
 <div id="categorySubtable" style='overflow-x:scroll;'></div>
-<br><br>
+<br>
 <img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;"/>
 
 <div id="agerangeDiv"></div>
+</div>
 <script type="text/javascript">
    getCategorySubDetails();
    getAgewiseInfoForVoterCategory();
+   
+   callMethodToGetData();
 </script>
 </body>
 </html>
