@@ -4987,6 +4987,12 @@
 				<param name="root">ageRangeList</param>	
 		   </result>
 		</action>
+		
+		<action name="getCasteWiseUserVoterCategory" class="votersAnalysisAction" method="getCasteWiseUserVoterCategory">
+		   <result type="json" name="success">
+				<param name="root">casteDetailsVO</param>	
+		   </result>
+		</action>
 				
 		<action name="customCategoryWiseVoterDetailsAction" class="customCategoryWiseVoterDetailsAction" >
 			<result name="success">/jsp/customCategoryWiseVoterDetails.jsp</result>

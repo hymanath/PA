@@ -17,6 +17,8 @@
 	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
 	  <script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
 	  <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
+	  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	
 <title>Voters Attributes Analysis</title>
@@ -29,7 +31,6 @@
     background: none repeat scroll 0 0 #D9EDF7;
     color: #454545;
    }
-  
  #subHeading{ border-bottom: 1px solid #C0C0C0;
     font-family: sans-serif,Helvetica;
     font-size: 14px;
@@ -42,6 +43,13 @@
     text-transform: uppercase;
 	font-family:sans-serif,Helvetica;
 }  
+   .table th, .table td {
+    border-top: 1px solid #DDDDDD;
+    line-height: 18px;
+    padding: 8px !important;
+    text-align: left;
+    vertical-align: top;
+}
 </style>
 <script type="text/javascript">
 
@@ -60,6 +68,10 @@ function callAjax(jsObj,url)
 								    }
 									else if(jsObj.task == "getAgeWiseWiseDetails")
 									  buildAgeWiseWiseDetails(myResults,jsObj);
+									else if(jsObj.task == "getCasteWiseWiseDetail"){
+											   $('#casteAjaxImage').hide();
+									buildCasteWiseWiseDetails(myResults,jsObj);
+									}
 								else if(jsObj.task == "getCategoryWiseDetails")
 								   buildCategoryWiseDetails(myResults,jsObj);
                                
@@ -175,6 +187,24 @@ function callAjax(jsObj,url)
 
    } 
 
+   function getCastewiseInfoForVoterCategory(){
+	   $('#casteAjaxImage').show();
+     
+	  var str = ${attributeIds};
+		var jsObj = {
+	        attributeIds: ''+str+'',
+			locationType:'${retrieveType}',
+			locationId:${locationId},
+			constituencyId:${constituencyId},
+			publicationId:${publicationId},
+			task:"getCasteWiseWiseDetail"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getCasteWiseUserVoterCategory.action?"+rparam;
+		callAjax(jsObj, url);
+		$("#ajaxImage").css("display","block");
+   }
+
    function getAgewiseInfoForVoterCategory(){
 	  var str = ${attributeIds};
 		var jsObj = {
@@ -190,6 +220,55 @@ function callAjax(jsObj,url)
 		callAjax(jsObj, url);
 		$("#ajaxImage").css("display","block");
 	}
+
+function buildCasteWiseWiseDetails(result,jobj)
+{
+	if(result == null || result.length == 0)
+		return false;
+
+	var attributeName = result[0].categoryName;
+
+	var count = 0;
+	var str =  '';
+    
+	str+='<div style="border:1px solid #d3d3d3;padding:5px 5px 31px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;">';
+	str+= "<h2 id='subHeading'><b> "+attributeName+"  Attribute Caste Wise Voters Analysis</b></h2>";
+	str += '<table class="table table-bordered table-striped table-hover" id="casteDetailsTable" style="margin-bottom: 5px; margin-top: 7px;">';
+	     str+="<thead class='info'>";
+		 str += '<tr>';
+		  str += '<th>Caste Name</th>';
+		  str += '<th>Male Voters</th>';
+		  str += '<th>Female Voters</th>';
+		  str += '<th>Total Voters</th>';
+		  str += '<th>Percent</th>';
+		 str += '</tr>';
+		 str+='</thead>';
+
+	for(var i in result)
+	{
+		str += '<tr>';
+			str += '<td>'+result[i].castName+'</td>';
+			str += '<td>'+result[i].totalMaleVoters+'</td>';
+			str += '<td>'+result[i].totalFemaleVoters+'</td>';
+			str += '<td>'+result[i].totalVoters+'</td>';
+			str += '<td>'+result[i].totalVotersPercent+'</td>';
+
+			count = count + parseInt(result[i].totalVoters);
+		str += '</tr>';	
+
+	}
+
+	str+='</table>';
+	str+='</div>';
+
+
+	$('#casteDetailsDiv').html(str);
+	$('#casteDetailsTable').dataTable({
+		"aaSorting": [[ 4, "desc" ]],
+	});
+
+
+}
 
  function buildAgeWiseWiseDetails(result,jobj)
  {
@@ -326,12 +405,15 @@ function callMethodToGetData(){
 <img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;"/>
 
 <div id="agerangeDiv"></div>
+
+<img id="casteAjaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;" style="display:none;margin:30px;"/>
+<div id="casteDetailsDiv"></div>
 </div>
 <script type="text/javascript">
    getCategorySubDetails();
    getAgewiseInfoForVoterCategory();
-   
    callMethodToGetData();
+   getCastewiseInfoForVoterCategory();
 </script>
 </body>
 </html>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -125,6 +126,17 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
     
     private VoterInfo voterInfo;
     
+    private List<VotersDetailsVO> casteDetailsVO;
+    
+	
+	public List<VotersDetailsVO> getCasteDetailsVO() {
+		return casteDetailsVO;
+	}
+
+	public void setCasteDetailsVO(List<VotersDetailsVO> casteDetailsVO) {
+		this.casteDetailsVO = casteDetailsVO;
+	}
+
 	public VoterInfo getVoterInfo() {
 		return voterInfo;
 	}
@@ -1691,6 +1703,31 @@ return Action.SUCCESS;
 	}
 	return Action.SUCCESS;
 	}
+	
+	public String getCasteWiseUserVoterCategory()
+	{
+	try{
+		jObj = new JSONObject(getTask());
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO == null)
+			return ERROR;
+		Long userId =  regVO.getRegistrationID();
+		String[] ids = jObj.getString("attributeIds").split(",");
+		List<Long> attributeIds = new ArrayList<Long>();
+		for(String id:ids){
+			attributeIds.add(new Long(id.trim()));
+		}
+		casteDetailsVO = userVoterService.getCasteWiseUserVoterCategory(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
+		
+	}
+	catch(Exception e)
+	{
+		log.error("Exception Occured in getAgeWiseWiseDetails() Method, Exception - ",e);	
+	}
+	return Action.SUCCESS;
+	}
+	
 	
 	 public static Comparator<VotersDetailsVO> sortByOrderNo = new Comparator<VotersDetailsVO>()
 			    {
