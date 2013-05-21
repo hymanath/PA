@@ -31,7 +31,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		
 		Query query = getSession().createQuery("from VoterCastInfo model where model.voterReportLevel.voterReportLevelId = :levelId and " +
 				"model.reportLevelValue = :levelValue and model.constituency.constituencyId = :constituencyId and model.publicationDateId = :publicationId " +
-				" and model.userId = :userId ");
+				" and model.userId = :userId order by model.casteState.caste.casteName asc");
 		
 		query.setParameter("levelId", levelId);
 		query.setParameter("levelValue", levelValue);
