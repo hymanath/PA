@@ -82,9 +82,14 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetLocationTypeForLocalEleBodyByLocalEleBodyId()
+	/*public void testGetLocationTypeForLocalEleBodyByLocalEleBodyId()
 	{
 		System.out.println(localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(83l));
+	}*/
+	
+	public void testgetMuncipalityNameById()
+	{
+		System.out.println(localElectionBodyDAO.getMuncipalityNameById(83l));
 	}
 	
 }

@@ -158,4 +158,11 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		return query.list();
 	}
 	
+	public String getTehsilNameById(Long tehsilId)
+	{
+		Query query = getSession().createQuery("select model.tehsilName from Tehsil model where model.tehsilId =:tehsilId ");
+		query.setParameter("tehsilId", tehsilId);
+		return (String) query.uniqueResult();
+	}
+	
 }

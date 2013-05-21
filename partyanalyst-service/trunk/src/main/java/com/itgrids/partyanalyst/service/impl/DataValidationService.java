@@ -450,8 +450,18 @@ public class DataValidationService implements IDataValidationService{
     		  if(repeatedConstituencyIdsList != null && repeatedConstituencyIdsList.size() > 0)
     		  {
     			  dataVerificationInfoVO.setRepeatedConstituencyCount(new Long(repeatedConstituencyIdsList.size()));
-    			  List<Object[]> repeatedConstituencyList = constituencyDAO.getConstituencyNameByConstituencyIdsList(repeatedConstituencyIdsList);
-    			  dataVerificationInfoVO.setRepeatedConstituencyList(getLocationNameAndIds(repeatedConstituencyList));
+    			  List<SelectOptionVO> selectOptionVOsList = new ArrayList<SelectOptionVO>(0);
+    			  for(Long constituencyId : repeatedConstituencyIdsList)
+    			  {
+    				  if(constituencyDAO.getConstituencyNameByConstituencyId(constituencyId) == null)
+    					  selectOptionVOsList.add(new SelectOptionVO(constituencyId,"unKnow"));
+    				  else
+    					  selectOptionVOsList.add(new SelectOptionVO(constituencyId,constituencyDAO.get(constituencyId).getName())); 
+    			  }
+    			  dataVerificationInfoVO.setRepeatedConstituencyList(selectOptionVOsList);
+    			  
+    			  //List<Object[]> repeatedConstituencyList = constituencyDAO.getConstituencyNameByConstituencyIdsList(repeatedConstituencyIdsList);
+    			  //dataVerificationInfoVO.setRepeatedConstituencyList(getLocationNameAndIds(repeatedConstituencyList));
     		  }
     		
     	}catch (Exception e) {
@@ -510,8 +520,17 @@ public class DataValidationService implements IDataValidationService{
   		  if(repeatedMandalIdsList != null && repeatedMandalIdsList.size() > 0)
   		  {
   			  dataVerificationInfoVO.setRepeatedMandalsCount(new Long(repeatedMandalIdsList.size()));
-  			  List<Object[]> repeatedMandalList = tehsilDAO.getTehsilNameByTehsilIdsList(repeatedMandalIdsList);
-  			  dataVerificationInfoVO.setRepeatedMandalList(getLocationNameAndIds(repeatedMandalList));
+  			  List<SelectOptionVO> extraMandals = new ArrayList<SelectOptionVO>(0);
+  			  for(Long id:repeatedMandalIdsList)
+  			  {
+  				  if(tehsilDAO.getTehsilNameById(id) == null)
+  					extraMandals.add(new SelectOptionVO(id,"unKnow")); 
+  				  else
+  					  extraMandals.add(new SelectOptionVO(id,tehsilDAO.getTehsilNameById(id)));
+  			  }
+  			dataVerificationInfoVO.setRepeatedMandalList(extraMandals);
+  			  //List<Object[]> repeatedMandalList = tehsilDAO.getTehsilNameByTehsilIdsList(repeatedMandalIdsList);
+  			  //dataVerificationInfoVO.setRepeatedMandalList(getLocationNameAndIds(repeatedMandalList));
   		  }
     		
     	}catch (Exception e) {
@@ -588,8 +607,22 @@ public class DataValidationService implements IDataValidationService{
  		   if(repeatedPanchayatIdsList != null && repeatedPanchayatIdsList.size() > 0)
 		    {
  			  dataVerificationInfoVO.setRepeatedPanchayatsCount(new Long(repeatedPanchayatIdsList.size()));
-		    	List<Object[]> repeatedPanchayats = panchayatDAO.getPanchayatsByPanchayatIdsList(repeatedPanchayatIdsList);
-		    	dataVerificationInfoVO.setRepeatedPanchayatList(getLocationNameAndIds(repeatedPanchayats));
+ 			  if(repeatedPanchayatIdsList != null && repeatedPanchayatIdsList.size() > 0)
+ 			  {
+ 				  List<SelectOptionVO> extraPanchayatList = new ArrayList<SelectOptionVO>(0);
+ 				  for(Long id : repeatedPanchayatIdsList)
+ 				  {
+ 					if(panchayatDAO.getPanchayatNameById(id) == null)
+ 						extraPanchayatList.add(new SelectOptionVO(id,"Unknow"));
+ 					else
+ 					  extraPanchayatList.add(new SelectOptionVO(id,panchayatDAO.get(id).getPanchayatName()));	
+ 				  }
+ 				 dataVerificationInfoVO.setRepeatedPanchayatList(extraPanchayatList);
+ 			  }
+ 			  
+		    	//List<Object[]> repeatedPanchayats = panchayatDAO.getPanchayatsByPanchayatIdsList(repeatedPanchayatIdsList);
+		    	//dataVerificationInfoVO.setRepeatedPanchayatList(getLocationNameAndIds(repeatedPanchayats));
+ 			 
 		    }
  		    
     	}catch (Exception e) {
@@ -645,8 +678,18 @@ public class DataValidationService implements IDataValidationService{
     		if(extraBoothIdsList != null && extraBoothIdsList.size() > 0)
     		{
     			dataVerificationInfoVO.setRepeatedBoothsCount(new Long(extraBoothIdsList.size()));
-    			List<Object[]> extraBoothList = boothDAO.getBoothsByBoothIdsList(extraBoothIdsList);
-    			dataVerificationInfoVO.setRepeatedBoothsList(getLocationNameAndIds(extraBoothList));
+    			List<SelectOptionVO> extraBoothsList = new ArrayList<SelectOptionVO>(0);
+    			for(Long id :extraBoothIdsList)
+    			{
+    				if(boothDAO.getBoothPartNoByBoothId(id) == null)
+    					extraBoothsList.add(new SelectOptionVO(id,"unKnow"));
+    				else
+    					extraBoothsList.add(new SelectOptionVO(id,boothDAO.getBoothPartNoByBoothId(id)));
+    			}
+    			dataVerificationInfoVO.setRepeatedBoothsList(extraBoothsList);
+    			
+    			//List<Object[]> extraBoothList = boothDAO.getBoothsByBoothIdsList(extraBoothIdsList);
+    			//dataVerificationInfoVO.setRepeatedBoothsList(getLocationNameAndIds(extraBoothList));
     		}
     		
     	}catch (Exception e) {
@@ -704,8 +747,20 @@ public class DataValidationService implements IDataValidationService{
     		if(extraMuncipalityIdsList != null && extraMuncipalityIdsList.size() > 0)
     		{
     			dataVerificationInfoVO.setRepeatedMandalsCount(new Long(extraMuncipalityIdsList.size()));
-    			List<Object[]> extraBoothList = boothDAO.getMuncipalitiesByMuncipalityIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),extraMuncipalityIdsList);
-    			dataVerificationInfoVO.setRepeatedMuncipalityList(getLocationNameAndIds(extraBoothList));
+    			
+    			List<SelectOptionVO> extraMuncipalities = new ArrayList<SelectOptionVO>(0);
+    			
+    			for(Long id : extraMuncipalityIdsList)
+    			{
+    			  if(localElectionBodyDAO.getMuncipalityNameById(id)==null)
+    				extraMuncipalities.add(new SelectOptionVO(id,"unKnow")); 
+    			  else
+    				  extraMuncipalities.add(new SelectOptionVO(id,localElectionBodyDAO.getMuncipalityNameById(id))); 
+    			}
+    			dataVerificationInfoVO.setRepeatedMuncipalityList(extraMuncipalities);
+    			
+    			//List<Object[]> extraBoothList = boothDAO.getMuncipalitiesByMuncipalityIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),extraMuncipalityIdsList);
+    			//dataVerificationInfoVO.setRepeatedMuncipalityList(getLocationNameAndIds(extraBoothList));
     		}
     	}catch (Exception e) {
 			e.printStackTrace();
@@ -760,8 +815,17 @@ public class DataValidationService implements IDataValidationService{
     		if(extraWardIdsList != null && extraWardIdsList.size() > 0)
     		{
     			dataVerificationInfoVO.setRepeatedWardsCount(new Long(extraWardIdsList.size()));
-    			List<Object[]> extraWardList = boothDAO.getWardsByWardIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),extraWardIdsList);
-    			dataVerificationInfoVO.setRepeatedWardList(getLocationNameAndIds(extraWardList));
+    			List<SelectOptionVO> extraWards = new ArrayList<SelectOptionVO>(0);
+    			for(Long id:extraWardIdsList)
+    			{
+    			  if(constituencyDAO.getConstituencyNameByConstituencyId(id)==null)
+    				extraWards.add(new SelectOptionVO(id,"unKnow"));
+    			  else
+    				extraWards.add(new SelectOptionVO(id,constituencyDAO.getConstituencyNameByConstituencyId(id)));
+    			}
+    			dataVerificationInfoVO.setRepeatedWardList(extraWards);
+    			//List<Object[]> extraWardList = boothDAO.getWardsByWardIdsList(dataVerificationVO.getConstituencyId(),dataVerificationVO.getPublicationId(),extraWardIdsList);
+    			//dataVerificationInfoVO.setRepeatedWardList(getLocationNameAndIds(extraWardList));
     		}
     		
     	}catch (Exception e) {
