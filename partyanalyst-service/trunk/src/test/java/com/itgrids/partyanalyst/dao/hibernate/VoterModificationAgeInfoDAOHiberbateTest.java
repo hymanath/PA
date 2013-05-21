@@ -24,12 +24,20 @@ public class VoterModificationAgeInfoDAOHiberbateTest extends BaseDaoTestCase{
 		voterModificationAgeInfoDAO.getAll();
 	}
    */
-	public void test()
+	/*public void test()
 	{
 		List<Long> ids1 = new ArrayList<Long>();
 		ids1.add(1l);
 		Set<Long> ids2 = new HashSet<Long>();
 		ids2.add(1l);
 		voterModificationAgeInfoDAO.getGenderWiseVoterModificationsBetweenPublications(1l,2l,3l,ids1,ids2);
+	}*/
+	
+	public void testgetVoterModificationIds()
+	{
+		List<Long> modificationIdsList = new ArrayList<Long>(0);
+		modificationIdsList.add(413l);
+		modificationIdsList.add(414l);
+		System.out.println(voterModificationAgeInfoDAO.getVoterModificationIds(modificationIdsList).size());
 	}
 }
