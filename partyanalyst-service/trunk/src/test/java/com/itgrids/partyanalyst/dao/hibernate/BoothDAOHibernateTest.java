@@ -529,7 +529,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		for(Object[] params :list)
 			System.out.println(params[0]+" "+params[1]);
 	}*/
-	
+	/*
 	public void testgetPanchayatiesCountByTahsilAndConstituencyId(){
 		List<Object[]> list = boothDAO.getPanchayatiesCountByTahsilAndConstituencyId(232l,844l,8l,"mandal");
 		System.out.println(list.size());
@@ -537,6 +537,11 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(params[0]+" "+params[1]);
 		}
-	}
+	}*/
 	
+	
+	public void testgetBoothPartNoByBoothId()
+	{
+		System.out.println(boothDAO.getBoothPartNoByBoothId(1l));
+	}
 }

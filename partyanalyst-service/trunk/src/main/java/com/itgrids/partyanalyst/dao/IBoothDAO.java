@@ -222,4 +222,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Object[]> getPanchayatiesCountByTahsilAndConstituencyId(Long constituencyId,Long tehsilId,Long publicationId,String type);
 	
 	public Long getTotalVotersInBooths(List<Long> boothIds);
+	
+	public String getBoothPartNoByBoothId(Long boothId);
+	
 }
