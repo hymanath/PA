@@ -690,7 +690,7 @@ var checkedType = '${checkedType}';
 				</tr>
 				<tr>
 					<th align="left">Elections : </th>
-					<th colspan="2" align="left"><s:checkboxlist theme="simple" list="mandalVO.electionsInMandal" listKey="id" listValue="name" name="elections" label="Elections:"/></th>
+					<th colspan="2" align="left"><s:checkboxlist theme="simple" list="mandalVO.electionsInMandalList" listKey="id" listValue="name" name="elections" label="Elections:"/></th>
 				</tr>
 				<tr>
 					<td align="center">
