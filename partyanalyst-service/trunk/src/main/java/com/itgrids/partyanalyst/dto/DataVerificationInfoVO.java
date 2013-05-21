@@ -82,6 +82,8 @@ public class DataVerificationInfoVO implements Serializable{
 	private List<SelectOptionVO> statusWiseBoothsList;
 	private List<SelectOptionVO> statusWiseConstituencyList;
 	
+	private List<SelectOptionVO> modificationAgeInfoList;
+	
 	public List<SelectOptionVO> getRepeatedMandalList() {
 		return repeatedMandalList;
 	}
@@ -487,6 +489,13 @@ public class DataVerificationInfoVO implements Serializable{
 	public void setStatusWiseConstituencyList(
 			List<SelectOptionVO> statusWiseConstituencyList) {
 		this.statusWiseConstituencyList = statusWiseConstituencyList;
+	}
+	public List<SelectOptionVO> getModificationAgeInfoList() {
+		return modificationAgeInfoList;
+	}
+	public void setModificationAgeInfoList(
+			List<SelectOptionVO> modificationAgeInfoList) {
+		this.modificationAgeInfoList = modificationAgeInfoList;
 	}
 	
 	

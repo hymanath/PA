@@ -6883,6 +6883,17 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					}
 				 }
 				 
+				 public String getReportLevelById(Long id)
+				 {
+					 try{
+						return voterReportLevelDAO.getReportLevelTypeById(id);
+					 }catch (Exception e) {
+						 e.printStackTrace();
+						 log.error("Exception Occured in getReportLevelId() Method, Exception - "+e);
+						 return null;
+					}
+				 }
+				 
 				 public List<VotersDetailsVO> getCountList(Long publicationDateId,Long id,String type,Long constituencyId,Long tehsilId,Long userId)
 				 {
 					 List<SelectOptionVO> namesList = new ArrayList<SelectOptionVO>(0);

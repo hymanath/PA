@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -19,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterModificationAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dto.DataVerificationInfoVO;
 import com.itgrids.partyanalyst.dto.DataVerificationVO;
@@ -48,6 +50,8 @@ public class DataValidationService implements IDataValidationService{
 	private IVoterModificationInfoDAO voterModificationInfoDAO;
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
+	private IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
@@ -167,6 +171,21 @@ public class DataValidationService implements IDataValidationService{
 	public void setBoothConstituencyElectionDAO(
 			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
 		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
+	}
+	public IVoterModificationAgeInfoDAO getVoterModificationAgeInfoDAO() {
+		return voterModificationAgeInfoDAO;
+	}
+
+	public void setVoterModificationAgeInfoDAO(
+			IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO) {
+		this.voterModificationAgeInfoDAO = voterModificationAgeInfoDAO;
+	}
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
 
 	public static Comparator<DataValidationVO> sortData = new Comparator<DataValidationVO>()
@@ -339,6 +358,7 @@ public class DataValidationService implements IDataValidationService{
     		 checkConstituencyWiseVotersFamilyData(dataVerificationVO);
     		 checkConstituencyWiseVotersAgeData(dataVerificationVO);
     		 checkConstituencyWiseVoterModificationData(dataVerificationVO);
+    		 validateVoterModificationAgeData(dataVerificationVO);
     		 
     		if(dataVerificationVO.getAreaType().equalsIgnoreCase(IConstants.RURAL) || dataVerificationVO.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN))
     		{
@@ -1384,6 +1404,93 @@ public class DataValidationService implements IDataValidationService{
     }
     
     /* Status(Added/deleted) Wise votersData verification End in VoterModificationInfo table */
+    
+    public void validateVoterModificationAgeData(DataVerificationVO dataVerificationVO)
+    {
+    	try{
+    		DataVerificationInfoVO dataVerificationInfoVO = dataVerificationVO.getModificationAgeInfo();
+    		List<Long> voterModificationIds = new ArrayList<Long>(0);
+    		List<Long> missedModificationIds = new ArrayList<Long>(0);
+    		List<Long> consModifIdsList = null;
+    		List<Long> mandModifIdsList = null;
+    		List<Long> panchayatModifIdsList = null;
+    		List<Long> muncipModifIdsList = null;
+    		List<Long> wardModifIdsList = null;
+    		
+    		 if(dataVerificationVO.getConstituencyIdsList() != null && dataVerificationVO.getConstituencyIdsList().size() > 0)
+    		    consModifIdsList = voterModificationInfoDAO.getVoterModificationIdsByReportLevelValue(dataVerificationVO.getConstituencyId(), dataVerificationVO.getPublicationId(),votersAnalysisService.getReportLevelId(IConstants.CONSTITUENCY), dataVerificationVO.getConstituencyIdsList());
+    		 if(consModifIdsList != null && consModifIdsList.size() > 0)
+    			voterModificationIds.addAll(consModifIdsList);
+    		
+    		if(dataVerificationVO.getAreaType().equalsIgnoreCase(IConstants.RURAL) || dataVerificationVO.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN))
+    		{
+    		   if(dataVerificationVO.getMandalIdsList() != null && dataVerificationVO.getMandalIdsList().size() > 0)
+    			mandModifIdsList = voterModificationInfoDAO.getVoterModificationIdsByReportLevelValue(dataVerificationVO.getConstituencyId(), dataVerificationVO.getPublicationId(),votersAnalysisService.getReportLevelId(IConstants.MANDAL), dataVerificationVO.getMandalIdsList());
+    		   if(mandModifIdsList != null && mandModifIdsList.size() > 0)
+    			 voterModificationIds.addAll(mandModifIdsList);
+    		  
+    		   if(dataVerificationVO.getPanchayatIdsList() != null && dataVerificationVO.getPanchayatIdsList().size() > 0)
+    		     panchayatModifIdsList = voterModificationInfoDAO.getVoterModificationIdsByReportLevelValue(dataVerificationVO.getConstituencyId(), dataVerificationVO.getPublicationId(),votersAnalysisService.getReportLevelId(IConstants.PANCHAYAT), dataVerificationVO.getPanchayatIdsList());
+      		   if(panchayatModifIdsList != null && panchayatModifIdsList.size() > 0)
+      			voterModificationIds.addAll(panchayatModifIdsList);
+    		}
+    		
+    		if(dataVerificationVO.getAreaType().equalsIgnoreCase(IConstants.URBAN) || dataVerificationVO.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN))
+    		{
+    		  if(dataVerificationVO.getMuncipalityIdsList() != null && dataVerificationVO.getMuncipalityIdsList().size() > 0)
+    		    muncipModifIdsList = voterModificationInfoDAO.getVoterModificationIdsByReportLevelValue(dataVerificationVO.getConstituencyId(), dataVerificationVO.getPublicationId(),votersAnalysisService.getReportLevelId(IConstants.LOCALELECTIONBODY), dataVerificationVO.getMuncipalityIdsList());
+    		  if(muncipModifIdsList !=null && muncipModifIdsList.size() > 0)
+    			voterModificationIds.addAll(muncipModifIdsList);
+    		  
+    		  if(dataVerificationVO.getWardIdsList() != null && dataVerificationVO.getWardIdsList().size() > 0)
+    		    wardModifIdsList = voterModificationInfoDAO.getVoterModificationIdsByReportLevelValue(dataVerificationVO.getConstituencyId(), dataVerificationVO.getPublicationId(),votersAnalysisService.getReportLevelId(IConstants.WARD), dataVerificationVO.getWardIdsList());
+    		  if(wardModifIdsList != null && wardModifIdsList.size() > 0)
+    			voterModificationIds.addAll(wardModifIdsList);
+    		}
+    		
+    		if(voterModificationIds != null && voterModificationIds.size() > 0)
+    		{
+    			List<Long> voterModifAgeIds = voterModificationAgeInfoDAO.getVoterModificationIds(voterModificationIds);
+    			if(voterModifAgeIds != null && voterModifAgeIds.size() > 0)
+    			{
+    				for(Long modificationId : voterModificationIds)
+    				  if(!voterModifAgeIds.contains(modificationId))
+    					  missedModificationIds.add(modificationId);
+    			}
+    			else
+    			  missedModificationIds.addAll(voterModificationIds);
+    		}
+    		if(missedModificationIds != null && missedModificationIds.size() > 0)
+    		{
+    			List<Object[]> list = voterModificationInfoDAO.getVoterModificationDetailsByModificationIdsList(missedModificationIds);
+    			if(list != null && list.size() > 0)
+    			{
+    			  List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+    			  for(Object[] params : list)
+    			  {
+    				 if(votersAnalysisService.getReportLevelById((Long)params[1]).equalsIgnoreCase(IConstants.CONSTITUENCY))
+    					selectOptionVOList.add(new SelectOptionVO((Long)params[1],constituencyDAO.get((Long)params[0]).getName(),IConstants.CONSTITUENCY));
+    				 else if(votersAnalysisService.getReportLevelById((Long)params[1]).equalsIgnoreCase(IConstants.MANDAL))
+    					selectOptionVOList.add(new SelectOptionVO((Long)params[1],tehsilDAO.get((Long)params[0]).getTehsilName(),IConstants.MANDAL));
+    				 else if(votersAnalysisService.getReportLevelById((Long)params[1]).equalsIgnoreCase(IConstants.PANCHAYAT))
+    					 selectOptionVOList.add(new SelectOptionVO((Long)params[1],panchayatDAO.get((Long)params[0]).getPanchayatName(),IConstants.PANCHAYAT));
+    				 else if(votersAnalysisService.getReportLevelById((Long)params[1]).equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+    					 selectOptionVOList.add(new SelectOptionVO((Long)params[1],localElectionBodyDAO.get((Long)params[0]).getName(),IConstants.LOCALELECTIONBODY));
+    				 else if(votersAnalysisService.getReportLevelById((Long)params[1]).equalsIgnoreCase(IConstants.WARD))
+    					 selectOptionVOList.add(new SelectOptionVO((Long)params[1],constituencyDAO.get((Long)params[0]).getName(),IConstants.WARD));
+    			  }
+    			  dataVerificationInfoVO.setModificationAgeInfoList(selectOptionVOList);
+    			}
+    		}
+    		dataVerificationVO.setModificationAgeInfo(dataVerificationInfoVO);
+    		
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    		LOG.error("Exception Occured in validateVoterModificationAgeData() method, Exception - "+e);
+		}
+    }
+    
+    /* voterModification Age Info validation End */
     
     
     public ElectionResultsVerificationVO validateConstituencyEleResults(Long electionId)
