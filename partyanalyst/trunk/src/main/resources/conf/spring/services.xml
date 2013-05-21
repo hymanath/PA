@@ -1523,6 +1523,8 @@
 	    <property name="voterModificationInfoDAO" ref="voterModificationInfoDAO" />
 	    <property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 	    <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+	    <property name="voterModificationAgeInfoDAO" ref="voterModificationAgeInfoDAO" />
+	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
     </bean>
     
     
