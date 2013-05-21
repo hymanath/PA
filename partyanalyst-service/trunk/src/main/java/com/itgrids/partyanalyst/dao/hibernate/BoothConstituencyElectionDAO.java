@@ -592,7 +592,7 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	public List<Object[]> getBoothIdsByWardIds(List<Long> wardIds, List<Long> electionIds,Long constituencyId)
     {
     	StringBuilder stringBuilder = new StringBuilder();
-    	stringBuilder.append("select distinct model.constituencyElection.election.electionId,model1.localBodyWard.constituencyId,model.booth.boothId,model1.localBodyWard.name from BoothConstituencyElection model,BoothLocalBodyWard model1 where model.booth.boothId = model1.booth.boothId and  " +
+    	stringBuilder.append("select distinct model.constituencyElection.election.electionId,model1.localBodyWard.constituencyId,model.booth.boothId,model1.localBodyWard.name,model.booth.totalVoters from BoothConstituencyElection model,BoothLocalBodyWard model1 where model.booth.boothId = model1.booth.boothId and  " +
     			"   model1.localBodyWard.constituencyId in(:wardIds) and model.constituencyElection.election.electionId in(:electionIds) " +
     			" and model.booth.constituency.constituencyId = :constituencyId");
     	Query query = getSession().createQuery(stringBuilder.toString());

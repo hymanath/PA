@@ -191,11 +191,11 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	
 	public List<Object[]> findBoothResultsForMultipleBoothsInElections(Long constituencyId,List<String> partNos, List<Long> electionIds,List<Long> partyIds);
 	
-	public List<Object[]> getMandalResultsForElectionAndMandals(Long constituencyId,List<Long> tehsilIds, List<Long> electionIds,List<Long> partyIds);
+	public List<Object[]> getMandalResultsForElectionAndMandals(Long constituencyId,List<Long> tehsilIds, List<Long> electionIds,List<Long> partyIds,List<Long> boothIds);
 	
 	public List<Object[]> getLocalbodyResultsForElectionAndByIds(Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds,List<Long> partyIds);
 	
-	public List<Object[]> getMandalCountForElectionAndMandals(Long constituencyId,List<Long> tehsilIds, List<Long> electionIds);
+	public List<Object[]> getMandalCountForElectionAndMandals(Long constituencyId,List<Long> tehsilIds, List<Long> electionIds,List<Long> boothIds);
 	
 	public List<Object[]> getLocalbodyCountForElectionAndByIds(Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds);
 	
@@ -216,7 +216,7 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
     public List<Object[]> getlocalbodywardValidvotes1(Long constituencyId, List<Long> electionIds);
     public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> electionIds,List<Long> partyIds);
 
-
+    public List<Object[]> getLocalbodyBoothIdsForElectionAndByIds(Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds);
 
 
 

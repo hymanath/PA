@@ -258,11 +258,25 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 	public List<Object[]> getPanchayatBoothDetailsByPanchayat(List<Long> panchayatIds,List<Long> electionIds)
 	{
 		Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionId,model4.panchayat.panchayatId,model4.panchayat.panchayatName,model.boothConstituencyElection.booth.boothId," +
-				" model.boothConstituencyElection.booth.partNo from HamletBoothElection model,PanchayatHamlet model4 where model4.hamlet.hamletId = model.hamlet.hamletId " +
+				" model.boothConstituencyElection.booth.partNo,model.boothConstituencyElection.booth.totalVoters from HamletBoothElection model,PanchayatHamlet model4 where model4.hamlet.hamletId = model.hamlet.hamletId " +
 				" and model.hamlet.hamletId in(select model2.hamlet.hamletId from PanchayatHamlet model2 where model2.panchayat.panchayatId in(:panchayatIds)) " +
 				" and model.boothConstituencyElection.constituencyElection.election.electionId in (:electionIds) order by model.boothConstituencyElection.constituencyElection.election.electionId,model4.panchayat.panchayatId");
 		query.setParameterList("panchayatIds", panchayatIds);
 		query.setParameterList("electionIds",electionIds);
 		return query.list();
-	}	
+	}
+	
+	public List<Object[]> getBoothIdsByMandalIdsElectionIds(List<Long> mandalIds, List<Long> electionIds,Long constituencyId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(" select distinct model.boothConstituencyElection.booth.boothId,model2.panchayat.tehsil.tehsilId,model2.panchayat.tehsil.tehsilName,model.boothConstituencyElection.booth.totalVoters,  ");
+		stringBuilder.append(" model.boothConstituencyElection.constituencyElection.election.electionId from HamletBoothElection model ,PanchayatHamlet model2 where model.hamlet.hamletId = model2.hamlet.hamletId ");
+		stringBuilder.append(" and model.boothConstituencyElection.constituencyElection.election.electionId in (:electionIds) ");
+		stringBuilder.append("and model2.panchayat.tehsil.tehsilId in( :tehsilIds) and model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId");
+		Query queryObj = getSession().createQuery(stringBuilder.toString());
+		queryObj.setParameterList("electionIds", electionIds);
+		queryObj.setParameterList("tehsilIds", mandalIds);
+		queryObj.setParameter("constituencyId",constituencyId);
+		return queryObj.list();
+	}
 }

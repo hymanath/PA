@@ -105,4 +105,10 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 		return (String) queryObj.uniqueResult();
 	}
 
+	public List<Object[]> findByLocalElecBodyIds(List<Long> lclElecBodyIds){
+		Query query = getSession().createQuery("select model.localElectionBodyId, model.name, model.electionType.electionType from " +
+				"LocalElectionBody model where model.localElectionBodyId in(:lclElecBodyIds)");
+		query.setParameterList("lclElecBodyIds",lclElecBodyIds);
+		return query.list();
+	}
 }
