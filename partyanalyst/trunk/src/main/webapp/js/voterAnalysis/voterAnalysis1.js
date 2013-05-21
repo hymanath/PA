@@ -5638,6 +5638,7 @@ function getDataResultsForTotalVoters(resultsArr)
 				party=resultsArr[0].partiesList[k];
 				partyResultArr=[];
 				clmTemp['name']=party;
+				clmTemp['color']=getColorCodeForParty(party);
 				for(var i in resultsArr){
 					var reqObj = resultsArr[i];
 					electionYr = reqObj['reqType'] + reqObj['electionYear'];
