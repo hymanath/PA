@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -28,6 +29,9 @@ public interface IUserVoterService {
 	public SelectOptionVO getAllParentUsers(Long userId);
 	
 	public ResultStatus assignParentUser(Long selectedUserId,Long parentuserId,Long mainAccountId);
+	
+	public List<VotersDetailsVO> getCasteWiseUserVoterCategory(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
+
 	
 	
 }

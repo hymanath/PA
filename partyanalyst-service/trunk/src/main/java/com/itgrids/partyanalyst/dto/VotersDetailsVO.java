@@ -52,10 +52,10 @@ public class VotersDetailsVO implements Serializable{
 	private Long totalVotersForAbove60;
 	
 	
-	private Long totalMaleVoters;
-	private Long totalFemaleVoters;
+	private Long totalMaleVoters = 0L;
+	private Long totalFemaleVoters = 0L;
 	private Long totalUnknownVoters;
-	private Long totalVoters;
+	private Long totalVoters = 0L;
 	private Long totalAssignedCount;
 	
 
@@ -122,6 +122,37 @@ public class VotersDetailsVO implements Serializable{
 	
 	private String muncipalityType;
 	
+	
+	private String castName;
+	private String casteId;
+	
+	private int totalVotersCount;
+	private String categoryName;
+	
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	public int getTotalVotersCount() {
+		return totalVotersCount;
+	}
+	public void setTotalVotersCount(int totalVotersCount) {
+		this.totalVotersCount = totalVotersCount;
+	}
+	public String getCastName() {
+		return castName;
+	}
+	public void setCastName(String castName) {
+		this.castName = castName;
+	}
+	public String getCasteId() {
+		return casteId;
+	}
+	public void setCasteId(String casteId) {
+		this.casteId = casteId;
+	}
 	public Long getOrderNo() {
 		return orderNo;
 	}
