@@ -613,8 +613,8 @@ $("#panchayats").live("change",function(){
 </div>
  <div id="mainDev" class="widget blue">
   <div id="sublevelHeading"><h4> Analysis Based On Votes Percentage Difference</h4></div>
-  <a id="ShowConstMenu" class="btn pull-right" style="margin-top:-30px;margin-right: 30px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a>
-  <a id="ShowConstMenu1" class="btn pull-right" style="margin-top:-30px;margin-right: 30px;display:none;" href="javascript:{}" >Show<i class="icon-chevron-down"></i></a>
+  <a id="ShowConstMenu" class="btn pull-right btn-primary" style="margin-top:-30px;margin-right: 30px; width: 46px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a>
+  <a id="ShowConstMenu1" class="btn pull-right btn-primary" style="margin-top:-30px;margin-right: 30px;display:none;" href="javascript:{}" >Show<i class="icon-chevron-down"></i></a>
   <div id="dataDiv">
   <div align="center" id = "subDev1">
 	   <div id="selectYoptionId" ></div>
@@ -3055,7 +3055,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 
 		divId.innerHTML = str;
 		$('#subLevelTable').dataTable({
-		"aaSorting": [[ 3, "desc" ]],
+		"aaSorting": [[ 4, "desc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
