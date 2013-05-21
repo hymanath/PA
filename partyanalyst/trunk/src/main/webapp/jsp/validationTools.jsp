@@ -452,7 +452,17 @@ function showVoterInfoData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedConstituencyCount+'</td>';
+		str +='<td>'+result.repeatedConstituencyCount+'';
+		if(result.repeatedConstituencyCount > 0)
+		{
+		  if(result.repeatedConstituencyList != null && result.repeatedConstituencyList.length > 0)
+		  {
+			 str +='<br>----------------';
+			 for(var i=0;i<result.repeatedConstituencyList.length;i++)
+			  str +='<br><span>'+result.repeatedConstituencyList[i].name+' --- '+result.repeatedConstituencyList[i].id+'</span>';
+		  }
+		}
+		str +='</td>';
 		str +='</tr>';
 		str +='</table>';
 		str +='</div>';
@@ -483,7 +493,17 @@ function showVoterInfoData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedMandalsCount+'</td>';
+		str +='<td>'+result.repeatedMandalsCount+'';
+		if(result.repeatedMandalsCount > 0)
+		{
+		  if(result.repeatedMandalList != null && result.repeatedMandalList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var j=0;j<result.repeatedMandalList.length;j++)
+				str +='<br><span>'+result.repeatedMandalList[j].name+' --- '+result.repeatedMandalList[j].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='</tr>';
 		str +='</table>';
 		str +='</div>';
@@ -512,7 +532,17 @@ function showVoterInfoData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedPanchayatsCount+'</td>';
+		str +='<td>'+result.repeatedPanchayatsCount+'';
+		if(result.repeatedPanchayatsCount > 0)
+		{
+		  if(result.repeatedPanchayatList != null && result.repeatedPanchayatList.length >0)
+			{
+			  str +='<br>----------------';
+			 for(var i=0;i<result.repeatedPanchayatList.length;i++)
+		      str +='<br><span>'+result.repeatedPanchayatList[i].name+' --- '+result.repeatedPanchayatList[i].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='</tr>';
 		str +='</table>';
 		str +='</div>';
@@ -545,7 +575,17 @@ function showVoterInfoData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedMuncipalitiesCount+'</td>';
+		str +='<td>'+result.repeatedMuncipalitiesCount+'';
+		if(result.repeatedMuncipalitiesCount >0)
+		{
+		  if(result.repeatedMuncipalityList != null && result.repeatedMuncipalityList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var k=0;k<result.repeatedMuncipalityList.length;k++)
+				str +='<br><span>'+result.repeatedMuncipalityList[k].name+' --- '+result.repeatedMuncipalityList[k].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='</tr>';
 		str +='</table>';
 		str +='</div>';
@@ -574,7 +614,17 @@ function showVoterInfoData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedWardsCount+'</td>';
+		str +='<td>'+result.repeatedWardsCount+'';
+		if(result.repeatedWardsCount > 0)
+		{
+		  if(result.repeatedWardList != null && result.repeatedWardList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var k=0;k<result.repeatedWardList.length;k++)
+				str +='<br><span>'+result.repeatedWardList[k].name+' --- '+result.repeatedWardList[k].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='</tr>';
 		str +='</table>';
 		str +='</div>';
@@ -604,7 +654,17 @@ function showVoterInfoData(myResults,jsObj)
 		  }
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedBoothsCount+'</td>';
+		str +='<td>'+result.repeatedBoothsCount+'';
+		if(result.repeatedBoothsCount > 0)
+		{
+		  if(result.repeatedBoothsList != null && result.repeatedBoothsList.length > 0)
+		  {
+		    str +='<br>----------------';
+			for(var k=0;k<result.repeatedBoothsList.length;k++)
+			 str +='<br><span>'+result.repeatedBoothsList[k].name+' --- '+result.repeatedBoothsList[k].id+'</span>';
+		  }
+		}
+		str +='</td>';
 		str +='</tr>';
 		str +='</table>';
 		str +='</div>';
@@ -643,7 +703,18 @@ function showVoterFamilyData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedConstituencyCount+'</td>';
+		str +='<td>'+result.repeatedConstituencyCount+'';
+		if(result.repeatedConstituencyCount > 0)
+		{
+			if(result.repeatedConstituencyList != null && result.repeatedConstituencyList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var j=0;j<result.repeatedConstituencyList.length;j++)
+				str +='<br><span>'+result.repeatedConstituencyList[j].name+' --- '+result.repeatedConstituencyList[j].id+'</span>';
+			}
+		}
+		str +='</td>';
+
 		str +='<td>'+result.familyConstituencyCount+'';
 		if(result.familyConstituencyCount > 0)
 		{
@@ -686,7 +757,17 @@ function showVoterFamilyData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedMandalsCount+'</td>';
+		str +='<td>'+result.repeatedMandalsCount+'';
+		if(result.repeatedMandalsCount > 0)
+		{
+			if(result.repeatedMandalList != null && result.repeatedMandalList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var j=0;j<result.repeatedMandalList.length;j++)
+				str +='<br><span>'+result.repeatedMandalList[j].name+' --- '+result.repeatedMandalList[j].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='<td>'+result.familyMandalCount+'';
 		if(result.familyMandalCount > 0)
 		{
@@ -727,7 +808,18 @@ function showVoterFamilyData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedPanchayatsCount+'</td>';
+		str +='<td>'+result.repeatedPanchayatsCount+'';
+
+		if(result.repeatedPanchayatsCount > 0)
+		{
+		  if(result.repeatedPanchayatList != null && result.repeatedPanchayatList.length > 0)
+		  {
+			 str +='<br>----------------';
+			 for(var i=0;i<result.repeatedPanchayatList.length;i++)
+		      str +='<br><span>'+result.repeatedPanchayatList[i].name+' --- '+result.repeatedPanchayatList[i].id+'</span>';
+		  }
+		}
+		str +='</td>';
 		str +='<td>'+result.familyPanchayatCount+'';
 		if(result.familyPanchayatCount > 0)
 		{
@@ -772,7 +864,19 @@ function showVoterFamilyData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedMuncipalitiesCount+'</td>';
+		str +='<td>'+result.repeatedMuncipalitiesCount+'';
+
+		if(result.repeatedMuncipalitiesCount >0)
+		{
+		  if(result.repeatedMuncipalityList != null && result.repeatedMuncipalityList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var k=0;k<result.repeatedMuncipalityList.length;k++)
+				str +='<br><span>'+result.repeatedMuncipalityList[k].name+' --- '+result.repeatedMuncipalityList[k].id+'</span>';
+			}
+		}
+		str +='</td>';
+
 		str +='<td>'+result.familyMuncipalityCount+'';
 		if(result.familyMuncipalityCount >0)
 		{
@@ -813,7 +917,17 @@ function showVoterFamilyData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedWardsCount+'</td>';
+		str +='<td>'+result.repeatedWardsCount+'';
+		if(result.repeatedWardsCount > 0)
+		{
+		  if(result.repeatedWardList != null && result.repeatedWardList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var k=0;k<result.repeatedWardList.length;k++)
+				str +='<br><span>'+result.repeatedWardList[k].name+' --- '+result.repeatedWardList[k].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='<td>'+result.familyWardCount+'';
 		if(result.familyWardCount > 0)
 		{
@@ -855,7 +969,17 @@ function showVoterFamilyData(myResults,jsObj)
 		  }
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedBoothsCount+'</td>';
+		str +='<td>'+result.repeatedBoothsCount+'';
+		if(result.repeatedBoothsCount > 0)
+		{
+		  if(result.repeatedBoothsList != null && result.repeatedBoothsList.length > 0)
+		  {
+		    str +='<br>----------------';
+			for(var k=0;k<result.repeatedBoothsList.length;k++)
+			 str +='<br><span>'+result.repeatedBoothsList[k].name+' --- '+result.repeatedBoothsList[k].id+'</span>';
+		  }
+		}
+		str +='</td>';
 		str +='<td>'+result.familyBoothCount+'';
 		if(result.familyBoothCount > 0)
 		{
@@ -904,7 +1028,17 @@ function showVoterAgeData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedConstituencyCount+'</td>';
+		str +='<td>'+result.repeatedConstituencyCount+'';
+		if(result.repeatedConstituencyCount > 0)
+		{
+		  if(result.repeatedConstituencyList != null && result.repeatedConstituencyList.length > 0)
+		  {
+			 str +='<br>----------------';
+			 for(var i=0;i<result.repeatedConstituencyList.length;i++)
+			  str +='<br><span>'+result.repeatedConstituencyList[i].name+' --- '+result.repeatedConstituencyList[i].id+'</span>';
+		  }
+		}
+		str +='</td>';
 		str +='<td>'+result.ageWiseConstituencyCount+'';
 		if(result.ageWiseConstituencyCount > 0)
 		{
@@ -947,7 +1081,18 @@ function showVoterAgeData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedMandalsCount+'</td>';
+		str +='<td>'+result.repeatedMandalsCount+'';
+		if(result.repeatedMandalsCount > 0)
+		{
+			if(result.repeatedMandalList != null && result.repeatedMandalList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var j=0;j<result.repeatedMandalList.length;j++)
+				str +='<br><span>'+result.repeatedMandalList[j].name+' --- '+result.repeatedMandalList[j].id+'</span>';
+			}
+		}
+		str +='</td>';
+
 		str +='<td>'+result.ageWiseMandalCount+'';
 		if(result.ageWiseMandalCount > 0)
 		{
@@ -988,7 +1133,17 @@ function showVoterAgeData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedPanchayatsCount+'</td>';
+		str +='<td>'+result.repeatedPanchayatsCount+'';
+		if(result.repeatedPanchayatsCount > 0)
+		{
+			if(result.repeatedPanchayatList != null && result.repeatedPanchayatList.length >0)
+			{
+			  str +='<br>----------------';
+			 for(var i=0;i<result.repeatedPanchayatList.length;i++)
+		      str +='<br><span>'+result.repeatedPanchayatList[i].name+' --- '+result.repeatedPanchayatList[i].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='<td>'+result.ageWisePanchayatCount+'';
 		if(result.ageWisePanchayatCount > 0)
 		{
@@ -1033,7 +1188,18 @@ function showVoterAgeData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedMuncipalitiesCount+'</td>';
+		str +='<td>'+result.repeatedMuncipalitiesCount+'';
+		if(result.repeatedMuncipalitiesCount >0)
+		{
+		  if(result.repeatedMuncipalityList != null && result.repeatedMuncipalityList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var k=0;k<result.repeatedMuncipalityList.length;k++)
+				str +='<br><span>'+result.repeatedMuncipalityList[k].name+' --- '+result.repeatedMuncipalityList[k].id+'</span>';
+			}
+		}
+		str +='</td>';
+
 		str +='<td>'+result.ageWiseMuncipalityCount+'';
 		if(result.ageWiseMuncipalityCount >0)
 		{
@@ -1074,7 +1240,17 @@ function showVoterAgeData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedWardsCount+'</td>';
+		str +='<td>'+result.repeatedWardsCount+'';
+		if(result.repeatedWardsCount > 0)
+		{
+		  if(result.repeatedWardList != null && result.repeatedWardList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var k=0;k<result.repeatedWardList.length;k++)
+				str +='<br><span>'+result.repeatedWardList[k].name+' --- '+result.repeatedWardList[k].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='<td>'+result.ageWiseWardCount+'';
 		if(result.ageWiseWardCount > 0)
 		{
@@ -1116,7 +1292,17 @@ function showVoterAgeData(myResults,jsObj)
 		  }
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedBoothsCount+'</td>';
+		str +='<td>'+result.repeatedBoothsCount+'';
+		if(result.repeatedBoothsCount > 0)
+		{
+		  if(result.repeatedBoothsList != null && result.repeatedBoothsList.length > 0)
+		  {
+		    str +='<br>----------------';
+			for(var k=0;k<result.repeatedBoothsList.length;k++)
+			 str +='<br><span>'+result.repeatedBoothsList[k].name+' --- '+result.repeatedBoothsList[k].id+'</span>';
+		  }
+		}
+		str +='</td>';
 		str +='<td>'+result.ageWiseBoothCount+'';
 		if(result.ageWiseBoothCount > 0)
 		{
@@ -1166,7 +1352,17 @@ function showVoterModificationData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedConstituencyCount+'</td>';
+		str +='<td>'+result.repeatedConstituencyCount+'';
+		if(result.repeatedConstituencyCount > 0)
+		{
+		  if(result.repeatedConstituencyList != null && result.repeatedConstituencyList.length > 0)
+		  {
+			 str +='<br>----------------';
+			 for(var i=0;i<result.repeatedConstituencyList.length;i++)
+			  str +='<br><span>'+result.repeatedConstituencyList[i].name+' --- '+result.repeatedConstituencyList[i].id+'</span>';
+		  }
+		}
+		str +='</td>';
 		str +='<td>'+result.statusWiseConstituencyCount+'';
 		if(result.statusWiseConstituencyCount > 0)
 		{
@@ -1209,7 +1405,17 @@ function showVoterModificationData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedMandalsCount+'</td>';
+		str +='<td>'+result.repeatedMandalsCount+'';
+		if(result.repeatedMandalsCount > 0)
+		{
+		  if(result.repeatedMandalList != null && result.repeatedMandalList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var j=0;j<result.repeatedMandalList.length;j++)
+				str +='<br><span>'+result.repeatedMandalList[j].name+' --- '+result.repeatedMandalList[j].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='<td>'+result.statusWiseMandalCount+'';
 		if(result.statusWiseMandalCount > 0)
 		{
@@ -1250,7 +1456,17 @@ function showVoterModificationData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedPanchayatsCount+'</td>';
+		str +='<td>'+result.repeatedPanchayatsCount+'';
+		if(result.repeatedPanchayatsCount > 0)
+		{
+		  if(result.repeatedPanchayatList != null && result.repeatedPanchayatList.length >0)
+			{
+			  str +='<br>----------------';
+			 for(var i=0;i<result.repeatedPanchayatList.length;i++)
+		      str +='<br><span>'+result.repeatedPanchayatList[i].name+' --- '+result.repeatedPanchayatList[i].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='<td>'+result.statusWisePanchayatCount+'';
 		if(result.statusWisePanchayatCount > 0)
 		{
@@ -1295,7 +1511,17 @@ function showVoterModificationData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedMuncipalitiesCount+'</td>';
+		str +='<td>'+result.repeatedMuncipalitiesCount+'';
+		if(result.repeatedMuncipalitiesCount >0)
+		{
+		  if(result.repeatedMuncipalityList != null && result.repeatedMuncipalityList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var k=0;k<result.repeatedMuncipalityList.length;k++)
+				str +='<br><span>'+result.repeatedMuncipalityList[k].name+' --- '+result.repeatedMuncipalityList[k].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='<td>'+result.statusWiseMuncipalityCount+'';
 		if(result.statusWiseMuncipalityCount >0)
 		{
@@ -1336,7 +1562,17 @@ function showVoterModificationData(myResults,jsObj)
 			}
 		}
 		str +='</td>';
-		str +='<td>'+result.repeatedWardsCount+'</td>';
+		str +='<td>'+result.repeatedWardsCount+'';
+		if(result.repeatedWardsCount > 0)
+		{
+		  if(result.repeatedWardList != null && result.repeatedWardList.length > 0)
+			{
+			  str +='<br>----------------';
+			  for(var k=0;k<result.repeatedWardList.length;k++)
+				str +='<br><span>'+result.repeatedWardList[k].name+' --- '+result.repeatedWardList[k].id+'</span>';
+			}
+		}
+		str +='</td>';
 		str +='<td>'+result.statusWiseWardCount+'';
 		if(result.statusWiseWardCount > 0)
 		{
