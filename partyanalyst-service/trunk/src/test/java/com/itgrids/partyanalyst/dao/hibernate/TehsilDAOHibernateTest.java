@@ -79,7 +79,7 @@ public class TehsilDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(tehsilDAO.getTehsilNameByTehsilId(844l));
 	}*/
 	
-	public void testGetTehsilNameByTehsilIdsList()
+	/*public void testGetTehsilNameByTehsilIdsList()
 	{
 		List<Long> tehsilIdsList = new ArrayList<Long>(0);
 		tehsilIdsList.add(844l);
@@ -87,6 +87,11 @@ public class TehsilDAOHibernateTest extends BaseDaoTestCase {
 		List<Object[]> list = tehsilDAO.getTehsilNameByTehsilIdsList(tehsilIdsList);
 		for(Object[] params : list)
 			System.out.println(params[0]+" "+params[1]);
+	}*/
+	
+	public void testgetTehsilNameById()
+	{
+		System.out.println(tehsilDAO.getTehsilNameById(833l));
 	}
 	
 }

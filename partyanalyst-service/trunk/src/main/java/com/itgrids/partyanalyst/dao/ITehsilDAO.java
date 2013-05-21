@@ -72,4 +72,6 @@ public List<Object[]> getAllTehsilInfoDetails();
 	
 	public List<Object[]> getTehsilNameByTehsilIdsList(List<Long> tehsilIdsList);
 	
+	public String getTehsilNameById(Long tehsilId);
+	
 }
