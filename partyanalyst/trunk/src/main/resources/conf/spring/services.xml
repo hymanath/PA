@@ -1538,6 +1538,10 @@
 	  <property name="voterCastInfoDAO" ref="voterCastInfoDAO" />
 	  <property name="voterReportLevelDAO" ref="voterReportLevelDAO" />
 	  <property name="voterPartyInfoDAO" ref="voterPartyInfoDAO" />
+	  <property name="panchayatDAO" ref="panchayatDAO" />
+	  <property name="constituencyDAO" ref="constituencyDAO" />
+	  <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	  
     </bean>
 </beans>		
 	
