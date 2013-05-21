@@ -141,7 +141,7 @@
 		$('#multiSelectLevelsHeading').html(name);
 		
 		var value = "";
-		value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'mandal\');" class="multipleSelect" multiple >';
+		value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'mandal\',\'\');" class="multipleSelect" multiple >';
 		if(result != null)
 		{
 			
@@ -375,7 +375,7 @@
 			$('#rangeSliderDiv').show();
 			$('#processingImg').show();
 			var name = "";
-			if(selected == "ward")
+			if(selected.toLowerCase() == "ward" )
 			{
 				getUserCategoeryValuesForSelecetdWards();
 			}
@@ -434,12 +434,12 @@
 				}	
 				else
 				{
-					if(selected == "booth" && substr == "RURAL" || selected == "Booth" && substr == "RURAL")
+					if(selected.toLowerCase() == "booth" && substr == "RURAL")
 					{
 						
 						name = $("#levelId option:selected").text();
 					}
-					else if(selected == "panchayat" || selected == "Panchayat")
+					else if(selected.toLowerCase() == "panchayat")
 					{
 						name = $("#levelId option:selected").text();
 					}
@@ -574,7 +574,7 @@
 			mandal +='<b class="space">Specific Ward</b>';
 			$('#specificMandalName').html(mandal);
 			var value = "";
-				value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'booth\');" class="multipleSelect" multiple >';
+				value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'booth\',\'\');" class="multipleSelect" multiple >';
 				if(result != null)
 				{
 					for(var i in result)
@@ -609,7 +609,7 @@
 				$('#specificMandalName').html(mandal);
 				$('#multiSelectLevelsHeading').html(name);
 				var value = "";
-				value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'panchayat\');" class="multipleSelect" multiple >';
+				value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'panchayat\',\'\');" class="multipleSelect" multiple >';
 				if(result != null)
 				{
 					for(var i in result)
@@ -638,7 +638,7 @@
 				$('#specificMandalName').html(mandal);
 				$('#multiSelectLevelsHeading').html(name);
 				var value = "";
-				value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'booth\');" class="multipleSelect" multiple >';
+				value += '<select name="values" id="multipleSelect" onChange="getUserCategoersFoeSelect(\'booth\',\'\');" class="multipleSelect" multiple >';
 				if(result != null)
 				{
 					for(var i in result)
@@ -749,7 +749,7 @@
 				name += '<b>Wards</b><font class="requiredFont" style="color:red">*</font>';
 				$('#specificMandalName').html(name);
 				var value = "";
-				value+= '<select id="wardsList"  onChange="getUserCategoersFoeSelect(\'ward\');" class="multipleSelect" multiple>';
+				value+= '<select id="wardsList"  onChange="getUserCategoersFoeSelect(\'ward\',\'\');" class="multipleSelect" multiple>';
 				for(var i in result)
 				{
 					value+= '<option value='+result[i].id+'>'+result[i].name+'</option>';
@@ -914,7 +914,7 @@
 					name += '<b>Booths</b><font class="requiredFont" style="color:red">*</font>';
 				}
 				$('#multiSelectLevelsHeading').html(name);
-				value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'\');" class="multipleSelect" multiple>';
+				value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'\',\'\');" class="multipleSelect" multiple>';
 				for(var i in result)
 				{
 					value += '<option value='+result[i].id+'>'+result[i].name+'</option>';
@@ -929,7 +929,7 @@
 			{
 				name += '<b>Wards</b><font class="requiredFont" style="color:red">*</font>';
 				$('#multiSelectLevelsHeading').html(name);
-				value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'muncipality\');" class="multipleSelect" multiple>';
+				value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'muncipality\',\'\');" class="multipleSelect" multiple>';
 				for(var i in result)
 				{
 					if(i > 0)
@@ -945,7 +945,7 @@
 			{
 				name += '<b>Booths</b><font class="requiredFont" style="color:red">*</font>';
 				$('#multiSelectLevelsHeading').html(name);
-				value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'booth\');" class="multipleSelect" multiple>';
+				value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'booth\',\'\');" class="multipleSelect" multiple>';
 				for(var i in result)
 				{
 					value += '<option value='+result[i].id+'>'+result[i].name+'</option>';
@@ -957,21 +957,25 @@
 			}
 		}
 	}
-	function getUserCategoersFoeSelect(type)
+	function getUserCategoersFoeSelect(type,name)
 	{
+		if(name != "checked")
+		{
+			$('#selectAllMandals').removeAttr('checked');
+			$('#selectAllCastes').removeAttr('checked');
+		}
 		$('#selReqFileldId').show();
 		mainStr = type;
 		$('#selReqFileldId').show();
-		if(type == "ward" || type == "Ward")
+		if(type.toLowerCase() == "ward")
 		{
-			$('#selMandalId').show();
-			
+			$('#selMandalId').show();	
 		}
-		else if(type == "mandal" || type == "Mandal")
+		else if(type.toLowerCase()  == "mandal")
 		{
 			$('#selMandalId').hide();
 		}
-		else if(type == "panchayat" || type == "Panchayat")
+		else if(type.toLowerCase() == "panchayat" )
 		{
 			$('#selPanchayatRow').hide();
 		}
@@ -979,7 +983,7 @@
 		{
 			$('#selPanchayatRow').show();
 		}
-		else if (type == "booth" || type == "Booth")
+		else if (type.toLowerCase() == "booth" )
 		{
 			if(substr == 'RURAL')
 			{
@@ -990,7 +994,7 @@
 				$('#selPanchayatRow').hide();
 			}
 		}
-		else if(type == "muncipality" || type == "Muncipality")
+		else if(type.toLowerCase() == "muncipality")
 		{
 			var selectedValues = $('.multipleSelect').val();
 			var values = "";
@@ -1132,7 +1136,6 @@
 	
 	function getUserCategoeryValuesForSelecetdWards()
 	{
-		$('.processingImg').show();
 		var selectedValues = $('#wardsList').val();
 		var values = "";
 		var constituencyId = $("#constituencyList option:selected").val();
@@ -1328,6 +1331,12 @@
 		}		callAjaxToGetData(jsObj,url);
 	}
 	
+	function sortByName(a,b){
+		  var aName = a["name"].toLowerCase();
+		  var bName = b["name"].toLowerCase(); 
+		  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+		}
+		
 	
 	function buildChart(buildType)
 	{
@@ -1345,6 +1354,9 @@
 		var data_vv=[];
 		var attr_perc=[];
 		var attr_vv=[];
+		var poll_vv= [];
+		var total_vv= [];
+		var poll_perc= [];
 		var data = new Array();
 		$("#show_hide_votes").show();
 		for(var i in result.locationNames){
@@ -1354,15 +1366,19 @@
 		results = result.attributeResults;
 		results3 = result.locationPercnts;
 		results1 = result.attributePercnts;
+		results4 = result.polledVotes;
+		results5 = result.polledVotesPercnts;
+		results6 = result.totalVotes;
 		var x = 0;
 		for(var i in results){	
 			x = x+1;
 		   var obj = {};
-			obj["name"] = i ;	
+			obj["name"] = i;		
 			obj['type']='spline';
-			obj["data"] = results[i];	 
+			obj["data"] = results[i];				
 			attr_vv.push(obj);			
 		}
+		attr_vv.sort(sortByName);
 		for(var i in results1){	
 			x = x+1;
 		   var obj = {};  
@@ -1370,6 +1386,31 @@
 			obj['type']='spline';
 			obj["data"] = results1[i];	 
 			attr_perc.push(obj);			
+		}
+		attr_perc.sort(sortByName);
+		for(var i in results4){	
+			x = x+1;
+		   var obj = {};
+			obj["name"] = i ;	
+			obj['type']='spline';
+			obj["data"] = results4[i];	 
+			poll_vv.push(obj);			
+		}
+		for(var i in results5){	
+			x = x+1;
+		   var obj = {};
+			obj["name"] = i ;	
+			obj['type']='spline';
+			obj["data"] = results5[i];	 
+			poll_perc.push(obj);			
+		}
+		for(var i in results6){	
+			x = x+1;
+		   var obj = {};
+			obj["name"] = i ;	
+			obj['type']='spline';
+			obj["data"] = results6[i];	 
+			total_vv.push(obj);			
 		}
 		for(var i in results2){	
 		   var obj = {};
@@ -1391,23 +1432,32 @@
 			if(buildType == "voterscount")
 			{
 				$("#votersByCount").attr('checked', 'checked');
-				for(var i=0;i<attr_vv.length;i++){
-					data.push(attr_vv[i]);
-				}		
+				for(var i=0;i<poll_vv.length;i++){
+					data.push(poll_vv[i]);	
+				}
+				for(var i=0;i<total_vv.length;i++){
+					data.push(total_vv[i]);	
+				}
 				for(var i=0;i<data_vv.length;i++){
 					data.push(data_vv[i]);	
 				}
+				for(var i=0;i<attr_vv.length;i++){
+					data.push(attr_vv[i]);
+				}						
 				buildVoterChart(data,linechartDataArr);
 			}
 			else
 			{
 				$("#votersByPerc").attr('checked', 'checked');
-				for(var i=0;i<attr_perc.length;i++){
-					data.push(attr_perc[i]);			
-				}		
+				for(var i=0;i<poll_perc.length;i++){
+					data.push(poll_perc[i]);	
+				}
 				for(var i=0;i<data_perc.length;i++){
 					data.push(data_perc[i]);	
 				}
+				for(var i=0;i<attr_perc.length;i++){
+					data.push(attr_perc[i]);			
+				}		
 				buildVoterPercChart(data,linechartDataArr);
 			}
 		}
@@ -1466,9 +1516,7 @@
 		});
 	}
  
-
 	
-		
 	$(function() {
 	$( "#slider" ).slider({
 	value:1,
@@ -1761,7 +1809,7 @@
 	function selectAllMandals()
 	{
 		$('.multipleSelect option').attr('selected', 'selected');
-		getUserCategoersFoeSelect(type);
+		getUserCategoersFoeSelect(type,"checked");
 	}
 	
 	function unSelectAllMandal()
