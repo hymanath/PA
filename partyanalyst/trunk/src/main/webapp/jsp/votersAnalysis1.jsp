@@ -63,6 +63,7 @@
 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+<script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 
 
