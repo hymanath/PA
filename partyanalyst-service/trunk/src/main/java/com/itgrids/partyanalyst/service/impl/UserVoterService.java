@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,31 +12,32 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterCategoryDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.model.UserVoterDetails;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IUserVoterService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.dao.ICadreDAO;
-import com.itgrids.partyanalyst.dao.ICandidateDAO;
-import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
-import com.itgrids.partyanalyst.dao.IUserVoterCategoryDAO;
-import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
-import com.itgrids.partyanalyst.dto.VoterDataVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.model.User;
-import com.itgrids.partyanalyst.model.UserVoterDetails;
-import com.itgrids.partyanalyst.model.Voter;
+
 
 public class UserVoterService implements IUserVoterService{
 
@@ -334,6 +337,8 @@ public class UserVoterService implements IUserVoterService{
 		 return new ArrayList<VotersDetailsVO>(category.values());
 	}
 	
+	
+
 	
 	
 	public void getVoterDetails(Map<Long, Map<Long,VotersDetailsVO>> categoryValues,Map<Long,VotersDetailsVO> category,List<Object[]> votersList,String ageRange,Long totalVoters)
@@ -696,4 +701,160 @@ public class UserVoterService implements IUserVoterService{
 		}
 	}
 	
+	public List<VotersDetailsVO> getCasteWiseUserVoterCategory(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId)
+	{
+		 Map<Long,VotersDetailsVO> category = new HashMap<Long, VotersDetailsVO>();
+		 Map<Long, Map<Long,VotersDetailsVO>> categoryValues = new HashMap<Long, Map<Long,VotersDetailsVO>>();
+		 List<Object[]> votersList = null;
+		 List<VotersDetailsVO> list1 = null;
+		 Map<String , VotersDetailsVO> map  = null;
+		try{
+			 List<Object[]> categoriesAndValues = userVoterCategoryValueDAO.getCatergoryAndValues(attributeIds,userId);
+			 String locationType1 = locationType;
+			 if(locationType.equalsIgnoreCase("mandal"))
+				{
+					String mandalId= locationId.toString();
+					String id=mandalId.substring(1);
+					locationId = new Long(id);
+					if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+						locationType = "mandal";
+						
+					}else if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+						locationType = "localElectionBody";
+						locationType1 = IConstants.LOCALELECTIONBODY;
+						List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationId);
+						locationId = (Long) list.get(0);
+					}
+				}
+			 if(!locationType.equalsIgnoreCase("hamlet"))
+			 {
+			// votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,18l,25l);
+				 votersList = boothPublicationVoterDAO.getCasteWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId);
+			
+				 map = new HashMap<String , VotersDetailsVO>();
+				 VotersDetailsVO votersDetailsVO1 = null;
+				 
+				 for(Object[] obj:votersList)
+				 {	 
+					 if(map.get(obj[1].toString()) != null){
+						 
+						  votersDetailsVO1 = map.get(obj[1].toString());		
+						 votersDetailsVO1.setCasteId(obj[0].toString());
+						 votersDetailsVO1.setCastName(obj[1].toString());
+						 
+						 if(obj[3].toString().equalsIgnoreCase("M"))
+						   votersDetailsVO1.setTotalMaleVoters((Long)obj[2]);
+						 else if(obj[3].toString().equalsIgnoreCase("F"))
+							 votersDetailsVO1.setTotalFemaleVoters((Long)obj[2]);
+						 
+						 //votersDetailsVO1.setTotalVoters(votersDetailsVO1.getTotalMaleVoters()+votersDetailsVO1.getTotalFemaleVoters());
+						 
+					 }else{
+
+						 
+						  votersDetailsVO1 = new VotersDetailsVO();		
+						 votersDetailsVO1.setCasteId(obj[0].toString());
+						 votersDetailsVO1.setCastName(obj[1].toString());
+						 
+						 if(obj[3].toString().equalsIgnoreCase("M"))
+						   votersDetailsVO1.setTotalMaleVoters((Long)obj[2]);
+						 else if(obj[3].toString().equalsIgnoreCase("F"))
+							 votersDetailsVO1.setTotalFemaleVoters((Long)obj[2]);
+					 }
+					 
+					 votersDetailsVO1.setTotalVoters(votersDetailsVO1.getTotalMaleVoters()+votersDetailsVO1.getTotalFemaleVoters());						 
+
+					 map.put(obj[1].toString(), votersDetailsVO1);
+				 }
+				 list1 = new ArrayList<VotersDetailsVO>(map.values());				 
+				 
+			 }
+			 
+			
+			 else if(locationType.equalsIgnoreCase("hamlet"))
+			 {
+				 votersList = boothPublicationVoterDAO.getCasteWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId);
+				 
+				 map = new HashMap<String , VotersDetailsVO>();
+				 VotersDetailsVO votersDetailsVO1 = null;
+				 
+				 for(Object[] obj:votersList)
+				 {	 
+					 if(map.get(obj[1].toString()) != null){
+						 
+						  votersDetailsVO1 = map.get(obj[1].toString());		
+						 votersDetailsVO1.setCasteId(obj[0].toString());
+						 votersDetailsVO1.setCastName(obj[1].toString());
+						 
+						 if(obj[3].toString().equalsIgnoreCase("M"))
+						   votersDetailsVO1.setTotalMaleVoters((Long)obj[2]);
+						 else if(obj[3].toString().equalsIgnoreCase("F"))
+							 votersDetailsVO1.setTotalFemaleVoters((Long)obj[2]);
+						 
+						 //votersDetailsVO1.setTotalVoters(votersDetailsVO1.getTotalMaleVoters()+votersDetailsVO1.getTotalFemaleVoters());
+						 
+					 }else{
+
+						 
+						  votersDetailsVO1 = new VotersDetailsVO();		
+						 votersDetailsVO1.setCasteId(obj[0].toString());
+						 votersDetailsVO1.setCastName(obj[1].toString());
+						 
+						 if(obj[3].toString().equalsIgnoreCase("M"))
+						   votersDetailsVO1.setTotalMaleVoters((Long)obj[2]);
+						 else if(obj[3].toString().equalsIgnoreCase("F"))
+							 votersDetailsVO1.setTotalFemaleVoters((Long)obj[2]);
+					 }
+					 
+					 votersDetailsVO1.setTotalVoters(votersDetailsVO1.getTotalMaleVoters()+votersDetailsVO1.getTotalFemaleVoters());						 
+
+					 map.put(obj[1].toString(), votersDetailsVO1);
+				 }
+				 list1 = new ArrayList<VotersDetailsVO>(map.values());
+				
+			 } 
+			 
+			 int totalVoters = 0;
+			 for(VotersDetailsVO vo:list1)
+				 totalVoters+=vo.getTotalVoters();
+			 
+			 for(VotersDetailsVO vo:list1)				 
+				 vo.setTotalVotersPercent(round((float)vo.getTotalVoters()/totalVoters*100,2));
+			 
+			 Collections.sort(list1,sortByNumber);			 
+			 list1.get(0).setCategoryName(categoriesAndValues.get(0)[1].toString());
+			
+			 
+			
+		 }
+		catch(Exception e)
+		{
+			LOG.error("error occured in the getAgeRangeByUserVoterCategory() method in VotersAnalysis" , e) ;
+		}
+		
+		
+		 return list1;
+	}
+	public static float round(float value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    long factor = (long) Math.pow(10, places);
+	    value = value * factor;
+	    long tmp = Math.round(value);
+	    return (float) tmp / factor;
+	}
+	
+	
+	 
+   public static Comparator<VotersDetailsVO> sortByNumber = new Comparator<VotersDetailsVO>()
+		    {
+		   
+		        public int compare(VotersDetailsVO votersDetailsVO1, VotersDetailsVO votersDetailsVO2)
+		        {
+		            if (votersDetailsVO1.getTotalVoters() > votersDetailsVO2.getTotalVoters()) return -1;
+		            if (votersDetailsVO1.getTotalVoters() < votersDetailsVO2.getTotalVoters()) return 1;
+		            return 0;
+		        }
+	 };
+
 }
