@@ -56,6 +56,7 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
 
 <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+<script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 	<!--<script type="text/javascript" src="js/highcharts/js/modules/exporting.js"></script>-->
 	
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -1711,6 +1712,7 @@ function buildLineChart(){
 			  <c:forEach var="entry" items="${partyResultMapPrcnt}" varStatus="loop">
 		      {
 				name: '<c:out value="${entry.key}"/>',
+				color:getColorCodeForParty('${entry.key}'),
 				data: <c:out value="${entry.value}"/>
 			  }<c:if test="${!loop.last}">,</c:if>
 		    </c:forEach>
@@ -1720,10 +1722,6 @@ function buildLineChart(){
 		$('tspan:last').hide();
     }
   
-
-
-
-
 	buildTabNavigator();
 	showMPTCZPTCResults();
 	showElectionResultsInPopup();
