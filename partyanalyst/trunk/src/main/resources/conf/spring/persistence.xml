@@ -325,6 +325,7 @@
 	            <value>com.itgrids.partyanalyst.model.VoterStatus</value>
 	            <value>com.itgrids.partyanalyst.model.VoterModificationInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserAccessIpAddress</value>
+				<value>com.itgrids.partyanalyst.model.QueryTemp</value>
 			</list>
 			
 		</property>

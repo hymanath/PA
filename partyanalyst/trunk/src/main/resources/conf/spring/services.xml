@@ -28,7 +28,8 @@
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="userVoterCategoryValueDAO" ref="userVoterCategoryValueDAO" />
 		<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
-		<property name="publicationDateDAO" ref="publicationDateDAO" />		
+		<property name="publicationDateDAO" ref="publicationDateDAO" />
+		<property name="queryTempDAO" ref="queryTempDAO" />	
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
