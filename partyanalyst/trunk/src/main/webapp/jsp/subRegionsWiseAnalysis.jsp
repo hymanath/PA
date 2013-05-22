@@ -449,6 +449,12 @@ $(document).ready(function(){
 	$('.delimitation').change(function(){
 		getResultsForConstituency();
 	});
+	
+	 $('#castesAsPerLocId').live('click', function(event) {        
+         $('#castGrid2Outer').toggle('show');
+		 //$(this).val(if($((this).val()))
+    });
+	
  if(type == "mandal"){
        $("#mandalElecResultsDiv").show();
 	   //$("#votingTrendzDiv").hide();
@@ -699,7 +705,17 @@ $("#panchayats").live("change",function(){
   </div>
 </div>
 <div style="border-bottom:1px solid;border-left:1px solid;border-right:1px solid;display:none;" id="castGrid2Outer">
-<div id="castGrid2" style="height: 750px; overflow-x: auto;"></div>	
+<div id="casteSelectDiv1" style="text-align:center;border:1px solid #ccc;"></div>
+<div id="rangeSliderDiv" style="width:500px;margin:20px auto;border:1px solid #ccc;padding:10px 20px;" >
+<h5>Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
+<div id="slider1" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
+
+<p>
+<input type="text" id="amount1" style="border: 0; color: #f6931f; font-weight: bold;" />
+</p>
+</div>
+
+<div id="castGrid2" style="height: 750px; overflow-x: auto;display:inline-block;"></div>	
 <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_show1">Show All </span>
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide1">Hide All </span>
@@ -996,6 +1012,7 @@ function callAjax(jsObj,url)
 									castePercent = myResults.castPercent;
 									buildCastInfoForSubLevels(myResults,jsObj,null,null);
 									buildCastSubLevelsDiv(myResults,jsObj);
+									buildCastSubLevelsDiv1(myResults,jsObj);
 									
 								}
 								else if(jsObj.task == "getAgewiseVoterDetails"){
@@ -2422,7 +2439,7 @@ var constMgmtMainObj={
 
 					 
 					 
-					 
+		 
 					 
 function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 {
@@ -2459,8 +2476,8 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 
 	else
       castMain = sort_unique(selectedCast);
-	
-		//console.log(castMain);
+	  
+	  
 	if(percentage != null)
 	{
 		for(var per=0;per<castePercent.length;per++)
@@ -2876,18 +2893,6 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 	{	 
 	
 		
-		locationsForXAxis=myresults.constituencyManagementVO.locations;
-		var data=myresults.constituencyManagementVO.locWiseCastePrcts;
-		
-		var dataObj;
-		$.each(data, function( key, value ) {
-			dataObj={};
-			dataObj['name']=value.caste;
-			dataObj['data']=value.locationWiseCastesCount;
-			//console.log(value.caste+""+value.locationWisePercentages);
-			dataForChart.push(dataObj);
-		});	
-		
 		  hamletMainPie=[];
 	      myChart=[];
 		  castTemp=[];
@@ -3173,13 +3178,77 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 	}
 	
 $('#castesAsPerLocId').click(function(){
-	buildCastGrid2();
+	buildCastGrid2(null,null);
 });
-function buildCastGrid2(){
-$('#castGrid2Outer').toggle();
+function buildCastGrid2(selectedCast1,percentage){
+	//Copied
+	var myChart1 = new Array();
+	var castMain = null;
+	
+	if(percentage==null)
+		percentage=1;
+	
+	if(selectedCast1 == null)
+	{
+		castMain = sort_unique(castTemp);
+		var radios = document.getElementsByName('castTypeRadio1');
+		
+		if(radios != null && radios.length > 0)
+		{
+			var selectValue;
+			for (var r=0;r<radios.length;r++) 
+			{
+				if (radios[r].checked) 
+					selectValue=radios[r].value;
+				if(selectValue != 'All')
+				{
+					castMain=[];
+					$("#castSelectdId1 option:selected").each(function()
+					{
+						castMain.push($(this).text());
+					});
+				}
+			}
+		}
+    }
+
+	else
+      castMain = sort_unique(selectedCast1);
+	
+		//console.log(castMain);
+	if(percentage != null)
+	{
+		for(var per=0;per<castePercent.length;per++)
+		{
+			if(castePercent[per].id < percentage)
+			{
+				var cIndex = castMain.indexOf(castePercent[per].name);
+				if(cIndex != -1)
+					castMain.splice(cIndex,1);
+			}
+		}
+	}
+	//Copied End
+	var dataForChart=[];
+	var myresults=tempObj.result;
+		locationsForXAxis=myresults.constituencyManagementVO.locations;
+		data=myresults.constituencyManagementVO.locWiseCastePrcts;
+		
+		var dataObj;
+		$.each(data, function( key, value ) {
+			dataObj={};
+			dataObj['name']=value.caste;
+			dataObj['data']=value.locationWiseCastesCount;
+			
+			if($.inArray(value.caste,castMain) > -1)
+				dataForChart.push(dataObj);
+		});
+
+//$('#castGrid2Outer').toggle();
  $('#castGrid2').highcharts({
             chart: {
                 type: 'line',
+				width:950
             },
             title: {
                 text: casteChartHeading,
@@ -3855,6 +3924,29 @@ function buildGraphBySlide(){
 buildHamletWiseCastResultsGraph(null,votersRange);
 }
 
+
+$(function() {
+$( "#slider1" ).slider({
+value:1,
+min: 0,
+max: 50,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount1" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+},
+change: function( event, ui ) {
+$( "#amount1" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+votersRange=ui.value;
+buildGraphBySlide1();
+}
+});
+votersRange=$( "#amount1" ).val( "Percentage of Voters Caste: " + $( "#slider1" ).slider( "value" ) +" %");
+votersRange=$( "#slider1" ).slider( "value" );
+});
+
+function buildGraphBySlide1(){
+buildCastGrid2(null,votersRange);
+}
 //Selecting individual castes For Chart
 
 //global variable tempObj to call buildCastWiseChart chart that consists ajax returned results and jsobj--created by sasi
@@ -3926,6 +4018,73 @@ function buildCastSubLevelsDiv(myResults,jsObj)
 		  $("#casteSelectDiv").html(str);
 	}
 }
+function buildCastSubLevelsDiv1(myResults,jsObj)
+{
+	tempObj={
+		result:myResults,
+		jsobj:jsObj
+	}
+	var castStateIdsArr = new Array();
+	var str ='';
+	$("#casteSelectDiv1").html('');
+	if(myResults != null && myResults.castVosList.length > 0)
+	{
+		$("#casteSelectDiv1").addClass('casteSelectDivCls');
+		str +='<div>';
+		str +='<div id="castErrorDiv"></div>';
+		str +='<h4>Select Options To View Caste Wise Voter Analysis</h4>';
+		
+		str +='<input id="castSelectRadio" type="radio" checked="true" name="castTypeRadio1" value="All" onclick="buildCastInfoBasedOnOptions1(\'all\')" /><b>All</b>';
+
+		str +='<input id="castAllRadio" type="radio" name="castTypeRadio1" value="castWise" onclick="buildCastInfoBasedOnOptions1(\'selected\')" /><b>Caste Wise</b>';
+		
+		str += '<div id="casteHideAndShowOptionsDiv1" style="display:none;">';
+		 str += '<select class="selectBoxStyle" id="castSelectdId1" multiple="multiple">';
+		 var casteInfo = myResults.castVosList;
+		 var casteIdsArray = new Array();
+		 var castesSortedArray= [];
+		 
+		 for(var i=0;i<casteInfo.length;i++)
+		 {
+		   if(casteInfo[i].voterCastInfoVO.castVOs != null && 
+			   casteInfo[i].voterCastInfoVO.castVOs.length > 0)
+			 {
+				for(var j=0;j<casteInfo[i].voterCastInfoVO.castVOs.length;j++)
+				 {
+					if(casteIdsArray.indexOf(casteInfo[i].voterCastInfoVO.castVOs[j].castStateId) == -1)
+					 {
+						casteIdsArray.push(casteInfo[i].voterCastInfoVO.castVOs[j].castStateId);
+						
+						var obj={
+							caste:casteInfo[i].voterCastInfoVO.castVOs[j].castName,
+							id:casteInfo[i].voterCastInfoVO.castVOs[j].castStateId
+						}
+						castesSortedArray.push(obj);
+					
+						/*castesSortedArray.sort(sort_by('caste', true, function(a){return a.toUpperCase()}));
+				
+									
+						str += '<option value="'+casteInfo[i].voterCastInfoVO.castVOs[j].castStateId+'">'+casteInfo[i].voterCastInfoVO.castVOs[j].castName+'</option>';*/
+					 }
+				 }
+			 }
+		 }
+
+		 castesSortedArray.sort(sort_by('caste', true, function(a){return a.toUpperCase()}));
+				
+		for(var k=0;k<castesSortedArray.length;k++)
+		{
+			str += '<option value="'+castesSortedArray[k].Id+'">'+castesSortedArray[k].caste+'</option>';
+		}
+
+		  str += '</select>';
+		  str +='<input type="button" style="margin-left: 24px;font-weight:bold;margin-top: -33px;" onclick="buildCastWiseChart1(tempObj)" value="View" class="btn btn-info">';
+		  str +='<p id="notePara">Press Ctrl Key To Select Multiple Castes</p>';
+		  str +='</div>';
+		  str +='</div>';
+		  $("#casteSelectDiv1").html(str);
+	}
+}
 
 var sort_by = function(field, reverse, primer){
 
@@ -3961,6 +4120,30 @@ function buildCastInfoBasedOnOptions(option)
 		$("#casteHideAndShowOptionsDiv").css('display','block');
 }
 
+function buildCastInfoBasedOnOptions1(option)
+{
+	
+	if(option == "all")
+	{
+		//used tempObj globla variable to get the json returned results and json object for calling the buildCastInfoForSubLevels() function -- sasi
+		var myResults_slctd=tempObj.result;
+		var jsObj_slctd=tempObj.jsobj;
+		
+		selectedCastArray = [];
+		
+		//called this function for changing the castTemp variable to store all the castes -- sasi
+		buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,null,null);
+		
+		$("#casteHideAndShowOptionsDiv1").css('display','none');
+		//buildHamletWiseCastResultsGraph(null,null);
+		buildCastGrid2(null,null);
+	}
+	else
+	{
+		$("#casteHideAndShowOptionsDiv1").css('display','block');
+	}
+}
+
 
 function buildCastWiseChart(temp)
 {
@@ -3984,6 +4167,33 @@ var jsObj_slctd=temp.jsobj;
 	//console.log(selectedCastArray);
 	  buildHamletWiseCastResultsGraph(selectedCastArray,null);
 	  buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,selectedCastArray,null);
+}
+function buildCastWiseChart1(temp)
+{
+var myResults_slctd=temp.result;
+var jsObj_slctd=temp.jsobj;
+	$("#castErrorDiv").html('');
+	selectedCastArray = [];
+	var selecteObj = document.getElementById('castSelectdId1');
+	for(var i=0;i<selecteObj.options.length;i++)
+	{
+		if(selecteObj.options[i].selected)
+		{
+		  selectedCastArray.push(selecteObj.options[i].text);
+		}
+	}
+	if(selectedCastArray.length == 0)
+	{
+		$("#castErrorDiv").html('Please select at least one caste.');
+		return;
+	}
+	  //console.log(selectedCastArray);
+	  //buildHamletWiseCastResultsGraph(selectedCastArray,null);
+	  
+	  buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,selectedCastArray,'');
+	  buildCastGrid2(selectedCastArray,null)
+	  
+	  
 }
 
 function getBoothPArtiesAndElections()
