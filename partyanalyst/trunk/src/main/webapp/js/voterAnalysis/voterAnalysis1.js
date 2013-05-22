@@ -9091,7 +9091,7 @@ function buildCategoriesDiv(result)
 		if(i%6==0)
 		str +='<tr>';
 				
-		str +='<td><input type="checkbox" name="type" value="'+result[i].id+'" class="categorycheckbox">&nbsp;&nbsp;'+result[i].name+'&nbsp;&nbsp;';
+		str +='<td><input type="checkbox" name="type" value="'+result[i].id+'" class="categorycheckbox" onClick="uncheckSelectAllAndUnselect();">&nbsp;&nbsp;'+result[i].name+'&nbsp;&nbsp;';
 		
 		str +='<input type="hidden" name="useraccessIp" id="categoryId" value='+result[i].id+' style="display:none;">';
 			str +='</td>';
@@ -9112,6 +9112,12 @@ function buildCategoriesDiv(result)
 		str +='<div id="agerangeDiv" ></div>';
 		divId.innerHTML=str;
 	}
+}
+
+function uncheckSelectAllAndUnselect()
+{
+	$('.selectAll').attr("checked",false);
+	$('.unselectAll').attr("checked",false);
 }
 
 function clearAllCheckBoxs()
