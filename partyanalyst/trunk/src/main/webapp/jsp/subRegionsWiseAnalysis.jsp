@@ -1061,7 +1061,7 @@ function callAjax(jsObj,url)
 		 }
 		  str+='<td></td>';
 
-		 str+='<td colspan="2"><input type="radio"  id="selectAllEle" name="electionsSle" value="Select All Elections" onclick="selectAllCheckBoxes(this.value); buildParty(partiesList);"><label style="font-weight: bold;color:blue;">Select All</label>';
+		 str+='<td colspan="2"><input type="radio"  id="selectAllEle" name="electionsSle" value="Select All Elections" onclick="selectAllCheckBoxes(this.value); buildParty(partiesList,\'click\');"><label style="font-weight: bold;color:blue;">Select All</label>';
 		str+='<input type="radio" id="deSelectAllEle" name="electionsSle" value="Unselect All Elections" onclick="deSelectAllCheckBoxes(this.value); "><label style=" font-weight: bold;color:blue;">Unselect All</label></td>';
 		 str+='</table>';
 
@@ -1070,14 +1070,14 @@ function callAjax(jsObj,url)
 		 str+='</table>';
 	     $("#mandalElecResultsElections").html(str);
 		 
-		 buildParty(partiesList);
+		 buildParty(partiesList,"onload");
 		 
 		getElectionData();
   }
 
 $(".elecSelForPanc").live("click",function(){
 
-buildParty(partiesList);
+buildParty(partiesList,"click");
 $(".partySelForPanc").removeAttr("checked");
 });
 
@@ -1086,8 +1086,9 @@ function hideParties()
 	$("#mandalElecResultsParties").hide();
 	$("#alliance").hide();
 }
-function buildParty(partiesList)
+function buildParty(partiesList,param)
 {
+	
 $("#mandalElecResultsParties").show();
 $("#alliance").show();
 var eleIds = [];
@@ -1139,8 +1140,10 @@ results.sort(dynamicSort("name"));
 		 
 			 if(i%12== 0)
 			str+='<tr>';
-
+			if(param == "onload")
 		  str+='<td><input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+results[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+results[i].name+'</label></td>';
+		if(param == "click")
+		 str+='<td><input id="parties-'+i+'" class="partySelForPanc" type="checkbox" value="'+results[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+results[i].name+'</label></td>';
 		  
 			if((i%12)+1 == 0)
 			str+='</tr>';
