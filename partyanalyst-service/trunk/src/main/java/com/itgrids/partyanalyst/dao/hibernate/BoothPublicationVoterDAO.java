@@ -3222,6 +3222,16 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		  return query.list(); 
 	  }
 	  
+	  public List<Object[]> getCatstesForBooths(Long userId,List<Long> boothIds ,Long publicationId)
+	  {
+		  Query query = getSession().createQuery("select distinct(UVD.casteState.casteStateId) ,UVD.casteState.caste.casteName from  UserVoterDetails UVD ,BoothPublicationVoter BPV , QueryTemp QT where " +
+		  		" UVD.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationId and UVD.user.userId =:userId and BPV.booth.boothId =  QT.value " +
+		  		" order by UVD.casteState.caste.casteName ");
+		  query.setParameter("userId", userId);
+		  query.setParameter("publicationId", publicationId);
+		  return query.list(); 
+	  }
+	  
 	  public List<Object[]> getCastesListForSelectedMuncipality(Long userId , Long id,Long constituencyId,String status)
 	  {
 		  StringBuffer queryString = new StringBuffer();
