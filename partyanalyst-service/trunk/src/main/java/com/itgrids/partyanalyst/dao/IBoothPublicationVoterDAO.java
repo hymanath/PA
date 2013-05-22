@@ -353,6 +353,8 @@ public interface IBoothPublicationVoterDAO extends
   
 	public List<Object[]> getCasteWiseDetails(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
 	public List<Object[]> getCasteWiseDetailsForHamlet(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
+	
+	 public List<Object[]> getCatstesForBooths(Long userId,List<Long> boothIds ,Long publicationId);
 
 
 }
