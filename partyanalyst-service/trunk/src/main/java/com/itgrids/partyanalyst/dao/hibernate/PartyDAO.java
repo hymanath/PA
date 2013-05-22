@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.PartyColumnNames;
@@ -89,6 +90,15 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 	public List<Object[]> getParticipatedPartiesInMandal(Long tehsilId){
 		
 		return getHibernateTemplate().find("select distinct model.nomination.party.partyId, model.nomination.party.shortName from CandidateBoothResult model where model.boothConstituencyElection.booth.tehsil.tehsilId =? order by model.nomination.party.shortName ",tehsilId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getParticipatedPartiesInMandalByElectionId(Long tehsilId,Long electionId){
+		
+		Query query = getSession().createQuery("select distinct model.nomination.party.partyId, model.nomination.party.shortName from CandidateBoothResult model where model.boothConstituencyElection.booth.tehsil.tehsilId =:tehsilId and model.boothConstituencyElection.constituencyElection.election.electionId=:electionId order by model.nomination.party.shortName ");
+		query.setParameter("tehsilId", tehsilId);
+		query.setParameter("electionId", electionId);
+		return query.list();
 	}
 	
 }
