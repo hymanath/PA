@@ -28,7 +28,7 @@ public class YouTubeManager {
     {  
     	
     	YouTubeService service1 = new YouTubeService(clientID);
-    	String videoEntryUrl = "http://gdata.youtube.com/feeds/api/videos/"+id;
+    	String videoEntryUrl = "http://gdata.youtube.com/feeds/api/videos/"+id.trim();
     	VideoEntry videoEntry=null;
     	URL url=null;
     	try{
