@@ -43,6 +43,7 @@
 	newCast.push(myObj['cast']);
 	
 	}
+	newCast.sort();
   return newCast;
 	}
 	
