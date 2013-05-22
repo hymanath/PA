@@ -1451,7 +1451,7 @@ $('#castAllRadio').live("click",function(){
 <div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
 
 <p>
-<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+<input type="text" id="amount" readonly="readonly" style="border: 0; color: #f6931f; font-weight: bold;" />
 </p>
 </div>
 <div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
