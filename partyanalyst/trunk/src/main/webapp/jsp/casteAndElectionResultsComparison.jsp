@@ -1913,7 +1913,7 @@
 				<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
 				</div>
 					<p style="padding-bottom:2px;">
-						<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;width: 255px;" />
+						<input type="text" id="amount" readonly="readonly" style="border: 0; color: #f6931f; font-weight: bold;width: 255px;" />
 					</p>
 		</div>
 		
