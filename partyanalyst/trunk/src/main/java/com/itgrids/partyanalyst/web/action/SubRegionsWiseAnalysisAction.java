@@ -238,11 +238,11 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 
 	public String execute(){
 		
-		if(type.equalsIgnoreCase("mandal")){
+		/*if(type.equalsIgnoreCase("mandal")){
 		
 		ElectionWiseMandalPartyResultListVO mptcZptcResultListVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(new Long(id.toString().substring(1)));
 		mptcZptcElectionResultsVO = mptcZptcResultListVO.getPartyWiseElectionResultsVOList();
-		}
+		}*/
 		//latest Parliament ConstituencyId
 	  parliamentConstituencyId = staticDataService.getParliamentIdByAssembly(constituencyId);
 		 
