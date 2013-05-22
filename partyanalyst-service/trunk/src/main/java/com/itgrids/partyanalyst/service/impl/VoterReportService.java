@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
+import com.itgrids.partyanalyst.dao.IQueryTempDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
@@ -52,6 +53,7 @@ import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.QueryTemp;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
@@ -90,9 +92,17 @@ public class VoterReportService implements IVoterReportService{
 	private IWardDAO wardDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IPublicationDateDAO publicationDateDAO;
-	
+	private IQueryTempDAO queryTempDAO;
 	IUserVoterCategoryValueDAO userVoterCategoryValueDAO;
 	
+	public IQueryTempDAO getQueryTempDAO() {
+		return queryTempDAO;
+	}
+
+	public void setQueryTempDAO(IQueryTempDAO queryTempDAO) {
+		this.queryTempDAO = queryTempDAO;
+	}
+
 	public IWardDAO getWardDAO() {
 		return wardDAO;
 	}
@@ -980,7 +990,7 @@ public class VoterReportService implements IVoterReportService{
 							castVO.setMalevoters(voterCastInfo.getCasteMaleVoters());
 							castVO.setFemalevoters(voterCastInfo.getCasteFemaleVoters());
 							castVO.setCasteCategoryName(voterCastInfo.getCasteState().getCasteCategoryGroup().getCasteCategory().getCategoryName());
-							castVO.setCastPercentage(voterCastInfo.getSubLeveCastePercentage().toString());
+							castVO.setCastPercentage(voterCastInfo.getCastePercentage().toString());
 							castVOs.add(castVO);
 						}
 						
@@ -1974,7 +1984,14 @@ public class VoterReportService implements IVoterReportService{
 					}
 					else if(type.equalsIgnoreCase("booth"))
 					{
-						List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,ids,type,status,publicationId);
+						for(Long boIds : ids)
+							queryTempDAO.save(new QueryTemp(boIds));
+						voterDAO.flushAndclearSession();
+						
+						List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getCatstesForBooths(userId, ids, publicationId);
+						queryTempDAO.deleteAll();
+						voterDAO.flushAndclearSession();
+						//List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,ids,type,status,publicationId);
 						//List<Object[]> castOrPartyDetails = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,3l,ids);
 						if(castOrPartyDetails != null && castOrPartyDetails.size() > 0)
 						{
