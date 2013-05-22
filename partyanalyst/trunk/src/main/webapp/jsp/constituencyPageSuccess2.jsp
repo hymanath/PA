@@ -3285,7 +3285,7 @@ function removeCensusNotAvailableErrorMessage()
 	str+='<br>';
 	str+='<br>';
 	}
-	electionYearSelect += '<table>';
+	electionYearSelect += '<table style="display:inline-block;">';
 	if('${constituencyDetails.constituencyType}' == 'Assembly')
 		  electionYearSelect += '<th>Select Assembly Election Year :</th>';
 		else
