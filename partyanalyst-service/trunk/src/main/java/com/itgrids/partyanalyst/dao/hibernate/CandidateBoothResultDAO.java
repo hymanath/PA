@@ -1449,4 +1449,13 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 		  query.setParameterList("partNos", partNos);
 		return query.list();
 	}
+	public List<Object[]> getPartiesForElection(Long electionId,Long constituencyId)
+	{
+		
+		Query query = getSession().createQuery("select distinct model.nomination.party.partyId, model.nomination.party.shortName,model.boothConstituencyElection.constituencyElection.election.electionId from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId and model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId order by model.nomination.party.shortName");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("electionId", electionId);
+		return query.list();
+	}
+	
 }

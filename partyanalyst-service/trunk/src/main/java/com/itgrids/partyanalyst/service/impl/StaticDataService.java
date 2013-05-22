@@ -6396,7 +6396,7 @@ public class StaticDataService implements IStaticDataService {
 	public MandalVO findListOfElectionsAndPartiesInMandal(Long tehsilId) {
 		MandalVO mandalVO = new MandalVO();
 		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
-		List<Object[]> partiesList = partyDAO.getParticipatedPartiesInMandal(tehsilId);
+		/*List<Object[]> partiesList = 
 		if(partiesList != null && partiesList.size() > 0)
 		{
 			for(Object[] params : partiesList)
@@ -6405,7 +6405,8 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> partiesInMandal = new ArrayList<SelectOptionVO>();
 		for (SelectOptionVO party : parties)
 			if (!"'AIMIM'".contains(party.getName()))
-				partiesInMandal.add(party);
+				partiesInMandal.add(party);*/
+		
 		Set<SelectOptionVO> elections = new HashSet<SelectOptionVO>();
 		List electionsInMandal = villageBoothElectionDAO
 				.findPolledVotesInAllElectionsOfMandalByRevenueVillages(tehsilId);
@@ -6418,9 +6419,23 @@ public class StaticDataService implements IStaticDataService {
 		 Collections.sort(listOfNames);
 		 Collections.reverse(listOfNames);
 		 Set mySet = new HashSet(Arrays.asList(listOfNames)); 
-		mandalVO.setPartiesInMandal(partiesInMandal);
+		 
+		 
+		//mandalVO.setPartiesInMandal(partiesInMandal);
 		mandalVO.setElectionsInMandal(mySet);
-		mandalVO.setElectionsInMandalList(listOfNames);
+		if(elections != null && elections.size() > 0)
+		{
+		for(SelectOptionVO election : elections)
+		{
+			election.setValue(election.getId().toString());
+			parties = getParties(election.getId(),tehsilId,election.getName(),"mandal");
+			if(parties != null && parties.size() > 0)
+			{
+				election.setSelectOptionsList(parties);
+			}
+			mandalVO.setParties(elections);
+		}
+		}
 		return mandalVO;
 	}
 
@@ -8019,26 +8034,39 @@ public class StaticDataService implements IStaticDataService {
 		MandalVO mandalVO = new MandalVO();
 		List<SelectOptionVO> partiesInMandal = new ArrayList<SelectOptionVO>();
 		Set<SelectOptionVO> elections = new HashSet<SelectOptionVO>();
-		
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 		List<Object[]> electionsInMandal = hamletBoothElectionDAO.getElectionsHappendinPanchayat(panchayatId);
 		
 		for (Object[] params : electionsInMandal)
 			elections.add(new SelectOptionVO((Long) params[0],(params[2] + " " + params[1])));
 		
-		List<Object[]> partiesList = hamletBoothElectionDAO.getPartiesParticipatedInAllElectionOfAPanchayat(panchayatId);
+	/*	List<Object[]> partiesList = hamletBoothElectionDAO.getPartiesParticipatedInAllElectionOfAPanchayat(panchayatId);
 		
 		if(partiesList != null && partiesList.size() > 0)
 		{
 			for(Object[] params : partiesList)
 				partiesInMandal.add(new SelectOptionVO((Long)params[0],params[1].toString()));
-		}
+		}*/
 		//For latest election year wise sorting 
 		List listOfNames = new ArrayList(elections);
 		 Collections.sort(listOfNames);
 		 Collections.reverse(listOfNames);
 		 Set mySet = new HashSet(Arrays.asList(listOfNames));
-		mandalVO.setPartiesInMandal(partiesInMandal);
+		//mandalVO.setPartiesInMandal(partiesInMandal);
 		mandalVO.setElectionsInMandal(mySet);
+		if(elections != null && elections.size() > 0)
+		{
+		for(SelectOptionVO election : elections)
+		{
+			election.setValue(election.getId().toString());
+			parties = getParties(election.getId(),panchayatId,election.getName(),"panchayat");
+			if(parties != null && parties.size() > 0)
+			{
+				election.setSelectOptionsList(parties);
+			}
+			mandalVO.setParties(elections);
+		}
+		}
 		return mandalVO;
 		}catch (Exception e) {
 			return null;
@@ -8047,13 +8075,16 @@ public class StaticDataService implements IStaticDataService {
 	public MandalVO getElectionYearsAndPartiesForConstituency(Long constituencyId)
 	{
 		MandalVO mandalVO = new MandalVO();
+		
 		Set<SelectOptionVO> elections = new HashSet<SelectOptionVO>();
 		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		//List<PartyElectionResultsVO> parties = new ArrayList<PartyElectionResultsVO>();
 		List list =null;
+		List<Object[]> partiesList = null;
 		Long parliamentConstiId = 0l;
 		try{
-			parliamentConstiId	= getParliamentIdByAssembly(constituencyId);
 			
+			parliamentConstiId	= getParliamentIdByAssembly(constituencyId);
 			list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(constituencyId);
 			getAllElectionIds(list,elections);
 			list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(parliamentConstiId);
@@ -8062,13 +8093,7 @@ public class StaticDataService implements IStaticDataService {
 			getAllElectionIds(list,elections);
 			list = electionDAO.findElectionYearsForElectionTypeAndState(3l, 1l);//Mptc Elections
 			getAllElectionIds(list,elections);
-			List<Object[]> partiesList = candidateBoothResultDAO.getParticipatedPartiesInConstituency(constituencyId);
-			if(partiesList != null && partiesList.size() > 0)
-			{
-				for(Object[] params : partiesList)
-				parties.add(new SelectOptionVO((Long)params[0],params[1].toString()));
-			}
-			
+		
 		}
 		catch(Exception e)
 		{
@@ -8079,9 +8104,22 @@ public class StaticDataService implements IStaticDataService {
 		 Collections.sort(listOfNames);
 		 Collections.reverse(listOfNames);
 		 Set mySet = new HashSet(Arrays.asList(listOfNames)); 
-		mandalVO.setPartiesInMandal(parties);
+		//
 		mandalVO.setElectionsInMandal(mySet);
-		
+		PartyElectionResultsVO  partyvo = null;
+		if(elections != null && elections.size() > 0)
+		{
+		for(SelectOptionVO election : elections)
+		{
+			election.setValue(election.getId().toString());
+			parties = getParties(election.getId(),constituencyId,election.getName(),"constituency");
+			if(parties != null && parties.size() > 0)
+			{
+				election.setSelectOptionsList(parties);
+			}
+			mandalVO.setParties(elections);
+		}
+		}
 		return mandalVO;
 	}
 	public MandalVO getElectionYearsAndPartiesForSelectedConstituency(Long constituencyId)
@@ -8543,6 +8581,45 @@ public class StaticDataService implements IStaticDataService {
 			
 		}
 		return vo;
+	}
+	
+	
+	public List<SelectOptionVO> getParties(Long electionId,Long id,String eletype,String type)
+	{
+		List<Long> tehsilIds = new ArrayList<Long>();
+		List<SelectOptionVO> mandals = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+		List<Object[]> partiesList = null;
+		if(type.equalsIgnoreCase("constituency"))
+		{
+		mandals =regionServiceDataImp.getSubRegionsInConstituency(id, IConstants.PRESENT_YEAR, null);
+		mandals =regionServiceDataImp.getMandals(mandals);
+		if(mandals != null && mandals.size() > 0)
+		{
+		for(SelectOptionVO mandalId : mandals)
+			tehsilIds.add(new Long(mandalId.getId().toString().substring(1)));
+		}
+		if(eletype.indexOf("Assembly") != -1  || eletype.indexOf("Parliament")!= -1)
+		{
+		 partiesList = candidateBoothResultDAO.getPartiesForElection(electionId,id);	
+		}
+		else
+		partiesList = nominationDAO.getPartiesForElection(electionId,tehsilIds);
+		}
+		else if(type.equalsIgnoreCase("mandal"))
+		{
+			partiesList = partyDAO.getParticipatedPartiesInMandalByElectionId(id,electionId);
+		}
+		else if(type.equalsIgnoreCase("panchayat"))
+		{
+			partiesList = hamletBoothElectionDAO.getParticipatedPartiesByEleId(id,electionId);
+		}	
+		SelectOptionVO party = null;
+		for (Object[] parties : partiesList) {
+			party = new SelectOptionVO((Long)parties[0],parties[1].toString());
+			list.add(party);
+		}
+		return list;	
 	}
 
 }

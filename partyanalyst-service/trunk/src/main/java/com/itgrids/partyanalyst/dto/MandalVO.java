@@ -19,7 +19,7 @@ public class MandalVO extends ResultStatus{
 	private String chartName;
 	private String isPartial;
 	private List<PartyElectionResultsVO> wardwiseResultsForParty;; 
-	
+	private Set<SelectOptionVO> parties;
 	public MandalVO(){}
 	
 	public MandalVO(Long id, String name){
@@ -28,6 +28,14 @@ public class MandalVO extends ResultStatus{
 	}
 	
 	
+	public Set<SelectOptionVO> getParties() {
+		return parties;
+	}
+
+	public void setParties(Set<SelectOptionVO> parties) {
+		this.parties = parties;
+	}
+
 	public String getIsPartial() {
 		return isPartial;
 	}
