@@ -1754,7 +1754,9 @@ function clearFilterOpts(){
 	 $("#departmentsinstate").val('0');
 	 $("#departmentsinstate").hide();
    }
+   if(document.getElementById("publicprobs").checked == true){
    document.getElementById("byUserDiv").disabled  = false;
+   }
    document.getElementById("byUserDiv").value = 0;
    document.getElementById("fromDate").value = '';
    document.getElementById("toDate").value = '';
