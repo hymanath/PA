@@ -790,7 +790,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 
 		divId.innerHTML = str;
 		$('#subLevelTable').dataTable({
-		"aaSorting": [[ 3, "desc" ]],
+		"aaSorting": [[ 4, "desc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
@@ -1058,7 +1058,7 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 		var myObj = mySort[p];
 		newCast.push(myObj['cast']);
 	}
-
+	newCast.sort(); // we sorting based on caste name updated by srishailam
  	var dataGrouping1 = {
     groupPixelWidth: 40,
     units: [[
