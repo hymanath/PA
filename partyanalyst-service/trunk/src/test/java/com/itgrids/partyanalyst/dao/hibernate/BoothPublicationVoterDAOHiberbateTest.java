@@ -549,7 +549,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		System.out.println(votersList.size());
 		
 	}*/
-	public void testGetVoterCastAndPartyCountForDifferentLocations()
+	/*public void testGetVoterCastAndPartyCountForDifferentLocations()
 	{   List<Long> attributeIds = new ArrayList<Long>();
 	    List<Long> ids = new ArrayList<Long>();
 	    List<String> partNos = new ArrayList<String>();
@@ -561,5 +561,13 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 
 
 		
+	}*/
+	
+	public void testGetCatstesForBooths()
+	{
+		List<Long> boothIds = new ArrayList<Long>(0);
+		boothIds.add(122792l);
+		List<Object[]> list = boothPublicationVoterDAO.getCatstesForBooths(1l, boothIds, 8l);
+		System.out.println(list.size());
 	}
 }
