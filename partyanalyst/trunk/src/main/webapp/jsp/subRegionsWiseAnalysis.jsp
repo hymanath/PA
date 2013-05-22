@@ -442,6 +442,7 @@ var parliamentResult;
 var counter = 0;
 var tehsilId = '${mandalId}';
 var isGhmc = '${ghmc}';
+var partiesList = new Array();
 
 $(document).ready(function(){
 
@@ -534,16 +535,13 @@ $("#panchayats").live("change",function(){
 	<div id="basicInfoAjaxDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 
 	<c:if test="${type == 'mandal'}">
-	<div id="otherMandalDiv" style=" margin-left:484px;
-    margin-top: 5px;width: 169px;"><input type="button" class="btn" id="othersDiv" value="View Other Mandal Info" onclick="getothersSelectDiv();"/></div>
 	
-	<div id="othersmandalDiv" style="display:none;float:right;margin-top:-21px;">Select Mandal : <select id="mandals"></select></div>
+	
+	<div id="othersmandalDiv" style="display:none;float:right;margin-top:5px;">Select Mandal : <select id="mandals"></select></div>
 	</c:if>
 	<c:if test="${type == 'panchayat'}">
-	<div id="otherPanchayatDiv" style=" margin-left:449px;
-    margin-top: 5px;width: 169px;"><input type="button" class="btn" id="othersDiv" value="View Other Panchayat Info" onclick="getothersSelectDiv();"/></div>
 	
-	<div id="othersPanchayatDiv" style="display:none;float:right;margin-top:-21px;">Select Panchayat : <select id="panchayats"></select></div>
+	<div id="othersPanchayatDiv" style="display:none;float:right;margin-top:5px;">Select Panchayat : <select id="panchayats"></select></div>
 	</c:if>
 	<br>
 	<div id="votersBasicInfoTitleDiv"></div>
@@ -598,8 +596,9 @@ $("#panchayats").live("change",function(){
 
 <div class="hero-unit" >
     <div id="mandalElecResultsErrMsg" style="color:red;"></div>
-    <div id="mandalElecResultsParties"></div>
+    <!--<div id="mandalElecResultsParties"></div>-->
     <div id="mandalElecResultsElections"></div>
+	  <div id="mandalElecResultsParties" style="clear:both;"></div>
     <div id="mandalElecResultsButton" style='margin-left:81px;'></div>
 	<div id="mandalElecResultsButton1" style='margin-left:81px;'></div>
   </div>
@@ -733,7 +732,7 @@ $("#panchayats").live("change",function(){
 
 <div id="container1"></div>
 
-<div id="electionResultsDiv" class="widget blue"></div>
+<!--<div id="electionResultsDiv" class="widget blue"></div>-->
 
 <div id="instructionDialog" ></div>
 
@@ -940,6 +939,7 @@ function callAjax(jsObj,url)
 										buildVotersBasicInfo(myResults,jsObj);
 									}else if(jsObj.task == "getElectionsAndParties" || jsObj.task == "getPanchayatElectionsAndParties" || jsObj.task == "getConstiEleAndParties"){
 									  buildElectionsAndParty(myResults);
+									   partiesList = myResults.parties;
 									}
 									
 									else if(jsObj.task == "getResults" ||jsObj.task == "getResultsForBooth" || jsObj.task == "getResultsForConstituency"){
@@ -1028,34 +1028,16 @@ function callAjax(jsObj,url)
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 
-  function buildElectionsAndParty(myResults){
-	  
+ function buildElectionsAndParty(myResults){
+	
+	  partiesList = myResults.parties; 
 	  if(myResults.electionsInMandal.length == 0)
 		  $("#mandalElecResultsDiv").css("display","none");
-      if(myResults != null && myResults.partiesInMandal != null && myResults.partiesInMandal.length > 0  && myResults.electionsInMandal != null && myResults.electionsInMandal.length > 0){
-			$("#mandalElecResultsDiv").css("display","block");
+		  else
+		$("#mandalElecResultsDiv").css("display","block");
 		  var electionsLength = myResults.electionsInMandal.length;
 	     var str='';
-		 str+='<table><tr><th align="left">Parties : </th><td>';
-		  str+='<table>';
-		 for(var i in myResults.partiesInMandal){
-			 if(i%12== 0)
-			str+='<tr>';
-
-		  str+='<td><input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label></td>';
-		  
-			if((i%12)+1 == 0)
-			str+='</tr>';
-		 }
-		 
-		 str+='<td></td>';
-
-		 str+='<td colspan="3"><input type="radio"  id="selectAll" value="Select All Parties" name="partiesSel"  onclick="selectAllCheckBoxes(this.value)"><label style=" font-weight: bold;color:blue;">Select All</label></td>';
-		 str+='<td  colspan="3"><input type="radio" id="deSelectAll" value="Unselect All Parties"  name="partiesSel"  onclick="deSelectAllCheckBoxes(this.value)"><label style=" font-weight: bold;color:blue;">Unselect All</label></td>';
-		
-
-		 str+='</table>'; 
-		 str+='</td></tr>';
+		 str+='<table>';
    
 		 str+='<tr><th align="left">Elections  : </th><td>';
 		 str+='<table>';
@@ -1074,23 +1056,129 @@ function callAjax(jsObj,url)
 		 }
 		  str+='<td></td>';
 
-		 str+='<td colspan="2"><input type="radio"  id="selectAllEle" name="electionsSle" value="Select All Elections" onclick="selectAllCheckBoxes(this.value)"><label style="font-weight: bold;color:blue;">Select All</label>';
-		str+='<input type="radio" id="deSelectAllEle" name="electionsSle" value="Unselect All Elections" onclick="deSelectAllCheckBoxes(this.value)"><label style=" font-weight: bold;color:blue;">Unselect All</label></td>';
+		 str+='<td colspan="2"><input type="radio"  id="selectAllEle" name="electionsSle" value="Select All Elections" onclick="selectAllCheckBoxes(this.value); buildParty(partiesList);"><label style="font-weight: bold;color:blue;">Select All</label>';
+		str+='<input type="radio" id="deSelectAllEle" name="electionsSle" value="Unselect All Elections" onclick="deSelectAllCheckBoxes(this.value); "><label style=" font-weight: bold;color:blue;">Unselect All</label></td>';
 		 str+='</table>';
 
 		 str+='</td></tr>';
 		
 		 str+='</table>';
 	     $("#mandalElecResultsElections").html(str);
-		 if(type == "mandal")
+		 
+		 buildParty(partiesList);
+		 
+		getElectionData();
+  }
+
+$(".elecSelForPanc").live("click",function(){
+
+buildParty(partiesList);
+$(".partySelForPanc").removeAttr("checked");
+});
+
+function hideParties()
+{
+	$("#mandalElecResultsParties").hide();
+	$("#alliance").hide();
+}
+function buildParty(partiesList)
+{
+$("#mandalElecResultsParties").show();
+$("#alliance").show();
+var eleIds = [];
+var party =[];
+var str='';
+
+ $('.elecSelForPanc').each(function() {
+
+	        if($(this).is(':checked')){
+			var eleId = $(this).val();
+		var isExist = $.inArray(eleId, partiesList);
+	
+		if(isExist == -1)
+		{
+		for(var i in partiesList){
+		if(eleId == partiesList[i].id)
+		{
+		for(var j in partiesList[i].selectOptionsList)
+		{
+	
+		 var obj = {
+				id: partiesList[i].selectOptionsList[j].id,
+				name:partiesList[i].selectOptionsList[j].name
+
+			  }
+		party.push(obj);
+		 }
+	
+		}
+	  }
+	}
+	}
+});
+
+var results = [];
+var idsSeen = {}, idSeenValue = {};
+for (var i = 0, len = party.length, id; i < len; ++i) {
+    id = party[i].id;
+    if (idsSeen[id] !== idSeenValue) {
+        results.push(party[i]);
+        idsSeen[id] = idSeenValue;
+    }
+}
+results.sort(dynamicSort("name")); 
+		str+='<div>';
+		 str+='<table><tr><th align="left">Parties : </th><td>';
+		  str+='<table>';
+		 for(var i in results){
+		 
+			 if(i%12== 0)
+			str+='<tr>';
+
+		  str+='<td><input id="parties-'+i+'" checked="true" class="partySelForPanc" type="checkbox" value="'+results[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+results[i].name+'</label></td>';
+		  
+			if((i%12)+1 == 0)
+			str+='</tr>';
+		 }
+		 
+		 str+='<td></td>';
+
+		 str+='<td colspan="3"><input type="radio"  id="selectAll" value="Select All Parties" name="partiesSel"  onclick="selectAllCheckBoxes(this.value)"><label style=" font-weight: bold;color:blue;">Select All</label></td>';
+		 str+='<td  colspan="3"><input type="radio" id="deSelectAll" value="Unselect All Parties"  name="partiesSel"  onclick="deSelectAllCheckBoxes(this.value)"><label style=" font-weight: bold;color:blue;">Unselect All</label></td>';
+		
+
+		 str+='</table>'; 
+		 str+='</td></tr></table>';
+		 str+='</div>';
+   $("#mandalElecResultsParties").html(str);
+  
+}
+
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1, property.length - 1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
+
+function getElectionData()
+
+{
+
+	 if(type == "mandal")
 		 {
-		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn btn-success" value="Submit" onclick="getPanchayatData()">');
+		$("#mandalElecResultsButton").html('<span id="alliance"><input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label></span>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getPanchayatData()">');
 		 $("#mandalElecResultsButton1").html('<input type="radio" name="votes"  class="btn" value="percentage" id="votingPercentageID" checked="true" onclick="getPanchayatData()"/>By Percentage&nbsp;<input type="radio" name="votes"  class="btn" value="validvotes" id="votingValuesID" onclick="getPanchayatData()"/>By Votes');
 		  getPanchayatData();
 		 }
 		 if(type == "panchayat")
 		 {
-		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn btn-success" value="Submit" onclick="getResultsForBooths()">');
+		$("#mandalElecResultsButton").html('<span id="alliance"><input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label></span>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForBooths()">');
 		 $("#mandalElecResultsButton1").html('<input type="radio" name="boothvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForBooths()"/>By Percentage&nbsp;<input type="radio"  name="boothvotes" class="btn" value="validvotes" id="boothvotingValuesID" onclick="getResultsForBooths()"/>By Votes');
 		  getResultsForBooths();
 
@@ -1099,13 +1187,12 @@ function callAjax(jsObj,url)
 		
 		if(type == "constituency")
 		{
-		$("#mandalElecResultsButton").html('<input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label>&nbsp;&nbsp;<input type="button"  class="btn btn-success" value="Submit" onclick="getResultsForConstituency()">');
+		$("#mandalElecResultsButton").html('<span id="alliance"><input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label></span>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForConstituency()">');
 		 $("#mandalElecResultsButton1").html('<input type="radio" name="constituencyvotes" class="btn" value="percentage" id="constituencyvotingPercentageID" checked="true" onclick="getResultsForConstituency()"/>By Percentage&nbsp;<input type="radio"  name="constituencyvotes" class="btn" value="validvotes" id="constituencyvotingValuesID" onclick="getResultsForConstituency()"/>By Votes');
 		  getResultsForConstituency();
 		}
-	  }
-  }
-
+	  
+}
   function getPanchayatData(){
   	emptyDivs();
   var parties = '';
@@ -3962,6 +4049,7 @@ var jsObj=
   }
 function getResultsForConstituency()
 {
+	
 var parties = '';
   var elections = '';
   var census = '';
@@ -4096,7 +4184,7 @@ var jsObj = {
 		}
   }
 
-   var allZPTCMPTCElecInfo = new Array();
+  /* var allZPTCMPTCElecInfo = new Array();
 <c:forEach var="zptcMptcElection" items="${mptcZptcElectionResultsVO}" >
 
 		var zptcMptcElec = {
@@ -4128,14 +4216,14 @@ var jsObj = {
 			zptcMptcElec.parties.push(party);	
 		</c:forEach>
 		allZPTCMPTCElecInfo.push(zptcMptcElec);
-	</c:forEach>
+	</c:forEach>*/
 	
 	//These Global Variables are used for Building chart for Local Body Elections
   var categories1 = [];//This globla variable is for making X-Axis elements
   var partiesInLocalElec=[];
   var partyObj;
   var partyWiseResArray=[];
-function getLocalEleArraysForChart(allZPTCMPTCElecInfo){
+/*function getLocalEleArraysForChart(allZPTCMPTCElecInfo){
 	var partyName;
 	var partyPercArry;
 	for(var i in allZPTCMPTCElecInfo){
@@ -4173,8 +4261,8 @@ function getLocalEleArraysForChart(allZPTCMPTCElecInfo){
 	
 	
 	return partyWiseResArray;
-}
-function showMPTCZPTCResults()
+}*/
+/*function showMPTCZPTCResults()
 {
 	var dataResultlocalele=getLocalEleArraysForChart(allZPTCMPTCElecInfo);
 	var title='${typeName}';
@@ -4262,7 +4350,7 @@ function showMPTCZPTCResults()
             series: result
         });
 	}
-	
+	*/
 	function rebuiltDataTable(invisib){
 		var myResults_slctd=tempObj.result;
 		var jsObj_slctd=tempObj.jsobj;
@@ -4394,9 +4482,12 @@ function showAllTehsilDetailsForAllDelimitations(results)
 
 <script type="text/javascript">
 
-getvotersBasicInfo("voters",id,publicationId,type);
-getCensusInfoForSubLevels();
 
+getvotersBasicInfo("voters",id,publicationId,type);
+if('${type}' == "mandal" || '${type}' == "panchayat" )
+getothersSelectDiv();
+getCensusInfoForSubLevels();
+  getResultsForConstituency();
 getLatestCastsSubcategoryWise();
 getAgewiseVoterDetails();
 if('${type}' == "mandal")
