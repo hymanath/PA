@@ -133,7 +133,7 @@ Quick Links</h2>
 				<!---- View Election Results------->
 							<div class="widget-block" contentindex="4c">
 								<h5> View Election Results</h5>
-								<p>You can view your Assembly or Parliment past Election Results.</p>
+								<p>You can view your Assembly or Parliament past Election Results.</p>
 								<table>
 									<tbody>
 									<tr>
