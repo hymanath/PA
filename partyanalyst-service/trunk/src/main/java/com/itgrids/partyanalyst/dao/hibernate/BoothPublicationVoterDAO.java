@@ -2761,7 +2761,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				" count(BPV.voter.voterId),BPV.voter.gender,UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,UVCV.categoryValue  from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
 				" BoothPublicationVoter BPV ,UserVoterDetails UVD where VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId and  " +
 				" VCV.voter.voterId = BPV.voter.voterId  and UVD.voter.voterId = BPV.voter.voterId and UVCV.userVoterCategory.userVoterCategoryId in (:attributeIds)  " +
-				" and VCV.user.userId = :userId and UVCV.user.userId = :userId and BPV.booth.publicationDate.publicationDateId = :publicationId  and ");
+				" and VCV.user.userId = :userId and UVCV.user.userId = :userId and UVD.user.userId = :userId and BPV.booth.publicationDate.publicationDateId = :publicationId  and ");
 		
 		if(locationType.equalsIgnoreCase("constituency"))
 			queryString.append(" BPV.booth.constituency.constituencyId = :locationId ");

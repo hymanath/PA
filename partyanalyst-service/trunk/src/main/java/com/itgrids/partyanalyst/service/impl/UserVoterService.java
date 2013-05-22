@@ -736,9 +736,9 @@ public class UserVoterService implements IUserVoterService{
 				 
 				 for(Object[] obj:votersList)
 				 {	 
-					 if(map.get(obj[1].toString()) != null){
+					 if(map.get(obj[0].toString()) != null){
 						 
-						  votersDetailsVO1 = map.get(obj[1].toString());		
+						  votersDetailsVO1 = map.get(obj[0].toString());		
 						 votersDetailsVO1.setCasteId(obj[0].toString());
 						 votersDetailsVO1.setCastName(obj[1].toString());
 						 
@@ -764,7 +764,7 @@ public class UserVoterService implements IUserVoterService{
 					 
 					 votersDetailsVO1.setTotalVoters(votersDetailsVO1.getTotalMaleVoters()+votersDetailsVO1.getTotalFemaleVoters());						 
 
-					 map.put(obj[1].toString(), votersDetailsVO1);
+					 map.put(obj[0].toString(), votersDetailsVO1);
 				 }
 				 list1 = new ArrayList<VotersDetailsVO>(map.values());				 
 				 
