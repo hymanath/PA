@@ -1659,7 +1659,12 @@
 			opposite: true
 
 		} */
-		
+		tooltip: {
+                formatter: function() {						
+                     return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +' Votes';
+                }
+            },
 		colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
 		
 		legend: {
@@ -1734,6 +1739,12 @@
 			},
 			opposite: true
 		} */
+		tooltip: {
+                formatter: function() {						
+                     return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +' %';
+                }
+            },
 		
 		colors: ['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43',  '#77a1e5', '#c42525', '#a6c96a'],
 		
@@ -1909,10 +1920,10 @@
 	<div class="hero-unit" style="display:none;" align="center">
 	<div id="mandalElecResultsElections"></div>
 	<div id="selectionDiv" align="left" style="margin-left: 125px;" >
-    <input type="button" id="selectAll"  class="btn" onclick="selectAll()" name="selection" value="Select All"><span></span>
-	<input type="button" id="deSelectAll" class="btn" onclick="deSelectAll()" name="selection" value="Unselect All"><span></span>
+    <input type="button" id="selectAll"  class="btn btn-info" onclick="selectAll()" name="selection" value="Select All"><span></span>
+	<input type="button" id="deSelectAll" class="btn btn-info" onclick="deSelectAll()" name="selection" value="Unselect All"><span></span>
 	</div>
-	<div id="submitbtn" style="margin-left:25px;"><input type="button" class="btn" value="Submit" onclick="validationCheck();" style="margin-top: -27px; margin-left: -193px;"></input><span><img alt="Processing Image" src="./images/icons/search.gif" id="ajaxImg" style="float: right; margin-right: 450px; margin-top: -21px;display:none;"></span></div>
+	<div id="submitbtn" style="margin-left:25px;"><input type="button" class="btn btn-success" value="Submit" onclick="validationCheck();" style="margin-top: -27px; margin-left: -193px;"></input><span><img alt="Processing Image" src="./images/icons/search.gif" id="ajaxImg" style="float: right; margin-right: 450px; margin-top: -21px;display:none;"></span></div>
 	</div>
 	
 	<div id="voterSelDiv"  style="float: left; margin-left: 117px; font-family: arial; font-weight: 900; font-size: 13px;display:none;">
