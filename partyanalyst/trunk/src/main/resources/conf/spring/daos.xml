@@ -1126,5 +1126,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 	
+	<bean id="queryTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.QueryTempDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
 	
 </beans>		
