@@ -682,6 +682,9 @@ $("#panchayats").live("change",function(){
 <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
 </p>
 </div>
+<div id="ajaxImageDiv1" align="center">
+<img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> 
+</div>
 <div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
  <!-- <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
 	<span class="label label-info" style="padding:5px;">Show All <input type="radio" name="show_hide" value="show" checked="checked"></span>
@@ -689,8 +692,10 @@ $("#panchayats").live("change",function(){
   </div>-->
   <div style="margin-left:auto;margin-right:auto;width:350px;margin-bottom:10px;">
 	<span class="label label-info btn btn-info" style="padding:5px;margin-left:85px;" id="show_hide_show">Show All </span>
-	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide">Hide All </span>
-	<span class="btn" id="castesAsPerLocId" style="margin-top:2px"> Show/Hide  Caste Wise Voters As Per Location</span>
+	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide">Hide All </span>	
+  </div>
+  <div style=" margin-bottom: 10px;">
+  <span class="btn btn-info " id="castesAsPerLocId" style="margin-top: 2px; margin-left: 650px;"> Show/Hide  Caste Wise Voters As Per Location</span>
   </div>
 </div>
 <div style="border-bottom:1px solid;border-left:1px solid;border-right:1px solid;display:none;" id="castGrid2Outer">
@@ -1799,6 +1804,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		$('#sublevelHeading').html('<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+'/Muncipality Wise Party Performance Analysis in Different Elections of '+jsObj.typename+' Constituency</h4>');	
 			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Voters Information in "+jsObj.typename+" Constituency";
 			heading = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Analysis of "+jsObj.typename+" ";
+			casteChartHeading = '<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+'/Muncipality Wise Caste Analysis in '+jsObj.typename+' Constituency</h4>';
 		$("#votersBasicInfoTitleDiv").append('<h3>'+title+'</h3>');
 		$("#headingDiv1").append('<h3>'+heading+'</h3>');
 		}
@@ -1806,6 +1812,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		$('#sublevelHeading').html('<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Party Performance Analysis in Different Elections of '+jsObj.typename+'</h4>');	
 		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" Wise Voters Information in "+jsObj.typename+" ";
 		 heading = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" Wise Analysis of "+jsObj.typename+" ";
+		 casteChartHeading = '<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Caste Analysis in '+jsObj.typename+'</h4>';
 		 $("#votersBasicInfoTitleDiv").append('<h3>'+title+'</h3>');
 		 $("#headingDiv1").append('<h3>'+heading+'</h3>');
 		}
@@ -2010,6 +2017,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			$("#votersBasicInfoDiv").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
 		
 	}
+getLatestCastsSubcategoryWise();
 }
 
 function openCompleteInfoForm(id,name,type){
@@ -2418,6 +2426,7 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 	var myChart1 = new Array();
 	var castMain = null;
 	
+	$('#ajaxImageDiv1').hide();
 	if(percentage==null)
 		percentage=1;
 	
@@ -2513,6 +2522,7 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 		newCast.push(myObj['cast']);
 	}
 
+ 	newCast.sort();
  	var dataGrouping1 = {
     groupPixelWidth: 40,
     units: [[
@@ -2630,7 +2640,8 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
 	      },
 	      series: myChart1,
 		  
-	   }); */var titleString= $("#sublevelHeading").text();
+	   }); */
+	   //var titleString= $("#sublevelHeading").text();
 	
 	   //alert(myChart[0]['name']+"---"+myChart[0]['data'].length);
 	   var chart1;
@@ -2649,7 +2660,7 @@ function buildHamletWiseCastResultsGraph(selectedCast,percentage)
               
             },
             title: {
-                text: titleString,
+                text: casteChartHeading,
                 x: -20 //center
             },
             subtitle: {
@@ -2869,7 +2880,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 		$.each(data, function( key, value ) {
 			dataObj={};
 			dataObj['name']=value.caste;
-			dataObj['data']=value.locationWiseCastesCount
+			dataObj['data']=value.locationWiseCastesCount;
 			//console.log(value.caste+""+value.locationWisePercentages);
 			dataForChart.push(dataObj);
 		});	
@@ -3168,7 +3179,7 @@ $('#castGrid2Outer').toggle();
                 type: 'line',
             },
             title: {
-                text: 'Caste Wise Voters As Per Location',
+                text: casteChartHeading,
                 x: -20 //center
             },
             
@@ -4244,6 +4255,7 @@ var jsObj = {
 	for(var i in allZPTCMPTCElecInfo){
 		var prtyParticipated=false;
 	   partyName=partiesInLocalElec[k];
+	   partyObj['color']=getColorCodeForParty(partyName);
 	   partyObj['name']=partyName;
 			for(var j in allZPTCMPTCElecInfo[i].parties){
 				if(allZPTCMPTCElecInfo[i].parties[j].partyName == partyName){
@@ -4481,6 +4493,7 @@ function showAllTehsilDetailsForAllDelimitations(results)
 
 
 <script type="text/javascript">
+ var casteChartHeading = '';
 
 
 getvotersBasicInfo("voters",id,publicationId,type);
