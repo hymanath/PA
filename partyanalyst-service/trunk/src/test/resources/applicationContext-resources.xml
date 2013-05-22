@@ -346,11 +346,16 @@
 				<value>com.itgrids.partyanalyst.model.VoterStatus</value>
 				<value>com.itgrids.partyanalyst.model.VoterModificationInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserAccessIpAddress</value>
+				<value>com.itgrids.partyanalyst.model.QueryTemp</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="queryTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.QueryTempDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="voterCastInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterCastInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
