@@ -220,7 +220,7 @@
 	 Publication Date<font class="requiredFont">*</font> <select id="publicationList" class="selectWidth" style="width:172px;height:25px;" name="publicationList" >
 		</select>
 	
-	<input type="button" value="panchayat Mapping Validation" class="btn btn-info" id="panchayatMappingId"/><img style="display:none;" id="ajaxImg" src="./images/icons/search.gif" alt="Processing Image"/>
+	<input type="button" value="Panchayat Mapping Validation" class="btn btn-info" id="panchayatMappingId"/><img style="display:none;" id="ajaxImg" src="./images/icons/search.gif" alt="Processing Image"/>
 	 
 	</div>
    	<div id="panchayatMappingInnerDiv"></div>
