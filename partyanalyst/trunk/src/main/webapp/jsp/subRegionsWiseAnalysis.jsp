@@ -2037,7 +2037,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			$("#votersBasicInfoDiv").html("<div id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</div>");
 		
 	}
-getLatestCastsSubcategoryWise();
+//getLatestCastsSubcategoryWise();
 }
 
 function openCompleteInfoForm(id,name,type){
