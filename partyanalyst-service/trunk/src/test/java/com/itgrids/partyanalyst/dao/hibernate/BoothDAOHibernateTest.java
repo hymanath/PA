@@ -540,8 +540,17 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testgetBoothPartNoByBoothId()
+	/*public void testgetBoothPartNoByBoothId()
 	{
 		System.out.println(boothDAO.getBoothPartNoByBoothId(1l));
+	}*/
+	
+	public void testgetPanchayatsByPanchayatIdsList()
+	{
+		List<Long> panchayatIdsList = new ArrayList<Long>(0);
+		panchayatIdsList.add(1l);
+		List<Long> list = boothDAO.getPanchayatsByPanchayatIdsList(232l, 8l, panchayatIdsList);
+		System.out.println(list.size());
 	}
+	
 }
