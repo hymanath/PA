@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
@@ -22,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
+import com.itgrids.partyanalyst.dto.DataMappingVerificationVO;
 import com.itgrids.partyanalyst.dto.DataVerificationInfoVO;
 import com.itgrids.partyanalyst.dto.DataVerificationVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsVerificationInfoVO;
@@ -29,6 +31,7 @@ import com.itgrids.partyanalyst.dto.ElectionResultsVerificationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.DataValidationVO;
 import com.itgrids.partyanalyst.service.IDataValidationService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -52,6 +55,8 @@ public class DataValidationService implements IDataValidationService{
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IRegionServiceData regionServiceDataImp;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
@@ -186,6 +191,22 @@ public class DataValidationService implements IDataValidationService{
 
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
 	}
 
 	public static Comparator<DataValidationVO> sortData = new Comparator<DataValidationVO>()
@@ -1712,4 +1733,162 @@ public class DataValidationService implements IDataValidationService{
 		}
     }
     
+    
+    //validate Mapping Data in booth
+    
+    public List<DataMappingVerificationVO> validatePanchayatMappingDataInBooth(Long constituencyId,Long publicationId)
+    {
+    	List<DataMappingVerificationVO> mandalList = new ArrayList<DataMappingVerificationVO>(0);
+    	try{
+    		List<Long> mandalIdsList = new ArrayList<Long>(0);
+    		
+    		String areaType = constituencyDAO.get(constituencyId).getAreaType();
+         if(areaType.equalsIgnoreCase(IConstants.RURAL) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
+    	 {	
+    		List<SelectOptionVO> list = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+    		if(list != null && list.size() > 0)
+    		{
+    		  for(SelectOptionVO optionVO : list)
+    		   if(optionVO.getId().toString().substring(0,1).equalsIgnoreCase("2"))
+    		   {
+    			 DataMappingVerificationVO verificationVO = new DataMappingVerificationVO();
+    			 verificationVO.setId(new Long(optionVO.getId().toString().substring(1)));
+    			 verificationVO.setName(tehsilDAO.get(new Long(optionVO.getId().toString().substring(1))).getTehsilName());
+    			 verificationVO.setAreaType(areaType);
+    			 mandalList.add(verificationVO);
+    			 mandalIdsList.add(new Long(optionVO.getId().toString().substring(1)));
+    		   }
+    		}
+    		
+    		List<Object[]> list2 = delimitationConstituencyMandalDAO.getIspartialForMandalByMandalIdsList(mandalIdsList,IConstants.DELIMITATION_YEAR);
+    		if(list2 != null && list2.size() > 0)
+    		{
+    		  DataMappingVerificationVO verificationVO = null;
+    		  for(Object[] params : list2)
+    		  {
+    			verificationVO = checkDataMappingVerificationVOExistForMandal((Long)params[0], mandalList);
+    			if(params[1].toString().equalsIgnoreCase("1"))
+    			  verificationVO.setStatus("completed");
+    			else
+    			  verificationVO.setStatus("partial"); 
+    		  }
+    		}
+    		
+    		setTotalPanchayatsForMandal(mandalIdsList,mandalList);
+    		setMappedAndUnMappedPanchayatsForMandal(mandalIdsList,mandalList,constituencyId,publicationId);
+    	 }
+         else
+         {
+        	 DataMappingVerificationVO mappingVerificationVO = new DataMappingVerificationVO();
+        	 mappingVerificationVO.setAreaType(areaType);
+        	 mandalList.add(mappingVerificationVO);
+         }
+    	  return mandalList;
+    	}catch (Exception e) {
+    	  e.printStackTrace();
+    	  LOG.error("Exception Occured in validatePanchayatMappingDataInBooth() method, Exception - "+e);
+    	  return mandalList;
+    	}
+    }
+    
+    public DataMappingVerificationVO checkDataMappingVerificationVOExistForMandal(Long mandalId,List<DataMappingVerificationVO> list)
+    {
+    	try{
+    	 if(list == null || list.size() == 0)
+    		return null;
+    	 
+    	 for(DataMappingVerificationVO optionVO : list)
+    	  if(optionVO.getId().equals(mandalId))
+    		return optionVO;
+    	 
+    	 return null;
+    	}catch (Exception e) {
+    		LOG.error("Exception Occured in checkSelectOptionVOExistForMandal() method, Exception - "+e);
+    	  return null;
+		}
+    }
+    
+    
+    public void setTotalPanchayatsForMandal(List<Long> mandalIdsList,List<DataMappingVerificationVO> mandalList)
+    {
+    	try{
+    	 List<Object[]> list = panchayatHamletDAO.getPanchayatsListByMandalIdsList(mandalIdsList);
+    	 if(list != null && list.size() > 0)
+    	 {
+    	   DataMappingVerificationVO verificationVO = null;
+    	   for(Object[] params:list)
+    	   {
+    		  verificationVO = checkDataMappingVerificationVOExistForMandal((Long)params[2], mandalList);
+    		  verificationVO.getTotalList().add(new SelectOptionVO((Long)params[0],params[1] != null ?params[1].toString():" "));
+    		  verificationVO.getTotalIdsList().add((Long)params[0]);
+    		  verificationVO.setTotalCount(new Long(verificationVO.getTotalList().size()));
+    	   }
+    	   
+    	 }
+    		
+    	}catch (Exception e) {
+    	  e.printStackTrace();
+    	  LOG.error("Exception Occured in setTotalPanchayatsForMandal() method, Exception - "+e);
+		}
+    }
+    
+    public void setMappedAndUnMappedPanchayatsForMandal(List<Long> mandalIdsList,List<DataMappingVerificationVO> mandalList,Long constituencyId,Long publicationId)
+    {
+    	try{
+    	  if(mandalList != null && mandalList.size() > 0)
+    	  {
+    		for(DataMappingVerificationVO verificationVO : mandalList)
+    		{
+    		   List<Long> mappedPanchayatIds = new ArrayList<Long>(0);
+      		   List<Long> unMappedPanchayatIds = new ArrayList<Long>(0);
+      		  
+    		   List<Long> totPanchayatIdsList =  verificationVO.getTotalIdsList();
+    		   if(totPanchayatIdsList != null && totPanchayatIdsList.size() > 0)
+    		   {
+    			 List<Long> list = boothDAO.getPanchayatsByPanchayatIdsList(constituencyId, publicationId, totPanchayatIdsList);
+    			 if(list != null && list.size() > 0)
+    			 {
+    			   for(Long id : totPanchayatIdsList)
+    				 if(list.contains(id))
+    				   mappedPanchayatIds.add(id);
+    				 else
+    				  unMappedPanchayatIds.add(id);
+    			 }else
+    			   unMappedPanchayatIds.addAll(totPanchayatIdsList); 
+    		   }
+    		  if(mappedPanchayatIds != null && mappedPanchayatIds.size() > 0)
+    			verificationVO.setMappedList(getPanchayatsByPanchayatIdsList(mappedPanchayatIds));
+    		  if(unMappedPanchayatIds != null && unMappedPanchayatIds.size() > 0)
+    			  verificationVO.setUnMappedList(getPanchayatsByPanchayatIdsList(unMappedPanchayatIds));
+    		 
+    		  verificationVO.setMappedCount(new Long(mappedPanchayatIds.size()));
+    		  verificationVO.setUnMappedCount(new Long(unMappedPanchayatIds.size()));
+    		   
+    		}
+    	  }
+    		
+    	}catch (Exception e) {
+      	  e.printStackTrace();
+      	  LOG.error("Exception Occured in setMappedAndUnMappedPanchayatsForMandal() method, Exception - "+e);
+  		}
+      }
+    
+    public List<SelectOptionVO> getPanchayatsByPanchayatIdsList(List<Long> panchayatIdsList)
+    {
+    	List<SelectOptionVO> optionVOsList = null; 
+    	try{
+    		List<Object[]> list = panchayatDAO.getPanchayatsByPanchayatIdsList(panchayatIdsList);
+    		if(list != null && list.size() > 0)
+    		{
+    		  optionVOsList = new ArrayList<SelectOptionVO>(0);
+    		  for(Object[] params : list)
+    			optionVOsList.add(new SelectOptionVO((Long)params[0],params[1] != null ?params[1].toString():""));
+    		}
+    		return optionVOsList;
+    	}catch (Exception e) {
+    	  e.printStackTrace();
+    	  LOG.error("Exception Occured in getPanchayatsByPanchayatIdsList() method, Exception - "+e);
+    	   return null;
+		}
+    }
 }
