@@ -176,5 +176,12 @@ IDelimitationConstituencyMandalDAO {
 		
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getIspartialForMandalByMandalIdsList(List<Long> mandalIdsList,Long year)
+	{
+		Query query = getSession().createQuery(" select model.tehsil.tehsilId, model.isPartial from DelimitationConstituencyMandal model where model.tehsil.tehsilId in (:mandalIdsList) and model.delimitationConstituency.year =:year ");
+		query.setParameterList("mandalIdsList", mandalIdsList);
+		query.setParameter("year", year);
+		return query.list();
+	}
 }

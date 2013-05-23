@@ -45,6 +45,6 @@ public interface IDelimitationConstituencyMandalDAO extends GenericDao<Delimitat
 	public List<Long> getMadalDetailsByDelimitationConstituencyIds(List<Long> delimitationConstituencyIds);
 	public List<Object[]> getMadalDtlsByDelimitationConstituencyIds(List<Long> delimitationConstituencyIds);
 
-
+	public List<Object[]> getIspartialForMandalByMandalIdsList(List<Long> mandalIdsList,Long year);
 
 }
