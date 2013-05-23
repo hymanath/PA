@@ -1527,6 +1527,8 @@
 	    <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 	    <property name="voterModificationAgeInfoDAO" ref="voterModificationAgeInfoDAO" />
 	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	    <property name="regionServiceDataImp" ref="regionServiceDataImp" />
+	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
     </bean>
     
     

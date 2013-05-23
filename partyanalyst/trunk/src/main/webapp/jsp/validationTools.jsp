@@ -78,7 +78,7 @@
 .widget h4 {font-family: arial;color:#000;}
 .f2 {margin-right: 15px;}
 #voterInfoHeading{margin-bottom: 15px;}
-#votersBasicInfoInnerDiv{padding-bottom: 27px;}
+#votersBasicInfoInnerDiv,#panchayatMappingDiv{padding-bottom: 27px;}
 #mandalTab{
     border: 1px solid #D3D3D3;
     border-collapse: collapse;
@@ -89,7 +89,7 @@
 }
 .voterInfoDiv{margin-top: 10px;}
 
-#votersBasicInfoInnerDiv table th ,#votersInfoDiv table th,#voterFamilyInfoDiv table th,#voterAgeInfoDiv table th,#voterModificationDiv table th,#constituencyVotesTab th,#mandalTab th{
+#votersBasicInfoInnerDiv table th ,#votersInfoDiv table th,#voterFamilyInfoDiv table th,#voterAgeInfoDiv table th,#voterModificationDiv table th,#constituencyVotesTab th,#mandalTab th,#panchayatMappingInnerDiv table th{
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -97,7 +97,7 @@
     padding: 10px;
     text-align: left;
 }
-#votersBasicInfoInnerDiv table td ,#votersInfoDiv table td,#voterFamilyInfoDiv table td,#voterAgeInfoDiv table td,#voterModificationDiv table td,#mandalTab td,#constituencyVotesTab td{
+#votersBasicInfoInnerDiv table td ,#votersInfoDiv table td,#voterFamilyInfoDiv table td,#voterAgeInfoDiv table td,#voterModificationDiv table td,#mandalTab td,#constituencyVotesTab td,#panchayatMappingInnerDiv table td{
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
@@ -105,7 +105,7 @@
 
 .headingSpan{font-size: 14px;margin-left: 23px;}
 #votersBasicInfo{padding-bottom: 10px;}
-#errorMsgDiv {
+#errorMsgDiv,#panchayatErrorMsgDiv {
     font-size: 13px;
     margin-top: 10px;
     text-align: center;
@@ -128,6 +128,9 @@
 #conTotalVotesDiv > span,#conValidVotesDiv > span {
     line-height: 1.8em;
 }
+#panchayatSelectDiv{margin-top: 15px;}
+#panchayatMappingInnerDiv{margin-top: 25px;}
+#panchayatErrorMsgDiv{color:red;}
 </style>
 </head>
 
@@ -206,6 +209,24 @@
 	</div>
 
  <!-- election results -->
+
+<!-- Panchayat Mapping -->
+ <div id="panchayatMappingDiv" class="widget blue">
+   <h4>Panchayat Mapping Validation</h4>
+    <div id="panchayatErrorMsgDiv"></div>
+   <div id="panchayatSelectDiv" class="selectDiv">
+     Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList1" list="constituencyList" listKey="id" listValue="name" onchange="buildPublicationDates();"/> &nbsp;&nbsp;
+
+	 Publication Date<font class="requiredFont">*</font> <select id="publicationList" class="selectWidth" style="width:172px;height:25px;" name="publicationList" >
+		</select>
+	
+	<input type="button" value="panchayat Mapping Validation" class="btn btn-info" id="panchayatMappingId"/><img style="display:none;" id="ajaxImg" src="./images/icons/search.gif" alt="Processing Image"/>
+	 
+	</div>
+   	<div id="panchayatMappingInnerDiv"></div>
+ </div>
+
+ <!-- Panchayat Mapping End -->
 </div>
 
 <script type="text/javascript">
@@ -244,6 +265,8 @@ function callAjax(jsObj,url)
 								{
 								
 									buildPublicationDateList(myResults);
+									buildPublicationDateListForPanchayat(myResults);
+
 								}
 
 								else if(jsObj.task == "checkVotersBasicInfo")
@@ -267,6 +290,9 @@ function callAjax(jsObj,url)
 								  showConstituencyWiseEleResults(myResults,jsObj);
 								  showBoothWiseEleResults(myResults,jsObj);
 								}
+								else if(jsObj.task == "validatePanchayatHamletData")
+								 showMappingDataForPanchayat(myResults,jsObj);
+								
 							
 							}catch (e) {
 							    //alert(Exception);
@@ -330,6 +356,58 @@ function buildPublicationDateList(results)
 	$('#publicationDateList').trigger("change");
 
 }
+
+function buildPublicationDateListForPanchayat(results)
+	{
+	
+	var selectedElmt=document.getElementById("publicationList");
+	//var selectElmt =jsObj.selectElmt;
+	removeSelectElements(selectedElmt);
+
+	var  publicationIdsArray = new Array();
+
+	for(var val in results)
+	{	
+	publicationIdsArray.push(results[val].id);
+
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}
+		
+
+	}
+
+	//var largest = Math.max.apply(Math, publicationIdsArray);
+
+	//$('#publicationDateList').val(largest);
+	//$('#publicationDateList').trigger("change");
+
+}
+
+function buildPublicationDates()
+{
+  var constituencyID = $("#constituencyList1").val();
+	
+	var jsObj=
+	{
+		selected:constituencyID,
+		task:"getPublicationDate"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "voterAnalysisAjaxAction.action?"+rparam;	
+
+	callAjax(jsObj,url);
+}
+
 function removeSelectElements(selectedElmt)
 	{
 		var len = selectedElmt.length;
@@ -1624,6 +1702,8 @@ function showVoterModificationAgeData(myResults,jsObj)
 		
 	$("#voterModificationAgeDiv").html(str);
 }
+
+
 
 </script>
 

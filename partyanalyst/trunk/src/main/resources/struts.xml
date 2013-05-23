@@ -5163,5 +5163,11 @@
 			<result name="success">/jsp/newCadrePage.jsp</result>
 			<result name="error">jsp/globalError.jsp</result>		
 		</action>
+		
+		<action name="validatePanchayatHamletMappingDataAction" class="validationToolsAction" method="AjaxHandler">
+		  <result type="json" name="success">
+		   <param name="root">mappingVerificationVOList</param>
+		 </result>
+		</action>
 		</package>
 </struts>      

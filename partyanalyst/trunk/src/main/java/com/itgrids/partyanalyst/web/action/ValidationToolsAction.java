@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.DataMappingVerificationVO;
 import com.itgrids.partyanalyst.dto.DataVerificationVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsVerificationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -36,6 +37,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 	private EntitlementsHelper entitlementsHelper;
 	private  DataVerificationVO dataVerificationVO;
 	private ElectionResultsVerificationVO electionResultsVerificationVO;
+	private List<DataMappingVerificationVO> mappingVerificationVOList;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -133,6 +135,13 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 			ElectionResultsVerificationVO electionResultsVerificationVO) {
 		this.electionResultsVerificationVO = electionResultsVerificationVO;
 	}
+	public List<DataMappingVerificationVO> getMappingVerificationVOList() {
+		return mappingVerificationVOList;
+	}
+	public void setMappingVerificationVOList(
+			List<DataMappingVerificationVO> mappingVerificationVOList) {
+		this.mappingVerificationVOList = mappingVerificationVOList;
+	}
 	public String execute()
 	{
 		HttpSession session = request.getSession();
@@ -188,7 +197,9 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 			dataVerificationVO = dataValidationService.validateVotersBasicInfo(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),userId);
 		else if(jObj.getString("task").equalsIgnoreCase("validateEleResults"))
 			electionResultsVerificationVO = dataValidationService.validateConstituencyEleResults(jObj.getLong("electionId"));
-			
+		else if(jObj.getString("task").equalsIgnoreCase("validatePanchayatHamletData"))
+			mappingVerificationVOList = dataValidationService.validatePanchayatMappingDataInBooth(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"));
+		
 		return SUCCESS;
 		
 	}
