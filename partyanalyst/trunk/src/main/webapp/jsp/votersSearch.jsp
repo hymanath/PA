@@ -211,6 +211,7 @@ body {
 			height: 11px;
 		
 		}
+		#requiredFieldsToCheck input {margin-right: 2px;}
 </style>
 
 <script type="text/javascript">
@@ -772,6 +773,11 @@ $("#pageUpBtn").live("click",function(){
 			  if(oRecord.getData("mobileNo") != null)
 			  val = oRecord.getData("mobileNo");
 			}
+			else if(ids[0] == "voterGroup")
+			{
+			if(oRecord.getData("voterGroup") !=null)
+			  val = oRecord.getData("voterGroup");
+			}
 		    else{
 			  for(var i in categ){
 			    if(categ[i].categoryValuesId == ids[0])
@@ -830,7 +836,7 @@ $("#pageUpBtn").live("click",function(){
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
 		resultsList: "votersList",
-		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName","fromSno","isInfluencePerson","isCadrePerson","isPoliticion","wardName","mobileNo"],
+		fields: ["name","voterIdCardNo","boothName", "gender", "age", "houseNo","gaurdian","relationship","voterId","boothId","categoriesList","cast","party","location","hamletName","localAreaName","fromSno","isInfluencePerson","isCadrePerson","isPoliticion","wardName","mobileNo","voterGroup"],
 		metaFields: {
 		totalRecords: "totalHousesCount" // Access to value in the server response
 		}
@@ -1005,23 +1011,25 @@ function buildVotersInFamilySearch(results,hno){
 function buildCategoriesListInit(result){
 	  var str ='';
 	    str+='<table style="margin-left:5px;margin-bottom:5px;color:#000000;"><tr>';
-		str+='   <td style="padding-left:20px;"><input type="checkbox" id="voterIdColum" />  Voter Id</td>';
-		str+='   <td style="padding-left:20px;"><input type="checkbox" id="genderColum" />  Gender</td>';
-		str+='   <td style="padding-left:20px;"><input type="checkbox" id="ageColum" />  Age</td>';
-		str+='   <td style="padding-left:20px;"><input type="checkbox" id="gaurdianColum" />  GuardName</td>';
-		str+='   <td style="padding-left:20px;"><input type="checkbox" id="relationShipCol" />  Relationship</td>';
+		str+='   <td style=""><input type="checkbox" id="voterIdColum" />  Voter Id</td>';
+		str+='   <td style=""><input type="checkbox" id="genderColum" />  Gender</td>';
+		str+='   <td style=""><input type="checkbox" id="ageColum" />  Age</td>';
+		str+='   <td style=""><input type="checkbox" id="gaurdianColum" />  GuardName</td>';
+		str+='   <td style=""><input type="checkbox" id="relationShipCol" />  Relationship</td>';
 	    str+='</tr><tr>';
 		/*str+='   <td style="padding-left:20px;"><input type="checkbox" id="serialnumbrCol" />  Serial Number</td>';*/
-	    str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="cast,Caste"/>  Caste</td>';
-		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
-		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" id="localityCheckBox" onClick="showAlert()" value="locality,Locality"/>  Locality</td>';
-		str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="mobileNo,Mobile No"/> Mobile</td>';
+	    str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="cast,Caste"/>  Caste</td>';
+		str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
+		str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" id="localityCheckBox" onClick="showAlert()" value="locality,Locality"/>  Locality</td>';
+		str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="mobileNo,Mobile No"/> Mobile</td>';
+		
+		str +='<td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="voterGroup,Voter Group"/> Voter Group</td>';
 		var x = 4;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
 		   if(x%5 == 0)
 		    str+='<tr>';
-		   str+='   <td style="padding-left:20px;"><input type="checkbox" class="attributeTypeClassIni" value="'+result.category[i].id+','+result.category[i].name+'"/>  '+result.category[i].name+'</td>';
+		   str+='   <td style=""><input type="checkbox" class="attributeTypeClassIni" value="'+result.category[i].id+','+result.category[i].name+'"/>  '+result.category[i].name+'</td>';
 	        x = x+1;
 			if(x%5 == 0)
 		    str+='</tr>';
