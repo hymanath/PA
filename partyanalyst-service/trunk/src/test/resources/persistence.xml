@@ -42,6 +42,10 @@
 		<class>com.itgrids.partyanalyst.model.ContentNotes</class>
 		<class>com.itgrids.partyanalyst.model.NewsFlag</class>
 		<class>com.itgrids.partyanalyst.model.NewsProblem</class>
+		
+		<class>com.itgrids.partyanalyst.model.AreaType</class>
+		<class>com.itgrids.partyanalyst.model.CustomVoterGroup</class>
+		<class>com.itgrids.partyanalyst.model.CustomVoter</class>
 	
 		
 		 <properties> 
