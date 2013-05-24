@@ -790,7 +790,9 @@ public String saveLocality()
 			    		searchInfo.setLocalityPresent(true);
 			    	}else if(id.equalsIgnoreCase("mobileNo")){
 			    		searchInfo.setMobileNoPresent(true);
-			    	}
+			    	}else if(id.equalsIgnoreCase("voterGroup"))
+			    		searchInfo.setVoterGroupPresent(true);
+			    		
 			    	else{
 			    		categories.add(new Long(id));
 			    	}

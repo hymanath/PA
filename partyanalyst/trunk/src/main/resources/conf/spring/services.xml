@@ -1442,6 +1442,7 @@
 		<property name="voterReportService" ref="voterReportService"/>
 		<property name="voterStatusDAO" ref="voterStatusDAO"/>
 		<property name="districtDAO" ref="districtDAO" />
+		<property name="customVoterDAO" ref="customVoterDAO" />
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">
