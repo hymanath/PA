@@ -45,7 +45,8 @@ public class Voter extends BaseModel implements Serializable {
 	private String insertionDate;
 	private Date dateOfBirth;
 	private String mobileNo;
-	
+	private Set<CustomVoter> customVoters = new HashSet<CustomVoter>(0);
+
 	public Voter(){
 		
 	}
@@ -168,6 +169,16 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CustomVoter> getCustomVoters() {
+		return customVoters;
+	}
+
+	public void setCustomVoters(Set<CustomVoter> customVoters) {
+		this.customVoters = customVoters;
 	}
 	
 }

@@ -70,10 +70,13 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<LocalGroupRegion> localGroupWardRegion = new HashSet<LocalGroupRegion>(0);
 	private Set<LocalGroupRegion> localGroupParliamentConstRegion = new HashSet<LocalGroupRegion>(0);
 	private LocalElectionBodyWard localElectionBodyWard;
+	
 	private Set<UserConstituencyScope> userConstituencyScope = new HashSet<UserConstituencyScope>(0);
 	private Set<MessageToParty> messageToParty = new HashSet<MessageToParty>(0);
 	private Set<ConstituencyUrbanPercentage> constituencyUrbanPercentage = new HashSet<ConstituencyUrbanPercentage>(0);
 	private Set<User> users = new HashSet<User>(0);
+	private Set<CustomVoterGroup> customVoterGroups = new HashSet<CustomVoterGroup>(0);
+
 	
 	// Constructors
 
@@ -407,5 +410,18 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CustomVoterGroup> getCustomVoterGroups() {
+		return customVoterGroups;
+	}
+
+	public void setCustomVoterGroups(Set<CustomVoterGroup> customVoterGroups) {
+		this.customVoterGroups = customVoterGroups;
+	}
+
+	
+	
 
 }
