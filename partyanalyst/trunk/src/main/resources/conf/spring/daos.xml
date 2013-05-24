@@ -1130,4 +1130,15 @@
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 	
+	<bean id="areaTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AreaTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	<bean id="customVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomVoterDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="customVoterGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomVoterGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
 </beans>		
