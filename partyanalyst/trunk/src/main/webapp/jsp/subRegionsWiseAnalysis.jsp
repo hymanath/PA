@@ -3430,9 +3430,10 @@ function buildAgewiseDetails(results , obj){
 	}
 
 	//$('#voterAgewiseDetailsNote').html('<div ><h3>'+noteString+'</h3></div>');
-$('#voterAgewiseDetailsNote').html('<div><h4 id="sublevelHeading">'+noteString+'</h4></div>');
+//$('#voterAgewiseDetailsNote').html('<div><h3 id="sublevelHeading">'+noteString+'</h3></div>');
 
 	var str='';
+	str+='<h3 id="sublevelHeading">'+noteString+'</h3>';
 	str+='<table  class="ageTable table table-bordered table-hover" id="mandalWiseVoterAgeTable" >';
 	str+='<thead class="info">';
 	str+='<tr>';
