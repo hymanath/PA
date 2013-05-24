@@ -326,6 +326,10 @@
 	            <value>com.itgrids.partyanalyst.model.VoterModificationInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserAccessIpAddress</value>
 				<value>com.itgrids.partyanalyst.model.QueryTemp</value>
+				
+				<value>com.itgrids.partyanalyst.model.AreaType</value>
+				<value>com.itgrids.partyanalyst.model.CustomVoterGroup</value>
+				<value>com.itgrids.partyanalyst.model.CustomVoter</value>
 			</list>
 			
 		</property>
