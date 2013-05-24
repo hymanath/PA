@@ -426,6 +426,7 @@ function showMappingDataForPanchayat(result,jsObj)
 		return;
 	 }
 	 
+	 $('#panchayatHideAndShow').css("display","inline-block");
 	 str +='<table id="" class="table table-bordered table-striped table-hover">';
 	 str +='<tr>';
 	 str +='<th>Mandal</th>';

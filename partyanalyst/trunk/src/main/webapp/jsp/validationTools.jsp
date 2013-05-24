@@ -131,6 +131,7 @@
 #panchayatSelectDiv{margin-top: 15px;}
 #panchayatMappingInnerDiv{margin-top: 25px;}
 #panchayatErrorMsgDiv{color:red;}
+#panchayatHideAndShow{margin-bottom: -13px;margin-left: 25px;}
 </style>
 </head>
 
@@ -221,7 +222,9 @@
 		</select>
 	
 	<input type="button" value="Panchayat Mapping Validation" class="btn btn-info" id="panchayatMappingId"/><img style="display:none;" id="ajaxImg" src="./images/icons/search.gif" alt="Processing Image"/>
-	 
+	
+	<span id="panchayatHideAndShow" style="display:none;"><a href="javascript:{}" class="btn pull-right" id="panchayatHideMenu">Hide<i class="icon-chevron-up"></i></a></span>
+
 	</div>
    	<div id="panchayatMappingInnerDiv"></div>
  </div>
@@ -1753,6 +1756,18 @@ $(document).ready(function(){
 	$("#showMenu").live("click",function(){
 		$("#votersBasicInnerDiv").css("display","block");
 		$("#hideAndShow").html('<a id="hideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
+	});
+
+	$("#panchayatHideMenu").live("click",function(){
+	  $("#panchayatMappingInnerDiv").css("display","none");
+	  
+	  $("#panchayatHideAndShow").html('<a id="panchayatShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+		
+	});
+
+	$("#panchayatShowMenu").live("click",function(){
+		$("#panchayatMappingInnerDiv").css("display","block");
+		$("#panchayatHideAndShow").html('<a id="panchayatHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
 
 	
