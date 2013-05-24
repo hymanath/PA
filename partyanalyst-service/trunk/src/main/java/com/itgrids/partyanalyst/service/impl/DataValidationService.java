@@ -1768,7 +1768,7 @@ public class DataValidationService implements IDataValidationService{
     		  {
     			verificationVO = checkDataMappingVerificationVOExistForMandal((Long)params[0], mandalList);
     			if(params[1].toString().equalsIgnoreCase("1"))
-    			  verificationVO.setStatus("completed");
+    			  verificationVO.setStatus("complete");
     			else
     			  verificationVO.setStatus("partial"); 
     		  }
