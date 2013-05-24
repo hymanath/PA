@@ -80,6 +80,8 @@ public class VoterHouseInfoVO {
 	private String selType = "";
 	private Long selTypeId;
 	private boolean mobileNoPresent;
+	private boolean voterGroupPresent;
+	private String voterGroup;
 	
 	private List<String> influenceNames;
 	private List<String>  cadreNames;
@@ -881,6 +883,20 @@ public class VoterHouseInfoVO {
 		this.mobileNoPresent = mobileNoPresent;
 	}
 
+	public boolean isVoterGroupPresent() {
+		return voterGroupPresent;
+	}
 
+	public void setVoterGroupPresent(boolean voterGroupPresent) {
+		this.voterGroupPresent = voterGroupPresent;
+	}
+
+	public String getVoterGroup() {
+		return voterGroup;
+	}
+
+	public void setVoterGroup(String voterGroup) {
+		this.voterGroup = voterGroup;
+	}
 	
 }

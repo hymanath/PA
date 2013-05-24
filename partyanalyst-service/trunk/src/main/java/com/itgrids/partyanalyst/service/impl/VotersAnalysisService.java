@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.ICustomVoterDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -205,6 +206,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterReportService voterReportService;
     private IVoterStatusDAO voterStatusDAO;
     private IDistrictDAO districtDAO;
+    private ICustomVoterDAO customVoterDAO;
     
     public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
@@ -992,6 +994,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		   return votersInfoForMandalVO;
 	}*/
 	
+	public ICustomVoterDAO getCustomVoterDAO() {
+		return customVoterDAO;
+	}
+
+	public void setCustomVoterDAO(ICustomVoterDAO customVoterDAO) {
+		this.customVoterDAO = customVoterDAO;
+	}
+
 	public ICadreDAO getCadreDAO() {
 		return cadreDAO;
 	}
@@ -6481,7 +6491,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		     if(voterIds != null && voterIds.size() > 0){
 		    	 getCadreInfluencingPeopleCandidateInfo(voterIds,searchInfo.getUserId(), votersMap);
 		     }
-			 if((searchInfo.isPartyPresent() || searchInfo.isCastPresent() ||searchInfo.isLocalityPresent() || (categories != null && categories.size() > 0)) && voterIds.size() >0){
+			 if((searchInfo.isPartyPresent() || searchInfo.isCastPresent() ||searchInfo.isLocalityPresent() || searchInfo.isVoterGroupPresent() || (categories != null && categories.size() > 0)) && voterIds.size() >0){
 				 if(searchInfo.isPartyPresent() || searchInfo.isCastPresent() || searchInfo.isLocalityPresent() ){
 					 List<UserVoterDetails> votersPartyCastList = userVoterDetailsDAO.getAllUserVoterDetails(voterIds,searchInfo.getUserId());
 				     for(UserVoterDetails voterDetails:votersPartyCastList){
@@ -6505,6 +6515,20 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				    			 
 				    	 }
 				     }
+				 }
+				 
+				 if(searchInfo.isVoterGroupPresent())
+				 {
+					 List<Object[]> list = customVoterDAO.getVoterGroupNamesByVoterIdsList(voterIds);
+					 if(list != null && list.size() > 0)
+					 {
+						for(Object[] params : list)
+						{
+						  VoterHouseInfoVO voterDet = votersMap.get((Long)params[0]);
+							if(voterDet != null)
+							  voterDet.setVoterGroup(params[1] != null ? params[1].toString(): " ");
+						}
+					 }
 				 }
 				 if(categories != null && categories.size() > 0){
 					 VoterHouseInfoVO category = null;
