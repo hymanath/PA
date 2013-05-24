@@ -132,6 +132,7 @@
 #panchayatMappingInnerDiv{margin-top: 25px;}
 #panchayatErrorMsgDiv{color:red;}
 #panchayatHideAndShow{margin-bottom: -13px;margin-left: 25px;}
+#eleResHideAndShow{margin-bottom: -6px;margin-left: 34px;}
 </style>
 </head>
 
@@ -198,7 +199,11 @@
 
 		<input type="button" value="Election validation" id="eleBtnId" class="btn btn-info"/>
 	    <img src="./images/icons/search.gif" id="eleResAjaxImg" style="display:none;"/>
+		
+		<span style="display: none;" id="eleResHideAndShow"><a href="javascript:{}" class="btn pull-right" id="eleResHideMenu">Hide<i class="icon-chevron-up"></i></a></span>
+
 	  </div>
+	 <div id="electionResultsMainDiv">
 	  <div id="constResDiv">
 	    <h4 id="conEleHeading" style="display:none;"></h4>
 		<div id="constResMainDiv"></div>
@@ -207,6 +212,7 @@
 		<h4 id="boothEleHeading" style="display:none;"></h4>
 		<div id="boothResMainDiv"></div>
 	</div>
+  </div>
 	</div>
 
  <!-- election results -->
@@ -290,6 +296,7 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "validateEleResults")
 								{
 								  $("#eleResAjaxImg").css("display","none");
+								  $("#eleResHideAndShow").css("display","inline-block");
 								  showConstituencyWiseEleResults(myResults,jsObj);
 								  showBoothWiseEleResults(myResults,jsObj);
 								}
@@ -1769,7 +1776,18 @@ $(document).ready(function(){
 		$("#panchayatMappingInnerDiv").css("display","block");
 		$("#panchayatHideAndShow").html('<a id="panchayatHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
+	
+	$("#eleResHideMenu").live("click",function(){
+	  $("#electionResultsMainDiv").css("display","none");
+	  
+	  $("#eleResHideAndShow").html('<a id="eleResShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+		
+	});
 
+	$("#eleResShowMenu").live("click",function(){
+		$("#electionResultsMainDiv").css("display","block");
+		$("#eleResHideAndShow").html('<a id="eleResHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
+	});
 	
 });
 </script>
