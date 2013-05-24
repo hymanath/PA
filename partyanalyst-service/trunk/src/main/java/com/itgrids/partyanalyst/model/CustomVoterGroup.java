@@ -34,7 +34,6 @@ public class CustomVoterGroup extends BaseModel implements Serializable{
 	private String name;
 	private AreaType areaType;
 	private Long locationValue;
-	private Long locationLevelId;
 	
 	private Constituency constituency;
 	private Set<CustomVoter> customVoters = new HashSet<CustomVoter>(0);
@@ -113,11 +112,6 @@ public class CustomVoterGroup extends BaseModel implements Serializable{
 		this.customVoters = customVoters;
 	}
 	
-	public Long getLocationLevelId() {
-		return locationLevelId;
-	}
-	public void setLocationLevel(Long locationLevelId) {
-		this.locationLevelId = locationLevelId;
-	}
+	
 
 }
