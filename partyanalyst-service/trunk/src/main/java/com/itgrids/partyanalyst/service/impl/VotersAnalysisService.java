@@ -15425,6 +15425,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 									castCount_unique.add(castVO.getCastCount());
 									caste=castVO.getCastName();
 									castExist=true;
+									break;
 								}
 							}
 							if(!castExist){
