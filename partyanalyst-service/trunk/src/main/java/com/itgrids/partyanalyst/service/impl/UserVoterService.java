@@ -900,17 +900,21 @@ public class UserVoterService implements IUserVoterService{
 		ResultStatus resultStatus = new ResultStatus();
 		CustomVoterGroup customVoterGroup = null;
 		Long localbody = 0l;
+		Long mandalId = 0l;
+		List<Object[]> list = null;
 		Constituency constituency =constituencyDAO.get(constituencyId);
 		String areaType = constituency.getAreaType();
 		if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("1"))
 		{
-		locationValue = assemblyLocalElectionBodyDAO.get(new Long(locationValue.toString().substring(1))).getLocalElectionBody().getLocalElectionBodyId();
+		localbody = assemblyLocalElectionBodyDAO.get(new Long(locationValue.toString().substring(1))).getLocalElectionBody().getLocalElectionBodyId();
+		list = customVoterGroupDAO.checkDuplicateGroupName(userId,localbody,name);
 		}
 		if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("2"))
 		{
-		locationValue = new Long(locationValue.toString().substring(1));
+		mandalId = new Long(locationValue.toString().substring(1));
+		list = customVoterGroupDAO.checkDuplicateGroupName(userId,mandalId,name);
 		}
-		List<Object[]> list = customVoterGroupDAO.checkDuplicateGroupName(userId,locationValue,name);
+		
 		if(list != null && list.size() > 0)
 		{
 			resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
@@ -920,7 +924,11 @@ public class UserVoterService implements IUserVoterService{
 			customVoterGroup = new CustomVoterGroup();
 			customVoterGroup.setName(name);
 			customVoterGroup.setUser(userDAO.get(userId));
-			customVoterGroup.setLocationValue(locationValue);
+			if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("1"))
+			customVoterGroup.setLocationValue(localbody);
+			else
+			customVoterGroup.setLocationValue(mandalId);
+			
 			customVoterGroup.setConstituency(constituencyDAO.get(constituencyId));
 			if(areaType.equalsIgnoreCase("RURAL"))
 			customVoterGroup.setAreaType(areaTypeDAO.get(2l));
