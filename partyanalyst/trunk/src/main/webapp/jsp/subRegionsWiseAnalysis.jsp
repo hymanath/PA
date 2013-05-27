@@ -1575,7 +1575,7 @@ function getElectionData()
                             } 
             }],
             yAxis: [{ // Secondary yAxis
-				min: 0,
+				
                 gridLineWidth: 0,
                 title: {
                     text: 'Percentage',
