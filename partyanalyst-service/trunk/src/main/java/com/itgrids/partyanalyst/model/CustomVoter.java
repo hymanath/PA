@@ -43,7 +43,7 @@ public class CustomVoter extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "custom_voter_group_id" ,insertable = false ,updatable = false)
+	@JoinColumn(name = "custom_voter_group_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public CustomVoterGroup getCustomVoterGroup() {
@@ -54,7 +54,7 @@ public class CustomVoter extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "voter_id" ,insertable = false ,updatable = false)
+	@JoinColumn(name = "voter_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Voter getVoter() {
