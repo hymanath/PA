@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IUserVoterService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -70,6 +71,17 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	
 	private List<VoterVO> votersData , voterDetails;
 	
+	private IUserVoterService userVoterService;
+	
+	
+	public IUserVoterService getUserVoterService() {
+		return userVoterService;
+	}
+
+	public void setUserVoterService(IUserVoterService userVoterService) {
+		this.userVoterService = userVoterService;
+	}
+
 	public List<SelectOptionVO> getHamlets() {
 		return hamlets;
 	}
@@ -1283,5 +1295,24 @@ public String saveLocality()
 				LOG.error("Error occured in the getvoterData() method in VotersEditAction", e);
 			}
 		   return Action.SUCCESS;
+	   }
+	   
+	   public String saveCustomVoterGroup()
+	   {
+		   try{
+			 
+			   session = request.getSession();
+			   RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			   if(user == null)
+					return "error";
+			   Long userId = user.getRegistrationID();
+			   jObj = new JSONObject(getTask());
+			   resultStatus = userVoterService.saveCustomVoterGroup(userId,jObj.getLong("constituencyId"),jObj.getLong("locationValue"),jObj.getString("groupName"));
+		   }
+		   catch(Exception e)
+		   {
+			   LOG.error("Exception Occured in saveCustomVoterGroup() method",e);
+		   }
+		return Action.SUCCESS;
 	   }
    }

@@ -1508,7 +1508,11 @@
 	  <property name="userVoterCategoryDAO" ref="userVoterCategoryDAO" />
 	  <property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
 	  <property name="regionServiceDataImp" ref="regionServiceDataImp" />
-    </bean>
+	  <property name="customVoterGroupDAO" ref="customVoterGroupDAO"/>
+	  <property name="constituencyDAO" ref="constituencyDAO"/>
+	  <property name="areaTypeDAO" ref="areaTypeDAO"/>
+	  <property name="userDAO" ref="userDAO" />
+	</bean>
     
     <bean name="dataValidationService" class="com.itgrids.partyanalyst.service.impl.DataValidationService">
 	    <property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>

@@ -5169,5 +5169,11 @@
 		   <param name="root">mappingVerificationVOList</param>
 		 </result>
 		</action>
+		 <action name="saveCustomVoterGroupAction" class="votersEditAction" method="saveCustomVoterGroup">
+		    <result type="json" name="success">
+				 <param name="root">resultStatus</param>
+			</result>
+		</action> 
+		
 		</package>
 </struts>      
