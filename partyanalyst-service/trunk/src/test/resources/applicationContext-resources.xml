@@ -347,6 +347,9 @@
 				<value>com.itgrids.partyanalyst.model.VoterModificationInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserAccessIpAddress</value>
 				<value>com.itgrids.partyanalyst.model.QueryTemp</value>
+				<value>com.itgrids.partyanalyst.model.AreaType</value>
+				<value>com.itgrids.partyanalyst.model.CustomVoter</value>
+				<value>com.itgrids.partyanalyst.model.CustomVoterGroup</value>
 			</list>
 		</property>
 	</bean>
@@ -1798,5 +1801,13 @@
 	<bean id="userAccessIpAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAccessIpAddressDAO">
 	     <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="areaTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AreaTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	<bean id="customVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomVoterDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	<bean id="customVoterGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomVoterGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
 </beans>
