@@ -35,7 +35,9 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/paginator.css">
 
 <link rel="stylesheet" type="text/css" href="styles/userGroups/userGroups.css">
-
+<style type="text/css">
+.uLEleStyle{font-family: verdana;font-size: 11px;}
+</style>
 <script type="text/javascript">
 var hidden=1;
 var smsHidden=1;
