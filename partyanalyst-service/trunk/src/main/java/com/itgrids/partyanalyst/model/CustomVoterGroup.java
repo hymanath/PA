@@ -67,7 +67,7 @@ public class CustomVoterGroup extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id" ,insertable = false ,updatable = false)
+	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
 	public User getUser() {
@@ -88,7 +88,7 @@ public class CustomVoterGroup extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "area_type_id" ,insertable = false ,updatable = false)
+	@JoinColumn(name = "area_type_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
 	public AreaType getAreaType() {
@@ -109,7 +109,7 @@ public class CustomVoterGroup extends BaseModel implements Serializable{
 	
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "constituency_id" ,insertable = false ,updatable = false)
+	@JoinColumn(name = "constituency_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
 	public Constituency getConstituency() {
