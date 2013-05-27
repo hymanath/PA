@@ -1576,7 +1576,7 @@ function getElectionData()
             }],
             yAxis: [{ // Secondary yAxis
 				
-                gridLineWidth: 0,
+                gridLineWidth: 1,
                 title: {
                     text: 'Percentage',
                     style: {
