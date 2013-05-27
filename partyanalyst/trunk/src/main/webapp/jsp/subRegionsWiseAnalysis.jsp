@@ -497,7 +497,9 @@ $(document).ready(function(){
 		$("#ShowConstMenu1").css("display","none");
 		 $('#dataDiv').toggle();
 	});
-  
+  if(buildType != 'hamlet'){
+	$('#mainDev').css('display','block');
+	}
 });
 
 $('#mandals').live("change",function() {
@@ -616,7 +618,7 @@ $("#panchayats").live("change",function(){
 	</div>
   </div>
 </div>
- <div id="mainDev" class="widget blue">
+ <div id="mainDev" class="widget blue" style="display:none;">
   <div id="sublevelHeading"><h4> Analysis Based On Votes Percentage Difference</h4></div>
   <a id="ShowConstMenu" class="btn pull-right btn-primary" style="margin-top:-30px;margin-right: 30px; width: 46px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a>
   <a id="ShowConstMenu1" class="btn pull-right btn-primary" style="margin-top:-30px;margin-right: 30px;display:none;" href="javascript:{}" >Show<i class="icon-chevron-down"></i></a>
@@ -685,7 +687,7 @@ $("#panchayats").live("change",function(){
 <div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
 
 <p>
-<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+<input type="text" id="amount" readonly="readonly" style="border: 0; color: #f6931f; font-weight: bold;" />
 </p>
 </div>
 <div id="ajaxImageDiv1" align="center">
@@ -711,7 +713,7 @@ $("#panchayats").live("change",function(){
 <div id="slider1" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
 
 <p>
-<input type="text" id="amount1" style="border: 0; color: #f6931f; font-weight: bold;" />
+<input type="text" id="amount1" readonly="readonly" style="border: 0; color: #f6931f; font-weight: bold;" />
 </p>
 </div>
 
@@ -1197,13 +1199,13 @@ function getElectionData()
 
 	 if(type == "mandal")
 		 {
-		$("#mandalElecResultsButton").html('<span id="alliance"><input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label></span>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getPanchayatData()">');
+		$("#mandalElecResultsButton").html('<span id="alliance"><input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label></span>&nbsp;&nbsp;<input type="button"  class="btn btn-success" value="Submit" onclick="getPanchayatData()">');
 		 $("#mandalElecResultsButton1").html('<input type="radio" name="votes"  class="btn" value="percentage" id="votingPercentageID" checked="true" onclick="getPanchayatData()"/>By Percentage&nbsp;<input type="radio" name="votes"  class="btn" value="validvotes" id="votingValuesID" onclick="getPanchayatData()"/>By Votes');
 		  getPanchayatData();
 		 }
 		 if(type == "panchayat")
 		 {
-		$("#mandalElecResultsButton").html('<span id="alliance"><input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label></span>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForBooths()">');
+		$("#mandalElecResultsButton").html('<span id="alliance"><input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label></span>&nbsp;&nbsp;<input type="button"  class="btn btn-success" value="Submit" onclick="getResultsForBooths()">');
 		 $("#mandalElecResultsButton1").html('<input type="radio" name="boothvotes" class="btn" value="percentage" id="boothvotingPercentageID" checked="true" onclick="getResultsForBooths()"/>By Percentage&nbsp;<input type="radio"  name="boothvotes" class="btn" value="validvotes" id="boothvotingValuesID" onclick="getResultsForBooths()"/>By Votes');
 		  getResultsForBooths();
 
