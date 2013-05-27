@@ -6491,7 +6491,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 						orderNo = (Long)maxOrderNo.get(0)+1L;
 					
 					filePaths.setOrderNo(orderNo);
-					filePaths.setFilePath(problemBeanVO.getFileVO().getFilePath().get(i));
+					filePaths.setFilePath(problemBeanVO.getFileVO().getFilePath().get(i).trim());
 					filePathsDAO.save(filePaths);
 					filesList.add(file);
 					problemFiles.setFile(file);

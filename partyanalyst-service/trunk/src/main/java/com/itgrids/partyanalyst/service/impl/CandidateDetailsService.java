@@ -1219,7 +1219,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		    		List<String> filePaths = new ArrayList<String>();
 		    		for(FilePaths filePath : filePathsList){
 		    			
-		    			filePaths.add(filePath.getFilePath());
+		    			filePaths.add(filePath.getFilePath().trim());
 		    			
 		    				
 		    		}
@@ -1409,7 +1409,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			Long orderNO = 1L;
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 			file.setFileName(fileVO.getName());
-			file.setFilePath(fileVO.getPath());
+			file.setFilePath(fileVO.getPath().trim());
 			//file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
 			file.setFileTitle(fileVO.getTitle());
 			file.setFileDescription(fileVO.getDescription().replace("\r\n", ""));
@@ -1442,7 +1442,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			    
 			   if(displayImage != null){
 					file.setFileName(displayImage.getDisplayImageName());
-					file.setFilePath(displayImage.getDisplayImagePath());
+					file.setFilePath(displayImage.getDisplayImagePath().trim());
 			   }
 				
 				file = fileDAO.save(file);
@@ -1474,7 +1474,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						if(fileVO.getFilePath() !=null)
 						{
 							
-						 filePaths.setFilePath(fileVO.getFilePath().get(i));
+						 filePaths.setFilePath(fileVO.getFilePath().get(i).trim());
 						 filePaths.setOrderNo(orderNO);
 						 if(fileVO.getFileTypesList()!=null)
 						 filePaths.setFileType(fileTypeDAO.getFileType(fileVO.getFileTypesList().get(i)).get(0));
@@ -1496,7 +1496,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						{
 						for(int i=0;i<fileVO.getFilePath().size();i++)
 						{
-							 filePaths.setFilePath(fileVO.getFilePath().get(i));
+							 filePaths.setFilePath(fileVO.getFilePath().get(i).trim());
 							 filePaths.setOrderNo(orderNO);
 							 if(fileVO.getFileTypesList()!=null)
 							 filePaths.setFileType(fileTypeDAO.getFileType(fileVO.getFileTypesList().get(i)).get(0));
@@ -2371,7 +2371,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			fileVO.setGallaryName(objects[2]!=null?objects[2].toString():"");
 			fileVO.setFileTitle1(objects[3]!=null?objects[3].toString():"");
 			fileVO.setFileDescription1(objects[4]!=null?objects[4].toString():"");
-			fileVO.setFilePath1(objects[5]!=null?objects[5].toString():"");
+			fileVO.setFilePath1(objects[5]!=null?objects[5].toString().trim():"");
 			fileVO.setFile(objects[6].toString());
 			fileVO.setFileTypeId((Long)objects[7]);
 		}
@@ -3092,7 +3092,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			    		List<String> filePaths = new ArrayList<String>();
 			    		for(FilePaths filePath : filePathsSet){
 			    			
-			    			filePaths.add(filePath.getFilePath());
+			    			filePaths.add(filePath.getFilePath().trim());
 			    			
 			    				
 			    		}
@@ -4956,7 +4956,7 @@ private PdfGenerationVO preparePdfWithMatchedFilesContentReturnFilePath(String q
 						       
 						for(FilePaths filePath :fileSource.getFilePaths()){					   
 							FileVO filePath1 = new FileVO();
-							filePath1.setFilePath1(filePath.getFilePath());
+							filePath1.setFilePath1(filePath.getFilePath().trim());
 							filePathList.add(filePath1);
 						}
 							   
