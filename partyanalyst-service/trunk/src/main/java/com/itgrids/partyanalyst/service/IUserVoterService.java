@@ -31,6 +31,8 @@ public interface IUserVoterService {
 	public ResultStatus assignParentUser(Long selectedUserId,Long parentuserId,Long mainAccountId);
 	
 	public List<VotersDetailsVO> getCasteWiseUserVoterCategory(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
+	
+	 public ResultStatus saveCustomVoterGroup(Long userId,Long constituencyId,Long locationValue,String name);
 
 	
 	

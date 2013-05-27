@@ -10,10 +10,13 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAreaTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ICustomVoterGroupDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
@@ -22,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -29,6 +33,8 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.CustomVoterGroup;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
@@ -66,6 +72,37 @@ public class UserVoterService implements IUserVoterService{
     private IUserRolesDAO userRolesDAO; 
     private IUserDAO userDAO;
     
+    private ICustomVoterGroupDAO customVoterGroupDAO;
+    
+    private IConstituencyDAO constituencyDAO;
+    
+    private IAreaTypeDAO areaTypeDAO;
+
+    
+	public IAreaTypeDAO getAreaTypeDAO() {
+		return areaTypeDAO;
+	}
+
+	public void setAreaTypeDAO(IAreaTypeDAO areaTypeDAO) {
+		this.areaTypeDAO = areaTypeDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public ICustomVoterGroupDAO getCustomVoterGroupDAO() {
+		return customVoterGroupDAO;
+	}
+
+	public void setCustomVoterGroupDAO(ICustomVoterGroupDAO customVoterGroupDAO) {
+		this.customVoterGroupDAO = customVoterGroupDAO;
+	}
+
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
 	}
@@ -856,5 +893,53 @@ public class UserVoterService implements IUserVoterService{
 		            return 0;
 		        }
 	 };
+	 /** This method is used to save groupName and details in custom Voter Group */
+	 public ResultStatus saveCustomVoterGroup(Long userId,Long constituencyId,Long locationValue,String name)
+	 {
+		 
+		ResultStatus resultStatus = new ResultStatus();
+		CustomVoterGroup customVoterGroup = null;
+		Long localbody = 0l;
+		Constituency constituency =constituencyDAO.get(constituencyId);
+		String areaType = constituency.getAreaType();
+		if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("1"))
+		{
+		locationValue = assemblyLocalElectionBodyDAO.get(new Long(locationValue.toString().substring(1))).getLocalElectionBody().getLocalElectionBodyId();
+		}
+		if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+		{
+		locationValue = new Long(locationValue.toString().substring(1));
+		}
+		List<Object[]> list = customVoterGroupDAO.checkDuplicateGroupName(userId,locationValue,name);
+		if(list != null && list.size() > 0)
+		{
+			resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			return resultStatus;
+		}
+		try{
+			customVoterGroup = new CustomVoterGroup();
+			customVoterGroup.setName(name);
+			customVoterGroup.setUser(userDAO.get(userId));
+			customVoterGroup.setLocationValue(locationValue);
+			customVoterGroup.setConstituency(constituencyDAO.get(constituencyId));
+			if(areaType.equalsIgnoreCase("RURAL"))
+			customVoterGroup.setAreaType(areaTypeDAO.get(2l));
+			else if(areaType.equalsIgnoreCase("URBAN"))
+			customVoterGroup.setAreaType(areaTypeDAO.get(1l));
+			else
+			customVoterGroup.setAreaType(areaTypeDAO.get(3l));	
+			customVoterGroupDAO.save(customVoterGroup);	
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			}	
+		
+		catch(Exception e)
+		{
+			LOG.error("error occured in the saveCustomVoterGroup() method " , e) ;	
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		return resultStatus;
+		
+	 }
 
 }
