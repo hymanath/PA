@@ -4668,7 +4668,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			}
 		}
 		
-		if(voters != null)
+		if(voters != null && voters.size() > 0){
 		for(Object[] voter : (List<Object[]>)voters){
 			houseNo = voter[1].toString();
 			voterVO = new VoterVO();
@@ -4707,9 +4707,10 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		}
 		List<Long> influencingPeopleList = new ArrayList<Long>(0);
 		
+		
 		int fromIndex = 0;
 		int toIndex = 999;
-		
+		if(voterIdsList.size() >= 1000){
 		while(fromIndex <= toIndex)
 		{
 			List<Long> iPList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIdsList.subList(fromIndex,toIndex),userId);
@@ -4718,6 +4719,11 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			toIndex += 1000;
 			if(toIndex >= voterIdsList.size())
 				toIndex = voterIdsList.size()-1;
+		}
+		}
+		else
+		{
+			influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIdsList,userId);
 		}
 		
 		if(influencingPeopleList != null && influencingPeopleList.size() > 0)
@@ -4734,6 +4740,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		fromIndex = 0;
 		toIndex = 999;
 		List<Long> cadrePeopleList = new ArrayList<Long>(0);
+		if(voterIdsList.size() >= 1000){
 		while(fromIndex <= toIndex)
 		{
 			List<Long> cPList = cadreDAO.findCadrePeopleDetails(voterIdsList.subList(fromIndex,toIndex),userId);
@@ -4743,7 +4750,9 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			if(toIndex >= voterIdsList.size())
 				toIndex = voterIdsList.size()-1;
 		}
-		
+		}else{
+			cadrePeopleList = cadreDAO.findCadrePeopleDetails(voterIdsList,userId);
+		}
 		if(cadrePeopleList != null && cadrePeopleList.size() > 0)
 		{
 			for (Long cadrePeople : cadrePeopleList) 
@@ -4757,6 +4766,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		fromIndex = 0;
 		toIndex = 999;
 		List<Long> candidatePeopleList = new ArrayList<Long>(0);
+		if(voterIdsList.size() >= 1000){
 		while(fromIndex <= toIndex)
 		{
 			List<Long> cdPList = candidateDAO.findCandidatePeopleDetails(voterIdsList.subList(fromIndex, toIndex));
@@ -4766,6 +4776,9 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			if(toIndex >= voterIdsList.size())
 				toIndex = voterIdsList.size()-1;
 			
+		}
+		}else{
+			candidatePeopleList = candidateDAO.findCandidatePeopleDetails(voterIdsList);
 		}
 		if(candidatePeopleList != null && candidatePeopleList.size() > 0)
 		{
@@ -4777,7 +4790,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				}
 			}
 		}
-		
+		}
 		Set<Long> keys = boothMap.keySet();
 		for(Long key:keys){
 			voterByHouseNoMap = boothMap.get(key);
