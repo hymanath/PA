@@ -1212,7 +1212,7 @@ function getElectionData()
 		
 		if(type == "constituency")
 		{
-		$("#mandalElecResultsButton").html('<span id="alliance"><input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label></span>&nbsp;&nbsp;<input type="button"  class="btn" value="Submit" onclick="getResultsForConstituency()">');
+		$("#mandalElecResultsButton").html('<span id="alliance"><input id="includeAlliancesDiv" type="checkbox" /><label  for="includeAlliancesDiv"><b>Include Aliance Parties</b></label></span>&nbsp;&nbsp;<input type="button"  class="btn btn-info" value="Submit" onclick="getResultsForConstituency()">');
 		 $("#mandalElecResultsButton1").html('<input type="radio" name="constituencyvotes" class="btn" value="percentage" id="constituencyvotingPercentageID" checked="true" onclick="getResultsForConstituency()"/>By Percentage&nbsp;<input type="radio"  name="constituencyvotes" class="btn" value="validvotes" id="constituencyvotingValuesID" onclick="getResultsForConstituency()"/>By Votes');
 		  getResultsForConstituency();
 		}
