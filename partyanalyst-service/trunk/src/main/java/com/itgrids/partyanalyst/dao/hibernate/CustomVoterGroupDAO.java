@@ -24,8 +24,18 @@ public class CustomVoterGroupDAO extends GenericDaoHibernate<CustomVoterGroup,Lo
 		query.setParameter(0, userId);
 		query.setParameter(1, locationTypeId);
 		query.setParameter(2, locationValue);
-		return null;
+		return query.list();
 		
+		
+	}
+	
+	public List<Object[]> checkDuplicateGroupName(Long userId,Long locationValue,String name)
+	{
+		Query query = getSession().createQuery("select model.customVoterGroupId,model.name from CustomVoterGroup model where model.user.userId =:userId and model.locationValue =:locationValue and model.name =:name ");
+		query.setParameter("userId", userId);
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("name", name);
+		return query.list();
 		
 	}
 }
