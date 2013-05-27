@@ -37,7 +37,24 @@ public class CustomVoterGroup extends BaseModel implements Serializable{
 	
 	private Constituency constituency;
 	private Set<CustomVoter> customVoters = new HashSet<CustomVoter>(0);
-
+	//Default Constructor
+		public CustomVoterGroup()
+		{
+			
+		}
+		
+		// Full Constructor
+		public CustomVoterGroup(Long customVoterGroupId,User user,String name,AreaType areaType,Long locationValue,
+				Constituency constituency)
+		{
+			this.customVoterGroupId = customVoterGroupId;
+			this.user = user;
+			this.name = name;
+			this.areaType = areaType;
+			this.locationValue = locationValue;
+			this.constituency = constituency; 
+			
+		}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
