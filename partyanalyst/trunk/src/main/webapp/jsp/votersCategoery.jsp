@@ -323,6 +323,7 @@ function showGroupStatus(result)
 if(result.resultCode == 121)
 	{
 $("#grouperrorMsg").html("Group Name already Exists").css("color","red");
+return;
 	}
 else if(result.resultCode == 0)
 	{
