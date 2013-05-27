@@ -23,7 +23,7 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
 <style>
-#valuesDisplayDiv, #casteCreation,#localityDiv ,#catrgoeryValuesMainDiv ,#groupCreation{
+#valuesDisplayDiv, #casteCreation,#localityDiv ,#catrgoeryValuesMainDiv ,#groupCreation,#customVoterGroup{
 border:1px solid #a1a1a1;
 padding:10px 40px; 
 width:560px;
@@ -32,7 +32,7 @@ border-radius:10px;
 margin-left:15px;
 }
 
-#casteCreation,#localityDiv{margin-bottom:30px;}
+#casteCreation,#localityDiv,#customVoterGroup{margin-bottom:30px;}
 </style>
 <script type="text/javascript">
 function openProblemEditSubForm(id,name)
@@ -118,6 +118,10 @@ function callAjax(jsObj,url)
 							else if(jsObj.task == "deleteCategoeryValues")
 							{
 								showStatusOfDeletedCategores(myResults);		
+							}
+							else if(jsObj.task == "saveCustomVoterGroup")
+							{
+								showGroupStatus(myResults);
 							}
 							
 							}catch(e){   
@@ -313,6 +317,25 @@ if(result.resultCode == 0)
 	}
 	
 }
+
+function showGroupStatus(result)
+{
+if(result.resultCode == 121)
+	{
+$("#grouperrorMsg").html("Group Name already Exists").css("color","red");
+	}
+else if(result.resultCode == 0)
+	{
+		$("#grouperrorMsg").html("Group Name Saved Successfully.").css("color","green");
+		
+		return;
+	}
+	else
+	{
+		$("#grouperrorMsg").addClass('casteCreationMsg').html('Data could not be Saved due to some technical difficulties').css('color','red');
+		return;
+	}
+}
 </script>
 </head>
 <body style="position: relative;">
@@ -422,19 +445,39 @@ if(result.resultCode == 0)
 	 <!-- Locality Div End-->
 
 	 
+	 <!--Custom Voter Group Div Start-->
+	  <div id="popupDiv" style="float: left;margin-left:6px;">
+	
+	 <div id="customVoterGroup" style="border:">
+	<h4>Create Voter Custom Group</h4>
+
+			<div id="ConstituencyDiv" class="selectDiv">
+				<div id="grouperrorMsg"></div>
+				<b>Select Constituency</b><font style="color:red">*</font><s:select theme="simple" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="customVoterConstituency" list="constituencyList" listKey="id" listValue="name" style="margin-left:27px;" onchange="getMandalListForCustomVoter();"/> &nbsp;&nbsp;
+			</div>
+		<div id="mandalDiv" class="selectDiv" >
+		
+			<b>Select Mandal</b><font style="color:red">*</font> <select id="customVotermandal" class="selectWidth" name="mandal" style="margin-left:63px;"></select>
+		</div>
+		
+		
+			<div id="groupNameDiv"><b>custom group Name</b><span style="color:red">*</span>
+				
+			 <input type="text" id="groupName" style="width: 175px;margin-left:23px;"></input>
+			
+			</div>
+			
+		<input type="button" onclick="saveCustomVoterGroup();" value="create" class="btn btn-success" style="clear: both; float: right; margin-top: -30px;" id="createGroup"></input>
+		</div>
+		</div>
+		 <!--Custom Voter Group Div  End-->
+		 
 	  <!-- Validation Div start-->
 	 <div id="popupDiv" style="float: right;clear:both;">
-	
-	
-		
-		 <a href="validationToolsAction.action"><input type="button" value="Get Hamlet Assigned Info" class="btn btn-success" style="clear: both; float: right; margin-top: -26px;" id="getHamletInfo"></input></a>
-	
-	 
-	 </div>
+	 <a href="validationToolsAction.action"><input type="button" value="Get Hamlet Assigned Info" class="btn btn-success" style="clear: both; float: right; margin-top: -26px;" id="getHamletInfo"></input></a>
+	</div>
 	 <br>
 	 <!-- Validation Div End-->
-	 
-	 
 	</div>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -505,7 +548,7 @@ $(document).ready(function() {
 			{
 					
 					selected:value,
-					
+					select : "mandalField",
 					task:"getMandalList"
 			};
 		
@@ -515,7 +558,29 @@ $(document).ready(function() {
 		
 	}
 	
-	
+	function getMandalListForCustomVoter()
+	{
+	var constituencyID = document.getElementById("customVoterConstituency");
+		var name=constituencyID.options[constituencyID.selectedIndex].name;
+		var value=constituencyID.options[constituencyID.selectedIndex].value;
+		var choice=false;
+		
+		if(value == 0)
+		{
+			return false;
+		}
+		var jsObj=
+			{
+					
+					selected:value,
+					select : "customVotermandal",
+					task:"getMandalList"
+			};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "voterAnalysisAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
 	function getHamletsInATehsil()
 	{
 		
@@ -567,8 +632,8 @@ $(document).ready(function() {
 	
 	function buildMandalList(results,jsObj)
 	{
-		
-		var selectElmt =document.getElementById("mandalField");
+		var selectBoxId = jsObj.select;
+		var selectElmt =document.getElementById(selectBoxId);
 		
 		removeSelectElements(selectElmt);
 		for(var val in results)
@@ -689,7 +754,45 @@ $(document).ready(function() {
 		var url = "saveLocalityAction.action?"+rparam;						
 		callAjax(jsObj,url);
 	}
-	
+	function saveCustomVoterGroup()
+	{
+	var str = '';
+	var errorDiv = document.getElementById("grouperrorMsg");
+	var constituencyId = $("#customVoterConstituency").val();
+	var name = $("#groupName").val();
+	var locationValue = $("#customVotermandal").val();
+	if(constituencyId == 0)
+		{
+			str +='<font color="red">Select Constituency Name</font>';
+			errorDiv.innerHTML = str;
+			return;
+		}
+		else if(locationValue == 0)
+		{
+			str +='<font color="red">Select Mandal/Muncipality Name</font>';
+			errorDiv.innerHTML = str;
+			return;
+		}
+		else if(name == "")
+		 {
+			str +='<font color="red">Name should not be empty</font>';
+			errorDiv.innerHTML = str;
+			return;
+		}
+		else
+	errorDiv.innerHTML = '';
+	var jsObj=
+	{
+		
+		constituencyId  : constituencyId,
+		locationValue   : locationValue,
+		groupName		: name,
+		task			: "saveCustomVoterGroup"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "saveCustomVoterGroupAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
 	/*
 		This Method is used For making a ajax call to get All Categoery Values
 	*/

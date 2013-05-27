@@ -1030,6 +1030,7 @@
 			<property name="staticDataService" ref="staticDataService" />
 			<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 			<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+			<property name="userVoterService" ref="userVoterService" />
 			
 	</bean>
 	
