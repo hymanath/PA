@@ -321,14 +321,14 @@ setTimeout("getPartyName()",1000);
 	<span><select id="category"  class="selectoptionisRequired" style="width: 219px;height:28px;margin-bottom:-2px;margin-left: 80px;">
 		<option value='0'>--Select Category--</option>
 		<option value='1'>Party</option>
-		<option value='2'>Candidate</option>
+		<option value='2'>Leader</option>
 		</select>
 		<div id="selectoptionErrormsg"></div>
 		</span></div>
 
 		<div style="height:45px;">
-		<span style="font-size: 13px;"><font color="red">*</font>Party/Candidate Name:</span>
-		<span><input  type="text" id="name" class="NameRequired" style="height: 18px; margin-bottom: -2px; margin-left: 39px;"/>
+		<span style="font-size: 13px;"><font color="red">*</font>Party/Leader Name:</span>
+		<span><input  type="text" id="name" class="NameRequired" style="height: 18px; margin-bottom: -2px; margin-left: 60px;"/>
 		<div id="accnameerrormsg"></div>
 		</span></div>
 
