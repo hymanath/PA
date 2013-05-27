@@ -1882,7 +1882,7 @@ function createCoulmnChart()
 	</c:if>
 
 	var chart = new google.visualization.ColumnChart(document.getElementById('graphDiv'));
-		chart.draw(data, {width: 320, height: 410,legend:'right',legendTextStyle:{fontSize:10}, title: 'Party Positions in ${electionComparisonReportVO.yearOne} and ${electionComparisonReportVO.yearTwo}',
+		chart.draw(data, {width: 320, height: 410,legend:'bottom',legendTextStyle:{fontSize:11}, title: 'Party Positions in ${electionComparisonReportVO.yearOne} and ${electionComparisonReportVO.yearTwo}',
 				  hAxis: {title: 'Year', titleTextStyle: {color: 'red'}}
 				 });
 
@@ -1895,9 +1895,9 @@ function createCoulmnChart()
 <table cellspacing="0" cellpadding="0" border="0" style="margin-top:30px;">
 	<tbody><tr>
 		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
-		<c:if test="${allianceCheck == 'true'}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.stateName}  ${electionComparisonReportVO.electionType} Elections ${electionComparisonReportVO.yearOne}-
+		<c:if test="${allianceCheck == 'true'}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.stateName}&nbsp;  ${electionComparisonReportVO.electionType} Elections ${electionComparisonReportVO.yearOne}-
        ${electionComparisonReportVO.yearTwo} Comparison Report For ${selectedPartyName} Including Alliances</div></td></c:if>
-		<c:if test="${allianceCheck == 'false' || allianceCheck == ''}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.stateName} ${electionComparisonReportVO.electionType} Elections ${electionComparisonReportVO.yearOne}-
+		<c:if test="${allianceCheck == 'false' || allianceCheck == ''}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.stateName}&nbsp; ${electionComparisonReportVO.electionType} Elections ${electionComparisonReportVO.yearOne}-
        ${electionComparisonReportVO.yearTwo} Comparison Report For ${selectedPartyName}</div></td></c:if>
 		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
 	</tr>
