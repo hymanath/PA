@@ -5544,6 +5544,13 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
       
 	 }
 
+	 function yearsort(a,b)
+	 {
+		var aName = parseInt($.trim(a["electionYear"]));
+		var bName = parseInt($.trim(b["electionYear"]));
+		return bName - aName;
+	 }
+	var data = new Array();
 function showPreviousEleVotingTrends(results,jsObj)
 {	
 	 $("#previousEleAjaxImg").css("display","none");
@@ -5580,9 +5587,13 @@ function showPreviousEleVotingTrends(results,jsObj)
 				   for(var i in results[0].partiesList)
 					 str +='<th>'+results[0].partiesList[i]+'</th>';
 					 str +='</tr></thead><tbody>';
-					
+					try{
+					results.sort(yearsort);
+					}catch(e){
+					}
 					for(var j in results)
 					{
+					 
 					  str +='<tr>';
 					  str += '<td>'+results[j].reqType+'</td>';
 					  str += '<td>'+results[j].electionYear+'</td>';
@@ -9262,7 +9273,7 @@ function buildCasteVotersChart(cs,tv,mv,fv,cp)
             chart: {
                 zoomType: 'xy',
 				marginRight: 130,
-                marginBottom: 80,
+                marginBottom: 100,
 				width:890,height:390
             },
 			
