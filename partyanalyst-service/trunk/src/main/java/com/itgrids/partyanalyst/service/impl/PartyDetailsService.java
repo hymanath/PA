@@ -1184,7 +1184,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 		fileSourceLanguage.setLanguage(sourceLanguageDAO.get(fileVO.getLanguegeId()));
 		fileSourceLanguage = fileSourceLanguageDAO.save(fileSourceLanguage);
 		
-		filePaths.setFilePath(fileVO.getPath());
+		filePaths.setFilePath(fileVO.getPath().trim());
 		filePaths.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
 		List<Object> maxOrderNo = filePathsDAO.getMaxOrderNo();
 		if(maxOrderNo.size()==0 && maxOrderNo.get(0)==null)

@@ -1000,7 +1000,7 @@ public class SpecialPageService implements ISpecialPageService{
 				FileGallary fileGallary = new FileGallary();
 				SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 				file.setFileName(fileVO.getName());
-				file.setFilePath(fileVO.getPath());
+				file.setFilePath(fileVO.getPath().trim());
 				file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
 				file.setFileTitle(fileVO.getTitle());
 				file.setFileDescription(fileVO.getDescription());

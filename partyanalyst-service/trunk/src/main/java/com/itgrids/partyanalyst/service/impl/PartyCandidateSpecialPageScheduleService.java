@@ -1191,7 +1191,7 @@ public class PartyCandidateSpecialPageScheduleService implements
 		  data.setSource(source.toString().substring(0,source.toString().length() - 2));
 		 if(language.length()>2)
 	      data.setLanguage(language.toString().substring(0,language.toString().length() - 2));
-	     data.setFilePath(filePath);
+	     data.setFilePath(filePath.trim());
 		
 	}
 	public void  convertFileGalleryToVoForNews(FileGallary result,EmailNotificationVO data,String type,String name,String path){
@@ -1218,16 +1218,16 @@ public class PartyCandidateSpecialPageScheduleService implements
 		 if(language.length()>2)
 	      data.setLanguage(language.toString().substring(0,language.toString().length() - 2));
 		 if(file.getFilePath() != null)
-	       data.setFilePath(file.getFilePath());
+	       data.setFilePath(file.getFilePath().trim());
 		 else{
 			 if(type.equalsIgnoreCase("candidate")){
-				 data.setFilePath("images/candidates/"+name.toUpperCase()+".jpg");
+				 data.setFilePath("images/candidates/"+name.toUpperCase().trim()+".jpg");
 			 }
 			 else if(type.equalsIgnoreCase("party")){
-				 data.setFilePath("images/party_flags/"+path);
+				 data.setFilePath("images/party_flags/"+path.trim());
 			 }
 			 else if(type.equalsIgnoreCase("specialpage")){
-				 data.setFilePath(""+path);
+				 data.setFilePath(""+path.trim());
 			 }
 		 }
 		
