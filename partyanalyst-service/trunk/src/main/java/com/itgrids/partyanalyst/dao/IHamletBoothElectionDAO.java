@@ -58,5 +58,9 @@ public interface IHamletBoothElectionDAO extends GenericDao<HamletBoothElection,
 	public List<Object[]> getBoothWiseVotersCountInAPanchayat(Long electionId,Long panchayatId);
 	
 	public List<Object[]> getBoothIdsByMandalIdsElectionIds(List<Long> mandalIds, List<Long> electionIds,Long constituencyId);
+	
 	public List<Object[]> getParticipatedPartiesByEleId(Long panchayatId,Long electionId);
+	
+	public List<Long> getPanchayatIdsByEleIdAndMandalIdsList(List<Long> mandalIdsList, Long electionId);
+	
 }
