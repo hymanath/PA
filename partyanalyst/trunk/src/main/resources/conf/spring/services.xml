@@ -1534,6 +1534,9 @@
 	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 	    <property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+	    <property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
+	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+	    <property name="constituencyPageService" ref="constituencyPageService" />
     </bean>
     
     
