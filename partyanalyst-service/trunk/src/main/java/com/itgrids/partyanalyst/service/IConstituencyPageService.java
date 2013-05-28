@@ -142,4 +142,6 @@ public interface IConstituencyPageService {
 	
 	public List<PartyVotesEarnedVO> getPanchayatWiseElectionsForTehsilforPreviousEle(String boothIdStr,Long electionId,String eletype,List<Long> tehsilIds);
 	
+	public List<SelectOptionVO> getMandalsByConstituencyID(Long constituencyID,String delimitationType);
+	
 }
