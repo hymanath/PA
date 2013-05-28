@@ -1380,20 +1380,29 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return partyResults;
 	}
 	
-	
+	/** this method is used to get Election results for parties*/
 	public List<PartyVotesEarnedVO> getPanchayatWiseElectionsForTehsilforPreviousEle(String boothIdStr,Long electionId,String eletype,List<Long> tehsilIds)
 	{
 		StringTokenizer str = new StringTokenizer(boothIdStr,",");
 		List<Long> boothIdList = new ArrayList<Long>(0);
 		List<Object[]> list = null;
+		List<Long> staticParties = null;
 		while(str.hasMoreTokens())
 		{
 			boothIdList.add(Long.parseLong(str.nextToken()));
 		}
-		if(!(eletype.equalsIgnoreCase("ZPTC") || eletype.equalsIgnoreCase("MPTC")))
-		 list = candidateBoothResultDAO.findBoothResultsForBoothsAndElection(boothIdList,electionId);
+		staticParties = partyDAO.getStaticParties(IConstants.STATIC_PARTIES + ",'IND'");
+		//staticParties.add(366l);
+		if(staticParties != null && staticParties.size() > 0)
+		/*if(!(eletype.equalsIgnoreCase("ZPTC") || eletype.equalsIgnoreCase("MPTC")))
+		list = candidateBoothResultDAO.findBoothResultsForBoothsAndElection(boothIdList,electionId);
 		else
-		list = nominationDAO.findAllMptcAndZptcElectionsInfoByelectionId(electionId,tehsilIds);	
+		list = nominationDAO.findAllMptcAndZptcElectionsInfoByelectionId(electionId,tehsilIds);	*/
+			
+		if(!(eletype.equalsIgnoreCase("ZPTC") || eletype.equalsIgnoreCase("MPTC")))
+			list = candidateBoothResultDAO.findBoothResultsForBoothsAndElectionAndParties(boothIdList,electionId,staticParties);
+			else
+			list = nominationDAO.findAllMptcAndZptcElectionsInfoByelectionId(electionId,tehsilIds,staticParties);	
 		List<PartyVotesEarnedVO> partyResults = new ArrayList<PartyVotesEarnedVO>();
 		PartyVotesEarnedVO partyVotesEarnedVO = null;
 		int i=0;

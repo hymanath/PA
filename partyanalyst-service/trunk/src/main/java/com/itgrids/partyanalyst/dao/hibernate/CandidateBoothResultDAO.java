@@ -1458,4 +1458,16 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findBoothResultsForBoothsAndElectionAndParties(List<Long> boothslist, Long electionId,List<Long> partIds){
+		Query query = getSession().createQuery("select model.nomination.party.partyId, model.nomination.party.shortName,"+
+				"sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ? " +
+				" and model.boothConstituencyElection.booth.boothId in(:boothslist) and model.nomination.party.partyId in(:partIds) group by model.nomination.party.partyId order by sum(model.votesEarned) desc");
+		
+		query.setParameter(0,electionId);
+		query.setParameterList("boothslist",boothslist);
+		query.setParameterList("partIds",partIds);
+		return query.list();
+	}
+	
 }

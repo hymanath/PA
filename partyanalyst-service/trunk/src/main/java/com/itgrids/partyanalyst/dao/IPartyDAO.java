@@ -64,4 +64,6 @@ public interface IPartyDAO extends GenericDao<Party, Long>{
 	
 	public List<Object[]> getParticipatedPartiesInMandal(Long tehsilId);
 	public List<Object[]> getParticipatedPartiesInMandalByElectionId(Long tehsilId,Long electionId);
+	
+	public List<Long> getStaticParties(String shortNames);
 }
