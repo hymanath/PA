@@ -446,6 +446,40 @@ var partiesList = new Array();
 
 $(document).ready(function(){
 
+
+	$('.elecSelForPanc').live("change",function(){
+
+		if($('.elecSelForPanc').filter(":checked").length == $('.elecSelForPanc').length )
+			$('#selectAllEle').attr('checked',true);
+		else
+			$('#selectAllEle').attr('checked',false);
+
+
+		if($('.elecSelForPanc').filter(":checked").length == 0 )
+			$('#deSelectAllEle').attr('checked',true);
+		else
+			$('#deSelectAllEle').attr('checked',false);		
+
+		
+	});
+
+
+	$('.partySelForPanc').live("change",function(){
+
+		if($('.partySelForPanc').filter(":checked").length == $('.partySelForPanc').length )
+			$('#selectAll').attr('checked',true);
+		else
+			$('#selectAll').attr('checked',false);
+
+
+		if($('.partySelForPanc').filter(":checked").length == 0 )
+			$('#deSelectAll').attr('checked',true);
+		else
+			$('#deSelectAll').attr('checked',false);		
+
+		
+	});
+
 	$('.delimitation').change(function(){
 		getResultsForConstituency();
 	});
@@ -1080,8 +1114,8 @@ function callAjax(jsObj,url)
 		 }
 		  str+='<td></td>';
 
-		 str+='<td colspan="2"><input type="radio"  id="selectAllEle" name="electionsSle" value="Select All Elections" onclick="selectAllCheckBoxes(this.value); buildParty(partiesList,\'click\');"><label style="font-weight: bold;color:blue;">Select All</label>';
-		str+='<input type="radio" id="deSelectAllEle" name="electionsSle" value="Unselect All Elections" onclick="deSelectAllCheckBoxes(this.value); "><label style=" font-weight: bold;color:blue;">Unselect All</label></td>';
+		 str+='<td colspan="2"><label style="color:#0088cc;"><b><input type="radio"  id="selectAllEle" name="electionsSle" value="Select All Elections" onclick="selectAllCheckBoxes(this.value); buildParty(partiesList,\'click\');">Select All</b></label>';
+		str+='<label style="color:#0088cc;"><b><input type="radio" id="deSelectAllEle" name="electionsSle" value="Unselect All Elections" onclick="deSelectAllCheckBoxes(this.value); ">Unselect All</label></b></td>';
 		 str+='</table>';
 
 		 str+='</td></tr>';
@@ -1170,8 +1204,8 @@ results.sort(dynamicSort("name"));
 		 
 		 str+='<td></td>';
 
-		 str+='<td colspan="3"><input type="radio"  id="selectAll" value="Select All Parties" name="partiesSel"  onclick="selectAllCheckBoxes(this.value)"><label style=" font-weight: bold;color:blue;">Select All</label></td>';
-		 str+='<td  colspan="3"><input type="radio" id="deSelectAll" value="Unselect All Parties"  name="partiesSel"  onclick="deSelectAllCheckBoxes(this.value)"><label style=" font-weight: bold;color:blue;">Unselect All</label></td>';
+		 str+='<td colspan="3"><label style="color:#0088cc;"><b><input type="radio"  id="selectAll" value="Select All Parties" name="partiesSel"  onclick="selectAllCheckBoxes(this.value)">Select All</b></label></td>';
+		 str+='<td  colspan="3"><label style="color:#0088cc;"><b><input type="radio" id="deSelectAll" value="Unselect All Parties"  name="partiesSel"  onclick="deSelectAllCheckBoxes(this.value)">Unselect All</b></label></td>';
 		
 
 		 str+='</table>'; 

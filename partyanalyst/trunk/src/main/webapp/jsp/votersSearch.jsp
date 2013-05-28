@@ -1050,6 +1050,7 @@ function buildCategoriesListInit(result){
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" id="allAttributeTypeAllId" class="allAttributeTypeClass" value="all" />  All</td>';
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="cast" />  Caste</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="party"/>  Party</td>';
+		str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="group"/> Voter Group</td>';
 		 if( selectedLevel == 3 || selectedLevel == 4 )
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="Locality"/>  Locality</td>'; 
 		str+='   <td style="padding-left:20px;"><input type="checkbox" class="allAttributeTypeClass" value="mobileNo" id= "mobileNo"/>  Mobile No</td>'; 
@@ -1072,8 +1073,12 @@ function buildCategoriesListInit(result){
 	   str+='<div><input type="radio" id="singleAttributeType" name="attributeType" /> Select Attributes for each voter to update<span style=" color: #000000;"> (Hint: Please select atmost 500 voters to edit)</span></div>';
 	   str+='<table style="margin-left:5px;margin-bottom:5px;color:#000000;"><tr>';
 	    str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" id="singleAttributeTypeId" class="singleAttributeTypeClass" value="all" />  All</td>';
+
 		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="cast" />  Caste</td>';
 		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="party"/>  Party</td>';
+
+		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="group" />  Voter Group</td>';
+
 			if( selectedLevel == 3 || selectedLevel == 4 )
 		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="Locality"/>  Locality</td>'; 
 		str+='   <td style="padding-left:20px;"><input type="checkbox" disabled="disabled" class="singleAttributeTypeClass" value="mobileNo" id="mobileNo"/>  Mobile No</td>';
@@ -1185,6 +1190,31 @@ function buildCategoriesListInit(result){
 			else
 				selTypeId = $("#mandalField").val().substring(1);
         }
+
+		var groupType = "";
+		var locationValue = 0;
+
+		if($('#reportLevel').val() == 1){
+			groupType = "constituency";
+			locationValue = $('#constituencyList').val(); 
+		}else if($('#reportLevel').val() == 2 || $('#reportLevel').val() == 4){
+
+		   var mandalTemp = $('#mandalField').val();
+
+		 if(mandalTemp.substring(0,1) == "2")
+			groupType =  "mandal";
+		 else if(mandalTemp.substring(0,1) == "1")
+			groupType =  "muncipality";
+		 locationValue = mandalTemp.substring(1);
+		}else if($('#reportLevel').val() == 3 || $('#reportLevel').val() == 6){
+	      groupType =  "mandal";
+		  locationValue = $("#mandalField").val().substring(1);
+		}
+		else if($('#reportLevel').val() == 5){
+	      groupType =  "muncipality";
+		  locationValue = $("#mandalField").val().substring(1);
+		}
+
 		
 		var jsObj=
 				{
@@ -1197,7 +1227,10 @@ function buildCategoriesListInit(result){
 					selectedTypeId:selectedTypeId,
 					publicationId:publicationId,
 					selType:selType,
-					selTypeId:selTypeId
+					selTypeId:selTypeId,
+                    groupType:groupType,
+					locationValue:locationValue	
+					
 					
 				}
 				$("#getAllVoterFamiliesForEditFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
@@ -1241,7 +1274,29 @@ function buildCategoriesListInit(result){
 				myId = $("#mandalField").val().substring(1);
 				}
         }
+		var groupType = "";
+		var locationValue = 0;
 
+		if($('#reportLevel').val() == 1){
+			groupType = "constituency";
+			locationValue = $('#constituencyList').val(); 
+		}else if($('#reportLevel').val() == 2 || $('#reportLevel').val() == 4){
+
+		   var mandalTemp = $('#mandalField').val();
+
+		 if(mandalTemp.substring(0,1) == "2")
+			groupType =  "mandal";
+		 else if(mandalTemp.substring(0,1) == "1")
+			groupType =  "muncipality";
+		 locationValue = mandalTemp.substring(1);
+		}else if($('#reportLevel').val() == 3 || $('#reportLevel').val() == 6){
+	      groupType =  "mandal";
+		  locationValue = $("#mandalField").val().substring(1);
+		}
+		else if($('#reportLevel').val() == 5){
+	      groupType =  "muncipality";
+		  locationValue = $("#mandalField").val().substring(1);
+		}
 
 
 		var jsObj=
@@ -1255,7 +1310,10 @@ function buildCategoriesListInit(result){
 					selectedTypeId:selectedTypeId,
 					publicationId:publicationId,
 					selType:selType,
-                    selTypeId:selTypeId 
+                    selTypeId:selTypeId,
+					locationValue:locationValue,
+                    groupType:groupType 
+						
 					
 				}
 	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1365,6 +1423,7 @@ function callAjaxForCandSearch(jsObj,url)
 	var castPresent = false;
 	var partyPresent = false;
 	var  localityPresent=false;
+	var groupPresent = false;
 	var totalCategCount = 0;
     if(results != null){
 		   str+="<fieldset>";
@@ -1378,7 +1437,18 @@ function callAjaxForCandSearch(jsObj,url)
 						 str+="<option value="+results.casteGroupNameList[l].id+">"+results.casteGroupNameList[l].name+"</option>";
 					    }
 			  str+="    </select></td></tr>";
-		   }  
+		   }
+		   if(results.groupPresent){
+		     groupPresent = true;
+			  str+="<tr>";	
+		      str+="    <td><b>Group:</b></td>";		  
+			  str+="    <td><select id='groupSelForAll' >";
+				        for(var x in results.customGroups){
+						 str+="<option value="+results.customGroups[x].id+">"+results.customGroups[x].name+"</option>";
+					    }
+			  str+="    </select></td></tr>";
+		   } 
+
 		   if(results.partyPresent){
 		      partyPresent = true;
 			  str+="<tr>";	
@@ -1429,12 +1499,13 @@ function callAjaxForCandSearch(jsObj,url)
 		    }   	
 		   str+="</table>";	
            str+="</fieldset>";	
-           str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForAll("+castPresent+","+partyPresent+","+localityPresent+","+totalCategCount+","+results.mobileNoPresent+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
+           str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForAll("+castPresent+","+partyPresent+","+localityPresent+","+totalCategCount+","+results.mobileNoPresent+","+results.groupPresent+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
 	    $("#multipleVoterFamiliesEditDiv").html(str);		   
 		}
 	   
 	}
-	 function updateAllSelectedVotersForAll(castPresent,partyPresent,localityPresent,count,mobileNoPresent){
+	 function updateAllSelectedVotersForAll(castPresent,partyPresent,localityPresent,count,mobileNoPresent,groupPresent){
+
 	     var votersEditInfo = new Array();
 		 var voterIds = '';
 		 if(selectedVotersArr.length > 1000){
@@ -1457,6 +1528,9 @@ function callAjaxForCandSearch(jsObj,url)
 			  {
 				obj["mobileId"] = $('#mobileForAll').val();
 			  }
+			  if(groupPresent)
+				  obj["groupId"] = $('#groupSelForAll').val();
+
 			  if(localityPresent){
 			  var hamletId=$("#localityForAll").val();
 			  var localityId= $("#localitylocationdiv").val();
@@ -1485,6 +1559,7 @@ function callAjaxForCandSearch(jsObj,url)
 		    total:count,
 			partyPresent:partyPresent,
 			castPresent:castPresent,
+            groupPresent:groupPresent,
 			localityPresent:localityPresent,
 			mobileNoPresent:mobileNoPresent,
 			voterIds:voterIds,
@@ -1523,7 +1598,7 @@ function callAjaxForCandSearch(jsObj,url)
 		    alert("Updated Successfully");
 	 }
 	 
-	 function updateAllSelectedVotersForIndividule(castPresent,partyPresent,localityPresent,count,mobileNoPresent){
+	 function updateAllSelectedVotersForIndividule(castPresent,partyPresent,localityPresent,count,mobileNoPresent,groupPresent){
 	    var votersEditInfo = new Array();
      $('.familyVoterEditId').each(function(){
 	        var obj={
@@ -1534,6 +1609,8 @@ function callAjaxForCandSearch(jsObj,url)
 			  obj["castId"] = $(this).closest("table").find(".castallfamily").val();
 			  if(partyPresent)
 			  obj["partyId"] = $(this).closest("table").find(".partyallfamily").val();
+			  if(groupPresent)
+			  obj["groupId"] =			$(this).closest("table").find(".groupallfamily").val();
 			  if(mobileNoPresent)
 			  {
 				obj["mobileId"] = $(this).closest("table").find(".mobileAllSelect").val();
@@ -1575,6 +1652,7 @@ function callAjaxForCandSearch(jsObj,url)
 					total:count,
 					partyPresent:partyPresent,
 					castPresent:castPresent,
+					groupPresent:groupPresent,	 
 					localityPresent:localityPresent,
 					selectedVoters:votersEditInfo,
 					mobileNoPresent:mobileNoPresent,
@@ -1654,6 +1732,22 @@ function callAjaxForCandSearch(jsObj,url)
 				  str+="    </select></td>";
 				  str+="    <td><a title='Apply this value to this family' href='javascript:{};' onclick='applyValueToAllVoters(\"castvalid"+localid+"\",\"castallfamily"+j+"\")'><i class='icon-ok'></i></a></td>";
 				  str+="    <td><a title='Apply this value to all families' href='javascript:{};' onclick='applyValueToAllVoters(\"castvalid"+localid+"\",\"castallfamily\")'><i class='icon-ok-sign'></i></a></td>";
+				  str+="   </tr>";
+				 }
+				 if(results.groupPresent){
+ 				  str+="   <tr>";	
+				  str+="    <td><b>Group:</b></td>";		  
+				  str+="    <td><select id='groupvalid"+localid+"' class='groupallfamily groupallfamily"+j+"' >";
+						 for(var l in results.customGroups){
+
+						   if(voters[k].customGroupId != results.customGroups[l].id)
+							str+="<option value="+results.customGroups[l].id+">"+results.customGroups[l].name+"</option>";
+						   else
+							str+="<option value="+results.customGroups[l].id+" selected='selected'>"+results.customGroups[l].name+"</option>";			
+						 }
+				  str+="    </select></td>";
+				  str+="    <td><a title='Apply this value to this family' href='javascript:{};' onclick='applyValueToAllVoters(\"groupvalid"+localid+"\",\"groupallfamily"+j+"\")'><i class='icon-ok'></i></a></td>";
+				  str+="    <td><a title='Apply this value to all families' href='javascript:{};' onclick='applyValueToAllVoters(\"groupvalid"+localid+"\",\"groupallfamily\")'><i class='icon-ok-sign'></i></a></td>";
 				  str+="   </tr>";
 				 }
 				 if(results.partyPresent){
@@ -1750,7 +1844,7 @@ function callAjaxForCandSearch(jsObj,url)
 			}
 		 
 		}
-		 str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForIndividule("+results.castPresent+","+results.partyPresent+","+results.localityPresent+","+categCount+","+results.mobileNoPresent+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
+		 str+="<input id='votersEditSaveButtnImg' style='margin-bottom: 20px;margin-left: 360px;margin-top: 10px;' type='button' class='btn btn-success' onclick='updateAllSelectedVotersForIndividule("+results.castPresent+","+results.partyPresent+","+results.localityPresent+","+categCount+","+results.mobileNoPresent+","+results.groupPresent+");' value='Update All Voters'/><input  style='margin-left: 10px;margin-top: -8px;' type='button' class='btn btn-success' onclick='ClearAllSelectedVoters();' value='Clear All Voters'/><img id='votersEditSaveAjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/ajaxImg.gif'>";
 		 $("#multipleVoterFamiliesEditDiv").html(str);
 	   }
 	}
@@ -3304,6 +3398,8 @@ function buildSelectedVotersData(results)
 	 }
 var isMuncipalitySelected = "";
 var muncipalitySelectedId = 0;
+var groupType = "";
+var locationValue = 0;
 function getAllSelectedVotersDetails1()
 {
 
@@ -3317,6 +3413,27 @@ function getAllSelectedVotersDetails1()
 				muniId = $("#mandalField").val().substring(1);
 				}
 	}
+
+		if($('#reportLevel').val() == 1){
+			groupType = "constituency";
+			locationValue = $('#constituencyList').val(); 
+		}else if($('#reportLevel').val() == 2 || $('#reportLevel').val() == 4){
+
+		   var mandalTemp = $('#mandalField').val();
+
+		 if(mandalTemp.substring(0,1) == "2")
+			groupType =  "mandal";
+		 else if(mandalTemp.substring(0,1) == "1")
+			groupType =  "muncipality";
+		 locationValue = mandalTemp.substring(1);
+		}else if($('#reportLevel').val() == 3 || $('#reportLevel').val() == 6){
+	      groupType =  "mandal";
+		  locationValue = $("#mandalField").val().substring(1);
+		}
+		else if($('#reportLevel').val() == 5){
+	      groupType =  "muncipality";
+		  locationValue = $("#mandalField").val().substring(1);
+		}
 
 	if(selectedVotersArr.length <= 0)
 		alert("Please select atleast one recore to update");

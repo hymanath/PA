@@ -70,8 +70,7 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private List<SelectOptionVO> hamlets;
 	
 	private List<VoterVO> votersData , voterDetails;
-	
-	private IUserVoterService userVoterService;
+    private IUserVoterService userVoterService;
 	
 	
 	public IUserVoterService getUserVoterService() {
@@ -80,6 +79,16 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 
 	public void setUserVoterService(IUserVoterService userVoterService) {
 		this.userVoterService = userVoterService;
+	}
+	
+	private List<SelectOptionVO> areaTypeList;
+	
+	public List<SelectOptionVO> getAreaTypeList() {
+		return areaTypeList;
+	}
+
+	public void setAreaTypeList(List<SelectOptionVO> areaTypeList) {
+		this.areaTypeList = areaTypeList;
 	}
 
 	public List<SelectOptionVO> getHamlets() {
@@ -374,6 +383,9 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		
+		areaTypeList = staticDataService.getAllAreaTypes();
+		areaTypeList.add(0, new SelectOptionVO(0L,"Select AreaType"));
 		//session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
 /*		HttpSession session = request.getSession();
 		session = request.getSession();
@@ -411,7 +423,7 @@ public String saveVoterDetails(){
 	 voterHouseInfoVO.setVoterId(new Long(voterId));
 	if(boothId != null && boothId.trim().length() > 0)
 		 voterHouseInfoVO.setBoothId(new Long(boothId));
-	 votersAnalysisService.updateVoterDetails(voterHouseInfoVO,"all");
+	 votersAnalysisService.updateVoterDetails(voterHouseInfoVO,"all",false);
 	request.setAttribute("voterId", voterHouseInfoVO.getVoterId());
 	resultStr = SUCCESS;
 	request.setAttribute("resultStr", resultStr);
@@ -737,7 +749,7 @@ public String saveLocality()
 					}
 					
 					
-				  status = votersAnalysisService.updateMultipleVoterDetails(votersList,"partyCast");
+				  status = votersAnalysisService.updateMultipleVoterDetails(votersList,"partyCast",false);
 				  return "update";
 			  }
 		}catch (Exception e) {
@@ -804,6 +816,8 @@ public String saveLocality()
 			    		searchInfo.setMobileNoPresent(true);
 			    	}else if(id.equalsIgnoreCase("voterGroup"))
 			    		searchInfo.setVoterGroupPresent(true);
+			    	else if(id.equalsIgnoreCase("customGroup"))
+			    		searchInfo.setGroupPresent(true);
 			    		
 			    	else{
 			    		categories.add(new Long(id));
@@ -848,6 +862,7 @@ public String saveLocality()
 					voterHouseInfoVO = new VoterHouseInfoVO();
 					voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
 					voterHouseInfoVO.setCasteStateId(jSONObject.getLong("casteId"));
+					voterHouseInfoVO.setCustomGroupId(jSONObject.getLong("groupId"));					
 					voterHouseInfoVO.setHamletId(jSONObject.getLong("hamletId"));
 					voterHouseInfoVO.setLocalitityId(jSONObject.getLong("localityHamletId"));
 					voterHouseInfoVO.setMobileNo(jSONObject.getString("mobileId"));
@@ -910,6 +925,24 @@ public String saveLocality()
 		       	parameters.setSelType(jObj.getString("isMuncipalitySelected"));
 		       	parameters.setSelTypeId(jObj.getLong("muncipalitySelectedId"));
 		       	
+                try
+                {
+		    	if(jObj.getString("groupType").equalsIgnoreCase("mandal"))
+	    			parameters.setMandal(true);
+	    		else if(jObj.getString("groupType").equalsIgnoreCase("muncipality"))
+	    			parameters.setMuncipality(true);
+	    		else if(jObj.getString("groupType").equalsIgnoreCase("constituency"))
+	    			parameters.setConstituency(true);
+	    		
+	    		parameters.setGroupLocationValue(jObj.getLong("locationValue"));
+                }catch(Exception e){
+                	parameters.setMandal(false);
+                	parameters.setMuncipality(false);
+                	parameters.setConstituency(false);
+                	parameters.setGroupLocationValue(0L);
+                }
+		     
+		       	
 		       	parameters.setUserId(userId);
 
 	    	org.json.JSONArray votersJSONArray = jObj.getJSONArray("votersIds");
@@ -964,6 +997,7 @@ public String saveLocality()
 					    for(String id : idsArray){
 					    	if(id.equalsIgnoreCase("all")){
 					    		parameters.setAll(true);
+					    		parameters.setGroupPresent(true);
 					    		parameters.setPartyPresent(true);
 					    		parameters.setCastPresent(true);
 					    		parameters.setLocalityPresent(true);
@@ -976,11 +1010,27 @@ public String saveLocality()
 					    		parameters.setLocalityPresent(true);
 					    	}else if(id.equalsIgnoreCase("mobileNo")){
 					    		parameters.setMobileNoPresent(true);
-					    	} 
+					    	}
+					    	else if(id.equalsIgnoreCase("group")){
+					    		parameters.setGroupPresent(true);
+					    	}
 					    	else{
 					    		categories.add(new Long(id));
 					    	}
 					    }
+					    
+					    
+					    if(parameters.isGroupPresent()){
+					    	if(jObj.getString("groupType").equalsIgnoreCase("mandal"))
+				    			parameters.setMandal(true);
+				    		else if(jObj.getString("groupType").equalsIgnoreCase("muncipality"))
+				    			parameters.setMuncipality(true);
+				    		else if(jObj.getString("groupType").equalsIgnoreCase("constituency"))
+				    			parameters.setConstituency(true);
+				    		
+				    		parameters.setGroupLocationValue(jObj.getLong("locationValue"));
+					    	
+					    }					    
 					    parameters.setSelectedType(jObj.getString("selectedType"));
 				       	parameters.setSelectedTypeId(jObj.getLong("selectedTypeId"));
 				       	parameters.setPublicationId(jObj.getLong("publicationId"));
@@ -1016,6 +1066,7 @@ public String saveLocality()
 					        catch(Exception e){					    		
 					        	 parameters.setSelTypeId(0L);
 					    	}
+					        parameters.setUserId(userId);
 					    	
 						  voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptions(parameters);
 						  //
@@ -1029,6 +1080,11 @@ public String saveLocality()
 						boolean castPresent = jObj.getBoolean("castPresent");
 						boolean localityPresent = jObj.getBoolean("localityPresent");
 						boolean mobileNoPresent = jObj.getBoolean("mobileNoPresent");
+						boolean groupPresent = false;
+						 try{
+						 groupPresent = jObj.getBoolean("groupPresent");
+						 }catch(Exception e){
+						 }
 						for(int i = 0;i<jSONArray.length();i++){
 							JSONObject jSONObject= jSONArray.getJSONObject(i);
 							//voterHouseInfoVO.setVoterId(jSONObject.getLong("voterId"));
@@ -1036,6 +1092,9 @@ public String saveLocality()
 							  voterHouseInfoVO.setCasteStateId(jSONObject.getLong("castId"));
 							if(partyPresent)
 							  voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
+							if(groupPresent)
+								voterHouseInfoVO.setCustomGroupId(jSONObject.getLong("groupId"));
+								
 							if(mobileNoPresent)
 							{
 								voterHouseInfoVO.setMobileNo(jSONObject.getString("mobileId"));
@@ -1104,7 +1163,7 @@ public String saveLocality()
 						 
 						}
 						String[] voters = jObj.getString("voterIds").split(",");
-						 votersAnalysisService.updateSelectedFieldsForAllVoters(voterHouseInfoVO,voters,type);
+						 votersAnalysisService.updateSelectedFieldsForAllVoters(voterHouseInfoVO,voters,type,groupPresent);
 						return "update";
 				  }else if(jObj.getString("task").equalsIgnoreCase("updateIndividuls")){
 					    List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
@@ -1115,6 +1174,15 @@ public String saveLocality()
 						boolean castPresent = jObj.getBoolean("castPresent");
 						boolean localityPresent = jObj.getBoolean("localityPresent");
 						boolean mobileNoPresent = jObj.getBoolean("mobileNoPresent");
+						boolean groupPresent = false;
+						try
+						{
+						 groupPresent = jObj.getBoolean("groupPresent");
+						}catch(Exception e)
+						{
+							
+						}
+						
 						for(int i = 0;i<jSONArray.length();i++){
 							JSONObject jSONObject= jSONArray.getJSONObject(i);
 							voterHouseInfoVO = new VoterHouseInfoVO();
@@ -1123,6 +1191,8 @@ public String saveLocality()
 							  voterHouseInfoVO.setCasteStateId(jSONObject.getLong("castId"));
 							if(partyPresent)
 							  voterHouseInfoVO.setPartyId(jSONObject.getLong("partyId"));
+							if(groupPresent)
+								voterHouseInfoVO.setCustomGroupId(jSONObject.getLong("groupId"));
 							if(localityPresent){
 								Long hamletId=jSONObject.getLong("hamletId");
 								
@@ -1192,7 +1262,7 @@ public String saveLocality()
 						}
 						
 					
-					  status = votersAnalysisService.updateMultipleVoterDetails(votersList,type);
+					  status = votersAnalysisService.updateMultipleVoterDetails(votersList,type,groupPresent);
 					  return "update";
 				  }
 			}catch (Exception e) {

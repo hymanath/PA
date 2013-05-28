@@ -1452,7 +1452,7 @@ for  body3 start    result  -->
 			<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
 			</div>
 				<p style="padding-bottom:2px;">
-					<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+					<input type="text" id="amount" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
 				</p>
 		</div>
 		<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto;"></div>
