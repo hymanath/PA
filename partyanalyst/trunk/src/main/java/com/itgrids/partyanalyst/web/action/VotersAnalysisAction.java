@@ -1458,12 +1458,20 @@ return Action.SUCCESS;
 		try{
 			jObj = new JSONObject(getTask());
 			session = request.getSession();
-			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-			if(user == null){
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			Long userId = null;
+			if(regVO != null && regVO.getRegistrationID() != null)
+				if(regVO.getParentUserId()!=null)
+					userId=regVO.getMainAccountId();
+				else
+					userId = regVO.getRegistrationID();
+			else 
+			  return "error";
+			if(regVO == null){
 				task = "notLogged";
 				return Action.SUCCESS;
 			}
-			task = cadreManagementService.updateCadreVoterId(jObj.getLong("cadreId"),jObj.getLong("voterId"),user.getRegistrationID());
+			task = cadreManagementService.updateCadreVoterId(jObj.getLong("cadreId"),jObj.getLong("voterId"),userId);
 		}catch (Exception e) {
 			log.error("Exception Occured in addVoterToCadre() Method, Exception - ",e);
 			task =  "error";

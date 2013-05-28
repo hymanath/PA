@@ -1499,15 +1499,15 @@ var userGrpsObj={
 	<div id="userGroupsMainDiv">	
 	</div>
 	<div id="userGroupsTopDiv">
-		<table class="hdTable">
+		<table class="hdTable" style="font-family: verdana; font-size: 14px;">
 		<tr>
 		<td><img src="images/usergroups/group-of-people.jpg" height="200px" width="320px" style="border:1px solid #96B4D3;border-width:1px 3px 3px 1px;"></td>
 		<td id="grpsDescTdDiv">
-			<h3>User Groups</h3>
+			<h3>User Groups</h3></br>
 			<p>User Groups is a consistent interaction for creating, managing groups
 			 and it helps the users for maintaining relationship with people</p>
-			&nbsp;Identifying and gathering sets of people within the system to:
-			<ul class="uLEleStyle">
+			<p>Identifying and gathering sets of people within the system to:</p>
+			<ul class="uLEleStyle" style="font-family: verdana; font-size: 14px;">
 				<li type="square">&nbsp;Collaborate</li> 
 				<li type="square">&nbsp;Communicate</li>
 				<li type="square">&nbsp;Define what activities the group can do together</li>

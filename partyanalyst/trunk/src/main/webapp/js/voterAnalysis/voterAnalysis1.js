@@ -3599,7 +3599,8 @@ function buildPartyWisePiechart(myResults,jsObj)
 	var partyWise_header=document.getElementById('partyWise_header');
 	var results = myResults.voterCastInfodetails;
 	if(results.partyWiseAssignedVoters > 0){
-
+		$('#partyBasicInfoStatsTabNewTitle').show();
+		$('#PartyWiseCastInfoBtn').show();
 	 if(maintype == jsObj.type && maintype == "hamlet" && isLocalityDataExist != null && isLocalityDataExist == 'false')
         $("#castPartyPopupShowBtn").hide();
 	   else
@@ -3608,7 +3609,9 @@ function buildPartyWisePiechart(myResults,jsObj)
 	   $("#LocalCastDiv").css('padding','20px');
 	    $("#votersMainOuterDiv2").show();
 	}else{
-		$("#votersMainOuterDiv2").hide();
+		$('#partyBasicInfoStatsTabNewTitle').hide();
+		$('#PartyWiseCastInfoBtn').hide();
+		//$("#votersMainOuterDiv2").hide();
 	}
 	var voters= '';
 	var str = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;">';
