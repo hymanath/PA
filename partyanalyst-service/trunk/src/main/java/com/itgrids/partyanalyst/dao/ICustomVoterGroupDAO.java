@@ -8,8 +8,8 @@ import com.itgrids.partyanalyst.model.CustomVoterGroup;
 
 public interface ICustomVoterGroupDAO extends GenericDao<CustomVoterGroup,Long>{
 	
-	public List<Object[]> getCustomVoterGroupsByLocationTypeAndLocationValue(Long userId ,Long locationTypeId ,Long locationValue);
-	
+	public List<Object[]> getCustomVoterGroupsByLocationValue(Long userId ,List<Long> locationValues);
+	public List<Object[]> getCustomVoterGroupsByLocationValueAndAreaType(Long userId ,List<Long> locationValues , String areaType);	
 	public List<Object[]> checkDuplicateGroupName(Long userId,Long locationValue,String name);
 
 

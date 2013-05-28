@@ -61,7 +61,7 @@ public interface IVotersAnalysisService {
 
 	public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long user);
 	
-	public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCast);
+	public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCast , boolean groupPresent);
 	
 	public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,Integer startIndex, Integer maxResults);
 	
@@ -93,7 +93,7 @@ public interface IVotersAnalysisService {
 	
 	public VoterHouseInfoVO getVoterPersonalDetailsList(List<VoterHouseInfoVO> voterIds,Long userId);
 	
-	public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs,String partyCast);
+	public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs,String partyCast,boolean groupPresent);
 	
 	public VoterHouseInfoVO getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id,List<Long> categories);
 	
@@ -111,7 +111,7 @@ public interface IVotersAnalysisService {
 	
 	public VoterHouseInfoVO getSelectedCategoryOptionsForIndividual(List<VoterHouseInfoVO> voterIds,VoterHouseInfoVO parameters);
 	
-	public void updateSelectedFieldsForAllVoters(VoterHouseInfoVO voterHouseInfoVO,String[] voterIds,String partyCast);
+	public void updateSelectedFieldsForAllVoters(VoterHouseInfoVO voterHouseInfoVO,String[] voterIds,String partyCast,boolean groupPresent);
 	
 	//public ResultStatus insertVotersDataToIntermediateTables(Long reportLevelValue, Long publicationDateId);
 	
@@ -281,5 +281,7 @@ public interface IVotersAnalysisService {
 	 public VoterInfo getTotalVotersDetailsbyLocation(Long userId,Long reportLevelValue,String locationType,Long publicationDateId,Long constituencyId);
 	 
 	 public String getReportLevelById(Long id);
+	 
+
 	 
 }

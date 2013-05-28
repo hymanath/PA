@@ -33,7 +33,7 @@ public class DelimitationUploadValidationVO implements Serializable {
 	private Boolean canSave;
 	
 	private Long year;
-	private Set<String> names;
+	private List<String> names;
 	private String oneDelimitation;
 	private String sameMandals;
 	private List<SelectOptionVO> selectOptionsList;
@@ -55,11 +55,11 @@ public class DelimitationUploadValidationVO implements Serializable {
 		this.year = year;
 	}
 
-	public Set<String> getNames() {
+	public List<String> getNames() {
 		return names;
 	}
 
-	public void setNames(Set<String> names) {
+	public void setNames(List<String> names) {
 		this.names = names;
 	}
 

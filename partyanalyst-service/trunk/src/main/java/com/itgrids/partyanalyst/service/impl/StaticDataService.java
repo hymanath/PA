@@ -26,6 +26,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.IAreaTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -94,7 +95,6 @@ import com.itgrids.partyanalyst.dto.ElectionInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
-import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -112,6 +112,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
+import com.itgrids.partyanalyst.model.AreaType;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
@@ -212,10 +213,19 @@ public class StaticDataService implements IStaticDataService {
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IRegionServiceData regionServiceDataImp;
-	private  IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
+	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
+	private IAreaTypeDAO areaTypeDAO;
 	
 
 	
+	public IAreaTypeDAO getAreaTypeDAO() {
+		return areaTypeDAO;
+	}
+
+	public void setAreaTypeDAO(IAreaTypeDAO areaTypeDAO) {
+		this.areaTypeDAO = areaTypeDAO;
+	}
+
 	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
 		return assemblyLocalElectionBodyWardDAO;
 	}
@@ -8518,8 +8528,17 @@ public class StaticDataService implements IStaticDataService {
 				for(Tehsil tehsil:tehsils){
 					tehsilNames.add(tehsil.getTehsilName());
 				}
-				vo.setSelectOptionsList(tehsilDetails);	
-				vo.setNames(tehsilNames);
+				vo.setSelectOptionsList(tehsilDetails);
+				
+				List<String> list=new ArrayList<String>(tehsilNames);
+				
+				Collections.sort(list, new Comparator<String>() {
+				    public int compare(String s1, String s2) {
+				    	 return s1.compareToIgnoreCase(s2);
+				    }
+				});
+				
+				vo.setNames(list);
 				resultList.add(vo);
 			}
 		}
@@ -8620,6 +8639,28 @@ public class StaticDataService implements IStaticDataService {
 			list.add(party);
 		}
 		return list;	
+	}
+	
+	/**
+	 * This method will get all the area types avialable in the database
+	 * @author Sambasiva Rao
+	 * @return list , whicch contains all the area types
+	 */
+	public List<SelectOptionVO> getAllAreaTypes()
+	{
+		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+		try{
+			
+			List<AreaType> areaTypes = areaTypeDAO.getAll();
+			for(AreaType areaType:areaTypes)
+				list.add(new SelectOptionVO(areaType.getAreaTypeId(),areaType.getType()));
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return list;
+		
 	}
 
 }
