@@ -289,7 +289,7 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		}
 		
 	}*/
-	public void testGetBoothResultsBasedOnMaleAndFemaleVotesByElectionId()
+	/*public void testGetBoothResultsBasedOnMaleAndFemaleVotesByElectionId()
 	{
 		List<Object[]> list = boothConstituencyElectionDAO.getBoothResultsBasedOnMaleAndFemaleVotesByElectionId(3l);
 		System.out.println(list.size());
@@ -300,7 +300,21 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 				System.out.print("\t"+object.toString());
 		}
 		
-	}
+	}*/
 	
+	/*public void testgetEleYears()
+	{
+		List<Object[]> list = boothConstituencyElectionDAO.getElectionYears();
+		for(Object[] params : list)
+		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
+	}*/
+	
+	public void testgetConstituenciesByEleId()
+	{
+		List<Object[]> list = boothConstituencyElectionDAO.getConstituenciesByEleId(38l);
+		for(Object[] params : list)
+			System.out.println(params[0]+" "+params[1]);
+			
+	}
 	
 }

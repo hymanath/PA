@@ -644,4 +644,17 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getEleYears()
+	{
+		return getHibernateTemplate().find(" select distinct model.constituencyElection.election.electionId,model.constituencyElection.election.electionYear,model.constituencyElection.election.elecSubtype,model.constituencyElection.election.electionScope.electionType.electionType from BoothConstituencyElection model order by model.constituencyElection.election.electionYear desc");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituenciesByEleId(Long electionId)
+	{
+		Query query = getSession().createQuery("select distinct model.constituencyElection.constituency.constituencyId, model.constituencyElection.constituency.name from BoothConstituencyElection model where model.constituencyElection.election.electionId =:electionId order by model.constituencyElection.constituency.name ");
+		query.setParameter("electionId", electionId);
+		return query.list();
+	}
 }
