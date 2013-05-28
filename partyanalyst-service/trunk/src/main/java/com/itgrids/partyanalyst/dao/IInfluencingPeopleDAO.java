@@ -150,7 +150,7 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	
 	public List<Long> getInfluencingPeopleCountInHamlets(Long userId,List<Long> locationValue);
 	
-	public List<Long> getInfluencingPeopleCount(Long userId,List<Long> locationValues,String type);
+	public List<Long> getInfluencingPeopleCount(Long userId,List<Long> locationValues,String type,Long constituencyId,String partNo);
 	
 	public List<InfluencingPeople> getAllDetailsOfInfluencingPeople(Long userId,List<Long> ids,String type,Integer startIndex,
 			Integer maxRecords,String columnName,String order);
