@@ -86,7 +86,92 @@ public class VoterHouseInfoVO {
 	private List<String> influenceNames;
 	private List<String>  cadreNames;
 	private List<String>  politicianNames;
+	private List<SelectOptionVO> customGroups;
+	private boolean  groupPresent;	
 	
+	private Long customGroupId;	
+	
+	private String groupType;
+	private boolean mandal;
+	private Long constituencyId;
+	private boolean muncipality;
+	private Long groupLocationValue;
+	private boolean constituency;
+
+
+
+
+	public boolean isConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(boolean constituency) {
+		this.constituency = constituency;
+	}
+
+	public Long getGroupLocationValue() {
+		return groupLocationValue;
+	}
+
+	public void setGroupLocationValue(Long groupLocationValue) {
+		this.groupLocationValue = groupLocationValue;
+	}
+
+	public boolean isMuncipality() {
+		return muncipality;
+	}
+
+	public void setMuncipality(boolean muncipality) {
+		this.muncipality = muncipality;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public String getGroupType() {
+		return groupType;
+	}
+
+	public void setGroupType(String groupType) {
+		this.groupType = groupType;
+	}
+
+	public boolean isMandal() {
+		return mandal;
+	}
+
+	public void setMandal(boolean mandal) {
+		this.mandal = mandal;
+	}
+
+	public boolean isGroupPresent() {
+		return groupPresent;
+	}
+
+	public void setGroupPresent(boolean groupPresent) {
+		this.groupPresent = groupPresent;
+	}
+
+	public Long getCustomGroupId() {
+		return customGroupId;
+	}
+
+	public void setCustomGroupId(Long customGroupId) {
+		this.customGroupId = customGroupId;
+	}
+
+	public List<SelectOptionVO> getCustomGroups() {
+		return customGroups;
+	}
+
+	public void setCustomGroups(List<SelectOptionVO> customGroups) {
+		this.customGroups = customGroups;
+	}
 
 	public List<String> getCadreNames() {
 		return cadreNames;

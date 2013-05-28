@@ -376,4 +376,6 @@ public interface IStaticDataService {
 		public List<Object[]> getVotersCountInAPanchayatForAnElection(Long electionId, Long panchayatId);
 	
 		public List<SelectOptionVO> getPanchayatiesByMandalIdAndConstId(Long constituencyId,Long id,Long publicationDateId);
+		public List<SelectOptionVO> getAllAreaTypes();
+
 }

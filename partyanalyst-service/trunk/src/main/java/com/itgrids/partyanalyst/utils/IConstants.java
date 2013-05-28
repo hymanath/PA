@@ -614,6 +614,11 @@ public interface IConstants {
 	public static final long MPTC_ELCTION_TYPE_ID = 3L;
 	public static final long ZPTC_ELCTION_TYPE_ID = 4L;
 	
+	
+	public final static String AREA_TYPE_URBAN = "URBAN";
+	public final static String AREA_TYPE_RURAL = "RURAL";
+	public final static String AREA_TYPE_RURAL_URBAN = "RURAL-URBAN";
+	
 
 	
 }

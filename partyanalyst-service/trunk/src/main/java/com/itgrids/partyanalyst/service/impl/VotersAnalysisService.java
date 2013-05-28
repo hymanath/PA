@@ -25,6 +25,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAreaTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -40,7 +41,10 @@ import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICustomVoterDAO;
+import com.itgrids.partyanalyst.dao.ICustomVoterGroupDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
@@ -107,6 +111,8 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Caste;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.CustomVoter;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Hamlet;
@@ -207,8 +213,46 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterStatusDAO voterStatusDAO;
     private IDistrictDAO districtDAO;
     private ICustomVoterDAO customVoterDAO;
+    private IAreaTypeDAO areaTypeDAO;
+    private ICustomVoterGroupDAO customVoterGroupDAO;
+    private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+    private IDelimitationConstituencyDAO delimitationConstituencyDAO;
     
-    public IDistrictDAO getDistrictDAO() {
+    public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+
+	public ICustomVoterGroupDAO getCustomVoterGroupDAO() {
+		return customVoterGroupDAO;
+	}
+
+	public void setCustomVoterGroupDAO(ICustomVoterGroupDAO customVoterGroupDAO) {
+		this.customVoterGroupDAO = customVoterGroupDAO;
+	}
+
+	public IAreaTypeDAO getAreaTypeDAO() {
+		return areaTypeDAO;
+	}
+
+	public void setAreaTypeDAO(IAreaTypeDAO areaTypeDAO) {
+		this.areaTypeDAO = areaTypeDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
 	}
 
@@ -5107,6 +5151,68 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 		
 	  }
   
+  public void getCustomVoterGroups(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId,SelectOptionVO defaultSelectOptionVO)
+  {
+	  try
+	  {
+		  List<Long> locationValuesList = new ArrayList<Long>();	
+		  List<Object[]> customGroups = null;
+           
+		  if(voterHouseInfoVO.isMandal()){
+			  
+			  				  
+			  locationValuesList.add(voterHouseInfoVO.getGroupLocationValue());				 
+			  
+			  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(userId, locationValuesList,IConstants.AREA_TYPE_RURAL);
+
+		  }else if(voterHouseInfoVO.isMuncipality()){
+			  
+			  Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(voterHouseInfoVO.getGroupLocationValue()).get(0); 
+			  locationValuesList.add(lid);
+			  //locationValuesList.add(voterHouseInfoVO.getGroupLocationValue());	
+			  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(userId, locationValuesList,IConstants.AREA_TYPE_URBAN);		  
+			  
+		  }else if(voterHouseInfoVO.getGroupType().equalsIgnoreCase("constituency")){
+			  List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(voterHouseInfoVO.getConstituencyId());
+				Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+				List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
+				if(mandals != null && mandals.size() > 0)
+				{						SelectOptionVO selectOptionVO = null;
+					for (Tehsil tehsil : mandals)						
+						locationValuesList.add(selectOptionVO.getId());
+					
+				}
+		   customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(userId, locationValuesList,IConstants.AREA_TYPE_RURAL);
+		  }
+		  
+		  
+		  //customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValue(userId, locationValuesList);
+				
+		List<SelectOptionVO> customGroupsList = new ArrayList<SelectOptionVO>();		 
+		SelectOptionVO defaultVo = new SelectOptionVO();
+		 defaultVo.setId(0L);
+		 defaultVo.setName("Select");
+		 customGroupsList.add(defaultVo);
+		 
+		 for(Object[] obj:customGroups)
+		 {
+			 SelectOptionVO vo = new SelectOptionVO();
+			 vo.setId((Long)obj[0]);
+			 vo.setName(obj[1].toString());
+			 customGroupsList.add(vo);
+			 
+		 }
+		 
+		 voterHouseInfoVO.setCustomGroups(customGroupsList);
+		  
+	  }catch(Exception e)
+	  {
+		  
+		  
+	  }
+	  
+  }
+  
 public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId,SelectOptionVO defaultSelectOptionVO){
 	  
 	  List<Long> stateIdsList = boothPublicationVoterDAO.getVoterStateId(voterId);
@@ -5220,7 +5326,7 @@ public void getPartiesAndCastsInVotersState(VoterHouseInfoVO voterHouseInfoVO,Lo
 		 category.setCategory(categoryOptionsList);
 	  
   }
-public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCast){
+public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCast , boolean groupPresent){
 	
 	   if(voterHouseInfoVO != null){
 			try{
@@ -5343,6 +5449,30 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 				}
 			}
 		}
+		
+		if(groupPresent){			
+			
+			List<Long> list = customVoterDAO.getCustomVoterIdByVoterIdAndUserId(voterHouseInfoVO.getVoterId(), voterHouseInfoVO.getUserId());
+			
+			if(voterHouseInfoVO.getCustomGroupId().longValue() == 0 && list != null && list.size() >0)
+				customVoterDAO.removeCustomVoterDetails(list.get(0));
+			else
+			{
+				CustomVoter customVoter  = null;
+				
+				if(list != null && list.size() >0)
+					customVoter = customVoterDAO.get(list.get(0));
+				else{
+					if(voterHouseInfoVO.getCustomGroupId().longValue() !=0){
+						customVoter = new CustomVoter();
+					    customVoter.setVoter(voter);
+					    customVoter.setCustomVoterGroup(customVoterGroupDAO.get(voterHouseInfoVO.getCustomGroupId()));
+					    customVoterDAO.save(customVoter);
+					}
+				}
+			}
+		}
+			
 		voterDAO.flushAndclearSession();
 	}
 	catch (Exception e) {
@@ -5352,10 +5482,10 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 	
 }
 
- public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs,String partyCast){
+ public boolean updateMultipleVoterDetails(List<VoterHouseInfoVO> voterHouseInfoVOs,String partyCast,boolean groupPresent){
    try{
 	for(VoterHouseInfoVO voterHouseInfoVO : voterHouseInfoVOs){
-		updateVoterDetails(voterHouseInfoVO,partyCast);
+		updateVoterDetails(voterHouseInfoVO,partyCast,groupPresent);
 	}
    }catch(Exception e){
 	   log.error("Exception rised in updateMultipleVoterDetails : ",e);
@@ -7637,6 +7767,66 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 	    SelectOptionVO defaultSelectOptionVO = new SelectOptionVO();
 		 	    defaultSelectOptionVO.setId(0l);
 		 	    defaultSelectOptionVO.setName("Select");
+		 	    
+		 	    
+		 	   if( parameters.isAll() || parameters.isGroupPresent())
+		 	   { 
+		 		    
+                   
+			 	  List<Long> locationValuesList = new ArrayList<Long>();
+					// locationValuesList.add(locationValue);
+					 
+			 	 List<Object[]> customGroups = null;
+		           
+				  if(parameters.isMandal()){
+						  locationValuesList.add(parameters.getGroupLocationValue());			 
+					  
+					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL);
+
+				  }else if(parameters.isMuncipality()){
+					  
+					  
+					  Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(parameters.getGroupLocationValue()).get(0); 
+					  locationValuesList.add(lid);
+					 // locationValuesList.add(parameters.getGroupLocationValue());		
+					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_URBAN);		  
+				  }else  if(parameters.getGroupType().equalsIgnoreCase("constituency")){
+					  List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(parameters.getConstituencyId());
+						Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+						List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
+						if(mandals != null && mandals.size() > 0)
+						{						SelectOptionVO selectOptionVO = null;
+							for (Tehsil tehsil : mandals)						
+								locationValuesList.add(selectOptionVO.getId());
+							
+						}	
+						  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL);
+
+				  }	
+			 	  
+			 	  
+					//customGroups = customVoterGroupDAO.getCustomVoterGroupsByLocationValue(parameters.getUserId() ,locationValuesList);
+					 
+					 List<SelectOptionVO> customGroupsList = new ArrayList<SelectOptionVO>();
+					 SelectOptionVO defaultVo = new SelectOptionVO();
+					 defaultVo.setId(0L);
+					 defaultVo.setName("Select");
+					 customGroupsList.add(defaultVo);
+					 
+					 for(Object[] obj:customGroups)
+					 {
+						 SelectOptionVO vo = new SelectOptionVO();
+						 vo.setId((Long)obj[0]);
+						 vo.setName(obj[1].toString());
+						 customGroupsList.add(vo);
+						 
+					 }
+					 
+					 votersHouseInfoVO.setCustomGroups(customGroupsList);
+			 	   
+		 	   }
+		 	   
+		 	   
 		 	   if( parameters.isAll() || parameters.isLocalityPresent())
 		 	   { 
 		 		    SelectOptionVO defaultSelectOptionVO1 = new SelectOptionVO();
@@ -7681,6 +7871,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			Map<String, List<VoterHouseInfoVO>> voterByHouseNoMap = null;
 			
 			List<VoterHouseInfoVO> voterVOs = null;
+			Map<Long , Long> groupDetailsMap = null;
 			
 		  try{
 			  if(voterIds != null && voterIds.size() >0){
@@ -7704,6 +7895,24 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 	   }
 		 	   if(parameters.isPartyPresent() || parameters.isCastPresent() || parameters.isAll() || parameters.isLocalityPresent())
 		 	    getPartiesAndCastsInVotersState(votersHouseInfoVO,voterIds.get(0).getVoterId(),parameters.getUserId(),defaultSelectOptionVO);
+		 	   
+		 	   if(parameters.isGroupPresent()){
+		 		   
+		 		  groupDetailsMap = new HashMap<Long, Long>();
+		 		  
+		 		  getCustomVoterGroups(votersHouseInfoVO,voterIds.get(0).getVoterId(),parameters.getUserId(),defaultSelectOptionVO);
+		 		  
+		 		  List<Long> votersIds = new ArrayList<Long>();
+		 		  for(VoterHouseInfoVO vo:voterIds)
+		 			  votersIds.add(vo.getVoterId());
+		 		  
+		 		  List<Object[]> votersGroupDetails =  customVoterDAO.getAllVotersGroups(votersIds , votersHouseInfoVO.getUserId());
+		 		  
+		 		  for(Object[] obj:votersGroupDetails)
+		 			 groupDetailsMap.put((Long)obj[0], (Long)obj[1]);
+		 	   }
+		 	   
+		 	   
 		 	    List<Object[]> userCategoryValuesList = null;
 		 	   List<Object[]> selectedUserCategoryValuesList = new ArrayList<Object[]>();
 		 	   if(parameters.isAll() || parameters.getIds().size() > 0){
@@ -7725,6 +7934,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 	    for(VoterHouseInfoVO voter : voterIds){
 		 	    	
 		 	     voterHouseInfoVO = new VoterHouseInfoVO();
+		 	     
+		 	     if(groupDetailsMap.get(voter.getVoterId()) != null)
+		 	    	voterHouseInfoVO.setCustomGroupId(groupDetailsMap.get(voter.getVoterId()));
 		 	     
 		 	     getVoterBasicInfo1(voterHouseInfoVO,voter.getVoterId(),parameters.getPublicationId());
 		 	   
@@ -7781,11 +7993,11 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		  
 	  }
 	  
-	  public void updateSelectedFieldsForAllVoters(VoterHouseInfoVO voterHouseInfoVO,String[] voterIds,String partyCast){
+	  public void updateSelectedFieldsForAllVoters(VoterHouseInfoVO voterHouseInfoVO,String[] voterIds,String partyCast,boolean groupPresent){
 		try{ 
 		  for(String voterId:voterIds){ 
 			 voterHouseInfoVO.setVoterId(new Long(voterId));
-		    updateVoterDetails(voterHouseInfoVO,partyCast);
+		    updateVoterDetails(voterHouseInfoVO,partyCast,groupPresent);
 		  }
 		}catch(Exception e){
 			log.error("Exception rised in updateSelectedFieldsForAllVoters ",e);
@@ -11808,7 +12020,12 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			  for (Object[] a : localities)
 			    {  SelectOptionVO sv =new  SelectOptionVO();
 				   // a[0]="x"+a[0];
+			       try
+			       {
 				    sv.setId((Long)a[0]);
+			       }catch(Exception e){
+				    sv.setId(new BigInteger(a[0].toString()).longValue());
+			       }
 				    sv.setName(a[1]!=null?a[1].toString():"");
 				    sv.setValue(a[1]!=null?a[1].toString():"");
 				    localitiesList.add(sv);
@@ -14588,6 +14805,61 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			 List<VoterHouseInfoVO> voterVOs = null;
 			 
 			 VoterHouseInfoVO voterHouseInfoVO = null;
+			 //GETTING  AREA TYPES  START SAMBA
+			 
+			 List<Long> locationValuesList = new ArrayList<Long>();
+			// locationValuesList.add(locationValue);
+			 
+			 
+			 List<Object[]> customGroups = null;
+	           
+			  if(parameters.isMandal()){
+				  
+				  locationValuesList.add(parameters.getGroupLocationValue()); 
+				  
+				  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL);
+
+			  }else if(parameters.isMuncipality()){
+				  
+				  Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(parameters.getGroupLocationValue()).get(0); 
+				  locationValuesList.add(lid);	
+				  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_URBAN);		  
+				  
+			  }else  if(parameters.getGroupType().equalsIgnoreCase("constituency")){
+				  List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(parameters.getConstituencyId());
+					Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+					List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
+					if(mandals != null && mandals.size() > 0)
+					{						SelectOptionVO selectOptionVO = null;
+						for (Tehsil tehsil : mandals)						
+							locationValuesList.add(selectOptionVO.getId());
+						
+					}	
+					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL);
+			  }	
+			 
+			// List<Object[]> customGroups = customVoterGroupDAO.getCustomVoterGroupsByLocationValue(userId ,locationValuesList);
+			 
+			 List<SelectOptionVO> customGroupsList = new ArrayList<SelectOptionVO>();
+			 SelectOptionVO defaultVo = new SelectOptionVO();
+			 defaultVo.setId(0L);
+			 defaultVo.setName("Select");
+			 customGroupsList.add(defaultVo);
+			 
+			 for(Object[] obj:customGroups)
+			 {
+				 SelectOptionVO vo = new SelectOptionVO();
+				 vo.setId((Long)obj[0]);
+				 vo.setName(obj[1].toString());
+				 customGroupsList.add(vo);
+				 
+			 }
+			 
+			 votersHouseInfoVO.setCustomGroups(customGroupsList);
+			 
+			 
+			 //GETTING  AREA TYPES END
+			 
 			 
 			 //GETTING  LOCALITIES DETAILS START			 
 			    SelectOptionVO defaultSelectOptionVO1 = new SelectOptionVO();
@@ -14667,6 +14939,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		 	    // voterSelectedCastAndPartyDetails(voterHouseInfoVO,voter.getVoterId(),parameters.getUserId());
 				 voterSelectedCastAndPartyDetailsWithSubLocalities(voterHouseInfoVO,voter.getVoterId(),parameters.getUserId());
 		 	     
+				 getVoterCustomGroupDetails(voterHouseInfoVO,voter.getVoterId(),parameters.getUserId());
 		 	     
 		 	    List<VoterHouseInfoVO> categoriesList = new ArrayList<VoterHouseInfoVO>();
 		 	  // List<Object[]> selectedUserCategoryValuesList = new ArrayList<Object[]>();
@@ -14796,8 +15069,10 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 						.getVoterAllCategoryValues(votersDetails.getUserId(),
 								votersDetails.getVoterId());
 				
-				for(VoterCategoryValue category:voterAllSavedCategories)
+				for(VoterCategoryValue category:voterAllSavedCategories){
+					if(category.getUserVoterCategoryValue() != null)
 					savedDetails.put(category.getUserVoterCategoryValue().getUserVoterCategoryValueId(), category);
+				}
 				
 				Map<Long ,VoterHouseInfoVO > newDetails = new HashMap<Long, VoterHouseInfoVO>();
 				
@@ -14805,6 +15080,8 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					if(voterVO.getCategoryValuesId().longValue() != 0)
 					newDetails.put(voterVO.getCategoryValuesId(), voterVO);
 				}
+				
+				removeOrUpdateCustomVoterDetails(voter , votersDetails.getUserId() ,votersDetails.getCustomGroupId());
 				
 				//CHECKING ALL THE SAVED CATEGORIES ARE EXIST OTHER WISE DELETE THOSE 
 				removeOrUpdateTheSavedVoterCategoryValues(savedDetails ,newDetails , voter , user );
@@ -14824,6 +15101,49 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			  throw new Exception();
 			  
 		  }
+		  
+	  }
+	  
+	  public void removeOrUpdateCustomVoterDetails(Voter voter , Long userId ,Long customGroupId)
+	  {
+		  log.debug("Entered into the removeOrUpdateCustomVoterDetails service method");
+		try
+		{
+			List<CustomVoter> customVoters = null;
+			
+			//if(customGroupId.longValue() != 0 )
+			 try
+			 {
+			  customVoters = customVoterDAO.getCustomVoterByVoterIdAndUserId(voter.getVoterId(),1L);
+			 }catch(Exception e)
+			 {}
+			
+			
+			if(customGroupId.longValue() == 0&& customVoters != null && customVoters.size() >0)
+			  customVoterDAO.removeCustomVoterDetails(customVoters.get(0).getCustomVoterId());
+			
+			else{	 
+				CustomVoter customVoter = null;
+				if(customVoters != null && customVoters.size() >0)
+					customVoter = customVoters.get(0);				 
+				else
+					 customVoter = new CustomVoter();
+				
+				if(customGroupId.longValue() != 0){
+				
+				 customVoter.setVoter(voter);
+				 customVoter.setCustomVoterGroup(customVoterGroupDAO.get(customGroupId));				
+				 customVoterDAO.save(customVoter);
+				}
+			}
+				
+			
+		}catch(Exception e)
+		{
+			log.debug("Exception raised  in the removeOrUpdateCustomVoterDetails service method");
+			e.printStackTrace();
+			
+		}
 		  
 	  }
 
@@ -14896,6 +15216,15 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		  }
 		  
 	  }
+	   
+	   public void getVoterCustomGroupDetails(VoterHouseInfoVO voterHouseInfoVO , Long voterId , Long userId)
+	   {
+		  List<Long> list =  customVoterDAO.getCustomGroupIdByVoterIdAndUserId(voterId , userId);
+		  
+		  if(list != null && list.size() >0)
+			  voterHouseInfoVO.setCustomGroupId(list.get(0));
+		   
+	   }
 
 	  public void voterSelectedCastAndPartyDetailsWithSubLocalities(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId){
 		
