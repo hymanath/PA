@@ -35,7 +35,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		Object[] params = {parliamentConstituencyId};
 		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name from DelimitationConstituencyAssemblyDetails model where " +
 				"model.delimitationConstituency.constituency.constituencyId = ? and model.delimitationConstituency.year = " +
-				"(select max(model1.year) from DelimitationConstituency model1)",params);
+				"(select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name ",params);
 	}
 	
 	public List findLatestParliamentForAssembly(Long assemblyId){

@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.DataMappingVerificationVO;
 import com.itgrids.partyanalyst.dto.DataVerificationVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsVerificationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.DataValidationVO;
 
 public interface IDataValidationService {
@@ -16,6 +17,12 @@ public interface IDataValidationService {
 	public ElectionResultsVerificationVO validateConstituencyEleResults(Long electionId);
 	
 	public List<DataMappingVerificationVO> validatePanchayatMappingDataInBooth(Long constituencyId,Long publicationId);
+	
+	 public List<SelectOptionVO> getEleYears();
+	 
+	 public List<SelectOptionVO> getConstituenciesByEleId(Long electionId);
+	 
+	 public List<DataMappingVerificationVO> validatePanchayatData(Long constituencyId, Long electionId,Long eleYear);
 	
 
 }

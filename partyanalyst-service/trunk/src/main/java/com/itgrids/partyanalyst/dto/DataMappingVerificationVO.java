@@ -14,6 +14,7 @@ public class DataMappingVerificationVO implements Serializable{
 	private Long constituencyId;
 	private Long publicationDateId;
 	private String areaType;
+	private String constituencyName;
 	
 	private Long totalCount;
 	private Long mappedCount;
@@ -22,6 +23,8 @@ public class DataMappingVerificationVO implements Serializable{
 	private List<SelectOptionVO> totalList = new ArrayList<SelectOptionVO>(0);
 	private List<SelectOptionVO> mappedList = new ArrayList<SelectOptionVO>(0);
 	private List<SelectOptionVO> unMappedList = new ArrayList<SelectOptionVO>(0);
+	
+	private List<DataMappingVerificationVO> verificationInfoVOsList = new ArrayList<DataMappingVerificationVO>(0);
 	
 	List<Long> totalIdsList = new ArrayList<Long>(0);
 	
@@ -102,6 +105,20 @@ public class DataMappingVerificationVO implements Serializable{
 	}
 	public void setAreaType(String areaType) {
 		this.areaType = areaType;
+	}
+	
+	public List<DataMappingVerificationVO> getVerificationInfoVOsList() {
+		return verificationInfoVOsList;
+	}
+	public void setVerificationInfoVOsList(
+			List<DataMappingVerificationVO> verificationInfoVOsList) {
+		this.verificationInfoVOsList = verificationInfoVOsList;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
 	}
 	
 }

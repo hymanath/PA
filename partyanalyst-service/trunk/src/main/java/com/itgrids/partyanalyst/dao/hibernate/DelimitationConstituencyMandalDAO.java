@@ -37,7 +37,7 @@ IDelimitationConstituencyMandalDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Tehsil> getTehsilsByDelimitationConstituencyID(Long delimitationConstituencyID) {
-		return getHibernateTemplate().find("Select model.tehsil from DelimitationConstituencyMandal model where " +
+		return getHibernateTemplate().find("Select distinct model.tehsil from DelimitationConstituencyMandal model where " +
 				"model.delimitationConstituency.delimitationConstituencyID =? order by model.tehsil.tehsilName", 
 				delimitationConstituencyID);
 	}
