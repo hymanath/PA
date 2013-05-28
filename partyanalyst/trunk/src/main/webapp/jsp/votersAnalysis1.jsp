@@ -1749,7 +1749,7 @@ for  body3 start    result  -->
 	    <div id='localCastStatsTabContent_subbody1'  class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
 	<div style="clear:both;">
-	  <span id="castPartyNewPopupShowBtn"><input type="button" class="btn btn-info" value="View Castes Vs Party Analysis" style="float:left;margin-top:7px;margin-bottom:5px;" onclick="getPartyWiseCastInfo();"/></span>
+	  <span id="castPartyNewPopupShowBtn"><input type="button" id="PartyWiseCastInfoBtn" class="btn btn-info" value="View Castes Vs Party Analysis" style="float:left;margin-top:7px;margin-bottom:5px;" onclick="getPartyWiseCastInfo();"/></span>
 	  	 <!-- <span id="castPartyPopupShowBtn"><input type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="ShowCastPartyPopupDiv();"/></span>
 	  
 	  <span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>-->
