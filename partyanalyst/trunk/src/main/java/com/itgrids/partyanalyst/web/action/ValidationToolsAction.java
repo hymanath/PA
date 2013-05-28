@@ -29,7 +29,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 	private String task;
 	JSONObject jObj;
 	
-	private List<SelectOptionVO> constituencyList, userAccessConstituencyList;
+	private List<SelectOptionVO> constituencyList, userAccessConstituencyList,eleYearsList,selectOptionVOsList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private IVotersAnalysisService votersAnalysisService;
 	private IDataValidationService dataValidationService;
@@ -37,7 +37,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 	private EntitlementsHelper entitlementsHelper;
 	private  DataVerificationVO dataVerificationVO;
 	private ElectionResultsVerificationVO electionResultsVerificationVO;
-	private List<DataMappingVerificationVO> mappingVerificationVOList;
+	private List<DataMappingVerificationVO> mappingVerificationVOList,panchayatMappingList;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -142,6 +142,27 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 			List<DataMappingVerificationVO> mappingVerificationVOList) {
 		this.mappingVerificationVOList = mappingVerificationVOList;
 	}
+	
+	public List<SelectOptionVO> getEleYearsList() {
+		return eleYearsList;
+	}
+	public void setEleYearsList(List<SelectOptionVO> eleYearsList) {
+		this.eleYearsList = eleYearsList;
+	}
+	
+	public List<SelectOptionVO> getSelectOptionVOsList() {
+		return selectOptionVOsList;
+	}
+	public void setSelectOptionVOsList(List<SelectOptionVO> selectOptionVOsList) {
+		this.selectOptionVOsList = selectOptionVOsList;
+	}
+	public List<DataMappingVerificationVO> getPanchayatMappingList() {
+		return panchayatMappingList;
+	}
+	public void setPanchayatMappingList(
+			List<DataMappingVerificationVO> panchayatMappingList) {
+		this.panchayatMappingList = panchayatMappingList;
+	}
 	public String execute()
 	{
 		HttpSession session = request.getSession();
@@ -199,7 +220,13 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 			electionResultsVerificationVO = dataValidationService.validateConstituencyEleResults(jObj.getLong("electionId"));
 		else if(jObj.getString("task").equalsIgnoreCase("validatePanchayatHamletData"))
 			mappingVerificationVOList = dataValidationService.validatePanchayatMappingDataInBooth(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"));
-		
+		else if(jObj.getString("task").equalsIgnoreCase("getEleYears"))
+			eleYearsList = dataValidationService.getEleYears();
+		else if(jObj.getString("task").equalsIgnoreCase("getConstituenciesByEleId"))
+			selectOptionVOsList = dataValidationService.getConstituenciesByEleId(jObj.getLong("electionId"));
+		else if(jObj.getString("task").equalsIgnoreCase("validatePanchayatDataByEleId"))
+			panchayatMappingList = dataValidationService.validatePanchayatData(jObj.getLong("constituencyId"), jObj.getLong("electionId"),jObj.getLong("eleYear"));
+			
 		return SUCCESS;
 		
 	}

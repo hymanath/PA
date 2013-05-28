@@ -5175,5 +5175,22 @@
 			</result>
 		</action> 
 		
+		<action name="getEleYearsForConstituencyAction" class="validationToolsAction" method="AjaxHandler">
+		<result type="json" name="success">
+		   <param name="root">eleYearsList</param>
+		 </result>
+		</action>
+		
+		<action name="getConstituenciesByEleIdAction" class="validationToolsAction" method="AjaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">selectOptionVOsList</param>
+		 </result>
+		</action>
+		
+		<action name="validateElePanchayatMappingDataAction" class="validationToolsAction" method="AjaxHandler">
+		  <result type="json" name="success">
+		   <param name="root">panchayatMappingList</param>
+		  </result>
+		</action>
 		</package>
 </struts>      

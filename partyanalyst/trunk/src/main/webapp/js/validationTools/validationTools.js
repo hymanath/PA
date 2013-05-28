@@ -109,6 +109,42 @@ $(document).ready(function(){
 		
   });
 
+
+  $("#boothMappingId").click(function(){
+	  
+	var constituencyId = $("#eleConstituencyList").val();
+	var eleId = $("#electionList").val();
+	var name = $("#eleConstituencyList :selected").text();
+
+	var eleYear = $("#electionList :selected").text();
+	var year = eleYear.substring(0,4);
+	
+   $("#panEleErrorMsgDiv").html('');
+	if(eleId == 0)
+	{
+	  $("#panEleErrorMsgDiv").html('Please Select Election Year.');
+	  return;
+	}
+	if(constituencyId == 0)
+	{
+	  $("#panEleErrorMsgDiv").html('Please Select Constituency.');
+	  return;
+	}
+	$("#eleAjaxImg").css("display","inline-block");
+	var jsObj=
+		{		
+			constituencyId :constituencyId,
+			electionId     :eleId,
+			name		   :name,
+			eleYear        :year,
+			task:"validatePanchayatDataByEleId"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "validateElePanchayatMappingDataAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	  
+  });
+
 });//End Ready
 
 
@@ -483,4 +519,163 @@ function showMappingDataForPanchayat(result,jsObj)
   }
 	
 
+}
+
+function buildEleYears()
+{
+    var jsObj=
+		{		
+		  task:"getEleYears"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getEleYearsForConstituencyAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+}
+
+function showEleYears(results)
+{
+  var selectedElmt = document.getElementById("electionList");
+  removeSelectElements(selectedElmt);
+ 
+  for(var val in results)
+  {	
+	var opElmt = document.createElement('option');
+	opElmt.value=results[val].id;
+	opElmt.text=results[val].name;
+
+	try
+	{
+	  selectedElmt.add(opElmt,null); // standards compliant
+	}
+	catch(ex)
+	{
+	 selectedElmt.add(opElmt); // IE only
+	}	
+  }
+
+}
+
+function showConstituenciesList(results)
+{
+ $("#eleAjaxImg").css("display","none");
+  var selectedConElmt = document.getElementById("eleConstituencyList");
+  removeSelectElements(selectedConElmt);
+ 
+  for(var val in results)
+  {	
+	var opElmt = document.createElement('option');
+	opElmt.value=results[val].id;
+	opElmt.text=results[val].name;
+
+	try
+	{
+	  selectedConElmt.add(opElmt,null); // standards compliant
+	}
+	catch(ex)
+	{
+	 selectedConElmt.add(opElmt); // IE only
+	}	
+  }
+
+}
+
+
+function getConstituenciesByEleId()
+{
+  var eleId = $("#electionList").val();
+   $("#panEleErrorMsgDiv").html('');
+  $("#eleAjaxImg").css("display","inline-block");
+	 var jsObj=
+		{		
+			electionId:eleId,
+			task:"getConstituenciesByEleId"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getConstituenciesByEleIdAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+}
+
+function showConstituencyWisePanchayatData(results,jsObj)
+{
+  $("#eleAjaxImg").css("display","none");
+  $("#boothHideAndShow").css("display","inline-block");
+  var str = ''; 
+  if(results == null || results.length == 0)
+  {
+	 $("#boothMappingInnerDiv").html('No Data Found.');
+     return;
+  }
+  for(var i in results)
+  {
+	
+	var data = results[i].verificationInfoVOsList;
+	str +='<h4 style="margin-bottom:16px;margin-top:15px;">'+results[i].constituencyName+' Constituency Details</h4>';
+	if(results[i].areaType == "URBAN")
+	 str +=''+results[i].constituencyName+' Constituency is URBAN Area.There are no Panchayats Exists.';
+	else if(results[i].areaType == null)
+	 str +='No Data Found.';
+	else
+	{
+     str +='<table class="table table-bordered table-striped table-hover">';
+     str +='<tr>';
+     str +='<th>Mandal</th>';
+	 str +='<th>Status</th>';
+     str +='<th>Total Panchayats</th>';
+     str +='<th>Mapped Panchayats</th>';
+     str +='<th>UnMapped Panchayats</th>';
+     str +='</tr>';
+	 for(var j=0;j<data.length;j++)
+	 {
+       str +='<tr>';
+	   str +='<td>'+data[j].name+'</td>';
+	   str +='<td>'+data[j].status+'</td>';
+	   str +='<td>';
+	   if(data[j].totalCount == null)
+		str +='0';
+	   else
+		str +=''+data[j].totalCount+'';
+	   if(data[j].totalCount != null && data[j].totalCount > 0)
+	   {
+		  if(data[j].totalList != null && data[j].totalList.length > 0)
+		  {
+			  str +='<br>---------------';
+			for(var k=0;k<data[j].totalList.length;k++)
+			 str +='<br><span>'+data[j].totalList[k].name+'</span>';
+		  }
+	   }
+	   str +='</td>';
+		
+	   str +='<td>'+data[j].mappedCount+'';
+	   if(data[j].mappedCount > 0)
+	   {
+		  if(data[j].mappedList != null && data[j].mappedList.length > 0)
+		  {
+			  str +='<br>---------------';
+			for(var k=0;k<data[j].mappedList.length;k++)
+			 str +='<br><span>'+data[j].mappedList[k].name+'</span>';
+		  }
+	   }
+	   str +='</td>';
+
+
+	   str +='<td>'+data[j].unMappedCount+'';
+	   if(data[j].unMappedCount > 0)
+	   {
+		  if(data[j].unMappedList != null && data[j].unMappedList.length > 0)
+		  {
+			  str +='<br>---------------';
+			for(var k=0;k<data[j].unMappedList.length;k++)
+			 str +='<br><span>'+data[j].unMappedList[k].name+'</span>';
+		  }
+	   }
+	   str +='</td>';
+	   str +='</tr>';
+	 }
+      str +='</table>';
+	}
+  }
+
+$("#boothMappingInnerDiv").html(str);
 }

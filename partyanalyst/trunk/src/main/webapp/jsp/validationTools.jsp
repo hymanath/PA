@@ -78,7 +78,7 @@
 .widget h4 {font-family: arial;color:#000;}
 .f2 {margin-right: 15px;}
 #voterInfoHeading{margin-bottom: 15px;}
-#votersBasicInfoInnerDiv,#panchayatMappingDiv{padding-bottom: 27px;}
+#votersBasicInfoInnerDiv,#panchayatMappingDiv,#boothMappingDiv{padding-bottom: 27px;}
 #mandalTab{
     border: 1px solid #D3D3D3;
     border-collapse: collapse;
@@ -89,7 +89,7 @@
 }
 .voterInfoDiv{margin-top: 10px;}
 
-#votersBasicInfoInnerDiv table th ,#votersInfoDiv table th,#voterFamilyInfoDiv table th,#voterAgeInfoDiv table th,#voterModificationDiv table th,#constituencyVotesTab th,#mandalTab th,#panchayatMappingInnerDiv table th{
+#votersBasicInfoInnerDiv table th ,#votersInfoDiv table th,#voterFamilyInfoDiv table th,#voterAgeInfoDiv table th,#voterModificationDiv table th,#constituencyVotesTab th,#mandalTab th,#panchayatMappingInnerDiv table th,#boothMappingInnerDiv table th{
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -97,7 +97,7 @@
     padding: 10px;
     text-align: left;
 }
-#votersBasicInfoInnerDiv table td ,#votersInfoDiv table td,#voterFamilyInfoDiv table td,#voterAgeInfoDiv table td,#voterModificationDiv table td,#mandalTab td,#constituencyVotesTab td,#panchayatMappingInnerDiv table td{
+#votersBasicInfoInnerDiv table td ,#votersInfoDiv table td,#voterFamilyInfoDiv table td,#voterAgeInfoDiv table td,#voterModificationDiv table td,#mandalTab td,#constituencyVotesTab td,#panchayatMappingInnerDiv table td,#boothMappingInnerDiv table td{
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
@@ -112,7 +112,7 @@
 }
 #electionResultsDiv{padding-bottom: 25px;}
 #electionTypeDiv{padding-top: 14px;}
-#eleErrorMsgDiv{color:red;}
+#eleErrorMsgDiv,#panEleErrorMsgDiv{color:red;}
 .tdCls{vertical-align: top;}
 .constituencyDiv{max-height: 300px;
     overflow-y: scroll;}
@@ -133,6 +133,7 @@
 #panchayatErrorMsgDiv{color:red;}
 #panchayatHideAndShow{margin-bottom: -13px;margin-left: 25px;}
 #eleResHideAndShow{margin-bottom: -6px;margin-left: 34px;}
+#boothHideAndShow{margin-bottom: -12px;margin-left: 14px;}
 </style>
 </head>
 
@@ -236,6 +237,30 @@
  </div>
 
  <!-- Panchayat Mapping End -->
+
+ <!-- booth Mapping Start -->
+  
+  <div id="boothMappingDiv" class="widget blue">
+   <h4>Election Wise Panchayat Mapping Validation</h4>
+	
+	 <div id="panchayatSelectDiv" class="selectDiv">
+     <div id="panEleErrorMsgDiv"></div>
+	 Election Year<font class="requiredFont">*</font> <select id="electionList" class="selectWidth" style="width:172px;height:25px;"  onchange="getConstituenciesByEleId();">
+		</select>
+	Constituency<font class="requiredFont">*</font> <select id="eleConstituencyList" class="selectWidth" style="width:172px;height:25px;"  >
+		</select>
+
+	
+	<input type="button" value="Panchayat Mapping Validation" class="btn btn-info" id="boothMappingId"/><img style="display:none;" id="eleAjaxImg" src="./images/icons/search.gif" alt="Processing Image"/>
+	
+	<span id="boothHideAndShow" style="display:none;"><a href="javascript:{}" class="btn pull-right" id="boothHideMenu">Hide<i class="icon-chevron-up"></i></a></span>
+
+	</div>
+   	<div id="boothMappingInnerDiv"></div>
+
+  </div> 
+
+ <!-- booth Mapping End -->
 </div>
 
 <script type="text/javascript">
@@ -301,9 +326,20 @@ function callAjax(jsObj,url)
 								  showBoothWiseEleResults(myResults,jsObj);
 								}
 								else if(jsObj.task == "validatePanchayatHamletData")
+								{
 								 showMappingDataForPanchayat(myResults,jsObj);
-								
-							
+								}
+								else if(jsObj.task == "getEleYears")
+								{	
+									showEleYears(myResults);
+								}
+								else if(jsObj.task == "getConstituenciesByEleId")
+								{
+									showConstituenciesList(myResults);
+								}
+								else if(jsObj.task == "validatePanchayatDataByEleId")
+								 showConstituencyWisePanchayatData(myResults,jsObj);
+
 							}catch (e) {
 							    //alert(Exception);
 								}  
@@ -1714,6 +1750,7 @@ function showVoterModificationAgeData(myResults,jsObj)
 }
 
 
+buildEleYears();
 
 </script>
 
@@ -1787,6 +1824,18 @@ $(document).ready(function(){
 	$("#eleResShowMenu").live("click",function(){
 		$("#electionResultsMainDiv").css("display","block");
 		$("#eleResHideAndShow").html('<a id="eleResHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
+	});
+
+	$("#boothHideMenu").live("click",function(){
+	  $("#boothMappingInnerDiv").css("display","none");
+	  
+	  $("#boothHideAndShow").html('<a id="boothShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+		
+	});
+
+	$("#boothShowMenu").live("click",function(){
+		$("#boothMappingInnerDiv").css("display","block");
+		$("#boothHideAndShow").html('<a id="boothHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
 	
 });
