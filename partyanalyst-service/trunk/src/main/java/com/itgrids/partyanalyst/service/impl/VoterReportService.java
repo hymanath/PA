@@ -1984,13 +1984,18 @@ public class VoterReportService implements IVoterReportService{
 					}
 					else if(type.equalsIgnoreCase("booth"))
 					{
+						List<Object[]> castOrPartyDetails = null;
+						synchronized (this) {
+							
+						
 						for(Long boIds : ids)
 							queryTempDAO.save(new QueryTemp(boIds));
 						voterDAO.flushAndclearSession();
 						
-						List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getCatstesForBooths(userId, ids, publicationId);
+						 castOrPartyDetails = boothPublicationVoterDAO.getCatstesForBooths(userId, ids, publicationId);
 						queryTempDAO.deleteAll();
 						voterDAO.flushAndclearSession();
+						}
 						//List<Object[]> castOrPartyDetails = boothPublicationVoterDAO.getPartysOrCatstesForSelectedLevel(userId,ids,type,status,publicationId);
 						//List<Object[]> castOrPartyDetails = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,3l,ids);
 						if(castOrPartyDetails != null && castOrPartyDetails.size() > 0)
