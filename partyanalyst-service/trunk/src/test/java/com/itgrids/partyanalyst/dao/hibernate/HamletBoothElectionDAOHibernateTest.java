@@ -153,5 +153,11 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 	}
 	*/
 	
+	public void testGetPanchayatIdsByEleIdAndMandalIdsList()
+	{
+		List<Long> mandalIdsList = new ArrayList<Long>(0);
+		mandalIdsList.add(844l);
+		List<Long> list = hamletBoothElectionDAO.getPanchayatIdsByEleIdAndMandalIdsList(mandalIdsList, 83l);
+	}
 	
 }
