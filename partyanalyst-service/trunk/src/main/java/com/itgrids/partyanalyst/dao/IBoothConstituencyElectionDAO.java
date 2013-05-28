@@ -144,5 +144,8 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	
 	public List<Object[]> getBoothResultsBasedOnMaleAndFemaleVotesByElectionId(Long electionId);
 	
+	public List<Object[]> getEleYears();
+	
+	public List<Object[]> getConstituenciesByEleId(Long electionId);
 	
 }
