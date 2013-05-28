@@ -262,7 +262,9 @@ function getAllVoterFamiliesForEditWithSelection11(){
 				selectedTypeId:window.opener.selectedTypeId,
 				publicationId:window.opener.RpublicationDateId,
 				isMuncipalitySelected:window.opener.isMuncipalitySelected,
-				muncipalitySelectedId:window.opener.muncipalitySelectedId
+				muncipalitySelectedId:window.opener.muncipalitySelectedId,
+                groupType:window.opener.groupType,
+                locationValue:window.opener.locationValue
                  
 				
 			}
@@ -347,6 +349,8 @@ function buildSelectedVotersData(results)
 
 		str+='<label class="labelClass"><input type="checkbox" value="Party" class="fields" checked="true" style="margin:0px;"/>&nbsp;Party</label>';
 
+		str+='<label class="labelClass"><input type="checkbox"  class="fields" checked="true" style="margin:0px;"/>&nbsp;Voter Group</label>';
+
 
 
 		str+='<label class="labelClass"><input type="checkbox" value="'+window.opener.ColType1+'" class="fields" checked="true" style="margin:0px;"/>&nbsp;'+window.opener.ColType1+'</label>';
@@ -373,7 +377,6 @@ function buildSelectedVotersData(results)
 		str+='<div id="topDiv"></div>';
 		str+='<b><a class="topDivBtn pull-right" href="javascript:{}" class="btn">Move To Bottom</a></b>';
 		
-		
           str+='<table id="votersDetailsTable">';
 		  str+='<thead>';
 		   str+='<tr>';
@@ -388,8 +391,12 @@ function buildSelectedVotersData(results)
 			str+='<th style="text-align:justify;">Gender</th>';			
 			str+='<th style="text-align:justify;">Caste</th>';
 			str+='<th style="text-align:justify;">Party</th>';
+
+			str+='<th style="text-align:justify;">Voter Group</th>';
             str+='<th style="text-align:justify;">'+window.opener.ColType1+'</th>';
 			str+='<th style="text-align:justify;">Local Area</th>';
+			
+
              totalCategoriesCount = results.userCategoriesList.length;
 			for(var id in results.userCategoriesList)		   
 			str+='<th style="text-align:justify;">'+results.userCategoriesList[id].name+'</th>';
@@ -409,6 +416,8 @@ function buildSelectedVotersData(results)
 
 			totalNoOfVoters = totalNoOfVoters +1;
 			  str+='<tr>';
+
+			  
 			    str+='<td>'+results.boothsList[i].partNo+'</td>';
 				str+='<input type="hidden" id="voterId" value="'+voters[k].voterId+'"/>';
 			    str+='<td>'+voters[k].fromSno+'</td>';
@@ -479,6 +488,21 @@ function buildSelectedVotersData(results)
 				 str+='<a title="Apply  this to all families"  href="javascript:{applyValue(\'party'+voters[k].voterId+'\',\'partyClass\');}"><i class="icon-ok-sign"></i></a>';
 				str+='</div></td>';
 
+				
+			   str+='<td>';
+				 str+='<div class="row" style="width:149px;"><select title="Select custom group to the voter:'+voters[k].name+'(SNo:'+voters[k].fromSno+')" class="groupClass group'+i+j+'" id="group'+voters[k].voterId+'" style="width:100px;">';
+				    for(var l in results.customGroups){
+						   if(results.customGroups[l].id == voters[k].customGroupId)
+							str+="<option selected value="+results.customGroups[l].id+">"+results.customGroups[l].name+"</option>";
+						   else
+							str+="<option value="+results.customGroups[l].id+" >"+results.customGroups[l].name+"</option>";			
+						 }
+				 str+='</select>';
+				 str+='<a  title="Apply  this to current family" href="javascript:{applyValue(\'group'+voters[k].voterId+'\',\'group'+i+j+'\');}"><i class="icon-ok"></i></a>';
+				 str+='<a title="Apply  this to all families"  href="javascript:{applyValue(\'group'+voters[k].voterId+'\',\'groupClass\');}"><i class="icon-ok-sign"></i></a>';
+				str+='</div></td>';
+
+
 				str+='<td>';
 				 str+='<div class="row" style="width:149px;"><select id="locality'+voters[k].voterId+'" class="localityClass locality'+i+j+'" style="width:100px;"  onChange="getLocalitiesListForHamlet(this.value , '+voters[k].voterId+',\'single\');" title="Select locality to the voter:'+voters[k].name+'(SNo:'+voters[k].fromSno+')">';
 
@@ -517,7 +541,9 @@ function buildSelectedVotersData(results)
 					str+='<div class="row" style="width:149px;"><select id="sublocality'+voters[k].voterId+'" style="width:100px;">';
 					str+='</select>';				
 
-				str+='</div></td>';				
+				str+='</div></td>';		
+				
+				
 
 
 				for(var m in voters[k].categoriesList){
@@ -539,6 +565,8 @@ function buildSelectedVotersData(results)
 
 				}
 
+				 
+
   			  str+='</tr>';
 			   }
 		  }
@@ -555,7 +583,7 @@ function buildSelectedVotersData(results)
 		  "aaSorting": [[ 1, "asc" ]],
 		  "iDisplayLength" : totalNoOfVoters		
 	  });
-		  var values = ["Gender","Relation","Age","Gaurdian Name","Mobile No"];
+		  var values = ["Gender","Relation","Age","Gaurdian Name","Mobile No","Custom Group"];
 
 		   for(var id in results.userCategoriesList)
 			   values.push(results.userCategoriesList[id].name);
@@ -657,6 +685,7 @@ function updateAllSelectedVotersDetails1()
 		 };
 		 obj["partyId"] = $('#party'+selectedVotersToUpdate[i]).val();
 		 obj["casteId"] = $('#caste'+selectedVotersToUpdate[i]).val();
+		 obj["groupId"] = $('#group'+selectedVotersToUpdate[i]).val();
 		 obj["voterId"] = selectedVotersToUpdate[i];
 		 
 		 
@@ -730,10 +759,13 @@ function updateAllSelectedVotersDetails1()
 
 	 for(var i in votersToUpdate)
 	 {
+		
 		 var obj={
 		 };
 		 obj["partyId"] = $('#party'+votersToUpdate[i]).val();
 		 obj["casteId"] = $('#caste'+votersToUpdate[i]).val();
+		 obj["groupId"] = $('#group'+votersToUpdate[i]).val();
+
 		 obj["voterId"] = votersToUpdate[i];
 		 obj["mobileId"]= $('#mobileNo'+votersToUpdate[i]).val();
 		 if ($('#locality'+votersToUpdate[i]).length )
