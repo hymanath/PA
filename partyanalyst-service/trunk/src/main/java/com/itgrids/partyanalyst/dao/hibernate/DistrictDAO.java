@@ -135,7 +135,7 @@ public List<Object[]> findByPartyNominationDetails(Long stateId,Long partyId,Lis
 	StringBuilder query = new StringBuilder();
 	query.append("select model.districtId , model.districtName from District model where model.state.stateId = :stateId ");
 	query.append(" and model.districtId in( select distinct model1.district.districtId from PartyElectionDistrictResult model1 ");
-	query.append(" where model1.party.partyId = :partyId and model1.election.electionId in (:electionIds) )");
+	query.append(" where model1.party.partyId = :partyId and model1.election.electionId in (:electionIds) ) order by model.districtName");
 	Query queryObject = getSession().createQuery(query.toString());
 	queryObject.setParameter("stateId", stateId);
 	queryObject.setParameter("partyId", partyId);
