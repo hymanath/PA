@@ -589,7 +589,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 
 	}
 
-	public List<Long> getInfluencingPeopleCount(Long userId , List<Long> ids,String type )
+	public List<Long> getInfluencingPeopleCount(Long userId , List<Long> ids,String type,Long constituencyId,String partNo)
 	{
 		
 		StringBuilder queryString = new StringBuilder();
@@ -609,7 +609,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		}*/
 		else if(type.equalsIgnoreCase("booth"))
 		{
-			queryString.append("and model.userAddress.booth.boothId in (:ids) ");
+			queryString.append("and model.userAddress.booth.partNo = :partNo and model.userAddress.booth.constituency.constituencyId = :constituencyId ");
 		}
 		else if(type.equalsIgnoreCase("hamlet"))
 		{
@@ -630,9 +630,13 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Query query = getSession().createQuery(queryString.toString());
 		
 		query.setParameter("userId", userId);
-		
-		
-		query.setParameterList("ids",ids);
+				
+		if(type.equalsIgnoreCase("booth")){
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("partNo", partNo);
+		}else{
+			query.setParameterList("ids",ids);
+		}
 		return query.list();
 	}
 	

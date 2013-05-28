@@ -11843,7 +11843,8 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			List<InfluencingPeopleBeanVO> result = new ArrayList<InfluencingPeopleBeanVO>(0);
 			InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
 			List<Long> locationIds = new ArrayList<Long>();
-			
+			Long constiId = null;
+			String partNo = null;
 		try{
 			if(type.equalsIgnoreCase("constituency"))
 			{
@@ -11876,10 +11877,11 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			
 			else if(type.equalsIgnoreCase("booth"))
 			{
-				
-				List partNo =boothDAO.getPartNoByBoothId(locationValue);
-				locationValues.add(partNo.get(0).toString());
-				cadreLevelValues.add(new Long(partNo.get(0).toString()));
+				Booth booth = boothDAO.get(locationValue);
+				partNo = booth.getPartNo();
+				constiId = booth.getConstituency().getConstituencyId();
+				locationValues.add(booth.getPartNo());
+				cadreLevelValues.add(new Long(booth.getPartNo().trim().toString()));
 				 politicianValues.add(locationValue);
 				
 			}
@@ -11944,11 +11946,11 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 					Long values = Long.valueOf(parms);
 					locationIds.add(values);
 				}
-				influencingPeopleCount =  influencingPeopleDAO.getInfluencingPeopleCount(userId,locationIds,type);
+				influencingPeopleCount =  influencingPeopleDAO.getInfluencingPeopleCount(userId,locationIds,type,constiId,partNo);
 			}
 				
 			
-		    List<Long> cadreCount = cadreDAO. getCadreCountByCadreLevel(userId,cadreLevelValues,type);
+		    List<Long> cadreCount = cadreDAO.getCadreCountByCadreLevel(userId,cadreLevelValues,type);
 		    
 		    List<Long> politicians = boothPublicationVoterDAO.getCandidateCount(politicianValues, publicationDateId,type);
 		    if(politicians != null && politicians.size() > 0)
@@ -11991,6 +11993,8 @@ List<Long> values = new ArrayList<Long>(0);
 List<InfluencingPeople> influencingDetails = new ArrayList<InfluencingPeople>();
 Long Id = 0l;
 String name = null;
+Long constiId = null;
+String partNo = null;
 try{
 	if(type.equalsIgnoreCase("constituency"))
 	{
@@ -12028,10 +12032,12 @@ try{
 	
 	else if(type.equalsIgnoreCase("booth"))
 	{
-		
-		List partNo =boothDAO.getPartNoByBoothId(locationValue);
-		locationValues.add(partNo.get(0).toString());
-		cadreLevelValues.add(new Long(partNo.get(0).toString()));
+		Booth booth = boothDAO.get(locationValue);
+		constiId = booth.getConstituency().getConstituencyId();
+		//List partNo =boothDAO.getPartNoByBoothId(locationValue);
+		partNo = booth.getPartNo();
+		locationValues.add(booth.getPartNo());
+		cadreLevelValues.add(new Long(booth.getPartNo().trim()));
 		politicianValues.add(locationValue);
 	}
 	else if(type.equalsIgnoreCase("ward")||type.equalsIgnoreCase("customWard"))
@@ -12096,7 +12102,7 @@ try{
 		name = hamletDAO.get(Id).getHamletName().toString();
 	
 	if(buttonName.equalsIgnoreCase("InfluencePeople"))
-		voters = getInfluencePeopleDetails(userId,locationValues,type,startIndex,maxRecords,name,columnName,order);
+		voters = getInfluencePeopleDetails(userId,locationValues,type,startIndex,maxRecords,name,columnName,order,constiId,partNo);
 	 if(buttonName.equalsIgnoreCase("Cadre"))
 		 voters =  getCadrePeopleDetails(userId,cadreLevelValues,type,startIndex,maxRecords,name);
 	 if(buttonName.equalsIgnoreCase("Politician"))
@@ -12113,7 +12119,7 @@ return voters;
 
 }
 
-public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> locationValues,String type,Integer startIndex,Integer maxRecords,String name,String columnName,String order)
+public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> locationValues,String type,Integer startIndex,Integer maxRecords,String name,String columnName,String order,Long constiId,String partNo)
 {
 	List<VoterVO> voters = new ArrayList<VoterVO>();
 	List<Voter> votersList = new ArrayList<Voter>();;
@@ -12152,7 +12158,7 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 				if(type.equalsIgnoreCase("panchayat"))
 					influencyDetailsCount = influencingPeopleDAO.getInfluencingPeopleCountInHamlets(userId,locationIds);	
 				else
-					influencyDetailsCount = influencingPeopleDAO.getInfluencingPeopleCount(userId,locationIds,type);
+					influencyDetailsCount = influencingPeopleDAO.getInfluencingPeopleCount(userId,locationIds,type,constiId,partNo);
 				totalCount =new Long(influencyDetailsCount.get(0));
 				VoterVO voterVO = new VoterVO();
 				if(params.getVoter() == null)
