@@ -1,13 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IFileDAO;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.model.File;
 
 public class FileDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -19,11 +15,11 @@ public class FileDAOHibernateTest extends BaseDaoTestCase{
 		this.fileDAO = fileDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		fileDAO.getAll();
 		
-	}
+	}*/
 	/*public void testGetFileByFileId()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -45,9 +41,14 @@ public class FileDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testUpdateProblemFileDetailsByFileId()
+	/*public void testUpdateProblemFileDetailsByFileId()
 	{
 		System.out.println(fileDAO.updateProblemFileDetailsByFileId(10l, "qweqw", "qweqwe"));
+	}*/
+	public void testFile()
+	{
+		File file = fileDAO.get(23423l);
+		String desc = file.getFileDescription();
+		
 	}
-	
 }
