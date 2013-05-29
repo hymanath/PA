@@ -703,7 +703,7 @@ function backtopage() {
 			clickIndex:index,
 			reportLevel:reportLvl,
 			locationId:loctnId,
-			stateId:stateId,
+			stateId:locationId,
 			task:"getConstituencyStatusAnalysisForVotesMarginWindow"		
 		}
 		
