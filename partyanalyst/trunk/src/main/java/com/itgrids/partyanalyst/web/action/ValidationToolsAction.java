@@ -38,6 +38,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 	private  DataVerificationVO dataVerificationVO;
 	private ElectionResultsVerificationVO electionResultsVerificationVO;
 	private List<DataMappingVerificationVO> mappingVerificationVOList,panchayatMappingList;
+	private List<DataValidationVO> unMappedBoothsList;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -163,6 +164,13 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 			List<DataMappingVerificationVO> panchayatMappingList) {
 		this.panchayatMappingList = panchayatMappingList;
 	}
+	
+	public List<DataValidationVO> getUnMappedBoothsList() {
+		return unMappedBoothsList;
+	}
+	public void setUnMappedBoothsList(List<DataValidationVO> unMappedBoothsList) {
+		this.unMappedBoothsList = unMappedBoothsList;
+	}
 	public String execute()
 	{
 		HttpSession session = request.getSession();
@@ -226,7 +234,9 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 			selectOptionVOsList = dataValidationService.getConstituenciesByEleId(jObj.getLong("electionId"));
 		else if(jObj.getString("task").equalsIgnoreCase("validatePanchayatDataByEleId"))
 			panchayatMappingList = dataValidationService.validatePanchayatData(jObj.getLong("constituencyId"), jObj.getLong("electionId"),jObj.getLong("eleYear"));
-			
+		else if(jObj.getString("task").equalsIgnoreCase("getunMappedBooths"))
+			unMappedBoothsList = dataValidationService.getUnMappedBoothsList(jObj.getLong("electionId"));
+		
 		return SUCCESS;
 		
 	}

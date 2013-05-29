@@ -5196,5 +5196,11 @@
 		<result name="success">/jsp/customVoterGroupAnalysis.jsp</result>
 		<result name="error">/jsp/loginForm.jsp</result>
 		</action>
+
+		<action name="getunMappedBoothsAction" class="validationToolsAction" method="AjaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">unMappedBoothsList</param>
+		 </result>
+		</action>
 		</package>
 </struts>      
