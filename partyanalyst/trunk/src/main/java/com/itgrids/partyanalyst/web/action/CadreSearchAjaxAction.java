@@ -388,7 +388,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			partyCadreDetailsVO.setRegisterCadreSearchType(IConstants.ALL_CADRES);
 		else if(jObj.getString("cadreRegTypeRadioValue").equalsIgnoreCase("registeredByUser"))
 			partyCadreDetailsVO.setRegisterCadreSearchType(IConstants.CADRE_REGISTERED_BY_USER);
-		else if(jObj.getString("cadreRegTypeRadioValue").equalsIgnoreCase(""))
+		else if(jObj.getString("cadreRegTypeRadioValue").equalsIgnoreCase("registeredFromOnline"))
 			partyCadreDetailsVO.setRegisterCadreSearchType(IConstants.CADRE_REGISTER_FROM_ONLINE);
 		
 		if(jObj.getBoolean("socialStatus"))
