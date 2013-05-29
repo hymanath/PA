@@ -5179,7 +5179,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 				if(mandals != null && mandals.size() > 0)
 				{						SelectOptionVO selectOptionVO = null;
 					for (Tehsil tehsil : mandals)						
-						locationValuesList.add(selectOptionVO.getId());
+						locationValuesList.add(tehsil.getTehsilId());
 					
 				}
 		   customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(userId, locationValuesList,IConstants.AREA_TYPE_RURAL,constituencyId);
@@ -7797,7 +7797,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						if(mandals != null && mandals.size() > 0)
 						{						SelectOptionVO selectOptionVO = null;
 							for (Tehsil tehsil : mandals)						
-								locationValuesList.add(selectOptionVO.getId());
+								locationValuesList.add(tehsil.getTehsilId());
 							
 						}	
 						  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL,parameters.getConstituencyId());
@@ -14830,9 +14830,9 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
 					List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
 					if(mandals != null && mandals.size() > 0)
-					{						SelectOptionVO selectOptionVO = null;
+					{		SelectOptionVO selectOptionVO = null;
 						for (Tehsil tehsil : mandals)						
-							locationValuesList.add(selectOptionVO.getId());
+							locationValuesList.add(tehsil.getTehsilId());
 						
 					}	
 					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL,parameters.getConstituencyId());
