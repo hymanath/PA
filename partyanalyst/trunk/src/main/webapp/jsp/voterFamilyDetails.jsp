@@ -869,6 +869,7 @@ function  buildFamilyMembers(result,jsObj,type){
 		  str+='     <th>Booth</th>';
           str+='     <th>House No</th>';
           str+='     <th>Members In Family</th>';
+		  str+='     <th>Type</th>';
 		  str +='	 <th>Caste</th>';
 		  str+='	 <th class="widthStyle">Eldest Person</th>';
 		  str+='	 <th>Gender</th>';
@@ -876,7 +877,6 @@ function  buildFamilyMembers(result,jsObj,type){
           str+='     <th class="widthStyle">Youngest Person</th>';
 		  str+='	 <th>Gender</th>';
 		  str+='	 <th>Age</th>';
-		  str+='     <th>Type</th>';
           str+='   </tr>';
           str+='  </thead>';
           str+='  <tbody>';
@@ -898,6 +898,25 @@ function  buildFamilyMembers(result,jsObj,type){
 		  str +='		<td>'+result[i].boothName+'</td>';
           str +='		<td><a href="javascript:{}" title="Click here to view and edit members in family" onclick="getVotersInAFamily('+result[i].boothId+','+publicationDateId+',\''+result[i].houseNo+'\')">'+result[i].houseNo+'</a></td>';
           str +='		<td>'+result[i].numberOfPeople+'</td>';
+		  if(result[i].isInfluencePerson == true || result[i].isCadrePerson == true || result[i].isPoliticion == true){
+			  str+='<td>';
+			  var temp = "";
+			 if(result[i].isInfluencePerson == true){
+				temp = "Influencing People";
+				str+='<img title="'+result[i].influenceNames+': '+temp+'" alt="'+result[i].influenceNames+'" src="./images/icons/influencing.png" class ="mouseOver"/>';
+			 }
+			 if(result[i].isCadrePerson == true){
+				temp = "Cadre";
+				str+='<img title="'+result[i].cadreNames+': '+temp+'" alt="'+result[i].cadreNames+'" src="./images/icons/cadre.png" class ="mouseOver"/>';
+			 }
+			 if(result[i].isPoliticion == true){
+				temp = "Politicion";
+		   str+='<img title="'+result[i].politicianNames+': '+temp+'" alt="'+result[i].politicianNames+'" src="./images/icons/politican.png" class ="mouseOver"/>';
+			 }
+         str+='</td>';
+		  }else{
+			str +='		<td></td>';
+		  }
 		/*if(result[i].isInfluencePerson == true){
 		 str+='<td><img title="InfluencingPeople" alt="InfluencePerson" src="./images/icons/influencing.png"/></td>';
 		 }else{
@@ -920,25 +939,7 @@ function  buildFamilyMembers(result,jsObj,type){
           str +='		<td class="widthStyle">'+result[i].younger+'</td>';
 		  str +='		<td>'+result[i].youngerGender+'</td>';
 		  str +='		<td>'+result[i].youngerAge+'</td>';
-		  if(result[i].isInfluencePerson == true || result[i].isCadrePerson == true || result[i].isPoliticion == true){
-			  str+='<td>';
-			  var temp = "";
-			 if(result[i].isInfluencePerson == true){
-				temp = "Influencing People";
-				str+='<img title="'+result[i].influenceNames+': '+temp+'" alt="'+result[i].influenceNames+'" src="./images/icons/influencing.png" class ="mouseOver"/>';
-			 }
-			 if(result[i].isCadrePerson == true){
-				temp = "Cadre";
-				str+='<img title="'+result[i].cadreNames+': '+temp+'" alt="'+result[i].cadreNames+'" src="./images/icons/cadre.png" class ="mouseOver"/>';
-			 }
-			 if(result[i].isPoliticion == true){
-				temp = "Politicion";
-		   str+='<img title="'+result[i].politicianNames+': '+temp+'" alt="'+result[i].politicianNames+'" src="./images/icons/politican.png" class ="mouseOver"/>';
-			 }
-         str+='</td>';
-		  }else{
-			str +='		<td></td>';
-		  }
+		  
           str+='   </tr>';
 	 }
           str+='  </tbody>';
