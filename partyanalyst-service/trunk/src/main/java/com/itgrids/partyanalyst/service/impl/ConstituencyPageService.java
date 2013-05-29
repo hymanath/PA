@@ -1392,7 +1392,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			boothIdList.add(Long.parseLong(str.nextToken()));
 		}
 		staticParties = partyDAO.getStaticParties(IConstants.STATIC_PARTIES + ",'IND'");
-		//staticParties.add(366l);
+		
 		if(staticParties != null && staticParties.size() > 0)
 		/*if(!(eletype.equalsIgnoreCase("ZPTC") || eletype.equalsIgnoreCase("MPTC")))
 		list = candidateBoothResultDAO.findBoothResultsForBoothsAndElection(boothIdList,electionId);
@@ -1400,9 +1400,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		list = nominationDAO.findAllMptcAndZptcElectionsInfoByelectionId(electionId,tehsilIds);	*/
 			
 		if(!(eletype.equalsIgnoreCase("ZPTC") || eletype.equalsIgnoreCase("MPTC")))
-			list = candidateBoothResultDAO.findBoothResultsForBoothsAndElectionAndParties(boothIdList,electionId,staticParties);
-			else
-			list = nominationDAO.findAllMptcAndZptcElectionsInfoByelectionId(electionId,tehsilIds,staticParties);	
+		list = candidateBoothResultDAO.findBoothResultsForBoothsAndElectionAndParties(boothIdList,electionId,staticParties);
+		else
+		list = nominationDAO.findAllMptcAndZptcElectionsInfoByelectionId(electionId,tehsilIds,staticParties);	
 		List<PartyVotesEarnedVO> partyResults = new ArrayList<PartyVotesEarnedVO>();
 		PartyVotesEarnedVO partyVotesEarnedVO = null;
 		int i=0;
