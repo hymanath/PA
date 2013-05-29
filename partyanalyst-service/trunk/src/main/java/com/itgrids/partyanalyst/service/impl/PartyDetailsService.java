@@ -75,6 +75,7 @@ import com.itgrids.partyanalyst.model.PartyUpdatesEmail;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.model.UserPartyRelation;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -115,7 +116,6 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private IFilePathsDAO filePathsDAO;
 	private IUserPartyRelationDAO userPartyRelationDAO;
 	private IUserDAO userDAO;
-	
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -480,8 +480,8 @@ public class PartyDetailsService implements IPartyDetailsService {
 	                 
 					 fileVO.setFileId(file.getFileId());
 					 fileVO.setTotalResultsCount(new Long(list.size()));
-					 fileVO.setFileTitle1(file.getFileTitle());
-					 fileVO.setFileDescription1(file.getFileDescription());
+					 fileVO.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle()));
+					 fileVO.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()));
 					 fileVO.setFileDate(data[2] != null ? (sdf.format((Date)data[2])) :"");
 					 fileVO.setContentId((Long)data[1]);
 					 fileVO.setCandidateId(partyId);
@@ -567,8 +567,8 @@ public class PartyDetailsService implements IPartyDetailsService {
 					fileVO.setFileId((Long) file.getFileId());
 					fileVO.setFileName1(file.getFileName() != null ? file.getFileName() : "");
 					fileVO.setPath(file.getFilePath());
-					fileVO.setFileTitle1(file.getFileTitle() != null ? file.getFileTitle() : "");
-					fileVO.setFileDescription1(file.getFileDescription() != null ? file.getFileDescription(): "");
+					fileVO.setFileTitle1(file.getFileTitle() != null ? CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle()) : "");
+					fileVO.setFileDescription1(file.getFileDescription() != null ? CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()): "");
 					fileVO.setSource(file.getSourceObj() != null ? file.getSourceObj().getSource() : "");
 					fileVO.setLanguage(file.getLanguage() != null ? file.getLanguage().getLanguage() : "");
 					fileVO.setFileDate(file.getFileDate() != null ? (sdf.format((Date)file.getFileDate())) : "");

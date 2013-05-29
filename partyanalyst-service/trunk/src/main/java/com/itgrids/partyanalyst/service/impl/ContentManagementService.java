@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IContentManagementService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ContentManagementService implements IContentManagementService{
@@ -192,7 +193,7 @@ public class ContentManagementService implements IContentManagementService{
 								 
 								   
 								    fileVO.setTitle(fileGallary.getFile().getFileTitle());
-									fileVO.setDescription(fileGallary.getFile().getFileDescription());
+									fileVO.setDescription(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()));
 									fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 									fileVO.setContentId(falseContentIdForPhotoGal);
 									falseContentIdForPhotoGal = falseContentIdForPhotoGal+1L;
@@ -236,8 +237,8 @@ public class ContentManagementService implements IContentManagementService{
 					if(fileGallary.getFile().getRegionScopes() != null)
 					  fileVO.setLocationScopeValue(fileGallary.getFile().getRegionScopes().getScope());
 					
-					fileVO.setTitle(fileGallary.getFile().getFileTitle());
-					fileVO.setDescription(fileGallary.getFile().getFileDescription());
+					fileVO.setTitle(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle()));
+					fileVO.setDescription(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()));
 					fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 					fileVO.setContentId(fileGallary.getFileGallaryId());
 					
@@ -325,7 +326,7 @@ public class ContentManagementService implements IContentManagementService{
 						FileVO otherFileVO = new FileVO();
 						
 						otherGallary.setGallaryName(galAndFileInfo[0].toString());
-						otherGallary.setDescription(galAndFileInfo[1].toString());
+						otherGallary.setDescription(CommonStringUtils.removeSpecialCharsFromAString(galAndFileInfo[1].toString()));
 						otherGallary.setOrderNo((Long)galAndFileInfo[2]);
 						
 						otherFileVO.setFileId((Long)galAndFileInfo[3]);

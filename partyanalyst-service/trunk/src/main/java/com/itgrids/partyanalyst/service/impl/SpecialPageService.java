@@ -72,6 +72,7 @@ import com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.YouTubeManager;
@@ -518,8 +519,8 @@ public class SpecialPageService implements ISpecialPageService{
 				fileVO.setFileName1(file.getFileName() != null ? file.getFileName() : "");
 				fileVO.setContentId((Long)params[1]);
 				
-				fileVO.setFileTitle1(file.getFileTitle() != null ? file.getFileTitle() : "");
-				fileVO.setFileDescription1(file.getFileDescription() != null ? file.getFileDescription(): "");
+				fileVO.setFileTitle1(file.getFileTitle() != null ? CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle()) : "");
+				fileVO.setFileDescription1(file.getFileDescription() != null ? CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()): "");
 				
 				fileVO.setFileDate(file.getFileDate() != null ? (sdf.format((Date)file.getFileDate())) : "");
 				fileVO.setCount(totalRecords.size());
@@ -1002,8 +1003,8 @@ public class SpecialPageService implements ISpecialPageService{
 				file.setFileName(fileVO.getName());
 				file.setFilePath(fileVO.getPath().trim());
 				file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
-				file.setFileTitle(fileVO.getTitle());
-				file.setFileDescription(fileVO.getDescription());
+				file.setFileTitle(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getTitle()));
+				file.setFileDescription(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getDescription()));
 				file.setKeywords(fileVO.getKeywords());
 				
 				if(fileVO.getLanguegeId() != null && fileVO.getLanguegeId() > 0)

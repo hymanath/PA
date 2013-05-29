@@ -56,6 +56,7 @@ import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IContentManagementService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -92,7 +93,6 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private INewsProblemDAO newsProblemDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
-	
 	
 	
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
@@ -305,8 +305,8 @@ public class NewsMonitoringService implements INewsMonitoringService {
     		  fileVO.setFileId(file.getFileId());
     		  fileVO.setName(file.getFileName());
     		  fileVO.setPath(file.getFilePath());
-    		  fileVO.setFileTitle1(file.getFileTitle());
-    		  fileVO.setDescription(file.getFileDescription());
+    		  fileVO.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle()));
+    		  fileVO.setDescription(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()));
     		  fileVO.setFileDate(file.getFileDate()!=null?file.getFileDate().toString():"");
     		  
     		  Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
@@ -463,8 +463,8 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		  fileVO.setFileId(file.getFileId());
 	    		  fileVO.setName(file.getFileName());
 	    		  fileVO.setPath(file.getFilePath());
-	    		  fileVO.setFileTitle1(file.getFileTitle());
-	    		  fileVO.setDescription(file.getFileDescription());
+	    		  fileVO.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle()));
+	    		  fileVO.setDescription(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()));
 	    		  String fileDate = file.getFileDate().toString();
 	    		  String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
 	    		  fileVO.setFileDate(dateObj!=null?dateObj:"");
@@ -948,8 +948,8 @@ public class NewsMonitoringService implements INewsMonitoringService {
 			 
 			 NewsImportance newsImportance = newsImportanceDAO.get(fileVO.getNewsImportanceId());
 			 
-			 file.setFileTitle(fileVO.getTitle());
-			 file.setFileDescription(fileVO.getDescription());
+			 file.setFileTitle(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getTitle()));
+			 file.setFileDescription(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getDescription()));
 			 file.setCategory(category);
 			 file.setNewsImportance(newsImportance);
 			 

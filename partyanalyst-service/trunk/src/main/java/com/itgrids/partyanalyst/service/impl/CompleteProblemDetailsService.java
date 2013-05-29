@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.service.ICompleteProblemDetailsService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CompleteProblemDetailsService implements ICompleteProblemDetailsService {
@@ -623,8 +624,8 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 				for(Object[] params : list)
 				{
 					fileVO.setFileId((Long)params[0]);
-					fileVO.setFileTitle1(params[1] != null ? params[1].toString() : " ");
-					fileVO.setFileDescription1(params[2]!=null ? params[2].toString() : " ");
+					fileVO.setFileTitle1(params[1] != null ? CommonStringUtils.removeSpecialCharsFromAString(params[1].toString()) : " ");
+					fileVO.setFileDescription1(params[2]!=null ? CommonStringUtils.removeSpecialCharsFromAString(params[2].toString()) : " ");
 					fileVO.setProblemFileId((Long)params[3]);
 				}
 			}
