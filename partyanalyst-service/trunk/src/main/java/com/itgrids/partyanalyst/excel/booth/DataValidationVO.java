@@ -19,6 +19,10 @@ public class DataValidationVO {
 	private List<SelectOptionVO> assignedHamletsList = new ArrayList<SelectOptionVO>(0);
 	private List<SelectOptionVO> notAssignedHamletsList = new ArrayList<SelectOptionVO>(0);
 	private List<Long> assignedHamletsIdsList = new ArrayList<Long>(0);
+	private String constituencyName;
+	private Long constituencyId;
+	private List<SelectOptionVO> boothList = new ArrayList<SelectOptionVO>(0);
+	private Long unMappedBoothsCount;
 
 	public List<Long> getAssignedHamletsIdsList() {
 		return assignedHamletsIdsList;
@@ -115,6 +119,38 @@ public class DataValidationVO {
 
 	public void setHamletsNotAssignedVoters(Long hamletsNotAssignedVoters) {
 		this.hamletsNotAssignedVoters = hamletsNotAssignedVoters;
+	}
+
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public List<SelectOptionVO> getBoothList() {
+		return boothList;
+	}
+
+	public void setBoothList(List<SelectOptionVO> boothList) {
+		this.boothList = boothList;
+	}
+
+	public Long getUnMappedBoothsCount() {
+		return unMappedBoothsCount;
+	}
+
+	public void setUnMappedBoothsCount(Long unMappedBoothsCount) {
+		this.unMappedBoothsCount = unMappedBoothsCount;
 	}
 	
 	

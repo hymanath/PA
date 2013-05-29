@@ -36,4 +36,10 @@ public class BoothLocalBodyWardDAO extends GenericDaoHibernate<BoothLocalBodyWar
 		return getHibernateTemplate().find("select model.booth.boothId,model.booth.partNo from BoothLocalBodyWard model where model.localBodyWard.constituencyId = ? and model.booth.publicationDate.publicationDateId ", wardId);
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getBoothIds()
+	{
+		return getHibernateTemplate().find(" select distinct model.booth.boothId from BoothLocalBodyWard model ");
+	}
 }

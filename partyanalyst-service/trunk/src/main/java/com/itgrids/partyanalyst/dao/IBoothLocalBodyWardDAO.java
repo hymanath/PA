@@ -10,4 +10,7 @@ public interface IBoothLocalBodyWardDAO extends GenericDao<BoothLocalBodyWard, L
 	public Integer deleteRecords(List<Long> boothIds, Long wardId);
 	public List<Long> getBoothsForWard(Long wardId,Long publicationId);
 	public List<Object[]> getBoothsDetailsForWard(Long wardId,Long publicationId);
+	
+	public List<Long> getBoothIds();
+	
 }
