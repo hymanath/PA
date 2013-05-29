@@ -17,6 +17,36 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css" />
  <style>
+ .marginClass{
+
+	margin:5px;
+}
+.selectBoxWidth {
+    padding: 2px;
+    width: 250px;
+}
+.span2{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-weight: bold;
+	margin-top: 8px;	
+}
+select {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 250px;
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,#fromDate,#toDate {
+    border-radius: 4px 4px 4px 4px;
+	color: #000000;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 18px;
+    padding: 4px;
+}
+input, button, select, textarea {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
    .blue {
       color:black;
    }
@@ -496,6 +526,23 @@
 	
 	function getRespectiveValues(constituencyType)
 	{
+		$('#specificMandalName').css("display","block");
+		$('#specificPanchayatName').css("display","block");
+		$('#multiSelectLevelsHeading').css("display","block");
+		$('#multipleSelect').css("display","block");
+		$('#selectAndUnselectmandal').css("display","block");
+		$('#multiSelectLevelsValues').css("display","block");
+		$('#panchayatsList').css("display","block");
+		if($('#levelId').val() == 0)
+		{
+		$('#specificMandalName').css("display","none");
+		$('#specificPanchayatName').css("display","none");
+		$('#multiSelectLevelsHeading').css("display","none");
+		$('#multipleSelect').css("display","none");
+		$('#selectAndUnselectmandal').css("display","none");
+		$('#multiSelectLevelsValues').css("display","none");
+		$('#panchayatsList').css("display","none");
+		}
 		$('#selectAndUnselectWards').hide();
 		$("input:radio").attr("checked", false);
 		$('#selReqFileldId').hide();
@@ -765,7 +812,7 @@
 				
 				$('.panchayatCkeck').prop('checked', false);
 				var mandalStr = "";
-				mandalStr+= '<select id="maldalsList" onChange="getSelectedPanchayatsOrBooths(\'mandal\');" multiple>';
+				mandalStr+= '<select id="maldalsList" onChange="getSelectedPanchayatsOrBooths(\'mandal\');" multiple style="margin-bottom:15px;">';
 				for(var i in result)
 				{
 					if(i > 0)
@@ -785,7 +832,7 @@
 		if(result != null)
 		{
 			var panchayatStr = "";
-			panchayatStr+= '<select id="panchayatsList" onchange="getSelectedPanchayatsOrBooths(\'panchayat\');" multiple>';
+			panchayatStr+= '<select id="panchayatsList" onchange="getSelectedPanchayatsOrBooths(\'panchayat\');" multiple style="margin-bottom:15px;">';
 			for(var i in result)
 			{
 				panchayatStr+= '<option value='+result[i].id+'>'+result[i].name+'</option>';
@@ -1837,51 +1884,45 @@
 	<div style="width:950px;margin-left:auto;margin-right:auto;">
 	<div  class="widget blue" id="votersBasicInformationDiv" style="font-family: verdana;font-size: 12px;margin-left:-11px;">
 	<div id="headingDiv"   style="border: 1px solid; background-color: rgb(73, 175, 205); border-radius: 4px 4px 4px 4px; font-family: verdana; font-size: 16px; color: white; margin-top: 10px; font-weight: bolder; height: 26px; padding-top: 8px;"><span style="margin-left:280px;">Caste Wise Election Results Analysis</span></div>
-	<div style="margin-left:280px;">
+	<div align="center" style="border:2px solid #98DEF2;">
 		<div id="errorDiv" style="color:red;display:none"></div>
 		<div id="errorMsgDiv" style="margin-left:1px;"></div>
 		<table style="">
 		
 		<tr class="tableRow" >
 		<div id="constituencyDiv" class="selectDiv">
-		<td><b>Constituency </b><font class="requiredFont" style="color:red">*</font></td><td>
-		<s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate();"/></td>
+		<td style="width:200px;"><b>Constituency </b><font class="requiredFont" style="color:red">*</font></td><td>
+		<s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate();"/></td><td style="width:250px;"></td>
 		</div></tr>
 		
 		<tr class="tableRow" id="publicationRow" style="display:none;">
 		<div id="publicationDiv" class = "selectDiv">
-		<td><b>Publication Date</b><font class="requiredFont" style="color:red">*</font></td>
+		<td style="width:200px;"><b>Publication Date</b><font class="requiredFont" style="color:red">*</font></td>
 		<td><select id="publicationId" onChange="" >
-		</select></td></div>
+		</select></td><td style="width:250px;"></td></div>
 		</tr>
 		
 		<tr class="tableRow" id="ruralConstituency" style="display:none;">
 		<div id="SelectLevelDiv" class="selectDiv">
-		<td><b>Level</b><font class="requiredFont" style="color:red">*</font></td>
+		<td style="width:200px;"><b>Level</b><font class="requiredFont" style="color:red">*</font></td>
 		<td><select id="levelId" onChange="getRespectiveValues('');" >
 		<option value="0">Select Level</option>
 		<option value="1">Mandal</option>
 		<option value="2">Panchayat</option>
 		<option value="3">Booth</option>
-		</select></td>
+		</select></td><td style="width:250px;"></td>
 		</div>
 		</tr>
 		
 		<tr class="tableRow" id="urbanConstituency" style="display:none;">
 		<div id="SelectLevelDiv2" class="selectDiv">
-		<td><b>Level</b><font class="requiredFont" style="color:red">*</font></td>
+		<td style="width:200px;"><b>Level</b><font class="requiredFont" style="color:red">*</font></td>
 		<td><select id="urbanIds" onChange="getRespectiveValues('urban');" >
 		<option value="0">Select Level</option>
 		<option value="4">Ward</option>
 		<option value="3">Booth</option>
-		</select></td>
+		</select></td><td style="width:250px;"></td>
 		</div>
-		</tr>
-		
-		<tr class="tableRow" id="selLevelId">
-		<td><div id="multiSelectLevelsHeading" ></div></td>
-		<td><div id="multiSelectLevelsValues" ></div></td>
-		<td id="selectAndUnselectmandal" style="display:none;"><input type="radio" name="selectAndUnselectmandal" onclick="selectAllMandals();" id="selectAllMandals"/><b>Select All</b><input type="radio" name="selectAndUnselectmandal"  onclick="unSelectAllMandal();"  id="unSelectAllMandal"/><b>UnSelect All</b></td>
 		</tr>
 		
 		<tr class="tableRow" id="selMandalId">
@@ -1895,6 +1936,12 @@
 		<td><div id="specificPanchayatValue" style="display:none;"></div></td>
 		</tr>
 		
+		<tr class="tableRow" id="selLevelId">
+		<td><div id="multiSelectLevelsHeading" ></div></td>
+		<td><div id="multiSelectLevelsValues" style="margin-bottom:15px;"></div></td>
+		<td id="selectAndUnselectmandal" style="display:none;"><input type="radio" name="selectAndUnselectmandal" onclick="selectAllMandals();" id="selectAllMandals"/><b>Select All</b><input type="radio" name="selectAndUnselectmandal"  onclick="unSelectAllMandal();"  id="unSelectAllMandal"/><b>UnSelect All</b></td>
+		</tr>
+		
 		<tr id="selReqFileldId" class="tableRow" style="display:none;">
 		<td><div id="requiredFieldsToCheckName" ></div></td>
 		<td><div id="requiredFieldsToCheckValue" ></div></td>
@@ -1902,7 +1949,7 @@
 		
 		<tr id="selUserCatgId" class="tableRow">
 		<td><div id="userSelCatgListHeading" ></div></td>
-		<td><div id="userSelCatgListValue" ></div></td>
+		<td><div id="userSelCatgListValue" style="margin-bottom:15px;" ></div></td>
 		<td id="selectAndUnselectCastes" style="display:none;"><input type="radio" name="selectAndUnselectCastes" onclick="selectAllCastes();" id="selectAllCastes"/><b>Select All</b><input type="radio" name="selectAndUnselectCastes"  onclick="unSelectAllCastes();"  id="unSelectAllCastes"/><b>UnSelect All</b></td>
 		</tr>
 		
