@@ -540,7 +540,8 @@ public class CadreManagementService {
 				cadre.setNoOfVoters(cadreInfo.getNoOfVoters());
 				cadre.setBloodGroupId(cadreInfo.getBloodGroup() != 0 ? cadreInfo.getBloodGroup() : null);
 				cadre.setNote(cadreInfo.getNote());
-				cadre.setCadreOnlineRegistrationId(cadreInfo.getCadreOnlineRegId());
+				if(cadre.getCadreId() == null)
+				  cadre.setCadreOnlineRegistrationId(cadreInfo.getCadreOnlineRegId());
 				if(cadreInfo.getVoterId() != null)
 				{
 					cadre.setVoter(voterDAO.get(cadreInfo.getVoterId()));
