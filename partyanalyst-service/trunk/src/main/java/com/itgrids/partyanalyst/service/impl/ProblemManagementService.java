@@ -158,6 +158,7 @@ import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStringUtilService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -232,7 +233,6 @@ public class ProblemManagementService implements IProblemManagementService {
     private ICandidateDetailsService candidateDetailsService;
     private IPanchayatHamletDAO panchayatHamletDAO;
     private INewsProblemDAO newsProblemDAO;
-
     
     public INewsProblemDAO getNewsProblemDAO() {
 		return newsProblemDAO;
@@ -6367,8 +6367,8 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			{
 				fileVO = new FileVO();
 				fileVO.setProblemFileId((Long)params[0]);
-				fileVO.setFileTitle1(params[1].toString());
-				fileVO.setFileDescription1(params[2].toString());
+				fileVO.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(params[1].toString()));
+				fileVO.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(params[2].toString()));
 				fileVO.setProblem(params[3].toString());
 				if(params[4]!= null && params[4].toString().equalsIgnoreCase(IConstants.FALSE))
 					fileVO.setScope(IConstants.NEW);
@@ -6473,9 +6473,9 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 					file.setFileName(problemBeanVO.getFileVO().getFileName().get(i));
 					
 					if (problemBeanVO.getFileVO().getFileTitle().get(i) != null)
-						file.setFileTitle(problemBeanVO.getFileVO().getFileTitle().get(i));
+						file.setFileTitle(CommonStringUtils.removeSpecialCharsFromAString(problemBeanVO.getFileVO().getFileTitle().get(i)));
 					if (problemBeanVO.getFileVO().getFileDescription().get(i) != null)
-						file.setFileDescription(problemBeanVO.getFileVO().getFileDescription().get(i));
+						file.setFileDescription(CommonStringUtils.removeSpecialCharsFromAString(problemBeanVO.getFileVO().getFileDescription().get(i)));
 					file = fileDAO.save(file);
 					fileSourceLanguage.setLanguage(null);
 					fileSourceLanguage.setSource(null);
@@ -6787,8 +6787,8 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				{
 					fileVO.setProblemFileId(problemFile.getProblemFileId());
 					fileVO.setProblem(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
-					fileVO.setFileTitle1(problemFile.getFile().getFileTitle());
-					fileVO.setFileDescription1(problemFile.getFile().getFileDescription());
+					fileVO.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(problemFile.getFile().getFileTitle()));
+					fileVO.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(problemFile.getFile().getFileDescription()));
 					fileVO.setFileName1(problemFile.getFile().getFileName());
 					fileVO.setScope(problemFile.getProblemHistory().getProblemLocation().getProblemImpactLevel().getScope());
 					fileVO.setIdentifiedOn(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn());

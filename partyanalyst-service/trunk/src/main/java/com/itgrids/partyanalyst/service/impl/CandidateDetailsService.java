@@ -151,6 +151,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.UserCandidateRelation;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -716,8 +717,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			    FileVO fileVO = new FileVO();
 		    	fileVO.setName(newsDetails[0] != null ? newsDetails[0].toString() :"");		    			    	
 		   	  	fileVO.setPath(newsDetails[1] != null ? newsDetails[1].toString() :"");
-		   	    fileVO.setFileTitle1(newsDetails[2] != null ? newsDetails[2].toString() :"");
-		   	    fileVO.setFileDescription1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+		   	    fileVO.setFileTitle1(newsDetails[2] != null ? CommonStringUtils.removeSpecialCharsFromAString(newsDetails[2].toString()) :"");
+		   	    fileVO.setFileDescription1(newsDetails[3] != null ? CommonStringUtils.removeSpecialCharsFromAString(newsDetails[3].toString()) :"");
 		   	    fileVO.setScope(newsDetails[4] != null ? newsDetails[4].toString() :"");
 		   	    Long scope = newsDetails[5]!= null ?(Long)newsDetails[5]:null;
 		   	    Long locationValue = newsDetails[6]!= null ?(Long)newsDetails[6]:null;
@@ -1227,8 +1228,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		    		fileVO.setFilePath(filePaths);	
 		    	}
 		   	  	fileVO.setPath(imageDetails[2] != null ? imageDetails[2].toString() :"");
-		   	    fileVO.setFileTitle1(file.getFileTitle() != null ? file.getFileTitle() :"");
-		   	    fileVO.setFileDescription1(file.getFileDescription() != null ? file.getFileDescription() :"");
+		   	    fileVO.setFileTitle1(file.getFileTitle() != null ? CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle()) :"");
+		   	    fileVO.setFileDescription1(file.getFileDescription() != null ? CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()) :"");
 		   	    fileVO.setGallaryName(imageDetails[1] != null ? imageDetails[1].toString() :"");
 		    	retValue.add(fileVO);	  
 		 }
@@ -1260,8 +1261,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
 			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
-			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
-			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? CommonStringUtils.removeSpecialCharsFromAString(newsDetails[3].toString()) :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? CommonStringUtils.removeSpecialCharsFromAString(newsDetails[4].toString()) :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
 			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
 			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
@@ -1296,8 +1297,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
 			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
-			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
-			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? CommonStringUtils.removeSpecialCharsFromAString(newsDetails[3].toString()) :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? CommonStringUtils.removeSpecialCharsFromAString(newsDetails[4].toString()) :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
 			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
 			   	    fileVO.setCandidateId((Long)newsDetails[7]);
@@ -1322,8 +1323,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
 			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
-			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
-			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? CommonStringUtils.removeSpecialCharsFromAString(newsDetails[3].toString()) :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? CommonStringUtils.removeSpecialCharsFromAString(newsDetails[4].toString()) :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
 			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
 			   	    fileVO.setContentId((Long)fileGallaryDAO.getFileGallaryIdByFileId(fileVO.getFileId()).get(0));
@@ -1411,7 +1412,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			file.setFileName(fileVO.getName());
 			file.setFilePath(fileVO.getPath().trim());
 			//file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
-			file.setFileTitle(fileVO.getTitle());
+			file.setFileTitle(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getTitle()));
 			file.setFileDescription(fileVO.getDescription().replace("\r\n", ""));
 			file.setKeywords(fileVO.getKeywords());
 			
@@ -2205,8 +2206,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
 			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
-			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
-			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? CommonStringUtils.removeSpecialCharsFromAString(newsDetails[3].toString()) :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? CommonStringUtils.removeSpecialCharsFromAString(newsDetails[4].toString()) :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
 			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
 			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
@@ -2369,8 +2370,8 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			fileVO.setFileId((Long)objects[0]);
 			fileVO.setGallaryId((Long)objects[1]);
 			fileVO.setGallaryName(objects[2]!=null?objects[2].toString():"");
-			fileVO.setFileTitle1(objects[3]!=null?objects[3].toString():"");
-			fileVO.setFileDescription1(objects[4]!=null?objects[4].toString():"");
+			fileVO.setFileTitle1(objects[3]!=null?CommonStringUtils.removeSpecialCharsFromAString(objects[3].toString()):"");
+			fileVO.setFileDescription1(objects[4]!=null?CommonStringUtils.removeSpecialCharsFromAString(objects[4].toString()):"");
 			fileVO.setFilePath1(objects[5]!=null?objects[5].toString().trim():"");
 			fileVO.setFile(objects[6].toString());
 			fileVO.setFileTypeId((Long)objects[7]);
@@ -2387,8 +2388,8 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 ResultStatus statusCode = new ResultStatus()  ;
 	try{
 	   File file =  fileDAO.get(fileVO.getFileId());
-	   file.setFileTitle(fileVO.getFileTitle1());
-	   file.setFileDescription(fileVO.getDescription());
+	   file.setFileTitle(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getFileTitle1()));
+	   file.setFileDescription(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getDescription()));
 	   fileDAO.save(file);
 	   FileGallary fileGallary = fileGallaryDAO.get(fileVO.getFileTypeId());
 	   Gallary gallary = gallaryDAO.get(fileVO.getGallaryId());
@@ -2666,7 +2667,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 fileVO.setContentType(result.get(i).getGallary().getContentType().getContentType());
 			 fileVO.setContentId(result.get(i).getFileGallaryId());
 			 fileVO.setFileId(result.get(i).getFile().getFileId());
-			 fileVO.setDescription(result.get(i).getFile().getFileDescription());
+			 fileVO.setDescription(CommonStringUtils.removeSpecialCharsFromAString(result.get(i).getFile().getFileDescription()));
 			 Set<FileSourceLanguage> fileSourceLanguageSet = result.get(i).getFile().getFileSourceLanguage();
 			 String filePath = null;
 			 String source = null;
@@ -2690,7 +2691,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 					 break;
 			 }
 			 fileVO.setPathOfFile(filePath);
-			 fileVO.setFileTitle1(result.get(i).getFile().getFileTitle());
+			 fileVO.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(result.get(i).getFile().getFileTitle()));
 			 fileVO.setGallaryName(result.get(i).getGallary().getName());
 			 fileVO.setGallaryUpdatedDate(result.get(i).getGallary().getUpdateddate().toString());
 			 
@@ -4209,8 +4210,8 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
                  
 				 fileVO.setFileId(file.getFileId());
 				 fileVO.setTotalResultsCount(list.get(0));
-				 fileVO.setFileTitle1(file.getFileTitle());
-				 fileVO.setFileDescription1(file.getFileDescription());
+				 fileVO.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle()));
+				 fileVO.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()));
 				 fileVO.setFileDate(data[2] != null ? (sdf.format((Date)data[2])) :"");
 				 fileVO.setContentId((Long)data[1]);
 				 fileVO.setCandidateId(candidateId);
