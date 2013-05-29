@@ -89,7 +89,7 @@
 }
 .voterInfoDiv{margin-top: 10px;}
 
-#votersBasicInfoInnerDiv table th ,#votersInfoDiv table th,#voterFamilyInfoDiv table th,#voterAgeInfoDiv table th,#voterModificationDiv table th,#constituencyVotesTab th,#mandalTab th,#panchayatMappingInnerDiv table th,#boothMappingInnerDiv table th{
+#votersBasicInfoInnerDiv table th ,#votersInfoDiv table th,#voterFamilyInfoDiv table th,#voterAgeInfoDiv table th,#voterModificationDiv table th,#constituencyVotesTab th,#mandalTab th,#panchayatMappingInnerDiv table th,#boothMappingInnerDiv table th,#unMappedBoothsInnerDiv table th{
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -97,7 +97,7 @@
     padding: 10px;
     text-align: left;
 }
-#votersBasicInfoInnerDiv table td ,#votersInfoDiv table td,#voterFamilyInfoDiv table td,#voterAgeInfoDiv table td,#voterModificationDiv table td,#mandalTab td,#constituencyVotesTab td,#panchayatMappingInnerDiv table td,#boothMappingInnerDiv table td{
+#votersBasicInfoInnerDiv table td ,#votersInfoDiv table td,#voterFamilyInfoDiv table td,#voterAgeInfoDiv table td,#voterModificationDiv table td,#mandalTab td,#constituencyVotesTab td,#panchayatMappingInnerDiv table td,#boothMappingInnerDiv table td,#unMappedBoothsInnerDiv table td{
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
@@ -110,7 +110,7 @@
     margin-top: 10px;
     text-align: center;
 }
-#electionResultsDiv{padding-bottom: 25px;}
+#electionResultsDiv,#unMappedBoothsDiv{padding-bottom: 25px;}
 #electionTypeDiv{padding-top: 14px;}
 #eleErrorMsgDiv,#panEleErrorMsgDiv{color:red;}
 .tdCls{vertical-align: top;}
@@ -121,19 +121,22 @@
 #stateId{margin-left: 51px;}
 #electionYear{margin-left: 6px;}
 #eleBtnId{margin-left: 75px; margin-bottom: 21px; margin-top: 9px;}
-#eleResAjaxImg{margin-left: 10px;margin-top: -10px;}
+#eleResAjaxImg,#unMappedBoothHideAndShow{margin-left: 10px;margin-top: -10px;}
 #boothResDiv{margin-top: 24px;}
 .paraCls{color: #676A67;font: small-caption;margin-left: 25px;}
 
 #conTotalVotesDiv > span,#conValidVotesDiv > span {
     line-height: 1.8em;
 }
-#panchayatSelectDiv{margin-top: 15px;}
+#panchayatSelectDiv,#unMappedBoothsInnerDiv{margin-top: 15px;}
 #panchayatMappingInnerDiv{margin-top: 25px;}
-#panchayatErrorMsgDiv{color:red;}
+#panchayatErrorMsgDiv,#errorMessageDiv{color:red;}
 #panchayatHideAndShow{margin-bottom: -13px;margin-left: 25px;}
 #eleResHideAndShow{margin-bottom: -6px;margin-left: 34px;}
 #boothHideAndShow{margin-bottom: -12px;margin-left: 14px;}
+#unMappedBoothsHeading{margin-bottom: 15px;}
+#unMappedBoothHideAndShow{ margin-bottom: -9px;}
+.spanCls{line-height: 1.9em;width: 100px;}
 </style>
 </head>
 
@@ -238,7 +241,7 @@
 
  <!-- Panchayat Mapping End -->
 
- <!-- booth Mapping Start -->
+ <!-- Election wise panchayat Mapping Start -->
   
   <div id="boothMappingDiv" class="widget blue">
    <h4>Election Wise Panchayat Mapping Validation</h4>
@@ -260,7 +263,24 @@
 
   </div> 
 
- <!-- booth Mapping End -->
+ <!-- Election wise panchayat Mapping End -->
+
+ <!-- unMapped Booths Div Start -->
+	<div id="unMappedBoothsDiv" class="widget blue">
+	<h4 id="unMappedBoothsHeading">UnMapped Booth Details</h4>
+	<div id="errorMessageDiv"></div>
+	Election Year<font class="requiredFont">*</font> <select id="electionListForBooth" class="selectWidth" style="width:172px;height:25px;"></select>
+
+	 <input type="button" value="UnMapped Booth" id="unMappedBoothsBtnId" class="btn btn-info" />
+
+	 <img style="display:none;" id="unMappedBoothsAjaxImg" src="./images/icons/search.gif" alt="Processing Image"/>
+	
+	<span id="unMappedBoothHideAndShow" style="display:none;"><a href="javascript:{}" class="btn pull-right" id="unMappedBoothHideMenu">Hide<i class="icon-chevron-up"></i></a></span>
+
+	 <div id="unMappedBoothsInnerDiv"></div>
+	</div>
+
+ <!-- unMapped Booths Div End -->
 </div>
 
 <script type="text/javascript">
@@ -339,6 +359,8 @@ function callAjax(jsObj,url)
 								}
 								else if(jsObj.task == "validatePanchayatDataByEleId")
 								 showConstituencyWisePanchayatData(myResults,jsObj);
+								else if(jsObj.task == "getunMappedBooths")
+								 showUnMappedBooths(myResults);
 
 							}catch (e) {
 							    //alert(Exception);
@@ -1836,6 +1858,19 @@ $(document).ready(function(){
 	$("#boothShowMenu").live("click",function(){
 		$("#boothMappingInnerDiv").css("display","block");
 		$("#boothHideAndShow").html('<a id="boothHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
+	});
+
+
+	$("#unMappedBoothHideMenu").live("click",function(){
+	  $("#unMappedBoothsInnerDiv").css("display","none");
+	  
+	  $("#unMappedBoothHideAndShow").html('<a id="unMappedBoothShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+		
+	});
+
+	$("#unMappedBoothShowMenu").live("click",function(){
+		$("#unMappedBoothsInnerDiv").css("display","block");
+		$("#unMappedBoothHideAndShow").html('<a id="unMappedBoothHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
 	
 });

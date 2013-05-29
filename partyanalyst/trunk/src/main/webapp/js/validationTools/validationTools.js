@@ -145,6 +145,27 @@ $(document).ready(function(){
 	  
   });
 
+
+  $("#unMappedBoothsBtnId").click(function(){
+	  
+	var electionId = $("#electionListForBooth").val();
+	$("#errorMessageDiv").html('');
+	if(electionId == 0)
+	{
+	  $("#errorMessageDiv").html('Please Select Election Year.');
+	  return;
+	}
+	$("#unMappedBoothsAjaxImg").css("display","inline-block");
+	var jsObj=
+		{
+		  electionId:electionId,
+		  task:"getunMappedBooths"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getunMappedBoothsAction.action?"+rparam;						
+		callAjax(jsObj,url);  
+  });
+
 });//End Ready
 
 
@@ -535,6 +556,7 @@ function buildEleYears()
 
 function showEleYears(results)
 {
+
   var selectedElmt = document.getElementById("electionList");
   removeSelectElements(selectedElmt);
  
@@ -551,6 +573,26 @@ function showEleYears(results)
 	catch(ex)
 	{
 	 selectedElmt.add(opElmt); // IE only
+	}	
+  }
+
+
+  var selectedElmt1 = document.getElementById("electionListForBooth");
+  removeSelectElements(selectedElmt1);
+ 
+  for(var val in results)
+  {	
+	var opElmt = document.createElement('option');
+	opElmt.value=results[val].id;
+	opElmt.text=results[val].name;
+
+	try
+	{
+	  selectedElmt1.add(opElmt,null); // standards compliant
+	}
+	catch(ex)
+	{
+	 selectedElmt1.add(opElmt); // IE only
 	}	
   }
 
@@ -678,4 +720,44 @@ function showConstituencyWisePanchayatData(results,jsObj)
   }
 
 $("#boothMappingInnerDiv").html(str);
+}
+
+function showUnMappedBooths(results)
+{
+	$("#unMappedBoothsAjaxImg").css("display","none");
+	$("#unMappedBoothHideAndShow").css("display","inline-block");
+  $('#unMappedBoothsInnerDiv').html('');
+  var str = '';
+  if(results == null)
+  {
+   $('#unMappedBoothsInnerDiv').html('No Data Found.');
+   return;
+  }
+  str +='<table class="table table-bordered table-striped table-hover">';
+  str +='<tr>';
+  str +='<th width="20%">Constituency</td>';
+  str +='<th width="80%">Part No</td>';
+  str +='</tr>';
+  for(var i in results)
+  {
+	str +='<tr>';
+	str +='<td>'+results[i].constituencyName+'</td>';
+	str +='<td>';
+	if(results[i].boothList != null && results[i].boothList.length > 0)
+	{
+	  str +=''+results[i].boothList.length+'<br>--------------';
+	  var brCount = 0;
+	  for(var j=0;j<results[i].boothList.length;j++)
+	{	if(brCount % 8 == 0)
+		  str +='<br>';
+	   str +='<span class="spanCls">Booth- '+results[i].boothList[j].name+'</span>';
+	   brCount++;
+	}
+	}
+	str +='</td>';
+	str +='</tr>';
+
+  }
+   str +='</table>';
+   $('#unMappedBoothsInnerDiv').html(str);
 }
