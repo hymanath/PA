@@ -303,4 +303,12 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getBoothIdsByElectionId(Long electionId)
+	{
+		Query query = getSession().createQuery("select distinct model.boothConstituencyElection.booth.boothId from HamletBoothElection model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId ");
+		query.setParameter("electionId", electionId);
+		return query.list();
+	}
+	
 }

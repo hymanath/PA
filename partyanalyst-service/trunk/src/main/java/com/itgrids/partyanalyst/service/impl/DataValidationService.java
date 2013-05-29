@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothLocalBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -63,6 +64,7 @@ public class DataValidationService implements IDataValidationService{
 	private IHamletBoothElectionDAO hamletBoothElectionDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IConstituencyPageService constituencyPageService;
+	private IBoothLocalBodyWardDAO boothLocalBodyWardDAO;
 	
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
@@ -240,6 +242,15 @@ public class DataValidationService implements IDataValidationService{
 	public void setConstituencyPageService(
 			IConstituencyPageService constituencyPageService) {
 		this.constituencyPageService = constituencyPageService;
+	}
+
+	public IBoothLocalBodyWardDAO getBoothLocalBodyWardDAO() {
+		return boothLocalBodyWardDAO;
+	}
+
+	public void setBoothLocalBodyWardDAO(
+			IBoothLocalBodyWardDAO boothLocalBodyWardDAO) {
+		this.boothLocalBodyWardDAO = boothLocalBodyWardDAO;
 	}
 
 
@@ -2105,5 +2116,72 @@ public class DataValidationService implements IDataValidationService{
 		}
     }
 
+    public List<DataValidationVO> getUnMappedBoothsList(Long electionId)
+    {
+    	List<DataValidationVO> dataValidationVOsList = null;
+    	try{
+    	 List<Long> boothList = new ArrayList<Long>(0);
+    	 List<Long> unMappedBoothIds = new ArrayList<Long>(0);
+    	 
+    	 List<Long> boothIdsList = boothConstituencyElectionDAO.getBoothIdsByElectionId(electionId);
+    	 
+    	 List<Long> hamletBoothIds = hamletBoothElectionDAO.getBoothIdsByElectionId(electionId);
+    	 List<Long> localBodyBoothIds = boothLocalBodyWardDAO.getBoothIds();
+    	 
+    	 if(hamletBoothIds != null && hamletBoothIds.size() > 0)
+    		boothList.addAll(hamletBoothIds);
+    	 if(localBodyBoothIds != null && localBodyBoothIds.size() > 0)
+    		 boothList.addAll(localBodyBoothIds);
+    	 
+    	 if(boothIdsList != null && boothIdsList.size() > 0)
+    	  for(Long boothId : boothIdsList)
+    	   if(!boothList.contains(boothId))
+    		  unMappedBoothIds.add(boothId);   
+    	 
+    	 List<Object[]> list = null;
+    	 if(unMappedBoothIds != null && unMappedBoothIds.size() > 0)
+    	  list = boothDAO.getBoothsListByBoothIdsList(unMappedBoothIds);
+    	 if(list != null && list.size() > 0)
+    	 {
+    		 dataValidationVOsList = new ArrayList<DataValidationVO>(0);
+    		 DataValidationVO dataValidationVO = null;
+    	   for(Object[] params:list)
+    	   {
+    		 dataValidationVO = checkDataValidationVOExist((Long)params[2],dataValidationVOsList);
+    		 if(dataValidationVO == null)
+    		 {
+    			 dataValidationVO = new DataValidationVO();
+    			 dataValidationVO.setConstituencyId((Long)params[2]);
+    			 dataValidationVO.setConstituencyName(params[3] != null ? params[3].toString() : " ");
+    			 dataValidationVOsList.add(dataValidationVO);
+    		 }
+    		 dataValidationVO.getBoothList().add(new SelectOptionVO((Long)params[0],params[1].toString()));
+    	   }
+    	 }
+    	 
+    	 return dataValidationVOsList;
+    	}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error("Exception Occured in getUnMappedBoothsList() method, Exception - "+e);
+		 return dataValidationVOsList;
+		}
+    	
+    }
+    
+    public DataValidationVO checkDataValidationVOExist(Long constituencyId,List<DataValidationVO> list)
+    {
+      try{
+    	if(list == null || list.size() == 0)
+    	  return null;
+    	for(DataValidationVO validationVO : list)
+    	  if(validationVO.getConstituencyId().equals(constituencyId))
+    		return validationVO;
+    	return null;
+      }catch (Exception e) {
+    		LOG.error("Exception Occured in checkDataValidationVOExist() method, Exception - "+e);
+    		return null;
+		}
+   }
 	
+    
 }
