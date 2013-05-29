@@ -82,5 +82,14 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 		
 		
 	}
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVotersInfoBycustomVoterGroupId(Long customVoterGroupId,Long userId)
+	{
+		Query query = getSession().createQuery("select model.voter.voterId from CustomVoter model where model.customVoterGroup.customVoterGroupId = :customVoterGroupId and " +
+				" model.customVoterGroup.user.userId = :userId");
+		query.setParameter("customVoterGroupId", customVoterGroupId);
+		query.setParameter("userId", userId);
+		return query.list();
 	}
+
+}
