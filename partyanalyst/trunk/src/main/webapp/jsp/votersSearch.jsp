@@ -1215,7 +1215,6 @@ function buildCategoriesListInit(result){
 		  locationValue = $("#mandalField").val().substring(1);
 		}
 
-		
 		var jsObj=
 				{
 					task:"getAllVoters",
@@ -1229,7 +1228,8 @@ function buildCategoriesListInit(result){
 					selType:selType,
 					selTypeId:selTypeId,
                     groupType:groupType,
-					locationValue:locationValue	
+					locationValue:locationValue,
+					constituencyid:$('#constituencyList').val()	
 					
 					
 				}
@@ -1312,7 +1312,8 @@ function buildCategoriesListInit(result){
 					selType:selType,
                     selTypeId:selTypeId,
 					locationValue:locationValue,
-                    groupType:groupType 
+                    groupType:groupType,
+					constituencyid:$('#constituencyList').val()	
 						
 					
 				}
@@ -1550,7 +1551,6 @@ function callAjaxForCandSearch(jsObj,url)
 				}
 			  }
 			  votersEditInfo.push(obj);
-
 		if(voterIds.length > 0){
 		    $("#votersEditSaveAjaxImg").show();
 			$("#votersEditSaveButtnImg").attr("disabled", "disabled");	
