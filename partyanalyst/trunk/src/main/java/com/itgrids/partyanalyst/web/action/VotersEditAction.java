@@ -933,6 +933,8 @@ public String saveLocality()
 	    			parameters.setMuncipality(true);
 	    		else if(jObj.getString("groupType").equalsIgnoreCase("constituency"))
 	    			parameters.setConstituency(true);
+		    	
+		    	parameters.setConstituencyId(jObj.getLong("constituencyId"));
 	    		
 	    		parameters.setGroupLocationValue(jObj.getLong("locationValue"));
                 }catch(Exception e){
@@ -1027,6 +1029,13 @@ public String saveLocality()
 				    			parameters.setMuncipality(true);
 				    		else if(jObj.getString("groupType").equalsIgnoreCase("constituency"))
 				    			parameters.setConstituency(true);
+					    	
+					    	try
+					    	{
+					    	    parameters.setConstituencyId(jObj.getLong("constituencyid"));
+					    	}catch(Exception e){
+					    		parameters.setConstituencyId(0L);					    		
+					    	}
 				    		
 				    		parameters.setGroupLocationValue(jObj.getLong("locationValue"));
 					    	

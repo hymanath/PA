@@ -3400,6 +3400,7 @@ var isMuncipalitySelected = "";
 var muncipalitySelectedId = 0;
 var groupType = "";
 var locationValue = 0;
+var constituencyId = 0;
 function getAllSelectedVotersDetails1()
 {
 
@@ -3434,6 +3435,8 @@ function getAllSelectedVotersDetails1()
 	      groupType =  "muncipality";
 		  locationValue = $("#mandalField").val().substring(1);
 		}
+
+		constituencyId = $('#constituencyList').val()
 
 	if(selectedVotersArr.length <= 0)
 		alert("Please select atleast one recore to update");
