@@ -5172,7 +5172,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 			  //locationValuesList.add(voterHouseInfoVO.getGroupLocationValue());	
 			  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(userId, locationValuesList,IConstants.AREA_TYPE_URBAN);		  
 			  
-		  }else if(voterHouseInfoVO.getGroupType().equalsIgnoreCase("constituency")){
+		  }else if(voterHouseInfoVO.isConstituency()){
 			  List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(voterHouseInfoVO.getConstituencyId());
 				Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
 				List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
@@ -7790,7 +7790,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					  locationValuesList.add(lid);
 					 // locationValuesList.add(parameters.getGroupLocationValue());		
 					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_URBAN);		  
-				  }else  if(parameters.getGroupType().equalsIgnoreCase("constituency")){
+				  }else  if(parameters.isConstituency()){
 					  List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(parameters.getConstituencyId());
 						Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
 						List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
@@ -14825,7 +14825,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				  locationValuesList.add(lid);	
 				  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_URBAN);		  
 				  
-			  }else  if(parameters.getGroupType().equalsIgnoreCase("constituency")){
+			  }else  if(parameters.isConstituency()){
 				  List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(parameters.getConstituencyId());
 					Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
 					List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
