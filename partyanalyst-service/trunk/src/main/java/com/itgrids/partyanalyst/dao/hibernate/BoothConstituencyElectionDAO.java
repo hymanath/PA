@@ -657,4 +657,12 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		query.setParameter("electionId", electionId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getBoothIdsByElectionId(Long electionId)
+	{
+		Query query = getSession().createQuery("select distinct model.booth.boothId from BoothConstituencyElection model where model.constituencyElection.election.electionId =:electionId ");
+		query.setParameter("electionId", electionId);
+		return query.list();
+	}
 }
