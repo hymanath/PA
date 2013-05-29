@@ -5151,7 +5151,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 		
 	  }
   
-  public void getCustomVoterGroups(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId,SelectOptionVO defaultSelectOptionVO)
+  public void getCustomVoterGroups(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId,SelectOptionVO defaultSelectOptionVO ,Long constituencyId)
   {
 	  try
 	  {
@@ -5163,14 +5163,14 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 			  				  
 			  locationValuesList.add(voterHouseInfoVO.getGroupLocationValue());				 
 			  
-			  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(userId, locationValuesList,IConstants.AREA_TYPE_RURAL);
+			  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(userId, locationValuesList,IConstants.AREA_TYPE_RURAL,constituencyId);
 
 		  }else if(voterHouseInfoVO.isMuncipality()){
 			  
 			  Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(voterHouseInfoVO.getGroupLocationValue()).get(0); 
 			  locationValuesList.add(lid);
 			  //locationValuesList.add(voterHouseInfoVO.getGroupLocationValue());	
-			  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(userId, locationValuesList,IConstants.AREA_TYPE_URBAN);		  
+			  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(userId, locationValuesList,IConstants.AREA_TYPE_URBAN,constituencyId);		  
 			  
 		  }else if(voterHouseInfoVO.isConstituency()){
 			  List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(voterHouseInfoVO.getConstituencyId());
@@ -5182,7 +5182,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 						locationValuesList.add(selectOptionVO.getId());
 					
 				}
-		   customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(userId, locationValuesList,IConstants.AREA_TYPE_RURAL);
+		   customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(userId, locationValuesList,IConstants.AREA_TYPE_RURAL,constituencyId);
 		  }
 		  
 		  
@@ -7781,7 +7781,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				  if(parameters.isMandal()){
 						  locationValuesList.add(parameters.getGroupLocationValue());			 
 					  
-					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL);
+					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId (parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL,parameters.getConstituencyId());
 
 				  }else if(parameters.isMuncipality()){
 					  
@@ -7789,7 +7789,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					  Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(parameters.getGroupLocationValue()).get(0); 
 					  locationValuesList.add(lid);
 					 // locationValuesList.add(parameters.getGroupLocationValue());		
-					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_URBAN);		  
+					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_URBAN,parameters.getConstituencyId());		  
 				  }else  if(parameters.isConstituency()){
 					  List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(parameters.getConstituencyId());
 						Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
@@ -7800,7 +7800,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								locationValuesList.add(selectOptionVO.getId());
 							
 						}	
-						  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL);
+						  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL,parameters.getConstituencyId());
 
 				  }	
 			 	  
@@ -7900,7 +7900,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 		   
 		 		  groupDetailsMap = new HashMap<Long, Long>();
 		 		  
-		 		  getCustomVoterGroups(votersHouseInfoVO,voterIds.get(0).getVoterId(),parameters.getUserId(),defaultSelectOptionVO);
+		 		  getCustomVoterGroups(votersHouseInfoVO,voterIds.get(0).getVoterId(),parameters.getUserId(),defaultSelectOptionVO,parameters.getConstituencyId());
 		 		  
 		 		  List<Long> votersIds = new ArrayList<Long>();
 		 		  for(VoterHouseInfoVO vo:voterIds)
@@ -14817,13 +14817,13 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				  
 				  locationValuesList.add(parameters.getGroupLocationValue()); 
 				  
-				  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL);
+				  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL,parameters.getConstituencyId());
 
 			  }else if(parameters.isMuncipality()){
 				  
 				  Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(parameters.getGroupLocationValue()).get(0); 
 				  locationValuesList.add(lid);	
-				  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_URBAN);		  
+				  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_URBAN,parameters.getConstituencyId());		  
 				  
 			  }else  if(parameters.isConstituency()){
 				  List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(parameters.getConstituencyId());
@@ -14835,7 +14835,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 							locationValuesList.add(selectOptionVO.getId());
 						
 					}	
-					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaType(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL);
+					  customGroups =   customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(parameters.getUserId(), locationValuesList,IConstants.AREA_TYPE_RURAL,parameters.getConstituencyId());
 			  }	
 			 
 			// List<Object[]> customGroups = customVoterGroupDAO.getCustomVoterGroupsByLocationValue(userId ,locationValuesList);

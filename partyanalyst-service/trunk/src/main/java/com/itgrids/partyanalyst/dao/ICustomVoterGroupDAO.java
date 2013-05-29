@@ -11,6 +11,8 @@ public interface ICustomVoterGroupDAO extends GenericDao<CustomVoterGroup,Long>{
 	public List<Object[]> getCustomVoterGroupsByLocationValue(Long userId ,List<Long> locationValues);
 	public List<Object[]> getCustomVoterGroupsByLocationValueAndAreaType(Long userId ,List<Long> locationValues , String areaType);	
 	public List<Object[]> checkDuplicateGroupName(Long userId,Long locationValue,String name);
+	public List<Object[]> getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(Long userId ,List<Long> locationValues, String areaType,Long constituencyId);
+
 
 
 }
