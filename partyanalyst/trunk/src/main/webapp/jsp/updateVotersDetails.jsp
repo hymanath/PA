@@ -264,7 +264,8 @@ function getAllVoterFamiliesForEditWithSelection11(){
 				isMuncipalitySelected:window.opener.isMuncipalitySelected,
 				muncipalitySelectedId:window.opener.muncipalitySelectedId,
                 groupType:window.opener.groupType,
-                locationValue:window.opener.locationValue
+                locationValue:window.opener.locationValue,
+                constituencyId:window.opener.constituencyId
                  
 				
 			}
