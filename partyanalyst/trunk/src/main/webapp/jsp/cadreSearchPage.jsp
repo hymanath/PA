@@ -299,7 +299,9 @@ function setCadreIdToProblem()
 		window.close();
 	}
  }
-
+function getUpdatedData(){
+	getCadresResults('search');
+}
 </script>
 <style>
 .btnClass
