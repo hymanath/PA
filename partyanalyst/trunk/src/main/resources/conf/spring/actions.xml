@@ -1172,5 +1172,7 @@
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 		<property name="partyStrengthService" ref="partyStrengthService" />	
 	</bean>
+	<bean id="customVoterGroupAnalysisAction" class="com.itgrids.partyanalyst.web.action.CustomVoterGroupAnalysisAction" singleton="false">
+	</bean>
 </beans>	
 	

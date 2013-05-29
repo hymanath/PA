@@ -5192,5 +5192,9 @@
 		   <param name="root">panchayatMappingList</param>
 		  </result>
 		</action>
+		<action name="customVoterGroupAnalysisAction" class="customVoterGroupAnalysisAction">
+		<result name="success">/jsp/customVoterGroupAnalysis.jsp</result>
+		<result name="error">/jsp/loginForm.jsp</result>
+		</action>
 		</package>
 </struts>      
