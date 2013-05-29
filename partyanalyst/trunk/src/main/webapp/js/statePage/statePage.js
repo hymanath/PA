@@ -336,7 +336,7 @@ if(eleGoverningBodyVOValue != '')
 	"queryList" : [
           {
 			"title" :  ""+stateName+" Govt Updates",
-            "q" : ""+stateName+" Goverment Updates"
+			"q" : "Govt Updates Of "+stateName+" "
             
           }	
      ],
