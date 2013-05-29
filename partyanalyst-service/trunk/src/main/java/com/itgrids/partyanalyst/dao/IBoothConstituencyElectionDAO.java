@@ -148,4 +148,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	
 	public List<Object[]> getConstituenciesByEleId(Long electionId);
 	
+	public List<Long> getBoothIdsByElectionId(Long electionId);
+	
 }

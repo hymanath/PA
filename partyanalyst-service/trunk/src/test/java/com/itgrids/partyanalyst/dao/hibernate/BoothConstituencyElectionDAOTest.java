@@ -309,12 +309,19 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
 	}*/
 	
-	public void testgetConstituenciesByEleId()
+	/*public void testgetConstituenciesByEleId()
 	{
 		List<Object[]> list = boothConstituencyElectionDAO.getConstituenciesByEleId(38l);
 		for(Object[] params : list)
 			System.out.println(params[0]+" "+params[1]);
 			
+	}*/
+	
+	
+	public void testGetBoothIdsByElectionId()
+	{
+		List<Long> list = boothConstituencyElectionDAO.getBoothIdsByElectionId(38l);
+		System.out.println(list.size());
 	}
 	
 }
