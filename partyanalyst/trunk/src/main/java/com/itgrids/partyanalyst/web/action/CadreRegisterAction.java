@@ -911,7 +911,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		cadreInfo.setUserPartyName(regVO.getPartyShortName());
 		cadreInfo.setAccessType(regVO.getAccessType());
 		cadreInfo.setCadreOnlineRegId(regVO.getCadreOnlineRegId());
-		
+		 boolean isCadreParliamentWise = regVO.isCadreParliamentWise();
 		rs = cadreManagementService.saveCader(cadreInfo, skills,windowTask);
 		
 		
@@ -961,6 +961,7 @@ public class CadreRegisterAction extends ActionSupport implements
 				
 			}else if("STATE".equals(regVO.getAccessType())){
 				log.debug("Access Type = State ****");
+				if(!isCadreParliamentWise)
 				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
