@@ -1860,7 +1860,7 @@ function callAjaxToGetParlConstis( jsObj, url){
 <script type="text/javaScript">
 	<c:if test="${windowTask == 'update_existing'}">
 		<c:if test="${rs.resultCode !=  '' && rs.resultCode == '0'}">	
-				getCadresResults1('search');
+              window.opener.getUpdatedData();
 		</c:if>
 	</c:if>	
 </script>
