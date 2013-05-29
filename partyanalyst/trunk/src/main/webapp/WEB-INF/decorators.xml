@@ -232,6 +232,7 @@
 		<pattern>/casteAndElectionResultsComparisonAction*</pattern>
 		<pattern>/validationToolsAction*</pattern>
 		<pattern>/cadreOnlineRegisterPageAction*</pattern>
+		<pattern>/customVoterGroupAnalysisAction*</pattern>
     	 </decorator>
 
 </decorators>
