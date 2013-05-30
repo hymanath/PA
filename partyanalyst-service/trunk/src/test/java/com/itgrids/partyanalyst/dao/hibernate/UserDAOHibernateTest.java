@@ -368,7 +368,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(count);
 	}*/
 	
-	public void testupdateAllUsersPasswords()
+	/*public void testupdateAllUsersPasswords()
 	{	System.out.println(new Date());
 		List<User> users  =userDAO.updateAllUsersPasswords();
 		
@@ -391,5 +391,14 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println("UPDATE user SET hash_key_txt = '"+secretKey +"',passwd_hash_txt = '"+encryptedPassword+"' WHERE user_id = "+user.getUserId()+";");
 		}
 		
+	}*/
+	
+	public void testCreateHashKeyAndValueForAPassword()
+	{
+		String secretKey = EncryptDecrypt.getSecretKey();
+		EncryptDecrypt phash = new EncryptDecrypt(secretKey);
+		String encryptedPassword = phash.encryptText("guest@pa");
+		System.out.println(secretKey);
+		System.out.println(encryptedPassword);
 	}
 }
