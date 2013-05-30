@@ -6404,7 +6404,7 @@ public class StaticDataService implements IStaticDataService {
 	public MandalVO findListOfElectionsAndPartiesInMandal(Long tehsilId) {
 		MandalVO mandalVO = new MandalVO();
 		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
-		/*List<Object[]> partiesList = 
+		List<Object[]> partiesList =  partyDAO.getParticipatedPartiesInMandal(tehsilId);
 		if(partiesList != null && partiesList.size() > 0)
 		{
 			for(Object[] params : partiesList)
@@ -6413,7 +6413,7 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> partiesInMandal = new ArrayList<SelectOptionVO>();
 		for (SelectOptionVO party : parties)
 			if (!"'AIMIM'".contains(party.getName()))
-				partiesInMandal.add(party);*/
+				partiesInMandal.add(party);
 		
 		Set<SelectOptionVO> elections = new HashSet<SelectOptionVO>();
 		List electionsInMandal = villageBoothElectionDAO
@@ -6429,8 +6429,9 @@ public class StaticDataService implements IStaticDataService {
 		 Set mySet = new HashSet(Arrays.asList(listOfNames)); 
 		 
 		 
-		//mandalVO.setPartiesInMandal(partiesInMandal);
-		mandalVO.setElectionsInMandal(mySet);
+			mandalVO.setPartiesInMandal(partiesInMandal);
+			mandalVO.setElectionsInMandal(mySet);
+			mandalVO.setElectionsInMandalList(listOfNames);
 		if(elections != null && elections.size() > 0)
 		{
 		for(SelectOptionVO election : elections)
