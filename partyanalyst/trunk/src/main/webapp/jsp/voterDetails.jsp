@@ -936,16 +936,18 @@ function buildVotersCount(myResults,jsObj)
 function getInfluencingPeopleCount(id)
 {
 	var jsObj=
-			{
-		locationValue:id,
-		type : maintype,
-		publicationDateId:publicationId,
-		name             :name,
-		task:"getInfluencingPeopleCount"
+	{
+		locationValue     : id,
+		type              : maintype,
+		publicationDateId : publicationId,
+		constituencyId    : constituencyId,
+		name              : name,
+		task              : "getInfluencingPeopleCount"
 	};
 	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		
-    var url1 = "getInfluencingPeopleCountAction.action?"+rparam1;
+    //var url1 = "getInfluencingPeopleCountAction.action?"+rparam1;
+	var url1 = "getCountForSelectedLevelAction.action?"+rparam1;
 	callAjax(jsObj,url1);
 }
 
@@ -967,7 +969,7 @@ function getInfluencingPeopleVotersDetails(locationValue,typeValue,publicationDa
 {
 	if(count != 0)
 	{
-		var reqBrowser = window.open("cadreDisplayWindowAction.action?locationValue="+locationValue+"&typeValue="+typeValue+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&mainreqid="+id+"&maintype="+maintype+"","newBrowser","width=900,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var reqBrowser = window.open("influencingCadrePoliticianDisplayWindowAction.action?locationValue="+locationValue+"&constituencyId="+constituencyId+"&typeValue="+typeValue+"&name="+name+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&mainreqid="+id+"&maintype="+maintype+"","newBrowser","width=1080,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		reqBrowser.focus();
 	}
 	

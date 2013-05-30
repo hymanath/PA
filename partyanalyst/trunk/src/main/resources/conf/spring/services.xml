@@ -29,7 +29,12 @@
 		<property name="userVoterCategoryValueDAO" ref="userVoterCategoryValueDAO" />
 		<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
 		<property name="publicationDateDAO" ref="publicationDateDAO" />
-		<property name="queryTempDAO" ref="queryTempDAO" />	
+		<property name="queryTempDAO" ref="queryTempDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >

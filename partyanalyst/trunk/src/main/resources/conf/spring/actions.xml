@@ -1031,7 +1031,7 @@
 			<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 			<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 			<property name="userVoterService" ref="userVoterService" />
-			
+			<property name="voterReportService" ref="voterReportService" />
 	</bean>
 	
 	
@@ -1174,6 +1174,10 @@
 	</bean>
 	<bean id="customVoterGroupAnalysisAction" class="com.itgrids.partyanalyst.web.action.CustomVoterGroupAnalysisAction" singleton="false">
 	 <property name="customVoterGroupAnalysisService" ref="customVoterGroupAnalysisService" />
+	</bean>
+		
+	<bean id="influencingCadrePoliticianDisplayWindowAction" class="com.itgrids.partyanalyst.web.action.InflencingCadreCountsDisplayAction" singleton="false">
+		<property name="voterReportService" ref="voterReportService" />
 	</bean>
 </beans>	
 	

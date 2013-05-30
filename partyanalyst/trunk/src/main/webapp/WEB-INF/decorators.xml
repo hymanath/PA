@@ -233,6 +233,7 @@
 		<pattern>/validationToolsAction*</pattern>
 		<pattern>/cadreOnlineRegisterPageAction*</pattern>
 		<pattern>/customVoterGroupAnalysisAction*</pattern>
+		<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
     	 </decorator>
 
 </decorators>
