@@ -563,11 +563,86 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testGetCatstesForBooths()
+/*	public void testGetCatstesForBooths()
 	{
 		List<Long> boothIds = new ArrayList<Long>(0);
 		boothIds.add(122792l);
 		List<Object[]> list = boothPublicationVoterDAO.getCatstesForBooths(1l, boothIds, 8l);
 		System.out.println(list.size());
+	}*/
+	
+	public void testGetCadreCountForSelectedLevel()
+	{
+		List<Long> boothIds = new ArrayList<Long>();
+		boothIds.add(123073l);
+		boothIds.add(123074l);
+		boothIds.add(123075l);
+		boothIds.add(123076l);
+		List<Long> values = boothPublicationVoterDAO.getCadreCountForSelectedLevel(boothIds,241l,1l);
+		for (Long long1 : values) {
+			System.out.println(long1);
+		}
 	}
+
+	/*public void testGetInfluencingPeopleCountForSelectedLevel()
+	{
+		List<Long> boothIds = new ArrayList<Long>();
+		boothIds.add(123074l);
+		boothIds.add(123075l);
+		boothIds.add(123076l);
+		boothIds.add(123077l);
+		List<Long> values = boothPublicationVoterDAO.getInfluencingPeopleCountForSelectedLevel(boothIds,241l,1l);
+		for (Long long1 : values) {
+			System.out.println(long1);
+		}
+	}*/
+	/*public void testGetPoliticianCountForSelectedLevel()
+	{
+		List<Long> boothIds = new ArrayList<Long>();
+		boothIds.add(123074l);
+		boothIds.add(123075l);
+		boothIds.add(123076l);
+		boothIds.add(123077l);
+		List<Long> values = boothPublicationVoterDAO.getPoliticianCountForSelectedLevel(boothIds,241l);
+		for (Long long1 : values) {
+			System.out.println(long1);
+		}
+	}*/
+	/*public void testgetCadreDetailsForSelectedlevel()
+	{
+		List<Long> boothIds = new ArrayList<Long>();
+		boothIds.add(123074l);
+		boothIds.add(123075l);
+		boothIds.add(123076l);
+		boothIds.add(123077l);
+		List<Voter> values = boothPublicationVoterDAO.getCadreDetailsForSelectedlevel(boothIds,241l,1L,0,5,"asc","voterId");
+		for (Voter voter : values) {
+			System.out.println(voter.getName());
+		}
+	}*/
+	
+	/*public void testGetInfluencingPeopleDetailsForSelectedlevel()
+	{
+		List<Long> boothIds = new ArrayList<Long>();
+		boothIds.add(123074l);
+		boothIds.add(123075l);
+		boothIds.add(123076l);
+		boothIds.add(123077l);
+		List<Voter> values = boothPublicationVoterDAO.getInfluencingPeopleDetailsForSelectedlevel(boothIds,241l,1L,0,5,"asc","voterId");
+		for (Voter voter : values) {
+			System.out.println(voter.getName());
+		}
+	}*/
+	/*public void testGetPoliticanDetailsForSelectedlevel()
+	{
+		List<Long> boothIds = new ArrayList<Long>();
+		boothIds.add(123074l);
+		boothIds.add(123075l);
+		boothIds.add(123076l);
+		boothIds.add(123077l);
+		List<Voter> values = boothPublicationVoterDAO.getPoliticanDetailsForSelectedlevel(boothIds,241l,0,5,"asc","voterId");
+		for (Voter voter : values) {
+			System.out.println(voter.getName());
+		}
+	}*/
 }

@@ -6,6 +6,9 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1262,6 +1265,171 @@ IUserVoterDetailsDAO{
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId",publicationDateId);
 		query.setParameter("userId",userId);
+		return query.list();
+	}
+	
+	/**
+	 * This DAO is Used For Getting Count For Selected Type (Cadre,InfluencingPeople and Candiadte..)
+	 * @param Long hamletId
+	 * @param Long userId
+	 * @param String type
+	 * @return List<Cadre>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Long> getCountForSelectedTypeInHamlet(Long hamletId,Long userId,String type)
+	{
+		StringBuffer queryString = new StringBuffer();
+		if(type.equalsIgnoreCase("InfluencePeople"))
+		{
+			queryString.append("select count(model.influencingPeopleId) from InfluencingPeople model,");
+		}
+		else if(type.equalsIgnoreCase("Cadre"))
+		{
+			queryString.append("select count(model.cadreId) from Cadre model,");
+		}
+		else if(type.equalsIgnoreCase("Politician"))
+		{
+			queryString.append("select count(model.candidateId) from Candidate model,");
+		}
+		queryString.append(" UserVoterDetails UVD where " +
+		" model.voter.voterId = UVD.voter.voterId and UVD.hamlet.hamletId = :hamletId and UVD.user.userId = :userId ");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	/**
+	 * This DAO is Used For Getting Cadre Details For Selected Hamlet
+	 * @param Long hamletId
+	 * @param Long userId
+	 * @return List<Cadre>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Cadre> getCadreDetailsForSelectedHamlet(Long hamletId,Long userId,Integer startIndex,Integer maxIndex,String order,String columnName)
+	{
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model from Cadre model,UserVoterDetails UVD where " +
+		" model.voter.voterId = UVD.voter.voterId and UVD.hamlet.hamletId = :hamletId and UVD.user.userId = :userId ");
+		
+		 if(columnName.equalsIgnoreCase("voterId"))
+		  {
+			  queryString.append(" order by model.voter."+columnName+" "+order);  
+		  }
+		  else if(columnName.equalsIgnoreCase("gender"))
+		  {
+			  columnName = "gender";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("houseNo"))
+		  {
+			  columnName = "houseNo";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("relativeFirstName"))
+		  {
+			  columnName = "relativeName";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else
+		  {
+			  columnName = "name";
+			  queryString.append("order by model.voter."+columnName+" "+order);
+		  }
+		Query query = getSession().createQuery(queryString.toString());
+		query.setFirstResult(startIndex);	
+		query.setMaxResults(maxIndex);
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+
+	/**
+	 * This DAO is Used For Getting InfluencingPeople Details For Selected Hamlet
+	 * @param Long hamletId
+	 * @param Long userId
+	 * @return List<InfluencingPeople>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<InfluencingPeople> getInfluencingPeopleDetailsForSelectedHamlet(
+			Long hamletId, Long userId,Integer startIndex,Integer maxIndex,String order,String columnName) {
+		
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model from InfluencingPeople model,UserVoterDetails UVD where " +
+				" model.voter.voterId = UVD.voter.voterId and UVD.hamlet.hamletId = :hamletId and UVD.user.userId = :userId ");
+		if(columnName.equalsIgnoreCase("voterId"))
+		  {
+			  queryString.append(" order by model.voter."+columnName+" "+order);  
+		  }
+		  else if(columnName.equalsIgnoreCase("gender"))
+		  {
+			  columnName = "gender";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("houseNo"))
+		  {
+			  columnName = "houseNo";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("relativeFirstName"))
+		  {
+			  columnName = "relativeName";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else
+		  {
+			  columnName = "name";
+			  queryString.append("order by model.voter."+columnName+" "+order);
+		  }
+		Query query = getSession().createQuery(queryString.toString());
+		query.setFirstResult(startIndex);	
+		query.setMaxResults(maxIndex);
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+
+	/**
+	 * This DAO is Used For Getting Candidate Details For Selected Hamlet
+	 * @param Long hamletId
+	 * @param Long userId
+	 * @return List<Candidate>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Candidate> getCandidateDetailsForSelectedHamlet(Long hamletId,
+			Long userId,Integer startIndex,Integer maxIndex,String order,String columnName) {
+		
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model from Candidate model,UserVoterDetails UVD where " +
+				" model.voter.voterId = UVD.voter.voterId and UVD.hamlet.hamletId = :hamletId and UVD.user.userId = :userId ");
+		if(columnName.equalsIgnoreCase("voterId"))
+		  {
+			  queryString.append(" order by model.voter."+columnName+" "+order);  
+		  }
+		  else if(columnName.equalsIgnoreCase("gender"))
+		  {
+			  columnName = "gender";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("houseNo"))
+		  {
+			  columnName = "houseNo";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("relativeFirstName"))
+		  {
+			  columnName = "relativeName";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else
+		  {
+			  columnName = "name";
+			  queryString.append("order by model.voter."+columnName+" "+order);
+		  }
+		Query query = getSession().createQuery(queryString.toString());
+		query.setFirstResult(startIndex);	
+		query.setMaxResults(maxIndex);
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("userId", userId);
 		return query.list();
 	}
 	

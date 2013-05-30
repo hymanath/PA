@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
@@ -58,4 +59,12 @@ public interface IVoterReportService {
 	public List<SelectOptionVO> getAllBoothsForSelectedWards(List<Long> ids,Long publicationId);
 	
 	public List<SelectOptionVO> getUserCategoeryValuesForMuncipalWards(Long userId,Long constituencyId,String type,List<Long> ids,Long publicationId);
+	
+	public List<InfluencingPeopleBeanVO>  getCountsOfSelectedLevel(Long userId,Long id,Long constituencyId,String selLevel,Long publicationDateId);
+	 
+	 public List<VoterVO> showVoterDetailsForSelcetedLevel(Long userId,Long id,Long constituencyId,String selLevel,Long publicationDateId,String type,Integer startIndex,Integer maxIndex,String order,String columnName);
+	 
+	 public List<VoterVO> showingVoterDetailsForSelectedHamlet(Long hamletId,Long userId,String selLevel,String type,Integer startIndex,Integer maxIndex,String order,String columnName);
+	 
+	 public List<InfluencingPeopleBeanVO> getcountForSelectedTypeInHamlet(Long hamletId,Long userId);
 }

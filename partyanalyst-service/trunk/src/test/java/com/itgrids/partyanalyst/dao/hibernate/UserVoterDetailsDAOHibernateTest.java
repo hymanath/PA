@@ -6,6 +6,9 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -191,7 +194,7 @@ for (Object[] objects : list) {
 					System.out.println(params[0]+"------ "+params[1]);
 			
 		}*/
-		public void testGetPanchayatWiseHamletsAssignedDetails()
+		/*public void testGetPanchayatWiseHamletsAssignedDetails()
 		{
 			List<Object[]> list = userVoterDetailsDAO.getPanchayatWiseHamletsAssignedDetails(232l,8l, 1l);
 			System.out.println(list.size());
@@ -200,6 +203,36 @@ for (Object[] objects : list) {
 				System.out.println();
 				for(Object object : params)
 					System.out.print("\t"+object);
+			}
+		}*/
+		
+		
+		/*public void testGetCadreCountForSelectedHamlet()
+		{
+			List<Long> values = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(33l,1l,"Politician");
+			for (Long long1 : values) {
+				System.out.println(long1);
+			}
+		}*/
+		/*public void testGetCadreDetailsForSelectedHamlet()
+		{
+			List<Cadre> values = userVoterDetailsDAO.getCadreDetailsForSelectedHamlet(33l,1l);
+			for (Cadre cadre : values) {
+				System.out.println(cadre.getFirstName());
+			}
+		}*/
+		/*public void testGetCadreDetailsForSelectedHamlet()
+		{
+			List<InfluencingPeople> values = userVoterDetailsDAO.getInfluencingPeopleDetailsForSelectedHamlet(33l,1l);
+			for (InfluencingPeople cadre : values) {
+				System.out.println(cadre.getFirstName());
+			}
+		}*/
+		public void testGetCadreDetailsForSelectedHamlet()
+		{
+			List<Candidate> values = userVoterDetailsDAO.getCandidateDetailsForSelectedHamlet(33l,1l,0,10,"asc","voterId");
+			for (Candidate candiadte : values) {
+				System.out.println(candiadte.getFirstname());
 			}
 		}
 }

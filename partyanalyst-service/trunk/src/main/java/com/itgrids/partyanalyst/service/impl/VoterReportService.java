@@ -22,10 +22,15 @@ import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IQueryTempDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
@@ -39,6 +44,7 @@ import com.itgrids.partyanalyst.dao.IVoterPartyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -48,12 +54,20 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VoterReportVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
+import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.QueryTemp;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
@@ -94,6 +108,11 @@ public class VoterReportService implements IVoterReportService{
 	private IPublicationDateDAO publicationDateDAO;
 	private IQueryTempDAO queryTempDAO;
 	IUserVoterCategoryValueDAO userVoterCategoryValueDAO;
+	private IHamletDAO hamletDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private ITehsilDAO tehsilDAO;
 	
 	public IQueryTempDAO getQueryTempDAO() {
 		return queryTempDAO;
@@ -297,6 +316,48 @@ public class VoterReportService implements IVoterReportService{
 
 		public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
 			this.publicationDateDAO = publicationDateDAO;
+		}
+
+		
+	public IHamletDAO getHamletDAO() {
+			return hamletDAO;
+		}
+
+		public void setHamletDAO(IHamletDAO hamletDAO) {
+			this.hamletDAO = hamletDAO;
+		}
+		
+
+	public IStateDAO getStateDAO() {
+			return stateDAO;
+		}
+
+		public void setStateDAO(IStateDAO stateDAO) {
+			this.stateDAO = stateDAO;
+		}
+
+		public IDistrictDAO getDistrictDAO() {
+			return districtDAO;
+		}
+
+		public void setDistrictDAO(IDistrictDAO districtDAO) {
+			this.districtDAO = districtDAO;
+		}
+
+		public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+			return localElectionBodyDAO;
+		}
+
+		public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+			this.localElectionBodyDAO = localElectionBodyDAO;
+		}
+
+		public ITehsilDAO getTehsilDAO() {
+			return tehsilDAO;
+		}
+
+		public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+			this.tehsilDAO = tehsilDAO;
 		}
 
 	public VoterReportVO getVoterDetailsInaLocation(String range,Long rangeValue)
@@ -2137,5 +2198,396 @@ public class VoterReportService implements IVoterReportService{
 				}
 			}
 			return resultData;
+		}
+		
+		/**
+		 * This Service is used for getting Counts (Cadre,Influencing People and Candidate) For Selected Level(booth or Panchayat)
+		 * @param Long userId
+		 * @param Long id
+		 * @param Long constituencyId
+		 * @param String selLevel
+		 * @param Long publicationDateId
+		 * @return List<InfluencingPeopleBeanVO>
+		 */
+		public List<InfluencingPeopleBeanVO>  getCountsOfSelectedLevel(Long userId,Long id,Long constituencyId,String selLevel,Long publicationDateId)
+		{
+			List<InfluencingPeopleBeanVO> resultCount = new ArrayList<InfluencingPeopleBeanVO>();
+			InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
+			List<Long> boothids = new ArrayList<Long>();
+			if(selLevel.equalsIgnoreCase("booth"))
+			{
+				boothids.add(id);
+			}
+			else if(selLevel.equalsIgnoreCase("panchayat"))
+			{
+				List<Object[]> booths = boothDAO.getBoothsInAPanchayat(id,publicationDateId); 
+				if(booths != null && booths.size() > 0)
+				{
+					for (Object[] parms : booths) {
+						boothids.add((Long)parms[0]);
+					}
+				}
+			}
+			
+			
+			List<Long> inluencingPeopleCount = boothPublicationVoterDAO.getInfluencingPeopleCountForSelectedLevel(boothids,constituencyId,userId);
+			if(inluencingPeopleCount != null)
+			{
+				for (Long influeneCount : inluencingPeopleCount) {
+					influencingPeopleBeanVO.setInfluencePeopleCount(influeneCount.longValue());
+					//resultCount.add(influencingPeopleBeanVO);
+				}
+				
+			}
+			
+			List<Long> cadreCount = boothPublicationVoterDAO.getCadreCountForSelectedLevel(boothids,constituencyId,userId);
+			if(cadreCount != null && cadreCount.size() > 0)
+			{
+				for (Long countCadre : cadreCount) {
+					influencingPeopleBeanVO.setCadreCount(countCadre.longValue());
+					//resultCount.add(influencingPeopleBeanVO);
+				}
+			}
+			
+			List<Long> politicanCount = boothPublicationVoterDAO.getPoliticianCountForSelectedLevel(boothids,constituencyId);
+			if(politicanCount != null && politicanCount.size() > 0)
+			{
+				for (Long countPolitican : politicanCount) {
+					influencingPeopleBeanVO.setPoliticianCount(countPolitican.longValue());
+					
+				}
+			}
+			resultCount.add(influencingPeopleBeanVO);
+			return resultCount;
+		}
+		
+		/**
+		 * This Service is used for Showing Details (Cadre,Influencing People and Candidate) For Selected Level(booth or Panchayat)
+		 * @param Long userId
+		 * @param Long id
+		 * @param Long constituencyId
+		 * @param String selLevel
+		 * @param Long publicationDateId
+		 * @param String type
+		 * @param Integer startIndex
+		 * @param Integer maxIndex
+		 * @param String order
+		 * @param String columnName
+		 * @return List<VoterVO>
+		 */
+		public List<VoterVO> showVoterDetailsForSelcetedLevel(Long userId,Long id,Long constituencyId,String selLevel,Long publicationDateId,String type,Integer startIndex,Integer maxIndex,String order,String columnName)
+		{
+			List<VoterVO> resultData = new ArrayList<VoterVO>();
+			List<Long> boothids = new ArrayList<Long>();
+			if(selLevel.equalsIgnoreCase("booth"))
+			{
+				boothids.add(id);
+			}
+			else if(selLevel.equalsIgnoreCase("panchayat"))
+			{
+				List<Object[]> booths = boothDAO.getBoothsInAPanchayat(id,publicationDateId); 
+				if(booths != null && booths.size() > 0)
+				{
+					for (Object[] parms : booths) {
+						boothids.add((Long)parms[0]);
+					}
+				}
+			}
+			if(type.equalsIgnoreCase("InfluencePeople"))
+			{
+				
+				List<InfluencingPeople> influencingData = boothPublicationVoterDAO.getInfluencingPeopleDetailsForSelectedlevel(boothids,constituencyId,userId,startIndex,maxIndex,order,columnName);
+				if(influencingData != null && influencingData.size() > 0)
+				{
+					List<Long> inluencingPeopleCount = boothPublicationVoterDAO.getInfluencingPeopleCountForSelectedLevel(boothids,constituencyId,userId);
+					Long totalRecords = inluencingPeopleCount.get(0).longValue();
+					resultData = storeInfluencingPeopleDetails(influencingData,selLevel,id,totalRecords);
+				}
+			}
+			else if(type.equalsIgnoreCase("Cadre"))
+			{
+				List<Cadre> cadreDetails = boothPublicationVoterDAO.getCadreDetailsForSelectedlevel(boothids,constituencyId,userId,startIndex,maxIndex,order,columnName);
+				if(cadreDetails != null && cadreDetails.size() > 0)
+				{
+					List<Long> cadreCount = boothPublicationVoterDAO.getCadreCountForSelectedLevel(boothids,constituencyId,userId);
+					Long totalRecords = cadreCount.get(0).longValue();
+					resultData = storeCadrePeopleDetails(cadreDetails,selLevel,id,totalRecords);
+				}
+				
+			}
+			else if(type.equalsIgnoreCase("Politician"))
+			{
+				List<Candidate> candidateDetails = boothPublicationVoterDAO.getPoliticanDetailsForSelectedlevel(boothids,constituencyId,startIndex,maxIndex,order,columnName);
+				if(candidateDetails != null && candidateDetails.size() > 0)
+				{
+					List<Long> politicanCount = boothPublicationVoterDAO.getPoliticianCountForSelectedLevel(boothids,constituencyId);
+					Long totalRecords = politicanCount.get(0).longValue();
+					resultData = storeCandidateDetails(candidateDetails,selLevel,id,totalRecords);
+				}
+			}
+			
+			
+			return resultData;
+		}
+		/**
+		 * This Service is used for getting counts for (cadre,influencing people and candidate) for selected hamlet
+		 * @param Long hamletId
+		 * @param userId userId
+		 * @return List<InfluencingPeopleBeanVO> resultCount
+		 */
+		public List<InfluencingPeopleBeanVO> getcountForSelectedTypeInHamlet(Long hamletId,Long userId)
+		{
+			List<InfluencingPeopleBeanVO> resultCount = new ArrayList<InfluencingPeopleBeanVO>();
+			InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
+			
+			List<Long> influencingPeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"InfluencePeople");
+			if(influencingPeopleCount != null && influencingPeopleCount.size() > 0)
+			{
+				for (Long influenceCount : influencingPeopleCount) {
+					influencingPeopleBeanVO.setInfluencePeopleCount(influenceCount.longValue());
+				}
+			}
+			
+			List<Long> cadrePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Cadre");
+			if(cadrePeopleCount != null && cadrePeopleCount.size() > 0)
+			{
+				for (Long cadreCount : cadrePeopleCount) {
+					influencingPeopleBeanVO.setCadreCount(cadreCount.longValue());
+				}
+			}
+			
+			List<Long> candidatePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Politician");
+			if(candidatePeopleCount != null && candidatePeopleCount.size() > 0)
+			{
+				for (Long candidateCount : candidatePeopleCount) {
+					influencingPeopleBeanVO.setPoliticianCount(candidateCount.longValue());
+				}
+			}
+			resultCount.add(influencingPeopleBeanVO);
+			return resultCount;
+		}
+		
+		/**
+		 * This Service is used for Showing Details (Cadre,Influencing People and Candidate) For Selected Hamlet
+		 * @param Long userId
+		 * @param Long hamletId
+		 * @param String selLevel
+		 * @param String type
+		 * @param Integer startIndex
+		 * @param Integer maxIndex
+		 * @param String order
+		 * @param String columnName
+		 * @return List<VoterVO>
+		 */
+		public List<VoterVO> showingVoterDetailsForSelectedHamlet(Long hamletId,Long userId,String selLevel,String type,Integer startIndex,Integer maxIndex,String order,String columnName)
+		{
+			List<VoterVO> resultList = null;
+			
+			if(type.equalsIgnoreCase("InfluencePeople"))
+			{
+				List<InfluencingPeople> influencingpeopleData = userVoterDetailsDAO.getInfluencingPeopleDetailsForSelectedHamlet(hamletId,userId,startIndex,maxIndex,order,columnName);
+				if(influencingpeopleData != null && influencingpeopleData.size() > 0)
+				{
+					List<Long> influencingPeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"InfluencePeople");
+					Long totalRecods = influencingPeopleCount.get(0).longValue();
+					resultList = storeInfluencingPeopleDetails(influencingpeopleData,selLevel,hamletId,totalRecods);
+				}
+				
+				
+			}
+			else if(type.equalsIgnoreCase("Cadre"))
+			{
+				List<Cadre> cadrepeopleData = userVoterDetailsDAO.getCadreDetailsForSelectedHamlet(hamletId,userId,startIndex,maxIndex,order,columnName);
+				if(cadrepeopleData != null && cadrepeopleData.size() > 0)
+				{
+					List<Long> cadrePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Cadre");
+					Long totalRecods = cadrePeopleCount.get(0).longValue();
+					resultList = storeCadrePeopleDetails(cadrepeopleData,selLevel,hamletId,totalRecods);
+				}
+			}
+			else if(type.equalsIgnoreCase("Politician"))
+			{
+				List<Candidate> candidatepeopleData = userVoterDetailsDAO.getCandidateDetailsForSelectedHamlet(hamletId,userId,startIndex,maxIndex,order,columnName);
+				if(candidatepeopleData != null && candidatepeopleData.size() > 0)
+				{
+					List<Long> candidatePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Politician");
+					Long totalRecods = candidatePeopleCount.get(0).longValue();
+					resultList = storeCandidateDetails(candidatepeopleData,selLevel,hamletId,totalRecods);
+				}
+			}
+			return resultList;
+		}
+		/**
+		 * This Service is used for storing all Influencing People Details into VoterVO.
+		 * @param List<InfluencingPeople> influencingData
+		 * @param String type
+		 * @param Long id
+		 * @return List<VoterVO>
+		 */
+		public List<VoterVO> storeInfluencingPeopleDetails(List<InfluencingPeople> influencingData,String type,Long id,Long totalRecords)
+		{
+			List<VoterVO> resultData = null;
+			VoterVO voterVO = null;
+			if(influencingData != null && influencingData.size() > 0)
+			{
+				resultData = new ArrayList<VoterVO>();
+				Long count = 1l;
+				for (InfluencingPeople influencingPeople : influencingData) {
+						voterVO = new VoterVO();
+						voterVO.setVoterId((Long.valueOf(count).toString()));
+						voterVO.setFirstName(influencingPeople.getVoter().getName());
+						voterVO.setVoterIDCardNo(influencingPeople.getVoter().getVoterIDCardNo());
+						voterVO.setGender(influencingPeople.getVoter().getGender());
+						voterVO.setAge(influencingPeople.getVoter().getAge());
+						voterVO.setHouseNo(influencingPeople.getVoter().getHouseNo());
+						voterVO.setRelativeFirstName(influencingPeople.getVoter().getRelativeName());
+						voterVO.setMobileNo(influencingPeople.getVoter().getMobileNo());
+						++count;
+						voterVO.setTotalVoters(totalRecords);
+						voterVO.setInfluencingRange(influencingPeople.getInfluencingScope());
+						voterVO.setInfluencingRegion(getRegionNameBasedOnScope(influencingPeople.getInfluencingScope(),influencingPeople.getInfluencingScopeValue()));
+						if(type.equalsIgnoreCase("booth"))
+						{
+							Booth booth = boothDAO.get(id);
+							voterVO.setLocalArea("BOOTH - " + booth.getPartNo());
+						}
+						else if(type.equalsIgnoreCase("panchayat"))
+						{
+							voterVO.setLocalArea(panchayatDAO.get(id).getPanchayatName().toString());
+						}
+						else if(type.equalsIgnoreCase("hamlet"))
+						{
+							voterVO.setLocalArea(hamletDAO.get(id).getHamletName().toString());
+						}
+					
+						resultData.add(voterVO);
+				}
+			}
+			return resultData;
+			
+		}
+		/**
+		 * This Service is used for storing all Cadre People Details into VoterVO.
+		 * @param List<Cadre> cadreDetails
+		 * @param String type
+		 * @param Long id
+		 * @return List<VoterVO>
+		 */
+		public List<VoterVO> storeCadrePeopleDetails(List<Cadre> cadreDetails,String type,Long id,Long totalRecords)
+		{
+			List<VoterVO> resultData = null;
+			VoterVO voterVO = null;
+			if(cadreDetails != null && cadreDetails.size() > 0)
+			{
+				resultData = new ArrayList<VoterVO>();
+				Long count = 1l;
+				for (Cadre cadre : cadreDetails) {
+						voterVO = new VoterVO();
+						voterVO.setVoterId((Long.valueOf(count).toString()));
+						voterVO.setFirstName(cadre.getVoter().getName());
+						voterVO.setVoterIDCardNo(cadre.getVoter().getVoterIDCardNo());
+						voterVO.setGender(cadre.getVoter().getGender());
+						voterVO.setAge(cadre.getVoter().getAge());
+						voterVO.setHouseNo(cadre.getVoter().getHouseNo());
+						voterVO.setRelativeFirstName(cadre.getVoter().getRelativeName());
+						voterVO.setMobileNo(cadre.getVoter().getMobileNo());
+						++count;
+						voterVO.setTotalVoters(totalRecords);
+						if(type.equalsIgnoreCase("booth"))
+						{
+							Booth booth = boothDAO.get(id);
+							voterVO.setLocalArea("BOOTH - " + booth.getPartNo());
+						}
+						else if(type.equalsIgnoreCase("panchayat"))
+						{
+							voterVO.setLocalArea(panchayatDAO.get(id).getPanchayatName().toString());
+						}
+						else if(type.equalsIgnoreCase("hamlet"))
+						{
+							voterVO.setLocalArea(hamletDAO.get(id).getHamletName().toString());
+						}
+						resultData.add(voterVO);
+				}
+			}
+			return resultData;
+		}
+		/**
+		 * This Service is used for storing all Candidates Details into VoterVO.
+		 * @param List<Candidate> candidateDetails
+		 * @param String type
+		 * @param Long id
+		 * @return List<VoterVO>
+		 */
+		public List<VoterVO> storeCandidateDetails(List<Candidate> candidateDetails,String type,Long id,Long totalRecords)
+		{
+			List<VoterVO> resultData = null;
+			VoterVO voterVO = null;
+			if(candidateDetails != null && candidateDetails.size() > 0)
+			{
+				resultData = new ArrayList<VoterVO>();
+				Long count = 1l;
+				for (Candidate candidate : candidateDetails) {
+						voterVO = new VoterVO();
+						voterVO.setVoterId((Long.valueOf(count).toString()));
+						voterVO.setFirstName(candidate.getVoter().getName());
+						voterVO.setVoterIDCardNo(candidate.getVoter().getVoterIDCardNo());
+						voterVO.setGender(candidate.getVoter().getGender());
+						voterVO.setAge(candidate.getVoter().getAge());
+						voterVO.setHouseNo(candidate.getVoter().getHouseNo());
+						voterVO.setRelativeFirstName(candidate.getVoter().getRelativeName());
+						voterVO.setMobileNo(candidate.getVoter().getMobileNo());
+						voterVO.setTotalVoters(totalRecords);
+						++count;
+						if(type.equalsIgnoreCase("booth"))
+						{
+							Booth booth = boothDAO.get(id);
+							voterVO.setLocalArea("BOOTH - " + booth.getPartNo());
+						}
+						else if(type.equalsIgnoreCase("panchayat"))
+						{
+							voterVO.setLocalArea(panchayatDAO.get(id).getPanchayatName().toString());
+						}
+						else if(type.equalsIgnoreCase("hamlet"))
+						{
+							voterVO.setLocalArea(hamletDAO.get(id).getHamletName().toString());
+						}
+						resultData.add(voterVO);
+				}
+			}
+			return resultData;
+		}
+		
+		public String getRegionNameBasedOnScope(String infScope,String regionId){
+			
+			if(infScope.equalsIgnoreCase(IConstants.STATE)){
+				State state = stateDAO.get(new Long(regionId));
+				return state.getStateName();
+			}else if(infScope.equalsIgnoreCase(IConstants.DISTRICT)){
+				District district = districtDAO.get(new Long(regionId));
+				return district.getDistrictName();
+			}else if(infScope.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				Constituency constituency = constituencyDAO.get(new Long(regionId));
+				return constituency.getName();
+			}else if(infScope.equalsIgnoreCase("MUNCIPALITY/CORPORATION") || infScope.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION)){
+				LocalElectionBody localBody = localElectionBodyDAO.get(new Long(regionId));
+				String localBodyName = localBody.getName() + " (" + localBody.getElectionType().getElectionType() + " )";
+				return localBodyName;
+			}else if(infScope.equalsIgnoreCase(IConstants.MANDAL) || infScope.equalsIgnoreCase(IConstants.TEHSIL)){
+				if(regionId.length() !=0 && regionId != null)
+				{
+					Tehsil tehsil = tehsilDAO.get(new Long(regionId));
+					return tehsil.getTehsilName();
+				}
+			}else if(infScope.equalsIgnoreCase(IConstants.VILLAGE) || infScope.equalsIgnoreCase(IConstants.HAMLET)){
+				Hamlet hamlet = hamletDAO.get(new Long(regionId));
+				return hamlet.getHamletName();
+			}else if(infScope.equalsIgnoreCase(IConstants.WARD)){
+				Constituency constituency = constituencyDAO.get(new Long(regionId));
+				return constituency.getName();
+			}else if(infScope.equalsIgnoreCase(IConstants.BOOTH)){
+				Booth booth = boothDAO.get(new Long(regionId));
+				return booth.getPartNo().toString()+" Booth";
+			}
+		 return null;
 		}
 }

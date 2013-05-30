@@ -9,7 +9,9 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -3478,5 +3480,206 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 			
 		}
+	  /**
+	   * This DAO is Used For getting The Cadre Count For Selected Level.
+	   * @param List<Long> boothIds
+	   * @param long constituencyId
+	   * @param Long userId
+	   * @return List<Long>
+	   */
+	  public List<Long> getCadreCountForSelectedLevel(List<Long> boothIds ,long constituencyId,Long userId)
+	  {
+		  StringBuffer queryString = new StringBuffer();
+		  queryString.append("select distinct count(model.cadreId) from Cadre model ,BoothPublicationVoter BPV where" +
+		  		" model.voter.voterId = BPV.voter.voterId and model.user.userId = :userId" +
+		  		" and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.boothId in (:boothIds)");		  
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	  }
+	  
+	  /**
+	   * This DAO is Used For getting The Influencing People Count For Selected Level.
+	   * @param List<Long> boothIds
+	   * @param long constituencyId
+	   * @param Long userId
+	   * @return List<Long>
+	   */
+	  public List<Long> getInfluencingPeopleCountForSelectedLevel(List<Long> boothIds,Long constituencyId,Long userId)
+	  {
+		  StringBuffer queryString = new StringBuffer();
+		  queryString.append("select count(model.influencingPeopleId) from InfluencingPeople model ,BoothPublicationVoter BPV where" +
+		  		" model.voter.voterId = BPV.voter.voterId and model.user.userId = :userId" +
+		  		" and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.boothId in (:boothIds)");		  
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	  }
+	  /**
+	   * This DAO is Used For getting The Politicains Count For Selected Level.
+	   * @param List<Long> boothIds
+	   * @param long constituencyId
+	   * @return List<Long>
+	   */
+	  public List<Long> getPoliticianCountForSelectedLevel(List<Long> boothIds , long constituencyId)
+	  {
+		  StringBuffer queryString = new StringBuffer();
+		  queryString.append("select count(model.candidateId) from Candidate model ,BoothPublicationVoter BPV where" +
+		  		" model.voter.voterId = BPV.voter.voterId " +
+		  		" and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.boothId in (:boothIds)");		  
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	  }
+	  /**
+	   * This DAO is Used For getting The Cadre People Details For  Selected Level.
+	   * @param List<Long> boothIds
+	   * @param long constituencyId
+	   * @param Long userId
+	   * @param Integer startIndex
+	   * @param Integer maxIndex
+	   * @param String order
+	   * @param String columnName
+	   * @return List<Long>
+	   */
+	  public List<Cadre> getCadreDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId , Long userId,Integer startIndex,Integer maxIndex,String order,String columnName)
+	  {
+		  StringBuffer queryString = new StringBuffer();
+		  queryString.append("select model from Cadre model ,BoothPublicationVoter BPV where" +
+			  		" model.voter.voterId = BPV.voter.voterId and model.user.userId = :userId" +
+			  		" and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.boothId in (:boothIds) ");
+		  if(columnName.equalsIgnoreCase("voterId"))
+		  {
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("gender"))
+		  {
+			  columnName = "gender";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("houseNo"))
+		  {
+			  columnName = "houseNo";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("relativeFirstName"))
+		  {
+			  columnName = "relativeName";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else
+		  {
+			  columnName = "name";
+			  
+		  }
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		query.setParameter("userId", userId);
+		query.setParameterList("boothIds", boothIds);
+		return query.list(); 
+	  }
+	  /**
+	   * This DAO is Used For getting The Influencing People Details For  Selected Level.
+	   * @param List<Long> boothIds
+	   * @param long constituencyId
+	   * @param Long userId
+	   * @param Integer startIndex
+	   * @param Integer maxIndex
+	   * @param String order
+	   * @param String columnName
+	   * @return List<Long>
+	   */
+	  public List<InfluencingPeople> getInfluencingPeopleDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId , Long userId,Integer startIndex,Integer maxIndex,String order,String columnName)
+	  {
+		  StringBuffer queryString = new StringBuffer();
+		  queryString.append("select model from InfluencingPeople model ,BoothPublicationVoter BPV where" +
+			  		" model.voter.voterId = BPV.voter.voterId and model.user.userId = :userId" +
+			  		" and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.boothId in (:boothIds) ");
+		  if(columnName.equalsIgnoreCase("voterId"))
+		  {
+			  queryString.append(" order by model.voter."+columnName+" "+order);  
+		  }
+		  else if(columnName.equalsIgnoreCase("gender"))
+		  {
+			  columnName = "gender";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("houseNo"))
+		  {
+			  columnName = "houseNo";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("relativeFirstName"))
+		  {
+			  columnName = "relativeName";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else
+		  {
+			  columnName = "name";
+			  queryString.append("order by model.voter."+columnName+" "+order);
+		  }
+		Query query = getSession().createQuery(queryString.toString());
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		query.setParameterList("boothIds", boothIds);
+		return query.list(); 
+	  }
+	  /**
+	   * This DAO is Used For getting The Politicans Details For  Selected Level.
+	   * @param List<Long> boothIds
+	   * @param long constituencyId
+	   * @param Integer startIndex
+	   * @param Integer maxIndex
+	   * @param String order
+	   * @param String columnName
+	   * @return List<Long>
+	   */
+	  public List<Candidate> getPoliticanDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId,Integer startIndex,Integer maxIndex,String order,String columnName)
+	  {
+		  StringBuffer queryString = new StringBuffer();
+		  queryString.append("select model from Candidate model ,BoothPublicationVoter BPV where" +
+			  		" model.voter.voterId = BPV.voter.voterId " +
+			  		" and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.boothId in (:boothIds) ");
+		  if(columnName.equalsIgnoreCase("voterId"))
+		  {
+			  queryString.append(" order by model.voter."+columnName+" "+order);	
+		  }
+		  else if(columnName.equalsIgnoreCase("gender"))
+		  {
+			  columnName = "gender";
+			  queryString.append(" order by model.voter."+columnName+" "+order);	
+		  }
+		  else if(columnName.equalsIgnoreCase("houseNo"))
+		  {
+			  columnName = "houseNo";
+			  queryString.append(" order by model.voter."+columnName+" "+order);	
+		  }
+		  else if(columnName.equalsIgnoreCase("relativeFirstName"))
+		  {
+			  columnName = "relativeName";
+			  queryString.append(" order by model.voter."+columnName+" "+order);	
+		  }
+		  else
+		  {
+			  columnName = "name";
+			  queryString.append(" order by model.voter."+columnName+" "+order);	
+		  }
+		Query query = getSession().createQuery(queryString.toString());
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("boothIds", boothIds);
+		return query.list(); 
+	  }
 		
 }
