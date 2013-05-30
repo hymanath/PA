@@ -20,6 +20,6 @@ public interface ICustomVoterDAO extends GenericDao<CustomVoter,Long>{
 	
 	public List<Object[]> getVotersInfoBycustomVoterGroupId(Long customVoterGroupId,Long userId);
 
-
+	public List<Object[]> getCasteWiseCustomVotersCount(Long customVoterGroupId, Long userId);
 		
 }
