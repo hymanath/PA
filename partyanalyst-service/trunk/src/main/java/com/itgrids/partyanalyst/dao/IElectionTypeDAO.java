@@ -36,5 +36,7 @@ public interface IElectionTypeDAO extends GenericDao<ElectionType, Long>{
 	public List<ElectionType> findByElectionType(Object electionType);
 
 	public List<ElectionType> findByScope(Object scope);
+	
+	public String getElectionTypeByTypeId(Long electionTypeId);
 
 }

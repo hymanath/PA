@@ -214,29 +214,29 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List<Nomination> getNominationOfACandidateInAnElection(Long electionId,Long constituencyId,Long candidateId);
 	
-	public List<Nomination> findByElectionIdAndPartyIdStateId(Long electionId,Long partyId,Long stateId);
+	public List<Nomination> findByElectionIdAndPartyIdStateId(Long electionId,Long partyId,Long stateId,String electionType);
 	
 	public List<Nomination> findNominationsByConstituencyElectionPartyAndCandidate(Long constiElecId, Long partyId, Long candidateId);
 	
 	public List<Nomination> findByElectionIdAndPartyIdStateIdForWon(Long electionId,Long partyId,Long rank);
 	
-	public List<Nomination> findByElectionIdAndPartyIdStateIdForWon(Long electionId, Long partyId, Long rank,Long stateId);
+	public List<Nomination> findByElectionIdAndPartyIdStateIdForWon(Long electionId, Long partyId, Long rank,Long stateId,String electionType);
 	
 	public List<Nomination> findByElectionIdAndPartyIdDistrictIdForWon(Long electionId, Long partyId, Long rank,Long districtId);
 	
 	public List<Nomination> findByElectionIdAndPartyIdStateIdForLost(Long electionId,Long partyId,Long rank);
 	
-	public List<Nomination> findByElectionIdAndPartyIdStateIdForLost(Long electionId, Long partyId, Long rank,Long stateId);
+	public List<Nomination> findByElectionIdAndPartyIdStateIdForLost(Long electionId, Long partyId, Long rank,Long stateId,String electionType);
 	
 	public List<Nomination> findByElectionIdAndPartyIdDistrictIdForLost(Long electionId, Long partyId, Long rank,Long districtId);
 	
 	public List<Nomination> findByElectionIdAndRank(Long electionId,Long rank,List<Long> constituencyIds);
 	
 	@SuppressWarnings("unchecked")
-	public List findElectionResultsByElectionIdAndPartyIdAndRank(Long electionId,Long partyId,Long rank,Long stateId);
+	public List findElectionResultsByElectionIdAndPartyIdAndRank(Long electionId,Long partyId,Long rank,Long stateId,String electioneType);
 	
 	@SuppressWarnings("unchecked")
-	public List findElectionResultsByElectionIdAndPartyIdAndLostRank(Long electionId,Long partyId,Long rank,Long stateId);
+	public List findElectionResultsByElectionIdAndPartyIdAndLostRank(Long electionId,Long partyId,Long rank,Long stateId,String electioneType);
 	
 	public List getMuncipalityCandidateDetails(String electionType,Long districtId);
 	
