@@ -7204,13 +7204,14 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							 panchayat = new SelectOptionVO((Long)params[0],params[1].toString()+" Panchayat");
 							 panchayatiesList.add(panchayat);
 							 }
+							 if(!type.equalsIgnoreCase("constituency"))
 							 for(SelectOptionVO panchayats : panchayatiesList)
 								{
-								 if(!type.equalsIgnoreCase("constituency")){
+								
 									 boothsList1 = getBoothsByPanchayatIdandConstituencyId((Long)panchayats.getId(),publicationDateId,constituencyId,type,id);
 									 panchayats.setSelectOptionsList(boothsList1);	
 								 }
-								 }
+								 
 							 votersDetailsVO.setPanchayatList(panchayatiesList);
 							 votersDetailsVO.setTotalPanchayats(new Long(panchayatiesList.size()));
 							}else{
