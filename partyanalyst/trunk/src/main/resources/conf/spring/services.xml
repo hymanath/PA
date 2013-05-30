@@ -1560,6 +1560,9 @@
 	  <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 	  
     </bean>
-    <bean name="customVoterGroupAnalysisService" class="com.itgrids.partyanalyst.service.impl.CustomVoterGroupAnalysisService"/>
+    <bean name="customVoterGroupAnalysisService" class="com.itgrids.partyanalyst.service.impl.CustomVoterGroupAnalysisService">
+     <property name="customVoterDAO" ref="customVoterDAO" />
+    </bean>
+    
 </beans>		
 	
