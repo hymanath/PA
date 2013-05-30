@@ -7,6 +7,9 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
+import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
 
 public interface IBoothPublicationVoterDAO extends
@@ -355,6 +358,18 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Object[]> getCasteWiseDetailsForHamlet(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
 	
 	 public List<Object[]> getCatstesForBooths(Long userId,List<Long> boothIds ,Long publicationId);
+	 
+	 public List<Long> getCadreCountForSelectedLevel(List<Long> boothIds ,long constituencyId,Long userId);
+	 
+	 public List<Long> getInfluencingPeopleCountForSelectedLevel(List<Long> boothIds,Long constituencyId,Long userId);
+	 
+	 public List<Long> getPoliticianCountForSelectedLevel(List<Long> boothIds , long constituencyId);
+	 
+	 public List<Cadre> getCadreDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId , Long userId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	 
+	 public List<InfluencingPeople> getInfluencingPeopleDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId , Long userId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	 
+	 public List<Candidate> getPoliticanDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId,Integer startIndex,Integer maxIndex,String order,String columnName);
 
 
 }
