@@ -4683,11 +4683,12 @@ public class StaticDataService implements IStaticDataService {
 		Double totalVotesPercentage = new Double(0);
 		Long completeValidVotes = new Long(0);
 		Double completeVotesPercent = new Double(0);
-
+		String electioneType = null;
 		try {
 			if (electionId != null && partyId != null && stateId != null) {
-				nominations = nominationDAO.findByElectionIdAndPartyIdStateId(
-						electionId, partyId, stateId);
+				electioneType = electionTypeDAO.getElectionTypeByTypeId(electionId);
+				nominations = nominationDAO.findByElectionIdAndPartyIdStateId(electionId,partyId,stateId,electioneType);
+						 
 				election = electionDAO.get(electionId);
 				party = partyDAO.get(partyId);
 				state = stateDAO.get(stateId);
@@ -4826,7 +4827,7 @@ public class StaticDataService implements IStaticDataService {
 
 		ElectionResultPartyVO electionResultPartyVO = null;
 		List<CandidateElectionResultVO> candidateElectionResultsVO = null;
-
+		String electioneType = null;
 		ResultStatus resultStatus = new ResultStatus();
 
 		try {
@@ -4834,16 +4835,13 @@ public class StaticDataService implements IStaticDataService {
 
 				electionResultPartyVO = new ElectionResultPartyVO();
 				List electionResultsList = null;
-
+				electioneType = electionTypeDAO.getElectionTypeByTypeId(electionId);
+				
 				if (!rank.equals(new Long(0)))
-					electionResultsList = nominationDAO
-							.findElectionResultsByElectionIdAndPartyIdAndRank(
-									electionId, partyId, rank, stateId);
+					electionResultsList = nominationDAO.findElectionResultsByElectionIdAndPartyIdAndRank(electionId, partyId, rank, stateId,electioneType);
 				else if (rank.equals(new Long(0)))
-					electionResultsList = nominationDAO
-							.findElectionResultsByElectionIdAndPartyIdAndLostRank(
-									electionId, partyId, new Long(1), stateId);
-
+					electionResultsList = nominationDAO.findElectionResultsByElectionIdAndPartyIdAndLostRank(electionId, partyId, new Long(1), stateId,electioneType);
+					
 				if (electionResultsList != null
 						&& electionResultsList.size() > 0) {
 
