@@ -431,7 +431,7 @@ function backtopage() {
 				    	rowsPerPage    : 50,
 						template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
 						rowsPerPageOptions: [50,100,150,200], 
-					    pageLinks: 50			        
+					    pageLinks: 10			        
 				    })
 				     
 					};
