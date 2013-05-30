@@ -5202,5 +5202,10 @@
 		   <param name="root">unMappedBoothsList</param>
 		 </result>
 		</action>
+		<action name="getCasteWiseCustomVotersCountAction" class="customVoterGroupAnalysisAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">castInfoVOsList</param>
+		 </result>
+		</action>
 		</package>
 </struts>      
