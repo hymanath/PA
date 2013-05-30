@@ -91,5 +91,17 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCasteWiseCustomVotersCount(Long customVoterGroupId, Long userId)
+	{
+		Query query = getSession().createQuery(" select count (distinct CV.voter.voterId),CV.voter.gender,UVD.casteState.caste.casteName,UVD.casteState.casteCategoryGroup.casteCategory.categoryName from CustomVoter CV, UserVoterDetails UVD where " +
+				" UVD.voter.voterId = CV.voter.voterId and CV.customVoterGroup.customVoterGroupId =:customVoterGroupId and UVD.user.userId =:userId group by UVD.casteState.caste.casteId,CV.voter.gender order by UVD.casteState.caste.casteName ");
+		
+		query.setParameter("customVoterGroupId", customVoterGroupId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
 
 }
