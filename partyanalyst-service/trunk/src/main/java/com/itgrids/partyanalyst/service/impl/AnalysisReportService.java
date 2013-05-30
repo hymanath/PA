@@ -23,11 +23,14 @@ import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.columns.enums.ElectionTypeColumnNames;
+import com.itgrids.partyanalyst.dao.hibernate.ElectionTypeDAO;
 import com.itgrids.partyanalyst.dto.AnalysisCategoryBasicVO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
@@ -62,8 +65,17 @@ public class AnalysisReportService implements IAnalysisReportService {
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO; 
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
+	private IElectionTypeDAO electionTypeDAO;
 	
 	
+	public IElectionTypeDAO getElectionTypeDAO() {
+		return electionTypeDAO;
+	}
+
+	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
+		this.electionTypeDAO = electionTypeDAO;
+	}
+
 	private static final Logger log = Logger.getLogger(AnalysisReportService.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 
@@ -642,12 +654,15 @@ public class AnalysisReportService implements IAnalysisReportService {
 		
 		List<CandidateElectionResultVO> notAnalyzedResultsList = null;
 		Map<Long,Nomination> partyNominationsMap = null;
-		
+		String electioneType = null;
+		List<Nomination> partyNominations = null;
 		if(electionId != null && partyId != null && stateId != null){
 			//get party participated nominations
 			notAnalyzedResultsList = new ArrayList<CandidateElectionResultVO>();
 			partyNominationsMap = new HashMap<Long,Nomination>();
-			List<Nomination> partyNominations = nominationDAO.findByElectionIdAndPartyIdStateId(electionId,partyId,stateId);
+			electioneType = electionTypeDAO.getElectionTypeByTypeId(electionId);
+			partyNominations = nominationDAO.findByElectionIdAndPartyIdStateId(electionId,partyId,stateId,electioneType);
+			
 			if(partyNominations != null && partyNominations.size() > 0){
 				for(Nomination nominations:partyNominations){
 					partyNominationsMap.put(nominations.getNominationId(), nominations);
@@ -794,17 +809,17 @@ public class AnalysisReportService implements IAnalysisReportService {
 		
 		List<CandidateElectionResultVO> notAnalyzedResultsList = null;
 		Map<Long,Nomination> partyNominationsMap = null;
-		
+		String electioneType = null;
 		if(electionId != null && partyId != null && stateId != null && category != null){
 			//get party participated nominations
 			notAnalyzedResultsList = new ArrayList<CandidateElectionResultVO>();
 			partyNominationsMap = new HashMap<Long,Nomination>();
 			List<Nomination> partyNominations = null;
-			
+			electioneType = electionTypeDAO.getElectionTypeByTypeId(electionId);
 			if(category.equals(IConstants.CANDIDATE_COMMENTS_WON))
-			    partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1),stateId);
+			    partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1),stateId,electioneType);
 			else if(category.equals(IConstants.CANDIDATE_COMMENTS_LOST))
-				partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId,partyId,new Long(1),stateId);
+				partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId,partyId,new Long(1),stateId,electioneType);
 				
 			if(partyNominations != null && partyNominations.size() > 0){
 				for(Nomination nominations:partyNominations){
@@ -1266,19 +1281,19 @@ public class AnalysisReportService implements IAnalysisReportService {
 		
 		//creating dummy map with dummy margin values
 		Map<Long,List<Long>> marginNominationIds = null;
-						 
+		String electioneType = null;			 
 		 try{
 			 List<Nomination> partyNominations = null;
 			 List<Nomination> oppPartyNominations = null;
 			 //Map<constituencyId,Nomination> oppositionPartyNominations ..
 			 Map<Long,Nomination> oppPartyNominationsMap = null;
-			 			 
+			  electioneType = electionTypeDAO.getElectionTypeByTypeId(electionId);			 
 			 if(electionId != null && partyId != null && category != null){
 				 
 				  if(category.equals(IConstants.CANDIDATE_COMMENTS_WON)){
 					  
 					  if(stateId > new Long(0) && districtId.equals(0L))
-						  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId, new Long(1),stateId);
+						  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId, new Long(1),stateId,electioneType);
 					  else if(stateId.equals(0L) && districtId > new Long(0))
 						  partyNominations = nominationDAO.findByElectionIdAndPartyIdDistrictIdForWon(electionId,partyId,new Long(1),districtId);
 					  else
@@ -1293,7 +1308,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				  else if(category.equals(IConstants.CANDIDATE_COMMENTS_LOST)){
 					  
                       if(stateId > new Long(0) && districtId.equals(0L))
-                    	  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId,partyId,new Long(1),stateId);
+                    	  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId,partyId,new Long(1),stateId,electioneType);
 					  else if(stateId.equals(0L) && districtId > new Long(0))
 						  partyNominations = nominationDAO.findByElectionIdAndPartyIdDistrictIdForLost(electionId,partyId, new Long(1),districtId);
 					  else
