@@ -4986,6 +4986,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
                 registrationVO.setRegistrationID(cadreOnlineRegistration.getUser().getUserId());
                 registrationVO.setCadreOnlineRegId(cadreOnlineRegistration.getCadreOnlineRegistrationId());
                 registrationVO.setUserType("");
+                registrationVO.setCadreOnlineRegFor(cadreOnlineRegistration.getName());
                 Set<UserGroupRelation> userGroups = cadreOnlineRegistration.getUser().getUserGroupRelations();
                 Set<UserGroupEntitlement> groupEntitlements = null;
                 Set<GroupEntitlementRelation> entitlementsModel = null;
