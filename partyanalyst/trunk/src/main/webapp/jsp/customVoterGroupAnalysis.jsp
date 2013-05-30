@@ -93,7 +93,7 @@
 
 
    <script type="text/javascript">
-   var customVoterGroupId = ${"customVoterGroupId"};
+   var customVoterGroupId = "${customVoterGroupId}";
    </script>
 </head>
 <body>
