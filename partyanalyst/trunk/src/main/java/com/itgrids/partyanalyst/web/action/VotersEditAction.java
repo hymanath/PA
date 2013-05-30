@@ -14,6 +14,7 @@ import org.jfree.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserVoterService;
+import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -58,6 +60,7 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	//private String windowTask = null;
 	private ResultStatus resultStatus;
 	private List<VoterHouseInfoVO> votersFamilyInfo;
+	private IVoterReportService voterReportService;
 	
 	private boolean status;
 	
@@ -72,6 +75,7 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private List<VoterVO> votersData , voterDetails;
     private IUserVoterService userVoterService;
 	
+	private List<InfluencingPeopleBeanVO> influencingPeopleBeanVO;
 	
 	public IUserVoterService getUserVoterService() {
 		return userVoterService;
@@ -361,6 +365,25 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 
 	public void setCategoerysList(List<SelectOptionVO> categoerysList) {
 		this.categoerysList = categoerysList;
+	}
+
+	
+	public List<InfluencingPeopleBeanVO> getInfluencingPeopleBeanVO() {
+		return influencingPeopleBeanVO;
+	}
+
+	public void setInfluencingPeopleBeanVO(
+			List<InfluencingPeopleBeanVO> influencingPeopleBeanVO) {
+		this.influencingPeopleBeanVO = influencingPeopleBeanVO;
+	}
+
+	
+	public IVoterReportService getVoterReportService() {
+		return voterReportService;
+	}
+
+	public void setVoterReportService(IVoterReportService voterReportService) {
+		this.voterReportService = voterReportService;
 	}
 
 	public String execute() throws Exception{
@@ -1393,5 +1416,42 @@ public String saveLocality()
 			   LOG.error("Exception Occured in saveCustomVoterGroup() method",e);
 		   }
 		return Action.SUCCESS;
+	   }
+	   
+	   public String getCountForSelectedLevelAction()
+	   {
+		   try
+		   {
+				LOG.debug("Enterd Into getCountForSelectedLevelAction() method in VotersEditAction Class");
+				 session = request.getSession();
+				   RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				   if(user == null)
+						return "error";
+				   Long userId = user.getRegistrationID();
+				   jObj = new JSONObject(getTask());
+				   if(jObj.getString("task").equalsIgnoreCase("getInfluencingPeopleCount"))
+				   {  
+					   Long constituencyid            = jObj.getLong("constituencyId");
+					   Long publicationDateId         = jObj.getLong("publicationDateId");
+					   Long id                        = jObj.getLong("locationValue");
+					   String selLevel                = jObj.getString("type");
+					
+					   if(selLevel.equalsIgnoreCase("hamlet"))
+					   {
+						   influencingPeopleBeanVO    =  voterReportService.getcountForSelectedTypeInHamlet(id,userId);
+					   }
+					   else
+					   {
+						   influencingPeopleBeanVO    = voterReportService.getCountsOfSelectedLevel(userId,id,constituencyid,selLevel,publicationDateId); 
+					   }
+					   
+				   }
+			
+		   } 
+		   catch (Exception e)
+		   {
+			   LOG.error("Exception Raised in getCountForSelectedLevelAction() method in VotersEditAction Class",e);
+		   }
+		   return Action.SUCCESS;
 	   }
    }

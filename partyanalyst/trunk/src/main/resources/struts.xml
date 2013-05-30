@@ -5207,5 +5207,23 @@
 		   <param name="root">castInfoVOsList</param>
 		 </result>
 		</action>
+		
+		<action name="getCountForSelectedLevelAction" class="votersEditAction" method="getCountForSelectedLevelAction">
+		 <result type="json" name="success">
+		   <param name="root">influencingPeopleBeanVO</param>
+		 </result>
+		</action>
+		
+		<action name="influencingCadrePoliticianDisplayWindowAction" class="influencingCadrePoliticianDisplayWindowAction" >
+			<result name="success">/jsp/influCadreCountDiaplay.jsp</result>
+			<result name="error">jsp/globalError.jsp</result>	
+		</action>
+			
+		 <action name="votersCountDetailsDisplayWindowAction" class="influencingCadrePoliticianDisplayWindowAction" method="getInfluencingPeopleVotersDetails">
+		    <result type="json" name="success">
+				 <param name="root">constituencyManagementVO</param>
+			</result>
+		</action> 
+		
 		</package>
 </struts>      
