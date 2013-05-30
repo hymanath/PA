@@ -648,6 +648,7 @@
 	}
 	function validationMethod()
     {
+	    $("#alertMessage").html("");
 		var fname = $('#firstNameField').val();
 		var lname = $('#lastNameField').val();
 		var fmyFirstPerson = $('#firstFamilyMemberNameId').val();
@@ -1018,6 +1019,17 @@ function refreshingParentWindow()
 		text-align: center;
 		width: 150px;
 	}
+	.cadreReportHeader1{
+		background-image: url("images/icons/cadreReport/bg_center.png");
+		background-repeat: repeat-x;
+		color: #FFFFFF;
+		font-size: 14px;
+		font-weight: bold;
+		height: 24px;
+		padding-top: 1px;
+		text-align: center;
+		width: 650px;
+	}
 	.calBtn
 	{
 		background-image: url("images/icons/constituencyManagement/calendar.jpeg");
@@ -1062,8 +1074,11 @@ function refreshingParentWindow()
 		<TABLE cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
 				<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
-				<c:if test="${windowTask == 'new'}">
+				<c:if test="${windowTask == 'new' && sessionScope.USER.cadreOnlineRegId == null}">
 					<TD><div class="cadreReportHeader"><span style="margin-top:2px;">Add New Cadre</span></div></TD>
+				</c:if>
+				<c:if test="${sessionScope.USER.cadreOnlineRegId != null && sessionScope.USER.cadreOnlineRegId > 0}">
+					<TD><div class="cadreReportHeader1"><span style="margin-top:2px;">Cadre Registration For ${sessionScope.USER.cadreOnlineRegFor}</span></div></TD>
 				</c:if>
 				<c:if test="${windowTask == 'update_existing'}">
 				<c:if test="${ empty voterId}">
@@ -1082,13 +1097,16 @@ function refreshingParentWindow()
 	<div id="registrationMainDiv">
 	
 		<c:if test="${windowTask == 'new'}">
-			<c:if test="${rs.resultCode !=  '' && rs.resultCode == '0'}">
-				<DIV id="alertMessage" style="color:green;font-weight:bold">Cadre Registered Successfully!</DIV>			
+			<c:if test="${rs.resultCode !=  '' && rs.resultCode == '0' && sessionScope.USER.cadreOnlineRegId == null}">
+				<DIV id="alertMessage" style="color:green;font-weight:bold;margin-left: 28px;">Cadre Registered Successfully!</DIV>			
+			</c:if>
+			<c:if test="${rs.resultCode !=  '' && rs.resultCode == '0' && sessionScope.USER.cadreOnlineRegId != null && sessionScope.USER.cadreOnlineRegId > 0}">
+				<DIV id="alertMessage" style="color:green;font-weight:bold;margin-left: 28px;">Cadre Registered Successfully For ${sessionScope.USER.cadreOnlineRegFor}!</DIV>			
 			</c:if>
 		</c:if>
 		<c:if test="${windowTask == 'update_existing'}">
 			<c:if test="${rs.resultCode !=  '' && rs.resultCode == '0'}">	
-				<DIV id="alertMessage" style="color:green;font-weight:bold">Cadre Details Updated Successfully!</DIV>
+				<DIV id="alertMessage" style="color:green;font-weight:bold;margin-left: 28px;">Cadre Details Updated Successfully!</DIV>
 			</c:if>	
 		</c:if>			
 		<table id="cadreRegistrationTable" class="registrationTable">
