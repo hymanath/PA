@@ -426,10 +426,22 @@ function showMarginCountAnalysisForConstituenciesPopup(index,partyId,status)
 }
 
 function showMarginCountAnalysisForAnalyzedConstituenciesPopup(index,partyId,status)
-{
+{ 
 	index = index+1;
 	var stateSelectEl = document.getElementById("stateSelectEl");
-	var stateId =stateSelectEl.value;	
+	var stateId =stateSelectEl.options[stateSelectEl.selectedIndex].value;
+	var stateName = stateSelectEl.options[stateSelectEl.selectedIndex].text;
+	
+	var electionTypeSelectEl = document.getElementById("electionTypeSelectEl");
+    var electionType = electionTypeSelectEl.options[electionTypeSelectEl.selectedIndex].text;
+	
+	var partySelectEl = document.getElementById("partySelectEl");
+	var partyId = partySelectEl.options[partySelectEl.selectedIndex].value;
+	var partyName = partySelectEl.options[partySelectEl.selectedIndex].text;
+	
+	var selectYearEl = document.getElementById("electionYearSelectEl");
+	var electionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var electionId =  selectYearEl.options[selectYearEl.selectedIndex].value;	
 	var position = '';
 	if(status == "WON")
 		position = "Won";

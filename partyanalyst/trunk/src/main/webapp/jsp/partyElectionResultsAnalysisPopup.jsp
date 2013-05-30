@@ -209,7 +209,6 @@ function getCandidateComments()
 	var status = '${status}';
 	var stateId = '${stateId}';
 	var url = '';
-	
 	var jsObj= 
 	{
 		
@@ -237,7 +236,6 @@ function getMainPartyComments()
 	var stateId = '${stateId}';
 	var position = '${position}';
 	var url = '';
-	
 	var jsObj= 
 	{
 		
