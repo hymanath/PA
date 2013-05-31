@@ -11866,7 +11866,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			
 		 List<SelectOptionVO> localitiesList = new ArrayList<SelectOptionVO>();
 
-			Long localBodyId = assemblylocalElectionBodyDAO.get(31L).getLocalElectionBody().getLocalElectionBodyId();
+			Long localBodyId = assemblylocalElectionBodyDAO.get(muncipalityId).getLocalElectionBody().getLocalElectionBodyId();
 			
 			//List<Object[]> localities = constituencyDAO.getWardsInMuncipality(muncipalityId);
 		 
