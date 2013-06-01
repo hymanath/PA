@@ -1192,7 +1192,6 @@
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 		<property name="newsFlagDAO" ref="newsFlagDAO"/>
 		<property name="candidateDetailsService" ref="candidateDetailsService"></property>
-		<property name="categoryDAO" ref="categoryDAO"></property>
 	</bean>
 	
 	<bean name="ministerAnalysisService" class="com.itgrids.partyanalyst.service.impl.MinisterAnalysisService">
