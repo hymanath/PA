@@ -335,7 +335,6 @@ public static final String AGE5="60Above";
 		    	VoterVO voterVO = null;
 		    	Map<Long,VoterVO> voters = new HashMap<Long, VoterVO>();
 		    	List<Long> voterIds = new ArrayList<Long>();
-		    	List<Object[]> serialNosList = new ArrayList<Object[]>(0);
 		    	
 		    	try{
 		    		
@@ -347,10 +346,10 @@ public static final String AGE5="60Above";
 		    	{
 		    		columnName = "relativeName";
 		    	}
-		    	List<Long> total = customVoterDAO.getCountBycustomvoterGroupId(customvoterGroupId,userId,8l);	
+		    	List<Long> total = customVoterDAO.getCountBycustomvoterGroupId(customvoterGroupId,userId,publicationDateId);	
 		    	
 		    	voterdata = customVoterDAO.getVotersInfoBycustomVoterGroupId(customvoterGroupId,userId,startIndex,maxRecords,
-		    			order,columnName,8l);	
+		    			order,columnName,publicationDateId);	
 		    	if(voterdata != null && voterdata.size() > 0)
 		    	for(Object[] params : voterdata)
 		    	{
@@ -441,8 +440,8 @@ public static final String AGE5="60Above";
 		    	VoterVO voterVO = null;
 		    	Map<Long , VoterVO> voterMap = new HashMap<Long, VoterVO>();
 		    	List<Long> voterIds = new ArrayList<Long>();
-		    	List<Object[]> serialNosList = new ArrayList<Object[]>(0);
-		    	List<Long> total = customVoterDAO.getCountBycustomvoterGroupId(voterDataVO.getCustomVoterGroupId(),userId,8l);	
+		    
+		    	List<Long> total = customVoterDAO.getCountBycustomvoterGroupId(voterDataVO.getCustomVoterGroupId(),userId,voterDataVO.getPublicationId());	
 		    	
 		    	voterdata = customVoterDAO.getVotersInfoBycustomVoterGroupId(voterDataVO.getCustomVoterGroupId(),userId,voterDataVO.getStartIndex().intValue(),voterDataVO.getMaxIndex().intValue(),
 		    			 voterDataVO.getDir(),voterDataVO.getSort(),voterDataVO.getPublicationId());	
