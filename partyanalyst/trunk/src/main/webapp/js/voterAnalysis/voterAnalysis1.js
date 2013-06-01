@@ -9534,7 +9534,7 @@ $(document).ready(function(){
 			 astr += "<div id='tabsForWardLocal' class='thumbnail1' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>";
              astr += "<div id='sse2' style='display:none'>";
              astr += "<div id='sses2'>";
-             astr += "<ul>";
+             astr += "<ul style='margin-left: 50px;'>";
 			 astr += "<li><a class='votersInfoLi2 votersInfoCls' href='javascript:{}' id='votersShareBtnss'>Booth Wise Voters Info of "+mainname+"</a></li>";
             astr += "<li id='myli'><a class='votersInfoLi2 mylicls' href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"muncipalityLocal\")}'>Ward Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
