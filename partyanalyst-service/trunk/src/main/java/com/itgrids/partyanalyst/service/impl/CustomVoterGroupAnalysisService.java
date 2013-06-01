@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICustomVoterGroupDAO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dao.ICustomVoterDAO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.service.ICustomVoterGroupAnalysisService;
@@ -17,6 +19,15 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 	
 	public static Logger Log = Logger.getLogger(CustomVoterGroupAnalysisService.class);
 	private ICustomVoterDAO customVoterDAO;
+	public ICustomVoterGroupDAO customVoterGroupDAO;
+
+
+	public ICustomVoterGroupDAO getCustomVoterGroupDAO() {
+		return customVoterGroupDAO;
+	}
+	public void setCustomVoterGroupDAO(ICustomVoterGroupDAO customVoterGroupDAO) {
+		this.customVoterGroupDAO = customVoterGroupDAO;
+	}
 	
 	public ICustomVoterDAO getCustomVoterDAO() {
 	  return customVoterDAO;
@@ -109,4 +120,158 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 		        	 return castVo1.getTotalVoters().intValue()- castVo2.getTotalVoters().intValue();
 		        }
 		    };
+
+public static final String AGE1="18to25";
+public static final String AGE2="26to35";
+public static final String AGE3="36to45";
+public static final String AGE4="46to60";
+public static final String AGE5="60Above";
+
+ public VotersDetailsVO getAgeWiseCustomVotersInGroup(Long userId,Long customGroupId,Long publicationDateId){
+	
+	 VotersDetailsVO votersDetailsVO=new VotersDetailsVO();
+	 List<Object[]> votersCount1 =customVoterGroupDAO.getVotersCountBasedOnAgeInGroup(userId, customGroupId, AGE1, publicationDateId);
+	 setAgewiseVotersFromGroup(votersCount1,AGE1,votersDetailsVO);
+	 	  
+	 List<Object[]> votersCount2 =customVoterGroupDAO.getVotersCountBasedOnAgeInGroup(userId, customGroupId, AGE2, publicationDateId);
+	 setAgewiseVotersFromGroup(votersCount2,AGE2,votersDetailsVO);
+	 	  
+	 List<Object[]> votersCount3 =customVoterGroupDAO.getVotersCountBasedOnAgeInGroup(userId, customGroupId, AGE3, publicationDateId);
+	 setAgewiseVotersFromGroup(votersCount3,AGE3,votersDetailsVO);
+	 
+	 List<Object[]> votersCount4 =customVoterGroupDAO.getVotersCountBasedOnAgeInGroup(userId, customGroupId, AGE4, publicationDateId);
+	 setAgewiseVotersFromGroup(votersCount4,AGE4,votersDetailsVO);
+	 
+	 List<Object[]> votersCount5 =customVoterGroupDAO.getVotersCountBasedOnAgeInGroup(userId, customGroupId, AGE5, publicationDateId);
+	 setAgewiseVotersFromGroup(votersCount5,AGE5,votersDetailsVO);  
+	 
+	 countPercentages(votersDetailsVO);
+	 
+		return votersDetailsVO;
+	}
+ 
+ 
+ public void setAgewiseVotersFromGroup(List<Object[]> votersCounts,String age,VotersDetailsVO votersDetailsVO){
+	 Long ttlVtrs=0l;
+	 
+	  for(Object[] obj:votersCounts){
+		  if(obj[1].toString().equalsIgnoreCase("F")){
+			  if(age.equalsIgnoreCase(AGE1)){
+			  votersDetailsVO.setFemaleVotersCountBetween18To25((Long)obj[0]);
+			  }
+			  if(age.equalsIgnoreCase(AGE2)){
+				  votersDetailsVO.setFemaleVotersCountBetween26To35((Long)obj[0]);
+			  }
+				
+			  if(age.equalsIgnoreCase(AGE3)){
+				  votersDetailsVO.setFemaleVotersCountBetween36To45((Long)obj[0]);
+			  }
+				
+			  if(age.equalsIgnoreCase(AGE4)){
+				  votersDetailsVO.setFemaleVotersCountBetween46To60((Long)obj[0]);
+			  }
+				
+			  if(age.equalsIgnoreCase(AGE5)){
+				  votersDetailsVO.setFemaleVotersCountAbove60((Long)obj[0]);
+			  }
+			  
+			  ttlVtrs+=(Long)obj[0];
+		  }
+		  else if(obj[1].toString().equalsIgnoreCase("M")){
+			  if(age.equalsIgnoreCase(AGE1)){
+			  votersDetailsVO.setMaleVotersCountBetween18To25((Long)obj[0]);
+			  }
+			  if(age.equalsIgnoreCase(AGE2)){
+				  votersDetailsVO.setMaleVotersCountBetween26To35((Long)obj[0]);
+			  }
+			  if(age.equalsIgnoreCase(AGE3)){
+				  votersDetailsVO.setMaleVotersCountBetween36To45((Long)obj[0]);
+			  }
+			  if(age.equalsIgnoreCase(AGE4)){
+				  votersDetailsVO.setMaleVotersCountBetween46To60((Long)obj[0]);
+			  }
+				
+			  if(age.equalsIgnoreCase(AGE5)){
+				  votersDetailsVO.setMaleVotersCountAbove60((Long)obj[0]);
+			  }
+			  ttlVtrs+=(Long)obj[0];
+		  }
+	  }
+	  	  if(age.equalsIgnoreCase(AGE1)){
+	  		  votersDetailsVO.setTotalVotersFor18To25(ttlVtrs!=null ? ttlVtrs :0l);
+	  	  }
+		  if(age.equalsIgnoreCase(AGE2)){
+			  votersDetailsVO.setTotalVotersFor26To35(ttlVtrs!=null ? ttlVtrs :0l);
+		  }
+		  if(age.equalsIgnoreCase(AGE3)){
+			  votersDetailsVO.setTotalVotersFor36To45(ttlVtrs!=null ? ttlVtrs :0l);
+		  }
+		  if(age.equalsIgnoreCase(AGE4)){
+			  votersDetailsVO.setTotalVotersFor46To60(ttlVtrs!=null ? ttlVtrs :0l);
+		  }
+		  if(age.equalsIgnoreCase(AGE5)){
+			  votersDetailsVO.setTotalVotersForAbove60(ttlVtrs!=null ? ttlVtrs :0l);
+		  }
+		  
+		 
+ }
+ 	public void countPercentages(VotersDetailsVO vo){
+ 		Long totalVotersOfGroup=0l;
+ 		if(vo.getTotalVotersFor18To25()!=null){
+ 			totalVotersOfGroup+=vo.getTotalVotersFor18To25();
+ 		}
+ 		if(vo.getTotalVotersFor26To35()!=null){
+ 			totalVotersOfGroup+=vo.getTotalVotersFor26To35();
+ 		}
+ 		if(vo.getTotalVotersFor36To45()!=null){
+ 			totalVotersOfGroup+=vo.getTotalVotersFor36To45();
+ 		}
+ 		if(vo.getTotalVotersFor46To60()!=null){
+ 			totalVotersOfGroup+=vo.getTotalVotersFor46To60();
+ 		}
+ 		if(vo.getTotalVotersForAbove60()!=null){
+ 			totalVotersOfGroup+=vo.getTotalVotersForAbove60();
+ 		}
+ 		
+ 			vo.setVotersPercentFor18To25(changeToPercentageString(vo.getTotalVotersFor18To25(),totalVotersOfGroup));
+ 		vo.setFemaleVotersPercentFor18To25(changeToPercentageString(vo.getFemaleVotersCountBetween18To25(),vo.getTotalVotersFor18To25()));
+ 		vo.setMaleVotersPercentFor18To25(changeToPercentageString(vo.getMaleVotersCountBetween18To25(),vo.getTotalVotersFor18To25()));
+ 		
+ 		vo.setVotersPercentFor26To35(changeToPercentageString(vo.getTotalVotersFor26To35(),totalVotersOfGroup));
+ 		vo.setFemaleVotersPercentFor26To35(changeToPercentageString(vo.getFemaleVotersCountBetween26To35(),vo.getTotalVotersFor26To35()));
+ 		vo.setMaleVotersPercentFor26To35(changeToPercentageString(vo.getMaleVotersCountBetween26To35(),vo.getTotalVotersFor26To35()));
+ 		
+ 		vo.setVotersPercentFor36To45(changeToPercentageString(vo.getTotalVotersFor36To45(),totalVotersOfGroup));
+ 		vo.setFemaleVotersPercentFor36To45(changeToPercentageString(vo.getFemaleVotersCountBetween36To45(),vo.getTotalVotersFor36To45()));
+ 		vo.setMaleVotersPercentFor36To45(changeToPercentageString(vo.getMaleVotersCountBetween36To45(),vo.getTotalVotersFor36To45()));
+ 		
+ 		vo.setVotersPercentFor46To60(changeToPercentageString(vo.getTotalVotersFor46To60(),totalVotersOfGroup));
+ 		vo.setFemaleVotersPercentFor46To60(changeToPercentageString(vo.getFemaleVotersCountBetween46To60(),vo.getTotalVotersFor46To60()));
+ 		vo.setMaleVotersPercentFor46To60(changeToPercentageString(vo.getMaleVotersCountBetween46To60(),vo.getTotalVotersFor46To60()));
+ 		
+ 		vo.setVotersPercentForAbove60(changeToPercentageString(vo.getTotalVotersForAbove60(),totalVotersOfGroup));
+ 		vo.setFemaleVotersPercentForAbove60(changeToPercentageString(vo.getFemaleVotersCountAbove60(),vo.getTotalVotersForAbove60()));
+ 		vo.setMaleVotersPercentForAbove60(changeToPercentageString(vo.getMaleVotersCountAbove60(),vo.getTotalVotersForAbove60()));
+ 	
 }
+ 	
+ 	public String changeToPercentageString(Long numerator,Long denominator){
+ 		String result="";
+ 		Long nmrtor=0l;
+ 		nmrtor= numerator!=null?numerator:0l;
+ 		
+ 		if(denominator!=0){
+ 		result=new BigDecimal((new Double(nmrtor)*100)/denominator).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+ 		}
+ 		else{
+ 			result="0.00";
+ 		}
+ 		return result;
+ 	}
+}
+
+
+
+
+
+ 
