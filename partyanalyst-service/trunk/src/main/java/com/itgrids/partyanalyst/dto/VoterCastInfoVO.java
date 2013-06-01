@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VoterCastInfoVO {
@@ -50,8 +51,11 @@ public class VoterCastInfoVO {
     private Long orderNo;
     
     private String muncipalityType;
-
-	
+    private List<VoterCastInfoVO> customGroupWiseVoterCasteInfoVOList = new ArrayList<VoterCastInfoVO>(0);
+    private Long casteId;
+    private Long groupWiseTotalVoters;
+    private List<SelectOptionVO> customGroupCasteList = new ArrayList<SelectOptionVO>(0);
+	 
 	public String getMuncipalityType() {
 		return muncipalityType;
 	}
@@ -360,6 +364,39 @@ public class VoterCastInfoVO {
 
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
+	}
+
+	public List<VoterCastInfoVO> getCustomGroupWiseVoterCasteInfoVOList() {
+		return customGroupWiseVoterCasteInfoVOList;
+	}
+
+	public void setCustomGroupWiseVoterCasteInfoVOList(
+			List<VoterCastInfoVO> customGroupWiseVoterCasteInfoVOList) {
+		this.customGroupWiseVoterCasteInfoVOList = customGroupWiseVoterCasteInfoVOList;
+	}
+
+	public Long getCasteId() {
+		return casteId;
+	}
+
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
+
+	public Long getGroupWiseTotalVoters() {
+		return groupWiseTotalVoters;
+	}
+
+	public void setGroupWiseTotalVoters(Long groupWiseTotalVoters) {
+		this.groupWiseTotalVoters = groupWiseTotalVoters;
+	}
+
+	public List<SelectOptionVO> getCustomGroupCasteList() {
+		return customGroupCasteList;
+	}
+
+	public void setCustomGroupCasteList(List<SelectOptionVO> customGroupCasteList) {
+		this.customGroupCasteList = customGroupCasteList;
 	}
 
 	
