@@ -906,7 +906,11 @@ public class CadreRegisterAction extends ActionSupport implements
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		cadreInfo.setCadreParliamentWise(regVO.isCadreParliamentWise());
-		cadreInfo.setUserID(regVO.getParentUserId() == null ? regVO.getRegistrationID() : regVO.getParentUserId());
+		if(regVO.getCadreOnlineRegId() != null && regVO.getCadreOnlineRegId() > 0){
+		  cadreInfo.setUserID(regVO.getCadreRegiserForId());
+		}else{
+		  cadreInfo.setUserID(regVO.getParentUserId() == null ? regVO.getRegistrationID() : regVO.getParentUserId());
+		}
 		cadreInfo.setUserType(regVO.getUserType());
 		cadreInfo.setUserPartyName(regVO.getPartyShortName());
 		cadreInfo.setAccessType(regVO.getAccessType());
