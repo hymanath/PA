@@ -65,6 +65,7 @@ public class RegistrationVO extends BaseDTO{
 	private boolean cadreOnline;
 	private Long cadreOnlineRegId;
 	private String cadreOnlineRegFor;
+	private Long cadreRegiserForId;
 	
 	public String getLoginRestriction() {
 		return loginRestriction;
@@ -462,6 +463,14 @@ public class RegistrationVO extends BaseDTO{
 
 	public void setCadreOnlineRegFor(String cadreOnlineRegFor) {
 		this.cadreOnlineRegFor = cadreOnlineRegFor;
+	}
+
+	public Long getCadreRegiserForId() {
+		return cadreRegiserForId;
+	}
+
+	public void setCadreRegiserForId(Long cadreRegiserForId) {
+		this.cadreRegiserForId = cadreRegiserForId;
 	}
 
 	
