@@ -82,11 +82,11 @@ public class ProfileManagePageAction extends ActionSupport implements ServletReq
 	    
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		/*if(session.getAttribute(IConstants.USER) == null && 
+		if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PROFILE_MANAGEMENT_ENTITLEMENT))
 			return IConstants.NOT_LOGGED_IN;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PROFILE_MANAGEMENT_ENTITLEMENT))
-			return ERROR;*/
+			return ERROR;
 		
 		candidatesList = candidateDetailsService.getCandidatesOfAUser(user.getRegistrationID());
 		
