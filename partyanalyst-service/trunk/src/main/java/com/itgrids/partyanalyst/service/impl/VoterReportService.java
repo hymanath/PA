@@ -2335,12 +2335,12 @@ public class VoterReportService implements IVoterReportService{
 		 * @param userId userId
 		 * @return List<InfluencingPeopleBeanVO> resultCount
 		 */
-		public List<InfluencingPeopleBeanVO> getcountForSelectedTypeInHamlet(Long hamletId,Long userId)
+		public List<InfluencingPeopleBeanVO> getcountForSelectedTypeInHamlet(Long hamletId,Long userId,String selLevel)
 		{
 			List<InfluencingPeopleBeanVO> resultCount = new ArrayList<InfluencingPeopleBeanVO>();
 			InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
 			
-			List<Long> influencingPeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"InfluencePeople");
+			List<Long> influencingPeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"InfluencePeople",selLevel);
 			if(influencingPeopleCount != null && influencingPeopleCount.size() > 0)
 			{
 				for (Long influenceCount : influencingPeopleCount) {
@@ -2348,7 +2348,7 @@ public class VoterReportService implements IVoterReportService{
 				}
 			}
 			
-			List<Long> cadrePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Cadre");
+			List<Long> cadrePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Cadre",selLevel);
 			if(cadrePeopleCount != null && cadrePeopleCount.size() > 0)
 			{
 				for (Long cadreCount : cadrePeopleCount) {
@@ -2356,7 +2356,7 @@ public class VoterReportService implements IVoterReportService{
 				}
 			}
 			
-			List<Long> candidatePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Politician");
+			List<Long> candidatePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Politician",selLevel);
 			if(candidatePeopleCount != null && candidatePeopleCount.size() > 0)
 			{
 				for (Long candidateCount : candidatePeopleCount) {
@@ -2385,10 +2385,10 @@ public class VoterReportService implements IVoterReportService{
 			
 			if(type.equalsIgnoreCase("InfluencePeople"))
 			{
-				List<InfluencingPeople> influencingpeopleData = userVoterDetailsDAO.getInfluencingPeopleDetailsForSelectedHamlet(hamletId,userId,startIndex,maxIndex,order,columnName);
+				List<InfluencingPeople> influencingpeopleData = userVoterDetailsDAO.getInfluencingPeopleDetailsForSelectedHamlet(hamletId,userId,startIndex,maxIndex,order,columnName,selLevel);
 				if(influencingpeopleData != null && influencingpeopleData.size() > 0)
 				{
-					List<Long> influencingPeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"InfluencePeople");
+					List<Long> influencingPeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"InfluencePeople",selLevel);
 					Long totalRecods = influencingPeopleCount.get(0).longValue();
 					resultList = storeInfluencingPeopleDetails(influencingpeopleData,selLevel,hamletId,totalRecods);
 				}
@@ -2397,20 +2397,20 @@ public class VoterReportService implements IVoterReportService{
 			}
 			else if(type.equalsIgnoreCase("Cadre"))
 			{
-				List<Cadre> cadrepeopleData = userVoterDetailsDAO.getCadreDetailsForSelectedHamlet(hamletId,userId,startIndex,maxIndex,order,columnName);
+				List<Cadre> cadrepeopleData = userVoterDetailsDAO.getCadreDetailsForSelectedHamlet(hamletId,userId,startIndex,maxIndex,order,columnName,selLevel);
 				if(cadrepeopleData != null && cadrepeopleData.size() > 0)
 				{
-					List<Long> cadrePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Cadre");
+					List<Long> cadrePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Cadre",selLevel);
 					Long totalRecods = cadrePeopleCount.get(0).longValue();
 					resultList = storeCadrePeopleDetails(cadrepeopleData,selLevel,hamletId,totalRecods);
 				}
 			}
 			else if(type.equalsIgnoreCase("Politician"))
 			{
-				List<Candidate> candidatepeopleData = userVoterDetailsDAO.getCandidateDetailsForSelectedHamlet(hamletId,userId,startIndex,maxIndex,order,columnName);
+				List<Candidate> candidatepeopleData = userVoterDetailsDAO.getCandidateDetailsForSelectedHamlet(hamletId,userId,startIndex,maxIndex,order,columnName,selLevel);
 				if(candidatepeopleData != null && candidatepeopleData.size() > 0)
 				{
-					List<Long> candidatePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Politician");
+					List<Long> candidatePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Politician",selLevel);
 					Long totalRecods = candidatePeopleCount.get(0).longValue();
 					resultList = storeCandidateDetails(candidatepeopleData,selLevel,hamletId,totalRecods);
 				}
@@ -2459,7 +2459,10 @@ public class VoterReportService implements IVoterReportService{
 						{
 							voterVO.setLocalArea(hamletDAO.get(id).getHamletName().toString());
 						}
-					
+						else if(type.equalsIgnoreCase("customWard"))
+						{
+							voterVO.setLocalArea(constituencyDAO.get(id).getName().toString());
+						}
 						resultData.add(voterVO);
 				}
 			}
@@ -2506,6 +2509,10 @@ public class VoterReportService implements IVoterReportService{
 						{
 							voterVO.setLocalArea(hamletDAO.get(id).getHamletName().toString());
 						}
+						else if(type.equalsIgnoreCase("customWard"))
+						{
+							voterVO.setLocalArea(constituencyDAO.get(id).getName().toString());
+						}
 						resultData.add(voterVO);
 				}
 			}
@@ -2550,6 +2557,10 @@ public class VoterReportService implements IVoterReportService{
 						else if(type.equalsIgnoreCase("hamlet"))
 						{
 							voterVO.setLocalArea(hamletDAO.get(id).getHamletName().toString());
+						}
+						else if(type.equalsIgnoreCase("customWard"))
+						{
+							voterVO.setLocalArea(constituencyDAO.get(id).getName().toString());
 						}
 						resultData.add(voterVO);
 				}
