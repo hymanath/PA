@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
@@ -49,6 +50,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	private List<SelectOptionVO> bloodGroupList;
 	private Long voterId;
 	JSONObject jObj = null;
+	private EntitlementsHelper entitlementsHelper;
 	
 	public List<SelectOptionVO> getBloodGroupList() {
 		return bloodGroupList;
@@ -226,13 +228,25 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		this.voterId = voterId;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute() throws Exception
 	{
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		if(regVO==null)
 			return ERROR;
-		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
+			return ERROR;
 		windowTask = request.getParameter("windowTask");
 		String accessType = regVO.getAccessType();
 		Long accessValue= new Long(regVO.getAccessValue());
