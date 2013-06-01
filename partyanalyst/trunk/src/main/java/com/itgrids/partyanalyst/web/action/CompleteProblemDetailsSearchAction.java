@@ -203,7 +203,7 @@ public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
 		 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 	     Long userId = null;
 	     String userStatus = null;
-		 if(regVO != null){
+		 if(regVO != null && regVO.getRegistrationID() != null){
 			userId = regVO.getRegistrationID();
 			if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
 				userStatus = IConstants.PARTY_ANALYST_USER;
