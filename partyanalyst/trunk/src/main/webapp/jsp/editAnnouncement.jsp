@@ -367,7 +367,6 @@ function getCalenderForFromDate()
             changeMonth: true,
             changeYear: true,
 			dateFormat: 'dd/mm/yy',
-			maxDate: new Date(),
 			yearRange: "-100:+0",
         }).datepicker("show");
 }
