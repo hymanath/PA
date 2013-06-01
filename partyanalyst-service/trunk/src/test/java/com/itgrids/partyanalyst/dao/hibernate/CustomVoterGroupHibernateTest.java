@@ -15,9 +15,20 @@ public void setCustomVoterGroupDAO(ICustomVoterGroupDAO customVoterGroupDAO) {
 }
 
 
-		public void test()
+		/*public void test()
 	    {
 	    	List<Object[]> list = customVoterGroupDAO.checkDuplicateGroupName(1l,844l,"j");
 	    	System.out.println(list.size());
-	    }
+	    }*/
+public void testGetVotersCountBasedOnAgeInGroup()
+{
+	List<Object[]> list = customVoterGroupDAO.getVotersCountBasedOnAgeInGroup(1l,1l,"36to45",3l);
+	System.out.println(list.size());
+	for(Object[] obj:list){
+		System.out.print(obj[1].toString()+":");
+		System.out.println((Long)obj[0]);
+	}
+		
+	
+}
 }
