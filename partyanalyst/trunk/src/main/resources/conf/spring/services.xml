@@ -1567,8 +1567,14 @@
 	  
     </bean>
     <bean name="customVoterGroupAnalysisService" class="com.itgrids.partyanalyst.service.impl.CustomVoterGroupAnalysisService">
-    	<property name="customVoterGroupDAO" ref="customVoterGroupDAO" />
-    	<property name="customVoterDAO" ref="customVoterDAO" />
+    <property name="customVoterDAO" ref="customVoterDAO"></property>
+    <property name="customVoterGroupDAO" ref="customVoterGroupDAO" />
+	<property name="influencingPeopleDAO" ref="influencingPeopleDAO" />
+	<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
+	<property name="voterCategoryValueDAO" ref="voterCategoryValueDAO" />
+	<property name="candidateDAO" ref="candidateDAO" />	
+	<property name="cadreDAO" ref="cadreDAO" />	
+	<property name="voterReportService" ref="voterReportService"/>
     </bean>
 </beans>		
 	

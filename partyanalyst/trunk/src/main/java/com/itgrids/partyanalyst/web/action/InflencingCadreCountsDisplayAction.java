@@ -40,6 +40,7 @@ public class InflencingCadreCountsDisplayAction extends ActionSupport implements
 	private String name;
 	private List<VoterVO> voters;
 	private ConstituencyManagementVO constituencyManagementVO;
+	private Long customVoterGroupId;
 	private static final Logger LOG = Logger.getLogger(InflencingCadreCountsDisplayAction.class);
 	
 	public HttpServletRequest getRequest() {
@@ -180,6 +181,16 @@ public class InflencingCadreCountsDisplayAction extends ActionSupport implements
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	public Long getCustomVoterGroupId() {
+		return customVoterGroupId;
+	}
+
+
+	public void setCustomVoterGroupId(Long customVoterGroupId) {
+		this.customVoterGroupId = customVoterGroupId;
 	}
 
 
