@@ -1158,10 +1158,13 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			List<String> filePathList = new ArrayList<String>();
 			List<Long> videoSourceIds = new ArrayList<Long>();
 			List<Long> videoSourceLangIds = new ArrayList<Long>();
+			List<String> fileTypes = new ArrayList<String>();
 			
 			FileVO fileVOObj = new FileVO();
 			//fileVOObj.setPath(jObj.getString("paths"));
 			fileVOObj.setContentType("video");
+			fileTypes.add("video");
+			fileVOObj.setFileTypesList(fileTypes);
 			fileVOObj.setTitle(jObj.getString("videoTitle"));
 			fileVOObj.setDescription(jObj.getString("videoDescription"));
 			fileVOObj.setKeywords(jObj.getString("keywords"));
