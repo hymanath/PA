@@ -4,8 +4,8 @@ function getVotersCount()
 
 		var jsObj=
 			{
-			publicationDateId : "8",
-			customVoterGroupId : "1",
+			publicationDateId : publicationDateId,
+			customVoterGroupId :customVoterGroupId,
 			task:"getVotersCount"
 	
 			}
@@ -17,9 +17,9 @@ function getInfluencingPeopleCount(id)
 {
 	var jsObj=
 			{
-		customVoterGroupId:"1",
+		customVoterGroupId:id,
 		
-		publicationDateId:"8",
+		publicationDateId:publicationDateId,
 		
 		task:"getInfluencingPeopleCount"
 	};
@@ -135,7 +135,7 @@ var votersByLocBoothColumnDefs = [
 
 ];
 
-var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetailsForACustomGroupAjax.action?customvoterGroupId="+1+"&publicationId="+8+"&");
+var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetailsForACustomGroupAjax.action?customvoterGroupId="+customVoterGroupId+"&publicationId="+8+"&");
 votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
@@ -196,14 +196,12 @@ function checkForAttributesToDisplay(){
 		
 			var jsObj=
 			{
-				//constituencyId : constituencyId,
-				//id : id,
-				customVoterGroupId:"1",
-				publicationId: "8",
+				
+				customVoterGroupId:customVoterGroupId,
+				publicationId: publicationDateId,
 				reqfields:reqfields,
 				startIndex : 0,
 				maxIndex : 100,
-				//buildType : "panchayat",
 				sort : "voterId",
 				dir : "asc",
 				task:"getVoterData"
@@ -231,14 +229,7 @@ function buildVotersInFamilyWithRetrievedResults(){
 			elLiner.innerHTML ='<a href="javascript:{};" style="cursor:pointer;" onclick="openProblemEditForm('+vId+','+vBoothId+');">'+vName+'</a>';
 				
 			} 
-          /* YAHOO.widget.DataTable.voterLink = function(elLiner, oRecord, oColumn, oData) 
-			{
-			var vBoothId = oRecord.getData("boothId");
-			var houseNo = oRecord.getData("houseNo");
-			elLiner.innerHTML ='<a href="javascript:{};" style="cursor:pointer;" onclick="getVotersInAFamilySearch('+vBoothId+','+publicationDateId+',\''+houseNo+'\');">'+houseNo+'</a>';
-				
-			} */
-		
+         
 		  
 YAHOO.widget.DataTable.ActionLink = function(elLiner, oRecord, oColumn, oData)
 {
@@ -303,7 +294,7 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 				 check = true;
 			 }
 		    }		
-			//elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+vId+","+vBoothId+"'/>";
+			
 			if(check)
 			  elLiner.innerHTML="<input type='checkbox' checked='checked' class='familyMemberCheck' value='"+vId+"'/><input type='hidden' class='selectedBoothId' value='"+vBoothId+"'/>";
             else
@@ -380,7 +371,7 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 					votersResultColumnDefs.push(obj);
 					
 		 }
-		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDataForCustomGroup.action?customVoterGroupId=1&reqfields="+reqfields+"&publicationId=8&");
+		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDataForCustomGroup.action?customVoterGroupId="+customVoterGroupId+"&reqfields="+reqfields+"&publicationId=8&");
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
 		resultsList: "votersList",
@@ -403,8 +394,8 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		if(confTrue){
 		 var stindx = 0;
 		 try{
-		 // stindx =  (parseInt($.trim($('.yui-pg-current-page').html()))-1)*100;
-		  stindx = 0;
+		stindx =  (parseInt($.trim($('.yui-pg-current-page').html()))-1)*100;
+		  //stindx = 0;
 		  myConfigs["paginator"] = new YAHOO.widget.Paginator({ 
 						rowsPerPage    : limit ,
 						initialPage:$('.yui-pg-current-page').html(),
@@ -415,7 +406,7 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		}
 		var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body",
 		votersResultColumnDefs, votersByLocBoothDataSource, myConfigs);
-        // $("#votersBySearchTabContentDiv_body").show();
+        
 		votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 		oPayload.totalRecords = oResponse.meta.totalRecords;
 		totalReq = oResponse.meta.totalRecords;
