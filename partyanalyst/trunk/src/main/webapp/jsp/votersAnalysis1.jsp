@@ -2028,6 +2028,7 @@ function showBasicAgewiseDetails(){
 
 		
 function getConstituencyResults(conId,consName){
+showHideNewsProblems();
 var cnstncy=$('#constituencyList :selected').text();
 $('#constituencyInfo').val('');
 $('#constituencyInfo').css('display','block');
@@ -2236,6 +2237,7 @@ function getAgewiseInfoForVoterCategory(){
      browser1.focus();
 	}
 	function refreshConstituencyData(){
+		showHideNewsProblems();
 		$('#publicationDateList').trigger('change')
 	}
 

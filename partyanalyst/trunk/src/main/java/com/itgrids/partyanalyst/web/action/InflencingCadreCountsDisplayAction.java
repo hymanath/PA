@@ -207,7 +207,7 @@ public class InflencingCadreCountsDisplayAction extends ActionSupport implements
 			String order = request.getParameter("dir");
 			String columnName = request.getParameter("sort");
 			Integer maxRecords = Integer.parseInt(request.getParameter("results"));
-			if(typeValue.equalsIgnoreCase("hamlet"))
+			if(typeValue.equalsIgnoreCase("hamlet") || typeValue.equalsIgnoreCase("customWard"))
 			{
 				voters = voterReportService.showingVoterDetailsForSelectedHamlet(locationValue,userId,typeValue,btnName,startIndex,maxRecords,order,columnName);
 			}
