@@ -99,7 +99,7 @@ var  mainreqid    = '${mainreqid}';
 var  maintype    = '${maintype}';
 var  constituencyId = '${constituencyId}';
 var  name   = '${name}'
-
+var customVoterGroupId = '${customVoterGroupId}';
 function getInfluencingPeopleVotersDetails()
 {
 	
@@ -224,7 +224,129 @@ oDT: votersByLocBoothDataTable
 };
 
 }
+function getVoterDetailsForCustomVoterGroup()
+{
+	
+	$("#titleDiv").append('<div id="headingDiv"> '+btnName+' Details</div>');
+	if(btnName == "Politician")
+	{
+		YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
+		{
+		//var id=oRecord.getData("candidateId");
+		var name = oRecord.getData("firstName");
+		elLiner.innerHTML ='<a target="_blank" id="candidateId" href="candidateElectionResultsAction.action?candidateId='+id+' ">'+name+'</a>';
+		}	
+		var votersByLocBoothColumnDefs = [
+		{key:"voterId", label: "SNo",width:20,sortable: true},
+		{key:"firstName", label: "Name",width:80, sortable: true},
+		{key:"voterIDCardNo", label: "voter ID",sortable: true},
+		{key:"gender", label: "Gender", width:50, sortable: true},
+		{key:"age", label: "Age",  width:30,sortable:true},
+		{key:"houseNo", label: "House No",width:60, sortable:true},
+		{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
+		//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
+		//{key:"relationshipType", label: "Relationship", sortable:true},
+		{key:"mobileNo",label:"MobileNo",sortable:true},
+		//{key:"localArea", label: "Location", sortable: true},
+		//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
+		//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
+		];
+		var votersByLocBoothDataSource = new YAHOO.util.DataSource("voterDetailsForCustomVoterAction.action?customVoterGroupId="+customVoterGroupId+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&");
+		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+		votersByLocBoothDataSource.responseSchema = {
+		resultsList: "voterDetails",
+		fields: [
+		{key:"voterId", parser:"number"},
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","mobileNo"],
+		metaFields: {
+		totalRecords: "voterDetailsCount" // Access to value in the server response
+		}
+		};
+	}
+	else if(btnName == "Cadre")
+	{
+		var votersByLocBoothColumnDefs = [
+		{key:"voterId", label: "SNo",width:20},
+		{key:"firstName", label: "Name",width:80, sortable: true},
+		{key:"voterIDCardNo", label: "voter ID",sortable: true},
+		{key:"gender", label: "Gender", width:50, sortable: true},
+		{key:"age", label: "Age",  width:30,sortable:true},
+		{key:"houseNo", label: "House No",width:60, sortable:true},
+		{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
+		//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
+		//{key:"relationshipType", label: "Relationship", sortable:true},
+		{key:"mobileNo",label:"MobileNo",sortable:true},
+		//{key:"localArea", label: "Location"},
+		//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
+		//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
+		];
+		var votersByLocBoothDataSource = new YAHOO.util.DataSource("voterDetailsForCustomVoterAction.action?customVoterGroupId="+customVoterGroupId+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&");
+		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+		votersByLocBoothDataSource.responseSchema = {
+		resultsList: "voterDetails",
+		fields: [
+		{key:"voterId", parser:"number"},
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson",],
+		metaFields: {
+		totalRecords: "voterDetailsCount" // Access to value in the server response
+		}
+		};
+	}
+	else 
+	{
+		var votersByLocBoothColumnDefs = [
+		{key:"voterId", label: "SNo",width:20},
+		{key:"firstName", label: "Name",width:80, sortable: true},
+		{key:"voterIDCardNo", label: "voter ID",sortable: true,width:100},
+		{key:"gender", label: "Gender", width:40, sortable: true},
+		{key:"age", label: "Age",  width:20,sortable:true},
+		{key:"houseNo", label: "House No",width:40, sortable:true},
+		{key:"relativeFirstName", label: "Guardian Name", width:80,sortable:true},
+		//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
+		//{key:"relationshipType", label: "Relationship", sortable:true},
+		{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
+		//{key:"localArea", label: "Location",width:50},
+		{key:"influencingRange", label: "Influencing Range",width:50},
+		{key:"influencingRegion", label: "Influencing Region",width:50}
+		//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
+		//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
+
+		];
+	var votersByLocBoothDataSource = new YAHOO.util.DataSource("voterDetailsForCustomVoterAction.action?customVoterGroupId="+customVoterGroupId+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&");
+		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+		votersByLocBoothDataSource.responseSchema = {
+		resultsList: "voterDetails",
+		fields: [
+		{key:"voterId", parser:"number"},
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","influencingRange","influencingRegion"],
+		metaFields: {
+		totalRecords: "voterDetailsCount" // Access to value in the server response
+		}
+		};
+	}
+
+var myConfigs = {
+initialRequest: "sort=voterId&dir=asc&startIndex=0&results=10", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"firstName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10 
+			    })  // Enables pagination
+};
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("InfluencingPeopleDetailsDiv",
+votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+}
+
+
+return {
+oDS: votersByLocBoothDataSource,
+oDT: votersByLocBoothDataTable
+};
+}
 </script>
 </head>
 <body  style="background: none repeat scroll 0% 0% rgb(238, 238, 238);">
@@ -235,7 +357,10 @@ oDT: votersByLocBoothDataTable
     width: 966px"></div>
 	 </div>
 <script type="text/javascript">
+if(constituencyId > 0)
 getInfluencingPeopleVotersDetails();
+if(customVoterGroupId > 0)
+getVoterDetailsForCustomVoterGroup();
 </script>
 </body>
 </html>
