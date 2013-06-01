@@ -67,4 +67,6 @@ public interface IVoterReportService {
 	 public List<VoterVO> showingVoterDetailsForSelectedHamlet(Long hamletId,Long userId,String selLevel,String type,Integer startIndex,Integer maxIndex,String order,String columnName);
 	 
 	 public List<InfluencingPeopleBeanVO> getcountForSelectedTypeInHamlet(Long hamletId,Long userId,String selLevel);
+	 
+	 public String getRegionNameBasedOnScope(String infScope,String regionId);
 }

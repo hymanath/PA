@@ -21,14 +21,22 @@ public class VoterDataVO implements Serializable{
 	private String buildType;
 	private String sort;
 	private String task;
-	private Boolean partyPresent;
-	private Boolean castePresent;
+	private Boolean partyPresent = false;
+	private Boolean castePresent = false;
 	private List<VoterDataVO> categoriesList;
 	private Long CategoryValuesId;
 	private String name;
 	private Long id;
 	private Long categoryId;
 	
+	private Long customVoterGroupId;
+	
+	public Long getCustomVoterGroupId() {
+		return customVoterGroupId;
+	}
+	public void setCustomVoterGroupId(Long customVoterGroupId) {
+		this.customVoterGroupId = customVoterGroupId;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}

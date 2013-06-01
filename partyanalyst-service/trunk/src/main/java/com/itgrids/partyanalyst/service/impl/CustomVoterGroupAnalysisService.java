@@ -4,31 +4,80 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.itgrids.partyanalyst.dao.ICustomVoterGroupDAO;
-import com.itgrids.partyanalyst.dto.VotersDetailsVO;
+import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICustomVoterDAO;
+import com.itgrids.partyanalyst.dao.ICustomVoterGroupDAO;
+import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.UserVoterDetails;
+import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.ICustomVoterGroupAnalysisService;
+import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysisService {
 	
 	public static Logger Log = Logger.getLogger(CustomVoterGroupAnalysisService.class);
 	private ICustomVoterDAO customVoterDAO;
-	public ICustomVoterGroupDAO customVoterGroupDAO;
-
-
-	public ICustomVoterGroupDAO getCustomVoterGroupDAO() {
-		return customVoterGroupDAO;
-	}
-	public void setCustomVoterGroupDAO(ICustomVoterGroupDAO customVoterGroupDAO) {
-		this.customVoterGroupDAO = customVoterGroupDAO;
-	}
+	private IVoterCategoryValueDAO voterCategoryValueDAO;
+	private IUserVoterDetailsDAO userVoterDetailsDAO;
+	private IInfluencingPeopleDAO influencingPeopleDAO;
+	private ICadreDAO cadreDAO;
+	private ICandidateDAO candidateDAO;
 	
+	private IVoterReportService voterReportService;
+	
+	private ICustomVoterGroupDAO customVoterGroupDAO;
+	public IVoterReportService getVoterReportService() {
+		return voterReportService;
+	}
+	public void setVoterReportService(IVoterReportService voterReportService) {
+		this.voterReportService = voterReportService;
+	}
+	public ICandidateDAO getCandidateDAO() {
+		return candidateDAO;
+	}
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
+	}
+	public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
+		return influencingPeopleDAO;
+	}
+	public void setInfluencingPeopleDAO(IInfluencingPeopleDAO influencingPeopleDAO) {
+		this.influencingPeopleDAO = influencingPeopleDAO;
+	}
+	public ICadreDAO getCadreDAO() {
+		return cadreDAO;
+	}
+	public void setCadreDAO(ICadreDAO cadreDAO) {
+		this.cadreDAO = cadreDAO;
+	}
+	public IVoterCategoryValueDAO getVoterCategoryValueDAO() {
+		return voterCategoryValueDAO;
+	}
+	public void setVoterCategoryValueDAO(
+			IVoterCategoryValueDAO voterCategoryValueDAO) {
+		this.voterCategoryValueDAO = voterCategoryValueDAO;
+	}
+	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
+		return userVoterDetailsDAO;
+	}
+	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
+		this.userVoterDetailsDAO = userVoterDetailsDAO;
+	}
 	public ICustomVoterDAO getCustomVoterDAO() {
 	  return customVoterDAO;
 	}
@@ -36,6 +85,12 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 	  this.customVoterDAO = customVoterDAO;
 	}
 	
+	public ICustomVoterGroupDAO getCustomVoterGroupDAO() {
+		return customVoterGroupDAO;
+	}
+	public void setCustomVoterGroupDAO(ICustomVoterGroupDAO customVoterGroupDAO) {
+		this.customVoterGroupDAO = customVoterGroupDAO;
+	}
 	public List<VoterCastInfoVO> getCasteWiseCustomVotersCount(Long customVoterGroupId,Long userId)
 	{
 		List<VoterCastInfoVO> castInfoVOsList = null;
@@ -120,6 +175,7 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 		        	 return castVo1.getTotalVoters().intValue()- castVo2.getTotalVoters().intValue();
 		        }
 		    };
+		    
 
 public static final String AGE1="18to25";
 public static final String AGE2="26to35";
@@ -268,10 +324,388 @@ public static final String AGE5="60Above";
  		}
  		return result;
  	}
+ 	/**this method is used to Get Voter Data By CustomGroupId **/
+		    public List<VoterVO> getVoterDetailsForCustomVoterGroup(Long customvoterGroupId,Integer startIndex , Integer maxRecords , String order,
+		    		String columnName,Long userId,Long publicationDateId)
+		    {
+		    	
+		    	List<VoterVO> result = new ArrayList<VoterVO>();
+		    	Long totalCount =0l;
+		    	List<Object[]> voterdata = new ArrayList<Object[]>();
+		    	VoterVO voterVO = null;
+		    	Map<Long,VoterVO> voters = new HashMap<Long, VoterVO>();
+		    	List<Long> voterIds = new ArrayList<Long>();
+		    	List<Object[]> serialNosList = new ArrayList<Object[]>(0);
+		    	
+		    	try{
+		    		
+		    	if(columnName != null && columnName.equalsIgnoreCase("firstName"))
+		    	{
+		    		columnName = "name";
+		    	}
+		    	if(columnName != null && columnName.equalsIgnoreCase("relativeFirstName"))
+		    	{
+		    		columnName = "relativeName";
+		    	}
+		    	List<Long> total = customVoterDAO.getCountBycustomvoterGroupId(customvoterGroupId,userId,8l);	
+		    	
+		    	voterdata = customVoterDAO.getVotersInfoBycustomVoterGroupId(customvoterGroupId,userId,startIndex,maxRecords,
+		    			order,columnName,8l);	
+		    	if(voterdata != null && voterdata.size() > 0)
+		    	for(Object[] params : voterdata)
+		    	{
+		    	voterIds.add((Long)params[0]);
+		    	}
+		    	
+		    	
+		    	if(voterdata != null && voterdata.size() > 0)
+		    	{
+		    		for(Object[] params : voterdata)
+		    		{
+		    		voterVO = new VoterVO();
+		    		voterVO.setVoterId(params[0].toString());
+		    		voterVO.setFirstName(params[1].toString());
+		    		voterVO.setGender(params[2].toString());
+		    		voterVO.setAge((Long)params[3]);
+		    		voterVO.setVoterIDCardNo(params[4].toString());
+		    		voterVO.setHouseNo(params[5].toString());
+		    		voterVO.setRelativeFirstName(params[6].toString());
+		    		voterVO.setSerialNo((Long)params[7]);
+		    	    voterVO.setPartNo(new Long(params[8].toString()));
+		    	    voterVO.setMobileNo(params[9]!= null?params[9].toString() : " ");
+		    		voterVO.setVoterIds((Long)params[0]);
+		    		voters.put((Long)params[0], voterVO);
+		    		result.add(voterVO);
+		    		}
+		    		
+		    	}
+		    	List<Long> influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIds,userId);
+				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+				{
+					for (Long influencingPeople : influencingPeopleList) {
+					   voterVO = voters.get(influencingPeople);
+						if(voterVO != null)
+						{
+							voterVO.setInfluencePerson(true);
+						}
+					}
+				}
+				List<Long> cadrePeopleList = cadreDAO.findCadrePeopleDetails(voterIds,userId);
+				if(cadrePeopleList != null && cadrePeopleList.size() > 0)
+				{
+					for (Long cadrePeople : cadrePeopleList) {
+						voterVO = voters.get(cadrePeople);
+						if(voterVO != null)
+						{
+							voterVO.setIsCadrePerson(true);
+						}
+					}
+				}
+				List<Long> candidatePeopleList = candidateDAO.findCandidatePeopleDetails(voterIds);
+				if(candidatePeopleList != null && candidatePeopleList.size() > 0)
+				{
+					for (Long candidatePeople : candidatePeopleList) {
+						voterVO = voters.get(candidatePeople);
+						if(voterVO != null)
+						{
+							voterVO.setIsPoliticion(true);
+						}
+					}
+				}
+		    	if(total != null && total.size() > 0)
+		    	{
+		    		totalCount = new Long(total.size());
+		    		result.get(0).setTotalVoters(totalCount);
+		    	}
+		    	
+		    	
+		    	}
+		    	
+		    	catch(Exception e)
+		    	{
+		    	Log.error("Exception Occured in getVoterDetailsForCustomVoterGroup() method" +e);	
+		    	}
+		    	
+		    	
+		    	return result;
+		    	
+		    }
+
+		   /**this method is used to Get Voter Data By CustomGroupId **/
+		    public List<VoterVO> getVoterDataForCustomGroup(VoterDataVO voterDataVO,Long userId,List<Long> categories)
+		    {
+		    	
+		    	List<VoterVO> result = new ArrayList<VoterVO>();
+		    	Long totalCount =0l;
+		    	List<Object[]> voterdata = new ArrayList<Object[]>();
+		    	VoterVO voterVO = null;
+		    	Map<Long , VoterVO> voterMap = new HashMap<Long, VoterVO>();
+		    	List<Long> voterIds = new ArrayList<Long>();
+		    	List<Object[]> serialNosList = new ArrayList<Object[]>(0);
+		    	List<Long> total = customVoterDAO.getCountBycustomvoterGroupId(voterDataVO.getCustomVoterGroupId(),userId,8l);	
+		    	
+		    	voterdata = customVoterDAO.getVotersInfoBycustomVoterGroupId(voterDataVO.getCustomVoterGroupId(),userId,voterDataVO.getStartIndex().intValue(),voterDataVO.getMaxIndex().intValue(),
+		    			 voterDataVO.getDir(),voterDataVO.getSort(),voterDataVO.getPublicationId());	
+		    	if(voterdata != null && voterdata.size() > 0)
+		    		for(Object[] params : voterdata)
+		    		{
+		    		voterIds.add((Long)params[0]);
+		    		}
+		    		
+		    	if(voterdata != null && voterdata.size() > 0)
+		    	{
+		    		for(Object[] params : voterdata)
+		    		{
+		    		voterVO = new VoterVO();
+		    		voterVO.setVoterId(params[0].toString());
+		    		
+		    		voterVO.setName(params[1].toString());
+		    		voterVO.setVoterIds((Long)params[0]);
+		    		voterVO.setGender(params[2].toString());
+		    		voterVO.setAge((Long)params[3]);
+		    		voterVO.setVoterIDCardNo(params[4].toString());
+		    		voterVO.setHouseNo(params[5].toString());
+		    		voterVO.setRelativeFirstName(params[6].toString());
+		    		voterVO.setSerialNo((Long)params[7]);
+		    		voterVO.setPartNo(new Long(params[8].toString()));
+		    		voterVO.setMobileNo(params[9]!= null?params[9].toString() : " ");
+		    		voterMap.put((Long)params[0], voterVO);
+		    		result.add(voterVO);
+		    		}
+		    		
+		    	}
+		    	List<Long> influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIds,userId);
+				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+				{
+					
+					for (Long influencingPeople : influencingPeopleList) {
+						if(influencingPeople != null)
+						{
+							voterVO = voterMap.get(influencingPeople);
+							voterVO.setInfluencePerson(true);
+						}
+					}
+				}
+				
+				List<Long> cadrePeopleList = cadreDAO.findCadrePeopleDetails(voterIds,userId);
+				if(cadrePeopleList != null && cadrePeopleList.size() > 0)
+				{
+					for (Long cadrePeople : cadrePeopleList) {
+						if(cadrePeople != null)
+						{
+							voterVO = voterMap.get(cadrePeople);
+							voterVO.setIsCadrePerson(true);
+						}
+					}
+				}
+				
+				List<Long> candidatePeopleList = candidateDAO.findCandidatePeopleDetails(voterIds);
+				if(candidatePeopleList != null && candidatePeopleList.size() > 0)
+				{
+					for (Long candidatePeople : candidatePeopleList) {
+						if(candidatePeople != null)
+						{
+							voterVO = voterMap.get(candidatePeople);
+							voterVO.setIsPoliticion(true);
+						}
+					}
+				}
+		    	if(voterDataVO.getPartyPresent() || voterDataVO.getCastePresent())
+		    	{
+		    		List<UserVoterDetails> votersPartyCastList = userVoterDetailsDAO.getAllUserVoterDetails(voterIds,userId);
+		    		if(votersPartyCastList != null && votersPartyCastList.size() > 0)
+		    		{
+		    			for (UserVoterDetails voterPartyAndCasteDetails : votersPartyCastList) {
+		    				voterVO = voterMap.get(voterPartyAndCasteDetails.getVoter().getVoterId());
+		    				if(voterPartyAndCasteDetails != null)
+		    				{
+		    					
+		    					voterVO.setPartyName(voterPartyAndCasteDetails.getParty()!=null ? voterPartyAndCasteDetails.getParty().getShortName():"");
+		    					if(voterPartyAndCasteDetails.getCasteState() != null)
+		    					voterVO.setCasteName(voterPartyAndCasteDetails.getCasteState().getCaste() != null ? voterPartyAndCasteDetails.getCasteState().getCaste().getCasteName():"");
+		    				}
+		    				else
+		    				{
+		    					voterVO.setPartyName("");
+		    					voterVO.setCasteName("");
+		    				}
+		    			}
+		    		}
+		    	}
+		    	if(categories != null && categories.size() > 0){
+		    		VoterVO category = null;
+		    		 List<Object[]> votersPartyCastList = voterCategoryValueDAO.getVoterCategoryValuesForVoters(userId,voterIds);
+		    	     for(Object[] voterDetails:votersPartyCastList){
+		    	    	 VoterVO voterObj = voterMap.get((Long)voterDetails[0]);
+		    	    	 if(voterObj != null){
+		    	    		 List<VoterVO> categoriesList = voterObj.getCategoriesList();
+		    	    		 if(categoriesList == null){
+		    	    			 categoriesList = new ArrayList<VoterVO>();
+		    	    			 voterObj.setCategoriesList(categoriesList);
+		    	    		 }
+		    	    		  category = new VoterVO();
+		    	    		  categoriesList.add(category);
+		    	    		  category.setCategoryValuesId((Long)voterDetails[1]);
+		    	    		  category.setName(voterDetails[2]!=null?voterDetails[2].toString():"");
+		    	    	 }
+		    	     }
+		    	 }
+		    	if(total != null && total.size() > 0)
+		    	{
+		    		totalCount = new Long(total.size());
+		    		result.get(0).setTotalVoters(totalCount);
+		    	}
+		    	return result;
+		    	
+		    }
+		    /** this method is used get TotalVoters,Male,Female Voters By CustomGroupId **/
+		    public VoterInfo getTotalVotersDetailsbyCustomVoterGroup(Long userId,Long customVoterGroupId,Long publicationId)
+		    {
+		    	VoterInfo voterInfo = new VoterInfo();
+		    	List<Object[]> list = null;
+		    	Long maleVoters = 0l;
+		    	Long femaleVoters = 0l;
+		    	Long total = 0l;
+		    
+		    try{
+		    	list = customVoterDAO.getCustomVotersCount(customVoterGroupId,userId,publicationId);
+		    	if(list != null && list.size() > 0)
+		    	{
+		    		for(Object[] params : list)
+		    		{
+		    			if(params[1].toString().equalsIgnoreCase("F"))
+		    				femaleVoters = femaleVoters+ (Long)params[0];
+		    			else
+		    				maleVoters =  maleVoters + (Long)params[0];;
+		    		}
+		    	}
+		    	total = maleVoters + femaleVoters;
+		    	voterInfo.setMaleVoters(maleVoters);
+		    	voterInfo.setFemaleVoters(femaleVoters);
+		    	voterInfo.setTotalVoters(total);
+		    
+		    }
+		   
+		    catch (Exception e) {
+				Log.error("Exception Occured in getTotalVotersDetailsbyCustomVoterGroup() of customVoterGroupAnalysis");
+			}
+			return voterInfo;
+			
+			
+		    }
+		   /** this method is used To get Influence,Cadre,Politician People Count **/ 
+		    public InfluencingPeopleBeanVO getInfluencingPeopleCount(Long userId,Long customVoterGroupId,Long publicationDateId)
+		    {
+		    	
+		    	List<Long> influencePeople = new ArrayList<Long>();
+		    	List<Long> cadrePeople = new ArrayList<Long>();
+		    	List<Long> politician = new ArrayList<Long>();
+		    	InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
+		    	try{
+		    		influencePeople = customVoterDAO.getInfluencingPeopleCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
+		    		cadrePeople = customVoterDAO.getCadrePeopleCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
+		    		politician = customVoterDAO.getPoliticianCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
+		    		if(influencePeople != null && influencePeople.size() > 0)
+		    		influencingPeopleBeanVO.setInfluencePeopleCount(new Long(influencePeople.get(0)));
+		    		else
+		    			influencingPeopleBeanVO.setInfluencePeopleCount(0l);	
+		    		if(cadrePeople != null && cadrePeople.size() > 0)
+			    		influencingPeopleBeanVO.setCadreCount(new Long(cadrePeople.get(0)));
+			    		else
+			    			influencingPeopleBeanVO.setCadreCount(0l);	
+		    		if(politician != null && politician.size() > 0)
+			    		influencingPeopleBeanVO.setPoliticianCount(new Long(politician.get(0)));
+			    		else
+			    			influencingPeopleBeanVO.setPoliticianCount(0l);	
+		    	}
+		    	catch(Exception e)
+		    	{
+		    		Log.error("Exception Occured in getInfluencingPeopleCount() method of CustomVoterGroupAnalysis");
+		    	}
+				return influencingPeopleBeanVO;
+		    }
+		   /** this method is used To get influence,cadre,Politician Details By customVoterGroupId **/
+		    public List<VoterVO> showVoterDetailsForSelcetedType(Long userId,Long customVoterGroupId,Long publicationDateId,String btnName,Integer startIndex,Integer maxRecords,String order,String columnName)
+		    {
+		    List<VoterVO> result = null;
+		    List<Object[]> list  = null;
+		    List<Long> influencePeople = new ArrayList<Long>();
+	    	List<Long> cadrePeople = new ArrayList<Long>();
+	    	List<Long> politician = new ArrayList<Long>();
+		    try{
+		    if(btnName.equalsIgnoreCase("InfluencePeople"))
+		    {
+		    	Long inftotal =0l;
+		    	influencePeople = customVoterDAO.getInfluencingPeopleCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
+		    	list = customVoterDAO.getInfluencingPeopleDetails(userId,publicationDateId,customVoterGroupId,startIndex,maxRecords,order,columnName);
+		    	if(influencePeople != null && influencePeople.size() > 0)
+		    	 inftotal = influencePeople.get(0).longValue();
+		    	result = setValuesToVOterVO(list,btnName,inftotal);
+		    }
+		    else if(btnName.equalsIgnoreCase("Cadre"))
+		    {
+		    	Long cadreCount = 0l;
+		    	list = customVoterDAO.getCadreDetails(userId,publicationDateId,customVoterGroupId,startIndex,maxRecords,order,columnName);
+		    	cadrePeople = customVoterDAO.getCadrePeopleCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
+		    	if(cadrePeople != null && cadrePeople.size() > 0)
+		        cadreCount = cadrePeople.get(0).longValue();
+		    	result = setValuesToVOterVO(list,btnName,cadreCount);
+		    }
+		    else if(btnName.equalsIgnoreCase("Politician"))
+		    {
+		    	Long politicainCount = 0l;
+		    	list = customVoterDAO.getPoliticanDetails(userId,publicationDateId,customVoterGroupId,startIndex,maxRecords,order,columnName);
+		    	politician = customVoterDAO.getPoliticianCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
+		    	if(politician != null && politician.size() > 0)
+		        politicainCount = politician.get(0).longValue();
+		    	result= setValuesToVOterVO(list,btnName,politicainCount);
+		    }
+		    	
+		    }
+		    catch(Exception e)
+		    {
+		    	e.printStackTrace();
+		    	Log.error("Exception Occured in showVoterDetailsForSelcetedType() method of customVoterGroupAnalysis" ,e);
+		    }
+			return result;
+		    }
+		    
+		    public List<VoterVO> setValuesToVOterVO(List<Object[]> list,String btnName,Long total)
+		    {
+		    	
+		    	List<VoterVO> result = new ArrayList<VoterVO>(0);
+		    	VoterVO voterVO = null;
+		    	try{
+		    	Long count = 1l;
+		    	if(list != null && list.size() > 0)
+		    	{
+		    		for(Object[] params : list)
+		    		{
+		    			voterVO = new VoterVO();
+						voterVO.setVoterId((Long.valueOf(count).toString()));
+						voterVO.setFirstName(params[1]!= null ? params[1].toString():" ");
+						voterVO.setVoterIDCardNo(params[7]!=null?params[7].toString():" ");
+						voterVO.setGender(params[2]!=null ? params[2].toString():" ");
+						voterVO.setAge((Long)params[3]);
+						voterVO.setHouseNo(params[4]!=null?params[4].toString():" ");
+						voterVO.setRelativeFirstName(params[5]!=null?params[5].toString():" ");
+						voterVO.setMobileNo(params[6]!=null ?params[6].toString(): " ");
+						voterVO.setTotalVoters(total);
+						if(btnName.equalsIgnoreCase("InfluencePeople"))
+						{
+						voterVO.setInfluencingRange(params[8].toString());
+						voterVO.setInfluencingRegion(voterReportService.getRegionNameBasedOnScope(params[8].toString(),params[9].toString()));
+						}
+						++count;
+						result.add(voterVO);
+		    		}
+		    	}
+		    	}catch(Exception e)
+		    	{
+		    		Log.error("Exception Occured in setValuesToVOterVO() of customVoterGroupAnalysis");
+		    	}
+				return result;
+		    }
+
+
 }
-
-
-
-
-
- 
