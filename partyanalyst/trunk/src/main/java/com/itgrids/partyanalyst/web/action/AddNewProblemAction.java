@@ -422,7 +422,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		boothList = new ArrayList<SelectOptionVO>(0);
 		
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user == null)
+		if(user == null || user.getRegistrationID() == null)
 			return ERROR;
 		
 		/*
