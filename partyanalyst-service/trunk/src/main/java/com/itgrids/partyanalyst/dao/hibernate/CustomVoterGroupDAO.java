@@ -112,4 +112,11 @@ public class CustomVoterGroupDAO extends GenericDaoHibernate<CustomVoterGroup,Lo
 		
 		return queryObject.list();
 	}
+	
+	public String getCustomVoterGroupNameByGroupId(Long customVoterGroupId)
+	{
+		Query query = getSession().createQuery("select model.name from CustomVoterGroup model where model.customVoterGroupId =:customVoterGroupId ");
+		query.setParameter("customVoterGroupId", customVoterGroupId);
+		return (String) query.uniqueResult();
+	}
 }

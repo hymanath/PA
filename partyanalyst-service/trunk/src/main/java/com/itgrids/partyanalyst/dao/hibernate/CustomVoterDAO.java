@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CustomVoter;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implements ICustomVoterDAO {
 
@@ -98,7 +99,7 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCasteWiseCustomVotersCount(Long customVoterGroupId, Long userId)
 	{
-		Query query = getSession().createQuery(" select count (distinct CV.voter.voterId),CV.voter.gender,UVD.casteState.caste.casteName,UVD.casteState.casteCategoryGroup.casteCategory.categoryName from CustomVoter CV, UserVoterDetails UVD where " +
+		Query query = getSession().createQuery(" select count (distinct CV.voter.voterId),CV.voter.gender,UVD.casteState.caste.casteName,UVD.casteState.casteCategoryGroup.casteCategory.categoryName,UVD.casteState.casteStateId,UVD.casteState.caste.casteId from CustomVoter CV, UserVoterDetails UVD where " +
 				" UVD.voter.voterId = CV.voter.voterId and CV.customVoterGroup.customVoterGroupId =:customVoterGroupId and UVD.user.userId =:userId group by UVD.casteState.caste.casteId,CV.voter.gender order by UVD.casteState.caste.casteName ");
 		
 		query.setParameter("customVoterGroupId", customVoterGroupId);
@@ -343,5 +344,32 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 	query.setParameter("publicationId", publicationId);
 	return query.list(); 
  }
+ 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCustomGroupWiseVotersDetailsForCaste(Long userId, String areaType, Long locationValue)
+	{
+		Query query = getSession().createQuery(" select count (distinct CV.voter.voterId),CV.customVoterGroup.customVoterGroupId,CV.customVoterGroup.name,UVD.casteState.casteStateId,UVD.casteState.caste.casteName,CV.voter.gender,UVD.casteState.casteCategoryGroup.casteCategory.categoryName,UVD.casteState.caste.casteId " +
+				" from CustomVoter CV,UserVoterDetails UVD where UVD.voter.voterId = CV.voter.voterId and UVD.user.userId =:userId and CV.customVoterGroup.areaType.type =:type and CV.customVoterGroup.locationValue =:locationValue group by CV.customVoterGroup.customVoterGroupId,UVD.casteState.caste.casteId," +
+				" CV.voter.gender order by CV.customVoterGroup.name,UVD.casteState.caste.casteName ");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("type", areaType);
+		query.setParameter("locationValue", locationValue);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Voter> getCasteWiseCustomVoterDetails(Long casteStateId,Long casteId,Long customVoterGroupId,Long userId)
+	{
+		Query query = getSession().createQuery("select CV.voter from CustomVoter CV,UserVoterDetails UVD where UVD.voter.voterId = CV.voter.voterId and UVD.user.userId =:userId and " +
+				" CV.customVoterGroup.customVoterGroupId =:customVoterGroupId and UVD.casteState.caste.casteId =:casteId and UVD.casteState.casteStateId =:casteStateId order by CV.voter.name ");
+		
+		query.setParameter("casteStateId", casteStateId);
+		query.setParameter("casteId", casteId);
+		query.setParameter("customVoterGroupId", customVoterGroupId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 
 }

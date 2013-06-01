@@ -27,6 +27,8 @@ import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.ICustomVoterGroupAnalysisService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysisService {
 	
@@ -116,6 +118,8 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 				  castInfoVO = new VoterCastInfoVO();
 				  castInfoVO.setCastName(casteName);
 				  castInfoVO.setCasteCategoryName(params[3] != null ?params[3].toString():"");
+				  castInfoVO.setCasteStateId((Long)params[4]);
+				  castInfoVO.setCasteId((Long)params[5]);
 				  castInfoVOsList.add(castInfoVO);
 			  }
 			  
@@ -175,6 +179,154 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 		        	 return castVo1.getTotalVoters().intValue()- castVo2.getTotalVoters().intValue();
 		        }
 		    };
+    public List<VoterCastInfoVO> getCustomGroupWiseVoterCasteDetails(Long userId,String areaType,Long locationValue)
+    {
+    	
+    	List<VoterCastInfoVO> castInfoVOsList = null;
+    	Map<String,Long> votersMap = new HashMap<String,Long>();
+    	Map<Long,Long> groupMap = new HashMap<Long, Long>();
+    	
+    	try{
+    		List<Object[]> list = customVoterDAO.getCustomGroupWiseVotersDetailsForCaste(userId,areaType,locationValue);
+    		
+    		if(list != null && list.size() > 0)
+    		{
+    			VoterCastInfoVO castInfoVO = null;
+    		  castInfoVOsList = new ArrayList<VoterCastInfoVO>(0);
+    		  for(Object[] params : list)
+    		  {
+    			 castInfoVO = checkVoterCastInfoVOExist((Long)params[1], (Long)params[3], castInfoVOsList);
+    			 if(castInfoVO == null)
+    			 {
+    			   castInfoVO = new VoterCastInfoVO();
+    			   castInfoVO.setId((Long)params[1]);
+ 				   castInfoVO.setName(params[2] != null ?params[2].toString():" ");
+ 				   castInfoVO.setCasteStateId((Long)params[3]);
+ 				   castInfoVO.setCasteCategoryName(params[6] != null ?params[6].toString():"");
+ 				   castInfoVO.setCastName(params[4] != null ?params[4].toString():"N/A");
+ 				   castInfoVO.setCasteId((Long)params[7]);
+ 				   
+ 				   castInfoVOsList.add(castInfoVO);
+    			 }
+ 				 if(params[5] != null && params[5].toString().equalsIgnoreCase(IConstants.MALE))
+ 				  castInfoVO.setMaleVoters((Long)params[0]);
+ 				 else if(params[5] != null && params[5].toString().equalsIgnoreCase(IConstants.FEMALE))
+    			  castInfoVO.setFemaleVoters((Long)params[0]);
+    			
+    			 if(votersMap.get(params[4].toString()) == null)
+    				 votersMap.put(params[4].toString(), (Long)params[0]);
+    			 else if(votersMap.get(params[4].toString()) != null)
+    				 votersMap.put(params[4].toString(), votersMap.get(params[4].toString())+(Long)params[0]);
+    			 
+    			 if(groupMap.get((Long)params[1]) == null)
+    				 groupMap.put((Long)params[1], (Long)params[0]);
+    			 else if(groupMap.get((Long)params[1]) != null)
+    				 groupMap.put((Long)params[1], groupMap.get((Long)params[1]) + (Long)params[0]);
+    			 
+    		  }
+    		  
+    		  for(VoterCastInfoVO infoVO : castInfoVOsList)
+    			infoVO.setTotalVoters(infoVO.getMaleVoters()+infoVO.getFemaleVoters());
+    		  
+    		  for(VoterCastInfoVO infoVO : castInfoVOsList)
+    		  {
+    			 Double percentage = 0.00;
+    			 percentage = new BigDecimal((infoVO.getTotalVoters()*100.0)/votersMap.get(infoVO.getCastName()).longValue()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+ 				 infoVO.setCastePercentage(percentage);
+ 				 infoVO.setGroupWiseTotalVoters(groupMap.get(infoVO.getId()));
+    		  }
+    		  
+    		      		  
+    		}
+    		
+    		return castInfoVOsList;
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    		Log.error("Exception Occured in getCustomGroupWiseVoterCasteDetails() method, Exception - "+e);
+    		return castInfoVOsList;
+		}
+    }
+    
+    
+	public VoterCastInfoVO checkVoterCastInfoVOExist(Long groupId,Long casteStateId, List<VoterCastInfoVO> list)
+	{
+		try{
+			
+			if(list == null || list.size() == 0)
+				return null;
+			for(VoterCastInfoVO castInfoVO : list)
+			  if(castInfoVO.getId().equals(groupId) && castInfoVO.getCasteStateId().equals(casteStateId))
+				return castInfoVO;
+			
+			return null;
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception Occured in checkVoterCastInfoVOExist() method, Exception - "+e);
+			return null;
+		}
+	}
+	
+	public VoterCastInfoVO checkSelectOptionVOExists(Long id,List<VoterCastInfoVO> list)
+	{
+		try{
+			if(list == null || list.size() == 0)
+				return null;
+			for(VoterCastInfoVO optionVO : list)
+			  if(optionVO.getId().equals(id))
+				return optionVO;
+			
+			return null;
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception Occured in checkSelectOptionVOExists() method,Exception - "+e);
+			return null;
+		}
+	}
+	
+	public String getGroupNameByGroupId(Long customVoterGroupId)
+	{
+		try{
+			String name = "";
+			name = customVoterGroupDAO.getCustomVoterGroupNameByGroupId(customVoterGroupId);
+			return name;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception Occured in getGroupNameByGroupId() method, Exception - "+e);
+			return null;
+		}
+	}
+	
+	public List<VoterHouseInfoVO> getCustomVoterDetails(Long casteStateId, Long casteId, Long customVoterGroupId, Long userId)
+	{
+		List<VoterHouseInfoVO> houseInfoVOsList = new ArrayList<VoterHouseInfoVO>(0);
+		try{
+		
+		 List<Voter> votersList = customVoterDAO.getCasteWiseCustomVoterDetails(casteStateId, casteId, customVoterGroupId, userId);
+		 
+		 if(votersList != null && votersList.size() > 0)
+		 {
+			for(Voter voter:votersList)
+			{
+			  VoterHouseInfoVO houseInfoVO = new VoterHouseInfoVO();
+			  houseInfoVO.setVoterId(voter.getVoterId());
+			  houseInfoVO.setName(voter.getName() != null ? voter.getName() :" ");
+			  houseInfoVO.setAge(voter.getAge());
+			  houseInfoVO.setGender(voter.getGender()!= null ? voter.getGender():" ");
+			  houseInfoVO.setHouseNo(voter.getHouseNo() != null? voter.getHouseNo():" ");
+			  houseInfoVO.setRelationship(voter.getRelationshipType()!= null ?voter.getRelationshipType():" ");
+			  houseInfoVO.setGaurdian(voter.getRelativeName() != null ?voter.getRelativeName():" ");
+			  houseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo() != null ?voter.getVoterIDCardNo():" ");
+			  houseInfoVO.setMobileNo(voter.getMobileNo() != null?voter.getMobileNo():"N/A");
+			  houseInfoVOsList.add(houseInfoVO);
+			}
+		 }
+		 return houseInfoVOsList;
+		}catch (Exception e) {
+		 Log.error("Exception Occured in getCustomVoterDetails() method, Exception - "+e);
+		 return null;
+		}
+	}
 		    
 
 public static final String AGE1="18to25";

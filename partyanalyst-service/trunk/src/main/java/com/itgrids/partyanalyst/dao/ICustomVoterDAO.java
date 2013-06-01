@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CustomVoter;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.Voter;
 
 public interface ICustomVoterDAO extends GenericDao<CustomVoter,Long>{
 	
@@ -42,5 +43,9 @@ public interface ICustomVoterDAO extends GenericDao<CustomVoter,Long>{
 	 public List<Object[]> getInfluencingPeopleDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName);
 	 
 	 public List<Object[]> getPoliticanDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	 
+	 public List<Object[]> getCustomGroupWiseVotersDetailsForCaste(Long userId,String areaType, Long locationValue);
+	
+	 public List<Voter> getCasteWiseCustomVoterDetails(Long casteStateId,Long casteId,Long customVoterGroupId,Long userId);
 		
 }
