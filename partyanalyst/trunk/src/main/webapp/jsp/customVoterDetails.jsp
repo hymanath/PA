@@ -167,9 +167,11 @@
 
 </div>
 <script type="text/javascript">
-var customvoterGroupId = 1;
+var customVoterGroupId ='${customVoterGroupId}';
+
 var limit = 100;
 var startIndex= "${startIndex}";
+var publicationDateId = '${publicationDateId}';
 
 
 function callAjax(jsObj,url)
@@ -227,7 +229,7 @@ function buildVotersCount(myResults,jsObj)
 function getPeopleData(customgrpId,publicationId,type)
 {
 	
-		var reqBrowser = window.open("influencingCadrePoliticianDisplayWindowAction.action?customVoterGroupId="+customgrpId+"&publicationDateId="+publicationId+"&btnName="+type+"&","newBrowser","width=1080,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	var reqBrowser = window.open("influencingCadrePoliticianDisplayWindowAction.action?customVoterGroupId="+customgrpId+"&publicationDateId="+publicationId+"&btnName="+type+"&","newBrowser","width=1080,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		reqBrowser.focus();
 	
 }
@@ -239,7 +241,7 @@ getVotersCount();
 getInfluencingPeopleCount(1);
 getUserCategories();
 getVoterInfoForACustomGroup();
-//getCasteWiseCustomVotersCount();
+
 </script>
 </body>
 </html>

@@ -40,9 +40,11 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	private VotersDetailsVO votersDetailsVO;
 	private List<VoterCastInfoVO> castInfoVOsList;
 	private Long customVoterGroupId;
+	
 	private List<VoterVO> votersData,votersList,voters;
 	private VoterVO voterVO;
 	private ConstituencyManagementVO constituencyManagementVO;
+	private Long publicationDateId;
 	
 	@Override
 	public void setServletRequest(HttpServletRequest arg) {
@@ -172,6 +174,14 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		this.voters = voters;
 	}
 
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+
 	public String execute()
 	{
 		return ActionSupport.SUCCESS;
@@ -235,9 +245,9 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		List<VoterVO> votersList = null;
 		constituencyManagementVO = new ConstituencyManagementVO();
 		Long customerGroupId = request.getParameter("customvoterGroupId") != null ? Long.parseLong(request.getParameter("customvoterGroupId")):0l;
-		//Long publicationId = request.getParameter("publicationId") != null ? 0l:Long.parseLong(request.getParameter("publicationId"));
+		Long publicationId = request.getParameter("publicationId") != null ? Long.parseLong(request.getParameter("publicationId")):0l;
 		votersList = customVoterGroupAnalysisService.getVoterDetailsForCustomVoterGroup(1l,startIndex,
-				maxRecords, order, columnName,userId,8l);
+				maxRecords, order, columnName,userId,publicationId);
 		constituencyManagementVO.setVoterDetails(votersList);
 		if(votersList != null && votersList.size() > 0)
 		constituencyManagementVO.setVoterDetailsCount(votersList.get(0).getTotalVoters());
@@ -376,7 +386,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			}
 			return Action.SUCCESS;
 		} catch (Exception e) {
-			LOG.debug("Exception Raised in getInfluencingPeopleVotersDetails() method in InflencingCadreCountsDisplayAction Class");
+			LOG.debug("Exception Raised in getVotersDetails() method in InflencingCadreCountsDisplayAction Class");
 			return ERROR;
 		}
 		
