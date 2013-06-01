@@ -552,6 +552,9 @@ function callAjax(jsObj,url)
 		
 			if(jsObj.task == "getCasteWiseCustomVotersCount")
 			  buildCasteWiseCustomVotersCount(myResults,jsObj);
+			if(jsObj.task=="getAgeWiseCustomVotersInGroup"){
+			  buildAgeWiseInGroupTable(myResults);
+				}
 
 			}catch (e) {
 							   
@@ -595,7 +598,7 @@ function callAjax(jsObj,url)
 		for(var i in results)
 		{
 		  str +='<tr>';
-		  str +='<td>'+results[i].castName+'</td>';
+		  str +='<td><a href="javascript:{}" onclick="getCasteWiseCustomVoters('+results[i].casteStateId+','+results[i].casteId+',\''+results[i].castName+'\',\''+results[i].casteCategoryName+'\')">'+results[i].castName+'</a></td>';
 		  str +='<td>'+results[i].casteCategoryName+'</td>';
 		  str +='<td>'+results[i].maleVoters+'</td>';
 		  str +='<td>'+results[i].femaleVoters+'</td>';
@@ -867,3 +870,13 @@ function showInfluencePeopleDialog(voterId){
 	 
 
 }
+
+  function getCasteWiseCustomVoters(casteStateId,casteId,casteName,casteCategoryName)
+  {
+	
+	var urlstr = "getCasteWiseCustomVotersDetails.action?casteStateId="+casteStateId+"&casteId="+casteId+"&casteName="+casteName+"&casteCategoryName="+casteCategoryName+"&customVoterGroupId="+customVoterGroupId+"&";
+
+	var browser1 = window.open(urlstr,"casteWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+	browser1.focus();
+  }
+  

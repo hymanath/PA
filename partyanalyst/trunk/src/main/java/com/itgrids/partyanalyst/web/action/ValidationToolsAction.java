@@ -71,7 +71,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 		this.jObj = jObj;
 	}
 	
-	@Override
+	//@Override
 	public void setServletRequest(HttpServletRequest arg0) {
 		
 		this.request=arg0;
