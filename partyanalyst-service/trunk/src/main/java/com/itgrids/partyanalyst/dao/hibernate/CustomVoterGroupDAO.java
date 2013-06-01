@@ -80,4 +80,36 @@ public class CustomVoterGroupDAO extends GenericDaoHibernate<CustomVoterGroup,Lo
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getVotersCountBasedOnAgeInGroup(Long userId,Long customGroupId, String age,Long publicationDate){
+		
+		StringBuilder query=new StringBuilder();
+		query.append("select count(*),model.voter.gender from CustomVoter model,BoothPublicationVoter model1 where " +
+				" model.customVoterGroup.customVoterGroupId = :customGroupId and model.voter.voterId=model1.voter.voterId and " +
+				" model1.booth.publicationDate.publicationDateId =:publicationDate ");
+		
+		if(age.equalsIgnoreCase("18to25")){
+			query.append(" and model.voter.age>=18 and model.voter.age<=25 ");
+		}
+		else if(age.equalsIgnoreCase("26to35")){
+			query.append("and model.voter.age>=26 and model.voter.age<=35 ");
+		}
+		else if(age.equalsIgnoreCase("36to45")){
+			query.append("and model.voter.age>=36 and model.voter.age<=45 ");
+		}
+		else if(age.equalsIgnoreCase("46to60")){
+			query.append("and model.voter.age>=46 and model.voter.age<=60 ");
+		}
+		else if(age.equalsIgnoreCase("60Above")){
+			query.append("and model.voter.age>=61 ");
+		}
+		query.append(" group by model.voter.gender");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setParameter("customGroupId", customGroupId);
+		queryObject.setParameter("publicationDate", publicationDate);
+		
+		return queryObject.list();
+	}
 }
