@@ -142,7 +142,7 @@ function getAgeWiseCustomVotersInGroup(){
 
 	
 	
-function callAjax(jsObj,url)
+/* function callAjax(jsObj,url)
 		{
 			 var myResults;
 
@@ -165,7 +165,7 @@ function callAjax(jsObj,url)
  		               };
 
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
- 	}
+ 	}*/
 
 function buildAgeWiseInGroupTable(result){
 	var str="";

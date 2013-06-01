@@ -5259,6 +5259,26 @@
 		    <result type="json" name="success">
 				 <param name="root">constituencyManagementVO</param>
 			</result>
+		</action>
+		
+		<action name="customGroupWiseCasteVotersDetails" class="customVoterGroupAnalysisAction">
+		 <result name="success">/jsp/customGroupWiseCasteVotersDetails.jsp</result>
+		</action>
+		
+		<action name="getCustomGroupWiseCasteVotersAction" class="customVoterGroupAnalysisAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">customGroupWiseCasteVotersList</param>
+		 </result>
 		</action> 
+		<action name="getCasteWiseCustomVotersDetails" class="customVoterGroupAnalysisAction">
+			<result name="success">/jsp/casteWiseCustomVoterDetails.jsp</result>
+		</action>
+		
+		<action name="getCasteWiseCustomVotersAction" class="customVoterGroupAnalysisAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		   <param name="root">customVotersList</param>
+		 </result>
+		</action>
+		
 		</package>
 </struts>      

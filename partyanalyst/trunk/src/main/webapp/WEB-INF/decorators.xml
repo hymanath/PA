@@ -98,6 +98,8 @@
 		<pattern>/subRegionsWiseAnalysisAction*</pattern>
 		<pattern>/allVotersInAcasteAction.action*</pattern>
 		<pattern>/getVoterDetailsForACustomGroup*</pattern>
+		<pattern>/getCasteWiseCustomVotersDetails.action*</pattern>
+		<pattern>/customGroupWiseCasteVotersDetails.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
