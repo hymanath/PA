@@ -5,11 +5,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
+import com.itgrids.partyanalyst.service.impl.CustomVoterGroupAnalysisService;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.service.ICustomVoterGroupAnalysisService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -23,7 +26,9 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	private String task;
 	
 	JSONObject jobj;
+	private static final Logger log = Logger.getLogger(VotersAnalysisAction.class);
 	private ICustomVoterGroupAnalysisService customVoterGroupAnalysisService;
+	private VotersDetailsVO votersDetailsVO;
 	private List<VoterCastInfoVO> castInfoVOsList;
 	private Long customVoterGroupId;
 	
@@ -64,13 +69,6 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		this.jobj = jobj;
 	}
 	
-	public List<VoterCastInfoVO> getCastInfoVOsList() {
-		return castInfoVOsList;
-	}
-
-	public void setCastInfoVOsList(List<VoterCastInfoVO> castInfoVOsList) {
-		this.castInfoVOsList = castInfoVOsList;
-	}
 	public ICustomVoterGroupAnalysisService getCustomVoterGroupAnalysisService() {
 		return customVoterGroupAnalysisService;
 	}
@@ -80,6 +78,22 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		this.customVoterGroupAnalysisService = customVoterGroupAnalysisService;
 	}
 
+	public VotersDetailsVO getVotersDetailsVO() {
+		return votersDetailsVO;
+	}
+
+	public void setVotersDetailsVO(VotersDetailsVO votersDetailsVO) {
+		this.votersDetailsVO = votersDetailsVO;
+	}
+
+	public List<VoterCastInfoVO> getCastInfoVOsList() {
+		return castInfoVOsList;
+	}
+
+	public void setCastInfoVOsList(List<VoterCastInfoVO> castInfoVOsList) {
+		this.castInfoVOsList = castInfoVOsList;
+	}
+	
 	public Long getCustomVoterGroupId() {
 		return customVoterGroupId;
 	}
@@ -110,6 +124,34 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			castInfoVOsList = customVoterGroupAnalysisService.getCasteWiseCustomVotersCount(jobj.getLong("customVoterGroupId"),userId);
 		
 		return ActionSupport.SUCCESS;
+	}
+	
+	
+	public String getAgeWiseCustomVotersInGroup(){
+		Long userId =null;
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		else  
+			userId= user.getRegistrationID();
+		String param;
+		param = getTask();
+		
+		votersDetailsVO=new VotersDetailsVO();
+		try{
+			jobj = new JSONObject(param);
+			Long customGroupId = Long.parseLong(jobj.getString("customGroupId"));
+			Long publicationDateId=Long.parseLong(jobj.getString("publicationDateId"));
+			votersDetailsVO=customVoterGroupAnalysisService.getAgeWiseCustomVotersInGroup(userId,customGroupId,publicationDateId);
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getAgeWiseCustomVotersInGroup() Method,Exception is- ",e);
+		}
+		
+		return SUCCESS;
 	}
 
 }
