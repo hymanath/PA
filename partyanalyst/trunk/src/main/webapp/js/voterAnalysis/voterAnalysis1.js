@@ -5555,7 +5555,14 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 	 }
 	var data = new Array();
 function showPreviousEleVotingTrends(results,jsObj)
-{	
+{
+   
+    if(jsObj.type == "customWard")
+	{
+		$("#previousEleVotingTrendsDiv1").css("display","none");
+	}
+	else	
+	{
 	 $("#previousEleAjaxImg").css("display","none");
 	 if(results.length == 0){
 		$("#previousEleVotingTrendsDiv1").css("display","none");
@@ -5640,6 +5647,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 	 }
 	
 	}
+}
 
 
 	var electionYearsForChrt=[];
@@ -6681,7 +6689,7 @@ var boothid=$(this).closest("a").attr("data-boothid");
 mainreqid = boothid;
 mainpublicationId = $("#publicationDateList").val();
 maintype = 'booth';
-mainname = $(this).closest("a").attr("name-booth");
+mainname = "Booth - " +$(this).closest("a").attr("name-booth");
 scrollToNewsDiv();
 getAllTabs(boothid,$("#publicationDateList").val(),'booth');
 //alert("SHOW BOOOTH DATA");

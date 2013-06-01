@@ -1436,9 +1436,9 @@ public String saveLocality()
 					   Long id                        = jObj.getLong("locationValue");
 					   String selLevel                = jObj.getString("type");
 					
-					   if(selLevel.equalsIgnoreCase("hamlet"))
+					   if(selLevel.equalsIgnoreCase("hamlet") || selLevel.equalsIgnoreCase("customWard"))
 					   {
-						   influencingPeopleBeanVO    =  voterReportService.getcountForSelectedTypeInHamlet(id,userId);
+						   influencingPeopleBeanVO    =  voterReportService.getcountForSelectedTypeInHamlet(id,userId,selLevel);
 					   }
 					   else
 					   {
