@@ -22,7 +22,7 @@ public class DistrictWisePartyPerformanceAction extends ActionSupport implements
 	public String execute()
 	{
         HttpSession session = request.getSession();		
-		if(session.getAttribute(IConstants.USER) == null)
+		if(session.getAttribute(IConstants.USER) == null || ((RegistrationVO)session.getAttribute(IConstants.USER)).getRegistrationID() == null)
 			return IConstants.NOT_LOGGED_IN;
 		return Action.SUCCESS;
 	}
