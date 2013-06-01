@@ -89,6 +89,12 @@
 #castContainerChartInner{padding-bottom: 2px;}
 #casteWiseVotersCountDiv{padding-bottom: 30px;}
 #rangeSliderDiv{width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;}
+.table-bordered th, .table-bordered td{text-align:center;color:#000000;font-size:14px;}
+	.table-bordered th{background:#D9EDF7;}
+	
+	#ageWiseInGroupDiv{
+		width:950px;margin-left:auto;margin-right:auto;margin:10px;
+	}
    </style>
 
 
@@ -97,6 +103,7 @@
    </script>
 </head>
 <body>
+<div id="ageWiseInGroupDiv" class="widget blue whitegloss"></div>
 <div id="customVotersMainDiv">
  <div id="casteWiseVotersCountDiv" class="widget blue">
   <h4>Caste Wise Custom Voters Count</h4>
@@ -120,6 +127,108 @@
 
 <script type="text/javascript">
  getCasteWiseCustomVotersCount();
+ getAgeWiseCustomVotersInGroup();
+function getAgeWiseCustomVotersInGroup(){
+	var jsObj={
+			customGroupId:2,
+			publicationDateId:8,
+			task:'getAgeWiseCustomVotersInGroup'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgeWiseCustomVotersInGroupAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	
+
+	
+	
+function callAjax(jsObj,url)
+		{
+			 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+									myResults = YAHOO.lang.JSON.parse(o.responseText);
+									
+									if(jsObj.task=="getAgeWiseCustomVotersInGroup"){
+										buildAgeWiseInGroupTable(myResults);
+									}
+								}catch (e) {
+							    console.log(e);
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+ 	}
+
+function buildAgeWiseInGroupTable(result){
+	var str="";
+	str+='<h4>Age Wise Voters Information</h4>';
+	str+='<table class="table table-bordered" id="ageWiseInGroupTable">';
+	str+='<thead><tr><th rowspan=2>AGE Range</th><th colspan=2>Total Voters</th><th colspan=2>Male</th>	<th colspan=2>Female</th></tr><tr>	<th>Total Voters</th><th>Total Percentage</th><th>Voters</th><th>Percentage</th><th>Voters</th>	<th>Percentage</th>	</tr></thead><tbody>';
+	
+		str+='<tr><td>18-25</td>';
+		str+='<td>'+checkForNull(result.totalVotersFor18To25)+'</td>';
+		str+='<td>'+result.votersPercentFor18To25+'</td>';
+		str+='<td>'+checkForNull(result.maleVotersCountBetween18To25)+'</td>';
+		str+='<td>'+result.maleVotersPercentFor18To25+'</td>';
+		str+='<td>'+checkForNull(result.femaleVotersCountBetween18To25)+'</td>';
+		str+='<td>'+result.femaleVotersPercentFor18To25+'</td>';
+		str+='</tr>'
+		
+		str+='<tr><td>26-35</td>';
+		str+='<td>'+checkForNull(result.totalVotersFor26To35)+'</td>';
+		str+='<td>'+result.votersPercentFor26To35+'</td>';
+		str+='<td>'+checkForNull(result.maleVotersCountBetween26To35)+'</td>';
+		str+='<td>'+result.maleVotersPercentFor26To35+'</td>';
+		str+='<td>'+checkForNull(result.femaleVotersCountBetween26To35)+'</td>';
+		str+='<td>'+result.femaleVotersPercentFor26To35+'</td>';
+		str+='</tr>'
+		
+		str+='<tr><td>36-45</td>';
+		str+='<td>'+checkForNull(result.totalVotersFor36To45)+'</td>';
+		str+='<td>'+result.votersPercentFor36To45+'</td>';
+		str+='<td>'+checkForNull(result.maleVotersCountBetween36To45)+'</td>';
+		str+='<td>'+result.maleVotersPercentFor36To45+'</td>';
+		str+='<td>'+checkForNull(result.femaleVotersCountBetween36To45)+'</td>';
+		str+='<td>'+result.femaleVotersPercentFor36To45+'</td>';
+		str+='</tr>'
+		
+		str+='<tr><td>46-60</td>';
+		str+='<td>'+checkForNull(result.totalVotersFor46To60)+'</td>';
+		str+='<td>'+result.votersPercentFor46To60+'</td>';
+		str+='<td>'+checkForNull(result.maleVotersCountBetween46To60)+'</td>';
+		str+='<td>'+result.maleVotersPercentFor46To60+'</td>';
+		str+='<td>'+checkForNull(result.femaleVotersCountBetween46To60)+'</td>';
+		str+='<td>'+result.femaleVotersPercentFor46To60+'</td>';
+		str+='</tr>'
+		
+		str+='<tr><td>60 Above</td>';
+		str+='<td>'+checkForNull(result.totalVotersForAbove60)+'</td>';
+		str+='<td>'+result.votersPercentForAbove60+'</td>';
+		str+='<td>'+checkForNull(result.maleVotersCountAbove60)+'</td>';
+		str+='<td>'+result.maleVotersPercentForAbove60+'</td>';
+		str+='<td>'+checkForNull(result.femaleVotersCountAbove60)+'</td>';
+		str+='<td>'+result.femaleVotersPercentForAbove60+'</td>';
+		str+='</tr>'
+		
+	
+	str+='</tbody>';
+	str+='</table>';
+	$('#ageWiseInGroupDiv').html(str);
+}
+function checkForNull(val){
+	if(val!=null)
+		return val;
+	else
+		return 0;
+}
 </script>
 
 
