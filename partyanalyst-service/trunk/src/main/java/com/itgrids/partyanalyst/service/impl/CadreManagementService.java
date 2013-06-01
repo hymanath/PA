@@ -4983,7 +4983,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
                 registrationVO = new RegistrationVO();
                 registrationVO.setAccessType(cadreOnlineRegistration.getUser().getAccessType());
                 registrationVO.setAccessValue(cadreOnlineRegistration.getUser().getAccessValue());
-                registrationVO.setRegistrationID(cadreOnlineRegistration.getUser().getUserId());
+                registrationVO.setCadreRegiserForId(cadreOnlineRegistration.getUser().getUserId());
                 registrationVO.setCadreOnlineRegId(cadreOnlineRegistration.getCadreOnlineRegistrationId());
                 registrationVO.setUserType("");
                 registrationVO.setCadreOnlineRegFor(cadreOnlineRegistration.getName());
