@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.service.impl.CustomVoterGroupAnalysisService;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
@@ -38,13 +39,22 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	private static final Logger log = Logger.getLogger(VotersAnalysisAction.class);
 	private ICustomVoterGroupAnalysisService customVoterGroupAnalysisService;
 	private VotersDetailsVO votersDetailsVO;
-	private List<VoterCastInfoVO> castInfoVOsList;
+	private List<VoterCastInfoVO> castInfoVOsList,customGroupWiseCasteVotersList;
 	private Long customVoterGroupId;
 	
 	private List<VoterVO> votersData,votersList,voters;
 	private VoterVO voterVO;
 	private ConstituencyManagementVO constituencyManagementVO;
 	private Long publicationDateId;
+	private Long casteStateId;
+	private Long casteId;
+	private String casteName;
+	private String casteCategoryName;
+	private String groupName;
+	private List<VoterHouseInfoVO> customVotersList;
+	private String areaType;
+	private Long locationValue;
+	private VoterCastInfoVO voterCastInfoVO;
 	
 	@Override
 	public void setServletRequest(HttpServletRequest arg) {
@@ -182,8 +192,91 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		this.publicationDateId = publicationDateId;
 	}
 
+	
+	public List<VoterCastInfoVO> getCustomGroupWiseCasteVotersList() {
+		return customGroupWiseCasteVotersList;
+	}
+
+	public void setCustomGroupWiseCasteVotersList(
+			List<VoterCastInfoVO> customGroupWiseCasteVotersList) {
+		this.customGroupWiseCasteVotersList = customGroupWiseCasteVotersList;
+	}
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+
+	public Long getCasteId() {
+		return casteId;
+	}
+
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
+
+	public String getCasteName() {
+		return casteName;
+	}
+
+	public void setCasteName(String casteName) {
+		this.casteName = casteName;
+	}
+
+	public String getCasteCategoryName() {
+		return casteCategoryName;
+	}
+
+	public void setCasteCategoryName(String casteCategoryName) {
+		this.casteCategoryName = casteCategoryName;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public List<VoterHouseInfoVO> getCustomVotersList() {
+		return customVotersList;
+	}
+
+	public void setCustomVotersList(List<VoterHouseInfoVO> customVotersList) {
+		this.customVotersList = customVotersList;
+	}
+	public String getAreaType() {
+		return areaType;
+	}
+
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
+	}
+
+	public Long getLocationValue() {
+		return locationValue;
+	}
+
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+
+	public VoterCastInfoVO getVoterCastInfoVO() {
+		return voterCastInfoVO;
+	}
+
+	public void setVoterCastInfoVO(VoterCastInfoVO voterCastInfoVO) {
+		this.voterCastInfoVO = voterCastInfoVO;
+	}
+
 	public String execute()
 	{
+		if(customVoterGroupId != null)
+		 groupName = customVoterGroupAnalysisService.getGroupNameByGroupId(customVoterGroupId);
+		
 		return ActionSupport.SUCCESS;
 	}
 	
@@ -202,6 +295,11 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		}
 		if(jobj.getString("task").equalsIgnoreCase("getCasteWiseCustomVotersCount"))
 			castInfoVOsList = customVoterGroupAnalysisService.getCasteWiseCustomVotersCount(jobj.getLong("customVoterGroupId"),userId);
+		else if(jobj.getString("task").equalsIgnoreCase("getCustomGroupWiseCasteVoters"))
+			customGroupWiseCasteVotersList = customVoterGroupAnalysisService.getCustomGroupWiseVoterCasteDetails(userId,jobj.getString("areaType"),jobj.getLong("locationValue"));
+		else if(jobj.getString("task").equalsIgnoreCase("getCasteWiseCustomVoters"))
+			customVotersList = customVoterGroupAnalysisService.getCustomVoterDetails(jobj.getLong("casteStateId"), jobj.getLong("casteId"), jobj.getLong("customVoterGroupId"),userId);
+		
 		
 		return ActionSupport.SUCCESS;
 	}
