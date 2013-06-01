@@ -132,13 +132,15 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<Object[]> getPanchayatWiseHamletsAssignedDetails(Long constituencyId,Long publicationDateId,Long userId);
 	
-	public List<Long> getCountForSelectedTypeInHamlet(Long hamletId,Long userId,String type);
+	public List<Long> getCountForSelectedTypeInHamlet(Long hamletId,Long userId,String type,String selLevel);
 	
-	public List<Cadre> getCadreDetailsForSelectedHamlet(Long hamletId,Long userId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	public List<Cadre> getCadreDetailsForSelectedHamlet(Long hamletId,Long userId,Integer startIndex,Integer maxIndex,String order,String columnName,String selLevel);
 	
-	public List<InfluencingPeople> getInfluencingPeopleDetailsForSelectedHamlet(Long hamletId,Long userId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	public List<InfluencingPeople> getInfluencingPeopleDetailsForSelectedHamlet(Long hamletId,Long userId,Integer startIndex,Integer maxIndex,String order,String columnName,String selLevel);
 	
-	public List<Candidate> getCandidateDetailsForSelectedHamlet(Long hamletId,Long userId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	public List<Candidate> getCandidateDetailsForSelectedHamlet(Long hamletId,Long userId,Integer startIndex,Integer maxIndex,String order,String columnName,String selLevel);
+	
+	public List<Object[]> getVotersCountBasedOnGenderForSelectedWard(Long userId,Long customWardId,Long publicationDateId);
 
 	
 }

@@ -571,7 +571,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetCadreCountForSelectedLevel()
+	/*public void testGetCadreCountForSelectedLevel()
 	{
 		List<Long> boothIds = new ArrayList<Long>();
 		boothIds.add(123073l);
@@ -582,7 +582,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		for (Long long1 : values) {
 			System.out.println(long1);
 		}
-	}
+	}*/
 
 	/*public void testGetInfluencingPeopleCountForSelectedLevel()
 	{
@@ -644,5 +644,24 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		for (Voter voter : values) {
 			System.out.println(voter.getName());
 		}
+	}*/
+	
+	/*public void testGetInfluencingPeopleCountForSelectedConstituency()
+	{
+		List<Long> boothIds = new ArrayList<Long>();
+		boothIds.add(123074l);
+		boothIds.add(123075l);
+		boothIds.add(123076l);
+		boothIds.add(123077l);
+		long startTime = System.currentTimeMillis();
+		List<Long> values = boothPublicationVoterDAO.getCountForSelectedTypeAndSelectedLevel(boothIds,241l,1l,"panchayat",844l,"influencingpeople");
+		Long endTime = System.currentTimeMillis();
+		System.out.println(startTime);
+		System.out.println(endTime);
+		for (Long long1 : values) 
+		{
+			System.out.println(long1);
+		}
+		System.out.println(endTime-startTime);
 	}*/
 }

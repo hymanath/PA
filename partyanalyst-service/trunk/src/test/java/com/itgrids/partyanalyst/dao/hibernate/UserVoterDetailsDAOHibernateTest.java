@@ -207,16 +207,16 @@ for (Object[] objects : list) {
 		}*/
 		
 		
-		/*public void testGetCadreCountForSelectedHamlet()
+		public void testGetCadreCountForSelectedHamlet()
 		{
-			List<Long> values = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(33l,1l,"Politician");
+			List<Long> values = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(28863l,1l,"cadre","as");
 			for (Long long1 : values) {
 				System.out.println(long1);
 			}
-		}*/
+		}
 		/*public void testGetCadreDetailsForSelectedHamlet()
 		{
-			List<Cadre> values = userVoterDetailsDAO.getCadreDetailsForSelectedHamlet(33l,1l);
+			List<Cadre> values = userVoterDetailsDAO.getCadreDetailsForSelectedHamlet(28863l,1l,0,10,"asc","voterId","");
 			for (Cadre cadre : values) {
 				System.out.println(cadre.getFirstName());
 			}
@@ -228,11 +228,22 @@ for (Object[] objects : list) {
 				System.out.println(cadre.getFirstName());
 			}
 		}*/
-		public void testGetCadreDetailsForSelectedHamlet()
+		/*public void testGetCadreDetailsForSelectedHamlet()
 		{
 			List<Candidate> values = userVoterDetailsDAO.getCandidateDetailsForSelectedHamlet(33l,1l,0,10,"asc","voterId");
 			for (Candidate candiadte : values) {
 				System.out.println(candiadte.getFirstname());
 			}
-		}
+		}*/
+		
+		/*public void test()
+		{
+			List<Object[]> values = userVoterDetailsDAO.getVotersCountBasedOnGenderForSelectedWard(1l,28863l,7l);
+			System.out.println(values.size());
+			
+			for (Object[] objects : values) {
+				System.out.println(objects[0]);
+				System.out.println(objects[1]);
+			}
+		}*/
 }

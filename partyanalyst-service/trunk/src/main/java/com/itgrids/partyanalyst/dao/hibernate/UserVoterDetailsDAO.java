@@ -1276,7 +1276,7 @@ IUserVoterDetailsDAO{
 	 * @return List<Cadre>
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Long> getCountForSelectedTypeInHamlet(Long hamletId,Long userId,String type)
+	public List<Long> getCountForSelectedTypeInHamlet(Long hamletId,Long userId,String type,String selLevel)
 	{
 		StringBuffer queryString = new StringBuffer();
 		if(type.equalsIgnoreCase("InfluencePeople"))
@@ -1292,7 +1292,15 @@ IUserVoterDetailsDAO{
 			queryString.append("select count(model.candidateId) from Candidate model,");
 		}
 		queryString.append(" UserVoterDetails UVD where " +
-		" model.voter.voterId = UVD.voter.voterId and UVD.hamlet.hamletId = :hamletId and UVD.user.userId = :userId ");
+		" model.voter.voterId = UVD.voter.voterId  and UVD.user.userId = :userId  ");
+		if(selLevel.equalsIgnoreCase("hamlet"))
+		{
+			queryString.append(" and UVD.hamlet.hamletId = :hamletId");
+		}
+		else
+		{
+			queryString.append(" and UVD.ward.constituencyId = :hamletId");
+		}
 		Query query = getSession().createQuery(queryString.toString());
 		query.setParameter("hamletId", hamletId);
 		query.setParameter("userId", userId);
@@ -1305,11 +1313,20 @@ IUserVoterDetailsDAO{
 	 * @return List<Cadre>
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Cadre> getCadreDetailsForSelectedHamlet(Long hamletId,Long userId,Integer startIndex,Integer maxIndex,String order,String columnName)
+	public List<Cadre> getCadreDetailsForSelectedHamlet(Long hamletId,Long userId,Integer startIndex,Integer maxIndex,String order,String columnName,String selLevel)
 	{
 		StringBuffer queryString = new StringBuffer();
 		queryString.append("select model from Cadre model,UserVoterDetails UVD where " +
-		" model.voter.voterId = UVD.voter.voterId and UVD.hamlet.hamletId = :hamletId and UVD.user.userId = :userId ");
+				" model.voter.voterId = UVD.voter.voterId  and UVD.user.userId = :userId  ");
+		if(selLevel.equalsIgnoreCase("hamlet"))
+		{
+			queryString.append(" and UVD.hamlet.hamletId = :hamletId");
+		}
+		else
+		{
+			queryString.append(" and UVD.ward.constituencyId = :hamletId");
+		}
+		
 		
 		 if(columnName.equalsIgnoreCase("voterId"))
 		  {
@@ -1333,7 +1350,7 @@ IUserVoterDetailsDAO{
 		  else
 		  {
 			  columnName = "name";
-			  queryString.append("order by model.voter."+columnName+" "+order);
+			  queryString.append(" order by model.voter."+columnName+" "+order);
 		  }
 		Query query = getSession().createQuery(queryString.toString());
 		query.setFirstResult(startIndex);	
@@ -1351,11 +1368,19 @@ IUserVoterDetailsDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<InfluencingPeople> getInfluencingPeopleDetailsForSelectedHamlet(
-			Long hamletId, Long userId,Integer startIndex,Integer maxIndex,String order,String columnName) {
+			Long hamletId, Long userId,Integer startIndex,Integer maxIndex,String order,String columnName,String selLevel) {
 		
 		StringBuffer queryString = new StringBuffer();
 		queryString.append("select model from InfluencingPeople model,UserVoterDetails UVD where " +
-				" model.voter.voterId = UVD.voter.voterId and UVD.hamlet.hamletId = :hamletId and UVD.user.userId = :userId ");
+				" model.voter.voterId = UVD.voter.voterId  and UVD.user.userId = :userId  ");
+		if(selLevel.equalsIgnoreCase("hamlet"))
+		{
+			queryString.append(" and UVD.hamlet.hamletId = :hamletId");
+		}
+		else
+		{
+			queryString.append(" and UVD.ward.constituencyId = :hamletId");
+		}
 		if(columnName.equalsIgnoreCase("voterId"))
 		  {
 			  queryString.append(" order by model.voter."+columnName+" "+order);  
@@ -1378,7 +1403,7 @@ IUserVoterDetailsDAO{
 		  else
 		  {
 			  columnName = "name";
-			  queryString.append("order by model.voter."+columnName+" "+order);
+			  queryString.append(" order by model.voter."+columnName+" "+order);
 		  }
 		Query query = getSession().createQuery(queryString.toString());
 		query.setFirstResult(startIndex);	
@@ -1396,11 +1421,19 @@ IUserVoterDetailsDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Candidate> getCandidateDetailsForSelectedHamlet(Long hamletId,
-			Long userId,Integer startIndex,Integer maxIndex,String order,String columnName) {
+			Long userId,Integer startIndex,Integer maxIndex,String order,String columnName,String selLevel) {
 		
 		StringBuffer queryString = new StringBuffer();
 		queryString.append("select model from Candidate model,UserVoterDetails UVD where " +
-				" model.voter.voterId = UVD.voter.voterId and UVD.hamlet.hamletId = :hamletId and UVD.user.userId = :userId ");
+				" model.voter.voterId = UVD.voter.voterId  and UVD.user.userId = :userId  ");
+		if(selLevel.equalsIgnoreCase("hamlet"))
+		{
+			queryString.append(" and UVD.hamlet.hamletId = :hamletId");
+		}
+		else
+		{
+			queryString.append(" and UVD.ward.constituencyId = :hamletId ");
+		}
 		if(columnName.equalsIgnoreCase("voterId"))
 		  {
 			  queryString.append(" order by model.voter."+columnName+" "+order);  
@@ -1423,7 +1456,7 @@ IUserVoterDetailsDAO{
 		  else
 		  {
 			  columnName = "name";
-			  queryString.append("order by model.voter."+columnName+" "+order);
+			  queryString.append(" order by model.voter."+columnName+" "+order);
 		  }
 		Query query = getSession().createQuery(queryString.toString());
 		query.setFirstResult(startIndex);	
@@ -1433,6 +1466,18 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
+	
+	public List<Object[]> getVotersCountBasedOnGenderForSelectedWard(Long userId,Long customWardId,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select count(UVD.voter.voterId),UVD.voter.gender from UserVoterDetails UVD ,BoothPublicationVoter BPV" +
+				" where UVD.voter.voterId = BPV.voter.voterId and UVD.user.userId = :userId and " +
+				" UVD.ward.constituencyId = :customWardId and BPV.booth.publicationDate.publicationDateId = :publicationDateId " +
+				" group by UVD.voter.gender");
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("customWardId", customWardId);
+		return query.list();
+	}
 	
 	
 }

@@ -16019,6 +16019,16 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		      }
 		      voterInfo.setTotalVoters(voterInfo.getMaleVoters()+voterInfo.getFemaleVoters());
 		}
+		else if(locationType.equalsIgnoreCase(IConstants.CUSTOMWARD)){
+			 List<Object[]> votersCount =  userVoterDetailsDAO.getVotersCountBasedOnGenderForSelectedWard(userId,reportLevelValue,publicationDateId);
+		      for(Object[] obj1:votersCount){
+		    	  if(obj1[1].toString().equalsIgnoreCase("M"))
+		    		  voterInfo.setMaleVoters((Long) obj1[0]);
+		    	  else if(obj1[1].toString().equalsIgnoreCase("F"))
+		    		  voterInfo.setFemaleVoters((Long) obj1[0]);						    	  
+		      }
+		      voterInfo.setTotalVoters(voterInfo.getMaleVoters()+voterInfo.getFemaleVoters());
+		}
 		else{
 			Long reportLvlId= getReportLevelId(locationType);		
 		List<Object[]> votersDetailesCount = voterInfoDAO.getVoterDetailedCountByLocation(reportLvlId,reportLevelValue,publicationDateId,constituencyId);
