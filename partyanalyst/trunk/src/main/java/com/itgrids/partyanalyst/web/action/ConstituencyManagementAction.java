@@ -458,7 +458,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(user == null)
+		if(user == null || user.getRegistrationID() == null)
 			return ERROR;
 				
 		accessType =user.getAccessType();
