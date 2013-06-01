@@ -1192,6 +1192,7 @@
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 		<property name="newsFlagDAO" ref="newsFlagDAO"/>
 		<property name="candidateDetailsService" ref="candidateDetailsService"></property>
+		<property name="categoryDAO" ref="categoryDAO"></property>
 	</bean>
 	
 	<bean name="ministerAnalysisService" class="com.itgrids.partyanalyst.service.impl.MinisterAnalysisService">
@@ -1567,8 +1568,8 @@
 	  
     </bean>
     <bean name="customVoterGroupAnalysisService" class="com.itgrids.partyanalyst.service.impl.CustomVoterGroupAnalysisService">
-     <property name="customVoterDAO" ref="customVoterDAO" />
+    	<property name="customVoterGroupDAO" ref="customVoterGroupDAO" />
+    	<property name="customVoterDAO" ref="customVoterDAO" />
     </bean>
-    
 </beans>		
 	
