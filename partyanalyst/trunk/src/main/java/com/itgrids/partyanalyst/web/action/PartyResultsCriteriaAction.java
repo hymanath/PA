@@ -74,7 +74,7 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 		
 		session = request.getSession();
 		
-		if(session.getAttribute(IConstants.USER) == null)
+		if(session.getAttribute(IConstants.USER) == null || ((RegistrationVO)session.getAttribute(IConstants.USER)).getRegistrationID() == null)
 			return "showMessage";
 		
 		if(session.getAttribute(IConstants.USER) == null && 
