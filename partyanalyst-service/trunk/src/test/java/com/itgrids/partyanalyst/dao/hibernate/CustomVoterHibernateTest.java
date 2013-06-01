@@ -17,8 +17,8 @@ public class CustomVoterHibernateTest  extends BaseDaoTestCase{
 
 	public void testGetVotersInfoBycustomVoterGroupId()
     {
-    	List<Object[]> list = customVoterDAO.getVotersInfoBycustomVoterGroupId(1l,1l);
-    	System.out.println(list.size());
+    	//List<Object[]> list = customVoterDAO.getVotersInfoBycustomVoterGroupId(1l,1l);
+    	//System.out.println(list.size());
     }
 
 }
