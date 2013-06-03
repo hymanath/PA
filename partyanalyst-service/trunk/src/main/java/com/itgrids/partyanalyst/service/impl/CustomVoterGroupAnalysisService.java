@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -863,6 +865,103 @@ public static final String AGE5="60Above";
 		    	}
 				return result;
 		    }
+		    
+		    
+		    /**
+		     * This Method is Uesd For getting Voters count For a Party  Based on CustomVoterGroupId
+		     *  
+		     * @param Long custGroupId
+		     * @param Long  userId
+		     * @return VoterCastInfoVO
+		     */
+
+		    public	VoterCastInfoVO getVotersCountForPartyByCustomGroup(Long userId,Long custGroupId){
+		    	 
+		    	 Log.debug("Entered into the getVotersCountForPartyByCustomGroup method");
+		    	 final List<VoterCastInfoVO> resultList = new ArrayList<VoterCastInfoVO>(0);
+		    	 VoterCastInfoVO listVO = null;
+		    	 Map<Long,VoterCastInfoVO> VoterCastInfoDataMap = null;
+		    	 VoterCastInfoVO mainVO = new VoterCastInfoVO();
+		    	 Long totalVoters = 0l;
+		    	 Long partyWisevotesConsidered = 0L;
+		    	
+		    	 try{
+		    		 totalVoters = customVoterDAO.getTotalVotersByCustomGroupId(custGroupId);
+		    		 final List<Object[]> list = customVoterDAO.getVotersCountForPartyByCustomGroup(userId,custGroupId);
+		    		 VoterCastInfoDataMap = new HashMap<Long,VoterCastInfoVO>();
+		    		 
+		    		 if(list != null && !list.isEmpty() && list.get(0) != null){
+		    			 VoterCastInfoVO voterCastInfoVO = null;
+		    			 for(Object[] params:list){
+		    				 partyWisevotesConsidered = partyWisevotesConsidered+(Long)params[0];
+		    				 Long partId = (Long)params[2];
+		    				 if(VoterCastInfoDataMap.isEmpty() || !VoterCastInfoDataMap.containsKey(partId)){
+		    					 voterCastInfoVO = new VoterCastInfoVO();
+		    					 voterCastInfoVO.setPartyId((Long)params[2]);
+		    					 voterCastInfoVO.setPartyName(params[3].toString());
+		    					  VoterCastInfoDataMap.put(partId,voterCastInfoVO);
+		    					
+		    					 
+		    				 }
+		    				 else if(VoterCastInfoDataMap.containsKey(partId)){
+		    					 voterCastInfoVO.setPartyId((Long)params[2]);
+		    					 voterCastInfoVO.setPartyName(params[3].toString());
+		    					  VoterCastInfoDataMap.put(partId,voterCastInfoVO);
+		    					 
+		    					 
+		    				 }
+		    				  if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.MALE)){
+		    							
+		    						
+		    						 voterCastInfoVO.setMaleVoters((Long)params[0]);
+		    					
+		    					 }
+		    					 else if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.FEMALE)){
+		    						 
+		    						 voterCastInfoVO.setFemaleVoters((Long)params[0]);
+		    					 }
+		    				  
+		    				  voterCastInfoVO.setTotalVoters(voterCastInfoVO.getMaleVoters()+voterCastInfoVO.getFemaleVoters());
+		    				 
+		    			 }
+		    		 }
+		    	
+		    		 if(!VoterCastInfoDataMap.isEmpty()){
+		    			 Set entries = VoterCastInfoDataMap.entrySet();
+		    				Iterator iterator = entries.iterator();
+		    				while(iterator.hasNext()){
+		    				Map.Entry entry = (Map.Entry)iterator.next();
+		    				Long PartyId = (Long)entry.getKey();
+		    				listVO = new VoterCastInfoVO();
+		    				 String votesPercentage = "0.00";
+		    				  
+		    				VoterCastInfoVO voterCastInfoVOList = (VoterCastInfoVO)entry.getValue();
+		    				listVO.setPartyId(voterCastInfoVOList.getPartyId());
+		    				listVO.setPartyName(voterCastInfoVOList.getPartyName());
+		    				listVO.setTotalVoters(voterCastInfoVOList.getTotalVoters());
+		    				listVO.setMaleVoters(voterCastInfoVOList.getMaleVoters());
+		    				listVO.setFemaleVoters(voterCastInfoVOList.getFemaleVoters());
+		    				votesPercentage = new BigDecimal((voterCastInfoVOList.getTotalVoters()*100.0)/partyWisevotesConsidered.longValue()).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+		    				listVO.setVotesPercent(votesPercentage);
+		    				resultList.add(listVO);
+		    				}
+		    			 
+		    		 }
+		    		 
+		    		 mainVO.setPartyWisevoterCastInfoVOList(resultList);
+		    		
+		    		 	mainVO.setPartyWiseAssignedVoters(partyWisevotesConsidered);
+		    		 	mainVO.setPartyWiseNotAssignedVoters(totalVoters - partyWisevotesConsidered);
+		    			return mainVO;
+		    		 
+		    	 
+		    	 }catch (Exception e) {
+		    			Log.error("Exception Occured in getVotersCountForPartyByCustomGroup() Method, Exception is - "+e);
+		    			return mainVO;
+		    		}
+		    	
+		    }
+
 
 
 }
