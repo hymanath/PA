@@ -137,11 +137,11 @@ public class CadreRegisterAction extends ActionSupport implements
 	private Long memberShipNo;
 	
 	
-	public Long getMemberShipNo() {
+	public String getMemberShipNo() {
 		return this.cadreInfo.getMemberShipNo();
 	}
 
-	public void setMemberShipNo(Long memberShipNo) {
+	public void setMemberShipNo(String memberShipNo) {
 		this.cadreInfo.setMemberShipNo(memberShipNo);
 	}
 
