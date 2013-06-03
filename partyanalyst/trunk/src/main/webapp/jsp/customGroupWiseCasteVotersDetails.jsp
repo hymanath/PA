@@ -58,6 +58,14 @@
   <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
   <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
+<script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+
+<script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+<script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
+
 <style type="text/css">
 #localCastStatsTabContent_subbody1 table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 #localCastStatsTabContent_subbody1 table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
@@ -111,6 +119,8 @@ color:#333333;
 #casteHideAndShowOptionsDiv{ margin-left: 188px;
     margin-top: -21px;}
 #casteSelectDiv h4{ margin-bottom: 13px;margin-top: 5px; font-size: 15px;text-align:center;}
+#rangeSliderDiv{width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;}
+#castContainerChartInner{margin-top:20px;}
 </style>
 <script type="text/javascript">
 var areaType = "${areaType}";
@@ -123,8 +133,19 @@ var locationValue = "${locationValue}";
 <div id ="localCastStatsVotersTitle" ></div>
 <div id="casteSelectDiv"></div>
 <div id="localCastStatsTabContent_subbody1" class="yui-skin-sam yui-dt-sortable"></div>
-</dir>
-
+<div id="castContainerChartInner" style="border:1px solid;">
+		<!-- <div id="rangeSliderDiv">
+			<h5 style="text-align:center;">Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
+			<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
+			</div>
+				<p style="padding-bottom:2px;">
+					<input type="text" id="amount" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
+				</p>
+		</div> -->
+		
+<div id="casteGroupWiseVotersGrapDiv" style="height: 500px; display: block; overflow-x: auto;"></div>
+</div>
+ </div>
 <script type="text/javascript">
 function getCasteWiseCustomGroupVoters()
 {
@@ -194,21 +215,76 @@ var myDataSource = new YAHOO.util.DataSource(results);
 					};
 		var familesDataSource = new YAHOO.widget.DataTable("localCastStatsTabContent_subbody1", votersDetails,myDataSource, myConfigs);
 
-	//buildCustomGroupWiseCasteVotersGraph(results,jsObj);
+	
+	buildGraphForCustomVotersGroup(results,jsObj);
 }
 
+
+var sort_by = function(field, reverse, primer){
+
+   var key = function (x) {return primer ? primer(x[field]) : x[field]};
+
+   return function (a,b) {
+       var A = key(a), B = key(b);
+       return ((A < B) ? -1 :
+               (A > B) ? +1 : 0) * [-1,1][+!!reverse];                  
+   }
+}
+
+
+
+
+
+function sort_unique(a) {
+     var temp = {};
+    for (var i = 0; i < a.length; i++)
+        temp[a[i]] = true;
+    var r = [];
+    for (var k in temp)
+        r.push(k);
+    return r;
+}
+
+
+/* var casteRange;	
+$(function() {
+$( "#slider" ).slider({
+value:1,
+min: 0,
+max: 40,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+},
+change: function( event, ui ) {
+$( "#amount" ).val( "Percentage of Voters Caste: " + ui.value +" %");
+casteRange=ui.value;
+//buildGraphBySlide(castArray,casteRange);
+buildGraph(null);
+}
+});
+casteRange=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
+casteRange=$( "#slider" ).slider( "value" );
+});*/
+
+//graph
+
 var castTemp = new Array();
+var mySort1= [];
 
+var groupNamesArray = new Array();
 
-function buildCustomGroupWiseCasteVotersGraph(results,jsObj)
+var resultArray = new Array();
+
+function buildGraphForCustomVotersGroup(results,jsObj)
 {
-   if(results == null || results.length == 0)
-	return;
+  if(results == null || results.length == 0)
+	  return;
 
+  for(var k in results)
+   if(groupNamesArray.indexOf(results[k].name) == -1)
+	 groupNamesArray.push(results[k].name);
 
-   
-   $("#casteSelectDiv").html('');
-   $("#casteSelectDiv").addClass('casteSelectDivCls');
    var castIdsArray = new Array();
    var castesSortedArray = [];
 
@@ -226,10 +302,33 @@ function buildCustomGroupWiseCasteVotersGraph(results,jsObj)
 
 	  }
 	}
+ 
+   for(var j in groupNamesArray)
+   {
+	  var groupData = new Object();
 
-	
+      var groupName = groupNamesArray[j]; // group1
+	  var temp = new Object();
+	  for(var i in castTemp)
+	  {                        //names of cast 
+       for (var k in results)  
+		{
+          
+           if(results[k].name == groupName && results[k].castName == castTemp[i])
+			{
+			   temp[results[k].castName] =  results[k].totalVoters;
+			}
+		}
+	  }
+	 groupData['name'] = groupName;
+	 groupData['data'] = temp;
+	 resultArray.push(groupData);
+	}
 
-   castesSortedArray.sort(sort_by('caste', true, function(a){return a.toUpperCase()}));
+
+   $("#casteSelectDiv").html('');
+   $("#casteSelectDiv").addClass('casteSelectDivCls');
+
    var str = '';
    str +='<div>';
    str +='<div id="casteErrorMsgDiv"></div>';
@@ -246,23 +345,93 @@ function buildCustomGroupWiseCasteVotersGraph(results,jsObj)
    
    str +='</select>';
 
-   str +='<input type="button" style="margin-left: 24px;font-weight:bold;margin-top: -33px;" onclick="buildCastWiseChart(tempObj)" value="View" class="btn btn-info">';
+   str +='<input type="button" style="margin-left: 24px;font-weight:bold;margin-top: -33px;" onclick="buildCastWiseChart()" value="View" class="btn btn-info">';
    str +='<p id="notePara">Press Ctrl Key To Select Multiple Castes</p>';
 
    str +='</div>';
    str +='</div>';
    $("#casteSelectDiv").html(str);
+
+   buildGraph(null);
 }
 
-var sort_by = function(field, reverse, primer){
 
-   var key = function (x) {return primer ? primer(x[field]) : x[field]};
 
-   return function (a,b) {
-       var A = key(a), B = key(b);
-       return ((A < B) ? -1 :
-               (A > B) ? +1 : 0) * [-1,1][+!!reverse];                  
-   }
+function buildGraph(selectedCastArray)
+{
+	
+	var castMain = null;
+	if(selectedCastArray != null)
+	 castMain = sort_unique(selectedCastArray);
+	else
+	 castMain = sort_unique(castTemp);
+
+	
+    var tempLine = new Array();
+	for(var i in resultArray)
+	{
+      var temp1 = new Object();
+	  var dataObj= resultArray[i];
+
+	  temp1['name'] = dataObj['name'];
+	  var groupVots = dataObj['data'];
+
+      var newdataObj = new Array();
+	  for(var i in castMain)
+	  {
+		if(groupVots[castMain[i]])
+		 newdataObj.push(groupVots[castMain[i]]);
+	  else
+		newdataObj.push(0); 
+	  }
+	  temp1['data'] = newdataObj;
+		tempLine.push(temp1);
+	}
+	
+
+	$('#casteGroupWiseVotersGrapDiv').highcharts({
+             chart: {
+                type: 'line',
+                marginRight: 130,
+                marginBottom: 25
+            },
+            title: {
+                text: 'Voter Group Wise Caste Statistics',
+                x: -20 //center
+            },
+            subtitle: {
+                text: 'Drag Between Any 3 Castes To See In Zoom',
+                x: -20
+            },
+            xAxis: {
+                categories: castMain
+            },
+            yAxis: {
+                title: {
+                    text: 'No of Voters'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y + ' Voters';
+                }
+            },
+             legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+            series: tempLine
+        });
 }
 
 function buildCastInfoBasedOnOptions(option)
@@ -270,7 +439,7 @@ function buildCastInfoBasedOnOptions(option)
 	
   if(option == "all")
   {
-	buildCustomGroupWiseCastResultsGraph(null,null);
+	buildGraph(null);
     $("#casteHideAndShowOptionsDiv").css("display","none");
   }
   else
@@ -279,63 +448,33 @@ function buildCastInfoBasedOnOptions(option)
   }
 }
 
-function buildCastWiseChart(tempObj)
+function buildCastWiseChart()
 {
- buildCustomGroupWiseCastResultsGraph(null,null);
-}
+ var selectedCastArray = new Array();
 
-function sort_unique(a) {
-     var temp = {};
-    for (var i = 0; i < a.length; i++)
-        temp[a[i]] = true;
-    var r = [];
-    for (var k in temp)
-        r.push(k);
-    return r;
-}
-
-function buildCustomGroupWiseCastResultsGraph(selectedCast,percentage)
-{
-  if(percentage==null)
-		percentage=1;
-	
-	var myChart1 = new Array();
-	var castMain = null;
-
-	if(selectedCast == null)
+  $("#casteErrorMsgDiv").html('');
+	var selectedCastArray = new Array();
+	var selecteObj = document.getElementById('castSelectdId');
+	for(var i=0;i<selecteObj.options.length;i++)
 	{
-	  castMain = sort_unique(castTemp);
-	  var radios = document.getElementsByName("castTypeRadio");
-	  if(radios != null && radios.length > 0)
-	  {
-		var selectValue;
-		for(var r=0;r<radios.length;r++)
+		if(selecteObj.options[i].selected)
 		{
-		  if(radios[r].checked)
-			selectValue = radios[r].value;
-		  if(selectValue != 'All')
-		  {
-			 castMain=[];
-			 $("#castSelectdId option:selected").each(function()
-			 {
-				castMain.push($(this).text());
-			});
-		  }
-
+		  selectedCastArray.push(selecteObj.options[i].text);
 		}
-	  }
-     else
-		castMain = sort_unique(castTemp);
-
-	 
-
-	
-
 	}
+	if(selectedCastArray.length == 0)
+	{
+		$("#casteErrorMsgDiv").html('Please select at least one caste.').css("color","red");
+		return;
+	}
+	
+ 
+ buildGraph(selectedCastArray);
 }
-
 
 getCasteWiseCustomGroupVoters();
+
+
 </script>
 </body>
 </html>
