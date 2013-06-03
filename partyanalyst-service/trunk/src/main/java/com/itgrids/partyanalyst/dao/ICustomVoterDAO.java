@@ -52,4 +52,8 @@ public interface ICustomVoterDAO extends GenericDao<CustomVoter,Long>{
 	 
 	  public Long getTotalVotersByCustomGroupId(Long custGroupId);
 		
+	 public List<Object[]> getCustomVoterCount(Long customVoterGroupId,Long publicationDateId,Long userId);
+		
+	 public List<Long> getImpFamiles(Long customVoterGroupId,Long publicationDateId,String queryString);
+		
 }
