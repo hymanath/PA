@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -490,4 +491,31 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		
 	}
 
+	public String getVotersCountForPartyByCustomGroup(){
+		String param = null;
+		param = getTask();
+		System.out.println("param:"+param);	
+		
+		try{
+			param = getTask();
+			System.out.println("param:"+param);	
+			jobj=new JSONObject(param);
+			
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			Long userId =  regVO.getRegistrationID();
+			Long custGroupId = jobj.getLong("custGroupId");
+			if(jobj.getString("task").equalsIgnoreCase("getVotersCountForPartyByCustomGroup")){
+				voterCastInfoVO = new VoterCastInfoVO();
+				voterCastInfoVO = customVoterGroupAnalysisService.getVotersCountForPartyByCustomGroup(userId, custGroupId);
+				
+			}
+		
+		}catch (ParseException e) {
+		e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }
