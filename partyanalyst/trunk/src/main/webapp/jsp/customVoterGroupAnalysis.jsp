@@ -7,8 +7,9 @@
 <html>
 <head>
 
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-
+ <%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>--%>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+	<script type="text/javascript" src="js/customVoterGroupAnalysis.js"></script>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -42,16 +43,14 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
-	
+
 	<!-- YUI Dependency files (End) -->
    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
-	
-   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
-   <script type="text/javascript" src="js/customVoterGroupAnalysis.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+  <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 
- <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
    <%--  <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/facescroll.js"></script>
 	   <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/jquery.ui.touch-punch.min.js"></script> --%>
 
@@ -65,7 +64,6 @@
    
 <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 <script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
-
 
    <style type="text/css">
     #customVotersMainDiv{float: none;margin: 20px auto;width: 980px;}
@@ -89,12 +87,41 @@
 #castContainerChartInner{padding-bottom: 2px;}
 #casteWiseVotersCountDiv{padding-bottom: 30px;}
 #rangeSliderDiv{width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;}
+
 .table-bordered th, .table-bordered td{text-align:center;color:#000000;font-size:14px;}
 	.table-bordered th{background:#D9EDF7;}
 	
 	#ageWiseInGroupDiv{
 		width:950px;margin-left:auto;margin-right:auto;margin:10px;
 	}
+
+
+#partyWiseVotersJqTable th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    text-align: left;
+	color:#333333;
+	}
+table.dataTable tr.odd {
+    background-color: #ffffff;
+}
+table.dataTable tr.even {
+    background-color:#EdF5FF;
+}
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #ffffff;
+}
+table.dataTable tr.even td.sorting_1 {
+    background-color: #EdF5FF;
+}
+
+#partyWiseVotersJqTable td{ padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+
    </style>
 
 
@@ -121,12 +148,17 @@
   </div>
  </div>
 
+<!-- For Part wise VotersInfo -->
+<div id="voterCountForPartyDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+<h4 class="">Party Wise Voters</h4>
+<div id="partyWiseAssignedVotersDiv" style="margin-top:30px;"></div>
+<div id="partyWiseVotersDiv"  style="margin-top:20px;margin-bottom:50px;"></div>
 </div>
-
-
-
-<script type="text/javascript">
- getCasteWiseCustomVotersCount();
+<!-- End of party wise VotersInfo -->
+</div>
+<script  type="text/javascript">
+getVotersCountForPartyByCustomGroupId();
+getCasteWiseCustomVotersCount();
  getAgeWiseCustomVotersInGroup();
 function getAgeWiseCustomVotersInGroup(){
 	var jsObj={
@@ -230,7 +262,5 @@ function checkForNull(val){
 		return 0;
 }
 </script>
-
-
 </body>
 </html>
