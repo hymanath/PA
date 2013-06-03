@@ -850,10 +850,10 @@ function  buildFamilyMembers(result,jsObj,type){
 	str+='<b style="margin-left: 50px">Cadre</b>:<img title="Cadre" alt="Cadre" src="./images/icons/cadre.png" style="margin-bottom: 10px;margin-left: 16px;"/>';
 	str+='<b style="margin-left: 50px">Politician</b>:<img title="Politician" alt="Politicion" src="./images/icons/politican.png" style="margin-bottom: 10px;margin-left: 16px;"/>';
 	str+='</div>';
-
-	  str+=' <div style="padding-bottom:4px;margin-top: 65px;margin-left: 5px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
-          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 5px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
-
+	str+='<div style="padding-bottom:4px;margin-top: 65px;margin-left: 5px;"><div/>';
+	//  str+=' <div style="padding-bottom:4px;margin-top: 65px;margin-left: 5px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+   /*       str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 5px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>';
+*/
 		
           str+='<div style="overflow-x:scroll;">';
 		  str+=' <table id="impfamilydatatable" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #D3D3D3;font-size: 12px;">';
@@ -945,8 +945,8 @@ function  buildFamilyMembers(result,jsObj,type){
           str+='  </tbody>';
           str+=' </table>';
 		  str+=' </div>';
-		  str+=' <div style="clear:both;padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
-	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div><br>';
+		  /*str+=' <div style="clear:both;padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+	      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div><br>';*/
               $('#impFamPancBothDtlsAgxImgForHamlet').hide();
 		  if((jsObj.buildType =="hamlet" && type == "panchayat") || ( pat.test(type) && requestFor !="booth" ) )
 	       {//alert(112);
@@ -1605,8 +1605,9 @@ getImpFamiliesVotersToShowForBooth(requestFor);
 			   name = $("#pollingStationField option:selected").text();
 			
 		      var str ='<h4 id="impFamPancBothDtlstitle">Voters Family details in '+name+' '+type+' in '+publicationYear+'</h4>';
-			      str+=' <div style="padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
-		          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div><br>';
+			  str+=' <div style="padding-bottom:4px;"></div>';
+			     /* str+=' <div style="padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+		          str+=' <div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:15px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div><br>';*/
 				  str+=' <table id="impfamilydatatableForBooth" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid black">';
 		          str+='  <thead>';
 		          str+='   <tr>';
@@ -1658,8 +1659,9 @@ getImpFamiliesVotersToShowForBooth(requestFor);
 			 }
 		          str+='  </tbody>';
 		          str+=' </table>';
-				  str+=' <div style="clear:both;padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
-			      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div><br>';
+				str+=' <div style="clear:both;padding-bottom:4px;"></div>';
+				/*  str+=' <div style="clear:both;padding-bottom:4px;"><b style="font-size:14px;">Hint: Please select atmost 30 families to edit</b></div>';
+			      str+=' <div style="clear:both;"><input type="button" style="margin-top:16px;margin-left:20px;" class="btn" value="Edit all selected families" onclick="editSelectedFamilies();"/><input class="btn" type="button" value="UnSelectAll" style="width:100px; margin-bottom:-17px;margin-left: 10px;"onClick="clearAllCheckBoxes()"></input><input type="button" class="btn" value="Refresh" style="width:100px; margin-bottom:-17px;margin-left: 10px;" onClick="getvotersFamileyInfo(\'impFamilies\',\'\')"></input><img alt="Processing Image" id="imgDiv1" style="display:none;margin-top: 0px;"src="./images/icons/search.gif"></img></div><br>';*/
 				 
 					  $('#importantFamiliesForBooth').html(str);
 					  //$('#impFamPancBothDtlsAgxImgForHamle').hide();
