@@ -121,6 +121,7 @@ color:#333333;
 #casteSelectDiv h4{ margin-bottom: 13px;margin-top: 5px; font-size: 15px;text-align:center;}
 #rangeSliderDiv{width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;}
 #castContainerChartInner{margin-top:20px;}
+#casteErrorMsgDiv{text-align: center;}
 </style>
 <script type="text/javascript">
 var areaType = "${areaType}";
@@ -399,10 +400,10 @@ function buildGraph(selectedCastArray)
                 text: 'Voter Group Wise Caste Statistics',
                 x: -20 //center
             },
-            subtitle: {
+            /* subtitle: {
                 text: 'Drag Between Any 3 Castes To See In Zoom',
                 x: -20
-            },
+            },*/
             xAxis: {
                 categories: castMain
             },

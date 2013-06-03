@@ -38,7 +38,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	private InfluencingPeopleBeanVO influencingPeopleBeanVO;
 	private VoterInfo voterInfo;
 	JSONObject jobj;
-	private static final Logger log = Logger.getLogger(VotersAnalysisAction.class);
+	private static final Logger log = Logger.getLogger(CustomVoterGroupAnalysisAction.class);
 	private ICustomVoterGroupAnalysisService customVoterGroupAnalysisService;
 	private VotersDetailsVO votersDetailsVO;
 	private List<VoterCastInfoVO> castInfoVOsList,customGroupWiseCasteVotersList;
