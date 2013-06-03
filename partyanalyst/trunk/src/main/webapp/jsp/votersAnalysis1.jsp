@@ -1458,7 +1458,7 @@ for  body3 start    result  -->
 		<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto;"></div>
 		</div>
 	</div>
-	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:35px;">	</div>
+	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:20px;">	</div>
 	<div id='castTab'></div>
 	<div id='localityTab'></div>
 <span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>
@@ -1505,7 +1505,7 @@ for  body3 start    result  -->
 	<span id="votersCountModifyAjaxDiv" style="display:none;position:absolute;top:10px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
   </div>-->
 	<!--<div id="previousEleVotingTrendsDiv"></div>-->
-	<div style="margin-bottom: 15px;" id="revenueVillageWiseElecResults" class="widget blue">
+	<div style="margin-bottom: 20px;" id="revenueVillageWiseElecResults" class="widget blue">
 	   <div id="revenueVillageWiseElecIdTitle" style="font-weight:bold;margin-bottom:10px;">Panchayat Wise Results In </div>
 	   Select Election Year : <select id="revenueVillageWiseElecId"></select><input style="margin-left:5px;" type="button" onclick="openwindowForPanchayatsToShowCast();" class="btn btn-info" value="View Panchayt Wise Election Results & Castes"/><input style="margin-left:5px;" type="button" onclick="openwindowForPanchayatsToShow();" class="btn btn-info" value="View Panchayat Wise Election Results"/>
 	</div>
@@ -1529,7 +1529,7 @@ for  body3 start    result  -->
 </div>
 
 	<!--<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>-->
-	<div id="votersDiv4" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top:40px;">
+	<div id="votersDiv4" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top:0px;">
 					<h4 id="AgeWisetitle" class="" > </h4>
 					<a id="refreshIdAge" href="javaScript:{refreshAgeWiseData();}" style="float:right;margin-top: -28px;"><img src="./images/icons/refreshImg.png" alt="Processing Image" title="Click Here To See Age Wise Voters Details"/></a>
 					<!-- for  body4 start    result  -->
