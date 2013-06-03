@@ -12299,6 +12299,9 @@ try{
 				locationValues.add(hamlet[0].toString());
 			}
 		}
+		List<Long> panchayitIds = new ArrayList<Long>(0);
+		panchayitIds.add(locationValue);
+		cadreLevelValues = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIds);
 		
 				
 	}
@@ -12323,9 +12326,9 @@ try{
 	if(buttonName.equalsIgnoreCase("InfluencePeople"))
 		voters = getInfluencePeopleDetails(userId,locationValues,type,startIndex,maxRecords,name,columnName,order,constiId,partNo);
 	 if(buttonName.equalsIgnoreCase("Cadre"))
-		 voters =  getCadrePeopleDetails(userId,cadreLevelValues,type,startIndex,maxRecords,name);
+		 voters =  getCadrePeopleDetails(userId,cadreLevelValues,type,startIndex,maxRecords,name,columnName,order);
 	 if(buttonName.equalsIgnoreCase("Politician"))
-		 voters = getPoliticianDetails(politicianValues, type, startIndex,maxRecords,name,publicationId);
+		 voters = getPoliticianDetails(politicianValues, type, startIndex,maxRecords,name,publicationId,columnName,order);
 		
 }
 
@@ -12391,8 +12394,10 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					voterVO.setInfluencingRange(params.getInfluencingScope());
 					
 					if(type.equalsIgnoreCase("BOOTH"))
-					voterVO.setLocalArea("Booth " + params.getInfluencingScopeValue());	
-					
+					{
+						Booth booth = boothDAO.get(locationIds.get(0));
+					voterVO.setLocalArea("BOOTH - " + booth.getPartNo());
+					}	
 					else
 						voterVO.setLocalArea(name);	
 						
@@ -12412,7 +12417,10 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					
 					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
 					if(type.equalsIgnoreCase("BOOTH"))
-						voterVO.setLocalArea("Booth " + params.getInfluencingScopeValue());	
+					{
+						Booth booth = boothDAO.get(locationIds.get(0));
+					voterVO.setLocalArea("BOOTH - " + booth.getPartNo());
+					}	
 					else
 						voterVO.setLocalArea(name);	
 					}
@@ -12464,14 +12472,26 @@ public String getRegionNameBasedOnScope(String infScope,String regionId){
 	}
  return null;
 }
-public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues,String type,Integer startIndex,Integer maxRecords,String name)
+public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues,String type,Integer startIndex,Integer maxRecords,String name,String columnName, String order)
 {
 	List<VoterVO> voters = new ArrayList<VoterVO>();
 	List<Voter> votersList = new ArrayList<Voter>();;
 	Long totalCount = 0L;
 	List<Cadre> cadreDetails = new ArrayList<Cadre>(0);
+	if(columnName.equalsIgnoreCase("relativeFirstName"))
+	{
+		columnName = "relativeName";
+	}
+	else if(columnName.equalsIgnoreCase("mobileNo"))
+	{
+		columnName = "mobile";
+	}
+	else if(columnName.equalsIgnoreCase("influencingRange"))
+	{
+		columnName = "influencingScope";
+	}
 	if(locationValues != null)
-		cadreDetails =  cadreDAO.getCadreVoterIDs(userId,locationValues,type,startIndex, maxRecords);
+		cadreDetails =  cadreDAO.getCadreVoterIDs(userId,locationValues,type,startIndex, maxRecords,columnName,order);
 		Long count = new Long(startIndex);
 		if(cadreDetails != null)
 		{
@@ -12479,8 +12499,8 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 			for(Cadre params : cadreDetails)
 				{
 				//Cadre voter Details Count
-				List<Long> influencyDetailsCount = cadreDAO.getCadreCountByCadreLevel(userId,locationValues,type);
-				totalCount =new Long(influencyDetailsCount.get(0));
+				Long influencyDetailsCount = cadreDAO.getCadreCountInALocation(userId,locationValues,type);
+				totalCount =influencyDetailsCount;
 				VoterVO voterVO = new VoterVO();
 				if(params.getVoter() == null)
 				{
@@ -12490,7 +12510,10 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 					voterVO.setMobileNo(params.getMobile()!=null ? params.getMobile():" ");
 					
 					if(type.equalsIgnoreCase("BOOTH"))
-					voterVO.setLocalArea("Booth " + params.getCadreLevelValue());	
+					{
+						Booth booth = boothDAO.get(locationValues.get(0));
+					voterVO.setLocalArea("BOOTH - " + booth.getPartNo());
+					}
 					
 					else
 						voterVO.setLocalArea(name);	
@@ -12510,7 +12533,10 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 					voterVO.setVoterIDCardNo(params.getVoter().getVoterIDCardNo());
 					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
 					if(type.equalsIgnoreCase("BOOTH"))
-						voterVO.setLocalArea("Booth " + params.getCadreLevelValue());	
+					{
+						Booth booth = boothDAO.get(locationValues.get(0));
+					voterVO.setLocalArea("BOOTH - " + booth.getPartNo());
+					}	
 					else
 						voterVO.setLocalArea(name);	
 					}
@@ -12524,18 +12550,30 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 	
 }
 
-public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,Integer startIndex,Integer maxRecords,String name,Long publicationId)
+public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,Integer startIndex,Integer maxRecords,String name,Long publicationId,String columnName,String order)
 {
 	List<VoterVO> voters = new ArrayList<VoterVO>();
 	List<Voter> votersList = new ArrayList<Voter>();;
 	Long totalCount = 0L;
 	Long Id = locationValues.get(0);
+	if(columnName.equalsIgnoreCase("relativeFirstName"))
+	{
+		columnName = "relativeName";
+	}
+	else if(columnName.equalsIgnoreCase("mobileNo"))
+	{
+		columnName = "mobileNo";
+	}
+	else if(columnName.equalsIgnoreCase("influencingRange"))
+	{
+		columnName = "influencingScope";
+	}
 	List<Object[]> politicianDetails =new ArrayList<Object[]>(0);
 	if(locationValues != null)
-		politicianDetails =  boothPublicationVoterDAO.getPoliticianDetails(locationValues,publicationId,type,startIndex, maxRecords);
+		politicianDetails =  boothPublicationVoterDAO.getPoliticianDetails(locationValues,publicationId,type,startIndex, maxRecords,columnName,order);
 		Long count = new Long(startIndex);
 		if(type.equalsIgnoreCase("booth"))
-			name ="Booth" + boothDAO.get(Id).getPartNo();
+			name ="Booth - " + boothDAO.get(Id).getPartNo();
 		if(politicianDetails != null)
 		{
 			

@@ -175,7 +175,7 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Long> getCadreCountByCadreLevel(Long userId,List<Long> locationValue,String type);
 	
 	public List<Cadre> getCadreVoterIDs(Long userId,List<Long> locationValue,String type,Integer startIndex,
-			Integer maxRecords);
+			Integer maxRecords,String columnName,String order);
 	
 	public Long findCadreSizeConstituencywise(List<Long> constituencyIds,Long userId) ;
 	

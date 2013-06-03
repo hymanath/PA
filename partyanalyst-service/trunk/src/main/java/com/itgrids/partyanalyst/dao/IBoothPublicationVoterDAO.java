@@ -184,7 +184,7 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<Long> getCandidateCount(List<Long> locationValue,Long publicationDateId,String type);
 	 
 	 public List<Object[]> getPoliticianDetails(List<Long> locationValue,Long publicationDateId,String type,Integer startIndex,
-				Integer maxRecords);
+				Integer maxRecords,String columnName,String order);
 	 
 	 public Long getTotalVotersCountForHamlet(Long userId ,Long id,Long publicationDateId,String type);
 	 

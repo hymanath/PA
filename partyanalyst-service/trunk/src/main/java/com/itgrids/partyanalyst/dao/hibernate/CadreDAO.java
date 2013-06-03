@@ -898,7 +898,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 	}
 	
-	public List<Cadre> getCadreVoterIDs(Long userId,List<Long> locationValue,String type,Integer startIndex,
+	/*public List<Cadre> getCadreVoterIDs(Long userId,List<Long> locationValue,String type,Integer startIndex,
 			Integer maxRecords)
 	{
 	
@@ -913,6 +913,44 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		query.setParameterList("locationValue", locationValue);
 		query.setParameter("userId", userId);
 		query.setParameter("type", type);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxRecords);
+		return query.list();
+		
+	}*/
+	
+	
+	public List<Cadre> getCadreVoterIDs(Long userId,List<Long> locationValue,String type,Integer startIndex,
+			Integer maxRecords,String columnName ,String order)
+	{
+	
+		if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+			type = "MUNICIPAL-CORP-GMC";
+		if(type.equalsIgnoreCase("panchayat"))
+			type = "hamlet";
+		if(type.equalsIgnoreCase("customWard"))
+			type ="WARD";
+		String str = "select model from Cadre model where model.user.userId=:userId and ";
+		
+		if(type.equalsIgnoreCase("constituency"))
+			str += " model.currentAddress.constituency.constituencyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("mandal"))
+			str += " model.currentAddress.tehsil.tehsilId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
+			str += " model.currentAddress.localElectionBody.localElectionBodyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("hamlet"))
+			str += " model.currentAddress.hamlet.hamletId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("WARD"))
+			str += " model.currentAddress.ward.constituencyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("BOOTH"))
+			str += " model.currentAddress.booth.boothId in (:locationValue) ";
+		if(columnName.equalsIgnoreCase("voterIDCardNo")||columnName.equalsIgnoreCase("age")||columnName.equalsIgnoreCase("gender")||columnName.equalsIgnoreCase("houseNo")||columnName.equalsIgnoreCase("relativeName"))
+			str += "order by model.voter."+columnName+" "+order;
+		else
+			str += "order by model."+columnName+" "+order;	   
+		Query query = getSession().createQuery(str);
+		query.setParameterList("locationValue", locationValue);
+		query.setParameter("userId", userId);
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxRecords);
 		return query.list();
