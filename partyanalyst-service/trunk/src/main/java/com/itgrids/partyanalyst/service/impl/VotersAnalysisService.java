@@ -12167,9 +12167,14 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 				influencingPeopleCount =  influencingPeopleDAO.getInfluencingPeopleCount(userId,locationIds,type,constiId,partNo);
 			}
 				
+			if(type.equalsIgnoreCase("panchayat"))
+			{
+				List<Long> panchayitIds = new ArrayList<Long>(0);
+				panchayitIds.add(locationValue);
+				cadreLevelValues = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIds);
+			}
+			influencingPeopleBeanVO.setCadreCount(cadreDAO.getCadreCountInALocation(userId,cadreLevelValues,type));
 			
-		    List<Long> cadreCount = cadreDAO.getCadreCountByCadreLevel(userId,cadreLevelValues,type);
-		    
 		    List<Long> politicians = boothPublicationVoterDAO.getCandidateCount(politicianValues, publicationDateId,type);
 		    if(politicians != null && politicians.size() > 0)
 		    	influencingPeopleBeanVO.setPoliticianCount(politicians.get(0));
@@ -12180,10 +12185,6 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 				 influencingPeopleBeanVO.setInfluencePeopleCount(new Long(influencingPeopleCount.get(0)));
 				else
 					influencingPeopleBeanVO.setInfluencePeopleCount((0l));
-			 if(cadreCount != null && cadreCount.size() > 0)
-				 influencingPeopleBeanVO.setCadreCount(new Long(cadreCount.get(0)));
-				else
-					influencingPeopleBeanVO.setCadreCount((0l));
 			 result.add(influencingPeopleBeanVO);
 			}
 			
