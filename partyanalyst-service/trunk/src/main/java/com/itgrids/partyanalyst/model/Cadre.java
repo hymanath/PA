@@ -83,6 +83,7 @@ public class Cadre extends BaseModel{
 	 private Set<ProblemAssignedCadre> problemAssignedCadres = new HashSet<ProblemAssignedCadre>(0);
 	 
 	 private String note;
+	 private Long memberShipNo;
 	 	
 	 
 	 @Id
@@ -536,6 +537,15 @@ public class Cadre extends BaseModel{
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	@Column(name = "membership_no")
+	public Long getMemberShipNo() {
+		return memberShipNo;
+	}
+
+	public void setMemberShipNo(Long memberShipNo) {
+		this.memberShipNo = memberShipNo;
 	}
 	
 	
