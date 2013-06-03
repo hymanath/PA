@@ -1542,7 +1542,7 @@ function refreshingParentWindow()
 						<td><s:checkboxlist list="#session.CadreRolesList"  name="cadreRoles" listKey="id" listValue="name"></s:checkboxlist></td>	
 					</tr>
 					<tr>
-						<td><span>No of MemberShip:&nbsp;&nbsp;&nbsp;</span><input type="text"  id="memberShipNo" name="memberShipNo" value="${cadreInfo.memberShipNo}" style="margin-left:40px;"></input><br/></td>
+						<td><span>Membership No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="text"  id="memberShipNo" name="memberShipNo" value="${cadreInfo.memberShipNo}" style="margin-left:40px;"></input><br/></td>
 						
 					</tr>
 					<tr>
