@@ -12,6 +12,8 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 
 public interface ICustomVoterGroupAnalysisService {
 	
+	public VoterCastInfoVO getVotersCountForPartyByCustomGroup(Long userId,Long custGroupId);
+	
 	public List<VoterCastInfoVO> getCasteWiseCustomVotersCount(Long customVoterGroupId,Long userId);
 	
 	public List<VoterCastInfoVO> getCustomGroupWiseVoterCasteDetails(Long userId,String areaType,Long locationValue);
