@@ -1613,8 +1613,12 @@ public List<Long> getCandidateCount(List<Long> locationValue,Long publicationDat
 }
 
 public List<Object[]> getPoliticianDetails(List<Long> locationValue,Long publicationDateId,String type,Integer startIndex,
-		Integer maxRecords)
+		Integer maxRecords,String columnName ,String order)
 {
+	if(columnName.equalsIgnoreCase("firstName"))
+	{
+		columnName = "name";
+	}
 	StringBuilder query = new StringBuilder();
 	
 	query.append("select model.voter.name,model.voter.voterId,model.voter.gender,model.voter.mobileNo,model.voter.relativeName,model.voter.age,model.voter.houseNo,model.voter.relationshipType,model.voter.voterIDCardNo,model2.candidateId from BoothPublicationVoter model,Candidate model2"); 
@@ -1634,8 +1638,8 @@ public List<Object[]> getPoliticianDetails(List<Long> locationValue,Long publica
 		query.append(" , UserVoterDetails model3 where model3.voter.voterId = model.voter.voterId and model.voter.voterId = model2.voter.voterId and " +
 				"model3.hamlet.hamletId in (:locationValue) ");
 	
-	query.append(" and model.booth.publicationDate.publicationDateId=:publicationDateId");
-	
+	query.append(" and model.booth.publicationDate.publicationDateId=:publicationDateId ");
+	query.append(" order by model.voter."+columnName+" "+order);
 	Query queryObj = getSession().createQuery(query.toString()) ;
 	queryObj.setParameterList("locationValue", locationValue);
 	queryObj.setParameter("publicationDateId", publicationDateId);
