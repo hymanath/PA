@@ -106,11 +106,11 @@ var groupName = "${groupName}";
 </script>
 </head>
 <body>
-<dir id="customVotersMainDiv">
+<div id="customVotersMainDiv">
 <div id="ajaxImg" style="display:none;"><img src="./images/icons/goldAjaxLoad.gif"></div>
 <div id ="localCastStatsVotersTitle" ></div>
 <div id="localCastStatsTabContent_subbody1" class="yui-skin-sam yui-dt-sortable"></div>
-</dir>
+</div>
 
 <script type="text/javascript">
 
