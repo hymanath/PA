@@ -1503,8 +1503,25 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				hamlets.add(locationId);
 			//List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
 				  List<Long> voterIds  =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(locationId, userId ,locationType);		
-		   
-				  List<Long> countList = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
+				  
+				  List<Long> countList = new ArrayList<Long>(0);
+				  int fromIndex = 0;
+				  int toIndex = 999;
+				  if(voterIds.size() >= 1000)
+				  {
+					  while(fromIndex <= toIndex)
+					  {
+						  List<Long> countListSub = boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds.subList(fromIndex, toIndex),publicationDateId);
+						  countList.addAll(countListSub);
+						  fromIndex += 1000;
+						  toIndex += 1000;
+						  if(toIndex >= voterIds.size())
+							toIndex = voterIds.size()-1;
+					  }
+				  }
+				  else
+					  countList = boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
+				  
 		   if(countList != null && countList.size() >0)
 			 totalVoters = countList.get(0);
 			}
@@ -1567,7 +1584,22 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				  hamlets.add(locationId);
 			 // List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
 				  List<Long> voterIds  =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(locationId, userId ,locationType);	
-		       List<Long> countList = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
+				  List<Long> countList = new ArrayList<Long>(0);
+				  int fromIndex = 0;
+				  int toIndex = 999;
+				  if(voterIds.size() >= 1000)
+				  {
+					  List<Long> countListTemp = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds.subList(fromIndex, toIndex),publicationDateId);
+					  countList.addAll(countListTemp);
+					  fromIndex += 1000;
+					  toIndex += 1000;
+					  if(toIndex >= voterIds.size())
+							toIndex = voterIds.size()-1;
+				  }
+				  else
+					  countList = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
+				  
+				  
 		      if(countList != null && countList.size() >0)
 			  totalVoters = countList.get(0);
 			}
@@ -2766,12 +2798,29 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				if(boothsList == null || boothsList.size()==0)
 					   return new ArrayList<VotersDetailsVO>();
 				
-				List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,boothsList);
+				List<Long> filter = (List<Long>) userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,boothsList);
 				if(filter == null || filter.size()==0)
 					   return new ArrayList<VotersDetailsVO>();
 				
 				//List<Object[]> list = userVoterDetailsDAO.getAgeWiseInfoForUser(filter);
-				List<Object[]> list = userVoterDetailsDAO.getAgeWiseInfoForUser(filter,boothId,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+				
+				List<Object[]> list = new ArrayList<Object[]>(0);
+				int fromIndex = 0;
+				int toIndex = 999;
+				if(filter.size() >= 1000)
+				{
+					while(fromIndex <= toIndex)
+					{
+						List<Object[]> listTemp = userVoterDetailsDAO.getAgeWiseInfoForUser(filter.subList(fromIndex, toIndex),boothId,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+						list.addAll(listTemp);
+						fromIndex += 1000;
+						toIndex += 1000;
+						if(toIndex >= filter.size())
+							toIndex = filter.size()-1;
+					}
+				}
+				else
+					list = userVoterDetailsDAO.getAgeWiseInfoForUser(filter,boothId,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 				
 				if(list == null || list.size()==0)	
 				{   
@@ -13713,7 +13762,20 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		         
 		         VotersInfoForMandalVO votersInfoForMandalVO = null;
 		         try{
-		        	 List<Object[]> VotersCont = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublication(voterVO.getPublicationDateId(),voterIdList);
+		        	 List<Object[]> VotersCont = new ArrayList<Object[]>(0);
+		        	 int fromIndex = 0;
+		        	 int toIndex = 999;
+		        	 if(voterIdList.size() >= 1000)
+		        	 {
+		        		 List<Object[]> VotersContTemp = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublication(voterVO.getPublicationDateId(),voterIdList.subList(fromIndex, toIndex));
+		        		 VotersCont.addAll(VotersContTemp);
+		        		 fromIndex += 1000;
+		        		toIndex += 1000;
+		        		if(toIndex >= voterIdList.size())
+		        			toIndex = voterIdList.size()-1;
+		        	 }
+		        	 else
+		        		 VotersCont = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublication(voterVO.getPublicationDateId(),voterIdList);
 		        	 Long maleVotersCount = 0l;
 		     		Long femaleVotersCount = 0l;
 		     		Long totalCount = 0l;
