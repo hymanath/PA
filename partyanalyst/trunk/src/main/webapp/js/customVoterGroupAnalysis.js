@@ -1,4 +1,3 @@
-
 function getVotersCount()
 {
 
@@ -540,36 +539,38 @@ function getCasteWiseCustomVotersCount()
   callAjax(jsObj,url);
 }
 
+function callAjax(jsObj,url){
+var myResults;
 
-function callAjax(jsObj,url)
-{
-	var myResults;
+		 var callback = {			
+				   success : function( o ) {
+					try {
 
-	var callback = {			
- 	 success : function( o ) {
-	  try {												
-		myResults = YAHOO.lang.JSON.parse(o.responseText);
-		
-			if(jsObj.task == "getCasteWiseCustomVotersCount")
-			  buildCasteWiseCustomVotersCount(myResults,jsObj);
-			if(jsObj.task=="getAgeWiseCustomVotersInGroup"){
-			  buildAgeWiseInGroupTable(myResults);
+						  myResults =  YAHOO.lang.JSON.parse(o.responseText);
+						   if(jsObj.task == "getVotersCountForPartyByCustomGroup"){
+							   buildVotersCountForPartyByCustomGroup(myResults);
+						   
+						   }
+						 else  if(jsObj.task == "getCasteWiseCustomVotersCount")
+			 				 buildCasteWiseCustomVotersCount(myResults,jsObj);
+			 			else if(jsObj.task=="getAgeWiseCustomVotersInGroup"){
+			 					 buildAgeWiseInGroupTable(myResults);
 				}
+					}catch (e) {
 
-			}catch (e) {
-							   
-						}  
- 		               },
- 		               scope : this,
+					}
+				   },
+						scope : this,
  		               failure : function( o ) {
  		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
  		                         }
- 		               };
+ 		           };
 
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
- 	}
-	
-	var castesArr=[];
+}
+
+
+var castesArr=[];
 	var totalVotersArr=[];
 	var maleVotersArr=[];
 	var femaleVotersArr=[];
@@ -782,8 +783,8 @@ function buildGraphBySlide(castArray,casteRange)
         });
 		$('tspan:last').hide();
   }
-
-  function openCadreSearchWindow(clickedId){
+  
+   function openCadreSearchWindow(clickedId){
   
 	var cadreWindow = window.open("cadreSearchAction.action?windowTask=Search&voterId="+clickedId,"cadreSearch","scrollbars=yes,height=600,width=750,left=200,top=200");
 	cadreWindow.focus();
@@ -871,7 +872,7 @@ function showInfluencePeopleDialog(voterId){
 
 }
 
-  function getCasteWiseCustomVoters(casteStateId,casteId,casteName,casteCategoryName)
+ function getCasteWiseCustomVoters(casteStateId,casteId,casteName,casteCategoryName)
   {
 	
 	var urlstr = "getCasteWiseCustomVotersDetails.action?casteStateId="+casteStateId+"&casteId="+casteId+"&casteName="+casteName+"&casteCategoryName="+casteCategoryName+"&customVoterGroupId="+customVoterGroupId+"&";
@@ -880,3 +881,68 @@ function showInfluencePeopleDialog(voterId){
 	browser1.focus();
   }
   
+
+//For Part wise VotersInfo
+  function getVotersCountForPartyByCustomGroupId(){
+	var jsObj=
+			{
+				custGroupId:customVoterGroupId,
+				task:"getVotersCountForPartyByCustomGroup"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersCountForPartyByCustomGroupIdAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+}
+
+  function buildVotersCountForPartyByCustomGroup(myResults){
+
+		var data = myResults.partyWisevoterCastInfoVOList;
+		if(data == null || data.length == 0)
+			    return;
+
+		var str1 = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;">';
+		str1 += '<span>Party Assigned Voters : '+myResults.partyWiseAssignedVoters+'</span>';
+		str1 += '<span style="padding-left:40px;">Party Not Assigned Voters : '+myResults.partyWiseNotAssignedVoters+'</span>';
+		str1 += '<br><br>';
+		str1 += '</div>';
+		$('#partyWiseAssignedVotersDiv').html(str1);
+
+		var str =' <table id="partyWiseVotersJqTable" cellpadding="0" cellspacing="0" border="0"  style="border:2px solid black">';
+	          str+='  <thead>';
+	          str+='   <tr>';
+	          str+='     <th>Party</th>';
+			  str+='     <th>Voters</th>';
+			  str+='     <th>Male Voters</th>';
+	          str+='     <th>Female Voters</th>';
+	          str+='	 <th>Party Percentage</th>';
+	          str+='   </tr>';
+	          str+='  </thead>';
+	          str+='  <tbody>';
+
+			  for(var i in data){
+		      str +='   <tr>';
+			  str +='		<td><a href="partyPageAction.action?partyId='+data[i].partyId+' ">'+data[i].partyName+'</td>';
+			  str +='		<td>'+data[i].totalVoters+'</td>';
+			  str +='		<td>'+data[i].maleVoters+'</td>';
+			  str +='		<td>'+data[i].femaleVoters+'</td>';
+			  str +='		<td>'+data[i].votesPercent+'</td>';
+	          str+='   </tr>';
+		   }
+	          str+='  </tbody>';
+	          str+=' </table>';
+		  
+		  $("#partyWiseVotersDiv").html(str);
+		  
+		  	$('#partyWiseVotersJqTable').dataTable({
+			"aaSorting": [[ 1, "asc" ]],
+			"iDisplayLength": 15,
+			"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+			//"bFilter": false,"bInfo": false
+			  "aoColumns": [null,null,null,null,null
+	     
+		  
+	    ] 
+			});
+	}
