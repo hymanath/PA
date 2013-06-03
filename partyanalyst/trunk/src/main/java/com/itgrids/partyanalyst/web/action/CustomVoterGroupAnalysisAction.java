@@ -13,6 +13,7 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
+import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
@@ -56,8 +57,17 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	private String areaType;
 	private Long locationValue;
 	private VoterCastInfoVO voterCastInfoVO;
+	private ImportantFamiliesInfoVo importantFamiliesInfoVo;
 	
-	@Override
+	public ImportantFamiliesInfoVo getImportantFamiliesInfoVo() {
+		return importantFamiliesInfoVo;
+	}
+
+	public void setImportantFamiliesInfoVo(
+			ImportantFamiliesInfoVo importantFamiliesInfoVo) {
+		this.importantFamiliesInfoVo = importantFamiliesInfoVo;
+	}
+
 	public void setServletRequest(HttpServletRequest arg) {
 		this.request = arg;
 	}
@@ -489,6 +499,27 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			return ERROR;
 		}
 		
+	}
+	
+	public String getCustomvoterFamilyDetails(){
+		String param;
+		param= getTask();
+		try{
+			jobj = new JSONObject(param);
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return ERROR;
+			Long userId             = regVO.getRegistrationID();
+
+			importantFamiliesInfoVo = customVoterGroupAnalysisService.getCustomVoterImpFamilyDetails(jobj.getLong("customVoterGroupId"),jobj.getLong("publicationDateId"),userId);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.error("Exception occured in getCustomvoterFamilyDetails() Method,Exception is - "+ e);
+		}
+
+		return Action.SUCCESS;
 	}
 
 	public String getVotersCountForPartyByCustomGroup(){
