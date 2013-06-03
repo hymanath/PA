@@ -247,7 +247,7 @@ function getVoterDetailsForCustomVoterGroup()
 		//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 		//{key:"relationshipType", label: "Relationship", sortable:true},
 		{key:"mobileNo",label:"MobileNo",sortable:true},
-		//{key:"localArea", label: "Location", sortable: true},
+		{key:"localArea", label: "Location", sortable: true},
 		//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 		//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 		];
@@ -257,7 +257,7 @@ function getVoterDetailsForCustomVoterGroup()
 		resultsList: "voterDetails",
 		fields: [
 		{key:"voterId", parser:"number"},
-		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","mobileNo"],
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","mobileNo","localArea"],
 		metaFields: {
 		totalRecords: "voterDetailsCount" // Access to value in the server response
 		}
@@ -276,7 +276,7 @@ function getVoterDetailsForCustomVoterGroup()
 		//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 		//{key:"relationshipType", label: "Relationship", sortable:true},
 		{key:"mobileNo",label:"MobileNo",sortable:true},
-		//{key:"localArea", label: "Location"},
+		{key:"localArea", label: "Location"},
 		//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 		//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
@@ -287,7 +287,7 @@ function getVoterDetailsForCustomVoterGroup()
 		resultsList: "voterDetails",
 		fields: [
 		{key:"voterId", parser:"number"},
-		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson",],
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea"],
 		metaFields: {
 		totalRecords: "voterDetailsCount" // Access to value in the server response
 		}
@@ -306,7 +306,7 @@ function getVoterDetailsForCustomVoterGroup()
 		//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 		//{key:"relationshipType", label: "Relationship", sortable:true},
 		{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
-		//{key:"localArea", label: "Location",width:50},
+		{key:"localArea", label: "Location",width:50},
 		{key:"influencingRange", label: "Influencing Range",width:50},
 		{key:"influencingRegion", label: "Influencing Region",width:50}
 		//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
@@ -319,7 +319,7 @@ function getVoterDetailsForCustomVoterGroup()
 		resultsList: "voterDetails",
 		fields: [
 		{key:"voterId", parser:"number"},
-		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","influencingRange","influencingRegion"],
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","influencingRange","influencingRegion"],
 		metaFields: {
 		totalRecords: "voterDetailsCount" // Access to value in the server response
 		}
