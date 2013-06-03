@@ -868,6 +868,36 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 	}
 	
+	public Long getCadreCountInALocation(Long userId,List<Long> locationValue,String type)
+	{
+		if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+			type = "MUNICIPAL-CORP-GMC";
+		if(type.equalsIgnoreCase("panchayat"))
+			type = "hamlet";
+		if(type.equalsIgnoreCase("customWard"))
+			type ="WARD";
+		String str = "select count(model.cadreId) from Cadre model where model.user.userId=:userId and ";
+		
+		if(type.equalsIgnoreCase("constituency"))
+			str += " model.currentAddress.constituency.constituencyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("mandal"))
+			str += " model.currentAddress.tehsil.tehsilId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
+			str += " model.currentAddress.localElectionBody.localElectionBodyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("hamlet"))
+			str += " model.currentAddress.hamlet.hamletId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("WARD"))
+			str += " model.currentAddress.ward.constituencyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("BOOTH"))
+			str += " model.currentAddress.booth.boothId in (:locationValue) ";
+			   
+		Query query = getSession().createQuery(str);
+		query.setParameterList("locationValue", locationValue);
+		query.setParameter("userId", userId);
+		return (Long)query.uniqueResult();
+		
+	}
+	
 	public List<Cadre> getCadreVoterIDs(Long userId,List<Long> locationValue,String type,Integer startIndex,
 			Integer maxRecords)
 	{
