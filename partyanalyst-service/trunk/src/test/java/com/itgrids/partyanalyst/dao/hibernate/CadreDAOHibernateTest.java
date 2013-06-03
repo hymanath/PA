@@ -33,7 +33,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	}
 
 	
-	public void testFindCadresByLevels()
+	/*public void testFindCadresByLevels()
 	{
 		List result = cadreDAO.findCadresByLevels(1l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		for(int i=0;i<result.size();i++){
@@ -43,7 +43,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 		
-	}
+	}*/
 	
 	/*@SuppressWarnings("unchecked")
 	public void testFindCadreSearchCriteria(){
@@ -508,6 +508,13 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		List<Cadre> values = cadreDAO.getCadreVoterIDs(1l,locationValue,"CONSTITUENCY",1,3);
 		System.out.println(values);
 	}*/
+	
+	public void testGetCadreCountInALocation()
+	{
+		List<Long>locationValue = new ArrayList<Long>();
+		locationValue.add(738l);
+		System.out.println(cadreDAO.getCadreCountInALocation(1l, locationValue, "mandal"));
+	}
 }
 	
 
