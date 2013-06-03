@@ -26,6 +26,8 @@ public interface ICustomVoterDAO extends GenericDao<CustomVoter,Long>{
 	public List<Object[]> getVotersInfoBycustomVoterGroupId(Long customVoterGroupId,Long userId,Integer startIndex,
 			Integer maxRecords, String order, String columnName,Long publicationDateId);
 	
+	public List<Object[]> getVotersInfoBycustomVoterGroupId(Long customVoterGroupId,Long userId);
+	
 	public List<Long> getCountBycustomvoterGroupId(Long customVoterGroupId,Long userId,Long publicationDateId);
 
 	public List<Object[]> getCasteWiseCustomVotersCount(Long customVoterGroupId, Long userId);
@@ -43,9 +45,11 @@ public interface ICustomVoterDAO extends GenericDao<CustomVoter,Long>{
 	 public List<Object[]> getInfluencingPeopleDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName);
 	 
 	 public List<Object[]> getPoliticanDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName);
-	 
 	 public List<Object[]> getCustomGroupWiseVotersDetailsForCaste(Long userId,String areaType, Long locationValue);
-	
+		
 	 public List<Voter> getCasteWiseCustomVoterDetails(Long casteStateId,Long casteId,Long customVoterGroupId,Long userId);
+	 public List<Object[]> getVotersCountForPartyByCustomGroup(Long userId,Long custGroupId);
+	 
+	  public Long getTotalVotersByCustomGroupId(Long custGroupId);
 		
 }
