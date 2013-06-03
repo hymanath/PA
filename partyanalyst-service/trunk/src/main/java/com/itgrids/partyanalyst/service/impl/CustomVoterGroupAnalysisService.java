@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.ICustomVoterGroupDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
+import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
@@ -963,5 +964,70 @@ public static final String AGE5="60Above";
 		    }
 
 
+
+public ImportantFamiliesInfoVo getCustomVoterImpFamilyDetails(Long customVoterGroupId,Long publicationDateId,Long userId){
+	ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+	String query = "";
+	Long maleVotersCount = 0l;
+	Long femaleVotersCount = 0l;
+	Long unknownsCount = 0l;
+	
+	List<Object[]> votersCountList = customVoterDAO.getCustomVoterCount(customVoterGroupId, publicationDateId,userId);
+	 for(Object[] votersCount : votersCountList){
+	    	if(votersCount[1] != null && votersCount[1].toString().trim().equalsIgnoreCase("M")){
+	    		maleVotersCount = (Long)votersCount[0];
+	    	}else if(votersCount[1] != null && votersCount[1].toString().trim().equalsIgnoreCase("F")){
+	    		femaleVotersCount = (Long)votersCount[0];
+	    	}else if(votersCount[1] != null && votersCount[1].toString().trim().equalsIgnoreCase("")){
+	    		unknownsCount = (Long)votersCount[0];
+	    	}
+	    }
+	importantFamiliesInfoVo.setTotalFemaleVoters(femaleVotersCount.toString());
+	importantFamiliesInfoVo.setTotalMaleVoters(maleVotersCount.toString());
+	importantFamiliesInfoVo.setTotalVoters(maleVotersCount.longValue()+femaleVotersCount.longValue()+unknownsCount.longValue());
+	
+	List<Long> totalFamilyList = getImpFamilyInfo(customVoterGroupId, publicationDateId,query);
+	Long totalVoters = (long)totalFamilyList.size();
+	importantFamiliesInfoVo.setTotalFamalies(totalVoters);
+	
+	query = " having count(model.voter.voterId) <= 3";
+	List<Long> familyList = getImpFamilyInfo(customVoterGroupId, publicationDateId,query);
+	importantFamiliesInfoVo.setBelow3((long)familyList.size());
+	Double val=0.0;
+	if(totalVoters>0)
+	val = Double.valueOf((long)familyList.size()*100/totalVoters);
+	importantFamiliesInfoVo.setBelow3perc(val);	
+	
+	query = " having count(model.voter.voterId) >= 4 and count(model.voter.voterId) <= 6";
+	List<Long> familyList1 = getImpFamilyInfo(customVoterGroupId, publicationDateId,query);
+	importantFamiliesInfoVo.setBetwn4to6((long)familyList1.size());
+	Double val1=0.0;
+	if(totalVoters>0)
+	val1 = Double.valueOf((long)familyList1.size()*100/totalVoters);
+	importantFamiliesInfoVo.setBetwn4to6perc(val1);
+	
+	query = " having count(model.voter.voterId) >= 7 and count(model.voter.voterId) <= 10";
+	List<Long> familyList2 = getImpFamilyInfo(customVoterGroupId, publicationDateId,query);
+	importantFamiliesInfoVo.setBetwn7to10((long)familyList2.size());
+	Double val2=0.0;
+	if(totalVoters>0)
+	val2 = Double.valueOf((long)familyList2.size()*100/totalVoters);
+	importantFamiliesInfoVo.setBetwn7to10perc(val2);	
+	
+	query = " having count(model.voter.voterId) > 10";
+	List<Long> familyList3 = getImpFamilyInfo(customVoterGroupId, publicationDateId,query);
+	importantFamiliesInfoVo.setAbove10((long)familyList3.size());
+	Double val3=0.0;
+	if(totalVoters>0)
+	val3 = Double.valueOf((long)familyList3.size()*100/totalVoters);
+	importantFamiliesInfoVo.setAbove10perc(val3);	
+	return importantFamiliesInfoVo;
+}
+
+public List<Long> getImpFamilyInfo(Long customVoterGroupId,Long publicationDateId,String query){
+	List<Long> familyList = customVoterDAO.getImpFamiles(customVoterGroupId, publicationDateId,query);
+	
+	return familyList;
+}
 
 }

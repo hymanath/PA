@@ -407,5 +407,30 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 		  
 		  return (Long)query.uniqueResult();
 	  }
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCustomVoterCount(Long customVoterGroupId,Long publicationDateId,Long userId){
+		Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.gender from "+
+				" CustomVoter model,BoothPublicationVoter BPV where model.customVoterGroup.customVoterGroupId = "+
+				":customVoterGroupId and BPV.booth.publicationDate.publicationDateId = :publicationDateId and "+
+				"model.customVoterGroup.user.userId = :userId and model.voter.voterId = BPV.voter.voterId group by model.voter.gender");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("customVoterGroupId", customVoterGroupId);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+	}
+		
+	@SuppressWarnings("unchecked")
+	public List<Long> getImpFamiles(Long customVoterGroupId,Long publicationDateId,String queryString){
+		StringBuilder query = new StringBuilder();
+		query.append("select count(model.voter.voterId) from CustomVoter model,BoothPublicationVoter BPV where model.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+		" model.customVoterGroup.customVoterGroupId = :customVoterGroupId group by BPV.booth.boothId,model.voter.houseNo") ;
+		if(queryString != null)
+			query.append(queryString);
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("customVoterGroupId", customVoterGroupId);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		return queryObj.list();
+		}
 }
