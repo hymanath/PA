@@ -592,7 +592,7 @@ public static final String AGE5="60Above";
 		    	VoterVO voterVO = null;
 		    	Map<Long , VoterVO> voterMap = new HashMap<Long, VoterVO>();
 		    	List<Long> voterIds = new ArrayList<Long>();
-		    
+		    try{
 		    	List<Long> total = customVoterDAO.getCountBycustomvoterGroupId(voterDataVO.getCustomVoterGroupId(),userId,voterDataVO.getPublicationId());	
 		    	
 		    	voterdata = customVoterDAO.getVotersInfoBycustomVoterGroupId(voterDataVO.getCustomVoterGroupId(),userId,voterDataVO.getStartIndex().intValue(),voterDataVO.getMaxIndex().intValue(),
@@ -706,6 +706,11 @@ public static final String AGE5="60Above";
 		    		totalCount = new Long(total.size());
 		    		result.get(0).setTotalVoters(totalCount);
 		    	}
+		    }
+		    catch(Exception e)
+		    {
+		    	Log.error("Exception Occured in getVoterDataForCustomGroup() of CustomVoterGroupAnalysis Service Exception - ",e);
+		    }
 		    	return result;
 		    	
 		    }
@@ -738,7 +743,7 @@ public static final String AGE5="60Above";
 		    }
 		   
 		    catch (Exception e) {
-				Log.error("Exception Occured in getTotalVotersDetailsbyCustomVoterGroup() of customVoterGroupAnalysis");
+				Log.error("Exception Occured in getTotalVotersDetailsbyCustomVoterGroup() of customVoterGroupAnalysis Exception - ",e);
 			}
 			return voterInfo;
 			
@@ -771,7 +776,7 @@ public static final String AGE5="60Above";
 		    	}
 		    	catch(Exception e)
 		    	{
-		    		Log.error("Exception Occured in getInfluencingPeopleCount() method of CustomVoterGroupAnalysis");
+		    		Log.error("Exception Occured in getInfluencingPeopleCount() method of CustomVoterGroupAnalysis Exception - ",e);
 		    	}
 				return influencingPeopleBeanVO;
 		    }
@@ -816,7 +821,7 @@ public static final String AGE5="60Above";
 		    catch(Exception e)
 		    {
 		    	e.printStackTrace();
-		    	Log.error("Exception Occured in showVoterDetailsForSelcetedType() method of customVoterGroupAnalysis" ,e);
+		    	Log.error("Exception Occured in showVoterDetailsForSelcetedType() method of customVoterGroupAnalysis Exception - " ,e);
 		    }
 			return result;
 		    }
@@ -841,11 +846,12 @@ public static final String AGE5="60Above";
 						voterVO.setHouseNo(params[4]!=null?params[4].toString():" ");
 						voterVO.setRelativeFirstName(params[5]!=null?params[5].toString():" ");
 						voterVO.setMobileNo(params[6]!=null ?params[6].toString(): " ");
+						voterVO.setLocalArea(params[8]!=null?params[8].toString() : " ");
 						voterVO.setTotalVoters(total);
 						if(btnName.equalsIgnoreCase("InfluencePeople"))
 						{
-						voterVO.setInfluencingRange(params[8].toString());
-						voterVO.setInfluencingRegion(voterReportService.getRegionNameBasedOnScope(params[8].toString(),params[9].toString()));
+						voterVO.setInfluencingRange(params[9].toString());
+						voterVO.setInfluencingRegion(voterReportService.getRegionNameBasedOnScope(params[9].toString(),params[10].toString()));
 						}
 						++count;
 						result.add(voterVO);
@@ -853,7 +859,7 @@ public static final String AGE5="60Above";
 		    	}
 		    	}catch(Exception e)
 		    	{
-		    		Log.error("Exception Occured in setValuesToVOterVO() of customVoterGroupAnalysis");
+		    		Log.error("Exception Occured in setValuesToVOterVO() of customVoterGroupAnalysis Exception - ",e);
 		    	}
 				return result;
 		    }
