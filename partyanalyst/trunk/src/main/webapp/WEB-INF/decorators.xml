@@ -237,6 +237,7 @@
 		<pattern>/cadreOnlineRegisterPageAction*</pattern>
 		<pattern>/customVoterGroupAnalysisAction*</pattern>
 		<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
+		<pattern>/getCustomPageFamilyDetailsAction*</pattern>
     	 </decorator>
 
 </decorators>
