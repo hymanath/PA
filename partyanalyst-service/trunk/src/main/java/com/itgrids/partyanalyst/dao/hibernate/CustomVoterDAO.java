@@ -371,5 +371,41 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	  
+	  /**
+		 * This method is Uesd For getting Voters count For Parties Based on CustomVoterGroupId
+		 *  
+		 * @param Long custGroupId
+		 * @param Long  userId
+		 * @return List<Object[]>
+		 */
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getVotersCountForPartyByCustomGroup(Long userId,Long custGroupId)
+		{
+		  Query query = getSession().createQuery("select count(model1.voter.voterId),model1.voter.gender,model2.party.partyId,model2.party.shortName "+
+				  		"from CustomVoter model1,UserVoterDetails model2" +
+				  		" where model1.customVoterGroup.customVoterGroupId = :custGroupId and model2.user.userId = :userId"+
+				  		" and model1.voter.voterId = model2.voter.voterId group by model2.party.partyId,model1.voter.gender");
+		  
+		  query.setParameter("userId", userId);
+		  query.setParameter("custGroupId", custGroupId);
+			return query.list();
+		  
+		}
+	  
+	  /**
+		 * This method is Uesd For getting Voters count Based on CustomVoterGroupId
+		 *  
+		 * @param Long custGroupId
+		 * @return Long
+		 */
+	@SuppressWarnings("unchecked")
+	public Long getTotalVotersByCustomGroupId(Long custGroupId){
+		  
+		  Query query = getSession().createQuery("select count(model.voter.voterId) from CustomVoter model where model.customVoterGroup.customVoterGroupId = :custGroupId");
+		  query.setParameter("custGroupId", custGroupId);
+		  
+		  return (Long)query.uniqueResult();
+	  }
 
 }
