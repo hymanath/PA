@@ -68,7 +68,7 @@ color:#333333;text-decoration:none;
     white-space: nowrap;
 }
 </style>
-<title>cadre</title>
+<title>${btnName}</title>
 <script type="text/javascript">
 var  locationValue    = '${locationValue}';
 var  typeValue    = '${typeValue}';
@@ -76,10 +76,10 @@ var  publicationDateId    = '${publicationDateId}';
 var  btnName    = '${btnName}';
 var  mainreqid    = '${mainreqid}';
 var  maintype    = '${maintype}';
-
+var  name        = '${name}';
 function getInfluencingPeopleVotersDetails()
 {
-	$("#titleDiv").append('<h3 style="background: none repeat scroll 0% 0% #4285F4; color: rgb(255, 255, 255); padding: 5px; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px;">Voters Details</h3>');
+	$("#titleDiv").append('<h3 style="background: none repeat scroll 0% 0% #4285F4; color: rgb(255, 255, 255); padding: 5px; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px;">'+name+' '+btnName+' Voters Details</h3>');
 	if(btnName == "Politician")
 	{
 		YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 

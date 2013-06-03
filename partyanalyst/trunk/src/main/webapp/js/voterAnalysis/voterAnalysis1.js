@@ -893,7 +893,11 @@ function addToPolitician(voterId,name)
     // jQuery is loaded => print the version
     alert(jQuery.fn.jquery);
     } */
-
+		var str = "";
+		str += '<a id ="InfluencingDetails"><span class="btn">0</span></a><span class="help-inline f2"> Influencing People</span>';
+		str += '<a id ="CadreDetails"><span class="btn">0</span></a><span class="help-inline f2"> Cadre</span>';
+		str += '<a id ="PoliticianDetails"><span class="btn">0</span></a><span class="help-inline f2"> Politician</span>';
+		$('#InfluencingPeopleCountDiv').html(str); 
 
 		if(type == "constituency")
 			$('#refreshImg').hide();
@@ -3371,7 +3375,6 @@ function buildVotersInFamily(results){
 
 function buildCastInfoData(myresults,jsObj)
 {
-
 	 if(mainreqid == jsObj.id)
   {
 	$('#localCastDetailsHeadingDiv').html('');
@@ -3392,7 +3395,7 @@ function buildCastInfoData(myresults,jsObj)
 		return false;
 	}
 	$('#casteDiv').show();
-	$('#votersMainOuterDiv2').show();
+	//$('#votersMainOuterDiv2').show();
 	if(result.maleVoters > 0){
 		
        if(maintype == jsObj.type && maintype == "hamlet" && isLocalityDataExist != null && isLocalityDataExist == 'false')
@@ -3611,6 +3614,8 @@ function buildPartyWisePiechart(myResults,jsObj)
 	}else{
 		$('#partyBasicInfoStatsTabNewTitle').hide();
 		$('#PartyWiseCastInfoBtn').hide();
+		$('#votersMainOuterDiv2').hide();
+		
 		//$("#votersMainOuterDiv2").hide();
 	}
 	var voters= '';
@@ -4566,7 +4571,7 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	var greatestValue = 0;
 	var lowestValue ;
 	for(var i in result.votersDetailsVO){
-	lowestValue = result.votersDetailsVO[i].totalVotersPercent.toFixed(2);
+	lowestValue = parseInt(result.votersDetailsVO[i].totalVotersPercent.toFixed(2).split(".", 1));
 		if(greatestValue < lowestValue)
 			greatestValue = lowestValue;
 	}
@@ -4574,9 +4579,8 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	str+='<tr>';
 	str+='<td>'+result.votersDetailsVO[i].ageRange+'</td>';
 	str+='<td>'+result.votersDetailsVO[i].totalVoters+'</td>';
-
 	if(result.votersDetailsVO[i].totalVotersPercent != null){
-		if(result.votersDetailsVO[i].totalVotersPercent.toFixed(2) == greatestValue)
+		if(result.votersDetailsVO[i].totalVotersPercent.toFixed(2).split(".", 1) == greatestValue)
 		 str+='<td style="background-color:green;color:white;">'+result.votersDetailsVO[i].totalVotersPercent.toFixed(2)+'</td>';
 		else
 		str+='<td>'+result.votersDetailsVO[i].totalVotersPercent.toFixed(2)+'</td>';
@@ -5648,7 +5652,6 @@ function showPreviousEleVotingTrends(results,jsObj)
 	
 	}
 }
-
 
 	var electionYearsForChrt=[];
 function getDataResultsForTotalVoters(resultsArr)
@@ -7820,7 +7823,7 @@ function buildInfluencingPeopleCount(results,jsObj)
 }
 function getInfluencingPeopleVotersDetails(locationValue,typeValue,publicationDateId,btnName)
 {
-var reqBrowser = window.open("cadreDisplayWindowAction.action?locationValue="+locationValue+"&typeValue="+typeValue+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&mainreqid="+mainreqid+"&maintype="+maintype+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+var reqBrowser = window.open("cadreDisplayWindowAction.action?locationValue="+locationValue+"&typeValue="+typeValue+"&publicationDateId="+publicationDateId+"&name="+mainname+"&btnName="+btnName+"&mainreqid="+mainreqid+"&maintype="+maintype+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 reqBrowser.focus();
 
 /*
