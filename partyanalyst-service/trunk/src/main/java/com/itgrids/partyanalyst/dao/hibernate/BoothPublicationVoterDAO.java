@@ -1787,18 +1787,28 @@ public List findVotersCastInfoByBoothIdAndPublicationDateForHamlet(Long hamletId
 //
 
 
-public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndVoters(Long publicationDateId , List<Long> voterIds)
+public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndVoters(Long publicationDateId ,Long userId,String type,List<Long> ids)
 {
+	StringBuilder queryString = new StringBuilder();
 	
-	Query query = getSession().createQuery("select count(model.voter.voterId),model.voter.houseNo, " +
+	     queryString.append("select count(model.voter.voterId),model.voter.houseNo, " +
 			" SUM( CASE WHEN model.voter.gender='F' THEN 1 ELSE 0 END) as femalecount ," +
 			" SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount  " +
-			"from BoothPublicationVoter model " +
+			"from BoothPublicationVoter model,UserVoterDetails model1 " +
 			"where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
-			"model.voter.voterId in(:voterIds)  group by model.voter.houseNo");
+			"model.voter.voterId = model1.voter.voterId and model1.user.userId = :userId  and ");
+	     
+	   if(type.equalsIgnoreCase(IConstants.HAMLET))
+		  queryString.append("model1.hamlet.hamletId in (:ids)  ");
+		else
+		  queryString.append("model1.ward.constituencyId in (:ids)  ");
+	 
+	queryString.append(" group by model.voter.houseNo ");
 	
+	Query query = getSession().createQuery(queryString.toString());
 	query.setParameter("publicationDateId", publicationDateId);
-	query.setParameterList("voterIds", voterIds);
+	query.setParameter("userId", userId);
+	query.setParameterList("ids", ids);
 	
 	return query.list();
 }

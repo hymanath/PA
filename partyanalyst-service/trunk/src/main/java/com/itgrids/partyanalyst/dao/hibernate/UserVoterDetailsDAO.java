@@ -492,15 +492,22 @@ IUserVoterDetailsDAO{
 			
 	}
 	public List<?> getVoterIdsBasedOnVoterIdsAndPublication(
-			 Long publicationDateId , List<?> voterIds) {		
+			 Long publicationDateId ,Long id,Long userId,String type) {		
 			
-			
-		Query query = getSession().createQuery("select distinct b.voter.voterId " +
-				" from BoothPublicationVoter b where  b.voter.voterId in (:voterIds) " +
-				"   and  b.booth.publicationDate.publicationDateId = :publicationDateId " 
-								) ;
+		StringBuilder queryString = new StringBuilder();	
+		queryString.append("select distinct b.voter.voterId " +
+				" from BoothPublicationVoter b,UserVoterDetails UVD where   " +
+				" b.booth.publicationDate.publicationDateId = :publicationDateId and b.voter.voterId = UVD.voter.voterId " +
+				" and UVD.user.userId = :userId  and ") ;
+		   
+		   if(type.equalsIgnoreCase(IConstants.HAMLET))
+			  queryString.append("UVD.hamlet.hamletId  = :id  ");
+			else
+			  queryString.append("UVD.ward.constituencyId = :id  ");
+		Query query = getSession().createQuery(queryString.toString());
 		query.setParameter("publicationDateId",publicationDateId);
-		query.setParameterList("voterIds", voterIds);	
+		query.setParameter("userId", userId);	
+		query.setParameter("id", id);	
 		  return query.list();
 		
 	}
