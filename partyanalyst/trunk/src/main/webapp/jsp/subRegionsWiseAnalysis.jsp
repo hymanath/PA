@@ -1384,7 +1384,7 @@ function getElectionData()
                         this.x +': '+ this.y +'%';
 						else
 						return '<b>'+ this.series.name +'</b><br/>'+
-                        this.x +': '+ this.y +' Valid Votes';
+                        this.x +': '+ this.y +' Votes Earned';
                 }
             },
 			
