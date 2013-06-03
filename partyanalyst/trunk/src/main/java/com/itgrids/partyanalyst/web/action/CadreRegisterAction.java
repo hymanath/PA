@@ -134,8 +134,17 @@ public class CadreRegisterAction extends ActionSupport implements
 	private Long bloodGroup;
 	
 	private String note;
+	private Long memberShipNo;
 	
 	
+	public Long getMemberShipNo() {
+		return this.cadreInfo.getMemberShipNo();
+	}
+
+	public void setMemberShipNo(Long memberShipNo) {
+		this.cadreInfo.setMemberShipNo(memberShipNo);
+	}
+
 	public String getNote() {
 		return this.cadreInfo.getNote();
 	}
