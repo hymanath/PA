@@ -123,12 +123,12 @@ public class CadreInfo implements Serializable{
 	private Long cadreOnlineRegId;
 	
 	private String note;
-	private Long memberShipNo;
+	private String memberShipNo;
 	
-	public Long getMemberShipNo() {
+	public String getMemberShipNo() {
 		return memberShipNo;
 	}
-	public void setMemberShipNo(Long memberShipNo) {
+	public void setMemberShipNo(String memberShipNo) {
 		this.memberShipNo = memberShipNo;
 	}
 	public String getNote() {
