@@ -25,6 +25,7 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 	
 	private Long id;
 	private Long publicationDateId;
+	private Long customVoterGroupId;
 	private String type;
 	private String publicationYear;
 	private String  buildType;
@@ -43,8 +44,15 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 	public String getGhmc() {
 		return ghmc;
 	}
+	
+	public Long getCustomVoterGroupId() {
+		return customVoterGroupId;
+	}
 
-
+	public void setCustomVoterGroupId(Long customVoterGroupId) {
+		this.customVoterGroupId = customVoterGroupId;
+	}
+	
 	public void setGhmc(String ghmc) {
 		this.ghmc = ghmc;
 	}
