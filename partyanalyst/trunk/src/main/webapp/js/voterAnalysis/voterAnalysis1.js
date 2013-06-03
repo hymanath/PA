@@ -916,7 +916,7 @@ function addToPolitician(voterId,name)
 		 }
      else $('#impFamiliesForBooths').hide();
 		 
-		   
+       $("#localCastChatDiv").html("");
 		   
 	   if(type == "booth")
 		    $('#impFamiliesForHamletsByBooth').show();
