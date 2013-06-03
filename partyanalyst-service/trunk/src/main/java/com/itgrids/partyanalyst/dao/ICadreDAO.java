@@ -180,4 +180,6 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public Long findCadreSizeConstituencywise(List<Long> constituencyIds,Long userId) ;
 	
 	public List findCadreSizeConstituencywise(Long userId,List<Long> constiIds);
+	
+	public Long getCadreCountInALocation(Long userId,List<Long> locationValue,String type);
 }
