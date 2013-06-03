@@ -1506,7 +1506,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				  
 				  List<Long> countList = new ArrayList<Long>(0);
 				  int fromIndex = 0;
-				  int toIndex = 999;
+				  int toIndex = 1000;
 				  if(voterIds.size() >= 1000)
 				  {
 					  while(fromIndex <= toIndex)
@@ -1516,14 +1516,16 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 						  fromIndex += 1000;
 						  toIndex += 1000;
 						  if(toIndex >= voterIds.size())
-							toIndex = voterIds.size()-1;
+							toIndex = voterIds.size();
 					  }
 				  }
 				  else
 					  countList = boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
 				  
 		   if(countList != null && countList.size() >0)
-			 totalVoters = countList.get(0);
+			   totalVoters = 0l;
+			 for(Long total:countList)
+			 totalVoters = totalVoters+total;
 			}
 						
 			if(!"main".equalsIgnoreCase(queryType) && !"booth".equalsIgnoreCase(locationType1) && !types.contains(locationType))
@@ -1586,7 +1588,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				  List<Long> voterIds  =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(locationId, userId ,locationType);	
 				  List<Long> countList = new ArrayList<Long>(0);
 				  int fromIndex = 0;
-				  int toIndex = 999;
+				  int toIndex = 1000;
 				  if(voterIds.size() >= 1000)
 				  {
 					  List<Long> countListTemp = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds.subList(fromIndex, toIndex),publicationDateId);
@@ -1594,7 +1596,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					  fromIndex += 1000;
 					  toIndex += 1000;
 					  if(toIndex >= voterIds.size())
-							toIndex = voterIds.size()-1;
+							toIndex = voterIds.size();
 				  }
 				  else
 					  countList = 	boothPublicationVoterDAO.getTotalVotersCountForHamletByVoterIds(voterIds,publicationDateId);
@@ -2792,13 +2794,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			if(type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase(IConstants.CUSTOMWARD) )
 			{ 
 			
-				boothsList =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(panchayatId, boothId ,type);
+				/*boothsList =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(panchayatId, boothId ,type);
 			
 				
 				if(boothsList == null || boothsList.size()==0)
-					   return new ArrayList<VotersDetailsVO>();
+					   return new ArrayList<VotersDetailsVO>();*/
 				
-				List<Long> filter = (List<Long>) userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,boothsList);
+				List<Long> filter = (List<Long>) userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,panchayatId,boothId,type);
 				if(filter == null || filter.size()==0)
 					   return new ArrayList<VotersDetailsVO>();
 				
@@ -2806,7 +2808,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				
 				List<Object[]> list = new ArrayList<Object[]>(0);
 				int fromIndex = 0;
-				int toIndex = 999;
+				int toIndex = 1000;
 				if(filter.size() >= 1000)
 				{
 					while(fromIndex <= toIndex)
@@ -2816,7 +2818,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 						fromIndex += 1000;
 						toIndex += 1000;
 						if(toIndex >= filter.size())
-							toIndex = filter.size()-1;
+							toIndex = filter.size();
 					}
 				}
 				else
@@ -2827,7 +2829,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					return constituencyVotersList;	
 				}else{
 					
-					myBusinessDelegator(list, constituencyVotersList);
+					myBusinessDelegator1(list, constituencyVotersList);
 					return constituencyVotersList;
 				}
 			}
@@ -4171,7 +4173,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 					     
 					     calculatePercentage(importantFamiliesInfoVo1);
 					     
-					     importantFamiliesInfoVo.getSubList().add(importantFamiliesInfoVo1);;
+					     importantFamiliesInfoVo.getSubList().add(importantFamiliesInfoVo1);
 						}
 				    return importantFamiliesInfoVo;
 				 }
@@ -4450,12 +4452,12 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		hamlets.add(id);
 		//18111 families
        //  List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
-		  List<Long> voterIds  =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(id, userId ,type);	
+		/*  List<Long> voterIds  =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(id, userId ,type);	
 		if(voterIds == null || voterIds.isEmpty())
-			return ;
-         impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndVoters(publicationDateId,voterIds);
+			return ;*/
+         impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndVoters(publicationDateId,userId,type,hamlets);
  		
-         if(impFamilesList == null || voterIds.isEmpty())
+         if(impFamilesList == null || impFamilesList.isEmpty())
  			return ;
  		//hamletVotersCountByGender = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublicationAndGender(publicationDateId,voterIds);
  		
@@ -4802,7 +4804,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 		
 		
 		int fromIndex = 0;
-		int toIndex = 999;
+		int toIndex = 1000;
 		if(voterIdsList.size() >= 1000){
 		while(fromIndex <= toIndex)
 		{
@@ -4811,7 +4813,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			fromIndex += 1000;
 			toIndex += 1000;
 			if(toIndex >= voterIdsList.size())
-				toIndex = voterIdsList.size()-1;
+				toIndex = voterIdsList.size();
 		}
 		}
 		else
@@ -12832,7 +12834,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				if(voterIds.size() > 1000)
 				{
 					int fromIndex = 0;
-					int toIndex = 999;
+					int toIndex = 1000;
 					while(fromIndex <= toIndex)
 					{
 						List<Object[]> tFList = boothPublicationVoterDAO.getFamilyDetailsForHamlet(userId,voterIds.subList(fromIndex,toIndex),publicationDateId,query);
@@ -12840,7 +12842,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 						fromIndex += 1000;
 						toIndex += 1000;
 						if(toIndex >= voterIds.size())
-							toIndex = voterIds.size()-1;
+							toIndex = voterIds.size();
 					}
 				}
 				else
@@ -13121,9 +13123,9 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			
 			List<Long> hamlets = userVoterDetailsDAO.getUserHamletsByPanchayatId(userId ,id );
 			
-             List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
-			
-			impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndVoters(publicationDateId,voterIds);
+             //List<Long> voterIds = boothPublicationVoterDAO.getVoterIdsForuserByHamletIds(userId , hamlets);
+             
+			impFamilesList = boothPublicationVoterDAO.getImpFamilesForPanchayatByPublicationIdAndVoters(publicationDateId,userId,"HAMLET",hamlets);
 			
 			
 			
@@ -13505,10 +13507,10 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			
 			List<?> voterIds= null;//	userVoterDetailsDAO.getVotersIdsByHamletId(hamletId,userId);
 			
-			voterIds  =   boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(hamletId, userId,(String) m.get(type));
+			/*voterIds  =   boothPublicationVoterDAO.getVoterIdsBasedOnHamletId(hamletId, userId,(String) m.get(type));
 			   if(voterIds == null || voterIds.size()==0)
-				   return new ArrayList<VotersDetailsVO>();
-			List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,voterIds);
+				   return new ArrayList<VotersDetailsVO>();*/
+			List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,hamletId, userId,(String) m.get(type));
 			if(filter == null || filter.size()==0)
 				   return new ArrayList<VotersDetailsVO>();
 		    	
@@ -13764,15 +13766,18 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		         try{
 		        	 List<Object[]> VotersCont = new ArrayList<Object[]>(0);
 		        	 int fromIndex = 0;
-		        	 int toIndex = 999;
+		        	 int toIndex = 1000;
 		        	 if(voterIdList.size() >= 1000)
 		        	 {
+		        		 while(fromIndex <= toIndex)
+						  {
 		        		 List<Object[]> VotersContTemp = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublication(voterVO.getPublicationDateId(),voterIdList.subList(fromIndex, toIndex));
 		        		 VotersCont.addAll(VotersContTemp);
 		        		 fromIndex += 1000;
 		        		toIndex += 1000;
 		        		if(toIndex >= voterIdList.size())
-		        			toIndex = voterIdList.size()-1;
+		        			toIndex = voterIdList.size();
+						  }
 		        	 }
 		        	 else
 		        		 VotersCont = boothPublicationVoterDAO.getVotersBasedOnVoterIdsAndPublication(voterVO.getPublicationDateId(),voterIdList);
@@ -13785,13 +13790,14 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		     		  
 		     		  if(votersCount[0] != null){
 		     			  if(votersCount[1].equals("F"))
-		   	    		femaleVotersCount = (Long)votersCount[0];
+		   	    		     femaleVotersCount = femaleVotersCount+(Long)votersCount[0];
 		     			  else
-		     				 maleVotersCount = (Long)votersCount[0];
+		     				 maleVotersCount = maleVotersCount+(Long)votersCount[0];
 		   	    	}
 		     	    	
-		     	    		totalCount = femaleVotersCount + maleVotersCount;
+		     	    		
 		     	   }
+		     	  totalCount = femaleVotersCount + maleVotersCount;
 		     	}
 		     		votersInfoForMandalVO = new VotersInfoForMandalVO();
 		     	    votersInfoForMandalVO.setTotalMaleVoters(maleVotersCount.toString());
@@ -13969,13 +13975,13 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			List<VotersInfoForMandalVO> votersInfoForMandalVOList = new ArrayList<VotersInfoForMandalVO>();
 			   
 			
-			
+			/*
 			   List<?> voterIds=	userVoterDetailsDAO.getVotersIdsByHamletId(hamletId,userId,type);
 			   
 			   if(voterIds == null || voterIds.size()==0)
-				   return ;
-					
-					List<?> filter =   userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,voterIds);
+				   return ;*/
+			   
+					List<?> filter =   userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,hamletId,userId,type);
 					if(filter == null || filter.size()==0)
 						   return ;
 			
@@ -14255,6 +14261,151 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			  resultReturn.add(voterDetailsVO4);
 			  resultReturn.add(voterDetailsVO);
 		   }
+		 
+		}
+		public void myBusinessDelegator1(List<Object[]> obj1, List<VotersDetailsVO> resultReturn )
+		{   
+		   
+		   int length=0;
+		   Long totalVoters= 0l;
+		   VotersDetailsVO voterDetailsVO =new VotersDetailsVO();
+		   VotersDetailsVO voterDetailsVO4 = new VotersDetailsVO();	
+		   VotersDetailsVO voterDetailsVO3 = new VotersDetailsVO();
+		   VotersDetailsVO voterDetailsVO2 = new VotersDetailsVO();
+		   VotersDetailsVO voterDetailsVO1 = new VotersDetailsVO();
+		   for(Object[] obj:obj1){
+		   
+			 length=obj.length;
+			
+			
+			//above 60 age realated Data
+			 voterDetailsVO.setTotalVoters(voterDetailsVO.getTotalVoters() != null?voterDetailsVO.getTotalVoters()+(Long)obj[length-1]:(Long)obj[length-1]);
+			 voterDetailsVO.setTotalUnknownVoters(voterDetailsVO.getTotalUnknownVoters() != null?voterDetailsVO.getTotalUnknownVoters()+(Long)obj[length-6]:(Long)obj[length-6]);
+			 voterDetailsVO.setTotalMaleVoters(voterDetailsVO.getTotalMaleVoters() != null? voterDetailsVO.getTotalMaleVoters()+(Long)obj[length-7]:(Long)obj[length-7]);
+			 voterDetailsVO.setTotalFemaleVoters(voterDetailsVO.getTotalFemaleVoters() != null ?voterDetailsVO.getTotalFemaleVoters()+(Long)obj[length-8]:(Long)obj[length-8]);
+			 
+			 
+                //46-50 age realated Data
+			 voterDetailsVO4.setTotalVoters(voterDetailsVO4.getTotalVoters() != null?voterDetailsVO4.getTotalVoters()+(Long)obj[length-2]:(Long)obj[length-2]);
+			 voterDetailsVO4.setTotalUnknownVoters(voterDetailsVO4.getTotalUnknownVoters() != null?voterDetailsVO4.getTotalUnknownVoters()+(Long)obj[length-9]:(Long)obj[length-9]);
+			 voterDetailsVO4.setTotalMaleVoters(voterDetailsVO4.getTotalMaleVoters() != null? voterDetailsVO4.getTotalMaleVoters()+(Long)obj[length-10]:(Long)obj[length-10]);
+			 voterDetailsVO4.setTotalFemaleVoters(voterDetailsVO4.getTotalFemaleVoters() != null ?voterDetailsVO4.getTotalFemaleVoters()+(Long)obj[length-11]:(Long)obj[length-11]);
+			 
+			   	
+		        //36-45 age realated Data
+			 
+			              voterDetailsVO3.setTotalVoters(voterDetailsVO3.getTotalVoters() != null?voterDetailsVO3.getTotalVoters()+(Long)obj[length-3]:(Long)obj[length-3]);
+			 			 voterDetailsVO3.setTotalUnknownVoters(voterDetailsVO3.getTotalUnknownVoters() != null?voterDetailsVO3.getTotalUnknownVoters()+(Long)obj[length-12]:(Long)obj[length-12]);
+						 voterDetailsVO3.setTotalMaleVoters(voterDetailsVO3.getTotalMaleVoters() != null? voterDetailsVO3.getTotalMaleVoters()+(Long)obj[length-13]:(Long)obj[length-13]);
+						 voterDetailsVO3.setTotalFemaleVoters(voterDetailsVO3.getTotalFemaleVoters() != null ?voterDetailsVO3.getTotalFemaleVoters()+(Long)obj[length-14]:(Long)obj[length-14]);
+						 
+						 	
+						//26-35 age realated Data	
+						 voterDetailsVO2.setTotalVoters(voterDetailsVO2.getTotalVoters() != null?voterDetailsVO2.getTotalVoters()+(Long)obj[length-4]:(Long)obj[length-4]);
+						 voterDetailsVO2.setTotalUnknownVoters(voterDetailsVO2.getTotalUnknownVoters() != null?voterDetailsVO2.getTotalUnknownVoters()+(Long)obj[length-15]:(Long)obj[length-15]);
+						 voterDetailsVO2.setTotalMaleVoters(voterDetailsVO2.getTotalMaleVoters() != null? voterDetailsVO2.getTotalMaleVoters()+(Long)obj[length-16]:(Long)obj[length-16]);
+						 voterDetailsVO2.setTotalFemaleVoters(voterDetailsVO2.getTotalFemaleVoters() != null ?voterDetailsVO2.getTotalFemaleVoters()+(Long)obj[length-17]:(Long)obj[length-17]);
+						 
+						 	
+		             //18-25 age realated Data				 
+						 voterDetailsVO1.setTotalVoters(voterDetailsVO1.getTotalVoters() != null?voterDetailsVO1.getTotalVoters()+(Long)obj[length-5]:(Long)obj[length-5]);
+						 voterDetailsVO1.setTotalUnknownVoters(voterDetailsVO1.getTotalUnknownVoters() != null?voterDetailsVO1.getTotalUnknownVoters()+(Long)obj[length-18]:(Long)obj[length-18]);
+						 voterDetailsVO1.setTotalMaleVoters(voterDetailsVO1.getTotalMaleVoters() != null? voterDetailsVO1.getTotalMaleVoters()+(Long)obj[length-19]:(Long)obj[length-19]);
+						 voterDetailsVO1.setTotalFemaleVoters(voterDetailsVO1.getTotalFemaleVoters() != null ?voterDetailsVO1.getTotalFemaleVoters()+(Long)obj[length-20]:(Long)obj[length-20]);
+						 
+						  totalVoters=totalVoters+(Long)obj[0];
+		   }	 
+						  long maleVoters =0; 
+						  long femaleVoters =0; 
+						  long totalVotersCase=0;
+						  
+						 if( voterDetailsVO.getTotalVoters() != 0){
+							 maleVoters=(long)voterDetailsVO.getTotalMaleVoters();
+							 femaleVoters=(long)voterDetailsVO.getTotalFemaleVoters();
+							 totalVotersCase=voterDetailsVO.getTotalVoters();
+							 voterDetailsVO.setTotalMaleVotersPercent((float) (maleVoters*100f/ totalVotersCase ));
+							 voterDetailsVO.setTotalFemaleVotersPercent((float)(femaleVoters *100f/ totalVotersCase ));
+							  }else{
+								  voterDetailsVO.setTotalMaleVotersPercent(0.0f);
+								  voterDetailsVO.setTotalFemaleVotersPercent(0.0f);
+							}
+			
+						 if( voterDetailsVO4.getTotalVoters() != 0){
+							 maleVoters=(long)voterDetailsVO4.getTotalMaleVoters();
+							 femaleVoters=(long)voterDetailsVO4.getTotalFemaleVoters();
+							 totalVotersCase=voterDetailsVO4.getTotalVoters();
+							 voterDetailsVO4.setTotalMaleVotersPercent((float) (maleVoters*100f/ totalVotersCase ));
+							 voterDetailsVO4.setTotalFemaleVotersPercent((float)(femaleVoters *100f/ totalVotersCase ));
+							  }else{
+								  voterDetailsVO4.setTotalMaleVotersPercent(0.0f);
+								  voterDetailsVO4.setTotalFemaleVotersPercent(0.0f);
+							}
+						 if( voterDetailsVO3.getTotalVoters() != 0){
+							 maleVoters=(long)voterDetailsVO3.getTotalMaleVoters();
+							 femaleVoters=(long)voterDetailsVO3.getTotalFemaleVoters();
+							 totalVotersCase=voterDetailsVO3.getTotalVoters();
+							 voterDetailsVO3.setTotalMaleVotersPercent((float) (maleVoters*100f/ totalVotersCase ));
+							 voterDetailsVO3.setTotalFemaleVotersPercent((float)(femaleVoters *100f/ totalVotersCase ));
+							  }else{
+								  voterDetailsVO3.setTotalMaleVotersPercent(0.0f);
+								  voterDetailsVO3.setTotalFemaleVotersPercent(0.0f);
+							}
+						 if(
+								 voterDetailsVO2.getTotalVoters() != 0){
+							 maleVoters=(long)voterDetailsVO2.getTotalMaleVoters();
+							 femaleVoters=(long)voterDetailsVO2.getTotalFemaleVoters();
+							 totalVotersCase=voterDetailsVO2.getTotalVoters();
+							 voterDetailsVO2.setTotalMaleVotersPercent((float) (maleVoters*100f/ totalVotersCase ));
+							 voterDetailsVO2.setTotalFemaleVotersPercent((float)(femaleVoters *100f/ totalVotersCase ));
+							  }else{
+								  voterDetailsVO2.setTotalMaleVotersPercent(0.0f);
+								  voterDetailsVO2.setTotalFemaleVotersPercent(0.0f);
+							}
+						 if( voterDetailsVO1.getTotalVoters() != 0){
+							 maleVoters=(long)voterDetailsVO1.getTotalMaleVoters();
+							 femaleVoters=(long)voterDetailsVO1.getTotalFemaleVoters();
+							 totalVotersCase=voterDetailsVO1.getTotalVoters();
+							 voterDetailsVO1.setTotalMaleVotersPercent((float) (maleVoters*100f/ totalVotersCase ));
+							 voterDetailsVO1.setTotalFemaleVotersPercent((float)(femaleVoters *100f/ totalVotersCase ));
+							  }else{
+								  voterDetailsVO1.setTotalMaleVotersPercent(0.0f);
+								  voterDetailsVO1.setTotalFemaleVotersPercent(0.0f);
+							}	 
+						 
+	//	List<Long>	voterIds =(List<Long>)(List<?>) boothPublicationVoterDAO.getVoterIdsBasedOnHamletId((Long)obj[0], userId);
+			
+			
+			
+		
+			
+			//voterDetailsVO.setLocalityName(obj[1].toString());
+			
+		
+			
+			//voterDetailsVO.setTotalVoters(totalVoters);
+			
+		
+			
+			
+			voterDetailsVO1.setTotalVotersPercent(voterDetailsVO1.getTotalVoters() != null ? (float)voterDetailsVO1.getTotalVoters()*100f/totalVoters : 0.0f);
+			voterDetailsVO2.setTotalVotersPercent(voterDetailsVO2.getTotalVoters() != null ? ((float)voterDetailsVO2.getTotalVoters()*100f/totalVoters):0.0f);
+			voterDetailsVO3.setTotalVotersPercent(voterDetailsVO3.getTotalVoters() != null ? ((float)voterDetailsVO3.getTotalVoters()*100f/totalVoters):0.0f);
+			voterDetailsVO4.setTotalVotersPercent(voterDetailsVO4.getTotalVoters() != null ? ((float)voterDetailsVO4.getTotalVoters()*100f/totalVoters) :0.0f);
+			voterDetailsVO.setTotalVotersPercent(voterDetailsVO.getTotalVoters() != null?  ((float)voterDetailsVO.getTotalVoters()*100f/totalVoters):0.0f);
+			
+			voterDetailsVO1.setAgeRange(IConstants.AGE18to25);
+			voterDetailsVO2.setAgeRange(IConstants.AGE26to35);
+			voterDetailsVO3.setAgeRange(IConstants.AGE36to45);
+			voterDetailsVO4.setAgeRange(IConstants.AGE45to60);
+			voterDetailsVO.setAgeRange(IConstants.Above60);
+			
+			
+			  resultReturn.add(voterDetailsVO1);
+			  resultReturn.add(voterDetailsVO2);
+			  resultReturn.add(voterDetailsVO3);
+			  resultReturn.add(voterDetailsVO4);
+			  resultReturn.add(voterDetailsVO);
+		   
 		 
 		}
 		public void helperBusinessDelegator(List<Object[]> hamlets,List< VotersDetailsVO> boothVotersList){

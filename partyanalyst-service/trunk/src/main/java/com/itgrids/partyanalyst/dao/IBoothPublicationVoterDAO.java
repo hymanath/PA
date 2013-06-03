@@ -209,7 +209,7 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Object[]> getAllVoterDetailsByPublicationAndVoterId(Long publicationDateId , List<Long> voterIds);
 	
-	public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndVoters(Long publicationDateId , List<Long> voterIds);
+	public List<Object[]> getImpFamilesForPanchayatByPublicationIdAndVoters(Long publicationDateId ,Long userId,String type,List<Long> ids);
 	
 	public List<Object[]> getVoterDetailsByVoterIds(List<Long> voterIds,Long publicationDateId);
 	
