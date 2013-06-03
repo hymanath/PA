@@ -5203,6 +5203,12 @@
 		<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		
+		<action name="getVotersCountForPartyByCustomGroupIdAction" class="customVoterGroupAnalysisAction" method="getVotersCountForPartyByCustomGroup">
+		  <result type="json" name="success">
+		   <param name="root">voterCastInfoVO</param>
+		  </result>
+		</action>
+
 		<action name="getunMappedBoothsAction" class="validationToolsAction" method="AjaxHandler">
 		 <result type="json" name="success">
 		   <param name="root">unMappedBoothsList</param>
