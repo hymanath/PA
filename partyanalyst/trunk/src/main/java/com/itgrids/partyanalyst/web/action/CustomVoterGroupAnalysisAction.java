@@ -352,7 +352,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			Log.error("Exception Occured in getVoterDetailsForCustomGroup() method of CustomVoterGroupAnalysis Action", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -360,7 +360,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	public String getVoterDataForCustomGroup()
 	{
 		try {
-			LOG.debug("Entered into the getvoterData() method in VotersEditAction");
+			LOG.debug("Entered into the getVoterDataForCustomGroup() method in VotersEditAction");
 			//jObj = new JSONObject(param);
 			session = request.getSession();
 			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
@@ -405,7 +405,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			}
 			
 		} catch (Exception e) {
-			LOG.error("Error occured in the getvoterData() method in VotersEditAction", e);
+			LOG.error("Error occured in the getVoterDataForCustomGroup() method in customVoterGroupAnalysis", e);
 		}
 	   return Action.SUCCESS;
 	}
@@ -428,7 +428,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			Log.error("Exception Occured in getTotalVotersInfo() method of customVoterGroup analysis Action ", e);
 		}
 		 return Action.SUCCESS;
 	}
@@ -448,7 +448,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			Log.error("Exception Occured in getInfluencingPeopleCount() of customVoterGroupAnalysis Action", e);
 		}
 		 return Action.SUCCESS;
 	}
@@ -457,7 +457,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	public String getVotersDetails()
 	{
 		try {
-			LOG.debug("Entered Into getInfluencingPeopleVotersDetails() method in InflencingCadreCountsDisplayAction Class");
+			LOG.debug("Entered Into getVotersDetails() method in InflencingCadreCountsDisplayAction Class");
 			HttpSession session = request.getSession();
 			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 			if(user == null)
