@@ -35,6 +35,7 @@
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="userAddressDAO" ref="userAddressDAO"></property>
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
@@ -1451,6 +1452,7 @@
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="customVoterDAO" ref="customVoterDAO" />
 		<property name="customVoterGroupDAO" ref="customVoterGroupDAO"></property>
+		<property name="userAddressDAO" ref="userAddressDAO"></property>
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">
