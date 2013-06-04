@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IQueryTempDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
@@ -72,6 +73,7 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.QueryTemp;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
@@ -116,7 +118,18 @@ public class VoterReportService implements IVoterReportService{
 	private IDistrictDAO districtDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private ITehsilDAO tehsilDAO;
+	private IUserAddressDAO userAddressDAO;
 	
+	
+	
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+
 	public IQueryTempDAO getQueryTempDAO() {
 		return queryTempDAO;
 	}
@@ -2444,12 +2457,19 @@ public class VoterReportService implements IVoterReportService{
 						voterVO.setAge(influencingPeople.getVoter().getAge());
 						voterVO.setHouseNo(influencingPeople.getVoter().getHouseNo());
 						voterVO.setRelativeFirstName(influencingPeople.getVoter().getRelativeName());
-						voterVO.setMobileNo(influencingPeople.getVoter().getMobileNo());
+						if(influencingPeople.getCaste()!=null){
+							voterVO.setCast(getInfluencingPeopleCasteCategory(influencingPeople.getCaste()));
+						}
+						voterVO.setMobileNo(influencingPeople.getVoter().getMobileNo()!=null?influencingPeople.getVoter().getMobileNo():"");
+						if(voterVO.getMobileNo().length()==0){
+							voterVO.setMobileNo(influencingPeople.getPhoneNo()!=null?influencingPeople.getPhoneNo():"");
+						}
+						
 						++count;
 						voterVO.setTotalVoters(totalRecords);
 						voterVO.setInfluencingRange(influencingPeople.getInfluencingScope());
 						voterVO.setInfluencingRegion(getRegionNameBasedOnScope(influencingPeople.getInfluencingScope(),influencingPeople.getInfluencingScopeValue()));
-						if(type.equalsIgnoreCase("booth"))
+						/*if(type.equalsIgnoreCase("booth"))
 						{
 							Booth booth = boothDAO.get(id);
 							voterVO.setLocalArea("BOOTH - " + booth.getPartNo());
@@ -2465,7 +2485,33 @@ public class VoterReportService implements IVoterReportService{
 						else if(type.equalsIgnoreCase("customWard"))
 						{
 							voterVO.setLocalArea(constituencyDAO.get(id).getName().toString());
+						}*/
+						
+						StringBuilder location=new StringBuilder();
+						//voterVO.setLocalArea(name);
+						UserAddress address=userAddressDAO.get(influencingPeople.getUserAddress().getUserAddressId());
+						if(address!=null){
+							if(!type.equalsIgnoreCase("booth")){
+								if(address.getHamlet()!=null)
+									location.append(address.getHamlet().getHamletName()+"(Hamlet) ");
+							}
+							if(address.getBooth()!=null){
+								Booth booth = boothDAO.get(address.getBooth().getBoothId());
+							
+								if(booth.getPartNo().length()!=0){
+									location.append(" BOOTH -"+booth.getPartNo());
+								}
+							}
+							if(location.length()!=0){
+								voterVO.setLocalArea(location.toString());
+							}
+							else{
+								voterVO.setLocalArea(address.getConstituency().getName()!=null?address.getConstituency().getName():"");
+							}
 						}
+						else
+							voterVO.setLocalArea(address.getConstituency().getName()!=null?address.getConstituency().getName():"");
+						
 						resultData.add(voterVO);
 				}
 			}
@@ -2492,14 +2538,18 @@ public class VoterReportService implements IVoterReportService{
 						voterVO.setVoterId((Long.valueOf(count).toString()));
 						voterVO.setFirstName(cadre.getVoter().getName());
 						voterVO.setVoterIDCardNo(cadre.getVoter().getVoterIDCardNo());
+						voterVO.setCast(cadre.getCasteCategory().getCategory());
 						voterVO.setGender(cadre.getVoter().getGender());
 						voterVO.setAge(cadre.getVoter().getAge());
 						voterVO.setHouseNo(cadre.getVoter().getHouseNo());
 						voterVO.setRelativeFirstName(cadre.getVoter().getRelativeName());
-						voterVO.setMobileNo(cadre.getVoter().getMobileNo());
+						voterVO.setMobileNo(cadre.getVoter().getMobileNo()!=null?cadre.getVoter().getMobileNo():"");
+						if(voterVO.getMobileNo().length()==0){
+							voterVO.setMobileNo(cadre.getMobile()!=null?cadre.getMobile():"");
+						}
 						++count;
 						voterVO.setTotalVoters(totalRecords);
-						if(type.equalsIgnoreCase("booth"))
+						/*if(type.equalsIgnoreCase("booth"))
 						{
 							Booth booth = boothDAO.get(id);
 							voterVO.setLocalArea("BOOTH - " + booth.getPartNo());
@@ -2515,7 +2565,31 @@ public class VoterReportService implements IVoterReportService{
 						else if(type.equalsIgnoreCase("customWard"))
 						{
 							voterVO.setLocalArea(constituencyDAO.get(id).getName().toString());
+						}*/
+						StringBuilder location=new StringBuilder();
+						//voterVO.setLocalArea(name);
+						UserAddress address=userAddressDAO.get(cadre.getPermanentAddress().getUserAddressId());
+						if(address!=null){
+							if(!type.equalsIgnoreCase("booth")){
+								if(address.getHamlet()!=null)
+									location.append(address.getHamlet().getHamletName()+"(Hamlet) ");
+							}
+							if(address.getBooth()!=null){
+								Booth booth = boothDAO.get(address.getBooth().getBoothId());
+							
+								if(booth.getPartNo().length()!=0){
+									location.append(" BOOTH -"+booth.getPartNo());
+								}
+							}
+							if(location.length()!=0){
+								voterVO.setLocalArea(location.toString());
+							}
+							else{
+								voterVO.setLocalArea(address.getConstituency().getName()!=null?address.getConstituency().getName():"");
+							}
 						}
+						else
+							voterVO.setLocalArea(address.getConstituency().getName()!=null?address.getConstituency().getName():"");
 						resultData.add(voterVO);
 				}
 			}
@@ -2779,5 +2853,24 @@ public class VoterReportService implements IVoterReportService{
 				}
 			}
 			return returnList;
+		}
+		public String getInfluencingPeopleCasteCategory(String id){
+			if(id == null){
+				return "";
+			}else if("1".equals(id)){
+				return "ST";
+			}else if("2".equals(id)){
+				return "SC";
+			}else if("3".equals(id)){
+				return "BC";
+			}else if("4".equals(id)){
+				return "Minority";
+			}else if("5".equals(id)){
+				return "General";
+			}else if("6".equals(id)){
+				return "N/A";
+			}else{
+				return "";
+			}
 		}
 }
