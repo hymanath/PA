@@ -263,11 +263,11 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	/*public void testGetAllCommentsByUserAndCategoryForANomination()
+	public void testGetAllCommentsByUserAndCategoryForANomination()
 	{
-		List result = commentCategoryCandidateDAO.getAllCommentsAndCategoryForANomination(79868l);
+		List result = commentCategoryCandidateDAO.getAllCommentsAndCategoryForANomination(81145l);
 		System.out.println(result.size());
-	}*/
+	}
 	
 	/*public void test()
 	{
@@ -299,7 +299,7 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(count);
 	}*/
 	
-	public void testGetPostedPoliticalReasonsByUserId()
+	/*public void testGetPostedPoliticalReasonsByUserId()
 	{
 		List results = commentCategoryCandidateDAO.getPostedPoliticalReasonsByUserId(1971l, 0, 10);
 		if(results != null && results.size() > 0)
@@ -311,7 +311,7 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 					System.out.println("\t" +list);
 			}
 		}
-	}
+	}*/
 	
 	
 }
