@@ -467,7 +467,15 @@ function buildCadreInfo(jsObj,results)
 	str += '			<th style="width:125px">Member Type</th>';
 	str += '			<th>:</th>';
 	str += '			<td>'+results.memberType+'</td>';
-	str += '		</tr>';	
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<th style="width:125px">Membership No</th>';
+	str += '			<th>:</th>';
+	if(results.memberShipNo != null)
+	 str += '			<td>'+results.memberShipNo+'</td>';
+	else
+	 str += '			<td></td>';
+	str +='			</tr>';
 	str += '		<tr>';
 	str += '			<th style="width:125px">Remarks</th>';
 	str += '			<th>:</th>';
