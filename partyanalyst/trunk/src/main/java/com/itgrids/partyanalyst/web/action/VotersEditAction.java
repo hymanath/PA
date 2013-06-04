@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -61,12 +62,12 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private ResultStatus resultStatus;
 	private List<VoterHouseInfoVO> votersFamilyInfo;
 	private IVoterReportService voterReportService;
-	
+	private List<VotersDetailsVO> votersDetailsVO;
 	private boolean status;
 	
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	
-	private List<SelectOptionVO> constituencyList, userAccessConstituencyList;
+	private List<SelectOptionVO> constituencyList, userAccessConstituencyList,wardsList;
 	
 	private RegionServiceDataImp regionServiceDataImp;
 	
@@ -384,6 +385,26 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 
 	public void setVoterReportService(IVoterReportService voterReportService) {
 		this.voterReportService = voterReportService;
+	}
+
+	
+	
+
+	public List<VotersDetailsVO> getVotersDetailsVO() {
+		return votersDetailsVO;
+	}
+
+	public void setVotersDetailsVO(List<VotersDetailsVO> votersDetailsVO) {
+		this.votersDetailsVO = votersDetailsVO;
+	}
+
+	
+	public List<SelectOptionVO> getWardsList() {
+		return wardsList;
+	}
+
+	public void setWardsList(List<SelectOptionVO> wardsList) {
+		this.wardsList = wardsList;
 	}
 
 	public String execute() throws Exception{
@@ -1454,4 +1475,36 @@ public String saveLocality()
 		   }
 		   return Action.SUCCESS;
 	   }
+	   
+	   public String getVotersAgeWiseDetails()
+	   {
+		   try {
+			   LOG.debug("Enterd Into getVotersAgeWiseDetails() method in VotersEditAction Class");
+				 session = request.getSession();
+				   RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				   if(user == null)
+						return "error";
+				   Long userId = user.getRegistrationID();
+				   jObj = new JSONObject(getTask());
+				   if(jObj.getString("task").equalsIgnoreCase("getBoothWiseAgeDetails"))
+				   {
+					   Long constituencyId = jObj.getLong("constituencyId");
+					   Long publicationDateId = jObj.getLong("publicationDateId");
+					   Long wardId = jObj.getLong("id");
+					   votersDetailsVO = voterReportService.getAgeWiseDetailsOfBoothsInSelectedCustomWard(wardId,userId,publicationDateId,constituencyId);
+					   return "ageDetails";
+				   }
+				   else if(jObj.getString("task").equalsIgnoreCase("getWardsList"))
+				   {
+					   Long constituencyId = jObj.getLong("constituencyId"); 
+					   
+					   wardsList = voterReportService.getTotalWardsInLocalBody(constituencyId);
+					   return "wardsList";
+				   }
+		} catch (Exception e) {
+			 LOG.error("Exception Raised in getVotersAgeWiseDetails() method in VotersEditAction Class",e);
+		   }
+		   return Action.SUCCESS;
+	   }
+
    }

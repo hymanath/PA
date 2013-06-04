@@ -5295,5 +5295,17 @@
 			</result>
 		</action>
 		
+		<action name="getVotersAgeWiseDetailsAction" class="votersEditAction" method="getVotersAgeWiseDetails">
+		 <result type="json" name="ageDetails">
+		   <param name="root">votersDetailsVO</param>
+		 </result>
+		 <result type="json" name="wardsList">
+		   <param name="root">wardsList</param>
+		 </result>
+		 <result type="json" name="error">
+				 <param name="root">"notLogged"</param>
+			</result>
+		</action>
+		
 		</package>
 </struts>      
