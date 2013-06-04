@@ -24,6 +24,7 @@ public class PartyCadreDetailsVO extends CadreBasicInformationVO implements Seri
 	private String cadreName;
 	private String taskName;
 	private String radioButtonValue;
+	private String memberShipNo;
 	
 	private List<CadreCategoryVO> cadreCasteCategory;
 	private List<CadreCategoryVO> cadreOccupation;
@@ -127,5 +128,15 @@ public class PartyCadreDetailsVO extends CadreBasicInformationVO implements Seri
 	public void setRadioButtonValue(String radioButtonValue) {
 		this.radioButtonValue = radioButtonValue;
 	}
+	
+	public String getMemberShipNo() {
+		return memberShipNo;
+	}
+	public void setMemberShipNo(String memberShipNo) {
+		this.memberShipNo = memberShipNo;
+	}
+	
+	
+	
 
 }
