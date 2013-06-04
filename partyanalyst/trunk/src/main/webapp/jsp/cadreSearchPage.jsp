@@ -364,7 +364,7 @@ function getUpdatedData(){
 
 			<table width="100%" class="cadreSearchInputTable">	
 				<tr>
-					<th style="width:210px;padding-left:17px;">Search By Cadre Name&nbsp;&nbsp;(optional)</th>
+					<th style="width:243px;padding-left:17px;">Search By Cadre Name&nbsp;&nbsp;(optional)</th>
 					<td>
 						<input type="text" id="cadreNameText"/>
 						<input type="radio" value="StartingWith" checked="checked" name="nameBasedRadio">Starting With 
@@ -372,8 +372,14 @@ function getUpdatedData(){
 						<input type="radio" value="AnyWhereInName"  name="nameBasedRadio">Any Where In Name
 					</td>
 			    </tr>
+				<tr>
+					<th style="width:243px;padding-left:17px;">Search By Membership No &nbsp;&nbsp;(optional)</th>
+					<td>
+						<input type="text" id="memberShipNoText" name ="memberShipNoText" value=""/>
+					</td>
+			    </tr>
 			</table>
-    
+
 			<table width="100%" class="cadreSearchInputTable">
 				<tr>
 					<th align="left"><font color="#FF0000"> * </font> ${windowTask} Based On</th>                

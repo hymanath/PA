@@ -593,7 +593,9 @@ function getCadresResults(btnType)
 	var locationValue = '';
 	if(!elmt)
 		return;
-	
+
+	//var REGISTRATIONNO = document.getElementById("registrationNoText").value;
+	var MEMBERSHIPNO = $("#memberShipNoText").val();
 	var countrySelectElmt = document.getElementById("countrySelectBox");
 	var stateSelectElmt = document.getElementById("stateField_s");
 	var districtSelectElmt = document.getElementById("districtField_s");
@@ -800,7 +802,7 @@ function getCadresResults(btnType)
 	var includeSenderElmtCheck = document.getElementById("smsIncludeSenderName");
 	var senderNameTextElmt = document.getElementById("senderNameText");
 	var CADRENAME = document.getElementById("cadreNameText").value;
-
+	
 	var SENDERNAME = '';
 
 	if(includeSenderElmtCheck && includeSenderElmtCheck.checked == true)
@@ -821,6 +823,7 @@ function getCadresResults(btnType)
 			socialStatusArray		: SOCIALSTATUSARRAY,
 			cadreType				: CADRETYPE,
 			cadreName				: CADRENAME,
+			memberShipNo			: MEMBERSHIPNO,
 			searchType				: SEARCHTYPE,
 			gender					: genderOption,
 			searchCriteria			: SEARCHCRITERIA,
