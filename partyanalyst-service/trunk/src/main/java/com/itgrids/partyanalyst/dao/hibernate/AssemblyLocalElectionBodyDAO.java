@@ -144,7 +144,7 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 	}
 
 	/**
-	 * This method Is Used To get the details of the Corpration or muncipality baseg on local election body id
+	 * This method Is Used To get the details of the Corpration or muncipality based on local election body id
 	 * @author PrasadThiragabathina
 	 * @date 26/02/2013
 	 * @param Long localElectionBodyId
@@ -164,6 +164,14 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		query.setParameter(0, localElectionBodyId);
 		query.setParameter(1, constituencyId);
 		
+		return (Long)query.uniqueResult();
+	}
+	
+	public Long getLocalBodyIdBasedOnConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select model.localElectionBody.localElectionBodyId from " +
+				" AssemblyLocalElectionBody  model where model.constituency.constituencyId = :constituencyId ");
+		query.setParameter("constituencyId", constituencyId);
 		return (Long)query.uniqueResult();
 	}
 }

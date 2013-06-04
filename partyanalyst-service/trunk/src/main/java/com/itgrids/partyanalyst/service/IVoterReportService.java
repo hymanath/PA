@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VoterReportVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
 public interface IVoterReportService {
@@ -69,4 +70,8 @@ public interface IVoterReportService {
 	 public List<InfluencingPeopleBeanVO> getcountForSelectedTypeInHamlet(Long hamletId,Long userId,String selLevel);
 	 
 	 public String getRegionNameBasedOnScope(String infScope,String regionId);
+	 
+	 public List<VotersDetailsVO> getAgeWiseDetailsOfBoothsInSelectedCustomWard(Long wardId,Long userId,Long publicationDateId,Long constituencyId);
+	 
+	 public List<SelectOptionVO> getTotalWardsInLocalBody(Long constituencyId);
 }
