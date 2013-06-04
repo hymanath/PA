@@ -389,8 +389,17 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(params[0]+" "+params[1]);
 	}*/
 	
-	public void testGetConstituencyNameByConstituencyId()
+	/*public void testGetConstituencyNameByConstituencyId()
 	{
 		System.out.println(constituencyDAO.getConstituencyNameByConstituencyId(232l));
+	}*/
+	
+	public void test()
+	{
+		List<Object[]> values = constituencyDAO.getWardsInALocalBody(83l);
+		
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1]);
+		}
 	}
 }

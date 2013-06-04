@@ -79,12 +79,12 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 
 		
 	}*/
-	public void testGetAssemblyLocalElectionBodyId()
+	/*public void testGetAssemblyLocalElectionBodyId()
 	{
 		List ids= assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(4L);
 		System.out.println(ids.size());
 		
-	}
+	}*/
 	
 	/*public void testDeleteByLocalElectionBodyAndConstituency()
 	{
@@ -107,8 +107,14 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		System.out.println(value.size());
 	}*/
 	
-	public void testGetLocalElectionBodyIdByAssemblyLocalElectionBodyId()
+	/*public void testGetLocalElectionBodyIdByAssemblyLocalElectionBodyId()
 	{
 		System.out.println(assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByAssemblyLocalElectionBodyId(123l));
+	}*/
+	
+	public void testGetLocalBodyIdBasedOnConstituencyId()
+	{
+		Long  localBodyId = assemblyLocalElectionBodyDAO.getLocalBodyIdBasedOnConstituencyId(232l);
+		System.out.println(localBodyId);
 	}
 }

@@ -1167,7 +1167,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				}else
 					
 					if(resultFor.equalsIgnoreCase("booth")){
-						getVoterDetailsForHamletsByBooths(id, votersInfoForMandalVO,publicationDateId,userId,type);
+						getVoterDetailsForHamletsByBooths(id, votersInfoForMandalVO,publicationDateId,userId,type,constituencyId);
 
 				
 					}
@@ -13568,9 +13568,32 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			List<?> filter =        userVoterDetailsDAO.getVoterIdsBasedOnVoterIdsAndPublication(publicationDateId,hamletId, userId,(String) m.get(type));
 			if(filter == null || filter.size()==0)
 				   return new ArrayList<VotersDetailsVO>();
-		    	
+			List<Object[]> hamlets = new ArrayList<Object[]>();
+			int fromIndex = 0;
+			  int toIndex = 1000;
 			//List<Object[]> hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter);
-			  List<Object[]> hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+			if(filter.size() > 1000)
+			{
+				while(fromIndex <= toIndex)
+				  {
+					List<Object[]> hamletsList = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter.subList(fromIndex, toIndex),IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+					if(hamletsList != null)
+					{
+						hamlets.addAll(hamletsList);
+					}
+					
+					fromIndex += 1000;
+					toIndex   += 1000;
+					if(toIndex > filter.size())
+						toIndex = filter.size();	
+				  }
+				
+			}
+			else
+			{
+				hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+			}
+			   
 		   
 			
 			//Long [] hamlets =(Long[]) hamlets;
@@ -14025,6 +14048,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				return null;
 			}
 		}
+	
 		public void getVoterDetailsForLocalAreasInHamlet(Long hamletId,VotersInfoForMandalVO votersInfoForMandalVO1,Long publicationDateId, Long userId,String type)
 		{  
 			List<VotersInfoForMandalVO> votersInfoForMandalVOList = new ArrayList<VotersInfoForMandalVO>();
@@ -14041,9 +14065,29 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 						   return ;
 			
 			List<Long> hamletIds = new ArrayList<Long>();
-			
-			
-			List<Object[]> hamletsList = userVoterDetailsDAO.getVotersCountByGenderForLocalAreas(filter,userId);
+			List<Object[]> hamletsList = new ArrayList<Object[]>();
+			  int fromIndex = 0;
+			  int toIndex = 1000;
+			  if(filter.size() > 1000)
+			  {
+				  while(fromIndex <= toIndex)
+				  {
+					 List<Object[]> hamlets = userVoterDetailsDAO.getVotersCountByGenderForLocalAreas(filter.subList(fromIndex, toIndex),userId);
+					 if(hamlets != null)
+					 {
+						 hamletsList.addAll(hamlets);
+					 }
+					 fromIndex += 1000;
+					  toIndex += 1000;
+					  if(toIndex >= filter.size())
+						toIndex = filter.size();
+				  }
+			  }
+			  else
+			  {
+				  hamletsList = userVoterDetailsDAO.getVotersCountByGenderForLocalAreas(filter,userId); 
+			  }
+			  
 			
 			int totalFemaleVoters = 0;
 			int totalMaleVoters = 0;
@@ -14748,7 +14792,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		}
 		
 		
-		public void getVoterDetailsForHamletsByBooths(Long hamletId,VotersInfoForMandalVO votersInfoForMandalVO1,Long publicationDateId, Long userId,String type)
+		public void getVoterDetailsForHamletsByBooths(Long hamletId,VotersInfoForMandalVO votersInfoForMandalVO1,Long publicationDateId, Long userId,String type,Long constituencyId)
 		{  
 			
 			
@@ -14756,7 +14800,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			   
 			
 			
-			List<Object[]> hamletsList =	userVoterDetailsDAO.getTotalVotersCountInABoothForHamlet(userId,hamletId,publicationDateId,type);
+			List<Object[]> hamletsList =	userVoterDetailsDAO.getTotalVotersCountInABoothForHamlet(userId,hamletId,publicationDateId,type,constituencyId);
 					
 			//int totalFemaleVoters = 0;
 			//int totalMaleVoters = 0;

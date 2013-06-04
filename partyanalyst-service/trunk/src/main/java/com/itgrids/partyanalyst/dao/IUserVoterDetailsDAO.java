@@ -86,7 +86,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	 
 	 public List<Object[]> getTotalVotersCountInABooth(Long userId ,Long boothId,Long publicationDateId);
 	 public List<Long> getUserHamletsByBoothId(Long userId , Long boothId , Long pubId);
-	 public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long id,Long publicationDateId,String type);
+	 public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long id,Long publicationDateId,String type,Long constituencyId);
 	 public List<Long> getUserBoothsByHamletId(Long userId , Long hamletId , Long pubId , String condition);
 	 public List<Voter> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId,long publicationId);
 	 public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId,String type );
@@ -143,6 +143,14 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getVotersCountBasedOnGenderForSelectedWard(Long userId,Long customWardId,Long publicationDateId);
 	
 	public List<Object> getDistinctWardsOfLocalElectionBodyId(Long id,Long publicationDateId,Long userId);
+	
+	public List<Object[]> getAgeWiseDetailsInSelectdCustomWard(Long wardId,Long userId,Long publicationDateId,Long minAge,Long maxAge,Long constituencyId);
+	
+	public List<Object[]> getAbove60AgeWiseDetailsInSelectdCustomWard(Long wardId,Long userId,Long publicationDateId,Long age,Long constituencyId);
+	
+	public List<Long> getBoothsInACustomWard(Long wardId,Long userId,Long publicationDateId,Long constituencyId);
 
+	public List<Object[]> getCountDetailsInSelectdCustomWard(List<Long> boothIds,Long userId,Long publicationDateId);
+	
 	
 }

@@ -169,4 +169,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	
 	public String getConstituencyNameByConstituencyId(Long constituencyId);
 	
+	public List<Object[]> getWardsInALocalBody(Long localBodyId);
+	
 }

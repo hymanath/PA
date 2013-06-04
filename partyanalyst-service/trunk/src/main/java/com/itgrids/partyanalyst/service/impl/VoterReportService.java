@@ -1,12 +1,14 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -52,6 +54,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VoterReportVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -2600,5 +2603,181 @@ public class VoterReportService implements IVoterReportService{
 				return booth.getPartNo().toString()+" Booth";
 			}
 		 return null;
+		}
+		/**
+		 * This Service is Used For Getting All Custom Wards Age Wise Details
+		 * @param Long wardId
+		 * @param Long userId
+		 * @param Long publicationDateId
+		 * @param Long constituencyId
+		 * @return List<VotersDetailsVO> returnList
+		 */
+		public List<VotersDetailsVO> getAgeWiseDetailsOfBoothsInSelectedCustomWard(Long wardId,Long userId,Long publicationDateId,Long constituencyId)
+		{
+			List<VotersDetailsVO> returnList = new ArrayList<VotersDetailsVO>();
+			VotersDetailsVO votersDetailsVO = null;
+			Map<Long ,VotersDetailsVO> ageWiseDetails = new HashMap<Long, VotersDetailsVO>();
+			/*List<Long> boothsIds = new ArrayList<Long>();
+			List<Long> boothIds = userVoterDetailsDAO.getBoothsInACustomWard(wardId,userId,publicationDateId,constituencyId);
+			for (Long booths : boothIds) {
+				boothsIds.add(booths);
+			}*/
+			
+			List<Object[]> ageDeatilsBt18To25 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,18l,25l,constituencyId);
+			if(ageDeatilsBt18To25 != null && ageDeatilsBt18To25.size() >0)
+			{
+				for (Object[] parms : ageDeatilsBt18To25) {
+					votersDetailsVO = ageWiseDetails.get((Long)parms[0]);
+					if(votersDetailsVO == null)
+					{
+						votersDetailsVO = new VotersDetailsVO();
+						ageWiseDetails.put((Long)parms[0], votersDetailsVO);
+					}
+					//votersDetailsVO.setAgeRange("18-25");
+					votersDetailsVO.setId((Long)parms[0]);
+					votersDetailsVO.setBoothName("Booth -" +parms[2]);
+					votersDetailsVO.setTotalVotersFor18To25((Long)parms[1]);
+					//returnList.add(votersDetailsVO);
+				}
+			}
+			
+			List<Object[]> ageDeatilsB26To35 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,26l,35l,constituencyId);
+			if(ageDeatilsB26To35 != null && ageDeatilsB26To35.size() >0)
+			{
+				for (Object[] parms : ageDeatilsB26To35) {
+					votersDetailsVO = ageWiseDetails.get((Long)parms[0]);
+					if(votersDetailsVO == null)
+					{
+						votersDetailsVO = new VotersDetailsVO();
+						ageWiseDetails.put((Long)parms[0], votersDetailsVO);
+					}
+					//votersDetailsVO.setAgeRange("26-35");
+					votersDetailsVO.setId((Long)parms[0]);
+					votersDetailsVO.setBoothName("Booth -" +parms[2]);
+					votersDetailsVO.setTotalVotersFor26To35((Long)parms[1]);
+					//returnList.add(votersDetailsVO);
+				}
+			}
+			
+			List<Object[]> ageDeatilsB36To45 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,36l,45l,constituencyId);
+			if(ageDeatilsB36To45 != null && ageDeatilsB36To45.size() >0)
+			{
+				for (Object[] parms : ageDeatilsB36To45) {
+					votersDetailsVO = ageWiseDetails.get((Long)parms[0]);
+					if(votersDetailsVO == null)
+					{
+						votersDetailsVO = new VotersDetailsVO();
+						ageWiseDetails.put((Long)parms[0], votersDetailsVO);
+					}
+					//votersDetailsVO.setAgeRange("36-45");
+					votersDetailsVO.setId((Long)parms[0]);
+					votersDetailsVO.setBoothName("Booth -" +parms[2]);
+					votersDetailsVO.setTotalVotersFor36To45((Long)parms[1]);
+					//returnList.add(votersDetailsVO);
+				}
+			}
+			
+			List<Object[]> ageDeatilsBt46To60 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,46l,60l,constituencyId);
+			if(ageDeatilsBt46To60 != null && ageDeatilsBt46To60.size() >0)
+			{
+				for (Object[] parms : ageDeatilsBt46To60) {
+					votersDetailsVO = ageWiseDetails.get((Long)parms[0]);
+					if(votersDetailsVO == null)
+					{
+						votersDetailsVO = new VotersDetailsVO();
+						ageWiseDetails.put((Long)parms[0], votersDetailsVO);
+					}
+					//votersDetailsVO.setAgeRange("46-60");
+					votersDetailsVO.setId((Long)parms[0]);
+					votersDetailsVO.setBoothName("Booth -" +parms[2]);
+					votersDetailsVO.setTotalVotersFor46To60((Long)parms[1]);
+					//returnList.add(votersDetailsVO);
+				}
+			}
+			
+			List<Object[]> ageDeatilsabove60 = userVoterDetailsDAO.getAbove60AgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,61l,constituencyId);
+			if(ageDeatilsabove60 != null && ageDeatilsabove60.size() >0)
+			{
+				for (Object[] parms : ageDeatilsabove60) {
+					votersDetailsVO = ageWiseDetails.get((Long)parms[0]);
+					if(votersDetailsVO == null)
+					{
+						votersDetailsVO = new VotersDetailsVO();
+						ageWiseDetails.put((Long)parms[0], votersDetailsVO);
+					}
+					//votersDetailsVO.setAgeRange("above60");
+					votersDetailsVO.setId((Long)parms[0]);
+					votersDetailsVO.setBoothName("Booth -" +parms[2]);
+					votersDetailsVO.setTotalVotersForAbove60((Long)parms[1]);
+					//returnList.add(votersDetailsVO);
+				}
+			}
+			
+			if(ageWiseDetails.size() > 0)
+			{
+				for (VotersDetailsVO  objects : ageWiseDetails.values()) {
+					//Long totalVoters = objects.getTotalVotersFor18To25()+objects.getTotalVotersFor26To35()+objects.getTotalVotersFor36To45()+objects.getTotalVotersFor46To60()+objects.getTotalVotersForAbove60();
+					objects.setBoothName(objects.getBoothName());
+					//objects.setAgeRange(objects.getAgeRange());
+					objects.setTotalVotersFor18To25(objects.getTotalVotersFor18To25()   != null ? Long.valueOf(objects.getTotalVotersFor18To25())  :0l);
+					objects.setTotalVotersFor26To35(objects.getTotalVotersFor26To35()   != null ? Long.valueOf(objects.getTotalVotersFor26To35())  :0l);
+					objects.setTotalVotersFor36To45(objects.getTotalVotersFor36To45()   != null ? Long.valueOf(objects.getTotalVotersFor36To45())  :0l);
+					objects.setTotalVotersFor46To60(objects.getTotalVotersFor46To60()   != null ? Long.valueOf(objects.getTotalVotersFor46To60())  :0l);
+					objects.setTotalVotersForAbove60(objects.getTotalVotersForAbove60() != null ? Long.valueOf(objects.getTotalVotersForAbove60()) :0l);
+					objects.setId(objects.getId());
+					Long totalVoters = objects.getTotalVotersFor18To25()+objects.getTotalVotersFor26To35()+objects.getTotalVotersFor36To45()+objects.getTotalVotersFor46To60()+objects.getTotalVotersForAbove60();
+					objects.setTotalVoters(totalVoters);
+					objects.setVotersPercentFor18To25(objects.getTotalVotersFor18To25()  != 0 ? roundTo2DigitsFloatValue((float)objects.getTotalVotersFor18To25() *100f/totalVoters) :"0.00");
+					objects.setVotersPercentFor26To35(objects.getTotalVotersFor26To35()  != 0 ? roundTo2DigitsFloatValue((float)objects.getTotalVotersFor26To35() *100f/totalVoters) :"0.00");
+					objects.setVotersPercentFor36To45(objects.getTotalVotersFor36To45()  != 0 ? roundTo2DigitsFloatValue((float)objects.getTotalVotersFor36To45() *100f/totalVoters) :"0.00");
+					objects.setVotersPercentFor46To60(objects.getTotalVotersFor46To60()  != 0 ? roundTo2DigitsFloatValue((float)objects.getTotalVotersFor46To60() *100f/totalVoters) :"0.00");
+					objects.setVotersPercentForAbove60(objects.getTotalVotersForAbove60()!= 0 ?roundTo2DigitsFloatValue ((float)objects.getTotalVotersForAbove60()*100f/totalVoters) :"0.00");
+					
+					returnList.add(objects);
+				}
+				Collections.sort(returnList,sortBoothIds);
+			}
+			return returnList;
+		}
+		
+		 public static Comparator<VotersDetailsVO> sortBoothIds = new Comparator<VotersDetailsVO>()
+				    {
+				   
+				        public int compare(VotersDetailsVO votersDetailsVO1, VotersDetailsVO votersDetailsVO2)
+				        {
+				            return (votersDetailsVO1.getId().intValue()) - (votersDetailsVO1.getId().intValue());
+				        }
+				    };
+		public String roundTo2DigitsFloatValue(Float number){
+			
+			NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+			f.setMaximumFractionDigits(2);  
+			f.setMinimumFractionDigits(2);
+			
+			return f.format(number);
+			
+		}
+		/**
+		 * this Service is used for Getting All Custom Wards in  Selected Muncipality
+		 * @param Long constituencyId
+		 * @return List<SelectOptionVO> returnList
+		 */
+		public List<SelectOptionVO> getTotalWardsInLocalBody(Long constituencyId)
+		{
+			List<SelectOptionVO> returnList = null;
+			SelectOptionVO  selectOptionVO = null;
+			Long localBodyId = assemblyLocalElectionBodyDAO.getLocalBodyIdBasedOnConstituencyId(constituencyId);
+			List<Object[]> wardsList = constituencyDAO.getWardsInALocalBody(localBodyId);
+			if(wardsList != null && wardsList.size() > 0)
+			{	
+				returnList = new ArrayList<SelectOptionVO>();
+				for (Object[] parms : wardsList) {
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long) parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					returnList.add(selectOptionVO);
+				}
+			}
+			return returnList;
 		}
 }

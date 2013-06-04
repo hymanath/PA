@@ -712,7 +712,7 @@ IUserVoterDetailsDAO{
 			return query.list();
 		}
 		 @SuppressWarnings("unchecked")
-		public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long id,Long publicationDateId,String type)
+		public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long id,Long publicationDateId,String type,Long constituencyId)
 			{
 				StringBuilder query = new StringBuilder();
 				query.append("select distinct concat('Booth-',model1.booth.partNo) ,SUM( CASE WHEN model1.voter.gender='F' THEN 1 ELSE 0 END) as femalecount , ");
@@ -723,11 +723,15 @@ IUserVoterDetailsDAO{
 				if(type.equalsIgnoreCase(IConstants.HAMLET))
 				 query.append(" model.hamlet.hamletId = :id ");
 				else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
-					query.append(" model.ward.constituencyId = :id ");
+					query.append(" model.ward.constituencyId = :id and model1.booth.constituency.constituencyId = :constituencyId");
 				
 				query.append(" group by model1.booth.partNo");
 				
 				Query queryObj = getSession().createQuery(query.toString()) ;
+				if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+				{
+					queryObj.setParameter("constituencyId", constituencyId);
+				}
 				queryObj.setParameter("publicationDateId", publicationDateId);
 				queryObj.setParameter("id", id);
 				queryObj.setParameter("userId", userId);
@@ -1497,6 +1501,83 @@ IUserVoterDetailsDAO{
 		query.setParameter("id", id);
 		return query.list();
 	}
+	
+	public List<Object[]> getCountDetailsInSelectdCustomWard(List<Long> boothIds,Long userId,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select count(UVD.voter.voterId),BPV.booth.boothId from UserVoterDetails UVD ,BoothPublicationVoter BPV " +
+				" where  UVD.voter.voterId = BPV.voter.voterId and  BPV.booth.boothId in (:boothIds) and " +
+				" UVD.user.userId =:userId  and BPV.booth.publicationDate.publicationDateId = :publicationDateId " +
+				"  group by BPV.booth.boothId");
+		query.setParameterList("boothIds", boothIds);
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+	}
+	/**
+	 * This DAO  is used For Getting Age Wise Details(18-25,26-35 ..) for Seleted custom ward in the Selected Muncipality
+	 * @param Long wardId
+	 * @param Long userId
+	 * @param Long publicationDateId
+	 * @param Long minAge
+	 * @param Long maxAge
+	 * @param Long constituencyId
+	 * @return List<Object[]>
+	 */
+	public List<Object[]> getAgeWiseDetailsInSelectdCustomWard(Long wardId,Long userId,Long publicationDateId,Long minAge,Long maxAge,Long constituencyId)
+	{
+		Query query = getSession().createQuery("select BPV.booth.boothId,count(UVD.voter.voterId),BPV.booth.partNo from UserVoterDetails UVD ,BoothPublicationVoter BPV " +
+				" where  UVD.voter.voterId = BPV.voter.voterId and  UVD.ward.constituencyId =:wardId and " +
+				" UVD.user.userId =:userId  and BPV.booth.publicationDate.publicationDateId =:publicationDateId " +
+				" and UVD.voter.age between :minAge and :maxAge and BPV.booth.constituency.constituencyId = :constituencyId " +
+				" group by BPV.booth.boothId order by BPV.booth.partNo ");
+		query.setParameter("wardId", wardId);
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("minAge", minAge);
+		query.setParameter("maxAge", maxAge);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	/**
+	 * This DAO  is used For Getting Age Wise Details(Above 60) for Seleted custom ward in the Selected Muncipality
+	 * @param Long wardId
+	 * @param Long userId
+	 * @param Long publicationDateId
+	 * @param Long age
+	 * @param Long constituencyId
+	 * @return List<Object[]>
+	 */
+	public List<Object[]> getAbove60AgeWiseDetailsInSelectdCustomWard(Long wardId,Long userId,Long publicationDateId,Long age,Long constituencyId)
+	{
+		Query query = getSession().createQuery("select BPV.booth.boothId,count(UVD.voter.voterId),BPV.booth.partNo from UserVoterDetails UVD ,BoothPublicationVoter BPV " +
+				" where  UVD.voter.voterId = BPV.voter.voterId and  UVD.ward.constituencyId =:wardId and " +
+				" UVD.user.userId =:userId  and BPV.booth.publicationDate.publicationDateId = :publicationDateId " +
+				" and UVD.voter.age >= :age and BPV.booth.constituency.constituencyId = :constituencyId  " +
+				" group by BPV.booth.boothId order by BPV.booth.partNo");
+		query.setParameter("wardId", wardId);
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("age", age);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	public List<Long> getBoothsInACustomWard(Long wardId,Long userId,Long publicationDateId,Long constituencyId)
+	{
+		
+		Query query = getSession().createQuery("select distinct BPV.booth.boothId from UserVoterDetails UVD ,BoothPublicationVoter BPV " +
+				" where BPV.voter.voterId = UVD.voter.voterId and UVD.ward.constituencyId = :wardId " +
+				" and UVD.user.userId =:userId and BPV.booth.publicationDate.publicationDateId = :publicationDateId " +
+				" and BPV.booth.constituency.constituencyId = :constituencyId  order by BPV.booth.boothId");
+		query.setParameter("wardId", wardId);
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	
+	
 	
 	
 }

@@ -213,7 +213,7 @@ for (Object[] objects : list) {
 			for (Long long1 : values) {
 				System.out.println(long1);
 			}
-		}*
+		}*/
 		/*public void testGetCadreDetailsForSelectedHamlet()
 		{
 			List<Cadre> values = userVoterDetailsDAO.getCadreDetailsForSelectedHamlet(28863l,1l,0,10,"asc","voterId","");
@@ -251,4 +251,40 @@ for (Object[] objects : list) {
 			List<Object> result=userVoterDetailsDAO.getDistinctWardsOfLocalElectionBodyId(83l, 8l, 1l);
 			System.out.println(result);
 		}
+		
+		public void testGetAgeWiseDetailsInSelectdCustomWard()
+		{
+			List<Long> boothids = new ArrayList<Long>();
+			boothids.add(122826l);
+			boothids.add(122829l);
+			boothids.add(122830l);
+			boothids.add(122832l);
+		
+			List<Object[]> values = userVoterDetailsDAO.getAbove60AgeWiseDetailsInSelectdCustomWard(28858l,1l,8l,61l,232l);
+			for (Object[] parms : values) {
+				System.out.println(parms[0] +":"+ parms[1]);
+			}
+		}
+		
+		/*public void testGetBoothsInACustomWard()
+		{
+			List<Long> values = userVoterDetailsDAO.getBoothsInACustomWard(28858l,1l,8l,232l);
+			
+			for (Long parms : values) {
+				System.out.println(parms);
+			}
+		}
+		*/
+		/*public void testGetCountAllVotersInACustomWard()
+		{
+			List<Long> boothids = new ArrayList<Long>();
+			boothids.add(122826l);
+			boothids.add(122829l);
+			boothids.add(122830l);
+			boothids.add(122832l);
+			List<Object[]> count = userVoterDetailsDAO.getCountDetailsInSelectdCustomWard(boothids,1l,8l);
+					for (Object[] objects : count) {
+						System.out.println(objects[0] +":"+ objects[1]);
+					}
+		}*/
 }

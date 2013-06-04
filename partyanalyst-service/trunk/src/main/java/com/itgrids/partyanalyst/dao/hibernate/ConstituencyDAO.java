@@ -568,4 +568,13 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		query.setParameter("constituencyId", constituencyId);
 		return (String) query.uniqueResult();
 	}
+	
+	public List<Object[]> getWardsInALocalBody(Long localBodyId)
+	{
+		Query query = getSession().createQuery("select model.constituencyId,model.name from Constituency model " +
+				" where model.localElectionBody.localElectionBodyId = :localBodyId");
+		query.setParameter("localBodyId", localBodyId);
+		
+		return query.list();
+	}
 }
