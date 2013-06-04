@@ -151,7 +151,9 @@ function getInfluencingPeopleVotersDetails()
 		{key:"voterId", label: "SNo",width:20},
 		{key:"firstName", label: "Name",width:80, sortable: true},
 		{key:"voterIDCardNo", label: "voter ID",sortable: true},
-		{key:"gender", label: "Gender", width:50, sortable: true},
+		{key:"partyName", label: "Party"},
+		{key:"cast", label: "Caste Group"},
+		{key:"gender", label: "Gender", width:50},
 		{key:"age", label: "Age",  width:30,sortable:true},
 		{key:"houseNo", label: "House No",width:60, sortable:true},
 		{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
@@ -171,7 +173,7 @@ function getInfluencingPeopleVotersDetails()
 		resultsList: "voterDetails",
 		fields: [
 		{key:"voterId", parser:"number"},
-		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","influencingRange","influencingRegion"],
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","influencingRange","influencingRegion","partyName","cast"],
 		metaFields: {
 		totalRecords: "voterDetailsCount" // Access to value in the server response
 		}
