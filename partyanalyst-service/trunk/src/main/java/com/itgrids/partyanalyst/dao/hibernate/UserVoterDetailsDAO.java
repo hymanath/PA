@@ -1486,5 +1486,17 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
+	public List<Object> getDistinctWardsOfLocalElectionBodyId(Long id,Long publicationDateId,Long userId){
+		Query query = getSession().createQuery("select count(distinct model.ward.constituencyId) from UserVoterDetails model, " +
+				" BoothPublicationVoter model1 " +
+				" where model.user.userId = :userId and model.voter.voterId = model1.voter.voterId and " +
+				"  model1.booth.publicationDate.publicationDateId = :publicationDateId and model.ward.localElectionBody.localElectionBodyId = :id " +
+				" and model.ward is not null");
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("id", id);
+		return query.list();
+	}
+	
 	
 }
