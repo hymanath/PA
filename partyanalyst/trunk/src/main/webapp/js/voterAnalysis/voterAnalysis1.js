@@ -6039,6 +6039,14 @@ var jsObj=
 			results[0].totalBooths = 0;
 	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
+	
+	if(jsObj.type == "customWard")
+
+	{
+		if(results[0].totalBooths == null)
+			results[0].totalBooths = 0;
+	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	}
 	str+='</div>';
 
 	divEle1.innerHTML = str;
