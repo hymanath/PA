@@ -553,7 +553,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetBoothsListByBoothIdsList()
+	/*public void testGetBoothsListByBoothIdsList()
 	{
 		List<Long> boothIdsList = new ArrayList<Long>(0);
 		boothIdsList.add(1l);
@@ -561,6 +561,10 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 		for(Object[] params :list)
 		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
+	}*/
+	public void testgetNoOfWardsInMuncipality(){
+		List<Object> list=boothDAO.getNoOfWardsInMuncipality(20l, 8l, 347l);
+		System.out.println(list);
 	}
 	
 }
