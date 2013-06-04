@@ -7302,10 +7302,30 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					 }
 					if(type.equalsIgnoreCase("localElectionBody"))
 					{
-						//getCount for wards
-						List<Object> count = boothDAO.getNoOfWardsInMuncipality(id, publicationDateId);
-						 if(count != null && count.size()>0 )
-						votersDetailsVO.setTotalNoOfWards(((Long)count.get(0)).intValue());
+						List<Object> count=null;
+						if(!constituencyDAO.get(constituencyId).getAreaType().equalsIgnoreCase("RURAL-URBAN"))
+						{//getCount for wards
+							count = boothDAO.getNoOfWardsInMuncipality(id, publicationDateId,constituencyId);
+						}
+						else
+						{
+							count = userVoterDetailsDAO.getDistinctWardsOfLocalElectionBodyId(id, publicationDateId, userId);
+						}
+						 if(count != null && count.size()>0 ){
+							 votersDetailsVO.setTotalNoOfWards(((Long)count.get(0)).intValue());
+						 }
+					}
+					if(type.equalsIgnoreCase("customWard")){
+						List<Object[]> booths= userVoterDetailsDAO.getBoothsForCustomWard(id,constituencyId,publicationDateId,userId);
+						if(booths != null && booths.size() > 0)
+						{
+							for(Object[] params :booths)
+							{
+							booth = new SelectOptionVO((Long)params[0],params[1].toString());
+							boothsList.add(booth);
+							}
+							votersDetailsVO.setTotalBooths(new Long(boothsList.size()));
+						}
 					}
 					if(muncipalityList != null && muncipalityList.size() > 0)
 					{
