@@ -207,13 +207,13 @@ for (Object[] objects : list) {
 		}*/
 		
 		
-		public void testGetCadreCountForSelectedHamlet()
+		/*public void testGetCadreCountForSelectedHamlet()
 		{
 			List<Long> values = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(28863l,1l,"cadre","as");
 			for (Long long1 : values) {
 				System.out.println(long1);
 			}
-		}
+		}*
 		/*public void testGetCadreDetailsForSelectedHamlet()
 		{
 			List<Cadre> values = userVoterDetailsDAO.getCadreDetailsForSelectedHamlet(28863l,1l,0,10,"asc","voterId","");
@@ -246,4 +246,9 @@ for (Object[] objects : list) {
 				System.out.println(objects[1]);
 			}
 		}*/
+		
+		public void testgetDistinctWardsOfLocalElectionBodyId(){
+			List<Object> result=userVoterDetailsDAO.getDistinctWardsOfLocalElectionBodyId(83l, 8l, 1l);
+			System.out.println(result);
+		}
 }
