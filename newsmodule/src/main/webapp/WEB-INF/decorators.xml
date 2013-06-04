@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<decorators defaultdir="/WEB-INF/decorators">
+    <!-- Any urls that are excluded will never be decorated by Sitemesh -->
+    <excludes>
+        <pattern>/nodecorate/*</pattern>
+        <pattern>/styles/*</pattern>
+        <pattern>/scripts/*</pattern>
+        <pattern>/images/*</pattern>
+        <pattern>/dojo/*</pattern>
+        <pattern>/struts/*</pattern>
+        <pattern>/townshipElectionResultsAction.action*</pattern>
+        <pattern>/constituencyElectionResultsAction.action*</pattern>
+        <pattern>/constituencyPageCandidateDetailsAjaxAction.action*</pattern>
+        <pattern>/districtPageCandidateDetailsAjaxAction.action*</pattern>
+        <pattern>/landing.action* </pattern>
+		<pattern>/jsp/votingTrendzPopup.jsp* </pattern>
+		<pattern>/candidateDetailsForElectionDetailsReportAction.action*</pattern>
+		<pattern>/districtwiseElectionResultsAnalysysForElectionReportAction.action*</pattern>
+		<pattern>/alliancePartiesPageAction.action*</pattern>
+		<pattern>/statewiseElectionResultsComparisionToolAction.action*</pattern>
+		<pattern>/partyPerformanceReportPopup.action*</pattern>
+		<pattern>/electionComparisonReportPopUp.action*</pattern>
+		<pattern>/partyElectionResultsAction.action*</pattern>
+		<pattern>/partyElectionResultsAnalysisAction.action*</pattern>
+		<pattern>/muncipalElectionReportAction.action*</pattern>
+		<pattern>/electionResultsAnalysisReportPopupAction.action*</pattern>
+		<pattern>/influencingPeopleSaveAction.action*</pattern>	
+		<pattern>/politicalChangesAction.action*</pattern>	 	
+		<pattern>/politicalChangesRegistrationAction.action*</pattern>
+		<pattern>/influencingPeopleRegistration.action*</pattern>
+		<pattern>/addNewProblemAction.action*</pattern>
+		<pattern>/addNewProblemSubmitAction.action*</pattern>
+		<pattern>/mandalVotingTrendzForBiElectionAction.action*</pattern>
+		<pattern>/mandalwiseBoothResultsForPartyAction.action*</pattern>
+		<pattern>/revenueVillagePartyAllElecAction.action*</pattern>
+		<pattern>/boothResultsForAllElectionsPopupAction.action*</pattern>
+		<pattern>/allBoothsResultsInTehsilAction.action*</pattern>
+		<pattern>/constituencyVotingTrendzAction.action*</pattern>
+		<pattern>/byeElectionResultsAnalysisAction.action*</pattern>
+		<pattern>/getCadreInfoAction.action*</pattern>		
+		<pattern>/cadreSearchAction.action*</pattern>
+		<pattern>/ecrComparedResultsAction.action*</pattern>
+		<!--<pattern>/completeResultForAPollAction.action*</pattern>  -->
+		<!--<pattern>/getAllPollsAction.action*</pattern> -->
+		<pattern>/influencingPeopleAction*</pattern>
+		<pattern>/getInfluencingPersonInfoAction*</pattern>
+		<pattern>/influencingPeopleDataAction*</pattern>
+		<!--<pattern>/mandalRevenueVillagesElecInputAction*</pattern>-->
+		<pattern>/localGroupsPeopleDataAction*</pattern>
+		<!--<pattern>/mandalRevenueVillagesElecViewAction*</pattern>-->
+		<pattern>/createLocalGroupAction*</pattern>
+		<pattern>/getInfluencingPersonDetailsAction*</pattern>		
+		<pattern>/saveLocalGroupAction*</pattern>
+		<pattern>/createLocalGroupMemberAction*</pattern>
+		<pattern>/createLocalGroupMemberPopupAction*</pattern>
+		<pattern>/saveLocalGroupMembersAction*</pattern>
+		<pattern>/cadreRegisterPopupAction*</pattern>
+		<pattern>/cadreRegisterPagePopupAction*</pattern>
+		<pattern>/analyzeConstituencyPopupAction*</pattern>
+		<pattern>/problemDetailsAndStatusAction*</pattern>							
+		<pattern>/problemAssigningAction*</pattern>
+		<pattern>/candidateStrenthsAction*</pattern>
+		<pattern>/getMediaOpenionsAction*</pattern>
+		<pattern>/newAnnouncementAction*</pattern>
+		<pattern>/announcementSaveAction*</pattern>
+		<pattern>/openEditAnnouncementAction*</pattern>
+		<pattern>/editAnnouncementPageAction*</pattern>
+		<pattern>/getImageInfoAction*</pattern>
+		<pattern>/panchayatWiseElectionResultsAction*</pattern>
+	    <pattern>/createNewEvent.action*</pattern>
+	    <pattern>/votersEditAction.action*</pattern>
+	    <pattern>/votersEditSubAction.action*</pattern>
+	    <pattern>/votersCategoeryAction.action*</pattern>
+	    <pattern>/editLocalGroupAction.action*</pattern>
+	    <pattern>/panchayatWiseMandalElectionInfoAction.action*</pattern>
+	    <pattern>/assigningCandidatesToVoterAction.action*</pattern>
+	    <pattern>/localBodyElectionResultsAction.action*</pattern>
+	    <pattern>/ageWiseVoterDetailsAction.action*</pattern>
+	    <pattern>/ageWiseVoterDetailsActionForCast*</pattern>
+	    <pattern>/voterFamilyInfoAction*</pattern>
+	    <pattern>/voterFamilyEditAction*</pattern>
+	    <pattern>/newsDisplayWindowAction.action*</pattern>
+	    <pattern>/problemsDisplayWindowAction.action*</pattern>
+		<pattern>/voterBasicInfoAction.action*</pattern>
+		<pattern>/getVoterDetailsInitialRequest*</pattern>
+	    <pattern>/casteAndPartyWindowAction.action*</pattern>
+	    <pattern>/boothWiseVoterModificationInfoAction.action*</pattern>
+		<pattern>/newsGallaryDisplayWindowAction.action*</pattern>
+		<pattern>/cadreDisplayWindowAction.action*</pattern>
+		<pattern>/boothWiseCasteInfoAction.action*</pattern>
+		<pattern>/localAreaWiseVotersInfoAction*</pattern>
+	</excludes>  
+	
+	<decorator name="main" page="main.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+
+	<decorator name="jsp" page="main.jsp">
+        <pattern>/jsp/*</pattern>
+    </decorator>
+
+    <decorator name="new" page="newlayout.jsp">
+        <pattern>/newhomePage*</pattern>
+        <pattern>/candidateElectionResultsAction*</pattern>
+		<pattern>/loginAction*</pattern>
+		<pattern>/candidateProfileAction*</pattern>
+		<pattern>/partyPageAction*</pattern>
+		<pattern>/specialPageAction*</pattern>
+		<pattern>/index*</pattern>
+		<pattern>/newsDisplayAction*</pattern>
+		<!--<pattern>/districtPageAction*</pattern>-->
+		<pattern>/electionDetailsReportAction*</pattern>
+		<pattern>/constituencyPageAction*</pattern>
+		<pattern>/electionResultsUpdateAction*</pattern>
+		<pattern>/electionLiveResultsAnalysisAction*</pattern>
+		<!-- <pattern>/districtPageAction*</pattern> -->
+		<pattern>/assignCandidateToElectionAction*</pattern>
+		<pattern>/assignKeyCandidateAction*</pattern>
+		<pattern>/cncSearchResultsAction*</pattern>
+		<pattern>/searchPartyAnalystAction*</pattern>
+		<pattern>/districtWisePartyPerformanceAction*</pattern>
+		<!--<pattern>/partyPerformanceMain*</pattern>-->
+		<pattern>/partyResultsCriteriaAction*</pattern>
+		<pattern>/partyResultsAction*</pattern>
+		<pattern>/electionResultsAnalysisAction*</pattern>
+		<pattern>/ministersPageAction*</pattern>
+		<pattern>/userTrackingReportAction*</pattern>
+		<pattern>/newsMonitoringService*</pattern>
+		<pattern>/searchInPartyAnalyst*</pattern>
+		<pattern>/customPagesAction*</pattern>
+		<pattern>/completeResultForAPollAction*</pattern>
+		<pattern>/getAllPollsAction*</pattern>
+		<pattern>/VotersPulse*</pattern>
+		<pattern>/constituencyProfileReport*</pattern>
+		<pattern>/partyCandidateAnalyzer*</pattern>
+		<pattern>/problemCompleteInfoAction*</pattern>
+		<pattern>/electionAnalysisAndManagementTool*</pattern>
+		<pattern>/connectPeopleAction*</pattern>
+		<pattern>/sendUpdatesAction*</pattern>
+		<pattern>/problemSearchAction*</pattern>
+		<!-- <pattern>/changePasswordAction*</pattern> -->
+		<pattern>/completeProblemDetailsAction*</pattern>
+		<pattern>/assigningPartyToUserAction*</pattern>
+		<pattern>/adminUpload*</pattern>
+		<pattern>/profileManagePageAction*</pattern>
+		<pattern>/initailConstituencyManagementAction*</pattern>
+		<pattern>/partyPerformanceReport*</pattern>
+		<pattern>/abuseCommentaction*</pattern>
+		<pattern>/partyManagementAction*</pattern>
+		<pattern>/cadreManagementAction*</pattern>
+		<pattern>/cadreReportAction*</pattern>
+		<pattern>/completeProblemDetailsSearchAction*</pattern>
+		<pattern>/partyStrengthAction*</pattern>
+		 <pattern>/partyStrengthAction*</pattern>
+		<!-- <pattern>/crossVotingReportInputAction*</pattern> -->
+		<pattern>/biElectionAction*</pattern>
+		<pattern>/mandalPageElectionInfoAction*</pattern>
+		<pattern>/specialPageInfoAction*</pattern>
+		<pattern>/removeVideosAction*</pattern>
+		<pattern>/createThumbNailsAction*</pattern>
+		<pattern>/generatePdfForGallaryAction*</pattern>
+		<pattern>/sendUpdatesByemailAction*</pattern>
+		<!-- <pattern>/missingVotersSearchAction*</pattern> -->
+		<pattern>/assigningCandidatesToVoterAction*</pattern>
+		<pattern>/sitemapAction*</pattern>
+		<pattern>/newsZoneAction*</pattern>
+    </decorator>
+    
+    <decorator name="newHome" page="homelayout.jsp">
+    	<pattern>/homePage*</pattern>
+    	<pattern>/newconnectPeoplePage*</pattern>
+    	<pattern>/voters*</pattern>
+    	<pattern>/userProfile*</pattern>
+    	<pattern>/votersAnalysisAction*</pattern>
+		<pattern>/loginInputAction*</pattern>
+		<pattern>/freeUserRegistration*</pattern>
+		<pattern>/publicProfile*</pattern>
+		<pattern>/adminSocialAction*</pattern>
+		<pattern>/candidateUpdateFormAction*</pattern>
+		<pattern>/footerLinksAction*</pattern>
+		<pattern>/viewFeaturesAction*</pattern>
+		<pattern>/voterDataManageAction*</pattern>
+		<pattern>/callCenterAction*</pattern>
+		<pattern>/partyBoothResult2Action*</pattern>
+		<pattern>/cadreManagementAction*</pattern>
+		<pattern>/constituencyManagementAction*</pattern>
+		<pattern>/problemManagementReportAction*</pattern>
+		<pattern>/electionComparisonAction*</pattern>
+		<pattern>/partyResultsCriteriaAction*</pattern>
+		<pattern>/partyPerformanceMain*</pattern>
+		<pattern>/crossVotingReportInputAction*</pattern>
+		<pattern>/mandalPageSDetailAction*</pattern>
+		<pattern>/partyBoothResultAction*</pattern>
+		<pattern>/ministerAnalysisAction*</pattern>
+		<pattern>/censusReportAction*</pattern>
+		<pattern>/populateVoterDataAction*</pattern>
+		<pattern>/cadreRegisterPageAction*</pattern>
+		<pattern>/cadreRegisterAction*</pattern>
+		<pattern>/statePageAction*</pattern>
+		<pattern>/electionComparisonReportAction*</pattern>
+		<pattern>/partyStrengthAction*</pattern>
+		<pattern>/specialPageManageAction*</pattern>
+		<pattern>/righttoinformation*</pattern>
+		<pattern>/voterModificationReportAction*</pattern>
+    	<pattern>/changePasswordAction*</pattern>
+    	<pattern>/localBodyElectionAction*</pattern>
+    	<pattern>/voterEditDataAction*</pattern>
+    	<pattern>/missingVotersSearchAction*</pattern>
+    	<pattern>/districtPageAction*</pattern>
+    	<pattern>/sendUpdatesBySMSAction*</pattern>
+    	<pattern>/voterFamilyInfoAction*</pattern>
+    	<pattern>/boothWiseModifiedVoterInfoAction*</pattern>
+    	<pattern>/voterFamilyEditAction*</pattern>
+    	<pattern>/ageWiseVoterDetailsActionForCast*</pattern>
+		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
+		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
+		<pattern>/voterBasicInfoAction*</pattern>
+		<pattern>/boothWiseModificationsCompleteInfo*</pattern>
+		<pattern>/cadreDisplayWindowAction*</pattern>		
+		<pattern>/updateSelectedVotersAction*</pattern>
+		
+		<pattern>/setUserRestrictionAction*</pattern>
+    	 </decorator>
+
+</decorators>

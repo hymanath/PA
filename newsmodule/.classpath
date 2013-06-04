@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry excluding="**/*.java" kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
+	<classpathentry excluding="**/*.java" kind="src" output="target/test-classes" path="src/test/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="M2_REPO/com/googlecode/jsonplugin/0.33/jsonplugin-0.33.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/struts/struts2-core/2.1.6/struts2-core-2.1.6.jar" sourcepath="M2_REPO/org/apache/struts/struts2-core/2.1.6/struts2-core-2.1.6-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/opensymphony/xwork/2.1.2/xwork-2.1.2.jar" sourcepath="M2_REPO/com/opensymphony/xwork/2.1.2/xwork-2.1.2-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/opensymphony/ognl/2.6.11/ognl-2.6.11.jar" sourcepath="M2_REPO/opensymphony/ognl/2.6.11/ognl-2.6.11-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/2.5.6/spring-test-2.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/freemarker/freemarker/2.3.13/freemarker-2.3.13.jar" sourcepath="M2_REPO/org/freemarker/freemarker/2.3.13/freemarker-2.3.13-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-fileupload/commons-fileupload/1.1.1/commons-fileupload-1.1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.0/commons-io-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/struts/struts2-junit-plugin/2.1.6/struts2-junit-plugin-2.1.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-mock/2.0.8/spring-mock-2.0.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/2.5.6/spring-core-2.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/itgrids/partyanalyst/partyanalyst-service/1.0.0-SNAPSHOT/partyanalyst-service-1.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/easymock/easymock/2.0/easymock-2.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/poi/poi/3.5-beta3/poi-3.5-beta3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.15/log4j-1.2.15.jar" sourcepath="M2_REPO/log4j/log4j/1.2.15/log4j-1.2.15-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.6.ga/hibernate-3.2.6.ga.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3.jar" sourcepath="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/asm/asm-attrs/1.5.3/asm-attrs-1.5.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" sourcepath="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6.jar" sourcepath="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/cglib/cglib/2.1_3/cglib-2.1_3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/asm/asm/1.5.3/asm-1.5.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-annotations/3.3.1.GA/hibernate-annotations-3.3.1.GA.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-commons-annotations/3.0.0.ga/hibernate-commons-annotations-3.0.0.ga.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/ejb3-persistence/1.0.1.GA/ejb3-persistence-1.0.1.GA.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.1/jta-1.1.jar" sourcepath="M2_REPO/javax/transaction/jta/1.1/jta-1.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/mysql/mysql-connector-java/5.1.6/mysql-connector-java-5.1.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-context-support/2.5.6/spring-context-support-2.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" sourcepath="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/2.5.3/spring-beans-2.5.3.jar" sourcepath="M2_REPO/org/springframework/spring-beans/2.5.3/spring-beans-2.5.3-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/2.5.3/spring-context-2.5.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/quartz-scheduler/quartz/1.7.3/quartz-1.7.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/dbunit/dbunit/2.4.4/dbunit-2.4.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.5.6/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/hsqldb/hsqldb/1.8.0.10/hsqldb-1.8.0.10.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/appfuse/appfuse-hibernate/2.0.1/appfuse-hibernate-2.0.1.jar" sourcepath="M2_REPO/org/appfuse/appfuse-hibernate/2.0.1/appfuse-hibernate-2.0.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/appfuse/appfuse-data-common/2.0.1/appfuse-data-common-2.0.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.1/commons-lang-2.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/persistence/persistence-api/1.0/persistence-api-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-jdbc/2.0.8/spring-jdbc-2.0.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-orm/2.5/spring-orm-2.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security-tiger/1.0.5/acegi-security-tiger-1.0.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.5/acegi-security-1.0.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.2/commons-codec-1.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/oro/oro/2.0.8/oro-2.0.8.jar" sourcepath="M2_REPO/oro/oro/2.0.8/oro-2.0.8-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/2.5.6.SEC01/spring-aop-2.5.6.SEC01.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/appfuse/appfuse-jpa/2.0.2/appfuse-jpa-2.0.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-entitymanager/3.3.1.ga/hibernate-entitymanager-3.3.1.ga.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-validator/3.0.0.ga/hibernate-validator-3.0.0.ga.jar"/>
+	<classpathentry kind="var" path="M2_REPO/jboss/javassist/3.3.ga/javassist-3.3.ga.jar"/>
+	<classpathentry kind="var" path="M2_REPO/jboss/jboss-archive-browsing/5.0.0alpha-200607201-119/jboss-archive-browsing-5.0.0alpha-200607201-119.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-core-tiger/2.0.1/spring-security-core-tiger-2.0.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-core/2.0.1/spring-security-core-2.0.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/appfuse/appfuse-service/2.0.2/appfuse-service-2.0.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/aspectj/aspectjweaver/1.6.0/aspectjweaver-1.6.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/aspectj/aspectjrt/1.6.0/aspectjrt-1.6.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar" sourcepath="M2_REPO/javax/mail/mail/1.4/mail-1.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar" sourcepath="M2_REPO/javax/activation/activation/1.1/activation-1.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/velocity/velocity/1.4/velocity-1.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/velocity/velocity-dep/1.4/velocity-dep-1.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/codehaus/xfire/xfire-java5/1.2.6/xfire-java5-1.2.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/codehaus/xfire/xfire-aegis/1.2.6/xfire-aegis-1.2.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/codehaus/xfire/xfire-core/1.2.6/xfire-core-1.2.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/wsdl4j/wsdl4j/1.6.1/wsdl4j-1.6.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/stax/stax-api/1.0.1/stax-api-1.0.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/codehaus/woodstox/wstx-asl/3.2.0/wstx-asl-3.2.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/jdom/jdom/1.0/jdom-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/java/dev/stax-utils/stax-utils/20040917/stax-utils-20040917.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/codehaus/xfire/xfire-annotations/1.2.6/xfire-annotations-1.2.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/xfire/xfire-jsr181-api/1.0-M1/xfire-jsr181-api-1.0-M1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/codehaus/xfire/xfire-spring/1.2.6/xfire-spring-1.2.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/xbean/xbean-spring/2.8/xbean-spring-2.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/codehaus/xfire/xfire-xmlbeans/1.2.6/xfire-xmlbeans-1.2.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/xmlbeans/xbean/2.2.0/xbean-2.2.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-aspects/2.5.4/spring-aspects-2.5.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sourceforge/jexcelapi/jxl/2.6.3/jxl-2.6.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/ehcache/ehcache-core/2.3.1/ehcache-core-2.3.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gdata/gdata-core-1.0/1.41.5/gdata-core-1.0-1.41.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/collections/google-collections/1.0-rc2/google-collections-1.0-rc2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gdata/gdata-client-1.0/1.41.5/gdata-client-1.0-1.41.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gdata/gdata-maps-2.0/1.41.5/gdata-maps-2.0-1.41.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gdata/gdata-media-1.0/1.41.5/gdata-media-1.0-1.41.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gdata/gdata-youtube-2.0/1.41.5/gdata-youtube-2.0-1.41.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/imgscalr/imgscalr-lib/4.2/imgscalr-lib-4.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/sanselan/sanselan/0.97-incubator/sanselan-0.97-incubator.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/metaparadigm/json-rpc/1.0/json-rpc-1.0.jar" sourcepath="M2_REPO/com/metaparadigm/json-rpc/1.0/json-rpc-1.0-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-digester/commons-digester/1.8/commons-digester-1.8.jar" sourcepath="M2_REPO/commons-digester/commons-digester/1.8/commons-digester-1.8-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/displaytag/displaytag/1.2/displaytag-1.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/lowagie/itext/1.3/itext-1.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/jcl104-over-slf4j/1.4.2/jcl104-over-slf4j-1.4.2.jar" sourcepath="M2_REPO/org/slf4j/jcl104-over-slf4j/1.4.2/jcl104-over-slf4j-1.4.2-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.4.2/slf4j-log4j12-1.4.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/displaytag/displaytag-export-poi/1.2/displaytag-export-poi-1.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/displaytag/displaytag-portlet/1.2/displaytag-portlet-1.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/jasperreports/jasperreports/3.0.0/jasperreports-3.0.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/jfree/jcommon/1.0.0/jcommon-1.0.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/jfree/jfreechart/1.0.12/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.3.02/xml-apis-1.3.02.jar"/>
+	<classpathentry kind="var" path="M2_REPO/eclipse/jdtcore/3.2.0.v_658/jdtcore-3.2.0.v_658.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/3.0-alpha-1/servlet-api-3.0-alpha-1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/servlet/jstl/1.1.2/jstl-1.1.2.jar" sourcepath="M2_REPO/javax/servlet/jstl/1.1.2/jstl-1.1.2-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/json-lib/json-lib/1.0.1/json-lib-1.0.1-jdk15.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/ezmorph/ezmorph/1.0.1/ezmorph-1.0.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/opencsv/opencsv/1.8/opencsv-1.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/opensymphony/sitemesh/2.4.2/sitemesh-2.4.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/struts/struts2-jasperreports-plugin/2.1.6/struts2-jasperreports-plugin-2.1.6.jar" sourcepath="M2_REPO/org/apache/struts/struts2-jasperreports-plugin/2.1.6/struts2-jasperreports-plugin-2.1.6-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/struts/struts2-sitemesh-plugin/2.1.6/struts2-sitemesh-plugin-2.1.6.jar" sourcepath="M2_REPO/org/apache/struts/struts2-sitemesh-plugin/2.1.6/struts2-sitemesh-plugin-2.1.6-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/struts/struts2-spring-plugin/2.1.6/struts2-spring-plugin-2.1.6.jar" sourcepath="M2_REPO/org/apache/struts/struts2-spring-plugin/2.1.6/struts2-spring-plugin-2.1.6-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/2.5.3/spring-web-2.5.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/struts/struts2-tiles-plugin/2.0.11/struts2-tiles-plugin-2.0.11.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-core/2.0.6/tiles-core-2.0.6.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-core/2.0.6/tiles-core-2.0.6-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-api/2.0.6/tiles-api-2.0.6.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-api/2.0.6/tiles-api-2.0.6-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-jsp/2.0.6/tiles-jsp-2.0.6.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-jsp/2.0.6/tiles-jsp-2.0.6-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/brickred/socialauth/2.0-beta4/socialauth-2.0-beta4.jar" sourcepath="M2_REPO/org/brickred/socialauth/2.0-beta4/socialauth-2.0-beta4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/json/json/20090211/json-20090211.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/openid4java/openid4java/0.9.5/openid4java-0.9.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/openid4java/openid4java-consumer/0.9.5/openid4java-consumer-0.9.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/openid4java/openid4java-nodeps/0.9.5/openid4java-nodeps-0.9.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sourceforge/nekohtml/nekohtml/1.9.7/nekohtml-1.9.7.jar" sourcepath="M2_REPO/net/sourceforge/nekohtml/nekohtml/1.9.7/nekohtml-1.9.7-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.8.1/xercesImpl-2.8.1.jar" sourcepath="M2_REPO/xerces/xercesImpl/2.8.1/xercesImpl-2.8.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-hibernate3/2.0.8/spring-hibernate3-2.0.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-dao/2.0.8/spring-dao-2.0.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-remoting/2.0.8/spring-remoting-2.0.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-support/2.0.8/spring-support-2.0.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/tuckey/urlrewritefilter/3.2.0/urlrewritefilter-3.2.0.jar" sourcepath="M2_REPO/org/tuckey/urlrewritefilter/3.2.0/urlrewritefilter-3.2.0-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/taglibs/request/1.0.1/request-1.0.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/taglibs/standard/1.1.2/standard-1.1.2.jar" sourcepath="M2_REPO/taglibs/standard/1.1.2/standard-1.1.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/acegi-security-1.0.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/acegi-security-tiger-1.0.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/appfuse-data-common-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/appfuse-hibernate-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/appfuse-jpa-2.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/appfuse-service-2.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/asm-1.5.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/asm-attrs-1.5.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/aspectjrt-1.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/aspectjweaver-1.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/cglib-2.1_3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/commons-beanutils-1.7.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/commons-codec-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/commons-collections-20040616.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/commons-digester-1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/commons-fileupload-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/commons-io-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/commons-lang-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/commons-logging-api-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/dbunit-2.4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/displaytag-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/displaytag-export-poi-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/displaytag-portlet-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/easymock-2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/ehcache-1.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/ehcache-core-2.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/ejb3-persistence-1.0.1.GA.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/ezmorph-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/freemarker-2.3.13.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/gdata-client-1.0-1.41.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/gdata-core-1.0-1.41.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/gdata-maps-2.0-1.41.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/gdata-media-1.0-1.41.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/gdata-youtube-2.0-1.41.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/google-collections-1.0-rc2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/hibernate-3.2.6.ga.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/hibernate-annotations-3.3.1.GA.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/hibernate-commons-annotations-3.0.0.ga.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/hibernate-entitymanager-3.3.1.ga.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/hibernate-validator-3.0.0.ga.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/hsqldb-1.8.0.10.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/imgscalr-lib-4.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/itext-4.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/itextpdf-5.1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jasperreports-3.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/javassist-3.3.ga.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jboss-archive-browsing-5.0.0alpha-200607201-119.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jcl104-over-slf4j-1.4.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jcommon-1.0.16.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jdtcore-3.2.0.v_658.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/json-20090211.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/json-lib-1.0.1-jdk15.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jsonplugin-0.33.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/json-rpc-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jsr305-1.3.9.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jstl-1.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/jxl-2.6.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/mail-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/mysql-connector-java-5.1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/nekohtml-1.9.7.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/ognl-2.6.11.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/opencsv-1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/openid4java-0.9.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/openid4java-consumer-0.9.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/openid4java-nodeps-0.9.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/oro-2.0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/partyanalyst-service-1.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/pdf-renderer-1.0.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/persistence-api-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/poi-3.5-beta3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/quartz-1.7.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/request-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/sanselan-0.97-incubator.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/sitemesh-2.4.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/slf4j-log4j12-1.4.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/socialauth-2.0-beta4.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-aop-2.5.6.SEC01.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-aspects-2.5.4.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-beans-2.5.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-context-2.5.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-context-support-2.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-core-2.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-dao-2.0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-hibernate3-2.0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-jdbc-2.0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-mock-2.0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-orm-2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-remoting-2.0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-security-core-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-security-core-tiger-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-support-2.0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-test-2.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-tx-2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/spring-web-2.5.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/standard-1.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/stax-utils-20040917.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/struts2-core-2.1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/struts2-jasperreports-plugin-2.1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/struts2-junit-plugin-2.1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/struts2-sitemesh-plugin-2.1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/struts2-spring-plugin-2.1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/struts2-tiles-plugin-2.0.11.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/tiles-api-2.0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/tiles-core-2.0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/tiles-jsp-2.0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/urlrewritefilter-3.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/velocity-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/velocity-dep-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/wsdl4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/wstx-asl-3.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xbean-2.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xbean-spring-2.8.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xercesImpl-2.8.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xfire-aegis-1.2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xfire-annotations-1.2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xfire-core-1.2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xfire-java5-1.2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xfire-jsr181-api-1.0-M1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xfire-spring-1.2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xfire-xmlbeans-1.2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xml-apis-1.3.02.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/ITGRIDS/Desktop/lib/xwork-2.1.2.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
