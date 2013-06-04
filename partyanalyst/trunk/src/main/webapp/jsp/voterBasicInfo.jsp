@@ -207,10 +207,15 @@ table.gridtable1 td {
   padding:10px;
   font-family : arial;
 }
-
-#votersBasicInfoSubChartDiv{
-  margin-left: 0px;
+#ageWiseDetailsDiv,#votersBasicInfoSubDiv,#votersBasicInfoSubChartDiv
+{
+    border-radius: 4px 4px 4px 4px;
+    margin-left: 10px;
+	margin-top: 17px;
+    padding: 11px 10px 28px;
+	
 }
+
 .pull-right{
 	 //margin-top: -15px;
 }
@@ -301,7 +306,7 @@ p {
  padding-bottom:40px;
 
 }
-#partyWiseJqTable, #subLevelTable,#impfamilydatatable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table,#impFamilesBasicSubDetailsForHamlet table,#impFamilesnfoForHamletByBooth table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#partyWiseJqTable, #subLevelTable,#impfamilydatatable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table,#impFamilesBasicSubDetailsForHamlet table,#impFamilesnfoForHamletByBooth table{#d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 
 #votersByLocationTabContentDiv_body table,#InfluencingPeopleDetailsDiv table{border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 
@@ -341,6 +346,28 @@ color:#333333;
     width:100%;
 }
 
+table.dataTable thead th {
+    background: none repeat scroll 0 0 #D9EDF7;
+    color: #454545;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 3px 18px 3px 10px;
+}
+table.dataTable tr.even td.sorting_1 {
+    background-color: #DBEAFF;
+}
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #EDF5FF;
+}
+table.dataTable thead th {
+    background: none repeat scroll 0 0 #D9EDF7;
+    border-bottom: 1px #DDDDDD ;
+    color: #454545;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 3px 18px 3px 10px;
+}
 </style>
 
 
@@ -362,7 +389,11 @@ var publicationYear= "${publicationYear}";
 var buildType= "${buildType}";
 var constituencyId= "${constituencyId}";
 var mainname = '${typeName}';
-
+if(type == "wardBooth")
+{
+	getBoothWiseAgeDetailsInSelectedCustomWard();
+	getWardsListInMuncipality();
+}
 getvotersBasicInfo("voters",id,publicationId,type);
 function getvotersBasicInfo(buttonType,id,publicationId,type){
   // var ajaxImageDiv =  document.getElementById('ImpFamwiseAjaxDiv');
@@ -425,6 +456,14 @@ function callAjax(jsObj,url)
 								{
 									buildVotersBasicInfo(myResults,jsObj);
 								}
+								else if(jsObj.task == "getBoothWiseAgeDetails")
+								{
+									buildVotersAgeWiseInfo(myResults);
+								}
+								else if(jsObj.task == "getWardsList")
+								{
+									buildWardsList(myResults);
+								}
 								}catch (e) {
 								//console.log(e);
 								//alert(e);
@@ -469,8 +508,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	 {
 		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
 		//$("#votersTitle").html(jsObj.typename);
-			$("#votersBasicInfoSubChartDiv").css('border','1px solid #FFF');
-			$("#votersBasicInfoSubDiv").css('border','1px solid #FFF');
+			$("#votersBasicInfoSubChartDiv").css('border','1px solid #EEEEEE');
+			$("#votersBasicInfoSubDiv").css('border','1px solid #EEEEEE');
 
 			$("#votersBasicInfoMsgDiv").html("<span id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</span>");
 		 return;
@@ -494,7 +533,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		str += '</b></div></div></br></br>';
         if(votersbasicinfo.previousElectInfoList != null && votersbasicinfo.previousElectInfoList.length >0){
 		    var prevElecInfo = votersbasicinfo.previousElectInfoList;
-			str += '<table class="votersPrevCountTableDiv" style="margin-bottom:5px;font-family:verdana;">';
+			str += '<table class="votersPrevCountTableDiv table table-bordered table-striped table-hover" style="margin-bottom:5px;font-family:verdana;">';
 			str += '  <tr>';
 			str += '    <th rowspan="2">Year</th>';
 			str += '    <th rowspan="2">Total Voters</th>';
@@ -608,8 +647,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		
 		//$("#votersBasicInfoDiv").html(str);
 			if(jsObj.type != "booth"){
-			  $("#votersBasicInfoSubChartDiv").css("border","1px solid black"); 
-	          $("#votersBasicInfoSubDiv").css("border","1px solid black");
+			  $("#votersBasicInfoSubChartDiv").css("border","1px solid #EEEEEE"); 
+	          $("#votersBasicInfoSubDiv").css("border","1px solid #EEEEEE");
 			 }
 		
 		str = '';
@@ -678,17 +717,137 @@ function buildVotersChart(chartInfo,reqTitle)
         chart.draw(data, options);
 }
 
+function getBoothWiseAgeDetailsInSelectedCustomWard()
+{
+	
+	var jsObj=
+			{
+				id:id,
+				publicationDateId:publicationId,
+				constituencyId:constituencyId,
+				task:"getBoothWiseAgeDetails"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersAgeWiseDetailsAction.action?"+rparam;	
+   
+		callAjax(jsObj,url);
+}
+function buildVotersAgeWiseInfo(myResults)
+{
+	if(myResults != null)
+	{
+		$('#votersAgenformationDiv').show();
+		$('#ageWiseHeading').html('Booth Wise Voters Age Information in '+mainname+' ');
+		var str = "";
+		str += '<table class="table table-bordered table-striped table-hover" id= "ageWiseDetailstable">';
+		str += '<thead class="info">';
+		str += '<tr>';
+		str += '<th rowspan="2">Booth NO</th>';
+		str += '<th rowspan="2">Toatl Voters</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">18-25</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">26-35</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">36-45</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">46-60</th>';
+		str += '<th colspan="2" style="padding-left: 45px;">Above 60</th>';
+		str += '</tr>';
+		str+='<tr>';
+		str+='<th>Voters</th>';
+		str+='<th>%</th>';
+		str+='<th>Voters</th>';
+		str+='<th>%</th>';
+		str+='<th>Voters</th>';
+		str+='<th>%</th>';
+		str+='<th>Voters</th>';
+		str+='<th>%</th>';
+		str+='<th>Voters</th>';
+		str+='<th>%</th>';
+		str+='</tr>';
+		str += '</thead>';
+		str += '<tbody>';
+		for(var i in myResults)
+		{
+			str+='<tr>';
+			str+='<td>'+myResults[i].boothName+'</td>';
+			str+='<td>'+myResults[i].totalVoters+'</td>';
+			str+='<td>'+myResults[i].totalVotersFor18To25+'</td>';
+			str+='<td>'+myResults[i].votersPercentFor18To25+'</td>';
+			str+='<td>'+myResults[i].totalVotersFor26To35+'</td>';
+			str+='<td>'+myResults[i].votersPercentFor26To35+'</td>';
+			str+='<td>'+myResults[i].totalVotersFor36To45+'</td>';
+			str+='<td>'+myResults[i].votersPercentFor36To45+'</td>';
+			str+='<td>'+myResults[i].totalVotersFor46To60+'</td>';
+			str+='<td>'+myResults[i].votersPercentFor46To60+'</td>';
+			str+='<td>'+myResults[i].totalVotersForAbove60+'</td>';
+			str+='<td>'+myResults[i].votersPercentForAbove60+'</td>';
+			str+='</tr>';
+		}
+		str += '</tbody>';
+		str += '</table>';
+		$('#ageWiseDetailsDiv').html(str);
+		$('#ageWiseDetailstable').dataTable({
+		"aaSorting": [[ 0, "asc" ]],
+		"bDestroy": true,
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+		});
+	}
+}
+
+function getWardsListInMuncipality()
+{
+	var jsObj=
+			{
+				constituencyId:constituencyId,
+				task:"getWardsList"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersAgeWiseDetailsAction.action?"+rparam;	
+   
+		callAjax(jsObj,url);
+}
+function buildWardsList(myResults)
+{
+	$('#wardSearchDiv').show();
+	$("#wardsList").append('<option value="0">Select Ward</option>');
+	if(myResults != null)
+	{
+		for(var i in myResults)
+		{
+			$("#wardsList").append('<option value='+myResults[i].id+' >'+myResults[i].name+'</option>');
+		}
+	}
+	$('#wardsList').val(id);
+}
+	
+function getDetailsForSelectedWard()
+{
+	
+	id 		 = $('#wardsList option:selected').val();
+	mainname = $('#wardsList option:selected').text();
+	var urlStr="voterBasicInfoAction.action?id="+id+"&publicationDateId="+publicationId+"&publicationYear="+publicationYear+"&typeName="+mainname+"&constituencyId="+constituencyId+"&buildType="+buildType+"&type="+type+" ";
+		var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=850,left=200,top=200");	
+		updateBrowser.focus();	
+}
 </script>
 </head>
 <body>
 <div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="votersBasicInfoMainDiv">
+	
 	<div id="votersBasicInfoTitleDiv"></div>
+	
 	<div id="votersBasicInfoMsgDiv"></div>
-	<div id="votersBasicInfoSubChartDiv"></div>
+	<div id="wardSearchDiv" style="float: right; padding: 10px;display:none;"><b>Select Ward : </b><select id="wardsList" onchange="getDetailsForSelectedWard();"></select></div>
+	<div id="votersBasicInfoSubChartDiv" style="border: 1px solid #EEEEEE; margin-top: 67px;">
+	</div>
+	
 	</br>
 	<div id="assAndUnass"></div>
-	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>	
+	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable" style="border: 1px solid #EEEEEE;"></div>	
+	<div id="votersAgenformationDiv" class="widget blue whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 949px;display:none;">
+	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="ageWiseHeading"></h4>
+	
+	<div id="ageWiseDetailsDiv" class="yui-skin-sam yui-dt-sortable"></div></div>
 </div>
 </body>
 
