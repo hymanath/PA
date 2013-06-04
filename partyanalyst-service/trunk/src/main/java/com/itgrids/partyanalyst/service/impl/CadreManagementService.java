@@ -4466,6 +4466,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			String cdType         = cadreInputVO.getCadreType();
 			String searchType     = cadreInputVO.getSearchType();
 			String name           = cadreInputVO.getCadreName().trim();
+			String memberShipNo     = cadreInputVO.getMemberShipNo().trim();
 			Long bloodGroupId 	  = cadreInputVO.getBloodGroupId();
 			String taskName 	  = cadreInputVO.getTaskName();
 			String radioButtonValue = cadreInputVO.getRadioButtonValue();
@@ -4483,6 +4484,11 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			String genderStr = new String();
 			String mobileStr = new String();
 			String cadreNameStr = null;
+			/*
+			 * Modified by gayathri 
+			 * please refer previous version to check for original code.
+			 */ 
+			String memberShipNoStr = new String();
 			String roleStr = null;
 			String bloodGroupStr = "";
 			String registerCadreSearchTypeStr = new String();
@@ -4678,6 +4684,16 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			}
 			else
 				cadreNameStr = " ";
+			/*
+			 * Modified by gayathri 
+			 * please refer previous version to check for original code.
+			 */ 
+			if(memberShipNo != null && memberShipNo.length() > 0){
+				memberShipNoStr = " and model.memberShipNo = "+memberShipNo;
+			}
+			
+			else
+				memberShipNoStr = " ";
 			
 			if(cadreInputVO.getRegisterCadreSearchType().equalsIgnoreCase(IConstants.ALL_CADRES))
 				registerCadreSearchTypeStr = " ";
@@ -4693,7 +4709,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			else if(taskName.equalsIgnoreCase(IConstants.PROBLEM_ADDING))
 				roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
 			 
-			Long totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr).get(0);
+			Long totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,memberShipNoStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr).get(0);
 			
 			if(maxResult < 0)
 			{
@@ -4704,7 +4720,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				return cadreInfoListTotal;
 			}
 			
-			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr,sortOption,order,startIndex,maxResult);
+			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,memberShipNoStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr,sortOption,order,startIndex,maxResult);
 			
 			for(Long id:cadreIds)
 			{
@@ -4723,8 +4739,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				cadreInfo.setImage(cadre.getImage() != null ? cadre.getImage() : "human.jpg");
 				cadreInfo.setNote(cadre.getNote());
 				cadreInfo.setMemberShipNo(cadre.getMemberShipNo());
-				
-				
+			
 				if(cadre.getCadreLevelValue() != null)
 					cadreInfo.setStrCadreLevel(getCadreLevelValueStr(cadre.getCadreLevel().getLevel(),cadre.getCadreLevelValue()));
 				else
