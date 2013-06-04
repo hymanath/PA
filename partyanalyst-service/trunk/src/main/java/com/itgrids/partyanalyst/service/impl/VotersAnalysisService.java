@@ -12431,6 +12431,11 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 	else if(columnName.equalsIgnoreCase("influencingRange"))
 	{
 		columnName = "influencingScope";
+	}else if(columnName.equalsIgnoreCase("partyName"))
+	{
+		columnName = "party.shortName";
+	}else if(columnName.equalsIgnoreCase("cast")){
+		columnName = "caste";
 	}
 	for (String parms : locationValues) {
 		Long id = Long.valueOf(parms);
@@ -12463,7 +12468,12 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					voterVO.setCast(params.getCaste());
 					voterVO.setMobileNo(params.getPhoneNo()!=null ? params.getPhoneNo() :" ");
 					voterVO.setInfluencingRange(params.getInfluencingScope());
-					
+					if(params.getParty() != null){
+					  voterVO.setPartyName(params.getParty().getShortName());
+					}else{
+					  voterVO.setPartyName("");
+					}
+					voterVO.setCast(getInfluencingPeopleCasteCategory(params.getCaste()));
 					if(type.equalsIgnoreCase("BOOTH"))
 					{
 						Booth booth = boothDAO.get(locationIds.get(0));
@@ -12485,7 +12495,11 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					voterVO.setRelativeFirstName(params.getVoter().getRelativeName());
 					voterVO.setRelationshipType(params.getVoter().getRelationshipType());
 					voterVO.setVoterIDCardNo(params.getVoter().getVoterIDCardNo());
-					
+					if(params.getParty() != null){
+						  voterVO.setPartyName(params.getParty().getShortName());
+					}else{
+						  voterVO.setPartyName("");
+					}
 					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
 					if(type.equalsIgnoreCase("BOOTH"))
 					{
@@ -12495,6 +12509,7 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					else
 						voterVO.setLocalArea(name);	
 					}
+				    voterVO.setCast(getInfluencingPeopleCasteCategory(params.getCaste()));
 				 	String infScope = params.getInfluencingScope();
 					String infScopeValue = params.getInfluencingScopeValue();
 					voterVO.setInfluencingRange(params.getInfluencingScope());
@@ -12508,6 +12523,26 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 		}
 		return voters;	
 	
+}
+
+public String getInfluencingPeopleCasteCategory(String id){
+	if(id == null){
+		return "";
+	}else if("1".equals(id)){
+		return "ST";
+	}else if("2".equals(id)){
+		return "SC";
+	}else if("3".equals(id)){
+		return "BC";
+	}else if("4".equals(id)){
+		return "Minority";
+	}else if("5".equals(id)){
+		return "General";
+	}else if("6".equals(id)){
+		return "N/A";
+	}else{
+		return "";
+	}
 }
 
 public String getRegionNameBasedOnScope(String infScope,String regionId){
