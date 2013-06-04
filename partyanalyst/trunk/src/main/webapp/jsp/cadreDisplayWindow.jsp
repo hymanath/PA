@@ -120,6 +120,7 @@ function getInfluencingPeopleVotersDetails()
 		var votersByLocBoothColumnDefs = [
 		{key:"voterId", label: "SNo",width:20},
 		{key:"firstName", label: "Name",width:80, sortable: true},
+		{key:"cast", label: "Caste Group"},
 		{key:"voterIDCardNo", label: "voter ID",sortable: true},
 		{key:"gender", label: "Gender", width:50, sortable: true},
 		{key:"age", label: "Age",  width:30,sortable:true},
@@ -139,7 +140,7 @@ function getInfluencingPeopleVotersDetails()
 		resultsList: "voterDetails",
 		fields: [
 		{key:"voterId", parser:"number"},
-		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea"],
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","cast"],
 		metaFields: {
 		totalRecords: "voterDetailsCount" // Access to value in the server response
 		}
