@@ -1577,6 +1577,7 @@
 	<property name="candidateDAO" ref="candidateDAO" />	
 	<property name="cadreDAO" ref="cadreDAO" />	
 	<property name="voterReportService" ref="voterReportService"/>
+	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
     </bean>
 </beans>		
 	

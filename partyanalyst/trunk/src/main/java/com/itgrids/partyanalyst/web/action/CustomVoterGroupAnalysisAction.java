@@ -58,6 +58,9 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	private Long locationValue;
 	private VoterCastInfoVO voterCastInfoVO;
 	private ImportantFamiliesInfoVo importantFamiliesInfoVo;
+	private List<VotersDetailsVO> customVoterAgeCountList;
+	private String locationName;
+	private Long constituencyId;
 	
 	public ImportantFamiliesInfoVo getImportantFamiliesInfoVo() {
 		return importantFamiliesInfoVo;
@@ -283,6 +286,31 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		this.voterCastInfoVO = voterCastInfoVO;
 	}
 
+	public List<VotersDetailsVO> getCustomVoterAgeCountList() {
+		return customVoterAgeCountList;
+	}
+
+	public void setCustomVoterAgeCountList(
+			List<VotersDetailsVO> customVoterAgeCountList) {
+		this.customVoterAgeCountList = customVoterAgeCountList;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
 	public String execute()
 	{
 		if(customVoterGroupId != null)
@@ -310,7 +338,8 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			customGroupWiseCasteVotersList = customVoterGroupAnalysisService.getCustomGroupWiseVoterCasteDetails(userId,jobj.getString("areaType"),jobj.getLong("locationValue"));
 		else if(jobj.getString("task").equalsIgnoreCase("getCasteWiseCustomVoters"))
 			customVotersList = customVoterGroupAnalysisService.getCustomVoterDetails(jobj.getLong("casteStateId"), jobj.getLong("casteId"), jobj.getLong("customVoterGroupId"),userId);
-		
+		else if(jobj.getString("task").equalsIgnoreCase("getCustomVoterAgeDetails"))
+			customVoterAgeCountList = customVoterGroupAnalysisService.getCustomVotersAgeDetails(jobj.getLong("constituencyId"), jobj.getLong("id"), jobj.getLong("publicationDateId"),jobj.getString("areaType"), userId);
 		
 		return ActionSupport.SUCCESS;
 	}
