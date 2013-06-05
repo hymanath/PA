@@ -927,7 +927,7 @@ function buildVotersCount(myResults,jsObj)
 {
 	if(myResults != null)
 	{
-		 $('#votersCountId').html('<span id="totCount">Total Voters : </span><span><b style="color:navy">'+myResults.totalVoters+'</b></span><span id="maleCount" style="margin-left: 10px;">Male Voters : </span><span><b style="color:navy">'+myResults.maleVoters+' </b></span><span id="femaleCount" style="margin-left: 10px;">Female Voters : </span><span><b style="color:navy">'+myResults.femaleVoters+'</b></span>'); 
+		 $('#votersCountId').html('<span id="totCount">Total Voters : </span><span><b style="color:navy">'+myResults.totalVoters+'</b></span><span id="maleCount" style="margin-left: 10px;">Male Voters : </span><span><b style="color:navy">'+myResults.maleVoters+' </b></span><span id="femaleCount" style="margin-left: 10px;">Female Voters : </span><span><b style="color:navy;">'+myResults.femaleVoters+'</b></span>'); 
 		/* $('#votersCountId').html('<table class="table table-bordered table-striped table-hover"> <tr><th>Total Voters</th><td>'+myResults.totalVoters+'</td></tr><tr><th>Male Voters</th><td>'+myResults.totalMaleVoters+'</td></tr><tr><th>Female Voters</th><td>'+myResults.totalFemaleVoters+'</td></tr></table>'); */
 	}
 	getInfluencingPeopleCount(jsObj.id);
@@ -959,7 +959,7 @@ function buildVoterTypeDetails(myResults,jsObj)
 	var	publicationDateId = jsObj.publicationDateId;
 	if(myResults != null)
 	{
-		 $('#voterTypeId').html('<span>Influencing People : </span><span class="btnName" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'InfluencePeople\' ,'+myResults[0].influencePeopleCount+');"><b style="color:navy;">'+myResults[0].influencePeopleCount+'</b></span><span style="margin-left: 10px;">Cadre : </span><span class="btnName"  onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Cadre\','+myResults[0].cadreCount+');"><b style="color:navy;">'+myResults[0].cadreCount+'</b></span><span style="margin-left: 10px;">Politican : </span><span class="btnName" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Politician\','+myResults[0].politicianCount+');"><b style="color:navy;">'+myResults[0].politicianCount+'</b></span>'); 
+		 $('#voterTypeId').html('<span>Influencing People : </span><span class="btnName" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'InfluencePeople\' ,'+myResults[0].influencePeopleCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].influencePeopleCount+'</b></span><span style="margin-left: 10px;">Cadre : </span><span class="btnName"  onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Cadre\','+myResults[0].cadreCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].cadreCount+'</b></span><span style="margin-left: 10px;">Politican : </span><span class="btnName" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Politician\','+myResults[0].politicianCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].politicianCount+'</b></span>'); 
 		
 	}
 	getVoterDetails();
