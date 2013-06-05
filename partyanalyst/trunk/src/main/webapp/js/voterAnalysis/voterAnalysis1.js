@@ -1199,6 +1199,10 @@ function addToPolitician(voterId,name)
 		  $("#castPartyPopupShowBtn").show();
 		} 
 	   
+         /* if(type == "mandal")
+		  $("#customGroupAgeLink").css("display","block");
+		 else 
+		   $("#customGroupAgeLink").css("display","none");*/
 
 		  if(type == "mandal" && mainreqid.substring(0,1) == "1")
 		  {
@@ -9567,4 +9571,32 @@ $(document).ready(function(){
 	 
 //getAllTabs(mainreqid,mainpublicationId,maintype);
 
+}
+
+function getcustomGroupAgeInfo()
+{
+
+  var constituencyId=$('#constituencyList option:selected').val();
+  var publicationId = $("#publicationDateList").val();
+
+  var areatype1 = areatype;
+  var id = mainreqid;
+
+   if(maintype == "mandal" && mainreqid.substring(0,1) == "2")
+   {
+    areatype1 = "RURAL";
+    id = mainreqid.substring(1);
+   }
+   else if(maintype == "mandal" && mainreqid.substring(0,1) == "1")
+   {
+	 areatype1 = "URBAN";
+     id = assemblyLocalEleBodyId;
+   }
+
+  var urlstr = "getCustomVoterGroupAgeDetailsAction.action?constituencyId="+constituencyId+"&areaType="+areatype1+"&publicationDateId="+publicationId+"&locationValue="+id+"&locationName="+mainname+"&";
+
+  var browser1 = window.open(urlstr,"casteWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+  browser1.focus();
+
+ return;
 }
