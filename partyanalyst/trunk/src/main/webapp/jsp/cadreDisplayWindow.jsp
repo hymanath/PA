@@ -89,13 +89,13 @@ function getInfluencingPeopleVotersDetails()
 		elLiner.innerHTML ='<a target="_blank" id="candidateId" href="candidateElectionResultsAction.action?candidateId='+id+' ">'+name+'</a>';
 		}	
 		var votersByLocBoothColumnDefs = [
-		{key:"voterId", label: "SNo",width:20,sortable: true},
+		//{key:"voterId", label: "SNo",width:20,sortable: true},
 		{key:"firstName", label: "Name",width:80, sortable: true},
 		{key:"voterIDCardNo", label: "voter ID",sortable: true},
 		{key:"gender", label: "Gender", width:50, sortable: true},
 		{key:"age", label: "Age",  width:30,sortable:true},
 		{key:"houseNo", label: "House No",width:60, sortable:true},
-		{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
+		//{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
 		//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 		//{key:"relationshipType", label: "Relationship", sortable:true},
 		{key:"mobileNo",label:"MobileNo",sortable:true},
@@ -118,14 +118,14 @@ function getInfluencingPeopleVotersDetails()
 	else if(btnName == "Cadre")
 	{
 		var votersByLocBoothColumnDefs = [
-		{key:"voterId", label: "SNo",width:20},
+		//{key:"voterId", label: "SNo",width:20},
 		{key:"firstName", label: "Name",width:80, sortable: true},
-		{key:"cast", label: "Caste Group"},
+		{key:"cast", label: "Caste"},
 		{key:"voterIDCardNo", label: "voter ID",sortable: true},
 		{key:"gender", label: "Gender", width:50, sortable: true},
 		{key:"age", label: "Age",  width:30,sortable:true},
 		{key:"houseNo", label: "House No",width:60, sortable:true},
-		{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
+		//{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
 		//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 		//{key:"relationshipType", label: "Relationship", sortable:true},
 		{key:"mobileNo",label:"MobileNo",sortable:true},
@@ -149,15 +149,15 @@ function getInfluencingPeopleVotersDetails()
 	else 
 	{
 		var votersByLocBoothColumnDefs = [
-		{key:"voterId", label: "SNo",width:20},
+		//{key:"voterId", label: "SNo",width:20},
 		{key:"firstName", label: "Name",width:80, sortable: true},
 		{key:"voterIDCardNo", label: "voter ID",sortable: true},
 		{key:"partyName", label: "Party"},
-		{key:"cast", label: "Caste Group"},
+		{key:"cast", label: "Caste"},
 		{key:"gender", label: "Gender", width:50},
 		{key:"age", label: "Age",  width:30,sortable:true},
 		{key:"houseNo", label: "House No",width:60, sortable:true},
-		{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
+		//{key:"relativeFirstName", label: "Guardian Name", width:100,sortable:true},
 		//{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
 		//{key:"relationshipType", label: "Relationship", sortable:true},
 		{key:"mobileNo",label:"MobileNo",sortable:true},
