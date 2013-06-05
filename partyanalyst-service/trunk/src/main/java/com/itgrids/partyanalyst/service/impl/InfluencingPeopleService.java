@@ -1935,6 +1935,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			return IConstants.VILLAGE;
 		else if(type.equalsIgnoreCase(IConstants.WARD))
 			return IConstants.WARD;
+		else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			return IConstants.BOOTH;
 		
 	 return null;
 	}
