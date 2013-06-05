@@ -152,5 +152,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 
 	public List<Object[]> getCountDetailsInSelectdCustomWard(List<Long> boothIds,Long userId,Long publicationDateId);
 	
+	public List<Voter> getVoterDetailsForCustomWardByBooth(Long boothId,Long publicationDateId,Long userId,Long casteStateId);
 	
 }

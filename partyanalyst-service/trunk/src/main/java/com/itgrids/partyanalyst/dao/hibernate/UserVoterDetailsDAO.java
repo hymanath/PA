@@ -1575,9 +1575,20 @@ IUserVoterDetailsDAO{
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
-	
-	
-	
-	
-	
+
+	//get voter details in a caste by caste stateId and boothId and publicationId
+	public List<Voter> getVoterDetailsForCustomWardByBooth(Long boothId,Long publicationDateId,Long userId,Long casteStateId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.voter from BoothPublicationVoter model,UserVoterDetails model2 ");
+		str.append(" where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and model2.casteState.casteStateId =:casteStateId and");
+		str.append(" model.booth.boothId = :boothId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("boothId", boothId);
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("casteStateId", casteStateId);
+		return query.list();
+		
+	}
 }

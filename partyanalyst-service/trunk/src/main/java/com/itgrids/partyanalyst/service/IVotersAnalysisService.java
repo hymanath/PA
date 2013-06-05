@@ -281,6 +281,8 @@ public interface IVotersAnalysisService {
 	 public VoterInfo getTotalVotersDetailsbyLocation(Long userId,Long reportLevelValue,String locationType,Long publicationDateId,Long constituencyId);
 	 
 	 public String getReportLevelById(Long id);
+	// public List<VoterCastInfoVO> getCastewiseDetailsForCustomWard(Long customWardId,Long publicationId,Long constituencyId,String type,Long userId);
+	 public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId, Long constituencyId ,Long userId);
 	 
 
 	 

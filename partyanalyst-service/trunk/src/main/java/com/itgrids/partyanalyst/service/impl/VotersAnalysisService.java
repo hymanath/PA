@@ -2741,6 +2741,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		
 		else if(type.equalsIgnoreCase("ward") && buildType.equalsIgnoreCase("muncipalityCustomWard"))
 		  	list = boothPublicationVoterDAO.getVoterDetailsForCustomWard(id, publicationDateId, userId, casteStateId);
+		else if(type.equalsIgnoreCase("wardbooth") && buildType.equalsIgnoreCase("muncipalityCustomWard"))
+			list = userVoterDetailsDAO.getVoterDetailsForCustomWardByBooth(id,publicationDateId, userId, casteStateId);
 		else
 		{
 			
@@ -12425,7 +12427,6 @@ return voters;
 
 
 }
-
 public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> locationValues,String type,Integer startIndex,Integer maxRecords,String name,String columnName,String order,Long constiId,String partNo)
 {
 	List<VoterVO> voters = new ArrayList<VoterVO>();
@@ -16546,4 +16547,6 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		        	 return castVo1.getCaste().compareToIgnoreCase(castVo2.getCaste());
 		        }
 		    };
+		    
+		  
 }
