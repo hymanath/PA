@@ -12435,6 +12435,8 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 	List<InfluencingPeople> influencingDetails = new ArrayList<InfluencingPeople>();
 	List<Long> locationIds = new ArrayList<Long>();
 	List<Long> influencyDetailsCount = new ArrayList<Long>();
+	Map<Long,VoterVO> influencingMap = new HashMap<Long, VoterVO>();
+	
 	if(columnName.equalsIgnoreCase("relativeFirstName"))
 	{
 		columnName = "relativeName";
@@ -12464,6 +12466,7 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 		if(influencingDetails != null)
 		{
 			//Influencing people voter Details (VoterIds not avilable) 
+			
 			for(InfluencingPeople params : influencingDetails)
 				{
 				//Influencing people voter Details Count
@@ -12587,14 +12590,26 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					
 						
 					}
-				    voterVO.setCast(getInfluencingPeopleCasteCategory(params.getCaste()));
+				   // voterVO.setCast();
 				 	String infScope = params.getInfluencingScope();
 					String infScopeValue = params.getInfluencingScopeValue();
 					voterVO.setInfluencingRange(params.getInfluencingScope());
 					voterVO.setInfluencingRegion(getRegionNameBasedOnScope(infScope,infScopeValue));
-			        voters.add(voterVO);
-			       
+					influencingMap.put(voterVO.getVoterIds(), voterVO);
+			        voters.add(voterVO);  
 				}
+			List<Long> voterids = new ArrayList<Long>(influencingMap.keySet());
+			
+			List<Object[]> castesList = userVoterDetailsDAO.getcasteForVoter(voterids,userId);
+			if(castesList != null && castesList.size() > 0)
+			{
+				for (Object[] parms : castesList) {
+					VoterVO voterVO1 = influencingMap.get((Long)parms[1]);
+					voterVO1.setCast(parms[0].toString());
+				}
+			}
+			
+			
 			if(voters != null)
 				if(voters.size() > 0)
 					voters.get(0).setTotalVoters(totalCount);
@@ -12662,6 +12677,8 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 	List<Voter> votersList = new ArrayList<Voter>();;
 	Long totalCount = 0L;
 	List<Cadre> cadreDetails = new ArrayList<Cadre>(0);
+	Map<Long,VoterVO> cadreMap = new HashMap<Long, VoterVO>();
+	
 	if(columnName.equalsIgnoreCase("relativeFirstName"))
 	{
 		columnName = "relativeName";
@@ -12748,7 +12765,7 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 					voterVO.setVoterIDCardNo(params.getVoter().getVoterIDCardNo());
 					
 					if(params.getCasteCategory()!=null){
-					voterVO.setCast(params.getCasteCategory().getCategory());
+					//voterVO.setCast(params.getCasteCategory().getCategory());
 					}
 					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
 					if(voterVO.getMobileNo().length()==0){
@@ -12792,8 +12809,19 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 					
 							
 					}
+					cadreMap.put(voterVO.getVoterIds(), voterVO);
 			        voters.add(voterVO);
+			        
 				}
+			List<Long> voterIds = new ArrayList<Long>(cadreMap.keySet());
+			List<Object[]> castesList = userVoterDetailsDAO.getcasteForVoter(voterIds,userId);
+			if(castesList != null && castesList.size() > 0)
+			{
+				for (Object[] parms : castesList) {
+					VoterVO voterVO1 = cadreMap.get((Long)parms[1]);
+					voterVO1.setCast(parms[0].toString());
+				}
+			}
 			if(voters != null)
 				if(voters.size() > 0)
 					voters.get(0).setTotalVoters(totalCount);
