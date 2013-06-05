@@ -5307,5 +5307,16 @@
 			</result>
 		</action>
 		
+		<action name="getCustomVoterGroupAgeDetailsAction" class="customVoterGroupAnalysisAction">
+		 <result name="success">/jsp/customVoterGroupAgeDetails.jsp</result>
+		 <result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="getCustomVoterAgeDetailsAction" class="customVoterGroupAnalysisAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">customVoterAgeCountList</param>
+		 </result>
+		</action>
+		
 		</package>
 </struts>      
