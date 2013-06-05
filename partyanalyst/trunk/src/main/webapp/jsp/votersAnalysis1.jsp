@@ -1034,6 +1034,7 @@ color:#2A4F97;
 
 	#sses2 ul{margin-left: 210px;}
 	#castPopupShowBtn{margin-right: 3px;}
+	#customGroupAgeLink{margin-right: 10px;}
 </style>
 
 </SCRIPT>
@@ -1557,6 +1558,7 @@ for  body3 start    result  -->
 <input id="ageLinkForHamletBooths1" type="button" value="View Booth Wise Age Details" onclick="showAllAgewiseDetailsForHamlet();" class="btn btn-info" style="display:none;float:right;margin-left:10px;" />
 <span id="ageLinkForHamletBooths" style="display:none;float:right;margin-top:10px;margin-left:3px;"><a href="javaScript:{showAllAgewiseDetailsForHamlet()}"  class="btn btn-info">View Booth Wise Age Details</a></span>
 <span id="ageLink" style="display:none;float:right;margin-top:10px;"><a href="javaScript:{showAllAgewiseDetails()}"  class="btn btn-info">View more details</a></span>
+<span id="customGroupAgeLink" style="display:none;float:right;margin-top:10px;"><a href="javaScript:{getcustomGroupAgeInfo()}"  class="btn btn-info">View Custom Group Wise Age Details</a></span>
 
 <div style="display:none;"> <!-- HIDING THE POPUP -->
 <div id="ageWiseVotersDetailsOuterDiv">
