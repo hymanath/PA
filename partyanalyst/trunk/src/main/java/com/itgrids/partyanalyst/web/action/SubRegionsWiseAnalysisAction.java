@@ -284,13 +284,28 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 		 String param = null;
 		   try{
 			  param = getTask();
+			  
 			 jObj = new JSONObject(param);
+			 Long userId = null;
+			 session = request.getSession();
+			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			 if(user == null)
+				 return null;
+			 else
+				userId =user.getRegistrationID(); 
 			 if(jObj.getString("task").equalsIgnoreCase("getMandals"))
 				 resultList = votersAnalysisService.getMandalsInConstituency(jObj.getLong("constituencyId")); 
 			 else if(jObj.getString("task").equalsIgnoreCase("getPanchayatsByMandalId"))
 			 {
 				
 				 resultList = staticDataService.getPanchayatiesByMandalId(new Long(jObj.getString("mandalId")));
+			 }
+			 else if(jObj.getString("task").equalsIgnoreCase("getCustomWards"))
+			 {
+				 String lclElecBodyId =jObj.getString("id").substring(1);
+				 Long publicationDateId = jObj.getLong("publicationDateId");
+				 Long constituencyId = jObj.getLong("constituencyId");
+				 resultList = votersAnalysisService.getWardsMunicipality(new Long(lclElecBodyId),publicationDateId,constituencyId ,userId);
 			 }
 		   }
 		   catch(Exception e)
