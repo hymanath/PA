@@ -81,6 +81,17 @@ table.dataTable td {
 #groupWiseAgeAndGenderTbl{width:100%;}
 /* #customGroupAgeAndGenderDiv,#customGroupGenderDiv{margin-top: 28px;}*/
 .customGroupAgeGraphDiv{border: 1px solid #000000;margin-bottom: 22px;width: 985px;}
+
+#headingId {
+    background-color: #05A8E9;
+    border-radius: 4px 4px 4px 4px;
+    color: snow;
+    font-family: arial;
+    height: 27px;
+    margin-left: 4px;
+    padding-top: 11px;
+    width: auto;
+}
 </style>
 <script type="text/javascript">
 
@@ -100,9 +111,9 @@ var locationName = "${locationName}";
 
 <div id="customGroupAgeGraphDiv"></div>
 
+ <div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv thumbnail breadcrumb" style="text-align:center;"></div>
  <div class="thumbnail" style="margin:15px 10px;">
-   <div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv thumbnail breadcrumb" style="text-align:center;display:none;"></div>
-   <div id="customGroupAgeDiv"></div>
+     <div id="customGroupAgeDiv"></div>
  </div>
  <div class="thumbnail" style="margin:15px 10px;">
    <div id="customGroupAgeAndGenderDiv"></div>
@@ -167,7 +178,7 @@ function buildCustomGroupAgeDetails(results,jsObj)
   $("#customGroupAgeDiv").html('');
   if(results == null || results.length == 0)
   {
-	$("#customGroupAgeDiv").html('No Data Found'); 
+	//$("#customGroupAgeDiv").html('No Data Found'); 
 	return;
   }
   var str = '';
@@ -212,6 +223,7 @@ function buildCustomGroupAgeDetails(results,jsObj)
 	str +='</tr>';
   }
   $("#customGroupAgeDiv").html(str);
+  //$('#customGroupAgeTable').dataTable();
 }
 
 function buildCustomGroupAgeWiseGenderDetails(results,jsObj)
@@ -219,7 +231,7 @@ function buildCustomGroupAgeWiseGenderDetails(results,jsObj)
   $("#customGroupAgeAndGenderDiv").html('');
   if(results == null || results.length == 0)
   {
-	$("#customGroupAgeAndGenderDiv").html('No Data Found'); 
+	//$("#customGroupAgeAndGenderDiv").html('No Data Found'); 
 	return;
   }
   var str = '';
@@ -270,7 +282,10 @@ function buildCustomGroupAgeWiseGenderDetails(results,jsObj)
 
 function buildCustomGroupAgeWisePercentageDetails(results,jsObj)
 {
-	
+  
+  $("#voterAgeAngGenderwiseDetailsNote").html('');
+  
+  $("#voterAgeAngGenderwiseDetailsNote").html('<h4 id="headingId">Age wise voter groups details in '+locationName+'</h4>');
   $("#customGroupGenderDiv").html('');
   if(results == null || results.length == 0)
   {
