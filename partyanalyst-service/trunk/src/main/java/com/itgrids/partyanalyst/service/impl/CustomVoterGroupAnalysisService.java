@@ -810,7 +810,7 @@ public static final String AGE5="60Above";
 		    	list = customVoterDAO.getInfluencingPeopleDetails(userId,publicationDateId,customVoterGroupId,startIndex,maxRecords,order,columnName);
 		    	if(influencePeople != null && influencePeople.size() > 0)
 		    	 inftotal = influencePeople.get(0).longValue();
-		    	result = setValuesToVOterVO(list,btnName,inftotal);
+		    	result = setValuesToVOterVO(list,btnName,inftotal,userId);
 		    }
 		    else if(btnName.equalsIgnoreCase("Cadre"))
 		    {
@@ -819,7 +819,7 @@ public static final String AGE5="60Above";
 		    	cadrePeople = customVoterDAO.getCadrePeopleCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
 		    	if(cadrePeople != null && cadrePeople.size() > 0)
 		        cadreCount = cadrePeople.get(0).longValue();
-		    	result = setValuesToVOterVO(list,btnName,cadreCount);
+		    	result = setValuesToVOterVO(list,btnName,cadreCount,userId);
 		    }
 		    else if(btnName.equalsIgnoreCase("Politician"))
 		    {
@@ -828,7 +828,7 @@ public static final String AGE5="60Above";
 		    	politician = customVoterDAO.getPoliticianCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
 		    	if(politician != null && politician.size() > 0)
 		        politicainCount = politician.get(0).longValue();
-		    	result= setValuesToVOterVO(list,btnName,politicainCount);
+		    	result= setValuesToVOterVO(list,btnName,politicainCount,userId);
 		    }
 		    	
 		    }
@@ -840,17 +840,21 @@ public static final String AGE5="60Above";
 			return result;
 		    }
 		    
-		    public List<VoterVO> setValuesToVOterVO(List<Object[]> list,String btnName,Long total)
+		    public List<VoterVO> setValuesToVOterVO(List<Object[]> list,String btnName,Long total,Long userId)
 		    {
 		    	
 		    	List<VoterVO> result = new ArrayList<VoterVO>(0);
 		    	VoterVO voterVO = null;
+		    	Map<Long,VoterVO> casteMap = new HashMap<Long, VoterVO>();
+		    	
 		    	try{
 		    	Long count = 1l;
 		    	if(list != null && list.size() > 0)
 		    	{
+		    		
 		    		for(Object[] params : list)
 		    		{
+		    			
 		    			voterVO = new VoterVO();
 						voterVO.setVoterId((Long.valueOf(count).toString()));
 						voterVO.setFirstName(params[1]!= null ? params[1].toString():" ");
@@ -862,6 +866,7 @@ public static final String AGE5="60Above";
 						voterVO.setMobileNo(params[6]!=null ?params[6].toString(): " ");
 						voterVO.setLocalArea(params[8]!=null?params[8].toString() : " ");
 						voterVO.setTotalVoters(total);
+						casteMap.put((Long)params[0], voterVO);
 						if(btnName.equalsIgnoreCase("InfluencePeople"))
 						{
 						voterVO.setInfluencingRange(params[9].toString());
@@ -870,7 +875,22 @@ public static final String AGE5="60Above";
 						++count;
 						result.add(voterVO);
 		    		}
+		    		
 		    	}
+		    	List<Long> voterIds = new ArrayList<Long>(casteMap.keySet());
+		    		if(voterIds != null && voterIds.size() > 0)
+		    		{	
+		    		List<Object[]> voterCast = userVoterDetailsDAO.getcasteForVoter(voterIds, userId);
+		    		if(voterCast != null && voterCast.size() > 0)
+		    		{
+		    			for(Object[] params : voterCast)
+		    			{
+		    			voterVO = casteMap.get(params[1]);
+		    			voterVO.setCast(params[0].toString());
+		    			}
+		    		}
+		    		}
+		    	
 		    	}catch(Exception e)
 		    	{
 		    		Log.error("Exception Occured in setValuesToVOterVO() of customVoterGroupAnalysis Exception - ",e);
