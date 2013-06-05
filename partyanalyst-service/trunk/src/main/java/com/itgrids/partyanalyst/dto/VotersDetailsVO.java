@@ -125,6 +125,7 @@ public class VotersDetailsVO implements Serializable{
 	
 	private String castName;
 	private String casteId;
+	private Long castId;
 	
 	private int totalVotersCount;
 	private String categoryName;
@@ -684,6 +685,12 @@ public class VotersDetailsVO implements Serializable{
 	}
 	public void setTotalAssignedCount(Long totalAssignedCount) {
 		this.totalAssignedCount = totalAssignedCount;
+	}
+	public Long getCastId() {
+		return castId;
+	}
+	public void setCastId(Long castId) {
+		this.castId = castId;
 	}
 	
 	

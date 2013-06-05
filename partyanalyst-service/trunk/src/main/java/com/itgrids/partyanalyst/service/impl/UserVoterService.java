@@ -738,7 +738,7 @@ public class UserVoterService implements IUserVoterService{
 		}
 	}
 	
-	public List<VotersDetailsVO> getCasteWiseUserVoterCategory(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId)
+	/*public List<VotersDetailsVO> getCasteWiseUserVoterCategory(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId)
 	{
 		 Map<Long,VotersDetailsVO> category = new HashMap<Long, VotersDetailsVO>();
 		 Map<Long, Map<Long,VotersDetailsVO>> categoryValues = new HashMap<Long, Map<Long,VotersDetailsVO>>();
@@ -871,7 +871,83 @@ public class UserVoterService implements IUserVoterService{
 		
 		
 		 return list1;
+	}*/
+	
+	
+	public List<VotersDetailsVO> getCasteWiseUserVoterCategory(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId)
+	{
+	  List<VotersDetailsVO> votersDetailsVOsList = null;
+		try{
+			List<Object[]> categoriesAndValues = userVoterCategoryValueDAO.getCatergoryAndValues(attributeIds,userId);
+			if(locationType.equalsIgnoreCase("mandal") && locationId.toString().substring(0, 1).equalsIgnoreCase("2"))
+				locationId = new Long(locationId.toString().substring(1));
+			else if(locationType.equalsIgnoreCase("mandal") && locationId.toString().substring(0, 1).equalsIgnoreCase("1"))
+			{
+			   List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationId.toString().substring(1)));
+			   locationId = (Long) list.get(0); 
+			}
+			
+			List<Object[]> votersList = boothPublicationVoterDAO.getCasteWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId);
+			
+			if(votersList != null && votersList.size() > 0)
+			{
+			  votersDetailsVOsList = new ArrayList<VotersDetailsVO>(0);
+			  VotersDetailsVO votersDetailsVO = null;
+			  
+			  for(Object[] params : votersList)
+			  {
+				 votersDetailsVO = checkVotersDetailsVOIsExists((Long)params[0],(Long)params[5],votersDetailsVOsList);
+			     if(votersDetailsVO == null)
+			     {
+			       votersDetailsVO = new VotersDetailsVO();
+			       votersDetailsVO.setCastId((Long)params[0]);
+			       votersDetailsVO.setUserVoterCategoryValueId((Long)params[5]);
+			       votersDetailsVO.setCastName(params[1] != null ? params[1].toString():" ");
+			       votersDetailsVO.setName(params[6] != null ?params[6].toString() : "");
+			       votersDetailsVOsList.add(votersDetailsVO);
+			     }
+			     if(params[3].toString().equalsIgnoreCase(IConstants.MALE))
+			      votersDetailsVO.setTotalMaleVoters((Long)params[2]);
+			     else if(params[3].toString().equalsIgnoreCase(IConstants.FEMALE))
+			      votersDetailsVO.setTotalFemaleVoters((Long)params[2]);
+			     
+			     votersDetailsVO.setTotalVoters(votersDetailsVO.getTotalMaleVoters()+votersDetailsVO.getTotalFemaleVoters());
+			  }
+			  
+			  int totalVoters = 0;
+			  for(VotersDetailsVO vo:votersDetailsVOsList)
+				totalVoters += vo.getTotalVoters();
+			  
+			  for(VotersDetailsVO detailsVO : votersDetailsVOsList)
+				  detailsVO.setTotalVotersPercent(round((float)detailsVO.getTotalVoters()/totalVoters*100,2)); 
+			  
+			  votersDetailsVOsList.get(0).setCategoryName(categoriesAndValues.get(0)[1].toString());
+			}
+			return votersDetailsVOsList;
+		 }catch(Exception e){
+			LOG.error("error occured in the getAgeRangeByUserVoterCategory() method in VotersAnalysis" , e) ;
+			return votersDetailsVOsList;
+		}
 	}
+	
+	public VotersDetailsVO checkVotersDetailsVOIsExists(Long casteId,Long userVoterCategoryValueId,List<VotersDetailsVO> list)
+	{
+		try{
+		if(list == null || list.size() == 0)
+		 return null;
+		 
+		 for(VotersDetailsVO detailsVO : list)
+		   if(detailsVO.getCastId().equals(casteId) && detailsVO.getUserVoterCategoryValueId().equals(userVoterCategoryValueId)) 
+			 return detailsVO;
+		 
+		 return null;
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in checkVotersDetailsVOIsExists() method, Exception - "+e);
+			return null;
+		}
+	}
+	
 	public static float round(float value, int places) {
 	    if (places < 0) throw new IllegalArgumentException();
 

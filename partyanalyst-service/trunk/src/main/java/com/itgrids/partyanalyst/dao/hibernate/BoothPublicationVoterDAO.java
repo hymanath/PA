@@ -2791,8 +2791,11 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			queryString.append(" BPV.booth.localBody.localElectionBodyId = :locationId and BPV.booth.constituency.constituencyId = :constituencyId ");
 		else if(locationType.equalsIgnoreCase("ward"))
 			queryString.append(" BPV.booth.localBodyWard.constituencyId = :locationId ");
+		else if(locationType.equalsIgnoreCase("hamlet"))
+			queryString.append(" UVD.hamlet.hamletId = :locationId ");
 		
-		queryString.append("  group by UVD.casteState.caste.casteId,BPV.voter.gender ");
+		queryString.append("  group by UVCV.userVoterCategoryValueId,UVD.casteState.caste.casteId,BPV.voter.gender ");
+		queryString.append(" order by UVCV.categoryValue, UVD.casteState.caste.casteName ");
 		Query query = getSession().createQuery(queryString.toString());
 		query.setParameter("locationId", locationId);
 		query.setParameterList("attributeIds", attributeIds);
