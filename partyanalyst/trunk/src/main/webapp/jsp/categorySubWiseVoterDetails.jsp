@@ -236,6 +236,7 @@ function buildCasteWiseWiseDetails(result,jobj)
 	str += '<table class="table table-bordered table-striped table-hover" id="casteDetailsTable" style="margin-bottom: 5px; margin-top: 7px;">';
 	     str+="<thead class='info'>";
 		 str += '<tr>';
+		  str += '<th>Education</th>';
 		  str += '<th>Caste Name</th>';
 		  str += '<th>Male Voters</th>';
 		  str += '<th>Female Voters</th>';
@@ -247,6 +248,7 @@ function buildCasteWiseWiseDetails(result,jobj)
 	for(var i in result)
 	{
 		str += '<tr>';
+			str += '<td>'+result[i].name+'</td>';
 			str += '<td>'+result[i].castName+'</td>';
 			str += '<td>'+result[i].totalMaleVoters+'</td>';
 			str += '<td>'+result[i].totalFemaleVoters+'</td>';
