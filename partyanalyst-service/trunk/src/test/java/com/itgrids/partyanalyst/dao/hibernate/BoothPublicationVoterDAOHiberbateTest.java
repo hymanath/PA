@@ -664,4 +664,18 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		}
 		System.out.println(endTime-startTime);
 	}*/
+	
+	public void testgetAgeWiseCustomVoterDetails()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getAgeWiseCustomVoterDetails(232l, 844l, 8l, "RURAL", 1l, "18to25");
+		System.out.println(list.size());
+	}
+	
+	/*public void testgetAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId()
+	{
+		List<Object[]> list= boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(844l, 8l, 15l, 150l, 232l);
+		
+		for(Object[] params : list)
+		 System.out.println(params[0]);
+	}*/
 }

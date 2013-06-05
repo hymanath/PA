@@ -3695,5 +3695,40 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameterList("boothIds", boothIds);
 		return query.list(); 
 	  }
+	  
+	  public List<Object[]> getAgeWiseCustomVoterDetails(Long constituencyId,Long locationValue,Long publicationDateId,String areaType,Long userId,String age)
+	  {
+		  StringBuilder stringBuilder = new StringBuilder();
+		  
+		  stringBuilder.append("select count(distinct CV.voter.voterId), CV.voter.gender, CV.customVoterGroup.customVoterGroupId, CV.customVoterGroup.name from ");
+		  stringBuilder.append(" BoothPublicationVoter BPV, UserVoterDetails UVD, CustomVoter CV where BPV.voter.voterId = UVD.voter.voterId and BPV.voter.voterId = CV.voter.voterId and ");
+		  stringBuilder.append(" BPV.booth.constituency.constituencyId =:constituencyId and CV.customVoterGroup.user.userId =:userId and BPV.booth.publicationDate.publicationDateId =:publicationDateId and ");
+		  
+		  if(areaType.equalsIgnoreCase(IConstants.RURAL))
+		   stringBuilder.append("  BPV.booth.tehsil.tehsilId=:id and ");
+		  else if(areaType.equalsIgnoreCase(IConstants.URBAN))
+		   stringBuilder.append(" BPV.booth.localBody.localElectionBodyId=:id and ");
+		  
+		  if(age.equalsIgnoreCase("18to25"))
+		   stringBuilder.append(" CV.voter.age >=18 and CV.voter.age <= 25 ");
+		  else if(age.equalsIgnoreCase("26to35"))
+		   stringBuilder.append(" CV.voter.age >=26 and CV.voter.age <= 35 ");
+		  else if(age.equalsIgnoreCase("36to45"))
+		   stringBuilder.append(" CV.voter.age >= 36 and CV.voter.age <= 45 ");
+		  else if(age.equalsIgnoreCase("46to60"))
+		   stringBuilder.append(" CV.voter.age >= 46 and CV.voter.age <= 60 ");
+		  else if(age.equalsIgnoreCase("60Above"))
+		   stringBuilder.append(" CV.voter.age >= 60 ");
+		  stringBuilder.append(" group by CV.customVoterGroup.customVoterGroupId, CV.voter.gender ");
+		  
+		  Query query = getSession().createQuery(stringBuilder.toString());
+		 
+		  query.setParameter("constituencyId", constituencyId);
+		  query.setParameter("id", locationValue);
+		  query.setParameter("publicationDateId", publicationDateId);
+		  query.setParameter("userId", userId);
+		  
+		  return query.list();
+	  }
 		
 }
