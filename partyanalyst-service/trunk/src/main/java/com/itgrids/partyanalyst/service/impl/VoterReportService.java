@@ -2317,7 +2317,7 @@ public class VoterReportService implements IVoterReportService{
 				{
 					List<Long> inluencingPeopleCount = boothPublicationVoterDAO.getInfluencingPeopleCountForSelectedLevel(boothids,constituencyId,userId);
 					Long totalRecords = inluencingPeopleCount.get(0).longValue();
-					resultData = storeInfluencingPeopleDetails(influencingData,selLevel,id,totalRecords);
+					resultData = storeInfluencingPeopleDetails(influencingData,selLevel,id,totalRecords,userId);
 				}
 			}
 			else if(type.equalsIgnoreCase("Cadre"))
@@ -2327,7 +2327,7 @@ public class VoterReportService implements IVoterReportService{
 				{
 					List<Long> cadreCount = boothPublicationVoterDAO.getCadreCountForSelectedLevel(boothids,constituencyId,userId);
 					Long totalRecords = cadreCount.get(0).longValue();
-					resultData = storeCadrePeopleDetails(cadreDetails,selLevel,id,totalRecords);
+					resultData = storeCadrePeopleDetails(cadreDetails,selLevel,id,totalRecords,userId);
 				}
 				
 			}
@@ -2406,7 +2406,7 @@ public class VoterReportService implements IVoterReportService{
 				{
 					List<Long> influencingPeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"InfluencePeople",selLevel);
 					Long totalRecods = influencingPeopleCount.get(0).longValue();
-					resultList = storeInfluencingPeopleDetails(influencingpeopleData,selLevel,hamletId,totalRecods);
+					resultList = storeInfluencingPeopleDetails(influencingpeopleData,selLevel,hamletId,totalRecods,userId);
 				}
 				
 				
@@ -2418,7 +2418,7 @@ public class VoterReportService implements IVoterReportService{
 				{
 					List<Long> cadrePeopleCount = userVoterDetailsDAO.getCountForSelectedTypeInHamlet(hamletId,userId,"Cadre",selLevel);
 					Long totalRecods = cadrePeopleCount.get(0).longValue();
-					resultList = storeCadrePeopleDetails(cadrepeopleData,selLevel,hamletId,totalRecods);
+					resultList = storeCadrePeopleDetails(cadrepeopleData,selLevel,hamletId,totalRecods,userId);
 				}
 			}
 			else if(type.equalsIgnoreCase("Politician"))
@@ -2440,10 +2440,11 @@ public class VoterReportService implements IVoterReportService{
 		 * @param Long id
 		 * @return List<VoterVO>
 		 */
-		public List<VoterVO> storeInfluencingPeopleDetails(List<InfluencingPeople> influencingData,String type,Long id,Long totalRecords)
+		public List<VoterVO> storeInfluencingPeopleDetails(List<InfluencingPeople> influencingData,String type,Long id,Long totalRecords,Long userId)
 		{
 			List<VoterVO> resultData = null;
 			VoterVO voterVO = null;
+			Map<Long,VoterVO> influencingMap = new HashMap<Long, VoterVO>();
 			if(influencingData != null && influencingData.size() > 0)
 			{
 				resultData = new ArrayList<VoterVO>();
@@ -2453,13 +2454,14 @@ public class VoterReportService implements IVoterReportService{
 						voterVO.setVoterId((Long.valueOf(count).toString()));
 						voterVO.setFirstName(influencingPeople.getVoter().getName());
 						voterVO.setVoterIDCardNo(influencingPeople.getVoter().getVoterIDCardNo());
+						voterVO.setVoterIds(influencingPeople.getVoter().getVoterId());
 						voterVO.setGender(influencingPeople.getVoter().getGender());
 						voterVO.setAge(influencingPeople.getVoter().getAge());
 						voterVO.setHouseNo(influencingPeople.getVoter().getHouseNo());
 						voterVO.setRelativeFirstName(influencingPeople.getVoter().getRelativeName());
-						if(influencingPeople.getCaste()!=null){
+						/*if(influencingPeople.getCaste()!=null){
 							voterVO.setCast(getInfluencingPeopleCasteCategory(influencingPeople.getCaste()));
-						}
+						}*/
 						voterVO.setMobileNo(influencingPeople.getVoter().getMobileNo()!=null?influencingPeople.getVoter().getMobileNo():"");
 						if(voterVO.getMobileNo().length()==0){
 							voterVO.setMobileNo(influencingPeople.getPhoneNo()!=null?influencingPeople.getPhoneNo():"");
@@ -2511,8 +2513,17 @@ public class VoterReportService implements IVoterReportService{
 						}
 						else
 							voterVO.setLocalArea(address.getConstituency().getName()!=null?address.getConstituency().getName():"");
-						
+						influencingMap.put(voterVO.getVoterIds(), voterVO);
 						resultData.add(voterVO);
+				}
+				List<Long> voterids = new ArrayList<Long>(influencingMap.keySet());
+				List<Object[]> castesList = userVoterDetailsDAO.getcasteForVoter(voterids,userId);
+				if(castesList != null && castesList.size() > 0)
+				{
+					for (Object[] parms : castesList) {
+						VoterVO voterVO1 = influencingMap.get((Long)parms[1]);
+						voterVO1.setCast(parms[0].toString());
+					}
 				}
 			}
 			return resultData;
@@ -2525,10 +2536,11 @@ public class VoterReportService implements IVoterReportService{
 		 * @param Long id
 		 * @return List<VoterVO>
 		 */
-		public List<VoterVO> storeCadrePeopleDetails(List<Cadre> cadreDetails,String type,Long id,Long totalRecords)
+		public List<VoterVO> storeCadrePeopleDetails(List<Cadre> cadreDetails,String type,Long id,Long totalRecords,Long userId)
 		{
 			List<VoterVO> resultData = null;
 			VoterVO voterVO = null;
+			Map<Long,VoterVO> cadreMap = new HashMap<Long, VoterVO>();
 			if(cadreDetails != null && cadreDetails.size() > 0)
 			{
 				resultData = new ArrayList<VoterVO>();
@@ -2538,6 +2550,7 @@ public class VoterReportService implements IVoterReportService{
 						voterVO.setVoterId((Long.valueOf(count).toString()));
 						voterVO.setFirstName(cadre.getVoter().getName());
 						voterVO.setVoterIDCardNo(cadre.getVoter().getVoterIDCardNo());
+						voterVO.setVoterIds(cadre.getVoter().getVoterId());
 						voterVO.setCast(cadre.getCasteCategory().getCategory());
 						voterVO.setGender(cadre.getVoter().getGender());
 						voterVO.setAge(cadre.getVoter().getAge());
@@ -2590,7 +2603,17 @@ public class VoterReportService implements IVoterReportService{
 						}
 						else
 							voterVO.setLocalArea(address.getConstituency().getName()!=null?address.getConstituency().getName():"");
+						cadreMap.put(voterVO.getVoterIds(), voterVO);
 						resultData.add(voterVO);
+				}
+				List<Long> voterids = new ArrayList<Long>(cadreMap.keySet());
+				List<Object[]> castesList = userVoterDetailsDAO.getcasteForVoter(voterids,userId);
+				if(castesList != null && castesList.size() > 0)
+				{
+					for (Object[] parms : castesList) {
+						VoterVO voterVO1 = cadreMap.get((Long)parms[1]);
+						voterVO1.setCast(parms[0].toString());
+					}
 				}
 			}
 			return resultData;
