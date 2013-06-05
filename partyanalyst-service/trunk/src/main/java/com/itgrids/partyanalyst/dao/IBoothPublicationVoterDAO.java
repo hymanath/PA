@@ -370,6 +370,8 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<InfluencingPeople> getInfluencingPeopleDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId , Long userId,Integer startIndex,Integer maxIndex,String order,String columnName);
 	 
 	 public List<Candidate> getPoliticanDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	 
+	 public List<Object[]> getAgeWiseCustomVoterDetails(Long constituencyId,Long locationValue,Long publicationDateId,String areaType,Long userId,String age);
 
 
 }
