@@ -70,6 +70,7 @@ ServletRequestAware ,ServletContextAware{
 	private Long contentId;
 	private String publicationDate;
 	private String task;
+	private Long lclBodyId;
 	JSONObject jObj;
 	private IUserVoterService userVoterService;
 	
@@ -78,6 +79,13 @@ ServletRequestAware ,ServletContextAware{
 	
 	
 	
+	
+	public Long getLclBodyId() {
+		return lclBodyId;
+	}
+	public void setLclBodyId(Long lclBodyId) {
+		this.lclBodyId = lclBodyId;
+	}
 	public IUserVoterService getUserVoterService() {
 		return userVoterService;
 	}
