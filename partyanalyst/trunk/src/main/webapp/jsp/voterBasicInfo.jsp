@@ -522,10 +522,7 @@ function callAjax(jsObj,url)
 									buildCastSubLevelsDiv1(myResults,jsObj);
 									//buildCasteData(myResults,jsObj);
 								}
-								else if(jsObj.task == "getCustomWards")
-								{
-									buildCustomWards(myResults);
-								}
+								
 								}catch (e) {
 								//console.log(e);
 								//alert(e);
@@ -539,42 +536,7 @@ function callAjax(jsObj,url)
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 
-function buildCustomWards(result)
-{
-	 if(result != null)
-	$("#othersWardDiv").css("display","block");
-	var selectedElmt=document.getElementById("wards");
-		removeSelectElements(selectedElmt);
-		var opElmt = document.createElement('option');
-			opElmt.value=0;
-			opElmt.text="Select Location";
 
-			try
-			{
-				selectedElmt.add(opElmt,null); // standards compliant
-			}
-			catch(ex)
-			{
-				selectedElmt.add(opElmt); // IE only
-			}
-		for(var val in result)
-		{
-		
-			var opElmt = document.createElement('option');
-			opElmt.value=result[val].id;
-			opElmt.text=result[val].name;
-
-			try
-			{
-				selectedElmt.add(opElmt,null); // standards compliant
-			}
-			catch(ex)
-			{
-				selectedElmt.add(opElmt); // IE only
-			}
-		}
-		
-}
 
  function removeSelectElements(selectedElmt)
   {
@@ -1488,10 +1450,10 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 		castTemp.push(constMgmtMainObj.castStatssubArray[i].caste);
 		hamletTemp.push(constMgmtMainObj.castStatssubArray[i].mandal);
 		
-		 if(type =="customWard" && jsObj.buildType != "hamlet")
+		 if(type =="customWard" && jsObj.buildType == "hamlet")
 		{
 		
-		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'wardbooth\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'customWardBooths\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		
 		else
@@ -1952,25 +1914,12 @@ function rebuiltDataTable(invisib){
 		buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,null,invisib);
 	}
 
-	function getCustomWards()
-	{
-		var jsObj = {
-		 id : '${lclBodyId}',
-		 publicationDateId:publicationId,
-	     constituencyId:constituencyId,
-		 task : "getCustomWards"
-	 };
-
-	 
-	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getMandalsAction.action?"+rparam;	
-   callAjax(jsObj,url);
-	}
+	
 	function getVotersInACaste(id,publicationDateId,caste,type,Name,casteStateId,casteCategory)
 {
 	var year=publicationYear;	
-	var mainId = "${id}";
-var urlStr="allVotersInAcasteAction.action?hamletId="+id+"&mainId="+id+"&publicationDateId="+publicationDateId+"&caste="+caste+"&type="+type+"&Name="+Name+"&casteStateId="+casteStateId+"&typename=&casteCategory="+casteCategory+"&typename=&year="+year+"&buildTypes=muncipalityCustomWard&constituencyId="+constituencyId+"";
+	var hamletId = ${id};
+var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&publicationDateId="+publicationDateId+"&caste="+caste+"&type=booth&Name="+Name+"&casteStateId="+casteStateId+"&typename=hamlet&casteCategory="+casteCategory+"&year="+year+"&buildTypes=customWardBooths&constituencyId="+constituencyId+"";
 	var updateBrowser = window.open(urlStr,"allVoterDetailsInAcaste"+casteStateId,"scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();
 }
@@ -2051,7 +2000,7 @@ getvotersBasicInfo("voters",id,publicationId,type);
 if(type == "wardBooth")
 {
 getCasteInfoForCustomWard();
-getCustomWards();
+
 }
 </script>
 </body>
