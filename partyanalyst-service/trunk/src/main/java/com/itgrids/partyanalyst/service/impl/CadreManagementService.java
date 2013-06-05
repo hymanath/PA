@@ -4689,7 +4689,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			 * please refer previous version to check for original code.
 			 */ 
 			if(memberShipNo != null && memberShipNo.length() > 0){
-				memberShipNoStr = " and model.memberShipNo = "+memberShipNo;
+				memberShipNoStr = " and model.memberShipNo = '"+ memberShipNo+"'";
 			}
 			
 			else
