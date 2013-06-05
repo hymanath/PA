@@ -9,47 +9,47 @@ public class VotersDetailsVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	
-	private Long maleVotersCountBetween18To25 ;
-	private Long femaleVotersCountBetween18To25 ;
-	private Long unknownVotersCountBetween18To25 ;	
-	private Long maleVotersCountBetween26To35 ;
-	private Long femaleVotersCountBetween26To35 ;
-	private Long unknownVotersCountBetween26To35 ;	
-	private Long maleVotersCountBetween36To45 ;
-	private Long femaleVotersCountBetween36To45 ;
-	private Long unknownVotersCountBetween36To45 ;	
-	private Long maleVotersCountBetween46To60 ;
-	private Long femaleVotersCountBetween46To60 ;
-	private Long unknownVotersCountBetween46To60 ;	
-	private Long maleVotersCountAbove60 ;
-	private Long femaleVotersCountAbove60 ;
-	private Long unknownVotersCountAbove60 ;
+	private Long maleVotersCountBetween18To25 = 0L;
+	private Long femaleVotersCountBetween18To25 = 0L;
+	private Long unknownVotersCountBetween18To25 = 0L;	
+	private Long maleVotersCountBetween26To35 = 0L;
+	private Long femaleVotersCountBetween26To35 = 0L;
+	private Long unknownVotersCountBetween26To35 = 0L;	
+	private Long maleVotersCountBetween36To45 = 0L;
+	private Long femaleVotersCountBetween36To45 = 0L;
+	private Long unknownVotersCountBetween36To45 = 0L;	
+	private Long maleVotersCountBetween46To60 = 0L;
+	private Long femaleVotersCountBetween46To60 = 0L;
+	private Long unknownVotersCountBetween46To60 = 0L;	
+	private Long maleVotersCountAbove60 = 0L;
+	private Long femaleVotersCountAbove60 = 0L;
+	private Long unknownVotersCountAbove60 = 0L;
 	
 	
-	private Long totalMaleVotesFor18To25;
-	private Long totalFemaleVotersFor18To25;
-	private Long totalUnknownVotersFor18To25;
-	private Long totalVotersFor18To25;
+	private Long totalMaleVotesFor18To25 = 0L;
+	private Long totalFemaleVotersFor18To25 = 0L;
+	private Long totalUnknownVotersFor18To25 = 0L;
+	private Long totalVotersFor18To25 = 0L;
 	
-	private Long totalMaleVotersFor26To35;
-	private Long totalFemaleVotersFor26To35;
-	private Long totalUnknownVotersFor26To35;
-	private Long totalVotersFor26To35;
+	private Long totalMaleVotersFor26To35 = 0L;
+	private Long totalFemaleVotersFor26To35 = 0L;
+	private Long totalUnknownVotersFor26To35 = 0L;
+	private Long totalVotersFor26To35 = 0L;
 	
-	private Long totalMaleVotersFor36To45;
-	private Long totalFemaleVotersFor36To45;
-	private Long totalUnknownVotersFor36To45;
-	private Long totalVotersFor36To45;
+	private Long totalMaleVotersFor36To45 = 0L;
+	private Long totalFemaleVotersFor36To45 = 0L;
+	private Long totalUnknownVotersFor36To45 = 0L;
+	private Long totalVotersFor36To45 = 0L;
 	
-	private Long totalMaleVotersFor46To60;
-	private Long totalFemaleVotersFor46To60;
-	private Long totalUnknownVotersFor46To60;
-	private Long totalVotersFor46To60;
+	private Long totalMaleVotersFor46To60 = 0L;
+	private Long totalFemaleVotersFor46To60 = 0L;
+	private Long totalUnknownVotersFor46To60 = 0L;
+	private Long totalVotersFor46To60 = 0L;
 	
-	private Long totalMaleVotersForAbove60;
-	private Long totalFemaleVotersForAbove60;
-	private Long totalUnknownVotersForAbove60;
-	private Long totalVotersForAbove60;
+	private Long totalMaleVotersForAbove60 = 0L;
+	private Long totalFemaleVotersForAbove60 =0L;
+	private Long totalUnknownVotersForAbove60 = 0L;
+	private Long totalVotersForAbove60 = 0L;
 	
 	
 	private Long totalMaleVoters = 0L;

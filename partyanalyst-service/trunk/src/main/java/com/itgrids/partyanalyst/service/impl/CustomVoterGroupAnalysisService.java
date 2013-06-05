@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICustomVoterDAO;
@@ -46,6 +47,8 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 	private IVoterReportService voterReportService;
 	
 	private ICustomVoterGroupDAO customVoterGroupDAO;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	
 	public IVoterReportService getVoterReportService() {
 		return voterReportService;
 	}
@@ -95,6 +98,14 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 	}
 	public void setCustomVoterGroupDAO(ICustomVoterGroupDAO customVoterGroupDAO) {
 		this.customVoterGroupDAO = customVoterGroupDAO;
+	}
+	
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
 	}
 	public List<VoterCastInfoVO> getCasteWiseCustomVotersCount(Long customVoterGroupId,Long userId)
 	{
@@ -463,7 +474,7 @@ public static final String AGE5="60Above";
  		vo.setVotersPercentForAbove60(changeToPercentageString(vo.getTotalVotersForAbove60(),totalVotersOfGroup));
  		vo.setFemaleVotersPercentForAbove60(changeToPercentageString(vo.getFemaleVotersCountAbove60(),vo.getTotalVotersForAbove60()));
  		vo.setMaleVotersPercentForAbove60(changeToPercentageString(vo.getMaleVotersCountAbove60(),vo.getTotalVotersForAbove60()));
- 	
+ 		vo.setTotalVoters(totalVotersOfGroup);
 }
  	
  	public String changeToPercentageString(Long numerator,Long denominator){
@@ -1029,5 +1040,119 @@ public List<Long> getImpFamilyInfo(Long customVoterGroupId,Long publicationDateI
 	
 	return familyList;
 }
+
+public List<VotersDetailsVO> getCustomVotersAgeDetails(Long constituencyId, Long locationId, Long publicationDateId,String areaType, Long userId)
+{
+	List<VotersDetailsVO> votersDetailsVOsList = new ArrayList<VotersDetailsVO>(0);
+	try{
+		List<Object[]> list = null;
+		 list = boothPublicationVoterDAO.getAgeWiseCustomVoterDetails(constituencyId, locationId, publicationDateId, areaType, userId,AGE1);
+		 setCustomVoterAgeDetails(AGE1,list,votersDetailsVOsList);
+		
+		 list = boothPublicationVoterDAO.getAgeWiseCustomVoterDetails(constituencyId, locationId, publicationDateId, areaType, userId,AGE2);
+		 setCustomVoterAgeDetails(AGE2,list,votersDetailsVOsList);
+		
+		 list = boothPublicationVoterDAO.getAgeWiseCustomVoterDetails(constituencyId, locationId, publicationDateId, areaType, userId,AGE3);
+		 setCustomVoterAgeDetails(AGE3,list,votersDetailsVOsList);
+		
+		 list = boothPublicationVoterDAO.getAgeWiseCustomVoterDetails(constituencyId, locationId, publicationDateId, areaType, userId,AGE4);
+		 setCustomVoterAgeDetails(AGE4,list,votersDetailsVOsList);
+		
+		 list = boothPublicationVoterDAO.getAgeWiseCustomVoterDetails(constituencyId, locationId, publicationDateId, areaType, userId,AGE5);
+		 setCustomVoterAgeDetails(AGE5,list,votersDetailsVOsList);
+		 
+		 if(votersDetailsVOsList != null && votersDetailsVOsList.size() > 0)
+		 {
+			for(VotersDetailsVO vo:votersDetailsVOsList)
+			{
+			  vo.setTotalVotersFor18To25(vo.getFemaleVotersCountBetween18To25() + vo.getMaleVotersCountBetween18To25());
+			  vo.setTotalVotersFor26To35(vo.getFemaleVotersCountBetween26To35()+ vo.getMaleVotersCountBetween26To35());
+			  vo.setTotalVotersFor36To45(vo.getFemaleVotersCountBetween36To45() + vo.getMaleVotersCountBetween36To45());
+			  vo.setTotalVotersFor46To60(vo.getFemaleVotersCountBetween46To60() + vo.getMaleVotersCountBetween46To60());
+			  vo.setTotalVotersForAbove60(vo.getFemaleVotersCountAbove60() + vo.getMaleVotersCountAbove60());
+			  
+			  countPercentages(vo);
+			}
+		 }
+		
+		return votersDetailsVOsList;
+	}catch (Exception e) {
+		e.printStackTrace();
+		Log.error("Exception Occured in getCustomVotersAgeDetails() method, Exception - "+e);
+		return votersDetailsVOsList;
+	}
+}
+
+public void setCustomVoterAgeDetails(String age ,List<Object[]> list,List<VotersDetailsVO> votersDetailsVOsList)
+{
+	try{
+		if(list != null && list.size() > 0)
+		{
+			VotersDetailsVO votersDetailsVO = null;
+			for(Object[] params :list)
+			{
+			  votersDetailsVO = checkVotersDetailsVOExists((Long)params[2],votersDetailsVOsList);
+			  if(votersDetailsVO == null)
+			  {
+				  votersDetailsVO = new VotersDetailsVO();
+				  votersDetailsVO.setId((Long)params[2]);
+				  votersDetailsVO.setName(params[3] != null ?params[3].toString():" ");
+				  votersDetailsVOsList.add(votersDetailsVO);
+			  }
+			  if(params[1].toString().equalsIgnoreCase(IConstants.MALE))
+			  {
+				  if(age.equalsIgnoreCase(AGE1))
+				   votersDetailsVO.setMaleVotersCountBetween18To25((Long)params[0]);
+				  else if(age.equalsIgnoreCase(AGE2))
+				   votersDetailsVO.setMaleVotersCountBetween26To35((Long)params[0]);
+				  else if(age.equalsIgnoreCase(AGE3))
+				   votersDetailsVO.setMaleVotersCountBetween36To45((Long)params[0]);
+				  else if(age.equalsIgnoreCase(AGE4))
+				   votersDetailsVO.setMaleVotersCountBetween46To60((Long)params[0]);
+				  else if(age.equalsIgnoreCase(AGE5))
+				   votersDetailsVO.setMaleVotersCountAbove60((Long)params[0]);
+			  }
+			  else if(params[1].toString().equalsIgnoreCase(IConstants.FEMALE))
+			  {
+				if(age.equalsIgnoreCase(AGE1))
+				  votersDetailsVO.setFemaleVotersCountBetween18To25((Long)params[0]);
+				else if(age.equalsIgnoreCase(AGE2))
+				  votersDetailsVO.setFemaleVotersCountBetween26To35((Long)params[0]);
+				else if(age.equalsIgnoreCase(AGE3))
+				  votersDetailsVO.setFemaleVotersCountBetween36To45((Long)params[0]);
+				else if(age.equalsIgnoreCase(AGE4))
+				  votersDetailsVO.setFemaleVotersCountBetween46To60((Long)params[0]);
+				else if(age.equalsIgnoreCase(AGE5))
+				  votersDetailsVO.setFemaleVotersCountAbove60((Long)params[0]);  
+			  }
+			  
+			}
+		}
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+		Log.error("Exception Occured in setCustomVoterAgeDetails() method, Exception - "+e);
+	}
+}
+
+  public VotersDetailsVO checkVotersDetailsVOExists(Long groupId, List<VotersDetailsVO> list)
+  {
+	try{
+		
+		if(list == null || list.size() == 0)
+			return null;
+		for(VotersDetailsVO votersDetailsVO : list)
+		  if(votersDetailsVO.getId().equals(groupId))
+			  return votersDetailsVO;
+					  
+		return null;
+	}catch (Exception e) {
+		e.printStackTrace();
+		Log.error("Exception Occured in checkVotersDetailsVOExists() method, Exception - "+e);
+		return null;
+	}
+  }
+  
+  
 
 }
