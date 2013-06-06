@@ -12,4 +12,9 @@
 	     <property name="thumbnailService" ref="thumbnailService"></property>
 	     <property name="newsMonitoringService" ref="newsMonitoringService"></property>
 	</bean>
+	
+		<bean id="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction" singleton="false">
+		<property name="loginService" ref="loginService"></property>
+	</bean>
+	
 	</beans>
