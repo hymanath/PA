@@ -4013,7 +4013,7 @@
 		</action>
 		<action name="loginPopUpsAction" class="loginAction" method="ajaxCallForLoginPopup">
 			<result type="json" name="success">
-				<param name="root">resultForAjax</param>				
+				<param name="root">resultStatus</param>				
 			</result>		
 		</action>
 		

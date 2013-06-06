@@ -463,4 +463,15 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return query.list();
 	}
 	
-*/}
+*/
+	
+	public Long checkForUserNameAndPasswordAvaliablity(String userName,String password)
+	{
+		Query query = getSession().createQuery("select count(*) from User model where" +
+				"  model.userName = :userName and  model.password = :password");
+		query.setParameter("userName", userName);
+		query.setParameter("password", password);
+		return (Long)query.uniqueResult();
+	}
+	
+}
