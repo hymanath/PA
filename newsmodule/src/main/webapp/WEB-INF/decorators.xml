@@ -221,6 +221,8 @@
 		<pattern>/updateSelectedVotersAction*</pattern>
 		<pattern>/partyManagementAction*</pattern>
 		<pattern>/setUserRestrictionAction*</pattern>
+		<pattern>/showNewsGallariesAction*</pattern>
+		<pattern>/showAllFilesOfAGallary*</pattern>
     	 </decorator>
 
 </decorators>
