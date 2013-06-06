@@ -10,11 +10,11 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -94,7 +94,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.util.IConstants;
 
 
 public class CandidateDetailsService implements ICandidateDetailsService {
@@ -5444,4 +5444,72 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 	}
 	
 }
-*/}
+*/
+ 
+ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex){
+		
+		List<FileVO> returnList = new ArrayList<FileVO>();
+		
+		List<Long> gallaryIdsList = new ArrayList<Long>();
+		gallaryIdsList.add(gallaryId);
+		
+		List<FileGallary> fileGallaryList = fileGallaryDAO
+				.getFilesOfInGallaries(gallaryIdsList,startIndex,endIndex);
+		
+		Long count = fileGallaryDAO.getAllRecordCountInGallary(gallaryId).get(0);
+		
+			for(FileGallary fileGallary : fileGallaryList){	
+				
+				FileVO file = new FileVO();
+				
+				file.setFileId(fileGallary.getFile().getFileId());
+				file.setFileGallaryId(fileGallary.getFileGallaryId());
+				file.setFileName1(fileGallary.getFile().getFileTitle());
+				file.setFileDescription1(fileGallary.getFile().getFileDescription());
+				
+				if(fileGallary.getFile().getCategory() != null){
+				file.setCategoryId(fileGallary.getFile().getCategory().getCategoryId());
+				file.setCategoryName(fileGallary.getFile().getCategory().getCategoryType());
+				}
+				
+				file.setFilePath1(fileGallary.getFile().getFilePath());
+				
+				Set<FileSourceLanguage> set = fileGallary.getFile().getFileSourceLanguage();
+				
+				String sourceString = "";
+				for(FileSourceLanguage source:set)
+					sourceString+=source.getSource().getSource()+" ";
+				
+				file.setFileType(sourceString);
+				
+				
+				returnList.add(file);
+				returnList.get(0).setTotalResultsCount(count);
+		}
+		
+		return returnList;		
+	}
+
+public List<SelectOptionVO> getLatestgallaries()
+{
+	   List<SelectOptionVO> gallariesList = new ArrayList<SelectOptionVO>();
+	   
+		List<Object[]> newsList = partyGalleryDAO.getPartyGallaryDetail(IConstants.TDPID, 
+
+IConstants.NEWS_GALLARY,0,5);
+		
+		for(Object[] obj:newsList){
+			SelectOptionVO vo = new SelectOptionVO();
+			vo.setId((Long)obj[0]);
+			vo.setName(obj[1].toString());
+			gallariesList.add(vo);
+		}
+		
+		return gallariesList;
+
+	   
+}
+ 
+
+
+}

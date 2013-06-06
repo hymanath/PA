@@ -10,23 +10,17 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import java.util.Map;
 
-import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
-import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
-import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
-import com.itgrids.partyanalyst.dto.CandidateVO;
-import com.itgrids.partyanalyst.dto.CustomPageVO;
-import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
-import com.itgrids.partyanalyst.dto.GallaryVO;
-import com.itgrids.partyanalyst.dto.MetaInfoVO;
-import com.itgrids.partyanalyst.dto.PdfGenerationVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.File;
 
-public interface ICandidateDetailsService {/*
+public interface ICandidateDetailsService {
+	
+	
+	public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex);
+	public List<SelectOptionVO> getLatestgallaries();
+	
+	/*
 	
 	public CandidateVO getCandidateDetails(Long candidateId);
 

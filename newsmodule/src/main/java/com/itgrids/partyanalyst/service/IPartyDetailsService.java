@@ -1,23 +1,15 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
-import java.util.Map;
 
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import java.util.List;
-
-import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
-import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
-import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
-import com.itgrids.partyanalyst.dto.PartyInfoVO;
-import com.itgrids.partyanalyst.dto.PartyPageVO;
-import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.model.File;
-import com.itgrids.partyanalyst.model.PartyElectionResult;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 public interface IPartyDetailsService {
+	
+	public FileVO getAllTheGallariesOfAparty(Long partyId , int startIndex , int endIndex);
+
 	/*
 	public List<SelectOptionVO> getAllPartysNames() ;
 	
