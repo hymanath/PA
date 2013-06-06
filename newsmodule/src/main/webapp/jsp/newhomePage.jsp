@@ -311,9 +311,13 @@
 							<div class="span12 boxHeading"><h4>category wise news</h4></div>
 							<div class="span12">
 								<ul class="unstyled pad10">
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</a></li>
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</a></li>
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</a></li>
+										<s:if test="resultMap != null && resultMap.size() > 0"> 
+										
+							    <s:iterator value="resultMap.categories" var="newsGallaryDetails" status="ctr">
+						       	<li><a href='javascript:{showAllgallaries(<s:property value="candidateId"/>,<s:property value="categoryId"/>)}' class="muted"><i class="icon-share-alt"></i> <s:property value="categoryName"/></a></li>                          		
+							</s:iterator>
+							</s:if>
+							
 								</ul>
 							</div>
 						</div>
@@ -377,6 +381,13 @@ function showAllgallaries(){
      var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 	}
+function showAllgallaries(partyId,catId){
+	   var urlstr = "showNewsGallariesAction.action?candidateId="+partyId+"&category="+catId;
+		
+     var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+	}
+
 
 </script>
 </body>
