@@ -2241,6 +2241,58 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 
+*/
+	
+	public String getAllTheGallariesOfAparty()
+	{
+		try{
+			
+			int startIndex = 1 ;
+			int endIndex = 30;
+			
+			fileVO2 = partyDetailsService.getAllTheGallariesOfAparty(872L,startIndex,endIndex);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return Action.SUCCESS;
+		
+	}
+	
 
 
-*/}
+
+		public String getFilesInAGallary(){				
+			
+			
+			Long  gallaryId = Long.parseLong(request.getParameter("gallaryId"));
+			int startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			int endIndex = Integer.parseInt(request.getParameter("endIndex"));
+			
+			fileVO = candidateDetailsService.getFilesOfAGallary(gallaryId,startIndex,endIndex);
+			
+			return Action.SUCCESS;
+				
+	  }
+		
+		
+	public String showAllFilesOfAGallary()
+	{
+		
+		
+		return Action.SUCCESS;
+		
+	}
+			
+	
+	
+	public String showNewsGallariesAction()
+	{
+		return Action.SUCCESS;
+		
+	}
+	
+
+}

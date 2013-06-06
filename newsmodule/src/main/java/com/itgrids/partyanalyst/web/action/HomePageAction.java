@@ -78,6 +78,9 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private ISpecialPageService specialPageService;
 	private String homePageLoadingFirstTime;
 	
+
+	private List<SelectOptionVO> latestGallariesList;
+	
 	private Long onlineRegId;
 	
 	public List<SelectOptionVO> getStates() {
@@ -86,6 +89,13 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setStates(List<SelectOptionVO> states) {
 		this.states = states;
 	}
+	public List<SelectOptionVO> getLatestGallariesList() {
+		return latestGallariesList;
+	}
+	public void setLatestGallariesList(List<SelectOptionVO> latestGallariesList) {
+		this.latestGallariesList = latestGallariesList;
+	}
+
 
 
 	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
@@ -351,6 +361,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public String execute()
 	{	
         request.setAttribute("notLogged",notLogged);
+		latestGallariesList = candidateDetailsService.getLatestgallaries();
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10);
 		return Action.SUCCESS;
 	}
