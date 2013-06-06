@@ -1830,6 +1830,32 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 		}		
 		return fileVo;		
 	}
+	public FileVO getAllTheGallariesForCategory(Long partyId , int startIndex , int endIndex,Long categoryId)
+	{  	FileVO fileVo =  new FileVO();
+	
+	
+	List<FileVO> fileVos = new ArrayList<FileVO>();
+	
+		List<Object[]> filesCount = partyGalleryDAO.getGalleriesForCategories(IConstants.TDPID, startIndex, endIndex, "public", categoryId);
+      for(Object[]  obj:filesCount){
+			
+			FileVO file = new FileVO();
+			
+			file.setGallaryId((Long)obj[0]);
+			file.setGallaryName(obj[1].toString());
+			file.setGallaryDescription(obj[2].toString());
+			file.setGallaryCreatedDate(obj[3].toString());
+			file.setGallaryUpdatedDate(obj[4].toString());
+			file.setTotalResultsCount((Long)obj[5]);
+			
+			fileVos.add(file);
+		}
+      fileVo.setFileVOList(fileVos);
+      
+      return fileVo;
+	}
+
+	
 }
 	
 
