@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -979,34 +980,20 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				 }*/
 				 
 				 List <Object[]> newsDetails =  partyGalleryDAO.getAllNewsDetailsForState(IConstants.TDPID, 0,10,"public",1l,2l);
-				 if(newsDetails == null && newsDetails.isEmpty())
-					 return null;
-				 
-				/* List<FileVO> nl= new ArrayList<FileVO>();
-				    for(Object[] obj : newsDetails )
-				    {  FileVO v =new FileVO();
-				    	File f =(File)obj[0];
-	                    long id = (Long)obj[1];
-				        Date date= (Date)obj[2];
-				        String source =(String) obj[3];
-				        String flag =(String) obj[4];
-				        long partyId =(Long) obj[5];
-				        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-				        String newDate = formatter.format(date);
-				        v.setSource(source);
-				        v.setContentId(id);
-				        v.setCandidateId(partyId);
-	                    v.setFileTitle1(f.getFileTitle());
-	                    v.setDescription(f.getFileDescription());
-	                    v.setDisplayImageName(f.getFileName());
-						 v.setDisplayImagePath(f.getFilePath());
-						 v.setImagePathInUpperCase(flag);
-						 v.setFileType("Party");
-	                    nl.add(v);
-				    	
-				    }*/
-				 List<FileVO> nl = buildFileVo(newsDetails);
+				 if(newsDetails != null && !newsDetails.isEmpty()){
+					 List<FileVO> nl = buildFileVo(newsDetails);
+							
 				 resultMap.put("NewsGallary", nl);
+				 
+				 }
+				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(1l);
+				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(IConstants.TDPID, 0,10,"public",3l,distIds);
+				 if(newsDetailsForDist != null && !newsDetailsForDist.isEmpty()){
+					 List<FileVO> nl = buildFileVo(newsDetailsForDist);
+							
+				 resultMap.put("NewsGallaryForDist", nl);
+				 
+				 }
 			 
 		/* newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
 		 resultList = setToFileVO(newsGallaryresultList);
