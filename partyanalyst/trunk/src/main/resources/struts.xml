@@ -5285,10 +5285,7 @@
 		   <param name="root">customVotersList</param>
 		 </result>
 		</action>
-				<action name="getCustomPageFamilyDetailsAction" class="subRegionsWiseAnalysisAction" >
-			<result name="success">/jsp/customVoterGroupFamilyDetails.jsp</result>
-			<result name="error">/jsp/loginForm.jsp</result>
-		</action>
+
 		<action name="getCustomVoterFamilyAction" class="customVoterGroupAnalysisAction" method="getCustomvoterFamilyDetails" >
 			<result type="json" name="success">
 		  	 <param name="root">importantFamiliesInfoVo</param>

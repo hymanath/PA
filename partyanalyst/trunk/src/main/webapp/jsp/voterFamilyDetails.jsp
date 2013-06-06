@@ -903,7 +903,7 @@ function  buildFamilyMembers(result,jsObj,type){
 			  var temp = "";
 			 if(result[i].isInfluencePerson == true){
 				temp = "Influencing People";
-				str+='<img title="'+result[i].influenceNames+': '+temp+'" alt="'+result[i].influenceNames+'" src="./images/icons/influencing.png" class ="mouseOver"/>';
+				str+='<img title="'+result[i].influenceNames+'('+result[i].influencePartyName+'): '+temp+'" alt="'+result[i].influenceNames+'" src="./images/icons/influencing.png" class ="mouseOver"/>';
 			 }
 			 if(result[i].isCadrePerson == true){
 				temp = "Cadre";

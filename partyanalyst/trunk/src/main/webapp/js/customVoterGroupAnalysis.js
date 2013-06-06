@@ -555,7 +555,8 @@ var myResults;
 			 				 buildCasteWiseCustomVotersCount(myResults,jsObj);
 			 			else if(jsObj.task=="getAgeWiseCustomVotersInGroup"){
 			 					 buildAgeWiseInGroupTable(myResults);
-				}
+						}else if(jsObj.task=="CustomVoterImpFamilies"){		CustomVoterImpFamiliesTable(myResults,jsObj);
+						}
 					}catch (e) {
 
 					}
@@ -894,6 +895,84 @@ function showInfluencePeopleDialog(voterId){
 			var url = "getVotersCountForPartyByCustomGroupIdAction.action?"+rparam;						
 		callAjax(jsObj,url);
 
+}
+
+function CustomVoterImpFamiliesTable(myresults,jsObj){
+	var value=0;
+	var str='';
+	var type = jsObj.type;	
+	str+='<div class="impFamilesMainDiv row">';
+	
+		str += '<div class="span3" style="margin-left: 30px;"><ul class="FamiliyList"> <li> <div style="width:68%;float:left;">Total Voters </div> <span style="clear:left;">: '+myresults.totalVoters+'</span></li>';
+
+	if(myresults.totalFamalies==null){
+		str+='<li><div style="width:68%;float:left;"> Total Families </div> : <span style="clear:left;">'+value+'</span> </li> ';
+	}
+	else{
+	str+='<li><div style="width:68%;float:left;"> Total Families </div> : <span style="clear:left;">'+myresults.totalFamalies+'</span></li> ';
+	}
+
+	if(myresults.totalMaleVoters==null){
+		str +='<li><div style="width:68%;float:left;"> Total Male Voters </div> : <span style="clear:left;"> '+value+'</span></li> ';
+	}
+	else{
+	str +='<li><div style="width:68%;float:left;"> Total Male Voters </div> : <span style="clear:left;">'+myresults.totalMaleVoters+'</span> </li> ';
+	}
+
+	if(myresults.totalFemaleVoters==null){
+		str +='<li><div style="width:68%;float:left;">Total Female Voters </div>: <span style="clear:left;">'+value+'</span> </li> ';
+	}
+	else{
+	str +='<li> <div style="width:68%;float:left;">Total Female Voters </div>: <span style="clear:left;">'+myresults.totalFemaleVoters+'</span> </li> ';
+	}
+	
+	str +='</ul></div>';
+	str+='<div class="span9" style="margin-top:6px;">';
+	str+='<table id="FamilyTable" class="table table-bordered table-hover"  style="margin-top: 15px; font-size: 13px;">';
+	str+='<thead class="info"><tr>';
+	str+='<th>Report</th><th>Voters Below 3</th><th>Voters Between 4-6</th><th>Voters Between 7-10</th><th>Above 10 Voters</th>';
+	str+='</tr></thead><tbody>';
+	str+='<tr>';
+	str+='<th>No of Familes</th>';
+
+	if(myresults.below3 != null)
+		str+='<td>'+myresults.below3+'</td>';
+	else
+		str+='<td>'+0+'</td>';
+
+	if(myresults.betwn4to6 != null)
+		str+='<td>'+myresults.betwn4to6+'</td>';
+	else
+		str+='<td>'+0+'</td>';
+
+	if(myresults.betwn7to10 != null)
+		str+='<td>'+myresults.betwn7to10+'</td>';
+	else
+		str+='<td>'+0+'</td>';
+
+	if(myresults.above10 != null)
+		str+='<td>'+myresults.above10+'</td>';
+	else
+		str+='<td>'+0+'</td>';
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th>Familes %</th>';
+
+	if(myresults.below3perc != null)
+		str+='<td>'+myresults.below3perc+'%</td>';
+	if(myresults.betwn4to6perc != null)
+		str+='<td>'+myresults.betwn4to6perc+'%</td>';
+	if(myresults.betwn7to10perc != null)
+		str+='<td>'+myresults.betwn7to10perc+'%</td>';
+	if(myresults.above10perc != null)
+		str+='<td>'+myresults.above10perc+'%</td>';
+
+	str+='<tr>';
+	str+='</tbody></table>';
+	str+='</div>';
+	$("#impFamilesBasicDetails").html(str);
+	
 }
 
   function buildVotersCountForPartyByCustomGroup(myResults){

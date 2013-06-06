@@ -2218,11 +2218,7 @@ function getAgewiseInfoForVoterCategory(){
 		var url = "<%=request.getContextPath()%>/getCategoryWiseDetailsAction.action?"+rparam;
 		callAjax(jsObj, url);*/
 	}
-	function getFamilyInfoByGroupId(){
-	 var urlstr = "getCustomPageFamilyDetailsAction.action?customVoterGroupId=1&publicationDateId=8&typeName="+mainname+"&publicationYear="+publicationYear+"";
-	 var browser1 = window.open(urlstr,"CustomPageFamilyDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-     browser1.focus();
-	}
+
 	function getAllSubDetails(){
 		if(typeofMuncipality == "GHMC Greater Municipal Corp")
 			isGhmc = true;
