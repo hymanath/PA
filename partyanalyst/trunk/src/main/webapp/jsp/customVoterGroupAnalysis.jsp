@@ -122,11 +122,28 @@ table.dataTable tr.even td.sorting_1 {
 
 #partyWiseVotersJqTable td{ padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 
+
+.noteDiv {
+    margin-bottom: 18px;
+    margin-top: 29px;
+}
+#impFamiliesTitle{
+margin-top: 17px;
+}
+.table thead.info th,.impFamilesMainDiv th,#censusTab th{background:#d9edf7; color:#454545;}
+
+.whitegloss h5.whitegloss{margin: 0px -20px; padding: 10px 10px 10px 20px;clear:both;}
+
+.FamiliyList li{margin:5px;font-weight:bold;font-size:14px;padding:6px;width:100%;}
+#ImportantFamiliesDiv{
+	  margin-bottom: 20px;
+	}
    </style>
 
 
    <script type="text/javascript">
    var customVoterGroupId = "${customVoterGroupId}";
+   var publicationId = "${publicationDateId}";
    </script>
 </head>
 <body>
@@ -155,6 +172,14 @@ table.dataTable tr.even td.sorting_1 {
 <div id="partyWiseVotersDiv"  style="margin-top:20px;margin-bottom:50px;"></div>
 </div>
 <!-- End of party wise VotersInfo -->
+<div id="customVoterFamilyDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
+<h4 class="">Family Wise Custom Voters</h4>
+
+<div id="ImportantFamiliesDiv" style="margin-top:30px;">
+	<div id ="impFamilesBasicDetails" style="margin-left: auto; margin-right: auto; width: 950px;"></div>
+	</br>
+	</div>
+</div>
 </div>
 <script  type="text/javascript">
 getVotersCountForPartyByCustomGroupId();
@@ -261,6 +286,20 @@ function checkForNull(val){
 	else
 		return 0;
 }
+function getFamilies(){
+	$("#basicInfoAjaxDiv").show();
+				var jsObj1=
+					{
+						customVoterGroupId:customVoterGroupId,
+						publicationDateId:publicationId,
+						task:"CustomVoterImpFamilies",
+			
+					}
+			var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
+					var url1 = "getCustomVoterFamilyAction.action?"+rparam1;						
+				callAjax(jsObj1,url1);
+}
+getFamilies();
 </script>
 </body>
 </html>

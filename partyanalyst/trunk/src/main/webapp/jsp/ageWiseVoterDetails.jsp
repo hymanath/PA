@@ -24,7 +24,6 @@
 <link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 <link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 <!-- YUI Dependency files (End) -->
-<script type="text/javascript" src="js/highcharts/js/highcharts.js"></script>
 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
@@ -34,6 +33,10 @@
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <script type="text/javascript" src="js/myCustChart.js"></script>
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+ <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+	  <script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
+	  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+<link href="styles/assets/css/bootstrap.css" rel="stylesheet">
 <style type="text/css">
 #voterDetailsNote{
   margin-bottom:5px;
@@ -528,7 +531,7 @@ var YDataObjectTemp = new Object();
 		else
 	str+='<td>'+innerResults[i].boothName+'</td>';
 	else if(type == "localElectionBody")
-	 str+='<td>'+innerResults[i].boothName+'</td>';
+	 str+='<td>Booth-'+innerResults[i].boothName+'</td>';
     else if(type == "ward")
 	 str+='<td>'+innerResults[i].boothName+'</td>';
       else if(agePattern.test(obj.type))
@@ -957,7 +960,13 @@ $("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <s
 </head>
 <body>
 <div id="errorDiv" align="center"></div>
+<div align="center">
 <div id="ageGrid" align="center"></div>
+<div style="margin: 10px auto -45px; width: 200px;">
+	<span class="label label-info btn btn-info" style="padding:5px;" id="show_votes">Show All </span>
+	<span class="label label-info btn btn-info" style="padding:5px;" id="hide_votes">Hide All 	</span>
+</div>
+</div>
 <div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="ageWiseVotersDetailsOuterDiv">
 	<div id='ageWiseInfoDiv' class=""  style="height:500px;">
@@ -984,5 +993,96 @@ $("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <s
 	<div id="tableDiv"></div>
 </div>
 </div> </div>
+<Script type="text/javascript">
+  function buildMyLineChart(xarray , tempLine ,utilObject , divId )
+	
+	{
+	try{
+	var chart1;
+/*  var fileref=document.createElement('script');
+  fileref.setAttribute("type","text/javascript");
+  fileref.setAttribute("src", "js/highcharts/js/highcharts.js"); */
+	    chart1 = new Highcharts.Chart({
+            chart: {
+                renderTo: divId,
+                type: 'line',
+				 zoomType: 'x',
+                        events: {
+                            click: function() {
+                                this.xAxis[0].setExtremes();
+								                       }
+                        }
+                   },
+            title: {
+                text: utilObject.title,
+                x: -20 //center
+            },
+            subtitle: {
+                text: 'Drag Between Any 3 Points To See In Zoom',
+                x: -20
+            },
+            xAxis: {
+               categories: xarray,
+				
+				 labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                } 
+            },
+            yAxis: {
+				min:0,
+                title: {
+                    text: utilObject.ytitle 
+                }
+            }, 
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y + utilObject.tooltipText;
+                }
+            },
+             series: tempLine //myChart1 
+        });
+
+		$('#show_votes').click(function(){
+			var chart = $('#ageGrid').highcharts();
+			var series = chart.series;
+		
+			var _redraw = chart.redraw;
+			chart.redraw = function(){};
+		
+			$.each(series, function(index, series1) {
+				series1.show();
+			});
+		
+			chart.redraw = _redraw;
+			chart.redraw();
+		
+		});
+	
+		$('#hide_votes').click(function(){
+			var chart = $('#ageGrid').highcharts();
+			var series = chart.series;
+		
+			var _redraw = chart.redraw;
+			chart.redraw = function(){};
+		
+			$.each(series, function(index, series1) {
+				series1.hide();
+			});
+		
+			chart.redraw = _redraw;
+			chart.redraw();
+		});
+	}catch(e){}
+return chart1;
+}
+
+
+</script>
 </body>
 </html>
