@@ -1590,5 +1590,9 @@
           
 		
 	</bean>
+	
+	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
+		<property name="userDAO" ref="userDAO" />
+	</bean>
 </beans>		
 	
