@@ -147,7 +147,7 @@
 		<pattern>/initailConstituencyManagementAction*</pattern>
 		<pattern>/partyPerformanceReport*</pattern>
 		<pattern>/abuseCommentaction*</pattern>
-		<pattern>/partyManagementAction*</pattern>
+		
 		<pattern>/cadreManagementAction*</pattern>
 		<pattern>/cadreReportAction*</pattern>
 		<pattern>/completeProblemDetailsSearchAction*</pattern>
@@ -219,7 +219,7 @@
 		<pattern>/boothWiseModificationsCompleteInfo*</pattern>
 		<pattern>/cadreDisplayWindowAction*</pattern>		
 		<pattern>/updateSelectedVotersAction*</pattern>
-		
+		<pattern>/partyManagementAction*</pattern>
 		<pattern>/setUserRestrictionAction*</pattern>
     	 </decorator>
 

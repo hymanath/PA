@@ -20,18 +20,7 @@ import com.itgrids.partyanalyst.model.Constituency;
  * @author <a href="mailto:shan.javaee@gmail.com">Shan Nagarajan</a>
  */
 
-public interface IConstituencyDAO extends GenericDao<Constituency, Long>{/*
-
-
-	*//**
-	 * Find all Constituency entities with a specific property value.
-	 * 
-	 * @param propertyName
-	 *            the name of the Constituency property to query
-	 * @param value
-	 *            the property value to match
-	 * @return List<Constituency> found by query
-	 *//*
+public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List<Constituency> findByProperty(String propertyName, Object value);
 
 	public List<Constituency> findByName(Object name);
@@ -159,14 +148,14 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{/*
 	
 	public String getLocalBodyElectionTypeByConstituencyId(Long constituencyId);
 	
-	public List<Object[]> getStateToConstituencyByParlConstituency(String constituencyIds);
+	//public List<Object[]> getStateToConstituencyByParlConstituency(String constituencyIds);
 	
-	public List<Object[]> getWardsInMuncipalityFomConstituency(Long localBodyid);
+	//public List<Object[]> getWardsInMuncipalityFomConstituency(Long localBodyid);
 	
-	public List<Object[]> getConstituencyType(Long constituencyId);
+	//public List<Object[]> getConstituencyType(Long constituencyId);
 	
-	public List<Object[]> getConstituencyNameByConstituencyIdsList(List<Long> constituencyIdsList);
+	//public List<Object[]> getConstituencyNameByConstituencyIdsList(List<Long> constituencyIdsList);
 	
-	public String getConstituencyNameByConstituencyId(Long constituencyId);
+	//public String getConstituencyNameByConstituencyId(Long constituencyId);
 	
-*/}
+}

@@ -3037,7 +3037,7 @@
 			</result>
 		</action>
 		
-		<action name="getEventsGallariesForUplaodAction" class="specialPageManageAction" method="AjaxHandler">
+		<action name="getEventsGallariesForUplaodAction" class="candidateElectionResultsAction" method="AjaxHandler">
 			<result type="json" name="success">
 				<param name="root">selectOptionList</param>
 			</result>

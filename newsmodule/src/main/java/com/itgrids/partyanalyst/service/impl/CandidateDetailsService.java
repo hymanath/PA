@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
 import com.itgrids.partyanalyst.dao.IMessageToPartyDAO;
+import com.itgrids.partyanalyst.dao.INewsDetailsDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -79,10 +80,17 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.CandidateProfileDescription;
+import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.model.NewsDetails;
+import com.itgrids.partyanalyst.model.NewsImportance;
+import com.itgrids.partyanalyst.model.RegionScopes;
+import com.itgrids.partyanalyst.model.Source;
+import com.itgrids.partyanalyst.model.SourceLanguage;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -148,7 +156,16 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
 	private IVoterDAO voterDAO;
+	private INewsDetailsDAO newsDetailsDAO;
 	
+	
+	public INewsDetailsDAO getNewsDetailsDAO() {
+		return newsDetailsDAO;
+	}
+
+	public void setNewsDetailsDAO(INewsDetailsDAO newsDetailsDAO) {
+		this.newsDetailsDAO = newsDetailsDAO;
+	}
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	
 	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
@@ -699,6 +716,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 							fileSourceLanguage.setSource(sourceDAO.get(fileVO.getFileSource().get(i)));
 							fileSourceLanguage.setFile(file);
 							fileSourceLanguage = fileSourceLanguageDAO.save(fileSourceLanguage);
+							NewsDetails newsDetails = new NewsDetails();
+							if(fileVO.getPageno() != null && fileVO.getPageno().size() > 0){
+								newsDetails.setFileSourceLanguage(fileSourceLanguage);
+								newsDetails.setPageNo(fileVO.getPageno().get(i));
+								newsDetails.setEdition(fileVO.getNewsedition().get(i));
+								newsDetails.setNewsLength(fileVO.getNewslength().get(i));
+								newsDetailsDAO.save(newsDetails);
+							}
 						}
 						if(fileVO.getFilePath() !=null)
 						{
@@ -715,8 +740,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				}
 					else
 					{
-						Long languageId = (Long)sourceLanguageDAO.getLanguageIdByLanguage("No Language").get(0);
-						Long sourceId = (Long)sourceDAO.getSourceIdBySource("No Source").get(0);
+						//Long languageId = (Long)sourceLanguageDAO.getLanguageIdByLanguage("No Language").get(0);
+						//Long sourceId = (Long)sourceDAO.getSourceIdBySource("No Source").get(0);
 						fileSourceLanguage.setLanguage(null);
 						fileSourceLanguage.setSource(null);
 						fileSourceLanguage.setFile(file);
@@ -979,7 +1004,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					
 				 }*/
 				 
-				 List <Object[]> newsDetails =  partyGalleryDAO.getAllNewsDetailsForState(IConstants.TDPID, 0,10,"public",1l,2l);
+				 List <Object[]> newsDetails =  partyGalleryDAO.getAllNewsDetailsForState(872l, 0,10,"public",1l,2l);
 				 if(newsDetails != null && !newsDetails.isEmpty()){
 					 List<FileVO> nl = buildFileVo(newsDetails);
 							
@@ -987,7 +1012,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				 
 				 }
 				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(1l);
-				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(IConstants.TDPID, 0,10,"public",3l,distIds);
+				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l, 0,10,"public",3l,distIds);
 				 if(newsDetailsForDist != null && !newsDetailsForDist.isEmpty()){
 					 List<FileVO> nl = buildFileVo(newsDetailsForDist);
 							
@@ -1040,7 +1065,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
      return nl;
 	 }
 	 
-	/*
+	
 
 	public List<FileVO> getScopesForNewSearch()
 	{   
@@ -1061,7 +1086,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			e.printStackTrace();
 			return retValue;
 		}
-	}
+	}/*
 	public List<FileVO> searchNewsDetails(FileVO inputs){
 		  List<FileVO> retValue = new ArrayList<FileVO>();
 		  try{
@@ -1089,7 +1114,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			}
 		}
 
-	
+	*/
 	public List<FileVO> getDistrictDetailsByStateId(Long stateId)
 	{   
 		 List<FileVO> retValue = new ArrayList<FileVO>();
@@ -1131,7 +1156,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return retValue;
 		}
 	}
-	
+	/*
 	public CandidateVO getCandidateDetails(Long candidateId){
 		CandidateVO candidateVO = new CandidateVO();
 		List<Candidate> candidate = candidateDAO.findCandidateDetails(candidateId);
@@ -2399,12 +2424,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	}
 
+	*/
 	
-	*//**
-	 * This method will return source (for Video and news)
-	 * 
-	 * @return
-	 *//*
 	public List<SelectOptionVO> getSource()
 	{   
 		List<SelectOptionVO> gallarySelectList = new ArrayList<SelectOptionVO>(0);
@@ -2494,7 +2515,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			e.printStackTrace();
 			return newsImportanceSelectList;
 		}
-	}
+	}/*
 public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	{
 		try{

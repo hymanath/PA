@@ -1,25 +1,61 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang.WordUtils;
+import org.apache.log4j.Logger;
+
+import com.itgrids.partyanalyst.dao.IContentTypeDAO;
+import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
+import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.ContentType;
+import com.itgrids.partyanalyst.model.ElectionType;
+import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.model.Gallary;
+import com.itgrids.partyanalyst.model.PartyGallery;
+import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PartyDetailsService implements IPartyDetailsService {/*
 	
-	private static final Logger log = Logger
-			.getLogger(PartyDetailsService.class);
-	private DateUtilService dateUtilService = new DateUtilService();
-	private IPartyDAO partyDAO;
+	
+	
+	
 	private IPartyProfileDescriptionDAO partyProfileDescriptionDAO;
-	private IFileGallaryDAO fileGallaryDAO;s
+	
+	
+	private PartyProfileDescription partyProfileDescription;*/
+	private IPartyDAO partyDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
 	private IPartyGalleryDAO partyGalleryDAO;
-	private PartyProfileDescription partyProfileDescription;
 	private IGallaryDAO gallaryDAO;
 	private IContentTypeDAO contentTypeDAO;
 	private IUserGallaryDAO userGallaryDAO;
+	private IFileGallaryDAO fileGallaryDAO;
+	private static final Logger log = Logger
+			.getLogger(PartyDetailsService.class);
+	private IElectionTypeDAO electionTypeDAO;
+	/*
 	private IFileTypeDAO fileTypeDAO;
 	private ISourceLanguageDAO sourceLanguageDAO;
 	private ISourceDAO sourceDAO;
 	private IRegionScopesDAO regionScopesDAO;
-	private IElectionTypeDAO electionTypeDAO;
+	
 	private IFileDAO fileDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IPartyManifestoDAO partyManifestoDAO;
@@ -119,7 +155,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	public void setPartyManifestoDAO(IPartyManifestoDAO partyManifestoDAO) {
 		this.partyManifestoDAO = partyManifestoDAO;
 	}
-
+*/
 	public IElectionTypeDAO getElectionTypeDAO() {
 		return electionTypeDAO;
 	}
@@ -127,7 +163,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
 		this.electionTypeDAO = electionTypeDAO;
 	}
-
+/*
 	public IFileDAO getFileDAO() {
 		return fileDAO;
 	}
@@ -176,7 +212,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	public void setFileTypeDAO(IFileTypeDAO fileTypeDAO) {
 		this.fileTypeDAO = fileTypeDAO;
 	}
-
+*/
 	public IUserGallaryDAO getUserGallaryDAO() {
 		return userGallaryDAO;
 	}
@@ -184,7 +220,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	public void setUserGallaryDAO(IUserGallaryDAO userGallaryDAO) {
 		this.userGallaryDAO = userGallaryDAO;
 	}
-
+/*
 	public IPartyUpdatesEmailDAO getPartyUpdatesEmailDAO() {
 		return partyUpdatesEmailDAO;
 	}
@@ -217,7 +253,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
 	}
-
+*/
 	public IContentTypeDAO getContentTypeDAO() {
 		return contentTypeDAO;
 	}
@@ -233,7 +269,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	public void setGallaryDAO(IGallaryDAO gallaryDAO) {
 		this.gallaryDAO = gallaryDAO;
 	}
-
+/*
 	public PartyProfileDescription getPartyProfileDescription() {
 		return partyProfileDescription;
 	}
@@ -242,7 +278,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 			PartyProfileDescription partyProfileDescription) {
 		this.partyProfileDescription = partyProfileDescription;
 	}
-
+*/
 	public IPartyGalleryDAO getPartyGalleryDAO() {
 		return partyGalleryDAO;
 	}
@@ -257,7 +293,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 
 	public void setFileGallaryDAO(IFileGallaryDAO fileGallaryDAO) {
 		this.fileGallaryDAO = fileGallaryDAO;
-	}
+	}/*
 
 	public IPartyProfileDescriptionDAO getPartyProfileDescriptionDAO() {
 		return partyProfileDescriptionDAO;
@@ -267,7 +303,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 			IPartyProfileDescriptionDAO partyProfileDescriptionDAO) {
 		this.partyProfileDescriptionDAO = partyProfileDescriptionDAO;
 	}
-
+*/
 	public IPartyDAO getPartyDAO() {
 		return partyDAO;
 	}
@@ -275,7 +311,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
 	}	
-
+/*
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
 	}
@@ -746,7 +782,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 			return retValue;
 		}
 	}
-
+*/
 	public List<FileVO> getPartyPhotoGallaryDetail(Long partyId,int firstRecord, int maxRecord, String type) 
 	{
 		List<FileVO> retValue = new ArrayList<FileVO>();
@@ -795,7 +831,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 		}
 	}
 
-	public List<SelectOptionVO> getAllPartysNames() {
+	/*public List<SelectOptionVO> getAllPartysNames() {
 		try {
 			log.debug("Entered into getAllPartysNames() Method");
 
@@ -878,7 +914,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 			 return statusCode;
 		 }
 	 }
-	
+	*/
 
 	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,String createOrUpdate)
 	{  
@@ -926,13 +962,6 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 					.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 			partyGallery = partyGalleryDAO.save(partyGallery);
 			}
-			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
-				userGallary = new UserGallary();
-				userGallary.setGallary(gallary);
-				userGallary.setUserId(gallaryVO.getUserId());
-				userGallaryDAO.save(userGallary);
-			}
-			
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 		} catch (Exception e) {
@@ -941,7 +970,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 			return resultStatus;
 		}
 	}
-
+	
 	public List<SelectOptionVO> getPartyGallarySelectList(Long partyId,
 			String contentType) {
 		try {
@@ -969,7 +998,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 			return null;
 		}
 	}
-
+	
 	public List<FileVO> getElectionType() {
 
 		List<FileVO> retValue = new ArrayList<FileVO>();
@@ -988,7 +1017,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 			return retValue;
 		}
 	}
-
+	/*
 	public List<FileVO> getPartyManifestoInfo(long partyId) {
 		 
 		List<FileVO> fileVOList = new ArrayList<FileVO>();
@@ -1211,7 +1240,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	    }
 	}
 
-	
+	*/
 	public GallaryVO getPartyGalleryDetails(Long galleryId, Long partyId) {
 		
 		GallaryVO gallaryVO = new GallaryVO();
@@ -1228,7 +1257,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 			return gallaryVO;
 		}
 	}
-
+/*
 	public List<SelectOptionVO> getElectionTypesBasedOnStateIdAndPartyId(
 			Long partyId, Long stateId) {
 		
@@ -1379,7 +1408,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 		return userlist;
 	}
 	
-	
+	*/
 	public String getPartyVisibility(Long gallaryId)
 	{
 		log.debug("Entered into getPartyVisibility() method");
@@ -1390,11 +1419,11 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 		}
 		catch(Exception e)
 		{
-			log.error("Exception occured in getPartyVisibility() method of PartyDetailsService");
+			log.error("Exception occured in getPartyVisibility() method of PartyDetailsService",e);
 			return result.get(0).toString();
 		}
 	}
-	
+	/*
 	public List<CustomPageVO> getCustomPagesOfAPartyPage(Long partyId)
     {
     	try{

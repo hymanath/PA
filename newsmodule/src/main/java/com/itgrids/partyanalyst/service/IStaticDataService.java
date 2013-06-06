@@ -90,7 +90,7 @@ public interface IStaticDataService {/*
 		
 		public ElectionTrendzReportVO getConstituencyOverview(Long constituencyId,String constituencyName);
 		
-		public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(Long parliamentConstituencyId);
+		
 		  
 		public List<ElectionBasicInfoVO> getAssemblyElectionsInfoForAConstituency(String presentYear,Long constituencyId);
 		
@@ -103,11 +103,10 @@ public interface IStaticDataService {/*
 		public CandidateDetailsVO getCompleteElectionResultsForAConstituency(Long constituencyId,Long electionId,Long partyId);
 		
 		public CandidateDetailsVO getLatestConstituenciesForAssemblyAndParliamentForAllElectionYears(Long electionType,Long stateId);
-	
-		public ConstituencyInfoVO getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);	
-	//>>>>>Constituency Related Methods End
-	
-	//>>>>>Party Related Methods Start
+	*/
+		public ConstituencyInfoVO getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);
+		public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(Long parliamentConstituencyId);
+/*
 		public List<PartyResultVO> getPartyVotesPercentageInAConstituency(Long constituencyId,String all,String[] choices);
 		
 		public List<PartyResultVO> getPartyVotesShareInConstituency(Long constituencyId,int flag,List<ElectionResultPartyVO> partyResult);

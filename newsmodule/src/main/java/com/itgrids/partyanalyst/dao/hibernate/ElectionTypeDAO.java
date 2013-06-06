@@ -17,7 +17,7 @@ public class ElectionTypeDAO extends GenericDaoHibernate<ElectionType, Long> imp
 	public ElectionTypeDAO() {
 		super(ElectionType.class);
 	}
-/*
+
 	public List<ElectionType> findByElectionType(Object electionType) {
 		
 		return findByProperty(ElectionTypeColumnNames.ELECTION_TYPE, electionType);
@@ -30,6 +30,6 @@ public class ElectionTypeDAO extends GenericDaoHibernate<ElectionType, Long> imp
 	public List<ElectionType> findByScope(Object scope) {
 		
 		return findByProperty(ElectionTypeColumnNames.SCOPE, scope);
-	}*/
+	}
  
 }

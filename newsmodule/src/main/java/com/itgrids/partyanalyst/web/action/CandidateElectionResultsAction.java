@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
@@ -37,6 +39,7 @@ import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.PdfGenerationVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -46,8 +49,8 @@ import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.IThumbnailService;
-import com.itgrids.partyanalyst.utils.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.IWebConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -125,6 +128,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private String status;
 	private String candidatePageLoadingFirstTime;
 	FileVO  fileDetails;
+	private List<Integer> newsedition;
+	private List<Integer> pageno;
+	private List<String> newslength;
 	
 	private INewsMonitoringService  newsMonitoringService;
 	
@@ -142,7 +148,36 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private IContentManagementService contentManagementService;
 	private ContentDetailsVO contentDetailsVO;
 	
-	
+
+	public List<Integer> getNewsedition() {
+		return newsedition;
+	}
+
+
+	public void setNewsedition(List<Integer> newsedition) {
+		this.newsedition = newsedition;
+	}
+
+
+	public List<Integer> getPageno() {
+		return pageno;
+	}
+
+
+	public void setPageno(List<Integer> pageno) {
+		this.pageno = pageno;
+	}
+
+
+	public List<String> getNewslength() {
+		return newslength;
+	}
+
+
+	public void setNewslength(List<String> newslength) {
+		this.newslength = newslength;
+	}
+
 	
 	public IContentManagementService getContentManagementService() {
 		return contentManagementService;
@@ -963,7 +998,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			}
 			fileVO.setFileSource(fileSourceIds);
 			fileVO.setSourceLangIds(fileSourceLangIds);
-			
+			fileVO.setNewsedition(newsedition);
+			fileVO.setPageno(pageno);
+			fileVO.setNewslength(newslength);
 			if(profileType != null && profileId != null && profileGalleryType != null)
 			{
 				String path ;
@@ -1023,7 +1060,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 					FileUtils.copyFile(userImage.get(i), fileToCreate);
 				}
 			}
-				File fileToCreate = new File(filePath, fileName);
+				//File fileToCreate = new File(filePath, fileName);
 				
 				//ERROR HERE
 				//FileUtils.copyFile(userImage, fileToCreate);
@@ -1121,12 +1158,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			return SUCCESS;
 		else
 			return ERROR;
-	}
+	}*/
 	
 	public String getCandidatesPhotoGallaryDetail(){
 		try  {
 			jObj = new JSONObject(getTask());
-			if(jObj.getString("task").equalsIgnoreCase("getCandidatePhotoGallaryDetail"))
+			/*if(jObj.getString("task").equalsIgnoreCase("getCandidatePhotoGallaryDetail"))
 			{
 			    fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.PHOTO_GALLARY);
 			}
@@ -1161,8 +1198,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			else if(jObj.getString("task").equalsIgnoreCase("getDevelopmentsInAGallary"))
 			{
 				fileVO = candidateDetailsService.getCandidatesPhotosInAGallary(jObj.getLong("gallaryId"));
-			}
-			else if(jObj.getString("task").equalsIgnoreCase("getScopesForNewSearch"))
+			}*/
+			 if(jObj.getString("task").equalsIgnoreCase("getScopesForNewSearch"))
 			{
 				fileVO = candidateDetailsService.getScopesForNewSearch();
 			}
@@ -1173,7 +1210,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			else if(jObj.getString("task").equalsIgnoreCase("getDistrictsByStateId"))
 			{
 				fileVO = candidateDetailsService.getDistrictDetailsByStateId(jObj.getLong("stateId"));
-			}
+			}/*
 			else if(jObj.getString("task").equalsIgnoreCase("searchNewsDetails"))
 			{    
 				  FileVO inputs = new FileVO();
@@ -1252,7 +1289,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				FileVO fileValue = new FileVO();
 				fileValue.setFileType(photoValue);
 				fileVO2 = fileValue;
-			}}
+			}*/}
 			catch(Exception e){
 				e.printStackTrace();
 			}
@@ -1261,7 +1298,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		return SUCCESS;
 	}
-	
+	/*
 	public String getCandidateGallaries(){
 		
 		try {
@@ -1280,7 +1317,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		return Action.SUCCESS;
 		
-	}
+	}*/
 	
 	public String AjaxHandler()
 	{
@@ -1293,7 +1330,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
-		if(jObj.getString("task").equalsIgnoreCase("createNewGallary") || 
+		/*if(jObj.getString("task").equalsIgnoreCase("createNewGallary") || 
 				jObj.getString("task").equalsIgnoreCase("createVideoNewGallary"))
 		{
 			gallaryVO = new GallaryVO();
@@ -1315,8 +1352,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("candidateGallariesForUplaod"))
 		{
 			selectOptionList = candidateDetailsService.getCandidateGallarySelectList(jObj.getLong("candidateId"),jObj.getString("contentType"));
-		}
-		else if(jObj.getString("task").equalsIgnoreCase("getSource"))
+		}*/
+		 if(jObj.getString("task").equalsIgnoreCase("getSource"))
 		 {
 			selectOptionList = candidateDetailsService.getSource();
 		 }
@@ -1324,10 +1361,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		 {
 			selectOptionList = candidateDetailsService.getLanguage();
 		 }
+		else if(jObj.getString("task").equalsIgnoreCase("getNewsImportance"))
+		 {
+			selectOptionList = candidateDetailsService.getNewsImportance();
+		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getCategory"))
 		 {
 			selectOptionList = candidateDetailsService.getCategory();
-		 }
+		 }/*
 		else if(jObj.getString("task").equalsIgnoreCase("updateProfileDiscription"))
 		{
 			List<Long> orderNo = new ArrayList<Long>();
@@ -1361,7 +1402,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("getCandidateLatestVideos"))
 		{
 			fileVO = candidateDetailsService.getCandidateLatestVideos(jObj.getLong("candidateId"),jObj.getInt("startIndex"),jObj.getInt("maxRecords"));
-		}
+		}*/
 		else if(jObj.getString("task").equalsIgnoreCase("candiadteVideoGallariesForUplaod"))
 		{
 			List<String> filePathList = new ArrayList<String>();
@@ -1374,8 +1415,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVOObj.setTitle(jObj.getString("videoTitle"));
 			fileVOObj.setDescription(jObj.getString("videoDescription"));
 			fileVOObj.setKeywords(jObj.getString("keywords"));
-			fileVOObj.setSourceId(jObj.getLong("sourceId"));
-			fileVOObj.setLanguegeId(jObj.getLong("languageId"));
+			//fileVOObj.setSourceId(jObj.getLong("sourceId"));
+			//fileVOObj.setLanguegeId(jObj.getLong("languageId"));
 			fileVOObj.setFileDate(jObj.getString("fileDate"));
 			fileVOObj.setGallaryId(jObj.getLong("gallaryId"));
 			fileVOObj.setVisibility(jObj.getString("visibility"));
@@ -1418,7 +1459,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVOObj.setSourceLangIds(videoSourceLangIds);
 			fileVOObj.setFileSource(videoSourceIds);
 			result = candidateDetailsService.uploadAFile(fileVOObj);
-		}
+		}/*
 		else if(jObj.getString("task").equalsIgnoreCase("saveDiscription"))
 		{
 			gallaryVO = new GallaryVO();
@@ -1479,10 +1520,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setFileType(jObj.getString("visibility"));
 			result = candidateDetailsService.updateIndividualPhoto(fileVO);
 		}
-		else if(jObj.getString("task").equalsIgnoreCase("getNewsImportance"))
-		 {
-			selectOptionList = candidateDetailsService.getNewsImportance();
-		 }
+		
 		else if(jObj.getString("task").equalsIgnoreCase("getUserMessages"))
 		{
 			Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
@@ -1502,10 +1540,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").trim().equalsIgnoreCase("getMinisterProfile"))
 		{
 			electionGoverningBodyVo = electionLiveResultsAnalysisService.getAllCandidateDetailsForMinisterProfile(jObj.getLong("candidateId"));
-		}
+		}*/
 		return Action.SUCCESS;
 	}
-	*/
+	
 	
 	/*
  public String checkForMinisterData(){
