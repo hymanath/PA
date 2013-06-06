@@ -53,6 +53,8 @@
 
 <div id="gallarysId"></div>
 <script>
+var partyId = '${candidateId}';
+var categoryId = '${category}';
 getAllGallaries();
 function getAllGallaries()
 {
@@ -64,7 +66,7 @@ function getAllGallaries()
 
 	$.ajax({
 	  type:'POST',
-	  url: 'getAllTheGallariesOfAparty.action',
+	  url: 'getAllTheGallariesOfAparty.action?candidateId='+partyId+'&category='+categoryId,
 	  dataType: 'json',
 		 
 	  success: function(results){ 
