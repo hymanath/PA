@@ -323,9 +323,11 @@
 							<div class="span12 boxHeading"><h4>galleries</h4></div>
 							<div class="span12">
 								<ul class="unstyled pad10">
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</a></li>
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</a></li>
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</a></li>
+								<c:forEach var="gallary" items="${latestGallariesList}">
+								<li><a href="javascript:{showFilesInGallary(${gallary.id})}">${gallary.name}</a></li>        
+                               </c:forEach>
+							   <a href="javascript:{showAllgallaries()}" class="btn btn-mini pull-right">More..</a>
+									
 								</ul>
 							</div>
 						</div>
@@ -359,6 +361,24 @@
 		<!------JS------>
 	<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/jquery.carousel.js"></script>	
+	<script type="text/javascript" src="js/jquery.carousel.js"></script>
+	
+<script>
+function showFilesInGallary(gallaryId)
+{
+ var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"";
+		
+     var browser1 = window.open(urlstr,"showAllFilesOfAGallary","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+}
+function showAllgallaries(){
+	   var urlstr = "showNewsGallariesAction.action";
+		
+     var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+	}
+
+</script>
 </body>
+
 </html>
