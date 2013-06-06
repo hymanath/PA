@@ -1584,7 +1584,10 @@
 		<property name="filePathsDAO" ref="filePathsDAO" />
 		<property name="fileTypeDAO" ref="fileTypeDAO" />
 		<property name="gallaryDAO" ref="gallaryDAO" />
-        <property name="fileGallaryDAO" ref="fileGallaryDAO" />  
+        <property name="fileGallaryDAO" ref="fileGallaryDAO" />
+        <property name="partyGalleryDAO" ref="partyGalleryDAO"/>
+        <property name="districtDAO" ref="districtDAO" />
+          
 		
 	</bean>
 </beans>		
