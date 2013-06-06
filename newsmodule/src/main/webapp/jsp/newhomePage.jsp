@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -32,7 +31,7 @@
 						<div class="span12">
 							<div class="tab-content" id="myTabContent" >
 								<!-----------NEWS tab--------->
-								<div id="News" class="tab-pane fade active in">
+							 <div id="News" class="tab-pane fade active in">
 								<div class="carousel slide center" id="myCarousel">
 										<ol class="carousel-indicators">
 										  <li data-slide-to="0" data-target="#myCarousel" class="active"></li>
@@ -41,56 +40,52 @@
 										  <li data-slide-to="3" data-target="#myCarousel" class=""></li>
 										</ol>
 										<div class="carousel-inner">
-										  <div class="item active">
-											<h4> TD to stall entry of tainted Ministers into Asse</h4>
-												<div class="row-fluid">
-														<a class="thumbnail span4" href="#" style="width: 146px;">
-															<img src="http://placehold.it/200x150" style="width:100%">
-														</a>
-														<p class="span8">Cras sit amet nibh libero, in gravida nulla. 
-															Nulla vel metus scelerisque ante 
-															sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus
-														</p>
-												</div>
-												<div class="row-fluid m_top10">
+										<s:if test="resultMap != null && resultMap.size() > 0"> 
+										
+							    <s:iterator value="resultMap.NewsGallary" var="newsGallaryDetails" status="ctr">
+						       
+                             <div ${ctr.first ? 'class="item active"' : 'class="item"'}>
+                          
+						  
+						 
+                         <h4> <s:property value="fileTitle1"/></h4>
+									<div class="row-fluid">				
+									
+									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
+										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
+											<a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+										</c:if>
+
+										<c:if test="${newsGallaryDetails.displayImagePath == null}">
+											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
+										</c:if>
+										<p class="span8"><s:property value="description"/></p>
+									    </div>
+										<div class="row-fluid m_top10">
 													<div class="span9">
-														<p class="text-error">Source : Indian Express</p>
+														<p class="text-error">Source :${newsGallaryDetails.source}</p>
 													</div>
 													<div class="span2 ">
-														<a href="#">
+														<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
 															<button class="btn btn-mini pull-right" type="button">More...</button>
 														</a>
 													</div>
 												</div>
-											</div>
-											<div class="item">
-											<h4> TD to stall entry of tainted Ministers into Asse</h4>
-												<div class="row-fluid">
-														<a class="thumbnail span4" href="#" style="width: 146px;">
-															<img src="http://placehold.it/200x150" style="width:100%">
-														</a>
-														<p class="span8">Cras sit amet nibh libero, in gravida nulla. 
-															Nulla vel metus scelerisque ante 
-															sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus
-														</p>
-												</div>
-												<div class="row-fluid m_top10">
-													<div class="span9">
-															<p class="text-error">Source : Indian Express</p>
-													</div>
-													<div class="span2 ">
-														<a href="#">
-															<button class="btn btn-mini pull-right" type="button">More...</button>
-														</a>
-													</div>
-												</div>
+									</s:if>
+									
+									</div>
+									
+							
+							</s:iterator>
+							</s:if>
+										
 											</div>
 										</div>
 										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
 										<a data-slide="next" href="#myCarousel" class="right">›</a>--->
 									</div>
 									
-								</div>
+								
 							<!------ News tab end ---->
 							<!------ Video tab --------->
 								<div id="Video" class="tab-pane fade span11">
@@ -167,50 +162,45 @@
 										  <li data-slide-to="3" data-target="#myCarousel" class=""></li>
 										</ol>
 										<div class="carousel-inner">
-										  <div class="item active">
-											<h4> TD to stall entry of tainted Ministers into Asse</h4>
-												<div class="row-fluid">
-														<a class="thumbnail span4" href="#" style="width: 146px;">
-															<img src="http://placehold.it/200x150" style="width:100%">
-														</a>
-														<p class="span8">Cras sit amet nibh libero, in gravida nulla. 
-															Nulla vel metus scelerisque ante 
-															sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus
-														</p>
-												</div>
-												<div class="row-fluid m_top10">
+										 <s:if test="resultMap != null && resultMap.size() > 0"> 
+										
+							    <s:iterator value="resultMap.NewsGallaryForDist" var="newsGallaryDetails" status="ctr">
+						       
+                             <div ${ctr.first ? 'class="item active"' : 'class="item"'}>
+                          
+						  
+						 
+                         <h4> <s:property value="fileTitle1"/></h4>
+									<div class="row-fluid">				
+									
+									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
+										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
+											<a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+										</c:if>
+
+										<c:if test="${newsGallaryDetails.displayImagePath == null}">
+											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
+										</c:if>
+										<p class="span8"><s:property value="description"/></p>
+									    </div>
+										<div class="row-fluid m_top10">
 													<div class="span9">
-														<p class="text-error">Source : Indian Express</p>
+														<p class="text-error">Source :${newsGallaryDetails.source}</p>
 													</div>
 													<div class="span2 ">
-														<a href="#">
+														<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
 															<button class="btn btn-mini pull-right" type="button">More...</button>
 														</a>
 													</div>
 												</div>
-											</div>
-											<div class="item">
-											<h4> TD to stall entry of tainted Ministers into Asse</h4>
-												<div class="row-fluid">
-														<a class="thumbnail span4" href="#" style="width: 146px;">
-															<img src="http://placehold.it/200x150" style="width:100%">
-														</a>
-														<p class="span8">Cras sit amet nibh libero, in gravida nulla. 
-															Nulla vel metus scelerisque ante 
-															sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus
-														</p>
-												</div>
-												<div class="row-fluid m_top10">
-													<div class="span9">
-															<p class="text-error">Source : Indian Express</p>
-													</div>
-													<div class="span2 ">
-														<a href="#">
-															<button class="btn btn-mini pull-right" type="button">More...</button>
-														</a>
-													</div>
-												</div>
-											</div>
+									</s:if>
+									
+									</div>
+									
+							
+							</s:iterator>
+							</s:if>
+										
 										</div>
 										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
 										<a data-slide="next" href="#myCarousel" class="right">›</a>--->
