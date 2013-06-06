@@ -1004,7 +1004,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					
 				 }*/
 				 
-				 List <Object[]> newsDetails =  partyGalleryDAO.getAllNewsDetailsForState(872l, 0,10,"public",1l,2l);
+				 List <Object[]> newsDetails =  partyGalleryDAO.getAllNewsDetailsForState(IConstants.TDPID, 0,10,"public",1l,2l);
 				 if(newsDetails != null && !newsDetails.isEmpty()){
 					 List<FileVO> nl = buildFileVo(newsDetails);
 							
@@ -1012,28 +1012,47 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				 
 				 }
 				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(1l);
-				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l, 0,10,"public",3l,distIds);
+				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(IConstants.TDPID, 0,10,"public",3l,distIds);
 				 if(newsDetailsForDist != null && !newsDetailsForDist.isEmpty()){
 					 List<FileVO> nl = buildFileVo(newsDetailsForDist);
 							
 				 resultMap.put("NewsGallaryForDist", nl);
 				 
 				 }
-			 
+				 List <Object[]> categoryList= partyGalleryDAO.getCategoryIdsForParty(IConstants.TDPID, 0, 6, "public");
 		/* newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
 		 resultList = setToFileVO(newsGallaryresultList);
-		 resultMap.put("NewsGallary", resultList);*/
-		 
+		 resultMap.put("NewsGallary", resultList);getCategoryIdsForParty*/
+				 
+				 if(categoryList != null && !categoryList.isEmpty()){
+				 List<FileVO> fo=buildFileVoForCategory(categoryList);
 		
-		
-		
-			 
+				 resultMap.put("categories", fo);
+				 }
 	     return resultMap;
 		 }catch (Exception e) {
 			 log.error("Exception occured - "+e);
 			 return null;
 		 }
 	}//18111
+	 
+	 public List<FileVO>  buildFileVoForCategory(List<Object[]> newsDetails)
+	 {
+		 
+		 List<FileVO> nl= new ArrayList<FileVO>();
+		  for(Object[] obj : newsDetails )
+		  {
+			  long categoryId =(Long)obj[0];
+	             String categoryName = (String)obj[1];
+			        long partyId= (Long)obj[2];
+			        FileVO v =new FileVO();
+			        v.setCategoryId(categoryId);
+			        v.setCategoryName(categoryName);
+			        v.setCandidateId(partyId);
+			        nl.add(v);
+		  }
+		 return nl;
+	 }
 	 public List<FileVO>  buildFileVo(List<Object[]> newsDetails)
 	 {
 		 
