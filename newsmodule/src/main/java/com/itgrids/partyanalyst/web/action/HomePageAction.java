@@ -355,7 +355,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public String execute()
 	{	
 
-		
+		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10);
 		return Action.SUCCESS;
 	}
 	
