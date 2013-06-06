@@ -11,8 +11,8 @@ public interface ILoginService {
 	
 	public List<String> getDefaultEntitlements(String defaultEntitlementsGroup);
 	public Boolean checkForRegionToViewReport(RegistrationVO registrationVO, final String regionType, Long regionId);
-
-
+	
+	public ResultStatus checkForUserNameAndPassword(String username,String password);
 	
 	/*
 	

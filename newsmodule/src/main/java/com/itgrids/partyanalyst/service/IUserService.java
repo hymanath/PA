@@ -2,7 +2,13 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
-public interface IUserService {/*
+import com.itgrids.partyanalyst.dto.ResultStatus;
 
-	public Long getUserDistrictByUserId(Long userId);
-*/}
+public interface IUserService {
+
+	/*public Long getUserDistrictByUserId(Long userId);
+	
+	
+*/
+	
+}

@@ -106,4 +106,6 @@ public interface IUserDAO extends GenericDao<User,Long>{/*
 	public List<User> checkUsernameAndEncryptedPasswordForUser(String userName, String encryptedPassword);
 	public List<User> updateAllUsersPasswords();
 
-*/}
+*/
+	public Long checkForUserNameAndPasswordAvaliablity(String userName,String password);
+}

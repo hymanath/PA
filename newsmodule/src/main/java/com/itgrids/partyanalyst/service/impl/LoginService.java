@@ -24,6 +24,8 @@ import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
@@ -31,6 +33,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -57,6 +60,7 @@ public class LoginService implements ILoginService{
 	private IUserDAO userDAO;
 	private IUserAccessIpAddressDAO userAccessIpAddressDAO;
 	private VelocityEngine velocityEngine;
+	public static Logger LOG = Logger.getLogger(UserService.class); 
 
 	private IMailService mailService;
 	
@@ -212,6 +216,7 @@ public class LoginService implements ILoginService{
 		this.userDAO = userDAO;
 	}
 
+	
 	
      /**
 	 * This method can be used to get all the default entitlements for a user.
@@ -792,4 +797,28 @@ public class LoginService implements ILoginService{
 		}
 		}
 	
-*/}
+*/
+	public ResultStatus checkForUserNameAndPassword(String username,String password)
+	{
+		ResultStatus resultStatus = null;
+		try {
+			LOG.debug("entered into checkForUserNameAndPassword() method in UserService Class");
+			Long  userdetails = userDAO.checkForUserNameAndPasswordAvaliablity(username,password);
+			if(userdetails == 1)
+			{
+				resultStatus = new ResultStatus();
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				
+			}
+			else
+			{
+				resultStatus = new ResultStatus();
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			}
+		} catch (Exception e) {
+			LOG.error("exception raised in checkForUserNameAndPassword() method in UserService Class", e);
+		}
+		
+		return resultStatus;
+	}
+}
