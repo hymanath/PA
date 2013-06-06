@@ -2249,8 +2249,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			
 			int startIndex = 1 ;
 			int endIndex = 30;
-			
+			if(getCategory() == null )
 			fileVO2 = partyDetailsService.getAllTheGallariesOfAparty(872L,startIndex,endIndex);
+			else
+			fileVO2 = partyDetailsService.getAllTheGallariesForCategory(getCandidateId(), 0, 30, getCategory());
 		}
 		catch(Exception e)
 		{
