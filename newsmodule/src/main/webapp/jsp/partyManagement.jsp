@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Party Analyst-Know | Analyze | Act</title>
+<title>TDP Party Management</title>
 <script type="text/javascript" src="js/jquery.js"></script>
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 

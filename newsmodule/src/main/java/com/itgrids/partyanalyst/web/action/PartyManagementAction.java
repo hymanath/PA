@@ -348,14 +348,16 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 public String execute()
  {
 	session = request.getSession();
-	//RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-	//if (registrationVO != null) 
+	RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+	if (registrationVO != null) 
 	{
-	 //partyList= partyDetailsService.getAllPartysNamesByUser(registrationVO.getRegistrationID());
-	 return Action.SUCCESS;
+	 if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
+	  return Action.SUCCESS;
+	 else
+		 return "error";
 	}
-	//else
-		//return IConstants.NOT_LOGGED_IN;
+	else
+		return IConstants.NOT_LOGGED_IN;
 	 
  }
 

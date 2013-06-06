@@ -1,25 +1,17 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.service.ILoginService;
-import com.itgrids.partyanalyst.util.IWebConstants;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
 public class LoginAction extends ActionSupport implements ServletContextAware, ServletRequestAware{
 
@@ -663,7 +655,9 @@ public String ajaxCallForLoginPopup(){
 			if(resultStatus.getResultCode() == 0)
 			{
 				System.out.println("success");
-			}
+				RegistrationVO regVO = loginService.getUserByUserNameAndPassword(userName, password);
+				session.setAttribute("USER", regVO);
+			} 
 			else
 			{
 				System.out.println("failure");

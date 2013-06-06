@@ -1,4 +1,4 @@
-
+var redirectTo = false;
 function openDialogForLoginWindowForPostProblem(){
 	
 	$('#logInDiv').prev().find('a').trigger('click');
@@ -23,8 +23,7 @@ str+='<div  class="input-prepend" style="margin-left: 55px;">';
 str+='<span class="add-on"><i class="icon-lock"></i></span><input type="password"  class="span2" class="input-small" placeholder="Password" name="password" style="width: 200px;position: static;" id="passWord_Id1"/>';
 str+='</div>';
 str+='<div class = "span3">';
-str+='<a href="javascript:{}" onclick="showForgotPasswordPanelForPopup()" style="color: rgb(1, 116, 223); font-size: small; margin-left: 50px;">Forgot Password</a>';
-str+='<input id="signin" class="submitButton btn btn btn-primary" type="submit" style="margin-left: 180px; margin-top: -20px; height: 25px; width: 85px; padding-top: 2px; background-image: linear-gradient(to bottom, #0088CC, #0044CC);background-repeat: repeat-x;border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); color: #FFFFFF;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); background-color: #006DCC;" value="Sign In" onclick="ajaxCallForLoginPopup();"/>';
+str+='<input id="signin" class="submitButton btn btn btn-primary" type="submit" style="margin-top:5px;margin-left: 180px;height: 25px; width: 85px; padding-top: 2px; background-image: linear-gradient(to bottom, #0088CC, #0044CC);background-repeat: repeat-x;border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); color: #FFFFFF;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); background-color: #006DCC;" value="Sign In" onclick="ajaxCallForLoginPopup();"/>';
 str+='</div>';
 str+='<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">';
 str+='<font  style="font-size:small;">Sending Your Request. Please wait...</font>';
@@ -121,7 +120,10 @@ function callHomePageAjax11(jsObj,url){
 								if(myResults.resultCode == 0)
 								{
 									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
-									window.location.reload();
+									if(redirectTo)
+										window.location = 'partyManagementAction.action';
+									else
+									  window.location.reload();
 								}
 								else{
 									//alert('else');

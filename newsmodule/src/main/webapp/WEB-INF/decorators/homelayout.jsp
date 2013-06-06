@@ -83,8 +83,17 @@ margin:-1px 0px 0px 0px ;
 					<!----Member Area Div---->
 					<div class="span12">
 						<ul class="nav nav-pills pull-right memberArea">
+						 <c:if test="${sessionScope.USER == null}">
 						  <li><a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a></li>
 						  <li class="selected"><a href="#">Register</a></li>
+						 </c:if>
+						 <c:if test="${sessionScope.USER != null}">
+						  <li style="padding-top: 6px;">${sessionScope.USER.name}</li>
+						   <c:if test="${sessionScope.USER.userType == 'Admin'}">
+						    <li><a href="#">Admin</a></li>
+						   </c:if>
+						  <li class="selected"><a href="logoutAction.action">Logout</a></li>
+						 </c:if>
 						</ul>
 					</div>
 					<!------Menu div-------->
@@ -94,7 +103,13 @@ margin:-1px 0px 0px 0px ;
 						  <li class=""><a href="#">About us</a></li>
 						  <li class=""><a href="#">News</a></li>
 						  <li class=""><a href="#">Videos</a></li>
+						   <c:if test="${sessionScope.USER != null}">
+						    <c:if test="${sessionScope.USER.userType != '' || sessionScope.USER.userType == 'subuser'}">
+						      <li class=""><a href="partyManagementAction.action">Manage Party Profile</a></li>
+						    </c:if>
+						   </c:if>
 						  <li class=""><a href="#">Contact us</a></li>
+						  
 						</ul>
 					</div>
 				</div>
@@ -152,7 +167,14 @@ margin:-1px 0px 0px 0px ;
 </td></tr>
 </table>
 <!--FOOTER SECTION END-->
-
+<script type="text/javascript">
+var notLogged = '${notLogged}';
+ if(notLogged == 'true')
+ {
+	 redirectTo = true;
+	 openDialogForLoginWindow();
+  }
+</script>
 </body>
 </html>
 

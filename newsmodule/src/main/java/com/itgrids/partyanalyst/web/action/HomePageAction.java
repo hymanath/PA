@@ -1,28 +1,21 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
-import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
-import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
@@ -35,12 +28,8 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.SpecialPageService;
-import com.itgrids.partyanalyst.util.IWebConstants;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.log4j.Logger;
 
 /**
  * A class representing to display the data related to home page
@@ -79,7 +68,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private IOpinionPollService opinionPollService;
 	private IAnanymousUserService ananymousUserService;
 	private QuestionsOptionsVO questionsOptionsVO;
-	
+	private boolean notLogged ;
 
 	private OpinionPollVO opinionPollVO;
 	private QuestionsOptionsVO questionsAndChoicesPercentage;
@@ -352,9 +341,16 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setOnlineRegId(Long onlineRegId) {
 		this.onlineRegId = onlineRegId;
 	}
+	
+	public boolean isNotLogged() {
+		return notLogged;
+	}
+	public void setNotLogged(boolean notLogged) {
+		this.notLogged = notLogged;
+	}
 	public String execute()
 	{	
-
+        request.setAttribute("notLogged",notLogged);
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10);
 		return Action.SUCCESS;
 	}
