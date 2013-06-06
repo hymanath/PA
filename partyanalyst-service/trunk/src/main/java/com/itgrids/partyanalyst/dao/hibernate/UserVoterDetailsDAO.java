@@ -945,7 +945,7 @@ IUserVoterDetailsDAO{
 	 * @return Object[]  
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId ,String type,String male,String female,long ...ages) {
+	public List<Object[]> getAgeDataForBoothByHamlets(Long constituencyId,Long userId,Long publicationDateId,Long boothId ,String type,String male,String female,long ...ages) {
 		  StringBuilder query = new StringBuilder();
 		  if(type.equalsIgnoreCase("boothHamlets"))
 			  query.append("select distinct model.hamlet.hamletId,model.hamlet.hamletName ,");
@@ -970,11 +970,11 @@ IUserVoterDetailsDAO{
 			query.append(" model1.booth.publicationDate.publicationDateId = :publicationDateId and " );
 				  
 		  if(type.equalsIgnoreCase("boothHamlets"))
-			query.append(" model1.booth.boothId = :boothId " );
+			query.append(" model1.booth.boothId = :boothId  " );
 		 else if(type.equalsIgnoreCase("hamletBooths"))
 			query.append(" model.hamlet.hamletId = :boothId " );
 		 else if( type.equalsIgnoreCase("wardBooths"))
-			 query.append(" model.ward.constituencyId = :boothId " );
+			 query.append(" model.ward.constituencyId = :boothId  and model1.booth.constituency.constituencyId = :constituencyId  " );
 
 			query.append("and model.user.userId = :userId " );
 				   
@@ -984,8 +984,14 @@ IUserVoterDetailsDAO{
 		}
 		else if(type.equalsIgnoreCase("hamletBooths"))
 			query.append("group by model1.booth.boothId order by model1.booth.partNo");
-
+		
+		else if(type.equalsIgnoreCase("wardBooths"))
+			query.append("group by model1.booth.boothId  order by model1.booth.partNo");
+		
 		Query queryObj = getSession().createQuery(query.toString()) ;
+		if(type.equalsIgnoreCase("wardBooths")){
+		queryObj.setParameter("constituencyId", constituencyId);
+		}
 		queryObj.setParameter("publicationDateId", publicationDateId);
 		queryObj.setParameter("boothId", boothId);
 		queryObj.setParameter("userId", userId);
