@@ -86,6 +86,7 @@ public class VoterHouseInfoVO {
 	private List<String> influenceNames;
 	private List<String>  cadreNames;
 	private List<String>  politicianNames;
+	private String influencePartyName;
 	private List<SelectOptionVO> customGroups;
 	private boolean  groupPresent;	
 	
@@ -100,6 +101,14 @@ public class VoterHouseInfoVO {
 
 
 
+
+	public String getInfluencePartyName() {
+		return influencePartyName;
+	}
+
+	public void setInfluencePartyName(String influencePartyName) {
+		this.influencePartyName = influencePartyName;
+	}
 
 	public boolean isConstituency() {
 		return constituency;

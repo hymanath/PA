@@ -154,4 +154,6 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	
 	public List<InfluencingPeople> getAllDetailsOfInfluencingPeople(Long userId,List<Long> ids,String type,Integer startIndex,
 			Integer maxRecords,String columnName,String order);
+	
+	public String getPartyIdUsingVoterId(Long voterId);
 }

@@ -4928,7 +4928,9 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			if(voterVOs.get(i).getIsInfluencePerson() != null && voterVOs.get(i).getIsInfluencePerson()){
 				voterHouseInfoVO.setIsInfluencePerson(voterVOs.get(i).getIsInfluencePerson()); 
 				names.add(voterVOs.get(i).getFirstName());
+				String partyName = influencingPeopleDAO.getPartyIdUsingVoterId(new Long(voterVOs.get(i).getVoterId()));
 				voterHouseInfoVO.setInfluenceNames(names);
+				voterHouseInfoVO.setInfluencePartyName(partyName);
 			}
 			if(voterVOs.get(i).getIsCadrePerson()!= null &&  voterVOs.get(i).getIsCadrePerson()){
 				voterHouseInfoVO.setIsCadrePerson(voterVOs.get(i).getIsCadrePerson());
