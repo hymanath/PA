@@ -297,6 +297,11 @@ function callAjax(jsObj,url)
 */
 function buildVoterDetailsTable(result,type,retrieveType){
 
+
+	if(type == 'wardBooths'){
+		$("#voterDetailsNoteMain").hide();
+	}
+	
 	if( result.votersDetailsVO != null && result.votersDetailsVO.length == 0){
 		$('#votersDiv4').hide();
 		return false;
@@ -391,7 +396,9 @@ function buildVoterDetailsTable(result,type,retrieveType){
 		$('#tableDiv').css('display','block');
 		$('#voterDetailsNote').css('display','block');
 	}
+	
 }
+
 var yaxisOpt = new Array();
 var xaxisOpt =  new Array("18-25","26-35","36-45","46-60","60-Above");
 
@@ -972,7 +979,7 @@ $("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <s
 	<div id='ageWiseInfoDiv' class=""  style="height:500px;">
 	<br><br>
 	<div id="ageWiseVotersBasicInfoSubChartDiv" style="margin-left:100px;" ></div>
-	<div class="thumbnail" style="margin:15px 10px;">
+	<div class="thumbnail" style="margin:15px 10px;" id="voterDetailsNoteMain">
 	<div id="voterDetailsNote" class="noteDiv thumbnail breadcrumb" style="display:none;text-align:center;"></div>
 	<div id="tableDiv" style="padding:10px;display:none;overflow-x:scroll" class="voterDetails"></div>
 	</div>

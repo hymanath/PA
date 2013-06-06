@@ -1271,12 +1271,12 @@ return Action.SUCCESS;
 	     
 	      else if (type.equalsIgnoreCase("hamletBooths") || type.equalsIgnoreCase("boothHamlets")  ){
 				
-				boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForHamletByBoothId(panchayatId,publicationDateId,userId1,type);
+				boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForHamletByBoothId(constituencyId,panchayatId,publicationDateId,userId1,type);
 			
 				constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 				} else if (type.equalsIgnoreCase("wardBooths")  ){
 					
-					boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForHamletByBoothId(panchayatId,publicationDateId,userId1,type);
+					boothVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForHamletByBoothId(constituencyId,panchayatId,publicationDateId,userId1,type);
 				
 					constituencyManagementVO.setBoothVotersDetails(boothVotersDetails);
 					}
