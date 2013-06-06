@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
@@ -22,6 +24,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Gallary;
@@ -29,7 +32,7 @@ import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.util.IConstants;
 
 public class PartyDetailsService implements IPartyDetailsService {/*
 	
@@ -915,6 +918,68 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 		 }
 	 }
 	*/
+	
+public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex){
+		
+		List<FileVO> returnList = new ArrayList<FileVO>();
+		
+		List<Long> gallaryIdsList = new ArrayList<Long>();
+		gallaryIdsList.add(gallaryId);
+		
+		List<FileGallary> fileGallaryList = fileGallaryDAO
+				.getFilesOfInGallaries(gallaryIdsList,startIndex,endIndex);
+		
+		Long count = fileGallaryDAO.getAllRecordCountInGallary(gallaryId).get(0);
+		
+			for(FileGallary fileGallary : fileGallaryList){	
+				
+				FileVO file = new FileVO();
+				
+				file.setFileId(fileGallary.getFile().getFileId());
+				file.setFileGallaryId(fileGallary.getFileGallaryId());
+				file.setFileName1(fileGallary.getFile().getFileTitle());
+				file.setFileDescription1(fileGallary.getFile().getFileDescription());
+				
+				if(fileGallary.getFile().getCategory() != null){
+				file.setCategoryId(fileGallary.getFile().getCategory().getCategoryId());
+				file.setCategoryName(fileGallary.getFile().getCategory().getCategoryType());
+				}
+				
+				file.setFilePath1(fileGallary.getFile().getFilePath());
+				
+				Set<FileSourceLanguage> set = fileGallary.getFile().getFileSourceLanguage();
+				
+				String sourceString = "";
+				for(FileSourceLanguage source:set)
+					sourceString+=source.getSource().getSource()+" ";
+				
+				file.setFileType(sourceString);
+				
+				
+				returnList.add(file);
+				returnList.get(0).setTotalResultsCount(count);
+		}
+		
+		return returnList;		
+	}
+
+   public List<SelectOptionVO> getLatestgallaries()
+   {
+	   List<SelectOptionVO> gallariesList = new ArrayList<SelectOptionVO>();
+	   
+		List<Object[]> newsList = partyGalleryDAO.getPartyGallaryDetail(IConstants.TDPID,IConstants.NEWS_GALLARY,0,5);
+		
+		for(Object[] obj:newsList){
+			SelectOptionVO vo = new SelectOptionVO();
+			vo.setId((Long)obj[0]);
+			vo.setName(obj[1].toString());
+			gallariesList.add(vo);
+		}
+		
+		return gallariesList;
+
+	   
+   }
 
 	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,String createOrUpdate)
 	{  
@@ -1713,6 +1778,58 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	  }
 	  return resultStatus;
 	}
-*/}
+*/
+
+	public FileVO getAllTheGallariesOfAparty(Long partyId , int startIndex , int endIndex)
+	{
+		log.debug("Entered into the getAllTheGallariesOfAparty service method");
+		
+		FileVO fileVo =  new FileVO();
+		
+		try
+		{
+		
+		List<FileVO> fileVos = new ArrayList<FileVO>();
+		
+		List<Object[]> newsList = partyGalleryDAO.getPartyGallaryDetail(partyId, IConstants.NEWS_GALLARY,startIndex,endIndex);
+		
+		Map<String , Long > map = new HashMap<String ,Long>();	
+		List<Long> gallaryIds = new ArrayList<Long>();
+		
+		
+		for(Object[] obj:newsList)
+			gallaryIds.add((Long)obj[0]);
+		
+		List<Object[]> filesCount = partyGalleryDAO.getNewsCountDetailsForGallaries(gallaryIds);
+		
+		
+		for(Object[] obj:filesCount)
+			map.put(obj[0].toString(), (Long)obj[1]);
+		
+		
+		
+		for(Object[]  obj:newsList){
+			
+			FileVO file = new FileVO();
+			
+			file.setGallaryId((Long)obj[0]);
+			file.setGallaryName(obj[1].toString());
+			file.setGallaryDescription(obj[2].toString());
+			file.setGallaryCreatedDate(obj[3].toString());
+			file.setGallaryUpdatedDate(obj[4].toString());
+			file.setTotalResultsCount(map.get(obj[0].toString()));
+			
+			fileVos.add(file);
+		}
+		
+		fileVo.setFileVOList(fileVos);
+		//fileVo.setTotalNotesNews(totalNotesNews);
+		}catch(Exception e){
+			e.printStackTrace();	
+			log.error("Exception raised in getAllTheGallariesOfAparty service method");
+		}		
+		return fileVo;		
+	}
+}
 	
 
