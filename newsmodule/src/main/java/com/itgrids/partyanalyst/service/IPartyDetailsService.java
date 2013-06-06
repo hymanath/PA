@@ -92,4 +92,6 @@ public interface IPartyDetailsService {
 	public ResultStatus saveDataToUserPartyRelation(Long userId,Long partyId);
 	
 	public List<FileVO> getAllNewsdetails(Long partyId,int firstResult,int maxResult,String queryType);
-*/}
+*/
+	public FileVO getAllTheGallariesForCategory(Long partyId , int startIndex , int endIndex,Long categoryId);
+}
