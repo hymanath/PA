@@ -19,6 +19,7 @@
 	  <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
 	  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	
 <title>Voters Attributes Analysis</title>
@@ -50,6 +51,32 @@
     text-align: left;
     vertical-align: top;
 }
+
+.dataTables_length {
+    float: left;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.dataTables_filter {
+    float: right;
+    margin-top: 10px;
+    text-align: right;
+}
+table.dataTable tr.even td.sorting_1 {
+    background-color: #DBEAFF;
+}
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #EDF5FF;
+}
+table.dataTable thead th {
+    background: none repeat scroll 0 0 #D9EDF7;
+    border-bottom: 1px #DDDDDD ;
+    color: #454545;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 3px 18px 3px 10px;
+}
 </style>
 <script type="text/javascript">
 
@@ -69,7 +96,7 @@ function callAjax(jsObj,url)
 									else if(jsObj.task == "getAgeWiseWiseDetails")
 									  buildAgeWiseWiseDetails(myResults,jsObj);
 									else if(jsObj.task == "getCasteWiseWiseDetail"){
-											   $('#casteAjaxImage').hide();
+											  $('#casteAjaxImage').hide();
 									buildCasteWiseWiseDetails(myResults,jsObj);
 									}
 								else if(jsObj.task == "getCategoryWiseDetails")
@@ -113,12 +140,13 @@ function callAjax(jsObj,url)
 	     // str+= "<div style='margin-bottom:5px;'><b style='font-size:13px;'>Total Voters : </b>"+results[0].totalVoters+"</div>";
 	     for(var i in results){
 		  if(results[i].partyWisevoterCastInfoVOList != null && results[i].partyWisevoterCastInfoVOList.length > 0){
-			   str+="<div style='border:1px solid #d3d3d3;padding:5px 5px 31px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;'>";
-			   str+= "<h2 id='subHeading'><b>"+results[i].name+" Attribute Wise Voters Analysis</b></h2>";
+			   str+="<div style='border: 1px solid #D3D3D3;border-radius: 4px 4px 4px 4px;margin-bottom: 20px; margin-top: 10px;padding: 8px 5px 31px;''>";
+			   //str+= "<h2 id='subHeading'><b>"+results[i].name+" Attribute Wise Voters Analysis</b></h2>";
+			   $('#categHeading').html(''+results[i].name+' Attribute Wise Voters Analysis');
 			   str+= "<div style='margin-top:5px;'><span><b style='font-size:14px;'>Total Voters : </b>"+results[0].totalVoters+"</span>&nbsp;&nbsp;<span><b style='font-size:14px;'>"+results[i].name+" assigned voters : </b>"+results[i].partyWiseAssignedVoters+"  </span>&nbsp;&nbsp;<span><b style='font-size:14px;'>   "+results[i].name+" not assigned voters : </b>"+results[i].partyWiseNotAssignedVoters+"</span></div>";
 			   
 			   
-			   str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;'>";
+			   str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;' id='occupationDataTable'>";
 			   str+="<thead class='info'>"
 			   str+="  <tr>";
 			   str+="     <th>"+results[i].name+"</th>";
@@ -139,11 +167,18 @@ function callAjax(jsObj,url)
 			      str+="  </tr>";
 			   }
 			   str+="</table>";
-			  
+			   
 			   str+="</div>";
+
 		   }
 		 }
 		 $("#categoriesValuesDiv").html(str);
+		 $('#occupationDataTable').dataTable({
+				"aaSorting": [[ 0, "asc" ]],
+				"bDestroy": true,
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				});
 	  }
 	}
 
@@ -151,8 +186,9 @@ function callAjax(jsObj,url)
    function buildResults(results,jsObj){
         if(results != null && results.length >0 && results[0].partyWisevoterCastInfoVOList != null && results[0].partyWisevoterCastInfoVOList.length > 0){
 	      var str = "";
-		  str+= "<h2 id='subHeading'><b>"+results[0].mandalName+" Wise "+results[0].castName+" Attribute Analysis</b></h2>";
-		  str+="<table class='table table-bordered table-striped table-hover'>";
+		  //str+= "<h2 id='subHeading'><b>"+results[0].mandalName+" Wise "+results[0].castName+" Attribute Analysis</b></h2>";
+		  $('#categSubHeadingDiv').html(''+results[0].mandalName+' Wise '+results[0].castName+' Attribute Analysis');
+		  str+="<table class='table table-bordered table-striped table-hover' id='mandalWiseDataTable'>";
 		  str+="<thead class='info'>";
 		  str+="   <tr>";
 		  str+="     <th rowspan='2'>"+results[0].mandalName+"</th>";
@@ -180,6 +216,12 @@ function callAjax(jsObj,url)
 		  }
 		  str+="</table>";
 		  $("#categorySubtable").html(str);
+		  $('#mandalWiseDataTable').dataTable({
+				"aaSorting": [[ 0, "asc" ]],
+				"bDestroy": true,
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				});
 		  $("#categorySubtable").show();
 	   }else{
 	      $("#categorySubtable").hide();
@@ -231,8 +273,9 @@ function buildCasteWiseWiseDetails(result,jobj)
 	var count = 0;
 	var str =  '';
     
-	str+='<div style="border:1px solid #d3d3d3;padding:5px 5px 31px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;">';
-	str+= "<h2 id='subHeading'><b> "+attributeName+"  Attribute Caste Wise Voters Analysis</b></h2>";
+	str+='<div style="border: 1px solid #D3D3D3;border-radius: 4px 4px 4px 4px;margin-bottom: 20px; margin-top: 10px;padding: 8px 5px 31px;">';
+	//str+= "<h2 id='subHeading'><b> "+attributeName+"  Attribute Caste Wise Voters Analysis</b></h2>";
+	$('#castDetailsHeadingDiv').html(''+attributeName+'  Attribute Caste Wise Voters Analysis');
 	str += '<table class="table table-bordered table-striped table-hover" id="casteDetailsTable" style="margin-bottom: 5px; margin-top: 7px;">';
 	     str+="<thead class='info'>";
 		 str += '<tr>';
@@ -281,9 +324,10 @@ function buildCasteWiseWiseDetails(result,jobj)
 		str +='<div>';
 		for(var i in result)
 		{
-		 str+="<div style='border:1px solid #d3d3d3;padding:5px 5px 31px;margin-bottom:20px;border-radius: 4px 4px 4px 4px;'>";
-		 str+= "<h2 id='subHeading'><b>"+result[i].name+" Attribute Age Wise Voters Analysis</b></h2>";
-		 str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;'>";
+		 str+="<div style='border: 1px solid #D3D3D3;border-radius: 4px 4px 4px 4px;margin-bottom: 20px; margin-top: 10px;padding: 8px 5px 31px;width: 988px;'>";
+		 //str+= "<h2 id='subHeading'><b>"+result[i].name+" Attribute Age Wise Voters Analysis</b></h2>";
+		 $('#ageHeadingDiv').html(''+result[i].name+' Attribute Age Wise Voters Analysis');
+		 str+="<table class='table table-bordered table-striped table-hover' style='margin-bottom: 5px; margin-top: 7px;' id='ageWiseDataTable'>";
 		 str+="<thead class='info'>";
 		 str  +='<tr>';
 		 str+="<th rowspan=3>"+result[i].name+"</th>";
@@ -378,6 +422,12 @@ function buildCasteWiseWiseDetails(result,jobj)
 	   }
 	 }
 	$("#agerangeDiv").html(str);
+	$('#ageWiseDataTable').dataTable({
+				/* "aaSorting": [[ 0, "asc" ]],
+				"bDestroy": true,
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]] */
+				});
 }
 
 function callMethodToGetData(){
@@ -400,16 +450,33 @@ function callMethodToGetData(){
 
 </script>
 <div id="mainDiv">
-<div id="categoriesValuesDiv"></div><br>
-<img id="busyImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;"/>
-<div id="categorySubtable" style='overflow-x:scroll;'></div>
+
+<div id="categoriesValuesDetailsDiv" class="widget green whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 924px;">
+	<h4 class="headingClass" id="categHeading" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
+<div id="categoriesValuesDiv" ></div></div><br>
+
+<img id="busyImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;margin-left:470px;" class="processingImg" />
+
+<div id="categorySubDetailstable" class="widget blue whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 924px;">
+	<h4 class="headingClass" id="categSubHeadingDiv" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="">
+	</h4>
+<div id="categorySubtable" style='overflow-x:scroll;'></div></div>
+
 <br>
-<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;"/>
+<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;margin-left:470px;" class="processingImg" />
 
-<div id="agerangeDiv"></div>
+<div id="agerangeDetailsDiv" class="widget green whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 924px;">
+	<h4 class="headingClass" id="ageHeadingDiv" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
+<div id="agerangeDiv"  style='overflow-x:scroll;'></div></div>
 
-<img id="casteAjaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;" style="display:none;margin:30px;"/>
-<div id="casteDetailsDiv"></div>
+<img id="casteAjaxImage"  src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none;margin-left:470px;" class="processingImg" />
+
+<div id="casteWiseDetailsDiv" class="widget blue whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 924px;">
+	<h4 class="headingClass" id="castDetailsHeadingDiv" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
+	
+<div id="casteDetailsDiv"></div></div>
+
+
 </div>
 <script type="text/javascript">
    getCategorySubDetails();
