@@ -84,10 +84,11 @@
 				<value>com.itgrids.partyanalyst.model.UserGroupEntitlement</value>
 				<value>com.itgrids.partyanalyst.model.ContentNotes</value>
 				<value>com.itgrids.partyanalyst.model.ElectionGoverningBody</value>
-				
-
- 
-			
+				<value>com.itgrids.partyanalyst.model.NewsDetails</value>
+                <value>com.itgrids.partyanalyst.model.DelimitationConstituency</value>
+			    <value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandal</value>
+			    <value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard</value>
+				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody</value>	
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
 				<value>com.itgrids.partyanalyst.model.Constituency</value>
@@ -120,9 +121,9 @@
 				<value>com.itgrids.partyanalyst.model.CandidateBoothResult</value>
 				<value>com.itgrids.partyanalyst.model.NominationHistory</value>
 				<value>com.itgrids.partyanalyst.model.CandidateConsolidationTask</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationConstituency</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandal </value>
+				
+				
+				
 				<value>com.itgrids.partyanalyst.model.UserEvents</value>
 				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
 				<value>com.itgrids.partyanalyst.model.ProblemBackup</value>
@@ -205,8 +206,7 @@
 				<value>com.itgrids.partyanalyst.model.OpinionPollResult</value>
 				<value>com.itgrids.partyanalyst.model.BoothLocalBodyWard</value>
 				<value>com.itgrids.partyanalyst.model.QuestionsRepository</value>
-				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard</value>
-				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody</value>	
+				
 				<value>com.itgrids.partyanalyst.model.AnanymousUser</value>	
 				<value>com.itgrids.partyanalyst.model.ProblemImpactLevel</value>
 				<value>com.itgrids.partyanalyst.model.CustomMessage</value>
@@ -231,7 +231,7 @@
 				<value>com.itgrids.partyanalyst.model.DelimitationVillage</value>
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyTown</value>
 				<value>com.itgrids.partyanalyst.model.DelimitationYear</value>
-				<value>com.itgrids.partyanalyst.model.CensusYear</value>
+				
 				<value>com.itgrids.partyanalyst.model.ApprovalDetails</value>
 				<value>com.itgrids.partyanalyst.model.UserApprovalDetails</value>
 				<value>com.itgrids.partyanalyst.model.UserProblemApproval</value>
@@ -267,7 +267,7 @@
 				<value>com.itgrids.partyanalyst.model.UserSubuserRelation</value>
 				<value>com.itgrids.partyanalyst.model.UserCandidateRelation</value>
 				<value>com.itgrids.partyanalyst.model.ContentType</value>
-				<value>com.itgrids.partyanalyst.model.UserGallary</value>
+				
 				<value>com.itgrids.partyanalyst.model.CandidateProfileDescription</value>
 				<value>com.itgrids.partyanalyst.model.SourceLanguage</value>
 				<value>com.itgrids.partyanalyst.model.Source</value>
@@ -289,7 +289,7 @@
 				<value>com.itgrids.partyanalyst.model.SpecialPageCustomPages</value>
 				<value>com.itgrids.partyanalyst.model.NewsImportance</value>
 				<value>com.itgrids.partyanalyst.model.Category</value>
-				<value>com.itgrids.partyanalyst.model.ConstituencyUrbanPercentage</value>
+				
 				<value>com.itgrids.partyanalyst.model.SpecialPageMetaInfo</value>
 				<value>com.itgrids.partyanalyst.model.Ministry</value>
 				<value>com.itgrids.partyanalyst.model.MinistryScope</value>

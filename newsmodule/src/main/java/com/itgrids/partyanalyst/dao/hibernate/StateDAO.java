@@ -117,7 +117,7 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
         } );
 	}
 	
-
+*/
 	@SuppressWarnings("unchecked")
 	public List<State> findByCountryId(Long countryId){
 		return getHibernateTemplate().find("from State model where model.country.countryId=?", countryId);
@@ -127,7 +127,7 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 	public List<State> findByCountryIdForSearch(Long countryId){
 		return getHibernateTemplate().find("from State model where model.country.countryId=? and model.stateId in ("+IConstants.STATES_FOR_SEARCH_FUNCTIONALITY+") ", countryId);
 	}
-
+	/*
 
 	@SuppressWarnings("unchecked")
 	public List findStatesByCountryId(Long countryId) {

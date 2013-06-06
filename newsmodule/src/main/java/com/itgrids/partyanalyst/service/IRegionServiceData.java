@@ -13,7 +13,7 @@ import java.util.Set;
  * @author Narender Akula
  *
  */
-public interface IRegionServiceData {/*
+public interface IRegionServiceData {
 	public List<SelectOptionVO> getStatesByCountry(Long countryID);
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID);	
 	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID);	
@@ -84,4 +84,4 @@ public interface IRegionServiceData {/*
 	public List<SelectOptionVO> getWardsInALocalElectionBodyByID(Long assemblyLocalBody);
 	
 	public List<SelectOptionVO> getMandals(List<SelectOptionVO> list);
-*/}
+}

@@ -125,13 +125,13 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return getHibernateTemplate().find("select count(model.boothId) from Booth model where model.constituency.name = ? and " +
 		"model.constituency.district.districtId = ? and model.year = ?",params);
 	}
-	
+	*/
 	public List findBoothInfoByConstituencyIdAndYear(Long constituencyId, Long year){
 		Object[] params = {constituencyId, year};
 		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location " +
 				"from Booth model where model.constituency.constituencyId = ? and model.year = ? and model.localBody is null", params);
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List<Booth> findByBoothIds(List<Long> boothIds) {
 		Query queryObject = getSession().createQuery("from Booth model where model.boothId in (:boothIds)");
@@ -189,7 +189,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return getHibernateTemplate().find("select distinct model.boothId from Booth model where " +
 				"model.partNo in ( "+ partNos + ") and model.year = ? and model.constituency.constituencyId = ?",params);
 	}
-	
+	*/
 		public List findBoothsInfoForAMandalByConstituencyAndYear(Long tehsilId, Long year, Long constituencyId){
 		Object[] params = {constituencyId, tehsilId, year};
 		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location from Booth model where model.constituency.constituencyId = ? and " +
@@ -201,7 +201,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location, model.villagesCovered from Booth model where model.constituency.constituencyId = ? and " +
 				"model.localBody.localElectionBodyId = ? and model.year = ? ", params);
 	}
-	
+	/*
 	public List<Object[]> findBoothsInfoForALocalBodyWardByConstituencyAndPublicationId(Long wardId , Long constituencyId , Long publicationId)
 	{
 		Object[] params = {constituencyId, wardId, publicationId};
@@ -211,12 +211,12 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	
 		
 	}
-	
+	*/
 	public List findBoothsInfoForALocalBodyWardByConstituencyAndYear(Long localBodyWardId, Long year, Long constituencyId){
 		Object[] params = {constituencyId, localBodyWardId, year};
 		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location, model.villagesCovered from Booth model where model.constituency.constituencyId = ? and " +
 				"model.boothLocalBodyWard.localBodyWard.constituencyId = ? and model.year = ? ", params);
-	}
+	}/*
 	@SuppressWarnings("unchecked")
 	public List<Long> getCountOfPartNumbersInAConstituency(Long constituencyId, Long electionYear) {
 		Object[] params = {electionYear, constituencyId};

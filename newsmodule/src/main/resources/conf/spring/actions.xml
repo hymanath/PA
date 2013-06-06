@@ -8,9 +8,19 @@
 	<bean id="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
 		<property name="partyDetailsService" ref="partyDetailsService" />
-		<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
+		
 	     <property name="thumbnailService" ref="thumbnailService"></property>
-	     <property name="newsMonitoringService" ref="newsMonitoringService"></property>
+	     <!-- <property name="newsMonitoringService" ref="newsMonitoringService"></property>-->
+	</bean>
+	<bean id="partyManagementAction" class="com.itgrids.partyanalyst.web.action.PartyManagementAction" singleton="false">
+		<property name="partyDetailsService" ref="partyDetailsService" />
+	    <property name="candidateDetailsService" ref="candidateDetailsService" />
+	    <property name="staticDataService" ref="staticDataService" />
+	</bean>
+	<bean id="locationsHierarchyAction" class="com.itgrids.partyanalyst.web.action.LocationsHierarchyAction" singleton="false">
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="staticDataService" ref="staticDataService" />
+		
 	</bean>
 	
 		<bean id="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction" singleton="false">

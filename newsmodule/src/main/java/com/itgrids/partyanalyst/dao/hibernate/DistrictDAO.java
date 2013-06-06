@@ -51,13 +51,13 @@ IDistrictDAO {
 	public List<District> getAllOrderByName() {
 		return getHibernateTemplate().find("from District model order by districtName");
 	}
-	
+	*/
 	@SuppressWarnings("unchecked")
 	public List getStateDistrictByDistrictID(Long districtID){
 		return getHibernateTemplate().find("Select model.state.stateId, model.state.stateName, model.districtName from District model where model.districtId=? order by model.state.stateName",districtID);
 		
 	}
-
+/*
 	@SuppressWarnings("unchecked")
 	public List getDistrictNameByDistrictId(Long districtId) {
 		return getHibernateTemplate().find("Select model.districtName,model.state.stateId from District model where model.districtId=? ", districtId);
@@ -74,12 +74,12 @@ IDistrictDAO {
 				"model.districtId, model.districtName " +
 				" from District model where model.districtId in("+districtIDs+") ");
 	}
-	
+	*/
 	@SuppressWarnings("unchecked")
 	public List getDistrictIdAndNameByState(Long stateId){
 		return getHibernateTemplate().find("select model.districtId,model.districtName from District model where model.state.stateId = ? order by model.districtName",stateId);
 	}
-	
+	/*
 
 	@SuppressWarnings("unchecked")
 	public List<Long> getAllDistrictByStateIds(List<Long> stateIds) {	

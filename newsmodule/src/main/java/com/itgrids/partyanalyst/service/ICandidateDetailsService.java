@@ -42,14 +42,19 @@ public interface ICandidateDetailsService {/*
 	
 	public List<FileVO> searchNewsDetails(FileVO inputs);
 	
-	public List<FileVO> getScopesForNewSearch();
 	
-	public List<FileVO> getStateDetails();
 	
-	public List<FileVO> getDistrictDetailsByStateId(Long stateId);*/
+	
+	*/
+	public List<FileVO> getDistrictDetailsByStateId(Long stateId);
 	
 	public ResultStatus uploadAFile(FileVO fileVO);
-	
+	public List<FileVO> getScopesForNewSearch();
+	public List<SelectOptionVO> getSource();
+	public List<SelectOptionVO> getLanguage();
+	public List<SelectOptionVO> getCategory();
+	 public List<SelectOptionVO> getNewsImportance();
+	 public List<FileVO> getStateDetails();
 	/*public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId,String contentType);
 	
 	public List<String> getCandidateProfileDescriptionByCandidateID(Long candidateId);
@@ -98,11 +103,11 @@ public interface ICandidateDetailsService {/*
 	
 	public List<FileVO> getOtherNews(Long candidateId,int startIndex,int maxResults,String queryType);
 	
-	public List<SelectOptionVO> getCategory();
+
 	
-	public List<SelectOptionVO> getSource();
 	
-	public List<SelectOptionVO> getLanguage();
+	
+	
 
 	public FileVO copyFileToFileVO(File file);
 	
@@ -128,7 +133,7 @@ public interface ICandidateDetailsService {/*
 	
 	 public boolean checkForCandidateExistence(List<SelectOptionVO> candidatesList,Long candidateId);
 	 public List<FileVO> getNewsByCategory(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType,String category);
-	 public List<SelectOptionVO> getNewsImportance();
+	
 	 public List<FileVO> getNewsByNewsImportance(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String newsImportance);
 	 
 	 public List<FileVO> getNewsGalleryByUserIdFromUserGallery(Long userId);

@@ -24,7 +24,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		super(Constituency.class);
 	}
 
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public List<Constituency> findByProperty(String propertyName, Object value) {
 		return getHibernateTemplate().find("from Constituency where " + propertyName + "=?", value);
 	}
@@ -523,4 +523,4 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		queryBuilder.setParameter("constituencyId", constituencyId);
 		return (String) queryBuilder.uniqueResult();
 	}
-*/}
+}

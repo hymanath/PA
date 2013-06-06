@@ -64,16 +64,17 @@ public interface IStateDAO extends GenericDao<State, Long>{/*
 	public List<State> findByStateCode(Object stateCode);
 	
 	public List<State> findByStateId(Long stateId);
-	
+	*/
 	public List<State> findByCountryId(Long countryId);
-	
+	public List<State> findByCountryIdForSearch(Long countryId);
+	/*
 	@SuppressWarnings("unchecked")
 	public List findStatesByCountryId(Long countryId);
 	
 	@SuppressWarnings("unchecked")
 	public List findStateIdByNameAndCountryId(String stateName,Long countryId);
 	
-	public List<State> findByCountryIdForSearch(Long countryId);
+	
 	
 	public List getAllStatesByCountryIdOrderByStateId(Long countryId);
 	

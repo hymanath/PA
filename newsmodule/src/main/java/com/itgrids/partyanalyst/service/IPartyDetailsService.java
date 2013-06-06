@@ -17,10 +17,10 @@ import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
-public interface IPartyDetailsService {/*
-	
+public interface IPartyDetailsService {
+	/*
 	public List<SelectOptionVO> getAllPartysNames() ;
-
+	
 	public PartyVO getPartyDetails(Long partyId);
 
 	public List<String> getPartyProfileDescriptionById(Long partyId);
@@ -36,19 +36,19 @@ public interface IPartyDetailsService {/*
 	public List<FileVO> getFirstThreePhotoGallaryDetail(Long partyId);
 
 	public List<FileVO> getPartyPhotoGallaryDetailWithOutGallerySizeZero(
-			Long partyId, int firstRecord, int maxRecord, String type);
+			Long partyId, int firstRecord, int maxRecord, String type);*/
 
 	public List<FileVO> getPartyPhotoGallaryDetail(Long partyId,
 			int firstRecord, int maxRecord, String type);
 	
-	public ResultStatus saveDescription(GallaryVO gallaryVO);
+	//public ResultStatus saveDescription(GallaryVO gallaryVO);
 	
 	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,String createOrUpdate);
 	
 	public List<SelectOptionVO> getPartyGallarySelectList(Long partyId,String contentType);
 	
 	public List<FileVO> getElectionType();
-	
+	/*
 	public List<FileVO> getPartyManifestoInfo(long partyId);
 
 	public List<FileVO> getSelectedState(Long partyId);
@@ -59,12 +59,12 @@ public interface IPartyDetailsService {/*
 	
 	public ResultStatus deleteProfileDescById(Long profDescId);
 	
-	public ResultStatus updateProfileDescription(List<GallaryVO> gallaryVO , Long partyId);
+	//public ResultStatus updateProfileDescription(List<GallaryVO> gallaryVO , Long partyId);
 	
 	public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long partyId);
-	
+	*/
 	public GallaryVO getPartyGalleryDetails(Long galleryId,Long partyId);
-	
+	/*
 	public List<SelectOptionVO> getElectionTypesBasedOnStateIdAndPartyId(Long partyId ,Long stateId);
 	
 	public List<SelectOptionVO> getElectionYearsBasedOnElectionTypeIdAndPartyId(Long electionTypeId , Long partyId , Long stateId);
@@ -76,9 +76,9 @@ public interface IPartyDetailsService {/*
 	public List<FileVO> getPartyManifestoDetailsBasedOnSelection(PartyPageVO partyPageVO);
 	
 	public ResultStatus savePartyMessageFromPeople(GallaryVO gallaryVO);
-		
+	*/	
 	public String getPartyVisibility(Long gallaryId);
-	
+	/*
 	public List<CandidateCommentsVO> getMessageToParty(Long partyId,int startIndex,int resultsCount);
 	
 	public List<CustomPageVO> getCustomPagesOfAPartyPage(Long partyId);
@@ -94,7 +94,7 @@ public interface IPartyDetailsService {/*
 	public List<SelectOptionVO> getElecYears(Long partyId,Long electionType,Long stateId);
 	
 	public List<SelectOptionVO> getCandidateDetailsForAParty(Long partyId,Long electionId);
-	
+
 	public List<SelectOptionVO> getAllPartysNamesByUser(Long userId);
 	
 	public ResultStatus saveDataToUserPartyRelation(Long userId,Long partyId);

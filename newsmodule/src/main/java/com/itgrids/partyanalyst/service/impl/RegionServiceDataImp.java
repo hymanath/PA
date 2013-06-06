@@ -1,9 +1,50 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang.WordUtils;
+import org.apache.log4j.Logger;
+
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
+import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IModuleDetailsDAO;
+import com.itgrids.partyanalyst.dao.IModuleRegionScopesDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesProblemTypeDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.excel.booth.BoothInfo;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.RegionScopes;
+import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
-public class RegionServiceDataImp implements IRegionServiceData {/*
+public class RegionServiceDataImp implements IRegionServiceData {
 
 	private static final Logger log = Logger.getLogger(RegionServiceDataImp.class);
 	private IStateDAO stateDAO;
@@ -381,7 +422,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 	
 	@SuppressWarnings("unchecked")
 	public Long getLatestParliamentElectionYear(Long stateID){
-		List list = electionDAO.findLatestParliamentaryElectionYear(stateID);
+		List list = null;//electionDAO.findLatestParliamentaryElectionYear(stateID);
 		Long year = null;
 		if(list!=null && list.size()==1)
 			year = new Long(list.get(0).toString());
@@ -427,10 +468,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
  		}
 		return constsList;
 	}
-*//**
- * This method returns all the sub-regions in a constituency based on its area type.If it is Rural it returns list of tehsils, If Urban returns municipalities, corporations, gmc's
- * if UrbanRural then it returns tehsils, municipalities, corporations, etc.  
- *//*
+
 	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String year, String scope) {
 		Constituency constituency = constituencyDAO.get(constituencyId);
 		List<SelectOptionVO> subRegionsList = new ArrayList<SelectOptionVO>();
@@ -468,10 +506,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		return subRegionsList;
 	}
 	
-	*//**
-	 * This method returns all the local election bodies in a constituency.This method is invoked from getSubRegionsInConstituency() method
-	 * 
-	 *//*
+
 	@SuppressWarnings("unchecked")
 	public  List<SelectOptionVO> getLocalElectionBodies(Long constituencyId, String year)
 	{
@@ -493,10 +528,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		return localElectionBodiesList;
 	}
 	
-	*//**
-	 * This method returns all the local election bodies in a constituency.This method is invoked from getSubRegionsInConstituency() method
-	 * 
-	 *//*
+	
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getLocalElectionBodiesInConstituency(Long constituencyId, String year)
 	{
@@ -561,10 +593,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		return tehsilsList;
 	}
 	
-	*//**
-	 * Checks Wheather Mandal has hamlets or not
-	 * @author Sai Krishna
-	 *//*
+
 	@SuppressWarnings("unchecked")
 	public Boolean checkForHamletsAvailability(Long locationId){
 		
@@ -577,10 +606,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 	 return false;
 	}
 	
-	*//**
-	 * Check wheather the area type is rural
-	 * @author Sai Krishna
-	 *//*
+
 	public Boolean checkForAreaRuralType(Long locationId){
 		
 		String areaFlag = locationId.toString().substring(0,1);
@@ -590,9 +616,8 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 	 return true;
 	}
 
-	*//**
-	 * This method retrieves all hamlets if the location is of type Rural and all wards if the location is of type Urban 
-	 *//*
+	
+	 
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getHamletsOrWards(Long locationId, String year) {
 		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
@@ -714,10 +739,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		
 	 return wards;
 	}
-	*//**
-	 * This method fetches constituencies from delimitation constituency table.
-	 * This method wont fetch the constituencies  
-	 *//*
+
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getConstituenciesByAreaTypeInDistrict(
 			Long districtId, String areaType) {
@@ -772,7 +794,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 			Long constituencyId) {
 		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
 		String id = wardId.toString().substring(1);
-		List boothsList =  boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndYear(new Long(id), year, constituencyId);
+		List boothsList = null;// boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndYear(new Long(id), year, constituencyId);
 		if(boothsList.size()>0)
 		{
 			for(int j=0;j<boothsList.size();j++)
@@ -784,19 +806,11 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		return regionsList;		
 	}
 	
-	*//**
-	 * This method is used to get all the booths in a ward for a publication
-	 * @author Samba Penugonda
-	 * @param wardId , this is the id of a ward 
-	 * @param constituencyId , this is the id of constituency which the ward exist.
-	 * @param publicationId , this is the publication id
-	 * @return all the booth details exist in a ward by publication id
-	 *  
-	 *//*
+	
 	public List<SelectOptionVO> getboothsInWardByPublicationId(Long wardId, Long constituencyId , Long publicationId) {
 		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
 		String id = wardId.toString().substring(1);
-		List<Object[]> boothsList =  boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndPublicationId(new Long(id), constituencyId ,  publicationId);
+		List<Object[]> boothsList = null;// boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndPublicationId(new Long(id), constituencyId ,  publicationId);
 		if(boothsList.size()>0)
 		{
 			for(int j=0;j<boothsList.size();j++)
@@ -813,7 +827,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 	public List<SelectOptionVO> getboothDetailsInWard(Long wardId, Long year,
 			Long constituencyId) {
 		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
-		List boothsList =  boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndYear(wardId, year, constituencyId);
+		List boothsList =  null;//boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndYear(wardId, year, constituencyId);
 		if(boothsList.size()>0)
 		{
 			for(int j=0;j<boothsList.size();j++)
@@ -840,9 +854,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		}
 		return regionsList;		
 	}
-	*//**
-	 * This method takes the booth ids in string form and retrieves complete details for each booth.
-	 *//*
+	
 	public List<BoothInfo> getBoothCompleteDetails(String areaType,
 			String boothIds) {
 		List resultsList = null;
@@ -850,12 +862,12 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		if(IConstants.URBAN_TYPE.equals(areaType))
 		{
 			// 0-localBodyId, 1-localBodyName, 2-boothId, 3 -partNo, 4-location, 5-village_covered
-			resultsList = boothDAO.getLocalElectionBodyToBoothByBooths(boothIds);
+			resultsList = null;//boothDAO.getLocalElectionBodyToBoothByBooths(boothIds);
 			
 		} else if(IConstants.RURAL_TYPE.equals(areaType))
 		{
 			// 0-tehsilId, 1-tehsilName, 2-boothId, 3 -partNo, 4-location, 5-village_covered
-			resultsList = boothDAO.getVillageToBoothByBooths(boothIds);
+			resultsList = null;//boothDAO.getVillageToBoothByBooths(boothIds);
 		}
 		
 		if(resultsList != null && resultsList.size() > 0)
@@ -875,10 +887,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		}
 
 	
-	 * (non-Javadoc)
-	 * @see com.itgrids.partyanalyst.service.IRegionServiceData#getBoothsInLocalBodysByConstituency(java.lang.Long, java.lang.Long, java.lang.Long)
-	 * Method that retrieves Booths in Local Body Election
-	 
+	
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getBoothsInLocalBodysByConstituency(
 			Long localBodyId, Long year, Long constituencyId) {
@@ -927,10 +936,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 	}
 
 	
-	 * (non-Javadoc)
-	 * @see com.itgrids.partyanalyst.service.IRegionServiceData#getBoothsInTehsilByConstituency(java.lang.Long, java.lang.Long, java.lang.Long)
-	 * Method that retrieves Booths in Tehsil
-	 
+
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getBoothsInTehsilByConstituency(Long tehsilId,
 			Long year, Long constituencyId) {
@@ -953,12 +959,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 	}
 	
 
-	*//**
-	 * This method is used in boothLocalBody mapper admin interface, which is intended to fetch all the local
-	 * bodies exists in dist and if any one of them are mapped to a constituency level, then they are also fetched.
-	 * This id to provide a user to map or unmap the local bodies to a constituency level.
-	 * @return
-	 *//*
+	
 	public Set<RegionalMappingInfoVO> getLocalBodiesInDistAndConst(Long districtId,
 			Long constituencyId, String year) {
 		String areaType = null;
@@ -1000,12 +1001,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 			
 		return finalList;
 	}
-	*//**
-	 * This method is used in boothLocalBody mapper admin interface, which is intended to fetch all the wards exists in local
-	 * bodies and if any one of them are mapped to a constituency level, then they are also fetched.
-	 * This id to provide a user to map or unmap the wards in local bodies to a constituency level.
-	 * @return
-	 *//*
+	
 	public Set<RegionalMappingInfoVO> getWardsInLocalBodyAndConst(
 			Long localBodyId, Long constituencyId, String year) {
 		
@@ -1062,12 +1058,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 
 		return finalList;
 	}
-	*//**
-	 * This method is used in boothLocalBody mapper admin interface, which is intended to fetch all the booths exists in local
-	 * bodies and if any one of them are mapped to a constituency level, then they are also fetched.
-	 * This id to provide a user to map or unmap the booths in local bodies to a constituency level.
-	 * @return
-	 *//*
+	
 	public Set<RegionalMappingInfoVO> getboothsInLocalBodiesAndConst(
 			Long localBodyId, Long constituencyId, String year) {
 		Set<RegionalMappingInfoVO> finalList = new LinkedHashSet<RegionalMappingInfoVO>(0);
@@ -1140,7 +1131,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 	
 	public List<SelectOptionVO> getAllRegionScopes() {
 		List<SelectOptionVO> scopes = new ArrayList<SelectOptionVO>(0);
-		List<RegionScopes> allScopes = regionScopesDAO.getAll();
+		List<RegionScopes> allScopes = null;//regionScopesDAO.getAll();
 		for(RegionScopes regionScopes: allScopes)
 		{
 			scopes.add(new SelectOptionVO(regionScopes.getRegionScopesId(),regionScopes.getScope()));
@@ -1156,9 +1147,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 			areaType = constituency.getAreaType();
 		return areaType;
 	}
-*//**
- * this method retrieves all the regions scopes like (state, district etc) for a module based on the state id
- *//*
+
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getAllRegionScopesForModule(String module,
 			Long stateId) {
@@ -1260,12 +1249,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		}
 	}
 	
-	*//**
-	 * This Method will give Problem Type List when we pass regionScopeId as Parameter
-	 * @param regionScopeId
-	 * @return List<SelectOptionVO>
-	 * @author kamalakar Dandu
-	 *//*
+	
 	public List<SelectOptionVO> getProblemTypesByRegionScopeId(Long regionScopeId)
 	{
 		try{
@@ -1319,12 +1303,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 	}
 	
 	
-	*//**
-	 * This method will get the all panchayat details of a mandal
-	 * @author Samba Penugonda
-	 * @param tehsilId , this is tehsilId
-	 * @return all the panchayat details in the form of list
-	 *//*
+	
 	public List<SelectOptionVO> getPanchayitiesInTehsil(Long tehsilId)
 	{
 		log.debug("Entered into the getPanchayitiesInTehsil service method");
@@ -1332,7 +1311,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		
 		try
 		{
-			List<Object[]> panchayatDetailsList = panchayatDAO.getPanchayatsBymandalId(new Long(tehsilId.toString().substring(1)));
+			List<Object[]> panchayatDetailsList = null;//panchayatDAO.getPanchayatsBymandalId(new Long(tehsilId.toString().substring(1)));
 			
 			
 			for(Object[] obj:panchayatDetailsList)
@@ -1353,13 +1332,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		return panchayatList;
 	}
 	
-*//**
- * This method will get all the booth details in a panchayat
- * @author Samba Penugonda
- * @param panchayatId , this is the panchayatId for which we need to retrieve booths
- * @param publicationId , this is publicationdate id
- * @return all the booth details of given panchayat
- *//*
+
 
 	public List<SelectOptionVO> getBoothsInAPanchayatByPublicationId(Long panchayatId , Long publicationId)
 	{
@@ -1368,7 +1341,7 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 		
 		try
 		{
-		List<Object[]> boothDetailsList = boothDAO.getBoothsInAPanchayatByPublicationId(new Long(panchayatId.toString().substring(1)),publicationId);
+		List<Object[]> boothDetailsList = null;//boothDAO.getBoothsInAPanchayatByPublicationId(new Long(panchayatId.toString().substring(1)),publicationId);
 		
 		for(Object[] obj:boothDetailsList)
 		{
@@ -1432,6 +1405,6 @@ public class RegionServiceDataImp implements IRegionServiceData {/*
 	
 	}
 	
-*/}
+}
 	
  

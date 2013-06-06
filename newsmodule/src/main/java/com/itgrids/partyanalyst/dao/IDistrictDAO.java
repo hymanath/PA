@@ -47,7 +47,7 @@ public interface IDistrictDAO extends GenericDao<District, Long>{/*
 
 	public List<District> getAllOrderByName();
 	
-	public List getStateDistrictByDistrictID(Long districtID);
+	
 	
 	public List getDistrictNameByDistrictId(Long districtID);
 	
@@ -57,10 +57,11 @@ public interface IDistrictDAO extends GenericDao<District, Long>{/*
 	public List getDistrictIdByStateIdAndDistrictName(Long stateID, String districtName);
 	
 	public List getStateToDistrictByDistrict(String districtIDs);
-	
+	*/
 	@SuppressWarnings("unchecked")
 	public List getDistrictIdAndNameByState(Long stateId);
-	
+	public List getStateDistrictByDistrictID(Long districtID);
+	/*
 	
 	
 	public Object getDistrictNameById(Long districtId);

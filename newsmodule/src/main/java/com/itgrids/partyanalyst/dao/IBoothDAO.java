@@ -43,7 +43,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{/*
 	public List findbyConstituencyNameDistrictIdAndElectionYear(
 			String acName, Long districtId, Long electionYear);
 	
-	public List findBoothInfoByConstituencyIdAndYear(Long constituencyId, Long year);
+	
 
 	public int updateLocalBodyInfoByBoothIdsAndWardId(Long localBody, List<Long> boothIds);
 	
@@ -59,13 +59,14 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{/*
 	
 	public List<Long> findByConstituencyElectionAndPartNo(
 			Long constituencyId, Long electionYear, String partNos);
-	
+	*/
+	public List findBoothInfoByConstituencyIdAndYear(Long constituencyId, Long year);
 	public List findBoothsInfoForAMandalByConstituencyAndYear(Long tehsilId, Long year, Long constituencyId);
 	
 	public List findBoothsInfoForALocalElectionBodyByConstituencyAndYear(Long localBodyId, Long year, Long constituencyId);
 	
 	public List findBoothsInfoForALocalBodyWardByConstituencyAndYear(Long localBodyWardId, Long year, Long constituencyId);
-	
+	/*
 	public List<Long> getCountOfPartNumbersInAConstituency(Long constituencyId, Long electionYear);
 	
 	public List<Object> getPartNumbersAndVillagesCoveredInAConstituency(Long constituencyId, Long electionYear);

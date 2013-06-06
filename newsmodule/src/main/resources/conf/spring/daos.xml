@@ -150,19 +150,20 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-
+-->
 	<bean id="stateDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="constituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	
 
 	<bean id="electionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
+<!-- 
+<bean id="constituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="constituencyElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyElectionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -218,11 +219,11 @@
 	<bean name="partyElectionStateResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionStateResultDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	-->
 	<bean name="partyDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean name="censusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusDAO" >
+	<!--<bean name="censusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
@@ -233,9 +234,7 @@
 	<bean name="boothDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean name="boothConstituencyElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothConstituencyElectionDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	
 	<bean name="boothVillageCensusDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothVillageCensusDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -246,7 +245,10 @@
 	<bean id="candidateBoothResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateBoothResultDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	-->
+	<bean name="boothConstituencyElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothConstituencyElectionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="delimitationConstituencyAssemblyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -254,7 +256,7 @@
 	<bean id="electionAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionAllianceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<!-- 
 	<bean id="allianceGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.AllianceGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -265,14 +267,14 @@
 	</bean>
 	<bean id="partyRebelCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyRebelCandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	</bean>-->
 	<bean id="delimitationConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="delimitationConstituencyMandalDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDAO">
+	 <bean id="delimitationConstituencyMandalDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+<!--
 	<bean id="hamletDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -430,7 +432,7 @@
 	<bean id="userGroupRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupRelationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	-->
 	<bean id="userCountryAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCountryAccessInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -446,7 +448,7 @@
 	<bean id="userConstituencyAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyAccessInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<!-- 
 	<bean id="socialCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SocialCategoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -493,7 +495,7 @@
 	<bean id="boothLocalBodyWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothLocalBodyWardDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	-->
 	<bean id="assemblyLocalElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -501,7 +503,7 @@
 	<bean id="assemblyLocalElectionBodyWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyWardDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<!-- 
 	<bean id="problemImpactLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemImpactLevelDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -668,10 +670,10 @@
 	<bean id="contentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ContentTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	-->
 	<bean id="userGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGallaryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	</bean><!--
 	
 	<bean id="candidateProfileDescriptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateProfileDescriptionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -695,10 +697,6 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	
-    <bean id="partyGalleryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyGalleryDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
 	<bean id="partyUpdatesEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyUpdatesEmailDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -1126,10 +1124,10 @@
 	<bean id="queryTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.QueryTempDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
-	
+	-->
 	<bean id="areaTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AreaTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
-	</bean>
+	</bean><!-- 
 	<bean id="customVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomVoterDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
@@ -1245,7 +1243,7 @@
 	<bean id="allianceGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.AllianceGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<bean id="gallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.GallaryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -1263,7 +1261,7 @@
 	<bean id="filePathsDAO" class="com.itgrids.partyanalyst.dao.hibernate.FilePathsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-		
+	
 	<bean id="fileGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileGallaryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -1275,10 +1273,10 @@
 	<bean id="electionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<!--
 	<bean id="electionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	</bean> -->
 		<bean id="contentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ContentTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -1293,6 +1291,8 @@
 	<bean id="categoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CategoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="newsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
 	
 </beans>		
