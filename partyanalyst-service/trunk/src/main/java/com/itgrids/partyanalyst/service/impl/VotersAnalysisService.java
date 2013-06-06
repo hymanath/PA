@@ -15126,13 +15126,13 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				return "false";
 			}
 	}
-	public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByBoothId(Long boothId,Long publicationDateId,Long userId,String type){
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForHamletByBoothId(Long constituencyId,Long boothId,Long publicationDateId,Long userId,String type){
 		List<VotersDetailsVO> boothVotersList = new ArrayList<VotersDetailsVO>();
 		
 		
 		
 		//List<Object[]> list=    userVoterDetailsDAO.getAgeDataForBoothByHamlets(userId,publicationDateId,boothId,type);
-		List<Object[]> list=    userVoterDetailsDAO.getAgeDataForBoothByHamlets(userId,publicationDateId,boothId,type,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
+		List<Object[]> list=    userVoterDetailsDAO.getAgeDataForBoothByHamlets(constituencyId,userId,publicationDateId,boothId,type,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 	    if(list == null || list.size()==0)	
 		{   
 			return boothVotersList;	
