@@ -12,7 +12,7 @@ import com.itgrids.partyanalyst.dto.PdfGenerationVO;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 
-public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
+public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	
 	public List<File> getStartingRecordInGallary(Long gallaryId);
 	
@@ -240,5 +240,14 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	public List<Object[]> getNewsByHamlet(NewsCountVO newsCountVO);
 	
 	public List<FileGallary> getNewsDetailsByForHamlets(NewsCountVO newsCountVO);
+*/
+	
+    public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex);
+	public List<Long> getAllRecordCountInGallary(Long gallaryId);
+   public List<File> getStartingRecordInGallary(Long gallaryId);
+	
+	public List<Object[]> getAllRecordInGallary(Long gallaryId);
+
+
 }
 

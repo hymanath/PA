@@ -6,6 +6,8 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyGallery;
 
 public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
+	public List<Object[]> getPartyGallaryDetail(Long partyId,String type,int startIndex , int maxRecords);
+	public List<Object[]> getNewsCountDetailsForGallaries(List<Long> gallaryIds);
 
 	public List<Object[]> getPartyGallaryDetail(Long partyId,int firstResult,int maxResult,String type) ;
 	
