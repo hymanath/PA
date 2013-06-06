@@ -19,40 +19,23 @@
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	<!--Bootstrap styles file-->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css">
-	
-
+	<script type="text/javascript" src="js/loginpopup.js"> </script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
 	<!--Script file
 	<script type="text/javascript" src="js/jquery.js"></script>-->
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!--YUI SCRIPT-->
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
     
-	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
-
-%>
-
-<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
-
-<% }
-
-%>
-	<%-- <script>
-		var Localization = { <%
-		
-		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
-		String stateSelect = rb.getString("stateSelect");
-		String distSelect = rb.getString("distSelect");
-		String constSelect = rb.getString("constSelect");
-		String assembly = rb.getString("assembly");
-		String parliament = rb.getString("parliament");
-		String localBody = rb.getString("localBodies");
-		String electionTypeInHome = rb.getString("electionTypeInHome");
-		String electionYearInHome = rb.getString("electionYearInHome");
-		
-		ResourceBundle resb = ResourceBundle.getBundle("global_ErrorMessages");
-		String errorMsg = resb.getString("constTypeAlert");
-%> }
-	</script> --%>
+	
 	<style>
 	body{color:#5B5B5B;}
 	
@@ -74,6 +57,7 @@ margin:-1px 0px 0px 0px ;
 .header-right-sec{width:750px;}
 .lr-sec{padding:14px 5px 5px;}
 #menu ul.menu li{z-index: 999;}
+
 </style>
 <decorator:head/>
 </head>
@@ -84,6 +68,8 @@ margin:-1px 0px 0px 0px ;
 <td>
 
   <div class="container-fluid headerBg" style="padding-left: 0px; padding-right: 0px;">
+  
+
 		<!---Header----->
 		<div class="container">	
 		<div class="row">
@@ -97,7 +83,7 @@ margin:-1px 0px 0px 0px ;
 					<!----Member Area Div---->
 					<div class="span12">
 						<ul class="nav nav-pills pull-right memberArea">
-						  <li><a href="#">Login</a></li>
+						  <li><a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a></li>
 						  <li class="selected"><a href="#">Register</a></li>
 						</ul>
 					</div>
@@ -141,6 +127,9 @@ margin:-1px 0px 0px 0px ;
 
 </center>
 </div>
+<div id="login_window">
+	<div id="login_window_inner"></div>
+</div>
 </td>
 </tr>
 <!--BODY -->
@@ -166,3 +155,4 @@ margin:-1px 0px 0px 0px ;
 
 </body>
 </html>
+
