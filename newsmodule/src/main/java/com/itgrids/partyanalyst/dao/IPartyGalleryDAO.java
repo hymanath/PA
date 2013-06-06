@@ -40,5 +40,6 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	public List<Object[]> getAllNewsDetailsForState(Long partyId,int firstResult,int maxResult,String queryType,long stateId,long scopeValue);
 	public List<Object[]> getAllNewsDetailsForDistrict(Long partyId,int firstResult,int maxResult,String queryType,long distScope ,List<Long> districtIds);
 	public List<Object[]> getGallariesByPartyIdForState(Long partyId,String contentType,int firstResult,int maxResult);
-
+	public List<Object[]> getCategoryIdsForParty(Long partyId,int firstResult,int maxResult,String queryType);
+	public List<Object[]> getGalleriesForCategories(long partyId,int firstResult,int maxResult,String queryType,Long catId);
 }
