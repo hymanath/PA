@@ -41,9 +41,9 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 	/*public void test(){
 		List list = influencingPeopleDAO.findByTehsils("836");
 	}*/
-	
+/*	
 	@SuppressWarnings("unchecked")
-	@Test
+	@Test*/
 /*	public void testGetInfluencingPeopleDetails(){
 		List results = influencingPeopleDAO.getTotalInfluencingPeopleDetailsByInfluencingScope(385l,"constituency","347");
 		System.out.println(" Results Size :" + results.size());
@@ -84,22 +84,30 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-	public void testGetInfluencingPeopleVoterIDs(){
-		/*List<String> locationValue = new ArrayList<String>(0);
+	/*public void testGetInfluencingPeopleVoterIDs(){
+		List<String> locationValue = new ArrayList<String>(0);
 		locationValue.add("28");
 		locationValue.add("29");
 		locationValue.add("30");
 		locationValue.add("33");
 		
 		List<InfluencingPeople> list = influencingPeopleDAO.getInfluencingPeopleVoterIDs(1l, locationValue, "panchayat",0,10);
-		System.out.println(list.size());*/
+		System.out.println(list.size());
 		
 		
-		/*Long count =  influencingPeopleDAO.getInfluencingPeopleCount(1l,229l,"booth");
-		System.out.println(count);*/
+		Long count =  influencingPeopleDAO.getInfluencingPeopleCount(1l,229l,"booth");
+		System.out.println(count);
 	
 		
+	}*/
+	
+	public void testgetPartyIdUsingVoterId(){
+		List<Long> locationValue = new ArrayList<Long>(0);
+		locationValue.add(99212l);
+		locationValue.add(113190l);
+		List<String> val=influencingPeopleDAO.getPartyIdUsingVoterId(locationValue);
+		System.out.println(val.get(0));
+		System.out.println(val.get(1));
 	}
-	
 	
 }

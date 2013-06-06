@@ -692,4 +692,10 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return query.list();
 	}
 		
+	
+	public String getPartyIdUsingVoterId(Long voterId){
+		Query query = getSession().createQuery("select model.party.shortName from InfluencingPeople model where model.voter.voterId = :voterId)");
+		query.setParameter("voterId", voterId);
+			return  (String) query.uniqueResult();
+	}
 }
