@@ -13,7 +13,7 @@ public interface ILoginService {
 	public Boolean checkForRegionToViewReport(RegistrationVO registrationVO, final String regionType, Long regionId);
 	
 	public ResultStatus checkForUserNameAndPassword(String username,String password);
-	
+	public RegistrationVO getUserByUserNameAndPassword(String username,String password);
 	/*
 	
 	public RegistrationVO checkForValidUser(String userName,String password);

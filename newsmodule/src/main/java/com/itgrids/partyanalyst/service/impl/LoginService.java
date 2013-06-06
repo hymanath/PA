@@ -821,4 +821,29 @@ public class LoginService implements ILoginService{
 		
 		return resultStatus;
 	}
+	
+	public RegistrationVO getUserByUserNameAndPassword(String username,String password)
+	{
+		RegistrationVO regVo = null;
+		try {
+			LOG.debug("entered into getUserByUserNameAndPassword() method in UserService Class");
+			User  userdetails = userDAO.getUserByUserNameAndPassword(username,password);
+			if(userdetails != null)
+			{
+				 regVo = new RegistrationVO();
+				 if("Admin".equalsIgnoreCase(userdetails.getUserType()) )
+				   regVo.setUserType("Admin");
+				 else if("subuser".equalsIgnoreCase(userdetails.getUserType()) )
+				   regVo.setUserType("subuser");
+				 else
+					 regVo.setUserType("");
+				 regVo.setName("Welcome "+userdetails.getFirstName()+" "+userdetails.getLastName());
+				 
+			}
+		} catch (Exception e) {
+			LOG.error("exception raised in getUserByUserNameAndPassword() method in UserService Class", e);
+		}
+		
+		return regVo;
+	}
 }

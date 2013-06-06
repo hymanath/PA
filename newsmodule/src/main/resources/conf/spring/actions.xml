@@ -23,8 +23,10 @@
 		
 	</bean>
 	
-		<bean id="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction" singleton="false">
+	 <bean id="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction" singleton="false">
 		<property name="loginService" ref="loginService"></property>
 	</bean>
 	
+	<bean id="logoutAction" class="com.itgrids.partyanalyst.web.action.LogoutAction" singleton="false">
+	</bean>
 	</beans>

@@ -2873,7 +2873,8 @@
 		</action>
 		<action name="partyManagementAction" class="partyManagementAction">
 		<result name="success">/jsp/partyManagement.jsp</result>
-		<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=partyManagementAction</result>
+		<result name="error">/jsp/globalError.jsp</result>
+		<result name="NOT_LOGGED_IN" type="redirect">homePage.action?notLogged=true</result>
 		</action>
 		
 		<action name="partyManageAction" class="partyManagementAction" method="AjaxHandler">
