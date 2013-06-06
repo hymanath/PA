@@ -13,13 +13,13 @@ import com.itgrids.partyanalyst.dto.NewsCountVO;
 import com.itgrids.partyanalyst.dto.PdfGenerationVO;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.util.IConstants;
 public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> implements IFileGallaryDAO{
 	
 	public FileGallaryDAO(){
 		super(FileGallary.class);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<File> getStartingRecordInGallary(Long gallaryId){
 		
@@ -46,17 +46,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		return query.list(); 
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Long> getAllRecordCountInGallary(Long gallaryId){
-		
-		Query query = getSession().createQuery("select count(*) from FilePaths model where model.fileSourceLanguage.file.fileId in(" +
-				" select distinct model1.file.fileId from FileGallary model1 where model1.gallary.gallaryId = ? and model1.isDelete = ? and model1.isPrivate = ? )");
-		
-		query.setParameter(0,gallaryId);
-		query.setParameter(1,"false");
-		query.setParameter(2,"false");				
-		return query.list(); 
-	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getNewsRecordsBySearchCriteria(FileVO fileVO,String type){
@@ -394,16 +384,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 		
 		return query.list();
 	}
-	/*@SuppressWarnings("unchecked")
-	public List<Long> getRecentlyUploadedGallaries(Integer startIndex,Integer maxResults)
-	{
-		Query query = getSession().createQuery("select distinct model.gallary.gallaryId from FileGallary model where model.gallary.contentType.contentType ='Photo Gallary'" +
-				" and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' group by model.file.fileId order by model.file.fileDate desc,model.updateddate desc");
-		query.setFirstResult(startIndex);
-		query.setMaxResults(maxResults);
-		
-		return query.list();	
-	}*/
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<FileGallary> getRecentlyUploadedGallaries(Integer startIndex,Integer maxResults)
@@ -417,15 +398,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 	}
 	
 	
-	/*@SuppressWarnings("unchecked")
-	public List<Long> getRecentlyUploadedVedioGallaryIds(Integer startIndex,Integer maxResults,String queryStr2)
-	{
-	Query query = getSession().createQuery("select distinct model.gallary.gallaryId from FileGallary model "+queryStr2+" and " +
-			"model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' group by model.file.fileId order by model.file.fileDate desc,model.updateddate desc");
-	query.setFirstResult(startIndex);
-	query.setMaxResults(maxResults);
-	return query.list();
-	}*/
+	
 	@SuppressWarnings("unchecked")
 	public List<FileGallary> getRecentlyUploadedVedioGallaryIds(Integer startIndex,Integer maxResults,String queryStr2)
 	{
@@ -1263,14 +1236,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     	 return getHibernateTemplate().find("select model.gallary.gallaryId from FileGallary model where model.file.fileId=?",fileId);
      }
      
-     @SuppressWarnings("unchecked")
-     public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList)
-     {
-    	 Query query = getSession().createQuery("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' " +
-    	 		" group by model.file.fileId");
-    	 query.setParameterList("gallaryIdsList",gallaryIdsList);
-    	 return query.list();
-     }
+    
      
      @SuppressWarnings("unchecked")
      public List<FileGallary> getFilesOfInGallariesForCustomer(List<Long> gallaryIdsList)
@@ -2419,9 +2385,9 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 				    " model.file.locationValue in( :tehsilIdsList))");
 		
 		
-		/*if(panchayatIdsList != null || panchayatIdsList != null)			
+		if(panchayatIdsList != null || panchayatIdsList != null)			
 			queryStr.append("or (model.file.regionScopes.regionScopesId = :lowLevelLocationId and " +
-				    " model.file.locationValue in( :panchayatIdsList))");*/
+				    " model.file.locationValue in( :panchayatIdsList))");
 		
 		if(panchayatIdsList != null && panchayatIdsList != null){
 			
@@ -2719,7 +2685,31 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		
 	
 	}
+   
 
 	
-   
+	 @SuppressWarnings("unchecked")
+     public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex)
+     {
+    	 Query query = getSession().createQuery("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' " +
+    	 		" group by model.file.fileId");
+    	 query.setParameterList("gallaryIdsList",gallaryIdsList);
+    	 
+    	 query.setFirstResult(startIndex);
+    	 query.setMaxResults(endIndex);
+    	 return query.list();
+     }
+	 
+	 @SuppressWarnings("unchecked")
+		public List<Long> getAllRecordCountInGallary(Long gallaryId){
+			
+			Query query = getSession().createQuery("select count(*) from FileGallary model where" +
+					" model.gallary.gallaryId = ? and model.isDelete = ? and model.isPrivate = ? )");
+			
+			query.setParameter(0,gallaryId);
+			query.setParameter(1,"false");
+			query.setParameter(2,"false");				
+			return query.list(); 
+		}
+	
 }

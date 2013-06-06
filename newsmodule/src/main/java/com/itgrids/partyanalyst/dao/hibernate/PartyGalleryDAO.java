@@ -16,6 +16,40 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	{
 		super(PartyGallery.class);
 	}
+	
+	public List<Object[]> getPartyGallaryDetail(Long partyId,String type , int startIndex , int maxRecords) {
+	 	 
+		Query query = getSession().createQuery("select model.gallery.gallaryId,model.gallery.name,model.gallery.description," +
+				"model.gallery.createdDate,model.gallery.updateddate from PartyGallery model " +
+				" where model.party.partyId=:partyId and  model.gallery.contentType.contentType= :type  " +
+				" and model.gallery.isDelete = :isDelete and model.gallery.isPrivate = :isPrivate " +
+				" and (select count(*)  from FileGallary model1 where model1.gallary.gallaryId = model.gallery.gallaryId and model1.isDelete = :isDelete and model1.isPrivate = :isPrivate ) > 0 " +
+				" order by model.gallery.createdDate desc");
+		
+		query.setLong("partyId", partyId);
+		query.setString("type", type);
+		query.setString("isDelete", "false");
+		query.setString("isPrivate","false" );
+		
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxRecords);
+						
+		return query.list(); 
+		
+	}
+	
+	public List<Object[]> getNewsCountDetailsForGallaries(List<Long> gallaryIds)
+	{
+		Query query = getSession().createQuery("select model.gallary.gallaryId , count( model.gallary.gallaryId) " +
+				" from FileGallary model where model.gallary.gallaryId in(:gallaryIds) group by model.gallary.gallaryId");
+		
+		query.setParameterList("gallaryIds", gallaryIds);
+		
+		return query.list();
+		
+	}
+	
+	
 
 	public List<Object[]> getFirstFourNewsToDisplay(Long partyId,int firstResult,int maxResult,String queryType)
 	{
