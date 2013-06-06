@@ -379,4 +379,49 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			queryObject.setMaxResults(maxResult);									
 			return queryObject.list(); 
 }
+	public List<Object[]> getCategoryIdsForParty(Long partyId,int firstResult,int maxResult,String queryType){
+		   
+	     StringBuilder query = new StringBuilder();
+			query.append("select distinct model.file.category.categoryId,model.file.category.categoryType,model2.party.partyId  from FileGallary model , PartyGallery model2 , FileSourceLanguage fs  where "+
+				" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId  and  model2.party.partyId = :partyId "+
+				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  ");
+				if(queryType.equals("Public"))
+			   query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+			if(queryType.equals("Private"))
+			  query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			query.append("group by model.file.category.categoryId order by model.file.fileDate desc, model.updateddate desc");
+			Query queryObject = getSession().createQuery(query.toString());
+			queryObject.setLong("partyId", partyId);
+			queryObject.setString("type", IConstants.NEWS_GALLARY);
+			queryObject.setString("isDelete", "false");
+			queryObject.setString("isPrivate", "false");
+			queryObject.setFirstResult(firstResult);
+			queryObject.setMaxResults(maxResult);									
+			return queryObject.list(); 
+}
+	//	List<Object[]> list = partyGalleryDAO.getGalleriesForCategories(872l, 0, 30, "public", 3l);
+
+	public List<Object[]> getGalleriesForCategories(long partyId,int firstResult,int maxResult,String queryType,Long catId){
+		   
+	     StringBuilder query = new StringBuilder();
+			query.append("select  model.gallary.gallaryId ,model.gallary.name,model.gallary.description,model.gallary.createdDate,model.gallary.updateddate,SUM(CASE  WHEN  model.file.category.categoryId = :categoryId and model2.party.partyId = :partyId THEN 1  ELSE 0 END ) from FileGallary model , PartyGallery model2   where "+
+				" model2.gallery.gallaryId=model.gallary.gallaryId   and  model2.party.partyId = :partyId "+
+				" and model2.gallery.contentType.contentType= :type  and model.file.category.categoryId = :categoryId  and  model.isDelete = :isDelete and model.isPrivate = :isPrivate  ");
+				if(queryType.equals("Public"))
+			   query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+			if(queryType.equals("Private"))
+			  query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			query.append("group by  model.gallary.gallaryId order by model.file.fileDate desc, model.updateddate desc");
+			Query queryObject = getSession().createQuery(query.toString());
+			queryObject.setLong("partyId", partyId);
+			queryObject.setLong("categoryId", catId);
+			queryObject.setString("type", IConstants.NEWS_GALLARY);
+			queryObject.setString("isDelete", "false");
+			queryObject.setString("isPrivate", "false");
+			queryObject.setFirstResult(firstResult);
+			queryObject.setMaxResults(maxResult);									
+			return queryObject.list(); 
+}
 }
