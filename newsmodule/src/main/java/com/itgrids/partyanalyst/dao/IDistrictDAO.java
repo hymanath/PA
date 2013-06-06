@@ -61,7 +61,7 @@ public interface IDistrictDAO extends GenericDao<District, Long>{/*
 	@SuppressWarnings("unchecked")
 	public List getDistrictIdAndNameByState(Long stateId);
 	
-	public List<Long> getAllDistrictByStateIds(List<Long> stateIds);
+	
 	
 	public Object getDistrictNameById(Long districtId);
 	
@@ -70,4 +70,6 @@ public interface IDistrictDAO extends GenericDao<District, Long>{/*
 	public List<Object[]> getAllDistrictInfoDetails();
 	
 	public List<Object[]> findByPartyNominationDetails(Long stateId,Long partyId,List findByPartyNomination);
-*/}
+*/
+	public List<Long> getAllDistrictByStateIds(long stateIds);	
+}
