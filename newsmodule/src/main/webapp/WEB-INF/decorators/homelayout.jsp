@@ -89,7 +89,7 @@ margin:-1px 0px 0px 0px ;
 		<div class="row">
 			<!----Logo----->
 			<div class="span4">
-				<img src="images/logo.png" alt="Telugudhesham party logo" />		
+				<img src="images/Logo.png" alt="Telugudhesham party logo" />		
 			</div>
 			<!-----Nav main div---->
 			<div class="span8">
