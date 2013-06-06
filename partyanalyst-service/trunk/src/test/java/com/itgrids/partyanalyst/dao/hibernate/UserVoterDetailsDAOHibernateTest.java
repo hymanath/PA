@@ -116,10 +116,10 @@ for (Object[] objects : list) {
 		}
 		*/
 
-	/*	public void testgetAgeDataForBoothByHamlets()
+		public void testgetAgeDataForBoothByHamlets()
 			{
 			//List<Object[]> voters = userVoterDetailsDAO.getAgeDataForBoothByHamlets(1l,8l,123020l,"boothHamlets");
-				List<Object[]> voters = userVoterDetailsDAO.getAgeDataForBoothByHamlets(1l,8l,123020l,"boothHamlets",IConstants.MALE,IConstants.FEMALE,18l,25l,26l,35l,36l,45l,46l,60l);
+				List<Object[]> voters = userVoterDetailsDAO.getAgeDataForBoothByHamlets(232l,1l,8l,123020l,"boothHamlets",IConstants.MALE,IConstants.FEMALE,18l,25l,26l,35l,36l,45l,46l,60l);
 				System.out.println(voters.size());
 				System.out.println(voters);
 				for (Object[] objects : voters) {
@@ -128,7 +128,7 @@ for (Object[] objects : list) {
 				System.out.println(objects[2]);
 				}
 			}
-		*/
+	
 		/*	public void testgetAgeWiseInfoForUser()
 		{
 			List<Object> hamlets =  userVoterDetailsDAO.getHamletsIdsForUserByPanchayat(4l, 1l);
@@ -247,7 +247,7 @@ for (Object[] objects : list) {
 			}
 		}*/
 		
-		/*public void testgetDistinctWardsOfLocalElectionBodyId(){
+	/*	public void testgetDistinctWardsOfLocalElectionBodyId(){
 			List<Object> result=userVoterDetailsDAO.getDistinctWardsOfLocalElectionBodyId(83l, 8l, 1l);
 			System.out.println(result);
 		}
@@ -286,7 +286,7 @@ for (Object[] objects : list) {
 					for (Object[] objects : count) {
 						System.out.println(objects[0] +":"+ objects[1]);
 					}
-		}*/
+		}
 		
 		public void testGetcasteForVoter()
 		{
@@ -297,5 +297,5 @@ for (Object[] objects : list) {
 			for (Object[] objects : values) {
 			System.out.println(objects[0] +":"+ objects[1]);	
 			}
-		}
+		}*/
 }
