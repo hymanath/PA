@@ -122,7 +122,7 @@ public interface ICandidateDetailsService {/*
 	 
 	 public ResultStatus updateIndividualPhoto(FileVO fileVO);
 
-	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults);
+	
 	 
 	 public SelectOptionVO assignAndReturnCandidate(Long userId,Long candidateId);
 	
@@ -213,4 +213,8 @@ public interface ICandidateDetailsService {/*
 	 public List<SelectOptionVO> getCandidateDetailsBySearch(String gender,String name,Long constituencyId,Long stateId,String selectedType);
 	 
 	 public ResultStatus saveCandidateVoterDetails(Long CandidateId,Long voterId);
-*/}
+*/
+	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults);
+	 
+	
+}
