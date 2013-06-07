@@ -38,4 +38,7 @@
 	<bean id="partyWiseNewsDisplayAction" class="com.itgrids.partyanalyst.web.action.PartyWiseNewsDisplayAction" singleton="false">
 		<property name="partyDetailsService" ref="partyDetailsService" />
 	</bean>
+	<bean id="anonymousUserAction" class="com.itgrids.partyanalyst.web.action.AnanymousUserAction" singleton="false">
+		<property name="registrationService" ref="registrationService" />
+	</bean>
 	</beans>

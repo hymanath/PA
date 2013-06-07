@@ -1599,6 +1599,9 @@
 	</bean>
 	<bean name="votersAnalysisService" class="com.itgrids.partyanalyst.service.impl.VotersAnalysisService">
 	</bean>
-
+	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
+		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="userDAO" ref="userDAO"></property>
+	</bean>
 </beans>		
 	

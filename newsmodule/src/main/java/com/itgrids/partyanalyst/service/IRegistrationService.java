@@ -27,4 +27,9 @@ public interface IRegistrationService {/*
 	 
 	 //public ResultStatus saveDataInToUserRolesTable(User user, RegistrationVO values);
 	 
-*/}
+*/
+	public Boolean saveDataIntoUser(final RegistrationVO regVo,final String userType);
+	
+	public ResultStatus checkForUserNameAvailabilityForFreashUser(String userName);
+	
+}
