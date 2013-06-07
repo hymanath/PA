@@ -828,7 +828,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return null;
 		}
 	}
-	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults)
+	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults,String level)
 	 {
 		 try{
 		 Map<String ,List<FileVO>> resultMap = new HashMap<String,List<FileVO>>();
@@ -1003,21 +1003,31 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						}
 					
 				 }*/
+		 		List<FileVO> nl;
+		 		if(level.equalsIgnoreCase("state")||level.equalsIgnoreCase(""))
+		 		{ 
+				 List <Object[]> newsDetails =  partyGalleryDAO.getAllNewsDetailsForState(IConstants.TDPID, startIndex,maxResults,"public",1l,2l);
+				 if(newsDetails == null && newsDetails.isEmpty())
+					 return null;
 				 
-				 List <Object[]> newsDetails =  partyGalleryDAO.getAllNewsDetailsForState(IConstants.TDPID, 0,10,"public",1l,2l);
-				 if(newsDetails != null && !newsDetails.isEmpty()){
-					 List<FileVO> nl = buildFileVo(newsDetails);
-							
+				 int count=partyGalleryDAO.getCountOfNewsFiles(IConstants.TDPID, startIndex,maxResults,"public",1l,2l);
+				 nl = buildFileVo(newsDetails,count);
 				 resultMap.put("NewsGallary", nl);
+		 		}
 				 
-				 }
+			 if(level.equalsIgnoreCase("district")||level.equalsIgnoreCase("")){
 				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(1l);
-				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(IConstants.TDPID, 0,10,"public",3l,distIds);
+				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l, startIndex,maxResults,"public",3l,distIds);
+				 
+				 if(newsDetailsForDist == null && newsDetailsForDist.isEmpty())
+					 return null;
+				 
+				 int count1=partyGalleryDAO.getCountOfNewsFilesForDistrict(IConstants.TDPID, startIndex,maxResults,"public",3l,distIds);
+				 
 				 if(newsDetailsForDist != null && !newsDetailsForDist.isEmpty()){
-					 List<FileVO> nl = buildFileVo(newsDetailsForDist);
+					 nl = buildFileVo(newsDetailsForDist,count1);
 							
 				 resultMap.put("NewsGallaryForDist", nl);
-				 
 				 }
 				 List <Object[]> categoryList= partyGalleryDAO.getCategoryIdsForParty(IConstants.TDPID, 0, 6, "public");
 		/* newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
@@ -1029,31 +1039,33 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		
 				 resultMap.put("categories", fo);
 				 }
-	     return resultMap;
-		 }catch (Exception e) {
+				 }
+		 return resultMap;
+				 }
+		 catch (Exception e) {
 			 log.error("Exception occured - "+e);
 			 return null;
 		 }
 	}//18111
-	 
-	 public List<FileVO>  buildFileVoForCategory(List<Object[]> newsDetails)
-	 {
+		 public List<FileVO>  buildFileVoForCategory(List<Object[]> newsDetails)
+		 {
+			 
+			 List<FileVO> nl= new ArrayList<FileVO>();
+			  for(Object[] obj : newsDetails )
+			  {
+				  long categoryId =(Long)obj[0];
+		             String categoryName = (String)obj[1];
+				        long partyId= (Long)obj[2];
+				        FileVO v =new FileVO();
+				        v.setCategoryId(categoryId);
+				        v.setCategoryName(categoryName);
+				        v.setCandidateId(partyId);
+				        nl.add(v);
+			  }
+			 return nl;
+		 }
 		 
-		 List<FileVO> nl= new ArrayList<FileVO>();
-		  for(Object[] obj : newsDetails )
-		  {
-			  long categoryId =(Long)obj[0];
-	             String categoryName = (String)obj[1];
-			        long partyId= (Long)obj[2];
-			        FileVO v =new FileVO();
-			        v.setCategoryId(categoryId);
-			        v.setCategoryName(categoryName);
-			        v.setCandidateId(partyId);
-			        nl.add(v);
-		  }
-		 return nl;
-	 }
-	 public List<FileVO>  buildFileVo(List<Object[]> newsDetails)
+	 public List<FileVO>  buildFileVo(List<Object[]> newsDetails,int count)
 	 {
 		 
 		 List<FileVO> nl= new ArrayList<FileVO>();
@@ -1077,6 +1089,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				 v.setDisplayImagePath(f.getFilePath());
 				 v.setImagePathInUpperCase(flag);
 				 v.setFileType("Party");
+				 v.setCount(count);
              nl.add(v);
 		    	
 		    }
