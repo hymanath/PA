@@ -12,8 +12,15 @@
 	    <property name="userGallaryDAO" ref="userGallaryDAO"/>
 	    <property name="fileGallaryDAO" ref="fileGallaryDAO"/>
 	    <property name="electionTypeDAO" ref="electionTypeDAO"/>
-	    
+	    <property name="problemManagementService" ref="problemManagementService"/>
+	    <property name="panchayatDAO" ref="panchayatDAO"/>
+	    <property name="panchayatHamletDAO" ref="panchayatHamletDAO"/>
+	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
+	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+	    <property name="boothDAO" ref="boothDAO"/>
+	    <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>	    
 	</bean>
+	
 	<!--<bean name="voterReportService" class="com.itgrids.partyanalyst.service.impl.VoterReportService" >
 		<property name="voterPartyInfoDAO" ref="voterPartyInfoDAO"/>
 		<property name="voterDAO" ref="voterDAO" />
@@ -588,9 +595,9 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
 	</bean>
-	
+	-->
 	<bean name="problemManagementService" class="com.itgrids.partyanalyst.service.impl.ProblemManagementService" >		
-		<property name="problemLocationDAO" ref="problemLocationDAO" />
+	<!-- <property name="problemLocationDAO" ref="problemLocationDAO" />
 		<property name="problemSourceScopeDAO" ref="problemSourceScopeDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="problemExternalSourceDAO" ref="problemExternalSourceDAO" />
@@ -608,9 +615,9 @@
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
-		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" /> -->
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
-		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+	<!--<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />	
 		<property name="cadreDAO" ref="cadreDAO" />	
@@ -648,9 +655,10 @@
 		<property name="abusedCommentsDAO" ref="abusedCommentsDAO"/>
 		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"/>
-		<property name="newsProblemDAO" ref="newsProblemDAO"/> 
+		<property name="newsProblemDAO" ref="newsProblemDAO"/> -->
    </bean>
    
+   <!--
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="partyDAO" ref="partyDAO" />
