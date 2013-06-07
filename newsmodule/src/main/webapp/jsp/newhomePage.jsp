@@ -64,7 +64,7 @@
 				<div class="span6">
 				<!----State waise news----->
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>state news</h4></div>
+						<div class="span12 boxHeading"><h4>State News</h4></div>
 						
 						<!--<div class="span4">
 							<ul class="nav nav-tabs pull-right" id="myTab">
@@ -375,7 +375,7 @@
 					<!-------->
 					<div class="span4">
 						<div class="row-fluid widget">
-							<div class="span12 boxHeading"><h4>category wise news</h4></div>
+							<div class="span12 boxHeading"><h4>Category Wise News</h4></div>
 							<div class="span12">
 								<ul class="unstyled pad10">
 										<s:if test="resultMap != null && resultMap.size() > 0"> 
@@ -391,7 +391,7 @@
 					</div>
 					<div class="span4">
 						<div class="row-fluid widget">
-							<div class="span12 boxHeading"><h4>galleries</h4></div>
+							<div class="span12 boxHeading"><h4>Galleries</h4></div>
 							<div class="span12">
 								<ul class="unstyled pad10">
 								<c:forEach var="gallary" items="${latestGallariesList}">
