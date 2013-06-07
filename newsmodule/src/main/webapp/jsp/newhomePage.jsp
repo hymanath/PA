@@ -420,7 +420,7 @@
 											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
 											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
 										</ul>
-										<a href="#" class="pull-right btn btn-mini" style="margin-top:75px;">More</a>
+										
 									</div>
 								</div>
 						</div>
