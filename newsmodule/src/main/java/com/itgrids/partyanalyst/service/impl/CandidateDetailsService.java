@@ -1083,8 +1083,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		        v.setSource(source);
 		        v.setContentId(id);
 		        v.setCandidateId(partyId);
-             v.setFileTitle1(f.getFileTitle());
-             v.setDescription(f.getFileDescription());
+             v.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(f.getFileTitle()));
+             v.setDescription(CommonStringUtils.removeSpecialCharsFromAString(f.getFileDescription()));
              v.setDisplayImageName(f.getFileName());
 				 v.setDisplayImagePath(f.getFilePath());
 				 v.setImagePathInUpperCase(flag);
@@ -5496,8 +5496,8 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 				
 				file.setFileId(fileGallary.getFile().getFileId());
 				file.setFileGallaryId(fileGallary.getFileGallaryId());
-				file.setFileName1(fileGallary.getFile().getFileTitle());
-				file.setFileDescription1(fileGallary.getFile().getFileDescription());
+				file.setFileName1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle()));
+				file.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()));
 				
 				if(fileGallary.getFile().getCategory() != null){
 				file.setCategoryId(fileGallary.getFile().getCategory().getCategoryId());
