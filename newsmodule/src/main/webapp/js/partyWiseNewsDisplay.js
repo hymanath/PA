@@ -482,7 +482,13 @@
 				scopeIdVal = document.getElementById("userAccessConstituencyList").value;	
 				locationName = $('#userAccessConstituencyList option:selected').text()+' Constituency';
 			}
-			var urlStr="partyWiseNewsPopupAction.action?scope="+scope+"&locationName="+locationName+"&locationValue="+scopeIdVal+"&partyName="+PartyName+"&partyId="+partyId;
+			
+			var urlStr
+			if(scopeIdVal != '0')
+				urlStr="partyWiseNewsPopupAction.action?scope="+scope+"&locationName="+locationName+"&locationValue="+scopeIdVal+"&partyName="+PartyName+"&partyId="+partyId;
+			else 
+				urlStr="./newsPaginationAction.action?level=district";
+			
 			var updatedBrowser = window.open(urlStr,"partyWiseNewsPopupAction","scrollbars=yes,height=600,width=700,left=200,top=200");	
 			updatedBrowser.focus();
 	}
@@ -545,30 +551,37 @@ function getTotalNews()
 
 function showTotalNews(myResult){
 	var str='';
-	str+='<ul>';
+	str+='<ul class="unstyled">';
 	for(var i in myResult){
 	if(myResult[i].fileType == 'Party'){
-	str+='<li>';
-	str+='<div class="">';
-	str+='<h4> '+myResult[i].fileTitle1+'</h4>';
-	str+='<div class="row-fluid">';
-	str+='<a class="thumbnail span4" href="#" style="width: 146px;">';
-	str+='<img src="'+myResult[i].displayImagePath+'" style="width:100%"/>';
-	str+='</a>';
-	str+='<p class="span8">'+myResult[i].description+'</p>';
-	str+='</div>';
-	str+='<div class="row-fluid m_top10">';
-	str+='<div class="span9">';
-	str+='<p class="text-error" style="margin-left: -255px;">Source : '+myResult[i].source+'</p>';
-	str+='</div>';
-	str+='<div class="span2 ">';
-	str+='<a href="#">';
-	str+='<button class="btn btn-mini pull-right" type="button">More...</button>';
-	str+='</a>';
-	str+='</div>';
-	str+='</div>';
-	str+='</div>';
-	str+='</li>';
+		str+='<li >';
+		str+='<div class="">';
+		str+='<h4  style="text-transform: capitalize;"> '+myResult[i].fileTitle1+'</h4>';
+		str+='<div class="row-fluid">';
+	if(myResult[i].displayImagePath != null){
+		str+='<a class="thumbnail span4" href="partyPageAction.action?partyId='+myResult[i].candidateId+'&contentId='+myResult[i].contentId+'" style="width: 146px;height:120px;">';
+		str+='<img src="'+myResult[i].displayImagePath+'" style="width:100%" alt="'+myResult[i].fileTitle1+'"/>';
+		str+='</a>';
+	}
+	if(myResult[i].displayImagePath == null){
+		str+='<a class="thumbnail span4" href="partyPageAction.action?partyId='+myResult[i].candidateId+'&contentId='+myResult[i].contentId+'" style="width: 146px;height:120px;">';
+		str+='<img src="./images/party_flags/'+myResult[i].imagePathInUpperCase+'" style="width:100%" alt="'+myResult[i].fileTitle1+'"/>';
+		str+='</a>';
+	}
+		str+='<p class="span8"  style="text-align: left;">'+myResult[i].description+'</p>';
+		str+='</div>';
+		str+='<div class="row-fluid m_top10">';
+		str+='<div class="span9">';
+		str+='<table><tr><td style="width:250px;font-weight:bold;"><p class="text-error" style="float: left; position: absolute;">Source : '+myResult[i].source+'</p></td><td style="width:250px;font-weight:bold;"><p class="text-error" style="float: right; position: absolute;">Date : '+myResult[i].fileDate+'</p></td></tr></table>';
+		str+='</div>';
+		str+='<div class="span2 ">';
+		str+='<a href="partyPageAction.action?partyId='+myResult[i].candidateId+'&contentId='+myResult[i].contentId+'">';
+		str+='<button class="btn btn-mini pull-right btn-info" type="button">Read Now...</button>';
+		str+='</a>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		str+='</li>';
 	}
 	}
 	str+='</ul>';
