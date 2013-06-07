@@ -113,18 +113,19 @@ function callAjax(jsObj,url)
 function buildPaginatedNews(results,jsObj){
 
 	var str="";
-	str+="<ul class='unstyled'>";
+	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
 		str+="<li>";
 		str+="<h4>"+results[i].fileTitle1+"</h4>";
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='#'>";
-		str+="<img style='width:100%' src="+results[i].displayImagePath+"></a>";
+		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
 		str+="<p class='span8'>"+results[i].description+"</p>";
 		str+="</div>";
 		str+="<div class='row-fluid m_top10'><div class='span9'><p class='text-error'>Source : "+results[i].source+"</p></div>";
 		str+="<div class='span2'><a href='#'></div></li>";
 	}
+	
 	var itemsCount=results[0].count;
 	var maxResults=jsObj.maxResult;
 	str+="</ul>";
@@ -138,6 +139,15 @@ function buildPaginatedNews(results,jsObj){
 		});
 	}
 }
+
+function imgError(image) {
+    image.onerror = "";
+    image.src = "images/TDP.PNG";
+    return true;
+}
+
+
+
 	
 	</script>
 </body>
