@@ -5286,6 +5286,12 @@
 		 </action>
 		<!-- <action name="userRegistrationSubmitAction" class="anonymousUserAction" method="saveUserData">
 			<result name="success">/jsp/UserRegistration.jsp</result>
-		</action> -->  
+		</action> --> 
+		       
+         <action name="getvideoAGallary" class="candidateElectionResultsAction" method="getVideosForSelectedGallery">
+        <result type="json" name="success">
+		    	<param name="root">fileVO</param>
+		   </result>        
+        </action>
 		</package>
 </struts>      

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.model.File;
+
 public class FileVO extends ResultStatus implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -116,7 +118,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Date fileGallaryDate;
 	private boolean isUpdatable = false;
 	private String task;
-	
+	private File fileData;
 	private List<Integer> newsedition;
 	private List<Integer> pageno;
 	private List<String> newslength;
@@ -236,6 +238,14 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public Long getFileGallaryId() {
 		return fileGallaryId;
+	}
+
+	public File getFileData() {
+		return fileData;
+	}
+
+	public void setFileData(File fileData) {
+		this.fileData = fileData;
 	}
 
 	public void setFileGallaryId(Long fileGallaryId) {

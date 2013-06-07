@@ -253,6 +253,10 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 				Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
 				List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds,Long 
 				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult);
+	 
+	public List<FileGallary> getAllVideoFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex , int endIndex,String type);
+	
+	public List<FileGallary> getAllVodeosForSelectedFile(Long fileId);
 
 
 }

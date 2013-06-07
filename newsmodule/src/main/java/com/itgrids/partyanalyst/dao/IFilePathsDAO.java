@@ -15,4 +15,5 @@ public interface IFilePathsDAO extends GenericDao<FilePaths, Long> {
 	public List<Object> getFilePaths(long fileId);
 	public List<Object> getFilePathsBasedOnFileTypeIds(List<?> fileTypeIds);
 	public int  updateFilePathsThumbnails(List<String> dataToSave);
+	public List<Object[]> getFilePathsBasedOnFileSource(List<Long> sourceIds);
 }

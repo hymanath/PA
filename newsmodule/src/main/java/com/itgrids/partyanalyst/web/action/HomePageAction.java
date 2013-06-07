@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
+import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -77,7 +79,17 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private List<SpecialPageVO> specialPageVOList;
 	private ISpecialPageService specialPageService;
 	private String homePageLoadingFirstTime;
+	private List<File> fileList;
 	
+
+	public List<File> getFileList() {
+		return fileList;
+	}
+	public void setFileList(List<File> fileList) {
+		this.fileList = fileList;
+	}
+
+
 
 	private List<SelectOptionVO> latestGallariesList;
 	
@@ -363,6 +375,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
         request.setAttribute("notLogged",notLogged);
 		latestGallariesList = candidateDetailsService.getLatestgallaries();
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"");
+		fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID);
 		return Action.SUCCESS;
 	}
 	

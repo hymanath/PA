@@ -47,4 +47,6 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	
 	public List<Object[]> getCategoryIdsForParty(Long partyId,int firstResult,int maxResult,String queryType);
 	public List<Object[]> getGalleriesForCategories(long partyId,int firstResult,int maxResult,String queryType,Long catId);
+	
+	public List<Long> getGalleryIdsForSelectedParty(Long partyId);
 }

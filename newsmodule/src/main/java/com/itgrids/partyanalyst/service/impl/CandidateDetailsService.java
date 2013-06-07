@@ -5541,6 +5541,75 @@ IConstants.NEWS_GALLARY,0,5);
 
 	   
 }
+
+public List<File> getVideosForSelectedParty(Long partyId)
+{
+	List<File> file = null;
+	List<Long> galleryIds = null;
+	List<Long> galleryList = partyGalleryDAO.getGalleryIdsForSelectedParty(partyId);
+	if(galleryList != null && galleryList.size() > 0)
+	{
+		galleryIds = new ArrayList<Long>();
+		for (Long galleryId : galleryList) {
+			galleryIds.add(galleryId); 
+		}
+	}
+	List<FileGallary> filesList = fileGallaryDAO.getAllVideoFilesOfInGallaries(galleryIds,1,6,"public");
+	
+	if(filesList != null && filesList.size() > 0)
+	{
+		file = new ArrayList<File>();
+		for (FileGallary fileGallary : filesList) {
+			file.add(fileGallary.getFile());
+		}
+	}
+	
+	return file;
+}
+
+public List<FileVO> getVideosListForSelectedFile(Long fileId)
+{
+	List<FileVO> fileList = null;
+	FileVO fileVO = null;
+	List<Long> fileSourceIds = null;
+	List<Long> fileSourceLIst = fileSourceLanguageDAO.getFileSourceIdsBasedOnFile(fileId);
+	if(fileSourceLIst != null && fileSourceLIst.size() > 0)
+	{
+		fileSourceIds = new  ArrayList<Long>();
+		for (Long fileSourceId : fileSourceLIst) {
+			fileSourceIds.add(fileSourceId);
+		}
+	}
+	List<Object[]> filePathsList = filePathsDAO.getFilePathsBasedOnFileSource(fileSourceIds);
+	if(filePathsList != null && filePathsList.size() > 0)
+	{
+		fileList = new ArrayList<FileVO>();
+		for (Object[] objects : filePathsList) {
+			fileVO = new FileVO();
+			fileVO.setIds((Long)objects[0]);
+			fileVO.setFilePath1(objects[1].toString());
+			fileVO.setFileData((File) objects[2]);
+			fileList.add(fileVO);
+		}
+	}
+	/*List<FileGallary> videos = fileGallaryDAO.getAllVodeosForSelectedFile(fileId);
+	if(videos != null && videos.size() > 0)
+	{
+		fileList = new ArrayList<FileVO>();
+		for (FileGallary fileGallary : videos) {
+			fileVO = new FileVO();
+			fileVO.setFileId(fileGallary.getFile().getFileId());
+			fileVO.setFileDescription1(fileGallary.getFile().getFileDescription().toString());
+			fileVO.setFilePath1(fileGallary.getFile().getFilePath());
+			fileList.add(fileVO);
+		}
+	}*/
+	
+	
+	return fileList;
+}
+
+
  
 
 
