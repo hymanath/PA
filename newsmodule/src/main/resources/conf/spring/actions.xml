@@ -32,4 +32,7 @@
 	
 	<bean id="logoutAction" class="com.itgrids.partyanalyst.web.action.LogoutAction" singleton="false">
 	</bean>
+	<bean id="electionVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ElectionVotingTrendzAction" singleton="false">
+	    <property name="staticDataService" ref="staticDataService"/>	        
+	</bean>
 	</beans>
