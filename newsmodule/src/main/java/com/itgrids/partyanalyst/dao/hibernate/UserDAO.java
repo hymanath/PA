@@ -16,7 +16,17 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	{
 		super(User.class);
 	}
+	@SuppressWarnings("unchecked")
+	public List<User> checkForUserNameAvailabiity(String userName)
+	{
+		return getHibernateTemplate().find("select model.userName from User model where model.userName = ?",userName);
+	}
 	
+	@SuppressWarnings("unchecked")
+	public List<User> checkForUserNameAvailabiityForEmail(String userName)
+	{
+		return getHibernateTemplate().find("select model.email from User model where model.email = ?",userName);
+	}
 	/*@SuppressWarnings("unchecked")
 	public List<User> findByProperty(RegistrationColumnNames propertyName, Object value){
 		return getHibernateTemplate().find("from User where " + propertyName + "=?", value);
@@ -65,17 +75,7 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return getHibernateTemplate().find("select password from User");
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<User> checkForUserNameAvailabiity(String userName)
-	{
-		return getHibernateTemplate().find("select model.userName from User model where model.userName = ?",userName);
-	}
 	
-	@SuppressWarnings("unchecked")
-	public List<User> checkForUserNameAvailabiityForEmail(String userName)
-	{
-		return getHibernateTemplate().find("select model.email from User model where model.email = ?",userName);
-	}
 	
 	@SuppressWarnings("unchecked")
 	public List<User> checkUserPassword(String password,Long userId) 

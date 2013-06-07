@@ -8,13 +8,13 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
 import com.itgrids.partyanalyst.model.User;
 
-public interface IUserDAO extends GenericDao<User,Long>{/*
+public interface IUserDAO extends GenericDao<User,Long>{
 	
 	public List<User> checkForUserNameAvailabiity(String userName);
 	
 	public List<User> checkForUserNameAvailabiityForEmail(String userName);
 	
-	public List<User> checkUserPassword(String password,Long userId); 
+	/*public List<User> checkUserPassword(String password,Long userId); 
 	
 	public Integer changeUserPassword(String password,Long userId,String status,Date date);
 	

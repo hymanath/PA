@@ -1,9 +1,40 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.List;
+
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 
-public class RegistrationService implements IRegistrationService{/*
+public class RegistrationService implements IRegistrationService{
+	//Other Templates
+	private TransactionTemplate transactionTemplate = null;
+	private IUserDAO userDAO;
 	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	/*
 	private IPartyDAO partyDAO;
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
@@ -492,4 +523,57 @@ public class RegistrationService implements IRegistrationService{/*
 		
 		
 	}
-*/}
+*/
+	/** This method is used save the registration Details **/
+	public Boolean saveDataIntoUser(final RegistrationVO regVo,final String userType)
+	{
+		
+		User result = (User)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					User user = null;
+					user = new User();
+					
+					 user.setFirstName(regVo.getFirstName());
+					 user.setLastName(regVo.getLastName());
+					 user.setUserName(regVo.getEmail());
+					// user.setUserType("subUser");
+					 if(userType.equalsIgnoreCase("Admin"))
+					 user.setUserType("subuser");
+					 else 
+					user.setUserType(userType);
+					user = userDAO.save(user);
+					
+				return user;
+				}	
+			});
+				
+			if(result != null && result.getUserId() != null)
+				return true;
+			
+		 return false;
+				
+  }
+	/** this method is used to check user name exists or not **/
+	public ResultStatus checkForUserNameAvailabilityForFreashUser(String userName){
+		ResultStatus resultStatus = new ResultStatus();
+		List<User> detailsList = null;
+		List<User> detailsListForEmail = null;
+		try{
+			detailsList = userDAO.checkForUserNameAvailabiity(userName);
+			detailsListForEmail = userDAO.checkForUserNameAvailabiityForEmail(userName);
+			if(detailsList.size()!=0 || detailsListForEmail.size()!=0){
+				
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			}else{
+				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			}
+			resultStatus.setResultPartial(false);
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+		}
+		return resultStatus;
+	}
+	
+}

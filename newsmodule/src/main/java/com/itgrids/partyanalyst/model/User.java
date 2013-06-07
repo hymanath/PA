@@ -119,7 +119,14 @@ public class User extends BaseModel implements Serializable{
 	
 	private String passwdHashTxt;
 	private String hashKeyTxt;
-
+	public User(){}
+	 public User(String firstName,  String lastName, String userName,String userType)
+	 {
+		 this.firstName  = firstName;
+		 this.lastName  = lastName;
+		 this.userName  = userName; 
+		 this.userType  = userType;
+	 }
 
 	/*public User(){}
 	 
@@ -920,7 +927,7 @@ public class User extends BaseModel implements Serializable{
 		this._loginRestriction = _loginRestriction;
 	}
 
-	@Column(name = "passwd_hash_txt", nullable = false, length = 250)
+	@Column(name = "passwd_hash_txt", nullable = true, length = 250)
 	public String getPasswdHashTxt() {
 		return passwdHashTxt;
 	}
@@ -930,7 +937,7 @@ public class User extends BaseModel implements Serializable{
 	}
 
 
-	@Column(name = "hash_key_txt", nullable = false, length = 250)
+	@Column(name = "hash_key_txt", nullable = true, length = 250)
 	public String getHashKeyTxt() {
 		return hashKeyTxt;
 	}
