@@ -352,8 +352,7 @@
 								}
 								else if(jsObj.task == "getPartyWiseNewsToDisplay")
 								{
-									alert(myResults);
-									//showTotalNews(myResults);
+									showTotalNews(myResults);
 								}
 								else if(jsObj.task == "getConstituencies")
 								{
@@ -440,7 +439,7 @@
 	function handleSubmit()
 	{		
 		var scope = document.getElementById('listValue').value;
-		alert(scope);
+	
 		if(scope == '0'){
 			$('#errorMsgDiv').html('<span style="margin-left: -165px;"> Please Select Scope Value </span>');
 			$('#listValue').css("border","1px solid IndianRed");
