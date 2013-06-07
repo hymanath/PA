@@ -21,14 +21,14 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 	{
 		return getHibernateTemplate().find("select model.panchayatId, model.panchayatName from Panchayat model where model.tehsil.tehsilId = ?",tehsilId);
 	}
-	
+	*/
 	@SuppressWarnings("unchecked")
 	public List<Long> getPanchayatIdsByTehsilId(Long tehsilId)
 	{
 		return getHibernateTemplate().find("select distinct(model.panchayatId) from Panchayat model where model.tehsil.tehsilId = ?",tehsilId);
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Long> getPanchayatIdsByTehsilIds(List<Long> tehsilIds)
 	{
 		
@@ -38,7 +38,7 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 		
 		return query.list();
 	}
-	
+	*/
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPanchayatIdsByMandalIdsList(List<Long> mandalIdsList)
 	{
@@ -46,17 +46,20 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 		query.setParameterList("mandalIdsList",mandalIdsList);
 		return query.list();
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPanchayatsByConstituencyId(Long constituencyId)
 	{
 		return getHibernateTemplate().find("select model.panchayatId, model.panchayatName from Panchayat model where model.tehsil.tehsilId in(select model1.tehsil.tehsilId from DelimitationConstituencyMandal model1 where model1.delimitationConstituency.year =2009 and model1.delimitationConstituency.constituency.constituencyId = ?)",constituencyId);
 	}
+	*/
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPanchayatsBymandalId(Long mandalId)
 	{
 		return getHibernateTemplate().find("select model.panchayatId, model.panchayatName from Panchayat model where model.tehsil.tehsilId =?",mandalId);	
 	}
+	/*
 	public List<Object> getPanchayatsBymandalId1(Long mandalId)
 	{
 		List<Object> panchayats= getHibernateTemplate().find("select model from Panchayat model where model.tehsil.tehsilId =?",mandalId);	

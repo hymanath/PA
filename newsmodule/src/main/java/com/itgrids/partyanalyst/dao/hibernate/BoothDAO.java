@@ -592,7 +592,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			queryObj.setParameter("wardId", wardId);
 			return queryObj.list();
 		}
-		
+		*/
 		public List<Long> getWardIdsByLocalElectionBodyIds(List<Long> localElectionBodyIds){
 			
 			Query query = getSession().createQuery("select distinct model.localBodyWard.constituencyId from " +
@@ -603,7 +603,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 			return query.list();
 		}
-		
+		/*
 		@SuppressWarnings("unchecked")
 		public List<Long> getWardIdsByLocalEleBodyIdsList(List<Long> localEleBodyIds, Long publicationDateId)
 		{

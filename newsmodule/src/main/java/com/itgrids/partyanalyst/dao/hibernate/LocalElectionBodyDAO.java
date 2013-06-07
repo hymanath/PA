@@ -85,7 +85,7 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 		
 		
 	}
-	
+	*/
 	public List<Long> getMuncipalitiesAndCorporationsForConstituency(List<Long> tehsilIds){
 		
 		Query query = getSession().createQuery("select model.localElectionBodyId from LocalElectionBody " +
@@ -96,7 +96,7 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 		return query.list();
 		
 	}
-	
+	/*
 	public String getLocationTypeForLocalEleBodyByLocalEleBodyId(Long localEleBodyId)
 	{
 		Query queryObj = getSession().createQuery("select model.electionType.electionType from LocalElectionBody model where model.localElectionBodyId =:localEleBodyId ");
