@@ -479,7 +479,7 @@
 				locationName = $('#boothList option:selected').text();
 			}*/
 			if(scope == "Constituency"){
-				scopeIdVal = $("#userAccessConstituencyList").val();
+				scopeIdVal = document.getElementById("userAccessConstituencyList").value;	
 				locationName = $('#userAccessConstituencyList option:selected').text()+' Constituency';
 			}
 			var urlStr="partyWiseNewsPopupAction.action?scope="+scope+"&locationName="+locationName+"&locationValue="+scopeIdVal+"&partyName="+PartyName+"&partyId="+partyId;
@@ -488,12 +488,12 @@
 	}
 
 function getTotalNews()
- {  
+ {
     var queryType='Public';
         var jsObj =
 		    {   
 				locationType:scope,
-				locationId:scopeIdVal,
+				locationId:locationValue,
 				partyId:partyId,
 				startRecord:0,
 			    maxRecord:30,
@@ -541,5 +541,37 @@ function getTotalNews()
 			elmt.add(option); // IE only
 		}
 	}
+}
 
+function showTotalNews(myResult){
+	var str='';
+	str+='<ul>';
+	for(var i in myResult){
+	if(myResult[i].fileType == 'Party'){
+	str+='<li>';
+	str+='<div class="">';
+	str+='<h4> '+myResult[i].fileTitle1+'</h4>';
+	str+='<div class="row-fluid">';
+	str+='<a class="thumbnail span4" href="#" style="width: 146px;">';
+	str+='<img src="'+myResult[i].displayImagePath+'" style="width:100%"/>';
+	str+='</a>';
+	str+='<p class="span8">'+myResult[i].description+'</p>';
+	str+='</div>';
+	str+='<div class="row-fluid m_top10">';
+	str+='<div class="span9">';
+	str+='<p class="text-error" style="margin-left: -255px;">Source : '+myResult[i].source+'</p>';
+	str+='</div>';
+	str+='<div class="span2 ">';
+	str+='<a href="#">';
+	str+='<button class="btn btn-mini pull-right" type="button">More...</button>';
+	str+='</a>';
+	str+='</div>';
+	str+='</div>';
+	str+='</div>';
+	str+='</li>';
+	}
+	}
+	str+='</ul>';
+	
+	document.getElementById('newsDispalyId').innerHTML=str;
 }
