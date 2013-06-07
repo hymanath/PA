@@ -314,7 +314,7 @@
 										<s:if test="resultMap != null && resultMap.size() > 0"> 
 										
 							    <s:iterator value="resultMap.categories" var="newsGallaryDetails" status="ctr">
-						       	<li><a href='javascript:{showAllgallaries(<s:property value="candidateId"/>,<s:property value="categoryId"/>)}' class="muted"><i class="icon-share-alt"></i> <s:property value="categoryName"/></a></li>                          		
+						       	<li><a href='javascript:{showAllgallaries1(<s:property value="candidateId"/>,<s:property value="categoryId"/>)}' class="muted"><i class="icon-share-alt"></i> <s:property value="categoryName"/></a></li>                          		
 							</s:iterator>
 							</s:if>
 							
@@ -375,13 +375,14 @@ function showFilesInGallary(gallaryId)
      var browser1 = window.open(urlstr,"showAllFilesOfAGallary","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
+
 function showAllgallaries(){
-	   var urlstr = "showNewsGallariesAction.action";
+	   var urlstr = "showNewsGallariesAction.action?candidateId=0&category=0";
 		
      var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 	}
-function showAllgallaries(partyId,catId){
+function showAllgallaries1(partyId,catId){
 	   var urlstr = "showNewsGallariesAction.action?candidateId="+partyId+"&category="+catId;
 		
      var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
