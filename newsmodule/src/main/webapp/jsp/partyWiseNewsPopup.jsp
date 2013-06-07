@@ -101,7 +101,8 @@ var locationName = '${locationName}';
 var locationValue = '${locationValue}';
 var partyName = '${partyName}';
 var partyId = '${partyId}';
-getNewsForPagination(1);
+
+getNewsForPagination(0);
 
 </script>	
 </body>
