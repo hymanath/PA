@@ -1,8 +1,33 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import com.itgrids.partyanalyst.service.IContentManagementService;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public class ContentManagementService implements IContentManagementService{/*
+import org.apache.log4j.Logger;
+
+import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.INewsFlagDAO;
+import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
+import com.itgrids.partyanalyst.dto.ContentDetailsVO;
+import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IContentManagementService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
+import com.itgrids.partyanalyst.utils.IConstants;
+
+public class ContentManagementService implements IContentManagementService{
 	
 	private static final Logger log = Logger.getLogger(ContentManagementService.class);
 	private IFileGallaryDAO fileGallaryDAO;
@@ -64,14 +89,14 @@ public class ContentManagementService implements IContentManagementService{/*
 
 
 
-	*//**
+	/**
 	 * This Method will give the Selected File Details, their related files and Other Galleries Details
 	 * @param contentId Long
 	 * @param requestFrom String
 	 * @param requestPageId Long
 	 * @return {@link ContentDetailsVO}
 	 * @author Kamalakar Dandu
-	 *//*
+	 */
 	public ContentDetailsVO getSelectedContentAndRelatedGalleries(
 			Long contentId, String requestFrom, Long requestPageId,
 			String isCustomer)	{
@@ -626,4 +651,4 @@ public class ContentManagementService implements IContentManagementService{/*
 				 	        else return 0;
 				        }
 				    };
-*/}
+}
