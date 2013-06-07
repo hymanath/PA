@@ -4,25 +4,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Party Analyst</title>
+<title>Telugudhesham Party</title>
 
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-<!-- YUI Dependency files (Start) -->
-<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script>  
-<script type="text/javascript" src="js/yahoo/element-min.js"></script> 	
-<script src="js/yahoo/resize-min.js"></script> 
-<script src="js/yahoo/layout-min.js"></script>  
-<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
-<script type="text/javascript" src="js/json/json-min.js"></script>
-<script type="text/javascript" src="js/yahoo/connection-min.js"></script>  
-<script type="text/javascript" src="js/yahoo/datasource-min.js"></script>   
-<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-<!-- Skin CSS files resize.css must load before layout.css -->  
-<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+
+
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+	 
+	<!-- YUI Skin Sam -->
 <!-- YUI Dependency files (End) -->
 
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
