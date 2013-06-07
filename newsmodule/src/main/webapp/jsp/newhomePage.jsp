@@ -262,12 +262,12 @@
 							<div class="tab-content" id="myTabContent" >
 								<!-----------NEWS tab--------->
 								<div id="News" class="tab-pane fade active in">
-								<div class="carousel slide center" id="myCarousel">
+								<div class="carousel slide center" id="myCarousel2">
 										<ol class="carousel-indicators">
-										  <li data-slide-to="0" data-target="#myCarousel" class="active"></li>
-										  <li data-slide-to="1" data-target="#myCarousel" class=""></li>
-										  <li data-slide-to="2" data-target="#myCarousel" class=""></li> 
-										  <li data-slide-to="3" data-target="#myCarousel" class=""></li>
+										  <li data-slide-to="0" data-target="#myCarousel2" class="active"></li>
+										  <li data-slide-to="1" data-target="#myCarousel2" class=""></li>
+										  <li data-slide-to="2" data-target="#myCarousel2" class=""></li> 
+										  <li data-slide-to="3" data-target="#myCarousel2" class=""></li>
 										</ol>
 										<div class="carousel-inner">
 										 <s:if test="resultMap != null && resultMap.size() > 0"> 
