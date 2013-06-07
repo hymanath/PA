@@ -11,6 +11,50 @@
 	<link rel="stylesheet" href="css/style.css">
 	<!-------PT-sans font---->
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+	<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.carousel.js"></script>
+	
+<LINK rel="stylesheet" type="text/css" href="styles/addNewProblem/addNewProblem.css">
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
+ <link href="calendar.css" rel="stylesheet" type="text/css">
+
+
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+	 
+	<!-- YUI Skin Sam -->
+
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+	<script src="js/partyWiseNewsDisplay.js"></script>
+	<style type="text/css">
+	select {
+    background-color: #FFFFFF;
+    border: 1px solid #F3E81E;
+    width: 130px;
+	}
+	#requiredValue{
+	color:red;
+	font-size:large;
+	}	
+	</style>
 </head>
 <body>
 		
@@ -267,7 +311,30 @@
 				<div class="span3" style="height:554px">
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>View your Constituency News</h4></div>
-						<div class="span12">ggdggfgggfggfgfdfgjkj kgjkgg kjgg kgjk gkjgk gjgkjgkjg gjjg</div>
+						<div class="span12">
+						<table style="margin-top:15px;">
+							<tr id="tableRowS">
+								<td id="tdWidth" style="padding-right: 55px;">
+									Area:<font id="requiredValue" class="requiredFont">*</font> 
+								</td>
+								<td>
+									<select id="listValue" onchange="populateLocations(this.options[this.selectedIndex].value)">
+									<option value="0"> Select Area </option>
+									<option value="Constituency" selected="selected"> Constituency </option>
+									<!--<option value="Mandal"> Mandal / Muncipality </option>
+									<option value="Panchayat"> Panchayath / Ward </option>
+									<option value="Booth"> Booth </option> -->
+									</select>
+								</td>
+								</tr>
+								<tr>
+								<td class="tdWidth1">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>
+								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
+								</select></td>	 
+							</tr>
+						</table>
+						<button id="sendButton" class="btn btn-warning" onclick="handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
+						</div>
 					</div>
 				</div>
 				<!-----View your Constituency News End------>
@@ -368,6 +435,7 @@
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	
 <script>
+getAllConstituenciesInStateByType(2, 1, 'constituency');
 function showFilesInGallary(gallaryId)
 {
  var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"";
