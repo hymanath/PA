@@ -5293,5 +5293,19 @@
 		    	<param name="root">fileVO</param>
 		   </result>        
         </action>
+		
+		<action name="newsDetailsPopupAction" class="contentManagementAction">
+		  <result name="success">/jsp/newsDetailsPopup.jsp</result>
+		</action>
+		
+		<action name="newsDetailsAction" class="newsDetailsAction">
+		 <result name="success">/jsp/latestUpdatedNews.jsp</result>
+		</action>
+		
+		<action name="latestUpdatedNewsAction" class="newsDetailsAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">fileVOsList</param>
+		  </result>
+		</action>
 		</package>
 </struts>      
