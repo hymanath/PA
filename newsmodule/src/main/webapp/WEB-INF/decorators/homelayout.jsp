@@ -99,7 +99,7 @@ margin:-1px 0px 0px 0px ;
 					<!------Menu div-------->
 					<div class="span12">
 						<ul class="nav nav-pills navMenu pull-right">
-						  <li class=""><a href="#">Home</a></li>
+						  <li class=""><a href="homePage.action">Home</a></li>
 						  <li class=""><a href="#">About us</a></li>
 						  <li class=""><a href="#">News</a></li>
 						  <li class=""><a href="#">Videos</a></li>
