@@ -19,13 +19,13 @@
 			<div class="row m_top10">
 				<div class="span2">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>state news</h4></div>
+						<div class="span12 boxHeading"><h4>State News</h4></div>
 					</div>
 				</div>
 				<!---View your Constituency News Div--->
 				<div class="span7">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>Latest Updates News</h4></div>
+						<div class="span12 boxHeading" style="text-transform: capitalize;"><h4>${level} Wise Latest News Updates  </h4></div>
 							<div id="pagedNewsId"></div>
 						<!----pagination Div----->
 						<div class="span12 text-center">
@@ -118,7 +118,7 @@ function buildPaginatedNews(results,jsObj){
 		str+="<li>";
 		str+="<h4>"+results[i].fileTitle1+"</h4>";
 		str+="<div class='row-fluid'>";
-		str+="<a class='thumbnail span4' style='width: 146px;' href='#'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='partyPageAction.action?partyId="+results[i].candidateId+"&contentId="+results[i].contentId+"'>";
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
 		str+="<p class='span8'>"+results[i].description+"</p>";
 		str+="</div>";

@@ -35,53 +35,19 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 </head>
 <body>
-		<div class="container-fluid headerBg" style="padding-left: 0px; padding-right: 0px;">
-		<!---Header----->
-		<div class="container">	
-		<div class="row">
-			<!----Logo----->
-			<div class="span4">
-				<img src="images/logo.png" alt="Telugudhesham party logo" />		
-			</div>
-			<!-----Nav main div---->
-			<div class="span8">
-				<div class="row-fluid">
-					<!----Member Area Div---->
-					<div class="span12">
-						<ul class="nav nav-pills pull-right memberArea">
-						  <li><a href="#">Admin</a></li>
-						  <li><a href="#">Login</a></li>
-						  <li class="selected"><a href="#">Register</a></li>
-						</ul>
-					</div>
-					<!------Menu div-------->
-					<div class="span12">
-						<ul class="nav nav-pills navMenu pull-right">
-						  <li class=""><a href="#">Home</a></li>
-						  <li class=""><a href="#">About us</a></li>
-						  <li class=""><a href="#">News</a></li>
-						  <li class=""><a href="#">Videos</a></li>
-						  <li class=""><a href="#">Contact us</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		</div>
-		</div>
 		<!----Container---->
 		<div class="container">
 		<!--------- Row-1 -------->
 			<div class="row m_top10">
 				<div class="span2">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>state news</h4></div>
+						<div class="span12 boxHeading"><h4>State News</h4></div>
 					</div>
 				</div>
 				<!---View your Constituency News Div--->
 				<div class="span7">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>Latest Updates News</h4></div>
+						<div class="span12 boxHeading"><h4>${scope} Wise Latest  News Updates</h4></div>
 						<div class="span12">
 						<div id="newsDispalyId"></div>
 						</div>
@@ -129,10 +95,6 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 			</div>
 		<!--------- Row-1 End -------->
 		
-		<!-----Footer---->
-	  <footer>
-        <p class="text-center">&copy; Telugudesham Party 2013</p>
-      </footer>
 		<!----<div class="row">
 			<div class="span12">
 				
