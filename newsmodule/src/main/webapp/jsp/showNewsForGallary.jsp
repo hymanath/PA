@@ -143,7 +143,10 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
 		str+='<h4>'+results[i].fileName1+'</h4>';
 			str+='<div class="row-fluid">';
 				str+='<a style="width: 146px;" href="#" class="thumbnail span4">';
-					str+='<img style="width:100%" src="'+results[i].filePath1+'" alt="this is image">';
+				 if(results[i].filePath1 != null && results[i].filePath1 == "") 
+					str+='<img style="width:100%" src="'+results[i].filePath1+'" alt="this is news image">';
+                  else
+					  str+='<img style="width:100%"src="/TDP/images/party_flags/TDP.png" alt="this is news image">';
 				str+='</a>';
 				str+='<p class="span8">'+results[i].fileDescription1+'</p>';
 			str+='</div>';
@@ -153,7 +156,7 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
 				str+='</div>';
 				str+='<div class="span2 ">';
 					str+='<a href="#">';
-					str+='	<button type="button" class="btn btn-mini pull-right" onClick="showAllFiles('+results[i].fileGallaryId+')">More...</button>';
+					str+='	<a type="button" class="btn btn-mini pull-right" onClick="showAllFiles('+results[i].fileGallaryId+')">More...</a>';
 					str+='</a>';
 				str+='</div>';
 			str+='</div>';
@@ -183,6 +186,11 @@ function callAjaxToGetTheResults(selectedvalue)
 	}
 
 showAllFilesofAGallry(startIndex,endIndex,galalryId,selectedvalue)
+}
+
+function showAllFiles(fileGallaryId)
+{
+	alert(fileGallaryId);
 }
 
 </script>
