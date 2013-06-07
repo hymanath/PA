@@ -175,7 +175,7 @@
     	<pattern>/userProfile*</pattern>
     	<pattern>/votersAnalysisAction*</pattern>
 		<pattern>/loginInputAction*</pattern>
-		<pattern>/freeUserRegistration*</pattern>
+		<pattern>/userRegistration*</pattern>
 		<pattern>/publicProfile*</pattern>
 		<pattern>/adminSocialAction*</pattern>
 		<pattern>/candidateUpdateFormAction*</pattern>
@@ -226,6 +226,7 @@
 		<pattern>/showNewsGallariesAction*</pattern>
 		<pattern>/showAllFilesOfAGallary*</pattern>		
 		<pattern>/partyWiseNewsPopupAction*</pattern>
+		<pattern>/anonymousUserAction*</pattern>
     	 </decorator>
 
 </decorators>
