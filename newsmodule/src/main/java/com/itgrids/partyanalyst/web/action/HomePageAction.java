@@ -362,7 +362,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	{	
         request.setAttribute("notLogged",notLogged);
 		latestGallariesList = candidateDetailsService.getLatestgallaries();
-		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10);
+		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"");
 		return Action.SUCCESS;
 	}
 	
