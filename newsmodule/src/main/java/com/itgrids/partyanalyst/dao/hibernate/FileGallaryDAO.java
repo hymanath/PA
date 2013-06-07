@@ -2711,5 +2711,70 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			query.setParameter(2,"false");				
 			return query.list(); 
 		}
-	
+	 
+	 public List<Object[]> getPartyWiseAllNewsDetailsInLocation(List<Long> partyId, Long constituencyScopeId, Long constituencyVal,
+				Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
+				List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds,Long 
+				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult){
+			StringBuilder query = new StringBuilder();
+			query.append("select model.file,model.fileGallaryId,model.file.fileDate,fs.source.source,model2.party.partyFlag,model2.party.partyId from FileGallary model , PartyGallery model2 , FileSourceLanguage fs where "+
+			" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId in (:partyId) "+
+			" and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and model.isPrivate = :isPrivate ");
+
+			if(queryType.equalsIgnoreCase("Public"))
+			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
+
+			if(queryType.equalsIgnoreCase("Private"))
+			query.append(" and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			if(constituencyVal!= null)
+			query.append(" and ((model.file.regionScopes.regionScopesId = :constituencyScopeId and " +
+			" model.file.locationValue = :constituencyVal) ");
+			if(tehsilIds!=null && tehsilIds.size()>0)
+				query.append("or (model.file.regionScopes.regionScopesId = :tehsilScopeId and " +
+						" model.file.locationValue in ( :tehsilIds)) ");
+			if(localElectionBodyIds!=null && localElectionBodyIds.size()>0)
+				query.append("or (model.file.regionScopes.regionScopesId = :muncipalityScopeId and " +
+						" model.file.locationValue in ( :localElectionBodyIds)) ");
+			if(wardIdsList !=null && wardIdsList.size()>0)
+				query.append("or (model.file.regionScopes.regionScopesId = :wardScopeId and " +
+						" model.file.locationValue in ( :wardIdsList))");
+			if(hamletIds !=null && hamletIds.size()>0)
+				query.append("or (model.file.regionScopes.regionScopesId = :hamletScopeId and " +
+						" model.file.locationValue in (:hamletIds))) ");
+				
+			query.append("group by model.file.fileId order by model.file.fileDate desc, model.updateddate desc  ");
+			Query queryObject = getSession().createQuery(query.toString());
+
+			queryObject.setParameterList("partyId", partyId);
+			if(constituencyVal!= null){
+				queryObject.setLong("constituencyVal",constituencyVal);
+				queryObject.setLong("constituencyScopeId", constituencyScopeId);
+			}
+			if(tehsilIds!=null && tehsilIds.size()>0){
+				queryObject.setLong("tehsilScopeId",tehsilScopeId);
+				queryObject.setParameterList("tehsilIds", tehsilIds);
+			}
+			if(localElectionBodyIds!=null && localElectionBodyIds.size()>0){
+				queryObject.setLong("muncipalityScopeId",muncipalityScopeId);
+				queryObject.setParameterList("localElectionBodyIds", localElectionBodyIds);
+			}
+			if(wardIdsList !=null && wardIdsList.size()>0){
+				queryObject.setLong("wardScopeId",wardScopeId);
+				queryObject.setParameterList("wardIdsList", wardIdsList);
+			}
+			if(hamletIds !=null && hamletIds.size()>0){
+				queryObject.setLong("hamletScopeId",hamletScopeId);
+				queryObject.setParameterList("hamletIds", hamletIds);
+			}
+
+			queryObject.setString("type", IConstants.NEWS_GALLARY);
+			queryObject.setString("isDelete", "false");
+			queryObject.setString("isPrivate", "false");
+			queryObject.setFirstResult(firstResult);
+			queryObject.setMaxResults(maxResult);
+
+
+			return queryObject.list();
+			}
+			
 }

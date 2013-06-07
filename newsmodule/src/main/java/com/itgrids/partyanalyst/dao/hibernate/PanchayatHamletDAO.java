@@ -14,14 +14,14 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 	public PanchayatHamletDAO()
 	{
 		super(PanchayatHamlet.class);
-	}/*
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getHamletsOfAPanchayat(Long panchayatId)
 	{
 		return getHibernateTemplate().find("select model.hamlet.hamletId,model.hamlet.hamletName from PanchayatHamlet model where model.panchayat.panchayatId = ? order by model.hamlet.hamletName",panchayatId);
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCount(Long panchayatId)
 	{
@@ -36,6 +36,7 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 		
 	}
 	
+	*/
 	
 	public List<Long> getHamletsOfPanchayitis(List<Long> panchayitIds){
 		
@@ -47,6 +48,8 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 		return query.list();
 		
 	}
+	/*
+	
 	@SuppressWarnings("unchecked")
 	public List<Object> getHamletsCountOfAPanchayat(Long panchayatId)
 	{
