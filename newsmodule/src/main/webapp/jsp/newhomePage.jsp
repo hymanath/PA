@@ -66,7 +66,7 @@
 														<p class="text-error">Source :${newsGallaryDetails.source}</p>
 													</div>
 													<div class="span2 ">
-														<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+														<a href="newsPaginationAction.action?level=state">
 															<button class="btn btn-mini pull-right" type="button">More...</button>
 														</a>
 													</div>
@@ -188,7 +188,7 @@
 														<p class="text-error">Source :${newsGallaryDetails.source}</p>
 													</div>
 													<div class="span2 ">
-														<a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+														<a href="newsPaginationAction.action?level=district">
 															<button class="btn btn-mini pull-right" type="button">More...</button>
 														</a>
 													</div>
