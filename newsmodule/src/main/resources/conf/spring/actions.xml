@@ -41,4 +41,13 @@
 	<bean id="anonymousUserAction" class="com.itgrids.partyanalyst.web.action.AnanymousUserAction" singleton="false">
 		<property name="registrationService" ref="registrationService" />
 	</bean>
+	
+	<bean id="homePageAction" class="com.itgrids.partyanalyst.web.action.HomePageAction" singleton="false">	
+	</bean>
+	<bean id="contentManagementAction" class="com.itgrids.partyanalyst.web.action.ContentManagementAction">
+	  <property name="contentManagementService" ref="contentManagementService" />
+	</bean>
+	<bean id="newsDetailsAction" class="com.itgrids.partyanalyst.web.action.NewsDetailsAction" singleton="false">
+	 <property name="candidateDetailsService" ref="candidateDetailsService" />
+	</bean>
 	</beans>
