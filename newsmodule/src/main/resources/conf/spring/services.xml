@@ -184,6 +184,7 @@
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 		<property name="areaTypeDAO" ref="areaTypeDAO" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="electionTypeDAO" ref="electionTypeDAO" />
 	
 	</bean>
 	<!--
