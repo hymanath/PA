@@ -12,6 +12,9 @@
 	     <property name="thumbnailService" ref="thumbnailService"></property>
 	     <!-- <property name="newsMonitoringService" ref="newsMonitoringService"></property>-->
 	</bean>
+	<bean id="newsPaginationAction" class="com.itgrids.partyanalyst.web.action.NewsPaginationAction" singleton="false">
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
+	</bean>
 	<bean id="partyManagementAction" class="com.itgrids.partyanalyst.web.action.PartyManagementAction" singleton="false">
 		<property name="partyDetailsService" ref="partyDetailsService" />
 	    <property name="candidateDetailsService" ref="candidateDetailsService" />
