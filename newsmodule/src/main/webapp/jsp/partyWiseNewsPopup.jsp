@@ -8,11 +8,15 @@
 	<link rel="stylesheet" href="css/style.css">
 	<!-------PT-sans font---->
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-	<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
+	
+	<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+	
+	<!--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>-->
 	<script src="js/partyWiseNewsDisplay.js"></script>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 
@@ -32,7 +36,10 @@
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	<script src="js/sendUpdatesByEmail.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>-->
+	
+	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+	<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
 </head>
 <body>
 		<!----Container---->
@@ -49,27 +56,13 @@
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>${scope} Wise Latest  News Updates</h4></div>
 						<div class="span12">
-						<div id="newsDispalyId"></div>
+							<div id="newsDispalyId"></div>
 						</div>
+						<div id="paginationId"></div>
 						<!----pagination Div----->
 						<div class="span12 text-center">
-						<div class="pagination">
-						  <ul>
-							<li><a href="#">«</a></li>
-							<li><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">6</a></li>
-							<li><a href="#">7</a></li>
-							<li><a href="#">8</a></li>
-							<li><a href="#">9</a></li>
-							<li><a href="#">10</a></li>
-							<li><a href="#">»</a></li>
-						  </ul>
+							<div id="paginationId"></div>
 						</div>
-					</div>
 						<!-----pagination Div end---->
 					</div>
 				</div>
@@ -108,7 +101,7 @@ var locationName = '${locationName}';
 var locationValue = '${locationValue}';
 var partyName = '${partyName}';
 var partyId = '${partyId}';
-getTotalNews();
+getNewsForPagination(1);
 
 </script>	
 </body>
