@@ -64,14 +64,14 @@
 				<div class="span6">
 				<!----State waise news----->
 					<div class="row-fluid widget">
-						<div class="span8 boxHeading"><h4>state news</h4></div>
+						<div class="span12 boxHeading"><h4>state news</h4></div>
 						
-						<div class="span4">
+						<!--<div class="span4">
 							<ul class="nav nav-tabs pull-right" id="myTab">
 								<li class="active"><a data-toggle="tab" href="#News">News</a></li>
 								<li class=""><a data-toggle="tab" href="#Video">Video</a></li>
 							</ul>
-						</div>
+						</div>-->
 						<div class="span12">
 							<div class="tab-content" id="myTabContent" >
 								<!-----------NEWS tab--------->
@@ -186,14 +186,14 @@
 			<!----State waise news end----->
 			<!----District waise news ----->
 			<div class="row-fluid widget m_top10">
-						<div class="span8 boxHeading"><h4>District level </h4></div>
+						<div class="span12 boxHeading"><h4>District level </h4></div>
 						
-						<div class="span4">
+						<!--<div class="span4">
 							<ul class="nav nav-tabs pull-right" id="myTab">
 								<li class="active"><a data-toggle="tab" href="#News">News</a></li>
 								<li class=""><a data-toggle="tab" href="#Video">Video</a></li>
 							</ul>
-						</div>
+						</div>-->
 						<div class="span12">
 							<div class="tab-content" id="myTabContent" >
 								<!-----------NEWS tab--------->
