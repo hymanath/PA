@@ -398,7 +398,6 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
 	}
 	
 	
-	
 	@SuppressWarnings("unchecked")
 	public List<FileGallary> getRecentlyUploadedVedioGallaryIds(Integer startIndex,Integer maxResults,String queryStr2)
 	{
@@ -2688,6 +2687,55 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
    
 
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId,Long contentId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(" select model.fileGallaryId,model.file.fileId,model.file.fileTitle,model.file.fileDescription,model.file.filePath from FileGallary model, PartyGallery model2 ");
+		stringBuilder.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
+		stringBuilder.append(" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' ");
+		
+		if(contentId != null)
+			 stringBuilder.append(" and model.fileGallaryId =:contentId ");
+		stringBuilder.append(" order by model.updateddate desc  ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		
+		query.setParameter("contentType", contentType);
+		query.setParameter("partyId", partyId);
+		if(contentId != null)
+			query.setParameter("contentId", contentId);
+		if(starIndex != null)
+		 query.setFirstResult(starIndex);
+		if(maxResults != null)
+		query.setMaxResults(maxResults);
+		
+		return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getRecentlyUploadedNews(Integer starIndex, Integer maxResults,String contentType,Long partyId)
+	{
+		Query query = getSession().createQuery(" select model.fileGallaryId,model.file.fileTitle from FileGallary model, PartyGallery model2 " +
+				" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType " +
+				" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' order by model.updateddate desc ");
+		
+		 query.setParameter("contentType", contentType);
+		 query.setParameter("partyId", partyId);
+		 query.setFirstResult(starIndex);
+		 query.setMaxResults(maxResults);
+		return query.list();
+		
+	}
+	
+	public FileGallary getSelectedNewsDetails(Long fileGallaryId)
+	{
+		Query query = getSession().createQuery(" select model from FileGallary model where model.fileGallaryId =:fileGallaryId ");
+		query.setParameter("fileGallaryId", fileGallaryId);
+		return (FileGallary) query.uniqueResult();
+	}
+	
 	 @SuppressWarnings("unchecked")
      public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex)
      {
@@ -2823,4 +2871,13 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			return queryObject.list();
 			}
 			
+	 @SuppressWarnings("unchecked")
+     public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList)
+     {
+    	 Query query = getSession().createQuery("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' " +
+    	 		" group by model.file.fileId");
+    	 query.setParameterList("gallaryIdsList",gallaryIdsList);
+    	 return query.list();
+     }
+	
 }

@@ -259,5 +259,25 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public List<FileGallary> getAllVodeosForSelectedFile(Long fileId);
 
 
+	
+	public List<Object[]> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId,Long contentId);
+	
+	public Object getFileIdByFileGallaryId(Long fileGallaryId);
+	
+	public List<Object> getGalleryIdsOfAFile(Long fileId);
+	
+	public List<FileGallary> getFilesOfInGallariesForCustomer(List<Long> gallaryIdsList);
+	
+	public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList);
+	
+	public List<Object[]> getFirstFileAndGallaryInfo(Long gallaryId,String queryString);
+	
+	public List<Object[]> getFirstFileAndGallaryInfoForCustomer(Long gallaryId,String queryString);
+	
+	public List<Object[]> getRecentlyUploadedNews(Integer starIndex, Integer maxResults,String contentType,Long partyId);
+	
+	public FileGallary getSelectedNewsDetails(Long fileGallaryId);
+	
+	
 }
 
