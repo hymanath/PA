@@ -111,7 +111,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		String queryType=jObj.getString("queryType");
 		Long stateId=jObj.getLong("stateId");
 		Long scopeId=jObj.getLong("scopeId");
-		String level=jObj.getString("Level");
+		String level=jObj.getString("level");
 		
 		Map<String ,List<FileVO>> resultMapList = new HashMap<String,List<FileVO>>();
 		
