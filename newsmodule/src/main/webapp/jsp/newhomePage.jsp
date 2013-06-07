@@ -12,7 +12,6 @@
 	<!-------PT-sans font---->
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-	
 	<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
@@ -45,10 +44,7 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 	<script src="js/partyWiseNewsDisplay.js"></script>
-	
-	<link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
 	<style type="text/css">
-	
 	select {
     background-color: #FFFFFF;
     border: 1px solid #F3E81E;
@@ -129,7 +125,8 @@
 										
 											</div>
 										</div>
-
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
+										<a data-slide="next" href="#myCarousel" class="right">›</a>--->
 									</div>
 									
 								
@@ -177,7 +174,8 @@
 										  <a data-slide="next" href="#myCarousel" class="right">></a>
 										  
 										</div>
-										
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
+										<a data-slide="next" href="#myCarousel" class="right">›</a>---->
 									</div>
 					<!----------------------->
 								</div>
@@ -248,8 +246,8 @@
 							</s:if>
 										
 										</div>
-										<!---<a data-slide="prev" href="#myCarousel" class="left ">â¹</a>
-										<a data-slide="next" href="#myCarousel" class="right">âº</a>--->
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
+										<a data-slide="next" href="#myCarousel" class="right">›</a>--->
 									</div>
 									
 								</div>
@@ -297,8 +295,8 @@
 										  <a data-slide="next" href="#myCarousel" class="right">></a>
 										  
 										</div>
-										<!---<a data-slide="prev" href="#myCarousel" class="left ">â¹</a>
-										<a data-slide="next" href="#myCarousel" class="right">âº</a>---->
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
+										<a data-slide="next" href="#myCarousel" class="right">›</a>---->
 									</div>
 					<!----------------------->
 								</div>
@@ -397,9 +395,9 @@
 							<div class="span12">
 								<ul class="unstyled pad10">
 								<c:forEach var="gallary" items="${latestGallariesList}">
-								<li><a href="javascript:{showFilesInGallary(${gallary.id})}">${gallary.name}</a></li>        
+								<li><a class="muted" href="javascript:{showFilesInGallary(${gallary.id})}"><i class="icon-share-alt"></i>${gallary.name}</a></li>        
                                </c:forEach>
-							   <a href="javascript:{showAllgallaries()}" class="btn btn-mini pull-right">More..</a>
+							   <a href="javascript:{showAllgallaries()}" class=" btn btn-mini pull-right ">More..</a>
 									
 								</ul>
 							</div>
@@ -415,12 +413,12 @@
 								<div class="row-fluid ">
 									<div class="span12 pad10 ">
 										<ul class="unstyled">
-											<li><a href="javascript:{}" onclick="openVideo('EUW4YcbUumk');" class="thumbnail span2"><img  src="http://img.youtube.com/vi/EUW4YcbUumk/0.jpg"></a></li>
-											<li><a href="javascript:{}" onclick="openVideo('rc4Z_ZjAijo');" class="thumbnail span2"><img  src="http://img.youtube.com/vi/rc4Z_ZjAijo/0.jpg"></a></li>
-											<li><a href="javascript:{}"  onclick="openVideo('dnWKb8qrg1g');"class="thumbnail span2"><img src="http://img.youtube.com/vi/dnWKb8qrg1g/0.jpg"></a></li>
-											<li><a href="javascript:{}"  onclick="openVideo('hlQL1FiNEQk');"class="thumbnail span2"><img  src="http://img.youtube.com/vi/hlQL1FiNEQk/0.jpg"></a></li>
-											<li><a href="javascript:{}"  onclick="openVideo('7w_Gg2b8S10');"class="thumbnail span2"><img  src="http://img.youtube.com/vi/7w_Gg2b8S10/0.jpg"></a></li>
-											<li><a href="javascript:{}"  onclick="openVideo('Xcdzou_IR4Q');"class="thumbnail span2"><img  src="http://img.youtube.com/vi/Xcdzou_IR4Q/0.jpg"></a></li>
+											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
+											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
+											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
+											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
+											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
+											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
 										</ul>
 										
 									</div>
@@ -428,17 +426,14 @@
 						</div>
 					</div>
 				</div>
-				<div id="video_popup">
-					<div id="video"></div>
-				</div>
 			<!-------- Row-3 end -------------->
 				
 	</div>
-	
 		<!------JS------>
 	<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
+	
 <script>
 getAllConstituenciesInStateByType(2, 1, 'constituency');
 function showFilesInGallary(gallaryId)
@@ -462,22 +457,6 @@ function showAllgallaries1(partyId,catId){
      browser1.focus();
 	}
 
-	function openVideo(path)
-	{
-		$("#video_popup").dialog({
-				resizable:false,
-				title:'videos',
-				height: 500,
-				width:580,
-				top:250,
-				left:100,
-				modal: true
-				
-	});
-		var str = "";
-		str += '<iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe></div>';
-		$('#video').html(str);
-	} 
 
 </script>
 </body>
