@@ -413,18 +413,23 @@
 								<div class="row-fluid ">
 									<div class="span12 pad10 ">
 										<ul class="unstyled">
+											<!--<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
 											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
 											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
 											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
 											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
-											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
-											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
+											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>-->
+											<c:forEach var="file" items="${fileList}">
+											<li><a class="thumbnail span2" href="javascript:{showVideoGallery(${file.fileId})}"><img src='http://img.youtube.com/vi/<s:property value="filePath"/>/0.jpg'/></a></li>   </c:forEach>
 										</ul>
-										
+										<!--<a href="#" class="pull-right btn btn-mini" style="margin-top:75px;">More</a>-->
 									</div>
 								</div>
 						</div>
 					</div>
+				</div>
+				<div id="video_dialog">
+					<div id="videos"></div>
 				</div>
 			<!-------- Row-3 end -------------->
 				
@@ -456,7 +461,74 @@ function showAllgallaries1(partyId,catId){
      var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 	}
+function showVideoGallery(fileId)
+{
+	
 
+task="getVideoGalley"; 		
+ var jsObj=
+	 {
+		task:task		
+	 };
+var url = "getvideoAGallary.action?&fileId="+fileId+"&task="+task;	
+callHomePageAjax11(jsObj,url);
+
+
+}
+
+function buildVideoGallery(myResults)
+{
+	$("#video_dialog").dialog({
+				resizable:false,
+				title:'Videos',
+				height: 500,
+				width:580,
+				top:250,
+				left:100,
+				modal: true
+				
+	});
+	var str = '';
+	for(var i in myResults)
+	{
+		str += '<iframe  src="http://www.youtube.com/embed/'+myResults[i].filePath1+'" frameborder="0" allowfullscreen="true" class="thumbnail span2">></iframe>';
+	}
+	
+	$('#videos').html(str);
+}
+
+function callHomePageAjax11(jsObj,url){
+	 
+	var callback = {			
+				   success : function( o ) {
+					   
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							
+							if(jsObj.task == "getVideoGalley")
+							{	
+								buildVideoGallery(myResults);
+								
+							}	
+							
+						}catch(e)
+						{   
+
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET',url, callback);
+
+
+
+}
 
 </script>
 </body>
