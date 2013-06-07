@@ -17,12 +17,13 @@ public interface IPanchayatDAO extends GenericDao<Panchayat,Long>{/*
 	//public Long getPanchayatiesCount(Long id,String type);
 	
 	public List<Object[]> getPanchayatiesCount(Long id,String type,Long publicationId);
-	
+	*/
 	public List<Long> getPanchayatIdsByTehsilId(Long tehsilId);
 	
 	public List<Object[]> getPanchayatIdsByMandalIdsList(List<Long> mandalIdsList);
-	
+	/*
 	public List<Long> getPanchayatIdsBytehsilIdsList(List<Long> mandalIdsList);
+	
 	public List<Object> getPanchayatsBymandalId1(Long mandalId);
 	
 	public List<Long> getPanchayatIdsListByMandalId(Long mandalId);
