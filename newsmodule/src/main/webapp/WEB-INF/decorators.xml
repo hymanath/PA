@@ -90,6 +90,7 @@
 		<pattern>/cadreDisplayWindowAction.action*</pattern>
 		<pattern>/boothWiseCasteInfoAction.action*</pattern>
 		<pattern>/localAreaWiseVotersInfoAction*</pattern>
+		<pattern>/newsDetailsPopupAction.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -227,6 +228,7 @@
 		<pattern>/showAllFilesOfAGallary*</pattern>		
 		<pattern>/partyWiseNewsPopupAction*</pattern>
 		<pattern>/anonymousUserAction*</pattern>
+		<pattern>/newsDetailsAction*</pattern>
     	 </decorator>
 
 </decorators>

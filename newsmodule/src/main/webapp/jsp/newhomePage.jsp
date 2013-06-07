@@ -4,6 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<!-- <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/> -->
 	<title>Telugudesham Party</title>
 	<meta name="" content="">
 	<!-- Bootstrap -->
@@ -54,6 +55,69 @@
 	color:red;
 	font-size:large;
 	}	
+	.main-mbg {
+    background-color: #06ABEA;
+    color: #FFFFFF;
+    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 35px;
+    padding-left: 13px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 850px;
+	border-radius:3px;
+}
+.tableCls{ margin-left: auto; margin-right: auto; float: none;}
+.popupcontainer {
+	background-color: #FFFFFF;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+    margin: 9px auto 10px;
+    max-width: 780px;
+    padding: 10px;margin-top: 12px; float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+.ui-widget-header {
+	border:0px;
+	color:none;
+	font-weight:bold;
+	}
+.imageButton{
+	
+	-moz-border-radius: 4px 4px 4px 4px;
+    background: none repeat scroll 0 0 #0063DC;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+
+  #buildSources, #buildNewSources {
+    border: 1px solid #D3D3D3;
+    margin: 10px auto 20px;
+    width: 618px;
+}
+#buildVideoNewSources {
+    border: 1px solid #D3D3D3;
+    margin: 10px auto 20px;
+    width: 500px;
+}
+.newssources {
+    background-color: #97DFEB;
+    border-radius: 5px 5px 5px 5px;
+    margin-left: 5px;
+    padding: 8px;
+}
+.newsParts {
+    color: #FF4500;
+}
+#showContentDiv{z-index: 111;}
+
 	</style>
 </head>
 <body>
@@ -363,11 +427,16 @@
 							<div class="span12 boxHeading"><h4>Latest News</h4></div>
 							<div class="span12">
 								<ul class="unstyled pad10">
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</a></li>
+									<!-- <li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</a></li>
 									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li>
 									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li>
 									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li>
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li>
+									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li> -->
+									<c:if test="${fileVOsList != null}">
+									 <c:forEach var="newDetails" items="${fileVOsList}">
+									  <li><a href="javascript:{}" onclick="getLatestNewsDetails(${newDetails.contentId})" class="muted"><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a></li>
+									 </c:forEach>
+									</c:if>
 								</ul>
 							</div>
 						</div>
@@ -432,7 +501,10 @@
 					<div id="videos"></div>
 				</div>
 			<!-------- Row-3 end -------------->
-				
+		<div id="showContentDiv">
+	 <div id="contentAjaxCallImg"><img src="images/icons/goldAjaxLoad.gif"></div>
+	 <div id="showContentDivInnerDiv"></div>
+	</div>		
 	</div>
 		<!------JS------>
 	<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
@@ -527,6 +599,234 @@ function callHomePageAjax11(jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET',url, callback);
 
 
+
+}
+/* function getLatestNewsDetails(contentId)
+	{
+	var urlstr = "newsDetailsAction.action?contentId="+contentId+"&";
+	
+    var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+    browser1.focus();
+	} 
+	function getLatestNewsDetails(contentId)
+	{
+		
+	  var jObj=
+	  {
+			startIndex:0,
+		    maxIndex:5,
+		    contentId:contentId,
+	        task:"getLatestNews"
+
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "latestUpdatedNewsAction.action?"+rparam;
+	callAjax(jObj,url);
+	}*/
+
+	function getLatestNewsDetails(contentId)
+   {
+	
+	var jsObj =
+		{   
+		    contentId : contentId,
+			requestFrom : 'Party Page',
+			requestPageId : 872,
+			task:"getSelectedContent"
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSelectedContentAndRelatedGalleriesAction.action?"+rparam;					callAjax(jsObj,url); 
+}
+
+
+   function callAjax(jsObj,url)
+		{
+			 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+									myResults = YAHOO.lang.JSON.parse(o.responseText);					
+									if(jsObj.task == "getSelectedContent")
+								{
+										buildLatestNews(myResults,jsObj);
+										
+								}
+								}catch (e) {
+							     
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+ 	}
+
+var selectedContentFile;
+function buildLatestNews(result,jsObj)
+{
+  $("#showContentDiv").dialog({ stack: false,
+								height: 600,
+								width: 900,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 900,
+								minHeight: 600,
+								title:'TDP Party News',
+								overlay: { opacity: 0.5, background: 'black'},
+								close: function(event, ui) {
+								document.getElementById("showContentDivInnerDiv").innerHTML ='';
+							 }
+		  
+								});
+		$("#showContentDiv").dialog();
+
+		
+	var str = '';
+	var titleStr = null;
+	var pathStr = null;
+	var descriptionStr = null;
+	
+	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
+	{
+	    selectedContentFile = result.relatedGalleries[0].filesList[i];
+		titleStr = result.relatedGalleries[0].filesList[i].title;
+		pathStr = result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path;
+		descriptionStr = result.relatedGalleries[0].filesList[i].description;
+		
+		str +='<div class="main-title-sec" style="margin-top:10px;"><div id="showContentHeaderDiv" class="main-mbg">'+titleStr+'</div></div>';
+		
+		str+='<table class="tableCls">';
+			str+='<tr>';
+			str+='<td>';
+			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
+				str+='<B>Source</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
+
+			if(result.relatedGalleries[0].filesList[i].fileDate != null)
+				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
+
+			 str+='</td>';
+			 str+='</tr>';
+			 str+='</table>';
+		str +='<div id="imgDiv" class="popupcontainer"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="max-width:750px;max-length:800px;" src="'+pathStr+'" /></div>';
+		str +='<div><span>Description: </span><b>'+descriptionStr+'<b></div>';
+		
+	}
+
+	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
+		{
+		   selectedContentFile = result.relatedGalleries[0].filesList[i];
+		   str +='<div id="buildNewSourceParts">';
+	       str += '<center><table><tr>';
+
+	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
+	         {
+	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[0].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	         }
+		 
+	       str += '  </tr></table>';
+	       str +='</center></div>';
+	
+	   if(selectedContentFile.multipleSource >1 )
+	          {
+	             str +='<div id="buildNewSources">';
+	             str += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	             str += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+	           
+			      for(var k=1;k<selectedContentFile.fileVOList.length;k++)
+	              {
+	               str += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[k].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[k].source+'</a></td>';
+	              }
+	            str += '  </tr></table>';
+	            str +='</center></div>';
+	          }
+		}
+    
+	$("#showContentDivInnerDiv").html(str);
+}
+
+function showNewAnotherSource(fileSourceLanguageId,type)
+{
+     var str1 ='';
+	   str1 += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	    str1 += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+  for(var m in selectedContentFile.fileVOList)
+  {
+    if(selectedContentFile.fileVOList[m].fileSourceLanguageId == fileSourceLanguageId)
+	{
+	  if(document.getElementById("sourceChangeSpan") != null)
+	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
+	  
+	    var str='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:750px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></img></div>';
+	  
+	  document.getElementById("imgDiv").innerHTML = str;
+	
+	   str = '<center><table><tr>';
+
+	    for(var j=1;j<selectedContentFile.fileVOList[m].fileVOList.length;j++)
+	     {
+		    
+	         str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[m].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+			
+	     }
+		 
+	   str += '  </tr></table>';
+	   str +='</center>';
+	  document.getElementById("buildNewSourceParts").innerHTML = str;
+	}
+    else
+	{
+	   
+	    str1 += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[m].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[m].source+'</a></td>';	             	          	
+	   
+	}
+  }
+     str1 += '  </tr></table>';
+	    str1 +='</center>';
+     if(document.getElementById("buildNewSources") != null)
+       document.getElementById("buildNewSources").innerHTML = str1;
+	 else
+	   document.getElementById("buildVideoNewSources").innerHTML = str1;
+}
+
+function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
+{
+  for(var i in selectedContentFile.fileVOList)
+  {
+    if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
+	{
+	  
+	    var str='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:750px;max-length:800px;" src="'+path+'"></img></div>';
+	  
+	  document.getElementById("imgDiv").innerHTML = str;
+	
+	   str = '<center><table><tr>';
+
+	    for(var j=0;j<selectedContentFile.fileVOList[i].fileVOList.length;j++)
+	     {
+		   if(selectedContentFile.fileVOList[i].fileVOList[j].orderNo != orderNo)
+		    {
+			  
+	             str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'other\')"><img width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" src="'+selectedContentFile.fileVOList[i].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+	         
+		    }
+		 }
+		 
+	   str += '  </tr></table>';
+	   str +='</center>';
+	  document.getElementById("buildNewSourceParts").innerHTML = str;
+	}
+  
+  }
 
 }
 
