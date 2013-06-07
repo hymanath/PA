@@ -131,11 +131,11 @@ public interface ICandidateDetailsService {
 	
 	 public List<FileVO> getNewsByNewsImportance(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String newsImportance);
 	 
-	 public List<FileVO> getNewsGalleryByUserIdFromUserGallery(Long userId);
+	 public List<FileVO> getNewsGalleryByUserIdFromUserGallery(Long userId);*/
 	 	 
 	 public String getLocationDetails(Long scope,Long locationValue);
 	 
-	 public List<CandidateCommentsVO> getMessages(String fromDate, String toDate,String selectstatus,String decidestatus);
+	 /*public List<CandidateCommentsVO> getMessages(String fromDate, String toDate,String selectstatus,String decidestatus);
 	 
 	 public ResultStatus controlMessages(List<CandidateCommentsVO> VO,String actionType);
 	 
@@ -220,5 +220,8 @@ public interface ICandidateDetailsService {
 	 
 	 public List<FileVO> getVideosListForSelectedFile(Long fileId);
 	 
-	
+			 
+	 public List<FileVO> getRecentlyUploadedNews(int startIndex,int maxIndex,String contenttype,Long partyId,Long contentId);
+	 
+	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId);
 }

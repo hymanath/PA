@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Comparator;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -3093,7 +3094,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			e.printStackTrace();
 			return returnValue;
 		}
-	}
+	}*/
  public String getLocationDetails(Long scope,Long locationValue){
 	 if(scope != null)
 	 { 
@@ -3137,7 +3138,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 }
 	    return " ";
    }
- public List<CandidateCommentsVO> getMessages(String fromDate, String toDate,String selectstatus,String decidestatus)
+ /*public List<CandidateCommentsVO> getMessages(String fromDate, String toDate,String selectstatus,String decidestatus)
  {
 	 List<CandidateCommentsVO> candidateComments = new ArrayList<CandidateCommentsVO>();
 	 if(log.isDebugEnabled())
@@ -4386,7 +4387,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				log.error("Exception rised in getAllNewsdetails method ",e);
 				return retValue;
 			}
-     }
+     }*/
       public static Comparator<FileVO> sortData = new Comparator<FileVO>()
 		    {
 		   
@@ -4420,7 +4421,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 						}
 					};
 
-	private List<FileVO> convertDataToFileVO(List<Object[]> dataList,List<Long> list,Long candidateId,String language,String source){
+	/*private List<FileVO> convertDataToFileVO(List<Object[]> dataList,List<Long> list,Long candidateId,String language,String source){
 		
 		if(log.isDebugEnabled())
 			log.debug("Entered into convertDataToFileVO() of candidateDetailsService");
@@ -5490,33 +5491,33 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 		
 		Long count = fileGallaryDAO.getAllRecordCountInGallary(gallaryId).get(0);
 		
-			for(FileGallary fileGallary : fileGallaryList){	
-				
-				FileVO file = new FileVO();
-				
-				file.setFileId(fileGallary.getFile().getFileId());
-				file.setFileGallaryId(fileGallary.getFileGallaryId());
-				file.setFileName1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle()));
-				file.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()));
-				
-				if(fileGallary.getFile().getCategory() != null){
-				file.setCategoryId(fileGallary.getFile().getCategory().getCategoryId());
-				file.setCategoryName(fileGallary.getFile().getCategory().getCategoryType());
-				}
-				
-				file.setFilePath1(fileGallary.getFile().getFilePath());
-				
-				Set<FileSourceLanguage> set = fileGallary.getFile().getFileSourceLanguage();
-				
-				String sourceString = "";
-				for(FileSourceLanguage source:set)
-					sourceString+=source.getSource().getSource()+" ";
-				
-				file.setFileType(sourceString);
-				
-				
-				returnList.add(file);
-				returnList.get(0).setTotalResultsCount(count);
+		for(FileGallary fileGallary : fileGallaryList){
+			
+			FileVO file = new FileVO();
+									
+									file.setFileId(fileGallary.getFile().getFileId());
+									file.setFileGallaryId(fileGallary.getFileGallaryId());
+									file.setFileName1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle()));
+									file.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()));
+									
+									if(fileGallary.getFile().getCategory() != null){
+									file.setCategoryId(fileGallary.getFile().getCategory().getCategoryId());
+									file.setCategoryName(fileGallary.getFile().getCategory().getCategoryType());
+									}
+									
+									file.setFilePath1(fileGallary.getFile().getFilePath());
+									
+									Set<FileSourceLanguage> set = fileGallary.getFile().getFileSourceLanguage();
+									
+									String sourceString = "";
+									for(FileSourceLanguage source:set)
+										sourceString+=source.getSource().getSource()+" ";
+									
+									file.setFileType(sourceString);
+									
+									
+									returnList.add(file);
+									returnList.get(0).setTotalResultsCount(count);
 		}
 		
 		return returnList;		
@@ -5539,7 +5540,7 @@ IConstants.NEWS_GALLARY,0,5);
 		
 		return gallariesList;
 
-	   
+
 }
 
 public List<File> getVideosForSelectedParty(Long partyId)
@@ -5610,7 +5611,69 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 }
 
 
- 
-
+ 					 
+	public List<FileVO> getRecentlyUploadedNews(int startIndex,int maxIndex,String contenttype,Long partyId,Long contentId)
+	{
+		List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
+		try{
+		
+		
+		 List<Object[]> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex, contenttype,partyId,contentId);
+		 if(fileGallaryList != null && fileGallaryList.size() > 0)
+		 {
+			 for(Object[] params : fileGallaryList)
+			 {
+				FileVO fileVO = new FileVO(); 
+				fileVO.setContentId((Long)params[0]);
+				fileVO.setFileId((Long)params[1]);
+				fileVO.setFileTitle1(params[2]!=null?params[2].toString():"");
+				fileVO.setFileDescription1(params[3] != null ?params[3].toString():"");
+				//fileVO.setSource(params[4] !=null?params[4].toString() :"");
+				fileVO.setFilePath1(params[4] != null ? params[4].toString() :" ");
+				
+				fileVOsList.add(fileVO);
+			 }
+		 }
+		 
+		 //fileVOsList.get(0).setCount(fileGallaryDAO.getRecentlyUploadedNewsDetails(null, null, contenttype,partyId,null).size());
+		 return fileVOsList;
+		 
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - "+e);
+			 return fileVOsList;
+		}
+	}
+	
+	
+	
+	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId)
+	{
+		List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
+		try{
+		
+		
+		 List<Object[]> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNews(startIndex, maxIndex, contenttype,partyId);
+		 if(fileGallaryList != null && fileGallaryList.size() > 0)
+		 {
+			 for(Object[] params : fileGallaryList)
+			 {
+				FileVO fileVO = new FileVO(); 
+				fileVO.setContentId((Long)params[0]);
+				fileVO.setFileTitle1(params[1]!=null?params[1].toString():"");
+				fileVOsList.add(fileVO);
+			 }
+		 }
+		 
+		 return fileVOsList;
+		 
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - "+e);
+			 return fileVOsList;
+		}
+	}
 
 }
