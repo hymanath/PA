@@ -359,13 +359,14 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-/*	public void testGetBoothsInAMandalByPublicationAndConstId()
+	public void testGetBoothsInAMandalByPublicationAndConstId()
 	{
-		List<Object[]> list = boothDAO.getBoothsInAMandalByPublicationAndConstId(844l,7l, 232l);
-		if(list != null && list.size() > 0)
+		List<Object[]> list = boothDAO.getBoothsInAMandalByPublicationAndConstId(739l,7l, 207l);
+		System.out.println(list.size());
+		/*if(list != null && list.size() > 0)
 			for(Object[] params : list)
-				System.out.println(params[0]+" "+params[1]);
-	}*/
+				System.out.println(params[0]+" "+params[1]);*/
+	}
 	
 	/*public void testString()
 	{
@@ -562,9 +563,9 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		for(Object[] params :list)
 		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
 	}*/
-	public void testgetNoOfWardsInMuncipality(){
+	/*public void testgetNoOfWardsInMuncipality(){
 		List<Object> list=boothDAO.getNoOfWardsInMuncipality(20l, 8l, 347l);
 		System.out.println(list);
-	}
+	}*/
 	
 }

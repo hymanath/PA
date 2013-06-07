@@ -2505,7 +2505,7 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(0);
 		try{
 			//List<Object[]> list = boothDAO.getBoothsInAMandalByPublication(mandalId,publicationId);
-			List<Object[]> list = boothDAO.getBoothsInAMandalByPublicationAndConstId(mandalId, publicationId, constituencyId);
+			List<Object[]> list = boothDAO.getBoothsInAMandalByPublicationAndConstIds(mandalId, publicationId, constituencyId);
 			
 			if(list != null && list.size() > 0)
 			for(Object[] params : list)

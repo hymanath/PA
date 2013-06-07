@@ -1135,4 +1135,13 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			return query.list();
 			
 		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getBoothsInAMandalByPublicationAndConstIds(Long mandalId, Long publicationId, Long constituencyId)
+		{	
+			Object[] params = {mandalId,publicationId,constituencyId};
+			return getHibernateTemplate().find(" select model.boothId,model.partNo,model.location,model.villagesCovered from Booth model where model.tehsil.tehsilId = ? and model.publicationDate.publicationDateId = ? " +
+					" and model.panchayat.panchayatId  is not Null and model.constituency.constituencyId = ?",params);
+		}
+		 
 }
