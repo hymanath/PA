@@ -2712,6 +2712,52 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			return query.list(); 
 		}
 	 
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getGalleryIdForSelectedParty(Long partyId){
+			
+			Query query = getSession().createQuery("select model.file,model.gallary.name,model.fileGallaryId" +
+					"  from FileGallary model where model.gallary.gallaryId = ? and model.isDelete = ? and model.isPrivate = ? "+
+					" order by model.file.fileId asc ");
+			
+			query.setParameter(0,partyId);
+			query.setParameter(1,"false");
+			query.setParameter(2,"false");				
+			return query.list(); 
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<FileGallary> getAllVideoFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex , int endIndex,String type)
+		{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select distinct model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and model.isDelete = 'false' ");
+		if("public".equalsIgnoreCase(type)){
+		queryStr.append(" and model.isPrivate = 'false' ");
+		}
+		queryStr.append(" order by model.updateddate ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("gallaryIdsList",gallaryIdsList);
+
+		query.setFirstResult(startIndex);
+		query.setMaxResults(endIndex);
+		return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<FileGallary> getAllVodeosForSelectedFile(Long fileId)
+		{
+			Query query = getSession().createQuery("select model from FileGallary model " +
+					" where model.file.fileId = :fileId");
+			query.setParameter("fileId", fileId);
+			return query.list();
+		}
+		
+		public List<Object[]> getVideoFileSourcesIdList(Long fileId)
+		{
+			Query query = getSession().createQuery("");
+			
+			return query.list();
+		}
+	 
 	 public List<Object[]> getPartyWiseAllNewsDetailsInLocation(List<Long> partyId, Long constituencyScopeId, Long constituencyVal,
 				Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
 				List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds,Long 

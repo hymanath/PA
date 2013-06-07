@@ -475,4 +475,14 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			queryObject.setMaxResults(maxResult);									
 			return queryObject.list(); 
 }
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getGalleryIdsForSelectedParty(Long partyId)
+	{
+		Query query = getSession().createQuery("select model.gallery.gallaryId from PartyGallery model " +
+				" where model.party.partyId = :partyId");
+		
+		query.setParameter("partyId", partyId);
+		return query.list();
+	}
 }

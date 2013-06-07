@@ -13,6 +13,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.File;
 
 public interface ICandidateDetailsService {
 	
@@ -214,6 +215,10 @@ public interface ICandidateDetailsService {
 	 public ResultStatus saveCandidateVoterDetails(Long CandidateId,Long voterId);
 */
 	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults,String level);
+	 
+	 public List<File> getVideosForSelectedParty(Long partyId);
+	 
+	 public List<FileVO> getVideosListForSelectedFile(Long fileId);
 	 
 	
 }

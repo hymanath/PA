@@ -27,4 +27,11 @@ public class FileSourceLanguageDAO extends GenericDaoHibernate<FileSourceLanguag
 	 {
 		 return getHibernateTemplate().find("select model.language.language from FileSourceLanguage model where model.file.fileId=?",fileId);
 	 }
+	 
+	 @SuppressWarnings("unchecked")
+	public List<Long> getFileSourceIdsBasedOnFile(Long fileId)
+	 {
+		 return getHibernateTemplate().find("select model.fileSourceLanguageId from FileSourceLanguage model " +
+		 		" where model.file.fileId = ? ",fileId);
+	 }
 }

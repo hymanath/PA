@@ -170,6 +170,17 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 		  return query.list();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getFilePathsBasedOnFileSource(List<Long> sourceIds)
+	{
+		Query query = getSession().createQuery("select model.filePathsId ,model.filePath ," +
+				"model.fileSourceLanguage.file from FilePaths model" +
+				" where model.fileSourceLanguage.fileSourceLanguageId = :sourceIds");
+		query.setParameterList("sourceIds", sourceIds);
+		
+		return query.list();
+	}
 
 	
 	

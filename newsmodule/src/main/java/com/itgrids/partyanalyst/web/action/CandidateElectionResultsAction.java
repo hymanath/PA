@@ -131,6 +131,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<Integer> newsedition;
 	private List<Integer> pageno;
 	private List<String> newslength;
+	private Long fileId ;
 	
 	private INewsMonitoringService  newsMonitoringService;
 	
@@ -2294,6 +2295,27 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	{
 		return Action.SUCCESS;
 		
+	}
+	
+	public String getVideosForSelectedGallery(){				
+		
+		
+		Long fileid = Long.parseLong(request.getParameter("fileId"));
+		
+		fileVO = candidateDetailsService.getVideosListForSelectedFile(fileid);
+		
+		return Action.SUCCESS;
+			
+  }
+
+
+	public Long getFileId() {
+		return fileId;
+	}
+
+
+	public void setFileId(Long fileId) {
+		this.fileId = fileId;
 	}
 	
 
