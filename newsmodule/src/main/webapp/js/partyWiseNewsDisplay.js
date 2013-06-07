@@ -352,7 +352,7 @@
 								}
 								else if(jsObj.task == "getPartyWiseNewsToDisplay")
 								{
-									showTotalNews(myResults);
+									showTotalNews(myResults,jsObj);
 								}
 								else if(jsObj.task == "getConstituencies")
 								{
@@ -493,7 +493,7 @@
 			updatedBrowser.focus();
 	}
 
-function getTotalNews()
+function getNewsForPagination(num)
  {
     var queryType='Public';
         var jsObj =
@@ -501,8 +501,8 @@ function getTotalNews()
 				locationType:scope,
 				locationId:locationValue,
 				partyId:partyId,
-				startRecord:0,
-			    maxRecord:30,
+				startRecord:num,
+			    maxRecord:10,
 				queryType:queryType,
 				task:"getPartyWiseNewsToDisplay"
 		    };
@@ -549,7 +549,7 @@ function getTotalNews()
 	}
 }
 
-function showTotalNews(myResult){
+function showTotalNews(myResult,jsObj){
 	var str='';
 	str+='<ul class="unstyled">';
 	for(var i in myResult){
@@ -587,4 +587,15 @@ function showTotalNews(myResult){
 	str+='</ul>';
 	
 	document.getElementById('newsDispalyId').innerHTML=str;
+	
+	var maxResults=jsObj.maxRecord;
+	//var itemsCount=results[0].count;
+	
+	if(jsObj.startRecord==1){
+		$("#paginationId").pagination({
+			items: 20,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme'
+		});
+	}
 }
