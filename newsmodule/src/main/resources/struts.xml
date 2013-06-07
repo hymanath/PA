@@ -5268,6 +5268,18 @@
 		   <param name="root">fileVOList</param>
 		 </result>
 		</action>
-		
+		<action name="partyWiseNewsDisplayAction" class="partyWiseNewsDisplayAction">
+		    <result name="success">/jsp/partyWiseNewsDisplay.jsp</result>
+		</action>
+		<action name="partyWiseNewsPopupAction" class="partyWiseNewsDisplayAction" method="getPartyWiseNewsForALocation">
+		  <result name="success">/jsp/partyWiseNewsPopup.jsp</result>
+		</action>
+		<action name="getPartyWiseNewsDetailsForALocation" class="partyWiseNewsDisplayAction"
+			method="getPartyWiseNewsDetails">
+			<result type="json" name="success">
+           		<param name="root">newsCountByCategoryList</param>
+       		</result>
+        </action>
+        
 		</package>
 </struts>      
