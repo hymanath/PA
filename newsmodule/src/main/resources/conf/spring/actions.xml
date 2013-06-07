@@ -35,4 +35,7 @@
 	<bean id="electionVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ElectionVotingTrendzAction" singleton="false">
 	    <property name="staticDataService" ref="staticDataService"/>	        
 	</bean>
+	<bean id="partyWiseNewsDisplayAction" class="com.itgrids.partyanalyst.web.action.PartyWiseNewsDisplayAction" singleton="false">
+		<property name="partyDetailsService" ref="partyDetailsService" />
+	</bean>
 	</beans>
