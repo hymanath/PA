@@ -51,7 +51,7 @@
 
 
 
-<div id="gallarysId"></div>
+<div id="gallarysId" style="margin:22px 0px 31px 102px;"></div>
 <script>
 var partyId = '${candidateId}';
 var categoryId = '${category}';
@@ -93,10 +93,10 @@ function buildGallariesDetails(results)
   for(var i in results)
   {
 	 
-	  str+='<div style="width:150px;float:left;border:1px solid #5e5e5e;height:120px;margin:4px;">';
+	  str+='<div class="span3 breadcrumb" style="height:100px;margin:4px;">';
     str+='<h6><a href="javascript:{getAllFilesOfAGallary('+results[i].gallaryId+')}">'+results[i].gallaryName+'</a></h6>';
 	str+='<span>'+results[i].gallaryDescription+'</span><br>';
-	str+='<span>COUNT:'+results[i].totalResultsCount+'</span>';
+	str+='<span class="badge badge-info pull-right" style="margin-top:10px;"> NEWS COUNT:'+results[i].totalResultsCount+'</span>';
 	str+='</div>';
 	
   }
