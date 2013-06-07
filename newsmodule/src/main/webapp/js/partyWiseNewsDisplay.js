@@ -495,7 +495,7 @@
 
 function getNewsForPagination(num)
  {
-    var queryType='Public';
+	var queryType='Public';
         var jsObj =
 		    {   
 				locationType:scope,
@@ -591,7 +591,7 @@ function showTotalNews(myResult,jsObj){
 	var maxResults=jsObj.maxRecord;
 	//var itemsCount=results[0].count;
 	
-	if(jsObj.startRecord==1){
+	if(jsObj.startRecord==0){
 		$("#paginationId").pagination({
 			items: 20,
 			itemsOnPage: maxResults,
