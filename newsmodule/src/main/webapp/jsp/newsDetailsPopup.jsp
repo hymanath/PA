@@ -156,6 +156,7 @@ h3 {
  
 
 <script type="text/javascript">
+var contentId = "${contentId}";
 var showContentResultList = null;
 var selectedContentFile;
 
@@ -164,9 +165,9 @@ var selectedContentFile;
 	//document.getElementById("contentAjaxCallImg").style.display="block";
 	var jsObj =
 		{   
-		    contentId : 17976,
+		    contentId : contentId,
 			requestFrom : 'Party Page',
-			requestPageId : 362,
+			requestPageId : 872,
 			task:"getSelectedContent"
 		};
 	
