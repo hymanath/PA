@@ -213,7 +213,7 @@ public interface ICandidateDetailsService {
 	 
 	 public ResultStatus saveCandidateVoterDetails(Long CandidateId,Long voterId);
 */
-	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults);
+	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults,String level);
 	 
 	
 }
