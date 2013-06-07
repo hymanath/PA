@@ -80,6 +80,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private ISpecialPageService specialPageService;
 	private String homePageLoadingFirstTime;
 	private List<File> fileList;
+	private List<FileVO> fileVOsList;
 	
 
 	public List<File> getFileList() {
@@ -370,15 +371,23 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setNotLogged(boolean notLogged) {
 		this.notLogged = notLogged;
 	}
+	
+	public List<FileVO> getFileVOsList() {
+		return fileVOsList;
+	}
+	public void setFileVOsList(List<FileVO> fileVOsList) {
+		this.fileVOsList = fileVOsList;
+	}
 	public String execute()
 	{	
         request.setAttribute("notLogged",notLogged);
 		latestGallariesList = candidateDetailsService.getLatestgallaries();
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"");
 		fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID);
+		
+		fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L);
 		return Action.SUCCESS;
 	}
 	
-
 	
 }
