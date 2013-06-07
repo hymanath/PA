@@ -1602,6 +1602,14 @@
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="userDAO" ref="userDAO"></property>
+	</bean>	
+	<bean name="contentManagementService" class="com.itgrids.partyanalyst.service.impl.ContentManagementService">
+		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
+		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO"/>
+		<property name="gallaryDAO" ref="gallaryDAO" />
+		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
+		<property name="newsFlagDAO" ref="newsFlagDAO"/>
+		<property name="candidateDetailsService" ref="candidateDetailsService"></property>
 	</bean>
 </beans>		
 	
