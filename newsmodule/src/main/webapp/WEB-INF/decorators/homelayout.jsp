@@ -85,12 +85,12 @@ margin:-1px 0px 0px 0px ;
 						<ul class="nav nav-pills pull-right memberArea">
 						 <c:if test="${sessionScope.USER == null}">
 						  <li><a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a></li>
-						  <li class="selected"><a href="#">Register</a></li>
+						  <li class="selected"><a href="userRegistration.action">Register</a></li>
 						 </c:if>
 						 <c:if test="${sessionScope.USER != null}">
 						  <li style="padding-top: 6px;">${sessionScope.USER.name}</li>
 						   <c:if test="${sessionScope.USER.userType == 'Admin'}">
-						    <li><a href="#">Admin</a></li>
+						    <li><a href="userRegistration.action">Admin</a></li>
 						   </c:if>
 						  <li class="selected"><a href="logoutAction.action">Logout</a></li>
 						 </c:if>
