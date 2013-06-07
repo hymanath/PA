@@ -151,21 +151,21 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	 
 	 public List<FileGallary> getNewsByLocationAndCategoryInPopup(List<Long> candidateIds,
 				FileVO fileVO, List<Long> locationValuesList);
-	 
+	 */
 	 public List<Object[]> getNewsCountForMandalLevel(List<Long> candidateIds,
 				Long tehsilScopeId, List<Long> tehsilIdsList,
 				Long panchayatScopeId, List<Long> panchayatIdsList);
-	 
+	 /*
 	public List<File> getNewsCountForALocationByCategoryAndImportance(
 				List<Long> candidateIds,Long categoryId ,Long locationScopeId ,List<Long> locationValuesList,Long hamletScopeId ,
 				List<Long> hamletIds );
 	 
-		
+		*/
 	public List<Object[]> getNewsCountForConstituencyLevel(
 				List<Long> candidateIds, Long constituencyScopeId, Long constituencyVal,
 				Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
 				List<Long> hamletIds);
-	
+	/*
 	public List<Object[]> getNewsCountForConstituencyLevelWithMuncipality(
 			List<Long> candidateIds, Long constituencyScopeId, Long constituencyVal,
 			Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
@@ -203,38 +203,39 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public List<FileGallary> getNewsDetailsForConstituencyWithMuncipality(NewsCountVO newsCountVO);
 	public List<FileGallary> getNewsDetailsByForMuncipalityWithWards(NewsCountVO newsCountVO);
 	public List<FileGallary> getNewsDetailsForConstituencyWithMuncipalityAndWards(NewsCountVO newsCountVO);
-	
+	*/
 	public List<Object[]> getNewsCountForMuncipality(
 			List<Long> candidateIds ,Long muncipalityScopeId ,List<Long> muncipalityValuesList);
+	/*
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForMuncipality(
 			Long categoryId , NewsCountVO newsCountVO);
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForMuncipalityWithWards(
 			Long categoryId , NewsCountVO newsCountVO);
 	
 	public List<FileGallary> getFilegallaryDetailsForPanchayat(NewsCountVO newsCountVO);
-	
+	*/
 	public List<Object[]> getNewsCountForMuncipalityWithWards(NewsCountVO newsCountVO);
-	
+	/*
 	public List<Object[]> getNewsByForMuncipalityWithWards(NewsCountVO newsCountVO);
 	
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForConstituencyWithMuncipalityAndWards(
             Long categoryId , NewsCountVO newsCountVO);
 	
 	public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCountVO newsCountVO);
-	
+	*/
 	public List<Object[]> getNewsCountForWards(List<Long> candidateIds,
 			Long wardScopeId, List<Long> wardValuesList);
-	
+	/*
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForWard(
             Long categoryId , NewsCountVO newsCountVO);
 	
 	public List<FileGallary> getNewsDetailsByForWards(NewsCountVO newsCountVO);
 	
 	public List<Object[]> getNewsByWard(NewsCountVO newsCountVO);
-	
+	*/
 	public List<Object[]> getNewsCountForHamlets(List<Long> candidateIds,
 			Long hamletScopeId, List<Long> hamletIds);
-	
+	/*
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForHamlet( Long categoryId , NewsCountVO newsCountVO);
 	
 	public List<Object[]> getNewsByHamlet(NewsCountVO newsCountVO);
@@ -247,6 +248,11 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
    public List<File> getStartingRecordInGallary(Long gallaryId);
 	
 	public List<Object[]> getAllRecordInGallary(Long gallaryId);
+	
+	 public List<Object[]> getPartyWiseAllNewsDetailsInLocation(List<Long> partyId, Long constituencyScopeId, Long constituencyVal,
+				Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
+				List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds,Long 
+				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult);
 
 
 }
