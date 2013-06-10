@@ -1102,6 +1102,20 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			return query.list();
 		}
 		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getPanchayatiesByMandalsListAndConstituencyId(List<Long> mandalsList,Long constituencyId,Long publicationDateId){
+			
+			Query query =getSession().createQuery("select model.tehsil.tehsilId, model.tehsil.tehsilName,model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model where " +
+					" model.publicationDate.publicationDateId = :publicationDateId and model.constituency.constituencyId =:constituencyId and " +
+					" model.tehsil.tehsilId in(:mandalsList) group by model.tehsil.tehsilId,model.panchayat.panchayatId order by " +
+					" model.tehsil.tehsilName, model.panchayat.panchayatName ");
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameterList("mandalsList",mandalsList);
+			return query.list();
+		}
+		
 		public Long getTotalVotersInBooths(List<Long> boothIds){
 			Query query = getSession().createQuery("select sum(model.totalVoters) from Booth model where model.boothId in(:boothIds)");
 			query.setParameterList("boothIds", boothIds);
@@ -1137,11 +1151,23 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		}
 		
 		@SuppressWarnings("unchecked")
+		public List<Object[]> getBoothsByPanchayatIdsListAndConstituencyIdInAPublication(List<Long> panchayatIdsList,Long constituencyId,Long publicationDateId)
+		{
+			Query query = getSession().createQuery("select model.panchayat.panchayatId,model.panchayat.panchayatName,model.boothId,model.partNo from Booth model where " +
+					" model.publicationDate.publicationDateId =:publicationDateId and model.constituency.constituencyId =:constituencyId and model.panchayat.panchayatId in (:panchayatIdsList) " +
+					" order by model.panchayat.panchayatName,model.boothId ");
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameterList("panchayatIdsList", panchayatIdsList);
+			return query.list();
+			
+		}
+		
+		@SuppressWarnings("unchecked")
 		public List<Object[]> getBoothsInAMandalByPublicationAndConstIds(Long mandalId, Long publicationId, Long constituencyId)
 		{	
 			Object[] params = {mandalId,publicationId,constituencyId};
 			return getHibernateTemplate().find(" select model.boothId,model.partNo,model.location,model.villagesCovered from Booth model where model.tehsil.tehsilId = ? and model.publicationDate.publicationDateId = ? " +
 					" and model.panchayat.panchayatId  is not Null and model.constituency.constituencyId = ?",params);
 		}
-		 
 }
