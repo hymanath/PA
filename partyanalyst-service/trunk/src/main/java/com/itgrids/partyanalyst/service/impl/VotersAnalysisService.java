@@ -7170,8 +7170,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								type = "localElectionBody";
 							}
 						}
-					 if(type.equalsIgnoreCase("constituency"))
-					 {      int totalHamlets=0;
+					 /* if(type.equalsIgnoreCase("constituency"))
+					 {      int totalHamlets = 0;
 								namesList = regionServiceDataImp.getSubRegionsInConstituency(id, IConstants.PRESENT_YEAR, null);
 								mandalList = getMandals(namesList);
 								muncipalityList = getMuncipalities(namesList);
@@ -7255,6 +7255,100 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								 }if(totalWards>0)
 								votersDetailsVO.setTotalNoOfWards(totalWards);
 								}
+								
+				 } */
+					 
+					 if(type.equalsIgnoreCase("constituency"))
+					 {      
+						 int totalHamlets = 0;
+						namesList = regionServiceDataImp.getSubRegionsInConstituency(id, IConstants.PRESENT_YEAR, null);
+						mandalList = getMandals(namesList);
+						muncipalityList = getMuncipalities(namesList);
+						List<Long> panchayatIdsList = new ArrayList<Long>(0);
+						
+						if(mandalList != null && mandalList.size() > 0)
+						{
+							votersDetailsVO.setMandalList(mandalList);
+							votersDetailsVO.setTotalmandals(new Long(mandalList.size()));
+							
+							List<Long> mandalIdsList = new ArrayList<Long>(0);
+							for(SelectOptionVO vo : mandalList)
+								mandalIdsList.add(new Long(vo.getId().toString().substring(1)));
+							
+							List<SelectOptionVO> mandalPanchayatsList = staticDataService.getPanchayatiesByMandalIdsListAndConstituencyId(mandalIdsList,constituencyId,publicationDateId);
+							
+							for(SelectOptionVO vo2 : mandalPanchayatsList)
+								for(SelectOptionVO vo3 : vo2.getSelectOptionsList())
+									panchayatIdsList.add(vo3.getId());
+							
+							for(SelectOptionVO mandals: mandalList)
+							{
+								SelectOptionVO vo = staticDataService.getSelectOptionVOFromResultList(mandalPanchayatsList, new Long(mandals.getId().toString().substring(1)));
+								mandals.setSelectOptionsList(vo.getSelectOptionsList());
+								
+								if(vo.getSelectOptionsList() == null)
+									mandals.setValue("0");
+								else
+									mandals.setValue(new Integer(vo.getSelectOptionsList().size()).toString());
+							}
+							
+							List<SelectOptionVO> panchayatHamletsList = staticDataService.getHamletsByPanchayatIdsList(panchayatIdsList);
+							List<SelectOptionVO> panchayatBoothsList = staticDataService.getBoothsByPanchayatIdsListAndConstituencyIdInAPublication(panchayatIdsList,constituencyId,publicationDateId);
+							
+							for(SelectOptionVO mandals: mandalList)
+							{
+								for(SelectOptionVO panchayatRef : mandals.getSelectOptionsList())
+								{
+									SelectOptionVO vo = staticDataService.getSelectOptionVOFromResultList(panchayatHamletsList, panchayatRef.getId());
+									panchayatRef.setSelectOptionsList1(vo.getSelectOptionsList());
+									totalHamlets += vo.getSelectOptionsList().size();
+									SelectOptionVO vo2 = staticDataService.getSelectOptionVOFromResultList(panchayatBoothsList, panchayatRef.getId());
+									panchayatRef.setSelectOptionsList(vo2.getSelectOptionsList());
+									
+									if(vo2.getSelectOptionsList() == null)
+										panchayatRef.setValue("0");
+									else
+										panchayatRef.setValue(new Integer(vo2.getSelectOptionsList().size()).toString());
+								}
+							}
+							votersDetailsVO.setTotalNoOfHamlets(totalHamlets);
+						}
+						
+					 	//each Muncipality boothList
+						if(muncipalityList != null && muncipalityList.size() > 0){
+							int totalWards=0;
+						for(SelectOptionVO localbody : muncipalityList)
+						{
+							localbody1 = getWardsMunicipality(new Long(localbody.getId().toString().substring(1)),publicationDateId, constituencyId , userId);
+							if(localbody1 ==null ||localbody1.size()<=0  )
+							localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
+							else {
+							if(!localbody1.get(0).getType().equalsIgnoreCase("Greater Municipal Corp") )
+								localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
+							
+							if(localbody1!= null && localbody1.size() > 0)
+							{
+							   for(SelectOptionVO customWardId : localbody1)
+							   {
+								   customWardBooths = getCustomWardBooths(customWardId.getId(), constituencyId, userId, publicationDateId);
+								   if(customWardBooths != null && customWardBooths.size() > 0)
+									   customWardId.setSelectOptionsList(customWardBooths);
+							   }
+							}
+							localbody.setSelectOptionsList(localbody1);	
+							totalWards = totalWards +localbody1.size();
+							localbody.setValue(new Long(localbody1.size()).toString());
+							localbody.setType(localbody1.get(0).getType());
+							}
+							if(localbody2!= null && localbody2.size() > 0){
+								localbody.setSelectOptionsList1(localbody2);
+							 localbody.setValue(new Long(localbody2.size()).toString()); }
+							else
+								localbody.setValue("0");
+							
+						 }if(totalWards>0)
+						votersDetailsVO.setTotalNoOfWards(totalWards);
+						}
 								
 				 }
 					 if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody") && !type.equalsIgnoreCase("ward") && !type.equalsIgnoreCase("hamlet") && !type.equalsIgnoreCase(IConstants.CUSTOMWARD))
