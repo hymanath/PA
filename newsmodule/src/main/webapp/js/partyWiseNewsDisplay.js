@@ -17,7 +17,7 @@
 			return false;
 	}	
 	var value = val;
-		if(value=="Constituency" || value=="Mandal" || value=="Panchayat" || value=="Booth")
+		/* if(value=="Constituency" || value=="Mandal" || value=="Panchayat" || value=="Booth")
 		{	
 			var str =''; 
 			str +='<table style="margin-top:5px">';
@@ -32,7 +32,7 @@
 			str +='</tr>';
 			str +='</table>';
 			document.getElementById("showScopeSubs").innerHTML = str;
-		}
+		}*/
 		if(value=="Mandal" || value=="Panchayat" || value=="Booth")
 		{
 			var str ='';
@@ -95,7 +95,7 @@
 			};		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "voterAnalysisAjaxAction.action?"+rparam;						
-		callAjax(jsObj,url);
+		callsAjax(jsObj,url);
 	}
 
 	function getPanchayatList(checkedele,selectedEle)
@@ -138,7 +138,7 @@
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getPanchayatByMandalAction.action?"+rparam;					
-			callAjax(jsObj,url);
+			callsAjax(jsObj,url);
 			return false;
 		}		
 		if(value1.charAt(0) =="2")
@@ -152,7 +152,7 @@
 			}		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getPanchayatByMandalAction.action?"+rparam;	
-			callAjax(jsObj,url);
+			callsAjax(jsObj,url);
 			return false;	
 		}		
 	}
@@ -176,7 +176,7 @@
 				};
 					 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 					 var url = "getPanchayatByMandalAction.action?"+rparam;						
-					 callAjax(jsObj,url);
+					 callsAjax(jsObj,url);
 		}
 		else
 			return;
@@ -319,7 +319,7 @@
 		}
 	}
 	
-	function callAjax(jsObj,url)
+	function callsAjax(jsObj,url)
 	{
 			 var myResults;
 			 var callback = {			
@@ -340,12 +340,7 @@
 								{     
 										$("#wardInfoAjaxImg").hide();
 										buildWardsList(myResults,jsObj);								
-								}
-								else if(jsObj.task == "getWardsForVoter")
-								{     
-										$("#wardInfoAjaxImg").hide();
-										buildWardsList(myResults,jsObj);								
-								}
+								}								
 								else if(jsObj.task == "getBooths")
 								{  										
 										buildBoothsList(myResults,jsObj);								
@@ -483,12 +478,7 @@
 				locationName = $('#userAccessConstituencyList option:selected').text()+' Constituency';
 			}
 			
-			var urlStr
-			if(scopeIdVal != '0')
-				urlStr="partyWiseNewsPopupAction.action?scope="+scope+"&locationName="+locationName+"&locationValue="+scopeIdVal+"&partyName="+PartyName+"&partyId="+partyId;
-			else 
-				urlStr="./newsPaginationAction.action?level=district";
-			
+			var urlStr="partyWiseNewsPopupAction.action?scope="+scope+"&locationName="+locationName+"&locationValue="+scopeIdVal+"&partyName="+PartyName+"&partyId="+partyId;			
 			var updatedBrowser = window.open(urlStr,"partyWiseNewsPopupAction","scrollbars=yes,height=600,width=700,left=200,top=200");	
 			updatedBrowser.focus();
 	}
@@ -509,7 +499,7 @@ function getNewsForPagination(num)
 	 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getPartyWiseNewsDetailsForALocation.action?"+rparam;						
-	callAjax(jsObj,url);  
+	callsAjax(jsObj,url);  
  }
  function getAllConstituenciesInStateByType(electionType, stateId, element)
 	{
@@ -523,7 +513,7 @@ function getNewsForPagination(num)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllConstituenciesInState.action?"+rparam;						
-	callAjax(jsObj,url);
+	callsAjax(jsObj,url);
 	}
 	
 	function createOptionsForSelectElmtId(myResults)
@@ -546,6 +536,8 @@ function getNewsForPagination(num)
 		{
 			elmt.add(option); // IE only
 		}
+		if(myResults[i].name == 'Kuppam')
+		$('#userAccessConstituencyList').val(option.value);
 	}
 }
 
