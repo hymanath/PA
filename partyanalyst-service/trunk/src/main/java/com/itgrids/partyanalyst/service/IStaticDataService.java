@@ -377,5 +377,12 @@ public interface IStaticDataService {
 	
 		public List<SelectOptionVO> getPanchayatiesByMandalIdAndConstId(Long constituencyId,Long id,Long publicationDateId);
 		public List<SelectOptionVO> getAllAreaTypes();
-
+		
+		public List<SelectOptionVO> getPanchayatiesByMandalIdsListAndConstituencyId(List<Long> mandalsList,Long constituencyId,Long publicationDateId);
+		
+		public SelectOptionVO getSelectOptionVOFromResultList(List<SelectOptionVO> list, Long id);
+		
+		public List<SelectOptionVO> getHamletsByPanchayatIdsList(List<Long> panchayatIdsList);
+		
+		public List<SelectOptionVO> getBoothsByPanchayatIdsListAndConstituencyIdInAPublication(List<Long> panchayatIdsList,Long constituencyId,Long publicationDateId);
 }
