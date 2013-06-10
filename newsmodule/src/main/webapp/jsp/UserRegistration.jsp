@@ -49,6 +49,15 @@ onsubmit="return validatefields()" cssClass="form-horizontal text-center">
 
 </div>
 
+   <div class="control-group">
+	
+<span id="mobileDiv" ></span>
+<div class="controls">
+ <b style="color:red;font-size:20px">*</b>  &nbsp;&nbsp;<s:password theme="simple" name="password"  maxlength = "40" id="passwordField" placeholder="Password" size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)"/>
+</div>
+
+</div>
+
  <div class="control-group">
 <span id="fstNameId">
   </span>
@@ -89,7 +98,7 @@ var r={
   'special':/[\W]/g
 }
  var isSaved = '${savedSuccessfully}';
-
+var emailflag = true;
 </script>	
 <script>
 
@@ -177,6 +186,7 @@ function showDetails(results)
 	var str='';
 	if(results==121){		
 		str+="<span style='color:green;font-weight:normal;'> Username is available.</span>";
+		emailflag = true;
 		result.innerHTML = str;
 		return true;
 	}else if(textEle.value == 'Username (Email)'){
@@ -188,6 +198,7 @@ function showDetails(results)
 	{
 		str+="<span class='errorClass'> Username is not available.</span>";	
 	    result.innerHTML = str;
+		emailflag = false;
 		return false;
 	}
 	result.innerHTML = str;
@@ -198,7 +209,7 @@ function removeTextInTextBoxes(id)
   var ids=document.getElementById(id);
    if(ids.value  =='Username (Email)' || 
 		ids.value =='First Name' ||
-		ids.value =='Last Name')
+		ids.value =='Last Name' || ids.value=='Password') 
 		{
        ids.value='';
 	return;
@@ -276,6 +287,7 @@ function validatefields()
 {
 	
 	var flag = true;
+	
 	if(!validateLastName())
 	{
 		flag = false;
@@ -286,6 +298,13 @@ function validatefields()
 	}
 	if(!validateEmail())
 	{
+		flag = false;
+	}
+	
+	if(!emailflag)
+	{
+		$("#mobileDiv").html("Username is not available").css("color","red");	
+	    
 		flag = false;
 	}
 	

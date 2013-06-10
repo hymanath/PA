@@ -41,6 +41,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String password;
 	private RegistrationVO regVO = new RegistrationVO();
 	private IRegistrationService registrationService;
 	private Long result;
@@ -172,6 +173,16 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 
 	public void setLastName(String lastName) {
 		this.regVO.setLastName(lastName);
+	}
+
+
+	public String getPassword() {
+		return regVO.getPassword();
+	}
+
+
+	public void setPassword(String password) {
+		this.regVO.setPassword(password);
 	}
 
 
