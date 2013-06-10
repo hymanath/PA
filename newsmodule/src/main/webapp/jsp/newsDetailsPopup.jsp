@@ -32,7 +32,22 @@
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <!-- <link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css"> -->
 <style type="text/css">
- #showContentHeaderDiv{width:850px;border-radius:5px;}
+ #showContentHeaderDiv{background-color: #06ABEA;
+    color: #FFFFFF;
+    float: none;
+    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 35px;
+    padding-left: 13px;
+    text-align: left;
+    text-transform: uppercase;border-radius:5px;}
+	
+#buildSources, #buildNewSources {
+    border: 1px solid #D3D3D3;
+    margin: 10px auto 20px;
+    width: 618px;
+}
+.tableCls{margin: 10px auto; float: none;}
+ 
  .main-mbg{float:none; background-color: #06ABEA;
     color: #FFFFFF;
     font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
@@ -116,6 +131,17 @@ h3 {
     margin-top: 10px;
     padding: 5px;
 }
+.newssources{
+ background-color:#97DFEB;
+ padding:8px 8px 8px 8px;
+ margin-left:5px;
+ border-radius: 5px 5px 5px 5px;
+
+}
+.newsParts{
+  
+  color:#FF4500;
+}
 </style>
 </head>
 <body>
@@ -125,11 +151,12 @@ h3 {
     <div class="row">
 	 <!-- left Div Start -->
 	  <div class="span8 right-panel m5-left" style="background:#ffffff;position:relative;">
-		<div id="showContentHeaderDiv"></div>
+	  <div id="newsDetailsDiv"></div>
+		<!-- <div id="showContentHeaderDiv"></div>
 		<div id="newstitleSourceDiv"></div>
 	    <div style="text-align:center;" id="newsImage" class="popupcontainer"></div>
 		 <div id="descriptionDiv"><table><tr><td>Description : <span id="desc"></span></td></tr></table></div>
-		  <div id="newsDisplayDiv"></div>
+		  <div id="newsDisplayDiv"></div>-->
 
 		 <div>
 		<div style="display:none;" class="errorClass" id="errormsgdiv"></div>
@@ -212,7 +239,7 @@ function buildContentDetails()
   result = showContentResultList;
 	if(result == null)
 		return;
-
+	$("#newsDetailsDiv").html('');
     var str = '';
 	var titleStr = null;
 	var pathStr = null;
@@ -230,16 +257,9 @@ function buildContentDetails()
 		descriptionStr = result.relatedGalleries[0].filesList[i].description;
 		preContentId = result.relatedGalleries[0].filesList[i].contentId;
 		curPos = i+1;
-		totSize = result.relatedGalleries[0].filesList.length;
+		str +='<div id="showContentHeaderDiv">'+titleStr+'</div>';
 		
-		$("#desc").html('<b>'+descriptionStr+'</b>');
-		$("#showContentHeaderDiv").html("<span class='headingStyle'>"+titleStr+"</span>");
-		$("#newsImage").html('<img alt="'+titleStr+'" title="'+descriptionStr+'" style="max-width:780px;max-length:800px;" src="'+pathStr+'" />');
-
-
-		if(result.contentType == 'Video Gallary' || result.contentType == 'News Gallary')
-		{
-			str+='<table>';
+		str+='<table class="tableCls">';
 			str+='<tr>';
 			str+='<td>';
 			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
@@ -251,9 +271,41 @@ function buildContentDetails()
 			 str+='</td>';
 			 str+='</tr>';
 			 str+='</table>';
-		}
-		$("#newstitleSourceDiv").html(str);
+		str +='<div id="imgDiv" class="popupcontainer"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="max-width:600px;max-length:800px;" src="'+pathStr+'" /></div>';
+		str +='<div><span>Description: </span><b>'+descriptionStr+'<b></div>';
+		
 	}
+
+	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
+		{
+		   selectedContentFile = result.relatedGalleries[0].filesList[i];
+		   str +='<div id="buildNewSourceParts">';
+	       str += '<center><table><tr>';
+
+	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
+	         {
+	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[0].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	         }
+		 
+	       str += '  </tr></table>';
+	       str +='</center></div>';
+	
+	   if(selectedContentFile.multipleSource >1 )
+	          {
+	             str +='<div id="buildNewSources">';
+	             str += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	             str += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+	           
+			      for(var k=1;k<selectedContentFile.fileVOList.length;k++)
+	              {
+	               str += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[k].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[k].source+'</a></td>';
+	              }
+	            str += '  </tr></table>';
+	            str +='</center></div>';
+	          }
+		}
+		$("#newsDetailsDiv").html(str);
 
 
 	var releatedGallary = '';
@@ -282,6 +334,82 @@ function buildContentDetailsOfSelected(preId,selId)
 	}
 
 	buildContentDetails();
+}
+
+function showNewAnotherSource(fileSourceLanguageId,type)
+{
+     var str1 ='';
+	   str1 += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	    str1 += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+  for(var m in selectedContentFile.fileVOList)
+  {
+    if(selectedContentFile.fileVOList[m].fileSourceLanguageId == fileSourceLanguageId)
+	{
+	  if(document.getElementById("sourceChangeSpan") != null)
+	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
+	  
+	    var str='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></img></div>';
+	  
+	  document.getElementById("imgDiv").innerHTML = str;
+	
+	   str = '<center><table><tr>';
+
+	    for(var j=1;j<selectedContentFile.fileVOList[m].fileVOList.length;j++)
+	     {
+		    
+	         str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[m].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+			
+	     }
+		 
+	   str += '  </tr></table>';
+	   str +='</center>';
+	  document.getElementById("buildNewSourceParts").innerHTML = str;
+	}
+    else
+	{
+	   
+	    str1 += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[m].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[m].source+'</a></td>';	             	          	
+	   
+	}
+  }
+     str1 += '  </tr></table>';
+	    str1 +='</center>';
+     if(document.getElementById("buildNewSources") != null)
+       document.getElementById("buildNewSources").innerHTML = str1;
+	 else
+	   document.getElementById("buildVideoNewSources").innerHTML = str1;
+}
+
+function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
+{
+  for(var i in selectedContentFile.fileVOList)
+  {
+    if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
+	{
+	  
+	    var str='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+path+'"></img></div>';
+	  
+	  document.getElementById("imgDiv").innerHTML = str;
+	
+	   str = '<center><table><tr>';
+
+	    for(var j=0;j<selectedContentFile.fileVOList[i].fileVOList.length;j++)
+	     {
+		   if(selectedContentFile.fileVOList[i].fileVOList[j].orderNo != orderNo)
+		    {
+			  
+	             str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'other\')"><img width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" src="'+selectedContentFile.fileVOList[i].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+	         
+		    }
+		 }
+		 
+	   str += '  </tr></table>';
+	   str +='</center>';
+	  document.getElementById("buildNewSourceParts").innerHTML = str;
+	}
+  
+  }
+
 }
 
 getContentDetails();

@@ -436,9 +436,11 @@
 									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li> -->
 									<c:if test="${fileVOsList != null}">
 									 <c:forEach var="newDetails" items="${fileVOsList}">
-									  <li><a href="javascript:{}" onclick="getLatestNewsDetails(${newDetails.contentId})" class="muted"><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a></li>
+									  <li><a href="javascript:{}" onclick="getNewsDetailsByContentId(${newDetails.contentId})" class="muted"><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a></li>
 									 </c:forEach>
 									</c:if>
+
+									<a class=" btn btn-mini pull-right" href="newsDetailsAction.action">More...</a>
 								</ul>
 							</div>
 						</div>
@@ -468,7 +470,7 @@
 								<c:forEach var="gallary" items="${latestGallariesList}">
 								<li><a class="muted" href="javascript:{showFilesInGallary(${gallary.id})}"><i class="icon-share-alt"></i>${gallary.name}</a></li>        
                                </c:forEach>
-							   <a href="javascript:{showAllgallaries()}" class=" btn btn-mini pull-right ">More..</a>
+							   <a href="javascript:{showAllgallaries()}" class=" btn btn-mini pull-right ">More...</a>
 									
 								</ul>
 							</div>
