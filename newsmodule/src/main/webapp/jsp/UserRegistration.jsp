@@ -51,9 +51,11 @@ onsubmit="return validatefields()" cssClass="form-horizontal text-center">
 
    <div class="control-group">
 	
-<span id="mobileDiv" ></span>
+
+<span id="pwdId">
+  </span>
 <div class="controls">
- <b style="color:red;font-size:20px">*</b>  &nbsp;&nbsp;<s:password theme="simple" name="password"  maxlength = "40" id="passwordField" placeholder="Password" size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)"/>
+ <b style="color:red;font-size:20px">*</b>  &nbsp;&nbsp;<s:password theme="simple" name="password"  maxlength = "40" id="passwordField" placeholder="Password" size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="isPwdSpclChar(),showTextInTextBoxes(this.id)"/>
 </div>
 
 </div>
@@ -265,6 +267,22 @@ function validateFirstName()
 		resultDIVEle.innerHTML = "";
 		
 }
+function isPwdSpclChar(){
+
+   var pwd = document.getElementById("passwordField").value;
+	if(pwd == "")
+	 {
+	 $("#pwdId").html("Please Enter PassWord").addClass("errorClass");
+	 return false;
+	 }
+	if (pwd.match(/[^a-zA-Z0-9 ]/g)) {
+	$("#pwdId").html("Password should not contain special characters").addClass("errorClass");
+	return false;
+	}else{
+	$("#pwdId").html("");
+	return true;
+	}
+}
 function validateLastName()
 {
 	var lstEle = document.getElementById("lastNameId");
@@ -300,7 +318,10 @@ function validatefields()
 	{
 		flag = false;
 	}
-	
+	if(!isPwdSpclChar())
+	{
+	flag = false;
+	}
 	if(!emailflag)
 	{
 		$("#mobileDiv").html("Username is not available").css("color","red");	
