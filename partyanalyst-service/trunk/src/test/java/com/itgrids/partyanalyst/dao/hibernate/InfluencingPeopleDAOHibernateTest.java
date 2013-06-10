@@ -105,9 +105,9 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 		List<Long> locationValue = new ArrayList<Long>(0);
 		locationValue.add(99212l);
 		locationValue.add(113190l);
-		List<String> val=influencingPeopleDAO.getPartyIdUsingVoterId(locationValue);
+	/*	List<String> val=influencingPeopleDAO.getPartyIdUsingVoterId(locationValue);
 		System.out.println(val.get(0));
-		System.out.println(val.get(1));
+		System.out.println(val.get(1));*/
 	}
 	
 }
