@@ -134,7 +134,7 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
    var str='';
 
    str+='<div class="span12">';
-   str+='<ul>';
+   str+='<ul class="unstyled pad10">';
    for(var i in results)
    {
 	   str+='<li>';
