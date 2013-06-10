@@ -161,7 +161,9 @@
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
 										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<!-- <a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a> -->
+
+											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' title='<s:property value="description"/>' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
@@ -283,7 +285,7 @@
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
 										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
