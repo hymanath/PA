@@ -2688,23 +2688,19 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId,Long contentId)
+	public List<FileGallary> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(" select model.fileGallaryId,model.file.fileId,model.file.fileTitle,model.file.fileDescription,model.file.filePath from FileGallary model, PartyGallery model2 ");
+		stringBuilder.append(" select model from FileGallary model, PartyGallery model2 ");
 		stringBuilder.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
 		stringBuilder.append(" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' ");
-		
-		if(contentId != null)
-			 stringBuilder.append(" and model.fileGallaryId =:contentId ");
 		stringBuilder.append(" order by model.updateddate desc  ");
 		
 		Query query = getSession().createQuery(stringBuilder.toString());
 		
 		query.setParameter("contentType", contentType);
 		query.setParameter("partyId", partyId);
-		if(contentId != null)
-			query.setParameter("contentId", contentId);
+
 		if(starIndex != null)
 		 query.setFirstResult(starIndex);
 		if(maxResults != null)

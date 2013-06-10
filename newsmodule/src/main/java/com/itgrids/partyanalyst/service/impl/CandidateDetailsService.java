@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -5612,30 +5613,73 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 
 
  					 
-	public List<FileVO> getRecentlyUploadedNews(int startIndex,int maxIndex,String contenttype,Long partyId,Long contentId)
+	public List<FileVO> getAllNews(int startIndex,int maxIndex,String contenttype,Long partyId)
 	{
 		List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
 		try{
 		
-		
-		 List<Object[]> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex, contenttype,partyId,contentId);
+		 List<FileGallary> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex, contenttype,partyId);
 		 if(fileGallaryList != null && fileGallaryList.size() > 0)
 		 {
-			 for(Object[] params : fileGallaryList)
+			 for(FileGallary fileGallary : fileGallaryList)
 			 {
+				 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					if(fileGallary.getFile() == null)
+						continue;
+					
 				FileVO fileVO = new FileVO(); 
-				fileVO.setContentId((Long)params[0]);
-				fileVO.setFileId((Long)params[1]);
-				fileVO.setFileTitle1(params[2]!=null?params[2].toString():"");
-				fileVO.setFileDescription1(params[3] != null ?params[3].toString():"");
-				//fileVO.setSource(params[4] !=null?params[4].toString() :"");
-				fileVO.setFilePath1(params[4] != null ? params[4].toString() :" ");
+				fileVO.setContentId(fileGallary.getFileGallaryId());
+				fileVO.setFileId(fileGallary.getFile().getFileId());
+				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?fileGallary.getFile().getFileTitle().toString():"");
+				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?fileGallary.getFile().getFileDescription():"");
 				
+				Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
+				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
+				Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+				
+				List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(0);
+				if(fileSourceLanguageList != null && fileSourceLanguageList.size() > 0)
+				{
+					for(FileSourceLanguage fileSourceLanguage:fileSourceLanguageList)
+					{
+					   FileVO fileVOSourceLanguage = new FileVO();
+					   fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():null);
+					   fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
+					   fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
+					   fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+					   fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+						
+						List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+						Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+						for(FilePaths filePath : filePathsSet)
+						{
+							FileVO fileVOPath = new FileVO();
+							fileVOPath.setPath(filePath.getFilePath());
+							fileVOPath.setOrderNo(filePath.getOrderNo());
+							fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+							fileVOPathsList.add(fileVOPath);
+						}
+					   Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+					   fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+					   fileVOSourceLanguageList.add(fileVOSourceLanguage);
+						
+					}
+				}
+				
+				fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+				Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+				fileVO.setFileVOList(fileVOSourceLanguageList);
+				 
+				
+				fileVO.setFileDate(fileGallary.getFile().getFileDate() == null ? null :
+					sdf.format(fileGallary.getFile().getFileDate()));
+				 fileVO.setReqFileDate(fileGallary.getFile().getFileDate());
+				 
 				fileVOsList.add(fileVO);
 			 }
 		 }
 		 
-		 //fileVOsList.get(0).setCount(fileGallaryDAO.getRecentlyUploadedNewsDetails(null, null, contenttype,partyId,null).size());
+		 fileVOsList.get(0).setCount(fileGallaryDAO.getRecentlyUploadedNewsDetails(null, null, contenttype,partyId).size());
 		 return fileVOsList;
 		 
 		

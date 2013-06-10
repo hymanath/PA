@@ -221,7 +221,7 @@ public interface ICandidateDetailsService {
 	 public List<FileVO> getVideosListForSelectedFile(Long fileId);
 	 
 			 
-	 public List<FileVO> getRecentlyUploadedNews(int startIndex,int maxIndex,String contenttype,Long partyId,Long contentId);
+	 public List<FileVO> getAllNews(int startIndex,int maxIndex,String contenttype,Long partyId);
 	 
 	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId);
 }
