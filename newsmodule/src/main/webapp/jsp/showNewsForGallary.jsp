@@ -156,7 +156,7 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
 				str+='</div>';
 				str+='<div class="span2 ">';
 					str+='<a href="#">';
-					str+='	<a type="button" class="btn btn-mini pull-right" onClick="showAllFiles('+results[i].fileGallaryId+')">More...</a>';
+					str+='	<a type="button" class="btn btn-mini btn-info pull-right" onClick="getNewsDetailsByContentId('+results[i].fileGallaryId+')">More...</a>';
 					str+='</a>';
 				str+='</div>';
 			str+='</div>';
@@ -188,10 +188,7 @@ function callAjaxToGetTheResults(selectedvalue)
 showAllFilesofAGallry(startIndex,endIndex,galalryId,selectedvalue)
 }
 
-function showAllFiles(fileGallaryId)
-{
-	alert(fileGallaryId);
-}
+
 
 </script>
 </body>

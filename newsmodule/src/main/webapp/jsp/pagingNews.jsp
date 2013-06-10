@@ -118,12 +118,12 @@ function buildPaginatedNews(results,jsObj){
 		str+="<li>";
 		str+="<h4>"+results[i].fileTitle1+"</h4>";
 		str+="<div class='row-fluid'>";
-		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}' onclick='getNewsDetailsByContentId("+results[i].contentId+")'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
 		str+="<p class='span8'>"+results[i].description+"</p>";
 		str+="</div>";
 		str+="<div class='row-fluid m_top10'><div class='span9'><p class='text-error'>Source : "+results[i].source+"</p></div>";
-		str+="<div class='span2'><a href='#'></div></li>";
+		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>More</a></div></li>";
 	}
 	
 	var itemsCount=results[0].count;
