@@ -120,12 +120,13 @@ public class User extends BaseModel implements Serializable{
 	private String passwdHashTxt;
 	private String hashKeyTxt;
 	public User(){}
-	 public User(String firstName,  String lastName, String userName,String userType)
+	 public User(String firstName,  String lastName, String userName,String userType,String password)
 	 {
 		 this.firstName  = firstName;
 		 this.lastName  = lastName;
 		 this.userName  = userName; 
 		 this.userType  = userType;
+		 this.password  = password; 
 	 }
 
 	/*public User(){}
