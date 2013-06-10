@@ -174,6 +174,15 @@ var notLogged = '${notLogged}';
 	 redirectTo = true;
 	 openDialogForLoginWindow();
   }
+
+function getNewsDetailsByContentId(contentId)
+{
+  var urlstr = "newsDetailsPopupAction.action?contentId="+contentId+"&";
+	
+    var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+    browser1.focus();
+} 
+
 </script>
 </body>
 </html>
