@@ -129,7 +129,9 @@ function buildPaginatedNews(results,jsObj)
 		str+="<p class='span8'>"+results[i].description+"</p>";
 		str+="</div>";
 
-		str+="<div class='row-fluid m_top10'><div class='span9'><p class='text-error'>Source :";
+		str+="<div class='row-fluid m_top10'><div class='span9'>";
+		str +='<table><tr><td>';
+		str +='<p class="text-error">Source :';
 		var length = results[i].fileVOList.length;
 
 		for(var j in results[i].fileVOList)
@@ -138,7 +140,10 @@ function buildPaginatedNews(results,jsObj)
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></div>';
+		str +='</p></td><tr><td><p class="text-error">Date : '+results[i].fileDate+'</p></td></tr>';
+		
+		str +='</table>';
+		str +='</div>';
 		
 		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>More...</a></div></li>";
 	}
