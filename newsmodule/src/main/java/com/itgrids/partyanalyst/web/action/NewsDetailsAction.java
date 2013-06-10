@@ -100,10 +100,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		jObj = new JSONObject(getTask());
 		 if(jObj.getString("task").equalsIgnoreCase("getLatestNews"))
 		 {
-		     String startIndex = request.getParameter("startIndex");
-		     String maxIndex = request.getParameter("maxIndex");
-			//fileVOsList = candidateDetailsService.getRecentlyUploadedNews(Integer.parseInt(startIndex), Integer.parseInt(maxIndex), "News Gallary",872L,jObj.getLong("contentId"));
-		     fileVOsList = candidateDetailsService.getRecentlyUploadedNews(jObj.getInt("startIndex"), jObj.getInt("maxIndex"), "News Gallary",872L,jObj.getLong("contentId"));
+		     fileVOsList = candidateDetailsService.getAllNews(jObj.getInt("firstResult"), jObj.getInt("maxResult"), "News Gallary",872L);
 		 }
 		}catch (Exception e) {
 			e.printStackTrace();

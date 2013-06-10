@@ -260,7 +260,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 
 
 	
-	public List<Object[]> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId,Long contentId);
+	public List<FileGallary> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId);
 	
 	public Object getFileIdByFileGallaryId(Long fileGallaryId);
 	
