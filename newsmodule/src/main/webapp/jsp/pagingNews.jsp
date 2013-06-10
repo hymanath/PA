@@ -118,7 +118,7 @@ function buildPaginatedNews(results,jsObj){
 		str+="<li>";
 		str+="<h4>"+results[i].fileTitle1+"</h4>";
 		str+="<div class='row-fluid'>";
-		str+="<a class='thumbnail span4' style='width: 146px;' href='partyPageAction.action?partyId="+results[i].candidateId+"&contentId="+results[i].contentId+"'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}' onclick='getNewsDetailsByContentId("+results[i].contentId+")'>";
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
 		str+="<p class='span8'>"+results[i].description+"</p>";
 		str+="</div>";
