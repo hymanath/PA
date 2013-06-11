@@ -52,7 +52,8 @@ public class LogoutAction extends ActionSupport implements ServletContextAware, 
 		session.invalidate();
 		
 		try{
-			response.sendRedirect("homePage.action");
+			//response.sendRedirect("homePage.action");
+			response.sendRedirect("index.jsp");
 		}catch (Exception e) {
 		}
 		return SUCCESS;

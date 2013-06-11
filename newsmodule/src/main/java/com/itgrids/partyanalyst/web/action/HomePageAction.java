@@ -1,14 +1,17 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
@@ -16,6 +19,7 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
@@ -42,7 +46,7 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 
 @SuppressWarnings("serial")
-public class HomePageAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
+public class HomePageAction extends ActionSupport implements ServletRequestAware,ServletContextAware,ServletResponseAware{
 
 	
 	private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageAction.class); 
@@ -81,7 +85,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String homePageLoadingFirstTime;
 	private List<File> fileList;
 	private List<FileVO> fileVOsList;
-	
+	private HttpServletResponse response;
 
 	public List<File> getFileList() {
 		return fileList;
@@ -378,9 +382,27 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setFileVOsList(List<FileVO> fileVOsList) {
 		this.fileVOsList = fileVOsList;
 	}
+	
+	public HttpServletResponse getResponse() {
+		return response;
+	}
+	public void setServletResponse(HttpServletResponse response) {
+		this.response = response;
+	}
 	public String execute()
 	{	
         request.setAttribute("notLogged",notLogged);
+        session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+        {
+			try {
+				response.sendRedirect("index.jsp");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+        
 		latestGallariesList = candidateDetailsService.getLatestgallaries();
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"");
 		fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID);
