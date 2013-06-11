@@ -149,7 +149,7 @@ margin:-1px 0px 0px 0px ;
 </tr>
 <!--BODY -->
 <tr>
-	<td class="background" border="0">
+	<td class="" border="0">
  		<div id="contenttable" class="background">
 			<decorator:body/>
 		</div>
