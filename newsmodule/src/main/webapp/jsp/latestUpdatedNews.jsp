@@ -131,7 +131,7 @@ function buildPaginatedNews(results,jsObj)
 
 		str+="<div class='row-fluid m_top10'><div class='span9'>";
 		str +='<table><tr><td>';
-		str +='<p class="text-error">Source :';
+		str +='<p style="margin-right: 12px; width: 260px;"><span class="text-error">Source :</span>';
 		var length = results[i].fileVOList.length;
 
 		for(var j in results[i].fileVOList)
@@ -140,7 +140,7 @@ function buildPaginatedNews(results,jsObj)
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></td><tr><td><p class="text-error">Date : '+results[i].fileDate+'</p></td></tr>';
+		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error">Date :</span> '+results[i].fileDate+'</p></td></tr>';
 		
 		str +='</table>';
 		str +='</div>';

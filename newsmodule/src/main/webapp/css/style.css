@@ -1,5 +1,5 @@
 .headerBg{background:url('..//images/Header_bg.png');width:100%; height:111px;}
-	body{background:url('..//images/bg.png');font-size:13px !important;}
+body{background:url('..//images/bg.png');font-size:13px !important;}
 	.navMenu li a{ color:#282827 !important;}
 	.navMenu > li > a:hover, .navMenu > li > a:focus {background-color: rgb(233, 233, 45);text-decoration: none;}
 	.memberArea > li > a{ color:#66B16B !important;}
@@ -8,6 +8,8 @@
 	.boxHeading{background-color:#f9f9f9;border-bottom:#ffff01 2px solid;padding-left:4px;}
 	.widget{height:100%;border:1px solid #e5e5e5; background-color:#fff;}
 	.m_top10{margin-top:10px;}
+	.m_top20{margin-top:20px;}
+	.m_top15{margin-top:15px;}
 	.nav-tabs{background-color:#f9f9f9 !important;border-bottom: 2px solid rgb(255, 255, 1) !imporatant;}
 	.pad10{padding:10px;}
 	footer{background:#ffff00;height:50px;border-top:2px solid #ffff01;margin-top:10px;}

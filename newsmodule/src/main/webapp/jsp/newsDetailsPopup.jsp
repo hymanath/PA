@@ -142,6 +142,8 @@ h3 {
   
   color:#FF4500;
 }
+#releatedNewsDiv{ height: 400px;
+    overflow-y: scroll;}
 </style>
 </head>
 <body>
@@ -171,8 +173,8 @@ h3 {
 	<!-- left Div End -->
 
 	<!-- right Div End -->
-	<div class="span3 left-panel">
-	<h3>Related Gallery</h3>
+	<div class="span3 left-panel" style=" width: 250px;">
+	<h3>Other News in this Gallery</h3>
 	   <div id="releatedNewsDiv"></div>
 	</div>
 	<!-- right Div End -->
@@ -309,7 +311,7 @@ function buildContentDetails()
 
 
 	var releatedGallary = '';
-	releatedGallary +="<ul class='unstyled relatedproblem' style='width:200px;'>";
+	releatedGallary +="<ul class='unstyled relatedproblem' style='width:220px;'>";
 
     for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 	if(!result.relatedGalleries[0].filesList[i].isSelectedContent)
