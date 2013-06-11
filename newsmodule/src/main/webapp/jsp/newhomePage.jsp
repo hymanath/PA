@@ -117,6 +117,9 @@
     color: #FF4500;
 }
 #showContentDiv{z-index: 111;}
+.tdWidth1{
+width: 92px;
+}
 
 	</style>
 </head>
@@ -377,28 +380,33 @@
 				<div class="span3" style="height:554px">
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>View your Constituency News</h4></div>
-						<div class="span12">
+						<div class="span12">						
 						<table style="margin-top:15px;">
 							<tr id="tableRowS">
-								<td id="tdWidth" style="padding-right: 55px;">
-									Area:<font id="requiredValue" class="requiredFont">*</font> 
+								<td id="tdWidth" style="padding-right: 32px;">
+									Location:<font id="requiredValue" class="requiredFont">*</font> 
 								</td>
 								<td>
 									<select id="listValue" onchange="populateLocations(this.options[this.selectedIndex].value)">
-									<option value="0"> Select Area </option>
+									<option value="0"> Select Location </option>
+									<option value="District"> District </option>
 									<option value="Constituency" selected="selected"> Constituency </option>
 									<!--<option value="Mandal"> Mandal / Muncipality </option>
 									<option value="Panchayat"> Panchayath / Ward </option>
 									<option value="Booth"> Booth </option> -->
 									</select>
 								</td>
-								</tr>
+							</tr>
+						</table>
+						<div id="showScopeSubsD" style="margin-bottom: 10px;" style="margin-top:15px;"></div>
+						<table  id="showScopeSubsC">	
 								<tr>
 								<td class="tdWidth1">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>
 								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
 								</select></td>	 
 							</tr>
 						</table>
+						
 						<button id="sendButton" class="btn btn-warning" onclick="handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
 						</div>
 					</div>
@@ -486,14 +494,12 @@
 								<div class="row-fluid ">
 									<div class="span12 pad10 ">
 										<ul class="unstyled">
-											<!--<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
-											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
-											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
-											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
-											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>
-											<li><a href="#" class="thumbnail span2"><img src="http://placehold.it/200x150"></a></li>-->
-											<c:forEach var="file" items="${fileList}">
-											<li><a class="thumbnail span2" href="javascript:{showVideoGallery(${file.fileId})}"><img src='http://img.youtube.com/vi/<s:property value="filePath"/>/0.jpg'/></a></li>   </c:forEach>
+											<li><a href="javascript:{}" onclick="openVideo('EUW4YcbUumk');" class="thumbnail span2"><img  src="http://img.youtube.com/vi/EUW4YcbUumk/0.jpg"></a></li>
+											<li><a href="javascript:{}" onclick="openVideo('rc4Z_ZjAijo');" class="thumbnail span2"><img  src="http://img.youtube.com/vi/rc4Z_ZjAijo/0.jpg"></a></li>
+											<li><a href="javascript:{}"  onclick="openVideo('dnWKb8qrg1g');"class="thumbnail span2"><img src="http://img.youtube.com/vi/dnWKb8qrg1g/0.jpg"></a></li>
+											<li><a href="javascript:{}"  onclick="openVideo('hlQL1FiNEQk');"class="thumbnail span2"><img  src="http://img.youtube.com/vi/hlQL1FiNEQk/0.jpg"></a></li>
+											<li><a href="javascript:{}"  onclick="openVideo('7w_Gg2b8S10');"class="thumbnail span2"><img  src="http://img.youtube.com/vi/7w_Gg2b8S10/0.jpg"></a></li>
+											<li><a href="javascript:{}"  onclick="openVideo('Xcdzou_IR4Q');"class="thumbnail span2"><img  src="http://img.youtube.com/vi/Xcdzou_IR4Q/0.jpg"></a></li>
 										</ul>
 										<!--<a href="#" class="pull-right btn btn-mini" style="margin-top:75px;">More</a>-->
 									</div>
@@ -560,6 +566,24 @@ callHomePageAjax11(jsObj,url);
 
 
 }
+
+function openVideo(path)
+	{
+		$("#video_dialog").dialog({
+				resizable:false,
+				title:'videos',
+				height: 500,
+				width:580,
+				top:250,
+				left:100,
+				modal: true
+				
+	});
+		var str = "";
+		str += '<iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe></div>';
+		$('#videos').html(str);
+	} 
+	
 
 function buildVideoGallery(myResults)
 {
@@ -668,7 +692,7 @@ function callHomePageAjax11(jsObj,url){
 								}
 								if(jsObj.task =="getMoreVideos")
 								{
-									alert('s');
+									//alert('s');
 								}
 								}catch (e) {
 							     
