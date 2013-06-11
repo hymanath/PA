@@ -216,7 +216,7 @@ public interface ICandidateDetailsService {
 */
 	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults,String level);
 	 
-	 public List<File> getVideosForSelectedParty(Long partyId);
+	 public List<FileVO> getVideosForSelectedParty(Long partyId);
 	 
 	 public List<FileVO> getVideosListForSelectedFile(Long fileId);
 	 
