@@ -220,6 +220,7 @@ public interface ICandidateDetailsService {
 	 
 	 public List<FileVO> getVideosListForSelectedFile(Long fileId);
 	 
+	 public List<FileVO> getAllVideosList(Long partyId,int firstResult,int maxResult,String queryType);
 			 
 	 public List<FileVO> getAllNews(int startIndex,int maxIndex,String contenttype,Long partyId);
 	 
