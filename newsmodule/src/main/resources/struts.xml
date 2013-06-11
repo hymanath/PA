@@ -5238,7 +5238,7 @@
 		</action>
 		
 		<action name="showNewsGallariesAction"  class="candidateElectionResultsAction" method="showNewsGallariesAction">
-		<result name="success">/jsp/showNewsGallaries.jsp</result>
+			<result name="success">/jsp/showNewsGallaries.jsp</result>
 		</action>
 		
 		 <action name="getFilesInAGallary" class="candidateElectionResultsAction" method="getFilesInAGallary">
@@ -5287,7 +5287,13 @@
 		<!-- <action name="userRegistrationSubmitAction" class="anonymousUserAction" method="saveUserData">
 			<result name="success">/jsp/UserRegistration.jsp</result>
 		</action> --> 
-		       
+		
+		  <action name="videosGallaryAction"  class="videoGallaryAction">
+			<result name="success">/jsp/showVideoGallary.jsp</result>
+		  </action>
+		     
+		   
+		   
          <action name="getvideoAGallary" class="candidateElectionResultsAction" method="getVideosForSelectedGallery">
         <result type="json" name="success">
 		    	<param name="root">fileVO</param>
@@ -5300,6 +5306,16 @@
 		
 		<action name="newsDetailsAction" class="newsDetailsAction">
 		 <result name="success">/jsp/latestUpdatedNews.jsp</result>
+		</action>
+		
+		<action name="getMoreVideosAction" class="homePageAction" method="getMoreVideos">
+		 <result type="json" name="success">
+		   <param name="root">fileVOsList</param>
+		  </result>
+		</action>
+		
+		<action name="showMoreVideos" class="homePageAction" method="showMoreVideos">
+		 	<result name="success">/jsp/showMoreVideosPage.jsp</result>
 		</action>
 		
 		<action name="latestUpdatedNewsAction" class="newsDetailsAction" method="ajaxHandler">
