@@ -338,6 +338,35 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 							
 			return queryObject.list(); 
 }
+	public List<Object[]> getAllVideosDetailsForDistrict(Long partyId,int firstResult,int maxResult,String queryType,long stateId ,List<Long> districtIds){
+		   
+	     StringBuilder query = new StringBuilder();
+				query.append("select model.file,model.fileGallaryId,model.file.fileDate,fs.source.source,model2.party.partyFlag,model2.party.partyId from FileGallary model , PartyGallery model2 , FileSourceLanguage fs  where "+
+					" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId  and  model2.party.partyId = :partyId "+
+					" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  ");
+				
+				if(queryType.equals("Public"))
+			   query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+			if(queryType.equals("Private"))
+			  query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			  query.append(" and model.file.locationValue in (:locId)  and model.file.regionScopes.regionScopesId = :locationValue ");
+           //query.append("or  (model.file.regionScopes.regionScopesId = :constituencyScopeId and " );
+			//query.append(" model.file.locationValue = :constituencyVal) " );
+			query.append("group by model.file.fileId order by model.file.fileDate desc, model.updateddate desc");
+			Query queryObject = getSession().createQuery(query.toString());
+			
+			queryObject.setLong("partyId", partyId);
+			queryObject.setLong("locationValue", stateId);
+			queryObject.setParameterList("locId", districtIds);
+
+			queryObject.setString("type", IConstants.VIDEO_GALLARY);
+			queryObject.setString("isDelete", "false");
+			queryObject.setString("isPrivate", "false");
+			queryObject.setFirstResult(1);
+			queryObject.setMaxResults(3);
+			return queryObject.list(); 
+}
 	public int getCountOfNewsFilesForDistrict(Long partyId,int firstResult,int maxResult,String queryType,long stateId ,List<Long> districtIds){
 		   
 	     StringBuilder query = new StringBuilder();
@@ -407,6 +436,31 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			queryObject.setMaxResults(maxResult);									
 			return queryObject.list(); 
 }
+	public List<Object[]> getAllVideosDetailsForState(Long partyId,int firstResult,int maxResult,String queryType,long stateId , long scopeId){
+		   
+	     StringBuilder query = new StringBuilder();
+			query.append("select model.file,model.fileGallaryId,model.file.fileDate,fs.source.source,model2.party.partyFlag,model2.party.partyId  from FileGallary model , PartyGallery model2 , FileSourceLanguage fs  where "+
+				" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId  and  model2.party.partyId = :partyId "+
+				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  ");
+				if(queryType.equals("Public"))
+			   query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+			if(queryType.equals("Private"))
+			  query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			query.append(" and model.file.locationValue = :locationValue and model.file.regionScopes.regionScopesId = :locId ");
+			query.append("group by model.file.fileId order by model.file.fileDate desc, model.updateddate desc");
+			Query queryObject = getSession().createQuery(query.toString());
+			
+			queryObject.setLong("partyId", partyId);
+			queryObject.setLong("locationValue", stateId);
+			queryObject.setLong("locId", scopeId);
+			queryObject.setString("type", IConstants.VIDEO_GALLARY);
+			queryObject.setString("isDelete", "false");
+			queryObject.setString("isPrivate", "false");
+			queryObject.setFirstResult(1);
+			queryObject.setMaxResults(3);									
+			return queryObject.list(); 
+}
 	public int getCountOfNewsFiles(Long partyId,int firstResult,int maxResult,String queryType,long stateId , long scopeId){
 		 StringBuilder query = new StringBuilder();
 			query.append("select count(distinct model.file.fileId) from FileGallary model , PartyGallery model2 , FileSourceLanguage fs  where "+
@@ -471,18 +525,72 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			queryObject.setString("type", IConstants.NEWS_GALLARY);
 			queryObject.setString("isDelete", "false");
 			queryObject.setString("isPrivate", "false");
-			queryObject.setFirstResult(firstResult);
+			queryObject.setFirstResult(firstResult*2);
 			queryObject.setMaxResults(maxResult);									
 			return queryObject.list(); 
-}
-	
-	@SuppressWarnings("unchecked")
-	public List<Long> getGalleryIdsForSelectedParty(Long partyId)
-	{
-		Query query = getSession().createQuery("select model.gallery.gallaryId from PartyGallery model " +
-				" where model.party.partyId = :partyId");
-		
-		query.setParameter("partyId", partyId);
-		return query.list();
 	}
-}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getGalleryIdsForSelectedParty(Long partyId)
+		{
+			Query query = getSession().createQuery("select model.gallery.gallaryId from PartyGallery model " +
+					" where model.party.partyId = :partyId");
+			
+			query.setParameter("partyId", partyId);
+			return query.list();
+		}
+		
+		 public List<Object[]> getAllVideosOfParty(Long partyId,int firstResult,int maxResult,String queryType){
+
+			 StringBuilder query = new StringBuilder();
+			 query.append("select model2.gallery.gallaryId, " +
+			 		"  model2.gallery.name, model2.gallery.description,fps.filePath,model2.gallery.createdDate from FileGallary model , PartyGallery model2 , FileSourceLanguage fs,FilePaths fps where "+
+			 " model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId = :partyId "+
+			 " and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and model.isPrivate = :isPrivate and fs.fileSourceLanguageId=fps.fileSourceLanguage.fileSourceLanguageId ");
+			 
+			 if(queryType.equals("Public"))
+			 query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
+
+			 if(queryType.equals("Private"))
+			 query.append(" and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			 //query.append(" and model.file.locationValue = :locationValue and model.file.regionScopes.regionScopesId = :locId ");
+			 query.append(" group by model2.gallery.gallaryId order by model2.gallery.updateddate desc ");
+			 Query queryObject = getSession().createQuery(query.toString());
+
+			 queryObject.setLong("partyId", partyId);
+			 queryObject.setString("type", IConstants.VIDEO_GALLARY);
+			 queryObject.setString("isDelete", "false");
+			 queryObject.setString("isPrivate", "false");
+			 queryObject.setFirstResult(firstResult);
+			 queryObject.setMaxResults(maxResult);
+
+
+			 return queryObject.list();
+		 }
+		 
+		 public int getAllVideosOfPartyCount(Long partyId,int firstResult,int maxResult,String queryType){
+
+			 StringBuilder query = new StringBuilder();
+			 query.append("select count(distinct model.gallary.gallaryId) " +
+			 		"  from FileGallary model , PartyGallery model2 , FileSourceLanguage fs where "+
+			 " model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId = :partyId "+
+			 " and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and model.isPrivate = :isPrivate ");
+			 
+			 if(queryType.equals("Public"))
+			 query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
+
+			 if(queryType.equals("Private"))
+			 query.append(" and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			 //query.append(" and model.file.locationValue = :locationValue and model.file.regionScopes.regionScopesId = :locId ");
+			 query.append(" group by model2.party.partyId order by model2.gallery.updateddate desc ");
+			 Query queryObject = getSession().createQuery(query.toString());
+
+			 queryObject.setLong("partyId", partyId);
+			 queryObject.setString("type", IConstants.VIDEO_GALLARY);
+			 queryObject.setString("isDelete", "false");
+			 queryObject.setString("isPrivate", "false");
+			 
+
+			 return ((Long)queryObject.uniqueResult()).intValue();
+		 }
+	}
