@@ -51,4 +51,5 @@
 	<bean id="newsDetailsAction" class="com.itgrids.partyanalyst.web.action.NewsDetailsAction" singleton="false">
 	 <property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>
+	<bean id="loginPageAction" class="com.itgrids.partyanalyst.web.action.LoginPageAction" singleton="false"></bean>
 	</beans>

@@ -396,14 +396,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
         session = request.getSession();
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
         if(user == null)
-        {
-			try {
-				response.sendRedirect("index.jsp");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        }
-        
+         return ERROR;
+               
 		latestGallariesList = candidateDetailsService.getLatestgallaries();
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"");
 		fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID);

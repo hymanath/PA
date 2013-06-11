@@ -60,8 +60,8 @@
 		</action>
 		
 		<action name="homePage" class="com.itgrids.partyanalyst.web.action.HomePageAction"> 
-		    <result>/jsp/newhomePage.jsp</result>
-		    <result name="cadreOnlineReg" type="redirect" >cadreOnlineRegisterPageAction.action?cadreId=0&amp;windowTask=new&amp;onlineRegId=${onlineRegId}</result>
+		    <result name="success">/jsp/newhomePage.jsp</result>
+		    <result name="error" type="redirect" >loginPageAction.action</result>
 		</action>
 	
 		<action name="loginInputAction" class="loginInputAction">
@@ -5322,6 +5322,10 @@
 		 <result type="json" name="success">
 		   <param name="root">fileVOsList</param>
 		  </result>
+		</action>
+		<action name="loginPageAction" class="loginPageAction">
+		  <result name="error">/jsp/homePage.jsp</result>
+		  <result name="success" type="redirect">homePage.action</result>
 		</action>
 		</package>
 </struts>      
