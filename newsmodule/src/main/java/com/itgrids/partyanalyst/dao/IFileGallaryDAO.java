@@ -249,10 +249,10 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	
 	public List<Object[]> getAllRecordInGallary(Long gallaryId);
 	
-	 public List<Object[]> getPartyWiseAllNewsDetailsInLocation(List<Long> partyId, Long constituencyScopeId, Long constituencyVal,
+	 public List<?> getPartyWiseAllNewsDetailsInLocation(List<Long> partyId, Long districtScopeId, List<Long> districtIds, Long constituencyScopeId, List<Long> constituencyVal,
 				Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
 				List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds,Long 
-				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult);
+				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult,String type);
 	 
 	public List<FileGallary> getAllVideoFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex , int endIndex,String type);
 	
