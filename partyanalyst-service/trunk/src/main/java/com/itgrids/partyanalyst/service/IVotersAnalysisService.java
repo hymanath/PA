@@ -6,6 +6,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
+import com.itgrids.partyanalyst.dto.DataVerificationVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
@@ -284,6 +285,6 @@ public interface IVotersAnalysisService {
 	// public List<VoterCastInfoVO> getCastewiseDetailsForCustomWard(Long customWardId,Long publicationId,Long constituencyId,String type,Long userId);
 	 public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId, Long constituencyId ,Long userId);
 	 
-
+	 public DataVerificationVO getCountForConstituency(String locationType,Long constituencyId,Long locationId,Long publicationDateId,Long userId);
 	 
 }
