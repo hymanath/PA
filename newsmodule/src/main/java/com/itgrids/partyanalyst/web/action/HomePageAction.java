@@ -84,14 +84,14 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private List<SpecialPageVO> specialPageVOList;
 	private ISpecialPageService specialPageService;
 	private String homePageLoadingFirstTime;
-	private List<File> fileList;
+	private List<FileVO> fileList;
 	private List<FileVO> fileVOsList;
 	private HttpServletResponse response;
 
-	public List<File> getFileList() {
+	public List<FileVO> getFileList() {
 		return fileList;
 	}
-	public void setFileList(List<File> fileList) {
+	public void setFileList(List<FileVO> fileList) {
 		this.fileList = fileList;
 	}
 
