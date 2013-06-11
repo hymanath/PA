@@ -37,7 +37,7 @@
 			var str =''; 
 			str +='<table style="margin-top:5px">';
 			str +='<tr id="tableRowC">';
-			str +='<td class="tdWidth1">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>';
+			str +='<td class="tdWidth1" style="padding-bottom: 15px;">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>';
 			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" >';
 			//onchange="getMandalList(this.options[this.selectedIndex].value);">';
 			str+='</select></td>';	 
