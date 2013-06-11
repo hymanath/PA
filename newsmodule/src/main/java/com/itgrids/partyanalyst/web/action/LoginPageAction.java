@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,14 +10,12 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 
-import com.itgrids.partyanalyst.dto.UserTrackingVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ILoginService;
-import com.itgrids.partyanalyst.util.IWebConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class LogoutAction extends ActionSupport implements ServletContextAware, ServletRequestAware,ServletResponseAware{
+public class LoginPageAction extends ActionSupport implements ServletContextAware, ServletRequestAware,ServletResponseAware{
 
-	private static final long serialVersionUID = 7141316754962897968L;
 	private HttpServletRequest request;
 	private HttpSession session;
 	private ServletContext context;
@@ -47,18 +46,12 @@ public class LogoutAction extends ActionSupport implements ServletContextAware, 
 	{
 		session = request.getSession();
 		
-		session.removeAttribute("USER");
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
 		
-		session.invalidate();
-		
-		try{
-			
-			response.sendRedirect("loginPageAction.action");
-		}catch (Exception e) {
-		}
 		return SUCCESS;
 	}
 
 	
-
 }
