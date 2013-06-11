@@ -23,6 +23,7 @@ public class DataVerificationVO implements Serializable{
 	private Long totalMuncipalities = 0L;
 	private Long totalWards = 0L;
 	private Long totalConstituencies = 0L;
+	private Long totalHamlets;
 	
 	private DataVerificationInfoVO voterInfo = new DataVerificationInfoVO();
 	private DataVerificationInfoVO familyInfo = new DataVerificationInfoVO();
@@ -149,6 +150,12 @@ public class DataVerificationVO implements Serializable{
 	}
 	public void setModificationAgeInfo(DataVerificationInfoVO modificationAgeInfo) {
 		this.modificationAgeInfo = modificationAgeInfo;
+	}
+	public Long getTotalHamlets() {
+		return totalHamlets;
+	}
+	public void setTotalHamlets(Long totalHamlets) {
+		this.totalHamlets = totalHamlets;
 	}
 	
 	

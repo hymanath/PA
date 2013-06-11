@@ -1608,7 +1608,34 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getWardsCountByLocalEleBodyId(Long localEleBodyId,Long constituencyId,Long userId,Long publicationDateId)
+	{
+		Query query = getSession().createQuery(" select count(distinct model.ward.constituencyId) from UserVoterDetails model, BoothPublicationVoter model2 " +
+				" where model2.voter.voterId = model.voter.voterId and model.user.userId =:userId and model2.booth.publicationDate.publicationDateId =:publicationDateId " +
+				" and model2.booth.constituency.constituencyId =:constituencyId and model2.booth.localBody.localElectionBodyId =:localEleBodyId and model.ward.constituencyId is not null ");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("localEleBodyId", localEleBodyId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getBoothsCountForCustomWard(Long wardId,Long constituencyId,Long publicationDateId,Long userId)
+	{
+		Query queryObj = getSession().createQuery("select count(distinct BPV.booth.boothId) from BoothPublicationVoter BPV , UserVoterDetails UVD where " +
+				" BPV.voter.voterId = UVD.voter.voterId and UVD.ward.constituencyId =:wardId and UVD.user.userId =:userId and BPV.booth.publicationDate.publicationDateId =:publicationDateId " +
+				" and BPV.booth.constituency.constituencyId =:constituencyId ");
+		
+		queryObj.setParameter("wardId", wardId);
+		queryObj.setParameter("constituencyId", constituencyId);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("userId", userId);
+		
+		return queryObj.list();
+	}
 	
 	
 }

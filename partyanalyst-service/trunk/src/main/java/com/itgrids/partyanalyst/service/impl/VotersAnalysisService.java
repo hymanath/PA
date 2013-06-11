@@ -92,6 +92,7 @@ import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
+import com.itgrids.partyanalyst.dto.DataVerificationVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
@@ -16671,6 +16672,49 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		        	 return castVo1.getCaste().compareToIgnoreCase(castVo2.getCaste());
 		        }
 		    };
+		    
+		    
+public DataVerificationVO getCountForConstituency(String locationType,Long constituencyId,Long locationId,Long publicationDateId,Long userId)
+{
+	DataVerificationVO dataVerificationVO = new DataVerificationVO();
+	try{
+	
+	   if(locationType.equalsIgnoreCase(IConstants.MANDAL) && locationId.toString().substring(0,1).equalsIgnoreCase("2"))
+	   {
+		   locationId = new Long(locationId.toString().substring(1));
+		   dataVerificationVO.setTotalPanchayats(boothDAO.getPanchayatsCountByMandalId(locationId, constituencyId, publicationDateId) != null?(Long)boothDAO.getPanchayatsCountByMandalId(locationId, constituencyId, publicationDateId).get(0):0L);
+		   dataVerificationVO.setTotalBooths(boothDAO.getBoothsCountByLocationId(IConstants.MANDAL, locationId, constituencyId, publicationDateId)!= null?(Long)boothDAO.getBoothsCountByLocationId(IConstants.MANDAL, locationId, constituencyId, publicationDateId).get(0):0L);
+		   dataVerificationVO.setTotalHamlets(panchayatHamletDAO.getHamletsCountByLocationId(IConstants.MANDAL, constituencyId, locationId, publicationDateId) !=null?(Long)panchayatHamletDAO.getHamletsCountByLocationId(IConstants.MANDAL, constituencyId, locationId, publicationDateId).get(0):0L);
+	   }
+	   else if(locationType.equalsIgnoreCase(IConstants.MANDAL) && locationId.toString().substring(0,1).equalsIgnoreCase("1"))
+	   {
+		  locationId = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationId.toString().substring(1))).get(0);
+		  String type=localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(locationId);
+		    
+		  if(type.equalsIgnoreCase(IConstants.GHMC))
+		    dataVerificationVO.setTotalWards(boothDAO.getWardsCountByLocalEleBodyId(locationId, publicationDateId, constituencyId) !=null?(Long)boothDAO.getWardsCountByLocalEleBodyId(locationId, publicationDateId, constituencyId).get(0):0L);
+		  else
+		   dataVerificationVO.setTotalWards(userVoterDetailsDAO.getWardsCountByLocalEleBodyId(locationId, constituencyId, userId, publicationDateId) != null?userVoterDetailsDAO.getWardsCountByLocalEleBodyId(locationId, constituencyId, userId, publicationDateId).get(0):0L);
+		    
+		   dataVerificationVO.setTotalBooths(boothDAO.getBoothsCountByLocationId(IConstants.PANCHAYAT, locationId, constituencyId, publicationDateId)!= null?(Long)boothDAO.getBoothsCountByLocationId(IConstants.LOCALELECTIONBODY, locationId, constituencyId, publicationDateId).get(0):0L);
+	   }
+	   else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+	   {
+		   dataVerificationVO.setTotalBooths(boothDAO.getBoothsCountByLocationId(IConstants.PANCHAYAT, locationId, constituencyId, publicationDateId)!= null?(Long)boothDAO.getBoothsCountByLocationId(IConstants.PANCHAYAT, locationId, constituencyId, publicationDateId).get(0):0L);
+		   dataVerificationVO.setTotalHamlets(panchayatHamletDAO.getHamletsCountByLocationId(IConstants.PANCHAYAT, constituencyId, locationId, publicationDateId) !=null?(Long)panchayatHamletDAO.getHamletsCountByLocationId(IConstants.PANCHAYAT, constituencyId, locationId, publicationDateId).get(0):0L);  
+	   }
+	   else if(locationType.equalsIgnoreCase(IConstants.CUSTOMWARD))
+		 dataVerificationVO.setTotalBooths(userVoterDetailsDAO.getBoothsCountForCustomWard(locationId, constituencyId, publicationDateId, userId) != null?(Long)userVoterDetailsDAO.getBoothsCountForCustomWard(locationId, constituencyId, publicationDateId, userId).get(0):0L);
+	   else if(locationType.equalsIgnoreCase(IConstants.WARD))
+		   dataVerificationVO.setTotalBooths(boothDAO.getBoothsCountByLocationId(IConstants.PANCHAYAT, locationId, constituencyId, publicationDateId)!= null?(Long)boothDAO.getBoothsCountByLocationId(IConstants.WARD, locationId, constituencyId, publicationDateId).get(0):0L);
+		
+		
+	 return dataVerificationVO;
+	}catch (Exception e) {
+	 log.error("Exception Occured in getCountForConstituency() method, Exception - "+e);
+	 return dataVerificationVO;
+	}
+}
 		    
 		  
 }
