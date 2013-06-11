@@ -2777,7 +2777,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		if("public".equalsIgnoreCase(type)){
 		queryStr.append(" and model.isPrivate = 'false' ");
 		}
-		queryStr.append(" order by model.updateddate ");
+		queryStr.append(" order by model.updateddate desc");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("gallaryIdsList",gallaryIdsList);
 
@@ -2802,42 +2802,61 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			return query.list();
 		}
 	 
-	 public List<Object[]> getPartyWiseAllNewsDetailsInLocation(List<Long> partyId, Long constituencyScopeId, Long constituencyVal,
+	 public List<?> getPartyWiseAllNewsDetailsInLocation(List<Long> partyId, Long districtScopeId, List<Long> districtIds, Long constituencyScopeId, List<Long> constituencyVal,
 				Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
 				List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds,Long 
-				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult){
+				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult,String type){
 			StringBuilder query = new StringBuilder();
-			query.append("select model.file,model.fileGallaryId,model.file.fileDate,fs.source.source,model2.party.partyFlag,model2.party.partyId from FileGallary model , PartyGallery model2 , FileSourceLanguage fs where "+
-			" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId in (:partyId) "+
-			" and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and model.isPrivate = :isPrivate ");
-
+			if(type.equalsIgnoreCase("count"))
+			{
+				query.append("select count(distinct model.file.fileId) from FileGallary model , PartyGallery model2 , FileSourceLanguage fs where "+
+						" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId in (:partyId) "+
+						" and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and model.isPrivate = :isPrivate ");
+			}
+			else 
+			{
+				query.append("select distinct model.file,model.fileGallaryId,model.file.fileDate,fs.source.source,model2.party.partyFlag,model2.party.partyId from FileGallary model , PartyGallery model2 , FileSourceLanguage fs where "+
+						" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId in (:partyId) "+
+						" and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and model.isPrivate = :isPrivate ");
+			}
+			
 			if(queryType.equalsIgnoreCase("Public"))
 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
 
 			if(queryType.equalsIgnoreCase("Private"))
 			query.append(" and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			
+			query.append(" and (");
+			if(districtIds!= null)
+				query.append("(model.file.regionScopes.regionScopesId = :districtScopeId and " +
+						" model.file.locationValue in (:districtIds)) or");
 			if(constituencyVal!= null)
-			query.append(" and ((model.file.regionScopes.regionScopesId = :constituencyScopeId and " +
-			" model.file.locationValue = :constituencyVal) ");
+				query.append("(model.file.regionScopes.regionScopesId = :constituencyScopeId and " +
+						" model.file.locationValue in (:constituencyVal)) or ");
 			if(tehsilIds!=null && tehsilIds.size()>0)
-				query.append("or (model.file.regionScopes.regionScopesId = :tehsilScopeId and " +
-						" model.file.locationValue in ( :tehsilIds)) ");
+				query.append(" (model.file.regionScopes.regionScopesId = :tehsilScopeId and " +
+						" model.file.locationValue in ( :tehsilIds)) or ");
 			if(localElectionBodyIds!=null && localElectionBodyIds.size()>0)
-				query.append("or (model.file.regionScopes.regionScopesId = :muncipalityScopeId and " +
-						" model.file.locationValue in ( :localElectionBodyIds)) ");
+				query.append("(model.file.regionScopes.regionScopesId = :muncipalityScopeId and " +
+						" model.file.locationValue in ( :localElectionBodyIds)) or ");
 			if(wardIdsList !=null && wardIdsList.size()>0)
-				query.append("or (model.file.regionScopes.regionScopesId = :wardScopeId and " +
-						" model.file.locationValue in ( :wardIdsList))");
+				query.append(" (model.file.regionScopes.regionScopesId = :wardScopeId and " +
+						" model.file.locationValue in ( :wardIdsList)) or ");
 			if(hamletIds !=null && hamletIds.size()>0)
-				query.append("or (model.file.regionScopes.regionScopesId = :hamletScopeId and " +
+				query.append("(model.file.regionScopes.regionScopesId = :hamletScopeId and " +
 						" model.file.locationValue in (:hamletIds))) ");
-				
-			query.append("group by model.file.fileId order by model.file.fileDate desc, model.updateddate desc  ");
+			if(!type.equalsIgnoreCase("count"))	
+				query.append("group by model.file.fileId order by model.file.fileDate desc, model.updateddate desc  ");
+			
 			Query queryObject = getSession().createQuery(query.toString());
 
 			queryObject.setParameterList("partyId", partyId);
+			if(districtIds!= null){
+				queryObject.setParameterList("districtIds",districtIds);
+				queryObject.setLong("districtScopeId", districtScopeId);				
+			}
 			if(constituencyVal!= null){
-				queryObject.setLong("constituencyVal",constituencyVal);
+				queryObject.setParameterList("constituencyVal",constituencyVal);
 				queryObject.setLong("constituencyScopeId", constituencyScopeId);
 			}
 			if(tehsilIds!=null && tehsilIds.size()>0){
@@ -2860,13 +2879,16 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			queryObject.setString("type", IConstants.NEWS_GALLARY);
 			queryObject.setString("isDelete", "false");
 			queryObject.setString("isPrivate", "false");
-			queryObject.setFirstResult(firstResult);
-			queryObject.setMaxResults(maxResult);
+			if(!type.equalsIgnoreCase("count"))
+			{
+				queryObject.setFirstResult(firstResult);
+				queryObject.setMaxResults(maxResult);
+			}
 
 
 			return queryObject.list();
 			}
-			
+	
 	 @SuppressWarnings("unchecked")
      public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList)
      {

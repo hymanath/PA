@@ -178,4 +178,17 @@ IDelimitationConstituencyDAO {
 				"and model.year =(select max(model1.year) from DelimitationConstituency model1 where model1.constituency.name = ? and "+
 				" model1.constituency.electionScope.electionType.electionType = ?)",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituenciesByDistrictIDs(Long districtId){
+		return getHibernateTemplate().find("Select model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				"model.constituency.district.districtId in(" + districtId + ") and model.year =(Select max(model.year) from DelimitationConstituency model) order by model.constituency.name"); 
+			}
+	
+	public List getMandalsOfConstituency(Long constituencyId){
+		return getHibernateTemplate().find("select model.tehsil.tehsilId, model.tehsil.tehsilName, model.delimitationConstituency.year, " +
+				"model.isPartial from DelimitationConstituencyMandal model where model.delimitationConstituency.constituency.constituencyId = ? " +
+				"order by model.delimitationConstituency.year desc,model.tehsil.tehsilName ", constituencyId);
+	}
+	
 }

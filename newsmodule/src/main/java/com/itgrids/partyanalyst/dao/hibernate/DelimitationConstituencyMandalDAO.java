@@ -67,7 +67,7 @@ IDelimitationConstituencyMandalDAO {
 	public List getMandalsOfConstituency(Long constituencyId){
 		return getHibernateTemplate().find("select model.tehsil.tehsilId, model.tehsil.tehsilName, model.delimitationConstituency.year, " +
 				"model.isPartial from DelimitationConstituencyMandal model where model.delimitationConstituency.constituency.constituencyId = ? " +
-				"order by model.delimitationConstituency.year desc,model.tehsil.tehsilName ", constituencyId);
+				"and model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1) ", constituencyId);
 	}
 	
 	@SuppressWarnings("unchecked")
