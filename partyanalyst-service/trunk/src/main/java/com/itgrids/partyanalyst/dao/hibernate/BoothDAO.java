@@ -1170,4 +1170,52 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			return getHibernateTemplate().find(" select model.boothId,model.partNo,model.location,model.villagesCovered from Booth model where model.tehsil.tehsilId = ? and model.publicationDate.publicationDateId = ? " +
 					" and model.panchayat.panchayatId  is not Null and model.constituency.constituencyId = ?",params);
 		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getPanchayatsCountByMandalId(Long mandalId,Long constituencyId,Long publicationDateId)
+		{
+			Query query = getSession().createQuery(" select count(distinct model.panchayat.panchayatId) from Booth model where model.tehsil.tehsilId =:tehsilId and " +
+					" model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId ");
+			
+			query.setParameter("tehsilId", mandalId);
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationDateId);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getBoothsCountByLocationId(String type,Long id,Long constituencyId,Long publicationDateId)
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("select count(model.boothId) from Booth model where model.constituency.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId  ");
+			
+			if(type.equalsIgnoreCase(IConstants.MANDAL))
+				stringBuilder.append(" and model.tehsil.tehsilId =:id and model.localBody is null ");
+			else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+				stringBuilder.append(" and model.panchayat.panchayatId =:id ");
+			else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+				stringBuilder.append(" and model.localBody.localElectionBodyId =:id ");
+			else if(type.equalsIgnoreCase(IConstants.WARD))
+				stringBuilder.append(" and model.localBodyWard.constituencyId = :id  ");
+			
+			Query query = getSession().createQuery(stringBuilder.toString());
+			query.setParameter("id", id);
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationDateId);
+			return query.list();
+			
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getWardsCountByLocalEleBodyId(Long localEleBodyId,Long publicationDateId,Long constituencyId)
+		{
+			Query query = getSession().createQuery(" select count(distinct model.localBodyWard.constituencyId) from Booth model where model.constituency.constituencyId =:constituencyId " +
+					" and model.publicationDate.publicationDateId =:publicationDateId and model.localBody.localElectionBodyId =:localEleBodyId ");
+			
+			query.setParameter("localEleBodyId", localEleBodyId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("constituencyId", constituencyId);
+			
+			return query.list();
+		}
 }

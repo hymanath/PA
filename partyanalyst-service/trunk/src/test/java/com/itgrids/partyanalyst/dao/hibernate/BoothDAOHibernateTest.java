@@ -359,14 +359,14 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testGetBoothsInAMandalByPublicationAndConstId()
+	/*public void testGetBoothsInAMandalByPublicationAndConstId()
 	{
 		List<Object[]> list = boothDAO.getBoothsInAMandalByPublicationAndConstId(739l,7l, 207l);
 		System.out.println(list.size());
-		/*if(list != null && list.size() > 0)
+		if(list != null && list.size() > 0)
 			for(Object[] params : list)
-				System.out.println(params[0]+" "+params[1]);*/
-	}
+				System.out.println(params[0]+" "+params[1]);
+	}*/
 	
 	/*public void testString()
 	{
@@ -584,7 +584,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetBoothsByPanchayatIdsListAndConstituencyIdInAPublication()
+	/*public void testGetBoothsByPanchayatIdsListAndConstituencyIdInAPublication()
 	{
 		List<Long> mandalsList = new ArrayList<Long>(0);
 		mandalsList.add(1l);
@@ -598,6 +598,24 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			for(Object obj : params)
 				System.out.print("\t"+obj.toString());
 		}
+	}*/
+	
+	/*public void testGetPanchayatsCountByMandalId()
+	{
+	 List<Long> list = boothDAO.getPanchayatsCountByMandalId(844l, 232l, 8l);
+	 System.out.println(list.get(0));
+	}*/
+	
+	public void testGetBoothsCountByLocationId()
+	{
+		List<Long> list = boothDAO.getBoothsCountByLocationId(IConstants.WARD, 31937l,347l, 8l);
+		System.out.println(list.get(0));
 	}
+	
+	/*public void testgetWardsCountByLocalEleBodyId()
+	{
+		List<Long> list = boothDAO.getWardsCountByLocalEleBodyId(20l, 8l, 347l);
+		System.out.println(list.get(0));
+	}*/
 	
 }
