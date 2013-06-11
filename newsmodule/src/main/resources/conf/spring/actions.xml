@@ -42,7 +42,8 @@
 		<property name="registrationService" ref="registrationService" />
 	</bean>
 	
-	<bean id="homePageAction" class="com.itgrids.partyanalyst.web.action.HomePageAction" singleton="false">	
+	<bean id="homePageAction" class="com.itgrids.partyanalyst.web.action.HomePageAction" singleton="false">
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>
 	<bean id="contentManagementAction" class="com.itgrids.partyanalyst.web.action.ContentManagementAction">
 	  <property name="contentManagementService" ref="contentManagementService" />
