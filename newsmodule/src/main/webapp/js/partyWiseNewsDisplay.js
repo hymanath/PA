@@ -17,22 +17,35 @@
 			return false;
 	}	
 	var value = val;
-		/* if(value=="Constituency" || value=="Mandal" || value=="Panchayat" || value=="Booth")
-		{	
+	if(value == 'District')
+		{
+			$('#showScopeSubsC').css("display","none");
+			var str =''; 
+			str +='<table style="margin-top:5px">';
+			str +='<tr id="tableRowC">';
+			str +='<td class="tdWidth1">District:<font id="requiredValue" class="requiredFont">*</font></td>';
+			//str+='<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="getAllConstituenciesInStateByType(2,1,this.options[this.selectedIndex].value);">';
+			str+='<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList">';
+			str+='</select></td>';	 
+			str +='</tr>';
+			str +='</table>';
+			document.getElementById("showScopeSubsD").innerHTML = str;
+			getAllConstituenciesInDistrictByType(1);
+		}
+		if(value=="Constituency" || value=="Mandal" || value=="Panchayat" || value=="Booth")
+		{	$('#showScopeSubsC').css("display","block");
 			var str =''; 
 			str +='<table style="margin-top:5px">';
 			str +='<tr id="tableRowC">';
 			str +='<td class="tdWidth1">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>';
-			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="getMandalList(this.options[this.selectedIndex].value);">';
-			 for(var i in locationDetails.constituencyArr)
-				{
-			str+='<option value='+locationDetails.constituencyArr[i].id+'>'+locationDetails.constituencyArr[i].value+'</option>';
-				} 
+			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" >';
+			//onchange="getMandalList(this.options[this.selectedIndex].value);">';
 			str+='</select></td>';	 
 			str +='</tr>';
 			str +='</table>';
-			document.getElementById("showScopeSubs").innerHTML = str;
-		}*/
+			document.getElementById("showScopeSubsC").innerHTML = str;
+			getAllConstituenciesInStateByType(2, 1, 'constituency');
+		}
 		if(value=="Mandal" || value=="Panchayat" || value=="Booth")
 		{
 			var str ='';
@@ -351,7 +364,11 @@
 								}
 								else if(jsObj.task == "getConstituencies")
 								{
-								createOptionsForSelectElmtId(myResults)
+								createOptionsForSelectElmtId('userAccessConstituencyList',myResults);
+								}
+								else if(jsObj.task == "getDistrictsForState")
+								{
+								createOptionsForSelectElmtId('userAccessDistrictList',myResults);
 								}
 							}catch (e) { 
 							     $("#votersEditSaveAjaxImg").hide();
@@ -405,12 +422,14 @@
 		var mandalValues = $('#mandalList').val();
 		var panchayatValues = $('#panchayatList').val();
 		var boothValues = $('#boothList').val();
+			$('#userAccessDistrictList').css("border","1px solid #F3E81E");
 			$('#userAccessConstituencyList').css("border","1px solid #F3E81E");
 			$('#mandalList').css("border","1px solid #F3E81E");
 			$('#panchayatList').css("border","1px solid #F3E81E");
 			$('#boothList').css("border","1px solid #F3E81E");
 			$('#listValue').css("border","1px solid #F3E81E");
 		if(scopeIdVal == '0'){
+				$('#userAccessDistrictList').css("border","1px solid IndianRed");
 				$('#userAccessConstituencyList').css("border","1px solid IndianRed");
 				$('#mandalList').css("border","1px solid IndianRed");
 				$('#panchayatList').css("border","1px solid IndianRed");
@@ -440,7 +459,7 @@
 			$('#listValue').css("border","1px solid IndianRed");
 			return false;
 		}
-		var scopeIdVal=document.getElementById("userAccessConstituencyList").value;	
+		var scopeIdVal;
 		/*var mandalValues = document.getElementById("mandalList").value;
 		var panchayatValues = document.getElementById("panchayatList").value;
 		var boothValues = document.getElementById("boothList").value;
@@ -473,13 +492,17 @@
 				scopeIdVal = $("#boothList").val();
 				locationName = $('#boothList option:selected').text();
 			}*/
+			if(scope == "District"){
+				scopeIdVal = document.getElementById("userAccessDistrictList").value;	
+				locationName = $('#userAccessDistrictList option:selected').text();
+			}
 			if(scope == "Constituency"){
 				scopeIdVal = document.getElementById("userAccessConstituencyList").value;	
 				locationName = $('#userAccessConstituencyList option:selected').text()+' Constituency';
 			}
 			
 			var urlStr="partyWiseNewsPopupAction.action?scope="+scope+"&locationName="+locationName+"&locationValue="+scopeIdVal+"&partyName="+PartyName+"&partyId="+partyId;			
-			var updatedBrowser = window.open(urlStr,"partyWiseNewsPopupAction","scrollbars=yes,height=600,width=700,left=200,top=200");	
+			var updatedBrowser = window.open(urlStr,'_blank');	
 			updatedBrowser.focus();
 	}
 
@@ -516,9 +539,10 @@ function getNewsForPagination(num)
 	callsAjax(jsObj,url);
 	}
 	
-	function createOptionsForSelectElmtId(myResults)
+	var flag =false;
+	function createOptionsForSelectElmtId(divId,myResults)
 {	
-	var elmt = document.getElementById("userAccessConstituencyList");
+	var elmt = document.getElementById(divId);
 	
 	if( !elmt || myResults == null)
 		return;
@@ -536,15 +560,18 @@ function getNewsForPagination(num)
 		{
 			elmt.add(option); // IE only
 		}
-		if(myResults[i].name == 'Kuppam')
+		if(myResults[i].name == 'Kuppam' && !flag){
+		flag=true;
 		$('#userAccessConstituencyList').val(option.value);
+		}
 	}
 }
-
+var maxResults;
 function showTotalNews(myResult,jsObj){
 	var str='';
 	str+='<ul class="unstyled">';
-	for(var i in myResult){
+	for(var i in myResult){	
+	maxResults = myResult[i].totalResultsCount;
 	if(myResult[i].fileType == 'Party'){
 		str+='<li >';
 		str+='<div class="">';
@@ -580,14 +607,28 @@ function showTotalNews(myResult,jsObj){
 	
 	document.getElementById('newsDispalyId').innerHTML=str;
 	
-	var maxResults=jsObj.maxRecord;
+	//var maxResults=jsObj.maxRecord;
 	//var itemsCount=results[0].count;
-	
-	if(jsObj.startRecord==0){
-		$("#paginationId").pagination({
-			items: 20,
-			itemsOnPage: maxResults,
-			cssStyle: 'light-theme'
-		});
+	if(maxResults>10){
+		if(jsObj.startRecord==0){
+			$("#paginationId").pagination({
+				items: maxResults,
+				itemsOnPage: 10,
+				cssStyle: 'light-theme'
+			});
+		}
 	}
+}
+
+function getAllConstituenciesInDistrictByType(stateId){
+
+	var jsObj=
+		{				
+			stateId: 1,
+			task: "getDistrictsForState",	
+		}
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getDistrictsForAStateAjaxAction.action?"+rparam;						
+	callsAjax(jsObj,url);
 }
