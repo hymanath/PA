@@ -534,7 +534,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		public List<Long> getGalleryIdsForSelectedParty(Long partyId)
 		{
 			Query query = getSession().createQuery("select model.gallery.gallaryId from PartyGallery model " +
-					" where model.party.partyId = :partyId");
+					" where model.party.partyId = :partyId and model.gallery.contentType.contentTypeId = 4");
 			
 			query.setParameter("partyId", partyId);
 			return query.list();
