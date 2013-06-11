@@ -4330,6 +4330,13 @@
            		<param name="root">countList</param>
         	</result>
 		</action>
+		
+		<action name="getCountForConstituencyAction" class="votersAnalysisAction" method="getCountsForLevel">
+		   <result type="json" name="success">
+		     <param name="root">dataVerificationVO</param>
+		   </result>
+		</action>
+		
 		<action name="populateVoterDataAction" class="populateVoterDataAction">
 		<result name="success">/jsp/populateVoterData.jsp</result>
 		<result name="error">/jsp/loginForm.jsp?src=populateVoterDataAction</result>	

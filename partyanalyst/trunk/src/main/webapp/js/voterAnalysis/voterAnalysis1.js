@@ -1164,7 +1164,10 @@ function addToPolitician(voterId,name)
 		// if(type != "hamlet")
 		// getInfluencingPeopleCount(id,type);
 		//-- 
-		getCounts(id,publicationId,type);
+		//getCounts(id,publicationId,type);
+		if(type != "constituency")
+		 getCountForConstituency(id,publicationId,type);
+
 		getVotersCastInfo(id,publicationId,type);
        //getCastInfoForsubLevel(id,publicationId,type);
        getvotersBasicInfo("impFamilies",id,publicationId,type);
@@ -1676,6 +1679,9 @@ function addToPolitician(voterId,name)
 									else
 									buildCountData1(myResults,jsObj);
 								}
+								else if(jsObj.task == "getCountForConstituency")
+								 buildCountForConstituency(myResults,jsObj);
+
 								else if(jsObj.task == "getCastInfoForsubLevels")
 								{   $("#votersDiv2").show();
 								$("#casteDiv").show();
@@ -5815,6 +5821,25 @@ var jsObj=
 		callAjax(jsObj,url);
 }
 
+
+function getCountForConstituency(id,publicationId,type)
+{
+	var jsObj = {
+	     id:id,
+		 type:type,
+		 publicationDateId :publicationId,
+		 constituencyId:$("#constituencyList").val(),
+		 task:"getCountForConstituency"
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getCountForConstituencyAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+	
+
+}
+
 function getCounts(id,publicationId,type)
 {
 var typeName = mainname;
@@ -6055,6 +6080,40 @@ var jsObj=
 
 	divEle1.innerHTML = str;
 
+	}
+
+	function buildCountForConstituency(results,jsObj)
+	{
+		$("#reportLevelCountDiv1").html('');
+	  $("#reportLevelCountDiv1").css({'display':'block','padding':'10px 0'});
+	  var str = '';
+	  str +='<div>';
+	  if(jsObj.type == "mandal" && mainreqid.charAt(0) =="2")
+	  {
+	    str +='<span class="btn btn-info">'+results.totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+	    str +='<span class="btn btn-info">'+results.totalHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	    str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	  }
+	 if(jsObj.type == "mandal" && mainreqid.charAt(0) =="1")
+	 {
+	   str +='<span class="btn btn-info">'+results.totalWards+'</span><span class="help-inline f2">Wards</span>';
+	   str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	 }
+	if(jsObj.type == "panchayat")
+	{
+	  str +='<span class="btn btn-info">'+results.totalHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	  str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	}
+	if(jsObj.type == "ward")
+	  str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	
+	
+	if(jsObj.type == "customWard")
+     str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	
+	str+='</div>';
+
+	 $("#reportLevelCountDiv1").html(str);
 	}
 
 

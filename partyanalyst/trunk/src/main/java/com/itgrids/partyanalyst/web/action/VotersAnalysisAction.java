@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
+import com.itgrids.partyanalyst.dto.DataVerificationVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
@@ -127,7 +128,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
     private VoterInfo voterInfo;
     
     private List<VotersDetailsVO> casteDetailsVO;
-    
+    private DataVerificationVO dataVerificationVO;
 	
 	public List<VotersDetailsVO> getCasteDetailsVO() {
 		return casteDetailsVO;
@@ -499,6 +500,14 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setResultData(List<SelectOptionVO> resultData) {
 		this.resultData = resultData;
+	}
+
+	public DataVerificationVO getDataVerificationVO() {
+		return dataVerificationVO;
+	}
+
+	public void setDataVerificationVO(DataVerificationVO dataVerificationVO) {
+		this.dataVerificationVO = dataVerificationVO;
 	}
 
 	public String execute() throws Exception
@@ -1091,19 +1100,21 @@ public String getCountsForLevel()
 	String param ;
 	param = getTask();
 	jObj = new JSONObject(param);
-	
-	if(jObj.getString("task").equalsIgnoreCase("getCountForLevel"))
-	{
+	session = request.getSession();
+	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+	Long userId =  regVO.getRegistrationID();
+	  if(jObj.getString("task").equalsIgnoreCase("getCountForLevel"))
+	  {
 		Long publicationDateId= jObj.getLong("publicationDateId");
 		Long id = jObj.getLong("id");
 		String type = jObj.getString("type");
-		session = request.getSession();
-		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		Long userId =  regVO.getRegistrationID();
+		
 	
 		
 		countList = votersAnalysisService.getCountList(publicationDateId,id,type, jObj.getLong("constituencyId"),jObj.getLong("tehsilId"),userId);
 		}
+	   else if(jObj.getString("task").equalsIgnoreCase("getCountForConstituency"))
+		  dataVerificationVO = votersAnalysisService.getCountForConstituency(jObj.getString("type"),jObj.getLong("constituencyId"),jObj.getLong("id"),jObj.getLong("publicationDateId"),userId);
 	}
 	
 	catch(Exception e)
