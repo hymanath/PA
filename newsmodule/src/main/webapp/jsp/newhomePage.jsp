@@ -503,6 +503,7 @@
 				</div>
 				<div id="video_dialog">
 					<div id="videos"></div>
+					<span class="btn" onclick="showMoreVideoGallaries()">More Videos</span>
 				</div>
 			<!-------- Row-3 end -------------->
 		<div id="showContentDiv">
@@ -516,6 +517,14 @@
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	
 <script>
+
+function showMoreVideoGallaries(){
+	 var urlstr = "showMoreVideos.action";
+		
+     var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+}
+
 getAllConstituenciesInStateByType(2, 1, 'constituency');
 function showFilesInGallary(gallaryId)
 {
@@ -656,6 +665,10 @@ function callHomePageAjax11(jsObj,url){
 								{
 										buildLatestNews(myResults,jsObj);
 										
+								}
+								if(jsObj.task =="getMoreVideos")
+								{
+									alert('s');
 								}
 								}catch (e) {
 							     
