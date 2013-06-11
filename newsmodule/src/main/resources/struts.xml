@@ -5294,7 +5294,7 @@
 		     
 		   
 		   
-         <action name="getvideoAGallary" class="candidateElectionResultsAction" method="getVideosForSelectedGallery">
+         <action name="getvideoAGallary" class="candidateElectionResultsAction" method="">
         <result type="json" name="success">
 		    	<param name="root">fileVO</param>
 		   </result>        
