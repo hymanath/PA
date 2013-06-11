@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PanchayatHamlet;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long> implements IPanchayatHamletDAO{
 
@@ -82,6 +83,26 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 	{
 		Query query = getSession().createQuery(" select distinct model.panchayat.panchayatId,model.panchayat.panchayatName,model.panchayat.tehsil.tehsilId from PanchayatHamlet model where model.panchayat.tehsil.tehsilId in(:tehsilId) ");
 		query.setParameterList("tehsilId", mandalIdsList);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getHamletsCountByLocationId(String type,Long constituencyId,Long id,Long publicationDateId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select count(distinct model.hamlet.hamletId) from PanchayatHamlet model, Booth model2 where model.panchayat.panchayatId = model2.panchayat.panchayatId and ");
+		stringBuilder.append(" model2.constituency.constituencyId =:constituencyId and model2.publicationDate.publicationDateId =:publicationDateId ");
+		if(type.equalsIgnoreCase(IConstants.MANDAL))
+			stringBuilder.append(" and model.panchayat.tehsil.tehsilId =:id ");
+		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			stringBuilder.append(" and model.panchayat.panchayatId =:id ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		
+		query.setParameter("id", id);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		
 		return query.list();
 	}
 
