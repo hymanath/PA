@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IConstants;
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionChainResult;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
@@ -408,6 +409,29 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID);
 		
 		fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L);
+		return Action.SUCCESS;
+	}
+	public String getMoreVideos(){
+		
+		try{	 
+			 jObj = new JSONObject(getTask());
+			 
+		   }catch(Exception e){
+				 e.printStackTrace(); 
+		   }
+		 
+		 Long partyId = jObj.getLong("partyId");
+		 int startRecord = jObj.getInt("startRecord");
+		 int maxRecord = jObj.getInt("maxRecord");
+		 String queryType = jObj.getString("queryType"); 
+		 
+		 fileVOsList = candidateDetailsService.getAllVideosList(partyId, startRecord, maxRecord, queryType);
+		 
+		 
+		return Action.SUCCESS;
+	}
+	
+	public String showMoreVideos(){
 		return Action.SUCCESS;
 	}
 	
