@@ -229,6 +229,7 @@
 		<pattern>/partyWiseNewsPopupAction*</pattern>
 		<pattern>/anonymousUserAction*</pattern>
 		<pattern>/newsDetailsAction*</pattern>
+		<pattern>/showMoreVideos*</pattern>
     	 </decorator>
 
 </decorators>
