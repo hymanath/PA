@@ -5719,5 +5719,44 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 return fileVOsList;
 		}
 	}
+	 public List<FileVO> getAllVideosList(Long partyId,int firstResult,int maxResult,String queryType)
+	 {
+	 	List<FileVO> fileList = null;
+	 	FileVO fileVO = null;
+	 	
+	 	List<Object[]> gallariesList = partyGalleryDAO.getAllVideosOfParty(partyId, firstResult, maxResult, queryType);
+	 	int count=partyGalleryDAO.getAllVideosOfPartyCount(partyId, firstResult, maxResult, queryType);
+	 	
+	 	
+	 	if(gallariesList != null && gallariesList.size() > 0)
+	 	{
+	 		fileList = new ArrayList<FileVO>();
+	 		for (Object[] objects : gallariesList) {
+	 			fileVO = new FileVO();
+	 			fileVO.setIds((Long)objects[0]);
+	 			fileVO.setName(objects[1].toString());
+	 			fileVO.setDescription(objects[2].toString());
+	 			fileVO.setPath(objects[3].toString());
+	 			fileVO.setGallaryCreatedDate(objects[4].toString());
+	 			fileVO.setCount(count);
+	 			fileList.add(fileVO);
+	 		}
+	 	}
+	 	/*List<FileGallary> videos = fileGallaryDAO.getAllVodeosForSelectedFile(fileId);
+	 	if(videos != null && videos.size() > 0)
+	 	{
+	 		fileList = new ArrayList<FileVO>();
+	 		for (FileGallary fileGallary : videos) {
+	 			fileVO = new FileVO();
+	 			fileVO.setFileId(fileGallary.getFile().getFileId());
+	 			fileVO.setFileDescription1(fileGallary.getFile().getFileDescription().toString());
+	 			fileVO.setFilePath1(fileGallary.getFile().getFilePath());
+	 			fileList.add(fileVO);
+	 		}
+	 	}*/
+	 	
+	 	
+	 	return fileList;
+	 }
 
 }
