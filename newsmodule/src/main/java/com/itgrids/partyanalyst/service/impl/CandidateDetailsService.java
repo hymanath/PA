@@ -5544,9 +5544,9 @@ IConstants.NEWS_GALLARY,0,5);
 
 }
 
-public List<File> getVideosForSelectedParty(Long partyId)
+public List<FileVO> getVideosForSelectedParty(Long partyId)
 {
-	List<File> file = null;
+	List<FileVO> file = null;
 	List<Long> galleryIds = null;
 	List<Long> galleryList = partyGalleryDAO.getGalleryIdsForSelectedParty(partyId);
 	if(galleryList != null && galleryList.size() > 0)
@@ -5560,9 +5560,13 @@ public List<File> getVideosForSelectedParty(Long partyId)
 	
 	if(filesList != null && filesList.size() > 0)
 	{
-		file = new ArrayList<File>();
+		file = new ArrayList<FileVO>();
 		for (FileGallary fileGallary : filesList) {
-			file.add(fileGallary.getFile());
+			FileVO fileVO = new FileVO();
+			fileVO.setFileId(fileGallary.getFile().getFileId());
+			fileVO.setDescription(fileGallary.getFile().getFileDescription());
+			fileVO.setFilePath1(fileGallary.getFile().getFilePath());
+			file.add(fileVO);
 		}
 	}
 	
@@ -5590,7 +5594,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			fileVO = new FileVO();
 			fileVO.setIds((Long)objects[0]);
 			fileVO.setFilePath1(objects[1].toString());
-			fileVO.setFileData((File) objects[2]);
+			//fileVO.setFileData((File) objects[2]);
 			fileList.add(fileVO);
 		}
 	}
