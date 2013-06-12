@@ -5762,5 +5762,27 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 	
 	 	return fileList;
 	 }
+	 public List<FileVO> getVideosForGalleryId(Long galId,int maxRecord,int startRecord){
+		 List<FileVO> fileList = null;
+		 FileVO fileVO = null;
+		 List<Object[]> videosList = fileGallaryDAO.getVideosOfGalleryId(galId,maxRecord,startRecord);
+		 int count=fileGallaryDAO.getVideosCountOfGalleryId(galId);
+		 
+		 if(videosList != null && videosList.size() > 0)
+		 	{
+		 		fileList = new ArrayList<FileVO>();
+		 		for (Object[] objects : videosList) {
+		 			fileVO = new FileVO();
+		 			fileVO.setIds((Long)objects[1]);
+		 			fileVO.setTitle(objects[2]!=null?objects[2].toString():null);
+		 			fileVO.setDescription(objects[3]!=null?objects[3].toString():null);
+		 			fileVO.setPath(objects[0]!=null?objects[0].toString():null);
+		 			fileVO.setCount(count);
+		 			fileList.add(fileVO);
+		 		}
+		 	}
+		 
+		 return fileList;
+	 }
 
 }
