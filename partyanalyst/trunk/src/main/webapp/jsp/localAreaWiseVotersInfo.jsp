@@ -68,7 +68,7 @@
  <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
  <script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 
-<title>Local Area Wise Voters Info</title>
+<title>LOCAL AREA WISE VOTERS INFORMATION</title>
 <style type="text/css">
 
 #votersBasicInfoSubDiv{
@@ -127,18 +127,20 @@ table {
 	 color:#333333;
 
  }
-#titleDiv{background: none repeat scroll 0 0 #06ABEA;
-    border-radius: 3px;
+#titleDiv
+{
+	background: none repeat scroll 0 0 #49AFCD;
+    border-radius: 5px 5px 5px 5px;
+    border-top-width: 40px;
     color: #FFFFFF;
-    font-size: 14px;
-	padding: 4px;
-    width: 550px;
-	font-family: verdana;
-    font-weight: bold;
-    margin-bottom: 14px;
-    margin-left: 10px;
-    margin-top: 12px;
-	}
+    font-family: arial;
+    font-size: 16px;
+    font-weight: bolder;
+    height: 28px;
+    margin: 10px;
+    padding: 5px 5px;
+    text-align: center;
+}
 	#votersBasicInfoSubChartDiv,#assAndUnass,#votersBasicInfoSubDiv{ margin-left: 10px;
     margin-right: 5px;}
 	#votersBasicInfoSubDiv{margin-bottom:20px;}
@@ -197,7 +199,17 @@ table.dataTable thead th {
     padding: 11px 10px 28px;
 	
 }
+.dataTables_length {
+    float: left;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
 
+.dataTables_filter {
+    float: right;
+    margin-top: 10px;
+    text-align: right;
+}
 </style>
 
 <script type="text/javascript">
@@ -223,12 +235,16 @@ table.dataTable thead th {
     });
 	if(type == "customWard" && resultFor=="localArea")
 {
+$("#localCastStatsTabContent_subbodyDiv").show();
 $("#localCastStatsTabContent_subbody").show();
+ $('#casteDetailsDiv_head').show();
  $('#casteDetailsDiv').show();
 }
 else
 	{
+	$("#localCastStatsTabContent_subbodyDiv").hide();
 	$("#localCastStatsTabContent_subbody").hide();
+	 $('#casteDetailsDiv_head').hide();
 	 $('#casteDetailsDiv').hide();
 	}
 });
@@ -246,18 +262,30 @@ $('#castesAsPerLocId').click(function(){
 <div id="ajaxImageDiv" style="margin-top:30px;margin-left:50px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 
 	<div id="votersBasicInfoMainDiv">
-	<div id="titleDiv"></div>
+	<div id="titleDiv" align="center"></div>
 		<div id="votersBasicInfoMsgDiv"></div>
-		<div id="wardSearchDiv" style="float: right; padding: 10px;display:none;margin-top:-48px;"><b>Select Ward : </b><select id="wardsList" onchange="getDetailsForSelectedWard();"></select></div>
-		<div id="votersBasicInfoSubChartDiv"></div>
+		<div id="wardSearchDiv" style="float: right; padding: 10px;display:none;"><b>Select Ward : </b><select id="wardsList" onchange="getDetailsForSelectedWard();"></select></div>
+	
+	<div align="center">
+	<div id="votersBasicInfoSubChartDiv_head" class="widget green whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
+	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="votersBasicInfoSubChartHeading"></h4>
+	<div id="votersBasicInfoSubChartDiv" style="margin-top: 67px;">
+	</div></div></div>
+	
 	</br>
 		<div id="assAndUnass"></div>
-		<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable"></div>
+	<div align="center">
+	<div id="votersBasicInfoSubDiv_head" class="widget blue whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
+	<h4 class="headingClass" id="votersBasicInfoSubHeading" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
+	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable table table-bordered table-striped table-hover" ></div>	</div></div>
 
 </div>
-<div style="border:1px solid;" id="casteDetailsDiv">
-<div id="casteSelectDiv" style="text-align:center;border:1px solid #ccc;"></div>
-<div id="rangeSliderDiv" style="width:500px;margin:20px auto;border:1px solid #ccc;padding:10px 20px;" >
+<div align="center">
+<div id="casteDetailsDiv_head" class="widget green whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;display:none;">
+<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
+<div style="" id="casteDetailsDiv">
+<div id="casteSelectDiv" style="text-align:center;"></div>
+<div id="rangeSliderDiv" style="width:500px;margin:20px auto;padding:10px 20px;" >
 <h5>Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
 <div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div>
 
@@ -277,7 +305,7 @@ $('#castesAsPerLocId').click(function(){
   <div style=" margin-bottom: 10px;">
   <span class="btn btn-info " id="castesAsPerLocId" style="margin-top: 2px; margin-left: 650px;"> Show/Hide  Caste Wise Voters As Per Location</span>
   </div>
-</div>
+</div></div></div>
 <div style="border-bottom:1px solid;border-left:1px solid;border-right:1px solid;display:none;" id="castGrid2Outer">
 <div id="casteSelectDiv1" style="text-align:center;border:1px solid #ccc;"></div>
 <div id="rangeSliderDiv" style="width:500px;margin:20px auto;border:1px solid #ccc;padding:10px 20px;" >
@@ -297,17 +325,22 @@ $('#castesAsPerLocId').click(function(){
 </div>
 
 
-<div id='localCastStatsTabContent_subbody'  class="yui-skin-sam yui-dt-sortable widget blue"></div>
-</div>
+<div align="center">
+<div id="localCastStatsTabContent_subbodyDiv" class="widget blue whitegloss "  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;display:none;">
+<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="sublevelHeading"></h4>
+<div id='localCastStatsTabContent_subbody'  class="yui-skin-sam yui-dt-sortable table table-bordered table-striped table-hover" ></div>
+</div></div>
+
 
 <div id="container1"></div>
 
 <div id="instructionDialog" ></div>	
 
-<div id="votersAgenformationDiv" class="widget blue whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 949px;display:none;">
-
+<div align="center">
+<div id="votersAgenformationDiv" class="widget green whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;display:none;">
+	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="ageWiseHeading"></h4>
 	
-<div id="ageWiseDetailsDiv" class="yui-skin-sam yui-dt-sortable"><h4 id="ageWiseHeading"> etyrfutyi tyrty</h4></div></div>
+	<div id="ageWiseDetailsDiv" class="yui-skin-sam yui-dt-sortable"></div></div></div>
 </div>
 
 <script type="text/javascript">
@@ -477,7 +510,7 @@ function buildAgewiseDetails(myResults,jsObj)
 
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 { 
-	
+		$("#votersBasicInfoSubHeading").html('Local Area Wise Voters Information in '+typename+'');
       $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
 	  $("#titleDiv").html('');
@@ -502,8 +535,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	 {
 		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
 		//$("#votersTitle").html(jsObj.typename);
-			$("#votersBasicInfoSubChartDiv").css('border','1px solid #FFF');
-			$("#votersBasicInfoSubDiv").css('border','1px solid #FFF');
+			//$("#votersBasicInfoSubChartDiv").css('border','1px solid #FFF');
+			//$("#votersBasicInfoSubDiv").css('border','1px solid #FFF');
 
 			$("#votersBasicInfoMsgDiv").html("<span id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</span>");
 		 return;
@@ -511,8 +544,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	if(votersbasicinfo != null && votersbasicinfo.datapresent)
 	{
 		
-		$("#votersBasicInfoSubChartDiv").css('border','1px solid black');
-		$("#votersBasicInfoSubDiv").css('border','1px solid black');
+		//$("#votersBasicInfoSubChartDiv").css('border','1px solid black');
+		//$("#votersBasicInfoSubDiv").css('border','1px solid black');
 		$("#votersBasicInfoMsgDiv").html('');
 		//$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
 		//$("#votersTitle").html(jsObj.typename);
@@ -641,8 +674,8 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		
 		//$("#votersBasicInfoDiv").html(str);
 			if(jsObj.type != "booth"){
-			  $("#votersBasicInfoSubChartDiv").css("border","1px solid black"); 
-	          $("#votersBasicInfoSubDiv").css("border","1px solid black");
+			 // $("#votersBasicInfoSubChartDiv").css("border","1px solid black"); 
+	        //  $("#votersBasicInfoSubDiv").css("border","1px solid black");
 			 }
 		
 		str = '';
@@ -687,6 +720,7 @@ function buildVotersChart(chartInfo,reqTitle)
 {
 
  // Create the data table.
+		$('#votersBasicInfoSubChartHeading').html('Local Area Wise Voters Information Chart In '+typename+'');
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'type');
         data.addColumn('number', 'value');
@@ -1208,6 +1242,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0){
 		  $("#localCastStatsTabContent_subbody").html("<b style='margin-left: 350px;'>No Data Available</b>");
 		  $("#getLatestCastsSubcategoryWise").css("display","none");
+		  $('#casteDetailsDiv_head').hide();
 		  $('#casteDetailsDiv').hide();
 		  return;
 		}  
@@ -1481,9 +1516,9 @@ function buildCastSubLevelsDiv(myResults,jsObj)
 		str +='<div id="castErrorDiv"></div>';
 		str +='<h4>Select Options To View Caste Wise Voter Analysis</h4>';
 		
-		str +='<input id="castSelectRadio" type="radio" checked="true" name="castTypeRadio" value="All" onclick="buildCastInfoBasedOnOptions(\'all\')" /><b>All</b>';
+		str +='<input id="castSelectRadio" type="radio" checked="true" name="castTypeRadio" value="All" onclick="buildCastInfoBasedOnOptions(\'all\')" style="margin: 4px;"/><b>All</b>';
 
-		str +='<input id="castAllRadio" type="radio" name="castTypeRadio" value="castWise" onclick="buildCastInfoBasedOnOptions(\'selected\')" /><b>Caste Wise</b>';
+		str +='<input id="castAllRadio" type="radio" name="castTypeRadio" value="castWise" onclick="buildCastInfoBasedOnOptions(\'selected\')" style="margin: 4px;"/><b>Caste Wise</b>';
 		
 		str += '<div id="casteHideAndShowOptionsDiv" style="display:none;">';
 		 str += '<select class="selectBoxStyle" id="castSelectdId" multiple="multiple">';
