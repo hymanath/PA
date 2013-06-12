@@ -282,6 +282,8 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	
 	public int getVideosCountOfGalleryId(Long galleryId);
 	
+	public Long getVideosCountIntheGallary(Long galleryId);
+	
 	
 }
 
