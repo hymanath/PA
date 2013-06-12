@@ -5,45 +5,53 @@
 	function populateLocations(val)
 	{
 	$('#tableRowC').remove();
+	$('#tableRowD').remove();
 	$('#tableRowM').remove();
 	$('#tableRowP').remove();
 	$('#tableRowB').remove();
+	$('#headingDiiv').html('');
 	clearErrDiv();
 	var scope = $('#listValue').val();
 	$('#listValue').css("border","1px solid #F3E81E");
 	if(scope == '0'){
-			$('#errorMsgDiv').html('<span style="margin-left: -165px;"> Please Select Scope Value </span>');
+			$('#showScopeSubsD').css("display","none");
+			$('#showScopeSubsC').css("display","none");
 			$('#listValue').css("border","1px solid IndianRed");
 			return false;
 	}	
 	var value = val;
 	if(value == 'District')
-		{
+		{	
+			$('#headingDiiv').html('View District Wise News');
 			$('#showScopeSubsC').css("display","none");
 			var str =''; 
 			str +='<table style="margin-top:5px">';
-			str +='<tr id="tableRowC">';
+			str +='<tr id="tableRowD">';
 			str +='<td class="tdWidth1">District:<font id="requiredValue" class="requiredFont">*</font></td>';
 			//str+='<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="getAllConstituenciesInStateByType(2,1,this.options[this.selectedIndex].value);">';
-			str+='<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList">';
+			str+='<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="addCssStyle();">';
 			str+='</select></td>';	 
 			str +='</tr>';
 			str +='</table>';
 			document.getElementById("showScopeSubsD").innerHTML = str;
+			$('#showScopeSubsD').css("display","block");
 			getAllConstituenciesInDistrictByType(1);
 		}
 		if(value=="Constituency" || value=="Mandal" || value=="Panchayat" || value=="Booth")
-		{	$('#showScopeSubsC').css("display","block");
+		{	
+			$('#headingDiiv').html('View Constituency Wise News');
+			$('#showScopeSubsD').css("display","none");
 			var str =''; 
 			str +='<table style="margin-top:5px">';
 			str +='<tr id="tableRowC">';
 			str +='<td class="tdWidth1" style="padding-bottom: 15px;">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>';
-			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" >';
+			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();" >';
 			//onchange="getMandalList(this.options[this.selectedIndex].value);">';
 			str+='</select></td>';	 
 			str +='</tr>';
 			str +='</table>';
 			document.getElementById("showScopeSubsC").innerHTML = str;
+			$('#showScopeSubsC').css("display","block");
 			getAllConstituenciesInStateByType(2, 1, 'constituency');
 		}
 		if(value=="Mandal" || value=="Panchayat" || value=="Booth")
@@ -126,15 +134,7 @@
 		var selectedElmt=document.getElementById("panchayatList");
 		removeSelectElements(selectedElmt);
 		}	
-		//For voterEditData
-		var epList = document.getElementsByName("panchayatList");		
-		if(epList.length > '0' || value1 == '0'){
-		var selectedElmt=document.getElementById("panchayatList");
-		var selectedElmts=document.getElementById("boothList");
-		removeSelectElements(selectedElmt);
-		removeSelectElements(selectedElmts);
-		}
-		//end
+		
 		addCssStyle();
 		if(value1 == 0)
 		{
@@ -359,7 +359,8 @@
 										buildBoothsList(myResults,jsObj);								
 								}
 								else if(jsObj.task == "getPartyWiseNewsToDisplay")
-								{
+								{	
+									$('#imageForMail').css("display","none");
 									showTotalNews(myResults,jsObj);
 								}
 								else if(jsObj.task == "getConstituencies")
@@ -384,66 +385,20 @@
  	}	
 	
 	function addCssStyle()
-	{	
-		// For voterEditData
-			var pValue = $(".pListClass").val();
-			var bValue = $(".boothClass").val();
-			var mValue = $(".mandalClass").val();
-			
-			if(mValue != '0'){
-			$(".mandalClass").css("border","1px solid #F3E81E");
-			$(".pListClass").css("border","1px solid #F3E81E");
-			$(".boothClass").css("border","1px solid IndianRed");
-			}
-
-			if(mValue == '0'){
-			$(".mandalClass").css("border","1px solid IndianRed");
-			}
-
-
-			if(pValue != '0'){
-			$(".pListClass").css("border","1px solid #F3E81E");
-			}
-
-			if(pValue == '0'){
-			$(".pListClass").css("border","1px solid IndianRed");
-			}
-		
-			if(bValue != '0'){
-			$(".boothClass").css("border","1px solid #F3E81E");
-			}
-
-			if(bValue == '0'){
-			$(".boothClass").css("border","1px solid IndianRed");
-			}
-			
-			//End
-		var scopeIdVal=document.getElementById("userAccessConstituencyList").value;	
-		var mandalValues = $('#mandalList').val();
-		var panchayatValues = $('#panchayatList').val();
-		var boothValues = $('#boothList').val();
-			$('#userAccessDistrictList').css("border","1px solid #F3E81E");
-			$('#userAccessConstituencyList').css("border","1px solid #F3E81E");
-			$('#mandalList').css("border","1px solid #F3E81E");
-			$('#panchayatList').css("border","1px solid #F3E81E");
-			$('#boothList').css("border","1px solid #F3E81E");
+	{
 			$('#listValue').css("border","1px solid #F3E81E");
-		if(scopeIdVal == '0'){
-				$('#userAccessDistrictList').css("border","1px solid IndianRed");
-				$('#userAccessConstituencyList').css("border","1px solid IndianRed");
-				$('#mandalList').css("border","1px solid IndianRed");
-				$('#panchayatList').css("border","1px solid IndianRed");
-		}
-		if(mandalValues == '0'){
-				$('#mandalList').css("border","1px solid IndianRed");
-		}
-		if(panchayatValues == '0'){
-				$('#panchayatList').css("border","1px solid IndianRed");
-		}
-		if(boothValues == '0'){
-				$('#errorMsgDiv').html('<span style="margin-left: -190px;">Please Select Booth </span>');
-				$('#boothList').css("border","1px solid IndianRed");
-		}		
+			$('#userAccessConstituencyList').css("border","1px solid #F3E81E");
+			$('#userAccessDistrictList').css("border","1px solid #F3E81E");
+			
+			var cValue = $("#userAccessConstituencyList").val();
+			var dValue = $("#userAccessDistrictList").val();
+			
+			if(cValue == '0'){			
+			$('#userAccessConstituencyList').css("border","1px solid IndianRed");
+			}						
+			if(dValue == '0'){	
+			$('#userAccessDistrictList').css("border","1px solid IndianRed");
+			}			
 	}
 	
 	var locationName = '';
@@ -459,7 +414,6 @@
 			$('#listValue').css("border","1px solid IndianRed");
 			return false;
 		}
-		var scopeIdVal;
 		/*var mandalValues = document.getElementById("mandalList").value;
 		var panchayatValues = document.getElementById("panchayatList").value;
 		var boothValues = document.getElementById("boothList").value;
@@ -498,16 +452,18 @@
 			}
 			if(scope == "Constituency"){
 				scopeIdVal = document.getElementById("userAccessConstituencyList").value;	
-				locationName = $('#userAccessConstituencyList option:selected').text()+' Constituency';
+				locationName = $('#userAccessConstituencyList option:selected').text();
 			}
-			
+			if(scopeIdVal != '0'){			
 			var urlStr="partyWiseNewsPopupAction.action?scope="+scope+"&locationName="+locationName+"&locationValue="+scopeIdVal+"&partyName="+PartyName+"&partyId="+partyId;			
 			var updatedBrowser = window.open(urlStr,'_blank');	
 			updatedBrowser.focus();
+			}
 	}
 
 function getNewsForPagination(num)
  {
+	$('#imageForMail').css("display","block");
 	var queryType='Public';
         var jsObj =
 		    {   
@@ -543,7 +499,7 @@ function getNewsForPagination(num)
 	function createOptionsForSelectElmtId(divId,myResults)
 {	
 	var elmt = document.getElementById(divId);
-	
+	var selLocationName = locationName.slice(0,8);
 	if( !elmt || myResults == null)
 		return;
 	
@@ -560,14 +516,18 @@ function getNewsForPagination(num)
 		{
 			elmt.add(option); // IE only
 		}
-		if(myResults[i].name == 'Kuppam' && !flag){
+		if(myResults[i].name == selLocationName )
+			$('#userAccessConstituencyList').val(option.value);
+		else if(myResults[i].name == locationName)
+			$('#userAccessDistrictList').val(option.value);
+		else if(myResults[i].name == 'Kuppam' && !flag){
 		flag=true;
 		$('#userAccessConstituencyList').val(option.value);
 		}
 	}
 }
 var maxResults;
-function showTotalNews(myResult,jsObj){
+function showTotalNews(myResult,jsObj){	
 	var str='';
 	str+='<ul class="unstyled">';
 	for(var i in myResult){	
@@ -579,12 +539,12 @@ function showTotalNews(myResult,jsObj){
 		str+='<div class="row-fluid">';
 	if(myResult[i].displayImagePath != null){
 		str+='<a class="thumbnail span4" href="partyPageAction.action?partyId='+myResult[i].candidateId+'&contentId='+myResult[i].contentId+'" style="width: 146px;height:120px;">';
-		str+='<img src="'+myResult[i].displayImagePath+'" style="width:100%" alt="'+myResult[i].fileTitle1+'"/>';
+		str+='<img src="'+myResult[i].displayImagePath+'" style="width:100%" alt="'+myResult[i].fileTitle1+'" onerror="imgError(this)"/>';
 		str+='</a>';
 	}
 	if(myResult[i].displayImagePath == null){
 		str+='<a class="thumbnail span4" href="partyPageAction.action?partyId='+myResult[i].candidateId+'&contentId='+myResult[i].contentId+'" style="width: 146px;height:120px;">';
-		str+='<img src="./images/party_flags/'+myResult[i].imagePathInUpperCase+'" style="width:100%" alt="'+myResult[i].fileTitle1+'"/>';
+		str+='<img src="images/'+myResult[i].imagePathInUpperCase+'" style="width:100%" alt="'+myResult[i].fileTitle1+'" onerror="imgError(this);"/>';
 		str+='</a>';
 	}
 		str+='<p class="span8"  style="text-align: left;">'+myResult[i].description+'</p>';
@@ -631,4 +591,10 @@ function getAllConstituenciesInDistrictByType(stateId){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getDistrictsForAStateAjaxAction.action?"+rparam;						
 	callsAjax(jsObj,url);
+}
+
+function imgError(image) {
+    image.onerror = "";
+    image.src = "images/TDP.PNG";
+    return true;
 }
