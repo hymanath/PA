@@ -117,8 +117,9 @@ public class User extends BaseModel implements Serializable{
 	
 	private String passwdHashTxt;
 	private String hashKeyTxt;
-
-
+	private Set<UpdationDetails> createdBy = new HashSet<UpdationDetails>(0);
+	private Set<UpdationDetails> updatedBy = new HashSet<UpdationDetails>(0);
+	private Set<SurveyAccessUsers> surveyAccessUsers = new HashSet<SurveyAccessUsers>(0);
 	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -947,6 +948,36 @@ public class User extends BaseModel implements Serializable{
 
 	public void setCustomVoterGroups(Set<CustomVoterGroup> customVoterGroups) {
 		this.customVoterGroups = customVoterGroups;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "createdBy")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UpdationDetails> getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Set<UpdationDetails> createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "updatedBy")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UpdationDetails> getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(Set<UpdationDetails> updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<SurveyAccessUsers> getSurveyAccessUsers() {
+		return surveyAccessUsers;
+	}
+
+	public void setSurveyAccessUsers(Set<SurveyAccessUsers> surveyAccessUsers) {
+		this.surveyAccessUsers = surveyAccessUsers;
 	}
 	
 }

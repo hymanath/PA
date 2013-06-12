@@ -8,6 +8,9 @@
 
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,11 +20,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * PartyWorkingCommittee entity. 
@@ -55,6 +60,9 @@ public class UserAddress implements java.io.Serializable {
 	private Cadre cadreCurrentAddress; 
 	private Cadre cadrePermanentAddress;
 	private InfluencingPeople influencingPeople;
+	
+	private Set<Survey> survey = new HashSet<Survey>(0);
+	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0);
 	
 	public UserAddress() {
 		super();		
@@ -254,6 +262,25 @@ public class UserAddress implements java.io.Serializable {
 
 	public void setBooth(Booth booth) {
 		this.booth = booth;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userAddress")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Survey> getSurvey() {
+		return survey;
+	}
+
+	public void setSurvey(Set<Survey> survey) {
+		this.survey = survey;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="userAddress")
+	public Set<UserAddress> getUserAddress() {
+		return userAddress;
+	}
+
+	public void setUserAddress(Set<UserAddress> userAddress) {
+		this.userAddress = userAddress;
 	}
 	
 	

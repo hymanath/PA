@@ -38,6 +38,7 @@ public class Occupation implements java.io.Serializable {
 	private Long occupationId;
 	private String occupation;
 	private Set<Cadre> cadres = new HashSet<Cadre>(0);
+	private Set<SurveyorProfile> surveyorProfile = new HashSet<SurveyorProfile>(0);
 	
 	public Occupation() {
 		super();
@@ -76,6 +77,15 @@ public class Occupation implements java.io.Serializable {
 
 	public void setCadres(Set<Cadre> cadres) {
 		this.cadres = cadres;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="occupation")
+	public Set<SurveyorProfile> getSurveyorProfile() {
+		return surveyorProfile;
+	}
+
+	public void setSurveyorProfile(Set<SurveyorProfile> surveyorProfile) {
+		this.surveyorProfile = surveyorProfile;
 	}
 	
 	

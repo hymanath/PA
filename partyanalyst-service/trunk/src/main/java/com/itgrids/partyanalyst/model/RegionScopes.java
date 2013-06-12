@@ -23,6 +23,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 /**
  * Occupation entity. 
  * @author <a href="mailto:raghavenderprasad@gmail.com">Raghav</a>
@@ -42,6 +43,8 @@ public class RegionScopes extends BaseModel implements java.io.Serializable {
 	private String description;
 	
 	private Set<ModuleRegionScopes> moduleRegionScopes = new HashSet<ModuleRegionScopes>(0);
+	private Set<Survey> survey = new HashSet<Survey>(0);
+	//private Set<RegionScopes> regionScopes = new HashSet<RegionScopes>(0);
 	
 	public RegionScopes() {
 	}
@@ -90,5 +93,23 @@ public class RegionScopes extends BaseModel implements java.io.Serializable {
 		this.moduleRegionScopes = moduleRegionScopes;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "locationScopes")
+	public Set<Survey> getSurvey() {
+		return survey;
+	}
+
+	public void setSurvey(Set<Survey> survey) {
+		this.survey = survey;
+	}
+
+	/*@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="regionScopes")
+	public Set<RegionScopes> getRegionScopes() {
+		return regionScopes;
+	}
+
+	public void setRegionScopes(Set<RegionScopes> regionScopes) {
+		this.regionScopes = regionScopes;
+	}*/
+	
 	
 }

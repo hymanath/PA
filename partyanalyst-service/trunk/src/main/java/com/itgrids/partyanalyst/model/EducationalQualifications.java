@@ -38,7 +38,7 @@ public class EducationalQualifications extends BaseModel{
 	private Long eduQualificationId;
 	private String qualification;
 	private Set<Cadre> cadres = new HashSet<Cadre>(0);
-	
+	private Set<SurveyorProfile> surveyorProfile = new HashSet<SurveyorProfile>(0);
 	public EducationalQualifications() {
 		super();
 		
@@ -80,6 +80,15 @@ public class EducationalQualifications extends BaseModel{
 
 	public void setCadres(Set<Cadre> cadres) {
 		this.cadres = cadres;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="educationalQualifications")
+	public Set<SurveyorProfile> getSurveyorProfile() {
+		return surveyorProfile;
+	}
+
+	public void setSurveyorProfile(Set<SurveyorProfile> surveyorProfile) {
+		this.surveyorProfile = surveyorProfile;
 	}
 	
 	

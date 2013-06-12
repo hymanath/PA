@@ -46,6 +46,17 @@
 		<class>com.itgrids.partyanalyst.model.AreaType</class>
 		<class>com.itgrids.partyanalyst.model.CustomVoterGroup</class>
 		<class>com.itgrids.partyanalyst.model.CustomVoter</class>
+		
+		<class>com.itgrids.partyanalyst.model.UpdationDetails</class>
+		<class>com.itgrids.partyanalyst.model.Survey</class>
+		<class>com.itgrids.partyanalyst.model.SurveyAccessUsers</class>
+		<class>com.itgrids.partyanalyst.model.SurveyQuestion</class>
+		<class>com.itgrids.partyanalyst.model.OptionType</class>
+		<class>com.itgrids.partyanalyst.model.Option</class>
+		<class>com.itgrids.partyanalyst.model.SurveyorProfile</class>
+		<class>com.itgrids.partyanalyst.model.Respondent</class>
+		<class>com.itgrids.partyanalyst.model.Surveyor</class>
+		<class>com.itgrids.partyanalyst.model.SurveyAnswer</class>
 	
 		
 		 <properties> 
