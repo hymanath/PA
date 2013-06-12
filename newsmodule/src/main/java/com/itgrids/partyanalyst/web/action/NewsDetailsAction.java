@@ -108,4 +108,20 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getVideosForGallery(){
+		try{
+			jObj = new JSONObject(getTask());
+			 Long galleryId=jObj.getLong("galId");
+			 int maxResult=jObj.getInt("maxRecords");
+			 int startRecord=jObj.getInt("startingRecord");
+			 fileVOsList = candidateDetailsService.getVideosForGalleryId(galleryId,maxResult,startRecord);
+			
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
+			}
+		return Action.SUCCESS;
+	}
+	
 }
