@@ -666,7 +666,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 				{
 					for (Object[] parms : wardsList) {
 						SelectOptionVO selectOptionVO = new SelectOptionVO();
-						selectOptionVO.setId((Long)parms[0]);
+						selectOptionVO.setId(Long.valueOf(IConstants.URBAN_TYPE+parms[0]));
 						selectOptionVO.setName(parms[1].toString());
 						regionsList.add(selectOptionVO);
 					}
@@ -680,7 +680,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 				{
 					for (Object[] parms : wardsList) {
 						SelectOptionVO selectOptionVO = new SelectOptionVO();
-						selectOptionVO.setId((Long)parms[0]);
+						selectOptionVO.setId(Long.valueOf(IConstants.URBAN_TYPE+parms[0]));
 						selectOptionVO.setName(parms[1].toString());
 						regionsList.add(selectOptionVO);
 					}
