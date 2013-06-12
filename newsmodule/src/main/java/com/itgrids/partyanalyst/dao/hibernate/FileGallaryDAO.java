@@ -2917,5 +2917,13 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			query.setParameter(2,"false");				
 			return ((Long)query.uniqueResult()).intValue(); 
 	 }
+	 public Long getVideosCountIntheGallary(Long galleryId){
+		 Query query = getSession().createQuery("select count(model.fileSourceLanguage.fileSourceLanguageId) from FilePaths model,FileGallary model1 where model.fileSourceLanguage.file.fileId "+
+					" = model1.file.fileId and model1.gallary.gallaryId = ? and model1.isDelete = ? and model1.isPrivate = ? group by model1.gallary.gallaryId ");
+		    query.setParameter(0,galleryId);
+			query.setParameter(1,"false");
+			query.setParameter(2,"false");				
+			return (Long)query.uniqueResult();
+	 }
 	
 }
