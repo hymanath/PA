@@ -159,6 +159,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Long> getWardsCountByLocalEleBodyId(Long localEleBodyId,Long constituencyId,Long userId,Long publicationDateId);
 	
 	public List<Long> getBoothsCountForCustomWard(Long wardId,Long constituencyId,Long publicationDateId,Long userId);
-	
+			
+	public List<Object[]> getHamletOrWardList(Long userId,Long Id,String type);
 	
 }

@@ -311,4 +311,11 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<HamletBoothElection> getHamletOrWardDetails(Long boothId)
+	{
+		return getHibernateTemplate().find("select model from HamletBoothElection model where " +
+				" model.boothConstituencyElection.booth.boothId = ?",boothId);
+	}
+	
 }
