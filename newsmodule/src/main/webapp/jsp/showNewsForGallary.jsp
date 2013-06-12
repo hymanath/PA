@@ -40,15 +40,18 @@ $( document ).ready(function() {
 				<div class="span2">
 				 	<div id="mainDiv"></div>
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>state news</h4></div>
+						<div class="span12 boxHeading"><h4>State News</h4></div>
 					</div>				
 				</div>
 				<!---View your Constituency News Div--->
 				<div class="span7">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>Latest Updates News</h4></div>
-						<div class="span12" id="newsDisplayDiv">
-						
+						<div class="span12 boxHeading"><h4>Latest News Updates </h4></div>
+						<div id="imageForMail"  class = "span3"  style="display:none;font-weight:bold;color: #0174DF;height:20px;width:500px;">
+								<font>Please wait...</font>
+								<img src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;" width="18" height="11"/>
+						</div>
+						<div class="span12" id="newsDisplayDiv">						
 						</div>
 
 						<div class="pagination-holder clearfix">
@@ -101,7 +104,7 @@ showAllFilesofAGallry(0,10,galalryId,1);
 
 function showAllFilesofAGallry(startIndex , endIndex , gallaryId,selectedvalue)
 {
-
+$('#imageForMail').css("display","block");
    $.ajaxSetup({
 	   jsonp: null,
 	   jsonpCallback: null
@@ -125,6 +128,7 @@ function showAllFilesofAGallry(startIndex , endIndex , gallaryId,selectedvalue)
 
 function buildFilesInGallaryDetails(results,selectedvalue)
 {   
+	$('#imageForMail').css("display","none");
 var totalPages = Math.ceil(results[0].totalResultsCount / 10);
   $('#light-pagination').pagination({
 	pages:totalPages,
@@ -140,7 +144,7 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
 	   str+='<li>';
 
 	str+='<div class="">';
-		str+='<h4>'+results[i].fileName1+'</h4>';
+		str+='<h4 style="text-transform: capitalize;">'+results[i].fileName1+'</h4>';
 			str+='<div class="row-fluid">';
 				str+='<a style="width: 146px;" href="#" class="thumbnail span4">';
 				 if(results[i].filePath1 != null && results[i].filePath1 == "") 
