@@ -65,6 +65,9 @@ public class File extends BaseModel implements java.io.Serializable {
 	//private Set<NewsProblem> newsProblems = new HashSet<NewsProblem>();
 	
 	private String comment;
+	private User user;
+
+	
 
 	/** default constructor */
 	public File() {
@@ -303,4 +306,16 @@ public class File extends BaseModel implements java.io.Serializable {
 	}
 
   */
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }

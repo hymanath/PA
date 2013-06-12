@@ -13,10 +13,7 @@ public interface INewsMonitoringService {/*
 	public List<FileVO> getNewsForRegisterUsers(FileVO inputs);
 	public List<FileVO> getNewsForRegisterUsers1(FileVO inputs);
 	public List<FileVO> getAllCountDetails(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
-	public List<FileVO> getAllSourceDetails();
-	public List<FileVO> getAllCategoryDetails();
-	public List<FileVO> getAllSourceLanguageDetails();
-	public List<FileVO> getAllNewsImportanceDetails();
+	
 	public List<FileVO> getCategoryCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO);
 	public List<FileVO> getSourceCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO);
 	public List<FileVO> getLanguageCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO);
@@ -47,4 +44,16 @@ public interface INewsMonitoringService {/*
 	public List<FileVO> getNewsForFlagedAndNoted(FileVO inputs);
 	
 		
-*/}
+*/
+	public List<FileVO> getNewsForAuser(FileVO inputs);
+	public List<FileVO> getAllSourceDetails();
+	public List<FileVO> getAllCategoryDetails();
+	public List<FileVO> getAllSourceLanguageDetails();
+	public List<FileVO> getAllNewsImportanceDetails();
+	public ResultStatus updateDeleteNews(FileVO fileVO,String task,List<FileVO> sourceIds,List<FileVO> languageIds);
+
+
+}
+
+
+

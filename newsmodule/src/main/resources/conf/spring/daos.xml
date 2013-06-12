@@ -663,9 +663,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="userCandidateRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCandidateRelationDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+
 	
 	<bean id="contentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ContentTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -1066,9 +1064,6 @@
 	    <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="contentNotesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ContentNotesDAO">
-	 <property name="sessionFactory" ref="sessionFactory" />	
-	</bean>
 	
 	<bean id="newsFlagDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsFlagDAO">
 	 <property name="sessionFactory" ref="sessionFactory" />	
@@ -1294,5 +1289,13 @@
 	<bean id="newsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsDetailsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
+	<bean id="contentNotesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ContentNotesDAO">
+	 <property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	<bean id="userCandidateRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCandidateRelationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 	
 </beans>		

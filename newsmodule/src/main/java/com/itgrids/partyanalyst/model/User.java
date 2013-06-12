@@ -67,6 +67,7 @@ public class User extends BaseModel implements Serializable{
 	private Date updatedDate;
 	private String isPwdChanged;
 	private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
+	private Set<File> files = new HashSet<File>();
 	//private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
 	//private Set<UserGroupRelation> userGroupRelations = new HashSet<UserGroupRelation>(0);
 	//private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
@@ -76,7 +77,7 @@ public class User extends BaseModel implements Serializable{
 	//private Set<CommentCategoryCandidate> userComments = new HashSet<CommentCategoryCandidate>(0);
 	//private Set<SmsTrack> userSmsDetails = new HashSet<SmsTrack>(0);
 	//private Set<PoliticalChanges> politicalChanges = new HashSet<PoliticalChanges>(0);
-	//private Set<UserCandidateRelation> userCandidateRelation = new HashSet<UserCandidateRelation>(0);
+	private Set<UserCandidateRelation> userCandidateRelation = new HashSet<UserCandidateRelation>(0);
 	private Set<UserEntitlementGroupRegion> userEntitlementGroupRegions = new HashSet<UserEntitlementGroupRegion>(0);
 	//private Set<UserEvents> userEvents = new HashSet<UserEvents>(0);
 	//private Set<UserImpDate> userimpDates = new HashSet<UserImpDate>(0);
@@ -110,6 +111,8 @@ public class User extends BaseModel implements Serializable{
 	//private Set<UserVoterCategory> userVoterCategory = new HashSet<UserVoterCategory>(0);
 	//private Set<UserVoterCategoryValue> userVoterCategoryValue = new HashSet<UserVoterCategoryValue>(0);
 	
+
+
 	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
 	
 	//private Set<Locality> Localities = new HashSet<Locality>(0);
@@ -945,6 +948,16 @@ public class User extends BaseModel implements Serializable{
 
 	public void setHashKeyTxt(String hashKeyTxt) {
 		this.hashKeyTxt = hashKeyTxt;
+	}
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<File> getFiles() {
+		return files;
+	}
+	public void setFiles(Set<File> files) {
+		this.files = files;
 	}
 	
 

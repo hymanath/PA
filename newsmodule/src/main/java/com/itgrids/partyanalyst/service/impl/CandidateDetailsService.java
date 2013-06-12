@@ -693,6 +693,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					file.setFilePath(displayImage.getDisplayImagePath() !=null?displayImage.getDisplayImagePath().trim():null);
 			   }
 				
+			   file.setUser(userDAO.get(fileVO.getUserId()));
 				file = fileDAO.save(file);
 			
 				//file = fileDAO.save(file);
@@ -4908,46 +4909,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	}
 	
 	
-	public List<SelectOptionVO> getCandidateGallaries(Long registrationId,String contentType){
-		try{
-			log.debug("Entered into getCandidateGallarySelectList() Method");
-			
-			List<SelectOptionVO> gallarySelectList = null;
-			
-			List<Long> candidateIds = new ArrayList<Long>();
-			
-			List<Object[]> candidateDetails = userCandidateRelationDAO.getCandidatesOfAUser(registrationId);
-			
-			
-			for(Object[] obj:candidateDetails)
-				candidateIds.add((Long)obj[0]);
-			
-			List<Object[]> list = gallaryDAO.getGallariesByCandidateIds(candidateIds,contentType);
-			
-			if(list != null && list.size() > 0)
-			{
-				gallarySelectList = new ArrayList<SelectOptionVO>(0);
-				SelectOptionVO selectOptionVO = null;
-				for(Object[] params : list)
-				{
-					selectOptionVO = new SelectOptionVO();
-					selectOptionVO.setId((Long)params[0]);
-					if(params[2] == null)
-					params[2] = "";
-					if(params[3] == null)
-						params[3] = "";
-					
-					selectOptionVO.setName(params[1].toString()+" - "+params[2].toString()+" "+params[3].toString());
-					gallarySelectList.add(selectOptionVO);
-				}
-			}
-			return gallarySelectList;
-		}catch (Exception e) {
-			log.error("Exception Occured in getCandidateGallarySelectList() method - "+e);
-			return null;
-		}
-	}
-
+	
 	
 	public List<SelectOptionVO> getCandidateGallariesByCategory(Long categoryId , Long registrationId){
 		
@@ -5786,5 +5748,45 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 
 		 return fileList;
 	 }
+	 public List<SelectOptionVO> getCandidateGallaries(Long registrationId,String contentType){
+			try{
+				log.debug("Entered into getCandidateGallarySelectList() Method");
+				
+				List<SelectOptionVO> gallarySelectList = null;
+				
+				List<Long> candidateIds = new ArrayList<Long>();
+				
+				List<Object[]> candidateDetails = userCandidateRelationDAO.getCandidatesOfAUser(registrationId);
+				
+				
+				for(Object[] obj:candidateDetails)
+					candidateIds.add((Long)obj[0]);
+				
+				List<Object[]> list = gallaryDAO.getGallariesByCandidateIds(candidateIds,contentType);
+				
+				if(list != null && list.size() > 0)
+				{
+					gallarySelectList = new ArrayList<SelectOptionVO>(0);
+					SelectOptionVO selectOptionVO = null;
+					for(Object[] params : list)
+					{
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)params[0]);
+						if(params[2] == null)
+						params[2] = "";
+						if(params[3] == null)
+							params[3] = "";
+						
+						selectOptionVO.setName(params[1].toString()+" - "+params[2].toString()+" "+params[3].toString());
+						gallarySelectList.add(selectOptionVO);
+					}
+				}
+				return gallarySelectList;
+			}catch (Exception e) {
+				log.error("Exception Occured in getCandidateGallarySelectList() method - "+e);
+				return null;
+			}
+		}
+
 
 }

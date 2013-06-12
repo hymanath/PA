@@ -51,6 +51,11 @@
 	<bean id="newsDetailsAction" class="com.itgrids.partyanalyst.web.action.NewsDetailsAction" singleton="false">
 	 <property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>
+	
+	<bean id="newsDisplayAction" class="com.itgrids.partyanalyst.web.action.NewsDisplayAction" singleton="false">
+		<property name="newsMonitoringService" ref="newsMonitoringService"/>		
+	</bean>	
+	
 		<bean id="loginPageAction" class="com.itgrids.partyanalyst.web.action.LoginPageAction" singleton="false">
 	</bean>
 	<bean id="cadreSearchAjaxAction" class="com.itgrids.partyanalyst.web.action.CadreSearchAjaxAction" singleton="false">

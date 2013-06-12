@@ -48,8 +48,9 @@ public interface ICandidateDetailsService {
 	public List<SelectOptionVO> getSource();
 	public List<SelectOptionVO> getLanguage();
 	public List<SelectOptionVO> getCategory();
-	 public List<SelectOptionVO> getNewsImportance();
-	 public List<FileVO> getStateDetails();
+	public List<SelectOptionVO> getNewsImportance();
+	public List<FileVO> getStateDetails();
+	public List<SelectOptionVO> getCandidateGallaries(Long registrationId,String contentType);
 	/*public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId,String contentType);
 	
 	public List<String> getCandidateProfileDescriptionByCandidateID(Long candidateId);

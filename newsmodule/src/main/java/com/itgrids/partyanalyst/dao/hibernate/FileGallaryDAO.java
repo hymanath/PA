@@ -2926,4 +2926,18 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			return (Long)query.uniqueResult();
 	 }
 	
+	 
+	 public List<Object[]> getAllTheNewsForAUser(Long userId)
+	 {
+		 Query query = getSession().createQuery("select model.fileGallaryId ,model.file,model.isPrivate,model.gallary.gallaryId," +
+		 		"model.gallary.name from FileGallary model  where model.isDelete = :isDelete and model.file.fileId " +
+		 		" in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId != 0  and model1.file.user.userId = :userId) " +
+		 		"and model.file.user.userId = :userId");
+		 
+		 query.setParameter("userId", userId);
+		 query.setParameter("isDelete", "false");
+		 
+		 return query.list();
+		 
+	 }
 }

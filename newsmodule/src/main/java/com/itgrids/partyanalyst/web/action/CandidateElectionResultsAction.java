@@ -898,6 +898,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		FileVO fileVO = new FileVO();
 		FileVO displayFileVO = new FileVO();
 		
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
+		fileVO.setUserId(regVO.getRegistrationID());
+		
 		
 		
 		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
@@ -1299,7 +1303,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		return SUCCESS;
 	}
-	/*
+	
 	public String getCandidateGallaries(){
 		
 		try {
@@ -1313,12 +1317,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		String contentType = jObj.getString("contentType");
 		
-		selectOptionList = candidateDetailsService.getCandidateGallaries(regVO.getRegistrationID() , contentType);
+		selectOptionList = candidateDetailsService.getCandidateGallaries(1L , contentType);
 
 		
 		return Action.SUCCESS;
 		
-	}*/
+	}
 	
 	public String AjaxHandler()
 	{
