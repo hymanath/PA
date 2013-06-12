@@ -40,6 +40,30 @@
 	
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
+	
+	<style type="text/css">
+	select {
+    background-color: #FFFFFF;
+    border: 1px solid #F3E81E;
+    width: 130px;
+	}
+	#requiredValue{
+	color:red;
+	font-size:large;
+	}	
+
+	.tdWidth1{
+	width: 92px;
+	}
+	#boxHeading1{
+	color: #66B16B;
+    font-family: 'PT Sans',sans-serif;
+    font-size: 16px;
+	font-weight: bold;
+	height: 40px; 
+	
+	}
+	</style>
 </head>
 <body>
 		<!----Container---->
@@ -48,14 +72,42 @@
 			<div class="row m_top10">
 				<div class="span2">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>State News</h4></div>
+						<div class="span12 boxHeading"><h4>State News</h4>
+						<div class="row-fluid widget">						
+						<div class="span12">
+						<table  id="showScopeSubsD">	
+								<tr>
+								<td class="tdWidth1">District:<font id="requiredValue" class="requiredFont">*</font></td>
+								</tr>
+								<tr>
+								<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="addCssStyle();"></td>	 
+							</tr>
+						</table>
+						<table  id="showScopeSubsC">	
+								<tr>
+								<td class="tdWidth1">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>
+								</tr>
+								<tr>
+								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
+								</select></td>	 
+							</tr>
+						</table>
+						
+						<button id="sendButton" class="btn btn-warning" onclick="addCssStyle(),getNewsForLocation()" style="margin-bottom: 15px; font-weight:bold;" > View News</button> 
+						</div>
+				</div>
+						</div>
 					</div>
 				</div>
 				<!---View your Constituency News Div--->
 				<div class="span7">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>${scope} Wise Latest  News Updates</h4></div>
+						<div class="span12 boxHeading" id="boxHeading1"><h4> ${locationName} ${scope} Latest  News Updates</h4></div>
 						<div class="span12">
+							<div id="imageForMail"  class = "span3"  style="display:none;font-weight:bold;color: #0174DF;height:20px;width:500px;">
+								<font>Please wait...</font>
+								<img src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;" width="18" height="11"/>
+							</div>
 							<div id="newsDispalyId"></div>
 						</div>
 						<div id="paginationId"></div>
@@ -103,7 +155,53 @@ var partyName = '${partyName}';
 var partyId = '${partyId}';
 
 getNewsForPagination(0);
+hideDivs();
+function hideDivs(){
+	if(scope == "District"){
+		$('#showScopeSubsD').css("display","block");
+		$('#showScopeSubsC').css("display","none");
+		getAllConstituenciesInDistrictByType(1);
+	}
+	if(scope == "Constituency"){
+		$('#showScopeSubsC').css("display","block");
+		$('#showScopeSubsD').css("display","none");
+		getAllConstituenciesInStateByType(2, 1, 'constituency');
+	}
+}
 
+function getNewsForLocation()
+ {
+	var scopes = scope;
+			if(scopes == "District"){				
+				scopeIdVal = document.getElementById("userAccessDistrictList").value;	
+				locationName = $('#userAccessDistrictList option:selected').text();
+			}
+			if(scopes == "Constituency"){
+				scopeIdVal = document.getElementById("userAccessConstituencyList").value;	
+				locationName = $('#userAccessConstituencyList option:selected').text();
+			}
+	if(scopeIdVal != '0'){
+	$('#boxHeading1').html('');
+	$('#boxHeading1').css("padding-top","9px");
+	$('#boxHeading1').html(locationName +' ${scope} Latest News Updates');
+	var queryType='Public';
+        var jsObj =
+		    {   
+				locationType:scope,
+				locationId:scopeIdVal,
+				partyId:partyId,
+				startRecord:0,
+			    maxRecord:10,
+				queryType:queryType,
+				task:"getPartyWiseNewsToDisplay"
+		    };
+	 
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartyWiseNewsDetailsForALocation.action?"+rparam;	
+	$('#imageForMail').css("display","block");
+	callsAjax(jsObj,url);  
+	}
+ }
 </script>	
 </body>
 </html>
