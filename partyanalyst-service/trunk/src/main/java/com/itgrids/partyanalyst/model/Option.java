@@ -23,11 +23,11 @@ import org.hibernate.annotations.NotFoundAction;
 public class Option extends BaseModel implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private Long optionId;
+	private Long optionsId;
 	private String options;
 	private String description;
 	private Long orderId;
-	//private Option parentOption;
+	private Option parentOption;
 	private OptionType optionType;
 	private String subOptionName;
 	private String remarks;
@@ -36,12 +36,12 @@ public class Option extends BaseModel implements java.io.Serializable {
 	public Option() {
 	}
 	
-	public Option(Long optionId,String options,String description,Long orderId,Option parentOption,OptionType optionType,String subOptionName,String remarks,UpdationDetails updationDetails) {
-		this.optionId = optionId;
+	public Option(Long optionsId,String options,String description,Long orderId,Option parentOption,OptionType optionType,String subOptionName,String remarks,UpdationDetails updationDetails) {
+		this.optionsId = optionsId;
 		this.options = options;
 		this.description = description;
 		this.orderId = orderId;
-		//this.parentOption = parentOption;
+		this.parentOption = parentOption;
 		this.optionType = optionType;
 		this.subOptionName = subOptionName;
 		this.remarks = remarks;
@@ -50,21 +50,21 @@ public class Option extends BaseModel implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "option_id", unique = true, nullable = false)
-	public Long getOptionId() {
-		return optionId;
+	@Column(name = "options_id", unique = true, nullable = false)
+	public Long getOptionsId() {
+		return optionsId;
 	}
 
-	public void setOptionId(Long optionId) {
-		this.optionId = optionId;
+	public void setOptionsId(Long optionsId) {
+		this.optionsId = optionsId;
 	}
 
 	@Column(name = "options", length = 100)
-	public String getOption() {
+	public String getOptions() {
 		return options;
 	}
 
-	public void setOption(String options) {
+	public void setOptions(String options) {
 		this.options = options;
 	}
 
@@ -86,7 +86,7 @@ public class Option extends BaseModel implements java.io.Serializable {
 		this.orderId = orderId;
 	}
 
-	/*@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="parent_option_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -96,7 +96,7 @@ public class Option extends BaseModel implements java.io.Serializable {
 
 	public void setParentOption(Option parentOption) {
 		this.parentOption = parentOption;
-	}*/
+	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="option_type_id")
