@@ -2825,15 +2825,15 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				
 				List<Object[]> list = new ArrayList<Object[]>(0);
 				int fromIndex = 0;
-				int toIndex = 1000;
-				if(filter.size() >= 1000)
+				int toIndex = 2000;
+				if(filter.size() >= 2000)
 				{
 					while(fromIndex <= toIndex)
 					{
 						List<Object[]> listTemp = userVoterDetailsDAO.getAgeWiseInfoForUser(filter.subList(fromIndex, toIndex),boothId,IConstants.MALE,IConstants.FEMALE,IConstants.AGE18,IConstants.AGE25,IConstants.AGE26,IConstants.AGE35,IConstants.AGE36,IConstants.AGE45,IConstants.AGE46,IConstants.AGE60);
 						list.addAll(listTemp);
-						fromIndex += 1000;
-						toIndex += 1000;
+						fromIndex += 2000;
+						toIndex += 2000;
 						if(toIndex >= filter.size())
 							toIndex = filter.size();
 					}
@@ -13841,9 +13841,9 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				   return new ArrayList<VotersDetailsVO>();
 			List<Object[]> hamlets = new ArrayList<Object[]>();
 			int fromIndex = 0;
-			  int toIndex = 1000;
+			  int toIndex = 2000;
 			//List<Object[]> hamlets = userVoterDetailsDAO.getLocalityIdsForUser(hamletId, userId,filter);
-			if(filter.size() > 1000)
+			if(filter.size() > 2000)
 			{
 				while(fromIndex <= toIndex)
 				  {
@@ -13853,8 +13853,8 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 						hamlets.addAll(hamletsList);
 					}
 					
-					fromIndex += 1000;
-					toIndex   += 1000;
+					fromIndex += 2000;
+					toIndex   += 2000;
 					if(toIndex > filter.size())
 						toIndex = filter.size();	
 				  }
@@ -14359,7 +14359,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				  hamletsList = userVoterDetailsDAO.getVotersCountByGenderForLocalAreas(filter,userId); 
 			  }
 			  
-			
+			  hamletsList = processDataForRemovingDuplication(hamletsList);
 			int totalFemaleVoters = 0;
 			int totalMaleVoters = 0;
 			int totalUnknownVoters = 0;
@@ -14396,6 +14396,43 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			votersInfoForMandalVO1.setVotersInfoForMandalVOList(votersInfoForMandalVOList);
 			  calculatePercentage1(votersInfoForMandalVO1);
 		}
+		
+		
+		List<Object[]> processDataForRemovingDuplication(List<Object[]> list)
+		{
+			List<Object[]> result = new ArrayList<Object[]>(0);
+			Map<String,SelectOptionVO> resultMap = new HashMap<String, SelectOptionVO>(0);
+			try{
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params : list)
+				{
+					selectOptionVO = resultMap.get(params[0].toString());
+					if(selectOptionVO == null)
+					{
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)params[1]);
+						selectOptionVO.setOrderId((Long)params[2]);
+					}
+					else
+					{
+						selectOptionVO.setId((Long)params[1]+selectOptionVO.getId());
+						selectOptionVO.setOrderId((Long)params[2]+selectOptionVO.getOrderId());
+					}
+					resultMap.put(params[0].toString(), selectOptionVO);
+				}
+				for(Map.Entry<String,SelectOptionVO> entry : resultMap.entrySet())
+				{
+					Object[] ar = new Object[]{entry.getKey(),entry.getValue().getId(),entry.getValue().getOrderId()};
+					result.add(ar);
+				}
+				return result;
+			}catch(Exception e){
+				log.error("Exception Occured in processDataForRemovingDuplication()",e);
+				return result;
+			}
+		}
+		
+		
 		   /**
 		    * This Method Is Used to Store Missing Voters
 		    * @param Map<String , VoterVO> voterMap
