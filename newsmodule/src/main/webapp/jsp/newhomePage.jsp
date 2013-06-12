@@ -502,6 +502,7 @@ width: 92px;
 											<li><a href="javascript:{}"  onclick="openVideo('Xcdzou_IR4Q');"class="thumbnail span2"><img  src="http://img.youtube.com/vi/Xcdzou_IR4Q/0.jpg"></a></li>
 										</ul>
 										<!--<a href="#" class="pull-right btn btn-mini" style="margin-top:75px;">More</a>-->
+										<span class="btn btn-mini pull-right" onclick="showMoreVideoGallaries()" style="margin:5px;">More Videos..</span>
 									</div>
 								</div>
 						</div>
