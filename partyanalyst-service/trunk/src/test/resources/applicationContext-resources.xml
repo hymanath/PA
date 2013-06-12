@@ -350,6 +350,17 @@
 				<value>com.itgrids.partyanalyst.model.AreaType</value>
 				<value>com.itgrids.partyanalyst.model.CustomVoter</value>
 				<value>com.itgrids.partyanalyst.model.CustomVoterGroup</value>
+				
+				<value>com.itgrids.partyanalyst.model.UpdationDetails</value>
+				<value>com.itgrids.partyanalyst.model.Survey</value>
+				<value>com.itgrids.partyanalyst.model.SurveyAccessUsers</value>
+				<value>com.itgrids.partyanalyst.model.SurveyQuestion</value>
+				<value>com.itgrids.partyanalyst.model.OptionType</value>
+				<value>com.itgrids.partyanalyst.model.Option</value>
+				<value>com.itgrids.partyanalyst.model.SurveyorProfile</value>
+				<value>com.itgrids.partyanalyst.model.Respondent</value>
+				<value>com.itgrids.partyanalyst.model.Surveyor</value>
+				<value>com.itgrids.partyanalyst.model.SurveyAnswer</value>
 			</list>
 		</property>
 	</bean>
@@ -1808,6 +1819,46 @@
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 	<bean id="customVoterGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomVoterGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="updationDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UpdationDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyAccessUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyAccessUsersDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyQuestionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="optionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.OptionTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="optionDAO" class="com.itgrids.partyanalyst.dao.hibernate.OptionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyorProfileDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyorProfileDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="respondentDAO" class="com.itgrids.partyanalyst.dao.hibernate.RespondentDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyorDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyorDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyAnswerDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 </beans>

@@ -46,7 +46,8 @@ public class Voter extends BaseModel implements Serializable {
 	private Date dateOfBirth;
 	private String mobileNo;
 	private Set<CustomVoter> customVoters = new HashSet<CustomVoter>(0);
-
+	private Set<Respondent> respondent = new HashSet<Respondent>(0);
+	
 	public Voter(){
 		
 	}
@@ -180,5 +181,15 @@ public class Voter extends BaseModel implements Serializable {
 	public void setCustomVoters(Set<CustomVoter> customVoters) {
 		this.customVoters = customVoters;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
+	public Set<Respondent> getRespondent() {
+		return respondent;
+	}
+
+	public void setRespondent(Set<Respondent> respondent) {
+		this.respondent = respondent;
+	}
+	
 	
 }
