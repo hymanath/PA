@@ -5254,7 +5254,11 @@
         </action>
         
         <action name="showAllFilesOfAGallary" class="candidateElectionResultsAction" method="showAllFilesOfAGallary">
-       <result name="success">/jsp/showNewsForGallary.jsp</result>    
+       		<result name="success">/jsp/showNewsForGallary.jsp</result>    
+        </action>
+        
+        <action name="showAllVideosOfAGallaryAction" class="partyWiseNewsDisplayAction" method="getAllVideosForGallary">
+       		<result name="success">/jsp/showAllVideosForGallary.jsp</result>    
         </action>
          
 		<action name="newsPaginationAction" class="newsPaginationAction">
@@ -5323,6 +5327,13 @@
 		   <param name="root">fileVOsList</param>
 		  </result>
 		</action>
+		
+		<action name="getVideosOfGalleryId" class="newsDetailsAction" method="getVideosForGallery">
+		 <result type="json" name="success">
+		   <param name="root">fileVOsList</param>
+		  </result>
+		</action>
+		
 		<action name="loginPageAction" class="loginPageAction">
 		  <result name="error">/jsp/homePage.jsp</result>
 		  <result name="success" type="redirect">homePage.action</result>
