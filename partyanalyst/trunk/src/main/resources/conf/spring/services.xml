@@ -586,7 +586,8 @@
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />	
 		<property name="regionScopesProblemTypeDAO" ref="regionScopesProblemTypeDAO"/>	
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
-		<property name="panchayatDAO" ref="panchayatDAO"></property>		
+		<property name="panchayatDAO" ref="panchayatDAO"></property>	
+		<property name="wardDAO" ref="wardDAO" />	
 	</bean>
 	
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		

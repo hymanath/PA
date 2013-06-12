@@ -1808,11 +1808,21 @@ return Action.SUCCESS;
 		try {
 			log.debug("entered into getUserCategoeryValues() method in VotersAnalysisAction Action Class");
 			jObj = new JSONObject(getTask());
-			session = request.getSession();
+			/*session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			if(regVO == null)
-				return ERROR;
-			Long userId             = regVO.getRegistrationID();
+				return ERROR;*/
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			Long userId = null;
+			if(regVO != null && regVO.getRegistrationID() != null)
+				if(regVO.getParentUserId()!=null)
+					userId=regVO.getMainAccountId();
+				else
+					userId = regVO.getRegistrationID();
+			else 
+			  return ERROR;
+			//Long userId             = regVO.getRegistrationID();
 			if(jObj.getString("task").equalsIgnoreCase("getUserCategoeryValues"))
 			{
 				String status                 = jObj.getString("status");
