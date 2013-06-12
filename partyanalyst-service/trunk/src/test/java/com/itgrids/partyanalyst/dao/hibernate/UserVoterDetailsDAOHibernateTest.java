@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -116,7 +117,7 @@ for (Object[] objects : list) {
 		}
 		*/
 
-		/*public void testgetAgeDataForBoothByHamlets()
+	/*	public void testgetAgeDataForBoothByHamlets()
 			{
 			//List<Object[]> voters = userVoterDetailsDAO.getAgeDataForBoothByHamlets(1l,8l,123020l,"boothHamlets");
 				List<Object[]> voters = userVoterDetailsDAO.getAgeDataForBoothByHamlets(232l,1l,8l,123020l,"boothHamlets",IConstants.MALE,IConstants.FEMALE,18l,25l,26l,35l,36l,45l,46l,60l);
@@ -299,15 +300,11 @@ for (Object[] objects : list) {
 			}
 		}*/
 		
-		/*public void testgetWardsCountByLocalEleBodyId()
+		public void testgetGetHamletOrWardList()
 		{
-			List<Long> list = userVoterDetailsDAO.getWardsCountByLocalEleBodyId(83l, 232l, 1l, 8l);
-			System.out.println(list.get(0));
-		}*/
-		
-		public void testgetBoothsCountForCustomWard()
-		{
-			List<Long> list = userVoterDetailsDAO.getBoothsCountForCustomWard(28861L, 232l, 8l, 1l);
-			System.out.println(list.get(0));
+			List<Object[]> values = userVoterDetailsDAO.getHamletOrWardList(1l,181004l,"ward");
+			for (Object[] parms : values) {
+				System.out.println(parms[0] +":"+ parms[1]);
+			}
 		}
 }

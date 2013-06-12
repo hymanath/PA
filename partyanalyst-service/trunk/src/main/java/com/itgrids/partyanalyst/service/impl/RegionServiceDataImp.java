@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesProblemTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
@@ -68,10 +69,19 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IModuleDetailsDAO moduleDetailsDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IRegionScopesProblemTypeDAO regionScopesProblemTypeDAO;
-	
+	private IWardDAO wardDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IPanchayatDAO panchayatDAO;
 	
+	
+	public IWardDAO getWardDAO() {
+		return wardDAO;
+	}
+
+	public void setWardDAO(IWardDAO wardDAO) {
+		this.wardDAO = wardDAO;
+	}
+
 	public IPanchayatDAO getPanchayatDAO() {
 		return panchayatDAO;
 	}
@@ -645,9 +655,42 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		
 		if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE))
 		{
+			Long locaElectionBodyId = assemblyLocalElectionBodyDAO.get(id).getLocalElectionBody().getLocalElectionBodyId();
+			Long constituencyId = assemblyLocalElectionBodyDAO.get(id).getConstituency().getConstituencyId();
+			String constituencyType = constituencyDAO.get(constituencyId).getAreaType();
+			
+			if(constituencyType.equalsIgnoreCase(IConstants.RURALURBAN))
+			{
+				List<Object[]> wardsList = constituencyDAO.getWardsInALocalBody(locaElectionBodyId);
+				if(wardsList != null && wardsList.size() > 0)
+				{
+					for (Object[] parms : wardsList) {
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)parms[0]);
+						selectOptionVO.setName(parms[1].toString());
+						regionsList.add(selectOptionVO);
+					}
+				}
+						
+			}
+			else
+			{
+				List<Object[]> wardsList = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(id,8l,constituencyId);
+				if(wardsList != null && wardsList.size() > 0)
+				{
+					for (Object[] parms : wardsList) {
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)parms[0]);
+						selectOptionVO.setName(parms[1].toString());
+						regionsList.add(selectOptionVO);
+					}
+				}
+				
+			}
+			
 			//fetch the wards in a municipal/corporation/greater corp region if it is partial
 			//List wardsList = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(id, year);
-			List wardsList = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(id, year);
+			/*List wardsList = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(id, year);
 			if(wardsList.size() == 0)
 			{	
 				// fetch the local election body id to retrieve wards from the constituency table
@@ -675,7 +718,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					
 					regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+ obj[0].toString()),WordUtils.capitalize(wardName.toLowerCase())));
 				}
-			}
+			}*/
 			
 		} else if(areaFlag.equalsIgnoreCase(IConstants.RURAL_TYPE))
 		{

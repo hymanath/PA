@@ -1623,6 +1623,26 @@ IUserVoterDetailsDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Object[]> getHamletOrWardList(Long userId,Long Id,String type)
+	{
+		StringBuffer queryString = new StringBuffer();
+		if(type.equalsIgnoreCase("hamlet"))
+		{
+			queryString.append("select model.hamlet.hamletId , model.hamlet.hamletName from UserVoterDetails model ");
+		}
+		else
+		{
+			queryString.append("select model.ward.constituencyId , model.ward.name from UserVoterDetails model ");
+		}
+		queryString.append(" where model.user.userId = :userId and model.voter.voterId = :Id");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("userId", userId);
+		query.setParameter("Id", Id);
+		return query.list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	public List<Long> getBoothsCountForCustomWard(Long wardId,Long constituencyId,Long publicationDateId,Long userId)
 	{
 		Query queryObj = getSession().createQuery("select count(distinct BPV.booth.boothId) from BoothPublicationVoter BPV , UserVoterDetails UVD where " +

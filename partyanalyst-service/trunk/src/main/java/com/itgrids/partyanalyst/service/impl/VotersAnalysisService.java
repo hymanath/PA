@@ -119,6 +119,7 @@ import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.HamletBoothElection;
 import com.itgrids.partyanalyst.model.HamletBoothPublication;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
@@ -11130,7 +11131,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 							  else
 							  	{
 								 Long localElectionBodyId = boothPublicationVoter.getBooth().getLocalBody().getLocalElectionBodyId();
-								 List assemblyLocalElectionBodyId = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(localElectionBodyId);
+								 List assemblyLocalElectionBodyId = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyIdsList(localElectionBodyId,Long.valueOf(influencingPeopleVO.getConstituency()));
 								 if(assemblyLocalElectionBodyId != null && assemblyLocalElectionBodyId.size() > 0)
 								 {
 								 Long assemblyLocalElectionBodyIds = (Long)assemblyLocalElectionBodyId.get(0);
@@ -11150,13 +11151,57 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 								HamletBoothPublication hamletBoothPublication = hamletBoothPublicationList.get(0);
 								if(hamletBoothPublication.getBooth().getLocalBody() == null)
 								{
-									influencingPeopleVO.setWardOrHamlet(IConstants.RURAL_TYPE+hamletBoothPublication.getHamlet().getHamletId().toString());
-									influencingPeopleVO.setWardOrHamletName(hamletBoothPublication.getHamlet().getHamletName().toString());
+									List<Object[]> hamletDetails = userVoterDetailsDAO.getHamletOrWardList(userId,voterId,IConstants.HAMLET);
+									if(hamletDetails != null && hamletDetails.size() > 0)
+									{
+										for (Object[] parms : hamletDetails) {
+											influencingPeopleVO.setWardOrHamlet(IConstants.RURAL_TYPE+parms[0]);
+											influencingPeopleVO.setWardOrHamletName(parms[1].toString());
+										}
+									}
+									
 								}
 								else
 								{
-									influencingPeopleVO.setWardOrHamlet(IConstants.URBAN_TYPE+hamletBoothPublication.getHamlet().getHamletId().toString());
-									influencingPeopleVO.setWardOrHamletName(hamletBoothPublication.getHamlet().getHamletName().toString());
+									List<Object[]> hamletDetails = userVoterDetailsDAO.getHamletOrWardList(userId,voterId,IConstants.WARD);
+									if(hamletDetails != null && hamletDetails.size() > 0)
+									{
+										for (Object[] parms : hamletDetails) {
+											influencingPeopleVO.setWardOrHamlet(IConstants.RURAL_TYPE+parms[0]);
+											influencingPeopleVO.setWardOrHamletName(parms[1].toString());
+										}
+									}
+								}
+							}
+							else
+							{
+								List<HamletBoothElection> hamletDetailsList = hamletBoothElectionDAO.getHamletOrWardDetails(boothId);
+								if(hamletDetailsList != null && hamletDetailsList.size() > 0)
+								
+								{
+									HamletBoothElection hamletBoothElection	= hamletDetailsList.get(0);
+									if(hamletBoothElection.getBoothConstituencyElection().getBooth().getLocalBody() != null)
+									{
+										List<Object[]> hamletDetails = userVoterDetailsDAO.getHamletOrWardList(userId,voterId,IConstants.HAMLET);
+										if(hamletDetails != null && hamletDetails.size() > 0)
+										{
+											for (Object[] parms : hamletDetails) {
+												influencingPeopleVO.setWardOrHamlet(IConstants.RURAL_TYPE+parms[0]);
+												influencingPeopleVO.setWardOrHamletName(parms[1].toString());
+											}
+										}
+									}
+									else
+									{
+										List<Object[]> hamletDetails = userVoterDetailsDAO.getHamletOrWardList(userId,voterId,IConstants.WARD);
+										if(hamletDetails != null && hamletDetails.size() > 0)
+										{
+											for (Object[] parms : hamletDetails) {
+												influencingPeopleVO.setWardOrHamlet(IConstants.RURAL_TYPE+parms[0]);
+												influencingPeopleVO.setWardOrHamletName(parms[1].toString());
+											}
+										}
+									}
 								}
 							}
 						}
@@ -12588,7 +12633,7 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					}else{
 					  voterVO.setPartyName("");
 					}
-					voterVO.setCast(getInfluencingPeopleCasteCategory(params.getCaste()));
+					voterVO.setCast("N/A");
 						
 					
 						StringBuilder location=new StringBuilder();
