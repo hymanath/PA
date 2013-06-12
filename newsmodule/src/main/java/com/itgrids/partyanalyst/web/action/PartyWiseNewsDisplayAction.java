@@ -40,7 +40,15 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 	
 	private IPartyDetailsService partyDetailsService;
 	private List<FileVO> newsCountByCategoryList;	
+	private Long gallaryId;
 	
+		
+	public Long getGallaryId() {
+		return gallaryId;
+	}
+	public void setGallaryId(Long gallaryId) {
+		this.gallaryId = gallaryId;
+	}
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -146,6 +154,9 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 	public String getPartyWiseNewsForALocation(){
 		
 		return SUCCESS;		
+	}
+	public String getAllVideosForGallary(){
+		return SUCCESS;
 	}
 	
 	public String getPartyWiseNewsDetails(){		
