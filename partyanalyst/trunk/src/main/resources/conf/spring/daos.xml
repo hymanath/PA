@@ -1141,4 +1141,43 @@
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 	
+	<bean id="updationDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UpdationDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyAccessUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyAccessUsersDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyQuestionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="optionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.OptionTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="optionDAO" class="com.itgrids.partyanalyst.dao.hibernate.OptionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyorProfileDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyorProfileDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="respondentDAO" class="com.itgrids.partyanalyst.dao.hibernate.RespondentDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyorDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyorDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="surveyAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyAnswerDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
 </beans>		
