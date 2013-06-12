@@ -509,7 +509,7 @@ width: 92px;
 				</div>
 				<div id="video_dialog">
 					<div id="videos"></div>
-					<span class="btn" onclick="showMoreVideoGallaries()">More Videos</span>
+					<!--<span class="btn" onclick="showMoreVideoGallaries()">More Videos</span>-->
 				</div>
 			<!-------- Row-3 end -------------->
 		<div id="showContentDiv">
