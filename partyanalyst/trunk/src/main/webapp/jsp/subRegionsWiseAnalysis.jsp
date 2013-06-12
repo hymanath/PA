@@ -1635,7 +1635,14 @@ function getElectionData()
 			legend: {
 					margin:20
 				},
-				
+			
+				tooltip: {
+	                formatter: function() {
+	                    return '<b>'+ this.x +'</b><br/>'+'<b>'+ this.series.name +'</b>'+
+	                        ' : ' +Highcharts.numberFormat(this.y,2)
+							 ;
+	                }
+	            },
 		
             series:data
 			
