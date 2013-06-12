@@ -78,6 +78,7 @@
 }
 #votersBasicInfoSubChartDiv{
   margin-left: 0px;
+  margin-top:67px;
 }
 #votersBasicInfoSubDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 #votersBasicInfoSubDiv table tr:nth-child(even){background:#EdF5FF;}
@@ -127,20 +128,19 @@ table {
 	 color:#333333;
 
  }
-#titleDiv
-{
-	background: none repeat scroll 0 0 #49AFCD;
-    border-radius: 5px 5px 5px 5px;
-    border-top-width: 40px;
+/*#titleDiv{background: none repeat scroll 0 0 #06ABEA;
+    border-radius: 3px;
     color: #FFFFFF;
-    font-family: arial;
-    font-size: 16px;
-    font-weight: bolder;
-    height: 28px;
-    margin: 10px;
-    padding: 5px 5px;
-    text-align: center;
-}
+    font-size: 14px;
+	padding: 4px;
+    width: 550px;
+	font-family: verdana;
+    font-weight: bold;
+    margin-bottom: 14px;
+    margin-left: 10px;
+    margin-top: 12px;
+	}*/
+	#titleDiv{background:#4285F4; color: #fff; padding: 5px; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px;}
 	#votersBasicInfoSubChartDiv,#assAndUnass,#votersBasicInfoSubDiv{ margin-left: 10px;
     margin-right: 5px;}
 	#votersBasicInfoSubDiv{margin-bottom:20px;}
@@ -262,16 +262,11 @@ $('#castesAsPerLocId').click(function(){
 <div id="ajaxImageDiv" style="margin-top:30px;margin-left:50px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 
 	<div id="votersBasicInfoMainDiv">
-	<div id="titleDiv" align="center"></div>
+	<div id="titleDiv1"><h3 id="titleDiv"></h3></div>
+	
 		<div id="votersBasicInfoMsgDiv"></div>
 		<div id="wardSearchDiv" style="float: right; padding: 10px;display:none;"><b>Select Ward : </b><select id="wardsList" onchange="getDetailsForSelectedWard();"></select></div>
-	
-	<div align="center">
-	<div id="votersBasicInfoSubChartDiv_head" class="widget green whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
-	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="votersBasicInfoSubChartHeading"></h4>
-	<div id="votersBasicInfoSubChartDiv" style="margin-top: 67px;">
-	</div></div></div>
-	
+		<div id="votersBasicInfoSubChartDiv"></div>
 	</br>
 		<div id="assAndUnass"></div>
 	<div align="center">
