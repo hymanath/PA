@@ -72,7 +72,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
     
     public void updateFileDate(Date updateDt,Long fileId);
     
-    public void deleteFile(Long fileId);
+    
     
     public List<FileGallary> getRecentlyUploadedPhotos(Integer startIndex,Integer maxResults);
         
@@ -144,7 +144,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public List<Object[]> getNewsByLocationAndCategory(List<Long> candidateIds,
 			FileVO fileVO, List<Long> locationValuesList);
 	
-	 public List<FileGallary> getFileGallariesByFileId(Long fileId);
+	 
 	 
 	 
 	 public List<String> checkForVisibilityStatus(Long contentId);
@@ -277,12 +277,16 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public List<Object[]> getRecentlyUploadedNews(Integer starIndex, Integer maxResults,String contentType,Long partyId);
 	
 	public FileGallary getSelectedNewsDetails(Long fileGallaryId);
-	
 	public List<Object[]> getVideosOfGalleryId(Long gallaryId,int maxRcrd,int firstRcrd);
 	
 	public int getVideosCountOfGalleryId(Long galleryId);
 	
 	public Long getVideosCountIntheGallary(Long galleryId);
+	
+	
+	public List<Object[]> getAllTheNewsForAUser(Long userId);
+	public List<FileGallary> getFileGallariesByFileId(Long fileId);
+	public void deleteFile(Long fileId);
 	
 	
 }

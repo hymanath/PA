@@ -1593,6 +1593,7 @@
 		<property name="userDAO" ref="userDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate"/>
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
+		<property name="userCandidateRelationDAO" ref="userCandidateRelationDAO" />
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
@@ -1611,6 +1612,24 @@
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 		<property name="newsFlagDAO" ref="newsFlagDAO"/>
 		<property name="candidateDetailsService" ref="candidateDetailsService"></property>
+	</bean>
+	
+	
+	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
+		<property name="fileGallaryDAO" ref="fileGallaryDAO"/>
+		<property name="candidateDetailsService" ref="candidateDetailsService"/>
+		<property name="newsFlagDAO" ref="newsFlagDAO"></property>
+		<property name="contentNotesDAO" ref="contentNotesDAO"></property>
+		<property name="sourceDAO" ref="sourceDAO"></property>
+		<property name="sourceLanguageDAO" ref="sourceLanguageDAO"/>
+		<property name="newsImportanceDAO" ref="newsImportanceDAO"/>
+		<property name="categoryDAO" ref="categoryDAO" />
+		<property name="fileDAO" ref="fileDAO" />
+		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
+		<property name="gallaryDAO" ref="gallaryDAO"/>
+		<property name="regionScopesDAO" ref="regionScopesDAO" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>	    
+				
 	</bean>
 </beans>		
 	

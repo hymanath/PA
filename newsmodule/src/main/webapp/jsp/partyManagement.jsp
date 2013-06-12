@@ -8,11 +8,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>TDP Party Management</title>
-<script type="text/javascript" src="js/jquery.js"></script>
+<!--<script type="text/javascript" src="js/jquery.js"></script>-->
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 
    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+  <!--  <script src="http://code.jquery.com/jquery-1.8.2.js"></script>-->
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
     <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js">
@@ -42,9 +44,12 @@
 <!-- JQuery files (End) -->
 
 <style>
-#problemHead
-{
-	
+
+#newsDetailsTable  th{
+	color:#005580;
+	background-color:#DDDDDD;
+	border:1px solid #fff;
+
 }
 body {
 	color:#000000;
@@ -244,6 +249,7 @@ document.getElementById("profileManagementMainOuterDiv2").style.display = 'none'
 
 document.getElementById("profileManagementMainOuterDiv1").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
+document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
 
 $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -310,8 +316,7 @@ function getSource(selectOptionId){
 		try
 		{ 
 		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
-         	 
-         if(jsObj.task == "getPartyPhotoGallaryDetail")
+		 if(jsObj.task == "getPartyPhotoGallaryDetail")
 			{
                buildCandidatePhotoGallary(myResults);
 			}
@@ -1626,6 +1631,8 @@ function getScopes(){
  
 }
 function buildResults(results,divId){
+	$('#'+divId).find('option').remove();
+
 
   var elmt = document.getElementById(divId);
          if(divId=='scopeDiv')
@@ -2284,6 +2291,7 @@ if(!formValidation()){
 document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv2").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
+document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
 
 $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
@@ -3179,6 +3187,8 @@ function updatePhoto(fileId,fileGallaryId)
 			    	<td style="padding-left:315px"><b><input type="button" class="buttonStyle" value="Photo Gallery" id="photoGalleryId" onClick="showPhotoGallary1()"></b></td>
 				    <td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()"></b> </td>
+
 					<!--<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Development Activity" id="developmentGalleryId" onClick="showDevelopmentActivity()"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Profile Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Party Manifesto" id="manifestoId" onClick="uploadPartyManifesto()"></b> </td>-->
@@ -3265,7 +3275,38 @@ function updatePhoto(fileId,fileGallaryId)
 	</div>
 </div>
 
+
+<!-- for  body 4  result  start -->
+<div id='profileManagementMainOuterDiv4' style="display:none">
+	<div id='profileManagementHeaderDiv4'>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			  <tr>
+				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
+				   </td>
+				   <td width="98%">
+					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
+					   <span style="text-decoration: none;" class="headerLabelSpan2">News</span>
+					 </div>
+				   </td>
+				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
+				   </td>
+			 </tr>
+		</table>
+		<div id='newsGallaryDiv' class="divInfo">
+	 </div>		
+	</div>
+</div>
+<!-- for  body 4  result  end -->
+<div id="editNewsOuter">
+  <div id="editNewsInner"></div>
+</div>
+<div id="ajaxImg" style="display:none;margin-left:300px;margin-top:30px;"><img src="images/icons/goldAjaxLoad.gif"></img></div>
+
 <script>
+var newsDetails;
+var bvalue = false;
+var noOfRowsPerPage = 10;
+var modifiedRecord = 0;
 $(document).ready(function() {
 	$(".dateField").live("click", function(){
        $(this).datepicker({
@@ -3280,6 +3321,1173 @@ $(document).ready(function() {
 
 
 showNewsGallaey();
+</script>
+
+<script>
+function showTheNewsToUpdate()
+{
+  document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
+  document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
+  document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
+  $('#profileManagementMainOuterDiv4').show();
+  $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+  $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+  $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+  $("#newsEditId").css({"background":"none repeat scroll 0 0 #F61D50"});
+  buildNewsDetails();
+
+}
+function buildNewsDetails()
+{
+	$('#ajaxImg').show();
+
+    var jsObj = {
+			queryType: 'getAllNews',
+			task: 'getAllNews'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getAllNewsForAUser.action?"+rparam;
+	callnewAjax(jsObj,url);
+}
+function callnewAjax(jsObj,url){
+var callback = {			
+	 success : function( o ) {
+		try
+		{ 
+		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
+		  
+		 if(jsObj.task == "getAllNews"){
+			 	$('#ajaxImg').hide();
+			 newsDetails = myResults;
+            buildAllNewsDetails(myResults);
+		 } 
+		  if(jsObj.task == "Update" || jsObj.task == "Delete"){
+        $('#newsSuccessDiv').html("<font style='font-weight:bold;color:green;margin-left:50px;'>News Updated Successfully.</font>");
+           setTimeout(hideDialog,3000);
+			buildNewsDetails();
+		 } 
+         else if(jsObj.task == "getCandidatePhotoGallaryDetail")
+			{
+               buildCandidatePhotoGallary(myResults);
+			}
+			else if(jsObj.task == "candidateGallariesForUplaod")
+			{ 
+			   if(jsObj.contentType=="News Gallary")
+				{
+
+					//clearOptionsListForSelectElmtId('gallaryId');
+					//createOptionsForSelectElmtId('gallaryId',myResults);
+
+					//$("#gallaryId").prepend("<option value='0'>Select Gallery</option>");
+					//document.getElementById("gallaryId").value = 0;
+						//$('#gallaryId').val(reqFile.contentId);
+
+						appendResults1(myResults,"gallaryId");
+				
+				}
+				else if(jsObj.contentType=="Video Gallary")
+				{
+					clearOptionsListForSelectElmtId('gallarySelectId');
+					createOptionsForSelectElmtId('gallarySelectId',myResults);
+
+					$("#gallarySelectId").prepend("<option value ='0'>Select Gallery</option>");
+					document.getElementById("gallarySelectId").value = 0;
+				}
+				else if(jsObj.contentType=="Photo Gallary")
+				{
+					clearOptionsListForSelectElmtId('gallaryphotoselectId');
+					createOptionsForSelectElmtId('gallaryphotoselectId',myResults);
+					$("#gallaryphotoselectId").prepend("<option value='0'>Select Gallery</option>");
+                    document.getElementById("gallaryphotoselectId").value = 0;
+				}
+			}
+			else if(jsObj.task == "getScopesForNewSearch")
+			{ 
+			   //clearOptionsListForSelectElmtId("scopeDiv");
+              // buildResults(myResults,"scopeDiv");
+
+			  appendResults1(myResults,"scopeDiv");
+			}
+			else if(jsObj.task == "getStates"){
+
+              appendResults1(myResults,"stateDiv");
+			}
+			else if(jsObj.task == "getDistrictsByStateId"){
+				appendResults1(myResults,"districtDiv");
+			}else if(jsObj.task == "constituenciesInDistrict"){
+				appendResults1(myResults,"constituencyDiv");
+			}else if(jsObj.task == "getConstNotInGivenAreaType"){
+                appendResults1(myResults,"constituencyDiv");
+			}else if(jsObj.task == "subRegionsInConstituency"){ 
+               appendResults1(myResults,"mandalDiv");
+			}else if(jsObj.task == "hamletsOrWardsInRegion"){ 
+               appendResults1(myResults,"villageDiv");
+			}else if(jsObj.task == "boothsInTehsilOrMunicipality"){ 
+               appendResults1(myResults,"villageDiv");
+			}else if(jsObj.task == "saveFileComment"){
+
+				alert("Your comment is saved successfully.");
+			}
+		
+}
+		catch(e)
+		{   
+		}  
+	 },
+	scope : this,
+	failure : function( o )
+	{
+							
+	}
+  };
+
+ YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function buildAllNewsDetails(results)
+{
+
+	 var pageNumber = 0;
+if(modifiedRecord == 0)
+	pageNumber = 0;
+else{
+	for(var j in results)
+	 if( results[j].fileId == modifiedRecord )
+		pageNumber = Math.ceil(j/noOfRowsPerPage) - 1;
+
+}
+
+
+	var str="";
+	str+='<table id="newsDetailsTable">';
+	str+='<thead>';
+	 str+='<tr>';
+	  str+='<th>CATEGORY</th>';
+	  str+='<th>GALLARY</th>';
+	  str+='<th>SOURCE</th>';
+	  str+='<th>TITLE</th>';
+	  str+='<th>DESCRIPTION</td>';
+	  str+='<th>IMPACT AREA </th>';
+	  str+='<th>AREA NAME</th>';
+	  str+='<th>NEWS DATE</th>';
+	  str+='<th>EDIT/DELETE</th>';
+	 // str+='<td>DELETE</td>';
+	  str+='</thead>';
+	 str+='</tr>';
+	 for(var i in results)
+	 {
+		 str+='<tr>';
+		    str+='<td>'+results[i].categoryType+'</td>';
+	        str+='<td>'+results[i].gallaryName+'</td>';
+	        str+='<td>'+results[i].source+'</td>';
+		    str+='<td>'+results[i].fileTitle1+'</td>';
+		    str+='<td>'+results[i].description+'</td>';
+			str+='<td>'+results[i].locationScopeValue+'</td>';
+	        str+='<td>'+results[i].locationValue+'</td>';
+	        str+='<td>'+results[i].fileDateAsString+'</td>';
+			str+='<td><a type="button" href="javascript:{editNewsDetails('+results[i].fileId+');}"><i class="icon-pencil"></i></a>';
+			str+='<a type="button" href="javascript:{updateDeleteNews(\'Update\','+results[i].fileId+');}" ><i class="icon-remove-sign"></i></a></td>';
+ 		str+='</tr>';
+           
+	 }
+ 	str+='</table>';
+	
+	$('#profileManagementMainOuterDiv4').html(str);
+
+	$(function() {
+		var table = $('#newsDetailsTable').dataTable({
+			"iDisplayLength": 10,
+			//"iDisplayStart":5
+			"bPaginate": true,
+
+		});
+		table.fnPageChange(pageNumber,true);
+		//$('#rrrr').dataTable();
+		//var oTable = $('#rrrr').dataTable({
+		//	iDisplayStart:1
+		});
+  //var oSettings = oTable.fnSettings();
+
+  //console.log(oSettings);
+	//});
+}
+function editNewsDetails(fileId){
+
+
+
+  $("#editNewsOuter").dialog({ stack: false,
+							    height: 'auto',
+								width: 700,
+								position:[150,120],								
+								modal: true,
+								title:'Edit News Details',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#editNewsOuter").dialog();
+	var str= '';
+	
+	
+	for(var i in newsDetails){
+	  if(newsDetails[i].fileId == fileId)
+	  {
+	    reqFile = newsDetails[i];
+		
+	  }
+	}
+
+	var str ='';
+
+	/*str+='<div style="float:right;"><div style="float:left;"><b>Flag Status:</b><input type="hidden" name="flagValue" id="flagInd" value="'+reqFile.flagSet+'"></input></div>';
+      if(reqFile.flagSet == "true"){
+		  str+='<div id="flagSet" style="width: 130px;"><a href=javaScript:{setFlagVariable(\'false\');}   ><i class="icon-flag"></i></a></div>';
+
+		  str+='<div id="flagUnSet" style="display:none;width: 130px;"><a href=javaScript:{setFlagVariable(\'true\');}  class="unflagClass" ><i class="icon-flag"></i></a></div>';
+	  }
+	  else{
+		    str+='<div id="flagSet" style="display:none;width: 130px;"><a href=javaScript:{setFlagVariable(\'false\');}><i class="icon-flag"></i></a></div>';
+
+		   str+='<div id="flagUnSet" style="width: 130px;"><a href=javaScript:{setFlagVariable(\'true\')}  class="unflagClass" ><i class="icon-flag"></i></a></div>';
+		 // str+='';
+	  }
+	  str+='<div style="clear: both" ></div>';
+	  str+='</div>';
+
+	str+='<div>';*/
+	str += '<fieldset>';
+	
+	str += '<table><tr><td><div id="uploadNewsFileErrorDiv"/></td></tr></table>';
+	str += '<table style="display:-moz-inline-box;">';
+	str+='<tr>';
+	str+='<td class="tdWidth">Select News Gallery<font class="requiredFont">*</font></td>';
+	str+='<td class="selectWidthPadd"><select style="width:222px;"  id="gallaryId" name="gallaryId" class="selectWidth"/><option value="0">Select</option></select></td>';
+	str +='<td>gallaryName - CandidateName</td>';
+	str+='</tr>';
+    str += '   <tr>';
+	str += '       <td class="tdWidth">Title<font class="requiredFont">*</font></td>';
+	str += '       <td><input type="text" id="fileTitle" size="25" maxlength="100"></text></td>'; 
+	str += '   </tr>';
+	str += '   <tr>';
+    
+	str += '       <td class="tdWidth">News Description<font class="requiredFont">*</font></td>';
+	str += '       <td><textarea id="fileDescription" cols="20" rows="3"></textarea></td>';
+	str += '   </tr>';
+
+    str += '   <tr>';
+	str += '       <td class="tdWidth">Keywords</td>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" style="margin-top:8px;"></text></td></tr>';
+
+	str += '   <TR>';
+	
+	
+	str += ' <td class="tdWidth"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '<TD><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '<TD>';
+	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
+	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	str += '</TD>';
+	
+	str += '   </TR>';
+
+
+	for(var i in reqFile.fileVOList)
+	{
+	   str += '   <tr>';
+	   str += '       <td class="tdWidth">Source<font class="requiredFont">*</font></td>';
+	   str += '       <td><select id="sourceEdit'+i+'" style="width:222px;"></select></td>';
+	   str += '       <td><input type="hidden" id="sourceEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
+	   str += '   </tr>';
+	
+	   str += '   <tr>';
+	   str += '       <td class="tdWidth">Language<font class="requiredFont">*</font></td>';
+	   str += '       <td><select id="languageEdit'+i+'" style="width:222px;"></select></td>';
+	   str += '       <td><input type="hidden" id="languageEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
+	   str += '   </tr>';
+	}
+	str += '       <td class="tdWidth">Category</td>';
+	str += '  <td><select id="categoryEdit" style="width:222px;"><option value="0">-select category-</option></select></td>';
+	str += '   </tr>';
+	str += '   </tr>';
+	str += '       <td class="tdWidth">News Importance<font class="requiredFont">*</font></td>';
+	str += '       <td><select id="newsimportance" style="width:222px;"></select></td>';
+	str += '   </tr>';
+
+	/*
+		str += '   <tr>';
+		str += '       <td class="tdWidth">File Path<font class="requiredFont">*</font></td>';
+		str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId" size="25" style="margin-top:8px;"/></td>';
+		str += '       <td class="selectWidthPadd" style="padding-left:24px;"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt=""Click here to add more images""/></td>';
+		str += '   </tr>';
+	*/
+
+	str += '   <tr>';
+	str += '      <td colspan="2"> <div id="addMoreFilesDiv" style="margin-left:107px;"></div></td>';
+	str += '   </tr>';
+
+	/*
+		str +='<tr><td class="tdWidth" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="newsfileId" size="25" style="margin-top:8px;"/></td></tr>';
+	*/
+	//str += '   <tr>';
+
+
+	str += '   <tr>';
+	str += '       <td></td>';
+
+	//Here visibility means isPrivate
+	if(reqFile.visibility == "false")
+
+		//str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
+
+		str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><i  class="icon-bullhorn" ></i></input></label></td>';
+	else
+
+		//str += '       <td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
+
+		str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId"><i  class="icon-bullhorn" ></i></input></label></td>';
+
+    str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td></td>';
+
+	if(reqFile.visibility == "true")
+
+	 // str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
+	  str += '<td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId"></input><i  class="icon-lock" ></i></label></td>';
+   else
+	  // str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
+
+    str += '<td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId"></input><i  class="icon-lock" ></label></td>';
+
+	str += '   </tr>';
+
+	str +='    <tr>';
+    str +='	   <td class="tdWidth">Location Scope<font class="requiredFont">*</font></td>';
+    str +='	   <td><select id="scopeDiv" name="locationScope" style="width:222px;" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
+    str +='  </tr>';
+ 
+	str +='  <tr>';
+	str +='    <td colspan="2">';
+	str +='       <div id="showScopeSubs" />'; 
+	str +='    </td>';
+	str +='  </tr>';
+
+   if(reqFile.locationScope != null && reqFile.locationScope != "null"){
+
+
+		str +='  <tr>';
+		str +='    <td>';
+
+       str+='<input type="hidden" id="locationValueId" value='+reqFile.location+'></input>';
+
+		str +='       <div style="font-weight:bold;margin-left: 54px;">'+reqFile.locationValue+'</div>'; 
+		str +='    </td>';
+		str +='    <td>';
+		str +='<input type="button" class="btn" value="Edit" onClick="getLocationDiv();"/>'; 
+		str +='    </td>';
+		str +='  </tr>';
+
+   }
+   
+	
+
+
+
+	str += '</table>';
+	str+='<div id="newsSuccessDiv"></div>';
+	str += '<div style="padding-left:223px;padding-top:10px;"> <input type="button" value="Update" class="imageButton" onclick="updateDeleteNews(\'Update\','+fileId+');" /></div>';
+	str += '</fieldset>';
+	str+='</div>';
+
+	
+    
+	str+='<input type="hidden" name="fileGallaryId"  id="fileGallaryId" value='+reqFile.contentId+'></input>';
+	    document.getElementById("editNewsInner").innerHTML = str;
+		
+	
+	   
+		//document.getElementById("existingFromText").value = reqFile.fileDate;
+	    document.getElementById("fileTitle").value = reqFile.fileTitle1;
+	    document.getElementById("keywords").value = reqFile.keywords;
+		document.getElementById("fileDescription").value = reqFile.description;
+		document.getElementById("existingFromText").value = reqFile.fileDateAsString;
+
+		getNews("sourceEdit","getAllSourceDetails","","","","","","","","","","");
+        getNews("categoryEdit","getAllCategoryDetails",reqFile.categoryId,"","","","","","","","","");
+        getNews("languageEdit","getAllSourceLanguageDetails","","","","","","","","","","");
+        getNews("newsimportance","getAllNewsImportanceDetails",reqFile.newsImportanceId,"","","","","","","","","");
+	
+		
+		//CHANGE BY SAMBA
+	getCandidateGallariesForUplaod("News Gallary",reqFile.fileId);  
+	getScopes1();
+ }
+ function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location,title,fromDate,toDate){
+/*if(returnedResults != undefined){
+	modifiedRecord = returnedResults.fileGallaryId;
+}*/
+
+   // document.getElementById("newsDeleteMessage").innerHTML = "";
+    var timeST = new Date().getTime();	
+var jsObj=
+	      { 
+		    queryType	:queryType,
+			fileType	:fileType,
+			sourceId	:sourceId,
+            languegeId	:languegeId,
+            categoryId	:categoryId,
+            newsImportanceId :newsImportanceId,
+            locationScope :locationScope,
+            location	:location,
+			fromDate	:fromDate,
+			toDate		:toDate,
+			title		:title,
+			timeST      :timeST,
+			task		:task
+	       }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "getAllNewsForAUser.action?"+rparam;						
+      callAjax1(jsObj,url);
+}
+function getCandidateGallariesForUplaod(contentType , fileId)
+{
+//var candidateId=document.getElementById("candidateId").value;
+	var jsObj =
+		{ 
+			contentType : contentType,
+		   	task : "candidateGallariesForUplaod"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidateGallaries.action?"+rparam;
+	callnewAjax(jsObj,url);
+}
+ function getScopes1(){
+  
+ var jsObj =
+		{ 
+            time : timeST,
+			task:"getScopesForNewSearch"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callnewAjax(jsObj,url);
+ 
+}
+
+function appendResults1(results , divId){
+
+	$('#'+divId).find('option').remove();
+
+
+    if(divId == "scopeDiv"){
+		//$('#'+divId).append(new Option("Select Scope", "0"));
+
+		for(var i in results){			
+
+			$('#'+divId).append('<option value='+results[i].locationScope+'>'+results[i].locationScopeValue+'</option>');
+		}
+
+		if(reqFile.locationScope != null && reqFile.locationScope != "null")
+		$('#scopeDiv').val(reqFile.locationScope);
+		//getLocations(reqFile.locationScope);
+
+	}
+
+
+	if(divId == "stateDiv"){
+		//$('#'+divId).append(new Option("Select State", "0"));
+
+		for(var i in results){
+
+		$('#'+divId).append('<option value='+results[i].ids+'>'+results[i].names+'</option>');
+	    }
+	}
+
+	if(divId == "districtDiv"){
+
+		//$('#'+divId).append(new Option("Select District", "0"));
+
+		for(var i in results){
+
+		$('#'+divId).append('<option value='+results[i].ids+'>'+results[i].names+'</option>');
+	    }
+	}
+   
+    if(divId == "constituencyDiv"){
+
+		//$('#'+divId).append(new Option("Select Constituency", "0"));
+
+		for(var i in results){
+		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+	    }
+
+	} 
+
+	if(divId == "mandalDiv"){
+
+		//$('#'+divId).append(new Option("Select Mandal", "0"));
+
+		for(var i in results){
+		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+	    }
+
+	}
+
+	if(divId == "villageDiv"){
+
+		//$('#'+divId).append(new Option("Select Village", "0"));
+
+		for(var i in results){
+		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+	    }
+
+	}
+	if(divId == "gallaryId"){
+
+		for(var i in results){
+
+		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+
+	    }
+
+	$('#gallaryId').val(reqFile.fileGallaryId);
+
+	}
+}
+ function getLocationDiv(){
+	bvalue=true;
+	var id =  $('#scopeDiv').val();
+   getLocations1(id);
+}
+
+function callAjax1(jsObj,url){
+var myResults;	
+var callback = {			
+    success : function( o ) {
+		try {												
+			myResults = YAHOO.lang.JSON.parse(o.responseText);
+			if(jsObj.queryType == "getAllNews"){
+			     buildAllNewsDetails(myResults);
+				// newsDetails = myResults;
+			}
+			
+			 if(jsObj.queryType == "getCount")
+			 {
+			   showNewsCountDetails(myResults,jsObj);
+			   hideImg();
+			 }
+			 else if(jsObj.queryType == "getNews")
+			 {	
+				newsDetails = myResults;
+				showNewsDetails(jsObj,myResults);
+				hideImg();
+			 }
+			else if(jsObj.queryType == "getAllSourceDetails")
+			 {	
+			     if(jsObj.task != "sourceEdit")
+				  bildDate(myResults,jsObj.task,jsObj.fileType);
+				 else
+				   bildDateForSource(myResults);
+			 }
+			 else if(jsObj.queryType == "getAllCategoryDetails")
+			 {	
+				bildDate(myResults,jsObj.task,jsObj.fileType);
+			 }
+			 else if(jsObj.queryType == "getAllSourceLanguageDetails")
+			 {	
+			    if(jsObj.task != "languageEdit")
+				   bildDate(myResults,jsObj.task,jsObj.fileType);
+				else
+				  bildDateForLanguage(myResults); 
+			 }
+			 else if(jsObj.queryType == "getAllNewsImportanceDetails")
+			 {	
+				bildDate(myResults,jsObj.task,jsObj.fileType);
+			 }
+			 else if(jsObj.task == "Delete")
+			 {
+			    newsSearch();
+				showDeletedMessage(myResults);
+			 }
+			 else if(jsObj.task == "Update")
+			 {
+				returnedResults = myResults;
+			    newsSearch();
+				showUpdatedMessage(myResults.resultStatus);
+			 }
+			 else if(jsObj.type == "flagedNews" || jsObj.type == "notedNews" )
+			 {
+				buildFlagedAndNotedNews(myResults);
+			 }
+			 else if(jsObj.type == "flagedCount" || jsObj.type == "notedCount")
+			 {
+				buildFlagedAndNotedData(myResults,jsObj);
+			 }
+			 
+			}catch (e) {   		
+		   	//alert("Invalid JSON result" + e);   
+		}  
+    },
+    scope : this,
+    failure : function( o ) {
+     			//alert( "Failed to load result" + o.status + " " + o.statusText);
+              }
+    };
+
+YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function bildDateForSource(results)
+ {
+   for(var j in reqFile.fileVOList)
+  {
+    elmt = document.getElementById('sourceEdit'+j+'');
+    for(var i in results)
+	{
+		var option = document.createElement('option');
+		option.value=results[i].ids;
+		option.text=results[i].names;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+	document.getElementById('sourceEdit'+j+'').value = reqFile.fileVOList[j].sourceId;
+  }
+}
+function bildDateForLanguage(results)
+ {
+      for(var j in reqFile.fileVOList)
+  {
+    elmt = document.getElementById('languageEdit'+j+'');
+    for(var i in results)
+	{
+		var option = document.createElement('option');
+		option.value=results[i].ids;
+		option.text=results[i].names;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+	document.getElementById('languageEdit'+j+'').value = reqFile.fileVOList[j].languegeId;
+  }
+ }
+ function bildDate(optionsList,elmtId,val){
+   var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].ids;
+		option.text=optionsList[i].names;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+	if(elmtId == "sourceEdit")
+	{
+	  document.getElementById("sourceEdit").value = val;
+	}
+	else if(elmtId == "categoryEdit")
+	{
+	  document.getElementById("categoryEdit").value = val;
+	}
+	else if(elmtId == "languageEdit")
+	{
+	  document.getElementById("languageEdit").value = val;
+	}
+	else if(elmtId == "newsimportance")
+	{
+	  document.getElementById("newsimportance").value = val;
+	}
+}
+function getLocations1(id){
+
+   if(id==0)
+  {
+   var val ='';
+  val +='<table>';
+  val +='  <tr><td></td>';
+  val +='  </tr>';
+  val +='</table>';
+  document.getElementById("showScopeSubs").innerHTML = val;
+    
+  }
+  else if(id==1)
+  {
+    var str ='';
+  str +='<table>';
+  str +='  <tr><td></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+  }
+  else if(id==2)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" name="locationValue" class="selectWidth" style="width: 222px; margin-left: -4px;"/></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==3)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">District<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth" name="locationValue"style="width: 222px; margin-left: -4px;"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==4)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(4,1);getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">District<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==5 || id==7)
+  {
+   if(id==5)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==7)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+   
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv"style="width: 222px; margin-left: -4px;"  class="selectWidth" onchange="clearAllElmts(5,1);getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">District<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv"style="width: 222px; margin-left: -4px;" class="selectWidth" onchange="clearAllElmts(5,2);getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"style="width: 222px; margin-left: -4px;" class="selectWidth" onchange="getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==6 || id==8)
+  {
+   if(id==6)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==8)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,1);getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">District<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,2);getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,3);getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Village/Ward/Division<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+  else if(id==9)
+  {
+     var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">District<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Village/Ward/Division<font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStatesForLocationScope();
+  }
+}
+function getStatesForLocationScope()
+{
+  var jsObj =
+		{ 
+            time : timeST,
+			task:"getStates"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callnewAjax(jsObj,url);
+}
+
+function updateDeleteNews(task,fileId){
+
+var fileTitle = $('#fileTitle').val();
+var fileDescription = $('#fileDescription').val();
+var flagInd = $('#flagInd').val();
+var scope = $('#scopeDiv').val();
+var errorMessage = "";
+var validate = false;
+
+if(fileTitle == ""){
+ errorMessage+="File title is required<br>";
+ validate = true;
+}
+
+if(fileDescription == ""){
+	errorMessage+="File description is required";
+	validate = true;
+}
+if(bvalue){
+if(scope == 3)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		var districtVal=document.getElementById('districtDiv').value;
+		if(stateVal == 0)
+		{
+		errorMessage += 'State Name is Required.<br>';
+		validate = true;
+		}
+		if(districtVal == 0)
+		{
+		errorMessage += 'District Name is Required.';
+		validate = true;
+		}
+	}
+
+	if(scope == 4)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		var districtVal=document.getElementById('districtDiv').value;
+		var constituencyVal=document.getElementById('constituencyDiv').value;
+		if(stateVal == 0)
+		{
+		errorMessage += 'State Name is Required.<br>';
+		validate = true;
+		}
+		if(districtVal == 0)
+		{
+		errorMessage += 'District Name is Required.<br>';
+		validate = true;
+		}
+		if(constituencyVal == 0)
+		{
+		errorMessage += 'Constituency Name is Required.';
+		validate = true;
+		}
+	}
+	if(scope == 5)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		var districtVal=document.getElementById('districtDiv').value;
+		var constituencyVal=document.getElementById('constituencyDiv').value;
+		var mandalVal=document.getElementById('mandalDiv').value;
+		if(stateVal == 0)
+		{
+		errorMessage += 'State Name is Required.<br>';
+		validate = true;
+		}
+		if(districtVal == 0)
+		{
+		errorMessage += 'District Name is Required.<br>';
+		validate = true;
+		}
+		if(constituencyVal == 0)
+		{
+		errorMessage += 'Constituency Name is Required.<br>';
+		validate = true;
+		}
+		if(mandalVal == 0)
+		{
+		errorMessage += 'Mandal Name is Required.';
+		validate = true;
+		}
+	}
+	if(scope == 6 || scope == 8 || scope == 9)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		var districtVal=document.getElementById('districtDiv').value;
+		var constituencyVal=document.getElementById('constituencyDiv').value;
+		var mandalVal=document.getElementById('mandalDiv').value;
+		var villageVal=document.getElementById('villageDiv').value;
+		if(stateVal == 0)
+		{
+		errorMessage += 'State Name is Required.<br>';
+		validate = true;
+		}
+		if(districtVal == 0)
+		{
+		errorMessage += 'District Name is Required.<br>';
+		validate = true;
+		}
+		if(constituencyVal == 0)
+		{
+		errorMessage += 'Constituency Name is Required.<br>';
+		validate = true;
+		}
+		if(mandalVal == 0)
+		{
+		errorMessage += 'Mandal Name is Required.<br>';
+		validate = true;
+		}
+		if(villageVal == 0)
+		{
+		errorMessage += 'Villiage Name is Required.';
+		validate = true;
+		}
+	}
+	if(scope == 7)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		var districtVal=document.getElementById('districtDiv').value;
+		var constituencyVal=document.getElementById('constituencyDiv').value;
+		var mandalVal=document.getElementById('mandalDiv').value;
+		
+		if(stateVal == 0)
+		{
+		errorMessage += 'State Name is Required.<br>';
+		validate = true;
+		}
+		if(districtVal == 0)
+		{
+		errorMessage += 'District Name is Required.<br>';
+		validate = true;
+		}
+		if(constituencyVal == 0)
+		{
+		errorMessage += 'Constituency Name is Required.<br>';
+		validate = true;
+		}
+		if(mandalVal == 0)
+		{
+		errorMessage += 'Mandal Name is Required.';
+		validate = true;
+		}
+		
+	}
+}
+if(validate == true) {
+$('#uploadNewsFileErrorDiv').html('<span style="color:red;">'+errorMessage+'</span>');
+validate = false;
+return false;
+}
+
+//document.getElementById("newsDeleteMessage").innerHTML = "";	
+ var timeST = new Date().getTime();
+ 
+
+   var title ="";
+   var description ="" ;
+   var sourceId =""  ;
+   var languegeId ="" ;
+   var categoryId ="" ;
+   var newsImportanceId ="" ;
+   var sourceString ='';
+   var languageString = '';
+
+   //CHANGE BY SAMBA START
+
+   var gallaryId = "";
+   var keywords = "";
+   var fileDate = "";
+   var locationScopeId = "0";
+   var locationScopeValue = "";
+   var visibility = "";
+   var fileGallaryId  = 0;
+   //CHANGE BY SAMBA END
+
+  if(task == "Update")
+  {
+   title  = document.getElementById("fileTitle").value;
+   description  = document.getElementById("fileDescription").value;
+
+    //CHANGE BY SAMBA START
+
+	visibility = $('input:radio[name=visibility]:checked').val();
+
+	gallaryId = document.getElementById("gallaryId").value;
+   keywords = document.getElementById("keywords").value;
+   fileDate = document.getElementById("existingFromText").value;
+   locationScopeId = document.getElementById("scopeDiv").value;
+   fileGallaryId = $('#fileGallaryId').val();
+
+   try
+  {
+  	 locationScopeValue = document.getElementsByName('locationValue')[0].value; 
+  }
+   catch(err)
+  { 
+	locationScopeValue = reqFile.locationVal;
+  }
+
+  if(locationScopeValue == null || locationScopeValue == "null")
+	  locationScopeValue = 0;
+
+
+
+   keywords = removeAllUnwantedCharacters(keywords); 
+   
+
+    //CHANGE BY SAMBA END
+   
+   title = removeAllUnwantedCharacters(title);   
+   description = removeAllUnwantedCharacters(description);
+  
+   for(var i in reqFile.fileVOList)
+   {
+      var sourceEle  = document.getElementById("sourceEdit"+i);
+      sourceId  = sourceEle.options[sourceEle.selectedIndex].value;
+      var filesourceId1 = document.getElementById("sourceEditId"+i).value;
+	  sourceString = sourceString+''+sourceId+','+filesourceId1+'-';
+	  
+	  
+      var languegeEle = document.getElementById("languageEdit"+i);
+      languegeId = languegeEle.options[languegeEle.selectedIndex].value;
+	  var filesourceId2 = document.getElementById("languageEditId"+i).value;
+	  languageString = languageString+''+languegeId+','+filesourceId2+'-';
+	  
+	  
+   }
+   var categoryEle = document.getElementById("categoryEdit");
+   categoryId = categoryEle.options[categoryEle.selectedIndex].value;
+   
+   var newsImportanceEle = document.getElementById("newsimportance");
+   newsImportanceId = newsImportanceEle.options[newsImportanceEle.selectedIndex].value;
+  }
+  if(task == "Delete")
+  {
+    var r = confirm("Do you want to delete this news article");
+      if (r == false)
+       return;  
+  
+  }
+
+  if(locationScopeId == 5 || locationScopeId == 7 || locationScopeId == 6 || locationScopeId == 8){
+
+try{
+    locationScopeValue = locationScopeValue.substring(1);
+}catch(e){
+	locationScopeValue = locationScopeValue;
+
+}
+
+  }
+
+  modifiedRecord  = fileId;
+   var jsObj=
+	      { 
+		  title		       :	title,
+		  description	   :	description,
+		  task			   :	task,
+		  sourceId		   :	sourceId,
+		  languegeId	   :	languegeId,
+		  categoryId	   :	categoryId,
+		  fileId           :    fileId,
+		  timeST           :    timeST,
+		  newsImportanceId :    newsImportanceId,
+		  sourceData       :    sourceString.slice(0, -1),
+		  languageData     :    languageString.slice(0, -1),
+		  gallaryId        :    gallaryId,
+          keywords         :    keywords,
+          fileDate         :    fileDate,
+          locationScopeId  :    locationScopeId,
+          locationScopeValue:   locationScopeValue,
+		  visibility        :visibility,
+		  flagInd          :false,
+		  fileGallaryId:fileGallaryId
+     }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "updateDeleteNewsAction.action?"+rparam;	
+  callnewAjax(jsObj,url);
+ 
+ }
+
+ function  hideDialog()
+ {
+	
+	 $("#editNewsOuter").dialog('close');
+ }
+
 </script>
 </body>
 </html>

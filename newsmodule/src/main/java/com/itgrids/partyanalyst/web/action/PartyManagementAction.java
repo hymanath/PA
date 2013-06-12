@@ -351,10 +351,11 @@ public String execute()
 	RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
 	if (registrationVO != null) 
 	{
-	 if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
+		 return Action.SUCCESS;
+	 /*if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
 	  return Action.SUCCESS;
 	 else
-		 return "error";
+		 return "error";*/
 	}
 	else
 		return IConstants.NOT_LOGGED_IN;
