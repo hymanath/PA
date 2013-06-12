@@ -278,6 +278,10 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	
 	public FileGallary getSelectedNewsDetails(Long fileGallaryId);
 	
+	public List<Object[]> getVideosOfGalleryId(Long gallaryId,int maxRcrd,int firstRcrd);
+	
+	public int getVideosCountOfGalleryId(Long galleryId);
+	
 	
 }
 
