@@ -71,6 +71,11 @@ function callAjax(jsObj,url)
 								{
 									buildMoreVideos(myResults,jsObj);
 								}
+								if(jsObj.task =="getVideosForGallery")
+								{
+									alert('in');
+									//buildMoreVideos(myResults,jsObj);
+								}
 								}catch (e) {
 							     
 								}  
@@ -92,7 +97,7 @@ function callAjax(jsObj,url)
 		str+="<li>";
 		str+="<h6 id='titleNameId' title='"+results[i].name+"' style='cursor:default;'>"+results[i].name+"</h6>";
 		str+="<div>";
-		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}' onclick='getVideosByContentId("+results[i].ids+")'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}' onclick='getAllVideosOfAGallary("+results[i].ids+")'>";
 		str+="<img id='myImg' style='width:100%' src=http://img.youtube.com/vi/"+results[i].path+"/1.jpg ></a>";
 		//str+="<p class='span8'>"+results[i].description+"</p>";
 		str+="</div>";
@@ -133,7 +138,24 @@ function callAjax(jsObj,url)
 	
 }
 function getVideosByContentId(galId){
+	getVideosOfGalleryId
+	
+	var jsObj =
+		{  	
+			galId:galId,
+			task:'getVideosForGallery'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getVideosOfGalleryId.action?"+rparam;
+		callAjax(jsObj, url);
+}
 
+function getAllVideosOfAGallary(gallaryId){		
+	
+	   var urlstr = "showAllVideosOfAGallaryAction.action?gallaryId="+gallaryId+"";
+		
+     var browser1 = window.open(urlstr,"showAllFilesOfAGallary","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
 }
 </script>
 
