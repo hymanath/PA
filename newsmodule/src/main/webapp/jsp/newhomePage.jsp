@@ -379,7 +379,7 @@ width: 92px;
 				<!---View your Constituency News Div--->
 				<div class="span3" style="height:554px">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>View your Constituency News</h4></div>
+						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Constituency Wise News</h4></div>
 						<div class="span12">						
 						<table style="margin-top:15px;">
 							<tr id="tableRowS">
@@ -402,12 +402,12 @@ width: 92px;
 						<table  id="showScopeSubsC">	
 								<tr>
 								<td class="tdWidth1">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>
-								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
+								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
 								</select></td>	 
 							</tr>
 						</table>
 						
-						<button id="sendButton" class="btn btn-warning" onclick="handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
+						<button id="sendButton" class="btn btn-warning" onclick="addCssStyle(),handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
 						</div>
 					</div>
 				</div>
@@ -524,7 +524,7 @@ width: 92px;
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	
 <script>
-
+$('#listValue').val('Constituency');
 function showMoreVideoGallaries(){
 	 var urlstr = "showMoreVideos.action";
 		
