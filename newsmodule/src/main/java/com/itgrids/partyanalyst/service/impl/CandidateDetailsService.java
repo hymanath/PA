@@ -5743,6 +5743,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 			fileVO.setPath(objects[3].toString());
 	 			fileVO.setGallaryCreatedDate(objects[4].toString());
 	 			fileVO.setCount(count);
+	 			Long count1=fileGallaryDAO.getVideosCountIntheGallary((Long)objects[0]);
+	 			fileVO.setTotalResultsCount(count1);
 	 			fileList.add(fileVO);
 	 		}
 	 	}
