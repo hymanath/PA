@@ -100,6 +100,7 @@ function callAjax(jsObj,url)
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}' onclick='getAllVideosOfAGallary("+results[i].ids+")'>";
 		str+="<img id='myImg' style='width:100%' src=http://img.youtube.com/vi/"+results[i].path+"/1.jpg ></a>";
 		//str+="<p class='span8'>"+results[i].description+"</p>";
+		str+="<span class='label' onclick='getAllVideosOfAGallary("+results[i].ids+")' style='cursor:pointer;'> Total Videos :"+results[i].totalResultsCount+"</span>";
 		str+="</div>";
 		//str+="<div class='row-fluid m_top10'><div class='span9'><p class='text-error'>Source : "+results[i].source+"</p></div>";
 		//str+="<div class='span2'><a href='#'></div></li>";
