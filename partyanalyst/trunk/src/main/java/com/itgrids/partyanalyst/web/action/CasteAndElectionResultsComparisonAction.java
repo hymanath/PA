@@ -147,10 +147,20 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 	public String getAttributesWiseElectionResults(){
 		//(List<Long> electionIds,List<Long> partyIds,Long userId,Long constituencyId,String type,List<Long> ids,String attributeType,List<Long> attributeIds,Long attrPerc)
 		try{
-			HttpSession session = request.getSession();
+			/*HttpSession session = request.getSession();
 			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 			if(user == null)
-				return Action.ERROR;
+				return Action.ERROR;*/
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			Long userId = null;
+			if(user != null && user.getRegistrationID() != null)
+				if(user.getParentUserId()!=null)
+					userId=user.getMainAccountId();
+				else
+					userId = user.getRegistrationID();
+			else 
+			  return ERROR;
 			jObj = new JSONObject(getTask());
 			List<Long> electionIds = new ArrayList<Long>();
 			List<Long> partyIds = new ArrayList<Long>();
@@ -183,7 +193,7 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 				attributeIds.add(new Long(attrId.trim()));
 			}
 			
-			partyResultsVO = attributeWiseElectionResultComparisonService.getElectionResultsByAttributeWise(electionIds,partyIds,user.getRegistrationID(),constituencyId,type,ids,attributeType,attributeIds,attrPerc,publicationId);
+			partyResultsVO = attributeWiseElectionResultComparisonService.getElectionResultsByAttributeWise(electionIds,partyIds,userId,constituencyId,type,ids,attributeType,attributeIds,attrPerc,publicationId);
 			
 		}
 		catch(Exception e)
