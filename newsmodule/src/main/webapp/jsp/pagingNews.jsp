@@ -26,7 +26,11 @@
 				<div class="span7">
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading" style="text-transform: capitalize;"><h4>${level} Wise Latest News Updates  </h4></div>
-							<div id="pagedNewsId"></div>
+						<div id="imageForMail"  class = "span3"  style="display:none;font-weight:bold;color: #0174DF;height:20px;width:500px;">
+							<font>Please wait...</font>
+							<img src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;" width="18" height="11"/>
+						</div>
+						<div id="pagedNewsId"></div>
 						<!----pagination Div----->
 						<div class="span12 text-center">
 							<div id="paginationId"></div>
@@ -81,6 +85,7 @@ var jsObj = {
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "getNewsByPagingAction.action?"+rparam;
 	callAjax(jsObj, url);
+	$('#imageForMail').css("display","block");
 }
 
 function callAjax(jsObj,url)
@@ -94,6 +99,7 @@ function callAjax(jsObj,url)
 			myResults = YAHOO.lang.JSON.parse(o.responseText);					
 			if(jsObj.task == "getNewsByPaging")
 			{
+				$('#imageForMail').css("display","none");
 				buildPaginatedNews(myResults,jsObj);
 			}	
 			}catch (e)
@@ -116,7 +122,7 @@ function buildPaginatedNews(results,jsObj){
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
 		str+="<li>";
-		str+="<h4>"+results[i].fileTitle1+"</h4>";
+		str+="<h4 style='text-transform: capitalize;'>"+results[i].fileTitle1+"</h4>";
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
