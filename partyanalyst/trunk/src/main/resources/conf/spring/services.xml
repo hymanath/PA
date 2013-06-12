@@ -1579,5 +1579,8 @@
 	<property name="voterReportService" ref="voterReportService"/>
 	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
     </bean>
+    
+    <bean name="surveyAnalysisService" class="com.itgrids.partyanalyst.service.impl.SurveyAnalysisService">
+    </bean>
 </beans>		
 	

@@ -240,6 +240,7 @@
 		<pattern>/customVoterGroupAnalysisAction*</pattern>
 		<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
 		<pattern>/getCustomPageFamilyDetailsAction*</pattern>
+		<pattern>/surveyAnalysisAction*</pattern>
     	 </decorator>
 
 </decorators>

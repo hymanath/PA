@@ -5322,5 +5322,8 @@
 		 </result>
 		</action>
 		
+		<action name="surveyAnalysisAction" class="surveyAnalysisAction" >
+		  <result name="success">/jsp/surveyAnalysis.jsp</result>
+		</action>
 		</package>
 </struts>      
