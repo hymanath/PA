@@ -230,6 +230,7 @@
 		<pattern>/anonymousUserAction*</pattern>
 		<pattern>/newsDetailsAction*</pattern>
 		<pattern>/showMoreVideos*</pattern>
+		<pattern>/showAllVideosOfAGallaryAction*</pattern>
     	 </decorator>
 
 </decorators>
