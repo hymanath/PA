@@ -102,6 +102,7 @@
 		<pattern>/customGroupWiseCasteVotersDetails.action*</pattern>
 		<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
 		<pattern>/getCustomVoterGroupAgeDetailsAction.action*</pattern>
+		<pattern>/attributeWiseVoterDeatils.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
