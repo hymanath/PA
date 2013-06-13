@@ -23,9 +23,8 @@
 	      obj["showRemark"] = $("#optshowremark"+key).is(':checked');
 		  obj["hasSubQuestion"] = $("#hassubDIV"+key).is(':checked');
             if($("#hassubDIV"+key).is(':checked')){
-			  obj["question"] = $("#subquestionTitle"+key).val();
-	          obj["questionType"] = $("#subquestionType"+key+" option:selected").val();
-		      obj["showSubRemark"] = $("#showsubRemark"+key).is(':checked');
+			  obj["subquestion"] = $("#subquestionTitle"+key).val();
+	          obj["subquestionType"] = $("#subquestionType"+key+" option:selected").val();
 			  $('.subquestcls'+key).each(function() {
 			      var subobj = {};
 				  var subkey = $(this).attr("key");
@@ -98,7 +97,7 @@
    function showSubQuestion(optionId,id){
      if($("#"+id).is(':checked')){
        var str ='';
-	   str+='<div><label>Question</label> <input type="text" class="span12" id="subquestionTitle'+optionId+'" /><input type="checkbox" id="showsubRemark'+optionId+'" /> Check to show remark </div>';
+	   str+='<div><label>Question</label> <input type="text" class="span12" id="subquestionTitle'+optionId+'" /> </div>';
        str+='<div>';
 	   str+='  <label>Select Question Type</label> <select class="span12" id="subquestionType'+optionId+'" onchange="buildSubQuestion('+optionId+');">';
 	   str+='   <option value="0">Select</option>';
