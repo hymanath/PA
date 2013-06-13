@@ -1582,6 +1582,7 @@
     </bean>
     
     <bean name="surveyAnalysisService" class="com.itgrids.partyanalyst.service.impl.SurveyAnalysisService">
+      <property name="optionTypeDAO" ref="optionTypeDAO"></property>
     </bean>
 </beans>		
 	

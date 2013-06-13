@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -95,16 +97,18 @@
    }
    
    function showSubQuestion(optionId,id){
+   
      if($("#"+id).is(':checked')){
        var str ='';
 	   str+='<div><label>Question</label> <input type="text" class="span12" id="subquestionTitle'+optionId+'" /> </div>';
        str+='<div>';
-	   str+='  <label>Select Question Type</label> <select class="span12" id="subquestionType'+optionId+'" onchange="buildSubQuestion('+optionId+');">';
-	   str+='   <option value="0">Select</option>';
-	   str+='   <option value="1">Multiple choice with single select</option>';
+	   str+='  <label>Select Question Type</label> <select class="span12" id="subquestionType'+optionId+'" name ="questionType" onchange="buildSubQuestion('+optionId+');">';
+	  /* str+='   <option value="0">Select</option>';
+	   str+='   <option value="1">Multiple choice with single select</option>';*/
 	   str+='  </select>';
 	   str+=' </div>';
 	   $('#subQuestionTypeDIV'+optionId).html(str);
+	   iterateQuestionType(optionTypeDetails,optionId);
 	  }else{
 	      $('#subQuestionTypeDIV'+optionId).html("");
 		  $('#subQuestionOptDIV'+optionId).html("");
@@ -138,6 +142,66 @@
       $('#subquestDIV'+id).remove();
 	}
    }
+   
+   
+function iterateQuestionType(optionTypeDetails,optionId){
+	var elmt = document.getElementById("subquestionType"+optionId);
+	var option = document.createElement('option');
+	clearOptionsListForSelectElmtId(elmt);
+	/*option.value="0";
+	option.text="Select";
+		try
+	{
+	elmt.add(option,null);	
+
+	}
+	catch (ex)
+	{
+		elmt.add(option);
+	}*/
+	console.log(optionTypeDetails.optionTypeArr);	
+	for(var i in optionTypeDetails.optionTypeArr)
+	{	
+
+		var option=document.createElement('option');		
+		option.value=optionTypeDetails.optionTypeArr[i].id;
+		option.text=optionTypeDetails.optionTypeArr[i].value;		
+		try
+	{
+	elmt.add(option,null);	
+	}
+	catch (ex)
+	{
+		elmt.add(option);
+	}
+	}
+
+}
+
+function clearOptionsListForSelectElmtId(elmtId)
+{
+	var elmt = elmtId;
+	if(!elmt)
+		return;	
+	var len=elmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		elmt.remove(i);
+	}	
+}
+
+   var optionTypeDetails={
+				optionTypeArr:[],
+					};
+					
+   <c:forEach var="optiontypes" items="${questionType}">
+	var ob={
+			id:'${optiontypes.id}',
+			value:'${optiontypes.name}'
+			};
+		optionTypeDetails.optionTypeArr.push(ob);	
+</c:forEach>
+
 </script>
 </head>
 <body>
@@ -151,10 +215,10 @@
 					<div style="margin-bottom:8px;margin-left:5px;"><input type="checkbox" id="showRemark" /> Show remark</div>
 					
 				  <label>Select Question Type </label> 
-				  <select class="span12" id="questionType" onchange="buildQuestion();">
-					  <option value="0">Select</option>
-					  <option value="1">Multiple choice with single select</option>
-				   </select>
+				  <s:select  theme="simple" cssClass="span12" id="questionType" name ="questionType" list="questionType" listKey="id" listValue="name"  onchange="buildQuestion();">
+					   <!--<option value="0">Select</option>
+					   <option value="1">Multiple choice with single select</option> -->
+				   </s:select>
 					
 					<div style="margin-top:5px;" id="questionOptionsDIV"></div>
 					<div style="margin-top:5px;" id="addNewOptionsDIV"></div>
