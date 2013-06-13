@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IOptionTypeDAO;
@@ -13,5 +15,11 @@ public class OptionTypeDAOHibernateTest extends BaseDaoTestCase  {
 	}
 	public void testGetAll(){
 		optionTypeDAO.getAll();
+	}
+	
+	public void testGetOptionTypes(){
+		
+		List<Object[]> list = optionTypeDAO.getOptionTypes();
+		System.out.println(list.size());
 	}
 }
