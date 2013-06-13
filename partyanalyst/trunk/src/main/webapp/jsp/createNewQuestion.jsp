@@ -55,7 +55,7 @@
 	  
 	  if($("#questionType option:selected").val() == 1){
 	    str+='<fieldset id="optionDIV0" class="alert alert-info" >';
-	    str+='<div><div style="margin-bottom:5px;">Options : </div><div><input  key="'+optionId+'" class="mainoption" type="text" id="option0" /> <input type="checkbox" id="optshowremark0"/> Check to show remark  <input type="checkbox" id="hassubDIV0" onclick="showSubQuestion('+optionId+',this.id);"/> Has sub options</div></div>';
+	    str+='<div><div style="margin-bottom:5px;">Options : </div><div><input  key="'+optionId+'" class="mainoption" type="text" id="option0" /> <input type="checkbox" id="optshowremark0"/> Show remark  &nbsp;<input type="checkbox" id="hassubDIV0" onclick="showSubQuestion('+optionId+',this.id);"/> Has sub options</div></div>';
 		str+='<div class="span10 offset1">';
 		str+='<div id="subQuestionTypeDIV'+optionId+'" style="margin-bottom:5px;margin-left:40px;"></div>';
 	    str+='<div id="subQuestionOptDIV'+optionId+'" style="margin-bottom:5px;margin-left:40px;"></div>';
@@ -74,7 +74,7 @@
       optionId = optionId+1;
 	  var str = '';
 	   str+='<fieldset id="optionDIV'+optionId+'" class="alert alert-info" >';
-       str+='<div  style="margin-bottom:5px;"><div><input  key="'+optionId+'" class="mainoption" type="text" id="optionDIV'+optionId+'" /> <input type="checkbox" id="optshowremark'+optionId+'" /> Check to show remark  <input type="checkbox"  id="hassubDIV'+optionId+'" onclick="showSubQuestion('+optionId+',this.id);" /> Has sub options <span class="icon-trash" style="cursor:pointer;" title="Remove Option" onclick="removeOption('+optionId+');" ></span></div></div>';
+       str+='<div  style="margin-bottom:5px;"><div><input  key="'+optionId+'" class="mainoption" type="text" id="optionDIV'+optionId+'" /> <input type="checkbox" id="optshowremark'+optionId+'" /> Show remark  &nbsp;<input type="checkbox"  id="hassubDIV'+optionId+'" onclick="showSubQuestion('+optionId+',this.id);" /> Has sub options <span class="icon-trash" style="cursor:pointer;" title="Remove Option" onclick="removeOption('+optionId+');" ></span></div></div>';
 	   str+='<div class="span10 offset1">';
 	   str+='<div id="subQuestionTypeDIV'+optionId+'" style="margin-bottom:5px;margin-left:40px;"></div>';
 	   str+='<div id="subQuestionOptDIV'+optionId+'" style="margin-bottom:5px;margin-left:40px;"></div>';
@@ -119,7 +119,7 @@
 	  $("#addNewSubQuestOptDIV"+optionId).html("");
 	  
 	  if($("#subquestionType"+optionId+" option:selected").val() == 1){
-	    str+='<fieldset id="subquestDIV'+suboptionId+'" class="alert"><div><div style="margin-bottom:5px;">Sub Options : </div><div><input type="text" key="'+suboptionId+'" class="subquestcls'+optionId+'" id="subquest'+suboptionId+'" /> <input id="subquestremark'+suboptionId+'" type="checkbox" /> Check to show remark </div></div></fieldset>';
+	    str+='<fieldset id="subquestDIV'+suboptionId+'" class="alert"><div><div style="margin-bottom:5px;">Sub Options : </div><div><input type="text" key="'+suboptionId+'" class="subquestcls'+optionId+'" id="subquest'+suboptionId+'" /> <input id="subquestremark'+suboptionId+'" type="checkbox" /> Show remark </div></div></fieldset>';
 		$("#subQuestionOptDIV"+optionId).html(str);
 		str ='<span onclick="buildSubOptions('+optionId+');" class="btn btn-small"><i class="icon-th-list"> </i> Add More Sub Options</span>';
 		//str ='<div><input type="button" class="btn" onclick="buildSubOptions('+optionId+');" value="Add Sub Option" > </div>';
@@ -130,7 +130,7 @@
    function buildSubOptions(id){
       suboptionId = suboptionId+1;
 	  var str = '';
-       str+='<fieldset id="subquestDIV'+suboptionId+'" class="alert"><div style="margin-bottom:5px;"><div><input type="text" key="'+suboptionId+'" class="subquestcls'+id+'" id="subquest'+suboptionId+'" /> <input id="subquestremark'+suboptionId+'" type="checkbox" /> Check to show remark  <span class="icon-minus-sign" style="cursor:pointer;" title="Remove Option" onclick="removeSubOption('+suboptionId+');" ></span></div></div></fieldset>';
+       str+='<fieldset id="subquestDIV'+suboptionId+'" class="alert"><div style="margin-bottom:5px;"><div><input type="text" key="'+suboptionId+'" class="subquestcls'+id+'" id="subquest'+suboptionId+'" /> <input id="subquestremark'+suboptionId+'" type="checkbox" /> Show remark  <span class="icon-minus-sign" style="cursor:pointer;" title="Remove Option" onclick="removeSubOption('+suboptionId+');" ></span></div></div></fieldset>';
 		$("#subQuestionOptDIV"+id).append(str);
    }
    function removeSubOption(id){
@@ -148,7 +148,7 @@
 		    <form class="row-fluid">
 			      <label>Question</label>
 				  <input type="text" id="questionTitle" placeholder="Enter Question..." name="Question" class="span12">
-					<div><input type="checkbox" id="showRemark" /> Check to show remark</div>
+					<div style="margin-bottom:8px;margin-left:5px;"><input type="checkbox" id="showRemark" /> Show remark</div>
 					
 				  <label>Select Question Type </label> 
 				  <select class="span12" id="questionType" onchange="buildQuestion();">
@@ -158,7 +158,7 @@
 					
 					<div style="margin-top:5px;" id="questionOptionsDIV"></div>
 					<div style="margin-top:5px;" id="addNewOptionsDIV"></div>
-					<input type="button" class="btn" value="Add Question" onclick="saveQuestion();"/>
+					<input type="button" style="margin-left:250px;" class="btn btn-success" value="Add Question" onclick="saveQuestion();"/>
 			</form>		
 		  </div>			
 		</div>			
