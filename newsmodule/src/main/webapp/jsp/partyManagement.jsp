@@ -3484,8 +3484,8 @@ else{
 			str+='<td>'+results[i].locationScopeValue+'</td>';
 	        str+='<td>'+results[i].locationValue+'</td>';
 	        str+='<td>'+results[i].fileDateAsString+'</td>';
-			str+='<td><a type="button" href="javascript:{editNewsDetails('+results[i].fileId+');}"><i class="icon-pencil"></i></a>';
-			str+='<a type="button" href="javascript:{updateDeleteNews(\'Update\','+results[i].fileId+');}" ><i class="icon-remove-sign"></i></a></td>';
+			str+='<td><a type="button"  title="Click here to edit" href="javascript:{editNewsDetails('+results[i].fileId+');}"><i class="icon-pencil"></i></a>';
+			str+='<a type="button" title="Click here to delete" href="javascript:{updateDeleteNews(\'Update\','+results[i].fileId+');}" ><i class="icon-remove-sign"></i></a></td>';
  		str+='</tr>';
            
 	 }
