@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +14,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ISurveyAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -27,7 +30,8 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
  	 private HttpServletRequest request;
  	 private HttpServletResponse response;; 
  	 private ServletContext context;
-  
+ 	 private List<SelectOptionVO>  questionType;
+ 	
 	 public ISurveyAnalysisService getSurveyAnalysisService() {
 		return surveyAnalysisService;
 	}
@@ -94,6 +98,14 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 	public void setResponse(HttpServletResponse response) {
 		this.response = response;
 	}
+	
+	public List<SelectOptionVO> getQuestionType() {
+		return questionType;
+	}
+
+	public void setQuestionType(List<SelectOptionVO> questionType) {
+		this.questionType = questionType;
+	}
 
 	public String execute(){
 		 System.out.println("In");
@@ -108,6 +120,14 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 	
 	 
 	public String createNewQuestion(){
+		try{
+			LOG.debug("Entered into the getQuestionOptionTypes() method in SurveyAnalysisAction");
+			questionType = surveyAnalysisService.getOptionTypes();
+			questionType.add(0, new SelectOptionVO(0L,"Select"));
+			}catch(Exception e){
+				LOG.error("Entered into the getQuestionOptionTypes() method in SurveyAnalysisAction");	
+			}
 		return Action.SUCCESS;
 	}
+	
 }
