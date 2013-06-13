@@ -254,6 +254,7 @@ document.getElementById("profileManagementMainOuterDiv4").style.display = 'none'
 $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsEditId").css({"background":"none repeat scroll 0 0 #0063DC"});
 
  buildCreateGallaryDiv();
 }
@@ -1506,10 +1507,14 @@ function showNewsGallaey()
   document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv3").style.display = 'block';
+  document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
+
   document.getElementById("videoGallaryDiv").innerHTML=''; 
   $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
+  $("#newsEditId").css({"background":"none repeat scroll 0 0 #0063DC"});
+
   buildCreateNewsCategory();
   }
 }
@@ -2296,6 +2301,8 @@ document.getElementById("profileManagementMainOuterDiv4").style.display = 'none'
 $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
 $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsEditId").css({"background":"none repeat scroll 0 0 #0063DC"});
+
 
 buildCreateVideoGallaryDiv();
 
