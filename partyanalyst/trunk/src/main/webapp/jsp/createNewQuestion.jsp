@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Survey Analysis</title>
+<title>Create New Question</title>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script type="text/javascript" src="js/surveyAnalysis/surveyAnalysis.js"></script>
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <script type="text/javascript">
    function saveQuestion(){
        var question = $("#questionTitle").val();
@@ -41,9 +41,10 @@
    }
    
    function openSurveyQuestionAddWindow(){
-      
-      var browser1 = window.open("createNewQuestionAction.action","addnewquestionwindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-      browser1.focus();
+      $( "#dialogWindowDiv" ).dialog({
+	    height:445,
+		width:612
+	  });
    }
    var optionId = 0;
    var suboptionId = 0;
@@ -141,8 +142,7 @@
 </script>
 </head>
 <body>
-     <input type="button" onclick="openSurveyQuestionAddWindow();"  value="Add Question" />
-	 <div style="display:none;" id="dialogWindowDiv" title="Add New Question">
+	 <div id="dialogWindowDiv">
 	   <div class="container">
 	    <div class="row">
 		  <div class="container row span8 offset2 well">

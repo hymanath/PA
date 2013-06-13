@@ -5342,5 +5342,9 @@
 		<action name="surveyAnalysisAction" class="surveyAnalysisAction" >
 		  <result name="success">/jsp/surveyAnalysis.jsp</result>
 		</action>
+		
+		<action name="createNewQuestionAction" class="surveyAnalysisAction" method="createNewQuestion" >
+		  <result name="success">/jsp/createNewQuestion.jsp</result>
+		</action>
 		</package>
 </struts>      
