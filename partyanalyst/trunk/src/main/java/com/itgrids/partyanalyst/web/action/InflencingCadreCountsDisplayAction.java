@@ -41,6 +41,9 @@ public class InflencingCadreCountsDisplayAction extends ActionSupport implements
 	private List<VoterVO> voters;
 	private ConstituencyManagementVO constituencyManagementVO;
 	private Long customVoterGroupId;
+	private Long userVoterCategoryValue;
+	private String gender;
+	private Long casteId;
 	private static final Logger LOG = Logger.getLogger(InflencingCadreCountsDisplayAction.class);
 	
 	public HttpServletRequest getRequest() {
@@ -59,6 +62,16 @@ public class InflencingCadreCountsDisplayAction extends ActionSupport implements
 
 	public void setVoterReportService(IVoterReportService voterReportService) {
 		this.voterReportService = voterReportService;
+	}
+
+
+	public Long getUserVoterCategoryValue() {
+		return userVoterCategoryValue;
+	}
+
+
+	public void setUserVoterCategoryValue(Long userVoterCategoryValue) {
+		this.userVoterCategoryValue = userVoterCategoryValue;
 	}
 
 
@@ -89,6 +102,16 @@ public class InflencingCadreCountsDisplayAction extends ActionSupport implements
 
 	public void setPublicationDateId(Long publicationDateId) {
 		this.publicationDateId = publicationDateId;
+	}
+
+
+	public String getGender() {
+		return gender;
+	}
+
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 
@@ -153,6 +176,16 @@ public class InflencingCadreCountsDisplayAction extends ActionSupport implements
 
 	
 	
+	public Long getCasteId() {
+		return casteId;
+	}
+
+
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
+
+
 	public List<VoterVO> getVoters() {
 		return voters;
 	}

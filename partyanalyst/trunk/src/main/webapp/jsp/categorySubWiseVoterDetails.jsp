@@ -79,7 +79,9 @@ table.dataTable thead th {
 }
 </style>
 <script type="text/javascript">
-
+var retrieveType = '${retrieveType}';
+var publicationId = '${publicationId}';
+var locationId='${locationId}';
 function callAjax(jsObj,url)
 		{
 			 var myResults;
@@ -293,9 +295,15 @@ function buildCasteWiseWiseDetails(result,jobj)
 		str += '<tr>';
 			str += '<td>'+result[i].name+'</td>';
 			str += '<td>'+result[i].castName+'</td>';
-			str += '<td>'+result[i].totalMaleVoters+'</td>';
-			str += '<td>'+result[i].totalFemaleVoters+'</td>';
-			str += '<td>'+result[i].totalVoters+'</td>';
+			
+			str += '<td>';
+			str+='<a onclick="getVoterDetails('+result[i].userVoterCategoryValueId+',\''+result[i].castId+'\',\'M\');">'+result[i].totalMaleVoters+'</a></td>';
+			str += '<td>';
+			str+='<a onclick="getVoterDetails('+result[i].userVoterCategoryValueId+',\''+result[i].castId+'\',\'F\');">'+result[i].totalFemaleVoters+'</a></td>';
+
+
+			str += '<td>';
+			str+='<a onclick="getVoterDetails('+result[i].userVoterCategoryValueId+',\''+result[i].castId+'\',\'total\');">'+result[i].totalVoters+'</a></td>';
 			str += '<td>'+result[i].totalVotersPercent+'</td>';
 
 			count = count + parseInt(result[i].totalVoters);
@@ -446,7 +454,14 @@ function callMethodToGetData(){
 		var url = "<%=request.getContextPath()%>/getCategoryWiseDetailsAction.action?"+rparam;
 		callAjax(jsObj, url);
 	}
+	function getVoterDetails(categoryValueId,casteId,gender)
+	{
 	
+	var urlstr = "attributeWiseVoterDeatils.action?categoryValueId="+categoryValueId+"&casteId="+casteId+"&gender="+gender+"&locationValue="+locationId+"&areaType="+retrieveType+"&publicationDateId="+publicationId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=booth";
+	var browser1 = window.open(urlstr,"voterDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+	browser1.focus();
+
+	}
 
 </script>
 <div id="mainDiv">

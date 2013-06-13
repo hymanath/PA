@@ -69,6 +69,7 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
     <script type="text/javascript" src="js/customVoterGroupAnalysis.js"></script>
+	 <script type="text/javascript" src="js/commonVoterDetails.js"></script>
   
    <style>
    #mainDiv{
