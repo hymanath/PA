@@ -107,4 +107,7 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 
 	
 	 
+	public String createNewQuestion(){
+		return Action.SUCCESS;
+	}
 }
