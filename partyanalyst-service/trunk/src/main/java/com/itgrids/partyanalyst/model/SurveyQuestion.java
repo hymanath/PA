@@ -31,12 +31,13 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 	private Long orderId;
 	private UpdationDetails updationDetails;
 	private String isDeleted;
+	private String hasRemarks;
 	
 	
 	public SurveyQuestion() {
 	}
 	
-	public SurveyQuestion(Long surveyQuestionId,Survey survey,OptionType optionType,String question,String description,Long orderId,UpdationDetails updationDetails,String isDeleted) {
+	public SurveyQuestion(Long surveyQuestionId,Survey survey,OptionType optionType,String question,String description,Long orderId,UpdationDetails updationDetails,String isDeleted,String hasRemarks) {
 		this.surveyQuestionId = surveyQuestionId;
 		this.survey = survey;
 		this.optionType = optionType;
@@ -45,6 +46,7 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 		this.orderId = orderId;
 		this.updationDetails = updationDetails;
 		this.isDeleted = isDeleted;
+		this.hasRemarks = hasRemarks;
 	}
 
 	@Id
@@ -69,8 +71,10 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 	public void setSurvey(Survey survey) {
 		this.survey = survey;
 	}
-
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@Column(name = "option_type_id", length = 15)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public OptionType getOptionType() {
 		return optionType;
 	}
@@ -126,6 +130,14 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	
+	@Column(name = "has_remarks", length = 100)
+	public String getHasRemarks() {
+		return hasRemarks;
+	}
+
+	public void setHasRemarks(String hasRemarks) {
+		this.hasRemarks = hasRemarks;
+	}
+
 	
 }
