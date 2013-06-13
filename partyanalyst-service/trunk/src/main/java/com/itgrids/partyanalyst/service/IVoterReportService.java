@@ -10,6 +10,9 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VoterReportVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
 
 public interface IVoterReportService {
 	
@@ -74,4 +77,7 @@ public interface IVoterReportService {
 	 public List<VotersDetailsVO> getAgeWiseDetailsOfBoothsInSelectedCustomWard(Long wardId,Long userId,Long publicationDateId,Long constituencyId);
 	 
 	 public List<SelectOptionVO> getTotalWardsInLocalBody(Long constituencyId);
+	 public List<VoterVO> storeInfluencingPeopleDetails(List<InfluencingPeople> influencingData,String type,Long id,Long totalRecords,Long userId);
+	 public List<VoterVO> storeCadrePeopleDetails(List<Cadre> cadreDetails,String type,Long id,Long totalRecords,Long userId);
+	 public List<VoterVO> storeCandidateDetails(List<Candidate> candidateDetails,String type,Long id,Long totalRecords);
 }

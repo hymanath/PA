@@ -110,7 +110,7 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 	
 	public List<Long> getCountBycustomvoterGroupId(Long customVoterGroupId,Long userId,Long publicationDateId)
 	{
-		Query query = getSession().createQuery("select  CV.voter.voterId from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
+		Query query = getSession().createQuery("select CV.voter.voterId from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and BPV.voter.voterId = CV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId");
 		query.setParameter("customVoterGroupId", customVoterGroupId);
 		query.setParameter("userId", userId);
@@ -129,8 +129,7 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 	
 		if(columnName.equalsIgnoreCase("initial"))
 		{
-	/*	query = getSession().createQuery("select model.voter.voterId, model.voter.name,model.voter.gender,model.voter.age,model.voter.voterIDCardNo,model.voter.houseNo,model.voter.relativeName from CustomVoter model where model.customVoterGroup.customVoterGroupId = :customVoterGroupId and " +
-							" model.customVoterGroup.user.userId = :userId order by model.voter.name ");	*/
+	
 			
 			query = getSession().createQuery("select CV.voter.voterId, CV.voter.name,CV.voter.gender,CV.voter.age,CV.voter.voterIDCardNo,CV.voter.houseNo,CV.voter.relativeName,BPV.serialNo,BPV.booth.partNo,CV.voter.mobileNo from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and BPV.voter.voterId = CV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by cast(BPV.booth.partNo , int),BPV.serialNo,BPV.voter.houseNo") ;
@@ -151,13 +150,44 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 		}
 		else
 		{
-	/*query = getSession().createQuery("select model.voter.voterId, model.voter.name,model.voter.gender,model.voter.age,model.voter.voterIDCardNo,model.voter.houseNo,model.voter.relativeName from CustomVoter model where model.customVoterGroup.customVoterGroupId = :customVoterGroupId and " +
-				" model.customVoterGroup.user.userId = :userId order by model.voter."+columnName+" "+order);*/
-			
 			query = getSession().createQuery("select CV.voter.voterId, CV.voter.name,CV.voter.gender,CV.voter.age,CV.voter.voterIDCardNo,CV.voter.houseNo,CV.voter.relativeName,BPV.serialNo,BPV.booth.partNo,CV.voter.mobileNo from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and BPV.voter.voterId = CV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by CV.voter."+columnName+" "+order);
 		
 		}
+		query.setParameter("customVoterGroupId", customVoterGroupId);
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxRecords);
+		return query.list();
+	}
+	
+	/** this method is used get voter data By CustomVoterGroupId **/
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVotersInfoBycustomVoterGroupId1(Long customVoterGroupId,Long userId,Integer startIndex,
+			Integer maxRecords, String order, String columnName,Long publicationDateId)
+	{
+		Query query = null;
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select CV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
+					" CV.customVoterGroup.user.userId = :userId and BPV.voter.voterId = CV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId ") ;
+		
+		if("initial".equalsIgnoreCase(columnName))
+		 {
+		str.append(" order by cast(BPV.booth.partNo , int),BPV.serialNo,BPV.voter.houseNo");
+		 }
+		 else if("partNo".equalsIgnoreCase(columnName))
+		 {
+			 str.append(" order by cast(BPV.booth.partNo , int) "+order);
+		 }
+		 else if("serialNo".equalsIgnoreCase(columnName))
+		 {
+			 str.append(" order by BPV.serialNo  "+order);
+		 }
+		 else
+		str.append(" order by BPV.voter."+columnName+" "+order);
+		query = getSession().createQuery(str.toString());
 		query.setParameter("customVoterGroupId", customVoterGroupId);
 		query.setParameter("userId", userId);
 		query.setParameter("publicationDateId", publicationDateId);
@@ -217,7 +247,7 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
  {
 	  StringBuffer queryString = new StringBuffer();
 	 
-	  queryString.append("select model.voter.voterId,model.voter.name,model.voter.gender,model.voter.age,model.voter.houseNo,model.voter.relativeName,model.voter.mobileNo,model.voter.voterIDCardNo,CV.customVoterGroup.name from Cadre model,BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
+	  queryString.append("select model.voter.voterId,model.voter.name,model.voter.gender,model.voter.age,model.voter.houseNo,model.voter.relativeName,model.voter.mobileNo,model.voter.voterIDCardNo,CV.customVoterGroup.name,model.casteCategory.category from Cadre model,BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and model.voter.voterId = CV.voter.voterId and CV.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationId");
 	  if(columnName.equalsIgnoreCase("voterId"))
 	  {

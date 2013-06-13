@@ -44,4 +44,13 @@ public interface ICustomVoterGroupAnalysisService {
 	 
 	 public List<VotersDetailsVO> getCustomVotersAgeDetails(Long constituencyId, Long locationId, Long publicationDateId,String areaType, Long userId);
 	 
+	 public List<VoterVO> getVoterDetailsForAttribute(Long userVoterCategoryValueId,Long casteId,String gender,Integer startIndex,Integer maxIndex,String order,String columnName,Long userId,String locationType,Long locationId,Long publicationId);
+	 
+	 public List<VoterVO> getVoterDataForAttribute(VoterDataVO voterDataVO,Long userId,List<Long> categories);
+	 public VoterInfo getTotalVotersDetailsbyCategoryAndCaste(Long categoryId,Long casteId,Long locationId,Long publicationId,String areaType,Long userId);
+	 public InfluencingPeopleBeanVO getInfluencingPeopleCountByCategoryAndCaste(Long categoryId,Long casteId,Long locationId,Long publicationId,
+				String areaType,String gender,Long userId);
+	 
+	 public List<VoterVO> showVoterDetailsForSelcetedTypeByCasteAndCategoryId(Long userId,VoterDataVO voterDataVO,String btnName);
+	 
 }

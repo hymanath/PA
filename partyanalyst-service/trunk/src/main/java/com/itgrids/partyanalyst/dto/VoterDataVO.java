@@ -30,7 +30,29 @@ public class VoterDataVO implements Serializable{
 	private Long categoryId;
 	
 	private Long customVoterGroupId;
+	private String gender;
+	private Long casteId;
+	private String locationId;
 	
+	
+	public String getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public Long getCasteId() {
+		return casteId;
+	}
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
 	public Long getCustomVoterGroupId() {
 		return customVoterGroupId;
 	}
