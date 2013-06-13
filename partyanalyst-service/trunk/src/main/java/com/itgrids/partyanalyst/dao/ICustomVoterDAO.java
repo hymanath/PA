@@ -40,11 +40,11 @@ public interface ICustomVoterDAO extends GenericDao<CustomVoter,Long>{
 	 
 	 public List<Long> getCadrePeopleCountByCustomVoter(Long userId,Long publicationId,Long customVoterGroupId);
 	 
-	 public List<Object[]> getCadreDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	 public List<Cadre> getCadreDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName);
 	 
-	 public List<Object[]> getInfluencingPeopleDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	 public List<InfluencingPeople> getInfluencingPeopleDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName);
 	 
-	 public List<Object[]> getPoliticanDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	 public List<Candidate> getPoliticanDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName);
 	 public List<Object[]> getCustomGroupWiseVotersDetailsForCaste(Long userId,String areaType, Long locationValue);
 		
 	 public List<Voter> getCasteWiseCustomVoterDetails(Long casteStateId,Long casteId,Long customVoterGroupId,Long userId);

@@ -642,33 +642,38 @@ public static final String AGE5="60Above";
 		    List<Long> influencePeople = new ArrayList<Long>();
 	    	List<Long> cadrePeople = new ArrayList<Long>();
 	    	List<Long> politician = new ArrayList<Long>();
+	    	List<InfluencingPeople> influencingData  = null;
+		    List<Cadre> cadreData = null;
+			List<Candidate> candidateData = null;
 		    try{
 		    if(btnName.equalsIgnoreCase("InfluencePeople"))
 		    {
 		    	Long inftotal =0l;
 		    	influencePeople = customVoterDAO.getInfluencingPeopleCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
-		    	list = customVoterDAO.getInfluencingPeopleDetails(userId,publicationDateId,customVoterGroupId,startIndex,maxRecords,order,columnName);
+		    	influencingData = customVoterDAO.getInfluencingPeopleDetails(userId,publicationDateId,customVoterGroupId,startIndex,maxRecords,order,columnName);
 		    	if(influencePeople != null && influencePeople.size() > 0)
 		    	 inftotal = influencePeople.get(0).longValue();
-		    	result = setValuesToVOterVO(list,btnName,inftotal,userId);
+		    	result = voterReportService.storeInfluencingPeopleDetails(influencingData,"mandal",null,inftotal,userId);
 		    }
 		    else if(btnName.equalsIgnoreCase("Cadre"))
 		    {
 		    	Long cadreCount = 0l;
-		    	list = customVoterDAO.getCadreDetails(userId,publicationDateId,customVoterGroupId,startIndex,maxRecords,order,columnName);
+		    	cadreData = customVoterDAO.getCadreDetails(userId,publicationDateId,customVoterGroupId,startIndex,maxRecords,order,columnName);
 		    	cadrePeople = customVoterDAO.getCadrePeopleCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
 		    	if(cadrePeople != null && cadrePeople.size() > 0)
 		        cadreCount = cadrePeople.get(0).longValue();
-		    	result = setValuesToVOterVO(list,btnName,cadreCount,userId);
+		    	//result = setValuesToVOterVO(list,btnName,cadreCount,userId);
+		    	result = voterReportService.storeCadrePeopleDetails(cadreData,"mandal",null,cadreCount,userId);
 		    }
 		    else if(btnName.equalsIgnoreCase("Politician"))
 		    {
 		    	Long politicainCount = 0l;
-		    	list = customVoterDAO.getPoliticanDetails(userId,publicationDateId,customVoterGroupId,startIndex,maxRecords,order,columnName);
+		    	candidateData = customVoterDAO.getPoliticanDetails(userId,publicationDateId,customVoterGroupId,startIndex,maxRecords,order,columnName);
 		    	politician = customVoterDAO.getPoliticianCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
 		    	if(politician != null && politician.size() > 0)
 		        politicainCount = politician.get(0).longValue();
-		    	result= setValuesToVOterVO(list,btnName,politicainCount,userId);
+		    	result = voterReportService.storeCandidateDetails(candidateData,"mandal",null,politicainCount);
+		    	
 		    }
 		    	
 		    }
@@ -697,7 +702,7 @@ public static final String AGE5="60Above";
 		    	influencingData = boothPublicationVoterDAO.getInfluencingPeopleDataByCategoryAndCaste(voterDataVO.getCategoryId(),voterDataVO.getCasteId(),voterDataVO.getId(),voterDataVO.getPublicationId(),voterDataVO.getBuildType(),userId,voterDataVO.getGender(),"InfluencePeople",voterDataVO.getStartIndex().intValue(),voterDataVO.getMaxIndex().intValue(),voterDataVO.getDir(),voterDataVO.getSort());
 		    	if(influencePeople != null && influencePeople.size() > 0)
 			    	 inftotal = influencePeople.get(0).longValue();
-		    	result = voterReportService.storeInfluencingPeopleDetails(influencingData,voterDataVO.getBuildType(),voterDataVO.getCategoryId(),inftotal,userId);
+		    	result = voterReportService.storeInfluencingPeopleDetails(influencingData,voterDataVO.getBuildType(),voterDataVO.getId(),inftotal,userId);
 		    	//list = boothPublicationVoterDAO.getInfluencingPeopleDataByCategoryAndCaste(voterDataVO.getCategoryId(),voterDataVO.getCasteId(),voterDataVO.getId(),voterDataVO.getPublicationId(),voterDataVO.getBuildType(),userId,voterDataVO.getGender(),"InfluencePeople",voterDataVO.getStartIndex().intValue(),voterDataVO.getMaxIndex().intValue(),voterDataVO.getDir(),voterDataVO.getSort());
 		    	
 		    	//result = setValuesToVOterVOForAttribute(list,btnName,inftotal,userId);
@@ -711,7 +716,7 @@ public static final String AGE5="60Above";
 		        cadreCount = cadrePeople.get(0).longValue();
 		    	//result = setValuesToVOterVOForAttribute(list,btnName,cadreCount,userId);
 		    	cadreData = boothPublicationVoterDAO.getCadreDataByCategoryAndCaste(voterDataVO.getCategoryId(),voterDataVO.getCasteId(),voterDataVO.getId(),voterDataVO.getPublicationId(),voterDataVO.getBuildType(),userId,voterDataVO.getGender(),"Cadre",voterDataVO.getStartIndex().intValue(),voterDataVO.getMaxIndex().intValue(),voterDataVO.getDir(),voterDataVO.getSort());
-		    	result = voterReportService.storeCadrePeopleDetails(cadreData,voterDataVO.getBuildType(),voterDataVO.getCategoryId(),cadreCount,userId);
+		    	result = voterReportService.storeCadrePeopleDetails(cadreData,voterDataVO.getBuildType(),voterDataVO.getId(),cadreCount,userId);
 		    }
 		    else if(btnName.equalsIgnoreCase("Politician"))
 		    {
@@ -722,7 +727,7 @@ public static final String AGE5="60Above";
 		        politicainCount = politician.get(0).longValue();
 		    	//result= setValuesToVOterVOForAttribute(list,btnName,politicainCount,userId);
 		    	candidateData = boothPublicationVoterDAO.getPoliticianDataByCategoryAndCaste(voterDataVO.getCategoryId(),voterDataVO.getCasteId(),voterDataVO.getId(),voterDataVO.getPublicationId(),voterDataVO.getBuildType(),userId,voterDataVO.getGender(),"Politician",voterDataVO.getStartIndex().intValue(),voterDataVO.getMaxIndex().intValue(),voterDataVO.getDir(),voterDataVO.getSort());
-		    	result = voterReportService.storeCandidateDetails(candidateData,voterDataVO.getBuildType(),voterDataVO.getCategoryId(),politicainCount);
+		    	result = voterReportService.storeCandidateDetails(candidateData,voterDataVO.getBuildType(),voterDataVO.getId(),politicainCount);
 		    }
 		    	
 		    }
