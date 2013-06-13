@@ -72,7 +72,7 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 		this.survey = survey;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@Column(name = "option_type_id", length = 15)
+	@JoinColumn(name = "option_type_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public OptionType getOptionType() {
