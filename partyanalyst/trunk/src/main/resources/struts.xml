@@ -5321,7 +5321,24 @@
 		   <param name="root">customVoterAgeCountList</param>
 		 </result>
 		</action>
-		
+		<action name="attributeWiseVoterDeatils" class="customVoterGroupAnalysisAction">
+			<result name="success">/jsp/attributeVoterDetails.jsp</result>
+		</action>
+		<action name="getVoterDetailsForAttributeAjax" class="customVoterGroupAnalysisAction" method="getVoterDetailsForAttribute">
+		<result type="json" name="success">
+		<param name="root">constituencyManagementVO</param>				
+		</result> 
+		</action>
+		<action name="getVoterDataForAttribute" class="customVoterGroupAnalysisAction" method="getVoterDataForAttribute">
+		    <result type="json" name="success">
+				 <param name="root">voterVO</param>
+			</result>			
+		</action>
+		<action name="voterDetailsForAttributeAction" class="customVoterGroupAnalysisAction" method="getVotersDetailsForAttribute">
+		    <result type="json" name="success">
+				 <param name="root">constituencyManagementVO</param>
+			</result>
+		</action>
 		<action name="surveyAnalysisAction" class="surveyAnalysisAction" >
 		  <result name="success">/jsp/surveyAnalysis.jsp</result>
 		</action>

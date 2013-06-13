@@ -61,7 +61,34 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	private List<VotersDetailsVO> customVoterAgeCountList;
 	private String locationName;
 	private Long constituencyId;
+	private Long attributeId;
+	private String gender;
+	private Long categoryValueId;
 	
+	public Long getCategoryValueId() {
+		return categoryValueId;
+	}
+
+	public void setCategoryValueId(Long categoryValueId) {
+		this.categoryValueId = categoryValueId;
+	}
+
+	public Long getAttributeId() {
+		return attributeId;
+	}
+
+	public void setAttributeId(Long attributeId) {
+		this.attributeId = attributeId;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	public ImportantFamiliesInfoVo getImportantFamiliesInfoVo() {
 		return importantFamiliesInfoVo;
 	}
@@ -461,7 +488,17 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			Long userId = null;
 			if(user != null && user.getRegistrationID() != null)
 			userId = user.getRegistrationID();
-			
+			if(jobj.getString("task").equalsIgnoreCase("getVotersCountForAttribute"))
+			{
+				Long casteId = jobj.getLong("casteId");
+				Long publicationId = jobj.getLong("publicationDateId");
+				Long categoryId = jobj.getLong("categoryValueId");
+				Long locationId = jobj.getLong("locationValue");
+				String areaType = jobj.getString("areaType");
+				
+				voterInfo = customVoterGroupAnalysisService.getTotalVotersDetailsbyCategoryAndCaste(categoryId,casteId,locationId,publicationId,areaType,userId);	
+			}
+			else if(jobj.getString("task").equalsIgnoreCase("getVotersCount"))
 			voterInfo = customVoterGroupAnalysisService.getTotalVotersDetailsbyCustomVoterGroup(userId,jobj.getLong("customVoterGroupId"),jobj.getLong("publicationDateId"));
 			
 		}
@@ -482,9 +519,23 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			Long userId =  regVO.getRegistrationID();
+			
+			if(jobj.getString("task").equalsIgnoreCase("getInfluencingPeopleCount"))
+			{
 			Long customVoterGroupId = jobj.getLong("customVoterGroupId");
 			Long publicationId = jobj.getLong("publicationDateId");
 			influencingPeopleBeanVO = customVoterGroupAnalysisService.getInfluencingPeopleCount(userId,customVoterGroupId,publicationId);
+			}
+			else if(jobj.getString("task").equalsIgnoreCase("getInfluencingPeopleCountForCategoryAndCaste"))
+			{
+				Long casteId = jobj.getLong("casteId");
+				Long publicationId = jobj.getLong("publicationDateId");
+				Long categoryId = jobj.getLong("categoryValueId");
+				Long locationId = jobj.getLong("locationValue");
+				String areaType = jobj.getString("areaType");
+				String gender = jobj.getString("gender");
+				influencingPeopleBeanVO = customVoterGroupAnalysisService.getInfluencingPeopleCountByCategoryAndCaste(categoryId,casteId,locationId,publicationId,areaType,gender,userId);	
+			}
 		}
 		catch(Exception e)
 		{
@@ -577,5 +628,149 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getVoterDetailsForAttribute()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			Long userId = user.getRegistrationID();
+			Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			String order = request.getParameter("dir");
+			String columnName = request.getParameter("sort");
+			Integer maxRecords = Integer.parseInt(request.getParameter("results"));
+			List<VoterVO> votersList = null;
+			constituencyManagementVO = new ConstituencyManagementVO();
+			//Long categoryValueId = request.getParameter("customvoterGroupId") != null ? Long.parseLong(request.getParameter("customvoterGroupId")):0l;
+			Long categoryValueId = request.getParameter("categoryValueId") != null ? Long.parseLong(request.getParameter("categoryValueId")):0l;
+			Long casteId = request.getParameter("casteId") != null ? Long.parseLong(request.getParameter("casteId")):0l;
+			String gender = request.getParameter("gender");
+			String locationType =  request.getParameter("areaType");
+			Long locationId = request.getParameter("locationValue") != null ? Long.parseLong(request.getParameter("locationValue")):0l;
+			Long publicationId = request.getParameter("publicationDateId") != null ? Long.parseLong(request.getParameter("publicationDateId")):0l;
+			votersList = customVoterGroupAnalysisService.getVoterDetailsForAttribute(categoryValueId,casteId,gender,startIndex,
+					maxRecords, order, columnName,userId,locationType,locationId,publicationId);
+			constituencyManagementVO.setVoterDetails(votersList);
+			if(votersList != null && votersList.size() > 0)
+			constituencyManagementVO.setVoterDetailsCount(votersList.get(0).getTotalVoters());
+			}
+			catch(Exception e)
+			{
+				Log.error("Exception Occured in getVoterDetailsForAttribute() method of CustomVoterGroupAnalysis Action", e);
+			}
+			return Action.SUCCESS;
+		
+	}
+	
+	public String getVoterDataForAttribute()
+	{
+		try {
+			LOG.debug("Entered into the getVoterDataForCustomGroup() method in VotersEditAction");
+			//jObj = new JSONObject(param);
+			session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			Long userId = null;
+			if(user != null && user.getRegistrationID() != null)
+			userId = user.getRegistrationID();
+			Long categoryValueId = request.getParameter("categoryValueId") != null ? Long.parseLong(request.getParameter("categoryValueId")):0l;
+			Long casteId = request.getParameter("casteId") != null ? Long.parseLong(request.getParameter("casteId")):0l;
+			String gender = request.getParameter("gender");
+			String startIndex = request.getParameter("startIndex");
+			String maxIndex = request.getParameter("results");
+			String sort = request.getParameter("sort");
+			String dir = request.getParameter("dir");
+			String locationType =  request.getParameter("areaType");
+			Long locationId = request.getParameter("locationValue") != null ? Long.parseLong(request.getParameter("locationValue")):0l;
+			Long publicationId = request.getParameter("publicationDateId") != null ? Long.parseLong(request.getParameter("publicationDateId")):0l;
+			VoterDataVO voterDataVO = new VoterDataVO();
+			voterDataVO.setGender(gender);
+			voterDataVO.setCategoryId(categoryValueId);
+			voterDataVO.setCasteId(casteId);
+			voterDataVO.setStartIndex(Long.valueOf(startIndex));
+			voterDataVO.setMaxIndex(Long.valueOf(maxIndex));
+			voterDataVO.setDir(dir);
+			voterDataVO.setBuildType(locationType);
+			voterDataVO.setId(locationId);
+			voterDataVO.setPublicationId(publicationId);
+			
+			voterDataVO.setSort(sort);
+			List<Long> categories = new ArrayList<Long>();
+			if(request.getParameter("reqfields").trim().length() >0){
+				String[] idsArray = request.getParameter("reqfields").trim().split(",");
+			    for(String id : idsArray){
+                   if(id.equalsIgnoreCase("party")){
+                	   voterDataVO.setPartyPresent(true);
+			    	}else if(id.equalsIgnoreCase("cast")){
+			    		voterDataVO.setCastePresent(true);
+			    	}
+			    	else{
+			    		categories.add(new Long(id));
+			    	}
+			    }
+			} 
+		votersData = customVoterGroupAnalysisService.getVoterDataForAttribute(voterDataVO , userId , categories);
+			voterVO = new VoterVO();
+			if(votersData != null && votersData.size() > 0)
+			{
+				voterVO.setVotersList(votersData);
+				voterVO.setTotalVoters(votersData.get(0).getTotalVoters());
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured in the getVoterDataForCustomGroup() method in customVoterGroupAnalysis", e);
+		}
+	   return Action.SUCCESS;
+	}
+	
+	public String getVotersDetailsForAttribute()
+	{
+		try {
+			LOG.debug("Entered Into getVotersDetails() method in InflencingCadreCountsDisplayAction Class");
+			HttpSession session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+				return ERROR;
+			String param;
+			long userId = user.getRegistrationID();
+			param = getTask();
+			Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			String order = request.getParameter("dir");
+			String columnName = request.getParameter("sort");
+			Integer maxRecords = Integer.parseInt(request.getParameter("results"));
+			Long userVoterCategoryValue =request.getParameter("userVoterCategoryValue")!= null ?Long.parseLong(request.getParameter("userVoterCategoryValue") ): 0l;
+			Long publicationDateId =request.getParameter("publicationDateId")!= null ?Long.parseLong(request.getParameter("publicationDateId") ): 0l; 
+			String btnName = request.getParameter("btnName");
+			Long locationValue = request.getParameter("locationValue")!= null ?Long.parseLong(request.getParameter("locationValue") ): 0l;
+			Long casteId = request.getParameter("casteId")!= null ?Long.parseLong(request.getParameter("casteId") ): 0l;
+			String gender = request.getParameter("gender");
+			String areaType = request.getParameter("maintype");
+			VoterDataVO voterDataVO = new VoterDataVO();
+			voterDataVO.setCategoryId(userVoterCategoryValue);
+			voterDataVO.setPublicationId(publicationDateId);
+			voterDataVO.setGender(gender);
+			voterDataVO.setCasteId(casteId);
+			voterDataVO.setBuildType(areaType);
+			voterDataVO.setId(locationValue);
+			voterDataVO.setStartIndex(Long.valueOf(startIndex));
+			voterDataVO.setMaxIndex(Long.valueOf(maxRecords));
+			voterDataVO.setDir(order);
+			voterDataVO.setSort(columnName);
+			
+			voters = customVoterGroupAnalysisService.showVoterDetailsForSelcetedTypeByCasteAndCategoryId(userId,voterDataVO,btnName);
+			constituencyManagementVO = new ConstituencyManagementVO();
+			constituencyManagementVO.setVoterDetails(voters);
+			constituencyManagementVO.setVoterDetailsCount(0l);
+			if(voters != null && voters.size() > 0 )
+			{
+				constituencyManagementVO.setVoterDetailsCount(voters.get(0).getTotalVoters());
+			}
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			LOG.debug("Exception Raised in getVotersDetails() method in InflencingCadreCountsDisplayAction Class");
+			return ERROR;
+		}
+		
+	}
+	
 	
 }
