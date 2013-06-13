@@ -59,7 +59,16 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String casteName;
 	private String influencingRange;
 	private String influencingRegion;
+	private List<Long> voterIdsList;
 	
+	public List<Long> getVoterIdsList() {
+		return voterIdsList;
+	}
+
+	public void setVoterIdsList(List<Long> voterIdsList) {
+		this.voterIdsList = voterIdsList;
+	}
+
 	public Long getLocalAreaId() {
 		return localAreaId;
 	}
