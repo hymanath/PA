@@ -243,11 +243,11 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 	}
  
  
- public List<Object[]> getCadreDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName)
+ public List<Cadre> getCadreDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName)
  {
 	  StringBuffer queryString = new StringBuffer();
 	 
-	  queryString.append("select model.voter.voterId,model.voter.name,model.voter.gender,model.voter.age,model.voter.houseNo,model.voter.relativeName,model.voter.mobileNo,model.voter.voterIDCardNo,CV.customVoterGroup.name,model.casteCategory.category from Cadre model,BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
+	  queryString.append("select model from Cadre model,BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and model.voter.voterId = CV.voter.voterId and CV.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationId");
 	  if(columnName.equalsIgnoreCase("voterId"))
 	  {
@@ -291,10 +291,10 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
   * @param String columnName
   * @return List<Long>
   */
- public List<Object[]> getInfluencingPeopleDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName)
+ public List<InfluencingPeople> getInfluencingPeopleDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName)
  {
 	  StringBuffer queryString = new StringBuffer();
-	  queryString.append("select model.voter.voterId,model.voter.name,model.voter.gender,model.voter.age,model.voter.houseNo,model.voter.relativeName,model.voter.mobileNo,model.voter.voterIDCardNo,CV.customVoterGroup.name,model.influencingScope,model.influencingScopeValue from InfluencingPeople model ,BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
+	  queryString.append("select model from InfluencingPeople model ,BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and model.voter.voterId = CV.voter.voterId and CV.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationId");
 	  if(columnName.equalsIgnoreCase("voterId"))
 	  {
@@ -337,10 +337,10 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
   * @param String columnName
   * @return List<Long>
   */
- public List<Object[]> getPoliticanDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName)
+ public List<Candidate> getPoliticanDetails(Long userId,Long publicationId,Long customVoterGroupId,Integer startIndex,Integer maxIndex,String order,String columnName)
  {
 	  StringBuffer queryString = new StringBuffer();
-	  queryString.append("select model.voter.voterId,model.voter.name,model.voter.gender,model.voter.age,model.voter.houseNo,model.voter.relativeName,model.voter.mobileNo,model.voter.voterIDCardNo,CV.customVoterGroup.name from Candidate model,BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
+	  queryString.append("select model from Candidate model,BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and model.voter.voterId = CV.voter.voterId and CV.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationId");
 	  if(columnName.equalsIgnoreCase("voterId"))
 	  {
