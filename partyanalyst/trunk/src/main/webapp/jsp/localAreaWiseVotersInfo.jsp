@@ -1812,7 +1812,28 @@ if(type == "customWard" && resultFor=="localArea")
 getAgeWiseData();
 getLocalAreaWiseCasteInfo();
 getWardsListInMuncipality();
+
+//getCustomWardWiseAgeDetails();
 }
+
+function getCustomWardWiseAgeDetails()
+{
+  var jsObj=
+				{
+			        constituencyId:constituencyId,
+					id:id,
+					publicationDateId:publicationDateId,
+					name:typename,
+				    type:"customWardLocalArea",
+					task:"getCustomWardAgeDetails"
+				};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgewiseCustomWardDetails.action?"+rparam;
+
+      callAjax(jsObj,url);	
+}
+
 </script>
 </body>
 </html>

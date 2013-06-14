@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -123,13 +124,14 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
     
     private List<MandalInfoVO> mandalInfoVOsList;
     
-    private List<SelectOptionVO> resultData;
+    private List<SelectOptionVO> resultData,ageDetailsList;
     
     private VoterInfo voterInfo;
     
     private List<VotersDetailsVO> casteDetailsVO;
     private DataVerificationVO dataVerificationVO;
-	
+	private List<OptionVO> ageList;
+    
 	public List<VotersDetailsVO> getCasteDetailsVO() {
 		return casteDetailsVO;
 	}
@@ -508,6 +510,21 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setDataVerificationVO(DataVerificationVO dataVerificationVO) {
 		this.dataVerificationVO = dataVerificationVO;
+	}
+
+	public List<SelectOptionVO> getAgeDetailsList() {
+		return ageDetailsList;
+	}
+
+	public void setAgeDetailsList(List<SelectOptionVO> ageDetailsList) {
+		this.ageDetailsList = ageDetailsList;
+	}
+	public List<OptionVO> getAgeList() {
+		return ageList;
+	}
+
+	public void setAgeList(List<OptionVO> ageList) {
+		this.ageList = ageList;
 	}
 
 	public String execute() throws Exception
@@ -1899,4 +1916,25 @@ return Action.SUCCESS;
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getCustomWardAgeDetails()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		Long userId = user.getRegistrationID();
+		try{
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("getCustomWardAgeDetails"))
+			ageDetailsList = votersAnalysisService.getLocalAreaWiseAgeDetailsForCustomWard(jObj.getString("type"),jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),jObj.getLong("id"),userId);
+			
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in getCustomWardAgeDetails() method,Exception - "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }

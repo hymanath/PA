@@ -5356,6 +5356,12 @@
 		<result type="json" name="success">
 		   <param name="root">resultStatus</param>
 		 </result>
+		</action>		
+	
+		<action name="getAgewiseCustomWardDetails" class="votersAnalysisAction" method="getCustomWardAgeDetails">
+		  <result type="json" name="success">
+		   <param name="root">ageDetailsList</param>
+		  </result>
 		</action>
 
 		</package>
