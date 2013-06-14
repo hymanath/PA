@@ -14,4 +14,6 @@ public interface IVoterAgeRangeDAO extends GenericDao<VoterAgeRange, Long>{
 	
 	public List<Long> getVoterAgeRangeDetails();
 	
+	public List<VoterAgeRange> getVoterAgeRangeList();
+	
 }

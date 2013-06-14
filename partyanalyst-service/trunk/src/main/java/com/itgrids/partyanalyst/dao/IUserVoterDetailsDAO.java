@@ -162,4 +162,10 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 			
 	public List<Object[]> getHamletOrWardList(Long userId,Long Id,String type);
 	
+	public List<Object[]> getLocalAreaWiseAgeDetailsForCustomWard(Long constituencyId,Long publicationDateId,Long customWardId,Long userId,String ageRange);
+	
+	public List<Object[]> getLocalAreaWiseAgeDetails(Long constituencyId,Long publicationDateId,Long customWardId,Long userId,Long minAge,Long maxAge,String type);
+	
+	public List<String> getLocalityByCustomWardId(Long constituencyId,Long publicationDateId,Long id,Long userId,String type);
+	
 }
