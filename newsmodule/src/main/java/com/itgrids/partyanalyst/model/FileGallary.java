@@ -46,7 +46,14 @@ public class FileGallary implements Serializable{
 	private String isDelete;
 	
 	private Set<ContentNotes> contentNotes = new HashSet<ContentNotes>(0);
+	private Set<CandidateRealatedNews> candidateRealatedNews = new HashSet<CandidateRealatedNews>(0);
+	private Set<CandidateNewsResponse> candidateNews = new HashSet<CandidateNewsResponse>(0);
+	private Set<CandidateNewsResponse> CandidateNewsResponse = new HashSet<CandidateNewsResponse>(0);
+
+	
+
 	private NewsFlag newsFlags;
+	
 	
 	public FileGallary(){
 	}
@@ -151,6 +158,39 @@ public class FileGallary implements Serializable{
 
 	public void setNewsFlags(NewsFlag newsFlags) {
 		this.newsFlags = newsFlags;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fileGallary")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CandidateRealatedNews> getCandidateRealatedNews() {
+		return candidateRealatedNews;
+	}
+
+	public void setCandidateRealatedNews(
+			Set<CandidateRealatedNews> candidateRealatedNews) {
+		this.candidateRealatedNews = candidateRealatedNews;
+	}
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fileGallary")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CandidateNewsResponse> getCandidateNews() {
+		return candidateNews;
+	}
+
+	public void setCandidateNews(Set<CandidateNewsResponse> candidateNews) {
+		this.candidateNews = candidateNews;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "responseFileGallary")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CandidateNewsResponse> getCandidateNewsResponse() {
+		return CandidateNewsResponse;
+	}
+
+	public void setCandidateNewsResponse(
+			Set<CandidateNewsResponse> candidateNewsResponse) {
+		CandidateNewsResponse = candidateNewsResponse;
 	}
 
 	
