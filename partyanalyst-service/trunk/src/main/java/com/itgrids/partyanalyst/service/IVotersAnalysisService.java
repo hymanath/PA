@@ -287,4 +287,6 @@ public interface IVotersAnalysisService {
 	 
 	 public DataVerificationVO getCountForConstituency(String locationType,Long constituencyId,Long locationId,Long publicationDateId,Long userId);
 	 
+	 public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,Long constituencyId,Long publicationDateId,Long customWardId,Long userId);
+	 
 }
