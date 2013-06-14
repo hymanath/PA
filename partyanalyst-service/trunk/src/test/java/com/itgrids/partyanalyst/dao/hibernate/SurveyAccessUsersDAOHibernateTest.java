@@ -11,7 +11,12 @@ public class SurveyAccessUsersDAOHibernateTest extends BaseDaoTestCase  {
 	public void setSurveyAccessUsersDAO(ISurveyAccessUsersDAO surveyAccessUsersDAO) {
 		this.surveyAccessUsersDAO = surveyAccessUsersDAO;
 	}
-	public void testGetAll(){
+	/*public void testGetAll(){
 		surveyAccessUsersDAO.getAll();
+	}*/
+	
+	public void testcheckForDuplicateRecords(){
+		Long s = surveyAccessUsersDAO.checkForDuplicateRecords(1l,1l);
+		System.out.println(s);
 	}
 }

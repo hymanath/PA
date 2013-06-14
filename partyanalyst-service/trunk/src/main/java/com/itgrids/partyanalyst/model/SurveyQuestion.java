@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -33,6 +37,7 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 	private String isDeleted;
 	private String hasRemarks;
 	
+	private Set<QuestionOptions> questionOptions = new HashSet<QuestionOptions>(0);
 	
 	public SurveyQuestion() {
 	}
@@ -71,8 +76,9 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 	public void setSurvey(Survey survey) {
 		this.survey = survey;
 	}
+
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "option_type_id")
+	@JoinColumn(name="option_type_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public OptionType getOptionType() {
@@ -130,6 +136,16 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "surveyQuestion")
+	public Set<QuestionOptions> getQuestionOptions() {
+		return questionOptions;
+	}
+
+	public void setQuestionOptions(Set<QuestionOptions> questionOptions) {
+		this.questionOptions = questionOptions;
+	}
+	
 	@Column(name = "has_remarks", length = 100)
 	public String getHasRemarks() {
 		return hasRemarks;
@@ -139,5 +155,4 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 		this.hasRemarks = hasRemarks;
 	}
 
-	
 }
