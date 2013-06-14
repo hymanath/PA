@@ -27,11 +27,15 @@ public class VoterAgeRange extends BaseModel implements Serializable{
 	private Long voterAgeRangeId ;
 	private String ageRange;
 	private Set<VoterAgeInfo> voterAgeInfos = new HashSet<VoterAgeInfo>(0);
+	private Long minValue;
+	private Long maxValue;
 	
 	public VoterAgeRange(){}
-	public VoterAgeRange(String ageRange)
+	public VoterAgeRange(String ageRange,Long minValue,Long maxValue)
 	{
 		this.ageRange = ageRange;
+		this.minValue = minValue;
+		this.maxValue = maxValue;
 	}
 	
 	@Id
@@ -59,6 +63,22 @@ public class VoterAgeRange extends BaseModel implements Serializable{
 	}
 	public void setVoterAgeInfos(Set<VoterAgeInfo> voterAgeInfos) {
 		this.voterAgeInfos = voterAgeInfos;
+	}
+	
+	@Column(name = "min_value",length = 3)
+	public Long getMinValue() {
+		return minValue;
+	}
+	public void setMinValue(Long minValue) {
+		this.minValue = minValue;
+	}
+	
+	@Column(name = "max_value",length = 3)
+	public Long getMaxValue() {
+		return maxValue;
+	}
+	public void setMaxValue(Long maxValue) {
+		this.maxValue = maxValue;
 	}
 	
 	
