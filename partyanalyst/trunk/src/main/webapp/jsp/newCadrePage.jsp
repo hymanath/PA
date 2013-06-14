@@ -1191,7 +1191,7 @@ function refreshingParentWindow()
 
 		<tr>
 			<td><s:label for="uploadFileId" id="uploadImageLabel" value="Upload Photo" /></td>
-			<td><s:file  id="uploadFileId" name="uploadImage" label="Upload" /></td>
+			<td colspan="3"><s:file  id="uploadFileId" name="uploadImage" label="Upload" />(Hint: Image should be .jpeg or .jpg or .png or .gif formats only )</td>
 		</tr>
 
 		<tr>
