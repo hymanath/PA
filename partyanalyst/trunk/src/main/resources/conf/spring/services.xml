@@ -586,8 +586,7 @@
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />	
 		<property name="regionScopesProblemTypeDAO" ref="regionScopesProblemTypeDAO"/>	
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
-		<property name="panchayatDAO" ref="panchayatDAO"></property>	
-		<property name="wardDAO" ref="wardDAO" />	
+		<property name="panchayatDAO" ref="panchayatDAO"></property>		
 	</bean>
 	
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
@@ -1580,9 +1579,17 @@
 	<property name="voterReportService" ref="voterReportService"/>
 	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
     </bean>
-    
+        
     <bean name="surveyAnalysisService" class="com.itgrids.partyanalyst.service.impl.SurveyAnalysisService">
       <property name="optionTypeDAO" ref="optionTypeDAO"></property>
+    </bean>
+    
+    <bean name="surveyDetailsService" class="com.itgrids.partyanalyst.service.impl.SurveyDetailsService">
+		<property name="userDAO" ref="userDAO"></property>
+   		<property name="surveyDAO" ref="surveyDAO"></property>
+		<property name="surveyAccessUsersDAO" ref="surveyAccessUsersDAO"></property>
+		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="updationDetailsDAO" ref="updationDetailsDAO"></property>
     </bean>
 </beans>		
 	

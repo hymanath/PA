@@ -341,6 +341,7 @@
 				<value>com.itgrids.partyanalyst.model.Respondent</value>
 				<value>com.itgrids.partyanalyst.model.Surveyor</value>
 				<value>com.itgrids.partyanalyst.model.SurveyAnswer</value>
+				<value>com.itgrids.partyanalyst.model.QuestionOptions</value>
 			</list>
 			
 		</property>

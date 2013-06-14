@@ -1180,9 +1180,14 @@
 	<bean id="influencingCadrePoliticianDisplayWindowAction" class="com.itgrids.partyanalyst.web.action.InflencingCadreCountsDisplayAction" singleton="false">
 		<property name="voterReportService" ref="voterReportService" />
 	</bean>
-	
+		
 	<bean id="surveyAnalysisAction" class="com.itgrids.partyanalyst.web.action.SurveyAnalysisAction" singleton="false">
 		<property name="surveyAnalysisService" ref="surveyAnalysisService" />	
+	</bean>
+
+	<bean id="assigningSurveyToUserAction" class="com.itgrids.partyanalyst.web.action.AssigningSurveyToUserAction" singleton="false">
+	 	<property name="candidateDetailsService" ref="candidateDetailsService" />
+	 	<property name="surveyDetailsService" ref="surveyDetailsService" />
 	</bean>
 </beans>	
 	

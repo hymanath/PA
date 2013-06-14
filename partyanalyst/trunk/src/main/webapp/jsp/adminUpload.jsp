@@ -201,6 +201,9 @@
 									<span class="fontStyle">Assign Party To User&nbsp;:&nbsp;&nbsp;
 										<a class="alinkstyle" href="<s:url action="assigningPartyToUserAction"/>">Assign</a>
 									</span><br>
+									<span class="fontStyle">Assign Survey To User&nbsp;:&nbsp;&nbsp;
+										<a class="alinkstyle" href="<s:url action="assigningSurveyToUserAction"/>">Assign</a>
+									</span><br>
 									<span class="fontStyle">
 										Restrict User :&nbsp;
 										<a class="alinkstyle" href="<s:url action="setUserRestrictionAction"/>"> Restrict User
