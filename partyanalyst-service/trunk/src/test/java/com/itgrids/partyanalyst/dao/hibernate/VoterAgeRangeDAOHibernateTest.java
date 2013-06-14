@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
+import com.itgrids.partyanalyst.model.VoterAgeRange;
 
 public class VoterAgeRangeDAOHibernateTest extends BaseDaoTestCase{
 
@@ -35,11 +36,17 @@ private IVoterAgeRangeDAO voterAgeRangeDAO;
 			System.out.println(str);
 	}*/
 	
-	public void testgetVoterAgeRangeDetails()
+	/*public void testgetVoterAgeRangeDetails()
 	{
 		List<Long> list = voterAgeRangeDAO.getVoterAgeRangeDetails();
 		
 			System.out.println(list.size());
+	}*/
+	
+	public void testGetVoterAgeRangeList()
+	{
+		List<VoterAgeRange> list = voterAgeRangeDAO.getVoterAgeRangeList();
+		System.out.println(list.size());
 	}
 	
 }

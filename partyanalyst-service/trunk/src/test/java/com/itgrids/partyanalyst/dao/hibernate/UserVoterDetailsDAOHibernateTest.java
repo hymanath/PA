@@ -300,11 +300,35 @@ for (Object[] objects : list) {
 			}
 		}*/
 		
-		public void testgetGetHamletOrWardList()
+		/*public void testgetGetHamletOrWardList()
 		{
 			List<Object[]> values = userVoterDetailsDAO.getHamletOrWardList(1l,181004l,"ward");
 			for (Object[] parms : values) {
 				System.out.println(parms[0] +":"+ parms[1]);
 			}
+		}*/
+		
+		/*public void testGetLocalAreaWiseAgeDetailsForCustomWard()
+		{
+			List<Object[]> list = userVoterDetailsDAO.getLocalAreaWiseAgeDetailsForCustomWard(309L, 8L, 29153L,1L, "18-25");
+			System.out.println(list.size());
+			for(Object[] params : list)
+			 System.out.println(params[1]+" "+params[2]);
+		}*/
+		
+		/*public void testgetLocalAreaWiseAgeDetails()
+		{
+			List<Object[]> list = userVoterDetailsDAO.getLocalAreaWiseAgeDetails(309L, 8L, 29153L,1L, 60l, 650l,"customWardLocalArea");
+			System.out.println(list.size());
+			for(Object[] params : list)
+				 System.out.println(params[1]+" "+params[2]);
+		}*/
+		
+		public void testgetLocalityByCustomWardId()
+		{
+			List<String> locality = userVoterDetailsDAO.getLocalityByCustomWardId(207L, 8L, 30638L,1L, "customWardLocalArea");
+			System.out.println(locality.size());
+			for(String name:locality)
+			 System.out.println(name);
 		}
 }

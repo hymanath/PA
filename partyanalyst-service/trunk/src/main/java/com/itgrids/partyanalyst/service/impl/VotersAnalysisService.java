@@ -135,6 +135,7 @@ import com.itgrids.partyanalyst.model.UserVoterCategoryValue;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
+import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.model.VoterCategoryValue;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
@@ -223,7 +224,6 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
     private IDelimitationConstituencyDAO delimitationConstituencyDAO;
     private IUserAddressDAO userAddressDAO;
-    
     
     
     public IUserAddressDAO getUserAddressDAO() {
@@ -16797,6 +16797,100 @@ public DataVerificationVO getCountForConstituency(String locationType,Long const
 	 return dataVerificationVO;
 	}
 }
-		    
+
+public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,Long constituencyId,Long publicationDateId,Long customWardId,Long userId)
+{
+	List<SelectOptionVO> selectOptionVOsList = new ArrayList<SelectOptionVO>(0);
+	
+	try{
+		List<String> localityNamesList = userVoterDetailsDAO.getLocalityByCustomWardId(constituencyId, publicationDateId, customWardId, userId, type);
+		if(localityNamesList == null || localityNamesList.size() == 0)
+			return selectOptionVOsList;
+		
+		List<VoterAgeRange> ageRangesList = voterAgeRangeDAO.getVoterAgeRangeList();
+		
+		for(String locality :localityNamesList)
+		  selectOptionVOsList.add(new SelectOptionVO(0L,locality));
+		
+	
+		for(VoterAgeRange ageRange:ageRangesList)
+		{
+			List<String> namesList = new ArrayList<String>(0);
+		  String age = ageRange.getMinValue()+"-"+ageRange.getMaxValue();
+		  List<Object[]> list = userVoterDetailsDAO.getLocalAreaWiseAgeDetails(constituencyId, publicationDateId, customWardId, userId, ageRange.getMinValue(), ageRange.getMaxValue(),type);
+		  
+		  
+		  if(list != null)
+		  {
+		    for(Object[] params : list)
+			 {
+				  SelectOptionVO selectOptionVO = checkSelectOptionVOExists(params[1].toString(),selectOptionVOsList);
+				  selectOptionVO.setId(selectOptionVO.getId() + (Long)params[2]);
+				  List<SelectOptionVO> tempList = selectOptionVO.getSelectOptionsList();
+				  tempList.add(new SelectOptionVO((Long)params[2],ageRange.getAgeRange()));
+				  selectOptionVO.setSelectOptionsList(tempList);
+				  
+				  List<SelectOptionVO> tempList1 = selectOptionVO.getSelectOptionsList1();
+				  tempList1.add(new SelectOptionVO((Long)params[2],ageRange.getAgeRange()));
+				  selectOptionVO.setSelectOptionsList1(tempList1);
+			 }
+			 
+			 for(Object[] params : list)
+			   namesList.add(params[1].toString());
+			 
+			 for(String name:localityNamesList)
+				  if(!namesList.contains(name))
+				  {
+					 SelectOptionVO selectOptionVO = checkSelectOptionVOExists(name,selectOptionVOsList);
+					 List<SelectOptionVO> tempList = selectOptionVO.getSelectOptionsList();
+					 tempList.add(new SelectOptionVO(0L,ageRange.getAgeRange()));
+					 selectOptionVO.setSelectOptionsList(tempList);
+					 
+					 List<SelectOptionVO> tempList1 = selectOptionVO.getSelectOptionsList1();
+					 tempList1.add(new SelectOptionVO(0L,ageRange.getAgeRange()));
+					 selectOptionVO.setSelectOptionsList1(tempList1);
+				  }
+		 }
+		
+	   }
+		
+		if(selectOptionVOsList != null && selectOptionVOsList.size() > 0)
+		{ 
+		  for(SelectOptionVO optionVO:selectOptionVOsList)
+		  {
+			  for(SelectOptionVO optionVO2:optionVO.getSelectOptionsList())
+			  {
+				 if(optionVO.getId()!=null && optionVO.getId()>0)
+				   optionVO2.setUrl(roundTo2DigitsFloatValue((float)optionVO2.getId()*100f/optionVO.getId()));
+				 else
+				  optionVO2.setUrl("0.00");
+			  }
+		  }
+		}
+		return selectOptionVOsList;
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getLocalAreaWiseAgeDetailsForCustomWard() method,Excepiton - "+e);
+		return selectOptionVOsList;
+	}
+	
+}
+
+
+ public SelectOptionVO checkSelectOptionVOExists(String localityName,List<SelectOptionVO> list)
+ {
+	try{
+		if(list == null || list.size() == 0)
+		 return null;
+		for(SelectOptionVO optionVO:list)
+		 if(optionVO.getName().equalsIgnoreCase(localityName))
+			 return optionVO;
+		return null;
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in checkSelectOptionVOExists() method,Excepiton - "+e);
+		return null;
+	}
+ }
 		  
 }
