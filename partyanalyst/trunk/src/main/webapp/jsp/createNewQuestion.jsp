@@ -54,8 +54,9 @@
       var str = '';
       $("#questionOptionsDIV").html("");
 	  $("#addNewOptionsDIV").html("");
-	  
-	  if($("#questionType option:selected").val() == 1){
+	  if($("#questionType option:selected").val() == 0)
+	   return;
+	  if($("#questionType option:selected").val() != 4){
 	    str+='<fieldset id="optionDIV0" class="alert alert-info" >';
 	    str+='<div><div style="margin-bottom:5px;">Options : </div><div><input  key="'+optionId+'" class="mainoption" type="text" id="option0" /> <input type="checkbox" id="optshowremark0"/> Show remark  &nbsp;<input type="checkbox" id="hassubDIV0" onclick="showSubQuestion('+optionId+',this.id);"/> Has sub options</div></div>';
 		str+='<div class="span10 offset1">';
@@ -68,8 +69,44 @@
 		str ='<span onclick="buildOptions();" class="btn btn-small"><i class="icon-th-list"> </i> Add More Options</span>';
 		//str ='<div><input type="button" class="btn" onclick="buildOptions();" value="Add Option" > </div>';
 	    $("#addNewOptionsDIV").html(str);
+	  }else{
+	    str+='<fieldset id="optionDIV0" class="alert alert-info" >';
+	    str+='<div><div style="margin-bottom:5px;">Options : </div><div id="divoption0"><input  key="'+optionId+'" class="mainoption" type="text" id="option0" /> </div></div>';
+		str+='<div class="span10 offset1">';
+	    str+='<div id="addNewSubQuestOptDIV'+optionId+'" style="margin-bottom:5px;"><span onclick="buildTextOptions('+optionId+');" class="btn btn-small"><i class="icon-th-list"> </i> Add more text boxes to this option</span></div>';
+		str+='</div>';
+		str+='</fieldset>';
+		$("#questionOptionsDIV").html(str);
+		str ='<span onclick="buildMultipleOptions();" class="btn btn-small"><i class="icon-th-list"> </i> Add More Options</span>';
+		//str ='<div><input type="button" class="btn" onclick="buildOptions();" value="Add Option" > </div>';
+	    $("#addNewOptionsDIV").html(str);
+	  
 	  }
 	  
+   }
+   
+   function buildTextOptions(id){
+    suboptionId = suboptionId+1;
+    var str = '';
+    str+='<div id="textbox'+suboptionId+'"><input  class="mainoption'+id+'" type="text"  /><span class="icon-minus-sign" style="cursor:pointer;" title="Remove Text Box" onclick="removeTextBox('+suboptionId+');" ></span></div>';
+	$("#divoption"+id).append(str);
+   }
+   
+   function removeTextBox(id){
+    if(confirm("Do you want to delete this text box?")){
+      $('#textbox'+id).remove();
+	}
+   }
+   function buildMultipleOptions(){
+      optionId = optionId+1;
+	  var str = '';
+        str+='<fieldset id="optionDIV'+optionId+'" class="alert alert-info" >';
+	    str+='<div style="margin-bottom:5px;"><div id="divoption'+optionId+'"><input  key="'+optionId+'" class="mainoption" type="text" id="option'+optionId+'" /> <span class="icon-trash" style="cursor:pointer;" title="Remove Option" onclick="removeOption('+optionId+');" ></span></div></div>';
+		str+='<div class="span10 offset1">';
+	    str+='<div id="addNewSubQuestOptDIV'+optionId+'" style="margin-bottom:5px;"><span onclick="buildTextOptions('+optionId+');" class="btn btn-small"><i class="icon-th-list"> </i> Add more text boxes to this option</span></div>';
+		str+='</div>';
+		str+='</fieldset>';
+		$("#questionOptionsDIV").append(str);
    }
    
    function buildOptions(){
@@ -122,7 +159,7 @@
       $("#subQuestionOptDIV"+optionId).html("");
 	  $("#addNewSubQuestOptDIV"+optionId).html("");
 	  
-	  if($("#subquestionType"+optionId+" option:selected").val() == 1){
+	  if($("#subquestionType"+optionId+" option:selected").val() != 4){
 	    str+='<fieldset id="subquestDIV'+suboptionId+'" class="alert"><div><div style="margin-bottom:5px;">Sub Options : </div><div><input type="text" key="'+suboptionId+'" class="subquestcls'+optionId+'" id="subquest'+suboptionId+'" /> <input id="subquestremark'+suboptionId+'" type="checkbox" /> Show remark </div></div></fieldset>';
 		$("#subQuestionOptDIV"+optionId).html(str);
 		str ='<span onclick="buildSubOptions('+optionId+');" class="btn btn-small"><i class="icon-th-list"> </i> Add More Sub Options</span>';
@@ -159,21 +196,23 @@ function iterateQuestionType(optionTypeDetails,optionId){
 	{
 		elmt.add(option);
 	}*/
-	console.log(optionTypeDetails.optionTypeArr);	
+	//console.log(optionTypeDetails.optionTypeArr);	
 	for(var i in optionTypeDetails.optionTypeArr)
 	{	
 
-		var option=document.createElement('option');		
-		option.value=optionTypeDetails.optionTypeArr[i].id;
-		option.text=optionTypeDetails.optionTypeArr[i].value;		
-		try
-	{
-	elmt.add(option,null);	
-	}
-	catch (ex)
-	{
-		elmt.add(option);
-	}
+		var option=document.createElement('option');
+        if(optionTypeDetails.optionTypeArr[i].id != 3 && optionTypeDetails.optionTypeArr[i].id != 4){		
+			option.value=optionTypeDetails.optionTypeArr[i].id;
+			option.text=optionTypeDetails.optionTypeArr[i].value;		
+			try
+			{
+			  elmt.add(option,null);	
+			}
+			catch (ex)
+			{
+			elmt.add(option);
+			}
+		}
 	}
 
 }
