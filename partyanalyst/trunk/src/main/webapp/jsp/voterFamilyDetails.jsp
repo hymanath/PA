@@ -690,7 +690,7 @@ function buildTableForImpFamilesMandal(impFamilesData,name,type)
 var impFamilesDataSource = new YAHOO.util.DataSource(impFamiList);
 impFamilesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 impFamilesDataSource.responseSchema = {
-fields: [{key:"name"},{key:"below3", parser:"number"},{key:"totalVoters"},{key:"totalMaleVoters"},{key:"totalFemaleVoters"},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
+fields: [{key:"name"},{key:"below3", parser:"number"},{key:"totalVoters"},{key:"totalMaleVoters", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"totalFemaleVoters", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"below3perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn4to6", parser:"number"},{key:"betwn4to6perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"betwn7to10", parser:"number"},{key:"betwn7to10perc", parser:YAHOO.util.DataSourceBase.parseNumber},{key:"above10", parser:"number"},{key:"above10perc", parser:YAHOO.util.DataSourceBase.parseNumber}]
 };
 var myConfigs = {
 };

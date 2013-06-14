@@ -243,6 +243,7 @@
 		<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
 		<pattern>/getCustomPageFamilyDetailsAction*</pattern>
 		<pattern>/surveyAnalysisAction*</pattern>
+		<pattern>/assigningSurveyToUserAction*</pattern>
     	 </decorator>
 
 </decorators>
