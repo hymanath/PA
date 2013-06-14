@@ -90,6 +90,8 @@
 			    <value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard</value>
 				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody</value>	
 				<value>com.itgrids.partyanalyst.model.UserCandidateRelation</value>
+				<value>com.itgrids.partyanalyst.model.CandidateNewsResponse</value>	
+				<value>com.itgrids.partyanalyst.model.CandidateRealatedNews</value>
 				
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>

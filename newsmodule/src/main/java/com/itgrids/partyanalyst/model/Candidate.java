@@ -64,6 +64,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	//private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
 	private Set<Gallary> gallaries = new HashSet<Gallary>(0);
+	private Set<CandidateRealatedNews> candidateRealatedNews = new HashSet<CandidateRealatedNews>(0);
 	//private Set<CandidateProfileDescription> candidateProfileDescription = new HashSet<CandidateProfileDescription>();
 	//private Set<CandidateUpdatesEmail> candidateUpdatesEmails = new HashSet<CandidateUpdatesEmail>(0);
 	//private Set<ElectionMinisters> electionMinisters = new HashSet<ElectionMinisters>(0);
@@ -74,6 +75,8 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	//private Set<CandidateCaste> candidateCaste = new HashSet<CandidateCaste>(0);
 	//private Set<CandidateAddress> candidateAddress = new HashSet<CandidateAddress>(0);
 	//private Set<CandidateWebsite> candidateWebsite = new HashSet<CandidateWebsite>(0);
+	
+
 	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
 	
  
@@ -381,5 +384,14 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 		this.newsFlags = newsFlags;
 	}
 	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	public Set<CandidateRealatedNews> getCandidateRealatedNews() {
+		return candidateRealatedNews;
+	}
+
+	public void setCandidateRealatedNews(
+			Set<CandidateRealatedNews> candidateRealatedNews) {
+		this.candidateRealatedNews = candidateRealatedNews;
+	}
 	
 }

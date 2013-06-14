@@ -1297,5 +1297,12 @@
 	</bean>
 	
 	
+	<bean id="candidateRealatedNewsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateRealatedNewsDAO">
+	 <property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	<bean id="candidateNewsResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateNewsResponseDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	
 </beans>		
