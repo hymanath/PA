@@ -40,7 +40,8 @@ public class UpdationDetails extends BaseModel implements java.io.Serializable  
 	private Set<Option> option = new HashSet<Option>(0);
 	private Set<Respondent> respondent = new HashSet<Respondent>(0);
 	private Set<Surveyor> surveyor = new HashSet<Surveyor>(0);
-	
+	private Set<QuestionOptions> questionOptions = new HashSet<QuestionOptions>(0);
+
 	public UpdationDetails() {
 	}
 	
@@ -158,5 +159,15 @@ public class UpdationDetails extends BaseModel implements java.io.Serializable  
 	public void setSurveyor(Set<Surveyor> surveyor) {
 		this.surveyor = surveyor;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "updationDetails")
+	public Set<QuestionOptions> getQuestionOptions() {
+		return questionOptions;
+	}
+
+	public void setQuestionOptions(Set<QuestionOptions> questionOptions) {
+		this.questionOptions = questionOptions;
+	}
+	
 	
 }

@@ -6,4 +6,5 @@ import com.itgrids.partyanalyst.model.SurveyAccessUsers;
 
 public interface ISurveyAccessUsersDAO extends GenericDao<SurveyAccessUsers, Long> {
 
+	public Long checkForDuplicateRecords(Long userId,Long surveyId);
 }

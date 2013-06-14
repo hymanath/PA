@@ -57,7 +57,7 @@
 		<class>com.itgrids.partyanalyst.model.Respondent</class>
 		<class>com.itgrids.partyanalyst.model.Surveyor</class>
 		<class>com.itgrids.partyanalyst.model.SurveyAnswer</class>
-	
+		<class>com.itgrids.partyanalyst.model.QuestionOptions</class>
 		
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />

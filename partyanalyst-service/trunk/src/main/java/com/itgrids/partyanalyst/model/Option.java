@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -33,6 +37,8 @@ public class Option extends BaseModel implements java.io.Serializable {
 	private String remarks;
 	private UpdationDetails updationDetails;
 		
+	private Set<QuestionOptions> questionOptions = new HashSet<QuestionOptions>(0);
+
 	public Option() {
 	}
 	
@@ -138,6 +144,15 @@ public class Option extends BaseModel implements java.io.Serializable {
 
 	public void setUpdationDetails(UpdationDetails updationDetails) {
 		this.updationDetails = updationDetails;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "options")
+	public Set<QuestionOptions> getQuestionOptions() {
+		return questionOptions;
+	}
+
+	public void setQuestionOptions(Set<QuestionOptions> questionOptions) {
+		this.questionOptions = questionOptions;
 	}
 	
 	
