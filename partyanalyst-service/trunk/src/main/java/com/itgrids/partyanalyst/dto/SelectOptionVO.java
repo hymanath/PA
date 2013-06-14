@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,8 +15,8 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String value;
 	private String location;
 	private String villageCovered;
-	private List<SelectOptionVO> selectOptionsList;
-	private List<SelectOptionVO> selectOptionsList1;
+	private List<SelectOptionVO> selectOptionsList = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> selectOptionsList1 = new ArrayList<SelectOptionVO>(0);
 	private boolean hampletPresent;
 	private String partno;
 	private List<Long> locationValuesList;
