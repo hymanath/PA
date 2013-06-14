@@ -1657,5 +1657,73 @@ IUserVoterDetailsDAO{
 		return queryObj.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalAreaWiseAgeDetailsForCustomWard(Long constituencyId,Long publicationDateId,Long customWardId,Long userId,String ageRange)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select distinct UVD.locality.localityId,UVD.locality.name,count(distinct UVD.voter.voterId),UVD.voter.gender from UserVoterDetails UVD,BoothPublicationVoter BPV where UVD.voter.voterId = BPV.voter.voterId ");
+		stringBuilder.append(" and UVD.ward.constituencyId =:customWardId and BPV.booth.constituency.constituencyId =:constituencyId and BPV.booth.publicationDate.publicationDateId =:publicationDateId and UVD.user.userId =:userId ");
+		
+		if(ageRange.equalsIgnoreCase(IConstants.AGE18to25))
+		  stringBuilder.append(" and UVD.voter.age >=18 and UVD.voter.age <=25 ");
+		else if(ageRange.equalsIgnoreCase(IConstants.AGE26to35))
+		  stringBuilder.append(" and UVD.voter.age >=26 and UVD.voter.age <=35 ");
+		else if(ageRange.equalsIgnoreCase(IConstants.AGE36to45))
+		  stringBuilder.append(" and UVD.voter.age >=36 and UVD.voter.age <=45 ");
+		else if(ageRange.equalsIgnoreCase(IConstants.AGE45to60))
+		  stringBuilder.append(" and UVD.voter.age >=46 and UVD.voter.age <=60 ");
+		else if(ageRange.equalsIgnoreCase(IConstants.Above60))
+		  stringBuilder.append(" and UVD.voter.age >=60 ");
+		
+		stringBuilder.append(" group by UVD.locality.localityId,UVD.voter.gender ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("customWardId", customWardId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalAreaWiseAgeDetails(Long constituencyId,Long publicationDateId,Long id,Long userId,Long minAge,Long maxAge,String type)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		if(type.equalsIgnoreCase("customWardLocalArea"))
+		 stringBuilder.append("select distinct UVD.locality.localityId,UVD.locality.name ");
+		
+		stringBuilder.append(" ,count(distinct UVD.voter.voterId) from UserVoterDetails UVD,BoothPublicationVoter BPV where UVD.voter.voterId = BPV.voter.voterId ");
+		stringBuilder.append(" and BPV.booth.constituency.constituencyId =:constituencyId and BPV.booth.publicationDate.publicationDateId =:publicationDateId and UVD.user.userId =:userId ");
+		stringBuilder.append(" and UVD.voter.age >='"+minAge+"' and UVD.voter.age <='"+maxAge+"' ");
+		if(type.equalsIgnoreCase(IConstants.CUSTOMWARD) || type.equalsIgnoreCase("customWardLocalArea"))
+		 stringBuilder.append(" and UVD.ward.constituencyId =:id ");
+		
+		if(type.equalsIgnoreCase("customWardLocalArea"))
+		  stringBuilder.append(" group by UVD.locality.localityId order by UVD.locality.name ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("id", id);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getLocalityByCustomWardId(Long constituencyId,Long publicationDateId,Long id,Long userId,String type)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select distinct UVD.locality.name from UserVoterDetails UVD,BoothPublicationVoter BPV where UVD.voter.voterId = BPV.voter.voterId ");
+		stringBuilder.append(" and UVD.user.userId =:userId and BPV.booth.publicationDate.publicationDateId =:publicationDateId and BPV.booth.constituency.constituencyId =:constituencyId ");
+		stringBuilder.append(" and UVD.ward.constituencyId =:id order by UVD.locality.name ");
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("id", id);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }
