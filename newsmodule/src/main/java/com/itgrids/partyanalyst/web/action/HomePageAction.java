@@ -397,6 +397,9 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
         if(user == null)
          return ERROR;
+        
+        if(user.getUserAccessType() != null && !user.getUserAccessType().equalsIgnoreCase("Admin"))
+        	return "noAccess";
                
 		latestGallariesList = candidateDetailsService.getLatestgallaries();
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"");

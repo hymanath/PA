@@ -122,6 +122,8 @@ public class User extends BaseModel implements Serializable{
 	
 	private String passwdHashTxt;
 	private String hashKeyTxt;
+	private String userAccessType;
+	
 	public User(){}
 	 public User(String firstName,  String lastName, String userName,String userType,String password)
 	 {
@@ -958,6 +960,14 @@ public class User extends BaseModel implements Serializable{
 	}
 	public void setFiles(Set<File> files) {
 		this.files = files;
+	}
+	
+	@Column(name = "user_access_type",  length = 15)
+	public String getUserAccessType() {
+		return userAccessType;
+	}
+	public void setUserAccessType(String userAccessType) {
+		this.userAccessType = userAccessType;
 	}
 	
 

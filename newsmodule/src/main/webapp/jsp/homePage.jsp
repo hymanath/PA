@@ -238,7 +238,14 @@ function handleErrorMessageForpopup()
 							if(jsObj.task == "validateUserForLogin")
 							{	
 								
-								if(myResults.resultCode == 0)
+								if(myResults.resultCode == 2){
+
+									$("#ajaxcallimage").show();
+									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
+									
+									  window.location.href = "partyManagementAction.action";
+								}								
+								else if(myResults.resultCode == 0)
 								{
 									$("#ajaxcallimage").show();
 									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
@@ -284,4 +291,3 @@ ajaxCallForLoginPopup();
 
 	</script>
 </body>
-</html>

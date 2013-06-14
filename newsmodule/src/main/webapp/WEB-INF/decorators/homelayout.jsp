@@ -89,7 +89,7 @@ margin:-1px 0px 0px 0px ;
 						 </c:if>
 						 <c:if test="${sessionScope.USER != null}">
 						  <li style="padding-top: 6px;">${sessionScope.USER.name}</li>
-						   <c:if test="${sessionScope.USER.userType == 'Admin'}">
+						   <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
 						    <li><a href="userRegistration.action">Admin</a></li>
 						   </c:if>
 						  <li class="selected"><a href="logoutAction.action">Logout</a></li>
@@ -99,16 +99,20 @@ margin:-1px 0px 0px 0px ;
 					<!------Menu div-------->
 					<div class="span12">
 						<ul class="nav nav-pills navMenu pull-right">
+
+						<c:if test="${sessionScope.USER != null}">
+						 <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
 						  <li class=""><a href="homePage.action">Home</a></li>
 						  <li class=""><a href="#">About us</a></li>
 						  <li class=""><a href="#">News</a></li>
 						  <li class=""><a href="#">Videos</a></li>
-						   <c:if test="${sessionScope.USER != null}">
-						    <c:if test="${sessionScope.USER.userType != '' || sessionScope.USER.userType == 'subuser'}">
+						 
+						  
 						      <li class=""><a href="partyManagementAction.action">Manage Party Profile</a></li>
-						    </c:if>
-						   </c:if>
+						   
+						  
 						  <li class=""><a href="#">Contact us</a></li>
+						   </c:if> </c:if>
 						  
 						</ul>
 					</div>

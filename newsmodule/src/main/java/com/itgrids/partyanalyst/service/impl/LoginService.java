@@ -831,6 +831,8 @@ public class LoginService implements ILoginService{
 			if(userdetails != null)
 			{
 				 regVo = new RegistrationVO();
+				 
+				 regVo.setUserAccessType(userdetails.getUserAccessType());
 				 if("Admin".equalsIgnoreCase(userdetails.getUserType()) )
 				   regVo.setUserType("Admin");
 				 else if("subuser".equalsIgnoreCase(userdetails.getUserType()) )

@@ -657,6 +657,9 @@ public String ajaxCallForLoginPopup(){
 				System.out.println("success");
 				RegistrationVO regVO = loginService.getUserByUserNameAndPassword(userName, password);
 				session.setAttribute("USER", regVO);
+				
+				if(regVO.getUserAccessType().equalsIgnoreCase("subuser"))
+					resultStatus.setResultCode(2);
 			} 
 			else
 			{
