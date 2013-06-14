@@ -525,7 +525,7 @@ function buildSelectedVotersData(results)
 				
 				if(voters[k].hamletId != null)
 			    {
-                  str+='<div class="row" style="width:149px;"><select id="sublocality'+voters[k].voterId+'" title="Select sub locality to the voter:'+voters[k].name+'(Sno:'+voters[k].fromSno+')" style="width:100px;">';
+                  str+='<div class="row" style="width:149px;"><select class="sublocalityClass sublocality'+i+j+'" id="sublocality'+voters[k].voterId+'" title="Select sub locality to the voter:'+voters[k].name+'(Sno:'+voters[k].fromSno+')" style="width:100px;">';
 				  for(var l in voters[k].subLocalities){					 
 					 
 					if(voters[k].subLocalityId !=  voters[k].subLocalities[l].id)								   
@@ -539,10 +539,11 @@ function buildSelectedVotersData(results)
  				 str+='</select>';
 				}
 				else				
-					str+='<div class="row" style="width:149px;"><select id="sublocality'+voters[k].voterId+'" style="width:100px;">';
+					str+='<div class="row" style="width:149px;"><select id="sublocality'+voters[k].voterId+'" style="width:100px;" class="sublocalityClass sublocality'+i+j+'">';
 					str+='</select>';				
-
-				str+='</div></td>';		
+				str+='<a  title="Apply  this to current family" href="javascript:{applyValue(\'sublocality'+voters[k].voterId+'\',\'sublocality'+i+j+'\');}"><i class="icon-ok"></i></a>';
+				 str+='<a title="Apply  this to all families"  href="javascript:{applyValue(\'sublocality'+voters[k].voterId+'\',\'sublocalityClass\');}"><i class="icon-ok-sign"></i></a>';
+				str+='</div></td>';
 				
 				
 
