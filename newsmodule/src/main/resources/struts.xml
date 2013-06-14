@@ -62,6 +62,7 @@
 		<action name="homePage" class="com.itgrids.partyanalyst.web.action.HomePageAction"> 
 		    <result name="success">/jsp/newhomePage.jsp</result>
 		    <result name="error" type="redirect" >loginPageAction.action</result>
+		    <result name="noAccess">/jsp/globalError.jsp</result>
 		</action>
 	
 		<action name="loginInputAction" class="loginInputAction">

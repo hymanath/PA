@@ -351,7 +351,8 @@ public String execute()
 	RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
 	if (registrationVO != null) 
 	{
-	 if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
+	// if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
+		 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || "subuser".equalsIgnoreCase(registrationVO.getUserAccessType())  )
 	  return Action.SUCCESS;
 	 else
 		 return "error";
