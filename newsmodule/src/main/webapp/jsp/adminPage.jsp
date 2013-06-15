@@ -31,21 +31,7 @@
 </head>
 
 <body>
-
-		<div class="container-fluid headerBg" style="padding-left: 0px; padding-right: 0px;">
-		<!---Header----->
-		<div class="container">	
-			<div class="row">
-				<!----Logo----->
-				<div class="span12">
-					<img src="images/Logo.png" alt="Telugudhesham party logo" />
-				</div>
-				
-			</div>
-		</div>
-		<!----Header End--->
-		</div>
-		
+	
 		<div class="row m_top10">
 		<table class="table table-hover table-bordered">
 		<tr>
