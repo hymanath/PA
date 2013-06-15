@@ -20,6 +20,24 @@ import com.itgrids.partyanalyst.model.Option;
 import com.itgrids.partyanalyst.model.QuestionOptions;
 import com.itgrids.partyanalyst.model.SurveyQuestion;
 import com.itgrids.partyanalyst.service.ISurveyAnalysisService;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ISurveyDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.model.Survey;
+import com.itgrids.partyanalyst.model.UpdationDetails;
+import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyAnalysisService implements ISurveyAnalysisService {
 	
@@ -30,6 +48,20 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 	private IOptionTypeDAO optionTypeDAO;
 	private IQuestionOptionsDAO questionOptionsDAO;
 	private TransactionTemplate transactionTemplate;
+	private ISurveyDAO surveyDAO;
+	private IRegionScopesDAO regionScopesDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
+	private IUserDAO userDAO; 
+	private IUpdationDetailsDAO updationDetailsDAO;
+	private IUserAddressDAO userAddressDAO;
+	private ICountryDAO countryDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITehsilDAO tehsilDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO; 
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -67,7 +99,85 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		this.optionDAO = optionDAO;
 	}
 
-
+    public ISurveyDAO getSurveyDAO() {
+		return surveyDAO;
+	}
+	public void setSurveyDAO(ISurveyDAO surveyDAO) {
+		this.surveyDAO = surveyDAO;
+	}
+    public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+	public IUpdationDetailsDAO getUpdationDetailsDAO() {
+		return updationDetailsDAO;
+	}
+	public void setUpdationDetailsDAO(IUpdationDetailsDAO updationDetailsDAO) {
+		this.updationDetailsDAO = updationDetailsDAO;
+	}
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+	public ICountryDAO getCountryDAO() {
+		return countryDAO;
+	}
+	public void setCountryDAO(ICountryDAO countryDAO) {
+		this.countryDAO = countryDAO;
+	}
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
 	public List<SelectOptionVO>  getOptionTypes(){
 		List<SelectOptionVO>  optionTypes = new ArrayList<SelectOptionVO>();
 		SelectOptionVO valuesVo = null;
@@ -92,6 +202,87 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		}
 		
 		return optionTypes;
+	}
+	public ResultStatus savesurveyDetails(final String name,final String desc,final Long scopeVal,final Long stateId,final Long districtId,final Long constId,final Long mandalId,final Long userId,final String consType)
+    {
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		  protected void doInTransactionWithoutResult(TransactionStatus status) 
+		 {
+		     Survey survey = new Survey();
+		     survey.setName(name);
+		     survey.setDescription(desc);
+		     survey.setLocationScopes(regionScopesDAO.get(scopeVal));
+		     survey.setIsDeleted(IConstants.FALSE);
+		     survey.setStartTime(dateUtilService.getCurrentDateAndTime());
+		     
+		     UpdationDetails updationDetails = new UpdationDetails();
+		     updationDetails.setCreatedBy(userDAO.get(userId));
+		     updationDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		     
+		     updationDetails = updationDetailsDAO.save(updationDetails);
+		     survey.setUpdationDetails(updationDetails);
+		     
+		     UserAddress userAddress = new UserAddress();
+		     if(scopeVal.equals(1L))
+		     {
+		    	 userAddress.setCountry(countryDAO.get(scopeVal));
+		    	 survey.setLocationScopeValue(scopeVal);
+		     }
+		     else if(scopeVal.equals(2L))
+		     {
+		    	 userAddress.setState(stateDAO.get(stateId));
+		    	 survey.setLocationScopeValue(stateId); 
+		     }
+		     else if(scopeVal.equals(3L))
+		     {
+		    	 userAddress.setState(stateDAO.get(stateId));
+		    	 userAddress.setDistrict(districtDAO.get(districtId));
+		    	 survey.setLocationScopeValue(districtId); 
+		     }
+		     else if(scopeVal.equals(4L))
+		     {
+		    	 if(consType.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE))
+		    	 {
+		    	   userAddress.setState(stateDAO.get(stateId));
+		    	   userAddress.setDistrict(districtDAO.get(districtId));
+		    	   userAddress.setConstituency(constituencyDAO.get(constId));
+		    	 }
+		    	 else
+		    		userAddress.setParliamentConstituency(constituencyDAO.get(constId));
+		    	 survey.setLocationScopeValue(constId); 
+		     }
+		     else if(scopeVal.equals(5L))
+		     {
+		    	 userAddress.setState(stateDAO.get(stateId));
+		    	 userAddress.setDistrict(districtDAO.get(districtId));
+		    	 userAddress.setConstituency(constituencyDAO.get(constId));
+		    	 userAddress.setTehsil(tehsilDAO.get(mandalId));
+		    	 survey.setLocationScopeValue(mandalId); 
+		     }
+		     else if(scopeVal.equals(7L))
+		     {
+		    	 userAddress.setState(stateDAO.get(stateId));
+		    	 userAddress.setDistrict(districtDAO.get(districtId));
+		    	 userAddress.setConstituency(constituencyDAO.get(constId));
+		    	 Long localEleBodyId = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(mandalId.toString().substring(1))).get(0);
+		    	 userAddress.setLocalElectionBody(localElectionBodyDAO.get(localEleBodyId));
+		    	 survey.setLocationScopeValue(localEleBodyId); 
+		     }
+		     
+		     userAddress = userAddressDAO.save(userAddress);
+		     survey.setUserAddress(userAddress);
+		     surveyDAO.save(survey);
+		  
+		 }});
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			Log.error("Exception Occured in savesurveyDetails() method, Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
 	}
 
 	public ResultStatus saveQuestion(final List<QuestionsOptionsVO> questionsOptionsList)
