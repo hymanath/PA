@@ -141,6 +141,7 @@
 </script>
 </head>
 <body>
+<div>
      <input type="button" onclick="openSurveyQuestionAddWindow();"  value="Add Question" />
 	 <div style="display:none;" id="dialogWindowDiv" title="Add New Question">
 	   <div class="container">
@@ -165,5 +166,17 @@
 		</div>			
       </div>
 	 </div>
+	<div style="text-align:center;margin-top:10px;margin-bottom:10px;"><input type="button" value="Creating Survey" id="surveyBtn" class="btn btn-info"/></div>
+	 </div>
+<script type="text/javascript">
+$(document).ready(function(){
+				
+  $("#surveyBtn").click(function(){
+	 var browser1 = window.open("surveyDetailsAction.action?","surveyDetails","scrollbars=yes,height=600,width=980,left=200,top=200");	
+    browser1.focus();
+  });
+
+});//End of ready
+</script>
 </body>
 </html>

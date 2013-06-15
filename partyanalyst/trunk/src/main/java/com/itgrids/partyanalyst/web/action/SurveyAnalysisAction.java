@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.text.ParseException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -130,6 +132,31 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 	
 	public String ajaxHandler()
 	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+		 return ERROR;
+		
+		Long userId = user.getRegistrationID();
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in ");
+		}
+		if(jObj.getString("task").equalsIgnoreCase("saveSurveyData"))
+		{
+			Long scopeVal = jObj.getLong("scopeVal");
+			Long stateId = jObj.getLong("stateId");
+			Long districtId = jObj.getLong("districtId");
+			Long constId = jObj.getLong("constituencyId");
+			Long mandalId = jObj.getLong("mandalId");
+			String name = jObj.getString("name");
+			String desc = jObj.getString("description");
+			String consType = jObj.getString("constituecyType");
+			
+			resultStatus = surveyAnalysisService.savesurveyDetails(name,desc,scopeVal,stateId,districtId,constId,mandalId,userId,consType);
+		}
 		return Action.SUCCESS;
 	}
 
