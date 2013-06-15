@@ -3460,7 +3460,23 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	  return resultStatus;
 	 }
 
-	
+	public ResultStatus storeSourceDetails(String value)
+	{
+		ResultStatus resultStatus = null;
+		
+		try {
+			resultStatus = new ResultStatus();
+			 log.debug("Enter into storeSourceDetails Method of NewsMonitoringService ");
+			 Source source = new Source();
+			 source.setSource(value);
+			 sourceDAO.save(source);
+			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		} catch (Exception e) {
+			log.error("Exception rised in storeSourceDetails Method of NewsMonitoringService ",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return resultStatus;
+	}
 
 
 }

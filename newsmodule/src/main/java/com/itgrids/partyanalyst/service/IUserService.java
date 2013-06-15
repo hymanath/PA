@@ -10,5 +10,6 @@ public interface IUserService {
 	
 	
 */
+	public String checkForUserType(Long userId);
 	
 }

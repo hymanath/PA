@@ -24,6 +24,7 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import com.itgrids.partyanalyst.service.IUserService;
 
 public class AnanymousUserAction extends ActionSupport implements
 ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
@@ -44,8 +45,10 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	private String password;
 	private RegistrationVO regVO = new RegistrationVO();
 	private IRegistrationService registrationService;
+	private IUserService userService;
 	private Long result;
 	private Boolean savedSuccessfully;
+	private String userType;
 	
 	public Boolean getSavedSuccessfully() {
 		return savedSuccessfully;
@@ -205,20 +208,58 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	}
    
 
+	public IUserService getUserService() {
+		return userService;
+	}
+
+
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
+
+
+	public String getUserType() {
+		return userType;
+	}
+
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+
 	public String execute()
 	{
+		/*HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		userType = userService.checkForUserType(user.getRegistrationID());
+		
+		if(userType.equalsIgnoreCase("admin"))
+		{
+			return Action.SUCCESS;
+		}
+		else {
+			return Action.ERROR;
+		}*/
 		
 		return Action.SUCCESS;
-		
 	}
 	
 	public String saveUserData()
 	{
 		String userType = "";
+		String type = "";
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user != null)
-		userType = user.getUserType();
+		{
+			userType = user.getUserType();
+			type     = user.getUserAccessType();
+		}
+		if(!type.equalsIgnoreCase("admin"))
+		{
+			return Action.ERROR;
+		}
 		if(regVO.getEmail() != null)
         savedSuccessfully = registrationService.saveDataIntoUser(regVO,userType);
 		else
