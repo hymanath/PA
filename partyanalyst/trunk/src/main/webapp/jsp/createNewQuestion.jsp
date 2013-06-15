@@ -13,10 +13,64 @@
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <script type="text/javascript">
    function saveQuestion(){
-	  
+	   $("#errorDiv").html("");
+	   var flag=true;
        var question = $("#questionTitle").val();
 	   var questionType = $("#questionType option:selected").val();
 	   var showRemark = $("#showRemark").is(':checked');
+	   
+if(question == ""){
+	$("#errorDiv").html("Question is mandatory..").css({"display":"block","color":"red","font":"bold"});
+	return;
+}
+if(questionType==0){
+	$("#errorDiv").html("Question Type is mandatory..").css({"display":"block","color":"red","font":"bold"});
+		return;
+}
+
+$(".mainoption").each(function(){
+	var val = $(this).val();
+	if($("#errorDiv").text()==""){
+	if(val == ""){
+	$("#errorDiv").html("Option is mandatory..").css({"display":"block","color":"red","font":"bold"});
+	flag = false;
+	}
+	}
+});
+
+$(".subOptionsClass").each(function(){
+	var val = $(this).val();
+	if($("#errorDiv").text()==""){
+	if(val == ""){
+	$("#errorDiv").html("Sub Question is mandatory..").css({"display":"block","color":"red","font":"bold"});
+	flag = false;
+	}
+	}
+});
+$(".subOptionsListClass").each(function(){
+	var val = $(this).val();
+	if($("#errorDiv").text()==""){
+	if(val == 0){
+	$("#errorDiv").html("Sub Question Type is mandatory..").css({"display":"block","color":"red","font":"bold"});
+	flag = false;
+	}
+	}
+});
+$(".subOptionClass").each(function(){
+	var val = $(this).val();
+	if($("#errorDiv").text()==""){
+	if(val == 0){
+	$("#errorDiv").html("Sub Question option is mandatory..").css({"display":"block","color":"red","font":"bold"});
+	flag = false;
+	}
+	}
+});
+if(flag == false)
+	return false;
+
+	if(flag == true)
+		{
+		$("#errorDiv").html("");
 	   var mainOptionsArray = new Array();
 	   	if(questionType == 4)
 	{
@@ -126,7 +180,7 @@
    function buildTextOptions(id){
     suboptionId = suboptionId+1;
     var str = '';
-    str+='<div id="textbox'+suboptionId+'"><input  class="mainoption'+id+'" type="text"  /><span class="icon-minus-sign" style="cursor:pointer;" title="Remove Text Box" onclick="removeTextBox('+suboptionId+');" ></span></div>';
+    str+='<div id="textbox'+suboptionId+'"><input  class="mainoption mainoption'+id+'" type="text"  /><span class="icon-minus-sign" style="cursor:pointer;" title="Remove Text Box" onclick="removeTextBox('+suboptionId+');" ></span></div>';
 	$("#divoption"+id).append(str);
    }
    
@@ -175,9 +229,9 @@
    
      if($("#"+id).is(':checked')){
        var str ='';
-	   str+='<div><label>Question</label> <input type="text" class="span12" id="subquestionTitle'+optionId+'" /> </div>';
+	   str+='<div><label>Question</label> <input type="text" class="span12 subOptionsClass" id="subquestionTitle'+optionId+'" /> </div>';
        str+='<div>';
-	   str+='  <label>Select Question Type</label> <select class="span12" id="subquestionType'+optionId+'" name ="questionType" onchange="buildSubQuestion('+optionId+');">';
+	   str+='  <label>Select Question Type</label> <select class="span12 subOptionsListClass" id="subquestionType'+optionId+'" name ="questionType" onchange="buildSubQuestion('+optionId+');">';
 	  /* str+='   <option value="0">Select</option>';
 	   str+='   <option value="1">Multiple choice with single select</option>';*/
 	   str+='  </select>';
@@ -198,7 +252,7 @@
 	  $("#addNewSubQuestOptDIV"+optionId).html("");
 	  
 	  if($("#subquestionType"+optionId+" option:selected").val() != 4){
-	    str+='<fieldset id="subquestDIV'+suboptionId+'" class="alert"><div><div style="margin-bottom:5px;">Sub Options : </div><div><input type="text" key="'+suboptionId+'" class="subquestcls'+optionId+'" id="subquest'+suboptionId+'" /> <input id="subquestremark'+suboptionId+'" type="checkbox" /> Show remark </div></div></fieldset>';
+	    str+='<fieldset id="subquestDIV'+suboptionId+'" class="alert"><div><div style="margin-bottom:5px;">Sub Options : </div><div><input type="text" key="'+suboptionId+'" class="subOptionClass subquestcls'+optionId+'" id="subquest'+suboptionId+'" /> <input id="subquestremark'+suboptionId+'" type="checkbox" /> Show remark </div></div></fieldset>';
 		$("#subQuestionOptDIV"+optionId).html(str);
 		str ='<span onclick="buildSubOptions('+optionId+');" class="btn btn-small"><i class="icon-th-list"> </i> Add More Sub Options</span>';
 		//str ='<div><input type="button" class="btn" onclick="buildSubOptions('+optionId+');" value="Add Sub Option" > </div>';
@@ -209,7 +263,7 @@
    function buildSubOptions(id){
       suboptionId = suboptionId+1;
 	  var str = '';
-       str+='<fieldset id="subquestDIV'+suboptionId+'" class="alert"><div style="margin-bottom:5px;"><div><input type="text" key="'+suboptionId+'" class="subquestcls'+id+'" id="subquest'+suboptionId+'" /> <input id="subquestremark'+suboptionId+'" type="checkbox" /> Show remark  <span class="icon-minus-sign" style="cursor:pointer;" title="Remove Option" onclick="removeSubOption('+suboptionId+');" ></span></div></div></fieldset>';
+       str+='<fieldset id="subquestDIV'+suboptionId+'" class="alert"><div style="margin-bottom:5px;"><div><input type="text" key="'+suboptionId+'" class="subOptionClass subquestcls'+id+'" id="subquest'+suboptionId+'" /> <input id="subquestremark'+suboptionId+'" type="checkbox" /> Show remark  <span class="icon-minus-sign" style="cursor:pointer;" title="Remove Option" onclick="removeSubOption('+suboptionId+');" ></span></div></div></fieldset>';
 		$("#subQuestionOptDIV"+id).append(str);
    }
    function removeSubOption(id){
@@ -286,6 +340,7 @@ function clearOptionsListForSelectElmtId(elmtId)
 	   <div class="container">
 	    <div class="row">
 		  <div class="container row span8 offset2 well">
+			<div id="errorDiv" style="display:none"></div>
 		    <form class="row-fluid">
 			      <label>Question</label>
 				  <input type="text" id="questionTitle" placeholder="Enter Question..." name="Question" class="span12">
