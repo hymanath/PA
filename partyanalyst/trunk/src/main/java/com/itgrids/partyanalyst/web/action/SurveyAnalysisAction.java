@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -11,8 +12,11 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.OptionVO;
+import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ISurveyAnalysisService;
@@ -31,8 +35,20 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
  	 private HttpServletResponse response;; 
  	 private ServletContext context;
  	 private List<SelectOptionVO>  questionType;
- 	
-	 public ISurveyAnalysisService getSurveyAnalysisService() {
+ 	 private List<QuestionsOptionsVO> questionsOptionsList;
+ 	 
+	 
+
+	public List<QuestionsOptionsVO> getQuestionsOptionsList() {
+		return questionsOptionsList;
+	}
+
+	public void setQuestionsOptionsList(
+			List<QuestionsOptionsVO> questionsOptionsList) {
+		this.questionsOptionsList = questionsOptionsList;
+	}
+
+	public ISurveyAnalysisService getSurveyAnalysisService() {
 		return surveyAnalysisService;
 	}
 		
@@ -127,6 +143,112 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 			}catch(Exception e){
 				LOG.error("Entered into the getQuestionOptionTypes() method in SurveyAnalysisAction");	
 			}
+		return Action.SUCCESS;
+	}
+	
+	public String saveSurveyQuestion()
+	{
+		try{
+		jObj = new JSONObject(getTask());
+		if(jObj.getString("task").equalsIgnoreCase("saveQuestion"))
+		{
+			JSONArray mainOptionsArray = jObj.getJSONArray("mainOptionsArray");
+			QuestionsOptionsVO questionsOptionsVO = new QuestionsOptionsVO();
+			String question = jObj.getString("question") ;
+			String questionType = jObj.getString("questionType");
+			Boolean showRemark = jObj.getBoolean("showRemark");
+			List<OptionVO>  optionVOs = new ArrayList<OptionVO>(); 
+			
+			List<QuestionsOptionsVO> questionsOptionsList = new ArrayList<QuestionsOptionsVO>();
+			for(int i=0;i<mainOptionsArray.length();i++)
+			{
+				JSONObject jSONObject= mainOptionsArray.getJSONObject(i);
+			
+				String option =jSONObject.getString("option"); 
+				Boolean hasRemark = jSONObject.getBoolean("showRemark");
+				Boolean hasSubQuestion = jSONObject.getBoolean("hasSubQuestion");
+				OptionVO optionVO = new OptionVO();
+				optionVO.setOption(option);
+				optionVO.setHasRemark(hasRemark);
+				
+				if(hasSubQuestion == true)
+				{
+				JSONArray subOptionsArray = jSONObject.getJSONArray("subOptions");	
+				String mainOptionquestionType = jSONObject.getString("subquestionType");
+				String mainOptionquestion = jSONObject.getString("subquestion");
+				Boolean mainOptionhasRemark =jSONObject.getBoolean("showRemark");
+				optionVO.setHasSubQuestion(hasSubQuestion);
+				optionVO.setSubquestion(mainOptionquestion);
+				optionVO.setSubquestionType(mainOptionquestionType);
+				optionVO.setHasRemark(mainOptionhasRemark);
+				List<OptionVO>  suboptionVOs = new ArrayList<OptionVO>(); 
+				for(int j=0;j<subOptionsArray.length();j++)
+				{
+					JSONObject jsonObject1 = subOptionsArray.getJSONObject(j);
+					String suboption =jsonObject1.getString("option"); 
+					Boolean subOptionhasRemark =jsonObject1.getBoolean("showRemark");
+					OptionVO suboptionVO = new OptionVO();
+					suboptionVO.setOption(suboption);
+					suboptionVO.setHasRemark(subOptionhasRemark);
+					suboptionVOs.add(suboptionVO);
+					optionVO.setSubOptionList(suboptionVOs);
+				}
+				
+				
+				}
+				optionVOs.add(optionVO);
+			}
+			questionsOptionsVO.setHasRemark(showRemark);
+			questionsOptionsVO.setQuestion(question);
+			questionsOptionsVO.setOptions(optionVOs);
+			questionsOptionsVO.setQuestionType(questionType);
+			questionsOptionsList.add(questionsOptionsVO);
+			resultStatus = surveyAnalysisService.saveQuestion(questionsOptionsList);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("saveQuestionForMultipleText"))
+		{
+			JSONArray mainOptionsArray = jObj.getJSONArray("mainOptionsArray");
+			String question = jObj.getString("question") ;
+			String questionType = jObj.getString("questionType");
+			Boolean showRemark = jObj.getBoolean("showRemark");
+			QuestionsOptionsVO questionsOptionsVO = new QuestionsOptionsVO();
+			List<OptionVO>  optionVOs = new ArrayList<OptionVO>(); 
+			List<QuestionsOptionsVO> questionsOptionsList = new ArrayList<QuestionsOptionsVO>();
+			for(int i=0;i<mainOptionsArray.length();i++)
+			{
+				JSONObject jSONObject= mainOptionsArray.getJSONObject(i);
+				JSONArray subQuestionsArray = jSONObject.getJSONArray("subQuestions");	
+				String option =jSONObject.getString("option"); 
+				OptionVO optionVO = new OptionVO();
+				optionVO.setOption(option);
+				if(subQuestionsArray != null)
+				{
+				List<OptionVO> suboptionVOs = new ArrayList<OptionVO>(); 
+				for(int j=0;j<subQuestionsArray.length();j++)
+				{
+					JSONObject jsonObject1 = subQuestionsArray.getJSONObject(j);
+					String mainOptionsubquestion = jsonObject1.getString("subquestion");
+					OptionVO suboptionVO = new OptionVO();
+					suboptionVO.setSubquestion(mainOptionsubquestion);
+					suboptionVOs.add(suboptionVO);
+					optionVO.setSubOptionList(suboptionVOs);
+				}
+				optionVOs.add(optionVO);
+				}
+				
+			}
+			questionsOptionsVO.setOptions(optionVOs);
+			questionsOptionsVO.setQuestion(question);
+			questionsOptionsVO.setHasRemark(showRemark);
+			questionsOptionsVO.setQuestionType(questionType);
+			questionsOptionsList.add(questionsOptionsVO);
+			resultStatus = surveyAnalysisService.saveQuestionForMultipleText(questionsOptionsList);	
+		}
+		}
+		catch (Exception e) {
+		e.printStackTrace();	
+		}
 		return Action.SUCCESS;
 	}
 	

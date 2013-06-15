@@ -5330,7 +5330,7 @@
 			<param name="root">constituencyManagementVO</param>
 			</result>
 		</action>
-		<action name="getVoterDataForAttribute" class="customVoterGroupAnalysisAction" method="getVoterDataForAttribute">
+	<action name="getVoterDataForAttribute" class="customVoterGroupAnalysisAction" method="getVoterDataForAttribute">
 			<result type="json" name="success">
 			<param name="root">voterVO</param>
 			</result>
@@ -5364,5 +5364,10 @@
 		  </result>
 		</action>
 
+		<action name="saveSurveyQuestionAction" class="surveyAnalysisAction" method="saveSurveyQuestion">
+		<result type="json" name="success">
+		<param name="root">resultStatus</param>
+		 </result>
+		</action>
 		</package>
 </struts>      
