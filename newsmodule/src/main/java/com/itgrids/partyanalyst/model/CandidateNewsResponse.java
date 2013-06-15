@@ -50,7 +50,7 @@ public class CandidateNewsResponse extends BaseModel{
 	
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "responce_gallery_id")
+	@JoinColumn(name = "response_gallery_id")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public FileGallary getResponseFileGallary() {
 		return responseFileGallary;
