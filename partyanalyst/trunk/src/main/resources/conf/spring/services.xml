@@ -1523,6 +1523,7 @@
 	  <property name="constituencyDAO" ref="constituencyDAO"/>
 	  <property name="areaTypeDAO" ref="areaTypeDAO"/>
 	  <property name="userDAO" ref="userDAO" />
+	  <property name="userRolesDAO" ref="userRolesDAO" />
 	</bean>
     
     <bean name="dataValidationService" class="com.itgrids.partyanalyst.service.impl.DataValidationService">
