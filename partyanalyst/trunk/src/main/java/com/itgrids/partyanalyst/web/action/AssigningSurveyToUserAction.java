@@ -120,9 +120,15 @@ public class AssigningSurveyToUserAction extends ActionSupport implements Servle
 	public String ajaxHandler(){
 		try 
 		{
+		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		return ERROR;
+		Long userID = user.getRegistrationID();
+		
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("saveSurveyDetailsAction"))
-			  resultStatus  = surveyDetailsService.saveSurveyDetails(jObj.getLong("userId"),jObj.getLong("surveyId"));
+			  resultStatus  = surveyDetailsService.saveSurveyDetails(userID,jObj.getLong("surveyId"));
 		}catch(Exception e)
 		{
 			e.printStackTrace();
