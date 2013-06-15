@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Survey Analysis</title>
+<title>Create New Survey</title>
 
     <script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -57,7 +57,7 @@
 <body>
 
 <div id="surveyMainDiv">
- <div id="headingDiv1"><h3>Creating Survey</h3></div>
+ <div id="headingDiv1"><h3>Create New Survey</h3></div>
   <div id="surveyInnerDiv" class="widget blue">
   <div id="successMsgDiv"></div>
   <div id="errorMsgDiv"></div>
@@ -533,7 +533,7 @@ function showSurveyStatus(results)
 	$("#assemblyTd").css("display","none");
 	$("#showScopeSubs").html('');
 
-    $("#successMsgDiv").html("Data Saved Successfully.").css("color","green");
+    $("#successMsgDiv").html("Survey Created Successfully.").css("color","green");
 	return;
   }
   else
