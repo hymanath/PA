@@ -1,13 +1,20 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class OptionVO implements Serializable,Comparable<OptionVO> {
 	private Long optionId;
 	private String option;
 	private Double percentage;
 	private Long votesObtained;
-	
+	private Boolean hasRemark;
+	private Boolean hasSubQuestion;
+	private String subquestion;
+	private String subquestionType;
+	private List<OptionVO> subOptionList;
+
+
 	public OptionVO() {
 	}
 
@@ -20,6 +27,40 @@ public class OptionVO implements Serializable,Comparable<OptionVO> {
 		this.optionId = optionId;
 		this.option = option;
 		this.percentage = percentage;
+	}
+
+	
+	
+	public Boolean getHasRemark() {
+		return hasRemark;
+	}
+
+	public void setHasRemark(Boolean hasRemark) {
+		this.hasRemark = hasRemark;
+	}
+
+	public Boolean getHasSubQuestion() {
+		return hasSubQuestion;
+	}
+
+	public void setHasSubQuestion(Boolean hasSubQuestion) {
+		this.hasSubQuestion = hasSubQuestion;
+	}
+
+	public String getSubquestion() {
+		return subquestion;
+	}
+
+	public void setSubquestion(String subquestion) {
+		this.subquestion = subquestion;
+	}
+
+	public String getSubquestionType() {
+		return subquestionType;
+	}
+
+	public void setSubquestionType(String subquestionType) {
+		this.subquestionType = subquestionType;
 	}
 
 	public Long getVotesObtained() {
@@ -52,6 +93,14 @@ public class OptionVO implements Serializable,Comparable<OptionVO> {
 
 	public void setOption(String option) {
 		this.option = option;
+	}
+
+	public List<OptionVO> getSubOptionList() {
+		return subOptionList;
+	}
+
+	public void setSubOptionList(List<OptionVO> subOptionList) {
+		this.subOptionList = subOptionList;
 	}
 
 	public int compareTo(OptionVO obj) {

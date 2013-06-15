@@ -17,7 +17,39 @@ public class QuestionsOptionsVO {
 	private String title;
 	private boolean pollExpire;
 	private boolean availability;
+	private Boolean hasRemark;
+	private Boolean hasSubQuestion;
+	private String questionType;
 	
+	public String getQuestionType() {
+		return questionType;
+	}
+
+
+	public void setQuestionType(String questionType) {
+		this.questionType = questionType;
+	}
+
+
+	public Boolean getHasRemark() {
+		return hasRemark;
+	}
+
+
+	public void setHasRemark(Boolean hasRemark) {
+		this.hasRemark = hasRemark;
+	}
+
+
+	public Boolean getHasSubQuestion() {
+		return hasSubQuestion;
+	}
+
+
+	public void setHasSubQuestion(Boolean hasSubQuestion) {
+		this.hasSubQuestion = hasSubQuestion;
+	}
+
 
 	public boolean isAvailability() {
 		return availability;
