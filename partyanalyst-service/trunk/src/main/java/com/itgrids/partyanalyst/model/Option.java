@@ -34,7 +34,7 @@ public class Option extends BaseModel implements java.io.Serializable {
 	private Option parentOption;
 	private OptionType optionType;
 	private String subOptionName;
-	private String remarks;
+	private String hasRemarks;
 	private UpdationDetails updationDetails;
 		
 	private Set<QuestionOptions> questionOptions = new HashSet<QuestionOptions>(0);
@@ -42,7 +42,7 @@ public class Option extends BaseModel implements java.io.Serializable {
 	public Option() {
 	}
 	
-	public Option(Long optionsId,String options,String description,Long orderId,Option parentOption,OptionType optionType,String subOptionName,String remarks,UpdationDetails updationDetails) {
+	public Option(Long optionsId,String options,String description,Long orderId,Option parentOption,OptionType optionType,String subOptionName,String hasRemarks,UpdationDetails updationDetails) {
 		this.optionsId = optionsId;
 		this.options = options;
 		this.description = description;
@@ -50,7 +50,7 @@ public class Option extends BaseModel implements java.io.Serializable {
 		this.parentOption = parentOption;
 		this.optionType = optionType;
 		this.subOptionName = subOptionName;
-		this.remarks = remarks;
+		this.hasRemarks = hasRemarks;
 		this.updationDetails = updationDetails;
 	}
 
@@ -125,13 +125,13 @@ public class Option extends BaseModel implements java.io.Serializable {
 		this.subOptionName = subOptionName;
 	}
 
-	@Column(name = "remarks", length = 100)
-	public String getRemarks() {
-		return remarks;
+	@Column(name = "has_remarks", length = 100)
+	public String getHasRemarks() {
+		return hasRemarks;
 	}
 
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
+	public void setHasRemarks(String hasRemarks) {
+		this.hasRemarks = hasRemarks;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
