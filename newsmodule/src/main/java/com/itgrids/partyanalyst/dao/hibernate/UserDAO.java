@@ -482,4 +482,13 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return (User)query.uniqueResult();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> chechForUserType(Long userId)
+	{
+		Query query = getSession().createQuery("select model.userId,model.userAccessType from User model where" +
+				"  model.userId :userId");
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
 }

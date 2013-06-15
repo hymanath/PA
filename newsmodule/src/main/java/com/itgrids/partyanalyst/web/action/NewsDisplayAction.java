@@ -494,4 +494,20 @@ public class NewsDisplayAction implements ServletRequestAware{
 	   return Action.SUCCESS;
 	   
    }
+   
+   public String saveSourceDetails()
+   {
+	   try {
+		   session = request.getSession();
+		   RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		   /*if(regVO == null)
+			   return Action.ERROR;*/
+		   jObj = new JSONObject(getTask());
+		   String name = jObj.getString("name");
+		   resultStatus = newsMonitoringService.storeSourceDetails(name);
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+	   return Action.SUCCESS;  
+   }
 }

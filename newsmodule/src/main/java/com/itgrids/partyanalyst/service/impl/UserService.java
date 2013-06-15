@@ -1,8 +1,13 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IUserService;
-
-public class UserService implements IUserService{/*
+import java.util.List;
+public class UserService implements IUserService{
+	
+	private IUserDAO userDAO;
+	/*
 	public static Logger log = Logger.getLogger(UserService.class); 
 	
 	private IUserDAO userDAO;
@@ -56,4 +61,21 @@ public class UserService implements IUserService{/*
 		return userDistrictId;
 	}
 	
-*/}
+*/
+	public String checkForUserType(Long userId)
+	{
+		String userType = null;
+		try {
+			List<Object[]> userdetails = userDAO.chechForUserType(userId);
+			if(userdetails != null && userdetails.size() > 0)
+			{
+				Object[] user = userdetails.get(0);
+				userType = user[1].toString();
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return userType;
+	}
+}
