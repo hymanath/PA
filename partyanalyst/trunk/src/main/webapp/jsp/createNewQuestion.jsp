@@ -11,6 +11,41 @@
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+		
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
+
+	<!-- YUI Dependency files (End) -->
 <script type="text/javascript">
    function saveQuestion(){
 	   $("#errorDiv").html("");
@@ -320,7 +355,47 @@ function clearOptionsListForSelectElmtId(elmtId)
 		elmt.remove(i);
 	}	
 }
+function callAjax(jsObj,url)
+{
+	var myResults;
 
+	var callback = {			
+ 		success : function( o ) 
+		{
+		try {												
+			myResults = YAHOO.lang.JSON.parse(o.responseText);
+			if (jsObj.task == "saveQuestionForMultipleText" || jsObj.task == "saveQuestion" )
+			{
+				showStatusForsaveQuestion(myResults);
+			}
+			
+		}
+		catch (e)
+			{
+							     
+			}  
+ 		},
+ 		scope : this,
+		failure : function( o ) 
+		{
+			//alert( "Failed to load result" + o.status + " " + o.statusText);
+		}
+	   };
+
+ 	YAHOO.util.Connect.asyncRequest('POST', url, callback);
+}
+
+function showStatusForsaveQuestion(myResults)
+{
+	var str='';
+	if(myResults.resultCode == 0)
+	{
+		$("#msgDiv").html(" Question Saved Successfully").css("color","green");
+	}
+	else
+		$("#msgDiv").html(" Data could not saved due to some error..").css("color","red");;
+
+}
    var optionTypeDetails={
 				optionTypeArr:[],
 					};
@@ -340,7 +415,7 @@ function clearOptionsListForSelectElmtId(elmtId)
 	   <div class="container">
 	    <div class="row">
 		  <div class="container row span8 offset2 well">
-			<div id="errorDiv" style="display:none"></div>
+		  <span id="msgDiv"></span>
 		    <form class="row-fluid">
 			      <label>Question</label>
 				  <input type="text" id="questionTitle" placeholder="Enter Question..." name="Question" class="span12">
