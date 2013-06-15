@@ -13,10 +13,34 @@
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <script type="text/javascript">
    function saveQuestion(){
+	  
        var question = $("#questionTitle").val();
 	   var questionType = $("#questionType option:selected").val();
 	   var showRemark = $("#showRemark").is(':checked');
 	   var mainOptionsArray = new Array();
+	   	if(questionType == 4)
+	{
+	 $('.mainoption').each(function() {
+		
+	 var obj = {};
+	  var key = $(this).attr("key");
+	  obj["option"] = $(this).val();
+	   var subQueArray = new Array();
+	  $('.mainoption'+key).each(function() {
+			      var subobj = {};
+				  var subkey = $(this).attr("key");
+				  subobj["subquestion"] = $(this).val();;
+				  subQueArray.push(subobj);
+			  });
+			   obj["subQuestions"] = subQueArray;
+			   mainOptionsArray.push(obj); 
+	 });
+	 
+	 task = "saveQuestionForMultipleText";
+	}
+	else
+	{
+		task="saveQuestion";
        $('.mainoption').each(function() {
 	      var obj = {};
 		  var key = $(this).attr("key");
@@ -38,6 +62,20 @@
 			}
 			mainOptionsArray.push(obj);
         });
+		
+	}
+
+		   var jsObj=
+		  {
+			question:question,
+			questionType:questionType,
+			showRemark:showRemark,
+			mainOptionsArray:mainOptionsArray,
+			task:task
+		  };
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "saveSurveyQuestionAction.action?"+rparam;						
+		callAjax(jsObj,url);
 		console.log(mainOptionsArray);
    }
    
