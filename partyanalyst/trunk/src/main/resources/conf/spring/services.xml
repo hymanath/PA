@@ -1582,12 +1582,23 @@
     </bean>
     
     <bean name="surveyAnalysisService" class="com.itgrids.partyanalyst.service.impl.SurveyAnalysisService">
-    <property name="surveyQuestionDAO" ref="surveyQuestionDAO" />
-    <property name="optionDAO" ref="optionDAO" />
-    <property name="optionTypeDAO" ref="optionTypeDAO"/>
-    <property name="questionOptionsDAO" ref="questionOptionsDAO"/>
-    <property name="transactionTemplate" ref="transactionTemplate" />
-    
+     <property name="surveyQuestionDAO" ref="surveyQuestionDAO" />
+     <property name="optionDAO" ref="optionDAO" />
+     <property name="optionTypeDAO" ref="optionTypeDAO"/>
+     <property name="questionOptionsDAO" ref="questionOptionsDAO"/>
+     <property name="transactionTemplate" ref="transactionTemplate" />     
+   	 <property name="regionScopesDAO" ref="regionScopesDAO" />
+     <property name="surveyDAO" ref="surveyDAO" />
+     <property name="userDAO" ref="userDAO" />
+     <property name="updationDetailsDAO" ref="updationDetailsDAO" />
+     <property name="userAddressDAO" ref="userAddressDAO" />
+     <property name="countryDAO" ref="countryDAO" />
+     <property name="stateDAO" ref="stateDAO" />
+     <property name="districtDAO" ref="districtDAO" />
+     <property name="constituencyDAO" ref="constituencyDAO" />
+     <property name="tehsilDAO" ref="tehsilDAO" />
+     <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+     <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
     </bean>
       
     <bean name="surveyDetailsService" class="com.itgrids.partyanalyst.service.impl.SurveyDetailsService">
