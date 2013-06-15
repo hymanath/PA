@@ -42,7 +42,7 @@
 		</tr>
 		<table>
 		</div>
-		<div id="sourceDetails"  style="width: 400px; border: 1px solid #CCCCCC; border-radius: 4px 4px 4px 4px; padding: 4px;display:none;"></div>
+		<div id="sourceDetails"  style="width: 400px; border: 1px solid #CCCCCC; border-radius: 4px 4px 4px 4px; padding: 4px;display:none; margin-left: 298px;"></div>
 		
 <script type="text/javascript">
 function createNewSource()
@@ -50,7 +50,7 @@ function createNewSource()
 	$('#sourceDetails').show();
 	var str = "";
 	str +=  '<span>Source Name : </span><input type="text" id="sourceName"></input></br>';
-	str +=  '<input type="button" value="create new Source" onClick="saveNewSourceDetails();" class="btn btn-info"></input>';
+	str +=  '<input type="button" value="create new Source" onClick="saveNewSourceDetails();" class="btn btn-info" style="margin-left: 244px;"></input>';
 	$('#sourceDetails').html(str);
 }
 function saveNewSourceDetails()
