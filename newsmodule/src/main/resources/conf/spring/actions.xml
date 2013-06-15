@@ -61,4 +61,8 @@
 	<bean id="cadreSearchAjaxAction" class="com.itgrids.partyanalyst.web.action.CadreSearchAjaxAction" singleton="false">
 	 <property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>	
+	
+	<bean id="adminPageAction" class="com.itgrids.partyanalyst.web.action.AdminPageAction" singleton="false">
+	 <!-- <property name="regionServiceDataImp" ref="regionServiceDataImp" /> -->
+	</bean>	
 	</beans>
