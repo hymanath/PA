@@ -42,6 +42,14 @@ p{
 function saveSurveyInfo(){
 	var userId = $('#userId').val();
 	var surveyId = $('#surveyId').val();
+	if(userId == 0){
+		$("#errorDiv").html("User field is mandatory..").css({"display":"block","color":"red","font":"bold"});
+		return;
+	}
+	if(surveyId == 0){
+		$("#errorDiv").html("Survey field is mandatory..").css({"display":"block","color":"red","font":"bold"});
+		return;
+	}
 	var jsObj =
 		{ 
             userId : userId,
@@ -69,9 +77,9 @@ function saveSurveyInfo(){
 		if(jsObj.task == "saveSurveyDetailsAction")
 			  {
 			if(myResults.resultCode == 121){
-				$("#errorDiv").html("Data already available..").css({"display":"block","color":"red","font":"bold"});
+				$("#errorDiv").html("Survey already assigned..").css({"display":"block","color":"red","font":"bold"});
 			}else if(myResults.resultCode == 0){
-				$("#errorDiv").html("Date Saved Successfully..").css({"display":"block","color":"green","font":"bold"});
+				$("#errorDiv").html("Survey assigned successfully..").css({"display":"block","color":"green","font":"bold"});
 			}else if(myResults.resultCode == 1){
 				$("#errorDiv").html("Data could not be saved due to some exception..").css({"display":"block","color":"red","font":"bold"});
 			}
