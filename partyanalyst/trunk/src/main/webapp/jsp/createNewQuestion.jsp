@@ -47,7 +47,7 @@
 
 	<!-- YUI Dependency files (End) -->
 <script type="text/javascript">
-   function saveQuestion(){
+    function saveQuestion(){
 	   $("#errorDiv").html("");
 	   var flag=true;
        var question = $("#questionTitle").val();
@@ -166,6 +166,7 @@ if(flag == false)
 		var url = "saveSurveyQuestionAction.action?"+rparam;						
 		callAjax(jsObj,url);
 		console.log(mainOptionsArray);
+		}
    }
    
    function openSurveyQuestionAddWindow(){
@@ -384,7 +385,6 @@ function callAjax(jsObj,url)
 
  	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
-
 function showStatusForsaveQuestion(myResults)
 {
 	var str='';
@@ -415,7 +415,8 @@ function showStatusForsaveQuestion(myResults)
 	   <div class="container">
 	    <div class="row">
 		  <div class="container row span8 offset2 well">
-		  <span id="msgDiv"></span>
+			 <span id="msgDiv"></span>
+			<div id="errorDiv" style="display:none"></div>
 		    <form class="row-fluid">
 			      <label>Question</label>
 				  <input type="text" id="questionTitle" placeholder="Enter Question..." name="Question" class="span12">
