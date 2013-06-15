@@ -48,6 +48,7 @@
 	<!-- YUI Dependency files (End) -->
 <script type="text/javascript">
     function saveQuestion(){
+		
 	   $("#errorDiv").html("");
 	   var flag=true;
        var question = $("#questionTitle").val();
@@ -109,22 +110,30 @@ if(flag == false)
 	   var mainOptionsArray = new Array();
 	   	if(questionType == 4)
 	{
-	 $('.mainoption').each(function() {
+	 $('.multimainOption').each(function() {
 		
 	 var obj = {};
 	  var key = $(this).attr("key");
 	  obj["option"] = $(this).val();
-	   var subQueArray = new Array();
-	  $('.mainoption'+key).each(function() {
-			      var subobj = {};
+	   var subQueArray =[];
+	   if($(".submultioption"+key).is(":visible") == true)
+		 {
+	   $(".submultioption"+key).each(function() {
+	   var subobj = {};
 				  var subkey = $(this).attr("key");
-				  subobj["subquestion"] = $(this).val();;
+				  subobj["subquestion"] = $(this).val();
 				  subQueArray.push(subobj);
 			  });
 			   obj["subQuestions"] = subQueArray;
-			   mainOptionsArray.push(obj); 
+	 }
+	 else
+		 {
+		
+		obj["subQuestions"] = subQueArray;
+		 }
+			 mainOptionsArray.push(obj);    
 	 });
-	 
+	
 	 task = "saveQuestionForMultipleText";
 	}
 	else
@@ -199,7 +208,7 @@ if(flag == false)
 	    $("#addNewOptionsDIV").html(str);
 	  }else{
 	    str+='<fieldset id="optionDIV0" class="alert alert-info" >';
-	    str+='<div><div style="margin-bottom:5px;">Options : </div><div id="divoption0"><input  key="'+optionId+'" class="mainoption" type="text" id="option0" /> </div></div>';
+	    str+='<div><div style="margin-bottom:5px;">Options : </div><div id="divoption0"><input  key="'+optionId+'" class="mainoption multimainOption" type="text" id="option0" /> </div></div>';
 		str+='<div class="span10 offset1">';
 	    str+='<div id="addNewSubQuestOptDIV'+optionId+'" style="margin-bottom:5px;"><span onclick="buildTextOptions('+optionId+');" class="btn btn-small"><i class="icon-th-list"> </i> Add more text boxes to this option</span></div>';
 		str+='</div>';
@@ -216,7 +225,7 @@ if(flag == false)
    function buildTextOptions(id){
     suboptionId = suboptionId+1;
     var str = '';
-    str+='<div id="textbox'+suboptionId+'"><input  class="mainoption mainoption'+id+'" type="text"  /><span class="icon-minus-sign" style="cursor:pointer;" title="Remove Text Box" onclick="removeTextBox('+suboptionId+');" ></span></div>';
+    str+='<div id="textbox'+suboptionId+'"><input  class="mainoption mainoption'+id+' submultioption'+id+'" type="text"  /><span class="icon-minus-sign" style="cursor:pointer;" title="Remove Text Box" onclick="removeTextBox('+suboptionId+');" ></span></div>';
 	$("#divoption"+id).append(str);
    }
    
@@ -229,7 +238,7 @@ if(flag == false)
       optionId = optionId+1;
 	  var str = '';
         str+='<fieldset id="optionDIV'+optionId+'" class="alert alert-info" >';
-	    str+='<div style="margin-bottom:5px;"><div id="divoption'+optionId+'"><input  key="'+optionId+'" class="mainoption" type="text" id="option'+optionId+'" /> <span class="icon-trash" style="cursor:pointer;" title="Remove Option" onclick="removeOption('+optionId+');" ></span></div></div>';
+	    str+='<div style="margin-bottom:5px;"><div id="divoption'+optionId+'"><input  key="'+optionId+'" class="mainoption multimainOption" type="text" id="option'+optionId+'" /> <span class="icon-trash" style="cursor:pointer;" title="Remove Option" onclick="removeOption('+optionId+');" ></span></div></div>';
 		str+='<div class="span10 offset1">';
 	    str+='<div id="addNewSubQuestOptDIV'+optionId+'" style="margin-bottom:5px;"><span onclick="buildTextOptions('+optionId+');" class="btn btn-small"><i class="icon-th-list"> </i> Add more text boxes to this option</span></div>';
 		str+='</div>';

@@ -249,7 +249,7 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 				String option =jSONObject.getString("option"); 
 				OptionVO optionVO = new OptionVO();
 				optionVO.setOption(option);
-				if(subQuestionsArray != null)
+				if(subQuestionsArray != null && subQuestionsArray.length() > 0)
 				{
 				List<OptionVO> suboptionVOs = new ArrayList<OptionVO>(); 
 				for(int j=0;j<subQuestionsArray.length();j++)
@@ -261,9 +261,9 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 					suboptionVOs.add(suboptionVO);
 					optionVO.setSubOptionList(suboptionVOs);
 				}
-				optionVOs.add(optionVO);
-				}
 				
+				}
+				optionVOs.add(optionVO);
 			}
 			questionsOptionsVO.setOptions(optionVOs);
 			questionsOptionsVO.setQuestion(question);
