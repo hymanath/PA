@@ -90,7 +90,7 @@ margin:-1px 0px 0px 0px ;
 						 <c:if test="${sessionScope.USER != null}">
 						  <li style="padding-top: 6px;">${sessionScope.USER.name}</li>
 						   <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
-						    <li><a href="userRegistration.action">Admin</a></li>
+						    <li><a href="adminPageAction.action">Admin</a></li>
 						   </c:if>
 						  <li class="selected"><a href="logoutAction.action">Logout</a></li>
 						 </c:if>

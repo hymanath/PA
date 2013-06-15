@@ -5345,5 +5345,15 @@
 		    	<param name="root">returnVal</param>
 		   </result> 
 		</action>
+		
+		<action name="adminPageAction" class="adminPageAction">
+		 <result name="success">/jsp/adminPage.jsp</result>
+		</action>
+		
+		<action name="storeSourceDetails" class="newsDisplayAction"  method="saveSourceDetails">
+		   <result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result> 
+		</action>
 		</package>
 </struts>      
