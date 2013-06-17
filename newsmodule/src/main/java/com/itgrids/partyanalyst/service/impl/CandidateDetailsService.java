@@ -806,7 +806,19 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				
 				fileGallary = fileGallaryDAO.save(fileGallary);
 				
-				if(fileVO.getCandidateIds().size() > 0){
+				if(fileVO.getCandidateId() != null){
+					
+                    CandidateRealatedNews candidateRelatedNews = new CandidateRealatedNews();
+					
+					candidateRelatedNews.setCandidate(candidateDAO.get(fileVO.getCandidateId()));
+					candidateRelatedNews.setFileGallary(fileGallary);
+					
+					candidateRelatedNewsDAO.save(candidateRelatedNews);	
+					
+					
+				}
+				
+				/*if(fileVO.getCandidateIds().size() > 0){
 					
 					for(Long candidateId:fileVO.getCandidateIds()){
 					
@@ -818,7 +830,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					candidateRelatedNewsDAO.save(candidateRelatedNews);					
 					
 					}					
-				}
+				}*/
 				
 				if(fileVO.getResponseFileIds() != null && fileVO.getResponseFileIds().size() >0)
 					
