@@ -535,7 +535,15 @@ function showTotalNews(myResult,jsObj){
 	if(myResult[i].fileType == 'Party'){
 		str+='<li >';
 		str+='<div class="">';
-		str+='<h4  style="text-transform: capitalize;"> '+myResult[i].fileTitle1+'</h4>';
+		if(myResult[i].source.trim() == "Eenadu Telugu")
+		{
+			str+='<h4  style="text-transform: capitalize;" class="enadu"> '+myResult[i].fileTitle1+'</h4>';
+		}
+		else
+		{
+			str+='<h4  style="text-transform: capitalize;"> '+myResult[i].fileTitle1+'</h4>';
+		}
+		
 		str+='<div class="row-fluid">';
 	if(myResult[i].displayImagePath != null){
 		str+='<a class="thumbnail span4" href="partyPageAction.action?partyId='+myResult[i].candidateId+'&contentId='+myResult[i].contentId+'" style="width: 146px;height:120px;">';

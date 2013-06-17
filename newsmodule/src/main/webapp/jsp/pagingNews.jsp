@@ -10,6 +10,18 @@
 
 <link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
 
+<style type="text/css">
+@font-face
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
+</style>
+
 </head>
 <body>
 		<div class="container-fluid headerBg" style="padding-left: 0px; padding-right: 0px;">
@@ -117,12 +129,19 @@ function callAjax(jsObj,url)
  	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 function buildPaginatedNews(results,jsObj){
-
 	var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
 		str+="<li>";
-		str+="<h4 style='text-transform: capitalize;'>"+results[i].fileTitle1+"</h4>";
+		if(results[i].source.trim() == "Eenadu Telugu")
+		{
+			str+="<h4 class='enadu' style='text-transform: capitalize;'>"+results[i].fileTitle1+"</h4>";
+		}
+		else
+		{
+			str+="<h4 style='text-transform: capitalize;'>"+results[i].fileTitle1+"</h4>";
+		}
+		
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";

@@ -14,6 +14,18 @@
 <link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
 
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+
+<style type="text/css">
+@font-face
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
+</style>
 <title>Insert title here</title>
 </head>
 <body>
@@ -118,13 +130,21 @@ function buildPaginatedNews(results,jsObj)
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
 		str+="<li>";
-		str+="<h4><a href='#'>"+results[i].title+"</a></h4>";
+		if(results[i].fileVOList[0].source.trim() == "Eenadu Telugu")
+		{
+			str+="<h4><a href='#' class='enadu'>"+results[i].title+"</a></h4>";
+		}
+		else
+		{
+			str+="<h4><a href='#'>"+results[i].title+"</a></h4>";
+		}
+		
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
 		
 		var path = results[i].fileVOList[0].fileVOList[0].path;
 		var source = results[i].fileVOList[0].source;
-
+		
 		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
 		str+="<p class='span8'>"+results[i].description+"</p>";
 		str+="</div>";
