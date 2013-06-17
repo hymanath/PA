@@ -12,6 +12,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ICandidateRealatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
@@ -22,10 +23,12 @@ import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CandidateRealatedNewsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
@@ -60,8 +63,20 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IGallaryDAO gallaryDAO;
     private IRegionScopesDAO regionScopesDAO;
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+    private ICandidateRealatedNewsDAO candidateRealatedNewsDAO;
     
-    public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+    
+    
+    public ICandidateRealatedNewsDAO getCandidateRealatedNewsDAO() {
+		return candidateRealatedNewsDAO;
+	}
+
+	public void setCandidateRealatedNewsDAO(
+			ICandidateRealatedNewsDAO candidateRealatedNewsDAO) {
+		this.candidateRealatedNewsDAO = candidateRealatedNewsDAO;
+	}
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
 	}
 
@@ -3460,6 +3475,19 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	  return resultStatus;
 	 }
 
+	public List<SelectOptionVO> getCandidates(){
+		List<SelectOptionVO> candidates=new ArrayList<SelectOptionVO>();
+		List<Object[]> list1=candidateRealatedNewsDAO.getCandidates();
+		if(list1!=null){
+		for(Object[] params:list1){
+			SelectOptionVO selectOptionVO=new SelectOptionVO();
+			selectOptionVO.setId((Long)params[0]);
+			selectOptionVO.setName(params[2].toString());
+			candidates.add(selectOptionVO);
+		}
+		}
+		return candidates;
+	}
 	public ResultStatus storeSourceDetails(String value)
 	{
 		ResultStatus resultStatus = null;
@@ -3477,6 +3505,4 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		}
 		return resultStatus;
 	}
-
-
 }
