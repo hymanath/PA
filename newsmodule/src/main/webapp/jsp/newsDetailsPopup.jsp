@@ -248,17 +248,26 @@ function buildContentDetails()
 	var preContentId = null;
 	var curPos = null;
 	var totSize = null;
-
+	var source = "";
    for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 	{
+		source = result.relatedGalleries[0].filesList[i].fileVOList[0].source;
 	    selectedContentFile = result.relatedGalleries[0].filesList[i];
 		titleStr = result.relatedGalleries[0].filesList[i].title;
 		pathStr = result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path;
 		descriptionStr = result.relatedGalleries[0].filesList[i].description;
 		preContentId = result.relatedGalleries[0].filesList[i].contentId;
 		curPos = i+1;
-		str +='<div id="showContentHeaderDiv">'+titleStr+'</div>';
+		if(source == "Eenadu Telugu")
+		{
+			str +='<div id="showContentHeaderDiv" class="enadu">'+titleStr+'</div>';
+		}
+		else
+		{
+			str +='<div id="showContentHeaderDiv">'+titleStr+'</div>';
+		}
+		
 		
 		str+='<table class="tableCls">';
 			str+='<tr>';
@@ -273,7 +282,14 @@ function buildContentDetails()
 			 str+='</tr>';
 			 str+='</table>';
 		str +='<div id="imgDiv" class="popupcontainer"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="max-width:600px;max-length:800px;" src="'+pathStr+'" /></div>';
-		str +='<div><span>Description: </span><b>'+descriptionStr+'<b></div>';
+		if(source == "Eenadu Telugu")
+		{
+			str +='<div><span>Description: </span><b class="enadu">'+descriptionStr+'<b></div>';
+		}
+		else
+		{
+			str +='<div><span>Description: </span><b>'+descriptionStr+'<b></div>';
+		}
 		
 	}
 
