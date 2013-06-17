@@ -152,9 +152,10 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
    for(var i in results)
    {
 	   str+='<li>';
-	//alert(results[i].fileType.trim());
+	alert(results[i].fileType.trim());
 	str+='<div class="">';
-	if(results[i].fileType.trim() == "Eenadu Telugu")
+	var source = results[i].fileType.trim();
+	if(source == "Eenadu Telugu")
 	{
 		str+='<h4 style="text-transform: capitalize;" class="enadu">'+results[i].fileName1+'</h4>';
 	}
@@ -170,7 +171,15 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
                   else
 					  str+='<img style="width:100%"src="/TDP/images/TDP.PNG" alt="this is news image">';
 				str+='</a>';
-				str+='<p class="span8">'+results[i].fileDescription1+'</p>';
+				if(source == "Eenadu Telugu")
+				{
+					str+='<p class="span8 enadu">'+results[i].fileDescription1+'</p>';
+				}
+				else
+				{
+					str+='<p class="span8">'+results[i].fileDescription1+'</p>';
+				}
+				
 			str+='</div>';
 			str+='<div class="row-fluid m_top10">';
 				str+='<div class="span9">';

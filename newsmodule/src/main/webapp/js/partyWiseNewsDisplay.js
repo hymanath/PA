@@ -535,7 +535,8 @@ function showTotalNews(myResult,jsObj){
 	if(myResult[i].fileType == 'Party'){
 		str+='<li >';
 		str+='<div class="">';
-		if(myResult[i].source.trim() == "Eenadu Telugu")
+		var source = myResult[i].source.trim();
+		if(source == "Eenadu Telugu")
 		{
 			str+='<h4  style="text-transform: capitalize;" class="enadu"> '+myResult[i].fileTitle1+'</h4>';
 		}
@@ -555,7 +556,15 @@ function showTotalNews(myResult,jsObj){
 		str+='<img src="images/'+myResult[i].imagePathInUpperCase+'" style="width:100%" alt="'+myResult[i].fileTitle1+'" onerror="imgError(this);"/>';
 		str+='</a>';
 	}
-		str+='<p class="span8"  style="text-align: left;">'+myResult[i].description+'</p>';
+		if(source == "Eenadu Telugu")
+		{
+			str+='<p class="span8 enadu"  style="text-align: left;">'+myResult[i].description+'</p>';
+		}
+		else
+		{
+			str+='<p class="span8"  style="text-align: left;">'+myResult[i].description+'</p>';
+		}
+		
 		str+='</div>';
 		str+='<div class="row-fluid m_top10">';
 		str+='<div class="span9">';
