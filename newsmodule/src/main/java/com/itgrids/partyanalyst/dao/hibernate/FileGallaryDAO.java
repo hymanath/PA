@@ -2688,12 +2688,14 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 
 	
 	@SuppressWarnings("unchecked")
-	public List<FileGallary> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId)
+	public List<FileGallary> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(" select model from FileGallary model, PartyGallery model2 ");
 		stringBuilder.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
-		stringBuilder.append(" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' ");
+		stringBuilder.append("  and model.isDelete = 'false'  and model.gallary.isDelete = 'false' ");
+		if(!newsType.equals(""))
+			stringBuilder.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false'");
 		stringBuilder.append(" order by model.updateddate desc  ");
 		
 		Query query = getSession().createQuery(stringBuilder.toString());
@@ -2711,12 +2713,15 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getRecentlyUploadedNews(Integer starIndex, Integer maxResults,String contentType,Long partyId)
+	public List<Object[]> getRecentlyUploadedNews(Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType)
 	{
-		Query query = getSession().createQuery(" select model.fileGallaryId,model.file.fileTitle from FileGallary model, PartyGallery model2 " +
-				" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType " +
-				" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' order by model.updateddate desc ");
-		
+		StringBuilder queryObject = new StringBuilder();
+		queryObject.append(" select model.fileGallaryId,model.file.fileTitle from FileGallary model, PartyGallery model2 " );
+		queryObject.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
+		if(!newsType.equalsIgnoreCase(""))
+			queryObject.append(" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' ");
+		queryObject.append(" order by model.updateddate desc ");
+		Query query = getSession().createQuery(queryObject.toString());
 		 query.setParameter("contentType", contentType);
 		 query.setParameter("partyId", partyId);
 		 query.setFirstResult(starIndex);
@@ -2733,10 +2738,15 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	}
 	
 	 @SuppressWarnings("unchecked")
-     public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex)
+     public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex,String newsType)
      {
-    	 Query query = getSession().createQuery("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' " +
-    	 		" group by model.file.fileId");
+		 StringBuffer queryObject = new StringBuffer();
+		 queryObject.append("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and " );
+		 queryObject.append(" model.isDelete = 'false' and model.gallary.isDelete = 'false' ");
+		 if(!newsType.equalsIgnoreCase(""))
+			 queryObject.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false' ");
+		 queryObject.append(" group by model.file.fileId ");
+		 Query query = getSession().createQuery(queryObject.toString());
     	 query.setParameterList("gallaryIdsList",gallaryIdsList);
     	 
     	 query.setFirstResult(startIndex);
@@ -2811,20 +2821,20 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			{
 				query.append("select count(distinct model.file.fileId) from FileGallary model , PartyGallery model2 , FileSourceLanguage fs where "+
 						" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId in (:partyId) "+
-						" and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and model.isPrivate = :isPrivate ");
+						" and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete ");
 			}
 			else 
 			{
 				query.append("select distinct model.file,model.fileGallaryId,model.file.fileDate,fs.source.source,model2.party.partyFlag,model2.party.partyId from FileGallary model , PartyGallery model2 , FileSourceLanguage fs where "+
 						" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId in (:partyId) "+
-						" and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and model.isPrivate = :isPrivate ");
+						" and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete ");
 			}
 			
 			if(queryType.equalsIgnoreCase("Public"))
-			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
+					query.append(" and model.isPrivate = :isPrivate  and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
 
 			if(queryType.equalsIgnoreCase("Private"))
-			query.append(" and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+					query.append(" and model.isPrivate = :isPrivate  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
 			
 			query.append(" and (");
 			if(districtIds!= null)
@@ -2878,6 +2888,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 
 			queryObject.setString("type", IConstants.NEWS_GALLARY);
 			queryObject.setString("isDelete", "false");
+			if(!queryType.equals(""))
 			queryObject.setString("isPrivate", "false");
 			if(!type.equalsIgnoreCase("count"))
 			{
