@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Random;
 
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -898,7 +900,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		FileVO fileVO = new FileVO();
 		FileVO displayFileVO = new FileVO();
 		
-		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
 		fileVO.setUserId(regVO.getRegistrationID());
 		
@@ -956,12 +958,15 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			
 			fileVO.setFileName(fileNamesList);
 			fileVO.setName(fileName);
-			fileVO.setTitle(getFileTitle());
-			fileVO.setDescription(getFileDescription());
+			fileVO.setTitle(escapeUnicode(StringEscapeUtils.unescapeHtml(getFileTitle())));
+			fileVO.setDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(getFileDescription())));
+			//fileVO.setTitle(getFileTitle());
+			//fileVO.setDescription(getFileDescription());
 			//fileVO.setContentType(fileType);
 			fileVO.setVisibility(getVisibility());
 			fileVO.setGallaryId(getGallaryId());
-			fileVO.setKeywords(getKeywords());
+			fileVO.setKeywords(escapeUnicode(StringEscapeUtils.unescapeHtml(getKeywords())));
+			//fileVO.setKeywords(getKeywords());
 			fileVO.setSourceId(getSource());
 			fileVO.setLanguegeId(getLanguage());
 			fileVO.setCategoryId(getCategory());
@@ -2312,7 +2317,23 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			
   }
 
-
+//	String s = StringEscapeUtils.unescapeHtml("&#3129;&#3144;&#3110;&#3120;&#3134;&#3116;&#3134;&#3110;&#3149;");
+//	System.out.println(s);
+//	String ss= escapeUnicode(s);
+//	System.out.println(ss);
+//	}
+	public String escapeUnicode(String input) {
+		  StringBuilder b = new StringBuilder(input.length());
+		  Formatter f = new Formatter(b);
+		  for (char c : input.toCharArray()) {
+		    if (c < 128) {
+		      b.append(c);
+		    } else {
+		      f.format("\\u%04x", (int) c);
+		    }
+		  }
+		  return b.toString();
+		}
 	public Long getFileId() {
 		return fileId;
 	}
