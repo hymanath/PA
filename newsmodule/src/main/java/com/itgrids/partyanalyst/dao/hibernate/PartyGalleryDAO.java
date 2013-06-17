@@ -593,4 +593,78 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 
 			 return ((Long)queryObject.uniqueResult()).intValue();
 		 }
+		 
+		 public List<Object[]> getNewsOfCandidate(Long candidateId,int firstResult,int maxResult,String queryType)
+			{
+				StringBuilder query = new StringBuilder();
+				query.append("select model2.filePath,model.fileGallary.fileGallaryId,model.fileGallary.file.fileTitle,model.fileGallary.file.fileDescription,model1.source.source " +
+						" from CandidateRealatedNews model,FileSourceLanguage model1,FilePaths model2 where model.candidate.candidateId = :candidateId "+
+						"  and  model.fileGallary.gallary.isDelete='false' and model.fileGallary.gallary.contentType.contentType= :type   and model.fileGallary.isDelete = :isDelete " +
+						" and  model.fileGallary.file.fileId=model1.file.fileId and model1.fileSourceLanguageId=model2.fileSourceLanguage.fileSourceLanguageId");
+				
+				if(queryType.equals("Public"))
+				   query.append("  and  model.fileGallary.gallary.isPrivate='false' and model.fileGallary.isPrivate ='false'  ");
+				
+				if(queryType.equals("Private"))
+				  query.append("  and ( (model.fileGallary.gallary.isPrivate='true') or(model.fileGallary.gallary.isPrivate='false' and model.fileGallary.isPrivate ='true') ) ");
+				
+				query.append(" order by model.fileGallary.file.fileDate desc ");
+				Query queryObject = getSession().createQuery(query.toString());
+				
+				queryObject.setLong("candidateId", candidateId);
+				queryObject.setString("type", IConstants.NEWS_GALLARY);
+				queryObject.setString("isDelete", "false");
+				queryObject.setFirstResult(firstResult);
+				queryObject.setMaxResults(maxResult);
+					
+								
+				return queryObject.list(); 
+			}
+		 
+		 public int getCountOfNewsOfCandidate(Long candidateId,int firstResult,int maxResult,String queryType)
+			{
+				StringBuilder query = new StringBuilder();
+				query.append("select count(model.fileGallary.file.fileId) " +
+						" from CandidateRealatedNews model,FileSourceLanguage model1,FilePaths model2 where model.candidate.candidateId = :candidateId "+
+						"  and  model.fileGallary.gallary.isDelete='false' and model.fileGallary.gallary.contentType.contentType= :type   and model.fileGallary.isDelete = :isDelete " +
+						" and  model.fileGallary.file.fileId=model1.file.fileId and model1.fileSourceLanguageId=model2.fileSourceLanguage.fileSourceLanguageId");
+				
+				if(queryType.equals("Public"))
+				   query.append("  and  model.fileGallary.gallary.isPrivate='false' and model.fileGallary.isPrivate ='false'  ");
+				
+				if(queryType.equals("Private"))
+				  query.append("  and ( (model.fileGallary.gallary.isPrivate='true') or(model.fileGallary.gallary.isPrivate='false' and model.fileGallary.isPrivate ='true') ) ");
+				
+				query.append(" group by model.candidate.candidateId ");
+				Query queryObject = getSession().createQuery(query.toString());
+				
+				queryObject.setLong("candidateId", candidateId);
+				queryObject.setString("type", IConstants.NEWS_GALLARY);
+				queryObject.setString("isDelete", "false");
+												
+				return ((Long)queryObject.uniqueResult()).intValue(); 
+			}
+		 public int getResponseNewsCountOfCandidate(Long candidateId,String queryType,Long fileGallaryId)
+			{
+				StringBuilder query = new StringBuilder();
+				query.append("select count(model1.fileGallary.fileGallaryId)  " +
+						" from CandidateRealatedNews model,CandidateNewsResponse model1 where model1.fileGallary.fileGallaryId=model.fileGallary.fileGallaryId and model.candidate.candidateId = :candidateId "+
+						" and model1.fileGallary.fileGallaryId=:fileGallaryId");
+				
+				query.append(" group by model1.fileGallary.fileGallaryId ");
+				Query queryObject = getSession().createQuery(query.toString());
+				
+				queryObject.setLong("candidateId", candidateId);
+				queryObject.setLong("fileGallaryId", fileGallaryId);
+										
+				Long res=(Long)queryObject.uniqueResult();
+				
+				if(res!=null)
+					return res.intValue();
+				
+				else
+					return 0;
+			}
+		 
+
 	}
