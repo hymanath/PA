@@ -21,4 +21,9 @@ public class SurveyDAO extends GenericDaoHibernate<Survey, Long> implements ISur
 		return getHibernateTemplate().find("select model.surveyId,model.name from Survey model");
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Survey> getSurveyDataBySurveyId(Long surveyId)
+	{
+		return getHibernateTemplate().find("select model from Survey model where model.surveyId = ?",surveyId);
+	}
 }

@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.dao.IPartyTrainingCampsDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDesignationDAO;
 import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -71,6 +72,7 @@ import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
+import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
@@ -159,6 +161,7 @@ public class CadreManagementService {
 	private IUserDAO userDAO;
 	private IBloodGroupDAO bloodGroupDAO;
 	private IVoterDAO voterDAO;
+	private IRegionScopesDAO regionScopesDAO;
 	public ICadreOnlineRegistrationDAO getCadreOnlineRegistrationDAO() {
 		return cadreOnlineRegistrationDAO;
 	}
@@ -171,6 +174,16 @@ public class CadreManagementService {
 
 	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
+	}
+
+	
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+
+
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
 	}
 
 
@@ -5032,5 +5045,52 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
         }
         return registrationVO;
     }
+	
+	public String  getRegionScopeValues(Long locationId ,String levelValueID)
+	{
+		
+		String levelValue = "";
+		String level = "";
+		List<String> regionScopes = regionScopesDAO.getScopeById(locationId);
+		if(regionScopes != null && regionScopes.size() > 0)
+		{
+			level = regionScopes.get(0);
+		}
+		if ("COUNTRY".equals(level)) {
+			levelValue = getCountryName(new Long(levelValueID));
+		} else if ("STATE".equals(level)) {
+			levelValue = getStateName(new Long(levelValueID));
+		} else if ("DISTRICT".equals(level)) {
+			levelValue = getDistrictName(new Long(levelValueID));
+		} else if ("CONSTITUENCY".equals(level)  || "PARLIAMENT CONSTITUENCY".equals(level)) {
+			//levelValueID =levelValueID.substring(1);
+			levelValue = getConstituencyName(new Long(levelValueID));
+		}else if("WARD".equals(level)){
+			log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+ levelValueID);
+			String type = levelValueID.substring(0, 1);
+			Long id = new Long(levelValueID.substring(1));
+			levelValue = getWardName(new Long(id));
+		}else if ("MANDAL".equals(level)) {
+			levelValue = getMandalName(new Long(levelValueID));
+		} else if ("VILLAGE".equals(level)) {
+			log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+ levelValueID);
+			String type = levelValueID.substring(0, 1);
+			//Long id = new Long(levelValueID.substring(1));
+			if (IConstants.HAMLET_TYPE.equals(type)) {
+				levelValue = getHamletName(new Long(levelValueID));
+			} else if (IConstants.TOWNSHIP_TYPE.equals(type)) {
+				levelValue = getTownshipName(new Long(levelValueID));
+			}
+			log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+ levelValueID);
+		} else if ("MUNICIPAL-CORP-GMC".equals(level)) {
+			AssemblyLocalElectionBody assemblyLocalElectionBody =  assemblyLocalElectionBodyDAO.get(Long.valueOf(levelValueID));
+			Long localBodyId = assemblyLocalElectionBody.getLocalElectionBody().getLocalElectionBodyId();
+			levelValue = getLocalElectionBodyName(localBodyId);
+		}  else if ("BOOTH".equals(level)) {
+			levelValue = getBoothDetailsByBoothId(new Long(levelValueID));
+		}
+		
+		return levelValue;
+	}
 	
 }

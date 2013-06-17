@@ -15,11 +15,20 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		this.voterCastInfoDAO = voterCastInfoDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(844l);
 		List<Object[]> values = voterCastInfoDAO.getCastAndPartyForSelectedLevel(1l,2l,ids,8l);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1]);
+		}
+		
+	}*/
+	public void test()
+	{
+		
+		List<Object[]> values = voterCastInfoDAO.getAllCasteInfoByUserId(1l);
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+ parms[1]);
 		}

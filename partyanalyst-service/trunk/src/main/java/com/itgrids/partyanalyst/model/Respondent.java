@@ -27,15 +27,16 @@ public class Respondent extends BaseModel implements java.io.Serializable {
 	private Voter voter;
 	private SurveyorProfile surveyorProfile;
 	private UpdationDetails updationDetails;
-	
+	private String landmark;
 	public Respondent() {
 	}
 	
-	public Respondent(Long respondentId,Voter voter,SurveyorProfile surveyorProfile,UpdationDetails updationDetails) {
-			this.respondentId = respondentId;
-			this.voter = voter;
+	public Respondent(Long respondentId,Voter voter,SurveyorProfile surveyorProfile,UpdationDetails updationDetails,String landmark) {
+			this.respondentId    = respondentId;
+			this.voter           = voter;
 			this.surveyorProfile = surveyorProfile;
 			this.updationDetails = updationDetails;
+			this.landmark        = landmark;
 	}
 
 	@Id
@@ -84,6 +85,13 @@ public class Respondent extends BaseModel implements java.io.Serializable {
 	public void setUpdationDetails(UpdationDetails updationDetails) {
 		this.updationDetails = updationDetails;
 	}
-	
+	@Column(name="landmark", length=100)
+	public String getLandmark() {
+		return landmark;
+	}
+
+	public void setLandmark(String landmark) {
+		this.landmark = landmark;
+	}
 	
 }
