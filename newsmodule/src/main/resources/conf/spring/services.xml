@@ -1596,7 +1596,9 @@
 		<property name="userCandidateRelationDAO" ref="userCandidateRelationDAO" />
 		<property name="candidateRelatedNewsDAO" ref="candidateRelatedNewsDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />	
-		<property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO"></property>	
+		<property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO"></property>
+		<property name="nominationDAO" ref="nominationDAO"></property>
+			
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
