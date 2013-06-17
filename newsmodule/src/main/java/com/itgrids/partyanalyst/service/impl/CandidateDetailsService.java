@@ -2624,6 +2624,15 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	{
 		try{
 			List<Object[]> list = userCandidateRelationDAO.getCandidatesOfAUser(userId);
+			
+			List<Long> candidateIds = new ArrayList<Long>();
+			
+			for(Object[] obj:list)
+				candidateIds.add((Long)obj[0]);
+			
+			list = nominationDAO.getCandidatesForAParty(candidateIds);
+			
+			
 			List<SelectOptionVO> cadidatesList = null;
 			if(list != null && list.size() > 0)
 			{

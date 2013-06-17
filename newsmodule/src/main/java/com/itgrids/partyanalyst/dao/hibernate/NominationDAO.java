@@ -7,27 +7,14 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
-import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.dao.columns.enums.NominationColumnNames;
-import com.itgrids.partyanalyst.dto.PositionManagementVO;
-import com.itgrids.partyanalyst.model.CandidateResult;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
-import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.util.IConstants;
 
 /**
 *@author <a href="mailto:sai.basetti@gmail.com">Sai Krishna</a>
@@ -3712,4 +3699,20 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		query.setParameterList("wardIds", wardIds);
 		return query.list();
 	}
-*/}
+*/
+	
+	public List<Object[]> getCandidatesForAParty(List<Long> candidateIds)
+	{
+		Query query = getSession().createQuery("select distinct(model.candidate.candidateId) , model.candidate.lastname" +
+				" from Nomination model where model.party.partyId = :partyId and model.candidate.candidateId in (:candidateIds) order by model.candidate.lastname ");
+		
+		query.setParameter("partyId", IConstants.TDPID);
+	    query.setParameterList("candidateIds", candidateIds);
+	    
+	    return query.list();
+		
+	}
+	
+
+}
+
