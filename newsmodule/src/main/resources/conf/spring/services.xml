@@ -1634,7 +1634,7 @@
 		<property name="gallaryDAO" ref="gallaryDAO"/>
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>	    
-		<property name="candidateRealatedNewsDAO" ref="candidateRealatedNewsDAO"></property>		
+		<property name="candidateRelatedNewsDAO" ref="candidateRelatedNewsDAO"></property>		
 	</bean>
 </beans>		
 	

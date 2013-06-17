@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRealatedNewsDAO;
+import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
@@ -63,17 +64,17 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IGallaryDAO gallaryDAO;
     private IRegionScopesDAO regionScopesDAO;
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
-    private ICandidateRealatedNewsDAO candidateRealatedNewsDAO;
+    private ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
     
     
-    
-    public ICandidateRealatedNewsDAO getCandidateRealatedNewsDAO() {
-		return candidateRealatedNewsDAO;
+   
+	public ICandidateRelatedNewsDAO getCandidateRelatedNewsDAO() {
+		return candidateRelatedNewsDAO;
 	}
 
-	public void setCandidateRealatedNewsDAO(
-			ICandidateRealatedNewsDAO candidateRealatedNewsDAO) {
-		this.candidateRealatedNewsDAO = candidateRealatedNewsDAO;
+	public void setCandidateRelatedNewsDAO(
+			ICandidateRelatedNewsDAO candidateRelatedNewsDAO) {
+		this.candidateRelatedNewsDAO = candidateRelatedNewsDAO;
 	}
 
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
@@ -3477,7 +3478,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 
 	public List<SelectOptionVO> getCandidates(){
 		List<SelectOptionVO> candidates=new ArrayList<SelectOptionVO>();
-		List<Object[]> list1=candidateRealatedNewsDAO.getCandidates();
+		List<Object[]> list1=candidateRelatedNewsDAO.getCandidates();
 		if(list1!=null){
 		for(Object[] params:list1){
 			SelectOptionVO selectOptionVO=new SelectOptionVO();

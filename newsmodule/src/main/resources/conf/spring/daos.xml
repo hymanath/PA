@@ -1295,8 +1295,6 @@
 	<bean id="userCandidateRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCandidateRelationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	
 	<bean id="candidateRelatedNewsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateRelatedNewsDAO">
 	 <property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
