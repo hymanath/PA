@@ -1156,7 +1156,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		        v.setContentId(id);
 		        v.setCandidateId(partyId);
              v.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileTitle())));
-             v.setDescription(StringEscapeUtils.unescapeJava(f.getFileDescription()));
+             v.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileDescription())));
              v.setDisplayImageName(f.getFileName());
 				 v.setDisplayImagePath(f.getFilePath());
 				 v.setImagePathInUpperCase(flag);
@@ -5674,8 +5674,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				FileVO fileVO = new FileVO(); 
 				fileVO.setContentId(fileGallary.getFileGallaryId());
 				fileVO.setFileId(fileGallary.getFile().getFileId());
-				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?fileGallary.getFile().getFileTitle().toString():"");
-				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?fileGallary.getFile().getFileDescription():"");
+				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle().toString()):"");
+				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()):"");
 				
 				Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
 				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
@@ -5749,7 +5749,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 {
 				FileVO fileVO = new FileVO(); 
 				fileVO.setContentId((Long)params[0]);
-				fileVO.setFileTitle1(params[1]!=null?params[1].toString():"");
+				fileVO.setFileTitle1(params[1]!=null?CommonStringUtils.removeSpecialCharsFromAString(params[1].toString()):"");
 				fileVOsList.add(fileVO);
 			 }
 		 }

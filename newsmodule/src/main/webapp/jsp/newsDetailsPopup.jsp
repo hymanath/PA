@@ -340,7 +340,16 @@ function buildContentDetails()
     for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 	if(!result.relatedGalleries[0].filesList[i].isSelectedContent)
 	{
-      releatedGallary += '<li><a href="javascript:{}"  onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')">'+result.relatedGalleries[0].filesList[i].title+'</a></li>';
+	var source = result.relatedGalleries[0].filesList[i].fileVOList[0].source;;
+	if(source == "Eenadu Telugu")
+	{
+		releatedGallary += '<li><a href="javascript:{}"  onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" class="enadu">'+result.relatedGalleries[0].filesList[i].title+'</a></li>';
+	}
+	else
+	{
+		releatedGallary += '<li><a href="javascript:{}"  onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')">'+result.relatedGalleries[0].filesList[i].title+'</a></li>';
+	}
+      
 	  
 	}
 	releatedGallary +='</ul>';

@@ -21,7 +21,7 @@
 	 <link rel="stylesheet" type="text/css" href="pagination/simplePagination.css">
 
 <style type="text/css">
-@font-face
+@font-face   
 {
 font-family:eFont;src: url('img/eenadu.ttf');
  }
@@ -152,7 +152,7 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
    for(var i in results)
    {
 	   str+='<li>';
-	alert(results[i].fileType.trim());
+	//alert(results[i].fileType.trim());
 	str+='<div class="">';
 	var source = results[i].fileType.trim();
 	if(source == "Eenadu Telugu")
