@@ -122,10 +122,20 @@ public class FileVO extends ResultStatus implements Serializable {
 	private List<Integer> newsedition;
 	private List<Integer> pageno;
 	private List<String> newslength;
+	private int responseCount;
 	private List<Long> candidateIds = new ArrayList<Long>();
 	private List<Long> responseFileIds = new ArrayList<Long>();
 	
 	
+	
+	public int getResponseCount() {
+		return responseCount;
+	}
+
+	public void setResponseCount(int responseCount) {
+		this.responseCount = responseCount;
+	}
+
 
 	public List<Long> getResponseFileIds() {
 		return responseFileIds;
@@ -135,6 +145,7 @@ public class FileVO extends ResultStatus implements Serializable {
 		this.responseFileIds = responseFileIds;
 	}
 
+	
 	public Date getFileGallaryDate() {
 		return fileGallaryDate;
 	}
