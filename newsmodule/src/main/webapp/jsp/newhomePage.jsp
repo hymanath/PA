@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -6,7 +6,7 @@
 <head>
 <!-- <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/> -->
 	<title>Telugudesham Party</title>
-	<meta name="" content="">
+ <META http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="css/style.css">
@@ -46,6 +46,15 @@
 	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 	<script src="js/partyWiseNewsDisplay.js"></script>
 	<style type="text/css">
+	@font-face
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
 	select {
     background-color: #FFFFFF;
     border: 1px solid #F3E81E;
@@ -158,8 +167,13 @@ width: 92px;
                              <div ${ctr.first ? 'class="item active"' : 'class="item"'}>
                           
 						  
-						 
+						<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
+                         <h4 class="enadu"> <s:property value="fileTitle1"/></h4>
+						 </s:if>
+						 <s:else>
                          <h4> <s:property value="fileTitle1"/></h4>
+                           </s:else>
+						 
 									<div class="row-fluid">				
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
@@ -172,7 +186,13 @@ width: 92px;
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
 											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
+										<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
+                                       <p class="span8 enadu"><s:property value="description"/></p>
+						               </s:if>
+						               <s:else>
 										<p class="span8"><s:property value="description"/></p>
+										</s:else>
+
 									    </div>
 										<div class="row-fluid m_top10">
 													<div class="span9">
