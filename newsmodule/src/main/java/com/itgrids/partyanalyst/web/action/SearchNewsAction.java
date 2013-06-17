@@ -17,7 +17,6 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.googlecode.jsonplugin.annotations.JSON;
-import com.itgrids.partyanalyst.dao.hibernate.CandidateRealatedNewsDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ILoginService;
