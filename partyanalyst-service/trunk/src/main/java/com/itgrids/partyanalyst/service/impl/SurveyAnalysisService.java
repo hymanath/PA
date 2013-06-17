@@ -205,6 +205,69 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
+	
+	
+	public IVoterCastInfoDAO getVoterCastInfoDAO() {
+		return voterCastInfoDAO;
+	}
+	public void setVoterCastInfoDAO(IVoterCastInfoDAO voterCastInfoDAO) {
+		this.voterCastInfoDAO = voterCastInfoDAO;
+	}
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
+		return userVoterDetailsDAO;
+	}
+	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
+		this.userVoterDetailsDAO = userVoterDetailsDAO;
+	}
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+	public IHamletDAO getHamletDAO() {
+		return hamletDAO;
+	}
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+	public ISurveyorProfileDAO getSurveyorProfileDAO() {
+		return surveyorProfileDAO;
+	}
+	public void setSurveyorProfileDAO(ISurveyorProfileDAO surveyorProfileDAO) {
+		this.surveyorProfileDAO = surveyorProfileDAO;
+	}
+	public IRespondentDAO getRespondentDAO() {
+		return respondentDAO;
+	}
+	public void setRespondentDAO(IRespondentDAO respondentDAO) {
+		this.respondentDAO = respondentDAO;
+	}
+	public IEducationalQualificationsDAO getEducationalQualificationsDAO() {
+		return educationalQualificationsDAO;
+	}
+	public void setEducationalQualificationsDAO(
+			IEducationalQualificationsDAO educationalQualificationsDAO) {
+		this.educationalQualificationsDAO = educationalQualificationsDAO;
+	}
+	public IOccupationDAO getOccupationDAO() {
+		return occupationDAO;
+	}
+	public void setOccupationDAO(IOccupationDAO occupationDAO) {
+		this.occupationDAO = occupationDAO;
+	}
 	public List<SelectOptionVO>  getOptionTypes(){
 		List<SelectOptionVO>  optionTypes = new ArrayList<SelectOptionVO>();
 		SelectOptionVO valuesVo = null;
