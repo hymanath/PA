@@ -14,6 +14,7 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
@@ -53,12 +54,12 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	public void setFileVOList(List<FileVO> fileVOList) {
 		this.fileVOList = fileVOList;
 	}
-	public HttpServletRequest getRequest() {
+  /*public HttpServletRequest getRequest() {
 		return request;
 	}
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
-	}
+	}*/
 	public HttpSession getSession() {
 		return session;
 	}
@@ -96,6 +97,9 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		this.candidateDetailsService = candidateDetailsService;
 	}
 	public String getNewsByPaging(){
+		  Log.debug("Entered into getNewsByPaging() method of NewsPaginationAction");
+        session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
 		try{
 			  jObj = new JSONObject(getTask());
 			}catch (Exception e) {
@@ -109,11 +113,15 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		Long stateId=jObj.getLong("stateId");
 		Long scopeId=jObj.getLong("scopeId");
 		String level=jObj.getString("level");
+		String newsType = "Public";
+		 if(user.getUserAccessType()!=null)
+			 if(user.getUserAccessType().equals("Admin"))
+				 newsType = "";
 		
 		Map<String ,List<FileVO>> resultMapList = new HashMap<String,List<FileVO>>();
 		
 		fileVOList=new ArrayList<FileVO>();
-		resultMapList=candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(first, max,level);
+		resultMapList=candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(first, max,level,newsType);
 		if(level.equalsIgnoreCase("state")){
 			fileVOList=resultMapList.get("NewsGallary");
 		}
@@ -157,8 +165,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 
 	//@Override
 	public void setServletRequest(HttpServletRequest arg0) {
-		// TODO Auto-generated method stub
-		
+		this.request = arg0;
 	}
 	public String getCandidatesNews(){
 		if(log.isDebugEnabled())
