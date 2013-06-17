@@ -5901,6 +5901,42 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 return resultList;
 		 
 	 }
+	 
+	 public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type){
+		 
+		try{
+			log.debug("In CandidateDetailsService getCandidatesNews Method");
+			List<FileVO> fileVOList = null;
+			FileVO fileVO = null;
+			List<Object[]> candidatesNews=new ArrayList<Object[]>();
+			candidatesNews=partyGalleryDAO.getNewsOfCandidate(candidateId, firstRecord, maxRecord, type);
+			int count=partyGalleryDAO.getCountOfNewsOfCandidate(candidateId, firstRecord, maxRecord, type);
+			
+			
+			if(candidatesNews != null && candidatesNews.size() > 0)
+		 	{
+				fileVOList = new ArrayList<FileVO>();
+		 		for (Object[] objects : candidatesNews) {
+		 			fileVO = new FileVO();
+		 			fileVO.setIds((Long)objects[1]);
+		 			int responseCount=partyGalleryDAO.getResponseNewsCountOfCandidate(candidateId, type, fileVO.getIds());
+		 			fileVO.setTitle(objects[2]!=null?objects[2].toString():null);
+		 			fileVO.setDescription(objects[3]!=null?objects[3].toString():null);
+		 			fileVO.setPath(objects[0]!=null?objects[0].toString():null);
+		 			fileVO.setCount(count);
+		 			fileVO.setSource(objects[4]!=null?objects[4].toString():null);
+		 			fileVO.setResponseCount(responseCount);
+		 			fileVOList.add(fileVO);
+		 		}
+		 	}
+			return fileVOList;
+			
+		}catch (Exception e) {
+			log.debug("Exception In CandidateDetailsService getCandidatesNews Method "+e);
+			// TODO: handle exception
+		}
+		return null;
+	 }
 
 
 }
