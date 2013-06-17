@@ -130,6 +130,8 @@ font-size:20px;
 width: 92px;
 }
 
+#candidatesListId{width:220px;}
+
 	</style>
 </head>
 <body>
@@ -427,7 +429,20 @@ width: 92px;
 							</tr>
 						</table>
 						
-						<button id="sendButton" class="btn btn-warning" onclick="addCssStyle(),handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
+						<button id="sendButton" class="btn btn-warning btn-mini" onclick="addCssStyle(),handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
+						</div>
+						<!--Created By sasi for Candidate News-->
+						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Candidate News</h4></div>
+						<div class="span12">						
+						<table style="margin-top:15px;">
+							<tr id="tableRowS">
+								<td id="tdWidth" style="padding-right: 32px;">
+									<s:select theme="simple" label="Candidates" name="candidates" id="candidatesListId" list="candidatesList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Candidate"/> 
+								</td>
+							</tr>
+						</table>
+						<button id="sendButton" class="btn btn-warning btn-mini" onclick="getCandidatesNews()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
+						<div class="span12 errorDiv"></div>
 						</div>
 					</div>
 				</div>
@@ -561,6 +576,8 @@ function showMoreVideoGallaries(){
 }
 
 getAllConstituenciesInStateByType(2, 1, 'constituency');
+getCandidates();
+
 function showFilesInGallary(gallaryId)
 {
  var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"";
@@ -720,6 +737,14 @@ function callHomePageAjax11(jsObj,url){
 										
 								}
 								if(jsObj.task =="getMoreVideos")
+								{
+									//alert('s');
+								}
+								if(jsObj.task =="getCandidateNamesInHomePage")
+								{
+									//alert('s');
+								}
+								if(jsObj.task =="getCandidatesNewsInHomePage")
 								{
 									//alert('s');
 								}
@@ -898,6 +923,30 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
   
   }
 
+}
+
+function getCandidates(){
+	var jsObj={
+		task:'getCandidateNamesInHomePage'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidateNamesInHomePageAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+
+
+function getCandidatesNews(){
+	var candidateId=$('#candidatesListId option:selected').val();
+	
+	if(candidateId==0){
+		$('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate</span>');
+		return;
+	}
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"";
+		
+     var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
 }
 
 </script>
