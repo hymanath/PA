@@ -464,7 +464,15 @@ width: 92px;
 									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li> -->
 									<c:if test="${fileVOsList != null}">
 									 <c:forEach var="newDetails" items="${fileVOsList}">
-									  <li><a href="javascript:{}" onclick="getNewsDetailsByContentId(${newDetails.contentId})" class="muted"><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a></li>
+									 
+									  <li>
+									  <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
+										<a href="javascript:{}" onclick="getNewsDetailsByContentId(${newDetails.contentId})" class="muted"><i class="icon-share-alt enadu"></i>${newDetails.fileTitle1}</a>
+									</s:if>
+									<s:else>
+										<a href="javascript:{}" onclick="getNewsDetailsByContentId(${newDetails.contentId})" class="muted"><i class="icon-share-alt enadu"></i>${newDetails.fileTitle1}</a>
+									</s:else>
+									  </li>
 									 </c:forEach>
 									</c:if>
 
