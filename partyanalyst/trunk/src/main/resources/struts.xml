@@ -5379,5 +5379,30 @@
 		<param name="root">resultStatus</param>
 		 </result>
 		</action>
+		
+		<action name="surveyFormAction" class="surveyFormAction" >
+		 <!--   <interceptor-ref name="token"/>
+    	  <interceptor-ref name="basicStack"/ -->
+		  <result name="success">/jsp/surveyForm.jsp</result>
+		</action>
+		
+		<action name="getSurveyDetailsAction" class="surveyFormAction" method="getSurveyDetails">
+		  <result type="json" name="success">
+		   <param name="root">surveyVO</param>
+		 </result>
+		 <result type="json" name="name">
+		   <param name="root">name</param>
+		 </result>
+		 <result type="json" name="voterVO">
+		   <param name="root">voterVO</param>
+		 </result>
+		</action>
+		
+		<action name="surveyFormSaveAction" class="surveyFormSaveAction" >
+		  <interceptor-ref name="basicStack"/>
+		  <interceptor-ref name="token"/>
+    	  <result name="invalid.token">/index.jsp</result>
+		  <result name="success">/jsp/surveyForm.jsp</result>
+		</action>
 		</package>
 </struts>      
