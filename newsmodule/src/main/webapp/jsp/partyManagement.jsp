@@ -5162,7 +5162,7 @@ function buildUploadNewsForMultipleUsers()
 	str += '<h2 align="center">Upload A News</h2>';
 	str += '<table  align="left" class="paddingCss"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 
-     str+='<a style="margin-left:46px;font-weight:bold;" href="javascript:void(0);" id="responseDiv">Click here to respond for a news</a>'; 
+     str+='<a style="margin-left:46px;font-weight:bold;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
 	str+='<div style="margin-left:50px;">';
      
     str+='<div id="responseContentDiv" style="display:none;">';
