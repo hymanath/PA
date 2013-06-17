@@ -18,7 +18,7 @@ import com.itgrids.partyanalyst.model.File;
 public interface ICandidateDetailsService {
 	
 	
-	public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex);
+	public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType);
 	public List<SelectOptionVO> getLatestgallaries();
 	
 	/*
@@ -216,7 +216,7 @@ public interface ICandidateDetailsService {
 	 
 	 public ResultStatus saveCandidateVoterDetails(Long CandidateId,Long voterId);
 */
-	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults,String level);
+	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults,String level,String newsType);
 	 
 	 public List<FileVO> getVideosForSelectedParty(Long partyId);
 	 
@@ -224,9 +224,9 @@ public interface ICandidateDetailsService {
 	 
 	 public List<FileVO> getAllVideosList(Long partyId,int firstResult,int maxResult,String queryType);
 			 
-	 public List<FileVO> getAllNews(int startIndex,int maxIndex,String contenttype,Long partyId);
+	 public List<FileVO> getAllNews(int startIndex,int maxIndex,String contenttype,Long partyId,String newsType);
 	 
-	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId);
+	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId,String newsType);
 	 
 	 public List<FileVO> getVideosForGalleryId(Long galId,int maxRecord,int startRecord);
 	 
