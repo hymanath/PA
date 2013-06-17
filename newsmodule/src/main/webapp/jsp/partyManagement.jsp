@@ -5171,7 +5171,7 @@ function buildUploadNewsForMultipleUsers()
 	str+='<select id="candidateNewsList"  multiple="true" style="width:453px;display:none;"></select>';
 
 	str+='<div style="margin-left:142px;display:none;" id="buttonsDiv"><input type="button" id="addFile" value="Add"/>';
-	str+='<input type="button" value="Delete" id="deleteFile"/></div>';
+	str+='<input type="button" value="Remove" id="deleteFile"/></div>';
 
 
 	str+='<select id="respenseNewsList" name="responseFileIds" multiple ="true" style="margin-left:2px;width:453px;display:none;"></select>';
@@ -5245,7 +5245,7 @@ function buildUploadNewsForMultipleUsers()
 
     //str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" style="margin-top:8px;"/></td></tr>';
 
-	str +='<tr><td class="tdWidth1" style="width:97px;">Select Candidate:</td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Delete"/></td></tr>';
+	str +='<tr><td class="tdWidth1" style="width:97px;">Select Candidate:</td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
 
 	str +='<tr><td class="tdWidth1" style="width:97px;">Select Candidate:</td><td><select multiple="true" id="list1" style="width:274px;"><option>Slect Candidate</option></select><select style="width:274px;" multiple="true" id="candidateList" name="candidateList"></select></td></tr>';
 
