@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Comparator;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -655,13 +656,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			FilePaths filePaths = new FilePaths();
 			FileGallary fileGallary = new FileGallary();
 			Long orderNO = 1L;
-			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			file.setFileName(fileVO.getName());
 			file.setFilePath(fileVO.getPath() != null ? fileVO.getPath().trim():null);
 			//file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
 			file.setFileTitle(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getTitle()));
 			file.setFileDescription(fileVO.getDescription().replace("\r\n", ""));
 			file.setKeywords(fileVO.getKeywords());
+			
 			
 			if(fileVO.getCategoryId() != null && fileVO.getCategoryId() > 0)
 				file.setCategory(categoryDAO.get(fileVO.getCategoryId()));
@@ -693,6 +695,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					file.setFilePath(displayImage.getDisplayImagePath() !=null?displayImage.getDisplayImagePath().trim():null);
 			   }
 				
+			    
 			   file.setUser(userDAO.get(fileVO.getUserId()));
 				file = fileDAO.save(file);
 			
@@ -1086,8 +1089,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		        v.setSource(source);
 		        v.setContentId(id);
 		        v.setCandidateId(partyId);
-             v.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(f.getFileTitle()));
-             v.setDescription(CommonStringUtils.removeSpecialCharsFromAString(f.getFileDescription()));
+             v.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileTitle())));
+             v.setDescription(StringEscapeUtils.unescapeJava(f.getFileDescription()));
              v.setDisplayImageName(f.getFileName());
 				 v.setDisplayImagePath(f.getFilePath());
 				 v.setImagePathInUpperCase(flag);
