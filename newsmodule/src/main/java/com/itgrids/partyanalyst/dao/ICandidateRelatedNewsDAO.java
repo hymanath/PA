@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.CandidateRealatedNews;
 
 public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNews, Long>{
 	public List<Object[]> getAllfileGallariesOfCandidate(Long candidateId);
-
+	public List<Object[]> getCandidates();
 }

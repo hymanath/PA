@@ -28,5 +28,10 @@ ICandidateRelatedNewsDAO {
 		
 		
 	}
+	public List<Object[]> getCandidates(){
+		Query queryObj=getSession().createQuery("select distinct model.candidate.candidateId,model.candidate.firstname,model.candidate.lastname,model.candidate.lastname " +
+				"from CandidateRealatedNews model ");
+		return queryObj.list();
+	}
 
 }
