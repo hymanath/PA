@@ -243,7 +243,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public List<FileGallary> getNewsDetailsByForHamlets(NewsCountVO newsCountVO);
 */
 	
-    public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex);
+    public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex,String newsType);
 	public List<Long> getAllRecordCountInGallary(Long gallaryId);
    public List<File> getStartingRecordInGallary(Long gallaryId);
 	
@@ -260,7 +260,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 
 
 	
-	public List<FileGallary> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId);
+	public List<FileGallary> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType);
 	
 	public Object getFileIdByFileGallaryId(Long fileGallaryId);
 	
@@ -274,7 +274,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	
 	public List<Object[]> getFirstFileAndGallaryInfoForCustomer(Long gallaryId,String queryString);
 	
-	public List<Object[]> getRecentlyUploadedNews(Integer starIndex, Integer maxResults,String contentType,Long partyId);
+	public List<Object[]> getRecentlyUploadedNews(Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType);
 	
 	public FileGallary getSelectedNewsDetails(Long fileGallaryId);
 	public List<Object[]> getVideosOfGalleryId(Long gallaryId,int maxRcrd,int firstRcrd);
