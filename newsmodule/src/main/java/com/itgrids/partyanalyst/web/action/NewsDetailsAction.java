@@ -13,6 +13,7 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -96,11 +97,17 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	
 	public String ajaxHandler()
 	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		try{
 		jObj = new JSONObject(getTask());
 		 if(jObj.getString("task").equalsIgnoreCase("getLatestNews"))
 		 {
-		     fileVOsList = candidateDetailsService.getAllNews(jObj.getInt("firstResult"), jObj.getInt("maxResult"), "News Gallary",872L);
+			 String newsType = "public"; 
+			 if(regVO.getUserAccessType()!=null)
+				 if(regVO.getUserAccessType().equals("Admin"))
+					 newsType = "";
+		     fileVOsList = candidateDetailsService.getAllNews(jObj.getInt("firstResult"), jObj.getInt("maxResult"), "News Gallary",872L,newsType);
 		 }
 		}catch (Exception e) {
 			e.printStackTrace();
