@@ -244,7 +244,9 @@
 		<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
 		<pattern>/getCustomPageFamilyDetailsAction*</pattern>
 		<pattern>/surveyAnalysisAction*</pattern>
-		<pattern>/assigningSurveyToUserAction*</pattern>
+		<pattern>/assigningSurveyToUserAction*</pattern>		
+		<pattern>/surveyFormAction*</pattern>
+		<pattern>/surveyFormSaveAction*</pattern>
     	 </decorator>
 
 </decorators>

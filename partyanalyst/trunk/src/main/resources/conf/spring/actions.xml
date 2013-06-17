@@ -1189,5 +1189,21 @@
 	 	<property name="candidateDetailsService" ref="candidateDetailsService" />
 	 	<property name="surveyDetailsService" ref="surveyDetailsService" />
 	</bean>
+		
+	<bean id="surveyFormAction" class="com.itgrids.partyanalyst.web.action.SurveyFormAction" singleton="false">
+		<property name="surveyAnalysisService" ref="surveyAnalysisService" />
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
+		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
+	
+	<bean id="surveyFormSaveAction" class="com.itgrids.partyanalyst.web.action.SurveyFormSaveAction" singleton="false">
+		<property name="surveyAnalysisService" ref="surveyAnalysisService" />
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
+		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
 </beans>	
 	

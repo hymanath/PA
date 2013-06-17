@@ -1600,6 +1600,16 @@
      <property name="tehsilDAO" ref="tehsilDAO" />
      <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
      <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+     <property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
+     <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
+     <property name="voterDAO" ref="voterDAO" />
+     <property name="panchayatDAO" ref="panchayatDAO"></property>
+     <property name="boothDAO" ref="boothDAO" />
+     <property name="hamletDAO" ref="hamletDAO" />
+     <property name="surveyorProfileDAO" ref="surveyorProfileDAO"></property>
+     <property name="respondentDAO" ref="respondentDAO"></property>
+     <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
+     <property name="occupationDAO" ref="occupationDAO" />
     </bean>
       
     <bean name="surveyDetailsService" class="com.itgrids.partyanalyst.service.impl.SurveyDetailsService">
