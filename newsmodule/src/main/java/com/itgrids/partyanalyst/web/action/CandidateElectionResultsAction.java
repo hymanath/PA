@@ -1007,7 +1007,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				
 			}
 			
-                if(displayFileVO.getFileVOForDiaplyImage () != null){
+                if(displayFileVO.getDisplayImageName() != null){
 				
 
 				   File fileToCreate = new File(filePath, displayFileVO.getDisplayImageName());
