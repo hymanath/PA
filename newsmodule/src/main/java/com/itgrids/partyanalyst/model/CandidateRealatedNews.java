@@ -25,7 +25,6 @@ public class CandidateRealatedNews extends BaseModel{
 	private Long candidateRealatedNewsId;	
 	private Candidate candidate;
 	private FileGallary fileGallary;
-	private String isResponse;
 	
 	
 
@@ -63,14 +62,5 @@ public class CandidateRealatedNews extends BaseModel{
 	}
 
 	
-    @Column(name="is_response" , length = 5)
-	public String getIsResponse() {
-		return isResponse;
-	}
-
-	public void setIsResponse(String isResponse) {
-		this.isResponse = isResponse;
-	}
-	
-
+   
 }
