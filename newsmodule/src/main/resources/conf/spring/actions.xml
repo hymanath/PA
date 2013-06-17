@@ -44,6 +44,7 @@
 	
 	<bean id="homePageAction" class="com.itgrids.partyanalyst.web.action.HomePageAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
+		<property name="newsMonitoringService" ref="newsMonitoringService"/>
 	</bean>
 	<bean id="contentManagementAction" class="com.itgrids.partyanalyst.web.action.ContentManagementAction">
 	  <property name="contentManagementService" ref="contentManagementService" />
@@ -62,7 +63,12 @@
 	 <property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>	
 	
+	<bean id="searchNewsAction" class="com.itgrids.partyanalyst.web.action.SearchNewsAction" singleton="false">
+	 	<property name="newsMonitoringService" ref="newsMonitoringService"/>
+	</bean>	
+	
 	<bean id="adminPageAction" class="com.itgrids.partyanalyst.web.action.AdminPageAction" singleton="false">
 	 <!-- <property name="regionServiceDataImp" ref="regionServiceDataImp" /> -->
 	</bean>	
+	
 	</beans>
