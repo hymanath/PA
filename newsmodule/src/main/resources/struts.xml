@@ -5345,6 +5345,36 @@
 		    	<param name="root">returnVal</param>
 		   </result> 
 		</action>
+		
+		<action name="searchNewsAction" class="searchNewsAction">
+		  <result name="success">/jsp/searchNewsPage.jsp</result>
+		</action>
+		
+		<action name="showNewsOfCandidateAction" class="homePageAction" method="showNewsOfCandidatePage">
+		  <result name="success">/jsp/showNewsOfCandidate.jsp</result>
+		</action>
+		
+		<action name="getNewsBySearchAction" class="searchNewsAction"  method="getNewsBySearch">
+		   <result type="json" name="success">
+		    	<param name="root">returnVal</param>
+		   </result> 
+		</action>
+		<action name="getCandidateNamesAction" class="searchNewsAction"  method="getCandidates">
+		   <result type="json" name="success">
+		    	<param name="root">returnVal</param>
+		   </result> 
+		</action>
+		<action name="getCandidateNamesInHomePageAction" class="homePageAction"  method="getCandidates">
+		   <result type="json" name="success">
+		   	<param name="root">returnVal</param>
+		  </result>
+		</action>
+		<action name="getCandidateNewsInHomePageAction" class="newsPaginationAction"  method="getCandidatesNews">
+		   <result type="json" name="success">
+		   	<param name="root">fileVOList</param>
+		  </result>
+		</action>
+		
 		<action name="adminPageAction" class="adminPageAction">
 		 <result name="success">/jsp/adminPage.jsp</result>
 		</action>
