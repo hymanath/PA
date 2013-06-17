@@ -3408,15 +3408,90 @@ var bvalue = false;
 var noOfRowsPerPage = 10;
 var modifiedRecord = 0;
 $(document).ready(function() {
-	$(".dateField").live("click", function(){
-       $(this).datepicker({
-			dateFormat: "dd/mm/yy",
-			changeMonth: true,
-            changeYear: true,
-			maxDate: new Date()
-			
-		}).datepicker("show");
+
+$(".dateField").live("click", function(){
+ $(this).datepicker({
+		dateFormat: "dd/mm/yy",
+		changeMonth: true,
+      changeYear: true,
+		maxDate: new Date()
+		
+	}).datepicker("show");
+});
+
+    $(document).on('click','#responseDiv',function(){
+		   $('#responseContentDiv').toggle('slow');
      });
+
+
+	    $(document).on('click','#addFile',function(){
+    $("#candidateNewsList > option:selected").each(function(){
+      $(this).remove().appendTo("#respenseNewsList");
+    });
+	  $('#respenseNewsList option').prop('selected', 'selected')
+  });
+
+  $(document).on('click','#deleteFile',function(){
+   $("#respenseNewsList > option:selected").each(function(){
+      $(this).remove().appendTo("#candidateNewsList");
+   });
+
+	  var my_options = $("#candidateNewsList option");
+
+	my_options.sort(function(a,b) {
+		if (a.text > b.text) return 1;
+		else if (a.text < b.text) return -1;
+		else return 0
+	})
+
+	$("#candidateNewsList").empty().append( my_options );
+
+	 $('#respenseNewsList option').prop('selected', 'selected');
+	});
+
+
+	
+  $(document).on('click','#button1',function(){
+    $("#list1 > option:selected").each(function(){
+      $(this).remove().appendTo("#candidateList");
+		// showUploadFilesDiv($(this).val(),$(this).text());
+
+        addMoreFiles1($(this).val(),$(this).text());
+    });
+	  $('#candidateList option').prop('selected', 'selected');
+
+	 
+
+  });
+
+  $(document).on('click','#button2',function(){
+
+		
+
+   $("#candidateList > option:selected").each(function(){
+		 $('.div'+$(this).val()).remove();
+
+		/* $("input:[value='"+ $(this).val()+"']").each(function(){
+			 alert($(this).attr('id'));
+
+		 });*/
+      $(this).remove().appendTo("#list1");
+   });
+
+	 var my_options = $("#list1 option");
+
+	my_options.sort(function(a,b) {
+		if (a.text > b.text) return 1;
+		else if (a.text < b.text) return -1;
+		else return 0
+	})
+
+	$("#list1").empty().append( my_options );
+	 $('#candidateList option').prop('selected', 'selected');
+
+   });
+
+
 });
 
 
