@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -80,21 +83,51 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private OpinionPollVO opinionPollVO;
 	private QuestionsOptionsVO questionsAndChoicesPercentage;
 	private Long freeUserConstituencyId;
-	private List<SelectOptionVO> states;
+	private List<SelectOptionVO> states,candidatesList;
 	private List<SpecialPageVO> specialPageVOList;
 	private ISpecialPageService specialPageService;
 	private String homePageLoadingFirstTime;
 	private List<FileVO> fileList;
 	private List<FileVO> fileVOsList;
 	private HttpServletResponse response;
-
+	private INewsMonitoringService newsMonitoringService;
+	private Long candidateId;
+	private Map<Long,String> candidatesMap;
+	
+	
+	public Map<Long, String> getCandidatesMap() {
+		return candidatesMap;
+	}
+	public void setCandidatesMap(Map<Long, String> candidatesMap) {
+		this.candidatesMap = candidatesMap;
+	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+	public INewsMonitoringService getNewsMonitoringService() {
+		return newsMonitoringService;
+	}
+	public void setNewsMonitoringService(
+			INewsMonitoringService newsMonitoringService) {
+		this.newsMonitoringService = newsMonitoringService;
+	}
 	public List<FileVO> getFileList() {
 		return fileList;
 	}
 	public void setFileList(List<FileVO> fileList) {
 		this.fileList = fileList;
 	}
+	
 
+	public List<SelectOptionVO> getCandidatesList() {
+		return candidatesList;
+	}
+	public void setCandidatesList(List<SelectOptionVO> candidatesList) {
+		this.candidatesList = candidatesList;
+	}
 
 
 	private List<SelectOptionVO> latestGallariesList;
@@ -431,6 +464,42 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public String showMoreVideos(){
 		return Action.SUCCESS;
 	}
-	
+	public String getCandidates(){
+		if(log.isDebugEnabled())
+			log.debug("In HomePageAction's getCandidates");
+		try {
+			candidatesList=new ArrayList<SelectOptionVO>();
+			
+			candidatesList=newsMonitoringService.getCandidates();
+			
+			for(SelectOptionVO vo:candidatesList)
+				candidatesMap.put(vo.getId(), vo.getName());
+			
+			
+		} catch (Exception e) {
+			log.debug("Exception in HomePageAction's getCandidates -"+e);
+		} 
+		
+		return SUCCESS;
+	}
+	public String showNewsOfCandidatePage(){
+		if(log.isDebugEnabled())
+			log.debug("In HomePageAction's getCandidates");
+		try {
+			candidatesMap=new HashMap<Long, String>();
+			candidatesList=new ArrayList<SelectOptionVO>();
+			
+			candidatesList=newsMonitoringService.getCandidates();
+			
+			for(SelectOptionVO vo:candidatesList)
+				candidatesMap.put(vo.getId(), vo.getName());
+			
+			
+		} catch (Exception e) {
+			log.debug("Exception in HomePageAction's getCandidates -"+e);
+		} 
+		
+		return SUCCESS;
+	}
 	
 }
