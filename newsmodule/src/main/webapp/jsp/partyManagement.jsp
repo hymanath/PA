@@ -5243,7 +5243,7 @@ function buildUploadNewsForMultipleUsers()
 	str += '   </tr>';
 	str += '   </tr>';*/
 
-    //str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" style="margin-top:8px;"/></td></tr>';
+    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" style="margin-top:8px;"/></td></tr>';
 
 	str +='<tr><td class="tdWidth1" style="width:97px;">Select Candidate:</td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
 
@@ -5279,8 +5279,6 @@ function buildUploadNewsForMultipleUsers()
 	str+='<div id="uploadFilesDiv" style="margin-left:43px;"></div>';
 	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
 	str += '<table align="center" style="margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input id="uploadNewsBtnId" type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNewsFromPartyPage1()"></td><td><input id="uploadNewsBtnId" type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
-
-	
 
 	str += '</form>';
 	str += '</fieldset>';
