@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.CommentVO;
 import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.FileGallary;
 
 public interface INewsMonitoringService {/*
@@ -51,6 +52,7 @@ public interface INewsMonitoringService {/*
 	public List<FileVO> getAllSourceLanguageDetails();
 	public List<FileVO> getAllNewsImportanceDetails();
 	public ResultStatus updateDeleteNews(FileVO fileVO,String task,List<FileVO> sourceIds,List<FileVO> languageIds);
+	public List<SelectOptionVO> getCandidates();
 	public ResultStatus storeSourceDetails(String value);
 
 
