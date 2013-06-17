@@ -433,12 +433,15 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
         
         if(user.getUserAccessType() != null && !user.getUserAccessType().equalsIgnoreCase("Admin"))
         	return "noAccess";
-               
+        String newsType = "Public"; 
+		 if(user.getUserAccessType()!=null)
+			 if(user.getUserAccessType().equals("Admin"))
+				 newsType = "";      
 		latestGallariesList = candidateDetailsService.getLatestgallaries();
-		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"");
+		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"",newsType);
 		fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID);
 		
-		fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L);
+		fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L,newsType);
 		return Action.SUCCESS;
 	}
 	public String getMoreVideos(){
