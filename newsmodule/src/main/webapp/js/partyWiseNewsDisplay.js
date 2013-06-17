@@ -14,6 +14,7 @@
 	var scope = $('#listValue').val();
 	$('#listValue').css("border","1px solid #F3E81E");
 	if(scope == '0'){
+		$('#headingDiiv').html('View Location Wise News');
 			$('#showScopeSubsD').css("display","none");
 			$('#showScopeSubsC').css("display","none");
 			$('#listValue').css("border","1px solid IndianRed");
@@ -499,7 +500,6 @@ function getNewsForPagination(num)
 	function createOptionsForSelectElmtId(divId,myResults)
 {	
 	var elmt = document.getElementById(divId);
-	var selLocationName = locationName.slice(0,8);
 	if( !elmt || myResults == null)
 		return;
 	
@@ -516,13 +516,14 @@ function getNewsForPagination(num)
 		{
 			elmt.add(option); // IE only
 		}
-		if(myResults[i].name == selLocationName )
+		if(myResults[i].name == locationName ){
+			flag=true;
 			$('#userAccessConstituencyList').val(option.value);
-		else if(myResults[i].name == locationName)
 			$('#userAccessDistrictList').val(option.value);
+		}
 		else if(myResults[i].name == 'Kuppam' && !flag){
-		flag=true;
-		$('#userAccessConstituencyList').val(option.value);
+			flag=true;
+			$('#userAccessConstituencyList').val(option.value);
 		}
 	}
 }
