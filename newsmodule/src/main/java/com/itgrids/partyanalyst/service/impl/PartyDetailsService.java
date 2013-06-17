@@ -948,7 +948,7 @@ public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 	 }
 	*/
 	
-public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex){
+public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType){
 		
 		List<FileVO> returnList = new ArrayList<FileVO>();
 		
@@ -956,7 +956,7 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 		gallaryIdsList.add(gallaryId);
 		
 		List<FileGallary> fileGallaryList = fileGallaryDAO
-				.getFilesOfInGallaries(gallaryIdsList,startIndex,endIndex);
+				.getFilesOfInGallaries(gallaryIdsList,startIndex,endIndex, newsType);
 		
 		Long count = fileGallaryDAO.getAllRecordCountInGallary(gallaryId).get(0);
 		
