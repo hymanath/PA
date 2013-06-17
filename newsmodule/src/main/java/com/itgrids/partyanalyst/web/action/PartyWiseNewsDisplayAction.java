@@ -13,13 +13,8 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
-import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
-import com.itgrids.partyanalyst.service.IRegionServiceData;
-import com.itgrids.partyanalyst.service.ISendUpdatesService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.IVotersAnalysisService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -159,10 +154,11 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 		return SUCCESS;
 	}
 	
-	public String getPartyWiseNewsDetails(){		
+	public String getPartyWiseNewsDetails(){	
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		 try{	 
 			 jObj = new JSONObject(getTask());
-			 
 		   }catch(Exception e){
 				 e.printStackTrace(); 
 		   }
@@ -173,7 +169,9 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 		 Long startRecord = jObj.getLong("startRecord");
 		 Long maxRecord = jObj.getLong("maxRecord");
 		 String queryType = jObj.getString("queryType"); 
-		
+		 if(regVO.getUserAccessType()!=null)
+			 if(regVO.getUserAccessType().equals("Admin"))
+				 queryType = "";
 		newsCountByCategoryList = partyDetailsService.getNewsCountForALocation(partyId,locationType,locationId,startRecord,maxRecord,queryType);
 
 		return Action.SUCCESS;
