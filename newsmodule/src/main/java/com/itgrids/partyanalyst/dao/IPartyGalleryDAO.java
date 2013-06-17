@@ -55,4 +55,12 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	public int getAllVideosOfPartyCount(Long partyId,int firstResult,int maxResult,String queryType);
 	
 	public List<Long> getGalleryIdsForSelectedParty(Long partyId);
+	
+	public List<Object[]> getNewsOfCandidate(Long candidateId,int firstResult,int maxResult,String queryType);
+	
+	public int getCountOfNewsOfCandidate(Long candidateId,int firstResult,int maxResult,String queryType);
+	
+	public int getResponseNewsCountOfCandidate(Long candidateId,String queryType,Long fileGallaryId);
+	
+	
 }
