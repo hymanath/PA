@@ -1726,4 +1726,14 @@ IUserVoterDetailsDAO{
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterDetailsForSurveyForm(Long voterId,Long userId)
+	{
+		Query queryObj = getSession().createQuery("select model.voter,model.casteState from UserVoterDetails model " +
+				" where model.voter.voterId = :voterId and model.user.userId = :userId");
+		queryObj.setParameter("voterId", voterId);
+		queryObj.setParameter("userId", userId);
+		return queryObj.list();
+	}
 }

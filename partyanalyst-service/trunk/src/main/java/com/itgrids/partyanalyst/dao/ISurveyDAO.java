@@ -10,4 +10,5 @@ public interface ISurveyDAO extends GenericDao<Survey, Long> {
 
 	public List<Object[]> getAllSurveys();
 	
+	public List<Survey> getSurveyDataBySurveyId(Long surveyId);
 }

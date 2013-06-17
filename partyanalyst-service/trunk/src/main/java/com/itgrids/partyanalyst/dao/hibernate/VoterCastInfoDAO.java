@@ -114,4 +114,13 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
     	 query.setParameter("publicationId", publicationId);
     	 return query.list();
      }
+     
+     @SuppressWarnings("unchecked")
+	public List<Object[]> getAllCasteInfoByUserId(Long userId)
+     {
+    	 Query query =getSession().createQuery("select distinct(model.casteState.casteStateId) , model.casteState.caste.casteName " +
+    	 		" from VoterCastInfo model where model.userId = :userId  " );
+    	 query.setParameter("userId", userId);
+    	 return query.list();
+     }
 }

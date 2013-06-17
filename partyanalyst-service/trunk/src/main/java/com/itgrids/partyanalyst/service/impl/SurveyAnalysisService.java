@@ -16,23 +16,40 @@ import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyInfoVO;
+import com.itgrids.partyanalyst.dto.SurveyVO;
+import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Option;
 import com.itgrids.partyanalyst.model.QuestionOptions;
+import com.itgrids.partyanalyst.model.Respondent;
 import com.itgrids.partyanalyst.model.SurveyQuestion;
+import com.itgrids.partyanalyst.model.SurveyorProfile;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ISurveyAnalysisService;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IOccupationDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
+import com.itgrids.partyanalyst.dao.IRespondentDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
+import com.itgrids.partyanalyst.dao.ISurveyorProfileDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Survey;
 import com.itgrids.partyanalyst.model.UpdationDetails;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -41,7 +58,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyAnalysisService implements ISurveyAnalysisService {
 	
-	private static Logger Log = Logger.getLogger(SurveyAnalysisService.class);
+	private static Logger LOG = Logger.getLogger(SurveyAnalysisService.class);
 	
 	private ISurveyQuestionDAO surveyQuestionDAO;
 	private IOptionDAO optionDAO;
@@ -61,6 +78,16 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 	private ITehsilDAO tehsilDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO; 
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IVoterCastInfoDAO voterCastInfoDAO;
+	private IVoterDAO voterDAO;
+	private IUserVoterDetailsDAO userVoterDetailsDAO;
+	private IPanchayatDAO panchayatDAO;
+	private IBoothDAO boothDAO ;
+	private IHamletDAO hamletDAO;
+	private ISurveyorProfileDAO surveyorProfileDAO;
+	private IRespondentDAO  respondentDAO;
+	private IEducationalQualificationsDAO educationalQualificationsDAO;
+	private IOccupationDAO  occupationDAO;
 	
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -183,7 +210,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		SelectOptionVO valuesVo = null;
 		List<Object[]> list = null;
 		try{
-		Log.debug("Enterd into getOptionTypes Method in SurveyAnalysis service");
+		LOG.debug("Enterd into getOptionTypes Method in SurveyAnalysis service");
 		list =  optionTypeDAO.getOptionTypes();
 		if(list != null){
 			for(Object[] params : list){
@@ -197,7 +224,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		
 		}
 		catch (Exception e) {
-			Log.error("Exception in getOptionTypes Method in SurveyAnalysis service",e);
+			LOG.error("Exception in getOptionTypes Method in SurveyAnalysis service",e);
 			
 		}
 		
@@ -279,7 +306,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 		}catch (Exception e) {
-			Log.error("Exception Occured in savesurveyDetails() method, Exception - "+e);
+			LOG.error("Exception Occured in savesurveyDetails() method, Exception - "+e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			return resultStatus;
 		}
@@ -347,7 +374,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			}
 		}
 		catch (Exception e) {
-			Log.error("Exception Occured in saveQuestion() method - Exception",e);
+			LOG.error("Exception Occured in saveQuestion() method - Exception",e);
 		}
 						return rs;
 					}
@@ -405,7 +432,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 						
 	}
 			catch (Exception e) {
-				Log.error("Exception Occured in saveQuestion() method - Exception",e);
+				LOG.error("Exception Occured in saveQuestion() method - Exception",e);
 			}
 							return rs;
 						}
@@ -413,4 +440,176 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 
 			return resultStatus;
 		}
+	
+	public List<SurveyVO> getSurveyDetailsBySurveyId(Long surveyId) {
+		List<SurveyVO> returnData = null;
+		List<Survey> survey = surveyDAO.getSurveyDataBySurveyId(surveyId);
+		if(survey != null && survey.size()> 0);
+		{
+			returnData = new ArrayList<SurveyVO>();
+			Survey surveyData = survey.get(0); 
+			SurveyVO surveyVO = new SurveyVO();
+			surveyVO.setSurveyId(surveyData.getSurveyId());
+			surveyVO.setName(surveyData.getName());
+			surveyVO.setDescription(surveyData.getDescription());
+			surveyVO.setLocationScopeId(surveyData.getLocationScopes().getRegionScopesId());
+			surveyVO.setLocationValue(surveyData.getLocationScopeValue());
+			returnData.add(surveyVO);
+		}
+		
+		return returnData;
+	}
+	
+	public List<SelectOptionVO> getAllCastesForUser(Long userId)
+	{
+		List<SelectOptionVO> returnList = null;
+		List<Object[]> casteList = voterCastInfoDAO.getAllCasteInfoByUserId(userId);
+		if(casteList != null && casteList.size() > 0)
+		{
+			returnList = new ArrayList<SelectOptionVO>();
+			SelectOptionVO selectOptionVO = null;
+			for (Object[] parms : casteList) {
+				selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long)parms[0]);
+				selectOptionVO.setName(parms[1].toString());
+				returnList.add(selectOptionVO);
+			}
+		}
+		return returnList;
+	}
+	public List<VoterVO> getVoterDetailsBasedOnVoterId(String VoterCardId,Long userId)
+	{
+		List<VoterVO> voterList = null;
+		Voter voter = voterDAO.getVoterByVoterIDCardNo(VoterCardId);
+		Long voterId = voter.getVoterId();
+		if(voter != null)
+		{
+			List<Object[]> voterData = userVoterDetailsDAO.getVoterDetailsForSurveyForm(voterId,userId);
+			if(voterData != null && voterData.size() > 0)
+			{
+				voterList = new ArrayList<VoterVO>();
+				for (Object[] parms : voterData) {
+					VoterVO voterVO = new VoterVO();
+					//Voter voterInfo      = (Voter) parms[0];
+					CasteState casteInfo =  (CasteState) parms[1];
+					voterVO.setVoterIds(voter.getVoterId());
+					voterVO.setFirstName(voter.getName());
+					voterVO.setAge(voter.getAge());
+					voterVO.setGender(voter.getGender());
+					if(voter.getGender().equalsIgnoreCase("m"))
+					{
+						voterVO.setGender("Male");
+					}
+					else
+					{
+						voterVO.setGender("Female");
+					}
+					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
+					voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :" ");
+					voterVO.setCast(casteInfo.getCaste().getCasteName());
+					voterVO.setCategoryValuesId(casteInfo.getCasteStateId());
+					voterList.add(voterVO);
+				}
+			}
+			
+			
+		}
+		return voterList;
+	}
+	
+	public ResultStatus saveSurveyDetails(final SurveyInfoVO surveyInfoVO)
+	{
+		ResultStatus resultStatus = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+		public Object doInTransaction(TransactionStatus status) {
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+		LOG.debug("entered into saveSurveyDetails() method in SurveyAnalysisService Service");
+		UserAddress userAddress = new UserAddress();
+		SurveyorProfile surveyorProfile = new SurveyorProfile();
+		Respondent respondent = new Respondent();
+		Voter voter = voterDAO.getVoterByVoterIDCardNo(surveyInfoVO.getVoterCardNo());
+		
+		if(surveyInfoVO.getStateId()!= null && surveyInfoVO.getStateId() > 0)
+		{
+			userAddress.setState(stateDAO.get(surveyInfoVO.getStateId()));
+		}
+		
+		if(surveyInfoVO.getContryId() != null && surveyInfoVO.getContryId() > 0)
+		{
+			userAddress.setCountry(countryDAO.get(surveyInfoVO.getContryId()));
+		}
+		if(surveyInfoVO.getDistrictId() != null && surveyInfoVO.getDistrictId() > 0)
+		{
+			userAddress.setDistrict(districtDAO.get(surveyInfoVO.getDistrictId()));
+		}
+		if(surveyInfoVO.getConstituencyId() != null && surveyInfoVO.getConstituencyId() > 0)
+		{
+			userAddress.setConstituency(constituencyDAO.get(surveyInfoVO.getConstituencyId()));
+		}
+		if(surveyInfoVO.getMandalId() != null && surveyInfoVO.getMandalId() > 0)
+		{
+			userAddress.setTehsil(tehsilDAO.get(surveyInfoVO.getMandalId()));
+		}
+		if(surveyInfoVO.getBoothId() != null && surveyInfoVO.getBoothId() > 0)
+		{
+			userAddress.setBooth(boothDAO.get(surveyInfoVO.getBoothId()));
+		}
+		if(surveyInfoVO.getHamletId() != null && surveyInfoVO.getHamletId() > 0)
+		{
+			userAddress.setHamlet(hamletDAO.get(surveyInfoVO.getHamletId()));
+		}
+		if(surveyInfoVO.getWardId() != null && surveyInfoVO.getWardId() > 0)
+		{
+			userAddress.setWard(constituencyDAO.get(surveyInfoVO.getWardId()));
+		}
+		if(surveyInfoVO.getLocalBodyElectionId() != null && surveyInfoVO.getLocalBodyElectionId() > 0)
+		{
+			userAddress.setLocalElectionBody(localElectionBodyDAO.get(surveyInfoVO.getLocalBodyElectionId()));
+		}
+		if(surveyInfoVO.getParlemtId() != null && surveyInfoVO.getParlemtId() > 0)
+		{
+			userAddress.setParliamentConstituency(constituencyDAO.get(surveyInfoVO.getParlemtId()));
+		}
+		System.out.println(surveyInfoVO.getName());
+		System.out.println(surveyInfoVO.getEducateionId());
+		surveyorProfile.setName(surveyInfoVO.getName()!=null ?surveyInfoVO.getName():"");
+		surveyorProfile.setMobileNo(surveyInfoVO.getMobileNo()!=null ?surveyInfoVO.getMobileNo():"");
+		surveyorProfile.setAge(surveyInfoVO.getAge()!=null?surveyInfoVO.getAge().toString():"");
+		if(surveyInfoVO.getEducateionId() != null && surveyInfoVO.getEducateionId() > 0)
+		{
+			surveyorProfile.setEducationalQualifications(educationalQualificationsDAO.get(surveyInfoVO.getEducateionId()));
+		}
+		if(surveyInfoVO.getOccupationId() != null && surveyInfoVO.getOccupationId() > 0)
+		{
+			surveyorProfile.setOccupation(occupationDAO.get(surveyInfoVO.getOccupationId()));
+		}
+		if(surveyInfoVO.getCasteId() != null && surveyInfoVO.getCasteId() > 0)
+		{
+			surveyorProfile.setCasteStateId(surveyInfoVO.getCasteId());
+		}
+		
+		surveyorProfile.setGender(surveyInfoVO.getGender()!=null ? surveyInfoVO.getGender():"");
+	
+		userAddress = userAddressDAO.save(userAddress);
+		surveyorProfile.setUserAddress(userAddress);
+		surveyorProfile = surveyorProfileDAO.save(surveyorProfile);
+		System.out.println(voter.getVoterId());
+		respondent.setSurveyorProfile(surveyorProfile);
+		if(voter.getVoterId() != null && voter.getVoterId() > 0)
+		{
+			respondent.setVoter(voterDAO.get(voter.getVoterId()));
+		}
+		
+		respondent.setLandmark(surveyInfoVO.getLandmark());
+		respondent  = respondentDAO.save(respondent);
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		}
+		catch (Exception e) {
+			LOG.error("exception raised in  saveSurveyDetails() method in SurveyAnalysisService Service",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return resultStatus;
+		} });
+		return resultStatus;
+	}
 }
