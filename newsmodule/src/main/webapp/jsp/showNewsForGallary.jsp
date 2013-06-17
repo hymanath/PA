@@ -20,7 +20,17 @@
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 	 <link rel="stylesheet" type="text/css" href="pagination/simplePagination.css">
 
-
+<style type="text/css">
+@font-face
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
+</style>
 <script>
 
 $( document ).ready(function() {
@@ -142,9 +152,17 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
    for(var i in results)
    {
 	   str+='<li>';
-
+	//alert(results[i].fileType.trim());
 	str+='<div class="">';
+	if(results[i].fileType.trim() == "Eenadu Telugu")
+	{
+		str+='<h4 style="text-transform: capitalize;" class="enadu">'+results[i].fileName1+'</h4>';
+	}
+	else
+	{
 		str+='<h4 style="text-transform: capitalize;">'+results[i].fileName1+'</h4>';
+	}
+		
 			str+='<div class="row-fluid">';
 				str+='<a style="width: 146px;" href="#" class="thumbnail span4">';
 				 if(results[i].filePath1 != null && results[i].filePath1 == "") 
