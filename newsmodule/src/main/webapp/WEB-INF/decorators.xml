@@ -231,6 +231,8 @@
 		<pattern>/newsDetailsAction*</pattern>
 		<pattern>/showMoreVideos*</pattern>
 		<pattern>/showAllVideosOfAGallaryAction*</pattern>
+		<pattern>/searchNewsAction*</pattern>
+		<pattern>/showNewsOfCandidateAction*</pattern>
 		<pattern>/adminPageAction*</pattern>
     	 </decorator>
 
