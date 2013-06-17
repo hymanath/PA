@@ -2514,10 +2514,17 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	public String getAllTheGallariesOfAparty()
 	{
+		session = request.getSession();
+	    RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+				
 		try{
 			
 			int startIndex = 1 ;
 			int endIndex = 30;
+		    String newsType = "Public";
+			if(user.getUserAccessType()!=null)
+				 if(user.getUserAccessType().equals("Admin"))
+					 newsType = "";   	
 			if(getCategory() == null || getCategory().equals(0l)  )
 			fileVO2 = partyDetailsService.getAllTheGallariesOfAparty(872L,startIndex,endIndex);
 			else
@@ -2536,13 +2543,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 
 
 		public String getFilesInAGallary(){				
-			
-			
+			session = request.getSession();
+		    RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
 			Long  gallaryId = Long.parseLong(request.getParameter("gallaryId"));
 			int startIndex = Integer.parseInt(request.getParameter("startIndex"));
 			int endIndex = Integer.parseInt(request.getParameter("endIndex"));
-			
-			fileVO = candidateDetailsService.getFilesOfAGallary(gallaryId,startIndex,endIndex);
+			String newsType = "Public";
+			if(user.getUserAccessType()!=null)
+				 if(user.getUserAccessType().equals("Admin"))
+					 newsType = "";   			
+			fileVO = candidateDetailsService.getFilesOfAGallary(gallaryId,startIndex,endIndex,newsType);
 			
 			return Action.SUCCESS;
 				
