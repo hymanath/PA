@@ -143,6 +143,15 @@ h3 {
 }
 #releatedNewsDiv{ height: 400px;
     overflow-y: scroll;}
+@font-face
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
 </style>
 </head>
 <body>
