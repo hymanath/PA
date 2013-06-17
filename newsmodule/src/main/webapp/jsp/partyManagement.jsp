@@ -1499,7 +1499,7 @@ function clearNewsUploadFileFields1()
 {
 
     $('#gallaryId').val(0);
-	$('#newsfileTitle , #newsfileDescription , #keywords , #existingFromTextNews').val('');
+	$('#newsfileTitle , #newsfileDescription , #keywords , #existingFromTextNews , #ImagenewsfileId').val('');
 	$('#candidateList').find('option').remove();
 	$('#uploadFilesDiv').html('');
 
