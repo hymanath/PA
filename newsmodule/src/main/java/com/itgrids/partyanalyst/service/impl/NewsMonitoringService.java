@@ -12,7 +12,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.ICandidateRealatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
@@ -24,7 +23,6 @@ import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CandidateRealatedNewsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
