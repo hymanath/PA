@@ -45,35 +45,35 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 	<script src="js/partyWiseNewsDisplay.js"></script>
-	<style type="text/css">
-	@font-face
+<style type="text/css">
+@font-face
 {
 font-family:eFont;src: url('img/eenadu.ttf');
- }
- .enadu
+}
+.enadu
 {
 font-family: eFont;
 font-size:20px;
 }
-	select {
-    background-color: #FFFFFF;
-    border: 1px solid #F3E81E;
-    width: 130px;
-	}
-	#requiredValue{
-	color:red;
-	font-size:large;
-	}	
-	.main-mbg {
-    background-color: #06ABEA;
-    color: #FFFFFF;
-    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
-    height: 35px;
-    padding-left: 13px;
-    text-align: left;
-    text-transform: uppercase;
-    width: 850px;
-	border-radius:3px;
+select {
+background-color: #FFFFFF;
+border: 1px solid #F3E81E;
+width: 130px;
+}
+#requiredValue{
+color:red;
+font-size:large;
+}	
+.main-mbg {
+background-color: #06ABEA;
+color: #FFFFFF;
+font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+height: 35px;
+padding-left: 13px;
+text-align: left;
+text-transform: uppercase;
+width: 850px;
+border-radius:3px;
 }
 .tableCls{ margin-left: auto; margin-right: auto; float: none;}
 .popupcontainer {
@@ -132,7 +132,7 @@ width: 92px;
 
 #candidatesListId{width:220px;}
 
-	</style>
+</style>
 </head>
 <body>
 		
@@ -170,10 +170,10 @@ width: 92px;
                           
 						  
 						<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
-                         <h4 class="enadu"> <s:property value="fileTitle1"/></h4>
+							<h4 class="enadu"> <s:property value="fileTitle1"/></h4>
 						 </s:if>
 						 <s:else>
-                         <h4> <s:property value="fileTitle1"/></h4>
+							<h4> <s:property value="fileTitle1"/></h4>
                            </s:else>
 						 
 									<div class="row-fluid">				
@@ -304,8 +304,12 @@ width: 92px;
                              <div ${ctr.first ? 'class="item active"' : 'class="item"'}>
                           
 						  
-						 
-                         <h4> <s:property value="fileTitle1"/></h4>
+						  <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
+							<h4 class="enadu"> <s:property value="fileTitle1"/></h4>
+						 </s:if>
+						 <s:else>
+							<h4> <s:property value="fileTitle1"/></h4>
+						 </s:else>
 									<div class="row-fluid">				
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
@@ -482,10 +486,10 @@ width: 92px;
 									 
 									  <li>
 									  <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
-										<a href="javascript:{}" onclick="getNewsDetailsByContentId(${newDetails.contentId})" class="muted"><i class="icon-share-alt enadu"></i>${newDetails.fileTitle1}</a>
+										<a href="javascript:{}" onclick="getNewsDetailsByContentId(${newDetails.contentId})" class="enadu"><i class="icon-share-alt "></i>${newDetails.fileTitle1}</a>
 									</s:if>
 									<s:else>
-										<a href="javascript:{}" onclick="getNewsDetailsByContentId(${newDetails.contentId})" class="muted"><i class="icon-share-alt enadu"></i>${newDetails.fileTitle1}</a>
+										<a href="javascript:{}" onclick="getNewsDetailsByContentId(${newDetails.contentId})" class="muted"><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a>
 									</s:else>
 									  </li>
 									 </c:forEach>
@@ -568,6 +572,14 @@ width: 92px;
 	
 <script>
 $('#listValue').val('Constituency');
+
+/* $( document ).ready(function() {
+	$('.enadu1').each(function()
+	{
+		$(this).addClass('enadu');
+	});
+	$('#enadu1').addClass('enadu');
+ }); */
 function showMoreVideoGallaries(){
 	 var urlstr = "showMoreVideos.action";
 		
