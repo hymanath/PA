@@ -1594,6 +1594,9 @@
 		<property name="transactionTemplate" ref="transactionTemplate"/>
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 		<property name="userCandidateRelationDAO" ref="userCandidateRelationDAO" />
+		<property name="candidateRelatedNewsDAO" ref="candidateRelatedNewsDAO" />
+		<property name="candidateDAO" ref="candidateDAO" />	
+		<property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO"></property>	
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >

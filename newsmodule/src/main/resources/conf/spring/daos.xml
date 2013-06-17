@@ -1297,7 +1297,7 @@
 	</bean>
 	
 	
-	<bean id="candidateRealatedNewsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateRealatedNewsDAO">
+	<bean id="candidateRelatedNewsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateRelatedNewsDAO">
 	 <property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 	<bean id="candidateNewsResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateNewsResponseDAO" >

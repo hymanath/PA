@@ -51,6 +51,7 @@ public interface ICandidateDetailsService {
 	public List<SelectOptionVO> getNewsImportance();
 	public List<FileVO> getStateDetails();
 	public List<SelectOptionVO> getCandidateGallaries(Long registrationId,String contentType);
+	public List<SelectOptionVO> getCandidatesOfAUser(Long userId);
 	/*public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId,String contentType);
 	
 	public List<String> getCandidateProfileDescriptionByCandidateID(Long candidateId);
@@ -107,7 +108,7 @@ public interface ICandidateDetailsService {
 
 	public FileVO copyFileToFileVO(File file);
 	
-	public List<SelectOptionVO> getCandidatesOfAUser(Long userId);
+	
 	
 	 public ResultStatus deleteFilesAndPhotos(Long fileId , Long gallaryId);
 	 
@@ -228,4 +229,6 @@ public interface ICandidateDetailsService {
 	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId);
 	 
 	 public List<FileVO> getVideosForGalleryId(Long galId,int maxRecord,int startRecord);
+	 
+	 public List<SelectOptionVO> getNewsForCandidate(Long candidateId);
 }

@@ -25,8 +25,10 @@ public class CandidateRealatedNews extends BaseModel{
 	private Long candidateRealatedNewsId;	
 	private Candidate candidate;
 	private FileGallary fileGallary;
+	private String isResponse;
 	
 	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "candidate_realated_news_id", nullable = false, unique = true)
@@ -60,6 +62,15 @@ public class CandidateRealatedNews extends BaseModel{
 		this.fileGallary = fileGallary;
 	}
 
+	
+    @Column(name="is_response" , length = 5)
+	public String getIsResponse() {
+		return isResponse;
+	}
+
+	public void setIsResponse(String isResponse) {
+		this.isResponse = isResponse;
+	}
 	
 
 }

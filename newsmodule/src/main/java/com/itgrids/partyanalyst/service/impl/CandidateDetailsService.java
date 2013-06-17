@@ -11,12 +11,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Comparator;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -28,8 +28,10 @@ import com.itgrids.partyanalyst.dao.IAbusedCommentsDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.ICandidateProfileDescriptionDAO;
+import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ICandidateUpdatesEmailDAO;
@@ -82,7 +84,9 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.CandidateNewsResponse;
 import com.itgrids.partyanalyst.model.CandidateProfileDescription;
+import com.itgrids.partyanalyst.model.CandidateRealatedNews;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
@@ -95,9 +99,9 @@ import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.util.IConstants;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.util.IConstants;
 
 
 public class CandidateDetailsService implements ICandidateDetailsService {
@@ -159,7 +163,29 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
 	private IVoterDAO voterDAO;
+	
+	
 	private INewsDetailsDAO newsDetailsDAO;
+	private ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
+	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
+	
+	public ICandidateNewsResponseDAO getCandidateNewsResponseDAO() {
+		return candidateNewsResponseDAO;
+	}
+
+	public void setCandidateNewsResponseDAO(
+			ICandidateNewsResponseDAO candidateNewsResponseDAO) {
+		this.candidateNewsResponseDAO = candidateNewsResponseDAO;
+	}
+
+	public ICandidateRelatedNewsDAO getCandidateRelatedNewsDAO() {
+		return candidateRelatedNewsDAO;
+	}
+
+	public void setCandidateRelatedNewsDAO(
+			ICandidateRelatedNewsDAO candidateRelatedNewsDAO) {
+		this.candidateRelatedNewsDAO = candidateRelatedNewsDAO;
+	}
 	
 	
 	public INewsDetailsDAO getNewsDetailsDAO() {
@@ -695,8 +721,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					file.setFilePath(displayImage.getDisplayImagePath() !=null?displayImage.getDisplayImagePath().trim():null);
 			   }
 				
-			    
-			   file.setUser(userDAO.get(fileVO.getUserId()));
+			 //  file.setUser(userDAO.get(fileVO.getUserId()));
+			   file.setUser(userDAO.get(1L));
 				file = fileDAO.save(file);
 			
 				//file = fileDAO.save(file);
@@ -778,7 +804,35 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				else
 					fileGallary.setIsPrivate(IConstants.TRUE);
 				
-				fileGallaryDAO.save(fileGallary);
+				fileGallary = fileGallaryDAO.save(fileGallary);
+				
+				if(fileVO.getCandidateIds().size() > 0){
+					
+					for(Long candidateId:fileVO.getCandidateIds()){
+					
+					CandidateRealatedNews candidateRelatedNews = new CandidateRealatedNews();
+					
+					candidateRelatedNews.setCandidate(candidateDAO.get(candidateId));
+					candidateRelatedNews.setFileGallary(fileGallary);
+					
+					candidateRelatedNewsDAO.save(candidateRelatedNews);					
+					
+					}					
+				}
+				
+				if(fileVO.getResponseFileIds() != null && fileVO.getResponseFileIds().size() >0)
+					
+					for(Long responseFileGallaryId:fileVO.getResponseFileIds())
+					{
+						CandidateNewsResponse candidateNewsresponse = new CandidateNewsResponse();
+						
+						candidateNewsresponse.setFileGallary(fileGallaryDAO.get(responseFileGallaryId));
+						candidateNewsresponse.setResponseFileGallary(fileGallary);
+						
+						candidateNewsResponseDAO.save(candidateNewsresponse);						
+						
+					}
+					
 				
 				if(fileVO.getUploadOtherProfileGalleryIds()!=null && fileVO.getUploadOtherProfileGalleryIds().size()>0)
 				{
@@ -2553,7 +2607,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			e.printStackTrace();
 			return newsImportanceSelectList;
 		}
-	}/*
+	}
 public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	{
 		try{
@@ -2576,7 +2630,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		}catch(Exception e){
 			return null;
 		}
-	}
+	}/*
  public	FileVO getCandidatesGallaryDescForUpdate(Long gallaryId , Long candidateId)
  {
 	 FileVO fileVO = new FileVO(); 
@@ -5790,6 +5844,42 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				return null;
 			}
 		}
+	 
+	 
+	 public List<SelectOptionVO> getNewsForCandidate(Long candidateId)
+	 {
+		 
+		 
+		return buildSelectOptionVO(candidateRelatedNewsDAO.getAllfileGallariesOfCandidate(candidateId));
+		 
+		 
+	 }
+	 
+	 
+	 public List<SelectOptionVO> buildSelectOptionVO(List<Object[]> list)
+	 {
+		 List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		 
+		 try
+		 {			 
+			 for(Object[] obj:list){
+				 
+				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				 
+				 selectOptionVO.setId((Long)obj[0]);
+				 selectOptionVO.setName(obj[1].toString());
+				 
+				 resultList.add(selectOptionVO);
+				 
+			 }
+			 
+		 }catch(Exception e)
+		 {
+			e.printStackTrace();			 
+		 }		 
+		 return resultList;
+		 
+	 }
 
 
 }
