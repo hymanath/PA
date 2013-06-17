@@ -1390,14 +1390,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		fileVO.setUserId(regVO.getRegistrationID());
 		
-		if(candidateList != null && candidateList.size() >0)			
-			for(String s:candidateList)
-				fileVO.getCandidateIds().add(Long.parseLong(s));
-		
-		if(responseFileIds != null && responseFileIds.size() >0)
-			for(String s:responseFileIds)
-				fileVO.getResponseFileIds().add(Long.parseLong(s));
-			
 		
 		
 		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
