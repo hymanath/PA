@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>  
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>TDP Party Management</title>
 <!--<script type="text/javascript" src="js/jquery.js"></script>-->
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
@@ -44,6 +44,17 @@
 <!-- JQuery files (End) -->
 
 <style>
+
+@font-face
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
+
 
 #newsDetailsTable  th{
 	color:#005580;
@@ -2156,15 +2167,15 @@ function  buildUploadNews()
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50" style="margin-top:8px;"></input></td>'; 
+	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle"  name="fileTitle" size="25" maxlength="50" style="margin-top:8px;"></input></td>'; 
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" style="margin-top:8px;"></textarea></td>';
+	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription"   cols="20" rows="3" name="fileDescription" style="margin-top:8px;"></textarea></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Keywords</td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" style="margin-top:8px;"></input></td></tr>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywords"  name="keywords" size="25" maxlength="200" style="margin-top:8px;"></input></td></tr>';
 	str += '<TR>';
 	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
 	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromTextNews" class="dateField" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
@@ -2251,6 +2262,33 @@ function  buildUploadNews()
 	 getLanguage("language");
 	 getNewsImportance();
 	 getCategory();
+	 $(document).ready(function(){
+	 	$("#source").change(function () {
+	
+var str = "";
+str = $("#source option:selected").text();
+alert(str)
+
+if(/Eenadu Telugu/i.test(str))
+{
+if(!$('#newsfileTitle').hasClass('enadu'))
+{
+$('#newsfileTitle').addClass('enadu');
+$('#newsfileDescription').addClass('enadu');
+$('#keywords').addClass('enadu');
+}
+}else{
+if($('#newsfileTitle').hasClass('enadu'))
+{
+$('#newsfileTitle').removeClass('enadu');
+$('#newsfileDescription').removeClass('enadu');
+$('#keywords').removeClass('enadu');
+}
+}
+
+
+});
+});
 }
 function getCategory()
 {
@@ -2391,6 +2429,14 @@ function buildUploadVideoDiv()
 	getPartyGallariesForUplaod('Video Gallary');
 	getSource("source");
 	getLanguage("language");
+
+
+}
+
+function getEnadu()
+{
+
+
 }
 
 function getCompleteVideoGallaries(gallaryId){
