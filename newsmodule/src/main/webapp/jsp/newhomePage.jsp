@@ -182,11 +182,11 @@ width: 92px;
 										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
 											<!-- <a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a> -->
 
-											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' title='<s:property value="description"/>' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'></a>
+											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' title='<s:property value="description"/>' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" onerror="imgError(this);" alt='<s:property value="fileTitle1" /> Image'></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" onerror="imgError(this);" alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
                                        <p class="span8 enadu"><s:property value="description"/></p>
@@ -314,11 +314,11 @@ width: 92px;
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
 										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" onerror="imgError(this);"  alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" onerror="imgError(this);"  alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
 										<p class="span8"><s:property value="description"/></p>
 									    </div>
@@ -561,7 +561,7 @@ width: 92px;
 				</div>
 			<!-------- Row-3 end -------------->
 		<div id="showContentDiv">
-	 <div id="contentAjaxCallImg"><img src="images/icons/goldAjaxLoad.gif"></div>
+	 <div id="contentAjaxCallImg" style="display:none;"><img src="images/icons/goldAjaxLoad.gif"></div>
 	 <div id="showContentDivInnerDiv"></div>
 	</div>		
 	</div>
