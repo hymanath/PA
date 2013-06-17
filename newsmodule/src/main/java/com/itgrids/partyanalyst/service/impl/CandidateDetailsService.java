@@ -900,7 +900,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return null;
 		}
 	}
-	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults,String level)
+	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults,String level,String newsType)
 	 {
 		 try{
 		 Map<String ,List<FileVO>> resultMap = new HashMap<String,List<FileVO>>();
@@ -1078,30 +1078,30 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 		List<FileVO> nl;
 		 		if(level.equalsIgnoreCase("state")||level.equalsIgnoreCase(""))
 		 		{ 
-				 List <Object[]> newsDetails =  partyGalleryDAO.getAllNewsDetailsForState(IConstants.TDPID, startIndex,maxResults,"public",1l,2l);
+				 List <Object[]> newsDetails =  partyGalleryDAO.getAllNewsDetailsForState(IConstants.TDPID, startIndex,maxResults,newsType,1l,2l);
 				 if(newsDetails == null && newsDetails.isEmpty())
 					 return null;
 				 
-				 int count=partyGalleryDAO.getCountOfNewsFiles(IConstants.TDPID, startIndex,maxResults,"public",1l,2l);
+				 int count=partyGalleryDAO.getCountOfNewsFiles(IConstants.TDPID, startIndex,maxResults,newsType,1l,2l);
 				 nl = buildFileVo(newsDetails,count);
 				 resultMap.put("NewsGallary", nl);
 		 		}
 				 
 			 if(level.equalsIgnoreCase("district")||level.equalsIgnoreCase("")){
 				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(1l);
-				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l, startIndex,maxResults,"public",3l,distIds);
+				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l, startIndex,maxResults,newsType,3l,distIds);
 				 
 				 if(newsDetailsForDist == null && newsDetailsForDist.isEmpty())
 					 return null;
 				 
-				 int count1=partyGalleryDAO.getCountOfNewsFilesForDistrict(IConstants.TDPID, startIndex,maxResults,"public",3l,distIds);
+				 int count1=partyGalleryDAO.getCountOfNewsFilesForDistrict(IConstants.TDPID, startIndex,maxResults,newsType,3l,distIds);
 				 
 				 if(newsDetailsForDist != null && !newsDetailsForDist.isEmpty()){
 					 nl = buildFileVo(newsDetailsForDist,count1);
 							
 				 resultMap.put("NewsGallaryForDist", nl);
 				 }
-				 List <Object[]> categoryList= partyGalleryDAO.getCategoryIdsForParty(IConstants.TDPID, 0, 6, "public");
+				 List <Object[]> categoryList= partyGalleryDAO.getCategoryIdsForParty(IConstants.TDPID, 0, 6, newsType);
 		/* newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
 		 resultList = setToFileVO(newsGallaryresultList);
 		 resultMap.put("NewsGallary", resultList);getCategoryIdsForParty*/
@@ -5520,7 +5520,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 }
 */
  
- public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex){
+ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType){
 		
 		List<FileVO> returnList = new ArrayList<FileVO>();
 		
@@ -5528,13 +5528,14 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 		gallaryIdsList.add(gallaryId);
 		
 		List<FileGallary> fileGallaryList = fileGallaryDAO
-				.getFilesOfInGallaries(gallaryIdsList,startIndex,endIndex);
+				.getFilesOfInGallaries(gallaryIdsList,startIndex,endIndex,newsType);
 		
 		Long count = fileGallaryDAO.getAllRecordCountInGallary(gallaryId).get(0);
 		
 		for(FileGallary fileGallary : fileGallaryList){
-			
-			FileVO file = new FileVO();
+			if(fileGallary.getFile() !=null){
+				
+					FileVO file = new FileVO();
 									
 									file.setFileId(fileGallary.getFile().getFileId());
 									file.setFileGallaryId(fileGallary.getFileGallaryId());
@@ -5559,6 +5560,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 									
 									returnList.add(file);
 									returnList.get(0).setTotalResultsCount(count);
+			}
 		}
 		
 		return returnList;		
@@ -5657,12 +5659,12 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 
 
  					 
-	public List<FileVO> getAllNews(int startIndex,int maxIndex,String contenttype,Long partyId)
+	public List<FileVO> getAllNews(int startIndex,int maxIndex,String contenttype,Long partyId,String newsType)
 	{
 		List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
 		try{
 		
-		 List<FileGallary> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex, contenttype,partyId);
+		 List<FileGallary> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex, contenttype,partyId,newsType);
 		 if(fileGallaryList != null && fileGallaryList.size() > 0)
 		 {
 			 for(FileGallary fileGallary : fileGallaryList)
@@ -5674,8 +5676,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				FileVO fileVO = new FileVO(); 
 				fileVO.setContentId(fileGallary.getFileGallaryId());
 				fileVO.setFileId(fileGallary.getFile().getFileId());
-				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle().toString()):"");
-				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()):"");
+				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?fileGallary.getFile().getFileTitle().toString():"");
+				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?fileGallary.getFile().getFileDescription():"");
 				
 				Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
 				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
@@ -5723,7 +5725,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 }
 		 }
 		 
-		 fileVOsList.get(0).setCount(fileGallaryDAO.getRecentlyUploadedNewsDetails(null, null, contenttype,partyId).size());
+		 fileVOsList.get(0).setCount(fileGallaryDAO.getRecentlyUploadedNewsDetails(null, null, contenttype,partyId,newsType).size());
 		 return fileVOsList;
 		 
 		
@@ -5736,20 +5738,20 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	
 	
 	
-	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId)
+	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId,String newsType)
 	{
 		List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
 		try{
 		
 		
-		 List<Object[]> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNews(startIndex, maxIndex, contenttype,partyId);
+		 List<Object[]> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNews(startIndex, maxIndex, contenttype,partyId,newsType);
 		 if(fileGallaryList != null && fileGallaryList.size() > 0)
 		 {
 			 for(Object[] params : fileGallaryList)
 			 {
 				FileVO fileVO = new FileVO(); 
 				fileVO.setContentId((Long)params[0]);
-				fileVO.setFileTitle1(params[1]!=null?CommonStringUtils.removeSpecialCharsFromAString(params[1].toString()):"");
+				fileVO.setFileTitle1(params[1]!=null?params[1].toString():"");
 				fileVOsList.add(fileVO);
 			 }
 		 }
@@ -5865,7 +5867,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				return null;
 			}
 		}
-	 
+ 
 	 
 	 public List<SelectOptionVO> getNewsForCandidate(Long candidateId)
 	 {
