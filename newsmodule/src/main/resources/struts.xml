@@ -5345,7 +5345,6 @@
 		    	<param name="root">returnVal</param>
 		   </result> 
 		</action>
-		
 		<action name="adminPageAction" class="adminPageAction">
 		 <result name="success">/jsp/adminPage.jsp</result>
 		</action>
@@ -5355,5 +5354,25 @@
 		    	<param name="root">resultStatus</param>
 		   </result> 
 		</action>
+		
+		<action name="getCandidatesOfAUser" class="candidateElectionResultsAction" method="getCandidatesOfAUser">
+		 <result type="json" name="success">
+		    	<param name="root">candidatesList</param>
+		   </result>			
+		</action>
+		
+		<action name="getNewsForACandidate" class="candidateElectionResultsAction" method="getNewsForACandidate">
+		 <result type="json" name="success">
+		    	<param name="root">selectOptionList</param>
+		   </result>			
+		</action>
+		
+		<action name="uploadFilesForMultipleCandidates" class="candidateElectionResultsAction" method="uploadFilesForMultipleCandidates">			
+			<result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+			</result>					
+		</action>
+		
+			
 		</package>
 </struts>      

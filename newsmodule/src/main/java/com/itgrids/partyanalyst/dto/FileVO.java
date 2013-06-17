@@ -122,8 +122,19 @@ public class FileVO extends ResultStatus implements Serializable {
 	private List<Integer> newsedition;
 	private List<Integer> pageno;
 	private List<String> newslength;
+	private List<Long> candidateIds = new ArrayList<Long>();
+	private List<Long> responseFileIds = new ArrayList<Long>();
 	
 	
+
+	public List<Long> getResponseFileIds() {
+		return responseFileIds;
+	}
+
+	public void setResponseFileIds(List<Long> responseFileIds) {
+		this.responseFileIds = responseFileIds;
+	}
+
 	public Date getFileGallaryDate() {
 		return fileGallaryDate;
 	}
@@ -134,6 +145,14 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public String getIsPrivate() {
 		return isPrivate;
+	}
+
+	public List<Long> getCandidateIds() {
+		return candidateIds;
+	}
+
+	public void setCandidateIds(List<Long> candidateIds) {
+		this.candidateIds = candidateIds;
 	}
 
 	public void setIsPrivate(String isPrivate) {
