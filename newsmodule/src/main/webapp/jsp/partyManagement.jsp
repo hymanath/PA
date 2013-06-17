@@ -4763,7 +4763,7 @@ function buildNewsDetailsOfcandidate(results)
 	//var moreDivElmt = document.createElement("addMoreFilesDiv");
 	var str ='';
 	str+='<div id="'+value+'"  class="div'+value+'">';
-	str+=text;
+	str+="<u><span style='font-weight:bold;'>Upload "+text+" Files</span></u>";
 	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+value+'">';
 	str += ' <tr>';
 	str +='<td>File Path</td>';
