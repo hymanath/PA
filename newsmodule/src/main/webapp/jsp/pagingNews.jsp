@@ -133,7 +133,8 @@ function buildPaginatedNews(results,jsObj){
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
 		str+="<li>";
-		if(results[i].source.trim() == "Eenadu Telugu")
+		var source = results[i].source.trim();
+		if(source == "Eenadu Telugu")
 		{
 			str+="<h4 class='enadu' style='text-transform: capitalize;'>"+results[i].fileTitle1+"</h4>";
 		}
@@ -145,7 +146,15 @@ function buildPaginatedNews(results,jsObj){
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
-		str+="<p class='span8'>"+results[i].description+"</p>";
+		if(source == "Eenadu Telugu")
+		{
+			str+="<p class='span8 enadu'>"+results[i].description+"</p>";
+		}
+		else
+		{
+			str+="<p class='span8'>"+results[i].description+"</p>";
+		}
+				
 		str+="</div>";
 		str+="<div class='row-fluid m_top10'><div class='span9'><p class='text-error'>Source : "+results[i].source+"</p></div>";
 		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>More</a></div></li>";

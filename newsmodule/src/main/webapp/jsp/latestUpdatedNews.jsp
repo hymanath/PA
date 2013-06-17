@@ -130,7 +130,8 @@ function buildPaginatedNews(results,jsObj)
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
 		str+="<li>";
-		if(results[i].fileVOList[0].source.trim() == "Eenadu Telugu")
+		var source = results[i].fileVOList[0].source.trim();
+		if(source == "Eenadu Telugu")
 		{
 			str+="<h4><a href='#' class='enadu'>"+results[i].title+"</a></h4>";
 		}
@@ -146,7 +147,15 @@ function buildPaginatedNews(results,jsObj)
 		var source = results[i].fileVOList[0].source;
 		
 		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
-		str+="<p class='span8'>"+results[i].description+"</p>";
+		if(source == "Eenadu Telugu")
+		{
+			str+="<p class='span8 enadu'>"+results[i].description+"</p>";
+		}
+		else
+		{
+			str+="<p class='span8'>"+results[i].description+"</p>";
+		}
+		
 		str+="</div>";
 
 		str+="<div class='row-fluid m_top10'><div class='span9'>";
