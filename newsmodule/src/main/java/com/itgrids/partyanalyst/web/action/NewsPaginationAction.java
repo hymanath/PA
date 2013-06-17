@@ -8,12 +8,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -25,7 +28,9 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	private FileVO fileVO;
 	private List<FileVO> fileVOList;
 	private ICandidateDetailsService candidateDetailsService;
+	private INewsMonitoringService newsMonitoringService;
 	private String level;
+	private static final Logger log=Logger.getLogger(NewsPaginationAction.class);
 	//private INewsByPagingService newsByPagingService;
 	
 	
@@ -154,5 +159,30 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	public void setServletRequest(HttpServletRequest arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	public String getCandidatesNews(){
+		if(log.isDebugEnabled())
+			log.debug("In HomePageAction's getCandidatesNews");
+		
+		try{
+			  jObj = new JSONObject(getTask());
+			}catch (Exception e) {
+			  e.printStackTrace();
+			  Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
+			}
+		
+		try{
+			fileVOList=new ArrayList<FileVO>();
+			Long candidateId=jObj.getLong("candidateId");
+			int frstRcrd=jObj.getInt("firstRecord");
+			int maxRcrd=jObj.getInt("maxRecords");
+			String type=jObj.getString("type");
+			
+			fileVOList=candidateDetailsService.getCandidatesNews(candidateId, frstRcrd, maxRcrd, type);
+		}
+		catch (Exception e) {
+			log.debug("Exception in HomePageAction's getCandidatesNews -"+e);
+		}
+		return SUCCESS;
 	}
 }
