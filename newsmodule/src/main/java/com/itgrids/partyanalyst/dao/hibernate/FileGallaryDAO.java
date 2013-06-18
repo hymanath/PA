@@ -2928,12 +2928,18 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			query.setParameter(2,"false");				
 			return ((Long)query.uniqueResult()).intValue(); 
 	 }
-	 public Long getVideosCountIntheGallary(Long galleryId){
-		 Query query = getSession().createQuery("select count(model.fileSourceLanguage.fileSourceLanguageId) from FilePaths model,FileGallary model1 where model.fileSourceLanguage.file.fileId "+
-					" = model1.file.fileId and model1.gallary.gallaryId = ? and model1.isDelete = ? and model1.isPrivate = ? group by model1.gallary.gallaryId ");
+	 public Long getVideosCountIntheGallary(Long galleryId,String queryType){
+		 StringBuffer queryObject = new StringBuffer();
+		 queryObject.append(" select count(model.fileSourceLanguage.fileSourceLanguageId) from FilePaths model,FileGallary model1 where " );
+		 queryObject.append(" model.fileSourceLanguage.file.fileId  = model1.file.fileId and model1.gallary.gallaryId = ? and model1.isDelete = ? ");
+		 if(!queryType.equalsIgnoreCase(""))
+			 queryObject.append(" and model1.isPrivate = ? ");
+		 queryObject.append(" group by model1.gallary.gallaryId ");
+		 Query query = getSession().createQuery(queryObject.toString());
 		    query.setParameter(0,galleryId);
 			query.setParameter(1,"false");
-			query.setParameter(2,"false");				
+			if(!queryType.equalsIgnoreCase(""))
+				query.setParameter(2,"false");				
 			return (Long)query.uniqueResult();
 	 }
 	
@@ -2959,4 +2965,45 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		query.setParameterList("fileGallaryIdsList", fileGallaryIdsList);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+    public List<FileGallary> getFilesOfGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex,String newsType,Long categoryId)
+    {
+		 StringBuffer queryObject = new StringBuffer();
+		 queryObject.append("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and " );
+		 queryObject.append(" model.isDelete = 'false' and model.gallary.isDelete = 'false' ");
+		 if(categoryId != 0)
+			 queryObject.append(" and model.file.category.categoryId = :categoryId ");
+		 if(!newsType.equalsIgnoreCase(""))
+			 queryObject.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false' ");
+		 queryObject.append(" group by model.file.fileId ");
+		 Query query = getSession().createQuery(queryObject.toString());
+   	 query.setParameterList("gallaryIdsList",gallaryIdsList);
+   	 if(categoryId != 0)
+   		 query.setParameter("categoryId", categoryId);
+   	 query.setFirstResult(startIndex);
+   	 query.setMaxResults(endIndex);
+   	 return query.list();
+    }
+	
+	 @SuppressWarnings("unchecked")
+		public List<Long> getAllRecordsCountInGallary(Long gallaryId,String newsType,Long categoryId){
+		 StringBuffer queryObject = new StringBuffer();
+		 queryObject.append("select count(*) from FileGallary model where model.gallary.gallaryId = :gallaryId " +
+		 		"and model.isDelete = :isDelete ");
+		 if(categoryId != 0)
+			 queryObject.append(" and model.file.category.categoryId = :categoryId ");
+		 if(!newsType.equalsIgnoreCase(""))
+			 queryObject.append(" and model.isPrivate = :isPrivate ");
+		
+		 Query query = getSession().createQuery(queryObject.toString());
+		 query.setParameter("gallaryId",gallaryId);
+		 query.setParameter("isDelete","false");
+		 if(categoryId != 0)
+			 query.setParameter("categoryId",categoryId);
+		 if(!newsType.equalsIgnoreCase(""))
+			 query.setParameter("isPrivate","false");				
+		return query.list(); 
+		}
+	 
 }
