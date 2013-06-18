@@ -1,9 +1,6 @@
 /* 
- * Copyright (c) 2009 IT Grids.
+ * Copyright (c) 2013 TDP PARTY .
  * All Rights Reserved.
- *
- * IT Grids Confidential Information.
- * Created on October 2, 2009
  */
 package com.itgrids.partyanalyst.service.impl;
 
@@ -17,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -81,6 +80,7 @@ import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dao.IUserPartyRelationDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -5520,7 +5520,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 }
 */
  
- public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType){
+ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType,Long categoryId){
 		
 		List<FileVO> returnList = new ArrayList<FileVO>();
 		
@@ -5528,9 +5528,9 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 		gallaryIdsList.add(gallaryId);
 		
 		List<FileGallary> fileGallaryList = fileGallaryDAO
-				.getFilesOfInGallaries(gallaryIdsList,startIndex,endIndex,newsType);
+				.getFilesOfGallaries(gallaryIdsList,startIndex,endIndex,newsType,categoryId);
 		
-		Long count = fileGallaryDAO.getAllRecordCountInGallary(gallaryId).get(0);
+		Long count = fileGallaryDAO.getAllRecordsCountInGallary(gallaryId,newsType,categoryId).get(0);
 		
 		for(FileGallary fileGallary : fileGallaryList){
 			if(fileGallary.getFile() !=null){
@@ -5601,7 +5601,7 @@ IConstants.NEWS_GALLARY,0,5);
 
 }
 
-public List<FileVO> getVideosForSelectedParty(Long partyId)
+public List<FileVO> getVideosForSelectedParty(Long partyId,String newsType)
 {
 	List<FileVO> file = null;
 	List<Long> galleryIds = null;
@@ -5613,7 +5613,7 @@ public List<FileVO> getVideosForSelectedParty(Long partyId)
 			galleryIds.add(galleryId); 
 		}
 	}
-	List<FileGallary> filesList = fileGallaryDAO.getAllVideoFilesOfInGallaries(galleryIds,1,6,"public");
+	List<FileGallary> filesList = fileGallaryDAO.getAllVideoFilesOfInGallaries(galleryIds,1,6,newsType);
 	
 	if(filesList != null && filesList.size() > 0)
 	{
@@ -5801,7 +5801,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 			fileVO.setPath(objects[3].toString());
 	 			fileVO.setGallaryCreatedDate(objects[4].toString());
 	 			fileVO.setCount(count);
-	 			Long count1=fileGallaryDAO.getVideosCountIntheGallary((Long)objects[0]);
+	 			Long count1=fileGallaryDAO.getVideosCountIntheGallary((Long)objects[0],queryType);
 	 			fileVO.setTotalResultsCount(count1);
 	 			fileList.add(fileVO);
 	 		}
