@@ -62,5 +62,6 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	
 	public int getResponseNewsCountOfCandidate(Long candidateId,String queryType,Long fileGallaryId);
 	
+	public List<Object[]> getLatestNewsResponses();
 	
 }

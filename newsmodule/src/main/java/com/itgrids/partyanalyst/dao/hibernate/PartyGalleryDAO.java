@@ -4,6 +4,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -673,6 +674,17 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 				else
 					return 0;
 			}
+		 public List<Object[]> getLatestNewsResponses(){
+			 Query queryObj=getSession().createQuery("select model.responseFileGallary.fileGallaryId,model.responseFileGallary.file.fileTitle,model.responseFileGallary.file.fileDate" +
+			 		" from CandidateNewsResponse model where model.responseFileGallary.isPrivate='false' and " +
+			 		" model.responseFileGallary.isDelete='false' and model.responseFileGallary.gallary.isPrivate='false' and " +
+			 		" model.responseFileGallary.gallary.isDelete='false' order by model.responseFileGallary.updateddate desc"); 
+			 queryObj.setFirstResult(0);
+			 queryObj.setMaxResults(5);
+			 
+			 return queryObj.list();
+			 
+		 }
 		 
 
 	}

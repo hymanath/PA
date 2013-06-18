@@ -5565,6 +5565,21 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 		
 		return returnList;		
 	}
+ 
+ public List<FileVO> getLatestResponsedNews(){
+	 List<FileVO> fileVoList=new ArrayList<FileVO>();
+	 List<Object[]> fileGalList=partyGalleryDAO.getLatestNewsResponses();
+	 
+	 for(Object[] objs:fileGalList){
+		 FileVO file=new FileVO();
+		 file.setFileGallaryId((Long)objs[0]);
+		 file.setTitle(objs[1]!=null?objs[1].toString():"");
+		 file.setFileDate(objs[2]!=null?objs[2].toString():"");
+		 
+		 fileVoList.add(file);
+	 }
+	 return fileVoList;
+ }
 
 public List<SelectOptionVO> getLatestgallaries()
 {
