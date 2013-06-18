@@ -42,7 +42,8 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	public List<Object[]> getNewsCountDetailsForGallaries(List<Long> gallaryIds)
 	{
 		Query query = getSession().createQuery("select model.gallary.gallaryId , count( model.gallary.gallaryId) " +
-				" from FileGallary model where model.gallary.gallaryId in(:gallaryIds) group by model.gallary.gallaryId");
+				" from FileGallary model where model.gallary.gallaryId in(:gallaryIds) and model.isDelete = 'false' " +
+				" and  model.gallary.isDelete='false' group by model.gallary.gallaryId");
 		
 		query.setParameterList("gallaryIds", gallaryIds);
 		
@@ -521,19 +522,20 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	     StringBuilder query = new StringBuilder();
 			query.append("select  model.gallary.gallaryId ,model.gallary.name,model.gallary.description,model.gallary.createdDate,model.gallary.updateddate,SUM(CASE  WHEN  model.file.category.categoryId = :categoryId and model2.party.partyId = :partyId THEN 1  ELSE 0 END ) from FileGallary model , PartyGallery model2   where "+
 				" model2.gallery.gallaryId=model.gallary.gallaryId   and  model2.party.partyId = :partyId "+
-				" and model2.gallery.contentType.contentType= :type  and model.file.category.categoryId = :categoryId  and  model.isDelete = :isDelete and model.isPrivate = :isPrivate  ");
-				if(queryType.equalsIgnoreCase("Public"))
-			   query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+				" and model2.gallery.contentType.contentType= :type  and model.file.category.categoryId = :categoryId  and  model.isDelete = :isDelete ");
+			if(queryType.equalsIgnoreCase("Public"))
+				query.append(" and model.isPrivate = :isPrivate  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
 			
 			if(queryType.equalsIgnoreCase("Private"))
-			  query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
-			query.append("group by  model.gallary.gallaryId order by model.file.fileDate desc, model.updateddate desc");
+				query.append(" and model.isPrivate = :isPrivate  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true' ) ) ");
+			query.append(" group by  model.gallary.gallaryId order by model.file.fileDate desc, model.updateddate desc ");
 			Query queryObject = getSession().createQuery(query.toString());
 			queryObject.setLong("partyId", partyId);
 			queryObject.setLong("categoryId", catId);
 			queryObject.setString("type", IConstants.NEWS_GALLARY);
 			queryObject.setString("isDelete", "false");
-			queryObject.setString("isPrivate", "false");
+			if(!queryType.equalsIgnoreCase(""))
+				queryObject.setString("isPrivate", "false");
 			queryObject.setFirstResult(firstResult*2);
 			queryObject.setMaxResults(maxResult);									
 			return queryObject.list(); 
@@ -555,13 +557,13 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			 query.append("select model2.gallery.gallaryId, " +
 			 		"  model2.gallery.name, model2.gallery.description,fps.filePath,model2.gallery.createdDate from FileGallary model , PartyGallery model2 , FileSourceLanguage fs,FilePaths fps where "+
 			 " model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId = :partyId "+
-			 " and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and model.isPrivate = :isPrivate and fs.fileSourceLanguageId=fps.fileSourceLanguage.fileSourceLanguageId ");
+			 " and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and fs.fileSourceLanguageId=fps.fileSourceLanguage.fileSourceLanguageId ");
 			 
 			 if(queryType.equalsIgnoreCase("Public"))
-			 query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
+			 query.append(" and model.isPrivate = :isPrivate and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
 
 			 if(queryType.equalsIgnoreCase("Private"))
-			 query.append(" and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			 query.append(" and model.isPrivate = :isPrivate and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
 			 //query.append(" and model.file.locationValue = :locationValue and model.file.regionScopes.regionScopesId = :locId ");
 			 query.append(" group by model2.gallery.gallaryId order by model2.gallery.updateddate desc ");
 			 Query queryObject = getSession().createQuery(query.toString());
@@ -569,7 +571,8 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			 queryObject.setLong("partyId", partyId);
 			 queryObject.setString("type", IConstants.VIDEO_GALLARY);
 			 queryObject.setString("isDelete", "false");
-			 queryObject.setString("isPrivate", "false");
+			 if(!queryType.equalsIgnoreCase(""))
+				 queryObject.setString("isPrivate", "false");
 			 queryObject.setFirstResult(firstResult);
 			 queryObject.setMaxResults(maxResult);
 
@@ -583,13 +586,13 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			 query.append("select count(distinct model.gallary.gallaryId) " +
 			 		"  from FileGallary model , PartyGallery model2 , FileSourceLanguage fs where "+
 			 " model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId = :partyId "+
-			 " and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and model.isPrivate = :isPrivate ");
+			 " and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete ");
 			 
 			 if(queryType.equalsIgnoreCase("Public"))
-			 query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
+			 query.append(" and model.isPrivate = :isPrivate and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
 
 			 if(queryType.equalsIgnoreCase("Private"))
-			 query.append(" and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			 query.append(" and model.isPrivate = :isPrivate and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
 			 //query.append(" and model.file.locationValue = :locationValue and model.file.regionScopes.regionScopesId = :locId ");
 			 query.append(" group by model2.party.partyId order by model2.gallery.updateddate desc ");
 			 Query queryObject = getSession().createQuery(query.toString());
@@ -597,7 +600,8 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			 queryObject.setLong("partyId", partyId);
 			 queryObject.setString("type", IConstants.VIDEO_GALLARY);
 			 queryObject.setString("isDelete", "false");
-			 queryObject.setString("isPrivate", "false");
+			 if(!queryType.equalsIgnoreCase(""))
+				 queryObject.setString("isPrivate", "false");
 			 
 
 			 return ((Long)queryObject.uniqueResult()).intValue();
