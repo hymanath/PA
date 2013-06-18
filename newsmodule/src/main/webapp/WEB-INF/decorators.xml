@@ -234,6 +234,8 @@
 		<pattern>/searchNewsAction*</pattern>
 		<pattern>/showNewsOfCandidateAction*</pattern>
 		<pattern>/adminPageAction*</pattern>
+		<pattern>/aboutUs*</pattern>
+		<pattern>/contactUs*</pattern>
     	 </decorator>
 
 </decorators>

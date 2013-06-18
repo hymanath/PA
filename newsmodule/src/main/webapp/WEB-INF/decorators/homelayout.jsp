@@ -103,7 +103,7 @@ margin:-1px 0px 0px 0px ;
 						<c:if test="${sessionScope.USER != null}">
 						 <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
 						  <li class=""><a href="homePage.action">Home</a></li>
-						  <li class=""><a href="#">About us</a></li>
+						  <li class=""><a href="aboutUs.action">About us</a></li>
 						  <li class="">
 						  <a href="newsDetailsAction.action">News</a></li>
 						  <li class="">
@@ -113,7 +113,7 @@ margin:-1px 0px 0px 0px ;
 						      <li class=""><a href="partyManagementAction.action">Manage Party Profile</a></li>
 						   
 						  
-						  <li class=""><a href="#">Contact us</a></li>
+						  <li class=""><a href="contactUs.action">Contact us</a></li>
 						   </c:if> </c:if>
 						  
 						</ul>
