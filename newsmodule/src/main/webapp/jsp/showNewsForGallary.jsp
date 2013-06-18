@@ -42,7 +42,6 @@ $( document ).ready(function() {
 
 </head>
 <body>
-		s
 		<!----Container---->
 		<div class="container">
 		<!--------- Row-1 -------->
@@ -110,6 +109,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 
 <script>
 var galalryId = '${gallaryId}';
+var categoryId = '${category}';
 showAllFilesofAGallry(0,10,galalryId,1);
 
 function showAllFilesofAGallry(startIndex , endIndex , gallaryId,selectedvalue)
@@ -124,7 +124,7 @@ $('#imageForMail').css("display","block");
 	  type:'POST',
 	  url: 'getFilesInAGallary.action',
 	  dataType: 'json',
-	 data: {startIndex:startIndex,endIndex:endIndex,gallaryId:gallaryId,},
+	 data: {startIndex:startIndex,endIndex:endIndex,gallaryId:gallaryId,categoryId:categoryId,},
 		 
 	  success: function(results){ 
 		   buildFilesInGallaryDetails(results,selectedvalue);
