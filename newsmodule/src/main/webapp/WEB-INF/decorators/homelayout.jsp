@@ -75,7 +75,7 @@ margin:-1px 0px 0px 0px ;
 		<div class="row">
 			<!----Logo----->
 			<div class="span4">
-				<img src="images/Logo.png" alt="Telugudhesham party logo" />		
+				<img src="images/Logo.png" alt="Telugudhesam party logo" />		
 			</div>
 			<!-----Nav main div---->
 			<div class="span8">
@@ -104,8 +104,10 @@ margin:-1px 0px 0px 0px ;
 						 <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
 						  <li class=""><a href="homePage.action">Home</a></li>
 						  <li class=""><a href="#">About us</a></li>
-						  <li class=""><a href="#">News</a></li>
-						  <li class=""><a href="#">Videos</a></li>
+						  <li class="">
+						  <a href="newsDetailsAction.action">News</a></li>
+						  <li class="">
+						  <a onclick="showMoreVideoGallaries()">Videos</a></li>
 						 
 						  
 						      <li class=""><a href="partyManagementAction.action">Manage Party Profile</a></li>
@@ -163,7 +165,7 @@ margin:-1px 0px 0px 0px ;
 <td>
 	<!-----Footer---->
 	  <footer>
-        <p class="text-center">&copy; Telugudesham Party 2013</p>
+        <p class="text-center">&copy; Telugudesam Party 2013</p>
       </footer>
   
   
@@ -186,7 +188,12 @@ function getNewsDetailsByContentId(contentId)
     var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
     browser1.focus();
 } 
-
+function showMoreVideoGallaries(){
+	 var urlstr = "showMoreVideos.action";
+		
+     var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+}
 </script>
 </body>
 </html>
