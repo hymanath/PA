@@ -11,6 +11,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
@@ -36,6 +38,8 @@ public class ContentManagementService implements IContentManagementService{
 	private IPartyGalleryDAO partyGalleryDAO;
 	private INewsFlagDAO newsFlagDAO;
 	private ICandidateDetailsService candidateDetailsService;
+	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
+	private ICandidateDAO candidateDAO;
 	
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
@@ -87,7 +91,22 @@ public class ContentManagementService implements IContentManagementService{
 		this.fileGallaryDAO = fileGallaryDAO;
 	}
 
+	public ICandidateNewsResponseDAO getCandidateNewsResponseDAO() {
+		return candidateNewsResponseDAO;
+	}
 
+	public void setCandidateNewsResponseDAO(
+			ICandidateNewsResponseDAO candidateNewsResponseDAO) {
+		this.candidateNewsResponseDAO = candidateNewsResponseDAO;
+	}
+
+	public ICandidateDAO getCandidateDAO() {
+		return candidateDAO;
+	}
+
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
+	}
 
 	/**
 	 * This Method will give the Selected File Details, their related files and Other Galleries Details
@@ -651,4 +670,145 @@ public class ContentManagementService implements IContentManagementService{
 				 	        else return 0;
 				        }
 				    };
+				    
+				    
+				  //get Response fileGallaries for selected fileGallary
+				    
+					public GallaryVO getResponseGallariesForSelectedGallary(Long fileGallaryId,Integer startIndex, Integer maxIndex)
+					{
+						GallaryVO gallaryVO = new GallaryVO();
+						try{
+							List<Object[]> responseGallaryList = candidateNewsResponseDAO.getResponsefileGallaryIds(fileGallaryId,startIndex,maxIndex);
+							if(responseGallaryList != null && responseGallaryList.size() > 0)
+							{
+							   List<Long> responseFileGallaryIdsList = new ArrayList<Long>(0);
+							   List<FileVO> responseFileList = new ArrayList<FileVO>();
+								for(Object[] params : responseGallaryList)
+								{
+								  FileVO fileVO = new FileVO();
+								  fileVO.setContentId((Long)params[0]);
+								  fileVO.setCandidateId((Long)params[1]);
+								  fileVO.setCandidateName(candidateDAO.get((Long)params[1]).getLastname());
+								  responseFileList.add(fileVO);
+								  responseFileGallaryIdsList.add((Long)params[0]);
+								}
+							 setFileGalaryDetailsByFileGallaryIdsList(responseFileGallaryIdsList, responseFileList);
+							 gallaryVO.setResponseGallaryList(responseFileList);
+							 gallaryVO.setResGallTotRecordsCount(candidateNewsResponseDAO.getResponsefileGallaryIds(fileGallaryId,null,null).size());
+							 
+							}
+							
+							List<Object[]> list = candidateNewsResponseDAO.getFileGallaryIdsByResponseGallaryId(fileGallaryId, startIndex,maxIndex);
+							if(list != null && list.size() > 0)
+							{
+								List<Long> fileGallaryIdslist = new ArrayList<Long>(0);
+								List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
+								for(Object[] params :list)
+								{
+								  FileVO fileVO = new FileVO();
+								  fileVO.setContentId((Long)params[0]);
+								  fileVO.setCandidateId((Long)params[1]);
+								  fileVO.setCandidateName(candidateDAO.get((Long)params[1]).getLastname());
+								  fileVOsList.add(fileVO);
+								  fileGallaryIdslist.add((Long)params[0]);
+								}
+								setFileGalaryDetailsByFileGallaryIdsList(fileGallaryIdslist, fileVOsList);
+								gallaryVO.setFilesList(fileVOsList);
+								gallaryVO.setCount(candidateNewsResponseDAO.getFileGallaryIdsByResponseGallaryId(fileGallaryId,null,null).size());
+							}
+							
+							return gallaryVO;
+						}catch (Exception e) {
+						 e.printStackTrace();
+						 log.error("Exception Occured in getResponseGallariesForSelectedGallary() method, Exception - "+e);
+						 return gallaryVO;
+						}
+					}
+					
+					public void setFileGalaryDetailsByFileGallaryIdsList(List<Long> fileGallaryIdsList,List<FileVO> fileVOResultList)
+					{
+						try{
+						List<FileGallary> fileGallariesList = fileGallaryDAO.getFileGallariesByFileGallaryIdsList(fileGallaryIdsList);
+						for(FileGallary fileGallary: fileGallariesList)
+						{
+						  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						  
+						  FileVO fileVO = getFileVOFromFileList(fileGallary.getFileGallaryId(), fileVOResultList);
+						  
+						  if(fileGallary.getFile() == null || fileVO == null)
+							 continue;
+						  
+						  fileVO.setCount(candidateNewsResponseDAO.getResponsefileGallaryIds(fileGallary.getFileGallaryId(),null,null).size());
+						  
+						  fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?fileGallary.getFile().getFileTitle():"");
+						  fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?fileGallary.getFile().getFileDescription():"");
+						  
+						  Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
+						  List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
+						  Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+						 
+						  List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(0);
+						  if(fileSourceLanguageList != null && fileSourceLanguageList.size() > 0)
+						  {
+							 for(FileSourceLanguage fileSourceLanguage:fileSourceLanguageList)
+							 {
+								FileVO fileVOSourceLanguage = new FileVO();
+								fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!= null?fileSourceLanguage.getSource().getSourceId():null);
+								fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():null);
+								fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+								fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
+								fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+								
+								List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+								Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+								for(FilePaths filePath:filePathsSet)
+								{
+								  FileVO fileVOFilePath = new FileVO();
+								  fileVOFilePath.setPath(filePath.getFilePath());
+								  fileVOFilePath.setOrderNo(filePath.getOrderNo());
+								  fileVOFilePath.setOrderName("Part-"+filePath.getOrderNo());
+								  fileVOPathsList.add(fileVOFilePath);
+								}
+								  
+								Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+								fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+								fileVOSourceLanguageList.add(fileVOSourceLanguage);
+							 }
+							 
+						  }
+						  
+						  
+						  fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+						  Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+						  fileVO.setFileVOList(fileVOSourceLanguageList);
+							
+						  fileVO.setFileDate(fileGallary.getFile().getFileDate() == null ? null :
+								sdf.format(fileGallary.getFile().getFileDate()));
+						  fileVO.setReqFileDate(fileGallary.getFile().getFileDate());
+							 
+						  //fileVOResultList.add(fileVO);
+						  
+						}
+					 }catch (Exception e) {
+						 e.printStackTrace();
+						 log.error("Exception Occured in setFileGalaryDetailsByFileGallaryIdsList() method, Exception - "+e);
+					}
+				}
+					
+					public FileVO getFileVOFromFileList(Long fileGallaryId, List<FileVO> list)
+					{
+					  try{
+						 if(list == null || list.size() == 0)
+						   return null;
+							
+						for(FileVO fileVO : list)
+						 if(fileVO.getContentId().equals(fileGallaryId))
+							 return fileVO;
+							return null;
+						}catch (Exception e) {
+							log.error("Exception Occured in getFileVOFromFileList() method, Exception - "+e);
+							return null;
+						}
+						
+					}
 }

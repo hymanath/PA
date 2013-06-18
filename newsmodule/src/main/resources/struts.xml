@@ -5402,7 +5402,11 @@
 			    <param name="inputName">inputStream</param>
 			</result>					
 		</action>
-		
-			
+				
+		<action name="getResponseGallaryDetailsAction" class="newsDetailsAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">gallaryVO</param>
+		 </result>
+		</action>
 		</package>
 </struts>      
