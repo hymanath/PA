@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>News - Telugudesham Party</title>
+	<title> News - Telugudesam Party</title>
 	<meta name="" content="">
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">

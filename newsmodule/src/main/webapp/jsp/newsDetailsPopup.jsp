@@ -3,7 +3,7 @@
 <html>
 <head>
  <META http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Telugudhesham Party</title>
+<title> Telugudesam Party </title>
 
 <!-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>

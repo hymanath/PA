@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>News - Telugudesham Party</title>
+<title>News - Telugudesam Party</title>
 
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 
