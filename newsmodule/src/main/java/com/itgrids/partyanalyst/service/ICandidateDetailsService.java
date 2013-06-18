@@ -233,4 +233,6 @@ public interface ICandidateDetailsService {
 	 public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type);
 	 
 	 public List<SelectOptionVO> getNewsForCandidate(Long candidateId);
+	 
+	 public List<FileVO> getLatestResponsedNews();
 }
