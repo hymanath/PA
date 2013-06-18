@@ -7,6 +7,7 @@ public class SurveyVO {
 	private String description;
 	private Long locationScopeId;
 	private Long locationValue;
+	private Long constituencyId;
 	public Long getSurveyId() {
 		return surveyId;
 	}
@@ -36,6 +37,12 @@ public class SurveyVO {
 	}
 	public void setLocationValue(Long locationValue) {
 		this.locationValue = locationValue;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	
 	

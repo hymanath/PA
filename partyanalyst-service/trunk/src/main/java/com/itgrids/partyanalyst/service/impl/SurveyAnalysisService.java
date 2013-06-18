@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyInfoVO;
 import com.itgrids.partyanalyst.dto.SurveyVO;
+import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Option;
 import com.itgrids.partyanalyst.model.QuestionOptions;
@@ -520,6 +521,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			surveyVO.setDescription(surveyData.getDescription());
 			surveyVO.setLocationScopeId(surveyData.getLocationScopes().getRegionScopesId());
 			surveyVO.setLocationValue(surveyData.getLocationScopeValue());
+			surveyVO.setConstituencyId(surveyData.getUserAddress()!=null?surveyData.getUserAddress().getConstituency().getConstituencyId():0l);
 			returnData.add(surveyVO);
 		}
 		
@@ -614,7 +616,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		}
 		if(surveyInfoVO.getMandalId() != null && surveyInfoVO.getMandalId() > 0)
 		{
-			userAddress.setTehsil(tehsilDAO.get(surveyInfoVO.getMandalId()));
+			userAddress.setTehsil(tehsilDAO.get(Long.valueOf(surveyInfoVO.getMandalId().toString().substring(1))));
 		}
 		if(surveyInfoVO.getBoothId() != null && surveyInfoVO.getBoothId() > 0)
 		{
@@ -626,18 +628,26 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		}
 		if(surveyInfoVO.getWardId() != null && surveyInfoVO.getWardId() > 0)
 		{
-			userAddress.setWard(constituencyDAO.get(surveyInfoVO.getWardId()));
+			userAddress.setWard(constituencyDAO.get(Long.valueOf(surveyInfoVO.getWardId().toString().substring(1))));
 		}
 		if(surveyInfoVO.getLocalBodyElectionId() != null && surveyInfoVO.getLocalBodyElectionId() > 0)
 		{
-			userAddress.setLocalElectionBody(localElectionBodyDAO.get(surveyInfoVO.getLocalBodyElectionId()));
+			AssemblyLocalElectionBody assemblyLocalElection = assemblyLocalElectionBodyDAO.get(Long.valueOf(surveyInfoVO.getLocalBodyElectionId().toString().substring(1)));
+			if(assemblyLocalElection != null)
+			{
+				Long id = assemblyLocalElection.getLocalElectionBody().getLocalElectionBodyId();
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(id));
+			}
+			
 		}
+		/*if(surveyInfoVO.getLocalBodyElectionId() != null && surveyInfoVO.getLocalBodyElectionId() > 0)
+		{
+			userAddress.setLocalElectionBody(localElectionBodyDAO.get(surveyInfoVO.getLocalBodyElectionId()));
+		}*/
 		if(surveyInfoVO.getParlemtId() != null && surveyInfoVO.getParlemtId() > 0)
 		{
 			userAddress.setParliamentConstituency(constituencyDAO.get(surveyInfoVO.getParlemtId()));
 		}
-		System.out.println(surveyInfoVO.getName());
-		System.out.println(surveyInfoVO.getEducateionId());
 		surveyorProfile.setName(surveyInfoVO.getName()!=null ?surveyInfoVO.getName():"");
 		surveyorProfile.setMobileNo(surveyInfoVO.getMobileNo()!=null ?surveyInfoVO.getMobileNo():"");
 		surveyorProfile.setAge(surveyInfoVO.getAge()!=null?surveyInfoVO.getAge().toString():"");
