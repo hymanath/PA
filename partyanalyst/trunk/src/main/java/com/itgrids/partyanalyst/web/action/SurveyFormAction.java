@@ -57,6 +57,7 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 	private Long locationId;
 	private String locationValue;
 	private ResultStatus resultStatus;
+	private String wardId ;
 	public void setServletRequest(HttpServletRequest arg0) {
 		
 		this.request=arg0;
@@ -439,6 +440,16 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 		this.resultStatus = resultStatus;
 	}
 
+	
+	public String getWardId() {
+		return wardId;
+	}
+
+
+	public void setWardId(String wardId) {
+		this.wardId = wardId;
+	}
+
 
 	public String execute()
 	{
@@ -474,15 +485,15 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("getSurveyDetails"))
 			{
-				Long surveyId = jObj.getLong("surveyId");
-				surveyVO      = surveyAnalysisService.getSurveyDetailsBySurveyId(surveyId);
+				Long surveyId       = jObj.getLong("surveyId");
+				surveyVO            = surveyAnalysisService.getSurveyDetailsBySurveyId(surveyId);
 			}
 			
 			else if(jObj.getString("task").equalsIgnoreCase("getLocationDetails"))
 			{
-				locationId     = jObj.getLong("locationId");
-			    locationValue  = jObj.getString("locationValue");
-				name           = cadreManagementService.getRegionScopeValues(locationId,locationValue);
+				locationId          = jObj.getLong("locationId");
+			    locationValue       = jObj.getString("locationValue");
+				name                = cadreManagementService.getRegionScopeValues(locationId,locationValue);
 				return "name";
 			}
 			
@@ -512,9 +523,18 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 		surveyInfoVO.setStateId(stateId);
 		surveyInfoVO.setDistrictId(districtId);
 		surveyInfoVO.setConstituencyId(constituencyId);
-		surveyInfoVO.setMandalId(mandalId);
+		String mandal = String.valueOf(mandalId);
+		if(mandal.charAt(0) == '1')
+		{
+			surveyInfoVO.setLocalBodyElectionId(mandalId);
+		}
+		else
+		{
+			surveyInfoVO.setMandalId(mandalId);
+		}
+		
 		//surveyInfoVO.setPanchayatId(panchayatId);
-	//	surveyInfoVO.setWardId(hamletId);
+		surveyInfoVO.setWardId(Long.valueOf(wardId));
 		surveyInfoVO.setBoothId(boothId);
 		surveyInfoVO.setHamletId(hamletId);
 		surveyInfoVO.setName(name);
@@ -533,7 +553,10 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 		//surveyInfoVO.setLocationId(locationId);
 		//surveyInfoVO.setLocationValue(Long.valueOf(locationValue));
 		Long accessValue= Long.valueOf(regVO.getAccessValue());
-		resultStatus = surveyAnalysisService.saveSurveyDetails(surveyInfoVO);
+		if(surveyInfoVO.getName() != null)
+		{
+			resultStatus = surveyAnalysisService.saveSurveyDetails(surveyInfoVO);
+		}
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
