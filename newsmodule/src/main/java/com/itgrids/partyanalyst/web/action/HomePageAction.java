@@ -88,13 +88,19 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private ISpecialPageService specialPageService;
 	private String homePageLoadingFirstTime;
 	private List<FileVO> fileList;
-	private List<FileVO> fileVOsList;
+	private List<FileVO> fileVOsList,responseFilesList;
 	private HttpServletResponse response;
 	private INewsMonitoringService newsMonitoringService;
 	private Long candidateId;
 	private Map<Long,String> candidatesMap;
 	
 	
+	public List<FileVO> getResponseFilesList() {
+		return responseFilesList;
+	}
+	public void setResponseFilesList(List<FileVO> responseFilesList) {
+		this.responseFilesList = responseFilesList;
+	}
 	public Map<Long, String> getCandidatesMap() {
 		return candidatesMap;
 	}
@@ -440,8 +446,10 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		latestGallariesList = candidateDetailsService.getLatestgallaries();
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"",newsType);
 		fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID);
+		responseFilesList=candidateDetailsService.getLatestResponsedNews();
 		
 		fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L,newsType);
+		
 		return Action.SUCCESS;
 	}
 	public String getMoreVideos(){
