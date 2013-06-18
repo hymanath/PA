@@ -5162,24 +5162,26 @@ function buildUploadNewsForMultipleUsers()
 	str += '<h2 align="center">Upload A News</h2>';
 	str += '<table  align="left" class="paddingCss"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 
+     str+='<div style="border:2px solid #5E5E5E;margin:2px;">';
      str+='<a style="margin-left:46px;font-weight:bold;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
 	str+='<div style="margin-left:50px;">';
      
     str+='<div id="responseContentDiv" style="display:none;">';
 	str+='<div><span>Select Candidate:</span><select id="candidatesList" onChange="getCandidateNews(this.value)"></select></div>';
 
-	str+='<select id="candidateNewsList"  multiple="true" style="width:453px;display:none;"></select>';
+	str+='<select id="candidateNewsList"  multiple="true" style="width:445px;display:none;"></select>';
 
 	str+='<div style="margin-left:142px;display:none;" id="buttonsDiv"><input type="button" id="addFile" value="Add"/>';
 	str+='<input type="button" value="Remove" id="deleteFile"/></div>';
 
 
-	str+='<select id="respenseNewsList" name="responseFileIds" multiple ="true" style="margin-left:2px;width:453px;display:none;"></select>';
+	str+='<select id="respenseNewsList" name="responseFileIds" multiple ="true" style="margin-left:2px;width:445px;display:none;"></select>';
 
 
 	 
 	str+='</div>';
 	str+='</div>';
+    str+='</div>';
 	str += '<table style="margin-left:50px;">';
 	str += '   <tr>';
 	str += ' <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId" class="selectWidth" /></select></td>';
