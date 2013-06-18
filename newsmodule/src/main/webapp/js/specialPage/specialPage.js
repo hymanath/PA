@@ -872,6 +872,7 @@ function getNewsImportance()
  
 }
 function uploadVideoGallary(){
+	
 	var makeThis = 'private';
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
@@ -1018,7 +1019,12 @@ function uploadVideoGallary(){
 	}
 	str += '</font>';
 	errorDivEle.innerHTML = str;
-	
+	if(eFlag = true)
+	{
+		$('html, body').animate({
+         scrollTop: $("#galErrorMsgDivId").offset().top
+     }, 2000);
+	}
 	if(eFlag)
 		return;
 

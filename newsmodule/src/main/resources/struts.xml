@@ -5413,5 +5413,11 @@
 		   <param name="root">gallaryVO</param>
 		 </result>
 		</action>
+		<action name="aboutUs" class="homePageAction">
+			<result>/jsp/aboutUsInfo.jsp</result>
+		</action>
+		<action name="contactUs" class="homePageAction">
+			<result>/jsp/contactUsInfo.jsp</result>
+		</action>
 		</package>
 </struts>      
