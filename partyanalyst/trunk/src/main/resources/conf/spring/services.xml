@@ -518,6 +518,7 @@
 		<property name="bloodGroupDAO" ref="bloodGroupDAO" />
 		<property name="voterDAO" ref="voterDAO" />
 		<property name="cadreOnlineRegistrationDAO" ref="cadreOnlineRegistrationDAO" />
+		<property name="regionScopesDAO" ref="regionScopesDAO" />
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
