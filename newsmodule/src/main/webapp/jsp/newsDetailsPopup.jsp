@@ -5,8 +5,8 @@
  <META http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Telugudhesham Party</title>
 
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-
+<!-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -27,9 +27,12 @@
 	 
 	<!-- YUI Skin Sam -->
 <!-- YUI Dependency files (End) -->
-
+<script type="text/javascript" src="js/simplePagination/gallaryResponsePagination.js" ></script>
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
-<!-- <link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css"> -->
+
+<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
+
 <style type="text/css">
  #showContentHeaderDiv{background-color: #06ABEA;
     color: #FFFFFF;
@@ -141,7 +144,7 @@ h3 {
   
   color:#FF4500;
 }
-#releatedNewsDiv{ height: 400px;
+#releatedNewsDiv{height: 200px;
     overflow-y: scroll;}
 @font-face
 {
@@ -152,12 +155,51 @@ font-family:eFont;src: url('img/eenadu.ttf');
 font-family: eFont;
 font-size:20px;
 }
+#newsResponseDiv{clear:both;display:table;margin-top:20px;backGround:#FFF;}
+.blue:before {
+    background: none repeat scroll 0 0 #548BD4;
+    content: " ";
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: 0px;
+    width: 45px;
+}
+.widget {
+    background: none repeat scroll 0 0 #FAFAFA;
+    border-top: 5px solid #000000;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    margin: 10px 0 20px;
+    position: relative;
+}
+.blue {
+    color: #2A4F97;
+}
+.widget h4, h2 {
+    font-family: arial;
+}
+.widget h4, h2 {
+    border-bottom: 1px solid #C0C0C0;
+     font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+      padding-left: 10px;
+    text-rendering: optimizelegibility;
+    text-transform: uppercase;
+	 color: #000000;
+    
+}
+#paginationId{margin-bottom: 15px;margin-top: 10px;}
+#newsResponseDiv{float: none;margin-left: auto;margin-right: auto;width: 600px;}
+#responseNewsGallaryDiv ul li{  margin-left: 20px;}
+#gallaryMainDiv{margin-bottom:20px;}
+#gallaryDiv{height:220px;}
 </style>
 </head>
 <body>
 <div id="newDisplayMainDiv">
  <div id="newDisplayInnerDiv">
-   <div class="span12" style="margin-top:25px;">
+   <div class="span12" style="margin-top:25px;margin-bottom:30px;">
     <div class="row">
 	 <!-- left Div Start -->
 	  <div class="span8 right-panel m5-left" style="background:#ffffff;position:relative;">
@@ -181,14 +223,35 @@ font-size:20px;
 	<!-- left Div End -->
 
 	<!-- right Div End -->
-	<div class="span3 left-panel" style=" width: 250px;">
-	<h3>Other News in this Gallery</h3>
+    <div class="span3" style=" width: 250px;">
+	
+	<div class="left-panel" id="gallaryMainDiv" style="display:none;">
+	    <h3>Main Article</h3>
+	   <div id="gallaryDiv"></div>
+	   <div class="text-center">
+	   <div id="paginationDiv"></div>
+	   </div>
+	</div>
+
+	  <div class="left-panel">
+	    <h3>Other News in this Gallery</h3>
 	   <div id="releatedNewsDiv"></div>
+	  </div>
 	</div>
 	<!-- right Div End -->
   </div>
  </div>
-</div>
+ </div>
+
+  <div class="widget blue" id="newsResponseDiv">
+	<h4>Responses</h4>
+	<div id="responseNewsGallaryDiv"></div>
+		<!----pagination Div----->
+		<div class="span12 text-center">
+			<div id="paginationId"></div>						
+		</div>	
+  </div>
+
 </div>	
  
 
@@ -226,6 +289,11 @@ function callAjax(jsObj,url)
 				showContentResultList = myResults;
 				buildContentDetails();
 				
+			}
+			else if(jsObj.task == "getResponseGallaryDetails")
+			{
+			  showResponseGallaryDetails(myResults,jsObj);
+			  buildPagination(myResults,jsObj);
 			}
 		 }
 		catch(e)
@@ -308,7 +376,7 @@ function buildContentDetails()
 		   selectedContentFile = result.relatedGalleries[0].filesList[i];
 		   str +='<div id="buildNewSourceParts">';
 	       str += '<center><table><tr>';
-
+			
 	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
 	         {
 	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[0].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
@@ -446,8 +514,132 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
   }
 
 }
+function getNewsForPagination(startIndex)
+{
+	
+var jObj=
+	{
+	  fileGallaryId:contentId,
+	  firstResult:startIndex,
+	  maxResult:3,
+	  task:"getResponseGallaryDetails"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getResponseGallaryDetailsAction.action?"+rparam;
+	callAjax(jObj,url);
+}
+function showResponseGallaryDetails(result,jsObj)
+{
+	$("#responseNewsGallaryDiv").html('');
+	if(result == null || result.resGallTotRecordsCount == 0)
+	{
+	  $("#responseNewsGallaryDiv").html('No Data Found.');
+	  return;
+	}
+   
+   var results = result.responseGallaryList;
+   var str="";
+	str+="<ul class='unstyled pad10'>";
+	for(var i in results){
+		str+="<li>";
+		str+="<h3><a href='javascript:{}'>"+results[i].title+"</a></h3>";
+		str+="<div class='row-fluid'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
+		
+		var path = results[i].fileVOList[0].fileVOList[0].path;
+		var source = results[i].fileVOList[0].source;
+
+		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
+		str+="<p class='span8'>"+results[i].description+"</p>";
+		str+="</div>";
+
+		str+="<div class='row-fluid m_top10'><div class='span9'>";
+		str +='<table><tr><td>';
+		str +='<p style="margin-right: 8px; width: 200px;"><span class="text-error">Source :</span>';
+		var length = results[i].fileVOList.length;
+
+		for(var j in results[i].fileVOList)
+		{
+		  str +=''+results[i].fileVOList[j].source+'';
+		  if(length-1 != j)
+			str +=',';
+		}
+		str +='</p></td><td style="vertical-align: top;"><p style="width: 130px;"><span class="text-error">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;"><p style="width: 301px;"><span class="text-error">candidate Name :</span> '+results[i].candidateName+'</td><td style="vertical-align: top;"><p style="width: 132px; margin-left: 13px;"><span class="text-error">Response count :</span> '+results[i].count+'</p></td></tr>';
+		
+		str +='</table>';
+		str +='</div>';
+		
+		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>More...</a></div></li>";
+		var len = results.length;
+		
+		if(len-1 != i)
+		 str +='<hr>';
+	}
+	
+	var itemsCount=result.resGallTotRecordsCount;
+	
+	var maxResults=jsObj.maxResult;
+	str+="</ul>";
+   
+	$("#responseNewsGallaryDiv").html(str);
+	
+	if(jsObj.firstResult==0){
+		$("#paginationId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme'
+		});
+	}
+}
+function imgError(image) {
+    image.onerror = "";
+    image.src = "images/TDP.PNG";
+    return true;
+}
+function getNewsDetailsByContentId(contentId)
+{
+  var urlstr = "newsDetailsPopupAction.action?contentId="+contentId+"&";
+	
+    var browser1 = window.open(urlstr,"gallaryDetails"+contentId+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+    browser1.focus();
+}
+
+
+function buildPagination(result,jsObj)
+{
+	
+  if(result.count == 0)
+  {
+    $("#releatedNewsDiv").css("height","400");
+	$("#gallaryMainDiv").css("display","none");
+	return;
+  }
+  $("#gallaryMainDiv").css("display","block");
+  $("#gallaryDiv").html('');
+ 
+  var str = '';
+
+  str +="<ul class='unstyled relatedproblem' style='width:220px;'>";
+  for(var i in result.filesList)
+     str += '<li><a href="javascript:{}"  onClick="getNewsDetailsByContentId('+result.filesList[i].contentId+')">'+result.filesList[i].title+'</a></li>';
+
+  	str +='</ul>';
+	 $("#gallaryDiv").addClass("gallaryDiv").html(str);
+	var itemsCount=result.count;
+	
+	var maxResults=jsObj.maxResult;
+	 if(jsObj.firstResult==0){
+		$("#paginationDiv").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme'
+		});
+	}
+  
+}
 
 getContentDetails();
+getNewsForPagination(0);
 </script>
 </body>
 </html>
