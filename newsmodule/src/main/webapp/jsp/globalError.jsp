@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Contact Us</title>
+<title> Telugudesam Party - Contact Us</title>
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">
 <!-- <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" /> -->
 </head>

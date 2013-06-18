@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>News - Telugudesham Party</title>
+	<title> News - Telugudesam Party</title>
 	<meta name="" content="">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	
