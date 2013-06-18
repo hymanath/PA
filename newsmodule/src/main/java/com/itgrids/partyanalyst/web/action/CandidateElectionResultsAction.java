@@ -1,9 +1,6 @@
 /* 
- * Copyright (c) 2009 IT Grids.
+ * Copyright (c) 2013 TDP PARTY .
  * All Rights Reserved.
- *
- * IT Grids Confidential Information.
- * Created on October 2, 2009
  */
 package com.itgrids.partyanalyst.web.action;
 
@@ -2528,7 +2525,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			if(getCategory() == null || getCategory().equals(0l)  )
 			fileVO2 = partyDetailsService.getAllTheGallariesOfAparty(872L,startIndex,endIndex);
 			else
-			fileVO2 = partyDetailsService.getAllTheGallariesForCategory(getCandidateId(), 0, 30, getCategory());
+			fileVO2 = partyDetailsService.getAllTheGallariesForCategory(getCandidateId(), 0, 30, getCategory(),newsType);
 		}
 		catch(Exception e)
 		{
@@ -2548,11 +2545,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			Long  gallaryId = Long.parseLong(request.getParameter("gallaryId"));
 			int startIndex = Integer.parseInt(request.getParameter("startIndex"));
 			int endIndex = Integer.parseInt(request.getParameter("endIndex"));
+			Long  categoryId = Long.parseLong(request.getParameter("categoryId"));
 			String newsType = "Public";
 			if(user.getUserAccessType()!=null)
 				 if(user.getUserAccessType().equals("Admin"))
 					 newsType = "";   			
-			fileVO = candidateDetailsService.getFilesOfAGallary(gallaryId,startIndex,endIndex,newsType);
+			fileVO = candidateDetailsService.getFilesOfAGallary(gallaryId,startIndex,endIndex,newsType,categoryId);
 			
 			return Action.SUCCESS;
 				
