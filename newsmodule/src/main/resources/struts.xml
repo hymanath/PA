@@ -5402,6 +5402,11 @@
 			    <param name="inputName">inputStream</param>
 			</result>					
 		</action>
+		<action name="getNewsContainedCandidates" class="candidateElectionResultsAction" method="getNewsContainedCandidates">			
+			<result name="success" type="json">			   
+			    <param name="root">candidatesList</param>
+			</result>					
+		</action>
 				
 		<action name="getResponseGallaryDetailsAction" class="newsDetailsAction" method="ajaxHandler">
 		 <result type="json" name="success">

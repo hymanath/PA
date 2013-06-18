@@ -3536,6 +3536,10 @@ var callback = {
 
 			 buildNewsDetailsOfcandidate(myResults);
 
+		 }
+		 else if (jsObj.task == "getCandidates")
+		 {
+             buildCandidates(myResults);
 		 }else if(jsObj.task == "getCandidatesOfAUser")
 		 {
 			 buildCandidatesOfAUser(myResults);
@@ -4672,11 +4676,22 @@ try{
 	 $("#editNewsOuter").dialog('close');
  }
 
+function getCandidates(){
+  
+ var jsObj =
+		{ 
+			task:"getCandidates"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getNewsContainedCandidates.action?"+rparam;						
+	callnewAjax(jsObj,url);
+ 
+}
  function getCandidatesofUser(){
   
  var jsObj =
 		{ 
-            time : timeST,
 			task:"getCandidatesOfAUser"
 		};
 
@@ -4723,9 +4738,18 @@ function buildNewsDetailsOfcandidate(results)
 
  function buildCandidatesOfAUser(results)
  {
-   $('#list1 , #candidatesList').find('option').remove();
+   $('#list1').find('option').remove();
    $.each(results,function(index,value){
-	   $('#list1 , #candidatesList').append('<option value="'+results[index].id+'">'+results[index].name+'</option>');
+	   $('#list1').append('<option value="'+results[index].id+'">'+results[index].name+'</option>');
+
+   })
+ }
+
+function buildCandidates(results)
+ {
+   $('#candidatesList').find('option').remove();
+   $.each(results,function(index,value){
+	   $(' #candidatesList').append('<option value="'+results[index].id+'">'+results[index].name+'</option>');
 
    })
 
@@ -5295,8 +5319,8 @@ function buildUploadNewsForMultipleUsers()
 	 getNewsImportance();
 	 getCategory();
 	 getCandidatesofUser();
+	 getCandidates();
 }
 
 </script>
 </body>
-</html>

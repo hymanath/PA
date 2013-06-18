@@ -5954,6 +5954,31 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		}
 		return null;
 	 }
+	 
+	 public List<SelectOptionVO> getNewsContainedCandidates()
+	 {
+			try{
+				List<Object[]> list = candidateRelatedNewsDAO.getCandidates();
+				
+				List<SelectOptionVO> cadidatesList = null;
+				if(list != null && list.size() > 0)
+				{
+					cadidatesList = new ArrayList<SelectOptionVO>(0);
+					SelectOptionVO selectOptionVO = null;
+					for(Object[] params : list)
+					{
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)params[0]);
+						selectOptionVO.setName(params[2] != null ? params[2].toString() : "");
+						cadidatesList.add(selectOptionVO);
+					}
+				}
+				
+				return cadidatesList;
+			}catch(Exception e){
+				return null;
+			}
+		}
 
 
 }

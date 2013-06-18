@@ -20,6 +20,8 @@ public interface ICandidateDetailsService {
 	
 	public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType);
 	public List<SelectOptionVO> getLatestgallaries();
+ public List<SelectOptionVO> getNewsContainedCandidates();
+
 	
 	/*
 	
