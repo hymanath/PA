@@ -11,7 +11,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class AdminPageAction extends ActionSupport implements ServletRequestAware{
 
 	private HttpServletRequest request;
-	@Override
+	//@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
