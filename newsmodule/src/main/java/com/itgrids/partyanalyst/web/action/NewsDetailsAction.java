@@ -17,6 +17,8 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.service.IContentManagementService;
 
 public class NewsDetailsAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
@@ -30,6 +32,8 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private ICandidateDetailsService candidateDetailsService ;
 	private ServletContext context;
 	private Long contentId;
+	private GallaryVO gallaryVO;
+	private IContentManagementService contentManagementService;
 	
 	public void setServletContext(ServletContext context) {
 		
@@ -89,6 +93,20 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	public void setContentId(Long contentId) {
 		this.contentId = contentId;
 	}
+	
+	public GallaryVO getGallaryVO() {
+		return gallaryVO;
+	}
+	public void setGallaryVO(GallaryVO gallaryVO) {
+		this.gallaryVO = gallaryVO;
+	}
+	public IContentManagementService getContentManagementService() {
+		return contentManagementService;
+	}
+	public void setContentManagementService(
+			IContentManagementService contentManagementService) {
+		this.contentManagementService = contentManagementService;
+	}
 	public String execute()
 	{	
 		
@@ -109,6 +127,10 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 					 newsType = "";
 		     fileVOsList = candidateDetailsService.getAllNews(jObj.getInt("firstResult"), jObj.getInt("maxResult"), "News Gallary",872L,newsType);
 		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("getResponseGallaryDetails"))
+			  gallaryVO = contentManagementService.getResponseGallariesForSelectedGallary(jObj.getLong("fileGallaryId"), jObj.getInt("firstResult"), jObj.getInt("maxResult"));
+		 
+		 
 		}catch (Exception e) {
 			e.printStackTrace();
 			Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);

@@ -1,4 +1,4 @@
-package com.itgrids.partyanalyst.helper;
+package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,6 +34,8 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	private String customPageName;
 	private Long customPageType;
 	private List<FileVO> responseGallaryList = new ArrayList<FileVO>(0);
+	private int resGallTotRecordsCount;
+	private int count;
 	
 	
 	public Long getPageId() {
@@ -149,6 +151,18 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	}
 	public void setResponseGallaryList(List<FileVO> responseGallaryList) {
 		this.responseGallaryList = responseGallaryList;
+	}
+	public int getResGallTotRecordsCount() {
+		return resGallTotRecordsCount;
+	}
+	public void setResGallTotRecordsCount(int resGallTotRecordsCount) {
+		this.resGallTotRecordsCount = resGallTotRecordsCount;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
 	}
 	
 }
