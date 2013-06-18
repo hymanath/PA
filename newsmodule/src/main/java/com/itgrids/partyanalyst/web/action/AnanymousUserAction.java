@@ -189,20 +189,20 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	}
 
 
-	@Override
+	//@Override
 	public void prepare() throws Exception {
 		
 	}
 
 
-	@Override
+	//@Override
 	public RegistrationVO getModel() {
 	
 		return null;
 	}
 
 
-	@Override
+	//@Override
 	public void setServletRequest(HttpServletRequest arg) {
 	this.request = arg;
 	}
