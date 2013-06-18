@@ -1,9 +1,6 @@
 /* 
- * Copyright (c) 2009 IT Grids India LTD.
+ * Copyright (c) 2013 TDP PARTY .
  * All Rights Reserved.
- *
- * IT Grids Confidential Information.
- * Created on January 8, 2010
  */
 package com.itgrids.partyanalyst.service;
 
