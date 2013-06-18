@@ -1,9 +1,6 @@
 /* 
- * Copyright (c) 2009 IT Grids.
+ * Copyright (c) 2013 TDP PARTY .
  * All Rights Reserved.
- *
- * IT Grids Confidential Information.
- * Created on October 2, 2009
  */
 package com.itgrids.partyanalyst.service;
 
@@ -18,7 +15,8 @@ import com.itgrids.partyanalyst.model.File;
 public interface ICandidateDetailsService {
 	
 	
-	public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType);
+	public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType,Long categoryId);
+	
 	public List<SelectOptionVO> getLatestgallaries();
  public List<SelectOptionVO> getNewsContainedCandidates();
 
@@ -220,7 +218,7 @@ public interface ICandidateDetailsService {
 */
 	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults,String level,String newsType);
 	 
-	 public List<FileVO> getVideosForSelectedParty(Long partyId);
+	 public List<FileVO> getVideosForSelectedParty(Long partyId,String newsType);
 	 
 	 public List<FileVO> getVideosListForSelectedFile(Long fileId);
 	 
