@@ -2951,4 +2951,12 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		 return query.list();
 		 
 	 }
+	 
+	@SuppressWarnings("unchecked")
+	public List<FileGallary> getFileGallariesByFileGallaryIdsList(List<Long> fileGallaryIdsList)
+	{
+		Query query = getSession().createQuery(" select model from FileGallary model where model.fileGallaryId in(:fileGallaryIdsList) ");
+		query.setParameterList("fileGallaryIdsList", fileGallaryIdsList);
+		return query.list();
+	}
 }

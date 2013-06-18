@@ -288,6 +288,6 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public List<FileGallary> getFileGallariesByFileId(Long fileId);
 	public void deleteFile(Long fileId);
 	
-	
+	public List<FileGallary> getFileGallariesByFileGallaryIdsList(List<Long> fileGallaryIdsList);
 }
 
