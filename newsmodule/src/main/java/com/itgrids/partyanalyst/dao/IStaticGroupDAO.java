@@ -1,10 +1,6 @@
 /* 
- * Copyright (c) 2009 IT Grids.
+ * Copyright (c) 2013 TDP PARTY .
  * All Rights Reserved.
- *
- * IT Grids Confidential Information.
- * Created on February, 2010
- * Author Saikrishna.g
  */
 
 package com.itgrids.partyanalyst.dao;
