@@ -587,7 +587,6 @@ function showTotalNews(myResult,jsObj){
 	
 	//var maxResults=jsObj.maxRecord;
 	//var itemsCount=results[0].count;
-	if(maxResults>10){
 		if(jsObj.startRecord==0){
 			$("#paginationId").pagination({
 				items: maxResults,
@@ -595,7 +594,6 @@ function showTotalNews(myResult,jsObj){
 				cssStyle: 'light-theme'
 			});
 		}
-	}
 }
 
 function getAllConstituenciesInDistrictByType(stateId){
