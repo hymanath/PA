@@ -36,7 +36,7 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 	private UpdationDetails updationDetails;
 	private String isDeleted;
 	private String hasRemarks;
-	
+	private String isAnalyse;
 	private Set<QuestionOptions> questionOptions = new HashSet<QuestionOptions>(0);
 	
 	public SurveyQuestion() {
@@ -153,6 +153,14 @@ public class SurveyQuestion extends BaseModel implements java.io.Serializable {
 
 	public void setHasRemarks(String hasRemarks) {
 		this.hasRemarks = hasRemarks;
+	}
+	@Column(name="is_analyse",length = 45)
+	public String getIsAnalyse() {
+		return isAnalyse;
+	}
+
+	public void setIsAnalyse(String isAnalyse) {
+		this.isAnalyse = isAnalyse;
 	}
 
 }

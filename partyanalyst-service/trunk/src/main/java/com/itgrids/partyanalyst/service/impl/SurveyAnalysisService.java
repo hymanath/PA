@@ -390,7 +390,9 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			SurveyQuestion surveyQuestion = new SurveyQuestion();
 			surveyQuestion.setQuestion(questionsOptionsList.get(0).getQuestion());
 			surveyQuestion.setOptionType(optionTypeDAO.get(new Long(questionsOptionsList.get(0).getQuestionType())));
+			
 			surveyQuestion.setHasRemarks(String.valueOf(questionsOptionsList.get(0).getHasRemark()));
+			surveyQuestion.setIsAnalyse(String.valueOf(questionsOptionsList.get(0).getIsAnalyse()));
 			surveyQuestion = surveyQuestionDAO.save(surveyQuestion);
 			
 				if(questionsOptionsList.get(0).getOptions() != null && questionsOptionsList.get(0).getOptions().size() > 0)
@@ -461,6 +463,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			surveyQuestion.setQuestion(questionsOptionsList.get(0).getQuestion());
 			surveyQuestion.setOptionType(optionTypeDAO.get(new Long(questionsOptionsList.get(0).getQuestionType())));
 			surveyQuestion.setHasRemarks(String.valueOf(questionsOptionsList.get(0).getHasRemark()));
+			surveyQuestion.setIsAnalyse(String.valueOf(questionsOptionsList.get(0).getIsAnalyse()));
 			surveyQuestion = surveyQuestionDAO.save(surveyQuestion);
 			if(questionsOptionsList.get(0).getOptions() != null && questionsOptionsList.get(0).getOptions().size() > 0)
 			{
@@ -476,7 +479,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 						{
 						Option option1 = new Option();
 						option1.setParentOption(option);
-						option1.setSubOptionName(questionsOptionsList.get(0).getOptions().get(i).getSubOptionList().get(j).getSubquestion());
+						option1.setOptions(questionsOptionsList.get(0).getOptions().get(i).getSubOptionList().get(j).getSubquestion());
 						option1 = optionDAO.save(option1);
 						}
 					}	
