@@ -5573,9 +5573,9 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 	 for(Object[] objs:fileGalList){
 		 FileVO file=new FileVO();
 		 file.setFileGallaryId((Long)objs[0]);
-		 file.setTitle(objs[1]!=null?objs[1].toString():"");
+		 file.setTitle(objs[1]!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(objs[1].toString())):"");
 		 file.setFileDate(objs[2]!=null?objs[2].toString():"");
-		 
+		 file.setSource(objs[3]!=null?objs[3].toString():"");
 		 fileVoList.add(file);
 	 }
 	 return fileVoList;
@@ -5691,8 +5691,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				FileVO fileVO = new FileVO(); 
 				fileVO.setContentId(fileGallary.getFileGallaryId());
 				fileVO.setFileId(fileGallary.getFile().getFileId());
-				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?fileGallary.getFile().getFileTitle().toString():"");
-				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?fileGallary.getFile().getFileDescription():"");
+				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle().toString())):"");
+				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 				
 				Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
 				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
@@ -5766,7 +5766,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 {
 				FileVO fileVO = new FileVO(); 
 				fileVO.setContentId((Long)params[0]);
-				fileVO.setFileTitle1(params[1]!=null?params[1].toString():"");
+				fileVO.setFileTitle1(params[1]!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(params[1].toString())):"");
+				fileVO.setSource(params[2] != null? params[2].toString():"");
 				fileVOsList.add(fileVO);
 			 }
 		 }

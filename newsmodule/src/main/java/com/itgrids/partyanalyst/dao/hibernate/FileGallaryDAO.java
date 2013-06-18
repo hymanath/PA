@@ -2716,8 +2716,8 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	public List<Object[]> getRecentlyUploadedNews(Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType)
 	{
 		StringBuilder queryObject = new StringBuilder();
-		queryObject.append(" select model.fileGallaryId,model.file.fileTitle from FileGallary model, PartyGallery model2 " );
-		queryObject.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
+		queryObject.append(" select model.fileGallaryId,model.file.fileTitle,fs.source.source from FileGallary model, PartyGallery model2,FileSourceLanguage fs " );
+		queryObject.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model.file.fileId = fs.file.fileId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
 		if(!newsType.equalsIgnoreCase(""))
 			queryObject.append(" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' ");
 		queryObject.append(" order by model.updateddate desc ");

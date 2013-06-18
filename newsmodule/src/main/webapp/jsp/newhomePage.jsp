@@ -459,7 +459,12 @@ width: 92px;
 							<ul class=" nav nav-list bs-docs-sidenav" style='margin-top:10px;'>
 								<s:iterator value="responseFilesList" var="responsefiles">
 								<li class='thumbnail' style='margin:5px;padding:5px 5px 5px 15px;'>
+								<s:if test="%{#responsefiles.source.equalsIgnoreCase('Eenadu Telugu')}">
+									<h6 class='text-info enadu' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;"> <s:property value="title"/></h6>
+									</s:if>
+									<s:else>
 									<h6 class='text-info' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;"> <s:property value="title"/></h6>
+									</s:else>
 									<span style='color:#ccc;'>
 										<s:if test="%{fileDate!=''}">
 											<i class="smal">Date: 
@@ -488,17 +493,16 @@ width: 92px;
 									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li>
 									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li> -->
 									<c:if test="${fileVOsList != null}">
-									 <c:forEach var="newDetails" items="${fileVOsList}">
-									 
-									  <li>
-									  <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
-										<a href="javascript:{}" onclick="getNewsDetailsByContentId(${newDetails.contentId})" class="enadu"><i class="icon-share-alt "></i>${newDetails.fileTitle1}</a>
+									 <s:iterator value="fileVOsList" var="newDetails">
+										<li>
+										<s:if test="%{#newDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
+										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="enadu muted"><i class="icon-share-alt "></i>${newDetails.fileTitle1}</a>
 									</s:if>
 									<s:else>
-										<a href="javascript:{}" onclick="getNewsDetailsByContentId(${newDetails.contentId})" class="muted"><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a>
+										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="muted"><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a>
 									</s:else>
-									  </li>
-									 </c:forEach>
+									</li>
+									 </s:iterator>
 									</c:if>
 
 									<a class=" btn btn-mini pull-right" href="newsDetailsAction.action">More...</a>

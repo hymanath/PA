@@ -675,10 +675,10 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 					return 0;
 			}
 		 public List<Object[]> getLatestNewsResponses(){
-			 Query queryObj=getSession().createQuery("select model.responseFileGallary.fileGallaryId,model.responseFileGallary.file.fileTitle,model.responseFileGallary.file.fileDate" +
-			 		" from CandidateNewsResponse model where model.responseFileGallary.isPrivate='false' and " +
+			 Query queryObj=getSession().createQuery("select model.responseFileGallary.fileGallaryId,model.responseFileGallary.file.fileTitle,model.responseFileGallary.file.fileDate,fs.source.source " +
+			 		" from CandidateNewsResponse model,FileSourceLanguage fs  where model.responseFileGallary.isPrivate='false' and " +
 			 		" model.responseFileGallary.isDelete='false' and model.responseFileGallary.gallary.isPrivate='false' and " +
-			 		" model.responseFileGallary.gallary.isDelete='false' order by model.responseFileGallary.updateddate desc"); 
+			 		" model.responseFileGallary.gallary.isDelete='false' and model.responseFileGallary.file.fileId = fs.file.fileId order by model.responseFileGallary.updateddate desc"); 
 			 queryObj.setFirstResult(0);
 			 queryObj.setMaxResults(5);
 			 
