@@ -5398,10 +5398,7 @@
 		 </result>
 		</action>
 		
-		<action name="surveyFormSaveAction" class="surveyFormSaveAction" >
-		  <interceptor-ref name="basicStack"/>
-		  <interceptor-ref name="token"/>
-    	  <result name="invalid.token">/index.jsp</result>
+		<action name="surveyFormSaveAction" class="surveyFormAction" method="saveSurveyFormData" >
 		  <result name="success">/jsp/surveyForm.jsp</result>
 		</action>
 		</package>

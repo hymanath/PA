@@ -38,7 +38,6 @@ textarea {
 </style>
 
 <script type="text/javascript">
-var constituencyId   = "";
 var mandalId         = "";
 var reportLevel      = "";
 var checkedele       = "";
@@ -48,17 +47,32 @@ var locationId       = "";
 var panchayatId      = "";
 var constituencyType = "";
 var surveyId         = '${surveyId}';
+var constituencyId   = "";
 function getreportLevel()
 {
 	var value = "";
-	if(constituencyType == "URBAN")
+	/* if(constituencyType == "URBAN")
 	{
 		value = $("#urbanLocation option:selected").val();
 	}
 	else
 	{
 		value = $("#ruralLocation option:selected").val();
+	} */
+	mandalId = $("#mandalId option:selected").val();
+	if(mandalId.charAt(0) == "1")
+	{
+		value = $("#urbanLocation option:selected").val();
+		$('#urbanLocation').show();
+		$('#ruralLocation').hide();
 	}
+	else
+	{
+		value = $("#ruralLocation option:selected").val();
+		$('#ruralLocation').show();
+		$('#urbanLocation').hide();
+	}
+	
 	/* if(value == 1)
 	{
 		$('#secondRow').show();
@@ -87,6 +101,7 @@ function getreportLevel()
 		$('#boothLable').hide();
 		$('#boothColumn').hide();
 	}
+	
 	else if(value == 2)
 	{
 		$('#secondRow').show();
@@ -94,13 +109,16 @@ function getreportLevel()
 		//$('#ConstituencyColumn').show();
 		$('#mandalLable').show();
 		$('#mandalColumn').show();
-		$('#panchayatLable').show();
-		$('#panchayatColumn').show();
+		$('#wardLable').show();
+		$('#wardColumn').show();
 		$('#hamletLable').hide();
 		$('#hamletcolumn').hide();
 		$('#boothLable').hide();
 		$('#boothColumn').hide();
+		getBooths();
+		getPanchayatList();
 	}
+	
 	else if(value == 3)
 	{
 		$('#secondRow').show();
@@ -115,6 +133,7 @@ function getreportLevel()
 		$('#boothLable').hide();
 		$('#boothColumn').hide();
 	}
+	
 	else if(value == 4)
 	{
 		$('#secondRow').show();
@@ -122,14 +141,16 @@ function getreportLevel()
 		//$('#ConstituencyColumn').show();
 		$('#mandalLable').show();
 		$('#mandalColumn').show();
-		$('#panchayatLable').show();
-		$('#panchayatColumn').show();
+		//$('#panchayatLable').show();
+		//$('#panchayatColumn').show();
 		$('#thirdRow').show();
 		$('#hamletLable').show();
 		$('#hamletcolumn').show();
 		$('#boothLable').hide();
 		$('#boothColumn').hide();
+		getHamlets();
 	}
+	
 	else if(value == 5)
 	{
 		$('#secondRow').show();
@@ -137,18 +158,22 @@ function getreportLevel()
 		//$('#ConstituencyColumn').show();
 		$('#mandalLable').show();
 		$('#mandalColumn').show();
-		$('#panchayatLable').show();
-		$('#panchayatColumn').show();
+		//$('#panchayatLable').show();
+		//$('#panchayatColumn').show();
 		$('#thirdRow').show();
 		$('#boothLable').show();
 		$('#boothColumn').show();
 		$('#hamletLable').hide();
 		$('#hamletcolumn').hide();
-		$('#panchayatLable').hide();
-		$('#panchayatColumn').hide();
+		//$('#panchayatLable').hide();
+		//$('#panchayatColumn').hide();
+		$('#wardLable').hide();
+		$('#wardColumn').hide();
+		getBooths();
 	}
 	
 }
+
 function getMandals(){
 	constituencyId = $("#constituencyList option:selected").val();
 	reportLevel = "Constituency";
@@ -164,7 +189,8 @@ function getMandals(){
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "voterAnalysisAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
-	}
+}
+	
 function buildMandals(myResults)
 {
 	var str = "";
@@ -180,6 +206,31 @@ function buildMandals(myResults)
 function getPanchayatList()
 {
 	mandalId = $("#mandalId option:selected").val();
+	if(mandalId.charAt(0) == "1")
+	{
+		$('#ruralLocation').hide();
+		$('#urbanLocation').show();
+		var str = "";
+		$("#urbanLocationId option").remove();
+		str += '<option value="0">select location</option>';
+		str += '<option value="2">ward</option>';
+		str += '<option value="5">PollingStation</option>';
+		
+		$('#urbanLocationId').html(str);
+	}
+	else
+	{
+		$('#ruralLocation').show();
+		$('#urbanLocation').hide();
+		var str = "";
+		$("#ruralLocationId option").remove();
+		str += '<option value="0">select location</option>';
+		str += '<option value="4">hamlets</option>';
+		str += '<option value="5">pollingstation</option>';
+		$('#ruralLocationId').html(str);
+	}
+	$('#secondRow').show();
+	
 	var value = mandalId.substring(1);
 	if(mandalId.charAt(0) =="1")
 	{
@@ -235,12 +286,12 @@ function buildPanchayats(myResults)
 		str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
 	}
 	$('#PanchayatId').html(str);
-	getBooths();
+	//getBooths();
 }
 
 function getHamlets()
 {
-	levelId = $("#levelId option:selected").val();
+	/* levelId = $("#levelId option:selected").val();
 	panchayatId = $("#PanchayatId option:selected").val();
 	
 		reportLevel = "hamlet";
@@ -250,9 +301,22 @@ function getHamlets()
 			selectedEle:"hamletField",
 			publicationValue : 8,
 			task:"getHamletsList"
-		};
+		}; */
+	var selectedId = $("#mandalId option:selected").val();
+	var jsObj=
+		{				
+			id: selectedId,
+			task: "hamletsOrWardsInRegion",
+			taskType:"cadreReg",
+			selectElementId: "hamletField_s" ,
+			address: "cadreLevel",
+			areaType: "null",
+			constId: "",
+			isParliament : "null"
+			
+		}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "voterAnalysisAjaxAction.action?"+rparam;						
+	var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
 	callAjax(jsObj,url);
 	
 	/* else if(levelId == 2)
@@ -305,14 +369,29 @@ function getBooths()
 
 function buildHamlets(myResults)
 {
-	var str = "";
-	$("#hamletId option").remove();
-	for(var i in myResults)
+	if(reportLevel =="muncipality" )
 	{
-		str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+		var str = "";
+		$("#wardId option").remove();
+		for(var i in myResults)
+		{
+			str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+		}
+		$('#wardId').html(str);
 	}
-	$('#hamletId').html(str);
+	else
+	{
+		var str = "";
+		$("#hamletId option").remove();
+		for(var i in myResults)
+		{
+			str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+		}
+		$('#hamletId').html(str);
+	}
+	
 }
+
 function buildBooths(myResults)
 {
 	var str = "";
@@ -330,7 +409,14 @@ function buildMuncipalityBooths(myResults)
 	$("#boothId option").remove();
 	for(var i in myResults)
 	{
-		str += '<option value='+myResults[i].id+'>Booth NO -'+myResults[i].name+'</option>';
+		if(i > 0)
+		{
+			str += '<option value='+myResults[i].id+'>Booth NO -'+myResults[i].name+'</option>';
+		}
+		else
+		{
+			str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+		}
 	}
 	$('#boothId').html(str);
 }
@@ -366,6 +452,7 @@ function buildConstituencyType(myResults)
 		$('#ruralLocation').show();
 	}
 }
+
 function callAjax(jsObj,url)
 {
 			 var myResults;
@@ -381,7 +468,8 @@ function callAjax(jsObj,url)
 									
 									else if(jsObj.task == "getPanchayat" && jsObj.checkedele == "panchayat" || jsObj.task == "hamletsOrWardsInRegion")
 									{
-										buildPanchayats(myResults);
+										//buildPanchayats(myResults);
+										buildHamlets(myResults);
 									}
 									
 									else if(jsObj.task == "getHamletsList")
@@ -417,6 +505,14 @@ function callAjax(jsObj,url)
 									else if(jsObj.task == "getVoterDetails")
 									{
 										buildVoterDetails(myResults);
+									}
+									else if(jsObj.task == "districtsInState")
+									{
+										buildDistrictes(myResults);
+									}
+									else if(jsObj.task == "constituenciesInDistrict")
+									{
+										buildConstituenceys(myResults);
 									}
 								}catch (e) {
 								
@@ -456,6 +552,7 @@ function getLevlValuesForSurvey(myResults)
 	{
 		var locationId     = myResults[0].locationScopeId;
 		var locationValue  = myResults[0].locationValue;
+		constituencyId     = myResults[0].constituencyId;
 	}
 	var jsObj=
 	{	
@@ -485,10 +582,10 @@ function buildLevlValuesForSurvey(myResults,jsObj)
 		$('#ConstituencyColumn').show();
 		$('#mandalLable').show();
 		$('#mandalColumn').show();
-		$('#panchayatLable').show();
-		$('#panchayatColumn').show();
-		$('#hamletLable').show();
-		$('#hamletcolumn').show();
+		//$('#panchayatLable').show();
+		//$('#panchayatColumn').show();
+		//$('#hamletLable').show();
+		//$('#hamletcolumn').show();
 		$('#boothLable').hide();
 		$('#boothColumn').hide();
 		$("#countryId option ").remove();
@@ -516,10 +613,10 @@ function buildLevlValuesForSurvey(myResults,jsObj)
 		$('#ConstituencyColumn').show();
 		$('#mandalLable').show();
 		$('#mandalColumn').show();
-		$('#panchayatLable').show();
-		$('#panchayatColumn').show();
-		$('#hamletLable').show();
-		$('#hamletcolumn').show();
+		//$('#panchayatLable').show();
+		//$('#panchayatColumn').show();
+		//$('#hamletLable').show();
+		//$('#hamletcolumn').show();
 		$('#boothLable').hide();
 		$('#boothColumn').hide();
 		$("#stateId option ").remove();
@@ -549,10 +646,10 @@ function buildLevlValuesForSurvey(myResults,jsObj)
 		$('#ConstituencyColumn').show();
 		$('#mandalLable').show();
 		$('#mandalColumn').show();
-		$('#panchayatLable').show();
-		$('#panchayatColumn').show();
-		$('#hamletLable').show();
-		$('#hamletcolumn').show();
+		//$('#panchayatLable').show();
+		//$('#panchayatColumn').show();
+		//$('#hamletLable').show();
+		//$('#hamletcolumn').show();
 		$('#boothLable').hide();
 		$('#boothColumn').hide();
 		$("#districtId option ").remove();
@@ -560,7 +657,6 @@ function buildLevlValuesForSurvey(myResults,jsObj)
 		str += '<option value='+jsObj.locationValue+'>'+myResults+'</option>';
 		$('#districtId').html(str);
 		var value =  $("#districtId option:selected").val();
-		alert(value);
 		if(value > 0)
 		{
 			getConstituencys();
@@ -583,10 +679,10 @@ function buildLevlValuesForSurvey(myResults,jsObj)
 		$('#ConstituencyColumn').show();
 		$('#mandalLable').show();
 		$('#mandalColumn').show();
-		$('#panchayatLable').show();
-		$('#panchayatColumn').show();
-		$('#hamletLable').show();
-		$('#hamletcolumn').show();
+		//$('#panchayatLable').show();
+		//$('#panchayatColumn').show();
+		//$('#hamletLable').show();
+		//$('#hamletcolumn').show();
 		$('#boothLable').hide();
 		$('#boothColumn').hide();
 		$("#constituencyList option ").remove();
@@ -616,20 +712,20 @@ function buildLevlValuesForSurvey(myResults,jsObj)
 		$('#ConstituencyColumn').hide();
 		$('#mandalLable').show();
 		$('#mandalColumn').show();
-		$('#panchayatLable').hide();
-		$('#panchayatColumn').hide();
-		$('#hamletLable').hide();
-		$('#hamletcolumn').hide();
+		//$('#panchayatLable').hide();
+		//$('#panchayatColumn').hide();
+		//$('#hamletLable').hide();
+		//$('#hamletcolumn').hide();
 		$('#boothLable').hide();
 		$('#boothColumn').hide();
 		$("#mandalId option ").remove();
 		var str = "";
-		str += '<option value='+jsObj.locationValue+'>'+myResults+'</option>';
+		str += '<option value=2'+jsObj.locationValue+'>'+myResults+'</option>';
 		$('#mandalId').html(str);
 		var str = "";
 		$("#ruralLocationId option").remove();
 		str += '<option value="0">select location</option>';
-		str += '<option value="3">panchayat</option>';
+		//str += '<option value="3">panchayat</option>';
 		str += '<option value="4">hamlets</option>';
 		str += '<option value="5">pollingstation</option>';
 		$('#ruralLocationId').html(str);
@@ -641,7 +737,7 @@ function buildLevlValuesForSurvey(myResults,jsObj)
 		}
 		
 	}
-	else if(jsObj.locationId == 6)
+	else if(jsObj.locationId == 7)
 	{
 		//alert("muncipality");
 		$('#mainRow').hide();
@@ -657,15 +753,15 @@ function buildLevlValuesForSurvey(myResults,jsObj)
 		$('#ConstituencyColumn').hide();
 		$('#mandalLable').show();
 		$('#mandalColumn').show();
-		$('#panchayatLable').hide();
-		$('#panchayatColumn').hide();
-		$('#hamletLable').hide();
-		$('#hamletcolumn').hide();
+		//$('#panchayatLable').hide();
+		//$('#panchayatColumn').hide();
+		//$('#hamletLable').hide();
+		//$('#hamletcolumn').hide();
 		$('#boothLable').hide();
 		$('#boothColumn').hide();
 		$("#mandalId option ").remove();
 		var str = "";
-		str += '<option value='+jsObj.locationValue+'>'+myResults+'</option>';
+		str += '<option value=1'+jsObj.locationValue+'>'+myResults+'</option>';
 		$('#mandalId').html(str);
 		var str = "";
 		$("#ruralLocationId option").remove();
@@ -694,6 +790,7 @@ function getVoterDetails()
 
 	callAjax(jsObj,url);
 }
+
 function buildVoterDetails(myresults)
 {
 	if(myresults != null)
@@ -709,12 +806,75 @@ function buildVoterDetails(myresults)
 		$('#nameId').val(myresults[0].firstName);
 	}
 }
+
+function getDistricts()
+{
+	var selectedId = $("#stateId option:selected").val();
+	var jsObj=
+		{				
+			id: selectedId,
+			task: "districtsInState",
+			taskType:"cadreReg",
+			selectElementId: "districtField_s" ,
+			address: "cadreLevel",
+			areaType: "null",
+			constId: "",
+			isParliament : "null"
+			
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function buildDistrictes(myResults)
+{
+	var str = "";
+	$("#districtId option").remove();
+	for(var i in myResults)
+	{
+		str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+	}
+	$('#districtId').html(str);
+}
+
+function getConstituencys()
+{
+	var selectedId = $("#districtId option:selected").val();
+	var jsObj=
+		{				
+			id: selectedId,
+			task: "constituenciesInDistrict",
+			taskType:"cadreReg",
+			selectElementId: "constituencyField_s" ,
+			address: "cadreLevel",
+			areaType: "null",
+			constId: "",
+			isParliament : "null"			
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function buildConstituenceys(myResults)
+{
+	var str = "";
+	$("#constituencyList option").remove();
+	for(var i in myResults)
+	{
+		str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+	}
+	$('#constituencyList').html(str);
+}
+
 </script>
 </head>
 <body>
 <div><input type="button" class="btn-info" value="Create Survey" style="float:right;margin-right:15px;" onClick="openSurveyForm();"></input></div>
-<s:form action="surveyFormSaveAction" method="GET" theme="simple" name="form">
-<s:token/>
+<s:form action="surveyFormSaveAction" method="post" theme="simple" name="form">
 <div>
 <div id="selectionDiv" class="widget green whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;">
 	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">Select Your Location Details</h4>
@@ -722,17 +882,20 @@ function buildVoterDetails(myresults)
 	<table>
 	<tr id="mainRow" style="display:none;">
 	<!--<td><span>Level : </span></td><td><select id="levelId"><option value="0" >Select Level</option></select></td>-->
-	<td id="countryLable" style="display:none;"><span>Country : </span></td><td id="countryColumn" style="display:none;"><select id="countryId" onChange="getStates();"><option value="0" name="countryId">Select Country</option></select></td>
+	<td id="countryLable" style="display:none;"><span>Country : </span></td><td id="countryColumn" style="display:none;"><select id="countryId" onChange="getStates();" name="countryId"><option value="0" >Select Country</option></select></td>
 	<td id="stateLable" style="display:none;"><span>State : </span></td><td id="stateColumn" style="display:none;"><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="stateId" id="stateId" list="stateList" listKey="id" listValue="name"  class="selectWidth" onChange="getDistricts();"/></td>
 	<td id="districtLable" style="display:none;"><span>District : </span></td><td id="districtColumn" style="display:none;"><s:select theme="simple" cssClass="selectWidth" label="Select Your District" name="districtId" id="districtId" list="districtList" listKey="id" listValue="name"  class="selectWidth" onChange="getConstituencys();"/></td>
 	</tr>
 	<tr id="firstRow" style="display:none;">
 	<td id="ConstituencyLable" ><span>Constituency : </span></td><td id="ConstituencyColumn" ><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyId" id="constituencyList" list="constituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getMandals();getConstituencyType();"/></td>
+	<td id="mandalLable" style="display:none;"><span>Mandal/Muncipality : </span></td><td id="mandalColumn" style="display:none;"><select id="mandalId" onChange="getPanchayatList()" name="mandalId"><option value="0" >Select Mandal</option></select></td>
+	
+	</tr>
+	<tr id="secondRow" style="display:none;">
+	
 	<td><span>Location : </span></td>
 	<td id="ruralLocation" ><select id="ruralLocationId" onChange="getreportLevel()">
 		<option value=0>Select Location</option>
-		<option value=1>Mandal</option>
-		<option value=3>Panchayat</option>
 	    <option value=4>Hamlets</option>
         <option value=5>PollingStation</option>
 		</select>
@@ -744,17 +907,13 @@ function buildVoterDetails(myresults)
         <option value=5>PollingStation</option>
 		</select>
       </td>
-	</tr>
-	<tr id="secondRow" style="display:none;">
-	
-	<td id="mandalLable" style="display:none;"><span>Mandal/Muncipality : </span></td><td id="mandalColumn" style="display:none;"><select id="mandalId" onChange="getPanchayatList()"><option id="0" name="mandalId">Select Mandal</option></select></td>
 	<!--<td id="locationLable" style="diaplay:none;"><span>Location : </span></td>
 	<td id="ruralLocation" style="diaplay:none;"><select id="ruralLocationId" onChange="getreportLevel()"></select>
       </td>
 	 <td id="urbanLocation" style="display:none;"><select id="urbanLocationId" onChange="getreportLevel()">
 		<option value=0>Select Location</option></select>
       </td>-->
-	<td id="panchayatLable" style="display:none;"><span>Panchayat/Ward : </span></td><td id="panchayatColumn" style="display:none;"><select id="PanchayatId" onChange="getHamlets();" name="panchayatId"><option id="0" >Select Panchayat</option></select></td>
+	<td id="wardLable" style="display:none;"><span>Ward : </span></td><td id="wardColumn" style="display:none;"><select id="wardId" onChange="" name="wardId"><option value="0">Select Ward</option></select></td>
 	<td id="hamletLable" style="display:none;"><span>Hamlet : </span></td><td id="hamletcolumn" style="display:none;"><select id="hamletId" name="hamletId"><option value="0">Select Hamlet</option></select></td>
 	<td id="boothLable" style="display:none;"><span>Booth : </span></td><td id="boothColumn" style="display:none;"><select id="boothId" name="boothId"><option value="0">Select Booth</option></select></td>
 	</tr>
