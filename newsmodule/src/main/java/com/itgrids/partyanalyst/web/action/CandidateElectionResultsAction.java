@@ -2618,10 +2618,17 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	    
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		candidatesList = candidateDetailsService.getCandidatesOfAUser(1L);
+		candidatesList = candidateDetailsService.getCandidatesOfAUser(user.getRegistrationID());
 		
 		return Action.SUCCESS;
 		
+	}
+	
+	public String getNewsContainedCandidates()
+	{
+		candidatesList = candidateDetailsService.getNewsContainedCandidates();
+		
+		return Action.SUCCESS;
 	}
 	
 	
