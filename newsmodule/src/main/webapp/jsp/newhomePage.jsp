@@ -602,7 +602,7 @@ getCandidates();
 
 function showFilesInGallary(gallaryId)
 {
- var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"";
+ var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"&category=0";
 		
      var browser1 = window.open(urlstr,"showAllFilesOfAGallary","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
