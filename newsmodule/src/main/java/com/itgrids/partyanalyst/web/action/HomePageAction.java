@@ -445,7 +445,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 				 newsType = "";      
 		latestGallariesList = candidateDetailsService.getLatestgallaries();
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"",newsType);
-		fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID);
+		fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID,newsType);
 		responseFilesList=candidateDetailsService.getLatestResponsedNews();
 		
 		fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L,newsType);
@@ -453,7 +453,9 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 	public String getMoreVideos(){
-		
+		 request.setAttribute("notLogged",notLogged);
+	        session = request.getSession();
+	        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
 		try{	 
 			 jObj = new JSONObject(getTask());
 			 
@@ -465,7 +467,9 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		 int startRecord = jObj.getInt("startRecord");
 		 int maxRecord = jObj.getInt("maxRecord");
 		 String queryType = jObj.getString("queryType"); 
-		 
+		 if(user.getUserAccessType()!=null)
+			 if(user.getUserAccessType().equals("Admin"))
+				 queryType = "";   
 		 fileVOsList = candidateDetailsService.getAllVideosList(partyId, startRecord, maxRecord, queryType);
 		 
 		 
