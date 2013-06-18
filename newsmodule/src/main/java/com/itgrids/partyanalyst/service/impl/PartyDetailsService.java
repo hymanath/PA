@@ -1917,13 +1917,13 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 		}		
 		return fileVo;		
 	}
-	public FileVO getAllTheGallariesForCategory(Long partyId , int startIndex , int endIndex,Long categoryId)
+	public FileVO getAllTheGallariesForCategory(Long partyId , int startIndex , int endIndex,Long categoryId,String newsType)
 	{  	FileVO fileVo =  new FileVO();
 	
 	
 	List<FileVO> fileVos = new ArrayList<FileVO>();
 	
-		List<Object[]> filesCount = partyGalleryDAO.getGalleriesForCategories(IConstants.TDPID, startIndex, endIndex, "public", categoryId);
+		List<Object[]> filesCount = partyGalleryDAO.getGalleriesForCategories(IConstants.TDPID, startIndex, endIndex, newsType, categoryId);
       for(Object[]  obj:filesCount){
 			
 			FileVO file = new FileVO();
