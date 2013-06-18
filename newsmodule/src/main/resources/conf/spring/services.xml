@@ -1617,6 +1617,8 @@
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 		<property name="newsFlagDAO" ref="newsFlagDAO"/>
 		<property name="candidateDetailsService" ref="candidateDetailsService"></property>
+		<property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO" />
+		<property name="candidateDAO" ref="candidateDAO" />
 	</bean>
 	
 	
