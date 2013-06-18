@@ -456,12 +456,18 @@ width: 92px;
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>Top Views</h4></div>
 						<div class="span12">
-							<ul class=" nav nav-list bs-docs-sidenav">
-								<li>
-									<h6>News Main Title</h6>
-										<span ><i class="smal">04 June 2013</i></span>
+							<ul class=" nav nav-list bs-docs-sidenav" style='margin-top:10px;'>
+								<s:iterator value="responseFilesList" var="responsefiles">
+								<li class='thumbnail' style='margin:5px;padding:5px 5px 5px 15px;'>
+									<h6 class='text-info' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;"> <s:property value="title"/></h6>
+									<span style='color:#ccc;'>
+										<s:if test="%{fileDate!=''}">
+											<i class="smal">Date: 
+											<s:property value="fileDate"/></i>
+										</s:if>
+									</span>
 								</li>
-								
+								</s:iterator>
 								
 							</ul>
 						</div>
