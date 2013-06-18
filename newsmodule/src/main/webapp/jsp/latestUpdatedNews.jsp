@@ -79,7 +79,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 
 <script type="text/javascript">
 
-getNewsForPagination(1);
+getNewsForPagination(0);
 function getNewsForPagination(startIndex)
  {
 	
@@ -184,7 +184,7 @@ function buildPaginatedNews(results,jsObj)
 
 	$("#latestNewsDiv").html(str);
 	
-	if(jsObj.firstResult==1){
+	if(jsObj.firstResult==0){
 		$("#paginationId").pagination({
 			items: itemsCount,
 			itemsOnPage: maxResults,
