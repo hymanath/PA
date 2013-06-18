@@ -184,6 +184,7 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 			String question = jObj.getString("question") ;
 			String questionType = jObj.getString("questionType");
 			Boolean showRemark = jObj.getBoolean("showRemark");
+			Boolean isAnalyse = jObj.getBoolean("isAnalyse");
 			List<OptionVO>  optionVOs = new ArrayList<OptionVO>(); 
 			
 			List<QuestionsOptionsVO> questionsOptionsList = new ArrayList<QuestionsOptionsVO>();
@@ -229,6 +230,7 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 			questionsOptionsVO.setQuestion(question);
 			questionsOptionsVO.setOptions(optionVOs);
 			questionsOptionsVO.setQuestionType(questionType);
+			questionsOptionsVO.setIsAnalyse(isAnalyse);
 			questionsOptionsList.add(questionsOptionsVO);
 			resultStatus = surveyAnalysisService.saveQuestion(questionsOptionsList);
 		}
@@ -239,6 +241,7 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 			String question = jObj.getString("question") ;
 			String questionType = jObj.getString("questionType");
 			Boolean showRemark = jObj.getBoolean("showRemark");
+			Boolean isAnalyse = jObj.getBoolean("isAnalyse");
 			QuestionsOptionsVO questionsOptionsVO = new QuestionsOptionsVO();
 			List<OptionVO>  optionVOs = new ArrayList<OptionVO>(); 
 			List<QuestionsOptionsVO> questionsOptionsList = new ArrayList<QuestionsOptionsVO>();
@@ -265,9 +268,11 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 				}
 				optionVOs.add(optionVO);
 			}
+			
 			questionsOptionsVO.setOptions(optionVOs);
 			questionsOptionsVO.setQuestion(question);
 			questionsOptionsVO.setHasRemark(showRemark);
+			questionsOptionsVO.setIsAnalyse(isAnalyse);
 			questionsOptionsVO.setQuestionType(questionType);
 			questionsOptionsList.add(questionsOptionsVO);
 			resultStatus = surveyAnalysisService.saveQuestionForMultipleText(questionsOptionsList);	

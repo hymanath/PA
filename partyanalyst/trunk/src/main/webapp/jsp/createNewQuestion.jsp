@@ -54,7 +54,7 @@
        var question = $("#questionTitle").val();
 	   var questionType = $("#questionType option:selected").val();
 	   var showRemark = $("#showRemark").is(':checked');
-	   
+	   var isAnalyse =$("#comparewithCaste").is(':checked');
 if(question == ""){
 	$("#errorDiv").html("Question is mandatory..").css({"display":"block","color":"red","font":"bold"});
 	return;
@@ -168,6 +168,7 @@ if(flag == false)
 			question:question,
 			questionType:questionType,
 			showRemark:showRemark,
+			isAnalyse:isAnalyse,
 			mainOptionsArray:mainOptionsArray,
 			task:task
 		  };
@@ -429,7 +430,8 @@ function showStatusForsaveQuestion(myResults)
 		    <form class="row-fluid">
 			      <label>Question</label>
 				  <input type="text" id="questionTitle" placeholder="Enter Question..." name="Question" class="span12">
-					<div style="margin-bottom:8px;margin-left:5px;"><input type="checkbox" id="showRemark" /> Show remark</div>
+					<div style="margin-bottom:8px;margin-left:5px;"><label class="checkbox inline"><input type="checkbox" id="showRemark" /> Show remark</label>
+					<label class="checkbox inline"><input type="checkbox" id="comparewithCaste" />Compare With Caste and Age</label></div>
 					
 				  <label>Select Question Type </label> 
 				  <s:select  theme="simple" cssClass="span12" id="questionType" name ="questionType" list="questionType" listKey="id" listValue="name"  onchange="buildQuestion();">
