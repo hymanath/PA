@@ -3453,7 +3453,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterDetailsVO.setVotersPercentForAbove60(voterDetailsVO.getTotalVotersForAbove60() != null? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters):"0.00");
 				mandalVotersList.add(voterDetailsVO);
 			}
-			
+			Collections.sort(mandalVotersList,sortByName);
 			return mandalVotersList;
 	}
 	
@@ -9424,6 +9424,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					}
 				}
 			}
+			Collections.sort(votersDetailsVOList,sortByName);
 			return votersDetailsVOList;
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -9431,7 +9432,13 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			return votersDetailsVOList;
 		}
 	}
-			
+	public static Comparator<VotersDetailsVO> sortByName = new Comparator<VotersDetailsVO>()
+			{	  
+					  public int compare(VotersDetailsVO arg1,VotersDetailsVO arg2)
+						{
+						  return arg1.getTehsilName().trim().toUpperCase().compareTo(arg2.getTehsilName().trim().toUpperCase());
+						}
+			};	
 	public List<VotersDetailsVO> getAgewiseVotersDetaForPanchayatisByTehsilId(Long tehsilId,Long publicationDateId, String type,Long constituencyId){
 		  try{
 			 List<VotersDetailsVO> votersDetailsVOList = new ArrayList<VotersDetailsVO>();

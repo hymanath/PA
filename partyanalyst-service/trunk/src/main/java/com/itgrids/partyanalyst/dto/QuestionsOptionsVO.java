@@ -20,7 +20,18 @@ public class QuestionsOptionsVO {
 	private Boolean hasRemark;
 	private Boolean hasSubQuestion;
 	private String questionType;
+	private Boolean isAnalyse;
 	
+	public Boolean getIsAnalyse() {
+		return isAnalyse;
+	}
+
+
+	public void setIsAnalyse(Boolean isAnalyse) {
+		this.isAnalyse = isAnalyse;
+	}
+
+
 	public String getQuestionType() {
 		return questionType;
 	}
