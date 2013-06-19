@@ -548,12 +548,12 @@ function showTotalNews(myResult,jsObj){
 		
 		str+='<div class="row-fluid">';
 	if(myResult[i].displayImagePath != null){
-		str+='<a class="thumbnail span4" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')" style="width: 146px;height:120px;">';
+		str+='<a class="thumbnail span4" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')" style="width: 146px;height:120px; cursor: pointer;">';
 		str+='<img src="'+myResult[i].displayImagePath+'" style="width:100%" alt="'+myResult[i].fileTitle1+'" onerror="imgError(this)"/>';
 		str+='</a>';
 	}
 	if(myResult[i].displayImagePath == null){
-		str+='<a class="thumbnail span4" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')" style="width: 146px;height:120px;">';
+		str+='<a class="thumbnail span4" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')" style="width: 146px;height:120px;  cursor: pointer;">';
 		str+='<img src="images/'+myResult[i].imagePathInUpperCase+'" style="width:100%" alt="'+myResult[i].fileTitle1+'" onerror="imgError(this);"/>';
 		str+='</a>';
 	}
