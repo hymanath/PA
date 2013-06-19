@@ -445,6 +445,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		     
 		     userAddress = userAddressDAO.save(userAddress);
 		     survey.setUserAddress(userAddress);
+		     survey.setIsDeleted("false");
 		     surveyDAO.save(survey);
 		  
 		 }});
@@ -475,6 +476,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			
 			surveyQuestion.setHasRemarks(String.valueOf(questionsOptionsList.get(0).getHasRemark()));
 			surveyQuestion.setIsAnalyse(String.valueOf(questionsOptionsList.get(0).getIsAnalyse()));
+			surveyQuestion.setSurvey(surveyDAO.get(questionsOptionsList.get(0).getSurvey()));
 			surveyQuestion = surveyQuestionDAO.save(surveyQuestion);
 			
 				if(questionsOptionsList.get(0).getOptions() != null && questionsOptionsList.get(0).getOptions().size() > 0)
@@ -1360,4 +1362,28 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 				 }
 			}
 		 }
+	
+	public List<SelectOptionVO> getSurveysForUser(){
+		List<SelectOptionVO> surveyList =new ArrayList<SelectOptionVO>();
+		
+		List<Object[]> allSurveys = surveyDAO.getAllSurveysUsingIsDeleted();
+		for(Object[] survey:allSurveys){
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId((Long)survey[0]);
+			selectOptionVO.setName((String)survey[1]);
+			surveyList.add(selectOptionVO);
+		}
+		
+		return surveyList;
+	}
+	
+	public List<SelectOptionVO> deleteSurveyDetails(Long surveyId){
+		ResultStatus resultStatus = new ResultStatus();
+		List<SelectOptionVO> surveyList = new ArrayList<SelectOptionVO>();
+		int value = surveyDAO.updateSurveyDetails(surveyId);
+		surveyList = getSurveysForUser();
+		
+		return surveyList;
+	}
+	
 }
