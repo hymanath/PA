@@ -213,9 +213,10 @@ font-size:20px;
 		 <div>
 		<div style="display:none;" class="errorClass" id="errormsgdiv"></div>
 		<span id="newsDescriptionDiv"></span>
-		<!--<h3>Comments:</h3>
+		<!--<h3>Comments:</h3>-->
 		 <div class="commentSection">
-		 <textarea style="width:100%;" id="commenttext" class="textareaid"></textarea></div><a style="margin-top:4px;margin-bottom:4px;" class="pull-right btn btn-info"  href="javascript:{}">Post</a>
+		 <!--<textarea style="width:100%;" id="commenttext" class="textareaid"></textarea>--></div><!--<a style="margin-top:4px;margin-bottom:4px;" class="pull-right btn btn-info"  href="javascript:{}">Post</a>-->
+		 <div id="newsDescriptionDiv"></div>
 		 <div style="padding-top: 0px; margin-left: 290px; margin-top: 36px; margin-bottom: -29px;" id="abusedErrorDiv"></div>
          <div style="display:none;" id="postedcomments"></div>	
 		</div>-->
