@@ -21,6 +21,7 @@ public class QuestionsOptionsVO {
 	private Boolean hasSubQuestion;
 	private String questionType;
 	private Boolean isAnalyse;
+	private Long survey;
 	
 	public Boolean getIsAnalyse() {
 		return isAnalyse;
@@ -29,6 +30,16 @@ public class QuestionsOptionsVO {
 
 	public void setIsAnalyse(Boolean isAnalyse) {
 		this.isAnalyse = isAnalyse;
+	}
+
+	
+	public Long getSurvey() {
+		return survey;
+	}
+
+
+	public void setSurvey(Long survey) {
+		this.survey = survey;
 	}
 
 

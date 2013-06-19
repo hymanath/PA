@@ -37,4 +37,8 @@ public interface ISurveyAnalysisService {
 	public String getSurveyForm(Long surveyId);
 	
 	public boolean saveSurveyForm(List<QuestionAnswerVO> questionAnswerVOList);
+	
+	public List<SelectOptionVO> getSurveysForUser();
+	
+	public List<SelectOptionVO> deleteSurveyDetails(Long surveyId);
 }

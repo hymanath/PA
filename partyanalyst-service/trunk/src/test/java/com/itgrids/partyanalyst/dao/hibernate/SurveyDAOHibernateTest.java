@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
@@ -14,7 +16,17 @@ public class SurveyDAOHibernateTest extends BaseDaoTestCase {
 	}
 
 
-		public void testGetAll(){
+	/*	public void testGetAll(){
 			surveyDAO.getAll();
+		}*/
+		
+		public void testupdateSurveyDetails(){
+			int i = surveyDAO.updateSurveyDetails(1l);
+			System.out.println(i);
 		}
+		
+		/*public void testgetAllSurveysUsingIsDeleted(){
+			List<Object[]> c = surveyDAO.getAllSurveysUsingIsDeleted();
+			System.out.println(c);
+		}*/
 }

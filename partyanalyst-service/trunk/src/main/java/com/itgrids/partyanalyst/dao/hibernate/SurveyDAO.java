@@ -26,4 +26,24 @@ public class SurveyDAO extends GenericDaoHibernate<Survey, Long> implements ISur
 	{
 		return getHibernateTemplate().find("select model from Survey model where model.surveyId = ?",surveyId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllSurveysUsingIsDeleted(){
+		Query queryObject = getSession()
+				.createQuery(
+						"select model.surveyId,model.name from Survey model where model.isDeleted != :value");
+		
+		queryObject.setParameter("value","true" );
+		return queryObject.list();
+	}
+
+	public int updateSurveyDetails(Long surveyId){
+		Query queryObject = getSession()
+				.createQuery(
+						"update Survey model set model.isDeleted = :value where model.surveyId = :surveyId");
+		
+		queryObject.setParameter("surveyId",surveyId );
+		queryObject.setParameter("value","true" );
+		return queryObject.executeUpdate();
+	}
 }
