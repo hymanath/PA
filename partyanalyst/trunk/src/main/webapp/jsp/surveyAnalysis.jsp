@@ -1,14 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Survey Analysis</title>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>-->
 <script type="text/javascript" src="js/surveyAnalysis/surveyAnalysis.js"></script>
+<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery_validation_1.7.js"></script>
+
+<style>
+	#myModal 
+	{
+		width: 700px; 
+		margin-top: -300px !important;
+		margin-left:  -350px !important;
+		height:470px;
+		
+	} 
+
+	#myModal .modal-body {
+		//max-height: 500px;
+	}
+</style>
 <script type="text/javascript">
    function saveQuestion(){
        var question = $("#questionTitle").val();
@@ -142,6 +162,7 @@
 </head>
 <body>
 <div>
+<span class='btn' onclick='openModal()'>Surveyor</span>
      <input type="button" onclick="openSurveyQuestionAddWindow();"  value="Add Question" />
 	 <div style="display:none;" id="dialogWindowDiv" title="Add New Question">
 	   <div class="container">
@@ -168,6 +189,155 @@
 	 </div>
 	<div style="text-align:center;margin-top:10px;margin-bottom:10px;"><input type="button" value="Creating Survey" id="surveyBtn" class="btn btn-info"/></div>
 	 </div>
+	 
+ <div class="modal hide fade" id="myModal">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">X</a>
+			<h4>Surveyor Personal Information </h4>
+		</div>
+		<div class="modal-body">
+			<p style="font-size:16px;font-weight:bold;"></p>
+			 <form class="form-horizontal" name='personalInfoForm' action='saveSurveyorInfoAction.action' method='post'>
+				<legend>Personal Information</legend>
+				<div class="control-group">
+					<label class="control-label" for="name">Name</label>
+					<div class="controls">
+						<input type="text" id="name" placeholder="Your Name" name='surveyorPersonalInfoVO.name'>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="contactnumber">Contact Number</label>
+					<div class="controls">
+						<!--<label class="control-label" for="mobileno">Mobile Number</label>-->
+						<input type="text" id="mobileNumber" placeholder="Mobile Number" name='surveyorPersonalInfoVO.mobileNumber'>
+						<!--<label class="control-label" for="phoneno">Phone Number</label>-->
+						<input type="text" id="phoneNumber" placeholder="Phone Number" name='surveyorPersonalInfoVO.phoneNumber'>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="age" >Age</label>
+					<div class="controls">
+						<input type="text" id="age" placeholder="Age" name='surveyorPersonalInfoVO.age'>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="emailid">Email-Id</label>
+					<div class="controls">
+						<input type="text" id="emailId" placeholder="Email-Id" name='surveyorPersonalInfoVO.email'>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="qualification">Qualification</label>
+					<div class="controls">
+						<select class='select' id='qualificationId' name='surveyorPersonalInfoVO.qualification'>
+							<option value="0">Select</option>
+							<option value="1" selected='selected'>X</option>
+							<option value="2">Inter</option>
+							<option value="3">UG</option>
+							<option value="4">PG</option>
+						</select>	
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="occupation">Occupation</label>
+					<div class="controls">
+						<select class='select' id='occupationId' name='surveyorPersonalInfoVO.occupation'>
+							<option value="0">Select</option>
+							<option value="1" selected='selected'>Farmer</option>
+							<option value="2">Job</option>
+						</select>	
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="caste">Caste</label>
+					<div class="controls">
+						<select class='select' id='casteId' name='surveyorPersonalInfoVO.caste'>
+							<option value="0">Select</option>
+							<option value="1" >SC/ST</option>
+							<option value="2">BC</option>
+							<option value="3" selected='selected'>GENERAL</option>
+						</select>	
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="gender">Gender</label>
+					<div class="controls">
+						<select class='select' id='genderId' name='surveyorPersonalInfoVO.gender'>
+							<option value="0">Select</option>
+							<option value="1" selected='selected'>Male</option>
+							<option value="2">Female</option>
+						</select>	
+					</div>
+				</div>
+				
+				<legend>Address</legend>
+				<div class="control-group">
+					<label class="control-label" for="state">State</label>
+					<div class="controls">
+						<select class='select' id='stateId' name='surveyorPersonalInfoVO.state'>
+							<option value="0">Select</option>
+							<option value="1" selected='selected'>AP</option>
+							<option value="2">MP</option>
+							<option value="3">UP</option>
+						</select>
+				<s:select
+tooltip="Choose Your Favourite Language"
+label="Favourite Language"
+list="statesList"
+name="statesList"
+listKey="id"
+listValue="name"
+headerKey="None"
+headerValue="None"/> 
+<!--<s:select theme="simple" label="Candidates" name="candidates" id="candidatesListId" list="candidatesList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Candidate"/>						-->
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="district">District</label>
+					<div class="controls">
+						<select class='select' id='districtId' name='surveyorPersonalInfoVO.district'>
+							<option value="0">Select</option>
+							<option value="1" selected='selected'>Prakasam</option>
+							<option value="2">Srikakulam</option>
+						</select>	
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="tehsil">Tehsil</label>
+					<div class="controls">
+						<select class='select' id='tehsilId' name='surveyorPersonalInfoVO.tehsil'>
+							<option value="0">Select</option>
+							<option value="1" selected='selected'>YPUDI</option>
+							<option value="2">MARTUR</option>
+						</select>	
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="village">Village</label>
+					<div class="controls">
+						<select class='select' id='villageId' name='surveyorPersonalInfoVO.township'>
+							<option value="0">Select</option>
+							<option value="1" selected='selected'>CHPALEM</option>
+							<option value="2">VPADU</option>
+						</select>	
+					</div>
+				</div>
+				
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary" onclick="personalInfoForm.submit()">Save changes</button>
+		</div>
+	</div>
+	
+	<div>
+		   
+			
+	</div>
+
+
 <script type="text/javascript">
 $(document).ready(function(){
 				
@@ -177,6 +347,9 @@ $(document).ready(function(){
   });
 
 });//End of ready
+function openModal(){
+		$('#myModal').modal('show');
+	}
 </script>
 </body>
 </html>
