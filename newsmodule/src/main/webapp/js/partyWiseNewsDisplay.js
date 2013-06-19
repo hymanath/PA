@@ -548,12 +548,12 @@ function showTotalNews(myResult,jsObj){
 		
 		str+='<div class="row-fluid">';
 	if(myResult[i].displayImagePath != null){
-		str+='<a class="thumbnail span4" href="partyPageAction.action?partyId='+myResult[i].candidateId+'&contentId='+myResult[i].contentId+'" style="width: 146px;height:120px;">';
+		str+='<a class="thumbnail span4" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')" style="width: 146px;height:120px;">';
 		str+='<img src="'+myResult[i].displayImagePath+'" style="width:100%" alt="'+myResult[i].fileTitle1+'" onerror="imgError(this)"/>';
 		str+='</a>';
 	}
 	if(myResult[i].displayImagePath == null){
-		str+='<a class="thumbnail span4" href="partyPageAction.action?partyId='+myResult[i].candidateId+'&contentId='+myResult[i].contentId+'" style="width: 146px;height:120px;">';
+		str+='<a class="thumbnail span4" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')" style="width: 146px;height:120px;">';
 		str+='<img src="images/'+myResult[i].imagePathInUpperCase+'" style="width:100%" alt="'+myResult[i].fileTitle1+'" onerror="imgError(this);"/>';
 		str+='</a>';
 	}
@@ -572,7 +572,7 @@ function showTotalNews(myResult,jsObj){
 		str+='<table><tr><td style="width:250px;font-weight:bold;"><p class="text-error" style="float: left; position: absolute;">Source : '+myResult[i].source+'</p></td><td style="width:250px;font-weight:bold;"><p class="text-error" style="float: right; position: absolute;">Date : '+myResult[i].fileDate+'</p></td></tr></table>';
 		str+='</div>';
 		str+='<div class="span2 ">';
-		str+='<a href="partyPageAction.action?partyId='+myResult[i].candidateId+'&contentId='+myResult[i].contentId+'">';
+		str+='<a onclick="getNewsDetailsByContentId('+myResult[i].contentId+')">';
 		str+='<button class="btn btn-mini pull-right btn-info" type="button">Read Now...</button>';
 		str+='</a>';
 		str+='</div>';
