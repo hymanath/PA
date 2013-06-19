@@ -144,7 +144,7 @@ function buildPaginatedNews(results,jsObj){
 		}
 		
 		str+="<div class='row-fluid'>";
-		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
 		if(source == "Eenadu Telugu")
 		{
