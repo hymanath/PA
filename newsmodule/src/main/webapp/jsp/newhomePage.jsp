@@ -557,12 +557,14 @@ width: 92px;
 								<div class="row-fluid ">
 									<div class="span12 pad10 ">
 										<ul class="unstyled">
-											<li><a href="javascript:{}" onclick="openVideo('EUW4YcbUumk');" class="thumbnail span2"><img  src="http://img.youtube.com/vi/EUW4YcbUumk/0.jpg"></a></li>
-											<li><a href="javascript:{}" onclick="openVideo('rc4Z_ZjAijo');" class="thumbnail span2"><img  src="http://img.youtube.com/vi/rc4Z_ZjAijo/0.jpg"></a></li>
-											<li><a href="javascript:{}"  onclick="openVideo('dnWKb8qrg1g');"class="thumbnail span2"><img src="http://img.youtube.com/vi/dnWKb8qrg1g/0.jpg"></a></li>
-											<li><a href="javascript:{}"  onclick="openVideo('hlQL1FiNEQk');"class="thumbnail span2"><img  src="http://img.youtube.com/vi/hlQL1FiNEQk/0.jpg"></a></li>
-											<li><a href="javascript:{}"  onclick="openVideo('7w_Gg2b8S10');"class="thumbnail span2"><img  src="http://img.youtube.com/vi/7w_Gg2b8S10/0.jpg"></a></li>
-											<li><a href="javascript:{}"  onclick="openVideo('Xcdzou_IR4Q');"class="thumbnail span2"><img  src="http://img.youtube.com/vi/Xcdzou_IR4Q/0.jpg"></a></li>
+										<s:iterator value="fileList" var="newsGallaryDetails" status="ctr">
+											<li><a class="thumbnail span2" href="javascript:{openVideo('<s:property value="filePath1"/>')}">
+											<img src='http://img.youtube.com/vi/<s:property value="filePath1"/>/0.jpg'/></a></li>                          		
+										</s:iterator>
+										
+									<!--
+									<li><a href="javascript:{}" onclick="openVideo('EUW4YcbUumk');" class="thumbnail span2"><img  src="http://img.youtube.com/vi/EUW4YcbUumk/0.jpg"></a></li>
+								 -->
 										</ul>
 										<!--<a href="#" class="pull-right btn btn-mini" style="margin-top:75px;">More</a>-->
 										<span class="btn btn-mini pull-right" onclick="showMoreVideoGallaries()" style="margin:5px;">More Videos..</span>
