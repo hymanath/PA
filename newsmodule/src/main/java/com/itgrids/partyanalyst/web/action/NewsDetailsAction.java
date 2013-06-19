@@ -34,7 +34,14 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private Long contentId;
 	private GallaryVO gallaryVO,mainArticleVO;
 	private IContentManagementService contentManagementService;
+	private Long responseContentId;
 	
+	public Long getResponseContentId() {
+		return responseContentId;
+	}
+	public void setResponseContentId(Long responseContentId) {
+		this.responseContentId = responseContentId;
+	}
 	public void setServletContext(ServletContext context) {
 		
 		this.context = context;
@@ -153,6 +160,27 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			 int maxResult=jObj.getInt("maxRecords");
 			 int startRecord=jObj.getInt("startingRecord");
 			 fileVOsList = candidateDetailsService.getVideosForGalleryId(galleryId,maxResult,startRecord);
+			
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
+			}
+		return Action.SUCCESS;
+	}
+	
+	public String showNewsResponseAction()
+	{
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getCompleteDetailsOfANewsResponse()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long resonseContentId = jObj.getLong("resonseContentId");
+			fileVOsList = contentManagementService.getResponseTrackingNews(resonseContentId);
 			
 			}catch (Exception e) {
 				e.printStackTrace();
