@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
@@ -43,6 +44,7 @@ import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.util.IConstants;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class PartyDetailsService implements IPartyDetailsService {/*
@@ -2333,8 +2335,8 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 			 file.setSource(source);
 			 file.setContentId(id);
 			 file.setCandidateId(partyId);
-			 file.setFileTitle1(f.getFileTitle());
-			 file.setDescription(f.getFileDescription());
+			 file.setFileTitle1(f.getFileTitle()!= null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileTitle())):"");
+			 file.setDescription(f.getFileDescription() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileDescription())):"");
 			 file.setDisplayImageName(f.getFileName());
 			 file.setDisplayImagePath(f.getFilePath());
 			 file.setImagePathInUpperCase(flag);

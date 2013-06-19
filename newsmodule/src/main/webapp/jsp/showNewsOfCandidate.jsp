@@ -45,6 +45,15 @@
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
 	
 	<style type="text/css">
+    @font-face
+	{
+	 font-family:eFont;src: url('img/eenadu.ttf');
+	}
+	.enadu
+	{
+	font-family: eFont;
+	font-size:20px;
+	}
 	select {
     background-color: #FFFFFF;
     border: 1px solid #F3E81E;
@@ -172,11 +181,19 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
 		str+="<li>";
-		str+="<h4 style='text-transform: capitalize;'>"+results[i].title+"</h4>";
+		if(results[i].source == "Eenadu Telugu")
+		 str+="<h4 style='text-transform: capitalize;'><span class='enadu'>"+results[i].title+"</span></h4>";
+		else
+		 str+="<h4 style='text-transform: capitalize;'>"+results[i].title+"</h4>";
+
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
-		str+="<p class='span8'>"+results[i].description+"</p>";
+		if(results[i].source == "Eenadu Telugu")
+		 str+="<p class='span8 enadu'>"+results[i].description+"</p>";
+		else
+		 str+="<p class='span8'>"+results[i].description+"</p>";
+
 		str+="</div>";
 		str+="<div class='row-fluid m_top10'><div class='span6'><p class='text-error'>Source : "+results[i].source+"</p></div>";
 		str+="<div class='span3'><p class='text-info'>Response Count: "+results[i].responseCount+"</p></div>";

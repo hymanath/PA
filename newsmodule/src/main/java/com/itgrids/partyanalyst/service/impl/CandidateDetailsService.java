@@ -5539,8 +5539,8 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 									
 									file.setFileId(fileGallary.getFile().getFileId());
 									file.setFileGallaryId(fileGallary.getFileGallaryId());
-									file.setFileName1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle()));
-									file.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()));
+									file.setFileName1(fileGallary.getFile().getFileTitle() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle())):"");
+									file.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):""));
 									
 									if(fileGallary.getFile().getCategory() != null){
 									file.setCategoryId(fileGallary.getFile().getCategory().getCategoryId());
@@ -5938,8 +5938,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 			fileVO = new FileVO();
 		 			fileVO.setIds((Long)objects[1]);
 		 			int responseCount=partyGalleryDAO.getResponseNewsCountOfCandidate(candidateId, type, fileVO.getIds());
-		 			fileVO.setTitle(objects[2]!=null?objects[2].toString():null);
-		 			fileVO.setDescription(objects[3]!=null?objects[3].toString():null);
+		 			fileVO.setTitle(objects[2]!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(objects[2].toString())):null);
+		 			fileVO.setDescription(objects[3]!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(objects[3].toString())):null);
 		 			fileVO.setPath(objects[0]!=null?objects[0].toString():null);
 		 			fileVO.setCount(count);
 		 			fileVO.setSource(objects[4]!=null?objects[4].toString():null);
