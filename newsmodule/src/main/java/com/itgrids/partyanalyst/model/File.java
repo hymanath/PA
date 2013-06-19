@@ -60,6 +60,8 @@ public class File extends BaseModel implements java.io.Serializable {
 	private Set<FileSourceLanguage> fileSourceLanguage = new HashSet<FileSourceLanguage>(0);
 	//private Set<ProblemFiles> problemFiles = new HashSet<ProblemFiles>(0);
 	//private Set<NewsProblem> newsProblems = new HashSet<NewsProblem>();
+	private String newsDescription;
+	
 	
 	private String comment;
 	private User user;
@@ -315,4 +317,14 @@ public class File extends BaseModel implements java.io.Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	@Column(name="news_description")
+	public String getNewsDescription() {
+		return newsDescription;
+	}
+
+	public void setNewsDescription(String newsDescription) {
+		this.newsDescription = newsDescription;
+	}
+
 }

@@ -5231,6 +5231,12 @@ function buildUploadNewsForMultipleUsers()
 	str +='       <div id="showScopeSubs" />'; 
 	str +='    </td>';
 	str +='  </tr>';
+
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">News description in details<font class="requiredFont">*</font></td>';
+	str += '       <td class="selectWidthPadd"><textarea id="newsDesc" cols="20" rows="3" name="newsDescription"></textarea></td>';
+	str += '   </tr>';
+	str += '   <tr>';
 	str += '</table>';
 
 	str +='<input type="hidden" name="profileType" value="party_profile">';

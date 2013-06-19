@@ -125,9 +125,18 @@ public class FileVO extends ResultStatus implements Serializable {
 	private int responseCount;
 	private List<Long> candidateIds = new ArrayList<Long>();
 	private List<Long> responseFileIds = new ArrayList<Long>();
+	private String newsDescription;
 	
 	
 	
+	public String getNewsDescription() {
+		return newsDescription;
+	}
+
+	public void setNewsDescription(String newsDescription) {
+		this.newsDescription = newsDescription;
+	}
+
 	public int getResponseCount() {
 		return responseCount;
 	}
