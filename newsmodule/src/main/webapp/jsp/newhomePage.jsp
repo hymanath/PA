@@ -320,7 +320,13 @@ width: 92px;
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
 											<a class="thumbnail span4" style="height:120px;" href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" onerror="imgError(this);"  alt='<s:property value="fileTitle1"/> Image'/></a>
 										</c:if>
-										<p class="span8"><s:property value="description"/></p>
+
+										 <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
+										   <p class="span8 enadu"><s:property value="description"/></p>
+										 </s:if>
+										  <s:else>
+											<p class="span8"><s:property value="description"/></p>
+										 </s:else>
 									    </div>
 										<div class="row-fluid m_top10">
 													<div class="span9">
