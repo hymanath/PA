@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.ISurveyAnswerDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyorProfileDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -92,8 +93,17 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 	private IRespondentDAO  respondentDAO;
 	private IEducationalQualificationsDAO educationalQualificationsDAO;
 	private IOccupationDAO  occupationDAO;
+	private ITownshipDAO townshipDAO;
 	private ISurveyAnswerDAO surveyAnswerDAO;
 	
+	
+	
+	public ITownshipDAO getTownshipDAO() {
+		return townshipDAO;
+	}
+	public void setTownshipDAO(ITownshipDAO townshipDAO) {
+		this.townshipDAO = townshipDAO;
+	}
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -305,7 +315,66 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		
 		return optionTypes;
 	}
-    
+	public ResultStatus saveSurveyorInfo(String name,String age,String mobileNo,String phoneNo,String email,int qualification,int occupation,int caste,Long state,Long district,Long tehsil,Long township,String gender){
+		  ResultStatus resultStatus=new ResultStatus();
+		  
+		  try {
+			UserAddress userAddress=new UserAddress();
+			  userAddress.setState(stateDAO.get(state));
+			  userAddress.setDistrict(districtDAO.get(district));
+			  userAddress.setTehsil(tehsilDAO.get(tehsil));
+			  userAddress.setTownship(townshipDAO.get(township));
+			  
+			  userAddress=userAddressDAO.save(userAddress);
+			  
+			  SurveyorProfile surveyorProfile=new SurveyorProfile();
+			  surveyorProfile.setName(name);
+			  surveyorProfile.setMobileNo(mobileNo);
+			  surveyorProfile.setPhoneNo(phoneNo);
+			  surveyorProfile.setGender(gender);
+			  surveyorProfile.setEmailId(email);
+			  surveyorProfile.setUserAddress(userAddress);
+			  surveyorProfile.setEducationalQualifications(educationalQualificationsDAO.get(new Long(qualification)));
+			  surveyorProfile.setOccupation(occupationDAO.get(new Long(occupation)));
+			  surveyorProfile.setCasteStateId(caste);
+			  surveyorProfile.setAge(age);
+			  
+			  surveyorProfileDAO.save(surveyorProfile);
+			  
+			  resultStatus.setMessage("Surveyor Profile Saved Successfully..");
+			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  } catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			e.printStackTrace();
+		}
+		  
+		  
+		  return resultStatus;
+	  }
+
+	public List<SelectOptionVO> getStatesList(){
+		List<SelectOptionVO> states=new ArrayList<SelectOptionVO>();
+		
+		List list=new ArrayList(0);
+		
+		list= stateDAO.getAllStatesByCountryIdOrderByStateId(1L);
+		for(int i=0;i<list.size();i++){
+				Object[] parms = (Object[])list.get(i); 				
+				states.add(new SelectOptionVO(new Long(parms[0].toString()),parms[1].toString()));
+			} 
+		return states;
+	}
+	public List<SelectOptionVO> getDistricts(Long stateId) {
+		
+		List list=new ArrayList(0);
+		
+		list = districtDAO.findByStateId(stateId);
+		List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>();
+		
+		//return districts;
+		return null;
+	}
 	public ResultStatus savesurveyDetails(final String name,final String desc,final Long scopeVal,final Long stateId,final Long districtId,final Long constId,final Long mandalId,final Long userId,final String consType)
     {
 		ResultStatus resultStatus = new ResultStatus();
