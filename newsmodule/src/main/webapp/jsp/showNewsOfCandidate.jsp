@@ -187,7 +187,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		 str+="<h4 style='text-transform: capitalize;'>"+results[i].title+"</h4>";
 
 		str+="<div class='row-fluid'>";
-		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].ids+")}'>";
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
 		if(results[i].source == "Eenadu Telugu")
 		 str+="<p class='span8 enadu'>"+results[i].description+"</p>";
