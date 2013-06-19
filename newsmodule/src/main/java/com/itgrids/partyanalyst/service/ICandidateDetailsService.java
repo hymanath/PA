@@ -235,4 +235,7 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getNewsForCandidate(Long candidateId);
 	 
 	 public List<FileVO> getLatestResponsedNews();
+	 
+	 public List<FileVO> getNewsBetweenSelectedDates(String fromDateStr,String toDateStr,Integer starIndex, Integer maxResults, String newsType);
+	 
 }

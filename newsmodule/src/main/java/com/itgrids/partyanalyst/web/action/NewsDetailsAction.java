@@ -35,6 +35,8 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private GallaryVO gallaryVO,mainArticleVO;
 	private IContentManagementService contentManagementService;
 	private Long responseContentId;
+	private String fromDate;
+	private String toDate;
 	
 	public Long getResponseContentId() {
 		return responseContentId;
@@ -120,6 +122,18 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	public void setMainArticleVO(GallaryVO mainArticleVO) {
 		this.mainArticleVO = mainArticleVO;
 	}
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
 	public String execute()
 	{	
 		
@@ -144,7 +158,14 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			  gallaryVO = contentManagementService.getResponseGallariesForSelectedGallary(jObj.getLong("fileGallaryId"), jObj.getInt("firstResult"), jObj.getInt("maxResult"));
 		 else if(jObj.getString("task").equalsIgnoreCase("getMainArticleDetails"))
 			 mainArticleVO = contentManagementService.getMainArticlesDetails(jObj.getLong("fileGallaryId"), 0, 3);
-			 
+		
+		 else if(jObj.getString("task").equalsIgnoreCase("getSelectedNewsBetweenDates"))
+		 {
+			 String newsType ="public";
+			 if(regVO.getUserAccessType() != null && regVO.getUserAccessType().equalsIgnoreCase("Admin"))
+				 newsType = "";
+			 fileVOsList = candidateDetailsService.getNewsBetweenSelectedDates(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getInt("firstResult"),jObj.getInt("maxResult"),newsType);
+		 }
 		 
 		}catch (Exception e) {
 			e.printStackTrace();
