@@ -219,7 +219,7 @@ font-size:20px;
 		 <div id="newsDescriptionDiv"></div>
 		 <div style="padding-top: 0px; margin-left: 290px; margin-top: 36px; margin-bottom: -29px;" id="abusedErrorDiv"></div>
          <div style="display:none;" id="postedcomments"></div>	
-		</div>-->
+		</div>
 
 	</div>
 	<!-- left Div End -->
