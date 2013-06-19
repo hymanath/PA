@@ -477,7 +477,8 @@ width: 92px;
 											<s:property value="fileDate"/></i>
 										</s:if>
 									</span>
-								</li>
+								</li><a href="javascript:{getResponseDetailsByContentId(<s:property value='fileGallaryId'/>)}" class="btn btn-mini btn-primary" style="margin-left:154px;">Track</a>
+
 								</s:iterator>
 								
 							</ul>
@@ -977,6 +978,15 @@ function getCandidatesNews(){
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
+}
+
+function getResponseDetailsByContentId(contentId)
+{
+		
+     var browser1 = window.open("showNewsResponseAction.action?responseContentId ="+contentId+" ","showNewsResponse","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+
+
 }
 
 </script>

@@ -236,6 +236,7 @@
 		<pattern>/adminPageAction*</pattern>
 		<pattern>/aboutUs*</pattern>
 		<pattern>/contactUs*</pattern>
+		<pattern>/showNewsResponseAction*</pattern>
     	 </decorator>
 
 </decorators>
