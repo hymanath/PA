@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IQuestionOptionsDAO;
+import com.itgrids.partyanalyst.model.Option;
 import com.itgrids.partyanalyst.model.QuestionOptions;
 
 public class QuestionOptionsDAO extends GenericDaoHibernate<QuestionOptions, Long> implements IQuestionOptionsDAO{
@@ -12,4 +15,8 @@ public class QuestionOptionsDAO extends GenericDaoHibernate<QuestionOptions, Lon
 		// TODO Auto-generated constructor stub
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Option> getOptionsForQuestion(Long surveyQuestionId){
+		return getHibernateTemplate().find("select model.options from QuestionOptions model where model.surveyQuestion.surveyQuestionId = ?",surveyQuestionId);
+	}
 }

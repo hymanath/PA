@@ -33,6 +33,8 @@ public class SurveyAnswer extends BaseModel implements java.io.Serializable{
 	private String isSubOption;
 	private UpdationDetails updationDetails;
 	private UserAddress userAddress;
+	private String optionValue;
+	private String remarks;
 	
 	public SurveyAnswer() {
 	}
@@ -174,6 +176,24 @@ public class SurveyAnswer extends BaseModel implements java.io.Serializable{
 
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
+	}
+
+	@Column(name="remarks")
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	@Column(name="option_value")
+	public String getOptionValue() {
+		return optionValue;
+	}
+
+	public void setOptionValue(String optionValue) {
+		this.optionValue = optionValue;
 	}
 	
 	

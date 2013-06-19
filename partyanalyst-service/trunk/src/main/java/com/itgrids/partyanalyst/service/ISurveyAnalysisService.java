@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
+import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyInfoVO;
@@ -24,5 +26,9 @@ public interface ISurveyAnalysisService {
 	
 	public List<VoterVO> getVoterDetailsBasedOnVoterId(String VoterCardId,Long userId);
 	
-	public ResultStatus saveSurveyDetails(final SurveyInfoVO surveyInfoVO);
+	public ResultStatus saveSurveyDetails(final SurveyInfoVO surveyInfoVO);	
+	
+	public String getSurveyForm(Long surveyId);
+	
+	public boolean saveSurveyForm(List<QuestionAnswerVO> questionAnswerVOList);
 }
