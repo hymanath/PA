@@ -354,7 +354,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			  surveyorProfile.setUserAddress(userAddress);
 			  surveyorProfile.setEducationalQualifications(educationalQualificationsDAO.get(new Long(qualification)));
 			  surveyorProfile.setOccupation(occupationDAO.get(new Long(occupation)));
-			  surveyorProfile.setCasteStateId(caste);
+			  surveyorProfile.setCasteStateId(new Long(caste));
 			  surveyorProfile.setAge(age);
 			  
 			  surveyorProfileDAO.save(surveyorProfile);

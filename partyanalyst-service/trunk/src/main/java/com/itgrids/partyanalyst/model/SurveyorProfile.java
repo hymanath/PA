@@ -27,7 +27,7 @@ import org.hibernate.annotations.NotFoundAction;
 public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	private long surveyorProfileId;
+	private Long surveyorProfileId;
 	private String name;
 	private String mobileNo;
 	private String phoneNo;
@@ -35,10 +35,10 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 	private String emailId;
 	private EducationalQualifications educationalQualifications;
 	private Occupation occupation;
-	private long casteStateId;
+	private Long casteStateId;
 	private String gender;
 	private RegionScopes regionScopes;
-	private long locationValue;
+	private Long locationValue;
 	private UserAddress userAddress;
 	
 	private Set<Respondent> respondent = new HashSet<Respondent>(0);
@@ -46,7 +46,7 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 	public SurveyorProfile() {
 	}
 	
-	public SurveyorProfile(long surveyorProfileId,String name,String mobileNo,String phoneNo,String age,String emailId,EducationalQualifications educationalQualifications,Occupation occupation,long casteStateId,String gender,RegionScopes regionScopes,long locationValue,UserAddress userAddress) {
+	public SurveyorProfile(Long surveyorProfileId,String name,String mobileNo,String phoneNo,String age,String emailId,EducationalQualifications educationalQualifications,Occupation occupation,Long casteStateId,String gender,RegionScopes regionScopes,Long locationValue,UserAddress userAddress) {
 		this.surveyorProfileId = surveyorProfileId;
 		this.name = name;
 		this.mobileNo = mobileNo;
@@ -65,11 +65,11 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="surveyor_profile_id", unique=true, nullable=false)
-	public long getSurveyorProfileId() {
+	public Long getSurveyorProfileId() {
 		return surveyorProfileId;
 	}
 
-	public void setSurveyorProfileId(long surveyorProfileId) {
+	public void setSurveyorProfileId(Long surveyorProfileId) {
 		this.surveyorProfileId = surveyorProfileId;
 	}
 
@@ -145,11 +145,11 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 	}
 
 	@Column(name="caste_state_id",length=15)
-	public long getCasteStateId() {
+	public Long getCasteStateId() {
 		return casteStateId;
 	}
 
-	public void setCasteStateId(long casteStateId) {
+	public void setCasteStateId(Long casteStateId) {
 		this.casteStateId = casteStateId;
 	}
 
@@ -175,11 +175,11 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 	}
 
 	@Column(name="location_value",length=20)
-	public long getLocationValue() {
+	public Long getLocationValue() {
 		return locationValue;
 	}
 
-	public void setLocationValue(long locationValue) {
+	public void setLocationValue(Long locationValue) {
 		this.locationValue = locationValue;
 	}
 

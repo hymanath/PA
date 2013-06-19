@@ -22,7 +22,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class QuestionOptions extends BaseModel implements java.io.Serializable{
 
-	private long questionOptionsId;
+	private Long questionOptionsId;
 	private SurveyQuestion surveyQuestion;
 	private Option options;
 	private UpdationDetails updationDetails;
@@ -30,7 +30,7 @@ public class QuestionOptions extends BaseModel implements java.io.Serializable{
 	public QuestionOptions() {
 	}
 	
-	public QuestionOptions(long questionOptionsId,SurveyQuestion surveyQuestion,Option options,UpdationDetails updationDetails) {
+	public QuestionOptions(Long questionOptionsId,SurveyQuestion surveyQuestion,Option options,UpdationDetails updationDetails) {
 		this.questionOptionsId = questionOptionsId;
 		this.surveyQuestion = surveyQuestion;
 		this.options = options;
@@ -40,11 +40,11 @@ public class QuestionOptions extends BaseModel implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "question_options_id", unique = true, nullable = false)
-	public long getQuestionOptionsId() {
+	public Long getQuestionOptionsId() {
 		return questionOptionsId;
 	}
 
-	public void setQuestionOptionsId(long questionOptionsId) {
+	public void setQuestionOptionsId(Long questionOptionsId) {
 		this.questionOptionsId = questionOptionsId;
 	}
 
