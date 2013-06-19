@@ -460,7 +460,7 @@ width: 92px;
 				<!-----Top view News DIv------>
 				<div class="span3" style="height:554px">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>Top Views</h4></div>
+						<div class="span12 boxHeading"><h4>Hot News</h4></div>
 						<div class="span12">
 							<ul class=" nav nav-list bs-docs-sidenav" style='margin-top:10px;'>
 								<s:iterator value="responseFilesList" var="responsefiles">
