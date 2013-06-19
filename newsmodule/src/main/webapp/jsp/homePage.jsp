@@ -114,7 +114,8 @@
 					<div class="carousel slide" id="myCarousel">
 						<div class="carousel-inner">
 							<div class="item active">
-								<img alt="" src="images/bootstrap-mdo-sfmoma-02.jpg">
+								<!-- <img alt="" src="images/bootstrap-mdo-sfmoma-02.jpg">-->
+								<img alt="" src="images/Tdp.jpg">
 								<div class="container" >
 									<div class="carousel-caption text-center">
 										<!-- <h4>--: WELCOME :--</h4>
