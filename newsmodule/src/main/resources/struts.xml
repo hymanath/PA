@@ -5239,6 +5239,7 @@
 		</action>
 		
 		<action name="showNewsGallariesAction"  class="candidateElectionResultsAction" method="showNewsGallariesAction">
+			<result name="error" type="redirect">loginPageAction.action</result>
 			<result name="success">/jsp/showNewsGallaries.jsp</result>
 		</action>
 		
@@ -5255,16 +5256,18 @@
         </action>
         
         <action name="showAllFilesOfAGallary" class="candidateElectionResultsAction" method="showAllFilesOfAGallary">
+       		 <result name="error" type="redirect">loginPageAction.action</result>
        		<result name="success">/jsp/showNewsForGallary.jsp</result>    
         </action>
         
         <action name="showAllVideosOfAGallaryAction" class="partyWiseNewsDisplayAction" method="getAllVideosForGallary">
+       		<result name="error" type="redirect">loginPageAction.action</result>
        		<result name="success">/jsp/showAllVideosForGallary.jsp</result>    
         </action>
          
 		<action name="newsPaginationAction" class="newsPaginationAction">
 		 <result name="success">/jsp/pagingNews.jsp</result>
-		 <result name="error">/jsp/loginForm.jsp</result>
+		 <result name="error" type="redirect">loginPageAction.action</result>
 		</action>
 		
 		<action name="getNewsByPagingAction" class="newsPaginationAction" method="getNewsByPaging">
@@ -5273,9 +5276,11 @@
 		 </result>
 		</action>
 		<action name="partyWiseNewsDisplayAction" class="partyWiseNewsDisplayAction">
+			 <result name="error">loginPageAction</result>
 		    <result name="success">/jsp/partyWiseNewsDisplay.jsp</result>
 		</action>
 		<action name="partyWiseNewsPopupAction" class="partyWiseNewsDisplayAction" method="getPartyWiseNewsForALocation">
+		  <result name="error" type="redirect">loginPageAction.action</result>
 		  <result name="success">/jsp/partyWiseNewsPopup.jsp</result>
 		</action>
 		<action name="getPartyWiseNewsDetailsForALocation" class="partyWiseNewsDisplayAction"
@@ -5306,10 +5311,12 @@
         </action>
 		
 		<action name="newsDetailsPopupAction" class="contentManagementAction">
+		  <result name="error" type="redirect">loginPageAction.action</result>
 		  <result name="success">/jsp/newsDetailsPopup.jsp</result>
 		</action>
 		
 		<action name="newsDetailsAction" class="newsDetailsAction">
+		 <result name="error" type="redirect">loginPageAction.action</result>
 		 <result name="success">/jsp/latestUpdatedNews.jsp</result>
 		</action>
 		
@@ -5320,6 +5327,7 @@
 		</action>
 		
 		<action name="showMoreVideos" class="homePageAction" method="showMoreVideos">
+			<result name="error" type="redirect">loginPageAction.action</result>
 		 	<result name="success">/jsp/showMoreVideosPage.jsp</result>
 		</action>
 		
@@ -5351,6 +5359,7 @@
 		</action>
 		
 		<action name="showNewsOfCandidateAction" class="homePageAction" method="showNewsOfCandidatePage">
+		  <result name="error" type="redirect">loginPageAction.action</result>
 		  <result name="success">/jsp/showNewsOfCandidate.jsp</result>
 		</action>
 		
@@ -5426,6 +5435,7 @@
 		</action>
 	
 		<action name="showNewsResponseAction" class="newsDetailsAction" method="showNewsResponseAction">
+		 <result name="error" type="redirect">loginPageAction.action</result>
 		 <result name="success">/jsp/newsResponse.jsp</result>
 		</action>
 		
