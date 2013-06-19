@@ -4959,6 +4959,12 @@
 			</result>			
 		</action>
 		
+		<action name="categoryWiseNewsAction" class="contentManagementAction" method="categoryWiseNews">
+		    <result type="json" name="success">
+				 <param name="root">contentDetailsVO</param>
+			</result>			
+		</action>
+		
 		<action name="getParlConstiForDistrictAction" class="locationsHierarchyAction" method="getParlmentAndAssemblyConstis">
 		   <result type="json" name="success">
 				<param name="root">regionsList</param>	
@@ -5401,5 +5407,16 @@
 		<action name="surveyFormSaveAction" class="surveyFormAction" method="saveSurveyFormData" >
 		  <result name="success">/jsp/surveyForm.jsp</result>
 		</action>
+		
+		<action name="saveSurveyorInfoAction" class="surveyAnalysisAction" method="saveSurveyorInfo">
+			<result name="success">/jsp/surveyAnalysis.jsp</result>
+		</action>
+		
+		<action name="getDistrictsAction" class="surveyAnalysisAction" method="getDistricts">
+			<result type="json" name="success">
+		   		<param name="root">districtsList</param>
+		  	</result>
+		</action>
+		
 		</package>
 </struts>      
