@@ -2574,8 +2574,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 	public String showAllFilesOfAGallary()
 	{
-		
-		
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else		
 		return Action.SUCCESS;
 		
 	}
@@ -2584,6 +2587,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	public String showNewsGallariesAction()
 	{
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else
 		return Action.SUCCESS;
 		
 	}

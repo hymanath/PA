@@ -87,6 +87,11 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	
 	public String execute()throws Exception
 	{
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else
 		return Action.SUCCESS;
 	}
 	public ICandidateDetailsService getCandidateDetailsService() {
