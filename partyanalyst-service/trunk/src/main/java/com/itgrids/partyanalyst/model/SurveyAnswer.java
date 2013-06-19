@@ -22,7 +22,7 @@
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	public class SurveyAnswer extends BaseModel implements java.io.Serializable{
 
-	private long surveyAnswerId;
+	private Long surveyAnswerId;
 	//private RegionScopes regionScopes;
 	//private long locationValue;
 	//private Respondent respondent;
@@ -40,7 +40,7 @@
 	public SurveyAnswer() {
 	}
 	
-	public SurveyAnswer(long surveyAnswerId, Option option,
+	public SurveyAnswer(Long surveyAnswerId, Option option,
 			SurveyQuestion surveyQuestion, String isSubOption,
 			String optionValue, String remarks,SurveyAnswerInfo surveyAnswerInfo) {
 		super();
@@ -58,11 +58,11 @@
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="survey_answer_id", unique=true, nullable=false)
-	public long getSurveyAnswerId() {
+	public Long getSurveyAnswerId() {
 		return surveyAnswerId;
 	}
 
-	public void setSurveyAnswerId(long surveyAnswerId) {
+	public void setSurveyAnswerId(Long surveyAnswerId) {
 		this.surveyAnswerId = surveyAnswerId;
 	}
 
