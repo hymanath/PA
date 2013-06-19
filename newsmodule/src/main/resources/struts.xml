@@ -5419,5 +5419,10 @@
 		<action name="contactUs" class="homePageAction">
 			<result>/jsp/contactUsInfo.jsp</result>
 		</action>
+		<action name="getMainArticleDetailsAction" class="newsDetailsAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		  <param name="root">mainArticleVO</param>
+		 </result>
+		</action>
 		</package>
 </struts>      

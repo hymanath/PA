@@ -292,10 +292,13 @@ function callAjax(jsObj,url)
 				buildContentDetails();
 				
 			}
-			else if(jsObj.task == "getResponseGallaryDetails")
+			 if(jsObj.task == "getResponseGallaryDetails")
 			{
 			  showResponseGallaryDetails(myResults,jsObj);
-			  buildPagination(myResults,jsObj);
+			}
+			if(jsObj.task == "getMainArticleDetails")
+			{
+			 showMainArticles(myResults,jsObj);
 			}
 		 }
 		catch(e)
@@ -621,7 +624,19 @@ function getNewsDetailsByContentId(contentId)
 }
 
 
-function buildPagination(result,jsObj)
+function getMainArticles()
+{
+ var jObj=
+	{
+	  fileGallaryId:contentId,
+	  task:"getMainArticleDetails"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getMainArticleDetailsAction.action?"+rparam;
+	callAjax(jObj,url);
+}
+
+function showMainArticles(result,jsObj)
 {
 	
   if(result.count == 0)
@@ -637,7 +652,13 @@ function buildPagination(result,jsObj)
 
   str +="<ul class='unstyled relatedproblem' style='width:220px;'>";
   for(var i in result.filesList)
-     str += '<li><a href="javascript:{}"  onClick="getNewsDetailsByContentId('+result.filesList[i].contentId+')">'+result.filesList[i].title+'</a></li>';
+  {
+	  var source = result.filesList[i].fileVOList[0].source;
+	  if(source == "Eenadu Telugu")
+       str += '<li><a class="enadu" href="javascript:{}"  onClick="getNewsDetailsByContentId('+result.filesList[i].contentId+')">'+result.filesList[i].title+'</a></li>';
+	  else
+       str += '<li><a href="javascript:{}"  onClick="getNewsDetailsByContentId('+result.filesList[i].contentId+')">'+result.filesList[i].title+'</a></li>';
+  }
 
   	str +='</ul>';
 	 $("#gallaryDiv").addClass("gallaryDiv").html(str);
@@ -656,6 +677,8 @@ function buildPagination(result,jsObj)
 
 getContentDetails();
 getNewsForPagination(0);
+getMainArticles();
+
 </script>
 </body>
 </html>

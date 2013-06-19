@@ -15,4 +15,6 @@ public interface IContentManagementService {
 	
 	public GallaryVO getResponseGallariesForSelectedGallary(Long fileGallaryId,Integer startIndex, Integer maxIndex);
 	
+	public GallaryVO getMainArticlesDetails(Long fileGallaryId, Integer startIndex, Integer maxIndex);
+	
 }

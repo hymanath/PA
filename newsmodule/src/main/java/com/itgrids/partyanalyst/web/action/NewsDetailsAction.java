@@ -32,7 +32,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private ICandidateDetailsService candidateDetailsService ;
 	private ServletContext context;
 	private Long contentId;
-	private GallaryVO gallaryVO;
+	private GallaryVO gallaryVO,mainArticleVO;
 	private IContentManagementService contentManagementService;
 	
 	public void setServletContext(ServletContext context) {
@@ -107,6 +107,12 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			IContentManagementService contentManagementService) {
 		this.contentManagementService = contentManagementService;
 	}
+	public GallaryVO getMainArticleVO() {
+		return mainArticleVO;
+	}
+	public void setMainArticleVO(GallaryVO mainArticleVO) {
+		this.mainArticleVO = mainArticleVO;
+	}
 	public String execute()
 	{	
 		
@@ -129,7 +135,9 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 }
 		 else if(jObj.getString("task").equalsIgnoreCase("getResponseGallaryDetails"))
 			  gallaryVO = contentManagementService.getResponseGallariesForSelectedGallary(jObj.getLong("fileGallaryId"), jObj.getInt("firstResult"), jObj.getInt("maxResult"));
-		 
+		 else if(jObj.getString("task").equalsIgnoreCase("getMainArticleDetails"))
+			 mainArticleVO = contentManagementService.getMainArticlesDetails(jObj.getLong("fileGallaryId"), 0, 3);
+			 
 		 
 		}catch (Exception e) {
 			e.printStackTrace();
