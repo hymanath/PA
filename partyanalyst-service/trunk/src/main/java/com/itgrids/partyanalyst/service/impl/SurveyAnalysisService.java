@@ -18,13 +18,18 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyInfoVO;
 import com.itgrids.partyanalyst.dto.SurveyVO;
+import com.itgrids.partyanalyst.dto.SurveyorVO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Option;
 import com.itgrids.partyanalyst.model.QuestionOptions;
 import com.itgrids.partyanalyst.model.Respondent;
+import com.itgrids.partyanalyst.model.SurveyAnswer;
+import com.itgrids.partyanalyst.model.SurveyAnswerInfo;
 import com.itgrids.partyanalyst.model.SurveyQuestion;
+import com.itgrids.partyanalyst.model.Surveyor;
 import com.itgrids.partyanalyst.model.SurveyorProfile;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ISurveyAnalysisService;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -42,7 +47,9 @@ import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRespondentDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAnswerDAO;
+import com.itgrids.partyanalyst.dao.ISurveyAnswerInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
+import com.itgrids.partyanalyst.dao.ISurveyorDAO;
 import com.itgrids.partyanalyst.dao.ISurveyorProfileDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -55,7 +62,6 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Survey;
-import com.itgrids.partyanalyst.model.SurveyAnswer;
 import com.itgrids.partyanalyst.model.UpdationDetails;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -95,14 +101,20 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 	private IOccupationDAO  occupationDAO;
 	private ITownshipDAO townshipDAO;
 	private ISurveyAnswerDAO surveyAnswerDAO;
-	
-	
+	private ISurveyorDAO surveyorDAO;
+	private ISurveyAnswerInfoDAO surveyAnswerInfoDAO;
 	
 	public ITownshipDAO getTownshipDAO() {
 		return townshipDAO;
 	}
 	public void setTownshipDAO(ITownshipDAO townshipDAO) {
 		this.townshipDAO = townshipDAO;
+	}
+	public ISurveyAnswerInfoDAO getSurveyAnswerInfoDAO() {
+		return surveyAnswerInfoDAO;
+	}
+	public void setSurveyAnswerInfoDAO(ISurveyAnswerInfoDAO surveyAnswerInfoDAO) {
+		this.surveyAnswerInfoDAO = surveyAnswerInfoDAO;
 	}
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -279,6 +291,12 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 	}
 	public IOccupationDAO getOccupationDAO() {
 		return occupationDAO;
+	}
+	public ISurveyorDAO getSurveyorDAO() {
+		return surveyorDAO;
+	}
+	public void setSurveyorDAO(ISurveyorDAO surveyorDAO) {
+		this.surveyorDAO = surveyorDAO;
 	}
 	public void setOccupationDAO(IOccupationDAO occupationDAO) {
 		this.occupationDAO = occupationDAO;
@@ -675,20 +693,23 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		return voterList;
 	}
 	
-	public ResultStatus saveSurveyDetails(final SurveyInfoVO surveyInfoVO)
+	public ResultStatus saveSurveyDetails(final SurveyInfoVO surveyInfoVO,final Long userId,final List<QuestionAnswerVO> questionAnswerVO)
 	{
-		ResultStatus resultStatus = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+		final ResultStatus resultStatus = new ResultStatus();
+		SurveyAnswerInfo surveyAnswerInfo = (SurveyAnswerInfo) transactionTemplate.execute(new TransactionCallback() {
 		public Object doInTransaction(TransactionStatus status) {
-		ResultStatus resultStatus = new ResultStatus();
+		SurveyAnswerInfo surveyAnswerInfo = new SurveyAnswerInfo();
 		try {
 		LOG.debug("entered into saveSurveyDetails() method in SurveyAnalysisService Service");
 		UserAddress userAddress = new UserAddress();
 		SurveyorProfile surveyorProfile = new SurveyorProfile();
 		Respondent respondent = new Respondent();
 		Voter voter = null;
+		
 		if(surveyInfoVO.getVoterCardNo() != null && surveyInfoVO.getVoterCardNo().trim().length() >0){
 		 voter = voterDAO.getVoterByVoterIDCardNo(surveyInfoVO.getVoterCardNo());
 		}
+		
 		if(surveyInfoVO.getStateId()!= null && surveyInfoVO.getStateId() > 0)
 		{
 			userAddress.setState(stateDAO.get(surveyInfoVO.getStateId()));
@@ -740,9 +761,13 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		{
 			userAddress.setParliamentConstituency(constituencyDAO.get(surveyInfoVO.getParlemtId()));
 		}
+		
 		surveyorProfile.setName(surveyInfoVO.getName()!=null ?surveyInfoVO.getName():"");
 		surveyorProfile.setMobileNo(surveyInfoVO.getMobileNo()!=null ?surveyInfoVO.getMobileNo():"");
 		surveyorProfile.setAge(surveyInfoVO.getAge()!=null?surveyInfoVO.getAge().toString():"");
+		surveyorProfile.setPhoneNo(surveyInfoVO.getPhoneNo()!=null?surveyInfoVO.getPhoneNo():"");
+		surveyorProfile.setEmailId(surveyInfoVO.getEmailId()!= null?surveyInfoVO.getEmailId():"");
+		
 		if(surveyInfoVO.getEducateionId() != null && surveyInfoVO.getEducateionId() > 0)
 		{
 			surveyorProfile.setEducationalQualifications(educationalQualificationsDAO.get(surveyInfoVO.getEducateionId()));
@@ -759,27 +784,83 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		surveyorProfile.setGender(surveyInfoVO.getGender()!=null ? surveyInfoVO.getGender():"");
 	
 		userAddress = userAddressDAO.save(userAddress);
+		
 		surveyorProfile.setUserAddress(userAddress);
 		surveyorProfile = surveyorProfileDAO.save(surveyorProfile);
 		
+		
 		respondent.setSurveyorProfile(surveyorProfile);
+		
 		if(voter != null && voter.getVoterId() != null && voter.getVoterId() > 0)
 		{
 			respondent.setVoter(voterDAO.get(voter.getVoterId()));
 		}
+		UpdationDetails updationDetails = new UpdationDetails();
+		User user = userDAO.get(userId);
+		if(user != null)
+		{
+			updationDetails.setCreatedBy(user);
+			updationDetails.setUpdatedBy(user);
+		}
+		updationDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		updationDetailsDAO.save(updationDetails);
 		
 		respondent.setLandmark(surveyInfoVO.getLandmark());
+		respondent.setUpdationDetails(updationDetails);
 		respondent  = respondentDAO.save(respondent);
+		
+		/*Surveyor surveyor = new Surveyor();
+		if(surveyInfoVO.getSurveyorId() != null && surveyInfoVO.getSurveyorId() > 0)
+		{
+			surveyor.setTeamLead(surveyorDAO.get(surveyInfoVO.getTeamleadId()));
+		}
+		surveyor.setSurveyorProfile(surveyorProfile);
+		surveyor.setUpdationDetails(updationDetails);
+		surveyor = surveyorDAO.save(surveyor);*/
+
+		/*if(surveyorProfile.getRegionScopes().getRegionScopesId() != null && surveyorProfile.getRegionScopes().getRegionScopesId() > 0)
+		{
+			surveyAnswerInfo.setRegionScopes(regionScopesDAO.get(surveyorProfile.getRegionScopes().getRegionScopesId()));
+		}*/
+		if(surveyInfoVO.getSurveyorId() != null && surveyInfoVO.getSurveyorId() > 0)
+		{
+			surveyAnswerInfo.setSurveyor(surveyorDAO.get(surveyInfoVO.getSurveyorId()));
+		}
+		if(surveyInfoVO.getTeamleadId() != null && surveyInfoVO.getTeamleadId() > 0)
+		{
+			surveyAnswerInfo.setTeamLead(surveyorDAO.get(surveyInfoVO.getTeamleadId()));
+		}
+		surveyAnswerInfo.setRespondent(respondent);
+		surveyAnswerInfo.setUpdationDetails(updationDetails);
+		surveyAnswerInfo.setUserAddress(userAddress);
+		surveyAnswerInfo = surveyAnswerInfoDAO.save(surveyAnswerInfo);
+		
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		}
 		catch (Exception e) {
 			LOG.error("exception raised in  saveSurveyDetails() method in SurveyAnalysisService Service",e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return null;
 		}
-		return resultStatus;
+		if(questionAnswerVO != null && questionAnswerVO.size() > 0)
+		{
+			boolean responce = saveSurveyForm(questionAnswerVO,surveyAnswerInfo);
+			if(responce == false)
+			{
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			}
+				
+			else
+			{
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			}
+		}
+		return surveyAnswerInfo;
 		} });
+		
 		return resultStatus;
 	}
+	
 	
     public String getSurveyForm(Long surveyId){
     	StringBuilder questions = new StringBuilder("<input type='hidden' name='surveyId' value='"+surveyId+"'/>");
@@ -1134,12 +1215,12 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		return subQuestion.toString();
 	 }
 	 
-	 public boolean saveSurveyForm(List<QuestionAnswerVO> questionAnswerVOList){
+	 public boolean saveSurveyForm(List<QuestionAnswerVO> questionAnswerVOList,SurveyAnswerInfo surveyAnswerInfo){
 		  try{
 			 for(QuestionAnswerVO questionAnswerVO : questionAnswerVOList){
 				 if(questionAnswerVO != null && questionAnswerVO.getQuestionId() != null){
 					 SurveyQuestion surveyQuestion = surveyQuestionDAO.get(questionAnswerVO.getQuestionId());
-					 saveSurveyQuestion(surveyQuestion,questionAnswerVO);
+					 saveSurveyQuestion(surveyQuestion,questionAnswerVO,surveyAnswerInfo);
 				 }
 			 }
 		  }catch(Exception e){
@@ -1148,34 +1229,34 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			}
 		  return true;
 	 }
-	 public void saveSurveyQuestion(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO){
+	 public void saveSurveyQuestion(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO,SurveyAnswerInfo surveyAnswerInfo){
 	    	
 	    	Long optionType = surveyQuestion.getOptionType().getOptionTypeId();
 		
 	    	switch (optionType.intValue()) {
 	    	
-		        case 1:   saveQuestionWithMultipleChoiceWithSingleSelect(surveyQuestion,questionAnswerVO); 	                 
+		        case 1:   saveQuestionWithMultipleChoiceWithSingleSelect(surveyQuestion,questionAnswerVO,surveyAnswerInfo); 	                 
 		                  break;         
 		        
-		        case 2:   saveQuestionWithMultipleChoiceWithMultiSelect(surveyQuestion,questionAnswerVO); 	            
+		        case 2:   saveQuestionWithMultipleChoiceWithMultiSelect(surveyQuestion,questionAnswerVO,surveyAnswerInfo); 	            
 		                  break;
 		        
-		        case 3:   saveQuestionWithMultipleOptionsWithSingleTextBox(surveyQuestion,questionAnswerVO); 
+		        case 3:   saveQuestionWithMultipleOptionsWithSingleTextBox(surveyQuestion,questionAnswerVO,surveyAnswerInfo); 
 		                  break;  
 		        
-		        case 4:   saveQuestionWithMultipleOptionsWithMultipleTextBox(surveyQuestion,questionAnswerVO); 
+		        case 4:   saveQuestionWithMultipleOptionsWithMultipleTextBox(surveyQuestion,questionAnswerVO,surveyAnswerInfo); 
 		                  break;
 		        
-		        case 5:   saveQuestionWithTextBox(surveyQuestion,questionAnswerVO); 
+		        case 5:   saveQuestionWithTextBox(surveyQuestion,questionAnswerVO,surveyAnswerInfo); 
 		                  break;
 		        
-		        case 6:   saveQuestionWithTextArea(surveyQuestion,questionAnswerVO); 
+		        case 6:   saveQuestionWithTextArea(surveyQuestion,questionAnswerVO,surveyAnswerInfo); 
 		                  break;
 	        }
 	    	
 	    }
 		
-		 public void saveQuestionWithMultipleChoiceWithSingleSelect(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO){
+		 public void saveQuestionWithMultipleChoiceWithSingleSelect(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO,SurveyAnswerInfo surveyAnswerInfo){
 			
 			if(questionAnswerVO.getOptions() != null && questionAnswerVO.getOptions().size() > 0){
 			 for(QuestionAnswerVO option : questionAnswerVO.getOptions()){
@@ -1184,10 +1265,11 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 					 SurveyAnswer surveyAnswer = new SurveyAnswer();
 					 surveyAnswer.setSurveyQuestion(surveyQuestion);
 					 surveyAnswer.setOption(questionOption);
+					 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 					 surveyAnswer.setIsSubOption("false");
 					 surveyAnswerDAO.save(surveyAnswer);
 					 if(option.getOptions() != null && option.getOptions().size() > 0 && questionOption.getOptionType() != null){
-						 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId());
+						 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId(), surveyAnswerInfo);
 					 }
 					 break;
 				 }
@@ -1196,25 +1278,26 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			
 		 }
 		
-		 public void saveQuestionWithMultipleChoiceWithMultiSelect(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO){
+		 public void saveQuestionWithMultipleChoiceWithMultiSelect(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO,SurveyAnswerInfo surveyAnswerInfo){
 			 if(questionAnswerVO.getOptions() != null && questionAnswerVO.getOptions().size() > 0){
 				 for(QuestionAnswerVO option : questionAnswerVO.getOptions()){
 					 if(option != null && option.getOptionId() != null && option.getOptionId().trim().length() > 0){
 						 Option questionOption = optionDAO.get(Long.valueOf(option.getOptionId().trim()));
 						 SurveyAnswer surveyAnswer = new SurveyAnswer();
 						 surveyAnswer.setSurveyQuestion(surveyQuestion);
+						 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 						 surveyAnswer.setOption(questionOption);
 						 surveyAnswer.setIsSubOption("false");
 						 surveyAnswerDAO.save(surveyAnswer);
 						 if(option.getOptions() != null && option.getOptions().size() > 0 && questionOption.getOptionType() != null){
-							 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId());
+							 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId(), surveyAnswerInfo);
 						 }
 					 }
 				 }
 				} 
 		 }
 		 
-		 public void saveQuestionWithMultipleOptionsWithSingleTextBox(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO){
+		 public void saveQuestionWithMultipleOptionsWithSingleTextBox(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO,SurveyAnswerInfo surveyAnswerInfo){
 			 if(questionAnswerVO.getOptions() != null && questionAnswerVO.getOptions().size() > 0){
 				 for(QuestionAnswerVO option : questionAnswerVO.getOptions()){
 					 if(option != null && option.getOptionId() != null && option.getOptionId().trim().length() > 0 && option.getOptionVal() != null && option.getOptionVal().trim().length() > 0){
@@ -1223,17 +1306,18 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 						 surveyAnswer.setSurveyQuestion(surveyQuestion);
 						 surveyAnswer.setOption(questionOption);
 						 surveyAnswer.setIsSubOption("false");
+						 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 						 surveyAnswer.setOptionValue(option.getOptionVal());
 						 surveyAnswerDAO.save(surveyAnswer);
 						 if(option.getOptions() != null && option.getOptions().size() > 0 && questionOption.getOptionType() != null){
-							 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId());
+							 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId(), surveyAnswerInfo);
 						 }
 					 }
 				 }
 				} 
 		 }
 		 
-		 public void saveQuestionWithMultipleOptionsWithMultipleTextBox(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO){
+		 public void saveQuestionWithMultipleOptionsWithMultipleTextBox(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO,SurveyAnswerInfo surveyAnswerInfo){
 			 if(questionAnswerVO.getOptions() != null && questionAnswerVO.getOptions().size() > 0){
 				 for(QuestionAnswerVO option : questionAnswerVO.getOptions()){
 					 if(option != null && option.getOptions() != null && option.getOptions().size() > 0 ){
@@ -1243,6 +1327,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 							 SurveyAnswer surveyAnswer = new SurveyAnswer();
 							 surveyAnswer.setSurveyQuestion(surveyQuestion);
 							 surveyAnswer.setOption(questionOption);
+							 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 							 surveyAnswer.setIsSubOption("false");
 							 surveyAnswer.setOptionValue(mainOption.getOptionVal());
 							 surveyAnswerDAO.save(surveyAnswer);
@@ -1253,7 +1338,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 				} 
 		 }
 		 
-		 public void saveQuestionWithTextBox(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO){
+		 public void saveQuestionWithTextBox(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO,SurveyAnswerInfo surveyAnswerInfo){
 			 if(questionAnswerVO.getOptions() != null && questionAnswerVO.getOptions().size() > 0){
 				 for(QuestionAnswerVO option : questionAnswerVO.getOptions()){
 					 if(option != null && option.getOptionId() != null && option.getOptionId().trim().length() > 0 && option.getOptionVal() != null && option.getOptionVal().trim().length() > 0){
@@ -1261,18 +1346,19 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 						 SurveyAnswer surveyAnswer = new SurveyAnswer();
 						 surveyAnswer.setSurveyQuestion(surveyQuestion);
 						 surveyAnswer.setOption(questionOption);
+						 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 						 surveyAnswer.setIsSubOption("false");
 						 surveyAnswer.setOptionValue(option.getOptionVal());
 						 surveyAnswerDAO.save(surveyAnswer);
 						 if(option.getOptions() != null && option.getOptions().size() > 0 && questionOption.getOptionType() != null){
-							 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId());
+							 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId(), surveyAnswerInfo);
 						 }
 					 }
 				 }
 				} 
 		 }
 		 
-		 public void saveQuestionWithTextArea(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO){
+		 public void saveQuestionWithTextArea(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO,SurveyAnswerInfo surveyAnswerInfo){
 			 if(questionAnswerVO.getOptions() != null && questionAnswerVO.getOptions().size() > 0){
 				 for(QuestionAnswerVO option : questionAnswerVO.getOptions()){
 					 if(option != null && option.getOptionId() != null && option.getOptionId().trim().length() > 0 && option.getOptionVal() != null && option.getOptionVal().trim().length() > 0){
@@ -1280,42 +1366,44 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 						 SurveyAnswer surveyAnswer = new SurveyAnswer();
 						 surveyAnswer.setSurveyQuestion(surveyQuestion);
 						 surveyAnswer.setOption(questionOption);
+						 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 						 surveyAnswer.setIsSubOption("false");
 						 surveyAnswer.setOptionValue(option.getOptionVal());
 						 surveyAnswerDAO.save(surveyAnswer);
 						 if(option.getOptions() != null && option.getOptions().size() > 0 && questionOption.getOptionType() != null){
-							 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId());
+							 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId(), surveyAnswerInfo);
 						 }
 					 }
 				 }
 				} 
 		 }
 		 
-		 public void saveSurveySubQuestion(SurveyQuestion surveyQuestion,List<QuestionAnswerVO> subAnswerList,Long optionType){
+		 public void saveSurveySubQuestion(SurveyQuestion surveyQuestion,List<QuestionAnswerVO> subAnswerList,Long optionType,SurveyAnswerInfo surveyAnswerInfo){
 		    	
 		    	switch (optionType.intValue()) {
 		    	
-			        case 1:   saveSubQuestionWithMultipleChoiceWithSingleSelect(surveyQuestion,subAnswerList); 
+			        case 1:   saveSubQuestionWithMultipleChoiceWithSingleSelect(surveyQuestion,subAnswerList,surveyAnswerInfo); 
 			                  break;
 			                 
-			        case 2:   saveSubQuestionWithMultipleChoiceWithMultiSelect(surveyQuestion,subAnswerList); 
+			        case 2:   saveSubQuestionWithMultipleChoiceWithMultiSelect(surveyQuestion,subAnswerList,surveyAnswerInfo); 
 			                  break;
 			                   
-			        case 5:   saveSubQuestionWithTextBox(surveyQuestion,subAnswerList); 
+			        case 5:   saveSubQuestionWithTextBox(surveyQuestion,subAnswerList,surveyAnswerInfo); 
 			                  break;
 			                 
-			        case 6:   saveSubQuestionWithTextArea(surveyQuestion,subAnswerList); 
+			        case 6:   saveSubQuestionWithTextArea(surveyQuestion,subAnswerList,surveyAnswerInfo); 
 			                  break;   
 		        
 		        }
 		    	
 		 }
 		 
-		 public void saveSubQuestionWithMultipleChoiceWithSingleSelect(SurveyQuestion surveyQuestion,List<QuestionAnswerVO> subAnswerList){
+		 public void saveSubQuestionWithMultipleChoiceWithSingleSelect(SurveyQuestion surveyQuestion,List<QuestionAnswerVO> subAnswerList,SurveyAnswerInfo surveyAnswerInfo){
 			for(QuestionAnswerVO subOption : subAnswerList){
 				 if(subOption != null && subOption.getOptionId() != null && subOption.getOptionId().trim().length() > 0){
 					 SurveyAnswer surveyAnswer = new SurveyAnswer();
 					 surveyAnswer.setSurveyQuestion(surveyQuestion);
+					 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 					 surveyAnswer.setOption(optionDAO.get(Long.valueOf(subOption.getOptionId().trim())));
 					 surveyAnswer.setIsSubOption("true");
 					 surveyAnswerDAO.save(surveyAnswer);
@@ -1324,11 +1412,12 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			}
 		 }
 		
-		 public void saveSubQuestionWithMultipleChoiceWithMultiSelect(SurveyQuestion surveyQuestion,List<QuestionAnswerVO> subAnswerList){
+		 public void saveSubQuestionWithMultipleChoiceWithMultiSelect(SurveyQuestion surveyQuestion,List<QuestionAnswerVO> subAnswerList,SurveyAnswerInfo surveyAnswerInfo){
 			 for(QuestionAnswerVO subOption : subAnswerList){
 				 if(subOption != null && subOption.getOptionId() != null && subOption.getOptionId().trim().length() > 0){
 					 SurveyAnswer surveyAnswer = new SurveyAnswer();
 					 surveyAnswer.setSurveyQuestion(surveyQuestion);
+					 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 					 surveyAnswer.setOption(optionDAO.get(Long.valueOf(subOption.getOptionId().trim())));
 					 surveyAnswer.setIsSubOption("true");
 					 surveyAnswerDAO.save(surveyAnswer);
@@ -1336,12 +1425,13 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			}
 		 }
 		 
-		 public void saveSubQuestionWithTextBox(SurveyQuestion surveyQuestion,List<QuestionAnswerVO> subAnswerList){
+		 public void saveSubQuestionWithTextBox(SurveyQuestion surveyQuestion,List<QuestionAnswerVO> subAnswerList,SurveyAnswerInfo surveyAnswerInfo){
 		 	
 			 for(QuestionAnswerVO subOption : subAnswerList){
 				 if(subOption != null && subOption.getOptionId() != null && subOption.getOptionId().trim().length() > 0 && subOption.getOptionVal() != null && subOption.getOptionVal().trim().length() > 0){
 					 SurveyAnswer surveyAnswer = new SurveyAnswer();
 					 surveyAnswer.setSurveyQuestion(surveyQuestion);
+					 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 					 surveyAnswer.setOption(optionDAO.get(Long.valueOf(subOption.getOptionId().trim())));
 					 surveyAnswer.setIsSubOption("true");
 					 surveyAnswer.setOptionValue(subOption.getOptionVal());
@@ -1350,11 +1440,12 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			}
 		 }
 		 
-		 public void saveSubQuestionWithTextArea(SurveyQuestion surveyQuestion,List<QuestionAnswerVO> subAnswerList){
+		 public void saveSubQuestionWithTextArea(SurveyQuestion surveyQuestion,List<QuestionAnswerVO> subAnswerList,SurveyAnswerInfo surveyAnswerInfo){
 			 for(QuestionAnswerVO subOption : subAnswerList){
 				 if(subOption != null && subOption.getOptionId() != null && subOption.getOptionId().trim().length() > 0 && subOption.getOptionVal() != null && subOption.getOptionVal().trim().length() > 0){
 					 SurveyAnswer surveyAnswer = new SurveyAnswer();
 					 surveyAnswer.setSurveyQuestion(surveyQuestion);
+					 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 					 surveyAnswer.setOption(optionDAO.get(Long.valueOf(subOption.getOptionId().trim())));
 					 surveyAnswer.setIsSubOption("true");
 					 surveyAnswer.setOptionValue(subOption.getOptionVal());
@@ -1362,28 +1453,44 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 				 }
 			}
 		 }
-	
-	public List<SelectOptionVO> getSurveysForUser(){
-		List<SelectOptionVO> surveyList =new ArrayList<SelectOptionVO>();
-		
-		List<Object[]> allSurveys = surveyDAO.getAllSurveysUsingIsDeleted();
-		for(Object[] survey:allSurveys){
-			SelectOptionVO selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId((Long)survey[0]);
-			selectOptionVO.setName((String)survey[1]);
-			surveyList.add(selectOptionVO);
+			
+			public List<SelectOptionVO> getSurveysForUser(){
+				List<SelectOptionVO> surveyList =new ArrayList<SelectOptionVO>();
+				
+				List<Object[]> allSurveys = surveyDAO.getAllSurveysUsingIsDeleted();
+				for(Object[] survey:allSurveys){
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)survey[0]);
+					selectOptionVO.setName((String)survey[1]);
+					surveyList.add(selectOptionVO);
+				}
+				
+				return surveyList;
+			}
+			
+			public List<SelectOptionVO> deleteSurveyDetails(Long surveyId){
+				ResultStatus resultStatus = new ResultStatus();
+				List<SelectOptionVO> surveyList = new ArrayList<SelectOptionVO>();
+				int value = surveyDAO.updateSurveyDetails(surveyId);
+				surveyList = getSurveysForUser();
+				
+				return surveyList;
+			}
+				
+	public List<SurveyorVO> getServeyorDetails()
+	{
+		List<SurveyorVO> returnList = null;
+		List<Surveyor> surveyorList = surveyorDAO.getSurveyorDetails();
+		if(surveyorList != null && surveyorList.size() > 0)
+		{
+			returnList = new ArrayList<SurveyorVO>();
+			for (Surveyor surveyor : surveyorList) {
+				SurveyorVO surveyorVO = new SurveyorVO();
+				surveyorVO.setSurveyorId(surveyor.getSurveyorId());
+				surveyorVO.setSurveyorName(surveyor.getSurveyorProfile().getName());
+				returnList.add(surveyorVO);
+			}
 		}
-		
-		return surveyList;
+		return returnList;
 	}
-	
-	public List<SelectOptionVO> deleteSurveyDetails(Long surveyId){
-		ResultStatus resultStatus = new ResultStatus();
-		List<SelectOptionVO> surveyList = new ArrayList<SelectOptionVO>();
-		int value = surveyDAO.updateSurveyDetails(surveyId);
-		surveyList = getSurveysForUser();
-		
-		return surveyList;
-	}
-	
 }
