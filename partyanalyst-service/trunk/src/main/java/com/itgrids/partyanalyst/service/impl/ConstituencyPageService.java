@@ -5066,6 +5066,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	   }catch(Exception e){
 		   log.error("Exception rised in findPanchayatsWiseResultsInElectionsOfMandal",e);
 	   }
+	   Collections.sort(returnVal,sortData);
 		return returnVal;
 	}
 	
