@@ -212,12 +212,13 @@ font-size:20px;
 
 		 <div>
 		<div style="display:none;" class="errorClass" id="errormsgdiv"></div>
-		<h3>Comments:</h3>
+		<span id="newsDescriptionDiv"></span>
+		<!--<h3>Comments:</h3>
 		 <div class="commentSection">
 		 <textarea style="width:100%;" id="commenttext" class="textareaid"></textarea></div><a style="margin-top:4px;margin-bottom:4px;" class="pull-right btn btn-info"  href="javascript:{}">Post</a>
 		 <div style="padding-top: 0px; margin-left: 290px; margin-top: 36px; margin-bottom: -29px;" id="abusedErrorDiv"></div>
          <div style="display:none;" id="postedcomments"></div>	
-		</div>
+		</div>-->
 
 	</div>
 	<!-- left Div End -->
@@ -329,6 +330,12 @@ function buildContentDetails()
    for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 	{
+	   if (result.relatedGalleries[0].filesList[i].newsDescription != null)
+	   {
+		   $('#newsDescriptionDiv').html(result.relatedGalleries[0].filesList[i].newsDescription);
+	   }
+	   
+
 		source = result.relatedGalleries[0].filesList[i].fileVOList[0].source;
 	    selectedContentFile = result.relatedGalleries[0].filesList[i];
 		titleStr = result.relatedGalleries[0].filesList[i].title;

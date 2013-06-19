@@ -153,7 +153,18 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<String> candidateList;
 	private List<String> responseFileIds;
 	private List<Long> filesList;
+	private String newsDescription;
 	
+
+	public String getNewsDescription() {
+		return newsDescription;
+	}
+
+
+	public void setNewsDescription(String newsDescription) {
+		this.newsDescription = newsDescription;
+	}
+
 
 	public List<Long> getFilesList() {
 		return filesList;
@@ -1109,6 +1120,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 					fileVO.getResponseFileIds().add(Long.parseLong(s));
 				
 				fileVO.setFileVOForDiaplyImage(displayFileVO);
+				fileVO.setNewsDescription(newsDescription);
 				
 			}
 			

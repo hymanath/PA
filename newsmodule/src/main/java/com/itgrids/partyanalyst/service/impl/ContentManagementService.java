@@ -261,6 +261,8 @@ public class ContentManagementService implements IContentManagementService{
 					fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 					fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 					fileVO.setContentId(fileGallary.getFileGallaryId());
+					fileVO.setNewsDescription(fileGallary.getFile().getNewsDescription());
+
 					
 					List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 					Set<FileSourceLanguage> fileSourceLanguageSet = fileGallary.getFile().getFileSourceLanguage();

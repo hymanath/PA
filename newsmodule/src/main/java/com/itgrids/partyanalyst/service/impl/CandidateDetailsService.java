@@ -722,6 +722,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   }
 				
 			 //  file.setUser(userDAO.get(fileVO.getUserId()));
+			   file.setNewsDescription(fileVO.getNewsDescription());
 			   file.setUser(userDAO.get(1L));
 				file = fileDAO.save(file);
 			
