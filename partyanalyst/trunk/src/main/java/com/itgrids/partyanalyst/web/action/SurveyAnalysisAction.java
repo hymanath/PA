@@ -21,14 +21,18 @@ import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyorPersonalInfoVO;
 import com.itgrids.partyanalyst.service.ISurveyAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
 
-public class SurveyAnalysisAction extends ActionSupport implements ServletRequestAware, ServletResponseAware,ServletContextAware{
+public class SurveyAnalysisAction extends ActionSupport implements ServletRequestAware, ServletResponseAware,ServletContextAware , ModelDriven<SurveyorPersonalInfoVO>{
 	
 	 private static final Logger LOG = Logger.getLogger(SurveyAnalysisAction.class);
      private ISurveyAnalysisService surveyAnalysisService;
+     private SurveyorPersonalInfoVO surveyorPersonalInfoVO;
+     private List<SelectOptionVO> statesList,districtsList,tehsilsList,townshipsList,villagesList;
      private ResultStatus resultStatus;
      private String task;
      private JSONObject jObj;
@@ -40,6 +44,57 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
  	 private List<QuestionsOptionsVO> questionsOptionsList;
  	 
 	 
+
+	public List<SelectOptionVO> getStatesList() {
+		return statesList;
+	}
+
+	public void setStatesList(List<SelectOptionVO> statesList) {
+		this.statesList = statesList;
+	}
+
+	
+	public List<SelectOptionVO> getDistrictsList() {
+		return districtsList;
+	}
+
+	public void setDistrictsList(List<SelectOptionVO> districtsList) {
+		this.districtsList = districtsList;
+	}
+
+	public List<SelectOptionVO> getTehsilsList() {
+		return tehsilsList;
+	}
+
+	public void setTehsilsList(List<SelectOptionVO> tehsilsList) {
+		this.tehsilsList = tehsilsList;
+	}
+
+	public List<SelectOptionVO> getTownshipsList() {
+		return townshipsList;
+	}
+
+	public void setTownshipsList(List<SelectOptionVO> townshipsList) {
+		this.townshipsList = townshipsList;
+	}
+
+	public List<SelectOptionVO> getVillagesList() {
+		return villagesList;
+	}
+
+	public void setVillagesList(List<SelectOptionVO> villagesList) {
+		this.villagesList = villagesList;
+	}
+
+	
+	public SurveyorPersonalInfoVO getSurveyorPersonalInfoVO() {
+		return surveyorPersonalInfoVO;
+	}
+
+	public void setSurveyorPersonalInfoVO(
+			SurveyorPersonalInfoVO surveyorPersonalInfoVO) {
+		this.surveyorPersonalInfoVO = surveyorPersonalInfoVO;
+	}
 
 	public List<QuestionsOptionsVO> getQuestionsOptionsList() {
 		return questionsOptionsList;
@@ -127,8 +182,22 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 
 	public String execute(){
 		 System.out.println("In");
+		 statesList=surveyAnalysisService.getStatesList();
+		 
 		 return Action.SUCCESS;
 	 }
+	public String getDistricts(){
+		try {
+			jObj=new JSONObject(getTask());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Long stateId=jObj.getLong("stateId");
+		districtsList=surveyAnalysisService.getDistricts(stateId);
+		return Action.SUCCESS;
+	}
 	
 	public String ajaxHandler()
 	{
@@ -159,7 +228,31 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
-
+	public SurveyorPersonalInfoVO getModel() {
+		// TODO Auto-generated method stub
+			return surveyorPersonalInfoVO;
+	}
+	
+	public String saveSurveyorInfo(){
+		String name=surveyorPersonalInfoVO.getName();
+		String age=surveyorPersonalInfoVO.getAge();
+		String mobileNo=surveyorPersonalInfoVO.getMobileNumber();
+		String phoneNo=surveyorPersonalInfoVO.getPhoneNumber();
+		String email=surveyorPersonalInfoVO.getEmail();
+		int qualification=surveyorPersonalInfoVO.getQualification();
+		int occupation=surveyorPersonalInfoVO.getOccupation();
+		int caste=surveyorPersonalInfoVO.getCaste();
+		
+		Long state=surveyorPersonalInfoVO.getState();
+		Long district=surveyorPersonalInfoVO.getDistrict();
+		Long tehsil=surveyorPersonalInfoVO.getTehsil();
+		Long township=surveyorPersonalInfoVO.getTownship();
+		
+		String gender=surveyorPersonalInfoVO.getGender();
+		resultStatus=surveyAnalysisService.saveSurveyorInfo(name,age,mobileNo,phoneNo,email,qualification,occupation,caste,state,district,tehsil,township,gender);
+		
+		return Action.SUCCESS;
+	}
 	
 	 
 	public String createNewQuestion(){
