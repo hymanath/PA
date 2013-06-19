@@ -41,7 +41,7 @@
     height: 35px;
     padding-left: 13px;
     text-align: left;
-    text-transform: uppercase;border-radius:5px;}
+    border-radius:5px;}
 	
 #buildSources, #buildNewSources {
     border: 1px solid #D3D3D3;
@@ -338,11 +338,11 @@ function buildContentDetails()
 		curPos = i+1;
 		if(source == "Eenadu Telugu")
 		{
-			str +='<div id="showContentHeaderDiv" class="enadu">'+titleStr+'</div>';
+			str +='<div id="showContentHeaderDiv"><span class="enadu">'+titleStr+'</span></div>';
 		}
 		else
 		{
-			str +='<div id="showContentHeaderDiv">'+titleStr+'</div>';
+			str +='<div id="showContentHeaderDiv" style="text-transform: uppercase;">'+titleStr+'</div>';
 		}
 		
 		
@@ -541,16 +541,24 @@ function showResponseGallaryDetails(result,jsObj)
    var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
+		var source = results[i].fileVOList[0].source;
 		str+="<li>";
-		str+="<h3><a href='javascript:{}'>"+results[i].title+"</a></h3>";
+		if(source == "Eenadu Telugu")
+		 str+="<h3><a href='javascript:{}' class='enadu'>"+results[i].title+"</a></h3>";
+		else
+		 str+="<h3><a href='javascript:{}'>"+results[i].title+"</a></h3>";
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
 		
 		var path = results[i].fileVOList[0].fileVOList[0].path;
-		var source = results[i].fileVOList[0].source;
+		
 
 		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
-		str+="<p class='span8'>"+results[i].description+"</p>";
+		if(source == "Eenadu Telugu")
+		str+="<p class='span8 enadu'>"+results[i].description+"</p>";
+		else
+		 	str+="<p class='span8'>"+results[i].description+"</p>";
+
 		str+="</div>";
 
 		str+="<div class='row-fluid m_top10'><div class='span9'>";
