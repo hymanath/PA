@@ -65,7 +65,6 @@
 			}
 			mainOptionsArray.push(obj);
         });
-		console.log(mainOptionsArray);
    }
    
    function openSurveyQuestionAddWindow(id){
@@ -207,11 +206,10 @@ var jsObj=
  	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 function buildSurveyDetailsDiv(myResults){
-	alert(myResults.length);
-	debugger;
+	
 	var str='';
 if(myResults != null){
-	alert(1);
+	
 str+="<table class=\"table table-bordered table-striped table-hover\"  			style=\"font-size: medium; font-weight: bold;\">";
 str+="<tr>";
 str+="<td>Survey title</td>";
@@ -227,7 +225,6 @@ str+="</tr>";
 str+="</c:forEach>";
 str+="</table>";
 $("#surveyDetails").html(str);
-alert("finished");
 }
 else{
  $("#surveyDetails").html('<div style="font-weight:bold;">Data Not Available</div>');
@@ -359,22 +356,15 @@ else{
 				<div class="control-group">
 					<label class="control-label" for="state">State</label>
 					<div class="controls">
-						<select class='select' id='stateId' name='surveyorPersonalInfoVO.state'>
-							<option value="0">Select</option>
-							<option value="1" selected='selected'>AP</option>
-							<option value="2">MP</option>
-							<option value="3">UP</option>
-						</select>
-				<s:select
-tooltip="Choose Your Favourite Language"
-label="Favourite Language"
+						<s:select
+theme="simple"
 list="statesList"
-name="statesList"
+name="surveyorPersonalInfoVO.state"
 listKey="id"
 listValue="name"
-headerKey="None"
-headerValue="None"/> 
-<!--<s:select theme="simple" label="Candidates" name="candidates" id="candidatesListId" list="candidatesList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Candidate"/>						-->
+headerKey="0"
+headerValue="Select State"/> 
+
 					</div>
 				</div>
 				<div class="control-group">
