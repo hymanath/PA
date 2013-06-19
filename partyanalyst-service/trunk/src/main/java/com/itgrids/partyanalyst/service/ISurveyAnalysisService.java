@@ -11,7 +11,13 @@ import com.itgrids.partyanalyst.dto.SurveyVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 public interface ISurveyAnalysisService {
-
+	
+	public ResultStatus saveSurveyorInfo(String name,String age,String mobileNo,String phoneNo,String email,int qualification,int occupation,int caste,Long state,Long district,Long tehsil,Long township,String gender);
+	
+	public List<SelectOptionVO> getStatesList();
+	
+	public List<SelectOptionVO> getDistricts(Long stateId);
+	
 	public ResultStatus saveQuestion(final List<QuestionsOptionsVO> questionsOptionsList);
 	
 	public ResultStatus saveQuestionForMultipleText(final List<QuestionsOptionsVO> questionsOptionsList);
