@@ -165,7 +165,7 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
 	}
 		
 			str+='<div class="row-fluid">';
-				str+='<a style="width: 146px;" href="#" class="thumbnail span4">';
+				str+='<a style="width: 146px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}" class="thumbnail span4">';
 				 if(results[i].filePath1 != null && results[i].filePath1 == "") 
 					str+='<img style="width:100%" src="'+results[i].filePath1+'" alt="this is news image">';
                   else
