@@ -5418,5 +5418,10 @@
 		  	</result>
 		</action>
 		
+		<action name="deleteSurveyAction" class="surveyAnalysisAction" method="ajaxHandler">
+			<result type="json" name="success">
+				<param name="root">surveyList</param>
+		 	</result>
+		</action>
 		</package>
 </struts>      
