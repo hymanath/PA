@@ -424,7 +424,7 @@ function showStatusForsaveQuestion(myResults)
 	 <div id="dialogWindowDiv">
 	   <div class="container">
 	    <div class="row">
-		  <div class="container row span8 offset2 well">
+		  <div class="row span8 offset2 well">
 			 <span id="msgDiv"></span>
 			<div id="errorDiv" style="display:none"></div>
 		    <form class="row-fluid">

@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -21,11 +22,12 @@ import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
 import com.itgrids.partyanalyst.dto.SurveyVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 
-public class SurveyFormAction extends ActionSupport implements ServletRequestAware{
+public class SurveyFormAction extends ActionSupport implements ServletRequestAware,ModelDriven<List<QuestionAnswerVO>>{
 
 	/**
 	 * 
@@ -58,6 +60,10 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 	private String locationValue;
 	private ResultStatus resultStatus;
 	private String wardId ;
+	private List<QuestionAnswerVO> questionAnswerVO ;
+	private String formString;
+	private boolean status;
+	
 	public void setServletRequest(HttpServletRequest arg0) {
 		
 		this.request=arg0;
@@ -451,6 +457,35 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 	}
 
 
+	public List<QuestionAnswerVO> getQuestionAnswerVO() {
+		return questionAnswerVO;
+	}
+
+
+	public void setQuestionAnswerVO(List<QuestionAnswerVO> questionAnswerVO) {
+		this.questionAnswerVO = questionAnswerVO;
+	}
+
+
+	public String getFormString() {
+		return formString;
+	}
+
+
+	public void setFormString(String formString) {
+		this.formString = formString;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -471,6 +506,7 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 		casteList.add(0,new SelectOptionVO(0l,"Select Caste"));
 		eduStatus.add(0,new SelectOptionVO(0l,"Select Education"));
 		occupationsList.add(0,new SelectOptionVO(0l,"Select Occupation"));
+		formString = surveyAnalysisService.getSurveyForm(surveyId);
 		return Action.SUCCESS;
 	}
 
@@ -570,7 +606,17 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 		casteList.add(0,new SelectOptionVO(0l,"Select Caste"));
 		eduStatus.add(0,new SelectOptionVO(0l,"Select Education"));
 		occupationsList.add(0,new SelectOptionVO(0l,"Select Occupation"));
+		if(questionAnswerVO != null){
+    		 status = surveyAnalysisService.saveSurveyForm(questionAnswerVO);
+    	}
+		 formString = surveyAnalysisService.getSurveyForm(surveyId);
 		return Action.SUCCESS;
+	}
+
+
+	public List<QuestionAnswerVO> getModel() {
+		
+		return questionAnswerVO;
 	}
 
 }
