@@ -25,15 +25,16 @@ public class Surveyor extends BaseModel implements java.io.Serializable{
 	private String address;
 	private Surveyor teamLead;
 	private UpdationDetails updationDetails;
-	
+	private SurveyorProfile surveyorProfile;
 	public Surveyor() {
 	}
 	
-	public Surveyor(long surveyorId,String address,Surveyor teamLead,UpdationDetails updationDetails) {
-		this.surveyorId = surveyorId;
-		this.address = address;
-		this.teamLead = teamLead;
-		this.updationDetails = updationDetails;
+	public Surveyor(long surveyorId,String address,Surveyor teamLead,UpdationDetails updationDetails,SurveyorProfile surveyorProfile) {
+		this.surveyorId       = surveyorId;
+		this.address          = address;
+		this.teamLead         = teamLead;
+		this.updationDetails  = updationDetails;
+		this.surveyorProfile  = surveyorProfile;
 	}
 
 	@Id
@@ -79,6 +80,17 @@ public class Surveyor extends BaseModel implements java.io.Serializable{
 	public void setUpdationDetails(UpdationDetails updationDetails) {
 		this.updationDetails = updationDetails;
 	}
-	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="surveyor_profile_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SurveyorProfile getSurveyorProfile() {
+		return surveyorProfile;
+	}
+
+	public void setSurveyorProfile(SurveyorProfile surveyorProfile) {
+		this.surveyorProfile = surveyorProfile;
+	}
+
 	
 }

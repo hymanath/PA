@@ -33,6 +33,12 @@ public class SurveyInfoVO implements Serializable{
 	private Long parlemtId;
 	private Long locationValue;
 	private Long locationId;
+	private String phoneNo;
+	private String emailId;
+	private Long surveyorId;
+	private Long teamleadId;
+	private String surveyorName;
+	private String teamleadName;
 	public Long getContryId() {
 		return contryId;
 	}
@@ -201,7 +207,41 @@ public class SurveyInfoVO implements Serializable{
 	public void setLocationId(Long locationId) {
 		this.locationId = locationId;
 	}
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+	public Long getSurveyorId() {
+		return surveyorId;
+	}
+	public void setSurveyorId(Long surveyorId) {
+		this.surveyorId = surveyorId;
+	}
+	public Long getTeamleadId() {
+		return teamleadId;
+	}
+	public void setTeamleadId(Long teamleadId) {
+		this.teamleadId = teamleadId;
+	}
+	public String getSurveyorName() {
+		return surveyorName;
+	}
+	public void setSurveyorName(String surveyorName) {
+		this.surveyorName = surveyorName;
+	}
+	public String getTeamleadName() {
+		return teamleadName;
+	}
+	public void setTeamleadName(String teamleadName) {
+		this.teamleadName = teamleadName;
+	}
 	
-	
-		
 }

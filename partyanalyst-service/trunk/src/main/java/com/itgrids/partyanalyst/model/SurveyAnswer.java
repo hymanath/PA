@@ -1,57 +1,59 @@
-package com.itgrids.partyanalyst.model;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-import org.hibernate.annotations.NotFoundAction;
-
-@Entity
-@Table(name="survey_answer")
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-public class SurveyAnswer extends BaseModel implements java.io.Serializable{
+	package com.itgrids.partyanalyst.model;
+	
+	import javax.persistence.CascadeType;
+	import javax.persistence.Column;
+	import javax.persistence.Entity;
+	import javax.persistence.FetchType;
+	import javax.persistence.GeneratedValue;
+	import javax.persistence.GenerationType;
+	import javax.persistence.Id;
+	import javax.persistence.JoinColumn;
+	import javax.persistence.ManyToOne;
+	import javax.persistence.Table;
+	
+	import org.hibernate.annotations.Cache;
+	import org.hibernate.annotations.CacheConcurrencyStrategy;
+	import org.hibernate.annotations.LazyToOne;
+	import org.hibernate.annotations.LazyToOneOption;
+	import org.hibernate.annotations.NotFoundAction;
+	
+	@Entity
+	@Table(name="survey_answer")
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+	public class SurveyAnswer extends BaseModel implements java.io.Serializable{
 
 	private long surveyAnswerId;
-	private RegionScopes regionScopes;
-	private long locationValue;
-	private Respondent respondent;
-	private Surveyor surveyor;
-	private Surveyor teamLead;
+	//private RegionScopes regionScopes;
+	//private long locationValue;
+	//private Respondent respondent;
+	//private Surveyor surveyor;
+	//private Surveyor teamLead;
 	private Option option;
 	private SurveyQuestion surveyQuestion;
 	private String isSubOption;
-	private UpdationDetails updationDetails;
-	private UserAddress userAddress;
+	//private UpdationDetails updationDetails;
+	//private UserAddress userAddress;
 	private String optionValue;
 	private String remarks;
+	private SurveyAnswerInfo surveyAnswerInfo;
 	
 	public SurveyAnswer() {
 	}
 	
-	public SurveyAnswer(long surveyAnswerId,RegionScopes regionScopes,long locationValue,Respondent respondent,Surveyor surveyor,Surveyor teamLead,Option option,SurveyQuestion surveyQuestion,String isSubOption,UpdationDetails updationDetails,UserAddress userAddress) {
-		this.surveyAnswerId = surveyAnswerId;
-		this.regionScopes = regionScopes;
-		this.locationValue = locationValue;
-		this.respondent = respondent;
-		this.surveyor = surveyor;
-		this.teamLead = teamLead;
-		this.option = option;
-		this.surveyQuestion = surveyQuestion;
-		this.isSubOption = isSubOption;
-		this.updationDetails = updationDetails;
-		this.userAddress = userAddress;
+	public SurveyAnswer(long surveyAnswerId, Option option,
+			SurveyQuestion surveyQuestion, String isSubOption,
+			String optionValue, String remarks,SurveyAnswerInfo surveyAnswerInfo) {
+		super();
+		this.surveyAnswerId    = surveyAnswerId;
+		this.option            = option;
+		this.surveyQuestion    = surveyQuestion;
+		this.isSubOption       = isSubOption;
+		this.optionValue       = optionValue;
+		this.remarks           = remarks;
+		this.surveyAnswerInfo  = surveyAnswerInfo;
 	}
+
+
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -64,7 +66,7 @@ public class SurveyAnswer extends BaseModel implements java.io.Serializable{
 		this.surveyAnswerId = surveyAnswerId;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="region_scopes_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -120,7 +122,7 @@ public class SurveyAnswer extends BaseModel implements java.io.Serializable{
 	public void setTeamLead(Surveyor teamLead) {
 		this.teamLead = teamLead;
 	}
-
+*/
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="option_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -154,7 +156,7 @@ public class SurveyAnswer extends BaseModel implements java.io.Serializable{
 		this.isSubOption = isSubOption;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="updation_details_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -176,7 +178,7 @@ public class SurveyAnswer extends BaseModel implements java.io.Serializable{
 
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
-	}
+	}*/
 
 	@Column(name="remarks")
 	public String getRemarks() {
@@ -194,6 +196,18 @@ public class SurveyAnswer extends BaseModel implements java.io.Serializable{
 
 	public void setOptionValue(String optionValue) {
 		this.optionValue = optionValue;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="survey_answer_info_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SurveyAnswerInfo getSurveyAnswerInfo() {
+		return surveyAnswerInfo;
+	}
+
+	public void setSurveyAnswerInfo(SurveyAnswerInfo surveyAnswerInfo) {
+		this.surveyAnswerInfo = surveyAnswerInfo;
 	}
 	
 	

@@ -8,7 +8,9 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyInfoVO;
 import com.itgrids.partyanalyst.dto.SurveyVO;
+import com.itgrids.partyanalyst.dto.SurveyorVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.SurveyAnswerInfo;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 public interface ISurveyAnalysisService {
 	
@@ -32,11 +34,13 @@ public interface ISurveyAnalysisService {
 	
 	public List<VoterVO> getVoterDetailsBasedOnVoterId(String VoterCardId,Long userId);
 	
-	public ResultStatus saveSurveyDetails(final SurveyInfoVO surveyInfoVO);	
+	public ResultStatus saveSurveyDetails(final SurveyInfoVO surveyInfoVO,final Long userId,final List<QuestionAnswerVO> questionAnswerVO);	
 	
 	public String getSurveyForm(Long surveyId);
 	
-	public boolean saveSurveyForm(List<QuestionAnswerVO> questionAnswerVOList);
+	public boolean saveSurveyForm(List<QuestionAnswerVO> questionAnswerVOList,SurveyAnswerInfo surveyAnswerInfo);
+	
+	public List<SurveyorVO> getServeyorDetails();
 	
 	public List<SelectOptionVO> getSurveysForUser();
 	
