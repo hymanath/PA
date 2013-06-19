@@ -90,16 +90,15 @@ function getAllFilesOfAGallary(gallaryId){
 function buildGallariesDetails(results)
 {
 	var str='';
-  for(var i in results)
-  {
-	 
-	  str+='<div class="span3 breadcrumb" style="height:100px;margin:4px;">';
-    str+='<h6><a href="javascript:{getAllFilesOfAGallary('+results[i].gallaryId+')}">'+results[i].gallaryName+'</a></h6>';
-	str+='<span>'+results[i].gallaryDescription+'</span><br>';
-	str+='<span class="badge badge-info pull-right" style="margin-top:10px;"> NEWS COUNT:'+results[i].totalResultsCount+'</span>';
-	str+='</div>';
-	
-  }
+ 	for(var i in results)
+  	{	
+		str+='<div class="span3 thumbnail" style=" background: none repeat scroll 0% 0% palegoldenrod;height:100px;margin:4px;">';
+	    str+='<h6><a href="javascript:{getAllFilesOfAGallary('+results[i].gallaryId+')}" style="text-transform: capitalize">'+results[i].gallaryName+'</a></h6>';
+		str+='<span>'+results[i].gallaryDescription+'</span><br>';
+		str+='<span class="badge badge-info pull-right" style="margin-top:10px;"> NEWS COUNT:'+results[i].totalResultsCount+'</span>';
+		str+='</div>';
+		
+	}
   document.getElementById("gallarysId").innerHTML =str;
 
 }
