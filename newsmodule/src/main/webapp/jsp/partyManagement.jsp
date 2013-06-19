@@ -4756,6 +4756,9 @@ function buildCandidates(results)
 	str+='<div id="'+value+'"  class="div'+value+'">';
 	str+="<u><span style='font-weight:bold;'>Upload "+text+" Files</span></u>";
 	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+value+'">';
+
+    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" /></td></tr>';
+
 	str += ' <tr>';
 	str +='<td>File Path</td>';
 	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25" class="newsFile"/></td>';
