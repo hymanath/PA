@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -211,8 +212,8 @@ public class ContentManagementService implements IContentManagementService{
 									}
 								 
 								   
-								    fileVO.setTitle(fileGallary.getFile().getFileTitle());
-									fileVO.setDescription(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()));
+								    fileVO.setTitle(fileGallary.getFile().getFileTitle() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle())):"");
+									fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 									fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 									fileVO.setContentId(falseContentIdForPhotoGal);
 									falseContentIdForPhotoGal = falseContentIdForPhotoGal+1L;
@@ -256,8 +257,8 @@ public class ContentManagementService implements IContentManagementService{
 					if(fileGallary.getFile().getRegionScopes() != null)
 					  fileVO.setLocationScopeValue(fileGallary.getFile().getRegionScopes().getScope());
 					
-					fileVO.setTitle(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle()));
-					fileVO.setDescription(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()));
+					fileVO.setTitle(fileGallary.getFile().getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle())):"");
+					fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 					fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 					fileVO.setContentId(fileGallary.getFileGallaryId());
 					
@@ -461,8 +462,8 @@ public class ContentManagementService implements IContentManagementService{
 									}
 								 
 								   
-								    fileVO.setTitle(fileGallary.getFile().getFileTitle());
-									fileVO.setDescription(fileGallary.getFile().getFileDescription());
+								    fileVO.setTitle(fileGallary.getFile().getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle())):"");
+									fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 									fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 									fileVO.setContentId(falseContentIdForPhotoGal);
 									falseContentIdForPhotoGal = falseContentIdForPhotoGal+1L;
@@ -515,8 +516,8 @@ public class ContentManagementService implements IContentManagementService{
 					if(fileGallary.getFile().getRegionScopes() != null)
 					  fileVO.setLocationScopeValue(fileGallary.getFile().getRegionScopes().getScope());
 					
-					fileVO.setTitle(fileGallary.getFile().getFileTitle());
-					fileVO.setDescription(fileGallary.getFile().getFileDescription());
+					fileVO.setTitle(fileGallary.getFile().getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle())):"");
+					fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 					fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 					fileVO.setContentId(fileGallary.getFileGallaryId());
 					
@@ -740,8 +741,8 @@ public class ContentManagementService implements IContentManagementService{
 						  
 						  fileVO.setCount(candidateNewsResponseDAO.getResponsefileGallaryIds(fileGallary.getFileGallaryId(),null,null).size());
 						  
-						  fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?fileGallary.getFile().getFileTitle():"");
-						  fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?fileGallary.getFile().getFileDescription():"");
+						  fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle())):"");
+						  fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 						  
 						  Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
 						  List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
