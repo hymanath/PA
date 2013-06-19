@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
@@ -27,6 +29,12 @@
 
 	#myModal .modal-body {
 		//max-height: 500px;
+	}
+	
+	table {
+	border-color:red !important;
+	border:2px !important;
+
 	}
 </style>
 <script type="text/javascript">
@@ -60,9 +68,9 @@
 		console.log(mainOptionsArray);
    }
    
-   function openSurveyQuestionAddWindow(){
+   function openSurveyQuestionAddWindow(id){
       
-      var browser1 = window.open("createNewQuestionAction.action","addnewquestionwindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+      var browser1 = window.open("createNewQuestionAction.action?surveyId="+id+"","addnewquestionwindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
       browser1.focus();
    }
    var optionId = 0;
@@ -158,6 +166,73 @@
       $('#subquestDIV'+id).remove();
 	}
    }
+
+  function removeSurvey(id){
+var jsObj=
+	      {
+		    surveyId:id,
+			task :"deleteSurvey"
+           }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "deleteSurveyAction.action?"+rparam;						
+      callAjax(jsObj,url);
+  }
+  function callAjax(jsObj,url)
+{
+	var myResults;
+
+	var callback = {			
+ 		success : function( o ) 
+		{
+		try {												
+			myResults = YAHOO.lang.JSON.parse(o.responseText);
+			if (jsObj.task == "deleteSurvey" )
+			{
+				buildSurveyDetailsDiv(myResults);
+			}
+			
+		}
+		catch (e)
+			{
+							     
+			}  
+ 		},
+ 		scope : this,
+		failure : function( o ) 
+		{
+			//alert( "Failed to load result" + o.status + " " + o.statusText);
+		}
+	   };
+
+ 	YAHOO.util.Connect.asyncRequest('POST', url, callback);
+}
+function buildSurveyDetailsDiv(myResults){
+	alert(myResults.length);
+	debugger;
+	var str='';
+if(myResults != null){
+	alert(1);
+str+="<table class=\"table table-bordered table-striped table-hover\"  			style=\"font-size: medium; font-weight: bold;\">";
+str+="<tr>";
+str+="<td>Survey title</td>";
+str+="<td>Add Question</td>";
+str+="<td>delete Servey</td>";
+str+="</tr>";
+str+="<c:forEach var='surveyLists' items='${surveyList}'>";
+str+="<tr>";
+str+="<td>${surveyLists.name}</td>";
+str+="<td><a href=\"javascript:{}\"  onclick=\"openSurveyQuestionAddWindow(${surveyLists.id});\">Add Question</a></td>";
+str+="<td><a href=\"javascript:{}\"  onclick=\"removeSurvey(${surveyLists.id});\">Delete</a></td>";
+str+="</tr>";
+str+="</c:forEach>";
+str+="</table>";
+$("#surveyDetails").html(str);
+alert("finished");
+}
+else{
+ $("#surveyDetails").html('<div style="font-weight:bold;">Data Not Available</div>');
+}
+}
 </script>
 </head>
 <body>
@@ -188,6 +263,15 @@
       </div>
 	 </div>
 	<div style="text-align:center;margin-top:10px;margin-bottom:10px;"><input type="button" value="Creating Survey" id="surveyBtn" class="btn btn-info"/></div>
+<div id="errorDiv"></div>
+
+
+<div style="width: 530px; margin-left: auto; margin-right: auto;">
+<div id="surveyDetails"></div>
+
+</div>
+
+
 	 </div>
 	 
  <div class="modal hide fade" id="myModal">
@@ -350,6 +434,9 @@ $(document).ready(function(){
 function openModal(){
 		$('#myModal').modal('show');
 	}
+</script>
+<script type="text/javascript">
+buildSurveyDetailsDiv("${surveyList}");
 </script>
 </body>
 </html>

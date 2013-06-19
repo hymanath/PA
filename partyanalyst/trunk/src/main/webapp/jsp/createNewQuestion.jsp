@@ -47,6 +47,7 @@
 
 	<!-- YUI Dependency files (End) -->
 <script type="text/javascript">
+var surveyId = "${surveyId}";
     function saveQuestion(){
 		
 	   $("#errorDiv").html("");
@@ -165,6 +166,7 @@ if(flag == false)
 
 		   var jsObj=
 		  {
+			surveyId:surveyId,
 			question:question,
 			questionType:questionType,
 			showRemark:showRemark,

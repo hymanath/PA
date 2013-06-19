@@ -42,8 +42,24 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
  	 private ServletContext context;
  	 private List<SelectOptionVO>  questionType;
  	 private List<QuestionsOptionsVO> questionsOptionsList;
- 	 
-	 
+ 	 private List<SelectOptionVO> surveyList;
+	 private Long surveyId;
+
+	public Long getSurveyId() {
+		return surveyId;
+	}
+
+	public void setSurveyId(Long surveyId) {
+		this.surveyId = surveyId;
+	}
+
+	public List<SelectOptionVO> getSurveyList() {
+		return surveyList;
+	}
+
+	public void setSurveyList(List<SelectOptionVO> surveyList) {
+		this.surveyList = surveyList;
+	}
 
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
@@ -183,6 +199,7 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 	public String execute(){
 		 System.out.println("In");
 		 statesList=surveyAnalysisService.getStatesList();
+		 surveyList = surveyAnalysisService.getSurveysForUser();
 		 
 		 return Action.SUCCESS;
 	 }
@@ -225,6 +242,13 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 			String consType = jObj.getString("constituecyType");
 			
 			resultStatus = surveyAnalysisService.savesurveyDetails(name,desc,scopeVal,stateId,districtId,constId,mandalId,userId,consType);
+		}
+		if(jObj.getString("task").equalsIgnoreCase("deleteSurvey"))
+		{
+			Long surveyId = jObj.getLong("surveyId");
+			
+			surveyList = surveyAnalysisService.deleteSurveyDetails(surveyId);
+			
 		}
 		return Action.SUCCESS;
 	}
@@ -274,6 +298,7 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 		{
 			JSONArray mainOptionsArray = jObj.getJSONArray("mainOptionsArray");
 			QuestionsOptionsVO questionsOptionsVO = new QuestionsOptionsVO();
+			Long surveyId = jObj.getLong("surveyId");
 			String question = jObj.getString("question") ;
 			String questionType = jObj.getString("questionType");
 			Boolean showRemark = jObj.getBoolean("showRemark");
@@ -324,6 +349,7 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 			questionsOptionsVO.setOptions(optionVOs);
 			questionsOptionsVO.setQuestionType(questionType);
 			questionsOptionsVO.setIsAnalyse(isAnalyse);
+			questionsOptionsVO.setSurvey(surveyId);
 			questionsOptionsList.add(questionsOptionsVO);
 			resultStatus = surveyAnalysisService.saveQuestion(questionsOptionsList);
 		}
