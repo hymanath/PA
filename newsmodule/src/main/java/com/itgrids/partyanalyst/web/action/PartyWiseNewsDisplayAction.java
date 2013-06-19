@@ -143,14 +143,28 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 		this.newsCountByCategoryList = newsCountByCategoryList;
 	}
 	public String execute(){
-		
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else
 		return SUCCESS;
 	}
 	public String getPartyWiseNewsForALocation(){
 		
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else
 		return SUCCESS;		
 	}
 	public String getAllVideosForGallary(){
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else
 		return SUCCESS;
 	}
 	

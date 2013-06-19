@@ -477,6 +477,11 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	}
 	
 	public String showMoreVideos(){
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else
 		return Action.SUCCESS;
 	}
 	public String getCandidates(){
@@ -498,6 +503,11 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		return SUCCESS;
 	}
 	public String showNewsOfCandidatePage(){
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else{
 		if(log.isDebugEnabled())
 			log.debug("In HomePageAction's getCandidates");
 		try {
@@ -515,6 +525,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		} 
 		
 		return SUCCESS;
+       }
 	}
 	
 }

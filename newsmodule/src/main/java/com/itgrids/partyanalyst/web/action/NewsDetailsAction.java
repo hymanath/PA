@@ -136,8 +136,12 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	}
 	public String execute()
 	{	
-		
-		return Action.SUCCESS;
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else
+         return Action.SUCCESS;
 	}
 	
 	public String ajaxHandler()
@@ -191,6 +195,11 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	
 	public String showNewsResponseAction()
 	{
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else
 		return Action.SUCCESS;
 		
 	}

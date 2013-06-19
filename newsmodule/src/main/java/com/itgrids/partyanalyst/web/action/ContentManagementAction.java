@@ -12,12 +12,11 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ContentDetailsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.service.IContentManagementService;
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-
-import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 
 public class ContentManagementAction extends ActionSupport implements
 ServletRequestAware, ServletResponseAware, ServletContextAware{
@@ -94,7 +93,11 @@ ServletRequestAware, ServletResponseAware, ServletContextAware{
 
 	public String execute()
 	{
-		
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+        if(user == null)
+         return ERROR;
+        else
 		return SUCCESS;
 	}
 	
