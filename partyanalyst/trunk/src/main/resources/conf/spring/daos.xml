@@ -1184,4 +1184,8 @@
 	<bean id="questionOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.QuestionOptionsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
+	
+	<bean id="surveyAnswerInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyAnswerInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
 </beans>		
