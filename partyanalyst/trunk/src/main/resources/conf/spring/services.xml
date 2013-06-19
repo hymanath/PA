@@ -1611,6 +1611,7 @@
      <property name="respondentDAO" ref="respondentDAO"></property>
      <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
      <property name="occupationDAO" ref="occupationDAO" />
+     <property name="surveyAnswerDAO" ref="surveyAnswerDAO" />
     </bean>
       
     <bean name="surveyDetailsService" class="com.itgrids.partyanalyst.service.impl.SurveyDetailsService">

@@ -35,8 +35,44 @@ textarea {
     padding: 5px 0 5px 10px;
     width: 760px;
 }
+.mainoptmargin{
+	    margin-left:20px;
+		margin-top: 10px;
+	 }
+	 .subquestclass{
+	   font-size: 13px;
+       font-weight: bold;
+       margin-left: 35px;
+	 }
+	 .suboptionclass{
+	   margin-left: 40px;
+	  }
+	 #formDIV textarea {
+       background-color: #FFFFFF;
+       border: 1px solid #D3D3D3 !important;
+       width: 206px;
+	  }
+	  #formDIV input[type="text"]{
+	     width: 140px;
+	  }
+	  [class*="span"] {
+        margin-left: 11px;
+      }
 </style>
-
+<script type="text/javascript">
+   $(document).ready(function(){
+      $("#formDIV").html("${formString}");
+	  $(".singleChoiceClass").live("click",function()
+	  {
+	    var key = $(this).attr("key");	
+		$('.singleChoiceClass'+key).each(function() {
+		     $(this).removeAttr('checked');
+            
+        });
+		$(this).attr('checked','checked');
+	  });
+   });
+</script>
 <script type="text/javascript">
 var mandalId         = "";
 var reportLevel      = "";
@@ -965,6 +1001,7 @@ function buildConstituenceys(myResults)
 	</div>
 </div>
 </div>
+<div id="formDIV"></div>
 <s:submit cssClass="button" value="Save" name="Save" ></s:submit>
 </s:form>
 </body>
