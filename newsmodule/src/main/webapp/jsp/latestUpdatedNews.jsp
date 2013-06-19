@@ -29,7 +29,6 @@ font-size:20px;
 <title>Insert title here</title>
 </head>
 <body>
-<div class="container-fluid headerBg" style="padding-left: 0px; padding-right: 0px;">
 		<!---Header----->
 		<div class="container">
 		<!--------- Row-1 -------->
