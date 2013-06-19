@@ -5604,25 +5604,16 @@ IConstants.NEWS_GALLARY,0,5);
 public List<FileVO> getVideosForSelectedParty(Long partyId,String newsType)
 {
 	List<FileVO> file = null;
-	List<Long> galleryIds = null;
-	List<Long> galleryList = partyGalleryDAO.getGalleryIdsForSelectedParty(partyId);
-	if(galleryList != null && galleryList.size() > 0)
-	{
-		galleryIds = new ArrayList<Long>();
-		for (Long galleryId : galleryList) {
-			galleryIds.add(galleryId); 
-		}
-	}
-	List<FileGallary> filesList = fileGallaryDAO.getAllVideoFilesOfInGallaries(galleryIds,1,6,newsType);
+	List<Object[]> filesList = fileGallaryDAO.getAllVideoFilesOfInGallaries(1,6,newsType);
 	
 	if(filesList != null && filesList.size() > 0)
 	{
 		file = new ArrayList<FileVO>();
-		for (FileGallary fileGallary : filesList) {
+		for (Object[] fileGallary : filesList) {			
 			FileVO fileVO = new FileVO();
-			fileVO.setFileId(fileGallary.getFile().getFileId());
-			fileVO.setDescription(fileGallary.getFile().getFileDescription());
-			fileVO.setFilePath1(fileGallary.getFile().getFilePath());
+			fileVO.setFileId((Long) fileGallary[0]);
+			fileVO.setDescription(fileGallary[1].toString());
+			fileVO.setFilePath1(fileGallary[2].toString());
 			file.add(fileVO);
 		}
 	}
