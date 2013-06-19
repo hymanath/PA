@@ -701,24 +701,6 @@ public class ContentManagementService implements IContentManagementService{
 							 
 							}
 							
-							List<Object[]> list = candidateNewsResponseDAO.getFileGallaryIdsByResponseGallaryId(fileGallaryId, startIndex,maxIndex);
-							if(list != null && list.size() > 0)
-							{
-								List<Long> fileGallaryIdslist = new ArrayList<Long>(0);
-								List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
-								for(Object[] params :list)
-								{
-								  FileVO fileVO = new FileVO();
-								  fileVO.setContentId((Long)params[0]);
-								  fileVO.setCandidateId((Long)params[1]);
-								  fileVO.setCandidateName(candidateDAO.get((Long)params[1]).getLastname());
-								  fileVOsList.add(fileVO);
-								  fileGallaryIdslist.add((Long)params[0]);
-								}
-								setFileGalaryDetailsByFileGallaryIdsList(fileGallaryIdslist, fileVOsList);
-								gallaryVO.setFilesList(fileVOsList);
-								gallaryVO.setCount(candidateNewsResponseDAO.getFileGallaryIdsByResponseGallaryId(fileGallaryId,null,null).size());
-							}
 							
 							return gallaryVO;
 						}catch (Exception e) {
@@ -814,4 +796,37 @@ public class ContentManagementService implements IContentManagementService{
 						}
 						
 					}
+					
+	//Main Articles
+					
+	public GallaryVO getMainArticlesDetails(Long fileGallaryId, Integer startIndex, Integer maxIndex)
+	{
+		GallaryVO gallaryVO = new GallaryVO();
+		try{
+			List<Object[]> list = candidateNewsResponseDAO.getFileGallaryIdsByResponseGallaryId(fileGallaryId, startIndex,maxIndex);
+			if(list != null && list.size() > 0)
+			{
+				List<Long> fileGallaryIdslist = new ArrayList<Long>(0);
+				List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
+				for(Object[] params :list)
+				{
+				  FileVO fileVO = new FileVO();
+				  fileVO.setContentId((Long)params[0]);
+				  fileVO.setCandidateId((Long)params[1]);
+				  fileVO.setCandidateName(candidateDAO.get((Long)params[1]).getLastname());
+				  fileVOsList.add(fileVO);
+				  fileGallaryIdslist.add((Long)params[0]);
+				}
+				setFileGalaryDetailsByFileGallaryIdsList(fileGallaryIdslist, fileVOsList);
+				gallaryVO.setFilesList(fileVOsList);
+				gallaryVO.setCount(candidateNewsResponseDAO.getFileGallaryIdsByResponseGallaryId(fileGallaryId,null,null).size());
+			}
+			return gallaryVO;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getMainArticlesDetails() method, Exception - "+e);
+			return gallaryVO;
+		}
+	}
+			
 }
