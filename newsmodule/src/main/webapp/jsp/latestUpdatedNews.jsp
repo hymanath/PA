@@ -133,15 +133,15 @@ function buildPaginatedNews(results,jsObj)
 		var source = results[i].fileVOList[0].source.trim();
 		if(source == "Eenadu Telugu")
 		{
-			str+="<h4><a href='#' class='enadu'>"+results[i].title+"</a></h4>";
+			str+="<h4 style='text-transform: capitalize'>"+results[i].title+"</h4>";
 		}
 		else
 		{
-			str+="<h4><a href='#'>"+results[i].title+"</a></h4>";
+			str+="<h4 style='text-transform: capitalize'>"+results[i].title+"</h4>";
 		}
 		
 		str+="<div class='row-fluid'>";
-		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
 		
 		var path = results[i].fileVOList[0].fileVOList[0].path;
 		var source = results[i].fileVOList[0].source;
