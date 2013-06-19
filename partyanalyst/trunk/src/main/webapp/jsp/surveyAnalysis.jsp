@@ -165,9 +165,34 @@
       $('#subquestDIV'+id).remove();
 	}
    }
-
+function buildSurveyDetailsDivMain()
+{
+	
+	console.log('${surveyList}');
+var str='';
+if('${surveyList}' != null && '${surveyList}'.length>0){
+str+="<table class=\"table table-bordered table-striped table-hover\"  			style=\"font-size: medium; font-weight: bold;\">";
+str+="<tr>";
+str+="<td>Survey title</td>";
+str+="<td>Add Question</td>";
+str+="<td>delete Servey</td>";
+str+="</tr>";
+str+="<c:forEach var='surveyLists' items='${surveyList}'>";
+str+="<tr>";
+str+="<td>${surveyLists.name}</td>";
+str+="<td><a href=\"javascript:{}\"  onclick=\"openSurveyQuestionAddWindow(${surveyLists.id});\">Add Question</a></td>";
+str+="<td><a href=\"javascript:{}\"  onclick=\"removeSurvey(${surveyLists.id});\">Delete</a></td>";
+str+="</tr>";
+str+="</c:forEach>";
+str+="</table>";
+$("#surveyDetails").html(str);
+}
+else{
+ $("#surveyDetails").html('<div style="font-weight:bold; font-size: 13px;">No Serveys are assigned for User.Please create Servey.</div>');
+}
+}
   function removeSurvey(id){
-var jsObj=
+	var jsObj=
 	      {
 		    surveyId:id,
 			task :"deleteSurvey"
@@ -209,20 +234,20 @@ function buildSurveyDetailsDiv(myResults){
 	
 	var str='';
 if(myResults != null){
-	
+	$("#surveyDetails").html("");
 str+="<table class=\"table table-bordered table-striped table-hover\"  			style=\"font-size: medium; font-weight: bold;\">";
 str+="<tr>";
 str+="<td>Survey title</td>";
 str+="<td>Add Question</td>";
 str+="<td>delete Servey</td>";
 str+="</tr>";
-str+="<c:forEach var='surveyLists' items='${surveyList}'>";
+for(var i in myResults){
 str+="<tr>";
-str+="<td>${surveyLists.name}</td>";
-str+="<td><a href=\"javascript:{}\"  onclick=\"openSurveyQuestionAddWindow(${surveyLists.id});\">Add Question</a></td>";
-str+="<td><a href=\"javascript:{}\"  onclick=\"removeSurvey(${surveyLists.id});\">Delete</a></td>";
+str+="<td>"+myResults[i].name+"</td>";
+str+="<td><a href=\"javascript:{}\"  onclick=\"openSurveyQuestionAddWindow("+myResults[i].id+");\">Add Question</a></td>";
+str+="<td><a href=\"javascript:{}\"  onclick=\"removeSurvey("+myResults[i].id+");\">Delete</a></td>";
 str+="</tr>";
-str+="</c:forEach>";
+}
 str+="</table>";
 $("#surveyDetails").html(str);
 }
@@ -235,7 +260,7 @@ else{
 <body>
 <div>
 <span class='btn' onclick='openModal()'>Surveyor</span>
-     <input type="button" onclick="openSurveyQuestionAddWindow();"  value="Add Question" />
+     <!-- <input type="button" onclick="openSurveyQuestionAddWindow();"  value="Add Question" />-->
 	 <div style="display:none;" id="dialogWindowDiv" title="Add New Question">
 	   <div class="container">
 	    <div class="row">
@@ -259,14 +284,15 @@ else{
 		</div>			
       </div>
 	 </div>
-	<div style="text-align:center;margin-top:10px;margin-bottom:10px;"><input type="button" value="Creating Survey" id="surveyBtn" class="btn btn-info"/></div>
+	
 <div id="errorDiv"></div>
 
 
-<div style="width: 530px; margin-left: auto; margin-right: auto;">
+<div style="width: 530px; margin-left: auto; margin-right: auto;margin-top: 35px;">
 <div id="surveyDetails"></div>
 
 </div>
+<div style="text-align:center;margin-top:10px;margin-bottom:10px;"><input type="button" value="Creating Survey" id="surveyBtn" class="btn btn-info"/></div>
 
 
 	 </div>
@@ -426,7 +452,7 @@ function openModal(){
 	}
 </script>
 <script type="text/javascript">
-buildSurveyDetailsDiv("${surveyList}");
+buildSurveyDetailsDivMain();
 </script>
 </body>
 </html>
