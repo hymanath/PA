@@ -1479,11 +1479,11 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 				
 	public List<SurveyorVO> getServeyorDetails()
 	{
-		List<SurveyorVO> returnList = null;
+		List<SurveyorVO> returnList = new ArrayList<SurveyorVO>();
 		List<Surveyor> surveyorList = surveyorDAO.getSurveyorDetails();
 		if(surveyorList != null && surveyorList.size() > 0)
 		{
-			returnList = new ArrayList<SurveyorVO>();
+			
 			for (Surveyor surveyor : surveyorList) {
 				SurveyorVO surveyorVO = new SurveyorVO();
 				surveyorVO.setSurveyorId(surveyor.getSurveyorId());
