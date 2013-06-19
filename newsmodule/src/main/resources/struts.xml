@@ -5424,9 +5424,7 @@
 		  <param name="root">mainArticleVO</param>
 		 </result>
 		</action>
-		
-		
-		
+	
 		<action name="showNewsResponseAction" class="newsDetailsAction" method="showNewsResponseAction">
 		 <result name="success">/jsp/newsResponse.jsp</result>
 		</action>
@@ -5437,5 +5435,15 @@
 		 </result>
 		</action>
 		
+		
+		<action name="selectedNewsDetailsAction" class="newsDetailsAction">
+		 <result>/jsp/selectedNewsDetails.jsp</result>
+		</action>
+		
+		<action name="getSelectedNewsBetweenDatesAction" class="newsDetailsAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		  <param name="root">fileVOsList</param>
+		 </result>
+		</action>
 		</package>
 </struts>      

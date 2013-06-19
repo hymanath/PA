@@ -5674,7 +5674,26 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 List<FileGallary> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex, contenttype,partyId,newsType);
 		 if(fileGallaryList != null && fileGallaryList.size() > 0)
 		 {
-			 for(FileGallary fileGallary : fileGallaryList)
+			 setfileGallaryDetails(fileGallaryList, fileVOsList);
+		 }
+		 
+		 fileVOsList.get(0).setCount(fileGallaryDAO.getRecentlyUploadedNewsDetails(null, null, contenttype,partyId,newsType).size());
+		 return fileVOsList;
+		 
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - "+e);
+			 return fileVOsList;
+		}
+	}
+	
+	
+	public void setfileGallaryDetails(List<FileGallary> fileGallaryList,List<FileVO> fileVOsList)
+	{
+		try{
+			
+			for(FileGallary fileGallary : fileGallaryList)
 			 {
 				 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					if(fileGallary.getFile() == null)
@@ -5730,20 +5749,13 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				 
 				fileVOsList.add(fileVO);
 			 }
-		 }
-		 
-		 fileVOsList.get(0).setCount(fileGallaryDAO.getRecentlyUploadedNewsDetails(null, null, contenttype,partyId,newsType).size());
-		 return fileVOsList;
-		 
-		
+			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - "+e);
-			 return fileVOsList;
+			log.error("Exception Occured in setfileGallaryDetails() method, Exception - "+e);
+			
 		}
 	}
-	
-	
 	
 	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId,String newsType)
 	{
@@ -5973,5 +5985,32 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			}
 		}
 
-
+	 
+	 public List<FileVO> getNewsBetweenSelectedDates(String fromDateStr,String toDateStr,Integer starIndex, Integer maxResults, String newsType)
+	 {
+		 List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
+		 try{
+			 Date fromDate = null;
+			 Date toDate = null;
+			 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null)
+				fromDate = format.parse(fromDateStr);
+			 
+			if(toDateStr != null)
+				toDate = format.parse(toDateStr);
+			
+			List<FileGallary> fileGallaryList = fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, starIndex, maxResults, IConstants.NEWS_GALLARY, IConstants.TDPID, newsType);
+			if(fileGallaryList != null && fileGallaryList.size() > 0)
+				setfileGallaryDetails(fileGallaryList, fileVOsList);
+			fileVOsList.get(0).setCount(fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, null, null, IConstants.NEWS_GALLARY, IConstants.TDPID, newsType).size()); 
+			
+			 return fileVOsList;
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 log.error("Exception Occured in getNewsBetweenSelectedDates() method, Exception - "+e);
+			 return fileVOsList;
+		}
+	 }
+	 
+	
 }

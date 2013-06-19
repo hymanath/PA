@@ -3017,4 +3017,41 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		return query.list(); 
 		}
 	 
+	 
+	 @SuppressWarnings("unchecked")
+	 public List<FileGallary> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType)
+	 {
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append(" select model from FileGallary model, PartyGallery model2 ");
+			stringBuilder.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
+			stringBuilder.append("  and model.isDelete = 'false'  and model.gallary.isDelete = 'false' ");
+			if(!newsType.equals(""))
+				stringBuilder.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false'");
+			if(fromDate != null)
+				stringBuilder.append(" and date(model.file.fileDate) >= :fromDate ");
+			if(toDate != null)
+				stringBuilder.append(" and date(model.file.fileDate) <= :toDate ");
+			
+			stringBuilder.append(" order by model.updateddate desc  ");
+			
+			Query query = getSession().createQuery(stringBuilder.toString());
+			
+			query.setParameter("contentType", contentType);
+			query.setParameter("partyId", partyId);
+			
+			if(fromDate != null)
+			 query.setParameter("fromDate", fromDate);
+			
+			if(toDate != null)
+				query.setParameter("toDate", toDate);
+			
+			if(starIndex != null)
+			 query.setFirstResult(starIndex);
+			if(maxResults != null)
+			query.setMaxResults(maxResults);
+			
+			return query.list();
+			
+	 }
+	 
 }
