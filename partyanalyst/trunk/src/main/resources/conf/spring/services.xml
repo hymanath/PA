@@ -1611,7 +1611,9 @@
      <property name="respondentDAO" ref="respondentDAO"></property>
      <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
      <property name="occupationDAO" ref="occupationDAO" />
+     <property name="surveyorDAO" ref="surveyorDAO" />
      <property name="surveyAnswerDAO" ref="surveyAnswerDAO" />
+     <property name="surveyAnswerInfoDAO" ref="surveyAnswerInfoDAO" />
      <property name="townshipDAO" ref="townshipDAO"></property>
     </bean>
       

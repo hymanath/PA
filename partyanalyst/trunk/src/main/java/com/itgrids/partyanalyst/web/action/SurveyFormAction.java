@@ -26,7 +26,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.itgrids.partyanalyst.dto.SurveyVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-
+import com.itgrids.partyanalyst.dto.SurveyorVO;
 public class SurveyFormAction extends ActionSupport implements ServletRequestAware,ModelDriven<List<QuestionAnswerVO>>{
 
 	/**
@@ -57,13 +57,14 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 	private String voterId,mobileNo,gender,landmark = null;
 	private SurveyInfoVO surveyInfoVO;
 	private Long locationId;
-	private String locationValue;
+	private String locationValue,phoneNo,emailId;
 	private ResultStatus resultStatus;
 	private String wardId ;
 	private List<QuestionAnswerVO> questionAnswerVO ;
 	private String formString;
 	private boolean status;
-	
+	private Long surveyor,teamlead;
+	private List<SurveyorVO> surveyoList;
 	public void setServletRequest(HttpServletRequest arg0) {
 		
 		this.request=arg0;
@@ -456,6 +457,15 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 		this.wardId = wardId;
 	}
 
+	
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
 
 	public List<QuestionAnswerVO> getQuestionAnswerVO() {
 		return questionAnswerVO;
@@ -484,6 +494,45 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+	
+	public String getEmailId() {
+		return emailId;
+	}
+
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	
+	public List<SurveyorVO> getSurveyoList() {
+		return surveyoList;
+	}
+
+
+	public void setSurveyoList(List<SurveyorVO> surveyoList) {
+		this.surveyoList = surveyoList;
+	}
+
+	
+	public Long getSurveyor() {
+		return surveyor;
+	}
+
+
+	public void setSurveyor(Long surveyor) {
+		this.surveyor = surveyor;
+	}
+
+
+	public Long getTeamlead() {
+		return teamlead;
+	}
+
+
+	public void setTeamlead(Long teamlead) {
+		this.teamlead = teamlead;
+	}
 
 
 	public String execute()
@@ -492,21 +541,24 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		if(regVO == null)
 			return ERROR;
-		Long accessValue= Long.valueOf(regVO.getAccessValue());
+		Long accessValue           = Long.valueOf(regVO.getAccessValue());
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
-		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+		constituencyList           = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+		stateList                  = cadreManagementService.findStatesByCountryID(accessValue.toString());
+		districtList               = staticDataService.getDistricts(accessValue);
+		eduStatus                  = staticDataService.getAllEducationalQualifications();
+		occupationsList            = staticDataService.getAllOccupations();
+		casteList                  = surveyAnalysisService.getAllCastesForUser(regVO.getRegistrationID());
+		surveyoList                = surveyAnalysisService.getServeyorDetails();
+		formString                 = surveyAnalysisService.getSurveyForm(surveyId);
+		
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
-		stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
 		stateList.add(0,new SelectOptionVO(0l,"Select State"));
-		districtList = staticDataService.getDistricts(accessValue);
 		districtList.add(0,new SelectOptionVO(0l,"Select District"));
-		eduStatus = staticDataService.getAllEducationalQualifications();
-		occupationsList = staticDataService.getAllOccupations();
-		casteList = surveyAnalysisService.getAllCastesForUser(regVO.getRegistrationID());
 		casteList.add(0,new SelectOptionVO(0l,"Select Caste"));
 		eduStatus.add(0,new SelectOptionVO(0l,"Select Education"));
 		occupationsList.add(0,new SelectOptionVO(0l,"Select Occupation"));
-		formString = surveyAnalysisService.getSurveyForm(surveyId);
+		//surveyoList.add(0,new SurveyorVO(0l,"Select Surveyor"));
 		return Action.SUCCESS;
 	}
 
@@ -586,30 +638,47 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 		//surveyInfoVO.setEducateion();
 		surveyInfoVO.setGender(gender);
 		surveyInfoVO.setLandmark(landmark);
+		surveyInfoVO.setPhoneNo(phoneNo);
+		surveyInfoVO.setEmailId(emailId);
+		surveyInfoVO.setSurveyorId(surveyor);
+		surveyInfoVO.setTeamleadId(teamlead);
 		//surveyInfoVO.setLocationId(locationId);
 		//surveyInfoVO.setLocationValue(Long.valueOf(locationValue));
 		Long accessValue= Long.valueOf(regVO.getAccessValue());
-		if(surveyInfoVO.getName() != null)
+		if(questionAnswerVO != null && surveyInfoVO.getName() != null)
 		{
-			resultStatus = surveyAnalysisService.saveSurveyDetails(surveyInfoVO);
+			resultStatus = surveyAnalysisService.saveSurveyDetails(surveyInfoVO,regVO.getRegistrationID(),questionAnswerVO);
+			if(resultStatus.getResultCode() == 1)
+			{
+				status = false;
+			    return Action.SUCCESS;
+			}
+			else
+			{
+				status = true;
+			}
 		}
-		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
-		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+		/*if(questionAnswerVO != null)
+		{
+   		 	status = surveyAnalysisService.saveSurveyForm(questionAnswerVO);
+		}*/
+		userAccessConstituencyList     = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
+		constituencyList               = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+		stateList                      = cadreManagementService.findStatesByCountryID(accessValue.toString());
+		districtList                   = staticDataService.getDistricts(accessValue);
+		eduStatus                      = staticDataService.getAllEducationalQualifications();
+		occupationsList                = staticDataService.getAllOccupations();
+		casteList                      = surveyAnalysisService.getAllCastesForUser(regVO.getRegistrationID());
+		surveyoList                    = surveyAnalysisService.getServeyorDetails();
+		formString                     = surveyAnalysisService.getSurveyForm(surveyId);
+		
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
-		stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
 		stateList.add(0,new SelectOptionVO(0l,"Select State"));
-		districtList = staticDataService.getDistricts(accessValue);
 		districtList.add(0,new SelectOptionVO(0l,"Select District"));
-		eduStatus = staticDataService.getAllEducationalQualifications();
-		occupationsList = staticDataService.getAllOccupations();
-		casteList = surveyAnalysisService.getAllCastesForUser(regVO.getRegistrationID());
 		casteList.add(0,new SelectOptionVO(0l,"Select Caste"));
 		eduStatus.add(0,new SelectOptionVO(0l,"Select Education"));
 		occupationsList.add(0,new SelectOptionVO(0l,"Select Occupation"));
-		if(questionAnswerVO != null){
-    		 status = surveyAnalysisService.saveSurveyForm(questionAnswerVO);
-    	}
-		 formString = surveyAnalysisService.getSurveyForm(surveyId);
+		
 		return Action.SUCCESS;
 	}
 

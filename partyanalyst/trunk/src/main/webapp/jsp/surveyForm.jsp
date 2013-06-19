@@ -58,6 +58,15 @@ textarea {
 	  [class*="span"] {
         margin-left: 11px;
       }
+	  .span12
+	  {
+		width: 916px;
+	  }
+	  [class*="span"]
+	  {
+		margin-left: -2px;
+		margin-top: 10px;
+	  }
 </style>
 <script type="text/javascript">
    $(document).ready(function(){
@@ -969,7 +978,7 @@ function buildConstituenceys(myResults)
 	
 <div>
 <div id="personalDetailsDiv" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;">
-	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="personalDetailsHeading">Personal Details</h4>
+	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="personalDetailsHeading">Voter Personal Details</h4>
 	<div id="personaltableDiv"  style="margin-left: 15px;">
 	<table>
 	<tr>
@@ -980,28 +989,48 @@ function buildConstituenceys(myResults)
 	
 	</tr>
 	<tr>
+	<td><span>Phone NO : </span></td><td><input type="text" id="phoneId" style="width: 134px;" name="phoneNo"></input></td>
+	<td><span>Email ID : </span></td><td><input type="text" id="emailId" style="width: 134px;" name="emailId"></input></td>
 	<td><span>Gender : </span></td><td><select id="genderId" name="gender">
 	<option id="0">Select Gender</option>
 	<option id="1">Male </option>
 	<option id="2">Female</option>
 	</select></td>
+	
+	</tr>
+	<tr>
+	
+	<td><span>Occupation : </span></td><td><s:select theme="simple" cssClass="selectWidth" label="Select Occupation" name="occupation" id="occupationList" list="occupationsList" listKey="id" listValue="name"  class="selectWidth"/></td>
 	<td><span>Caste : </span></td><td><s:select theme="simple" cssClass="selectWidth" label="Select Caste" name="caste" id="caste" list="casteList" listKey="id" listValue="name"  class="selectWidth"/></td>
 	<!--<td><span>Caste Categoery : </span></td><td><select id="casteCategoeryId" >
 	<option id="0">Select Categoery</option>
 	</select></td>-->
 	<td><span>Education : </span></td><td><s:select theme="simple" cssClass="selectWidth" label="Select Education" name="education" id="educationList" list="eduStatus" listKey="id" listValue="name"  class="selectWidth"/></td>
 	</tr>
-	<tr>
-	
-	<td><span>Occupation : </span></td><td><s:select theme="simple" cssClass="selectWidth" label="Select Occupation" name="occupation" id="occupationList" list="occupationsList" listKey="id" listValue="name"  class="selectWidth"/></td>
-	
-	</tr>
 	</table>
 	<div style="margin-left:10px;"><span>Land Marks : </span><textarea id="descTextArea" onkeyup="limitText('descTextArea','maxcount',200)" rows="" cols="40" name="landmark"></textarea></div>
 	</div>
 </div>
 </div>
+
+<div>
+<div id="serverSelectionDiv" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;">
+<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="serverSelectionHeading">Surveyor Selection Details</h4>
+<table>
+<tr>
+<td><span>Surveyor : </span></td><td><s:select theme="simple" cssClass="selectWidth" label="Select Surveyor" name="surveyor" id="surveyoList" list="surveyoList" listKey="surveyorId" listValue="surveyorName"  class="selectWidth" headerValue="Select Surveyor" headerKey="0"/></td>
+
+<td><span>Team Lead : </span></td><td><s:select theme="simple" cssClass="selectWidth" label="Select Teamlead" name="teamlead" id="surveyoList" list="surveyoList" listKey="surveyorId" listValue="surveyorName"  class="selectWidth" headerValue="Select Teamlead" headerKey="0"/></td>
+</tr>
+</table>
+</div>
+</div>
+
+<div>
+<div id="personalDetailsDiv" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;">
+	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="personalDetailsHeading">Voter Personal Details</h4>
 <div id="formDIV"></div>
+</div></div>
 <s:submit cssClass="button" value="Save" name="Save" ></s:submit>
 </s:form>
 </body>
