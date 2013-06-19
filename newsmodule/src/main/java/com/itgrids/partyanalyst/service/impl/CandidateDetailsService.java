@@ -721,9 +721,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					file.setFilePath(displayImage.getDisplayImagePath() !=null?displayImage.getDisplayImagePath().trim():null);
 			   }
 				
-			 //  file.setUser(userDAO.get(fileVO.getUserId()));
+			  file.setUser(userDAO.get(fileVO.getUserId()));
 			   file.setNewsDescription(fileVO.getNewsDescription());
-			   file.setUser(userDAO.get(1L));
+			 //  file.setUser(userDAO.get(1L));
 				file = fileDAO.save(file);
 			
 				//file = fileDAO.save(file);
