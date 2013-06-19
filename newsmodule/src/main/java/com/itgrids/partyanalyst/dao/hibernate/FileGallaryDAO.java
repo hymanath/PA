@@ -2780,20 +2780,31 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		}
 		
 		@SuppressWarnings("unchecked")
-		public List<FileGallary> getAllVideoFilesOfInGallaries(List<Long> gallaryIdsList , int startIndex , int endIndex,String type)
+		public List<Object[]> getAllVideoFilesOfInGallaries(int startIndex , int endIndex,String queryType)
 		{
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select distinct model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and model.isDelete = 'false' ");
-		if("public".equalsIgnoreCase(type)){
-		queryStr.append(" and model.isPrivate = 'false' ");
-		}
-		queryStr.append(" order by model.updateddate desc");
-		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameterList("gallaryIdsList",gallaryIdsList);
+			StringBuilder query = new StringBuilder();
+			 query.append("select  fs.file.fileId,fs.file.fileDescription,fps.filePath from FileGallary model , PartyGallery model2 , FileSourceLanguage fs,FilePaths fps where "+
+			 " model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId = :partyId "+
+			 " and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and fs.fileSourceLanguageId=fps.fileSourceLanguage.fileSourceLanguageId ");
+			 
+			 if(queryType.equalsIgnoreCase("Public"))
+			 query.append(" and model.isPrivate = :isPrivate and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
 
-		query.setFirstResult(startIndex);
-		query.setMaxResults(endIndex);
-		return query.list();
+			 if(queryType.equalsIgnoreCase("Private"))
+			 query.append(" and model.isPrivate = :isPrivate and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+			 //query.append(" and model.file.locationValue = :locationValue and model.file.regionScopes.regionScopesId = :locId ");
+			 query.append(" group by model2.gallery.gallaryId order by model2.gallery.updateddate desc ");
+			 Query queryObject = getSession().createQuery(query.toString());
+
+			 queryObject.setLong("partyId", IConstants.TDPID);
+			 queryObject.setString("type", IConstants.VIDEO_GALLARY);
+			 queryObject.setString("isDelete", "false");
+			 if(!queryType.equalsIgnoreCase(""))
+				 queryObject.setString("isPrivate", "false");
+			 queryObject.setFirstResult(startIndex);
+			 queryObject.setMaxResults(endIndex);
+			 
+		return queryObject.list();
 		}
 		
 		@SuppressWarnings("unchecked")
