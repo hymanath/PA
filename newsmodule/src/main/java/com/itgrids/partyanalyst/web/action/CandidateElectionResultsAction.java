@@ -1047,11 +1047,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				fileVO.setCandidateId(Long.parseLong(candidateId));
 				
 				fileVO.setName(fileName);
-				fileVO.setTitle(getFileTitle());
-				fileVO.setDescription(getFileDescription());
+				//fileVO.setTitle(getFileTitle());
+				//fileVO.setDescription(getFileDescription());
+				fileVO.setTitle(escapeUnicode(StringEscapeUtils.unescapeHtml(getFileTitle())));
+				fileVO.setDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(getFileDescription())));
 				fileVO.setVisibility(getVisibility());
 				fileVO.setGallaryId(getGallaryId());
-				fileVO.setKeywords(getKeywords());
+				//fileVO.setKeywords(getKeywords());
+				fileVO.setKeywords(escapeUnicode(StringEscapeUtils.unescapeHtml(getKeywords())));
 				fileVO.setCategoryId(getCategory());
 				fileVO.setNewsImportanceId(getNewsimportance());
 				fileVO.setLocationScope(getLocationScope());
@@ -1120,7 +1123,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 					fileVO.getResponseFileIds().add(Long.parseLong(s));
 				
 				fileVO.setFileVOForDiaplyImage(displayFileVO);
-				fileVO.setNewsDescription(newsDescription);
+				fileVO.setNewsDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(newsDescription)));
 				
 			}
 			
