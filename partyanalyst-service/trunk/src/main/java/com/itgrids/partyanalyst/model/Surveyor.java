@@ -21,7 +21,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name="surveyor")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Surveyor extends BaseModel implements java.io.Serializable{
-	private long surveyorId;
+	private Long surveyorId;
 	private String address;
 	private Surveyor teamLead;
 	private UpdationDetails updationDetails;
@@ -29,7 +29,7 @@ public class Surveyor extends BaseModel implements java.io.Serializable{
 	public Surveyor() {
 	}
 	
-	public Surveyor(long surveyorId,String address,Surveyor teamLead,UpdationDetails updationDetails,SurveyorProfile surveyorProfile) {
+	public Surveyor(Long surveyorId,String address,Surveyor teamLead,UpdationDetails updationDetails,SurveyorProfile surveyorProfile) {
 		this.surveyorId       = surveyorId;
 		this.address          = address;
 		this.teamLead         = teamLead;
@@ -40,11 +40,11 @@ public class Surveyor extends BaseModel implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="surveyor_id", unique=true, nullable=false)
-	public long getSurveyorId() {
+	public Long getSurveyorId() {
 		return surveyorId;
 	}
 
-	public void setSurveyorId(long surveyorId) {
+	public void setSurveyorId(Long surveyorId) {
 		this.surveyorId = surveyorId;
 	}
 
