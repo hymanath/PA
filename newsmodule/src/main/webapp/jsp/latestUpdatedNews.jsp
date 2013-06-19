@@ -132,7 +132,7 @@ function buildPaginatedNews(results,jsObj)
 		var source = results[i].fileVOList[0].source.trim();
 		if(source == "Eenadu Telugu")
 		{
-			str+="<h4 style='text-transform: capitalize'>"+results[i].title+"</h4>";
+			str+="<h4 class='enadu'>"+results[i].title+"</h4>";
 		}
 		else
 		{
