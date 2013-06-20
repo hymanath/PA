@@ -2793,7 +2793,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			 if(queryType.equalsIgnoreCase("Private"))
 			 query.append(" and model.isPrivate = :isPrivate and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
 			 //query.append(" and model.file.locationValue = :locationValue and model.file.regionScopes.regionScopesId = :locId ");
-			 query.append(" group by model2.gallery.gallaryId order by model2.gallery.updateddate desc ");
+			 query.append(" order by model.updateddate desc ");
 			 Query queryObject = getSession().createQuery(query.toString());
 
 			 queryObject.setLong("partyId", IConstants.TDPID);
