@@ -336,13 +336,16 @@ function buildContentDetails()
    for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 	{
+	   source = result.relatedGalleries[0].filesList[i].fileVOList[0].source;
 	   if (result.relatedGalleries[0].filesList[i].newsDescription != null)
-	   {
-		   $('#newsDescriptionDiv').html(result.relatedGalleries[0].filesList[i].newsDescription);
+	   {  
+		  if(source == "Eenadu Telugu") $('#newsDescriptionDiv').addClass("enadu").html(result.relatedGalleries[0].filesList[i].newsDescription);
+		  else
+	       $('#newsDescriptionDiv').removeClass("enadu").html(result.relatedGalleries[0].filesList[i].newsDescription);
 	   }
 	   
 
-		source = result.relatedGalleries[0].filesList[i].fileVOList[0].source;
+		
 	    selectedContentFile = result.relatedGalleries[0].filesList[i];
 		titleStr = result.relatedGalleries[0].filesList[i].title;
 		pathStr = result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path;
