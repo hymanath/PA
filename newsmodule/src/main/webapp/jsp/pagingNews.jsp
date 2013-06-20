@@ -10,6 +10,7 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 
 <style type="text/css">
 @font-face
@@ -21,6 +22,8 @@ font-family:eFont;src: url('img/eenadu.ttf');
 font-family: eFont;
 font-size:20px;
 }
+#existingFromText,#existingToText{width:155px;}
+#errorMsgDiv{font-size:12px;}
 </style>
 
 </head>
@@ -57,13 +60,19 @@ font-size:20px;
 						<div class="span12 boxHeading"><h4>All News</h4></div>
 						<div class="span12">
 							<ul class=" nav nav-list bs-docs-sidenav">
-								<li>
+								<!-- <li>
 									<h6>News Main Title</h6>
 									<p>
 About Gmail - email from Google
 
 Video chat with a friend, or give someone a ring all from your inbox. See more reasons to switch or check out our newest features. <p>
-								</li>
+								</li> -->
+
+								<div id="errorMsgDiv"></div>
+		       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
+			   <p>To Date: <input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"/></p>
+			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails()" class="btn btn-info"/>
+
 							</ul>
 						</div>
 					</div>
@@ -180,8 +189,47 @@ function imgError(image) {
     return true;
 }
 
+function getSelectedNewsDetails()
+{
+	$("#errorMsgDiv").html('');
+	
+	var fromDate = $("#existingFromText").val();
+	var toDate = $("#existingToText").val();
+	if(fromDate=="" && toDate == "")
+	{
+		$("#errorMsgDiv").html('Please Select From And To Dates');
+		return;
+	}
+	else if(fromDate =="")
+	{
+	  $("#errorMsgDiv").html('Please Select From Date');
+		return;
+	}
+	else if(toDate =="")
+	{
+	  $("#errorMsgDiv").html('Please Select To Date');
+		return;
+	}
+	else if (Date.parse(fromDate) > Date.parse(toDate)) {
+      $("#errorMsgDiv").html('Invalid Date Selection.');
+      return;
+	} 
+	
+	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
+	
+    var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+    browser1.focus();
+}
 
-
+$(".dateField").live("click", function(){
+ $(this).datepicker({
+		dateFormat: "dd/mm/yy",
+		changeMonth: true,
+      changeYear: true,
+		maxDate: new Date()
+		
+	}).datepicker("show");
+});
 	
 	</script>
 </body>
