@@ -793,7 +793,14 @@ public String getVotersCastInfoByConstituency()
 	
 	session = request.getSession();
 	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-	Long userId =  regVO.getRegistrationID();
+	Long userId =  null;
+	
+	if(regVO.getParentUserId()!=null){
+		userId=regVO.getMainAccountId();
+	}
+	else{
+		userId = regVO.getRegistrationID();
+	}
 	
 	if(jObj.getString("task").equalsIgnoreCase("getCastInfo"))
 	{
