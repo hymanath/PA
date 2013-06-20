@@ -18,7 +18,7 @@ public class QuestionAnswerVO implements Serializable {
 	public boolean hasSubQuestion;
 	public List<Long> optionIds;
 	public String optionVal;
-	
+	public String remarks;
 	public List<QuestionAnswerVO> options;
 	public QuestionAnswerVO option;
 
@@ -102,6 +102,14 @@ public class QuestionAnswerVO implements Serializable {
 
 	public void setOptionVal(String optionVal) {
 		this.optionVal = optionVal;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 	
 	
