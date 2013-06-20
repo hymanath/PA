@@ -65,6 +65,7 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 	private boolean status;
 	private Long surveyor,teamlead;
 	private List<SurveyorVO> surveyoList;
+	private String questionRemark;
 	public void setServletRequest(HttpServletRequest arg0) {
 		
 		this.request=arg0;
@@ -532,6 +533,16 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 
 	public void setTeamlead(Long teamlead) {
 		this.teamlead = teamlead;
+	}
+
+	
+	public String getQuestionRemark() {
+		return questionRemark;
+	}
+
+
+	public void setQuestionRemark(String questionRemark) {
+		this.questionRemark = questionRemark;
 	}
 
 
