@@ -7302,15 +7302,24 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								for(SelectOptionVO panchayatRef : mandals.getSelectOptionsList())
 								{
 									SelectOptionVO vo = staticDataService.getSelectOptionVOFromResultList(panchayatHamletsList, panchayatRef.getId());
-									panchayatRef.setSelectOptionsList1(vo.getSelectOptionsList());
-									totalHamlets += vo.getSelectOptionsList().size();
+									
+									if(vo != null && vo.getSelectOptionsList() != null){
+										panchayatRef.setSelectOptionsList1(vo.getSelectOptionsList());
+										totalHamlets += vo.getSelectOptionsList().size();
+									}
+									
 									SelectOptionVO vo2 = staticDataService.getSelectOptionVOFromResultList(panchayatBoothsList, panchayatRef.getId());
 									panchayatRef.setSelectOptionsList(vo2.getSelectOptionsList());
 									
-									if(vo2.getSelectOptionsList() == null)
+									if(vo2 != null && vo2.getSelectOptionsList() != null){
+										if(vo2.getSelectOptionsList() == null)
+											panchayatRef.setValue("0");
+										else
+											panchayatRef.setValue(new Integer(vo2.getSelectOptionsList().size()).toString());
+									}else{
 										panchayatRef.setValue("0");
-									else
-										panchayatRef.setValue(new Integer(vo2.getSelectOptionsList().size()).toString());
+									}
+									
 								}
 							}
 							votersDetailsVO.setTotalNoOfHamlets(totalHamlets);
