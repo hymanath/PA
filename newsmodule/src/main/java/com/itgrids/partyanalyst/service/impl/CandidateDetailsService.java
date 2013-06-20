@@ -1080,27 +1080,33 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 		if(level.equalsIgnoreCase("state")||level.equalsIgnoreCase(""))
 		 		{ 
 				 List <Object[]> newsDetails =  partyGalleryDAO.getAllNewsDetailsForState(IConstants.TDPID, startIndex,maxResults,newsType,1l,2l);
-				 if(newsDetails == null && newsDetails.isEmpty())
-					 return null;
+				 /*if(newsDetails == null || newsDetails.isEmpty())
+					 return null;*/
+				   if(newsDetails != null && newsDetails.size() > 0)
+				   {
+					 int count=partyGalleryDAO.getCountOfNewsFiles(IConstants.TDPID, startIndex,maxResults,newsType,1l,2l);
+					 nl = buildFileVo(newsDetails,count);
+					 resultMap.put("NewsGallary", nl);
+				   }
 				 
-				 int count=partyGalleryDAO.getCountOfNewsFiles(IConstants.TDPID, startIndex,maxResults,newsType,1l,2l);
-				 nl = buildFileVo(newsDetails,count);
-				 resultMap.put("NewsGallary", nl);
 		 		}
 				 
 			 if(level.equalsIgnoreCase("district")||level.equalsIgnoreCase("")){
 				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(1l);
 				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l, startIndex,maxResults,newsType,3l,distIds);
 				 
-				 if(newsDetailsForDist == null && newsDetailsForDist.isEmpty())
+				/* if(newsDetailsForDist == null || newsDetailsForDist.isEmpty() )
 					 return null;
+				 */
+				 if(newsDetailsForDist != null && newsDetailsForDist.size() > 0)
+				 {
+				   int count1=partyGalleryDAO.getCountOfNewsFilesForDistrict(IConstants.TDPID, startIndex,maxResults,newsType,3l,distIds);
 				 
-				 int count1=partyGalleryDAO.getCountOfNewsFilesForDistrict(IConstants.TDPID, startIndex,maxResults,newsType,3l,distIds);
-				 
-				 if(newsDetailsForDist != null && !newsDetailsForDist.isEmpty()){
-					 nl = buildFileVo(newsDetailsForDist,count1);
+				   if(newsDetailsForDist != null && !newsDetailsForDist.isEmpty()){
+					  nl = buildFileVo(newsDetailsForDist,count1);
 							
-				 resultMap.put("NewsGallaryForDist", nl);
+				    resultMap.put("NewsGallaryForDist", nl);
+				   }
 				 }
 				 List <Object[]> categoryList= partyGalleryDAO.getCategoryIdsForParty(IConstants.TDPID, 0, 6, newsType);
 		/* newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
