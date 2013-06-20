@@ -67,6 +67,27 @@ textarea {
 		margin-left: -2px;
 		margin-top: 10px;
 	  }
+	  
+	 .remarksLable 
+	 {
+		font-weight: bold;
+		margin-left: 34px;
+	 }
+	 .lableRemarks
+	 {
+		float: left;
+		font-weight: bold;
+		margin-top: 6px;
+	 }
+	 .questionRemarks
+	 {
+		float: left;
+		margin-left: 17px;
+	 }
+	 input[type="radio"]
+	 {
+		margin-right: 15px;
+	 }
 </style>
 <script type="text/javascript">
    $(document).ready(function(){
@@ -93,6 +114,7 @@ var panchayatId      = "";
 var constituencyType = "";
 var surveyId         = '${surveyId}';
 var constituencyId   = "";
+var name             = "";
 function getreportLevel()
 {
 	var value = "";
@@ -571,12 +593,12 @@ function callAjax(jsObj,url)
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 
-function openSurveyForm()
+/* function openSurveyForm()
 {
 	var surveyId = 1;
 	var urlString = "surveyFormAction.action?surveyId="+surveyId+"";
 	window.location.href = urlString;	
-}
+} */
 
 if(surveyId > 0)
 {
@@ -598,7 +620,9 @@ function getLevlValuesForSurvey(myResults)
 		var locationId     = myResults[0].locationScopeId;
 		var locationValue  = myResults[0].locationValue;
 		constituencyId     = myResults[0].constituencyId;
+		name               = myResults[0].name.toUpperCase();
 	}
+	$('#surveyName').html(name);
 	var jsObj=
 	{	
 		locationId     : locationId,
@@ -918,7 +942,8 @@ function buildConstituenceys(myResults)
 </script>
 </head>
 <body>
-<div><input type="button" class="btn-info" value="Create Survey" style="float:right;margin-right:15px;" onClick="openSurveyForm();"></input></div>
+<div id="headingDiv" align="center" style="background: none repeat scroll 0px 0px rgb(49, 152, 182); border-radius: 4px 4px 4px 4px; margin-left: 10px; width: 977px; font-family: arial; font-size: 18px; color: white; padding-bottom: 4px; margin-bottom: 5px; margin-top: 19px; font-weight: bolder; padding-top: 10px; height: 25px;"><span id="surveyName"></span> SURVEY FORM</div>
+<!--<div><input type="button" class="btn-info" value="Create Survey" style="float:right;margin-right:15px;" onClick="openSurveyForm();"></input></div>-->
 <s:form action="surveyFormSaveAction" method="post" theme="simple" name="form">
 <div>
 <div id="selectionDiv" class="widget green whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;">
@@ -1027,11 +1052,12 @@ function buildConstituenceys(myResults)
 </div>
 
 <div>
-<div id="personalDetailsDiv" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;">
-	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="personalDetailsHeading">Voter Personal Details</h4>
+<div id="surveyQuestionsDiv" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;">
+	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="surveyQuestionsHeading">Survey Questions and Options</h4>
 <div id="formDIV"></div>
 </div></div>
-<s:submit cssClass="button" value="Save" name="Save" ></s:submit>
+<div align="center" style="margin-bottom: 10px;">
+<s:submit cssClass="btn btn-success" value="Submit Form" name="Save"  ></s:submit></div>
 </s:form>
 </body>
 </html>

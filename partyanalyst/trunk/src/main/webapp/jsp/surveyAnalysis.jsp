@@ -72,6 +72,11 @@
       var browser1 = window.open("createNewQuestionAction.action?surveyId="+id+"","addnewquestionwindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
       browser1.focus();
    }
+   function openSurveyForm(id)
+	{
+		var browser1 = window.open("surveyFormAction.action?surveyId="+id+"","addnewquestionwindow","scrollbars=yes,height=750,width=1050,left=200,top=200");	
+		browser1.focus();
+	} 
    var optionId = 0;
    var suboptionId = 0;
    function buildQuestion(){
@@ -171,16 +176,18 @@ function buildSurveyDetailsDivMain()
 	console.log('${surveyList}');
 var str='';
 if('${surveyList}' != null && '${surveyList}'.length>0){
-str+="<table class=\"table table-bordered table-striped table-hover\"  			style=\"font-size: medium; font-weight: bold;\">";
+str+="<table class=\"table table-bordered table-striped table-hover\"  			style=\"font-size: small; font-weight: normal;\" border=\"1\">";
 str+="<tr>";
 str+="<td>Survey title</td>";
 str+="<td>Add Question</td>";
-str+="<td>delete Servey</td>";
+str+="<td>Survey Form</td>";
+str+="<td>Delete Servey</td>";
 str+="</tr>";
 str+="<c:forEach var='surveyLists' items='${surveyList}'>";
 str+="<tr>";
 str+="<td>${surveyLists.name}</td>";
 str+="<td><a href=\"javascript:{}\"  onclick=\"openSurveyQuestionAddWindow(${surveyLists.id});\">Add Question</a></td>";
+str+="<td><a href=\"javascript:{}\"  onclick=\"openSurveyForm(${surveyLists.id});\">Survey Form</a></td>";
 str+="<td><a href=\"javascript:{}\"  onclick=\"removeSurvey(${surveyLists.id});\">Delete</a></td>";
 str+="</tr>";
 str+="</c:forEach>";
