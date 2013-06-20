@@ -6432,7 +6432,7 @@ var typeofMuncipality="";
 					str+='<li><a onClick="" dest-atr="ward" data-municipalityid="'+ municipality.id+'" name-muncipal="'+municipality.name+'"><span class="checkbox"><input type="radio" data-municipality="'+ municipality.id+'" id="Chk-'+municipality.id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup"></span><i class="icon-chevron-right"></i> '+municipality.name.replace('Greater Municipal Corp','')+'</a></li>';
 					}
 
-			if( municipality.selectOptionsList != null){
+			if( municipality.selectOptionsList != null && municipality.selectOptionsList.length > 0){
 				isMuncipalityExist = "true";
 				
 				muncipalityType = municipality.selectOptionsList[0].type;
