@@ -32,6 +32,8 @@
 
 <link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <style type="text/css">
  #showContentHeaderDiv{background-color: #06ABEA;
@@ -370,15 +372,17 @@ function buildContentDetails()
 			 str+='</tr>';
 			 str+='</table>';
 		str +='<div id="imgDiv" class="popupcontainer"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="max-width:600px;max-length:800px;" src="'+pathStr+'" /></div>';
+		str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="width:950px;height:850px;" src="'+pathStr+'" /></div>';
 		if(source == "Eenadu Telugu")
 		{
-			str +='<div><span>Description: </span><b class="enadu">'+descriptionStr+'<b></div>';
+			str +='<div><span>Description: </span><b class="enadu">'+descriptionStr+'<b>';
 		}
 		else
 		{
-			str +='<div><span>Description: </span><b>'+descriptionStr+'<b></div>';
+			str +='<div><span>Description: </span><b>'+descriptionStr+'<b>';
 		}
 		
+		str +='<button class="btn btn-info" onclick="getZoomImage()" style="float:right;"> Zoom Image </button> </div>';
 	}
 
 	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
@@ -674,7 +678,15 @@ function showMainArticles(result,jsObj)
 	}
   
 }
-
+function getZoomImage(){
+$("#zoomImageDiv").dialog({
+				resizable:true,
+				title:'News Image',
+				height:600,
+				width:800,
+				modal: true				
+	});
+}
 getContentDetails();
 getNewsForPagination(0);
 getMainArticles();
