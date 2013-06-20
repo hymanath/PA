@@ -107,7 +107,7 @@ margin:-1px 0px 0px 0px ;
 						  <li class="">
 						  <a href="newsDetailsAction.action">News</a></li>
 						  <li class="">
-						  <a onclick="showMoreVideoGallaries()">Videos</a></li>
+						  <a onclick="showMoreVideoGallaries()" style="cursor: pointer;">Videos</a></li>
 						 
 						  
 						      <li class=""><a href="partyManagementAction.action">Manage Party Profile</a></li>
