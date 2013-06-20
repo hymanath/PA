@@ -1019,7 +1019,7 @@ function uploadVideoGallary(){
 	}
 	str += '</font>';
 	errorDivEle.innerHTML = str;
-	if(eFlag = true)
+	if(!eFlag)
 	{
 		$('html, body').animate({
          scrollTop: $("#galErrorMsgDivId").offset().top
