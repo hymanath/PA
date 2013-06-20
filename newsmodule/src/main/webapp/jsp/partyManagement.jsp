@@ -5164,7 +5164,7 @@ function buildUploadNewsForMultipleUsers()
 	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 
      str+='<div class="aligncenter">';
-     str+='<a style="margin-left:46px;font-weight:bold;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
+     str+='<a style="margin-left:46px;font-weight:bold;color:blue;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
 	str+='<table class="aligncenter" style="margin-left:123px;left:50%;">';
      
     str+='<td><div id="responseContentDiv" style="display:none;">';
@@ -5466,7 +5466,7 @@ if(!$('#newsfileTitle').hasClass('enadu'))
 {
 $('#newsfileTitle').addClass('enadu');
 $('#newsfileDescription').addClass('enadu');
-$('#keywords').addClass('enadu');
+$('#newsDesc').addClass('enadu');
 }
 }else{
 	count = 0;
@@ -5476,7 +5476,7 @@ if($('#newsfileTitle').hasClass('enadu'))
 {
 $('#newsfileTitle').removeClass('enadu');
 $('#newsfileDescription').removeClass('enadu');
-$('#keywords').removeClass('enadu');
+$('#newsDesc').removeClass('enadu');
 }
 }
 
