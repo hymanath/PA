@@ -5455,11 +5455,12 @@
 		  <param name="root">fileVOsList</param>
 		 </result>
 		</action>
-		</package>
+		
 		
 		<action name="getCandidatesOfAParty" class="candidateElectionResultsAction" method="getCandidatesOfAParty">
 		 <result type="json" name="success">
 		  <param name="root">candidatesList</param>
 		 </result>
 		</action>
+		</package>
 </struts>      
