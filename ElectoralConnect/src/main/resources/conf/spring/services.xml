@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC 
+	"-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- <bean name="partyDetailsService" class="com.itgrids.electoralconnect.service.impl.PartyDetailsService">
+	    <property name="partyDAO" ref="partyDAO"/>
+	    <property name="partyGalleryDAO" ref="partyGalleryDAO"/>
+	    <property name="gallaryDAO" ref="gallaryDAO"/>
+	    <property name="contentTypeDAO" ref="contentTypeDAO"/>
+	    <property name="userGallaryDAO" ref="userGallaryDAO"/>
+	    <property name="fileGallaryDAO" ref="fileGallaryDAO"/>
+	    <property name="electionTypeDAO" ref="electionTypeDAO"/>
+	    <property name="problemManagementService" ref="problemManagementService"/>
+	    <property name="panchayatDAO" ref="panchayatDAO"/>
+	    <property name="panchayatHamletDAO" ref="panchayatHamletDAO"/>
+	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
+	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+	    <property name="boothDAO" ref="boothDAO"/>
+	    <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
+	    <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>	    
+	</bean>  -->
+</beans>		
+	
