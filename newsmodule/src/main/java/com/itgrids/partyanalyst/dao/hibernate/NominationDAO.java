@@ -3701,8 +3701,15 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	public List<Object[]> getCandidatesForAParty(List<Long> candidateIds)
 	{
 		
-		Query query = getSession().createQuery("select model1.candidate.candidateId  , model1.candidate.lastname " +
+		/*Query query = getSession().createQuery("select model1.candidate.candidateId  , model1.candidate.lastname " +
 				"from Nomination model1 where model1.nominationId in(select max(model2.nominationId) from " +
+				"Nomination model2 where model1.candidate.candidateId = model2.candidate.candidateId and " +
+				"model2.candidate.candidateId in(:candidateIds)) and model1.party.partyId =:partyId order by model1.candidate.lastname");
+		
+		*/
+		
+		Query query = getSession().createQuery("select model1.candidate.candidateId  , model1.candidate.lastname " +
+				"from Nomination model1 where model1.constituencyElection.election.electionDate in(select max(model2.constituencyElection.election.electionDate) from " +
 				"Nomination model2 where model1.candidate.candidateId = model2.candidate.candidateId and " +
 				"model2.candidate.candidateId in(:candidateIds)) and model1.party.partyId =:partyId order by model1.candidate.lastname");
 		
