@@ -2645,6 +2645,22 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 	}
 	
+	public String getCandidatesOfAParty() throws Exception
+	{
+	 try{
+		   
+			jObj = new JSONObject(getTask());			
+			candidatesList = candidateDetailsService.getCandidatesOfAParty(jObj.getLong("partyId"));
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();			
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	
 	public String getNewsContainedCandidates()
 	{
 		candidatesList = candidateDetailsService.getNewsContainedCandidates();
