@@ -3,7 +3,8 @@
 <head>
 	<title> News - Telugudesam Party</title>
 	<meta name="" content="">
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	
+	<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
 	
     <script type="text/javascript" src="pagination/jquery.simplePagination.js"></script> 
 
@@ -19,6 +20,7 @@
 	<!-------PT-sans font---->
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 	 <link rel="stylesheet" type="text/css" href="pagination/simplePagination.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 
 <style type="text/css">
 @font-face   
@@ -30,6 +32,8 @@ font-family:eFont;src: url('img/eenadu.ttf');
 font-family: eFont;
 font-size:20px;
 }
+#existingFromText,#existingToText{width:155px;}
+#errorMsgDiv{font-size:12px;}
 </style>
 <script>
 
@@ -81,13 +85,17 @@ $( document ).ready(function() {
 						<div class="span12 boxHeading"><h4>All News</h4></div>
 						<div class="span12">
 							<ul class=" nav nav-list bs-docs-sidenav">
-								<li>
+								<!-- <li>
 									<h6>News Main Title</h6>
 									<p>
 About Gmail - email from Google
 
 Video chat with a friend, or give someone a ring all from your inbox. See more reasons to switch or check out our newest features. <p>
-								</li>
+								</li>-->
+								<div id="errorMsgDiv"></div>
+		       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
+			   <p>To Date: <input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"/></p>
+			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails()" class="btn btn-info"/>
 							</ul>
 						</div>
 					</div>
@@ -100,7 +108,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 		
 	</div>
 		<!------JS------>
-	<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+	<!-- <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script> -->
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>	
 	
@@ -220,7 +228,47 @@ showAllFilesofAGallry(startIndex,endIndex,galalryId,selectedvalue)
 }
 
 
+function getSelectedNewsDetails()
+{
+	$("#errorMsgDiv").html('');
+	
+	var fromDate = $("#existingFromText").val();
+	var toDate = $("#existingToText").val();
+	if(fromDate=="" && toDate == "")
+	{
+		$("#errorMsgDiv").html('Please Select From And To Dates');
+		return;
+	}
+	else if(fromDate =="")
+	{
+	  $("#errorMsgDiv").html('Please Select From Date');
+		return;
+	}
+	else if(toDate =="")
+	{
+	  $("#errorMsgDiv").html('Please Select To Date');
+		return;
+	}
+	else if (Date.parse(fromDate) > Date.parse(toDate)) {
+      $("#errorMsgDiv").html('Invalid Date Selection.');
+      return;
+	} 
 
+	
+	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
+	
+    var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+    browser1.focus();
+}
+  $(".dateField").live("click", function(){
+ $(this).datepicker({
+		dateFormat: "dd/mm/yy",
+		changeMonth: true,
+      changeYear: true,
+		maxDate: new Date()
+		
+	}).datepicker("show");
+});
 </script>
 </body>
 </html>
