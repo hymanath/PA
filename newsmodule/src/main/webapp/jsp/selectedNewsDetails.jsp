@@ -142,6 +142,12 @@ function callAjax(jsObj,url)
 
 function buildPaginatedNews(results,jsObj)
 {
+	$("#newsDisplayDiv").html('');
+	if(results == null || results.length == 0)
+	{
+		$("#newsDisplayDiv").html('<p style="margin-left: 25px;">No Data Found.</p>');
+		return;
+	}
 	var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){

@@ -6001,8 +6001,10 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			
 			List<FileGallary> fileGallaryList = fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, starIndex, maxResults, IConstants.NEWS_GALLARY, IConstants.TDPID, newsType);
 			if(fileGallaryList != null && fileGallaryList.size() > 0)
+			{
 				setfileGallaryDetails(fileGallaryList, fileVOsList);
-			fileVOsList.get(0).setCount(fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, null, null, IConstants.NEWS_GALLARY, IConstants.TDPID, newsType).size()); 
+			    fileVOsList.get(0).setCount(fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, null, null, IConstants.NEWS_GALLARY, IConstants.TDPID, newsType).size());
+			}
 			
 			 return fileVOsList;
 		 }catch (Exception e) {
