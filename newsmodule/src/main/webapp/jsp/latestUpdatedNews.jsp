@@ -28,6 +28,7 @@ font-family: eFont;
 font-size:20px;
 }
 #existingFromText,#existingToText{width:155px;}
+#errorMsgDiv{font-size:12px;}
 </style>
 <title>Insert title here</title>
 </head>
@@ -226,6 +227,11 @@ function getSelectedNewsDetails()
 	  $("#errorMsgDiv").html('Please Select To Date');
 		return;
 	}
+	else if (Date.parse(fromDate) > Date.parse(toDate)) {
+      $("#errorMsgDiv").html('Invalid Date Selection.');
+      return;
+	} 
+
 	
 	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
 	
