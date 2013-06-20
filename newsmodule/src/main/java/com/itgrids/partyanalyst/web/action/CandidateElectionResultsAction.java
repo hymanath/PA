@@ -1700,6 +1700,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			//fileVOObj.setLanguegeId(jObj.getLong("languageId"));
 			fileVOObj.setFileDate(jObj.getString("fileDate"));
 			fileVOObj.setGallaryId(jObj.getLong("gallaryId"));
+			fileVOObj.setUserId(regVO.getRegistrationID());
 			fileVOObj.setVisibility(jObj.getString("visibility"));
 			JSONArray filePaths = jObj.getJSONArray("paths");
 			JSONArray srcLangIds = jObj.getJSONArray("languageId");
