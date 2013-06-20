@@ -5189,6 +5189,8 @@ function buildUploadNewsForMultipleUsers()
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
 	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50"></input></td>'; 
+	str += ' <td> <a id="sourceTelugu" style="font-weight:bold;color: blue;" href=javascript:{changeLanguage();}> Select Telugu Language</a> </td>';
+	str += ' <td> <a id="sourceEnglish"  style="display:none;font-weight:bold;color: blue;" href=javascript:{changeLanguage();}>Remove Telugu Language</a></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
@@ -5403,7 +5405,7 @@ function  buildUploadNews()
 	
 var str = "";
 str = $("#source option:selected").text();
-alert(str)
+//alert(str)
 
 if(/Eenadu Telugu/i.test(str))
 {
@@ -5447,6 +5449,36 @@ function buildPartyCandidates(results)
 		$('#list1').append('<option value="'+value.id+'">'+value.name+'</option>');
 
 	});
+
+
+}
+var count = 0;
+function changeLanguage(){
+var str='';
+if(count == 0)
+	str='Eenadu Telugu';	
+if(/Eenadu Telugu/i.test(str))
+{
+ count = count+1; 
+$('#sourceTelugu').css("display","none");
+$('#sourceEnglish').css("display","block");
+if(!$('#newsfileTitle').hasClass('enadu'))
+{
+$('#newsfileTitle').addClass('enadu');
+$('#newsfileDescription').addClass('enadu');
+$('#keywords').addClass('enadu');
+}
+}else{
+	count = 0;
+$('#sourceTelugu').css("display","block");
+$('#sourceEnglish').css("display","none");
+if($('#newsfileTitle').hasClass('enadu'))
+{
+$('#newsfileTitle').removeClass('enadu');
+$('#newsfileDescription').removeClass('enadu');
+$('#keywords').removeClass('enadu');
+}
+}
 
 
 }
