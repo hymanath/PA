@@ -7286,12 +7286,15 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 							for(SelectOptionVO mandals: mandalList)
 							{
 								SelectOptionVO vo = staticDataService.getSelectOptionVOFromResultList(mandalPanchayatsList, new Long(mandals.getId().toString().substring(1)));
-								mandals.setSelectOptionsList(vo.getSelectOptionsList());
 								
-								if(vo.getSelectOptionsList() == null)
-									mandals.setValue("0");
-								else
+								if(vo != null)
+								{
+									mandals.setSelectOptionsList(vo.getSelectOptionsList());
+									if(vo.getSelectOptionsList() == null)
+										mandals.setValue("0");
+									else
 									mandals.setValue(new Integer(vo.getSelectOptionsList().size()).toString());
+								}
 							}
 							
 							List<SelectOptionVO> panchayatHamletsList = staticDataService.getHamletsByPanchayatIdsList(panchayatIdsList);
