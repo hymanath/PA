@@ -560,7 +560,7 @@ width: 92px;
 										<ul class="unstyled">
 										<s:iterator value="fileList" var="newsGallaryDetails" status="ctr">
 											<li><a class="thumbnail span2" href="javascript:{openVideo('<s:property value="filePath1"/>')}">
-											<img src='http://img.youtube.com/vi/<s:property value="filePath1"/>/0.jpg'/></a></li>                          		
+											<img src='http://img.youtube.com/vi/<s:property value="filePath1"/>/0.jpg' title='<s:property value="description"/>'/></a></li>                          		
 										</s:iterator>
 										
 									<!--
