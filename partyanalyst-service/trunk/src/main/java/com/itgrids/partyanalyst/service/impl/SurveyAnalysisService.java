@@ -803,6 +803,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			updationDetails.setUpdatedBy(user);
 		}
 		updationDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		updationDetails.setLastUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		updationDetailsDAO.save(updationDetails);
 		
 		respondent.setLandmark(surveyInfoVO.getLandmark());
@@ -884,26 +885,27 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
     	Long optionType = surveyQuestion.getOptionType().getOptionTypeId();
     	Long surveyQuestionId = surveyQuestion.getSurveyQuestionId();
     	String question = surveyQuestion.getQuestion();
+    	String hasRemarks = surveyQuestion.getHasRemarks();
     			
     	switch (optionType.intValue()) {
     	
-	        case 1:  return getQuestionWithMultipleChoiceWithSingleSelect(surveyQuestionId,question,questionNo); 	                 
+	        case 1:  return getQuestionWithMultipleChoiceWithSingleSelect(surveyQuestionId,question,questionNo,hasRemarks); 	                 
 	                 
-	        case 2:  return getQuestionWithMultipleChoiceWithMultiSelect(surveyQuestionId,question,questionNo); 	            
+	        case 2:  return getQuestionWithMultipleChoiceWithMultiSelect(surveyQuestionId,question,questionNo,hasRemarks); 	            
 	                 
-	        case 3:  return getQuestionWithMultipleOptionsWithSingleTextBox(surveyQuestionId,question,questionNo); 
+	        case 3:  return getQuestionWithMultipleOptionsWithSingleTextBox(surveyQuestionId,question,questionNo,hasRemarks); 
 	                 
-	        case 4:  return getQuestionWithMultipleOptionsWithMultipleTextBox(surveyQuestionId,question,questionNo); 
+	        case 4:  return getQuestionWithMultipleOptionsWithMultipleTextBox(surveyQuestionId,question,questionNo,hasRemarks); 
 	                 
-	        case 5:  return getQuestionWithTextBox(surveyQuestionId,question,questionNo); 
+	        case 5:  return getQuestionWithTextBox(surveyQuestionId,question,questionNo,hasRemarks); 
 	                 
-	        case 6:  return getQuestionWithTextArea(surveyQuestionId,question,questionNo); 
+	        case 6:  return getQuestionWithTextArea(surveyQuestionId,question,questionNo,hasRemarks); 
         
         }
     	return "";
     }
 	
-	 public String getQuestionWithMultipleChoiceWithSingleSelect(Long surveyQuestionId,String question,int questionNo){
+	 public String getQuestionWithMultipleChoiceWithSingleSelect(Long surveyQuestionId,String question,int questionNo,String hasRemarks){
 		 StringBuilder questionStr = new StringBuilder("");
 		 boolean hasSubOption = false;
 		 List<Option> options = questionOptionsDAO.getOptionsForQuestion(surveyQuestionId);
@@ -917,40 +919,86 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		 }
 		 
 		 if(!hasSubOption){
-			 questionStr.append("<table class='mainoptmargin'>");
+			 questionStr.append("<table class='mainoptmargin' id='multipleChoiceSingleSelect'>");
 			 int i = 0;
 			 for(Option option : options){
 					 if(i%4 == 0)
 						 questionStr.append("<tr>");
+					/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+					 {
+						 questionStr.append("<td  valign='top' style='width:25%;'>" +
+						 		"<input type='radio' name='questionAnswerVO["+questionNo+"].options[0].optionId'" +
+						 				" value='"+option.getOptionsId()+"' onClick='openRemarksTab(1);' style='margin-bottom: 4px;''/><span>"+option.getOptions()+"</span></td>"); 
+					 }
+					 else
+					 {
+						 questionStr.append("<td  valign='top' style='width:25%;'>" +
+							 		"<input type='radio' name='questionAnswerVO["+questionNo+"].options[0].optionId'" +
+							 				" value='"+option.getOptionsId()+"' style='margin-bottom: 4px;''/><span>"+option.getOptions()+"</span></td>");  
+					 }*/
+					questionStr.append("<td  valign='top' style='width:25%;'><input type='radio' name='questionAnswerVO["+questionNo+"].options[0].optionId' value='"+option.getOptionsId()+"' />"+option.getOptions()+"</td>");
 					 
-					 questionStr.append("<td  valign='top' style='width:25%;'><input type='radio' name='questionAnswerVO["+questionNo+"].options[0].optionId' value='"+option.getOptionsId()+"' />"+option.getOptions()+"</td>");
-					   
 					 if((i+1)%4 == 0)
 						 questionStr.append("</tr>");
 					 
+					/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+					 {
+						 questionStr.append("<span class='remarksLable'> Remarks :  </span><input type='text'" +
+						 		" class='optionRemarks'></input>");
+					 }*/
 					 i=i+1;
 			 }
 			 if(i == 1 || (i-1)%4 != 0)
 				 questionStr.append("</tr>"); 
-			 
+			/* questionStr.append("<tr id='multiOptionsSingleSelect' style='display:none;'><td><span>Remarks : </span></td>" +
+				 		"<td><input type='text' name='remarks' id='singleRadio'></input></td></tr>"); */
 			 questionStr.append("</table>");
 			
 		 }else{
 			 int i = 0;
 			 for(Option option : options){
 				
-				 questionStr.append("<div  class='mainoptmargin'><input type='radio' class='singleChoiceClass singleChoiceClass"+questionNo+"' key='"+questionNo+"' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' value='"+option.getOptionsId()+"' />"+option.getOptions()+"</div>");
+				 /*if(option.getHasRemarks().equalsIgnoreCase("true"))
+				 {
+					 questionStr.append("<div  class='mainoptmargin'>" +
+						 		"<input type='radio' class='singleChoiceClass singleChoiceClass"+questionNo+"' " +
+						 				"key='"+questionNo+"' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId'" +
+						 						" value='"+option.getOptionsId()+"' onClick='openRemarksTab(1);' />"+option.getOptions()+"</div>"); 
+				 }
+				 else
+				 {
+					 questionStr.append("<div  class='mainoptmargin'>" +
+						 		"<input type='radio' class='singleChoiceClass singleChoiceClass"+questionNo+"' " +
+						 				"key='"+questionNo+"' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId'" +
+						 						" value='"+option.getOptionsId()+"' />"+option.getOptions()+"</div>");
+				 }*/
+				questionStr.append("<div  class='mainoptmargin'>" +
+				 		"<input type='radio' class='singleChoiceClass singleChoiceClass"+questionNo+"' " +
+				 				"key='"+questionNo+"' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId'" +
+				 						" value='"+option.getOptionsId()+"' />"+option.getOptions()+"</div>");
+				 
 				 if(option.getOptionType() != null){
+					 
 					 questionStr.append(getSurveySubQuestion(option.getOptionsId(),option.getOptionType().getOptionTypeId(),option.getSubOptionName(),questionNo,i));
 				 }
+				/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+				 {
+					 questionStr.append("<span class='remarksLable'> Remarks :  </span><input type='text' class='optionRemarks'></input>");
+				 }*/
 				 i++;
 			 }
+		 }
+		 if(hasRemarks.equalsIgnoreCase("true"))
+		 {
+			 questionStr.append(" </br><span class='lableRemarks'> Remarks : </span> " +
+			 		"<input type='text' class='questionRemarks' " +
+			 		"name='questionAnswerVO["+questionNo+"].remarks'></input>");
 		 }
 		 
 		return questionStr.toString();
 	 }
 	
-	 public String getQuestionWithMultipleChoiceWithMultiSelect(Long surveyQuestionId,String question,int questionNo){
+	 public String getQuestionWithMultipleChoiceWithMultiSelect(Long surveyQuestionId,String question,int questionNo,String hasRemarks){
 		 boolean hasSubOption = false;	
 		 StringBuilder questionStr = new StringBuilder("");
 		 List<Option> options = questionOptionsDAO.getOptionsForQuestion(surveyQuestionId);
@@ -969,56 +1017,143 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			 for(Option option : options){
 					 if(i%4 == 0)
 						 questionStr.append("<tr>");
+					/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+					 {
+						 questionStr.append("<td  valign='top' style='width:25%;'>" +
+							 		"<input type='checkbox' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+							 				"value='"+option.getOptionsId()+"' onClick='openRemarksTab(2);' />"+option.getOptions()+"</td>"); 
+					 }
+					 else
+					 {
+						 questionStr.append("<td  valign='top' style='width:25%;'>" +
+							 		"<input type='checkbox' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+							 				"value='"+option.getOptionsId()+"' />"+option.getOptions()+"</td>"); 
+					 }*/
+				   questionStr.append("<td  valign='top' style='width:25%;'>" +
+					 		"<input type='checkbox' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+					 				"value='"+option.getOptionsId()+"' />"+option.getOptions()+"</td>");
 					 
-					 questionStr.append("<td  valign='top' style='width:25%;'><input type='checkbox' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' value='"+option.getOptionsId()+"' />"+option.getOptions()+"</td>");
-					   
 					 if((i+1)%4 == 0)
 						 questionStr.append("</tr>");
-					 
+					/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+					 {
+						 questionStr.append("<span class='remarksLable'> Remarks :  </span><input type='text' class='optionRemarks'></input>");
+					 }*/
 					 i=i+1;
 			 }
 			 if(i == 1 || (i-1)%4 != 0)
 				 questionStr.append("</tr>"); 
-			 
+			 /*questionStr.append("<tr id='multiOptionsMultiSelect' style='display:none;'><td><span>Remarks : </span></td>" +
+			 		"<td><input type='text' name='remarks' id='multiCheckBox'></input></td></tr>"); */
 			 questionStr.append("</table>");	
 		 }
 		 else{
 			 int i = 0;
 			 for(Option option : options){
-				 questionStr.append("<div  class='mainoptmargin'><input type='checkbox' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' value='"+option.getOptionsId()+"' />"+option.getOptions()+"</div>");
+				/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+				 {
+					 questionStr.append("<div  class='mainoptmargin'><input type='checkbox' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+						 		"value='"+option.getOptionsId()+"' onClick='openRemarksTab(2);' />"+option.getOptions()+"</div>"); 
+				 }
+				 else
+				 {
+					 questionStr.append("<div  class='mainoptmargin'><input type='checkbox' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+						 		"value='"+option.getOptionsId()+"' />"+option.getOptions()+"</div>");
+				 }*/
+				 questionStr.append("<div  class='mainoptmargin'><input type='checkbox' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+				 		"value='"+option.getOptionsId()+"' />"+option.getOptions()+"</div>");
+				 
 				 if(option.getOptionType() != null){
 					 questionStr.append(getSurveySubQuestion(option.getOptionsId(),option.getOptionType().getOptionTypeId(),option.getSubOptionName(),questionNo,i));
 				 }
+				 /*if(option.getHasRemarks().equalsIgnoreCase("true"))
+				 {
+					 questionStr.append("<span class='remarksLable'> Remarks :  </span><input type='text' class='optionRemarks'></input>");
+				 }*/
+				
 				 i = i+1;
 			 }
+		 }
+		 if(hasRemarks.equalsIgnoreCase("true"))
+		 {
+			 questionStr.append(" </br><span class='lableRemarks'> Remarks : </span> " +
+			 		"<input type='text' class='questionRemarks' " +
+			 		"name='questionAnswerVO["+questionNo+"].remarks'></input>");
 		 }
 		return questionStr.toString();
 	 }
 	 
-	 public String getQuestionWithMultipleOptionsWithSingleTextBox(Long surveyQuestionId,String question,int questionNo){
+	 public String getQuestionWithMultipleOptionsWithSingleTextBox(Long surveyQuestionId,String question,int questionNo,String hasRemarks){
 		 StringBuilder questionStr = new StringBuilder("");
 		 List<Option> options = questionOptionsDAO.getOptionsForQuestion(surveyQuestionId);
 		 questionStr.append("<div style='font-size:15px;font-weight:bold;'>"+questionNo+")&nbsp;"+question+"<input type='hidden' name='questionAnswerVO["+questionNo+"].questionId' value='"+surveyQuestionId+"' /></div>");
 		 int i = 0;
 		 for(Option option : options){
-			 questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" <input type='text' name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' /><input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' value='"+option.getOptionsId()+"' /></div>");
+			 /*if(option.getHasRemarks().equalsIgnoreCase("true"))
+			 {
+				 questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" " +
+					 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' onClick='openRemarksTab(3);'/>" +
+					 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId'" +
+					 						" value='"+option.getOptionsId()+"' /></div>"); 
+			 }
+			 else
+			 {
+				 questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" " +
+					 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' />" +
+					 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId'" +
+					 						" value='"+option.getOptionsId()+"' /></div>");
+			 }*/
+			questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" " +
+			 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' />" +
+			 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId'" +
+			 						" value='"+option.getOptionsId()+"' /></div>");
+			 
 			 if(option.getOptionType() != null){
 				 questionStr.append(getSurveySubQuestion(option.getOptionsId(),option.getOptionType().getOptionTypeId(),option.getSubOptionName(),questionNo,i));
 			 }
+			/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+			 {
+				 questionStr.append("<span class='remarksLable'> Remarks :  </span><input type='text' class='optionRemarks'></input>");
+			 }*/
 			 i++;
+		 }
+		 if(hasRemarks.equalsIgnoreCase("true"))
+		 {
+			 questionStr.append(" </br><span class='lableRemarks'> Remarks : </span>" +
+			 		" <input type='text' class='questionRemarks'" +
+			 		" name= 'questionAnswerVO["+questionNo+"].options["+i+"].remarks'></input>");
 		 }
 		return questionStr.toString();
 	 }
 	 
-	 public String getQuestionWithMultipleOptionsWithMultipleTextBox(Long surveyQuestionId,String question,int questionNo){
+	 public String getQuestionWithMultipleOptionsWithMultipleTextBox(Long surveyQuestionId,String question,int questionNo,String hasRemarks){
 		 StringBuilder questionStr = new StringBuilder("");
 		 List<Option> options = questionOptionsDAO.getOptionsForQuestion(surveyQuestionId);
 		 questionStr.append("<div style='font-size:15px;font-weight:bold;'>"+questionNo+")&nbsp;"+question+"<input type='hidden' name='questionAnswerVO["+questionNo+"].questionId' value='"+surveyQuestionId+"' /></div>");
 		 questionStr.append("<table class='mainoptmargin'>");
 		 int j = 0;
 		 for(Option option : options){
-			 questionStr.append("<tr>");
-			  questionStr.append("<td  valign='top' style='width:25%;'> "+option.getOptions()+" <input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options[0].optionVal' /><input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options[0].optionId' value='"+option.getOptionsId()+"' /></td>");
+			/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+			 {
+				 questionStr.append("<tr>");
+				  questionStr.append("<td  valign='top' style='width:25%;'> "+option.getOptions()+" " +
+				  		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options[0].optionVal' onClick='openRemarksTab(4);'/>" +
+				  				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options[0].optionId'" +
+				  						" value='"+option.getOptionsId()+"' /></td>");
+			 }
+			 else
+			 {
+				 questionStr.append("<tr>");
+				  questionStr.append("<td  valign='top' style='width:25%;'> "+option.getOptions()+" " +
+				  		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options[0].optionVal' />" +
+				  				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options[0].optionId'" +
+				  						" value='"+option.getOptionsId()+"' /></td>");
+			 }*/
+			questionStr.append("<tr>");
+			  questionStr.append("<td  valign='top' style='width:25%;'> "+option.getOptions()+" " +
+			  		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options[0].optionVal' />" +
+			  				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options[0].optionId'" +
+			  						" value='"+option.getOptionsId()+"' /></td>");
 			   
 			 
 			 List<Option> subOptions = optionDAO.getSubOptionsByParentOptionId(option.getOptionsId());
@@ -1026,10 +1161,31 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			 int i = 1;
 			 for( Option subOption: subOptions){
 				 if(i%4 == 0)
+				 /*if(option.getHasRemarks().equalsIgnoreCase("true"))
+				 {
 					 questionStr.append("<tr>");
-				 
-				 questionStr.append("<td  valign='top' style='width:25%;'> "+subOption.getOptions()+" <input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionVal' /><input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionId' value='"+subOption.getOptionsId()+"' /></td>");
-				   
+					 questionStr.append("<td  valign='top' style='width:25%;'> "+subOption.getOptions()+" " +
+					 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionVal'  onClick='openRemarksTab(4);'/>" +
+					 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionId'" +
+					 						" value='"+subOption.getOptionsId()+"' /></td>"); 
+				 }
+				 else
+				 {
+					 questionStr.append("<tr>");
+					 questionStr.append("<td  valign='top' style='width:25%;'> "+subOption.getOptions()+" " +
+					 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionVal' />" +
+					 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionId'" +
+					 						" value='"+subOption.getOptionsId()+"' /></td>");
+				 }*/
+				 questionStr.append("<tr>");
+				 questionStr.append("<td  valign='top' style='width:25%;'> "+subOption.getOptions()+" " +
+				 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionVal' />" +
+				 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionId'" +
+				 						" value='"+subOption.getOptionsId()+"' /></td>");
+				/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+				 {
+					 questionStr.append("<span class='remarksLable'> Remarks :  </span><input type='text' class='optionRemarks'></input>");
+				 }*/
 				 if((i+1)%4 == 0)
 					 questionStr.append("</tr>");
 				 i++; 
@@ -1040,34 +1196,96 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			 j++;
 			 
 		 }
+		 if(hasRemarks.equalsIgnoreCase("true"))
+		 {
+			 questionStr.append(" </br><span class='lableRemarks'> Remarks : </span> " +
+			 		"<input type='text' class='questionRemarks'" +
+			 		" name= 'questionAnswerVO["+questionNo+"].options["+j+"].remarks'></input>");
+		 }
 		 questionStr.append("</table>");
 		return questionStr.toString();
 	 }
-	 public String getQuestionWithTextBox(Long surveyQuestionId,String question,int questionNo){
+	 public String getQuestionWithTextBox(Long surveyQuestionId,String question,int questionNo,String hasRemarks){
 		 StringBuilder questionStr = new StringBuilder("");
 		 List<Option> options = questionOptionsDAO.getOptionsForQuestion(surveyQuestionId);
 		 questionStr.append("<div style='font-size:15px;font-weight:bold;'>"+questionNo+")&nbsp;"+question+"<input type='hidden' name='questionAnswerVO["+questionNo+"].questionId' value='"+surveyQuestionId+"' /></div>");
 		 int i = 0;
 		 for(Option option : options){
-			 questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" <input type='text' name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' /><input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' value='"+option.getOptionsId()+"' /></div>");
+			 
+			questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" " +
+			 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' />" +
+			 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+			 						"value='"+option.getOptionsId()+"' /></div>");
+			 /*if(option.getHasRemarks().equalsIgnoreCase("true"))
+			 {
+				 questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" " +
+					 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal'  onClick='openRemarksTab(5);'/>" +
+					 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+					 						"value='"+option.getOptionsId()+"' /></div>"); 
+			 }
+			 else
+			 {
+				 questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" " +
+					 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' />" +
+					 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+					 						"value='"+option.getOptionsId()+"' /></div>"); 
+			 }*/
 			 if(option.getOptionType() != null){
 				 questionStr.append(getSurveySubQuestion(option.getOptionsId(),option.getOptionType().getOptionTypeId(),option.getSubOptionName(),questionNo,i));
 			 }
+			/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+			 {
+				 questionStr.append("<span class='remarksLable'> Remarks :  </span><input type='text' class='optionRemarks'></input>");
+			 }*/
 			 i++;
+		 }
+		 if(hasRemarks.equalsIgnoreCase("true"))
+		 {
+			 questionStr.append(" </br><span class='lableRemarks'> Remarks : </span> " +
+			 		"<input type='text' class='questionRemarks' " +
+			 		"name= 'questionAnswerVO["+questionNo+"].options["+i+"].remarks'></input>");
 		 }
 		return questionStr.toString();
 	 }
-	 public String getQuestionWithTextArea(Long surveyQuestionId,String question,int questionNo){
+	 public String getQuestionWithTextArea(Long surveyQuestionId,String question,int questionNo,String hasRemarks){
 		 StringBuilder questionStr = new StringBuilder("");
 		 List<Option> options = questionOptionsDAO.getOptionsForQuestion(surveyQuestionId);
 		 questionStr.append("<div style='font-size:15px;font-weight:bold;'>"+questionNo+")&nbsp;"+question+"<input type='hidden' name='questionAnswerVO["+questionNo+"].questionId' value='"+surveyQuestionId+"' /></div>");
 		 int i = 0;
 		 for(Option option : options){
-			 questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" <textarea  name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' ></textarea><input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' value='"+option.getOptionsId()+"' /></div>");
+			 /*if(option.getHasRemarks().equalsIgnoreCase("true"))
+			 {
+				 questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" " +
+					 		"<textarea  name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' onClick='openRemarksTab(6);'>" +
+					 				"</textarea><input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+					 						"value='"+option.getOptionsId()+"' /></div>"); 
+			 }
+			 else
+			 {
+				 questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" " +
+					 		"<textarea  name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' >" +
+					 				"</textarea><input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+					 						"value='"+option.getOptionsId()+"' /></div>"); 
+			 }*/
+			questionStr.append("<div class='mainoptmargin'>"+option.getOptions()+" " +
+			 		"<textarea  name='questionAnswerVO["+questionNo+"].options["+i+"].optionVal' >" +
+			 				"</textarea><input type='hidden' name='questionAnswerVO["+questionNo+"].options["+i+"].optionId' " +
+			 						"value='"+option.getOptionsId()+"' /></div>");
+			
 			 if(option.getOptionType() != null){
 				 questionStr.append(getSurveySubQuestion(option.getOptionsId(),option.getOptionType().getOptionTypeId(),option.getSubOptionName(),questionNo,i));
 			 }
+			/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+			 {
+				 questionStr.append("<span class='remarksLable'> Remarks :  </span><input type='text' class='optionRemarks'></input>");
+			 }*/
 			 i++;
+		 }
+		 if(hasRemarks.equalsIgnoreCase("true"))
+		 {
+			 questionStr.append(" </br><span class='lableRemarks'> Remarks : </span>" +
+			 		" <input type='text' class='questionRemarks' " +
+			 		"name= 'questionAnswerVO["+questionNo+"].options["+i+"].remarks'></input>");
 		 }
 		return questionStr.toString();
 	 }
@@ -1267,6 +1485,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 					 surveyAnswer.setOption(questionOption);
 					 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 					 surveyAnswer.setIsSubOption("false");
+					 surveyAnswer.setRemarks(questionAnswerVO.getRemarks());
 					 surveyAnswerDAO.save(surveyAnswer);
 					 if(option.getOptions() != null && option.getOptions().size() > 0 && questionOption.getOptionType() != null){
 						 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId(), surveyAnswerInfo);
@@ -1280,6 +1499,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		
 		 public void saveQuestionWithMultipleChoiceWithMultiSelect(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO,SurveyAnswerInfo surveyAnswerInfo){
 			 if(questionAnswerVO.getOptions() != null && questionAnswerVO.getOptions().size() > 0){
+				 Boolean flag = false;
 				 for(QuestionAnswerVO option : questionAnswerVO.getOptions()){
 					 if(option != null && option.getOptionId() != null && option.getOptionId().trim().length() > 0){
 						 Option questionOption = optionDAO.get(Long.valueOf(option.getOptionId().trim()));
@@ -1288,7 +1508,10 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 						 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 						 surveyAnswer.setOption(questionOption);
 						 surveyAnswer.setIsSubOption("false");
+						 if(flag == false)
+						 surveyAnswer.setRemarks(questionAnswerVO.getRemarks());
 						 surveyAnswerDAO.save(surveyAnswer);
+						 flag = true;
 						 if(option.getOptions() != null && option.getOptions().size() > 0 && questionOption.getOptionType() != null){
 							 saveSurveySubQuestion(surveyQuestion,option.getOptions(),questionOption.getOptionType().getOptionTypeId(), surveyAnswerInfo);
 						 }
@@ -1306,6 +1529,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 						 surveyAnswer.setSurveyQuestion(surveyQuestion);
 						 surveyAnswer.setOption(questionOption);
 						 surveyAnswer.setIsSubOption("false");
+						 surveyAnswer.setRemarks(questionAnswerVO.getRemarks());
 						 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 						 surveyAnswer.setOptionValue(option.getOptionVal());
 						 surveyAnswerDAO.save(surveyAnswer);
@@ -1319,6 +1543,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		 
 		 public void saveQuestionWithMultipleOptionsWithMultipleTextBox(SurveyQuestion surveyQuestion,QuestionAnswerVO questionAnswerVO,SurveyAnswerInfo surveyAnswerInfo){
 			 if(questionAnswerVO.getOptions() != null && questionAnswerVO.getOptions().size() > 0){
+				 Boolean flag = false;
 				 for(QuestionAnswerVO option : questionAnswerVO.getOptions()){
 					 if(option != null && option.getOptions() != null && option.getOptions().size() > 0 ){
 						 for(QuestionAnswerVO mainOption : option.getOptions()){
@@ -1327,10 +1552,13 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 							 SurveyAnswer surveyAnswer = new SurveyAnswer();
 							 surveyAnswer.setSurveyQuestion(surveyQuestion);
 							 surveyAnswer.setOption(questionOption);
+							 if(flag == false)
+							 surveyAnswer.setRemarks(questionAnswerVO.getRemarks());
 							 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 							 surveyAnswer.setIsSubOption("false");
 							 surveyAnswer.setOptionValue(mainOption.getOptionVal());
 							 surveyAnswerDAO.save(surveyAnswer);
+							 flag = true;
 						   }
 						 }
 					 }
@@ -1348,6 +1576,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 						 surveyAnswer.setOption(questionOption);
 						 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 						 surveyAnswer.setIsSubOption("false");
+						 surveyAnswer.setRemarks(questionAnswerVO.getRemarks());
 						 surveyAnswer.setOptionValue(option.getOptionVal());
 						 surveyAnswerDAO.save(surveyAnswer);
 						 if(option.getOptions() != null && option.getOptions().size() > 0 && questionOption.getOptionType() != null){
@@ -1368,6 +1597,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 						 surveyAnswer.setOption(questionOption);
 						 surveyAnswer.setSurveyAnswerInfo(surveyAnswerInfo);
 						 surveyAnswer.setIsSubOption("false");
+						 surveyAnswer.setRemarks(questionAnswerVO.getRemarks());
 						 surveyAnswer.setOptionValue(option.getOptionVal());
 						 surveyAnswerDAO.save(surveyAnswer);
 						 if(option.getOptions() != null && option.getOptions().size() > 0 && questionOption.getOptionType() != null){
