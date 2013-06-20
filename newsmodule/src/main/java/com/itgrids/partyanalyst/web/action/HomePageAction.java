@@ -489,6 +489,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			log.debug("In HomePageAction's getCandidates");
 		try {
 			candidatesList=new ArrayList<SelectOptionVO>();
+			candidatesMap = new HashMap<Long, String>(0);
 			
 			candidatesList=newsMonitoringService.getCandidates();
 			

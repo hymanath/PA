@@ -262,7 +262,7 @@ public class ContentManagementService implements IContentManagementService{
 					fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 					fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 					fileVO.setContentId(fileGallary.getFileGallaryId());
-					fileVO.setNewsDescription(fileGallary.getFile().getNewsDescription());
+					fileVO.setNewsDescription(fileGallary.getFile().getNewsDescription() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 
 					
 					List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
@@ -401,7 +401,7 @@ public class ContentManagementService implements IContentManagementService{
 			
 			fileVO.setFileTitle1(file.getFileTitle());
 			fileVO.setFileDescription1(file.getFileDescription());
-			fileVO.setNewsDescription(file.getNewsDescription());
+			fileVO.setNewsDescription(file.getNewsDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getNewsDescription())):"");
 			
 			List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 			Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
