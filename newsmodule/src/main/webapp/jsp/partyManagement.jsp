@@ -356,7 +356,11 @@ function getSource(selectOptionId){
 		try
 		{ 
 		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
-		 if(jsObj.task == "getPartyPhotoGallaryDetail")
+		  if (jsObj.task == "getCandidatesOfAParty")
+		 {
+			 buildPartyCandidates(myResults);
+		 }
+		 else if(jsObj.task == "getPartyPhotoGallaryDetail")
 			{
                buildCandidatePhotoGallary(myResults);
 			}
@@ -1564,7 +1568,7 @@ function clearNewsUploadFileFields1()
 	 getLanguage("language");
 	 getNewsImportance();
 	 getCategory();
-	 getCandidatesofUser();
+	// getCandidatesofUser();
 }
 
 function clearNewsUploadFileFields()
@@ -5209,11 +5213,16 @@ function buildUploadNewsForMultipleUsers()
 	str += '       <td class="tdWidth1">News Importance<font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance"><option value="0">Select NewsImportance</option></select></td>';
 	str += '   </tr>';
+
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">Select Party<font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="partiesList" name="party" onchange="getCandidatesOfSelectedParty(this.value)"><option value="0">Select Party</option><option value="163">BJP</option><option value="362" selected>INC</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></td>';
+	str += '   </tr>';
 	
 
-	str +='<tr><td class="tdWidth1">Select Candidate:</td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
+	str +='<tr><td class="tdWidth1"></td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
 
-	str +='<tr><td class="tdWidth1">Select Candidate:</td><td><select multiple="true" id="list1"><option>Slect Candidate</option></select><select multiple="true" id="candidateList" name="candidateList"></select></td></tr>';
+	str +='<tr><td class="tdWidth1">Select Candidate:</td><td><select multiple="true" id="list1"></select><select multiple="true" id="candidateList" name="candidateList"></select></td></tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
 	str += ' <td id="newsPublicRadioDiv"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Visible to Public Also</font></b></input></label></td>';
@@ -5262,8 +5271,9 @@ function buildUploadNewsForMultipleUsers()
 	 getLanguage("language");
 	 getNewsImportance();
 	 getCategory();
-	 getCandidatesofUser();
+	 //getCandidatesofUser();
 	  getCandidates();
+	  $('#partiesList').trigger('change');
 }
 function  buildUploadNews()
 {
@@ -5406,10 +5416,34 @@ $('#newsfileDescription').removeClass('enadu');
 $('#keywords').removeClass('enadu');
 }
 }
-
-
 });
 });
+}
+
+function getCandidatesOfSelectedParty(partyId)
+{
+	
+		var jsObj = {
+			partyId :partyId,
+			task : "getCandidatesOfAParty"	
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesOfAParty.action?"+rparam;					
+	
+callAjax(jsObj,url);
+}
+
+function buildPartyCandidates(results)
+{
+	$('#list1').find('option').remove();
+
+	$.each(results,function(index , value){
+		$('#list1').append('<option value="'+value.id+'">'+value.name+'</option>');
+
+	});
+
+
 }
 </script>
 </body>
