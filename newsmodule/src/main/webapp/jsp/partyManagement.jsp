@@ -358,6 +358,7 @@ function getSource(selectOptionId){
 		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
 		  if (jsObj.task == "getCandidatesOfAParty")
 		 {
+			  	$('#candidateAjaxImg').hide();
 			 buildPartyCandidates(myResults);
 		 }
 		 else if(jsObj.task == "getPartyPhotoGallaryDetail")
@@ -4718,6 +4719,8 @@ function buildNewsDetailsOfcandidate(results)
 function buildCandidates(results)
  {
    $('#candidatesList').find('option').remove();
+
+   $(' #candidatesList').append('<option value="">Select Candidate</option>');
    $.each(results,function(index,value){
 	   $(' #candidatesList').append('<option value="'+results[index].id+'">'+results[index].name+'</option>');
 
@@ -5221,6 +5224,8 @@ function buildUploadNewsForMultipleUsers()
 	
 
 	str +='<tr><td class="tdWidth1"></td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
+	str+='<tr><td></td><td><img id="candidateAjaxImg" src="images/search.jpg" style="display:none;"/></td></tr>';
+
 
 	str +='<tr><td class="tdWidth1">Select Candidate:</td><td><select multiple="true" id="list1"></select><select multiple="true" id="candidateList" name="candidateList"></select></td></tr>';
 	str += '   <tr>';
@@ -5422,6 +5427,8 @@ $('#keywords').removeClass('enadu');
 
 function getCandidatesOfSelectedParty(partyId)
 {
+    $('#list1').find('option').remove();
+	$('#candidateAjaxImg').show();
 	
 		var jsObj = {
 			partyId :partyId,
@@ -5436,8 +5443,6 @@ callAjax(jsObj,url);
 
 function buildPartyCandidates(results)
 {
-	$('#list1').find('option').remove();
-
 	$.each(results,function(index , value){
 		$('#list1').append('<option value="'+value.id+'">'+value.name+'</option>');
 
