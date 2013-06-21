@@ -19,4 +19,10 @@ public class QuestionOptionsDAO extends GenericDaoHibernate<QuestionOptions, Lon
 	public List<Option> getOptionsForQuestion(Long surveyQuestionId){
 		return getHibernateTemplate().find("select model.options from QuestionOptions model where model.surveyQuestion.surveyQuestionId = ?",surveyQuestionId);
 	}
+	
+	public List<Object[]> getOptionsForQuestionId(Long questionId)
+	{
+		return getHibernateTemplate().find("select model.options.optionsId ,model.options.options " +
+				"  from QuestionOptions model where model.surveyQuestion.surveyQuestionId = ?",questionId);
+	}
 }

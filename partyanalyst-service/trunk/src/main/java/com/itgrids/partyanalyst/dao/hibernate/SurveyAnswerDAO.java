@@ -37,4 +37,37 @@ public class SurveyAnswerDAO extends GenericDaoHibernate<SurveyAnswer, Long> imp
 		query.setParameter("isSubOption", "false");
 		return query.list();
 	}
+    
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getsurveyDetailsBasedOnGivenAgeRange(List<Long> questionIds,String minAge,String maxAge)
+	{
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model.surveyQuestion.surveyQuestionId,model.surveyQuestion.question," +
+				" model.option.optionsId ,model.option.options , count(model.option.optionsId) from SurveyAnswer model " +
+				" where model.surveyQuestion.surveyQuestionId in (:questionIds) and " +
+				" model.surveyAnswerInfo.respondent.surveyorProfile.age between :minAge and :maxAge  " +
+				" group by model.surveyQuestion.surveyQuestionId,model.option.optionsId");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameterList("questionIds", questionIds);
+		query.setParameter("minAge", minAge);
+		query.setParameter("maxAge", maxAge);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getsurveyDetailsForAbove60Years(List<Long> questionIds,String age)
+	{
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model.surveyQuestion.surveyQuestionId ,model.surveyQuestion.question," +
+				" model.option.optionsId ,model.option.options , count(model.option.optionsId) from SurveyAnswer model " +
+				" where model.surveyQuestion.surveyQuestionId in (:questionIds) and " +
+				" model.surveyAnswerInfo.respondent.surveyorProfile.age >= :age " +
+				" group by model.surveyQuestion.surveyQuestionId,model.option.optionsId");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameterList("questionIds", questionIds);
+		query.setParameter("age", age);
+		return query.list();
+	}
+
+ 
 }

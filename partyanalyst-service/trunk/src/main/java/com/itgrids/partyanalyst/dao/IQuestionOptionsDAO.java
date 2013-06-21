@@ -10,4 +10,6 @@ import com.itgrids.partyanalyst.model.QuestionOptions;
 public interface IQuestionOptionsDAO  extends GenericDao<QuestionOptions, Long>{
 
 	public List<Option> getOptionsForQuestion(Long surveyQuestionId);
+	
+	public List<Object[]> getOptionsForQuestionId(Long questionId);
 }
