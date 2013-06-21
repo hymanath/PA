@@ -5423,5 +5423,10 @@
 				<param name="root">surveyList</param>
 		 	</result>
 		</action>
+		<action name="analyseSurveyAction" class="surveyAnalysisAction" method="ajaxHandler">
+			<result type="json" name="success">
+				<param name="root">surveyDetails</param>
+		 	</result>
+		</action>
 		</package>
 </struts>      
