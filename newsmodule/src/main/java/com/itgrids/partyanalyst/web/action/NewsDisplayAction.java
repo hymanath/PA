@@ -459,10 +459,13 @@ public class NewsDisplayAction implements ServletRequestAware{
 	   {
 		   session = request.getSession();
 		   RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		   if(regVO == null)
+			 return null;
 		   
 		   FileVO fileVO = new FileVO();
+		   fileVO.setUserId(regVO.getRegistrationID());
 		 //  fileVO.setUserId(regVO.getRegistrationID());
-		   fileVO.setUserId(1L);
+		   //fileVO.setUserId(1L);
 		   
 		   jObj = new JSONObject(getTask());
 		   
