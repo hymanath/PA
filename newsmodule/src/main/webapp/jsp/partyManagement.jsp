@@ -994,9 +994,23 @@ function getCompleteGallaries(gallaryId){
        str+= '<tr style="height:220px;">';
      }
      str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
-	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
-     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
-	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
+	 
+	 str +='<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;">';
+	 if(results[i].source == 'Eenadu Telugu')
+	  str += '<b class="enadu">'+results[i].fileTitle1+'</b>';
+     else
+       str += '<b>'+results[i].fileTitle1+'</b>';
+	 str +='</font></div></td></tr>';
+
+	 str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
+	 
+	 str += '<tr><td><div>';
+	 if(results[i].source == 'Eenadu Telugu')
+	  str += '<b class="enadu">'+results[i].fileDescription1+'</b>';
+	 else
+	  str += '<b>'+results[i].fileDescription1+'</b>';
+	 str += '</div></td></tr>';
+
 	 str += '<tr><td><table><tr><td><input type = "button" class="buttonStyle" style="background: none repeat scroll 0 0 #0063dc;" value = "Update" id= "updateFile_'+i+'" onclick="updateFilesAndPhotos('+results[i].fileId+')"></td>';
 	 str += '<td> <input type = "button" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" id= "deleteFile_'+i+'" onclick="deleteFilesAndPhotos('+results[i].fileId+')"></td></tr></table>';
      str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
@@ -3787,8 +3801,16 @@ else{
 		    str+='<td>'+results[i].categoryType+'</td>';
 	        str+='<td>'+results[i].gallaryName+'</td>';
 	        str+='<td>'+results[i].source+'</td>';
-		    str+='<td>'+results[i].fileTitle1+'</td>';
-		    str+='<td>'+results[i].description+'</td>';
+			if(results[i].source == "Eenadu Telugu")
+		     str+='<td><span class="enadu">'+results[i].fileTitle1+'</span></td>';
+			else
+	         str+='<td>'+results[i].fileTitle1+'</td>';
+
+			if(results[i].source == "Eenadu Telugu")
+		     str+='<td><span class="enadu">'+results[i].description+'</span></td>';
+			else
+			 str+='<td>'+results[i].description+'</td>';
+
 			str+='<td>'+results[i].locationScopeValue+'</td>';
 	        str+='<td>'+results[i].locationValue+'</td>';
 	        str+='<td>'+results[i].fileDateAsString+'</td>';

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -3137,8 +3138,8 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    		  fileVO.setFileId(file.getFileId());
 	    		  fileVO.setName(file.getFileName());
 	    		  fileVO.setPath(file.getFilePath());
-	    		  fileVO.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle()));
-	    		  fileVO.setDescription(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()));
+	    		  fileVO.setFileTitle1(file.getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())):"");
+	    		  fileVO.setDescription(file.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):"");
 	    		  String fileDate = file.getFileDate().toString();
 	    		  String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
 	    		  fileVO.setFileDate(dateObj!=null?dateObj:"");
