@@ -270,6 +270,7 @@ padding: 0 20px;
 }
 .aligncenter{margin-left:auto;margin-right:auto;}
 .nav-tabs > li > a:hover,.nav-tabs > li > a:focus{border-color:none;background-color:#5caceb;color:#fff;}
+#list1,#candidateList{width: 260px;}
 
 </style>
 
@@ -1585,6 +1586,7 @@ function clearNewsUploadFileFields()
 	//document.getElementById('publicRadioId').checked = true;
 	document.getElementById('existingFromTextNews').value = '';
 	document.getElementById('ImagenewsfileId').value = '';
+	$("#newsDesc").val('');
 	getScopes();
 }
 	
@@ -5380,6 +5382,10 @@ function  buildUploadNews()
 	str +='       <div id="showScopeSubs" />'; 
 	str +='    </td>';
 	str +='  </tr>';
+	str +='<tr>';
+	str +='<td class="tdWidth1">News description in details<font class="requiredFont">*</font></td>';
+	str +='<td><textarea name="newsDescription" rows="3" cols="20" id="newsDesc"></textarea></td>';
+	str +='</tr>';
 	str += '</table>';
 
 	str +='<input type="hidden" name="profileType" value="party_profile">';
