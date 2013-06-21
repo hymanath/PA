@@ -49,7 +49,17 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	private Long result;
 	private Boolean savedSuccessfully;
 	private String userType;
+	private List<SelectOptionVO> userTypeList;
 	
+	
+	public List<SelectOptionVO> getUserTypeList() {
+		return userTypeList;
+	}
+
+	public void setUserTypeList(List<SelectOptionVO> userTypeList) {
+		this.userTypeList = userTypeList;
+	}
+
 	public Boolean getSavedSuccessfully() {
 		return savedSuccessfully;
 	}
@@ -249,12 +259,20 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	{
 		String userType = "";
 		String type = "";
+		String registeredUserType="";
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user != null)
 		{
+			regVO.setRegistrationID(user.getRegistrationID());
 			userType = user.getUserType();
 			type     = user.getUserAccessType();
+			if(getUserType() != null){
+			if(getUserType().equalsIgnoreCase("1"))
+				regVO.setUserAccessType("Admin");
+			if(getUserType().equalsIgnoreCase("2"))
+				regVO.setUserAccessType("SubUser");
+			}
 		}
 		if(!type.equalsIgnoreCase("admin"))
 		{
@@ -264,6 +282,10 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
         savedSuccessfully = registrationService.saveDataIntoUser(regVO,userType);
 		else
 		savedSuccessfully = false;	
+		userTypeList = new ArrayList<SelectOptionVO>();		
+		userTypeList.add(0,new SelectOptionVO(0l,"Select User Type"));
+		userTypeList.add(1,new SelectOptionVO(1l,"Admin"));
+		userTypeList.add(2,new SelectOptionVO(2l,"SubUser"));
         return Action.SUCCESS;
 			
 	}
