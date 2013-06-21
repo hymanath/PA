@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>News - Telugudesam Party</title>
+<title>News - Telugu Desam Party</title>
 
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 
@@ -64,7 +64,7 @@
 			<div class="row">
 				<!----Logo----->
 				<div class="span8">
-					<img class="pull-left" src="images/Logo.png" alt="Telugudhesham party logo" />
+					<img class="pull-left" src="images/logo_1.png" alt="Telugudhesham party logo" />
 				</div>
 				<div class="span2 offset1 m_top5 pull-right">	
 					<ul class="">
@@ -135,7 +135,7 @@
 		
 		<!-----Footer---->
 	 <footer class="span12" style="margin-left: 0 !important;" >
-        <p class="text-center m_top15">&copy; Telugudesham Party 2013</p>
+        <p class="text-center m_top15">&copy; Telugu Desam Party 2013</p>
       </footer>
 		<!----<div class="row">
 			<div class="span12">
