@@ -10,4 +10,6 @@ public interface ISurveyAnswerDAO extends GenericDao<SurveyAnswer, Long>{
 	public List<Object[]> getSurveyAnalyseData(List<Long> surveyId);
 	
 	public List<Object[]> getCountForSurveyQuestion(List<Long> surveyQuestionIds);
+	
+	public List<Object[]> getCasteWiseSurveyInfo(List<Long> surveyQuestionIds);
 }

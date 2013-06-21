@@ -2,10 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.math.BigDecimal;
-
-import java.math.BigInteger;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,36 +11,12 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IOptionDAO;
-import com.itgrids.partyanalyst.dao.IOptionTypeDAO;
-import com.itgrids.partyanalyst.dao.IQuestionOptionsDAO;
-import com.itgrids.partyanalyst.dao.ISurveyQuestionDAO;
-import com.itgrids.partyanalyst.dto.OptionVO;
-import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.SurveyInfoVO;
-import com.itgrids.partyanalyst.dto.SurveyVO;
-import com.itgrids.partyanalyst.dto.SurveyorVO;
-import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
-import com.itgrids.partyanalyst.model.CasteState;
-import com.itgrids.partyanalyst.model.Option;
-import com.itgrids.partyanalyst.model.QuestionOptions;
-import com.itgrids.partyanalyst.model.Respondent;
-import com.itgrids.partyanalyst.model.SurveyAnswer;
-import com.itgrids.partyanalyst.model.SurveyAnswerInfo;
-import com.itgrids.partyanalyst.model.SurveyQuestion;
-import com.itgrids.partyanalyst.model.Surveyor;
-import com.itgrids.partyanalyst.model.SurveyorProfile;
-import com.itgrids.partyanalyst.model.User;
-import com.itgrids.partyanalyst.model.Voter;
-import com.itgrids.partyanalyst.service.ISurveyAnalysisService;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -51,13 +24,17 @@ import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
+import com.itgrids.partyanalyst.dao.IOptionDAO;
+import com.itgrids.partyanalyst.dao.IOptionTypeDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IQuestionOptionsDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRespondentDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAnswerDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAnswerInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
+import com.itgrids.partyanalyst.dao.ISurveyQuestionDAO;
 import com.itgrids.partyanalyst.dao.ISurveyorDAO;
 import com.itgrids.partyanalyst.dao.ISurveyorProfileDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -68,11 +45,33 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
+import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyAnalysisVO;
+import com.itgrids.partyanalyst.dto.SurveyInfoVO;
+import com.itgrids.partyanalyst.dto.SurveyVO;
+import com.itgrids.partyanalyst.dto.SurveyorVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
+import com.itgrids.partyanalyst.model.CasteState;
+import com.itgrids.partyanalyst.model.Option;
+import com.itgrids.partyanalyst.model.QuestionOptions;
+import com.itgrids.partyanalyst.model.Respondent;
 import com.itgrids.partyanalyst.model.Survey;
+import com.itgrids.partyanalyst.model.SurveyAnswer;
+import com.itgrids.partyanalyst.model.SurveyAnswerInfo;
+import com.itgrids.partyanalyst.model.SurveyQuestion;
+import com.itgrids.partyanalyst.model.Surveyor;
+import com.itgrids.partyanalyst.model.SurveyorProfile;
 import com.itgrids.partyanalyst.model.UpdationDetails;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.service.ISurveyAnalysisService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -112,6 +111,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 	private ISurveyAnswerDAO surveyAnswerDAO;
 	private ISurveyorDAO surveyorDAO;
 	private ISurveyAnswerInfoDAO surveyAnswerInfoDAO;
+	private ICasteStateDAO casteStateDAO;
 	
 	public ITownshipDAO getTownshipDAO() {
 		return townshipDAO;
@@ -317,6 +317,14 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 	public void setSurveyAnswerDAO(ISurveyAnswerDAO surveyAnswerDAO) {
 		this.surveyAnswerDAO = surveyAnswerDAO;
 	}
+	
+	public ICasteStateDAO getCasteStateDAO() {
+		return casteStateDAO;
+	}
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
+	
 	public List<SelectOptionVO>  getOptionTypes(){
 		List<SelectOptionVO>  optionTypes = new ArrayList<SelectOptionVO>();
 		SelectOptionVO valuesVo = null;
@@ -363,7 +371,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			  surveyorProfile.setUserAddress(userAddress);
 			  surveyorProfile.setEducationalQualifications(educationalQualificationsDAO.get(new Long(qualification)));
 			  surveyorProfile.setOccupation(occupationDAO.get(new Long(occupation)));
-			  surveyorProfile.setCasteStateId(new Long(caste));
+			  surveyorProfile.setCasteState(casteStateDAO.get(new Long(caste)));
 			  surveyorProfile.setAge(age);
 			  
 			  surveyorProfileDAO.save(surveyorProfile);
@@ -787,7 +795,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		}
 		if(surveyInfoVO.getCasteId() != null && surveyInfoVO.getCasteId() > 0)
 		{
-			surveyorProfile.setCasteStateId(surveyInfoVO.getCasteId());
+			surveyorProfile.setCasteState(casteStateDAO.get(surveyInfoVO.getCasteId()));
 		}
 		
 		surveyorProfile.setGender(surveyInfoVO.getGender()!=null ? surveyInfoVO.getGender():"");
@@ -1798,5 +1806,113 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 				return optionVO;
 		 return null;
 	}
-
+	
+	public void getAttributesWiseSurveyAnalysis(){
+		
+	}
+	
+	public void getOptionWiseSurveyAnalysis(){
+		
+	}
+	
+    public void getAgeWiseSurveyAnalysis(){
+		
+	}
+    
+    public void getGenderWiseSurveyAnalysis(){
+		
+   	}
+    
+    public List<SurveyAnalysisVO> getCasteWiseSurveyAnalysis(List<Long> surveyQuestionIds){
+    	
+    	List<SurveyAnalysisVO> casteWiseResults = new ArrayList<SurveyAnalysisVO>();
+    	try{
+    		DecimalFormat df = new DecimalFormat("#.##");
+    	    List<Object[]> casteInfoList = surveyAnswerDAO.getCasteWiseSurveyInfo(surveyQuestionIds);
+    	    Map<Long,Map<Long,Map<Long,Long>>> questionMap = new HashMap<Long,Map<Long,Map<Long,Long>>>();//contains Map<questionId,Map<optionId,Map<casteId,casteCount>>>
+    	    Map<Long,Map<Long,Long>> optionsMap = null; //contains Map<optionId,Map<casteId,casteCount>>
+    	    Map<Long,Long> casteMap = null; //contains Map<casteId,casteCount>
+    	    Map<Long,Map<Long,Long>> casteCountMap = new HashMap<Long,Map<Long,Long>>();//contains Map<questionId,Map<casteId,count>>
+    	    Map<Long,Long> casteCount = null;
+    	    SurveyAnalysisVO surveyAnalysisVO = null;
+    	    Map<Long,String> casteNames = new HashMap<Long,String>();
+    	    
+    	    if(casteInfoList != null && casteInfoList.size() > 0){
+    	    	
+    	      for(Object[] casteInfo : casteInfoList){
+    	    	  optionsMap = questionMap.get((Long)casteInfo[0]);
+    	    	  casteCount = casteCountMap.get((Long)casteInfo[0]);
+    	    	  if(optionsMap == null){
+    	    		  optionsMap = new HashMap<Long,Map<Long,Long>>();
+    	    		  questionMap.put((Long)casteInfo[0], optionsMap);
+    	    		  casteCount = new HashMap<Long,Long>();
+    	    	  }
+    	    	  
+    	    	  casteMap = optionsMap.get((Long)casteInfo[1]);
+    	    	  
+    	    	  if(casteMap == null){
+    	    		  casteMap = new HashMap<Long,Long>();
+    	    		  optionsMap.put((Long)casteInfo[1], casteMap);
+    	    	  }
+    	    	  
+    	    	  if(casteMap.get((Long)casteInfo[2]) == null){
+    	    		  casteMap.put((Long)casteInfo[2], (Long)casteInfo[4]);
+    	    		  casteNames.put((Long)casteInfo[2],casteInfo[3]!=null?casteInfo[3].toString():"");
+    	    	  }else{
+    	    		  casteMap.put((Long)casteInfo[2], casteMap.get((Long)casteInfo[2])+(Long)casteInfo[4]);
+    	    	  }
+    	    	  
+    	    	  if(casteCount.get((Long)casteInfo[2]) == null){
+    	    		  casteCount.put((Long)casteInfo[2], (Long)casteInfo[4]);
+    	    	  }else{
+    	    		  casteCount.put((Long)casteInfo[2], casteCount.get((Long)casteInfo[2])+(Long)casteInfo[4]);
+    	    	  }
+    	      }
+    	      
+    	      SurveyAnalysisVO questionOption = null;
+    	      SurveyAnalysisVO casteVO = null;
+    	      
+    	      for(Long questionId : questionMap.keySet()){
+    	    	  optionsMap = questionMap.get(questionId);
+    	    	  casteCount = casteCountMap.get(questionId);
+    	    	  if(optionsMap != null){
+    	    		  surveyAnalysisVO = new SurveyAnalysisVO();
+    	    		  casteWiseResults.add(surveyAnalysisVO);
+    	    		  List<Option> options = questionOptionsDAO.getOptionsForQuestion(questionId);
+    	    		  List<SurveyAnalysisVO> optionsList = new ArrayList<SurveyAnalysisVO>();
+    	    		  surveyAnalysisVO.setSubList(optionsList);
+    	    		  for(Option option : options){
+    	    			   questionOption = new SurveyAnalysisVO();
+    	    			   questionOption.setId(option.getOptionsId());
+    	    			   questionOption.setName(option.getOptions());
+    	    			   casteMap = optionsMap.get(option.getOptionsId());
+    	    			   List<SurveyAnalysisVO> castesList = new ArrayList<SurveyAnalysisVO>();
+    	    			   questionOption.setSubList(castesList);
+    	    			   for(Long casteId : casteNames.keySet()){
+	    					   casteVO = new SurveyAnalysisVO();
+	    					   casteVO.setId(casteId);
+	    					   casteVO.setName(casteNames.get(casteId));
+	    					   if(casteMap != null && casteMap.get(casteId) != null){
+	    						   casteVO.setCount(casteMap.get(casteId));
+	    						   if(casteCount.get(casteId) != null && casteCount.get(casteId)>0){
+	    							   casteVO.setPercentage(new Double(df.format(casteMap.get(casteId).doubleValue()*100/casteCount.get(casteId).doubleValue())));
+	    						   }
+	    					   }else{
+	    						   casteVO.setCount(0l);
+	    						   casteVO.setPercentage(0.00d);
+	    					   }
+	    					   castesList.add(casteVO);
+    	    			   }
+    	    			   optionsList.add(questionOption);  
+    	    		  }
+    	    	  }
+    		  }
+    		 
+    	  }
+    	  
+    	}catch(Exception e){
+    		LOG.error("Exception rised in getCasteWiseSurveyAnalysis ",e);
+    	}
+    	return casteWiseResults;
+   	}
 }
