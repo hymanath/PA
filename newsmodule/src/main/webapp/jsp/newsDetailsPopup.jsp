@@ -196,6 +196,9 @@ font-size:20px;
 #responseNewsGallaryDiv ul li{  margin-left: 20px;}
 #gallaryMainDiv{margin-bottom:20px;}
 #gallaryDiv{height:220px;}
+#newsDescriptionHeadingDiv{ color: #0088CC;
+     font-size: 15px;
+    font-weight: bold;margin-right: 2px;}
 </style>
 </head>
 <body>
@@ -214,10 +217,12 @@ font-size:20px;
 
 		 <div>
 		<div style="display:none;" class="errorClass" id="errormsgdiv"></div>
+		<span id="newsDescriptionHeadingDiv"></span>
 		<span id="newsDescriptionDiv"></span>
 		<!--<h3>Comments:</h3>-->
 		 <div class="commentSection">
 		 <!--<textarea style="width:100%;" id="commenttext" class="textareaid"></textarea>--></div><!--<a style="margin-top:4px;margin-bottom:4px;" class="pull-right btn btn-info"  href="javascript:{}">Post</a>-->
+		 <span id="newsDescriptionHeadingDiv"></span>
 		 <div id="newsDescriptionDiv"></div>
 		 <div style="padding-top: 0px; margin-left: 290px; margin-top: 36px; margin-bottom: -29px;" id="abusedErrorDiv"></div>
          <div style="display:none;" id="postedcomments"></div>	
@@ -247,15 +252,16 @@ font-size:20px;
  </div>
  </div>
 
+  <div id="responseMainDiv">
   <div class="widget blue" id="newsResponseDiv">
-	<h4>Responses</h4>
+	<h4 id="responseHeading"></h4>
 	<div id="responseNewsGallaryDiv"></div>
 		<!----pagination Div----->
 		<div class="span12 text-center">
 			<div id="paginationId"></div>						
 		</div>	
   </div>
-
+</div>
 </div>	
  
 
@@ -333,15 +339,17 @@ function buildContentDetails()
 	var curPos = null;
 	var totSize = null;
 	var source = "";
+	$("#newsDescriptionHeadingDiv").html('');
    for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 	{
 	   source = result.relatedGalleries[0].filesList[i].fileVOList[0].source;
-	   if (result.relatedGalleries[0].filesList[i].newsDescription != null)
+	   if (result.relatedGalleries[0].filesList[i].newsDescription != null && result.relatedGalleries[0].filesList[i].newsDescription != "")
 	   {  
 		  if(source == "Eenadu Telugu") $('#newsDescriptionDiv').addClass("enadu").html(result.relatedGalleries[0].filesList[i].newsDescription);
 		  else
 	       $('#newsDescriptionDiv').removeClass("enadu").html(result.relatedGalleries[0].filesList[i].newsDescription);
+		   $("#newsDescriptionHeadingDiv").html("Detailed News: ");
 	   }
 	   
 
@@ -549,12 +557,15 @@ var jObj=
 function showResponseGallaryDetails(result,jsObj)
 {
 	$("#responseNewsGallaryDiv").html('');
+	$("#responseHeading").html('');
 	if(result == null || result.resGallTotRecordsCount == 0)
 	{
-	  $("#responseNewsGallaryDiv").html('No Data Found.');
+	  $("#responseMainDiv").css("display","none");
 	  return;
 	}
-   
+	
+   $("#responseMainDiv").css("display","block");
+   $("#responseHeading").html('Responses');
    var results = result.responseGallaryList;
    var str="";
 	str+="<ul class='unstyled pad10'>";
