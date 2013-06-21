@@ -253,6 +253,7 @@ $(document).ready(function(){
 	  var districtId = 0;
 	  var constituencyId = 0;
 	  var mandalId = 0;
+	  var value = 0;
 	  var constituencyType = null;
 	  if(id==1)
 	   countryId = id;
@@ -275,20 +276,29 @@ $(document).ready(function(){
 	    constituencyId = $("#constituencyDiv").val();
 		}
       }
-	  else if(id==5 || id == 7)
+	  else if(id==5)
 	 {
 		stateId = $("#stateDiv").val();
 	    districtId = $("#districtDiv").val();
 	    constituencyId = $("#constituencyDiv").val();
 	    mandalId = $("#mandalDiv").val();
+		value  = mandalId.substring(1);
     }
-
+	else if(id == 7)
+	{
+		stateId = $("#stateDiv").val();
+	    districtId = $("#districtDiv").val();
+	    constituencyId = $("#constituencyDiv").val();
+	    mandalId = $("#mandalDiv").val();
+		value  = mandalId;
+	}
+	
 	var jsObj = {
 	    scopeVal:id,
 	    stateId:stateId,
 	    districtId:districtId,
 	    constituencyId:constituencyId,
-	    mandalId:mandalId,
+	    mandalId:value,
 	    name:name,
 	    description:desc,
 		constituecyType:constituencyType,
@@ -534,6 +544,7 @@ function showSurveyStatus(results)
 	$("#showScopeSubs").html('');
 
     $("#successMsgDiv").html("Survey Created Successfully.").css("color","green");
+	window.opener.location.reload(false);
 	return;
   }
   else

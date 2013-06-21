@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyAgeWiseDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyInfoVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.ISurveyAnalysisService;
@@ -66,6 +67,7 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 	private Long surveyor,teamlead;
 	private List<SurveyorVO> surveyoList;
 	private String questionRemark;
+	private List<SurveyAgeWiseDetailsVO> surveyAgeWiseDetailsVO;
 	public void setServletRequest(HttpServletRequest arg0) {
 		
 		this.request=arg0;
@@ -545,6 +547,17 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 		this.questionRemark = questionRemark;
 	}
 
+	
+	public List<SurveyAgeWiseDetailsVO> getSurveyAgeWiseDetailsVO() {
+		return surveyAgeWiseDetailsVO;
+	}
+
+
+	public void setSurveyAgeWiseDetailsVO(
+			List<SurveyAgeWiseDetailsVO> surveyAgeWiseDetailsVO) {
+		this.surveyAgeWiseDetailsVO = surveyAgeWiseDetailsVO;
+	}
+
 
 	public String execute()
 	{
@@ -601,6 +614,13 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 				String voterCardNo  = jObj.getString("voterId");
 				voterVO             = surveyAnalysisService.getVoterDetailsBasedOnVoterId(voterCardNo,regVO.getRegistrationID());
 				return "voterVO";
+			}
+			
+			else if(jObj.getString("task").equalsIgnoreCase("getAgeWiseSurveyAnalysis"))
+			{
+				Long surveyId       = jObj.getLong("surveyId");
+				surveyAgeWiseDetailsVO = surveyAnalysisService.agewiseSurveyAnalysis(surveyId);
+				return "ageWiseAnalysis";
 			}
 			
 			
