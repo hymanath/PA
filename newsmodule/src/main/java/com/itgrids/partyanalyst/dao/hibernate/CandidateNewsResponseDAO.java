@@ -58,13 +58,13 @@ public class CandidateNewsResponseDAO extends GenericDaoHibernate<CandidateNewsR
 		
 	}
 	
-	public List<Long> getResponseFileGallaryidForANews(Long fileGallaryId)
+	public List<Long> getResponseFileGallaryidForANews(List<Long> fileGallaryIds)
 	{
 		
 		Query query = getSession().createQuery("select model.responseFileGallary.fileGallaryId from CandidateNewsResponse model" +
-				" where model.fileGallary.fileGallaryId = :fileGallaryId ");
+				" where model.fileGallary.fileGallaryId in( :fileGallaryIds )");
 		
-		query.setParameter("fileGallaryId", fileGallaryId);
+		query.setParameterList("fileGallaryIds", fileGallaryIds);
 		
 		return query.list();
 		

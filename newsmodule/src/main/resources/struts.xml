@@ -5463,5 +5463,17 @@
 		  <param name="root">candidatesList</param>
 		 </result>
 		</action>
+		
+		<action name="uploadMLCCandidateDetailsAction" class="adminPageAction"  method="uploadMLCCandidateDetailsAction">
+			<result name="success">/jsp/uploadMLCCandidateDetails.jsp</result>
+		</action>
+		
+		<action name="insertMLCCandidateDetails" class="adminPageAction" method="insertMLCCandidateDetails">
+		 <result type="json" name="success">
+		  <param name="root">result</param>
+		 </result>
+		</action>
 		</package>
+		
+		
 </struts>      

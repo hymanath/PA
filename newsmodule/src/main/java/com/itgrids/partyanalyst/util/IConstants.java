@@ -618,6 +618,8 @@ public interface IConstants {
 	public final static String AREA_TYPE_RURAL = "RURAL";
 	public final static String AREA_TYPE_RURAL_URBAN = "RURAL-URBAN";
 	public static final long TDPID = 872l;
+	
+	public final static  long MLC_ELECTION_SCOPE_ID = 7L;
 
 	
 }

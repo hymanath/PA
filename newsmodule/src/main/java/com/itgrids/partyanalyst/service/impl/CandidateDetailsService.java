@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePageCustomPagesDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePartyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
@@ -84,7 +85,9 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateNewsResponse;
+import com.itgrids.partyanalyst.model.CandidateParty;
 import com.itgrids.partyanalyst.model.CandidateProfileDescription;
 import com.itgrids.partyanalyst.model.CandidateRealatedNews;
 import com.itgrids.partyanalyst.model.Category;
@@ -168,7 +171,16 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private INewsDetailsDAO newsDetailsDAO;
 	private ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
 	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
+	private ICandidatePartyDAO candidatePartyDAO;
 	
+	public ICandidatePartyDAO getCandidatePartyDAO() {
+		return candidatePartyDAO;
+	}
+
+	public void setCandidatePartyDAO(ICandidatePartyDAO candidatePartyDAO) {
+		this.candidatePartyDAO = candidatePartyDAO;
+	}
+
 	public ICandidateNewsResponseDAO getCandidateNewsResponseDAO() {
 		return candidateNewsResponseDAO;
 	}
@@ -2667,6 +2679,8 @@ public List<SelectOptionVO> getCandidatesOfAParty(Long partyId)
 	{
 	List<Object[]> list = nominationDAO.getCandidatesParticipatedInAssemblyAndParlimentElections(partyId);
 	
+	List<Object[]> list1  = candidatePartyDAO.getCandidatesOfAParty(partyId);
+	
 	List<SelectOptionVO> cadidatesList = null;
 	if(list != null && list.size() > 0)
 	{
@@ -2680,6 +2694,22 @@ public List<SelectOptionVO> getCandidatesOfAParty(Long partyId)
 			cadidatesList.add(selectOptionVO);
 		}
 	}
+	
+	if(list1 != null && list1.size() > 0)
+	{
+		SelectOptionVO selectOptionVO = null;
+		for(Object[] params : list1)
+		{
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId((Long)params[0]);
+			selectOptionVO.setName(params[1] != null ? params[1].toString() : "");
+			cadidatesList.add(selectOptionVO);
+		}
+	}
+	
+	Collections.sort(cadidatesList);
+	
+	
 	
 	return cadidatesList;
 	}catch(Exception e)
@@ -6053,6 +6083,47 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 return fileVOsList;
 		}
 	 }
+	 
+	 public String insertMLCCandidateDetails(final Long partyId ,final String candidateName ,final String  education , final String gender)
+	 {
+		 
+		 try
+		 {
+			 
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+			 Candidate candidate = new Candidate();
+			 
+			 candidate.setLastname(candidateName);
+			 candidate.setEducation(education);
+			 candidate.setGender(gender);
+			 
+			 candidate = candidateDAO.save(candidate);
+			
+			 CandidateParty candidateParty = new CandidateParty();
+			 
+			 candidateParty.setCandidateId(candidate.getCandidateId());
+			 candidateParty.setPartyId(partyId);
+			 candidateParty.setElectionTypeId(IConstants.MLC_ELECTION_SCOPE_ID);
+			 
+			 candidatePartyDAO.save(candidateParty);
+			}
+		});
+			 
+			 
+			 return "success";
+			 
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+			 return null;
+			 
+		 }		 
+		 
+	 }
+	 
+	 
 	 
 	
 }

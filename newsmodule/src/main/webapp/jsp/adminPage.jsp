@@ -37,8 +37,8 @@
 		<tr>
 		<td>
 		<a  class="btn btn-info" href="userRegistration.action">Registraion Form</a>
-		</td><td><a  class="btn btn-info" href="javascript:{}" onClick="createNewSource();">Create New Source</a></td>
-		<td><a  class="btn btn-info" href="javascript:{}" onClick="">Create New Source</a></td>
+		</td><td><a  class="btn btn-info" href="javascript:{}" onClick="();">fdsf</a></td>
+		<td><a  class="btn btn-info" href="javascript:{uploadMLCCandidateDetails();}">Upload MLC Candidates Details</a></td>
 		</tr>
 		<table>
 		</div>
@@ -92,6 +92,17 @@ function callAjax(jsObj,url)
    };
 YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
+
+function uploadMLCCandidateDetails()
+{
+
+
+var win=window.open("uploadMLCCandidateDetailsAction.action", '_blank');
+  win.focus();
+
+}
+
+
 
 </script>
 </body>
