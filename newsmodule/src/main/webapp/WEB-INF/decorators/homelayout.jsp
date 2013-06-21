@@ -15,7 +15,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<title><decorator:title default="  Telugudesam Party "/></title>
+	<title><decorator:title default="  Telugu Desam Party "/></title>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	<!--Bootstrap styles file-->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -165,7 +165,7 @@ margin:-1px 0px 0px 0px ;
 <td>
 	<!-----Footer---->
 	  <footer>
-        <p class="text-center">&copy; Telugudesam Party 2013</p>
+        <p class="text-center">&copy; Telugu Desam Party 2013</p>
       </footer>
   
   

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title> Telugudesam Party </title>
+<title> Telugu Desam Party </title>
 
 
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
