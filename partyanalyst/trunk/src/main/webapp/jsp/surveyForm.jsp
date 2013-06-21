@@ -101,6 +101,11 @@ textarea {
         });
 		$(this).attr('checked','checked');
 	  });
+	  if(status == 'true')
+	  {
+		 $('#successMsg').html('<b style="color: green;">Survey Details Successfully Saved</b>');
+		 $('#successMsg').show().delay(2000).hide(slow);
+	  }
    });
 </script>
 <script type="text/javascript">
@@ -115,6 +120,7 @@ var constituencyType = "";
 var surveyId         = '${surveyId}';
 var constituencyId   = "";
 var name             = "";
+var status           = '${status}';
 function getreportLevel()
 {
 	var value = "";
@@ -581,6 +587,10 @@ function callAjax(jsObj,url)
 									{
 										buildConstituenceys(myResults);
 									}
+									else if(jsObj.task == "getAgeWiseSurveyAnalysis")
+									{
+										buildAgeWiseSurveyAnalysis(myResults);
+									}
 								}catch (e) {
 								
 								}  
@@ -867,10 +877,10 @@ function buildVoterDetails(myresults)
 		$('#nameId').val(myresults[0].firstName);
 		$('#mobileNoId').val(myresults[0].mobileNo);
 		$('#ageId').val(myresults[0].age);
-		var agestr = '<option>'+myresults[0].gender+'</option>';
-		$('#genderId').html(agestr);
-		var castestr = '<option value='+myresults[0].categoryValuesId+'>'+myresults[0].cast+'</option>';
-		$('#casteList').html(castestr);
+		//var agestr = '<option>'+myresults[0].gender+'</option>';
+		$('#genderId').val(myresults[0].gender);
+		//var castestr = '<option value='+myresults[0].categoryValuesId+'>'+myresults[0].cast+'</option>';
+		$('#caste').val(myresults[0].categoryValuesId);
 		$('#educationList').html(educationstr);
 		$('#nameId').val(myresults[0].firstName);
 	}
@@ -939,10 +949,59 @@ function buildConstituenceys(myResults)
 	$('#constituencyList').html(str);
 }
 
+function surveyAnalysisBasedOnAge()
+{
+	
+	var jsObj=
+	{	
+		surveyId     : surveyId,
+		task         : "getAgeWiseSurveyAnalysis" 
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSurveyDetailsAction.action?"+rparam;
+	callAjax(jsObj,url); 
+}
+function buildAgeWiseSurveyAnalysis(myResults)
+{
+	if(myResults != null)
+	{
+		var str = "";
+		for(var i in myResults)
+		{
+			str +='<div><div id="AgeAnalysisDiv+i" class="widget green whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">'+myResults[i].question+'</h4>';
+			str +='<table class="table table-bordered table-striped table-hover">'
+			str +='<tr>';
+			str +='<td>Options</td>';
+			str +='<td>18-25%</td>';
+			str +='<td>26-35%</td>';
+			str +='<td>36-45%</td>';
+			str +='<td>45-50%</td>';
+			str +='<td>Above60%</td>';
+			str +='<tr>';
+			for(var j in myResults[i].surveyAgeWiseDetailsVO)
+			{
+			str +='<tr>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].option+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].ageBt18To25Perc+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].ageBt26To35Perc+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].ageBt36To45Perc+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].ageBt46To60Perc+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].ageAbove60Perc+'</td>';
+			str +='<tr>';
+			}
+			str +='</table>'
+			str +='</div>';
+		}
+		$('#ageWiseSurveyAnalysis').html(str);
+	}
+}
 </script>
 </head>
 <body>
+
 <div id="headingDiv" align="center" style="background: none repeat scroll 0px 0px rgb(49, 152, 182); border-radius: 4px 4px 4px 4px; margin-left: 10px; width: 977px; font-family: arial; font-size: 18px; color: white; padding-bottom: 4px; margin-bottom: 5px; margin-top: 19px; font-weight: bolder; padding-top: 10px; height: 25px;"><span id="surveyName"></span> SURVEY FORM</div>
+</br>
+<div id="successMsg"></div>
 <!--<div><input type="button" class="btn-info" value="Create Survey" style="float:right;margin-right:15px;" onClick="openSurveyForm();"></input></div>-->
 <s:form action="surveyFormSaveAction" method="post" theme="simple" name="form">
 <div>
@@ -1059,5 +1118,9 @@ function buildConstituenceys(myResults)
 <div align="center" style="margin-bottom: 10px;">
 <s:submit cssClass="btn btn-success" value="Submit Form" name="Save"  ></s:submit></div>
 </s:form>
+</br>
+<div><input type="button" value="Age Wise Analysis" onClick="surveyAnalysisBasedOnAge();"></input></div>
+
+<div id="ageWiseSurveyAnalysis"></div>
 </body>
 </html>

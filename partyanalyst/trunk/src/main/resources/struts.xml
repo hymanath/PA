@@ -5402,6 +5402,9 @@
 		 <result type="json" name="voterVO">
 		   <param name="root">voterVO</param>
 		 </result>
+		 <result type="json" name="ageWiseAnalysis">
+		   <param name="root">surveyAgeWiseDetailsVO</param>
+		 </result>
 		</action>
 		
 		<action name="surveyFormSaveAction" class="surveyFormAction" method="saveSurveyFormData" >
