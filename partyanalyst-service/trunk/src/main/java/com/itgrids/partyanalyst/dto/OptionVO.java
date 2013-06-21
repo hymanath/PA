@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OptionVO implements Serializable,Comparable<OptionVO> {
@@ -12,8 +13,9 @@ public class OptionVO implements Serializable,Comparable<OptionVO> {
 	private Boolean hasSubQuestion;
 	private String subquestion;
 	private String subquestionType;
-	private List<OptionVO> subOptionList;
-
+	private List<OptionVO> subOptionList = new ArrayList<OptionVO>(0);
+	private String question;
+	private Long questionId;
 
 	public OptionVO() {
 	}
@@ -31,6 +33,22 @@ public class OptionVO implements Serializable,Comparable<OptionVO> {
 
 	
 	
+	public Long getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(Long questionId) {
+		this.questionId = questionId;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
 	public Boolean getHasRemark() {
 		return hasRemark;
 	}

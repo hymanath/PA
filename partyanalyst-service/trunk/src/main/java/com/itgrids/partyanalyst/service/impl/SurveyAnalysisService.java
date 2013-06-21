@@ -1,7 +1,15 @@
 package com.itgrids.partyanalyst.service.impl;
 
+
+import java.math.BigDecimal;
+
+import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -12,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IOptionDAO;
 import com.itgrids.partyanalyst.dao.IOptionTypeDAO;
 import com.itgrids.partyanalyst.dao.IQuestionOptionsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyQuestionDAO;
+import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -1723,4 +1732,71 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		}
 		return returnList;
 	}
+	public List<OptionVO> getSurveyAnalyseDetails(Long surveyId)
+	{
+		List<OptionVO> resultList = new ArrayList<OptionVO>();
+		List<Long> surveyIds = null;
+		List<Long> questionIds = new ArrayList<Long>();
+		Map<Long,Long> countmap = new HashMap<Long, Long>(0);
+		try{
+			surveyIds = surveyQuestionDAO.getSurveyQuestionIdsById(surveyId);
+			if(surveyIds != null && surveyIds.size() > 0)
+			{
+			List<Object[]> totalList = surveyAnswerDAO.getCountForSurveyQuestion(surveyIds);
+			if(totalList != null && totalList.size() > 0)
+			{
+			for(Object[] params:totalList)
+				countmap.put((Long)params[1], (Long)params[0]);
+			}
+			List<Object[]> list = surveyAnswerDAO.getSurveyAnalyseData(surveyIds);
+			if(list != null && list.size() > 0)
+			{
+				OptionVO optionVO = null;
+				for(Object[] params : list)
+				{
+				  optionVO = checkDuplicate(resultList, (Long)params[2]);
+				  if(optionVO == null)
+				  {
+					  optionVO =  new OptionVO();
+					  optionVO.setQuestionId((Long)params[2]);
+					  optionVO.setQuestion(params[3].toString());
+					  resultList.add(optionVO);
+				  }
+				  
+				}
+				//List<OptionVO> optionsList = new ArrayList<OptionVO>();
+				for(Object[] params : list)
+				{
+					optionVO = checkDuplicate(resultList, (Long)params[2]);
+					Long total= 0l;
+					total = countmap.get((Long)params[2]);
+					OptionVO optionVO1 = new OptionVO();
+					optionVO1.setOption(params[1].toString());
+					optionVO1.setVotesObtained((Long)params[0]);
+					
+					optionVO1.setPercentage(Double.parseDouble((new BigDecimal((optionVO1.getVotesObtained() * 100.0)/total).setScale(2, BigDecimal.ROUND_HALF_UP)).toString()));
+					optionVO.getSubOptionList().add(optionVO1);
+					
+				}
+				
+			}
+		}
+		}
+		catch(Exception e)
+		{
+		LOG.error("Exception Occured in getSurveyAnalyseDetails() method in surveyAnalysis Service Exception is - ",e);
+		}
+		return resultList;
+	}
+	
+	public OptionVO checkDuplicate(List<OptionVO> resultList,Long questionId)
+	{
+		if(resultList == null || resultList.size()==0)
+			return null;
+		for(OptionVO optionVO:resultList)
+			if(optionVO.getQuestionId().equals(questionId))
+				return optionVO;
+		 return null;
+	}
+
 }

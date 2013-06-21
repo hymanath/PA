@@ -362,6 +362,7 @@
 				<value>com.itgrids.partyanalyst.model.Surveyor</value>
 				<value>com.itgrids.partyanalyst.model.SurveyAnswer</value>
 				<value>com.itgrids.partyanalyst.model.QuestionOptions</value>
+				<value>com.itgrids.partyanalyst.model.SurveyAnswerInfo</value>
 			</list>
 		</property>
 	</bean>
@@ -1864,6 +1865,9 @@
 	</bean>
 	
 	<bean id="questionOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.QuestionOptionsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	<bean id="surveyAnswerInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyAnswerInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 </beans>
