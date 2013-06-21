@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -45,4 +46,6 @@ public interface ISurveyAnalysisService {
 	public List<SelectOptionVO> getSurveysForUser();
 	
 	public List<SelectOptionVO> deleteSurveyDetails(Long surveyId);
+	
+	public List<OptionVO> getSurveyAnalyseDetails(Long surveyId);
 }
