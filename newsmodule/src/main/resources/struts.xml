@@ -5292,6 +5292,7 @@
         
 		 <action name="userRegistration" class="anonymousUserAction"  method="saveUserData">
 			<result name="success">/jsp/UserRegistration.jsp</result>
+			<result name="error" type="redirect">loginPageAction.action</result>
 			<!--<result name="input">/jsp/anonymousUserRegistration.jsp</result>-->
 		 </action>
 		<!-- <action name="userRegistrationSubmitAction" class="anonymousUserAction" method="saveUserData">
