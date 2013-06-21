@@ -15,7 +15,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<title><decorator:title default="  Telugu Desam Party "/></title>
+	<title><decorator:title default=" TDP News Portal "/></title>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	<!--Bootstrap styles file-->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
