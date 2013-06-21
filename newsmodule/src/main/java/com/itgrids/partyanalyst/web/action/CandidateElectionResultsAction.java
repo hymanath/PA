@@ -2534,7 +2534,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				
 		try{
 			
-			int startIndex = 1 ;
+			int startIndex = 0;
 			int endIndex = 30;
 		    String newsType = "Public";
 			if(user.getUserAccessType()!=null)
