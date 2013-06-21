@@ -537,7 +537,9 @@ public class RegistrationService implements IRegistrationService{
 					 user.setLastName(regVo.getLastName());
 					 user.setUserName(regVo.getEmail());
 					user.setPassword(regVo.getPassword());
-					 if(userType.equalsIgnoreCase("Admin"))
+					user.setParentUser(userDAO.get(regVo.getRegistrationID()));
+					user.setUserAccessType(regVo.getUserAccessType());
+					if(userType.equalsIgnoreCase("Admin"))
 					 user.setUserType("subuser");
 					 else 
 					user.setUserType(userType);
