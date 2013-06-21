@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title> News - Telugu Desam Party</title>
+	<title> TDP News Portal </title>
 	<meta name="" content="">
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title> Telugu Desam Party - Contact Us</title>
+<title> TDP News Portal - Contact Us</title>
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">
 <!-- <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" /> -->
 </head>

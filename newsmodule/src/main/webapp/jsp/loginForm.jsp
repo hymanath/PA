@@ -219,7 +219,7 @@ if(request.getParameter("showMessage")!=null){
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 	<head>
-		<title>Login</title>
+		<title>TDP News Portal - Login Page</title>
 		<META NAME="Generator" CONTENT="EditPlus">
 		<META NAME="Author" CONTENT="">
 		<META NAME="Keywords" CONTENT="">

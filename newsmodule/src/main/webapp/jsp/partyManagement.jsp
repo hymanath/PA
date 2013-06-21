@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title> Telugu Desam Party Management</title>
+<title> TDP News Portal </title>
 <!--<script type="text/javascript" src="js/jquery.js"></script>-->
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
