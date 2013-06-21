@@ -92,6 +92,7 @@
 				<value>com.itgrids.partyanalyst.model.UserCandidateRelation</value>
 				<value>com.itgrids.partyanalyst.model.CandidateNewsResponse</value>	
 				<value>com.itgrids.partyanalyst.model.CandidateRealatedNews</value>
+				<value>com.itgrids.partyanalyst.model.CandidateParty</value>
 				
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>

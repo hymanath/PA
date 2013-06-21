@@ -381,13 +381,17 @@ public class ContentManagementService implements IContentManagementService{
 			List<Long> responseIds = null;
 			
 			List<Long> ids = candidateNewsResponseDAO.getFileGallaryIdsByResponseGallaryId(responseFileGallaryId);
+			totalIds.add(responseFileGallaryId);
 			 totalIds.addAll(ids);
+			 
+			 List<Long> list = new ArrayList<Long>();
+			 list.add(responseFileGallaryId);
 			
-			 responseIds = candidateNewsResponseDAO.getResponseFileGallaryidForANews(responseFileGallaryId);
+			 responseIds = candidateNewsResponseDAO.getResponseFileGallaryidForANews(list);
 			 
 			 while(responseIds != null && responseIds.size() >0){				 
 				 totalIds.addAll(responseIds);
-				 responseIds = candidateNewsResponseDAO.getResponseFileGallaryidForANews(responseFileGallaryId);	 
+				 responseIds = candidateNewsResponseDAO.getResponseFileGallaryidForANews(responseIds);	 
 			 }			 
 			 
 		List<FileGallary> fileGallaries =  fileGallaryDAO.getFileGallariesByFileGallaryIdsList(totalIds);

@@ -1302,5 +1302,11 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="candidatePartyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePartyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	
 	
 </beans>		

@@ -41,9 +41,12 @@ public class ElectionType extends BaseModel implements java.io.Serializable {
 	private String electionType;
 	private String scope;
 	private Set<ElectionScope> electionScopes = new HashSet<ElectionScope>(0);
+	private Set<CandidateParty> candidateParty = new HashSet<CandidateParty>(0);
+
 
 	// Constructors
 
+	
 	/** default constructor */
 	public ElectionType() {
 	}
@@ -100,5 +103,16 @@ public class ElectionType extends BaseModel implements java.io.Serializable {
 	public void setElectionScopes(Set<ElectionScope> electionScopes) {
 		this.electionScopes = electionScopes;
 	}
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "electionType")
+	public Set<CandidateParty> getCandidateParty() {
+		return candidateParty;
+	}
+
+	public void setCandidateParty(Set<CandidateParty> candidateParty) {
+		this.candidateParty = candidateParty;
+	}
+
 
 }
