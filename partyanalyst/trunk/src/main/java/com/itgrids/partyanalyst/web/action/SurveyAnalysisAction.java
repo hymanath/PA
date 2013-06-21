@@ -44,6 +44,15 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
  	 private List<QuestionsOptionsVO> questionsOptionsList;
  	 private List<SelectOptionVO> surveyList;
 	 private Long surveyId;
+	 private List<OptionVO> surveyDetails;
+
+	public List<OptionVO> getSurveyDetails() {
+		return surveyDetails;
+	}
+
+	public void setSurveyDetails(List<OptionVO> surveyDetails) {
+		this.surveyDetails = surveyDetails;
+	}
 
 	public Long getSurveyId() {
 		return surveyId;
@@ -249,6 +258,10 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 			
 			surveyList = surveyAnalysisService.deleteSurveyDetails(surveyId);
 			
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("analyseSurvey"))
+		{
+			surveyDetails = surveyAnalysisService.getSurveyAnalyseDetails(jObj.getLong("surveyId"));
 		}
 		return Action.SUCCESS;
 	}

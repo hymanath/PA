@@ -16,6 +16,7 @@
 <script type="text/javascript" src="js/surveyAnalysis/surveyAnalysis.js"></script>
 <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery_validation_1.7.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 <style>
 	#myModal 
@@ -32,12 +33,14 @@
 	}
 	
 	table {
-	border-color:red !important;
-	border:2px !important;
+	
+	border:1px solid #d3d3d3 !important;
+	font-size:13px;
 
 	}
 </style>
 <script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
    function saveQuestion(){
        var question = $("#questionTitle").val();
 	   var questionType = $("#questionType option:selected").val();
@@ -182,6 +185,7 @@ str+="<td>Survey title</td>";
 str+="<td>Add Question</td>";
 str+="<td>Survey Form</td>";
 str+="<td>Delete Servey</td>";
+str+="<td>Analyse Servey</td>";
 str+="</tr>";
 str+="<c:forEach var='surveyLists' items='${surveyList}'>";
 str+="<tr>";
@@ -189,6 +193,7 @@ str+="<td>${surveyLists.name}</td>";
 str+="<td><a href=\"javascript:{}\"  onclick=\"openSurveyQuestionAddWindow(${surveyLists.id});\">Add Question</a></td>";
 str+="<td><a href=\"javascript:{}\"  onclick=\"openSurveyForm(${surveyLists.id});\">Survey Form</a></td>";
 str+="<td><a href=\"javascript:{}\"  onclick=\"removeSurvey(${surveyLists.id});\">Delete</a></td>";
+str+="<td><a href=\"javascript:{}\"  onclick=\"analyseSurvey(${surveyLists.id});\">Analyse</a></td>";
 str+="</tr>";
 str+="</c:forEach>";
 str+="</table>";
@@ -198,6 +203,18 @@ else{
  $("#surveyDetails").html('<div style="font-weight:bold; font-size: 13px;">No Serveys are assigned for User.Please create Servey.</div>');
 }
 }
+function analyseSurvey(id)
+{
+	var jsObj = {
+			surveyId:id,
+			task :"analyseSurvey"
+           }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "analyseSurveyAction.action?"+rparam;						
+      callAjax(jsObj,url);
+}
+
+
   function removeSurvey(id){
 	var jsObj=
 	      {
@@ -221,7 +238,10 @@ else{
 			{
 				buildSurveyDetailsDiv(myResults);
 			}
-			
+			else if(jsObj.task == "analyseSurvey" )
+			{
+				buildSurveyDetails(myResults);
+			}
 		}
 		catch (e)
 			{
@@ -237,6 +257,53 @@ else{
 
  	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
+function buildSurveyDetails(result)
+{
+	var str = '';
+	var divEle = document.getElementById("analyseDiv");
+	var k=0;
+	
+	
+	for(var i in result)
+	{
+	 k++;
+	
+	str+='<div>';
+	str+='<div id="question'+k+'" style="margin-bottom:10px;"><h4>'+result[i].question+'</h4></div>';
+	str+='<table class="table table-bordered table-striped table-hover m-top10" id="tableId'+k+'">';
+	str+='<tr>';
+	str+='<th>Option</th>';
+	str+='<th>Votes </th>';
+	str+='<th> percentage</th>';
+	str+='</tr>';
+	
+	for(var j in result[i].subOptionList)
+	{
+	str+='<tr>';
+	str+='<td>'+result[i].subOptionList[j].option+'';
+	str+='</td>';
+	str+='<td>'+result[i].subOptionList[j].votesObtained+'';
+	str+='</td>';
+	str+='<td>'+result[i].subOptionList[j].percentage+'';
+	str+='</td>';
+	str+='</tr>';
+	
+	}
+	str+='</table>';
+	str+='<div id="chartDiv'+k+'"></div>';
+	str+='</div>';
+	}
+	
+	divEle.innerHTML = str;
+	var k1=0;
+	for(var i in result)
+	{
+		k1++;
+	var subList = result[i].subOptionList;
+	buildChart(subList,'chartDiv'+k1+'');
+	}
+}
+
 function buildSurveyDetailsDiv(myResults){
 	
 	var str='';
@@ -441,7 +508,7 @@ headerValue="Select State"/>
 	
 	<div>
 		   
-			
+		<div id="analyseDiv" style="width:900px;margin-left:auto;margin-right:auto;"></div>	
 	</div>
 
 
