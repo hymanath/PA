@@ -35,7 +35,7 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 	private String emailId;
 	private EducationalQualifications educationalQualifications;
 	private Occupation occupation;
-	private Long casteStateId;
+	private CasteState casteState;
 	private String gender;
 	private RegionScopes regionScopes;
 	private Long locationValue;
@@ -46,7 +46,7 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 	public SurveyorProfile() {
 	}
 	
-	public SurveyorProfile(Long surveyorProfileId,String name,String mobileNo,String phoneNo,String age,String emailId,EducationalQualifications educationalQualifications,Occupation occupation,Long casteStateId,String gender,RegionScopes regionScopes,Long locationValue,UserAddress userAddress) {
+	public SurveyorProfile(Long surveyorProfileId,String name,String mobileNo,String phoneNo,String age,String emailId,EducationalQualifications educationalQualifications,Occupation occupation,CasteState casteState,String gender,RegionScopes regionScopes,Long locationValue,UserAddress userAddress) {
 		this.surveyorProfileId = surveyorProfileId;
 		this.name = name;
 		this.mobileNo = mobileNo;
@@ -55,7 +55,7 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 		this.emailId = emailId;
 		this.educationalQualifications = educationalQualifications;
 		this.occupation = occupation;
-		this.casteStateId = casteStateId;
+		this.casteState = casteState;
 		this.gender = gender;
 		this.regionScopes = regionScopes;
 		this.locationValue = locationValue;
@@ -144,13 +144,16 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 		this.occupation = occupation;
 	}
 
-	@Column(name="caste_state_id",length=15)
-	public Long getCasteStateId() {
-		return casteStateId;
+	@ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name="caste_state_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CasteState getCasteState() {
+		return casteState;
 	}
 
-	public void setCasteStateId(Long casteStateId) {
-		this.casteStateId = casteStateId;
+	public void setCasteState(CasteState casteState) {
+		this.casteState = casteState;
 	}
 
 	@Column(name="gender", length=8)

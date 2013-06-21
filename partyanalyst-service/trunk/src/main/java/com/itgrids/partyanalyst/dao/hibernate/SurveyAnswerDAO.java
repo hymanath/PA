@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -27,5 +28,13 @@ public class SurveyAnswerDAO extends GenericDaoHibernate<SurveyAnswer, Long> imp
 		query.setParameterList("surveyQuestionIds", surveyQuestionIds);
 		return query.list();
 		
+	}
+    public List<Object[]> getCasteWiseSurveyInfo(List<Long> surveyQuestionIds){
+		Query query = getSession().createQuery("select model.surveyQuestion.surveyQuestionId,model.option.optionsId,model.surveyAnswerInfo.respondent.surveyorProfile.casteState.casteStateId," +
+				" model.surveyAnswerInfo.respondent.surveyorProfile.casteState.caste.casteName,count(*) from SurveyAnswer model where model.surveyQuestion.surveyQuestionId in (:surveyQuestionIds) " +
+				" and model.isSubOption = :isSubOption group by model.surveyQuestion.surveyQuestionId,model.option.optionsId,model.surveyAnswerInfo.respondent.surveyorProfile.casteState.casteStateId");
+		query.setParameterList("surveyQuestionIds", surveyQuestionIds);
+		query.setParameter("isSubOption", "false");
+		return query.list();
 	}
 }
