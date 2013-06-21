@@ -5,7 +5,7 @@
 <html>
 <head>
 <!-- <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/> -->
-	<title> Telugudesam Party </title>
+	<title> Telugu Desam Party </title>
  <META http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
