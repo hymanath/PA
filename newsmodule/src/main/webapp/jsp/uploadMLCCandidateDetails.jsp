@@ -38,6 +38,13 @@
 
 function insertCandidateDetails()
 {
+
+ if($('#candidateName').val() == ""){
+   alert("Candidatename is Required");
+   return false;
+ }
+
+
 	var jsObj =
 		{   
 			candidateName : $('#candidateName').val(),
