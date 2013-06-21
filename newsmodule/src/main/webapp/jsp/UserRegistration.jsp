@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title> Telugu Desam Party </title>
+	<title> TDP News Portal </title>
 	<meta name="" content="">
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -75,6 +75,15 @@ onsubmit="return validatefields()" cssClass="form-horizontal text-center">
   </span>
 <div class="controls">
  <b style="color:red;font-size:20px">*</b>  &nbsp;&nbsp;<s:textfield name="lastName" value="Last Name" id="lastNameId"  maxlength = "20"  size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" theme="simple"/>
+</div>
+
+</div>
+<div class="control-group">
+
+<span id="usrTypeId">
+  </span>
+<div class="controls">
+ <b style="color:red;font-size:20px">*</b>  &nbsp;&nbsp;<s:select name="userType" id="userTypeId" list="userTypeList"  onChange="validateUserType();"theme="simple" listKey="id" listValue="name"/>
 </div>
 
 </div>
@@ -299,6 +308,19 @@ function validateLastName()
 	
 	else 
              return true;
+}
+
+function validateUserType()
+{	
+	var usrEle = document.getElementById("userTypeId");
+	var usrEleErr=document.getElementById("usrTypeId");
+	usrEleErr.innerHTML = "";
+    if(usrEle.value== 'Select User'){
+		usrEleErr.innerHTML = "<span class='errorClass'>&nbsp;Please Select User Type.</span>";
+	    return false;
+	}     
+	else
+	 return true;
 }
 
 function validatefields()

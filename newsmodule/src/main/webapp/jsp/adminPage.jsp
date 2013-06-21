@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title> Telugu Desam Party - Admin Page</title>
+	<title> TDP News Portal - Admin Page</title>
 	<meta name="" content="">
 	<!-- Bootstrap -->
 	
@@ -38,9 +38,9 @@
 		<td>
 		<a  class="btn btn-info" href="userRegistration.action">Registraion Form</a>
 		</td><td><a  class="btn btn-info" href="javascript:{}" onClick="createNewSource();">Create New Source</a></td>
-		<td><a  class="btn btn-info" href="javascript:{uploadMLCCandidateDetails();}">Upload MLC Candidates Details</a></td>
+		<!-- <td><a  class="btn btn-info" href="javascript:{}" onClick="">Create New Source</a></td> -->
 		</tr>
-		<table>
+		</table>
 		</div>
 		<div id="sourceDetails"  style="width: 400px; border: 1px solid #CCCCCC; border-radius: 4px 4px 4px 4px; padding: 4px;display:none; margin-left: 298px;"></div>
 		
@@ -49,13 +49,19 @@ function createNewSource()
 {
 	$('#sourceDetails').show();
 	var str = "";
+	str += "<div id='errorDiv' style='color:red'> </div>";
 	str +=  '<span>Source Name : </span><input type="text" id="sourceName"></input></br>';
 	str +=  '<input type="button" value="create new Source" onClick="saveNewSourceDetails();" class="btn btn-info" style="margin-left: 244px;"></input>';
 	$('#sourceDetails').html(str);
 }
 function saveNewSourceDetails()
 {
-	var sourceName = $('#sourceName').val();
+	$('#errorDiv').html('');
+	var sourceName =  $.trim($('#sourceName').val());
+	if(sourceName.length <=0){
+		$('#errorDiv').html('Source Name Should not be empty');
+		return false;
+	}
 	var jsObj=
 	{
 		name  : sourceName,

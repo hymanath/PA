@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title> News - Telugu Desam Party</title>
+	<title> TDP News Portal </title>
 	<meta name="" content="">
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 	
