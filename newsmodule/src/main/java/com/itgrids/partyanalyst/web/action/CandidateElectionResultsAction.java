@@ -1231,6 +1231,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setName(fileName);
 			fileVO.setTitle(escapeUnicode(StringEscapeUtils.unescapeHtml(getFileTitle())));
 			fileVO.setDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(getFileDescription())));
+			fileVO.setNewsDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(newsDescription)));
+			
 			//fileVO.setTitle(getFileTitle());
 			//fileVO.setDescription(getFileDescription());
 			//fileVO.setContentType(fileType);

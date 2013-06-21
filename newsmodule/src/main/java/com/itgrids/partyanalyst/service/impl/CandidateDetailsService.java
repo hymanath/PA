@@ -689,7 +689,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			file.setFileTitle(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getTitle()));
 			file.setFileDescription(fileVO.getDescription().replace("\r\n", ""));
 			file.setKeywords(fileVO.getKeywords());
-			
+			file.setNewsDescription(fileVO.getNewsDescription());
 			
 			if(fileVO.getCategoryId() != null && fileVO.getCategoryId() > 0)
 				file.setCategory(categoryDAO.get(fileVO.getCategoryId()));
