@@ -41,8 +41,7 @@ function insertCandidateDetails()
 
  if($('#candidateName').val() == ""){
    alert("Candidatename is Required");
-   return false;
- }
+ }else{
 
 
 	var jsObj =
@@ -56,6 +55,7 @@ function insertCandidateDetails()
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "insertMLCCandidateDetails.action?"+rparam;					callAjax(jsObj,url); 
+ }
 }
 function callAjax(jsObj,url)
 {
