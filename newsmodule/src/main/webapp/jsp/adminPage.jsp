@@ -37,7 +37,7 @@
 		<tr>
 		<td>
 		<a  class="btn btn-info" href="userRegistration.action">Registraion Form</a>
-		</td><td><a  class="btn btn-info" href="javascript:{}" onClick="();">fdsf</a></td>
+		</td><td><a  class="btn btn-info" href="javascript:{}" onClick="createNewSource();">Create New Source</a></td>
 		<td><a  class="btn btn-info" href="javascript:{uploadMLCCandidateDetails();}">Upload MLC Candidates Details</a></td>
 		</tr>
 		<table>
