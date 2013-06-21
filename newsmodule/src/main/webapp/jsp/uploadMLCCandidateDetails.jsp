@@ -75,6 +75,7 @@ function callAjax(jsObj,url)
 
 					if(myResults == "success"){
 				 $('#successDiv').text("Candidate Details Inserted Successfully....").css(cssObj).show().delay(2000).fadeOut(400);
+				 $('#candidateName , #education').val('');
 					}else{
 
 					 $('#successDiv').html('<b>Error occured .Try again...</b>');

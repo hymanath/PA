@@ -114,6 +114,7 @@ public class User extends BaseModel implements Serializable{
 
 
 	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
+	private Set<CandidateParty> candidateParty = new HashSet<CandidateParty>(0);
 	
 	//private Set<Locality> Localities = new HashSet<Locality>(0);
 	//private Set<CustomVoterGroup> customVoterGroups = new HashSet<CustomVoterGroup>(0);
@@ -962,12 +963,22 @@ public class User extends BaseModel implements Serializable{
 		this.files = files;
 	}
 	
+	
 	@Column(name = "user_access_type",  length = 15)
 	public String getUserAccessType() {
 		return userAccessType;
 	}
 	public void setUserAccessType(String userAccessType) {
 		this.userAccessType = userAccessType;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CandidateParty> getCandidateParty() {
+		return candidateParty;
+	}
+	public void setCandidateParty(Set<CandidateParty> candidateParty) {
+		this.candidateParty = candidateParty;
 	}
 	
 

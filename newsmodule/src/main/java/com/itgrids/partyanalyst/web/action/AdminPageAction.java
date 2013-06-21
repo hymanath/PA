@@ -83,6 +83,11 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 		
 
 		try{
+			
+			 session = request.getSession();	
+			 RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			   
+			   
 			jObj = new JSONObject(getTask());
 			
 			Long partyId = jObj.getLong("partyId");
@@ -90,7 +95,7 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 			String education = jObj.getString("education");
 			String gender = jObj.getString("gender");
 			
-			 result   = candidateDetailsService.insertMLCCandidateDetails(partyId ,candidateName ,  education , gender);
+			 result   = candidateDetailsService.insertMLCCandidateDetails(partyId ,candidateName ,  education , gender,user.getRegistrationID());
 			
 			if(result.equalsIgnoreCase("success"))
 				return Action.SUCCESS;

@@ -6084,7 +6084,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		}
 	 }
 	 
-	 public String insertMLCCandidateDetails(final Long partyId ,final String candidateName ,final String  education , final String gender)
+	 public String insertMLCCandidateDetails(final Long partyId ,final String candidateName ,final String  education , final String gender , final Long userId)
 	 {
 		 
 		 try
@@ -6105,6 +6105,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 candidateParty.setCandidateId(candidate.getCandidateId());
 			 candidateParty.setPartyId(partyId);
 			 candidateParty.setElectionTypeId(IConstants.MLC_ELECTION_SCOPE_ID);
+			 candidateParty.setUserId(userId);
 			 
 			 candidatePartyDAO.save(candidateParty);
 			}
@@ -6122,8 +6123,6 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 }		 
 		 
 	 }
-	 
-	 
 	 
 	
 }

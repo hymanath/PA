@@ -29,11 +29,13 @@ public class CandidateParty extends BaseModel{
 	private Long partyId;
 	private Long candidateId;
 	private Long electionTypeId;
+	private Long userId;
 	
 	
 	private Party party;
 	private Candidate candidate;
 	private ElectionType electionType;
+	private User user;
 	
 	
 	
@@ -43,6 +45,7 @@ public class CandidateParty extends BaseModel{
 	public Long getCandidatePartyId() {
 		return candidatePartyId;
 	}
+	
 	public void setCandidatePartyId(Long candidatePartyId) {
 		this.candidatePartyId = candidatePartyId;
 	}
@@ -105,6 +108,26 @@ public class CandidateParty extends BaseModel{
 	}
 	public void setCandidate(Candidate candidate) {
 		this.candidate = candidate;
+	}
+	
+	@Column(name="user_id")
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", insertable = false , updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	
