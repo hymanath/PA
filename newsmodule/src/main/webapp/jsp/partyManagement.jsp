@@ -1731,7 +1731,7 @@ function buildUploadNewsForMultipleUsers()
 
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Select Party<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="partiesList" name="party" onchange="getCandidatesOfSelectedParty(this.value)"><option value="0">Select Party</option><option value="163">BJP</option><option value="362" selected>INC</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></td>';
+	str += '  <td class="selectWidthPadd"><select id="partiesList" name="party" onchange="getCandidatesOfSelectedParty(this.value)"><option value="0">Select Party</option><option value="163">BJP</option><option value="362" >INC</option><option value="872" selected>TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></td>';
 	str += '   </tr>';
 	
 
@@ -1759,7 +1759,7 @@ function buildUploadNewsForMultipleUsers()
 	str +='  </tr>';
 
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News description in details<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">News description in detail</td>';
 	str += '       <td class="selectWidthPadd"><textarea id="newsDesc" cols="20" rows="3" name="newsDescription"></textarea></td>';
 	str += '   </tr>';
 	str += '   <tr>';

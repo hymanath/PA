@@ -5466,6 +5466,7 @@
 		
 		<action name="uploadMLCCandidateDetailsAction" class="adminPageAction"  method="uploadMLCCandidateDetailsAction">
 			<result name="success">/jsp/uploadMLCCandidateDetails.jsp</result>
+		<result name="error" type="redirect">loginPageAction.action</result>
 		</action>
 		
 		<action name="insertMLCCandidateDetails" class="adminPageAction" method="insertMLCCandidateDetails">

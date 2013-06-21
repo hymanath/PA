@@ -67,8 +67,14 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	}
 	
 	public String uploadMLCCandidateDetailsAction()
-	{
-		return Action.SUCCESS;
+	{ 
+	   session = request.getSession();	
+	   RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+	   
+	   if(user == null)
+		return ERROR;
+	   else		   
+	    return Action.SUCCESS;
 		
 	}
 	
