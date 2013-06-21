@@ -3814,7 +3814,7 @@ else{
 			str+='<td>'+results[i].locationScopeValue+'</td>';
 	        str+='<td>'+results[i].locationValue+'</td>';
 	        str+='<td>'+results[i].fileDateAsString+'</td>';
-			str+='<td><a type="button"  title="Click here to edit" href="javascript:{editNewsDetails('+results[i].fileId+');}"><i class="icon-pencil"></i></a>';
+			str+='<td><a type="button"  title="Click here to edit" href="javascript:{editNewsDetails('+results[i].fileId+',\''+results[i].source+'\');}"><i class="icon-pencil"></i></a>';
 			str+='<a type="button" title="Click here to delete" href="javascript:{updateDeleteNews(\'Delete\','+results[i].fileId+');}" ><i class="icon-remove-sign"></i></a></td>';
  		str+='</tr>';
            
@@ -3840,7 +3840,7 @@ else{
   //console.log(oSettings);
 	//});
 }
-function editNewsDetails(fileId){
+function editNewsDetails(fileId,source){
 
 
 
@@ -3893,12 +3893,26 @@ function editNewsDetails(fileId){
 	str+='</tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth">Title<font class="requiredFont">*</font></td>';
-	str += '       <td><input type="text" id="fileTitle" size="25" maxlength="100"></text></td>'; 
+	
+	str +='<td>';
+	
+	if(source == "Eenadu Telugu")
+	 str += ' <input style="font-family: eFont; font-size: 20px;" type="text" id="fileTitle" size="25" maxlength="100" />';
+	else 
+	 str += ' <input type="text" id="fileTitle" size="25" maxlength="100" />';
+
+	str +='</td>';
 	str += '   </tr>';
 	str += '   <tr>';
     
 	str += '       <td class="tdWidth">News Description<font class="requiredFont">*</font></td>';
-	str += '       <td><textarea id="fileDescription" cols="20" rows="3"></textarea></td>';
+	str +='<td>';
+	if(source == "Eenadu Telugu")
+     str += '<textarea style="font-family: eFont; font-size: 20px;" id="fileDescription" cols="20" rows="3"></textarea>';
+	else
+	 str += '<textarea id="fileDescription" cols="20" rows="3"></textarea>';
+	str +='</td>';
+	
 	str += '   </tr>';
 
     str += '   <tr>';
@@ -4033,7 +4047,6 @@ function editNewsDetails(fileId){
 	str+='<input type="hidden" name="fileGallaryId"  id="fileGallaryId" value='+reqFile.contentId+'></input>';
 	    document.getElementById("editNewsInner").innerHTML = str;
 		
-	
 	   
 		//document.getElementById("existingFromText").value = reqFile.fileDate;
 	    document.getElementById("fileTitle").value = reqFile.fileTitle1;
