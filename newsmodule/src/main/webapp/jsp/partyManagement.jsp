@@ -1633,9 +1633,153 @@ function showNewsGallaey()
   $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
   $("#newsEditId").css({"background":"none repeat scroll 0 0 #0063DC"});*/
 
-  buildCreateNewsCategory();
+  //buildCreateNewsCategory();
+
+  buildUploadNewsForMultipleUsers();
   }
 }
+
+
+function buildUploadNewsForMultipleUsers()
+{
+	
+   var tempPartyId = 872;
+   var str ='';
+	str+='<div id="content" style="width:650px;">';
+	//str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
+	/*str +='<table>';
+	str +=  '<tr>';
+	str += 	'<td><input type="button" class="imageButton" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>';
+	str += '<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>';
+	str += '<td><input type="button" class="imageButton" value="Upload News For Multiple Users" onclick="buildUploadNewsForMultipleUsers()"></td>';
+	str += 	 '</tr>';
+	str += 	'</table>';*/
+	//str += '<fieldset class="imgFieldset" style="width:504px;">';
+	str += '<form name="uploadForm1" action="uploadFilesForMultipleCandidates.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
+	str += '<h2 align="center">Upload A News</h2>';
+	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
+
+     str+='<div class="aligncenter">';
+     str+='<a style="margin-left:46px;font-weight:bold;color:blue;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
+	str+='<table class="aligncenter" style="margin-left:123px;left:50%;">';
+     
+    str+='<td><div id="responseContentDiv" style="display:none;">';
+	str+='<table> <tr><td class="tdWidth1">Select Candidate:</td><td class="selectWidthPadd"><select id="candidatesList" onChange="getCandidateNews(this.value)"></select></td></tr>';
+
+	str+='<tr><td class="tdWidth1"></td><td class="selectWidthPadd"><select id="candidateNewsList"  multiple="true" style="display:none;"></select></td></tr>';
+
+	str+='<tr><td class="tdWidth1"></td><td class="selectWidthPadd"><div style="display:none;" id="buttonsDiv"><input type="button" id="addFile" value="Add"/>';
+	str+='<input type="button" value="Remove" id="deleteFile"/></div></td></tr>';
+
+
+	str+='<tr><td class="tdWidth1"></td><td class="selectWidthPadd"><select id="respenseNewsList" name="responseFileIds" multiple ="true" style="display:none;"></select></td></tr></table>';
+
+
+	 
+	str+='</div></td>';
+	str+='</table>';
+	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
+	str += '   <tr>';
+	str += ' <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
+	str += '   </tr>';
+    str += '   <tr>';
+	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50"></input></td>'; 
+	str += ' <td> <a id="sourceTelugu" style="font-weight:bold;color: blue;" href=javascript:{changeLanguage();}> Select Telugu Language</a> </td>';
+	str += ' <td> <a id="sourceEnglish"  style="display:none;font-weight:bold;color: blue;" href=javascript:{changeLanguage();}>Remove Telugu Language</a></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
+	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription"></textarea></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">Keywords</td>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200"></input></td></tr>';
+	str += '<TR>';
+	str += ' <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromTextNews" class="dateField" readonly="true" name="fileDate" size="20" />';
+	
+	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '<TD>';
+	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
+	
+	str += '</TD>';
+	str += '</TR>';
+	
+	str += '   </tr>';
+	str += '       <td class="tdWidth1">Category<font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">News Importance<font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance"><option value="0">Select NewsImportance</option></select></td>';
+	str += '   </tr>';
+
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">Select Party<font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="partiesList" name="party" onchange="getCandidatesOfSelectedParty(this.value)"><option value="0">Select Party</option><option value="163">BJP</option><option value="362" selected>INC</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></td>';
+	str += '   </tr>';
+	
+
+	str +='<tr><td class="tdWidth1"></td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
+	str+='<tr><td></td><td><img id="candidateAjaxImg" src="images/search.jpg" style="display:none;"/></td></tr>';
+
+
+	str +='<tr><td class="tdWidth1">Select Candidate:</td><td><select multiple="true" id="list1"></select><select multiple="true" id="candidateList" name="candidateList"></select></td></tr>';
+	str += '   <tr>';
+	str += '       <td></td>';
+	str += ' <td id="newsPublicRadioDiv"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Visible to Public Also</font></b></input></label></td>';
+    str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td></td>';
+	str += '       <td id="newsprivateRadioDiv"><label class="radio"><input type="radio" value="private" name="visibility" id="newsprivateRadioId"><b><font>Make This Private</font></b></input></label></td>';
+	str += '   </tr>';
+	str +='    <tr>';
+    str +='	   <td class="tdWidth1">Location Scope<font class="requiredFont">*</font></td>';
+    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
+    str +='  </tr>';
+	str +='  <tr>';
+	str +='    <td colspan="2">';
+	str +='       <div id="showScopeSubs" />'; 
+	str +='    </td>';
+	str +='  </tr>';
+
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">News description in details<font class="requiredFont">*</font></td>';
+	str += '       <td class="selectWidthPadd"><textarea id="newsDesc" cols="20" rows="3" name="newsDescription"></textarea></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '</table>';
+
+	str +='<input type="hidden" name="profileType" value="party_profile">';
+	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
+	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
+	
+	
+	str+='<div id="uploadFilesDiv" style="margin-left:122px;"></div>';
+	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
+	str += '<table class="aligncenter"><tr><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Upload News"  onClick="uploadNewsFromPartyPage1()"></td><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
+
+	
+
+	str += '</form>';
+	//str += '</fieldset>';
+
+	str+='</div></div>';
+	document.getElementById("newsGallaryDiv").innerHTML = str;
+	getPartyGallariesForUplaod("News Gallary");
+	
+	 getScopes();
+	 getSource("source");
+	 getLanguage("language");
+	 getNewsImportance();
+	 getCategory();
+	 //getCandidatesofUser();
+	  getCandidates();
+	  $('#partiesList').trigger('change');
+}
+
+
 function buildCreateNewsCategory()
 {
    var str ='';
@@ -5146,144 +5290,7 @@ function validateNewsFileUpload1()
 	return flag;
 }
 
-function buildUploadNewsForMultipleUsers()
-{
-	
-   var tempPartyId = 872;
-   var str ='';
-	str+='<div id="content" style="width:650px;">';
-	//str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
-	/*str +='<table>';
-	str +=  '<tr>';
-	str += 	'<td><input type="button" class="imageButton" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>';
-	str += '<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>';
-	str += '<td><input type="button" class="imageButton" value="Upload News For Multiple Users" onclick="buildUploadNewsForMultipleUsers()"></td>';
-	str += 	 '</tr>';
-	str += 	'</table>';*/
-	//str += '<fieldset class="imgFieldset" style="width:504px;">';
-	str += '<form name="uploadForm1" action="uploadFilesForMultipleCandidates.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
-	str += '<h2 align="center">Upload A News</h2>';
-	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 
-     str+='<div class="aligncenter">';
-     str+='<a style="margin-left:46px;font-weight:bold;color:blue;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
-	str+='<table class="aligncenter" style="margin-left:123px;left:50%;">';
-     
-    str+='<td><div id="responseContentDiv" style="display:none;">';
-	str+='<table> <tr><td class="tdWidth1">Select Candidate:</td><td class="selectWidthPadd"><select id="candidatesList" onChange="getCandidateNews(this.value)"></select></td></tr>';
-
-	str+='<tr><td class="tdWidth1"></td><td class="selectWidthPadd"><select id="candidateNewsList"  multiple="true" style="display:none;"></select></td></tr>';
-
-	str+='<tr><td class="tdWidth1"></td><td class="selectWidthPadd"><div style="display:none;" id="buttonsDiv"><input type="button" id="addFile" value="Add"/>';
-	str+='<input type="button" value="Remove" id="deleteFile"/></div></td></tr>';
-
-
-	str+='<tr><td class="tdWidth1"></td><td class="selectWidthPadd"><select id="respenseNewsList" name="responseFileIds" multiple ="true" style="display:none;"></select></td></tr></table>';
-
-
-	 
-	str+='</div></td>';
-	str+='</table>';
-	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
-	str += '   <tr>';
-	str += ' <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
-	str += '   </tr>';
-    str += '   <tr>';
-	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50"></input></td>'; 
-	str += ' <td> <a id="sourceTelugu" style="font-weight:bold;color: blue;" href=javascript:{changeLanguage();}> Select Telugu Language</a> </td>';
-	str += ' <td> <a id="sourceEnglish"  style="display:none;font-weight:bold;color: blue;" href=javascript:{changeLanguage();}>Remove Telugu Language</a></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription"></textarea></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Keywords</td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200"></input></td></tr>';
-	str += '<TR>';
-	str += ' <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromTextNews" class="dateField" readonly="true" name="fileDate" size="20" />';
-	
-	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
-	str += '<TD>';
-	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	
-	str += '</TD>';
-	str += '</TR>';
-	
-	str += '   </tr>';
-	str += '       <td class="tdWidth1">Category<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Importance<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance"><option value="0">Select NewsImportance</option></select></td>';
-	str += '   </tr>';
-
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Select Party<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="partiesList" name="party" onchange="getCandidatesOfSelectedParty(this.value)"><option value="0">Select Party</option><option value="163">BJP</option><option value="362" selected>INC</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></td>';
-	str += '   </tr>';
-	
-
-	str +='<tr><td class="tdWidth1"></td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
-	str+='<tr><td></td><td><img id="candidateAjaxImg" src="images/search.jpg" style="display:none;"/></td></tr>';
-
-
-	str +='<tr><td class="tdWidth1">Select Candidate:</td><td><select multiple="true" id="list1"></select><select multiple="true" id="candidateList" name="candidateList"></select></td></tr>';
-	str += '   <tr>';
-	str += '       <td></td>';
-	str += ' <td id="newsPublicRadioDiv"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Visible to Public Also</font></b></input></label></td>';
-    str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td></td>';
-	str += '       <td id="newsprivateRadioDiv"><label class="radio"><input type="radio" value="private" name="visibility" id="newsprivateRadioId"><b><font>Make This Private</font></b></input></label></td>';
-	str += '   </tr>';
-	str +='    <tr>';
-    str +='	   <td class="tdWidth1">Location Scope<font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
-    str +='  </tr>';
-	str +='  <tr>';
-	str +='    <td colspan="2">';
-	str +='       <div id="showScopeSubs" />'; 
-	str +='    </td>';
-	str +='  </tr>';
-
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News description in details<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><textarea id="newsDesc" cols="20" rows="3" name="newsDescription"></textarea></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '</table>';
-
-	str +='<input type="hidden" name="profileType" value="party_profile">';
-	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
-	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
-	
-	
-	str+='<div id="uploadFilesDiv" style="margin-left:122px;"></div>';
-	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
-	str += '<table class="aligncenter"><tr><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Upload News"  onClick="uploadNewsFromPartyPage1()"></td><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
-
-	
-
-	str += '</form>';
-	//str += '</fieldset>';
-
-	str+='</div></div>';
-	document.getElementById("newsGallaryDiv").innerHTML = str;
-	getPartyGallariesForUplaod("News Gallary");
-	
-	 getScopes();
-	 getSource("source");
-	 getLanguage("language");
-	 getNewsImportance();
-	 getCategory();
-	 //getCandidatesofUser();
-	  getCandidates();
-	  $('#partiesList').trigger('change');
-}
 function  buildUploadNews()
 {
    var tempPartyId = 872;
