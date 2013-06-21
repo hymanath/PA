@@ -29,4 +29,18 @@ public class SurveyAnswerDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("");
 		}
 	}
+	
+	public void testgetsurveyDetailsBasedOnGivenAgeRange()
+	{
+		List<Long> questionIds = new ArrayList<Long>();
+		questionIds.add(9l);
+		questionIds.add(10l);
+		questionIds.add(11l);
+		questionIds.add(12l);
+		questionIds.add(13l);
+		List<Object[]> values = surveyAnswerDAO.getsurveyDetailsForAbove60Years(questionIds,"61");
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1] +":"+ parms[2] +":"+ parms[3] +":"+ parms[4]);
+		}
+	}
 }

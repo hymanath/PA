@@ -2828,7 +2828,7 @@ public class VoterReportService implements IVoterReportService{
 					objects.setVotersPercentFor26To35(objects.getTotalVotersFor26To35()  != 0 ? roundTo2DigitsFloatValue((float)objects.getTotalVotersFor26To35() *100f/totalVoters) :"0.00");
 					objects.setVotersPercentFor36To45(objects.getTotalVotersFor36To45()  != 0 ? roundTo2DigitsFloatValue((float)objects.getTotalVotersFor36To45() *100f/totalVoters) :"0.00");
 					objects.setVotersPercentFor46To60(objects.getTotalVotersFor46To60()  != 0 ? roundTo2DigitsFloatValue((float)objects.getTotalVotersFor46To60() *100f/totalVoters) :"0.00");
-					objects.setVotersPercentForAbove60(objects.getTotalVotersForAbove60()!= 0 ?roundTo2DigitsFloatValue ((float)objects.getTotalVotersForAbove60()*100f/totalVoters) :"0.00");
+					objects.setVotersPercentForAbove60(objects.getTotalVotersForAbove60()!= 0 ? roundTo2DigitsFloatValue ((float)objects.getTotalVotersForAbove60()*100f/totalVoters) :"0.00");
 					
 					returnList.add(objects);
 				}

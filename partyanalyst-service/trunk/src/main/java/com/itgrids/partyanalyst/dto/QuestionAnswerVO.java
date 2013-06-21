@@ -21,6 +21,7 @@ public class QuestionAnswerVO implements Serializable {
 	public String remarks;
 	public List<QuestionAnswerVO> options;
 	public QuestionAnswerVO option;
+	public String question;
 
 	public Long getQuestionId() {
 		return questionId;
@@ -110,6 +111,14 @@ public class QuestionAnswerVO implements Serializable {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
 	}
 	
 	

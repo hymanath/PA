@@ -18,11 +18,18 @@ public class SurveyQuestionDAOHibernateTest extends BaseDaoTestCase  {
 		surveyQuestionDAO.getAll();
 	}
 	
-	public void testgetAllQuestionsForSurvey()
+	/*public void testgetAllQuestionsForSurvey()
 	{
 		List<SurveyQuestion> values = surveyQuestionDAO.getAllQuestionsForSurvey(1l);
 		for (SurveyQuestion surveyQuestion : values) {
 			System.out.println(surveyQuestion.getDescription());
+		}
+	}*/
+	public void testgetAllQuestionsForSurvey()
+	{
+		List<Long> values = surveyQuestionDAO.getSurveyQuestionsForSelectedSurvey(10l);
+		for (Long long1 : values) {
+			System.out.println(long1);
 		}
 	}
 }

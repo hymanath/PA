@@ -1,19 +1,49 @@
 package com.itgrids.partyanalyst.service.impl;
 
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.record.formula.functions.If;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IOptionDAO;
+import com.itgrids.partyanalyst.dao.IOptionTypeDAO;
+import com.itgrids.partyanalyst.dao.IQuestionOptionsDAO;
+import com.itgrids.partyanalyst.dao.ISurveyQuestionDAO;
+import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyAgeWiseDetailsVO;
+import com.itgrids.partyanalyst.dto.SurveyInfoVO;
+import com.itgrids.partyanalyst.dto.SurveyVO;
+import com.itgrids.partyanalyst.dto.SurveyorVO;
+import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
+import com.itgrids.partyanalyst.model.CasteState;
+import com.itgrids.partyanalyst.model.Option;
+import com.itgrids.partyanalyst.model.QuestionOptions;
+import com.itgrids.partyanalyst.model.Respondent;
+import com.itgrids.partyanalyst.model.SurveyAnswer;
+import com.itgrids.partyanalyst.model.SurveyAnswerInfo;
+import com.itgrids.partyanalyst.model.SurveyQuestion;
+import com.itgrids.partyanalyst.model.Surveyor;
+import com.itgrids.partyanalyst.model.SurveyorProfile;
+import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.service.ISurveyAnalysisService;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
@@ -669,9 +699,9 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		Voter voter = voterDAO.getVoterByVoterIDCardNo(VoterCardId);
 		
 		if(voter != null)
-		{
+		{	
+			voterList = new ArrayList<VoterVO>();
 			Long voterId = voter.getVoterId();
-			List<Object[]> voterData = userVoterDetailsDAO.getVoterDetailsForSurveyForm(voterId,userId);
 			VoterVO voterVO = new VoterVO();
 			voterVO.setVoterIds(voter.getVoterId());
 			voterVO.setFirstName(voter.getName());
@@ -687,22 +717,22 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			}
 			voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
 			voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :" ");
-			if(voterData != null && voterData.size() > 0)
+			
+			List<Object[]> voterCasteData = userVoterDetailsDAO.getVoterDetailsForSurveyForm(voterId,userId);
+			if(voterCasteData != null && voterCasteData.size() > 0)
 			{
-				voterList = new ArrayList<VoterVO>();
-				for (Object[] parms : voterData) {
+				for (Object[] parms : voterCasteData) {
 					
-					//Voter voterInfo      = (Voter) parms[0];
-					CasteState casteInfo =  (CasteState) parms[1];
-				   if(casteInfo != null){
-					voterVO.setCast(casteInfo.getCaste().getCasteName());
-					voterVO.setCategoryValuesId(casteInfo.getCasteStateId());
-					
-				   }else{
-					    voterVO.setCast("");
-						voterVO.setCategoryValuesId(0l);
-				   }
+				  voterVO.setCast(parms[1].toString());
+				  voterVO.setCategoryValuesId((Long)parms[0]);
+				  voterList.add(voterVO);
 				}
+			}
+			else
+			{
+				  voterVO.setCast("");
+				  voterVO.setCategoryValuesId(0l);
+				  voterList.add(voterVO);
 			}
 			
 			voterList.add(voterVO);
@@ -754,7 +784,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		}
 		if(surveyInfoVO.getHamletId() != null && surveyInfoVO.getHamletId() > 0)
 		{
-			userAddress.setHamlet(hamletDAO.get(surveyInfoVO.getHamletId()));
+			userAddress.setHamlet(hamletDAO.get(Long.valueOf(surveyInfoVO.getHamletId().toString().substring(1))));
 		}
 		if(surveyInfoVO.getWardId() != null && surveyInfoVO.getWardId() > 0)
 		{
@@ -1915,4 +1945,158 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
     	}
     	return casteWiseResults;
    	}
+    
+	/**
+	 * This Service is Used For Analisis Based on Age Wise For Responding For Survey Questions
+	 * @param surveyId
+	 * @return List<SurveyAgeWiseDetailsVO>
+	 */
+	public List<SurveyAgeWiseDetailsVO> agewiseSurveyAnalysis(Long surveyId)
+	{
+		List<SurveyAgeWiseDetailsVO> returnList = new ArrayList<SurveyAgeWiseDetailsVO>();
+		List<Long> surveyQuestionIds = new ArrayList<Long>();
+		Map<Long, Map<Long,SurveyAgeWiseDetailsVO>> questionMap = new HashMap<Long, Map<Long,SurveyAgeWiseDetailsVO>>();//Contains Map<questionId,<Map optionId,SurveyAgeWiseDetailsVO>>
+		Map<Long,SurveyAgeWiseDetailsVO> optionsMap = null;//Contains Map<optionId,SurveyAgeWiseDetailsVO>
+		Map<Long,String> question = new HashMap<Long, String>();
+		List<Long > surveyQuestions = surveyQuestionDAO.getSurveyQuestionsForSelectedSurvey(surveyId);
+		if(surveyQuestions != null && surveyQuestions.size() > 0)
+		{
+			for (Long questions : surveyQuestions) {
+				surveyQuestionIds.add(questions);
+			}
+		}
+		List<Object[]> ageSurveyBt18To25 = surveyAnswerDAO.getsurveyDetailsBasedOnGivenAgeRange(surveyQuestionIds, "18", "25");
+		if(ageSurveyBt18To25 != null && ageSurveyBt18To25.size() > 0)
+		{
+			populateFielsds(ageSurveyBt18To25,"bt18To25",questionMap,question);	
+		}
+		
+		List<Object[]> ageSurveyBt26To35 = surveyAnswerDAO.getsurveyDetailsBasedOnGivenAgeRange(surveyQuestionIds, "26", "35");
+		if(ageSurveyBt26To35 != null && ageSurveyBt26To35.size() > 0)
+		{
+			populateFielsds(ageSurveyBt26To35,"bt26To35",questionMap,question);	
+		}
+		
+		List<Object[]> ageSurveyBt36To45 = surveyAnswerDAO.getsurveyDetailsBasedOnGivenAgeRange(surveyQuestionIds, "36", "45");
+		if(ageSurveyBt36To45 != null && ageSurveyBt36To45.size() > 0)
+		{
+			populateFielsds(ageSurveyBt36To45,"bt36To45",questionMap,question);
+		}
+		
+		List<Object[]> ageSurveyBt46To60 = surveyAnswerDAO.getsurveyDetailsBasedOnGivenAgeRange(surveyQuestionIds, "45", "60");
+		if(ageSurveyBt46To60 != null && ageSurveyBt46To60.size() > 0)
+		{
+			populateFielsds(ageSurveyBt36To45,"bt46To60",questionMap,question);
+		}
+		
+		List<Object[]> ageSurveyAbove60 = surveyAnswerDAO.getsurveyDetailsForAbove60Years(surveyQuestionIds, "61");
+		if(ageSurveyAbove60 != null && ageSurveyAbove60.size() > 0)
+		{
+			populateFielsds(ageSurveyAbove60,"above60",questionMap,question);
+		}
+		
+		if(questionMap.size() > 0)
+		{
+			SurveyAgeWiseDetailsVO surveyAgeWiseDetails = null;
+			for (Long questionId : questionMap.keySet()) {
+				SurveyAgeWiseDetailsVO questions = new SurveyAgeWiseDetailsVO();
+				questions.setQuestion(question.get(questionId));
+				List<SurveyAgeWiseDetailsVO> optionsList = new ArrayList<SurveyAgeWiseDetailsVO>();
+				List<Object[]> optilnsList = questionOptionsDAO.getOptionsForQuestionId(questionId);
+					for (Object[] parms : optilnsList) {
+						Long optionId = (Long)parms[0];
+						String optionName = parms[1].toString();
+						optionsMap = questionMap.get(questionId);
+						SurveyAgeWiseDetailsVO surveyOptionList = optionsMap.get(optionId);
+						surveyAgeWiseDetails = new SurveyAgeWiseDetailsVO();
+						
+						if(surveyOptionList == null)
+						{
+							surveyAgeWiseDetails.setOptionId(optionId);
+							surveyAgeWiseDetails.setOption(optionName);
+							optionsList.add(surveyAgeWiseDetails);
+						}
+						else
+						{ 		
+								surveyAgeWiseDetails.setOption(surveyOptionList.getOption());
+								surveyAgeWiseDetails.setAgeBt18To25Total(surveyOptionList.getAgeBt18To25Total() != null ?surveyOptionList.getAgeBt18To25Total()  :0l);
+								surveyAgeWiseDetails.setAgeBt26To35Total(surveyOptionList.getAgeBt18To25Total() != null ?surveyOptionList.getAgeBt26To35Total() :0l);
+								surveyAgeWiseDetails.setAgeBt36To45Total(surveyOptionList.getAgeBt36To45Total() != null ?surveyOptionList.getAgeBt36To45Total():0l);
+								surveyAgeWiseDetails.setAgeBt46To60Total(surveyOptionList.getAgeBt46To60Total() != null ?surveyOptionList.getAgeBt46To60Total() :0l);
+								surveyAgeWiseDetails.setAgeAbove60(surveyOptionList.getAgeAbove60()             != null ?surveyOptionList.getAgeAbove60()       :0l);
+								Long totalResponders = surveyOptionList.getAgeBt18To25Total()+surveyOptionList.getAgeBt26To35Total()+surveyOptionList.getAgeBt36To45Total()+surveyOptionList.getAgeBt46To60Total()+surveyOptionList.getAgeAbove60();
+								surveyAgeWiseDetails.setTotal(totalResponders);	
+								surveyAgeWiseDetails.setAgeBt18To25Perc(surveyOptionList.getAgeBt18To25Total() != 0 ? roundTo2DigitsFloatValue((float)surveyOptionList.getAgeBt18To25Total() *100f/totalResponders) : "0.00");
+								surveyAgeWiseDetails.setAgeBt26To35Perc(surveyOptionList.getAgeBt26To35Total() != 0 ? roundTo2DigitsFloatValue((float)surveyOptionList.getAgeBt26To35Total()  *100f/totalResponders) : "0.00");
+								surveyAgeWiseDetails.setAgeBt36To45Perc(surveyOptionList.getAgeBt36To45Total() != 0 ? roundTo2DigitsFloatValue((float)surveyOptionList.getAgeBt36To45Total()  *100f/totalResponders) : "0.00");
+								surveyAgeWiseDetails.setAgeBt46To60Perc(surveyOptionList.getAgeBt46To60Total() != 0 ? roundTo2DigitsFloatValue((float)surveyOptionList.getAgeBt46To60Total()  *100f/totalResponders) : "0.00");
+								surveyAgeWiseDetails.setAgeAbove60Perc(surveyOptionList.getAgeAbove60()        != 0 ? roundTo2DigitsFloatValue((float)surveyOptionList.getAgeAbove60()        *100f/totalResponders) : "0.00");
+								optionsList.add(surveyAgeWiseDetails);
+							
+						}
+						
+				}
+				
+				questions.setSurveyAgeWiseDetailsVO(optionsList);
+				returnList.add(questions);
+			}
+		}
+		return returnList;
+	}
+	
+	public String roundTo2DigitsFloatValue(Float number){
+		
+		NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+		f.setMaximumFractionDigits(2);  
+		f.setMinimumFractionDigits(2);
+		
+		return f.format(number);
+		
+	}
+	
+	public void populateFielsds(List<Object[]> ageDetails , String type,Map<Long, Map<Long,SurveyAgeWiseDetailsVO>> questionMap,Map<Long,String> question)
+	{
+		
+		Map<Long,SurveyAgeWiseDetailsVO> optionsMap = null;//Contains Map<optionId,SurveyAgeWiseDetailsVO>
+		SurveyAgeWiseDetailsVO surveyAgeWiseDetailsVO = null;
+		for (Object[] parms : ageDetails) {
+			optionsMap = questionMap.get((Long)parms[0]);
+			if(optionsMap == null)
+			{
+				optionsMap = new HashMap<Long,SurveyAgeWiseDetailsVO>();
+				questionMap.put((Long)parms[0], optionsMap);
+			}
+			surveyAgeWiseDetailsVO = optionsMap.get((Long)parms[2]);
+			if(surveyAgeWiseDetailsVO == null)
+			{
+				surveyAgeWiseDetailsVO = new SurveyAgeWiseDetailsVO();
+				optionsMap.put((Long)parms[2],surveyAgeWiseDetailsVO);
+				surveyAgeWiseDetailsVO.setOptionId((Long)parms[2]);
+				surveyAgeWiseDetailsVO.setOption(parms[3].toString());
+			}
+			question.put((Long)parms[0], parms[1].toString());
+			if(type.equalsIgnoreCase("bt18To25"))
+			{
+				surveyAgeWiseDetailsVO.setAgeBt18To25Total((Long)parms[4]);
+			}
+			else if(type.equalsIgnoreCase("bt26To35"))
+			{
+				surveyAgeWiseDetailsVO.setAgeBt26To35Total((Long)parms[4]);
+			}
+			else if(type.equalsIgnoreCase("bt36To45"))
+			{
+				surveyAgeWiseDetailsVO.setAgeBt36To45Total((Long)parms[4]);
+			}
+			else if(type.equalsIgnoreCase("bt46To60"))
+			{
+				surveyAgeWiseDetailsVO.setAgeBt46To60Total((Long)parms[4]);
+			}
+			else if(type.equalsIgnoreCase("above60"))
+			{
+				surveyAgeWiseDetailsVO.setAgeAbove60((Long)parms[4]);
+			}
+		}
+	}
+
 }
+

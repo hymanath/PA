@@ -23,4 +23,12 @@ public class SurveyQuestionDAO extends GenericDaoHibernate<SurveyQuestion, Long>
 	{
 		return getHibernateTemplate().find("select model.surveyQuestionId from SurveyQuestion model where model.survey.surveyId = ? and model.isAnalyse='false' and model.optionType.optionTypeId =1 ",surveyId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getSurveyQuestionsForSelectedSurvey(Long surveyId)
+	{
+		return getHibernateTemplate().find("select model.surveyQuestionId from SurveyQuestion model " +
+				" where model.survey.surveyId = ? and model.isAnalyse = 'true' " +
+				" and model.optionType.optionTypeId = 1",surveyId);
+	}
 }
