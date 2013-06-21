@@ -273,7 +273,7 @@ padding: 0 20px;
 #list1,#candidateList{width: 260px;}
 
 </style>
-
+</head>
 <script type="text/javascript">
 var gGallaryId;
 		var timeST = new Date().getTime();
@@ -3333,10 +3333,15 @@ function updatePhoto(fileId,fileGallaryId)
 		  }
 	  }
 </script>
-</head>
+
 <body>
 <br>
 <!-- For Heading -->
+
+<div id="editNewsOuter">
+  <div id="editNewsInner"></div>
+</div>
+
 <div id='profileManagementMainOuterDiv'>
 
 <div id='profileManagementHeaderDiv'>
@@ -3502,9 +3507,7 @@ function updatePhoto(fileId,fileGallaryId)
 	 </div>		
 
 <!-- for  body 4  result  end -->
-<div id="editNewsOuter">
-  <div id="editNewsInner"></div>
-</div>
+
 <div id="ajaxImg" style="display:none;margin-left:300px;margin-top:30px;"><img src="images/icons/goldAjaxLoad.gif"></img></div>
 
 <script>
@@ -3820,9 +3823,9 @@ function editNewsDetails(fileId){
 
 
   $("#editNewsOuter").dialog({ stack: false,
-							    height: 'auto',
-								width: 700,
-								position:[150,120],								
+							    height: 570,
+								width: 720,
+								position:[130,130],								
 								modal: true,
 								title:'Edit News Details',
 								overlay: { opacity: 0.5, background: 'black'}
@@ -3999,7 +4002,7 @@ function editNewsDetails(fileId){
 	str += '</table>';
 
 	str+='<div id="newsSuccessDiv"></div>';
-	str += '<div style="padding-left:223px;padding-top:10px;"> <input type="button" value="Update" class="btn btn-success highlight" onclick="updateDeleteNews(\'Update\','+fileId+');" /></div>';
+	str += '<div style="padding-left:223px;padding-top:10px; margin-bottom: 25px; margin-top: 11px;"> <input type="button" value="Update" class="btn btn-success highlight" onclick="updateDeleteNews(\'Update\','+fileId+');" /></div>';
 	str += '</fieldset>';
 	str+='</div>';
 
