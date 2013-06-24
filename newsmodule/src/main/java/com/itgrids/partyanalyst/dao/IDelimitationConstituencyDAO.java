@@ -8,9 +8,13 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 
 public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationConstituency, Long>{
-	/*public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(Long constituencyID);
-	
-	public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(
+	public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(Long constituencyID);
+	public List<Object[]> getConstituenciesByDistrictIDs(Long districtId);
+	public List<Constituency> getLatestConstituenciesForDistrict(Long districtId);
+	public List getConstituenciesByAreaTypeInDist(Long districtId, String areaType);
+	public List getLatestConstituenciesByElectionTypeInState(Long electionTypeId, Long stateId);
+
+/*public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(
 			Long constituencyID,Long year);
 	
 	public List<DelimitationConstituency> findByElectionScopeIdStateIdAndElectionYear(Long electionScopeId, Long stateId, Long electionYear);
