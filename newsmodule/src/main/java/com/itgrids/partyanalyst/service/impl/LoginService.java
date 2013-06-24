@@ -53,9 +53,7 @@ public class LoginService implements ILoginService{
 	private ITehsilDAO tehsilDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
-	private DateUtilService dateUtilService = new DateUtilService();
 	private IUserLoginDetailsDAO userLoginDetailsDAO;
-	private static Logger log = Logger.getLogger(LoginService.class);
 	private IUserRolesDAO userRolesDAO;
 	private IUserDAO userDAO;
 	private IUserAccessIpAddressDAO userAccessIpAddressDAO;

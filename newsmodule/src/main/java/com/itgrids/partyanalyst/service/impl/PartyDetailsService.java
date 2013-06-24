@@ -2003,7 +2003,6 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 			 filesList = generateNewsDetails(countByCategoryList,totalNewsCount);
 			 
 		}catch(Exception e){
-			log.error("Exception raised in the getNewsCountForMandalLevel service method");
 			e.printStackTrace();		
 		}
 		return filesList;
