@@ -199,6 +199,7 @@ font-size:20px;
 #newsDescriptionHeadingDiv{ color: #0088CC;
      font-size: 15px;
     font-weight: bold;margin-right: 2px;}
+#newsPageNOSpan,#newsChangeEdition{margin-left: 15px;}
 </style>
 </head>
 <body>
@@ -339,6 +340,8 @@ function buildContentDetails()
 	var curPos = null;
 	var totSize = null;
 	var source = "";
+	var totSize = null;
+
 	$("#newsDescriptionHeadingDiv").html('');
    for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
@@ -360,13 +363,15 @@ function buildContentDetails()
 		descriptionStr = result.relatedGalleries[0].filesList[i].description;
 		preContentId = result.relatedGalleries[0].filesList[i].contentId;
 		curPos = i+1;
+		totSize = result.relatedGalleries[0].filesList.length;
+
 		if(source == "Eenadu Telugu")
 		{
-			str +='<div id="showContentHeaderDiv"><span class="enadu">'+titleStr+'</span></div>';
+			str +='<div id="showContentHeaderDiv"><span class="enadu">'+titleStr+' </span> ('+curPos+' of '+totSize+')</div>';
 		}
 		else
 		{
-			str +='<div id="showContentHeaderDiv" style="text-transform: uppercase;">'+titleStr+'</div>';
+			str +='<div id="showContentHeaderDiv" style="text-transform: uppercase;">'+titleStr+' ('+curPos+' of '+totSize+')</div>';
 		}
 		
 		
@@ -378,6 +383,12 @@ function buildContentDetails()
 
 			if(result.relatedGalleries[0].filesList[i].fileDate != null)
 				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
+			 
+			if(result.relatedGalleries[0].filesList[i].fileVOList[0].newsEdition != null)
+				str +='<span id="newsChangeEdition"><b>Edition</b> : <font color="#FF4500">'+result.relatedGalleries[0].filesList[i].fileVOList[0].newsEdition+'</font></span>';
+			
+			if(result.relatedGalleries[0].filesList[i].fileVOList[0].pageNo != null)
+				str +='<span id="newsPageNOSpan"><b>Page NO</b> : <font color="#FF4500">'+result.relatedGalleries[0].filesList[i].fileVOList[0].pageNo+'</font></span>';
 
 			 str+='</td>';
 			 str+='</tr>';
@@ -476,6 +487,14 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	{
 	  if(document.getElementById("sourceChangeSpan") != null)
 	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
+
+	  if(document.getElementById("newsChangeEdition") != null && selectedContentFile.fileVOList[m].newsEdition != null)
+		document.getElementById("newsChangeEdition").innerHTML = ''+selectedContentFile.fileVOList[m].newsEdition+'';
+
+	 if(document.getElementById("newsPageNOSpan") != null && selectedContentFile.fileVOList[m].pageNo != null)
+		document.getElementById("newsPageNOSpan").innerHTML = ''+selectedContentFile.fileVOList[m].pageNo+'';
+
+	  
 	  
 	    var str='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></img></div>';
 	  
