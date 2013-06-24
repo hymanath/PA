@@ -29,6 +29,11 @@ public class SurveyAnswerDAO extends GenericDaoHibernate<SurveyAnswer, Long> imp
 		return query.list();
 		
 	}
+	/**
+	 * This DAO is used for getting the Caste based survey Analysis
+	 * @param List<Long> questionIds
+	 * @return List<Object[]> 
+	 */
     public List<Object[]> getCasteWiseSurveyInfo(List<Long> surveyQuestionIds){
 		Query query = getSession().createQuery("select model.surveyQuestion.surveyQuestionId,model.option.optionsId,model.surveyAnswerInfo.respondent.surveyorProfile.casteState.casteStateId," +
 				" model.surveyAnswerInfo.respondent.surveyorProfile.casteState.caste.casteName,count(*) from SurveyAnswer model where model.surveyQuestion.surveyQuestionId in (:surveyQuestionIds) " +
@@ -37,7 +42,11 @@ public class SurveyAnswerDAO extends GenericDaoHibernate<SurveyAnswer, Long> imp
 		query.setParameter("isSubOption", "false");
 		return query.list();
 	}
-    
+    /**
+	 * This DAO is used for getting the Age based survey Analysis 
+	 * @param List<Long> questionIds
+	 * @return List<Object[]> 
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getsurveyDetailsBasedOnGivenAgeRange(List<Long> questionIds,String minAge,String maxAge)
 	{
@@ -53,7 +62,11 @@ public class SurveyAnswerDAO extends GenericDaoHibernate<SurveyAnswer, Long> imp
 		query.setParameter("maxAge", maxAge);
 		return query.list();
 	}
-	
+	/**
+	 * This DAO is used for getting the Age based survey Analysis for Above 60 years
+	 * @param List<Long> questionIds
+	 * @return List<Object[]> 
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getsurveyDetailsForAbove60Years(List<Long> questionIds,String age)
 	{
@@ -68,7 +81,11 @@ public class SurveyAnswerDAO extends GenericDaoHibernate<SurveyAnswer, Long> imp
 		query.setParameter("age", age);
 		return query.list();
 	}
-	
+	/**
+	 * This DAO is used for getting the Gender based survey Analysis
+	 * @param List<Long> questionIds
+	 * @return List<Object[]> 
+	 */
 	public List<Object[]> getGenderWiseSurveyAnalysis(List<Long> questionIds,String gender)
 	{
 		StringBuffer queryString = new StringBuffer();
@@ -84,7 +101,11 @@ public class SurveyAnswerDAO extends GenericDaoHibernate<SurveyAnswer, Long> imp
 		query.setParameterList("questionIds", questionIds);
 		return query.list();
 	}
-	
+	/**
+	 * This DAO is used for getting the option based survey Analysis
+	 * @param List<Long> questionIds
+	 * @return List<Object[]> 
+	 */
 	public List<Object[]> getOptionWiseSurveyAnalysis(List<Long> questionIds)
 	{
 		StringBuffer queryString = new StringBuffer();

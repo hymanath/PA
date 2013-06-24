@@ -23,7 +23,11 @@ public class SurveyQuestionDAO extends GenericDaoHibernate<SurveyQuestion, Long>
 	{
 		return getHibernateTemplate().find("select model.surveyQuestionId from SurveyQuestion model where model.survey.surveyId = ? and model.isAnalyse='false' and model.optionType.optionTypeId =1 ",surveyId);
 	}
-	
+	/**
+	 * This DAO is used for getting Question for selected survey
+	 * @param Long surveyId
+	 * @return List<Long>
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Long> getSurveyQuestionsForSelectedSurvey(Long surveyId)
 	{
