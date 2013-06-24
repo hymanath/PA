@@ -372,8 +372,8 @@ function buildSurveyDetails(result)
     	for(var i in result)
 		{
 		 k++;
-		str +='<div><div id="casteAnalysisDiv'+k+'" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">'+result[i].question+'</h4>';
-		str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px;" id="tableId'+k+'">'
+		str +='<div><div id="casteAnalysisDiv'+k+'" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: -38px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">'+result[i].question+'</h4>';
+		str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px; margin-top: 15px;" id="tableId'+k+'">'
 		str+='<tr>';
 		str+='<th>Option</th>';
 		str+='<th>Votes </th>';
@@ -393,7 +393,7 @@ function buildSurveyDetails(result)
 		
 		}
 		str+='</table>';
-		str+='<div id="chartDiv'+k+'" style="position: relative; float: right; margin-top: -167px;"></div>';
+		str+='<div id="chartDiv'+k+'" style="position: relative; float: right; margin-top: -182px;"></div>';
 		str+='</div>';
 		}
 		$('#analyseDiv').html(str);	
@@ -418,7 +418,7 @@ function buildAgeWiseSurveyAnalysis(myResults)
 		{
 			k++;
 			str +='<div><div id="AgeAnalysisDiv'+k+'" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">'+myResults[i].question+'</h4>';
-			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px;" id="agetableId'+k+'">'
+			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px; margin-top: 15px;" id="agetableId'+k+'">'
 			str +='<tr>';
 			str +='<td>Options</td>';
 			str +='<td>18-25%</td>';
@@ -439,7 +439,7 @@ function buildAgeWiseSurveyAnalysis(myResults)
 			str +='</tr>';
 			}
 			str +='</table>'
-			str+='<div id="ageChartDiv'+k+'" style="position: relative; float: right; margin-top: -167px;"></div>';
+			str+='<div id="ageChartDiv'+k+'" style="position: relative; float: right; margin-top: -212px;"></div>';
 			str +='</div>';
 		}
 		$('#ageWiseSurveyAnalysis').html(str);
@@ -463,7 +463,7 @@ function buildGenderWiseSurveyAnalysis(myResults)
 		{
 			k++;
 			str +='<div><div id="genderAnalysisDiv'+k+'" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">'+myResults[i].question+'</h4>';
-			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px;" id="gendertableId'+k+'">';
+			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px; margin-top: 15px;" id="gendertableId'+k+'">';
 			str +='<tr>';
 			str +='<td>Options</td>';
 			str +='<td>Male</td>';
@@ -482,7 +482,7 @@ function buildGenderWiseSurveyAnalysis(myResults)
 			str +='</tr>';			
 			}
 			str +='</table>'
-			str+='<div id="genderChartDiv'+k+'" style="position: relative; float: right; margin-top: -167px;"></div>';
+			str+='<div id="genderChartDiv'+k+'" style="position: relative; float: right; margin-top: -212px;"></div>';
 			str +='</div>';
 		}
 		$('#genderWiseSurveyAnalysis').html(str);
@@ -506,7 +506,7 @@ function buildOptionWiseSurveyAnalysis(myResults)
 		{
 			k++;
 			str +='<div><div id="optionAnalysisDiv'+k+'" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">'+myResults[i].question+'</h4>';
-			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px;" id="optiontableId'+k+'">'	
+			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px; margin-top: 15px;" id="optiontableId'+k+'">'	
 			str +='<tr>';
 			str +='<td>Options</td>';
 			str +='<td>Total</td>';
@@ -521,7 +521,7 @@ function buildOptionWiseSurveyAnalysis(myResults)
 			str +='</tr>';
 			}
 			str +='</table>';
-			str+='<div id="optionChartDiv'+k+'" style="position: relative; float: right; margin-top: -167px;"></div>';
+			str+='<div id="optionChartDiv'+k+'" style="position: relative; float: right; margin-top: -212px;"></div>';
 			str +='</div>';
 		}
 		$('#optionWiseSurveyAnalysis').html(str);
