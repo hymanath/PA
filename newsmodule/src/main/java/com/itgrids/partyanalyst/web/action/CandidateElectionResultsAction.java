@@ -7,8 +7,12 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
@@ -2678,7 +2682,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		{			
 		  jObj = new JSONObject(getTask());
 		  
-		  selectOptionList = candidateDetailsService.getNewsForCandidate(jObj.getLong("candidateId"));	
+		  selectOptionList = candidateDetailsService.getNewsForCandidate(jObj.getLong("candidateId"),getDate(jObj.getString("fromDate")),getDate(jObj.getString("toDate")));	
 		  
 		}catch(Exception e)
 		{
@@ -2687,6 +2691,20 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		}
 		return Action.SUCCESS;
 		
+	}
+	public Date getDate(String dateStr){
+		
+		try{
+		
+	         DateFormat df = new SimpleDateFormat("dd/MM/yyyy"); 
+	         return  df.parse(dateStr);
+	       
+		   }catch(Exception e)
+		   {
+			e.printStackTrace();
+			return null;			
+		   }
+
 	}
 
 }

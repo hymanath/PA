@@ -4,6 +4,7 @@
  */
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -232,7 +233,7 @@ public interface ICandidateDetailsService {
 	 
 	 public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type);
 	 
-	 public List<SelectOptionVO> getNewsForCandidate(Long candidateId);
+	 public List<SelectOptionVO> getNewsForCandidate(Long candidateId , Date fromDate , Date toDate );
 	 
 	 public List<FileVO> getLatestResponsedNews();
 	 
@@ -242,5 +243,6 @@ public interface ICandidateDetailsService {
 	 public String insertMLCCandidateDetails(Long partyId ,String candidateName ,String  education , String gender,Long userId);
 
 	 public ResultStatus createUserNewsCategory(String name, String visibility, Long userId);
+
 	 
 }

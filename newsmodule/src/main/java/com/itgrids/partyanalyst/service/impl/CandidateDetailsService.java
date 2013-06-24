@@ -5695,17 +5695,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			}
 		}
  
-	 
-	 public List<SelectOptionVO> getNewsForCandidate(Long candidateId)
-	 {
-		 
-		 
-		return buildSelectOptionVO(candidateRelatedNewsDAO.getAllfileGallariesOfCandidate(candidateId));
-		 
-		 
-	 }
-	 
-	 
+	
 	 public List<SelectOptionVO> buildSelectOptionVO(List<Object[]> list)
 	 {
 		 List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
@@ -5903,5 +5893,15 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			}
 	
 }
+		
+		public List<SelectOptionVO> getNewsForCandidate(Long candidateId , Date fromDate , Date toDate)
+		 {
+			 
+			 
+			return buildSelectOptionVO(candidateRelatedNewsDAO.getAllfileGallariesOfCandidate(candidateId , fromDate , toDate));
+			 
+			 
+		 }
+		 
 		
 }
