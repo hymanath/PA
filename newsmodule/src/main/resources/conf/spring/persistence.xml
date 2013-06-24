@@ -93,7 +93,7 @@
 				<value>com.itgrids.partyanalyst.model.CandidateNewsResponse</value>	
 				<value>com.itgrids.partyanalyst.model.CandidateRealatedNews</value>
 				<value>com.itgrids.partyanalyst.model.CandidateParty</value>
-				
+				<value>com.itgrids.partyanalyst.model.UserNewsCategory</value>
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
 				<value>com.itgrids.partyanalyst.model.Constituency</value>

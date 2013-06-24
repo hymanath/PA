@@ -271,7 +271,7 @@ padding: 0 20px;
 .aligncenter{margin-left:auto;margin-right:auto;}
 .nav-tabs > li > a:hover,.nav-tabs > li > a:focus{border-color:none;background-color:#5caceb;color:#fff;}
 #list1,#candidateList{width: 260px;}
-
+#errorMsgDiv{ font-size: 12px;}
 </style>
 </head>
 <script type="text/javascript">
@@ -1807,22 +1807,70 @@ function buildCreateNewsCategory()
 	str += 	 '</tr>';
 	str += 	'</table>';*/
 	//str += '<fieldset class="imgFieldset" style="width:449px;">';
-	str += '<h2 align="center">Create A News Category</h2>';
+	str += '<h2 align="center">Create A News Gallary</h2>';
 	str+='<table class="aligncenter"><tr><td><div id="newsErrorMsgDivId" /></td></tr></table>';
-	str += '<table class="aligncenter"><tr><td><b><font>Category Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" /></td></tr>';
+	str += '<table class="aligncenter"><tr><td><b><font>Gallary Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" /></td></tr>';
 
 	str += '<tr><td><b><font>Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="newsCateDesc" cols="27" rows="3" name="requirement"></textarea></td></tr></table>';
 	str += '<table class="aligncenter"><tr><td><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font>Visible to Public Also</font></b></input></label></td></tr>';
 	str += '<tr><td><label class="radio"><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font>Make This Private</font></b></input></label></td></tr></table>';
 	str+='<div id="createnewsgalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
-	str += '<table class="aligncenter"><tr><td><input type="button" class="btn btn-success highlight" value="Create Category" style="background-color:#57B731" onClick="createCategory()"></td><td><input type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
+	str += '<table class="aligncenter"><tr><td><input type="button" class="btn btn-success highlight" value="Create Gallary" style="background-color:#57B731" onClick="createCategory()"></td><td><input type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
 
 	str += '<div>';
 	//str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("newsGallaryDiv").innerHTML = str;
 }
+
+function createNewsCategory()
+{
+	$("#newsGallaryDiv").html('');
+	var str = '';
+	str +='<div id="content" style="width:650px;">';
+	str +='<h2 align="center">Create A News Category</h2>';
+	str+='<table class="aligncenter"><tr><td><div id="errorMsgDiv" /></td></tr></table>';
+	str +='<table class="aligncenter">';
+	str +='<tr><td><b>Category Name</b><font class="requiredFont">*</font></td>';
+	str +='<td><input type="text" id="userNewsCategory" /></td></tr>';
+	str +='</table>';
+	str += '<table class="aligncenter"><tr><td><label class="radio"><input type="radio" value="public" name="visibility" id="categoryPublicRadio" checked="true"><b><font>Visible to Public Also</font></b></input></label></td></tr>';
+	str += '<tr><td><label class="radio"><input type="radio" value="private" name="visibility" id="categoryPrivateRadio"><b><font>Make This Private</font></b></input></label></td></tr></table>';
+	str += '<table class="aligncenter"><tr><td><input type="button" class="btn btn-success highlight" value="Create Category" style="background-color:#57B731" onClick="createUserNewsCategory()"></td><td><input type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
+	str +='</div>';
+	$("#newsGallaryDiv").html(str);
+
+}
+
+function createUserNewsCategory()
+{
+   $("#errorMsgDiv").html('');
+   var name = $("#userNewsCategory").val();
+	if($.trim(name) == "" || name.length == 0)
+	{
+	  $("#errorMsgDiv").html('Category Name is Required.').css('color','red');
+	  return;
+	}
+
+   var isPublic = document.getElementById("categoryPublicRadio").checked;
+   var makeThis = 'true';
+   if(isPublic)
+	 makeThis = "false";
+   
+   var jsObj =
+		{ 
+            name : name,
+		    visibility : makeThis,
+			task : "createUserNewsCategory"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createUserNewsCategoryAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+
+}
+
 function getDistricts1(stateId){
   var jsObj =
 		{ 
@@ -3486,7 +3534,9 @@ function updatePhoto(fileId,fileGallaryId)
 				   </td>
 			 </tr>
 		</table>-->
-	<div class="span10 offset1 text-center alert"><input type="button" class="btn btn-success highlight" value="Create News Categery" onclick="buildCreateNewsCategory()">
+	<div class="span10 offset1 text-center alert">
+	<input type="button" class="btn btn-success highlight" value="Create News Category" onclick="createNewsCategory()">
+	<input type="button" class="btn btn-success highlight" value="Create News Gallary" onclick="buildCreateNewsCategory()">
 	<input type="button" class="btn btn-success highlight" value="Upload News" onclick="buildUploadNews()">
 	<input type="button" class="btn btn-success highlight" value="Upload News For Multiple Users" onclick="buildUploadNewsForMultipleUsers()">
 	</div>
@@ -4267,6 +4317,9 @@ var callback = {
 			 {
 				buildFlagedAndNotedData(myResults,jsObj);
 			 }
+			 else if(jsObj.task == "createUserNewsCategory")
+			  showUserNewsCategoryStatus(myResults);
+			
 			 
 			}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
@@ -5532,6 +5585,25 @@ $('#newsDesc').removeClass('enadu');
 }
 
 
+}
+
+function showUserNewsCategoryStatus(results)
+{
+	
+  if(results.resultCode == 0 && results.message != null)
+  {
+	$("#userNewsCategory").val('');
+	$("#errorMsgDiv").html(''+results.message+'').css('color','green');
+	return;
+  }
+  else if(results.resultCode == 0 && results.message == null)
+  {
+	$("#userNewsCategory").val('');
+	$("#errorMsgDiv").html('News Category Created Successfully..').css('color','green');
+	return;
+  }
+  $("#errorMsgDiv").html('Error Occured! Try Again..').css('color','red');
+	return;
 }
 </script>
 </body>

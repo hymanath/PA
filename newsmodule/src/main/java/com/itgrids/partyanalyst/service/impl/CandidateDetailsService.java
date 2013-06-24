@@ -78,6 +78,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dao.IUserNewsCategoryDAO;
 import com.itgrids.partyanalyst.dao.IUserPartyRelationDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -101,6 +102,7 @@ import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.UserNewsCategory;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.util.IConstants;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
@@ -172,6 +174,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
 	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
 	private ICandidatePartyDAO candidatePartyDAO;
+	private IUserNewsCategoryDAO userNewsCategoryDAO;
 	
 	public ICandidatePartyDAO getCandidatePartyDAO() {
 		return candidatePartyDAO;
@@ -679,7 +682,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.userPartyRelationDAO = userPartyRelationDAO;
 	}
 	
-	
+	public IUserNewsCategoryDAO getUserNewsCategoryDAO() {
+		return userNewsCategoryDAO;
+	}
+
+	public void setUserNewsCategoryDAO(IUserNewsCategoryDAO userNewsCategoryDAO) {
+		this.userNewsCategoryDAO = userNewsCategoryDAO;
+	}
+
 	public ResultStatus uploadAFile(final FileVO fileVO)
 	{
 		
@@ -6123,6 +6133,47 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 }		 
 		 
 	 }
+	 
+	public ResultStatus createUserNewsCategory(String name, String visibility, Long userId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List<String> list = categoryDAO.checkCategoryNameExist(name.trim());
+			if(list != null && list.size() > 0)
+			{
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				resultStatus.setMessage("News Category is Already Exists.");
+				return resultStatus;
+			}
+			
+			Long orderNo = categoryDAO.getMaxOrderNo();
+			if(orderNo == null || orderNo == 0L)
+				orderNo = 1L;
+			else
+				orderNo = orderNo+1;
+			Category category = new Category();
+			category.setCategoryType(name.trim());
+			category.setOrderNo(orderNo);
+			category = categoryDAO.save(category);
+			
+			UserNewsCategory userNewsCategory = new UserNewsCategory();
+			userNewsCategory.setIsPrivate(visibility);
+			userNewsCategory.setIsDelete("false");
+			userNewsCategory.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			userNewsCategory.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			userNewsCategory.setUser(userDAO.get(userId));
+			userNewsCategory.setCategory(category);
+			userNewsCategoryDAO.save(userNewsCategory);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in createUserNewsCategory() method, Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
 	 
 	
 }
