@@ -68,6 +68,35 @@ public class SurveyAnswerDAO extends GenericDaoHibernate<SurveyAnswer, Long> imp
 		query.setParameter("age", age);
 		return query.list();
 	}
+	
+	public List<Object[]> getGenderWiseSurveyAnalysis(List<Long> questionIds,String gender)
+	{
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model.surveyQuestion.surveyQuestionId ,model.surveyQuestion.question," +
+				" model.option.optionsId ,model.option.options ," +
+				" count(model.surveyAnswerInfo.respondent.surveyorProfile.gender)  from SurveyAnswer model " +
+				" where model.surveyQuestion.surveyQuestionId in (:questionIds) and " +
+				" model.surveyAnswerInfo.respondent.surveyorProfile.gender = :gender " +
+				" group by model.surveyQuestion.surveyQuestionId,model.option.optionsId, " +
+				" model.surveyAnswerInfo.respondent.surveyorProfile.gender");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("gender", gender);
+		query.setParameterList("questionIds", questionIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getOptionWiseSurveyAnalysis(List<Long> questionIds)
+	{
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model.surveyQuestion.surveyQuestionId ,model.surveyQuestion.question," +
+				" model.option.optionsId ,model.option.options ," +
+				" count(model.option.options)  from SurveyAnswer model " +
+				" where model.surveyQuestion.surveyQuestionId in (:questionIds) " +
+				" group by model.surveyQuestion.surveyQuestionId,model.option.optionsId ");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameterList("questionIds", questionIds);
+		return query.list();
+	}
 
  
 }

@@ -51,4 +51,8 @@ public interface ISurveyAnalysisService {
 	public List<OptionVO> getSurveyAnalyseDetails(Long surveyId);
 	
 	public List<SurveyAgeWiseDetailsVO> agewiseSurveyAnalysis(Long surveyId);
+	
+	public List<SurveyAgeWiseDetailsVO> getGenderWiseSurveyAnalysis(Long surveyId);
+	
+	public List<SurveyAgeWiseDetailsVO> getOptionWiseSurveyAnalysis(Long surveyId);
 }

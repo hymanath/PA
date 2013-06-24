@@ -17,4 +17,8 @@ public List<Object[]> getSurveyAnalyseData(List<Long> surveyId);
 	public List<Object[]> getsurveyDetailsBasedOnGivenAgeRange(List<Long> questionIds,String minAge,String maxAge);
 	
 	public List<Object[]> getsurveyDetailsForAbove60Years(List<Long> questionIds,String age);
+	
+	public List<Object[]> getGenderWiseSurveyAnalysis(List<Long> questionIds,String gender);
+	
+	public List<Object[]> getOptionWiseSurveyAnalysis(List<Long> questionIds);
 }

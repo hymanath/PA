@@ -19,6 +19,10 @@ public class SurveyAgeWiseDetailsVO implements Serializable{
 	private Long    total             = 0l;
 	private Long    questionId        = 0l;
 	private Long    optionId          = 0l;
+	private Long    maleresponderTotal= 0l;
+	private Long    femaleRespondersTotal = 0l;
+	private Long    unkonwnPrepondersTotal = 0l;
+	private Long    optionCount       = 0l;
 	
 	private String   ageBt18To25Perc  = "0.00";
 	private String   ageBt26To35Perc  = "0.00";
@@ -26,6 +30,10 @@ public class SurveyAgeWiseDetailsVO implements Serializable{
 	private String   ageBt46To60Perc  = "0.00";
 	private String   ageAbove60Perc   = "0.00";
 	private String   totalPerc        = "0.00";
+	private String   maleperc         = "0.00";
+	private String   femaleperc       = "0.00";
+	private String   unknownPerc      = "0.00";
+	private String   optionPerc       = "0.00";
 	private String   question;
 	private String   option;
 	
@@ -146,6 +154,54 @@ public class SurveyAgeWiseDetailsVO implements Serializable{
 	public void setSurveyAgeWiseDetailsVO(
 			List<SurveyAgeWiseDetailsVO> surveyAgeWiseDetailsVO) {
 		this.surveyAgeWiseDetailsVO = surveyAgeWiseDetailsVO;
+	}
+	public Long getMaleresponderTotal() {
+		return maleresponderTotal;
+	}
+	public void setMaleresponderTotal(Long maleresponderTotal) {
+		this.maleresponderTotal = maleresponderTotal;
+	}
+	public Long getFemaleRespondersTotal() {
+		return femaleRespondersTotal;
+	}
+	public void setFemaleRespondersTotal(Long femaleRespondersTotal) {
+		this.femaleRespondersTotal = femaleRespondersTotal;
+	}
+	public String getMaleperc() {
+		return maleperc;
+	}
+	public void setMaleperc(String maleperc) {
+		this.maleperc = maleperc;
+	}
+	public String getFemaleperc() {
+		return femaleperc;
+	}
+	public void setFemaleperc(String femaleperc) {
+		this.femaleperc = femaleperc;
+	}
+	public Long getUnkonwnPrepondersTotal() {
+		return unkonwnPrepondersTotal;
+	}
+	public void setUnkonwnPrepondersTotal(Long unkonwnPrepondersTotal) {
+		this.unkonwnPrepondersTotal = unkonwnPrepondersTotal;
+	}
+	public String getUnknownPerc() {
+		return unknownPerc;
+	}
+	public void setUnknownPerc(String unknownPerc) {
+		this.unknownPerc = unknownPerc;
+	}
+	public Long getOptionCount() {
+		return optionCount;
+	}
+	public void setOptionCount(Long optionCount) {
+		this.optionCount = optionCount;
+	}
+	public String getOptionPerc() {
+		return optionPerc;
+	}
+	public void setOptionPerc(String optionPerc) {
+		this.optionPerc = optionPerc;
 	}
 	
 	
