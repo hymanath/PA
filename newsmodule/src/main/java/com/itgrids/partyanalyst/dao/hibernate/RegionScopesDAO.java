@@ -14,7 +14,7 @@ public class RegionScopesDAO extends GenericDaoHibernate<RegionScopes, Long> imp
 		super(RegionScopes.class);		 
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<String> getScopeById(Long regionScopesId)
 	{
 		return getHibernateTemplate().find("select model.scope from RegionScopes model where model.regionScopesId = ? ",regionScopesId);
@@ -39,5 +39,5 @@ public class RegionScopesDAO extends GenericDaoHibernate<RegionScopes, Long> imp
 		query.setParameter("scope", scope);
 		return (Long) query.uniqueResult();
 		
-	}
+	}*/
 }
