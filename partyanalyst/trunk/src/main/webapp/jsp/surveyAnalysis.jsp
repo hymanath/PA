@@ -17,7 +17,7 @@
 <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery_validation_1.7.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-
+<link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <style>
 	#myModal 
 	{
@@ -38,6 +38,10 @@
 	font-size:13px;
 
 	}
+	.table th {
+    font-weight: normal;
+}
+
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -205,15 +209,24 @@ else{
 }
 function analyseSurvey(id)
 {
-	var jsObj = {
-			surveyId:id,
-			task :"analyseSurvey"
-           }
-	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-      var url = "analyseSurveyAction.action?"+rparam;						
-      callAjax(jsObj,url);
+
+	catsteWiseSurveyAnalysis(id);
+	surveyAnalysisBasedOnAge(id);
+	surveyAnalysisBasedOnGender(id);
+	surveyAnalysisBasedOnOption(id);
 }
 
+function catsteWiseSurveyAnalysis(id)
+{
+	var jsObj =
+	{
+		surveyId:id,
+		task :"analyseSurvey"
+    }
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "analyseSurveyAction.action?"+rparam;						
+   callAjax(jsObj,url);
+}
 
   function removeSurvey(id){
 	var jsObj=
@@ -242,6 +255,18 @@ function analyseSurvey(id)
 			{
 				buildSurveyDetails(myResults);
 			}
+			else if(jsObj.task == "getAgeWiseSurveyAnalysis")
+			{
+				buildAgeWiseSurveyAnalysis(myResults);
+			}
+			else if(jsObj.task == "getGenderWiseSurveyAnalysis")
+			{
+				buildGenderWiseSurveyAnalysis(myResults);
+			}
+			else if(jsObj.task == "getOptionWiseSurveyAnalysis")
+			{
+				buildOptionWiseSurveyAnalysis(myResults);
+			}
 		}
 		catch (e)
 			{
@@ -257,68 +282,25 @@ function analyseSurvey(id)
 
  	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
-function buildSurveyDetails(result)
-{
-	var str = '';
-	var divEle = document.getElementById("analyseDiv");
-	var k=0;
-	
-	
-	for(var i in result)
-	{
-	 k++;
-	
-	str+='<div>';
-	str+='<div id="question'+k+'" style="margin-bottom:10px;"><h4>'+result[i].question+'</h4></div>';
-	str+='<table class="table table-bordered table-striped table-hover m-top10" id="tableId'+k+'">';
-	str+='<tr>';
-	str+='<th>Option</th>';
-	str+='<th>Votes </th>';
-	str+='<th> percentage</th>';
-	str+='</tr>';
-	
-	for(var j in result[i].subOptionList)
-	{
-	str+='<tr>';
-	str+='<td>'+result[i].subOptionList[j].option+'';
-	str+='</td>';
-	str+='<td>'+result[i].subOptionList[j].votesObtained+'';
-	str+='</td>';
-	str+='<td>'+result[i].subOptionList[j].percentage+'';
-	str+='</td>';
-	str+='</tr>';
-	
-	}
-	str+='</table>';
-	str+='<div id="chartDiv'+k+'"></div>';
-	str+='</div>';
-	}
-	
-	divEle.innerHTML = str;
-	var k1=0;
-	for(var i in result)
-	{
-		k1++;
-	var subList = result[i].subOptionList;
-	buildChart(subList,'chartDiv'+k1+'');
-	}
-}
+
 
 function buildSurveyDetailsDiv(myResults){
 	
 	var str='';
 if(myResults != null){
 	$("#surveyDetails").html("");
-str+="<table class=\"table table-bordered table-striped table-hover\"  			style=\"font-size: medium; font-weight: bold;\">";
+str+="<table class=\"table table-bordered table-striped table-hover\"  			style=\"font-size: small; font-weight: normal;\" border=\"1\">";
 str+="<tr>";
 str+="<td>Survey title</td>";
 str+="<td>Add Question</td>";
+str+="<td>Survey Form</td>";
 str+="<td>delete Servey</td>";
 str+="</tr>";
 for(var i in myResults){
 str+="<tr>";
 str+="<td>"+myResults[i].name+"</td>";
 str+="<td><a href=\"javascript:{}\"  onclick=\"openSurveyQuestionAddWindow("+myResults[i].id+");\">Add Question</a></td>";
+str+="<td><a href=\"javascript:{}\"  onclick=\"openSurveyForm(${surveyLists.id});\">Survey Form</a></td>";
 str+="<td><a href=\"javascript:{}\"  onclick=\"removeSurvey("+myResults[i].id+");\">Delete</a></td>";
 str+="</tr>";
 }
@@ -329,12 +311,231 @@ else{
  $("#surveyDetails").html('<div style="font-weight:bold;">Data Not Available</div>');
 }
 }
+
+
+
+function surveyAnalysisBasedOnAge(id)
+{
+	
+	var jsObj=
+	{	
+		surveyId     : id,
+		task         : "getAgeWiseSurveyAnalysis" 
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSurveyDetailsAction.action?"+rparam;
+	callAjax(jsObj,url); 
+}
+function surveyAnalysisBasedOnGender(id)
+{
+	
+	var jsObj=
+	{	
+		surveyId     : id,
+		task         : "getGenderWiseSurveyAnalysis" 
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSurveyDetailsAction.action?"+rparam;
+	callAjax(jsObj,url); 
+}
+function surveyAnalysisBasedOnOption(id)
+{
+	
+	var jsObj=
+	{	
+		surveyId     : id,
+		task         : "getOptionWiseSurveyAnalysis" 
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSurveyDetailsAction.action?"+rparam;
+	callAjax(jsObj,url); 
+}
+function buildSurveyDetails(result)
+{
+	if(result != null)
+	{
+		var str = '';
+		var k=0;
+		$('#casteWiseAnalysisHeading').show();
+    	for(var i in result)
+		{
+		 k++;
+		str +='<div><div id="casteAnalysisDiv'+k+'" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">'+result[i].question+'</h4>';
+		str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px;" id="tableId'+k+'">'
+		str+='<tr>';
+		str+='<th>Option</th>';
+		str+='<th>Votes </th>';
+		str+='<th> percentage</th>';
+		str+='</tr>';
+		
+		for(var j in result[i].subOptionList)
+		{
+		str+='<tr>';
+		str+='<td>'+result[i].subOptionList[j].option+'';
+		str+='</td>';
+		str+='<td>'+result[i].subOptionList[j].votesObtained+'';
+		str+='</td>';
+		str+='<td>'+result[i].subOptionList[j].percentage+'';
+		str+='</td>';
+		str+='</tr>';
+		
+		}
+		str+='</table>';
+		str+='<div id="chartDiv'+k+'" style="position: relative; float: right; margin-top: -167px;"></div>';
+		str+='</div>';
+		}
+		$('#casteWiseSurveyAnalysis').html(str);	
+		var k1=0;
+		for(var i in result)
+		{
+			k1++;
+		var subList = result[i].subOptionList;
+		buildChart(subList,'chartDiv'+k1+'');
+		}
+	}
+	
+}
+function buildAgeWiseSurveyAnalysis(myResults)
+{
+	if(myResults != null)
+	{
+		$('#ageWiseAnalysisHeading').show();
+		var k = 0;
+		var str = "";
+		for(var i in myResults)
+		{
+			k++;
+			str +='<div><div id="AgeAnalysisDiv'+k+'" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">'+myResults[i].question+'</h4>';
+			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px;" id="agetableId'+k+'">'
+			str +='<tr>';
+			str +='<td>Options</td>';
+			str +='<td>18-25%</td>';
+			str +='<td>26-35%</td>';
+			str +='<td>36-45%</td>';
+			str +='<td>45-50%</td>';
+			str +='<td>Above60%</td>';
+			str +='</tr>';
+			for(var j in myResults[i].surveyAgeWiseDetailsVO)
+			{
+			str +='<tr>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].option+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].ageBt18To25Perc+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].ageBt26To35Perc+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].ageBt36To45Perc+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].ageBt46To60Perc+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].ageAbove60Perc+'</td>';
+			str +='</tr>';
+			}
+			str +='</table>'
+			str+='<div id="ageChartDiv'+k+'" style="position: relative; float: right; margin-top: -167px;"></div>';
+			str +='</div>';
+		}
+		$('#ageWiseSurveyAnalysis').html(str);
+		var k1=0;
+		for(var i in myResults)
+		{
+			k1++;
+		var subList = myResults[i].surveyAgeWiseDetailsVO;
+		buildChartForSurveyAnalysis(subList,'ageChartDiv'+k1+'');
+		}
+	}
+}
+function buildGenderWiseSurveyAnalysis(myResults)
+{
+	if(myResults != null)
+	{
+		$('#genderWiseAnalysisHeading').show();
+		var k=0;
+		var str = "";
+		for(var i in myResults)
+		{
+			k++;
+			str +='<div><div id="genderAnalysisDiv'+k+'" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">'+myResults[i].question+'</h4>';
+			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px;" id="gendertableId'+k+'">';
+			str +='<tr>';
+			str +='<td>Options</td>';
+			str +='<td>Male</td>';
+			str +='<td>Male %</td>';
+			str +='<td>Female</td>';
+			str +='<td>Female %</td>';
+			str +='</tr>';
+			for(var j in myResults[i].surveyAgeWiseDetailsVO)
+			{
+			str +='<tr>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].option+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].maleresponderTotal+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].maleperc+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].femaleRespondersTotal+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].femaleperc+'</td>';
+			str +='</tr>';			
+			}
+			str +='</table>'
+			str+='<div id="genderChartDiv'+k+'" style="position: relative; float: right; margin-top: -167px;"></div>';
+			str +='</div>';
+		}
+		$('#genderWiseSurveyAnalysis').html(str);
+		var k1=0;
+		for(var i in myResults)
+		{
+			k1++;
+		var subList = myResults[i].surveyAgeWiseDetailsVO;
+		buildChartForSurveyAnalysis(subList,'genderChartDiv'+k1+'');
+		}
+	}
+}
+function buildOptionWiseSurveyAnalysis(myResults)
+{
+	if(myResults != null)
+	{
+		$('#optionWiseAnalysisHeading').show();
+		var k=0;
+		var str = "";
+		for(var i in myResults)
+		{
+			k++;
+			str +='<div><div id="optionAnalysisDiv'+k+'" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">'+myResults[i].question+'</h4>';
+			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px;" id="optiontableId'+k+'">'	
+			str +='<tr>';
+			str +='<td>Options</td>';
+			str +='<td>Total</td>';
+			str +='<td>percentage</td>';
+			str +='</tr>';
+			for(var j in myResults[i].surveyAgeWiseDetailsVO)
+			{
+			str +='<tr>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].option+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].optionCount+'</td>';
+			str +='<td>'+myResults[i].surveyAgeWiseDetailsVO[j].optionPerc+'</td>';
+			str +='</tr>';
+			}
+			str +='</table>';
+			str+='<div id="optionChartDiv'+k+'" style="position: relative; float: right; margin-top: -167px;"></div>';
+			str +='</div>';
+		}
+		$('#optionWiseSurveyAnalysis').html(str);
+		var k1=0;
+		for(var i in myResults)
+		{
+			k1++;
+		var subList = myResults[i].surveyAgeWiseDetailsVO;
+		buildChartForOptionSurveyAnalysis(subList,'optionChartDiv'+k1+'');
+		}
+	}
+}
+
+
 </script>
 </head>
 <body>
 <div>
-<span class='btn' onclick='openModal()'>Surveyor</span>
+<div style="margin-left: 236px; margin-bottom: -26px; padding-bottom: 26px;">
+<!--<span id="surveyorSpan" class='btn btn-info' onclick='openModal()' style="margin-bottom: -26px; margin-top: 32px;">Creating Surveyor</span>-->
+<div><input type="button" value="Creating Surveyor" class='btn btn-info' style="margin-bottom: -26px; margin-top: 32px;" onClick="openModal();"></input></div>
+<div style="margin-left: 276px;"><input type="button" value="Creating Survey" id="surveyBtn" class="btn btn-info"  style="margin-left: 119px;"/></div>
+</div>
      <!-- <input type="button" onclick="openSurveyQuestionAddWindow();"  value="Add Question" />-->
+	 
+	 
 	 <div style="display:none;" id="dialogWindowDiv" title="Add New Question">
 	   <div class="container">
 	    <div class="row">
@@ -366,7 +567,7 @@ else{
 <div id="surveyDetails"></div>
 
 </div>
-<div style="text-align:center;margin-top:10px;margin-bottom:10px;"><input type="button" value="Creating Survey" id="surveyBtn" class="btn btn-info"/></div>
+
 
 
 	 </div>
@@ -508,7 +709,22 @@ headerValue="Select State"/>
 	
 	<div>
 		   
-		<div id="analyseDiv" style="width:900px;margin-left:auto;margin-right:auto;"></div>	
+		<!--<div id="analyseDiv" style="width:900px;margin-left:auto;margin-right:auto;"></div>	-->
+		
+		<div class="" align="center" style="background: none repeat scroll 0px 0px rgb(49, 152, 182); border-radius: 4px 4px 4px 4px; margin-left: 10px; width: 977px; font-family: arial; font-size: 18px; color: white; padding-bottom: 4px; margin-bottom: 5px; margin-top: 19px; font-weight: bolder; padding-top: 10px; height: 25px;display:none;" id="casteWiseAnalysisHeading">SURVEY ANALYSIS BASED ON CASTE WISE</div>
+		<div id="casteWiseSurveyAnalysis"></div>
+		
+		<div class="" align="center" style="background: none repeat scroll 0px 0px rgb(49, 152, 182); border-radius: 4px 4px 4px 4px; margin-left: 10px; width: 977px; font-family: arial; font-size: 18px; color: white; padding-bottom: 4px; margin-bottom: 5px; margin-top: 19px; font-weight: bolder; padding-top: 10px; height: 25px;display:none;" id="ageWiseAnalysisHeading">SURVEY ANALYSIS BASED ON AGE WISE</div>
+		<div id="ageWiseSurveyAnalysis"></div>
+
+
+		
+		<div class="" align="center" style="background: none repeat scroll 0px 0px rgb(49, 152, 182); border-radius: 4px 4px 4px 4px; margin-left: 10px; width: 977px; font-family: arial; font-size: 18px; color: white; padding-bottom: 4px; margin-bottom: 5px; margin-top: 19px; font-weight: bolder; padding-top: 10px; height: 25px;display:none;" id="genderWiseAnalysisHeading" >SURVEY ANALYSIS BASED ON GENDER WISE</div>
+		<div id="genderWiseSurveyAnalysis"></div>
+
+		
+		<div class="" align="center" style="background: none repeat scroll 0px 0px rgb(49, 152, 182); border-radius: 4px 4px 4px 4px; margin-left: 10px; width: 977px; font-family: arial; font-size: 18px; color: white; padding-bottom: 4px; margin-bottom: 5px; margin-top: 19px; font-weight: bolder; padding-top: 10px; height: 25px;display:none;"  id="optionWiseAnalysisHeading">SURVEY ANALYSIS BASED ON OPTION WISE</div>
+		<div id="optionWiseSurveyAnalysis"></div>
 	</div>
 
 

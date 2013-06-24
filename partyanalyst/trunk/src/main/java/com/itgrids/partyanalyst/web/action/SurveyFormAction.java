@@ -623,6 +623,20 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 				return "ageWiseAnalysis";
 			}
 			
+			else if(jObj.getString("task").equalsIgnoreCase("getGenderWiseSurveyAnalysis"))
+			{
+				Long surveyId       = jObj.getLong("surveyId");
+				surveyAgeWiseDetailsVO = surveyAnalysisService.getGenderWiseSurveyAnalysis(surveyId);
+				return "ageWiseAnalysis";
+			}
+			
+			else if(jObj.getString("task").equalsIgnoreCase("getOptionWiseSurveyAnalysis"))
+			{
+				Long surveyId       = jObj.getLong("surveyId");
+				surveyAgeWiseDetailsVO = surveyAnalysisService.getOptionWiseSurveyAnalysis(surveyId);
+				return "ageWiseAnalysis";
+			}
+			
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getSurveyDetails() method in SurveyFormAction Action Class", e);
