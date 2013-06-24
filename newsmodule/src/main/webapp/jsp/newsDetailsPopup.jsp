@@ -341,7 +341,7 @@ function buildContentDetails()
 	var totSize = null;
 	var source = "";
 	var totSize = null;
-
+    $("#newsDescriptionDiv").html('');
 	$("#newsDescriptionHeadingDiv").html('');
    for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
