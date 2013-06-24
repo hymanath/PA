@@ -15,38 +15,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IAbusedCommentsDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
-import com.itgrids.partyanalyst.dao.ICandidatePageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyDAO;
-import com.itgrids.partyanalyst.dao.ICandidateProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
-import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
-import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
-import com.itgrids.partyanalyst.dao.ICandidateUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
-import com.itgrids.partyanalyst.dao.ICommentDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
-import com.itgrids.partyanalyst.dao.ICustomPageDAO;
-import com.itgrids.partyanalyst.dao.ICustomPageTypeDAO;
-import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
-import com.itgrids.partyanalyst.dao.IElectionDAO;
-import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
@@ -55,41 +40,25 @@ import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
-import com.itgrids.partyanalyst.dao.IMessageToPartyDAO;
 import com.itgrids.partyanalyst.dao.INewsDetailsDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
-import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
-import com.itgrids.partyanalyst.dao.IPartyPageCustomPagesDAO;
-import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
-import com.itgrids.partyanalyst.dao.ISpecialPageCustomPagesDAO;
-import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
-import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
-import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dao.IUserNewsCategoryDAO;
-import com.itgrids.partyanalyst.dao.IUserPartyRelationDAO;
-import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateNewsResponse;
 import com.itgrids.partyanalyst.model.CandidateParty;
-import com.itgrids.partyanalyst.model.CandidateProfileDescription;
 import com.itgrids.partyanalyst.model.CandidateRealatedNews;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.File;
@@ -111,14 +80,14 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class CandidateDetailsService implements ICandidateDetailsService {
 
-	private ICandidateResultDAO candidateResultDAO;
+	//private ICandidateResultDAO candidateResultDAO;
 	private static final Logger log = Logger.getLogger(CandidateDetailsService.class);
 	private ICandidateDAO candidateDAO;
 	private IGallaryDAO gallaryDAO;
 	private IFileGallaryDAO fileGallaryDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
-	private IContentTypeDAO contentTypeDAO;
-	private IUserGallaryDAO userGallaryDAO;
+	//private IContentTypeDAO contentTypeDAO;
+	//private IUserGallaryDAO userGallaryDAO;
 	private IRegionScopesDAO regionScopesDAO;
 	private ISourceDAO sourceDAO;
 	private ICountryDAO countryDAO;
@@ -129,45 +98,39 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IHamletDAO hamletDAO;  
 	private ILocalElectionBodyDAO localElectionBodyDAO;  
 	private IBoothDAO boothDAO; 
-	private ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO;
+	//private ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO;
 	private IFileDAO fileDAO;
 	private IFileTypeDAO fileTypeDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private INominationDAO nominationDAO;
-	private CandidateProfileDescription candidateProfileDescription;
-    private IMessageToCandidateDAO messageToCandidateDAO;
+	//private CandidateProfileDescription candidateProfileDescription;
+   // private IMessageToCandidateDAO messageToCandidateDAO;
 	private IUserCandidateRelationDAO userCandidateRelationDAO;
-	private ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO;
+	//private ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO;
 	private ISourceLanguageDAO sourceLanguageDAO;
-	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
-	private List<SelectOptionVO> candidatesList;
+	//private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	//private List<SelectOptionVO> candidatesList;
 	private ICategoryDAO categoryDAO; 
 	private TransactionTemplate transactionTemplate;
 	private INewsImportanceDAO newsImportanceDAO;
 	private IPartyGalleryDAO partyGalleryDAO;	
-	private ISpecialPageGalleryDAO specialPageGalleryDAO;
-	private IMessageToPartyDAO messageToPartyDAO;
-	private IElectionDAO electionDAO;
-	private IElectionGoverningBodyDAO electionGoverningBodyDAO;
-	private ICandidatePageCustomPagesDAO candidatePageCustomPagesDAO;
-	private ICustomPageTypeDAO customPageTypeDAO;
-	private ICustomPageDAO customPageDAO;
-	private IPartyDAO partyDAO;
-	private IPartyPageCustomPagesDAO partyPageCustomPagesDAO;
-	private ISpecialPageDAO specialPageDAO;
-	private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
+	//private ISpecialPageGalleryDAO specialPageGalleryDAO;
+	//private IMessageToPartyDAO messageToPartyDAO;
+	//private IElectionDAO electionDAO;
+	//private IElectionGoverningBodyDAO electionGoverningBodyDAO;
+//	private ICandidatePageCustomPagesDAO candidatePageCustomPagesDAO;
+	//private ICustomPageTypeDAO customPageTypeDAO;
+	//private ICustomPageDAO customPageDAO;
+	//private IPartyDAO partyDAO;
+	//private IPartyPageCustomPagesDAO partyPageCustomPagesDAO;
+	//private ISpecialPageDAO specialPageDAO;
+	//private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
 	private IFilePathsDAO filePathsDAO;
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
 	private IUserDAO userDAO;
-	private ICandidateSubscriptionsDAO candidateSubscriptionsDAO;
-	private IPartySubscriptionsDAO partySubscriptionsDAO;
-	private ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO;
-	private IUserPartyRelationDAO userPartyRelationDAO;	
-	private IAbusedCommentsDAO abusedCommentsDAO;
-	private ICommentDAO commentDAO;
-	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
-	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
-	private IVoterDAO voterDAO;
+	//private ICandidateSubscriptionsDAO candidateSubscriptionsDAO;
+	//private IPartySubscriptionsDAO partySubscriptionsDAO;
+	//private IUserPartyRelationDAO userPartyRelationDAO;	
 	
 	
 	private INewsDetailsDAO newsDetailsDAO;
@@ -221,75 +184,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
 	}
 
-	public IVoterDAO getVoterDAO() {
-		return voterDAO;
-	}
-
-
-	public void setVoterDAO(IVoterDAO voterDAO) {
-		this.voterDAO = voterDAO;
-	}
-
-	public IPartyElectionStateResultDAO getPartyElectionStateResultDAO() {
-		return partyElectionStateResultDAO;
-	}
-
-	public void setPartyElectionStateResultDAO(
-			IPartyElectionStateResultDAO partyElectionStateResultDAO) {
-		this.partyElectionStateResultDAO = partyElectionStateResultDAO;
-	}
-
-	public IPartyElectionDistrictResultDAO getPartyElectionDistrictResultDAO() {
-		return partyElectionDistrictResultDAO;
-	}
-
-	public void setPartyElectionDistrictResultDAO(
-			IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO) {
-		this.partyElectionDistrictResultDAO = partyElectionDistrictResultDAO;
-	}
-	
-	
-	public ICommentDAO getCommentDAO() {
-		return commentDAO;
-	}
-	public void setCommentDAO(ICommentDAO commentDAO) {
-		this.commentDAO = commentDAO;
-	}
-
-	public IAbusedCommentsDAO getAbusedCommentsDAO() {
-		return abusedCommentsDAO;
-	}
-
-	public void setAbusedCommentsDAO(IAbusedCommentsDAO abusedCommentsDAO) {
-		this.abusedCommentsDAO = abusedCommentsDAO;
-	}
-
-	public IPartySubscriptionsDAO getPartySubscriptionsDAO() {
-		return partySubscriptionsDAO;
-	}
-
-	public void setPartySubscriptionsDAO(
-			IPartySubscriptionsDAO partySubscriptionsDAO) {
-		this.partySubscriptionsDAO = partySubscriptionsDAO;
-	}
-
-	public ISpecialPageSubscriptionsDAO getSpecialPageSubscriptionsDAO() {
-		return specialPageSubscriptionsDAO;
-	}
-
-	public void setSpecialPageSubscriptionsDAO(
-			ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO) {
-		this.specialPageSubscriptionsDAO = specialPageSubscriptionsDAO;
-	}
-
-	public ICandidateSubscriptionsDAO getCandidateSubscriptionsDAO() {
-		return candidateSubscriptionsDAO;
-	}
-
-	public void setCandidateSubscriptionsDAO(
-			ICandidateSubscriptionsDAO candidateSubscriptionsDAO) {
-		this.candidateSubscriptionsDAO = candidateSubscriptionsDAO;
-	}
 
 	public IUserDAO getUserDAO() {
 		return userDAO;
@@ -315,98 +209,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.fileSourceLanguageDAO = fileSourceLanguageDAO;
 	}
 
-	public ISpecialPageCustomPagesDAO getSpecialPageCustomPagesDAO() {
-		return specialPageCustomPagesDAO;
-	}
-
-	public void setSpecialPageCustomPagesDAO(
-			ISpecialPageCustomPagesDAO specialPageCustomPagesDAO) {
-		this.specialPageCustomPagesDAO = specialPageCustomPagesDAO;
-	}
-
-	public ISpecialPageDAO getSpecialPageDAO() {
-		return specialPageDAO;
-	}
-
-	public void setSpecialPageDAO(ISpecialPageDAO specialPageDAO) {
-		this.specialPageDAO = specialPageDAO;
-	}
-
-	public IPartyPageCustomPagesDAO getPartyPageCustomPagesDAO() {
-		return partyPageCustomPagesDAO;
-	}
-
-	public void setPartyPageCustomPagesDAO(
-			IPartyPageCustomPagesDAO partyPageCustomPagesDAO) {
-		this.partyPageCustomPagesDAO = partyPageCustomPagesDAO;
-	}
-
-	public IPartyDAO getPartyDAO() {
-		return partyDAO;
-	}
-
-	public void setPartyDAO(IPartyDAO partyDAO) {
-		this.partyDAO = partyDAO;
-	}
-
-	public ICustomPageDAO getCustomPageDAO() {
-		return customPageDAO;
-	}
-
-	public void setCustomPageDAO(ICustomPageDAO customPageDAO) {
-		this.customPageDAO = customPageDAO;
-	}
-
-	public ICustomPageTypeDAO getCustomPageTypeDAO() {
-		return customPageTypeDAO;
-	}
-
-	public void setCustomPageTypeDAO(ICustomPageTypeDAO customPageTypeDAO) {
-		this.customPageTypeDAO = customPageTypeDAO;
-	}
-
-	public ICandidatePageCustomPagesDAO getCandidatePageCustomPagesDAO() {
-		return candidatePageCustomPagesDAO;
-	}
-
-	public void setCandidatePageCustomPagesDAO(
-			ICandidatePageCustomPagesDAO candidatePageCustomPagesDAO) {
-		this.candidatePageCustomPagesDAO = candidatePageCustomPagesDAO;
-	}
-
-	public IElectionGoverningBodyDAO getElectionGoverningBodyDAO() {
-		return electionGoverningBodyDAO;
-	}
-
-	public void setElectionGoverningBodyDAO(
-			IElectionGoverningBodyDAO electionGoverningBodyDAO) {
-		this.electionGoverningBodyDAO = electionGoverningBodyDAO;
-	}
-
-	public IElectionDAO getElectionDAO() {
-		return electionDAO;
-	}
-
-	public void setElectionDAO(IElectionDAO electionDAO) {
-		this.electionDAO = electionDAO;
-	}
-
-	public IMessageToPartyDAO getMessageToPartyDAO() {
-		return messageToPartyDAO;
-	}
-
-	public void setMessageToPartyDAO(IMessageToPartyDAO messageToPartyDAO) {
-		this.messageToPartyDAO = messageToPartyDAO;
-	}
-
-	public ISpecialPageGalleryDAO getSpecialPageGalleryDAO() {
-		return specialPageGalleryDAO;
-	}
-
-	public void setSpecialPageGalleryDAO(
-			ISpecialPageGalleryDAO specialPageGalleryDAO) {
-		this.specialPageGalleryDAO = specialPageGalleryDAO;
-	}
 
 	public IPartyGalleryDAO getPartyGalleryDAO() {
 		return partyGalleryDAO;
@@ -432,22 +234,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.categoryDAO = categoryDAO;
 	}
 
-	public void setDelimitationConstituencyAssemblyDetailsDAO(
-			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
-		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
-	}
-
-	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
-		return delimitationConstituencyAssemblyDetailsDAO;
-	}
-
-	public List<SelectOptionVO> getCandidatesList() {
-		return candidatesList;
-	}
-
-	public void setCandidatesList(List<SelectOptionVO> candidatesList) {
-		this.candidatesList = candidatesList;
-	}
 
 		public ISourceLanguageDAO getSourceLanguageDAO() {
 		return sourceLanguageDAO;
@@ -457,25 +243,11 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.sourceLanguageDAO = sourceLanguageDAO;
 	}
 
-	public ICandidateUpdatesEmailDAO getCandidateUpdatesEmailDAO() {
-		return candidateUpdatesEmailDAO;
-	}
-
-	public void setCandidateUpdatesEmailDAO(
-			ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO) {
-		this.candidateUpdatesEmailDAO = candidateUpdatesEmailDAO;
-	}
+	
 
 	
       
-	public IMessageToCandidateDAO getMessageToCandidateDAO() {
-		return messageToCandidateDAO;
-	}
-
-	public void setMessageToCandidateDAO(
-			IMessageToCandidateDAO messageToCandidateDAO) {
-		this.messageToCandidateDAO = messageToCandidateDAO;
-	}
+	
 
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
@@ -486,14 +258,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
 		
-	public CandidateProfileDescription getCandidateProfileDescription() {
-		return candidateProfileDescription;
-	}
-
-	public void setCandidateProfileDescription(
-			CandidateProfileDescription candidateProfileDescription) {
-		this.candidateProfileDescription = candidateProfileDescription;
-	}
+	
 
 	public IFileDAO getFileDAO() {
 		return fileDAO;
@@ -511,29 +276,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.fileTypeDAO = fileTypeDAO;
 	}
 
-	public IUserGallaryDAO getUserGallaryDAO() {
-		return userGallaryDAO;
-	}
-
-	public void setUserGallaryDAO(IUserGallaryDAO userGallaryDAO) {
-		this.userGallaryDAO = userGallaryDAO;
-	}
-
-	public IContentTypeDAO getContentTypeDAO() {
-		return contentTypeDAO;
-	}
-
-	public void setContentTypeDAO(IContentTypeDAO contentTypeDAO) {
-		this.contentTypeDAO = contentTypeDAO;
-	}
-
-	public ICandidateResultDAO getCandidateResultDAO() {
-		return candidateResultDAO;
-	}
-
-	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
-		this.candidateResultDAO = candidateResultDAO;
-	}
+	
 
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
@@ -637,17 +380,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
-	}
-	
-	
-	public ICandidateProfileDescriptionDAO getCandidateProfileDescriptionDAO() {
-		return candidateProfileDescriptionDAO;
-	}
-
-	public void setCandidateProfileDescriptionDAO(
-			ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO) {
-		this.candidateProfileDescriptionDAO = candidateProfileDescriptionDAO;
-	}
+	}	
 
 	public INominationDAO getNominationDAO() {
 		return nominationDAO;
@@ -674,13 +407,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.newsImportanceDAO = newsImportanceDAO;
 	}
 
-	public IUserPartyRelationDAO getUserPartyRelationDAO() {
-		return userPartyRelationDAO;
-	}
 
-	public void setUserPartyRelationDAO(IUserPartyRelationDAO userPartyRelationDAO) {
-		this.userPartyRelationDAO = userPartyRelationDAO;
-	}
 	
 	public IUserNewsCategoryDAO getUserNewsCategoryDAO() {
 		return userNewsCategoryDAO;
@@ -6133,47 +5860,48 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 }		 
 		 
 	 }
+	
 	 
-	public ResultStatus createUserNewsCategory(String name, String visibility, Long userId)
-	{
-		ResultStatus resultStatus = new ResultStatus();
-		try{
-			List<String> list = categoryDAO.checkCategoryNameExist(name.trim());
-			if(list != null && list.size() > 0)
-			{
+		public ResultStatus createUserNewsCategory(String name, String visibility, Long userId)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			try{
+				List<String> list = categoryDAO.checkCategoryNameExist(name.trim());
+				if(list != null && list.size() > 0)
+				{
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					resultStatus.setMessage("News Category is Already Exists.");
+					return resultStatus;
+				}
+				
+				Long orderNo = categoryDAO.getMaxOrderNo();
+				if(orderNo == null || orderNo == 0L)
+					orderNo = 1L;
+				else
+					orderNo = orderNo+1;
+				Category category = new Category();
+				category.setCategoryType(name.trim());
+				category.setOrderNo(orderNo);
+				category = categoryDAO.save(category);
+				
+				UserNewsCategory userNewsCategory = new UserNewsCategory();
+				userNewsCategory.setIsPrivate(visibility);
+				userNewsCategory.setIsDelete("false");
+				userNewsCategory.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+				userNewsCategory.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+				userNewsCategory.setUser(userDAO.get(userId));
+				userNewsCategory.setCategory(category);
+				userNewsCategoryDAO.save(userNewsCategory);
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-				resultStatus.setMessage("News Category is Already Exists.");
+				return resultStatus;
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in createUserNewsCategory() method, Exception - "+e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				return resultStatus;
 			}
-			
-			Long orderNo = categoryDAO.getMaxOrderNo();
-			if(orderNo == null || orderNo == 0L)
-				orderNo = 1L;
-			else
-				orderNo = orderNo+1;
-			Category category = new Category();
-			category.setCategoryType(name.trim());
-			category.setOrderNo(orderNo);
-			category = categoryDAO.save(category);
-			
-			UserNewsCategory userNewsCategory = new UserNewsCategory();
-			userNewsCategory.setIsPrivate(visibility);
-			userNewsCategory.setIsDelete("false");
-			userNewsCategory.setCreatedDate(dateUtilService.getCurrentDateAndTime());
-			userNewsCategory.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-			userNewsCategory.setUser(userDAO.get(userId));
-			userNewsCategory.setCategory(category);
-			userNewsCategoryDAO.save(userNewsCategory);
-			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-			return resultStatus;
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.error("Exception Occured in createUserNewsCategory() method, Exception - "+e);
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			return resultStatus;
-		}
-	}
-	 
 	
+}
+		
 }
