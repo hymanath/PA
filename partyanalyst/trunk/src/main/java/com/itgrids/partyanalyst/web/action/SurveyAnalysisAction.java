@@ -206,7 +206,12 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 	}
 
 	public String execute(){
-		 System.out.println("In");
+		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+		 return ERROR;
+		
 		 statesList=surveyAnalysisService.getStatesList();
 		 surveyList = surveyAnalysisService.getSurveysForUser();
 		 

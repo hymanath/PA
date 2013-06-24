@@ -210,14 +210,6 @@ else{
 function analyseSurvey(id)
 {
 
-	catsteWiseSurveyAnalysis(id);
-	surveyAnalysisBasedOnAge(id);
-	surveyAnalysisBasedOnGender(id);
-	surveyAnalysisBasedOnOption(id);
-}
-
-function catsteWiseSurveyAnalysis(id)
-{
 	var jsObj =
 	{
 		surveyId:id,
@@ -226,6 +218,23 @@ function catsteWiseSurveyAnalysis(id)
    var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
    var url = "analyseSurveyAction.action?"+rparam;						
    callAjax(jsObj,url);
+   
+	catsteWiseSurveyAnalysis(id);
+	surveyAnalysisBasedOnAge(id);
+	surveyAnalysisBasedOnGender(id);
+	surveyAnalysisBasedOnOption(id);
+}
+
+function catsteWiseSurveyAnalysis(id)
+{
+	var jsObj=
+	{	
+		surveyId     : id,
+		task         : "getCasteWiseSurveyAnalysis" 
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSurveyDetailsAction.action?"+rparam;
+	callAjax(jsObj,url); 
 }
 
   function removeSurvey(id){
@@ -266,6 +275,10 @@ function catsteWiseSurveyAnalysis(id)
 			else if(jsObj.task == "getOptionWiseSurveyAnalysis")
 			{
 				buildOptionWiseSurveyAnalysis(myResults);
+			}
+			else if(jsObj.task == "getCasteWiseSurveyAnalysis")
+			{
+				buildCasteWiseSurveyAnalysis(myResults);
 			}
 		}
 		catch (e)
@@ -356,7 +369,6 @@ function buildSurveyDetails(result)
 	{
 		var str = '';
 		var k=0;
-		$('#casteWiseAnalysisHeading').show();
     	for(var i in result)
 		{
 		 k++;
@@ -384,7 +396,7 @@ function buildSurveyDetails(result)
 		str+='<div id="chartDiv'+k+'" style="position: relative; float: right; margin-top: -167px;"></div>';
 		str+='</div>';
 		}
-		$('#casteWiseSurveyAnalysis').html(str);	
+		$('#analyseDiv').html(str);	
 		var k1=0;
 		for(var i in result)
 		{
@@ -523,7 +535,10 @@ function buildOptionWiseSurveyAnalysis(myResults)
 	}
 }
 
+function buildCasteWiseSurveyAnalysis(myResults)
+{
 
+}
 </script>
 </head>
 <body>
@@ -709,7 +724,7 @@ headerValue="Select State"/>
 	
 	<div>
 		   
-		<!--<div id="analyseDiv" style="width:900px;margin-left:auto;margin-right:auto;"></div>	-->
+		<div id="analyseDiv" style="width:900px;margin-left:auto;margin-right:auto;"></div>
 		
 		<div class="" align="center" style="background: none repeat scroll 0px 0px rgb(49, 152, 182); border-radius: 4px 4px 4px 4px; margin-left: 10px; width: 977px; font-family: arial; font-size: 18px; color: white; padding-bottom: 4px; margin-bottom: 5px; margin-top: 19px; font-weight: bolder; padding-top: 10px; height: 25px;display:none;" id="casteWiseAnalysisHeading">SURVEY ANALYSIS BASED ON CASTE WISE</div>
 		<div id="casteWiseSurveyAnalysis"></div>
