@@ -56,8 +56,6 @@ font-family:eFont;src: url('img/eenadu.ttf');
 font-family: eFont;
 font-size:20px;
 }
-
-
 #newsDetailsTable  th{
 	color:#005580;
 	background-color:#DDDDDD;
@@ -1600,7 +1598,7 @@ function clearNewsUploadFileFields()
 	//document.getElementById('publicRadioId').checked = true;
 	document.getElementById('existingFromTextNews').value = '';
 	document.getElementById('ImagenewsfileId').value = '';
-	$("#newsDesc").val('');
+	document.getElementById('newsDesc').value = '';
 	getScopes();
 }
 	
