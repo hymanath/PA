@@ -18,7 +18,7 @@ public class SurveyAnswerDAOHibernateTest extends BaseDaoTestCase {
 		surveyAnswerDAO.getAll();
 	}*/
 	
-	public void testGetCasteWiseSurveyInfo(){
+	/*public void testGetCasteWiseSurveyInfo(){
 		List<Long> questionIds = new ArrayList<Long>();
 		questionIds.add(34l);
 		List<Object[]>  valuesList = surveyAnswerDAO.getCasteWiseSurveyInfo(questionIds);
@@ -28,9 +28,9 @@ public class SurveyAnswerDAOHibernateTest extends BaseDaoTestCase {
 			}
 			System.out.println("");
 		}
-	}
+	}*/
 	
-	public void testgetsurveyDetailsBasedOnGivenAgeRange()
+	/*public void testgetsurveyDetailsBasedOnGivenAgeRange()
 	{
 		List<Long> questionIds = new ArrayList<Long>();
 		questionIds.add(9l);
@@ -39,6 +39,30 @@ public class SurveyAnswerDAOHibernateTest extends BaseDaoTestCase {
 		questionIds.add(12l);
 		questionIds.add(13l);
 		List<Object[]> values = surveyAnswerDAO.getsurveyDetailsForAbove60Years(questionIds,"61");
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1] +":"+ parms[2] +":"+ parms[3] +":"+ parms[4]);
+		}
+	}*/
+	/*public void testgetsurveyDetailsBasedOnGivenAgeRange()
+	{
+		List<Long> questionIds = new ArrayList<Long>();
+		questionIds.add(9l);
+		questionIds.add(10l);
+		questionIds.add(11l);
+		questionIds.add(12l);
+		List<Object[]> values = surveyAnswerDAO.getGenderWiseSurveyAnalysis(questionIds,"male");
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1] +":"+ parms[2] +":"+ parms[3] +":"+ parms[4]);
+		}
+	}*/
+	public void testgetsurveyDetailsBasedOnGivenAgeRange()
+	{
+		List<Long> questionIds = new ArrayList<Long>();
+		questionIds.add(9l);
+		questionIds.add(10l);
+		questionIds.add(11l);
+		questionIds.add(12l);
+		List<Object[]> values = surveyAnswerDAO.getOptionWiseSurveyAnalysis(questionIds);
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+ parms[1] +":"+ parms[2] +":"+ parms[3] +":"+ parms[4]);
 		}
