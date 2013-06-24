@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -37,6 +38,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private Long responseContentId;
 	private String fromDate;
 	private String toDate;
+	private ResultStatus resultStatus;
 	
 	public Long getResponseContentId() {
 		return responseContentId;
@@ -134,6 +136,12 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	public void setToDate(String toDate) {
 		this.toDate = toDate;
 	}
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	public String execute()
 	{	
 		session = request.getSession();
@@ -148,6 +156,10 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	{
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO == null)
+			return null;
+		Long userId = regVO.getRegistrationID();
+		
 		try{
 		jObj = new JSONObject(getTask());
 		 if(jObj.getString("task").equalsIgnoreCase("getLatestNews"))
@@ -170,6 +182,9 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 				 newsType = "";
 			 fileVOsList = candidateDetailsService.getNewsBetweenSelectedDates(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getInt("firstResult"),jObj.getInt("maxResult"),newsType);
 		 }
+		 
+		 else if(jObj.getString("task").equalsIgnoreCase("createUserNewsCategory"))
+			resultStatus = candidateDetailsService.createUserNewsCategory(jObj.getString("name"),jObj.getString("visibility"),userId);
 		 
 		}catch (Exception e) {
 			e.printStackTrace();

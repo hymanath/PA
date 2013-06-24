@@ -241,6 +241,6 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getCandidatesOfAParty(Long partyId);
 	 public String insertMLCCandidateDetails(Long partyId ,String candidateName ,String  education , String gender,Long userId);
 
-
+	 public ResultStatus createUserNewsCategory(String name, String visibility, Long userId);
 	 
 }

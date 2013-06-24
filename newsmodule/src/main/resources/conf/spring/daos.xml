@@ -1306,7 +1306,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	
-	
-	
+	<bean id="userNewsCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserNewsCategoryDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
