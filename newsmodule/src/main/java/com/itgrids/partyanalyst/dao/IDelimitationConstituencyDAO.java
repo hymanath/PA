@@ -8,7 +8,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 
 public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationConstituency, Long>{
-	public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(Long constituencyID);
+	/*public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(Long constituencyID);
 	
 	public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(
 			Long constituencyID,Long year);
@@ -52,5 +52,5 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 	
 	public List<Object[]> getConstituenciesByDistrictIDs(Long districtId);
 	
-	public List getMandalsOfConstituency(Long constituencyId);
+	public List getMandalsOfConstituency(Long constituencyId);*/
 }
