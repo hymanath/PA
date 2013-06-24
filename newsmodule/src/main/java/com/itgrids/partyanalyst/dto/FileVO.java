@@ -126,8 +126,8 @@ public class FileVO extends ResultStatus implements Serializable {
 	private List<Long> candidateIds = new ArrayList<Long>();
 	private List<Long> responseFileIds = new ArrayList<Long>();
 	private String newsDescription;
-	
-	
+	private String newsEdition;
+	private Long pageNo;
 	
 	public String getNewsDescription() {
 		return newsDescription;
@@ -1067,7 +1067,20 @@ public class FileVO extends ResultStatus implements Serializable {
 		this.newslength = newslength;
 	}
 
-	
-	
+	public String getNewsEdition() {
+		return newsEdition;
+	}
+
+	public void setNewsEdition(String newsEdition) {
+		this.newsEdition = newsEdition;
+	}
+
+	public Long getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(Long pageNo) {
+		this.pageNo = pageNo;
+	}
 
 }

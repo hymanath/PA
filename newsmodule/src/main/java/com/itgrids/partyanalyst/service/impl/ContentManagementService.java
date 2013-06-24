@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.INewsDetailsDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
@@ -42,6 +43,7 @@ public class ContentManagementService implements IContentManagementService{
 	private ICandidateDetailsService candidateDetailsService;
 	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
 	private ICandidateDAO candidateDAO;
+	private INewsDetailsDAO newsDetailsDAO;
 	
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
@@ -108,6 +110,14 @@ public class ContentManagementService implements IContentManagementService{
 
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
+	}
+
+	public INewsDetailsDAO getNewsDetailsDAO() {
+		return newsDetailsDAO;
+	}
+
+	public void setNewsDetailsDAO(INewsDetailsDAO newsDetailsDAO) {
+		this.newsDetailsDAO = newsDetailsDAO;
 	}
 
 	/**
@@ -218,6 +228,17 @@ public class ContentManagementService implements IContentManagementService{
 									fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 									fileVO.setContentId(falseContentIdForPhotoGal);
 									falseContentIdForPhotoGal = falseContentIdForPhotoGal+1L;
+							
+									/*List<Object[]> editionDets = newsDetailsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());		
+									if(editionDets != null && editionDets.size() > 0)
+									{
+									  fileVO.setPageNo((Long)editionDets.get(0)[0]);
+									  Long edition = (Long)editionDets.get(0)[1];
+									  if(edition.equals(1L))
+										  fileVO.setNewsEdition("Main Edition");
+									  else
+										 fileVO.setNewsEdition("District/Sub Edition");
+									}*/
 								 
 								 FileVO fileVOPath = new FileVO();
 								 fileVOPath.setPath(filePath.getFilePath());
@@ -275,6 +296,19 @@ public class ContentManagementService implements IContentManagementService{
 						 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
 						 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
 						 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+						 
+						 List<Object[]> editionDets = newsDetailsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());		
+							if(editionDets != null && editionDets.size() > 0)
+							{
+							 
+							fileVOSourceLanguage.setPageNo(Long.parseLong(editionDets.get(0)[0].toString()));
+							  Long edition = Long.parseLong(editionDets.get(0)[1].toString());
+							  if(edition.equals(1L))
+								  fileVOSourceLanguage.setNewsEdition("Main Edition");
+							  else
+								  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
+							}
+						 
 						 
 						 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
 						 
