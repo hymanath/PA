@@ -1621,6 +1621,7 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService"></property>
 		<property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />
+		<property name="newsDetailsDAO" ref="newsDetailsDAO" />
 	</bean>
 	
 	
