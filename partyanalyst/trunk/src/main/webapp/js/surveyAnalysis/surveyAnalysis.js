@@ -14,7 +14,7 @@ data.addRows(result.length);
 			data.setValue(i, 1,result[i].votesObtained);
 			}
 			var chart = new google.visualization.PieChart(chartDiv);
-					chart.draw(data, {width:350, height:200, title: "", legendFontSize:14,fontSize:13});
+					chart.draw(data, {width:350, height:200, title: "", legendFontSize:10,fontSize:10});
 }
 
 
@@ -34,7 +34,7 @@ data.addRows(result.length);
 			data.setValue(i, 1,result[i].optionCount);
 			}
 			var chart = new google.visualization.PieChart(chartDiv);
-					chart.draw(data, {width:350, height:200, title: "", legendFontSize:14,fontSize:13});
+					chart.draw(data, {width:350, height:200, title: "", legendFontSize:10,fontSize:10});
 }
 
 function buildChartForSurveyAnalysis(result,div)
@@ -53,5 +53,5 @@ data.addRows(result.length);
 			data.setValue(i, 1,result[i].total);
 			}
 			var chart = new google.visualization.PieChart(chartDiv);
-					chart.draw(data, {width:350, height:200, title: "", legendFontSize:14,fontSize:13});
+					chart.draw(data, {width:350, height:200, title: "", legendFontSize:10,fontSize:10});
 }
