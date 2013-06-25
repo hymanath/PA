@@ -1584,8 +1584,7 @@ function clearNewsUploadFileFields1()
 	$('#newsfileTitle , #newsfileDescription , #keywords , #existingFromTextNews , #ImagenewsfileId').val('');
 	$('#candidateList').find('option').remove();
 	$('#uploadFilesDiv').html('');
-
-
+    $('#newsDesc').val('');
 	 getScopes();
 	 getSource("source");
 	 getLanguage("language");
