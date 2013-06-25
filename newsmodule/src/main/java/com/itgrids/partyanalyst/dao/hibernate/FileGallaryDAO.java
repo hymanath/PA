@@ -2847,28 +2847,29 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			if(queryType.equalsIgnoreCase("Private"))
 					query.append(" and model.isPrivate = :isPrivate  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
 			
-			query.append(" and (");
+			query.append(" and ( ");
 			if(districtIds!= null)
-				query.append("(model.file.regionScopes.regionScopesId = :districtScopeId and " +
-						" model.file.locationValue in (:districtIds)) or");
+				query.append(" (model.file.regionScopes.regionScopesId = :districtScopeId and " +
+						" model.file.locationValue in (:districtIds)) or ");
 			if(constituencyVal!= null)
-				query.append("(model.file.regionScopes.regionScopesId = :constituencyScopeId and " +
-						" model.file.locationValue in (:constituencyVal)) or ");
+				query.append(" (model.file.regionScopes.regionScopesId = :constituencyScopeId and " +
+						" model.file.locationValue in (:constituencyVal))  ");
 			if(tehsilIds!=null && tehsilIds.size()>0)
-				query.append(" (model.file.regionScopes.regionScopesId = :tehsilScopeId and " +
-						" model.file.locationValue in ( :tehsilIds)) or ");
+				query.append(" or (model.file.regionScopes.regionScopesId = :tehsilScopeId and " +
+						" model.file.locationValue in ( :tehsilIds)) ");
 			if(localElectionBodyIds!=null && localElectionBodyIds.size()>0)
-				query.append("(model.file.regionScopes.regionScopesId = :muncipalityScopeId and " +
-						" model.file.locationValue in ( :localElectionBodyIds)) or ");
+				query.append(" or (model.file.regionScopes.regionScopesId = :muncipalityScopeId and " +
+						" model.file.locationValue in ( :localElectionBodyIds)) ");
 			if(wardIdsList !=null && wardIdsList.size()>0)
-				query.append(" (model.file.regionScopes.regionScopesId = :wardScopeId and " +
-						" model.file.locationValue in ( :wardIdsList)) or ");
-			if(hamletIds !=null && hamletIds.size()>0)
-				query.append("(model.file.regionScopes.regionScopesId = :hamletScopeId and " +
-						" model.file.locationValue in (:hamletIds))) ");
+				query.append(" or (model.file.regionScopes.regionScopesId = :wardScopeId and " +
+						" model.file.locationValue in ( :wardIdsList)) ");
+			if(hamletIds !=null && (hamletIds.size() > 0 && hamletIds.size() <= 5000))
+				query.append(" or (model.file.regionScopes.regionScopesId = :hamletScopeId and " +
+						" model.file.locationValue in (:hamletIds)) ");
 			if(!type.equalsIgnoreCase("count"))	
-				query.append("group by model.file.fileId order by model.file.fileDate desc, model.updateddate desc  ");
-			
+				query.append(" ) group by model.file.fileId order by model.file.fileDate desc, model.updateddate desc  ");
+			if(type.equalsIgnoreCase("count"))	
+				query.append(" )");
 			Query queryObject = getSession().createQuery(query.toString());
 
 			queryObject.setParameterList("partyId", partyId);
@@ -2892,7 +2893,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 				queryObject.setLong("wardScopeId",wardScopeId);
 				queryObject.setParameterList("wardIdsList", wardIdsList);
 			}
-			if(hamletIds !=null && hamletIds.size()>0){
+			if(hamletIds !=null && (hamletIds.size() > 0 && hamletIds.size() <= 5000)){
 				queryObject.setLong("hamletScopeId",hamletScopeId);
 				queryObject.setParameterList("hamletIds", hamletIds);
 			}
