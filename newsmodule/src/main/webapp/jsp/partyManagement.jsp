@@ -1683,7 +1683,7 @@ function buildUploadNewsForMultipleUsers()
      str+='<div class="aligncenter">';
      //str+='<a style="margin-left:46px;font-weight:bold;color:blue;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
 
-	 str+='<a href="javascript:void(0)" title="Click here to respond to news"  id="responseDiv" style="float:right"><img id="" src="images/responseImage.png"/></a>';
+	 str+='<a href="javascript:void(0)" title="Click here to respond to news"  id="responseDiv" style="margin-left:586px;"><img id="" src="images/responseImage.png"/></a>';
 
 	 	 str+='<div id="dateErrorMessage"></div>';
 
