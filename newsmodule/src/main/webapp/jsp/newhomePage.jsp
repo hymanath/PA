@@ -469,7 +469,7 @@ width: 92px;
 								<s:iterator value="responseFilesList" var="responsefiles">
 								<li class='thumbnail' style='margin:5px;padding:5px 5px 5px 15px;'>
 								<s:if test="%{#responsefiles.source.equalsIgnoreCase('Eenadu Telugu')}">
-									<span class='text-info enadu' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;"> <s:property value="title"/></span>
+									<span class='text-info enadu' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;font-weight:bold;"> <s:property value="title"/></span>
 									</s:if>
 									<s:else>
 									<h6 class='text-info' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;"> <s:property value="title"/></h6>
@@ -497,16 +497,12 @@ width: 92px;
 							<div class="span12 boxHeading"><h4>Latest News</h4></div>
 							<div class="span12">
 								<ul class="unstyled pad10">
-									<!-- <li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</a></li>
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li>
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li>
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li>
-									<li><a href="#" class="muted"><i class="icon-share-alt"></i> Lorem ipsum dolor sit amet</a></li> -->
+									
 									<c:if test="${fileVOsList != null}">
 									 <s:iterator value="fileVOsList" var="newDetails">
 										<li>
 										<s:if test="%{#newDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
-										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="enadu muted"><i class="icon-share-alt "></i>${newDetails.fileTitle1}</a>
+										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="enadu muted" style='font-weight:bold;'><i class="icon-share-alt "></i>${newDetails.fileTitle1}</a>
 									</s:if>
 									<s:else>
 										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="muted"><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a>

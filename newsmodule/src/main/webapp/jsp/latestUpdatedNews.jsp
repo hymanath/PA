@@ -38,6 +38,7 @@ font-size:20px;
 
 #existingFromText,#existingToText{width:155px;}
 #errorMsgDiv{font-size:12px;}
+.fontStyle{color:#000;font-size:21px;}
 </style>
 <title>Insert title here</title>
 </head>
@@ -150,7 +151,7 @@ function buildPaginatedNews(results,jsObj)
 		var source = results[i].fileVOList[0].source.trim();
 		if(source == "Eenadu Telugu")
 		{
-			str+="<h4 class='enadu'>"+results[i].title+"</h4>";
+			str+="<span class='enadu fontStyle' style='font-weight:bold;'>"+results[i].title+"</span>";
 		}
 		else
 		{
@@ -166,7 +167,7 @@ function buildPaginatedNews(results,jsObj)
 		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
 		if(source == "Eenadu Telugu")
 		{
-			str+="<p class='span8 enadu'>"+results[i].description+"</p>";
+			str+="<p class='span8 enadu fontStyle'>"+results[i].description+"</p>";
 		}
 		else
 		{
