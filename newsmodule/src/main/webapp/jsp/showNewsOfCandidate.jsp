@@ -49,6 +49,14 @@
 	{
 	 font-family:eFont;src: url('img/eenadu.ttf');
 	}
+	@font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
+	@font-face {
+    font-family: "eFont";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
+	}
+	
 	.enadu
 	{
 	font-family: eFont;

@@ -46,9 +46,12 @@
 	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 	<script src="js/partyWiseNewsDisplay.js"></script>
 <style type="text/css">
-@font-face
-{
-font-family:eFont;src: url('img/eenadu.ttf');
+@font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
+@font-face {
+    font-family: "eFont";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
 }
 .enadu
 {
@@ -170,7 +173,7 @@ width: 92px;
                           
 						  
 						<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
-							<h4 class="enadu"> <s:property value="fileTitle1"/></h4>
+							<span class="enadu"> <s:property value="fileTitle1"/></span>
 						 </s:if>
 						 <s:else>
 							<h4> <s:property value="fileTitle1"/></h4>
@@ -466,7 +469,7 @@ width: 92px;
 								<s:iterator value="responseFilesList" var="responsefiles">
 								<li class='thumbnail' style='margin:5px;padding:5px 5px 5px 15px;'>
 								<s:if test="%{#responsefiles.source.equalsIgnoreCase('Eenadu Telugu')}">
-									<h6 class='text-info enadu' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;"> <s:property value="title"/></h6>
+									<span class='text-info enadu' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;"> <s:property value="title"/></span>
 									</s:if>
 									<s:else>
 									<h6 class='text-info' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;"> <s:property value="title"/></h6>
