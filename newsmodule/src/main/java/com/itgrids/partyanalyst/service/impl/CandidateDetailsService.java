@@ -5801,7 +5801,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 						if(params[1].toString().substring(0, 1).equalsIgnoreCase("."))
 							  selectOptionVO.setName(params[1].toString().substring(1));
 						else
-							  selectOptionVO.setName(params[12].toString());
+							  selectOptionVO.setName(params[1].toString());
 						
 						cadidatesList.add(selectOptionVO);
 					}
