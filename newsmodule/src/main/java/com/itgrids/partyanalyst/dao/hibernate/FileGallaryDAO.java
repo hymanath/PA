@@ -2720,7 +2720,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		queryObject.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model.file.fileId = fs.file.fileId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
 		if(!newsType.equalsIgnoreCase(""))
 			queryObject.append(" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' ");
-		queryObject.append(" order by model.updateddate desc ");
+		queryObject.append(" group by model.file.fileId order by model.updateddate desc ");
 		Query query = getSession().createQuery(queryObject.toString());
 		 query.setParameter("contentType", contentType);
 		 query.setParameter("partyId", partyId);

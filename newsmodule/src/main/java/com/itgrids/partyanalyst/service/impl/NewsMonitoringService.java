@@ -3495,7 +3495,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		for(Object[] params:list1){
 			SelectOptionVO selectOptionVO=new SelectOptionVO();
 			selectOptionVO.setId((Long)params[0]);
-			selectOptionVO.setName(params[2].toString());
+			selectOptionVO.setName(params[1] !=null?params[1].toString():"");
 			candidates.add(selectOptionVO);
 		}
 		}
