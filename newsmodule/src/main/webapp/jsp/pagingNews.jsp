@@ -34,6 +34,8 @@ font-size:20px;
 
 #existingFromText,#existingToText{width:155px;}
 #errorMsgDiv{font-size:12px;}
+.fontStyle{color:#000;font-size:21px;}
+
 </style>
 
 </head>
@@ -155,7 +157,7 @@ function buildPaginatedNews(results,jsObj){
 		var source = results[i].source.trim();
 		if(source == "Eenadu Telugu")
 		{
-			str+="<span class='enadu'>"+results[i].fileTitle1+"</span>";
+			str+="<span class='enadu fontStyle' style='font-weight:bold;'>"+results[i].fileTitle1+"</span>";
 		}
 		else
 		{
@@ -167,7 +169,7 @@ function buildPaginatedNews(results,jsObj){
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
 		if(source == "Eenadu Telugu")
 		{
-			str+="<p class='span8 enadu'>"+results[i].description+"</p>";
+			str+="<p class='span8 enadu fontStyle'>"+results[i].description+"</p>";
 		}
 		else
 		{

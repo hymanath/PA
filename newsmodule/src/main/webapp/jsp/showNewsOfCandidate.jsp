@@ -236,7 +236,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		str+="<li>";
 		var source = results[i].fileVOList[0].source.trim();
 		if(source == "Eenadu Telugu")
-		  str+="<h4 class='enadu'>"+results[i].title+"</h4>";
+		  str+="<h4 class='enadu' style='font-size:23px;'>"+results[i].title+"</h4>";
 		else
 		  str+="<h4 style='text-transform: capitalize'>"+results[i].title+"</h4>";
 				
@@ -248,7 +248,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		
 		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
 		if(source == "Eenadu Telugu")
-		  str+="<p class='span8 enadu'>"+results[i].description+"</p>";
+		  str+="<p class='span8 enadu' style='color:#000;'>"+results[i].description+"</p>";
 		else
 		 str+="<p class='span8'>"+results[i].description+"</p>";
 		
