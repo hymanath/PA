@@ -245,7 +245,14 @@ public class InflencingCadreCountsDisplayAction extends ActionSupport implements
 			if(user == null)
 				return ERROR;
 			String param;
-			long userId = user.getRegistrationID();
+			Long userId =  null;
+			if(user.getParentUserId()!=null){
+					userId=user.getMainAccountId();
+				}
+				else{
+					userId = user.getRegistrationID();
+				}
+				
 			param = getTask();
 			Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
 			String order = request.getParameter("dir");
