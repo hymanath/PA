@@ -139,7 +139,6 @@ public class ContentManagementService implements IContentManagementService{
 			List<Long> gallaryIds = null;
 			String contentType = null;
 			Long falseContentIdForPhotoGal = 1l;
-			Long tempPartNo = 1L;
 			
 			fileId = (Long)fileGallaryDAO.getFileIdByFileGallaryId(contentId);
 			
@@ -315,7 +314,7 @@ public class ContentManagementService implements IContentManagementService{
 						 
 						 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
 						 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
-						 
+						 Long tempPartNo = 1L;
 						 for(FilePaths filePath : filePathsSet){
 							 FileVO fileVOPath = new FileVO();
 							 fileVOPath.setPath(filePath.getFilePath());
