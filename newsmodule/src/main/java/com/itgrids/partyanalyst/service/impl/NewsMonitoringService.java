@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -3342,6 +3343,19 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	return returnFileVOList;
   }
 	
+	public String escapeUnicode(String input) {
+		  StringBuilder b = new StringBuilder(input.length());
+		  Formatter f = new Formatter(b);
+		  for (char c : input.toCharArray()) {
+		    if (c < 128) {
+		      b.append(c);
+		    } else {
+		      f.format("\\u%04x", (int) c);
+		    }
+		  }
+		  return b.toString();
+		}
+	
 	public ResultStatus updateDeleteNews(FileVO fileVO,String task,List<FileVO> sourceIds,List<FileVO> languageIds){
 		 if(log.isDebugEnabled())
 			 log.debug("Enter into updateDeleteNews Method of NewsMonitoringService ");
@@ -3356,9 +3370,8 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			  category = categoryDAO.get(fileVO.getCategoryId());
 			 
 			 NewsImportance newsImportance = newsImportanceDAO.get(fileVO.getNewsImportanceId());
-			 
-			 file.setFileTitle(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getTitle()));
-			 file.setFileDescription(CommonStringUtils.removeSpecialCharsFromAString(fileVO.getDescription()));
+			 file.setFileTitle(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getTitle())));
+			 file.setFileDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getDescription())));
 			 file.setCategory(category);
 			 file.setNewsImportance(newsImportance);
 			 
