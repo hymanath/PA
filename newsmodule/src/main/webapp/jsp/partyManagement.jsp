@@ -1673,7 +1673,9 @@ function buildUploadNewsForMultipleUsers()
 	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 
      str+='<div class="aligncenter">';
-     str+='<a style="margin-left:46px;font-weight:bold;color:blue;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
+     //str+='<a style="margin-left:46px;font-weight:bold;color:blue;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
+
+	 str+='<a href="javascript:void(0)" title="Click here to respond to news"  id="responseDiv" style="float:right"><img id="" src="images/1372153864_response.png"/></a>';
 
 	 	 str+='<div id="dateErrorMessage"></div>';
 
