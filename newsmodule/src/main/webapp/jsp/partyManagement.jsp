@@ -1734,8 +1734,8 @@ function buildUploadNewsForMultipleUsers()
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
 	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50"></input></td>'; 
-	str += ' <td> <a id="sourceTelugu" style="font-weight:bold;color: blue;" href=javascript:{changeLanguage();}> Select Telugu Language</a> </td>';
-	str += ' <td> <a id="sourceEnglish"  style="display:none;font-weight:bold;color: blue;" href=javascript:{changeLanguage();}>Remove Telugu Language</a></td>';
+	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceTelugu"><img id="" src="images/letter-t-video.png"  style="width:20px;"/></a> </td>';
+	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceEnglish" style="display:none"><img src="images/e-letter.jpeg"></img></a></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
