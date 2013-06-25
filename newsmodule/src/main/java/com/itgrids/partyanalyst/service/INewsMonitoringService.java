@@ -54,6 +54,8 @@ public interface INewsMonitoringService {/*
 	public ResultStatus updateDeleteNews(FileVO fileVO,String task,List<FileVO> sourceIds,List<FileVO> languageIds);
 	public List<SelectOptionVO> getCandidates();
 	public ResultStatus storeSourceDetails(String value);
+	public List<SelectOptionVO> getCandidatesByRemovingDots();
+
 
 
 }

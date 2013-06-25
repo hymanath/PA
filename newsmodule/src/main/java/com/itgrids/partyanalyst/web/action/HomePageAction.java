@@ -491,7 +491,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			candidatesList=new ArrayList<SelectOptionVO>();
 			candidatesMap = new HashMap<Long, String>(0);
 			
-			candidatesList=newsMonitoringService.getCandidates();
+		//	candidatesList=newsMonitoringService.getCandidates();
+			candidatesList=newsMonitoringService.getCandidatesByRemovingDots();
 			
 			for(SelectOptionVO vo:candidatesList)
 				candidatesMap.put(vo.getId(), vo.getName());

@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<title> TDP News Portal </title>
+ <title> TDP News Portal </title>
  
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -82,7 +82,7 @@ function buildNewsDetails(results)
 
    var str='';
 
-   str+='<div style="margin-left:50px;">';
+   str+='<div>';
    for(var i in results)
    { 
 	   str+='<div style="border:2px solid #5e5e5e;padding:4px;margin:3px;">';
@@ -97,7 +97,7 @@ function buildNewsDetails(results)
          str+='<div id="mainDiv'+i+'" style="text-align:center;">';
 		str+='<span class="label" style="float:left;">SOURCE:'+ results[i].fileVOList[0].source+'</span>';
 
-		str+='<img src="'+results[i].fileVOList[0].fileVOList[0].path+'" style="width:415px;height:244px;"></img>';
+		str+='<img src="'+results[i].fileVOList[0].fileVOList[0].path+'" style="width:415px;height:244px;" alt="news image not available"></img>';
 		str+='</div>';
 
 		if(results[i].fileVOList[0].fileVOList.length > 1)
@@ -108,7 +108,7 @@ function buildNewsDetails(results)
 
 			for(var k=1;k<results[i].fileVOList[0].fileVOList.length ;k++){
 
-				str+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+results[i].fileVOList[0].fileVOList[k].path+'"></img><br>';
+				str+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+results[i].fileVOList[0].fileVOList[k].path+'" alt="news image not available"></img><br>';
 
 			str+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+results[i].fileVOList[0].fileSourceLanguageId+','+results[i].fileVOList[0].fileVOList[k].orderNo+',\''+results[i].fileVOList[0].fileVOList[k].path+'\','+i+')};">'+results[i].fileVOList[0].fileVOList[k].orderName+'</a></span></div>';
 			}
@@ -155,34 +155,24 @@ function showAnotherSource(sourceId , i)
 
           str+='<div id="mainDiv'+i+'" style="text-align:center;">';
 
-		  str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].sourcee+'</span>'
+		  str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
 
-		//str+='<span class="class="text-error">SOURCE:</span>'+ showContentResultList[i].fileVOList[j].source;
 
-		str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[0].path+'" style="width:415px;height:244px;"></img>';
+		str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[0].path+'11" style="width:415px;height:244px;" alt="news image not available"></img>';
 		str+='</div>';
 
-		//str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[0].path+'"></img>';
 		str+='</div>';
 
-		if(showContentResultList[i].fileVOList[j].fileVOList.length > 0)
+		if(showContentResultList[i].fileVOList[j].fileVOList.length > 1)
 	    {
 			str+='<div style="margin-left:100px;margin-top:39px;width:700px;height:143px;" id="otherNews'+i+'">';
 
-			//str+='<div style="margin-left:100px;margin-top:39px;" id="otherNews'+i+'">';
 
 			for(var k=1;k<showContentResultList[i].fileVOList[j].fileVOList.length ;k++){
 
-				
-
-				str+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+showContentResultList[i].fileVOList[j].fileVOList[k].path+'"></img><br>';
+				str+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+showContentResultList[i].fileVOList[j].fileVOList[k].path+'" alt="news image not available"></img><br>';
 
 			str+='<span style="margin-left:22px;"><a   href="javascript:{showNextnews('+showContentResultList[i].fileVOList[j].fileSourceLanguageId+','+showContentResultList[i].fileVOList[j].fileVOList[k].orderNo+',\''+showContentResultList[i].fileVOList[j].fileVOList[k].path+'\','+i+');}" >'+showContentResultList[i].fileVOList[j].fileVOList[k].orderName+'</a></span></div>';
-
-				
-/*
-				str+='<div><img style="height:100px;width:100px;"src="'+showContentResultList[i].fileVOList[j].fileVOList[k].path+'"></img></div>';
-			str+='<span style="margin-left:22px;"><a   href="javascript:{showNextnews('+showContentResultList[i].fileVOList[j].fileSourceLanguageId+','+showContentResultList[i].fileVOList[j].fileVOList[k].orderNo+',\''+showContentResultList[i].fileVOList[j].fileVOList[k].path+'\','+i+');}" >'+showContentResultList[i].fileVOList[j].fileVOList[k].orderName+'</a></span>';*/
 			}
 			  str+='</div>';
 
@@ -194,19 +184,11 @@ function showAnotherSource(sourceId , i)
              
 		  }else{
 
-			 // if(index == 0){
-			//	str1+='<div id="otherSources'+i+'">';
-			  // }
-			  //index = 1;
 
-			str+='<span><a href="javascript:{showAnotherSource('+showContentResultList[i].fileVOList[j].sourceId+','+i+')}" class="newssources" >'+showContentResultList[i].fileVOList[j].source+'</a></span>';
+			str1+='<span><a  class="btn btn-success" href="javascript:{showAnotherSource('+showContentResultList[i].fileVOList[j].sourceId+','+i+')}"  >'+showContentResultList[i].fileVOList[j].source+'</a></span>';
 		  }
 
-		 //alert(showContentResultList[i].fileVOList[j].source);
 	}
-	//if(str1 != "")
-	//str1+="</div>";
-
 
 	$('#otherSources'+i).html(str1);
 
@@ -221,8 +203,21 @@ function showNextnews(sourceId , orderNo  , path , i)
 
 		if(showContentResultList[i].fileVOList[j].fileSourceLanguageId == sourceId)
 		{
-				str+='<span text-error"="" class="class=">SOURCE:</span>'+showContentResultList[i].fileVOList[j].source+'';
-			str+='<img src="'+path+'"></img>';
+
+        //str+='<div id="mainDiv'+i+'" style="text-align:center;">';
+
+		  str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
+
+
+		str+='<img src="'+path+'" style="width:415px;height:244px;" alt="news image not available"></img>';
+
+
+		//str+='</div>';
+
+
+
+				//str+='<span text-error"="" class="class=">SOURCE:</span>'+showContentResultList[i].fileVOList[j].source+'';
+			//str+='<img src="'+path+'"></img>';
 
 			$("#mainDiv"+i).html(str);
 
@@ -233,7 +228,7 @@ function showNextnews(sourceId , orderNo  , path , i)
 			for(var k = 0;k<showContentResultList[i].fileVOList[j].fileVOList.length;k++)
 			{
 
-			if(showContentResultList[i].fileVOList[j].fileVOList[k].orderNo != orderNo){
+			if(showContentResultList[i].fileVOList[j].fileVOList[k].orderNo != orderNo){/*
 
 			str1+='<div>';
 
@@ -243,7 +238,14 @@ function showNextnews(sourceId , orderNo  , path , i)
 
 			str1+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+showContentResultList[i].fileVOList[j].fileSourceLanguageId+','+showContentResultList[i].fileVOList[j].fileVOList[k].orderNo+',\''+showContentResultList[i].fileVOList[j].fileVOList[k].path+'\','+i+');}">'+showContentResultList[i].fileVOList[j].fileVOList[k].orderName+'</a></span>';
 
-			str1+='</div>';
+			str1+='</div>';*/
+
+
+
+            str1+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+showContentResultList[i].fileVOList[j].fileVOList[k].path+'" alt="news image not available"></img><br>';
+
+			str1+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+showContentResultList[i].fileVOList[j].fileSourceLanguageId+','+showContentResultList[i].fileVOList[j].fileVOList[k].orderNo+',\''+showContentResultList[i].fileVOList[j].fileVOList[k].path+'\','+i+');};">'+showContentResultList[i].fileVOList[j].fileVOList[k].orderName+'</a></span></div>';
+
 				}
 			}			
 
