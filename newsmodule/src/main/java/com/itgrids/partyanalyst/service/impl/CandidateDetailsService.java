@@ -2427,7 +2427,13 @@ public List<SelectOptionVO> getCandidatesOfAParty(Long partyId)
 		{
 			selectOptionVO = new SelectOptionVO();
 			selectOptionVO.setId((Long)params[0]);
-			selectOptionVO.setName(params[1] != null ? params[1].toString() : "");
+			
+			if(params[1] != null)
+			if(params[1].toString().substring(0, 1).equalsIgnoreCase("."))
+				  selectOptionVO.setName(params[1].toString().substring(1));
+			else
+				  selectOptionVO.setName(params[1].toString());
+			
 			cadidatesList.add(selectOptionVO);
 		}
 	}
@@ -5790,7 +5796,13 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 					{
 						selectOptionVO = new SelectOptionVO();
 						selectOptionVO.setId((Long)params[0]);
-						selectOptionVO.setName(params[2] != null ? params[2].toString() : "");
+						
+						if(params[2] != null)
+						if(params[2].toString().substring(0, 1).equalsIgnoreCase("."))
+							  selectOptionVO.setName(params[2].toString().substring(1));
+						else
+							  selectOptionVO.setName(params[2].toString());
+						
 						cadidatesList.add(selectOptionVO);
 					}
 				}

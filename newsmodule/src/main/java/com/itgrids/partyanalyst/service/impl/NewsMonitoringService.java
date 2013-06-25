@@ -3518,4 +3518,27 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		}
 		return resultStatus;
 	}
+	
+	
+	public List<SelectOptionVO> getCandidatesByRemovingDots(){
+		List<SelectOptionVO> candidates=new ArrayList<SelectOptionVO>();
+		
+		List<Object[]> list1=candidateRelatedNewsDAO.getCandidates();
+		if(list1!=null){
+		for(Object[] params:list1){
+			SelectOptionVO selectOptionVO=new SelectOptionVO();
+			selectOptionVO.setId((Long)params[0]);
+			
+			
+			if(params[1].toString().substring(0, 1).equalsIgnoreCase("."))
+			  selectOptionVO.setName(params[1].toString().substring(1));
+			else
+			  selectOptionVO.setName(params[1].toString());
+			candidates.add(selectOptionVO);
+		}
+		}
+		return candidates;
+	}
+	
+
 }
