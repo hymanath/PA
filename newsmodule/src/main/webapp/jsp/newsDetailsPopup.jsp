@@ -205,6 +205,7 @@ font-size:20px;
      font-size: 15px;
     font-weight: bold;margin-right: 2px;}
 #newsPageNOSpan,#newsChangeEdition{margin-left: 15px;}
+#imgDiv{text-align: center;}
 </style>
 </head>
 <body>
