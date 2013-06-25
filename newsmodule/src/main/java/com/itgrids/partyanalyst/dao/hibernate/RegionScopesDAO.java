@@ -31,7 +31,7 @@ public class RegionScopesDAO extends GenericDaoHibernate<RegionScopes, Long> imp
 		
 		   return getHibernateTemplate().find("select model.regionScopesId,model.scope from RegionScopes model");
 		
-	}
+	}*/
 	
 	public Long getRegionScopeIdByScope(String scope)
 	{
@@ -39,5 +39,5 @@ public class RegionScopesDAO extends GenericDaoHibernate<RegionScopes, Long> imp
 		query.setParameter("scope", scope);
 		return (Long) query.uniqueResult();
 		
-	}*/
+	}
 }

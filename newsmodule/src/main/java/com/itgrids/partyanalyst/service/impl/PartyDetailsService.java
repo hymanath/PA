@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -73,6 +74,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IBoothDAO boothDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IRegionScopesDAO regionScopesDAO;
 	/*
 	private IFileTypeDAO fileTypeDAO;
 	private ISourceLanguageDAO sourceLanguageDAO;
@@ -1170,6 +1172,13 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 	public void setBoothDAO(IBoothDAO boothDAO) {
 		this.boothDAO = boothDAO;
 	}
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
 
 	/*
 	public List<FileVO> getPartyManifestoInfo(long partyId) {
@@ -1950,7 +1959,8 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 		List<Long> partyIds = new ArrayList<Long>();
 		partyIds.add(partyId);
 		List<FileVO> filesList = null;
-		Long locationId = problemManagementService.getRegionScopesIdByScope(locationType);
+		Long locationId =  regionScopesDAO.getRegionScopeIdByScope(locationType);
+		//Long locationId = problemManagementService.getRegionScopesIdByScope(locationType);
 		int startRecords = Integer.parseInt(startRecord.toString());
 		int maxRecords = Integer.parseInt(maxRecord.toString());
 	 

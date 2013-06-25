@@ -139,6 +139,7 @@ public class ContentManagementService implements IContentManagementService{
 			List<Long> gallaryIds = null;
 			String contentType = null;
 			Long falseContentIdForPhotoGal = 1l;
+			Long tempPartNo = 1L;
 			
 			fileId = (Long)fileGallaryDAO.getFileIdByFileGallaryId(contentId);
 			
@@ -319,7 +320,9 @@ public class ContentManagementService implements IContentManagementService{
 							 FileVO fileVOPath = new FileVO();
 							 fileVOPath.setPath(filePath.getFilePath());
 							 fileVOPath.setOrderNo(filePath.getOrderNo());
-							 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+							 //fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+							 fileVOPath.setOrderName("Part-"+tempPartNo);
+							 tempPartNo = tempPartNo+1;
 							 fileVOPathsList.add(fileVOPath);
 						 }
 						 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);

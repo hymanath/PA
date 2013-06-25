@@ -3515,9 +3515,9 @@ function updatePhoto(fileId,fileGallaryId)
 		
 	
 	    <ul class="nav nav-tabs" style="margin-left:Auto;margin-right:Auto;width:808px;">
-    <li>
+   <!--  <li>
     <a value="Photo Gallery" id="photoGalleryId" onClick="showPhotoGallary1()" style="cursor:pointer">Photo Gallery</a>
-    </li>
+    </li> -->
     <li> <a value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()" style="cursor:pointer">Video Gallery</a></li>
     <li class="active"><a value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer">News Gallery</a></li>
 	<li><a value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()" style="cursor:pointer">Update News</a></li>

@@ -19,7 +19,8 @@
 	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
 	    <property name="boothDAO" ref="boothDAO"/>
 	    <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
-	    <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>	    
+	    <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
+	    <property name="regionScopesDAO" ref="regionScopesDAO" />	    
 	</bean>
 	
 	<!--<bean name="voterReportService" class="com.itgrids.partyanalyst.service.impl.VoterReportService" >
