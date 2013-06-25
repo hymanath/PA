@@ -1584,7 +1584,8 @@ function clearNewsUploadFileFields1()
 	$('#newsfileTitle , #newsfileDescription , #keywords , #existingFromTextNews , #ImagenewsfileId').val('');
 	$('#candidateList').find('option').remove();
 	$('#uploadFilesDiv').html('');
-    $('#newsDesc').val('');
+
+
 	 getScopes();
 	 getSource("source");
 	 getLanguage("language");
@@ -1734,8 +1735,8 @@ function buildUploadNewsForMultipleUsers()
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
 	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50"></input></td>'; 
-	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceTelugu"><img id="" src="images/letter-t-video.png"  style="width:20px;"/></a> </td>';
-	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceEnglish" style="display:none"><img src="images/e-letter.jpg"></img></a></td>';
+	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceTelugu"><img id="" src="images/letter-t-video.png"  style="height:20px;width:20px;" alt="Select telugu language"/></a> </td>';
+	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceEnglish" style="display:none"><img src="images/e-letter.jpg" style="height:20px;width:20px;"></img></a></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
@@ -3515,9 +3516,9 @@ function updatePhoto(fileId,fileGallaryId)
 		
 	
 	    <ul class="nav nav-tabs" style="margin-left:Auto;margin-right:Auto;width:808px;">
-   <!--  <li>
+    <li>
     <a value="Photo Gallery" id="photoGalleryId" onClick="showPhotoGallary1()" style="cursor:pointer">Photo Gallery</a>
-    </li> -->
+    </li>
     <li> <a value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()" style="cursor:pointer">Video Gallery</a></li>
     <li class="active"><a value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer">News Gallery</a></li>
 	<li><a value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()" style="cursor:pointer">Update News</a></li>
