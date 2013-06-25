@@ -1683,7 +1683,7 @@ function buildUploadNewsForMultipleUsers()
      str+='<div class="aligncenter">';
      //str+='<a style="margin-left:46px;font-weight:bold;color:blue;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
 
-	 str+='<a href="javascript:void(0)" title="Click here to respond to news"  id="responseDiv" style="float:right"><img id="" src="images/1372153864_response.png"/></a>';
+	 str+='<a href="javascript:void(0)" title="Click here to respond to news"  id="responseDiv" style="float:right"><img id="" src="images/responseImage.png"/></a>';
 
 	 	 str+='<div id="dateErrorMessage"></div>';
 
@@ -4097,7 +4097,7 @@ function editNewsDetails(fileId,source){
 
     str += '   <tr>';
 	str += '       <td class="tdWidth">Keywords</td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" style="margin-top:8px;"></text></td></tr>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywordsForEdit" name="keywords" size="25" maxlength="200" style="margin-top:8px;" value="'+reqFile.keywords+'" ></text></td></tr>';
 
 	str += '   <TR>';
 	
@@ -4936,7 +4936,7 @@ return false;
 	visibility = $('input:radio[name=visibility]:checked').val();
 
    gallaryId = document.getElementById("gallaryIdForEdit").value;
-   keywords = document.getElementById("keywords").value;
+   keywords = document.getElementById("keywordsForEdit").value;
    fileDate = document.getElementById("existingFromText").value;
    locationScopeId = document.getElementById("scopeDivForEdit").value;
    fileGallaryId = $('#fileGallaryId').val();
