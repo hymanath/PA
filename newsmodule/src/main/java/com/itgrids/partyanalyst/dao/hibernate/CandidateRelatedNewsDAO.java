@@ -8,6 +8,8 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.model.CandidateRealatedNews;
+import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CandidateRelatedNewsDAO extends GenericDaoHibernate<CandidateRealatedNews, Long> implements 
 ICandidateRelatedNewsDAO {
@@ -44,6 +46,30 @@ ICandidateRelatedNewsDAO {
 		Query queryObj=getSession().createQuery("select distinct model.candidate.candidateId,model.candidate.firstname,model.candidate.lastname,model.candidate.lastname " +
 				"from CandidateRealatedNews model order by model.candidate.lastname");
 		return queryObj.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FileGallary> getFileGallaryListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType)
+    {
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.fileGallary from CandidateRealatedNews model where model.candidate.candidateId =:candidateId and ");
+		str.append(" model.fileGallary.gallary.isDelete='false' and model.fileGallary.gallary.contentType.contentType= :type and model.fileGallary.isDelete = 'false' ");
+		if(queryType.equals("Public"))
+		  str.append(" and model.fileGallary.gallary.isPrivate='false' and model.fileGallary.isPrivate ='false' ");
+				
+		else if(queryType.equals("Private"))
+		  str.append("  and ( (model.fileGallary.gallary.isPrivate='true') or(model.fileGallary.gallary.isPrivate='false' and model.fileGallary.isPrivate ='true') ) ");
+				
+		 str.append(" order by model.fileGallary.file.fileDate desc ");
+		Query query = getSession().createQuery(str.toString());
+			 
+		 query.setLong("candidateId", candidateId);
+		 query.setString("type", IConstants.NEWS_GALLARY);
+		 if(firstResult != null)
+		 query.setFirstResult(firstResult);
+		 if(maxResult != null)
+		 query.setMaxResults(maxResult);
+		 return query.list();
 	}
 
 }
