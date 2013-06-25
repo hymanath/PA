@@ -4069,7 +4069,7 @@ function editNewsDetails(fileId,source){
 	str+='<tr>';
 	str+='<td class="tdWidth">Select News Gallery<font class="requiredFont">*</font></td>';
 	str+='<td class="selectWidthPadd"><select style="width:222px;"  id="gallaryIdForEdit" name="gallaryId" class="selectWidth"/><option value="0">Select</option></select></td>';
-	str +='<td>gallaryName - CandidateName</td>';
+	str +='<td></td>';
 	str+='</tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth">Title<font class="requiredFont">*</font></td>';
