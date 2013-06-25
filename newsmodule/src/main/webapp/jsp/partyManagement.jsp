@@ -3643,6 +3643,9 @@ var bvalue = false;
 var noOfRowsPerPage = 10;
 var modifiedRecord = 0;
 $(document).ready(function() {
+
+	showNewsGallaey();
+
 	$(".nav-tabs li a").click(function()
 			{
 				$(".nav-tabs li").removeClass('active');
@@ -3766,7 +3769,6 @@ $(document).on("click",'#fromDateId , #toDateId', function(){
 });
 
 
-showNewsGallaey();
 
 function checkAllValuesAndSendAjax()
 {
