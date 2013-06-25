@@ -637,10 +637,19 @@ public String getVoterDetails(){
 	
 		String param;
 		param = getTask();
-		
+		Long userId = null;
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		Long userId =  regVO.getRegistrationID();
+		if(regVO.getParentUserId()!=null)
+		{
+		  userId = regVO.getMainAccountId();
+		}
+		else
+		{
+		  userId = regVO.getRegistrationID();
+		}
+
+		//Long userId =  regVO.getRegistrationID();
 		
 		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
 		String order = request.getParameter("dir");
@@ -705,10 +714,20 @@ public String getVoterDetails(){
 	public String getVotersCount(){
 		String param;
 		param = getTask();
+		Long userId = 0l;
 		Long constituencyId = null;
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		Long userId =  regVO.getRegistrationID();
+		if(regVO.getParentUserId()!=null)
+		{
+		  userId=regVO.getMainAccountId();
+		}
+		else
+		{
+		  userId = regVO.getRegistrationID();
+		}
+
+		
 		try{
 			jObj = new JSONObject(param);
 			constituencyId = jObj.getLong("constituencyId");
@@ -1025,7 +1044,17 @@ public String getImportantFamaliesDetails(){
 	session = request.getSession();
 	
 	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-	Long userId =  regVO.getRegistrationID();
+	Long userId = null;
+	if(regVO.getParentUserId()!=null)
+	{
+	  userId = regVO.getMainAccountId();
+	}
+	else
+	{
+	  userId = regVO.getRegistrationID();
+	}
+
+	//Long userId =  regVO.getRegistrationID();
 	   importantFamiliesInfoVo = votersAnalysisService.getImportantFamiliesInfo(userId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"),jObj.getString("requestFor"),jObj.getString("buildType"));
 	return Action.SUCCESS;
 }
@@ -1058,8 +1087,17 @@ public String getVotersFamilyDetails(){
 		jObj = new JSONObject(param);
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		Long userId =  regVO.getRegistrationID();
-		
+		//Long userId =  regVO.getRegistrationID();
+		Long userId = null;
+		if(regVO.getParentUserId()!=null)
+		{
+		  userId = regVO.getMainAccountId();
+		}
+		else
+		{
+		  userId = regVO.getRegistrationID();
+		}
+
 		if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies"))
 		{
 			String requestFor = "";
@@ -1086,8 +1124,18 @@ public String getUserCategories(){
 		param = getTask();
 		jObj = new JSONObject(param);
 		session = request.getSession();
+		Long userId = null;
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		Long userId =  regVO.getRegistrationID();
+		if(regVO.getParentUserId()!=null)
+		{
+		  userId = regVO.getMainAccountId();
+		}
+		else
+		{
+		  userId = regVO.getRegistrationID();
+		}
+
+		//Long userId =  regVO.getRegistrationID();
 		userCategoriesList = votersAnalysisService.getUserCategoryValuesByUserId(userId);
 		
 	}catch(Exception e){
@@ -1126,7 +1174,17 @@ public String getCountsForLevel()
 	jObj = new JSONObject(param);
 	session = request.getSession();
 	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-	Long userId =  regVO.getRegistrationID();
+	//Long userId =  regVO.getRegistrationID();
+	Long userId = null;
+	if(regVO.getParentUserId()!=null)
+	{
+	  userId = regVO.getMainAccountId();
+	}
+	else
+	{
+	  userId = regVO.getRegistrationID();
+	}
+
 	  if(jObj.getString("task").equalsIgnoreCase("getCountForLevel"))
 	  {
 		Long publicationDateId= jObj.getLong("publicationDateId");
@@ -1224,8 +1282,19 @@ return Action.SUCCESS;
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user == null)
 			return ERROR;
-		else  
-			userId1= user.getRegistrationID();
+		else 
+		{
+			if(user.getParentUserId()!=null)
+			{
+				userId1 = user.getMainAccountId();
+			}
+			else
+			{
+				userId1 = user.getRegistrationID();
+			}
+
+		}
+			//userId1= user.getRegistrationID();
 		String param;
 		param = getTask();
 		constituencyManagementVO = new ConstituencyManagementVO();
@@ -1529,7 +1598,17 @@ return Action.SUCCESS;
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return ERROR;
-		Long userID = user.getRegistrationID();
+		Long userID = null;
+		//Long userID = user.getRegistrationID();
+		if(user.getParentUserId()!=null)
+		{
+			userID = user.getMainAccountId();
+		}
+		else
+		{
+			userID = user.getRegistrationID();
+		}
+
 		String param;
 		param = getTask();
 	
@@ -1663,8 +1742,18 @@ return Action.SUCCESS;
 			param = getTask();
 			jObj = new JSONObject(param);
 			session = request.getSession();
+			Long userId = null;
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-			Long userId =  regVO.getRegistrationID();
+			if(regVO.getParentUserId()!=null)
+			{
+			  userId = regVO.getMainAccountId();
+			}
+			else
+			{
+			  userId = regVO.getRegistrationID();
+			}
+
+			//Long userId =  regVO.getRegistrationID();
 			Long constituencyId = jObj.getLong("constituencyId");
 			
 			votersFamilyInfo = votersAnalysisService.getVotersFamilyDetailsByConstituencyId(jObj.getLong("fromPublication"),jObj.getLong("ToPublication"),jObj.getLong("partNo"),jObj.getString("hno"),userId,constituencyId);
@@ -1684,7 +1773,17 @@ return Action.SUCCESS;
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			if(regVO == null)
 				return ERROR;
-			Long userId =  regVO.getRegistrationID();
+			Long userId = null;
+			if(regVO.getParentUserId()!=null)
+			{
+			  userId = regVO.getMainAccountId();
+			}
+			else
+			{
+			  userId = regVO.getRegistrationID();
+			}
+
+			//Long userId =  regVO.getRegistrationID();
 			isLocalityExist = votersAnalysisService.checkLocalityDataExist(jObj.getLong("id"),userId,jObj.getString("type"),jObj.getLong("publicationDateId"));
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1934,9 +2033,19 @@ return Action.SUCCESS;
 			jObj = new JSONObject(getTask());
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-			Long userId =  regVO.getRegistrationID();
+			//Long userId =  regVO.getRegistrationID();
+			Long userId = null;
 			if(regVO == null)
 				return ERROR;
+			if(regVO.getParentUserId()!=null)
+			{
+			  userId = regVO.getMainAccountId();
+			}
+			else
+			{
+			  userId = regVO.getRegistrationID();
+			}
+
 			voterInfo = votersAnalysisService.getTotalVotersDetailsbyLocation(userId,jObj.getLong("id"),jObj.getString("reportLevel"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
 		} catch (ParseException e) {
 			log.error("Exception raised in getTotalVotersDetailsbyLocation() method in VotersAnalysisAction Action Class",e);

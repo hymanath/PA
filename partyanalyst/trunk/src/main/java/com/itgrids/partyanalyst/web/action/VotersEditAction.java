@@ -1491,7 +1491,17 @@ public String saveLocality()
 				   RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 				   if(user == null)
 						return "error";
-				   Long userId = user.getRegistrationID();
+				  // Long userId = user.getRegistrationID();
+				   Long userId = null;
+				   if(user.getParentUserId()!=null)
+					{
+					  userId = user.getMainAccountId();
+					}
+					else
+					{
+					  userId = user.getRegistrationID();
+					}
+
 				   jObj = new JSONObject(getTask());
 				   if(jObj.getString("task").equalsIgnoreCase("getBoothWiseAgeDetails"))
 				   {
