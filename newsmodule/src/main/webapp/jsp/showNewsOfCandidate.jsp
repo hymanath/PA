@@ -181,7 +181,7 @@ function callAjax(jsObj,url)
 
  	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
-function buildPaginatedNewsOfCandidate(results,jsObj){
+/* function buildPaginatedNewsOfCandidate(results,jsObj){
 
 	var str="";
 	str+="<ul class='unstyled pad10'>";
@@ -212,6 +212,68 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 	$("#pagedNewsId").html(str);
 	
 	if(jsObj.firstRecord==0){
+		$("#paginationId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme'
+		});
+	}
+}*/
+
+function buildPaginatedNewsOfCandidate(results,jsObj){
+
+	var str="";
+	str+="<ul class='unstyled pad10'>";
+	for(var i in results){
+		str+="<li>";
+		var source = results[i].fileVOList[0].source.trim();
+		if(source == "Eenadu Telugu")
+		  str+="<h4 class='enadu'>"+results[i].title+"</h4>";
+		else
+		  str+="<h4 style='text-transform: capitalize'>"+results[i].title+"</h4>";
+				
+		str+="<div class='row-fluid'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
+		
+		var path = results[i].fileVOList[0].fileVOList[0].path;
+		var source = results[i].fileVOList[0].source;
+		
+		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
+		if(source == "Eenadu Telugu")
+		  str+="<p class='span8 enadu'>"+results[i].description+"</p>";
+		else
+		 str+="<p class='span8'>"+results[i].description+"</p>";
+		
+		
+		str+="</div>";
+
+		str+="<div class='row-fluid m_top10'><div class='span9'>";
+		str +='<table><tr><td>';
+		str +='<p style="margin-right: 0px; width: 170px;"><span class="text-error">Source :</span>';
+		var length = results[i].fileVOList.length;
+
+		for(var j in results[i].fileVOList)
+		{
+		  str +=''+results[i].fileVOList[j].source+'';
+		  if(length-1 != j)
+			str +=',';
+		}
+		str +='</p></td><td style="vertical-align: top;"><p style="width: 104px; margin-left: 0px; margin-right: 13px;"><span class="text-error">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;"><p style="width: 113px;"><span class="text-error">Response Count: </span>'+results[i].responseCount+'</p></td></tr>';
+		
+		str +='</table>';
+		str +='</div>';
+		
+		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>More...</a></div></li>";
+	}
+	
+	var itemsCount=results[0].count;
+	
+	var maxResults=jsObj.maxResult;
+	str+="</ul>";
+
+	$("#pagedNewsId").html(str);
+	
+	if(jsObj.firstResult==0){
 		$("#paginationId").pagination({
 			items: itemsCount,
 			itemsOnPage: maxResults,
