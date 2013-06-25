@@ -4374,7 +4374,11 @@ for(var i in results){
 
 	    }
 
+if(divId == "gallaryIdForEdit")
+	$('#gallaryIdForEdit').val(reqFile.fileGallaryId);
+else
 	$('#gallaryId').val(reqFile.fileGallaryId);
+
 
 	}
 }

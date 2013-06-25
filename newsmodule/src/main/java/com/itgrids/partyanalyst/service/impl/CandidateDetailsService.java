@@ -5669,13 +5669,14 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				
 				List<Long> candidateIds = new ArrayList<Long>();
 				
-				List<Object[]> candidateDetails = userCandidateRelationDAO.getCandidatesOfAUser(registrationId);
+				/*//List<Object[]> candidateDetails = userCandidateRelationDAO.getCandidatesOfAUser(registrationId);
 				
 				
 				for(Object[] obj:candidateDetails)
 					candidateIds.add((Long)obj[0]);
-				
-				List<Object[]> list = gallaryDAO.getGallariesByCandidateIds(candidateIds,contentType);
+				*/
+				//List<Object[]> list = gallaryDAO.getGallariesByCandidateIds(candidateIds,contentType);
+				List<Object[]> list = gallaryDAO.getAllGallaries(contentType);
 				
 				if(list != null && list.size() > 0)
 				{
@@ -5685,12 +5686,13 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 					{
 						selectOptionVO = new SelectOptionVO();
 						selectOptionVO.setId((Long)params[0]);
-						if(params[2] == null)
+						/*if(params[2] == null)
 						params[2] = "";
 						if(params[3] == null)
 							params[3] = "";
 						
-						selectOptionVO.setName(params[1].toString()+" - "+params[2].toString()+" "+params[3].toString());
+						selectOptionVO.setName(params[1].toString()+" - "+params[2].toString()+" "+params[3].toString());*/
+						selectOptionVO.setName(params[1].toString());
 						gallarySelectList.add(selectOptionVO);
 					}
 				}
