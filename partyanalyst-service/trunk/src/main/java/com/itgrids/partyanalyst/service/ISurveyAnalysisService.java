@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyAgeWiseDetailsVO;
+import com.itgrids.partyanalyst.dto.SurveyAnalysisVO;
 import com.itgrids.partyanalyst.dto.SurveyInfoVO;
 import com.itgrids.partyanalyst.dto.SurveyVO;
 import com.itgrids.partyanalyst.dto.SurveyorVO;
@@ -55,4 +56,6 @@ public interface ISurveyAnalysisService {
 	public List<SurveyAgeWiseDetailsVO> getGenderWiseSurveyAnalysis(Long surveyId);
 	
 	public List<SurveyAgeWiseDetailsVO> getOptionWiseSurveyAnalysis(Long surveyId);
+	
+	public List<SurveyAnalysisVO> getCasteWiseSurveyAnalysis(Long surveyId);
 }
