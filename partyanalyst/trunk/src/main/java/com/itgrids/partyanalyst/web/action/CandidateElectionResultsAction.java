@@ -1919,8 +1919,17 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		   }
 		
 		 session = request.getSession();
+		 Long userId = null;
 		 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		 
+		 if(regVO.getParentUserId()!=null)
+			{
+			 userId = regVO.getMainAccountId();
+			}
+			else
+			{
+			  userId = regVO.getRegistrationID();
+			}
+
 		 
 		 FileVO fileVO = new FileVO();
 		
@@ -1934,7 +1943,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		Integer lastIndex = jObj.getInt("lastIndex");
 		
 		
-		fileVO.setUserId(regVO.getRegistrationID());
+		fileVO.setUserId(userId);
 		fileVO.setLocationVal(locationValue);
 		fileVO.setLocationId(locationId);
 		fileVO.setPublicationId(publicationId);

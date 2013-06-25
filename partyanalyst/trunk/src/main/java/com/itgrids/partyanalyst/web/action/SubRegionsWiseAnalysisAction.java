@@ -292,7 +292,18 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 			 if(user == null)
 				 return null;
 			 else
-				userId =user.getRegistrationID(); 
+			 {
+				 if(user.getParentUserId()!=null)
+					{
+					  userId = user.getMainAccountId();
+					}
+					else
+					{
+					  userId = user.getRegistrationID();
+					}
+
+			 }
+				
 			 if(jObj.getString("task").equalsIgnoreCase("getMandals"))
 				 resultList = votersAnalysisService.getMandalsInConstituency(jObj.getLong("constituencyId")); 
 			 else if(jObj.getString("task").equalsIgnoreCase("getPanchayatsByMandalId"))
