@@ -1179,7 +1179,14 @@ public String getProblemsByLocation()
 		jObj = new JSONObject(param);
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		Long userId =  regVO.getRegistrationID();
+		Long userId =  null;
+		
+		if(regVO.getParentUserId()!=null){
+			userId=regVO.getMainAccountId();
+		}
+		else{
+			userId = regVO.getRegistrationID();
+		}
 		
 		Long locationValue = jObj.getLong("locationValue");
 		Long locationId = jObj.getLong("locationId");
@@ -1564,7 +1571,14 @@ return Action.SUCCESS;
 		jObj = new JSONObject(param);
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		Long userId =  regVO.getRegistrationID();
+		Long userId =  null;
+		
+		if(regVO.getParentUserId()!=null){
+			userId=regVO.getMainAccountId();
+		}
+		else{
+			userId = regVO.getRegistrationID();
+		}
 		Long locationValue = jObj.getLong("locationValue");
 		String type = jObj.getString("type");
 		Long publicationId = jObj.getLong("publicationDateId");
@@ -1593,7 +1607,14 @@ return Action.SUCCESS;
 			constituencyManagementVO = new ConstituencyManagementVO();
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-			Long userId =  regVO.getRegistrationID();
+			Long userId =  null;
+			if(regVO.getParentUserId()!=null){
+					userId=regVO.getMainAccountId();
+				}
+				else{
+					userId = regVO.getRegistrationID();
+				}
+				
 			Long locationValue =request.getParameter("locationValue") != null ?Long.parseLong(request.getParameter("locationValue")):0L;
 			String type =request.getParameter("type");
 			String buttonName =request.getParameter("buttonName");

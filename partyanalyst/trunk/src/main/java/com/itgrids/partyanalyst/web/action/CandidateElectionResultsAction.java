@@ -1891,10 +1891,17 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		 session = request.getSession();
 		 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		 
-		
+		 Long userId =  null;
+			
+			if(regVO.getParentUserId()!=null){
+				userId=regVO.getMainAccountId();
+			}
+			else{
+				userId = regVO.getRegistrationID();
+			}
 		 
 		newsCountByCategoryList = newsMonitoringService
-				.getNewsCountForALocationByCategory(regVO.getRegistrationID(),
+				.getNewsCountForALocationByCategory(userId,
 						locationValue, locationId, publicationId);
 
 		return Action.SUCCESS;

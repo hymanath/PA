@@ -298,7 +298,13 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 			if(regVO == null)
 				return null;
-			Long userId =  regVO.getRegistrationID();
+			Long userId =  null;
+			if(regVO.getParentUserId()!=null){
+					userId=regVO.getMainAccountId();
+				}
+				else{
+					userId = regVO.getRegistrationID();
+				}
 			resultStatus = votersAnalysisService.deleteVotersCastDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"),userId);
 			resultStatus = votersAnalysisService.deleteVotersPartyDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"),userId);
 			resultStatus = voterReportService.insertVotersPartyDataToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
