@@ -5721,7 +5721,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 
 	 }
 	 
-	 public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type){
+	 /*public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type){
 		 
 		try{
 			log.debug("In CandidateDetailsService getCandidatesNews Method");
@@ -5756,6 +5756,25 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		}
 		return null;
 	 }
+	 */
+	 
+  public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type){
+		 List<FileVO> fileVOList = null;
+	 try{
+		 List<FileGallary> fileGallariesList = candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, firstRecord, maxRecord, type);
+		 if(fileGallariesList != null && fileGallariesList.size() > 0)
+		 {
+			fileVOList = new ArrayList<FileVO>(0);
+			setfileGallaryDetails(fileGallariesList, fileVOList);
+			fileVOList.get(0).setCount(candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, null, null, type).size());
+		  }
+		 return fileVOList;
+	}catch (Exception e) {
+				log.debug("Exception Occured in getCandidatesNews() Method, Exception - "+e);
+				return fileVOList;
+		}
+	}
+		 
 	 
 	 public List<SelectOptionVO> getNewsContainedCandidates()
 	 {
@@ -5896,7 +5915,6 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		
 		public List<SelectOptionVO> getNewsForCandidate(Long candidateId , Date fromDate , Date toDate)
 		 {
-			 
 			 
 			return buildSelectOptionVO(candidateRelatedNewsDAO.getAllfileGallariesOfCandidate(candidateId , fromDate , toDate));
 			 

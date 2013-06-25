@@ -21,4 +21,6 @@ public interface IContentManagementService {
 	public GallaryVO getMainArticlesDetails(Long fileGallaryId, Integer startIndex, Integer maxIndex);
 	public List<FileVO> getResponseTrackingNews(Long responseFileGallaryId);
 	
+	public void setFileGalaryDetailsByFileGallaryIdsList(List<Long> fileGallaryIdsList,List<FileVO> fileVOResultList);
+	
 }
