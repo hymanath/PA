@@ -5797,11 +5797,11 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 						selectOptionVO = new SelectOptionVO();
 						selectOptionVO.setId((Long)params[0]);
 						
-						if(params[2] != null)
-						if(params[2].toString().substring(0, 1).equalsIgnoreCase("."))
-							  selectOptionVO.setName(params[2].toString().substring(1));
+						if(params[1] != null)
+						if(params[1].toString().substring(0, 1).equalsIgnoreCase("."))
+							  selectOptionVO.setName(params[1].toString().substring(1));
 						else
-							  selectOptionVO.setName(params[2].toString());
+							  selectOptionVO.setName(params[12].toString());
 						
 						cadidatesList.add(selectOptionVO);
 					}
