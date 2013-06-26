@@ -93,7 +93,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private INewsMonitoringService newsMonitoringService;
 	private Long candidateId;
 	private Map<Long,String> candidatesMap;
-	
+	private String fromDate;
+	private String toDate;
 	
 	public List<FileVO> getResponseFilesList() {
 		return responseFilesList;
@@ -429,6 +430,18 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setServletResponse(HttpServletResponse response) {
 		this.response = response;
 	}
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
 	public String execute()
 	{	
         request.setAttribute("notLogged",notLogged);
@@ -516,8 +529,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			candidatesMap=new HashMap<Long, String>();
 			candidatesList=new ArrayList<SelectOptionVO>();
 			
-			candidatesList=newsMonitoringService.getCandidates();
-			
+			//candidatesList=newsMonitoringService.getCandidates();
+			candidatesList = newsMonitoringService.getCandidatesByRemovingDots();
 			for(SelectOptionVO vo:candidatesList)
 				candidatesMap.put(vo.getId(), vo.getName());
 			
