@@ -1040,6 +1040,7 @@ color:#2A4F97;
 </SCRIPT>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
+var populateConstituencyId = '${constituencyId}';
 	var votersLimitExist = false;
 	var pattern= /^(hamlet|customWard)$/i;
 	var  muncipalityPattern = /MUNCIPALITY/i;
@@ -1063,6 +1064,7 @@ locationDetails.constituencyArr.push(ob);
 </c:forEach>		
 
 $(document).ready(function(){
+
 
 $(".votersInfoLi2").live("mouseover",function(){
 	
@@ -2248,6 +2250,16 @@ function getAgewiseInfoForVoterCategory(){
 		callCorrespondingAjaxCall('brief');
 	
 	}
+	$(document).ready(function(){
+		if(populateConstituencyId != null && populateConstituencyId != "" && populateConstituencyId > 0)
+		{
+			
+			$('#constituencyList').val(populateConstituencyId);
+			getPublicationDate();
+			getConstituencyResults(populateConstituencyId);
+			getUserVoterCategories();
+		}
+	});
 </script>
 </body>
 </html>
