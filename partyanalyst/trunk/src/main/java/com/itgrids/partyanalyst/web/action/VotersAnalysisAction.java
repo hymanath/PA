@@ -131,6 +131,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
     private List<VotersDetailsVO> casteDetailsVO;
     private DataVerificationVO dataVerificationVO;
 	private List<OptionVO> ageList;
+	
+	private Long constituencyId;
     
 	public List<VotersDetailsVO> getCasteDetailsVO() {
 		return casteDetailsVO;
@@ -525,6 +527,14 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setAgeList(List<OptionVO> ageList) {
 		this.ageList = ageList;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 
 	public String execute() throws Exception
