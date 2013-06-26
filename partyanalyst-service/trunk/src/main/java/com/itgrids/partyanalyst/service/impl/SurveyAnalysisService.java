@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyAgeWiseDetailsVO;
+import com.itgrids.partyanalyst.dto.SurveyAnalysisDTO;
 import com.itgrids.partyanalyst.dto.SurveyAnalysisVO;
 import com.itgrids.partyanalyst.dto.SurveyInfoVO;
 import com.itgrids.partyanalyst.dto.SurveyVO;
@@ -1808,8 +1809,80 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		 return null;
 	}
 	
-	public void getAttributesWiseSurveyAnalysis(){
+	public List<SurveyAnalysisDTO> getAttributesWiseSurveyAnalysis(Long surveyId)
+	{
+		List<SurveyAnalysisDTO> returnList                      = new ArrayList<SurveyAnalysisDTO>();
+		SurveyAnalysisDTO surveyAnalysisDTO                     = null;
+		Map<Long,SurveyAnalysisDTO> ageWiseMap       = new HashMap<Long, SurveyAnalysisDTO>();//Map<questionId,SurveyAnalysisDTO>
+		Map<Long,SurveyAnalysisDTO> optionWiseMap    = new HashMap<Long, SurveyAnalysisDTO>();//Map<questionId,SurveyAnalysisDTO>
+		Map<Long,SurveyAnalysisDTO> genderWiseMap    = new HashMap<Long, SurveyAnalysisDTO>();//Map<questionId,SurveyAnalysisDTO>
+		Map<Long,SurveyAnalysisDTO> casteWiseMap     = new HashMap<Long, SurveyAnalysisDTO>();//Map<questionId,SurveyAnalysisDTO>
+		Map<Long,String> question                               = new HashMap<Long, String>();//Map<questionId,question>
+		List<SurveyAgeWiseDetailsVO> ageWiseSurveyAnalysis      = agewiseSurveyAnalysis(surveyId);
+		List<SurveyAgeWiseDetailsVO> genderWiseSurveyAnalysis   = getGenderWiseSurveyAnalysis(surveyId);
+		List<SurveyAgeWiseDetailsVO> optionWiseSurveyAnalysis   = getOptionWiseSurveyAnalysis(surveyId);
+		List<SurveyAnalysisVO>       casteWiseSurveyAnalysis    = getCasteWiseSurveyAnalysis(surveyId);
+		if(ageWiseSurveyAnalysis != null && ageWiseSurveyAnalysis.size() > 0)
+		{
+			for (SurveyAgeWiseDetailsVO ageWiseDetails : ageWiseSurveyAnalysis) {
+				surveyAnalysisDTO = new SurveyAnalysisDTO();
+				surveyAnalysisDTO.setQuestionId(ageWiseDetails.getQuestionId());
+				surveyAnalysisDTO.setQuestion(ageWiseDetails.getQuestion());
+				surveyAnalysisDTO.setAgewiseSurveyAnalysisVO(ageWiseDetails.getSurveyAgeWiseDetailsVO());
+				question.put(ageWiseDetails.getQuestionId(), ageWiseDetails.getQuestion());
+				ageWiseMap.put(ageWiseDetails.getQuestionId(), surveyAnalysisDTO);
+			}
+		}
+		if(genderWiseSurveyAnalysis != null && genderWiseSurveyAnalysis.size() > 0)
+		{
+			for (SurveyAgeWiseDetailsVO genderWiseAnalysis : genderWiseSurveyAnalysis) {
+				surveyAnalysisDTO = new SurveyAnalysisDTO();
+				surveyAnalysisDTO.setQuestionId(genderWiseAnalysis.getQuestionId());
+				surveyAnalysisDTO.setQuestion(genderWiseAnalysis.getQuestion());
+				surveyAnalysisDTO.setGenderWiseSurveyAnalysisVO(genderWiseAnalysis.getSurveyAgeWiseDetailsVO());
+				question.put(genderWiseAnalysis.getQuestionId(), genderWiseAnalysis.getQuestion());
+				genderWiseMap.put(genderWiseAnalysis.getQuestionId(), surveyAnalysisDTO);
+			}
+		}
+		if(optionWiseSurveyAnalysis != null && optionWiseSurveyAnalysis.size() > 0)
+		{
+			for (SurveyAgeWiseDetailsVO optionWiseAnalysis : optionWiseSurveyAnalysis) {
+				surveyAnalysisDTO = new SurveyAnalysisDTO();
+				surveyAnalysisDTO.setQuestionId(optionWiseAnalysis.getQuestionId());
+				surveyAnalysisDTO.setQuestion(optionWiseAnalysis.getQuestion());
+				surveyAnalysisDTO.setOptionWiseSurveyAnalysisVO(optionWiseAnalysis.getSurveyAgeWiseDetailsVO());
+				question.put(optionWiseAnalysis.getQuestionId(), optionWiseAnalysis.getQuestion());
+				optionWiseMap.put(optionWiseAnalysis.getQuestionId(), surveyAnalysisDTO);
+			}
+		}
 		
+		if(casteWiseSurveyAnalysis != null && casteWiseSurveyAnalysis.size() > 0)
+		{
+			for (SurveyAnalysisVO casteWiseAnalysis : casteWiseSurveyAnalysis) {
+				surveyAnalysisDTO = new SurveyAnalysisDTO();
+				surveyAnalysisDTO.setQuestionId(casteWiseAnalysis.getQuestionId());
+				surveyAnalysisDTO.setQuestion(casteWiseAnalysis.getQuestion());
+				surveyAnalysisDTO.setCasteWiseSurveyAnalysisVO(casteWiseAnalysis.getSubList());
+				question.put(casteWiseAnalysis.getQuestionId(), casteWiseAnalysis.getQuestion());
+				casteWiseMap.put(casteWiseAnalysis.getQuestionId(), surveyAnalysisDTO);
+			}
+		}
+		if(question.size() > 0)
+		{
+			for (Long questionId : question.keySet()) {
+				SurveyAnalysisDTO surveyAnalysisVO = new SurveyAnalysisDTO();	
+				surveyAnalysisVO.setQuestionId(questionId);
+				surveyAnalysisVO.setQuestion(question.get(questionId)                != null ? question.get(questionId)      : null);
+				surveyAnalysisVO.setAgeWiseSurveyVO(ageWiseMap.get(questionId)       != null ? ageWiseMap.get(questionId)    : null);
+				surveyAnalysisVO.setGenderWiseSurveyVO(genderWiseMap.get(questionId) != null ? genderWiseMap.get(questionId) : null);
+				surveyAnalysisVO.setCasteWiseSurveyVO(casteWiseMap.get(questionId)   != null ? casteWiseMap.get(questionId)  : null);
+				surveyAnalysisVO.setOptionWiseSurveyVO(optionWiseMap.get(questionId) != null ? optionWiseMap.get(questionId) : null);
+				returnList.add(surveyAnalysisVO);
+			}
+		}
+		
+		
+		return returnList;
 	}
 	
 	
@@ -1840,7 +1913,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
     	    Map<Long,Long> casteCount = null;
     	    SurveyAnalysisVO surveyAnalysisVO = null;
     	    Map<Long,String> casteNames = new HashMap<Long,String>();
-    	    
+    	    Map<Long,String> question = new HashMap<Long, String>();//Map<questionId,question>
     	    if(casteInfoList != null && casteInfoList.size() > 0){
     	    	
     	      for(Object[] casteInfo : casteInfoList){
@@ -1850,10 +1923,11 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
     	    		  optionsMap = new HashMap<Long,Map<Long,Long>>();
     	    		  questionMap.put((Long)casteInfo[0], optionsMap);
     	    		  casteCount = new HashMap<Long,Long>();
+    	    		  casteCountMap.put((Long)casteInfo[0],casteCount);
     	    	  }
     	    	  
     	    	  casteMap = optionsMap.get((Long)casteInfo[1]);
-    	    	  
+    	    	  question.put((Long)casteInfo[0], casteInfo[5].toString());
     	    	  if(casteMap == null){
     	    		  casteMap = new HashMap<Long,Long>();
     	    		  optionsMap.put((Long)casteInfo[1], casteMap);
@@ -1876,12 +1950,15 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
     	      SurveyAnalysisVO questionOption = null;
     	      SurveyAnalysisVO casteVO = null;
     	      
-    	      for(Long questionId : questionMap.keySet()){
+    	      for(Long questionId : questionMap.keySet()){ 
+    	    	  SurveyAnalysisVO questionVO = new SurveyAnalysisVO();
+    	    	  questionVO.setQuestion(question.get(questionId));
+    	    	  questionVO.setQuestionId(questionId);
     	    	  optionsMap = questionMap.get(questionId);
     	    	  casteCount = casteCountMap.get(questionId);
     	    	  if(optionsMap != null){
     	    		  surveyAnalysisVO = new SurveyAnalysisVO();
-    	    		  casteWiseResults.add(surveyAnalysisVO);
+    	    		  
     	    		  List<Option> options = questionOptionsDAO.getOptionsForQuestion(questionId);
     	    		  List<SurveyAnalysisVO> optionsList = new ArrayList<SurveyAnalysisVO>();
     	    		  surveyAnalysisVO.setSubList(optionsList);
@@ -1906,10 +1983,15 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 	    						   casteVO.setPercentage(0.00d);
 	    					   }
 	    					   castesList.add(casteVO);
+	    					   
     	    			   }
     	    			   optionsList.add(questionOption);  
+    	    			   questionVO.setSubList(optionsList);
+    	    			  
     	    		  }
+    	    		  
     	    	  }
+    	    	  casteWiseResults.add(questionVO);
     		  }
     		 
     	  }
@@ -1977,6 +2059,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 				for (Long questionId : questionMap.keySet()) {
 					SurveyAgeWiseDetailsVO questions = new SurveyAgeWiseDetailsVO();
 					questions.setQuestion(question.get(questionId));
+					questions.setQuestionId(questionId);
 					List<SurveyAgeWiseDetailsVO> optionsList = new ArrayList<SurveyAgeWiseDetailsVO>();
 					List<Object[]> optilnsList = questionOptionsDAO.getOptionsForQuestionId(questionId);
 						for (Object[] parms : optilnsList) {
@@ -2120,6 +2203,7 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 				 for (Long questionId : questionMap.keySet()) {
 					 SurveyAgeWiseDetailsVO questions = new SurveyAgeWiseDetailsVO();
 					 questions.setQuestion(question.get(questionId));
+					 questions.setQuestionId(questionId);
 					 List<SurveyAgeWiseDetailsVO> optionsList = new ArrayList<SurveyAgeWiseDetailsVO>();
 					 List<Object[]> optilnsList = questionOptionsDAO.getOptionsForQuestionId(questionId);
 					 if(optilnsList != null && optilnsList.size() > 0)
@@ -2256,7 +2340,6 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 				}
 				 if(questionCount.size() > 0)
 				 {
-					 SurveyAgeWiseDetailsVO surveyAgeWiseDetails  = null;
 					 
 					 for (Long questionId : questionCount.keySet()) {
 					 List<Object[]> optilnsList = questionOptionsDAO.getOptionsForQuestionId(questionId);	
