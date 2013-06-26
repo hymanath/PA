@@ -144,7 +144,6 @@ input, button, select, textarea {
 	   showHideLocations('mandal');
 	    if(constituencyId != null && constituencyId != "" && constituencyId > 0 )
 		  {
-			alert(constituencyId);
 			$('#constituencyList').val(constituencyId);
 			getConstituencyType();
 			getPublicationDate();
