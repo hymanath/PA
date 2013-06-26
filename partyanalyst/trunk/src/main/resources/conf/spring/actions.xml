@@ -1220,6 +1220,9 @@
 	
 	<bean id="dashBoardAction" class="com.itgrids.partyanalyst.web.action.DashBoardAction" singleton="false">			
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
+		<property name="cadreManagementService" ref="cadreManagementService" />
 		
 	</bean>
 </beans>	

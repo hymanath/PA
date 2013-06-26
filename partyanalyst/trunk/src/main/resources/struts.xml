@@ -5441,7 +5441,8 @@
 	     </action>
 	     
 	     <action name="dashBoardAction" class="dashBoardAction"> 
-		    <result>/jsp/dashBoard.jsp</result>
+		    <result name="success">/jsp/dashBoard.jsp</result>
+		    <result name="input">/jsp/loginForm.jsp</result>
 		</action>
 		
 		</package>
