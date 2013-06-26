@@ -35,9 +35,13 @@ public class SurveyAnswerDAO extends GenericDaoHibernate<SurveyAnswer, Long> imp
 	 * @return List<Object[]> 
 	 */
     public List<Object[]> getCasteWiseSurveyInfo(List<Long> surveyQuestionIds){
-		Query query = getSession().createQuery("select model.surveyQuestion.surveyQuestionId,model.option.optionsId,model.surveyAnswerInfo.respondent.surveyorProfile.casteState.casteStateId," +
-				" model.surveyAnswerInfo.respondent.surveyorProfile.casteState.caste.casteName,count(*) from SurveyAnswer model where model.surveyQuestion.surveyQuestionId in (:surveyQuestionIds) " +
-				" and model.isSubOption = :isSubOption group by model.surveyQuestion.surveyQuestionId,model.option.optionsId,model.surveyAnswerInfo.respondent.surveyorProfile.casteState.casteStateId");
+		Query query = getSession().createQuery("select model.surveyQuestion.surveyQuestionId," +
+				" model.option.optionsId,model.surveyAnswerInfo.respondent.surveyorProfile.casteState.casteStateId," +
+				" model.surveyAnswerInfo.respondent.surveyorProfile.casteState.caste.casteName," +
+				" count(*),model.surveyQuestion.question from SurveyAnswer model where " +
+				" model.surveyQuestion.surveyQuestionId in (:surveyQuestionIds) " +
+				" and model.isSubOption = :isSubOption group by model.surveyQuestion.surveyQuestionId," +
+				" model.option.optionsId,model.surveyAnswerInfo.respondent.surveyorProfile.casteState.casteStateId");
 		query.setParameterList("surveyQuestionIds", surveyQuestionIds);
 		query.setParameter("isSubOption", "false");
 		return query.list();
