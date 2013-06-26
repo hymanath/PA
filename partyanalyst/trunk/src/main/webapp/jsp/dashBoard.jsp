@@ -240,7 +240,7 @@ Parliament
 	   <div>
 	   <table>
 	   <tr>
-	   <td><span>Election year </span></td><td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" ></s:select> </td>
+	   <td><span>Election year </span></td><td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" onClick="getParlmentsList();" headerValue="Select Year" headerKey="0"></s:select> </td>
 	   <td><span>Parliment Constituency   </span></td><td><s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" onChange="getAssemblyConstituencies();"></s:select></td>
 	   </tr>
 	   <tr>
@@ -360,9 +360,11 @@ function buildParties(myResults)
 function getAssemblyConstituencies()
 {
 	var constituencyId = $('#pConstituencyList option:selected').val();
+	var year = $('#electionYearField option:selected').val();
 	var jsObj=
 	{
 		constituencyId : constituencyId,
+		year           : year,
 		task           : "getAssemblysForParliment"
 	}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -376,11 +378,40 @@ function buildAssemblies(myResults)
 	{
 		var str = "";
 		$("#aConstituencyList option").remove();
+		str += '<option value="0">Select Location</option>';
 		for(var i in myResults)
 		{
 			str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
 		}
 		$('#aConstituencyList').html(str);
+	}
+}
+function getParlmentsList()
+{
+	var electionYear = $('#electionYearField option:selected').val();
+	
+	var jsObj=
+	{
+		electionYear   : electionYear,
+		task           : "getParlements"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getParlementForElectionYear.action?"+rparam;	
+
+	callAjax(jsObj,url);
+}
+function buildParlemnts(myResults)
+{
+	if(myResults != null)
+	{
+		var str = "";
+		$("#pConstituencyList option").remove();
+		str += '<option value="0">Select Location</option>';
+		for(var i in myResults)
+		{
+			str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+		}
+		$('#pConstituencyList').html(str);
 	}
 }
 function callAjax(jsObj,url)
@@ -398,6 +429,10 @@ function callAjax(jsObj,url)
 					else if(jsObj.task == "getAssemblysForParliment")
 					{
 						buildAssemblies(myResults);
+					}
+					else if(jsObj.task == "getParlements")
+					{
+						buildParlemnts(myResults);
 					}
 					
 				}catch (e) {
