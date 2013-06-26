@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
-import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -21,14 +20,13 @@ import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 
 
 @SuppressWarnings("serial")
 public class DashBoardAction extends ActionSupport implements ServletRequestAware{
 
 	
-	private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageAction.class); 
+	private static final org.apache.log4j.Logger log = Logger.getLogger(DashBoardAction.class); 
 	
 	private HttpServletRequest request;
 	private List<SelectOptionVO> statesList,statesListForLocalBodyElection;
