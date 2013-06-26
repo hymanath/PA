@@ -5418,7 +5418,7 @@ IConstants.NEWS_GALLARY,0,5);
 public List<FileVO> getVideosForSelectedParty(Long partyId,String newsType)
 {
 	List<FileVO> file = null;
-	List<Object[]> filesList = fileGallaryDAO.getAllVideoFilesOfInGallaries(1,6,newsType);
+	List<Object[]> filesList = fileGallaryDAO.getAllVideoFilesOfInGallaries(0,6,newsType);
 	
 	if(filesList != null && filesList.size() > 0)
 	{
