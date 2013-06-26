@@ -15,4 +15,6 @@ public interface IConstituencySearchService {
 	public List<SelectOptionVO> getConstituencyNames(Long stateId);
 	public List<SelectOptionVO> getConstituencyNamesByElectionScope(Long countryId, Long stateId, Long electionTypeID);
 	public Long getTotalConstituencySearchCount(String searchText,String electionType,Long stateId);
+	
+	public List<SelectOptionVO> getDistrictAndStateId(Long constituencyId);
 }
