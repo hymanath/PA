@@ -42,8 +42,12 @@
 	<!-- YUI Skin Sam -->
 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
+	<!-- <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script> -->
+
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+
 	<script src="js/partyWiseNewsDisplay.js"></script>
 <style type="text/css">
 @font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
@@ -135,6 +139,13 @@ width: 92px;
 
 #candidatesListId{width:220px;}
 
+#existingFromText, #existingToText {
+    width: 73px;
+}
+#byAllRadio{margin-right: 4px;margin-top: 0;}
+#byDateRadio{margin-left: 10px; margin-right: 4px;margin-top: 0;}
+#candidateNewsShowHideDatesDiv{margin-top: 10px;}
+#cadidateRadioDiv{text-align: center; margin-top: 6px;}
 </style>
 </head>
 <body>
@@ -446,7 +457,18 @@ width: 92px;
 						</div>
 						<!--Created By sasi for Candidate News-->
 						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Candidate News</h4></div>
-						<div class="span12">						
+						<div class="span12">
+						
+						<div id="cadidateRadioDiv">
+						 <input type="radio" id="byAllRadio" value="byAll" name="candidateNewsRadio" class="candidateRadioCls" checked="true"/>All
+						 <input type="radio" id="byDateRadio" value="byDate" name="candidateNewsRadio" class="candidateRadioCls"/>By Date
+						 </div>
+						
+						<div id="candidateNewsShowHideDatesDiv" style="display:none;">
+						  From:<input type="text" size="20" name="fileDate" readonly="true" class="dateField" id="existingFromText" />
+						  To:<input type="text" size="20" name="fileDate" readonly="true" class="dateField" id="existingToText" />
+						</div>
+
 						<table style="margin-top:15px;">
 							<tr id="tableRowS">
 								<td id="tdWidth" style="padding-right: 32px;">
@@ -968,12 +990,43 @@ function getCandidates(){
 
 function getCandidatesNews(){
 	var candidateId=$('#candidatesListId option:selected').val();
-	
+	 $(".errorDiv").html('');
 	if(candidateId==0){
 		$('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate</span>');
 		return;
 	}
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"";
+     var fromDate = "";
+	 var toDate = "";
+
+	 var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
+	 if(radioVal == "byDate")
+	 {
+       fromDate = $("#existingFromText").val();
+	   toDate   = $("#existingToText").val();
+
+	   if(fromDate=="" && toDate == "")
+	    {
+		 $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select From And To Dates</span>');
+		 return;
+	    }
+	    else if(fromDate =="")
+	    {
+	     $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select From Date</span>');
+		 return;
+	    }
+	    else if(toDate =="")
+	    {
+	      $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select To Date</span>');
+		  return;
+	    }
+	    else if (Date.parse(fromDate) > Date.parse(toDate))
+	    {
+          $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Invalid Date Selection.</span>');
+          return;
+	    }
+
+	 }
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&";
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
@@ -987,6 +1040,35 @@ function getResponseDetailsByContentId(contentId)
 
 
 }
+
+$(document).ready(function(){
+	
+$(".dateField").live("click", function(){
+	$(this).datepicker({
+		dateFormat: "dd/mm/yy",
+		changeMonth: true,
+      changeYear: true,
+		maxDate: new Date()
+		
+	}).datepicker("show");
+});
+
+$(".candidateRadioCls").click(function(){
+	var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
+	if(radioVal=="byAll")
+	{
+	 $("#existingFromText").val('');
+	 $("#existingToText").val('');
+	 $("#candidateNewsShowHideDatesDiv").css("display","none");
+	}
+	else
+     $("#candidateNewsShowHideDatesDiv").css("display","block");
+	
+	
+});
+
+});
+
 
 </script>
 </body>

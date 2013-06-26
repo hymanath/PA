@@ -86,6 +86,15 @@
 	#candidatesListId{width:150px;}
 	#existingFromText,#existingToText{width:155px;}
 	#errorMsgDiv{font-size:12px;}
+	#candidateFromText,#candidateToText{width:75px;}
+	#byAllRadio{margin-right: 4px;margin-top: 0;}
+	#byDateRadio{margin-left: 10px; margin-right: 4px;margin-top: 0;}
+	#candidateNewsShowHideDatesDiv{margin-top: 10px;}
+	#fromParaId{margin-left: 4px; margin-bottom: 5px;}
+    #toParaId{margin-left: 3px;}
+	#candidateToText{margin-left: 15px;}
+	#candidateNewsBtn{margin-left: 30px;}
+	#cadidateRadioDiv{text-align: center; margin-top: 6px;margin-bottom: 15px;}
 	</style>
 </head>
 <body>
@@ -96,8 +105,17 @@
 				<div class="span2">
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>Candidates News</h4></div>
-						<s:select theme="simple" label="Candidates" name="candidates" id="candidatesListId" list ="candidatesMap"  headerKey="0" headerValue="Select Candidate" onchange="getCandiNews();" value="candidateId"/> 
-						
+					    <div id="cadidateRadioDiv">
+						  <input type="radio" id="byAllRadio" value="byAll" name="candidateNewsRadio" class="candidateRadioCls" checked="true"/>All
+						  <input type="radio" id="byDateRadio" value="byDate" name="candidateNewsRadio" class="candidateRadioCls"/>By Date
+						</div>
+						<div id="candidateNewsShowHideDatesDiv" style="display:none;">
+						  <p id="fromParaId">From: <input type="text" size="20" name="fileDate" readonly="true" class="candidateDateField" id="candidateFromText" /></p>
+						   <p id="toParaId">To: <input type="text" size="20" name="fileDate" readonly="true" class="candidateDateField" id="candidateToText" /> </p>
+						</div>
+
+						<s:select theme="simple" label="Candidates" name="candidates" id="candidatesListId" list ="candidatesMap"  headerKey="0" headerValue="Select Candidate"  value="candidateId"/> 
+						<input id="candidateNewsBtn" type="button" class="btn btn-info" value="submit" onclick="getCandiNews();"/>
 						<!--<s:select list ="candidatesMap" name ="candidateId" value="candidateId" headerKey="0" headerValue = "Select Candidate"/>-->
 						<div class="span12 errorDiv"></div>
 					</div>
@@ -147,6 +165,8 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 	</div>
 <Script type="text/javascript">
 var candidateId = '${candidateId}';
+var fromDate = '${fromDate}';
+var toDate = '${toDate}';
 getNewsForPagination(0);
 //getCandidates();
 
@@ -155,6 +175,8 @@ function getNewsForPagination(num){
 		candidateId:candidateId,
 		firstRecord:num,
 		maxRecords:10,
+		fromDate:fromDate,
+		toDate:toDate,
 		type:'Public',
 		task:'getCandidatesNewsInHomePage'
 	};
@@ -230,6 +252,12 @@ function callAjax(jsObj,url)
 
 function buildPaginatedNewsOfCandidate(results,jsObj){
 
+	$("#pagedNewsId").html('');
+	if(results == null)
+	{
+		$("#pagedNewsId").html('No Data Found.');
+		return;
+	}
 	var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
@@ -276,12 +304,12 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 	
 	var itemsCount=results[0].count;
 	
-	var maxResults=jsObj.maxResult;
+	var maxResults=jsObj.maxRecords;
 	str+="</ul>";
 
 	$("#pagedNewsId").html(str);
 	
-	if(jsObj.firstResult==0){
+	if(jsObj.firstRecord==0){
 		$("#paginationId").pagination({
 			items: itemsCount,
 			itemsOnPage: maxResults,
@@ -306,12 +334,43 @@ function getCandidates(){
 
 function getCandiNews(){
 	var candidateId=$('#candidatesListId option:selected').val();
-	
+	$('.errorDiv').html('');
 	if(candidateId==0){
 		$('.errorDiv').html('<span class="text-error" style="margin-left:10px;">Please Select Candidate</span>');
 		return;
 	}
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"";
+	 var fromDate = "";
+	 var toDate = "";
+	 var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
+
+	 if(radioVal == "byDate")
+	 {
+		fromDate = $("#candidateFromText").val();
+	    toDate   = $("#candidateToText").val();
+	    if(fromDate=="" && toDate == "")
+	    {
+		 $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select From And To Dates</span>');
+		 return;
+	    }
+	    else if(fromDate =="")
+	    {
+	     $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select From Date</span>');
+		 return;
+	    }
+	    else if(toDate =="")
+	    {
+	      $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select To Date</span>');
+		  return;
+	    }
+	    else if (Date.parse(fromDate) > Date.parse(toDate))
+	    {
+          $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Invalid Date Selection.</span>');
+          return;
+	    } 
+     
+	 }
+	 
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&";
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
@@ -349,7 +408,9 @@ function getSelectedNewsDetails()
     var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
     browser1.focus();
 }
-  $(".dateField").live("click", function(){
+$(document).ready(function(){
+
+ $(".dateField").live("click", function(){
  $(this).datepicker({
 		dateFormat: "dd/mm/yy",
 		changeMonth: true,
@@ -358,6 +419,52 @@ function getSelectedNewsDetails()
 		
 	}).datepicker("show");
 });
+
+
+  $(".candidateDateField").live("click", function(){
+   $(this).datepicker({
+		dateFormat: "dd/mm/yy",
+		changeMonth: true,
+      changeYear: true,
+		maxDate: new Date()
+		
+	}).datepicker("show");
+ });
+
+$(".candidateRadioCls").click(function(){
+	var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
+	if(radioVal=="byAll")
+	{
+	 $("#candidateFromText").val('');
+	 $("#candidateToText").val('');
+	 $("#candidateNewsShowHideDatesDiv").css("display","none");
+	}
+	else
+     $("#candidateNewsShowHideDatesDiv").css("display","block");
+
+	});
+});
+
+function getCandidateDetails()
+{
+ 
+ if(fromDate=="" && toDate == "")
+ {
+  $('#byAllRadio').trigger('click');
+  $("#candidateNewsShowHideDatesDiv").css("display","none");
+  $("#candidateFromText").val('');
+  $("#candidateToText").val('');
+ }
+ else
+ {
+  $('#byDateRadio').trigger('click');
+  $("#candidateNewsShowHideDatesDiv").css("display","block");
+  $("#candidateFromText").val(''+fromDate+'');
+  $("#candidateToText").val(''+toDate+'');
+ }
+}
+
+getCandidateDetails();
 </script>	
 </body>
 </html>

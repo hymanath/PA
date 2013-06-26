@@ -189,8 +189,9 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 			int frstRcrd=jObj.getInt("firstRecord");
 			int maxRcrd=jObj.getInt("maxRecords");
 			String type=jObj.getString("type");
-			
-			fileVOList=candidateDetailsService.getCandidatesNews(candidateId, frstRcrd, maxRcrd, type);
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			fileVOList=candidateDetailsService.getCandidatesNews(candidateId, frstRcrd, maxRcrd, type,fromDate,toDate);
 		}
 		catch (Exception e) {
 			log.debug("Exception in HomePageAction's getCandidatesNews -"+e);
