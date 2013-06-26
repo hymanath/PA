@@ -259,5 +259,20 @@ public class ConstituencySearchService implements IConstituencySearchService{
 		return (Long) obj;
 	}
 
+	public List<SelectOptionVO> getDistrictAndStateId(Long constituencyId)
+	{
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		List<Object[]> districtList = constituencyDAO.getStateAndDistricts(constituencyId);
+		if(districtList != null && districtList.size() > 0)
+		{
+			for (Object[] parms : districtList) {
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long)parms[0]);
+				selectOptionVO.setOrderId((Long)parms[1]);
+				returnList.add(selectOptionVO);
+			}
+		}
+		return returnList;
+	}
 	
 }
