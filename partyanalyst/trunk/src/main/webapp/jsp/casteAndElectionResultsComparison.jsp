@@ -113,6 +113,9 @@ input, button, select, textarea {
   var resultsData;
   var type;
   var publicationId;
+  var constituencyId = '${constituencyId}';
+  
+ 
     function showHideLocations(type){
 	     locationSelected = type;
 	       $("#constituencyList").val(0);
@@ -139,6 +142,14 @@ input, button, select, textarea {
 	
 	$(document).ready(function(){
 	   showHideLocations('mandal');
+	    if(constituencyId != null && constituencyId != "" && constituencyId > 0 )
+		  {
+			alert(constituencyId);
+			$('#constituencyList').val(constituencyId);
+			getConstituencyType();
+			getPublicationDate();
+			
+		  }
 	   var jsObj=
 			{
 				task:"getCategoriesForAUser"
@@ -147,6 +158,8 @@ input, button, select, textarea {
 	     var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getVotersInfoBySearchAction.action?task=categories&save=";						
 		   callAjaxToGetData(jsObj,url);
+		   
+		   
 	});
 	
 	function getMandals(){
@@ -1877,6 +1890,7 @@ input, button, select, textarea {
 	{
 		$(".multipleSelect").val([]);
 	}
+	
 	
 	</script>
 	</head>
