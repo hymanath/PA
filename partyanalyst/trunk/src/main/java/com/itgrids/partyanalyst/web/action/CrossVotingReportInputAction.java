@@ -188,13 +188,25 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		{
 			pConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(String.valueOf(year), new Long(1));
 		}
+		else
+		{
+			pConstituencyList = new ArrayList<SelectOptionVO>();
+		}
 		if(pConstituency != null && pConstituency > 0)
 		{
 			aConstituencyList = crossVotingEstimationService.getAssembliesForParliament(pConstituency,year);
 		}
+		else
+		{
+			aConstituencyList = new ArrayList<SelectOptionVO>();
+		}
 		if(aConstituency != null && aConstituency > 0)
 		{
 			partysList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(aConstituency, String.valueOf(year));
+		}
+		else
+		{
+			partysList = new ArrayList<SelectOptionVO>();
 		}
 		
 		pConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));

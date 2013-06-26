@@ -233,17 +233,15 @@ Parliament
 	   
 	   <div>
 	   Election year : <s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" ></s:select> 
-	   Parliment Constituency :  <s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" ></s:select>
+	   Parliment Constituency :  <s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onChange="getAssemblyConstituencies();"></s:select>
 	    Assembly Constituency : <select id="aConstituencyList" onChange="getParties();">
 	   <option value="0">Select Constituency</option>
-	   <option value="232">Kavali</option>
 	   </select>
 	    Party : <select id="partyList">
 	   <option value="0">Select Party</option>
-	   <option value="872">TDP</option>
 	   </select>
 	   </div>
-	   <div><input type="button" value="View" onChange="getCrossVotingReport();"></input></div>
+	   <div><input type="button" value="View" onClick="getCrossVotingReport();"></input></div>
 	   </div>       				
 	</div>
 	<div class="row-fluid">
@@ -296,10 +294,15 @@ function openVotersAnalysts()
 
 function getCrossVotingReport()
 {
+	
 	var electionYear  = $('#electionYearField option:selected').val();
+	
 	var pConstituency = $('#pConstituencyList option:selected').val();
+	
 	var aConstituency = $('#aConstituencyList option:selected').val();
+	
 	var party         = $('#partyList option:selected').val();
+	
 	if(electionYear != null && electionYear != "" && electionYear > 0)
 	{
 		window.open("crossVotingReportInputAction.action?year="+electionYear+"&pConstituency="+pConstituency+"&aConstituency="+aConstituency+"&partyId="+party+"");

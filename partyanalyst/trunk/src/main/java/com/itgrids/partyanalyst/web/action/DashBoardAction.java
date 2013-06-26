@@ -263,6 +263,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	}
    
 	public String getAssemblyConstisForParl(){
+		session = request.getSession();
 		Map<Long,List<SelectOptionVO>> assembliesForParl = (Map<Long,List<SelectOptionVO>>)session.getAttribute("assembliesForParl");
 		
 		if(assembliesForParl != null){
