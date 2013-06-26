@@ -1610,6 +1610,7 @@ function callAjaxForRegionSelect(jsObj,url)
 							{
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
 								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+								$('#districtList_d').val(districtId);
 								hideBusyImgWithId(jsObj.elmtId);
 							}
 							else if(jsObj.task == "cadreSearch" && jsObj.taskType == "search")
@@ -1632,6 +1633,7 @@ function callAjaxForRegionSelect(jsObj,url)
 							{
 								//clearOptionsListForSelectElmtId(jsObj.elmtId);
 								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+								$('#constituency').val(constituencyId);
 								hideBusyImgWithId(jsObj.elmtId);
 							}else if(jsObj.task == "getAllParliamentConstituencies")
 							{

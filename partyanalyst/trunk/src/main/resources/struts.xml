@@ -5453,7 +5453,13 @@
 		
 		<action name="getAssemblyForParlimentAction" class="dashBoardAction" method="getAssemblyConstisForParl">
 			<result type="json" name="success">
-				<param name="root">assemblyConstis</param>
+				<param name="root">aConstituencyList</param>
+		 	</result>
+		</action>
+		
+		<action name="getParlementForElectionYear" class="dashBoardAction" method="getparlementByElection">
+			<result type="json" name="success">
+				<param name="root">pConstituencyList</param>
 		 	</result>
 		</action>
 		
