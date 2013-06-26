@@ -236,10 +236,10 @@ Parliament
 	   <div class="span6 widget-simple">Voters Details Analysis</div>
 	</div>
 	<div class="row-fluid">
-	   <div class="span6 widget-simple">widget-simple
+	   <div class="span6 widget-simple">
 			 Results Vs Caste
 		</div>       
-	   <div class="span6 widget-simple">widget-simple</div>					
+	   <div class="span6 widget-simple">Voters Search</div>					
 	</div>
 </div>
 <script type="text/javascript">
