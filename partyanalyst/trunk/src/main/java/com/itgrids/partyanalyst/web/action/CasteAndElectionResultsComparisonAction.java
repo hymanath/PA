@@ -48,6 +48,8 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 	
 	private EntitlementsHelper entitlementsHelper;
 	
+	private Long constituencyId;
+	
 	public void setServletRequest(HttpServletRequest request) {
 		
 		this.request = request;
@@ -128,6 +130,15 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 
 	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
 		this.entitlementsHelper = entitlementsHelper;
+	}
+
+	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 
 	public String execute(){
