@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -39,12 +40,45 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private CadreManagementService cadreManagementService;
 	JSONObject jObj;
 	private String task;
+	private List<SelectOptionVO> electionYearsList,elecYears,partiesList;
 	private Long constituencyId;
 	private Long districtId;
 	private Long stateId;
 	private List<SelectOptionVO> pConstituencyList,aConstituencyList;
 	private IConstituencySearchService constituencySearchService;
 	private List<SelectOptionVO> districtStateList;
+	
+	
+	public List<SelectOptionVO> getElectionYearsList() {
+		return electionYearsList;
+	}
+
+
+	public void setElectionYearsList(List<SelectOptionVO> electionYearsList) {
+		this.electionYearsList = electionYearsList;
+	}
+
+
+	public List<SelectOptionVO> getElecYears() {
+		return elecYears;
+	}
+
+
+	public void setElecYears(List<SelectOptionVO> elecYears) {
+		this.elecYears = elecYears;
+	}
+
+
+	public List<SelectOptionVO> getPartiesList() {
+		return partiesList;
+	}
+
+
+	public void setPartiesList(List<SelectOptionVO> partiesList) {
+		this.partiesList = partiesList;
+	}
+
+
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
 	}
@@ -74,8 +108,8 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}
-
 	
+
 	public List<SelectOptionVO> getElectionYearList() {
 		return electionYearList;
 	}
@@ -85,15 +119,6 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		this.electionYearList = electionYearList;
 	}
 	
-	public JSONObject getjObj() {
-		return jObj;
-	}
-
-
-	public void setjObj(JSONObject jObj) {
-		this.jObj = jObj;
-	}
-
 	public List<SelectOptionVO> getPartysList() {
 		return partysList;
 	}
@@ -264,6 +289,8 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
 		
+		electionYearsList=staticDataService.getElectionYearsForBooths(1l,2l);
+		
 		statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(new Long(5)); 
 		
 		if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
@@ -343,6 +370,63 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			
 		}
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getOptions(){
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		session = request.getSession();
+		String module=jObj.getString("task");
+		if(module.equalsIgnoreCase("forElectionYears")){
+			elecYears=new ArrayList<SelectOptionVO>();
+			Long etype=jObj.getLong("electionType");
+			Long stateId=jObj.getLong("stateId");
+			elecYears=staticDataService.getElectionYearsForBooths(stateId,etype);
+			
+			return "years";
+		}
+		if(module.equalsIgnoreCase("forParty")){
+			partiesList=new ArrayList<SelectOptionVO>();
+			String elecYear=jObj.getString("electionYear");
+			Long consId=jObj.getLong("constituencyId");
+			partiesList=staticDataService.getPartiesForBooths(elecYear,consId);
+			
+			return "parties";
+		}
+		if(module.equalsIgnoreCase("forConstituencies")){
+			List<SelectOptionVO> constituencyList1=new ArrayList<SelectOptionVO>();
+			long stateId=jObj.getLong("stateId");
+			long etype=jObj.getLong("electionType");
+			long elecId=jObj.getLong("electionId");
+			constituencyList1=crossVotingEstimationService.getAllOptions("constituencies",stateId,etype,elecId);
+			
+			List<Long> constlist=new ArrayList<Long>();
+			
+			
+			if(etype==2){
+				assemblyConstis = (List<SelectOptionVO>)session.getAttribute("assemblyConstis");
+				for(SelectOptionVO list:assemblyConstis){constlist.add(list.getId());Collections.sort(constlist);}
+			}
+			if(etype==1){
+				parlConstis = (List<SelectOptionVO>)session.getAttribute("parlConstis");
+				for(SelectOptionVO list:parlConstis){constlist.add(list.getId());Collections.sort(constlist);}
+			}
+			
+			constituencyList=new ArrayList<SelectOptionVO>(); 
+			for (int i=0; i<constituencyList1.size(); i++) {
+			    if (constlist.contains(constituencyList1.get(i).getId())) {
+			        //System.out.println("Equals..: " + Alist.get(i));
+			    	constituencyList.add(constituencyList1.get(i));
+			    }
+			}
+			
+			
+			return "constituencies";
+		}
 		return Action.SUCCESS;
 	}
 
