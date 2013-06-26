@@ -77,6 +77,11 @@ padding:0px;
 .widget-simple {
     margin: 6px 0 5px;
 }
+
+#boothResultsDiv .control-label{text-align:left;width:85px;}
+#boothResultsDiv .controls{margin-left:100px;}
+.boothResults{margin-top:5px;display:none;padding:25px;}
+input[type="radio"]{margin-top:-1px;}
 </style>
 <div class="container m-top15">
 <div class="row-fluid"><div class="span12 widget" style="padding: 0 20px 4px;"><h2 class="pagination-centered" style="border-bottom: 0px solid #C0C0C0;">DASHBOARD</h2></div></div>
@@ -257,7 +262,8 @@ Parliament
 	   </div>       				
 	</div>
 	<div class="row-fluid">
-	   <div class="span6 widget-simple">Booth Wise Results</div>       
+	         
+	   <div class="row-fluid">
 	   
 	   <div class="span6 widget-simple">
 	    <h4>Voters Analysis </h4>
@@ -268,6 +274,63 @@ Parliament
 		</table>
 		<div><input type="button" value="View" class="btn btn-success" onCLick="openVotersAnalysts();" style="float:right;"></input></div>
 	   </div>
+	   
+	   <div class="span6 widget-simple" id="boothResultsDiv">
+	   Booth Wise Results
+	   
+	   <label class="checkbox">
+                <input type="checkbox" id="moreDetailsId"> Check for More Details
+       </label>
+	   
+		<div class="form-horizontal boothResults thumbnail" name='boothSelection'>
+		
+				<div class="control-group">
+					<label class="control-label" for="firstName">Election Type</label>
+					<div class="controls ">
+						<input type="radio" name="electionType" value="2" checked="checked">Assembly</input>
+						<input type="radio" name="electionType" value="1">Parliament</input>
+					</div>
+					
+					
+				</div>
+				
+				<div class="control-group ">
+					<label class="control-label" for="electionYear">Select Year</label>
+					<div class="controls">
+						<s:select
+theme="simple"
+list="electionYearsList"
+name="electionYear"
+listKey="id"
+listValue="name"
+headerKey="0"
+headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/> 
+					</div>
+				</div>
+				
+				<div class="control-group ">
+					<label class="control-label" for="constituency">Constituency</label>
+					<div class="controls ">
+						<select id="constiId" onChange="getPartiesForElections()" name="constituencyName">
+							<option value='0'>Select Constituency</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="partyId">Party</label>
+					<div class="controls">
+						<select id="partyId" name="partyName">
+							<option value='0'>Select Party</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group" id="errorDiv" style="color:red;">
+				</div>
+				
+					<button class="btn btn-mini btn-success pull-right" data-dismiss="modal" aria-hidden="true" onclick="submitRes()">SUBMIT</button>
+			</div>
+	   </div> 
 	   
 	</div>
 	<div class="row-fluid">
@@ -292,6 +355,62 @@ var districtId = '${districtId}';
 getDistrictsComboBoxForAState(stateId,"districtList_d");
 getAllConstituenciesInStateByType(2,stateId,"constituency");
 
+//getPartiesForElections();
+
+//Created By SASI
+
+$("input:radio[name=electionType]").click(function() {
+    var value = $(this).val();
+	var stateId=1;
+	getElectionYears(stateId,value);
+	//$('#electionYearsId').val(0);
+	$('#partyId').val(0);
+	$('#constiId').val(0);
+});
+
+
+
+function getElectionYears(stateId,electionType){
+
+var jsObj =
+		{  	
+			stateId:stateId,
+			electionType:electionType,
+			task:'forElectionYears'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "optionsForBoothAction.action?"+rparam;
+		callAjax(jsObj, url);
+}
+function constituencyOptions(){
+	var stateId=1;
+	var electionType=$("input:radio[name=electionType]:checked").val();
+	var electionId=$("#electionYearsId option:selected").val();
+	var jsObj =
+		{  	
+			stateId:stateId,
+			electionType:electionType,
+			electionId:electionId,
+			task:'forConstituencies'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "optionsForBoothAction.action?"+rparam;
+		callAjax(jsObj, url);
+}
+
+function getPartiesForElections(){
+	var electionYear=$("#electionYearsId option:selected").text();
+	var constiId=$("#constiId option:selected").val();
+	var jsObj =
+		{  	
+			electionYear:electionYear,
+			constituencyId:constiId,
+			task:'forParty'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "optionsForBoothAction.action?"+rparam;
+		callAjax(jsObj, url);
+}
 function openCasteViseAnalysis()
 {
 	var constituencyId = $('#constituencyList option:selected').val();
@@ -415,38 +534,164 @@ function buildParlemnts(myResults)
 		$('#pConstituencyList').html(str);
 	}
 }
-function callAjax(jsObj,url)
+
+function callAjax(jsObj,url){
+		 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+								myResults = YAHOO.lang.JSON.parse(o.responseText);					
+								if(jsObj.task =="forElectionYears")
+								{
+									buildElectionYears(myResults);
+								}
+								if(jsObj.task =="forParty")
+								{
+									buildPartiesSelectBox(myResults);
+								}
+								if(jsObj.task=="forConstituencies"){
+									buildConstituencies(myResults);
+								}
+								if(jsObj.task == "getPariesForAssemply")
+								{
+									buildParties(myResults);
+								}
+								else if(jsObj.task == "getAssemblysForParliment")
+								{
+									buildAssemblies(myResults);
+								}	
+								else if(jsObj.task == "getParlements")
+								{
+									buildParlemnts(myResults);
+								}	
+								}catch (e) {
+							     
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                		//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+ 	}
+
+function buildElectionYears(myResult)
 {
-	 var myResults;
-	 var callback = {			
-	   success : function( o ) {
-			try {												
-					myResults = YAHOO.lang.JSON.parse(o.responseText);	
-				
-					if(jsObj.task == "getPariesForAssemply")
-					{
-						buildParties(myResults);
-					}
-					else if(jsObj.task == "getAssemblysForParliment")
-					{
-						buildAssemblies(myResults);
-					}
-					else if(jsObj.task == "getParlements")
-					{
-						buildParlemnts(myResults);
-					}
-					
-				}catch (e) {
-				
-				}  
-	   },
-	   scope : this,
-	   failure : function( o ) {
-					//alert( "Failed to load result" + o.status + " " + o.statusText);
-				 }
-	   };
-YAHOO.util.Connect.asyncRequest('POST', url, callback);
+	$('#errorDiv').html("");
+	
+	if(myResult == null || myResult.length == 0)
+		return;
+
+	var electionYearsElmt = document.getElementById("electionYearsId");
+	electionYearsElmt.options.length=0;
+
+	var option = document.createElement('option');
+	option.value = "0";
+	option.text = "Select Year";
+	electionYearsElmt.add(option);
+	
+	for(var i in myResult)
+	{
+		option = document.createElement('option');
+		option.value = myResult[i].id;
+		option.text = myResult[i].name;
+		try
+		{
+			electionYearsElmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			electionYearsElmt.add(option); // IE only
+		}
+	}	
+
 }
+function buildPartiesSelectBox(myResult){
+	if(myResult == null || myResult.length == 0)
+		return;
+	
+	$('#errorDiv').html("");
+	var electionYearsElmt = document.getElementById("partyId");
+	electionYearsElmt.options.length=0;
+
+	var option = document.createElement('option');
+	option.value = "0";
+	option.text = "Select Party";
+	electionYearsElmt.add(option);
+	
+	
+	for(var i in myResult)
+	{
+		option = document.createElement('option');
+		option.value = myResult[i].id;
+		option.text = myResult[i].name;
+		try
+		{
+			electionYearsElmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			electionYearsElmt.add(option); // IE only
+		}
+	}
+}
+
+function buildConstituencies(myResult){
+	if(myResult == null || myResult.length == 0)
+		return;
+	
+	$('#errorDiv').html("");
+	
+	var electionYearsElmt = document.getElementById("constiId");
+	electionYearsElmt.options.length=0;
+
+	var option = document.createElement('option');
+	option.value = "0";
+	option.text = "Select Constituency";
+	electionYearsElmt.add(option);
+	
+	
+	for(var i in myResult)
+	{
+		option = document.createElement('option');
+		option.value = myResult[i].id;
+		option.text = myResult[i].name;
+		try
+		{
+			electionYearsElmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			electionYearsElmt.add(option); // IE only
+		}
+	}
+	
+}
+
+function submitRes(){
+	
+	var electionYear=$("#electionYearsId option:selected").text();
+	var val=$("#electionYearsId option:selected").val();
+	if(val==0){$('#errorDiv').html("Please Select Election Year"); return ;}
+	
+	var constituencyName=$("#constituencyId option:selected").val();
+	if(constituencyName==0){$('#errorDiv').html("Please Select Constituency;"); return;}
+	
+	var partyName=$("#partyId option:selected").val();
+	if(partyName==0){$('#errorDiv').html("Please Select Party"); return;}
+	
+	$('#errorDiv').html("");
+	var boothResultsWindow = window.open("partyBoothResult2Action.action?constituencyName="+constituencyName+"&electionYear="+electionYear+"&partyName="+partyName,"BoothResults","scrollbars=yes,height=600,width=850,left=200,top=200");
+    boothResultsWindow.focus();
+}
+
+  $('#moreDetailsId').click(function(){
+     $('.boothResults').toggle();
+  });
+
 
 
 </script>

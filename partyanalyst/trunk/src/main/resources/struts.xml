@@ -5410,6 +5410,17 @@
 		   <param name="root">surveyAnalysisVO</param>
 		 </result> -->
 		</action>
+		<action name="optionsForBoothAction" class="dashBoardAction" method="getOptions">
+			<result type="json" name="years">
+		   		<param name="root">elecYears</param>
+		 	</result>
+		 	<result type="json" name="parties">
+		   		<param name="root">partiesList</param>
+		 	</result>
+		 	<result type="json" name="constituencies">
+		   		<param name="root">constituencyList</param>
+		 	</result>
+		</action>
 		
 		<action name="surveyFormSaveAction" class="surveyFormAction" method="saveSurveyFormData" >
 		  <result name="success">/jsp/surveyForm.jsp</result>
