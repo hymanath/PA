@@ -5766,15 +5766,24 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 }
 	 */
 	 
-  public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type){
+  public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr){
 		 List<FileVO> fileVOList = null;
 	 try{
-		 List<FileGallary> fileGallariesList = candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, firstRecord, maxRecord, type);
+		 Date fromDate = null;
+		 Date toDate = null;
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		 if(fromDateStr != null && !fromDateStr.equalsIgnoreCase("") && !fromDateStr.equalsIgnoreCase("null"))
+			fromDate = format.parse(fromDateStr);
+		 if(toDateStr != null && !toDateStr.equalsIgnoreCase("") && !toDateStr.equalsIgnoreCase("null"))
+			 toDate = format.parse(toDateStr);
+		 
+		 
+		 List<FileGallary> fileGallariesList = candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate);
 		 if(fileGallariesList != null && fileGallariesList.size() > 0)
 		 {
 			fileVOList = new ArrayList<FileVO>(0);
 			setfileGallaryDetails(fileGallariesList, fileVOList);
-			fileVOList.get(0).setCount(candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, null, null, type).size());
+			fileVOList.get(0).setCount(candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, null, null, type,fromDate,toDate).size());
 		  }
 		 return fileVOList;
 	}catch (Exception e) {

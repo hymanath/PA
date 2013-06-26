@@ -231,7 +231,7 @@ public interface ICandidateDetailsService {
 	 
 	 public List<FileVO> getVideosForGalleryId(Long galId,int maxRecord,int startRecord);
 	 
-	 public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type);
+	 public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr);
 	 
 	 public List<SelectOptionVO> getNewsForCandidate(Long candidateId , Date fromDate , Date toDate );
 	 

@@ -13,6 +13,8 @@ public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNe
 	public List<Object[]> getCandidates();
 	public List<Object[]> getCandidatesContainsNews();
 	
-	public List<FileGallary> getFileGallaryListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType);
+	public List<FileGallary> getFileGallaryListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate);
+	
+	public List<Object[]> getCandidatesWithCount();
 
 }
