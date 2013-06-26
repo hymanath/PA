@@ -50,7 +50,7 @@ ICandidateRelatedNewsDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FileGallary> getFileGallaryListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType)
+	public List<FileGallary> getFileGallaryListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate)
     {
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.fileGallary from CandidateRealatedNews model where model.candidate.candidateId =:candidateId and ");
@@ -60,17 +60,34 @@ ICandidateRelatedNewsDAO {
 				
 		else if(queryType.equals("Private"))
 		  str.append("  and ( (model.fileGallary.gallary.isPrivate='true') or(model.fileGallary.gallary.isPrivate='false' and model.fileGallary.isPrivate ='true') ) ");
+		
+		if(fromDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+		if(toDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
 				
 		 str.append(" order by model.fileGallary.file.fileDate desc ");
 		Query query = getSession().createQuery(str.toString());
 			 
 		 query.setLong("candidateId", candidateId);
 		 query.setString("type", IConstants.NEWS_GALLARY);
+		 if(fromDate != null)
+		  query.setParameter("fromDate", fromDate);
+		 if(toDate != null)
+		  query.setParameter("toDate", toDate);
+		 
 		 if(firstResult != null)
 		 query.setFirstResult(firstResult);
 		 if(maxResult != null)
 		 query.setMaxResults(maxResult);
 		 return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidatesWithCount(){
+		Query queryObj=getSession().createQuery("select count(model.fileGallary.fileGallaryId), model.candidate.candidateId,model.candidate.lastname " +
+				"from CandidateRealatedNews model group by model.candidate.candidateId order by model.candidate.lastname ");
+		return queryObj.list();
 	}
 
 }
