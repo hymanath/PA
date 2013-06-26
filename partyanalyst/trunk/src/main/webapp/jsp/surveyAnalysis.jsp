@@ -18,6 +18,7 @@
 <script type="text/javascript" src="js/jQuery/jquery_validation_1.7.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <style>
 	#myModal 
 	{
@@ -40,6 +41,23 @@
 	}
 	.table th {
     font-weight: normal;
+}
+.table thead.info th, .impFamilesMainDiv th, #censusTab th {
+    background: none repeat scroll 0 0 #D9EDF7;
+    color: #454545;
+}
+.table-bordered th, .table-bordered td {
+    border-left: 1px solid #DDDDDD;
+}
+.table th {
+    font-weight: bold;
+}
+.table th, .table td {
+    border-top: 1px solid #DDDDDD;
+    line-height: 20px;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
 }
 
 </style>
@@ -218,14 +236,14 @@ function analyseSurvey(id)
    var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
    var url = "analyseSurveyAction.action?"+rparam;						
    callAjax(jsObj,url);
-   
-	catsteWiseSurveyAnalysis(id);
+   surveyAnalysis(id);
+	/* catsteWiseSurveyAnalysis(id);
 	surveyAnalysisBasedOnAge(id);
 	surveyAnalysisBasedOnGender(id);
-	surveyAnalysisBasedOnOption(id);
+	surveyAnalysisBasedOnOption(id); */
 }
 
-function catsteWiseSurveyAnalysis(id)
+function surveyAnalysis(id)
 {
 	var jsObj=
 	{	
@@ -264,7 +282,7 @@ function catsteWiseSurveyAnalysis(id)
 			{
 				buildSurveyDetails(myResults);
 			}
-			else if(jsObj.task == "getAgeWiseSurveyAnalysis")
+			/* else if(jsObj.task == "getAgeWiseSurveyAnalysis")
 			{
 				buildAgeWiseSurveyAnalysis(myResults);
 			}
@@ -275,11 +293,11 @@ function catsteWiseSurveyAnalysis(id)
 			else if(jsObj.task == "getOptionWiseSurveyAnalysis")
 			{
 				buildOptionWiseSurveyAnalysis(myResults);
-			}
+			}*/
 			else if(jsObj.task == "getCasteWiseSurveyAnalysis")
 			{
 				buildCasteWiseSurveyAnalysis(myResults);
-			}
+			} 
 		}
 		catch (e)
 			{
@@ -327,7 +345,7 @@ else{
 
 
 
-function surveyAnalysisBasedOnAge(id)
+/* function surveyAnalysisBasedOnAge(id)
 {
 	
 	var jsObj=
@@ -362,7 +380,7 @@ function surveyAnalysisBasedOnOption(id)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getSurveyDetailsAction.action?"+rparam;
 	callAjax(jsObj,url); 
-}
+} */
 function buildSurveyDetails(result)
 {
 	if(result != null)
@@ -407,7 +425,7 @@ function buildSurveyDetails(result)
 	}
 	
 }
-function buildAgeWiseSurveyAnalysis(myResults)
+/* function buildAgeWiseSurveyAnalysis(myResults)
 {
 	if(myResults != null)
 	{
@@ -534,12 +552,159 @@ function buildOptionWiseSurveyAnalysis(myResults)
 		}
 	}
 }
-
+*/
 function buildCasteWiseSurveyAnalysis(myResults)
 {
-
+	if(myResults != null)
+	{
+		var str = "";
+		var k = 0;
+		for(var i in myResults)
+		{
+			str +='<div id="surveyAnalysis'+k+'" class="widget blue whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading"><b style="color:blue;">Question : </b>'+myResults[i].question+'</h4>';
+				
+			if(myResults[i].ageWiseSurveyVO != null)
+			{
+				str +='<div id="ageWiseAnalysis'+k+'" class="widget green whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 897px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">Age Wise Survey Analysis</h4>';
+				str += '<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px; margin-top: 15px;" id="ageWiseTable'+k+'">';
+				str +='<tr>';
+				str += '<thead class="info">';
+				str +='<th>Options</th>';
+				str +='<th>18-25%</th>';
+				str +='<th>26-35%</th>';
+				str +='<th>36-45%</th>';
+				str +='<th>45-50%</th>';
+				str +='<th>Above60%</th>';
+				str += '</thead>';	
+				str +='</tr>';
+					
+				for(var m in myResults[i].ageWiseSurveyVO.agewiseSurveyAnalysisVO)
+				{
+				str +='<tr>';
+				str +='<td>'+myResults[i].ageWiseSurveyVO.agewiseSurveyAnalysisVO[m].option+'</td>';
+				str +='<td>'+myResults[i].ageWiseSurveyVO.agewiseSurveyAnalysisVO[m].ageBt18To25Perc+'</td>';
+				str +='<td>'+myResults[i].ageWiseSurveyVO.agewiseSurveyAnalysisVO[m].ageBt26To35Perc+'</td>';
+				str +='<td>'+myResults[i].ageWiseSurveyVO.agewiseSurveyAnalysisVO[m].ageBt36To45Perc+'</td>';
+				str +='<td>'+myResults[i].ageWiseSurveyVO.agewiseSurveyAnalysisVO[m].ageBt46To60Perc+'</td>';
+				str +='<td>'+myResults[i].ageWiseSurveyVO.agewiseSurveyAnalysisVO[m].ageAbove60Perc+'</td>';
+				str +='</tr>';	
+				}
+				str += '</table>';
+				/* str+='<div id="ageChartDiv'+k+'" style="position: relative; float: right; margin-top: -212px;"></div>';
+				
+				 var k1=0;
+				for(var z in myResults[i].ageWiseSurveyVO)
+				{alert("yes");
+					k1++;
+				var subList = myResults[i].ageWiseSurveyVO.agewiseSurveyAnalysisVO;
+				alet(subList);
+				buildChartForSurveyAnalysis(subList,'ageChartDiv'+k1+'');
+				}  */
+				str +='</div>';
+			}
+			if(myResults[i].genderWiseSurveyVO != null)
+			{
+				str +='<div id="genderWiseAnalysis'+k+'" class="widget green whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 897px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">Gender Wise Survey Analysis</h4>';
+				str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px; margin-top: 15px;" id="gendertableId'+k+'">';
+				str +='<tr>';
+				str += '<thead class="info">';
+				str +='<th>Options</th>';
+				str +='<th>Male</th>';
+				str +='<th>Male %</th>';
+				str +='<th>Female</th>';
+				str +='<th>Female %</th>';
+				str += '</thead>';	
+				str +='</tr>';
+				
+				for(var j in myResults[i].genderWiseSurveyVO.genderWiseSurveyAnalysisVO)
+				{
+				str +='<tr>';
+				str +='<td>'+myResults[i].genderWiseSurveyVO.genderWiseSurveyAnalysisVO[j].option+'</td>';
+				str +='<td>'+myResults[i].genderWiseSurveyVO.genderWiseSurveyAnalysisVO[j].maleresponderTotal+'</td>';
+				str +='<td>'+myResults[i].genderWiseSurveyVO.genderWiseSurveyAnalysisVO[j].maleperc+'</td>';
+				str +='<td>'+myResults[i].genderWiseSurveyVO.genderWiseSurveyAnalysisVO[j].femaleRespondersTotal+'</td>';
+				str +='<td>'+myResults[i].genderWiseSurveyVO.genderWiseSurveyAnalysisVO[j].femaleperc+'</td>';
+				str +='</tr>';	
+				}
+				str += '</table>';
+				
+				/* str+='<div id="genderChartDiv'+k+'" style="position: relative; float: right; margin-top: -212px;"></div>';
+				var k1=0;
+				for(var v in myResults[i].genderWiseSurveyVO.surveyAgeWiseDetailsVO)
+				{
+					k1++;
+				var subList = myResults[i].genderWiseSurveyVO.surveyAgeWiseDetailsVO[v];
+				buildChartForSurveyAnalysis(subList,'genderChartDiv'+k1+'');
+				} */
+				str +='</div>';
+			}
+			if(myResults[i].optionWiseSurveyVO != null)
+			{
+				str +='<div id="optionWiseAnalysis'+k+'" class="widget green whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 897px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">Option Wise Survey Analysis</h4>';
+				str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px; margin-top: 15px;" id="optiontableId'+k+'">'	
+				str +='<tr>';
+				str += '<thead class="info">';
+				str +='<th>Options</th>';
+				str +='<th>Total</th>';
+				str +='<th>percentage</th>';
+				str += '</thead>';
+				str +='</tr>';
+				for(var x in myResults[i].optionWiseSurveyVO.optionWiseSurveyAnalysisVO)
+				{
+				str +='<tr>';
+				str +='<td>'+myResults[i].optionWiseSurveyVO.optionWiseSurveyAnalysisVO[x].option+'</td>';
+				str +='<td>'+myResults[i].optionWiseSurveyVO.optionWiseSurveyAnalysisVO[x].optionCount+'</td>';
+				str +='<td>'+myResults[i].optionWiseSurveyVO.optionWiseSurveyAnalysisVO[x].optionPerc+'</td>';
+				str +='</tr>';
+				}
+				str += '</table>';
+				/* str+='<div id="optionChartDiv'+k+'" style="position: relative; float: right; margin-top: -212px;"></div>';
+				var k1=0;
+				for(var n in myResults[i].optionWiseSurveyVO.surveyAgeWiseDetailsVO)
+				{
+					k1++;
+				var subList = myResults[i].surveyAgeWiseDetailsVO[n];
+				buildChartForOptionSurveyAnalysis(subList,'optionChartDiv'+k1+'');
+				} */
+				str +='</div>';
+			}
+			if(myResults[i].casteWiseSurveyVO != null)
+			{
+			str +='<div id="casteWiseAnalysis'+k+'" class="widget green whitegloss"  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 897px;padding-bottom: 12px;"><h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="SelectionHeading">Caste Wise Survey Analysis</h4>';
+			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px; margin-top: 15px;" id="castetableId'+k+'">'
+			str += '<tr>';
+			str += '<thead class="info">';
+			str +='<th>Options</th>';
+			for(var a in myResults[i].casteWiseSurveyVO.casteWiseSurveyAnalysisVO[0].subList)
+			{
+			str +='<th>'+myResults[i].casteWiseSurveyVO.casteWiseSurveyAnalysisVO[0].subList[a].name+'</th>';
+			} 
+			str += '</thead>';
+			str += '</tr>';
+			
+			for(var b in myResults[i].casteWiseSurveyVO.casteWiseSurveyAnalysisVO)
+			{
+			str += '<tr>';	
+			str +='<td>'+myResults[i].casteWiseSurveyVO.casteWiseSurveyAnalysisVO[b].name+'</td>';
+			for(var c in myResults[i].casteWiseSurveyVO.casteWiseSurveyAnalysisVO[i].subList)
+			{
+			str +='<td>'+myResults[i].casteWiseSurveyVO.casteWiseSurveyAnalysisVO[b].subList[c].percentage+'</td>';
+			}
+			str += '</tr>';	
+			}
+			str += '</table>';
+			str +='</div>';
+			}
+			
+			
+			str +='</div>';
+			
+		}
+		
+		$('#casteWiseSurveyAnalysis').html(str);
+	}
 }
-</script>
+ </script>
 </head>
 <body>
 <div>
@@ -672,14 +837,7 @@ function buildCasteWiseSurveyAnalysis(myResults)
 				<div class="control-group">
 					<label class="control-label" for="state">State</label>
 					<div class="controls">
-						<s:select
-theme="simple"
-list="statesList"
-name="surveyorPersonalInfoVO.state"
-listKey="id"
-listValue="name"
-headerKey="0"
-headerValue="Select State"/> 
+						<s:select theme="simple" list="statesList"name="surveyorPersonalInfoVO.state" listKey="id" listValue="name" headerKey="0"headerValue="Select State"/> 
 
 					</div>
 				</div>

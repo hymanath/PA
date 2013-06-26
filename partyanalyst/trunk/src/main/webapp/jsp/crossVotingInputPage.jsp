@@ -254,8 +254,13 @@ var selAssemblyId = "${acId}";
 var selParliamentId = "${pcId}";
 var selElectionYear = "${electionYear}";
 var selParty = "${party}";
-
+var electionYear = "${year}";
+var pConstituencyId = "${pConstituency}";
+var aConstituencyId = "${aConstituency}";
+var partyId = "${partyId}";
 $(document).ready(function(){
+
+	
 	 if(selElectionYear != ""){
        $("#electionYearField").val(selElectionYear);
 	   if(selParliamentId != "" && selAssemblyId != "" && selParty != "")
@@ -767,7 +772,16 @@ function getAssembly(assemblyId,partyId)
 		}
 	}
 			
-			
+$(document).ready(function(){
+	if(electionYear != null && electionYear != "" && electionYear > 0)
+	{
+		$('#electionYearField').val(electionYear);
+		$('#parliamentField').val(pConstituencyId);
+		$('#AssemblySelect').val(aConstituencyId);
+		$('#PartySelect').val(partyId);
+		forGetCrossVoting();
+	}
+});	
 </script>
 </head>
 <body>
@@ -798,28 +812,30 @@ function getAssembly(assemblyId,partyId)
 				
 					<td align="left" class="tdStyle" style="padding-left:10px;"><label theme="simple" for="parliamentField" id="parliamentLabel">Parliament Constituency<font color="red">*</font></label></td>
 					<td align="left"> 
-						<select class="selectstyle" id="parliamentField" onchange="getAssembly('','')">
+						<!--<select class="selectstyle" id="parliamentField" onchange="getAssembly('','')">
 							<option value="-1">Select</option>
-						</select>
+						</select>-->
+						<s:select cssClass="selectstyle" theme="simple" id="parliamentField" name="parliamentField" list="pConstituencyList" listKey="id" listValue="name"  onchange="getAssembly('','')"></s:select>
 					</td>
 					<td><img id="ajaxImg2" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 				</tr>			
 				<tr>
 					<td align="left" class="tdStyle">Assembly Constituency<font color="red">*</font></td>
 					<td align="left">
-						<select class="selectstyle" id="AssemblySelect" onchange="getParty('')">
+						<!--<select class="selectstyle" id="AssemblySelect" onchange="getParty('')">
 							<option value="-1">Select</option>
-						</select>
-
+						</select>-->
+						<s:select cssClass="selectstyle" theme="simple" id="AssemblySelect" name="AssemblySelect" list="aConstituencyList" listKey="id" listValue="name"  onchange="getParty('')"></s:select>
 						<input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" onclick="forGetCrossVoting()"/><span id="checkBoxStyle">Include Aliance Parties</span>
 					</td>
 					<td><img id="ajaxImg3" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 					
 					<td align="left" class="tdStyle" style="padding-left:10px;">Party<font color="red">*</font></td>
 					<td align="left">
-							<select id="PartySelect" onchange="forGetCrossVoting()">
+							<!--<select id="PartySelect" onchange="forGetCrossVoting()">
 								<option value="-1" style="width:124px;">Select </option>			
-							</select>						
+							</select>	-->
+							<s:select cssClass="selectstyle" theme="simple" id="PartySelect" name="PartySelect" list="partysList" listKey="id" listValue="name"  onchange="forGetCrossVoting()"></s:select>							
 					</td>
 					
 				</tr>
