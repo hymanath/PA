@@ -5093,4 +5093,27 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		return levelValue;
 	}
 	
+	public Object[] getConstituencies(List<Long> assemblyIds){
+		Map<Long,List<SelectOptionVO>> assemblies = new HashMap<Long,List<SelectOptionVO>>();
+		List<SelectOptionVO> parliaments = new ArrayList<SelectOptionVO>();
+		parliaments.add(0, new SelectOptionVO(0l,"Select Location"));
+		Object[] returnVal = {parliaments,assemblies};
+		try{
+			List<Object[]> parlIdsList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(assemblyIds);
+			for(Object[] parlId:parlIdsList){
+				List<SelectOptionVO> assemIds = assemblies.get((Long)parlId[0]);
+				if(assemIds == null){
+					assemIds =  new ArrayList<SelectOptionVO>();
+					assemIds.add(0, new SelectOptionVO(0l,"Select Location"));
+					assemblies.put((Long)parlId[0], assemIds);
+					parliaments.add(new SelectOptionVO((Long)parlId[0], parlId[2] != null?parlId[2].toString():""));	
+				}
+				  assemIds.add(new SelectOptionVO((Long)parlId[1], parlId[3] != null?parlId[3].toString():""));
+				
+			}
+		}catch(Exception e){
+			log.error("Exception occured in getConstituencies() - ",e);
+		}
+		return returnVal;
+	}
 }
