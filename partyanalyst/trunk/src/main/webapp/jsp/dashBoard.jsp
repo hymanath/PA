@@ -229,15 +229,41 @@ Parliament
 </div>
 <div class="span9">
 	<div class="row-fluid">
-	   <div class="span12 widget-simple">Cross Voting</div>       				
+	   <div class="span12 widget-simple">Cross Voting
+	   
+	   <div>
+	   Election year : <s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" ></s:select> 
+	   Parliment Constituency :  <s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" ></s:select>
+	    Assembly Constituency : <select id="aConstituencyList" onChange="getParties();">
+	   <option value="0">Select Constituency</option>
+	   <option value="232">Kavali</option>
+	   </select>
+	    Party : <select id="partyList">
+	   <option value="0">Select Party</option>
+	   <option value="872">TDP</option>
+	   </select>
+	   </div>
+	   <div><input type="button" value="View" onChange="getCrossVotingReport();"></input></div>
+	   </div>       				
 	</div>
 	<div class="row-fluid">
 	   <div class="span6 widget-simple">Booth Wise Results</div>       
-	   <div class="span6 widget-simple">Voters Details Analysis</div>
+	   <div class="span6 widget-simple">Voters Details Analysis
+	   <div> <select  id="constituencyId">
+			 <option value="0">Select Constituency</option>
+			 <option value="232">Kavali</option>
+			 </select></div>
+			 <div><input type="button" value="View" class="btn btn-success" onCLick="openVotersAnalysts();"></input></div>
+	   </div>
 	</div>
 	<div class="row-fluid">
 	   <div class="span6 widget-simple">
 			 Results Vs Caste
+			<div> <select  id="constituencyList">
+			 <option value="0">Select Constituency</option>
+			 <option value="232">Kavali</option>
+			 </select></div>
+			 <div><input type="button" value="View" class="btn btn-success" onCLick="openCasteViseAnalysis();"></input></div>
 		</div>       
 	   <div class="span6 widget-simple">Voters Search</div>					
 	</div>
@@ -248,6 +274,122 @@ var loginMode = '${loginMode}';
 var stateId = $('#stateList_d').val();
 getDistrictsComboBoxForAState(stateId,"districtList_d");
 getAllConstituenciesInStateByType(2,stateId,"constituency");
+
+function openCasteViseAnalysis()
+{
+	var constituencyId = $('#constituencyList option:selected').val();
+	if(constituencyId != null && constituencyId != "" && constituencyId > 0)
+	{
+	window.open("casteAndElectionResultsComparisonAction.action?constituencyId="+constituencyId);
+	}
+	
+}
+
+function openVotersAnalysts()
+{
+	var constituencyId = $('#constituencyId option:selected').val();
+	if(constituencyId != null && constituencyId != "" && constituencyId > 0)
+	{
+	window.open("votersAnalysisNewAction.action?constituencyId="+constituencyId);
+	}
+}
+
+function getCrossVotingReport()
+{
+	var electionYear  = $('#electionYearField option:selected').val();
+	var pConstituency = $('#pConstituencyList option:selected').val();
+	var aConstituency = $('#aConstituencyList option:selected').val();
+	var party         = $('#partyList option:selected').val();
+	if(electionYear != null && electionYear != "" && electionYear > 0)
+	{
+		window.open("crossVotingReportInputAction.action?year="+electionYear+"&pConstituency="+pConstituency+"&aConstituency="+aConstituency+"&partyId="+party+"");
+	}
+}
+
+function getParties()
+{
+	var id   = $('#aConstituencyList option:selected').val();
+	var year = $('#electionYearField option:selected').val();
+	var jsObj=
+	{
+		constituencyId : id,
+		year           : year,
+		task           : "getPariesForAssemply"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPariesForAssemplyAction.action?"+rparam;	
+
+	callAjax(jsObj,url);
+}
+function buildParties(myResults)
+{
+	if(myResults != null)
+	{
+		var str = "";
+		$("#partyList option").remove();
+		str += '<option value="0">Select Party</option>';
+		for(var i in myResults)
+		{
+			str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+		}
+		$('#partyList').html(str);
+	}
+}
+
+function getAssemblyConstituencies()
+{
+	var constituencyId = $('#pConstituencyList option:selected').val();
+	var jsObj=
+	{
+		constituencyId : constituencyId,
+		task           : "getAssemblysForParliment"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAssemblyForParlimentAction.action?"+rparam;	
+
+	callAjax(jsObj,url);
+}
+function buildAssemblies(myResults)
+{
+	if(myResults != null)
+	{
+		var str = "";
+		$("#aConstituencyList option").remove();
+		for(var i in myResults)
+		{
+			str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+		}
+		$('#aConstituencyList').html(str);
+	}
+}
+function callAjax(jsObj,url)
+{
+	 var myResults;
+	 var callback = {			
+	   success : function( o ) {
+			try {												
+					myResults = YAHOO.lang.JSON.parse(o.responseText);	
+				
+					if(jsObj.task == "getPariesForAssemply")
+					{
+						buildParties(myResults);
+					}
+					else if(jsObj.task == "getAssemblysForParliment")
+					{
+						buildAssemblies(myResults);
+					}
+					
+				}catch (e) {
+				
+				}  
+	   },
+	   scope : this,
+	   failure : function( o ) {
+					//alert( "Failed to load result" + o.status + " " + o.statusText);
+				 }
+	   };
+YAHOO.util.Connect.asyncRequest('POST', url, callback);
+}
 
 
 </script>
