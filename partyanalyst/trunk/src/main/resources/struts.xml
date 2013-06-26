@@ -584,6 +584,7 @@
 		
 		<action name="subUserRegPageAction" class="userAction" method="subUserRegistration">
 			<result name="success">/jsp/registration.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>	
 		
 		<action name="getSubUserAccessValueAction" class="userAction" method="getSubUserAccessValue">
@@ -5434,5 +5435,14 @@
 				<param name="root">surveyDetails</param>
 		 	</result>
 		</action>
+
+		<action name="newhomePageAction" class="newhomePageAction">
+	       <result>/jsp/TdphomePage.jsp</result>
+	     </action>
+	     
+	     <action name="dashBoardAction" class="dashBoardAction"> 
+		    <result>/jsp/dashBoard.jsp</result>
+		</action>
+		
 		</package>
 </struts>      
