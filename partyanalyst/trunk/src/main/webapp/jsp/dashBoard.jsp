@@ -15,7 +15,12 @@
 </head>
 <style>
 	
-
+	table {
+    background-color: transparent;
+    border-spacing: 14px;
+     border-collapse: separate;
+    max-width: 564%;
+    }
 	#menu ul.menu li.active a {
 		background-position: left 0px;
 	}
@@ -229,42 +234,55 @@ Parliament
 </div>
 <div class="span9">
 	<div class="row-fluid">
-	   <div class="span12 widget-simple">Cross Voting
+	   <div class="span12 widget-simple">
+	   <h4>Cross Voting Analysis</h4>
 	   
 	   <div>
-	   Election year : <s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" ></s:select> 
-	   Parliment Constituency :  <s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onChange="getAssemblyConstituencies();"></s:select>
-	    Assembly Constituency : <select id="aConstituencyList" onChange="getParties();">
-	   <option value="0">Select Constituency</option>
-	   </select>
-	    Party : <select id="partyList">
+	   <table>
+	   <tr>
+	   <td><span>Election year </span></td><td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" ></s:select> </td>
+	   <td><span>Parliment Constituency   </span></td><td><s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onChange="getAssemblyConstituencies();"></s:select></td>
+	   </tr>
+	   <tr>
+	   <td><span> Assembly Constituency </span></td><td> <select id="aConstituencyList" onChange="getParties();">
+	   <option value="0">Select Location</option>
+	   </select></td>
+	    <td><span>Party  </span></td><td><select id="partyList">
 	   <option value="0">Select Party</option>
-	   </select>
+	   </select></td>
+	   </tr>
+	   </table>
 	   </div>
-	   <div><input type="button" value="View" onClick="getCrossVotingReport();"></input></div>
+	   <div><input type="button" value="View" class="btn btn-success" onClick="getCrossVotingReport();" style="float:right;"></input></div>
 	   </div>       				
 	</div>
 	<div class="row-fluid">
 	   <div class="span6 widget-simple">Booth Wise Results</div>       
-	   <div class="span6 widget-simple">Voters Details Analysis
-	   <div> <select  id="constituencyId">
-			 <option value="0">Select Constituency</option>
-			 <option value="232">Kavali</option>
-			 </select></div>
-			 <div><input type="button" value="View" class="btn btn-success" onCLick="openVotersAnalysts();"></input></div>
+	   
+	   <div class="span6 widget-simple">
+	    <h4>Voters Analysis </h4>
+	   <table>
+	   <tr>
+	   <td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="constituencyId" name="constituencyId" list="constituencyList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location"></s:select></td>
+	    </tr>
+		</table>
+		<div><input type="button" value="View" class="btn btn-success" onCLick="openVotersAnalysts();" style="float:right;"></input></div>
 	   </div>
+	   
 	</div>
 	<div class="row-fluid">
 	   <div class="span6 widget-simple">
-			 Results Vs Caste
-			<div> <select  id="constituencyList">
-			 <option value="0">Select Constituency</option>
-			 <option value="232">Kavali</option>
-			 </select></div>
-			 <div><input type="button" value="View" class="btn btn-success" onCLick="openCasteViseAnalysis();"></input></div>
+	   
+			<h4> Results Vs Caste</h4>
+			<table>
+			<tr>
+			 <td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="constituencyList" name="constituencyList" list="constituencyList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location"></s:select></td>
+	       </tr>
+		   </table>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openCasteViseAnalysis();" style="float:right;"></input></div>
 		</div>       
 	   <div class="span6 widget-simple">Voters Search</div>					
-	</div>
+	
 </div>
 <script type="text/javascript">
 constituencyId = '${sessionScope.USER.constituencyId}';
