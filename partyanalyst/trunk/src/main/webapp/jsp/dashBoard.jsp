@@ -240,8 +240,8 @@ Parliament
 	   <div>
 	   <table>
 	   <tr>
-	   <td><span>Election year </span></td><td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" ></s:select> </td>
-	   <td><span>Parliment Constituency   </span></td><td><s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onChange="getAssemblyConstituencies();"></s:select></td>
+	   <td><span>Election year </span></td><td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" ></s:select> </td>
+	   <td><span>Parliment Constituency   </span></td><td><s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" onChange="getAssemblyConstituencies();"></s:select></td>
 	   </tr>
 	   <tr>
 	   <td><span> Assembly Constituency </span></td><td> <select id="aConstituencyList" onChange="getParties();">
@@ -263,7 +263,7 @@ Parliament
 	    <h4>Voters Analysis </h4>
 	   <table>
 	   <tr>
-	   <td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="constituencyId" name="constituencyId" list="constituencyList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location"></s:select></td>
+	   <td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="constituencyId" name="constituencyId" list="constituencyList" listKey="id" listValue="name" ></s:select></td>
 	    </tr>
 		</table>
 		<div><input type="button" value="View" class="btn btn-success" onCLick="openVotersAnalysts();" style="float:right;"></input></div>
@@ -276,7 +276,7 @@ Parliament
 			<h4> Results Vs Caste</h4>
 			<table>
 			<tr>
-			 <td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="constituencyList" name="constituencyList" list="constituencyList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location"></s:select></td>
+			 <td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="constituencyList" name="constituencyList" list="constituencyList" listKey="id" listValue="name" ></s:select></td>
 	       </tr>
 		   </table>
 			<div><input type="button" value="View" class="btn btn-success" onCLick="openCasteViseAnalysis();" style="float:right;"></input></div>
