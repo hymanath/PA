@@ -3942,8 +3942,12 @@ var callback = {
 							
 	}
   };
-
- YAHOO.util.Connect.asyncRequest('GET', url, callback);
+ var conn = YAHOO.util.Connect;
+if(jsObj.task == "Update")
+{
+//conn.initHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8', true);  anil 
+}
+ conn.asyncRequest('GET', url, callback);
 }
 function buildAllNewsDetails(results)
 {
@@ -4934,7 +4938,9 @@ return false;
   {
    title  = document.getElementById("fileTitle").value;
    description  = document.getElementById("fileDescription").value;
-
+    
+	title = htmlEntity(title);
+	description = htmlEntity(description);
     //CHANGE BY SAMBA START
 
 	visibility = $('input:radio[name=visibility]:checked').val();
@@ -4964,8 +4970,8 @@ return false;
 
     //CHANGE BY SAMBA END
    
-   title = removeAllUnwantedCharacters(title);   
-   description = removeAllUnwantedCharacters(description);
+  // title = removeAllUnwantedCharacters(title);   
+  // description = removeAllUnwantedCharacters(description);
   
    for(var i in reqFile.fileVOList)
    {
@@ -5030,8 +5036,8 @@ try{
 		  flagInd          :false,
 		  fileGallaryId:fileGallaryId
      }
-	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-      var url = "updateDeleteNewsAction.action?"+rparam;	
+	  var rparam ="task="+encodeURIComponent(unescape(YAHOO.lang.JSON.stringify(jsObj)));
+      var url = "updateDeleteNewsAction.action?"+rparam;	//18111
   callnewAjax(jsObj,url);
  
  }
@@ -5765,6 +5771,31 @@ function showUserNewsCategoryStatus(results)
   $("#errorMsgDiv").html('Error Occured! Try Again..').css('color','red');
 	return;
 }
+function htmlEntity(aa) {
+
+var bb = '';
+for (i = 0; i < aa.length; i++)
+bb += hoj(aa.charAt(i));
+return bb;
+}
+function hoj(d) 
+{         if (d == '<')
+         return '&lt;';
+       else
+        if (d == '>')
+          return '&gt;';
+    
+if (d == '<')
+return '&lt;';
+if (d == '>')
+return '&gt;';
+if (d == '&')
+return '&amp;';
+  
+   if (d.charCodeAt(0) > 127)
+   return '&#' + d.charCodeAt(0) + ';';
+  return d;
+    }
 </script>
 </body>
 </html>
