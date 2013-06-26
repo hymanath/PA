@@ -248,5 +248,9 @@
 		<pattern>/surveyFormAction*</pattern>
 		<pattern>/surveyFormSaveAction*</pattern>
     	 </decorator>
-
+    	 
+       <decorator name="tdpHome" page="tdplayout.jsp">
+             <pattern>/newhomePageAction*</pattern>
+             <pattern>/dashBoardAction*</pattern>
+       </decorator>
 </decorators>
