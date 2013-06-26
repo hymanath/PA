@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.SurveyVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.dto.SurveyorVO;
+import com.itgrids.partyanalyst.dto.SurveyAnalysisDTO;
 public class SurveyFormAction extends ActionSupport implements ServletRequestAware,ModelDriven<List<QuestionAnswerVO>>{
 
 	/**
@@ -70,6 +71,7 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 	private String questionRemark;
 	private List<SurveyAgeWiseDetailsVO> surveyAgeWiseDetailsVO;
 	private List<SurveyAnalysisVO> surveyAnalysisVO;
+	private List<SurveyAnalysisDTO> surveyAnalysisDTO;
 	public void setServletRequest(HttpServletRequest arg0) {
 		
 		this.request=arg0;
@@ -570,6 +572,16 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 		this.surveyAnalysisVO = surveyAnalysisVO;
 	}
 
+	
+	public List<SurveyAnalysisDTO> getSurveyAnalysisDTO() {
+		return surveyAnalysisDTO;
+	}
+
+
+	public void setSurveyAnalysisDTO(List<SurveyAnalysisDTO> surveyAnalysisDTO) {
+		this.surveyAnalysisDTO = surveyAnalysisDTO;
+	}
+
 
 	public String execute()
 	{
@@ -628,14 +640,14 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 				return "voterVO";
 			}
 			
-			else if(jObj.getString("task").equalsIgnoreCase("getAgeWiseSurveyAnalysis"))
+			else if(jObj.getString("task").equalsIgnoreCase("getAgeWiseSurveyAnalysis") || jObj.getString("task").equalsIgnoreCase("getGenderWiseSurveyAnalysis") || jObj.getString("task").equalsIgnoreCase("getOptionWiseSurveyAnalysis") || jObj.getString("task").equalsIgnoreCase("getCasteWiseSurveyAnalysis"))
 			{
 				Long surveyId       = jObj.getLong("surveyId");
-				surveyAgeWiseDetailsVO = surveyAnalysisService.agewiseSurveyAnalysis(surveyId);
-				return "ageWiseAnalysis";
+				surveyAnalysisDTO = surveyAnalysisService.getAttributesWiseSurveyAnalysis(surveyId);
+				return "surveyAnalysis";
 			}
 			
-			else if(jObj.getString("task").equalsIgnoreCase("getGenderWiseSurveyAnalysis"))
+			/*else if(jObj.getString("task").equalsIgnoreCase("getGenderWiseSurveyAnalysis"))
 			{
 				Long surveyId       = jObj.getLong("surveyId");
 				surveyAgeWiseDetailsVO = surveyAnalysisService.getGenderWiseSurveyAnalysis(surveyId);
@@ -654,7 +666,7 @@ public class SurveyFormAction extends ActionSupport implements ServletRequestAwa
 				Long surveyId       = jObj.getLong("surveyId");
 				surveyAnalysisVO = surveyAnalysisService.getCasteWiseSurveyAnalysis(surveyId);
 				return "casteWiseAnalysis";
-			}
+			}*/
 			
 			
 		} catch (Exception e) {
