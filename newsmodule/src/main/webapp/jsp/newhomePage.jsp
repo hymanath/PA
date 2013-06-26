@@ -319,8 +319,7 @@ width: 92px;
                           
 						  
 						  <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
-							<h4 class="enadu"> <s:property value="fileTitle1"/></h4>
-						 </s:if>
+							<span class="enadu"> <s:property value="fileTitle1"/></span>						 </s:if>
 						 <s:else>
 							<h4> <s:property value="fileTitle1"/></h4>
 						 </s:else>
