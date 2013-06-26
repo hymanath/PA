@@ -385,4 +385,8 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getHamletsByPanchayatIdsList(List<Long> panchayatIdsList);
 		
 		public List<SelectOptionVO> getBoothsByPanchayatIdsListAndConstituencyIdInAPublication(List<Long> panchayatIdsList,Long constituencyId,Long publicationDateId);
+		
+		public List<SelectOptionVO> getElectionYearsForBooths(Long stateId,Long electionType);
+		
+		public List<SelectOptionVO> getPartiesForBooths(String electionYear,Long constituencyId);
 }

@@ -3827,5 +3827,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 
 		return query.list();
 	}
+	public List<Party> findDistinctPartiesByConstituencyAndElection(Long constituencyId, String electionYear) {
+		Object[] params = {constituencyId, electionYear};
+		return getHibernateTemplate().find( "select distinct model.party from Nomination model where model.constituencyElection.constituency.constituencyId = ? and model.constituencyElection.election.electionYear = ?", params);
+	}
 		
 }

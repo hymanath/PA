@@ -8760,5 +8760,35 @@ public class StaticDataService implements IStaticDataService {
 		return list;
 		
 	}
+	public List<SelectOptionVO> getElectionYearsForBooths(Long stateId,Long electionType){
+		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+		try{
+			
+			List<Object[]> years = areaTypeDAO.getElectionYears(stateId,electionType);
+			for(Object[] yearsObj:years)
+				list.add(new SelectOptionVO((Long)yearsObj[0],yearsObj[1].toString()));
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<SelectOptionVO> getPartiesForBooths(String electionYear,Long constituencyId){
+		List<Party> parties = nominationDAO
+				.findPartiesByConstituencyAndElection(constituencyId,
+						electionYear);
+		List<SelectOptionVO> partyVOs = new ArrayList<SelectOptionVO>();
+		for (Party party : parties) {
+			if(party.getPartyId()!=366){
+			SelectOptionVO partyVO = new SelectOptionVO(party.getPartyId(),
+					party.getShortName());
+			partyVOs.add(partyVO);
+			}
+		}
+		return partyVOs;
+	}
+
+		
 
 }
