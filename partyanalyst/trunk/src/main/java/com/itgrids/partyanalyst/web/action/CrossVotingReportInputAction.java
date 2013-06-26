@@ -19,7 +19,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class CrossVotingReportInputAction extends ActionSupport implements ServletRequestAware {
 
 	private static final long serialVersionUID = 1L;
-	private List<SelectOptionVO> electionYearList;
+	private List<SelectOptionVO> electionYearList,pConstituencyList,aConstituencyList,partysList;
 	private List<SelectOptionVO> parliamentList;
 	private HttpServletRequest request;
 	private EntitlementsHelper entitlementsHelper;
@@ -28,6 +28,7 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 	private String pcId;
 	private String electionYear;
 	private String party;
+	private Long year , pConstituency,aConstituency,partyId;
 	
 	public ICrossVotingEstimationService getCrossVotingEstimationService() {
 		return crossVotingEstimationService;
@@ -106,6 +107,64 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		this.party = party;
 	}
 
+	
+	public Long getYear() {
+		return year;
+	}
+
+	public void setYear(Long year) {
+		this.year = year;
+	}
+
+	public Long getpConstituency() {
+		return pConstituency;
+	}
+
+	public void setpConstituency(Long pConstituency) {
+		this.pConstituency = pConstituency;
+	}
+
+	public Long getaConstituency() {
+		return aConstituency;
+	}
+
+	public void setaConstituency(Long aConstituency) {
+		this.aConstituency = aConstituency;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
+	
+	public List<SelectOptionVO> getpConstituencyList() {
+		return pConstituencyList;
+	}
+
+	public void setpConstituencyList(List<SelectOptionVO> pConstituencyList) {
+		this.pConstituencyList = pConstituencyList;
+	}
+
+	public List<SelectOptionVO> getaConstituencyList() {
+		return aConstituencyList;
+	}
+
+	public void setaConstituencyList(List<SelectOptionVO> aConstituencyList) {
+		this.aConstituencyList = aConstituencyList;
+	}
+
+	public List<SelectOptionVO> getPartysList() {
+		return partysList;
+	}
+
+	public void setPartysList(List<SelectOptionVO> partysList) {
+		this.partysList = partysList;
+	}
+
 	public String execute(){
 		
 		HttpSession session = request.getSession();
@@ -125,7 +184,22 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		
 		for(String year : years)
 			electionYearList.add(new SelectOptionVO(Long.parseLong(year), year));
+		if(year != null  && year > 0)
+		{
+			pConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(String.valueOf(year), new Long(1));
+		}
+		if(pConstituency != null && pConstituency > 0)
+		{
+			aConstituencyList = crossVotingEstimationService.getAssembliesForParliament(pConstituency,year);
+		}
+		if(aConstituency != null && aConstituency > 0)
+		{
+			partysList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(aConstituency, String.valueOf(year));
+		}
 		
+		pConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		aConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		partysList.add(0, new SelectOptionVO(0L,"Select Party"));
 		return Action.SUCCESS;
 	}
 

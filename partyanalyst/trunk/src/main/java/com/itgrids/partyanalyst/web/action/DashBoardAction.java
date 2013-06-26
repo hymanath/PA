@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -20,7 +21,7 @@ import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 
 
 @SuppressWarnings("serial")
@@ -33,6 +34,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> statesList,statesListForLocalBodyElection;
 	private IStaticDataService staticDataService;
 	private HttpSession session;
+	private List<SelectOptionVO> electionYearList,partysList;
 	private List<SelectOptionVO> constituencyList, userAccessConstituencyList,assemblyConstis,parlConstis,parliaments;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private IVotersAnalysisService votersAnalysisService;
@@ -68,6 +70,34 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
+	}
+
+	
+	public List<SelectOptionVO> getElectionYearList() {
+		return electionYearList;
+	}
+
+
+	public void setElectionYearList(List<SelectOptionVO> electionYearList) {
+		this.electionYearList = electionYearList;
+	}
+	
+	public JSONObject getjObj() {
+		return jObj;
+	}
+
+
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+
+	public List<SelectOptionVO> getPartysList() {
+		return partysList;
+	}
+
+
+	public void setPartysList(List<SelectOptionVO> partysList) {
+		this.partysList = partysList;
 	}
 
 
@@ -153,7 +183,6 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		
 		if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
 			statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
-
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return INPUT;
@@ -212,9 +241,19 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		}
 		session.setAttribute("assemblyConstis",assemblyConstis);
 		session.setAttribute("parlConstis",parlConstis);
+		
+		List<String> years = crossVotingEstimationService.getElectionYearsForBoothResult();
+		electionYearList = new ArrayList<SelectOptionVO>();
+		if(years != null && years.size() > 0)
+		{  
+			
+			for(String year : years)
+				electionYearList.add(new SelectOptionVO(Long.parseLong(year.trim()), year));
+			
+			
+		}
+		
 		return Action.SUCCESS;
-		
-		
 	}
 
 
@@ -242,5 +281,21 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 		
+	}
+	public String ajaxHandler()
+	{
+		try
+		{
+			String param;
+			param = getTask();
+			jObj = new JSONObject(param);
+			Long constituencyId  = jObj.getLong("constituencyId");
+			Long year            = jObj.getLong("year");
+			partysList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(constituencyId, String.valueOf(year));
+		}catch(Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
 	}
 }
