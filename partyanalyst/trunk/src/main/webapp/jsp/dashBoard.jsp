@@ -288,6 +288,7 @@ Parliament
 constituencyId = '${sessionScope.USER.constituencyId}';
 var loginMode = '${loginMode}';	  
 var stateId = $('#stateList_d').val();
+var districtId = '${districtId}';
 getDistrictsComboBoxForAState(stateId,"districtList_d");
 getAllConstituenciesInStateByType(2,stateId,"constituency");
 

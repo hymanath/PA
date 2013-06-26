@@ -20,7 +20,7 @@ import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-
+import com.itgrids.partyanalyst.service.IConstituencySearchService;
 
 @SuppressWarnings("serial")
 public class DashBoardAction extends ActionSupport implements ServletRequestAware{
@@ -39,7 +39,12 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private CadreManagementService cadreManagementService;
 	JSONObject jObj;
 	private String task;
-	
+	private Long constituencyId;
+	private Long districtId;
+	private Long stateId;
+	private List<SelectOptionVO> pConstituencyList,aConstituencyList;
+	private IConstituencySearchService constituencySearchService;
+	private List<SelectOptionVO> districtStateList;
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
 	}
@@ -170,6 +175,88 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		this.task = task;
 	}
 
+	
+	public List<SelectOptionVO> getpConstituencyList() {
+		return pConstituencyList;
+	}
+
+
+	public void setpConstituencyList(List<SelectOptionVO> pConstituencyList) {
+		this.pConstituencyList = pConstituencyList;
+	}
+	
+
+	public List<SelectOptionVO> getParliaments() {
+		return parliaments;
+	}
+
+
+	public void setParliaments(List<SelectOptionVO> parliaments) {
+		this.parliaments = parliaments;
+	}
+
+	
+	public List<SelectOptionVO> getaConstituencyList() {
+		return aConstituencyList;
+	}
+
+
+	public void setaConstituencyList(List<SelectOptionVO> aConstituencyList) {
+		this.aConstituencyList = aConstituencyList;
+	}
+
+
+	
+	public IConstituencySearchService getConstituencySearchService() {
+		return constituencySearchService;
+	}
+
+
+	public void setConstituencySearchService(
+			IConstituencySearchService constituencySearchService) {
+		this.constituencySearchService = constituencySearchService;
+	}
+
+	
+	public List<SelectOptionVO> getDistrictStateList() {
+		return districtStateList;
+	}
+
+
+	public void setDistrictStateList(List<SelectOptionVO> districtStateList) {
+		this.districtStateList = districtStateList;
+	}
+
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
 
 	public String execute()
 	{	
@@ -184,7 +271,12 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return INPUT;
-		
+		constituencyId = user.getConstituencyId();
+		districtStateList = constituencySearchService.getDistrictAndStateId(constituencyId);
+		SelectOptionVO selectOptionVO = new SelectOptionVO();
+		selectOptionVO = districtStateList.get(0);
+		districtId = selectOptionVO.getId();
+		stateId = selectOptionVO.getOrderId();
 		constituencyList = user.getUserAccessVoterConstituencies();
 		assemblyConstis = (List<SelectOptionVO>)session.getAttribute("assemblyConstis");
 		parlConstis = (List<SelectOptionVO>)session.getAttribute("parlConstis");
@@ -261,7 +353,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	}
    
 	public String getAssemblyConstisForParl(){
-		session = request.getSession();
+		/*session = request.getSession();
 		Map<Long,List<SelectOptionVO>> assembliesForParl = (Map<Long,List<SelectOptionVO>>)session.getAttribute("assembliesForParl");
 		
 		if(assembliesForParl != null){
@@ -279,7 +371,20 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			assemblyConstis.add(new SelectOptionVO(0l,"Select Location"));
 		}
 		return Action.SUCCESS;
-		
+		*/
+		try
+		{
+			String param;
+			param = getTask();
+			jObj = new JSONObject(param);
+			Long constituencyId  = jObj.getLong("constituencyId");
+			Long year            = jObj.getLong("year");
+			aConstituencyList = crossVotingEstimationService.getAssembliesForParliament(constituencyId,year);
+		}catch(Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
 	}
 	public String ajaxHandler()
 	{
@@ -291,6 +396,22 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			Long constituencyId  = jObj.getLong("constituencyId");
 			Long year            = jObj.getLong("year");
 			partysList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(constituencyId, String.valueOf(year));
+		}catch(Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getparlementByElection()
+	{
+		try
+		{
+			String param;
+			param = getTask();
+			jObj = new JSONObject(param);
+			Long year  = jObj.getLong("electionYear");
+			pConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(String.valueOf(year), new Long(1));
 		}catch(Exception e)
 		{
 			

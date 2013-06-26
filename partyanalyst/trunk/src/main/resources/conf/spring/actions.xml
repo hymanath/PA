@@ -1223,6 +1223,7 @@
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="constituencySearchService" ref="constituencySearchService" />
 	</bean>
 </beans>	
 	
