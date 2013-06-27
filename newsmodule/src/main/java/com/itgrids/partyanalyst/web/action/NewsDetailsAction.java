@@ -15,11 +15,13 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.service.IContentManagementService;
+import com.itgrids.partyanalyst.util.IConstants;
 
 public class NewsDetailsAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
@@ -39,6 +41,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private String fromDate;
 	private String toDate;
 	private ResultStatus resultStatus;
+	private List<SelectOptionVO> selectOptionVOList;
 	
 	public Long getResponseContentId() {
 		return responseContentId;
@@ -142,6 +145,12 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
+	public List<SelectOptionVO> getSelectOptionVOList() {
+		return selectOptionVOList;
+	}
+	public void setSelectOptionVOList(List<SelectOptionVO> selectOptionVOList) {
+		this.selectOptionVOList = selectOptionVOList;
+	}
 	public String execute()
 	{	
 		session = request.getSession();
@@ -185,6 +194,14 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 
 		 else if(jObj.getString("task").equalsIgnoreCase("createUserNewsCategory"))
 			resultStatus = candidateDetailsService.createUserNewsCategory(jObj.getString("name"),jObj.getString("visibility"),userId);
+		 
+		 else if(jObj.getString("task").equalsIgnoreCase("getCandidateRelatedGallaries"))
+		 {
+			 String newsType ="public";
+			 if(regVO.getUserAccessType() != null && regVO.getUserAccessType().equalsIgnoreCase("Admin"))
+				 newsType = "";
+			 selectOptionVOList = candidateDetailsService.getCandidateRelatedGallaries(jObj.getLong("candidateId"),jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.TDPID,newsType);
+		 }
 		 
 		}catch (Exception e) {
 			e.printStackTrace();

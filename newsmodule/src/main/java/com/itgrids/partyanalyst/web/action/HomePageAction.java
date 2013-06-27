@@ -95,6 +95,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private Map<Long,String> candidatesMap;
 	private String fromDate;
 	private String toDate;
+	private String gallaryIds;
 	
 	public List<FileVO> getResponseFilesList() {
 		return responseFilesList;
@@ -441,6 +442,13 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	}
 	public void setToDate(String toDate) {
 		this.toDate = toDate;
+	}
+	
+	public String getGallaryIds() {
+		return gallaryIds;
+	}
+	public void setGallaryIds(String gallaryIds) {
+		this.gallaryIds = gallaryIds;
 	}
 	public String execute()
 	{	

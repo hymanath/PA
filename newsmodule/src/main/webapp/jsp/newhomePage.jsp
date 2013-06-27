@@ -146,6 +146,12 @@ width: 92px;
 #byDateRadio{margin-left: 10px; margin-right: 4px;margin-top: 0;}
 #candidateNewsShowHideDatesDiv{margin-top: 10px;}
 #cadidateRadioDiv{text-align: center; margin-top: 6px;}
+#gallaryRadioId{ margin-left: 5px;
+    margin-right: 4px;
+    margin-top: 0;}
+.errorDiv{color:red;}
+#gallaryShowHideDiv{margin-left: 2px;}
+#gallaryId{width: 221px;}
 </style>
 </head>
 <body>
@@ -461,6 +467,9 @@ width: 92px;
 						<div id="cadidateRadioDiv">
 						 <input type="radio" id="byAllRadio" value="byAll" name="candidateNewsRadio" class="candidateRadioCls" checked="true"/>All
 						 <input type="radio" id="byDateRadio" value="byDate" name="candidateNewsRadio" class="candidateRadioCls"/>By Date
+						 <!-- <input type="radio" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" onclick="getCandidateGallaries()"/>By Gallary -->
+
+						 <input type="checkbox" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" />By Gallery
 						 </div>
 						
 						<div id="candidateNewsShowHideDatesDiv" style="display:none;">
@@ -475,6 +484,11 @@ width: 92px;
 								</td>
 							</tr>
 						</table>
+
+						<div id="gallaryShowHideDiv" style="display:none;">
+						  <select id="gallaryId" multiple="multiple"></select>
+						</div>
+
 						<button id="sendButton" class="btn btn-warning btn-mini" onclick="getCandidatesNews()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
 						<div class="span12 errorDiv"></div>
 						</div>
@@ -799,6 +813,12 @@ function callHomePageAjax11(jsObj,url){
 								{
 									//alert('s');
 								}
+								else if(jsObj.task == "getCandidateRelatedGallaries")
+								{
+								 clearOptionsListForSelectElmtId('gallaryId');
+								 createOptionsForSelectElmtId('gallaryId',myResults);
+			  
+								}
 								}catch (e) {
 							     
 								}  
@@ -1025,7 +1045,21 @@ function getCandidatesNews(){
 	    }
 
 	 }
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&";
+	 var selectedGallaryIds = "";
+	if($("#gallaryRadioId").is(":checked"))
+	{
+	  selectedGallaryIds = $('#gallaryId').val();
+	  if(selectedGallaryIds == null || selectedGallaryIds == "null")
+	  {
+		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Gallary.</span>');
+          return;
+	  }
+
+	}
+	else
+	 selectedGallaryIds = "";
+
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&";
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
@@ -1036,6 +1070,58 @@ function getResponseDetailsByContentId(contentId)
 		
      var browser1 = window.open("showNewsResponseAction.action?responseContentId ="+contentId+" ","showNewsResponse","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
+
+
+}
+
+function getCandidateGallaries()
+{
+  $("#gallaryShowHideDiv").css("display","block");
+    var fromDate = "";
+	var toDate = "";
+	var candidateId = $("#candidatesListId").val();
+	$(".errorDiv").html('');
+	if(candidateId == 0)
+	{
+	  $(".errorDiv").html('Please Select Candidate');
+	  return;	
+	}
+	var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
+	if(radioVal == "byDate")
+	{
+	   fromDate = $("#existingFromText").val();
+	   toDate = $("#existingToText").val();
+	
+	   if(fromDate=="" && toDate == "")
+	   {
+		 $(".errorDiv").html('Please Select From And To Dates');
+		 return;
+	   }
+	   else if(fromDate =="")
+	   {
+	     $(".errorDiv").html('Please Select From Date');
+		 return;
+	   }
+	   else if(toDate =="")
+	   {
+	     $(".errorDiv").html('Please Select To Date');
+		 return;
+	   }
+	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
+         $(".errorDiv").html('Invalid Date Selection.');
+         return;
+	   } 
+	}
+
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		candidateId:candidateId,
+		task:'getCandidateRelatedGallaries'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidateRelatedGallariesAction.action?"+rparam;
+	callAjax(jsObj, url);
 
 
 }
@@ -1064,6 +1150,43 @@ $(".candidateRadioCls").click(function(){
      $("#candidateNewsShowHideDatesDiv").css("display","block");
 	
 	
+});
+
+
+$("#candidatesListId").live("change",function(){
+  var candidateId = $("#candidatesListId").val();
+   $('.errorDiv').html('');
+    clearOptionsListForSelectElmtId('gallaryId');
+  if(candidateId == 0)
+  {
+    $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate</span>');
+		return;
+  }
+	
+  if($("#gallaryRadioId").is(":checked"))
+  {
+	$("#gallaryShowHideDiv").css("display","block");
+    $("#gallaryRadioId").attr('checked', true);
+	getCandidateGallaries();
+  }
+  else
+  {
+	$("#gallaryShowHideDiv").css("display","none");
+  }
+	
+});
+
+$("#gallaryRadioId").click(function(){
+	if($("#gallaryRadioId").is(":checked"))
+	{
+      $("#gallaryShowHideDiv").css("display","block");
+	  getCandidateGallaries();
+	}
+	else
+    {
+	  $("#gallaryShowHideDiv").css("display","none");
+    }
+
 });
 
 });
