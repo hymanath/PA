@@ -2,13 +2,10 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
-import com.itgrids.partyanalyst.dto.PdfGenerationVO;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 
@@ -45,9 +42,9 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public List<FileGallary> getRecentlyUploadedFiles(Integer startIndex , Integer maxResults , String queryStr);
 	
 	public List<Object[]> getNewsByGalleryId(List galleryIds);	
-	
-	 public void updateVisibility(Long fileId,String visibility);
-	
+	*/
+	public void updateVisibility(Long fileId,String visibility);
+	/*
 	public List<File> getNewsForRegisterUsers(FileVO fileVO);
 	
     public List<Object[]> getCountDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);

@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.Voter;
 
 public interface IBoothDAO extends GenericDao<Booth, Long>{/*
 	

@@ -5,7 +5,6 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.FileVO;
-import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.NewsFlag;
 

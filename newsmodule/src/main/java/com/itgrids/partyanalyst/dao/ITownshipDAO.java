@@ -4,12 +4,8 @@
  */
 package com.itgrids.partyanalyst.dao;
 
-import java.util.List;
-
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dao.columns.enums.TownshipColumnNames;
-import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.Township;
 
 /**
@@ -29,6 +25,7 @@ public interface ITownshipDAO extends GenericDao<Township, Long>{
 	 *            the property value to match
 	 * @return List<Township> found by query
 	 */
+	/*
 	public List<Township> findByProperty(TownshipColumnNames propertyName, Object value);
 
 	public List<Township> findByTownshipName(Object townshipName);
@@ -57,4 +54,5 @@ public interface ITownshipDAO extends GenericDao<Township, Long>{
 	public List findTownshipsByTehsilId(Long tehsilId);
 	
 	public List<Panchayat> getPanchayathies(Long mandalID);
+	 */
 }
