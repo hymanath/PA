@@ -50,7 +50,7 @@ ICandidateRelatedNewsDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FileGallary> getFileGallaryListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate,List<Long> gallaryIdsList)
+	public List<FileGallary> getFileGallaryListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate,List<Long> gallaryIdsList,List<Long> categoryIdsList)
     {
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.fileGallary from CandidateRealatedNews model where model.candidate.candidateId =:candidateId and ");
@@ -69,6 +69,9 @@ ICandidateRelatedNewsDAO {
 		if(gallaryIdsList != null && gallaryIdsList.size() > 0)
 		 str.append(" and model.fileGallary.gallary.gallaryId in (:gallaryIdsList) ");
 		
+		if(categoryIdsList != null && categoryIdsList.size() > 0)
+		 str.append(" and model.fileGallary.file.category.categoryId in (:categoryIdsList) ");
+		
 		 str.append(" order by model.fileGallary.file.fileDate desc ");
 		Query query = getSession().createQuery(str.toString());
 			 
@@ -81,6 +84,9 @@ ICandidateRelatedNewsDAO {
 		 
 		 if(gallaryIdsList !=null && gallaryIdsList.size() > 0)
 		  query.setParameterList("gallaryIdsList", gallaryIdsList);
+		 if(categoryIdsList != null && categoryIdsList.size() > 0)
+		  query.setParameterList("categoryIdsList", categoryIdsList);
+		 
 		 if(firstResult != null)
 		 query.setFirstResult(firstResult);
 		 if(maxResult != null)
