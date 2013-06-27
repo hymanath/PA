@@ -16911,5 +16911,24 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		return null;
 	}
  }
-		  
+	
+ public SelectOptionVO getConstiInfo(List<Long> constiIds){
+	 try{
+		 List<Object[]> result = nominationDAO.getLatestElectionDetails(constiIds);
+		 if(result != null && result.size() > 0){
+			 Object[] data = result.get(0);
+			 SelectOptionVO vo = new SelectOptionVO();
+			 vo.setId((Long)data[0]);
+			 vo.setName(data[1].toString());
+			 if("BYE".equalsIgnoreCase(data[2].toString()))
+			  vo.setType(data[2].toString()+" election");
+			 else
+			  vo.setType("");
+			 return vo;
+		 }
+	 }catch(Exception e){
+		 
+	 }
+	 return null;
+ }
 }
