@@ -97,12 +97,7 @@ function callAjax(jsObj,url)
 YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 
-$('#id').find('option').remove();
 
-$.each(results,function(index,value){
-	$('#id').append('<option value="'+result[0]+'">'+result[0]+'</option>');
-
-});
 </script>
 </head>
 <body>
