@@ -26,7 +26,6 @@ import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
-import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
@@ -62,7 +61,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	private IPartyGalleryDAO partyGalleryDAO;
 	private IGallaryDAO gallaryDAO;
 	private IContentTypeDAO contentTypeDAO;
-	private IUserGallaryDAO userGallaryDAO;
+	//private IUserGallaryDAO userGallaryDAO;
 	private IFileGallaryDAO fileGallaryDAO;
 	private static final Logger log = Logger
 			.getLogger(PartyDetailsService.class);
@@ -240,13 +239,13 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 		this.fileTypeDAO = fileTypeDAO;
 	}
 */
-	public IUserGallaryDAO getUserGallaryDAO() {
+/*	public IUserGallaryDAO getUserGallaryDAO() {
 		return userGallaryDAO;
 	}
 
 	public void setUserGallaryDAO(IUserGallaryDAO userGallaryDAO) {
 		this.userGallaryDAO = userGallaryDAO;
-	}
+	}*/
 public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
 	}

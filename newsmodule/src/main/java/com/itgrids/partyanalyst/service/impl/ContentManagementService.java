@@ -19,7 +19,6 @@ import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.INewsDetailsDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
-import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
 import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -36,7 +35,7 @@ public class ContentManagementService implements IContentManagementService{
 	
 	private static final Logger log = Logger.getLogger(ContentManagementService.class);
 	private IFileGallaryDAO fileGallaryDAO;
-	private ISpecialPageGalleryDAO specialPageGalleryDAO;
+	//private ISpecialPageGalleryDAO specialPageGalleryDAO;
 	private IGallaryDAO gallaryDAO;
 	private IPartyGalleryDAO partyGalleryDAO;
 	private INewsFlagDAO newsFlagDAO;
@@ -78,7 +77,7 @@ public class ContentManagementService implements IContentManagementService{
 		this.partyGalleryDAO = partyGalleryDAO;
 	}
 
-	public ISpecialPageGalleryDAO getSpecialPageGalleryDAO() {
+	/*public ISpecialPageGalleryDAO getSpecialPageGalleryDAO() {
 		return specialPageGalleryDAO;
 	}
 
@@ -86,7 +85,7 @@ public class ContentManagementService implements IContentManagementService{
 			ISpecialPageGalleryDAO specialPageGalleryDAO) {
 		this.specialPageGalleryDAO = specialPageGalleryDAO;
 	}
-
+*/
 	public IFileGallaryDAO getFileGallaryDAO() {
 		return fileGallaryDAO;
 	}
@@ -350,7 +349,7 @@ public class ContentManagementService implements IContentManagementService{
 				
 				if(requestFrom.equalsIgnoreCase(IConstants.SPECIAL_PAGE))
 				{
-					otherGalIdsResult = specialPageGalleryDAO.getOtherGalleries(requestPageId,gallaryIds,contentType);
+					//otherGalIdsResult = specialPageGalleryDAO.getOtherGalleries(requestPageId,gallaryIds,contentType);
 				}
 				else if(requestFrom.equalsIgnoreCase(IConstants.CANDIDATE_PAGE))
 				{
@@ -515,7 +514,7 @@ public class ContentManagementService implements IContentManagementService{
 		
 	}
 	
-	
+	/*
 	public ContentDetailsVO getSelectedContentAndRelatedGalleriesInPopup(
 			Long contentId, String requestFrom, Long requestPageId,
 			String isCustomer,List<FileGallary> allNewsListForPopup)	{
@@ -774,7 +773,7 @@ public class ContentManagementService implements IContentManagementService{
 			return null;
 		}
 	}
-	
+	*/
 	public boolean checkForFileExistance(List<FileGallary> list, FileGallary fileGallary)
 	{
 		try{
@@ -803,7 +802,7 @@ public class ContentManagementService implements IContentManagementService{
 		 	        else return 0;
 		        }
 		    };
-		    
+		    /*  
 		    public static Comparator<FileVO> reverse_date_comparator = new Comparator<FileVO>()
 				    {
 				   
@@ -819,7 +818,7 @@ public class ContentManagementService implements IContentManagementService{
 				 	        else if (n1 < n2) return 1;
 				 	        else return 0;
 				        }
-				    };
+				    };*/
 				    
 				    
 				  //get Response fileGallaries for selected fileGallary

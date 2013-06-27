@@ -5,24 +5,15 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.velocity.app.VelocityEngine;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
-import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGroupEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dao.IUserAccessIpAddressDAO;
-import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
-import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
-import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
-import com.itgrids.partyanalyst.dao.IUserRolesDAO;
-import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -35,16 +26,13 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.ILoginService;
-import com.itgrids.partyanalyst.service.IMailService;
-import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-
 public class LoginService implements ILoginService{
 	
-	private IUserCountryAccessInfoDAO userCountryAccessInfoDAO;
-	private IUserStateAccessInfoDAO userStateAccessInfoDAO;
-	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
-	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	//private IUserCountryAccessInfoDAO userCountryAccessInfoDAO;
+	//private IUserStateAccessInfoDAO userStateAccessInfoDAO;
+	//private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+	//private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IGroupEntitlementDAO groupEntitlementDAO;
 	private ICountryDAO countryDAO;
 	private IStateDAO stateDAO;
@@ -52,18 +40,18 @@ public class LoginService implements ILoginService{
 	private IConstituencyDAO constituencyDAO;
 	private ITehsilDAO tehsilDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
-	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
-	private IUserLoginDetailsDAO userLoginDetailsDAO;
-	private IUserRolesDAO userRolesDAO;
+	//private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	//private IUserLoginDetailsDAO userLoginDetailsDAO;
+	//private IUserRolesDAO userRolesDAO;
 	private IUserDAO userDAO;
-	private IUserAccessIpAddressDAO userAccessIpAddressDAO;
-	private VelocityEngine velocityEngine;
+	//private IUserAccessIpAddressDAO userAccessIpAddressDAO;
+	//private VelocityEngine velocityEngine;
 	public static Logger LOG = Logger.getLogger(UserService.class); 
 
-	private IMailService mailService;
+	//private IMailService mailService;
 	
 	
-	public VelocityEngine getVelocityEngine() {
+	/*public VelocityEngine getVelocityEngine() {
 		return velocityEngine;
 	}
 
@@ -87,23 +75,23 @@ public class LoginService implements ILoginService{
 			IUserAccessIpAddressDAO userAccessIpAddressDAO) {
 		this.userAccessIpAddressDAO = userAccessIpAddressDAO;
 	}
-
-	public IUserRolesDAO getUserRolesDAO() {
+*/
+/*	public IUserRolesDAO getUserRolesDAO() {
 		return userRolesDAO;
 	}
 
 	public void setUserRolesDAO(IUserRolesDAO userRolesDAO) {
 		this.userRolesDAO = userRolesDAO;
 	}
-
-	public IUserLoginDetailsDAO getUserLoginDetailsDAO() {
+*/
+	/*public IUserLoginDetailsDAO getUserLoginDetailsDAO() {
 		return userLoginDetailsDAO;
 	}
 
 	public void setUserLoginDetailsDAO(IUserLoginDetailsDAO userLoginDetailsDAO) {
 		this.userLoginDetailsDAO = userLoginDetailsDAO;
 	}
-
+*/
 	public ICountryDAO getCountryDAO() {
 		return countryDAO;
 	}
@@ -111,7 +99,7 @@ public class LoginService implements ILoginService{
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
 	}
-
+	
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -144,7 +132,7 @@ public class LoginService implements ILoginService{
 		this.tehsilDAO = tehsilDAO;
 	}
 
-	public IUserCountryAccessInfoDAO getUserCountryAccessInfoDAO() {
+	/*public IUserCountryAccessInfoDAO getUserCountryAccessInfoDAO() {
 		return userCountryAccessInfoDAO;
 	}
 
@@ -179,7 +167,7 @@ public class LoginService implements ILoginService{
 			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
 		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
 	}
-
+*/
 	public IGroupEntitlementDAO getGroupEntitlementDAO() {
 		return groupEntitlementDAO;
 	}
@@ -187,7 +175,7 @@ public class LoginService implements ILoginService{
 	public void setGroupEntitlementDAO(IGroupEntitlementDAO groupEntitlementDAO) {
 		this.groupEntitlementDAO = groupEntitlementDAO;
 	}
-
+	
 	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
 		return delimitationConstituencyMandalDAO;
 	}
@@ -196,7 +184,7 @@ public class LoginService implements ILoginService{
 			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
 		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
 	}
-
+	/*
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -205,7 +193,7 @@ public class LoginService implements ILoginService{
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
-	
+	*/
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -213,10 +201,10 @@ public class LoginService implements ILoginService{
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
-
+/*
 	
 	
-     /**
+     *//**
 	 * This method can be used to get all the default entitlements for a user.
 	 * 
 	 */
@@ -278,22 +266,22 @@ public class LoginService implements ILoginService{
 					acSelect = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
 					district = constituency.getDistrict();
 					districtSelect.add(new SelectOptionVO(district.getDistrictId(), district.getDistrictName()));
-					List pcs = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(regionId);
+					/*List pcs = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(regionId);
 
 					if(pcs.size() > 0){
 						Long pcId = (Long)((Object[])delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(regionId).get(0))[0];
 						pc = constituencyDAO.get(pcId);
 						pcSelect = new SelectOptionVO(pc.getConstituencyId(), pc.getName());
-					}
+					}*/
 					
 				}else
 				{
 					pcSelect = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
-					List<Object[]> DisList = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(constituency.getConstituencyId());
+					/*List<Object[]> DisList = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(constituency.getConstituencyId());
 					
 					for(Object[] param : DisList)
 						districtSelect.add(new SelectOptionVO((Long)param[0],param[1].toString()));
-				}
+				*/}
 				
 				countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
 				stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
@@ -313,13 +301,13 @@ public class LoginService implements ILoginService{
 					ac = constituencyDAO.get(acId);
 					acSelect = new SelectOptionVO(ac.getConstituencyId(), ac.getName());
 				
-					List pcs = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(acId);
+					/*List pcs = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(acId);
 					
 					if(acs.size() > 0){
 						pcId = (Long)((Object[])pcs.get(0))[0];
 						pc = constituencyDAO.get(pcId);
 						pcSelect = new SelectOptionVO(pc.getConstituencyId(), pc.getName());
-					}
+					}*/
 				}
 				
 				countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());

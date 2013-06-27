@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -35,6 +36,7 @@ import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.model.NewsFlag;
 import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
@@ -42,6 +44,7 @@ import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 /**
  * @author ITGRIDS
@@ -65,9 +68,17 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IRegionScopesDAO regionScopesDAO;
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
     private ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
-    
+    private IUserDAO userDAO;
     
    
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public ICandidateRelatedNewsDAO getCandidateRelatedNewsDAO() {
 		return candidateRelatedNewsDAO;
 	}
@@ -207,7 +218,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IBoothDAO boothDAO;
     private IUserCandidateRelationDAO userCandidateRelationDAO;
    
-    private IUserDAO userDAO;
+ 
 	private TransactionTemplate transactionTemplate;
 	private IPanchayatHamletDAO panchayatHamletDAO;
 	private IContentManagementService contentManagementService;
@@ -1008,7 +1019,8 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	  }
 	  
 	  return resultStatus;
-	 }
+	 }*/
+	 /*
 	 private void setSourceLanguageAndPaths(FileSourceLanguage fileSourceLanguage,List<FileVO> fileVOSourceLanguageList){
 			 
 		     FileVO fileVOSourceLanguage = new FileVO();
@@ -2829,7 +2841,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		}
 		return IConstants.SUCCESS;		
 	}
-	
+	*/
 	public String addFlagToNews(Long contentId , Long userId){
 		
 		log.debug("Entered into the addFlagToNews service method");
@@ -2858,7 +2870,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		return IConstants.SUCCESS;
 		
 	}
-	
+	/*
 	public String checkForFlag(Long contentId){
 		
 		log.debug("Entered into the checkForFlag service method");
@@ -3062,7 +3074,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	
 */
 	
-	public List<FileVO> getNewsForAuser(FileVO inputs){
+public List<FileVO> getNewsForAuser(FileVO inputs){
 	      log.debug("Enter into getNewsForRegisterUsers Method of NewsMonitoringService ");
 	       List<FileVO> fileVOList = new ArrayList<FileVO>();
 	    	try{
@@ -3258,7 +3270,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		 fileVOSourceLanguageList.add(fileVOSourceLanguage);
 		 
 	}
-	
+
 	public List<FileVO> getAllSourceDetails(){
 		log.debug("Enter into getAllSourceDetails Method of NewsMonitoringService ");
 	    List<FileVO> returnFileVOList = new ArrayList<FileVO>();
@@ -3302,6 +3314,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	 return returnFileVOList;
 		
   }
+	
 	public List<FileVO> getAllSourceLanguageDetails(){
 	   log.debug("Enter into getAllSourceLanguageDetails Method of NewsMonitoringService ");
 	   List<FileVO> returnFileVOList = new ArrayList<FileVO>();
@@ -3323,6 +3336,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	return returnFileVOList;
 		
   }
+
 	public List<FileVO> getAllNewsImportanceDetails(){
 		log.debug("Enter into getAllNewsImportanceDetails Method of NewsMonitoringService ");
 	    List<FileVO> returnFileVOList = new ArrayList<FileVO>();
@@ -3461,7 +3475,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				 
 			 }
          
-        /* if(fileVO.getFlagSet().equalsIgnoreCase("false"))        	  
+         if(fileVO.getFlagSet().equalsIgnoreCase("false"))        	  
        	  newsFlagDAO.removeFlagForNews(fileVO.getFileGallaryId());          
          else
        	  addFlagToNews(fileVO.getFileGallaryId(),fileVO.getUserId());
@@ -3474,7 +3488,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				 
 				 fileGallaryDAO.updateVisibility(fileVO.getFileId(),"true");
 				 
-			 }*/
+			 }
 			 
 		 }
 		 else if(task.equalsIgnoreCase("Delete")){
@@ -3504,6 +3518,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		}
 		return candidates;
 	}
+	
 	public ResultStatus storeSourceDetails(String value)
 	{
 		ResultStatus resultStatus = null;

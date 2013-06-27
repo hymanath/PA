@@ -30,7 +30,6 @@ import com.itgrids.partyanalyst.dao.ICandidatePartyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
@@ -83,15 +82,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 
 	//private ICandidateResultDAO candidateResultDAO;
 	private static final Logger log = Logger.getLogger(CandidateDetailsService.class);
+	
+	private DateUtilService dateUtilService = new DateUtilService();
+	
 	private ICandidateDAO candidateDAO;
 	private IGallaryDAO gallaryDAO;
 	private IFileGallaryDAO fileGallaryDAO;
-	private DateUtilService dateUtilService = new DateUtilService();
-	//private IContentTypeDAO contentTypeDAO;
-	//private IUserGallaryDAO userGallaryDAO;
-	private IRegionScopesDAO regionScopesDAO;
-	private ISourceDAO sourceDAO;
-	private ICountryDAO countryDAO;
+	private INewsDetailsDAO newsDetailsDAO;
+	private ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
+	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
+	private ICandidatePartyDAO candidatePartyDAO;
+	private IUserNewsCategoryDAO userNewsCategoryDAO;
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO; 
@@ -99,22 +100,36 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IHamletDAO hamletDAO;  
 	private ILocalElectionBodyDAO localElectionBodyDAO;  
 	private IBoothDAO boothDAO; 
-	//private ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO;
+	private IRegionScopesDAO regionScopesDAO;
+	private ISourceDAO sourceDAO;
 	private IFileDAO fileDAO;
 	private IFileTypeDAO fileTypeDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private INominationDAO nominationDAO;
+	private ICategoryDAO categoryDAO; 
+	private TransactionTemplate transactionTemplate;
+	private INewsImportanceDAO newsImportanceDAO;
+	private IPartyGalleryDAO partyGalleryDAO;
+	private ISourceLanguageDAO sourceLanguageDAO;
+	private IFilePathsDAO filePathsDAO;
+	private IFileSourceLanguageDAO fileSourceLanguageDAO;
+	private IUserDAO userDAO;
+	
+	//private IContentTypeDAO contentTypeDAO;
+	//private IUserGallaryDAO userGallaryDAO;
+
+	//private ICountryDAO countryDAO;
+
+	//private ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO;
+
 	//private CandidateProfileDescription candidateProfileDescription;
    // private IMessageToCandidateDAO messageToCandidateDAO;
 	private IUserCandidateRelationDAO userCandidateRelationDAO;
 	//private ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO;
-	private ISourceLanguageDAO sourceLanguageDAO;
+
 	//private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	//private List<SelectOptionVO> candidatesList;
-	private ICategoryDAO categoryDAO; 
-	private TransactionTemplate transactionTemplate;
-	private INewsImportanceDAO newsImportanceDAO;
-	private IPartyGalleryDAO partyGalleryDAO;	
+	
 	//private ISpecialPageGalleryDAO specialPageGalleryDAO;
 	//private IMessageToPartyDAO messageToPartyDAO;
 	//private IElectionDAO electionDAO;
@@ -126,19 +141,11 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	//private IPartyPageCustomPagesDAO partyPageCustomPagesDAO;
 	//private ISpecialPageDAO specialPageDAO;
 	//private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
-	private IFilePathsDAO filePathsDAO;
-	private IFileSourceLanguageDAO fileSourceLanguageDAO;
-	private IUserDAO userDAO;
 	//private ICandidateSubscriptionsDAO candidateSubscriptionsDAO;
 	//private IPartySubscriptionsDAO partySubscriptionsDAO;
 	//private IUserPartyRelationDAO userPartyRelationDAO;	
 	
-	
-	private INewsDetailsDAO newsDetailsDAO;
-	private ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
-	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
-	private ICandidatePartyDAO candidatePartyDAO;
-	private IUserNewsCategoryDAO userNewsCategoryDAO;
+
 	
 	public ICandidatePartyDAO getCandidatePartyDAO() {
 		return candidatePartyDAO;
@@ -243,13 +250,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public void setSourceLanguageDAO(ISourceLanguageDAO sourceLanguageDAO) {
 		this.sourceLanguageDAO = sourceLanguageDAO;
 	}
-
-	
-
-	
-      
-	
-
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
 	}
@@ -358,7 +358,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public ICandidateDAO getCandidateDAO() {
 		return candidateDAO;
 	}
-	
+
 	public ISourceDAO getSourceDAO() {
 		return sourceDAO;
 	}
@@ -375,13 +375,13 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.regionScopesDAO = regionScopesDAO;
 	}
 
-	public ICountryDAO getCountryDAO() {
+	/*public ICountryDAO getCountryDAO() {
 		return countryDAO;
 	}
 
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
-	}	
+	}*/	
 
 	public INominationDAO getNominationDAO() {
 		return nominationDAO;
@@ -399,7 +399,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			IUserCandidateRelationDAO userCandidateRelationDAO) {
 		this.userCandidateRelationDAO = userCandidateRelationDAO;
 	}
-   
 	public INewsImportanceDAO getNewsImportanceDAO() {
 		return newsImportanceDAO;
 	}
@@ -2995,7 +2994,7 @@ public List<SelectOptionVO> getCandidatesOfAParty(Long partyId)
 	 { 
 	   if(scope == 1L)
 	    {
-	    	return countryDAO.get(1L).getCountryName();
+	    	//return countryDAO.get(1L).getCountryName();
 	    }
 	    else if(scope == 2L && locationValue != null)
 	    {
@@ -6001,6 +6000,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				return null;
 			}
 		}
+
+
 		 
 		
 		public List<SelectOptionVO> getCandidateRelatedCategories(Long candidateId,String fromDateStr,String toDateStr,Long partyId)
