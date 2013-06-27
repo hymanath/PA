@@ -4241,9 +4241,10 @@ function editNewsDetails(fileId,source){
 		str +='  </tr>';
 
    }
-   
-	
-
+   str +='    <tr>';
+    str +='	   <td class="tdWidth">News description in details</td>';
+    str +='	   <td><textarea id="newsfileDescriptionForEdit" cols="20" rows="3" name="fileDescription" >'+reqFile.newsDescription+'</textarea></td>';
+    str +='  </tr>';
 
 
 	str += '</table>';
@@ -4793,6 +4794,7 @@ var flagInd = $('#flagInd').val();
 var scope = $('#scopeDiv').val();
 var errorMessage = "";
 var validate = false;
+var newsDescription = "";
 
 if(fileTitle == ""){
  errorMessage+="File title is required<br>";
@@ -4977,6 +4979,7 @@ return false;
    fileDate = document.getElementById("existingFromText").value;
    locationScopeId = document.getElementById("scopeDivForEdit").value;
    fileGallaryId = $('#fileGallaryId').val();
+   newsDescription = $('#newsfileDescriptionForEdit').val();
 
    try
   {
@@ -5061,7 +5064,8 @@ try{
           locationScopeValue:   locationScopeValue,
 		  visibility        :visibility,
 		  flagInd          :false,
-		  fileGallaryId:fileGallaryId
+		  fileGallaryId:fileGallaryId,
+          newsDescription:newsDescription 
      }
 	  var rparam ="task="+encodeURIComponent(unescape(YAHOO.lang.JSON.stringify(jsObj)));
       var url = "updateDeleteNewsAction.action?"+rparam;	//18111
@@ -5679,8 +5683,8 @@ function  buildUploadNews()
 	str +='    </td>';
 	str +='  </tr>';
 	str +='<tr>';
-	str +='<td class="tdWidth1">News description in details<font class="requiredFont">*</font></td>';
-	str +='<td><textarea name="newsDescription" rows="3" cols="20" id="newsDesc"></textarea></td>';
+	str +='<td class="tdWidth1">News description in detail</td>';
+	str +='<td><textarea id="newsDescriptionId" name="newsDescription" rows="3" cols="20" id="newsDesc"></textarea></td>';
 	str +='</tr>';
 	str += '</table>';
 
@@ -5716,6 +5720,7 @@ if(!$('#newsfileTitle').hasClass('enadu'))
 $('#newsfileTitle').addClass('enadu');
 $('#newsfileDescription').addClass('enadu');
 $('#keywords').addClass('enadu');
+$('#newsDescriptionId').addClass('enadu');
 }
 }else{
 if($('#newsfileTitle').hasClass('enadu'))
@@ -5723,6 +5728,7 @@ if($('#newsfileTitle').hasClass('enadu'))
 $('#newsfileTitle').removeClass('enadu');
 $('#newsfileDescription').removeClass('enadu');
 $('#keywords').removeClass('enadu');
+$('#newsDescriptionId').removeClass('enadu');
 }
 }
 });
