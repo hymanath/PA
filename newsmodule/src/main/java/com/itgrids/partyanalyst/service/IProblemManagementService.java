@@ -4,28 +4,6 @@
  */
 package com.itgrids.partyanalyst.service;
 
-import java.util.Date;
-import java.util.List;
-
-import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
-import com.itgrids.partyanalyst.dto.FileVO;
-import com.itgrids.partyanalyst.dto.ProblemBeanVO;
-import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
-import com.itgrids.partyanalyst.dto.ProblemManagementChartVO;
-import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
-import com.itgrids.partyanalyst.dto.ProblemSearchVO;
-import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
-import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.Comment;
-import com.itgrids.partyanalyst.model.File;
-import com.itgrids.partyanalyst.model.Problem;
-import com.itgrids.partyanalyst.model.ProblemComments;
-import com.itgrids.partyanalyst.model.ProblemCompleteLocation;
-import com.itgrids.partyanalyst.model.ProblemExternalSource;
-import com.itgrids.partyanalyst.model.ProblemProgress;
-import com.itgrids.partyanalyst.model.UserProblem;
 
 public interface IProblemManagementService {/*
 

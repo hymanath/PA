@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service;
 
-import java.io.File;
 import java.util.List;
 
 public interface IThumbnailService {

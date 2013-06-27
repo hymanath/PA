@@ -1,14 +1,10 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.Date;
 import java.util.List;
 
-import com.itgrids.partyanalyst.dto.CommentVO;
-import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.FileGallary;
 
 public interface INewsMonitoringService {/*
 	public List<FileVO> getNewsForRegisterUsers(FileVO inputs);
