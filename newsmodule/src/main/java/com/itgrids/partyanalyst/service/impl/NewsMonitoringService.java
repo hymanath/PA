@@ -3120,7 +3120,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    		  }
 	    		  
 	    		  fileVO.setContentId((Long)obj[0]);
-	    		  fileVO.setKeywords(file.getKeywords());
+	    		  fileVO.setKeywords(file.getKeywords()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getKeywords())):"");
 	    		  fileVO.setFileDate(file.getFileDate().toString());
 	    		  
 	    		  String dateString =file.getFileDate().getDate()+"/"+(file.getFileDate().getMonth()+1)+"/"+(file.getFileDate().getYear()+1900);
@@ -3378,7 +3378,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			 file.setCategory(category);
 			 file.setNewsImportance(newsImportance);
 			 
-			 file.setKeywords(fileVO.getKeywords());
+			 file.setKeywords(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getKeywords())));
 			 
 			 
 			 String[] dateArray = fileVO.getFileDate().split("/");
