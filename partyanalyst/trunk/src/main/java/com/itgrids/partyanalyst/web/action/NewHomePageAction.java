@@ -79,7 +79,14 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 	private String homePageLoadingFirstTime;
 	
 	private Long onlineRegId;
-	
+    private String loginMode;
+    
+    public String getLoginMode() {
+        return loginMode;
+    }
+    public void setLoginMode(String loginMode) {
+        this.loginMode = loginMode;
+    }
 	public List<SelectOptionVO> getStates() {
 		return states;
 	}
@@ -344,7 +351,7 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 	public String execute()
 	{	
 		
-		
+		loginMode = "true";
 		request.setAttribute("feedback", feedback);
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
