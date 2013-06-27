@@ -96,6 +96,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String fromDate;
 	private String toDate;
 	private String gallaryIds;
+	private String categoryIds;
 	
 	public List<FileVO> getResponseFilesList() {
 		return responseFilesList;
@@ -449,6 +450,12 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	}
 	public void setGallaryIds(String gallaryIds) {
 		this.gallaryIds = gallaryIds;
+	}
+	public String getCategoryIds() {
+		return categoryIds;
+	}
+	public void setCategoryIds(String categoryIds) {
+		this.categoryIds = categoryIds;
 	}
 	public String execute()
 	{	

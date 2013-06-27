@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -10,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.util.Log;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -41,7 +43,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private String fromDate;
 	private String toDate;
 	private ResultStatus resultStatus;
-	private List<SelectOptionVO> selectOptionVOList;
+	private List<SelectOptionVO> selectOptionVOList,galleriesList;
 	
 	public Long getResponseContentId() {
 		return responseContentId;
@@ -151,6 +153,12 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	public void setSelectOptionVOList(List<SelectOptionVO> selectOptionVOList) {
 		this.selectOptionVOList = selectOptionVOList;
 	}
+	public List<SelectOptionVO> getGalleriesList() {
+		return galleriesList;
+	}
+	public void setGalleriesList(List<SelectOptionVO> galleriesList) {
+		this.galleriesList = galleriesList;
+	}
 	public String execute()
 	{	
 		session = request.getSession();
@@ -198,10 +206,23 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 else if(jObj.getString("task").equalsIgnoreCase("getCandidateRelatedGallaries"))
 		 {
 			 String newsType ="public";
-			 if(regVO.getUserAccessType() != null && regVO.getUserAccessType().equalsIgnoreCase("Admin"))
-				 newsType = "";
+			 //if(regVO.getUserAccessType() != null && regVO.getUserAccessType().equalsIgnoreCase("Admin"))
+				// newsType = "";
 			 selectOptionVOList = candidateDetailsService.getCandidateRelatedGallaries(jObj.getLong("candidateId"),jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.TDPID,newsType);
 		 }
+		 
+		 else if(jObj.getString("task").equalsIgnoreCase("getCandidateRelatedCategories"))
+			selectOptionVOList = candidateDetailsService.getCandidateRelatedCategories(jObj.getLong("candidateId"),jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.TDPID);
+		 else if(jObj.getString("task").equalsIgnoreCase("getGallariesForSelectedCategory"))
+		 {
+			 List<Long> categoryIdsList = new ArrayList<Long>(0);
+			 JSONArray categoryIds = jObj.getJSONArray("categoryIds");
+			 for(int i=0;i<categoryIds.length();i++)
+			  categoryIdsList.add(new Long(categoryIds.get(i).toString()));
+			 galleriesList = candidateDetailsService.getGallariesForSelectedCategories(categoryIdsList,jObj.getLong("candidateId"));
+		 }
+			 
+			 
 		 
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -220,7 +241,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
+				Log.error("Exception Occured in getVideosForGallery() method, Exception - "+e);
 			}
 		return Action.SUCCESS;
 	}
@@ -246,7 +267,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
+				Log.error("Exception Occured in getCompleteDetailsOfANewsResponse() method, Exception - "+e);
 			}
 		return Action.SUCCESS;
 	}
