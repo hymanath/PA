@@ -2,14 +2,15 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
+
+import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.model.File;
-import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 
 
 public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> implements IPartyGalleryDAO{
@@ -555,8 +556,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		 public List<Object[]> getAllVideosOfParty(Long partyId,int firstResult,int maxResult,String queryType){
 
 			 StringBuilder query = new StringBuilder();
-			 query.append("select model2.gallery.gallaryId, " +
-			 		"  model2.gallery.name, model2.gallery.description,fps.filePath,model2.gallery.createdDate from FileGallary model , PartyGallery model2 , FileSourceLanguage fs,FilePaths fps where "+
+			 query.append("select model2.gallery.gallaryId, model2.gallery.name, model2.gallery.description,fps.filePath,model2.gallery.createdDate from FileGallary model , PartyGallery model2 , FileSourceLanguage fs,FilePaths fps where "+
 			 " model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId = :partyId "+
 			 " and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete and fs.fileSourceLanguageId=fps.fileSourceLanguage.fileSourceLanguageId ");
 			 

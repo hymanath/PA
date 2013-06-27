@@ -1,13 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.List;
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.model.UserRoles;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserRolesDAO extends GenericDaoHibernate<UserRoles, Long>
 		implements IUserRolesDAO {

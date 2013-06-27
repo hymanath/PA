@@ -7,7 +7,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
-import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.NewsFlag;
 

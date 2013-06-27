@@ -6,7 +6,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Panchayat;
 
 public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements IPanchayatDAO{

@@ -4,27 +4,10 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
-import com.itgrids.partyanalyst.dao.columns.enums.CandidateColumnNames;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ElectionScope;
-import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.Voter;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 
 /**

@@ -10,12 +10,11 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.ConstituencyColumnNames;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		implements IConstituencyDAO {

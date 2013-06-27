@@ -7,7 +7,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.model.File;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		IFileDAO {
