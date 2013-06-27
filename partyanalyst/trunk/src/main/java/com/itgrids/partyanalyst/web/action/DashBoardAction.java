@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -49,8 +50,12 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> pConstituencyList,aConstituencyList;
 	private IConstituencySearchService constituencySearchService;
 	private List<SelectOptionVO> districtStateList;
-	
-	
+	private List<SelectOptionVO> mandalList;
+	private List<SelectOptionVO> panchayatsList;
+	private List<SelectOptionVO> boothsList;
+	private String loginUserProfilePic;
+	private IAnanymousUserService ananymousUserService;
+	private String loginUserName;
 	public List<SelectOptionVO> getElectionYearsList() {
 		return electionYearsList;
 	}
@@ -304,6 +309,66 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		this.boothAnalysisData = boothAnalysisData;
 	}
 
+	
+	public List<SelectOptionVO> getMandalList() {
+		return mandalList;
+	}
+
+
+	public void setMandalList(List<SelectOptionVO> mandalList) {
+		this.mandalList = mandalList;
+	}
+
+
+	public List<SelectOptionVO> getPanchayatsList() {
+		return panchayatsList;
+	}
+
+
+	public void setPanchayatsList(List<SelectOptionVO> panchayatsList) {
+		this.panchayatsList = panchayatsList;
+	}
+
+
+	public List<SelectOptionVO> getBoothsList() {
+		return boothsList;
+	}
+
+
+	public void setBoothsList(List<SelectOptionVO> boothsList) {
+		this.boothsList = boothsList;
+	}
+
+	
+	public String getLoginUserProfilePic() {
+		return loginUserProfilePic;
+	}
+
+
+	public void setLoginUserProfilePic(String loginUserProfilePic) {
+		this.loginUserProfilePic = loginUserProfilePic;
+	}
+
+	
+	public IAnanymousUserService getAnanymousUserService() {
+		return ananymousUserService;
+	}
+
+
+	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
+		this.ananymousUserService = ananymousUserService;
+	}
+	
+
+	public String getLoginUserName() {
+		return loginUserName;
+	}
+
+
+	public void setLoginUserName(String loginUserName) {
+		this.loginUserName = loginUserName;
+	}
+
 
 	public String execute()
 	{	
@@ -321,6 +386,8 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(user == null)
 		return INPUT;
 		constituencyId = user.getConstituencyId();
+		loginUserName = user.getFirstName()+" "+user.getLastName();
+		loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(user.getRegistrationID());
 		if(constituencyId != null){
 			districtStateList = constituencySearchService.getDistrictAndStateId(constituencyId);
 			SelectOptionVO selectOptionVO = new SelectOptionVO();
@@ -350,7 +417,26 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			assemblyConstis.add(0, initialVo);
 			user.setUserAccessVoterConstituencies(constituencyList);
 		}
-		
+		List<Long> constituencyIds = new ArrayList<Long>();
+		if(constituencyList != null && constituencyList.size() > 0)
+		{  
+			for (SelectOptionVO constituency : constituencyList) {
+				
+				Long constituencyId = constituency.getId();
+				constituencyIds.add(constituencyId);
+			}
+		}
+		List<Long> mandalIds = new ArrayList<Long>();
+		mandalList = crossVotingEstimationService.getTehsilsForConstituencies(constituencyIds);
+		if(mandalList != null && mandalList.size() > 0)
+		{
+			for (SelectOptionVO mandal : mandalList) {
+				Long mandalId = mandal.getId();
+				mandalIds.add(mandalId);
+			}
+		}
+		//boothsList = crossVotingEstimationService.getBoothsForConstituencyList(constituencyIds);
+		panchayatsList = crossVotingEstimationService.getPanchayatsForConstituencyList(mandalIds);
 		if(assemblyConstis == null){
 			assemblyConstis = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 			if(assemblyConstis != null)

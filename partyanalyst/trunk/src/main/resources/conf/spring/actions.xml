@@ -1228,6 +1228,7 @@
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="constituencySearchService" ref="constituencySearchService" />
+		<property name="ananymousUserService" ref="ananymousUserService" />
 	</bean>
 </beans>	
 	

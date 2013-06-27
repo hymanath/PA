@@ -12,6 +12,8 @@
 <link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
 <link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
+	<script src="js/combobox.js" type="text/javascript"></script>
+
 </head>
 <style>
 	
@@ -88,6 +90,25 @@ input[type="radio"]{margin-top:-1px;}
 #boothWiseResult a:hover{text-decoration:none;color:#0088CC;}
 #boothWiseResult .breadcrumb{padding: 8px 5px;}
 
+.ui-autocomplete {
+		max-height: 200px;
+		overflow-y: auto;
+		/* prevent horizontal scrollbar */
+		overflow-x: hidden;
+       max-width:200px;
+		/* add padding to account for vertical scrollbar */
+		padding-right: 20px;
+	}
+	/* IE 6 doesn't support max-height
+	 * we use height instead, but this forces the menu to always be this tall
+	 */
+	* html .ui-autocomplete {
+		height: 200px;
+	}
+
+	.ui-autocomplete-input { border-radius:3px;margin: 0; height:25px; position:relative; width:150px; -moz-border-radius:0px 0px 0px 0px;border:1px solid #CCCCCC;margin: 0 5px 8px;}
+	
+
 </style>
 <div class="container m-top15">
 <div class="row-fluid"><div class="span12 widget" style="padding: 0 20px 4px;"><h2 class="pagination-centered" style="border-bottom: 0px solid #C0C0C0;">DASHBOARD</h2></div></div>
@@ -96,6 +117,19 @@ input[type="radio"]{margin-top:-1px;}
 <!--------left div------->
 <div class="span3">
 <!-------Quick Links Block--------------->
+<div class="profile-pic widget blue">
+<div class="profileimg  thumbnail" >
+<c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
+<img src="pictures/profiles/human.jpg" id="userProfileImg" style="height: 100px; width: 132px;">
+</c:if>
+<c:if test="${loginUserProfilePic !='' && loginUserProfilePic != null}">
+<img src="pictures/profiles/${loginUserProfilePic}" id="userProfileImg" style="height: 100px; width: 132px;"">
+</c:if>
+</div>
+<div class="widget-block" id="profileUserName">
+<h5>${loginUserName}</h5> </div>
+</div>	
+ 
 <div  class="widget blue">
   <h2>Advanced DashBoard</h2>
    <b>Click here for</b> 
@@ -293,6 +327,7 @@ Parliament
     </div>
   </div>
  </c:if>
+ 
   <div class="row-fluid span12 widget" style="margin-left:0px;">
     <h2>Constituency Level Analysis</h2>
 	<div class="row-fluid">
@@ -406,7 +441,44 @@ headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/
 	   
 			<h4>Voters Search</h4>
 			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input></div>
-		</div>	   
+		</div>	 
+		<div class="span6 widget-simple" id="">	
+		<h4>Constituency Analysis</h4>
+		<table>
+	
+		<tr>
+		<td><span>Level</span></td>
+		<td><select id="selectlevel" onChange="getSelectedlevel();">
+		<option value="0">Select Type</option>
+		<option value="1">Constituency</option>
+		<option value="2">Mandal/Muncipality</option>
+		<option value="3">Panchayat</option>
+		<!--<option value="4">Booth</option>-->
+		</select>
+		</tr>
+		<tr style="display:none;" id="constituencyRow">
+		<td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="selConstituency" name="selConstituency" list="constituencyList" listKey="id" listValue="name" ></s:select></td>
+		</tr>
+		<tr style="display:none;" id="mandalRow">
+	   <!--<td><span>Mandal/Muncipality  <span></td>
+		<td><select id="selMandal">
+		<option value="0">Select Mandal</option>
+		<option value="232">Kavali</option> 
+		</select>-->
+		<td><span>Mandal/Muncipality </span></td><td><s:select cssClass="selectstyle" theme="simple" id="selMandal" name="selMandal" list="mandalList" listKey="id" listValue="name" ></s:select></td>
+		</tr>
+		<tr style="display:none;" id="panchayatRow">
+		<!--<td><span>Panchayat  <span></td>
+		<td><select id="selPanchayat">
+		<option value="0">Select Panchayat</option>
+		<option value="232">Kavali</option>
+		</select>-->
+		<td><span>Panchayat  </span></td><td><s:select cssClass="selectstyle" theme="simple" id="selPanchayat" name="selPanchayat" list="panchayatsList" listKey="id" listValue="name" ></s:select></td>
+		</tr>
+		
+		</table>
+		<div><input type="button" value="View" class="btn btn-success" onCLick="getVotersAnalysisbasedOnLevel();" style="float:right;"></input></div>
+		</div>
     </div>
    </div>
    
@@ -455,14 +527,46 @@ headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/
  
  
 </div>
+
+<script>
+ $(document).ready(function(){
+ 
+ 	  $('#selConstituency').combobox();
+ 	  
+	  $('#selConstituency').next().click(function(){
+	    if($(this).val() == "Select Constituency" || $(this).val() == "Select")
+		   $(this).val("");
+	  });
+	  
+	  $('#selMandal').combobox();
+	  $('#selMandal').next().click(function(){
+	    if($(this).val() == "Select Constituency" || $(this).val() == "Select")
+		   $(this).val("");
+	  });
+	  
+	  $('#selPanchayat').combobox();
+	  $('#selPanchayat').next().click(function(){
+	    if($(this).val() == "Select Constituency" || $(this).val() == "Select")
+		   $(this).val("");
+	  });
+	  
+	  /* $('#selBooth').combobox();
+	  $('#selBooth').next().click(function(){
+	    if($(this).val() == "Select Constituency" || $(this).val() == "Select")
+		   $(this).val("");
+	  }); */
+
+});
+</script>
 <script type="text/javascript">
 constituencyId = '${sessionScope.USER.constituencyId}';
 var loginMode = '${loginMode}';	  
 var stateId = $('#stateList_d').val();
 var districtId = '${districtId}';
+var selType= "";
 getDistrictsComboBoxForAState(stateId,"districtList_d");
 getAllConstituenciesInStateByType(2,stateId,"constituency");
-         <c:if test="${boothAnalysisData != null}">
+         /* <c:if test="${boothAnalysisData != null}">
 		   var elecYear = '${boothAnalysisData.name}';
 		   var conId = '${boothAnalysisData.id}';
 		   var elec = '${boothAnalysisData.value}';
@@ -472,7 +576,7 @@ getAllConstituenciesInStateByType(2,stateId,"constituency");
 		 <c:if test="${boothAnalysisData == null}">
 		   $("#moreDetailsId").trigger("click");
 		   $('.boothResults').toggle();
-		 </c:if>
+		 </c:if> */
 function viewBoothResults(){
   window.open("partyBoothResult2Action.action?partyName=872&electionYear="+elecYear+"&constituencyName="+conId+"");
 }
@@ -488,6 +592,7 @@ $("input:radio[name=electionType]").click(function() {
 	$('#partyId').val(0);
 	$('#constiId').val(0);
 });
+
 
 
 
@@ -863,6 +968,72 @@ function submitRes(){
      $('.boothResults').toggle();
   });
 
+function getSelectedlevel()
+{
+	var levelId = $('#selectlevel option:selected').val();
+	
+	if(levelId == 1)
+	{
+		selType  = "constituency";
+		$('#constituencyRow').show();
+		$('#mandalRow').hide();
+		$('#panchayatRow').hide();
+		$('#boothRow').hide();
+	}
+	else if(levelId == 2)
+	{
+		selType  = "mandal";
+		$('#constituencyRow').hide();
+		$('#mandalRow').show();
+		$('#panchayatRow').hide();
+		$('#boothRow').hide();
+	}
+	else if(levelId == 3)
+	{
+		selType  = "panchayat";
+		$('#constituencyRow').hide();
+		$('#mandalRow').hide();
+		$('#panchayatRow').show();
+		$('#boothRow').hide();
+	}
+	else if(levelId == 4)
+	{
+		selType  = "booth";
+		$('#constituencyRow').hide();
+		$('#mandalRow').hide();
+		$('#panchayatRow').hide();
+		$('#boothRow').show();
+	}
+}
 
+function getVotersAnalysisbasedOnLevel()
+{
+	var id = "";
+	if(selType == "constituency")
+	{
+		id = $('#selConstituency option:selected').val();
+		if(id > 0)
+		window.open("votersAnalysisNewAction.action?constituencyId="+id+"&type="+selType+"");
+	}
+	else if(selType == "mandal")
+	{
+		id = $('#selMandal option:selected').val();
+		if(id > 0)
+		window.open("votersAnalysisNewAction.action?mandalId="+id+"&type="+selType+"");
+	}
+	else if(selType == "panchayat")
+	{
+		id = $('#selPanchayat option:selected').val();
+		if(id > 0)
+		window.open("votersAnalysisNewAction.action?panchayatId="+id+"&type="+selType+"");
+	}
+	/* else if(selType == "booth")
+	{
+		id = $('#selBooth option:selected').val();
+		if(id > 0)
+		window.open("votersAnalysisNewAction.action?boothId="+id+"&type="+selType+"");
+	} */
+	
+}
 
 </script>

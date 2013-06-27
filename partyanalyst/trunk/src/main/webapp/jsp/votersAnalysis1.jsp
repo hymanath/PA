@@ -1041,6 +1041,10 @@ color:#2A4F97;
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
 var populateConstituencyId = '${constituencyId}';
+var selType = '${type}';
+var populateMandalId = '${mandalId}';
+var populatePanchayatId = '${panchayatId}';
+var populateBoothId = '${boothId}';
 	var votersLimitExist = false;
 	var pattern= /^(hamlet|customWard)$/i;
 	var  muncipalityPattern = /MUNCIPALITY/i;
@@ -2258,6 +2262,25 @@ function getAgewiseInfoForVoterCategory(){
 			getPublicationDate();
 			getConstituencyResults(populateConstituencyId);
 			getUserVoterCategories();
+		}
+		if(selType == "constituency")
+		{
+			$('#constituencyList').val(populateConstituencyId);
+			getPublicationDate();
+			getConstituencyResults(populateConstituencyId);
+			getUserVoterCategories();
+		}
+		else if(selType == "mandal")
+		{
+		
+		}
+		else if(selType == "panchayat")
+		{
+		
+		}
+		else if(selType == "booth")
+		{
+		
 		}
 	});
 </script>

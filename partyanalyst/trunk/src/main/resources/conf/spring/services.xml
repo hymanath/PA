@@ -702,6 +702,10 @@
     	<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
     	<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
     	<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+    	<property name="constituencyDAO" ref="constituencyDAO" />
+    	<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+    	<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+    	<property name="panchayatDAO" ref="panchayatDAO" />
     </bean>
     
 	<bean id="smsCountrySmsService" class="com.itgrids.partyanalyst.service.impl.SmsCountrySmsService" >
