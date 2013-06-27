@@ -5482,6 +5482,11 @@
 		  </result>
 		</action>
 		
+		<action name="getCandidateRelatedGallariesAction" class="newsDetailsAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		    <param name="root">selectOptionVOList</param>
+		  </result>
+		</action>
 		</package>
 		
 		

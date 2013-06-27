@@ -231,7 +231,7 @@ public interface ICandidateDetailsService {
 	 
 	 public List<FileVO> getVideosForGalleryId(Long galId,int maxRecord,int startRecord);
 	 
-	 public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr);
+	 public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String gallaryIdsStr);
 	 
 	 public List<SelectOptionVO> getNewsForCandidate(Long candidateId , Date fromDate , Date toDate );
 	 
@@ -244,5 +244,6 @@ public interface ICandidateDetailsService {
 
 	 public ResultStatus createUserNewsCategory(String name, String visibility, Long userId);
 
+	 public List<SelectOptionVO> getCandidateRelatedGallaries(Long candidateId,String fromDateStr,String toDateStr,Long partyId,String queryType);
 	 
 }

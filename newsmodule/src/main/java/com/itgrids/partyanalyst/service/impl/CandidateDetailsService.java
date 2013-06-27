@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -5766,7 +5767,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 }
 	 */
 	 
-  public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr){
+  public List<FileVO> getCandidatesNews(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String gallaryIdsStr){
 		 List<FileVO> fileVOList = null;
 	 try{
 		 Date fromDate = null;
@@ -5777,13 +5778,20 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 if(toDateStr != null && !toDateStr.equalsIgnoreCase("") && !toDateStr.equalsIgnoreCase("null"))
 			 toDate = format.parse(toDateStr);
 		 
+		 List<Long> gallaryIdsList = new ArrayList<Long>(0);
+		 if(gallaryIdsStr!=null && !gallaryIdsStr.equalsIgnoreCase("") && !gallaryIdsStr.equalsIgnoreCase("null"))
+		 {
+		   StringTokenizer str = new StringTokenizer(gallaryIdsStr,",");
+		   while(str.hasMoreTokens())
+			   gallaryIdsList.add(Long.parseLong(str.nextToken()));
+		 }
 		 
-		 List<FileGallary> fileGallariesList = candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate);
+		 List<FileGallary> fileGallariesList = candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate,gallaryIdsList);
 		 if(fileGallariesList != null && fileGallariesList.size() > 0)
 		 {
 			fileVOList = new ArrayList<FileVO>(0);
 			setfileGallaryDetails(fileGallariesList, fileVOList);
-			fileVOList.get(0).setCount(candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, null, null, type,fromDate,toDate).size());
+			fileVOList.get(0).setCount(candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, null, null, type,fromDate,toDate,gallaryIdsList).size());
 		  }
 		 return fileVOList;
 	}catch (Exception e) {
@@ -5943,6 +5951,30 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 
 			 
 		 }
+		
+		public List<SelectOptionVO> getCandidateRelatedGallaries(Long candidateId,String fromDateStr,String toDateStr,Long partyId,String queryType)
+		{
+			List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+			try{
+				Date fromDate = null;
+				Date toDate = null;
+				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+				 fromDate = format.parse(fromDateStr);
+				if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+				 toDate = format.parse(toDateStr);
+				List<Object[]> list = partyGalleryDAO.getCandidateRelatedGallaries(candidateId, partyId, fromDate, toDate, queryType);
+				if(list != null && list.size() > 0)
+				  for(Object[] params : list)
+				   selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!=null?params[1].toString():""));
+				
+				return selectOptionVOList;
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in getCandidateRelatedGallaries() method, Exception - "+e);
+				return null;
+			}
+		}
 		 
 		
 }

@@ -44,6 +44,8 @@
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<style type="text/css">
     @font-face
 	{
@@ -87,7 +89,7 @@
 	#existingFromText,#existingToText{width:155px;}
 	#errorMsgDiv{font-size:12px;}
 	#candidateFromText,#candidateToText{width:75px;}
-	#byAllRadio{margin-right: 4px;margin-top: 0;}
+	#byAllRadio,#gallaryRadioId{margin-right: 4px;margin-top: 0;}
 	#byDateRadio{margin-left: 10px; margin-right: 4px;margin-top: 0;}
 	#candidateNewsShowHideDatesDiv{margin-top: 10px;}
 	#fromParaId{margin-left: 4px; margin-bottom: 5px;}
@@ -108,6 +110,11 @@
 					    <div id="cadidateRadioDiv">
 						  <input type="radio" id="byAllRadio" value="byAll" name="candidateNewsRadio" class="candidateRadioCls" checked="true"/>All
 						  <input type="radio" id="byDateRadio" value="byDate" name="candidateNewsRadio" class="candidateRadioCls"/>By Date
+						<br>
+						  <!-- <input type="radio" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" onclick="getCandidateGallaries()"/>By Gallary -->
+
+						  <input type="checkbox" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" />By Gallery
+
 						</div>
 						<div id="candidateNewsShowHideDatesDiv" style="display:none;">
 						  <p id="fromParaId">From: <input type="text" size="20" name="fileDate" readonly="true" class="candidateDateField" id="candidateFromText" /></p>
@@ -115,6 +122,11 @@
 						</div>
 
 						<s:select theme="simple" label="Candidates" name="candidates" id="candidatesListId" list ="candidatesMap"  headerKey="0" headerValue="Select Candidate"  value="candidateId"/> 
+
+						<div id="gallaryShowHideDiv" style="display:none;">
+						  <select id="gallaryId" multiple="multiple"></select>
+						</div>
+
 						<input id="candidateNewsBtn" type="button" class="btn btn-info" value="submit" onclick="getCandiNews();"/>
 						<!--<s:select list ="candidatesMap" name ="candidateId" value="candidateId" headerKey="0" headerValue = "Select Candidate"/>-->
 						<div class="span12 errorDiv"></div>
@@ -167,6 +179,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 var candidateId = '${candidateId}';
 var fromDate = '${fromDate}';
 var toDate = '${toDate}';
+var gallaryIds = '${gallaryIds}';
 getNewsForPagination(0);
 //getCandidates();
 
@@ -177,6 +190,7 @@ function getNewsForPagination(num){
 		maxRecords:10,
 		fromDate:fromDate,
 		toDate:toDate,
+		gallaryIds:gallaryIds,
 		type:'Public',
 		task:'getCandidatesNewsInHomePage'
 	};
@@ -196,7 +210,13 @@ function callAjax(jsObj,url)
 			if(jsObj.task == "getCandidatesNewsInHomePage")
 			{
 				buildPaginatedNewsOfCandidate(myResults,jsObj);
-			}	
+			}
+			else if(jsObj.task == "getCandidateRelatedGallaries")
+			{
+			   clearOptionsListForSelectElmtId('gallaryId');
+			   buildGallaryList('gallaryId',myResults);
+			  
+			}
 			}catch (e)
 			{
 							     
@@ -211,45 +231,6 @@ function callAjax(jsObj,url)
 
  	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
-/* function buildPaginatedNewsOfCandidate(results,jsObj){
-
-	var str="";
-	str+="<ul class='unstyled pad10'>";
-	for(var i in results){
-		str+="<li>";
-		if(results[i].source == "Eenadu Telugu")
-		 str+="<h4 style='text-transform: capitalize;'><span class='enadu'>"+results[i].title+"</span></h4>";
-		else
-		 str+="<h4 style='text-transform: capitalize;'>"+results[i].title+"</h4>";
-
-		str+="<div class='row-fluid'>";
-		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].ids+")}'>";
-		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
-		if(results[i].source == "Eenadu Telugu")
-		 str+="<p class='span8 enadu'>"+results[i].description+"</p>";
-		else
-		 str+="<p class='span8'>"+results[i].description+"</p>";
-
-		str+="</div>";
-		str+="<div class='row-fluid m_top10'><div class='span6'><p class='text-error'>Source : "+results[i].source+"</p></div>";
-		str+="<div class='span3'><p class='text-info'>Response Count: "+results[i].responseCount+"</p></div>";
-		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].ids+")' class='btn btn-mini btn-info pull-right' type='button'>More</a></div></li>";
-	}
-	
-	var itemsCount=results[0].count;
-	var maxResults=jsObj.maxRecords;
-	str+="</ul>";
-	$("#pagedNewsId").html(str);
-	
-	if(jsObj.firstRecord==0){
-		$("#paginationId").pagination({
-			items: itemsCount,
-			itemsOnPage: maxResults,
-			cssStyle: 'light-theme'
-		});
-	}
-}*/
-
 function buildPaginatedNewsOfCandidate(results,jsObj){
 
 	$("#pagedNewsId").html('');
@@ -369,8 +350,22 @@ function getCandiNews(){
 	    } 
      
 	 }
-	 
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&";
+	var selectedGallaryIds = "";
+	if($("#gallaryRadioId").is(":checked"))
+	{
+	  selectedGallaryIds = $('#gallaryId').val();
+	  if(selectedGallaryIds == null || selectedGallaryIds == "null")
+	  {
+		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Gallary.</span>');
+          return;
+	  }
+
+	}
+	else
+	 selectedGallaryIds = "";
+	
+		
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&";
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
@@ -443,10 +438,113 @@ $(".candidateRadioCls").click(function(){
      $("#candidateNewsShowHideDatesDiv").css("display","block");
 
 	});
+
+$("#candidatesListId").live("change",function(){
+  var candidateId = $("#candidatesListId").val();
+   $('.errorDiv').html('');
+    clearOptionsListForSelectElmtId('gallaryId');
+  if(candidateId == 0)
+  {
+    $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate</span>');
+		return;
+  }
+	
+  if($("#gallaryRadioId").is(":checked"))
+  {
+	$("#gallaryShowHideDiv").css("display","block");
+    $("#gallaryRadioId").attr('checked', true);
+	getCandidateGallaries();
+  }
+  else
+  {
+	$("#gallaryShowHideDiv").css("display","none");
+  }
+	
 });
+
+$("#gallaryRadioId").click(function(){
+	if($("#gallaryRadioId").is(":checked"))
+	{
+      $("#gallaryShowHideDiv").css("display","block");
+	  getCandidateGallaries();
+	}
+	else
+    {
+	  $("#gallaryShowHideDiv").css("display","none");
+    }
+
+});
+});//End of Ready
+
+function getCandidateGallaries()
+{
+
+  $("#gallaryShowHideDiv").css("display","block");
+    var fromDateStr = "";
+	var toDateStr = "";
+	var candidateId = $("#candidatesListId").val();
+	$(".errorDiv").html('');
+	if(candidateId == 0)
+	{
+	  $(".errorDiv").html('Please Select Candidate');
+	  return;	
+	}
+	if(fromDate != "")
+	 fromDateStr = fromDate;
+	if(toDate != "")
+	 toDateStr = toDate;
+
+	var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
+	if(radioVal == "byDate")
+	{
+	   fromDateStr = $("#candidateFromText").val();
+	   toDateStr = $("#candidateToText").val();
+	
+	   if(fromDateStr=="" && toDateStr == "")
+	   {
+		 $(".errorDiv").html('Please Select From And To Dates');
+		 return;
+	   }
+	   else if(fromDateStr =="")
+	   {
+	     $(".errorDiv").html('Please Select From Date');
+		 return;
+	   }
+	   else if(toDateStr =="")
+	   {
+	     $(".errorDiv").html('Please Select To Date');
+		 return;
+	   }
+	   else if (Date.parse(fromDateStr) > Date.parse(toDateStr)) {
+         $(".errorDiv").html('Invalid Date Selection.');
+         return;
+	   } 
+	}
+
+	var jsObj={
+		fromDate:fromDateStr,
+		toDate:toDateStr,
+		candidateId:candidateId,
+		task:'getCandidateRelatedGallaries'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidateRelatedGallariesAction.action?"+rparam;
+	callAjax(jsObj, url);
+
+
+}
 
 function getCandidateDetails()
 {
+	
+ if(gallaryIds != "null" && gallaryIds != "")
+ {
+ $("#candidateNewsShowHideDatesDiv").css("display","block");
+ $("#gallaryRadioId").attr('checked', true);
+  getCandidateGallaries();
+   
+  
+ }
  
  if(fromDate=="" && toDate == "")
  {
@@ -462,6 +560,39 @@ function getCandidateDetails()
   $("#candidateFromText").val(''+fromDate+'');
   $("#candidateToText").val(''+toDate+'');
  }
+}
+
+
+
+function buildGallaryList(elmtId,optionsList)
+{	
+	var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+
+	if(gallaryIds != "null" && gallaryIds != "")
+   {
+     var valoresArea=gallaryIds 
+    var arrayArea = valoresArea.split(',');
+    $('#gallaryId').val(arrayArea).attr('selected', true);
+   }
+
 }
 
 getCandidateDetails();
