@@ -133,6 +133,9 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private List<OptionVO> ageList;
 	
 	private Long constituencyId;
+	
+	private Long mandalId,panchayatId,boothId;
+	private String type;
     
 	public List<VotersDetailsVO> getCasteDetailsVO() {
 		return casteDetailsVO;
@@ -535,6 +538,39 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+
+	
+	public Long getMandalId() {
+		return mandalId;
+	}
+
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String execute() throws Exception
