@@ -418,7 +418,7 @@ headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/
 	   <div class="span6 widget-simple">
 	   
 			<h4> Add New Problem</h4>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('addproblem');" style="float:right;"></input></div>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openAddNewProblemWindow()" style="float:right;"></input></div>
 		</div>       
 	   <div class="span6 widget-simple">
 	      <h4>All Problems</h4>
@@ -567,9 +567,6 @@ function openAllInNewWindow(type){
    else if(type == 'voterssearch')
     url ='votersSearchAction.action';
 
-  else if(type == 'addproblem')
-    url ='addNewProblemAction.action';
-  
   else if(type == 'allproblems')
     url ='constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT';
   
@@ -586,6 +583,14 @@ function openAllInNewWindow(type){
     url ='callCenterAction.action';
 	
 	window.open(url);
+}
+
+ function openAddNewProblemWindow()
+{	
+	var browser1 = 
+	window.open("addNewProblemAction.action","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+						 
+		 browser1.focus();
 }
 
 function openVotersAnalysts()
