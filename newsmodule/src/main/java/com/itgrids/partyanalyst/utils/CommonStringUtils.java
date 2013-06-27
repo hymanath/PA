@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.utils;
 
+
 public class CommonStringUtils {
 	
 	public static String removeSpecialCharsFromAString(String textValue){
