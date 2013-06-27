@@ -67,4 +67,7 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	
 	public List<Object[]> getCandidateRelatedGallaries(Long candidateId,Long partyId,Date fromDate, Date toDate,String queryType);
 	
+	public List<Object[]> getCandidateRelatedCategories(Long candidateId,Long partyId,Date fromDate,Date toDate);
+	
+	
 }

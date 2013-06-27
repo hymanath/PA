@@ -296,5 +296,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
     
     public List<FileGallary> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType);
     
+    public List<Object[]> getGalleriesByCategoryIds(List<Long> categoryIdsList,Long partyId,Long candidateId);
+    
 }
 
