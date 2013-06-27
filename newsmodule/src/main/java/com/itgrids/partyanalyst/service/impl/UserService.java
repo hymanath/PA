@@ -1,13 +1,16 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IUserService;
-import java.util.List;
+
 public class UserService implements IUserService{
-	
-	private IUserDAO userDAO;
-	/*
 	public static Logger log = Logger.getLogger(UserService.class); 
 	
 	private IUserDAO userDAO;
@@ -26,12 +29,12 @@ public class UserService implements IUserService{
 		this.userDAO = userDAO;
 	}
 	
-	*//**
+	/**
 	 * @author srishailam
 	 * @param Long
 	 * @return Long
 	 * 
-	 *//*
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Long getUserDistrictByUserId(Long userId){
 		log.debug("entered into getUserDistrictByUserId() method ");
@@ -41,16 +44,17 @@ public class UserService implements IUserService{
 		Object[] values = null;
 		try{
 		userIds.add(userId);
-		List<Object[]> userLocations = userDAO.getAnanymousUserLocationDetailsByIds(userIds);
+		List<Object[]> userLocations =null;
+		//userLocations = userDAO.getAnanymousUserLocationDetailsByIds(userIds);
 		if(userLocations !=null && userLocations.size()>0){
 			values = (Object[])userLocations.get(0);
-			locationIds = new ArrayList();
+			/*locationIds = new ArrayList();
 			locationIds.add((Long)values[0]);
 			locationIds.add((Long)values[1]);
 			locationIds.add((Long)values[2]);
 			locationIds.add((Long)values[3]);
 			locationIds.add((Long)values[4]);
-			locationIds.add((Long)values[5]);
+			locationIds.add((Long)values[5]);*/
 			userDistrictId = (Long)values[2];
 			}
 		}catch(Exception e){
@@ -61,21 +65,4 @@ public class UserService implements IUserService{
 		return userDistrictId;
 	}
 	
-*/
-	public String checkForUserType(Long userId)
-	{
-		String userType = null;
-		try {
-			List<Object[]> userdetails = userDAO.chechForUserType(userId);
-			if(userdetails != null && userdetails.size() > 0)
-			{
-				Object[] user = userdetails.get(0);
-				userType = user[1].toString();
-			}
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return userType;
-	}
 }

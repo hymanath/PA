@@ -5,72 +5,47 @@ import java.util.List;
 
 import org.apache.commons.lang.WordUtils;
 
-import com.itgrids.partyanalyst.dao.IAreaTypeDAO;
-import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
-import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
-import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
-import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IDistrictDAO;
-import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
-import com.itgrids.partyanalyst.dao.IElectionDAO;
-import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
-import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.IPanchayatDAO;
-import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
-import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dao.IStateDAO;
-import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dao.ITownshipDAO;
-import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
-import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
-import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
-import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ElectionType;
-import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class StaticDataService implements IStaticDataService {
 
-	private IElectionDAO electionDAO;
-	private IPartyDAO partyDAO;
-	private IElectionScopeDAO electionScopeDAO;
-	private IDistrictDAO districtDAO;
-	private IStateDAO stateDAO;
-	private IElectionAllianceDAO electionAllianceDAO;
+	//private IElectionDAO electionDAO;
+	//private IPartyDAO partyDAO;
+	//private IElectionScopeDAO electionScopeDAO;
+	//private IDistrictDAO districtDAO;
+	//private IStateDAO stateDAO;
+	//private IElectionAllianceDAO electionAllianceDAO;
 	private IConstituencyDAO constituencyDAO;
-	private ITownshipDAO townshipDAO;
-	private ITehsilDAO tehsilDAO;
-	private IHamletDAO hamletDAO;
-	private IConstituencyElectionDAO constituencyElectionDAO;
-	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	//private ITownshipDAO townshipDAO;
+	//private ITehsilDAO tehsilDAO;
+	//private IHamletDAO hamletDAO;
+	//private IConstituencyElectionDAO constituencyElectionDAO;
+	//private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
-	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
-	private IUserDAO userDAO;
-	private IPanchayatHamletDAO panchayatHamletDAO;
-	private IPanchayatDAO panchayatDAO;
-	private IBoothDAO boothDAO;
-	private IUserCountryAccessInfoDAO userCountryAccessInfoDAO;
-	private IUserStateAccessInfoDAO userStateAccessInfoDAO;
-	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
-	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
-	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
-	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
-	private IAreaTypeDAO areaTypeDAO;
-	private IRegionServiceData regionServiceDataImp;
+	//private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	//private IUserDAO userDAO;
+	//private IPanchayatHamletDAO panchayatHamletDAO;
+	//private IPanchayatDAO panchayatDAO;
+	//private IBoothDAO boothDAO;
+	//private IUserCountryAccessInfoDAO userCountryAccessInfoDAO;
+	//private IUserStateAccessInfoDAO userStateAccessInfoDAO;
+	//private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+	//private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	//private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	//private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
+	//private IAreaTypeDAO areaTypeDAO;
+	//private IRegionServiceData regionServiceDataImp;
 	
-	public IElectionDAO getElectionDAO() {
+	/*public IElectionDAO getElectionDAO() {
 		return electionDAO;
 	}
 	public void setElectionDAO(IElectionDAO electionDAO) {
@@ -99,26 +74,26 @@ public class StaticDataService implements IStaticDataService {
 	}
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
-	}
-	public IElectionAllianceDAO getElectionAllianceDAO() {
+	}*/
+	/*public IElectionAllianceDAO getElectionAllianceDAO() {
 		return electionAllianceDAO;
 	}
 	public void setElectionAllianceDAO(IElectionAllianceDAO electionAllianceDAO) {
 		this.electionAllianceDAO = electionAllianceDAO;
-	}
+	}*/
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
 	}
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
 	}
-	public ITownshipDAO getTownshipDAO() {
+	/*public ITownshipDAO getTownshipDAO() {
 		return townshipDAO;
 	}
 	public void setTownshipDAO(ITownshipDAO townshipDAO) {
 		this.townshipDAO = townshipDAO;
-	}
-	public ITehsilDAO getTehsilDAO() {
+	}*/
+	/*public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
 	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
@@ -136,21 +111,21 @@ public class StaticDataService implements IStaticDataService {
 	public void setConstituencyElectionDAO(
 			IConstituencyElectionDAO constituencyElectionDAO) {
 		this.constituencyElectionDAO = constituencyElectionDAO;
-	}
-	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+	}*/
+	/*public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
-	}
+	}*/
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
 	}
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
-	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+	/*public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
 	}
 	public void setDelimitationConstituencyDAO(
@@ -234,7 +209,7 @@ public class StaticDataService implements IStaticDataService {
 	}
 	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
-	}
+	}*/
 	private IElectionTypeDAO electionTypeDAO;
 	
 	public IElectionTypeDAO getElectionTypeDAO() {
@@ -5494,7 +5469,7 @@ public class StaticDataService implements IStaticDataService {
 
 	}
 */
-	public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(
+	/*public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(
 			Long parliamentConstituencyId) {
 		
 		ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
@@ -5514,7 +5489,7 @@ public class StaticDataService implements IStaticDataService {
 				.getName());
 		
 		return constituencyInfoVO;
-	}
+	}*/
 /*
 	public NavigationVO findHirarchiForNavigation(Long locationId,
 			String locationType) {

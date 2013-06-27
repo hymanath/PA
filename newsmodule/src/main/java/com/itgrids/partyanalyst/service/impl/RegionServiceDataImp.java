@@ -12,34 +12,21 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
-import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
-import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
-import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.IModuleDetailsDAO;
-import com.itgrids.partyanalyst.dao.IModuleRegionScopesDAO;
-import com.itgrids.partyanalyst.dao.IPanchayatDAO;
-import com.itgrids.partyanalyst.dao.IRegionScopesProblemTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
-import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
-import com.itgrids.partyanalyst.model.District;
-import com.itgrids.partyanalyst.model.Hamlet;
-import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
-import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -52,82 +39,51 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
-	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
-	private IElectionDAO electionDAO;
-	private ITownshipDAO townshipDAO;
+	//private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IHamletDAO hamletDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;  
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IBoothDAO boothDAO;
-	private IBoothMapperService boothMapperService;
-	private IModuleRegionScopesDAO moduleRegionScopesDAO;
+	/*private IModuleRegionScopesDAO moduleRegionScopesDAO;
 	private IModuleDetailsDAO moduleDetailsDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IRegionScopesProblemTypeDAO regionScopesProblemTypeDAO;
 	
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IPanchayatDAO panchayatDAO;
+	*/
 	
-	public IPanchayatDAO getPanchayatDAO() {
-		return panchayatDAO;
-	}
-
-	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
-		this.panchayatDAO = panchayatDAO;
-	}
-
-	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
-		return boothPublicationVoterDAO;
-	}
-
-	public void setBoothPublicationVoterDAO(
-			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
-		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
-	}
-
-	public IRegionScopesProblemTypeDAO getRegionScopesProblemTypeDAO() {
-		return regionScopesProblemTypeDAO;
-	}
-
-	public void setRegionScopesProblemTypeDAO(
-			IRegionScopesProblemTypeDAO regionScopesProblemTypeDAO) {
-		this.regionScopesProblemTypeDAO = regionScopesProblemTypeDAO;
-	}
-
-	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
-		return delimitationConstituencyAssemblyDetailsDAO;
-	}
-
-	public void setDelimitationConstituencyAssemblyDetailsDAO(
-			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
-		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
-	}
-
-	public IElectionDAO getElectionDAO() {
-		return electionDAO;
-	}
-
-	public void setElectionDAO(IElectionDAO electionDAO) {
-		this.electionDAO = electionDAO;
-	}
-
-	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
-		this.constituencyDAO = constituencyDAO;
+	public IStateDAO getStateDAO() {
+		return stateDAO;
 	}
 
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
 	}
-
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
 
-	
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
 	public void setDelimitationConstituencyDAO(
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
 	}
 
 	public void setDelimitationConstituencyMandalDAO(
@@ -135,19 +91,20 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
 	}
 
+	/*public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
+		return boothConstituencyElectionDAO;
+	}
 	public void setBoothConstituencyElectionDAO(
 			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
 		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
 	}
-
-	
-	public void setTownshipDAO(ITownshipDAO townshipDAO) {
-		this.townshipDAO = townshipDAO;
+*/
+	public IHamletDAO getHamletDAO() {
+		return hamletDAO;
 	}
-
 	public void setHamletDAO(IHamletDAO hamletDAO) {
 		this.hamletDAO = hamletDAO;
-	}	
+	}
 
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
@@ -156,7 +113,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public void setAssemblyLocalElectionBodyDAO(
 			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
-	}	
+	}
 
 	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
 		return assemblyLocalElectionBodyWardDAO;
@@ -165,15 +122,14 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public void setAssemblyLocalElectionBodyWardDAO(
 			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
 		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
-	}	
-
+	}
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
 	}
 
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
-	}	
+	}
 
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
@@ -181,31 +137,6 @@ public class RegionServiceDataImp implements IRegionServiceData {
 
 	public void setBoothDAO(IBoothDAO boothDAO) {
 		this.boothDAO = boothDAO;
-	}	
-
-	public IBoothMapperService getBoothMapperService() {
-		return boothMapperService;
-	}
-
-	public void setBoothMapperService(IBoothMapperService boothMapperService) {
-		this.boothMapperService = boothMapperService;
-	}	
-	
-	public IModuleRegionScopesDAO getModuleRegionScopesDAO() {
-		return moduleRegionScopesDAO;
-	}
-
-	public void setModuleRegionScopesDAO(
-			IModuleRegionScopesDAO moduleRegionScopesDAO) {
-		this.moduleRegionScopesDAO = moduleRegionScopesDAO;
-	}	
-
-	public IModuleDetailsDAO getModuleDetailsDAO() {
-		return moduleDetailsDAO;
-	}
-
-	public void setModuleDetailsDAO(IModuleDetailsDAO moduleDetailsDAO) {
-		this.moduleDetailsDAO = moduleDetailsDAO;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -227,8 +158,6 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			return null;
 		}
 	}
-	
-	
 
 	public List<SelectOptionVO> getMandalsByConstituencyID(Long constituencyID){
 		List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
@@ -364,7 +293,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return result;
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getStatesByCountryFromBooth(Long countryID){
 		List list = boothConstituencyElectionDAO.getStatesByCountryFromBooth(countryID);
@@ -468,7 +397,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
  		}
 		return constsList;
 	}
-
+*/
 	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String year, String scope) {
 		Constituency constituency = constituencyDAO.get(constituencyId);
 		List<SelectOptionVO> subRegionsList = new ArrayList<SelectOptionVO>();
@@ -549,7 +478,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		
 		return localElectionBodiesList;
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public String getLocalBodyElectionTypeInConstituency(Long constituencyId){
 		
@@ -570,7 +499,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	 
 	 return type;	
 	}
-	
+	*/
 	public List<SelectOptionVO> getTehsilsInConstituency(Long constituencyId)
 	{
 		List<SelectOptionVO> list = getMandalsByConstituencyID(constituencyId);
@@ -581,7 +510,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return tehsilsList;
 	}
-	
+	/*
 	public List<SelectOptionVO> getTehsilsInAConstituency(Long constituencyId)
 	{
 		List<SelectOptionVO> list = getMandalsByConstituencyID(constituencyId);
@@ -688,7 +617,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 	 return regionsList;
 	}
-	
+	*/
 	public List<SelectOptionVO> getLocalElectionBodiesOfADistrict(Long districtId){
 		List<SelectOptionVO> localBodies = new ArrayList<SelectOptionVO>();
 		List rawData = localElectionBodyDAO.findByDistrictId(districtId);
@@ -696,7 +625,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			localBodies.add(new SelectOptionVO(Long.parseLong(values[0].toString()),WordUtils.capitalize(values[1].toString().toLowerCase()) +" "+values[2].toString()));
 		return localBodies;		
 	}
-	
+
 	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId){
 		
 		List<SelectOptionVO> wards = new ArrayList<SelectOptionVO>();
@@ -706,7 +635,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		
 	 return wards;
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId,Long constituencyId,String year){
 		
@@ -739,7 +668,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		
 	 return wards;
 	}
-
+*/
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getConstituenciesByAreaTypeInDistrict(
 			Long districtId, String areaType) {
@@ -806,7 +735,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return regionsList;		
 	}
 	
-	
+
 	public List<SelectOptionVO> getboothsInWardByPublicationId(Long wardId, Long constituencyId , Long publicationId) {
 		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
 		String id = wardId.toString().substring(1);
@@ -821,7 +750,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return regionsList;		
 	}
-	
+	/*
 	
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getboothDetailsInWard(Long wardId, Long year,
@@ -854,7 +783,8 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return regionsList;		
 	}
-	
+	*/
+	@SuppressWarnings("unused")
 	public List<BoothInfo> getBoothCompleteDetails(String areaType,
 			String boothIds) {
 		List resultsList = null;
@@ -887,7 +817,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 
 	
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getBoothsInLocalBodysByConstituency(
 			Long localBodyId, Long year, Long constituencyId) {
@@ -959,7 +889,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	}
 	
 
-	
+	*/
 	public Set<RegionalMappingInfoVO> getLocalBodiesInDistAndConst(Long districtId,
 			Long constituencyId, String year) {
 		String areaType = null;
@@ -1001,7 +931,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			
 		return finalList;
 	}
-	
+
 	public Set<RegionalMappingInfoVO> getWardsInLocalBodyAndConst(
 			Long localBodyId, Long constituencyId, String year) {
 		
@@ -1128,7 +1058,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			return finalList;		
 	}
 	
-	
+	/*
 	public List<SelectOptionVO> getAllRegionScopes() {
 		List<SelectOptionVO> scopes = new ArrayList<SelectOptionVO>(0);
 		List<RegionScopes> allScopes = null;//regionScopesDAO.getAll();
@@ -1275,7 +1205,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			return null;
 		}
 	}
-	
+	*/
 	public List<SelectOptionVO> getAllParliamentConstituenciesForAState(
 			Long electionScopeId , Long stateId) {
 		List<SelectOptionVO> constsList = new ArrayList<SelectOptionVO>();
@@ -1290,7 +1220,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
  		}
 		return constsList;
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getConstituenciesByDistrictIDs(Long districtID){
 		List<Constituency> constituencies = constituencyDAO.findConstituenciesByDistrictId(districtID);
@@ -1302,7 +1232,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return result;
 	}
 	
-	
+	*/
 	
 	public List<SelectOptionVO> getPanchayitiesInTehsil(Long tehsilId)
 	{
@@ -1361,7 +1291,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		
 		
 	}
-	
+	/*
 	public List<SelectOptionVO> getWardsInALocalElectionBodyByID(Long assemblyLocalBody)
 	{
 		List<SelectOptionVO> wards = new ArrayList<SelectOptionVO>();
@@ -1404,7 +1334,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	}
 	
 	}
-	
+	*/
 }
 	
  
