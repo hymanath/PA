@@ -108,7 +108,36 @@ input[type="radio"]{margin-top:-1px;}
 
 	.ui-autocomplete-input { border-radius:3px;margin: 0; height:25px; position:relative; width:150px; -moz-border-radius:0px 0px 0px 0px;border:1px solid #CCCCCC;margin: 0 5px 8px;}
 	
-
+.thumbnail {
+    border: 1px solid #DDDDDD;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+    display: block;
+    line-height: 20px;
+    margin-left: 18px;
+    padding: 4px;
+    transition: all 0.2s ease-in-out 0s;
+    width: 125px;
+}
+.ui-dialog .ui-dialog-content {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    overflow: auto;
+    padding: 0.5em 1em;
+    position: relative;
+}
+.ui-dialog .ui-dialog-content {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    overflow: auto;
+    padding: 0.5em 1em;
+    position: relative;
+}
+.ui-widget-content {
+    background: url("images/ui-bg_flat_75_ffffff_40x100.png") repeat-x scroll 50% 50% #FFFFFF;
+    border: 1px solid #AAAAAA;
+    color: #222222;
+}
 </style>
 <div class="container m-top15">
 <div class="row-fluid"><div class="span12 widget" style="padding: 0 20px 4px;"><h2 class="pagination-centered" style="border-bottom: 0px solid #C0C0C0;">DASHBOARD</h2></div></div>
@@ -117,7 +146,7 @@ input[type="radio"]{margin-top:-1px;}
 <!--------left div------->
 <div class="span3">
 <!-------Quick Links Block--------------->
-<div class="profile-pic widget blue">
+<div class="profile-pic widget blue"  style="height: 139px;">
 <div class="profileimg  thumbnail" >
 <c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
 <img src="pictures/profiles/human.jpg" id="userProfileImg" style="height: 100px; width: 132px;">
@@ -127,9 +156,17 @@ input[type="radio"]{margin-top:-1px;}
 </c:if>
 </div>
 <div class="widget-block" id="profileUserName">
-<h5>${loginUserName}</h5> </div>
+<h5 style="margin-left: 16px;">${loginUserName}</h5> </div>
 </div>	
- 
+ <div class="widget blue">
+ <h2>Account Settings</h2>
+ <table class="table table-hover"><thead></thead><tbody><tr><td><a href="freeUserRegistration.action"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>  <tr><td><a class="changePwdLink" href="javascript:{}"><span class="icon-hand-right"></span>  Change Password</a></td></tr>   <tr><td><a class="editPictureLink" href="javascript:{}"><span class="icon-user"></span>  Edit Picture</a></td></tr>  </tbody></table>
+ </div>
+ <div id="userSettingsDialog"></div>
+
+<div id="connectPeoplePopup" style="display:none;">
+	<div id="allConnectedUsersDisplay_main"></div>
+	</div>
 <div  class="widget blue">
   <h2>Advanced DashBoard</h2>
    <b>Click here for</b> 
@@ -1036,4 +1073,235 @@ function getVotersAnalysisbasedOnLevel()
 	
 }
 
+//change Password
+
+$(".changePwdLink").live("click",function(){
+	 $("#allConnectedUsersDisplay_main").children().remove();
+	
+	 $("#connectPeoplePopup").dialog({
+            modal: true,
+            title: "<b>Change Password</b>",
+			width: 565,
+            height: 300
+           
+        });
+		var elmt = $("#allConnectedUsersDisplay_main");
+		var div = $("<div class='changePwdDiv'></div>");
+
+		div.append('<div id="password_window_errorMsg"></div>');
+		div.append('<img src="images/icons/infoicon.png" />');
+		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span>');
+		div.append('<div> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 15px;"/></div>');
+		div.append('<div> <span>New Password</span><font color="red"> *</font> <input type="password" id="newPwdId" name="newPassword" style="height: 18px; width: 160px; margin-top: 10px;margin-left: 38px;"/></div>');
+		div.append('<div> <span>Confirm Password</span><font color="red"> *</font> <input type="password" id="confirmPwdId" name="confirmPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 13px;"/></div>');
+        div.append('<div style="margin-left: auto; margin-right: auto; width: 550px;"><input class="btn-info btn-small" id="changePWDButton" type="button" value="Change Password"></input><input class="btn-info btn-small" id="cancelButtonID" type="button" value="Cancel" style="margin-left:10px;"></input></div>');
+
+		elmt.append(div);
+		$("#impdatesDiv").hide();
+		$("#impEvents").hide();
+		$("#announcementsDiv").hide();
+	});
+
+   $("#cancelButtonID").live("click",function(){
+	 $("#connectPeoplePopup").dialog("destroy");
+   });
+
+   $("#changePWDButton").live("click",function(){
+
+		var cpwd = $.trim($("#currentPwdId").val());
+		var npwd = $.trim($("#newPwdId").val());
+		var cfmpwd = $.trim($("#confirmPwdId").val());
+		var errorDiv = $("#password_window_errorMsg");
+		errorDiv.html('');		
+		if(cpwd.length > 0 &&cpwd.length < 6)
+		{
+		  errorDiv.html("<font color='red'>Current Password Minimum Of 6 Characters.</font>");
+	      return;
+		}
+	if(npwd.length > 0 &&npwd.length < 6)
+	{
+	  errorDiv.html("<font color='red'>New Password Minimum Of 6 Characters.</font>");
+	  return;
+	}
+	if(cpwd=="")
+	{
+     errorDiv.html("<font color='red'>Please enter password.</font>");	
+	 return;
+	}
+     if(npwd.length > 0 && cfmpwd.length > 0 && npwd != cfmpwd)
+	{
+ 	  errorDiv.html("<font color='red'>Passwords do not match.</font>");
+       return
+	}
+	if(cpwd=='')
+	{
+     errorDiv.html("<font color='red'>Please enter current password.</font>");
+	 return;
+	}
+	if(npwd=='')
+	{
+      errorDiv.html("<font color='red'>Please enter new password.</font>");
+	   return;
+	}
+	if(cfmpwd=='')
+	{
+	   errorDiv.html("<font color='red'>Please enter confirm password.</font>");
+	   return;
+	}
+	if(cpwd == npwd)
+	{
+	  errorDiv.html("<font color='green'>Your new password is same as existing one.</font>");
+	  setTimeout("closewdw()",3000);
+	  return;
+	}
+	if(cpwd!='')
+	{
+	  errorDiv.html("Sending Your Request.Please wait</font>");
+	  errorDiv.html('<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">');
+
+      var jsObj={
+      crntPassword:cpwd,
+      newPassword:npwd,
+	  task:"changePassword"	 
+	 };
+     var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "changeUserPasswordAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+	}
+  });
+//edit picture
+
+$(".editPictureLink").live("click",function(){
+	
+$("#allConnectedUsersDisplay_main").children().remove();
+	
+	$("#connectPeoplePopup").dialog({
+		modal: true,
+		title: "<b>Change Image</b>",
+		width: 583,
+		height: "auto"
+           
+	});
+	
+	
+	$(".ui-dialog-titlebar").hide();
+
+	var elmt = $("#allConnectedUsersDisplay_main");
+	var div =$("<div></div>");
+	var str = '';
+	str += '<div id="uploadPic_window_head">Upload Your Picture</div>';
+	str += '<div id="uploadPic_window_body">';
+	str += '<form name="uploadForm" action="uploadPicAction.action" enctype="multipart/form-data" method="post" id="uploadPicForm">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th valign="top">';
+	str += '	<table width="100%" class="uploadPic_string_table">';
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td style="font-size:11px;float:left;">Select a image from your computer.</td>';
+	str += '	</tr>';
+
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td style="font-size:11px;float:left;"">Image size should be less than 2MB.</td>';
+	str += '	</tr>';
+
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td style="font-size:11px;float:left;"">Image should be .jpg or.png or .gif formats only.</td>';
+	str += '	</tr>';
+
+	str += '	</table>';	
+	str += '</th>';
+	str += '<td rowspan="3">';
+	str += '	<div style="width:100px;height:100px;overflow:hidden;"><img width="90" height="100" id="Imgpreview" class="jcrop-preview" src="images/icons/indexPage/human.jpg"></div>';
+	str += '</td>';
+	str += '</tr>';
+
+	str += '<tr>';
+	str += '<td>';
+	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width:430px;"/>';
+	str += '</td>';
+	str += '</tr>';
+	
+	str += ' <input type="hidden" size="4" value=""  id="xcoardinate"  name="xcoardinate"   value="0" />'; 
+     str += ' <input type="hidden" size="4"  value="" id="ycoardinate"  name="ycoardinate"   value="0" />';  
+     str += ' <input type="hidden" size="4" value=""  id="width"        name="width" />';  
+     str += ' <input type="hidden" size="4"  value="" id="height"       name="height" />'; 
+	str += '</table>';	
+	str += '</form>';
+	str += '</div>';
+	str += '<div id="uploadPic_window_footer" class="yui-skin-sam">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th width="60%" valign="top"><div id="uploadPic_window_status"></div></th>';
+	str += '<td width="40%" valign="top"><input class="btn-info btn-small" type="button" value="Upload" id="uploadPicButton"/>';
+	str += '<input class="btn-info btn-small" type="button" value="Cancel" id="cancelPicButton"/>';	
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';	
+	str += '</div>';
+	str += '<div style="width:300px;" id="Imgpreview2"><img style="width:300px;height:300px;" width="300" height="300" id="Imgpreview1"  src=""></div>';
+	div.append(str);
+	elmt.append(div);
+	
+	oPushButton1 = new YAHOO.widget.Button("uploadPicButton");  
+	oPushButton2 = new YAHOO.widget.Button("cancelPicButton");
+	
+	oPushButton1.on("click",function(){
+	   
+		var uploadPhotoId = document.getElementById("photoUploadElmt").value;
+		var str = '<font color="red">';
+		if(uploadPhotoId.length == 0)
+	     {   
+		     str += ' Please Select a image .<br>';
+		     document.getElementById("uploadPic_window_status").innerHTML = str;
+	     }
+		 else{
+		 var photoStatusElmt = document.getElementById("uploadPic_window_status");
+		 photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
+		
+		 getUploadpic();
+		}
+	});
+
+	oPushButton2.on("click",function(){
+		$("#uploadPic_window").dialog("destroy");
+	});
+
+});
+
+$("#cancelPicButton").live("click",function(){
+	$("#connectPeoplePopup").dialog("destroy");
+});
+
+$("#uploadPicButton").live("click",function(){
+	var uploadPhotoId = $.trim($("#photoUploadElmt").val());
+		var str = '<font color="red">';
+		if(uploadPhotoId.length == 0)
+	     {   
+	       $("#uploadPic_window_status").html('Please Select a image .<br>');
+		   return;
+	     }
+		 else
+		 {
+		   $("#uploadPic_window_status").html('Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>');
+			 getUploadpic();
+		}
+});
+
+$("#uploadCoverPicButton").live("click",function(){
+	var uploadPhotoId = $.trim($("#photoUploadElmt").val());
+		var str = '<font color="red">';
+		if(uploadPhotoId.length == 0)
+	     {   
+	       $("#uploadPic_window_status").html('Please Select a image .<br>');
+		   return;
+	     }
+		 else
+		 {
+		   $("#uploadPic_window_status").html('Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>');
+			 getUploadCoverpic();
+		}
+});
 </script>
