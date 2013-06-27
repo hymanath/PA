@@ -1,8 +1,5 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.List;
-
-import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface IUserService {
 
@@ -10,6 +7,6 @@ public interface IUserService {
 	
 	
 */
-	public String checkForUserType(Long userId);
+	//public String checkForUserType(Long userId);
 	
 }

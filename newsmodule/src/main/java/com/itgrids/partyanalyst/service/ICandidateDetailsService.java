@@ -11,7 +11,6 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.File;
 
 public interface ICandidateDetailsService {
 	
@@ -19,8 +18,14 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType,Long categoryId);
 	
 	public List<SelectOptionVO> getLatestgallaries();
- public List<SelectOptionVO> getNewsContainedCandidates();
-
+	
+	public List<SelectOptionVO> getNewsContainedCandidates();
+ 
+	public List<SelectOptionVO> getCandidateRelatedCategories(Long candidateId,String fromDateStr,String toDateStr,Long partyId);
+ 
+	public List<SelectOptionVO> getGallariesForSelectedCategories(List<Long> categoryIdsList,Long candidateId);
+ 
+ 
 	
 	/*
 	
@@ -245,10 +250,5 @@ public interface ICandidateDetailsService {
 	 public ResultStatus createUserNewsCategory(String name, String visibility, Long userId);
 
 	 public List<SelectOptionVO> getCandidateRelatedGallaries(Long candidateId,String fromDateStr,String toDateStr,Long partyId,String queryType);
-	 
-	 public List<SelectOptionVO> getCandidateRelatedCategories(Long candidateId,String fromDateStr,String toDateStr,Long partyId);
-	 
-	 public List<SelectOptionVO> getGallariesForSelectedCategories(List<Long> categoryIdsList,Long candidateId);
-	 
 	 
 }

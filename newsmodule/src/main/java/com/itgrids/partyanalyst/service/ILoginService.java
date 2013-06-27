@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.UserTrackingVO;
 
 public interface ILoginService {
 	

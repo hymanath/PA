@@ -1,43 +1,7 @@
 
 package com.itgrids.partyanalyst.service;
 
-import java.util.List;
-import java.util.Set;
-
-import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
-import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
-import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
-import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
-import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
-import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
-import com.itgrids.partyanalyst.dto.ConstituencyResultsInElectionVO;
-import com.itgrids.partyanalyst.dto.DataTransferVO;
-import com.itgrids.partyanalyst.dto.DelimitationUploadValidationVO;
-import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
-import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
-import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
-import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
-import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
-import com.itgrids.partyanalyst.dto.MandalVO;
-import com.itgrids.partyanalyst.dto.NavigationVO;
-import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
-import com.itgrids.partyanalyst.dto.PartyResultVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
-import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
-import com.itgrids.partyanalyst.model.ElectionScope;
-import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
-import com.itgrids.partyanalyst.model.PartyElectionResult;
-import com.itgrids.partyanalyst.model.PartyElectionStateResult;
-import com.itgrids.partyanalyst.model.State;
-
-import com.itgrids.partyanalyst.utils.GenericException;
 
 public interface IStaticDataService {/*
 
@@ -105,7 +69,7 @@ public interface IStaticDataService {/*
 		public CandidateDetailsVO getLatestConstituenciesForAssemblyAndParliamentForAllElectionYears(Long electionType,Long stateId);
 	*/
 		public ConstituencyInfoVO getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);
-		public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(Long parliamentConstituencyId);
+		//public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(Long parliamentConstituencyId);
 /*
 		public List<PartyResultVO> getPartyVotesPercentageInAConstituency(Long constituencyId,String all,String[] choices);
 		
