@@ -656,6 +656,7 @@ Opinion Poll</h2>
 	</div>
 	
 	<script>
+	var loginMode = '${loginMode}'; 
 	constituencyId = '${sessionScope.USER.constituencyId}';
 	showVotesObtainedForOpinionPoll();
 		  
