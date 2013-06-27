@@ -21,12 +21,25 @@
 </head>
 <body>
 <style>
+.currentTab
+{
+ background-color:yellowgreen;
+ border-radius:8px;
+}
 	.unstyled li{
 	float:left;width:20%;border:1px solid #ccc;padding:5px;text-align:center;margin:4px;
 	}
 </style>
 <div id="gallarysId" style="margin:22px 0px 31px 50px;float:left;"></div>
 <div id="paginationId" style="float:left;margin-left:280px;"></div>
+<script>
+
+$(document).ready(function(){
+
+	$('#videosTabId').addClass('currentTab');
+});
+
+</script>
 <script>
 getNewsForPagination(1);
 

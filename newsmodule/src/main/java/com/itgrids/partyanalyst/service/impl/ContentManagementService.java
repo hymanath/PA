@@ -415,6 +415,7 @@ public class ContentManagementService implements IContentManagementService{
 			List<Long> totalIds = new ArrayList<Long>();
 			
 			List<Long> responseIds = null;
+			List<Long> latestFileIds = new ArrayList<Long>();
 			
 			List<Long> ids = candidateNewsResponseDAO.getFileGallaryIdsByResponseGallaryId(responseFileGallaryId);
 			totalIds.add(responseFileGallaryId);
@@ -427,6 +428,7 @@ public class ContentManagementService implements IContentManagementService{
 			 
 			 while(responseIds != null && responseIds.size() >0){				 
 				 totalIds.addAll(responseIds);
+				 latestFileIds = responseIds;
 				 responseIds = candidateNewsResponseDAO.getResponseFileGallaryidForANews(responseIds);	 
 			 }			 
 			 
@@ -439,20 +441,45 @@ public class ContentManagementService implements IContentManagementService{
 			
 			File file = fileGallary.getFile();
 			
-			fileVO.setFileTitle1(file.getFileTitle());
-			fileVO.setFileDescription1(file.getFileDescription());
+			if(latestFileIds.contains(file.getFileId()))
+				fileVO.setLatest(true);
+				
+			
+			//fileVO.setFileTitle1(file.getFileTitle());
+			fileVO.setFileTitle1(file.getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())):"");
+			fileVO.setFileDescription1(file.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):"");
 			fileVO.setNewsDescription(file.getNewsDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getNewsDescription())):"");
+			fileVO.setFileDate(file.getFileDate().toString());
 			
 			List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 			Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
 			
+			boolean isTelugu = false;
+			
 			for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+				
+				if(fileSourceLanguage.getSource().getSource().equalsIgnoreCase("Eenadu Telugu"))
+					isTelugu = true;
+					
 				FileVO fileVOSourceLanguage = new FileVO();
 				 fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():null);
 				 fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
 				 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
 				 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
 				 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+				 
+				 List<Object[]> editionDets = newsDetailsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());
+				 
+				if(editionDets != null && editionDets.size() > 0)
+				{
+				 
+				  fileVOSourceLanguage.setPageNo(Long.parseLong(editionDets.get(0)[0].toString()));
+				  Long edition = Long.parseLong(editionDets.get(0)[1].toString());
+				  if(edition.equals(1L))
+					  fileVOSourceLanguage.setNewsEdition("Main Edition");
+				  else
+					  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
+				}
 				 
 				 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
 				 
@@ -471,6 +498,7 @@ public class ContentManagementService implements IContentManagementService{
 				 fileVOSourceLanguageList.add(fileVOSourceLanguage);
 			 }
 			
+			fileVO.setEenadu(isTelugu);
 			 fileVO.setFileVOList(fileVOSourceLanguageList);
 			 
 			 resultList.add(fileVO);

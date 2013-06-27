@@ -21,7 +21,7 @@ ICandidateRelatedNewsDAO {
 	
 	public List<Object[]> getAllfileGallariesOfCandidate(Long candidateId  ,Date fromDate  ,Date toDate)
 	{
-		Query query = getSession().createQuery("select model.fileGallary.fileGallaryId , model.fileGallary.file.fileTitle " +
+		Query query = getSession().createQuery("select model.fileGallary.fileGallaryId , model.fileGallary.file.fileTitle , model.fileGallary.file " +
 				"from CandidateRealatedNews model where model.candidate.candidateId = :candidateId and " +
 				" date(model.fileGallary.file.fileDate) >= :fromDate and date(model.fileGallary.file.fileDate) <= :toDate" +
 				" and model.fileGallary.isDelete = :isDelete " +

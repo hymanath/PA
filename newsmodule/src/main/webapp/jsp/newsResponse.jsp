@@ -4,6 +4,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <title> TDP News Portal </title>
+   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+   <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
  
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -23,7 +27,80 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	 
 	<!-- YUI Skin Sam -->
+
 <style>
+.ui-tooltip, .arrow:after {
+    background: black;
+    border: 2px solid white;
+  }
+  .ui-tooltip {
+    padding: 10px 20px;
+    color: white;
+    border-radius: 20px;
+    font: bold 14px "Helvetica Neue", Sans-Serif;
+    text-transform: uppercase;
+    box-shadow: 0 0 7px black;
+	width:200px;
+  }
+  .arrow {
+    width: 70px;
+    height: 16px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+    bottom: -16px;
+  }
+  .arrow.top {
+    top: -16px;
+    bottom: auto;
+  }
+  .arrow.left {
+    left: 20%;
+  }
+  .arrow:after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -20px;
+    width: 25px;
+    height: 25px;
+    box-shadow: 6px 5px 9px -9px black;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    tranform: rotate(45deg);
+  }
+  .arrow.top:after {
+    bottom: -20px;
+    top: auto;
+  }
+</style>
+<style>
+
+label {
+    display: inline-block;
+    width: 5em;
+  }
+  too
+@font-face
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+@font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
+@font-face {
+    font-family: "eFont";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
+}
+ 
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
 .newssources{
  background-color:#97DFEB;
  padding:8px 8px 8px 8px;
@@ -32,6 +109,45 @@
 
 }
 </style>
+
+<script>
+
+ $(document).ready(function(){
+
+	 //$( ".selector" ).tooltip({ content: "Awesome title!" });
+	   $( document ).tooltip({
+		//tooltipClass: "enadu" ,
+      position: {
+       // my: "center bottom-20",
+        at: "center top",
+        using: function( position, feedback ) {
+          $( this ).css( position );
+          $( "<div>" )
+            .addClass( "arrow" )
+            .addClass( feedback.vertical )
+            .addClass( feedback.horizontal )
+            .appendTo( this );
+        }
+      }
+    });
+
+	 $(document).on("click",".nextLink",function() {
+		 var divNo = parseInt($(this).attr('data-nextdiv'))+1;
+         $('html, body').animate({
+            scrollTop: $("#newsDisplayDiv"+divNo).offset().top
+         }, 1000);
+     });
+
+	 $(document).on("click",".previousLink",function() {
+		 var divNo = parseInt($(this).attr('data-nextdiv'))-1;
+         $('html, body').animate({
+            scrollTop: $("#newsDisplayDiv"+divNo).offset().top
+         }, 1000);
+     });
+
+ });
+
+</script>
 
 <script>
 getCompleteDetailsForANewsResponse();
@@ -47,6 +163,7 @@ function getCompleteDetailsForANewsResponse()
 	callAjax(jObj,url);
 }
 var showContentResultList = null;
+var totalRecords = 0;
 function callAjax(jsObj,url)
 {
 	
@@ -59,6 +176,7 @@ function callAjax(jsObj,url)
 		    if(jsObj.task == "getCompleteDetailsOfANewsResponse")
 			{
 				showContentResultList = myResults;
+				totalRecords = myResults.length;
                buildNewsDetails(myResults);	
 			}
 			
@@ -84,20 +202,48 @@ function buildNewsDetails(results)
 
    str+='<div>';
    for(var i in results)
-   { 
-	   str+='<div style="border:2px solid #5e5e5e;padding:4px;margin:3px;">';
-	   str+='<div id="titleDiv"><h5 style="text-align:center;" href="javascript:{}">'+results[i].fileTitle1+'</h5></div>';
-	   str+='<div id="descriptionDiv" class="alert alert-success">'+results[i].fileDescription1+'</div>';
-	   str+='<div id="descriptionDiv">'+results[i].newsDescription+'</div>';
+   {  
 
-        
+	 // alert(results[i].eenadu == true);  
+	   str+='<div class="alert" id="newsDisplayDiv'+i+'" style="border:2px solid #5e5e5e;padding:4px;margin:3px 0px 0px 76px;;width:807px;background-color:#ffffff;">';
+	   if(results[i].latest == true )
+			str+='<h6 style="color:red;text-align:center;">THIS IS LATEST RESPONSE</h6>';
+
+       if(results[i].eenadu == true )
+	       str+='<div id="titleDiv" style="color:#5e5e5e;font-weight:bold;text-align:center;"><span  class="enadu">'+results[i].fileTitle1+'</span></div>';
+	   else
+		   str+='<div id="titleDiv" style="color:#5e5e5e;font-weight:bold;text-align:center;"><span  href="javascript:{}">'+results[i].fileTitle1+'</span></div>';
+
+
+       if(results[i].fileDescription1 != null && results[i].fileDescription1 != "")
+       if(results[i].eenadu == true )
+	      str+='<div id="descriptionDiv" class="alert alert-info" style="color:#000000;background-color:#ffffff;"><span class="enadu">'+results[i].fileDescription1+'</span></div>';
+	    else
+		  str+='<div id="descriptionDiv" class="alert alert-info" style="color:#000000;background-color:#ffffff;">'+results[i].fileDescription1+'</div>';
+
+        if(results[i].newsDescription != null && results[i].newsDescription != "")  
+		if(results[i].eenadu == true )			
+	       str+='<div id="" class="breadcrumb" style="color:#000000;"><span class="enadu">'+results[i].newsDescription+'</span></div>';
+		else
+			str+='<div id="" class="breadcrumb" style="color:#000000;"><span>'+results[i].newsDescription+'</span></div>';
+
 
 		 str+='<div id="imageDiv'+i+'" style="text-align:center;">';
 
          str+='<div id="mainDiv'+i+'" style="text-align:center;">';
-		str+='<span class="label" style="float:left;">SOURCE:'+ results[i].fileVOList[0].source+'</span>';
+		str+='<div style="height:24px;"><span class="label label-success" style="float:left;">SOURCE:'+ results[i].fileVOList[0].source+'</span>';
+		str+='<span class="label label-success" style="margin-right:138px;">EDITION:'+ results[i].fileVOList[0].newsEdition+'</span>';
+		str+='<span class="label label-success">PAGE NO:'+ results[i].fileVOList[0].pageNo+'</span>';
+		str+='<span style="float:right;" class="label label-success">File Date:'+results[i].fileDate+'</span></div>';
 
-		str+='<img src="'+results[i].fileVOList[0].fileVOList[0].path+'" style="width:415px;height:244px;" alt="news image not available"></img>';
+        if(i != results.length-1 )
+		str+='<div style="float: right; margin-top: 60px;"><a  class="nextLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to next news"><img src="images/arrow-down_blue.png"></img></a></div>';
+
+        if(i != 0)
+        str+='<div style="float: left; margin-top: 60px;"><a  class="previousLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to previous news"><img src="images/arrow-up_blue.png" "></img></a></div>';
+		
+
+		str+='<img  src="'+results[i].fileVOList[0].fileVOList[0].path+'" style="" alt="news image not available"></img>';
 		str+='</div>';
 
 		if(results[i].fileVOList[0].fileVOList.length > 1)
@@ -118,9 +264,9 @@ function buildNewsDetails(results)
 		}
      str+='</div>';
 
-        if(results[i].fileVOList.length > 0)
+        if(results[i].fileVOList.length > 1)
 	    {
-			str+='<div style="text-align:center;margin:6px;" id="otherSourcesDiv" class="breadcrumb">';
+			str+='<div style="text-align:center;margin:6px;background-color:#5e5e5e;color:#ffffff;" id="otherSourcesDiv" class="breadcrumb">';
 			str+='<h6>Same News In Other Sources</h6>';
              
             str+='<div id="otherSources'+i+'">';
@@ -139,6 +285,10 @@ function buildNewsDetails(results)
     str+='</div>';
 
    $('#newsDetailsDiv').html(str);
+var finalIndex = results.length-1;
+    $('html, body').animate({
+            scrollTop: $("#newsDisplayDiv"+finalIndex).offset().top
+    }, 2000);
 }
 
 function showAnotherSource(sourceId , i)
@@ -155,10 +305,24 @@ function showAnotherSource(sourceId , i)
 
           str+='<div id="mainDiv'+i+'" style="text-align:center;">';
 
-		  str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
+		  str+='<div style="height:24px;"><span class="label label-success" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>';
+
+          str+='<span class="label label-success" style="margin-right:138px;">EDITION:'+ showContentResultList[i].fileVOList[0].newsEdition+'</span>';
+
+		  str+='<span class="label label-success">PAGE NO:'+ showContentResultList[i].fileVOList[0].pageNo+'</span>';
+
+		str+='<span style="float:right;" class="label label-success">File Date:'+showContentResultList[i].fileDate+'</span></div>';
+
+		 if(i != totalRecords -1)
+		str+='<div style="float: right; margin-top: 60px;"><a  class="nextLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to next news"><img src="images/arrow-down_blue.png"></img></a></div>';
+
+        if(i != 0)
+        str+='<div style="float: left; margin-top: 60px;"><a  class="previousLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to previous news"><img src="images/arrow-up_blue.png"></img></a></div>';
+
+		 // str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
 
 
-		str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[0].path+'11" style="width:415px;height:244px;" alt="news image not available"></img>';
+		str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[0].path+'" style="" alt="news image not available"></img>';
 		str+='</div>';
 
 		str+='</div>';
@@ -206,10 +370,26 @@ function showNextnews(sourceId , orderNo  , path , i)
 
         //str+='<div id="mainDiv'+i+'" style="text-align:center;">';
 
-		  str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
+		 // str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
+
+		  str+='<div style="height:24px;"><span class="label label-success" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>';
+
+         str+='<span class="label label-success" style="margin-right:138px;">EDITION:'+ showContentResultList[i].fileVOList[0].newsEdition+'</span>';
+
+		 str+='<span class="label label-success">PAGE NO:'+ showContentResultList[i].fileVOList[0].pageNo+'</span>';
 
 
-		str+='<img src="'+path+'" style="width:415px;height:244px;" alt="news image not available"></img>';
+		str+='<span style="float:right;" class="label label-success">File Date:'+showContentResultList[i].fileDate+'</span></div>';
+
+      
+	    if(i != totalRecords -1)
+		str+='<div style="float: right; margin-top: 60px;"><a  class="nextLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to next news"><img src="images/arrow-down_blue.png"></img></a></div>';
+
+        if(i != 0)
+        str+='<div style="float: left; margin-top:60px;"><a  class="previousLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to previous news"><img src="images/arrow-up_blue.png"></img></a></div>';
+
+
+		str+='<img src="'+path+'" style="" alt="news image not available"></img>';
 
 
 		//str+='</div>';
@@ -423,7 +603,7 @@ function buildNewsDetails1(result)
  </head>
 
  <body>
- <div id="newsDetailsDiv"></div>
+ <div id="newsDetailsDiv" class="alert alert-success"></div>
  </body>
 
 </html>

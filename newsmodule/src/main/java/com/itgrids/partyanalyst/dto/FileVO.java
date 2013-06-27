@@ -128,7 +128,25 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String newsDescription;
 	private String newsEdition;
 	private Long pageNo;
+	private boolean latest;
+	private boolean eenadu;
 	
+	public boolean isEenadu() {
+		return eenadu;
+	}
+
+	public void setEenadu(boolean eenadu) {
+		this.eenadu = eenadu;
+	}
+
+	public boolean isLatest() {
+		return latest;
+	}
+
+	public void setLatest(boolean latest) {
+		this.latest = latest;
+	}
+
 	public String getNewsDescription() {
 		return newsDescription;
 	}

@@ -5716,7 +5716,25 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				 SelectOptionVO selectOptionVO = new SelectOptionVO();
 				 
 				 selectOptionVO.setId((Long)obj[0]);
-				 selectOptionVO.setName(obj[1].toString());
+				// selectOptionVO.setName(obj[1].toString());
+				 
+				 selectOptionVO.setName(obj[1]!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(obj[1].toString())):"");
+	    	
+				 File file =(File) obj[2];
+				 
+				 Set<FileSourceLanguage> languages = file.getFileSourceLanguage();
+				 
+				 boolean eenaduExist = false;
+				 if(languages != null && languages.size() >0){
+					 
+					 for(FileSourceLanguage language:languages)						
+						 if(language.getSource().getSource().equalsIgnoreCase("Eenadu Telugu"))
+							 eenaduExist = true;
+					
+					 
+				 }
+				 
+				 selectOptionVO.setFlag(eenaduExist);
 				 
 				 resultList.add(selectOptionVO);
 				 

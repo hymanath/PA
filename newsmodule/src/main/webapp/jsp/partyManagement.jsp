@@ -47,6 +47,18 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <style>
 
+.currentTab
+{
+ background-color:yellowgreen;
+ border-radius:8px;
+}
+
+
+.inputClass
+{
+	width:88px;
+}
+
 @font-face
 {
 font-family:eFont;src: url('img/eenadu.ttf');
@@ -1685,7 +1697,6 @@ function buildUploadNewsForMultipleUsers()
 
 	 str+='<a href="javascript:void(0)" title="Click here to respond to news"  id="responseDiv" style="margin-left:586px;"><img id="" src="images/responseImage.png"/></a>';
 
-	 	 str+='<div id="dateErrorMessage"></div>';
 
 	/*str+='<table class="aligncenter" style="margin-left:123px;left:50%;">';
      
@@ -1704,13 +1715,15 @@ function buildUploadNewsForMultipleUsers()
 	 
 	str+='</div></td>';
 	str+='</table>';*/
-	str+='<div id="responseContentDiv" style="display:none;padding:14px;border:2px solid #5e5e5e;">';
-       str+='<div>';
-	     str+='<div style="float:left;"><b>Start Date:</b><input type="text" name="fromDate" class="" id="fromDateId" readonly="true"/></div>';
-		 str+='<div><b>End Date:</b><input type="text" name="toDate" readonly="true" class="" id="toDateId"/></div>';
+	str+='<div id="responseContentDiv" style="display:none;border:1px solid #a6a66a;width:526px;margin:17px 0px 25px 105px">';
+       str+='<div style="margin-left:72px;">';
+	   	 	 str+='<span id="dateErrorMessage"></span><br>';
+
+	     str+='<span style="margin-right:30px;"><b>Start Date:<font class="requiredFont">*</font></b><input type="text" name="fromDate" class="inputClass" id="fromDateId" readonly="true"/></span>';
+		 str+='<span><b>End Date:<font class="requiredFont">*</font></b><input type="text" name="toDate" readonly="true" class="inputClass" id="toDateId"/></span>';
 	   str+='</div>';
-	   str+='<div style="margin-left:119px;">';
-	     str+='<b>Select Candidate</b><select id="candidatesList"></select>';
+	   str+='<div style="margin-left:83px;">';
+	     str+='<b>Select Candidate :<font class="requiredFont">*</font></b><select id="candidatesList"></select>';
 		 str+='</div>';
 
 		 str+='<div id="noNewsError"></div>';
@@ -3652,6 +3665,12 @@ var noOfRowsPerPage = 10;
 var modifiedRecord = 0;
 $(document).ready(function() {
 
+$(document).ready(function(){
+
+	$('#partyManagementTabId').addClass('currentTab');
+});
+
+
 	showNewsGallaey();
 
 	$(".nav-tabs li a").click(function()
@@ -3692,7 +3711,15 @@ $(document).on("click",'#fromDateId , #toDateId', function(){
 });
 
     $(document).on('click','#responseDiv',function(){
+		  if($('#responseContentDiv').css('display') == "block"){
+			  $('#candidatesList').val("");
+			  $('#dateErrorMessage').html("");
+		  }
+
 		   $('#responseContentDiv').toggle('slow');
+		   		//alert($('#responseContentDiv').is(":visible"))
+
+
      });
 
 
@@ -5104,7 +5131,12 @@ function buildNewsDetailsOfcandidate(results)
 	$('#candidateNewsList').find('option').remove();
 
 	$.each(results , function(index , value){
-		$('#candidateNewsList').append('<option title="'+results[index].name+'" value="'+results[index].id+'">'+results[index].name+'</option>');
+
+		if(value.flag == true)
+		  $('#candidateNewsList').append('<option class="enadu" title="'+results[index].name+'" value="'+results[index].id+'">'+results[index].name+'</option>');
+		else
+			$('#candidateNewsList').append('<option class="notEenadu" title="'+results[index].name+'" value="'+results[index].id+'">'+results[index].name+'</option>');
+
 
 	});
 
