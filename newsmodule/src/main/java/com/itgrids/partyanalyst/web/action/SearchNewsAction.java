@@ -16,15 +16,17 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
-import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.opensymphony.xwork2.ActionSupport;
 
 
 public class SearchNewsAction extends ActionSupport implements ServletContextAware, ServletRequestAware,ServletResponseAware{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(NewsDisplayAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;

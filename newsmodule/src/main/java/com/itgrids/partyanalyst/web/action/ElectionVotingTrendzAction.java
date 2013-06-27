@@ -12,24 +12,9 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.IMailService;
-import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.IElectionTrendzService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.BoothTotalVotesVO;
-import com.itgrids.partyanalyst.dto.ConstituencyWiseBoothsInfoVO;
-import com.itgrids.partyanalyst.dto.ConstituencyWisePartyResultsForMandal;
-import com.itgrids.partyanalyst.dto.MandalVO;
-import com.itgrids.partyanalyst.dto.MandalCompleteElectionTrendzVO;
-import com.itgrids.partyanalyst.dto.MandalElectionTrendzVO;
-import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
-import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
-import com.itgrids.partyanalyst.dto.ElectionTrendzInfoVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 
 
 

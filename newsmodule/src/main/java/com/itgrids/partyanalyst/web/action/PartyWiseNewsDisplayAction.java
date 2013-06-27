@@ -12,14 +12,16 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.helper.EntitlementsHelper;
-import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class PartyWiseNewsDisplayAction extends ActionSupport implements ServletRequestAware{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
 	private HttpSession session;
 	private ResultStatus result;
@@ -30,8 +32,8 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 	private Long locationValue;
 	private Long partyId;
 	private String partyName;
-	private EntitlementsHelper entitlementsHelper;
-	private List<SelectOptionVO> constituencyList , userAccessConstituencyList;
+	//private EntitlementsHelper entitlementsHelper;
+//	private List<SelectOptionVO> constituencyList , userAccessConstituencyList;
 	
 	private IPartyDetailsService partyDetailsService;
 	private List<FileVO> newsCountByCategoryList;	
@@ -77,15 +79,15 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 	public void setServletRequest(HttpServletRequest arg0) {
 		this.request=arg0;
 	}
-	
+/*	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
 	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
 		this.entitlementsHelper = entitlementsHelper;
 	}
-	
-	public List<SelectOptionVO> getConstituencyList() {
+	*/
+	/*public List<SelectOptionVO> getConstituencyList() {
 		return constituencyList;
 	}
 	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
@@ -98,7 +100,7 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 			List<SelectOptionVO> userAccessConstituencyList) {
 		this.userAccessConstituencyList = userAccessConstituencyList;
 	}
-	
+	*/
 	public String getScope() {
 		return scope;
 	}

@@ -21,7 +21,6 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
@@ -46,7 +45,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	private Set<RegionalMappingInfoVO> regions;
 	private List<SelectOptionVO> parliamentConstituencies;
 	private List<Object> constituencies;
-	CadreManagementService cadreManagementService;
+	//CadreManagementService cadreManagementService;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -128,14 +127,14 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		this.regions = regions;
 	}
 
-	public CadreManagementService getCadreManagementService() {
+	/*public CadreManagementService getCadreManagementService() {
 		return cadreManagementService;
 	}
 
 	public void setCadreManagementService(
 			CadreManagementService cadreManagementService) {
 		this.cadreManagementService = cadreManagementService;
-	}
+	}*/
 
 	public String execute() throws Exception {
 			
@@ -201,7 +200,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			Long locationId = jObj.getLong("id");
 			List<SelectOptionVO> hamletsOrWards = new ArrayList<SelectOptionVO>();
 			if(locationId !=0){
-			 hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
+			 //hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
 			}
 			setRegionsList(hamletsOrWards);
 
@@ -365,7 +364,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			Long locationId = jObj.getLong("id");
 			List<SelectOptionVO> hamletsOrWards = new ArrayList<SelectOptionVO>();
 			if(locationId !=0){
-			 hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
+			 //hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
 			}
 			 hamletsOrWards.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(hamletsOrWards);
@@ -423,7 +422,8 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		{
 			//to get all constituenciesByAreaTypeInDistrict  
 			Long locationId = jObj.getLong("id");
-			ConstituencyInfoVO constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(locationId);
+			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+			//constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(locationId);
 			
 			List<SelectOptionVO> constituencies = constituencyInfoVO.getAssembyConstituencies();
 			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));

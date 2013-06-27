@@ -1,30 +1,16 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.CadreCategoryVO;
-import com.itgrids.partyanalyst.dto.CadreInfo;
-import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.SearchListVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.SmsResultVO;
-import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
-import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.CadreManagementService;
-import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
