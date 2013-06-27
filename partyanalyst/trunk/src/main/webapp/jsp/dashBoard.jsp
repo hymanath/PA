@@ -237,7 +237,58 @@ Parliament
 
 </div>
 </div>
+
 <div class="span9">
+ <c:if test="${party}">
+  <div class="row-fluid span12 widget">
+     <h2>State Level Analysis</h2>
+	 <div class="row-fluid">
+	   <div class="span6 widget-simple">
+	   
+			<h4> Party Performance Report</h4>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('partyperformance');" style="float:right;"></input></div>
+		</div>       
+	   <div class="span6 widget-simple">
+	      <h4>Elections Comparison</h4>
+		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('electioncomparison');" style="float:right;"></input></div>
+	   </div>						
+    </div>
+	
+	<div class="row-fluid">
+	   <div class="span6 widget-simple">
+	   
+			<h4>Party Results Report</h4>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('partyresultsReport');" style="float:right;"></input></div>
+		</div>       
+	   <div class="span6 widget-simple">
+	      <h4>Election Results Analysis Report</h4>
+		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('electionResReport');" style="float:right;"></input></div>
+	   </div>						
+    </div>
+	
+	<div class="row-fluid">
+	   <div class="span6 widget-simple">
+	   
+			<h4> Elections Vs Demographics</h4>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('elecdemog');" style="float:right;"></input></div>
+		</div>       
+	   <div class="span6 widget-simple">
+	      <h4>Party Strengths and Weakness</h4>
+		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('partystrweak');" style="float:right;"></input></div>
+	   </div>						
+    </div>
+	
+	<div class="row-fluid">
+	   <div class="span6 widget-simple">
+	   
+			<h4> District Wise Party Performance</h4>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('distperform');" style="float:right;"></input></div>
+		</div>       						
+    </div>
+  </div>
+ </c:if>
+  <div class="row-fluid span12 widget" style="margin-left:0px;">
+    <h2>Constituency Level Analysis</h2>
 	<div class="row-fluid">
 	   <div class="span12 widget-simple">
 	   <h4>Cross Voting Analysis</h4>
@@ -261,9 +312,7 @@ Parliament
 	   <div><input type="button" value="View" class="btn btn-success" onClick="getCrossVotingReport();" style="float:right;"></input></div>
 	   </div>       				
 	</div>
-	<div class="row-fluid">
-	         
-	   <div class="row-fluid">
+     <div class="row-fluid">
 	   
 	   <div class="span6 widget-simple">
 	    <h4>Voters Analysis </h4>
@@ -276,8 +325,8 @@ Parliament
 	   </div>
 	   
 	   <div class="span6 widget-simple" id="boothResultsDiv">
-	   Booth Wise Results
-	   
+	   <h4>Booth Wise Results</h4>
+	   <div id="boothWiseResult"></div>
 	   <label class="checkbox">
                 <input type="checkbox" id="moreDetailsId"> Check for More Details
        </label>
@@ -344,8 +393,14 @@ headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/
 		   </table>
 			<div><input type="button" value="View" class="btn btn-success" onCLick="openCasteViseAnalysis();" style="float:right;"></input></div>
 		</div>       
-	   <div class="span6 widget-simple">Voters Search</div>					
-	
+
+       <div class="span6 widget-simple">
+	   
+			<h4>Voters Search</h4>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input></div>
+		</div>	   
+    </div>
+   </div>
 </div>
 <script type="text/javascript">
 constituencyId = '${sessionScope.USER.constituencyId}';
@@ -354,7 +409,20 @@ var stateId = $('#stateList_d').val();
 var districtId = '${districtId}';
 getDistrictsComboBoxForAState(stateId,"districtList_d");
 getAllConstituenciesInStateByType(2,stateId,"constituency");
-
+         <c:if test="${boothAnalysisData != null}">
+		   var elecYear = '${boothAnalysisData.name}';
+		   var conId = '${boothAnalysisData.id}';
+		   var elec = '${boothAnalysisData.value}';
+		   var type = '${boothAnalysisData.type}';
+		   $("#boothWiseResult").html('Booth Wise Results('+elecYear+' '+elec+' '+type+') <input type="button" value="View" class="btn btn-success" onCLick="viewBoothResults();" style="float:right;"></input>');
+	     </c:if>
+		 <c:if test="${boothAnalysisData == null}">
+		   $("#moreDetailsId").trigger("click");
+		   $('.boothResults').toggle();
+		 </c:if>
+function viewBoothResults(){
+  window.open("partyBoothResult2Action.action?partyName=872&electionYear="+elecYear+"&constituencyName="+conId+"");
+}
 //getPartiesForElections();
 
 //Created By SASI
@@ -419,6 +487,34 @@ function openCasteViseAnalysis()
 	window.open("casteAndElectionResultsComparisonAction.action?constituencyId="+constituencyId);
 	}
 	
+}
+function openAllInNewWindow(type){
+ var url = "";
+  if(type == 'partyperformance')
+    url ='partyPerformanceMain.action';
+	
+  else if(type == 'electioncomparison')
+    url ='electionComparisonAction.action';
+  
+  else if(type == 'partyresultsReport')
+    url ='partyResultsCriteriaAction.action';
+  
+  else if(type == 'electionResReport')
+    url ='electionResultsAnalysisAction.action';
+  
+  else if(type == 'elecdemog')
+    url ='censusReportAction.action';
+  
+  else if(type == 'partystrweak')
+    url ='partyStrengthAction.action';
+  
+  else if(type == 'distperform')
+    url ='districtWisePartyPerformanceAction.action';
+	
+   else if(type == 'voterssearch')
+    url ='votersSearchAction.action';	
+	
+	window.open(url);
 }
 
 function openVotersAnalysts()
@@ -677,15 +773,14 @@ function submitRes(){
 	var val=$("#electionYearsId option:selected").val();
 	if(val==0){$('#errorDiv').html("Please Select Election Year"); return ;}
 	
-	var constituencyName=$("#constituencyId option:selected").val();
+	var constituencyName=$("#constiId option:selected").val();
 	if(constituencyName==0){$('#errorDiv').html("Please Select Constituency;"); return;}
 	
 	var partyName=$("#partyId option:selected").val();
 	if(partyName==0){$('#errorDiv').html("Please Select Party"); return;}
 	
 	$('#errorDiv').html("");
-	var boothResultsWindow = window.open("partyBoothResult2Action.action?constituencyName="+constituencyName+"&electionYear="+electionYear+"&partyName="+partyName,"BoothResults","scrollbars=yes,height=600,width=850,left=200,top=200");
-    boothResultsWindow.focus();
+	var boothResultsWindow = window.open("partyBoothResult2Action.action?constituencyName="+constituencyName+"&electionYear="+electionYear+"&partyName="+partyName);
 }
 
   $('#moreDetailsId').click(function(){
