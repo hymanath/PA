@@ -22,7 +22,7 @@
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 <style type="text/css">
-#existingFromText,#existingToText{width:155px;}
+#existingFromText,#existingToText{width:155px;cursor: text;}
 #errorMsgDiv{font-size:12px;}
 </style>
 </head>

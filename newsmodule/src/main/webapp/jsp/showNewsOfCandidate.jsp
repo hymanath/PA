@@ -86,9 +86,9 @@
 	}
 	
 	#candidatesListId{width:150px;}
-	#existingFromText,#existingToText{width:155px;}
+	#existingFromText,#existingToText{width:155px; cursor: text;}
 	#errorMsgDiv{font-size:12px;}
-	#candidateFromText,#candidateToText{width:75px;}
+	#candidateFromText,#candidateToText{width:75px; cursor: text;}
 	#byAllRadio{margin-right: 4px;margin-top: 0;}
 	#byDateRadio{margin-left: 10px; margin-right: 4px;margin-top: 0;}
 	#candidateNewsShowHideDatesDiv{margin-top: 10px;}

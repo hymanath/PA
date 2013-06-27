@@ -107,7 +107,7 @@ function callAjax(jsObj,url)
 	var str="";
 	str+="<ul class='unstyled' id='videoGalUlId'>";
 	for(var i in results){
-		str+="<li>";
+		str+="<li style='width: 200px;'>";
 		str+="<h6 id='titleNameId' title='"+results[i].name+"' style='cursor:default;'>"+results[i].name+"</h6>";
 		str+="<div>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}' onclick='getAllVideosOfAGallary("+results[i].ids+")'>";
