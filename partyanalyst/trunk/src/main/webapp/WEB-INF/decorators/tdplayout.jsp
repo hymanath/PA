@@ -112,7 +112,7 @@ margin-top:10px;
 #header-mainsec{background:#ffdc2d;}
 
 
-<!--Header Menu Styles Created By sasi Start-->
+
 .headerMenu .outerli{display:inline;margin:5px;}
 .headerMenu .outerli a:hover{text-decoration:none;background:#0088CC;color:#ffffff;border-radius:4px;}
 
@@ -131,9 +131,9 @@ margin-top:5px;
 }
 .headerMenu .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a{background:#FFDC2D;color:blue;}
 
-.headerMenu .dropdown-menu{width:210px;}
+.headerMenu .dropdown-menu li{width:210px;margin-left:2px;}
 
-<!--Header Menu Styles Created By sasi END-->
+
 </style>
 <decorator:head/>
 </head>
@@ -271,24 +271,14 @@ margin-top:5px;
 						</ul>
 			
 				</li><!-----CONSTITUENCY END---->
-				<!-- Constituency Analysis -->
-				<li class="dropdown outerli">
-				<a class="dropdown-toggle" data-toggle="dropdown" role="button">CONSTITUENCY ANALYSIS<b class="caret"></b></a>
-				<ul class="dropdown-menu" role="menu" aria-labelledby="">
-				<li><a href="votersAnalysisNewAction.action">Voter Analysis</a></li>
-				<li><a href="votersSearchAction.action">Voters Search &amp; Report</a></li>
 				
-				<li><a href="casteAndElectionResultsComparisonAction.action">Caste Vs Election Results</a></li>
-				</ul>
-				</li>
-				<!--End -->
 				
 				
 				<!---STATE----->
 				<li class="dropdown outerli">
 					<a class="dropdown-toggle" data-toggle="dropdown" role="button">STATES<b class="caret"></b></a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="">
-						<li class="dropdown-submenu">
+					<ul class="dropdown-menu" role="menu" aria-labelledby="" style="width:160px;">
+						<li class="dropdown-submenu" style="width:160px;">
 							<a href="#">South India</a>
 							
 								<ul class="dropdown-menu">
@@ -302,7 +292,7 @@ margin-top:5px;
 								</ul>
 							
 						</li>
-						<li class="dropdown-submenu">
+						<li class="dropdown-submenu" style="width:160px;">
 							<a href="#"><span>North India</span></a>
 							
 								<ul class="dropdown-menu">
@@ -329,7 +319,7 @@ margin-top:5px;
 								</ul>
 							
 						</li>
-						<li class="dropdown-submenu">
+						<li class="dropdown-submenu" style="width:160px;">
 							<a href="#">Union Territories</a>
 							
 								<ul class="dropdown-menu">
@@ -342,7 +332,17 @@ margin-top:5px;
 					</ul>
 					
 				</li><!---STATE END----->
+				<!-- Constituency Analysis -->
+				<li class="dropdown outerli">
+				<a class="dropdown-toggle" data-toggle="dropdown" role="button">CONSTITUENCY ANALYSIS<b class="caret"></b></a>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="">
+				<li><a href="votersAnalysisNewAction.action">Voter Analysis</a></li>
+				<li><a href="votersSearchAction.action">Voters Search &amp; Report</a></li>
 				
+				<li><a href="casteAndElectionResultsComparisonAction.action">Caste Vs Election Results</a></li>
+				</ul>
+				</li>
+				<!--End -->
 				
 				<!---DASHBOARD---->
 				<li class="outerli">
