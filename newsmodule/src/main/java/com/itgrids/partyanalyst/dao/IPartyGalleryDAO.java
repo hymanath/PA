@@ -1,4 +1,5 @@
 package com.itgrids.partyanalyst.dao;
+import java.util.Date;
 import java.util.List;
 import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.File;
@@ -63,5 +64,7 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	public int getResponseNewsCountOfCandidate(Long candidateId,String queryType,Long fileGallaryId);
 	
 	public List<Object[]> getLatestNewsResponses();
+	
+	public List<Object[]> getCandidateRelatedGallaries(Long candidateId,Long partyId,Date fromDate, Date toDate,String queryType);
 	
 }

@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -690,5 +691,33 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			 
 		 }
 		 
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getCandidateRelatedGallaries(Long candidateId,Long partyId,Date fromDate, Date toDate,String newsType)
+		 {
+			 StringBuilder str = new StringBuilder();
+			 str.append(" select distinct model.gallery.gallaryId,model.gallery.name from PartyGallery model,CandidateRealatedNews model2  where model.gallery.gallaryId = model2.fileGallary.gallary.gallaryId ");
+			 str.append(" and model.party.partyId =:partyId and model.gallery.contentType.contentType =:contentType and model2.candidate.candidateId =:candidateId ");
+			 str.append(" and model.gallery.isDelete = 'false' ");
+			 if(!newsType.equals(""))
+				str.append(" and model.gallery.isPrivate = 'false' "); 
+			 
+			 if(fromDate != null)
+				 str.append(" and model2.fileGallary.file.fileDate >= :fromDate ");
+			 if(toDate != null)
+				 str.append(" and model2.fileGallary.file.fileDate <= :toDate ");
+			 
+			 str.append(" order by model.gallery.name ");
+			 Query query = getSession().createQuery(str.toString());
+			 
+			 query.setParameter("candidateId", candidateId);
+			 query.setParameter("partyId", partyId);
+			 if(fromDate != null)
+			  query.setParameter("fromDate", fromDate);
+			 if(toDate != null)
+			  query.setParameter("toDate", toDate);
+			 query.setParameter("contentType", IConstants.NEWS_GALLARY);
+			 
+			 return query.list();
+		 }
 
 	}
