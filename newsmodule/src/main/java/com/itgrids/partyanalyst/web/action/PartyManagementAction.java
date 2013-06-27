@@ -31,8 +31,6 @@ import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IWebConstants;
-import com.itgrids.partyanalyst.service.impl.CandidateDetailsService;
-import com.itgrids.partyanalyst.service.impl.PartyDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;

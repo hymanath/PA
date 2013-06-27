@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,26 +18,12 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
-import com.itgrids.partyanalyst.dto.ProblemBeanVO;
-import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.SpecialPageVO;
-import com.itgrids.partyanalyst.dto.StateElectionsVO;
-import com.itgrids.partyanalyst.model.File;
-import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
-import com.itgrids.partyanalyst.service.IOpinionPollService;
-import com.itgrids.partyanalyst.service.IProblemManagementReportService;
-import com.itgrids.partyanalyst.service.IProblemManagementService;
-import com.itgrids.partyanalyst.service.IRegionServiceData;
-import com.itgrids.partyanalyst.service.ISpecialPageService;
-import com.itgrids.partyanalyst.service.IStatePageService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IConstants;
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionChainResult;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
@@ -57,35 +42,35 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	
 	private HttpServletRequest request;
 	private List<SelectOptionVO> statesList,statesListForLocalBodyElection;
-	private IStaticDataService staticDataService;
-	private List<StateElectionsVO> stateElections;
+	//private IStaticDataService staticDataService;
+	//private List<StateElectionsVO> stateElections;
 	private HttpSession session;
 	private String task = null;
 	JSONObject jObj = null;
-	private IStatePageService statePageService;
-	private IRegionServiceData regionServiceDataImp;
+	//private IStatePageService statePageService;
+	//private IRegionServiceData regionServiceDataImp;
 	private ICandidateDetailsService candidateDetailsService ;
 	private List<SelectOptionVO> constituenciesList;
-	private IProblemManagementReportService problemManagementReportService;
-	private List<ProblemBeanVO> problemsList;
+	//private IProblemManagementReportService problemManagementReportService;
+	//private List<ProblemBeanVO> problemsList;
 	private String loginStatus;
 	private ServletContext context;
 	private Map<String, List<FileVO>> resultMap ;
 	private String changedUserName = "false";
 	private String feedback = "true"; 
-    private IProblemManagementService problemManagementService;
+   // private IProblemManagementService problemManagementService;
 	private Long problemCount;
-	private IOpinionPollService opinionPollService;
-	private IAnanymousUserService ananymousUserService;
-	private QuestionsOptionsVO questionsOptionsVO;
+	//private IOpinionPollService opinionPollService;
+	//private IAnanymousUserService ananymousUserService;
+	//private QuestionsOptionsVO questionsOptionsVO;
 	private boolean notLogged ;
 
 	private OpinionPollVO opinionPollVO;
-	private QuestionsOptionsVO questionsAndChoicesPercentage;
+//	private QuestionsOptionsVO questionsAndChoicesPercentage;
 	private Long freeUserConstituencyId;
 	private List<SelectOptionVO> states,candidatesList;
-	private List<SpecialPageVO> specialPageVOList;
-	private ISpecialPageService specialPageService;
+	//private List<SpecialPageVO> specialPageVOList;
+	//private ISpecialPageService specialPageService;
 	private String homePageLoadingFirstTime;
 	private List<FileVO> fileList;
 	private List<FileVO> fileVOsList,responseFilesList;
@@ -174,7 +159,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setOpinionPollVO(OpinionPollVO opinionPollVO) {
 		this.opinionPollVO = opinionPollVO;
 	}
-
+/*
 	public IOpinionPollService getOpinionPollService() {
 		return opinionPollService;
 	}
@@ -183,7 +168,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		this.opinionPollService = opinionPollService;
 	}
 
-
+*/
 	
 	public void setResultMap(Map<String, List<FileVO>> resultMap) {
 		this.resultMap = resultMap;
@@ -253,7 +238,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	}
 	
 	
-	public IStaticDataService getStaticDataService() {
+	/*public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
 
@@ -261,8 +246,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}	
-
-
+*/
+/*
 	public List<StateElectionsVO> getStateElections() {
 		return stateElections;
 	}
@@ -271,7 +256,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setStateElections(List<StateElectionsVO> stateElections) {
 		this.stateElections = stateElections;
 	}
-
+*/
 	public HttpSession getSession() {
 		return session;
 	}
@@ -299,7 +284,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setJObj(JSONObject obj) {
 		jObj = obj;
 	}
-
+/*
 	public IStatePageService getStatePageService() {
 		return statePageService;
 	}
@@ -320,7 +305,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		this.regionServiceDataImp = regionServiceDataImp;
 	}
 
-
+*/
 	public List<SelectOptionVO> getConstituenciesList() {
 		return constituenciesList;
 	}
@@ -330,7 +315,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		this.constituenciesList = constituenciesList;
 	}
 	
-	public IProblemManagementReportService getProblemManagementReportService() {
+	/*public IProblemManagementReportService getProblemManagementReportService() {
 		return problemManagementReportService;
 	}
 
@@ -340,8 +325,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		this.problemManagementReportService = problemManagementReportService;
 	}
 
-
-	public List<ProblemBeanVO> getProblemsList() {
+*/
+	/*public List<ProblemBeanVO> getProblemsList() {
 		return problemsList;
 	}
 
@@ -349,8 +334,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setProblemsList(List<ProblemBeanVO> problemsList) {
 		this.problemsList = problemsList;
 	}
-
-	public IProblemManagementService getProblemManagementService() {
+*/
+	/*public IProblemManagementService getProblemManagementService() {
 		return problemManagementService;
 	}
 
@@ -358,7 +343,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			IProblemManagementService problemManagementService) {
 		this.problemManagementService = problemManagementService;
 	}
-
+*/
 	public Long getProblemCount() {
 		return problemCount;
 	}
@@ -375,36 +360,36 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		this.freeUserConstituencyId = freeUserConstituencyId;
 	}
 
-	public IAnanymousUserService getAnanymousUserService() {
+	/*public IAnanymousUserService getAnanymousUserService() {
 		return ananymousUserService;
 	}
 
 	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
 		this.ananymousUserService = ananymousUserService;
 	}
-	
-	public QuestionsOptionsVO getQuestionsOptionsVO() {
+	*/
+	/*public QuestionsOptionsVO getQuestionsOptionsVO() {
 		return questionsOptionsVO;
 	}
 	public void setQuestionsOptionsVO(QuestionsOptionsVO questionsOptionsVO) {
 		this.questionsOptionsVO = questionsOptionsVO;
 	}
-	
-	public List<SpecialPageVO> getSpecialPageVOList() {
+	*/
+/*	public List<SpecialPageVO> getSpecialPageVOList() {
 		return specialPageVOList;
 	}
 	public void setSpecialPageVOList(List<SpecialPageVO> specialPageVOList) {
 		this.specialPageVOList = specialPageVOList;
-	}
+	}*/
 		
-	public ISpecialPageService getSpecialPageService() {
+/*	public ISpecialPageService getSpecialPageService() {
 		return specialPageService;
 	}
 	public void setSpecialPageService(ISpecialPageService specialPageService) {
 		this.specialPageService = specialPageService;
 	}
 	
-	
+	*/
 	public Long getOnlineRegId() {
 		return onlineRegId;
 	}

@@ -15,13 +15,15 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
-import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class NewsPaginationAction  extends ActionSupport implements ServletRequestAware  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
 	private HttpSession session;
 	private String task;
@@ -29,7 +31,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	private FileVO fileVO;
 	private List<FileVO> fileVOList;
 	private ICandidateDetailsService candidateDetailsService;
-	private INewsMonitoringService newsMonitoringService;
+	//private INewsMonitoringService newsMonitoringService;
 	private String level;
 	private static final Logger log=Logger.getLogger(NewsPaginationAction.class);
 	//private INewsByPagingService newsByPagingService;

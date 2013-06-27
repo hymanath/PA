@@ -11,7 +11,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -34,8 +33,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
-import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.CommentVO;
 import com.itgrids.partyanalyst.dto.ContentDetailsVO;
@@ -50,7 +47,6 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IContentManagementService;
-import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.IThumbnailService;
@@ -65,9 +61,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(CandidateElectionResultsAction.class);
 	private Long candidateId;
-	private List<CandidateDetailsVO> candidateElectionDetails;
+	//private List<CandidateDetailsVO> candidateElectionDetails;
 	private CandidateVO candidateVO;
-	private CandidateProfileInfoVO candidateProfileInfoVO;
+	//private CandidateProfileInfoVO candidateProfileInfoVO;
 	private String candidateURLString;
 	private JSONObject jObj;
 	private String task;
@@ -114,7 +110,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long newsimportance;
 	private List<CandidateCommentsVO> candidateCommentsVO;
 	private Long contentId;
-	private IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService;
+	//private IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService;
 	private List<ElectionGoverningBodyVO> electionGoverningBodyVO;
 	private List<CustomPageVO> customPages;
 	private Long uploadCandidateId;
@@ -575,9 +571,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.customPages = customPages;
 	}
 
-	public IElectionLiveResultsAnalysisService getElectionLiveResultsAnalysisService() {
-		return electionLiveResultsAnalysisService;
-	}
+	
 
 	public List<ElectionGoverningBodyVO> getElectionGoverningBodyVO() {
 		return electionGoverningBodyVO;
@@ -587,11 +581,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			List<ElectionGoverningBodyVO> electionGoverningBodyVO) {
 		this.electionGoverningBodyVO = electionGoverningBodyVO;
 	}
-
+	
+	/*public IElectionLiveResultsAnalysisService getElectionLiveResultsAnalysisService() {
+		return electionLiveResultsAnalysisService;
+	}
 	public void setElectionLiveResultsAnalysisService(
 			IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService) {
 		this.electionLiveResultsAnalysisService = electionLiveResultsAnalysisService;
-	}
+	}*/
 
 	public Long getContentId() {
 		return contentId;
@@ -850,7 +847,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.candidateURLString = candidateURLString;
 	}
 
-	public CandidateProfileInfoVO getCandidateProfileInfoVO() {
+	/*public CandidateProfileInfoVO getCandidateProfileInfoVO() {
 		return candidateProfileInfoVO;
 	}
 
@@ -858,7 +855,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			CandidateProfileInfoVO candidateProfileInfoVO) {
 		this.candidateProfileInfoVO = candidateProfileInfoVO;
 	}
-
+*/
 	public CandidateVO getCandidateVO() {
 		return candidateVO;
 	}
@@ -875,14 +872,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.candidateId = candidateId;
 	}
 
-	public List<CandidateDetailsVO> getCandidateElectionDetails() {
+	/*public List<CandidateDetailsVO> getCandidateElectionDetails() {
 		return candidateElectionDetails;
 	}
 
 	public void setCandidateElectionDetails(
 			List<CandidateDetailsVO> candidateElectionDetails) {
 		this.candidateElectionDetails = candidateElectionDetails;
-	}
+	}*/
 	public List<FileVO> getFileVO() {
 		return fileVO;
 	}

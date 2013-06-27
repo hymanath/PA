@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,19 +11,13 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.IAnanymousUserService;
-import com.itgrids.partyanalyst.service.IMailService;
-import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IRegistrationService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.service.IUserService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import com.itgrids.partyanalyst.service.IUserService;
 
 public class AnanymousUserAction extends ActionSupport implements
 ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {

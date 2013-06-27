@@ -16,6 +16,10 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class LoginPageAction extends ActionSupport implements ServletContextAware, ServletRequestAware,ServletResponseAware{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
 	private HttpSession session;
 	private ServletContext context;
