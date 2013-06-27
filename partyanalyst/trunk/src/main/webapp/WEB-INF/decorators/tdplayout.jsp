@@ -18,6 +18,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<title><decorator:title default="Party Analyst"/></title>
+	<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	<!--Bootstrap styles file-->
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
@@ -73,20 +74,18 @@
 %> }
 	</script>
 	<style>
-	body{color:#5B5B5B;}
+	
 	
 .background
 {
 background:#ffffff;
 margin:-1px 0px 0px 0px ;
 }
-
 .header2 {
-     position: absolute;
-    top: -126px;
-	left:-2%;
+position: absolute;
+top: -126px;
+left:-2%;
 }
-
 : #follow-icon{width:69px;height:24px;}
 #follow-icon a.f-icon{margin-left:7px;background: url("images/new_homepage/f.png") repeat scroll 0px 0px transparent; display: block;float: left;height: 24px;transition: all 0s ease-in-out 0s;width: 24px;}
 #follow-icon a.f-icon:hover{background: url("images/new_homepage/f.png") repeat scroll 0px -24px transparent;}
@@ -95,8 +94,9 @@ margin:-1px 0px 0px 0px ;
 #follow-icon a.t-icon:hover{background: url("images/new_homepage/t.png") repeat scroll 0px -24px transparent;}
 
 .gradlightblack{
-	margin-top:10px;
+margin-top:10px;
 }
+
 
 .header-right-sec{width:750px;}
 .follow-us-top{width:72px;margin:0px;display:inline-block;}
@@ -105,11 +105,30 @@ margin:-1px 0px 0px 0px ;
 #menu ul.menu li{z-index: 999;}
 .header{height:120px;}
 #header-mainsec{background:#ffdc2d;}
+
+/*---------------------*/
 ul.menu a{color:#484840;text-shadow:0ox 1px 1px #fff; }
 ul.menu li{float:left; }
-ul.menu a{line-height:0px;font:cambria !important;font-size:13px;text-decoration:none;text-shadow:0 1px 0.5px #FFFFFF;font-weight:300; }
-ul.menu li {padding:5px 5px; border-top:2px solid #fff;border-bottom:2px solid #fff;margin-bottom:10px;}
+
 li.dropdown a{border:none;}
+
+
+.menu li a{padding:3px 12px;}
+ul.menu>li>a{ line-height:30px;float:left;color:#333333;font:cambria !important;font-size:14px;text-decoration:none;font-weight:600; }
+ul.menu>li>a>.caret{ margin-top:15px;}
+
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus
+				{color: #333;
+				 background-color: #ffdc2d !important;
+				 background-image: none;
+				 filter: none;
+				}	
+
+
+.dropdown-menu > li >a:hover,.dropdown-menu > li >a:focus{ background:#ffdc2d !important;}
+
 </style>
 <decorator:head/>
 </head>
@@ -141,18 +160,52 @@ li.dropdown a{border:none;}
 <td>
 <div id="header-mainsec">
   <div class="mainwrapper">
-  <div class="container"  style="border-top:2px solid #ffdc2d">
+  <div class="container">
     <div class="row-fluid">
+	 <div class="pull-right" style="margin-right:35px;margin-top:5px;">
+       
+<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
+                                        <c:out value="Welcome, ${sessionScope.UserName} |"/></c:if>
+									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">        		
+										<c:out value="Welcome, ${sessionScope.UserName} |"/></c:if>
+										
+									<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+											<a href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+											|
+										</c:if>
+									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
+									
+									<a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a>
+										<!--<span>|</span>
+										<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>-->
+										
+									</c:if>
+									
+									<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
+                                       	<a href="newlogoutAction.action">Logout</a>
+										</c:if>
+								<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">        
+								<a href="newlogoutAction.action">Logout</a>
+								</c:if>	
+								<!-- For LoginPoppWindow-->
+   								
+   								<!--<a href="javascript:{}" onClick="openDialogForLoginWindow()"> new Login</a>-->
+  								<div id="login_window">
+									<div id="login_window_inner"></div>
+  								</div>
+   	 							<!-- End of LoginPoppWindow-->
+		</div>
+	
     <div class="span8 offset2">
-<img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:32px;left:50%;">
+<img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:79.5px;left:50%;">
 
 
     </div>
-<div class="span8 offset2">
+<div class="span10 offset1" style="border-top:2px solid #ffffff; border-bottom:2px solid #ffffff;margin-bottom:10px;">
 <ul class="inline menu unstyled">
 				<!----Home Icon----->
 				<li>
-					<a href="homePage.action"><span><i class="icon-home"></i></span></a>
+					<a href="newhomePageAction.action"><span>&nbsp;&nbsp;&nbsp;<i class="icon-home"></i></span></a>
 				</li><!----Home Icon END----->
 				<!-----ANALYSIS----->
 				<li class="dropdown">
@@ -167,9 +220,9 @@ li.dropdown a{border:none;}
 											<li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a></li>
 											<li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a></li>
 											<li><a href="electionResultsAnalysisAction.action"><span>Election Results Analysis Report</span></a></li>
-											<li><a href="biElectionAction.action"><span>Telengana Bye-Elections 2010</span></a></li>
 											<li><a href="censusReportAction.action"><span>Elections vs Demographics</span></a></li>
 											<li><a href="partyStrengthAction.action"><span>Party Strenths/Weakness</span></a></li>
+											<li><a href="electionLiveResultsAnalysisAction.action"><span>Live &amp; Previous Results Comparison</span></a></li>
 										</ul>
 									
 							</li>
@@ -185,25 +238,14 @@ li.dropdown a{border:none;}
 								
 							</li>
 				
-							<li class="dropdown-submenu">
-								<a href="#">Live Results Analysis</a>
-								
-									<ul class="dropdown-menu">
-										<li><a href="electionLiveResultsAnalysisAction.action"><span>Live &amp; Previous Results Comparison</span></a></li>
-										<li><a href="ministerAnalysisAction.action"><span>Ministers &amp; Special Candidates Analysis</span></a></li>
-										<li><a href="electionResultsUpdateAction.action"><span>Update Live Election Results</span></a></li>
-										<li><a href="assignKeyCandidateAction.action"><span>Assign Special Candidates</span></a></li>
-										<li><a href="districtWisePartyPerformanceAction.action"><span>District Wise Party Performance</span></a></li>
-									</ul>
-								
-							</li>
+							
 						</ul>
 					
 				</li><!-----ANALYSIS END----->
 				
 				<!-----CONSTITUENCY---->
 				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" role="button" href="initailConstituencyManagementAction.action">CONSTITUENCY <b class="caret"></b></a>
+					<a class="dropdown-toggle" data-toggle="dropdown" role="button">MANAGEMENT TOOLS<b class="caret"></b></a>
            
 						<ul class="dropdown-menu" role="menu" aria-labelledby="">
 							<li class="dropdown-submenu">
@@ -216,23 +258,36 @@ li.dropdown a{border:none;}
 									</ul>
 							
 							</li>
-							<li><a href="userGroupAction.action">User Groups</a></li>
+							
+							<li><a href="initailConstituencyManagementAction.action">Constituency Management</a></li>
+							<li><a href="cadreManagementAction.action" id="cadreId">Cadre Management</a></li>
 							<li><a href="callCenterAction.action">Call Center</a></li>
-							<li><a href="votersAnalysisNewAction.action">Constituency Analysis</a></li>
-							<li><a href="votersSearchAction.action">Voters Search &amp; Report</a></li>
-							<li><a href="casteAndElectionResultsComparisonAction.action">Caste Vs Election Results</a></li>
+							
 						</ul>
 			
 				</li><!-----CONSTITUENCY END---->
+				<!-- Constituency Analysis -->
+				<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" role="button">CONSTITUENCY ANALYSIS<b class="caret"></b></a>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="">
+				<li><a href="votersAnalysisNewAction.action">Voter Analysis</a></li>
+				<li><a href="votersSearchAction.action">Voters Search &amp; Report</a></li>
+				
+				<li><a href="casteAndElectionResultsComparisonAction.action">Caste Vs Election Results</a></li>
+				</ul>
+				</li>
+				<!--End -->
+				
 				
 				<!---STATE----->
 				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" role="button" href="statePageAction.action?stateId=1">STATE <b class="caret"></b></a>
-					<ul class="dropdown-menu">
+					<a class="dropdown-toggle" data-toggle="dropdown" role="button">STATES<b class="caret"></b></a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="">
 						<li class="dropdown-submenu">
 							<a href="#">South India</a>
 							
 								<ul class="dropdown-menu">
+								
 									<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>
 									<li><a href="statePageAction.action?stateId=6"><span>Goa</span>
 									</a></li>
@@ -283,20 +338,13 @@ li.dropdown a{border:none;}
 					
 				</li><!---STATE END----->
 				
-				<!-------CADRE------>
-				<li>
-					<a href="cadreManagementAction.action" id="cadreId">CADRE</a>
-				</li><!-------CADRE END------>
 				
 				<!---DASHBOARD---->
 				<li>
-					<a href="/userProfile.action">DASHBOARD</a> 
+					<a href="dashBoardAction.action">DASHBOARD</a> 
 				</li><!---DASHBOARD END---->	
 				
-				<!----SEARCH---->
-				<li>
-						<a href="searchInPartyAnalyst.action" id="searchId" class="searchClass">SEARCH</a>
-				</li><!----SEARCH END---->
+				
 			</ul>
     </div>
       
