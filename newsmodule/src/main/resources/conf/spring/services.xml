@@ -9,7 +9,6 @@
 	    <property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 	    <property name="gallaryDAO" ref="gallaryDAO"/>
 	    <property name="contentTypeDAO" ref="contentTypeDAO"/>
-	    <property name="userGallaryDAO" ref="userGallaryDAO"/>
 	    <property name="fileGallaryDAO" ref="fileGallaryDAO"/>
 	    <property name="electionTypeDAO" ref="electionTypeDAO"/>
 	    <property name="problemManagementService" ref="problemManagementService"/>
@@ -163,13 +162,14 @@
 	</bean>
 	-->
 	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService" >
-		<property name="electionDAO" ref="electionDAO" />  
+	<property name="constituencyDAO" ref="constituencyDAO" />
+	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />		
+	
+	<!-- <property name="electionDAO" ref="electionDAO" />  
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="electionAllianceDAO" ref="electionAllianceDAO" />
-		
-		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="townshipDAO" ref="townshipDAO" />
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
@@ -192,7 +192,7 @@
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 		<property name="areaTypeDAO" ref="areaTypeDAO" />
-		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />-->
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
 	
 	</bean>
@@ -569,19 +569,13 @@
 		<property name="constituencyDAO" ref="constituencyDAO"/>
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
-		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO"/>
-		<property name="electionDAO" ref="electionDAO"/>
+   <!-- <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO"/> 
+		<property name="electionDAO" ref="electionDAO"/>-->
 		<property name="hamletDAO" ref="hamletDAO"/>
-		<property name="townshipDAO" ref="townshipDAO"/>
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
 		<property name="boothDAO" ref="boothDAO" />
-		
-		
-		
-		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />	
-		
 			
 	</bean>
 	<!-- 
@@ -1575,6 +1569,7 @@
 		<property name="categoryDAO" ref="categoryDAO" />
 		<property name="newsImportanceDAO" ref="newsImportanceDAO" />
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="fileDAO" ref="fileDAO" />
 		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO"/>
 		<property name="sourceLanguageDAO" ref="sourceLanguageDAO" />
@@ -1594,28 +1589,35 @@
 		<property name="userDAO" ref="userDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate"/>
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
-		<property name="userCandidateRelationDAO" ref="userCandidateRelationDAO" />
 		<property name="candidateRelatedNewsDAO" ref="candidateRelatedNewsDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />	
 		<property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO"></property>
 		<property name="nominationDAO" ref="nominationDAO"></property>
 		<property name="candidatePartyDAO" ref="candidatePartyDAO"></property>
 		<property name="userNewsCategoryDAO" ref="userNewsCategoryDAO" />
+		<property name="userCandidateRelationDAO" ref="userCandidateRelationDAO" />
 			
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
 		<property name="userDAO" ref="userDAO" />
+		<property name="groupEntitlementDAO" ref="groupEntitlementDAO" />
+		<property name="countryDAO" ref="countryDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 	</bean>
-	<bean name="votersAnalysisService" class="com.itgrids.partyanalyst.service.impl.VotersAnalysisService">
-	</bean>
+	<!-- <bean name="votersAnalysisService" class="com.itgrids.partyanalyst.service.impl.VotersAnalysisService">
+	</bean> -->
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="userDAO" ref="userDAO"></property>
 	</bean>	
 	<bean name="contentManagementService" class="com.itgrids.partyanalyst.service.impl.ContentManagementService">
 		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
-		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO"/>
+		<!-- <property name="specialPageGalleryDAO" ref="specialPageGalleryDAO"/> -->
 		<property name="gallaryDAO" ref="gallaryDAO" />
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 		<property name="newsFlagDAO" ref="newsFlagDAO"/>
@@ -1635,6 +1637,7 @@
 		<property name="sourceLanguageDAO" ref="sourceLanguageDAO"/>
 		<property name="newsImportanceDAO" ref="newsImportanceDAO"/>
 		<property name="categoryDAO" ref="categoryDAO" />
+		<property name="userDAO" ref="userDAO" />
 		<property name="fileDAO" ref="fileDAO" />
 		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
 		<property name="gallaryDAO" ref="gallaryDAO"/>
