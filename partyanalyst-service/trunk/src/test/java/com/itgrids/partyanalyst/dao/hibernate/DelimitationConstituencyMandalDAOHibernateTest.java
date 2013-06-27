@@ -100,12 +100,21 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		}
 	}*/
 	
-	public void testGetIspartialForMandalByMandalIdsList()
+	/*public void testGetIspartialForMandalByMandalIdsList()
 	{
 		List<Long> mandalIdsList = new ArrayList<Long>(0);
 		mandalIdsList.add(844l);
 		List<Object[]> list = delimitationConstituencyMandalDAO.getIspartialForMandalByMandalIdsList(mandalIdsList,2009l);
 		for (Object[] parms : list) 
 			System.out.println(parms[0]+" "+parms[1]);
-	}
+	}*/
+	/*public void testGetIspartialForMandalByMandalIdsList()
+	{
+		List<Long> mandalIdsList = new ArrayList<Long>(0);
+		mandalIdsList.add(232l);
+		mandalIdsList.add(347l);
+		List<Object[]> list = delimitationConstituencyMandalDAO.getTehsilsForRuralConstituencyes(mandalIdsList);
+		for (Object[] parms : list) 
+			System.out.println(parms[0]+" "+parms[1]);
+	}*/
 }
