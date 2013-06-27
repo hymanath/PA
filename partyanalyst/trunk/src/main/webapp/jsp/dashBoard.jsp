@@ -83,6 +83,11 @@ padding:0px;
 .boothResults{margin-top:5px;display:none;padding:25px;}
 input[type="radio"]{margin-top:-1px;}
 .boothResults select{width:160px;}
+
+#boothWiseResult a{color:#000;}
+#boothWiseResult a:hover{text-decoration:none;color:#0088CC;}
+#boothWiseResult .breadcrumb{padding: 8px 5px;}
+
 </style>
 <div class="container m-top15">
 <div class="row-fluid"><div class="span12 widget" style="padding: 0 20px 4px;"><h2 class="pagination-centered" style="border-bottom: 0px solid #C0C0C0;">DASHBOARD</h2></div></div>
@@ -324,11 +329,24 @@ Parliament
 		</table>
 		<div><input type="button" value="View" class="btn btn-success" onCLick="openVotersAnalysts();" style="float:right;"></input></div>
 	   </div>
+	   <div class="span6 widget-simple">
 	   
-	   <div class="span6 widget-simple" id="boothResultsDiv">
+			<h4> Results Vs Caste</h4>
+			<table>
+			<tr>
+			 <td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="constituencyList" name="constituencyList" list="constituencyList" listKey="id" listValue="name" ></s:select></td>
+	       </tr>
+		   </table>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openCasteViseAnalysis();" style="float:right;"></input></div>
+		</div>
+	    
+	   
+	</div>
+	<div class="row-fluid">
+		<div class="span6 widget-simple" id="boothResultsDiv">
 	   <h4>Booth Wise Results</h4>
 	   <div id="boothWiseResult"></div>
-	   <label class="checkbox">
+	   <label class="checkbox" style="margin-top:10px;margin-left:5px;">
                 <input type="checkbox" id="moreDetailsId"> Check for More Details
        </label>
 	   
@@ -380,20 +398,9 @@ headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/
 				
 					<button class="btn btn-mini btn-success pull-right" data-dismiss="modal" aria-hidden="true" onclick="submitRes()">SUBMIT</button>
 			</div>
-	   </div> 
-	   
-	</div>
-	<div class="row-fluid">
-	   <div class="span6 widget-simple">
-	   
-			<h4> Results Vs Caste</h4>
-			<table>
-			<tr>
-			 <td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="constituencyList" name="constituencyList" list="constituencyList" listKey="id" listValue="name" ></s:select></td>
-	       </tr>
-		   </table>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openCasteViseAnalysis();" style="float:right;"></input></div>
-		</div>       
+	   </div>
+		
+	          
 
        <div class="span6 widget-simple">
 	   
@@ -415,7 +422,7 @@ getAllConstituenciesInStateByType(2,stateId,"constituency");
 		   var conId = '${boothAnalysisData.id}';
 		   var elec = '${boothAnalysisData.value}';
 		   var type = '${boothAnalysisData.type}';
-		   $("#boothWiseResult").html('Booth Wise Results('+elecYear+' '+elec+' '+type+') <input type="button" value="View" class="btn btn-success" onCLick="viewBoothResults();" style="float:right;"></input>');
+		   $("#boothWiseResult").html('<a onclick="viewBoothResults()" style="cursor:pointer" class="breadcrumb" title="click here to view Booth Wise Results"> Click here for Booth Wise Results('+elecYear+' '+elec+' '+type+') </a>');
 	     </c:if>
 		 <c:if test="${boothAnalysisData == null}">
 		   $("#moreDetailsId").trigger("click");
