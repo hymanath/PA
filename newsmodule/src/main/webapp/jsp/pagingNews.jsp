@@ -32,7 +32,7 @@ font-size:20px;
 }
 
 
-#existingFromText,#existingToText{width:155px;}
+#existingFromText,#existingToText{width:155px; cursor: text;}
 #errorMsgDiv{font-size:12px;}
 .fontStyle{color:#000;font-size:21px;}
 

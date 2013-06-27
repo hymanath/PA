@@ -147,6 +147,7 @@ width: 92px;
 
 #existingFromText, #existingToText {
     width: 73px;
+	cursor: text;
 }
 #byAllRadio{margin-right: 4px;margin-top: 0;}
 #byDateRadio{margin-left: 10px; margin-right: 4px;margin-top: 0;}
@@ -610,7 +611,7 @@ width: 92px;
 				<div class="row m_top10">
 					<div class="span12">
 						<div class="row-fluid widget">
-							<div class="span12 boxHeading"><h4>Latest Video</h4></div>
+							<div class="span12 boxHeading"><h4>Latest Videos</h4></div>
 								<div class="row-fluid ">
 									<div class="span12 pad10 ">
 										<ul class="unstyled">

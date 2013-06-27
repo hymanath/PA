@@ -82,7 +82,7 @@
     src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
 }
 
-	#existingFromText,#existingToText{width:155px;}
+	#existingFromText,#existingToText{width:155px;cursor: text;}
 	#errorMsgDiv{font-size:12px;}
 	</style>
 </head>
