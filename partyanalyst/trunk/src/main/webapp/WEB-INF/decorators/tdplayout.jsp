@@ -111,29 +111,29 @@ margin-top:10px;
 .header{height:120px;}
 #header-mainsec{background:#ffdc2d;}
 
-/*---------------------*/
-ul.menu a{color:#484840;text-shadow:0ox 1px 1px #fff; }
-ul.menu li{float:left; }
 
-li.dropdown a{border:none;}
+<!--Header Menu Styles Created By sasi Start-->
+.headerMenu .outerli{display:inline;margin:5px;}
+.headerMenu .outerli a:hover{text-decoration:none;background:#0088CC;color:#ffffff;border-radius:4px;}
 
+.headerMenu .outerli a{font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;padding:5px;}
 
-.menu li a{padding:3px 12px;}
-ul.menu>li>a{ line-height:30px;float:left;color:#333333;font:cambria !important;font-size:14px;text-decoration:none;font-weight:600; }
-ul.menu>li>a>.caret{ margin-top:15px;}
+.headerMenu ul.menu li.dropdown:hover > ul.dropdown-menu{
+    display: block;
+margin-top:5px;    
+}
 
+.headerMenu a.menu:after, .dropdown-toggle:after {
+  content: none;
+}
+.headerMenu .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a{background:#FFDC2D;color:blue;}
 
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus
-				{color: #333;
-				 background-color: #ffdc2d !important;
-				 background-image: none;
-				 filter: none;
-				}	
+.headerMenu .dropdown-menu{width:210px;}
 
-
-.dropdown-menu > li >a:hover,.dropdown-menu > li >a:focus{ background:#ffdc2d !important;}
-
+<!--Header Menu Styles Created By sasi END-->
 </style>
 <decorator:head/>
 </head>
@@ -201,19 +201,19 @@ ul.menu>li>a>.caret{ margin-top:15px;}
    	 							<!-- End of LoginPoppWindow-->
 		</div>
 	
-    <div class="span8 offset2">
+    <div class="span8 offset2" style="margin-bottom:10px;">
 <img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:79.5px;left:50%;">
 
 
     </div>
-<div class="span10 offset1" style="border-top:2px solid #ffffff; border-bottom:2px solid #ffffff;margin-bottom:10px;">
+<div class="span10 offset1 headerMenu">
 <ul class="inline menu unstyled">
 				<!----Home Icon----->
-				<li>
+				<li class="outerli">
 					<a href="newhomePageAction.action"><span>&nbsp;&nbsp;&nbsp;<i class="icon-home"></i></span></a>
 				</li><!----Home Icon END----->
 				<!-----ANALYSIS----->
-				<li class="dropdown">
+				<li class="dropdown outerli">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">ANALYSIS <b class="caret"></b></a>
 					
 						<ul class="dropdown-menu" role="menu" aria-labelledby="">
@@ -249,7 +249,7 @@ ul.menu>li>a>.caret{ margin-top:15px;}
 				</li><!-----ANALYSIS END----->
 				
 				<!-----CONSTITUENCY---->
-				<li class="dropdown">
+				<li class="dropdown outerli">
 					<a class="dropdown-toggle" data-toggle="dropdown" role="button">MANAGEMENT TOOLS<b class="caret"></b></a>
            
 						<ul class="dropdown-menu" role="menu" aria-labelledby="">
@@ -272,7 +272,7 @@ ul.menu>li>a>.caret{ margin-top:15px;}
 			
 				</li><!-----CONSTITUENCY END---->
 				<!-- Constituency Analysis -->
-				<li class="dropdown">
+				<li class="dropdown outerli">
 				<a class="dropdown-toggle" data-toggle="dropdown" role="button">CONSTITUENCY ANALYSIS<b class="caret"></b></a>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="">
 				<li><a href="votersAnalysisNewAction.action">Voter Analysis</a></li>
@@ -285,7 +285,7 @@ ul.menu>li>a>.caret{ margin-top:15px;}
 				
 				
 				<!---STATE----->
-				<li class="dropdown">
+				<li class="dropdown outerli">
 					<a class="dropdown-toggle" data-toggle="dropdown" role="button">STATES<b class="caret"></b></a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="">
 						<li class="dropdown-submenu">
@@ -345,7 +345,7 @@ ul.menu>li>a>.caret{ margin-top:15px;}
 				
 				
 				<!---DASHBOARD---->
-				<li>
+				<li class="outerli">
 					<a href="dashBoardAction.action">DASHBOARD</a> 
 				</li><!---DASHBOARD END---->	
 				
@@ -1580,6 +1580,11 @@ $(document).keypress(function(e) {
         ajaxCallForLoginPopup();
 		}
     }
+});
+
+$('.outerli').hover(function(){
+    $('.outerli').removeClass("active");
+    $(this).addClass("active");
 });
 
 </script>
