@@ -1,8 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,14 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-import org.hibernate.annotations.NotFoundAction;
 
 /**
  * 
@@ -55,8 +49,8 @@ public class DelimitationConstituency extends BaseModel implements Serializable{
 			Long delimitationConstituencyID,
 			Constituency constituency,
 			Long year,
-			Long constituencyNO,
-			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses) {
+			Long constituencyNO//,Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses) {
+			){
 		this.delimitationConstituencyID = delimitationConstituencyID;
 		this.constituency = constituency;
 		this.year = year;

@@ -5,8 +5,6 @@
 package com.itgrids.partyanalyst.model;
 
 import java.util.HashSet;
-import com.itgrids.partyanalyst.model.BaseModel;
-
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -87,8 +85,7 @@ public class Party implements java.io.Serializable {
 	/** full constructor */
 	public Party(Long partyId, String longName, String shortName,
 			String symbol, String address, String comments,
-			String partyRecognization, Set<Nomination> nominations,
-			Set<CommentCategoryParty> commentCategoryParty) {
+			String partyRecognization, Set<Nomination> nominations) {
 		this.partyId = partyId;
 		this.longName = longName;
 		this.shortName = shortName;
