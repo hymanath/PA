@@ -38,6 +38,8 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private IVotersAnalysisService votersAnalysisService;
 	private CadreManagementService cadreManagementService;
+	private SelectOptionVO boothAnalysisData;
+	private boolean party;
 	JSONObject jObj;
 	private String task;
 	private List<SelectOptionVO> electionYearsList,elecYears,partiesList;
@@ -283,6 +285,26 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	}
 
 
+	public boolean isParty() {
+		return party;
+	}
+
+
+	public void setParty(boolean party) {
+		this.party = party;
+	}
+
+
+	public SelectOptionVO getBoothAnalysisData() {
+		return boothAnalysisData;
+	}
+
+
+	public void setBoothAnalysisData(SelectOptionVO boothAnalysisData) {
+		this.boothAnalysisData = boothAnalysisData;
+	}
+
+
 	public String execute()
 	{	
 		session = request.getSession();
@@ -299,11 +321,16 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(user == null)
 		return INPUT;
 		constituencyId = user.getConstituencyId();
-		districtStateList = constituencySearchService.getDistrictAndStateId(constituencyId);
-		SelectOptionVO selectOptionVO = new SelectOptionVO();
-		selectOptionVO = districtStateList.get(0);
-		districtId = selectOptionVO.getId();
-		stateId = selectOptionVO.getOrderId();
+		if(constituencyId != null){
+			districtStateList = constituencySearchService.getDistrictAndStateId(constituencyId);
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO = districtStateList.get(0);
+			districtId = selectOptionVO.getId();
+			stateId = selectOptionVO.getOrderId();
+		}
+		if("Party".equalsIgnoreCase(user.getUserType())){
+			party = true;
+		}
 		constituencyList = user.getUserAccessVoterConstituencies();
 		assemblyConstis = (List<SelectOptionVO>)session.getAttribute("assemblyConstis");
 		parlConstis = (List<SelectOptionVO>)session.getAttribute("parlConstis");
@@ -368,6 +395,34 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				electionYearList.add(new SelectOptionVO(Long.parseLong(year.trim()), year));
 			
 			
+		}
+		
+		if(user.getAccessType() != null){
+			if("MLA".equalsIgnoreCase(user.getAccessType())){
+				List<Long> assIds = new ArrayList<Long>();
+				for(SelectOptionVO vo:assemblyConstis){
+					if(vo.getId().longValue() != 0l)
+					   assIds.add(vo.getId());
+				}
+				if(assIds.size() > 0){
+					boothAnalysisData = votersAnalysisService.getConstiInfo(assIds);
+					if(boothAnalysisData != null){
+						boothAnalysisData.setValue("AC");
+					}
+				}
+			}else if("MP".equalsIgnoreCase(user.getAccessType())){
+				List<Long> assIds = new ArrayList<Long>();
+				for(SelectOptionVO vo:parlConstis){
+					if(vo.getId().longValue() != 0l)
+					   assIds.add(vo.getId());
+					if(assIds.size() > 0){
+						boothAnalysisData = votersAnalysisService.getConstiInfo(assIds);
+						if(boothAnalysisData != null){
+							boothAnalysisData.setValue("PC");
+						}
+					}
+				}
+			}
 		}
 		
 		return Action.SUCCESS;
