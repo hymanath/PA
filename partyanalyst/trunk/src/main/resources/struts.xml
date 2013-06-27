@@ -3321,6 +3321,9 @@
 		
 		<action name="logoutAction" class="logoutAction">
         </action>
+        
+        <action name="newlogoutAction" class="newLogoutAction">
+        </action>
 	
 		<action name="userTrackingReportAction" class="userTrackingReportAction"> 
              <result name="success">/jsp/userTrackingReport.jsp</result>

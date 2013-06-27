@@ -102,9 +102,25 @@ function callHomePageAjax11(jsObj,url){
 							if(jsObj.task == "validateUserForLogin")
 							{	
 								if(myResults=="success"){
-									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
-									window.location.reload();
-								}else if(myResults=="IPFAILURE"){
+                                    $('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
+                                    try
+                                    {
+                                        if(loginMode =="true")
+                                        {
+                                            window.location.href = "dashBoardAction.action";
+                                        }
+                                        else
+                                        {
+                                            window.location.reload();
+                                        }
+                                    }
+                                    catch(e)
+                                    {
+                                        window.location.reload();
+                                    }
+                                   
+                                   
+                                }else if(myResults=="IPFAILURE"){
 									$("#ajaxcallimage").hide();
 
 									$("#LoginErrorMessageDiv").html('You DO Not Have Permission to Access Site From This IP ');

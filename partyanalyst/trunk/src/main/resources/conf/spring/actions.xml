@@ -909,6 +909,10 @@
 	
 	<bean id="logoutAction" class="com.itgrids.partyanalyst.web.action.LogoutAction" singleton="false">
 		<property name="loginService" ref="loginService" />
+	</bean>
+	
+	<bean id="newLogoutAction" class="com.itgrids.partyanalyst.web.action.NewLogoutAction" singleton="false">
+		<property name="loginService" ref="loginService" />
 	</bean>	
 				
 	<bean id="userTrackingReportAction" class="com.itgrids.partyanalyst.web.action.UserTrackingReportAction" singleton="false">
