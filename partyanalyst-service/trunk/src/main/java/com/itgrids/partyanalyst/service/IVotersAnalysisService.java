@@ -289,4 +289,5 @@ public interface IVotersAnalysisService {
 	 
 	 public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,Long constituencyId,Long publicationDateId,Long customWardId,Long userId);
 	 
+	 public SelectOptionVO getConstiInfo(List<Long> constiIds);
 }
