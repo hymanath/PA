@@ -89,7 +89,7 @@
 	#existingFromText,#existingToText{width:155px;}
 	#errorMsgDiv{font-size:12px;}
 	#candidateFromText,#candidateToText{width:75px;}
-	#byAllRadio,#gallaryRadioId{margin-right: 4px;margin-top: 0;}
+	#byAllRadio{margin-right: 4px;margin-top: 0;}
 	#byDateRadio{margin-left: 10px; margin-right: 4px;margin-top: 0;}
 	#candidateNewsShowHideDatesDiv{margin-top: 10px;}
 	#fromParaId{margin-left: 4px; margin-bottom: 5px;}
@@ -97,6 +97,10 @@
 	#candidateToText{margin-left: 15px;}
 	#candidateNewsBtn{margin-left: 30px;}
 	#cadidateRadioDiv{text-align: center; margin-top: 6px;margin-bottom: 15px;}
+	#categoryCheckBoxId{margin-top: 0px; margin-left: 11px; margin-right: 8px;}
+	#gallaryRadioId{margin-right: 8px;margin-top: 0;}
+	#gallaryCategoryDiv{margin-top: 4px; line-height: 1.9em;}
+	.errorDiv{color:red;}
 	</style>
 </head>
 <body>
@@ -110,11 +114,13 @@
 					    <div id="cadidateRadioDiv">
 						  <input type="radio" id="byAllRadio" value="byAll" name="candidateNewsRadio" class="candidateRadioCls" checked="true"/>All
 						  <input type="radio" id="byDateRadio" value="byDate" name="candidateNewsRadio" class="candidateRadioCls"/>By Date
-						<br>
+						
 						  <!-- <input type="radio" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" onclick="getCandidateGallaries()"/>By Gallary -->
-
-						  <input type="checkbox" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" />By Gallery
-
+				          <div id="gallaryCategoryDiv">
+						    <input type="checkbox" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" />By Gallery
+							<br>
+						    <input type="checkbox" value="categoryCheckBox" id="categoryCheckBoxId" class="categoryCheckBoxCls" />By Category
+						  </div>
 						</div>
 						<div id="candidateNewsShowHideDatesDiv" style="display:none;">
 						  <p id="fromParaId">From: <input type="text" size="20" name="fileDate" readonly="true" class="candidateDateField" id="candidateFromText" /></p>
@@ -126,6 +132,10 @@
 						<div id="gallaryShowHideDiv" style="display:none;">
 						  <select id="gallaryId" multiple="multiple"></select>
 						</div>
+
+						<div id="categoryShowHideDiv" style="display:none;">
+						   <select id="candidateCategoryId" multiple="multiple"></select>
+						 </div>
 
 						<input id="candidateNewsBtn" type="button" class="btn btn-info" value="submit" onclick="getCandiNews();"/>
 						<!--<s:select list ="candidatesMap" name ="candidateId" value="candidateId" headerKey="0" headerValue = "Select Candidate"/>-->
@@ -180,6 +190,8 @@ var candidateId = '${candidateId}';
 var fromDate = '${fromDate}';
 var toDate = '${toDate}';
 var gallaryIds = '${gallaryIds}';
+var categoryIds = '${categoryIds}';
+
 getNewsForPagination(0);
 //getCandidates();
 
@@ -191,6 +203,7 @@ function getNewsForPagination(num){
 		fromDate:fromDate,
 		toDate:toDate,
 		gallaryIds:gallaryIds,
+		categoryIds:categoryIds,
 		type:'Public',
 		task:'getCandidatesNewsInHomePage'
 	};
@@ -216,6 +229,13 @@ function callAjax(jsObj,url)
 			   clearOptionsListForSelectElmtId('gallaryId');
 			   buildGallaryList('gallaryId',myResults);
 			  
+			}
+
+			else if(jsObj.task == "getCandidateRelatedCategories")
+			{
+			  clearOptionsListForSelectElmtId('candidateCategoryId');
+			  buildCategoryList('candidateCategoryId',myResults);
+			  //createOptionsForSelectElmtId('candidateCategoryId',myResults);
 			}
 			}catch (e)
 			{
@@ -364,9 +384,18 @@ function getCandiNews(){
 	else
 	 selectedGallaryIds = "";
 	
-		
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&";
-		
+	var categoryIds = "";
+	if($("#categoryCheckBoxId").is(":checked"))
+	{
+      categoryIds = $("#candidateCategoryId").val();
+	  if(categoryIds == null || categoryIds == "null")
+	  {
+		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Category.</span>');
+          return;
+	  }
+	}
+	
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&categoryIds="+categoryIds+"&";
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
@@ -443,6 +472,8 @@ $("#candidatesListId").live("change",function(){
   var candidateId = $("#candidatesListId").val();
    $('.errorDiv').html('');
     clearOptionsListForSelectElmtId('gallaryId');
+	clearOptionsListForSelectElmtId('candidateCategoryId');
+
   if(candidateId == 0)
   {
     $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate</span>');
@@ -459,6 +490,17 @@ $("#candidatesListId").live("change",function(){
   {
 	$("#gallaryShowHideDiv").css("display","none");
   }
+
+  if($("#categoryCheckBoxId").is(":checked"))
+  {
+	$("#categoryShowHideDiv").css("display","block");
+    $("#categoryCheckBoxId").attr('checked', true);
+	getCandidatecategories();
+  }
+  else
+  {
+	$("#categoryShowHideDiv").css("display","none");
+  }
 	
 });
 
@@ -467,6 +509,8 @@ $("#gallaryRadioId").click(function(){
 	{
       $("#gallaryShowHideDiv").css("display","block");
 	  getCandidateGallaries();
+	  $("#categoryCheckBoxId").attr('checked', false);
+	  $("#categoryShowHideDiv").css("display","none");
 	}
 	else
     {
@@ -474,6 +518,23 @@ $("#gallaryRadioId").click(function(){
     }
 
 });
+
+
+$("#categoryCheckBoxId").click(function(){
+	
+	if($("#categoryCheckBoxId").is(":checked"))
+    {
+	  $("#gallaryRadioId").attr('checked', false);
+	  $("#gallaryShowHideDiv").css("display","none");
+	  $("#categoryShowHideDiv").css("display","block");
+	  getCandidatecategories();
+	}
+	else
+	  $("#categoryShowHideDiv").css("display","none");
+
+});
+
+
 });//End of Ready
 
 function getCandidateGallaries()
@@ -539,19 +600,28 @@ function getCandidateDetails()
 	
  if(gallaryIds != "null" && gallaryIds != "")
  {
- $("#candidateNewsShowHideDatesDiv").css("display","block");
- $("#gallaryRadioId").attr('checked', true);
+  $("#categoryShowHideDiv").css("display","none");
+  $("#candidateNewsShowHideDatesDiv").css("display","block");
+  $("#gallaryRadioId").attr('checked', true);
   getCandidateGallaries();
-   
   
+ }
+
+ if(categoryIds !="null" && categoryIds !="")
+ {
+   
+   $("#categoryCheckBoxId").attr('checked', true);
+   $("#categoryShowHideDiv").css("display","block");
+   getCandidatecategories();
  }
  
  if(fromDate=="" && toDate == "")
  {
   $('#byAllRadio').trigger('click');
-  $("#candidateNewsShowHideDatesDiv").css("display","none");
   $("#candidateFromText").val('');
   $("#candidateToText").val('');
+  $("#candidateNewsShowHideDatesDiv").css("display","none");
+  
  }
  else
  {
@@ -592,6 +662,89 @@ function buildGallaryList(elmtId,optionsList)
     var arrayArea = valoresArea.split(',');
     $('#gallaryId').val(arrayArea).attr('selected', true);
    }
+
+}
+
+function buildCategoryList(elmtId,optionsList)
+{	
+	var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+
+	 if(categoryIds != "null" && categoryIds != "")
+   {
+     var valoresArea=categoryIds 
+    var arrayArea = valoresArea.split(',');
+    $('#candidateCategoryId').val(arrayArea).attr('selected', true);
+   }
+
+}
+
+
+
+function getCandidatecategories()
+{
+   var fromDate = "";
+	var toDate = "";
+	var candidateId = $("#candidatesListId").val();
+	$(".errorDiv").html('');
+	if(candidateId == 0)
+	{
+	  $(".errorDiv").html('Please Select Candidate');
+	  return;	
+	}
+	var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
+	if(radioVal == "byDate")
+	{
+	   fromDate = $("#candidateFromText").val();
+	   toDate = $("#candidateToText").val();
+	
+	   if(fromDate=="" && toDate == "")
+	   {
+		 $(".errorDiv").html('Please Select From And To Dates');
+		 return;
+	   }
+	   else if(fromDate =="")
+	   {
+	     $(".errorDiv").html('Please Select From Date');
+		 return;
+	   }
+	   else if(toDate =="")
+	   {
+	     $(".errorDiv").html('Please Select To Date');
+		 return;
+	   }
+	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
+         $(".errorDiv").html('Invalid Date Selection.');
+         return;
+	   } 
+	}
+
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		candidateId:candidateId,
+		task:'getCandidateRelatedCategories'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidateRelatedCategoriesAction.action?"+rparam;
+	callAjax(jsObj, url);
 
 }
 

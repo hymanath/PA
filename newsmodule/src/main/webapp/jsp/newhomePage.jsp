@@ -143,7 +143,7 @@ border-radius:3px;
 width: 92px;
 }
 
-#candidatesListId{width:220px;}
+#candidatesListId,#candidateCategoryId{width:220px;}
 
 #existingFromText, #existingToText {
     width: 73px;
@@ -158,6 +158,8 @@ width: 92px;
 .errorDiv{color:red;}
 #gallaryShowHideDiv{margin-left: 2px;}
 #gallaryId{width: 221px;}
+#categoryCheckBoxId{margin-top: 0px;margin-right: 6px;}
+#categoryCheckBoxDiv{margin-top: 8px;}
 </style>
 </head>
 <body>
@@ -464,6 +466,10 @@ width: 92px;
 							</tr>
 						</table>
 						
+						<!-- <div id="categoryGallaryShowHideDiv" style="display:none;">
+						 <select id="categoryGallarySelect" multiple="multiple"></select>
+						</div> -->
+
 						<button id="sendButton" class="btn btn-warning btn-mini" onclick="addCssStyle(),handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
 						</div>
 						<!--Created By sasi for Candidate News-->
@@ -476,6 +482,9 @@ width: 92px;
 						 <!-- <input type="radio" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" onclick="getCandidateGallaries()"/>By Gallary -->
 
 						 <input type="checkbox" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" />By Gallery
+						  <div id="categoryCheckBoxDiv">
+						    <input type="checkbox" value="categoryCheckBox" id="categoryCheckBoxId" class="categoryCheckBoxCls" />By Category
+						  </div>
 						 </div>
 						
 						<div id="candidateNewsShowHideDatesDiv" style="display:none;">
@@ -494,6 +503,13 @@ width: 92px;
 						<div id="gallaryShowHideDiv" style="display:none;">
 						  <select id="gallaryId" multiple="multiple"></select>
 						</div>
+						 
+						 <div id="categoryShowHideDiv" style="display:none;">
+						   <select id="candidateCategoryId" multiple="multiple"></select>
+
+						    <!-- <input type="checkbox" value="categoryGallaries" id="categoryGallary"/>Gallery -->
+
+						 </div>
 
 						<button id="sendButton" class="btn btn-warning btn-mini" onclick="getCandidatesNews()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
 						<div class="span12 errorDiv"></div>
@@ -825,6 +841,11 @@ function callHomePageAjax11(jsObj,url){
 								 createOptionsForSelectElmtId('gallaryId',myResults);
 			  
 								}
+								else if(jsObj.task == "getCandidateRelatedCategories")
+								{
+								  clearOptionsListForSelectElmtId('candidateCategoryId');
+								 createOptionsForSelectElmtId('candidateCategoryId',myResults);
+								}
 								}catch (e) {
 							     
 								}  
@@ -1065,7 +1086,18 @@ function getCandidatesNews(){
 	else
 	 selectedGallaryIds = "";
 
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&";
+	var categoryIds = "";
+	if($("#categoryCheckBoxId").is(":checked"))
+	{
+      categoryIds = $("#candidateCategoryId").val();
+	  if(categoryIds == null || categoryIds == "null")
+	  {
+		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Category.</span>');
+          return;
+	  }
+	}
+
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&categoryIds="+categoryIds+"&";
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
@@ -1132,9 +1164,58 @@ function getCandidateGallaries()
 
 }
 
-$(document).ready(function(){
 
-	$('#homeTabId').addClass('currentTab');
+function getCandidatecategories()
+{
+   var fromDate = "";
+	var toDate = "";
+	var candidateId = $("#candidatesListId").val();
+	$(".errorDiv").html('');
+	if(candidateId == 0)
+	{
+	  $(".errorDiv").html('Please Select Candidate');
+	  return;	
+	}
+	var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
+	if(radioVal == "byDate")
+	{
+	   fromDate = $("#existingFromText").val();
+	   toDate = $("#existingToText").val();
+	
+	   if(fromDate=="" && toDate == "")
+	   {
+		 $(".errorDiv").html('Please Select From And To Dates');
+		 return;
+	   }
+	   else if(fromDate =="")
+	   {
+	     $(".errorDiv").html('Please Select From Date');
+		 return;
+	   }
+	   else if(toDate =="")
+	   {
+	     $(".errorDiv").html('Please Select To Date');
+		 return;
+	   }
+	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
+         $(".errorDiv").html('Invalid Date Selection.');
+         return;
+	   } 
+	}
+
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		candidateId:candidateId,
+		task:'getCandidateRelatedCategories'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidateRelatedCategoriesAction.action?"+rparam;
+	callAjax(jsObj, url);
+
+}
+
+$(document).ready(function(){
 	
 $(".dateField").live("click", function(){
 	$(this).datepicker({
@@ -1165,6 +1246,8 @@ $("#candidatesListId").live("change",function(){
   var candidateId = $("#candidatesListId").val();
    $('.errorDiv').html('');
     clearOptionsListForSelectElmtId('gallaryId');
+	clearOptionsListForSelectElmtId('candidateCategoryId');
+
   if(candidateId == 0)
   {
     $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate</span>');
@@ -1181,6 +1264,17 @@ $("#candidatesListId").live("change",function(){
   {
 	$("#gallaryShowHideDiv").css("display","none");
   }
+
+  if($("#categoryCheckBoxId").is(":checked"))
+  {
+	$("#categoryShowHideDiv").css("display","block");
+    $("#categoryCheckBoxId").attr('checked', true);
+	getCandidatecategories();
+  }
+  else
+  {
+	$("#categoryShowHideDiv").css("display","none");
+  }
 	
 });
 
@@ -1189,11 +1283,71 @@ $("#gallaryRadioId").click(function(){
 	{
       $("#gallaryShowHideDiv").css("display","block");
 	  getCandidateGallaries();
+	  $("#categoryCheckBoxId").attr('checked', false);
+	  $("#categoryShowHideDiv").css("display","none");
 	}
 	else
     {
 	  $("#gallaryShowHideDiv").css("display","none");
     }
+
+});
+
+$("#categoryCheckBoxId").click(function(){
+	
+	if($("#categoryCheckBoxId").is(":checked"))
+    {
+	  $("#gallaryRadioId").attr('checked', false);
+	  $("#gallaryShowHideDiv").css("display","none");
+	  $("#categoryShowHideDiv").css("display","block");
+	  getCandidatecategories();
+
+	}
+	else
+	  $("#categoryShowHideDiv").css("display","none");
+
+});
+
+
+$("#categoryGallary").click(function(){
+
+	var candidateId = $("#candidatesListId").val();
+	$('.errorDiv').html('');
+  if($("#categoryGallary").is(":checked"))
+  {
+	  $("#categoryGallaryShowHideDiv").css("display","block");
+
+	 if(candidateId == 0)
+	 {
+       $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate.</span>');
+		return;
+	 }
+	 var categoryIdsArray = new Array();
+    
+	  $('#candidateCategoryId > option:selected').each(
+       function(i){
+         categoryIdsArray.push($(this).val());
+     });
+
+       if(categoryIdsArray == null || categoryIdsArray == "null")
+	   {
+         $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Category.</span>');
+		return;
+	   }
+	
+    var jsObj={
+		candidateId:candidateId,
+		categoryIds:categoryIdsArray,
+		task:'getGallariesForSelectedCategory'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getGallariesForSelectedCategoryAction.action?"+rparam;
+	callAjax(jsObj, url);
+	 
+ 
+  }
+  else
+	 $("#categoryGallaryShowHideDiv").css("display","none");
 
 });
 

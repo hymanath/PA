@@ -5487,6 +5487,18 @@
 		    <param name="root">selectOptionVOList</param>
 		  </result>
 		</action>
+		
+		<action name="getCandidateRelatedCategoriesAction" class="newsDetailsAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		  <param name="root">selectOptionVOList</param>
+		 </result>
+		</action>
+		
+		<action name="getGallariesForSelectedCategoryAction" class="newsDetailsAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		  <param name="root">galleriesList</param>
+		 </result>
+		</action>
 		</package>
 		
 		
