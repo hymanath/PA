@@ -82,6 +82,7 @@ padding:0px;
 #boothResultsDiv .controls{margin-left:100px;}
 .boothResults{margin-top:5px;display:none;padding:25px;}
 input[type="radio"]{margin-top:-1px;}
+.boothResults select{width:160px;}
 </style>
 <div class="container m-top15">
 <div class="row-fluid"><div class="span12 widget" style="padding: 0 20px 4px;"><h2 class="pagination-centered" style="border-bottom: 0px solid #C0C0C0;">DASHBOARD</h2></div></div>
@@ -335,7 +336,7 @@ Parliament
 		
 				<div class="control-group">
 					<label class="control-label" for="firstName">Election Type</label>
-					<div class="controls ">
+					<div class="controls " style="width:165px;">
 						<input type="radio" name="electionType" value="2" checked="checked">Assembly</input>
 						<input type="radio" name="electionType" value="1">Parliament</input>
 					</div>
