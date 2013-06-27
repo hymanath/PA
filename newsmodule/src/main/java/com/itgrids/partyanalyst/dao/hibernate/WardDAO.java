@@ -2,10 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.appfuse.dao.jpa.GenericDaoJpa;
 
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.WardColumnNames;

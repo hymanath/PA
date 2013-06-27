@@ -1,15 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
 import com.itgrids.partyanalyst.model.User;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	public UserDAO()

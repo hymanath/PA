@@ -7,7 +7,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.model.Category;
-import com.itgrids.partyanalyst.model.SourceLanguage;
 
 public class CategoryDAO extends GenericDaoHibernate<Category, Long> implements ICategoryDAO {
 	public CategoryDAO() {

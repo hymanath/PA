@@ -1,12 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.List;
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dao.columns.enums.TehsilColumnNames;
 import com.itgrids.partyanalyst.model.Tehsil;
 
 public class TehsilDAO extends GenericDaoHibernate<Tehsil, Long> implements ITehsilDAO

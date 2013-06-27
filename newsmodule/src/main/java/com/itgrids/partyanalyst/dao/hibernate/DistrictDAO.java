@@ -1,12 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
-import com.itgrids.partyanalyst.dao.IDistrictDAO; 
-import com.itgrids.partyanalyst.dao.columns.enums.DistrictColumnNames; 
-import com.itgrids.partyanalyst.dto.StateToHamletVO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.model.District;
 
 public class DistrictDAO extends GenericDaoHibernate<District, Long> implements
