@@ -3055,4 +3055,21 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			
 	 }
 	 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGalleriesByCategoryIds(List<Long> categoryIdsList,Long partyId,Long candidateId)
+	 {
+		 Query query = getSession().createQuery(" select distinct model.fileGallary.gallary.gallaryId,model.fileGallary.gallary.name from CandidateRealatedNews model, PartyGallery model2 " +
+		 		" where model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId and model.candidate.candidateId =:candidateId and model2.party.partyId =:partyId  " +
+		 		"  and model.fileGallary.file.category.categoryId in (:categoryIdsList) and model.fileGallary.gallary.contentType.contentType =:contentType " +
+		 		"  and model.fileGallary.isDelete ='false' and model.fileGallary.gallary.isDelete ='false' and model.fileGallary.isPrivate ='false' and " +
+		 		"  model.fileGallary.gallary.isPrivate ='false' order by model.fileGallary.gallary.name ");
+		 
+		 query.setParameterList("categoryIdsList", categoryIdsList);
+		 query.setParameter("contentType", IConstants.NEWS_GALLARY);
+		 query.setParameter("partyId", partyId);
+		 query.setParameter("candidateId", candidateId);
+		 
+		 return query.list();
+	 }
+	 
 }

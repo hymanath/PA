@@ -719,5 +719,33 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			 
 			 return query.list();
 		 }
+		
+		
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getCandidateRelatedCategories(Long candidateId,Long partyId,Date fromDate,Date toDate)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append(" select distinct model2.fileGallary.file.category.categoryId, model2.fileGallary.file.category.categoryType from PartyGallery model, CandidateRealatedNews model2 where ");
+			str.append(" model.gallery.gallaryId = model2.fileGallary.gallary.gallaryId and model2.fileGallary.isDelete = 'false' and model2.fileGallary.gallary.isDelete = 'false' and ");
+			str.append(" model.party.partyId =:partyId and model2.candidate.candidateId =:candidateId and model.gallery.contentType.contentType =:contentType ");
+			if(fromDate != null)
+			 str.append(" and model2.fileGallary.file.fileDate >= :fromDate ");
+			if(toDate != null)
+			 str.append(" and model2.fileGallary.file.fileDate <= :toDate ");
+			
+			str.append(" order by model2.fileGallary.file.category.categoryType ");
+			Query query = getSession().createQuery(str.toString());
+			
+			query.setParameter("candidateId", candidateId);
+			query.setParameter("partyId", partyId);
+			query.setParameter("contentType", IConstants.NEWS_GALLARY);
+			if(fromDate != null)
+			 query.setParameter("fromDate", fromDate);
+			if(toDate != null)
+			 query.setParameter("toDate", toDate);
+			
+			return query.list();
+		}
 
 	}
