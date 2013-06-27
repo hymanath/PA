@@ -18,7 +18,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<title><decorator:title default="Party Analyst"/></title>
-	<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+	<!--<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>-->
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
+	
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	<!--Bootstrap styles file-->
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
@@ -28,14 +32,15 @@
 	<!--Script file
 	<script type="text/javascript" src="js/jquery.js"></script>-->
 	<script type="text/javascript" src="js/loginpopup.js"> </script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	
     <script type="text/javascript" src="js/menu.js"></script>
 	<script type="text/javascript" src="js/ddaccordion.js"></script>
 	<script type="text/javascript" 
 		src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
-	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
+	<script type="text/javascript" src="js/bootstrap.js" ></script>
+	
 	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 
 %>
