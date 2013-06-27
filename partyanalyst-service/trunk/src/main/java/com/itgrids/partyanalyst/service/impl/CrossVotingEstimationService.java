@@ -2,19 +2,27 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.hsqldb.Collation;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
@@ -24,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CrossVotedCandidateVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
@@ -45,7 +54,10 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
-	
+	private IConstituencyDAO  constituencyDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IPanchayatDAO panchayatDAO;
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
 	}
@@ -130,6 +142,41 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
 	}
 	
+	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+	
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
 	public ICandidateBoothResultDAO getCandidateBoothResultDAO() {
 		return candidateBoothResultDAO;
 	}
@@ -624,4 +671,146 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		}
 		return options;
 	}
+	
+	public List<SelectOptionVO> getTehsilsForConstituencies(List<Long> constituenyIds)
+	{
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		String constituencyType = "";
+		Map<Long,String> constituencyMap = new HashMap<Long, String>();//Map<constituencyId,constituencyType>
+		List<Long> ruralConstituencyIds = new ArrayList<Long>();
+		List<Long> urbanConstituencyIds = new ArrayList<Long>();
+		List<Long> ruralUrbanConstituencyIds = new ArrayList<Long>();
+		List<Object[]> constituenyList = constituencyDAO.getConstituencyTypeByConstituencyList(constituenyIds);
+		if(constituenyList != null && constituenyList.size() >0)
+		{
+			for (Object[] parms : constituenyList) {
+				constituencyMap.put((Long)parms[0], parms[1].toString());
+			}
+		}
+		if(constituenyIds != null && constituenyIds.size() > 0)
+		{
+			for (Long constituencyId : constituenyIds) {
+				if(constituencyId != 0)
+				{
+					constituencyType = constituencyMap.get(constituencyId);
+					if(constituencyType.equalsIgnoreCase(IConstants.RURAL))
+					{
+						ruralConstituencyIds.add(constituencyId);
+					}
+					else if(constituencyType.equalsIgnoreCase(IConstants.URBAN))
+					{
+						urbanConstituencyIds.add(constituencyId);
+					}
+					else
+					{
+						ruralUrbanConstituencyIds.add(constituencyId);
+					}
+				}
+				
+			}
+		}
+		if(ruralConstituencyIds != null && ruralConstituencyIds.size() >0)
+		{
+			List<Object[]> ruralConstituencyList = delimitationConstituencyMandalDAO.getTehsilsForRuralConstituencyes(ruralConstituencyIds,Long.valueOf(IConstants.PRESENT_ELECTION_YEAR));
+			if(ruralConstituencyList != null && ruralConstituencyList.size() > 0)
+			{
+				for (Object[] parms : ruralConstituencyList) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					returnList.add(selectOptionVO);
+				}
+			}
+		}
+		
+		if(urbanConstituencyIds != null && urbanConstituencyIds.size() > 0)
+		{
+			List<Object[]> urbanConstituencyList = assemblyLocalElectionBodyDAO.getTehsilsForUrbanConstituency(urbanConstituencyIds,IConstants.PRESENT_ELECTION_YEAR);
+			if(urbanConstituencyList != null && urbanConstituencyList.size() > 0)
+			{
+				for (Object[] parms : urbanConstituencyList) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					returnList.add(selectOptionVO);
+				}
+			}
+		}
+		
+		if(ruralUrbanConstituencyIds != null && ruralUrbanConstituencyIds.size() >0)
+		{
+			List<Object[]> ruralConstituencyList = delimitationConstituencyMandalDAO.getTehsilsForRuralConstituencyes(ruralUrbanConstituencyIds,Long.valueOf(IConstants.PRESENT_ELECTION_YEAR));
+			if(ruralConstituencyList != null && ruralConstituencyList.size() > 0)
+			{
+				for (Object[] parms : ruralConstituencyList) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					returnList.add(selectOptionVO);
+				}
+			}
+			
+			List<Object[]> urbanConstituencyList = assemblyLocalElectionBodyDAO.getTehsilsForUrbanConstituency(ruralUrbanConstituencyIds,IConstants.PRESENT_ELECTION_YEAR);
+			if(urbanConstituencyList != null && urbanConstituencyList.size() > 0)
+			{
+				for (Object[] parms : urbanConstituencyList) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					returnList.add(selectOptionVO);
+				}
+			}
+		}
+		Collections.sort(returnList,sortIds);
+		return returnList;
+	}
+	
+	 public static Comparator<SelectOptionVO> sortIds = new Comparator<SelectOptionVO>()
+    {
+   
+        public int compare(SelectOptionVO selectOptionVO1, SelectOptionVO selectOptionVO2)
+        {
+            return (selectOptionVO1.getId().intValue()) - (selectOptionVO2.getId().intValue());
+        }
+    };
+    
+    public List<SelectOptionVO> getPanchayatsForConstituencyList(List<Long> tehsilIds)
+    {
+    	List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+    	if(tehsilIds != null && tehsilIds.size() > 0)
+    	{
+    		List<Object[]> tehsilList = panchayatDAO.getPanchaytsForConstituencyList(tehsilIds);
+    		if(tehsilList != null && tehsilList.size() > 0)
+    		{
+    			for (Object[] parms : tehsilList) {
+    				SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					returnList.add(selectOptionVO);
+				}
+    		}
+    	}
+    	Collections.sort(returnList,sortIds);
+    	return returnList;
+    }
+    
+    public List<SelectOptionVO> getBoothsForConstituencyList(List<Long> constituencyIds)
+    {
+    	List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+    	if(constituencyIds != null && constituencyIds.size() > 0)
+    	{
+    		List<Object[]> boothsList = boothDAO.getBoothsForConstituencyList(constituencyIds);
+    		if(boothsList != null && boothsList.size() > 0)
+    		{
+    			for (Object[] parms : boothsList) {
+    				SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[2].toString()+"-"+ parms[1].toString());
+					returnList.add(selectOptionVO);
+				}
+    		}
+    	}
+    	Collections.sort(returnList,sortIds);
+    	return returnList;
+    }
 }

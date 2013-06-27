@@ -20,5 +20,11 @@ public interface ICrossVotingEstimationService {
 	public List<String> getElectionYearsForBoothResult();
 	
 	public List<SelectOptionVO> getAllOptions(String type,Long stateId,Long electionType,Long electionId);
+	
+	public List<SelectOptionVO> getPanchayatsForConstituencyList(List<Long> tehsilIds);
+	
+	public List<SelectOptionVO> getTehsilsForConstituencies(List<Long> constituenyIds);
+	
+	public List<SelectOptionVO> getBoothsForConstituencyList(List<Long> constituencyIds);
 			
 }

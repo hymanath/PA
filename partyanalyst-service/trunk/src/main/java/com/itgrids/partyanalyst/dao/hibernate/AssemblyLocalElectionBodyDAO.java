@@ -180,4 +180,15 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		return getHibernateTemplate().find("select model.assemblyLocalElectionBodyId  from AssemblyLocalElectionBody  model " +
 				" where model.localElectionBody.localElectionBodyId = ? and model.constituency.constituencyId = ? ", parms);
 	}
+	
+	public List<Object[]> getTehsilsForUrbanConstituency(List<Long> constituencyIds,String year)
+	{
+		Query query = getSession().createQuery("select  model.assemblyLocalElectionBodyId , model.localElectionBody.name " +
+				"from AssemblyLocalElectionBody  model   where " +
+				" model.constituency.constituencyId in (:constituencyIds) and model.year = :year ");
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameter("year", year);
+		
+		return query.list();
+	}
 }

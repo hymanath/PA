@@ -241,4 +241,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Long> getWardsCountByLocalEleBodyId(Long localEleBodyId,Long publicationDateId,Long constituencyId);
 	
+	public List<Object[]> getBoothsForConstituencyList(List<Long> constituencyIds);
+	
 }
