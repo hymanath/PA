@@ -3139,6 +3139,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    		  fileVO.setFileId(file.getFileId());
 	    		  fileVO.setName(file.getFileName());
 	    		  fileVO.setPath(file.getFilePath());
+	    		  fileVO.setNewsDescription(file.getNewsDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getNewsDescription())):"");
 	    		  fileVO.setFileTitle1(file.getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())):"");
 	    		  fileVO.setDescription(file.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):"");
 	    		  String fileDate = file.getFileDate().toString();
@@ -3372,6 +3373,8 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			 NewsImportance newsImportance = newsImportanceDAO.get(fileVO.getNewsImportanceId());
 			 file.setFileTitle(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getTitle())));
 			 file.setFileDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getDescription())));
+			 file.setNewsDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getNewsDescription())));
+
 			 file.setCategory(category);
 			 file.setNewsImportance(newsImportance);
 			 
