@@ -409,6 +409,51 @@ headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/
 		</div>	   
     </div>
    </div>
+   
+   <!--Created By SASI Management Tools Block-->
+   
+  <div class="row-fluid span12 widget">
+     <h2>Management Tools</h2>
+	 <div class="row-fluid">
+	   <div class="span6 widget-simple">
+	   
+			<h4> Add New Problem</h4>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('addproblem');" style="float:right;"></input></div>
+		</div>       
+	   <div class="span6 widget-simple">
+	      <h4>All Problems</h4>
+		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('allproblems');" style="float:right;"></input></div>
+	   </div>						
+    </div>
+	
+	<div class="row-fluid">
+	   <div class="span6 widget-simple">
+	   
+			<h4>Problem Search And Report</h4>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('problemsearch');" style="float:right;"></input></div>
+		</div>       
+	   <div class="span6 widget-simple">
+	      <h4>Cadre Mangement </h4>
+		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('cadremgmt');" style="float:right;"></input></div>
+	   </div>						
+    </div>
+	
+	<div class="row-fluid">
+	   <div class="span6 widget-simple">
+	   
+			<h4> Constituency Management </h4>
+			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('constituencymgmt');" style="float:right;"></input></div>
+		</div>       
+	   <div class="span6 widget-simple">
+	      <h4>Call Center</h4>
+		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('callcenter');" style="float:right;"></input></div>
+	   </div>						
+    </div>
+	
+  </div>
+ <!--End of Management Tools Block-->
+ 
+ 
 </div>
 <script type="text/javascript">
 constituencyId = '${sessionScope.USER.constituencyId}';
@@ -520,7 +565,25 @@ function openAllInNewWindow(type){
     url ='districtWisePartyPerformanceAction.action';
 	
    else if(type == 'voterssearch')
-    url ='votersSearchAction.action';	
+    url ='votersSearchAction.action';
+
+  else if(type == 'addproblem')
+    url ='addNewProblemAction.action';
+  
+  else if(type == 'allproblems')
+    url ='constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT';
+  
+  else if(type == 'problemsearch')
+    url ='completeProblemDetailsSearchAction.action';
+  
+  else if(type == 'cadremgmt')
+    url ='cadreManagementAction.action';
+  
+  else if(type == 'constituencymgmt')
+    url ='initailConstituencyManagementAction.action';
+	
+   else if(type == 'callcenter')
+    url ='callCenterAction.action';
 	
 	window.open(url);
 }
