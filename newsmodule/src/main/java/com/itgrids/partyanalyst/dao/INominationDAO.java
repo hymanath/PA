@@ -8,13 +8,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dto.PositionManagementVO;
-import com.itgrids.partyanalyst.model.CandidateResult;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
-import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.Party;
 
 /**
  * Interface for NominationDAO.

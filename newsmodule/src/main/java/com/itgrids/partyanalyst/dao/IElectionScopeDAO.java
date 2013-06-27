@@ -4,15 +4,10 @@
  */
 package com.itgrids.partyanalyst.dao;
 
-import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.model.Country;
-import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.ElectionScope;
-import com.itgrids.partyanalyst.model.ElectionType;
-import com.itgrids.partyanalyst.model.State;
 
 /**
  * Interface for ElectionScopeDAO.

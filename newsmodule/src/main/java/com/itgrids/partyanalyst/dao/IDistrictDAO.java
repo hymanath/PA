@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dao.columns.enums.DistrictColumnNames;
 import com.itgrids.partyanalyst.model.District;
 
 /**
