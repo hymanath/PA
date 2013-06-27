@@ -36,6 +36,12 @@ font-size:20px;
     src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
 }
 
+.currentTab
+{
+ background-color:yellowgreen;
+ border-radius:8px;
+}
+
 #existingFromText,#existingToText{width:155px;}
 #errorMsgDiv{font-size:12px;}
 .fontStyle{color:#000;font-size:21px;}
@@ -93,7 +99,14 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 		
 	</div>
 
+<script type="text/javascript">
 
+
+$(document).ready(function(){
+
+	$('#newsTabId').addClass('currentTab');
+});
+</script>
 
 <script type="text/javascript">
 

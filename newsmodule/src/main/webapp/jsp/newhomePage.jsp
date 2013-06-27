@@ -57,6 +57,12 @@
     font-weight: normal;
     src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
 }
+
+.currentTab
+{
+ background-color:yellowgreen;
+ border-radius:8px;
+}
 .enadu
 {
 font-family: eFont;
@@ -1127,6 +1133,8 @@ function getCandidateGallaries()
 }
 
 $(document).ready(function(){
+
+	$('#homeTabId').addClass('currentTab');
 	
 $(".dateField").live("click", function(){
 	$(this).datepicker({

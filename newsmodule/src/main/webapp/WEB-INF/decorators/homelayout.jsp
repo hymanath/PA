@@ -97,23 +97,23 @@ margin:-1px 0px 0px 0px ;
 						</ul>
 					</div>
 					<!------Menu div-------->
-					<div class="span12">
+					<div class="span10">
 						<ul class="nav nav-pills navMenu pull-right">
 
 						<c:if test="${sessionScope.USER != null}">
 						 <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
-						  <li class=""><a href="homePage.action">Home</a></li>
-						  <li class=""><a href="aboutUs.action">About Us</a></li>
+						  <li class=""><a id="homeTabId" href="homePage.action">Home</a></li>
+						<!--  <li class=""><a href="aboutUs.action">About Us</a></li>-->
 						  <li class="">
-						  <a href="newsDetailsAction.action">News</a></li>
+						  <a href="newsDetailsAction.action" id="newsTabId">News</a></li>
 						  <li class="">
-						  <a onclick="showMoreVideoGallaries()" style="cursor: pointer;">Videos</a></li>
+						  <a onclick="showMoreVideoGallaries()" style="cursor: pointer;" id="videosTabId">Videos</a></li>
 						 
 						  
-						      <li class=""><a href="partyManagementAction.action">Manage Party Profile</a></li>
+						      <li class=""><a href="partyManagementAction.action" id="partyManagementTabId">Manage Party Profile</a></li>
 						   
 						  
-						  <li class=""><a href="contactUs.action">Contact Us</a></li>
+						  <!--<li class=""><a href="contactUs.action">Contact Us</a></li>-->
 						   </c:if> </c:if>
 						  
 						</ul>
