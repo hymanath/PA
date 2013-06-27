@@ -46,7 +46,7 @@ getNewsForPagination(1);
 function getNewsForPagination(num){
 var startRecord=1;
 	if(num==1){
-		startRecord=1;
+		startRecord=0;
 	}
 	else{
 		startRecord=num*2

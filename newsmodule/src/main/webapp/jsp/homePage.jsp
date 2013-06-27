@@ -69,7 +69,7 @@
 				<div class="span2 offset1 m_top5 pull-right">	
 					<ul class="">
 						<li class="dropdown btn btn-mini">
-						   <a href="javascript:{}" onclick="loginPopUp()" data-toggle="dropdown" role="button" class="dropdown-toggle muted "> <b class="icon-user"></b> User Login </a>
+						   <a href="javascript:{}" onclick="loginPopUp()" data-toggle="dropdown" role="button" class="dropdown-toggle muted "> <b class="icon-user"></b><b> User Login </b> </a>
 							<div id="loginDiv" style="display:none;"></div>
 							<!-- <ul  id="loginMenu" class=" dropdown-menu span3 pull-right m_top10" style="border-top: 5px solid rgb(255, 218, 78);"> 
 							 <div class="arrow" />

@@ -4128,6 +4128,9 @@ function editNewsDetails(fileId,source){
 
     str += '   <tr>';
 	str += '       <td class="tdWidth">Keywords</td>';
+	if(source == "Eenadu Telugu")
+	str += '       <td class="selectWidthPadd"><input type="text"  style="font-family: eFont; font-size: 20px;" id="keywordsForEdit" name="keywords" size="25" maxlength="200" style="margin-top:8px;" value="'+reqFile.keywords+'" ></text></td></tr>';
+	else
 	str += '       <td class="selectWidthPadd"><input type="text" id="keywordsForEdit" name="keywords" size="25" maxlength="200" style="margin-top:8px;" value="'+reqFile.keywords+'" ></text></td></tr>';
 
 	str += '   <TR>';
@@ -4243,6 +4246,9 @@ function editNewsDetails(fileId,source){
    }
    str +='    <tr>';
     str +='	   <td class="tdWidth">News description in details</td>';
+	if(source == "Eenadu Telugu")
+	    str +='	   <td><textarea id="newsfileDescriptionForEdit" style="font-family: eFont; font-size: 20px;" cols="20" rows="3" name="fileDescription" >'+reqFile.newsDescription+'</textarea></td>';
+     else
     str +='	   <td><textarea id="newsfileDescriptionForEdit" cols="20" rows="3" name="fileDescription" >'+reqFile.newsDescription+'</textarea></td>';
     str +='  </tr>';
 
@@ -4967,7 +4973,7 @@ return false;
   {
    title  = document.getElementById("fileTitle").value;
    description  = document.getElementById("fileDescription").value;
-    
+    //changes by anil
 	title = htmlEntity(title);
 	description = htmlEntity(description);
     //CHANGE BY SAMBA START
@@ -4980,6 +4986,7 @@ return false;
    locationScopeId = document.getElementById("scopeDivForEdit").value;
    fileGallaryId = $('#fileGallaryId').val();
    newsDescription = $('#newsfileDescriptionForEdit').val();
+   newsDescription = htmlEntity(newsDescription);
 
    try
   {
@@ -4995,8 +5002,8 @@ return false;
 
 
 
-   keywords = removeAllUnwantedCharacters(keywords); 
-   
+  // keywords = removeAllUnwantedCharacters(keywords); 
+   keywords = htmlEntity(keywords);
 
     //CHANGE BY SAMBA END
    
@@ -5809,6 +5816,7 @@ function showUserNewsCategoryStatus(results)
   $("#errorMsgDiv").html('Error Occured! Try Again..').css('color','red');
 	return;
 }
+//changes by anil
 function htmlEntity(aa) {
 
 var bb = '';
