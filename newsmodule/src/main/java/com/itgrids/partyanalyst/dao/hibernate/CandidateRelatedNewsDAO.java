@@ -50,7 +50,7 @@ ICandidateRelatedNewsDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FileGallary> getFileGallaryListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate)
+	public List<FileGallary> getFileGallaryListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate,List<Long> gallaryIdsList)
     {
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.fileGallary from CandidateRealatedNews model where model.candidate.candidateId =:candidateId and ");
@@ -65,7 +65,10 @@ ICandidateRelatedNewsDAO {
 		 str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
 		if(toDate != null)
 		 str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
-				
+			
+		if(gallaryIdsList != null && gallaryIdsList.size() > 0)
+		 str.append(" and model.fileGallary.gallary.gallaryId in (:gallaryIdsList) ");
+		
 		 str.append(" order by model.fileGallary.file.fileDate desc ");
 		Query query = getSession().createQuery(str.toString());
 			 
@@ -76,6 +79,8 @@ ICandidateRelatedNewsDAO {
 		 if(toDate != null)
 		  query.setParameter("toDate", toDate);
 		 
+		 if(gallaryIdsList !=null && gallaryIdsList.size() > 0)
+		  query.setParameterList("gallaryIdsList", gallaryIdsList);
 		 if(firstResult != null)
 		 query.setFirstResult(firstResult);
 		 if(maxResult != null)
@@ -85,8 +90,9 @@ ICandidateRelatedNewsDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCandidatesWithCount(){
-		Query queryObj=getSession().createQuery("select count(model.fileGallary.fileGallaryId), model.candidate.candidateId,model.candidate.lastname " +
-				"from CandidateRealatedNews model group by model.candidate.candidateId order by model.candidate.lastname ");
+		Query queryObj=getSession().createQuery("select count(distinct model.fileGallary.fileGallaryId), model.candidate.candidateId,model.candidate.lastname " +
+				"from CandidateRealatedNews model where model.fileGallary.isPrivate='false' and model.fileGallary.isDelete ='false' and model.fileGallary.gallary.isDelete ='false' " +
+				" and model.fileGallary.gallary.isPrivate='false' and model.fileGallary.file.fileId is not null group by model.candidate.candidateId order by model.candidate.lastname ");
 		return queryObj.list();
 	}
 
