@@ -10,6 +10,8 @@
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
 	<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
+	<script type="text/javascript" src="js/homePage/newHomePage.js"> </script>
+	<script type="text/javascript" src="js/homePage/newHomePage_inner.js"> </script>
 </head>
 <style>
 	
@@ -201,7 +203,7 @@ lable{line-height:40px;}
 	<div class="widget-block" contentindex="4c">
 		<h5> View Election Results</h5>
 			<p>You can view your Assembly or Parliament past Election Results.</p>
-		<table>
+		<table style="margin-left: -34px; margin-top: -35px;">
 			<tbody>
 				<tr>
 					<td width="65%">
