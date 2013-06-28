@@ -272,4 +272,22 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}
 	
+  public String getNewsForACandidate()
+  {
+	  try{
+		jObj = new JSONObject(getTask());
+		if(jObj.getString("task").equalsIgnoreCase("getNewsTitlesForACandidate"))
+		  selectOptionVOList = candidateDetailsService.getNewsTitlesForACandidateByGalleryId(jObj.getLong("candidateId"),jObj.getLong("gallaryId"),jObj.getString("fromDate"),jObj.getString("toDate"));
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getNewsForACandidateByCategoryId"))
+		 selectOptionVOList = candidateDetailsService.getNewsForACandidateByCategoryId(jObj.getLong("candidateId"),jObj.getLong("categoryId"),jObj.getString("fromDate"),jObj.getString("toDate"));
+		
+		
+	 }catch (Exception e) {
+		 e.printStackTrace();
+		 Log.error("Exception Occured in getNewsForACandidate() method, Exception - "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
