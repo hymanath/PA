@@ -215,7 +215,7 @@ str +='<div class="form-signin modal-body ">';
 str +='<div id="LoginErrorMessageDiv"></div>';
 str +='<input type="text" id="userName1" placeholder="Email address" class="input-block-level" />';
 str +='<input type="password" placeholder="Password" class="input-block-level" id="passWord_Id1" />';
-str+='<input id="signin" value="Sign In" onclick="ajaxCallForLoginPopup();" class="btn btn-large btn-primary" style="width: 63px;"/>';
+str+='<input type="button" class="btn btn-success" id="signin" value="Sign In" onclick="ajaxCallForLoginPopup();" class="btn btn-large btn-primary" style="width: 63px;"/>';
 
 str +='</div>';
 str +='</ul></div>';
