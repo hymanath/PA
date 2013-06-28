@@ -496,7 +496,7 @@ lable{line-height:40px;}
 				<h2>Voters Analysis </h2>
 				<fieldset>
 					<lable>Select Constituency </lable>
-					<s:select cssClass="selectstyle span12" theme="simple" id="constituencyId" name="constituencyId" list="constituencyList" listKey="id" listValue="name" ></s:select>
+					<s:select cssClass="selectstyle span12" theme="simple" id="constituencyId"  list="constituencyList" listKey="id" listValue="name" ></s:select>
 				
 					<input type="button" value="View" class="btn btn-small" onCLick="openVotersAnalysts();" style="float:right;"></input>
 				</fieldset>
@@ -506,7 +506,7 @@ lable{line-height:40px;}
 				<h2> Results Vs Caste</h2>
 				<fieldset>
 				<lable>Constituency </lable>
-				<s:select cssClass="selectstyle" theme="simple" id="constituencyList" name="constituencyList" list="constituencyList" listKey="id" listValue="name" ></s:select>
+				<s:select cssClass="selectstyle" theme="simple" id="constituencyList"  list="constituencyList" listKey="id" listValue="name" ></s:select>
 					
 			   <input type="button" value="View" class="btn btn-small" onCLick="openCasteViseAnalysis();" style="float:right;"></input>
 				</fieldset>
@@ -693,7 +693,8 @@ lable{line-height:40px;}
 
 <script>
  $(document).ready(function(){
- 
+	//$("#constituencyId option[value=0]").remove();
+	//$("#constituencyList option[value=0]").remove();
  	  /*$('#selConstituency').combobox();
  	  
 	  $('#selConstituency').next().click(function(){
@@ -721,6 +722,8 @@ var loginMode = '${loginMode}';
 var stateId = $('#stateList_d').val();
 var districtId = '${districtId}';
 var selType= "";
+$("#constituencyId option[value=0]").remove();
+$("#constituencyList option[value=0]").remove();
 getDistrictsComboBoxForAState(stateId,"districtList_d");
 getAllConstituenciesInStateByType(2,stateId,"constituency");
           <c:if test="${boothAnalysisData != null}">
