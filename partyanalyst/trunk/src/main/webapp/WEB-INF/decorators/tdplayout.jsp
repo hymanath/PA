@@ -29,7 +29,7 @@
 	<!--<link type="text/css" href="styles/assets/css/bootstrap.css" rel="stylesheet">-->
 	<link type="text/css" href="styles/tdp/menu.css" rel="stylesheet" />
 	<link href="styles/tdphome_inner_styles.css" rel="stylesheet" type="text/css" />
-	
+		<link rel="stylesheet" type="text/css" href="styles/home_style.css">
 	
 	<!--Script file
 	<script type="text/javascript" src="js/jquery.js"></script>-->
@@ -139,7 +139,7 @@ margin-top:10px;
   <div class="mainwrapper">
   <div>
     <div class="row-fluid">
-	 <div class="pull-right" style="margin-right:35px;margin-top:5px;">
+	 <div class="pull-right" style="margin-right:35px;margin-top:5px;font-family:helvetica;font-size:14px;font-weight:bold;">
        
 <c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
                                         <c:out value="Welcome, ${sessionScope.UserName} |"/></c:if>
