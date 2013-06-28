@@ -23,7 +23,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
 	
-	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
+	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 	<!--Bootstrap styles file-->
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 	<!--<link type="text/css" href="styles/assets/css/bootstrap.css" rel="stylesheet">-->
@@ -44,15 +44,7 @@
 	<script type="text/javascript" src="js/bootstrap.js" ></script>
 	<!--<script type="text/javascript" src="styles/assets/css/js/bootstrap.js" ></script>-->
 	
-	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 
-%>
-
-<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
-
-<% }
-
-%>
 	
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
@@ -188,7 +180,7 @@ margin-top:10px;
     </div>
 <div id="menu" class="span10" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;">
     <ul class="menu">
-        <li class="active"><a href="homePage.action"><span><i class="icon-home icon-black"></i></span></a></li>
+        <li class="active"><a href="newhomePageAction.action"><span><i class="icon-home icon-black"></i></span></a></li>
 	
     
 	
@@ -204,9 +196,10 @@ margin-top:10px;
 								<li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a></li>
 								<li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a></li>
 								<li><a href="electionResultsAnalysisAction.action"><span>Election Results Analysis Report</span></a></li>
-								<li><a href="biElectionAction.action"><span>Telengana Bye-Elections 2010</span></a></li>
+								
 								<li><a href="censusReportAction.action"><span>Elections vs Demographics</span></a></li>
 								<li><a href="partyStrengthAction.action"><span>Party Strenths/Weakness</span></a></li>
+								<li><a href="electionLiveResultsAnalysisAction.action"><span>Live & Previous Results Comparison</span></a></li>
 							</ul>
 						</div>
                 </li>
@@ -227,7 +220,7 @@ margin-top:10px;
 		</div>
 		</li>
         
-		<li><a href="initailConstituencyManagementAction.action" class="parent"><span>CONSTITUENCY</span></a>
+		<li><a href="initailConstituencyManagementAction.action" class="parent"><span>MANAGEMENT TOOLS</span></a>
             <div  style="z-index:1;text-align:left;">
 				<ul>
 					<li><a href="#" class="parent"><span>Problem Management</span></a>

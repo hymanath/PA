@@ -26,7 +26,7 @@
 	
 	
 
-	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
+	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 	<!--Bootstrap styles file-->
 	<!--<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">-->
 	<link type="text/css" href="styles/assets/css/bootstrap.css" rel="stylesheet">
@@ -69,22 +69,14 @@
 <script type="text/javascript" src="js/jquery.anythingslider.js"></script>
 <script type="text/javascript" src="js/bannerslider.js"></script>
 
-	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 
-%>
-
-<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
-
-<% }
-
-%>
 	
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
-	
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<!--YUI SCRIPT-->
 	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
 	
@@ -196,7 +188,7 @@ margin:-1px 0px 0px 0px ;
     </div>
 <div id="menu" class="span10" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;">
     <ul class="menu">
-        <li class="active"><a href="homePage.action"><span><i class="icon-home icon-black"></i></span></a></li>
+        <li class="active"><a href="newhomePageAction.action"><span><i class="icon-home icon-black"></i></span></a></li>
 	
     
 	
@@ -212,9 +204,10 @@ margin:-1px 0px 0px 0px ;
 								<li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a></li>
 								<li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a></li>
 								<li><a href="electionResultsAnalysisAction.action"><span>Election Results Analysis Report</span></a></li>
-								<li><a href="biElectionAction.action"><span>Telengana Bye-Elections 2010</span></a></li>
+								
 								<li><a href="censusReportAction.action"><span>Elections vs Demographics</span></a></li>
 								<li><a href="partyStrengthAction.action"><span>Party Strenths/Weakness</span></a></li>
+								<li><a href="electionLiveResultsAnalysisAction.action"><span>Live & Previous Results Comparison</span></a></li>
 							</ul>
 						</div>
                 </li>
@@ -235,7 +228,7 @@ margin:-1px 0px 0px 0px ;
 		</div>
 		</li>
         
-		<li><a href="initailConstituencyManagementAction.action" class="parent"><span>CONSTITUENCY</span></a>
+		<li><a href="initailConstituencyManagementAction.action" class="parent"><span>MANAGEMENT TOOLS</span></a>
             <div  style="z-index:1;text-align:left;">
 				<ul>
 					<li><a href="#" class="parent"><span>Problem Management</span></a>
@@ -1267,9 +1260,9 @@ function buildLocalBodiesForAState(jsObj,results)
 	var str = '';
 	for(var i=0; i<results.length; i++)
 	{
-		str += '<label class="radio">';
+		str += '<label class="radio" style="width:150px;">';
 		str += '<input type="radio" name="localBodyRadio" onclick="getSelectElmtForLocalBody(this.value)" value="'+results[i].id+'"> '+results[i].name+' </input><br>';
-		str +='</label>'
+		str +='</label></br>'
 		/*if(i == 1)
 			str += '<br/>';*/
 	}
