@@ -295,6 +295,24 @@ padding: 0 20px;
 .nav-tabs > li > a:hover,.nav-tabs > li > a:focus{border-color:none;background-color:#5caceb;color:#fff;}
 #list1,#candidateList{width: 260px;}
 #errorMsgDiv{ font-size: 12px;}
+
+#allLabelId{float: left; margin-left: 146px;}
+#byGallaryLabelId{float: left; margin-left: 13px;}
+#byCategoryLabelId{float: left; margin-left: 13px;}
+#gallaryCheckboxId,#gallaryAllCheckboxId,#categoryCheckboxId{margin-top: 0px; margin-right: 4px;}
+#responseContentDiv{margin: 17px auto 25px; float: none; width: 600px; padding-bottom: 14px;padding-top: 3px;}
+#candidatesDiv{ margin-top: 12px;}
+#fromDateId,#toDateId,#candidatesList,#candidateCategoryId{margin-left: 4px;cursor:pointer;}
+#candidateNewsList,#respenseNewsList{width: 300px;}
+#buttonsDiv{margin-bottom: 8px; margin-top: 6px;}
+#categoryGallaryHideShowDiv{margin-top: 10px; margin-bottom: 43px;}
+#candidateCategoryId{margin-right: 20px;}
+#categoryGallary{margin-top: 0px;margin-right: 4px;}
+#gallaryShowHideDiv{margin-left: 70px;}
+#categoryShowHideDiv{margin-left: 70px;}
+#gallaryList{margin-left: 15px;}
+#noNewsError{margin-bottom: 9px; margin-top: -11px;color:red;font-weight:bold;}
+#dateErrorMessage{color:red;font-weight:bold;}
 </style>
 </head>
 <script type="text/javascript">
@@ -603,11 +621,31 @@ function getSource(selectOptionId){
 			{
 				buildGallaries('gallariesList' , myResults);
 			}
-			else if(jsObj.task == 'getAllTheNewsOfAGallary')
+			else if(jsObj.task == 'getAllTheNewsOfAGallary' || jsObj.task == 'getNewsTitlesForACandidate' || jsObj.task == 'getNewsForACandidateByCategoryId')
 			{
+				 clearOptionsListForSelectElmtId('candidateNewsList');
                  buildNewsOfAGallary('candidateNewsList' , myResults);
 			}
 			
+			else if(jsObj.task == "getCandidateRelatedGallaries")
+			{
+			  clearOptionsListForSelectElmtId('gallaryList');
+			  createOptionsForSelectElement('gallaryList',myResults);
+			  
+			}
+
+			else if(jsObj.task == "getCandidateRelatedCategories")
+			{
+			  clearOptionsListForSelectElmtId('candidateCategoryId');
+			  createOptionsForSelectElement('candidateCategoryId',myResults);
+			}
+			else if(jsObj.task == "getGallariesForSelectedCategory")
+			{
+				clearOptionsListForSelectElmtId('gallaryList');
+			    createOptionsForSelectElement('gallaryList',myResults);
+
+			}
+
      	}
 		catch(e)
 		{   
@@ -1731,13 +1769,14 @@ function buildUploadNewsForMultipleUsers()
 	str+='</table>';*/
 	str+='<div id="responseContentDiv" style="display:none;border:1px solid #a6a66a;width:526px;margin:17px 0px 25px 94px">';
        str+='<div style="margin-left:72px;">';
-	   	 	 str+='<span id="dateErrorMessage"></span><br>';
+	   	 	 str+='<div id="dateErrorMessage"></div><br>';
+         str+='<div id="noNewsError"></div>';
 
 	     str+='<span style="margin-right:30px;"><b>Start Date:<font class="requiredFont">*</font></b><input type="text" name="fromDate" class="inputClass" id="fromDateId" readonly="true"/></span>';
 		 str+='<span><b>End Date:<font class="requiredFont">*</font></b><input type="text" name="toDate" readonly="true" class="inputClass" id="toDateId"/></span>';
 	   str+='</div>';
 
-       str+='<div><label style="float:left;margin-left:182px;"><input style="margin:0px;" type="radio" name="newsType" value="party" class="typeRadio">Party</input></label><label style="margin-left:249px;"><input type="radio" checked="checked" style="margin:0px;" name="newsType" value="candidate" class="typeRadio" selected>Candidate</input></label></div>'
+       str+='<div><label style="float:left;margin-left:182px;"><input style="margin-top: 0px; margin-right: 4px;" type="radio" name="newsType" value="party" class="typeRadio">Party</input></label><label style="margin-left:249px;"><input type="radio" style="margin-top: 0px; margin-right: 4px;" checked="checked" name="newsType" value="candidate" class="typeRadio" selected>Candidate</input></label></div>'
 
 	     str+='<div style="margin-left:70px;" id="candidatesDiv">';
 	     str+='<b>Select Candidate :<font class="requiredFont">*</font></b><select id="candidatesList"></select>';
@@ -1757,10 +1796,31 @@ function buildUploadNewsForMultipleUsers()
 
 		 str+='</div>';
 
-		 str+='<div id="noNewsError"></div>';
-       
-	   str+='<div style="text-align:center;">';
-		 str+='<div><select id="candidateNewsList"  multiple="true" style="display:none;"></select></div>';
+		 //str+='<div id="noNewsError"></div>';
+         
+		 str +='<div id="categoryGallaryHideShowDiv" style="display:none;">';
+		 str +='<label id="allLabelId"><input type="checkbox" value="ByGallery" id="gallaryAllCheckboxId" checked="true" onclick="getCandidateNews();"/>All</label>';
+		 str +='<label id="byGallaryLabelId"><input type="checkbox" value="ByGallery" id="gallaryCheckboxId"/>By Gallery</label>';
+		 str +='<label id="byCategoryLabelId"><input type="checkbox" value="ByCategory" id="categoryCheckboxId"/>By Category</label>';
+		 str +='</div>';
+                 
+         str +='<div id="categoryShowHideDiv" style="display:none;">';
+		 str +='<b>Select Category :<font class="requiredFont">*</font></b><select id="candidateCategoryId"></select>';
+		 str +='<input type="checkbox" value="categoryGallaries" id="categoryGallary"/>Gallery'; 
+         str +='</div>';
+
+		 str +='<div id="gallaryShowHideDiv" style="display:none;"><b>Select Gallery :<font class="requiredFont">*</font></b><select id="gallaryList"></select></div>';
+
+		 /* str +='<div id="categoryGallaryShowHideDiv" style="display:none;text-align:center;">';
+		 str +='<select id="categoryGallarySelect"></select>';
+		 str +='</div>'; */
+
+
+	     str+='<div style="text-align:center;">';
+		 str+='<div style="clear:both;"><select id="candidateNewsList"  multiple="true" style="display:none;"></select></div>';
+
+		 /*str +='<div id="gallaryShowHideDiv" style="display:none;"><select id="gallaryList"></select></div>';*/
+		 
 
 	     str+='<div style="display:none;" id="buttonsDiv"><input type="button" id="addFile" value="Add"/>';
 		 str+='<input type="button" value="Remove" id="deleteFile"/>';
@@ -3730,6 +3790,9 @@ $(".dateField").live("click", function(){
 
 
 	 $(document).on("change",'#gallariesList', function(){
+		 $("#noNewsError").html('');
+		 $('#dateErrorMessage').html("");
+
        if($('#fromDateId').val() == "" || $('#toDateId').val() == ""){
 			$('#dateErrorMessage').html("<b style='color:red;'>Select Date Range</b>");
 		}else{
@@ -3747,13 +3810,15 @@ $(".dateField").live("click", function(){
 	$(document).on("change",'.typeRadio', function(){
 		$('#noNewsError ,#dateErrorMessage').html('');
 		$('#candidateNewsList , #respenseNewsList , #buttonsDiv').hide();
-
+        $("#gallaryShowHideDiv").css("display","none");
+		$("#categoryShowHideDiv").css("display","none");
 		if(this.value == "candidate"){
 			$('#candidatesDiv').show('slow');
 			$('#partyNewsDiv').hide('slow');
 			$('#candidatesList').val("");
 		}else
 		{
+			$("#categoryGallaryHideShowDiv").css("display","none");
 			$('#candidatesDiv').hide();
 			$('#partyNewsDiv').show('slow');
 			$('#partyList').val(872);
@@ -3782,6 +3847,7 @@ $(document).on("click",'#fromDateId , #toDateId', function(){
 		  if($('#responseContentDiv').css('display') == "block"){
 			  $('#candidatesList').val("");
 			  $('#dateErrorMessage').html("");
+              $('#noNewsError').html('');
 		  }
 
 		   $('#responseContentDiv').toggle('slow');
@@ -3859,23 +3925,191 @@ $(document).on("click",'#fromDateId , #toDateId', function(){
    });
 
     $(document).on('change','#candidatesList',function(){
+        $('#dateErrorMessage').html("");
+		$('#noNewsError').html("");
+		
 		if($('#fromDateId').val() == "" || $('#toDateId').val() == ""){
 			$('#dateErrorMessage').html("<b style='color:red;'>Select Date Range</b>");
 		}else if($(this).val() != ""){
-         getCandidateNews($(this).val());
+
+		 $("#categoryGallaryHideShowDiv").css('display','inline-block');
+		 $("#gallaryShowHideDiv").css("display","none");
+
+         $("#respenseNewsList").find('option').remove();
+		 $("#candidateNewsList").find('option').remove();
+
+		 $("#gallaryAllCheckboxId").attr("checked",true);
+		 getCandidateNews();
+
+         //getCandidateNews($(this).val());
+		 //$("#gallaryAllCheckboxId").trigger('click');
 		}
    
     });
+//CategoryGallary
+//gallary
+$("#gallaryCheckboxId").live("click",function(){
+ $("#categoryCheckboxId").attr('checked',false);
+ $("#gallaryAllCheckboxId").attr('checked',false);
+ $("#respenseNewsList").find('option').remove();
+ $("#respenseNewsList").css('display','none');
+ $("#buttonsDiv").css('display','none');
+ $("#categoryShowHideDiv").css('display','none');
+ if($("#gallaryCheckboxId").is(":checked"))
+ {
+  getCandidateGallaries();
+ }
+	
+});
+$("#gallaryList").live("change",function(){
+ getNewsTitlesForACandidateByGallaryId();
+	
+});
+$("#categoryGallarySelect").live("change",function(){
+ getNewsTitlesForACandidateByGallaryId();
+	
+});
+//category
+$("#categoryCheckboxId").live("click",function(){
+ $("#gallaryCheckboxId").attr('checked',false);
+ $("#gallaryAllCheckboxId").attr('checked',false);
+ $("#candidateNewsList").css("display","none");
+ $("#buttonsDiv").css("display","none");
+ $("#respenseNewsList").find("option").remove();
+ $("#respenseNewsList").css("display","none");
+ $("#categoryGallary").attr('checked',false);
 
+ $("#candidateNewsList").css("display","none");
 
+ $("#respenseNewsList").find('option');
+ $("#respenseNewsList").css("display","none");
+
+ $("#gallaryShowHideDiv").css("display","none");
+
+ if($("#categoryCheckboxId").is(":checked"))
+  getCandidatecategories();
+	
+});
+$("#gallaryList").live("change",function(){
+ $("#respenseNewsList").find('option').remove();
+	
+});
+
+$("#categoryGallary").live("click",function(){
+
+	var candidateId = $("#candidatesList").val();
+	$('#dateErrorMessage').html('');
+	$("#candidateNewsList").css('display','none');
+    $("#buttonsDiv").css('display','none');
+	$("#respenseNewsList").css('display','none');
+	$('#noNewsError').html('');
+
+  if($("#categoryGallary").is(":checked"))
+  {
+	 
+	 if(candidateId == 0)
+	 {
+       $('#dateErrorMessage').html('Please Select Candidate.');
+		return;
+	 }
+      if($("#candidateCategoryId").val() == 0)
+	  {
+        $('#dateErrorMessage').html('Please Select Category.');
+		return;
+	  }
+
+	 var categoryIdsArray = new Array();
+    
+	  $('#candidateCategoryId > option:selected').each(
+       function(i){
+         categoryIdsArray.push($(this).val());
+     });
+       if(categoryIdsArray == null || categoryIdsArray == "null" || categoryIdsArray.length == 0)
+	   {
+         $('#dateErrorMessage').html('Please Select Category.');
+		 return;
+	   }
+	$("#gallaryShowHideDiv").css('display','block');
+	
+      var jsObj={
+		candidateId:candidateId,
+		categoryIds:categoryIdsArray,
+		task:'getGallariesForSelectedCategory'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getGallariesForSelectedCategoryAction.action?"+rparam;
+	callAjax(jsObj, url);
+	 
+ 
+  }
+  else
+	{
+     clearOptionsListForSelectElmtId('categoryGallarySelect');
+	 $("#gallaryShowHideDiv").css("display","none");
+	}
 
 });
+$("#candidateCategoryId").live("click",function(){
+	
+	$("#categoryGallary").attr('checked', false);
+	$("#gallaryShowHideDiv").css("display","none");
+});
+
+
+//Category Onchange
+
+$("#candidateCategoryId").live("change",function(){
+
+  var candidateId = $("#candidatesList").val();
+  var categoryId = $("#candidateCategoryId").val();
+  var fromDate = $("#fromDateId").val();
+  var toDate = $("#toDateId").val();
+  $("#respenseNewsList").find('option').remove();
+  $("#candidateNewsList").find('option').remove();
+
+  $("#respenseNewsList").css('display','none');
+  $("#candidateNewsList").css('display','none');
+  $("#buttonsDiv").css('display','none');
+
+  $("#noNewsError").html('');
+  $("#dateErrorMessage").html('');
+
+  if(categoryId == 0)
+  {
+    $("#noNewsError").html('Please Select Category.');
+	return;
+  }
+  
+  
+  if($("#categoryGallary").is(":checked") == false)
+  {
+	 $("#respenseNewsList").css('display','inline-block');
+     $("#candidateNewsList").css('display','inline-block');
+	 $("#buttonsDiv").css('display','inline-block');
+
+    var jsObj={
+		candidateId:candidateId,
+		categoryId:categoryId,
+		fromDate:fromDate,
+	    toDate:toDate,
+		task:'getNewsForACandidateByCategoryId'
+	  };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	 var url = "getNewsForACandidateByCategoryIdAction.action?"+rparam;
+	 callAjax(jsObj, url);
+  }
+	
+});
+
+
+});//End of Ready 
 
 
 function checkAllValuesAndSendAjaxForNews()
 {
 	if($('#fromDateId').val() != "" && $('#toDateId').val() != "" && $('#gallariesList').val() != "" && $('#gallariesList').val() != "0"){
 		$('#dateErrorMessage').html('');
+		$('#noNewsError').html("");
 		$('#gallariesList').change();
 	}
 
@@ -3886,6 +4120,7 @@ function checkAllValuesAndSendAjax()
 	if($('#fromDateId').val() != "" && $('#toDateId').val() != "" && $('#candidatesList').val() != ""){
 		$('#dateErrorMessage').html('');
 		$('#candidatesList').change();
+		$('#noNewsError').html("");
 	}
 
 }
@@ -5221,10 +5456,19 @@ function getAllNewsOfAGallary(gallaryId)
 
 }
 
-function getCandidateNews(candidateId)
+function getCandidateNews()
 {
 
-	var jsObj =
+    $("#gallaryCheckboxId").attr("checked",false);
+	$("#categoryCheckboxId").attr("checked",false);
+	$("#respenseNewsList").find('option').remove();
+
+	$("#categoryShowHideDiv").css("display","none");
+	$("#gallaryShowHideDiv").css("display","none");
+	if($("#gallaryAllCheckboxId").is(":checked"))
+	{
+	  var candidateId = $("#candidatesList").val();
+	  var jsObj =
 		{ 
 		    candidateId : candidateId,
             fromDate : $('#fromDateId').val(),
@@ -5232,22 +5476,26 @@ function getCandidateNews(candidateId)
 			task:"getNewsForACandidate"
 		};
 
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getNewsForACandidate.action?"+rparam;						
-	callnewAjax(jsObj,url);
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	  var url = "getNewsForACandidate.action?"+rparam;						
+	  callnewAjax(jsObj,url);
+	}
 
 }
 
 function buildNewsDetailsOfcandidate(results)
 {
 	$('#noNewsError').html('');
+	$('#dateErrorMessage').html('');
 	if(results == null || results.length == 0)
 	{
 		$('#candidateNewsList , #respenseNewsList , #buttonsDiv').hide();
 		$('#noNewsError').html('<b style="color:red;">No news found.Changing the date range may help you.</b>');
+		$("#categoryGallaryHideShowDiv").css("display","none");
 		return false;
 	}else{
 
+		$("#categoryGallaryHideShowDiv").css("display","block");
 		$('#candidateNewsList , #respenseNewsList , #buttonsDiv').show();
 	}
 	$('#candidateNewsList').find('option').remove();
@@ -6017,6 +6265,185 @@ function IsNumeric1(val) {
 		$('.newslength').val('');
 	}
 }
+
+
+//Gallary
+
+function getCandidateGallaries()
+{
+  $("#candidateNewsList").css("display","none");
+  $("#gallaryShowHideDiv").css("display","block");
+    var fromDate = "";
+	var toDate = "";
+	var candidateId = $("#candidatesList").val();
+	$("#noNewsError").html('');
+	$("#dateErrorMessage").html('');
+	if(candidateId == 0)
+	{
+	  $("#noNewsError").html('Please Select Candidate');
+	  return;	
+	}
+	   fromDate = $("#fromDateId").val();
+	   toDate = $("#toDateId").val();
+	
+	   if(fromDate=="" && toDate == "")
+	   {
+		 $("#noNewsError").html('Please Select From And To Dates');
+		 return;
+	   }
+	   else if(fromDate =="")
+	   {
+	     $("#noNewsError").html('Please Select From Date');
+		 return;
+	   }
+	   else if(toDate =="")
+	   {
+	     $("#noNewsError").html('Please Select To Date');
+		 return;
+	   }
+	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
+         $("#noNewsError").html('Invalid Date Selection.');
+         return;
+	   } 
+	
+
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		candidateId:candidateId,
+		task:'getCandidateRelatedGallaries'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidateRelatedGallariesAction.action?"+rparam;
+	callAjax(jsObj, url);
+
+
+}
+
+function getCandidatecategories()
+{
+	$("#categoryShowHideDiv").css("display","block");
+   var fromDate = "";
+	var toDate = "";
+	var candidateId = $("#candidatesList").val();
+	$("#dateErrorMessage").html('');
+	$('#noNewsError').html("");
+	if(candidateId == 0)
+	{
+	  $("#dateErrorMessage").html('Please Select Candidate');
+	  return;	
+	}
+	
+	   fromDate = $("#fromDateId").val();
+	   toDate = $("#toDateId").val();
+	
+	   if(fromDate=="" && toDate == "")
+	   {
+		 $("#dateErrorMessage").html('Please Select From And To Dates');
+		 return;
+	   }
+	   else if(fromDate =="")
+	   {
+	     $("#dateErrorMessage").html('Please Select From Date');
+		 return;
+	   }
+	   else if(toDate =="")
+	   {
+	     $("#dateErrorMessage").html('Please Select To Date');
+		 return;
+	   }
+	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
+         $("#dateErrorMessage").html('Invalid Date Selection.');
+         return;
+	    
+	}
+
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		candidateId:candidateId,
+		task:'getCandidateRelatedCategories'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidateRelatedCategoriesAction.action?"+rparam;
+	callAjax(jsObj, url);
+
+}
+
+function getNewsTitlesForACandidateByGallaryId()
+{
+	$("#noNewsError").html('');
+	$("#dateErrorMessage").html('');
+  var candidateId = $("#candidatesList").val();
+	var gallaryId = $("#gallaryList").val();
+	var fromDate = $("#fromDateId").val();
+	var toDate = $("#toDateId").val();
+
+	$("#respenseNewsList").find('option').remove();
+  $("#candidateNewsList").find('option').remove();
+
+  $("#respenseNewsList").css('display','none');
+  $("#candidateNewsList").css('display','none');
+  $("#buttonsDiv").css('display','none');
+
+	if(gallaryId == 0)
+	{
+	  $("#noNewsError").html('Please Select Gallery.');
+	  return;
+	}
+
+    $("#respenseNewsList").css('display','inline-block');
+    $("#candidateNewsList").css('display','inline-block');
+    $("#buttonsDiv").css('display','inline-block');
+
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		candidateId:candidateId,
+		gallaryId:gallaryId,
+		task:'getNewsTitlesForACandidate'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getNewsTitlesForACandidateAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function createOptionsForSelectElement(elmtId,optionsList)
+{	
+	var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	
+	var option = document.createElement('option');
+	option.value="0";
+	option.text="Select";
+	try
+	{
+		elmt.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		elmt.add(option); // IE only
+	}
+
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+
+}
+
 </script>
 </body>
 </html>
