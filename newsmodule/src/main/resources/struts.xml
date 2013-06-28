@@ -5514,6 +5514,19 @@
 		  <param name="root">galleriesList</param>
 		 </result>
 		</action>
+		
+		<action name="getNewsTitlesForACandidateAction" class="newsDetailsAction" method="getNewsForACandidate">
+		  <result type="json" name="success">
+		    <param name="root">selectOptionVOList</param>
+		  </result>
+		</action>
+		
+		<action name="getNewsForACandidateByCategoryIdAction" class="newsDetailsAction" method="getNewsForACandidate">
+		  <result type="json" name="success">
+		    <param name="root">selectOptionVOList</param>
+		  </result>
+		</action>
+		
 		</package>
 		
 		
