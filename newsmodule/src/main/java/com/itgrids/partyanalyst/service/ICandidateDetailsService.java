@@ -255,5 +255,8 @@ public interface ICandidateDetailsService {
 	 
 	public List<SelectOptionVO> getAllGallariesOfAParty(Long partyId);
 
-	 
+	public List<SelectOptionVO> getNewsTitlesForACandidateByGalleryId(Long candidateId,Long gallaryId,String fromDateStr,String toDateStr);
+	
+	public List<SelectOptionVO> getNewsForACandidateByCategoryId(Long candidateId,Long categoryId,String fromDateStr,String toDateStr);
+	
 }
