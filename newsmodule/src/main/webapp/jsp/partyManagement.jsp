@@ -46,7 +46,12 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <style>
-
+#fromDateId,#toDateId,#existingFromTextNews{
+cursor: text;
+}
+#Err4Numer,#Err4Numer1{
+color:red;
+}
 .currentTab
 {
  background-color:yellowgreen;
@@ -1701,7 +1706,7 @@ function buildUploadNewsForMultipleUsers()
 	str += '<h2 align="center">Upload A News</h2>';
 	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 
-     str+='<div class="aligncenter">';
+     str+='<div class="aligncenter" style="margin-left:-45px;">';
      //str+='<a style="margin-left:46px;font-weight:bold;color:blue;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
 
 	 str+='<a href="javascript:void(0)" title="Click here to respond to news"  id="responseDiv" style="margin-left:586px;"><img id="" src="images/responseImage.png"/></a>';
@@ -1724,7 +1729,7 @@ function buildUploadNewsForMultipleUsers()
 	 
 	str+='</div></td>';
 	str+='</table>';*/
-	str+='<div id="responseContentDiv" style="display:none;border:1px solid #a6a66a;width:526px;margin:17px 0px 25px 105px">';
+	str+='<div id="responseContentDiv" style="display:none;border:1px solid #a6a66a;width:526px;margin:17px 0px 25px 94px">';
        str+='<div style="margin-left:72px;">';
 	   	 	 str+='<span id="dateErrorMessage"></span><br>';
 
@@ -1734,20 +1739,20 @@ function buildUploadNewsForMultipleUsers()
 
        str+='<div><label style="float:left;margin-left:182px;"><input style="margin:0px;" type="radio" name="newsType" value="party" class="typeRadio">Party</input></label><label style="margin-left:249px;"><input type="radio" checked="checked" style="margin:0px;" name="newsType" value="candidate" class="typeRadio" selected>Candidate</input></label></div>'
 
-	     str+='<div style="margin-left:83px;" id="candidatesDiv">';
+	     str+='<div style="margin-left:70px;" id="candidatesDiv">';
 	     str+='<b>Select Candidate :<font class="requiredFont">*</font></b><select id="candidatesList"></select>';
 		 str+='</div>';
 
 		 str+='<div id="partyNewsDiv" style="display:none;">';
 
-		 str+='<div style="margin-left:83px;" id="partyDiv">';
+		 str+='<div style="margin-left:70px;" id="partyDiv">';
 
-	     str+='<b>Select Party :<font class="requiredFont">*</font></b><select id="partyList" style="margin-left:12px;"><option value="0">Select Party</option><option value="163">BJP</option><option value="362" >INC</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+	     str+='<b>Select Party :<font class="requiredFont">*</font></b><select id="partyList" style="margin-left:30px;"><option value="0">Select Party</option><option value="163">BJP<option value="265">CPI</option><option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
 		 str+='</div>';
 
           
-		 str+='<div style="margin-left:83px;" id="gallariesDiv">';
-	     str+='<b>Select Gallary :<font class="requiredFont">*</font></b><select id="gallariesList"></select>';
+		 str+='<div style="margin-left:70px;" id="gallariesDiv">';
+	     str+='<b>Select Gallary :<font class="requiredFont">*</font></b><select id="gallariesList" style="margin-left:17px"></select>';
 		 str+='</div>';
 
 		 str+='</div>';
@@ -1769,20 +1774,20 @@ function buildUploadNewsForMultipleUsers()
 	str+='</div>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
 	str += '   <tr>';
-	str += ' <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
+	str += ' <td class="tdWidth1">Select Category : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
-	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
+	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
 	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50"></input></td>'; 
-	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceTelugu"><img id="" src="images/letter-t-video.png"  style="height:20px;width:20px;" alt="Select telugu language"/></a> </td>';
-	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceEnglish" style="display:none"><img src="images/e-letter.jpg" style="height:20px;width:20px;"></img></a></td>';
+	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceTelugu"><img id="" src="images/letter-t-video.png"  style="height:35px;width:35px;" alt="Select Telugu language" title="Eenadu Telugu Language"/></a> </td>';
+	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceEnglish" style="display:none"><img src="images/e-letter.jpg" style="height:35px;width:35px;" title="English Language"></img></a></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">News Description : <font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription"></textarea></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Keywords</td>';
+	str += '       <td class="tdWidth1">Keywords : </td>';
 	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200"></input></td></tr>';
 	str += '<TR>';
 	str += ' <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
@@ -1796,17 +1801,17 @@ function buildUploadNewsForMultipleUsers()
 	str += '</TR>';
 	
 	str += '   </tr>';
-	str += '       <td class="tdWidth1">Category<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Importance<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">News Importance : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance"><option value="0">Select NewsImportance</option></select></td>';
 	str += '   </tr>';
 
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Select Party<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="partiesList" name="party" onchange="getCandidatesOfSelectedParty(this.value)"><option value="0">Select Party</option><option value="163">BJP</option><option value="362" >INC</option><option value="872" selected>TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></td>';
+	str += '       <td class="tdWidth1">Select Party : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="partiesList" name="party" onchange="getCandidatesOfSelectedParty(this.value)"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" selected>TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></td>';
 	str += '   </tr>';
 	
 
@@ -1814,7 +1819,7 @@ function buildUploadNewsForMultipleUsers()
 	str+='<tr><td></td><td><img id="candidateAjaxImg" src="images/search.jpg" style="display:none;"/></td></tr>';
 
 
-	str +='<tr><td class="tdWidth1">Select Candidate:</td><td><select multiple="true" id="list1"></select><select multiple="true" id="candidateList" name="candidateList"></select></td></tr>';
+	str +='<tr><td class="tdWidth1">Select Candidate : </td><td><select multiple="true" id="list1"></select><select multiple="true" id="candidateList" name="candidateList"></select></td></tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
 	str += ' <td id="newsPublicRadioDiv"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Visible to Public Also</font></b></input></label></td>';
@@ -1824,7 +1829,7 @@ function buildUploadNewsForMultipleUsers()
 	str += '       <td id="newsprivateRadioDiv"><label class="radio"><input type="radio" value="private" name="visibility" id="newsprivateRadioId"><b><font>Make This Private</font></b></input></label></td>';
 	str += '   </tr>';
 	str +='    <tr>';
-    str +='	   <td class="tdWidth1">Location Scope<font class="requiredFont">*</font></td>';
+    str +='	   <td class="tdWidth1">Location Scope : <font class="requiredFont">*</font></td>';
     str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
     str +='  </tr>';
 	str +='  <tr>';
@@ -1834,7 +1839,7 @@ function buildUploadNewsForMultipleUsers()
 	str +='  </tr>';
 
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News description in detail</td>';
+	str += '       <td class="tdWidth1">News description in details : </td>';
 	str += '       <td class="selectWidthPadd"><textarea id="newsDesc" cols="20" rows="3" name="newsDescription"></textarea></td>';
 	str += '   </tr>';
 	str += '   <tr>';
@@ -2296,7 +2301,7 @@ function buildAssmblParlElecYears(electionType)
      var str ='';
 		 str +='<table style="margin-left:45px;">';
 		 str +='  <tr>';
-		 str +='	   <td class="tdWidth1" style="width:153px;">Election Year<font class="requiredFont">*</font></td>';
+		 str +='	   <td class="tdWidth1" style="width:153px;">Election Year : <font class="requiredFont">*</font></td>';
 		 str +='	   <td class="selectWidthPadd"><select class="selectWidth" id="assmblParlElecYearsSelect" style="width:175px;text-align:left;" name="electionId"/></td>';
 		 str +='  </tr>';
 		 str +='</table>';
@@ -2328,7 +2333,7 @@ function buildStatesForAssParl(type)
     var str ='';
 		 str +='<table style="margin-left:45px;">';
 		 str +='  <tr>';
-		 str +='	   <td class="tdWidth1" style="width:153px;">State<font class="requiredFont">*</font></td>';
+		 str +='	   <td class="tdWidth1" style="width:153px;">State : <font class="requiredFont">*</font></td>';
 		 str +='	   <td><select id="stateDiv" class="selectWidth" name="locationValue" onchange="buildAssmblParlElecYears(\''+type+'\');"/></td>';
 		 str +='  </tr>';
 		 str +='</table>';
@@ -2393,7 +2398,7 @@ function getLocations(id){
    var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	    <td class="tdWidth1">State :<font class="requiredFont">*</font></td>';
+  str +='	    <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDiv" name="locationValue"/></td>';
   str +='  </tr>';
   str +='</table>';
@@ -2405,11 +2410,11 @@ function getLocations(id){
    var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">State :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">District :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="districtDiv" name="locationValue"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -2421,15 +2426,15 @@ function getLocations(id){
    var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">State :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1"> District :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1"> District : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="districtDiv" onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">Assembly Constituency :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -2452,19 +2457,19 @@ function getLocations(id){
     var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">State :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">District :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="districtDiv" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">Assembly Constituency :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"    onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="mandalDiv" name="locationValue" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -2486,23 +2491,23 @@ function getLocations(id){
     var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">State :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDiv"    onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">District :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="districtDiv"   onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">Assembly Constituency :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="mandalDiv"    onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">Village/Ward/Division :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">Village/Ward/Division : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue"  ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -2514,23 +2519,23 @@ function getLocations(id){
      var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">State :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/ ></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">District :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="districtDiv"  onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">Assembly Constituency :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="mandalDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth1">Village/Ward/Division :<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth1">Village/Ward/Division : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -2548,24 +2553,24 @@ function addMoreFiles()
 	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+fileCount+'" size="25" /></td>';
 	str += ' </tr>';
 	str += ' <tr>';
-	str += ' <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
+	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
 	str += ' <td class="selectWidthPadd"><select id="filesourceId'+fileCount+'" name="fileSourceId" style="width:175px;"><option value="0">Select Source</option></select></td>';
 	str += ' </tr>';
 	str += ' <tr>';
-	str += ' <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
+	str += ' <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
 	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+fileCount+'" name="sourceLanguageId" style="width:175px;"><option value="0">Select Language</option></select></td>';
 	
 	str += ' </tr>';
-	str += '       <td class="tdWidth1">Edition<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsedition'+fileCount+'" name="newsedition" style="width:175px;margin-top:8px;"><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Page Number<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+fileCount+'" name="pageno" class="pageno" size="25" maxlength="200" style="margin-top:8px;"></input></td>';
+	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+fileCount+'" name="pageno" class="pageno" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Length<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+fileCount+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;"></input></td>';
+	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+fileCount+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
 	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'moreFileTableId'+fileCount+'\')"></td>';
 	str += '   </tr>';
 	str +='</table>';
@@ -4169,12 +4174,12 @@ function editNewsDetails(fileId,source){
 	str += '<table><tr><td><div id="uploadNewsFileErrorDiv"/></td></tr></table>';
 	str += '<table style="display:-moz-inline-box;">';
 	str+='<tr>';
-	str+='<td class="tdWidth">Select News Gallery<font class="requiredFont">*</font></td>';
+	str+='<td class="tdWidth">Select News Gallery : <font class="requiredFont">*</font></td>';
 	str+='<td class="selectWidthPadd"><select style="width:222px;"  id="gallaryIdForEdit" name="gallaryId" class="selectWidth"/><option value="0">Select</option></select></td>';
 	str +='<td></td>';
 	str+='</tr>';
     str += '   <tr>';
-	str += '       <td class="tdWidth">Title<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth">Title : <font class="requiredFont">*</font></td>';
 	
 	str +='<td>';
 	
@@ -4187,7 +4192,7 @@ function editNewsDetails(fileId,source){
 	str += '   </tr>';
 	str += '   <tr>';
     
-	str += '       <td class="tdWidth">News Description<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth">News Description : <font class="requiredFont">*</font></td>';
 	str +='<td>';
 	if(source == "Eenadu Telugu")
      str += '<textarea style="font-family: eFont; font-size: 20px;" id="fileDescription" cols="20" rows="3"></textarea>';
@@ -4198,7 +4203,7 @@ function editNewsDetails(fileId,source){
 	str += '   </tr>';
 
     str += '   <tr>';
-	str += '       <td class="tdWidth">Keywords</td>';
+	str += '       <td class="tdWidth">Keywords : </td>';
 	if(source == "Eenadu Telugu")
 	str += '       <td class="selectWidthPadd"><input type="text"  style="font-family: eFont; font-size: 20px;" id="keywordsForEdit" name="keywords" size="25" maxlength="200" style="margin-top:8px;" value="'+reqFile.keywords+'" ></text></td></tr>';
 	else
@@ -4207,7 +4212,7 @@ function editNewsDetails(fileId,source){
 	str += '   <TR>';
 	
 	
-	str += ' <td class="tdWidth"><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
+	str += ' <td class="tdWidth"><b><font>File Date : <font class="requiredFont">*</font></font></b></td>';
 	str += '<TD><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
@@ -4221,22 +4226,22 @@ function editNewsDetails(fileId,source){
 	for(var i in reqFile.fileVOList)
 	{
 	   str += '   <tr>';
-	   str += '       <td class="tdWidth">Source<font class="requiredFont">*</font></td>';
+	   str += '       <td class="tdWidth">Source : <font class="requiredFont">*</font></td>';
 	   str += '       <td><select id="sourceEdit'+i+'" style="width:222px;"></select></td>';
 	   str += '       <td><input type="hidden" id="sourceEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
 	   str += '   </tr>';
 	
 	   str += '   <tr>';
-	   str += '       <td class="tdWidth">Language<font class="requiredFont">*</font></td>';
+	   str += '       <td class="tdWidth">Language : <font class="requiredFont">*</font></td>';
 	   str += '       <td><select id="languageEdit'+i+'" style="width:222px;"></select></td>';
 	   str += '       <td><input type="hidden" id="languageEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
 	   str += '   </tr>';
 	}
-	str += '       <td class="tdWidth">Category</td>';
+	str += '       <td class="tdWidth">Category : </td>';
 	str += '  <td><select id="categoryEdit" style="width:222px;"><option value="0">-select category-</option></select></td>';
 	str += '   </tr>';
 	str += '   </tr>';
-	str += '       <td class="tdWidth">News Importance<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth">News Importance : <font class="requiredFont">*</font></td>';
 	str += '       <td><select id="newsimportanceForEdit" style="width:222px;"></select></td>';
 	str += '   </tr>';
 
@@ -4289,7 +4294,7 @@ function editNewsDetails(fileId,source){
 	str += '   </tr>';
 
 	str +='    <tr>';
-    str +='	   <td class="tdWidth">Location Scope<font class="requiredFont">*</font></td>';
+    str +='	   <td class="tdWidth">Location Scope : <font class="requiredFont">*</font></td>';
     str +='	   <td><select id="scopeDivForEdit" name="locationScope" style="width:222px;" class="selectWidth" onchange="getLocations1(this.options[this.selectedIndex].value)"  /></td>';
     str +='  </tr>';
  
@@ -4316,7 +4321,7 @@ function editNewsDetails(fileId,source){
 
    }
    str +='    <tr>';
-    str +='	   <td class="tdWidth">News description in details</td>';
+    str +='	   <td class="tdWidth">News description in details : </td>';
 	if(source == "Eenadu Telugu")
 	    str +='	   <td><textarea id="newsfileDescriptionForEdit" style="font-family: eFont; font-size: 20px;" cols="20" rows="3" name="fileDescription" >'+reqFile.newsDescription+'</textarea></td>';
      else
@@ -4684,7 +4689,7 @@ function getLocations1(id){
    var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit" name="locationValue" class="selectWidth" style="width: 222px; margin-left: -4px;"/></td>';
   str +='  </tr>';
   str +='</table>';
@@ -4696,11 +4701,11 @@ function getLocations1(id){
    var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getDistricts2(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">District<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">District : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit" class="selectWidth" name="locationValue"style="width: 222px; margin-left: -4px;"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -4712,15 +4717,15 @@ function getLocations1(id){
    var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(4,1);getDistricts2(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">District<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">District : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -4743,19 +4748,19 @@ function getLocations1(id){
     var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit"style="width: 222px; margin-left: -4px;"  class="selectWidth" onchange="clearAllElmts(5,1);getDistricts2(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">District<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">District : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit"style="width: 222px; margin-left: -4px;" class="selectWidth" onchange="clearAllElmts(5,2);getAllDetails1(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit"style="width: 222px; margin-left: -4px;" class="selectWidth" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -4778,23 +4783,23 @@ function getLocations1(id){
     var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,1);getDistricts2(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">District<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">District : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,2);getAllDetails1(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,3);getAllDetails1(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Village/Ward/Division<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Village/Ward/Division : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="villageDivForEdit" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -4806,27 +4811,27 @@ function getLocations1(id){
      var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">State<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">State : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);getDistricts2(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">District<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">District : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);getAllDetails1(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);getAllDetails1(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
   //str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC<font class="requiredFont">*</font></td>';
   //str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" class="selectWidth" style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
 
-   str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC<font class="requiredFont">*</font></td>';
+   str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDivForEdit\').options[document.getElementById(\'constituencyDivForEdit\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
 
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Village/Ward/Division<font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Village/Ward/Division : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="villageDivForEdit" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -5316,31 +5321,31 @@ function buildCandidates(results)
 	str+="<u><span style='font-weight:bold;'>Upload "+text+" Files</span></u>";
 	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId0'+value+'">';
 
-    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" /></td></tr>';
+    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" /></td></tr>';
 
 	str += ' <tr>';
 	str +='<td>File Path</td>';
 	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25" class="newsFile"/></td>';
 	str += ' </tr>';
 	str += ' <tr>';
-	str += ' <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
+	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
 	str += ' <td class="selectWidthPadd"><select id="filesourceId'+value+'" name="fileSourceId" style="width:175px;"><option value="0">Select Source</option><option value="1">Eenadu</option><option value="2">Sakshi</option></select></td>';
 	str += ' </tr>';
 	str += ' <tr>';
-	str += ' <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
+	str += ' <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
 	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+value+'" name="sourceLanguageId" style="width:175px;"></select></td>';
 	
 	str += ' </tr>';
-	str += '       <td class="tdWidth1">Edition<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsedition'+value+'" name="newsedition" style="width:175px;margin-top:8px;"><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Page Number<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+value+'" name="pageno" class="pageno" size="25" maxlength="200" style="margin-top:8px;"></input></td>';
+	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+value+'" name="pageno" class="pageno" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Length<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;"></input></td>';
+	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
 	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/plus.png" title="Click here to delete file" onclick="addMoreFiles2('+value+')"></td>';
 	str += '   </tr>';
 	str+='<input type="hidden" name="filesList" value="'+value+'"/>';
@@ -5365,24 +5370,24 @@ function addMoreFiles2(value)
 	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25" /></td>';
 	str += ' </tr>';
 	str += ' <tr>';
-	str += ' <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
+	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
 	str += ' <td class="selectWidthPadd"><select id="filesourceId'+divCount+''+value+'" name="fileSourceId" style="width:175px;" class="source'+value+'" ></select></td>';
 	str += ' </tr>';
 	str += ' <tr>';
-	str += ' <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
+	str += ' <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
 	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+divCount+''+value+'" name="sourceLanguageId" style="width:175px;" class="lang'+value+'"><option value="0">Select Language</option><option value="0">Select Language</option></select></td>';
 	
 	str += ' </tr>';
-	str += '       <td class="tdWidth1">Edition<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsedition'+value+'" name="newsedition" style="width:175px;margin-top:8px;"><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Page Number<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+value+'" name="pageno" class="pageno" size="25" maxlength="200" style="margin-top:8px;"></input></td>';
+	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+value+'" name="pageno" class="pageno" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Length<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;"></input></td>';
+	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
 	//str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(\'moreFileTableId'+value+'\')"></td>';
 	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(this)"></td>';
 	str += '   </tr>';
@@ -5723,18 +5728,18 @@ function  buildUploadNews()
 	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
 	str += '   <tr>';
-	str += ' <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
+	str += ' <td class="tdWidth1">Select Category : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
-	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
+	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
 	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50" ></input></td>'; 
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">News Description : <font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" ></textarea></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Keywords</td>';
+	str += '       <td class="tdWidth1">Keywords : </td>';
 	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" ></input></td></tr>';
 	str += '<TR>';
 	str += ' <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
@@ -5747,35 +5752,37 @@ function  buildUploadNews()
 	str += '</TD>';
 	str += '</TR>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="source" name="fileSourceId" ><option value="0">Select Source</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" ><option value="0">Select Language</option></select></td>';
 	str += '   </tr>';
 	str += '   </tr>';
-	str += '       <td class="tdWidth1">Category<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Importance<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">News Importance : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance" ><option value="0">Select NewsImportance</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Edition<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsedition" name="newsedition" ><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Page Number<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno" name="pageno" size="25" class="pageno" maxlength="200" ></input></td>';
+	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno" name="pageno" size="25" class="pageno" maxlength="200" onKeyup="IsNumeric(this.value);"></input></td>';
+	str += '    <td id="Err4Numer">Only Numbers</td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Length<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength" name="newslength" class="newslength" size="25" maxlength="200" ></input></td>';
+	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength" name="newslength" class="newslength" size="25" maxlength="200" onKeyup="IsNumeric1(this.value);"></input></td>';
+	str += '   <td id="Err4Numer1">Only Numbers</td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">File Path : <font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" style="margin-top:8px;"/></td>';
 	str += '       <td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt=""Click here to add more images""/></td>';
 	str += '   </tr>';
@@ -5784,7 +5791,7 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   </tr>';
 
-    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" /></td></tr>';
+    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" /></td></tr>';
 
 	str += '   <tr>';
 	str += '       <td></td>';
@@ -5795,7 +5802,7 @@ function  buildUploadNews()
 	str += '       <td id="newsprivateRadioDiv"><label class="radio"><input type="radio" value="private" name="visibility" id="newsprivateRadioId"><b><font>Make This Private</font></b></input></label></td>';
 	str += '   </tr>';
 	str +='    <tr>';
-    str +='	   <td class="tdWidth1">Location Scope<font class="requiredFont">*</font></td>';
+    str +='	   <td class="tdWidth1">Location Scope : <font class="requiredFont">*</font></td>';
     str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
     str +='  </tr>';
 	str +='  <tr>';
@@ -5804,7 +5811,7 @@ function  buildUploadNews()
 	str +='    </td>';
 	str +='  </tr>';
 	str +='<tr>';
-	str +='<td class="tdWidth1">News description in detail</td>';
+	str +='<td class="tdWidth1">News description in details : </td>';
 	str +='<td><textarea id="newsDescriptionId" name="newsDescription" rows="3" cols="20" id="newsDesc"></textarea></td>';
 	str +='</tr>';
 	str += '</table>';
@@ -5995,6 +6002,20 @@ function buildGallaries(divId , results)
   });
 
 
+}
+function IsNumeric(val) {
+	$('#Err4Numer').hide();
+	if (!(Number(val)==val)) {
+	$('#Err4Numer').show();
+		$('.pageno').val('');
+	}
+}
+function IsNumeric1(val) {
+	$('#Err4Numer1').hide();
+	if (!(Number(val)==val)) {
+		$('#Err4Numer1').show();
+		$('.newslength').val('');
+	}
 }
 </script>
 </body>
