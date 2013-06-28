@@ -35,21 +35,28 @@
  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script>
+$('document').ready(function(){
+$('#candidateName').val('');
+$('#education').val('');
+$('#partyList').val(872);
+});
 
 function insertCandidateDetails()
 {
 
  if($('#candidateName').val() == ""){
    alert("Candidatename is Required");
- }else{
-
-
+ }
+ else if($('#partyList').val() <=0)
+	alert("Party Name is Required");
+ 
+ else{
 	var jsObj =
 		{   
 			candidateName : $('#candidateName').val(),
             education: $('#education').val(),
             gender:$('#gender').val(),
-			partyId : 872,
+			partyId : $('#partyList').val(),
 			task:"insertMLCCandidateDetails"
 		};
 	
@@ -108,10 +115,24 @@ YAHOO.util.Connect.asyncRequest('POST', url, callback);
   <div>Enter Candidatename :<input type="text"  id="candidateName"/></div>
   <div>Enter Education :<input type="text" style="margin-left:31px;"  id="education"/></div>
   <div>Gender :
-  <select type="text" id="gender" style="margin-left:78px;">
+  <select type="text" id="gender" style="margin-left:78px; width: 220px;">
     <option value="M">Male</option>
 	<option value="F">Female</option>
   </select></div>
+  <div>
+  Select Party :
+  <select id="partyList" style="margin-left: 48px; width: 220px;">
+	  <option value="0">Select Party</option>
+	  <option value="163">BJP</option>
+	  <option value="265">CPI</option>
+	  <option value="269">CPM</option>
+	  <option value="362">INC</option>
+	  <option value="990">MIM</option>
+	  <option value="872">TDP</option>
+	  <option value="886">TRS</option>
+	  <option value="1117">YSRCP</option>
+  </select>
+  <div>
 <a class="btn btn-primary" style="margin-left:198px;" href="javascript:{insertCandidateDetails();}">Insert</a>
 <div id="successDiv"></div>
 
