@@ -534,7 +534,7 @@ lable{line-height:40px;}
 				   </label>
 	   
 				<div class="form-horizontal boothResults " name='boothSelection'>
-					<div class="control-group">
+					<div class="control-group" style="float: left; margin-bottom: 10px; margin-left: -219px; padding-top: 16px;">
 						<label class="control-label" for="firstName">Election Type</label>
 						<div class="controls " style="">
 							<input type="radio" name="electionType" value="2" checked="checked">  Assembly  </input>
@@ -543,8 +543,25 @@ lable{line-height:40px;}
 						
 						
 					</div>
-					
-					<div class="control-group ">
+					<table>
+					<tr>
+					<td><span>Select Year</span></td>
+					<td><s:select theme="simple" list="electionYearsList" name="electionYear" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/> </td>
+					<td><span>Constituency</span></td>
+					<td><select id="constiId" onChange="getPartiesForElections()" name="constituencyName">
+								<option value='0'>Select Constituency</option>
+							</select></td>
+					</tr>
+					<tr>
+					<td><span>Party</span></td>
+					<td><select id="partyId" name="partyName">
+								<option value='0'>Select Party</option>
+							</select></td>
+					</tr>
+					</table>
+					<div class="control-group" id="errorDiv" style="color:red;"></div>
+					<button class="btn btn-mini btn-small" data-dismiss="modal" aria-hidden="true" onclick="submitRes()" style="float: right; margin-top: -55px; margin-right: 201px;">SUBMIT</button>
+					<!--<div class="control-group ">
 						<label class="control-label" for="electionYear">Select Year</label>
 						<div class="controls">
 							<s:select theme="simple" list="electionYearsList" name="electionYear" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/> 
@@ -567,9 +584,8 @@ lable{line-height:40px;}
 								<option value='0'>Select Party</option>
 							</select>
 						</div>
-					</div>
-					<div class="control-group" id="errorDiv" style="color:red;"></div>
-					<button class="btn btn-mini btn-small" data-dismiss="modal" aria-hidden="true" onclick="submitRes()">SUBMIT</button>
+					</div>-->
+					
 				</div>
 			</div>
 			<!----<div class="span6 widget-simple">
