@@ -5707,9 +5707,10 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 public List<SelectOptionVO> buildSelectOptionVO(List<Object[]> list)
 	 {
 		 List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
-		 
 		 try
 		 {			 
+		   if(list != null && list.size() > 0)
+		   {
 			 for(Object[] obj:list){
 				 
 				 SelectOptionVO selectOptionVO = new SelectOptionVO();
@@ -5738,6 +5739,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				 resultList.add(selectOptionVO);
 				 
 			 }
+		   }
 			 
 		 }catch(Exception e)
 		 {
@@ -6084,5 +6086,44 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		   return null;
 		 }
 	}
+   
+    public List<SelectOptionVO> getNewsTitlesForACandidateByGalleryId(Long candidateId,Long gallaryId,String fromDateStr,String toDateStr)
+    {
+    	try{
+    		Date fromDate = null;
+    		Date toDate = null;
+    		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy"); 
+    		if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+    		 fromDate = format.parse(fromDateStr);
+    		if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+    		 toDate = format.parse(toDateStr);
+    		return buildSelectOptionVO(candidateRelatedNewsDAO.getCandidateRelatedNewsByGallaryId(candidateId, gallaryId, fromDate, toDate));
+    		
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    		log.error("Exception Occured in getNewsTitlesForACandidateByGalleryId() method, Exception - "+e);
+    		return null;
+		}
+    }
+    
+    public List<SelectOptionVO> getNewsForACandidateByCategoryId(Long candidateId,Long categoryId,String fromDateStr,String toDateStr)
+    {
+      try{
+    	  Date fromDate = null;
+    	  Date toDate = null;
+    	  SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	  if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+    	   fromDate = format.parse(fromDateStr);
+    	  if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+    		toDate = format.parse(toDateStr);
+    	    
+    	  return buildSelectOptionVO(candidateRelatedNewsDAO.getNewsForACandidateByCategoryId(candidateId, categoryId, fromDate, toDate));
+    	  
+      }catch (Exception e) {
+    	e.printStackTrace();
+    	log.error("Exception Occured in getNewsForACandidateByCategoryId() method, Exception - "+e);
+    	return null;
+	}
+    }
 		
 }
