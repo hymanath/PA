@@ -623,7 +623,7 @@ lable{line-height:40px;}
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Add New Problem.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
-						<p>Add New Problem</p>
+						<p>Add a New Problem to solve the Problems easily and effectively</p>
 						<input type="button" value="View" class="btn btn-small" onCLick="openAddNewProblemWindow()" style="float:right;"></input>
 					</div>
 				</div>       
@@ -633,7 +633,7 @@ lable{line-height:40px;}
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/All Problems.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
-						<p>All Problems</p>
+						<p>To View All Problems and analyze the Seviority and priority of the Problems</p>
 						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('allproblems');" style="float:right;"></input></div>
 				</div>					
 			</div>					
@@ -645,7 +645,7 @@ lable{line-height:40px;}
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Problem Search And Report.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
-					<p>Detaild reports of Party Performance</p>
+					<p>To View the Detailed Report of the Problems and Search for a Particular Problem you can use Problem Search and Report</p>
 						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('problemsearch');" style="float:right;"></input>
 				    </div>
 				</div>    					
@@ -655,19 +655,19 @@ lable{line-height:40px;}
 			  <div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Cadre Mangement.png"style="width: 64px; height: 64px;"></img>
 				<div class="media-body">
-				<p>Cadre Mangement</p>
+				<p>You can create your Cadre, then you can connect with your Cadre via SMS, emails</p>
 					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('cadremgmt');" style="float:right;"></input>
 				</div>
 		   </div>	
 		</div>
-	
+	</div>
 		<div class="row-fluid">
 			<div class="span6 widget">
 				<h2> Constituency Management </h2>
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Constituency Management.png"style="width: 64px; height: 64px;"></img>
 						<div class="media-body">
-						<p>Constituency Management</p>
+						<p>To Add/View the Influencing People, local User Groups, and analyse their impact in your Constituency</p>
 							<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('constituencymgmt');" style="float:right;"></input>
 						</div>
 				</div> 
@@ -678,7 +678,7 @@ lable{line-height:40px;}
 			  <div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Call Center.png"style="width: 64px; height: 64px;"></img>
 				<div class="media-body">
-					<p>Call Center</p>
+					<p>Now you can know the Problems, Appointments given by your Call Center</p>
 					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('callcenter');" style="float:right;"></input>
 				</div>
 			  </div>						
@@ -718,6 +718,7 @@ lable{line-height:40px;}
 });
 </script>
 <script type="text/javascript">
+userType = '${UserType}';
 constituencyId = '${sessionScope.USER.constituencyId}';
 var loginMode = '${loginMode}';	  
 var stateId = $('#stateList_d').val();
@@ -1513,5 +1514,6 @@ function callAjax(jsObj,url){
 
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
  	}
+
 
 </script>
