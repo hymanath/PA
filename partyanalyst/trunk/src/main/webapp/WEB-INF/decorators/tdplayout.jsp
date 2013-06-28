@@ -25,8 +25,8 @@
 	
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	<!--Bootstrap styles file-->
-	<!--<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">-->
-	<link type="text/css" href="styles/assets/css/bootstrap.css" rel="stylesheet">
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+	<!--<link type="text/css" href="styles/assets/css/bootstrap.css" rel="stylesheet">-->
 	<link type="text/css" href="styles/tdp/menu.css" rel="stylesheet" />
 	<link href="styles/tdphome_inner_styles.css" rel="stylesheet" type="text/css" />
 	<link href="styles/home_styles.css" rel="stylesheet" type="text/css" />
@@ -41,8 +41,8 @@
 		src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
-	<!--<script type="text/javascript" src="js/bootstrap.js" ></script>-->
-	<script type="text/javascript" src="styles/assets/css/js/bootstrap.js" ></script>
+	<script type="text/javascript" src="js/bootstrap.js" ></script>
+	<!--<script type="text/javascript" src="styles/assets/css/js/bootstrap.js" ></script>-->
 	
 	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 
@@ -113,29 +113,6 @@ margin-top:10px;
 #menu ul.menu li{z-index: 999;}
 .header{height:120px;}
 #header-main{background:#ffdc2d !important;}
-
-
-
-.headerMenu .outerli{display:inline;margin:5px;}
-.headerMenu .outerli a:hover{text-decoration:none;background:#0088CC;color:#ffffff;border-radius:4px;}
-
-.headerMenu .outerli a{font-family: Verdana,Arial,Helvetica,sans-serif;
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 600;padding:5px;}
-
-.headerMenu ul.menu li.dropdown:hover > ul.dropdown-menu{
-    display: block;
-margin-top:5px;    
-}
-
-.headerMenu a.menu:after, .dropdown-toggle:after {
-  content: none;
-}
-.headerMenu .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a{background:#FFDC2D;color:blue;}
-
-.headerMenu .dropdown-menu li{width:210px;margin-left:2px;}
-
 
 </style>
 <decorator:head/>
@@ -274,6 +251,7 @@ margin-top:5px;
 			</div>
 		</li>
 		
+		
 		<li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
 			<div  style="z-index:8;text-align:left;" >
 			<ul>
@@ -339,7 +317,6 @@ margin-top:5px;
 			</div>
 		</li>
 
-		
 		
 		
 		
