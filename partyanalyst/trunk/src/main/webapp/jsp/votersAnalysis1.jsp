@@ -107,7 +107,7 @@ color:#FFFFFF !important;
 
 .wid
 {
-width: 194px !important;
+width: 199px !important;
 word-wrap: break-word;
 height: 34px;
 }
@@ -1369,6 +1369,8 @@ for  body3 start    result  -->
 	<div id="votersBasicInfoDiv"></div>
 	<div id="votersInfoMoreShowHide" style="display:none;"><span class="btn btn-info pull-right" href="javaScript:{};" onclick="getVotersDetails();" style="margin-top:5px;">Click here for voters details</span></div>
 
+	
+
   </div>
 
   <div id="votersCountVaryDiv" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;">
@@ -1928,7 +1930,6 @@ function showAgewiseDetails(){
 function getVotersDetails(){
 		getVotersData();
 }
-
 
 function showBasicAgewiseDetails(){
    callCorrespondingAjaxCall('brief');
