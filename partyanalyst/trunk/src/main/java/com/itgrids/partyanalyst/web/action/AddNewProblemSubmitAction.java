@@ -604,9 +604,13 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			String filePath = null;
 			
 			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
-				filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES +pathSeperator+"Problem_Files"+pathSeperator;
-			else
-				filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES+pathSeperator+"Problem_Files"+ pathSeperator;
+				filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.PROFILE_PIC + pathSeperator;
+			 else if(request.getRequestURL().toString().contains(IConstants.LOCAL_HOST))
+			 {
+				 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\"; 
+			 }
+			 else
+				 filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.PROFILE_PIC + pathSeperator;	
 			
 			problemFilePathList = new ArrayList<String>();
 			
