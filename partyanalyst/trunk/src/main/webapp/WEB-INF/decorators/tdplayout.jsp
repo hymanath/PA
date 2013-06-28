@@ -32,7 +32,7 @@
 	<!--Script file
 	<script type="text/javascript" src="js/jquery.js"></script>-->
 	<script type="text/javascript" src="js/loginpopup.js"> </script>
-	
+	<link rel="stylesheet" type="text/css" href="styles/home_style.css">
     <script type="text/javascript" src="js/menu.js"></script>
 	<script type="text/javascript" src="js/ddaccordion.js"></script>
 	<script type="text/javascript" 
