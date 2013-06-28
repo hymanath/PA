@@ -167,7 +167,7 @@ lable{line-height:40px;}
 <!---------Left Section ----------->
 <div class="span3">
 <!-------Quick Links Block--------------->
-<div class="profile-pic widget blue"  style="height: 139px;">
+<div class="profile-pic widget blue"  style="min-height: 139px; margin-bottom: 12px;">
 <div class="profileimg  thumbnail" >
 <c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
 <img src="pictures/profiles/human.jpg" id="userProfileImg" style="height: 100px; width: 132px;">
@@ -177,7 +177,7 @@ lable{line-height:40px;}
 </c:if>
 </div>
 <div class="widget-block" id="profileUserName">
-<h5 style="margin-left: 16px;">${loginUserName}</h5> </div>
+<b style="margin-left: 16px;">${loginUserName}</b> </div>
 </div>	
  <div class="widget blue">
  <h2>Account Settings</h2>
