@@ -534,7 +534,7 @@ lable{line-height:40px;}
 	    </div>
 		
 	    <div class="row-fluid">
-			<div class="span12 widget" id="boothResultsDiv">
+			<div class="span12 widget" id="boothResultsDiv" style="max-height: 206px;">
 				<h2>Booth Wise Results</h2>
 				<div id="boothWiseResult"></div>
 				   <label class="checkbox" style="margin-top:10px;margin-left:5px;width:200px;">
