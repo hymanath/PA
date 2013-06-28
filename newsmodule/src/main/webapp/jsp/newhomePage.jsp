@@ -143,7 +143,7 @@ border-radius:3px;
 width: 92px;
 }
 
-#candidatesListId,#candidateCategoryId{width:220px;}
+#candidatesListId,#candidateCategoryId,#categoryGallarySelect{width:220px;}
 
 #existingFromText, #existingToText {
     width: 73px;
@@ -161,6 +161,7 @@ width: 92px;
 #gallaryId{width: 221px;}
 #categoryCheckBoxId{margin-top: 0px;margin-right: 6px;}
 #categoryCheckBoxDiv{margin-top: 8px;}
+#categoryGallary{margin: 0px 5px 0px 0px;}
 </style>
 </head>
 <body>
@@ -467,10 +468,6 @@ width: 92px;
 							</tr>
 						</table>
 						
-						<!-- <div id="categoryGallaryShowHideDiv" style="display:none;">
-						 <select id="categoryGallarySelect" multiple="multiple"></select>
-						</div> -->
-
 						<button id="sendButton" class="btn btn-warning btn-mini" onclick="addCssStyle(),handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
 						</div>
 						<!--Created By sasi for Candidate News-->
@@ -508,9 +505,12 @@ width: 92px;
 						 <div id="categoryShowHideDiv" style="display:none;">
 						   <select id="candidateCategoryId" multiple="multiple"></select>
 
-						    <!-- <input type="checkbox" value="categoryGallaries" id="categoryGallary"/>Gallery -->
+						     <input type="checkbox" value="categoryGallaries" id="categoryGallary"/>Gallery 
 
 						 </div>
+						<div id="categoryGallaryShowHideDiv" style="display:none;">
+						 <select id="categoryGallarySelect" multiple="multiple"></select>
+						</div>
 
 						<button id="sendButton" class="btn btn-warning btn-mini" onclick="getCandidatesNews()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
 						<div class="span12 errorDiv"></div>
@@ -847,6 +847,13 @@ function callHomePageAjax11(jsObj,url){
 								  clearOptionsListForSelectElmtId('candidateCategoryId');
 								 createOptionsForSelectElmtId('candidateCategoryId',myResults);
 								}
+
+								else if(jsObj.task == "getGallariesForSelectedCategory")
+								{
+								  clearOptionsListForSelectElmtId('categoryGallarySelect');
+								 createOptionsForSelectElmtId('categoryGallarySelect',myResults);
+								}
+
 								}catch (e) {
 							     
 								}  
@@ -1096,9 +1103,19 @@ function getCandidatesNews(){
 		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Category.</span>');
           return;
 	  }
+
+	  if($("#categoryGallary").is(":checked"))
+	  {
+        selectedGallaryIds = $("#categoryGallarySelect").val();
+		 if(selectedGallaryIds == null || selectedGallaryIds == "null")
+	    {
+		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Gallary.</span>');
+          return;
+	   }
+	  }
 	}
 
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&categoryIds="+categoryIds+"&";
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&categoryIds="+categoryIds+"&tempVarable=true&";
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
@@ -1255,6 +1272,8 @@ $("#candidatesListId").live("change",function(){
 		return;
   }
 	
+  $("#categoryGallary").attr("checked",false);
+  $("#categoryGallaryShowHideDiv").css("display","none");
   if($("#gallaryRadioId").is(":checked"))
   {
 	$("#gallaryShowHideDiv").css("display","block");
@@ -1286,6 +1305,7 @@ $("#gallaryRadioId").click(function(){
 	  getCandidateGallaries();
 	  $("#categoryCheckBoxId").attr('checked', false);
 	  $("#categoryShowHideDiv").css("display","none");
+	  $("#categoryGallaryShowHideDiv").css("display","none");
 	}
 	else
     {
@@ -1316,7 +1336,7 @@ $("#categoryGallary").click(function(){
 	$('.errorDiv').html('');
   if($("#categoryGallary").is(":checked"))
   {
-	  $("#categoryGallaryShowHideDiv").css("display","block");
+	 
 
 	 if(candidateId == 0)
 	 {
@@ -1330,17 +1350,17 @@ $("#categoryGallary").click(function(){
          categoryIdsArray.push($(this).val());
      });
 
-       if(categoryIdsArray == null || categoryIdsArray == "null")
+       if(categoryIdsArray == null || categoryIdsArray == "null" || categoryIdsArray.length == 0)
 	   {
          $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Category.</span>');
-		return;
+		 return;
 	   }
-	
-    var jsObj={
+	$("#categoryGallaryShowHideDiv").css("display","block");
+      var jsObj={
 		candidateId:candidateId,
 		categoryIds:categoryIdsArray,
 		task:'getGallariesForSelectedCategory'
-	};
+	  };
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "getGallariesForSelectedCategoryAction.action?"+rparam;
 	callAjax(jsObj, url);
@@ -1348,8 +1368,18 @@ $("#categoryGallary").click(function(){
  
   }
   else
+	{
+     clearOptionsListForSelectElmtId('categoryGallarySelect');
 	 $("#categoryGallaryShowHideDiv").css("display","none");
+	}
 
+});
+
+
+$("#candidateCategoryId").live("click",function(){
+	
+	$("#categoryGallary").attr('checked', false);
+	$("#categoryGallaryShowHideDiv").css("display","none");
 });
 
 });
