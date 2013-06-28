@@ -203,7 +203,7 @@ width: 92px;
 							<span class="enadu"> <s:property value="fileTitle1"/></span>
 						 </s:if>
 						 <s:else>
-							<h4> <s:property value="fileTitle1"/></h4>
+							<h4 style="text-transform: capitalize;"> <s:property value="fileTitle1"/></h4>
                            </s:else>
 						 
 									<div class="row-fluid">				
@@ -337,7 +337,7 @@ width: 92px;
 						  <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
 							<span class="enadu"> <s:property value="fileTitle1"/></span>						 </s:if>
 						 <s:else>
-							<h4> <s:property value="fileTitle1"/></h4>
+							<h4 style="text-transform: capitalize;"> <s:property value="fileTitle1"/></h4>
 						 </s:else>
 									<div class="row-fluid">				
 									
@@ -530,15 +530,15 @@ width: 92px;
 									<span class='text-info enadu' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;font-weight:bold;"> <s:property value="title"/></span>
 									</s:if>
 									<s:else>
-									<h6 class='text-info' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;"> <s:property value="title"/></h6>
+									<h6 class='text-info' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer; text-transform: capitalize;"> <s:property value="title"/></h6>
 									</s:else>
 									<span style='color:#ccc;'>
 										<s:if test="%{fileDate!=''}">
-											<i class="smal">Date: 
+											<i class="smal" style="color:#3A87AD;">Date: 
 											<s:property value="fileDate"/></i>
 										</s:if>
 									</span>
-								</li><a href="javascript:{getResponseDetailsByContentId(<s:property value='fileGallaryId'/>)}" class="btn btn-mini btn-primary" style="margin-left:154px;">Track</a>
+								</li><a href="javascript:{getResponseDetailsByContentId(<s:property value='fileGallaryId'/>)}" class="btn btn-mini btn-primary" style="margin-left:154px;background: none repeat scroll 0% 0% #FAA938;font-weight:bold;">Track</a>
 
 								</s:iterator>
 								
@@ -560,10 +560,10 @@ width: 92px;
 									 <s:iterator value="fileVOsList" var="newDetails">
 										<li>
 										<s:if test="%{#newDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
-										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="enadu muted" style='font-weight:bold;'><i class="icon-share-alt "></i>${newDetails.fileTitle1}</a>
+										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="enadu muted" style='font-weight:bold;text-transform: capitalize;'><i class="icon-share-alt "></i>${newDetails.fileTitle1}</a>
 									</s:if>
 									<s:else>
-										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="muted"><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a>
+										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="muted" style='text-transform: capitalize;'><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a>
 									</s:else>
 									</li>
 									 </s:iterator>
