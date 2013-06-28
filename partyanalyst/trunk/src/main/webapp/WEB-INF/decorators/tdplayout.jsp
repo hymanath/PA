@@ -180,7 +180,7 @@ margin-top:5px;
 										</c:if>
 									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 									
-									<a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a>
+									<a href="javascript:{}" onClick="openDialogForLoginWindow()" class="btn btn-mini"><i class="icon-user"></i><b> Login</b></a>
 										<!--<span>|</span>
 										<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>-->
 										
@@ -410,7 +410,7 @@ margin-top:5px;
 	<div class="container" style="border-top:2px solid #ffdc2d;">
 <div class="row-fluid"> 
     <div class="span6" style="line-height:15px;color:#7d7d7d;text-shadow:0px 1px 1px #fff;font-size:12px;margin-top:18.5px;">
-&copy; Copyright 2013. Telugu Desam Party <br>All rights reserved&amp;Powered By  IT GRIDS (India) Pvt. Ltd. </div>
+&copy; Copyright 2013 Telugu Desam Party. <br>All Rights Reserved &amp; Powered By: <a href="http://www.itgrids.com" class="text-error" target="_blank">IT GRIDS (India) Pvt. Ltd. </a></div>
 <div class="span6"><img src="./images/TDP/PA_LOGO.jpg" class="pull-right"/></div>
 </div>
   <!--COPYRIGHT SECTION END--> 
