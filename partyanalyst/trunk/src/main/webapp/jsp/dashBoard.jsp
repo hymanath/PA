@@ -271,22 +271,23 @@ lable{line-height:40px;}
 		<h5>View Your Constituency</h5>
 		<p>Select Constituency Type<br>
 			<label class="radio" style="width:66px;">
-			<input type="radio" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked">
+			<input type="radio" style="margin-top: 6px;" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked">
 			Assembly
 			</label>
 			
 			<label class="radio">
-			<input type="radio" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" >
+			<input type="radio" style="margin-top: 6px;" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" >
 			Parliament
 			</label>
 		</p>
-		<table style="display: block;" id="stateTable">
+		<table style="display: block; margin-bottom: -27px;" id="stateTable">
 			<tbody>
 				<tr>
 					<td>
 						<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/>
 					</td>
 				</tr>
+
 			</tbody>
 		</table>
 		
@@ -298,7 +299,7 @@ lable{line-height:40px;}
 			</tr>
 		</table>
 
-		<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()">Go</button>
+		<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()" style="margin-top: 10px;">Go</button>
 	</div><!--- View your constituency END --->
 
 	<!--View your Locality-->
@@ -1541,3 +1542,5 @@ function callAjax(jsObj,url){
 
 
 </script>
+</body>
+</html>
