@@ -26,8 +26,10 @@
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	<!--Bootstrap styles file-->
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
-	<link type="text/css" href="styles/menu.css" rel="stylesheet" />
+	<!--<link type="text/css" href="styles/assets/css/bootstrap.css" rel="stylesheet">-->
+	<link type="text/css" href="styles/tdp/menu.css" rel="stylesheet" />
 	<link href="styles/tdphome_inner_styles.css" rel="stylesheet" type="text/css" />
+	<link href="styles/home_styles.css" rel="stylesheet" type="text/css" />
 	
 	<!--Script file
 	<script type="text/javascript" src="js/jquery.js"></script>-->
@@ -40,6 +42,7 @@
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 	<script type="text/javascript" src="js/bootstrap.js" ></script>
+	<!--<script type="text/javascript" src="styles/assets/css/js/bootstrap.js" ></script>-->
 	
 	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 
@@ -201,158 +204,152 @@ margin-top:5px;
    	 							<!-- End of LoginPoppWindow-->
 		</div>
 	
-    <div class="span8 offset2" style="margin-bottom:10px;">
-<img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:79.5px;left:50%;">
+    <div class="span8 " style="margin-bottom:10px;">
+<img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:79.5px;left:50%;margin-left:215px;margin-top:10px;">
 
 
     </div>
-<div class="span10 offset1 headerMenu">
-<ul class="inline menu unstyled">
-				<!----Home Icon----->
-				<li class="outerli">
-					<a href="newhomePageAction.action"><span>&nbsp;&nbsp;&nbsp;<i class="icon-home"></i></span></a>
-				</li><!----Home Icon END----->
-				<!-----ANALYSIS----->
-				<li class="dropdown outerli">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">ANALYSIS <b class="caret"></b></a>
-					
-						<ul class="dropdown-menu" role="menu" aria-labelledby="">
-							<li class="dropdown-submenu">
-								<a href="#">Election Analysis</a>
-									
-										<ul class="dropdown-menu">
-											<li><a href="partyPerformanceMain.action"><span>Party Performance Report</span></a></li>
-											<li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a></li>
-											<li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a></li>
-											<li><a href="electionResultsAnalysisAction.action"><span>Election Results Analysis Report</span></a></li>
-											<li><a href="censusReportAction.action"><span>Elections vs Demographics</span></a></li>
-											<li><a href="partyStrengthAction.action"><span>Party Strenths/Weakness</span></a></li>
-											<li><a href="electionLiveResultsAnalysisAction.action"><span>Live &amp; Previous Results Comparison</span></a></li>
-										</ul>
-									
-							</li>
-							
-							<li class="dropdown-submenu">
-								<a href="#">Politician Analysis</a>
-									
-										<ul class="dropdown-menu">
-											<li><a href="mandalPageSDetailAction.action"><span>Mandal Voting Report</span></a></li>
-											<li><a href="crossVotingReportInputAction.action"><span>Cross Voting Report</span></a></li>
-											<li><a href="partyBoothResultAction.action"><span>Constituency Booth Results Report</span></a></li>
-										</ul>
+<div id="menu" class="span10" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;">
+    <ul class="menu">
+        <li class="active"><a href="homePage.action"><span><i class="icon-home icon-black"></i></span></a></li>
+	
+    
+	
+         <li>
+			<a href="#" class="parent"><span>ANALYSIS</span></a>
+            <div  style="z-index:1;text-align:left;">
+			<ul>
+                <li><a href="#" class="parent">
+					<span>Election Analysis</span></a>
+						<div  style="z-index:1;text-align:left;">
+							<ul>
+								<li><a href="partyPerformanceMain.action"><span>Party Performance Report</span></a></li>
+								<li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a></li>
+								<li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a></li>
+								<li><a href="electionResultsAnalysisAction.action"><span>Election Results Analysis Report</span></a></li>
+								<li><a href="biElectionAction.action"><span>Telengana Bye-Elections 2010</span></a></li>
+								<li><a href="censusReportAction.action"><span>Elections vs Demographics</span></a></li>
+								<li><a href="partyStrengthAction.action"><span>Party Strenths/Weakness</span></a></li>
+							</ul>
+						</div>
+                </li>
+                <li>
+					<a href="#" class="parent"><span>Politician Analysis</span></a>
+						<div  style="z-index:1;text-align:left;">
+							<ul>
+								<li><a href="mandalPageSDetailAction.action"><span>Mandal Voting Report</span></a></li>
+								<li><a href="crossVotingReportInputAction.action"><span>Cross Voting Report</span></a></li>
+								<li><a href="partyBoothResultAction.action"><span>Constituency Booth Results Report</span></a></li>
+							</ul>
+						</div>
+                </li>
+				
+				
+				
+            </ul>
+		</div>
+		</li>
+        
+		<li><a href="initailConstituencyManagementAction.action" class="parent"><span>CONSTITUENCY</span></a>
+            <div  style="z-index:1;text-align:left;">
+				<ul>
+					<li><a href="#" class="parent"><span>Problem Management</span></a>
+						<div>
+							<ul>
+								<li><a onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>
+								<li><a href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"><span>All Problems</span></a></li>
+								<li><a href="completeProblemDetailsSearchAction.action"><span>Problem Search And Report</span></a></li>
 								
-							</li>
-				
-							
-						</ul>
-					
-				</li><!-----ANALYSIS END----->
-				
-				<!-----CONSTITUENCY---->
-				<li class="dropdown outerli">
-					<a class="dropdown-toggle" data-toggle="dropdown" role="button">MANAGEMENT TOOLS<b class="caret"></b></a>
-           
-						<ul class="dropdown-menu" role="menu" aria-labelledby="">
-							<li class="dropdown-submenu">
-								<a href="#">Problem Management</a>
 								
-									<ul class="dropdown-menu">
-										<li><a href="javascript:{}" onclick="openAddNewProblemWindow()"><span>Add New Problem</span></a></li>
-										<li><a href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"><span>All Problems</span></a></li>
-										<li><a href="completeProblemDetailsSearchAction.action"><span>Problem Search And Report</span></a></li>
-									</ul>
-							
-							</li>
-							
-							<li><a href="initailConstituencyManagementAction.action">Constituency Management</a></li>
-							<li><a href="cadreManagementAction.action" id="cadreId">Cadre Management</a></li>
-							<li><a href="callCenterAction.action">Call Center</a></li>
-							
-						</ul>
-			
-				</li><!-----CONSTITUENCY END---->
-				
-				
-				
-				<!---STATE----->
-				<li class="dropdown outerli">
-					<a class="dropdown-toggle" data-toggle="dropdown" role="button">STATES<b class="caret"></b></a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="" style="width:160px;">
-						<li class="dropdown-submenu" style="width:160px;">
-							<a href="#">South India</a>
-							
-								<ul class="dropdown-menu">
-								
-									<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>
-									<li><a href="statePageAction.action?stateId=6"><span>Goa</span>
-									</a></li>
-									<li><a href="statePageAction.action?stateId=12"><span>Karnataka</span></a></li>
-									<li><a href="statePageAction.action?stateId=13"><span>Kerala 	</span></a></li>
-									<li><a href="statePageAction.action?stateId=24"><span>Tamil Nadu</span></a></li>
-								</ul>
-							
-						</li>
-						<li class="dropdown-submenu" style="width:160px;">
-							<a href="#"><span>North India</span></a>
-							
-								<ul class="dropdown-menu">
-									<li><a href="statePageAction.action?stateId=3">Assam
-										</a></li>
-									<li><a href="statePageAction.action?stateId=7">Gujarat
-										</a></li>
-									<li><a href="statePageAction.action?stateId=9">Himachal Pradesh</a></li>
-									<li><a href="statePageAction.action?stateId=16">Manipur
-									</a></li>
-									<li><a href="statePageAction.action?stateId=21">Punjab
-									</a></li>
-									<li><a href="statePageAction.action?stateId=27">Uttar Pradesh</a></li>
-									<li><a href="statePageAction.action?stateId=26">Uttaranchal
-									</a></li>
-									<li><a href="statePageAction.action?stateId=28">West Bengal
-									</a></li>
-									<li><a href="statePageAction.action?stateId=17">Meghalaya
-									</a></li>
-									<li><a href="statePageAction.action?stateId=19">Nagaland
-									</a></li>
-									<li><a href="statePageAction.action?stateId=25">Tripura
-									</a></li>
-								</ul>
-							
-						</li>
-						<li class="dropdown-submenu" style="width:160px;">
-							<a href="#">Union Territories</a>
-							
-								<ul class="dropdown-menu">
-									<li>
-										<a href="statePageAction.action?stateId=35">Puducherry
-									</a></li>
-								</ul>
-							
-						</li>
-					</ul>
+							</ul>
+						</div>
+					</li>
 					
-				</li><!---STATE END----->
-				<!-- Constituency Analysis -->
-				<li class="dropdown outerli">
-				<a class="dropdown-toggle" data-toggle="dropdown" role="button">CONSTITUENCY ANALYSIS<b class="caret"></b></a>
-				<ul class="dropdown-menu" role="menu" aria-labelledby="">
-				<li><a href="votersAnalysisNewAction.action">Voter Analysis</a></li>
-				<li><a href="votersSearchAction.action">Voters Search &amp; Report</a></li>
-				
-				<li><a href="casteAndElectionResultsComparisonAction.action">Caste Vs Election Results</a></li>
+					<li><a href="initailConstituencyManagementAction.action"><span>Constituency Management</span></a></li>
+					<li><a href="cadreManagementAction.action" id="cadreId"><span>Cadre Management</span></a></li>
+					<li><a href="callCenterAction.action"><span>Call Center</span></a></li>
+					
+					</span></a></li>
 				</ul>
+			</div>
+		</li>
+		
+		<li>
+			<a href="#" class="parent"><span>CONSTITUENCY ANALYSIS</span></a>
+			<div  style="z-index:8;text-align:left;" >
+				<ul>
+					<li><a href="votersAnalysisNewAction.action"><span>Voter Analysis</span></a></li>
+					<li><a href="votersSearchAction.action"><span>Voters Search &amp; Report</span></a></li>
+					<li><a href="casteAndElectionResultsComparisonAction.action"><span>Caste Vs Election Results</span></a></li>
+				</ul>
+			</div>
+		</li>
+
+		<li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
+			<div  style="z-index:8;text-align:left;" >
+			<ul>
+				<li><a href="#" class="parent"><span>South India</span></a>
+					<div style="z-index:1;text-align:left;">
+						<ul>
+							<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>
+							<li><a href="statePageAction.action?stateId=6"><span>Goa</span>
+							</a></li>
+							<li><a href="statePageAction.action?stateId=12"><span>Karnataka</span></a></li>
+							<li><a href="statePageAction.action?stateId=13"><span>Kerala 	</span></a></li>
+							<li><a href="statePageAction.action?stateId=24"><span>Tamil Nadu</span></a></li>
+						</ul>
+					</div>
 				</li>
-				<!--End -->
-				
-				<!---DASHBOARD---->
-				<li class="outerli">
-					<a href="dashBoardAction.action">DASHBOARD</a> 
-				</li><!---DASHBOARD END---->	
-				
-				
+				<li><a href="#" class="parent"><span>North India</span></a>
+					<div style="z-index:1;text-align:left;">
+						<ul>
+							<li><a href="statePageAction.action?stateId=3"><span>Assam</span>
+								</a></li>
+							<li><a href="statePageAction.action?stateId=7"><span>Gujarat</span>
+								</a></li>
+							<li><a href="statePageAction.action?stateId=9"><span>Himachal Pradesh</span></a></li>
+							<li><a href="statePageAction.action?stateId=16"><span>Manipur</span>
+							</a></li>
+							<li><a href="statePageAction.action?stateId=21"><span>Punjab</span>
+							</a></li>
+							<li><a href="statePageAction.action?stateId=27"><span>Uttar Pradesh</span></a></li>
+							<li><a href="statePageAction.action?stateId=26"><span>Uttaranchal</span>
+							</a></li>
+							<li><a href="statePageAction.action?stateId=28"><span>West Bengal</span>
+							</a></li>
+							<li><a href="statePageAction.action?stateId=17"><span>Meghalaya</span>
+							</a></li>
+							<li><a href="statePageAction.action?stateId=19"><span>Nagaland</span>
+							</a></li>
+							<li><a href="statePageAction.action?stateId=25"><span>Tripura</span>
+							</a></li>
+						</ul>
+					</div>
+				</li>
+				<li><a href="#" class="parent"><span>Union Territories</span></a>
+					<div style="z-index:1;text-align:left;">
+						<ul>
+							<li><a href="statePageAction.action?stateId=35"><span>Puducherry</span>
+							</a></li>
+						</ul>
+					</div>
+				</li>
 			</ul>
-    </div>
-      
+			</div>
+		</li>
+		
+		
+		
+		
+	
+		<li>
+			<a href="dashBoardAction.action"><span>DASHBOARD</span></a> 
+		</li>
+					
+			
+    </ul>
+	
+</div>      
 </div>
 <!-- Header End -->
 
