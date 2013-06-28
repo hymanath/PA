@@ -8,7 +8,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <%@taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>
 <%@taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %>
-<%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -78,7 +77,23 @@
 <script type="text/javascript" src="js/bannerslider.js"></script>
 
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
-
+<script>
+		var Localization = { <%
+		
+		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
+		String stateSelect = rb.getString("stateSelect");
+		String distSelect = rb.getString("distSelect");
+		String constSelect = rb.getString("constSelect");
+		String assembly = rb.getString("assembly");
+		String parliament = rb.getString("parliament");
+		String localBody = rb.getString("localBodies");
+		String electionTypeInHome = rb.getString("electionTypeInHome");
+		String electionYearInHome = rb.getString("electionYearInHome");
+		
+		ResourceBundle resb = ResourceBundle.getBundle("global_ErrorMessages");
+		String errorMsg = resb.getString("constTypeAlert");
+%> }
+	</script>
 <style>
 .background
 {
@@ -199,7 +214,7 @@ margin-top:5px;
 
 	<div id="menu" class="span10" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;">
     <ul class="menu">
-        <li class="active"><a href="homePage.action"><span><i class="icon-home icon-black"></i></span></a></li>
+        <li class="active"><a href="newhomePageAction.action"><span><i class="icon-home icon-black"></i></span></a></li>
 	
     
 	
