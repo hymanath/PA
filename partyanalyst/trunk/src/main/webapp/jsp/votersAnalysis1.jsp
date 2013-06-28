@@ -1035,6 +1035,7 @@ color:#2A4F97;
 	#sses2 ul{margin-left: 210px;}
 	#castPopupShowBtn{margin-right: 3px;}
 	#customGroupAgeLink{margin-right: 10px;}
+	.middleNav{width:223px;}
 </style>
 
 </SCRIPT>
@@ -1369,7 +1370,7 @@ for  body3 start    result  -->
 	<div id="votersBasicInfoDiv"></div>
 	<div id="votersInfoMoreShowHide" style="display:none;"><span class="btn btn-info pull-right" href="javaScript:{};" onclick="getVotersDetails();" style="margin-top:5px;">Click here for voters details</span></div>
 
-	
+
 
   </div>
 
@@ -1930,6 +1931,7 @@ function showAgewiseDetails(){
 function getVotersDetails(){
 		getVotersData();
 }
+
 
 function showBasicAgewiseDetails(){
    callCorrespondingAjaxCall('brief');
