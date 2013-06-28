@@ -29,7 +29,7 @@
 	<!--<link type="text/css" href="styles/assets/css/bootstrap.css" rel="stylesheet">-->
 	<link type="text/css" href="styles/tdp/menu.css" rel="stylesheet" />
 	<link href="styles/tdphome_inner_styles.css" rel="stylesheet" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="styles/home_style.css">
+		<link rel="stylesheet" type="text/css" href="styles/newhome_styles.css">
 	
 	<!--Script file
 	<script type="text/javascript" src="js/jquery.js"></script>-->
