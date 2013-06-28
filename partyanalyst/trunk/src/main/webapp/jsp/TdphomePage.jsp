@@ -112,7 +112,7 @@
 
 .newLink{color:#000000;}
 .newLink:hover{color:#000000;text-decoration:none;}
-
+#contenttable{ margin-top: -13px;}
 			</style>
 <div class="container m-top15">
 		<div class="row-fluid">
@@ -191,7 +191,7 @@ Quick Links</h2>
 							<div id="alertMessage" style="color:red;font-weight:bold;"></div>
 								<h5>View Your Constituency</h5>
 								<p>Select Constituency Type<br>
-								<label class="radio">
+								<label class="radio"  style="width:64px;">
 										<input type="radio" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked">
 											Assembly
 											</label>
@@ -238,9 +238,9 @@ Quick Links</h2>
 											<tr>
 												<td>
 													<div id="localBodiesRadioDiv_data">
-														<label class="radio"><input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality</label>
-														<label class="radio"><input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Corporation</label>
-														<label class="radio"><input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Greater Municipal Corp</label>
+														<label class="radio"><input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality</label></br>
+														<label class="radio"><input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Corporation</label></br>
+														<label class="radio" style="width:150px;"><input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Greater Municipal Corp</label>
 													</div>
 												</td>									
 											</tr>
