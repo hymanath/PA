@@ -109,7 +109,7 @@ margin-top:10px;
 .lr-sec{padding:14px 5px 5px;}
 #menu ul.menu li{z-index: 999;}
 .header{height:120px;}
-#header-mainsec{background:#ffdc2d;}
+#header-main{background:#ffdc2d !important;}
 
 
 
@@ -163,9 +163,9 @@ margin-top:5px;
 <table style="border-collapse: collapse;" width="100%">
 <tr>
 <td>
-<div id="header-mainsec">
+<div id="header-main">
   <div class="mainwrapper">
-  <div class="container">
+  <div>
     <div class="row-fluid">
 	 <div class="pull-right" style="margin-right:35px;margin-top:5px;">
        
