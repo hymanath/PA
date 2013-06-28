@@ -25,8 +25,8 @@
 	
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	<!--Bootstrap styles file-->
-	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
-	<!--<link type="text/css" href="styles/assets/css/bootstrap.css" rel="stylesheet">-->
+	<!--<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">-->
+	<link type="text/css" href="styles/assets/css/bootstrap.css" rel="stylesheet">
 	<link type="text/css" href="styles/tdp/menu.css" rel="stylesheet" />
 	<link href="styles/tdphome_inner_styles.css" rel="stylesheet" type="text/css" />
 	<link href="styles/home_styles.css" rel="stylesheet" type="text/css" />
@@ -41,8 +41,8 @@
 		src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
-	<script type="text/javascript" src="js/bootstrap.js" ></script>
-	<!--<script type="text/javascript" src="styles/assets/css/js/bootstrap.js" ></script>-->
+	<!--<script type="text/javascript" src="js/bootstrap.js" ></script>-->
+	<script type="text/javascript" src="styles/assets/css/js/bootstrap.js" ></script>
 	
 	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 
@@ -274,17 +274,6 @@ margin-top:5px;
 			</div>
 		</li>
 		
-		<li>
-			<a href="#" class="parent"><span>CONSTITUENCY ANALYSIS</span></a>
-			<div  style="z-index:8;text-align:left;" >
-				<ul>
-					<li><a href="votersAnalysisNewAction.action"><span>Voter Analysis</span></a></li>
-					<li><a href="votersSearchAction.action"><span>Voters Search &amp; Report</span></a></li>
-					<li><a href="casteAndElectionResultsComparisonAction.action"><span>Caste Vs Election Results</span></a></li>
-				</ul>
-			</div>
-		</li>
-
 		<li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
 			<div  style="z-index:8;text-align:left;" >
 			<ul>
@@ -337,6 +326,20 @@ margin-top:5px;
 			</ul>
 			</div>
 		</li>
+		
+		
+		<li>
+			<a href="#" class="parent"><span>CONSTITUENCY ANALYSIS</span></a>
+			<div  style="z-index:8;text-align:left;" >
+				<ul>
+					<li><a href="votersAnalysisNewAction.action"><span>Voter Analysis</span></a></li>
+					<li><a href="votersSearchAction.action"><span>Voters Search &amp; Report</span></a></li>
+					<li><a href="casteAndElectionResultsComparisonAction.action"><span>Caste Vs Election Results</span></a></li>
+				</ul>
+			</div>
+		</li>
+
+		
 		
 		
 		
