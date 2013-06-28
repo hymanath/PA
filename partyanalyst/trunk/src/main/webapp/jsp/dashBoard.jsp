@@ -182,7 +182,7 @@ lable{line-height:40px;}
 </div>
 <div  id="profileUserName" style="margin-top: 12px;" >
 <b style="margin-left: 16px;">${loginUserName}</b> </div></div>
-</div>	
+</div>		
  <div class="widget blue">
  <h2>Account Settings</h2>
  <table class="table table-hover" style="margin-bottom: -13px;border-spacing: 2px;"><thead></thead><tbody><tr><td><a href="freeUserRegistration.action"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>  <tr><td><a class="changePwdLink" href="javascript:{}"><span class="icon-hand-right"></span>  Change Password</a></td></tr>   <tr><td><a class="editPictureLink" href="javascript:{}"><span class="icon-user"></span>  Edit Picture</a></td></tr>  </tbody></table>
@@ -362,7 +362,8 @@ lable{line-height:40px;}
 				
 				<div class="media-body">
 					<!---<h4 class="media-heading"> Party Performance Report</h4>--->
-					<p>Detaild reports of Party Performance</p>
+					<p>To know your Party Performance in Previous Elections and Analyse where your Party
+					lost/gain with low/high Margin</p>
 					<div>
 						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('partyperformance');" style="float:right;"></input>
 					</div>
@@ -374,7 +375,7 @@ lable{line-height:40px;}
 					<div class="media">
 						<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Elections Comparison copy.png"style="width: 64px; height: 64px;"></img>
 						<div class="media-body">
-							<p>Detaild reports of Elections Comparison</p>
+							<p>Election Comparison Report gives a glance of compared election results for a Party participated in any two elections in detailed view</p>
 							<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('electioncomparison');" style="float:right;"></input>
 						</div>
 					</div>
@@ -388,7 +389,8 @@ lable{line-height:40px;}
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Party Results Report.png"style="width: 64px; height: 64px;"></img>
 				<div class="media-body">
-					<p>Party Detaild  Results Report</p>
+					<p>Party Results Report gives to you, your Party Results in all previous elections compared with other parties and their/ your alliances in state/district/constituency levels.
+					</p>
 					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('partyresultsReport');" style="float:right;"></input>
 				</div>
 				</div>    					
@@ -399,7 +401,8 @@ lable{line-height:40px;}
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Election Results Analysis Report.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
-						<p>Party Detaild  Results Report</p>
+						<p>Now you can analyse and view the reasons of analysed constituencies for winning/lossing in an Election
+						</p>
 						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('electionResReport');" style="float:right;"></input>
 					</div>
 				</div>
@@ -412,7 +415,9 @@ lable{line-height:40px;}
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Elections Vs Demographics.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
-						<p>Elections Vs Demographics Detaild Report</p>
+						<p>Now you can analyse the parties performance based on Demographics like SC Population,
+						ST Population, litarates,illitarates and etc.
+						</p>
 						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('elecdemog');" style="float:right;"></input>
 					</div>
 				</div>       
@@ -423,7 +428,9 @@ lable{line-height:40px;}
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Strengths & Weakness.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
-						<p>Party Detaild  Strengths and Weakness</p>
+						<p>To Know where your party Strong or Weak to improve your Party Performance in coming Elections.
+
+						</p>
 						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('partystrweak');" style="float:right;"></input>
 					</div>
 				</div>						
@@ -436,7 +443,8 @@ lable{line-height:40px;}
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/District Wise Party Performance.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
-						<p>Elections Vs Demographics Detaild Report</p>
+						<p>Now you can analyse the parties performance in newly formed Constituencies with old Constituencies.
+						</p>
 						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('distperform');" style="float:right;"></input>
 					</div>
 				</div>       						
