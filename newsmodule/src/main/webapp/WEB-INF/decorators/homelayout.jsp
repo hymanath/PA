@@ -107,7 +107,7 @@ margin:-1px 0px 0px 0px ;
 						  <li class="">
 						  <a href="newsDetailsAction.action" id="newsTabId">News</a></li>
 						  <li class="">
-						  <a onclick="showMoreVideoGallaries()" style="cursor: pointer;" id="videosTabId">Videos</a></li>
+						  <a href="showMoreVideos.action" style="cursor: pointer;" id="videosTabId">Videos</a></li>
 						 
 						  
 						      <li class=""><a href="partyManagementAction.action" id="partyManagementTabId">Manage Party Profile</a></li>
@@ -188,12 +188,14 @@ function getNewsDetailsByContentId(contentId)
     var browser1 = window.open(urlstr,"gallaryDetails"+contentId+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
     browser1.focus();
 } 
+/* updated by srishailam
 function showMoreVideoGallaries(){
 	 var urlstr = "showMoreVideos.action";
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
+*/
 </script>
 </body>
 </html>
