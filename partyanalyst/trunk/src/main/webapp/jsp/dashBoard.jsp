@@ -87,6 +87,7 @@ input[type="radio"]{margin-top:-1px;}
 #boothWiseResult a{color:#000;}
 #boothWiseResult a:hover{text-decoration:none;color:#0088CC;}
 #boothWiseResult .breadcrumb{padding: 8px 5px;}
+#boothWiseResult {margin-top:10px;}
 .ui-autocomplete {
 		max-height: 200px;
 		overflow-y: auto;
@@ -722,7 +723,7 @@ var districtId = '${districtId}';
 var selType= "";
 getDistrictsComboBoxForAState(stateId,"districtList_d");
 getAllConstituenciesInStateByType(2,stateId,"constituency");
-         /* <c:if test="${boothAnalysisData != null}">
+          <c:if test="${boothAnalysisData != null}">
 		   var elecYear = '${boothAnalysisData.name}';
 		   var conId = '${boothAnalysisData.id}';
 		   var elec = '${boothAnalysisData.value}';
@@ -732,7 +733,7 @@ getAllConstituenciesInStateByType(2,stateId,"constituency");
 		 <c:if test="${boothAnalysisData == null}">
 		   $("#moreDetailsId").trigger("click");
 		   $('.boothResults').toggle();
-		 </c:if> */
+		 </c:if> 
 function viewBoothResults(){
   window.open("partyBoothResult2Action.action?partyName=872&electionYear="+elecYear+"&constituencyName="+conId+"");
 }
