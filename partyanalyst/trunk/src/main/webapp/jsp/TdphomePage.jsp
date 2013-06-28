@@ -5,7 +5,7 @@
 		<%@ page import="java.util.ResourceBundle;" %>
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<title>Party Analyst - An Election Analysis &amp; Management Platform</title>
+			<title>TDP Party's Election Analysis &amp; Management Platform</title>
 			<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
 
 			<meta http-equiv="Content-Language" content="en" />
