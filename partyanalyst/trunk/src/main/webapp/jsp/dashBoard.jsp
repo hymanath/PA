@@ -13,7 +13,8 @@
 <link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
 	<script src="js/combobox.js" type="text/javascript"></script>
-
+<script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
+<link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
 </head>
 <style>
 	
@@ -849,48 +850,6 @@ function buildParlemnts(myResults)
 	}
 }
 
-function callAjax(jsObj,url){
-		 var myResults;
-
-			 var callback = {			
- 		               success : function( o ) {
-							try {												
-								myResults = YAHOO.lang.JSON.parse(o.responseText);					
-								if(jsObj.task =="forElectionYears")
-								{
-									buildElectionYears(myResults);
-								}
-								if(jsObj.task =="forParty")
-								{
-									buildPartiesSelectBox(myResults);
-								}
-								if(jsObj.task=="forConstituencies"){
-									buildConstituencies(myResults);
-								}
-								if(jsObj.task == "getPariesForAssemply")
-								{
-									buildParties(myResults);
-								}
-								else if(jsObj.task == "getAssemblysForParliment")
-								{
-									buildAssemblies(myResults);
-								}	
-								else if(jsObj.task == "getParlements")
-								{
-									buildParlemnts(myResults);
-								}	
-								}catch (e) {
-							     
-								}  
- 		               },
- 		               scope : this,
- 		               failure : function( o ) {
- 		                		//alert( "Failed to load result" + o.status + " " + o.statusText);
- 		                         }
- 		               };
-
- 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
- 	}
 
 function buildElectionYears(myResult)
 {
@@ -1097,9 +1056,6 @@ $(".changePwdLink").live("click",function(){
         div.append('<div style="margin-left: auto; margin-right: auto; width: 550px;"><input class="btn-info btn-small" id="changePWDButton" type="button" value="Change Password"></input><input class="btn-info btn-small" id="cancelButtonID" type="button" value="Cancel" style="margin-left:10px;"></input></div>');
 
 		elmt.append(div);
-		$("#impdatesDiv").hide();
-		$("#impEvents").hide();
-		$("#announcementsDiv").hide();
 	});
 
    $("#cancelButtonID").live("click",function(){
@@ -1166,7 +1122,7 @@ $(".changePwdLink").live("click",function(){
 	 };
      var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "changeUserPasswordAction.action?"+rparam;						
-	callAjax1(jsObj,url);
+	callAjax(jsObj,url);
 	}
   });
 //edit picture
@@ -1304,4 +1260,135 @@ $("#uploadCoverPicButton").live("click",function(){
 			 getUploadCoverpic();
 		}
 });
+function showChangePwdStatus(results)
+{
+	$("#password_window_errorMsg").html('');
+	var result = $("#password_window_errorMsg");
+	if(results==121)
+	{
+	  result.html('<div style="color:green">Password changed successfully, Window Closing...</div>');
+      setTimeout("closewdw()",3000);
+	  return;
+	}	
+    else if(results==0)
+	{
+	 result.html('<div style="color:red"> Invalid Current Password</div>');	
+	 return;
+	}
+}
+
+function createCropImage(imgpreview,imgtarget,event)
+{     
+      //alert(event.target.result); 
+	  
+   var a=document.getElementById("Imgpreview").src = event.target.result;
+
+   if(jcrop_api){
+   
+   	
+	
+	
+    jcrop_api.destroy();
+	 $('#Imgpreview1').removeAttr('style'); 
+	document.getElementById("Imgpreview1").src = event.target.result;
+  
+  
+
+}
+else{
+ document.getElementById("Imgpreview1").src = event.target.result;
+  $('#xcoardinate').val("0");
+  $('#ycoardinate').val("0");
+   $('#width').val("300");
+   $('#height').val("300");
+   
+}
+}
+function previewImg()
+{
+	var photoElmt = document.getElementById("photoUploadElmt");
+	var photoStatusElmt = $("#uploadPic_window_status");
+	var fileLimit = 1048576; //1024*1024 = 1048576 bytes (2MB photo limit)
+	
+	var file = photoElmt.files[0];
+	
+	var fileType = file.type;
+	var fileImgType = fileType.substring(fileType.indexOf('/')+1,fileType.length);
+	
+	if(fileImgType == "jpeg" || fileImgType == "png" || fileImgType == "gif")
+	{
+		var fileSize = file.fileSize/fileLimit;
+		if(fileSize > 2)
+		{
+			photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image size should be < 2MB.</span>';
+		}
+		else
+		{
+			var reader = new FileReader();
+           //  init the reader event handlers
+			reader.onloadend = handleReaderLoadEnd;
+			 
+			// begin the read operation
+			reader.readAsDataURL(file);
+			
+			photoStatusElmt.innerHTML = '';
+			var previewElmt = document.getElementById("Imgpreview");
+			//previewElmt.src = file.getAsDataURL();
+			uploadPicStatus = true;
+		}
+	}
+	else
+	{
+		photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image is not of the type specified.</span>';
+	}
+
+	
+}
+function callAjax(jsObj,url){
+		 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+								myResults = YAHOO.lang.JSON.parse(o.responseText);					
+								if(jsObj.task =="forElectionYears")
+								{
+									buildElectionYears(myResults);
+								}
+								if(jsObj.task =="forParty")
+								{
+									buildPartiesSelectBox(myResults);
+								}
+								if(jsObj.task=="forConstituencies"){
+									buildConstituencies(myResults);
+								}
+								if(jsObj.task == "getPariesForAssemply")
+								{
+									buildParties(myResults);
+								}
+								else if(jsObj.task == "getAssemblysForParliment")
+								{
+									buildAssemblies(myResults);
+								}	
+								else if(jsObj.task == "getParlements")
+								{
+									buildParlemnts(myResults);
+								}	
+								else if(jsObj.task =="changePassword")
+								{
+									showChangePwdStatus(myResults);
+								}
+								}catch (e) {
+							     
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                		//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+ 	}
+
 </script>
