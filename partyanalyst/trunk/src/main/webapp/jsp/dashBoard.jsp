@@ -5,16 +5,11 @@
 <%@ page import="java.util.ResourceBundle;" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>DashBoard</title>
-				 
-<link rel="stylesheet" type="text/css" href="style.css"/> 
-<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
-<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
-<link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
-	<script src="js/combobox.js" type="text/javascript"></script>
-<script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
-<link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
+	<title>DashBoard</title>			 
+	<link rel="stylesheet" type="text/css" href="style.css"/> 
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
 </head>
 <style>
 	
@@ -90,7 +85,6 @@ input[type="radio"]{margin-top:-1px;}
 #boothWiseResult a{color:#000;}
 #boothWiseResult a:hover{text-decoration:none;color:#0088CC;}
 #boothWiseResult .breadcrumb{padding: 8px 5px;}
-
 .ui-autocomplete {
 		max-height: 200px;
 		overflow-y: auto;
@@ -139,12 +133,38 @@ input[type="radio"]{margin-top:-1px;}
     border: 1px solid #AAAAAA;
     color: #222222;
 }
-</style>
-<div class="container m-top15">
-<div class="row-fluid"><div class="span12 widget" style="padding: 0 20px 4px;"><h2 class="pagination-centered" style="border-bottom: 0px solid #C0C0C0;">DASHBOARD</h2></div></div>
-<div class="row-fluid">
+/*----------------------------27-----*/
+.dashboard-header:after {
+    clear: both;
+    content: "";
+    display: block;
+    height: 0;
+}
+.dashboard-header {
+    background: linear-gradient(to bottom, #FCFCFC 0%, #ECECEC 100%) repeat scroll 0 0 transparent;
+    border: 1px solid #C1C1C1;
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 1px 0 #FFFFFF;
+	padding:5px;
+	line-height:30px;
+}
 
-<!--------left div------->
+.m-top10{margin-top:10px;}
+.widget{border-top:none;}
+.page-header{ border-bottom: 1px solid #FFDC2D;margin: 0px 0px 10px;}
+.page-header h4{margin:0px; font-size:15.5px ; }
+lable{line-height:40px;}
+</style>
+<div class="container">
+	
+<div class="row">
+
+		<div class="dashboard-header m-top10">
+			<h4><i class="icon-hdd"></i> DASHBOARD</h4>
+		</div>
+
+<div class="row-fluid m-top10" >
+<!---------Left Section ----------->
 <div class="span3">
 <!-------Quick Links Block--------------->
 <div class="profile-pic widget blue"  style="height: 139px;">
@@ -168,110 +188,117 @@ input[type="radio"]{margin-top:-1px;}
 <div id="connectPeoplePopup" style="display:none;">
 	<div id="allConnectedUsersDisplay_main"></div>
 	</div>
-<div  class="widget blue">
-  <h2>Advanced DashBoard</h2>
-   <b>Click here for</b> 
-   <a class="btn btn-small btn-primary" href="userProfile.action">Advanced DashBoard</a>
-</div>
-<div class="widget blue quicklinks"><h2><span><i class="icon-random "id="icon_leftsec"></i></span>
-Quick Links</h2>
+<div class="btn btn-xlarge" style="height: 185px;">
+    
+    <h2 style="margin-top: 38px;">Advanced Dashboard</h2>
+    <a href="userProfile.action" class="btn btn-small btn-success"> Click <i class="icon-hand-up icon-white"></i> To View More Futures </a>
 
-<!---- View Election Results------->
-<div class="widget-block" contentindex="4c">
-<h5> View Election Results</h5>
-<p>You can view your Assembly or Parliament past Election Results.</p>
-<table>
-<tbody>
-<tr>
-<td width="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
-</tr>
-<tr>
-<td>
-<select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 168px;margin-bottom:5px;" autoComplete="off"
-onchange="checkElectionType(this.options[this.selectedIndex].value)">
-<option value="0">Select Type</option>
-<option value="2">Assembly</option>
-<option value="1">Parliament</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>
-<select id="states" name="state_s" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:168px;margin-bottom:5px;"onchange="getElectionYearsInHomePage('Assembly')">
-</select>
-</td>
-</tr>
-<tr>
-<td>
-<select id="electionYears" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:168px;">
-</select>
-</td>
-</tr>
-</tbody>
-</table>
+            </div>
+<div class="widget quicklinks m-top15">
+	<h2><span><i class="icon-random "id="icon_leftsec"></i></span>Quick Links</h2>
 
-<button class="btn btn-success pull-right" type="button" onclick="viewElectionResults()">Go</button>
+	<!---- View Election Results------->
+	<div class="widget-block" contentindex="4c">
+		<h5> View Election Results</h5>
+			<p>You can view your Assembly or Parliament past Election Results.</p>
+		<table>
+			<tbody>
+				<tr>
+					<td width="65%">
+						<div id="electionDetailsErrorMsgDiv" style="display:none;">
+							<font color="red"><b>*Select All Inputs</b></font>
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 168px;margin-bottom:5px;" autoComplete="off"
+						onchange="checkElectionType(this.options[this.selectedIndex].value)">
+						<option value="0">Select Type</option>
+						<option value="2">Assembly</option>
+						<option value="1">Parliament</option>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<select id="states" name="state_s" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:168px;margin-bottom:5px;"onchange="getElectionYearsInHomePage('Assembly')">
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<select id="electionYears" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:168px;">
+						</select>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<button class="btn btn-success pull-right" type="button" onclick="viewElectionResults()">Go</button>
+	</div><!------View Election Results END---------->
 
-</div>
-<!---------------->
+	<!------View Your State---------->
+	<div class="widget-block" contentindex="0c" >
+		<h5>View Your State</h5>
+		<p>Select your state to view its Assembly, Parliament, Local Bodies election results.</p>
+		<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
+		<button class="btn btn-success clear-both pull-right" type="button" onclick="navigateToStatePage()">Go</button>
+	</div><!------View Your State END---------->
+	
+    <!----View Your district------>
+	<div class="widget-block" contentindex="1c">
+		<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
+		<h5>View Your District</h5>
+		<p>Select your district to view its election results in district level.</p>
+		<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"></s:select>
+		<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
+		<br>
+		<a onclick="navigateToDistrictPage()" href="javascript:{}">
+		<button class="btn btn-success pull-right" type="button">Go</button>
+		</a>
+	</div> <!----View Your district END------>
+	
+	<!--View your constituency-->
+	<div class="widget-block" contentindex="2c" >
+		<div id="alertMessage" style="color:red;font-weight:bold;"></div>
+		<h5>View Your Constituency</h5>
+		<p>Select Constituency Type<br>
+			<label class="radio" style="width:66px;">
+			<input type="radio" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked">
+			Assembly
+			</label>
+			
+			<label class="radio">
+			<input type="radio" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" >
+			Parliament
+			</label>
+		</p>
+		<table style="display: block;" id="stateTable">
+			<tbody>
+				<tr>
+					<td>
+						<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table id="constTable" style="display:block;">
+			<tr>
+				<td>
+					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/>
+				</td>
+			</tr>
+		</table>
 
-<!------View Your State---------->
-<div class="widget-block" contentindex="0c" >
-<h5>View Your State</h5>
-<p>Select your state to view its Assembly, Parliament, Local Bodies election results.</p>
-<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
+		<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()">Go</button>
+	</div><!--- View your constituency END --->
 
-<button class="btn btn-success clear-both pull-right" type="button" onclick="navigateToStatePage()">Go</button>
-
-</div>
-<!----View Your district------>
-<div class="widget-block" contentindex="1c">
-<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
-<h5>View Your District</h5>
-<p>Select your district to view its election results in district level.</p>
-<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"></s:select>
-<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
-<br>
-<a onclick="navigateToDistrictPage()" href="javascript:{}">
-<button class="btn btn-success pull-right" type="button">Go</button>
-</a>
-
-</div>
-<!--View your constituency-->
-<div class="widget-block" contentindex="2c" >
-<div id="alertMessage" style="color:red;font-weight:bold;"></div>
-<h5>View Your Constituency</h5>
-<p>Select Constituency Type<br>
-<label class="radio">
-<input type="radio" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked">
-Assembly
-</label>
-<label class="radio">
-<input type="radio" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" >
-Parliament
-</label>
-</p>
-<table style="display: block;" id="stateTable">
-<tbody>
-<tr>
-<td>
-<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/>
-</td>
-</tr>
-</tbody>
-</table>
-<table id="constTable" style="display:block;">
-<tr>
-<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/></td>
-</tr>
-</table>
-
-<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()">Go</button>
-</div>
-
-<!--View your Locality-->
-
-<div class="widget-block" contentindex="3c" >
+	<!--View your Locality-->
+	<div class="widget-block" contentindex="3c" >
 <h5>View Your Locality</h5>
 <div>
 <table>								
@@ -288,10 +315,10 @@ Parliament
 
 <tr>
 <td>
-<div id="localBodiesRadioDiv_data">
-<input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality
-<input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Corporation
-<input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Greater Municipal Corp
+<div id="localBodiesRadioDiv_data" style="margin-bottom:-30px;margin-top: -30px;">
+<input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>&nbsp;Muncipality</br>
+<input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>&nbsp;Corporation</br>
+<input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>&nbsp;Greater Municipal Corp</br>
 </div>
 </td>									
 </tr>
@@ -314,173 +341,243 @@ Parliament
 </div>	
 
 </div>
-</div>
+</div><!---------Left Section END----------->
 
+<!---------Right Section----------->
 <div class="span9">
  <c:if test="${party}">
-  <div class="row-fluid span12 widget">
-     <h2>State Level Analysis</h2>
-	 <div class="row-fluid">
-	   <div class="span6 widget-simple">
-	   
-			<h4> Party Performance Report</h4>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('partyperformance');" style="float:right;"></input></div>
-		</div>       
-	   <div class="span6 widget-simple">
-	      <h4>Elections Comparison</h4>
-		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('electioncomparison');" style="float:right;"></input></div>
-	   </div>						
-    </div>
-	
-	<div class="row-fluid">
-	   <div class="span6 widget-simple">
-	   
-			<h4>Party Results Report</h4>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('partyresultsReport');" style="float:right;"></input></div>
-		</div>       
-	   <div class="span6 widget-simple">
-	      <h4>Election Results Analysis Report</h4>
-		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('electionResReport');" style="float:right;"></input></div>
-	   </div>						
-    </div>
-	
-	<div class="row-fluid">
-	   <div class="span6 widget-simple">
-	   
-			<h4> Elections Vs Demographics</h4>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('elecdemog');" style="float:right;"></input></div>
-		</div>       
-	   <div class="span6 widget-simple">
-	      <h4>Party Strengths and Weakness</h4>
-		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('partystrweak');" style="float:right;"></input></div>
-	   </div>						
-    </div>
-	
-	<div class="row-fluid">
-	   <div class="span6 widget-simple">
-	   
-			<h4> District Wise Party Performance</h4>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('distperform');" style="float:right;"></input></div>
-		</div>       						
-    </div>
-  </div>
- </c:if>
- 
-  <div class="row-fluid span12 widget" style="margin-left:0px;">
-    <h2>Constituency Level Analysis</h2>
-	<div class="row-fluid">
-	   <div class="span12 widget-simple">
-	   <h4>Cross Voting Analysis</h4>
-	   
-	   <div>
-	   <table>
-	   <tr>
-	   <td><span>Election year </span></td><td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" onClick="getParlmentsList();" headerValue="Select Year" headerKey="0"></s:select> </td>
-	   <td><span>Parliment Constituency   </span></td><td><s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" onChange="getAssemblyConstituencies();"></s:select></td>
-	   </tr>
-	   <tr>
-	   <td><span> Assembly Constituency </span></td><td> <select id="aConstituencyList" onChange="getParties();">
-	   <option value="0">Select Location</option>
-	   </select></td>
-	    <td><span>Party  </span></td><td><select id="partyList">
-	   <option value="0">Select Party</option>
-	   </select></td>
-	   </tr>
-	   </table>
-	   </div>
-	   <div><input type="button" value="View" class="btn btn-success" onClick="getCrossVotingReport();" style="float:right;"></input></div>
-	   </div>       				
-	</div>
-     <div class="row-fluid">
-	   
-	   <div class="span6 widget-simple">
-	    <h4>Voters Analysis </h4>
-	   <table>
-	   <tr>
-	   <td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="constituencyId" name="constituencyId" list="constituencyList" listKey="id" listValue="name" ></s:select></td>
-	    </tr>
-		</table>
-		<div><input type="button" value="View" class="btn btn-success" onCLick="openVotersAnalysts();" style="float:right;"></input></div>
-	   </div>
-	   <div class="span6 widget-simple">
-	   
-			<h4> Results Vs Caste</h4>
-			<table>
-			<tr>
-			 <td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="constituencyList" name="constituencyList" list="constituencyList" listKey="id" listValue="name" ></s:select></td>
-	       </tr>
-		   </table>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openCasteViseAnalysis();" style="float:right;"></input></div>
+  <!-----State Level Analysis----->
+  <div class="row-fluid span12 well well-small">
+    <div class="page-header"> <h4>State Level Analysis</h4></div>
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2> Party Performance Report</h2>
+				<div class="media">
+				
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Party Performance Report.png"style="width: 64px; height: 64px;"></img>
+				
+				<div class="media-body">
+					<!---<h4 class="media-heading"> Party Performance Report</h4>--->
+					<p>Detaild reports of Party Performance</p>
+					<div>
+						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('partyperformance');" style="float:right;"></input>
+					</div>
+				</div> 
+				</div> 
+			</div> 
+			<div class="span6 widget">
+					<h2>Elections Comparison</h2>	
+					<div class="media">
+						<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Elections Comparison copy.png"style="width: 64px; height: 64px;"></img>
+						<div class="media-body">
+							<p>Detaild reports of Elections Comparison</p>
+							<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('electioncomparison');" style="float:right;"></input>
+						</div>
+					</div>
+			</div>	
+							
 		</div>
-	    
-	   
-	</div>
-	<div class="row-fluid">
-		<div class="span6 widget-simple" id="boothResultsDiv">
-	   <h4>Booth Wise Results</h4>
-	   <div id="boothWiseResult"></div>
-	   <label class="checkbox" style="margin-top:10px;margin-left:5px;">
-                <input type="checkbox" id="moreDetailsId"> Check for More Details
-       </label>
-	   
-		<div class="form-horizontal boothResults thumbnail" name='boothSelection'>
-		
-				<div class="control-group">
-					<label class="control-label" for="firstName">Election Type</label>
-					<div class="controls " style="width:165px;">
-						<input type="radio" name="electionType" value="2" checked="checked">Assembly</input>
-						<input type="radio" name="electionType" value="1">Parliament</input>
-					</div>
-					
-					
+	
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2>Party Results Report</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Party Results Report.png"style="width: 64px; height: 64px;"></img>
+				<div class="media-body">
+					<p>Party Detaild  Results Report</p>
+					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('partyresultsReport');" style="float:right;"></input>
 				</div>
-				
-				<div class="control-group ">
-					<label class="control-label" for="electionYear">Select Year</label>
-					<div class="controls">
-						<s:select
-theme="simple"
-list="electionYearsList"
-name="electionYear"
-listKey="id"
-listValue="name"
-headerKey="0"
-headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/> 
-					</div>
-				</div>
-				
-				<div class="control-group ">
-					<label class="control-label" for="constituency">Constituency</label>
-					<div class="controls ">
-						<select id="constiId" onChange="getPartiesForElections()" name="constituencyName">
-							<option value='0'>Select Constituency</option>
-						</select>
-					</div>
-				</div>
-				
-				<div class="control-group">
-					<label class="control-label" for="partyId">Party</label>
-					<div class="controls">
-						<select id="partyId" name="partyName">
-							<option value='0'>Select Party</option>
-						</select>
-					</div>
-				</div>
-				<div class="control-group" id="errorDiv" style="color:red;">
-				</div>
-				
-					<button class="btn btn-mini btn-success pull-right" data-dismiss="modal" aria-hidden="true" onclick="submitRes()">SUBMIT</button>
+				</div>    					
 			</div>
-	   </div>
+			
+			<div class="span6 widget">
+				<h2>Election Results Analysis Report</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Election Results Analysis Report.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+						<p>Party Detaild  Results Report</p>
+						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('electionResReport');" style="float:right;"></input>
+					</div>
+				</div>
+			</div>	
+		</div>
 		
-	          
-
-       <div class="span6 widget-simple">
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2> Elections Vs Demographics</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Elections Vs Demographics.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+						<p>Elections Vs Demographics Detaild Report</p>
+						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('elecdemog');" style="float:right;"></input>
+					</div>
+				</div>       
+					
+			</div>       
+		   <div class="span6 widget">
+			  <h2>Party Strengths & Weakness</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Strengths & Weakness.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+						<p>Party Detaild  Strengths and Weakness</p>
+						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('partystrweak');" style="float:right;"></input>
+					</div>
+				</div>						
+			</div>
+		</div>
+	
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2> District Wise Party Performance</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/District Wise Party Performance.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+						<p>Elections Vs Demographics Detaild Report</p>
+						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('distperform');" style="float:right;"></input>
+					</div>
+				</div>       						
+			</div>
+		</div>
+   </div><!--------State Level Analysis END---->
+	
+ </c:if>
+  <!---Constituency Level Analysis--->
+  <div class="row-fluid">
+	<div class="span12 well well-small">
+		<div class="page-header">
+			<h4>Constituency Level Analysis</h4>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span12 widget">
+				<h2>Cross Voting Analysis</h2>
+				<!----<fieldset>
+				  <div class="row-fluid">
+					<div class="span2">
+						<label>Election year </label>					
+						<s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" onClick="getParlmentsList();" headerValue="Select Year" headerKey="0"></s:select> 
+					</div>
+					<div class="span2">
+						<label>Parliment Constituency </label>					
+						<s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" onChange="getAssemblyConstituencies();"></s:select>
+					</div>
+					
+				  </div>
+				</fieldset>----->
+				
+				<div>
+				   <table>
+				   <tr>
+				   <td><span>Election year </span></td><td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" onClick="getParlmentsList();" headerValue="Select Year" headerKey="0"></s:select> </td>
+				   <td><span>Parliment Constituency   </span></td><td><s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" onChange="getAssemblyConstituencies();"></s:select></td>
+				   </tr>
+				   <tr>
+				   <td><span> Assembly Constituency </span></td><td> <select id="aConstituencyList" onChange="getParties();">
+				   <option value="0">Select Location</option>
+				   </select></td>
+					<td><span>Party  </span></td><td><select id="partyList">
+				   <option value="0">Select Party</option>
+				   </select></td>
+				   </tr>
+				   </table>
+				</div>
+				
+				<div>
+					<input type="button" value="View" class="btn btn-small" onClick="getCrossVotingReport();" style="float:right;"></input>
+				</div>
+			</div>       				
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span4 widget">
+				<h2>Voters Analysis </h2>
+				<fieldset>
+					<lable>Select Constituency </lable>
+					<s:select cssClass="selectstyle span12" theme="simple" id="constituencyId" name="constituencyId" list="constituencyList" listKey="id" listValue="name" ></s:select>
+				
+					<input type="button" value="View" class="btn btn-small" onCLick="openVotersAnalysts();" style="float:right;"></input>
+				</fieldset>
+			</div>
+			
+		    <div class="span4 widget">
+				<h2> Results Vs Caste</h2>
+				<fieldset>
+				<lable>Constituency </lable>
+				<s:select cssClass="selectstyle" theme="simple" id="constituencyList" name="constituencyList" list="constituencyList" listKey="id" listValue="name" ></s:select>
+					
+			   <input type="button" value="View" class="btn btn-small" onCLick="openCasteViseAnalysis();" style="float:right;"></input>
+				</fieldset>
+			</div>
+			
+			<div class="span4 widget">
+			  <h2>Voters Search</h2>
+				<div class="media">
+					<img class="media-object pull-left m-top15" alt="Party Performance Report" src="./images/dashboard/Voters Search.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+						<p>Voters Search</p>
+						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input>
+					</div>
+				</div>  
+			</div>
+	    </div>
+		
+	    <div class="row-fluid">
+			<div class="span12 widget" id="boothResultsDiv">
+				<h2>Booth Wise Results</h2>
+				<div id="boothWiseResult"></div>
+				   <label class="checkbox" style="margin-top:10px;margin-left:5px;width:200px;">
+							<input type="checkbox" id="moreDetailsId"> Check for More Details
+				   </label>
 	   
-			<h4>Voters Search</h4>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input></div>
-		</div>	 
-		<div class="span6 widget-simple" id="">	
+				<div class="form-horizontal boothResults " name='boothSelection'>
+					<div class="control-group">
+						<label class="control-label" for="firstName">Election Type</label>
+						<div class="controls " style="">
+							<input type="radio" name="electionType" value="2" checked="checked">  Assembly  </input>
+							<input type="radio" name="electionType" value="1">  Parliament</input>
+						</div>
+						
+						
+					</div>
+					
+					<div class="control-group ">
+						<label class="control-label" for="electionYear">Select Year</label>
+						<div class="controls">
+							<s:select theme="simple" list="electionYearsList" name="electionYear" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/> 
+						</div>
+					</div>
+					
+					<div class="control-group ">
+						<label class="control-label" for="constituency">Constituency</label>
+						<div class="controls ">
+							<select id="constiId" onChange="getPartiesForElections()" name="constituencyName">
+								<option value='0'>Select Constituency</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="partyId">Party</label>
+						<div class="controls">
+							<select id="partyId" name="partyName">
+								<option value='0'>Select Party</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group" id="errorDiv" style="color:red;"></div>
+					<button class="btn btn-mini btn-small" data-dismiss="modal" aria-hidden="true" onclick="submitRes()">SUBMIT</button>
+				</div>
+			</div>
+			<!----<div class="span6 widget-simple">
+				<h4>Voters Search</h4>
+				<div><input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input></div>
+			</div>	---->   
+		</div>
+    </div>
+    
+    
+    
+    	<!--	<div class="span6 widget-simple" id="">	
 		<h4>Constituency Analysis</h4>
 		<table>
 	
@@ -491,85 +588,110 @@ headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/
 		<option value="1">Constituency</option>
 		<option value="2">Mandal/Muncipality</option>
 		<option value="3">Panchayat</option>
-		<!--<option value="4">Booth</option>-->
+		<option value="4">Booth</option>
 		</select>
 		</tr>
 		<tr style="display:none;" id="constituencyRow">
 		<td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="selConstituency" name="selConstituency" list="constituencyList" listKey="id" listValue="name" ></s:select></td>
 		</tr>
 		<tr style="display:none;" id="mandalRow">
-	   <!--<td><span>Mandal/Muncipality  <span></td>
-		<td><select id="selMandal">
-		<option value="0">Select Mandal</option>
-		<option value="232">Kavali</option> 
-		</select>-->
+	  
 		<td><span>Mandal/Muncipality </span></td><td><s:select cssClass="selectstyle" theme="simple" id="selMandal" name="selMandal" list="mandalList" listKey="id" listValue="name" ></s:select></td>
 		</tr>
 		<tr style="display:none;" id="panchayatRow">
-		<!--<td><span>Panchayat  <span></td>
-		<td><select id="selPanchayat">
-		<option value="0">Select Panchayat</option>
-		<option value="232">Kavali</option>
-		</select>-->
+		
 		<td><span>Panchayat  </span></td><td><s:select cssClass="selectstyle" theme="simple" id="selPanchayat" name="selPanchayat" list="panchayatsList" listKey="id" listValue="name" ></s:select></td>
 		</tr>
 		
 		</table>
 		<div><input type="button" value="View" class="btn btn-success" onCLick="getVotersAnalysisbasedOnLevel();" style="float:right;"></input></div>
-		</div>
-    </div>
-   </div>
+		</div>-->
+   </div><!---Constituency Level Analysis END--->
    
    <!--Created By SASI Management Tools Block-->
    
-  <div class="row-fluid span12 widget">
-     <h2>Management Tools</h2>
-	 <div class="row-fluid">
-	   <div class="span6 widget-simple">
-	   
-			<h4> Add New Problem</h4>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openAddNewProblemWindow()" style="float:right;"></input></div>
-		</div>       
-	   <div class="span6 widget-simple">
-	      <h4>All Problems</h4>
-		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('allproblems');" style="float:right;"></input></div>
-	   </div>						
-    </div>
+  <div class="row-fluid">
+	<div class="span12 well well-small">
+     <div class="page-header"><h4>Management Tools</h4></div>
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2> Add New Problem</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Add New Problem.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+						<p>Add New Problem</p>
+						<input type="button" value="View" class="btn btn-small" onCLick="openAddNewProblemWindow()" style="float:right;"></input>
+					</div>
+				</div>       
+			</div>       
+			<div class="span6 widget">
+			  <h2>All Problems</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/All Problems.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+						<p>All Problems</p>
+						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('allproblems');" style="float:right;"></input></div>
+				</div>					
+			</div>					
+		</div>
 	
-	<div class="row-fluid">
-	   <div class="span6 widget-simple">
-	   
-			<h4>Problem Search And Report</h4>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('problemsearch');" style="float:right;"></input></div>
-		</div>       
-	   <div class="span6 widget-simple">
-	      <h4>Cadre Mangement </h4>
-		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('cadremgmt');" style="float:right;"></input></div>
-	   </div>						
-    </div>
+		<div class="row-fluid">
+		   <div class="span6 widget">
+				<h2>Problem Search And Report</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Problem Search And Report.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+					<p>Detaild reports of Party Performance</p>
+						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('problemsearch');" style="float:right;"></input>
+				    </div>
+				</div>    					
+			</div>
+			<div class="span6 widget">
+			  <h2>Cadre Mangement </h2>
+			  <div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Cadre Mangement.png"style="width: 64px; height: 64px;"></img>
+				<div class="media-body">
+				<p>Cadre Mangement</p>
+					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('cadremgmt');" style="float:right;"></input>
+				</div>
+		   </div>	
+		</div>
 	
-	<div class="row-fluid">
-	   <div class="span6 widget-simple">
-	   
-			<h4> Constituency Management </h4>
-			<div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('constituencymgmt');" style="float:right;"></input></div>
-		</div>       
-	   <div class="span6 widget-simple">
-	      <h4>Call Center</h4>
-		    <div><input type="button" value="View" class="btn btn-success" onCLick="openAllInNewWindow('callcenter');" style="float:right;"></input></div>
-	   </div>						
-    </div>
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2> Constituency Management </h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Constituency Management.png"style="width: 64px; height: 64px;"></img>
+						<div class="media-body">
+						<p>Constituency Management</p>
+							<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('constituencymgmt');" style="float:right;"></input>
+						</div>
+				</div> 
+			</div> 
+			
+		   <div class="span6 widget">
+			  <h2>Call Center</h2>
+			  <div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Call Center.png"style="width: 64px; height: 64px;"></img>
+				<div class="media-body">
+					<p>Call Center</p>
+					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('callcenter');" style="float:right;"></input>
+				</div>
+			  </div>						
+		 </div>
 	
-  </div>
+        </div>
+     </div>
+ 
  <!--End of Management Tools Block-->
  
  
-</div>
+</div></div>
 
 <script>
  $(document).ready(function(){
  
- 	  $('#selConstituency').combobox();
+ 	  /*$('#selConstituency').combobox();
  	  
 	  $('#selConstituency').next().click(function(){
 	    if($(this).val() == "Select Constituency" || $(this).val() == "Select")
@@ -586,13 +708,7 @@ headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/
 	  $('#selPanchayat').next().click(function(){
 	    if($(this).val() == "Select Constituency" || $(this).val() == "Select")
 		   $(this).val("");
-	  });
-	  
-	  /* $('#selBooth').combobox();
-	  $('#selBooth').next().click(function(){
-	    if($(this).val() == "Select Constituency" || $(this).val() == "Select")
-		   $(this).val("");
-	  }); */
+	  });*/
 
 });
 </script>
