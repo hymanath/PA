@@ -38,7 +38,7 @@
 		<td>
 		<a  class="btn btn-info" href="userRegistration.action">Registraion Form</a>
 		</td><td><a  class="btn btn-info" href="javascript:{}" onClick="createNewSource();">Create New Source</a></td>
-		<td><a  class="btn btn-info" href="javascript:{uploadMLCCandidateDetails();}">Upload MLC Candidates Details</a></td>
+		<td><a  class="btn btn-info" href="javascript:{uploadMLCCandidateDetails();}">Upload Party Candidates </a></td>
 		</tr>
 		</table>
 		</div>
