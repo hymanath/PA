@@ -115,5 +115,52 @@ ICandidateRelatedNewsDAO {
 				" and model.fileGallary.gallary.isPrivate='false' and model.fileGallary.file.fileId is not null group by model.candidate.candidateId order by model.candidate.lastname ");
 		return queryObj.list();
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidateRelatedNewsByGallaryId(Long candidateId,Long gallaryId,Date fromDate,Date toDate)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.fileGallary.file.fileId,model.fileGallary.file.fileTitle,model.fileGallary.file from CandidateRealatedNews model ");
+		str.append(" where model.candidate.candidateId =:candidateId and model.fileGallary.gallary.gallaryId =:gallaryId and model.fileGallary.isDelete ='false' ");
+		str.append(" and model.fileGallary.gallary.isDelete ='false' and model.fileGallary.gallary.isPrivate='false' and model.fileGallary.isPrivate='false' ");
+		if(fromDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+		if(toDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) <= :toDate");
+		str.append(" order by model.fileGallary.file.fileTitle ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("candidateId", candidateId);
+		query.setParameter("gallaryId", gallaryId);
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+		
+		return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getNewsForACandidateByCategoryId(Long candidateId,Long categoryId,Date fromDate,Date toDate)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.fileGallary.file.fileId,model.fileGallary.file.fileTitle,model.fileGallary.file from CandidateRealatedNews model ");
+		str.append(" where model.candidate.candidateId =:candidateId and model.fileGallary.file.category.categoryId =:categoryId and model.fileGallary.isDelete ='false' ");
+		str.append(" and model.fileGallary.gallary.isDelete ='false' and model.fileGallary.gallary.isPrivate='false' and model.fileGallary.isPrivate='false' ");
+		if(fromDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+		if(toDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) <= :toDate");
+		str.append(" order by model.fileGallary.file.fileTitle ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("candidateId", candidateId);
+		query.setParameter("categoryId", categoryId);
+		if(fromDate != null)
+		 query.setParameter("fromDate", fromDate);
+		if(toDate != null)
+		 query.setParameter("toDate", toDate);
+		
+		return query.list();
+	}
 
 }
