@@ -5408,6 +5408,21 @@
 		   </result>			
 		</action>
 		
+		<action name="getAllGallariesOfAParty" class="candidateElectionResultsAction" method="getAllGallariesOfAParty">
+		 <result type="json" name="success">
+		    	<param name="root">selectOptionList</param>
+		   </result>			
+		</action>
+		
+		
+		<action name="getAllTheNewsOfAGallary" class="candidateElectionResultsAction" method="getAllTheFilesOfAGallary">
+		 <result type="json" name="success">
+		    	<param name="root">selectOptionList</param>
+		   </result>			
+		</action>
+		
+		
+		
 		<action name="uploadFilesForMultipleCandidates" class="candidateElectionResultsAction" method="uploadFilesForMultipleCandidates">			
 			<result name="success" type="stream">			   
 			    <param name="inputName">inputStream</param>

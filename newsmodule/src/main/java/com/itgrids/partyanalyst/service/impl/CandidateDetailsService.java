@@ -5977,6 +5977,43 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 
 		 }
 		
+		public List<SelectOptionVO> getAllGallariesOfAParty(Long partyId)
+		{
+			
+		  List<SelectOptionVO> partyGallariesList = new ArrayList<SelectOptionVO>();
+		  
+		  try
+		  {
+			
+          List<Object[]> gallaries = gallaryDAO.getAllGallariesForParty(partyId , IConstants.NEWS_GALLARY);
+        
+        
+	        for(Object[] obj:gallaries)
+	        {
+	        	SelectOptionVO vo = new SelectOptionVO();
+	        	
+	        	vo.setId((Long)obj[0]);
+	        	vo.setName(obj[1].toString());
+	        	partyGallariesList.add(vo);
+	        	
+	        }
+	        
+		  }catch(Exception e)
+		  {
+			  e.printStackTrace();
+			  
+		  }
+	        return partyGallariesList;
+			 
+		}
+		
+		public List<SelectOptionVO> getAllTheFilesOfAGallary(Long gallaryId  , Date fromDate , Date toDate)
+		{
+			//return fileGallaryDAO.getAllFilesOfAGallaryByGallaryId(gallaryId,  fromDate ,  toDate);
+			
+			return buildSelectOptionVO(fileGallaryDAO.getAllFilesOfAGallaryByGallaryId(gallaryId,  fromDate ,  toDate));
+		}
+		
 		public List<SelectOptionVO> getCandidateRelatedGallaries(Long candidateId,String fromDateStr,String toDateStr,Long partyId,String queryType)
 		{
 			List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);

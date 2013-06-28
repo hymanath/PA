@@ -136,4 +136,16 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		
 	}
 	
+	public List<Object[]> getAllGallariesForParty(Long partyId ,String contentType)
+	{
+		
+		Query query = getSession().createQuery("select model.gallery.gallaryId , model.gallery.name" +
+				" from PartyGallery model where model.party.partyId = :partyId and model.gallery.contentType.contentType = :contentType");
+		
+		query.setParameter("partyId", partyId);
+		query.setParameter("contentType", contentType);
+		return query.list();
+		
+	}
+	
 }

@@ -133,7 +133,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<Integer> pageno;
 	private List<String> newslength;
 	private Long fileId ;
-	
+
+
 	private INewsMonitoringService  newsMonitoringService;
 	
 	
@@ -2680,6 +2681,41 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		  jObj = new JSONObject(getTask());
 		  
 		  selectOptionList = candidateDetailsService.getNewsForCandidate(jObj.getLong("candidateId"),getDate(jObj.getString("fromDate")),getDate(jObj.getString("toDate")));	
+		  
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getAllGallariesOfAParty()
+	{
+		try
+		{			
+		  jObj = new JSONObject(getTask());
+		  
+		  selectOptionList = candidateDetailsService.getAllGallariesOfAParty(jObj.getLong("partyId"));	
+		  
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String getAllTheFilesOfAGallary()
+	{
+		try
+		{			
+		  jObj = new JSONObject(getTask());
+		  
+		  selectOptionList = candidateDetailsService.getAllTheFilesOfAGallary(jObj.getLong("gallaryId"),getDate(jObj.getString("fromDate")),getDate(jObj.getString("toDate")));	
 		  
 		}catch(Exception e)
 		{

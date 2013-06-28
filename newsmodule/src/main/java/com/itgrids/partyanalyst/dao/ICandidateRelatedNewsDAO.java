@@ -16,5 +16,8 @@ public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNe
 	public List<FileGallary> getFileGallaryListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate,List<Long> gallaryIdsList,List<Long> categoryIdsList);
 	
 	public List<Object[]> getCandidatesWithCount();
+	
+	public List<Object[]> getNewsForAParty(Long partyId  ,Date fromDate  ,Date toDate);
+
 
 }
