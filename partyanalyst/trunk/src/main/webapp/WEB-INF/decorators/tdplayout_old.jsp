@@ -75,7 +75,7 @@
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
-	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<!--YUI SCRIPT-->
 	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
@@ -147,7 +147,7 @@ margin:-1px 0px 0px 0px ;
   <div class="mainwrapper">
   <div>
     <div class="row-fluid">
-	 <div class="pull-right" style="margin-right:35px;margin-top:5px;">
+	 <div class="pull-right" style="margin-right:35px;margin-top:5px;font-family:helvetica;font-size:14px;font-weight:bold;">
        
 <c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
                                         <c:out value="Welcome, ${sessionScope.UserName} |"/></c:if>
