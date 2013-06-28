@@ -212,11 +212,11 @@ width: 92px;
 										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
 											<!-- <a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a> -->
 
-											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' title='<s:property value="description"/>' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" onerror="imgError(this);" alt='<s:property value="fileTitle1" /> Image'></a>
+											<a class="thumbnail span4" style="height:120px;" href='javascript:{}'  onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" onerror="imgError(this);" /></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;"href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" title='<s:property value="description"/>'> <img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" onerror="imgError(this);" alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;"href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" onerror="imgError(this);"/></a>
 										</c:if>
 										<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
                                        <p class="span8 enadu"><s:property value="description"/></p>
@@ -343,11 +343,11 @@ width: 92px;
 									
 									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
 										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" onerror="imgError(this);"  alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" onerror="imgError(this);" /></a>
 										</c:if>
 
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" title='<s:property value="description"/>'> <img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" onerror="imgError(this);"  alt='<s:property value="fileTitle1"/> Image'/></a>
+											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" onerror="imgError(this);"/></a>
 										</c:if>
 
 										 <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
@@ -625,7 +625,7 @@ width: 92px;
 								 -->
 										</ul>
 										<!--<a href="#" class="pull-right btn btn-mini" style="margin-top:75px;">More</a>-->
-										<span class="btn btn-mini pull-right" onclick="window.location ='showMoreVideos.action'" style="margin:5px;">More Videos..</span>
+										<span class="btn btn-mini pull-right" onclick="showMoreVideoGallaries()" style="margin:5px;">More Videos..</span>
 									</div>
 								</div>
 						</div>
@@ -656,13 +656,12 @@ $('#listValue').val('Constituency');
 	});
 	$('#enadu1').addClass('enadu');
  }); */
-/* updated by srishailam
 function showMoreVideoGallaries(){
 	 var urlstr = "showMoreVideos.action";
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
-}*/
+}
 
 getAllConstituenciesInStateByType(2, 1, 'constituency');
 getCandidates();
