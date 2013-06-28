@@ -3071,5 +3071,20 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		 
 		 return query.list();
 	 }
+	
+	public List<Object[]> getAllFilesOfAGallaryByGallaryId(Long gallaryId , Date fromDate , Date toDate)
+	 {
+		 Query query = getSession().createQuery("select model.file.fileId , model.file.fileTitle , model.file from FileGallary model " +
+		 		" where model.gallary.gallaryId = :gallaryId and date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate");
+		 
+		 query.setParameter("gallaryId", gallaryId);
+		 query.setParameter("fromDate", fromDate);
+		 query.setParameter("toDate", toDate);
+		 
+		 return query.list();
+		 
+	 }
+	
+	
 	 
 }

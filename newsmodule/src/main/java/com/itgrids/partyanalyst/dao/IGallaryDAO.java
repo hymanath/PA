@@ -28,6 +28,8 @@ public interface IGallaryDAO extends GenericDao<Gallary, Long>{
 	public List<Object[]> checkGallaryNameExistenceForSelectedCandidate(Long candidateId, String gallaryName, String contentType);
 	
 	public List<Object[]> getAllGallaries(String contentType);
+	public List<Object[]> getAllGallariesForParty(Long partyId ,String contentType);
+
 
 	
 }

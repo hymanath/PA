@@ -594,6 +594,13 @@ function getSource(selectOptionId){
 			{
 				 showUploadVideoStatus(myResults);
 				
+			}else if(jsObj.task == 'getAllGallariesOfAParty')
+			{
+				buildGallaries('gallariesList' , myResults);
+			}
+			else if(jsObj.task == 'getAllTheNewsOfAGallary')
+			{
+                 buildNewsOfAGallary('candidateNewsList' , myResults);
 			}
 			
      	}
@@ -765,6 +772,8 @@ function buildCreateGallaryDiv()
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
 	str += '<table class="aligncenter">';
 	str+='<tr><td>';
+
+
 	str += '<div><label class="radio"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font>Visible to Public Also</font></b></input></label></div>';
 	str+='</td></tr>';
 	str+='<tr><td>';
@@ -1722,8 +1731,25 @@ function buildUploadNewsForMultipleUsers()
 	     str+='<span style="margin-right:30px;"><b>Start Date:<font class="requiredFont">*</font></b><input type="text" name="fromDate" class="inputClass" id="fromDateId" readonly="true"/></span>';
 		 str+='<span><b>End Date:<font class="requiredFont">*</font></b><input type="text" name="toDate" readonly="true" class="inputClass" id="toDateId"/></span>';
 	   str+='</div>';
-	   str+='<div style="margin-left:83px;">';
+
+       str+='<div><label style="float:left;margin-left:182px;"><input style="margin:0px;" type="radio" name="newsType" value="party" class="typeRadio">Party</input></label><label style="margin-left:249px;"><input type="radio" checked="checked" style="margin:0px;" name="newsType" value="candidate" class="typeRadio" selected>Candidate</input></label></div>'
+
+	     str+='<div style="margin-left:83px;" id="candidatesDiv">';
 	     str+='<b>Select Candidate :<font class="requiredFont">*</font></b><select id="candidatesList"></select>';
+		 str+='</div>';
+
+		 str+='<div id="partyNewsDiv" style="display:none;">';
+
+		 str+='<div style="margin-left:83px;" id="partyDiv">';
+
+	     str+='<b>Select Party :<font class="requiredFont">*</font></b><select id="partyList" style="margin-left:12px;"><option value="0">Select Party</option><option value="163">BJP</option><option value="362" >INC</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		 str+='</div>';
+
+          
+		 str+='<div style="margin-left:83px;" id="gallariesDiv">';
+	     str+='<b>Select Gallary :<font class="requiredFont">*</font></b><select id="gallariesList"></select>';
+		 str+='</div>';
+
 		 str+='</div>';
 
 		 str+='<div id="noNewsError"></div>';
@@ -3697,6 +3723,40 @@ $(".dateField").live("click", function(){
 	}).datepicker("show");
 });
 
+
+	 $(document).on("change",'#gallariesList', function(){
+       if($('#fromDateId').val() == "" || $('#toDateId').val() == ""){
+			$('#dateErrorMessage').html("<b style='color:red;'>Select Date Range</b>");
+		}else{
+		getAllNewsOfAGallary(this.value);
+		}
+     });
+
+     $(document).on("change",'#partyList', function(){
+         $('#candidateNewsList , #respenseNewsList').find('option').remove();
+		 $('#candidateNewsList , #respenseNewsList , #buttonsDiv').hide();
+
+		getNewsForAParty(this.value);
+     });
+
+	$(document).on("change",'.typeRadio', function(){
+		$('#noNewsError ,#dateErrorMessage').html('');
+		$('#candidateNewsList , #respenseNewsList , #buttonsDiv').hide();
+
+		if(this.value == "candidate"){
+			$('#candidatesDiv').show('slow');
+			$('#partyNewsDiv').hide('slow');
+			$('#candidatesList').val("");
+		}else
+		{
+			$('#candidatesDiv').hide();
+			$('#partyNewsDiv').show('slow');
+			$('#partyList').val(872);
+			getNewsForAParty(872);
+
+		}
+     });
+
 $(document).on("click",'#fromDateId , #toDateId', function(){
  $(this).datepicker({
 		dateFormat: "dd/mm/yy",
@@ -3704,7 +3764,10 @@ $(document).on("click",'#fromDateId , #toDateId', function(){
         changeYear: true,
 		maxDate: new Date(),
 	    onSelect: function(dateText, inst) { 
-       checkAllValuesAndSendAjax();
+			if($('input:radio[name=newsType]:checked').val() == "party")
+ 				   checkAllValuesAndSendAjaxForNews();
+			else if($('input:radio[name=newsType]:checked').val() == "candidate")
+                   checkAllValuesAndSendAjax();
 	}
 		
 	}).datepicker("show");
@@ -3804,6 +3867,14 @@ $(document).on("click",'#fromDateId , #toDateId', function(){
 });
 
 
+function checkAllValuesAndSendAjaxForNews()
+{
+	if($('#fromDateId').val() != "" && $('#toDateId').val() != "" && $('#gallariesList').val() != "" && $('#gallariesList').val() != "0"){
+		$('#dateErrorMessage').html('');
+		$('#gallariesList').change();
+	}
+
+}
 
 function checkAllValuesAndSendAjax()
 {
@@ -5106,8 +5177,43 @@ function getCandidatesofUser(){
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getCandidatesOfAUser.action?"+rparam;						
-	callnewAjax(jsObj,url);
+	callAjax(jsObj,url);
  
+}
+function getNewsForAParty(partyId)
+{
+	if( partyId != 0 ){
+
+	var jsObj =
+		{ 
+		    partyId : partyId,
+			task:"getAllGallariesOfAParty"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllGallariesOfAParty.action?"+rparam;						
+	callAjax(jsObj,url);
+	}
+
+}
+
+function getAllNewsOfAGallary(gallaryId)
+{
+	if( gallaryId != 0 ){
+
+	var jsObj =
+		{ 
+		    gallaryId : gallaryId,
+            fromDate : $('#fromDateId').val(),
+            toDate : $('#toDateId').val(),
+			task:"getAllTheNewsOfAGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllTheNewsOfAGallary.action?"+rparam;						
+	callAjax(jsObj,url);
+	}
+
 }
 
 function getCandidateNews(candidateId)
@@ -5208,7 +5314,7 @@ function buildCandidates(results)
 	var str ='';
 	str+='<div id="'+value+'"  class="div'+value+'">';
 	str+="<u><span style='font-weight:bold;'>Upload "+text+" Files</span></u>";
-	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+value+'">';
+	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId0'+value+'">';
 
     str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" /></td></tr>';
 
@@ -5248,23 +5354,23 @@ function buildCandidates(results)
 	getLanguage('sourceLangId'+value+'');
 	//fileCount++;
 } 
-
+var divCount = 1;
 function addMoreFiles2(value)
 {
 	//var moreDivElmt = document.createElement("addMoreFilesDiv");
 	var str ='';
-	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+value+'">';
+	str +='<table class="moreFileTable" style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+divCount+''+value+'">';
 	str += ' <tr>';
 	str +='<td>File Path</td>';
 	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25" /></td>';
 	str += ' </tr>';
 	str += ' <tr>';
 	str += ' <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
-	str += ' <td class="selectWidthPadd"><select id="filesourceId'+value+'" name="fileSourceId" style="width:175px;" class="source'+value+'" ></select></td>';
+	str += ' <td class="selectWidthPadd"><select id="filesourceId'+divCount+''+value+'" name="fileSourceId" style="width:175px;" class="source'+value+'" ></select></td>';
 	str += ' </tr>';
 	str += ' <tr>';
 	str += ' <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
-	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+value+'" name="sourceLanguageId" style="width:175px;" class="lang'+value+'"><option value="0">Select Language</option><option value="0">Select Language</option></select></td>';
+	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+divCount+''+value+'" name="sourceLanguageId" style="width:175px;" class="lang'+value+'"><option value="0">Select Language</option><option value="0">Select Language</option></select></td>';
 	
 	str += ' </tr>';
 	str += '       <td class="tdWidth1">Edition<font class="requiredFont">*</font></td>';
@@ -5277,27 +5383,35 @@ function addMoreFiles2(value)
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Length<font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;"></input></td>';
-	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(\'moreFileTableId'+value+'\')"></td>';
+	//str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(\'moreFileTableId'+value+'\')"></td>';
+	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(this)"></td>';
 	str += '   </tr>';
 	str +='</table>';
 	str+='<input type="hidden" name="filesList" value="'+value+'"/>';
-	$('#'+value).append(str);
+	//$('#'+value).append(str);
+	$('#uploadFilesDiv').append(str);
 	//document.getElementById("addMoreFilesDiv").appendChild(moreDivElmt);
 	//document.getElementById(value).appendChild(moreDivElmt);
 	//alert("filesourceId"+value+"");
-	getSource1("source"+value);
-	getLanguage1("lang"+value);
+
+	getSource1("filesourceId"+divCount+value);
+	getLanguage1("sourceLangId"+divCount+value);
 	//fileCount++;
+	divCount ++;
+
 } 
-function deleteFileDiv(id)
+function deleteFileDiv(element)
 {
-	$('#'+id).remove();
+	//$('#'+id).remove();
+
+	//$('#'+id).closest().find('.moreFileTable').remove();
+	$($(element)).closest('table').remove();
 }
 function getSource1(selectOptionId){
-	$('.'+selectOptionId).find('option').remove();
+	//$('#'+selectOptionId).find('option').remove();
 	
 	$.each(sourceObj,function(index,value){
-		$('.'+selectOptionId).append('<option value="'+sourceObj[index].id+'">'+sourceObj[index].name+'</option>');
+		$('#'+selectOptionId).append('<option value="'+sourceObj[index].id+'">'+sourceObj[index].name+'</option>');
 
 	});
 	
@@ -5307,10 +5421,10 @@ function getSource1(selectOptionId){
 function getLanguage1(fillOptionId)
 {
 
-$('.'+fillOptionId).find('option').remove();
+//$('#'+fillOptionId).find('option').remove();
 	
 	$.each(languagesObj,function(index,value){
-		$('.'+fillOptionId).append('<option value="'+languagesObj[index].id+'">'+languagesObj[index].name+'</option>');
+		$('#'+fillOptionId).append('<option value="'+languagesObj[index].id+'">'+languagesObj[index].name+'</option>');
 
 	});
 		
@@ -5842,6 +5956,46 @@ return '&amp;';
    return '&#' + d.charCodeAt(0) + ';';
   return d;
     }
+
+	function buildNewsOfAGallary(divId , results)
+{
+ $('#noNewsError').html('');
+  $('#'+divId).find('option').remove();
+  if(results != null && results.length > 0){
+	  	  $('#candidateNewsList , #respenseNewsList , #buttonsDiv').show();
+
+
+	 $.each(results , function(index , value){
+
+		if(value.flag == true)
+		  $('#'+divId).append('<option class="enadu" title="'+value.name+'" value="'+value.id+'">'+value.name+'</option>');
+		else
+			$('#'+divId).append('<option class="notEenadu" title="'+value.name+'" value="'+value.id+'">'+value.name+'</option>');
+
+
+	});
+  }else{
+	  $('#noNewsError').html('<b style="color:red;">No news found.Changing the date range may help you.</b>');
+	  $('#candidateNewsList , #respenseNewsList , #buttonsDiv').hide();
+
+  }
+
+}
+
+
+
+function buildGallaries(divId , results)
+{
+   $('#'+divId).find('option').remove();
+   $('#'+divId).append('<option value="0">Select Gallary</option>');
+
+  $.each(results,function(key , value){
+   $('#'+divId).append('<option value="'+value.id+'">'+value.name+'</option>');
+
+  });
+
+
+}
 </script>
 </body>
 </html>

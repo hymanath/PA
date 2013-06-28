@@ -251,4 +251,9 @@ public interface ICandidateDetailsService {
 
 	 public List<SelectOptionVO> getCandidateRelatedGallaries(Long candidateId,String fromDateStr,String toDateStr,Long partyId,String queryType);
 	 
+	public List<SelectOptionVO> getAllTheFilesOfAGallary(Long gallaryId  , Date fromDate , Date toDate);
+	 
+	public List<SelectOptionVO> getAllGallariesOfAParty(Long partyId);
+
+	 
 }

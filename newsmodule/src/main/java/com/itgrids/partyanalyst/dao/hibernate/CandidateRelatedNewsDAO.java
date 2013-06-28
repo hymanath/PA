@@ -35,6 +35,20 @@ ICandidateRelatedNewsDAO {
 		
 		
 	}
+	
+	public List<Object[]> getNewsForAParty(Long partyId  ,Date fromDate  ,Date toDate)
+	{
+		
+		Query query = getSession().createQuery("select model.fileGallaryId , model.file.fileTitle, model.fileGallary.file " +
+				" from model FileGallary model where model.gallary.gallaryId " +
+				"in(select model1.gallery.galleryId from PartyGallary model1 where model1.party.partyId = :partyId)" );
+		
+		query.setParameter("partyId", partyId);
+		
+		return query.list();
+		
+		
+	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCandidates(){
 		Query queryObj=getSession().createQuery("select distinct model.candidate.candidateId,model.candidate.lastname " +
