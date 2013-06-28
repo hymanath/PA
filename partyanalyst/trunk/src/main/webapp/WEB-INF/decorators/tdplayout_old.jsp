@@ -5,68 +5,61 @@
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
+
+
 <html xmlns="http://www.w3.org/1999/xhtml">
+
+
 <%@taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>
 <%@taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title><decorator:title default="Party Analyst"/></title>
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
-<!-- Combo-handled YUI JS files: --> 
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> 
-<!--  BootStrap Stating and pasted 'assert' folder in webapp folder-->
-<link href="styles/assets/css/bootstrap.css" rel="stylesheet">
-<!--  BootStrap Ending -->
-<!--  BootStrap Stating -->
- <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-<!--  BootStrap Ending -->
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="styles/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="styles/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="styles/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="styles/assets/ico/apple-touch-icon-57-precomposed.png">
+	<title><decorator:title default="Party Analyst"/></title>
+	<!--<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>-->
 
-<link type="text/css" href="styles/menu.css" rel="stylesheet" />
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/menu.js"></script>
+	<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+	<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
+	<script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
+	
+	
 
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-
-<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
-
-<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
-%>
-<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
-<% }
-%>
-
-<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
-<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
-<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
-<script type="text/javascript" src="js/homePage/homePage.js"> </script>
-<script type="text/javascript" src="js/statePage/statePage.js"> </script>
-<script type="text/javascript" src="js/cncSearch.js"> </script>
-<script type="text/javascript" src="js/loginpopup.js"> </script>
- <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>   
-<!-- JQuery files (Start) -->
-<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
-<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
-<script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
-
-<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
-<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
-<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
-<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
-<!-- JQuery files (End) -->
-
-
+	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
+	<!--Bootstrap styles file-->
+	<!--<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">-->
+	<link type="text/css" href="styles/assets/css/bootstrap.css" rel="stylesheet">
+	<link type="text/css" href="styles/tdp/menu.css" rel="stylesheet" />
+	<link href="styles/tdphome_inner_styles.css" rel="stylesheet" type="text/css" />
+	<link href="styles/home_styles.css" rel="stylesheet" type="text/css" />
+	
+	<!--Script file
+	<script type="text/javascript" src="js/jquery.js"></script>-->
+	<script type="text/javascript" src="js/loginpopup.js"> </script>
+	<script type="text/javascript" src="js/menu.js"></script>
+	<script type="text/javascript" src="js/ddaccordion.js"></script>
+	<script type="text/javascript" 
+		src="js/commonUtilityScript/commonUtilityScript.js"></script>
+	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
+	
+	
+    <script type="text/javascript" src="js/homePage/homePage.js"> </script>
+	<script type="text/javascript" src="js/statePage/statePage.js"> </script>
+	<script type="text/javascript" src="js/cncSearch.js"> </script>
+	<script type="text/javascript" src="js/loginpopup.js"> </script>
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>   
+	
+	
+	
+	
+	<!--<script type="text/javascript" src="js/bootstrap.js" ></script>-->
+	<script type="text/javascript" src="styles/assets/css/js/bootstrap.js" ></script>
+	
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
-<link href="styles/home_style.css" rel="stylesheet" type="text/css" />
-
+<link rel="stylesheet" type="text/css" href="styles/home_style.css">
+	
 <script type="text/javascript" src="js/jcarousellite_1.0.1.pack.js"></script>
 <script type="text/javascript" src="js/captify.tiny.js"></script>
 <script type="text/javascript" src="js/hslider.js"></script>
@@ -76,8 +69,27 @@
 <script type="text/javascript" src="js/jquery.anythingslider.js"></script>
 <script type="text/javascript" src="js/bannerslider.js"></script>
 
-<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
-<script>
+	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
+
+%>
+
+<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+
+<% }
+
+%>
+	
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+	
+	<!--YUI SCRIPT-->
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
+	
+	
+	<script>
 		var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
@@ -94,7 +106,9 @@
 		String errorMsg = resb.getString("constTypeAlert");
 %> }
 	</script>
-<style>
+	
+	
+	<style>
 .background
 {
 background:url("./images/new_homepage/js-banner-bg1.jpg");
@@ -106,38 +120,7 @@ margin:-1px 0px 0px 0px ;
     padding: 0px 7px 0 0;
     width: 992px;
 }
-#l2s_trk img{max-width:100%;width:130px;}
-
-.header-right-sec{width:750px;}
-.follow-us-top{width:72px;margin:0px;display:inline-block;}
-.follow-us-top h5{margin:0px;display:inline-block;color:#80D1F1;font-size: 12px;}
-.lr-sec{padding:14px 5px 5px;}
-#menu ul.menu li{z-index: 999;}
-.header{height:120px;}
 #header-main{background:#ffdc2d !important;}
-.headerMenu .outerli{display:inline;margin:5px;}
-.headerMenu .outerli a:hover{text-decoration:none;background:#0088CC;color:#ffffff;border-radius:4px;}
-.headerMenu .outerli a{font-family: Verdana,Arial,Helvetica,sans-serif;
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 600;padding:5px;}
-
-.headerMenu ul.menu li.dropdown:hover > ul.dropdown-menu{
-    display: block;
-margin-top:5px;    
-}
-
-.headerMenu a.menu:after, .dropdown-toggle:after {
-  content: none;
-}
-.headerMenu .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a{background:#FFDC2D;color:blue;}
-
-.headerMenu .dropdown-menu li{width:210px;margin-left:2px;}
-.row-fluid .offset2{margin-left:19.1489%;}
-.row-fluid .span8{width:65.9574%;}
-.row-fluid .offset1{margin-left:10.6383%;}
-.row-fluid .span10{width:82.9787%;}
-
 
 </style>
 <decorator:head/>
@@ -185,7 +168,7 @@ margin-top:5px;
 										</c:if>
 									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 									
-									<a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a>
+									<a href="javascript:{}" onClick="openDialogForLoginWindow()" class="btn btn-mini"><i class="icon-user"></i><b> Login</b></a>
 										<!--<span>|</span>
 										<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>-->
 										
@@ -206,15 +189,14 @@ margin-top:5px;
    	 							<!-- End of LoginPoppWindow-->
 		</div>
 	
-    <div class="span8 offset2" style="margin-bottom:10px;">
-<img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:79.5px;left:50%;">
+    <div class="span8 " style="margin-bottom:10px;">
+<img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:79.5px;left:50%;margin-left:215px;margin-top:10px;">
 
 
     </div>
-
-	<div id="menu" class="span10" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;">
+<div id="menu" class="span10" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;">
     <ul class="menu">
-        <li class="active"><a href="newhomePageAction.action"><span><i class="icon-home icon-black"></i></span></a></li>
+        <li class="active"><a href="homePage.action"><span><i class="icon-home icon-black"></i></span></a></li>
 	
     
 	
@@ -277,17 +259,6 @@ margin-top:5px;
 			</div>
 		</li>
 		
-		<li>
-			<a href="#" class="parent"><span>CONSTITUENCY ANALYSIS</span></a>
-			<div  style="z-index:8;text-align:left;" >
-				<ul>
-					<li><a href="votersAnalysisNewAction.action"><span>Voter Analysis</span></a></li>
-					<li><a href="votersSearchAction.action"><span>Voters Search &amp; Report</span></a></li>
-					<li><a href="casteAndElectionResultsComparisonAction.action"><span>Caste Vs Election Results</span></a></li>
-				</ul>
-			</div>
-		</li>
-
 		<li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
 			<div  style="z-index:8;text-align:left;" >
 			<ul>
@@ -342,6 +313,20 @@ margin-top:5px;
 		</li>
 		
 		
+		<li>
+			<a href="#" class="parent"><span>CONSTITUENCY ANALYSIS</span></a>
+			<div  style="z-index:8;text-align:left;" >
+				<ul>
+					<li><a href="votersAnalysisNewAction.action"><span>Voter Analysis</span></a></li>
+					<li><a href="votersSearchAction.action"><span>Voters Search &amp; Report</span></a></li>
+					<li><a href="casteAndElectionResultsComparisonAction.action"><span>Caste Vs Election Results</span></a></li>
+				</ul>
+			</div>
+		</li>
+
+		
+		
+		
 		
 		
 	
@@ -352,8 +337,7 @@ margin-top:5px;
 			
     </ul>
 	
-</div>
-      
+</div>      
 </div>
 <!-- Header End -->
 
@@ -411,7 +395,7 @@ margin-top:5px;
 	<div class="container" style="border-top:2px solid #ffdc2d;">
 <div class="row-fluid"> 
     <div class="span6" style="line-height:15px;color:#7d7d7d;text-shadow:0px 1px 1px #fff;font-size:12px;margin-top:18.5px;">
-&copy; Copyright 2013. Telugu Desam Party <br>All rights reserved&amp;Powered By  IT GRIDS (India) Pvt. Ltd. </div>
+&copy; Copyright 2013 Telugu Desam Party. <br>All Rights Reserved &amp; Powered By: <a href="http://www.itgrids.com" class="text-error" target="_blank">IT GRIDS (India) Pvt. Ltd. </a></div>
 <div class="span6"><img src="./images/TDP/PA_LOGO.jpg" class="pull-right"/></div>
 </div>
   <!--COPYRIGHT SECTION END--> 
@@ -1583,10 +1567,7 @@ $(document).keypress(function(e) {
     }
 });
 
-$('.outerli').hover(function(){
-    $('.outerli').removeClass("active");
-    $(this).addClass("active");
-});
+
 
 </script>
 </body>
