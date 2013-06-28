@@ -101,6 +101,7 @@
 	#gallaryRadioId{margin-right: 8px;margin-top: 0;}
 	#gallaryCategoryDiv{margin-top: 4px; line-height: 1.9em;}
 	.errorDiv{color:red;}
+	#categoryGallary{margin: 0px 5px 0px 0px;}
 	</style>
 </head>
 <body>
@@ -135,7 +136,13 @@
 
 						<div id="categoryShowHideDiv" style="display:none;">
 						   <select id="candidateCategoryId" multiple="multiple"></select>
+						   <br>
+						   <input type="checkbox" value="categoryGallaries" id="categoryGallary" onclick="getCategoryGallaries()"/>Gallery 
 						 </div>
+						
+						<div id="categoryGallaryShowHideDiv" style="display:none;">
+						 <select id="categoryGallarySelect" multiple="multiple"></select>
+						</div>
 
 						<input id="candidateNewsBtn" type="button" class="btn btn-info" value="submit" onclick="getCandiNews();"/>
 						<!--<s:select list ="candidatesMap" name ="candidateId" value="candidateId" headerKey="0" headerValue = "Select Candidate"/>-->
@@ -191,6 +198,7 @@ var fromDate = '${fromDate}';
 var toDate = '${toDate}';
 var gallaryIds = '${gallaryIds}';
 var categoryIds = '${categoryIds}';
+var tempVarable = '${tempVarable}';
 
 getNewsForPagination(0);
 //getCandidates();
@@ -235,8 +243,15 @@ function callAjax(jsObj,url)
 			{
 			  clearOptionsListForSelectElmtId('candidateCategoryId');
 			  buildCategoryList('candidateCategoryId',myResults);
-			  //createOptionsForSelectElmtId('candidateCategoryId',myResults);
 			}
+
+			else if(jsObj.task == "getGallariesForSelectedCategory")
+			{
+			  clearOptionsListForSelectElmtId('categoryGallarySelect');
+			  buildCategoryGallaryList('categoryGallarySelect',myResults);
+			 
+			}
+
 			}catch (e)
 			{
 							     
@@ -393,9 +408,18 @@ function getCandiNews(){
 		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Category.</span>');
           return;
 	  }
+
+	  if($("#categoryGallary").is(":checked"))
+	  {
+        selectedGallaryIds = $("#categoryGallarySelect").val();
+		 if(selectedGallaryIds == null || selectedGallaryIds == "null")
+	    {
+		  $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Gallary.</span>');
+          return;
+	    }
+	  }
 	}
-	
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&categoryIds="+categoryIds+"&";
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&categoryIds="+categoryIds+"&tempVarable=true&";
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
@@ -469,17 +493,24 @@ $(".candidateRadioCls").click(function(){
 	});
 
 $("#candidatesListId").live("change",function(){
+
+  tempVarable = false;
   var candidateId = $("#candidatesListId").val();
    $('.errorDiv').html('');
     clearOptionsListForSelectElmtId('gallaryId');
 	clearOptionsListForSelectElmtId('candidateCategoryId');
+    clearOptionsListForSelectElmtId('categoryGallarySelect');
+	$("#categoryGallary").attr('checked', false);
+	$("#categoryGallaryShowHideDiv").css("display","none");
 
   if(candidateId == 0)
   {
     $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate</span>');
 		return;
   }
-	
+   $("#categoryGallary").attr('checked', false);
+   $("#categoryGallaryShowHideDiv").css("display","none");
+   
   if($("#gallaryRadioId").is(":checked"))
   {
 	$("#gallaryShowHideDiv").css("display","block");
@@ -511,6 +542,7 @@ $("#gallaryRadioId").click(function(){
 	  getCandidateGallaries();
 	  $("#categoryCheckBoxId").attr('checked', false);
 	  $("#categoryShowHideDiv").css("display","none");
+	  $("#categoryGallaryShowHideDiv").css("display","none");
 	}
 	else
     {
@@ -522,6 +554,10 @@ $("#gallaryRadioId").click(function(){
 
 $("#categoryCheckBoxId").click(function(){
 	
+	$("#categoryGallary").attr('checked', false);
+    $("#categoryGallaryShowHideDiv").css("display","none");
+    tempVarable = false;
+    clearOptionsListForSelectElmtId('categoryGallarySelect');
 	if($("#categoryCheckBoxId").is(":checked"))
     {
 	  $("#gallaryRadioId").attr('checked', false);
@@ -534,6 +570,13 @@ $("#categoryCheckBoxId").click(function(){
 
 });
 
+
+
+$("#candidateCategoryId").live("click",function(){
+	
+	$("#categoryGallary").attr('checked', false);
+	$("#categoryGallaryShowHideDiv").css("display","none");
+});
 
 });//End of Ready
 
@@ -595,10 +638,57 @@ function getCandidateGallaries()
 
 }
 
+function getCategoryGallaries()
+{
+	
+	var candidateId = $("#candidatesListId").val();
+	$('.errorDiv').html('');
+  if($("#categoryGallary").is(":checked"))
+  {
+	 
+
+	 if(candidateId == 0)
+	 {
+       $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate.</span>');
+		return;
+	 }
+	 var categoryIdsArray = new Array();
+    
+	  $('#candidateCategoryId > option:selected').each(
+       function(i){
+         categoryIdsArray.push($(this).val());
+     });
+
+       if(categoryIdsArray == null || categoryIdsArray == "null" || categoryIdsArray.length == 0)
+	   {
+         $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Category.</span>');
+		 return;
+	   }
+	$("#categoryGallaryShowHideDiv").css("display","block");
+      var jsObj={
+		candidateId:candidateId,
+		categoryIds:categoryIdsArray,
+		task:'getGallariesForSelectedCategory'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getGallariesForSelectedCategoryAction.action?"+rparam;
+	callAjax(jsObj, url);
+	 
+ 
+  }
+  else
+	{
+     clearOptionsListForSelectElmtId('categoryGallarySelect');
+	 $("#categoryGallaryShowHideDiv").css("display","none");
+	}
+
+
+}
+
 function getCandidateDetails()
 {
 	
- if(gallaryIds != "null" && gallaryIds != "")
+ if(gallaryIds != "null" && gallaryIds != "" && (categoryIds =="null" ||  categoryIds ==""))
  {
   $("#categoryShowHideDiv").css("display","none");
   $("#candidateNewsShowHideDatesDiv").css("display","block");
@@ -607,12 +697,20 @@ function getCandidateDetails()
   
  }
 
- if(categoryIds !="null" && categoryIds !="")
+ if(categoryIds !="null" && categoryIds !="" && (gallaryIds == "null" || gallaryIds == ""))
  {
    
    $("#categoryCheckBoxId").attr('checked', true);
    $("#categoryShowHideDiv").css("display","block");
    getCandidatecategories();
+ }
+
+ if((categoryIds !="null" && categoryIds !="") && (gallaryIds != "null" && gallaryIds != ""))
+ {
+   $("#categoryCheckBoxId").attr('checked', true);
+   $("#categoryShowHideDiv").css("display","block");
+   getCandidatecategories();
+  
  }
  
  if(fromDate=="" && toDate == "")
@@ -656,7 +754,7 @@ function buildGallaryList(elmtId,optionsList)
 		}
 	}
 
-	if(gallaryIds != "null" && gallaryIds != "")
+	if(gallaryIds != "null" && gallaryIds != "" && (categoryIds == "null" || categoryIds == "") && tempVarable == "true")
    {
      var valoresArea=gallaryIds 
     var arrayArea = valoresArea.split(',');
@@ -687,17 +785,51 @@ function buildCategoryList(elmtId,optionsList)
 		}
 	}
 
-	 if(categoryIds != "null" && categoryIds != "")
+	 if(categoryIds != "null" && categoryIds != "" && tempVarable == "true")
    {
      var valoresArea=categoryIds 
     var arrayArea = valoresArea.split(',');
     $('#candidateCategoryId').val(arrayArea).attr('selected', true);
    }
 
+   if(gallaryIds != null && gallaryIds !="" && tempVarable == "true")
+	{
+	   $("#categoryGallary").attr('checked', true);
+       $("#categoryGallaryShowHideDiv").css("display","block");
+       getCategoryGallaries();
+	}
+
 }
-
-
-
+function buildCategoryGallaryList(elmtId,optionsList)
+{	
+	var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+   
+	 if(categoryIds != null && categoryIds != "" && gallaryIds !=null && gallaryIds !="")
+    {
+     var valoresArea = gallaryIds; 
+	
+    var arrayArea = valoresArea.split(',');
+    $('#categoryGallarySelect').val(arrayArea).attr('selected', true);
+   }
+}
 function getCandidatecategories()
 {
    var fromDate = "";

@@ -82,6 +82,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String toDate;
 	private String gallaryIds;
 	private String categoryIds;
+	private boolean tempVarable;
 	
 	public List<FileVO> getResponseFilesList() {
 		return responseFilesList;
@@ -441,6 +442,13 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	}
 	public void setCategoryIds(String categoryIds) {
 		this.categoryIds = categoryIds;
+	}
+	
+	public boolean isTempVarable() {
+		return tempVarable;
+	}
+	public void setTempVarable(boolean tempVarable) {
+		this.tempVarable = tempVarable;
 	}
 	public String execute()
 	{	
