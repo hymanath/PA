@@ -560,66 +560,10 @@ Hot Topics</h2>
 	<script>
 	constituencyId = '${sessionScope.USER.constituencyId}';
 	var loginMode = '${loginMode}';  
-	showVotesObtainedForOpinionPoll();
-		  
-	function showVotesObtainedForOpinionPoll()
-	{
-    var elmt = document.getElementById("pollsWidgetBody");
-	var str='';	
-	
-	if(${opinionPollVO.avaliability != true})
-	{
-		
-		str+='<div class="opinionpoll">';
-		
-		str+='<div class="breadcrumb"><p class="question"><b>${opinionPollVO.quesitons[0].question}</b></p>';	
-	
-		str+='<div id="qstnDiv1" style="margin:0px-20px;margin-top:3px">';	
-
-		str+='<div class="control-group form-horizontal "><p class="answer">';
-		<s:iterator status="stat" value="opinionPollVO.quesitons[0].options">
-
-		<s:if test="%{#stat.index == 0}">         
-
-			str +='<label><input type="radio" class="radio" name="pollradio" value="<s:property value="optionId"/>" checked="true">';
-	        str +="<s:property value='option'/></label>"; 
-		</s:if>
-		<s:else>
-			str +='<label><input type="radio" class="radio"  name="pollradio" value="<s:property value="optionId"/>">';
-	        str+="<s:property value='option'/></label>";
-		</s:else></s:iterator>
-		
-		str+='</p><a href="javaScript:saveCurrentPollResult(${opinionPollVO.quesitons[0].questionId});" class="btn btn-primary votebtn" title="Click Here To Vote">Vote</a>';
-		
-		str+='<p class="resultdisplay" style="margin-top:10px;"><a  class="previouslink" href="javaScript:{callAjaxToGetQuestionsDetails(\'vote\',${opinionPollVO.quesitons[0].questionId});}" style="margin-bottom:10px;"title="Click Here To See This Poll Result">View Results</a>';
-
-		    
-		str+=' <a class="nextlink" style="margin-bottom:10px;"  href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}&comments=getComments" title="Click Here To See Comments On This Poll" >View Comments</a></p>';
-		str+=' </div></div>';
-		str+='</div>';
-		str+='<div class="widget-block" style="padding:2px;height:30px;border:0px;">';
-   
-        str+='<a style="float:left;margin-left:3px;" href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}&comments=getComments"  class="btn btn-mini" title="Post Your Comment On This Poll">Post Your Comment</a>';
- 
-  
-    str+='<a style="float:right;margin-right:3px;" class="btn btn-mini" href="getAllPollsAction.action"  title="Click Here To View Rececnt Poll Details">View Recent Polls </a>';
-   
-    str+='</div>';
-	elmt.innerHTML = str;		
-	
-	}
-	else
-	{
-	 displayPollResult('${opinionPollVO.questionsOptionsVO.questionId}');
-	}
-	
-}
-
-
-
-
-initializeNewHomePage();
-getProblemDetails();
+	var stateId = $('#stateList_d').val();
+	//showVotesObtainedForOpinionPoll();
+    initializeNewHomePage();
+    getProblemDetails();
 
 
 
