@@ -148,10 +148,10 @@ input[type="radio"]{margin-top:-1px;}
     border: 1px solid #C1C1C1;
     border-radius: 6px 6px 0 0;
     box-shadow: 0 1px 0 #FFFFFF;
-	padding:5px;
+	padding:2px;
 	line-height:30px;
 }
-
+.m-top5{margin-top:5px;}
 .m-top10{margin-top:10px;}
 .widget{border-top:none;}
 .page-header{ border-bottom: 1px solid #FFDC2D;margin: 0px 0px 10px;}
@@ -162,8 +162,8 @@ lable{line-height:40px;}
 	
 <div class="row">
 
-		<div class="dashboard-header m-top10">
-			<h4><i class="icon-hdd"></i> DASHBOARD</h4>
+		<div class="dashboard-header m-top5">
+			<img Src="./images/dashboard/DashBoard_Page_Header.jpg"></img>
 		</div>
 
 <div class="row-fluid m-top10" >
@@ -439,7 +439,7 @@ lable{line-height:40px;}
 	
 		<div class="row-fluid">
 			<div class="span6 widget">
-				<h2> District Wise Party Performance</h2>
+				<h2> Live & Previous Results Comparison</h2>
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/District Wise Party Performance.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
@@ -534,7 +534,7 @@ lable{line-height:40px;}
 	    </div>
 		
 	    <div class="row-fluid">
-			<div class="span12 widget" id="boothResultsDiv" style="max-height: 206px;">
+			<div class="span12 widget" id="boothResultsDiv" >
 				<h2>Booth Wise Results</h2>
 				<div id="boothWiseResult"></div>
 				   <label class="checkbox" style="margin-top:10px;margin-left:5px;width:200px;">
@@ -542,7 +542,7 @@ lable{line-height:40px;}
 				   </label>
 	   
 				<div class="form-horizontal boothResults " name='boothSelection'>
-					<div class="control-group" style="float: left; margin-bottom: 10px; margin-left: -219px; padding-top: 16px;">
+					<div class="control-group" >
 						<label class="control-label" for="firstName">Election Type</label>
 						<div class="controls " style="">
 							<input type="radio" name="electionType" value="2" checked="checked">  Assembly  </input>
@@ -551,7 +551,7 @@ lable{line-height:40px;}
 						
 						
 					</div>
-					<table>
+					<table  style="margin-bottom: -8px; margin-top: -20px;">
 					<tr>
 					<td><span>Select Year</span></td>
 					<td><s:select theme="simple" list="electionYearsList" name="electionYear" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/> </td>
@@ -853,7 +853,7 @@ function openAllInNewWindow(type){
     url ='partyStrengthAction.action';
   
   else if(type == 'distperform')
-    url ='districtWisePartyPerformanceAction.action';
+    url ='electionLiveResultsAnalysisAction.action';
 	
    else if(type == 'voterssearch')
     url ='votersSearchAction.action';
