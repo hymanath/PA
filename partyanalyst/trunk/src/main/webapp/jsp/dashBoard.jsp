@@ -353,7 +353,7 @@ lable{line-height:40px;}
  <c:if test="${party}">
   <!-----State Level Analysis----->
   <div class="row-fluid span12 well well-small">
-    <div class="page-header"> <h4>State Level Analysis</h4></div>
+    <div class="page-header"> <h4><img src="./images/dashboard/ap_icon.png " ></img> State Level Analysis</h4></div>
 		<div class="row-fluid">
 			<div class="span6 widget">
 				<h2> Party Performance Report</h2>
@@ -458,7 +458,7 @@ lable{line-height:40px;}
   <div class="row-fluid">
 	<div class="span12 well well-small">
 		<div class="page-header">
-			<h4>Constituency Level Analysis</h4>
+			<h4><img src="./images/dashboard/Constituency Level Analysis copy.png" />  Constituency Level Analysis</h4>
 		</div>
 		
 		<div class="row-fluid">
@@ -641,7 +641,7 @@ lable{line-height:40px;}
    
   <div class="row-fluid">
 	<div class="span12 well well-small">
-     <div class="page-header"><h4>Management Tools</h4></div>
+     <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />  Management Tools</h4></div>
 		<div class="row-fluid">
 			<div class="span6 widget">
 				<h2> Add New Problem</h2>
@@ -758,7 +758,7 @@ getAllConstituenciesInStateByType(2,stateId,"constituency");
 		   var conId = '${boothAnalysisData.id}';
 		   var elec = '${boothAnalysisData.value}';
 		   var type = '${boothAnalysisData.type}';
-		   $("#boothWiseResult").html('<a onclick="viewBoothResults()" style="cursor:pointer" class="breadcrumb" title="click here to view Booth Wise Results"> Click here for Booth Wise Results('+elecYear+' '+elec+' '+type+') </a>');
+		   $("#boothWiseResult").html('<a onclick="viewBoothResults()" style="cursor:pointer" class="btn" title="click here to view Booth Wise Results"> Click here for Booth Wise Results('+elecYear+' '+elec+' '+type+') </a>');
 	     </c:if>
 		 <c:if test="${boothAnalysisData == null}">
 		   $("#moreDetailsId").trigger("click");
