@@ -496,6 +496,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 						boothAnalysisData.setValue("AC");
 					}
 				}
+				
+				/*if(assemblyConstis != null && assemblyConstis.size() >0)
+				constituencyId = assemblyConstis.get(1).getId();*/
+				
 			}else if("MP".equalsIgnoreCase(user.getAccessType())){
 				List<Long> assIds = new ArrayList<Long>();
 				for(SelectOptionVO vo:parlConstis){
@@ -508,6 +512,14 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 						}
 					}
 				}
+			}
+			
+			/*
+			if(parlConstis != null && parlConstis.size() >1)
+			constituencyId = parlConstis.get(1).getId();*/
+			if(assemblyConstis != null && assemblyConstis.size() >0){
+				constituencyId = assemblyConstis.get(1).getId();
+				districtId = staticDataService.getdistrictForAConstituency(constituencyId);
 			}
 		}
 		
