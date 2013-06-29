@@ -15,186 +15,106 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<title><decorator:title default="  Telugudesam Party "/></title>
-	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
-	<!--Bootstrap styles file-->
-	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" href="css/style.css">
-	<script type="text/javascript" src="js/loginpopup.js"> </script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
-	<!--Script file
-	<script type="text/javascript" src="js/jquery.js"></script>-->
-	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
-	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
-	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
-	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
-	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+	<title>Electoral Connect Election Commission of India-AP</title>
+		<meta name="Electoral Connect" content="Electoral Connect Election Commission of India-AP">
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link rel="stylesheet" href="css/style.css">
+		<!-----Fonts----->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		
+		<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+		<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+		<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+		<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 	
-	<!--YUI SCRIPT-->
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
-    
-	
-	<style>
-	body{color:#5B5B5B;}
-	
-.background
-{
-background:#ffffff;
-margin:-1px 0px 0px 0px ;
-}
-
-.header2 {
-     position: absolute;
-    top: -126px;
-	left:-2%;
-}
-.gradlightblack{
-	margin-top:10px;
-}
-
-.header-right-sec{width:750px;}
-.lr-sec{padding:14px 5px 5px;}
-#menu ul.menu li{z-index: 999;}
-
-</style>
-<decorator:head/>
-</head>
+		<script type="text/javascript" src="js/jquery/jquery-1.8.2.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery-ui-1.8.5.custom.min.js"></script>
+		<script type="text/javascript" src="bootstrap/bootstrap.js"></script>
+		
+		<!--YUI SCRIPT-->
+		<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
+    </head>
 <body>
-
-<table style="border-collapse: collapse;" width="100%">
-<tr>
-<td>
-
-  <div class="container-fluid headerBg" style="padding-left: 0px; padding-right: 0px;">
-  
-
-		<!---Header----->
-		<div class="container">	
-		<div class="row">
-			<!----Logo----->
-			<div class="span4">
-				<img src="images/Logo.png" alt="Telugudhesam party logo" />		
-			</div>
-			<!-----Nav main div---->
-			<div class="span8">
-				<div class="row-fluid">
-					<!----Member Area Div---->
-					<div class="span12">
-						<ul class="nav nav-pills pull-right memberArea">
-						 <c:if test="${sessionScope.USER == null}">
-						  <li><a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a></li>
-						  <li class="selected"><a href="userRegistration.action">Register</a></li>
-						 </c:if>
-						 <c:if test="${sessionScope.USER != null}">
-						  <li style="padding-top: 6px;">${sessionScope.USER.name}</li>
-						   <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
-						    <li><a href="adminPageAction.action">Admin</a></li>
-						   </c:if>
-						  <li class="selected"><a href="logoutAction.action">Logout</a></li>
-						 </c:if>
-						</ul>
+<style>
+	#loginModal{width:600px;}
+</style>
+<!---  Header ---->
+		<header>
+			<div class="row">
+				<!---header Container---->
+				<div class="container">
+					<div class="row-fluid">
+					
+						<div class="span6">
+							<h1>
+								<a href="/" title="Electoral Connect-Election Commission of India-AP">
+									<img src="image/logo.png" Alt="Electoral Connect Election Commission of India-AP" />
+								</a>
+							</h1>
+						</div>
+						
+						<div class="span6">
+							<nav>
+								<ul class="inline pull-right">
+									<!--<li><a href="#" title="Home">Home</a></li>
+									<li><a href="#" title="About Us">About US</a></li>
+									<li><a href="#" title="Contact Us">Contact Us</a></li>-->
+									<li><a title="Home" id='loginId'>Login</a></li>
+									<li><a title="About Us" id='registerId'>Register</a></li>
+								</ul>
+							</nav>
+						</div>
+						
 					</div>
-					<!------Menu div-------->
-					<div class="span12">
-						<ul class="nav nav-pills navMenu pull-right">
-
-						<c:if test="${sessionScope.USER != null}">
-						 <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
-						  <li class=""><a href="homePage.action">Home</a></li>
-						  <li class=""><a href="aboutUs.action">About Us</a></li>
-						  <li class="">
-						  <a href="newsDetailsAction.action">News</a></li>
-						  <li class="">
-						  <a onclick="showMoreVideoGallaries()">Videos</a></li>
-						 
-						  
-						      <li class=""><a href="partyManagementAction.action">Manage Party Profile</a></li>
-						   
-						  
-						  <li class=""><a href="contactUs.action">Contact Us</a></li>
-						   </c:if> </c:if>
-						  
-						</ul>
+				</div><!---header Container---->
+			</div>
+		</header><!---header End---->
+		
+		<div id="decoBodyId">
+			<decorator:body/>
+			
+		<div class="modal hide fade" id="loginModal">
+				
+		<div class="modal-body">
+			<a class="close" data-dismiss="modal">X</a>
+			<p style="font-size:16px;font-weight:bold;"></p>
+			 <form class="form-horizontal" name='personalInfoForm' action='saveSurveyorInfoAction.action' method='post'>
+				<legend>Please Login</legend>
+				<div class="control-group">
+					<label class="control-label" for="username">UserName</label>
+					<div class="controls">
+						<input type="text" id="userName" placeholder="Your Name" name='userName'>
 					</div>
 				</div>
-			</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="password" >Password</label>
+					<div class="controls">
+						<input type="password" id="password" placeholder="password" name='password'>
+					</div>
+				</div>
+								
+			</form>
 		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary" >Login</button>
 		</div>
-		</div>
-
-</td>
-</tr>
-
-<tr>
-<td class="background" border="0">
-<div style="width:960px;position:relative;margin:0 auto;">
-<center>
-
-<div class="header2">
-<!--Facebook like icon-->
-	<div style="float:left;margin-left:80px;margin-top:15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false">
 	</div>
-	<!--Facebook and twitter follow us
-		<div class="follow-us" style="margin-left:180px;">
-            <ul>
-              <li><a href="http://twitter.com/#!/electoralconnect" target="_blank"><img src="./images/new_homepage/twitter.gif" alt="" height="30px" width="30px"/></a></li>
-              <li><a title="Facebook" href="http://www.facebook.com/electoralconnect" target="_blank"><img src="./images/new_homepage/facebook.gif" alt="" height="30px" width="30px"/></a></li>
-            </ul>
-            <h5 style="color:#08AAEC;">follow us</h5> 
-		</div>-->
-</div>
-
-</center>
-</div>
-<div id="login_window">
-	<div id="login_window_inner"></div>
-</div>
-</td>
-</tr>
-<!--BODY -->
-<tr>
-	<td class="" border="0">
- 		<div id="contenttable" class="background">
-			<decorator:body/>
 		</div>
-	</td>
-</tr>
-<tr>
-<td>
-	<!-----Footer---->
-	  <footer>
-        <p class="text-center">&copy; Telugudesam Party 2013</p>
-      </footer>
-  
-  
-</div>
-</td></tr>
-</table>
-<!--FOOTER SECTION END-->
-<script type="text/javascript">
-var notLogged = '${notLogged}';
- if(notLogged == 'true')
- {
-	 redirectTo = true;
-	 openDialogForLoginWindow();
-  }
-
-function getNewsDetailsByContentId(contentId)
-{
-  var urlstr = "newsDetailsPopupAction.action?contentId="+contentId+"&";
-	
-    var browser1 = window.open(urlstr,"gallaryDetails"+contentId+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-    browser1.focus();
-} 
-function showMoreVideoGallaries(){
-	 var urlstr = "showMoreVideos.action";
 		
-     var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-     browser1.focus();
-}
-</script>
+		<footer>
+			&copy;2013 Electoral Connect
+		</footer>
+		<script>
+			$('#registerId').click(function(){
+				$('#registerId').attr('href','registerUser.action');
+			});
+			$('#loginId').click(function(){
+				$('#loginModal').modal('show');
+			});
+		</script>
 </body>
 </html>
 
