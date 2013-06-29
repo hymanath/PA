@@ -3844,6 +3844,8 @@ $(document).on("click",'#fromDateId , #toDateId', function(){
 });
 
     $(document).on('click','#responseDiv',function(){
+		$('#candidateNewsList').empty();
+		$('#respenseNewsList').empty();		
 		  if($('#responseContentDiv').css('display') == "block"){
 			  $('#candidatesList').val("");
 			  $('#dateErrorMessage').html("");
@@ -4334,7 +4336,10 @@ else{
 			 str+='<td>'+results[i].description+'</td>';
 
 			str+='<td>'+results[i].locationScopeValue+'</td>';
-	        str+='<td>'+results[i].locationValue+'</td>';
+			if(results[i].locationValue !=null)
+				str+='<td>'+results[i].locationValue+'</td>';
+			else
+				str+='<td></td>';
 	        str+='<td>'+results[i].fileDateAsString+'</td>';
 			str+='<td><a type="button"  title="Click here to edit" href="javascript:{editNewsDetails('+results[i].fileId+',\''+results[i].source+'\');}"><i class="icon-pencil"></i></a>';
 			str+='<a type="button" title="Click here to delete" href="javascript:{updateDeleteNews(\'Delete\','+results[i].fileId+');}" ><i class="icon-remove-sign"></i></a></td>';
