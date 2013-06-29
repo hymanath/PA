@@ -46,6 +46,10 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <style>
+
+.nav-tabs > li{
+font-weight:bold;
+}
 #fromDateId,#toDateId,#existingFromTextNews{
 cursor: text;
 }
@@ -3623,9 +3627,9 @@ function updatePhoto(fileId,fileGallaryId)
     <!--<li>
     <a value="Photo Gallery" id="photoGalleryId" onClick="showPhotoGallary1()" style="cursor:pointer">Photo Gallery</a>
     </li>-->
-    <li> <a value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()" style="cursor:pointer">Video Gallery</a></li>
-    <li class="active"><a value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer">News Gallery</a></li>
-	<li><a value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()" style="cursor:pointer">Update News</a></li>
+    <li> <a value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()" style="cursor:pointer;color: blue;">Video Gallery</a></li>
+    <li class="active"><a value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer;color: blue;">News Gallery</a></li>
+	<li><a value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: blue;">Update News</a></li>
     </ul>
 	
 </div>
