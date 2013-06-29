@@ -70,4 +70,13 @@ public class CandidateNewsResponseDAO extends GenericDaoHibernate<CandidateNewsR
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getFileGalleryIdByResponseGalleryId(Long fileGalleryId)
+	{
+		Query query = getSession().createQuery(" select model.responseFileGallary.fileGallaryId from CandidateNewsResponse model " +
+				" where model.fileGallary.fileGallaryId =:fileGallaryId ");
+		query.setParameter("fileGallaryId", fileGalleryId);
+		return query.list();
+	}
+	
 }
