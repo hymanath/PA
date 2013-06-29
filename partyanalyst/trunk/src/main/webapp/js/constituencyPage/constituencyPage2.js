@@ -183,7 +183,7 @@ function showAddress(address)
 
 function buildRightlayoutMap()
 {
-	
+	try{
 	var address=constituencyPageMainObj.constituencyAddress;	
 		var map = new GMap2(document.getElementById("map_canvas"));
 		
@@ -203,7 +203,9 @@ function buildRightlayoutMap()
 			map.setUIToDefault();
 		  }
 		})
-
+	}catch(e){
+		
+	}
 }
 
 function buildConstituencyInfo()
