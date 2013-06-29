@@ -5464,6 +5464,7 @@
 		
 		
 		<action name="selectedNewsDetailsAction" class="newsDetailsAction">
+		 <result name="error" type="redirect">loginPageAction.action</result>
 		 <result>/jsp/selectedNewsDetails.jsp</result>
 		</action>
 		
