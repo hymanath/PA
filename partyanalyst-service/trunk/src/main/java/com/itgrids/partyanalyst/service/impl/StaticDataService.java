@@ -8836,5 +8836,22 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return resultList;
 	}
+	
+	public Long getdistrictForAConstituency(Long constituencyId)
+	{
+		
+		try
+		{
+			List<Long> districtsList = constituencyDAO.getDistrictIdByConstituencyId(constituencyId);
+			
+			return districtsList.get(0);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+			
+		}
+	}
 
 }
