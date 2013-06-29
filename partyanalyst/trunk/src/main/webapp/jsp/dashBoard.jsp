@@ -202,7 +202,7 @@ lable{line-height:40px;}
 <div class="btn btn-xlarge" style="height: 185px;">
     
     <h2 style="margin-top: 38px;">Advanced Dashboard</h2>
-    <a href="userProfile.action" class="btn btn-small btn-success"> Click <i class="icon-hand-up icon-white"></i> To View More Futures </a>
+    <a href="userProfile.action" class="btn btn-small btn-success"> Click <i class="icon-hand-up icon-white"></i> To View More Features </a>
 
             </div>
 <div class="widget quicklinks m-top15">
