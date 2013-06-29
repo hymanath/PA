@@ -944,11 +944,13 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		 {
 			 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
 			 
-					filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.COVER_PIC + pathSeperator;
+					 filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.COVER_PIC + pathSeperator;
 			
-				 else
+				 else if(request.getRequestURL().toString().contains(IConstants.LOCAL_HOST))
 				
 					 filePath = context.getRealPath("/")+"pictures\\"+IConstants.COVER_PIC+"\\";
+				 else
+					 filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.COVER_PIC + pathSeperator;
 				
 		 }
 		BufferedImage image = null;
