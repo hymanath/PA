@@ -593,4 +593,34 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStateForSelectedConstituency(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery("select distinct model.state.stateId,model.state.stateName from Constituency model" +
+				" where model.constituencyId in (:constituencyIds)");
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+		
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistrictForSelectedConstituency(List<Long> constituencyIds,Long stateId)
+	{
+		Query query = getSession().createQuery("select  distinct model.district.districtId,model.district.districtName from Constituency model" +
+				" where model.constituencyId in (:constituencyIds) and model.state.stateId = :stateId");
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameter("stateId", stateId);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getConstituencysForSelDistrict(List<Long> constituencyIds,Long districtId)
+	{
+		Query query = getSession().createQuery("select  distinct model.constituencyId,model.name from Constituency model" +
+				" where model.constituencyId in (:constituencyIds) and model.district.districtId = :districtId");
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameter("districtId", districtId);
+		return query.list();
+		
+	}
 }

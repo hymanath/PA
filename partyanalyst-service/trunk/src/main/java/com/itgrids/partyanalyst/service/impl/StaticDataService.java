@@ -8789,6 +8789,52 @@ public class StaticDataService implements IStaticDataService {
 		return partyVOs;
 	}
 
-		
+	public List<SelectOptionVO> getStatesByConstituency(List<Long> constituencyId)
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		List<Object[]> statesList = constituencyDAO.getStateForSelectedConstituency(constituencyId);
+		if(statesList != null && statesList.size() > 0)
+		{
+			for (Object[] parms : statesList) {
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long)parms[0]);
+				selectOptionVO.setName(parms[1].toString());
+				resultList.add(selectOptionVO);
+			}
+		}
+		return resultList;
+	}
+	
+	public List<SelectOptionVO> getDistrictsByConstituency(List<Long> constituencyId,Long stateId)
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		List<Object[]> statesList = constituencyDAO.getDistrictForSelectedConstituency(constituencyId,stateId);
+		if(statesList != null && statesList.size() > 0)
+		{
+			for (Object[] parms : statesList) {
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long)parms[0]);
+				selectOptionVO.setName(parms[1].toString());
+				resultList.add(selectOptionVO);
+			}
+		}
+		return resultList;
+	}
+	
+	public List<SelectOptionVO> getConstituencyForSelDistrict(List<Long> constituencyId,Long districtId)
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		List<Object[]> districtList = constituencyDAO.getConstituencysForSelDistrict(constituencyId,districtId);
+		if(districtList != null && districtList.size() > 0)
+		{
+			for (Object[] parms : districtList) {
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long)parms[0]);
+				selectOptionVO.setName(parms[1].toString());
+				resultList.add(selectOptionVO);
+			}
+		}
+		return resultList;
+	}
 
 }
