@@ -174,7 +174,8 @@ function buildPaginatedNews(results,jsObj)
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
 		
-		var path = results[i].fileVOList[0].fileVOList[0].path;
+		//var path = results[i].fileVOList[0].fileVOList[0].path;
+		var path = results[i].filePath1;
 		var source = results[i].fileVOList[0].source;
 		
 		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
