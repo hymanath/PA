@@ -526,7 +526,8 @@ width: 92px;
 						<div class="span12 boxHeading"><h4>Hot News</h4></div>
 						<div class="span12">
 							<ul class=" nav nav-list bs-docs-sidenav" style='margin-top:10px;'>
-								<s:iterator value="responseFilesList" var="responsefiles">
+								<s:iterator value="responseFilesList" var ="responsefiles" status="status">
+								<s:if test="%{#status.index <4}">
 								<li class='thumbnail' style='margin: 3px 5px 5px;padding:5px 5px 5px 15px;'>
 								<s:if test="%{#responsefiles.source.equalsIgnoreCase('Eenadu Telugu')}">
 									<span class='text-info enadu' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;font-weight:bold;"> <s:property value="title"/></span>
@@ -542,7 +543,7 @@ width: 92px;
 									</span>
 								</li>
 								<a href="javascript:{getResponseDetailsByContentId(<s:property value='fileGallaryId'/>)}" class="btn btn-mini btn-primary" style="margin-left:154px;background: none repeat scroll 0% 0% #FAA938;font-weight:bold;margin-top: -2px;">Track</a>
-
+								 </s:if> 
 								</s:iterator>
 								
 							</ul>
