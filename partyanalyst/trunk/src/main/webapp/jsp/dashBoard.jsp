@@ -461,6 +461,40 @@ lable{line-height:40px;}
 			<h4><img src="./images/dashboard/Constituency Level Analysis copy.png" />  Constituency Level Analysis</h4>
 		</div>
 		
+		
+		
+		<div class="row-fluid">
+			<div class="span4 widget">
+				<h2>Voters Analysis </h2>
+				<fieldset>
+					<lable>Select Constituency </lable>
+					<s:select cssClass="selectstyle span12" theme="simple" id="constituencyId"  list="constituencyList" listKey="id" listValue="name" ></s:select>
+				
+					<input type="button" value="View" class="btn btn-small" onCLick="openVotersAnalysts();" style="float:right;"></input>
+				</fieldset>
+			</div>
+			
+		    <div class="span4 widget">
+				<h2> Results Vs Caste</h2>
+				<fieldset>
+				<lable>Constituency </lable>
+				<s:select cssClass="selectstyle" theme="simple" id="constituencyList"  list="constituencyList" listKey="id" listValue="name" ></s:select>
+					
+			   <input type="button" value="View" class="btn btn-small" onCLick="openCasteViseAnalysis();" style="float:right;"></input>
+				</fieldset>
+			</div>
+			
+			<div class="span4 widget">
+			  <h2>Voters Search</h2>
+				<div class="media">
+					<img class="media-object pull-left m-top15" alt="Party Performance Report" src="./images/dashboard/Voters Search.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+						<p>Voters Search</p>
+						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input>
+					</div>
+				</div>  
+			</div>
+	    </div>
 		<div class="row-fluid">
 			<div class="span12 widget">
 				<h2>Cross Voting Analysis</h2>
@@ -500,40 +534,6 @@ lable{line-height:40px;}
 				</div>
 			</div>       				
 		</div>
-		
-		<div class="row-fluid">
-			<div class="span4 widget">
-				<h2>Voters Analysis </h2>
-				<fieldset>
-					<lable>Select Constituency </lable>
-					<s:select cssClass="selectstyle span12" theme="simple" id="constituencyId"  list="constituencyList" listKey="id" listValue="name" ></s:select>
-				
-					<input type="button" value="View" class="btn btn-small" onCLick="openVotersAnalysts();" style="float:right;"></input>
-				</fieldset>
-			</div>
-			
-		    <div class="span4 widget">
-				<h2> Results Vs Caste</h2>
-				<fieldset>
-				<lable>Constituency </lable>
-				<s:select cssClass="selectstyle" theme="simple" id="constituencyList"  list="constituencyList" listKey="id" listValue="name" ></s:select>
-					
-			   <input type="button" value="View" class="btn btn-small" onCLick="openCasteViseAnalysis();" style="float:right;"></input>
-				</fieldset>
-			</div>
-			
-			<div class="span4 widget">
-			  <h2>Voters Search</h2>
-				<div class="media">
-					<img class="media-object pull-left m-top15" alt="Party Performance Report" src="./images/dashboard/Voters Search.png"style="width: 64px; height: 64px;"></img>
-					<div class="media-body">
-						<p>Voters Search</p>
-						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input>
-					</div>
-				</div>  
-			</div>
-	    </div>
-		
 	    <div class="row-fluid">
 			<div class="span12 widget" id="boothResultsDiv" >
 				<h2>Booth Wise Results</h2>
