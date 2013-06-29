@@ -225,9 +225,9 @@ lable{line-height:40px;}
 				<tr>
 					<td>
 						<select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 168px;margin-bottom:5px;" autoComplete="off"
-						onchange="checkElectionType(this.options[this.selectedIndex].value)">
+						onchange="checkForElectionType(this.options[this.selectedIndex].value)">
 						<option value="0">Select Type</option>
-						<option value="2">Assembly</option>
+						<option value="2" selected>Assembly</option>
 						<option value="1">Parliament</option>
 						</select>
 					</td>
@@ -235,7 +235,7 @@ lable{line-height:40px;}
 				
 				<tr>
 					<td>
-						<select id="states" name="state_s" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:168px;margin-bottom:5px;"onchange="getElectionYearsInHomePage('Assembly')">
+						<select id="states" name="state_s" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:168px;margin-bottom:5px;"onchange="getElectionYearsInDashBoard('Assembly','')">
 						</select>
 					</td>
 				</tr>
@@ -264,7 +264,7 @@ lable{line-height:40px;}
 		<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
 		<h5>View Your District</h5>
 		<p>Select your district to view its election results in district level.</p>
-		<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"></s:select>
+		<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAStateForDashBoard(this.options[this.selectedIndex].value,'districtList_d','')"></s:select>
 		<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
 		<br>
 		<a onclick="navigateToDistrictPage()" href="javascript:{}">
@@ -291,7 +291,7 @@ lable{line-height:40px;}
 			<tbody>
 				<tr>
 					<td>
-						<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/>
+						<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByTypeInDashBoard(2,this.options[this.selectedIndex].value,'constituency','')"/>
 					</td>
 				</tr>
 
@@ -750,16 +750,20 @@ lable{line-height:40px;}
 });
 </script>
 <script type="text/javascript">
+var defaultConstituencyId = '${constituencyId}';
 userType = '${UserType}';
 constituencyId = '${sessionScope.USER.constituencyId}';
+userAccessType = '${sessionScope.USER.accessType}';
 var loginMode = '${loginMode}';	  
 var stateId = $('#stateList_d').val();
 var districtId = '${districtId}';
 var selType= "";
 $("#constituencyId option[value=0]").remove();
 $("#constituencyList option[value=0]").remove();
-getDistrictsComboBoxForAState(stateId,"districtList_d");
-getAllConstituenciesInStateByType(2,stateId,"constituency");
+getDistrictsComboBoxForAStateForDashBoard(stateId,"districtList_d","default");
+//getAllConstituenciesInStateByType(2,stateId,"constituency");
+getAllConstituenciesInStateByTypeInDashBoard(2,stateId,"constituency","default");
+
           <c:if test="${boothAnalysisData != null}">
 		   var elecYear = '${boothAnalysisData.name}';
 		   var conId = '${boothAnalysisData.id}';
@@ -1535,6 +1539,61 @@ function callAjax(jsObj,url){
 								{
 									showChangePwdStatus(myResults);
 								}
+								else if(jsObj.task == "getStates")
+								{
+									$('#states').find('option').remove();
+										$('#states').append('<option value="0">Select State</option>');
+									 $.each(myResults,function(index,value){
+										$('#states').append('<option value="'+value.id+'">'+value.name+'</option>');
+
+									});
+									if(jsObj.type == "default"){
+									 $('#states').val(1);
+									 getElectionYearsInDashBoard('Assembly','default');
+									}
+								}else if(jsObj.task == "getElectionYearsForAState")
+								{
+									$('#electionYears').find('option').remove();
+
+									 $.each(myResults,function(index,value){
+										$('#electionYears').append('<option value="'+value.id+'">'+value.name+'</option>');
+
+									});
+									if(jsObj.type == "default"){
+									$("#electionYears").val($("#electionYears option:eq(1)").val());
+									}
+								}
+								else if(jsObj.task == "getConstituencies")
+							    {
+								//clearOptionsListForSelectElmtId(jsObj.elmtId);
+								//createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+
+								$('#constituency').find('option').remove();
+
+								 $.each(myResults,function(index,value){
+										$('#constituency').append('<option value="'+value.id+'">'+value.name+'</option>');
+
+									});
+
+                                if(jsObj.type == "default")
+								$('#constituency').val(defaultConstituencyId);
+								hideBusyImgWithId(jsObj.elmtId);
+							   }else if(jsObj.task == "findDistrictsForAState")
+								{	
+
+								   $('#districtList_d').find('option').remove();
+
+								 $.each(myResults,function(index,value){
+										$('#districtList_d').append('<option value="'+value.id+'">'+value.name+'</option>');
+
+									});
+
+                                if(jsObj.type == "default"){
+								 $('#districtList_d').val(districtId);
+								}
+								
+
+							    }
 								}catch (e) {
 							     
 								}  
@@ -1548,7 +1607,129 @@ function callAjax(jsObj,url){
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
  	}
 
+function checkForElectionType(electionTypeId)
+{
+    if(electionTypeId == 1)
+	{
+	  getStatesInDashBoard();
+	  $('#states').hide();
+	  getElectionYearsInDashBoard('Parliament','');
+	}
+
+    if(electionTypeId == 2)
+	{
+	  $('#states').show();
+      getStatesInDashBoard();
+
+	}
+}
+function getStatesInDashBoard()
+{
+
+	var electionType = $('#electionTypeId').val();
+
+	var jsObj=
+		{						
+				
+			electionType:electionType,
+            type:"change",
+			task:"getStates"
+		}
+
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getStatesForHomepage.action?"+rparam;
+	callAjax(jsObj,url);
+
+}
+getStatesInDashBoardByDefault();
+function getStatesInDashBoardByDefault()
+{
+
+
+	var jsObj=
+		{					
+				
+			electionType:2,
+            type:"default",
+			task:"getStates"
+		}
+
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getStatesForHomepage.action?"+rparam;
+	callAjax(jsObj,url);
+
+}
+
+
+function getElectionYearsInDashBoard(electionType , type)
+{
+
+	var stateEle = document.getElementById("states");
+	if(electionType == 'Assembly')
+	var stateId = stateEle.options[stateEle.selectedIndex].value;
+	if(electionType == 'Parliament')
+		stateId = 1;
+	document.getElementById("electionYears").length = 0;
+	
+	if(electionType == null || electionType == 'Select Type' || stateId == 0)
+		return;
+	
+	var jObj = {
+			stateId : stateId,
+		electionType: electionType,
+				type:type,	 
+				task: 'getElectionYearsForAState'
+				};
+
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
+	callAjax(jObj,url);
+}
+
+
+function getAllConstituenciesInStateByTypeInDashBoard(electionType, stateId, element,type)
+{
+	clearOptionsListForSelectElmtId(element);
+	showBusyImgWithId(element);
+	
+	var jsObj=
+	{				
+			electionTypeId: electionType,
+			stateId: stateId,
+			task: "getConstituencies",
+            type:type,  
+			elmtId: element 	
+	}
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getAllConstituenciesInState.action?"+rparam;						
+callAjax(jsObj,url);
+}
+
+
+function getDistrictsComboBoxForAStateForDashBoard(value,elmtId,type)
+{
+	var jsObj=
+		{				
+				stateId:value,
+				elmtId:elmtId,
+                type:type,
+				task:"findDistrictsForAState"				
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getDistrictsForAStateAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+
+
+
 
 </script>
+
+
 </body>
 </html>
