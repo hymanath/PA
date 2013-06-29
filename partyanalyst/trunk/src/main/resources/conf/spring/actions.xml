@@ -322,6 +322,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>
 	
 	<bean id="cadreSMSAction" class="com.itgrids.partyanalyst.web.action.CadreSMSAction" singleton="false">

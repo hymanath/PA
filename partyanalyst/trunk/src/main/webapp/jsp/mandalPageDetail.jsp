@@ -67,6 +67,14 @@ function callAjax(jsObj,url,name){
 			{
 				buildMandalVoting(myResults);
 			}
+			else if(jsObj.task=="getDistricts")
+			{
+				buildDistricts(myResults);
+			}
+			else if(jsObj.task=="getConstituencys")
+			{
+				buildConstituency(myResults);
+			}
 			else
 			{
 				buildSelectOption(myResults,name);
@@ -290,6 +298,62 @@ function getMandalVotingReport()
 }
 
 
+function getDistrictsList()
+{
+	var stateId = $('#stateField option:selected').val();
+	var jsObj =
+		{  	
+			stateId:stateId,
+			task:'getDistricts'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getConstiAndDistrict.action?"+rparam;
+		callAjax(jsObj, url ,"");
+}
+
+function getConstituencsList()
+{
+	var districtId = $('#districtField option:selected').val();
+	var jsObj =
+		{  	
+			districtId:districtId,
+			task:'getConstituencys'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getConstiAndDistrict.action?"+rparam;
+		callAjax(jsObj, url,"");
+}
+
+function buildDistricts(myResults)
+{
+	if(myResults != null)
+	{
+		var str = "";
+		$("#districtField option").remove();
+		str += '<option value="0">Select District</option>';
+		for(var i in myResults)
+		{
+			str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+		}
+		$('#districtField').html(str);
+	}
+}
+
+function buildConstituency(myResults)
+{
+	if(myResults != null)
+	{
+		var str = "";
+		$("#constituencyField option").remove();
+		str += '<option value="0">Select Constituency</option>';
+		for(var i in myResults)
+		{
+			str += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+		}
+		$('#constituencyField').html(str);
+	}
+}
+
 </script>
 	<style type="text/css">
 		.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
@@ -410,14 +474,14 @@ function getMandalVotingReport()
 					<tr>
 						<th align="left"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /></th>
 						<td align="left">
-							<s:select id="stateField" name="state" list="states" listKey="id" listValue="name" onchange="getList('STATE',this.options[this.selectedIndex].value)" cssClass="mySelectBox"></s:select>					
+							<s:select id="stateField" name="state" list="states" listKey="id" listValue="name" onchange="getDistrictsList();" cssClass="mySelectBox"></s:select>					
 						</td>
 
 						
 					
 						<th align="left" class="tdLeftBorder" style="padding-left:30px;"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /></th>
 						<td align="left">
-							<select class="mySelectBox" id="districtField" name="district" onchange="getList('DISTRICT',this.options[this.selectedIndex].value)">
+							<select class="mySelectBox" id="districtField" name="district" onchange="getConstituencsList();">
 								<option value="0">Select District</option>
 							</select>					
 						</td>
