@@ -49,5 +49,10 @@
 			</result>
 		</action>
 		
+		<action name="userLonginVerficationAction" class="RegisterUserAction" method="userLoginCheck">
+			<result type="json" name="success">
+				<param name="root">resultStr</param>				
+			</result>
+		</action>
 		</package>
 </struts>      

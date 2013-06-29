@@ -43,14 +43,35 @@
 		</property>
 		<property name="annotatedClasses">
 			<list>
-				<!-- <value>com.itgrids.electoralconnect.model.UserProfile</value> -->
+				<value>com.itgrids.electoralconnect.model.UserProfile</value>
+				<value>com.itgrids.electoralconnect.model.UserLogin</value>
+				<value>com.itgrids.electoralconnect.model.User</value>
+				<value>com.itgrids.electoralconnect.model.Roles</value>
+				<value>com.itgrids.electoralconnect.model.UserRoles</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
 	
-	<!-- <bean id="userProfileDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserProfileDAO">
-		<property name="sessionFactory" ref="sessionFactory" />	
-	</bean> -->
+	  	<bean id="userProfileDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserProfileDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+		</bean>
+		
+		<bean id="userLoginDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserLoginDAO" >
+			<property name="sessionFactory" ref="sessionFactory" />
+		</bean>
+		
+		<bean id="userDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserDAO" >
+			<property name="sessionFactory" ref="sessionFactory" />
+		</bean>
+		
+		<bean id="userRolesDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserRolesDAO" >
+			<property name="sessionFactory" ref="sessionFactory" />
+		</bean>
+		
+		<bean id="rolesDAO" class="com.itgrids.electoralconnect.dao.hibernate.RolesDAO" >
+			<property name="sessionFactory" ref="sessionFactory" />
+		</bean> 
+	
 </beans>
