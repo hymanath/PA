@@ -296,6 +296,12 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
     
     public List<Object[]> getAllFilesOfAGallaryByGallaryId(Long gallaryId , Date fromDate , Date toDate);
 
+    public List<Object[]> getAllGallariesListForParty(Date fromDate,Date toDate);
+    
+    public List<Object[]> getnewsListByGalleryId(Long galleryId,Date fromDate,Date toDate);
+    
+    public List<Long> getFileGallaryIdsListByGallaryId(Long gallaryId);
+    
     
 }
 

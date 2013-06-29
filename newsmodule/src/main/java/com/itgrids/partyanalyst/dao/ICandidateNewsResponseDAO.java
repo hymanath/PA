@@ -15,5 +15,7 @@ public interface ICandidateNewsResponseDAO extends GenericDao<CandidateNewsRespo
    
    public List<Long> getFileGallaryIdsByResponseGallaryId(Long responseFileGallaryId);
    public List<Long> getResponseFileGallaryidForANews(List<Long> fileGallaryIds);
+   
+   public List<Long> getFileGalleryIdByResponseGalleryId(Long fileGalleryId);
 	
 }

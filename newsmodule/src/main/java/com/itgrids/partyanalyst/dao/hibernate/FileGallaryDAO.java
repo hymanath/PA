@@ -3086,5 +3086,60 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	 }
 	
 	
+    @SuppressWarnings("unchecked")
+	public List<Object[]> getAllGallariesListForParty(Date fromDate,Date toDate)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.gallary.gallaryId , model.gallary.name from FileGallary model where ");
+		str.append(" model.gallary.contentType.contentType = :contentType and model.isDelete = 'false' and model.isPrivate = 'false' ");
+		str.append(" and model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' ");
+		if(fromDate != null)
+		 str.append(" and model.file.fileDate <= :fromDate ");
+		if(toDate != null)
+		 str.append(" and model.file.fileDate >= :toDate ");
+		str.append(" order by model.gallary.name ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("contentType", IConstants.NEWS_GALLARY);
+		
+		if(fromDate != null)
+		 query.setParameter("fromDate", fromDate);
+		if(toDate != null)
+		 query.setParameter("toDate", toDate);
+		
+		return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getnewsListByGalleryId(Long galleryId,Date fromDate,Date toDate)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.fileGallaryId,model.file.fileTitle,model.file from FileGallary model where model.gallary.gallaryId =:gallaryId ");
+		str.append(" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' ");
+		if(fromDate != null)
+		 str.append(" and model.file.fileDate <= :fromDate ");
+		if(toDate != null)
+		 str.append(" and model.file.fileDate >= :toDate ");
+		str.append(" order by model.file.fileTitle ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("gallaryId", galleryId);
+		if(fromDate != null)
+		  query.setParameter("fromDate", fromDate);
+		if(toDate != null)
+		  query.setParameter("toDate", toDate);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getFileGallaryIdsListByGallaryId(Long gallaryId)
+	{
+		Query query = getSession().createQuery(" select distinct model.fileGallaryId from FileGallary model where model.gallary.gallaryId =:gallaryId ");
+		query.setParameter("gallaryId", gallaryId);
+		return query.list();
+	}
 	 
 }

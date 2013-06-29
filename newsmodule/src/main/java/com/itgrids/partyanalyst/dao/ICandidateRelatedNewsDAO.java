@@ -23,6 +23,8 @@ public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNe
 	
 	public List<Object[]> getNewsForACandidateByCategoryId(Long candidateId,Long categoryId,Date fromDate,Date toDate);
 	
+	public List<Long> getFileGalleryIdByCandidateId(Long candidateId);
+	
 
 
 }

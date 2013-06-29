@@ -162,5 +162,13 @@ ICandidateRelatedNewsDAO {
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getFileGalleryIdByCandidateId(Long candidateId)
+	{
+		Query query = getSession().createQuery(" select model.fileGallary.fileGallaryId from CandidateRealatedNews model where model.candidate.candidateId =:candidateId");
+		query.setParameter("candidateId", candidateId);
+		return query.list();
+	}
 
 }
