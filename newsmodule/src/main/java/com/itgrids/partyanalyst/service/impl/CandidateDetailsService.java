@@ -911,6 +911,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		        v.setSource(source);
 		        v.setContentId(id);
 		        v.setCandidateId(partyId);
+		        v.setFileDate(newDate);
              v.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileTitle())));
              v.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileDescription())));
              v.setDisplayImageName(f.getFileName());
@@ -5517,6 +5518,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				fileVO.setFileId(fileGallary.getFile().getFileId());
 				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle().toString())):"");
 				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
+				fileVO.setFilePath1(fileGallary.getFile().getFilePath());
 				
 				Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
 				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
