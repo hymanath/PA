@@ -157,6 +157,13 @@ input[type="radio"]{margin-top:-1px;}
 .page-header{ border-bottom: 1px solid #FFDC2D;margin: 0px 0px 10px;}
 .page-header h4{margin:0px; font-size:15.5px ; }
 lable{line-height:40px;}
+
+.background {
+    background-attachment: fixed;
+    background-color: #E5E5E5;
+    background-image: url("chrome://browser/skin/newtab/noise.png"), linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));
+    margin-left: 20px;
+}
 </style>
 <div class="container">
 	
@@ -275,7 +282,7 @@ lable{line-height:40px;}
 			Assembly
 			</label>
 			
-			<label class="radio">
+			<label class="radio" style="margin-bottom: -30px;">
 			<input type="radio" style="margin-top: 6px;" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" >
 			Parliament
 			</label>

@@ -238,8 +238,8 @@ Quick Links</h2>
 											<tr>
 												<td>
 													<div id="localBodiesRadioDiv_data">
-														<label class="radio"><input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality</label></br>
-														<label class="radio"><input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Corporation</label></br>
+														<label class="radio"><input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality</label>
+														<label class="radio"><input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Corporation</label>
 														<label class="radio" style="width:150px;"><input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Greater Municipal Corp</label>
 													</div>
 												</td>									

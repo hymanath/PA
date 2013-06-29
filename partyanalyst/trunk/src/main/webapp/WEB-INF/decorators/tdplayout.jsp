@@ -1254,7 +1254,7 @@ function buildLocalBodiesForAState(jsObj,results)
 	{
 		str += '<label class="radio" style="width:150px;">';
 		str += '<input type="radio" name="localBodyRadio" onclick="getSelectElmtForLocalBody(this.value)" value="'+results[i].id+'"> '+results[i].name+' </input><br>';
-		str +='</label></br>'
+		str +='</label>'
 		/*if(i == 1)
 			str += '<br/>';*/
 	}
