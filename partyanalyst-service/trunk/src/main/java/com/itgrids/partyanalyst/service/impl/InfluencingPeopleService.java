@@ -1051,6 +1051,47 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 return influenceScopeDetailsVO;
 	}
 	
+	public String getRegionNameBasedOnScope1(String infScope,String regionId,Long userAddressId){
+		
+		if(infScope.equalsIgnoreCase(IConstants.STATE)){
+			State state = stateDAO.get(new Long(regionId));
+			return state.getStateName();
+		}else if(infScope.equalsIgnoreCase(IConstants.DISTRICT)){
+			if(userAddressId > 0)
+			{
+			UserAddress userAddress = userAddressDAO.get(userAddressId);
+			if(userAddress.getDistrict() != null)
+			{
+			District district = districtDAO.get(new Long(userAddress.getDistrict().getDistrictId()));
+			return district.getDistrictName();
+			}
+			}
+		}else if(infScope.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			Constituency constituency = constituencyDAO.get(new Long(regionId));
+			return constituency.getName();
+		}else if(infScope.equalsIgnoreCase("MUNCIPALITY/CORPORATION") || infScope.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION)){
+			LocalElectionBody localBody = localElectionBodyDAO.get(new Long(regionId));
+			String localBodyName = localBody.getName() + " (" + localBody.getElectionType().getElectionType() + " )";
+			return localBodyName;
+		}else if(infScope.equalsIgnoreCase(IConstants.MANDAL) || infScope.equalsIgnoreCase(IConstants.TEHSIL)){
+			if(regionId.length() !=0 && regionId != null)
+			{
+				Tehsil tehsil = tehsilDAO.get(new Long(regionId));
+				return tehsil.getTehsilName();
+			}
+		}else if(infScope.equalsIgnoreCase(IConstants.VILLAGE) || infScope.equalsIgnoreCase(IConstants.HAMLET)){
+			Hamlet hamlet = hamletDAO.get(new Long(regionId));
+			return hamlet.getHamletName();
+		}else if(infScope.equalsIgnoreCase(IConstants.WARD)){
+			Constituency constituency = constituencyDAO.get(new Long(regionId));
+			return constituency.getName();
+		}else if(infScope.equalsIgnoreCase(IConstants.BOOTH)){
+			Booth booth = boothDAO.get(new Long(regionId));
+			return booth.getPartNo().toString()+" Booth";
+		}
+	 return null;
+	}
+
 	public String getRegionNameBasedOnScope(String infScope,String regionId){
 		
 		if(infScope.equalsIgnoreCase(IConstants.STATE)){
@@ -1717,7 +1758,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				Constituency ward = null;
 				Constituency parliamentConst = null;
 				
-				Object infAddress = (Object)influencingPeopleAddress.get(i++);
+				Object infAddress = (Object)influencingPeopleAddress.get(i);
 				UserAddress userAddr = (UserAddress)infAddress;
 				if(userAddr.getState() != null)
 				state = userAddr.getState();
@@ -1745,6 +1786,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				influencingPeopleBeanVO.setConstituency(constituency.getName());
 				if(tehsil != null && tehsil.getTehsilId() != null){
 					influencingPeopleBeanVO.setMandal(tehsil.getTehsilName());
+					if(hamlet != null && hamlet.getHamletName() != null)
 					influencingPeopleBeanVO.setWardOrHamlet(hamlet.getHamletName());
 				}else if(localBody != null && localBody.getLocalElectionBodyId() != null){
 					String localBodyName = localBody.getName() + " (" +localBody.getElectionType().getElectionType()+" )"; 
