@@ -1,0 +1,35 @@
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Museo Slab';
+    src: url('font/Museo_Slab_500.otf');
+    src: url('font/Museo_Slab_500.otf?#iefix') format('embedded-opentype'),
+         /*url('font/BEBAS___-webfont.woff') format('woff'),*/
+         url('font/museo_slab_50.ttf') format('truetype'),
+         url('font/BEBAS___-webfont.svg#BebasRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+text-shadow: 0px 1px 1px #ffffff;
+}
+
+body{border-top:4px solid #2dcfff;font-family: 'Open Sans', sans-serif;}
+.m_top10{margin-top:10px;}
+.m_top20{margin-top:20px;}
+
+/*Header styles*/
+header{background:#1a1a1a; height:108px;width:100%;border-bottom:1px solid #ffffff;}
+nav ul li a{line-height:108px;color:#ffffff;padding:45px 5px;}
+nav li a:hover{color:#000000;background:#2dcfff;width:100%;height:100%;padding:45px 5px;text-decoration:none;}
+
+/*Main Section styles*/
+section .slidesow{background:#2dcfff;}
+thead{background:#FFFFFF;border:1px solid #fff;}
+tbody{background:#FBFBFB;border-bottom:1px solid #2dcfff;}
+tbody tr{border:2px dotted #ddd !important;}
+.downarrow-icon{background:url('..//image/down-arrow.png') no-repeat;padding-right:5px;width:15px;height:15px;display:inline-block;}
+.label{background:#FBFBFB; border:1px solid #ccc;color:#404040;}
+
+/*hero-unit*/
+.slidesow  h1{font-size:32px !important; Line-height:46px}
+hero-unit  h2{font-size:18px !important;}
+
+/*footer*/
+footer{border-top:1px solid #a1a1a1; text-align:center;padding:15px;}

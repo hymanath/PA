@@ -1,1 +1,1 @@
-<% response.sendRedirect("loginPageAction.action"); %>
+<% response.sendRedirect("homePage.action"); %>
