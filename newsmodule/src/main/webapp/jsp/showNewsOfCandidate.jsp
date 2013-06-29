@@ -301,7 +301,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 
 		str+="<div class='row-fluid m_top10'><div class='span9'>";
 		str +='<table><tr><td>';
-		str +='<p style="margin-right: 0px; width: 170px;"><span class="text-error">Source :</span>';
+		str +='<p style="margin-left: 5px;"><span class="text-error" style="font-weight:bold;">Source :</span>';
 		var length = results[i].fileVOList.length;
 
 		for(var j in results[i].fileVOList)
@@ -310,7 +310,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></td><td style="vertical-align: top;"><p style="width: 104px; margin-left: 0px; margin-right: 13px;"><span class="text-error">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;"><p style="width: 113px;"><span class="text-error">Response Count: </span>'+results[i].responseCount+'</p></td></tr>';
+		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="margin-left: 45px;font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;"><p ><span class="text-error" style="font-weight: bold; margin-left: 15px;">Response Count: </span>'+results[i].responseCount+'</p></td></tr>';
 		
 		str +='</table>';
 		str +='</div>';
