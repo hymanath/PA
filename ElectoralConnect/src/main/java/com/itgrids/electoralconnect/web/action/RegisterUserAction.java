@@ -9,6 +9,7 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONObject;
 
 import com.google.gdata.util.parser.Action;
+import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
 import com.itgrids.electoralconnect.dto.UserVO;
@@ -20,7 +21,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class RegisterUserAction extends ActionSupport implements ServletRequestAware{
 
-	private static final Logger log=Logger.getLogger(RegisterUserAction.class);
+	private static final Logger LOG = Logger.getLogger(RegisterUserAction.class);
 	private String task;
 	private JSONObject jobj;
 	private String firstName;
@@ -127,7 +128,7 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 	}
 	
 	public String execute(){
-		log.debug("In RegisterUserActions execute()");
+		LOG.debug("In RegisterUserActions execute()");
 		System.out.println(firstName+" "+lastName);
 		UserProfileVO userProfileVO=new UserProfileVO();
 		userProfileVO.setFirstName(firstName);
@@ -155,7 +156,7 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 			jobj=new JSONObject(getTask());
 		}
 		catch(Exception e){
-			log.debug("Exception Raised in RegisterUserActions Validate Email Method ", e);
+			LOG.debug("Exception Raised in RegisterUserActions Validate Email Method ", e);
 		}
 		String emailId=jobj.getString("emailId");
 		resultStr=userService.validateEmail(emailId);
@@ -170,5 +171,28 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request=request;
+	}
+	
+	public String userLoginCheck()
+	{
+		try{
+			jobj=new JSONObject(getTask());
+		}
+		catch(Exception e){
+			LOG.debug("Exception Raised in RegisterUserActions Validate Email Method ", e);
+		}
+		String username  = jobj.getString("userName");
+		String passward  = jobj.getString("passward");
+		RegistrationVO user = userService.checkForValidUser(username,passward);
+		
+		if(user.getRegistrationID() != null && user.getRegistrationID() > 0)
+		{
+			resultStr = "success";
+		}
+		else
+		{
+			resultStr = "failure";
+		}
+		return SUCCESS;
 	}
 }

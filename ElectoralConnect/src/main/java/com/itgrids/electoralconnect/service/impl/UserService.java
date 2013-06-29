@@ -24,6 +24,7 @@ import com.itgrids.electoralconnect.model.UserProfile;
 import com.itgrids.electoralconnect.model.UserRoles;
 import com.itgrids.electoralconnect.service.IUserService;
 import com.itgrids.partyanalyst.dao.IRoleDAO;
+import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.partyanalyst.model.Role;
 
 public class UserService implements IUserService{
@@ -149,5 +150,27 @@ public class UserService implements IUserService{
 			
 			
 			return userVO;
+		}
+		
+		public RegistrationVO checkForValidUser(String username,String passward)
+		{
+			RegistrationVO user        = new RegistrationVO();
+			List<Object[]> userDetails = userDAO.checkForValidUser(username, passward);
+			UserProfile userProfile    = new UserProfile();
+			UserLogin userLogin        = new UserLogin();
+			if(userDetails != null && userDetails.size() > 0)
+			{
+				for (Object[] parms : userDetails) {
+					userProfile = (UserProfile) parms[0];
+					userLogin   = (UserLogin) parms[1];
+					user.setFirstName(userProfile.getLastName());
+					user.setLastName(userProfile.getLastName());
+					user.setEmail(userProfile.getEmailId());
+					user.setMobile(userProfile.getMobileNo());
+					user.setUserName(userLogin.getUserName());
+					user.setRegistrationID(userLogin.getUserLoginId());
+				}
+			}
+			return user;
 		}
 }

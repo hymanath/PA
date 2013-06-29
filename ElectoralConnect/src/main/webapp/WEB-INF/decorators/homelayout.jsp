@@ -99,7 +99,7 @@
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-			<button class="btn btn-primary" >Login</button>
+			<button class="btn btn-primary" onClick="checkingForValidUser();">Login</button>
 		</div>
 	</div>
 		</div>
@@ -114,6 +114,48 @@
 			$('#loginId').click(function(){
 				$('#loginModal').modal('show');
 			});
+			function checkingForValidUser()
+			{
+				var userName = $('#userName').val();
+				var passward = $('#password').val();
+				var jsObj =
+				{  	
+					userName : userName,
+					passward : passward
+					task     :'checkForUserLogin'
+				};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+				var url = "userLonginVerficationAction.action?"+rparam;
+				callAjax(jsObj, url);
+			}
+			
+		   function callAjax(jsObj,url)
+		   {
+				var myResults;
+
+				var callback = 
+				{			
+				   success : function( o )
+				   {
+						try {												
+							myResults = YAHOO.lang.JSON.parse(o.responseText);					
+							if(jsObj.task =="checkForUserLogin")
+							{
+								alert(1234);
+							}
+							}catch (e) {
+							 
+							}  
+				},
+				scope : this,
+				failure : function( o )
+					{
+						//alert( "Failed to load result" + o.status + " " + o.statusText);
+					}
+				};
+
+				YAHOO.util.Connect.asyncRequest('POST', url, callback);
+		}
 		</script>
 </body>
 </html>
