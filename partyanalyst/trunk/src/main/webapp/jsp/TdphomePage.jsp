@@ -563,11 +563,7 @@ Hot Topics</h2>
 	var stateId = $('#stateList_d').val();
 	//showVotesObtainedForOpinionPoll();
     initializeNewHomePage();
-    getProblemDetails();
-
-
-
- 
+    
  $(document).ready(function() {
     
     var ellipsestext = "...";
