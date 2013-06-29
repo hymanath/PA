@@ -12,9 +12,11 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CrossVotingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.IConstituencySearchService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -22,7 +24,6 @@ import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.service.IConstituencySearchService;
 
 @SuppressWarnings("serial")
 public class DashBoardAction extends ActionSupport implements ServletRequestAware{
@@ -56,6 +57,12 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private String loginUserProfilePic;
 	private IAnanymousUserService ananymousUserService;
 	private String loginUserName;
+	private CrossVotingVO crossVotingVO;
+	private Long crossVotingYear;
+	private Long crossVotingPConsti;
+	private Long crossVotingAConsti;
+	private Long crossVotingParty;
+	
 	public List<SelectOptionVO> getElectionYearsList() {
 		return electionYearsList;
 	}
@@ -369,6 +376,54 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		this.loginUserName = loginUserName;
 	}
 
+	public CrossVotingVO getCrossVotingVO() {
+		return crossVotingVO;
+	}
+
+
+	public void setCrossVotingVO(CrossVotingVO crossVotingVO) {
+		this.crossVotingVO = crossVotingVO;
+	}
+
+	public Long getCrossVotingYear() {
+		return crossVotingYear;
+	}
+
+
+	public void setCrossVotingYear(Long crossVotingYear) {
+		this.crossVotingYear = crossVotingYear;
+	}
+
+
+	public Long getCrossVotingPConsti() {
+		return crossVotingPConsti;
+	}
+
+
+	public void setCrossVotingPConsti(Long crossVotingPConsti) {
+		this.crossVotingPConsti = crossVotingPConsti;
+	}
+
+
+	public Long getCrossVotingAConsti() {
+		return crossVotingAConsti;
+	}
+
+
+	public void setCrossVotingAConsti(Long crossVotingAConsti) {
+		this.crossVotingAConsti = crossVotingAConsti;
+	}
+
+
+	public Long getCrossVotingParty() {
+		return crossVotingParty;
+	}
+
+
+	public void setCrossVotingParty(Long crossVotingParty) {
+		this.crossVotingParty = crossVotingParty;
+	}
+
 
 	public String execute()
 	{	
@@ -522,7 +577,32 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				districtId = staticDataService.getdistrictForAConstituency(constituencyId);
 			}
 		}
-		
+		//assembliesForParl
+		//parliaments
+		crossVotingVO = new CrossVotingVO();
+		try{
+			List<Long> assIds = new ArrayList<Long>();
+			for(SelectOptionVO vo:assemblyConstis){
+				if(vo.getId().longValue() != 0l)
+				   assIds.add(vo.getId());
+			}
+			List<Long> parlIds = new ArrayList<Long>();
+			for(SelectOptionVO vo:parliaments){
+				if(vo.getId().longValue() != 0l)
+					parlIds.add(vo.getId());
+			}
+			crossVotingVO = crossVotingEstimationService.getElectionYearsForCrossVotingAnalysis(assIds,parlIds,assembliesForParl);
+			if(crossVotingVO.getYearsList().size() > 1)
+			  crossVotingYear = crossVotingVO.getYearsList().get(1).getId();
+			if(crossVotingVO.getParliamentLists().size() > 1)
+			  crossVotingPConsti = crossVotingVO.getParliamentLists().get(1).getId();
+			if(crossVotingVO.getAssemblyList().size() > 1)
+			  crossVotingAConsti = crossVotingVO.getAssemblyList().get(1).getId();
+			  crossVotingParty = 872l;
+
+		}catch(Exception e){
+			log.error("Exception is ",e);
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -653,6 +733,38 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		{
 			
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String getConstituenciesAndParties(){
+		try
+		{
+			session = request.getSession();
+			String param;
+			param = getTask();
+			jObj = new JSONObject(param);
+			if("getParlements".equalsIgnoreCase(jObj.getString("task"))){
+				parliaments = (List<SelectOptionVO>)session.getAttribute("parliaments");
+				List<Long> parlIds = new ArrayList<Long>();
+				for(SelectOptionVO vo:parliaments){
+					if(vo.getId().longValue() != 0l)
+						parlIds.add(vo.getId());
+				}
+				pConstituencyList = crossVotingEstimationService.getParliamentConstisByElectionYear(jObj.getString("year"),parlIds);
+			}
+			else if("getAssemblysForParliment".equalsIgnoreCase(jObj.getString("task"))){
+				Map<Long,List<SelectOptionVO>> assembliesForParl = (Map<Long,List<SelectOptionVO>>)session.getAttribute("assembliesForParl");
+				pConstituencyList = crossVotingEstimationService.getAssemblyConstisByElectionYear(jObj.getString("year"),jObj.getLong("parliamentId"),assembliesForParl);
+			}
+			else if("getPariesForAssemply".equalsIgnoreCase(jObj.getString("task"))){
+				pConstituencyList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(jObj.getLong("assemblyId"),jObj.getString("year"));
+			}			
+			
+		}catch(Exception e)
+		{
+			log.error("Exception rised in getConstituenciesAndParties", e);
+		}
+		
 		return Action.SUCCESS;
 	}
 }
