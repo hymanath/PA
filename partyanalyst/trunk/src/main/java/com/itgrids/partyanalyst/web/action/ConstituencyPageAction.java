@@ -708,10 +708,12 @@ public class ConstituencyPageAction extends ActionSupport implements
 		String userStatusType = null;
 		if(path.equalsIgnoreCase("partyanalyst.com"))
 			mapKey = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRScRx3TrvnxStTkM4udVhaLbRJhbBQtQ6p3f6vU6rRwFFw_2yEXM9Af3g&sensor=true";
-		else
+		else 
 			mapKey = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRScRx3TrvnxStTkM4udVhaLbRJhbBQtQ6p3f6vU6rRwFFw_2yEXM9Af3g&sensor=true";
 			//mapKey = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRSqcWSqDo-rwCiW8VjO_0U_k7HAuxQBSweyAZ1v5ozDSPMDKAFtPwSrGw&sensor=true";
-		
+		if("tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST)){
+			mapKey = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyCSbtF4m2Eeh77OFbfIEJiN6hs-yPa7Qg4&sensor=true";
+		}
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
 		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;
 		muncipalityElectionType = IConstants.MUNCIPLE_ELECTION_TYPE;
