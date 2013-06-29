@@ -625,7 +625,7 @@ width: 92px;
 								 -->
 										</ul>
 										<!--<a href="#" class="pull-right btn btn-mini" style="margin-top:75px;">More</a>-->
-										<span class="btn btn-mini pull-right" onclick="showMoreVideoGallaries()" style="margin:5px;">More Videos..</span>
+										<span class="btn btn-mini pull-right" onclick="window.location='showMoreVideos.action'" style="margin:5px;">More Videos..</span>
 									</div>
 								</div>
 						</div>
@@ -656,13 +656,14 @@ $('#listValue').val('Constituency');
 	});
 	$('#enadu1').addClass('enadu');
  }); */
+ /* updated by srishailam
 function showMoreVideoGallaries(){
 	 var urlstr = "showMoreVideos.action";
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
-
+*/
 getAllConstituenciesInStateByType(2, 1, 'constituency');
 getCandidates();
 
