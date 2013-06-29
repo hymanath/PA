@@ -521,18 +521,18 @@ lable{line-height:40px;}
 				
 				<div>
 				   <table>
-				   <tr>
-				   <td><span>Election year </span></td><td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" onClick="getParlmentsList();" headerValue="Select Year" headerKey="0"></s:select> </td>
-				   <td><span>Parliment Constituency   </span></td><td><s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" onChange="getAssemblyConstituencies();"></s:select></td>
-				   </tr>
-				   <tr>
-				   <td><span> Assembly Constituency </span></td><td> <select id="aConstituencyList" onChange="getParties();">
-				   <option value="0">Select Location</option>
-				   </select></td>
-					<td><span>Party  </span></td><td><select id="partyList">
-				   <option value="0">Select Party</option>
-				   </select></td>
-				   </tr>
+				     <tr>
+				        <td><s:label theme="simple" for="electionYearField" value="Election year"/></td>
+						<td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="crossVotingYear" list="crossVotingVO.yearsList" listKey="id" listValue="name" onChange="getParlmentsList();"/></td>
+				        <td><s:label theme="simple" for="pConstituencyList" value="Parliment Constituency"/></td>
+						<td><s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="crossVotingPConsti" list="crossVotingVO.parliamentLists" listKey="id" listValue="name" onChange="getAssemblyConstituencies();"/></td>
+				     </tr>
+				     <tr>
+				        <td><s:label theme="simple" for="aConstituencyList" value="Assembly Constituency"/></td>
+						 <td><s:select theme="simple" id="aConstituencyList" list="crossVotingVO.assemblyList" listKey="id"  name="crossVotingAConsti" listValue="name" onChange="getParties();"/></td>
+					    <td><s:label theme="simple" for="partyList" value="Party"/></td>
+						<td><s:select theme="simple" id="partyList" list="crossVotingVO.partiesList" listKey="id"  name="crossVotingParty" listValue="name"/></td>
+				    </tr>
 				   </table>
 				</div>
 				
@@ -929,12 +929,12 @@ function getParties()
 	var year = $('#electionYearField option:selected').val();
 	var jsObj=
 	{
-		constituencyId : id,
+			assemblyId : id,
 		year           : year,
 		task           : "getPariesForAssemply"
 	}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getPariesForAssemplyAction.action?"+rparam;	
+	var url = "getConstituenciesAndParties.action?"+rparam;	
 
 	callAjax(jsObj,url);
 }
@@ -959,12 +959,12 @@ function getAssemblyConstituencies()
 	var year = $('#electionYearField option:selected').val();
 	var jsObj=
 	{
-		constituencyId : constituencyId,
+			parliamentId : constituencyId,
 		year           : year,
 		task           : "getAssemblysForParliment"
 	}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAssemblyForParlimentAction.action?"+rparam;	
+	var url = "getConstituenciesAndParties.action?"+rparam;	
 
 	callAjax(jsObj,url);
 }
@@ -988,11 +988,11 @@ function getParlmentsList()
 	
 	var jsObj=
 	{
-		electionYear   : electionYear,
+			year   : electionYear,
 		task           : "getParlements"
 	}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getParlementForElectionYear.action?"+rparam;	
+	var url = "getConstituenciesAndParties.action?"+rparam;	
 
 	callAjax(jsObj,url);
 }
