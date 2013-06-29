@@ -5356,6 +5356,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 									file.setFileGallaryId(fileGallary.getFileGallaryId());
 									file.setFileName1(fileGallary.getFile().getFileTitle() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle())):"");
 									file.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):""));
+									file.setFileDate(new SimpleDateFormat("yyyy-MM-dd").format(fileGallary.getFile().getFileDate()));
 									
 									if(fileGallary.getFile().getCategory() != null){
 									file.setCategoryId(fileGallary.getFile().getCategory().getCategoryId());
