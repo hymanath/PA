@@ -3,7 +3,7 @@ package com.itgrids.electoralconnect.util;
 import java.awt.Color;
 
 public interface IConstants {
-	public static final String DATE_PATTERN = "dd/MM/yyyy";
+	/*public static final String DATE_PATTERN = "dd/MM/yyyy";
 	public static final String DATE_PATTERN_YYYY_MM_DD = "yyyy/MM/dd";
 	public static final Long CENSUS_YEAR = 2001L;
 	public static final Long DELIMITATION_YEAR = 2009L;
@@ -614,6 +614,16 @@ public interface IConstants {
 	public final static String AREA_TYPE_RURAL = "RURAL";
 	public final static String AREA_TYPE_RURAL_URBAN = "RURAL-URBAN";
 	public static final long TDPID = 872l;
-
+*/
+	public static final String TOEMAILID = "kripton514@gmail.com";
+	public static final String SERVER = "server";
+    public static final String LOCALHOST = "localhost";
+    public static final String LOCALFROMEMAILID = "partyanalyst04@gmail.com";
+    public static final String FROMEMAILID = "info@partyanalyst.com";
+    
+    public static final String HOST = "smtp.gmail.com";
+    public static final String PORT = "465";
+    public static final String PASSWORD="ITGRIDS123";
+    
 	
 }
