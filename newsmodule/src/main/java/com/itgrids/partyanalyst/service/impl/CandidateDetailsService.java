@@ -6127,5 +6127,95 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
     	return null;
 	}
     }
+    
+    public List<SelectOptionVO> getGalleryListForAParty(String fromDateStr,String toDateStr)
+    {
+    	try{
+    	 List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+    	 Date fromDate = null;
+    	 Date toDate = null;
+    	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	 if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+    		 fromDate = format.parse(fromDateStr);
+    	 if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+    		toDate = format.parse(toDateStr);
+    	 
+    	 List<Object[]> list = fileGallaryDAO.getAllGallariesListForParty(fromDate, toDate);
+    	 if(list != null && list.size() > 0)
+    	  for(Object[] params : list)
+    		selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null?params[1].toString():""));
+    		 
+    	 return selectOptionVOList;
+    	}catch (Exception e) {
+    	 e.printStackTrace();
+    	 log.error("Exception Occured in getGalleryListForAParty() method, Exception - "+e);
+    	 return null;
+		}
+    }
+    
+   public List<SelectOptionVO> getNewsByGalleryId(Long galleryId,String fromDateStr,String toDateStr)
+   {
+	   try{
+		   List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		   Date fromDate = null;
+	    	 Date toDate = null;
+	    	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	    	 if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+	    		 fromDate = format.parse(fromDateStr);
+	    	 if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+	    		toDate = format.parse(toDateStr);
+	    	 
+	    	 selectOptionVOList = buildSelectOptionVO(fileGallaryDAO.getnewsListByGalleryId(galleryId, fromDate, toDate));
+	    	   
+	    	 
+		   return selectOptionVOList;
+	   }catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in getNewsByGalleryId() method, Exception - "+e);
+		 return null;
+	}
+   }
+   
+   public ResultStatus assignResToCandidateOrAGallary(Long candidateId,Long fileGalleryId,Long resFileGalId,String tempVar)
+   {
+	   ResultStatus resultStatus = new ResultStatus();
+	   try{ 
+		   if(tempVar != null && tempVar.equalsIgnoreCase("assignResponse"))
+		   {
+			   List<Long> list =  candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGalleryId);
+			   if(list == null || list.size() == 0)
+			   {
+				   CandidateNewsResponse candidateNewsResponse = new CandidateNewsResponse();
+				   candidateNewsResponse.setFileGallary(fileGallaryDAO.get(fileGalleryId));
+				   candidateNewsResponse.setResponseFileGallary(fileGallaryDAO.get(resFileGalId));
+				   candidateNewsResponseDAO.save(candidateNewsResponse);
+			   }
+			   else
+				resultStatus.setMessage("already assigned.");  
+		   }
+		   else
+		   {
+			 List<Long> list1 = candidateRelatedNewsDAO.getFileGalleryIdByCandidateId(candidateId);
+			   if(list1 == null || list1.size() == 0)
+			   {
+				   CandidateRealatedNews candidateRealatedNews = new CandidateRealatedNews();
+				   candidateRealatedNews.setFileGallary(fileGallaryDAO.get(fileGalleryId));
+				   candidateRealatedNews.setCandidate(candidateDAO.get(candidateId));
+				   candidateRelatedNewsDAO.save(candidateRealatedNews);
+			   }
+			   else
+				resultStatus.setMessage("already assigned.");  
+			   
+		   }
+		   
+		   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		   return resultStatus;
+	   }catch (Exception e) {
+			 e.printStackTrace();
+			 log.error("Exception Occured in assignResToCandidateOrAGallary() method, Exception - "+e);
+			 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			 return resultStatus;
+		}
+   }
 		
 }

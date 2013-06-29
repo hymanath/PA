@@ -259,4 +259,10 @@ public interface ICandidateDetailsService {
 	
 	public List<SelectOptionVO> getNewsForACandidateByCategoryId(Long candidateId,Long categoryId,String fromDateStr,String toDateStr);
 	
+	public List<SelectOptionVO> getGalleryListForAParty(String fromDateStr,String toDateStr);
+	
+	public List<SelectOptionVO> getNewsByGalleryId(Long galleryId,String fromDateStr,String toDateStr);
+	
+	public ResultStatus assignResToCandidateOrAGallary(Long candidateId,Long fileGalleryId,Long resFileGalId,String tempVar);
+	
 }

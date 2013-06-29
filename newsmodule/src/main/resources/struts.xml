@@ -5527,6 +5527,23 @@
 		  </result>
 		</action>
 		
+		<action name="getGalleryListForAPartyAction" class="newsDetailsAction" method="getNewsForACandidate">
+		  <result type="json" name="success">
+		    <param name="root">selectOptionVOList</param>
+		  </result>
+		</action>
+		
+		<action name="getNewsByGalleryIdAction" class="newsDetailsAction" method="getNewsForACandidate">
+		 <result type="json" name="success">
+		  <param name="root">newsList</param>
+		 </result>
+		</action>
+		
+		<action name="assignResToCandidateOrAGallaryAction" class="newsDetailsAction" method="getNewsForACandidate">
+		 <result type="json" name="success">
+		  <param name="root">resultStatus</param>
+		 </result>
+		</action>
 		</package>
 		
 		

@@ -43,7 +43,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private String fromDate;
 	private String toDate;
 	private ResultStatus resultStatus;
-	private List<SelectOptionVO> selectOptionVOList,galleriesList;
+	private List<SelectOptionVO> selectOptionVOList,galleriesList,newsList;
 	
 	public Long getResponseContentId() {
 		return responseContentId;
@@ -158,6 +158,12 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	}
 	public void setGalleriesList(List<SelectOptionVO> galleriesList) {
 		this.galleriesList = galleriesList;
+	}
+	public List<SelectOptionVO> getNewsList() {
+		return newsList;
+	}
+	public void setNewsList(List<SelectOptionVO> newsList) {
+		this.newsList = newsList;
 	}
 	public String execute()
 	{	
@@ -281,7 +287,13 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsForACandidateByCategoryId"))
 		 selectOptionVOList = candidateDetailsService.getNewsForACandidateByCategoryId(jObj.getLong("candidateId"),jObj.getLong("categoryId"),jObj.getString("fromDate"),jObj.getString("toDate"));
+		else if(jObj.getString("task").equalsIgnoreCase("getGalleryListForAParty"))
+		 selectOptionVOList = candidateDetailsService.getGalleryListForAParty(jObj.getString("fromDate"),jObj.getString("toDate"));
+		else if(jObj.getString("task").equalsIgnoreCase("getNewsByGalleryId"))
+		 newsList = candidateDetailsService.getNewsByGalleryId(jObj.getLong("gallaryId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		
+		else if(jObj.getString("task").equalsIgnoreCase("assignResToCandidateOrAGallary"))
+		 resultStatus = candidateDetailsService.assignResToCandidateOrAGallary(jObj.getLong("candidateId"),jObj.getLong("fileGalleryId"),jObj.getLong("resFileGalId"),jObj.getString("tempVar"));
 		
 	 }catch (Exception e) {
 		 e.printStackTrace();
