@@ -174,7 +174,6 @@ function buildPaginatedNews(results,jsObj)
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
 		
-		//var path = results[i].fileVOList[0].fileVOList[0].path;
 		var path = results[i].filePath1;
 		var source = results[i].fileVOList[0].source;
 		
@@ -192,7 +191,7 @@ function buildPaginatedNews(results,jsObj)
 
 		str+="<div class='row-fluid m_top10'><div class='span9'>";
 		str +='<table><tr><td>';
-		str +='<p style="margin-right: 12px; width: 260px;"><span class="text-error">Source :</span>';
+		str +='<p style="margin-right: 12px; width: 260px;"><span class="text-error" style="font-weight:bold;">Source : </span>';
 		var length = results[i].fileVOList.length;
 
 		for(var j in results[i].fileVOList)
@@ -201,7 +200,7 @@ function buildPaginatedNews(results,jsObj)
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error">Date :</span> '+results[i].fileDate+'</p></td></tr>';
+		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td></tr>';
 		
 		str +='</table>';
 		str +='</div>';
