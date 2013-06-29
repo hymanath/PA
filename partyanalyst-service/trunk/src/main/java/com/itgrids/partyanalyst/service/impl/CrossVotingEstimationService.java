@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
-import org.hsqldb.Collation;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -31,8 +29,8 @@ import com.itgrids.partyanalyst.dto.CrossVotedBoothVO;
 import com.itgrids.partyanalyst.dto.CrossVotedCandidateVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
+import com.itgrids.partyanalyst.dto.CrossVotingVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
@@ -58,6 +56,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IPanchayatDAO panchayatDAO;
+	
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
 	}
@@ -184,7 +183,8 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			ICandidateBoothResultDAO candidateBoothResultDAO) {
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
 	}
-	
+
+
 	//Getting Constituencies From BoothConstituencyElection
 	public List<SelectOptionVO> getConstituenciesForElectionYearAndScopeForBoothData(String electionYear, Long electionScopeId){
 		List<SelectOptionVO> constituencyVOs = new ArrayList<SelectOptionVO>();
@@ -813,4 +813,93 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
     	Collections.sort(returnList,sortIds);
     	return returnList;
     }
+    
+    public CrossVotingVO getElectionYearsForCrossVotingAnalysis(List<Long> assemblyIds,List<Long> parliamentIds,Map<Long,List<SelectOptionVO>> parliamentMap){
+    	CrossVotingVO returnValue = new CrossVotingVO();
+    	try{
+	    	List<String> assemblyYears = boothConstituencyElectionDAO.getAllElectionYearsByConstiIds(assemblyIds);
+	    	List<String> parliamentYears = boothConstituencyElectionDAO.getAllElectionYearsByConstiIds(parliamentIds);
+	    	assemblyYears.retainAll(parliamentYears);
+	    	List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
+	    	if(assemblyYears != null && assemblyYears.size() > 0){
+		    	for(String year:assemblyYears){
+		    		years.add(new SelectOptionVO(new Long(year.trim()),year));
+		    	}
+		    	List<SelectOptionVO> parliamentVos = getParliamentConstisByElectionYear(assemblyYears.get(0),parliamentIds);
+		    	 List<SelectOptionVO> assemblyVos = new ArrayList<SelectOptionVO>();
+		    	 List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
+		    	if(parliamentVos.size() > 0)
+		    	  assemblyVos = getAssemblyConstisByElectionYear(assemblyYears.get(0),parliamentVos.get(0).getId(),parliamentMap);
+		    	if(assemblyVos.size() > 0)
+		    	  partiesList = getPartiesForConstituencyAndElectionYearForBoothData(assemblyVos.get(0).getId(), assemblyYears.get(0));
+		    	
+		    	years.add(0,new SelectOptionVO(0l,"Select Year"));
+		    	returnValue.setYearsList(years);
+		    	
+		    	parliamentVos.add(0,new SelectOptionVO(0l,"Select Location"));
+		    	returnValue.setParliamentLists(parliamentVos);
+		    	
+		    	assemblyVos.add(0,new SelectOptionVO(0l,"Select Location"));
+		    	returnValue.setAssemblyList(assemblyVos);
+		    	
+		    	if(partiesList != null)
+			      partiesList.add(0,new SelectOptionVO(0l,"Select Party"));
+			      returnValue.setPartiesList(partiesList);
+	    	}
+    	}catch(Exception e){
+    		log.error("Exception rised in getElectionYearsForCrossVotingAnalysis method : ",e);
+    	}
+    	return returnValue;
+    }
+    
+    public List<SelectOptionVO> getParliamentConstisByElectionYear(String year,List<Long> parliamentIds){
+    	List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+    	try{
+	    	List<Object[]> parliamentConstis = boothConstituencyElectionDAO.getParliamentConstisByElectionYear(parliamentIds, year);
+	    	for(Object[] parliament : parliamentConstis){
+	    		SelectOptionVO vo = new SelectOptionVO();
+	    		vo.setId((Long)parliament[0]);
+	    		vo.setName(parliament[1]!= null?parliament[1].toString():"");
+	    		returnVal.add(vo);
+	    	}
+    	}catch(Exception e){
+    		log.error("Exception rised in getParliamentConstisByElectionYear method : ",e);
+    	}
+    	return returnVal;
+    }
+    
+    public List<SelectOptionVO> getAssemblyConstisByElectionYear(String year,Long parliamentId,Map<Long,List<SelectOptionVO>> parliamentMap){
+    	List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+    	try{
+	    	List<SelectOptionVO> assemblyList = parliamentMap.get(parliamentId);
+	    	List<Long> assemblyIds = new ArrayList<Long>();
+	    	List<Long> assemblyIds1 = new ArrayList<Long>();
+	    	for(SelectOptionVO assembly:assemblyList){
+	    		if(assembly.getId() != 0){
+	    			assemblyIds.add(assembly.getId());
+	    		}
+	    	}
+	    	List<SelectOptionVO> constis = getAssembliesForParliament(parliamentId, new Long(year.trim()));
+	    	for(SelectOptionVO assembly:constis){
+	    		assemblyIds1.add(assembly.getId());
+	    	}
+	    	assemblyIds.retainAll(assemblyIds1);
+	    	if(assemblyIds.size() > 0){
+		    	List<Object[]> assemblyConstis = boothConstituencyElectionDAO.getParliamentConstisByElectionYear(assemblyIds, year);
+		    	for(Object[] assembly : assemblyConstis){
+		    		SelectOptionVO vo = new SelectOptionVO();
+		    		vo.setId((Long)assembly[0]);
+		    		vo.setName(assembly[1]!= null?assembly[1].toString():"");
+		    		returnVal.add(vo);
+		    	}
+	    	}
+    	}catch(Exception e){
+    		log.error("Exception rised in getAssemblyConstisByElectionYear method : ",e);
+    	}
+    	return returnVal;
+    	
+    }
+    
+    
+    
 }
