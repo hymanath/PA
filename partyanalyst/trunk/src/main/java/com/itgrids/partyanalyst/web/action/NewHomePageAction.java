@@ -371,7 +371,7 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 		String requestURL = request.getRequestURL().toString();
 		System.out.println("................ Request URL :" + requestURL);
 		
-		String chartPath = getChartPath(requestURL);
+		String chartPath = IWebConstants.CHART_URL_IN_SERVER;
 		String imagePath = getUserImagesPath(requestURL);
 		
 		if(session != null && (session.getAttribute("chartPath") == null || session.getAttribute("chartPath") == ""))
@@ -560,14 +560,12 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 		String pathSeperator = System.getProperty("file.separator");
 		String osDetails     = System.getProperty("os.name");
 		
-		if(requestURL.contains("www.partyanalyst.com"))
+		if(requestURL.contains("partyanalyst.com"))
 			imagePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + "profiles" + pathSeperator;
 		else
 			imagePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
 		
-		log.info("Chart Path : " + imagePath + " In " + osDetails + " Environment ");
-		
-	 return imagePath;
+		return IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + "profiles" + pathSeperator;
 	}
 	
 	
