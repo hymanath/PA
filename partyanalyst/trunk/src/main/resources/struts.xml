@@ -5477,5 +5477,11 @@
 		 	</result>
 		</action>
 		
+		<action name="getConstiAndDistrict" class="staticDataAction" method="getDistrictsAndConstituencysList1">
+			<result type="json" name="success">
+				<param name="root">returnList</param>
+		 	</result>
+		</action>
+		
 		</package>
 </struts>      
