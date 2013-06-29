@@ -199,12 +199,13 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
 			str+='</div>';
 			str+='<div class="row-fluid m_top10">';
 				str+='<div class="span9">';
-					str+='<p class="text-error">Source : '+results[i].fileType+'</p>';
+					str+='<p class="text-error"><span style="font-weight:bold;">Source : </span> <span style="color:black;">'+results[i].fileType+'</span>';
+					str+=' <span style="font-weight:bold;margin-left:55px;">Date : </span><span style="color:black;">'+results[i].fileDate+'</span></p>';
 				str+='</div>';
 				str+='<div class="span2 ">';
-					str+='<a href="#">';
+				
 					str+='	<a type="button" class="btn btn-mini btn-info pull-right" onClick="getNewsDetailsByContentId('+results[i].fileGallaryId+')">More...</a>';
-					str+='</a>';
+					
 				str+='</div>';
 			str+='</div>';
 	str+='</div>';
