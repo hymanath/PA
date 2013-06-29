@@ -253,10 +253,9 @@ function buildNewsDetails(results)
 			str+='<div style="margin-left:100px;margin-top:39px;width:700px;height:143px;" id="otherNews'+i+'">';
 
 			for(var k=1;k<results[i].fileVOList[0].fileVOList.length ;k++){
-
 				str+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+results[i].fileVOList[0].fileVOList[k].path+'" alt="news image not available"></img><br>';
 
-			str+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+results[i].fileVOList[0].fileSourceLanguageId+','+results[i].fileVOList[0].fileVOList[k].orderNo+',\''+results[i].fileVOList[0].fileVOList[k].path+'\','+i+')};">'+results[i].fileVOList[0].fileVOList[k].orderName+'</a></span></div>';
+			str+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+results[i].fileVOList[0].fileSourceLanguageId+','+results[i].fileVOList[0].fileVOList[k].orderNo+',\''+results[i].fileVOList[0].fileVOList[k].path+'\','+i+')};"> Part - '+k+'</a></span></div>';
 			}
 
 			str+='</div>';
@@ -424,7 +423,7 @@ function showNextnews(sourceId , orderNo  , path , i)
 
             str1+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+showContentResultList[i].fileVOList[j].fileVOList[k].path+'" alt="news image not available"></img><br>';
 
-			str1+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+showContentResultList[i].fileVOList[j].fileSourceLanguageId+','+showContentResultList[i].fileVOList[j].fileVOList[k].orderNo+',\''+showContentResultList[i].fileVOList[j].fileVOList[k].path+'\','+i+');};">'+showContentResultList[i].fileVOList[j].fileVOList[k].orderName+'</a></span></div>';
+			str1+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+showContentResultList[i].fileVOList[j].fileSourceLanguageId+','+showContentResultList[i].fileVOList[j].fileVOList[k].orderNo+',\''+showContentResultList[i].fileVOList[j].fileVOList[k].path+'\','+i+');};">Part - '+(k+1)+'</a></span></div>';
 
 				}
 			}			
