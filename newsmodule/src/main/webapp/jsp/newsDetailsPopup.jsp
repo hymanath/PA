@@ -503,6 +503,7 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	  
 	  
 	    var str='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></img></div>';
+		str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="width:950px;height:850px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" /></div>';
 	  
 	  document.getElementById("imgDiv").innerHTML = str;
 	
@@ -542,7 +543,7 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
 	{
 	  
 	    var str='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+path+'"></img></div>';
-	  
+		str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="width:950px;height:850px;" src="'+path+'" /></div>';
 	  document.getElementById("imgDiv").innerHTML = str;
 	
 	   str = '<center><table><tr>';
