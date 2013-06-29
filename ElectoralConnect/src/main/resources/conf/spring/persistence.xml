@@ -3,7 +3,7 @@
 
 <beans>
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:comp/env/jdbc/ElectoralConnectDB" />
+		<property name="jndiName" value="java:comp/env/jdbc/electoralConnectDB" />
 	</bean>
 
 	<bean id="sessionFactory" 
@@ -26,6 +26,11 @@
 		<property name="annotatedClasses">
 			<list>
 				<!-- <value>com.itgrids.electoralconnect.model.Booth</value> -->
+				<value>com.itgrids.electoralconnect.model.UserProfile</value>
+				<value>com.itgrids.electoralconnect.model.UserLogin</value>
+				<value>com.itgrids.electoralconnect.model.User</value>
+				<value>com.itgrids.electoralconnect.model.Roles</value>
+				<value>com.itgrids.electoralconnect.model.UserRoles</value>
 			</list>
 			
 		</property>
@@ -39,4 +44,4 @@
 	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
 		<property name="transactionManager" ref="transactionManager" />
 	</bean>
-	</beans>
+</beans>

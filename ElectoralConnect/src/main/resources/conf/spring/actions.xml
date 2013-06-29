@@ -13,4 +13,11 @@
 	</bean>
 	
 	 -->
+	 <bean id="HomePageAction" class="com.itgrids.electoralconnect.web.action.HomePageAction" singleton="false">
+	 </bean>
+	 
+	 <bean id="RegisterUserAction" class="com.itgrids.electoralconnect.web.action.RegisterUserAction" singleton="false">
+	 	<property name="userService" ref="userService"/>
+	 	<property name="mailService" ref="mailService"/> 	
+	 </bean>
 </beans>
