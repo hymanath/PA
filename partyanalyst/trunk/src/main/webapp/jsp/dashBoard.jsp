@@ -545,7 +545,7 @@ lable{line-height:40px;}
 			<div class="span12 widget" id="boothResultsDiv" >
 				<h2>Booth Wise Results</h2>
 				<div id="boothWiseResult"></div>
-				   <label class="checkbox" style="margin-top:10px;margin-left:5px;width:200px;">
+				   <label class="checkbox" style="margin-top:10px;margin-left:5px;width:200px;" id="boothResultLable">
 							<input type="checkbox" id="moreDetailsId"> Check for More Details
 				   </label>
 	   
@@ -769,6 +769,7 @@ getAllConstituenciesInStateByType(2,stateId,"constituency");
 	     </c:if>
 		 <c:if test="${boothAnalysisData == null}">
 		   $("#moreDetailsId").trigger("click");
+		   $("#boothResultLable").hide();
 		   $('.boothResults').toggle();
 		 </c:if> 
 function viewBoothResults(){
