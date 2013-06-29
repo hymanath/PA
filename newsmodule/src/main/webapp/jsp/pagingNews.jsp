@@ -177,7 +177,7 @@ function buildPaginatedNews(results,jsObj){
 		}
 				
 		str+="</div>";
-		str+="<div class='row-fluid m_top10'><div class='span9'><p class='text-error'>Source : "+results[i].source+"</p></div>";
+		str+="<div class='row-fluid m_top10'><div class='span9'><p class='text-error' > <span style='font-weight: bold;'>Source :</span><span style='color: black;'> "+results[i].source+"</span> <span style='font-weight: bold;margin-left: 55px;'>Date :</span><span style='color: black;'> "+results[i].fileDate+"</span></p></div>";
 		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>More</a></div></li>";
 	}
 	
