@@ -665,4 +665,24 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		query.setParameter("electionId", electionId);
 		return query.list();
 	}
+	
+	public List<String> getAllElectionYearsByConstiIds(List<Long> constiIds){
+		
+		Query query = getSession().createQuery("select distinct model.constituencyElection.election.electionYear from BoothConstituencyElection model where model.constituencyElection.constituency.constituencyId in(:constiIds) order by model.constituencyElection.election.electionYear desc");
+		query.setParameterList("constiIds", constiIds);
+		
+		return query.list();
+		
+	}
+	
+  public List<Object[]> getParliamentConstisByElectionYear(List<Long> constiIds,String year){
+		
+		Query query = getSession().createQuery("select distinct model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from BoothConstituencyElection model where model.constituencyElection.constituency.constituencyId in(:constiIds) " +
+				" and model.constituencyElection.election.electionYear = :year order by model.constituencyElection.constituency.name ");
+		query.setParameterList("constiIds", constiIds);
+		query.setParameter("year", year);
+		
+		return query.list();
+		
+	}
 }
