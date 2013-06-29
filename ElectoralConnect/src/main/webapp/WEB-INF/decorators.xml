@@ -23,6 +23,8 @@
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
+    	<pattern>/homePage*</pattern>
+    	<pattern>/registerUser*</pattern>
     </decorator>
 
 </decorators>
