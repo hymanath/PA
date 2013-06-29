@@ -228,7 +228,8 @@ width: 92px;
 									    </div>
 										<div class="row-fluid m_top10">
 													<div class="span9">
-														<p class="text-error">Source :${newsGallaryDetails.source}</p>
+														<p class="text-error"><span style="font-weight:bold;">Source : </span><span style="color:black;"> ${newsGallaryDetails.source} </span>
+														<span class="text-error" style="margin-left: 60px;"><span style="font-weight:bold">Date: </span> <span style="color:black;">${newsGallaryDetails.fileDate} </span>							</span></p>
 													</div>
 													<div class="span2 ">
 														<a href="newsPaginationAction.action?level=state">
@@ -359,7 +360,8 @@ width: 92px;
 									    </div>
 										<div class="row-fluid m_top10">
 													<div class="span9">
-														<p class="text-error">Source :${newsGallaryDetails.source}</p>
+														<p class="text-error"><span style="font-weight:bold;">Source : </span><span style="color:black;"> ${newsGallaryDetails.source} </span>
+														<span class="text-error" style="margin-left: 60px;"><span style="font-weight:bold">Date: </span> <span style="color:black;">${newsGallaryDetails.fileDate} </span></span></p>
 													</div>
 													<div class="span2 ">
 														<a href="newsPaginationAction.action?level=district">
@@ -525,7 +527,7 @@ width: 92px;
 						<div class="span12">
 							<ul class=" nav nav-list bs-docs-sidenav" style='margin-top:10px;'>
 								<s:iterator value="responseFilesList" var="responsefiles">
-								<li class='thumbnail' style='margin:5px;padding:5px 5px 5px 15px;'>
+								<li class='thumbnail' style='margin: 3px 5px 5px;padding:5px 5px 5px 15px;'>
 								<s:if test="%{#responsefiles.source.equalsIgnoreCase('Eenadu Telugu')}">
 									<span class='text-info enadu' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;font-weight:bold;"> <s:property value="title"/></span>
 									</s:if>
@@ -538,7 +540,8 @@ width: 92px;
 											<s:property value="fileDate"/></i>
 										</s:if>
 									</span>
-								</li><a href="javascript:{getResponseDetailsByContentId(<s:property value='fileGallaryId'/>)}" class="btn btn-mini btn-primary" style="margin-left:154px;background: none repeat scroll 0% 0% #FAA938;font-weight:bold;">Track</a>
+								</li>
+								<a href="javascript:{getResponseDetailsByContentId(<s:property value='fileGallaryId'/>)}" class="btn btn-mini btn-primary" style="margin-left:154px;background: none repeat scroll 0% 0% #FAA938;font-weight:bold;margin-top: -2px;">Track</a>
 
 								</s:iterator>
 								
