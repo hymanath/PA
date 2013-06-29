@@ -21,5 +21,19 @@
 	    <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
 	    <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>	    
 	</bean>  -->
+	<bean name="userService" class="com.itgrids.electoralconnect.service.impl.UserService">
+		<property name="userProfileDAO" ref="userProfileDAO"/>
+		<property name="userLoginDAO" ref="userLoginDAO"/>
+		<property name="userRolesDAO" ref="userRolesDAO"/>
+		<property name="userDAO" ref="userDAO"/>
+		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="rolesDAO" ref="rolesDAO"/>
+	</bean>
+	<bean name="mailService" class="com.itgrids.electoralconnect.service.impl.MailService">
+		<property name="mailsTemplateService" ref="mailsTemplateService" />
+	</bean>
+	<bean name="mailsTemplateService" class="com.itgrids.electoralconnect.service.impl.MailsTemplateService">
+	
+	</bean>
 </beans>		
 	
