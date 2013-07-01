@@ -48,30 +48,44 @@
 				<value>com.itgrids.electoralconnect.model.User</value>
 				<value>com.itgrids.electoralconnect.model.Roles</value>
 				<value>com.itgrids.electoralconnect.model.UserRoles</value>
+				<value>com.itgrids.electoralconnect.model.Announcements</value>
+				<value>com.itgrids.electoralconnect.model.AnnouncementType</value>
+				<value>com.itgrids.electoralconnect.model.File</value>
+				<value>com.itgrids.electoralconnect.model.AnnouncementFiles</value>
+				<value>com.itgrids.electoralconnect.model.FileType</value>
+				<value>com.itgrids.electoralconnect.model.Comment</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
 	
-	  	<bean id="userProfileDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserProfileDAO" >
+	<bean id="userProfileDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserProfileDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
-		</bean>
-		
-		<bean id="userLoginDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserLoginDAO" >
-			<property name="sessionFactory" ref="sessionFactory" />
-		</bean>
-		
-		<bean id="userDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserDAO" >
-			<property name="sessionFactory" ref="sessionFactory" />
-		</bean>
-		
-		<bean id="userRolesDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserRolesDAO" >
-			<property name="sessionFactory" ref="sessionFactory" />
-		</bean>
-		
-		<bean id="rolesDAO" class="com.itgrids.electoralconnect.dao.hibernate.RolesDAO" >
-			<property name="sessionFactory" ref="sessionFactory" />
-		</bean> 
+	</bean>
+	<bean id="userLoginDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserLoginDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userRolesDAO" class="com.itgrids.electoralconnect.dao.hibernate.UserRolesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="rolesDAO" class="com.itgrids.electoralconnect.dao.hibernate.RolesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="announcementsDAO" class="com.itgrids.electoralconnect.dao.hibernate.AnnouncementsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="announcementFilesDAO" class="com.itgrids.electoralconnect.dao.hibernate.AnnouncementFilesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="fileDAO" class="com.itgrids.electoralconnect.dao.hibernate.FileDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentDAO" class="com.itgrids.electoralconnect.dao.hibernate.CommentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>

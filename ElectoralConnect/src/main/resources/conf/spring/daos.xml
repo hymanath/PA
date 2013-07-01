@@ -26,6 +26,18 @@
 	<bean id="rolesDAO" class="com.itgrids.electoralconnect.dao.hibernate.RolesDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="announcementsDAO" class="com.itgrids.electoralconnect.dao.hibernate.AnnouncementsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="announcementFilesDAO" class="com.itgrids.electoralconnect.dao.hibernate.AnnouncementFilesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="fileDAO" class="com.itgrids.electoralconnect.dao.hibernate.FileDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentDAO" class="com.itgrids.electoralconnect.dao.hibernate.CommentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	
 	
