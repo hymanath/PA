@@ -972,4 +972,19 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	public List<Object[]> getCadreCasteDetails(Long userId , List<Long> cadreIds)
+	{
+		
+		Query query = getSession().createQuery("select model1.cadreId  , model2.casteState.caste.casteName " +
+				" from Cadre model1 , UserVoterDetails model2 where model1.voter.voterId = model2.voter.voterId and " +
+				" model2.user.userId = :userId and model1.cadreId  in(:cadreIds) and model2.casteState is not null");
+		
+		query.setParameter("userId", userId);
+		query.setParameterList("cadreIds", cadreIds);
+		
+		return query.list();
+		
+		
+	}
 }

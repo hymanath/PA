@@ -4735,6 +4735,10 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			
 			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,memberShipNoStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr,sortOption,order,startIndex,maxResult);
 			
+			List<Object[]> list = cadreDAO.getCadreCasteDetails(userId , cadreIds);
+			
+			Map<Long , String>  casteDetailsMap = convertListToMap(list);
+			
 			for(Long id:cadreIds)
 			{
 				Cadre cadre = cadreDAO.get(id);
@@ -4747,7 +4751,14 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				cadreInfo.setMemberType(cadre.getMemberType());
 				cadreInfo.setEducationStr(cadre.getEducation().getQualification());
 				cadreInfo.setProfessionStr(cadre.getOccupation().getOccupation());
-				cadreInfo.setCasteCategoryStr(cadre.getCasteCategory().getCategory());
+				
+				if(casteDetailsMap.get(cadre.getCadreId()) != null)
+				 // cadreInfo.setCasteCategoryStr(cadre.getCasteCategory().getCategory());
+					 cadreInfo.setCasteCategoryStr(casteDetailsMap.get(cadre.getCadreId()));
+				else
+				  cadreInfo.setCasteCategoryStr("NOT AVAILABLE");
+				
+				
 				cadreInfo.setMobile(cadre.getMobile()!= null ? cadre.getMobile() :"");
 				cadreInfo.setImage(cadre.getImage() != null ? cadre.getImage() : "human.jpg");
 				cadreInfo.setNote(cadre.getNote());
@@ -5115,5 +5126,23 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			log.error("Exception occured in getConstituencies() - ",e);
 		}
 		return returnVal;
+	}
+	
+	public Map<Long,String> convertListToMap(List<Object[]> list)
+	{
+		Map<Long , String> map = new HashMap<Long, String>();
+		
+		try
+		{
+			for(Object[] obj:list)
+				map.put((Long)obj[0], obj[1].toString());
+				
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return map;
+		
 	}
 }
