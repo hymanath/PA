@@ -52,4 +52,6 @@ public interface ICensusDAO extends GenericDao<Census, Long> {
 	
 	public List<Object[]> findTownshipWiseCompleteCensusDetails(Long stateId,Long districtId,Long townshipId,Long year,String level);
 	
+	public List<Object[]> getCensusDetailsOfAState(Long stateId, Long year);
+	
 }
