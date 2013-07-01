@@ -37,7 +37,7 @@
 	<SCRIPT type="text/javascript" src="js/ElectionResultsAnalysisReport/electionResultsAnalysisReport.js"></SCRIPT>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<LINK rel="stylesheet" type="text/css" href="styles/ElectionResultsAnalysisReport/electionResultsAnalysisReport.css">
-	
+	<LINK rel="stylesheet" type="text/css" href="styles/tdp/electionResultsAnalysis.css">
 	<!-- YUI Skin Sam -->
 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	

@@ -1231,5 +1231,14 @@
 		<property name="constituencySearchService" ref="constituencySearchService" />
 		<property name="ananymousUserService" ref="ananymousUserService" />
 	</bean>
+	
+	<bean id="surveyorProfileSaveAction" class="com.itgrids.partyanalyst.web.action.SurveyorProfileSaveAction" singleton="false">
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="surveyAnalysisService" ref="surveyAnalysisService" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+		<property name="votersAnalysisService" ref="votersAnalysisService" />
+		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
 </beans>	
 	

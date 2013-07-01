@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
 <decorators defaultdir="/WEB-INF/decorators">
     <!-- Any urls that are excluded will never be decorated by Sitemesh -->
     <excludes>
@@ -117,7 +116,14 @@
 
     <decorator name="new" page="newlayout.jsp">
         <pattern>/newhomePage*</pattern>
-        <pattern>/candidateElectionResultsAction*</pattern>
+        
+    </decorator>
+    
+    <decorator name="newHome" page="homelayout.jsp">
+    	<pattern>/homePage*</pattern>
+    </decorator>
+		<decorator name="tdpHome_old" page="tdplayout_old.jsp">
+			<pattern>/candidateElectionResultsAction*</pattern>
 		<pattern>/loginAction*</pattern>
 		<pattern>/candidateProfileAction*</pattern>
 		<pattern>/partyPageAction*</pattern>
@@ -181,11 +187,11 @@
 		<pattern>/sitemapAction*</pattern>
 		<pattern>/newsZoneAction*</pattern>
 		<pattern>/partyPerformanceJasper*</pattern>
-    </decorator>
-    
-    <decorator name="newHome" page="homelayout.jsp">
-    	<pattern>/homePage*</pattern>
-    	<pattern>/newconnectPeoplePage*</pattern>
+		</decorator>
+	    <decorator name="tdphomelayout" page="tdplayout.jsp">
+		<pattern>/newhomePageAction*</pattern>
+        <pattern>/dashBoardAction*</pattern>
+		<pattern>/newconnectPeoplePage*</pattern>
     	<pattern>/voters*</pattern>
     	<pattern>/userProfile*</pattern>
     	<pattern>/votersAnalysisAction*</pattern>
@@ -247,10 +253,8 @@
 		<pattern>/assigningSurveyToUserAction*</pattern>		
 		<pattern>/surveyFormAction*</pattern>
 		<pattern>/surveyFormSaveAction*</pattern>
-    	 </decorator>
-    	 
-       <decorator name="tdpHome" page="tdplayout.jsp">
-             <pattern>/newhomePageAction*</pattern>
-             <pattern>/dashBoardAction*</pattern>
-       </decorator>
+		<pattern>/surveyorProfileSaveAction*</pattern>
+		</decorator>
+		
+
 </decorators>

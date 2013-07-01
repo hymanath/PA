@@ -281,9 +281,9 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 		String mobileNo=surveyorPersonalInfoVO.getMobileNumber();
 		String phoneNo=surveyorPersonalInfoVO.getPhoneNumber();
 		String email=surveyorPersonalInfoVO.getEmail();
-		int qualification=surveyorPersonalInfoVO.getQualification();
-		int occupation=surveyorPersonalInfoVO.getOccupation();
-		int caste=surveyorPersonalInfoVO.getCaste();
+		//int qualification=surveyorPersonalInfoVO.getQualification();
+		//int occupation=surveyorPersonalInfoVO.getOccupation();
+		//int caste=surveyorPersonalInfoVO.getCaste();
 		
 		Long state=surveyorPersonalInfoVO.getState();
 		Long district=surveyorPersonalInfoVO.getDistrict();
@@ -291,7 +291,7 @@ public class SurveyAnalysisAction extends ActionSupport implements ServletReques
 		Long township=surveyorPersonalInfoVO.getTownship();
 		
 		String gender=surveyorPersonalInfoVO.getGender();
-		resultStatus=surveyAnalysisService.saveSurveyorInfo(name,age,mobileNo,phoneNo,email,qualification,occupation,caste,state,district,tehsil,township,gender);
+		//resultStatus=surveyAnalysisService.saveSurveyorInfo(name,age,mobileNo,phoneNo,email,qualification,occupation,caste,state,district,tehsil,township,gender);
 		
 		return Action.SUCCESS;
 	}
