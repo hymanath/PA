@@ -240,6 +240,7 @@
 		<pattern>/showNewsResponseAction*</pattern>
 		<pattern>/uploadMLCCandidateDetailsAction*</pattern>
 		<pattern>/candidateResponseNews*</pattern>
+		<pattern>/candidateNewsDetailsAction*</pattern>
     	 </decorator>
 
 </decorators>
