@@ -3,6 +3,7 @@ import java.util.Date;
 import java.util.List;
 import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyGallery;
 
@@ -68,6 +69,8 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	public List<Object[]> getCandidateRelatedGallaries(Long candidateId,Long partyId,Date fromDate, Date toDate,String queryType);
 	
 	public List<Object[]> getCandidateRelatedCategories(Long candidateId,Long partyId,Date fromDate,Date toDate);
+	
+	public List<FileGallary> getLatestNewsResPonses(Integer startIndex, Integer maxIndex);
 	
 	
 }

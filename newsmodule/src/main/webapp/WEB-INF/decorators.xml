@@ -239,6 +239,7 @@
 		<pattern>/contactUs*</pattern>
 		<pattern>/showNewsResponseAction*</pattern>
 		<pattern>/uploadMLCCandidateDetailsAction*</pattern>
+		<pattern>/candidateResponseNews*</pattern>
     	 </decorator>
 
 </decorators>

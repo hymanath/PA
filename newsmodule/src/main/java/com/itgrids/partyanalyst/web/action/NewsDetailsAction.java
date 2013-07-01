@@ -193,6 +193,10 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 					 newsType = "";
 		     fileVOsList = candidateDetailsService.getAllNews(jObj.getInt("firstResult"), jObj.getInt("maxResult"), "News Gallary",872L,newsType);
 		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("getLatestResponsefiles"))
+		 {
+			 fileVOsList = candidateDetailsService.getCandidateNewsResponseNews(jObj.getInt("firstResult"), jObj.getInt("maxResult")); 
+		 }
 		 else if(jObj.getString("task").equalsIgnoreCase("getResponseGallaryDetails"))
 			  gallaryVO = contentManagementService.getResponseGallariesForSelectedGallary(jObj.getLong("fileGallaryId"), jObj.getInt("firstResult"), jObj.getInt("maxResult"));
 		 else if(jObj.getString("task").equalsIgnoreCase("getMainArticleDetails"))

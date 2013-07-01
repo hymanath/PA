@@ -265,4 +265,6 @@ public interface ICandidateDetailsService {
 	
 	public ResultStatus assignResToCandidateOrAGallary(Long candidateId,Long fileGalleryId,Long resFileGalId,String tempVar);
 	
+	public List<FileVO> getCandidateNewsResponseNews(Integer startIndex,Integer maxIndex);
+	
 }
