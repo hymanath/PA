@@ -855,7 +855,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		request.setAttribute("candidateId",candidateId);
 		
 		session = request.getSession();
-		if(!"tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST)){
+		if(!("tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST))){
 			if(session.getAttribute("candidatePageLoadingFirstTime")== null){
 				if(contentId == null){
 				   session.setAttribute("candidatePageLoadingFirstTime", "true");
