@@ -89,10 +89,12 @@ td.tdStyle{
   text-align:center;
   width:240px;
  }
-  .yui-skin-sam.yui-dt table{
+ 
+ .yui-skin-sam.yui-dt table{
 	border: 1px solid #CCCCCC;
     width: 100%;
- 
+	color: black;
+    font-family: arial;
  }
  .yui-skin-sam.yui-dt table th{
 	background: url("images/ui-bg_highlight-soft_75_cccccc_1x100.png") repeat-x scroll 50% 50% #EEEEEE;
