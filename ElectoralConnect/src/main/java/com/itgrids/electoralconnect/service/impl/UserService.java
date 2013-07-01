@@ -180,7 +180,7 @@ public class UserService implements IUserService{
 					/*userProfile = (UserProfile) parms[0];
 					userLogin     =   (UserLogin) parms[1];*/
 					user          =   (User) parms[0];
-					roles         =   (Roles) parms[0];
+					roles         =   (Roles) parms[1];
 					userProfile   =   user.getUserProfile();
 					userLogin     =   user.getUserLogin();
 					regVO.setFirstName(userProfile.getLastName());
