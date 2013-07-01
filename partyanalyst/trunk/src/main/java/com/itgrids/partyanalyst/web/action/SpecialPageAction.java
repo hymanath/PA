@@ -235,12 +235,15 @@ public class SpecialPageAction extends ActionSupport implements
 	public String execute() {
 		
 		session = request.getSession();
-		
-		if(session.getAttribute("specialPageLoadingFirstTime")== null){
-			if(contentId == null){
-			   session.setAttribute("specialPageLoadingFirstTime", "true");
+		if(!"PARTY".equalsIgnoreCase(IConstants.PROJECT_TYPE)){
+			if(session.getAttribute("specialPageLoadingFirstTime")== null){
+				if(contentId == null){
+				   session.setAttribute("specialPageLoadingFirstTime", "true");
+				}
+			}else{ 
+				session.setAttribute("specialPageLoadingFirstTime", "false");
 			}
-		}else{ 
+		}else{
 			session.setAttribute("specialPageLoadingFirstTime", "false");
 		}
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
