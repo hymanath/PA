@@ -22,6 +22,7 @@ import com.itgrids.electoralconnect.model.UserProfile;
 import com.itgrids.electoralconnect.model.UserRoles;
 import com.itgrids.electoralconnect.service.IUserService;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dao.hibernate.UserRolesDAO;
 
 public class UserService implements IUserService{
 		//DAO's 
@@ -125,7 +126,16 @@ public class UserService implements IUserService{
 			Roles roles=new Roles();
 			
 			userRoles.setUser(user);
-			userRoles.setRole(rolesDAO.get(2l));
+			
+			if(userProfileVO.getUserType() != null && userProfileVO.getUserType().equalsIgnoreCase("admin"))
+			{
+				userRoles.setRoles(rolesDAO.get(1l));
+			}
+			else
+			{
+				userRoles.setRoles(rolesDAO.get(2l));
+			}
+			
 			
 			userRoles=userRolesDAO.save(userRoles);
 			
@@ -157,23 +167,38 @@ public class UserService implements IUserService{
 		 */
 		public RegistrationVO checkForValidUser(String username,String password)
 		{
-			RegistrationVO user        = new RegistrationVO();
-			List<Object[]> userDetails = userDAO.checkForValidUser(username, password);
+			RegistrationVO regVO        = new RegistrationVO();
+			//List<Object[]> userDetails = userDAO.checkForValidUser(username, password);
+			List<Object[]> userDetails = userRolesDAO.checkForValidUser(username, password);
 			UserProfile userProfile    = new UserProfile();
 			UserLogin userLogin        = new UserLogin();
+			User user                  = new User();
+			Roles roles                = new Roles();
 			if(userDetails != null && userDetails.size() > 0)
 			{
 				for (Object[] parms : userDetails) {
-					userProfile = (UserProfile) parms[0];
-					userLogin   = (UserLogin) parms[1];
-					user.setFirstName(userProfile.getLastName());
-					user.setLastName(userProfile.getLastName());
-					user.setEmail(userProfile.getEmailId());
-					user.setMobile(userProfile.getMobileNo());
-					user.setUserName(userLogin.getUserName());
-					user.setRegistrationID(userLogin.getUserLoginId());
+					/*userProfile = (UserProfile) parms[0];
+					userLogin     =   (UserLogin) parms[1];*/
+					user          =   (User) parms[0];
+					roles         =   (Roles) parms[0];
+					userProfile   =   user.getUserProfile();
+					userLogin     =   user.getUserLogin();
+					regVO.setFirstName(userProfile.getLastName());
+					regVO.setLastName(userProfile.getLastName());
+					regVO.setEmail(userProfile.getEmailId());
+					regVO.setMobile(userProfile.getMobileNo());
+					regVO.setUserName(userLogin.getUserName());
+					regVO.setRegistrationID(userLogin.getUserLoginId());
+					if(roles.getRole().equalsIgnoreCase("Admin"))
+					{
+						regVO.setIsAdmin(true);
+					}
+					else
+					{
+						regVO.setIsAdmin(false);
+					}
 				}
 			}
-			return user;
+			return regVO;
 		}
 }

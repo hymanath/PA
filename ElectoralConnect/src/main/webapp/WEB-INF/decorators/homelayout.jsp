@@ -63,6 +63,7 @@
 									<li><a href="#" title="About Us">About US</a></li>
 									<li><a href="#" title="Contact Us">Contact Us</a></li>-->
 									<li><a title="Home" id='loginId'>Login</a></li>
+									<li><a title="Admin" id='adminId' onClick="openAdminPage();">Admin</a></li>
 									<li><a title="About Us" id='registerId'>Register</a></li>
 								</ul>
 							</nav>
@@ -116,6 +117,10 @@
 			$('#registerId').click(function(){
 				$('#registerId').attr('href','registerUser.action');
 			});
+			$('#adminId').click(function(){
+				$('#adminId').attr('href','adminPageAction.action');
+			});
+			
 			$('#loginId').click(function(){
 				$('#loginModal').modal('show');
 			});

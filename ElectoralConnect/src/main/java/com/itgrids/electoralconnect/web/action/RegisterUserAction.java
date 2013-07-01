@@ -35,7 +35,7 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 	private String password;
 	private IUserService userService;
 	private IMailService mailService;
-	
+	private String userType;
 	private HttpServletRequest request;
 	
 	public String getTask() {
@@ -146,6 +146,15 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 		this.password = password;
 	}
 
+	
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
 	public String execute(){
 		LOG.debug("In RegisterUserActions execute()");
 		System.out.println(firstName+" "+lastName);
@@ -155,7 +164,7 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 		userProfileVO.setEmailId(emailId);
 		userProfileVO.setMobileNo(mobileNo);
 		userProfileVO.setEpicId(epicId);
-		
+		userProfileVO.setUserType(userType);
 		UserVO uservo=userService.registerUser(userProfileVO);
 		String requestURL= request.getRequestURL().toString();
 		System.out.println(requestURL);

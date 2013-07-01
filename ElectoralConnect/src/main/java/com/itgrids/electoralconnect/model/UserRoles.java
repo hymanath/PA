@@ -52,11 +52,11 @@ public class UserRoles extends BaseModel implements Serializable{
 	@JoinColumn(name = "role_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Roles getRole() {
+	public Roles getRoles() {
 		return roles;
 	}
 
-	public void setRole(Roles roles) {
+	public void setRoles(Roles roles) {
 		this.roles = roles;
 	}
 

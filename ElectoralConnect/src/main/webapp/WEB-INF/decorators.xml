@@ -26,6 +26,7 @@
     	<pattern>/homePage*</pattern>
     	<pattern>/registerUser*</pattern>
     	<pattern>/userLonginVerficationAction*</pattern>
+    	<pattern>/adminPageAction*</pattern>
     </decorator>
 
 </decorators>
