@@ -11,6 +11,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.FileGallary;
 
 public interface ICandidateDetailsService {
 	
@@ -266,5 +267,7 @@ public interface ICandidateDetailsService {
 	public ResultStatus assignResToCandidateOrAGallary(Long candidateId,Long fileGalleryId,Long resFileGalId,String tempVar);
 	
 	public List<FileVO> getCandidateNewsResponseNews(Integer startIndex,Integer maxIndex);
+	
+	public void setfileGallaryDetails(List<FileGallary> fileGallaryList,List<FileVO> fileVOsList);
 	
 }

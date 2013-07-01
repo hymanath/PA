@@ -14,11 +14,13 @@ import org.jfree.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -44,6 +46,9 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private String toDate;
 	private ResultStatus resultStatus;
 	private List<SelectOptionVO> selectOptionVOList,galleriesList,newsList;
+	private List<CandidateNewsCountVO> newsCountVOsList;
+	private INewsMonitoringService newsMonitoringService; 
+	private Long candidateId;
 	
 	public Long getResponseContentId() {
 		return responseContentId;
@@ -164,6 +169,27 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	}
 	public void setNewsList(List<SelectOptionVO> newsList) {
 		this.newsList = newsList;
+	}
+	
+	public List<CandidateNewsCountVO> getNewsCountVOsList() {
+		return newsCountVOsList;
+	}
+	public void setNewsCountVOsList(List<CandidateNewsCountVO> newsCountVOsList) {
+		this.newsCountVOsList = newsCountVOsList;
+	}
+	
+	public INewsMonitoringService getNewsMonitoringService() {
+		return newsMonitoringService;
+	}
+	public void setNewsMonitoringService(
+			INewsMonitoringService newsMonitoringService) {
+		this.newsMonitoringService = newsMonitoringService;
+	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
 	}
 	public String execute()
 	{	
@@ -305,5 +331,36 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+  
+  
+   public String getLocationWiseNewsDetails()
+   {
+	   try{
+		  session = request.getSession();
+	      RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+	      if(user == null)
+	       return ERROR;
+	      
+		jObj = new JSONObject(getTask());
+		if(jObj.getString("task").equalsIgnoreCase("getLocationWiseNewsCountForACandidate"))
+		 newsCountVOsList = newsMonitoringService.getNewsCountForACandidate(jObj.getLong("candidateId"), jObj.getString("fromDate"), jObj.getString("toDate"));
+		else if(jObj.getString("task").equalsIgnoreCase("getLocationWiseNewsDetailsForACandidate"))
+		{
+			Long candidateId = jObj.getLong("candidateId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			Integer startIndex = jObj.getInt("firstResult");
+			Integer maxIndex = jObj.getInt("maxResult");
+			String locationScope = jObj.getString("locationScope");
+			
+		 fileVOsList = newsMonitoringService.getLocationWiseNewsDetailsForACandidate(candidateId,fromDateStr,toDateStr,locationScope,startIndex,maxIndex);
+		}
+		
+	   }catch (Exception e) {
+		 e.printStackTrace();
+		 Log.error("Exception Occured in getLocationWiseNewsDetails() method, Exception - "+e);
+	}
+	  return Action.SUCCESS; 
+   }
 	
 }
