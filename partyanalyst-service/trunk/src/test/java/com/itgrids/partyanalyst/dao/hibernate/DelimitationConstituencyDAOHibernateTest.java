@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -23,6 +24,9 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
+	/*public void testGetAll(){
+		delimitationConstituencyDAO.getAll();
+	}*/
 	/*
 	public void testDelimitationConstituencies(){
 		List<DelimitationConstituency> list = delimitationConstituencyDAO.findByElectionScopeIdStateIdAndElectionYear(new Long(1), new Long(1), new Long(2009));
@@ -149,7 +153,7 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		if(list != null && list.size() > 0)
 			System.out.println(list.size());
 		}*/
-	public void testGetLatestConstituenciesByElectionTypeAndYearInState()
+	/*public void testGetLatestConstituenciesByElectionTypeAndYearInState()
 	{
 		List<Object[]> list = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeAndYearInState(1l,1l,2004l);
 		
@@ -161,5 +165,13 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(param[1]);
 			}
 		}
+	}*/
+	
+	public void testfindDelimitationConstituencyByConstituencyIDs(){
+		List<Long> idsList =new ArrayList<Long>(0);
+		idsList.add(282l);
+		idsList.add(232l);
+		List<DelimitationConstituency> value = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDs(idsList);
+		System.out.println(value.size());
 	}
 }
