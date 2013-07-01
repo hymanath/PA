@@ -788,6 +788,9 @@ function viewBoothResults(){
 //Created By SASI
 
 $("input:radio[name=electionType]").click(function() {
+
+	$('#constiId').find('option').remove();
+	$('#constiId').append('<option value="0">Select Constituency </option>');
     var value = $(this).val();
 	var stateId=1;
 	getElectionYears(stateId,value);
