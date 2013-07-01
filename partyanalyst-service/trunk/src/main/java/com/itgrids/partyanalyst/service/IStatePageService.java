@@ -26,6 +26,8 @@ public interface IStatePageService {
 	
 	public StateElectionResultsVO getStateElectionResults(Long electionId);
 	
-	 public ElectionGoverningBodyVO getChiefMinisterForAState(Long stateId);
+	public ElectionGoverningBodyVO getChiefMinisterForAState(Long stateId);
+	
+	public List<CensusVO> getCensusDetailsOfAState(Long stateId,int year);
 	
 }
