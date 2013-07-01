@@ -5483,5 +5483,10 @@
 		 	</result>
 		</action>
 		
+		<action name="getConstituenciesAndParties" class="dashBoardAction" method="getConstituenciesAndParties">
+			<result type="json" name="success">
+				<param name="root">pConstituencyList</param>
+		 	</result>
+		</action>
 		</package>
 </struts>      
