@@ -332,6 +332,8 @@ function viewParty(value){
 
 $(document).ready(function(){
 
+	try{
+
  $('#my-jqCarousel-3 ul li').width($('#my-jqCarousel-3').width()/3.2);
 
  $('#my-jqCarousel-3').jqCarousel({
@@ -409,6 +411,8 @@ $("#my-jqCarousel-news").hover(
 
 			
 	setTimeout("applyRaty()",1000);
+	}catch(e)
+	{}
 
 });
 
