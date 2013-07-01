@@ -8,6 +8,7 @@ import java.util.Set;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -54,6 +55,18 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
             }
         } );
 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCensusDetailsOfAState(Long stateId, Long year)
+	{
+		Query query = getSession().createQuery("select model.tru, model.totalPopulation, model.totalMalePopulation, model.totalFemalePopulation " +
+				" from Census model where model.stateId = :stateId and model.year = :year and model.level = :level order by model.censusId ");
+		
+		query.setParameter("stateId",stateId);
+		query.setParameter("year",year);
+		query.setParameter("level","STATE");
+		return query.list();
 	}
 
 	@SuppressWarnings("unchecked")
