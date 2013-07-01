@@ -53,6 +53,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	private ServletContext context;
 	private String selectedPartyShortName;
 	private Long selectedPartyId;
+	private String host = IConstants.DEPLOYED_HOST;
 	
 	private static final org.apache.log4j.Logger log = Logger.getLogger(PartyResultsAction.class);
 	
@@ -159,6 +160,14 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 
 	public void setSelectedPartyId(Long selectedPartyId) {
 		this.selectedPartyId = selectedPartyId;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
 	}
 
 	public String execute() {
