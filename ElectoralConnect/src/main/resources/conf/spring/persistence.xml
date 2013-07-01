@@ -31,6 +31,12 @@
 				<value>com.itgrids.electoralconnect.model.User</value>
 				<value>com.itgrids.electoralconnect.model.Roles</value>
 				<value>com.itgrids.electoralconnect.model.UserRoles</value>
+				<value>com.itgrids.electoralconnect.model.Announcements</value>
+				<value>com.itgrids.electoralconnect.model.AnnouncementType</value>
+				<value>com.itgrids.electoralconnect.model.File</value>
+				<value>com.itgrids.electoralconnect.model.AnnouncementFiles</value>
+				<value>com.itgrids.electoralconnect.model.FileType</value>
+				<value>com.itgrids.electoralconnect.model.Comment</value>
 			</list>
 			
 		</property>
