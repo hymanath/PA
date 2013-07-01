@@ -5429,8 +5429,8 @@
 		  <result name="success">/jsp/surveyForm.jsp</result>
 		</action>
 		
-		<action name="saveSurveyorInfoAction" class="surveyAnalysisAction" method="saveSurveyorInfo">
-			<result name="success">/jsp/surveyAnalysis.jsp</result>
+		<action name="saveSurveyorInfoAction" class="surveyorProfileSaveAction" method="saveSurveyorInfo">
+			<result name="success">/jsp/surveyorProfileSavePage.jsp</result>
 		</action>
 		
 		<action name="getDistrictsAction" class="surveyAnalysisAction" method="getDistricts">
@@ -5493,6 +5493,15 @@
 		<result type="json" name="success">
 				<param name="root">constituencyList</param>
 		 </result>
+		</action>
+		<action name="surveyorProfileSaveAction" class="surveyorProfileSaveAction">
+			<result name="success">/jsp/surveyorProfileSavePage.jsp</result>
+		</action>
+		
+		<action name="getVilliageListAction" class="surveyorProfileSaveAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">villagesList</param>				
+			</result>		
 		</action>
 		</package>
 </struts>      

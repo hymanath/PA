@@ -342,6 +342,16 @@ else{
  $("#surveyDetails").html('<div style="font-weight:bold;">Data Not Available</div>');
 }
 }
+function surveyorMethod(){
+var urlstr = "surveyorProfileSaveAction.action";
+ var browser1 = window.open(urlstr,"surveyorProfileSaving","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+}
+function surveyorMethod1(){
+var urlstr = "surveyorProfileSaveAction.action?surveyorId=36";
+ var browser1 = window.open(urlstr,"surveyorProfileSaving","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+}
 
 
 
@@ -710,6 +720,8 @@ function buildCasteWiseSurveyAnalysis(myResults)
 <div>
 <div style="margin-left: 236px; margin-bottom: -26px; padding-bottom: 26px;">
 <!--<span id="surveyorSpan" class='btn btn-info' onclick='openModal()' style="margin-bottom: -26px; margin-top: 32px;">Creating Surveyor</span>-->
+<span class='btn' onclick='surveyorMethod()'>Surveyor1</span>
+<span class='btn' onclick='surveyorMethod1()'>Surveyor1</span>
 <div><input type="button" value="Creating Surveyor" class='btn btn-info' style="margin-bottom: -26px; margin-top: 32px;" onClick="openModal();"></input></div>
 <div style="margin-left: 276px;"><input type="button" value="Creating Survey" id="surveyBtn" class="btn btn-info"  style="margin-left: 119px;"/></div>
 </div>
@@ -751,7 +763,7 @@ function buildCasteWiseSurveyAnalysis(myResults)
 
 
 	 </div>
-	 
+<!--	 
  <div class="modal hide fade" id="myModal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">X</a>
@@ -771,9 +783,9 @@ function buildCasteWiseSurveyAnalysis(myResults)
 					<label class="control-label" for="contactnumber">Contact Number</label>
 					<div class="controls">
 						<!--<label class="control-label" for="mobileno">Mobile Number</label>-->
-						<input type="text" id="mobileNumber" placeholder="Mobile Number" name='surveyorPersonalInfoVO.mobileNumber'>
+						<!--<input type="text" id="mobileNumber" placeholder="Mobile Number" name='surveyorPersonalInfoVO.mobileNumber'>
 						<!--<label class="control-label" for="phoneno">Phone Number</label>-->
-						<input type="text" id="phoneNumber" placeholder="Phone Number" name='surveyorPersonalInfoVO.phoneNumber'>
+						<!--<input type="text" id="phoneNumber" placeholder="Phone Number" name='surveyorPersonalInfoVO.phoneNumber'>
 					</div>
 				</div>
 				<div class="control-group">
@@ -899,7 +911,7 @@ function buildCasteWiseSurveyAnalysis(myResults)
 		<div class="" align="center" style="background: none repeat scroll 0px 0px rgb(49, 152, 182); border-radius: 4px 4px 4px 4px; margin-left: 10px; width: 977px; font-family: arial; font-size: 18px; color: white; padding-bottom: 4px; margin-bottom: 5px; margin-top: 19px; font-weight: bolder; padding-top: 10px; height: 25px;display:none;"  id="optionWiseAnalysisHeading">SURVEY ANALYSIS BASED ON OPTION WISE</div>
 		<div id="optionWiseSurveyAnalysis"></div>
 	</div>
-
+-->
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -910,9 +922,9 @@ $(document).ready(function(){
   });
 
 });//End of ready
-function openModal(){
+/*function openModal(){
 		$('#myModal').modal('show');
-	}
+	}*/
 </script>
 <script type="text/javascript">
 buildSurveyDetailsDivMain();
