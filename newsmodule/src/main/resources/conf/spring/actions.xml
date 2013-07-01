@@ -52,6 +52,7 @@
 	<bean id="newsDetailsAction" class="com.itgrids.partyanalyst.web.action.NewsDetailsAction" singleton="false">
 	 <property name="candidateDetailsService" ref="candidateDetailsService" />
 	 <property name="contentManagementService" ref="contentManagementService" />
+	 <property name="newsMonitoringService" ref="newsMonitoringService" />
 	</bean>
 	
 	<bean id="newsDisplayAction" class="com.itgrids.partyanalyst.web.action.NewsDisplayAction" singleton="false">

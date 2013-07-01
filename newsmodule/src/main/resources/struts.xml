@@ -5548,6 +5548,23 @@
 		<action name="candidateResponseNews" class="homePageAction">
 			<result>/jsp/candidateResponseNews.jsp</result>
 		</action>
+		
+		<action name="getLocationWiseNewsCountForACandidateAction" class="newsDetailsAction" method="getLocationWiseNewsDetails">
+		 <result type="json" name="success">
+		  <param name="root">newsCountVOsList</param>
+		 </result>
+		</action>
+		
+		<action name="candidateNewsDetailsAction" class="newsDetailsAction">
+		 <result name="success">/jsp/candidateNewsDetails.jsp</result>
+		 <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
+		 
+		 <action name="getLocationWiseNewsDetailsForACandidateAction" class="newsDetailsAction" method="getLocationWiseNewsDetails">
+		  <result type="json" name="success">
+		    <param name="root">fileVOsList</param>
+		  </result>
+		 </action>
 		</package>
 		
 		
