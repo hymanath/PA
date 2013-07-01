@@ -802,7 +802,7 @@ getAllConstituenciesInStateByTypeInDashBoard(2,stateId,"constituency","default")
 		 <c:if test="${boothAnalysisData == null}">
 		   $("#moreDetailsId").trigger("click");
 		   $("#boothResultLable").hide();
-		   $('.boothResults').toggle();
+		   $('.boothResults').show();
 		 </c:if> 
 function viewBoothResults(){
   window.open("partyBoothResult2Action.action?partyName=872&electionYear="+elecYear+"&constituencyName="+conId+"");
@@ -1106,7 +1106,7 @@ function buildPartiesSelectBox(myResult ,type){
 	}
 
 	if(type == "default")
-		$('#partyId').val($('#partyId option:eq(1)').val());
+		$('#partyId').val(872);
 
 }
 
@@ -1795,7 +1795,7 @@ function getMandalsForState(){
 	}
 	window.open("mandalPageElectionInfoAction.action?MANDAL_ID="+mandalsSelectElVal+"");
 }
-console.log('${politician}');
+
 
 
 
