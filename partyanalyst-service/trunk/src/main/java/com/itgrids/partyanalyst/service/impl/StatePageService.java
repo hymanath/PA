@@ -238,6 +238,35 @@ public class StatePageService implements IStatePageService {
 	return null;
 	}
 	
+	public List<CensusVO> getCensusDetailsOfAState(Long stateId,int year)
+	{
+		List<CensusVO> censusVOList = null;
+		try{
+			List<Object[]> list = censusDAO.getCensusDetailsOfAState(stateId,new Long(year));
+			
+			if(list != null && list.size() > 0)
+			{
+				censusVOList = new ArrayList<CensusVO>(0);
+				CensusVO censusVO = null;
+				for(Object[] params : list)
+				{
+					censusVO = new CensusVO();
+					censusVO.setStateId(stateId);
+					censusVO.setTotalPopulation((Long)params[1]);
+					censusVO.setMalePopulation((Long)params[2]);
+					censusVO.setFemalePopulation((Long)params[3]);
+					censusVO.setTru(params[0].toString());
+					censusVO.setYear(year);
+					censusVOList.add(censusVO);
+				}
+			}
+			return censusVOList;
+		}catch(Exception e)
+		{
+			return censusVOList;
+		}
+	}
+	
 	 @SuppressWarnings("unchecked")
 		public StateElectionResultsVO getStateElectionResults(Long electionId){
 			
