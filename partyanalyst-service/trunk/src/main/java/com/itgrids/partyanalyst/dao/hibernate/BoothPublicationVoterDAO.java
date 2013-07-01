@@ -975,10 +975,10 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	}
 	
 	//get voter details By caste_state ID
-		public List<Voter> getVoterDetailsByCasteStateForPanchayat(Long panchayatId,Long publicationDateId,Long casteStateId)
+		public List<Voter> getVoterDetailsByCasteStateForPanchayat(Long panchayatId,Long publicationDateId,Long casteStateId,Long userId)
 		{
-			Object[] params={panchayatId,publicationDateId,casteStateId};
-		return getHibernateTemplate().find("select distinct model.voter from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.panchayat.panchayatId=? and model.booth.publicationDate.publicationDateId = ? and model2.casteState.casteStateId =? ",params);
+			Object[] params={panchayatId,publicationDateId,casteStateId,userId};
+		return getHibernateTemplate().find("select distinct model.voter from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.panchayat.panchayatId=? and model.booth.publicationDate.publicationDateId = ? and model2.casteState.casteStateId =? and model2.user.userId = ?",params);
 		
 		}
 		

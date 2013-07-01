@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +48,7 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.OptionVO;
+import com.itgrids.partyanalyst.dao.hibernate.CasteDAO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -57,8 +59,10 @@ import com.itgrids.partyanalyst.dto.SurveyAnalysisDTO;
 import com.itgrids.partyanalyst.dto.SurveyAnalysisVO;
 import com.itgrids.partyanalyst.dto.SurveyInfoVO;
 import com.itgrids.partyanalyst.dto.SurveyVO;
+import com.itgrids.partyanalyst.dto.SurveyorPersonalInfoVO;
 import com.itgrids.partyanalyst.dto.SurveyorVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.Address;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.Option;
 import com.itgrids.partyanalyst.model.QuestionOptions;
@@ -352,32 +356,90 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		
 		return optionTypes;
 	}
-	public ResultStatus saveSurveyorInfo(String name,String age,String mobileNo,String phoneNo,String email,int qualification,int occupation,int caste,Long state,Long district,Long tehsil,Long township,String gender){
+	public ResultStatus saveSurveyorInfo(final Long userId,final SurveyorPersonalInfoVO surveyorPersonalInfoVO){
 		  ResultStatus resultStatus=new ResultStatus();
 		  
 		  try {
-			UserAddress userAddress=new UserAddress();
-			  userAddress.setState(stateDAO.get(state));
-			  userAddress.setDistrict(districtDAO.get(district));
-			  userAddress.setTehsil(tehsilDAO.get(tehsil));
-			  userAddress.setTownship(townshipDAO.get(township));
+			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				  protected void doInTransactionWithoutResult(TransactionStatus status) 
+				 {
+			Surveyor surveyor = null;
+			UpdationDetails updationDetails = null;
+			SurveyorProfile surveyorProfile= null;
+			UserAddress userAddress=null;
+			if(surveyorPersonalInfoVO.getState() != null)
+			{
+			if(surveyorPersonalInfoVO.getUserAddressId() == null )
+				userAddress=new UserAddress();
+			else			
+				userAddress =  userAddressDAO.get(new Long(surveyorPersonalInfoVO.getUserAddressId()));
+			  
+			if(surveyorPersonalInfoVO.getState() != null && surveyorPersonalInfoVO.getState() > 0)
+			  userAddress.setState(stateDAO.get(surveyorPersonalInfoVO.getState()));
+			if(surveyorPersonalInfoVO.getDistrict() != null && surveyorPersonalInfoVO.getDistrict() > 0)
+			  userAddress.setDistrict(districtDAO.get(surveyorPersonalInfoVO.getDistrict()));
+			if(surveyorPersonalInfoVO.getTehsil() != null && surveyorPersonalInfoVO.getTehsil() > 0)
+			  userAddress.setTehsil(tehsilDAO.get(surveyorPersonalInfoVO.getTehsil()));
+			if(surveyorPersonalInfoVO.getConstituency() != null && surveyorPersonalInfoVO.getConstituency() > 0)
+			userAddress.setConstituency(constituencyDAO.get(surveyorPersonalInfoVO.getConstituency()));
+			if(surveyorPersonalInfoVO.getVillage() != null && surveyorPersonalInfoVO.getVillage() > 0)
+			  userAddress.setTownship(townshipDAO.get(surveyorPersonalInfoVO.getVillage()));
 			  
 			  userAddress=userAddressDAO.save(userAddress);
 			  
-			  SurveyorProfile surveyorProfile=new SurveyorProfile();
-			  surveyorProfile.setName(name);
-			  surveyorProfile.setMobileNo(mobileNo);
-			  surveyorProfile.setPhoneNo(phoneNo);
-			  surveyorProfile.setGender(gender);
-			  surveyorProfile.setEmailId(email);
+			  if(surveyorPersonalInfoVO.getSurveyorProfileId() == null )
+				  surveyorProfile=new SurveyorProfile();
+			  else			
+				  surveyorProfile =  surveyorProfileDAO.get(new Long(surveyorPersonalInfoVO.getSurveyorProfileId()));
+			  
+			  if(surveyorPersonalInfoVO.getName() != null)
+			  surveyorProfile.setName(surveyorPersonalInfoVO.getName());
+			  if(surveyorPersonalInfoVO.getMobileNumber() != null)
+			  surveyorProfile.setMobileNo(surveyorPersonalInfoVO.getMobileNumber());
+			  if(surveyorPersonalInfoVO.getPhoneNumber() != null)
+			  surveyorProfile.setPhoneNo(surveyorPersonalInfoVO.getPhoneNumber());
+			  if(surveyorPersonalInfoVO.getGender() != null)
+			  surveyorProfile.setGender(surveyorPersonalInfoVO.getGender());
+			  if(surveyorPersonalInfoVO.getEmail() != null)
+			  surveyorProfile.setEmailId(surveyorPersonalInfoVO.getEmail());
 			  surveyorProfile.setUserAddress(userAddress);
-			  surveyorProfile.setEducationalQualifications(educationalQualificationsDAO.get(Long.valueOf(qualification)));
-			  surveyorProfile.setOccupation(occupationDAO.get(Long.valueOf(occupation)));
-			  surveyorProfile.setCasteState(casteStateDAO.get(Long.valueOf(caste)));
-			  surveyorProfile.setAge(age);
+			  if(surveyorPersonalInfoVO.getQualification() != null && surveyorPersonalInfoVO.getQualification() > 0)
+			  surveyorProfile.setEducationalQualifications(educationalQualificationsDAO.get(surveyorPersonalInfoVO.getQualification()));
+			  if(surveyorPersonalInfoVO.getOccupation() != null && surveyorPersonalInfoVO.getOccupation() >0)
+			  surveyorProfile.setOccupation(occupationDAO.get(surveyorPersonalInfoVO.getOccupation()));
+			  if(surveyorPersonalInfoVO.getCaste()!= null && surveyorPersonalInfoVO.getCaste() >0)
+			  surveyorProfile.setCasteState(casteStateDAO.get(surveyorPersonalInfoVO.getCaste()));
+			  if(surveyorPersonalInfoVO.getAge() != null)
+			  surveyorProfile.setAge(surveyorPersonalInfoVO.getAge());
 			  
-			  surveyorProfileDAO.save(surveyorProfile);
+			  surveyorProfile = surveyorProfileDAO.save(surveyorProfile);
 			  
+			  if(surveyorPersonalInfoVO.getUpdationDetailsId() == null )
+				  updationDetails = new UpdationDetails();
+			  else			
+				  updationDetails =  updationDetailsDAO.get(new Long(surveyorPersonalInfoVO.getUpdationDetailsId()));
+			  
+			  updationDetails.setCreatedBy(userDAO.get(userId));
+			  updationDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			  
+			  updationDetails = updationDetailsDAO.save(updationDetails);
+			  
+			 
+			  
+			  
+			  if(surveyorPersonalInfoVO.getSurveyorId() == null || surveyorPersonalInfoVO.getSurveyorId().equals(""))
+				  surveyor = new Surveyor();
+				else			
+					surveyor =  surveyorDAO.get(new Long(surveyorPersonalInfoVO.getSurveyorId()));
+			  
+			  if(surveyorPersonalInfoVO.getAddress() != null)
+			  surveyor.setAddress(surveyorPersonalInfoVO.getAddress());
+			  surveyor.setUpdationDetails(updationDetails);
+			  surveyor.setSurveyorProfile(surveyorProfile);
+			  
+			  surveyor = surveyorDAO.save(surveyor);
+			}
+				 }});
 			  resultStatus.setMessage("Surveyor Profile Saved Successfully..");
 			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		  } catch (Exception e) {
@@ -1180,31 +1242,31 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 			 int i = 1;
 			 for( Option subOption: subOptions){
 				 if(i%4 == 0)
-				 /*if(option.getHasRemarks().equalsIgnoreCase("true"))
-				 {
-					 questionStr.append("<tr>");
-					 questionStr.append("<td  valign='top' style='width:25%;'> "+subOption.getOptions()+" " +
-					 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionVal'  onClick='openRemarksTab(4);'/>" +
-					 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionId'" +
-					 						" value='"+subOption.getOptionsId()+"' /></td>"); 
-				 }
-				 else
-				 {
+					 /*if(option.getHasRemarks().equalsIgnoreCase("true"))
+					 {
+						 questionStr.append("<tr>");
+						 questionStr.append("<td  valign='top' style='width:25%;'> "+subOption.getOptions()+" " +
+						 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionVal'  onClick='openRemarksTab(4);'/>" +
+						 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionId'" +
+						 						" value='"+subOption.getOptionsId()+"' /></td>"); 
+					 }
+					 else
+					 {
+						 questionStr.append("<tr>");
+						 questionStr.append("<td  valign='top' style='width:25%;'> "+subOption.getOptions()+" " +
+						 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionVal' />" +
+						 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionId'" +
+						 						" value='"+subOption.getOptionsId()+"' /></td>");
+					 }*/
 					 questionStr.append("<tr>");
 					 questionStr.append("<td  valign='top' style='width:25%;'> "+subOption.getOptions()+" " +
 					 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionVal' />" +
 					 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionId'" +
 					 						" value='"+subOption.getOptionsId()+"' /></td>");
-				 }*/
-				 questionStr.append("<tr>");
-				 questionStr.append("<td  valign='top' style='width:25%;'> "+subOption.getOptions()+" " +
-				 		"<input type='text' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionVal' />" +
-				 				"<input type='hidden' name='questionAnswerVO["+questionNo+"].options["+j+"].options["+i+"].optionId'" +
-				 						" value='"+subOption.getOptionsId()+"' /></td>");
-				/* if(option.getHasRemarks().equalsIgnoreCase("true"))
-				 {
-					 questionStr.append("<span class='remarksLable'> Remarks :  </span><input type='text' class='optionRemarks'></input>");
-				 }*/
+					/* if(option.getHasRemarks().equalsIgnoreCase("true"))
+					 {
+						 questionStr.append("<span class='remarksLable'> Remarks :  </span><input type='text' class='optionRemarks'></input>");
+					 }*/
 				 if((i+1)%4 == 0)
 					 questionStr.append("</tr>");
 				 i++; 
@@ -2406,5 +2468,58 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 		
 	   
 
+	public SurveyorPersonalInfoVO getSurveyorInfoBasedOnSurveyId(Long surveyorId){
+		SurveyorPersonalInfoVO surveyorPersonalInfoVO = new SurveyorPersonalInfoVO();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+		
+		String eDate = null;
+		String iDate = null;
+		try {
+			List<Surveyor> surveyor = surveyorDAO.getSurveyDataBySurveyorId(surveyorId);
+			if(surveyor != null)
+				for(Surveyor params:surveyor){
+					if(params.getSurveyorProfile() != null){
+					if(params.getSurveyorProfile().getName() != null)
+						surveyorPersonalInfoVO.setName(params.getSurveyorProfile().getName());
+					if(params.getSurveyorProfile().getMobileNo() != null)
+						surveyorPersonalInfoVO.setMobileNumber(params.getSurveyorProfile().getMobileNo());
+					if(params.getSurveyorProfile().getPhoneNo() != null)
+						surveyorPersonalInfoVO.setPhoneNumber(params.getSurveyorProfile().getPhoneNo());
+					if(params.getSurveyorProfile().getAge() != null)
+						surveyorPersonalInfoVO.setAge(params.getSurveyorProfile().getAge());
+					if(params.getSurveyorProfile().getEmailId() != null)
+						surveyorPersonalInfoVO.setEmail(params.getSurveyorProfile().getEmailId());
+					if(params.getSurveyorProfile().getEducationalQualifications() != null)
+						surveyorPersonalInfoVO.setQualification(params.getSurveyorProfile().getEducationalQualifications().getEduQualificationId());
+					if(params.getSurveyorProfile().getOccupation() != null)
+						surveyorPersonalInfoVO.setOccupation(params.getSurveyorProfile().getOccupation().getOccupationId());
+					if(params.getSurveyorProfile().getCasteState() != null)
+						surveyorPersonalInfoVO.setCaste(params.getSurveyorProfile().getCasteState().getCasteStateId());
+					if(params.getSurveyorProfile().getGender() != null)
+						surveyorPersonalInfoVO.setGender(params.getSurveyorProfile().getGender());
+					if(params.getSurveyorProfile().getUserAddress().getState() != null)
+						surveyorPersonalInfoVO.setState(params.getSurveyorProfile().getUserAddress().getState().getStateId());
+					if(params.getSurveyorProfile().getUserAddress().getDistrict() != null)
+						surveyorPersonalInfoVO.setDistrict(params.getSurveyorProfile().getUserAddress().getDistrict().getDistrictId());
+					if(params.getSurveyorProfile().getUserAddress().getConstituency() != null)
+						surveyorPersonalInfoVO.setConstituency(params.getSurveyorProfile().getUserAddress().getConstituency().getConstituencyId());
+					if(params.getSurveyorProfile().getUserAddress().getTehsil() != null)
+						surveyorPersonalInfoVO.setTehsil(params.getSurveyorProfile().getUserAddress().getTehsil().getTehsilId());
+					if(params.getSurveyorProfile().getUserAddress().getTownship() != null)
+						surveyorPersonalInfoVO.setVillage(params.getSurveyorProfile().getUserAddress().getTownship().getTownshipId());
+					if(params.getAddress() != null)
+						surveyorPersonalInfoVO.setAddress(params.getAddress());
+					}
+					surveyorPersonalInfoVO.setSurveyorProfileId(params.getSurveyorProfile().getSurveyorProfileId());
+					surveyorPersonalInfoVO.setSurveyorId(params.getSurveyorId().toString());
+					surveyorPersonalInfoVO.setUpdationDetailsId(params.getUpdationDetails().getUpdationDetailsId());
+					surveyorPersonalInfoVO.setUserAddressId(params.getSurveyorProfile().getUserAddress().getUserAddressId());
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return surveyorPersonalInfoVO;
+		
+	}
 }
 

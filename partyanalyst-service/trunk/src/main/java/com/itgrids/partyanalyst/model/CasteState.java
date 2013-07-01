@@ -34,6 +34,7 @@ public class CasteState extends BaseModel implements Serializable{
 	private Caste caste;
 	private CasteCategoryGroup casteCategoryGroup;
 	private Set<CandidateCaste> candidateCaste=new HashSet<CandidateCaste>();
+	private Set<SurveyorProfile> surveyorProfile=new HashSet<SurveyorProfile>();
 	private String isGlobal;
 	private User user;
 	
@@ -128,10 +129,15 @@ public class CasteState extends BaseModel implements Serializable{
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	
-	
-	
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "casteState")
+	public Set<SurveyorProfile> getSurveyorProfile() {
+		return surveyorProfile;
+	}
+
+	public void setSurveyorProfile(Set<SurveyorProfile> surveyorProfile) {
+		this.surveyorProfile = surveyorProfile;
+	}
 	
 	
 }

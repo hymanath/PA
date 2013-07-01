@@ -42,6 +42,7 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 	private UserAddress userAddress;
 	
 	private Set<Respondent> respondent = new HashSet<Respondent>(0);
+	private Set<Surveyor> surveyor = new HashSet<Surveyor>(0);
 	
 	public SurveyorProfile() {
 	}
@@ -205,6 +206,15 @@ public class SurveyorProfile extends BaseModel implements java.io.Serializable{
 
 	public void setRespondent(Set<Respondent> respondent) {
 		this.respondent = respondent;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "surveyorProfile")
+	public Set<Surveyor> getSurveyor() {
+		return surveyor;
+	}
+
+	public void setSurveyor(Set<Surveyor> surveyor) {
+		this.surveyor = surveyor;
 	}
 	
 	

@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.Surveyor;
 public interface ISurveyorDAO extends GenericDao<Surveyor , Long>{
 
 	public List<Surveyor> getSurveyorDetails();
+	public List<Surveyor> getSurveyDataBySurveyorId(Long surveyorId);
 }

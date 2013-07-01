@@ -14,9 +14,9 @@ public class SurveyorDAOHibernateTest extends BaseDaoTestCase{
 	public void setSurveyorDAO(ISurveyorDAO surveyorDAO) {
 		this.surveyorDAO = surveyorDAO;
 	}
-	public void testGetAll(){
+	/*public void testGetAll(){
 		surveyorDAO.getAll();
-	}
+	}*/
 	public void testgetSurveyorDetails()
 	{
 		List<Surveyor> values = surveyorDAO.getSurveyorDetails();
