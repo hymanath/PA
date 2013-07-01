@@ -350,7 +350,31 @@ lable{line-height:40px;}
 
 <button class="btn btn-success pull-right" type="button" onclick="navigateToLocalBodyPage()">Go</button>
 
-</div>	
+</div>	<!---------locality END----------->
+
+	<!--mandal start-->
+	<c:if test="${politician == true && mandalsList != null}">
+	<div class="widget-block" contentindex="3c" >
+<h5>View Your Mandal</h5>
+<div>
+<table>								
+<tbody>
+<tr>
+<td>
+<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="mandal_s" id="mandalsList_l" list="mandalsList" listKey="id" listValue="name" />
+</td>									
+</tr>
+
+
+</tbody>
+</table>
+</div>
+
+<button class="btn btn-success pull-right" type="button" onclick="getMandalsForState()">Go</button>
+
+</div>
+</c:if>
+<!---------mandal END----------->
 
 </div>
 </div><!---------Left Section END----------->
@@ -1759,7 +1783,19 @@ function getDistrictsComboBoxForAStateForDashBoard(value,elmtId,type)
 	callAjax(jsObj,url);
 }
 
-
+function getMandalsForState(){
+	var mandalsSelectEl = document.getElementById("mandalsList_l");
+	var alertEl = document.getElementById("alertMessage");
+	var mandalsSelectElVal = mandalsSelectEl.options[mandalsSelectEl.selectedIndex].value;
+	alertEl.innerHTML = '';
+	if(mandalsSelectElVal == 0)
+	{
+		alertEl.innerHTML = 'Please Select Your Mandal';
+		return;
+	}
+	window.open("mandalPageElectionInfoAction.action?MANDAL_ID="+mandalsSelectElVal+"");
+}
+console.log('${politician}');
 
 
 
