@@ -12,13 +12,14 @@ import com.itgrids.partyanalyst.dto.SurveyAnalysisDTO;
 import com.itgrids.partyanalyst.dto.SurveyAnalysisVO;
 import com.itgrids.partyanalyst.dto.SurveyInfoVO;
 import com.itgrids.partyanalyst.dto.SurveyVO;
+import com.itgrids.partyanalyst.dto.SurveyorPersonalInfoVO;
 import com.itgrids.partyanalyst.dto.SurveyorVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.SurveyAnswerInfo;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 public interface ISurveyAnalysisService {
 	
-	public ResultStatus saveSurveyorInfo(String name,String age,String mobileNo,String phoneNo,String email,int qualification,int occupation,int caste,Long state,Long district,Long tehsil,Long township,String gender);
+	public ResultStatus saveSurveyorInfo(Long userId,SurveyorPersonalInfoVO surveyorPersonalInfoVO);
 	
 	public List<SelectOptionVO> getStatesList();
 	
@@ -61,4 +62,6 @@ public interface ISurveyAnalysisService {
 	public List<SurveyAnalysisVO> getCasteWiseSurveyAnalysis(Long surveyId);
 	 
 	public List<SurveyAnalysisDTO> getAttributesWiseSurveyAnalysis(Long surveyId);
+	
+	public SurveyorPersonalInfoVO getSurveyorInfoBasedOnSurveyId(Long surveyorId);
 }

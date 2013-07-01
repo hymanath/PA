@@ -387,7 +387,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			userDAO.save(user);			
 			i++;
 			
-			if(i >= 2500)
+			if(i == 1)
 			System.out.println("UPDATE user SET hash_key_txt = '"+secretKey +"',passwd_hash_txt = '"+encryptedPassword+"' WHERE user_id = "+user.getUserId()+";");
 		}
 		

@@ -2749,7 +2749,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		{
 			
 			if(buildType.equalsIgnoreCase("booth"))
-		      list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayat(id,publicationDateId,casteStateId);
+		      list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayat(id,publicationDateId,casteStateId,userId);
 			else{	
 				
 				List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
