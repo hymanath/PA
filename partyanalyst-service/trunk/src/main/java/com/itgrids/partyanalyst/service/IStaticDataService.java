@@ -396,5 +396,8 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getConstituencyForSelDistrict(List<Long> constituencyId,Long districtId);
 		public Long getdistrictForAConstituency(Long constituencyId);
+		public List<SelectOptionVO> getElectionYearsByConstituencyIds(List<Long> constituencyIds);
+		public List<SelectOptionVO> getConstitunciesByElectionIdAndConstituenciyIds(List<Long> assemblyIds  , Long electionId);
+
 		
 }

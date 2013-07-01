@@ -8774,6 +8774,47 @@ public class StaticDataService implements IStaticDataService {
 		return list;
 	}
 	
+	public List<SelectOptionVO> getElectionYearsByConstituencyIds(List<Long> constituencyIds)
+	{
+		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+		try
+		{
+			List<Object[]> electionsList =   constituencyElectionDAO.getElectionYearsByConstituencyIds(constituencyIds);
+			
+			for(Object[] yearsObj:electionsList)
+				list.add(new SelectOptionVO((Long)yearsObj[0],yearsObj[1].toString()));
+			
+			return list;
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+			
+		}
+		
+		
+	}
+	
+	public List<SelectOptionVO> getConstitunciesByElectionIdAndConstituenciyIds(List<Long> assemblyIds  , Long electionId)
+	{
+		List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
+		
+		try
+		{
+			List<Object[]> list = constituencyElectionDAO.getConstituenciesByElectionIdAndConstituencyId(assemblyIds,electionId);
+			
+			for(Object[] obj:list)
+				constituenciesList.add(new SelectOptionVO((Long)obj[0],obj[1].toString()));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return constituenciesList;
+		
+	}
+	
 	public List<SelectOptionVO> getPartiesForBooths(String electionYear,Long constituencyId){
 		List<Party> parties = nominationDAO
 				.findPartiesByConstituencyAndElection(constituencyId,
