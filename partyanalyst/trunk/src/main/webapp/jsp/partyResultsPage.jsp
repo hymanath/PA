@@ -98,30 +98,30 @@ table.searchresultsTable td {
 		<div id="headingDiv" style="background:#06ABEA;margin-left: 12px;">
 		
 			<c:out value="${selectedPartyShortName}"/>  Party Results for          <c:out value="${selectedElectionTypeName}"/> Elections   In   <c:out value="${selectedLocationName}"/>&nbsp;   <c:out value="${reportLevel}"/> 
-
+			
+			<c:if test="${host != 'tdpserver'}">	
 			<span style="float:right;">
 				<g:plusone size="medium"></g:plusone>
+				<script type="text/javascript">
+					(function() {
+						var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+						po.src = 'https://apis.google.com/js/plusone.js';
+						var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+					})();
+				</script>
+			</span>
+			
+			<span style="float:right">
+				<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/partyResultsAction.action?selectedPartyShortName=${selectedPartyShortName}&selectedPartyId=${selectedPartyId}&selectedElectionTypeName=${selectedElectionTypeName}&selectedLocationName=${selectedLocationName}&electionType=${electionType}&reportLevel=${reportLevel}&stateSelectName=${stateSelectName}&partySelectName=${partySelectName}&alliances=true&__checkbox_alliances=true">Tweet</a>
 
-			<script type="text/javascript">
-			(function() {
-			var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-			po.src = 'https://apis.google.com/js/plusone.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-		  })();
-		  </script>
-		  </span>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+				</script>
+			</span>
 
-		<span style="float:right">
-		<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/partyResultsAction.action?selectedPartyShortName=${selectedPartyShortName}&selectedPartyId=${selectedPartyId}&selectedElectionTypeName=${selectedElectionTypeName}&selectedLocationName=${selectedLocationName}&electionType=${electionType}&reportLevel=${reportLevel}&stateSelectName=${stateSelectName}&partySelectName=${partySelectName}&alliances=true&__checkbox_alliances=true">
-		Tweet</a>
-		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-		</script>
-		</span>
-
-		<span style="float:right;margin-right: 25px;">
-		<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/partyResultsAction.action?selectedPartyShortName=${selectedPartyShortName}&selectedPartyId=${selectedPartyId}&selectedElectionTypeName=${selectedElectionTypeName}&selectedLocationName=${selectedLocationName}&electionType=${electionType}&reportLevel=${reportLevel}&stateSelectName=${stateSelectName}&partySelectName=${partySelectName}&alliances=true&__checkbox_alliances=true')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
-		</span>
-	
+			<span style="float:right;margin-right: 25px;">
+				<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/partyResultsAction.action?selectedPartyShortName=${selectedPartyShortName}&selectedPartyId=${selectedPartyId}&selectedElectionTypeName=${selectedElectionTypeName}&selectedLocationName=${selectedLocationName}&electionType=${electionType}&reportLevel=${reportLevel}&stateSelectName=${stateSelectName}&partySelectName=${partySelectName}&alliances=true&__checkbox_alliances=true')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
+			</span>
+			</c:if>
 	</div>
 	
 	<div id="imageDiv" style="margin-top:20px;" align="center">
