@@ -21,7 +21,9 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
 		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
 	}
-	
+	public void testGetAll(){
+		delimitationConstituencyMandalDAO.getAll();
+	}
 /*	public void testMandalsForAConstituency(){
 		List<Tehsil> tehsil = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(new Long(3382));
 		System.out.println(tehsil.size());
@@ -117,4 +119,12 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		for (Object[] parms : list) 
 			System.out.println(parms[0]+" "+parms[1]);
 	}*/
+	public void testgetTehsilsByDelimitationConstituencyIds(){
+		List<Long> mandalIdsList = new ArrayList<Long>(0);
+		mandalIdsList.add(232l);
+		mandalIdsList.add(347l);
+		List<Object[]> list = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyIds(mandalIdsList);
+		for (Object[] parms : list) 
+			System.out.println(parms[0]+" "+parms[1]);
+	}
 }
