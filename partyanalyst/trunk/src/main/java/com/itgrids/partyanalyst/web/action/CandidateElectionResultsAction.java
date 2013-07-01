@@ -855,13 +855,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		request.setAttribute("candidateId",candidateId);
 		
 		session = request.getSession();
-		
-		if(session.getAttribute("candidatePageLoadingFirstTime")== null){
-			if(contentId == null){
-			   session.setAttribute("candidatePageLoadingFirstTime", "true");
+		if(!"PARTY".equalsIgnoreCase(IConstants.PROJECT_TYPE)){
+			if(session.getAttribute("candidatePageLoadingFirstTime")== null){
+				if(contentId == null){
+				   session.setAttribute("candidatePageLoadingFirstTime", "true");
+				}
+			}else{ 
+				session.setAttribute("candidatePageLoadingFirstTime", "false");
 			}
-		}else{ 
-			session.setAttribute("candidatePageLoadingFirstTime", "false");
+		}else{
+			session.setAttribute("specialPageLoadingFirstTime", "false");
 		}
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		

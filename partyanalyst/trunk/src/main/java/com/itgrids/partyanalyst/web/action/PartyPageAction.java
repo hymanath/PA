@@ -245,13 +245,16 @@ public class PartyPageAction extends ActionSupport implements
 		return task;
 	}
 	public String execute() throws Exception {
-		if(session.getAttribute("partyPageLoadingFirstTime") == null)
-		{
-			session.setAttribute("partyPageLoadingFirstTime", "true");
+		if(!"PARTY".equalsIgnoreCase(IConstants.PROJECT_TYPE)){
+			if(session.getAttribute("partyPageLoadingFirstTime") == null)
+			{
+				session.setAttribute("partyPageLoadingFirstTime", "true");
+			}
+			else
+				session.setAttribute("partyPageLoadingFirstTime", "false");
+		}else{
+			session.setAttribute("specialPageLoadingFirstTime", "false");
 		}
-		else
-			session.setAttribute("partyPageLoadingFirstTime", "false");
-		
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
