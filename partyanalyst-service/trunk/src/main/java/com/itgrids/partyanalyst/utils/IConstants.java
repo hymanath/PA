@@ -618,8 +618,11 @@ public interface IConstants {
 	public final static String AREA_TYPE_RURAL = "RURAL";
 	public final static String AREA_TYPE_RURAL_URBAN = "RURAL-URBAN";
 	
-	public final static String LOCAL_HOST = "localhost";
-	
-
+	/*
+	 * tdpserver for tdp project
+	 * partyanalyst.com for live server
+	 * localhost for development environment
+    */	
+    public final static String DEPLOYED_HOST = "localhost";
 	
 }
