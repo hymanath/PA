@@ -201,9 +201,6 @@
 									<span class="fontStyle">Assign Party To User&nbsp;:&nbsp;&nbsp;
 										<a class="alinkstyle" href="<s:url action="assigningPartyToUserAction"/>">Assign</a>
 									</span><br>
-									<span class="fontStyle">Assign Survey To User&nbsp;:&nbsp;&nbsp;
-										<a class="alinkstyle" href="<s:url action="assigningSurveyToUserAction"/>">Assign</a>
-									</span><br>
 									<span class="fontStyle">
 										Restrict User :&nbsp;
 										<a class="alinkstyle" href="<s:url action="setUserRestrictionAction"/>"> Restrict User
@@ -531,7 +528,19 @@
 										<a class="alinkstyle" href="<s:url action="validationToolsAction"/>"> Voter's	Validation tool	</a>
 									</span><br>
 									</fieldset></td>
-								
+									</tr>
+								<tr>
+								<tr>
+								<td>
+								<fieldset class="f2">
+									<legend class="l2">Assign Survey To User</legend>
+									<span class="fontStyle">
+										Assign Survey To User:&nbsp;
+										<a class="alinkstyle" href="<s:url action="assigningSurveyToUserAction"/>"> Assign
+										</a>
+									</span><br>
+									</fieldset></td>
+								</tr>
 								<td></td>
 								</tr>
 						</table>
