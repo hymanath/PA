@@ -34,6 +34,8 @@
 		
 		<!--YUI SCRIPT-->
 		<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
+		
+		<script type="text/javascript" src="js/jQuery/jquery_validation_1.7.js"></script>
     </head>
 <body>
 <style>
@@ -79,7 +81,7 @@
 		<div class="modal-body">
 			<a class="close" data-dismiss="modal">X</a>
 			<p style="font-size:16px;font-weight:bold;"></p>
-			 <form class="form-horizontal" name='personalInfoForm' action='saveSurveyorInfoAction.action' method='post'>
+			 <form class="form-horizontal" name='personalInfoForm' action='userLonginVerficationAction.action' method='post'>
 				<legend>Please Login</legend>
 				<div class="control-group">
 					<label class="control-label" for="username">UserName</label>
@@ -94,13 +96,16 @@
 						<input type="password" id="password" placeholder="password" name='password'>
 					</div>
 				</div>
-								
-			</form>
+				<div id="loginStatusDiv"></div>				
+			
 		</div>
 		<div class="modal-footer">
+			<div id="successMsg" style="float:left;"></div>
+			<div id="errorMsg" style="float:left;"></div>
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-			<button class="btn btn-primary" onClick="checkingForValidUser();">Login</button>
+			<button class="btn btn-primary" type="submit">Login</button>
 		</div>
+		</form>
 	</div>
 		</div>
 		
@@ -114,19 +119,34 @@
 			$('#loginId').click(function(){
 				$('#loginModal').modal('show');
 			});
-			function checkingForValidUser()
+			
+			/* function checkingForValidUser()
 			{
 				var userName = $('#userName').val();
 				var passward = $('#password').val();
 				var jsObj =
 				{  	
 					userName : userName,
-					passward : passward
-					task     :'checkForUserLogin'
+					passward : passward,
+					task     : 'checkForUserLogin'
 				};
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 				var url = "userLonginVerficationAction.action?"+rparam;
 				callAjax(jsObj, url);
+			}
+			
+			function ShowLoginStatus(myResults)
+			{
+				loginStatusDiv
+				if(myResults == "failure")
+				{
+					$('#loginStatusDiv').html("<b style='color:red;'>Please Enter Valid Username And Passward</b>");
+				}
+				else
+				{
+					$('#loginStatusDiv').html("<b style='color:green;'>Successfully Login Please Wait...</b>");
+					
+				}
 			}
 			
 		   function callAjax(jsObj,url)
@@ -141,7 +161,7 @@
 							myResults = YAHOO.lang.JSON.parse(o.responseText);					
 							if(jsObj.task =="checkForUserLogin")
 							{
-								alert(1234);
+								ShowLoginStatus(myResults);
 							}
 							}catch (e) {
 							 
@@ -155,7 +175,7 @@
 				};
 
 				YAHOO.util.Connect.asyncRequest('POST', url, callback);
-		}
+		} */
 		</script>
 </body>
 </html>

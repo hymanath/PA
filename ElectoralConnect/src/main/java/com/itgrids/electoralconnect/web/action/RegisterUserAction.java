@@ -2,6 +2,7 @@ package com.itgrids.electoralconnect.web.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -30,7 +31,8 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 	private String epicId;
 	private String mobileNo;
 	private String resultStr;
-	
+	private String userName;
+	private String password;
 	private IUserService userService;
 	private IMailService mailService;
 	
@@ -127,6 +129,23 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 		this.request = request;
 	}
 	
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String execute(){
 		LOG.debug("In RegisterUserActions execute()");
 		System.out.println(firstName+" "+lastName);
@@ -173,18 +192,12 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 		this.request=request;
 	}
 	
-	public String userLoginCheck()
+	/*public String userLoginCheck()
 	{
-		try{
-			jobj=new JSONObject(getTask());
-		}
-		catch(Exception e){
-			LOG.debug("Exception Raised in RegisterUserActions Validate Email Method ", e);
-		}
-		String username  = jobj.getString("userName");
-		String passward  = jobj.getString("passward");
-		RegistrationVO user = userService.checkForValidUser(username,passward);
 		
+		HttpSession session = request.getSession();
+		RegistrationVO user = userService.checkForValidUser(userName,password);
+		session.setAttribute("USER", user);
 		if(user.getRegistrationID() != null && user.getRegistrationID() > 0)
 		{
 			resultStr = "success";
@@ -194,5 +207,5 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 			resultStr = "failure";
 		}
 		return SUCCESS;
-	}
+	}*/
 }

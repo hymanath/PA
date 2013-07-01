@@ -49,10 +49,8 @@
 			</result>
 		</action>
 		
-		<action name="userLonginVerficationAction" class="RegisterUserAction" method="userLoginCheck">
-			<result type="json" name="success">
-				<param name="root">resultStr</param>				
-			</result>
+		<action name="userLonginVerficationAction" class="loginAction" method="userLoginCheck">
+			<result>/jsp/registerNow.jsp</result>
 		</action>
 		</package>
 </struts>      

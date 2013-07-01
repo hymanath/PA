@@ -20,4 +20,8 @@
 	 	<property name="userService" ref="userService"/>
 	 	<property name="mailService" ref="mailService"/> 	
 	 </bean>
+	 
+	 <bean id="loginAction" class="com.itgrids.electoralconnect.web.action.LoginAction" singleton="false">
+	 	<property name="userService" ref="userService"/>
+	 </bean>
 </beans>
