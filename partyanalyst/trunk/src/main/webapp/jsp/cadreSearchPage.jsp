@@ -751,7 +751,8 @@ function buildCadreSearchResultDataTable(rparam)
 		    				{key:"memberType", label: "Cadre Type",sortable:true},
 							{key:"educationStr", label: "Education",sortable:true},
 		    				{key:"professionStr", label: "Occupation",sortable:true},
-							{key:"casteCategoryStr", label: "Caste Category",sortable:true},
+							//{key:"casteCategoryStr", label: "Caste Category",sortable:true},
+                            {key:"casteCategoryStr", label: "Caste ",sortable:true},
 							{key:"edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit},
 							{key:"Delete", label: "Delete",formatter:YAHOO.widget.DataTable.deleteCadre}
 		    	        ]; 
