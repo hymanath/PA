@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Profile Page</title>
+<title>DashBoard</title>
 <script type="text/javascript" src="js/userProfile/userProfilePage.js"> </script>
 <script type="text/javascript" src="js/opinionpoll/opinionpoll.js"> </script>
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
@@ -289,16 +289,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					<c:if test="${dataTransferVO.userStatusType == 'FREE_USER'}">
 					<li class="active"><a href="javascript:{}" onclick="getInitialUpdates();" id="latestUpdates" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
 					</c:if>
-					<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER' && hasNewsMonitoring == true) || (dataTransferVO.userStatusType == 'BOTH' && hasNewsMonitoring == true)}">
+					<c:if test="${((dataTransferVO.userStatusType == 'PARTY_ANALYST_USER' && hasNewsMonitoring == true) || (dataTransferVO.userStatusType == 'BOTH' && hasNewsMonitoring == true)) && host != 'tdpserver'}">
 					<li><a href="javascript:{}" onclick="getInitialUpdates();" id="latestUpdates" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
 					</c:if>
-					<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER' && hasNewsMonitoring == false) || (dataTransferVO.userStatusType == 'BOTH' && hasNewsMonitoring == false)}">
+					<c:if test="${((dataTransferVO.userStatusType == 'PARTY_ANALYST_USER' && hasNewsMonitoring == true) || (dataTransferVO.userStatusType == 'BOTH' && hasNewsMonitoring == true))  && host == 'tdpserver'}">
 					<li class="active"><a href="javascript:{}" onclick="getInitialUpdates();" id="latestUpdates" class="whatsnew"><i class="icon-fire"></i><i class="icon-chevron-right"></i> Whats's New?</a></li>
 					</c:if>
 					
-					<li><a href="javascript:{}" class="messagesLink"><i class="icon-envelope"></i><i class="icon-chevron-right"></i> Messages</a></li>
-					<li><a href="javascript:{}" id="friendsLink"><i class="icon-comment"></i><i class="icon-chevron-right"></i> Friends</a></li>
-					<li><a href="javascript:{}" id="requestLink"><i class="icon-retweet"></i><i class="icon-chevron-right"></i> Requests</a></li>
+					<c:if test="${ host != 'tdpserver'}">
+						<li><a href="javascript:{}" class="messagesLink"><i class="icon-envelope"></i><i class="icon-chevron-right"></i> Messages</a></li>
+						<li><a href="javascript:{}" id="friendsLink"><i class="icon-comment"></i><i class="icon-chevron-right"></i> Friends</a></li>
+						<li><a href="javascript:{}" id="requestLink"><i class="icon-retweet"></i><i class="icon-chevron-right"></i> Requests</a></li>
+					</c:if>
 					</ul>
 				
 				</div>
@@ -328,8 +330,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					<li><a  href="javascript:{}" class="assessPoliticianLink"><i class="icon-edit"></i><i class="icon-chevron-right"></i> Asses Politician</a>
 					<input type="hidden" value="Total" class="politicalReasTypeVar" /></li>
 					<li><a href="javascript:{}" id="FavouriteLinks"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favourite Links</a></li>
-					<c:if test="${hasNewsMonitoring == true}">
+					<c:if test="${hasNewsMonitoring == true && host != 'tdpserver'}">
 					<li class="active"><a href="javascript:{}" class="active" onclick="getNews('byTodayDate','getCount','','','','','','','')" id="customerNews"><i class="icon-file"></i><i class="icon-chevron-right"></i> News</a></li>
+					</c:if>
+					<c:if test="${hasNewsMonitoring == true && host == 'tdpserver'}">
+					<li class=""><a href="javascript:{}" onclick="getNews('byTodayDate','getCount','','','','','','','')" id="customerNews"><i class="icon-file"></i><i class="icon-chevron-right"></i> News</a></li>
 					</c:if>
 					<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
 					<li><a href="javascript:{}" id="announcements"><i class="icon-bullhorn"></i><i class="icon-chevron-right"></i> Announcements</a></li>
@@ -350,9 +355,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					<li><a href="newsDisplayAction.action" id="newsAnalysis" target="_blank" onclick="clearDivs()"><img src="images/graph.png" style="width:20px;"></i><i class="icon-chevron-right"></i> News Analyse</a></li>
 					</c:if>
 					<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
-					<li><a href="userGroupAction.action" onclick="clearDivs()" id="userGroups" target="_blank"><img src="images/icons/indexPage/group_icon.png" style="width:20px;"><i class="icon-chevron-right"></i> User Groups</a></li>
+					<!--<li><a href="userGroupAction.action" onclick="clearDivs()" id="userGroups" target="_blank"><img src="images/icons/indexPage/group_icon.png" style="width:20px;"><i class="icon-chevron-right"></i> User Groups</a></li>
 					
-					<li><a href="sendUpdatesBySMSAction.action" id="communicationCenter" target="_blank" onclick="clearDivs()"><i class="icon-asterisk"></i><i class="icon-chevron-right"></i> Communication  Center</a></li>
+					<li><a href="sendUpdatesBySMSAction.action" id="communicationCenter" target="_blank" onclick="clearDivs()"><i class="icon-asterisk"></i><i class="icon-chevron-right"></i> Communication  Center</a></li>-->
 					
 					<li ><a href="javascript:{}" id="cadreInfoLink" onClick="getCadresInfo();"><i class="icon-user"></i><i class="icon-chevron-right"></i> Cadre Info</a></li>
 					<li><a href="javascript:{}" class="ImportantEvents"><i class="icon-calendar"></i><i class="icon-chevron-right"></i> Important Events</a></li>
@@ -491,7 +496,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 			<!-- Profile Statistics Div End -->
 			
 			
-
+        <c:if test="${host != 'tdpserver'}">
 				<div class="widget blue">
 				<!-- <h4>People In Your Location</h4>
 				<div>
@@ -561,9 +566,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 
 				</div>
 			<!-- People You May Know Div End -->
-
+        </c:if>
 				<!-- special Pages-->
-				<div class="widget red hottopics">
+				 <c:if test="${host == 'tdpserver'}">
+				  <div class="widget red hottopics" style="padding-bottom:10px;">
+				 </c:if>
+				 <c:if test="${host != 'tdpserver'}">
+				  <div class="widget red hottopics">
+				 </c:if>
 					<h2>
 					<span><i class="icon-thumbs-up" id="icon_leftsec"></i></span>
 					You Might Like</h2>
@@ -585,7 +595,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 						<a id="specialPageLink" href="javascript:{}" class="btn btn-primary" >View More Special Pages</a>						
 				</div>
 				<!-- end special Pages -->
-				
+				<c:if test="${host != 'tdpserver'}">
 				<!-- opinionPollDiv Start -->
 				<div class="widget blue" style="padding-bottom:0px;">
 					<h2><span><i class="icon-signal "id="icon_leftsec"></i><span>
@@ -599,7 +609,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				
 				</div>
 				<!-- opinionPollDiv End -->
-		
+		       </c:if>
 			</div>
 		<!--------Right div Close------>
 			
@@ -879,10 +889,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 }
  
 
-<c:if test="${hasNewsMonitoring == false}">
+<c:if test="${hasNewsMonitoring == false || host == 'tdpserver'}">
 getInitialUpdates();
 </c:if>
-<c:if test="${hasNewsMonitoring == true}">
+<c:if test="${hasNewsMonitoring == true && host != 'tdpserver'}">
 getNews('byTodayDate','getCount','','','','','','','');
 </c:if>
 
@@ -928,8 +938,9 @@ var impDates = new Array();
 						};
 			constituencies.push(obj);
 		</c:forEach>
+		<c:if test="${host != 'tdpserver'}">
 		buildPolls();
-		
+		</c:if>
 	$(document).ready(function(){
 	
 	
@@ -1336,7 +1347,7 @@ function callAjaxForUserSettings(jsObj,url)
 										
 											
 			}catch (e) { 
-				alert("Invalid JSON result" + e);   
+				//alert("Invalid JSON result" + e);   
 			}  
 	   },
 	   scope : this,
@@ -1363,7 +1374,9 @@ function checkForUserStatus()
 		<c:remove var="status" scope="session" />  
 	}
 }
-getPeopleYouMayKnowDetails();
+<c:if test="${host != 'tdpserver'}">
+  getPeopleYouMayKnowDetails();
+</c:if>
 checkForUserStatus();
 </script>
 </body>
