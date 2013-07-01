@@ -47,6 +47,15 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 	private Long electionId;
 	private Long electionType;
 	private Long stateId;
+	private String host = IConstants.DEPLOYED_HOST;
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
 
 	public List<PartyElectionResultVO> getPartyElectionResultVOList() {
 		return partyElectionResultVOList;
