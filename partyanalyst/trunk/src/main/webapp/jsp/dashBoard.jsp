@@ -546,10 +546,10 @@ lable{line-height:40px;}
 				<h2>Booth Wise Results</h2>
 				<div id="boothWiseResult"></div>
 				   <label class="checkbox" style="margin-top:10px;margin-left:5px;width:200px;" id="boothResultLable">
-							<input type="checkbox" id="moreDetailsId"> Check for More Details
+							<input type="checkbox" id="moreDetailsId" checked> Check for More Details
 				   </label>
 	   
-				<div class="form-horizontal boothResults " name='boothSelection'>
+				<div class="form-horizontal boothResults " name='boothSelection' style="display:block;">
 					<div class="control-group" >
 						<label class="control-label" for="firstName">Election Type</label>
 						<div class="controls " style="">
@@ -562,9 +562,9 @@ lable{line-height:40px;}
 					<table  style="margin-bottom: -8px; margin-top: -20px;">
 					<tr>
 					<td><span>Select Year</span></td>
-					<td><s:select theme="simple" list="electionYearsList" name="electionYear" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/> </td>
+					<td><s:select theme="simple" list="electionYearsList" name="electionYear" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions('')"/> </td>
 					<td><span>Constituency</span></td>
-					<td><select id="constiId" onChange="getPartiesForElections()" name="constituencyName">
+					<td><select id="constiId" onChange="getPartiesForElections('')" name="constituencyName">
 								<option value='0'>Select Constituency</option>
 							</select></td>
 					</tr>
@@ -726,6 +726,10 @@ lable{line-height:40px;}
 
 <script>
  $(document).ready(function(){
+	 $('#electionYearsId').val($("#electionYearsId option:eq(1)").val());
+	 constituencyOptions("default");
+
+	 $('#moreDetailsId').change();
 	//$("#constituencyId option[value=0]").remove();
 	//$("#constituencyList option[value=0]").remove();
  	  /*$('#selConstituency').combobox();
@@ -807,7 +811,7 @@ var jsObj =
 		var url = "optionsForBoothAction.action?"+rparam;
 		callAjax(jsObj, url);
 }
-function constituencyOptions(){
+function constituencyOptions(type){
 	var stateId=1;
 	var electionType=$("input:radio[name=electionType]:checked").val();
 	var electionId=$("#electionYearsId option:selected").val();
@@ -816,6 +820,7 @@ function constituencyOptions(){
 			stateId:stateId,
 			electionType:electionType,
 			electionId:electionId,
+            type:type,
 			task:'forConstituencies'
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -823,13 +828,14 @@ function constituencyOptions(){
 		callAjax(jsObj, url);
 }
 
-function getPartiesForElections(){
+function getPartiesForElections(type){
 	var electionYear=$("#electionYearsId option:selected").text();
 	var constiId=$("#constiId option:selected").val();
 	var jsObj =
 		{  	
 			electionYear:electionYear,
 			constituencyId:constiId,
+            type:type,
 			task:'forParty'
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -1043,7 +1049,7 @@ function buildElectionYears(myResult)
 	}	
 
 }
-function buildPartiesSelectBox(myResult){
+function buildPartiesSelectBox(myResult ,type){
 	if(myResult == null || myResult.length == 0)
 		return;
 	
@@ -1071,6 +1077,28 @@ function buildPartiesSelectBox(myResult){
 			electionYearsElmt.add(option); // IE only
 		}
 	}
+
+	if(type == "default")
+		$('#partyId').val($('#partyId option:eq(1)').val());
+
+}
+
+function buildConstituenciesDefault(myResult)
+{
+	if(myResult == null || myResult.length == 0)
+		return;
+
+	$('#constiId').find('option').remove();
+    $('#constiId').append('<option value="">Select Constituency</option>');
+	$.each(myResult,function(index , value){
+       $('#constiId').append('<option value="'+value.id+'">'+value.name+'</option>');
+	});
+
+	$('#constiId').val($('#constiId option:eq(1)').val());
+	getPartiesForElections('default');
+
+	
+
 }
 
 function buildConstituencies(myResult){
@@ -1518,10 +1546,14 @@ function callAjax(jsObj,url){
 								}
 								if(jsObj.task =="forParty")
 								{
-									buildPartiesSelectBox(myResults);
+									buildPartiesSelectBox(myResults,jsObj.type);
 								}
 								if(jsObj.task=="forConstituencies"){
-									buildConstituencies(myResults);
+
+									if(jsObj.type == "default")
+										buildConstituenciesDefault(myResults);
+									else
+ 									  buildConstituencies(myResults);
 								}
 								if(jsObj.task == "getPariesForAssemply")
 								{
