@@ -187,8 +187,8 @@ lable{line-height:40px;}
 <img src="pictures/profiles/${loginUserProfilePic}" id="userProfileImg" style="height: 100px; width: 132px; "">
 </c:if>
 </div>
-<div  id="profileUserName" style="margin-top: 12px;" >
-<b style="margin-left: 16px;">${loginUserName}</b> </div></div>
+<div  id="profileUserName" style="margin-top: 12px;text-align:center;" >
+<b>${loginUserName}</b> </div></div>
 </div>		
  <div class="widget blue">
  <h2>Account Settings</h2>
