@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CandidateDetailsService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -59,7 +60,16 @@ public class StatePageAction extends ActionSupport implements
 	private JSONObject jsObj;
 	private String task;
 	private ElectionGoverningBodyVO electionGoverningBodyVO;
+	private String host = IConstants.DEPLOYED_HOST;
 	
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
 	public ElectionGoverningBodyVO getElectionGoverningBodyVO() {
 		return electionGoverningBodyVO;
 	}
@@ -184,7 +194,7 @@ public class StatePageAction extends ActionSupport implements
     	    	
 		stateElections = statePageService.getStateElections(statePage.getStateId());
    	  	
-   	  	censusVO = statePageService.getCensusDetails(statePage.getStateId(),2001);   	  	
+   	  	censusVO = statePageService.getCensusDetailsOfAState(statePage.getStateId(),2001);   	  	
    	  	
    	  	if(statePage == null || districtData == null)  	  	       	  		
     	 return ERROR;
