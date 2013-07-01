@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.ISpecialPageInfoDAO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.model.SpecialPageInfo;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SpecialPageInfoDAO extends GenericDaoHibernate<SpecialPageInfo,Long> implements ISpecialPageInfoDAO {
 
@@ -28,7 +29,10 @@ public class SpecialPageInfoDAO extends GenericDaoHibernate<SpecialPageInfo,Long
 		Query queryObj = getSession().createQuery("select model.title,model.description,model.showImgPath,model.specialPage.specialPageId from SpecialPageInfo" +
 				" model where model.isDisplayEnabled = 'Yes'");
 		queryObj.setFirstResult(0);
-		queryObj.setMaxResults(5);
+		if("tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST))
+		 queryObj.setMaxResults(3);
+		else
+		 queryObj.setMaxResults(5);	
 		return queryObj.list();
 		
 	}
