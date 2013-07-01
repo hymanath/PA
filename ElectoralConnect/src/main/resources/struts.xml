@@ -39,8 +39,11 @@
 			<result>/jsp/registerNow.jsp</result>
 		</action>
 		
-		<action name="registerUserProfile" class="RegisterUserAction">
+		<action name="registerUserProfile" class="RegisterSaveAction">
 			<result>/jsp/registerNow.jsp</result>
+			<result name="input">/jsp/registerNow.jsp</result>
+         	<result name="success">/jsp/registerNow.jsp</result>
+         	<result name="error">/jsp/registerNow.jsp</result>
 		</action>
 		
 		<action name="validateEmailAction" class="RegisterUserAction" method="validateEmail">

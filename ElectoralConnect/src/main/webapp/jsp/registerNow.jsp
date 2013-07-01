@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="s" uri="/struts-tags" %>  
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -20,6 +21,10 @@
 </style>
 
 <div id="formDivId">
+			<div class="control-group" style="color:red;">
+					<s:actionerror />
+					<s:fielderror />
+				</div>
 		   <form class="form-horizontal" name='userDetailsForm' action="registerUserProfile.action" method="post">
 				<legend>Personal Information</legend>
 				<div class="control-group">
@@ -60,10 +65,7 @@
 					</div>
 				</div>
 				
-				<div class="control-group">
-					<s:actionerror />
-					<s:fielderror />
-				</div>
+				
 				${resultStr}
 			</form>
 			

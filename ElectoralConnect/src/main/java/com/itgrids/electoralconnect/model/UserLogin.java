@@ -14,6 +14,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="user_login")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

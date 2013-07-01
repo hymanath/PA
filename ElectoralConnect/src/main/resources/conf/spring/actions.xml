@@ -24,4 +24,9 @@
 	 <bean id="loginAction" class="com.itgrids.electoralconnect.web.action.LoginAction" singleton="false">
 	 	<property name="userService" ref="userService"/>
 	 </bean>
+	 
+	 <bean id="RegisterSaveAction" class="com.itgrids.electoralconnect.web.action.RegisterSaveAction" singleton="false">
+	 	<property name="userService" ref="userService"/>
+	 	<property name="mailService" ref="mailService"/>
+	 </bean>
 </beans>

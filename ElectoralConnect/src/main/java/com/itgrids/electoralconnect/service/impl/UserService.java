@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -14,7 +13,6 @@ import com.itgrids.electoralconnect.dao.IUserDAO;
 import com.itgrids.electoralconnect.dao.IUserLoginDAO;
 import com.itgrids.electoralconnect.dao.IUserProfileDAO;
 import com.itgrids.electoralconnect.dao.IUserRolesDAO;
-import com.itgrids.electoralconnect.dao.hibernate.RolesDAO;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
 import com.itgrids.electoralconnect.dto.UserVO;
 import com.itgrids.electoralconnect.model.Roles;
@@ -23,9 +21,7 @@ import com.itgrids.electoralconnect.model.UserLogin;
 import com.itgrids.electoralconnect.model.UserProfile;
 import com.itgrids.electoralconnect.model.UserRoles;
 import com.itgrids.electoralconnect.service.IUserService;
-import com.itgrids.partyanalyst.dao.IRoleDAO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
-import com.itgrids.partyanalyst.model.Role;
 
 public class UserService implements IUserService{
 		//DAO's 
@@ -152,10 +148,17 @@ public class UserService implements IUserService{
 			return userVO;
 		}
 		
-		public RegistrationVO checkForValidUser(String username,String passward)
+		/**
+		 * This Service is used for Verfying the weather user entered username and password or correct or wrong
+		 * @param String username
+		 * @param String password
+		 * @return RegistrationVO
+		 * @date 29-06-2013
+		 */
+		public RegistrationVO checkForValidUser(String username,String password)
 		{
 			RegistrationVO user        = new RegistrationVO();
-			List<Object[]> userDetails = userDAO.checkForValidUser(username, passward);
+			List<Object[]> userDetails = userDAO.checkForValidUser(username, password);
 			UserProfile userProfile    = new UserProfile();
 			UserLogin userLogin        = new UserLogin();
 			if(userDetails != null && userDetails.size() > 0)

@@ -15,6 +15,7 @@ public class RegistrationVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long registrationID;
+	
 	private String firstName;
 	private String middleName;
 	private String lastName;
@@ -27,6 +28,8 @@ public class RegistrationVO implements Serializable{
 	private String phone;
 	private String mobile;
 	private String address;
+	
+	private Boolean isAdmin;
 	public Long getRegistrationID() {
 		return registrationID;
 	}
@@ -108,6 +111,13 @@ public class RegistrationVO implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+	
 	
 	
 	
