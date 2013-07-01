@@ -55,5 +55,9 @@
 		<action name="userLonginVerficationAction" class="loginAction" method="userLoginCheck">
 			<result>/jsp/registerNow.jsp</result>
 		</action>
+		
+		<action name="adminPageAction" class="adminPageAction">
+			<result>/jsp/adminPage.jsp</result>
+		</action>
 		</package>
 </struts>      

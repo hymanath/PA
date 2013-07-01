@@ -27,6 +27,7 @@ public class RegisterSaveAction extends ActionSupport implements ServletRequestA
 	private IUserService userService;
 	private HttpServletRequest request;
 	private IMailService mailService;
+	private String userType;
 	public String getFirstName() {
 		return firstName;
 	}
@@ -80,6 +81,15 @@ public class RegisterSaveAction extends ActionSupport implements ServletRequestA
 	public void setMailService(IMailService mailService) {
 		this.mailService = mailService;
 	}
+	
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
 	public String execute()
 	{
 		LOG.debug("In RegisterUserActions execute()");
@@ -90,7 +100,7 @@ public class RegisterSaveAction extends ActionSupport implements ServletRequestA
 		userProfileVO.setEmailId(emailId);
 		userProfileVO.setMobileNo(mobileNo);
 		userProfileVO.setEpicId(epicId);
-		
+		userProfileVO.setUserType(userType);
 		UserVO uservo=userService.registerUser(userProfileVO);
 		String requestURL= request.getRequestURL().toString();
 		System.out.println(requestURL);

@@ -65,6 +65,7 @@
 					</div>
 				</div>
 				
+				<div id="userType"><input type="hidden" id="userType" name="userType" value="${userType}"></input></div>
 				
 				${resultStr}
 			</form>

@@ -9,6 +9,7 @@ public class UserProfileVO implements Serializable {
  private String epicId;
  private String mobileNo;
  private String userRole;
+ private String userType;
  
 public String getFirstName() {
 	return firstName;
@@ -46,7 +47,13 @@ public String getUserRole() {
 public void setUserRole(String userRole) {
 	this.userRole = userRole;
 }
- 
+public String getUserType() {
+	return userType;
+}
+public void setUserType(String userType) {
+	this.userType = userType;
+}
+
  
 	
 }
