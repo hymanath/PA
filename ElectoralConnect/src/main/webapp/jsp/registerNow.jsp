@@ -8,7 +8,7 @@
 <title>Register Now</title>
 </head>
 <body>
-
+<script type="text/javascript"  src="js/RegisterFormValidation.js"></script>
 <style>
 	.requ:after { content:"*";color:red;}
 	span.ok{background-image:url("img/accept.png");}
@@ -18,6 +18,20 @@
 	#formDivId{width:800px;margin-left:auto;margin-right:auto;}
 	#formDivId legend,#saveUser{margin-left:140px;margin-bottom:5px;}
 	#status{background-image:url(img/accept.png)}
+	   label.valid {
+		  color: green !important;
+		  background: url(img/accept.png) no-repeat !important;
+		  display: inline-block;
+		  text-indent: 24px;
+		}
+		label.error {
+		  font-weight: bold; 
+		  color: red;
+		  background: url(img/error.png) no-repeat;
+		  display: inline-block;
+		  text-indent: 24px;
+		}
+	
 </style>
 
 <div id="formDivId">
@@ -25,12 +39,13 @@
 					<s:actionerror />
 					<s:fielderror />
 				</div>
-		   <form class="form-horizontal" name='userDetailsForm' action="registerUserProfile.action" method="post">
+		   <form class="form-horizontal" name='userDetailsForm' action="registerUserProfile.action" method="post" onsubmit="return validate()">
 				<legend>Personal Information</legend>
 				<div class="control-group">
 					<label class="control-label requ" for="firstName">First Name</label>
 					<div class="controls ">
-						<input type="text" name="firstName" id="firstNameId" placeholder="First Name">  
+						<input type="text" name="firstName" id="firstNameId" placeholder="First Name"> 
+						<span id="firstNameErr"></span>
 					</div>
 					
 					
@@ -47,14 +62,14 @@
 				<div class="control-group ">
 					<label class="control-label requ" for="emailid">Email-Id</label>
 					<div class="controls ">
-						<input type="text" id="emailId" name="emailId" placeholder="Email-Id"><img src="img/accept.png" id="correctImgId"/>  <img src="img/error.png" id="errorImgId"/>
+						<input type="text" id="emailId" name="emailId" placeholder="Email-Id">
 					</div>
 				</div>
 				
 				<div class="control-group">
 					<label class="control-label" for="mobileno">Mobile Number</label>
 					<div class="controls">
-						<input type="text" id="mobileId" name="mobileNo" placeholder="Mobile Number"><div><img src="img/accept.png" id="correctImgId"/></div>
+						<input type="text" id="mobileId" name="mobileNo" placeholder="Mobile Number"><div></div>
 					</div>
 				</div>
 				
@@ -74,12 +89,12 @@
 			<button class="btn btn-primary" id="saveUser">Save changes</button>
 		
 	</div>
-		
-		
+	
 		<script>
 	
 	$('#saveUser').click(function(){
-		document.userDetailsForm.submit();
+		//document.userDetailsForm.submit();
+		$(".form-horizontal").validate();
 	});
 	
 	$(document).ready(function () {
