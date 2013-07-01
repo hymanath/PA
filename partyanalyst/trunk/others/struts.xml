@@ -1,0 +1,3 @@
+<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
+	<result type="redirect" name="PARTY_ANALYST_USER">dashBoardAction.action?changedUserName=true</result>	 	 
+</action>
