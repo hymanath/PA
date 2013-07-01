@@ -5488,5 +5488,11 @@
 				<param name="root">pConstituencyList</param>
 		 	</result>
 		</action>
+		
+		<action name="getConstitunciesByElectionIdAndConstituenciyIds" class="dashBoardAction"  method="getConstitunciesByElectionIdAndConstituenciyIds">
+		<result type="json" name="success">
+				<param name="root">constituencyList</param>
+		 </result>
+		</action>
 		</package>
 </struts>      

@@ -431,7 +431,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
 		
-		electionYearsList=staticDataService.getElectionYearsForBooths(1l,2l);
+		//electionYearsList=staticDataService.getElectionYearsForBooths(1l,2l);
 		
 		statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(new Long(5)); 
 		
@@ -577,6 +577,15 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				districtId = staticDataService.getdistrictForAConstituency(constituencyId);
 			}
 		}
+		
+		List<Long> assemblyIds = new ArrayList<Long>();
+		for(SelectOptionVO vo:assemblyConstis)
+			assemblyIds.add(vo.getId());
+		
+		
+		
+		electionYearsList=staticDataService.getElectionYearsByConstituencyIds(assemblyIds);
+		
 		//assembliesForParl
 		//parliaments
 		crossVotingVO = new CrossVotingVO();
@@ -618,7 +627,30 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			elecYears=new ArrayList<SelectOptionVO>();
 			Long etype=jObj.getLong("electionType");
 			Long stateId=jObj.getLong("stateId");
-			elecYears=staticDataService.getElectionYearsForBooths(stateId,etype);
+			
+			if(etype == 2L){
+				
+				List<Long> assemblyIds = new ArrayList<Long>();
+				
+			  assemblyConstis = (List<SelectOptionVO>)session.getAttribute("assemblyConstis");	
+			  
+			  for(SelectOptionVO vo:assemblyConstis)
+				  assemblyIds.add(vo.getId());
+			  
+			  elecYears=staticDataService.getElectionYearsByConstituencyIds(assemblyIds);
+			}
+			else if(etype == 1L)
+			{
+				List<Long> parlimentIds = new ArrayList<Long>();
+				
+				parlConstis = (List<SelectOptionVO>)session.getAttribute("parlConstis");
+				
+				 for(SelectOptionVO vo:parlConstis)
+					 parlimentIds.add(vo.getId());
+				  
+				  elecYears=staticDataService.getElectionYearsByConstituencyIds(parlimentIds);
+			}
+
 			
 			return "years";
 		}
@@ -765,6 +797,33 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			log.error("Exception rised in getConstituenciesAndParties", e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getConstitunciesByElectionIdAndConstituenciyIds()
+	{
+		try
+		{
+				jObj = new JSONObject(getTask());
+				
+			     session = request.getSession();
+			     
+			     assemblyConstis = (List<SelectOptionVO>)session.getAttribute("assemblyConstis");
+			     
+			     List<Long> assemblyIds = new ArrayList<Long>();
+			     
+			     for(SelectOptionVO vo:assemblyConstis)
+			    	 assemblyIds.add(vo.getId());
+			    	 
+			
+			     constituencyList = staticDataService.getConstitunciesByElectionIdAndConstituenciyIds(assemblyIds,jObj.getLong("electionId"));
+			     
+			     
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 	}
 }
