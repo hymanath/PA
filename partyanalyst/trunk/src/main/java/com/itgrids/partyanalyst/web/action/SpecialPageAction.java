@@ -235,7 +235,7 @@ public class SpecialPageAction extends ActionSupport implements
 	public String execute() {
 		
 		session = request.getSession();
-		if(!"PARTY".equalsIgnoreCase(IConstants.PROJECT_TYPE)){
+		if(!"tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST)){
 			if(session.getAttribute("specialPageLoadingFirstTime")== null){
 				if(contentId == null){
 				   session.setAttribute("specialPageLoadingFirstTime", "true");
