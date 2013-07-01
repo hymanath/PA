@@ -931,27 +931,11 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 		 if(coverImg == null)
 		 {
-		 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
 			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.PROFILE_PIC + pathSeperator;
-		 else if(request.getRequestURL().toString().contains(IConstants.LOCAL_HOST))
-		 {
-			 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\"; 
-		 }
-		 else
-			 filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.PROFILE_PIC + pathSeperator;	
 		 }
 		 else if(coverImg != null && coverImg.equalsIgnoreCase("true"))
-		 {
-			 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
-			 
-					 filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.COVER_PIC + pathSeperator;
-			
-				 else if(request.getRequestURL().toString().contains(IConstants.LOCAL_HOST))
-				
-					 filePath = context.getRealPath("/")+"pictures\\"+IConstants.COVER_PIC+"\\";
-				 else
-					 filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.COVER_PIC + pathSeperator;
-				
+		 { 
+			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.COVER_PIC + pathSeperator;
 		 }
 		BufferedImage image = null;
         try {

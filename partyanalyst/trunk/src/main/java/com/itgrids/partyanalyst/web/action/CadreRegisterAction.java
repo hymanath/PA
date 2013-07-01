@@ -1020,16 +1020,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	{
 		try{
 			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-			String filePath = null;
 			
-			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
-				filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator;
-			 else if(request.getRequestURL().toString().contains(IConstants.LOCAL_HOST))
-			 {
-				 filePath = context.getRealPath("/")+"images\\"+IConstants.CADRE_IMAGES+"\\";
-			 }
-			 else
-				 filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator;
+			String filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator;
 			
 			log.info("Cadre File Path -- "+filePath);
 			

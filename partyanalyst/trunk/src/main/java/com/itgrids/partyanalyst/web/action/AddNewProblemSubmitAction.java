@@ -601,16 +601,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			String fileName;
 			
 			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-			String filePath = null;
 			
-			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
-				filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES +pathSeperator+"Problem_Files"+pathSeperator;
-			 else if(request.getRequestURL().toString().contains(IConstants.LOCAL_HOST))
-			 {
-				 filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES+pathSeperator+"Problem_Files"+ pathSeperator; 
-			 }
-			 else
-				 filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES +pathSeperator+"Problem_Files"+pathSeperator;
+			String filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES +pathSeperator+"Problem_Files"+pathSeperator;
 			
 			problemFilePathList = new ArrayList<String>();
 			
