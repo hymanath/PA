@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -127,9 +128,13 @@ hr
 <center>
 <div style="background:#fff;width: 950px;margin-top:12px;">
 <span id="mainHeading" style="color:#990099;font-weight:bold;font-size:20px;margin:10px;">Live Election Results Analysis</span>
-<div style="margin-top: 28px;margin-right: 4px;margin-left: 682px;">
-<a href="ministerAnalysisAction.action" class="grad" style="font-family:verdana;font-size:12px;text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">View Ministers Results Analysis</a>
-</div>
+
+<c:if test="${host != 'tdpserver'}">
+	<div style="margin-top: 28px;margin-right: 4px;margin-left: 682px;">
+	<a href="ministerAnalysisAction.action" class="grad" style="font-family:verdana;font-size:12px;text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">View Ministers Results Analysis</a>
+	</div>
+</c:if>
+
 <div style="margin-top: 15px;margin-right: 4px;margin-left: 682px;">
 <a href="districtWisePartyPerformanceAction.action" class="grad" style="font-family:verdana;font-size:12px;text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">View District Wise Party Performance</a>
 </div>
