@@ -2,11 +2,14 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
 
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
+import org.hibernate.Query;
 
 public class DelimitationConstituencyDAO extends GenericDaoHibernate<DelimitationConstituency, Long> implements
 IDelimitationConstituencyDAO {
@@ -178,4 +181,13 @@ IDelimitationConstituencyDAO {
 				"and model.year =(select max(model1.year) from DelimitationConstituency model1 where model1.constituency.name = ? and "+
 				" model1.constituency.electionScope.electionType.electionType = ?)",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyIDs(List<Long> constituencyIDs){
+		String queryString = "from DelimitationConstituency model where model.constituency.constituencyId in (:constituencyIDs) order by model.year desc";
+		Query query  = getSession().createQuery(queryString);
+		query.setParameterList("constituencyIDs", constituencyIDs);
+		return query.list();
+	}
+		
 }
