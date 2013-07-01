@@ -245,7 +245,7 @@ public class PartyPageAction extends ActionSupport implements
 		return task;
 	}
 	public String execute() throws Exception {
-		if(!"PARTY".equalsIgnoreCase(IConstants.PROJECT_TYPE)){
+		if(!"tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST)){
 			if(session.getAttribute("partyPageLoadingFirstTime") == null)
 			{
 				session.setAttribute("partyPageLoadingFirstTime", "true");
