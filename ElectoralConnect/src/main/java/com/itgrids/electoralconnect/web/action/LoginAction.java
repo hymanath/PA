@@ -15,7 +15,7 @@ import com.opensymphony.xwork2.ActionSupport;
 @SuppressWarnings("serial")
 public class LoginAction extends ActionSupport implements ServletRequestAware{
 
-	private static final Logger LOG = Logger.getLogger(RegisterUserAction.class);
+	private static final Logger LOG = Logger.getLogger(LoginAction.class);
 	private String task;
 	private JSONObject jobj;
 	private HttpServletRequest request;
