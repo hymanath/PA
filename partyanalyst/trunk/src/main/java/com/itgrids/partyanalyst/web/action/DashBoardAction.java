@@ -62,7 +62,30 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private Long crossVotingPConsti;
 	private Long crossVotingAConsti;
 	private Long crossVotingParty;
+	private List<SelectOptionVO> mandalsList;
+	private boolean politician;
 	
+	
+	public List<SelectOptionVO> getMandalsList() {
+		return mandalsList;
+	}
+
+
+	public void setMandalsList(List<SelectOptionVO> mandalsList) {
+		this.mandalsList = mandalsList;
+	}
+
+
+	public boolean isPolitician() {
+		return politician;
+	}
+
+
+	public void setPolitician(boolean politician) {
+		this.politician = politician;
+	}
+
+
 	public List<SelectOptionVO> getElectionYearsList() {
 		return electionYearsList;
 	}
@@ -472,6 +495,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			assemblyConstis.add(0, initialVo);
 			user.setUserAccessVoterConstituencies(constituencyList);
 		}
+		if("Politician".equalsIgnoreCase(user.getUserType())){
+			mandalsList = votersAnalysisService.getMandalsInConstituencys(assemblyConstis);
+			politician = true;
+			}
 		List<Long> constituencyIds = new ArrayList<Long>();
 		if(constituencyList != null && constituencyList.size() > 0)
 		{  
