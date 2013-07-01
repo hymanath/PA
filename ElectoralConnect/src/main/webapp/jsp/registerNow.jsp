@@ -85,6 +85,9 @@
 		{
 			$('#loginModal').modal('show');
 			$('#errorMsg').html('<b style="color:green">Login Successfully Please Wait.....</b>');
+			$('#loginModal').modal('show').delay('slow').modal('hide');
+			window.location.href = "homePage.action";
+			
 		}
 		else if(loginStatus == "failure")
 		{
