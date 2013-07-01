@@ -119,12 +119,12 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		for (Object[] parms : list) 
 			System.out.println(parms[0]+" "+parms[1]);
 	}*/
-	public void testgetTehsilsByDelimitationConstituencyIds(){
+	/*public void testgetTehsilsByDelimitationConstituencyIds(){
 		List<Long> mandalIdsList = new ArrayList<Long>(0);
 		mandalIdsList.add(232l);
 		mandalIdsList.add(347l);
 		List<Object[]> list = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyIds(mandalIdsList);
 		for (Object[] parms : list) 
 			System.out.println(parms[0]+" "+parms[1]);
-	}
+	}*/
 }
