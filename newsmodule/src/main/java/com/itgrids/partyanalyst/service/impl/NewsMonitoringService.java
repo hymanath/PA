@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -27,6 +28,7 @@ import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
+import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -3561,5 +3563,102 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		return candidates;
 	}
 	
+	
+	public List<CandidateNewsCountVO> getNewsCountForACandidate(Long candidateId, String fromDateStr, String toDateStr)
+	{
+		try{
+		 List<CandidateNewsCountVO> candidateNewsCountVOList = new ArrayList<CandidateNewsCountVO>(0);
+		 Date fromDate = null;
+		 Date toDate = null;
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		 if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+		  fromDate = format.parse(fromDateStr);
+		 if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+		  toDate = format.parse(toDateStr);
+		 
+		 List<Object[]> list = candidateRelatedNewsDAO.getNewsCountForACandidate(candidateId, 872l,fromDate,toDate);
+		 if(list != null && list.size() > 0)
+		 {
+			CandidateNewsCountVO candidateNewsCountVO = null;
+			for(Object[] params : list)
+			{
+				candidateNewsCountVO = checkCandidateNewsCountVOExist((Long)params[1], candidateNewsCountVOList);
+			  if(candidateNewsCountVO == null)
+			  {
+			    candidateNewsCountVO = new CandidateNewsCountVO();
+			    candidateNewsCountVO.setId((Long)params[1]);
+			    candidateNewsCountVO.setName(params[2]!=null?params[2].toString():"");
+			    candidateNewsCountVOList.add(candidateNewsCountVO);
+			  }
+			  if(params[3].equals(2L))
+				candidateNewsCountVO.setStateNewsCount((Long)params[0]);
+			  else if(params[3].equals(3L))
+				candidateNewsCountVO.setDistrictNewsCount((Long)params[0]);
+			  else if(params[3].equals(4L))
+				candidateNewsCountVO.setConstituencyNewsCount((Long)params[0]);
+			  else if(params[3].equals(5L))
+				candidateNewsCountVO.setMandalNewsCount((Long)params[0]);
+			  else if(params[3].equals(6L))
+				candidateNewsCountVO.setVillageNewsCount((Long)params[0]);
+			  else if(params[3].equals(7L))
+				candidateNewsCountVO.setLocalEleBodyNewsCount((Long)params[0]);
+			  else if(params[3].equals(8L))
+				candidateNewsCountVO.setWardNewsCount((Long)params[0]);
+			  else if(params[3].equals(9L))
+				candidateNewsCountVO.setBoothNewsCount((Long)params[0]);
+				
+			}
+		 }
+		 return candidateNewsCountVOList;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error(" Exception Occured in getNewsCountForACandidate() method, Exception - "+e);
+		 return null;
+		}
+	}
+	
+	public CandidateNewsCountVO checkCandidateNewsCountVOExist(Long candidateId,List<CandidateNewsCountVO> list)
+	{
+	  try{
+		if(list == null || list.size() == 0)
+		 return null;  
+		 for(CandidateNewsCountVO newsCountVO:list)
+		  if(newsCountVO.getId().equals(candidateId))
+			  return newsCountVO;    
+		return null;  
+	  }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in checkCandidateNewsCountVOExist() method, Exception - "+e);
+		return null;
+	}
+	}
+	
+	
+	public List<FileVO> getLocationWiseNewsDetailsForACandidate(Long candidateId,String fromDateStr,String toDateStr,String locationScope,Integer startIndex,Integer maxIndex)
+	{
+		List<FileVO> fileVOsList = null;
+		try{
+			 Date fromDate = null;
+			 Date toDate = null;
+			 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			 if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+			  fromDate = format.parse(fromDateStr);
+			 if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+			  toDate = format.parse(toDateStr);
+			Long locationScopeId = regionScopesDAO.getRegionScopeIdByScope(locationScope);
+			List<FileGallary> fileGallaryList = candidateRelatedNewsDAO.getLocationWiseFileGalleryList(candidateId, fromDate, toDate, locationScopeId, startIndex, maxIndex);
+			if(fileGallaryList != null && fileGallaryList.size() > 0)
+			{
+				fileVOsList = new ArrayList<FileVO>(0);
+				candidateDetailsService.setfileGallaryDetails(fileGallaryList, fileVOsList);
+				fileVOsList.get(0).setCount(candidateRelatedNewsDAO.getLocationWiseFileGalleryList(candidateId, fromDate, toDate, locationScopeId, null, null).size());
+			}
+			return fileVOsList;
+		}catch (Exception e) {
+			
+			log.error("Exception Occured in getLocationWiseNewsDetailsForACandidate() method, Exception - "+e);
+		 return fileVOsList;
+		}
+	}
 
 }

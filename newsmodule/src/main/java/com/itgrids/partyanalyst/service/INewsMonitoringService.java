@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -52,6 +53,9 @@ public interface INewsMonitoringService {/*
 	public ResultStatus storeSourceDetails(String value);
 	public List<SelectOptionVO> getCandidatesByRemovingDots();
 
+	public List<CandidateNewsCountVO> getNewsCountForACandidate(Long candidateId ,String fromDateStr, String toDateStr);
+	
+	public List<FileVO> getLocationWiseNewsDetailsForACandidate(Long candidateId,String fromDateStr,String toDateStr,String locationScope,Integer startIndex,Integer maxIndex);
 
 
 }
