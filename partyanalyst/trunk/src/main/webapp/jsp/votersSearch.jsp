@@ -649,7 +649,9 @@ $("#pageUpBtn").live("click",function(){
 		$("#topButtons").append('<img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif">');
 		   $("#topButtons").append('<div style="margin-bottom: 10px;margin-right: 20px;float:right;" id="imgDescriptionDiv"><b style="margin-left: 5px">Influencing People</b>:<img style="margin-bottom: 10px;margin-left: 8px;" src="./images/icons/influencing.png" alt="Influencing People" title="Influencing People"><b style="margin-left: 22px">Cadre</b>:<img style="margin-bottom: 10px;margin-left: 8px;" src="./images/icons/cadre.png" alt="Cadre" title="Cadre"><b style="margin-left: 22px">Politician</b>:<img style="margin-bottom: 10px;margin-left: 8px;" src="./images/icons/politican.png" alt="Politicion" title="Politician"></div>');
 		   $("#bottomButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Create Custom Groups(Cast,Party,Locaities)" onclick="openNewWindow();"/></div>');
-	    YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
+	     $("#topSelCount").html("Total Voters Selected For Edit : 0");
+               $("#bottomSelCount").html("Total Voters Selected For Edit : 0");
+		YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 			{
 			var vId = oRecord.getData("voterId");
 			var vName = oRecord.getData("name");
@@ -670,15 +672,17 @@ $("#pageUpBtn").live("click",function(){
 		    var check = false;
 			var vId = oRecord.getData("voterId");
 			var vBoothId = oRecord.getData("boothId");
-               for(var i in selectedVotersArr){
+			 selectedVotersArr = new Array();
+
+               /*for(var i in selectedVotersArr){
 			   if(selectedVotersArr[i].boothId == vBoothId && selectedVotersArr[i].voterId == vId ){
 				  check = true;
 			   }
-		      }		
+		      }	
 			//elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+vId+","+vBoothId+"'/>";
 			if(check)
 			  elLiner.innerHTML="<input type='checkbox' checked='checked' class='familyMemberCheck' value='"+vId+"'/><input type='hidden' class='selectedBoothId' value='"+vBoothId+"'/>";
-            else
+            else*/	
               elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+vId+"'/><input type='hidden' class='selectedBoothId' value='"+vBoothId+"'/>";			
 		  };
 		  
@@ -1010,31 +1014,31 @@ function buildVotersInFamilySearch(results,hno){
 }
 function buildCategoriesListInit(result){
 	  var str ='';
-	    str+='<table style="margin-left:5px;margin-bottom:5px;color:#000000;"><tr>';
-		str+='   <td style=""><input type="checkbox" id="voterIdColum" />  Voter Id</td>';
-		str+='   <td style=""><input type="checkbox" id="genderColum" />  Gender</td>';
-		str+='   <td style=""><input type="checkbox" id="ageColum" />  Age</td>';
-		str+='   <td style=""><input type="checkbox" id="gaurdianColum" />  GuardName</td>';
-		str+='   <td style=""><input type="checkbox" id="relationShipCol" />  Relationship</td>';
+	    str+='<table style="margin-left:5px;"><tr>';
+		str+='   <td style=""><input type="checkbox" id="voterIdColum" />  Voter Id&nbsp;&nbsp;</td>';
+		str+='   <td style=""><input type="checkbox" id="genderColum" />  Gender&nbsp;&nbsp;</td>';
+		str+='   <td style=""><input type="checkbox" id="ageColum" />  Age&nbsp;&nbsp;</td>';
+		str+='   <td style=""><input type="checkbox" id="gaurdianColum" />  GuardName&nbsp;&nbsp;</td>';
+		str+='   <td style=""><input type="checkbox" id="relationShipCol" />  Relationship&nbsp;&nbsp;</td>';
 	    str+='</tr><tr>';
-		/*str+='   <td style="padding-left:20px;"><input type="checkbox" id="serialnumbrCol" />  Serial Number</td>';*/
-	    str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="cast,Caste"/>  Caste</td>';
-		str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="party,Party"/>  Party</td>';
-		str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" id="localityCheckBox" onClick="showAlert()" value="locality,Locality"/>  Locality</td>';
-		str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="mobileNo,Mobile No"/> Mobile</td>';
-		
-		str +='<td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="voterGroup,Voter Group"/> Voter Group</td>';
-		var x = 4;
+	    str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="cast,Caste"/>  Caste&nbsp;&nbsp;</td>';
+		str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="party,Party"/>  Party&nbsp;&nbsp;</td>';
+		str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" id="localityCheckBox" onClick="showAlert()" value="locality,Locality"/>  Locality&nbsp;&nbsp;</td>';
+		str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="mobileNo,Mobile No"/> Mobile&nbsp;&nbsp;</td>';
+		str+='   <td style="padding-top: 7px; padding-bottom: 7px;"><input type="checkbox" class="attributeTypeClassIni" value="voterGroup,Voter Group"/> Voter Group&nbsp;&nbsp;</td>';
+		str+='</tr></table>';
+		str+='<table style="margin-left:5px;width:100%">';
+		var x = 0;
 		if(result != null && result.category != null && result.category.length > 0){
 		  for(var i in result.category){
-		   if(x%5 == 0)
-		    str+='<tr>';
-		   str+='   <td style=""><input type="checkbox" class="attributeTypeClassIni" value="'+result.category[i].id+','+result.category[i].name+'"/>  '+result.category[i].name+'</td>';
+		   if(x%3 == 0)
+		    str+='<tr style="width:100%">';
+		   str+='   <td style="width:33%" ><input type="checkbox" class="attributeTypeClassIni" value="'+result.category[i].id+','+result.category[i].name+'">  '+result.category[i].name+'&nbsp;&nbsp;</input></td>';
 	        x = x+1;
-			if(x%5 == 0)
+			if(x%3 == 0)
 		    str+='</tr>';
 		  }	
-		  if(x%5 != 0)
+		  if(x%3 != 0)
 		    str+='</tr>';
 		}else{
 		  str+='</tr>';
@@ -3060,7 +3064,7 @@ function showAlert()
 	    </div>
 	  </div>
 	  <div class="selectDiv">
-	   <table><tr>
+	   <table style="width:100%"><tr>
 	     <td style="width:132px;"><span>Check Required Fields To Show</span></td>
 	     <td><span id="requiredFieldsToCheck"></span></td>
 	   </tr></table>
@@ -3069,7 +3073,7 @@ function showAlert()
 	   <table><tr>
 	     <td style="width:165px;"><span>Total Voters To Show For Each Page</span></td>
 	     <td><select id="votersPageLimit"><option value="100">100</option><option value="200">200</option><option value="500">500</option><option value="1000">1000</option></select></td>
-	     <td><div id="localityUpdation"></td>
+	     <td><div id="localityUpdation"></div></td>
 	  </tr>
 	   
 	   </table>
