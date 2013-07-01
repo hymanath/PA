@@ -50,4 +50,5 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 	@SuppressWarnings("unchecked")
 	public List getLatestConstituencyByConstituencyNameAndDistrictIdAndElectionType(String constituencyName,Long districtId,String electionType);
 
+	public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyIDs(List<Long> constituencyIDs);
 }
