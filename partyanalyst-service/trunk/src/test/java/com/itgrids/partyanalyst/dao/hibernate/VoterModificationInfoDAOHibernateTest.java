@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
-import com.itextpdf.text.log.SysoLogger;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 
 public class VoterModificationInfoDAOHibernateTest extends BaseDaoTestCase{
