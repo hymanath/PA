@@ -5520,7 +5520,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle().toString())):"");
 				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 				fileVO.setFilePath1(fileGallary.getFile().getFilePath());
-				
+				fileVO.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size());
 				Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
 				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
 				Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
@@ -6218,5 +6218,29 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 return resultStatus;
 		}
    }
+   
+   public List<FileVO> getCandidateNewsResponseNews(Integer startIndex,Integer maxIndex)
+	{
+	   List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
+		try{
+		
+		// List<FileGallary> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex, contenttype,partyId,newsType);
+			List<FileGallary> fileGallaryList = partyGalleryDAO.getLatestNewsResPonses(startIndex, maxIndex);
+		 if(fileGallaryList != null && fileGallaryList.size() > 0)
+		 {
+			 setfileGallaryDetails(fileGallaryList, fileVOsList);
+		 }
+		 
+		 fileVOsList.get(0).setCount(partyGalleryDAO.getLatestNewsResPonses(null, null).size());
+		 return fileVOsList;
+		 
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - "+e);
+			 return fileVOsList;
+		}
+}
+	
 		
 }

@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -689,6 +690,20 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			 
 			 return queryObj.list();
 			 
+		 }
+		 public List<FileGallary> getLatestNewsResPonses(Integer startIndex, Integer maxIndex)
+		 {
+			 Query queryObj=getSession().createQuery("select model.responseFileGallary" +
+			 		" from CandidateNewsResponse model,FileSourceLanguage fs  where model.responseFileGallary.isPrivate='false' and " +
+				 		" model.responseFileGallary.isDelete='false' and model.responseFileGallary.gallary.isPrivate='false' and " +
+				 		" model.responseFileGallary.gallary.isDelete='false' and model.responseFileGallary.file.fileId = fs.file.fileId order by model.responseFileGallary.updateddate desc");
+			 
+			 	if(startIndex != null)
+				 queryObj.setFirstResult(startIndex);
+				if(maxIndex != null)
+					queryObj.setMaxResults(maxIndex);
+				
+				return queryObj.list(); 
 		 }
 		 
 		@SuppressWarnings("unchecked")

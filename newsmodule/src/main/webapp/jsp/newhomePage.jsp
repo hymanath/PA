@@ -527,7 +527,7 @@ width: 92px;
 						<div class="span12">
 							<ul class=" nav nav-list bs-docs-sidenav" style='margin-top:10px;'>
 								<s:iterator value="responseFilesList" var ="responsefiles" status="status">
-								<s:if test="%{#status.index <4}">
+								<s:if test="%{#status.index < 4}">
 								<li class='thumbnail' style='margin: 3px 5px 5px;padding:5px 5px 5px 15px;'>
 								<s:if test="%{#responsefiles.source.equalsIgnoreCase('Eenadu Telugu')}">
 									<span class='text-info enadu' onclick="getNewsDetailsByContentId(<s:property value='fileGallaryId'/>)" style="cursor:pointer;font-weight:bold;"> <s:property value="title"/></span>
@@ -547,7 +547,11 @@ width: 92px;
 								</s:iterator>
 								
 							</ul>
+							
 						</div>
+							<br><br>
+						<div  class="span12" style="margin-bottom:0px;"><button id="newsresponseMore" class="btn btn-mini" style="margin-left:88px" onclick="getCandidatesResponseNews()"> More...</button></div>
+						<br><br>
 					</div>
 				</div>
 			<!----- Top view News DIv End ------>
@@ -651,6 +655,16 @@ width: 92px;
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	
 <script>
+var responseFilesList = [];
+<c:forEach var="status"  items="${responseFilesList}" >
+	var ob={
+				fileGallaryId:'${status.fileGallaryId}',
+				title:'${status.title}',
+				fileDate:'${status.fileDate}'
+			};
+	responseFilesList.push(ob);	
+</c:forEach>
+
 $('#listValue').val('Constituency');
 
 /* $( document ).ready(function() {
@@ -1388,7 +1402,12 @@ $("#candidateCategoryId").live("click",function(){
 });
 
 });
-
+function getCandidatesResponseNews()
+{
+var urlStr="candidateResponseNews.action";
+	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
+	updateBrowser.focus();
+}
 
 </script>
 </body>
