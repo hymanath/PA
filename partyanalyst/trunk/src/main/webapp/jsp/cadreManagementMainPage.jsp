@@ -3645,7 +3645,7 @@ function buildNewImpDatePopup()
 		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
 		eventStr+='<th id="impheaders" style="width: 130px;">Repeat Until :</th>';
 		eventStr+='<td>';
-		eventStr+='<input type="text" id="ImpEndDateText_new" readonly="readonly"  value="'+date+'" name="ImpEndDateText" style="width: auto; margin-top: 6px;cursor:text;" class="impdate"/></div>';
+		eventStr+='<input type="text" id="ImpEndDateText_new" disabled="true"  value="'+date+'" name="ImpEndDateText" style="width: auto; margin-top: 6px;cursor:text;" class="impdate"/></div>';
 		eventStr+='<div id="ImpEndDateText_new_Div" class="tinyDateCal">';
 		eventStr+='</td>';
 		//eventStr+='</td></tr>';
@@ -3660,7 +3660,7 @@ function buildNewImpDatePopup()
 		 newDateDialog.remove();
 		}
 		newDateDialog = $('#newImpDateDiv').dialog({
-			width: 600,
+			width: 660,
 			buttons: {
 				"Create New Date": function(){
 				
@@ -3759,36 +3759,74 @@ function handleImpDateSubmit()
 		var repeatFreqElmt = document.getElementById("repeatFreqSelect");
 		repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
 		var ImpDescVallength=ImpDescVal.trim().length;
-		
+		var errorExist = false;
+		var errorString = "";
+		var errorInLength = false;
+         if(ImpeventNameVal.length > 100)
+ 	     {
+			  errorString +="<font color='red'>Title length can not exceed 100 characters </font><br>"  ;
+			 errorInLength = true;
+		 }
+		 if(ImpDescVal.length  > 300)
+	     {
+			  errorString +="<font color='red'>Description length can not exceed 300 characters </font><br>"  ;
+			 errorInLength = true;
+		 }
+
+		 if(errorInLength == true)
+         {
+			  $('#errorMesgDIV').html(errorString);
+			 return errorInLength;
+		 }
 		    if(ImpeventNameVal == '')
 		    {
-			document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
-			return;
+			//document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
+			//return;
+             errorString +="<font color='red'>Please Enter Important Date Title </font><br>"  ;
+			errorExist = true;
 			}
 			else if ( ImpeventNameVal != null)
-			{ 				
+			{ 	
+				var errorInSpecialChar = false;
 				var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
 				
 		            for (var i = 0; i < ImpeventNameVal.length; i++)
                 {      
                     if (iChars.indexOf(ImpeventNameVal.charAt(i)) != -1)
                     {   
-					document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
+					//document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
+
 			
-                    return; 
+                   // return; 
+				  
+				     errorInSpecialChar = true;
                     } 
                 }
 			}
+
+			if(errorInSpecialChar == true)
+        	{
+				errorExist = true;
+				errorString +="<font color='red'> Important Date Title cannot allow special characters & Numbers</font><br>"  ;
+
+			}
 			if(ImpDescVallength==0)
 			{
-			   document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
-			  return false;
+			   //document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
+			 // return false;
+			  errorString +="<font color='red'>Please Enter Description</font><br>"  ;
+			 errorExist = true;
 			}
 			 if(repeatFreqVal == "No Repeat")
 			{
 				ImpendDateVal = ImpstartDateVal;
 			}
 	
+	    if(errorExist == true)
+    	{
+           $('#errorMesgDIV').html(errorString);
+		   return errorExist;
+		}
 		selectedDateObj.importantDateId="";
 		selectedDateObj.eventId="";
 		selectedDateObj.eventType="";
