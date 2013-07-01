@@ -385,27 +385,30 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 
 	<div id="statePage_header">
 		<c:out value="${statePage.stateName}" /> State Details
-
-		<span style="float:right;">
-			<g:plusone size="medium"></g:plusone>
-
-			<script type="text/javascript">
-			 (function() {
-			  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-				 po.src = 'https://apis.google.com/js/plusone.js';
-				 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-			 })();
-			</script>
-		</span>
-		<span style="float:right;">
-			<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/statePageAction.action?stateId=${statePage.stateId}">
+		
+		<c:if test="${host != 'tdpserver'}">
+			<span style="float:right;">
+				<g:plusone size="medium"></g:plusone>
+				<script type="text/javascript">
+					(function() {
+						var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+						po.src = 'https://apis.google.com/js/plusone.js';
+						var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+					})();
+				</script>
+			</span>
+			
+			<span style="float:right;">
+				<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/statePageAction.action?stateId=${statePage.stateId}">
 				Tweet</a>
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-			</script>
-		</span>
-		<span style="float:right;margin-right: 20px;">
-			<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/statePageAction.action?stateId=${statePage.stateId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
-		</span>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+				</script>
+			</span>
+			
+			<span style="float:right;margin-right: 20px;">
+				<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/statePageAction.action?stateId=${statePage.stateId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
+			</span>
+		</c:if>
 
 	</div>
 
