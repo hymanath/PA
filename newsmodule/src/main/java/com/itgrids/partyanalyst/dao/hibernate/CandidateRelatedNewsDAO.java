@@ -170,5 +170,70 @@ ICandidateRelatedNewsDAO {
 		query.setParameter("candidateId", candidateId);
 		return query.list();
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getNewsCountForACandidate(Long candidateId,Long partyId, Date fromDate, Date toDate)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.fileGallary.fileGallaryId),model.candidate.candidateId, model.candidate.lastname,model.fileGallary.file.regionScopes.regionScopesId from CandidateRealatedNews model,PartyGallery model2 ");
+		str.append(" where model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId and model.fileGallary.isDelete = 'false' and model.fileGallary.isPrivate = 'false' ");
+		str.append(" and model2.isDelete = 'false' and model2.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false' and model.fileGallary.gallary.isPrivate = 'false' ");
+		str.append(" and model2.party.partyId =:partyId and model.fileGallary.file.fileId is not null ");
+		if(candidateId != null && candidateId > 0L)
+		 str.append(" and model.candidate.candidateId =:candidateId ");
+		
+		if(fromDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+		if(toDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
+		
+		str.append(" group by model.fileGallary.file.regionScopes.regionScopesId ,model.candidate.candidateId order by model.candidate.lastname  ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("partyId", partyId);
+		if(candidateId != null && candidateId > 0L)
+		 query.setParameter("candidateId", candidateId);
+		if(fromDate != null)
+		 query.setParameter("fromDate", fromDate);
+		if(toDate != null)
+		 query.setParameter("toDate", toDate);
+		
+		return query.list();
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<FileGallary> getLocationWiseFileGalleryList(Long candidateId,Date fromDate,Date toDate,Long locationScopeId,Integer startIndex,Integer maxIndex)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.fileGallary from CandidateRealatedNews model where model.fileGallary.isPrivate ='false' and model.fileGallary.isDelete ='false' ");
+		str.append(" and model.fileGallary.gallary.isPrivate ='false' and model.fileGallary.gallary.isDelete ='false' and model.fileGallary.file.regionScopes.regionScopesId =:regionScopesId ");
+		if(candidateId != null && candidateId >0)
+		 str.append(" and model.candidate.candidateId =:candidateId ");
+		if(fromDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+		if(toDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) <= :toDate");
+		
+		str.append(" order by model.fileGallary.file.fileDate desc");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("regionScopesId", locationScopeId);
+		if(candidateId != null && candidateId >0)
+		 query.setParameter("candidateId", candidateId);
+		if(fromDate != null)
+		 query.setParameter("fromDate", fromDate);
+		if(toDate != null)
+		 query.setParameter("toDate", toDate);
+		if(startIndex != null)
+		 query.setFirstResult(startIndex);
+		if(maxIndex != null)
+		 query.setMaxResults(maxIndex);
+		
+		return query.list();
+	}
+	
 
 }
