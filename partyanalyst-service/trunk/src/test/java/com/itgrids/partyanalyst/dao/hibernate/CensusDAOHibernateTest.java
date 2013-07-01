@@ -197,7 +197,7 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 		   }
 	   }*/
 	   
-	   public void testFindTownshipWiseCompleteCensusDetails()
+	   /*public void testFindTownshipWiseCompleteCensusDetails()
 	   {
 		   List<Object[]> list = censusDAO.findTownshipWiseCompleteCensusDetails(1l,19l,21664l,2001l,"TOWN");
 		   System.out.println(list.size());
@@ -208,5 +208,18 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 			   System.out.println("======"+ ++i +")"+obj.toString());
 		   }
 		   
+	   }*/
+	
+	   public void testGetCensusDetailsOfAState()
+	   {
+		   List<Object[]> list = censusDAO.getCensusDetailsOfAState(1l,2001l);
+		   System.out.println(list.size());
+		   
+		   for(Object[] params : list)
+		   {
+			   System.out.println();
+			   for(Object str : params)
+				   System.out.print("\t"+str.toString());
+		   }
 	   }
 }
