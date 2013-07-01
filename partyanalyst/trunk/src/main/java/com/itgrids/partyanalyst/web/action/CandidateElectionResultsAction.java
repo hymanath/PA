@@ -1321,16 +1321,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		
 		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-		
-		 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
-			 filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator;
-		 else if(request.getRequestURL().toString().contains(IConstants.LOCAL_HOST))
-		 {
-			 filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;
-		 }
-		 else
-			 filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator;
-		
+				
+		filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator;
+			 
 		if(profileType != null && profileId != null && profileGalleryType != null)
 		{
 			filePath = filePath + profileType + pathSeperator + profileId + pathSeperator + profileGalleryType + pathSeperator;
