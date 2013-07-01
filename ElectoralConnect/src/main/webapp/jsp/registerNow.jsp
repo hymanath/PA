@@ -79,6 +79,19 @@
 		document.userDetailsForm.submit();
 	});
 	
+	$(document).ready(function () {
+		var loginStatus = '${resultStr}';
+		if(loginStatus == "success")
+		{
+			$('#loginModal').modal('show');
+			$('#errorMsg').html('<b style="color:green">Login Successfully Please Wait.....</b>');
+		}
+		else if(loginStatus == "failure")
+		{
+			$('#loginModal').modal('show');
+			$('#errorMsg').html('<b style="color:red">Please Enter Valid User Name and Paaword</b>');
+		}
+	});
 	$("#emailId").blur(function(){
 		var emailId=$('#emailId').val();
 		var s=isValidEmailAddress(emailId);

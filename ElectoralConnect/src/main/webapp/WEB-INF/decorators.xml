@@ -25,6 +25,7 @@
     <decorator name="newHome" page="homelayout.jsp">
     	<pattern>/homePage*</pattern>
     	<pattern>/registerUser*</pattern>
+    	<pattern>/userLonginVerficationAction*</pattern>
     </decorator>
 
 </decorators>
