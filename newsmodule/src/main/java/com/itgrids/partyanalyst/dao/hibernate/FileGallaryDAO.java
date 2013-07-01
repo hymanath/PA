@@ -2718,8 +2718,9 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		StringBuilder queryObject = new StringBuilder();
 		queryObject.append(" select model.fileGallaryId,model.file.fileTitle,fs.source.source from FileGallary model, PartyGallery model2,FileSourceLanguage fs " );
 		queryObject.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model.file.fileId = fs.file.fileId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
+		queryObject.append(" and model.isDelete = 'false' and model.gallary.isDelete = 'false' ");
 		if(!newsType.equalsIgnoreCase(""))
-			queryObject.append(" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' ");
+			queryObject.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false' ");
 		queryObject.append(" group by model.file.fileId order by model.updateddate desc ");
 		Query query = getSession().createQuery(queryObject.toString());
 		 query.setParameter("contentType", contentType);
