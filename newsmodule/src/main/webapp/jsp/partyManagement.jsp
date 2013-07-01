@@ -45,7 +45,7 @@
 <!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<style>
+<style type="text/css">
 
 .nav-tabs > li{
 font-weight:bold;
@@ -317,6 +317,18 @@ padding: 0 20px;
 #gallaryList{margin-left: 15px;}
 #noNewsError{margin-bottom: 9px; margin-top: -11px;color:red;font-weight:bold;}
 #dateErrorMessage{color:red;font-weight:bold;}
+#toDateLabelId,#fromDateLabelId{display:inline-block;}
+#toDateLabelId{margin-left: 15px;}
+#assignNewsInnerDiv{margin-left: 151px; margin-top: 0px; width: 600px; clear: both;}
+#assignNewsRadioDiv{margin-bottom: 16px; margin-top: 8px;}
+#assignNewsResradio{margin-top: 0px; margin-right: 4px;}
+#assignNewsCandidateRadio{margin-top: 0px; margin-right: 6px; margin-left: 13px;}
+#assignNewsgallaryList{margin-left: 18px;}
+#newsTitlesSelectList{margin-left: 30px;}
+#responseNewsgallaryList{margin-left: 20px;}
+#responseNewsTitlesSelectList{margin-left: 30px;}
+#assignNewsbtn{margin-left: 137px; margin-top: 8px;}
+#errorMessageDiv{text-align: center; color: red; margin-top: -10px; margin-bottom: 17px;}
 </style>
 </head>
 <script type="text/javascript">
@@ -650,6 +662,37 @@ function getSource(selectOptionId){
 
 			}
 
+			else if(jsObj.task == "getGalleryListForAParty")
+			{
+              clearOptionsListForSelectElmtId('assignNewsgallaryList');
+			  createOptionsForSelectElement('assignNewsgallaryList',myResults);
+
+			  clearOptionsListForSelectElmtId('responseNewsgallaryList');
+			  createOptionsForSelectElement('responseNewsgallaryList',myResults);
+
+			}
+
+		   else if(jsObj.task == "getNewsByGalleryId")
+		   {
+			  if(jsObj.divId == "assignNewsgallaryList")
+			  {
+                clearOptionsListForSelectElmtId('newsTitlesSelectList');
+			    buildNewsOfAGallary('newsTitlesSelectList',myResults);
+			  }
+              else
+			  {
+				clearOptionsListForSelectElmtId('responseNewsTitlesSelectList');
+			    buildNewsOfAGallary('responseNewsTitlesSelectList',myResults); 
+			  }
+			  			  
+			}
+			else if(jsObj.task == "getCandidatesByPartyId")
+			{
+              clearOptionsListForSelectElmtId('candidatesList');
+			  createOptionsForSelectElement('candidatesList',myResults);
+			}
+
+		
      	}
 		catch(e)
 		{   
@@ -3630,6 +3673,9 @@ function updatePhoto(fileId,fileGallaryId)
     <li> <a value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()" style="cursor:pointer;color: blue;">Video Gallery</a></li>
     <li class="active"><a value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer;color: blue;">News Gallery</a></li>
 	<li><a value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: blue;">Update News</a></li>
+
+	<li><a value="Assign News" id="assignNewsId" onClick="assignNewsToCandidate()" style="cursor:pointer;color: blue;">Assign News</a></li>
+
     </ul>
 	
 </div>
@@ -4104,6 +4150,111 @@ $("#candidateCategoryId").live("change",function(){
 	 var url = "getNewsForACandidateByCategoryIdAction.action?"+rparam;
 	 callAjax(jsObj, url);
   }
+	
+});
+
+
+$("#assignNewsgallaryList").live("change",function(){
+getNewsTitlesByGalleryId("assignNewsgallaryList");
+ 
+});
+$("#responseNewsgallaryList").live("change",function(){
+	
+getNewsTitlesByGalleryId("responseNewsgallaryList");	
+});
+
+$("#assignNewsbtn").live("click",function(){
+   
+    $("#errorMessageDiv").html('');
+    
+	var gallaryId = $("#assignNewsgallaryList").val();
+    var fileGalleryId = $("#newsTitlesSelectList").val();
+	var radioVal = $('input[name=assignNewsRadio]:checked').val();
+	var responseId =0;
+	var candidateId =0;
+	var tempVar = "";
+	if(gallaryId == 0)
+	{
+     $("#errorMessageDiv").html('Please Select Gallery.');
+	 return;
+	}
+    else if(fileGalleryId == 0)
+    {
+     $("#errorMessageDiv").html('Please Select News.');
+	 return;
+	}
+	if(radioVal == "assignResponse")
+	{
+
+	  var responseGalleryId = $("#responseNewsgallaryList").val();
+	  resFileGalId = $("#responseNewsTitlesSelectList").val();
+      
+	   if(responseGalleryId == 0)
+      {
+       $("#errorMessageDiv").html('Please Select Response Gallery.');
+	   return;
+	  }
+	  else if(fileGalleryId == 0)
+      {
+       $("#errorMessageDiv").html('Please Select News.');
+	   return;
+	  }
+	  else if(fileGalleryId == resFileGalId)
+	  {
+       $("#errorMessageDiv").html("We Can't assign this news to response.");
+	   return;
+	  }
+	  tempVar = "assignResponse";
+	}
+	else
+    {
+		var partyId = $("#partiesList").val();
+		candidateId = $("#candidateList").val();
+		if(partyId == 0)
+		{
+		 $("#errorMessageDiv").html('Please Select Party.');
+	     return;
+		}
+		else if(candidateId == 0)
+		{
+         $("#errorMessageDiv").html('Please Select Candidate.');
+	     return;
+		}
+
+	   
+	   tempVar = "assignToCandidate";
+
+	}
+	
+	var jsObj={
+		candidateId:candidateId,
+		fileGalleryId:fileGalleryId,
+		resFileGalId:resFileGalId,
+	    tempVar:tempVar,
+		task:'assignResToCandidateOrAGallary'
+	  };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	 var url = "assignResToCandidateOrAGallaryAction.action?"+rparam;
+	 callAjax1(jsObj, url);
+
+	
+});
+
+
+$(".assignNewsRadioCls").live("click",function(){
+ var radioVal = $('input[name=assignNewsRadio]:checked').val();
+ 
+ if(radioVal == "assignToCandidate")
+ {
+  $("#candidateShowHideDiv").css("display","block");
+  $("#showHideResponseGallaryDiv").css("display","none");
+  getCandidatesByPartyId();
+ }
+ else
+ {
+   $("#showHideResponseGallaryDiv").css("display","block");
+    $("#candidateShowHideDiv").css("display","none");
+ }
 	
 });
 
@@ -4812,6 +4963,10 @@ var callback = {
 			 else if(jsObj.task == "createUserNewsCategory")
 			  showUserNewsCategoryStatus(myResults);
 			
+			else if(jsObj.task == "assignResToCandidateOrAGallary")
+			{
+              showAssignNewsStatus(myResults);
+			}
 			 
 			}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
@@ -6452,6 +6607,156 @@ function createOptionsForSelectElement(elmtId,optionsList)
 	}
 
 }
+
+
+function assignNewsToCandidate()
+{
+  $("#newsGallaryDiv").html('');
+  $("#profileManagementMainOuterDiv4").css("display","none");
+  $("#profileManagementHeaderDiv2").css("display","none");
+  $("#profileManagementMainOuterDiv3").css("display","block");
+  $("#profileManagementHeaderDiv3").css("display","none");
+  $("#videoGallaryDiv").css("display","none");
+
+  var str = '';
+  str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
+  str +='<h2 style="text-align: center;">Assign News</h2>';
+  str +='<div id="errorMessageDiv"></div>';
+  str +='<div id="assignNewsInnerDiv">';
+  str +='<label id="fromDateLabelId">From Date:<input type="text" readonly="true" id="fromDateId" class="inputClass assignNewsDateCls fromDateCls" name="fromDate"></label>';
+  str +='<label id="toDateLabelId">ToDate :<input type="text" id="toDateId" class="inputClass assignNewsDateCls toDateCls" readonly="true" name="toDate"></label>';
+  str +='<label>Select Gallery: <select id="assignNewsgallaryList"></select></label>';
+  str +='<label>Select News: <select id="newsTitlesSelectList"></select></label>';
+  str +='<div id="assignNewsRadioDiv">';
+  str +='<input id="assignNewsResradio" type="radio" value="assignResponse" name="assignNewsRadio" class="assignNewsRadioCls" checked="true"/>Set As Response';
+  str +='<input id="assignNewsCandidateRadio" type="radio" value="assignToCandidate" name="assignNewsRadio" class="assignNewsRadioCls"/>Assign Candidate';
+  str +='</div>';
+  
+  str +='<div id="showHideResponseGallaryDiv">';
+  str +='<label>Select Gallery: <select id="responseNewsgallaryList"></select></label>';
+  str +='<label>Select News: <select id="responseNewsTitlesSelectList"></select></label>';
+  str +='</div>';
+
+  str +='<div id="candidateShowHideDiv" style="display:none;">';
+  str += '<label>Select Party : <font class="requiredFont">*</font>';
+  str += ' <select id="partiesList" name="party" onchange="getCandidatesByPartyId()"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option><option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" selected>TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></label>';
+	
+
+  str +='<label>Select Candidate : <font class="requiredFont">*</font><select id="candidatesList"></select></label>';
+  str +='</div>';
+  str +='<input type="button" value="submit" class="btn btn-info" id="assignNewsbtn"/>';
+
+  str +='</div>';
+  str +='</div>';
+  $("#newsGallaryDiv").html(str);
+
+  getGalleryListForAParty();
+}
+
+
+function getGalleryListForAParty()
+{
+	var fromDate = $("#fromDateId").val();
+	var toDate = $("#toDateId").val();
+
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		partyId:872,
+		task:'getGalleryListForAParty'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getGalleryListForAPartyAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getNewsTitlesByGalleryId(divId)
+{
+	var gallaryId;
+  if(divId == "assignNewsgallaryList")
+   gallaryId = $("#assignNewsgallaryList").val();
+
+  if(divId == "responseNewsgallaryList")
+   gallaryId = $("#responseNewsgallaryList").val();
+
+
+ var fromDate = $("#fromDateId").val();
+ var toDate = $("#toDateId").val();
+
+ $("errorMsgDiv").html('');
+ if(gallaryId == 0)
+ {
+   $("errorMsgDiv").html('Please Select Gallery.');
+   return;
+ }
+
+ var jsObj={
+		gallaryId:gallaryId,
+		fromDate:fromDate,
+	    toDate:toDate,
+        divId:divId,
+		task:'getNewsByGalleryId'
+	  };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	 var url = "getNewsByGalleryIdAction.action?"+rparam;
+	 callAjax(jsObj, url);
+
+}
+
+function getCandidatesByPartyId()
+{
+ 
+ $("#errorMessageDiv").html('');
+ var partyId = $("#partiesList").val();
+ if(partyId == 0)
+ {
+   $("#errorMessageDiv").html('Please Select Party.');
+   return;
+ }
+
+  var jsObj = {
+			partyId :partyId,
+			task : "getCandidatesByPartyId"	
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesOfAParty.action?"+rparam;					
+	
+  callAjax(jsObj,url);
+}
+
+function showAssignNewsStatus(results)
+{
+	$("#errorMessageDiv").html('');
+  if(results.resultCode == 0 && results.message != null)
+  {
+	  $("#assignNewsgallaryList").val("0");
+	  $("#responseNewsgallaryList").val("0");
+
+	  clearOptionsListForSelectElmtId('newsTitlesSelectList');
+	  clearOptionsListForSelectElmtId('responseNewsTitlesSelectList');
+
+   $("#errorMessageDiv").html('News is Already Assigned.').css("color","green");
+   return;
+  }
+  else if(results.resultCode == 0 && results.message == null)
+  {
+	  $("#assignNewsgallaryList").val("0");
+	  $("#responseNewsgallaryList").val("0");
+	  clearOptionsListForSelectElmtId('newsTitlesSelectList');
+	  clearOptionsListForSelectElmtId('responseNewsTitlesSelectList');
+
+   $("#errorMessageDiv").html('News Assigned Successfully.').css("color","green");
+   return;
+  }
+  else
+  {
+   $("#errorMessageDiv").html('Error occured! try again.').css("color","red");
+   return;
+  }
+}
+
+
 
 </script>
 </body>
