@@ -16931,4 +16931,32 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 	 }
 	 return null;
  }
+ 
+ public List<SelectOptionVO> getMandalsInConstituencys(List<SelectOptionVO> constituencyList){
+	 List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
+	 List<Long> delimitationConstituencyIDs = new ArrayList<Long>(0);
+		List<Long> constituencyIds = new ArrayList<Long>();
+		if(constituencyList != null && constituencyList.size() > 0)
+		{  
+			for (SelectOptionVO constituency : constituencyList) {
+				
+				Long constituencyId = constituency.getId();
+				constituencyIds.add(constituencyId);
+			}
+		}
+		List<DelimitationConstituency> delimitationConstituencys = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDs(constituencyIds);
+		for(DelimitationConstituency delimitationConstituency:delimitationConstituencys){
+		delimitationConstituencyIDs.add(delimitationConstituency.getDelimitationConstituencyID());
+		
+		}
+		List<Object[]> mandals = delimitationConstituencyMandalDAO.getTehsilByDelimitationConstituencyIds(delimitationConstituencyIDs);
+		
+		for(Object[] tehsil : mandals){
+			SelectOptionVO objVO = new SelectOptionVO();
+			objVO.setId((Long)tehsil[0]);
+			objVO.setName(tehsil[1]!=null?tehsil[1].toString():"");
+			mandalNames.add(objVO);
+		}	
+	 return mandalNames;
+ }
 }
