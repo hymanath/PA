@@ -468,6 +468,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	{
 		String userStatusType = null;
 		session = request.getSession();
+		request.setAttribute("host", IConstants.DEPLOYED_HOST);
 		if(profileId == null){
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
