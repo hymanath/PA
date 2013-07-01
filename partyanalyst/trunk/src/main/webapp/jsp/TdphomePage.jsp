@@ -137,7 +137,7 @@ Quick Links</h2>
 										<tr>
 											<td>
 												<select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 168px;margin-bottom:5px;" autoComplete="off"
-		                                          onchange="checkElectionType(this.options[this.selectedIndex].value)">
+		                                          onchange="checkElectionTypeForHomepage(this.options[this.selectedIndex].value,'')">
 		                                               <option value="0">Select Type</option>
 		                                               <option value="2">Assembly</option>
 		                                               <option value="1">Parliament</option>
@@ -146,7 +146,7 @@ Quick Links</h2>
 										</tr>
 										<tr>
 											<td>
-												<select id="states" name="state_s" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:168px;margin-bottom:5px;"onchange="getElectionYearsInHomePage('Assembly')">
+												<select id="states" name="state_s" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width:168px;margin-bottom:5px;"onchange="getElectionYearsForHomePage('Assembly','')">
 		                                       	</select>
 											</td>
 										</tr>
@@ -178,7 +178,7 @@ Quick Links</h2>
 							<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
 								     <h5>View Your District</h5>
 									 <p>Select your district to view its election results in district level.</p>
-									 <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"></s:select>
+									 <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAStateForHomepage(this.options[this.selectedIndex].value,'districtList_d','')"></s:select>
                                      <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
 									     <br>
 									   <a onclick="navigateToDistrictPage()" href="javascript:{}">
@@ -204,7 +204,7 @@ Quick Links</h2>
 									<tbody>
 										<tr>
 											<td>
-												<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/>
+												<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByTypeForHomepage(2,this.options[this.selectedIndex].value,'constituency','')"/>
 											</td>
 										</tr>
 									</tbody>
@@ -565,7 +565,17 @@ Hot Topics</h2>
     initializeNewHomePage();
     
  $(document).ready(function() {
-    
+
+  //default populating state , district , constituency , election type and election year start
+    	 $('#electionTypeId').val(2);
+		 checkElectionTypeForHomepage(2,'default');
+		 getElectionYearsForHomePage('Assembly','default');
+		 getAllConstituenciesInStateByTypeForHomepage(2,1,'constituency','default')
+		 getDistrictsComboBoxForAStateForHomepage(1,'districtList_d','default')
+
+ //default populating state , district , constituency , election type and election year end
+
+
     var ellipsestext = "...";
 	var ellipsetext = ".."
 	
@@ -648,6 +658,200 @@ $(document).ready(function(){
 	
 	});
 	hideUnhideSelectBox('assembly_radio', 'constituency')
+
+
+function checkElectionTypeForHomepage(electionTypeId,type)
+{
+
+var electionType = document.getElementById('electionTypeId').value;
+
+if(electionType == 1)
+	{
+getStatesInHomePage(type);
+document.getElementById('states').style.display="none";
+getElectionYearsForHomePage('Parliament','');
+	}
+
+if(electionType == 2)
+	{
+	document.getElementById('states').style.display="block";
+
+getStatesInHomePage(type);
+	}
+}
+
+function getElectionYearsForHomePage(electionType,type)
+{
+
+   if(!type == "default"){
+	var stateEle = document.getElementById("states");
+
+	if(electionType == 'Assembly')
+	var stateId = stateEle.options[stateEle.selectedIndex].value;
+
+   }else
+	   stateId = 1;
+
+	if(electionType == 'Parliament')
+		stateId = 1;
+	document.getElementById("electionYears").length = 0;
+
+	if(electionType == null || electionType == 'Select Type' || stateId == 0)
+		return;
+	
+	var jObj = {
+			stateId : stateId,
+		electionType: electionType,
+				type:type,
+				task: 'getElectionYearsForAState'
+				};
+
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
+	callAjaxForHomepage(jObj,url);
+}
+function getStatesInHomePage(type)
+{
+
+	var electionType = document.getElementById('electionTypeId').value;
+
+	var jsObj=
+		{						
+				
+				electionType:electionType,
+                type:type,					 
+				task:"getStates"
+		}
+
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getStatesForHomepage.action?"+rparam;
+	callAjaxForHomepage(jsObj,url);
+
+}
+
+
+function callAjaxForHomepage(jsObj,url)
+{		
+	var callback = {			
+				   success : function( o ) {
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							
+							if(jsObj.task == 'getElectionYearsForAState')
+							{
+								
+								buildElectionYears(myResults,jsObj.type );
+							}
+							
+							else if(jsObj.task == "getStates")
+							{
+								buildStatesForHomePage(myResults,jsObj.type);
+							}
+							else if(jsObj.task == "getConstituencies")
+							{
+								buildConstituencies(myResults,jsObj.type);
+							}else if(jsObj.task == "findDistrictsForAState")
+							{
+								buildDistricts(myResults,jsObj.type);
+							}
+
+						}
+						catch(e)
+						{   
+							//alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function buildElectionYears(myResults,type)
+{
+
+	$('#electionYears').find('option').remove();
+	
+		$.each(myResults,function(index,value){			
+			$('#electionYears').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+
+      if(type == "default")
+		  $('#electionYears').val($('#electionYears option:eq(1)').val());
+
+}
+function buildStatesForHomePage(myResults,type)
+{
+
+	$('#states').find('option').remove();
+	
+		$.each(myResults,function(index,value){			
+			$('#states').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+
+      if(type == "default")
+		  $('#states').val($('#states option:eq(0)').val());
+
+}
+
+function  buildConstituencies(myResults,type)
+{
+	$('#constituency').find('option').remove();
+	
+		$.each(myResults,function(index,value){			
+			$('#constituency').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+
+      if(type == "default")
+		  $('#constituency').val($('#constituency option:eq(1)').val());
+}
+function buildDistricts(myResults,type)
+{
+	$('#districtList_d').find('option').remove();
+	
+		$.each(myResults,function(index,value){			
+			$('#districtList_d').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+
+      if(type == "default")
+		  $('#districtList_d').val($('#districtList_d option:eq(1)').val());
+
+}
+function getAllConstituenciesInStateByTypeForHomepage(electionType, stateId, element,type)
+{	
+	var jsObj=
+	{				
+			electionTypeId: electionType,
+			stateId: stateId,
+            type:type, 
+			task: "getConstituencies",
+			elmtId: element 	
+	}
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getAllConstituenciesInState.action?"+rparam;						
+callAjaxForHomepage(jsObj,url);
+}
+
+function getDistrictsComboBoxForAStateForHomepage(value,elmtId,type)
+{	
+	var jsObj=
+		{				
+				stateId:value,
+				elmtId:elmtId,
+				task:"findDistrictsForAState",
+                type:type,
+				taskType:"getRegions"				
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getDistrictsForAStateAjaxAction.action?"+rparam;						
+	callAjaxForHomepage(jsObj,url);
+}
 </script>
 	<script type="text/javascript" src="styles/engine3/wowslider.js"></script>
 	<script type="text/javascript" src="styles/engine3/script.js"></script>
