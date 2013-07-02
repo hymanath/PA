@@ -327,7 +327,7 @@ lable{line-height:40px;}
 
 <tr>
 <td>
-<div id="localBodiesRadioDiv_data" style="margin-bottom:-30px;margin-top: -30px;">
+<div id="localBodiesRadioDiv_data" style="margin-top: -30px;">
 <input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>&nbsp;Muncipality</br>
 <input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>&nbsp;Corporation</br>
 <input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>&nbsp;Greater Municipal Corp</br>
