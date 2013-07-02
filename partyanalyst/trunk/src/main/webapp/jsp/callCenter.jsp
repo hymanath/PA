@@ -221,17 +221,31 @@ width: 42px;
 }
 #basicInfo td{padding:5px;}
 #unSelectAllBtn{margin-left: 20px;}
-#smssending{margin-top: 33px;}
+#smssending{margin-top: -25px;}
 #selectAndUnselectDiv{margin-left: 132px; clear: both; width: 220px; margin-top: -32px;}
 </style>
 </head>
 
 <script type="text/javascript">	
 var timeST = new Date().getTime();
-
-//dummy code by sasi
+var selectedPhoneNosArr = new Array();
 function sendSMS()
 {
+	selectedPhoneNosArr =[];
+	$(".checkBoxCls").each(function() {
+	        if($(this).is(':checked')){	
+			    var obj={ 
+					phoneNo:$(this).val()
+				}
+			   selectedPhoneNosArr.push(obj);
+			}
+	});
+	console.log(selectedPhoneNosArr);
+	if(selectedPhoneNosArr.length==0){
+	alert("Please select numbers");
+	return;
+	}
+
 	$("#allConnectedUsersDisplay_main").children().remove();
 	$( "#connectPeoplePopup").dialog({
 			title:"Send Sms ",
@@ -254,11 +268,24 @@ function sendSMS()
 		div.append(textarea);
 		div.append(button);
 		$('#allConnectedUsersDisplay_main').append(div);
+		
 }
 
 function sendMessageToConnectedUser(){
-	//ajax call and processing logic to be written
-	setTimeout(function(){showMessageSentConfirmation()},1000);
+	var contentText = $("#connectMessageText").val();
+	if(contentText == ""){
+		$("#ErrorMsgDivId").html("<span>Please enter text..</span>").css("color","red");
+		return;
+	}
+	var jsObj=
+			{	
+					selectedPhoneNosArr:selectedPhoneNosArr,
+					content:contentText,
+					task:"sendSMSForCallCenter"
+			}					
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+				var url = "sendSMSForCallCenterAction.action?"+rparam;						
+				 callAjax(rparam,jsObj,url);
 }
 
 function showMessageSentConfirmation()
@@ -269,13 +296,12 @@ function showMessageSentConfirmation()
    
 	$("#connectMessageText").val('');
 	$("#ErrorMsgDivId").html('<font color="green">Message Sent Successfully..</font>');
-	setTimeout('self.close();',2000);
+	setTimeout("self.close();",2000);
 		
 	
 	
 }
-//end of dummy code by sasi
-	
+
 
   function clearAll(){
       document.getElementById("name1").value='';
@@ -817,7 +843,13 @@ var callback = {
 			     showResultMessage();
 				 getCurrentDayCallTrackingProblem();
 			 }
+			else if(jsObj.task =="sendSMSForCallCenter"){
+				selectedPhoneNosArr = new Array();
+			    $("#ErrorMsgDivId").html("<span>Message sent successfully to "+myResults.totalSmsSent+" person(s)</span>").css("color","green");
 			
+			setTimeout($('#connectPeoplePopup').dialog('close'), 1000);	
+	$("#unSelectAllBtn").trigger("click");
+			 }
 		}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
 		}  
@@ -862,7 +894,8 @@ function showSearchDetails(result){
 		//var name = oData;
 		//var id= oRecord.getData("voterId");
 		//var boothId=oRecord.getData("boothId"); 
-		elLiner.innerHTML="<input type='checkbox' class='checkBoxCls' />";
+		var mobileno=oRecord.getData("mobile"); 
+		elLiner.innerHTML="<input type='checkbox' class='checkBoxCls' value='"+mobileno+"'/>";
 					
 	  };
   
@@ -1141,8 +1174,8 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
 </div>
 
 <!--dummy sms code by sasi-->
-<div id="smssending" style="margin-left:auto;margin-right:auto;width:50px;display:none;">
-	<input class="btnClass btn btn-inverse" type="button" value="Send SMS" onclick="sendSMS()">
+<div id="smssending" style="margin-left:auto;margin-right:180px;width:50px;display:none;">
+	<input class="btnClass btn btn-inverse" type="button" value="Send SMS" onclick="sendSMS()" style="background: none repeat scroll 0% 0% green;">
 </div>
 <!--dummy sms code by sasi end-->
 
