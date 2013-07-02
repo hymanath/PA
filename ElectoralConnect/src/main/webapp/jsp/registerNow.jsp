@@ -10,6 +10,7 @@
 </head>
 <body>
 <script type="text/javascript"  src="js/RegisterFormValidation.js"></script>
+
 <style>
 	.requ:after { content:"*";color:red;}
 	span.ok{background-image:url("img/accept.png");}
@@ -21,18 +22,17 @@
 	#status{background-image:url(img/accept.png)}
 	   label.valid {
 		  color: green !important;
-		  background: url(img/accept.png) no-repeat !important;
+		  background: url(img/accept.png) center center no-repeat !important;
 		  display: inline-block;
-		  text-indent: 24px;
+		  text-indent: -9999px;  
 		}
 		label.error {
 		  font-weight: bold; 
 		  color: red;
 		  background: url(img/error.png) no-repeat;
+		  padding: 2px 14px;
 		  display: inline-block;
-		  text-indent: 24px;
 		}
-	
 </style>
 
 <div id="formDivId">
@@ -46,18 +46,14 @@
 					<label class="control-label requ" for="firstName">First Name</label>
 					<div class="controls ">
 						<input type="text" name="firstName" id="firstNameId" placeholder="First Name"> 
-						<span id="firstNameErr"></span>
-					</div>
-					
-					
+					</div>	
 				</div>
 				
 				<div class="control-group ">
 					<label class="control-label requ" for="lastName">Last Name</label>
 					<div class="controls">
 						<input type="text" id="lastNameId" name="lastName" placeholder="Last Name">
-					</div>
-					
+					</div>			
 				</div>
 				
 				<div class="control-group ">
@@ -123,7 +119,7 @@
 		else if(loginStatus == "failure")
 		{
 			$('#loginModal').modal('show');
-			$('#errorMsg').html('<b style="color:red">Please Enter Valid User Name and Paaword</b>');
+			$('#errorMsg').html('<b style="color:red">Please Enter Valid User Name and Password</b>');
 		}
 		
 	}); */
@@ -139,15 +135,24 @@
 			alert(" Not Updated SuccessFully");
 		}
 	}); */
-	$("#emailId").blur(function(){
+
+	/*$("#emailId").blur(function(){
+	
 		var emailId=$('#emailId').val();
 		var s=isValidEmailAddress(emailId);
 		if(!s){
 			$('#errorImgId').css('display','inline-block');
 			return;
-		}
-		
-			
+		}*/
+$("#emailId").live("blur",function()
+{
+	alert('aa');
+	checkemail();
+	
+});
+	function checkemail(){	
+		alert(emailId);
+		var emailId = $("#emailId").val();
 		var jsObj =
 		{  	
 			emailId:emailId,
@@ -156,16 +161,15 @@
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "validateEmailAction.action?"+rparam;
 		callAjax(jsObj, url);
-		
-	});
 	
+	}
 	function isValidEmailAddress(emailAddress) {
 		var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
 				
 		//var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 		//return regex.test(emailAddress);
-		
-		return pattern.test(emailAddress);
+		alert(pattern.test(emailAddress));
+		return pattern.test(emailAddress);	
 	};
 	
 	/* function verfyingPassword()
@@ -211,7 +215,6 @@
 	} */
 	function callAjax(jsObj,url){
 		 var myResults;
-
 			 var callback = {			
  		               success : function( o ) {
 							try {												
@@ -238,15 +241,19 @@
  	}
 	function statusOfEmail(myResults){
 		if(myResults=="FAILED"){
-			$('#errorImgId').css('display','inline-block');
+			//$('#errorImgId').css('display','inline-block');	
+			$("#emailId").text('ok').html("Email Already Available").addClass('valid');
 		}
 		else{
-			$('#correctImgId').css('display','inline-block');
+			//alert("hhjgj");
+		$("#emailId").text('ok').html("").removeClass('valid');
+			//$("#emailId").css('display','inline-block');
+			
 		}
-	}
+	}	
 	 function openChagePasswordModel()
 	{
-		alert('in');
+		//alert('in');
 		$('#passwordModal').modal('show');
 	} 
 	
