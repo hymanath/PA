@@ -203,7 +203,7 @@ width: 92px;
 							<span class="enadu"> <s:property value="fileTitle1"/></span>
 						 </s:if>
 						 <s:else>
-							<h4 style="text-transform: capitalize;"> <s:property value="fileTitle1"/></h4>
+							<h4 style="text-transform: capitalize;"> <a style="color: #005580;font-weight: bolder;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"><s:property value="fileTitle1"/> </a></h4>
                            </s:else>
 						 
 									<div class="row-fluid">				
@@ -336,9 +336,9 @@ width: 92px;
                           
 						  
 						  <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
-							<span class="enadu"> <s:property value="fileTitle1"/></span>						 </s:if>
+							<span class="enadu"><a style="color: #005580;font-weight: bolder;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <s:property value="fileTitle1"/> </a></span>						 </s:if>
 						 <s:else>
-							<h4 style="text-transform: capitalize;"> <s:property value="fileTitle1"/></h4>
+							<h4 style="text-transform: capitalize;"><a  style="color: #005580;font-weight: bolder;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <s:property value="fileTitle1"/> </a></h4>
 						 </s:else>
 									<div class="row-fluid">				
 									
