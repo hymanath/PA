@@ -173,11 +173,11 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
 	var source = results[i].fileType.trim();
 	if(source == "Eenadu Telugu")
 	{
-		str+='<h4 style="text-transform: capitalize;" class="enadu">'+results[i].fileName1+'</h4>';
+		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}">'+results[i].fileName1+'</a></h4>';
 	}
 	else
 	{
-		str+='<h4 style="text-transform: capitalize;">'+results[i].fileName1+'</h4>';
+		str+='<h4 style="text-transform: capitalize;"> <a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}">'+results[i].fileName1+'</a></h4>';
 	}
 		
 			str+='<div class="row-fluid">';
@@ -204,7 +204,7 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
 				str+='</div>';
 				str+='<div class="span2 ">';
 				
-					str+='	<a type="button" class="btn btn-mini btn-info pull-right" onClick="getNewsDetailsByContentId('+results[i].fileGallaryId+')">More...</a>';
+					str+='	<a type="button" class="btn btn-mini btn-info pull-right" onClick="getNewsDetailsByContentId('+results[i].fileGallaryId+')">Details...</a>';
 					
 				str+='</div>';
 			str+='</div>';
