@@ -156,7 +156,7 @@ public class MailService implements IMailService{
 		return rs;
  	    }
     
-    public ResultStatus sendMailToUserToRecoverPassword(UserVO userVO , String requestFrom){
+    public ResultStatus sendMailToUserToRecoverPassword(RegistrationVO regVO , String requestFrom){
     	
     	QuickRequestVO quickRequestVO = new QuickRequestVO();
     	ResultStatus rs = new ResultStatus();
@@ -167,13 +167,13 @@ public class MailService implements IMailService{
     	
     	text = "";
     	text = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" 
-    			+"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'>Hi <b>"+userVO.getFirstname()+" "+userVO.getLastname()+",</b></div>" +
+    			+"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'>Hi <b>"+regVO.getFirstName()+" "+regVO.getLastName()+",</b></div>" +
     			"<div style='margin-left:45px;margin-bottom:40px;line-height: 1.5em;'>Here are the login details for your Party Analyst Account.<br>";
-    	text += "User Name is : " + " " +userVO.getEmailId()+"<br>";
-    	if(userVO.getPwd()!= null)
-    	text += "Your Password is :" +"  <b>"+ userVO.getPwd()+"</b>";
+    	text += "User Name is : " + " " +regVO.getEmail()+"<br>";
+    	if(regVO.getPassword() != null)
+    	text += "Your Password is :" +"  <b>"+ regVO.getPassword()+"</b>";
     	text +="</div><div style='margin: -17px 3px 0px 19px; padding-bottom: 18px;'>"+mailsTemplateService.getFooter()+"</div></div>";
-    	quickRequestVO.setToEmailId(userVO.getEmailId());
+    	quickRequestVO.setToEmailId(regVO.getEmail());
     	quickRequestVO.setSubject(subject);
     	quickRequestVO.setText(text);
     	

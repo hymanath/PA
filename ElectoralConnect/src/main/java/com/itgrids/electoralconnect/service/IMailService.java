@@ -11,7 +11,7 @@ public interface IMailService {
 
 	public ResultStatus sendQuickRequestEmailToAdmin(QuickRequestVO quickRequestVO,String requestFrom);
 	 
-	public ResultStatus sendMailToUserToRecoverPassword(UserVO userVO , String requestFrom);
+	public ResultStatus sendMailToUserToRecoverPassword(RegistrationVO regVO , String requestFrom);
 	 
 	public  ResultStatus sendMailFromLocalHost(QuickRequestVO quickRequestVO);
 	  

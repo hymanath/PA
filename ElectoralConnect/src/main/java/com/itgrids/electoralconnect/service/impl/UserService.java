@@ -185,7 +185,7 @@ public class UserService implements IUserService{
 						roles         =   (Roles) parms[1];
 						userProfile   =   user.getUserProfile();
 						userLogin     =   user.getUserLogin();
-						regVO.setFirstName(userProfile.getLastName());
+						regVO.setFirstName(userProfile.getFirstName());
 						regVO.setLastName(userProfile.getLastName());
 						regVO.setEmail(userProfile.getEmailId());
 						regVO.setMobile(userProfile.getMobileNo());
@@ -223,7 +223,7 @@ public class UserService implements IUserService{
 				Long userLoginId =0l;
 				if(userId != null)
 				{
-					userLoginId   = userDAO.get(userId).getUserId();
+					userLoginId   = userDAO.get(userId).getUserLogin().getUserLoginId();
 				}
 				
 				int passwordStatus = userDAO.updatePassword(password, userLoginId);
@@ -241,5 +241,22 @@ public class UserService implements IUserService{
 			}
 			
 			return resultStatus;
+		}
+		
+		public RegistrationVO forgetPasswordService(String username)
+		{
+			RegistrationVO regVO = new RegistrationVO();
+			User user = userDAO.getUserDetailsByUserName(username);
+			if(user != null)
+			{
+				regVO.setUserName(user.getUserLogin().getUserName());
+				regVO.setRegistrationID(user.getUserId());
+				regVO.setPassword(user.getUserLogin().getPassword());
+				regVO.setFirstName(user.getUserProfile().getFirstName());
+				regVO.setLastName(user.getUserProfile().getLastName());
+				regVO.setEmail(user.getUserProfile().getEmailId());
+				regVO.setMobile(user.getUserProfile().getMobileNo());
+			}
+			return regVO;
 		}
 }

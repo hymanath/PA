@@ -112,7 +112,8 @@
 						<input type="password" id="password" placeholder="password" name='password'>
 					</div>
 				</div>
-				<div id="loginStatusDiv"></div>				
+				<div id="loginStatusDiv"></div>	
+				<div style="float:right;"><a id="forgetPassword">forget password</a></div>
 			
 		</div>
 		<div class="modal-footer">
@@ -167,6 +168,29 @@
 		</div>
 		</form>
 	</div>
+	
+	<div class="modal hide fade" id="forgetPasswordModel">
+				
+		<div class="modal-body">
+			<a class="close" data-dismiss="modal">X</a>
+			<p style="font-size:16px;font-weight:bold;"></p>
+			 
+				<legend>Forgot Password</legend>
+				<div class="control-group">
+					<label class="control-label" for="username">UserName</label>
+					<div class="controls">
+						<input type="text" id="userNameForPassword" placeholder="Your Name" name='userName'>
+					</div>
+				</div>
+		</div>
+		<div class="modal-footer">
+			<div id="successMsg" style="float:left;"></div>
+			<div id="errorMsg" style="float:left;"></div>
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<a class="btn btn-primary" onClick="getForgetdPassword();">Submit</a>
+		</div>
+		
+	</div>
 		</div>
 		
 		<footer>
@@ -183,6 +207,24 @@
 			$('#loginId').click(function(){
 				$('#loginModal').modal('show');
 			});
+			$('#forgetPassword').click(function(){
+				$('.close').trigger('click',function(){
+				});
+				$('#forgetPasswordModel').modal('show');
+				});
+
+			function getForgetdPassword()
+			{
+				var username = $('#userNameForPassword').val();
+				var jsObj =
+				{  	
+					username : username,
+					task     : 'getForgetdPassword'
+				};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+				var url = "forgotPasswordAction.action?"+rparam;
+				callAjax(jsObj, url);
+			}
 			/* function checkingForValidUser()
 			{
 				var userName = $('#userName').val();
@@ -210,7 +252,7 @@
 					$('#loginStatusDiv').html("<b style='color:green;'>Successfully Login Please Wait...</b>");
 					
 				}
-			}
+			}*/
 			
 		   function callAjax(jsObj,url)
 		   {
@@ -222,9 +264,9 @@
 				   {
 						try {												
 							myResults = YAHOO.lang.JSON.parse(o.responseText);					
-							if(jsObj.task =="checkForUserLogin")
+							if(jsObj.task =="getForgetdPassword")
 							{
-								ShowLoginStatus(myResults);
+								
 							}
 							}catch (e) {
 							 
@@ -238,7 +280,7 @@
 				};
 
 				YAHOO.util.Connect.asyncRequest('POST', url, callback);
-		} */
+		} 
 		</script>
 </body>
 </html>
