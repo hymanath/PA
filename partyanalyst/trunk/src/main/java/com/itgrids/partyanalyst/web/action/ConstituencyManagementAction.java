@@ -86,8 +86,17 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private InfluencingPeopleBeanVO influencingPersonVO;
 	private List<SelectOptionVO> problemStatus;
 	private List<SelectOptionVO> groupList;
+	private String host = IConstants.DEPLOYED_HOST;
 	
 	
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
 	public List<SelectOptionVO> getGroupList() {
 		return groupList;
 	}
