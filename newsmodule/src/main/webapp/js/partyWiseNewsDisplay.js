@@ -539,11 +539,11 @@ function showTotalNews(myResult,jsObj){
 		var source = myResult[i].source.trim();
 		if(source == "Eenadu Telugu")
 		{
-			str+='<h4  style="text-transform: capitalize;" class="enadu"> '+myResult[i].fileTitle1+'</h4>';
+			str+='<h4  style="text-transform: capitalize;" class="enadu"> <a style="cursor:pointer;color: #005580;" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')">'+myResult[i].fileTitle1+'</a></h4>';
 		}
 		else
 		{
-			str+='<h4  style="text-transform: capitalize;"> '+myResult[i].fileTitle1+'</h4>';
+			str+='<h4  style="text-transform: capitalize;"><a style="cursor:pointer;color: #005580;" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')"> '+myResult[i].fileTitle1+'</a></h4>';
 		}
 		
 		str+='<div class="row-fluid">';
@@ -573,7 +573,7 @@ function showTotalNews(myResult,jsObj){
 		str+='</div>';
 		str+='<div class="span2 ">';
 		str+='<a onclick="getNewsDetailsByContentId('+myResult[i].contentId+')">';
-		str+='<button class="btn btn-mini pull-right btn-info" type="button">Read Now...</button>';
+		str+='<button class="btn btn-mini pull-right btn-info" type="button">Details...</button>';
 		str+='</a>';
 		str+='</div>';
 		str+='</div>';
