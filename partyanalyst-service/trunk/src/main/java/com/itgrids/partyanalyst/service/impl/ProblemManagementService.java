@@ -8679,8 +8679,7 @@ public ProblemBeanVO saveNewProblemData(ProblemBeanVO problemBeanVOToSave) {
 						problemCompleteLocation.setDistrict(districtDAO
 								.get(new Long(problemBeanVO.getDistrict())));
 
-					if (problemBeanVO.getDistrict().equals("0")
-							|| problemBeanVO.getDistrict() == null) {
+					if (problemBeanVO.getDistrict() == null || problemBeanVO.getDistrict().equals("0") ) {
 						problemCompleteLocation.setDistrict(null);
 						problemCompleteLocation.setConstituency(null);
 						problemCompleteLocation.setTehsil(null);

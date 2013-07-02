@@ -575,6 +575,14 @@ public class CadreManagementService {
 						currentAddress.setDistrict(constituencyDAO.get(cadreInfo.getConstituencyID()).getDistrict());
 					}
 				} else {
+					 if(cadreInfo.getConstituencyID() != null){
+						List parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(cadreInfo.getConstituencyID());
+						if(parliamentList != null && parliamentList.size() > 0){
+					    	 Object[] parliament = (Object[])(parliamentList.get(0));
+					    	 if(parliament[0] != null)
+					    	 currentAddress.setParliamentConstituency(constituencyDAO.get((Long)parliament[0]));
+					     }
+					 }
 					//currentAddress.setParliamentConstituency(constituencyDAO.get(new Long(cadreInfo.getParliament())));
 					if(cadreInfo.getDistrict() != null)
 					 currentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
@@ -644,6 +652,14 @@ public class CadreManagementService {
 							permanentAddress.setDistrict(constituencyDAO.get(cadreInfo.getPconstituencyID()).getDistrict());
 						}
 					} else {
+						if(cadreInfo.getPconstituencyID() != null){
+							List parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(cadreInfo.getPconstituencyID());
+							if(parliamentList != null && parliamentList.size() > 0){
+						    	 Object[] parliament = (Object[])(parliamentList.get(0));
+						    	 if(parliament[0] != null)
+						    		 permanentAddress.setParliamentConstituency(constituencyDAO.get((Long)parliament[0]));
+						     }
+						 }
 						//permanentAddress.setParliamentConstituency(constituencyDAO.get(new Long(cadreInfo.getPParliament())));
 						if(cadreInfo.getPdistrict() != null)
 						 permanentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getPdistrict())));
@@ -1127,8 +1143,13 @@ public class CadreManagementService {
 					idToCompare = modelDetails.get(1);
 				}
 				
-				totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserIDInALocation(userCadreInfo.getUserID(), IConstants.CADRE_MEMBER_TYPE_ACTIVE, model, idToCompare, accessLocationValue);
-				totalNormalCadres = cadreDAO.findTotalCadresByUserIDInALocation(userCadreInfo.getUserID(), IConstants.CADRE_MEMBER_TYPE_NORMAL, model, idToCompare, accessLocationValue);		
+				//Commented by mahesh
+				//totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserIDInALocation(userCadreInfo.getUserID(), IConstants.CADRE_MEMBER_TYPE_ACTIVE, model, idToCompare, accessLocationValue);
+				//totalNormalCadres = cadreDAO.findTotalCadresByUserIDInALocation(userCadreInfo.getUserID(), IConstants.CADRE_MEMBER_TYPE_NORMAL, model, idToCompare, accessLocationValue);	
+				
+				//Changed by mahesh to get cadre count for parent as well as user
+				totalUserAccessLevelCaders = cadreDAO.findTotalCadresByMultipleUserIDsInALocation(userCadreInfo.getUserIds(), IConstants.CADRE_MEMBER_TYPE_ACTIVE, model, idToCompare, accessLocationValue);
+				totalNormalCadres = cadreDAO.findTotalCadresByMultipleUserIDsInALocation(userCadreInfo.getUserIds(), IConstants.CADRE_MEMBER_TYPE_NORMAL, model, idToCompare, accessLocationValue);		
 			}
 			
 			//Long nonAssignedToBoothActiveCadres = getAllNonAssignedBoothCadres(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
@@ -1422,7 +1443,10 @@ public class CadreManagementService {
 				log.debug("CadreManagementService.getUserAccessRegions() if COUNTRY started");
 			}
 			List states = cadreDAO.findStatesByCountryID(accessID);
-			List cadreSizeStateWise = cadreDAO.findCadreSizeStateWise(userCadreInfo.getUserID());
+			//Commented by mahesh
+			//List cadreSizeStateWise = cadreDAO.findCadreSizeStateWise(userCadreInfo.getUserID());
+			//Changed by mahesh to get cadre count for parent as well as user
+			List cadreSizeStateWise = cadreDAO.findCadreSizeStateWiseForMultipleUsers(userCadreInfo.getUserIds());
 			if (cadreSizeStateWise.size() == 0)
 				downLevelCadresFlag = false;
 			long stateLevelZeroCadres = states.size() - cadreSizeStateWise.size();
@@ -1446,7 +1470,10 @@ public class CadreManagementService {
 				log.debug("CadreManagementService.getUserAccessRegions() if STATE started");
 			}
 			List districts = cadreDAO.findDistrictsByStateID(accessID);
-			List cadreSizeDistrictWise = cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID());
+			//Commented by mahesh
+			//List cadreSizeDistrictWise = cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID());
+			//Changed by mahesh to get cadre count for parent as well as user
+			List cadreSizeDistrictWise = cadreDAO.findCadreSizeDistrictWiseForMultipleUsers(userCadreInfo.getUserIds());
 			if (cadreSizeDistrictWise.size() == 0)
 				downLevelCadresFlag = false;
 			long districtLevelZeroCadres = districts.size() - cadreSizeDistrictWise.size();// getZeroSize(cadreSizeZero4District);
@@ -1496,7 +1523,10 @@ public class CadreManagementService {
 				List<Long> cadreNotContains = new ArrayList<Long>();
 				List<Long> cadreContains = new ArrayList<Long>();
 				for(Long key:parliamentMap.keySet()){
-				  Long count = cadreDAO.findCadreSizeConstituencywise(parliamentMap.get(key),userCadreInfo.getUserID());
+				   //Commented by mahesh
+				  //Long count = cadreDAO.findCadreSizeConstituencywise(parliamentMap.get(key),userCadreInfo.getUserID());
+					//Changed by mahesh to get cadre count for parent as well as user
+				  Long count = cadreDAO.findCadreSizeConstituencywiseForMultipleUsers(parliamentMap.get(key),userCadreInfo.getUserIds());
 				  userAccessParlConstituencies.put(key, parliamentNames.get(key));
 				  if(count != null && count.longValue() > 0){
 					  cadreContains.add(key);
@@ -1539,8 +1569,12 @@ public class CadreManagementService {
 				constis.add((Long)constiDetails[0]);
 			}
 			List cadreSizeConstituencywise = new ArrayList();
-			if(constis.size() > 0)
-			 cadreSizeConstituencywise = cadreDAO.findCadreSizeConstituencywise(userCadreInfo.getUserID(),constis);
+			if(constis.size() > 0){
+				//Commented by mahesh
+			    //cadreSizeConstituencywise = cadreDAO.findCadreSizeConstituencywise(userCadreInfo.getUserID(),constis);
+				//Changed by mahesh to get cadre count for parent as well as user
+				cadreSizeConstituencywise = cadreDAO.findCadreSizeConstituencywiseForMultiple(userCadreInfo.getUserIds(),constis);
+			}
 			if (cadreSizeConstituencywise.size() == 0)
 					downLevelCadresFlag = false;
 			long constituencyLevelZeroCadres = constituencies.size() - cadreSizeConstituencywise.size();// getZeroSize(cadreSizeZero4Constituency);
@@ -1562,7 +1596,10 @@ public class CadreManagementService {
 				log.debug("CadreManagementService.getUserAccessRegions() if DISTRICT started");
 			}
 			constituencyIds = accessID;
-			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
+			
+			//Changed by mahesh to get cadre count for parent as well as user
+			//List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
+			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWiseForMultipleUsers(userCadreInfo.getUserIds());
 			if (cadreSizeMandalWise.size() == 0)
 				downLevelCadresFlag = false;
 			if(downLevelCadresFlag)
@@ -1586,7 +1623,9 @@ public class CadreManagementService {
 			List localElectionBodies = assemblyLocalElectionBodyDAO.findByConstituencyIds(constituencyIds);
 			if(localElectionBodies.size() != 0)
 			{
-				List cadreSizeLocalElectionBodywise = cadreDAO.findCadreSizeLocalElectionBodywise(userCadreInfo.getUserID());
+				//Changed by mahesh to get cadre count for parent as well as user
+				//List cadreSizeLocalElectionBodywise = cadreDAO.findCadreSizeLocalElectionBodywise(userCadreInfo.getUserID());
+				List cadreSizeLocalElectionBodywise = cadreDAO.findCadreSizeLocalElectionBodywiseForMultipleUsers(userCadreInfo.getUserIds());
 				if (cadreSizeLocalElectionBodywise.size() > 0)
 					localElectionBodyCadresFlag = true;
 				log.debug("CadreManagementService.getUserAccessRegions() cadreSizeMandalWise::"+ cadreSizeLocalElectionBodywise.size());
@@ -1609,7 +1648,9 @@ public class CadreManagementService {
 			 
 			
 			List boothsInTehsils = boothDAO.findBoothsInTehsils(accessID, constituencyIds, IConstants.DELIMITATION_YEAR);
-			List cadreSizeBoothwiseInMandal = cadreDAO.findCadreSizeBoothwiseInMandal(userCadreInfo.getUserID());
+			//Changed by mahesh to get cadre count for parent as well as user
+			//List cadreSizeBoothwiseInMandal = cadreDAO.findCadreSizeBoothwiseInMandal(userCadreInfo.getUserID());
+			List cadreSizeBoothwiseInMandal = cadreDAO.findCadreSizeBoothwiseInMandalForMultipleUsers(userCadreInfo.getUserIds());
 			long boothwiseZeroCadresInMandal = boothsInTehsils.size()	- cadreSizeBoothwiseInMandal.size();// getZeroSize(cadreSizeZero4Mandal);
 				StringBuilder sbLocalElectionBodies = getFormatedData(boothsInTehsils, userAccessBoothsInMandal, cadreSizeBoothwiseInMandal, zeroCadreBoothsInMandal);
 				userCadreInfo.setUserAccessBoothsInMandal(userAccessBoothsInMandal);
@@ -1626,7 +1667,9 @@ public class CadreManagementService {
 			List wards = constituencyDAO.findWardsInLocalElectionBodies(localElectionBodyIds);
 			if(wards.size() != 0)
 			{
-				List cadreSizeWardswise = cadreDAO.findCadreSizeWardswise(userCadreInfo.getUserID());
+				//Changed by mahesh to get cadre count for parent as well as user
+				//List cadreSizeWardswise = cadreDAO.findCadreSizeWardswise(userCadreInfo.getUserID());
+				List cadreSizeWardswise = cadreDAO.findCadreSizeWardswiseForMultipleUsers(userCadreInfo.getUserIds());
 				long wardLevelZeroCadres = wards.size()	- cadreSizeWardswise.size();
 				StringBuilder sbwards = getFormatedData(wards, userAccessWards, cadreSizeWardswise, zeroCadreWards);
 				userCadreInfo.setUserAccessWards(userAccessWards);
@@ -1644,7 +1687,9 @@ public class CadreManagementService {
 			List booths = boothDAO.findBoothsInLocalElectionBodies(localElectionBodyIds, constituencyIds, new Long(IConstants.DELIMITATION_YEAR));
 			//List wards = constituencyDAO.findWardsInLocalElectionBodies(localElectionBodyIds);
 			
-			List cadreSizeBoothwise = cadreDAO.findCadreSizeBoothwise(userCadreInfo.getUserID());
+			//Changed by mahesh to get cadre count for parent as well as user
+			//List cadreSizeBoothwise = cadreDAO.findCadreSizeBoothwise(userCadreInfo.getUserID());
+			List cadreSizeBoothwise = cadreDAO.findCadreSizeBoothwiseForMultipleUsers(userCadreInfo.getUserIds());
 			long wardLevelBoothCadres = booths.size()	- cadreSizeBoothwise.size();
 			StringBuilder sbbooths = getFormatedData(booths, userAccessBooths, cadreSizeBoothwise,zeroCadreBooths);
 			userCadreInfo.setUserAccessBooths(userAccessBooths);
@@ -1662,8 +1707,9 @@ public class CadreManagementService {
 				log.debug("CadreManagementService.getUserAccessRegions() if MANDAL started");
 			}
 			List hamlets = cadreDAO.findHamletsByTehsilIds(accessID);
-			
-			List cadreSizeHamletWise = cadreDAO.findCadreSizeHamletWise(userCadreInfo.getUserID());
+			//Changed by mahesh to get cadre count for parent as well as user
+			//List cadreSizeHamletWise = cadreDAO.findCadreSizeHamletWise(userCadreInfo.getUserID());
+			List cadreSizeHamletWise = cadreDAO.findCadreSizeHamletWise(userCadreInfo.getUserIds());
 			long hamletLevelZeroCadres = hamlets.size() - cadreSizeHamletWise.size();// getZeroSize(cadreSizeZero4Mandal);
 
 			StringBuilder sbHamlets = getFormatedData(hamlets, userAccessHamlets, cadreSizeHamletWise, zeroCadreHamlets);
@@ -1778,7 +1824,9 @@ public class CadreManagementService {
 				model = modelDetails.get(0);
 				idToCompare = modelDetails.get(1);
 			}
-			cadresByRegionList = cadreDAO.findTotalCadresByUserIdBasedOnCadreLevel(userCadreInfo.getUserID(), IConstants.CADRE_MEMBER_TYPE_ACTIVE, model, idToCompare, new Long(userCadreInfo.getUserAccessValue()));
+			//Changed by mahesh to get cadre count for parent as well as user
+			//cadresByRegionList = cadreDAO.findTotalCadresByUserIdBasedOnCadreLevel(userCadreInfo.getUserID(), IConstants.CADRE_MEMBER_TYPE_ACTIVE, model, idToCompare, new Long(userCadreInfo.getUserAccessValue()));
+			cadresByRegionList = cadreDAO.findTotalCadresByMultipleUserIdsBasedOnCadreLevel(userCadreInfo.getUserIds(), IConstants.CADRE_MEMBER_TYPE_ACTIVE, model, idToCompare, new Long(userCadreInfo.getUserAccessValue()));
 		}
 		
 		Map<String, Long> result = new LinkedHashMap<String, Long>();
