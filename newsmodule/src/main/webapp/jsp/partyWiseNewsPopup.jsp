@@ -249,10 +249,10 @@ function getNewsForLocation()
 	  $("#errorMsgDiv").html('Please Select To Date');
 		return;
 	}
-	else if (Date.parse(fromDate) > Date.parse(toDate)) {
+	/* else if (Date.parse(fromDate) > Date.parse(toDate)) {
       $("#errorMsgDiv").html('Invalid Date Selection.');
       return;
-	} 
+	}  */
 
 	
 	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
