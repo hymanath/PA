@@ -15,7 +15,13 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>	
+<c:if test="${!updateEvent}">
 <title>Create New Event</title>
+</c:if>
+
+<c:if test="${updateEvent}">
+<title>Update Event</title>
+</c:if>
 <style>
 #pop_header {
     background-attachment: scroll;
@@ -1013,7 +1019,7 @@ function handleSubmit(type)
     <div style="clear:both;" id="successmsg"></div>
     <div style="clear:both;" id="errorMsgDiv"></div>
     <div style="clear:both;">
-		<span class="titleStyle">Event Name<font class="requiredFont"> * </font> : </span> <input type="text" id="eventNameText" />
+		<span class="titleStyle">Event Name<font class="requiredFont"> * </font> : </span> <input type="text" id="eventNameText" maxlength = "100" />
 	</div>
 	<div>
 	    <span class="titleStyle">Start Date<font class="requiredFont"> * </font> : </span>
@@ -1121,7 +1127,7 @@ function handleSubmit(type)
 	</div>
 	<div style="clear:both;">
 	     <span class="titleStyle">Description<font class="requiredFont"> * </font> : </span>
-	     <textarea id="descTextArea"></textarea>
+	     <textarea id="descTextArea" maxlength="300"></textarea>
 	</div>
 	<div  style="background:#ffffff;clear:both;width:100%;">
 	<a id="planOrgButton" href="javascript:{}"><div style="clear:both;font-weight:bold;margin-top:0px;padding-left:5px;padding-top:5px;background-color:#DBE4E9;width:99%;height:30px;">Add Organisers</div></a>

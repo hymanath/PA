@@ -320,7 +320,30 @@ function callAjax(jsObj,url)
 									alert("Important Event created successfully");
 								}
 								else if(jsObj.task=="createImpDateEvent")
-								{			
+								{
+									var selectedDate = jsObj.startDate.split('/')[1]+'/'+jsObj.startDate.split('/')[0]+'/'+jsObj.startDate.split('/')[2];
+									  datesRenderArr.push(selectedDate);
+									 renderStack()
+
+              var ob =
+					{
+						importantDateId:myResults[0].importantDateId,
+						title:myResults[0].title,
+						impDate:myResults[0].impDate,
+						importance:myResults[0].importance,
+						eventType:myResults[0].eventType
+					};
+
+					impDates.push(ob);
+
+					impDates.sort(compare);
+
+
+
+                                    // impDates.push(myResults);
+									showInitialImpEventsAndDates(impDates,'impDates',"");
+
+
 									alert("Important Date created successfully");
 									$('#newImpDateDiv').dialog('close');
 									var date = new Date();
@@ -427,6 +450,9 @@ function removeDeletedElement(id,jsObj)
 		else if(jsObj.task=="deleteImpDate"){		
 		var elmt = document.getElementById("ImpDate_"+myResults);
 		alert("Date successfully deleted");
+
+		 datesRenderArr.push("");
+	     renderStack();
 			
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
@@ -1552,11 +1578,11 @@ function buildUnEditableSelectedDateEventPopup(results,jsObj)
 		eventStr+='<th>Title</th>';		
 		if(jsObj.taskType == "impEvent")
 		{
-			eventStr+='<td colspan="3"><span id="" class="fieldSpan">'+results.title+'</span></td>';
+			eventStr+='<td colspan="3"><p id="" class="fieldSpan" style="width:275px;">'+results.title+'</p></td>';
 		}
 		else if(jsObj.taskType == "impDate")
 		{
-			eventStr+='<td colspan="3"><span id="" class="fieldSpan">'+results[0].title+'</span></td>';					
+			eventStr+='<td colspan="3"><p id="" class="fieldSpan" style="width:275px;">'+results[0].title+'</p></td>';					
 		}
 		eventStr+='</tr>';
 		
@@ -1601,7 +1627,7 @@ function buildUnEditableSelectedDateEventPopup(results,jsObj)
 		if(jsObj.taskType == "impEvent")
 		{
 			if(results.description != '')
-				eventStr+='<td colspan="3"><span class="fieldSpan">'+results.description+'</span></td>';
+				eventStr+='<td colspan="3"><p class="fieldSpan" style="width:300px;">'+results.description+'</p></td>';
 			else
 				eventStr+='<td colspan="3"><span class="fieldSpan"> - </span></td>';
 		}
@@ -1688,8 +1714,16 @@ function buildUnEditableSelectedDateEventPopup(results,jsObj)
 		}
 		newDateDialog = $('#eventDateDetails').dialog({
 			width:600,
-			'title':'Important Date Details'
+			'title':'Important Date Details',
+			buttons: {
+				"Ok": function(){
+				
+					$(this).dialog("close");
+					
+				}
+			}
 		});
+
 }
 function showplanorgs(id)
 {
@@ -1938,7 +1972,7 @@ function buildSelectedDateEventPopup(results,jsObj)
 		eventStr+='</table>';
 		eventStr+='<div class="ui-dialog-buttonset">';
 		eventStr+='<input type="button" value="Update"  class="btn btn-primary" onclick="dateCheck(\''+jsObj.taskType+'\')" style="float: right; position: relative; left: -180px;margin-top: 10px;width:100px"></input>';
-		eventStr+='<input type="button" value="Delete"  class="btn btn-primary" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\')" style="float: inherit;margin-left: 488px;margin-top: -24px;width:100px;" ></input>';		
+		eventStr+='<input type="button" value="Delete"  class="btn btn-primary" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\',\'\')" style="float: inherit;margin-left: 488px;margin-top: -24px;width:100px;" ></input>';		
 		eventStr+='</div>';
 		eventStr+='</div>';		
 		divChild.innerHTML=eventStr;
@@ -2213,8 +2247,9 @@ function updateSelectedEvent(type)
 		
 }
 
-function deleteSelectedEvent(type,eId)
-{		
+function deleteSelectedEvent(type,eId,deletedDate)
+{
+	
 		var jsObj;
 			if(type == 'impEvent')
 			{	
@@ -2233,6 +2268,13 @@ function deleteSelectedEvent(type,eId)
 			if(status==false){
  				return;
 			}
+
+      if(deletedDate != "" && deletedDate != undefined){
+			var tdate = deletedDate.split('/')[1]+'/'+  deletedDate.split('/')[0]+'/'+deletedDate.split('/')[2];
+	        tdate = new Date(tdate);
+	        var removeDate = (tdate.getMonth()+1)+"/"+tdate.getDate()+"/"+tdate.getFullYear();
+			datesRenderArr.splice($.inArray(removeDate,datesRenderArr)  ,1);
+      }
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/deleteEventAction.action?"+rparam;		
@@ -2324,7 +2366,7 @@ function addCreatedEvent(results,jsObj)
 			str+='<div id="ImpEvent_'+results.userEventsId+'" class="eventSummaryDiv">';
 			//str+='onmouseover="displayEditCloseIcons(this.id)" ';
 			//str+='onmouseout="hideEditCloseIcons(this.id)">';
-			str+='<span id="cadreSpan_'+results.userEventsId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impEvent\','+results.userEventsId+')"> X </span>';
+			str+='<span id="cadreSpan_'+results.userEventsId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impEvent\','+results.userEventsId+',\'\')"> X </span>';
 			str+='<span id="cadreSpan_'+results.userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+results.userEventsId+'\',\'\',\'impEvent\',\''+newdate+'\')">';
 			str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
 
@@ -2335,7 +2377,7 @@ function addCreatedEvent(results,jsObj)
 			str+='<div id="ImpDate_'+results[0].importantDateId+'" class="eventSummaryDiv">';	
 			//str+='onmouseover="displayEditCloseIcons(this.id)" ';
 			//str+='onmouseout="hideEditCloseIcons(this.id)">';
-			str+='<span id="cadreSpan_'+results[0].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+results[0].importantDateId+')"> X </span>';
+			str+='<span id="cadreSpan_'+results[0].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+results[0].importantDateId+',\'\')"> X </span>';
 			str+='<span id="cadreSpan_'+results[0].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(this.id,\'ImpDate_'+results[0].importantDateId+'\',\'impDate\',\''+newdate+'\')">';
 			str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
 
@@ -3919,7 +3961,7 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 			{
 				var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;
 				str+='<div id="ImpEvent_'+eventsarr[i].userEventsId+'" class="eventSummaryDiv">';				
-				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impEvent\','+eventsarr[i].userEventsId+')"> X </span>';
+				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impEvent\','+eventsarr[i].userEventsId+',\'\')"> X </span>';
 				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\',\''+newdate+'\')">';
 				/*str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\''+eventsarr[i].eventType+'\',\'\',\'impEvent\')">';*/
 				str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
@@ -3928,7 +3970,7 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 			{
 				var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;
 				str+='<div id="ImpDate_'+eventsarr[i].importantDateId+'" class="eventSummaryDiv">';	
-				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+eventsarr[i].importantDateId+')"> X </span>';
+				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+eventsarr[i].importantDateId+',\''+newdate+'\',\'\')"> X </span>';
 				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\',\''+newdate+'\')">';
 				str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
 				
@@ -4255,6 +4297,15 @@ function changeToEditableField()
 			buildNewImpDatePopup();
 		if(createNewEvent == "true")
 			buildNewEventPopup();
+
+function compare(a,b) {
+  if (a.impDate > b.impDate)
+     return -1;
+  if (a.impDate < b.impDate)
+    return 1;
+  return 0;
+}
+
 	</script>	
 </body>
 </html>
