@@ -1715,6 +1715,7 @@ function buildUnEditableSelectedDateEventPopup(results,jsObj)
 		newDateDialog = $('#eventDateDetails').dialog({
 			width:600,
 			'title':'Important Date Details',
+             modal:true,
 			buttons: {
 				"Ok": function(){
 				
@@ -1999,6 +2000,7 @@ function buildSelectedDateEventPopup(results,jsObj)
 		}
 		eventDateDialog = $('#eventDateDetails').dialog({
 			width:650,
+            modal:true,
 			'title':'Update Important Date'
 		});
 		$(".ui-dialog-buttonset button").attr("class", "btn btn-primary");
