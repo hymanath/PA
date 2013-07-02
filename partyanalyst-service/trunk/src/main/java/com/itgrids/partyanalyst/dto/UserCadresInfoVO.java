@@ -23,7 +23,8 @@ public class UserCadresInfoVO implements Serializable{
 	private Long totalNormalCadres = null;
 	private Long totalNonAssignedToBoothActiveCadres = null;
 	private Long totalNonAssignedToBoothNormalCadres = null;
-	private Boolean isParent; 
+	private Boolean isParent;
+	private List<Long> userIds; 
 	/**
 	 *  regionLevel No Cadres contains like following
 	 * Zero Cadres in 5 Districts
@@ -323,6 +324,12 @@ public class UserCadresInfoVO implements Serializable{
 	public void setZeroCadreParlConstituencies(
 			Map<Long, String> zeroCadreParlConstituencies) {
 		this.zeroCadreParlConstituencies = zeroCadreParlConstituencies;
+	}
+	public List<Long> getUserIds() {
+		return userIds;
+	}
+	public void setUserIds(List<Long> userIds) {
+		this.userIds = userIds;
 	}
 	
 	
