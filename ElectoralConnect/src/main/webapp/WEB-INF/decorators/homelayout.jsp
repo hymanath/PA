@@ -69,7 +69,7 @@
 									</c:if>
 									
 									<c:if test="${sessionScope.loginStatus == 'in'}">
-									<c:out value="Welcome, ${sessionScope.USER.firstName} ${sessionScope.USER.lastName}|"/>
+									<li style="color: white;"><c:out value="Welcome, ${sessionScope.USER.firstName} ${sessionScope.USER.lastName}|"/></li>
 									</c:if>
 									<c:if test="${sessionScope.USER.isAdmin == 'true' && sessionScope.loginStatus == 'in'}">
 									<li><a title="Admin" id='adminId' onClick="openAdminPage();">Admin</a></li>|
