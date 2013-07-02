@@ -923,6 +923,7 @@ public String getVotersCastInfoByConstituency()
 	{
 		constituencyManagementVO = new ConstituencyManagementVO();
 		Long hamletId = 0L;
+		Long constituencyId =0L;
 		String id=jObj.getString("id");
 		String publicationDateId = jObj.getString("publicationDateId");
 		String casteStateId=jObj.getString("caste");
@@ -932,11 +933,12 @@ public String getVotersCastInfoByConstituency()
 		try
 		{
 			hamletId=jObj.getLong("hamletId");
+			constituencyId = jObj.getLong("constituencyId");
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		List<VoterHouseInfoVO> votersByHouseNos=votersAnalysisService.getVoterDetailsByCaste(new Long(id),new Long(publicationDateId),new Long(casteStateId),type,buildType,userId,hamletId);
+		List<VoterHouseInfoVO> votersByHouseNos=votersAnalysisService.getVoterDetailsByCaste(new Long(id),new Long(publicationDateId),new Long(casteStateId),type,buildType,userId,hamletId,constituencyId);
 		constituencyManagementVO.setVotersByHouseNos(votersByHouseNos);
 		
 		
