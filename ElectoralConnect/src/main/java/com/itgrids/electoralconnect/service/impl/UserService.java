@@ -22,7 +22,8 @@ import com.itgrids.electoralconnect.model.UserProfile;
 import com.itgrids.electoralconnect.model.UserRoles;
 import com.itgrids.electoralconnect.service.IUserService;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dao.hibernate.UserRolesDAO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public class UserService implements IUserService{
 		//DAO's 
@@ -31,7 +32,7 @@ public class UserService implements IUserService{
 		private IUserProfileDAO userProfileDAO;
 		private IUserRolesDAO userRolesDAO;
 		private IRolesDAO rolesDAO;
-		private static final Logger log=Logger.getLogger(UserService.class);
+		private static final Logger LOG=Logger.getLogger(UserService.class);
 		private TransactionTemplate transactionTemplate=null;
 		
 		
@@ -84,7 +85,7 @@ public class UserService implements IUserService{
 			}
 			return res;
 		}
-		public UserVO registerUser(final UserProfileVO userProfileVO){
+		public RegistrationVO registerUser(final UserProfileVO userProfileVO){
 			User result = (User)transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus status) {
 			UserProfile userProfile=new UserProfile();
@@ -123,7 +124,7 @@ public class UserService implements IUserService{
 			user=userDAO.save(user);
 			
 			UserRoles userRoles=new UserRoles();
-			Roles roles=new Roles();
+			//Roles roles=new Roles();
 			
 			userRoles.setUser(user);
 			
@@ -141,21 +142,21 @@ public class UserService implements IUserService{
 			
 			}
 			catch (Exception e) {
-				log.debug("Exception Raised ..In registerUser in UserService"+e);
+				LOG.debug("Exception Raised ..In registerUser in UserService"+e);
 			}
 			return user;
 		  }
 			
 		});
-			UserVO userVO=new UserVO();
-			userVO.setUsername(result.getUserLogin().getUserName());
-			userVO.setPwd(result.getUserLogin().getPassword());
-			userVO.setFirstname(result.getUserProfile().getFirstName());
-			userVO.setLastname(result.getUserProfile().getLastName());
-			userVO.setEmailId(result.getUserLogin().getUserName());
-			
-			
-			return userVO;
+			RegistrationVO regVO = new RegistrationVO();
+			regVO.setUserName(result.getUserLogin().getUserName());
+			regVO.setRegistrationID(result.getUserId());
+			regVO.setFirstName(result.getUserProfile().getFirstName());
+			regVO.setLastName(result.getUserProfile().getLastName());
+			regVO.setMobile(result.getUserProfile().getMobileNo());
+			regVO.setEmail(result.getUserProfile().getEmailId());
+			regVO.setPassword(result.getUserLogin().getPassword());
+			return regVO;
 		}
 		
 		/**
@@ -167,38 +168,78 @@ public class UserService implements IUserService{
 		 */
 		public RegistrationVO checkForValidUser(String username,String password)
 		{
-			RegistrationVO regVO        = new RegistrationVO();
-			//List<Object[]> userDetails = userDAO.checkForValidUser(username, password);
-			List<Object[]> userDetails = userRolesDAO.checkForValidUser(username, password);
-			UserProfile userProfile    = new UserProfile();
-			UserLogin userLogin        = new UserLogin();
-			User user                  = new User();
-			Roles roles                = new Roles();
-			if(userDetails != null && userDetails.size() > 0)
-			{
-				for (Object[] parms : userDetails) {
-					/*userProfile = (UserProfile) parms[0];
-					userLogin     =   (UserLogin) parms[1];*/
-					user          =   (User) parms[0];
-					roles         =   (Roles) parms[1];
-					userProfile   =   user.getUserProfile();
-					userLogin     =   user.getUserLogin();
-					regVO.setFirstName(userProfile.getLastName());
-					regVO.setLastName(userProfile.getLastName());
-					regVO.setEmail(userProfile.getEmailId());
-					regVO.setMobile(userProfile.getMobileNo());
-					regVO.setUserName(userLogin.getUserName());
-					regVO.setRegistrationID(userLogin.getUserLoginId());
-					if(roles.getRole().equalsIgnoreCase("Admin"))
-					{
-						regVO.setIsAdmin(true);
-					}
-					else
-					{
-						regVO.setIsAdmin(false);
+			RegistrationVO regVO         = new RegistrationVO();
+			try {
+				LOG.debug("Entered Into checkForValidUser() method in UserService Service"); 
+				//List<Object[]> userDetails = userDAO.checkForValidUser(username, password);
+				List<Object[]> userDetails   = userRolesDAO.checkForValidUser(username, password);
+				UserProfile userProfile      = new UserProfile();
+				UserLogin userLogin          = new UserLogin();
+				User user                    = new User();
+				Roles roles                  = new Roles();
+				if(userDetails != null && userDetails.size() > 0)
+				{
+					for (Object[] parms : userDetails) {
+						
+						user          =   (User) parms[0];
+						roles         =   (Roles) parms[1];
+						userProfile   =   user.getUserProfile();
+						userLogin     =   user.getUserLogin();
+						regVO.setFirstName(userProfile.getLastName());
+						regVO.setLastName(userProfile.getLastName());
+						regVO.setEmail(userProfile.getEmailId());
+						regVO.setMobile(userProfile.getMobileNo());
+						regVO.setUserName(userLogin.getUserName());
+						regVO.setRegistrationID(user.getUserId());
+						regVO.setIsPasswordChanged(userLogin.getIsPwdChanged());
+						if(roles.getRole().equalsIgnoreCase("Admin"))
+						{
+							regVO.setIsAdmin(true);
+						}
+						else
+						{
+							regVO.setIsAdmin(false);
+						}
 					}
 				}
+			} catch (Exception e) {
+				LOG.error("Exception Raised in checkForValidUser() method in UserService Service",e); 
 			}
+			
 			return regVO;
+		}
+		
+		/**
+		 * This Service is used for updateing the password
+		 * @param String password
+		 * @param Long userId
+		 * @return ResultStatus
+		 */
+		public ResultStatus updateUserPassword(String password,Long userId)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			try {
+				LOG.debug("Entered into updateUserPassword() method in UserService Service");
+				Long userLoginId =0l;
+				if(userId != null)
+				{
+					userLoginId   = userDAO.get(userId).getUserId();
+				}
+				
+				int passwordStatus = userDAO.updatePassword(password, userLoginId);
+				if(passwordStatus == 1)
+				{
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+				else
+				{
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				}
+			} catch (Exception e) {
+				LOG.error("Exception Raised in updateUserPassword() method in UserService Service",e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			}
+			
+			return resultStatus;
 		}
 }

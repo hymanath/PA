@@ -14,13 +14,14 @@ import javax.mail.internet.MimeMessage.RecipientType;
 import org.apache.log4j.Logger;
 
 import com.itgrids.electoralconnect.dto.QuickRequestVO;
+import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.dto.ResultCodeMapper;
 import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.itgrids.electoralconnect.dto.UserVO;
 import com.itgrids.electoralconnect.service.IMailService;
 import com.itgrids.electoralconnect.service.IMailsTemplateService;
 import com.itgrids.electoralconnect.util.IConstants;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
+
 
 public class MailService implements IMailService{
 
@@ -189,7 +190,7 @@ public class MailService implements IMailService{
     	return rs;
     }
     
-    public ResultStatus sendRegistrationNotification(UserVO userVO,String requestFrom)
+    public ResultStatus sendRegistrationNotification(RegistrationVO  regVO,String requestFrom)
     {
     	ResultStatus rs = new ResultStatus();
     	try{
@@ -206,7 +207,7 @@ public class MailService implements IMailService{
     	text = "";
     	text +="<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"<br/>";
       	
-    	text +="<div style='margin-left:20px; margin-top:15px;'>Hi  <b>"+userVO.getFirstname()+" "+userVO.getLastname()+",</div>";
+    	text +="<div style='margin-left:20px; margin-top:15px;'>Hi  <b>"+regVO.getFirstName()+" "+regVO.getLastName()+",</div>";
     	
     	text +="<div style='margin: 12px 15px 30px 30px; line-height: 1.8em;'></b></font>Just a quick note to confirm that you are now a registered member of Party Analyst family.";
     	
@@ -215,8 +216,8 @@ public class MailService implements IMailService{
     	
     	text +="<br>Here are your login details. Please keep them safe for future reference.";
     	
-    	text +="<br><b>Username : </b>"+ " <span style='text-decoration: none;'>"+userVO.getEmailId()+"</span>";
-    	text +="<br><b>Password : </b>"+" "+userVO.getPwd();
+    	text +="<br><b>Username : </b>"+ " <span style='text-decoration: none;'>"+regVO.getEmail()+"</span>";
+    	text +="<br><b>Password : </b>"+" "+regVO.getPassword();
     	
     	text +="<br>We hope to see you around and take part in our community!!!";
     	//text +="<br><br>For suggestions and support contact us at <b><a href="+sendMail+">info@partyanalyst.com</a></b>";
@@ -239,7 +240,7 @@ public class MailService implements IMailService{
 
     	//text = "<b><font color=\"blue\">Thank You  For Registering with PartyAnalyst</font></b>";
     	
-    	quickRequestVO.setToEmailId(userVO.getEmailId());
+    	quickRequestVO.setToEmailId(regVO.getEmail());
     	quickRequestVO.setSubject(subject);
     	quickRequestVO.setText(text);
     	
@@ -293,6 +294,8 @@ public class MailService implements IMailService{
         }
     	return rs;
 	}
+
+	
 
 	
 	/* public  ResultStatus sendArticleToAdmin(QuickRequestVO quickRequestVO,String requestFrom){
