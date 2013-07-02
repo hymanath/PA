@@ -583,6 +583,8 @@ Your password will be sent to this Email address
 </script>
 <script>
 $(document).ready(function() {
+
+	$('#constituency').val($('#constituency option:eq(1)').val());
  
 	$('#password-clear').show();
 	$('#password-password').hide();
