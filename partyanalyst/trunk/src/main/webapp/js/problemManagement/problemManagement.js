@@ -373,11 +373,14 @@ function buildProblemsData(jsObj,results)
 		bStr += '</font>';
 		bStr += '</div></td>';
 		bStr += '</tr>';
-		if(newProblems[i].visibility==2){
-		bStr += '<div id="publishProblem"><span onclick="publishProblem('+newProblems[i].problemHistoryId+')" style="cursor:pointer;color:white;">Publish Problem</span></div>'
+		if(host != 'tdpserver')
+		{
+			if(newProblems[i].visibility==2){
+			bStr += '<div id="publishProblem"><span onclick="publishProblem('+newProblems[i].problemHistoryId+')" style="cursor:pointer;color:white;">Publish Problem</span></div>'
+			}
+			else
+			bStr += '<div id="publishProblem"><span style="color:white;">Problem Published</span>';
 		}
-		else
-		bStr += '<div id="publishProblem"><span style="color:white;">Problem Published</span>';
 		bStr += '</tr>';
 		bStr += '</table>';
 		bStr += '</div>';
