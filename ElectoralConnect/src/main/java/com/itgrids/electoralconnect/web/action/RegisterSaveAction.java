@@ -1,9 +1,11 @@
 package com.itgrids.electoralconnect.web.action;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
 import com.itgrids.electoralconnect.dto.UserVO;
@@ -92,6 +94,7 @@ public class RegisterSaveAction extends ActionSupport implements ServletRequestA
 
 	public String execute()
 	{
+		HttpSession session = request.getSession();
 		LOG.debug("In RegisterUserActions execute()");
 		System.out.println(firstName+" "+lastName);
 		UserProfileVO userProfileVO=new UserProfileVO();
@@ -101,17 +104,17 @@ public class RegisterSaveAction extends ActionSupport implements ServletRequestA
 		userProfileVO.setMobileNo(mobileNo);
 		userProfileVO.setEpicId(epicId);
 		userProfileVO.setUserType(userType);
-		UserVO uservo=userService.registerUser(userProfileVO);
+		RegistrationVO  regVO = userService.registerUser(userProfileVO);
 		String requestURL= request.getRequestURL().toString();
-		System.out.println(requestURL);
-		
+		//System.out.println(requestURL);
+		session.setAttribute("USER", regVO);
 		String requestFrom = "";
 		if(requestURL.contains("www.partyanalyst.com"))
 			requestFrom = IConstants.SERVER;
 		else
 			requestFrom = IConstants.LOCALHOST;
 		
-		ResultStatus rs = mailService.sendRegistrationNotification(uservo,requestFrom);
+		ResultStatus rs = mailService.sendRegistrationNotification(regVO,requestFrom);
 		
 		return SUCCESS;
 	}
