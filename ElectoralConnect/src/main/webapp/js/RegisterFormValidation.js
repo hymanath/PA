@@ -12,6 +12,9 @@ $(document).ready(function(){
         return this.optional(element) || /^[a-zA-Z]+[0-9]+$/i.test(value);
     });
 
+	$.validator.addMethod("mobile", function(value, element) {
+        return this.optional(element) || /^((\+){0,1}91(\s){0,1}(\-){0,1}){0,1}[789][0-9]{3}(\s){0,1}(\-){0,1}[0-9]{6}$/i.test(value);
+    });
 
    $(".form-horizontal").validate({
 	onkeyup: function(element) {$(element).valid()},
@@ -34,13 +37,11 @@ $(document).ready(function(){
 			email: true
 			},
 		mobileNo: {
-				number: true,
-				minlength: 10,
-			    maxlength: 10
+		    mobile: true
 			},
 		epicId: {
-				epic: true
-				}
+			epic: true
+			}
 	  },	
 	  messages: {
 		firstName: {
@@ -57,31 +58,53 @@ $(document).ready(function(){
 			maxlength: "Enter only maximum of 8 characters"
 		   },
 		emailId:{
-			required: "Please provide the Email ID",
-            email:"Please enter a valid email address"
+		    required: "Please provide the Email ID",
+            email: "Please enter a valid email address"
             },
 		mobileNo:{
-				number: "Please provide valid Number",
-				minlength: "mobile number should be 10 digits",
-				maxlength: "mobile number should be 10 digits"
+				
+					mobile: "Please provide valid Number"
 			},
 		epicId: {
 				 epic: "Please enter valid Epic Number"
 			}
 	  },
-		/*success: function(label) {
-			        if (label.attr('for') == "emailId"){ 
-                     label.html("emailId available").addClass("valid");
+	      success: function(label) {
+
+			  if (label.attr('for') == "emailId"){
+                     /*label.html("ok").addClass("valid");
+					  var element = '#' + label.attr('for');
+                      $(element).addClass('valid');*/
+					}
+					else{
+					  label.html('ok').addClass('valid');
 					  var element = '#' + label.attr('for');
                       $(element).addClass('valid');
 					}
-					else
-						label.html('').addClass('valid')
-			 
-			},*/
-			success: function(element) {
-				element.text('ok').addClass('valid');
+			},
+		
+	});
 
+    $('[name="personalInfoForm"]').validate({
+	onkeyup: function(element) {$(element).valid()},
+	  rules: {
+		userName: {	
+			required: true  
+			},
+		password: {
+		    required :true
+			}
+	  },	
+	  messages: {
+		userName: {
+			required: " Enter the Username" 
+			},
+		password: {
+			required: " Enter the password"
+		    }
+	  },
+	  success: function(element) {
+	      element.text('ok').addClass('valid');
 			},
 	});
 
