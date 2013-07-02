@@ -13,7 +13,7 @@
 
 $(document).ready(function () {
 	var passwordChanged = '${passwordChanged}';
-	alert(passwordChanged);
+	//alert(passwordChanged);
 	if(passwordChanged == "NO")
 		{
 			$('#passwordWindow').show();
