@@ -157,11 +157,11 @@ function buildPaginatedNews(results,jsObj){
 		var source = results[i].source.trim();
 		if(source == "Eenadu Telugu")
 		{
-			str+="<span class='enadu fontStyle' style='font-weight:bold;'>"+results[i].fileTitle1+"</span>";
+			str+="<span class='enadu fontStyle' style='font-weight:bold;'> <a href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].fileTitle1+"</a></span>";
 		}
 		else
 		{
-			str+="<h4 style='text-transform: capitalize;'>"+results[i].fileTitle1+"</h4>";
+			str+="<h4 style='text-transform: capitalize;'> <a href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].fileTitle1+"</span></h4>";
 		}
 		
 		str+="<div class='row-fluid'>";
@@ -178,7 +178,7 @@ function buildPaginatedNews(results,jsObj){
 				
 		str+="</div>";
 		str+="<div class='row-fluid m_top10'><div class='span9'><p class='text-error' > <span style='font-weight: bold;'>Source :</span><span style='color: black;'> "+results[i].source+"</span> <span style='font-weight: bold;margin-left: 55px;'>Date :</span><span style='color: black;'> "+results[i].fileDate+"</span></p></div>";
-		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>More</a></div></li>";
+		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
 	}
 	
 	var itemsCount=results[0].count;
