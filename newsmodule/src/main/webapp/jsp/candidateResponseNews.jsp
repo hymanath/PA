@@ -195,7 +195,7 @@ function buildPaginatedNews(results,jsObj)
 		
 		str +='</table>';
 		str +='</div>';
-		str+='<div class="span3 pull-right"><a class="btn btn-mini btn-info" type="button" onclick="getNewsDetailsByContentId('+results[i].contentId+')">More</a>&nbsp;&nbsp;';
+		str+='<div class="span3 pull-right"><a class="btn btn-mini btn-info" type="button" onclick="getNewsDetailsByContentId('+results[i].contentId+')">Details...</a>&nbsp;&nbsp;';
 		str+="<a href='showNewsResponseAction.action?responseContentId ="+results[i].contentId+"' class='btn btn-mini btn-info' type='button'>track</a></div></li>";
 	}
 	
