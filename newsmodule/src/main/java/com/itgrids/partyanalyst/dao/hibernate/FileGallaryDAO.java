@@ -3120,9 +3120,9 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		str.append(" select distinct model.fileGallaryId,model.file.fileTitle,model.file from FileGallary model where model.gallary.gallaryId =:gallaryId ");
 		str.append(" and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' ");
 		if(fromDate != null)
-		 str.append(" and model.file.fileDate <= :fromDate ");
+		 str.append(" and model.file.fileDate >= :fromDate ");
 		if(toDate != null)
-		 str.append(" and model.file.fileDate >= :toDate ");
+		 str.append(" and model.file.fileDate <= :toDate ");
 		str.append(" order by model.file.fileTitle ");
 		
 		Query query = getSession().createQuery(str.toString());
