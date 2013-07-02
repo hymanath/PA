@@ -905,7 +905,7 @@ IUserVoterDetailsDAO{
 				   else if (type.equalsIgnoreCase(IConstants.CUSTOMWARD))
 					   query.append("select distinct model.ward.constituencyId,model.ward.name ,");
 							  
-		  query.append(" count( distinct model.voter.voterId), ");	   
+		  query.append(" count(model.voter.voterId), ");	   
 		
 		query.append(getAgeQuery(null,"GENDER"));	
 		if(ages.length%2==0)
