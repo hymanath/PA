@@ -28,8 +28,10 @@ public class RegistrationVO implements Serializable{
 	private String phone;
 	private String mobile;
 	private String address;
+	private String isPasswordChanged;
 	
 	private Boolean isAdmin;
+	
 	public Long getRegistrationID() {
 		return registrationID;
 	}
@@ -116,6 +118,12 @@ public class RegistrationVO implements Serializable{
 	}
 	public void setIsAdmin(Boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+	public String getIsPasswordChanged() {
+		return isPasswordChanged;
+	}
+	public void setIsPasswordChanged(String isPasswordChanged) {
+		this.isPasswordChanged = isPasswordChanged;
 	}
 	
 	

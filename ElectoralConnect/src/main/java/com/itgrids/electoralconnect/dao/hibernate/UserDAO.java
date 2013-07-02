@@ -3,6 +3,7 @@ package com.itgrids.electoralconnect.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.electoralconnect.dao.IUserDAO;
 import com.itgrids.electoralconnect.dao.IUserLoginDAO;
@@ -30,4 +31,21 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return getHibernateTemplate().find("select model.userProfile,model.userLogin from User model " +
 				" where model.userLogin.userName = ? and model.userLogin.password = ? ", parms);
 	}
+	
+	/**
+	 * This DAO is Used for updating the new password
+	 * @param String password
+	 * @param Long userId
+	 * @return int
+	 */
+	public int updatePassword(String password,Long userId)
+	{
+		Query query = getSession().createQuery("update UserLogin model1 set model1.password = :password " +
+				" , model1.isPwdChanged = 'YES' where  model1.userLoginId = :userId ");
+		query.setParameter("password", password);
+		query.setParameter("userId", userId);
+		int x= query.executeUpdate();
+		return x;
+	}
+	
 }
