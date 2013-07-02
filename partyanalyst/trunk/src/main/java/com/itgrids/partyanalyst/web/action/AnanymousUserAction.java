@@ -431,11 +431,9 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		List<SelectOptionVO> profileOpts = ananymousUserService.findAllProfileOptsAvailableInDB(); 
 		List<SelectOptionVO> states = regionServiceDataImp.getStatesByCountry(1l);
 		//List<SelectOptionVO> districts = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(regVO.getState()));
-		List<SelectOptionVO> constituencies = null;
+		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
 		if(regVO.getState() != null)
-	     constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), Long.parseLong(regVO.getState())).getConstituencies();
-		else
-			constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), 1L).getConstituencies();
+	     constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), Long.parseLong(regVO.getState())).getConstituencies();		
 		
 		gender.add("Male");
 		gender.add("Female");
