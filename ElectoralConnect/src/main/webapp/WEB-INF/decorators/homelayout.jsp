@@ -62,9 +62,24 @@
 									<!--<li><a href="#" title="Home">Home</a></li>
 									<li><a href="#" title="About Us">About US</a></li>
 									<li><a href="#" title="Contact Us">Contact Us</a></li>-->
+									<c:if test="${sessionScope.loginStatus == null}">
 									<li><a title="Home" id='loginId'>Login</a></li>
-									<li><a title="Admin" id='adminId' onClick="openAdminPage();">Admin</a></li>
+									<!--<li><a title="Admin" id='adminId' onClick="openAdminPage();">Admin</a></li>-->
 									<li><a title="About Us" id='registerId'>Register</a></li>
+									</c:if>
+									
+									<c:if test="${sessionScope.loginStatus == 'in'}">
+									<c:out value="Welcome, ${sessionScope.USER.firstName} ${sessionScope.USER.lastName}|"/>
+									</c:if>
+									<c:if test="${sessionScope.USER.isAdmin == 'true' && sessionScope.loginStatus == 'in'}">
+									<li><a title="Admin" id='adminId' onClick="openAdminPage();">Admin</a></li>|
+									</c:if>
+									<c:if test="${sessionScope.loginStatus == 'in'}">
+									<li><a title="Logout" id='logoutId' href="logoutAction.action">Logout</a></li>
+									</c:if>
+																		
+									
+									
 								</ul>
 							</nav>
 						</div>
@@ -108,6 +123,50 @@
 		</div>
 		</form>
 	</div>
+	
+	<div class="modal hide fade" id="passwordModal">
+			
+		<div class="modal-body">
+		<div class="control-group" style="color:red;">
+					<s:actionerror />
+					<s:fielderror />
+				</div>	
+			<div id="errorMessage"></div>
+			<a class="close" data-dismiss="modal">X</a>
+			<p style="font-size:16px;font-weight:bold;"></p>
+			 <form class="form-horizontal" name='personalInfoForm' action='changePasswordAction.action' method='post' >
+				<legend>Change Password</legend>
+				<div class="control-group">
+					<label class="control-label" for="passward">Enter Password</label>
+					<div class="controls">
+						<input type="password" id="orginalpassword" placeholder="Enter Password" name='orginalpassword' onChange="">
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="newPassword" >New Password</label>
+					<div class="controls">
+						<input type="password" id="newPassword" placeholder="New password" name='newPassword'>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="conformPassword" >Conform Password</label>
+					<div class="controls">
+						<input type="password" id="conformPassword" placeholder="Conform password" name='conformPassword'>
+					</div>
+				</div>
+				<div id="loginStatusDiv"></div>				
+			
+		</div>
+		<div class="modal-footer">
+			<div id="successMsg" style="float:left;"></div>
+			<div id="errorMsg" style="float:left;"></div>
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary" type="submit">Save</button>
+		</div>
+		</form>
+	</div>
 		</div>
 		
 		<footer>
@@ -124,7 +183,6 @@
 			$('#loginId').click(function(){
 				$('#loginModal').modal('show');
 			});
-			
 			/* function checkingForValidUser()
 			{
 				var userName = $('#userName').val();

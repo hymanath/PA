@@ -53,11 +53,32 @@
 		</action>
 		
 		<action name="userLonginVerficationAction" class="loginAction" method="userLoginCheck">
-			<result>/jsp/registerNow.jsp</result>
+			<result>/jsp/loginPage.jsp</result>
 		</action>
 		
 		<action name="adminPageAction" class="adminPageAction">
 			<result>/jsp/adminPage.jsp</result>
+		</action>
+		
+		<action name="passwordChangeAction" class="loginAction" method="changePassword">
+			<result>/jsp/registerNow.jsp</result>
+		</action>
+		
+		<action name="logoutAction" class="logoutAction" >
+			<result>/jsp/homePage.jsp</result>
+		</action>
+		
+		<!--  <action name="verfyingPassword" class="RegisterUserAction" method="verfyingPassword">
+			<result type="json" name="success">
+				<param name="root">passwordStatus</param>				
+			</result>
+		</action> -->
+		
+		<action name="changePasswordAction" class="changePasswordAction" >
+			<!--  <result>/jsp/registerNow.jsp</result> -->
+			<result name="input">/jsp/changePassword.jsp</result>
+			<result name="success">/jsp/changePassword.jsp</result>
+         	<result name="error">/jsp/changePassword.jsp</result>
 		</action>
 		</package>
 </struts>      

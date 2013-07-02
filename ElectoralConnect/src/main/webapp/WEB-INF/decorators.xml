@@ -27,6 +27,9 @@
     	<pattern>/registerUser*</pattern>
     	<pattern>/userLonginVerficationAction*</pattern>
     	<pattern>/adminPageAction*</pattern>
+    	<pattern>/passwordChangeAction*</pattern>
+    	<pattern>/logoutAction*</pattern>
+    	<pattern>/changePasswordAction*</pattern>
     </decorator>
 
 </decorators>

@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="s" uri="/struts-tags" %>  
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -88,8 +89,14 @@
 		
 			<button class="btn btn-primary" id="saveUser">Save changes</button>
 		
-	</div>
 	
+		<div id="successMsg"></div>
+		
+		<span style="float:right;display:none;"><a class="btn btn-primary" id="changePassword" >Change Password</a><span>
+		
+	
+	
+	</div>
 		<script>
 	
 	$('#saveUser').click(function(){
@@ -101,8 +108,10 @@
 		}
 	});
 	
-	$(document).ready(function () {
+		
+	/* $(document).ready(function () {
 		var loginStatus = '${resultStr}';
+		alert(loginStatus);
 		if(loginStatus == "success")
 		{
 			$('#loginModal').modal('show');
@@ -116,7 +125,20 @@
 			$('#loginModal').modal('show');
 			$('#errorMsg').html('<b style="color:red">Please Enter Valid User Name and Paaword</b>');
 		}
-	});
+		
+	}); */
+	
+	/* $(document).ready(function () {
+		var status = '${status}';
+		if(status == "success")
+		{
+			alert("Updated SuccessFully");
+		}
+		else if(status == "failure")
+		{
+			alert(" Not Updated SuccessFully");
+		}
+	}); */
 	$("#emailId").blur(function(){
 		var emailId=$('#emailId').val();
 		var s=isValidEmailAddress(emailId);
@@ -146,6 +168,47 @@
 		return pattern.test(emailAddress);
 	};
 	
+	/* function verfyingPassword()
+	{
+		alert(1234);
+		password = $('#password').val();	
+		var jsObj =
+		{  	
+			password : password,
+			task     : 'verfyingPassword'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "verfyingPassword.action?"+rparam;
+		callAjax(jsObj, url);
+	}
+	
+	function passwordVerfication(myResults)
+	{
+		
+		var str = "";
+		var flag = false;
+		if(myResults == "success")
+		{
+			var nPassword = $('#newPassword').val().toLowerCase();
+			alert(nPassword);
+			var cPassword = $('#conformPassword').val().toLowerCase();
+			alert(cPassword);
+			if(nPassword == cPassword)
+			{
+				flag = true;
+			}
+			else
+			{
+				str += '<b style="color:red">Password Miss Match</b>';
+			}
+		}
+		else
+		{
+			str += '<b style="color:red">Please Enter Valid Password</b>';
+		}
+		return flag;
+		$('#errorMessage').html(str);
+	} */
 	function callAjax(jsObj,url){
 		 var myResults;
 
@@ -157,6 +220,10 @@
 								{
 									statusOfEmail(myResults);
 								}
+								/* else if(jsObj.task =="verfyingPassword")
+								{
+									passwordVerfication(myResults);
+								} */
 								}catch (e) {
 							     
 								}  
@@ -177,7 +244,17 @@
 			$('#correctImgId').css('display','inline-block');
 		}
 	}
+	 function openChagePasswordModel()
+	{
+		alert('in');
+		$('#passwordModal').modal('show');
+	} 
 	
+		<c:if test="${sessionScope.USER != null && sessionScope.USER.registrationID != null}">
+			$('#successMsg').html('<b style="color:green">User Registerd Successfully...</b>');
+			
+
+		</c:if>
 	</script>
 </body>
 </html>
