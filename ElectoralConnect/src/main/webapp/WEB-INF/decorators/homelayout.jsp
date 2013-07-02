@@ -266,6 +266,16 @@
 							myResults = YAHOO.lang.JSON.parse(o.responseText);					
 							if(jsObj.task =="getForgetdPassword")
 							{
+								if(myResults == "success")
+								{
+									alert("Password is send to your mail please check once..");
+									$('.close').trigger('click',function(){
+									});
+								}
+								else
+								{
+									alert("Please Enter Correct Username?");
+								}
 								
 							}
 							}catch (e) {
