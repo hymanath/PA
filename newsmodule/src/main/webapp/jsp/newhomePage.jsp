@@ -551,8 +551,10 @@ $(document).ready(function(){
 									</s:else>
 									<span style='color:#ccc;'>
 										<s:if test="%{fileDate!=''}">
+										<div>
 											<i class="smal" style="color:#3A87AD;">Date: 
 											<s:property value="fileDate"/></i>
+										</div>
 										</s:if>
 									</span>
 								</li>
