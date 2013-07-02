@@ -62,7 +62,7 @@
 									<!--<li><a href="#" title="Home">Home</a></li>
 									<li><a href="#" title="About Us">About US</a></li>
 									<li><a href="#" title="Contact Us">Contact Us</a></li>-->
-									<c:if test="${sessionScope.loginStatus == null}">
+									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'out'}">
 									<li><a title="Home" id='loginId'>Login</a></li>
 									<!--<li><a title="Admin" id='adminId' onClick="openAdminPage();">Admin</a></li>-->
 									<li><a title="About Us" id='registerId'>Register</a></li>
@@ -182,6 +182,7 @@
 						<input type="text" id="userNameForPassword" placeholder="Your Name" name='userName'>
 					</div>
 				</div>
+				<div id="errorDiv"></div>
 		</div>
 		<div class="modal-footer">
 			<div id="successMsg" style="float:left;"></div>
@@ -268,13 +269,15 @@
 							{
 								if(myResults == "success")
 								{
-									alert("Password is send to your mail please check once..");
-									$('.close').trigger('click',function(){
-									});
+									//alert("Password is send to your mail please check once..");
+									$('#errorDiv').html('<b style="color:green">Password is send to your mail please check once..</b>');
+									//$('.close').trigger('click',function(){
+									//});
 								}
 								else
 								{
-									alert("Please Enter Correct Username?");
+									//alert("Please Enter Correct Username?");
+									$('#errorDiv').html('<b style="color:red">Please Enter Correct Username?</b>');
 								}
 								
 							}
