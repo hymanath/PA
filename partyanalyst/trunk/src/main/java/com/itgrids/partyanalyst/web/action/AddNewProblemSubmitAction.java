@@ -565,16 +565,16 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		problemBeanVO.setHasFreeUserRole(hasFreeUserRole);
 		problemBeanVO.setHasPartyAnalystUserRole(hasPartyAnalystUserRole);
 		
-		if(user.getParentUserId() == null || user.getParentUserId() == 0)
-		{
+		/*if(user.getParentUserId() == null || user.getParentUserId() == 0)
+		{*/
 			problemBeanVO.setUserID(user.getRegistrationID());
 			problemBeanVO.setSubUserId(user.getRegistrationID());
-		}
+		/*}
 		else
 		{
 			problemBeanVO.setUserID(user.getMainAccountId());
 			problemBeanVO.setSubUserId(user.getRegistrationID());
-		}
+		}*/
 		
 		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
 			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
