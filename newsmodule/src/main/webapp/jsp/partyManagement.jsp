@@ -6465,10 +6465,10 @@ function getCandidateGallaries()
 	     $("#noNewsError").html('Please Select To Date');
 		 return;
 	   }
-	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
+	   /* else if (Date.parse(fromDate) > Date.parse(toDate)) {
          $("#noNewsError").html('Invalid Date Selection.');
          return;
-	   } 
+	   }  */
 	
 
 	var jsObj={
@@ -6516,11 +6516,11 @@ function getCandidatecategories()
 	     $("#dateErrorMessage").html('Please Select To Date');
 		 return;
 	   }
-	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
+	  /*  else if (Date.parse(fromDate) > Date.parse(toDate)) {
          $("#dateErrorMessage").html('Invalid Date Selection.');
          return;
 	    
-	}
+	} */
 
 	var jsObj={
 		fromDate:fromDate,
