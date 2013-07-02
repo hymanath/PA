@@ -80,5 +80,9 @@
 			<result name="success">/jsp/changePassword.jsp</result>
          	<result name="error">/jsp/changePassword.jsp</result>
 		</action>
+		
+		<action name="forgotPasswordAction" class="forgotPasswordAction" >
+			<result>/jsp/forgetPassword.jsp</result>
+		</action>
 		</package>
 </struts>      

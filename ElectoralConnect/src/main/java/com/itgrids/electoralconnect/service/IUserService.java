@@ -14,4 +14,6 @@ public interface IUserService {
 	public RegistrationVO checkForValidUser(String username,String passward);
 	
 	public ResultStatus updateUserPassword(String password,Long userId);
+	
+	public RegistrationVO forgetPasswordService(String username);
 }

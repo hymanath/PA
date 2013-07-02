@@ -11,4 +11,6 @@ public interface IUserDAO  extends GenericDao<User, Long> {
 	public List<Object[]> checkForValidUser(String userName,String Passward);
 	
 	public int updatePassword(String password,Long userId);
+	
+	public User getUserDetailsByUserName(String username);
 }

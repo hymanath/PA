@@ -30,6 +30,7 @@
     	<pattern>/passwordChangeAction*</pattern>
     	<pattern>/logoutAction*</pattern>
     	<pattern>/changePasswordAction*</pattern>
+    	<pattern>/forgotPasswordAction*</pattern>
     </decorator>
 
 </decorators>
