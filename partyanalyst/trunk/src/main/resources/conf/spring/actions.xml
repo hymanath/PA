@@ -809,6 +809,7 @@
 		<property name="callCenterService" ref="callCenterService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 		<property name="callTrackingService" ref="callTrackingService" />
+		<property name="cadreManagementService" ref="cadreManagementService" />
 	</bean>
 	
 	<bean id="profileManagePageAction" class="com.itgrids.partyanalyst.web.action.ProfileManagePageAction" singleton="false">

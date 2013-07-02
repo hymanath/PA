@@ -5503,5 +5503,11 @@
 				<param name="root">villagesList</param>				
 			</result>		
 		</action>
+		
+		<action name="sendSMSForCallCenterAction" class="callCenterAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">smsResultVO</param>				
+			</result>		
+		</action>
 		</package>
 </struts>      

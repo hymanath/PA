@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -19,9 +20,12 @@ import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
+import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICallCenterService;
 import com.itgrids.partyanalyst.service.ICallTrackingService;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -43,8 +47,30 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 	private EntitlementsHelper entitlementsHelper;
 	private ICallTrackingService callTrackingService;
 	private List<CallTrackingVO> callTrackingVO;
+	private CadreManagementService cadreManagementService;
+	private SmsResultVO smsResultVO;
 	
-	
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+
+
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
+
+
+	public SmsResultVO getSmsResultVO() {
+		return smsResultVO;
+	}
+
+
+	public void setSmsResultVO(SmsResultVO smsResultVO) {
+		this.smsResultVO = smsResultVO;
+	}
+
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -182,6 +208,22 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 				callCenterVO.setUserId(userId);
 				
 				problemBeanVO = callCenterService.getProblemDetails(callCenterVO);
+			}else if(jObj.getString("task").equalsIgnoreCase("sendSMSForCallCenter")){
+				String content = jObj.getString("content");
+				 
+				 JSONArray jArray = jObj.getJSONArray("selectedPhoneNosArr");
+				 List<SmsVO> smsvo = new ArrayList<SmsVO>(0);	
+					for (int i = 0; i < jArray.length(); i++) 
+					{
+						SmsVO smsvo1 = new SmsVO(); 
+						JSONObject jSONObject= jArray.getJSONObject(i);
+						String phoneNo         = jSONObject.getString("phoneNo");
+						smsvo1.setMobileNO(phoneNo);
+						smsvo.add(smsvo1);
+					}
+				
+				smsResultVO = cadreManagementService.sendSMSToSelectedCadre(userId, "NO", true,content, smsvo);
+			
 			}
 		} catch (ParseException e) {
 			
