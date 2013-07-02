@@ -82,6 +82,7 @@ $(document).ready(function(){
 });
 
 	var accessType = '${accessType}';
+	var host = '${host}';
 	
 	var Localization = { <%
 			
