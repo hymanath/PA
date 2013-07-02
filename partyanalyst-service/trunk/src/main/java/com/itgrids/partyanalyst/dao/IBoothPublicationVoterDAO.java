@@ -94,7 +94,7 @@ public interface IBoothPublicationVoterDAO extends
 	 
 	public List<Long> getVoterStateId(Long voterId);
 	
-	public List<Voter> getVoterDetailsByCasteStateForBooth(Long boothid,Long publicationDateId,Long casteStateId);
+	public List<Voter> getVoterDetailsByCasteStateForBooth(Long boothid,Long publicationDateId,Long casteStateId,Long userId,Long constituencyId);
 	
 	public List<Voter> getVoterDetailsByCasteStateForPanchayat(Long panchayatId,Long publicationDateId,Long casteStateId,Long userId);
 	
@@ -383,4 +383,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<InfluencingPeople> getInfluencingPeopleDataByCategoryAndCaste(Long categoryValueId,Long casteId,Long locationId,Long publicationId,String locationType,Long userId,String gender,String type,Integer startIndex,Integer maxIndex,String order,String columnName);
 	  public List<Candidate> getPoliticianDataByCategoryAndCaste(Long categoryValueId,Long casteId,Long locationId,Long publicationId,String locationType,Long userId,String gender,String type,Integer startIndex,Integer maxIndex,String order,String columnName);
 	  public List<Cadre> getCadreDataByCategoryAndCaste(Long categoryValueId,Long casteId,Long locationId,Long publicationId,String locationType,Long userId,String gender,String type,Integer startIndex,Integer maxIndex,String order,String columnName);
+	  
+	  public List<Voter> getVoterDetailsByCasteStateForHamlet(Long hamletId,Long publicationDateId,Long casteStateId,Long userId,Long constituencyId);
 }
