@@ -80,6 +80,13 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 		else
 		{			
 			userCadresInfoVO.setUserID(user.getParentUserId() == null ? user.getRegistrationID() : user.getParentUserId()); 
+			
+				List<Long> userIDs = new ArrayList<Long>();
+				if(user.getParentUserId() != null){
+				  userIDs.add(user.getParentUserId());
+				}
+				userIDs.add(user.getRegistrationID());
+				userCadresInfoVO.setUserIds(userIDs);
 			userCadresInfoVO.setUserAccessType(user.getAccessType());
 			userCadresInfoVO.setUserAccessValue(user.getAccessValue());
 			userCadresInfoVO.setIsParent(user.getParentUserId() == null ? true : false);
