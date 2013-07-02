@@ -378,11 +378,11 @@ function getCandiNews(){
 	      $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select To Date</span>');
 		  return;
 	    }
-	    else if (Date.parse(fromDate) > Date.parse(toDate))
+	    /* else if (Date.parse(fromDate) > Date.parse(toDate))
 	    {
           $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Invalid Date Selection.</span>');
           return;
-	    } 
+	    }  */
      
 	 }
 	var selectedGallaryIds = "";
@@ -445,10 +445,10 @@ function getSelectedNewsDetails()
 	  $("#errorMsgDiv").html('Please Select To Date');
 		return;
 	}
-	else if (Date.parse(fromDate) > Date.parse(toDate)) {
+	/* else if (Date.parse(fromDate) > Date.parse(toDate)) {
       $("#errorMsgDiv").html('Invalid Date Selection.');
       return;
-	} 
+	}  */
 
 	
 	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
@@ -619,10 +619,10 @@ function getCandidateGallaries()
 	     $(".errorDiv").html('Please Select To Date');
 		 return;
 	   }
-	   else if (Date.parse(fromDateStr) > Date.parse(toDateStr)) {
+	   /* else if (Date.parse(fromDateStr) > Date.parse(toDateStr)) {
          $(".errorDiv").html('Invalid Date Selection.');
          return;
-	   } 
+	   }  */
 	}
 
 	var jsObj={
@@ -862,10 +862,10 @@ function getCandidatecategories()
 	     $(".errorDiv").html('Please Select To Date');
 		 return;
 	   }
-	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
+	   /* else if (Date.parse(fromDate) > Date.parse(toDate)) {
          $(".errorDiv").html('Invalid Date Selection.');
          return;
-	   } 
+	   }  */
 	}
 
 	var jsObj={
