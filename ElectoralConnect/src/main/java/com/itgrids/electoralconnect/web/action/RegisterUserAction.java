@@ -20,6 +20,7 @@ import com.itgrids.electoralconnect.service.IUserService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
+@SuppressWarnings("serial")
 public class RegisterUserAction extends ActionSupport implements ServletRequestAware{
 
 	private static final Logger LOG = Logger.getLogger(RegisterUserAction.class);
@@ -36,6 +37,7 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 	private IUserService userService;
 	private IMailService mailService;
 	private String userType;
+	private String passwordStatus = "";
 	private HttpServletRequest request;
 	
 	public String getTask() {
@@ -155,6 +157,15 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 		this.userType = userType;
 	}
 
+	
+	public String getPasswordStatus() {
+		return passwordStatus;
+	}
+
+	public void setPasswordStatus(String passwordStatus) {
+		this.passwordStatus = passwordStatus;
+	}
+
 	public String execute(){
 		LOG.debug("In RegisterUserActions execute()");
 		System.out.println(firstName+" "+lastName);
@@ -165,7 +176,7 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 		userProfileVO.setMobileNo(mobileNo);
 		userProfileVO.setEpicId(epicId);
 		userProfileVO.setUserType(userType);
-		UserVO uservo=userService.registerUser(userProfileVO);
+		RegistrationVO  regVO = userService.registerUser(userProfileVO);
 		String requestURL= request.getRequestURL().toString();
 		System.out.println(requestURL);
 		
@@ -175,7 +186,7 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 		else
 			requestFrom = IConstants.LOCALHOST;
 		
-		ResultStatus rs = mailService.sendRegistrationNotification(uservo,requestFrom);
+		ResultStatus rs = mailService.sendRegistrationNotification(regVO,requestFrom);
 		
 		return SUCCESS;
 	}
@@ -214,6 +225,28 @@ public class RegisterUserAction extends ActionSupport implements ServletRequestA
 		else
 		{
 			resultStr = "failure";
+		}
+		return SUCCESS;
+	}*/
+	
+	/*public String verfyingPassword()
+	{
+		try {
+			LOG.debug("Entered into verfyingPassword() method in RegisterUserAction Action ");
+			jobj=new JSONObject(getTask());
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			String password = jobj.getString("password");
+			if(regVO.getPassword().equals(password))
+			{
+				passwordStatus = "success";
+			}
+			else
+			{
+				passwordStatus = "failure";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Raised in verfyingPassword Validate Email Method ", e);
 		}
 		return SUCCESS;
 	}*/
