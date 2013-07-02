@@ -162,7 +162,21 @@ width: 92px;
 #categoryCheckBoxId{margin-top: 0px;margin-right: 6px;}
 #categoryCheckBoxDiv{margin-top: 8px;}
 #categoryGallary{margin: 0px 5px 0px 0px;}
+
+.nav > li > a:hover {
+    -moz-text-blink: none;
+    -moz-text-decoration-color: -moz-use-text-color;
+    -moz-text-decoration-line: none;
+    -moz-text-decoration-style: solid;
+    background-color: #EEEEEE;
+}
 </style>
+<script>
+$(document).ready(function(){
+
+	$('#homeTabId').addClass('currentTab');
+});
+</script>
 </head>
 <body>
 		

@@ -29,6 +29,14 @@
 	.unstyled li{
 	float:left;width:20%;border:1px solid #ccc;padding:5px;text-align:center;margin:4px;
 	}
+	
+.nav > li > a:hover {
+    -moz-text-blink: none;
+    -moz-text-decoration-color: -moz-use-text-color;
+    -moz-text-decoration-line: none;
+    -moz-text-decoration-style: solid;
+    background-color: #EEEEEE;
+}
 </style>
 <div id="gallarysId" style="margin:22px 0px 31px 50px;float:left;"></div>
 <div id="paginationId" style="float:left;margin-left:280px;"></div>
