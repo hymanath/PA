@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CandidateNewsCountVO implements Serializable{
    
@@ -14,7 +15,42 @@ public class CandidateNewsCountVO implements Serializable{
    private Long localEleBodyNewsCount = 0L;
    private Long wardNewsCount = 0L;
    private Long boothNewsCount = 0L;
+   private List<String> candidateNames;
+   private List<Long> stateCounts;
+   private List<Long> districtCounts;
+   private List<Long> constituencyCounts;
+   private List<Long> mandalCounts;
   
+	public List<Long> getConstituencyCounts() {
+	return constituencyCounts;
+	}
+	public void setConstituencyCounts(List<Long> constituencyCounts) {
+		this.constituencyCounts = constituencyCounts;
+	}
+	public List<Long> getMandalCounts() {
+		return mandalCounts;
+	}
+	public void setMandalCounts(List<Long> mandalCounts) {
+		this.mandalCounts = mandalCounts;
+	}
+	public List<Long> getStateCounts() {
+	return stateCounts;
+	}
+	public void setStateCounts(List<Long> stateCounts) {
+		this.stateCounts = stateCounts;
+	}
+	public List<Long> getDistrictCounts() {
+		return districtCounts;
+	}
+	public void setDistrictCounts(List<Long> districtCounts) {
+		this.districtCounts = districtCounts;
+	}
+	public List<String> getCandidateNames() {
+	return candidateNames;
+	}
+	public void setCandidateNames(List<String> candidateNames) {
+		this.candidateNames = candidateNames;
+	}
 	public String getName() {
 		return name;
 	}

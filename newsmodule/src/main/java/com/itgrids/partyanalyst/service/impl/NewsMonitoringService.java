@@ -3609,6 +3609,25 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 				
 			}
 		 }
+		List<Long> stateList = new ArrayList<Long>();
+		List<Long> districtList = new ArrayList<Long>();
+		List<Long> constituencyList = new ArrayList<Long>();
+		List<Long> mandalList = new ArrayList<Long>();
+		List<String> names= new ArrayList<String>();
+		
+		for(CandidateNewsCountVO list1 : candidateNewsCountVOList)
+		{
+			stateList.add(list1.getStateNewsCount());
+			districtList.add(list1.getDistrictNewsCount());
+			constituencyList.add(list1.getConstituencyNewsCount());
+			mandalList.add(list1.getMandalNewsCount());
+			names.add(list1.getName());
+		}
+		candidateNewsCountVOList.get(0).setStateCounts(stateList);
+		candidateNewsCountVOList.get(0).setDistrictCounts(districtList);
+		candidateNewsCountVOList.get(0).setConstituencyCounts(constituencyList);
+		candidateNewsCountVOList.get(0).setMandalCounts(mandalList);
+		candidateNewsCountVOList.get(0).setCandidateNames(names);
 		 return candidateNewsCountVOList;
 		}catch (Exception e) {
 		 e.printStackTrace();
