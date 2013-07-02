@@ -39,7 +39,7 @@
 					<s:actionerror />
 					<s:fielderror />
 				</div>
-		   <form class="form-horizontal" name='userDetailsForm' action="registerUserProfile.action" method="post" onsubmit="return validate()">
+		   <form class="form-horizontal" name='userDetailsForm' action="registerUserProfile.action" method="post">
 				<legend>Personal Information</legend>
 				<div class="control-group">
 					<label class="control-label requ" for="firstName">First Name</label>
@@ -95,6 +95,10 @@
 	$('#saveUser').click(function(){
 		//document.userDetailsForm.submit();
 		$(".form-horizontal").validate();
+		
+		if ($('.form-horizontal').valid()){
+			document.userDetailsForm.submit();
+		}
 	});
 	
 	$(document).ready(function () {
