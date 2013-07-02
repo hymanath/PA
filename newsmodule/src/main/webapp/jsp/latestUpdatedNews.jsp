@@ -164,11 +164,11 @@ function buildPaginatedNews(results,jsObj)
 		var source = results[i].fileVOList[0].source.trim();
 		if(source == "Eenadu Telugu")
 		{
-			str+="<span class='enadu fontStyle' style='font-weight:bold;'>"+results[i].title+"</span>";
+			str+="<span class='enadu fontStyle' style='font-weight:bold;'><a href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].title+"</a></span>";
 		}
 		else
 		{
-			str+="<h4 style='text-transform: capitalize'>"+results[i].title+"</h4>";
+			str+="<h4 style='text-transform: capitalize;color: #005580;'><a  href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].title+"</a></h4>";
 		}
 		
 		str+="<div class='row-fluid'>";
@@ -205,7 +205,7 @@ function buildPaginatedNews(results,jsObj)
 		str +='</table>';
 		str +='</div>';
 		
-		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>More...</a></div></li>";
+		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
 	}
 	
 	var itemsCount=results[0].count;
