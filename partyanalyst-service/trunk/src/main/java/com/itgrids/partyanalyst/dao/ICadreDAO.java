@@ -184,4 +184,27 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public Long getCadreCountInALocation(Long userId,List<Long> locationValue,String type);
 	public List<Object[]> getCadreCasteDetails(Long userId , List<Long> cadreIds);
 
+	public List findTotalCadresByMultipleUserIdsBasedOnCadreLevel(List<Long> userIDs, String cadreType, String model, String idToCompare, Long locationId);
+	
+	public Long findTotalCadresByMultipleUserIDsInALocation(List<Long> userIDs, String cadreType, String model, String idToCompare, Long locationId);
+	
+	public List findCadreSizeStateWiseForMultipleUsers(List<Long> userIDs);
+	
+	public List findCadreSizeDistrictWiseForMultipleUsers(List<Long> userIDs);
+	
+	public Long findCadreSizeConstituencywiseForMultipleUsers(List<Long> constituencyIds,List<Long> userIds);
+	
+	public List findCadreSizeConstituencywiseForMultiple(List<Long> userIds,List<Long> constiIds);
+	
+	public List findCadreSizeMandalWiseForMultipleUsers(List<Long> userIDs);
+	
+	public List findCadreSizeLocalElectionBodywiseForMultipleUsers(List<Long> userIds);
+	
+	public List findCadreSizeBoothwiseInMandalForMultipleUsers(List<Long> userIds);
+	
+	public List findCadreSizeWardswiseForMultipleUsers(List<Long> userIds);
+	
+	public List findCadreSizeBoothwiseForMultipleUsers(List<Long> userIds);
+	
+	public List findCadreSizeHamletWise(List<Long> userIds);
 }

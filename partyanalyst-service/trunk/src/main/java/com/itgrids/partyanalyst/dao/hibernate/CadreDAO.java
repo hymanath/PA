@@ -47,7 +47,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	}
 	
 	public Long findTotalCadresByUserIDInALocation(Long userID, String cadreType, String model, String idToCompare, Long locationId){
-		Query query = getSession().createQuery("SELECT count(*) FROM Cadre model WHERE model. = ? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? " );
+		Query query = getSession().createQuery("SELECT count(*) FROM Cadre model WHERE model.user.userId = ? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? " );
 		query.setLong(0, userID);
 		query.setString(1, cadreType);
 		query.setLong(2, locationId);
@@ -122,7 +122,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 
 	@SuppressWarnings("unchecked")
 	public List findCadreSizeMandalWise(Long userID){
-		List  results = getHibernateTemplate().find("Select model.currentAddress.tehsil.tehsilId, count(model.currentAddress.tehsil.tehsilId)from Cadre model " +
+		List  results = getHibernateTemplate().find("Select model.currentAddress.tehsil.tehsilId, count(model.currentAddress.tehsil.tehsilId) from Cadre model " +
 				" where model.user.userId = ? and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.tehsil.tehsilId", userID);
 				
 		return results;
@@ -985,6 +985,102 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 		return query.list();
 		
+		
+	}
+	
+	public List findTotalCadresByMultipleUserIdsBasedOnCadreLevel(List<Long> userIDs, String cadreType, String model, String idToCompare, Long locationId)
+	{		
+		Object[] params = {  locationId};
+		Query query = getSession().createQuery("SELECT model.cadreLevel.level,count(model.cadreId) " +
+				" FROM Cadre model WHERE model.user.userId in (:userIDs) and model.memberType = :cadreType and model.currentAddress."+model+"."+idToCompare+" = :locationId "+
+				" group by model.cadreLevel.level order by model.cadreLevel.orderNo"); 
+		query.setParameterList("userIDs", userIDs);
+		query.setParameter("cadreType", cadreType);
+		query.setParameter("locationId", locationId);
+		return query.list();
+		
+	}
+	
+	public Long findTotalCadresByMultipleUserIDsInALocation(List<Long> userIDs, String cadreType, String model, String idToCompare, Long locationId){
+		Query query = getSession().createQuery("SELECT count(*) FROM Cadre model WHERE model.user.userId in (:userIDs) and model.memberType = :cadreType and model.currentAddress."+model+"."+idToCompare+" = :locationId " );
+		query.setParameterList("userIDs", userIDs);
+		query.setString("cadreType", cadreType);
+		query.setLong("locationId", locationId);
+		Long totalCadres = (Long) query.uniqueResult();
+		return totalCadres;
+	}
+	
+	public List findCadreSizeStateWiseForMultipleUsers(List<Long> userIDs){
+		Query  query = getSession().createQuery("Select model.currentAddress.state.stateId, count(model.currentAddress.state.stateId) from Cadre model " +
+				"where model.user.userId in (:userIDs) group by model.currentAddress.state.stateId"); 
+		query.setParameterList("userIDs", userIDs);
+		return query.list();
+	}
+	
+	public List findCadreSizeDistrictWiseForMultipleUsers(List<Long> userIDs){
+		Query  query = getSession().createQuery("Select model.currentAddress.district.districtId, count(model.currentAddress.district.districtId) from Cadre model " +
+				"where model.user.userId in (:userIDs) and model.currentAddress.district.districtId is not null group by model.currentAddress.district.districtId");
+		query.setParameterList("userIDs", userIDs);
+		return query.list();
+	}
+
+	public Long findCadreSizeConstituencywiseForMultipleUsers(List<Long> constituencyIds,List<Long> userIds) {
+		Query query = getSession().createQuery("Select  count(model.currentAddress.constituency.constituencyId)from Cadre model " +
+				" where model.user.userId in (:userIds) and model.currentAddress.constituency.constituencyId in(:constituencyIds)");
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameterList("userIds", userIds);
+		return (Long)query.uniqueResult();
+	}
+	
+	public List findCadreSizeConstituencywiseForMultiple(List<Long> userIds,List<Long> constiIds) {
+		Query query = getSession().createQuery("Select model.currentAddress.constituency.constituencyId, count(model.currentAddress.constituency.constituencyId)from Cadre model " +
+				" where model.user.userId in (:userIds) and model.currentAddress.constituency.constituencyId in(:constiIds) and model.currentAddress.constituency.constituencyId is not null group by model.currentAddress.constituency.constituencyId");
+		query.setParameterList("constiIds", constiIds);
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
+	
+	public List findCadreSizeMandalWiseForMultipleUsers(List<Long> userIDs){
+		Query query = getSession().createQuery("Select model.currentAddress.tehsil.tehsilId, count(model.currentAddress.tehsil.tehsilId) from Cadre model " +
+				" where model.user.userId in(:userIDs) and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.tehsil.tehsilId");
+				
+		query.setParameterList("userIDs", userIDs);
+		return query.list();
+	}
+	
+	public List findCadreSizeLocalElectionBodywiseForMultipleUsers(List<Long> userIds) {
+		Query query = getSession().createQuery("Select model.currentAddress.localElectionBody.localElectionBodyId, count(model.currentAddress.localElectionBody.localElectionBodyId) from Cadre model " +
+				"where model.user.userId in(:userIds) and model.currentAddress.localElectionBody.localElectionBodyId is not null group by model.currentAddress.localElectionBody.localElectionBodyId"); 
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
+	
+	public List findCadreSizeBoothwiseInMandalForMultipleUsers(List<Long> userIds) {
+		Query query = getSession().createQuery("Select model.currentAddress.booth.boothId, count(model.currentAddress.booth.boothId)from Cadre model " +
+				" where model.user.userId in(:userIds) and model.currentAddress.booth.boothId is not null and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.booth.boothId");
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
+	
+	public List findCadreSizeWardswiseForMultipleUsers(List<Long> userIds) {
+		Query query = getSession().createQuery("Select model.currentAddress.ward.constituencyId, count(model.currentAddress.ward.constituencyId)from Cadre model " +
+				" where model.user.userId in(:userIds) and model.currentAddress.ward.constituencyId is not null group by model.currentAddress.ward.constituencyId");
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
+	
+	public List findCadreSizeBoothwiseForMultipleUsers(List<Long> userIds) {
+		Query query = getSession().createQuery("Select model.currentAddress.booth.boothId, count(model.currentAddress.booth.boothId)from Cadre model " +
+				" where model.user.userId in(:userIds) and model.currentAddress.booth.boothId is not null and model.currentAddress.localElectionBody.localElectionBodyId is not null group by model.currentAddress.booth.boothId");
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
+	
+	public List findCadreSizeHamletWise(List<Long> userIds){
+		Query query = getSession().createQuery("Select model.currentAddress.hamlet.hamletId, count(model.currentAddress.hamlet.hamletId)from Cadre model " +
+					" where model.user.userId in(:userIds) and model.currentAddress.hamlet.hamletId is not null group by model.currentAddress.hamlet.hamletId");
+		query.setParameterList("userIds", userIds);
+		return query.list();
 		
 	}
 }
