@@ -2705,7 +2705,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		  return voterCasteDetailsMap;
 	  }
 	
-	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type,String buildType,Long userId,Long hamletId)
+	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type,String buildType,Long userId,Long hamletId,Long constituencyId)
 	{
 		String queryStr = null;
 		List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
@@ -2718,7 +2718,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}else
 		if(type.equalsIgnoreCase("booth") && !buildType.equalsIgnoreCase("customWardBooths"))
 		{
-		 list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId);
+		 list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId,userId,constituencyId);
+			
 		}
 		else if(type.equalsIgnoreCase("booth") && buildType.equalsIgnoreCase("customWardBooths"))
 			list = boothPublicationVoterDAO.getVoterDetailsForCustomWardBooths(hamletId, id, userId, publicationDateId, casteStateId);
@@ -2745,6 +2746,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		  	list = boothPublicationVoterDAO.getVoterDetailsForCustomWard(id, publicationDateId, userId, casteStateId);
 		else if(type.equalsIgnoreCase("wardbooth") && buildType.equalsIgnoreCase("muncipalityCustomWard"))
 			list = userVoterDetailsDAO.getVoterDetailsForCustomWardByBooth(id,publicationDateId, userId, casteStateId);
+		else if(type.equalsIgnoreCase("panchayat") && buildType.equalsIgnoreCase("booth"))
+			 list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForHamlet(id,publicationDateId,casteStateId,userId,constituencyId);
 		else
 		{
 			
