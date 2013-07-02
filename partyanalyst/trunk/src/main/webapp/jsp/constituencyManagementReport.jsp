@@ -791,7 +791,7 @@
 					<LI>Know the problems and their status in your constituency</LI>
 					<LI>Know about the Local Political Changes and impact in your constituency</LI>
 					<LI>View the people who are having more influence in your constituency</LI>
-					<LI>Access voters details by hamlet level, and group them by Important Families and Cast</LI>
+					<LI>Access voters details by hamlet level, and group them by Important Families and Caste</LI>
 					<LI>View Mandal Level Leaders Details</LI>
 				</UL>
 			</DIV>
