@@ -200,7 +200,7 @@ width: 92px;
                           
 						  
 						<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
-							<span class="enadu"> <s:property value="fileTitle1"/></span>
+							<span class="enadu"><a style="color: #005580;font-weight: bolder;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <s:property value="fileTitle1"/> </a></span>
 						 </s:if>
 						 <s:else>
 							<h4 style="text-transform: capitalize;"> <a style="color: #005580;font-weight: bolder;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"><s:property value="fileTitle1"/> </a></h4>
@@ -550,7 +550,7 @@ width: 92px;
 							
 						</div>
 							<br><br>
-						<div  class="span12" style="margin-bottom:0px;"><button id="newsresponseMore" class="btn btn-mini" style="margin-left:88px" onclick="getCandidatesResponseNews()"> More...</button></div>
+						<div  class="span12" style="margin-bottom:0px;"><button id="newsresponseMore" class="btn btn-mini" style="margin-top: 15px; margin-left: 175px;" onclick="getCandidatesResponseNews()"> More...</button></div>
 						<br><br>
 					</div>
 				</div>
@@ -577,7 +577,7 @@ width: 92px;
 									 </s:iterator>
 									</c:if>
 
-									<a class=" btn btn-mini pull-right" href="newsDetailsAction.action">More...</a>
+									<a class=" btn btn-mini pull-right" href="newsDetailsAction.action" style="margin-top: -10px;">More...</a>
 								</ul>
 							</div>
 						</div>
@@ -607,7 +607,7 @@ width: 92px;
 								<c:forEach var="gallary" items="${latestGallariesList}">
 								<li><a class="muted" href="javascript:{showFilesInGallary(${gallary.id})}"><i class="icon-share-alt"></i>${gallary.name}</a></li>        
                                </c:forEach>
-							   <a href="javascript:{showAllgallaries()}" class=" btn btn-mini pull-right ">More...</a>
+							   <a href="javascript:{showAllgallaries()}" class=" btn btn-mini pull-right " style="margin-top: -10px;">More...</a>
 									
 								</ul>
 							</div>
@@ -624,8 +624,9 @@ width: 92px;
 									<div class="span12 pad10 ">
 										<ul class="unstyled">
 										<s:iterator value="fileList" var="newsGallaryDetails" status="ctr">
-											<li><a class="thumbnail span2" href="javascript:{openVideo('<s:property value="filePath1"/>')}">
-											<img src='http://img.youtube.com/vi/<s:property value="filePath1"/>/0.jpg' title='<s:property value="description"/>'/></a></li>                          		
+											<li><a class="thumbnail span2" style="width: 144px;" href="javascript:{openVideo('<s:property value="filePath1"/>')}">
+											<img style="width: 140px; height: 100px;" src='http://img.youtube.com/vi/<s:property value="filePath1"/>/0.jpg' title='<s:property value="description"/>'/></a>
+											</li>
 										</s:iterator>
 										
 									<!--
@@ -633,7 +634,7 @@ width: 92px;
 								 -->
 										</ul>
 										<!--<a href="#" class="pull-right btn btn-mini" style="margin-top:75px;">More</a>-->
-										<span class="btn btn-mini pull-right" onclick="window.location='showMoreVideos.action'" style="margin:5px;">More Videos..</span>
+										<button class="btn btn-mini pull-right" style="margin-top: 75px; margin-left: 15px;" onclick="window.location='showMoreVideos.action'">More...</button>
 									</div>
 								</div>
 						</div>
