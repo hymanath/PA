@@ -43,6 +43,11 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		userCadreInfo.setUserID(user.getRegistrationID());
 		userCadreInfo.setUserAccessType(user.getAccessType());
 		userCadreInfo.setUserAccessValue(user.getAccessValue());
+		List<Long> userIds = new ArrayList<Long>();
+		if(user.getParentUserId() != null)
+		 userIds.add(user.getParentUserId());
+		userIds.add(user.getRegistrationID());
+		userCadreInfo.setUserIds(userIds);
 		
 		Long userID = user.getRegistrationID();
 		Long partyID = user.getParty();
