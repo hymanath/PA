@@ -137,6 +137,7 @@ function getVotersInACasteForLocality(){
 function getVotersInACaste(){
 var jsObj={
 			id:hamletId,
+			hamletId:hamletId,
 			publicationDateId:publicationId,
 			caste:casteStateId,
 			casteName:casteName,
