@@ -33,4 +33,12 @@
 	 <bean id="adminPageAction" class="com.itgrids.electoralconnect.web.action.AdminPageAction" singleton="false">
 	 	
 	 </bean>
+	 
+	 <bean id="logoutAction" class="com.itgrids.electoralconnect.web.action.LogoutAction" singleton="false">
+	 	
+	 </bean>
+	 
+	 <bean id="changePasswordAction" class="com.itgrids.electoralconnect.web.action.ChangePasswordAction" singleton="false">
+	 	<property name="userService" ref="userService"/>
+	 </bean>
 </beans>

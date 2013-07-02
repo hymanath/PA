@@ -19,9 +19,15 @@ public class UserDAOHibernateTest extends BaseDaoTestCase {
 		userDAO.getAll();
 	}*/	
 	
-	public void testcheckForValidUser()
+	/*public void testcheckForValidUser()
 	{
 		List<Object[]> values = userDAO.checkForValidUser("sasi_1680@gmail.com","0803767");
 		System.out.println(values.size());
+	}*/
+	
+	public void testcheckForValidUser()
+	{
+		int value = userDAO.updatePassword("prasad",18l);
+		System.out.println(value);
 	}
 }
