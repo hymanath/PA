@@ -45,6 +45,8 @@
 
 <link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+<script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 
 <style type="text/css">
 #candidateNewsCountDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
@@ -72,7 +74,7 @@
 
 <div id="candidateNewsMainDiv">
 <div id="candidateNewsCountDiv"></div>
-
+<div id="container"></div>
 </div>
 
 
@@ -158,6 +160,7 @@ function buildCandidateNews(results,jsObj)
   }
  str +='</table>';
  $("#candidateNewsCountDiv").html(str);
+ buildChart(results);
 }
 
 function getLocationWiseNewsDetails(candidateId,locationScope)
@@ -175,7 +178,92 @@ function getLocationWiseNewsDetails(candidateId,locationScope)
 	var url = "getLocationWiseNewsDetailsForACandidateAction.action?"+rparam;
 	callAjax(jsObj, url);*/
 }
+function buildChart(results)
+{
+	var dataarr = [];
+	var xaxis = results[0].candidateNames;
+	if(results[0].stateCounts != null)
+	{
+		var obj = {
+		name: 'State',
+        data: results[0].stateCounts
+		}
+		dataarr.push(obj);
+	}
+	if(results[0].districtCounts != null)
+	{
+		var obj1 = {
+		name: 'District',
+        data: results[0].districtCounts
+		}
+		dataarr.push(obj1);
+	}
+	if(results[0].constituencyCounts != null)
+	{
+		var obj3 = {
+		name: 'Constituency',
+        data: results[0].constituencyCounts
+		}
+		dataarr.push(obj3);
+	}
+	if(results[0].mandalCounts != null)
+	{
+		var obj4 = {
+		name: 'Mandal',
+        data: results[0].mandalCounts
+		}
+		dataarr.push(obj4);
+	}
+	dataarr.push();
+	
+        $('#container').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Regionwise News Count'
+            },
+            
+            xAxis: {
+                categories: xaxis,
+					labels: {
+				rotation: -70,
+				align: 'right',
+				style: {
+				fontSize: '13px',
+				fontFamily: 'Verdana, sans-serif'
+				}
 
+				}
+            },
+            yAxis: {
+               
+				
+                min: 0,
+               
+               /* title: {
+                    text: 'Rainfall (mm)'
+                }*/
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+           
+			 series:dataarr
+        });
+}
+    
 
 getCandidateNewsCount();
 </script>
