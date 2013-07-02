@@ -3607,7 +3607,7 @@ function buildNewImpDatePopup()
 		eventStr+='<table width="100%">';
 		eventStr+='<tr>';
 		eventStr+='<th id="impheaders" >Important Date Title :<font color="red"> *</font></th>';
-		eventStr+='<td><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText" class="ImpeventNameText"/></td>';
+		eventStr+='<td><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText" class="ImpeventNameText" maxlength="100"/></td>';
 		eventStr+='</tr>';
 
 		eventStr+='<tr>';
@@ -3620,7 +3620,7 @@ function buildNewImpDatePopup()
 	
 		eventStr+='<tr>';
 		eventStr+='<th id="impheaders">Description :<font color="red"> *</font></th>';
-		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="ImpdescTextArea" name="ImpdescTextArea"></textarea></td>';
+		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="ImpdescTextArea" name="ImpdescTextArea" maxlength="300"></textarea></td>';
 		eventStr+='</tr></table>';		
 
 		/*eventStr+='<tr>';
