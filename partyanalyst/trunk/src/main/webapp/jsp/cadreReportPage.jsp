@@ -125,6 +125,13 @@
 				{	
 					buildRegionCadreTree(regionLevelCadres[j].id,regionLevelCadres[j].val);
 				}
+				try{
+					if(regionLevelCadres == null || regionLevelCadres.length == 0){
+						document.getElementById("cadreLevelInfoDivBody").innerHTML = "<span style='margin-left:10px;'><b>No Cadre Available</b></span>";
+					}
+				}catch(e){
+					
+				}
 			}
 
 			function callAjax(jsObj,url)
