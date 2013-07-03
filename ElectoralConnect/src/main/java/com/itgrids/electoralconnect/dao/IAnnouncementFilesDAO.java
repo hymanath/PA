@@ -6,6 +6,6 @@ import com.itgrids.electoralconnect.model.AnnouncementFiles;
 import com.itgrids.electoralconnect.model.AnnouncementType;
 import com.itgrids.electoralconnect.model.User;
 
-public interface IAnnouncementFiles  extends GenericDao<AnnouncementFiles, Long> {
+public interface IAnnouncementFilesDAO  extends GenericDao<AnnouncementFiles, Long> {
 	
 }

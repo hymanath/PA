@@ -1,13 +1,17 @@
 package com.itgrids.electoralconnect.web.action;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -16,8 +20,9 @@ import org.springframework.web.context.ServletContextAware;
 
 import com.itgrids.electoralconnect.dto.AnnouncementVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
+import com.itgrids.electoralconnect.dto.ResultStatus;
+import com.itgrids.electoralconnect.service.IAnnouncementService;
 import com.itgrids.electoralconnect.util.IConstants;
-
  
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -30,6 +35,7 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 	private JSONObject jobj;
 	private HttpServletRequest request;
 	private ServletContext context;
+	private ResultStatus resultStatus;
 	
 	private String title;
 	private String description;
@@ -40,6 +46,7 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 	private File docs;
 	private String docsContentType;
 	private String docsFileName;
+	private IAnnouncementService announcementService;
 	 
 	
 	@Override
@@ -134,22 +141,39 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 	public void setDocsFileName(String docsFileName) {
 		this.docsFileName = docsFileName;
 	}
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	
+	public IAnnouncementService getAnnouncementService() {
+		return announcementService;
+	}
+
+	public void setAnnouncementService(IAnnouncementService announcementService) {
+		this.announcementService = announcementService;
+	}
 
 	public String execute()
 	{
 		String filePath=null;
-		System.out.println(context.getContextPath());
-		System.out.println(context.getRealPath("/"));
-		AnnouncementVO announcementVO=new AnnouncementVO();
-		announcementVO.setName(title);
-		announcementVO.setDescription(description);
-		announcementVO.setUpdatedDate(date);
-		announcementVO.setAnnouncementType(announcementType);
+		String fileNames=null;
+		String subFolder=null;
 		
-		System.out.println(docs);
-		System.out.println(docsContentType);
-		System.out.println(docsFileName);
-				
+		try{
+		if(announcementType==1){
+			subFolder="Notifications";
+		}
+		else{
+			subFolder="Press Notes";
+		}
+		
+		AnnouncementVO announcementVO=new AnnouncementVO();
+	
 		HttpSession session=request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		
@@ -167,24 +191,61 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 		
 		 if(request.getRequestURL().toString().contains(IConstants.SERVERLINK)){
-			filePath = IConstants.STATIC_CONTENT_FOLDER_URL + "Uploaded Files" + pathSeperator;
+			filePath = IConstants.STATIC_CONTENT_FOLDER_URL + "Uploaded_Documents" + pathSeperator;
 		 }
 		 else if(request.getRequestURL().toString().contains(IConstants.LOCALHOST))
 		 {
-			 filePath = context.getRealPath("/")+"Uploaded Files\\"; 
+			 filePath = context.getRealPath("/")+"Uploaded_Documents\\"; 
 		 }
 		
+        filePath=filePath+subFolder+pathSeperator;
         System.out.println(filePath);
         
-        if(announcementType==1){
-        	filePath=filePath+"Notification"+pathSeperator;
-        }
-        else{
-        	filePath=filePath+"Press Notes"+pathSeperator;
-        }
-        
-        System.out.println(filePath);
+        String fileType = null;
+		Long systime = System.currentTimeMillis();
+		Random random = new Random();
 		
+		String[] str ;
+		str = docsContentType.split(",");
+		if(str !=null)
+		{
+			for(int i=0;i<str.length;i++)
+			{
+			fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
+			fileNames = systime.toString()+random.nextInt(IConstants.FILE_RANDOM_NO)+"."+fileType;
+			}
+		}
+        
+        
+        
+        announcementVO.setName(title);
+		announcementVO.setDescription(description);
+		announcementVO.setUpdatedDate(date);
+		announcementVO.setAnnouncementType(announcementType);
+		announcementVO.setFileTitle(title);
+		announcementVO.setFileDescription(fileDescription);
+		
+		
+		if(announcementType!= null)
+		{
+			String path ;
+			if(fileNames!=null||fileNames!="")
+			{
+				path = IConstants.UPLOADED_DOCS+"/"+subFolder+"/"+fileNames;
+				announcementVO.setFilePath(path);
+			}
+		}
+		
+		
+		File fileToCreate = new File(filePath, fileNames);
+		FileUtils.copyFile(docs, fileToCreate);
+		
+		resultStatus=announcementService.uploadFile(announcementVO,user);
+		
+		}catch (Exception e) {
+			System.out.println(e);
+		} 
+        
 		return Action.SUCCESS;
 	}
 

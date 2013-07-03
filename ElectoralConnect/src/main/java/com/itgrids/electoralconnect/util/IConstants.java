@@ -634,5 +634,11 @@ public interface IConstants {
     public static final String SERVERLINK="www.ElectoralConnect.com";
     public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\ElectoralConnect\\";
     
+    
+    public static final int FILE_RANDOM_NO = 10000000;
+    public static final String UPLOADED_DOCS = "Uploaded_Docuements";
+    
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    
 	
 }

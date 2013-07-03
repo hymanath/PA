@@ -61,7 +61,7 @@
 		</action>
 		
 		<action name="createAnnouncementAction" class="createAnnouncementAction">
-			<result>/jsp/announcementPage.jsp</result>
+			<result>/jsp/adminPage.jsp</result>
 			
 			<interceptor-ref name="fileUpload">
 				<param name="maximumSize">2097152</param>
@@ -74,7 +74,7 @@
 		
 				
 		<action name="passwordChangeAction" class="loginAction" method="changePassword">
-			<result>/jsp/registerNow.jsp</result>
+			<result>/jsp/adminPage.jsp</result>
 		</action>
 		
 		<action name="logoutAction" class="logoutAction" >
