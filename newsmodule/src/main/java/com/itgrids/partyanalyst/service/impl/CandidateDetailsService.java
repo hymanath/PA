@@ -6144,19 +6144,22 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	}
     }
     
-    public List<SelectOptionVO> getGalleryListForAParty(String fromDateStr,String toDateStr)
+    public List<SelectOptionVO> getGalleryListForAParty(String fromDateStr,String toDateStr,List<Long> locationIdsList,String locationScope)
     {
     	try{
     	 List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
     	 Date fromDate = null;
     	 Date toDate = null;
+    	 Long locationScopeId = 0L;
     	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     	 if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
     		 fromDate = format.parse(fromDateStr);
     	 if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
     		toDate = format.parse(toDateStr);
+    	 if(locationScope != null && !locationScope.equalsIgnoreCase(""))
+    	  locationScopeId = regionScopesDAO.getRegionScopeIdByScope(locationScope);
     	 
-    	 List<Object[]> list = fileGallaryDAO.getAllGallariesListForParty(fromDate, toDate);
+    	 List<Object[]> list = candidateRelatedNewsDAO.getAllGallariesListForParty(fromDate, toDate, locationScopeId, locationIdsList);
     	 if(list != null && list.size() > 0)
     	  for(Object[] params : list)
     		selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null?params[1].toString():""));

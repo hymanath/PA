@@ -260,7 +260,7 @@ public interface ICandidateDetailsService {
 	
 	public List<SelectOptionVO> getNewsForACandidateByCategoryId(Long candidateId,Long categoryId,String fromDateStr,String toDateStr);
 	
-	public List<SelectOptionVO> getGalleryListForAParty(String fromDateStr,String toDateStr);
+	public List<SelectOptionVO> getGalleryListForAParty(String fromDateStr,String toDateStr,List<Long> locationIdsList,String locationScope);
 	
 	public List<SelectOptionVO> getNewsByGalleryId(Long galleryId,String fromDateStr,String toDateStr);
 	

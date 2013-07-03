@@ -3571,7 +3571,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 	}
 	
 	
-	public List<CandidateNewsCountVO> getNewsCountForACandidate(String fromDateStr,String toDateStr,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,String tempVar)
+	public List<CandidateNewsCountVO> getNewsCountForACandidate(String fromDateStr,String toDateStr,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,String tempVar,String locationScope)
 	{
 		try{
 		 List<CandidateNewsCountVO> candidateNewsCountVOList = new ArrayList<CandidateNewsCountVO>(0);
@@ -3584,10 +3584,10 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		  toDate = format.parse(toDateStr);
 		 
 		  Long locationScopeId = 0L;
-		  if(!tempVar.equalsIgnoreCase("null") && !tempVar.equalsIgnoreCase(""))
-		   locationScopeId = regionScopesDAO.getRegionScopeIdByScope(tempVar);
+		  if(!locationScope.equalsIgnoreCase("null") && !locationScope.equalsIgnoreCase(""))
+		   locationScopeId = regionScopesDAO.getRegionScopeIdByScope(locationScope);
 		 
-		 List<Object[]> list = candidateRelatedNewsDAO.getNewsCountForACandidate(872l,fromDate,toDate,categoryIdsList,galleryIdsList,locationIdsList,locationScopeId);
+		 List<Object[]> list = candidateRelatedNewsDAO.getNewsCountForACandidate(fromDate,toDate,categoryIdsList,galleryIdsList,locationIdsList,locationScopeId,tempVar,872L);
 		 if(list != null && list.size() > 0)
 		 {
 			CandidateNewsCountVO candidateNewsCountVO = null;
@@ -3710,19 +3710,23 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		}
 	}
 	
-	public List<SelectOptionVO> getCategoryList(String fromDateStr, String toDateStr)
+	public List<SelectOptionVO> getCategoryList(String fromDateStr, String toDateStr,String locationScope,List<Long> locationIdsList)
 	{
 		try{
 			List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
-			SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyy");
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			Date fromDate = null;
 			Date toDate = null;
+			Long locationScopeId = 0L;
+			if(locationScope != null && !locationScope.equalsIgnoreCase(""))
+			 locationScopeId = regionScopesDAO.getRegionScopeIdByScope(locationScope);
+			
 			if(!fromDateStr.equalsIgnoreCase("null") && !fromDateStr.equalsIgnoreCase(""))
 			 fromDate = format.parse(fromDateStr);
 			if(!toDateStr.equalsIgnoreCase("null") && !toDateStr.equalsIgnoreCase(""))
 			 toDate = format.parse(toDateStr);
 			
-			List<Object[]> list = fileGallaryDAO.getCategoryList(fromDate, toDate);
+			List<Object[]> list = candidateRelatedNewsDAO.getCategoryList(fromDate, toDate, locationScopeId, locationIdsList);
 			if(list !=null && list.size() > 0)
 			 for(Object[] params : list)
 			  selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():""));
@@ -3739,7 +3743,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 	{
 	  try{
 		  List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
-		  List<Object[]> list = fileGallaryDAO.getGalleryListForSelectedCategory(categoryIdsList);
+		  List<Object[]> list = candidateRelatedNewsDAO.getGalleryListForSelectedCategory(categoryIdsList);
 		  if(list !=null && list.size() > 0)
 			for(Object[] params : list)
 			 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():""));
@@ -3755,7 +3759,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 	{
 		try{
 		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
-		SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date fromDate = null;
 		Date toDate = null;
 		Long locationScopeId = regionScopesDAO.getRegionScopeIdByScope(locationScope);
@@ -3764,7 +3768,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		if(!toDateStr.equalsIgnoreCase("null") && !toDateStr.equalsIgnoreCase(""))
 		 toDate = format.parse(toDateStr);
 		
-		List<Long> locationIdsList = fileGallaryDAO.getLocationValuesByLocationScopeId(locationScopeId, fromDate, toDate, 872L);
+		List<Long> locationIdsList = candidateRelatedNewsDAO.getLocationValuesByLocationScopeId(locationScopeId, fromDate, toDate);
 		if(locationIdsList != null && locationIdsList.size() > 0)
 		{
 		  if(locationScopeId.equals(3L))

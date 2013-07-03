@@ -173,13 +173,16 @@ ICandidateRelatedNewsDAO {
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getNewsCountForACandidate(Long partyId, Date fromDate, Date toDate,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId)
+	public List<Object[]> getNewsCountForACandidate(Date fromDate, Date toDate,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar, Long partyId)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select count(distinct model.fileGallary.fileGallaryId),model.candidate.candidateId, model.candidate.lastname,model.fileGallary.file.regionScopes.regionScopesId from CandidateRealatedNews model,PartyGallery model2 ");
 		str.append(" where model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId and model.fileGallary.isDelete = 'false' and model.fileGallary.isPrivate = 'false' ");
 		str.append(" and model2.isDelete = 'false' and model2.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false' and model.fileGallary.gallary.isPrivate = 'false' ");
-		str.append(" and model2.party.partyId =:partyId and model.fileGallary.file.fileId is not null ");
+		str.append(" and model.fileGallary.file.fileId is not null ");
+		
+		if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+		 str.append(" and model2.party.partyId =:partyId ");
 		
 		if(categoryIdsList != null && categoryIdsList.size() > 0 )
 		 str.append(" and model.fileGallary.file.category.categoryId in (:categoryIdsList) ");
@@ -201,7 +204,8 @@ ICandidateRelatedNewsDAO {
 		
 		Query query = getSession().createQuery(str.toString());
 		
-		query.setParameter("partyId", partyId);
+		if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+		 query.setParameter("partyId", partyId);
 		
 		if(fromDate != null)
 		 query.setParameter("fromDate", fromDate);
@@ -262,6 +266,110 @@ ICandidateRelatedNewsDAO {
 		if(maxIndex != null)
 		 query.setMaxResults(maxIndex);
 		
+		return query.list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getLocationValuesByLocationScopeId(Long locationScopeId,Date fromDate, Date toDate)
+	{
+	  StringBuilder str = new StringBuilder();
+	  str.append(" select distinct model.fileGallary.file.locationValue from CandidateRealatedNews model where model.fileGallary.isPrivate = 'false' ");
+	  str.append("  and model.fileGallary.isDelete = 'false' and model.fileGallary.gallary.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false' ");
+	  str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId and model.fileGallary.gallary.contentType.contentType =:contentType and model.candidate.candidateId is not null ");
+	  if(fromDate != null)
+	   str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate");
+	  if(toDate != null)
+		str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
+	  
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("locationScopeId", locationScopeId);
+	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
+	  if(fromDate != null)
+	   query.setParameter("fromDate", fromDate);
+	  if(toDate != null)
+		 query.setParameter("toDate", toDate);
+	  return query.list();
+	  
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllGallariesListForParty(Date fromDate,Date toDate,Long locationScopeId,List<Long> locationIdsList)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.fileGallary.gallary.gallaryId , model.fileGallary.gallary.name from CandidateRealatedNews model where ");
+		str.append(" model.fileGallary.gallary.contentType.contentType = :contentType and model.fileGallary.isDelete = 'false' and model.fileGallary.isPrivate = 'false' ");
+		str.append(" and model.fileGallary.gallary.isDelete = 'false' and model.fileGallary.gallary.isPrivate = 'false' ");
+		if(fromDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+		if(toDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
+		
+		if(locationScopeId >0)
+		 str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
+		if(locationIdsList != null && locationIdsList.size() > 0)
+		 str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
+		
+		str.append(" and model.candidate.candidateId is not null order by model.fileGallary.gallary.name ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("contentType", IConstants.NEWS_GALLARY);
+		
+		if(fromDate != null)
+		 query.setParameter("fromDate", fromDate);
+		if(toDate != null)
+		 query.setParameter("toDate", toDate);
+		if(locationScopeId >0)
+		 query.setParameter("locationScopeId", locationScopeId);
+		if(locationIdsList != null && locationIdsList.size() > 0)
+		 query.setParameterList("locationIdsList", locationIdsList);
+		
+		return query.list();
+		
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCategoryList(Date fromDate, Date toDate,Long locationScopeId,List<Long> locationIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.fileGallary.file.category.categoryId,model.fileGallary.file.category.categoryType from CandidateRealatedNews model where ");
+		str.append(" model.fileGallary.isDelete = 'false' and model.fileGallary.isPrivate = 'false' and model.fileGallary.gallary.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false' ");
+		str.append(" and model.fileGallary.gallary.contentType.contentType =:contentType ");
+		if(fromDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+		if(toDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
+		if(locationScopeId > 0)
+		 str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
+		if(locationIdsList != null && locationIdsList.size() > 0)
+		 str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");	
+		
+		str.append(" and model.candidate.candidateId is not null order by model.fileGallary.file.category.categoryType ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("contentType", IConstants.NEWS_GALLARY);
+		if(fromDate != null)
+		 query.setParameter("fromDate", fromDate);	
+		if(toDate != null)
+		 query.setParameter("toDate", toDate);	
+		if(locationScopeId >0)
+			query.setParameter("locationScopeId", locationScopeId);
+		if(locationIdsList != null && locationIdsList.size() > 0)
+		  query.setParameterList("locationIdsList", locationIdsList);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGalleryListForSelectedCategory(List<Long> categoryIdsList)
+	{
+		Query query = getSession().createQuery(" select distinct model.fileGallary.gallary.gallaryId, model.fileGallary.gallary.name from CandidateRealatedNews model where model.fileGallary.isPrivate = 'false' " +
+				" and model.fileGallary.isDelete ='false' and model.fileGallary.gallary.isPrivate = 'false' and model.fileGallary.gallary.isDelete ='false' and model.fileGallary.file.category.categoryId in (:categoryIdsList)" +
+				" and model.candidate.candidateId is not null order by model.fileGallary.gallary.name ");
+		
+		query.setParameterList("categoryIdsList", categoryIdsList);
 		return query.list();
 	}
 	

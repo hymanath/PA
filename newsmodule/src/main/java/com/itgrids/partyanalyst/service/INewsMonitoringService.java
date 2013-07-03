@@ -53,11 +53,11 @@ public interface INewsMonitoringService {/*
 	public ResultStatus storeSourceDetails(String value);
 	public List<SelectOptionVO> getCandidatesByRemovingDots();
 
-	public List<CandidateNewsCountVO> getNewsCountForACandidate(String fromDateStr,String toDateStr,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,String locationScope);
+	public List<CandidateNewsCountVO> getNewsCountForACandidate(String fromDateStr,String toDateStr,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,String tempVar,String locationScope);
 	
 	public List<FileVO> getLocationWiseNewsDetailsForACandidate(Long candidateId,String fromDateStr,String toDateStr,String locationScope,Integer startIndex,Integer maxIndex,String galleryIdsStr,String categoryIdsStr);
 
-	public List<SelectOptionVO> getCategoryList(String fromDateStr, String toDateStr);
+	public List<SelectOptionVO> getCategoryList(String fromDateStr, String toDateStr,String locationScope,List<Long> locationIdsList);
 	
 	public List<SelectOptionVO> getGalleryListForSelectedCategory(List<Long> categoryIdsList);
 	
