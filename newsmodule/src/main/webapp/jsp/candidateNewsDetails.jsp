@@ -5,7 +5,9 @@
 <head>
 <title> TDP News Portal </title>
 
-<!-- YUI Dependency files (Start) -->
+<!--<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+
+ YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
@@ -17,6 +19,7 @@
 	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
@@ -24,6 +27,8 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis1.js"></script>
+	<script type="text/javascript" src="js/voterAnalysis/showGallaries.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
@@ -37,16 +42,18 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
-   
+
+	<!-- YUI Dependency files (End) -->
+   <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+   <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
   <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
-  <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/> 
-
-<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
-
-<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
-<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+  <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 <script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
+
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 
 <style type="text/css">
 #candidateNewsCountDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
@@ -66,15 +73,94 @@
 	}
 #candidateNewsMainDiv{margin-left: auto; margin-right: auto; float: none; width: 950px; padding-top: 20px; padding-bottom: 20px;}
 
+
+#allRadio{margin-top: 0px; margin-right: 4px;}
+#byDateRadio{margin-top: 0px; margin-left: 15px; margin-right: 4px;}
+#existingFromText,#existingToText{width: 130px;}
+#radioBtnDiv{margin-bottom: 20px;}
+#selectNewsInnerDiv{margin-left: 149px;}
+#showAndHideDateSelectDiv{margin-left: 17px;}
+#newsDetailsBtn{margin-top: -7px; margin-left: 16px;}
+#candidateNewsGraphDiv{clear:both;}
+#selectRadioBtnTable td{vertical-align: top;}
+#galleryRadioDiv,#categoryRadioDiv,#districtCheckboxDiv{margin-left: 10px;}
+#galleryCheckBoxId,#categoryCheckBoxId,#districtCheckboxId{margin-top: 0px;margin-right: 4px;}
+#headingSpan{background:#49AFCD;color:#FFF;}
+#candidateNewsMainDiv h4{text-align: center; margin-bottom: 20px;}
+#headingSpan{padding: 5px 68px; border-radius: 5px;}
+#categoryGallary{margin-left: 12px; margin-right: 4px; margin-top: 0px;}
+#errorMsgDiv{text-align: center; font-size: 13px; margin-bottom: 10px;}
+#galleryListShowHideDiv{margin-left: 23px;}
+#districtList,#categoryList,#galleryList{margin-left: 12px;width:200px;}
+
 </style>
+<script type="text/javascript">
+var fromDate = '${fromDate}';
+var toDate = '${toDate}';
+</script>
 
 </head>
 
 <body>
 
 <div id="candidateNewsMainDiv">
-<div id="candidateNewsCountDiv"></div>
-<div id="container"></div>
+ <div>
+  <h4><span id="headingSpan">Candidate News Details</span></h4>
+ 
+   <div id="errorMsgDiv"></div>
+    <div id="selectNewsDiv">
+     <div id="selectNewsInnerDiv">
+	  <table id="selectRadioBtnTable">
+	   <tr>
+		 <td>
+			<div id="radioBtnDiv"><input type="radio" value="all" name="candidateNewsRadio" class="candidateNewsRadioCls" id="allRadio" checked="true"/><b>All</b>
+			<input type="radio" value="byDate" name="candidateNewsRadio" class="candidateNewsRadioCls" id="byDateRadio"/><b>By Date</b></div>
+	      </td>
+		  <td>
+		   <div id="galleryRadioDiv"><input type="checkbox" value="byGallery" class="galleryCheckBoxCls" id="galleryCheckBoxId"/><b>By Gallery</b></div>
+		  </td>
+		  <td>
+		   <div id="categoryRadioDiv"><input type="checkbox" value="byCategory" id="categoryCheckBoxId"/><b>By Category</b></div>
+		  </td>
+		  <td>
+		    <div id="districtCheckboxDiv"><input type="checkbox" value="byDistrict" id="districtCheckboxId"><b>By District</b></div>
+		  </td>
+		 </tr> 
+		</table>
+		<table>
+		 <tr>
+	      <td style="vertical-align: top;">
+			<div id="showAndHideDateSelectDiv" style="display:none;">
+			 <label style="float:left;"><b>From Date: </b><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"></label>
+			 <label style="float: left; margin-left: 11px;"><b>To Date: </b><input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"></label>
+			</div>
+	      </td>
+		 </tr>
+		 <tr>
+		  <td id="categoryShowAndHideTb" style="display:none;">
+		    <div id="categoryShowAndHideDiv"><b>Select Category: </b><select id="categoryList" multiple="multiple"></select><input type="checkbox" id="categoryGallary"><b>Gallery</b></div>
+		  </td>
+		 
+		  <td id="galleryListShowHideTb" style="display:none;">
+		   <div id="galleryListShowHideDiv"><b>Select Gallery:</b> <select id="galleryList" multiple="multiple"></select></div>
+		  </td>
+		</tr>
+		<tr>
+		 <td>
+		  <div id="districtShowAndHideDiv" style="display:none;"><b>Select District:</b><select id="districtList" multiple="multiple"></select></div>
+		  </td>
+		</tr>
+	  </table>
+			
+	 <div style="text-align:center;"><input type="button" value="submit" id="newsDetailsBtn" class="btn btn-info"/></div>
+	     
+
+  </div>
+ 
+ <div id="candidateNewsCountDiv"></div>
+</div>
+
+<div id="candidateNewsGraphDiv"></div>
 </div>
 
 
@@ -82,10 +168,97 @@
 
 function getCandidateNewsCount()
 {
+   $("#errorMsgDiv").html('');
+   var radioVal = $("input:radio[name=candidateNewsRadio]:checked").val();
+   var fromDatestr = '';
+   var toDatestr = '';
+   var galleryIdsArray = new Array();
+   var categoryIdsArray = new Array();
+   var locationScope = "";
+   var locationValue = 0;
+   var locationIdsList = new Array();
+
+   if(radioVal == "byDate")
+   {
+	 $("#showAndHideDateSelectDiv").css("display","inline-block");
+	 fromDatestr = $("#existingFromText").val();
+     toDatestr = $("#existingToText").val();
+	 if(fromDatestr == '' && toDatestr =='')
+	 {
+	  $("#errorMsgDiv").html('Please Select From And To Dates.');
+	  return;
+	 }
+	 if(fromDatestr == '')
+	 {
+	  $("#errorMsgDiv").html('Please Select From Date.');
+	  return;
+	 }
+	 if(toDatestr =='')
+	 {
+	  $("#errorMsgDiv").html('Please Select To Date.');
+	  return;
+	 }
+
+   }
+   else
+   {
+    $("#showAndHideDateSelectDiv").css("display","none");
+	
+   }
+
+    if($("#categoryCheckBoxId").is(":checked"))
+	{
+	  $('#categoryList > option:selected').each(
+       function(i){
+         categoryIdsArray.push($(this).val());
+       });
+	   if(categoryIdsArray.length == 0)
+	   {
+		 $("#errorMsgDiv").html('Please Select Category.');
+	     return; 
+	   }
+	   
+	}
+
+    if($("#galleryCheckBoxId").is(":checked") || $("#categoryGallary").is(":checked"))
+	{
+	  
+       $('#galleryList > option:selected').each(
+       function(i){
+         galleryIdsArray.push($(this).val());
+       });
+	   if(galleryIdsArray.length == 0)
+	   {
+		 $("#errorMsgDiv").html('Please Select Gallery.');
+	     return; 
+	   }
+	   
+	}
+
+	if($("#districtCheckboxId").is(":checked"))
+	{
+      $('#districtList > option:selected').each(
+       function(i){
+         locationIdsList.push($(this).val());
+       });
+	   if(locationIdsList.length == 0)
+	   {
+		 $("#errorMsgDiv").html('Please Select District.');
+	     return; 
+	   }
+
+	   locationScope = "DISTRICT";
+	}
+   
+
 	var jsObj={
 		candidateId:0,
-		fromDate:"",
-		toDate:"",
+		fromDate:fromDate,
+		toDate:toDate,
+		galleryIdsArray:galleryIdsArray,
+        categoryIdsArray:categoryIdsArray,
+        tempVar:locationScope,
+		locationValuesList:locationIdsList,
 	    task:'getLocationWiseNewsCountForACandidate'
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -106,6 +279,22 @@ function callAjax(jsObj,url)
 			{
 				buildCandidateNews(myResults,jsObj);
 			}
+			else if(jsObj.task == "getGalleryListForAParty" || jsObj.task == "getGalleryListForSelectedCategory")
+			{
+			  clearOptionsListForSelectElmtId('galleryList');
+			  createOptionsForSelectElmtId('galleryList',myResults);
+			}
+			else if(jsObj.task == "getCategoryList")
+			{
+			  clearOptionsListForSelectElmtId('categoryList');
+			  createOptionsForSelectElmtId('categoryList',myResults);
+			}
+			else if(jsObj.task == "getLocationsListByScopeId")
+			{
+			  clearOptionsListForSelectElmtId('districtList');
+			  createOptionsForSelectElmtId('districtList',myResults);
+			}
+
 			}catch (e)
 			{
 							     
@@ -132,57 +321,151 @@ function buildCandidateNews(results,jsObj)
 
   var str = '';
   str +='<table id="newsCountTab">';
+  str +='<thead>';
   str +='<tr>';
+ 
   str +='<th>Candidate Name</th>';
-  str +='<th>State</th>';
+  if(jsObj.tempVar != "DISTRICT")
+   str +='<th>State</th>';
   str +='<th>District</th>';
-  str +='<th>Constituency</th>';
-  str +='<th>Mandal</th>';
+
+  if(jsObj.tempVar != "DISTRICT")
+  {
+    str +='<th>Constituency</th>';
+    str +='<th>Mandal</th>';
+  }
   /* str +='<th>village</th>';
   str +='<th>Muncipality</th>';
   str +='<th>Ward</th>';
   str +='<th>Booth</th>';*/
-
+  
   str +='</tr>';
+  str +='</thead>';
+  str+='<tbody>';
   for(var i in results)
   {
    str +='<tr>';
+   
    str +='<td>'+results[i].name+'</td>';
-   str +='<td><a href="javascript:{}" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'state\')">'+results[i].stateNewsCount+'</a></td>';
-   str +='<td>'+results[i].districtNewsCount+'</td>';
-   str +='<td>'+results[i].constituencyNewsCount+'</td>';
-   str +='<td>'+results[i].mandalNewsCount+'</td>';
+
+  if(jsObj.tempVar != "DISTRICT")
+  {
+   
+   if(results[i].stateNewsCount > 0)
+    str +='<td><a href="javascript:{}" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'STATE\')">'+results[i].stateNewsCount+'</a></td>';
+	else
+	 str +='<td><a href="javascript:{}">'+results[i].stateNewsCount+'</a></td>';
+  }
+
+   if(results[i].districtNewsCount > 0)
+   str +='<td><a href="javascript:{}" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'DISTRICT\')">'+results[i].districtNewsCount+'</a></td>';
+   else
+	str +='<td><a href="javascript:{}">'+results[i].districtNewsCount+'</a></td>';
+
+  if(jsObj.tempVar != "DISTRICT")
+  {
+   if(results[i].constituencyNewsCount > 0)
+    str +='<td><a href="javascript:{}" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'CONSTITUENCY\')">'+results[i].constituencyNewsCount+'</a></td>';
+   else
+	str +='<td><a href="javascript:{}">'+results[i].constituencyNewsCount+'</a></td>';
+
+   if(results[i].mandalNewsCount >0)
+    str +='<td><a href="javascript:{}" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'MANDAL\')">'+results[i].mandalNewsCount+'</a></td>';
+   else
+	str +='<td><a href="javascript:{}">'+results[i].mandalNewsCount+'</a></td>';
+  }
    /* str +='<td>'+results[i].villageNewsCount+'</td>';
    str +='<td>'+results[i].localEleBodyNewsCount+'</td>';
    str +='<td>'+results[i].wardNewsCount+'</td>';
    str +='<td>'+results[i].boothNewsCount+'</td>';*/
+   
    str +='</tr>';
   }
+  str+='</tbody>';
  str +='</table>';
  $("#candidateNewsCountDiv").html(str);
- buildChart(results);
+
+ if(jsObj.tempVar != "DISTRICT")
+ {
+   $('#newsCountTab').dataTable({
+		"aaSorting": [[ 1, "asc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null] 
+		});
+ }
+ else
+ {
+	$('#newsCountTab').dataTable({
+		"aaSorting": [[ 1, "asc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null] 
+		});
+ }
+
+buildChart(results,jsObj);
 }
 
 function getLocationWiseNewsDetails(candidateId,locationScope)
 {
-  /* var jsObj={
-		candidateId:candidateId,
-		fromDate:"",
-		toDate:"",
-		locationScope:locationScope,
-		firstResult:0,
-	    maxResult:10,
-	    task:'getLocationWiseNewsDetailsForACandidate'
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "getLocationWiseNewsDetailsForACandidateAction.action?"+rparam;
-	callAjax(jsObj, url);*/
+  
+  var fromDate = "";
+  var toDate = "";
+  var categoryIds = "";
+  var galleryIds = "";
+
+  var radioVal = $("input:radio[name=candidateNewsRadio]:checked").val();
+  if(radioVal == "byDate")
+  {
+	fromDate = $("#existingFromText").val();
+    toDate = $("#existingToText").val();
+  }
+  if($("#categoryCheckBoxId").is(":checked"))
+	categoryIds = $("#categoryList").val();
+  
+  if($("#galleryCheckBoxId").is(":checked") || $("#categoryGallary").is(":checked"))
+  {
+    galleryIds = $("#galleryList").val(); 
+  }
+  
+  var urlstr = "locationWiseNewsDetailsAction.action?candidateId="+candidateId+"&locationScope="+locationScope+"&fromDate="+fromDate+"&toDate="+toDate+"&categoryIds="+categoryIds+"&galleryIds="+galleryIds+"&";
+		
+     var browser1 = window.open(urlstr,"locationWiseNewsDetails"+locationScope+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+
 }
-function buildChart(results)
+
+
+
+
+function getSelectedNewsDetails()
 {
+  $("#existingFromText").val('');
+  $("#existingToText").val('');
+  if(fromDate != '' && toDate !='')
+  {
+	 $("#byDateRadio").attr("checked",true);
+	 $("#showAndHideDateSelectDiv").css("display","inline-block");
+	 $("#existingFromText").val(fromDate);
+	 $("#existingToText").val(toDate);
+  }
+  else
+   $("#allRadio").attr("checked",true);
+ 
+}
+function buildChart(results,jsObj)
+{
+	$("#candidateNewsGraphDiv").html('');
+	if(results == null || results.size == 0)
+	 return;
+
 	var dataarr = [];
 	var xaxis = results[0].candidateNames;
-	if(results[0].stateCounts != null)
+
+	if(results[0].stateCounts != null && jsObj.tempVar != "DISTRICT")
 	{
 		var obj = {
 		name: 'State',
@@ -198,7 +481,7 @@ function buildChart(results)
 		}
 		dataarr.push(obj1);
 	}
-	if(results[0].constituencyCounts != null)
+	if(results[0].constituencyCounts != null && jsObj.tempVar != "DISTRICT")
 	{
 		var obj3 = {
 		name: 'Constituency',
@@ -206,7 +489,7 @@ function buildChart(results)
 		}
 		dataarr.push(obj3);
 	}
-	if(results[0].mandalCounts != null)
+	if(results[0].mandalCounts != null && jsObj.tempVar != "DISTRICT")
 	{
 		var obj4 = {
 		name: 'Mandal',
@@ -216,7 +499,7 @@ function buildChart(results)
 	}
 	dataarr.push();
 	
-        $('#container').highcharts({
+        $('#candidateNewsGraphDiv').highcharts({
             chart: {
                 type: 'column'
             },
@@ -263,9 +546,208 @@ function buildChart(results)
 			 series:dataarr
         });
 }
-    
+
+
+//gallery List
+
+function getGalleriesList()
+{
+  var fromDate = $("#existingFromText").val();
+  var toDate = $("#existingToText").val();
+
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		task:'getGalleryListForAParty'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getGalleryListForAPartyAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getCategoryList()
+{
+ var fromDate = $("#existingFromText").val();
+  var toDate = $("#existingToText").val();
+
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		task:'getCategoryList'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCategoryListAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getGalleriesForASelectedCategory()
+{
+ $("#errorMsgDiv").html('');
+ var categoryIdsArray = new Array();
+ $('#categoryList > option:selected').each(
+       function(i){
+         categoryIdsArray.push($(this).val());
+     });
+
+ if(categoryIdsArray.length == 0)
+ {
+   $("#errorMsgDiv").html('Please Select Category.');
+   return; 
+	   
+ }
+
+ var jsObj={
+		categoryIdsList:categoryIdsArray,
+		task:'getGalleryListForSelectedCategory'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getGalleryListForSelectedCategory.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+
+function getDistrictList()
+{
+  var fromDate = $("#existingFromText").val();
+  var toDate = $("#existingToText").val();
+
+	var jsObj={
+		locationScope:"DISTRICT",
+		fromDate:fromDate,
+		toDate:toDate,
+		task:'getLocationsListByScopeId'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getDistrictListForACandidateAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
 
 getCandidateNewsCount();
+getSelectedNewsDetails();
+
+
+$(document).ready(function(){
+
+ $(".candidateNewsRadioCls").click(function(){
+
+ $("#existingFromText").val('');
+ $("#existingToText").val('');
+ var radioVal = $("input:radio[name=candidateNewsRadio]:checked").val();
+ if(radioVal == "byDate")
+ {
+	$("#showAndHideDateSelectDiv").css("display","inline-block");
+ }
+ else
+ {
+  $("#showAndHideDateSelectDiv").css("display","none");
+ }
+		
+ });
+
+ $("#newsDetailsBtn").click(function(){
+   getCandidateNewsCount();
+	 
+ });
+
+ $(".dateField").live("click", function(){
+ $(this).datepicker({
+		dateFormat: "dd/mm/yy",
+		changeMonth: true,
+      changeYear: true,
+		maxDate: new Date()
+		
+	}).datepicker("show");
+});
+
+
+//Gallery Checkbox
+
+$("#galleryCheckBoxId").click(function(){
+$('#errorMsgDiv').html('');
+ 
+ if($("#galleryCheckBoxId").is(":checked"))
+ {
+  $("#categoryCheckBoxId").attr("checked",false);
+  $("#galleryListShowHideTb").css("display","inline-block");
+  $("#categoryShowAndHideTb").css("display","none");
+  $("#districtCheckboxId").attr("checked",false);
+  $("#districtShowAndHideDiv").css("display","none");
+
+  getGalleriesList();
+ }
+ else
+  $("#galleryListShowHideTb").css("display","none");
+	
+});
+
+//Category CheckBox
+
+$("#categoryCheckBoxId").click(function(){
+   $('#errorMsgDiv').html('');
+	$("#categoryList").find('option').remove();
+	$("#galleryList").find('option').remove();
+	$("#categoryGallary").attr("checked",false);
+
+	if($("#categoryCheckBoxId").is(":checked"))
+	{
+	 $("#galleryCheckBoxId").attr("checked",false);
+	 $("#categoryShowAndHideTb").css("display","inline-block");
+	 $("#galleryListShowHideTb").css("display","none");
+	 $("#districtCheckboxId").attr("checked",false);
+	 $("#districtShowAndHideDiv").css("display","none");
+	 getCategoryList();
+	}
+	else
+	{
+	 $("#categoryShowAndHideTb").css("display","none");
+	 $("#galleryListShowHideTb").css("display","none");
+	}
+	
+});
+
+//include Gallery
+
+$("#categoryGallary").live("click",function(){
+ $('#errorMsgDiv').html('');
+ $("#galleryList").find('option').remove();
+ if($("#categoryGallary").is(":checked"))
+ {
+  $("#galleryListShowHideTb").css("display","inline-block");
+  getGalleriesForASelectedCategory();
+ }
+ else
+  $("#galleryListShowHideTb").css("display","none");
+	
+});
+
+
+//by district
+
+$("#districtCheckboxId").click(function(){
+
+  $('#errorMsgDiv').html('');
+  if($("#districtCheckboxId").is(":checked"))
+  {
+	 $("#galleryCheckBoxId").attr("checked",false);
+	 $("#categoryCheckBoxId").attr("checked",false);
+	 $("#galleryListShowHideTb").css("display","none");
+	 $("#categoryShowAndHideTb").css("display","none");
+	 $("#districtShowAndHideDiv").css("display","block");
+     getDistrictList();
+  }
+  else
+   $("#districtShowAndHideDiv").css("display","none");
+	
+});
+
+$("#categoryList").live("click",function(){
+   $('#errorMsgDiv').html('');
+   $("#categoryGallary").attr("checked",false);
+   $("#galleryListShowHideTb").css("display","none");
+	
+});
+
+});//End OF Ready
 </script>
 </body>
 </html>
