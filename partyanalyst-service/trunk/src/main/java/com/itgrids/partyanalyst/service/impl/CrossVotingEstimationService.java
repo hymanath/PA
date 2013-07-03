@@ -814,24 +814,18 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
     	return returnList;
     }
     
-    public CrossVotingVO getElectionYearsForCrossVotingAnalysis(List<Long> assemblyIds,List<Long> parliamentIds,Map<Long,List<SelectOptionVO>> parliamentMap){
+    public CrossVotingVO getElectionYearsForCrossVotingAnalysis(List<Long> assemblyIds){
     	CrossVotingVO returnValue = new CrossVotingVO();
     	try{
-	    	List<String> assemblyYears = boothConstituencyElectionDAO.getAllElectionYearsByConstiIds(assemblyIds);
-	    	List<String> parliamentYears = boothConstituencyElectionDAO.getAllElectionYearsByConstiIds(parliamentIds);
-	    	assemblyYears.retainAll(parliamentYears);
-	    	List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
-	    	if(assemblyYears != null && assemblyYears.size() > 0){
-		    	for(String year:assemblyYears){
-		    		years.add(new SelectOptionVO(new Long(year.trim()),year));
-		    	}
-		    	List<SelectOptionVO> parliamentVos = getParliamentConstisByElectionYear(assemblyYears.get(0),parliamentIds);
+	    	List<SelectOptionVO> years = getAllElectionYearsForCrossVoting(assemblyIds);
+	    	if(years != null && years.size() > 0){
+		    	List<SelectOptionVO> parliamentVos = getAllParliamentConstituenciesForCrossVoting(assemblyIds,years.get(0).getName());
 		    	 List<SelectOptionVO> assemblyVos = new ArrayList<SelectOptionVO>();
 		    	 List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
 		    	if(parliamentVos.size() > 0)
-		    	  assemblyVos = getAssemblyConstisByElectionYear(assemblyYears.get(0),parliamentVos.get(0).getId(),parliamentMap);
+		    	  assemblyVos = getAllAssemblyConstituenciesForCrossVoting(assemblyIds,parliamentVos.get(0).getId(),years.get(0).getName());
 		    	if(assemblyVos.size() > 0)
-		    	  partiesList = getPartiesForConstituencyAndElectionYearForBoothData(assemblyVos.get(0).getId(), assemblyYears.get(0));
+		    	  partiesList = getPartiesForConstituencyAndElectionYearForBoothData(assemblyVos.get(0).getId(),years.get(0).getName());
 		    	
 		    	years.add(0,new SelectOptionVO(0l,"Select Year"));
 		    	returnValue.setYearsList(years);
@@ -852,7 +846,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
     	return returnValue;
     }
     
-    public List<SelectOptionVO> getParliamentConstisByElectionYear(String year,List<Long> parliamentIds){
+   /* public List<SelectOptionVO> getParliamentConstisByElectionYear(String year,List<Long> parliamentIds){
     	List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
     	try{
 	    	List<Object[]> parliamentConstis = boothConstituencyElectionDAO.getParliamentConstisByElectionYear(parliamentIds, year);
@@ -898,8 +892,82 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
     	}
     	return returnVal;
     	
+    }*/
+       
+    public List<SelectOptionVO> getAllElectionYearsForCrossVoting(List<Long> assemblyIds){
+    	List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+    	SelectOptionVO vo = null;
+    	try{
+    		List<Long> parliamentIds = getAllParliamentsByAssemblyIds(assemblyIds);
+    		if(parliamentIds.size() > 0){
+	    		List<String> assemblyYears = boothConstituencyElectionDAO.getAllElectionYearsByConstiIds(assemblyIds);
+		    	List<String> parliamentYears = boothConstituencyElectionDAO.getAllElectionYearsByConstiIds(parliamentIds);
+		    	assemblyYears.retainAll(parliamentYears);
+	    		for(String year : assemblyYears){
+		    		vo = new SelectOptionVO();
+		    		vo.setId(new Long(year.trim()));
+		    		vo.setName(year);
+		    		returnVal.add(vo);
+		    	}
+    		}
+    	}catch(Exception e){
+    		log.error("Exception rised in getAllElectionYearsForCrossVoting method : ",e);
+    	}	
+    	return returnVal;
     }
     
+    public List<Long> getAllParliamentsByAssemblyIds(List<Long> assemblyIds){
+    	List<Long> parliamentConstisList = null;    	
+    	try{
+    		 parliamentConstisList = delimitationConstituencyAssemblyDetailsDAO.findAllParliamentForAssembly(assemblyIds);    		
+    	}catch(Exception e){
+    		log.error("Exception rised in getAllParliamentsByAssemblyIds method : ",e);
+    	}
+    	if(parliamentConstisList == null)
+    		parliamentConstisList = new ArrayList<Long>();
+    	return parliamentConstisList;
+    }
     
+    public List<SelectOptionVO> getAllParliamentConstituenciesForCrossVoting(List<Long> assemblyIds,String electionYear){
+    	List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+    	SelectOptionVO vo = null;
+    	try{
+    		List<Long> assemblyList = boothConstituencyElectionDAO.getAllAssemblyConstisByYearsAndConstiIds(electionYear,assemblyIds);
+    		if(assemblyList != null && assemblyList.size() > 0){
+		    	List<Long> parliamentList = delimitationConstituencyAssemblyDetailsDAO.findAllParliamentForAssembliesForTheGivenYear(assemblyList,Long.valueOf(electionYear.trim()));
+		    	if(parliamentList != null && parliamentList.size() > 0){
+			    	List<Object[]> parliamentConstituencies = boothConstituencyElectionDAO.getAllConstisByYearsAndConstiIds(electionYear,parliamentList);
+		    		for(Object[] parliament : parliamentConstituencies){
+			    		 vo = new SelectOptionVO();
+			    		vo.setId((Long)parliament[0]);
+			    		vo.setName(parliament[1]!= null?parliament[1].toString():"");
+			    		returnVal.add(vo);
+			    	}
+		    	}
+    		}
+    	}catch(Exception e){
+    		log.error("Exception rised in getAllParliamentConstituenciesForCrossVoting method : ",e);
+    	}   	
+    	return returnVal;    
+    }
     
+    public List<SelectOptionVO> getAllAssemblyConstituenciesForCrossVoting(List<Long> assemblyIds,Long parliamentId,String electionYear){
+    	List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+    	SelectOptionVO vo = null;
+    	try{
+	    	List<Long> assembliesList = delimitationConstituencyAssemblyDetailsDAO.findAllAssembliesForParliamentForTheGivenYear(assemblyIds,parliamentId,Long.valueOf(electionYear.trim()));
+	    	if(assembliesList != null && assembliesList.size() > 0){
+		    	List<Object[]> assemblyConstituencies = boothConstituencyElectionDAO.getAllConstisByYearsAndConstiIds(electionYear,assembliesList);
+	    		for(Object[] assembly : assemblyConstituencies){
+		    		 vo = new SelectOptionVO();
+		    		 vo.setId((Long)assembly[0]);
+		    		 vo.setName(assembly[1]!= null?assembly[1].toString():"");
+		    		 returnVal.add(vo);
+		    	}
+	    	}
+    	}catch(Exception e){
+    		log.error("Exception rised in getAllAssemblyConstituenciesForCrossVoting method : ",e);
+    	}
+    	return returnVal;   
+    }
 }

@@ -150,4 +150,34 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 				" from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year = " +
 				"(select max(model1.year) from DelimitationConstituency model1) and model.constituency.constituencyId = ?",assemblyId);
 	} 
+	
+	public List<Long> findAllParliamentForAssembly(List<Long> assemblyIds){
+		Query query = getSession().createQuery("select distinct model.delimitationConstituency.constituency.constituencyId " +
+				"  from DelimitationConstituencyAssemblyDetails model where  " +
+				" model.constituency.constituencyId in (:assemblyIds)");
+		query.setParameterList("assemblyIds", assemblyIds);
+		return query.list();
+	} 
+	
+	public List<Long> findAllParliamentForAssembliesForTheGivenYear(List<Long> assemblyIds,Long electionYear){
+		Query query = getSession().createQuery("select distinct model.delimitationConstituency.constituency.constituencyId " +
+				"  from DelimitationConstituencyAssemblyDetails model where model.constituency.constituencyId in (:assemblyIds) and" +
+				" model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1 where model1.year <= :electionYear )");
+		
+		query.setParameterList("assemblyIds", assemblyIds);
+		query.setParameter("electionYear", electionYear);
+		return query.list();
+	} 
+	
+	public List<Long> findAllAssembliesForParliamentForTheGivenYear(List<Long>  assemblyIds,Long parliamentId,Long electionYear){
+		Query query = getSession().createQuery("select model.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where " +
+				"model.delimitationConstituency.constituency.constituencyId = :parliamentId and model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1 where model1.year <= :electionYear) and model.constituency.constituencyId in(:assemblyIds) ");
+		
+		query.setParameterList("assemblyIds", assemblyIds);
+		query.setParameter("parliamentId", parliamentId);
+		query.setParameter("electionYear", electionYear);
+		return query.list();
+	
+	}
 }

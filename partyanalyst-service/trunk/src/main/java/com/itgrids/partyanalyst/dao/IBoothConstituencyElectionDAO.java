@@ -153,4 +153,8 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List<String> getAllElectionYearsByConstiIds(List<Long> constiIds);
 	
 	public List<Object[]> getParliamentConstisByElectionYear(List<Long> constiIds,String year);
+	
+	public List<Long> getAllAssemblyConstisByYearsAndConstiIds(String electionYear,List<Long> constiIds);
+	
+	public List<Object[]> getAllConstisByYearsAndConstiIds(String electionYear,List<Long> constiIds);
 }
