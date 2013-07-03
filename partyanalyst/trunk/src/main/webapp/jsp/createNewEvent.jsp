@@ -380,13 +380,17 @@ function callAjaxToGetData(jsObj,url)
 									 $("#successmsg").html("Event created Successfully");
 									 $('html, body').animate({ scrollTop: $("#successmsg").offset().top }, "slow");
 									 
-										window.opener.refreshParent();
+										//window.opener.refreshParent();
+										 window.opener.location.href = window.opener.location.href;
 									
 								}
 								else if(jsObj.task == "updateCreateEvent"){
 									 $("#successmsg").html("Event updated Successfully");
 									 $('html, body').animate({ scrollTop: $("#successmsg").offset().top }, "slow");
-									 window.opener.refreshParent();
+									// window.opener.refreshParent();
+									 window.opener.location.href = window.opener.location.href;
+
+
 								}
 							}catch (e) {   
 							   	//alert("Invalid JSON result" + e);   

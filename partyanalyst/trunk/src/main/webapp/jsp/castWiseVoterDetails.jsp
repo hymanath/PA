@@ -540,7 +540,8 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		var locationId=cast[i].locationId;
 		else
 		locationId = 0;
-		var totalVoters=subLevelcastData.totalVoters;
+		//var totalVoters=subLevelcastData.totalVoters;
+		var totalVoters=subLevelcastData.totalCastKnownVoters;
 		var cast1 =subLevelcastData.castVOs;
 			var castData = new Object();
 			for(var k in cast1)
@@ -576,6 +577,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		   }
 		 }
 		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
+
 		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0){
 		  $("#localCastStatsTabContent_subbody").html("<b style='margin-left: 350px;'>No Data Available</b>");
 		  $("#getLatestCastsSubcategoryWise").css("display","none");

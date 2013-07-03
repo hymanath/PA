@@ -195,4 +195,17 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getUpdatedDatesAndEvents()
+	{
+		
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		
+		cadreManagementVO = userCadreManagementService.getUserData(user);
+
+		return Action.SUCCESS;
+		
+	}
 }

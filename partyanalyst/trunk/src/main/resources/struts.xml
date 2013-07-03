@@ -5509,5 +5509,11 @@
 				<param name="root">smsResultVO</param>				
 			</result>		
 		</action>
+		
+		<action name="getUpdatedDatesAndEvents" class="cadreManagementAction" method="getUpdatedDatesAndEvents">
+		<result type="json" name="success">
+				<param name="root">cadreManagementVO</param>				
+			</result>	
+		</action>
 		</package>
 </struts>      
