@@ -16,16 +16,16 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IContentManagementService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
+import com.itgrids.partyanalyst.util.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.GallaryVO;
-import com.itgrids.partyanalyst.service.IContentManagementService;
-import com.itgrids.partyanalyst.util.IConstants;
 
 public class NewsDetailsAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
@@ -345,8 +345,11 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsByGalleryId"))
 		 newsList = candidateDetailsService.getNewsByGalleryId(jObj.getLong("gallaryId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		
-		else if(jObj.getString("task").equalsIgnoreCase("assignResToCandidateOrAGallary"))
-		 resultStatus = candidateDetailsService.assignResToCandidateOrAGallary(jObj.getLong("candidateId"),jObj.getLong("fileGalleryId"),jObj.getLong("resFileGalId"),jObj.getString("tempVar"));
+		else if(jObj.getString("task").equalsIgnoreCase("assignResToCandidateOrAGallary")){
+			String tempVar = jObj.getString("tempVar");
+			Long resFileGalId =jObj.getLong("resFileGalId");			
+		 resultStatus = candidateDetailsService.assignResToCandidateOrAGallary(jObj.getLong("candidateId"),jObj.getLong("fileGalleryId"),tempVar == "assignToCandidate"?resFileGalId=0L:resFileGalId,tempVar);
+		}
 		
 	 }catch (Exception e) {
 		 e.printStackTrace();
