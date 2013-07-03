@@ -294,6 +294,33 @@
 
 				YAHOO.util.Connect.asyncRequest('POST', url, callback);
 		} 
+		
+		$(function(){
+			$('[name="personalInfoForm"]').validate({
+	onfocusout: function(e) {
+      this.element(e);
+      }, onkeyup: false,
+	  rules: {
+		userName: {	
+			required: true  
+			},
+		password: {
+		    required :true
+			}
+	  },	
+	  messages: {
+		userName: {
+			required: " Enter the Username" 
+			},
+		password: {
+			required: " Enter the password"
+		    }
+	  },
+	  success: function(element) {
+	      element.text('ok').addClass('valid');
+			},
+	});
+		});
 		</script>
 </body>
 </html>
