@@ -335,7 +335,7 @@ input, button, select, textarea {
 									}
 									else if(jsObj.task == "getConstiEleAndPartiesForSelected")
 									{
-										buildElectionAndPartyDetails(myResults);
+										buildElectionAndPartyDetails1(myResults);
 									}
 									else if(jsObj.task == "getCategValuesForMuncipalWard")
 									{
@@ -1268,7 +1268,42 @@ input, button, select, textarea {
 			$("#mandalElecResultsElections").html(str);
 		}
 	}
-	
+	function buildElectionAndPartyDetails1(myResults)
+	{
+		$('.hero-unit').show();
+		$('#voterSelDiv').show();
+		if(myResults.electionsInMandal.length == 0)
+		$("#mandalElecResultsDiv").css("display","none");
+      if(myResults != null && myResults.partiesInMandal != null && myResults.partiesInMandal.length > 0  && myResults.electionsInMandal != null && myResults.electionsInMandal.length > 0){
+		   $("#mandalElecResultsDiv").css("display","block");
+		  var electionsLength = myResults.electionsInMandal.length;
+	     var str='';
+		 str+='<table><tr><th align="left">Parties : </th><td>';
+		 for(var i in myResults.partiesInMandal){
+		 if(myResults.partiesInMandal[i].id != 366)
+		  str+='<input id="parties-'+i+'"  class="partySelForPanc" type="checkbox" value="'+myResults.partiesInMandal[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+myResults.partiesInMandal[i].name+'</label>';
+		 }
+		 str+='</td></tr>';
+	     
+		 str+='<tr><th align="left">Elections  : </th><td>';
+		 str+='<table>';
+		 for(var i in myResults.electionsInMandal[0]){
+			if(i%6==0)
+				str+='<tr>';
+			
+	          str+='<td><input id="elections-'+i+'"  type="checkbox" class="elecSelForPanc" value="'+myResults.electionsInMandal[0][i].id+'" name="parties"><label class="checkboxLabel" for="elections-'+i+'">'+myResults.electionsInMandal[0][i].name+'</label></td>';
+		   
+			if((i%6)+1==0)
+		   str+='</tr>';
+		 }
+		 str+='</table>';
+		 str+='</td></tr>';
+		
+		 str+='</table>';
+	    
+			$("#mandalElecResultsElections").html(str);
+		}
+	}
 	function selectAll(){
 		var elmts = document.getElementsByName('parties');
 		if(elmts.length == 0)
