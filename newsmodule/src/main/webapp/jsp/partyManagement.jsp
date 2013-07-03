@@ -2730,6 +2730,8 @@ function showVideoGallaey1()
 {
 	
 if(!formValidation()){
+  $("#profileManagementHeaderDiv2").css("display","block");
+  $("#videoGallaryDiv").css("display","block");
 document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv2").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
@@ -4227,7 +4229,6 @@ $("#assignNewsbtn").live("click",function(){
 	   tempVar = "assignToCandidate";
 
 	}
-	
 	var jsObj={
 		candidateId:candidateId,
 		fileGalleryId:fileGalleryId,
