@@ -18,11 +18,25 @@
 
 <div id="mainBodyId">
 	<div>
-		<div><a href="registerUser.action?userType=admin">Create User</a><div>
+		<div><a href="registerUser.action?userType=admin">Create User</a></div>
 		<div><a href="createAnnouncementAction.action?userType=admin">Create Announcement</a></div>
+		<div><a href="">Show Comment</a></div>
 	</div>
 	
-	<div id="announcementForm">
+	<div id="commentsDiv">
+		<div>
+			<input type="radio" name="comment" onClick="getAllComments(0,5,'getTotalComments');">All</input>
+			<input type="radio" name="comment" onClick="getCommentsBetweenDates();">Between Dates</input>
+		</div></br>
+		<div id="btDatesMainDiv">
+			<div id="betweenDatesDiv"></div></br>
+			<div id="totalCommentsBtDates"></div>
+		</div>
+		<div id="totalCommentsMainDiv">
+			<div id="totalCommentsList"></div>
+		</div>
+	</div>
+	<div id="announcementForm" style="display:none;">
 		<form class="form-horizontal AnnouncementForm" name="AnnouncementForm" action="createAnnouncementAction.action"  method="post" enctype="multipart/form-data">
 				<legend>Announcement Form</legend>
 				<div class="control-group">
@@ -92,6 +106,10 @@
 
 
 <script>
+	var startIndex = 0;
+	var maxIndex   = 5;
+	var stIndex    = 0;
+	var enIndex    = 5;
 	$(function(){	
 		$("#datepicker").datepicker();
 	});
@@ -103,6 +121,150 @@
 	$('input[name=attachFile]:checked').click(function(){
 		$('#forFileId').toggle('fast');
 	});
+	
+	function getAllComments(stIndex,enIndex,task)
+	{
+		$('#btDatesMainDiv').hide();
+		$('#totalCommentsMainDiv').show();
+		var jsObj =
+		{  	
+			startIndex  : stIndex,
+			maxIndex    : enIndex,
+			task        : task
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getCommentsByAdminAction.action?"+rparam;
+		callAjaxForAdmin(jsObj, url);
+	}
+	
+	function getCommentsBetweenDates()
+	{
+		$('#btDatesMainDiv').show();
+		$('#totalCommentsMainDiv').hide();
+		var str = "";
+		str += 'Start Date : <input type="text" id="startDate" class="calender"></input>';
+		str += 'End Date : <input type="text" id="endDate" class="calender"></input></br>';
+		str += '<a class="btn btn-primary" onClick="getCommentsSelectdDates(startIndex,maxIndex,\'commentsBetweenDates\');">View</a>';
+		$('#betweenDatesDiv').html(str);
+		$('.calender').datepicker({ 
+			dateFormat: 'yy-mm-dd' 
+		});
+	}
+
+	function getCommentsSelectdDates(startIndex,maxIndex,task)
+	{
+		var startDate = $('#startDate').val();
+		var endDate   = $('#endDate').val();
+		var jsObj =
+		{  	
+			statrtDate  : startDate,
+			endDate     : endDate,
+			startIndex  : startIndex,
+			maxIndex    : maxIndex,
+			task        : task
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getCommentsByAdminAction.action?"+rparam;
+		callAjaxForAdmin(jsObj, url);
+	}
+	
+	function buildTotalCommentsListBtDates(myResults)
+	{
+		
+		totalCount = myResults[0].total ;
+		var str = "";
+			for(var i in myResults)
+			{
+				str += '<div class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid green; margin-bottom: 10px;">';
+				str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
+				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
+				
+				str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
+				str += '</div>';
+				str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
+			}
+			$('#totalCommentsBtDates').append(str);
+		if(maxIndex < totalCount)
+		{
+			startIndex = maxIndex;
+			maxIndex   = maxIndex + 5;
+			$('#moreButton').show();
+		}
+		else
+		{
+			$('#moreButton').hide();
+		}
+		
+	}
+	function getRemaingCommentsList()
+	{
+		getCommentsSelectdDates(startIndex,maxIndex,"commentsBetweenDates");
+	}
+	
+	function buildTotalCommentsList(myResults)
+	{
+		totalCount = myResults[0].total;
+		
+		var str = "";
+			for(var i in myResults)
+			{
+				str += '<div class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid blue; margin-bottom: 10px;">';
+				str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
+				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
+				
+				str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
+				str += '</div>';
+				str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingTotalCommentsList();">More</a>'
+			}
+			$('#totalCommentsList').append(str);
+		if(enIndex < totalCount)
+		{
+			stIndex  = enIndex;
+			enIndex   = enIndex + 5;
+			$('#moreButton').show();
+		}
+		else
+		{
+			$('#moreButton').hide();
+		}
+		
+	}
+	function getRemaingTotalCommentsList()
+	{
+		getAllComments(stIndex,enIndex,'getTotalComments');
+	}
+	function callAjaxForAdmin(jsObj,url){
+		 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+								myResults = YAHOO.lang.JSON.parse(o.responseText);					
+								
+								if(jsObj.task =="commentsBetweenDates")
+								{
+									buildTotalCommentsListBtDates(myResults);
+								}
+								else if(jsObj.task =="getTotalComments")
+								{
+									buildTotalCommentsList(myResults);
+								}
+								/* else if(jsObj.task =="getRemaingComments")
+								{
+									buildRemainingCommentsList(myResults);
+								} */
+								}catch (e) {
+							     
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                		
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+ 	}
 </script>
 </body>
 </html>

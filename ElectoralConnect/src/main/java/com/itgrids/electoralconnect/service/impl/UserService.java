@@ -17,6 +17,7 @@ import com.itgrids.electoralconnect.dao.IUserProfileDAO;
 import com.itgrids.electoralconnect.dao.IUserRolesDAO;
 import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
+import com.itgrids.electoralconnect.model.Announcements;
 import com.itgrids.electoralconnect.model.Comment;
 import com.itgrids.electoralconnect.model.Roles;
 import com.itgrids.electoralconnect.model.User;
@@ -397,4 +398,86 @@ public class UserService implements IUserService{
 			
 			return returnList;
 		}*/
+		
+		/**
+		 * This Service is used for getting all comments By Selected Between Dates
+		 * @param Date startDate
+		 * @param Date endDate
+		 * @param Long startIndex
+		 * @param Long  maxIndex
+		 * @return List<CommentVO>
+		 * @date 03-07-2013
+		 */
+		public List<CommentVO> getAllCommentsBetweenSelectedDates(Date startDate,Date endDate,int startIndex,int maxIndex)
+		{
+			List<CommentVO> returnList = null;
+			try {
+				LOG.debug("Entered into getAllCommentsBetweenSelectedDates() method in UserService Service");
+				User user = new User();
+				Announcements announcements = new Announcements();
+				Long totalCount = commentDAO.getCommentsCountBetweenSelectedDates(startDate,endDate);
+				List<Object[]> commentsList = commentDAO.getCommentsBetwnnSelectedDates(startDate, endDate,startIndex, maxIndex);
+				if(commentsList != null && commentsList.size() > 0)
+				{
+					returnList = new ArrayList<CommentVO>();
+					for (Object[] parms : commentsList) {
+						CommentVO commentVO = new CommentVO();
+						commentVO.setCommentId((Long)parms[0]);
+						commentVO.setComment(parms[1].toString());
+						user          = (User) parms[2];
+						announcements = (Announcements) parms[4];
+						commentVO.setName(user.getUserProfile().getFirstName());
+						commentVO.setDate((Date) parms[3]);
+						commentVO.setAnnouncement(announcements.getTitle());
+						commentVO.setTotal(totalCount);
+						returnList.add(commentVO);
+					}
+				}
+			} catch (Exception e) {
+				returnList = new ArrayList<CommentVO>();
+				LOG.error("Exception Raised in getAllCommentsCommentedByUser() method in UserService Service",e);
+			}
+			
+			return returnList;
+		}
+		
+		/**
+		 * This Service is used to get all comments 
+		 * @param int startIndex
+		 * @param int maxIndex
+		 * @return List<CommentVO>
+		 * @date 03-07-2013
+		 */
+		public List<CommentVO> getAllComments(int startIndex,int maxIndex)
+		{
+			List<CommentVO> returnList = null;
+			try {
+				LOG.debug("Entered into getAllComments() method in UserService Service");
+				User user = new User();
+				Announcements announcements = new Announcements();
+				Long totalCount = commentDAO.getTotalComments();
+				List<Object[]> commentsList = commentDAO.getAllComments(startIndex, maxIndex);
+				if(commentsList != null && commentsList.size() > 0)
+				{
+					returnList = new ArrayList<CommentVO>();
+					for (Object[] parms : commentsList) {
+						CommentVO commentVO = new CommentVO();
+						commentVO.setCommentId((Long)parms[0]);
+						commentVO.setComment(parms[1].toString());
+						user          = (User) parms[2];
+						announcements = (Announcements) parms[4];
+						commentVO.setName(user.getUserProfile().getFirstName());
+						commentVO.setDate((Date) parms[3]);
+						commentVO.setAnnouncement(announcements.getTitle());
+						commentVO.setTotal(totalCount);
+						returnList.add(commentVO);
+					}
+				}
+			} catch (Exception e) {
+				returnList = new ArrayList<CommentVO>();
+				LOG.error("Exception Raised in getAllComments() method in UserService Service",e);
+			}
+			
+			return returnList;
+		}
 }

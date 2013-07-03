@@ -1,5 +1,6 @@
 package com.itgrids.electoralconnect.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.electoralconnect.dto.CommentVO;
@@ -24,4 +25,8 @@ public interface IUserService {
 	//public List<CommentVO> getTop5CommentsCommentedByUser(Long announcementId);
 	
 	public List<CommentVO> getAllCommentsCommentedByUser(Long announcementId,int startIndex,int maxIndex);
+	
+	public List<CommentVO> getAllCommentsBetweenSelectedDates(Date startDate,Date endDate,int startIndex,int maxIndex);
+	
+	public List<CommentVO> getAllComments(int startIndex,int maxIndex);
 }
