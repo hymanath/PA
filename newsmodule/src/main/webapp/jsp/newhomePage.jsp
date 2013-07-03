@@ -241,13 +241,16 @@ $(document).ready(function(){
 
 									    </div>
 										<div class="row-fluid m_top10">
-													<div class="span9">
-														<p class="text-error"><span style="font-weight:bold;">Source : </span><span style="color:black;"> ${newsGallaryDetails.source} </span>
-														<span class="text-error" style="margin-left: 60px;"><span style="font-weight:bold">Date: </span> <span style="color:black;">${newsGallaryDetails.fileDate} </span>							</span></p>
-													</div>
-													<div class="span2 ">
+													<div class="span9" style="width:550px;">
+													<table><tr><td style="width:200px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;"> ${newsGallaryDetails.source}</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">${newsGallaryDetails.fileDate}</span></p></td>
+													<s:if test="#newsGallaryDetails.responseCount >0">
+													<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">${newsGallaryDetails.responseCount} </span></p></td>
+													</s:if>									
+													</tr></table>
+													</div></br>
+													<div class="span2 " style="float:right"><br>
 														<a href="newsPaginationAction.action?level=state">
-															<button class="btn btn-mini pull-right" type="button">More...</button>
+															<button class="btn btn-mini pull-right" type="button"  style="margin-top: 10px; margin-bottom: 5px;margin-right: 25px;">More...</button>
 														</a>
 													</div>
 												</div>
@@ -373,13 +376,16 @@ $(document).ready(function(){
 										 </s:else>
 									    </div>
 										<div class="row-fluid m_top10">
-													<div class="span9">
-														<p class="text-error"><span style="font-weight:bold;">Source : </span><span style="color:black;"> ${newsGallaryDetails.source} </span>
-														<span class="text-error" style="margin-left: 60px;"><span style="font-weight:bold">Date: </span> <span style="color:black;">${newsGallaryDetails.fileDate} </span></span></p>
-													</div>
-													<div class="span2 ">
-														<a href="newsPaginationAction.action?level=district">
-															<button class="btn btn-mini pull-right" type="button">More...</button>
+													<div class="span9" style="width:550px;">
+													<table><tr><td style="width:200px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;"> ${newsGallaryDetails.source}</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">${newsGallaryDetails.fileDate}</span></p></td>
+													<s:if test="#newsGallaryDetails.responseCount >0">
+													<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">${newsGallaryDetails.responseCount} </span></p></td>
+													</s:if>
+													</tr></table>
+													</div></br>
+													<div class="span2 " style="float:right"><br>
+														<a href="newsPaginationAction.action?level=state">
+															<button class="btn btn-mini pull-right" type="button"  style="margin-top: 10px; margin-bottom: 5px;margin-right: 25px;">More...</button>
 														</a>
 													</div>
 												</div>
