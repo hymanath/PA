@@ -625,5 +625,10 @@ public interface IConstants {
     public static final String PORT = "465";
     public static final String PASSWORD="ITGRIDS123";
     
+    public static final String FILE_SEPARATOR = "file.separator";
+    
+    public static final String SERVERLINK="www.ElectoralConnect.com";
+    public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\ElectoralConnect\\";
+    
 	
 }
