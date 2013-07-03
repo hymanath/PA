@@ -1,6 +1,7 @@
 package com.itgrids.electoralconnect.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,6 +9,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.electoralconnect.dao.IAnnouncementsDAO;
+import com.itgrids.electoralconnect.dao.ICommentDAO;
 import com.itgrids.electoralconnect.dao.IRolesDAO;
 import com.itgrids.electoralconnect.dao.IUserDAO;
 import com.itgrids.electoralconnect.dao.IUserLoginDAO;
@@ -15,6 +18,7 @@ import com.itgrids.electoralconnect.dao.IUserProfileDAO;
 import com.itgrids.electoralconnect.dao.IUserRolesDAO;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
 import com.itgrids.electoralconnect.dto.UserVO;
+import com.itgrids.electoralconnect.model.Comment;
 import com.itgrids.electoralconnect.model.Roles;
 import com.itgrids.electoralconnect.model.User;
 import com.itgrids.electoralconnect.model.UserLogin;
@@ -32,6 +36,9 @@ public class UserService implements IUserService{
 		private IUserProfileDAO userProfileDAO;
 		private IUserRolesDAO userRolesDAO;
 		private IRolesDAO rolesDAO;
+		private IAnnouncementsDAO announcementsDAO;
+		private DateUtilService dateUtilService;
+		private ICommentDAO commentDAO;
 		private static final Logger LOG=Logger.getLogger(UserService.class);
 		private TransactionTemplate transactionTemplate=null;
 		
@@ -72,6 +79,20 @@ public class UserService implements IUserService{
 		}
 		public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 			this.transactionTemplate = transactionTemplate;
+		}
+		
+		public IAnnouncementsDAO getAnnouncementsDAO() {
+			return announcementsDAO;
+		}
+		public void setAnnouncementsDAO(IAnnouncementsDAO announcementsDAO) {
+			this.announcementsDAO = announcementsDAO;
+		}
+		
+		public ICommentDAO getCommentDAO() {
+			return commentDAO;
+		}
+		public void setCommentDAO(ICommentDAO commentDAO) {
+			this.commentDAO = commentDAO;
 		}
 		public String validateEmail(String emailId){
 			String res="";
@@ -258,5 +279,39 @@ public class UserService implements IUserService{
 				regVO.setMobile(user.getUserProfile().getMobileNo());
 			}
 			return regVO;
+		}
+		
+		public ResultStatus saveComment(Long userId,Long annoncementId,String comment)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			try {
+				LOG.debug("Entered into saveComment() method in UserService Service");
+				Comment commentModel = new Comment();
+				if(userId != null && userId > 0)
+				{
+					commentModel.setUser(userDAO.get(userId));
+				}
+				if(annoncementId != null && annoncementId > 0)
+				{
+					commentModel.setAnnouncements(announcementsDAO.get(annoncementId));
+				}
+				dateUtilService = new DateUtilService();
+				commentModel.setComment(comment);
+				commentModel.setTime(dateUtilService.getCurrentDateAndTime());
+				commentModel = commentDAO.save(commentModel);
+				if(commentModel != null)
+				{
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+				else
+				{
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				}
+			} catch (Exception e) {
+				LOG.error("Exception Raised in saveComment() method in UserService Service",e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			}
+			
+			return resultStatus;
 		}
 }

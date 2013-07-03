@@ -14,6 +14,7 @@
 	
 	 -->
 	 <bean id="HomePageAction" class="com.itgrids.electoralconnect.web.action.HomePageAction" singleton="false">
+	 	<property name="userService" ref="userService"/>
 	 </bean>
 	 
 	 <bean id="RegisterUserAction" class="com.itgrids.electoralconnect.web.action.RegisterUserAction" singleton="false">

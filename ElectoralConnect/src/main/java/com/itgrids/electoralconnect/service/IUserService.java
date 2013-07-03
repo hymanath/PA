@@ -16,4 +16,6 @@ public interface IUserService {
 	public ResultStatus updateUserPassword(String password,Long userId);
 	
 	public RegistrationVO forgetPasswordService(String username);
+	
+	public ResultStatus saveComment(Long userId,Long annoncementId,String comment);
 }
