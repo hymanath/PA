@@ -177,8 +177,13 @@ function buildPaginatedNews(results,jsObj){
 		}
 				
 		str+="</div>";
-		str+="<div class='row-fluid m_top10'><div class='span9'><p class='text-error' > <span style='font-weight: bold;'>Source :</span><span style='color: black;'> "+results[i].source+"</span> <span style='font-weight: bold;margin-left: 55px;'>Date :</span><span style='color: black;'> "+results[i].fileDate+"</span></p></div>";
-		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
+		str+="<div class='span9'  style='width:550px;'><table><tr><td style='width:240px;font-weight:bold;'><p class='text-error' >Source : <span style='font-weight:normal;color:black;'>"+results[i].source+"</span></p></td><td style='font-weight:bold;width: 135px;'><p class='text-error'>Date : <span style='font-weight:normal;color:black;'>"+results[i].fileDate+"</span></p></td>";
+	if(results[i].responseCount > 0)
+		str+="<td style='font-weight:bold;padding-left: 20px;width:200px;'><p class='text-error' >Response Count : <span style='font-weight:normal;color:black;'>"+results[i].responseCount+"</span></p></td>";
+	if(results[i].responseCount == 0)
+		str+="<td style='font-weight:bold;padding-left: 20px;width:200px;'></td>";
+		
+		str+="</tr></table></div><br><br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
 	}
 	
 	var itemsCount=results[0].count;
