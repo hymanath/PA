@@ -149,7 +149,7 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		System.out.println(((Object[])list.get(0))[1]);
 		
 	}*/
-	public void testfindLatestParliamentForAssembly(){
+	/*public void testfindLatestParliamentForAssembly(){
 		List<Long> assemblyIds = new ArrayList<Long>();
 		assemblyIds.add(239l);
 		assemblyIds.add(341l);
@@ -160,6 +160,14 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		for(Object[] data:list){
 		System.out.println("P: "+data[0]+" A: "+data[1]);
 		}
+		
+	}*/
+	public void testfindLatestParliamentForAssembly(){
+		List<Long> assemblyIds = new ArrayList<Long>();
+		assemblyIds.add(1l);assemblyIds.add(16l);assemblyIds.add(67l);assemblyIds.add(68l);assemblyIds.add(70l);assemblyIds.add(87l);assemblyIds.add(94l);assemblyIds.add(112l);assemblyIds.add(140l);assemblyIds.add(159l);assemblyIds.add(173l);assemblyIds.add(176l);assemblyIds.add(205l);assemblyIds.add(212l);assemblyIds.add(227l);assemblyIds.add(233l);assemblyIds.add(238l);assemblyIds.add(246l);assemblyIds.add(248l);assemblyIds.add(252l);assemblyIds.add(254l);assemblyIds.add(265l);assemblyIds.add(276l);assemblyIds.add(291l);assemblyIds.add(298l);
+		List<Long> list = delimitationConstituencyAssemblyDetailsDAO.findAllParliamentForAssembliesForTheGivenYear(assemblyIds,2012l);
+		for(Long id:list)
+		System.out.println(id);
 		
 	}
 }

@@ -29,9 +29,15 @@ public interface ICrossVotingEstimationService {
 	
 	public List<SelectOptionVO> getBoothsForConstituencyList(List<Long> constituencyIds);
 	
-	public CrossVotingVO getElectionYearsForCrossVotingAnalysis(List<Long> assemblyIds,List<Long> parliamentIds,Map<Long,List<SelectOptionVO>> parliamentMap);
+	public CrossVotingVO getElectionYearsForCrossVotingAnalysis(List<Long> assemblyIds);
 	
-	public List<SelectOptionVO> getParliamentConstisByElectionYear(String year,List<Long> parliamentIds);
+	//public List<SelectOptionVO> getParliamentConstisByElectionYear(String year,List<Long> parliamentIds);
 	
-	public List<SelectOptionVO> getAssemblyConstisByElectionYear(String year,Long parliamentId,Map<Long,List<SelectOptionVO>> parliamentMap);
+	//public List<SelectOptionVO> getAssemblyConstisByElectionYear(String year,Long parliamentId,Map<Long,List<SelectOptionVO>> parliamentMap);
+	
+	public List<SelectOptionVO> getAllElectionYearsForCrossVoting(List<Long> assemblyIds);
+	
+	public List<SelectOptionVO> getAllParliamentConstituenciesForCrossVoting(List<Long> assemblyIds,String electionYear);
+	
+	public List<SelectOptionVO> getAllAssemblyConstituenciesForCrossVoting(List<Long> assemblyIds,Long parliamentId,String electionYear);
 }
