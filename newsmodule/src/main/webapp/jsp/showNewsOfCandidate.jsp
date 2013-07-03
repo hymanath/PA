@@ -277,7 +277,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 	var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
-		str+="<li>";
+		str+="<li i style='margin-top: 30px;'>";
 		var source = results[i].fileVOList[0].source.trim();
 		if(source == "Eenadu Telugu")
 		  str+="<h4 class='enadu' style='font-size:23px;'><a style='color: #005580;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].title+"</a></h4>";
@@ -299,9 +299,9 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		
 		str+="</div>";
 
-		str+="<div class='row-fluid m_top10'><div class='span9'>";
+		str+="<div class='span9' style='width:550px;'>";
 		str +='<table><tr><td>';
-		str +='<p style="margin-left: 5px;"><span class="text-error" style="font-weight:bold;">Source :</span>';
+		str +='<p style="margin-left: 5px;width: 230px;"><span class="text-error" style="font-weight:bold;">Source :</span>';
 		var length = results[i].fileVOList.length;
 
 		for(var j in results[i].fileVOList)
@@ -310,12 +310,14 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="margin-left: 45px;font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;"><p ><span class="text-error" style="font-weight: bold; margin-left: 15px;">Response Count: </span>'+results[i].responseCount+'</p></td></tr>';
+		str +='</p></td><td><p><span class="text-error" style="margin-left: 45px;font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td>';
+	if(results[i].responseCount > 0)
+		str+='<td><p><span class="text-error" style="font-weight: bold; margin-left: 15px;">Response Count: </span>'+results[i].responseCount+'</p></td>';
 		
-		str +='</table>';
+		str +='</tr></table>';
 		str +='</div>';
 		
-		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
+		str+="<br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
 	}
 	
 	var itemsCount=results[0].count;
