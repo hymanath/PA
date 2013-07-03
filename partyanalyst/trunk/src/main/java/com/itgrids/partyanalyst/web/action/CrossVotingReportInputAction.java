@@ -6,7 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -29,6 +31,10 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 	private String electionYear;
 	private String party;
 	private Long year , pConstituency,aConstituency,partyId;
+	private String task;
+	JSONObject jObj;
+	
+	private static final Logger LOG = Logger.getLogger(CrossVotingReportInputAction.class);
 	
 	public ICrossVotingEstimationService getCrossVotingEstimationService() {
 		return crossVotingEstimationService;
@@ -165,6 +171,14 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		this.partysList = partysList;
 	}
 
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
 	public String execute(){
 		
 		HttpSession session = request.getSession();
@@ -174,33 +188,48 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CROSS_VOTING_REPORT))
 			return ERROR;
 		
-		electionYearList = new ArrayList<SelectOptionVO>();
+		
 		/*
 		electionYearList.add(new SelectOptionVO(2009l, "2009"));
 		electionYearList.add(new SelectOptionVO(2004l, "2004"));
 		*/
 		
-		List<String> years = crossVotingEstimationService.getElectionYearsForBoothResult();
+		//List<String> years = crossVotingEstimationService.getElectionYearsForBoothResult();
+		RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+		List<SelectOptionVO> constituencyList = (List<SelectOptionVO>)session.getAttribute("assemblyConstis");
 		
-		for(String year : years)
-			electionYearList.add(new SelectOptionVO(Long.parseLong(year), year));
+		if(constituencyList == null){
+		  constituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(user.getRegistrationID(),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
+		  constituencyList.add(0,new SelectOptionVO(1l,"Select Constituency"));
+		  session.setAttribute("assemblyConstis",constituencyList);
+		}
+		
+		List<Long> constituencyIds = new ArrayList<Long>();
+		
+		for(SelectOptionVO constituency : constituencyList){
+			if(constituency.getId().longValue() != 0l)
+			  constituencyIds.add(constituency.getId());
+		}
+		
+		electionYearList = crossVotingEstimationService.getAllElectionYearsForCrossVoting(constituencyIds);
+		
 		if(year != null  && year > 0)
 		{
-			pConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(String.valueOf(year), new Long(1));
+			pConstituencyList = crossVotingEstimationService.getAllParliamentConstituenciesForCrossVoting(constituencyIds, String.valueOf(year));
 		}
 		else
 		{
 			pConstituencyList = new ArrayList<SelectOptionVO>();
 		}
-		if(pConstituency != null && pConstituency > 0)
+		if(year != null && pConstituency != null && pConstituency > 0)
 		{
-			aConstituencyList = crossVotingEstimationService.getAssembliesForParliament(pConstituency,year);
+			aConstituencyList = crossVotingEstimationService.getAllAssemblyConstituenciesForCrossVoting(constituencyIds,pConstituency,String.valueOf(year));
 		}
 		else
 		{
 			aConstituencyList = new ArrayList<SelectOptionVO>();
 		}
-		if(aConstituency != null && aConstituency > 0)
+		if(year != null && aConstituency != null && aConstituency > 0)
 		{
 			partysList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(aConstituency, String.valueOf(year));
 		}
@@ -215,4 +244,27 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		return Action.SUCCESS;
 	}
 
+	public String getCrossVotingReportDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			HttpSession session = request.getSession();
+			
+			List<SelectOptionVO> constituencyList = (List<SelectOptionVO>)session.getAttribute("assemblyConstis");
+			List<Long> constituencyIds = new ArrayList<Long>();
+			
+			for(SelectOptionVO constituency : constituencyList){
+				if(constituency.getId().longValue() != 0l)
+				  constituencyIds.add(constituency.getId());
+			}
+			
+			if("getParliament".equalsIgnoreCase(jObj.getString("task"))){
+				parliamentList = crossVotingEstimationService.getAllParliamentConstituenciesForCrossVoting(constituencyIds, jObj.getString("electionValue"));
+			}else if("Assembly".equalsIgnoreCase(jObj.getString("task"))){
+				parliamentList = crossVotingEstimationService.getAllAssemblyConstituenciesForCrossVoting(constituencyIds,jObj.getLong("parliamentValue"),jObj.getString("electionYear"));
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getCrossVotingReportDetails",e);
+		}
+		return Action.SUCCESS;
+	}
 }

@@ -622,12 +622,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				if(vo.getId().longValue() != 0l)
 				   assIds.add(vo.getId());
 			}
-			List<Long> parlIds = new ArrayList<Long>();
-			for(SelectOptionVO vo:parliaments){
-				if(vo.getId().longValue() != 0l)
-					parlIds.add(vo.getId());
-			}
-			crossVotingVO = crossVotingEstimationService.getElectionYearsForCrossVotingAnalysis(assIds,parlIds,assembliesForParl);
+			crossVotingVO = crossVotingEstimationService.getElectionYearsForCrossVotingAnalysis(assIds);
 			if(crossVotingVO.getYearsList().size() > 1)
 			  crossVotingYear = crossVotingVO.getYearsList().get(1).getId();
 			if(crossVotingVO.getParliamentLists().size() > 1)
@@ -802,18 +797,17 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			String param;
 			param = getTask();
 			jObj = new JSONObject(param);
+			assemblyConstis = (List<SelectOptionVO>)session.getAttribute("assemblyConstis");;
+			List<Long> assemblyIds = new ArrayList<Long>();
+			for(SelectOptionVO vo:assemblyConstis){
+				if(vo.getId().longValue() != 0l)
+					assemblyIds.add(vo.getId());
+			}
 			if("getParlements".equalsIgnoreCase(jObj.getString("task"))){
-				parliaments = (List<SelectOptionVO>)session.getAttribute("parliaments");
-				List<Long> parlIds = new ArrayList<Long>();
-				for(SelectOptionVO vo:parliaments){
-					if(vo.getId().longValue() != 0l)
-						parlIds.add(vo.getId());
-				}
-				pConstituencyList = crossVotingEstimationService.getParliamentConstisByElectionYear(jObj.getString("year"),parlIds);
+				pConstituencyList = crossVotingEstimationService.getAllParliamentConstituenciesForCrossVoting(assemblyIds,jObj.getString("year"));
 			}
 			else if("getAssemblysForParliment".equalsIgnoreCase(jObj.getString("task"))){
-				Map<Long,List<SelectOptionVO>> assembliesForParl = (Map<Long,List<SelectOptionVO>>)session.getAttribute("assembliesForParl");
-				pConstituencyList = crossVotingEstimationService.getAssemblyConstisByElectionYear(jObj.getString("year"),jObj.getLong("parliamentId"),assembliesForParl);
+				pConstituencyList = crossVotingEstimationService.getAllAssemblyConstituenciesForCrossVoting(assemblyIds,jObj.getLong("parliamentId"),jObj.getString("year"));
 			}
 			else if("getPariesForAssemply".equalsIgnoreCase(jObj.getString("task"))){
 				pConstituencyList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(jObj.getLong("assemblyId"),jObj.getString("year"));
