@@ -5519,6 +5519,19 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				fileVO.setFileId(fileGallary.getFile().getFileId());
 				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle().toString())):"");
 				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
+				
+				Long locationScopeId = fileGallary.getFile().getRegionScopes().getRegionScopesId();
+				if(locationScopeId.equals(2L))
+				 fileVO.setLocationName(stateDAO.get(locationScopeId).getStateName());
+				else if(locationScopeId.equals(3L))
+				 fileVO.setLocationName(districtDAO.get(locationScopeId).getDistrictName());
+				else if(locationScopeId.equals(4L))
+				 fileVO.setLocationName(constituencyDAO.get(locationScopeId).getName());
+				else if(locationScopeId.equals(5L))
+				 fileVO.setLocationName(tehsilDAO.get(locationScopeId).getTehsilName());
+				
+				fileVO.setLocationId(locationScopeId);
+				
 				fileVO.setFilePath1(fileGallary.getFile().getFilePath());
 				fileVO.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size());
 				Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();

@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
@@ -71,6 +73,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
     private ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
     private IUserDAO userDAO;
+    private IDistrictDAO districtDAO;
     
    
 	public IUserDAO getUserDAO() {
@@ -202,9 +205,13 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		this.fileSourceLanguageDAO = fileSourceLanguageDAO;
 	}
 	
-	
-	
-	
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
 
 	/* 
  
@@ -3564,7 +3571,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 	}
 	
 	
-	public List<CandidateNewsCountVO> getNewsCountForACandidate(Long candidateId, String fromDateStr, String toDateStr)
+	public List<CandidateNewsCountVO> getNewsCountForACandidate(String fromDateStr,String toDateStr,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,String tempVar)
 	{
 		try{
 		 List<CandidateNewsCountVO> candidateNewsCountVOList = new ArrayList<CandidateNewsCountVO>(0);
@@ -3576,7 +3583,11 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		 if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
 		  toDate = format.parse(toDateStr);
 		 
-		 List<Object[]> list = candidateRelatedNewsDAO.getNewsCountForACandidate(candidateId, 872l,fromDate,toDate);
+		  Long locationScopeId = 0L;
+		  if(!tempVar.equalsIgnoreCase("null") && !tempVar.equalsIgnoreCase(""))
+		   locationScopeId = regionScopesDAO.getRegionScopeIdByScope(tempVar);
+		 
+		 List<Object[]> list = candidateRelatedNewsDAO.getNewsCountForACandidate(872l,fromDate,toDate,categoryIdsList,galleryIdsList,locationIdsList,locationScopeId);
 		 if(list != null && list.size() > 0)
 		 {
 			CandidateNewsCountVO candidateNewsCountVO = null;
@@ -3614,20 +3625,22 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		List<Long> constituencyList = new ArrayList<Long>();
 		List<Long> mandalList = new ArrayList<Long>();
 		List<String> names= new ArrayList<String>();
-		
-		for(CandidateNewsCountVO list1 : candidateNewsCountVOList)
+		if(candidateNewsCountVOList != null && candidateNewsCountVOList.size() > 0)
 		{
+		  for(CandidateNewsCountVO list1 : candidateNewsCountVOList)
+		  {
 			stateList.add(list1.getStateNewsCount());
 			districtList.add(list1.getDistrictNewsCount());
 			constituencyList.add(list1.getConstituencyNewsCount());
 			mandalList.add(list1.getMandalNewsCount());
 			names.add(list1.getName());
+		  }
+		  candidateNewsCountVOList.get(0).setStateCounts(stateList);
+		  candidateNewsCountVOList.get(0).setDistrictCounts(districtList);
+		  candidateNewsCountVOList.get(0).setConstituencyCounts(constituencyList);
+		  candidateNewsCountVOList.get(0).setMandalCounts(mandalList);
+		  candidateNewsCountVOList.get(0).setCandidateNames(names);
 		}
-		candidateNewsCountVOList.get(0).setStateCounts(stateList);
-		candidateNewsCountVOList.get(0).setDistrictCounts(districtList);
-		candidateNewsCountVOList.get(0).setConstituencyCounts(constituencyList);
-		candidateNewsCountVOList.get(0).setMandalCounts(mandalList);
-		candidateNewsCountVOList.get(0).setCandidateNames(names);
 		 return candidateNewsCountVOList;
 		}catch (Exception e) {
 		 e.printStackTrace();
@@ -3653,7 +3666,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 	}
 	
 	
-	public List<FileVO> getLocationWiseNewsDetailsForACandidate(Long candidateId,String fromDateStr,String toDateStr,String locationScope,Integer startIndex,Integer maxIndex)
+	public List<FileVO> getLocationWiseNewsDetailsForACandidate(Long candidateId,String fromDateStr,String toDateStr,String locationScope,Integer startIndex,Integer maxIndex,String galleryIdsStr,String categoryIdsStr)
 	{
 		List<FileVO> fileVOsList = null;
 		try{
@@ -3665,18 +3678,108 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 			 if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
 			  toDate = format.parse(toDateStr);
 			Long locationScopeId = regionScopesDAO.getRegionScopeIdByScope(locationScope);
-			List<FileGallary> fileGallaryList = candidateRelatedNewsDAO.getLocationWiseFileGalleryList(candidateId, fromDate, toDate, locationScopeId, startIndex, maxIndex);
+			
+			List<Long> galleryIdsList = new ArrayList<Long>(0);
+			List<Long> categoryIdsList = new ArrayList<Long>(0);
+			StringTokenizer str = null;
+			if(!galleryIdsStr.equalsIgnoreCase("null") && !galleryIdsStr.equalsIgnoreCase("") && galleryIdsStr != null)
+			{
+			  str = new StringTokenizer(galleryIdsStr,",");
+			  while (str.hasMoreTokens()) 
+				 galleryIdsList.add(Long.parseLong(str.nextToken()));
+			}
+			if(categoryIdsStr != null && !categoryIdsStr.equalsIgnoreCase("") && !categoryIdsStr.equalsIgnoreCase("null"))
+			{
+			  str = new StringTokenizer(categoryIdsStr,",");
+			  while (str.hasMoreTokens()) 
+			  categoryIdsList.add(Long.parseLong(str.nextToken()));
+			}
+			
+			List<FileGallary> fileGallaryList = candidateRelatedNewsDAO.getLocationWiseFileGalleryList(candidateId, fromDate, toDate, locationScopeId, startIndex, maxIndex,galleryIdsList,categoryIdsList);
 			if(fileGallaryList != null && fileGallaryList.size() > 0)
 			{
 				fileVOsList = new ArrayList<FileVO>(0);
 				candidateDetailsService.setfileGallaryDetails(fileGallaryList, fileVOsList);
-				fileVOsList.get(0).setCount(candidateRelatedNewsDAO.getLocationWiseFileGalleryList(candidateId, fromDate, toDate, locationScopeId, null, null).size());
+				fileVOsList.get(0).setCount(candidateRelatedNewsDAO.getLocationWiseFileGalleryList(candidateId, fromDate, toDate, locationScopeId, null, null,galleryIdsList,categoryIdsList).size());
 			}
 			return fileVOsList;
 		}catch (Exception e) {
 			
 			log.error("Exception Occured in getLocationWiseNewsDetailsForACandidate() method, Exception - "+e);
 		 return fileVOsList;
+		}
+	}
+	
+	public List<SelectOptionVO> getCategoryList(String fromDateStr, String toDateStr)
+	{
+		try{
+			List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+			SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyy");
+			Date fromDate = null;
+			Date toDate = null;
+			if(!fromDateStr.equalsIgnoreCase("null") && !fromDateStr.equalsIgnoreCase(""))
+			 fromDate = format.parse(fromDateStr);
+			if(!toDateStr.equalsIgnoreCase("null") && !toDateStr.equalsIgnoreCase(""))
+			 toDate = format.parse(toDateStr);
+			
+			List<Object[]> list = fileGallaryDAO.getCategoryList(fromDate, toDate);
+			if(list !=null && list.size() > 0)
+			 for(Object[] params : list)
+			  selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():""));
+			
+			return selectOptionVOList;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in getCategoryList() method, Exception -"+e);
+		 return null;
+		}
+	}
+	
+	public List<SelectOptionVO> getGalleryListForSelectedCategory(List<Long> categoryIdsList)
+	{
+	  try{
+		  List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		  List<Object[]> list = fileGallaryDAO.getGalleryListForSelectedCategory(categoryIdsList);
+		  if(list !=null && list.size() > 0)
+			for(Object[] params : list)
+			 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():""));
+		  return selectOptionVOList;
+	  }catch (Exception e) {
+		  e.printStackTrace();
+		  log.error(" Exception Occured in getGalleryListForSelectedCategory() method, Exception - "+e);
+		 return null;
+	}
+	}
+	
+	public List<SelectOptionVO> getLocationsListByScopeId(String locationScope,String fromDateStr, String toDateStr)
+	{
+		try{
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
+		Date fromDate = null;
+		Date toDate = null;
+		Long locationScopeId = regionScopesDAO.getRegionScopeIdByScope(locationScope);
+		if(!fromDateStr.equalsIgnoreCase("null") && !fromDateStr.equalsIgnoreCase(""))
+		 fromDate = format.parse(fromDateStr);
+		if(!toDateStr.equalsIgnoreCase("null") && !toDateStr.equalsIgnoreCase(""))
+		 toDate = format.parse(toDateStr);
+		
+		List<Long> locationIdsList = fileGallaryDAO.getLocationValuesByLocationScopeId(locationScopeId, fromDate, toDate, 872L);
+		if(locationIdsList != null && locationIdsList.size() > 0)
+		{
+		  if(locationScopeId.equals(3L))
+		  {
+			List<Object[]> list = districtDAO.getDistrictNamesByDistrictIdsList(locationIdsList);
+			for(Object[] params:list)
+			 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():" "));
+		  }
+		}
+			
+		return selectOptionVOList;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in getLocationsListByScopeId() method, Exception - "+e);
+		 return null;
 		}
 	}
 
