@@ -16,6 +16,7 @@ public class AnnouncementVO implements Serializable{
 	private Long announcementType;
 	private String fileTitle;
 	private String fileDescription;
+	private String filePath;
 	
 	
 	public String getName() {
@@ -65,6 +66,12 @@ public class AnnouncementVO implements Serializable{
 	}
 	public void setFileDescription(String fileDescription) {
 		this.fileDescription = fileDescription;
+	}
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 	
 	

@@ -45,7 +45,7 @@
 	 </bean>
 	 
 	 <bean id="createAnnouncementAction" class="com.itgrids.electoralconnect.web.action.CreateAnnouncementAction" singleton="false">
-	 	
+	 	<property name="announcementService" ref="announcementService"/>
 	 </bean>
 	 
 	  <bean id="forgotPasswordAction" class="com.itgrids.electoralconnect.web.action.ForgotPasswordAction" singleton="false">
