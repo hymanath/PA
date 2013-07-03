@@ -175,7 +175,7 @@
 		var str = "";
 			for(var i in myResults)
 			{
-				str += '<div class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid green; margin-bottom: 10px;">';
+				str += '<div id="commentsDIv'+myResults[i].commentId+'" class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid green; margin-bottom: 10px;">';
 				str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
 				str +='<span><b>Announcement : </b></span><span>'+myResults[i].announcement+'</span></br>';
 				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
@@ -215,7 +215,7 @@
 		var str = "";
 			for(var i in myResults)
 			{
-				str += '<div class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid blue; margin-bottom: 10px;">';
+				str += '<div id="commentsDIv'+myResults[i].commentId+'" class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid blue; margin-bottom: 10px;">';
 				str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
 				str +='<span><b>Announcement : </b></span><span>'+myResults[i].announcement+'</span></br>';
 				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
@@ -279,7 +279,7 @@
 									if(myResults.resultCode == 0)
 									{
 										$("#abusedStatus"+jsObj.id+"").html("<b style='color:green'>Abused Successfull..</b>");
-										$('#abusedButton"+jsObj.id+"').hide();
+										$("#commentsDIv"+jsObj.id+"").hide();
 									}
 									
 								} 
