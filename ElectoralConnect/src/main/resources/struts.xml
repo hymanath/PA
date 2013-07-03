@@ -104,6 +104,16 @@
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>				
 			</result>
+			<result type="json" name="notLogged">
+				<param name="root">"notLogged"</param>				
+			</result>
 		</action>
+		
+		<action name="getCommentsAction" class="HomePageAction" method="getCommentsList">
+			<result type="json" name="success">
+				<param name="root">commentVO</param>				
+			</result>
+		</action>
+		
 		</package>
 </struts>      
