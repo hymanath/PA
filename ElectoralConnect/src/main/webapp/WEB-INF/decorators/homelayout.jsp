@@ -40,6 +40,19 @@
 <body>
 <style>
 	#loginModal{width:600px;}
+	label.valid {
+		  color: green !important;
+		  background: url(img/accept.png) center no-repeat !important;
+		  display: inline-block;
+		  text-indent: -9999px;  
+		}
+		label.error {
+		  font-weight: bold; 
+		  color: red;
+		  background: url(img/error.png) no-repeat left center;
+		  padding: 1px 16px;
+		  display: inline-block;
+		}
 </style>
 <!---  Header ---->
 		<header>
@@ -97,7 +110,7 @@
 		<div class="modal-body">
 			<a class="close" data-dismiss="modal">X</a>
 			<p style="font-size:16px;font-weight:bold;"></p>
-			 <form class="form-horizontal" name='personalInfoForm' action='userLonginVerficationAction.action' method='post'>
+			 <form class="form-horizontal" name='loginInfoForm' action='userLonginVerficationAction.action' method='post'>
 				<legend>Please Login</legend>
 				<div class="control-group">
 					<label class="control-label" for="username">UserName</label>
@@ -119,8 +132,8 @@
 		<div class="modal-footer">
 			<div id="successMsg" style="float:left;"></div>
 			<div id="errorMsg" style="float:left;"></div>
+			<button class="btn btn-primary" type="submit" id="loginNow">Login</button>
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-			<button class="btn btn-primary" type="submit">Login</button>
 		</div>
 		</form>
 	</div>
@@ -174,7 +187,7 @@
 		<div class="modal-body">
 			<a class="close" data-dismiss="modal">X</a>
 			<p style="font-size:16px;font-weight:bold;"></p>
-			 
+			 <form class="form-horizontal" name="forgotpwd">
 				<legend>Forgot Password</legend>
 				<div class="control-group">
 					<label class="control-label" for="username">UserName</label>
@@ -187,10 +200,10 @@
 		<div class="modal-footer">
 			<div id="successMsg" style="float:left;"></div>
 			<div id="errorMsg" style="float:left;"></div>
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 			<a class="btn btn-primary" onClick="getForgetdPassword();">Submit</a>
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 		</div>
-		
+		</form>
 	</div>
 		</div>
 		
@@ -207,6 +220,10 @@
 			
 			$('#loginId').click(function(){
 				$('#loginModal').modal('show');
+			});
+			
+			$('#loginNow').click(function(){
+				document.loginInfoForm.submit();
 			});
 			$('#forgetPassword').click(function(){
 				$('.close').trigger('click',function(){
@@ -294,15 +311,16 @@
 
 				YAHOO.util.Connect.asyncRequest('POST', url, callback);
 		} 
-		
+	
 		$(function(){
-			$('[name="personalInfoForm"]').validate({
-	onfocusout: function(e) {
-      this.element(e);
+			
+	     $('[name="loginInfoForm"]').validate({
+	      onfocusout: function(e) {
+          this.element(e);
       }, onkeyup: false,
 	  rules: {
 		userName: {	
-			required: true  
+			required: true
 			},
 		password: {
 		    required :true
@@ -320,8 +338,32 @@
 	      element.text('ok').addClass('valid');
 			},
 	});
-		});
-		</script>
+});
+$(function(){
+	$('[name="forgotpwd"]').validate({
+	    onfocusout: function(e) {
+         this.element(e);
+         }, onkeyup: false,
+	  rules: {
+		userName: {	
+			required: true,
+			email: true
+			}
+	  },	
+	  messages: {
+		userName: {
+			required: "Please enter Email ID" ,
+            email: "Enter valid emailid"
+			}	
+	  },
+	  success: function(element) {
+	      element.text('ok').addClass('valid');
+			},
+    });
+
+});
+
+</script>
 </body>
 </html>
 
