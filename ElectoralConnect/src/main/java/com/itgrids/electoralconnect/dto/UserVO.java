@@ -1,6 +1,12 @@
 package com.itgrids.electoralconnect.dto;
 
-public class UserVO {
+import java.io.Serializable;
+
+public class UserVO implements Serializable{
+	/**
+	 * 
+	 */
+private static final long serialVersionUID = -5332293961274583806L;
 private String username;
 private String pwd;
 private String firstname;

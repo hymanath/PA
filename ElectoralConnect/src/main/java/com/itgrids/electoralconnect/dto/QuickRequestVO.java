@@ -1,8 +1,14 @@
 package com.itgrids.electoralconnect.dto;
 
-public class QuickRequestVO {
+import java.io.Serializable;
+
+public class QuickRequestVO implements Serializable{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8982533925785155628L;
 	private String userName;
     private String emailId;
     private String mobileNumber;
