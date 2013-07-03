@@ -321,11 +321,11 @@ function callAjax(jsObj,url)
 								}
 								else if(jsObj.task=="createImpDateEvent")
 								{
-									var selectedDate = jsObj.startDate.split('/')[1]+'/'+jsObj.startDate.split('/')[0]+'/'+jsObj.startDate.split('/')[2];
-									  datesRenderArr.push(selectedDate);
-									 renderStack()
+									//var selectedDate = jsObj.startDate.split('/')[1]+'/'+jsObj.startDate.split('/')[0]+'/'+jsObj.startDate.split('/')[2];
+									//  datesRenderArr.push(selectedDate);
+									// renderStack()
 
-              var ob =
+             /* var ob =
 					{
 						importantDateId:myResults[0].importantDateId,
 						title:myResults[0].title,
@@ -336,15 +336,30 @@ function callAjax(jsObj,url)
 
 					impDates.push(ob);
 
-					impDates.sort(compare);
+					impDates.sort(compare);*/
 
 
 
                                     // impDates.push(myResults);
-									showInitialImpEventsAndDates(impDates,'impDates',"");
+									//showInitialImpEventsAndDates(impDates,'impDates',"");
 
 
 									alert("Important Date created successfully");
+
+
+
+
+                         //BY SAMBA START 
+
+						 	var jsObj2={
+									task:'getUpdatedEvents'
+								   };
+									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+									var url = "<%=request.getContextPath()%>/getUpdatedDatesAndEvents.action?"+rparam;	
+									callAjax(jsObj2,url);
+
+
+						// BY SAMBA END
 									$('#newImpDateDiv').dialog('close');
 									var date = new Date();
 									
@@ -419,7 +434,14 @@ function callAjax(jsObj,url)
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
 									var url = "<%=request.getContextPath()%>/getNextMonthDatesEvents.action?"+rparam;	
-									callAjax(jsObj1,url);									
+									callAjax(jsObj1,url);
+									
+                                 getUpdatedEvents();
+									
+								}else if(jsObj.task == "getUpdatedEvents")
+								{
+                                buildUpdatedEvents(myResults ,jsObj);
+
 								}
 										
 							}catch (e) {   
@@ -451,8 +473,10 @@ function removeDeletedElement(id,jsObj)
 		var elmt = document.getElementById("ImpDate_"+myResults);
 		alert("Date successfully deleted");
 
-		 datesRenderArr.push("");
-	     renderStack();
+          getUpdatedEvents();
+
+		// datesRenderArr.push("");
+	    // renderStack();
 			
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
@@ -1772,13 +1796,13 @@ function buildSelectedDateEventPopup(results,jsObj)
 		if(jsObj.taskType == "impEvent")
 		{
 			eventStr+='<td colspan="3">';
-			eventStr+='<input type="text" id="eventNameText" class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impEvent\',\'title\')" value="'+results.title+'" >';
+			eventStr+='<input type="text" id="eventNameText" class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impEvent\',\'title\')" value="'+results.title+'" maxlength="100" >';
 			eventStr+='</td>';
 		}
 		else if(jsObj.taskType == "impDate")
 		{
 			eventStr+='<td colspan="3">';
-			eventStr+='<input id="ImpeventNameText" class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impDate\',\'title\')" value="'+results[0].title+'" style="border-radius: 3px 3px 3px 3px; border: 1px solid rgb(195, 195, 195); width: 218px; height: 35px; margin-bottom: 7px;">';
+			eventStr+='<input id="ImpeventNameText" class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impDate\',\'title\')" value="'+results[0].title+'" style="border-radius: 3px 3px 3px 3px; border: 1px solid rgb(195, 195, 195); width: 218px; height: 35px; margin-bottom: 7px;" maxlength="100">';
 			eventStr+='</td>';					
 		}
 		eventStr+='</tr>';
@@ -1863,7 +1887,7 @@ function buildSelectedDateEventPopup(results,jsObj)
 		if(jsObj.taskType == "impEvent")
 		{
 				eventStr+='<td colspan="3">';
-				eventStr+='<textarea rows="5" cols="50" id="descTextArea" name="descTextArea" style="background:#ffffff;">'+results.description+'</textarea>';
+				eventStr+='<textarea rows="5" cols="50" id="descTextArea" name="descTextArea" style="background:#ffffff;" maxlength+"300">'+results.description+'</textarea>';
 				eventStr+='<td>';
 			
 			
@@ -1871,7 +1895,7 @@ function buildSelectedDateEventPopup(results,jsObj)
 		else if(jsObj.taskType == "impDate")
 		{
 				eventStr+='<td colspan="3">';
-				eventStr+='<textarea rows="5" cols="50" id="ImpdescTextArea1" name="ImpdescTextArea">'+results[0].importance+' </textarea>';
+				eventStr+='<textarea rows="5" cols="50" id="ImpdescTextArea1" name="ImpdescTextArea"maxlength="300">'+results[0].importance+' </textarea>';
 				eventStr+='</td>';				
 		}
 		eventStr+='</tr>';
@@ -1953,8 +1977,15 @@ function buildSelectedDateEventPopup(results,jsObj)
 		{
 			eventStr+='<tr>';
 			eventStr+='<th id="impheaders">Repeat Frequency :</th>';
-			if(results[0].frequency != null)
-				eventStr+='<td colspan="1"><span class="fieldSpan" onclick="changeToEditableField(this,\'select\',\'impDate\',\'frequency\')">'+results[0].frequency+'</span></td>';		
+			if(results[0].frequency != null){
+				eventStr+='<td>';
+				eventStr+='<select id="repeatFreqSelectUpdate" class="timeSelect" onchange="showEndDateText1(this.options[this.selectedIndex].text)">';
+				eventStr+='<option value="No Repeat">No Repeat</option>';
+				eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
+
+			}
+
+				//eventStr+='<td colspan="1"><span class="fieldSpan" onclick="changeToEditableField(this,\'select\',\'impDate\',\'frequency\')">'+results[0].frequency+'</span></td>';		
 			else
 				eventStr+='<td colspan="1"><span class="fieldSpan" onclick="changeToEditableField(this,\'select\',\'impDate\',\'frequency\')"> - </span></td>';		
 			
@@ -1962,6 +1993,11 @@ function buildSelectedDateEventPopup(results,jsObj)
 			{
 				eventStr+='<th id="impheaders" style="margin-left: -50px;">Repeat Until :</th>';
 				eventStr+='<td>';
+				if(results[0].frequency == "No Repeat")
+				{
+					eventStr+='<div><input type="text" id="ImpEndDateText" disabled value="'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'" name="ImpEndDateText" style="width: auto;cursor:text;"  class="impdate"/></div>';
+
+				}else
 				eventStr+='<div><input type="text" id="ImpEndDateText" readonly="readonly" value="'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'" name="ImpEndDateText" style="width: auto;cursor:text;"  class="impdate"/></div>';
 				eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"></div>';
 				eventStr+='</td>';
@@ -2196,6 +2232,7 @@ function updateSelectedEvent(type)
 				var ImpeventNameValue = $("#ImpeventNameText").val();			
 				var ImpDescValu = $("#ImpdescTextArea1").val();
 				var ImpDescVallength=ImpDescValu.trim().length;
+				var repeatType =   $('#repeatFreqSelectUpdate :selected').text();
 				
 				if(ImpeventNameValue == '')
 				{
@@ -2233,7 +2270,8 @@ function updateSelectedEvent(type)
 					selectedDateObj.startDate = ImpstartDateVal;
 					selectedDateObj.endDate = ImpendDateVal;
 					selectedDateObj.desc = ImpDescVal;
-					selectedDateObj.frequency = results[0].frequency;
+					//selectedDateObj.frequency = results[0].frequency;
+					selectedDateObj.frequency = repeatType; 
 					selectedDateObj.isDeleted = "NO";
 					selectedDateObj.task="updateImpDateEvent";
 
@@ -2271,12 +2309,12 @@ function deleteSelectedEvent(type,eId,deletedDate)
  				return;
 			}
 
-      if(deletedDate != "" && deletedDate != undefined){
+     /* if(deletedDate != "" && deletedDate != undefined){
 			var tdate = deletedDate.split('/')[1]+'/'+  deletedDate.split('/')[0]+'/'+deletedDate.split('/')[2];
 	        tdate = new Date(tdate);
 	        var removeDate = (tdate.getMonth()+1)+"/"+tdate.getDate()+"/"+tdate.getFullYear();
 			datesRenderArr.splice($.inArray(removeDate,datesRenderArr)  ,1);
-      }
+      }*/
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/deleteEventAction.action?"+rparam;		
@@ -3738,6 +3776,17 @@ function showEndDateText(val)
 			txtElmt.disabled=false;
 }
 
+function showEndDateText1(val)
+{
+		var txtElmt = document.getElementById('ImpEndDateText');
+		if(val == "No Repeat")
+		{
+			txtElmt.disabled=true;
+		}
+		else
+			txtElmt.disabled=false;
+}
+
 function showNewImpDatePopup()
 {
 	newDateDialog.show();
@@ -3907,7 +3956,8 @@ function hideEditCloseIcons(id)
 }
 
 function showInitialImpEventsAndDates(eventsarr,type,task)
-{			
+{		
+
 		var divElmt;
 		if(type == "impEvents")
 			var elmt = document.getElementById("cadreImpEventsBodyDiv");
@@ -4067,6 +4117,7 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 		datesRenderArr.push("");
 	}
 	renderStack();
+
 }
 
 function existingDataCheck(date,type)
@@ -4300,14 +4351,49 @@ function changeToEditableField()
 		if(createNewEvent == "true")
 			buildNewEventPopup();
 
-function compare(a,b) {
+function buildUpdatedEvents(myResults ,jsObj)
+{
+	var impDates1 = new Array();
+
+ for(var i in myResults.userImpDates)
+ {
+	 var ob =
+					{
+						importantDateId:myResults.userImpDates[i].importantDateId,
+						title:myResults.userImpDates[i].title,
+						impDate:myResults.userImpDates[i].impDate,
+						importance:myResults.userImpDates[i].importance,
+						eventType:myResults.userImpDates[i].eventType
+					}
+			
+					impDates1.push(ob);
+
+ }
+		
+	showInitialImpEventsAndDates(impDates1,'impDates',"");
+	renderStack();
+
+}
+
+
+function getUpdatedEvents()
+{
+		var jsObj2={
+			task:'getUpdatedEvents'
+		   };
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+			var url = "<%=request.getContextPath()%>/getUpdatedDatesAndEvents.action?"+rparam;	
+			callAjax(jsObj2,url);
+
+}
+/*function compare(a,b) {
   if (a.impDate > b.impDate)
      return -1;
   if (a.impDate < b.impDate)
     return 1;
   return 0;
 }
-
+*/
 	</script>	
 </body>
 </html>
