@@ -129,4 +129,14 @@ public List<Object[]> getAllDistrictInfoDetails(){
 		queryObject.setParameter("stateIds", stateIds);
 		return queryObject.list();
 	}	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistrictNamesByDistrictIdsList(List<Long> districtIdsList)
+	{
+		Query query = getSession().createQuery(" select model.districtId, model.districtName from District model where model.districtId in (:districtIdsList) " +
+				" order by model.districtName ");
+		
+		query.setParameterList("districtIdsList", districtIdsList);
+		return query.list();
+	}
 }
