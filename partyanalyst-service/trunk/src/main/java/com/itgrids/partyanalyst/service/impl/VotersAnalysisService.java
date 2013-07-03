@@ -2260,6 +2260,23 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					}
 				  }
 			}
+			
+			if(mandalCasts != null && mandalCasts.size() >0){
+				
+				for(VoterCastInfoVO vo:mandalCasts){
+					
+					List<CastVO> list = vo.getVoterCastInfoVO().getCastVOs();
+					
+					Long totalCount = 0L;
+					
+					for(CastVO caste :list)
+						totalCount +=caste.getCastCount();
+					
+					vo.setTotalCastKnownVoters(totalCount);
+					
+				}
+				
+			}
 			return mandalCasts;
 			
 		}
