@@ -5515,5 +5515,11 @@
 				<param name="root">cadreManagementVO</param>				
 			</result>	
 		</action>
+				
+		<action name="getCrossVotingReportDetails" class="crossVotingReportInputAction" method="getCrossVotingReportDetails">
+			<result type="json" name="success">
+				<param name="root">parliamentList</param>				
+			</result>
+		</action>
 		</package>
 </struts>      
