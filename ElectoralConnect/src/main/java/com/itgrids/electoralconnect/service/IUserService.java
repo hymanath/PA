@@ -29,4 +29,6 @@ public interface IUserService {
 	public List<CommentVO> getAllCommentsBetweenSelectedDates(Date startDate,Date endDate,int startIndex,int maxIndex);
 	
 	public List<CommentVO> getAllComments(int startIndex,int maxIndex);
+	
+	public ResultStatus abuseCommentService(Long commentId);
 }

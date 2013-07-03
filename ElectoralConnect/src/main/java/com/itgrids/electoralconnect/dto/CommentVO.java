@@ -12,6 +12,7 @@ public class CommentVO implements Serializable{
 	private Date date;
 	private String announcement;
 	private Long total;
+	private String abused;
 	public Long getCommentId() {
 		return commentId;
 	}
@@ -47,6 +48,12 @@ public class CommentVO implements Serializable{
 	}
 	public void setTotal(Long total) {
 		this.total = total;
+	}
+	public String getAbused() {
+		return abused;
+	}
+	public void setAbused(String abused) {
+		this.abused = abused;
 	}
 	
 	

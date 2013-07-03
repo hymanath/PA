@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.service.IUserService;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -27,7 +28,7 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	private JSONObject jobj;
 	private IUserService userService;
 	private List<CommentVO> commentVO;
-	
+	private ResultStatus resultStatus;
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request  = request;
@@ -61,6 +62,16 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 
 	public void setCommentVO(List<CommentVO> commentVO) {
 		this.commentVO = commentVO;
+	}
+
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
 	}
 
 
@@ -106,6 +117,19 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in  getCommentsBtSelDates() method in AdminPageAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String abuseComment()
+	{
+		try {
+			LOG.debug("Entered into abuseComment() method in AdminPageAction Action");
+			jobj = new JSONObject(getTask());
+			Long commentId = jobj.getLong("id");
+			resultStatus = userService.abuseCommentService(commentId);
+		} catch (Exception e) {
+			LOG.error("Exception raised in  abuseComment() method in AdminPageAction Action",e);
 		}
 		return Action.SUCCESS;
 	}

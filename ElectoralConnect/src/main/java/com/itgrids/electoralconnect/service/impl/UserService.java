@@ -429,6 +429,7 @@ public class UserService implements IUserService{
 						commentVO.setName(user.getUserProfile().getFirstName());
 						commentVO.setDate((Date) parms[3]);
 						commentVO.setAnnouncement(announcements.getTitle());
+						commentVO.setAbused(parms[5].toString());
 						commentVO.setTotal(totalCount);
 						returnList.add(commentVO);
 					}
@@ -469,6 +470,7 @@ public class UserService implements IUserService{
 						commentVO.setName(user.getUserProfile().getFirstName());
 						commentVO.setDate((Date) parms[3]);
 						commentVO.setAnnouncement(announcements.getTitle());
+						commentVO.setAbused(parms[5].toString());
 						commentVO.setTotal(totalCount);
 						returnList.add(commentVO);
 					}
@@ -479,5 +481,31 @@ public class UserService implements IUserService{
 			}
 			
 			return returnList;
+		}
+		/**
+		 * This Service  is used to Abuse the comment
+		 * @param Long commentId
+		 * @return ResultStatus
+		 * @date  03-07-2013
+		 */
+		public ResultStatus abuseCommentService(Long commentId)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			try {
+				LOG.debug("Entered into abuseCommentService() method in UserService Service");
+				int aduseState = commentDAO.abuseTheComment(commentId);
+				if(aduseState == 1)
+				{
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+				else
+				{
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);	
+				}
+			} catch (Exception e) {
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				LOG.error("Exception Raised in abuseCommentService() method in UserService Service",e);
+			}
+			return resultStatus;
 		}
 }

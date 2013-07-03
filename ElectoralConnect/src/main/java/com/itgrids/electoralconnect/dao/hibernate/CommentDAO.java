@@ -81,7 +81,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	public List<Object[]> getCommentsBetwnnSelectedDates(Date startDate,Date endDate,int statIndex,int maxIndex)
 	{
 		Query query = getSession().createQuery("select model.commentId,model.comment,model.user," +
-				"model.time,model.announcements from Comment model where  Date(model.time) between :startDate and :endDate");
+				"model.time,model.announcements,model.isDelete from Comment model where  Date(model.time) between :startDate and :endDate");
 		//query.setParameter("announcementId", announcementId);
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -118,7 +118,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	public List<Object[]> getAllComments(int startIndex,int maxIndex)
 	{
 		Query query = getSession().createQuery("select model.commentId,model.comment,model.user," +
-				"model.time,model.announcements  from Comment model");
+				"model.time,model.announcements,model.isDelete  from Comment model");
 		
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxIndex);
@@ -135,5 +135,22 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 		Query query = getSession().createQuery("select count(*) from Comment model");
 		
 		return (Long) query.uniqueResult();
+	}
+	
+	/**
+	 * This DAO is used to abuse the comment
+	 * @param Long commentId
+	 * @return int
+	 * @date 03-07-2013
+	 */
+	public int abuseTheComment(Long commentId)
+	{
+		Query query = getSession().createQuery("update Comment model set model.isDelete = 'YES' " +
+				" where model.commentId = :commentId");
+		query.setParameter("commentId", commentId);
+		
+		int x = query.executeUpdate();
+		getSession().flush();
+		return  x;	
 	}
 }
