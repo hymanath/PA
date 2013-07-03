@@ -3,6 +3,10 @@ package com.itgrids.electoralconnect.dto;
 import java.io.Serializable;
 
 public class UserProfileVO implements Serializable {
+ /**
+	 * 
+	 */
+ private static final long serialVersionUID = 1L;
  private String firstName;
  private String lastName;
  private String emailId;
