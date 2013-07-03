@@ -25,9 +25,9 @@ public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNe
 	
 	public List<Long> getFileGalleryIdByCandidateId(Long candidateId);
 	
-	public List<Object[]> getNewsCountForACandidate(Long candidateId, Long partyId, Date fromDate, Date toDate);
+	public List<Object[]> getNewsCountForACandidate(Long partyId, Date fromDate, Date toDate,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId);
 	
-	public List<FileGallary> getLocationWiseFileGalleryList(Long candidateId,Date fromDate,Date toDate,Long locationScopeId,Integer startIndex,Integer maxIndex);
+	public List<FileGallary> getLocationWiseFileGalleryList(Long candidateId,Date fromDate,Date toDate,Long locationScopeId,Integer startIndex,Integer maxIndex,List<Long> galleryIdsList,List<Long> categoryIdsList);
 	
 
 
