@@ -119,7 +119,7 @@ function callAjax(jsObj,url)
 		str+="<h6 id='titleNameId' title='"+results[i].name+"' style='cursor:default;'>"+results[i].name+"</h6>";
 		str+="<div>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}' onclick='getAllVideosOfAGallary("+results[i].ids+")'>";
-		str+="<img id='myImg' style='width:100%' src=http://img.youtube.com/vi/"+results[i].path+"/1.jpg ></a>";
+		str+="<img id='myImg' style='width:100%' src=http://img.youtube.com/vi/"+results[i].path+"/0.jpg ></a>";
 		//str+="<p class='span8'>"+results[i].description+"</p>";
 		str+="<span class='label' onclick='getAllVideosOfAGallary("+results[i].ids+")' style='cursor:pointer;'> Total Videos :"+results[i].totalResultsCount+"</span>";
 		str+="</div>";
