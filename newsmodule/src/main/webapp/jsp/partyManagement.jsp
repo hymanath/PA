@@ -4173,6 +4173,7 @@ $("#assignNewsbtn").live("click",function(){
 	var responseId =0;
 	var candidateId =0;
 	var tempVar = "";
+	var resFileGalId;
 	if(gallaryId == 0)
 	{
      $("#errorMessageDiv").html('Please Select Gallery.');
@@ -4209,7 +4210,8 @@ $("#assignNewsbtn").live("click",function(){
 	else
     {
 		var partyId = $("#partiesList").val();
-		candidateId = $("#candidateList").val();
+		candidateId = $("#candidatesList").val();
+		resFileGalId = 0;
 		if(partyId == 0)
 		{
 		 $("#errorMessageDiv").html('Please Select Party.');
