@@ -199,9 +199,11 @@ function buildPaginatedNews(results,jsObj)
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td></tr>';
+		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td>';
+	if(results[i].responseCount > 0)
+		str+='<td style="vertical-align: top;padding-left: 50px;"><p><span class="text-error" style="font-weight: bold;">Respone Count :</span> '+results[i].responseCount+'</p></td>';
 		
-		str +='</table>';
+		str +='</tr></table>';
 		str +='</div>';
 		
 		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
