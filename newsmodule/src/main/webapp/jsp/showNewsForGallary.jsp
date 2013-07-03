@@ -198,11 +198,13 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
 				
 			str+='</div>';
 			str+='<div class="row-fluid m_top10">';
-				str+='<div class="span9">';
-					str+='<p class="text-error"><span style="font-weight:bold;">Source : </span> <span style="color:black;">'+results[i].fileType+'</span>';
-					str+=' <span style="font-weight:bold;margin-left:55px;">Date : </span><span style="color:black;">'+results[i].fileDate+'</span></p>';
-				str+='</div>';
-				str+='<div class="span2 ">';
+				str+='<div class="span9" style="width:550px;">';
+					str+='<table><tr><td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">'+results[i].fileType+'</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+results[i].fileDate+'</span></p></td>';
+			if(results[i].responseCount > 0)
+				str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">'+results[i].responseCount+'</span></p></td>';
+				
+				str+='</tr></table></div>';
+				str+='<br><div class="span2" style="float:right;">';
 				
 					str+='	<a type="button" class="btn btn-mini btn-info pull-right" onClick="getNewsDetailsByContentId('+results[i].fileGallaryId+')">Details...</a>';
 					
