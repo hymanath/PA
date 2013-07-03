@@ -325,8 +325,11 @@ function getAssembly(assemblyId,partyId)
 					partyId:partyId
 			  }
 		
-		var bparam="parliamentValue="+jsObj.parliamentValue+"&election="+jsObj.electionYear;
-		callAjax(jsObj,bparam);
+		//var bparam="parliamentValue="+jsObj.parliamentValue+"&election="+jsObj.electionYear;
+		//callAjax(jsObj,bparam);
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getCrossVotingReportDetails.action?"+rparam;	
+		callAjaxForCrossVoting(jsObj,url);
 	}
 }
 
@@ -370,6 +373,40 @@ function getAssembly(assemblyId,partyId)
  		               };
 
  		YAHOO.util.Connect.asyncRequest('GET', boothUrl , callback);
+	}
+	function callAjaxForCrossVoting(jObj,url)
+	{
+		var myResults;		
+		
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {
+								var img1=document.getElementById('ajaxImg1');
+								img1.style.display='none';
+
+								var img2=document.getElementById('ajaxImg2');
+								img2.style.display='none';
+
+								var img3=document.getElementById('ajaxImg3');
+								img3.style.display='none';
+
+								myResults = YAHOO.lang.JSON.parse(o.responseText); 										
+								if(jObj.task == "Assembly" || jObj.task=="getParty" || jObj.task=="getParliament")
+									buildParliamemtSelect(jObj,myResults);
+								else if(jObj.task == "crossVotingReport")
+									buildCrossVotingReport(jObj,myResults.crossVotingConsolidateVO);
+												
+							}catch (e) {   
+							   	//alert("Invalid JSON result" + e);   
+							}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('GET', url , callback);
 	}
     function setDefaultImage(img)
     {
@@ -749,8 +786,11 @@ function getAssembly(assemblyId,partyId)
 						partyId:partyId
 				  }
 
-		var bparam="election="+jsObj.electionValue;
-		callAjax(jsObj,bparam);	
+		//var bparam="election="+jsObj.electionValue;
+		//callAjax(jsObj,bparam);	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getCrossVotingReportDetails.action?"+rparam;	
+		callAjaxForCrossVoting(jsObj,url);
 
 	}
 
