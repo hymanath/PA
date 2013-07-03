@@ -32,7 +32,7 @@
 	 </bean>
 	 
 	 <bean id="adminPageAction" class="com.itgrids.electoralconnect.web.action.AdminPageAction" singleton="false">
-	 	
+	 	<property name="userService" ref="userService"/>
 	 </bean>
 	 
 	 	 

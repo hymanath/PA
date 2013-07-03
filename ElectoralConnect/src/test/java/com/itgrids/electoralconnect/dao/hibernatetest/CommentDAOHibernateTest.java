@@ -1,5 +1,9 @@
 package com.itgrids.electoralconnect.dao.hibernatetest;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -36,8 +40,38 @@ public class CommentDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testCount()
+	/*public void testCount()
 	{
 		System.out.println(commentDAO.getTotalCommentsCountByAnnouncementId(1l));
+	}*/
+	
+	/*public void testCount()
+	{
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		 Date startDate = null;
+		 Date endDate = null   ;
+		try {
+			startDate = df.parse("2013-06-12");
+			endDate   = df.parse("2013-07-03");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<Object[]> values = commentDAO.getCommentsBetwnnSelectedDates(startDate , endDate, 0, 20);
+		for (Object[] parms : values) {
+			System.out.println(parms[0]  +":"+ parms[1]);
+		}
+		
+		//System.out.println(commentDAO.getCommentsCountBetweenSelectedDates(startDate , endDate));
+	}*/
+	
+	public void testCount()
+	{
+		List<Object[]> values = commentDAO.getAllComments(0, 20);
+		for (Object[] parms : values) {
+		System.out.println(parms[0]  +":"+ parms[1]);
+		}
+	    System.out.println(commentDAO.getTotalComments());
 	}
 }

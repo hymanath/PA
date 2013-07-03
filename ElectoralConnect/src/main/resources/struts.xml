@@ -115,5 +115,14 @@
 			</result>
 		</action>
 		
+		
+		<action name="getCommentsByAdminAction" class="adminPageAction" method="getCommentsBtSelDates">
+			<result type="json" name="success">
+				<param name="root">commentVO</param>				
+			</result>
+			<result type="json" name="notLogged">
+				<param name="root">"notLogged"</param>				
+			</result>
+		</action>
 		</package>
 </struts>      
