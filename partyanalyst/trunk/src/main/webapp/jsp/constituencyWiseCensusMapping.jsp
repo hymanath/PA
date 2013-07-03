@@ -286,6 +286,7 @@ function buildResultTable(myResults)
 			<td>
 				<select id="yearSelect">
 					<option>2001</option>
+					<option>2011</option>
 				</select>
 			</td>
 		</tr>
