@@ -60,6 +60,19 @@
 			<result>/jsp/adminPage.jsp</result>
 		</action>
 		
+		<action name="createAnnouncementAction" class="createAnnouncementAction">
+			<result>/jsp/announcementPage.jsp</result>
+			
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">2097152</param>
+				<param name="allowedExtensions">
+					.png,.gif,.jpeg,.pjpeg,.html,.txt,.xls,.pdf,.zip,.xlsx,.doc,.docx,.jpg
+                </param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+				
 		<action name="passwordChangeAction" class="loginAction" method="changePassword">
 			<result>/jsp/registerNow.jsp</result>
 		</action>
