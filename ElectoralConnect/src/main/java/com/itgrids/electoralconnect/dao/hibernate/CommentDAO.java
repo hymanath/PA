@@ -47,7 +47,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	public List<Object[]> getAllComments(Long announcementid,int minIndex,int maxIndex)
 	{
 		Query query = getSession().createQuery("select model.commentId,model.comment,model.user,model.time from Comment model " +
-				" where model.announcements.announcementId = :announcementid order by model.commentId desc");
+				" where model.announcements.announcementId = :announcementid and  model.isDelete = 'NO' order by model.commentId desc");
 		query.setParameter("announcementid", announcementid);
 		query.setFirstResult(minIndex);
 		query.setMaxResults(maxIndex);
@@ -81,7 +81,8 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	public List<Object[]> getCommentsBetwnnSelectedDates(Date startDate,Date endDate,int statIndex,int maxIndex)
 	{
 		Query query = getSession().createQuery("select model.commentId,model.comment,model.user," +
-				"model.time,model.announcements,model.isDelete from Comment model where  Date(model.time) between :startDate and :endDate");
+				"model.time,model.announcements,model.isDelete from Comment model where  " +
+				" Date(model.time) between :startDate and :endDate and model.isDelete = 'NO'");
 		//query.setParameter("announcementId", announcementId);
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -118,7 +119,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	public List<Object[]> getAllComments(int startIndex,int maxIndex)
 	{
 		Query query = getSession().createQuery("select model.commentId,model.comment,model.user," +
-				"model.time,model.announcements,model.isDelete  from Comment model");
+				"model.time,model.announcements,model.isDelete  from Comment model where model.isDelete = 'NO'");
 		
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxIndex);
