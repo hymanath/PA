@@ -160,7 +160,7 @@ function buildPaginatedNews(results,jsObj)
 	var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
-		str+="<li>";
+		str+="<li style='margin-top: 35px;'>";
 		var source = results[i].fileVOList[0].source.trim();
 		if(source == "Eenadu Telugu")
 		{
@@ -189,9 +189,9 @@ function buildPaginatedNews(results,jsObj)
 		
 		str+="</div>";
 
-		str+="<div class='row-fluid m_top10'><div class='span9'>";
-		str +='<table><tr><td>';
-		str +='<p style="margin-right: 12px; width: 260px;"><span class="text-error" style="font-weight:bold;">Source : </span>';
+		str+="<div class='span9' style='width:550px;'>";
+		str +='<table><tr><td style="width:240px;">';
+		str +='<p style="margin-right: 12px;"><span class="text-error" style="font-weight:bold;">Source : </span>';
 		var length = results[i].fileVOList.length;
 
 		for(var j in results[i].fileVOList)
@@ -200,12 +200,14 @@ function buildPaginatedNews(results,jsObj)
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td></tr>';
+		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
+		if(results[i].responseCount > 0)
+		str+='<td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;padding-left: 20px;">Response Count : </span > '+results[i].responseCount+'</p></td>';
 		
-		str +='</table>';
+		str +='</tr></table>';
 		str +='</div>';
 		
-		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
+		str+="<br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
 	}
 	
 	var itemsCount=results[0].count;
