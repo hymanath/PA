@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
@@ -74,6 +75,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	private IBoothDAO boothDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IRegionScopesDAO regionScopesDAO;
+	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
 	/*
 	private IFileTypeDAO fileTypeDAO;
 	private ISourceLanguageDAO sourceLanguageDAO;
@@ -1141,6 +1143,15 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 
 	public IPanchayatHamletDAO getPanchayatHamletDAO() {
 		return panchayatHamletDAO;
+	}
+
+	public ICandidateNewsResponseDAO getCandidateNewsResponseDAO() {
+		return candidateNewsResponseDAO;
+	}
+
+	public void setCandidateNewsResponseDAO(
+			ICandidateNewsResponseDAO candidateNewsResponseDAO) {
+		this.candidateNewsResponseDAO = candidateNewsResponseDAO;
 	}
 
 	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
@@ -2350,6 +2361,7 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 			 file.setImagePathInUpperCase(flag);
 			 file.setFileDate(newDate);
 			 file.setFileType("Party");
+			 file.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)obj[1]).size());
 			 file.setTotalResultsCount(totalNewsCount);
 			 filesList.add(file);
 
