@@ -19,7 +19,7 @@
 <div id="mainBodyId">
 	<div>
 		<div><a href="registerUser.action?userType=admin">Create User</a></div>
-		<div><a href="createAnnouncementAction.action?userType=admin">Create Announcement</a></div>
+		<div><a href="#" id="createAnnouncementId">Create Announcement</a></div>
 		<div><a href="">Show Comment</a></div>
 	</div>
 	
@@ -112,6 +112,10 @@
 	var enIndex    = 5;
 	$(function(){	
 		$("#datepicker").datepicker();
+	});
+	
+	$('#createAnnouncementId').click(function(){
+		$('#announcementForm').css('display','block');
 	});
 	
 	$('#saveAnnouncement').click(function(){
