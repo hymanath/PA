@@ -152,7 +152,7 @@ function callAjax(jsObj,url)
 		str+="<h4>"+results[i].title+"</h4>";
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}' onclick=getVideo('"+results[i].path+"')>";
-		str+="<img id='myImg' style='width:100%' src=http://img.youtube.com/vi/"+results[i].path+"/1.jpg onerror='imgError(this)'></a>";
+		str+="<img id='myImg' style='width:100%' src=http://img.youtube.com/vi/"+results[i].path+"/0.jpg onerror='imgError(this)'></a>";
 		str+="<p class='span8'>"+results[i].description+"</p>";
 		str+="</div>";
 		//str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].ids+")' class='btn btn-mini btn-info pull-right' type='button'>More</a></div></li>";
