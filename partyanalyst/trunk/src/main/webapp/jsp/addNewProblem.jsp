@@ -440,7 +440,7 @@ function checkValidations(){
 
 	$('#warningMsgs').html("");
 	var exp=/^[A-Za-z\s]+$/;  
-	if($('#nameText').val() == ""){
+	if($.trim($('#nameText').val()) == ""){
 		$('#warningMsgs').append('<span>Please Provide Problem title</span>');
 		flag=false;
 	}else if(!($('#nameText').val().match(exp))){
@@ -448,7 +448,7 @@ function checkValidations(){
 		flag=false;
 	}
 	
-	if($('#descTextArea').val() == ""){
+	if($.trim($('#descTextArea').val()) == ""){
 		$('#warningMsgs').append('<br><span>Please Provide Problem Description</span>');
 		flag=false;
 	}
