@@ -95,7 +95,15 @@
 		</action>
 		
 		<action name="forgotPasswordAction" class="forgotPasswordAction" >
-			<result>/jsp/forgetPassword.jsp</result>
+			<result type="json" name="success">
+				<param name="root">statusMessage</param>				
+			</result>
+		</action>
+		
+		<action name="commentSaveAction" class="HomePageAction" method="saveComment">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>
 		</action>
 		</package>
 </struts>      

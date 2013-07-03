@@ -3,6 +3,10 @@ package com.itgrids.electoralconnect.util;
 import java.awt.Color;
 
 public interface IConstants {
+	
+	public static final String DATE_AND_TIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+	 public static final String TIME_ZONE_INDIA = "Asia/Calcutta"; 
+	 public static final String DATE_PATTERN = "dd/MM/yyyy";
 	/*public static final String DATE_PATTERN = "dd/MM/yyyy";
 	public static final String DATE_PATTERN_YYYY_MM_DD = "yyyy/MM/dd";
 	public static final Long CENSUS_YEAR = 2001L;

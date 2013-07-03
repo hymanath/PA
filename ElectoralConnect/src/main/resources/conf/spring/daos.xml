@@ -39,6 +39,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="announcementTypeDAO" class="com.itgrids.electoralconnect.dao.hibernate.AnnouncementTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
+	<bean id="fileTypeDAO" class="com.itgrids.electoralconnect.dao.hibernate.FileTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>		
