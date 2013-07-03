@@ -1305,7 +1305,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					mandalAllElectionDetailsVO.setElectionType(IConstants.ZPTC_ELECTION_TYPE);
 				}
 				else{
-					mandalAllElectionDetailsVO.setCandidateName(IConstants.MPTC_ELECTION_TYPE);
+					mandalAllElectionDetailsVO.setCandidateName(candidateName);
 					mandalAllElectionDetailsVO.setElectionType(IConstants.MPTC_ELECTION_TYPE);
 				}				
 				mandalAllElectionDetailsVO.setPartyShortName(partyName);
