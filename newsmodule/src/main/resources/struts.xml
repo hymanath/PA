@@ -5565,6 +5565,29 @@
 		    <param name="root">fileVOsList</param>
 		  </result>
 		 </action>
+		 
+		 <action name="locationWiseNewsDetailsAction" class="newsDetailsAction">
+		  <result name="success">/jsp/locationWiseNewsDetails.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		 </action>
+		 
+		 <action name="getCategoryListAction" class="newsDetailsAction" method="getLocationWiseNewsDetails">
+		  <result name="success" type="json">
+		   <param name="root">selectOptionVOList</param>
+		  </result>
+		 </action>
+		 
+		 <action name="getGalleryListForSelectedCategory" class="newsDetailsAction" method="getLocationWiseNewsDetails">
+		  <result name="success" type="json">
+		   <param name="root">galleriesList</param>
+		  </result>
+		 </action>
+		 
+		 <action name="getDistrictListForACandidateAction" class="newsDetailsAction" method="getLocationWiseNewsDetails">
+		  <result name="success" type="json">
+		   <param name="root">selectOptionVOList</param>
+		  </result>
+		 </action>
 		</package>
 		
 		

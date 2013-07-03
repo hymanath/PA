@@ -241,6 +241,7 @@
 		<pattern>/uploadMLCCandidateDetailsAction*</pattern>
 		<pattern>/candidateResponseNews*</pattern>
 		<pattern>/candidateNewsDetailsAction*</pattern>
+		<pattern>/locationWiseNewsDetailsAction*</pattern>
     	 </decorator>
 
 </decorators>

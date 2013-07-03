@@ -49,6 +49,9 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private List<CandidateNewsCountVO> newsCountVOsList;
 	private INewsMonitoringService newsMonitoringService; 
 	private Long candidateId;
+	private String locationScope;
+	private String categoryIds;
+	private String galleryIds;
 	
 	public Long getResponseContentId() {
 		return responseContentId;
@@ -190,6 +193,26 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	}
 	public void setCandidateId(Long candidateId) {
 		this.candidateId = candidateId;
+	}
+	
+	public String getLocationScope() {
+		return locationScope;
+	}
+	public void setLocationScope(String locationScope) {
+		this.locationScope = locationScope;
+	}
+	
+	public String getCategoryIds() {
+		return categoryIds;
+	}
+	public void setCategoryIds(String categoryIds) {
+		this.categoryIds = categoryIds;
+	}
+	public String getGalleryIds() {
+		return galleryIds;
+	}
+	public void setGalleryIds(String galleryIds) {
+		this.galleryIds = galleryIds;
 	}
 	public String execute()
 	{	
@@ -343,7 +366,40 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	      
 		jObj = new JSONObject(getTask());
 		if(jObj.getString("task").equalsIgnoreCase("getLocationWiseNewsCountForACandidate"))
-		 newsCountVOsList = newsMonitoringService.getNewsCountForACandidate(jObj.getLong("candidateId"), jObj.getString("fromDate"), jObj.getString("toDate"));
+		{
+		 List<Long> categoryIdsList = new ArrayList<Long>(0);
+		 List<Long> galleryIdsList = new ArrayList<Long>(0);
+		 List<Long> locationIdsList = new ArrayList<Long>(0);
+		 
+		 JSONArray categoryIdsArray = jObj.getJSONArray("categoryIdsArray");
+		 if(categoryIdsArray != null && categoryIdsArray.length() > 0)
+		 {
+		  for(int i=0;i<categoryIdsArray.length();i++)
+			 categoryIdsList.add(Long.parseLong(categoryIdsArray.get(i).toString()));
+		 }
+		 
+		 JSONArray galleryIdsArray = jObj.getJSONArray("galleryIdsArray");
+		 if(galleryIdsArray != null && galleryIdsArray.length() > 0)
+		 {
+          for(int i=0;i<galleryIdsArray.length();i++)
+        	galleryIdsList.add(Long.parseLong(galleryIdsArray.get(i).toString()));
+		 }
+		 
+		 JSONArray locationValuesList = jObj.getJSONArray("locationValuesList");
+		 if(locationValuesList != null && locationValuesList.length() > 0)
+		 {
+			for(int i=0;i<locationValuesList.length();i++)
+			 locationIdsList.add(Long.parseLong(locationValuesList.get(i).toString()));
+		 }
+		 
+		 
+		 String fromDateStr = jObj.getString("fromDate");
+		 String toDateStr = jObj.getString("toDate");
+		 String tempVar = jObj.getString("tempVar");
+		 
+		 
+		 newsCountVOsList = newsMonitoringService.getNewsCountForACandidate(fromDateStr,toDateStr,categoryIdsList,galleryIdsList,locationIdsList,tempVar);
+		}
 		else if(jObj.getString("task").equalsIgnoreCase("getLocationWiseNewsDetailsForACandidate"))
 		{
 			Long candidateId = jObj.getLong("candidateId");
@@ -352,9 +408,25 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			Integer startIndex = jObj.getInt("firstResult");
 			Integer maxIndex = jObj.getInt("maxResult");
 			String locationScope = jObj.getString("locationScope");
+			String galleryIdsStr = jObj.getString("galleryIdsList");
+			String categoryIdsStr = jObj.getString("categoryIdsList");
 			
-		 fileVOsList = newsMonitoringService.getLocationWiseNewsDetailsForACandidate(candidateId,fromDateStr,toDateStr,locationScope,startIndex,maxIndex);
+		 fileVOsList = newsMonitoringService.getLocationWiseNewsDetailsForACandidate(candidateId,fromDateStr,toDateStr,locationScope,startIndex,maxIndex,galleryIdsStr,categoryIdsStr);
 		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getCategoryList"))
+		 selectOptionVOList = newsMonitoringService.getCategoryList(jObj.getString("fromDate"),jObj.getString("toDate"));
+		else if(jObj.getString("task").equalsIgnoreCase("getGalleryListForSelectedCategory"))
+		{
+		  JSONArray categoryIdsList = jObj.getJSONArray("categoryIdsList");
+		  List<Long> categoryIds = new ArrayList<Long>(0);
+		  for(int i=0;i<categoryIdsList.length();i++)
+			categoryIds.add(Long.parseLong(categoryIdsList.get(i).toString()));
+		 galleriesList = newsMonitoringService.getGalleryListForSelectedCategory(categoryIds);
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getLocationsListByScopeId"))
+		 selectOptionVOList = newsMonitoringService.getLocationsListByScopeId(jObj.getString("locationScope"), jObj.getString("fromDate"),jObj.getString("toDate"));
+		
 		
 	   }catch (Exception e) {
 		 e.printStackTrace();
