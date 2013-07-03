@@ -914,6 +914,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		        v.setFileDate(newDate);
              v.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileTitle())));
              v.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileDescription())));
+             v.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)obj[1]).size());
              v.setDisplayImageName(f.getFileName());
 				 v.setDisplayImagePath(f.getFilePath());
 				 v.setImagePathInUpperCase(flag);
@@ -5357,6 +5358,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 									file.setFileName1(fileGallary.getFile().getFileTitle() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle())):"");
 									file.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):""));
 									file.setFileDate(new SimpleDateFormat("yyyy-MM-dd").format(fileGallary.getFile().getFileDate()));
+									file.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)fileGallary.getFileGallaryId()).size());
 									
 									if(fileGallary.getFile().getCategory() != null){
 									file.setCategoryId(fileGallary.getFile().getCategory().getCategoryId());
@@ -6197,7 +6199,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		   if(tempVar != null && tempVar.equalsIgnoreCase("assignResponse"))
 		   {
 			   List<Long> list =  candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGalleryId);
-			   if(list == null || list.size() == 0)
+			   if(list == null || list.size() == 0 || !list.contains(fileGalleryId))
 			   {
 				   CandidateNewsResponse candidateNewsResponse = new CandidateNewsResponse();
 				   candidateNewsResponse.setFileGallary(fileGallaryDAO.get(fileGalleryId));
@@ -6210,7 +6212,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		   else
 		   {
 			 List<Long> list1 = candidateRelatedNewsDAO.getFileGalleryIdByCandidateId(candidateId);
-			   if(list1 == null || list1.size() == 0)
+			   if(list1 == null || list1.size() == 0 || !list1.contains(fileGalleryId) )
 			   {
 				   CandidateRealatedNews candidateRealatedNews = new CandidateRealatedNews();
 				   candidateRealatedNews.setFileGallary(fileGallaryDAO.get(fileGalleryId));
