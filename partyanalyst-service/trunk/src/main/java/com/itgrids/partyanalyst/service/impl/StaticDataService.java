@@ -8250,14 +8250,20 @@ public class StaticDataService implements IStaticDataService {
 				for(Object[] params : partiesList)
 				parties.add(new SelectOptionVO((Long)params[0],params[1].toString()));
 			}
-			
+			List listOfNames = new ArrayList(elections);
+			 Collections.sort(listOfNames);
+			 Collections.reverse(listOfNames);
+			Set mySet = new HashSet(Arrays.asList(listOfNames));
+		
+			mandalVO.setPartiesInMandal(parties);
+			mandalVO.setElectionsInMandal(mySet);
 		}
 		catch(Exception e)
 		{
 			log.error("Exception Occured in getElectionYearsAndPartiesForConstituency() method -"+e) ;
 		}
-		mandalVO.setPartiesInMandal(parties);
-		mandalVO.setElectionsInMandal(elections);
+	
+		
 		return mandalVO;
 	}
 	
@@ -8268,7 +8274,8 @@ public class StaticDataService implements IStaticDataService {
 			for(Object[] params :(List<Object[]>)list)
 			{
 				elections.add(new SelectOptionVO((Long)params[0],params[1].toString()+" "+params[2].toString()));	
-			}	
+			}
+		
 	}
 	public Long getParliamentIdByAssembly(Long constituencyId)
 	{
