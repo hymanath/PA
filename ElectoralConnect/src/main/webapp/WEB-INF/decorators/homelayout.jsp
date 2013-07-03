@@ -23,10 +23,10 @@
 		<!-----Fonts----->
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 		
-		<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
-		<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
-		<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
-		<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+		<link  rel="stylesheet" type="text/css" href="js/jquery/development-bundle/themes/base/jquery.ui.core.css"/>
+		<link  rel="stylesheet" type="text/css" href="js/jquery/development-bundle/themes/base/jquery.ui.theme.css"/>
+		<link  rel="stylesheet" type="text/css" href="js/jquery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+		<link  rel="stylesheet" type="text/css" href="js/jquery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 	
 		<script type="text/javascript" src="js/jquery/jquery-1.8.2.js"></script>
 		<script type="text/javascript" src="js/jquery/jquery-ui-1.8.5.custom.min.js"></script>

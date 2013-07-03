@@ -34,6 +34,7 @@
 	 	
 	 </bean>
 	 
+	 	 
 	 <bean id="logoutAction" class="com.itgrids.electoralconnect.web.action.LogoutAction" singleton="false">
 	 	
 	 </bean>
@@ -42,7 +43,11 @@
 	 	<property name="userService" ref="userService"/>
 	 </bean>
 	 
-	 <bean id="forgotPasswordAction" class="com.itgrids.electoralconnect.web.action.ForgotPasswordAction" singleton="false">
+	 <bean id="createAnnouncementAction" class="com.itgrids.electoralconnect.web.action.CreateAnnouncementAction" singleton="false">
+	 	
+	 </bean>
+	 
+	  <bean id="forgotPasswordAction" class="com.itgrids.electoralconnect.web.action.ForgotPasswordAction" singleton="false">
 	 	<property name="userService" ref="userService"/>
 	 	<property name="mailService" ref="mailService"/>
 	 </bean>
