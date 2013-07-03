@@ -128,7 +128,9 @@ function buildMandalVoting(myResult)
 		str+='<td>'+result[i].electionType+'</td>';
 		str+='<td>'+result[i].electionYear+'</td>';
 		str+='<td>'+result[i].partyShortName+'</td>';
-		str+='<td align="right">'+result[i].partyVotesPercentage+'</td>';				
+		str+='<td align="right">'+result[i].partyVotesPercentage+'</td>';			if(result[i].totalVoters == 0)
+		str+='<td align="right">-</td>';
+		else
 		str+='<td align="right">'+result[i].totalVoters+'</td>';
 		str+='<td align="right">'+result[i].validVoters+'</td>';
 		str+='</tr>';	
@@ -160,7 +162,7 @@ function buildMandalDataTable()
 		}, {
 			key : "partyVotesPercentage",parser:"number"
 		}, {
-			key : "totalVoters",parser:"number"
+			key : "totalVoters"
 		} , {
 			key : "validVoters",parser:"number"
 		} ]
