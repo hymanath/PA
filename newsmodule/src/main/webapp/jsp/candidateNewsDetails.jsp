@@ -665,6 +665,10 @@ $(document).ready(function(){
 $("#galleryCheckBoxId").click(function(){
 $('#errorMsgDiv').html('');
  
+ $("#districtList").find('option').remove();
+ $("#categoryList").find('option').remove();
+ $("#galleryList").find('option').remove();
+
  if($("#galleryCheckBoxId").is(":checked"))
  {
   $("#categoryCheckBoxId").attr("checked",false);
@@ -684,8 +688,11 @@ $('#errorMsgDiv').html('');
 
 $("#categoryCheckBoxId").click(function(){
    $('#errorMsgDiv').html('');
-	$("#categoryList").find('option').remove();
-	$("#galleryList").find('option').remove();
+
+	$("#districtList").find('option').remove();
+    $("#categoryList").find('option').remove();
+    $("#galleryList").find('option').remove();
+
 	$("#categoryGallary").attr("checked",false);
 
 	if($("#categoryCheckBoxId").is(":checked"))
@@ -726,6 +733,10 @@ $("#categoryGallary").live("click",function(){
 $("#districtCheckboxId").click(function(){
 
   $('#errorMsgDiv').html('');
+  $("#districtList").find('option').remove();
+  $("#categoryList").find('option').remove();
+  $("#galleryList").find('option').remove();
+
   if($("#districtCheckboxId").is(":checked"))
   {
 	 $("#galleryCheckBoxId").attr("checked",false);
