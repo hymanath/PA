@@ -5522,15 +5522,15 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				
 				Long locationScopeId = fileGallary.getFile().getRegionScopes().getRegionScopesId();
 				if(locationScopeId.equals(2L))
-				 fileVO.setLocationName(stateDAO.get(locationScopeId).getStateName());
+				 fileVO.setLocationName(stateDAO.get(fileGallary.getFile().getLocationValue()).getStateName());
 				else if(locationScopeId.equals(3L))
-				 fileVO.setLocationName(districtDAO.get(locationScopeId).getDistrictName());
+				 fileVO.setLocationName(districtDAO.get(fileGallary.getFile().getLocationValue()).getDistrictName());
 				else if(locationScopeId.equals(4L))
-				 fileVO.setLocationName(constituencyDAO.get(locationScopeId).getName());
+				 fileVO.setLocationName(constituencyDAO.get(fileGallary.getFile().getLocationValue()).getName());
 				else if(locationScopeId.equals(5L))
-				 fileVO.setLocationName(tehsilDAO.get(locationScopeId).getTehsilName());
+				 fileVO.setLocationName(tehsilDAO.get(fileGallary.getFile().getLocationValue()).getTehsilName());
 				
-				fileVO.setLocationId(locationScopeId);
+				fileVO.setLocationId(fileGallary.getFile().getLocationValue());
 				
 				fileVO.setFilePath1(fileGallary.getFile().getFilePath());
 				fileVO.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size());
