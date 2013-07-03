@@ -1,5 +1,7 @@
 package com.itgrids.electoralconnect.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -7,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.service.IUserService;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -23,7 +26,7 @@ private String task;
 private JSONObject jobj;
 private ResultStatus resultStatus;
 private IUserService userService;
-
+private List<CommentVO> commentVO;
 public String getPasswordChanged() {
 	return passwordChanged;
 }
@@ -56,6 +59,14 @@ public void setUserService(IUserService userService) {
 	this.userService = userService;
 }
 
+public List<CommentVO> getCommentVO() {
+	return commentVO;
+}
+
+public void setCommentVO(List<CommentVO> commentVO) {
+	this.commentVO = commentVO;
+}
+
 public String execute() throws Exception {
 	return SUCCESS;
 }
@@ -73,13 +84,31 @@ public String saveComment()
 		HttpSession session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		if(regVO == null)
-			return Action.ERROR;
+			return "notLogged";
 		String commentString = jobj.getString("comment");
 		Long annoucementId = jobj.getLong("id");
 		Long userId = regVO.getRegistrationID();
 		resultStatus = userService.saveComment(userId, annoucementId, commentString);
 	} catch (Exception e) {
 		LOG.error("Exception raised in  saveComment() method in HomePageAction Action",e);
+	}
+	return Action.SUCCESS;
+}
+
+public String getCommentsList()
+{
+	try {
+		LOG.debug("Entered into getCommentsList() method in HomePageAction Action");
+		jobj = new JSONObject(getTask());
+		
+			Long id        = jobj.getLong("id");
+			int startIndex = jobj.getInt("startIndex");
+			int maxIndex   = jobj.getInt("maxIndex");
+			commentVO = userService.getAllCommentsCommentedByUser(id,startIndex,maxIndex);
+		
+			
+	} catch (Exception e) {
+		LOG.error("Exception raised in  getCommentsList() method in HomePageAction Action",e);
 	}
 	return Action.SUCCESS;
 }

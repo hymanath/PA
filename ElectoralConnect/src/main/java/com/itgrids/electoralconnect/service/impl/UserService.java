@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
 import com.itgrids.electoralconnect.dao.IAnnouncementsDAO;
 import com.itgrids.electoralconnect.dao.ICommentDAO;
 import com.itgrids.electoralconnect.dao.IRolesDAO;
@@ -16,8 +15,8 @@ import com.itgrids.electoralconnect.dao.IUserDAO;
 import com.itgrids.electoralconnect.dao.IUserLoginDAO;
 import com.itgrids.electoralconnect.dao.IUserProfileDAO;
 import com.itgrids.electoralconnect.dao.IUserRolesDAO;
+import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
-import com.itgrids.electoralconnect.dto.UserVO;
 import com.itgrids.electoralconnect.model.Comment;
 import com.itgrids.electoralconnect.model.Roles;
 import com.itgrids.electoralconnect.model.User;
@@ -28,6 +27,7 @@ import com.itgrids.electoralconnect.service.IUserService;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+
 
 public class UserService implements IUserService{
 		//DAO's 
@@ -263,7 +263,12 @@ public class UserService implements IUserService{
 			
 			return resultStatus;
 		}
-		
+		/**
+		 * This Service is used for getting the password For the sake of user forgeted password
+		 * @param String username
+		 * @return RegistrationVO
+		 * @date 02-07-2013
+		 */
 		public RegistrationVO forgetPasswordService(String username)
 		{
 			RegistrationVO regVO = new RegistrationVO();
@@ -280,7 +285,14 @@ public class UserService implements IUserService{
 			}
 			return regVO;
 		}
-		
+		/**
+		 * This Service is used for saving the comments enterd by user about announcement or pressrelease
+		 * @param Long userId
+		 * @param Long annoncementId
+		 * @param String comment
+		 * @return ResultStatus
+		 * @date 02-07-2013
+		 */
 		public ResultStatus saveComment(Long userId,Long annoncementId,String comment)
 		{
 			ResultStatus resultStatus = new ResultStatus();
@@ -298,6 +310,7 @@ public class UserService implements IUserService{
 				dateUtilService = new DateUtilService();
 				commentModel.setComment(comment);
 				commentModel.setTime(dateUtilService.getCurrentDateAndTime());
+				commentModel.setIsDelete("NO");
 				commentModel = commentDAO.save(commentModel);
 				if(commentModel != null)
 				{
@@ -314,4 +327,74 @@ public class UserService implements IUserService{
 			
 			return resultStatus;
 		}
+		/**
+		 * This Service is used for getting all comments commented by users
+		 * @param Long announcementId
+		 * @param Long startIndex
+		 * @param Long  maxIndex
+		 * @return List<CommentVO>
+		 * @date 03-07-2013
+		 */
+		public List<CommentVO> getAllCommentsCommentedByUser(Long announcementId,int startIndex,int maxIndex)
+		{
+			List<CommentVO> returnList = null;
+			try {
+				LOG.debug("Entered into getAllCommentsCommentedByUser() method in UserService Service");
+				User user = new User();
+				Long totalCount = commentDAO.getTotalCommentsCountByAnnouncementId(announcementId);
+				List<Object[]> commentsList = commentDAO.getAllComments(announcementId, startIndex, maxIndex);
+				if(commentsList != null && commentsList.size() > 0)
+				{
+					returnList = new ArrayList<CommentVO>();
+					for (Object[] parms : commentsList) {
+						CommentVO commentVO = new CommentVO();
+						commentVO.setCommentId((Long)parms[0]);
+						commentVO.setComment(parms[1].toString());
+						user          = (User) parms[2];
+						commentVO.setName(user.getUserProfile().getFirstName());
+						commentVO.setDate((Date) parms[3]);
+						commentVO.setTotal(totalCount);
+						returnList.add(commentVO);
+					}
+				}
+			} catch (Exception e) {
+				returnList = new ArrayList<CommentVO>();
+				LOG.error("Exception Raised in getAllCommentsCommentedByUser() method in UserService Service",e);
+			}
+			
+			return returnList;
+		}
+		/**
+		 * This Service is user for getting Top 5 Comments commented by the users
+		 * @param Long announcementId
+		 * @return List<CommentVO>
+		 * @date 03-07-2013
+		 */
+		/*public List<CommentVO> getTop5CommentsCommentedByUser(Long announcementId)
+		{
+			List<CommentVO> returnList = null;
+			try {
+				LOG.debug("Entered into getTop5CommentsCommentedByUser() method in UserService Service");
+				User user = new User();
+				List<Object[]> commentsList = commentDAO.getTop5Comments(announcementId);
+				if(commentsList != null && commentsList.size() > 0)
+				{
+					returnList = new ArrayList<CommentVO>();
+					for (Object[] parms : commentsList) {
+						CommentVO commentVO = new CommentVO();
+						commentVO.setCommentId((Long)parms[0]);
+						commentVO.setComment(parms[1].toString());
+						user          = (User) parms[2];
+						commentVO.setName(user.getUserProfile().getFirstName());
+						commentVO.setDate((Date) parms[3]);
+						returnList.add(commentVO);
+					}
+				}
+			} catch (Exception e) {
+				returnList = new ArrayList<CommentVO>();
+				LOG.error("Exception Raised in getTop5CommentsCommentedByUser() method in UserService Service",e);
+			}
+			
+			return returnList;
+		}*/
 }

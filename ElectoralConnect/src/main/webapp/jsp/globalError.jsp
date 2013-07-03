@@ -7,6 +7,6 @@
 <title>Error</title>
 </head>
 <body>
-<b>Error</b>
+<div align="center"></div><b style="color:red">Please Login To Continue </b></div>
 </body>
 </html>
