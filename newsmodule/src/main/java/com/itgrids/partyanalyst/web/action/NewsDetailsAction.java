@@ -341,7 +341,17 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsForACandidateByCategoryId"))
 		 selectOptionVOList = candidateDetailsService.getNewsForACandidateByCategoryId(jObj.getLong("candidateId"),jObj.getLong("categoryId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		else if(jObj.getString("task").equalsIgnoreCase("getGalleryListForAParty"))
-		 selectOptionVOList = candidateDetailsService.getGalleryListForAParty(jObj.getString("fromDate"),jObj.getString("toDate"));
+		{
+		  List<Long> locationIdsList = new ArrayList<Long>(0);
+		  JSONArray locationIdsArray = jObj.getJSONArray("locationIdsArray");
+		  if(locationIdsArray != null && locationIdsArray.length() > 0)
+		  {
+		    for(int i=0;i<locationIdsArray.length();i++)
+			 locationIdsList.add(Long.parseLong(locationIdsArray.get(i).toString()));
+		  }
+		  String locationScope = jObj.getString("locationScope");
+		  selectOptionVOList = candidateDetailsService.getGalleryListForAParty(jObj.getString("fromDate"),jObj.getString("toDate"),locationIdsList,locationScope);
+		}
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsByGalleryId"))
 		 newsList = candidateDetailsService.getNewsByGalleryId(jObj.getLong("gallaryId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		
@@ -399,9 +409,9 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 String fromDateStr = jObj.getString("fromDate");
 		 String toDateStr = jObj.getString("toDate");
 		 String tempVar = jObj.getString("tempVar");
+		 String locationScope = jObj.getString("locationScope");
 		 
-		 
-		 newsCountVOsList = newsMonitoringService.getNewsCountForACandidate(fromDateStr,toDateStr,categoryIdsList,galleryIdsList,locationIdsList,tempVar);
+		 newsCountVOsList = newsMonitoringService.getNewsCountForACandidate(fromDateStr,toDateStr,categoryIdsList,galleryIdsList,locationIdsList,tempVar,locationScope);
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getLocationWiseNewsDetailsForACandidate"))
 		{
@@ -418,7 +428,18 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getCategoryList"))
-		 selectOptionVOList = newsMonitoringService.getCategoryList(jObj.getString("fromDate"),jObj.getString("toDate"));
+		{
+		  List<Long> locationIdsList = new ArrayList<Long>(0);
+		  String locationScope = jObj.getString("locationScope");
+		  JSONArray locationIdsArray = jObj.getJSONArray("locationIdsArray");
+		  if(locationIdsArray != null && locationIdsArray.length() > 0)
+		  {
+			for(int i=0;i<locationIdsArray.length();i++)
+			 locationIdsList.add(Long.parseLong(locationIdsArray.getString(i).toString()));
+		  }
+		 
+		  selectOptionVOList = newsMonitoringService.getCategoryList(jObj.getString("fromDate"),jObj.getString("toDate"),locationScope,locationIdsList);
+		}
 		else if(jObj.getString("task").equalsIgnoreCase("getGalleryListForSelectedCategory"))
 		{
 		  JSONArray categoryIdsList = jObj.getJSONArray("categoryIdsList");

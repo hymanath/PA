@@ -221,10 +221,10 @@ function buildPaginatedNews(results,jsObj)
 		str +='</table>';
 		str +='</div>';
 		
-		str+="<div style='clear:both;' class='span3 pull-right'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' style='margin-right: 10px;' class='btn btn-mini btn-info pull-right' type='button'>More...</a>";
-		if(results[i].responseCount > 2)
+		str+="<div style='clear:both;' class='span4 pull-right'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' style='font-weight: bold; font-size: 13px; margin-right: 20px;' class='btn btn-mini btn-info pull-right' type='button'>More...</a>";
+		if(results[i].responseCount > 0)
 		{
-		  str +="<a style='margin-left: 18px;' type='button' class='btn btn-mini btn-info' href='showNewsResponseAction.action?responseContentId ="+results[i].contentId+"'>track</a>";
+		  str +="<a style='font-size: 13px; margin-left: 28px; font-weight: bold;' type='button' class='btn btn-mini btn-info' href='javascript:{}' onclick='getNewsTrackDetails("+results[i].contentId+")'>Track</a>";
 		}
 
 		str +='</div></li>';
@@ -283,7 +283,19 @@ function getSelectedNewsDetails()
     var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
     browser1.focus();
 }
-  $(".dateField").live("click", function(){
+
+function getNewsTrackDetails(contentId)
+{
+   
+  var urlstr = "showNewsResponseAction.action?responseContentId ="+contentId+"&";
+		
+     var browser1 = window.open(urlstr,"newsTrackDetails"+contentId+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+
+}
+
+
+$(".dateField").live("click", function(){
  $(this).datepicker({
 		dateFormat: "dd/mm/yy",
 		changeMonth: true,
