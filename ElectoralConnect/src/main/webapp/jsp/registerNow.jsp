@@ -22,15 +22,15 @@
 	#status{background-image:url(img/accept.png)}
 	   label.valid {
 		  color: green !important;
-		  background: url(img/accept.png) center center no-repeat !important;
+		  background: url(img/accept.png) center no-repeat !important;
 		  display: inline-block;
 		  text-indent: -9999px;  
 		}
 		label.error {
 		  font-weight: bold; 
 		  color: red;
-		  background: url(img/error.png) no-repeat;
-		  padding: 2px 14px;
+		  background: url(img/error.png) no-repeat left center;
+		  padding: 1px 16px;
 		  display: inline-block;
 		}
 </style>
