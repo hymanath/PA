@@ -181,7 +181,13 @@
 				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
 				
 				str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
+				if(myResults[i].abused.toLowerCase() == "no")
+				{
+					str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" class="btn btn-warning">Abuse</a>';
+				}
+				str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
 				str += '</div>';
+				
 				str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
 			}
 			$('#totalCommentsBtDates').append(str);
@@ -215,6 +221,11 @@
 				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
 				
 				str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
+				if(myResults[i].abused.toLowerCase() == "no")
+				{
+					str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" class="btn btn-warning">Abuse</a>';
+				}
+				str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
 				str += '</div>';
 				str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingTotalCommentsList();">More</a>'
 			}
@@ -235,6 +246,18 @@
 	{
 		getAllComments(stIndex,enIndex,'getTotalComments');
 	}
+	
+	function abuseComment(id)
+	{
+		var jsObj =
+		{  	
+			id   : id,
+			task : "abuseComment"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "abuseCommentAction.action?"+rparam;
+		callAjaxForAdmin(jsObj, url);
+	}
 	function callAjaxForAdmin(jsObj,url){
 		 var myResults;
 
@@ -251,10 +274,15 @@
 								{
 									buildTotalCommentsList(myResults);
 								}
-								/* else if(jsObj.task =="getRemaingComments")
+								else if(jsObj.task =="abuseComment")
 								{
-									buildRemainingCommentsList(myResults);
-								} */
+									if(myResults.resultCode == 0)
+									{
+										$("#abusedStatus"+jsObj.id+"").html("<b style='color:green'>Abused Successfull..</b>");
+										$('#abusedButton"+jsObj.id+"').hide();
+									}
+									
+								} 
 								}catch (e) {
 							     
 								}  
