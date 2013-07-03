@@ -17,7 +17,10 @@ $(document).ready(function(){
     });
 
    $(".form-horizontal").validate({
-	onkeyup: function(element) {$(element).valid()},
+	onfocusout: function(e) {
+      this.element(e);
+      }, onkeyup: false,
+
 	  rules: {
 		firstName: {	
 			required: true,
@@ -85,28 +88,7 @@ $(document).ready(function(){
 		
 	});
 
-    $('[name="personalInfoForm"]').validate({
-	onkeyup: function(element) {$(element).valid()},
-	  rules: {
-		userName: {	
-			required: true  
-			},
-		password: {
-		    required :true
-			}
-	  },	
-	  messages: {
-		userName: {
-			required: " Enter the Username" 
-			},
-		password: {
-			required: " Enter the password"
-		    }
-	  },
-	  success: function(element) {
-	      element.text('ok').addClass('valid');
-			},
-	});
+    
 
 });
 
