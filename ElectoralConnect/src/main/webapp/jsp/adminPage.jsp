@@ -177,6 +177,7 @@
 			{
 				str += '<div class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid green; margin-bottom: 10px;">';
 				str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
+				str +='<span><b>Announcement : </b></span><span>'+myResults[i].announcement+'</span></br>';
 				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
 				
 				str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
@@ -210,6 +211,7 @@
 			{
 				str += '<div class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid blue; margin-bottom: 10px;">';
 				str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
+				str +='<span><b>Announcement : </b></span><span>'+myResults[i].announcement+'</span></br>';
 				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
 				
 				str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
