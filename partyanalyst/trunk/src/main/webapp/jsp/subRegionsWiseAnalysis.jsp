@@ -2037,8 +2037,9 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		var id = oRecord.getData("id");
 		var type = oRecord.getData("type");
 		
-		if(type == "booth" || type == "LOCAL ELECTION BODY" || type == "Booth"){
-		elLiner.innerHTML ='<a id="openCompleteInfoFormId" href="javascript:{}">'+name+'</a>';
+		if(type == "booth" || type == "LOCAL ELECTION BODY" || type == "Booth" || buildType == "hamlet"){
+		
+		elLiner.innerHTML ='<a id="openCompleteInfoFormId" style="cursor:default;text-decoration:none;">'+name+'</a>';
 		}
 		else
 		{
