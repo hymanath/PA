@@ -1542,7 +1542,7 @@ function refreshingParentWindow()
 						<td><s:checkboxlist list="#session.CadreRolesList"  name="cadreRoles" listKey="id" listValue="name"></s:checkboxlist></td>	
 					</tr>
 					<tr>
-						<td><span>Membership No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="text"  id="memberShipNo" name="memberShipNo" value="${cadreInfo.memberShipNo}" style="margin-left:40px;"></input><br/></td>
+						<td><span>Membership No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="text"  id="memberShipNo" name="memberShipNo" value="${cadreInfo.memberShipNo}" style="margin-left:40px;width:205px;"></input><br/></td>
 						
 					</tr>
 					<tr>
@@ -1557,7 +1557,7 @@ function refreshingParentWindow()
 		</table>
 		<table class="cadreDetailsTable">
 			<tr>
-				<td width="200"><s:label for="cadreTypeField" id="cadreTypeLabel"  value="%{getText('memberType')}" /><font class="requiredFont"> * </font></td>
+				<td width="170"><s:label for="cadreTypeField" id="cadreTypeLabel"  value="%{getText('memberType')}" /><font class="requiredFont"> * </font></td>
 				<td align="left">
 					<s:radio id="memberType" name="memberType" list="#session.cadreType" onclick="showPartyCommittee(this.value)" value="defaultCadreType"/>
 				</td>
@@ -1565,9 +1565,9 @@ function refreshingParentWindow()
 		</table>
 		<table class="cadreDetailsTable" width="100%" id="cadreLevelTable" style="display:none;"  border="0">
 		<tr>
-			<td width="200"><s:label for="scopeLevelField" id="cadreLevelLabel"  value="%{getText('CADRE_LEVEL')}" /><font class="requiredFont"> * </font></td>
+			<td width="170"><s:label for="scopeLevelField" id="cadreLevelLabel"  value="%{getText('CADRE_LEVEL')}" /><font class="requiredFont"> * </font></td>
 			<td align="left">				
-				<s:select id="scopeLevel" cssClass="regionSelect" name="cadreLevel"list="#session.cadreLevelsList" listKey="id" listValue = "name" value="defaultCadreLevel"  headerKey="0" headerValue="Select Cadre Level" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>	
+				<s:select id="scopeLevel" cssClass="regionSelect" cssStyle="width:220px;" name="cadreLevel"list="#session.cadreLevelsList" listKey="id" listValue = "name" value="defaultCadreLevel"  headerKey="0" headerValue="Select Cadre Level" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>	
 			</td>
 		</tr>
 		<c:if test="${windowTask == 'update_existing'}">
@@ -1581,40 +1581,40 @@ function refreshingParentWindow()
 					</tr>
 		 		</c:if>
 		<tr id="row1" style="display:none;">
-			<td width="200"><s:label for="stateField_s" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
+			<td width="170"><s:label for="stateField_s" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="stateField_s" cssClass="regionSelect" name="cadreLevelState" value="defaultStateId" list="#session.statesList_c" listKey="id" listValue="name" onchange="getReqValues(this.options[this.selectedIndex].value);setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="stateField_s" cssStyle="width:220px;" cssClass="regionSelect" name="cadreLevelState" value="defaultStateId" list="#session.statesList_c" listKey="id" listValue="name" onchange="getReqValues(this.options[this.selectedIndex].value);setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row2" style="display:none;">
-			<td width="200"><s:label for="districtField_s" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
+			<td width="170"><s:label for="districtField_s" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="districtField_s" cssClass="regionSelect" name="cadreLevelDistrict" value="defaultDistId" list="#session.districtsList_c" listKey="id" listValue="name" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'cadreReg','constituencyField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="districtField_s" cssStyle="width:220px;" cssClass="regionSelect" name="cadreLevelDistrict" value="defaultDistId" list="#session.districtsList_c" listKey="id" listValue="name" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'cadreReg','constituencyField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row3" style="display:none;">
-			<td width="200"><s:label for="constituencyField_s" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
+			<td width="170"><s:label for="constituencyField_s" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="constituencyField_s" value="defaultConstId" name="cadreLevelConstituency" cssClass="regionSelect" list="#session.constituenciesList_c" listKey="id" listValue="name" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreReg','mandalField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="constituencyField_s" cssStyle="width:220px;" value="defaultConstId" name="cadreLevelConstituency" cssClass="regionSelect" list="#session.constituenciesList_c" listKey="id" listValue="name" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreReg','mandalField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>								
 		<tr id="row4" style="display:none;">
-			<td width="200"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
+			<td width="170"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="mandalField_s" cssClass="regionSelect" name="cadreLevelMandal" list="#session.mandalsList_c" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','cadreLevel','null','constituencyField_s', 'row6', 'row5');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="mandalField_s" cssStyle="width:220px;" cssClass="regionSelect" name="cadreLevelMandal" list="#session.mandalsList_c" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','cadreLevel','null','constituencyField_s', 'row6', 'row5');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>					
 		<tr id="row5" style="display:none;">
-			<td width="200"><s:label for="hamletField_s" id="mandalLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
+			<td width="170"><s:label for="hamletField_s" id="mandalLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="hamletField_s" cssClass="regionSelect" name="cadreLevelVillage" list="#session.villagesList_c" listKey="id" listValue="name" onchange="getBoothsInWard('cadreLevel','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField_s');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="hamletField_s" cssStyle="width:220px;" cssClass="regionSelect" name="cadreLevelVillage" list="#session.villagesList_c" listKey="id" listValue="name" onchange="getBoothsInWard('cadreLevel','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField_s');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row6" style="display:none;">
-			<td width="200">Booth No<font class="requiredFont"> * </font></td>
+			<td width="170">Booth No<font class="requiredFont"> * </font></td>
 
 			<td>
-				<s:select id="boothField_s" cssClass="regionSelect" name="cadreLevelBooth" list="#session.boothsList_c" listKey="id" listValue="name" onchange="setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="boothField_s" cssStyle="width:220px;" cssClass="regionSelect" name="cadreLevelBooth" list="#session.boothsList_c" listKey="id" listValue="name" onchange="setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 			<td>
 				<input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField_s')"/>
