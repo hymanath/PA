@@ -27,6 +27,7 @@
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="userDAO" ref="userDAO"></property>
 		<property name="announcementTypeDAO" ref="announcementTypeDAO"></property>
+		<property name="commentDAO" ref="commentDAO"/>
 	</bean>
 </beans>		
 	

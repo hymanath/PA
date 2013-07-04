@@ -9,8 +9,10 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.electoralconnect.dto.AnnouncementVO;
 import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
+import com.itgrids.electoralconnect.service.IAnnouncementService;
 import com.itgrids.electoralconnect.service.IUserService;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.opensymphony.xwork2.Action;
@@ -27,6 +29,8 @@ private JSONObject jobj;
 private ResultStatus resultStatus;
 private IUserService userService;
 private List<CommentVO> commentVO;
+private List<AnnouncementVO> announcementsList;
+private IAnnouncementService announcementService;
 public String getPasswordChanged() {
 	return passwordChanged;
 }
@@ -65,6 +69,22 @@ public List<CommentVO> getCommentVO() {
 
 public void setCommentVO(List<CommentVO> commentVO) {
 	this.commentVO = commentVO;
+}
+
+public List<AnnouncementVO> getAnnouncementsList() {
+	return announcementsList;
+}
+
+public void setAnnouncementsList(List<AnnouncementVO> announcementsList) {
+	this.announcementsList = announcementsList;
+}
+
+public IAnnouncementService getAnnouncementService() {
+	return announcementService;
+}
+
+public void setAnnouncementService(IAnnouncementService announcementService) {
+	this.announcementService = announcementService;
 }
 
 public String execute() throws Exception {
@@ -112,4 +132,30 @@ public String getCommentsList()
 	}
 	return Action.SUCCESS;
 }
+
+public String getTopAnnouncements()
+{
+	try {
+		LOG.debug("Entered into getTopAnnouncements() method in HomePageAction Action");
+		jobj = new JSONObject(getTask());
+		if(jobj.getString("task").equalsIgnoreCase("topAnnouncements"))
+		{
+			announcementsList = announcementService.getTop5Announcements();
+		}
+		else if(jobj.getString("task").equalsIgnoreCase("getAnnouncementForSelected"))
+		{
+			Long announcementId = jobj.getLong("announcementId");
+			announcementsList = announcementService.getAnnouncementById(announcementId);
+		}
+		else if(jobj.getString("task").equalsIgnoreCase("getAllAnnouncements"))
+		{
+			announcementsList = announcementService.getAllAnnouncements();
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised in  getTopAnnouncements() method in HomePageAction Action",e);
+	}
+	return Action.SUCCESS;
+}
+
 }

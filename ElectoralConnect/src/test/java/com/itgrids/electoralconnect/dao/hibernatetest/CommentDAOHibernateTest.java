@@ -66,17 +66,25 @@ public class CommentDAOHibernateTest extends BaseDaoTestCase{
 		//System.out.println(commentDAO.getCommentsCountBetweenSelectedDates(startDate , endDate));
 	}*/
 	
-	public void testCount()
+	/*public void testCount()
 	{
 		List<Object[]> values = commentDAO.getAllComments(0, 20);
 		for (Object[] parms : values) {
 		System.out.println(parms[0]  +":"+ parms[1]);
 		}
 	    System.out.println(commentDAO.getTotalComments());
-	}
+	}*/
 	
 	/*public void testCount()
 	{
 		System.out.println(commentDAO.abuseTheComment(1l));
 	}*/
+	
+	public void testCount()
+	{
+		List<Object[]> values = commentDAO.getTop5PressReleases(0, 5);
+		for (Object[] parms : values) {
+		System.out.println(parms[0]  +":"+ parms[1]);
+		}
+	}
 }

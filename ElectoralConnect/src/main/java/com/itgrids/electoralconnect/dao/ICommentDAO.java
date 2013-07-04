@@ -24,4 +24,8 @@ public interface ICommentDAO  extends GenericDao<Comment, Long> {
 	public List<Object[]> getAllComments(int startIndex,int maxIndex);
 	
 	public int abuseTheComment(Long commentId);
+	
+	public List<Object[]> getTop5Notifications(int startIndex,int maxIndex);
+	
+	public List<Object[]> getTop5PressReleases(int startIndex,int maxIndex);
 }

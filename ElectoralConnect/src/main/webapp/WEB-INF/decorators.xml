@@ -33,6 +33,7 @@
     	<pattern>/forgotPasswordAction*</pattern>
     	<pattern>/adminRegisterSaveAction*</pattern>
     	<pattern>/createAnnouncementAction*</pattern>
+    	<pattern>/selectedAnnouncementsAction*</pattern>
     </decorator>
 
 </decorators>
