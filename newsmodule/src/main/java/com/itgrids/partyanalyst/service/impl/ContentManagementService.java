@@ -12,8 +12,10 @@ import java.util.Set;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
+import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.INewsDetailsDAO;
@@ -43,6 +45,8 @@ public class ContentManagementService implements IContentManagementService{
 	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
 	private ICandidateDAO candidateDAO;
 	private INewsDetailsDAO newsDetailsDAO;
+	private ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
+	private IBoothDAO boothDAO;
 	
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
@@ -75,6 +79,23 @@ public class ContentManagementService implements IContentManagementService{
 
 	public void setPartyGalleryDAO(IPartyGalleryDAO partyGalleryDAO) {
 		this.partyGalleryDAO = partyGalleryDAO;
+	}
+
+	public ICandidateRelatedNewsDAO getCandidateRelatedNewsDAO() {
+		return candidateRelatedNewsDAO;
+	}
+
+	public void setCandidateRelatedNewsDAO(
+			ICandidateRelatedNewsDAO candidateRelatedNewsDAO) {
+		this.candidateRelatedNewsDAO = candidateRelatedNewsDAO;
+	}
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
 	}
 
 	/*public ISpecialPageGalleryDAO getSpecialPageGalleryDAO() {
@@ -282,6 +303,7 @@ public class ContentManagementService implements IContentManagementService{
 					fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
 					fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 					fileVO.setContentId(fileGallary.getFileGallaryId());
+					fileVO.setGallaryName(fileGallary.getGallary().getName());
 					fileVO.setNewsDescription(fileGallary.getFile().getNewsDescription() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getNewsDescription())):"");
 
 					
@@ -432,8 +454,11 @@ public class ContentManagementService implements IContentManagementService{
 			 }			 
 			 
 		List<FileGallary> fileGallaries =  fileGallaryDAO.getFileGallariesByFileGallaryIdsList(totalIds);
-		
-		
+		List<Object[]> candidateNames = candidateRelatedNewsDAO.getCandidateByFileGallaryId(totalIds);		
+		Map<Long,String> candidateByGaleryId = new HashMap<Long, String>();		
+		for (Object[] objects : candidateNames) {
+			candidateByGaleryId.put((Long)objects[0],objects[1].toString());
+		}			
 		for(FileGallary fileGallary:fileGallaries)
 		{
 			FileVO fileVO = new FileVO();
@@ -449,6 +474,8 @@ public class ContentManagementService implements IContentManagementService{
 			fileVO.setFileDescription1(file.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):"");
 			fileVO.setNewsDescription(file.getNewsDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getNewsDescription())):"");
 			fileVO.setFileDate(file.getFileDate().toString());
+			fileVO.setCandidateName(candidateByGaleryId.get(fileGallary.getFileGallaryId()!=null?fileGallary.getFileGallaryId():""));
+			fileVO.setLocationName(boothDAO.getLocationsById(file.getRegionScopes().getScope(),file.getLocationValue()).toString()+" ( "+file.getRegionScopes().getScope()+" )");
 			
 			List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 			Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
