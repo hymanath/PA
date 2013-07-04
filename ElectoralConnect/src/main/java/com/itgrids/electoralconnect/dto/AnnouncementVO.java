@@ -24,6 +24,7 @@ public class AnnouncementVO implements Serializable{
 	private List<PressReleaseVO> pressReleasesList;
 	private String fileName;
 	private String title;
+	private Long id;
 	public String getName() {
 		return name;
 	}
@@ -113,6 +114,12 @@ public class AnnouncementVO implements Serializable{
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

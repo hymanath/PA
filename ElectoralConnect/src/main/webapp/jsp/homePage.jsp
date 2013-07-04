@@ -270,7 +270,7 @@ $('#changePassword').click(function(){
 $('#passwordModal').modal('show');
 });
 
-function saveComment()
+/* function saveComment()
 {
 	var comment = $('#commentText').val();
 	var jsObj =
@@ -282,7 +282,7 @@ function saveComment()
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "commentSaveAction.action?"+rparam;
 		callAjaxForComments(jsObj, url);
-}
+} */
 
 function getTop5Comments(id,startIndex,maxIndex,task)
 {
@@ -456,7 +456,7 @@ function buildAnnouncementForSelected(myResults)
 	if(myResults != null)
 	{
 		result = myResults;
-		window.open('selectedAnnouncementsAction.action','','width=700,height=500');
+		window.open('selectedAnnouncementsAction.action');
 		
 	}
 }
