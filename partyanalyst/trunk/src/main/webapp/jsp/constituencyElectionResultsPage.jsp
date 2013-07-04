@@ -260,7 +260,8 @@ function displayConstituencyElectionResults()
 		if(constituencyElecMainObj.constituencyBasicInfo.reservationZone==""){
 			str+='<td width="25%"><a href="constituencyPageAction.action?constituencyId='+constituencyElecMainObj.constituencyBasicInfo.constituencyId+'" onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.constituencyBasicInfo.constituencyName+'</a></td>';
 		}else{
-			str+='<td width="25%">'+constituencyElecMainObj.constituencyBasicInfo.constituencyName+' <b style="color:green;"> ( '+ (constituencyElecMainObj.constituencyBasicInfo.reservationZone )+' ) </b></td>';
+			
+			str+='<td width="25%"><a href="constituencyPageAction.action?constituencyId='+constituencyElecMainObj.constituencyBasicInfo.constituencyId+'" onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.constituencyBasicInfo.constituencyName+' <b style="color:green;"> ( '+ (constituencyElecMainObj.constituencyBasicInfo.reservationZone )+' ) </b></a></td>';
 		}
 		
 		str+='<th width="25%">Constituency Type</th>';
