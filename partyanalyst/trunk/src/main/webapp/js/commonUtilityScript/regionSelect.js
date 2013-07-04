@@ -391,7 +391,7 @@ function getLevelWiseRangeDetails()
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="3"/> District';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="10"/> Parliament Constituency';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="4"/> Assembly Constituency';
-   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="5"/> Mandal';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="5"/> Mandal<br/>';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="6"/> Village';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="7"/> MUNICIPAL-CORP-GMC';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="8"/> WARD';
@@ -1816,6 +1816,8 @@ function buildRegionsSelectBoxes(jsObj,results)
 		}
 	    else if(results.regions[i].name == 'MANDAL/TEHSIL'){
 		  str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="MANDAL" onclick="populateLocations(this.id,\'onChange\')"/>'+results.regions[i].name+'';
+		  if(results.regions.length > 6)
+		  str+='<br/>';
 		}
 		else if(results.regions[i].name == 'ASSEMBLY CONSTITUENCY'){
 		  str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="CONSTITUENCY" onclick="populateLocations(this.id,\'onChange\')"/>'+results.regions[i].name+'';
