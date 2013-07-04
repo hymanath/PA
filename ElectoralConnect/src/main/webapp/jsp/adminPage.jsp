@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="s" uri="/struts-tags" %>  
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -15,7 +17,7 @@
 	#mainBodyId{width:800px;margin-left:auto;margin-right:auto;}
 	input[type="radio"],#attachFileId{margin-bottom:5px;margin-right:5px;}
 	
-	#mainBodyId legend,#saveAnnouncement{margin-left:140px;margin-bottom:5px;}
+	#saveAnnouncement{margin-left:300px;margin-bottom:10px;margin-top:10px;}
 	.AnnouncementForm{ margin-top: 5px;}
 	.widget{background:#fcfcfc;  height:100px;border:1px solid #2DCFFE;}
 	.widget:hover{box-shadow:0px 0px 15px #c0c0c0;}
@@ -33,7 +35,8 @@
 	.align{ margin-left: 90px;
    margin-top:7px;}
 	.t_align{text-align:center;}
-	#forFileId{width:661px;}
+	#forFileId{width:661px;margin-bottom:10px;}
+	#statusMessage{margin:10px;}
 
 </style>
 
@@ -179,7 +182,7 @@
 	</div>
 	<div id="announcementForm" >
 	<div id="BOX-2" style="display: none;background-color:#fff;">
-		<form class="form-horizontal AnnouncementForm" name="AnnouncementForm" action="createAnnouncementAction.action"  method="post" enctype="multipart/form-data">
+		<form class="form-horizontal AnnouncementForm" name="AnnouncementForm" action="createAnnouncementAction.action?fromForm=announcement"  method="post" enctype="multipart/form-data">
 				<input type="hidden" value="admin" name="isAdmin"></input>
 				<input type="hidden" value="2" name="type"></input>
 				<h2 class="row_border header">Announcement Form</h2>
@@ -241,7 +244,13 @@
 						<div class="controls">
 							<input type="file" id="docs" class="thumbnail" name="docs"></div>
 					</div>
+					
 				</div>
+				<div class="control-group">
+						
+						<div class="controls">
+							<span id="statusMessage">${resultString}</span>
+						</div>
 				
 				<input type="submit" class="btn btn-primary " id="saveAnnouncement" value="submit"></input>
 						
@@ -570,8 +579,36 @@ $(document).ready(function(){
 						    $("#comment").removeClass("selected");
 							 
 				   });
-				    
-				});
+				 });
+				
+		<c:if test="${fromForm=='announcement'}">
+			getAnnouncementForm();
+			<c:if test="${resultString=='SUCCESS'}">
+				$('#statusMessage').html("Uploaded SuccessFully");
+				$('#statusMessage').css("color","green");
+			</c:if>
+			<c:if test="${resultString=='FAILURE'}">
+				$('#statusMessage').html("Sorry Failure Occur..Please upload later");
+				$('#statusMessage').css("color","red");
+			</c:if>
+		</c:if>
+			function getAnnouncementForm(){
+				if(document.getElementById("BOX-2").style.display == "none"){
+						   $("#BOX-2").show();
+						   $("#announ").addClass("selected");
+						   
+						}else{
+						  $("#BOX-2").hide();
+						   $("#announ").removeClass("selected");
+						}
+						 $("#BOX-1").hide();
+						 $("#BOX-3").hide();
+						 $("#BOX-4").hide();
+						
+						 $("#user").removeClass("selected");
+						 $("#comment").removeClass("selected");
+						 $("#allannoun").removeClass("selected");
+			}		
 				
 				
 </script>
