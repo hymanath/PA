@@ -574,7 +574,12 @@ lable{line-height:40px;}
 				   </label>
 	   
 				<div class="form-horizontal boothResults " name='boothSelection' style="display:block;">
+					<s:if test="#session.parlConstis  != null && #session.parlConstis.size() > 1">
 					<div class="control-group" >
+					</s:if>
+					<s:else>
+					<div class="control-group" style="display:none">
+					</s:else>
 						<label class="control-label" for="firstName">Election Type</label>
 						<div class="controls " style="">
 							<input type="radio" name="electionType" value="2" checked="checked">  Assembly  </input>
