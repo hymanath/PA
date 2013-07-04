@@ -247,6 +247,7 @@
 var startIndex = 0;
 var maxIndex = 5;
 var totalCount = "";
+var id = "";
 $(document).ready(function () {
 	var passwordChanged = '${passwordChanged}';
 	//alert(passwordChanged);
@@ -283,11 +284,11 @@ function saveComment()
 		callAjaxForComments(jsObj, url);
 }
 
-function getTop5Comments(startIndex,maxIndex,task)
+function getTop5Comments(id,startIndex,maxIndex,task)
 {
 	var jsObj =
 		{  	
-			id          : 1,
+			id          : id,
 			startIndex  : startIndex,
 			maxIndex    : maxIndex,
 			task        : task
@@ -316,11 +317,11 @@ function buildCommentsList(myResults)
 }
 
 
-function getAllComments(startIndex,maxIndex)
+function getAllComments(id,startIndex,maxIndex)
 {
 	
 	$('#totalComments').modal('show');
-	getTop5Comments(startIndex,maxIndex,"getTotalComments");
+	getTop5Comments(id,startIndex,maxIndex,"getTotalComments");
 	
 }
 function buildTotalCommentsList(myResults)
@@ -360,7 +361,7 @@ function buildTotalCommentsList(myResults)
 
 function getRemaingCommentsList()
 {
-	getTop5Comments(startIndex,maxIndex,"getTotalComments");
+	getTop5Comments(id,startIndex,maxIndex,"getTotalComments");
 }
 
 /* function buildRemainingCommentsList(myResults)
@@ -416,12 +417,14 @@ function buildTopAnnouncements(myResults)
 {
 	if(myResults[0].notificationsList != null)
 	{
+		
 		var nstr = "";
 		nstr += '<h4>Notifications</h4>';
 		for(var i in myResults[0].notificationsList)
 		{
+			id =  myResults[0].notificationsList[i].id;
 			nstr += '<article class="row-fluid notifications">';
-			nstr += '<a style="cursor: pointer;" class="date span2" onClick="getAllComments(0,5)"><h2>'+myResults[0].notificationsList[i].date+'</h2>';
+			nstr += '<a style="cursor: pointer;" class="date span2" onClick="getAllComments('+myResults[0].notificationsList[i].id+',0,5)"><h2>'+myResults[0].notificationsList[i].date+'</h2>';
 			nstr += '<span class="text-center label"><i class="icon-comment"></i><br/><small>'+myResults[0].notificationsList[i].count+'</small></span></a>';
 			nstr +='<a style="cursor: pointer;" class=" title span10" onClick="getSelectedAnnouncement('+myResults[0].notificationsList[i].id+');"><h1>'+myResults[0].notificationsList[i].title+'</h1><p>'+myResults[0].notificationsList[i].description+'</p></a>';
 			nstr +='	</article>';
@@ -436,8 +439,9 @@ function buildTopAnnouncements(myResults)
 			pstr +=	 '<table class="table table-bordered table-hover table-condensed"><tbody>';
 		for(var i in myResults[0].pressReleasesList)
 		{
+			id =  myResults[0].pressReleasesList[i].id;
 			pstr +=	 '<tr><td><a style="cursor: pointer;" class=" title" onClick="getSelectedAnnouncement('+myResults[0].pressReleasesList[i].id+');"><i class="downarrow-icon"></i></a>'+myResults[0].pressReleasesList[i].title+'<span class="pull-right label">';
-			pstr +=	'<a style="cursor: pointer;" onClick="getAllComments(0,5)"><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></td></tr>';
+			pstr +=	'<a style="cursor: pointer;" onClick="getAllComments('+myResults[0].pressReleasesList[i].id+',0,5)"><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></td></tr>';
 			
 		}
 		pstr +=	'</table>';
@@ -469,7 +473,7 @@ function callAjaxForComments(jsObj,url){
 									if(myResults.resultCode == 0)
 									{
 										$('#errorMsg').html('<b style="color:green">Comment Saved Successfully..</b>');
-										getTop5Comments(startIndex,maxIndex,"getCommentsList");
+										getTop5Comments(id,startIndex,maxIndex,"getCommentsList");
 									}
 									else if(myResults == 'notLogged')
 									{
