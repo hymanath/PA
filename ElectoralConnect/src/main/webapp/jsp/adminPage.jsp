@@ -329,39 +329,44 @@
 	
 	function buildTotalCommentsListBtDates(myResults)
 	{
-		
-		totalCount = myResults[0].total ;
-		var str = "";
-			for(var i in myResults)
-			{
-				str += '<div id="commentsDIv'+myResults[i].commentId+'" class="span7 breadcrumb"  style=" border: 1px solid #c3c3c3; margin-bottom: 10px;">';
-				str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
-				str +='<span><b>Announcement : </b></span><span>'+myResults[i].announcement+'</span></br>';
-				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
-				
-				str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
-				if(myResults[i].abused.toLowerCase() == "no")
-				{
-					str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" class="btn btn-warning">Abuse</a>';
-				}
-				str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
-				
-				str += '</div>';
-				
-				str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
-			}
-			$('#totalCommentsBtDates').append(str);
-		if(maxIndex < totalCount)
+		if(myResults != null)
 		{
-			startIndex = maxIndex;
-			maxIndex   = maxIndex + 5;
-			$('#moreButton').show();
+			totalCount = myResults[0].total ;
+			var str = "";
+				for(var i in myResults)
+				{
+					str += '<div id="commentsDIv'+myResults[i].commentId+'" class="span7 breadcrumb"  style=" border: 1px solid #c3c3c3; margin-bottom: 10px;">';
+					str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
+					str +='<span><b>Announcement : </b></span><span>'+myResults[i].announcement+'</span></br>';
+					str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
+					
+					str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
+					if(myResults[i].abused.toLowerCase() == "no")
+					{
+						str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" class="btn btn-warning">Abuse</a>';
+					}
+					str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
+					
+					str += '</div>';
+					
+					str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
+				}
+				$('#totalCommentsBtDates').append(str);
+			if(startIndex <= totalCount)
+			{
+				startIndex = startIndex + 5;
+				maxIndex   = 5;
+				$('#moreButton').show();
+			}
+			else
+			{
+				$('#moreButton').hide();
+			}
 		}
 		else
 		{
 			$('#moreButton').hide();
 		}
-		
 	}
 	function getRemaingCommentsList()
 	{
@@ -370,34 +375,40 @@
 	
 	function buildTotalCommentsList(myResults)
 	{
-		totalCount = myResults[0].total;
-		
-		var str = "";
-			for(var i in myResults)
-			{
-				str += '<div id="commentsDIv'+myResults[i].commentId+'" class="span9 breadcrumb"  style=" border: 1px solid #c3c3c3; margin-bottom: 10px;margin-left:29px;">';
-				str +='<div style="color:#3A87AD;line-height:23px;">';
-				str +='<span><b>Comment : </b></span><span style="color:#0088CC;font-size:15px;">'+myResults[i].comment+'</span></br>';
-				str +='<span><b>Announcement : </b></span><span>'+myResults[i].announcement+'</span></br>';
-				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
-				str +='</div>';
-				str +='<div class="pull-right" >';
-				str +='<span style="margin-top:3px;"><b>Date : </b>'+myResults[i].date+'</span></br>';
-				if(myResults[i].abused.toLowerCase() == "no")
-				{
-					str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" class="btn btn-warning">Abuse</a>';
-				}
-				str +='</div>';
-				str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
-				str += '</div>';
-				str += '<a id="moreButton" style="display:none;margin-top:5px;" class="btn btn-primary" onClick="getRemaingTotalCommentsList();">More</a>'
-			}
-			$('#totalCommentsList').append(str);
-		if(enIndex < totalCount)
+		if(myResults != null)
 		{
-			stIndex  = enIndex;
-			enIndex   = enIndex + 5;
-			$('#moreButton').show();
+			totalCount = myResults[0].total;
+			var str = "";
+				for(var i in myResults)
+				{
+					str += '<div id="commentsDIv'+myResults[i].commentId+'" class="span9 breadcrumb"  style=" border: 1px solid #c3c3c3; margin-bottom: 10px;margin-left:29px;">';
+					str +='<div style="color:#3A87AD;line-height:23px;">';
+					str +='<span><b>Comment : </b></span><span style="color:#0088CC;font-size:15px;">'+myResults[i].comment+'</span></br>';
+					str +='<span><b>Announcement : </b></span><span>'+myResults[i].announcement+'</span></br>';
+					str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
+					str +='</div>';
+					str +='<div class="pull-right" >';
+					str +='<span style="margin-top:3px;"><b>Date : </b>'+myResults[i].date+'</span></br>';
+					if(myResults[i].abused.toLowerCase() == "no")
+					{
+						str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" class="btn btn-warning">Abuse</a>';
+					}
+					str +='</div>';
+					str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
+					str += '</div>';
+					str += '<a id="moreButton" style="display:none;margin-top:5px;" class="btn btn-primary" onClick="getRemaingTotalCommentsList();">More</a>'
+				}
+				$('#totalCommentsList').append(str);
+			if(stIndex <=  totalCount)
+			{
+				stIndex   = stIndex + 5;
+				enIndex   =  5;
+				$('#moreButton').show();
+			}
+			else
+			{
+				$('#moreButton').hide();
+			}
 		}
 		else
 		{
