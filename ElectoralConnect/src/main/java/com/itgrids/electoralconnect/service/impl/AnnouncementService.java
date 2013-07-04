@@ -248,7 +248,7 @@ public class AnnouncementService implements IAnnouncementService{
 						AnnouncementVO announcementVO = new AnnouncementVO();
 						announcements = (Announcements) parms[0];
 						file          = (File) parms[1];
-						announcementVO.setName(announcements.getTitle()!= null ? announcements.getTitle() : "");
+						announcementVO.setTitle(announcements.getTitle()!= null ? announcements.getTitle() : "");
 						announcementVO.setDescription(announcements.getDescription() != null ? announcements.getDescription() : "");
 						announcementVO.setDate(announcements.getDate());
 						announcementVO.setFileDate(file.getUpdatedTime() != null ? file.getUpdatedTime().toString():"");
