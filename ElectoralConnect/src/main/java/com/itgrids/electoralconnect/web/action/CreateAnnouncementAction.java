@@ -44,6 +44,8 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 	private String docsFileName;
 	private Long type;
 	private IAnnouncementService announcementService;
+	private String fromForm;
+	private String resultString;
 	 
 	
 	@Override
@@ -155,12 +157,29 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 		this.announcementService = announcementService;
 	}
 	
+
 	public Long getType() {
 		return type;
 	}
 
 	public void setType(Long type) {
 		this.type = type;
+	}
+	
+	public String getFromForm() {
+		return fromForm;
+	}
+
+	public void setFromForm(String fromForm) {
+		this.fromForm = fromForm;
+	}
+
+	public String getResultString() {
+		return resultString;
+	}
+
+	public void setResultString(String resultString) {
+		this.resultString = resultString;
 	}
 
 	public String execute()
@@ -217,6 +236,15 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 			for(int i=0;i<str.length;i++)
 			{
 			fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
+			if(fileType.equalsIgnoreCase("pdf")){
+				fileType="pdf";
+			}
+			else if(fileType.equalsIgnoreCase("msword")){
+				fileType="doc";
+			}
+			else{
+				fileType="docx";
+			}
 			fileNames = systime.toString()+random.nextInt(IConstants.FILE_RANDOM_NO)+"."+fileType;
 			}
 		}
@@ -229,6 +257,7 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 		announcementVO.setAnnouncementType(announcementType);
 		announcementVO.setFileTitle(title);
 		announcementVO.setFileDescription(fileDescription);
+		announcementVO.setFileName(docsFileName);
 		
 		
 		if(announcementType!= null)
@@ -246,9 +275,15 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 		FileUtils.copyFile(docs, fileToCreate);
 		
 		resultStatus=announcementService.uploadFile(announcementVO,user);
-		
+		if(resultStatus.getResultCode()==0){
+			resultString="SUCCESS";
+		}
+		else{
+			resultString="FAILURE";
+		}
 		}catch (Exception e) {
 			System.out.println(e);
+			resultString="FAILURE";
 		} 
         
 		return Action.SUCCESS;
