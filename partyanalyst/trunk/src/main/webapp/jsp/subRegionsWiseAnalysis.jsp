@@ -2039,11 +2039,11 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		
 		if(type == "booth" || type == "LOCAL ELECTION BODY" || type == "Booth" || buildType == "hamlet"){
 		
-		elLiner.innerHTML ='<a id="openCompleteInfoFormId" style="cursor:default;text-decoration:none;">'+name+'</a>';
+		elLiner.innerHTML ='<span id="openCompleteInfoFormId" style="cursor:default;text-decoration:none;">'+name+'</span>';
 		}
 		else
 		{
-		elLiner.innerHTML ='<a id="openCompleteInfoFormId" onclick=" openCompleteInfoForm('+id+',\''+name+'\',\''+type+'\');">'+name+'</a>';
+		elLiner.innerHTML ='<a style="cursor:pointer;" id="openCompleteInfoFormId" onclick=" openCompleteInfoForm('+id+',\''+name+'\',\''+type+'\');">'+name+'</a>';
 		}
 	}
 	var areaType = '';
