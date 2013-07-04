@@ -19,10 +19,10 @@ if(myResults != null)
 	for(var i in myResults)
 	{
 		str += '<div></br>';
-		str += '<b>Title : </b><span>'+myResults[i].name+'</span></br>';
+		str += '<b>Title : </b><span>'+myResults[i].title+'</span></br>';
 		str += '<b>Description : </b><span>'+myResults[i].description+'</span></br>';
 		str += '<b>Date : </b><span>'+myResults[i].date+'</span></br>';
-		str += '<b>Name : </b><span>'+myResults[i].updatedBy+'</span></br>';
+		str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';
 		if(myResults[i].filePath =! null && myResults[i].filePath != "")
 		{
 			str += '<b>File Title : </b><a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileTitle+'</span></a></br>';
@@ -52,10 +52,10 @@ function buildAllAnnouncements(myResults)
 		for(var i in myResults)
 		{
 			str += '<div></br>';
-			str += '<b>Title : </b><span>'+myResults[i].name+'</span></br>';
+			str += '<b>Title : </b><span>'+myResults[i].title+'</span></br>';
 			str += '<b>Description : </b><span>'+myResults[i].description+'</span></br>';
 			str += '<b>Date : </b><span>'+myResults[i].date+'</span></br>';
-			str += '<b>Name : </b><span>'+myResults[i].updatedBy+'</span></br>';
+			str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';
 			if(myResults[i].filePath =! null && myResults[i].filePath != "")
 			{
 				str += '<b>File Title : </b><a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileTitle+'</span></a></br>';
