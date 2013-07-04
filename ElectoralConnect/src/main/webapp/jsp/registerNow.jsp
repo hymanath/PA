@@ -146,12 +146,9 @@
 		}*/
 $("#emailId").live("blur",function()
 {
-	alert('aa');
 	checkemail();
-	
 });
 	function checkemail(){	
-		alert(emailId);
 		var emailId = $("#emailId").val();
 		var jsObj =
 		{  	
