@@ -1626,6 +1626,8 @@
 		<property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />
 		<property name="newsDetailsDAO" ref="newsDetailsDAO" />
+		<property name="candidateRelatedNewsDAO" ref="candidateRelatedNewsDAO" />
+		<property name="boothDAO" ref="boothDAO" />		
 	</bean>
 	
 	
