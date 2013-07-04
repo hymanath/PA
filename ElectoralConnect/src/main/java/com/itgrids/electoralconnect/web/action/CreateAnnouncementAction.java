@@ -1,10 +1,7 @@
 package com.itgrids.electoralconnect.web.action;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import javax.servlet.ServletContext;
@@ -14,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
@@ -46,6 +42,7 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 	private File docs;
 	private String docsContentType;
 	private String docsFileName;
+	private Long type;
 	private IAnnouncementService announcementService;
 	 
 	
@@ -156,6 +153,14 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 
 	public void setAnnouncementService(IAnnouncementService announcementService) {
 		this.announcementService = announcementService;
+	}
+	
+	public Long getType() {
+		return type;
+	}
+
+	public void setType(Long type) {
+		this.type = type;
 	}
 
 	public String execute()

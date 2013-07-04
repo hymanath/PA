@@ -52,4 +52,9 @@
 	 	<property name="userService" ref="userService"/>
 	 	<property name="mailService" ref="mailService"/>
 	 </bean>
+	 
+	 <bean id="adminRegisterSaveAction" class="com.itgrids.electoralconnect.web.action.AdminRegisterSaveAction" singleton="false">
+	 	<property name="userService" ref="userService"/>
+	 	<property name="mailService" ref="mailService"/>
+	 </bean>
 </beans>

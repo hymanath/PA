@@ -40,10 +40,11 @@
 		</action>
 		
 		<action name="registerUserProfile" class="RegisterSaveAction">
-			<result>/jsp/registerNow.jsp</result>
+			<!-- <result>/jsp/registerNow.jsp</result> -->
 			<result name="input">/jsp/registerNow.jsp</result>
          	<result name="success">/jsp/registerNow.jsp</result>
          	<result name="error">/jsp/registerNow.jsp</result>
+         	<result name="admin">/jsp/adminPage.jsp</result>
 		</action>
 		
 		<action name="validateEmailAction" class="RegisterUserAction" method="validateEmail">
@@ -129,6 +130,12 @@
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>				
 			</result>
+		</action>
+		
+		<action name="adminRegisterSaveAction" class="adminRegisterSaveAction">
+			<result name="input">/jsp/adminPage.jsp</result>
+         	<result name="success">/jsp/adminPage.jsp</result>
+         	<result name="error">/jsp/adminPage.jsp</result>
 		</action>
 		</package>
 </struts>      

@@ -340,8 +340,8 @@ function buildTotalCommentsList(myResults)
 			$('#totalComments').append(str);
 		if(startIndex < totalCount)
 		{
-			startIndex = startIndex + 5;
-			maxIndex   =  5;
+			startIndex = startIndex + maxIndex;
+			maxIndex   =  maxIndex;
 			$('#moreButton').show();
 		}
 		else

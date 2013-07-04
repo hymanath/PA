@@ -31,6 +31,8 @@
     	<pattern>/logoutAction*</pattern>
     	<pattern>/changePasswordAction*</pattern>
     	<pattern>/forgotPasswordAction*</pattern>
+    	<pattern>/adminRegisterSaveAction*</pattern>
+    	<pattern>/createAnnouncementAction*</pattern>
     </decorator>
 
 </decorators>
