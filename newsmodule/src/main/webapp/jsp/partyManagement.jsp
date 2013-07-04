@@ -212,7 +212,7 @@ h3 {
 .tdWidth {           
   font-weight:bold;
  
-  width:161px;
+  width:185px;
 }
 .tdWidth1 {           
  
@@ -4360,7 +4360,7 @@ var callback = {
 					//document.getElementById("gallaryId").value = 0;
 						//$('#gallaryId').val(reqFile.contentId);
 
-						appendResults1(myResults,"gallaryIdForEdit");
+						appendResults1(myResults,"gallaryIdForEdit1");
 				
 				}
 				else if(jsObj.contentType=="Video Gallary")
@@ -4383,7 +4383,7 @@ var callback = {
 			{ 
 			   //clearOptionsListForSelectElmtId("scopeDiv");
               // buildResults(myResults,"scopeDiv");
-			  appendResults1(myResults,jsObj.divId);
+			  appendResults1(myResults,jsObj.divId+'1');
 			}
 			else if(jsObj.task == "getStates" && jsObj.type == "forEdit")
 			{
@@ -4573,7 +4573,7 @@ function editNewsDetails(fileId,source){
 	str += '<table style="display:-moz-inline-box;">';
 	str+='<tr>';
 	str+='<td class="tdWidth">Select News Gallery : <font class="requiredFont">*</font></td>';
-	str+='<td class="selectWidthPadd"><select style="width:222px;"  id="gallaryIdForEdit" name="gallaryId" class="selectWidth"/><option value="0">Select</option></select></td>';
+	str+='<td class="selectWidthPadd"><select style="width:222px;"  id="gallaryIdForEdit1" name="gallaryId" class="selectWidth"/><option value="0">Select</option></select></td>';
 	str +='<td></td>';
 	str+='</tr>';
     str += '   <tr>';
@@ -4582,9 +4582,9 @@ function editNewsDetails(fileId,source){
 	str +='<td>';
 	
 	if(source == "Eenadu Telugu")
-	 str += ' <input style="font-family: eFont; font-size: 20px;" type="text" id="fileTitle" size="25" maxlength="100" />';
+	 str += ' <input style="font-family: eFont; font-size: 20px;" type="text" id="fileTitle1" size="25" maxlength="100" />';
 	else 
-	 str += ' <input type="text" id="fileTitle" size="25" maxlength="100" />';
+	 str += ' <input type="text" id="fileTitle1" size="25" maxlength="100" />';
 
 	str +='</td>';
 	str += '   </tr>';
@@ -4593,9 +4593,9 @@ function editNewsDetails(fileId,source){
 	str += '       <td class="tdWidth">News Description : <font class="requiredFont">*</font></td>';
 	str +='<td>';
 	if(source == "Eenadu Telugu")
-     str += '<textarea style="font-family: eFont; font-size: 20px;" id="fileDescription" cols="20" rows="3"></textarea>';
+     str += '<textarea style="font-family: eFont; font-size: 20px;" id="fileDescription1" cols="20" rows="3"></textarea>';
 	else
-	 str += '<textarea id="fileDescription" cols="20" rows="3"></textarea>';
+	 str += '<textarea id="fileDescription1" cols="20" rows="3"></textarea>';
 	str +='</td>';
 	
 	str += '   </tr>';
@@ -4603,15 +4603,15 @@ function editNewsDetails(fileId,source){
     str += '   <tr>';
 	str += '       <td class="tdWidth">Keywords : </td>';
 	if(source == "Eenadu Telugu")
-	str += '       <td class="selectWidthPadd"><input type="text"  style="font-family: eFont; font-size: 20px;" id="keywordsForEdit" name="keywords" size="25" maxlength="200" style="margin-top:8px;" value="'+reqFile.keywords+'" ></text></td></tr>';
+	str += '       <td class="selectWidthPadd"><input type="text"  style="font-family: eFont; font-size: 20px;" id="keywordsForEdit1" name="keywords" size="25" maxlength="200" style="margin-top:8px;" value="'+reqFile.keywords+'" ></text></td></tr>';
 	else
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywordsForEdit" name="keywords" size="25" maxlength="200" style="margin-top:8px;" value="'+reqFile.keywords+'" ></text></td></tr>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywordsForEdit1" name="keywords" size="25" maxlength="200" style="margin-top:8px;" value="'+reqFile.keywords+'" ></text></td></tr>';
 
 	str += '   <TR>';
 	
 	
 	str += ' <td class="tdWidth"><b><font>File Date : <font class="requiredFont">*</font></font></b></td>';
-	str += '<TD><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<TD><input type="text" id="existingFromText1" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
 	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
@@ -4625,22 +4625,22 @@ function editNewsDetails(fileId,source){
 	{
 	   str += '   <tr>';
 	   str += '       <td class="tdWidth">Source : <font class="requiredFont">*</font></td>';
-	   str += '       <td><select id="sourceEdit'+i+'" style="width:222px;"></select></td>';
+	   str += '       <td><select id="sourceEdit1'+i+'" style="width:222px;"></select></td>';
 	   str += '       <td><input type="hidden" id="sourceEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
 	   str += '   </tr>';
 	
 	   str += '   <tr>';
 	   str += '       <td class="tdWidth">Language : <font class="requiredFont">*</font></td>';
-	   str += '       <td><select id="languageEdit'+i+'" style="width:222px;"></select></td>';
-	   str += '       <td><input type="hidden" id="languageEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
+	   str += '       <td><select id="languageEdit1'+i+'" style="width:222px;"></select></td>';
+	   str += '       <td><input type="hidden" id="languageEditId1'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
 	   str += '   </tr>';
 	}
 	str += '       <td class="tdWidth">Category : </td>';
-	str += '  <td><select id="categoryEdit" style="width:222px;"><option value="0">-select category-</option></select></td>';
+	str += '  <td><select id="categoryEdit1" style="width:222px;"><option value="0">-select category-</option></select></td>';
 	str += '   </tr>';
 	str += '   </tr>';
 	str += '       <td class="tdWidth">News Importance : <font class="requiredFont">*</font></td>';
-	str += '       <td><select id="newsimportanceForEdit" style="width:222px;"></select></td>';
+	str += '       <td><select id="newsimportanceForEdit1" style="width:222px;"></select></td>';
 	str += '   </tr>';
 
 	/*
@@ -4669,12 +4669,12 @@ function editNewsDetails(fileId,source){
 
 		//str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
 
-		str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><i  class="icon-bullhorn" ></i></input></label></td>';
+		str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId1" checked="true"><i  class="icon-bullhorn" ></i></input></label></td>';
 	else
 
 		//str += '       <td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
 
-		str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId"><i  class="icon-bullhorn" ></i></input></label></td>';
+		str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId1"><i  class="icon-bullhorn" ></i></input></label></td>';
 
     str += '   </tr>';
 	str += '   <tr>';
@@ -4683,17 +4683,17 @@ function editNewsDetails(fileId,source){
 	if(reqFile.visibility == "true")
 
 	 // str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
-	  str += '<td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId"></input><i  class="icon-lock" ></i></label></td>';
+	  str += '<td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId1"></input><i  class="icon-lock" ></i></label></td>';
    else
 	  // str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
 
-    str += '<td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId"></input><i  class="icon-lock" ></label></td>';
+    str += '<td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId1"></input><i  class="icon-lock" ></label></td>';
 
 	str += '   </tr>';
 
 	str +='    <tr>';
     str +='	   <td class="tdWidth">Location Scope : <font class="requiredFont">*</font></td>';
-    str +='	   <td><select id="scopeDivForEdit" name="locationScope" style="width:222px;" class="selectWidth" onchange="getLocations1(this.options[this.selectedIndex].value)"  /></td>';
+    str +='	   <td><select id="scopeDivForEdit1" name="locationScope" style="width:222px;" class="selectWidth" onchange="getLocations1(this.options[this.selectedIndex].value)"  /></td>';
     str +='  </tr>';
  
 	str +='  <tr>';
@@ -4708,7 +4708,7 @@ function editNewsDetails(fileId,source){
 		str +='  <tr>';
 		str +='    <td>';
 
-       str+='<input type="hidden" id="locationValueId" value='+reqFile.location+'></input>';
+       str+='<input type="hidden" id="locationValueId1" value='+reqFile.location+'></input>';
 
 		str +='       <div style="font-weight:bold;margin-left: 54px;">'+reqFile.locationValue+'</div>'; 
 		str +='    </td>';
@@ -4721,9 +4721,9 @@ function editNewsDetails(fileId,source){
    str +='    <tr>';
     str +='	   <td class="tdWidth">News description in details : </td>';
 	if(source == "Eenadu Telugu")
-	    str +='	   <td><textarea id="newsfileDescriptionForEdit" style="font-family: eFont; font-size: 20px;" cols="20" rows="3" name="fileDescription" >'+reqFile.newsDescription+'</textarea></td>';
+	    str +='	   <td><textarea id="newsfileDescriptionForEdit1" style="font-family: eFont; font-size: 20px;" cols="20" rows="3" name="fileDescription" >'+reqFile.newsDescription+'</textarea></td>';
      else
-    str +='	   <td><textarea id="newsfileDescriptionForEdit" cols="20" rows="3" name="fileDescription" >'+reqFile.newsDescription+'</textarea></td>';
+    str +='	   <td><textarea id="newsfileDescriptionForEdit1" cols="20" rows="3" name="fileDescription" >'+reqFile.newsDescription+'</textarea></td>';
     str +='  </tr>';
 
 
@@ -4736,15 +4736,15 @@ function editNewsDetails(fileId,source){
 
 	
     
-	str+='<input type="hidden" name="fileGallaryId"  id="fileGallaryId" value='+reqFile.contentId+'></input>';
+	str+='<input type="hidden" name="fileGallaryId"  id="fileGallaryId1" value='+reqFile.contentId+'></input>';
 	    document.getElementById("editNewsInner").innerHTML = str;
 		
 	   
 		//document.getElementById("existingFromText").value = reqFile.fileDate;
-	    document.getElementById("fileTitle").value = reqFile.fileTitle1;
+	    document.getElementById("fileTitle1").value = reqFile.fileTitle1;
 	    document.getElementById("keywords").value = reqFile.keywords;
-		document.getElementById("fileDescription").value = reqFile.description;
-		document.getElementById("existingFromText").value = reqFile.fileDateAsString;
+		document.getElementById("fileDescription1").value = reqFile.description;
+		document.getElementById("existingFromText1").value = reqFile.fileDateAsString;
 
 		getNews("sourceEdit","getAllSourceDetails","","","","","","","","","","");
         getNews("categoryEdit","getAllCategoryDetails",reqFile.categoryId,"","","","","","","","","");
@@ -4816,7 +4816,7 @@ function appendResults1(results , divId){
 	$('#'+divId).find('option').remove();
 
 
-    if(divId == "scopeDiv" || divId == "scopeDivForEdit"){
+    if(divId == "scopeDiv" || divId == "scopeDivForEdit1"){
 		//$('#'+divId).append(new Option("Select Scope", "0"));
 
 		for(var i in results){			
@@ -4878,7 +4878,7 @@ for(var i in results){
 	    }
 
 	}
-	if(divId == "gallaryId" || divId == "gallaryIdForEdit"){
+	if(divId == "gallaryId" || divId == "gallaryIdForEdit1"){
 
 		for(var i in results){
 
@@ -4886,8 +4886,8 @@ for(var i in results){
 
 	    }
 
-if(divId == "gallaryIdForEdit")
-	$('#gallaryIdForEdit').val(reqFile.fileGallaryId);
+if(divId == "gallaryIdForEdit1")
+	$('#gallaryIdForEdit1').val(reqFile.fileGallaryId);
 else
 	$('#gallaryId').val(reqFile.fileGallaryId);
 
@@ -4896,7 +4896,7 @@ else
 }
  function getLocationDiv(){
 	bvalue=true;
-	var id =  $('#scopeDivForEdit').val();
+	var id =  $('#scopeDivForEdit1').val();
    getLocations1(id);
 }
 
@@ -4931,7 +4931,7 @@ var callback = {
 			 }
 			 else if(jsObj.queryType == "getAllCategoryDetails")
 			 {	
-				bildDate(myResults,jsObj.task,jsObj.fileType);
+				bildDate(myResults,jsObj.task+'1',jsObj.fileType);
 			 }
 			 else if(jsObj.queryType == "getAllSourceLanguageDetails")
 			 {	
@@ -4942,7 +4942,7 @@ var callback = {
 			 }
 			 else if(jsObj.queryType == "getAllNewsImportanceDetails")
 			 {	
-				bildDate(myResults,jsObj.task,jsObj.fileType);
+				bildDate(myResults,jsObj.task+'1',jsObj.fileType);
 			 }
 			 else if(jsObj.task == "Delete")
 			 {
@@ -4987,7 +4987,7 @@ function bildDateForSource(results)
  {
    for(var j in reqFile.fileVOList)
   {
-    elmt = document.getElementById('sourceEdit'+j+'');
+    elmt = document.getElementById('sourceEdit1'+j+'');
     for(var i in results)
 	{
 		var option = document.createElement('option');
@@ -5002,14 +5002,14 @@ function bildDateForSource(results)
 			elmt.add(option); // IE only
 		}
 	}
-	document.getElementById('sourceEdit'+j+'').value = reqFile.fileVOList[j].sourceId;
+	document.getElementById('sourceEdit1'+j+'').value = reqFile.fileVOList[j].sourceId;
   }
 }
 function bildDateForLanguage(results)
  {
       for(var j in reqFile.fileVOList)
   {
-    elmt = document.getElementById('languageEdit'+j+'');
+    elmt = document.getElementById('languageEdit1'+j+'');
     for(var i in results)
 	{
 		var option = document.createElement('option');
@@ -5024,7 +5024,7 @@ function bildDateForLanguage(results)
 			elmt.add(option); // IE only
 		}
 	}
-	document.getElementById('languageEdit'+j+'').value = reqFile.fileVOList[j].languegeId;
+	document.getElementById('languageEdit1'+j+'').value = reqFile.fileVOList[j].languegeId;
   }
  }
  function bildDate(optionsList,elmtId,val){
@@ -5046,24 +5046,24 @@ function bildDateForLanguage(results)
 			elmt.add(option); // IE only
 		}
 	}
-	if(elmtId == "sourceEdit")
+	if(elmtId == "sourceEdit1")
 	{
 	  document.getElementById("sourceEdit").value = val;
 	}
-	else if(elmtId == "categoryEdit")
+	else if(elmtId == "categoryEdit1")
 	{
-	  document.getElementById("categoryEdit").value = val;
+	  document.getElementById("categoryEdit1").value = val;
 	}
-	else if(elmtId == "languageEdit")
+	else if(elmtId == "languageEdit1")
 	{
-	  document.getElementById("languageEdit").value = val;
+	  document.getElementById("languageEdit1").value = val;
 	}
-	else if(elmtId == "newsimportance")
+	else if(elmtId == "newsimportance1")
 	{
-	  document.getElementById("newsimportance").value = val;
-	}else if (elmtId == "newsimportanceForEdit")
+	  document.getElementById("newsimportance1").value = val;
+	}else if (elmtId == "newsimportanceForEdit1")
 	{
-		 document.getElementById("newsimportanceForEdit").value = val;
+		 document.getElementById("newsimportanceForEdit1").value = val;
 	}
 }
 function getLocations1(id){
@@ -5272,10 +5272,10 @@ function getStatesForLocationScope()
 
 function updateDeleteNews(task,fileId){
 
-var fileTitle = $('#fileTitle').val();
-var fileDescription = $('#fileDescription').val();
-var flagInd = $('#flagInd').val();
-var scope = $('#scopeDiv').val();
+var fileTitle = $('#fileTitle1').val();
+var fileDescription = $('#fileDescription1').val();
+var flagInd = $('#flagInd1').val();
+var scope = $('#scopeDiv1').val();
 var errorMessage = "";
 var validate = false;
 var newsDescription = "";
@@ -5292,8 +5292,8 @@ if(fileDescription == ""){
 if(bvalue){
 if(scope == 3)
 	{
-		var stateVal=document.getElementById('stateDivForEdit').value;
-		var districtVal=document.getElementById('districtDivForEdit').value;
+		var stateVal=document.getElementById('stateDivForEdit1').value;
+		var districtVal=document.getElementById('districtDivForEdit1').value;
 		if(stateVal == 0)
 		{
 		errorMessage += 'State Name is Required.<br>';
@@ -5308,9 +5308,9 @@ if(scope == 3)
 
 	if(scope == 4)
 	{
-		var stateVal=document.getElementById('stateDivForEdit').value;
-		var districtVal=document.getElementById('districtDivForEdit').value;
-		var constituencyVal=document.getElementById('constituencyDivForEdit').value;
+		var stateVal=document.getElementById('stateDivForEdit1').value;
+		var districtVal=document.getElementById('districtDivForEdit1').value;
+		var constituencyVal=document.getElementById('constituencyDivForEdit1').value;
 		if(stateVal == 0)
 		{
 		errorMessage += 'State Name is Required.<br>';
@@ -5329,10 +5329,10 @@ if(scope == 3)
 	}
 	if(scope == 5)
 	{
-		var stateVal=document.getElementById('stateDivForEdit').value;
-		var districtVal=document.getElementById('districtDivForEdit').value;
-		var constituencyVal=document.getElementById('constituencyDivForEdit').value;
-		var mandalVal=document.getElementById('mandalDivForEdit').value;
+		var stateVal=document.getElementById('stateDivForEdit1').value;
+		var districtVal=document.getElementById('districtDivForEdit1').value;
+		var constituencyVal=document.getElementById('constituencyDivForEdit1').value;
+		var mandalVal=document.getElementById('mandalDivForEdit1').value;
 		if(stateVal == 0)
 		{
 		errorMessage += 'State Name is Required.<br>';
@@ -5356,11 +5356,11 @@ if(scope == 3)
 	}
 	if(scope == 6 || scope == 8 || scope == 9)
 	{
-		var stateVal=document.getElementById('stateDivForEdit').value;
-		var districtVal=document.getElementById('districtDivForEdit').value;
-		var constituencyVal=document.getElementById('constituencyDivForEdit').value;
-		var mandalVal=document.getElementById('mandalDivForEdit').value;
-		var villageVal=document.getElementById('villageDivForEdit').value;
+		var stateVal=document.getElementById('stateDivForEdit1').value;
+		var districtVal=document.getElementById('districtDivForEdit1').value;
+		var constituencyVal=document.getElementById('constituencyDivForEdit1').value;
+		var mandalVal=document.getElementById('mandalDivForEdit1').value;
+		var villageVal=document.getElementById('villageDivForEdit1').value;
 		if(stateVal == 0)
 		{
 		errorMessage += 'State Name is Required.<br>';
@@ -5389,10 +5389,10 @@ if(scope == 3)
 	}
 	if(scope == 7)
 	{
-		var stateVal=document.getElementById('stateDivForEdit').value;
-		var districtVal=document.getElementById('districtDivForEdit').value;
-		var constituencyVal=document.getElementById('constituencyDivForEdit').value;
-		var mandalVal=document.getElementById('mandalDivForEdit').value;
+		var stateVal=document.getElementById('stateDivForEdit1').value;
+		var districtVal=document.getElementById('districtDivForEdit1').value;
+		var constituencyVal=document.getElementById('constituencyDivForEdit1').value;
+		var mandalVal=document.getElementById('mandalDivForEdit1').value;
 		
 		if(stateVal == 0)
 		{
@@ -5449,8 +5449,8 @@ return false;
 
   if(task == "Update")
   {
-   title  = document.getElementById("fileTitle").value;
-   description  = document.getElementById("fileDescription").value;
+   title  = document.getElementById("fileTitle1").value;
+   description  = document.getElementById("fileDescription1").value;
     //changes by anil
 	title = htmlEntity(title);
 	description = htmlEntity(description);
@@ -5458,13 +5458,13 @@ return false;
 
 	visibility = $('input:radio[name=visibility]:checked').val();
 
-   gallaryId = document.getElementById("gallaryIdForEdit").value;
-   keywords = document.getElementById("keywordsForEdit").value;
-   fileDate = document.getElementById("existingFromText").value;
-   locationScopeId = document.getElementById("scopeDivForEdit").value;
-   fileGallaryId = $('#fileGallaryId').val();
-   newsDescription = $('#newsfileDescriptionForEdit').val();
-   newsDescription = htmlEntity(newsDescription);
+   gallaryId = document.getElementById("gallaryIdForEdit1").value;
+   keywords = document.getElementById("keywordsForEdit1").value;
+   fileDate = document.getElementById("existingFromText1").value;
+   locationScopeId = document.getElementById("scopeDivForEdit1").value;
+   fileGallaryId = $('#fileGallaryId1').val();
+   //newsDescription = $('#newsfileDescriptionForEdit1').val();
+   //newsDescription = htmlEntity(newsDescription);
 
    try
   {
@@ -5490,23 +5490,23 @@ return false;
   
    for(var i in reqFile.fileVOList)
    {
-      var sourceEle  = document.getElementById("sourceEdit"+i);
+      var sourceEle  = document.getElementById("sourceEdit1"+i);
       sourceId  = sourceEle.options[sourceEle.selectedIndex].value;
       var filesourceId1 = document.getElementById("sourceEditId"+i).value;
 	  sourceString = sourceString+''+sourceId+','+filesourceId1+'-';
 	  
 	  
-      var languegeEle = document.getElementById("languageEdit"+i);
+      var languegeEle = document.getElementById("languageEdit1"+i);
       languegeId = languegeEle.options[languegeEle.selectedIndex].value;
-	  var filesourceId2 = document.getElementById("languageEditId"+i).value;
+	  var filesourceId2 = document.getElementById("languageEditId1"+i).value;
 	  languageString = languageString+''+languegeId+','+filesourceId2+'-';
 	  
 	  
    }
-   var categoryEle = document.getElementById("categoryEdit");
+   var categoryEle = document.getElementById("categoryEdit1");
    categoryId = categoryEle.options[categoryEle.selectedIndex].value;
    
-   var newsImportanceEle = document.getElementById("newsimportance");
+   var newsImportanceEle = document.getElementById("newsimportanceForEdit1");
    newsImportanceId = newsImportanceEle.options[newsImportanceEle.selectedIndex].value;
   }
   if(task == "Delete")
@@ -5549,8 +5549,8 @@ try{
           locationScopeValue:   locationScopeValue,
 		  visibility        :visibility,
 		  flagInd          :false,
-		  fileGallaryId:fileGallaryId,
-          newsDescription:newsDescription 
+		  fileGallaryId:fileGallaryId
+         /* newsDescription:newsDescription */
      }
 	  var rparam ="task="+encodeURIComponent(unescape(YAHOO.lang.JSON.stringify(jsObj)));
       var url = "updateDeleteNewsAction.action?"+rparam;	//18111
