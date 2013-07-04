@@ -36,6 +36,8 @@ public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNe
 	public List<Object[]> getCategoryList(Date fromDate, Date toDate,Long locationScopeId,List<Long> locationIdsList);
 	
 	public List<Object[]> getGalleryListForSelectedCategory(List<Long> categoryIdsList);
+	
+	public List<Object[]> getCandidateByFileGallaryId(List<Long> gallaryIdsList);
 
 
 }
