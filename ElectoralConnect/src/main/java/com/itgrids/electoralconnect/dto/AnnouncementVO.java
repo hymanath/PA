@@ -23,7 +23,7 @@ public class AnnouncementVO implements Serializable{
 	private List<NotificationVO> notificationsList;
 	private List<PressReleaseVO> pressReleasesList;
 	private String fileName;
-	
+	private String title;
 	public String getName() {
 		return name;
 	}
@@ -107,6 +107,12 @@ public class AnnouncementVO implements Serializable{
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 	
