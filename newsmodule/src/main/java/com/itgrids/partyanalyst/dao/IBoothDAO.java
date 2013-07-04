@@ -181,4 +181,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{/*
 	
 	public List<String> getPartNosByBoothIdsList(Long constituencyId, Long publicationDateId, List<Long> boothIdsList);
 	
-*/}
+*/
+	public String getLocationsById(String locationType,Long locationValue);
+}
