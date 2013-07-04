@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBoothDAO{
 
@@ -820,4 +821,32 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			return queryObj.list();
 		}
 		
-*/}
+*/
+		@SuppressWarnings("unchecked")
+		public String getLocationsById(String locationType,Long locationValue)
+		{
+		  StringBuilder stringBuilder = new StringBuilder();
+		  
+		  if(locationType.equalsIgnoreCase("State"))
+			  stringBuilder.append(" select model.stateName from State model where model.stateId = :locationValue ");
+		  else if(locationType.equalsIgnoreCase("District"))
+			  stringBuilder.append(" select model.districtName from District model where model.districtId = :locationValue ");
+		  else if(locationType.equalsIgnoreCase("Constituency") || locationType.equalsIgnoreCase("ward"))
+			  stringBuilder.append(" select model.name from Constituency model where model.constituencyId =:locationValue ");
+		  else if(locationType.equalsIgnoreCase("Mandal"))
+			  stringBuilder.append(" select model.tehsilName from Tehsil model where model.tehsilId =:locationValue ");
+		  else if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+			  stringBuilder.append(" select model.name from LocalElectionBody model where model.localElectionBodyId =:locationValue ");
+		  else if(locationType.equalsIgnoreCase("Panchayat"))
+			  stringBuilder.append(" select model.panchayatName from Panchayat model where model.panchayatId = :locationValue ");
+		  else if(locationType.equalsIgnoreCase("Booth"))
+			  stringBuilder.append(" select model.partName from Booth model where model.boothId = :locationValue ");
+		  else if(locationType.equalsIgnoreCase("Village"))
+			  stringBuilder.append(" select model.hamletName from Hamlet model where model.hamletId = :locationValue ");
+		 
+		  
+		  Query queryObj = getSession().createQuery(stringBuilder.toString());
+		  queryObj.setParameter("locationValue", locationValue);
+		 return (String) queryObj.uniqueResult();
+		}		
+}
