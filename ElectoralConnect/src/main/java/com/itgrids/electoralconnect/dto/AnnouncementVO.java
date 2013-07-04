@@ -17,6 +17,7 @@ public class AnnouncementVO implements Serializable{
 	private String fileTitle;
 	private String fileDescription;
 	private String filePath;
+	private String fileName;
 	
 	
 	public String getName() {
@@ -72,6 +73,12 @@ public class AnnouncementVO implements Serializable{
 	}
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
 	
