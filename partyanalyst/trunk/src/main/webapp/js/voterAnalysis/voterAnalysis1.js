@@ -5960,18 +5960,18 @@ document.getElementById('reportLevelCountDiv').style.display = 'inline-block';
 	}
 	str+='</ul>';*/
     if(results[0].totalmandals !=null && results[0].totalmandals!=0 )
-	str +='<span class="btn btn-success btn-small">'+results[0].totalmandals+'</span><span class="help-inline f2">Mandals</span>';
+	str +='<span class="btn btn-success btn-small" style="cursor:default;">'+results[0].totalmandals+'</span><span class="help-inline f2">Mandals</span>';
 	if(results[0].noOfLocalBodies !=null && results[0].noOfLocalBodies!=0 )
-	str +='<span class="btn btn-info btn-small">'+results[0].noOfLocalBodies+'</span><span class="help-inline f2">Muncipalities</span>';
+	str +='<span class="btn btn-info btn-small" style="cursor:default;">'+results[0].noOfLocalBodies+'</span><span class="help-inline f2">Muncipalities</span>';
 	if(results[0].totalPanchayats !=null && results[0].totalPanchayats!=0 ){
-	str +='<span class="btn btn-info btn-small">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+	str +='<span class="btn btn-info btn-small" style="cursor:default;">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
 	}
 	 if(results[0].totalNoOfWards !=null && results[0].totalNoOfWards!=0 )
-	str +='<span class="btn btn-info btn-small">'+results[0].totalNoOfWards+'</span><span class="help-inline f2">Wards</span>';
+	str +='<span class="btn btn-info btn-small" style="cursor:default;">'+results[0].totalNoOfWards+'</span><span class="help-inline f2">Wards</span>';
 	 if(results[0].totalBooths !=null && results[0].totalBooths!=0 )
-	str +='<span class="btn btn-info btn-small">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info btn-small" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	if(results[0].totalPanchayats !=null && results[0].totalPanchayats!=0 ){
-	str +='<span class="btn btn-info btn-small">'+results[0].totalNoOfHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	str +='<span class="btn btn-info btn-small" style="cursor:default;">'+results[0].totalNoOfHamlets+'</span><span class="help-inline f2">Hamlets</span>';
 	}
    
 str+='</div>';
@@ -6040,8 +6040,8 @@ var jsObj=
 		results[0].totalPanchayats = 0;
 		if(results[0].totalBooths == null)
 		results[0].totalBooths = 0;
-	str +='<span class="btn btn-info">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
-	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if( jsObj.type == "mandal" && type == "muncipality")
 
@@ -6049,8 +6049,8 @@ var jsObj=
 			if(results[0].totalBooths == null)
 			results[0].totalBooths = 0;
 			if(results[0].totalNoOfWards !=null && results[0].totalNoOfWards!=0 )
-	str +='<span class="btn btn-info">'+results[0].totalNoOfWards+'</span><span class="help-inline f2">Wards</span>';
-	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalNoOfWards+'</span><span class="help-inline f2">Wards</span>';
+	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if(jsObj.type == "panchayat")
 
@@ -6058,15 +6058,15 @@ var jsObj=
 		if(results[0].totalBooths == null)
 			results[0].totalBooths = 0;
 	
-	str +='<span class="btn btn-info">'+results[0].totalNoOfHamlets+'</span><span class="help-inline f2">Hamlets</span>';
-	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalNoOfHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if(jsObj.type == "ward")
 
 	{
 		if(results[0].totalBooths == null)
 			results[0].totalBooths = 0;
-	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	
 	if(jsObj.type == "customWard")
@@ -6074,7 +6074,7 @@ var jsObj=
 	{
 		if(results[0].totalBooths == null)
 			results[0].totalBooths = 0;
-	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	str+='</div>';
 
@@ -6090,26 +6090,26 @@ var jsObj=
 	  str +='<div>';
 	  if(jsObj.type == "mandal" && mainreqid.charAt(0) =="2")
 	  {
-	    str +='<span class="btn btn-info">'+results.totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
-	    str +='<span class="btn btn-info">'+results.totalHamlets+'</span><span class="help-inline f2">Hamlets</span>';
-	    str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	    str +='<span class="btn btn-info" style="cursor:default;">'+results.totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+	    str +='<span class="btn btn-info" style="cursor:default;">'+results.totalHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	    str +='<span class="btn btn-info" style="cursor:default;">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	  }
 	 if(jsObj.type == "mandal" && mainreqid.charAt(0) =="1")
 	 {
-	   str +='<span class="btn btn-info">'+results.totalWards+'</span><span class="help-inline f2">Wards</span>';
-	   str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	   str +='<span class="btn btn-info" style="cursor:default;">'+results.totalWards+'</span><span class="help-inline f2">Wards</span>';
+	   str +='<span class="btn btn-info" style="cursor:default;">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	 }
 	if(jsObj.type == "panchayat")
 	{
-	  str +='<span class="btn btn-info">'+results.totalHamlets+'</span><span class="help-inline f2">Hamlets</span>';
-	  str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	  str +='<span class="btn btn-info" style="cursor:default;">'+results.totalHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	  str +='<span class="btn btn-info" style="cursor:default;">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if(jsObj.type == "ward")
-	  str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	  str +='<span class="btn btn-info" style="cursor:default;">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	
 	
 	if(jsObj.type == "customWard")
-     str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+     str +='<span class="btn btn-info" style="cursor:default;">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	
 	str+='</div>';
 
