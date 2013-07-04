@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -248,6 +247,7 @@ public class AnnouncementService implements IAnnouncementService{
 						AnnouncementVO announcementVO = new AnnouncementVO();
 						announcements = (Announcements) parms[0];
 						file          = (File) parms[1];
+						announcementVO.setId(announcements.getAnnouncementId());
 						announcementVO.setTitle(announcements.getTitle()!= null ? announcements.getTitle() : "");
 						announcementVO.setDescription(announcements.getDescription() != null ? announcements.getDescription() : "");
 						announcementVO.setDate(announcements.getDate());
