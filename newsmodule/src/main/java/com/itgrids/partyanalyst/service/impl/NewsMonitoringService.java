@@ -3396,7 +3396,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 			 NewsImportance newsImportance = newsImportanceDAO.get(fileVO.getNewsImportanceId());
 			 file.setFileTitle(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getTitle())));
 			 file.setFileDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getDescription())));
-			 file.setNewsDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getNewsDescription())));
+			// file.setNewsDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getNewsDescription())));
 
 			 file.setCategory(category);
 			 file.setNewsImportance(newsImportance);
