@@ -105,9 +105,8 @@
 					<s:actionerror />
 					<s:fielderror />
 				</div>
-		   <form class="form-horizontal" name='userDetailsForm' action="registerUserProfile.action" method="post">
+		   <form class="form-horizontal" name='userDetailsForm' action="registerAdmin.action?userType=admin" method="post">
 				<legend>Personal Information</legend>
-				<input type="hidden" value="admin" name="userType"></input>
 				<div class="control-group">
 					<label class="control-label requ" for="firstName">First Name</label>
 					<div class="controls ">
@@ -143,7 +142,7 @@
 					</div>
 				</div>
 				
-			<!--	<div id="userType"><input type="hidden" id="userType" name="userType" value="${userType}"></input></div>-->
+				<div id="userType"><input type="hidden" id="userType" name="userType" value="${userType}"></input></div>
 				
 				${resultStr}
 			</form>
@@ -266,7 +265,7 @@
 	});
 	
 	$('#saveAnnouncement').click(function(){
-		document.userDetailsForm.submit();
+		document.AnnouncementForm.submit();
 	});
 	
 	$('input[name=attachFile]:checked').click(function(){
