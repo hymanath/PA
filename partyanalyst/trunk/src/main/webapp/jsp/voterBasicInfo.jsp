@@ -557,6 +557,10 @@ function callAjax(jsObj,url)
   }
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 {
+	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0){
+	$("#votersBasicInfoSubChartDiv_head").css("display","inline-block");
+	$("#votersBasicInfoSubDiv_head").css("display","inline-block");
+	}
 	  $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
 	  $("#votersBasicInfoSubHeading").html('Booth Wise Voters Information in '+mainname+'');
@@ -1944,11 +1948,11 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 	
 	<div id="votersBasicInfoTitleDiv" align="center"></div>
 	
-	<div id="votersBasicInfoMsgDiv"></div>
+	<div id="votersBasicInfoMsgDiv" style="text-align: center; margin-top: 50px;"></div>
 	<div id="wardSearchDiv" style="float: right; padding: 10px;display:none;"><b>Select Ward : </b><select id="wardsList" onchange="getDetailsForSelectedWard();" style="margin-bottom: 1px;"></select></div>
 	
 	<div align="center">
-	<div id="votersBasicInfoSubChartDiv_head" class="widget green whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
+	<div id="votersBasicInfoSubChartDiv_head" class="widget green whitegloss" style="display: none; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
 	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="votersBasicInfoSubChartHeading"></h4>
 	<div id="votersBasicInfoSubChartDiv" style="margin-top: 67px;">
 	</div></div></div>
@@ -1958,7 +1962,7 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 	<div id="assAndUnass"></div>
 	
 	<div align="center">
-	<div id="votersBasicInfoSubDiv_head" class="widget blue whitegloss" style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
+	<div id="votersBasicInfoSubDiv_head" class="widget blue whitegloss" style="display: none; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
 	<h4 class="headingClass" id="votersBasicInfoSubHeading" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable table table-bordered table-striped table-hover" ></div>	</div></div>
 	
