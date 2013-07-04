@@ -109,25 +109,31 @@ function getAllComments(startIndex,maxIndex)
 }
 function buildTotalCommentsList(myResults)
 {
-	totalCount = myResults[0].total;
-	
-	var str = "";
-		for(var i in myResults)
-		{
-			str += '<div class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid blue; margin-bottom: 10px;">';
-			str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
-			str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
-			
-			str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
-			str += '</div>';
-			str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
-		}
-		$('#totalComments').append(str);
-	if(maxIndex < totalCount)
+	if(myResults != null)
 	{
-		startIndex = maxIndex;
-		maxIndex   = maxIndex + 5;
-		$('#moreButton').show();
+		totalCount = myResults[0].total;
+		var str = "";
+			for(var i in myResults)
+			{
+				str += '<div class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid blue; margin-bottom: 10px;">';
+				str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
+				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
+				
+				str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
+				str += '</div>';
+				str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
+			}
+			$('#totalComments').append(str);
+		if(startIndex < totalCount)
+		{
+			startIndex = startIndex + 5;
+			maxIndex   =  5;
+			$('#moreButton').show();
+		}
+		else
+		{
+			$('#moreButton').hide();
+		}
 	}
 	else
 	{
