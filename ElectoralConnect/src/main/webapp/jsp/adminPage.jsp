@@ -105,8 +105,10 @@
 					<s:actionerror />
 					<s:fielderror />
 				</div>
-		   <form class="form-horizontal" name='userDetailsForm' action="registerAdmin.action?userType=admin" method="post">
+		   <form class="form-horizontal" name='userDetailsForm' action="adminRegisterSaveAction.action" method="post">
 				<legend>Personal Information</legend>
+				<input type="hidden" value="admin" name="userType"></input>
+				<input type="hidden" value="1" name="type"></input>
 				<div class="control-group">
 					<label class="control-label requ" for="firstName">First Name</label>
 					<div class="controls ">
@@ -142,7 +144,7 @@
 					</div>
 				</div>
 				
-				<div id="userType"><input type="hidden" id="userType" name="userType" value="${userType}"></input></div>
+			<!--	<div id="userType"><input type="hidden" id="userType" name="userType" value="${userType}"></input></div>-->
 				
 				${resultStr}
 			</form>
@@ -177,6 +179,8 @@
 	<div id="announcementForm" >
 	<div id="BOX-2" style="display: none;background-color:#fff;">
 		<form class="form-horizontal AnnouncementForm" name="AnnouncementForm" action="createAnnouncementAction.action"  method="post" enctype="multipart/form-data">
+				<input type="hidden" value="admin" name="isAdmin"></input>
+				<input type="hidden" value="2" name="type"></input>
 				<h2 class="row_border header">Announcement Form</h2>
 				<div class="align">
 				<div class="control-group">
@@ -354,8 +358,8 @@
 				$('#totalCommentsBtDates').append(str);
 			if(startIndex <= totalCount)
 			{
-				startIndex = startIndex + 5;
-				maxIndex   = 5;
+				startIndex = startIndex + maxIndex;
+				maxIndex   = maxIndex;
 				$('#moreButton').show();
 			}
 			else
@@ -401,8 +405,8 @@
 				$('#totalCommentsList').append(str);
 			if(stIndex <=  totalCount)
 			{
-				stIndex   = stIndex + 5;
-				enIndex   =  5;
+				stIndex   = stIndex + enIndex;
+				enIndex   =  enIndex;
 				$('#moreButton').show();
 			}
 			else
@@ -480,6 +484,18 @@
 	});
 	
 $(document).ready(function(){
+
+					var type = '${type}';
+					if(type == 1)
+					{
+						$("#BOX-1").show();
+						$("#BOX-2").hide();
+					}
+					else if(type == 2)
+					{
+						$("#BOX-1").hide();
+						$("#BOX-2").show();
+					}
 				   $("#CareId1").click(function(){
 				        if(document.getElementById("BOX-1").style.display == "none"){
 						   $("#BOX-1").show();
@@ -553,7 +569,8 @@ $(document).ready(function(){
 				   });
 				    
 				});
-					
+				
+				
 </script>
 </body>
 </html>
