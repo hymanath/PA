@@ -82,12 +82,23 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	 return queryObject.list();
 	}
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInDistrict(Long userId,
 			Long districtId) {
 		Object[] params = {userId,districtId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId) from InfluencingPeople model where "+
-				"model.user.userId = ? and model.userAddress.district.districtId = ?",params);
+				"model.user.userId = ? and model.userAddress.district.districtId = ? ",params);
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInDistrict(Long userId,
+			Long districtId) {
+		//Object[] params = {userId,districtId};
+		Query queryObject = getSession().createQuery("select count(model.influencingPeopleId) from InfluencingPeople model where "+
+				"model.user.userId =:userId and model.userAddress.constituency.constituencyId in(select model1.constituencyId from Constituency model1 where model1.district.districtId =:districtId) and model.userAddress.district.districtId =:districtId");
+		queryObject.setParameter("userId", userId);
+		queryObject.setParameter("districtId", districtId);
+		return queryObject.list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -698,4 +709,5 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		query.setParameter("voterId", voterId);
 			return  (String) query.uniqueResult();
 	}
+
 }
