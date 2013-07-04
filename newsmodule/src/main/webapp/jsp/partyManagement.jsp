@@ -6661,11 +6661,13 @@ function getGalleryListForAParty()
 {
 	var fromDate = $("#fromDateId").val();
 	var toDate = $("#toDateId").val();
-
+    var locationIdsArray = new Array();
+	var locationScope = "";
 	var jsObj={
 		fromDate:fromDate,
 		toDate:toDate,
-		partyId:872,
+		locationIdsArray:locationIdsArray,
+		locationScope:locationScope,
 		task:'getGalleryListForAParty'
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
