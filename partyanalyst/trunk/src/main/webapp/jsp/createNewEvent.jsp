@@ -1149,7 +1149,7 @@ function handleSubmit(type)
 	  <div id="actionPlanPlans" style="clear:both;margin-top:10px;margin-left:37px;width:100%"></div>
 	  <div id="actionPlanError"></div>
 	  <div style="clear:both;">
-		<span class="titleStyle">Action Plan<font class="requiredFont"> * </font> : </span> <input type="text" id="actionPlanName" />
+		<span class="titleStyle">Action Plan<font class="requiredFont"> * </font> : </span> <input type="text" id="actionPlanName" maxlength="100"/>
 	  </div>
 	  <div style="clear:both;">
 		<span class="titleStyle">Target Date<font class="requiredFont"> * </font> : </span> <input type="text" id="actionPlanDate" readonly="readonly" name="planDateText" value="" />
