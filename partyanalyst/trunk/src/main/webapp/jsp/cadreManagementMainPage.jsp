@@ -471,8 +471,9 @@ function removeDeletedElement(id,jsObj)
 		}
 		else if(jsObj.task=="deleteImpDate"){		
 		var elmt = document.getElementById("ImpDate_"+myResults);
-		alert("Date successfully deleted");
+		 $('#eventDateDetails').dialog('close');
 
+		alert("Date successfully deleted");
           getUpdatedEvents();
 
 		// datesRenderArr.push("");
