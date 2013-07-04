@@ -191,7 +191,8 @@ public class UserService implements IUserService{
 		public RegistrationVO checkForValidUser(String username,String password)
 		{
 			RegistrationVO regVO         = new RegistrationVO();
-			try {
+			try 
+			{
 				LOG.debug("Entered Into checkForValidUser() method in UserService Service"); 
 				//List<Object[]> userDetails = userDAO.checkForValidUser(username, password);
 				List<Object[]> userDetails   = userRolesDAO.checkForValidUser(username, password);
@@ -224,7 +225,8 @@ public class UserService implements IUserService{
 						}
 					}
 				}
-			} catch (Exception e) {
+			} catch (Exception e)
+			{
 				LOG.error("Exception Raised in checkForValidUser() method in UserService Service",e); 
 			}
 			
@@ -240,7 +242,8 @@ public class UserService implements IUserService{
 		public ResultStatus updateUserPassword(String password,Long userId)
 		{
 			ResultStatus resultStatus = new ResultStatus();
-			try {
+			try
+			{
 				LOG.debug("Entered into updateUserPassword() method in UserService Service");
 				Long userLoginId =0l;
 				if(userId != null)
@@ -257,7 +260,8 @@ public class UserService implements IUserService{
 				{
 					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				}
-			} catch (Exception e) {
+			} catch (Exception e)
+			{
 				LOG.error("Exception Raised in updateUserPassword() method in UserService Service",e);
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			}
@@ -273,17 +277,25 @@ public class UserService implements IUserService{
 		public RegistrationVO forgetPasswordService(String username)
 		{
 			RegistrationVO regVO = new RegistrationVO();
-			User user = userDAO.getUserDetailsByUserName(username);
-			if(user != null)
+			try 
 			{
-				regVO.setUserName(user.getUserLogin().getUserName());
-				regVO.setRegistrationID(user.getUserId());
-				regVO.setPassword(user.getUserLogin().getPassword());
-				regVO.setFirstName(user.getUserProfile().getFirstName());
-				regVO.setLastName(user.getUserProfile().getLastName());
-				regVO.setEmail(user.getUserProfile().getEmailId());
-				regVO.setMobile(user.getUserProfile().getMobileNo());
+				LOG.debug("Entered into forgetPasswordService() method in UserService Service");
+				User user = userDAO.getUserDetailsByUserName(username);
+				if(user != null)
+				{
+					regVO.setUserName(user.getUserLogin().getUserName());
+					regVO.setRegistrationID(user.getUserId());
+					regVO.setPassword(user.getUserLogin().getPassword());
+					regVO.setFirstName(user.getUserProfile().getFirstName());
+					regVO.setLastName(user.getUserProfile().getLastName());
+					regVO.setEmail(user.getUserProfile().getEmailId());
+					regVO.setMobile(user.getUserProfile().getMobileNo());
+				}
+			} catch (Exception e)
+			{
+				LOG.error("Exception Raised in forgetPasswordService() method in UserService Service",e);
 			}
+			
 			return regVO;
 		}
 		/**
@@ -297,7 +309,8 @@ public class UserService implements IUserService{
 		public ResultStatus saveComment(Long userId,Long annoncementId,String comment)
 		{
 			ResultStatus resultStatus = new ResultStatus();
-			try {
+			try 
+			{
 				LOG.debug("Entered into saveComment() method in UserService Service");
 				Comment commentModel = new Comment();
 				if(userId != null && userId > 0)
@@ -321,7 +334,8 @@ public class UserService implements IUserService{
 				{
 					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				}
-			} catch (Exception e) {
+			} catch (Exception e)
+			{
 				LOG.error("Exception Raised in saveComment() method in UserService Service",e);
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			}
@@ -339,7 +353,8 @@ public class UserService implements IUserService{
 		public List<CommentVO> getAllCommentsCommentedByUser(Long announcementId,int startIndex,int maxIndex)
 		{
 			List<CommentVO> returnList = null;
-			try {
+			try
+			{
 				LOG.debug("Entered into getAllCommentsCommentedByUser() method in UserService Service");
 				User user = new User();
 				Long totalCount = commentDAO.getTotalCommentsCountByAnnouncementId(announcementId);
@@ -358,7 +373,8 @@ public class UserService implements IUserService{
 						returnList.add(commentVO);
 					}
 				}
-			} catch (Exception e) {
+			} catch (Exception e)
+			{
 				returnList = new ArrayList<CommentVO>();
 				LOG.error("Exception Raised in getAllCommentsCommentedByUser() method in UserService Service",e);
 			}
@@ -411,7 +427,8 @@ public class UserService implements IUserService{
 		public List<CommentVO> getAllCommentsBetweenSelectedDates(Date startDate,Date endDate,int startIndex,int maxIndex)
 		{
 			List<CommentVO> returnList = null;
-			try {
+			try
+			{
 				LOG.debug("Entered into getAllCommentsBetweenSelectedDates() method in UserService Service");
 				User user = new User();
 				Announcements announcements = new Announcements();
@@ -434,7 +451,8 @@ public class UserService implements IUserService{
 						returnList.add(commentVO);
 					}
 				}
-			} catch (Exception e) {
+			} catch (Exception e)
+			{
 				returnList = new ArrayList<CommentVO>();
 				LOG.error("Exception Raised in getAllCommentsCommentedByUser() method in UserService Service",e);
 			}
@@ -452,7 +470,8 @@ public class UserService implements IUserService{
 		public List<CommentVO> getAllComments(int startIndex,int maxIndex)
 		{
 			List<CommentVO> returnList = null;
-			try {
+			try 
+			{
 				LOG.debug("Entered into getAllComments() method in UserService Service");
 				User user = new User();
 				Announcements announcements = new Announcements();
@@ -475,7 +494,8 @@ public class UserService implements IUserService{
 						returnList.add(commentVO);
 					}
 				}
-			} catch (Exception e) {
+			} catch (Exception e)
+			{
 				returnList = new ArrayList<CommentVO>();
 				LOG.error("Exception Raised in getAllComments() method in UserService Service",e);
 			}
@@ -491,7 +511,8 @@ public class UserService implements IUserService{
 		public ResultStatus abuseCommentService(Long commentId)
 		{
 			ResultStatus resultStatus = new ResultStatus();
-			try {
+			try 
+			{
 				LOG.debug("Entered into abuseCommentService() method in UserService Service");
 				int aduseState = commentDAO.abuseTheComment(commentId);
 				if(aduseState == 1)
@@ -502,7 +523,8 @@ public class UserService implements IUserService{
 				{
 					resultStatus.setResultCode(ResultCodeMapper.FAILURE);	
 				}
-			} catch (Exception e) {
+			} catch (Exception e) 
+			{
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				LOG.error("Exception Raised in abuseCommentService() method in UserService Service",e);
 			}
