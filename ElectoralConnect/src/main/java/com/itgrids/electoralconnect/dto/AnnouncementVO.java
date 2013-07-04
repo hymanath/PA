@@ -2,6 +2,7 @@ package com.itgrids.electoralconnect.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class AnnouncementVO implements Serializable{
 	/**
@@ -17,8 +18,11 @@ public class AnnouncementVO implements Serializable{
 	private String fileTitle;
 	private String fileDescription;
 	private String filePath;
+	private Date date;
+	private String announcementName;
+	private List<NotificationVO> notificationsList;
+	private List<PressReleaseVO> pressReleasesList;
 	private String fileName;
-	
 	
 	public String getName() {
 		return name;
@@ -74,13 +78,36 @@ public class AnnouncementVO implements Serializable{
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
+	public List<NotificationVO> getNotificationsList() {
+		return notificationsList;
+	}
+	public void setNotificationsList(List<NotificationVO> notificationsList) {
+		this.notificationsList = notificationsList;
+	}
+	public List<PressReleaseVO> getPressReleasesList() {
+		return pressReleasesList;
+	}
+	public void setPressReleasesList(List<PressReleaseVO> pressReleasesList) {
+		this.pressReleasesList = pressReleasesList;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public String getAnnouncementName() {
+		return announcementName;
+	}
+	public void setAnnouncementName(String announcementName) {
+		this.announcementName = announcementName;
+	}
 	public String getFileName() {
 		return fileName;
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	
 	
 	
 }

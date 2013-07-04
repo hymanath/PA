@@ -46,8 +46,9 @@
 <div><a onClick="getAllComments(0,5);" class="btn btn-primary">View More</a></div>
 </div>
 
-
-<div id="totalComments"></div>-->
+-->
+<div id="totalComments" class="modal hide fade"
+></div>
 
 <section role="main">
 			<!----Slider---->
@@ -146,8 +147,8 @@
 			<section class="row ">
 				<div class="container m_top10">
 					<div class="row-fluid">
-						<div class="span5 well well-small">
-							<h4>Notifications</h4>
+						<div class="span5 well well-small" id="topFiveNotifications">
+							<!--<h4>Notifications</h4>
 							<article class="row-fluid notifications">
 								<a href="" class="date span2">
 									<h2>July 03 2013</h2>
@@ -209,12 +210,12 @@
 									<h1>Affidavits of Contesting Candidates - New Affidav ...</h1>
 									<p>Affidavits of Contesting Candidates New Affidav...</p>
 								</a>	
-							</article>
+							</article>-->
 							
 						</div>
 						
-						<div class="span7">
-							<article>
+						<div class="span7" id="pressReleaseDiv">
+							<!--<article>
 								<h4>Press Releases</h4>
 								<table class="table table-bordered table-hover table-condensed">
 									
@@ -232,7 +233,7 @@
 									</tbody>
 								</table>
 								
-							</article>
+							</article>-->
 						</div>
 					</div>
 					
@@ -318,6 +319,7 @@ function buildCommentsList(myResults)
 function getAllComments(startIndex,maxIndex)
 {
 	
+	$('#totalComments').modal('show');
 	getTop5Comments(startIndex,maxIndex,"getTotalComments");
 	
 }
@@ -375,6 +377,86 @@ function getRemaingCommentsList()
 		}
 		$('#totalComments').append(str);
 } */
+
+function getTopAnnouncements()
+{
+	var jsObj =
+		{  	
+			task  : "topAnnouncements"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getTopAnnouncementsAction.action?"+rparam;
+		callAjaxForComments(jsObj, url);
+}
+
+function getSelectedAnnouncement(id)
+{
+	var jsObj =
+		{  	
+			announcementId : id,
+			task           : "getAnnouncementForSelected"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getTopAnnouncementsAction.action?"+rparam;
+		callAjaxForComments(jsObj, url);
+}
+
+/* function getAllAnnoncements()
+{
+	var jsObj =
+		{  	
+			task           : "getAllAnnouncements"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getTopAnnouncementsAction.action?"+rparam;
+		callAjaxForComments(jsObj, url);
+}
+ */
+function buildTopAnnouncements(myResults)
+{
+	if(myResults[0].notificationsList != null)
+	{
+		var nstr = "";
+		nstr += '<h4>Notifications</h4>';
+		for(var i in myResults[0].notificationsList)
+		{
+			nstr += '<article class="row-fluid notifications">';
+			nstr += '<a style="cursor: pointer;" class="date span2" onClick="getAllComments(0,5)"><h2>'+myResults[0].notificationsList[i].date+'</h2>';
+			nstr += '<span class="text-center label"><i class="icon-comment"></i><br/><small>'+myResults[0].notificationsList[i].count+'</small></span></a>';
+			nstr +='<a style="cursor: pointer;" class=" title span10" onClick="getSelectedAnnouncement('+myResults[0].notificationsList[i].id+');"><h1>'+myResults[0].notificationsList[i].title+'</h1><p>'+myResults[0].notificationsList[i].description+'</p></a>';
+			nstr +='	</article>';
+		}
+		$('#topFiveNotifications').html(nstr);
+	}
+	if(myResults[0].pressReleasesList != null)
+	{
+		var pstr = "";
+			pstr +=  '<article>';
+			pstr +=	 '<h4>Press Releases</h4>';
+			pstr +=	 '<table class="table table-bordered table-hover table-condensed"><tbody>';
+		for(var i in myResults[0].pressReleasesList)
+		{
+			pstr +=	 '<tr><td><a style="cursor: pointer;" class=" title" onClick="getSelectedAnnouncement('+myResults[0].pressReleasesList[i].id+');"><i class="downarrow-icon"></i></a>'+myResults[0].pressReleasesList[i].title+'<span class="pull-right label">';
+			pstr +=	'<a style="cursor: pointer;" onClick="getAllComments(0,5)"><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></td></tr>';
+			
+		}
+		pstr +=	'</table>';
+			pstr += '</article>';
+		$('#pressReleaseDiv').html(pstr);
+		
+	}
+}
+var result = "";
+function buildAnnouncementForSelected(myResults)
+{
+	if(myResults != null)
+	{
+		result = myResults;
+		window.open('selectedAnnouncementsAction.action','','width=700,height=500');
+		
+	}
+}
+
 function callAjaxForComments(jsObj,url){
 		 var myResults;
 
@@ -406,9 +488,17 @@ function callAjaxForComments(jsObj,url){
 								{
 									buildTotalCommentsList(myResults);
 								}
-								/* else if(jsObj.task =="getRemaingComments")
+								else if(jsObj.task =="topAnnouncements")
 								{
-									buildRemainingCommentsList(myResults);
+									buildTopAnnouncements(myResults);
+								} 
+								else if(jsObj.task =="getAnnouncementForSelected")
+								{
+									buildAnnouncementForSelected(myResults);
+								}
+								/* else if(jsObj.task =="getAllAnnouncements")
+								{
+									buildAllAnnouncements(myResults);
 								} */
 								}catch (e) {
 							     
@@ -426,6 +516,9 @@ function callAjaxForComments(jsObj,url){
 	$('.carousel').carousel({  
 		interval: 10000 // in milliseconds  
 	})
+	getTopAnnouncements();
+	//getSelectedAnnouncement(1);
+	//getAllAnnoncements();
 </script>
 
 </body>  

@@ -15,6 +15,7 @@
 	 -->
 	 <bean id="HomePageAction" class="com.itgrids.electoralconnect.web.action.HomePageAction" singleton="false">
 	 	<property name="userService" ref="userService"/>
+	 	<property name="announcementService" ref="announcementService"/>
 	 </bean>
 	 
 	 <bean id="RegisterUserAction" class="com.itgrids.electoralconnect.web.action.RegisterUserAction" singleton="false">
@@ -56,5 +57,9 @@
 	 <bean id="adminRegisterSaveAction" class="com.itgrids.electoralconnect.web.action.AdminRegisterSaveAction" singleton="false">
 	 	<property name="userService" ref="userService"/>
 	 	<property name="mailService" ref="mailService"/>
+	 </bean>
+	 
+	 <bean id="selectedAnnouncementsAction" class="com.itgrids.electoralconnect.web.action.SelectedAnnouncementsAction" singleton="false">
+	 	
 	 </bean>
 </beans>

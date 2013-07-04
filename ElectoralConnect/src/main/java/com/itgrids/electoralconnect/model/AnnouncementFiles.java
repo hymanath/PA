@@ -1,9 +1,6 @@
 package com.itgrids.electoralconnect.model;
 
 import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -70,10 +66,10 @@ public class AnnouncementFiles extends BaseModel implements Serializable{
 	@JoinColumn(name = "announcement_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Announcements getAnnouncement() {
+	public Announcements getAnnouncements() {
 		return announcements;
 	}
-	public void setAnnouncement(Announcements announcement) {
+	public void setAnnouncements(Announcements announcement) {
 		this.announcements = announcement;
 	}
 	

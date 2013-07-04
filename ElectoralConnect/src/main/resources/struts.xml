@@ -137,5 +137,15 @@
          	<result name="success">/jsp/adminPage.jsp</result>
          	<result name="error">/jsp/adminPage.jsp</result>
 		</action>
+		
+		<action name="getTopAnnouncementsAction" class="HomePageAction" method="getTopAnnouncements">
+			<result type="json" name="success">
+				<param name="root">announcementsList</param>				
+			</result>
+		</action>
+		
+		<action name="selectedAnnouncementsAction" class="selectedAnnouncementsAction" >
+			<result>/jsp/selectedAnnouncements.jsp</result>
+		</action>
 		</package>
 </struts>      

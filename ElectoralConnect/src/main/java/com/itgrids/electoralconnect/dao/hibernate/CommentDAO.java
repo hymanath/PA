@@ -154,4 +154,38 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 		getSession().flush();
 		return  x;	
 	}
+	/**
+	 * This DAO is used to get Top 5 Notifications
+	 * @param int startIndex
+	 * @param int maxIndex
+	 * @return List<Object[]>
+	 * @date 04-07-2013
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTop5Notifications(int startIndex,int maxIndex)
+	{
+		Query query = getSession().createQuery("select count(*),model.announcements from Comment model " +
+				"  where model.announcements.announcementType.announcementTypeId = 1" +
+				"  group by model.announcements.announcementId order by model.announcements.announcementId desc");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		return query.list();
+	}
+	/**
+	 * This DAO is used to get Top 5 PressReleases
+	 * @param int startIndex
+	 * @param int maxIndex
+	 * @return List<Object[]>
+	 * @date 04-07-2013
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTop5PressReleases(int startIndex,int maxIndex)
+	{
+		Query query = getSession().createQuery("select count(*),model.announcements from Comment model " +
+				"  where model.announcements.announcementType.announcementTypeId = 2" +
+				"  group by model.announcements.announcementId order by model.announcements.announcementId desc");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		return query.list();
+	}
 }
