@@ -115,16 +115,14 @@
 						<div class="carousel-inner">
 							<div class="item active">
 								<!-- <img alt="" src="images/bootstrap-mdo-sfmoma-02.jpg">-->
-								<img alt="" src="images/Tdp.jpg">
-								<div class="container" >
+								<img alt="" src="images/TDPNEW.jpg">
+								<!--<div class="container" >
 									<div class="carousel-caption text-center">
-										<!-- <h4>--: WELCOME :--</h4>
-										<p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> -->
 										<h4>--: WELCOME :--</h4>
 										<p style="font-size: 14px; color: #FD9A0F;">Telugu Desam Party News Information Center For Politicians</p>
 
 									</div>
-								</div>
+								</div> -->
 							</div>   
 						</div>
       
