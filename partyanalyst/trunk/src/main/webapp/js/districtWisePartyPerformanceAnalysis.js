@@ -957,7 +957,7 @@ function showDistrictWiseAnalysis(result)
 	    ctitle = "Selected Parties Wise Results(Won/Lead) Comparison";
 			  
 	 new google.visualization.LineChart(chartResultDiv).
-		  draw(data, {curveType: "function",width: 1002, height: 300,title:ctitle,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:13,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		  draw(data, {curveType: "function",width: 1002, height: 520,title:ctitle,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:13,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
    }
   else
    {
