@@ -210,7 +210,7 @@ $(document).ready(function(){
 										
 							    <s:iterator value="resultMap.NewsGallary" var="newsGallaryDetails" status="ctr">
 						       
-                             <div ${ctr.first ? 'class="item active"' : 'class="item"'}>
+                             <div ${ctr.first ? 'class="item active"' : 'class="item"'} style="top: 10px;">
                           
 						  
 						<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
@@ -250,7 +250,7 @@ $(document).ready(function(){
 													</div></br>
 													<div class="span2 " style="float:right"><br>
 														<a href="newsPaginationAction.action?level=state">
-															<button class="btn btn-mini pull-right" type="button"  style="margin-top: 10px; margin-bottom: 5px;margin-right: 25px;">More...</button>
+															<button class="btn btn-mini pull-right" type="button"  style="margin-top: -20px; margin-bottom: 15px;margin-right: 25px;">More...</button>
 														</a>
 													</div>
 												</div>
@@ -349,7 +349,7 @@ $(document).ready(function(){
 										
 							    <s:iterator value="resultMap.NewsGallaryForDist" var="newsGallaryDetails" status="ctr">
 						       
-                             <div ${ctr.first ? 'class="item active"' : 'class="item"'}>
+                             <div ${ctr.first ? 'class="item active"' : 'class="item"'} style="top: 10px;">
                           
 						  
 						  <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
@@ -385,7 +385,7 @@ $(document).ready(function(){
 													</div></br>
 													<div class="span2 " style="float:right"><br>
 														<a href="newsPaginationAction.action?level=state">
-															<button class="btn btn-mini pull-right" type="button"  style="margin-top: 10px; margin-bottom: 5px;margin-right: 25px;">More...</button>
+															<button class="btn btn-mini pull-right" type="button"  style="margin-top: -20px; margin-bottom: 15px;margin-right: 25px;">More...</button>
 														</a>
 													</div>
 												</div>
@@ -460,7 +460,7 @@ $(document).ready(function(){
 			
 				</div>
 				<!---View your Constituency News Div--->
-				<div class="span3" style="height:554px">
+				<div class="span3" style="height:555px">
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Constituency Wise News</h4></div>
 						<div class="span12">						
@@ -541,7 +541,7 @@ $(document).ready(function(){
 				</div>
 				<!-----View your Constituency News End------>
 				<!-----Top view News DIv------>
-				<div class="span3" style="height:554px">
+				<div class="span3" style="height:555px">
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>Hot News</h4></div>
 						<div class="span12">
