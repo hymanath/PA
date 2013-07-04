@@ -694,6 +694,7 @@ $(document).ready(function(){
  $("#categoryCheckBoxId").attr("checked",false);
  $("#galleryCheckBoxId").attr("checked",false);
  $("#districtCheckboxId").attr("checked",false);
+ $("#categoryGallary").attr("checked",false);
 
  if(radioVal == "byDate")
  {
