@@ -355,7 +355,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		    fileVO.setVisibility(jObj.getString("visibility"));
 		    fileVO.setFileGallaryId(jObj.getLong("fileGallaryId"));
 		    fileVO.setFlagSet(jObj.getString("flagInd"));
-		    fileVO.setNewsDescription(jObj.getString("newsDescription"));
+		    //fileVO.setNewsDescription(jObj.getString("newsDescription"));
 		    fileVO.setUserId(regVO.getRegistrationID());
 		   
 		    
