@@ -373,5 +373,17 @@ ICandidateRelatedNewsDAO {
 		return query.list();
 	}
 	
+	public List<Object[]> getCandidateByFileGallaryId(List<Long> gallaryIdsList)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.fileGallary.fileGallaryId,model.candidate.lastname from CandidateRealatedNews model where model.fileGallary.fileGallaryId  in(:gallaryIdsList) ");
+		str.append(" order by model.fileGallary.file.fileDate desc ");
+		Query query = getSession().createQuery(str.toString());	
+		
+		if(gallaryIdsList !=null && gallaryIdsList.size() > 0)
+			query.setParameterList("gallaryIdsList", gallaryIdsList);
+		
+	return query.list();
+	}
 
 }
