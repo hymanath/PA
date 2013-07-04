@@ -250,7 +250,7 @@ font-size:20px;
 	</div>
 
 	  <div class="left-panel">
-	    <h3>Other News in this Gallery</h3>
+	    <h3 id="gallaryNameId" style="text-transform:capitalize;">Other News in this Gallery</h3>
 	   <div id="releatedNewsDiv"></div>
 	  </div>
 	</div>
@@ -353,6 +353,10 @@ function buildContentDetails()
 	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 	{
 	   source = result.relatedGalleries[0].filesList[i].fileVOList[0].source;
+	   if(result.relatedGalleries[0].filesList[i].gallaryName != null && result.relatedGalleries[0].filesList[i].gallaryName != ""){
+		$('#gallaryNameId').html('');
+	   	$('#gallaryNameId').html('Other News in Gallery: '+(result.relatedGalleries[0].filesList[i].gallaryName));
+		}
 	   if (result.relatedGalleries[0].filesList[i].newsDescription != null && result.relatedGalleries[0].filesList[i].newsDescription != "")
 	   {  
 		  if(source == "Eenadu Telugu") $('#newsDescriptionDiv').addClass("enadu").html(result.relatedGalleries[0].filesList[i].newsDescription);
