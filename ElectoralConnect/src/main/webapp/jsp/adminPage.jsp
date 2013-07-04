@@ -10,6 +10,7 @@
 </head>
 <body>
 <script type="text/javascript"  src="js/RegisterFormValidation.js"></script>
+<script type="text/javascript"  src="js/AnnouncementFormValidation.js"></script>
 <style>
 	#mainBodyId{width:800px;margin-left:auto;margin-right:auto;}
 	input[type="radio"],#attachFileId{margin-bottom:5px;margin-right:5px;}
@@ -29,10 +30,10 @@
     font-size: 25px;
     font-weight: bold;
     text-align: center;}
-	.align{ margin-left: 100px;
+	.align{ margin-left: 90px;
    margin-top:7px;}
 	.t_align{text-align:center;}
-	#forFileId{width:600px;}
+	#forFileId{width:661px;}
 
 </style>
 
@@ -269,6 +270,8 @@
 	});
 	
 	$('#saveAnnouncement').click(function(){
+		 $('[name="AnnouncementForm"]').validate();
+		if ( $('[name="AnnouncementForm"]').valid())
 		document.AnnouncementForm.submit();
 	});
 	
