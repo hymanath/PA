@@ -103,7 +103,8 @@ table {
 #userratingchangedDiv {
     border: 1px solid #D3D3D3;
     height: 109px;
-    margin-left: 20px;
+    margin-left: auto;
+	margin-right: auto;
     width: 630px;
     padding-top: 7px;
 }
@@ -2166,8 +2167,8 @@ function displayDateText(type, args, obj) {
 	   });
 	</script>
 	</s:if>
-	<div class="pull-left" style="margin-left:40px;"><div class="fontalign" style="color: #06ABEA;" > Average Rating</div><div id="avgratingnumeric" style="margin-top:5px;margin-left:30px;"></div> <div style="margin-top:5px;" class="rateit" id="rateitavgall"></div><div id="avgratpeplcount" style="margin-top:5px;margin-left:30px;"></div></div>
-	<div class="pull-left" style="margin-left:49px;"><div style="width:181px;" id="individualcountrate"></div></div>
+	<div class="pull-left" style="margin-left:20px;"><div class="fontalign" style="color: #06ABEA;" > Average Rating</div><div id="avgratingnumeric" style="margin-top:5px;margin-left:30px;"></div> <div style="margin-top:5px;" class="rateit" id="rateitavgall"></div><div id="avgratpeplcount" style="margin-top:5px;margin-left:30px;"></div></div>
+	<div class="pull-left" style="margin-left:25px;"><div style="width:181px;" id="individualcountrate"></div></div>
 </div>
 			<s:if test="completeProblemDetailsVO.userStatus != 'notlogged' " >
         <div class="span8">
