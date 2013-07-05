@@ -10,6 +10,8 @@
 </head>
 <body>
 <link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
+<link rel="stylesheet" type="text/css" href="css/dataPicker.css"/>
+<link rel="stylesheet" href="/resources/demos/style.css" />
 <script type="text/javascript"  src="js/RegisterFormValidation.js"></script>
 <script type="text/javascript"  src="js/AnnouncementFormValidation.js"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
@@ -45,7 +47,7 @@
 	.posted_sec{ font-family: Verdana;font-size: 16px;font-weight: bold;margin-left: 6px;text-align: left;}
 	.AnnouncementForm{ margin-top: 5px;padding: 7px; border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
 	.getallcomment{margin-top: 8px;padding: 7px;display: none;background-color:#fff;border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
-	
+
 
 </style>
 
@@ -221,7 +223,7 @@
 				<div class="control-group">
 					<label class="control-label" for="date">Date</label>
 					<div class="controls">
-						<input type="text" id="datepicker" name="date" />
+						<input type="text" id="datepicker" name="date" readonly="true"/>
 					</div>
 				</div>
 				
@@ -285,7 +287,7 @@
 	var enIndex    = 5;
 	var announcementData = "";
 	$(function(){	
-		$("#datepicker").datepicker();
+	$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
 	});
 	
 	$('#createAnnouncementId').click(function(){
@@ -551,7 +553,7 @@
 	});
 	
 	function buildAllAnnouncements(results,jsObj){
-	console.log(results);
+	//console.log(results);
 	
 		var str="";
 	str+="<ul class='unstyled pad10'>";
@@ -560,6 +562,8 @@
 		str+="<li>";
 		
 		str+="<span class='title_sec1' >"+results[i].name+"</span>";
+		str+= "<div style='float:right;'><a class='icon-pencil' onClick='editAnnouncement("+results[i].announcementFileId+")' style='cursor: pointer; margin-right: 7px;'></a>";
+		str+= "<a class='icon-remove-sign' onClick='deleteAnnouncement("+results[i].announcementId+")' style='cursor: pointer;'></a></div>";
 		  str +='<hr style="margin-top:0px;">';
 		str+="<div class='row-fluid'>";
 		<!--str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
@@ -570,8 +574,6 @@
 		str+="<span class='text-error'>Date: "+results[i].dateString+"</span>";
 		<!--str+="<div class='span2'>"+results[i].announcementTypeName+"</div></li>";-->
 		str+="<span class='pull-right'>"+results[i].updatedBy+"</span>";
-		str+= "<a class='btn btn-primery' onClick='editAnnouncement("+results[i].announcementFileId+")'>Edit</a>";
-		str+= "<a class='btn btn-primery' onClick='deleteAnnouncement("+results[i].announcementId+")'>Delete</a>";
 		 str +='</div>';
 		
 		str+="</li>";
