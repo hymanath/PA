@@ -623,7 +623,7 @@ function getCadresResults(btnType)
 	elmt.innerHTML = 'Name Accepts only Characters';
 	return false;
 
-	}	
+	}
 	if(REPORTLEVEL == '') 
 	{
 		elmt.innerHTML = 'Please Select Range';
@@ -1432,14 +1432,16 @@ function sendCadreSMS()
 {
 	var elements = document.getElementsByName("cadreResult_check");
 	var errorSpanElmt = document.getElementById("smsStatusTextSpan");
+	$('#smsStatusTextSpan1').html('');
 	selectedCadresArray = [];
 
 
-	if(!elements || !errorSpanElmt)
+	if(!elements || !errorSpanElmt){
+		$('#smsStatusTextSpan1').html('<font style="color:red;margin-left:75px;">Atleast One cadre need to selected to send SMS</font>');
 		return;
+	}
 
 	
-
 	for(var i=0; i<elements.length; i++)
 	{
 		if(elements[i].checked == false)
@@ -1461,6 +1463,7 @@ function sendCadreSMS()
 	if(selectedCadresArray.length == 0)
 	{
 		errorSpanElmt.innerHTML = 'Atleast One cadre need to selected to send SMS';
+		$('#smsStatusTextSpan1').html('<font style="color:red;margin-left:75px;">Atleast One cadre need to selected to send SMS</font>');
 		return;
 	}
 	else
