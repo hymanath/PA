@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -563,7 +564,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	}
 	  $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
-	  $("#votersBasicInfoSubHeading").html('Booth Wise Voters Information in '+mainname+'');
+	  $("#votersBasicInfoSubHeading").html(votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Voters Information in '+mainname+'');
 	  $("#ajaxImageDiv").css('display','none');
 	//var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	//hideAjaxImgDiv('ajaxImageDiv');
@@ -774,7 +775,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 
 function buildVotersChart(chartInfo,reqTitle)
 {
-		$('#votersBasicInfoSubChartHeading').html('Booth Wise Voters Information Chart In '+mainname+'');
+		$('#votersBasicInfoSubChartHeading').html(chartInfo[0].type+' Wise Voters Information Chart In '+mainname+'');
  // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'type');
@@ -1939,8 +1940,33 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 	var updateBrowser = window.open(urlStr,"allVoterDetailsInAcaste"+casteStateId,"scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();
 }
+var value22='${typeName}';
 </script>
-<title>BOOTH WISE VOTERS INFORMATION</title>
+<c:if test="${type == 'constituency'}">
+<title><c:out value='MANDAL'/> WISE VOTERS INFORMATION</title>
+</c:if>
+<c:if test="${type == 'mandal'}">
+
+<c:set var="theString" value='${typeName}'/>
+<c:if test="${fn:contains(theString, 'MUNCIPALITY')}">
+<title><c:out value='BOOTH'/> WISE VOTERS INFORMATION</title>
+</c:if>
+<c:if test="${fn:contains(theString, 'MANDAL')}">
+<title><c:out value='PANCHAYAT'/> WISE VOTERS INFORMATION</title>
+</c:if>
+</c:if>
+<c:if test="${type == 'panchayat'}">
+<title><c:out value='BOOTH'/> WISE VOTERS INFORMATION</title>
+</c:if>
+<c:if test="${type == 'booth'}">
+<title><c:out value='HAMLET'/> WISE VOTERS INFORMATION</title>
+</c:if>
+<c:if test="${type == 'hamletBooth'}">
+<title><c:out value='BOOTH'/> WISE VOTERS INFORMATION</title>
+</c:if>
+<c:if test="${type == 'wardBooth'}">
+<title><c:out value='BOOTH'/> WISE VOTERS INFORMATION</title>
+</c:if>
 </head>
 <body>
 <div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
