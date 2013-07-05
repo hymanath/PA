@@ -100,6 +100,7 @@ public class AnnouncementService implements IAnnouncementService{
 						file.setTitle(announcementVO.getFileTitle());
 						file.setDescription(announcementVO.getFileDescription());
 						file.setFilePath(announcementVO.getFilePath());
+						file.setFileName(announcementVO.getFileName());
 						file.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						file.setUpdatedBy(userDAO.get(user.getRegistrationID()));
 						if(announcementVO.getFileId() != null && announcementVO.getFileId() > 0)
@@ -325,6 +326,7 @@ public class AnnouncementService implements IAnnouncementService{
 						announcementVO.setName(announcements.getUpdatedBy() != null ?announcements.getUpdatedBy().getUserProfile().getFirstName() :"");
 						announcementVO.setAnnouncementName(announcements.getAnnouncementType() != null ?announcements.getAnnouncementType().getName() :"");
 						announcementVO.setFileId(file.getFileId()!= null ?file.getFileId() :0l);
+						announcementVO.setFileName(file.getFileName() != null ?file.getFileName() :"");
 						returnList.add(announcementVO);
 					}
 				}

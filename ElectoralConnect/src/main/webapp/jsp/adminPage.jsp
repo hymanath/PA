@@ -530,6 +530,18 @@
 										window.open('editAnnouncementAction.action');
 									}
 								}
+								else if(jsObj.task =="deleteAnnouncement")
+								{
+									if(myResults.resultCode == 0)
+									{
+										$('#statusMsg'+jsObj.announcementId+'').html('<b style="color:green">Deleted Successfully</b>');
+										//$('#announcemtsDiv'+jsObj.announcementId+'').hide();										
+									}
+									else
+									{
+										$('#statusMsg'+jsObj.announcementId+'').html('<b style="color:red">Error Occured While Deleteing The Announcement</b>');
+									}
+								}
 								}catch (e) {
 							     
 								}  
@@ -558,7 +570,7 @@
 		var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
-	  str +='<div class="comment_sec span7">';
+	  str +='<div class="comment_sec span7" id="announcemtsDiv'+results[i].announcementId+'">';
 		str+="<li>";
 		
 		str+="<span class='title_sec1' >"+results[i].name+"</span>";
@@ -574,6 +586,7 @@
 		str+="<span class='text-error'>Date: "+results[i].dateString+"</span>";
 		<!--str+="<div class='span2'>"+results[i].announcementTypeName+"</div></li>";-->
 		str+="<span class='pull-right'>"+results[i].updatedBy+"</span>";
+		str += "<div id='statusMsg"+results[i].announcementId+"'></div>";
 		 str +='</div>';
 		
 		str+="</li>";
