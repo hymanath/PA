@@ -28,7 +28,8 @@
 			.title{margin-left:-4px !important;}
 			.title p{margin-top:-9px;}
 			.date h2{font-size:9px; line-height:15px;padding:2px 15px 2px 2px;color:#2DCFFE; float:left;}
-	
+			#totalCommentsModal{width:600px;}
+			.indiCommentId{margin:5px;}
 </style>
 <div>
 <!--<div id="bodyId">Hello Welcome to Electoral Connect </div>
@@ -47,8 +48,19 @@
 </div>
 
 -->
-<div id="totalComments" class="modal hide fade"
-></div>
+<div id="totalCommentsModal" class="modal hide fade">
+		<div class="modal-body">
+			<a class="close" data-dismiss="modal">X</a>
+			<legend>Comments On this Announcement</legend>
+			<div id="totalComments"></div>
+			<a id="moreId"></a>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+		</form>
+</div>
+
 
 <section role="main">
 			<!----Slider---->
@@ -148,92 +160,9 @@
 				<div class="container m_top10">
 					<div class="row-fluid">
 						<div class="span5 well well-small" id="topFiveNotifications">
-							<!--<h4>Notifications</h4>
-							<article class="row-fluid notifications">
-								<a href="" class="date span2">
-									<h2>July 03 2013</h2>
-									<span class="text-center label"><i class="icon-comment"></i><br/><small>2500</small></span>
-									
-								</a>
-								<a href="" class=" title span10">
-									<h1>Affidavits of Contesting Candidates - New Affidav ...</h1>
-									<p>Affidavits of Contesting Candidates New Affidav Affidavits of Contesting Candidates New Affidav Affidavits of Contesting Candidates New Affidav Affidavits of Contesting Candidates New Affidav</p>
-								</a>	
-							</article>
-							<article class="row-fluid notifications">
-								<a href="" class="date span2">
-									<h2>July 03
-									2013</h2>
-									<span class="text-center label"><i class="icon-comment"></i><br/><small>2500</small></span>
-									
-								</a>
-								<a href="" class=" title span10">
-									<h1>Affidavits of Contesting Candidates - New Affidav ...</h1>
-									<p>Affidavits of Contesting Candidates New Affidav Affidavits of Contesting Candidates</p>
-								</a>	
-							</article>
-							
-							<article class="row-fluid notifications">
-								<a href="" class="date span2">
-									<h2>July 03
-									2013</h2>
-									<span class="text-center label"><i class="icon-comment"></i><br/><small>2500</small></span>
-									
-								</a>
-								<a href="" class=" title span10">
-									<h1>Affidavits of Contesting Candidates - New Affidav ...</h1>
-									<p></p>
-								</a>	
-							</article>
-							
-							<article class="row-fluid notifications">
-								<a href="" class="date span2">
-									<h2>July 03
-									2013</h2>
-									<span class="text-center label"><i class="icon-comment"></i><br/><small>2500</small></span>
-									
-								</a>
-								<a href="" class=" title span10">
-									<h1>Affidavits of Contesting Candidates - New Affidav ...</h1>
-									<p>Affidavits of Contesting Candidates New Affidav...</p>
-								</a>	
-							</article>
-							
-							<article class="row-fluid notifications">
-								<a href="" class="date span2">
-									<h2>July 03
-									2013</h2>
-									<span class="text-center label"><i class="icon-comment"></i><br/><small>2500</small></span>
-									
-								</a>
-								<a href="" class=" title span10">
-									<h1>Affidavits of Contesting Candidates - New Affidav ...</h1>
-									<p>Affidavits of Contesting Candidates New Affidav...</p>
-								</a>	
-							</article>-->
-							
 						</div>
 						
 						<div class="span7" id="pressReleaseDiv">
-							<!--<article>
-								<h4>Press Releases</h4>
-								<table class="table table-bordered table-hover table-condensed">
-									
-									<tbody>
-										<tr><td><i class="downarrow-icon"></i>Affidavits of Contesting Candidates - New Affidav ...<span class="pull-right label"><i class="icon-comment"></i><small>|2500</small></span></td></tr>
-										<tr><td><i class="downarrow-icon"></i>Affidavits of Contesting Candidates - New Affidav ...<span class="pull-right label"><i class="icon-comment"></i><small>|2500</small></span></td></tr>
-										<tr><td><i class="downarrow-icon"></i>Affidavits of Contesting Candidates - New Affidav ...<span class="pull-right label"><i class="icon-comment"></i><small>|2500</small></span></td></tr>
-										<tr><td><i class="downarrow-icon"></i>Affidavits of Contesting Candidates - New Affidav ...<span class="pull-right label"><i class="icon-comment"></i><small>|2500</small></span></td></tr>
-										<tr><td><i class="downarrow-icon"></i>Affidavits of Contesting Candidates - New Affidav ...<span class="pull-right label"><i class="icon-comment"></i><small>|2500</small></span></td></tr>
-										<tr><td><i class="downarrow-icon"></i>Affidavits of Contesting Candidates - New Affidav ...<span class="pull-right label"><i class="icon-comment"></i><small>|2500</small></span></td></tr>
-										<tr><td><i class="downarrow-icon"></i>Affidavits of Contesting Candidates - New Affidav ...<span class="pull-right label"><i class="icon-comment"></i><small>|2500</small></span></td></tr>
-										<tr><td><i class="downarrow-icon"></i>Affidavits of Contesting Candidates - New Affidav ...<span class="pull-right label"><i class="icon-comment"></i><small>|2500</small></span></td></tr>
-										<tr><td><i class="downarrow-icon"></i>Affidavits of Contesting Candidates - New Affidav ...<span class="pull-right label"><i class="icon-comment"></i><small>|2500</small></span></td></tr>
-										<tr><td><i class="downarrow-icon"></i>Affidavits of Contesting Candidates - New Affidav ...<span class="pull-right label"><i class="icon-comment"></i><small>|2500</small></span></td></tr>
-									</tbody>
-								</table>
-								
-							</article>-->
 						</div>
 					</div>
 					
@@ -284,14 +213,18 @@ $('#passwordModal').modal('show');
 		callAjaxForComments(jsObj, url);
 } */
 
-function getTop5Comments(id,startIndex,maxIndex,task)
+function getTop5Comments(id,startIndex,maxIndex,task,showMore)
 {
+	/**
+		The showMore is used in callback function to append the results to existing div..else we clear the div
+	**/
 	var jsObj =
 		{  	
 			id          : id,
 			startIndex  : startIndex,
 			maxIndex    : maxIndex,
-			task        : task
+			task        : task,
+			showMore    : showMore
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "getCommentsAction.action?"+rparam;
@@ -320,48 +253,58 @@ function buildCommentsList(myResults)
 function getAllComments(id,startIndex,maxIndex)
 {
 	
-	$('#totalComments').modal('show');
-	getTop5Comments(id,startIndex,maxIndex,"getTotalComments");
+	$('#totalCommentsModal').modal('show');
+	getTop5Comments(id,startIndex,maxIndex,"getTotalComments",false);
 	
 }
-function buildTotalCommentsList(myResults)
+function buildTotalCommentsList(myResults,jsObj)
 {
+	var announcementId=jsObj.id;
+	
+	if(!jsObj.showMore)
+	$('#totalComments').html("");
+	
 	if(myResults != null)
 	{
 		totalCount = myResults[0].total;
+		var recordsPerPage=5;
 		var str = "";
+		var date="";
 			for(var i in myResults)
 			{
-				str += '<div class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid blue; margin-bottom: 10px;">';
-				str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
-				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
-				
-				str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
+				str += '<div class="thumbnail indiCommentId">';
+				str +='<span>'+myResults[i].comment+'</span></br>';
+				str +='<span class="pull-left label label-important">'+myResults[i].name+'</span>';
+				str +='<span class="pull-right ">'+myResults[i].commentedTime+'</span></br>';
 				str += '</div>';
-				str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
 			}
+			<!--str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList('+announcementId+');">More</a>';-->
+			
 			$('#totalComments').append(str);
-		if(startIndex < totalCount)
+		if(recordsPerPage+startIndex < totalCount)
 		{
+			$('#moreId').html('<a class="btn btn-primary" onClick="getRemaingCommentsList('+announcementId+');">More</a>');
 			startIndex = startIndex + maxIndex;
 			maxIndex   =  maxIndex;
-			$('#moreButton').show();
+			$('#moreId').css('display','block');
 		}
 		else
 		{
-			$('#moreButton').hide();
+			$('#moreId').css('display','none');
+			startIndex=0;
 		}
 	}
 	else
 	{
-		$('#moreButton').hide();
+		$('#moreId').css('display','none');
+		startIndex=0;
 	}
 	
 }
 
-function getRemaingCommentsList()
+function getRemaingCommentsList(announcementId)
 {
-	getTop5Comments(id,startIndex,maxIndex,"getTotalComments");
+	getTop5Comments(announcementId,startIndex,maxIndex,"getTotalComments",true);
 }
 
 /* function buildRemainingCommentsList(myResults)
@@ -419,12 +362,19 @@ function buildTopAnnouncements(myResults)
 	{
 		
 		var nstr = "";
-		nstr += '<h4>Notifications</h4>';
+		nstr += '<h4>Electoral Updates</h4>';
 		for(var i in myResults[0].notificationsList)
 		{
 			id =  myResults[0].notificationsList[i].id;
 			nstr += '<article class="row-fluid notifications">';
+			
+			if(myResults[0].notificationsList[i].count>0){
 			nstr += '<a style="cursor: pointer;" class="date span2" onClick="getAllComments('+myResults[0].notificationsList[i].id+',0,5)"><h2>'+myResults[0].notificationsList[i].date+'</h2>';
+			}
+			else{
+			nstr += '<a class="date span2"><h2>'+myResults[0].notificationsList[i].date+'</h2>';
+			}
+			
 			nstr += '<span class="text-center label"><i class="icon-comment"></i><br/><small>'+myResults[0].notificationsList[i].count+'</small></span></a>';
 			nstr +='<a style="cursor: pointer;" class=" title span10" onClick="getSelectedAnnouncement('+myResults[0].notificationsList[i].id+');"><h1>'+myResults[0].notificationsList[i].title+'</h1><p>'+myResults[0].notificationsList[i].description+'</p></a>';
 			nstr +='	</article>';
@@ -441,8 +391,13 @@ function buildTopAnnouncements(myResults)
 		{
 			id =  myResults[0].pressReleasesList[i].id;
 			pstr +=	 '<tr><td><a style="cursor: pointer;" class=" title" onClick="getSelectedAnnouncement('+myResults[0].pressReleasesList[i].id+');"><i class="downarrow-icon"></i></a>'+myResults[0].pressReleasesList[i].title+'<span class="pull-right label">';
-			pstr +=	'<a style="cursor: pointer;" onClick="getAllComments('+myResults[0].pressReleasesList[i].id+',0,5)"><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></td></tr>';
 			
+			if(myResults[0].pressReleasesList[i].count>0){
+			pstr +=	'<a style="cursor: pointer;" onClick="getAllComments('+myResults[0].pressReleasesList[i].id+',0,5)"><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></td></tr>';
+			}
+			else{
+			pstr +='<a><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></td></tr>';
+			}
 		}
 		pstr +=	'</table>';
 			pstr += '</article>';
@@ -472,7 +427,7 @@ function callAjaxForComments(jsObj,url){
 									if(myResults.resultCode == 0)
 									{
 										$('#errorMsg').html('<b style="color:green">Comment Saved Successfully..</b>');
-										getTop5Comments(id,startIndex,maxIndex,"getCommentsList");
+										getTop5Comments(id,startIndex,maxIndex,"getCommentsList",false);
 									}
 									else if(myResults == 'notLogged')
 									{
@@ -489,7 +444,7 @@ function callAjaxForComments(jsObj,url){
 								}
 								else if(jsObj.task =="getTotalComments")
 								{
-									buildTotalCommentsList(myResults);
+									buildTotalCommentsList(myResults,jsObj);
 								}
 								else if(jsObj.task =="topAnnouncements")
 								{
