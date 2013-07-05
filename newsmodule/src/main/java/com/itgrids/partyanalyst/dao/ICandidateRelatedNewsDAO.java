@@ -38,6 +38,22 @@ public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNe
 	public List<Object[]> getGalleryListForSelectedCategory(List<Long> categoryIdsList);
 	
 	public List<Object[]> getCandidateByFileGallaryId(List<Long> gallaryIdsList);
+	
+	public List<Long> getTotalNewsCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
+	
+	public List<Object[]> getTotalNewsCountForAParty(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
+
+	public List<Long> getNotRespondFileGalleryIds(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,List<Long> respondFileGalleryIds);
+	
+	public List<Object[]> getRespondNewsPartyDetails(List<Long> respondFileGalleryIdsList);
+	
+	public List<Long> getResponseCountBasedTotalNewsCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
+	public List<Long> getNotResponseCountBasedTotalNewsCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
+	public List<Object[]> getRespondNewsPartyDetailsCustom(List<Long> respondFileGalleryIdsList);
+
+	public List<Long> getTotalNewsCountCustom(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
+	
+	public List<Long> getResponseCountBasedTotalNewsCountCustom(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
 
 
 }
