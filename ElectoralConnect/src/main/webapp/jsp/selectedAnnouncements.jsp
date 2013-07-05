@@ -23,16 +23,19 @@ var startIndex = 0;
 var maxIndex = 5;
 var totalCount = "";
 var id = "";
+var allAnnouncements = "";
+var announcenentTypeId = "";
 if(myResults != null)
 {
 	var str = "";
 	for(var i in myResults)
 	{
 		id = myResults[i].id;
+		announcenentTypeId = myResults[i].announcementType;
 		str += '<div></br>';
 		str += '<b>Title : </b><span>'+myResults[i].title+'</span></br>';
 		str += '<b>Description : </b><span>'+myResults[i].description+'</span></br>';
-		str += '<b>Date : </b><span>'+myResults[i].date+'</span></br>';
+		str += '<b>Date : </b><span>'+myResults[i].dateString+'</span></br>';
 		str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';
 		if(myResults[i].filePath =! null && myResults[i].filePath != "")
 		{
@@ -49,7 +52,8 @@ function getAllAnnoncements()
 {
 	var jsObj =
 		{  	
-			task           : "getAllAnnouncements"
+			announcenentTypeId : announcenentTypeId,
+			task               : "getAllAnnouncements"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "getTopAnnouncementsAction.action?"+rparam;
@@ -59,13 +63,15 @@ function buildAllAnnouncements(myResults)
 {
 	if(myResults != null)
 	{
-		var str = "";
+		allAnnouncements = myResults;
+		window.open('allAnnouncementsDisplayAction.action');
+		/* var str = "";
 		for(var i in myResults)
 		{
 			str += '<div></br>';
 			str += '<b>Title : </b><span>'+myResults[i].title+'</span></br>';
 			str += '<b>Description : </b><span>'+myResults[i].description+'</span></br>';
-			str += '<b>Date : </b><span>'+myResults[i].date+'</span></br>';
+			str += '<b>Date : </b><span>'+myResults[i].dateString+'</span></br>';
 			str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';
 			if(myResults[i].filePath =! null && myResults[i].filePath != "")
 			{
@@ -74,9 +80,9 @@ function buildAllAnnouncements(myResults)
 				str += '<b>File Date : </b><span>'+myResults[i].fileDate+'</span></br>';
 			}
 		   str += '</div>';
-	   }
+	   } */
 	}
-	$('#allNotificationDiv').html(str);
+	//$('#allNotificationDiv').html(str);
 }
 function saveComment()
 {
@@ -187,6 +193,7 @@ function callAjaxForComments(jsObj,url)
 
 	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
+getTop5Comments(id,startIndex,maxIndex,"getTotalComments");
 </script>
 </body>
 </html>

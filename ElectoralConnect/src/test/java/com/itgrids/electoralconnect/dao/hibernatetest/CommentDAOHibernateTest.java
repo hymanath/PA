@@ -80,11 +80,16 @@ public class CommentDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(commentDAO.abuseTheComment(1l));
 	}*/
 	
-	public void testCount()
+	/*public void testCount()
 	{
 		List<Object[]> values = commentDAO.getTop5Notifications(0, 5);
 		for (Object[] parms : values) {
 		System.out.println(parms[0]  +":"+ parms[1]);
 		}
+	}*/
+	
+	public void testCount()
+	{
+		System.out.println(commentDAO.getTotalCommentsCountByAnnouncementId(1l));
 	}
 }

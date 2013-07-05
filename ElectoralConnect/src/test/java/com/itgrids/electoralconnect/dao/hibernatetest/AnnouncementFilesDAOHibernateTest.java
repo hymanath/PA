@@ -32,7 +32,7 @@ public class AnnouncementFilesDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetAnnoncementById()
 	{
-		List<Object[]> values = announcementFilesDAO.getAnnoncementById(4l);
+		List<Object[]> values = announcementFilesDAO.getAllAnnoncement(1l);
 		System.out.println(values.size());
 	}
 }

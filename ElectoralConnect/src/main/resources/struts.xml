@@ -154,5 +154,9 @@
 		<action name="selectedAnnouncementsAction" class="selectedAnnouncementsAction" >
 			<result>/jsp/selectedAnnouncements.jsp</result>
 		</action>
+		
+		<action name="allAnnouncementsDisplayAction" class="allAnnouncementsDisplayAction" >
+			<result>/jsp/allAnnouncements.jsp</result>
+		</action>
 		</package>
 </struts>      
