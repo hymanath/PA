@@ -607,6 +607,9 @@ function getUpdatedData(){
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
 		<div id="searchResultsDiv_head"></div>
+
+		<span id="smsStatusTextSpan1"></span>
+
 		<div id="resultsCount" style="margin-left:30px;color:#707070;font-weight:bold;font-size:13px;text-align:center;"></div>
 		<div id="searchResultsDiv_body">
 			<div id="smsResult"></div>
