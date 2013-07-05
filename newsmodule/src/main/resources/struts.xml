@@ -5588,6 +5588,11 @@
 		   <param name="root">selectOptionVOList</param>
 		  </result>
 		 </action>
+		 <action name="getRespondedAndNotRespondedNewsCountAction" class="newsDetailsAction" method="getNewsCountForAParty">
+		   <result name="success" type="json">
+		     <param name="root">newsCountVO</param>
+		   </result>
+		 </action>
 		</package>
 		
 		
