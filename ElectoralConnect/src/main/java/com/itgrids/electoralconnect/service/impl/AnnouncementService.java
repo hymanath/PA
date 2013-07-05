@@ -1,5 +1,7 @@
 package com.itgrids.electoralconnect.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,6 +129,39 @@ public class AnnouncementService implements IAnnouncementService{
 			}
 			
 		}
+		public List<AnnouncementVO> getAllAnnouncementsForAdmin(int startRecord,int maxRecord,Long userId){
+			Log.debug("Entered into getAllAnnouncementsForAdmin of Announcement Service");
+			AnnouncementVO announcementVO=null;
+			List<AnnouncementVO> announcementVOsList=new ArrayList<AnnouncementVO>();
+			try{
+				List<AnnouncementFiles> announcementFiles=announcementFilesDAO.getAllAnnouncements(startRecord, maxRecord, userId);
+				int allannouncementFilesCount=announcementFilesDAO.getAllAnnouncementsCountOfUser(userId);
+				for(AnnouncementFiles files:announcementFiles){
+					announcementVO=new AnnouncementVO();
+					announcementVO.setAnnouncementId(files.getAnnouncements().getId());
+					announcementVO.setAnnouncementTypeName(files.getAnnouncements().getAnnouncementType().getName());
+					announcementVO.setName(files.getAnnouncements().getTitle());
+					announcementVO.setDescription(files.getAnnouncements().getDescription());
+					//announcementVO.setUpdatedDate(files.getAnnouncements().getDate());
+					String updatedBy=files.getAnnouncements().getUpdatedBy().getUserProfile().getFirstName()+""+
+							files.getAnnouncements().getUpdatedBy().getUserProfile().getLastName();
+					announcementVO.setUpdatedBy(updatedBy);
+					
+					DateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+					String reportDate = df.format(files.getAnnouncements().getDate());
+					announcementVO.setDateString(reportDate);
+					
+					announcementVO.setAllAnnouncementsCount(allannouncementFilesCount);
+					announcementVOsList.add(announcementVO);
+				}
+				
+			}catch (Exception e) {
+				Log.debug("Exception Raised in into getAllAnnouncementsForAdmin of Announcement Service"+e);
+			}
+			
+			return announcementVOsList;
+		}
+		
 		/**
 		 * This Service is used to get Top 5 Notifications And Press Releases
 		 * @return List<AnnouncementVO>

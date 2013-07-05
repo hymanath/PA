@@ -201,7 +201,12 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 		HttpSession session=request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		
+		 announcementVO.setName(title);
+		 announcementVO.setDescription(description);
+		 announcementVO.setUpdatedDate(date);
+		 announcementVO.setAnnouncementType(announcementType);
 		
+		 if(docsFileName!=null){
 		String requestURL= request.getRequestURL().toString();
 		System.out.println(requestURL);
 		
@@ -251,10 +256,7 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
         
         
         
-        announcementVO.setName(title);
-		announcementVO.setDescription(description);
-		announcementVO.setUpdatedDate(date);
-		announcementVO.setAnnouncementType(announcementType);
+       
 		announcementVO.setFileTitle(title);
 		announcementVO.setFileDescription(fileDescription);
 		announcementVO.setFileName(docsFileName);
@@ -273,7 +275,8 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 		
 		File fileToCreate = new File(filePath, fileNames);
 		FileUtils.copyFile(docs, fileToCreate);
-		
+		}
+		 
 		resultStatus=announcementService.uploadFile(announcementVO,user);
 		if(resultStatus.getResultCode()==0){
 			resultString="SUCCESS";
