@@ -5593,6 +5593,17 @@
 		     <param name="root">newsCountVO</param>
 		   </result>
 		 </action>
+		 
+		 <action name="getNewsDetailsAction" class="newsDetailsAction">
+		  <result name="success">/jsp/newsDetails.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		 </action>
+		 
+		 <action name="getNewsDetailsForAPartyAction" class="newsDetailsAction" method="getNewsDetails">
+		   <result name="success" type="json">
+		     <param name="root">fileVOsList</param>
+		   </result>
+		 </action>
 		</package>
 		
 		

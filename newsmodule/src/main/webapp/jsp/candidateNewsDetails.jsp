@@ -791,8 +791,15 @@ function  showPartyWiseNewsCount(results)
   var str = '';
   str +='<div>';
   str +='<span><b>Total News :</b>'+results.totalNewsCount+'</span>';
-  str +='<span><b>Respond News :</b>'+results.responseNewsCount+'</span>';
-  str +='<span><b>NotRespond News :</b>'+results.notResponseNewsCount+'</span>';
+  if(results.responseNewsCount > 0)
+   str +='<span><b>Respond News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0)">'+results.responseNewsCount+'</a></span>';
+  else
+	str +='<span><b>Respond News :</b><a href="javascript:{}">'+results.responseNewsCount+'</a></span>';
+  if(results.notResponseNewsCount > 0)
+   str +='<span><b>NotRespond News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0)">'+results.notResponseNewsCount+'</a></span>';
+   else
+	str +='<span><b>NotRespond News :</b><a href="javascript:{}">'+results.notResponseNewsCount+'</a></span>';
+
   str +='</div>';
   
   str +='<div class="row-fluid">';
@@ -808,7 +815,9 @@ function  showPartyWiseNewsCount(results)
      {
        str +='<tr>';
        str +='<td>'+selectOptionVo.selectOptionsList[i].name+'</td>';
-       str +='<td>'+selectOptionVo.selectOptionsList[i].id+'</td>';
+
+
+       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded \','+selectOptionVo.selectOptionsList[i].id+')">'+selectOptionVo.selectOptionsList[i].populateId+'<a></td>';
     
        str +='</tr>';
     }
@@ -827,7 +836,7 @@ function  showPartyWiseNewsCount(results)
      {
        str +='<tr>';
        str +='<td>'+selectOptionVo.selectOptionsList1[i].name+'</td>';
-       str +='<td>'+selectOptionVo.selectOptionsList1[i].id+'</td>';
+       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \','+selectOptionVo.selectOptionsList1[i].id+')">'+selectOptionVo.selectOptionsList1[i].populateId+'</a></td>';
     
        str +='</tr>';
     }
@@ -837,6 +846,102 @@ function  showPartyWiseNewsCount(results)
     str +='</div>';
 
   $("#respondNotRespondNewsCountDiv").html(str);
+}
+
+
+//
+function getResponseNewsDetails(newsType,partyId)
+{
+ 
+ var radioVal = $("input:radio[name=candidateNewsRadio]:checked").val();
+   var fromDate = '';
+   var toDate = '';
+   var galleryIdsArray = new Array();
+   var categoryIdsArray = new Array();
+   var locationScope = "";
+   var locationValue = 0;
+   var locationIdsList = new Array();
+   var tempVar = "";
+
+   if(radioVal == "byDate")
+   {
+	 $("#showAndHideDateSelectDiv").css("display","inline-block");
+	 fromDate = $("#existingFromText").val();
+     toDate = $("#existingToText").val();
+	 if(fromDate == '' && toDate =='')
+	 {
+	  $("#errorMsgDiv").html('Please Select From And To Dates.');
+	  return;
+	 }
+	 if(fromDate == '')
+	 {
+	  $("#errorMsgDiv").html('Please Select From Date.');
+	  return;
+	 }
+	 if(toDate =='')
+	 {
+	  $("#errorMsgDiv").html('Please Select To Date.');
+	  return;
+	 }
+	 tempVar = "byDate";
+
+   }
+   else
+   {
+    $("#showAndHideDateSelectDiv").css("display","none");
+    tempVar = "all";
+	
+   }
+
+    if($("#categoryCheckBoxId").is(":checked"))
+	{
+	  $('#categoryList > option:selected').each(
+       function(i){
+         categoryIdsArray.push($(this).val());
+       });
+	   if(categoryIdsArray.length == 0)
+	   {
+		 $("#errorMsgDiv").html('Please Select Category.');
+	     return; 
+	   }
+	   tempVar = "";
+	   
+	}
+
+    if($("#galleryCheckBoxId").is(":checked") || $("#categoryGallary").is(":checked"))
+	{
+	  
+       $('#galleryList > option:selected').each(
+       function(i){
+         galleryIdsArray.push($(this).val());
+       });
+	   if(galleryIdsArray.length == 0)
+	   {
+		 $("#errorMsgDiv").html('Please Select Gallery.');
+	     return; 
+	   }
+	   tempVar = "";
+	   
+	}
+
+	if($("#districtCheckboxId").is(":checked"))
+	{
+      $('#districtList > option:selected').each(
+       function(i){
+         locationIdsList.push($(this).val());
+       });
+	   if(locationIdsList.length == 0)
+	   {
+		 $("#errorMsgDiv").html('Please Select District.');
+	     return; 
+	   }
+
+	   locationScope = "DISTRICT";
+	}
+
+  var urlstr = "getNewsDetailsAction.action?newsType="+newsType+"&partyId="+partyId+"&categoryIds="+categoryIdsArray+"&galleryIds="+galleryIdsArray+"&locationIdsList="+locationIdsList+"&locationScope="+locationScope+"&fromDate="+fromDate+"&toDate="+toDate+"&";
+  var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
 }
 
 

@@ -34,7 +34,9 @@ public class NewsCountVO extends ResultStatus implements Serializable{
 	private List<NewsCountVO> newsCountVOList = new ArrayList<NewsCountVO>(0);
 	private Long id;
 	private SelectOptionVO selectOptionVO = new SelectOptionVO();
-	
+	private List<Long> responseNewsGalleryIdsList;
+	private List<Long> notResponseNewsGalleryIdsList;
+	private List<Long> totalNewsIdsList;
 	
 	public List<Long> getWardIdsList() {
 		return wardIdsList;
@@ -181,5 +183,26 @@ public class NewsCountVO extends ResultStatus implements Serializable{
 	public void setSelectOptionVO(SelectOptionVO selectOptionVO) {
 		this.selectOptionVO = selectOptionVO;
 	}
+	public List<Long> getResponseNewsGalleryIdsList() {
+		return responseNewsGalleryIdsList;
+	}
+	public void setResponseNewsGalleryIdsList(List<Long> responseNewsGalleryIdsList) {
+		this.responseNewsGalleryIdsList = responseNewsGalleryIdsList;
+	}
+	public List<Long> getNotResponseNewsGalleryIdsList() {
+		return notResponseNewsGalleryIdsList;
+	}
+	public void setNotResponseNewsGalleryIdsList(
+			List<Long> notResponseNewsGalleryIdsList) {
+		this.notResponseNewsGalleryIdsList = notResponseNewsGalleryIdsList;
+	}
+	public List<Long> getTotalNewsIdsList() {
+		return totalNewsIdsList;
+	}
+	public void setTotalNewsIdsList(List<Long> totalNewsIdsList) {
+		this.totalNewsIdsList = totalNewsIdsList;
+	}
+	
+	
 
 }

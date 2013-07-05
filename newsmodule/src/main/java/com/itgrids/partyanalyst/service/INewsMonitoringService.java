@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
+import com.itgrids.partyanalyst.dto.NewsDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
@@ -65,6 +66,8 @@ public interface INewsMonitoringService {/*
 	public List<SelectOptionVO> getLocationsListByScopeId(String locationScope,String fromDateStr, String toDateStr);
 	
 	public NewsCountVO getRespondedAndNotRespondedNewsCount(String fromDateStr,String toDateStr,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,String locationScope,String tempVar);
+	
+	public List<FileVO> getNewsDetailsForAParty(NewsDetailsVO newsDetailsVO);
 	
 }
 

@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
+import com.itgrids.partyanalyst.dto.NewsDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -54,6 +55,9 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private String categoryIds;
 	private String galleryIds;
 	private NewsCountVO newsCountVO;
+	private String locationIdsList;
+	private Long partyId;
+	private String newsType;
 	
 	public Long getResponseContentId() {
 		return responseContentId;
@@ -222,6 +226,26 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	}
 	public void setNewsCountVO(NewsCountVO newsCountVO) {
 		this.newsCountVO = newsCountVO;
+	}
+	public String getLocationIdsList() {
+		return locationIdsList;
+	}
+	public void setLocationIdsList(String locationIdsList) {
+		this.locationIdsList = locationIdsList;
+	}
+	
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	
+	public String getNewsType() {
+		return newsType;
+	}
+	public void setNewsType(String newsType) {
+		this.newsType = newsType;
 	}
 	public String execute()
 	{	
@@ -518,5 +542,38 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	   return Action.SUCCESS;
    }
    
-	
+  public String getNewsDetails()
+  {
+	  try{
+		  session = request.getSession();
+		  RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+		  if(user == null)
+		   return ERROR;
+		      
+		 jObj = new JSONObject(getTask());
+		 NewsDetailsVO newsDetailsVO = new NewsDetailsVO();
+		 
+		 newsDetailsVO.setLocationScope(jObj.getString("locationScope"));
+		 newsDetailsVO.setFromDateStr(jObj.getString("fromDate"));
+		 newsDetailsVO.setToDateStr(jObj.getString("toDate"));
+		 newsDetailsVO.setNewsType(jObj.getString("newsType"));
+		 newsDetailsVO.setTempVar(jObj.getString("tempVar"));
+		 newsDetailsVO.setSelectedPartyId(jObj.getLong("partyId"));
+		 newsDetailsVO.setCategoryIdsList(jObj.getString("categoryIds"));
+		 newsDetailsVO.setGalleryIdsList(jObj.getString("galleryIds"));
+		 newsDetailsVO.setLocationIdsList(jObj.getString("locationIdsList"));
+		 newsDetailsVO.setStartIndex(jObj.getInt("firstResult"));
+		 newsDetailsVO.setMaxIndex(jObj.getInt("maxResult"));
+		 
+		 fileVOsList = newsMonitoringService.getNewsDetailsForAParty(newsDetailsVO);
+		  
+	  }catch (Exception e) {
+		e.printStackTrace();
+		Log.error(" Exception Occured in getNewsDetails() method, Exception - "+e);
+	}
+	  
+	return Action.SUCCESS;
+  }
+   
+   
 }

@@ -39,7 +39,7 @@ public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNe
 	
 	public List<Object[]> getCandidateByFileGallaryId(List<Long> gallaryIdsList);
 	
-	public List<Long> getTotalNewsCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
+	public List<Long> getTotalNewsCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId);
 	
 	public List<Object[]> getTotalNewsCountForAParty(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
 
@@ -47,8 +47,8 @@ public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNe
 	
 	public List<Object[]> getRespondNewsPartyDetails(List<Long> respondFileGalleryIdsList);
 	
-	public List<Long> getResponseCountBasedTotalNewsCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
-	public List<Long> getNotResponseCountBasedTotalNewsCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
+	public List<Long> getResponseCountBasedTotalNewsCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId);
+	public List<Long> getNotResponseCountBasedTotalNewsCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId);
 	public List<Object[]> getRespondNewsPartyDetailsCustom(List<Long> respondFileGalleryIdsList);
 
 	public List<Long> getTotalNewsCountCustom(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
