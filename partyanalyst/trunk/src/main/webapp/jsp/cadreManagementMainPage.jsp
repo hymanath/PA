@@ -4,6 +4,8 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" 
+   prefix="fn" %>
 <%@ page import="java.util.ResourceBundle;" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -361,8 +363,11 @@ function callAjax(jsObj,url)
 
 						// BY SAMBA END
 									$('#newImpDateDiv').dialog('close');
-									var date = new Date();
-									
+									//var date = new Date();
+									var str=jsObj.startDate;
+									var dateVal=str.split("/"); 
+									var selMonth = dateVal[1];
+									var selYear = dateVal[2];
 									var jsObj1={
 									monthVal:selMonth,
 									yearval:selYear,
@@ -426,7 +431,10 @@ function callAjax(jsObj,url)
 								{		
 									alert("Updated Successfully");
 									var date = new Date();
-									
+									var str=jsObj.startDate;
+									var dateVal=str.split("/"); 
+									var selMonth = dateVal[1];
+									var selYear = dateVal[2];
 									var jsObj1={
 									monthVal:selMonth,
 									yearval:selYear,
@@ -2230,25 +2238,27 @@ function updateSelectedEvent(type)
 		}
 		else if(type == 'impDate')
 		{
-				var ImpeventNameValue = $("#ImpeventNameText").val();			
-				var ImpDescValu = $("#ImpdescTextArea1").val();
+				var ImpeventNameValue = $("#ImpeventNameText").val();
+				var ImpdescText1 = $("#ImpdescTextArea1").val();
+				var ImpDescValu = removeEnterStrokeForString(ImpdescText1);
+				var ImpDescValu = ImpDescValu;
 				var ImpDescVallength=ImpDescValu.trim().length;
 				var repeatType =   $('#repeatFreqSelectUpdate :selected').text();
 				
 				if(ImpeventNameValue == '')
 				{
-				document.getElementById("errorMsgDIV").innerHTML = '<b><font color="red">Please Enter Important Date Title </font></b>';
+				document.getElementById("errorMsgDIV").innerHTML = '<font color="red"><b>Please Enter Important Date Title </b></font>';
 				return;
 				}
 				else if ( ImpeventNameValue != null)
 				{ 				
-					var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+					var iChars = "!`@#$%^&*<()>+=-[]\\\';,./{}|\":?~";  
 					
 						for (var i = 0; i < ImpeventNameValue.length; i++)
 					{      
 						if (iChars.indexOf(ImpeventNameValue.charAt(i)) != -1)
 						{   
-						document.getElementById("errorMsgDIV").innerHTML = '<b><font color="red"> Important Date Title cannot allow special characters & Numbers</font></b>';
+						document.getElementById("errorMsgDIV").innerHTML = '<b><font color="red"> Important Date Title should not contain special characters</font></b>';
 						return false;
 						} 
 					}
@@ -2258,12 +2268,27 @@ function updateSelectedEvent(type)
 			if(ImpDescVallength==0)
 			{
 						document.getElementById("errorMsgDIV").innerHTML = '<b><font color="red">Please Enter Description</font></b>';
-					return;
+					return false;
 			}
+			 if ( ImpDescVallength > 0)
+				{ 			
+					var iChars = "!`#$%^*<()>+=-[]\\\,/{}|\":?~";  
+					
+						for (var i = 0; i < ImpDescValu.length; i++)
+					{     
+						if (iChars.indexOf(ImpDescValu.charAt(i)) != -1)
+						{   
+						document.getElementById("errorMsgDIV").innerHTML = '<b><font color="red"> Important Date Description should not contain special characters </font></b>';
+						return false;
+						} 
+					}
+				
+				}
 			var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
 			var ImpstartDateVal = document.getElementById("ImpStartDateText").value;		
 			var ImpendDateVal = document.getElementById("ImpEndDateText").value;		
 			var ImpDescVal = document.getElementById("ImpdescTextArea1").value;
+			ImpDescVal=removeEnterStrokeForString(ImpDescVal);//for removing special chars
 			selectedDateObj.importantDateId = results[0].importantDateId;
 					selectedDateObj.eventId = results[0].eventId;
 					selectedDateObj.eventType = results[0].eventType;
@@ -3876,24 +3901,19 @@ function handleImpDateSubmit()
 		    {
 			//document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
 			//return;
-             errorString +="<font color='red'>Please Enter Important Date Title </font><br>"  ;
+             errorString +="<font color='red'><b>Please Enter Important Date Title </b></font><br>"  ;
 			errorExist = true;
 			}
 			else if ( ImpeventNameVal != null)
 			{ 	
 				var errorInSpecialChar = false;
-				var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+				var iChars = "!`@#$%^&*<()>+=-[]\\\';,./{}|\":?~";  
 				
 		            for (var i = 0; i < ImpeventNameVal.length; i++)
                 {      
                     if (iChars.indexOf(ImpeventNameVal.charAt(i)) != -1)
                     {   
-					//document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
-
-			
-                   // return; 
-				  
-				     errorInSpecialChar = true;
+					    errorInSpecialChar = true;
                     } 
                 }
 			}
@@ -3901,15 +3921,34 @@ function handleImpDateSubmit()
 			if(errorInSpecialChar == true)
         	{
 				errorExist = true;
-				errorString +="<font color='red'> Important Date Title cannot allow special characters & Numbers</font><br>"  ;
+				errorString +="<font color='red'> <b>Important Date Title should not contain special characters</b></font><br>"  ;
 
 			}
 			if(ImpDescVallength==0)
 			{
 			   //document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
 			 // return false;
-			  errorString +="<font color='red'>Please Enter Description</font><br>"  ;
+			  errorString +="<font color='red'><b>Please Enter Description</b></font><br>"  ;
 			 errorExist = true;
+			}
+	 if ( ImpDescVallength > 0)
+			{ 	
+				var errorInSpecialChars = false;
+				var iChars = "!`#$%^*<()>+=-[]\\\,/{}|\":?~";  
+				
+		            for (var i = 0; i < ImpDescVal.length; i++)
+                {      
+                    if (iChars.indexOf(ImpDescVal.charAt(i)) != -1)
+                    {   
+					    errorInSpecialChars = true;
+                    } 
+                }
+			}
+			if(errorInSpecialChars == true)
+        	{
+				errorExist = true;
+				errorString +="<font color='red'> <b>Important Date Description should not contain special characters</b></font><br>"  ;
+
 			}
 			 if(repeatFreqVal == "No Repeat")
 			{
@@ -3932,7 +3971,6 @@ function handleImpDateSubmit()
 		selectedDateObj.isDeleted=repeatFreqVal;
 		selectedDateObj.task="createImpDateEvent";
 	
-				
 		var rparam ="task="+YAHOO.lang.JSON.stringify(selectedDateObj);
 		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
 		callAjax(selectedDateObj,url);
