@@ -23,8 +23,15 @@ public class AnnouncementVO implements Serializable{
 	private List<NotificationVO> notificationsList;
 	private List<PressReleaseVO> pressReleasesList;
 	private String fileName;
+	private Long announcementId;
+	private Long fileId;
+	private Long announcementFileId;
+	private String announcementTypeName;
+	private int allAnnouncementsCount;
+	private String dateString;
 	private String title;
 	private Long id;
+	
 	public String getName() {
 		return name;
 	}
@@ -109,6 +116,42 @@ public class AnnouncementVO implements Serializable{
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+	public Long getAnnouncementId() {
+		return announcementId;
+	}
+	public void setAnnouncementId(Long announcementId) {
+		this.announcementId = announcementId;
+	}
+	public Long getFileId() {
+		return fileId;
+	}
+	public void setFileId(Long fileId) {
+		this.fileId = fileId;
+	}
+	public Long getAnnouncementFileId() {
+		return announcementFileId;
+	}
+	public void setAnnouncementFileId(Long announcementFileId) {
+		this.announcementFileId = announcementFileId;
+	}
+	public String getAnnouncementTypeName() {
+		return announcementTypeName;
+	}
+	public void setAnnouncementTypeName(String announcementTypeName) {
+		this.announcementTypeName = announcementTypeName;
+	}
+	public int getAllAnnouncementsCount() {
+		return allAnnouncementsCount;
+	}
+	public void setAllAnnouncementsCount(int allAnnouncementsCount) {
+		this.allAnnouncementsCount = allAnnouncementsCount;
+	}
+	public String getDateString() {
+		return dateString;
+	}
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -121,6 +164,7 @@ public class AnnouncementVO implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+		
 	
 	
 }
