@@ -70,4 +70,8 @@
 	 <bean id="allAnnouncementsDisplayAction" class="com.itgrids.electoralconnect.web.action.AllAnnouncementsDisplayAction" singleton="false">
 	 	
 	 </bean>
+	 
+	 <bean id="editAnnouncementAction" class="com.itgrids.electoralconnect.web.action.EditAnnouncementAction" singleton="false">
+	 	<property name="announcementService" ref="announcementService"/>
+	 </bean>
 </beans>

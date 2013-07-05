@@ -1,23 +1,17 @@
 package com.itgrids.electoralconnect.web.action;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONObject;
 
-import com.google.gdata.util.parser.Action;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
-import com.itgrids.electoralconnect.dto.UserVO;
-import com.itgrids.electoralconnect.model.User;
 import com.itgrids.electoralconnect.service.IMailService;
 import com.itgrids.electoralconnect.service.IUserService;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.electoralconnect.util.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")

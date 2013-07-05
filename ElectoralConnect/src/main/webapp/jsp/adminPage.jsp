@@ -283,6 +283,7 @@
 	var maxIndex   = 5;
 	var stIndex    = 0;
 	var enIndex    = 5;
+	var announcementData = "";
 	$(function(){	
 		$("#datepicker").datepicker();
 	});
@@ -519,6 +520,14 @@
 									}
 									
 								} 
+								else if(jsObj.task =="getAllAnnouncementsByAnnounFileId")
+								{
+									if(myResults != null)
+									{
+										announcementData = myResults;
+										window.open('editAnnouncementAction.action');
+									}
+								}
 								}catch (e) {
 							     
 								}  
@@ -561,6 +570,8 @@
 		str+="<span class='text-error'>Date: "+results[i].dateString+"</span>";
 		<!--str+="<div class='span2'>"+results[i].announcementTypeName+"</div></li>";-->
 		str+="<span class='pull-right'>"+results[i].updatedBy+"</span>";
+		str+= "<a class='btn btn-primery' onClick='editAnnouncement("+results[i].announcementFileId+")'>Edit</a>";
+		str+= "<a class='btn btn-primery' onClick='deleteAnnouncement("+results[i].announcementId+")'>Delete</a>";
 		 str +='</div>';
 		
 		str+="</li>";
@@ -580,7 +591,30 @@
 		});
 	}
 	}
-	
+
+	function editAnnouncement(announcementId)
+	{
+		var jsObj =
+			{  	
+				announcenentTypeId : announcementId,
+				task               : "getAllAnnouncementsByAnnounFileId"
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "getTopAnnouncementsAction.action?"+rparam;
+			callAjaxForAdmin(jsObj, url);
+	}
+
+	function deleteAnnouncement(announcementId)
+	{
+		var jsObj =
+			{  	
+				announcementId : announcementId,
+				task           : "deleteAnnouncement"
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "deleteAnnouncementAction.action?"+rparam;
+			callAjaxForAdmin(jsObj, url);
+	}
 $(document).ready(function(){
 
 					var type = '${type}';

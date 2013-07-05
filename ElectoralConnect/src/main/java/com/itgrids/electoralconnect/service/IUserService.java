@@ -6,7 +6,7 @@ import java.util.List;
 import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.electoralconnect.dto.ResultStatus;
 
 public interface IUserService {
 	

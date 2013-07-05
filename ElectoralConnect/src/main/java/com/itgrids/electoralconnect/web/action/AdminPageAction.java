@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.service.IUserService;
-import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 

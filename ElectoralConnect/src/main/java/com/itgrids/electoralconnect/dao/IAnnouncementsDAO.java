@@ -11,4 +11,6 @@ import com.itgrids.electoralconnect.model.Announcements;
 public interface IAnnouncementsDAO  extends GenericDao<Announcements, Long> {
 	
 	public List<Announcements> getTopAnnouncements(Long announcementType,int startIndex,int maxIndex);
+	
+	public int deleteSelAnnouncement(Long announcementId);
 }

@@ -39,16 +39,18 @@ public class Announcements extends BaseModel implements Serializable{
 	private Date updatedTime;
 	private User updatedBy;
 	private AnnouncementType announcementType;
+	private String isDeleted;
 	private Set<Comment> comment=new HashSet<Comment>();
 	
 	
-	public Announcements(String title,String description,Date date,Date updatedTime,User updatedBy,AnnouncementType announcementType,Set<Comment> comment){
+	public Announcements(String title,String description,Date date,Date updatedTime,User updatedBy,AnnouncementType announcementType,Set<Comment> comment,String isDeleted){
 		this.title=title;
 		this.description=description;
 		this.date=date;
 		this.updatedBy=updatedBy;
 		this.updatedTime=updatedTime;
 		this.announcementType=announcementType;
+		this.isDeleted = isDeleted;
 	}
 	public Announcements(){}
 	
@@ -125,7 +127,15 @@ public class Announcements extends BaseModel implements Serializable{
 	public void setComment(Set<Comment> comment) {
 		this.comment = comment;
 	}
-
+	
+	@Column(name="is_deleted",length=45)
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 	
 	
 	

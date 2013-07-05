@@ -42,7 +42,7 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getAnnoncementById(Long announcementId)
 		{
-			Query query = getSession().createQuery("select model.announcements,model.file from AnnouncementFiles model " +
+			Query query = getSession().createQuery("select model.announcementFilesId,model.announcements,model.file from AnnouncementFiles model " +
 					" where model.announcements.announcementId = :announcementId");
 			query.setParameter("announcementId", announcementId);
 			return query.list();
@@ -56,9 +56,18 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getAllAnnoncement(Long announcementTypeId)
 		{
-			Query query = getSession().createQuery("select model.announcements,model.file from AnnouncementFiles model " +
+			Query query = getSession().createQuery("select model.announcementFilesId,model.announcements,model.file from AnnouncementFiles model " +
 					" where model.announcements.announcementType.announcementTypeId = :announcementTypeId" );
 			query.setParameter("announcementTypeId", announcementTypeId);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getAnnouncementsByAnnouncementFileId(Long announcementFileId)
+		{
+			Query query = getSession().createQuery("select model.announcementFilesId,model.announcements,model.file from AnnouncementFiles model " +
+					" where model.announcementFilesId = :announcementFileId");
+			query.setParameter("announcementFileId", announcementFileId);
 			return query.list();
 		}
 
