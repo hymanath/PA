@@ -537,6 +537,8 @@ $(document).ready(function(){
 						<button id="sendButton" class="btn btn-warning btn-mini" onclick="getCandidatesNews()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
 						<div class="span12 errorDiv"></div>
 						</div>
+
+						<!-- <div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&"><input type="button" value="generateCandidateReport" class="btn btn-info"/></a></div>-->
 					</div>
 				</div>
 				<!-----View your Constituency News End------>
@@ -1115,11 +1117,11 @@ function getCandidatesNews(){
 	      $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select To Date</span>');
 		  return;
 	    }
-	    else if (Date.parse(fromDate) > Date.parse(toDate))
+	    /* else if (Date.parse(fromDate) > Date.parse(toDate))
 	    {
           $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Invalid Date Selection.</span>');
           return;
-	    }
+	    } */
 
 	 }
 	 var selectedGallaryIds = "";
@@ -1205,10 +1207,10 @@ function getCandidateGallaries()
 	     $(".errorDiv").html('Please Select To Date');
 		 return;
 	   }
-	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
+	   /* else if (Date.parse(fromDate) > Date.parse(toDate)) {
          $(".errorDiv").html('Invalid Date Selection.');
          return;
-	   } 
+	   }  */
 	}
 
 	var jsObj={
@@ -1257,10 +1259,10 @@ function getCandidatecategories()
 	     $(".errorDiv").html('Please Select To Date');
 		 return;
 	   }
-	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
+	   /* else if (Date.parse(fromDate) > Date.parse(toDate)) {
          $(".errorDiv").html('Invalid Date Selection.');
          return;
-	   } 
+	   }  */
 	}
 
 	var jsObj={
