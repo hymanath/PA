@@ -7,7 +7,7 @@
 	<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
 	
     <script type="text/javascript" src="pagination/jquery.simplePagination.js"></script> 
-
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityDateOperations.js"> </script>
     <link href="styles/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="styles/css/style.css">
 	<!-------PT-sans font---->
@@ -276,7 +276,10 @@ function getSelectedNewsDetails()
 		dateFormat: "dd/mm/yy",
 		changeMonth: true,
       changeYear: true,
-		maxDate: new Date()
+		maxDate: new Date(),
+		onSelect:function(date1,date2){	
+			isDateValid();
+		}
 		
 	}).datepicker("show");
 });
