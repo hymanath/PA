@@ -1,6 +1,8 @@
 package com.itgrids.electoralconnect.web.action;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
@@ -36,7 +38,7 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 	private String title;
 	private String description;
 	private Long announcementType;
-	private Date date;
+	private String date;
 	private String fileName;
 	private String fileDescription;
 	private File docs;
@@ -46,7 +48,7 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 	private IAnnouncementService announcementService;
 	private String fromForm;
 	private String resultString;
-	 
+	DateFormat dateFormate = new SimpleDateFormat("yyyy-mm-dd");
 	
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
@@ -92,11 +94,11 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 		this.announcementType = announcementType;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -203,7 +205,7 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 		
 		 announcementVO.setName(title);
 		 announcementVO.setDescription(description);
-		 announcementVO.setUpdatedDate(date);
+		 announcementVO.setUpdatedDate(dateFormate.parse(date));
 		 announcementVO.setAnnouncementType(announcementType);
 		
 		 if(docsFileName!=null){

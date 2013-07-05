@@ -21,7 +21,7 @@ var myResults = window.opener.allAnnouncements;
 			str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';
 			if(myResults[i].filePath =! null && myResults[i].filePath != "")
 			{
-				str += '<b>File Title : </b><a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileTitle+'</span></a></br>';
+				str += '<b>File Title : </b><a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileName+'</span></a></br>';
 				str += '<b>File Description : </b><span>'+myResults[i].fileDescription+'</span></br>';
 				str += '<b>File Date : </b><span>'+myResults[i].fileDate+'</span></br>';
 			}

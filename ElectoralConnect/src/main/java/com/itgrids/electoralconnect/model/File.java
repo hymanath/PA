@@ -39,15 +39,17 @@ public class File extends BaseModel implements Serializable{
 	private String filePath;
 	private Date updatedTime;
 	private User updatedBy;
+	private String fileName;
 	private Set<AnnouncementFiles> announcementFiles=new HashSet<AnnouncementFiles>();
 	
-	public File(String title,String description,FileType fileType,String filePath,Date updatedTime,User updatedBy){
+	public File(String title,String description,FileType fileType,String filePath,Date updatedTime,User updatedBy,String fileName){
 		this.title=title;
 		this.description=description;
 		this.fileType=fileType;
 		this.filePath=filePath;
 		this.updatedBy=updatedBy;
 		this.updatedTime=updatedTime;
+		this.fileName = fileName;
 	}
 	public File(){};
 	
@@ -129,6 +131,13 @@ public class File extends BaseModel implements Serializable{
 	}
 	public void setAnnouncementFiles(Set<AnnouncementFiles> announcementFiles) {
 		this.announcementFiles = announcementFiles;
+	}
+	@Column(name="file_name",length=100)
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
 	
