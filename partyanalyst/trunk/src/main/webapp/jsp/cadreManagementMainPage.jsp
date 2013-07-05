@@ -2009,8 +2009,8 @@ function buildSelectedDateEventPopup(results,jsObj)
 		
 		eventStr+='</table>';
 		eventStr+='<div class="ui-dialog-buttonset">';
-		eventStr+='<input type="button" value="Update"  class="btn btn-primary" onclick="dateCheck(\''+jsObj.taskType+'\')" style="float: right; position: relative; left: -180px;margin-top: 10px;width:100px"></input>';
-		eventStr+='<input type="button" value="Delete"  class="btn btn-primary" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\',\'\')" style="float: inherit;margin-left: 488px;margin-top: -24px;width:100px;" ></input>';		
+		eventStr+='<input type="button" value="Update"  class="btn btn-primary" onclick="dateCheck(\''+jsObj.taskType+'\')" style="float: right; position: relative; left: -190px;margin-top: 10px;width:100px"></input>';
+		eventStr+='<input type="button" value="Delete"  class="btn btn-primary" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\',\''+eventId+'\',\'\')" style="float: inherit;margin-left: 488px;margin-top: -28px;width:100px;" ></input>';		
 		eventStr+='</div>';
 		eventStr+='</div>';		
 		divChild.innerHTML=eventStr;
@@ -2036,7 +2036,7 @@ function buildSelectedDateEventPopup(results,jsObj)
 		 eventDateDialog.remove();
 		}
 		eventDateDialog = $('#eventDateDetails').dialog({
-			width:650,
+			width:700,
             modal:true,
 			'title':'Update Important Date'
 		});
