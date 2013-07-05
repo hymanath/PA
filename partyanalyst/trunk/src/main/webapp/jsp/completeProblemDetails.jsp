@@ -408,7 +408,7 @@ var problemDetailsInEdit = null;
 	str+='<span id="alertMsg3"></span>';
 	str += '<div class="fileUploadDiv">';
 	//str += '<div><span style="margin-right: 8px;">Documents And Images<font color="red">*</font></span>';
-	str += '<div><span style="margin-right: 8px;">Images<font color="red">*</font></span>';
+	str += '<div><span style="margin-right: 8px;">Upload Images<font color="red">*</font></span>';
 	str += '<input type="hidden" name="problemHistoryId" value="${completeProblemDetailsVO.problemId}">';
 	str += '<span><input type="file" name="userImage" id="userImage" accept="image/x-png, image/gif, image/jpeg" /></span></div>';
 	str += ' <div style="margin-top: 20px; width: 120px; margin-left: 375px;"><input type="button" style="float:none;padding: 2px;" class="button" value="Upload" onclick="postFilesAndImages()" ></div>';
