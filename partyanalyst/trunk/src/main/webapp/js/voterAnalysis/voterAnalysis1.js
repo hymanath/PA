@@ -893,6 +893,8 @@ function addToPolitician(voterId,name)
     // jQuery is loaded => print the version
     alert(jQuery.fn.jquery);
     } */
+
+	    $("#categoriesValuesDiv").html("");
 		var str = "";
 		str += '<a id ="InfluencingDetails"><span class="btn">0</span></a><span class="help-inline f2"> Influencing People</span>';
 		str += '<a id ="CadreDetails"><span class="btn">0</span></a><span class="help-inline f2"> Cadre</span>';
@@ -1229,7 +1231,7 @@ function addToPolitician(voterId,name)
 			buildBtnForLocalEleBody();
 		  }
 			
-	   $("#categoriesValuesDiv").html("");
+	
 	   $("#agerangeDiv").html("");
 	}
 	function getModifiedVotersCountBetweenPublications(locationType,locationValue,fromPublicationDateId,toPublicationDateId){
