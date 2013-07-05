@@ -59,6 +59,10 @@
 	 	<property name="mailService" ref="mailService"/>
 	 </bean>
 	 
+	 <bean id="announcementsAction" class="com.itgrids.electoralconnect.web.action.AnnouncementsAction" singleton="false">
+	 	<property name="announcementService" ref="announcementService"></property>
+	 </bean>
+	 
 	 <bean id="selectedAnnouncementsAction" class="com.itgrids.electoralconnect.web.action.SelectedAnnouncementsAction" singleton="false">
 	 	
 	 </bean>

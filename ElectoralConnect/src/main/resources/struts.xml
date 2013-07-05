@@ -132,6 +132,13 @@
 			</result>
 		</action>
 		
+		<action name="getAllAnnouncementsForAdmin" class="announcementsAction">
+			<result type="json" name="success">
+				<param name="root">announcementVOs</param>				
+			</result>
+		</action>
+		
+		
 		<action name="adminRegisterSaveAction" class="adminRegisterSaveAction">
 			<result name="input">/jsp/adminPage.jsp</result>
          	<result name="success">/jsp/adminPage.jsp</result>
