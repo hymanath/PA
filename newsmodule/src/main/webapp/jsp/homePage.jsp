@@ -132,7 +132,14 @@
 		<!--------- Row-1 End -------->
 		
 		<!-----Footer---->
-	 <footer class="span12" style="margin-left: 0 !important;" >
+		<div class="container">
+			<div class="carousel-caption" style="position: static !important;width: 920px; left: 37px;top: 500px;height:55px;">
+				<h4>--: WELCOME :--</h4>
+					<p style="font-size: 14px; color: #FD9A0F;">Telugu Desam Party News Information Center
+					</p>
+				</div>
+		</div>
+	 <footer class="span12" style="margin-left: 0 !important;display:none;" >
         <p class="text-center m_top15">&copy; Telugu Desam Party 2013</p>
       </footer>
 		<!----<div class="row">
@@ -219,7 +226,7 @@ str +='</div>';
 str +='</ul></div>';
 $("#loginDiv").html(str);
 	
-
+$('#userName1').focus().val('');
 }
 
 function ajaxCallForLoginPopup(){
