@@ -10,6 +10,7 @@
 <title>Edit Announcement Form</title>
 </head>
 <body>
+<link rel="stylesheet" type="text/css" href="css/dataPicker.css"/>
 <script type="text/javascript"  src="js/RegisterFormValidation.js"></script>
 <script type="text/javascript"  src="js/AnnouncementFormValidation.js"></script>
 <style>
@@ -19,6 +20,7 @@
 
 <script>
 var myResults = window.opener.announcementData;
+//console.log(myResults);
 if(myResults != null)
 {
 	var str = "";
@@ -59,7 +61,7 @@ if(myResults != null)
 	str += '<div class="control-group">';
 	str += '<label class="control-label" for="date">Date</label>';
 	str += '<div class="controls">';
-	str += '<input type="text" id="datepicker" name="date" value='+myResults[0].dateString+'>';
+	str += '<input type="text" id="datepicker" name="date" value='+myResults[0].dateString+' readonly="true">';
 	str += '</div></div>';
 	str += '<div class="control-group">';
 	str += '<label class="control-label" for="docs"></label>';
@@ -126,7 +128,10 @@ $('#saveAnnouncement').click(function(){
 	if ( $('[name="AnnouncementForm"]').valid())
 	document.AnnouncementForm.submit();
 });
-
+$(function(){	
+	$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+});
+	
 <c:if test="${fromForm=='announcement'}">
 		<c:if test="${resultString=='SUCCESS'}">
 			$('#statusMessage').html("Uploaded SuccessFully");
