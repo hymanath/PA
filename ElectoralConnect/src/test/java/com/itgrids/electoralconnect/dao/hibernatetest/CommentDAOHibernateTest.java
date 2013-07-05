@@ -82,7 +82,7 @@ public class CommentDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testCount()
 	{
-		List<Object[]> values = commentDAO.getTop5PressReleases(0, 5);
+		List<Object[]> values = commentDAO.getTop5Notifications(0, 5);
 		for (Object[] parms : values) {
 		System.out.println(parms[0]  +":"+ parms[1]);
 		}

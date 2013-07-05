@@ -6,6 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 
 import com.itgrids.electoralconnect.dao.hibernate.AnnouncementFilesDAO;
+import com.itgrids.electoralconnect.model.AnnouncementFiles;
 
 
 public class AnnouncementFilesDAOHibernateTest extends BaseDaoTestCase{
@@ -19,8 +20,15 @@ public class AnnouncementFilesDAOHibernateTest extends BaseDaoTestCase{
 
 	/*public void test(){
 		announcementFilesDAO.getAll();
+	}*/
+	
+	/*public void testAll(){
+		List<AnnouncementFiles> list=announcementFilesDAO.getAllAnnouncements(1, 15, 36l);
 	}
-*/
+	public void testAlla(){
+		int list=announcementFilesDAO.getAllAnnouncementsCountOfUser(36l);
+	}*/
+
 	
 	public void testgetAnnoncementById()
 	{

@@ -7,12 +7,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>ADMIN PAGE</title>
-
-
 </head>
 <body>
+<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
 <script type="text/javascript"  src="js/RegisterFormValidation.js"></script>
 <script type="text/javascript"  src="js/AnnouncementFormValidation.js"></script>
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+
 <style>
 	#mainBodyId{width:800px;margin-left:auto;margin-right:auto;}
 	input[type="radio"],#attachFileId{margin-bottom:5px;margin-right:5px;}
@@ -37,10 +38,18 @@
 	.t_align{text-align:center;}
 	#forFileId{width:661px;margin-bottom:10px;}
 	#statusMessage{margin:10px;}
+	.comment_sec{ border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left: 29px;padding: 12px;}
+	.label1 {background: none repeat scroll 0 0 #3A87AD;color:#fff;font-weight:bold;padding:1px;}
+	.title_sec{font-family: icon;font-size: 15px;font-weight: bold;}
+	.title_sec1{color: #0989C9; font-size: 14px;font-weight: bold;text-transform: uppercase;}
+	.posted_sec{ font-family: Verdana;font-size: 16px;font-weight: bold;margin-left: 6px;text-align: left;}
+	.AnnouncementForm{ margin-top: 5px;padding: 7px; border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
+	.getallcomment{margin-top: 8px;padding: 7px;display: none;background-color:#fff;border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
+	
 
 </style>
 
-<div id="mainBodyId">
+<div id="mainBodyId" class="well">
 	<!--<div>
 		<div><a href="registerUser.action?userType=admin">Create User</a></div>
 		<div><a href="#" id="createAnnouncementId">Create Announcement</a></div>
@@ -166,8 +175,8 @@
 	</div>
 			</div>
 	<div id="commentsDiv">
-	<div id="BOX-3" style="display: none;background-color:#fff;">
-		<div class="t_align">
+	<div id="BOX-3" class="getallcomment">
+		<div class="t_align_sec">
 			<input type="radio" name="comment" onClick="getAllComments(0,5,'getTotalComments');">All</input>
 			<input type="radio" name="comment" onClick="getCommentsBetweenDates();">Between Dates</input>
 		</div></br>
@@ -175,7 +184,7 @@
 			<div id="betweenDatesDiv"></div></br>
 			<div id="totalCommentsBtDates"></div>
 		</div>
-		<div id="totalCommentsMainDiv  ">
+		<div id="totalCommentsMainDiv" style="display:inline-table" >
 			<div id="totalCommentsList"></div>
 		</div>
 	</div>
@@ -185,8 +194,8 @@
 		<form class="form-horizontal AnnouncementForm" name="AnnouncementForm" action="createAnnouncementAction.action?fromForm=announcement"  method="post" enctype="multipart/form-data">
 				<input type="hidden" value="admin" name="isAdmin"></input>
 				<input type="hidden" value="2" name="type"></input>
-				<h2 class="row_border header">Announcement Form</h2>
-				<div class="align">
+				<legend>Announcement Form</legend>
+				<div class="align thumbnail">
 				<div class="control-group">
 					<label class="control-label requ" for="Title">Title</label>
 					<div class="controls ">
@@ -258,7 +267,11 @@
 	</div>
 			</div>
 			<div id="BOX-4" style="display: none">
-			<h3>jjjjjjjjjjjj</h3>
+			<div id="pagedAnnouncementsId"  class="getallcomment" style="display:inline-block"></div>
+						<!----pagination Div----->
+						<div class="span12 text-center">
+							<div id="paginationId"></div>
+						</div>
 			</div>
 			
 		</div>
@@ -288,6 +301,24 @@
 		$('#forFileId').toggle('fast');
 	});
 	
+	function getPaginationForData(pageNo){
+	var jsObj={
+			startRecord:pageNo,
+			maxRecord:10,
+			task:"getAllAnnouncements"
+		}
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getAllAnnouncementsForAdmin.action?"+rparam;
+		callAjaxForAdmin(jsObj, url);
+	}
+	
+	$('#allannoun').click(function(){getPaginationForData(1)});
+		
+	
+		
+	
+	
+	
 	function getAllComments(stIndex,enIndex,task)
 	{
 		$('#btDatesMainDiv').hide();
@@ -307,20 +338,20 @@
 	{
 		$('#btDatesMainDiv').show();
 		$('#totalCommentsMainDiv').hide();
-		var str = "";
-		str +='<div class=t_align>';
-		str +='<form class="form-inline">';
-		str +='<label>Start Date:&nbsp;&nbsp;</label>';
-		str += '<input type="text" id="startDate" class="calender input-medium"></input>';
-		str +='<label>End Date:&nbsp;&nbsp;</label>';
-		str += '<input type="text" id="endDate" class="calender input-medium"></input><br><br>';
-		str +='<div class="pull-right span5">';
-		str += '<a class="btn btn-primary" onClick="getCommentsSelectdDates(startIndex,maxIndex,\'commentsBetweenDates\');">View</a>';
-		str +='</div>';
-		str +='</form>';
-		str +='</div>';
-		$('#betweenDatesDiv').html(str);
-		$('.calender').datepicker({ 
+		 var str = "";
+		 str +='<div class=t_align>';
+		 str +='<form class="form-inline">';
+		 str +='<label>Start Date:&nbsp;&nbsp;</label>';
+		 str += '<input type="text" id="startDate" class="calender input-medium"></input>';
+		 str +='<label>End Date:&nbsp;&nbsp;</label>';
+		 str += '<input type="text" id="endDate" class="calender input-medium"></input>';
+		 str +='<span style="margin-left:5px">';
+		 str += '<a class="btn btn-primary" onClick="getCommentsSelectdDates(startIndex,maxIndex,\'commentsBetweenDates\');">View</a>';
+		 str +='</span>';
+		 str +='</form>';
+		 str +='</div>';
+   		 $('#betweenDatesDiv').html(str);
+		 $('.calender').datepicker({ 
 		  
 			dateFormat: 'yy-mm-dd' 
 		});
@@ -349,25 +380,31 @@
 		{
 			totalCount = myResults[0].total ;
 			var str = "";
-				for(var i in myResults)
-				{
-					str += '<div id="commentsDIv'+myResults[i].commentId+'" class="span7 breadcrumb"  style=" border: 1px solid #c3c3c3; margin-bottom: 10px;">';
-					str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
-					str +='<span><b>Announcement : </b></span><span>'+myResults[i].announcement+'</span></br>';
-					str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
-					
-					str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
-					if(myResults[i].abused.toLowerCase() == "no")
-					{
-						str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" class="btn btn-warning">Abuse</a>';
-					}
-					str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
-					
-					str += '</div>';
-					
-					str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
-				}
-				$('#totalCommentsBtDates').append(str);
+			for(var i in myResults)
+			{
+			str += '<div id="commentsDIv'+myResults[i].commentId+'">';
+			str +='<div class="comment_sec span7">';
+			if(myResults[i].abused.toLowerCase() == "no")
+			{
+			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
+			}
+			str +='<span class="title_sec">TITLE:</span><span class="title_sec1">'+myResults[i].announcement+'</span>';
+			str +='<hr style="margin-top:0px;">';
+			str +='<span style="font-size: 15px;">'+myResults[i].comment+'</span>';
+			str +='<hr style="margin-top:0px;">';
+			str +=' <span class="label1 label-info">Posted By:</span>';
+			str +='<span class="posted_sec">'+myResults[i].name+'</span>';
+			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].date+'</span></div>';
+
+
+			str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
+
+			str +='</div>';
+			str +='</div>';
+			str += '<a id="moreButton" style="display:none;margin-top:5px;" class="btn btn-primary pull-right" onClick="getRemaingTotalCommentsList();">More</a>'
+
+			}
+			$('#totalCommentsBtDates').append(str);
 			if(startIndex <= totalCount)
 			{
 				startIndex = startIndex + maxIndex;
@@ -395,26 +432,31 @@
 		{
 			totalCount = myResults[0].total;
 			var str = "";
-				for(var i in myResults)
-				{
-					str += '<div id="commentsDIv'+myResults[i].commentId+'" class="span9 breadcrumb"  style=" border: 1px solid #c3c3c3; margin-bottom: 10px;margin-left:29px;">';
-					str +='<div style="color:#3A87AD;line-height:23px;">';
-					str +='<span><b>Comment : </b></span><span style="color:#0088CC;font-size:15px;">'+myResults[i].comment+'</span></br>';
-					str +='<span><b>Announcement : </b></span><span>'+myResults[i].announcement+'</span></br>';
-					str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
-					str +='</div>';
-					str +='<div class="pull-right" >';
-					str +='<span style="margin-top:3px;"><b>Date : </b>'+myResults[i].date+'</span></br>';
-					if(myResults[i].abused.toLowerCase() == "no")
-					{
-						str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" class="btn btn-warning">Abuse</a>';
-					}
-					str +='</div>';
-					str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
-					str += '</div>';
-					str += '<a id="moreButton" style="display:none;margin-top:5px;" class="btn btn-primary" onClick="getRemaingTotalCommentsList();">More</a>'
-				}
-				$('#totalCommentsList').append(str);
+			for(var i in myResults)
+			{
+			str += '<div id="commentsDIv'+myResults[i].commentId+'">';
+			str +='<div class="comment_sec span7">';
+			if(myResults[i].abused.toLowerCase() == "no")
+			{
+			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
+			}
+			str +='<span class="title_sec">TITLE:</span><span class="title_sec1">'+myResults[i].announcement+'</span>';
+			str +='<hr style="margin-top:0px;">';
+			str +='<span style="font-size: 15px;">'+myResults[i].comment+'</span>';
+			str +='<hr style="margin-top:0px;">';
+			str +=' <span class="label1 label-info">Posted By:</span>';
+			str +='<span class="posted_sec">'+myResults[i].name+'</span>';
+			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].date+'</span></div>';
+
+
+			str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
+
+			str +='</div>';
+			str +='</div>';
+			str += '<a id="moreButton" style="display:none;margin-top:5px;" class="btn btn-primary pull-right" onClick="getRemaingTotalCommentsList();">More</a>'
+
+			}
+			$('#totalCommentsList').append(str);
 			if(stIndex <=  totalCount)
 			{
 				stIndex   = stIndex + enIndex;
@@ -464,6 +506,10 @@
 								{
 									buildTotalCommentsList(myResults);
 								}
+								else if(jsObj.task =="getAllAnnouncements")
+								{
+									buildAllAnnouncements(myResults,jsObj);
+								}
 								else if(jsObj.task =="abuseComment")
 								{
 									if(myResults.resultCode == 0)
@@ -494,6 +540,46 @@
 			document.userDetailsForm.submit();
 		}
 	});
+	
+	function buildAllAnnouncements(results,jsObj){
+	console.log(results);
+	
+		var str="";
+	str+="<ul class='unstyled pad10'>";
+	for(var i in results){
+	  str +='<div class="comment_sec span7">';
+		str+="<li>";
+		
+		str+="<span class='title_sec1' >"+results[i].name+"</span>";
+		  str +='<hr style="margin-top:0px;">';
+		str+="<div class='row-fluid'>";
+		<!--str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
+		<!--str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";-->
+		str+="<span style='font-size: 15px;'>"+results[i].description+"</p>";
+		  str +='<hr style="margin-top:0px;">';
+		str+="</div>";
+		str+="<span class='text-error'>Date: "+results[i].dateString+"</span>";
+		<!--str+="<div class='span2'>"+results[i].announcementTypeName+"</div></li>";-->
+		str+="<span class='pull-right'>"+results[i].updatedBy+"</span>";
+		 str +='</div>';
+		
+		str+="</li>";
+		 str +='</div>';
+	}
+	
+	var itemsCount=results[0].allAnnouncementsCount;
+	var maxResults=jsObj.maxRecord;
+	str+="</ul>";
+	$("#pagedAnnouncementsId").html(str);
+	
+	if(jsObj.startRecord==1){
+		$("#paginationId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme'
+		});
+	}
+	}
 	
 $(document).ready(function(){
 
