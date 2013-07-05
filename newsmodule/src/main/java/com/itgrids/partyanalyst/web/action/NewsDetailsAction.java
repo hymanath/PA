@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.NewsCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -52,6 +53,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private String locationScope;
 	private String categoryIds;
 	private String galleryIds;
+	private NewsCountVO newsCountVO;
 	
 	public Long getResponseContentId() {
 		return responseContentId;
@@ -213,6 +215,13 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	}
 	public void setGalleryIds(String galleryIds) {
 		this.galleryIds = galleryIds;
+	}
+	
+	public NewsCountVO getNewsCountVO() {
+		return newsCountVO;
+	}
+	public void setNewsCountVO(NewsCountVO newsCountVO) {
+		this.newsCountVO = newsCountVO;
 	}
 	public String execute()
 	{	
@@ -458,5 +467,56 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	}
 	  return Action.SUCCESS; 
    }
+   
+   public String getNewsCountForAParty()
+   {
+	   try{
+		  session = request.getSession();
+		  RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+		  if(user == null)
+		   return ERROR;
+		      
+		 jObj = new JSONObject(getTask());
+		 if(jObj.getString("task").equalsIgnoreCase("getRespondedAndNotRespondedNewsCount"))
+		 {
+		  String fromDateStr = jObj.getString("fromDate");
+		  String toDateStr = jObj.getString("toDate");
+		  String locationScope = jObj.getString("locationScope");
+		  String tempVar = jObj.getString("tempVar");
+		  List<Long> galleryIdsList = new ArrayList<Long>(0);
+		  List<Long> categoryIdsList = new ArrayList<Long>(0);
+		  List<Long> locationIdsList = new ArrayList<Long>(0);
+		  
+		  JSONArray galleryIdsArray = jObj.getJSONArray("galleryIdsArray");
+		  if(galleryIdsArray != null && galleryIdsArray.length() > 0)
+		  {
+			for(int i=0;i<galleryIdsArray.length();i++)
+			 galleryIdsList.add(Long.parseLong(galleryIdsArray.getString(i).toString()));
+		  }
+		  
+		  JSONArray categoryIdsArray = jObj.getJSONArray("categoryIdsArray");
+		  if(categoryIdsArray != null && categoryIdsArray.length() > 0)
+		  {
+			for(int i=0;i<categoryIdsArray.length();i++)
+			 categoryIdsList.add(Long.parseLong(categoryIdsArray.getString(i).toString()));
+		  }
+		  
+		  JSONArray locationValuesList = jObj.getJSONArray("locationValuesList");
+		  if(locationValuesList != null && locationValuesList.length() > 0)
+		  {
+			for(int i=0;i<locationValuesList.length();i++)
+			 locationIdsList.add(Long.parseLong(locationValuesList.getString(i).toString()));
+		  }
+		  
+		  newsCountVO = newsMonitoringService.getRespondedAndNotRespondedNewsCount(fromDateStr, toDateStr, categoryIdsList, galleryIdsList, locationIdsList, locationScope, tempVar);
+		 }
+		 
+	   }catch (Exception e) {
+		 e.printStackTrace();
+		Log.error(" Exception Occured in getNewsCountForAParty() method, Exception - "+e);   
+	}
+	   return Action.SUCCESS;
+   }
+   
 	
 }

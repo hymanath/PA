@@ -1647,7 +1647,8 @@
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>	    
 		<property name="candidateRelatedNewsDAO" ref="candidateRelatedNewsDAO"></property>
-		<property name="districtDAO" ref="districtDAO" />		
+		<property name="districtDAO" ref="districtDAO" />	
+		<property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO" />	
 	</bean>
 </beans>		
 	
