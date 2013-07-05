@@ -17,4 +17,8 @@ public interface IAnnouncementService {
 	public List<AnnouncementVO> getAnnouncementById(Long announcementId);
 	
 	public List<AnnouncementVO> getAllAnnouncements(Long announcemetTypeId);
+	
+	public List<AnnouncementVO> getAnnouncementByAnnouncementFileId(Long announcemetFileId);
+	
+	public ResultStatus deleteSelctedAnnoncement(Long announcementid);
 }

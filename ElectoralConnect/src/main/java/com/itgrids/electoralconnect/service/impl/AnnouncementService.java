@@ -1,7 +1,6 @@
 package com.itgrids.electoralconnect.service.impl;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ import com.itgrids.electoralconnect.model.AnnouncementFiles;
 import com.itgrids.electoralconnect.model.Announcements;
 import com.itgrids.electoralconnect.model.File;
 import com.itgrids.electoralconnect.service.IAnnouncementService;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.electoralconnect.dto.ResultCodeMapper;
 
 public class AnnouncementService implements IAnnouncementService{
 		
@@ -103,7 +102,10 @@ public class AnnouncementService implements IAnnouncementService{
 						file.setFilePath(announcementVO.getFilePath());
 						file.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						file.setUpdatedBy(userDAO.get(user.getRegistrationID()));
-						
+						if(announcementVO.getFileId() != null && announcementVO.getFileId() > 0)
+						{
+							file.setFileId(announcementVO.getFileId());
+						}
 						file=fileDAO.save(file);
 						
 						announcements.setTitle(announcementVO.getName());
@@ -112,11 +114,18 @@ public class AnnouncementService implements IAnnouncementService{
 						announcements.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						announcements.setAnnouncementType(announcementTypeDAO.get(announcementVO.getAnnouncementType()));
 						announcements.setUpdatedBy(userDAO.get(user.getRegistrationID()));
-						
+						if(announcementVO.getAnnouncementId() != null && announcementVO.getAnnouncementId() > 0)
+						{
+							announcements.setAnnouncementId(announcementVO.getAnnouncementId());
+						}
 						announcements=announcementsDAO.save(announcements);
 						
 						announcementFiles.setAnnouncements(announcements);
 						announcementFiles.setFile(file);
+						if(announcementVO.getAnnouncementFileId() != null && announcementVO.getAnnouncementFileId() > 0)
+						{
+							announcementFiles.setAnnouncementFilesId(announcementVO.getAnnouncementFileId());
+						}
 						announcementFiles=announcementFilesDAO.save(announcementFiles);
 					}
 				});
@@ -139,7 +148,8 @@ public class AnnouncementService implements IAnnouncementService{
 				int allannouncementFilesCount=announcementFilesDAO.getAllAnnouncementsCountOfUser(userId);
 				for(AnnouncementFiles files:announcementFiles){
 					announcementVO=new AnnouncementVO();
-					announcementVO.setAnnouncementId(files.getAnnouncements().getId());
+					announcementVO.setAnnouncementFileId(files.getAnnouncementFilesId());
+					announcementVO.setAnnouncementId(files.getAnnouncements().getAnnouncementId());
 					announcementVO.setAnnouncementTypeName(files.getAnnouncements().getAnnouncementType().getName());
 					announcementVO.setName(files.getAnnouncements().getTitle());
 					announcementVO.setDescription(files.getAnnouncements().getDescription());
@@ -261,7 +271,27 @@ public class AnnouncementService implements IAnnouncementService{
 			}
 			return returnList;
 		}
-		
+		/**
+		 * This Service is used to get the Announcements by Announcement File Id
+		 * @param Long announcemetFileId
+		 * @return List<AnnouncementVO>
+		 * @date 05-07-2013
+		 */
+		public List<AnnouncementVO> getAnnouncementByAnnouncementFileId(Long announcemetFileId)
+		{
+			List<AnnouncementVO> returnList = new ArrayList<AnnouncementVO>();
+			try {
+				LOG.debug("Enterd into getAnnouncementByAnnouncementFileId() method in AnnouncementService Service");
+				List<Object[]> announcementsList = announcementFilesDAO.getAnnouncementsByAnnouncementFileId(announcemetFileId);
+				if(announcementsList != null && announcementsList.size() >0)
+				{
+					returnList = fillAnnouncementVO(announcementsList);
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised in getAnnouncementByAnnouncementFileId() method in AnnouncementService Service",e);
+			}
+			return returnList;
+		}
 		/**
 		 * This Service is used to fill the AnnouncementVo
 		 * @param List<Object[]> announcementsList
@@ -279,8 +309,10 @@ public class AnnouncementService implements IAnnouncementService{
 					File file = new File();
 					for (Object[] parms : announcementsList) {
 						AnnouncementVO announcementVO = new AnnouncementVO();
-						announcements = (Announcements) parms[0];
-						file          = (File) parms[1];
+						Long announcementFileId = (Long)parms[0];
+						announcements = (Announcements) parms[1];
+						file          = (File) parms[2];
+						announcementVO.setAnnouncementFileId(announcementFileId);
 						announcementVO.setId(announcements.getAnnouncementId());
 						announcementVO.setAnnouncementType(announcements.getAnnouncementType() != null ? announcements.getAnnouncementType().getAnnouncementTypeId():0l);
 						announcementVO.setTitle(announcements.getTitle()!= null ? announcements.getTitle() : "");
@@ -292,6 +324,7 @@ public class AnnouncementService implements IAnnouncementService{
 						announcementVO.setFilePath(file.getFilePath() != null ? file.getFilePath() : "");
 						announcementVO.setName(announcements.getUpdatedBy() != null ?announcements.getUpdatedBy().getUserProfile().getFirstName() :"");
 						announcementVO.setAnnouncementName(announcements.getAnnouncementType() != null ?announcements.getAnnouncementType().getName() :"");
+						announcementVO.setFileId(file.getFileId()!= null ?file.getFileId() :0l);
 						returnList.add(announcementVO);
 					}
 				}
@@ -300,5 +333,26 @@ public class AnnouncementService implements IAnnouncementService{
 			}
 			
 			return returnList;
+		}
+		
+		public ResultStatus deleteSelctedAnnoncement(Long announcementid)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			try {
+				LOG.debug("Enterd into deleteSelctedAnnoncement() method in AnnouncementService Service");
+				int status = announcementsDAO.deleteSelAnnouncement(announcementid);
+				if(status == 1)
+				{
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+				else
+				{
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised in deleteSelctedAnnoncement() method in AnnouncementService Service",e);
+			}
+			
+			return resultStatus;
 		}
 }

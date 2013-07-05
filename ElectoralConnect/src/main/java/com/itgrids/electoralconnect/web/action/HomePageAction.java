@@ -14,7 +14,7 @@ import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.service.IAnnouncementService;
 import com.itgrids.electoralconnect.service.IUserService;
-import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -153,10 +153,28 @@ public String getTopAnnouncements()
 			announcementsList = announcementService.getAllAnnouncements(announcemetId);
 		}
 		
+		else if(jobj.getString("task").equalsIgnoreCase("getAllAnnouncementsByAnnounFileId"))
+		{
+			Long announcemetId = jobj.getLong("announcenentTypeId");
+			announcementsList = announcementService.getAnnouncementByAnnouncementFileId(announcemetId);
+		}
+		
 	} catch (Exception e) {
 		LOG.error("Exception raised in  getTopAnnouncements() method in HomePageAction Action",e);
 	}
 	return Action.SUCCESS;
 }
 
+public String deleteAnnouncement()
+{
+	try {
+		LOG.debug("Entered into deleteAnnouncement() method in AdminPageAction Action");
+		jobj = new JSONObject(getTask());
+		Long announcementId = jobj.getLong("announcementId");
+		resultStatus = announcementService.deleteSelctedAnnoncement(announcementId);
+	} catch (Exception e) {
+		LOG.error("Exception raised in  deleteAnnouncement() method in AdminPageAction Action",e);
+	}
+	return Action.SUCCESS;
+}
 }

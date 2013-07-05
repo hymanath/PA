@@ -7,7 +7,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.service.IUserService;
-import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;

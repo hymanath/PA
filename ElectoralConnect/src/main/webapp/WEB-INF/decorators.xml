@@ -35,6 +35,8 @@
     	<pattern>/createAnnouncementAction*</pattern>
     	<pattern>/selectedAnnouncementsAction*</pattern>
     	<pattern>/allAnnouncementsDisplayAction*</pattern>
+    	<pattern>/editAnnouncementAction*</pattern>
+    	<pattern>/editUpdateAnnouncementAction*</pattern>
     </decorator>
 
 </decorators>

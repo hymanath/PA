@@ -10,13 +10,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.electoralconnect.dao.hibernate.UserDAO;
 import com.itgrids.electoralconnect.dto.AnnouncementVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.service.IAnnouncementService;
-import com.itgrids.electoralconnect.service.IUserService;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")

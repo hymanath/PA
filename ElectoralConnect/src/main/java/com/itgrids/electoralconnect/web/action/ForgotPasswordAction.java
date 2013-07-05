@@ -10,7 +10,7 @@ import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.itgrids.electoralconnect.service.IMailService;
 import com.itgrids.electoralconnect.service.IUserService;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.electoralconnect.util.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 

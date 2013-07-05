@@ -26,8 +26,8 @@ import com.itgrids.electoralconnect.model.UserProfile;
 import com.itgrids.electoralconnect.model.UserRoles;
 import com.itgrids.electoralconnect.service.IUserService;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
-import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.electoralconnect.dto.ResultCodeMapper;
+import com.itgrids.electoralconnect.dto.ResultStatus;
 
 
 public class UserService implements IUserService{

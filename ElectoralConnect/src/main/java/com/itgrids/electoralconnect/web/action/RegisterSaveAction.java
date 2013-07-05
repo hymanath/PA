@@ -1,6 +1,7 @@
 package com.itgrids.electoralconnect.web.action;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.itgrids.electoralconnect.dto.RegistrationVO;
@@ -8,7 +9,7 @@ import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
 import com.itgrids.electoralconnect.service.IMailService;
 import com.itgrids.electoralconnect.service.IUserService;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.electoralconnect.util.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;

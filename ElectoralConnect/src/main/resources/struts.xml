@@ -158,5 +158,27 @@
 		<action name="allAnnouncementsDisplayAction" class="allAnnouncementsDisplayAction" >
 			<result>/jsp/allAnnouncements.jsp</result>
 		</action>
+		
+		<action name="editUpdateAnnouncementAction" class="editAnnouncementAction" >
+			<result>/jsp/editAnnouncement.jsp</result>
+			
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">2097152</param>
+				<param name="allowedExtensions">
+					.png,.gif,.jpeg,.pjpeg,.html,.txt,.xls,.pdf,.zip,.xlsx,.doc,.docx,.jpg
+                </param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+		<action name="editAnnouncementAction" class="editAnnouncementAction" method="openEditAnnouncementForm">
+			<result>/jsp/editAnnouncement.jsp</result>
+		</action>
+		
+		<action name="deleteAnnouncementAction" class="HomePageAction" method="deleteAnnouncement">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>
+		</action>
 		</package>
 </struts>      

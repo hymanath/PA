@@ -38,4 +38,20 @@ public class AnnouncementsDAO extends GenericDaoHibernate<Announcements, Long> i
 		query.setParameter("announcementTypeId", announcementTypeId);
 		return query.list();
 	}
+	
+	/**
+	 * This DAO is used to update the deleted announcement
+	 * @param Long announcementId
+	 * @return int
+	 * @date 05-07-2013
+	 */
+	public int deleteSelAnnouncement(Long announcementId)
+	{
+		Query query = getSession().createQuery("update Announcements model set isDeleted = 'YES' where" +
+				" model.announcementId = :announcementId");
+		query.setParameter("announcementId", announcementId);
+		int x = query.executeUpdate();
+		getSession().flush();
+		return x;
+	}
 }

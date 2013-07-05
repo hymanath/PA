@@ -31,7 +31,6 @@ public class AnnouncementVO implements Serializable{
 	private String dateString;
 	private String title;
 	private Long id;
-	
 	public String getName() {
 		return name;
 	}
