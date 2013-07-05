@@ -10,7 +10,7 @@
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
-	
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityDateOperations.js"> </script>
 	<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
@@ -265,7 +265,10 @@ function getNewsForLocation()
 		dateFormat: "dd/mm/yy",
 		changeMonth: true,
       changeYear: true,
-		maxDate: new Date()
+		maxDate: new Date(),
+		onSelect:function(date1,date2){	
+			isDateValid();	
+		}
 		
 	}).datepicker("show");
 });
