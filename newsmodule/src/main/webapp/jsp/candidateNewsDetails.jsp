@@ -56,10 +56,10 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 
 <style type="text/css">
-#candidateNewsCountDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#candidateNewsCountDiv table,#respondNotRespondNewsCountDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 
-#candidateNewsCountDiv table tr:nth-child(even){background:#EdF5FF;}
-#candidateNewsCountDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#candidateNewsCountDiv table tr:nth-child(even),#respondNotRespondNewsCountDiv table tr:nth-child(even){background:#EdF5FF;}
+#candidateNewsCountDiv table td,#respondNotRespondNewsCountDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 #candidateNewsCountDiv table th{
 	background-color: #CDE6FC;
     font-size: 13px;
@@ -91,7 +91,8 @@
 #categoryGallary{margin-left: 12px; margin-right: 4px; margin-top: 0px;}
 #errorMsgDiv{text-align: center; font-size: 13px; margin-bottom: 10px;}
 #districtList,#categoryList,#galleryList{margin-left: 12px;width:200px;}
-
+#respondNotRespondNewsCountDiv{margin-top: 11px; margin-bottom: 25px;}
+#respondNotRespondNewsCountDiv table{margin-top: 10px;}
 </style>
 <script type="text/javascript">
 var fromDate = '${fromDate}';
@@ -157,7 +158,8 @@ var toDate = '${toDate}';
 	     
 
   </div>
- 
+  <div id="respondNotRespondNewsCountDiv"></div>
+
  <div id="candidateNewsCountDiv"></div>
 </div>
 
@@ -258,7 +260,6 @@ function getCandidateNewsCount()
    $("#ajaxImg").css("display","inline-block");
 
 	var jsObj={
-		candidateId:0,
 		fromDate:fromDate,
 		toDate:toDate,
 		galleryIdsArray:galleryIdsArray,
@@ -300,6 +301,10 @@ function callAjax(jsObj,url)
 			{
 			  clearOptionsListForSelectElmtId('districtList');
 			  createOptionsForSelectElmtId('districtList',myResults);
+			}
+			else if(jsObj.task == "getRespondedAndNotRespondedNewsCount")
+			{
+			 showPartyWiseNewsCount(myResults);
 			}
 
 			}catch (e)
@@ -671,9 +676,173 @@ function getDistrictList()
 	callAjax(jsObj, url);
 }
 
+
+
+function getResponseNewsCountNewsCount()
+{
+   $("#errorMsgDiv").html('');
+   var radioVal = $("input:radio[name=candidateNewsRadio]:checked").val();
+   var fromDate = '';
+   var toDate = '';
+   var galleryIdsArray = new Array();
+   var categoryIdsArray = new Array();
+   var locationScope = "";
+   var locationValue = 0;
+   var locationIdsList = new Array();
+   var tempVar = "";
+
+   if(radioVal == "byDate")
+   {
+	 $("#showAndHideDateSelectDiv").css("display","inline-block");
+	 fromDate = $("#existingFromText").val();
+     toDate = $("#existingToText").val();
+	 if(fromDate == '' && toDate =='')
+	 {
+	  $("#errorMsgDiv").html('Please Select From And To Dates.');
+	  return;
+	 }
+	 if(fromDate == '')
+	 {
+	  $("#errorMsgDiv").html('Please Select From Date.');
+	  return;
+	 }
+	 if(toDate =='')
+	 {
+	  $("#errorMsgDiv").html('Please Select To Date.');
+	  return;
+	 }
+	 tempVar = "byDate";
+
+   }
+   else
+   {
+    $("#showAndHideDateSelectDiv").css("display","none");
+    tempVar = "all";
+	
+   }
+
+    if($("#categoryCheckBoxId").is(":checked"))
+	{
+	  $('#categoryList > option:selected').each(
+       function(i){
+         categoryIdsArray.push($(this).val());
+       });
+	   if(categoryIdsArray.length == 0)
+	   {
+		 $("#errorMsgDiv").html('Please Select Category.');
+	     return; 
+	   }
+	   tempVar = "";
+	   
+	}
+
+    if($("#galleryCheckBoxId").is(":checked") || $("#categoryGallary").is(":checked"))
+	{
+	  
+       $('#galleryList > option:selected').each(
+       function(i){
+         galleryIdsArray.push($(this).val());
+       });
+	   if(galleryIdsArray.length == 0)
+	   {
+		 $("#errorMsgDiv").html('Please Select Gallery.');
+	     return; 
+	   }
+	   tempVar = "";
+	   
+	}
+
+	if($("#districtCheckboxId").is(":checked"))
+	{
+      $('#districtList > option:selected').each(
+       function(i){
+         locationIdsList.push($(this).val());
+       });
+	   if(locationIdsList.length == 0)
+	   {
+		 $("#errorMsgDiv").html('Please Select District.');
+	     return; 
+	   }
+
+	   locationScope = "DISTRICT";
+	}
+   $("#ajaxImg").css("display","inline-block");
+
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		galleryIdsArray:galleryIdsArray,
+        categoryIdsArray:categoryIdsArray,
+        locationScope:locationScope,
+        tempVar:tempVar,
+		locationValuesList:locationIdsList,
+	    task:'getRespondedAndNotRespondedNewsCount'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getRespondedAndNotRespondedNewsCountAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function  showPartyWiseNewsCount(results)
+{
+  $("#respondNotRespondNewsCountDiv").html('');
+  if(results == null)
+	  return;
+  var str = '';
+  str +='<div>';
+  str +='<span><b>Total News :</b>'+results.totalNewsCount+'</span>';
+  str +='<span><b>Respond News :</b>'+results.responseNewsCount+'</span>';
+  str +='<span><b>NotRespond News :</b>'+results.notResponseNewsCount+'</span>';
+  str +='</div>';
+  
+  str +='<div class="row-fluid">';
+  str +='<div class="span3">';
+    str +='<table>';
+    str +='<tr>';
+    str +='<th>Party</th>';
+    str +='<th>Responde News</th>';
+    str +='</tr>';
+
+    var selectOptionVo = results.selectOptionVO;
+     for(var i in selectOptionVo.selectOptionsList)
+     {
+       str +='<tr>';
+       str +='<td>'+selectOptionVo.selectOptionsList[i].name+'</td>';
+       str +='<td>'+selectOptionVo.selectOptionsList[i].id+'</td>';
+    
+       str +='</tr>';
+    }
+     str +='</table>';
+	 str +='</div>';
+
+    str +='<div class="span4">';
+    str +='<table>';
+    str +='<tr>';
+    str +='<th>Party</th>';
+    str +='<th>Not Responde News</th>';
+    str +='</tr>';
+
+    var selectOptionVo = results.selectOptionVO;
+     for(var i in selectOptionVo.selectOptionsList1)
+     {
+       str +='<tr>';
+       str +='<td>'+selectOptionVo.selectOptionsList1[i].name+'</td>';
+       str +='<td>'+selectOptionVo.selectOptionsList1[i].id+'</td>';
+    
+       str +='</tr>';
+    }
+     str +='</table>';
+	 str +='</div>';
+
+    str +='</div>';
+
+  $("#respondNotRespondNewsCountDiv").html(str);
+}
+
+
 getCandidateNewsCount();
 getSelectedNewsDetails();
-
+getResponseNewsCountNewsCount();
 
 $(document).ready(function(){
 
@@ -709,7 +878,8 @@ $(document).ready(function(){
  });
 
  $("#newsDetailsBtn").click(function(){
-   getCandidateNewsCount();
+	 getResponseNewsCountNewsCount();
+     getCandidateNewsCount();
 	 
  });
 
