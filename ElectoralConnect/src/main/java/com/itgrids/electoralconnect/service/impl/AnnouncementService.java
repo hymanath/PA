@@ -1,6 +1,7 @@
 package com.itgrids.electoralconnect.service.impl;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class AnnouncementService implements IAnnouncementService{
 		private static final Logger LOG=Logger.getLogger(UserService.class);
 		private TransactionTemplate transactionTemplate=null;
 		private DateUtilService dateUtilService=new DateUtilService();
-		
+		DateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
 		public IFileDAO getFileDAO() {
 			return fileDAO;
 		}
@@ -175,33 +176,31 @@ public class AnnouncementService implements IAnnouncementService{
 				List<NotificationVO> notificationList = null;
 				List<PressReleaseVO> pressReleaseList = null;
 				AnnouncementVO announcementVO = null;
-	 			List<Object[]> notificationsList = commentDAO.getTop5Notifications(0, 5);
+	 			List<Announcements> notificationsList = announcementsDAO.getTopAnnouncements(1l, 0, 5);
 				if(notificationsList != null)
 				{
 					notificationList = new ArrayList<NotificationVO>();
-					for (Object[] parms : notificationsList) {
+					for (Announcements announcement : notificationsList) {
 						NotificationVO notificationVO = new NotificationVO();
-						notificationVO.setCount((Long)parms[0]);
-						Announcements announcements = (Announcements) parms[1];
-						notificationVO.setId(announcements.getAnnouncementId());
-						notificationVO.setTitle(announcements.getTitle());
-						notificationVO.setDescription(announcements.getDescription());
-						notificationVO.setDate(announcements.getDate());
+						notificationVO.setId(announcement.getAnnouncementId());
+						notificationVO.setTitle(announcement.getTitle());
+						notificationVO.setDescription(announcement.getDescription());
+						notificationVO.setDate(dateFormate.format(announcement.getDate()));
+						notificationVO.setCount(commentDAO.getTotalCommentsCountByAnnouncementId(announcement.getAnnouncementId()));
 						notificationList.add(notificationVO);
 					}
 				}
-				List<Object[]> pressReleasesList = commentDAO.getTop5PressReleases(0, 10);
+				List<Announcements> pressReleasesList = announcementsDAO.getTopAnnouncements(2l, 0, 5);
 				if(pressReleasesList != null)
 				{
 					pressReleaseList = new ArrayList<PressReleaseVO>();
-					for (Object[] parms : pressReleasesList) {
+					for (Announcements announcement : pressReleasesList) {
 						PressReleaseVO pressReleaseVO = new PressReleaseVO();
-						pressReleaseVO.setCount((Long)parms[0]);
-						Announcements announcements = (Announcements) parms[1];
-						pressReleaseVO.setId(announcements.getAnnouncementId());
-						pressReleaseVO.setTitle(announcements.getTitle());
-						pressReleaseVO.setDescription(announcements.getDescription());
-						pressReleaseVO.setDate(announcements.getDate());
+						pressReleaseVO.setId(announcement.getAnnouncementId());
+						pressReleaseVO.setTitle(announcement.getTitle());
+						pressReleaseVO.setDescription(announcement.getDescription());
+						pressReleaseVO.setDate(dateFormate.format(announcement.getDate()));
+						pressReleaseVO.setCount(commentDAO.getTotalCommentsCountByAnnouncementId(announcement.getAnnouncementId()));
 						pressReleaseList.add(pressReleaseVO);
 					}
 				}
@@ -247,12 +246,12 @@ public class AnnouncementService implements IAnnouncementService{
 		 * @return List<AnnouncementVO>
 		 * @date 04-07-2013
 		 */
-		public List<AnnouncementVO> getAllAnnouncements()
+		public List<AnnouncementVO> getAllAnnouncements(Long announcemetTypeId)
 		{
 			List<AnnouncementVO> returnList = new ArrayList<AnnouncementVO>();
 			try {
 				LOG.debug("Enterd into getAnnouncementById() method in AnnouncementService Service");
-				List<Object[]> announcementsList = announcementFilesDAO.getAllAnnoncement();
+				List<Object[]> announcementsList = announcementFilesDAO.getAllAnnoncement(announcemetTypeId);
 				if(announcementsList != null && announcementsList.size() >0)
 				{
 					returnList = fillAnnouncementVO(announcementsList);
@@ -283,15 +282,16 @@ public class AnnouncementService implements IAnnouncementService{
 						announcements = (Announcements) parms[0];
 						file          = (File) parms[1];
 						announcementVO.setId(announcements.getAnnouncementId());
+						announcementVO.setAnnouncementType(announcements.getAnnouncementType() != null ? announcements.getAnnouncementType().getAnnouncementTypeId():0l);
 						announcementVO.setTitle(announcements.getTitle()!= null ? announcements.getTitle() : "");
 						announcementVO.setDescription(announcements.getDescription() != null ? announcements.getDescription() : "");
-						announcementVO.setDate(announcements.getDate());
-						announcementVO.setFileDate(file.getUpdatedTime() != null ? file.getUpdatedTime().toString():"");
+						announcementVO.setDateString(dateFormate.format(announcements.getDate()));
+						announcementVO.setFileDate(file.getUpdatedTime() != null ? dateFormate.format(file.getUpdatedTime()).toString():"");
 						announcementVO.setFileTitle(file.getTitle() != null ? file.getTitle() : "");
 						announcementVO.setFileDescription(file.getDescription() != null ? file.getDescription() : "");
 						announcementVO.setFilePath(file.getFilePath() != null ? file.getFilePath() : "");
-						announcementVO.setName(announcements.getUpdatedBy().getUserProfile().getFirstName());
-						announcementVO.setAnnouncementName(announcements.getAnnouncementType().getName());
+						announcementVO.setName(announcements.getUpdatedBy() != null ?announcements.getUpdatedBy().getUserProfile().getFirstName() :"");
+						announcementVO.setAnnouncementName(announcements.getAnnouncementType() != null ?announcements.getAnnouncementType().getName() :"");
 						returnList.add(announcementVO);
 					}
 				}

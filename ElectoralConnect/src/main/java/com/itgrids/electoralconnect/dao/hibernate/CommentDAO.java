@@ -161,7 +161,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	 * @return List<Object[]>
 	 * @date 04-07-2013
 	 */
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Object[]> getTop5Notifications(int startIndex,int maxIndex)
 	{
 		Query query = getSession().createQuery("select count(*),model.announcements from Comment model " +
@@ -170,7 +170,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxIndex);
 		return query.list();
-	}
+	}*/
 	/**
 	 * This DAO is used to get Top 5 PressReleases
 	 * @param int startIndex
@@ -178,7 +178,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	 * @return List<Object[]>
 	 * @date 04-07-2013
 	 */
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Object[]> getTop5PressReleases(int startIndex,int maxIndex)
 	{
 		Query query = getSession().createQuery("select count(*),model.announcements from Comment model " +
@@ -187,5 +187,19 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxIndex);
 		return query.list();
-	}
+	}*/
+	/**
+	 * This DAO is used to get the comments count based on announcement id
+	 * @param Long announcementId
+	 * @return Long
+	 * @date 05-07-2013
+	 */
+	/*public Long getCommentCountByAnnouncementId(Long announcementId)
+	{
+		Query query = getSession().createQuery("select count(*) from Comment model where " +
+				" model.announcements.announcementId = :announcementId");
+		query.setParameter("announcementId", announcementId);
+		
+		return (Long) query.uniqueResult();
+	}*/
 }
