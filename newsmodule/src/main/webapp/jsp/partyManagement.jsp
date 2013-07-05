@@ -50,7 +50,7 @@
 .nav-tabs > li{
 font-weight:bold;
 }
-#fromDateId,#toDateId,#existingFromTextNews{
+#fromDateId1,#toDateId1,#fromDateId,#toDateId,#existingFromTextNews{
 cursor: text;
 }
 #Err4Numer,#Err4Numer1{
@@ -306,7 +306,7 @@ padding: 0 20px;
 #gallaryCheckboxId,#gallaryAllCheckboxId,#categoryCheckboxId{margin-top: 0px; margin-right: 4px;}
 #responseContentDiv{margin: 17px auto 25px; float: none; width: 600px; padding-bottom: 14px;padding-top: 3px;}
 #candidatesDiv{ margin-top: 12px;}
-#fromDateId,#toDateId,#candidatesList,#candidateCategoryId{margin-left: 4px;cursor:pointer;}
+#fromDateId,#toDateId,#candidatesLists,#candidatesList,#candidateCategoryId{margin-left: 4px;cursor:pointer;}
 #candidateNewsList,#respenseNewsList{width: 300px;}
 #buttonsDiv{margin-bottom: 8px; margin-top: 6px;}
 #categoryGallaryHideShowDiv{margin-top: 10px; margin-bottom: 43px;}
@@ -688,8 +688,8 @@ function getSource(selectOptionId){
 			}
 			else if(jsObj.task == "getCandidatesByPartyId")
 			{
-              clearOptionsListForSelectElmtId('candidatesList');
-			  createOptionsForSelectElement('candidatesList',myResults);
+              clearOptionsListForSelectElmtId('candidatesLists');
+			  createOptionsForSelectElement('candidatesLists',myResults);
 			}
 
 		
@@ -1752,6 +1752,8 @@ function formValidation()
 	
 function showNewsGallaey()
 {
+	  $("#newsGallaryDiv").css("display","block");
+	  $("#newsAssignGallaryDiv").css("display","none");
   if(!formValidation()){
   document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
@@ -3770,6 +3772,7 @@ function updatePhoto(fileId,fileGallaryId)
 </div>
 		<div id='newsGallaryDiv' class="divInfo">
 	 </div>		
+		<div id='newsAssignGallaryDiv' class="divInfo"> </div>		 
 	</div>
 </div>
 
@@ -3879,6 +3882,23 @@ $(".dateField").live("click", function(){
 		}
      });
 
+$(document).on("click",'#fromDateId1 , #toDateId1', function(){
+ $(this).datepicker({
+		dateFormat: "dd/mm/yy",
+		changeMonth: true,
+        changeYear: true, 
+		maxDate: new Date(),
+	    onSelect: function(dateText, inst) { 
+			isDatesValid1();
+			if($('input:radio[name=newsType]:checked').val() == "party")
+ 				   checkAllValuesAndSendAjaxForNews();
+			else if($('input:radio[name=newsType]:checked').val() == "candidate")
+                   checkAllValuesAndSendAjax();
+	}
+		
+	}).datepicker("show");
+});
+
 $(document).on("click",'#fromDateId , #toDateId', function(){
  $(this).datepicker({
 		dateFormat: "dd/mm/yy",
@@ -3886,6 +3906,7 @@ $(document).on("click",'#fromDateId , #toDateId', function(){
         changeYear: true,
 		maxDate: new Date(),
 	    onSelect: function(dateText, inst) { 
+			isDatesValid();
 			if($('input:radio[name=newsType]:checked').val() == "party")
  				   checkAllValuesAndSendAjaxForNews();
 			else if($('input:radio[name=newsType]:checked').val() == "candidate")
@@ -4212,7 +4233,7 @@ $("#assignNewsbtn").live("click",function(){
 	else
     {
 		var partyId = $("#partiesList").val();
-		candidateId = $("#candidatesList").val();
+		candidateId = $("#candidatesLists").val();
 		resFileGalId = 0;
 		if(partyId == 0)
 		{
@@ -4267,7 +4288,7 @@ $(".assignNewsRadioCls").live("click",function(){
 
 function checkAllValuesAndSendAjaxForNews()
 {
-	if($('#fromDateId').val() != "" && $('#toDateId').val() != "" && $('#gallariesList').val() != "" && $('#gallariesList').val() != "0"){
+	if($('#fromDateId1').val() != "" && $('#toDateId1').val() != "" && $('#fromDateId').val() != "" && $('#toDateId').val() != "" && $('#gallariesList').val() != "" && $('#gallariesList').val() != "0"){
 		$('#dateErrorMessage').html('');
 		$('#noNewsError').html("");
 		$('#gallariesList').change();
@@ -4277,7 +4298,7 @@ function checkAllValuesAndSendAjaxForNews()
 
 function checkAllValuesAndSendAjax()
 {
-	if($('#fromDateId').val() != "" && $('#toDateId').val() != "" && $('#candidatesList').val() != ""){
+	if($('#fromDateId1').val() != "" && $('#toDateId1').val() != "" && $('#fromDateId').val() != "" && $('#toDateId').val() != "" && $('#candidatesList').val() != ""){
 		$('#dateErrorMessage').html('');
 		$('#candidatesList').change();
 		$('#noNewsError').html("");
@@ -5463,8 +5484,8 @@ return false;
    fileDate = document.getElementById("existingFromText").value;
    locationScopeId = document.getElementById("scopeDivForEdit").value;
    fileGallaryId = $('#fileGallaryId').val();
-   newsDescription = $('#newsfileDescriptionForEdit').val();
-   newsDescription = htmlEntity(newsDescription);
+   /*newsDescription = $('#newsfileDescriptionForEdit').val();
+   newsDescription = htmlEntity(newsDescription);*/
 
    try
   {
@@ -5550,7 +5571,7 @@ try{
 		  visibility        :visibility,
 		  flagInd          :false,
 		  fileGallaryId:fileGallaryId,
-          newsDescription:newsDescription 
+         /* newsDescription:newsDescription */
      }
 	  var rparam ="task="+encodeURIComponent(unescape(YAHOO.lang.JSON.stringify(jsObj)));
       var url = "updateDeleteNewsAction.action?"+rparam;	//18111
@@ -6614,7 +6635,9 @@ function createOptionsForSelectElement(elmtId,optionsList)
 
 function assignNewsToCandidate()
 {
-  $("#newsGallaryDiv").html('');
+  $("#newsGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").css("display","block");
+  $("#newsAssignGallaryDiv").html('');
   $("#profileManagementMainOuterDiv4").css("display","none");
   $("#profileManagementHeaderDiv2").css("display","none");
   $("#profileManagementMainOuterDiv3").css("display","block");
@@ -6626,8 +6649,8 @@ function assignNewsToCandidate()
   str +='<h2 style="text-align: center;">Assign News</h2>';
   str +='<div id="errorMessageDiv"></div>';
   str +='<div id="assignNewsInnerDiv">';
-  str +='<label id="fromDateLabelId">From Date:<input type="text" readonly="true" id="fromDateId" class="inputClass assignNewsDateCls fromDateCls" name="fromDate"></label>';
-  str +='<label id="toDateLabelId">ToDate :<input type="text" id="toDateId" class="inputClass assignNewsDateCls toDateCls" readonly="true" name="toDate"></label>';
+  str +='<label id="fromDateLabelId">From Date:<input type="text" readonly="true" id="fromDateId1" class="inputClass assignNewsDateCls fromDateCls" name="fromDate"></label>';
+  str +='<label id="toDateLabelId">ToDate :<input type="text" id="toDateId1" class="inputClass assignNewsDateCls toDateCls" readonly="true" name="toDate"></label>';
   str +='<label>Select Gallery: <select id="assignNewsgallaryList"></select></label>';
   str +='<label>Select News: <select id="newsTitlesSelectList"></select></label>';
   str +='<div id="assignNewsRadioDiv">';
@@ -6645,13 +6668,13 @@ function assignNewsToCandidate()
   str += ' <select id="partiesList" name="party" onchange="getCandidatesByPartyId()"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option><option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" selected>TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></label>';
 	
 
-  str +='<label>Select Candidate : <font class="requiredFont">*</font><select id="candidatesList"></select></label>';
+  str +='<label>Select Candidate : <font class="requiredFont">*</font><select id="candidatesLists"></select></label>';
   str +='</div>';
   str +='<input type="button" value="submit" class="btn btn-info" id="assignNewsbtn"/>';
 
   str +='</div>';
   str +='</div>';
-  $("#newsGallaryDiv").html(str);
+  $("#newsAssignGallaryDiv").html(str);
 
   getGalleryListForAParty();
 }
@@ -6678,16 +6701,19 @@ function getGalleryListForAParty()
 function getNewsTitlesByGalleryId(divId)
 {
 	var gallaryId;
-  if(divId == "assignNewsgallaryList")
+	var fromDate;
+	var toDate;
+  if(divId == "assignNewsgallaryList"){
    gallaryId = $("#assignNewsgallaryList").val();
+	fromDate = $("#fromDateId1").val();
+	toDate = $("#toDateId1").val();
+   }
 
-  if(divId == "responseNewsgallaryList")
-   gallaryId = $("#responseNewsgallaryList").val();
-
-
- var fromDate = $("#fromDateId").val();
- var toDate = $("#toDateId").val();
-
+  if(divId == "responseNewsgallaryList"){
+    gallaryId = $("#responseNewsgallaryList").val();
+	toDate = $("#toDateId").val();
+	fromDate = $("#fromDateId").val();
+   }
  $("errorMsgDiv").html('');
  if(gallaryId == 0)
  {
@@ -6759,6 +6785,52 @@ function showAssignNewsStatus(results)
    $("#errorMessageDiv").html('Error occured! try again.').css("color","red");
    return;
   }
+}	
+	
+function isDatesValid()
+{
+	$('#noNewsError').html("");
+	var fromDate = $("#fromDateId").val();
+	var toDate  = $("#toDateId").val();
+		if(fromDate.length > 0 && toDate.length > 0 )
+		{		    
+		  var dt1  = parseInt(fromDate.substring(0,2),10);
+		  var mon1 = parseInt(fromDate.substring(3,5),10);
+		  var yr1  = parseInt(fromDate.substring(6,10),10);
+		  var dt2  = parseInt(toDate.substring(0,2),10);
+		  var mon2 = parseInt(toDate.substring(3,5),10);
+		  var yr2  = parseInt(toDate.substring(6,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
+
+		if(date2 < date1)
+		{
+		 $('#noNewsError').html("Start Date should be Less Than End Date");
+		}
+	}
+}
+
+function isDatesValid1()
+{
+	$('#errorMessageDiv').html("");
+	var fromDate = $("#fromDateId1").val();
+	var toDate  = $("#toDateId1").val();
+		if(fromDate.length > 0 && toDate.length > 0 )
+		{		    
+		  var dt1  = parseInt(fromDate.substring(0,2),10);
+		  var mon1 = parseInt(fromDate.substring(3,5),10);
+		  var yr1  = parseInt(fromDate.substring(6,10),10);
+		  var dt2  = parseInt(toDate.substring(0,2),10);
+		  var mon2 = parseInt(toDate.substring(3,5),10);
+		  var yr2  = parseInt(toDate.substring(6,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
+
+		if(date2 < date1)
+		{ 
+		 $('#errorMessageDiv').html("From Date should be Less Than To Date");
+		}
+	}
 }
 
 
