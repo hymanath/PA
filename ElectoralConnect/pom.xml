@@ -114,13 +114,7 @@
 
 
 	<dependencies>
-		<!-- PartyService  -->
-		<dependency>
-			<groupId>com.itgrids.partyanalyst</groupId>
-			<artifactId>partyanalyst-service</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-
+		
 		<!-- Junit -->
 		<dependency>
 			<groupId>junit</groupId>
