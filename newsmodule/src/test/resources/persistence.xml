@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+    http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+
+	<persistence-unit name="persistenceUnitManager"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>com.itgrids.partyanalyst.model.Country</class>
+		<class>com.itgrids.partyanalyst.model.Census</class>
+		<class>com.itgrids.partyanalyst.model.State</class>
+		<class>com.itgrids.partyanalyst.model.Constituency</class>
+		<class>com.itgrids.partyanalyst.model.District</class>
+		<class>com.itgrids.partyanalyst.model.CandidateResult</class>
+		<class>com.itgrids.partyanalyst.model.Candidate</class>
+		<class>com.itgrids.partyanalyst.model.ConstituencyElection</class>
+		<class>com.itgrids.partyanalyst.model.Nomination</class>
+		<class>com.itgrids.partyanalyst.model.Ward</class>
+		<class>com.itgrids.partyanalyst.model.Township</class>
+		<class>com.itgrids.partyanalyst.model.Tehsil</class>
+		<class>com.itgrids.partyanalyst.model.ElectionScope</class>
+		<class>com.itgrids.partyanalyst.model.Party</class>
+		<class>com.itgrids.partyanalyst.model.Election</class>
+		<class>com.itgrids.partyanalyst.model.ElectionType</class>
+		<class>com.itgrids.partyanalyst.model.Registration</class>
+		<class>com.itgrids.partyanalyst.model.UserAddress</class>
+		<class>com.itgrids.partyanalyst.model.NewsImportance</class>  
+		<class>com.itgrids.partyanalyst.model.ContentNotes</class>
+		<class>com.itgrids.partyanalyst.model.NewsFlag</class>
+		
+	    <properties> 
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
+			<property name="dialect" value="org.hibernate.dialect.MySQLDialect"/>
+			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.password" value="root" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="reate-drop" />
+			<property name="hibernate.format_sql" value="true" />
+		</properties>
+	</persistence-unit>
+
+</persistence>
