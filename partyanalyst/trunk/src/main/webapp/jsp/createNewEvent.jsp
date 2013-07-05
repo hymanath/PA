@@ -593,6 +593,19 @@ function addNewAction(){
 		   $("#actionPlanError").html("Action Plan is required");
 		   return;
 		}
+			 else if(actionPlanValue != null)
+		{
+				var iChars = "!`@#$%^&*<()>+=-[]\\\';,./{}|\":?~";  
+				
+		            for (var i = 0; i < actionPlanValue.length; i++)
+                {      
+                    if (iChars.indexOf(actionPlanValue.charAt(i)) != -1)
+                    {				  
+				     $("#actionPlanError").html("Action Plan should not contain special characters");
+					 return;
+                    } 
+				}
+		}
 		var targetDateValue = $("#actionPlanDate").val();
         actionPlanArrayId = actionPlanArrayId+1;
 	    var planId = "planId"+actionPlanArrayId;
@@ -830,6 +843,22 @@ function handleSubmit(type)
 		{
 		  str += "Please enter Description.";
 		  errorReq = true;
+		}
+		 else if(descVal != null)
+		{
+				var iChars = "!`#$%^*<()>+=-[]\\\,/{}|\":?~";  
+				
+		            for (var i = 0; i < descVal.length; i++)
+                {      
+                    if (iChars.indexOf(descVal.charAt(i)) != -1)
+                    {
+					
+				     errorReq = true;
+                    } 
+				}
+				if(errorReq){
+					 str += "Description should not contain special characters.";
+				}
 		}
 		if(errorReq){
 		  errorMsg.innerHTML = str;
