@@ -616,6 +616,14 @@ function getCadresResults(btnType)
 	   if(nameSelectedRadioEle[i].checked == true)
 	        nameSelectedRadioValue = nameSelectedRadioEle[i].value;
     }
+	var name = $('#cadreNameText').val();
+
+    if(/[^a-z A-Z]/.test(name)){
+
+	elmt.innerHTML = 'Name Accepts only Characters';
+	return false;
+
+	}	
 	if(REPORTLEVEL == '') 
 	{
 		elmt.innerHTML = 'Please Select Range';
