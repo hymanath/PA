@@ -994,7 +994,7 @@ function addToPolitician(voterId,name)
 	   if(type == "constituency"){
 		var area='';
 		  $("#votersBasicInfoBtnDiv").show();
-		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span id='areaId'>"+area+"</span> Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show values</span><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
+		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span id='areaId'>"+area+"</span> Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
 		  $("#votersShareBtn1").css('display','none');
 		  checkForLocalBodyElection();
 		  $("#castPopupShowBtn").attr("value","Mandal/Muncipality wise Caste Info");
