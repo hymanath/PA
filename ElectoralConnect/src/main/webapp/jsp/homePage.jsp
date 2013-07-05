@@ -457,7 +457,6 @@ function buildAnnouncementForSelected(myResults)
 	{
 		result = myResults;
 		window.open('selectedAnnouncementsAction.action');
-		
 	}
 }
 

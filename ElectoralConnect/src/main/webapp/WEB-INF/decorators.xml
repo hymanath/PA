@@ -34,6 +34,7 @@
     	<pattern>/adminRegisterSaveAction*</pattern>
     	<pattern>/createAnnouncementAction*</pattern>
     	<pattern>/selectedAnnouncementsAction*</pattern>
+    	<pattern>/allAnnouncementsDisplayAction*</pattern>
     </decorator>
 
 </decorators>

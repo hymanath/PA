@@ -149,7 +149,8 @@ public String getTopAnnouncements()
 		}
 		else if(jobj.getString("task").equalsIgnoreCase("getAllAnnouncements"))
 		{
-			announcementsList = announcementService.getAllAnnouncements();
+			Long announcemetId = jobj.getLong("announcenentTypeId");
+			announcementsList = announcementService.getAllAnnouncements(announcemetId);
 		}
 		
 	} catch (Exception e) {

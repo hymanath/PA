@@ -66,4 +66,8 @@
 	 <bean id="selectedAnnouncementsAction" class="com.itgrids.electoralconnect.web.action.SelectedAnnouncementsAction" singleton="false">
 	 	
 	 </bean>
+	 
+	 <bean id="allAnnouncementsDisplayAction" class="com.itgrids.electoralconnect.web.action.AllAnnouncementsDisplayAction" singleton="false">
+	 	
+	 </bean>
 </beans>
