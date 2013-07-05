@@ -1,5 +1,7 @@
 package com.itgrids.electoralconnect.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -368,7 +370,16 @@ public class UserService implements IUserService{
 						commentVO.setComment(parms[1].toString());
 						user          = (User) parms[2];
 						commentVO.setName(user.getUserProfile().getFirstName());
-						commentVO.setDate((Date) parms[3]);
+						
+						DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+						
+						String reportDate="";
+						if(parms[3]!=null){
+							reportDate = df.format(parms[3]);
+						}
+						
+						//commentVO.setDate((Date) parms[3]);
+						commentVO.setCommentedTime(reportDate);
 						commentVO.setTotal(totalCount);
 						returnList.add(commentVO);
 					}

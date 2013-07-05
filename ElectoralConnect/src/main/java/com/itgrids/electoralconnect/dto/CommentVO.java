@@ -13,6 +13,8 @@ public class CommentVO implements Serializable{
 	private String announcement;
 	private Long total;
 	private String abused;
+	private String commentedTime;
+	
 	public Long getCommentId() {
 		return commentId;
 	}
@@ -54,6 +56,12 @@ public class CommentVO implements Serializable{
 	}
 	public void setAbused(String abused) {
 		this.abused = abused;
+	}
+	public String getCommentedTime() {
+		return commentedTime;
+	}
+	public void setCommentedTime(String commentedTime) {
+		this.commentedTime = commentedTime;
 	}
 	
 	
