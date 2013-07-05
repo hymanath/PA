@@ -338,11 +338,11 @@ function buildCandidateNews(results,jsObj)
   str +='<tr>';
  
   str +='<th>Candidate Name</th>';
-  if(jsObj.tempVar != "DISTRICT")
+  if(jsObj.locationScope != "DISTRICT")
    str +='<th>State</th>';
   str +='<th>District</th>';
 
-  if(jsObj.tempVar != "DISTRICT")
+  if(jsObj.locationScope != "DISTRICT")
   {
     str +='<th>Constituency</th>';
     str +='<th>Mandal</th>';
@@ -361,7 +361,7 @@ function buildCandidateNews(results,jsObj)
    
    str +='<td>'+results[i].name+'</td>';
 
-  if(jsObj.tempVar != "DISTRICT")
+  if(jsObj.locationScope != "DISTRICT")
   {
    
    if(results[i].stateNewsCount > 0)
@@ -375,7 +375,7 @@ function buildCandidateNews(results,jsObj)
    else
 	str +='<td><a href="javascript:{}">'+results[i].districtNewsCount+'</a></td>';
 
-  if(jsObj.tempVar != "DISTRICT")
+  if(jsObj.locationScope != "DISTRICT")
   {
    if(results[i].constituencyNewsCount > 0)
     str +='<td><a href="javascript:{}" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'CONSTITUENCY\')">'+results[i].constituencyNewsCount+'</a></td>';
@@ -398,7 +398,7 @@ function buildCandidateNews(results,jsObj)
  str +='</table>';
  $("#candidateNewsCountDiv").html(str);
 
- if(jsObj.tempVar != "DISTRICT")
+ if(jsObj.locationScope != "DISTRICT")
  {
    $('#newsCountTab').dataTable({
 		"aaSorting": [[ 1, "asc" ]],
@@ -478,7 +478,7 @@ function buildChart(results,jsObj)
 	var dataarr = [];
 	var xaxis = results[0].candidateNames;
 
-	if(results[0].stateCounts != null && jsObj.tempVar != "DISTRICT")
+	if(results[0].stateCounts != null && jsObj.locationScope != "DISTRICT")
 	{
 		var obj = {
 		name: 'State',
@@ -495,7 +495,7 @@ function buildChart(results,jsObj)
 		dataarr.push(obj1);
 	}
 	
-	/* if(results[0].constituencyCounts != null && jsObj.tempVar != "DISTRICT")
+	/* if(results[0].constituencyCounts != null && jsObj.locationScope != "DISTRICT")
 	{
 		var obj3 = {
 		name: 'Constituency',
@@ -503,7 +503,7 @@ function buildChart(results,jsObj)
 		}
 		dataarr.push(obj3);
 	}
-	if(results[0].mandalCounts != null && jsObj.tempVar != "DISTRICT")
+	if(results[0].mandalCounts != null && jsObj.locationScope != "DISTRICT")
 	{
 		var obj4 = {
 		name: 'Mandal',
