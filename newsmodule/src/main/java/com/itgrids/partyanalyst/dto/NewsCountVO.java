@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsCountVO extends ResultStatus implements Serializable{
@@ -9,8 +10,6 @@ public class NewsCountVO extends ResultStatus implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
 	private Long constituencyScopeId;
 	private Long constituencyValue;
 	private Long tehsilScopeId;
@@ -28,9 +27,15 @@ public class NewsCountVO extends ResultStatus implements Serializable{
 	private List<Long> muncipalityValuesList;
 	private List<Long> wardIdsList;
 	private Long wardScopeId;
+	private Long totalNewsCount= 0L;
+	private Long responseNewsCount = 0L;
+	private Long notResponseNewsCount = 0L;
+	private String name;
+	private List<NewsCountVO> newsCountVOList = new ArrayList<NewsCountVO>(0);
+	private Long id;
+	private SelectOptionVO selectOptionVO = new SelectOptionVO();
 	
 	
-
 	public List<Long> getWardIdsList() {
 		return wardIdsList;
 	}
@@ -132,6 +137,49 @@ public class NewsCountVO extends ResultStatus implements Serializable{
 	}
 	public void setHamletIds(List<Long> hamletIds) {
 		this.hamletIds = hamletIds;
+	}
+	public Long getTotalNewsCount() {
+		return totalNewsCount;
+	}
+	public void setTotalNewsCount(Long totalNewsCount) {
+		this.totalNewsCount = totalNewsCount;
+	}
+	
+	public Long getResponseNewsCount() {
+		return responseNewsCount;
+	}
+	public void setResponseNewsCount(Long responseNewsCount) {
+		this.responseNewsCount = responseNewsCount;
+	}
+	public Long getNotResponseNewsCount() {
+		return notResponseNewsCount;
+	}
+	public void setNotResponseNewsCount(Long notResponseNewsCount) {
+		this.notResponseNewsCount = notResponseNewsCount;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public List<NewsCountVO> getNewsCountVOList() {
+		return newsCountVOList;
+	}
+	public void setNewsCountVOList(List<NewsCountVO> newsCountVOList) {
+		this.newsCountVOList = newsCountVOList;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public SelectOptionVO getSelectOptionVO() {
+		return selectOptionVO;
+	}
+	public void setSelectOptionVO(SelectOptionVO selectOptionVO) {
+		this.selectOptionVO = selectOptionVO;
 	}
 
 }
