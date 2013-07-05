@@ -9,7 +9,7 @@ public class NotificationVO implements Serializable{
 	private Long id;
 	private String title;
 	private String description;
-	private Date date;
+	private String date;
 	private String updatedBy;
 	private Long count;
 	public Long getId() {
@@ -30,10 +30,10 @@ public class NotificationVO implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public String getUpdatedBy() {

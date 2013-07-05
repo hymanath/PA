@@ -9,11 +9,12 @@ import com.itgrids.electoralconnect.dto.ResultStatus;
 public interface IAnnouncementService {
 	
 	public ResultStatus uploadFile(AnnouncementVO announcementVO,RegistrationVO user);
+	
 	public List<AnnouncementVO> getAllAnnouncementsForAdmin(int startRecord,int maxRecord,Long userId);
 	
 	public List<AnnouncementVO> getTop5Announcements();
 	
 	public List<AnnouncementVO> getAnnouncementById(Long announcementId);
 	
-	public List<AnnouncementVO> getAllAnnouncements();
+	public List<AnnouncementVO> getAllAnnouncements(Long announcemetTypeId);
 }
