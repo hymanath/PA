@@ -604,7 +604,7 @@ function addNewAction(){
 					      actionPlanOrganizers:planOrgnisers			
 						};
 		actionPlanArray.push(actionObj);
-		var str = '<div id="'+planId+'" style="clear:both;font-weight:bold;padding:5px;background-color:#F2DEDE;width:480px;height:18px;">';
+		var str = '<div id="'+planId+'" style="clear:both;font-weight:bold;padding:5px;background-color:#F2DEDE;width:480px;height:auto;">';
 		   str += '  <span style="float:left;margin-left:10px;">'+actionPlanValue+' - '+targetDateValue+'</span>';
 		   str += '  <span style="float:right;margin-right:10px;">';
 		   str += '     <a href="javascript:{}" onclick ="editActionPlan(\''+planId+'\');">Edit</a> |';
@@ -943,7 +943,7 @@ function handleSubmit(type)
 					      actionPlanOrganizers:editPlanOrgnisers			
 						};
 		  actionPlanArray.push(actionObj);
-		   var str = '<div id="'+planId+'" style="clear:both;font-weight:bold;padding:5px;background-color:#F2DEDE;width:480px;height:18px;">';
+		   var str = '<div id="'+planId+'" style="clear:both;font-weight:bold;padding:5px;background-color:#F2DEDE;width:480px;height:auto;">';
 		   str += '  <span style="float:left;margin-left:10px;">'+actionPlanValue+' - '+targetDateValue+'</span>';
 		   str += '  <span style="float:right;margin-right:10px;">';
 		   str += '     <a href="javascript:{}" onclick ="editActionPlan(\''+planId+'\');">Edit</a> |';
