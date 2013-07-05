@@ -366,7 +366,7 @@ function getUpdatedData(){
 				<tr>
 					<th style="width:243px;padding-left:17px;">Search By Cadre Name&nbsp;&nbsp;(optional)</th>
 					<td>
-						<input type="text" id="cadreNameText"/>
+						<input type="text" id="cadreNameText" maxlength="40"/>
 						<input type="radio" value="StartingWith" checked="checked" name="nameBasedRadio">Starting With 
 						<input type="radio" value="ExactMatch" name="nameBasedRadio">Exact Match
 						<input type="radio" value="AnyWhereInName"  name="nameBasedRadio">Any Where In Name
@@ -375,7 +375,7 @@ function getUpdatedData(){
 				<tr>
 					<th style="width:243px;padding-left:17px;">Search By Membership No &nbsp;&nbsp;(optional)</th>
 					<td>
-						<input type="text" id="memberShipNoText" name ="memberShipNoText" value=""/>
+						<input type="text" id="memberShipNoText" name ="memberShipNoText" value="" maxlength="50"/>
 					</td>
 			    </tr>
 			</table>
