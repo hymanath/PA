@@ -6,6 +6,7 @@
 <title> TDP News Portal </title>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityDateOperations.js"> </script>
 
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
 
@@ -243,8 +244,10 @@ $(".dateField").live("click", function(){
 		dateFormat: "dd/mm/yy",
 		changeMonth: true,
       changeYear: true,
-		maxDate: new Date()
-		
+		maxDate: new Date(),
+	    onSelect: function(date1, date2) { 
+			isDateValid();		
+		}		
 	}).datepicker("show");
 });
 	
