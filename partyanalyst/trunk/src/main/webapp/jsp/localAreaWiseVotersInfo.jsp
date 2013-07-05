@@ -68,7 +68,16 @@
  <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
  <script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 
-<title>LOCAL AREA WISE VOTERS INFORMATION</title>
+<c:if test="${type == 'customWard'}">
+<title><c:out value='LOCALAREA'/> WISE VOTERS INFORMATION</title>
+</c:if>
+<c:if test="${type == 'mandal'}">
+<title><c:out value='CUSTOM WARD'/> WISE VOTERS INFORMATION</title>
+</c:if>
+<c:if test="${type == 'hamlet'}">
+<title><c:out value='LOCALAREA'/> WISE VOTERS INFORMATION</title>
+</c:if>
+
 <style type="text/css">
 
 #votersBasicInfoSubDiv{
@@ -505,7 +514,7 @@ function buildAgewiseDetails(myResults,jsObj)
 
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 { 
-		$("#votersBasicInfoSubHeading").html('Local Area Wise Voters Information in '+typename+'');
+		$("#votersBasicInfoSubHeading").html(''+votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Voters Information in '+typename+'');
       $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
 	  $("#titleDiv").html('');
