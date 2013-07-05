@@ -43,78 +43,97 @@
 		</property>
 		<property name="annotatedClasses">
 			<list>
-				<value>com.itgrids.partyanalyst.model.Country</value>
+				<value>com.itgrids.partyanalyst.model.Booth</value>
+				<value>com.itgrids.partyanalyst.model.Candidate</value>
+				<value>com.itgrids.partyanalyst.model.Category</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
 				<value>com.itgrids.partyanalyst.model.Constituency</value>
 				<value>com.itgrids.partyanalyst.model.District</value>
-				<value>com.itgrids.partyanalyst.model.CandidateResult</value>
-				<value>com.itgrids.partyanalyst.model.Candidate</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyElection</value>
-				<value>com.itgrids.partyanalyst.model.Nomination</value>
-				<value>com.itgrids.partyanalyst.model.Ward</value>
-				<value>com.itgrids.partyanalyst.model.Township</value>
-				<value>com.itgrids.partyanalyst.model.Tehsil</value>
+				<value>com.itgrids.partyanalyst.model.ContentType</value>
+				<value>com.itgrids.partyanalyst.model.Country</value>
+				<value>com.itgrids.partyanalyst.model.Election</value>
+				
 				<value>com.itgrids.partyanalyst.model.ElectionScope</value>
 				<value>com.itgrids.partyanalyst.model.Party</value>
-				<value>com.itgrids.partyanalyst.model.Election</value>
-				<value>com.itgrids.partyanalyst.model.ElectionType</value>
-				<value>com.itgrids.partyanalyst.model.Registration</value>				
-				<value>com.itgrids.partyanalyst.model.Booth</value>
-				<value>com.itgrids.partyanalyst.model.Group</value>				
-				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandal</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationConstituency</value>			
-				<value>com.itgrids.partyanalyst.model.Hamlet</value>				
-				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResult</value>	
-				<value>com.itgrids.partyanalyst.model.LocalElectionBody</value>
-				<value>com.itgrids.partyanalyst.model.ElectionGoverningBodyPosition</value>
-				<value>com.itgrids.partyanalyst.model.ElectionGoverningBody</value>
-				<value>com.itgrids.partyanalyst.model.PoliticalChanges</value>
-				<value>com.itgrids.partyanalyst.model.PoliticalChangesInformationSource</value>			
+				<value>com.itgrids.partyanalyst.model.Ward</value>
+				<value>com.itgrids.partyanalyst.model.Visibility</value>
+				<value>com.itgrids.partyanalyst.model.UserTracking</value>
+				<value>com.itgrids.partyanalyst.model.UserRoles</value>
+				<value>com.itgrids.partyanalyst.model.UserGroups</value>
+				<value>com.itgrids.partyanalyst.model.UserEntitlementGroupRegion</value>
 				<value>com.itgrids.partyanalyst.model.UserAddress</value>
-				<value>com.itgrids.partyanalyst.model.Language</value>
-				<value>com.itgrids.partyanalyst.model.Entitlement</value>
-				<value>com.itgrids.partyanalyst.model.GroupEntitlement</value>
-				<value>com.itgrids.partyanalyst.model.UserGroupEntitlement</value>
-				<value>com.itgrids.partyanalyst.model.UserGroups</value>				
-				<value>com.itgrids.partyanalyst.model.GroupEntitlementRelation</value>		
-				<value>com.itgrids.partyanalyst.model.BoothLocalBodyWard</value>			
-				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody</value>
-				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard</value>			
-				<value>com.itgrids.partyanalyst.model.LocalGroupRegion</value>
-				<value>com.itgrids.partyanalyst.model.LocalElectionBodyWard</value>			
-				<value>com.itgrids.partyanalyst.model.RegionScopes</value>			
+				<value>com.itgrids.partyanalyst.model.User</value>
+				<value>com.itgrids.partyanalyst.model.Township</value>
 				<value>com.itgrids.partyanalyst.model.StateRegionDistrict</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageGallery</value>
+				<value>com.itgrids.partyanalyst.model.SourceLanguage</value>
+				<value>com.itgrids.partyanalyst.model.Source</value>
+				<value>com.itgrids.partyanalyst.model.Role</value>
+				<value>com.itgrids.partyanalyst.model.Registration</value> 
+				<value>com.itgrids.partyanalyst.model.RegionScopes</value>
+				<value>com.itgrids.partyanalyst.model.PublicationDate</value>
+				<value>com.itgrids.partyanalyst.model.PartyGallery</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResult</value>
+				<value>com.itgrids.partyanalyst.model.Nomination</value>
+				<value>com.itgrids.partyanalyst.model.NewsProblem</value>
+				<value>com.itgrids.partyanalyst.model.NewsImportance</value>
+				<value>com.itgrids.partyanalyst.model.NewsFlag</value>
+				<value>com.itgrids.partyanalyst.model.LocalElectionBody</value>
+				<value>com.itgrids.partyanalyst.model.LocalElectionBodyWard</value>
+				<value>com.itgrids.partyanalyst.model.Language</value>
+				<value>com.itgrids.partyanalyst.model.Hamlet</value>
+				<value>com.itgrids.partyanalyst.model.GroupEntitlementRelation</value>		
+				<value>com.itgrids.partyanalyst.model.GroupEntitlement</value>
+				<value>com.itgrids.partyanalyst.model.Group</value>
 				<value>com.itgrids.partyanalyst.model.File</value>
 				<value>com.itgrids.partyanalyst.model.FileType</value>
 				<value>com.itgrids.partyanalyst.model.Gallary</value>
-				<value>com.itgrids.partyanalyst.model.FileGallary</value>
-				<value>com.itgrids.partyanalyst.model.UserEntitlementGroupRegion</value>
-				<value>com.itgrids.partyanalyst.model.ContentType</value>
-				<value>com.itgrids.partyanalyst.model.UserGallary</value>
-				<value>com.itgrids.partyanalyst.model.SourceLanguage</value>
-				<value>com.itgrids.partyanalyst.model.Source</value>
-				<value>com.itgrids.partyanalyst.model.PartyGallery</value>
-				<value>com.itgrids.partyanalyst.model.Panchayat</value>
-				<value>com.itgrids.partyanalyst.model.PanchayatHamlet</value>		
-				<value>com.itgrids.partyanalyst.model.NewsImportance</value>
-				<value>com.itgrids.partyanalyst.model.Category</value>				
-				<value>com.itgrids.partyanalyst.model.FilePaths</value>
 				<value>com.itgrids.partyanalyst.model.FileSourceLanguage</value>
-				<value>com.itgrids.partyanalyst.model.Role</value>
-				<value>com.itgrids.partyanalyst.model.UserRoles</value>
-				<value>com.itgrids.partyanalyst.model.User</value>
-				<value>com.itgrids.partyanalyst.model.PublicationDate</value>           
-	            <value>com.itgrids.partyanalyst.model.ContentNotes</value>
-	            <value>com.itgrids.partyanalyst.model.NewsFlag</value>	
-                <value>com.itgrids.partyanalyst.model.NewsProblem</value>
+				<value>com.itgrids.partyanalyst.model.FilePaths</value>
+				<value>com.itgrids.partyanalyst.model.FileGallary</value>
+				<value>com.itgrids.partyanalyst.model.Entitlement</value>
+				<value>com.itgrids.partyanalyst.model.ElectionType</value>
+				<value>com.itgrids.partyanalyst.model.Panchayat</value>
+				<value>com.itgrids.partyanalyst.model.Tehsil</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPage</value>
+				<value>com.itgrids.partyanalyst.model.LocalGroupRegion</value>		
+				<value>com.itgrids.partyanalyst.model.PanchayatHamlet</value>
+				<value>com.itgrids.partyanalyst.model.UserGroupEntitlement</value>
+				<value>com.itgrids.partyanalyst.model.ContentNotes</value>
+				<value>com.itgrids.partyanalyst.model.ElectionGoverningBody</value>
+				<value>com.itgrids.partyanalyst.model.NewsDetails</value>
+                <value>com.itgrids.partyanalyst.model.DelimitationConstituency</value>
+			    <value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandal</value>
+			    <value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard</value>
+				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody</value>	
+				<value>com.itgrids.partyanalyst.model.UserCandidateRelation</value>
+				<value>com.itgrids.partyanalyst.model.CandidateNewsResponse</value>	
+				<value>com.itgrids.partyanalyst.model.CandidateRealatedNews</value>
+				<value>com.itgrids.partyanalyst.model.CandidateParty</value>
+				<value>com.itgrids.partyanalyst.model.UserNewsCategory</value>
 				
 			</list>
 		</property>
 	</bean>
 
-	<!-- Add new DAOs here -->
+	<!--Start  Add new DAOs here -->
 	
 	<bean id="partyGalleryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyGalleryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="constituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateNewsResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateNewsResponseDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateRelatedNewsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateRelatedNewsDAO">
+	 <property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<!--End Add new DAOs here -->
 </beans>
