@@ -1940,7 +1940,6 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 	var updateBrowser = window.open(urlStr,"allVoterDetailsInAcaste"+casteStateId,"scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();
 }
-var value22='${typeName}';
 </script>
 <c:if test="${type == 'constituency'}">
 <title><c:out value='MANDAL'/> WISE VOTERS INFORMATION</title>
