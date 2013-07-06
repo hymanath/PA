@@ -20,7 +20,7 @@
 	.link{color:#548BD4;font-weight:bold;}
 		.indiCommentId{margin:5px;}
 		.commentblockinsected{  margin-left: 63px;margin-right: 0;margin-top: 58px;}
-		.allblockinsected{margin-right: 108px;margin-top:-29px;}
+		.allblockinsected{position:fixed;top:200px;right:0px;}
 		.description_font{font-family: Helvetica;}
 </style>
 <body>
@@ -47,10 +47,10 @@
   <div id="totalComments"></div>
   <a id="moreId"></a>
 </div>
-<div><a class="btn btn-primary pull-right allblockinsected" onClick="getAllAnnoncements();">View All</a></div>
 <div id="allNotificationDiv" align="center" ></div>
 </div>
 </div>
+<div><a class="btn btn-primary pull-right allblockinsected" onClick="getAllAnnoncements();">View All Announcements</a></div>
 <script>
 var myResults = window.opener.result;
 var startIndex = 0;

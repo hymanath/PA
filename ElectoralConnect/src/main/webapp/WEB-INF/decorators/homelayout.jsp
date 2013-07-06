@@ -17,6 +17,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<title>Electoral Connect Election Commission of India-AP</title>
 		<meta name="Electoral Connect" content="Electoral Connect Election Commission of India-AP">
+		<link rel="SHORTCUT ICON" type="image/x-icon" href="image/fevicon.png">
 		<!-- Bootstrap -->
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link rel="stylesheet" href="css/style.css">
