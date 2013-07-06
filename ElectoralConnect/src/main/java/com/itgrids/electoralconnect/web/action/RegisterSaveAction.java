@@ -28,6 +28,7 @@ public class RegisterSaveAction extends ActionSupport implements ServletRequestA
 	private HttpServletRequest request;
 	private IMailService mailService;
 	private String userType;
+	private String resultStr;
 	public String getFirstName() {
 		return firstName;
 	}
@@ -89,10 +90,17 @@ public class RegisterSaveAction extends ActionSupport implements ServletRequestA
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+	
+	public String getResultStr() {
+		return resultStr;
+	}
+
+	public void setResultStr(String resultStr) {
+		this.resultStr = resultStr;
+	}
 
 	public String execute()
 	{
-		//HttpSession session = request.getSession();
 		LOG.debug("In RegisterUserActions execute()");
 		System.out.println(firstName+" "+lastName);
 		UserProfileVO userProfileVO=new UserProfileVO();
@@ -103,16 +111,23 @@ public class RegisterSaveAction extends ActionSupport implements ServletRequestA
 		userProfileVO.setEpicId(epicId);
 		userProfileVO.setUserType(userType);
 		RegistrationVO  regVO = userService.registerUser(userProfileVO);
-		String requestURL= request.getRequestURL().toString();
-		//System.out.println(requestURL);
-		//session.setAttribute("USER", regVO);
-		String requestFrom = "";
-		if(requestURL.contains("www.partyanalyst.com"))
-			requestFrom = IConstants.SERVER;
+		if(regVO != null)
+		{
+			resultStr= "SUCCESS";
+			String requestURL= request.getRequestURL().toString();
+			String requestFrom = "";
+			if(requestURL.contains("www.partyanalyst.com"))
+				requestFrom = IConstants.SERVER;
+			else
+				requestFrom = IConstants.LOCALHOST;
+			
+			ResultStatus rs = mailService.sendRegistrationNotification(regVO,requestFrom);
+		}
 		else
-			requestFrom = IConstants.LOCALHOST;
+		{
+			resultStr= "FAILURE";
+		}
 		
-		ResultStatus rs = mailService.sendRegistrationNotification(regVO,requestFrom);
 		
 		return SUCCESS;
 	}
