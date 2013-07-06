@@ -90,9 +90,8 @@
 									<c:if test="${sessionScope.loginStatus == 'in'}">
 									<li><a title="Logout" id='logoutId' href="logoutAction.action">Logout</a></li>|
 									</c:if>
-									<li><a href="homePage.action" title="Home">Home</a></li>								
-									
-									
+									<li><a href="homePage.action" title="Home">Home</a></li>
+																	
 								</ul>
 							</nav>
 						</div>
@@ -126,7 +125,7 @@
 					</div>
 				</div>
 				<div id="loginStatusDiv"></div>	
-				<div style="float:right;"><a id="forgetPassword">forget password</a></div>
+				<div class="pull-right btn btn-mini"><span id="forgetPassword">Forget Password</span></div>
 			
 		</div>
 		<div class="modal-footer">
@@ -141,14 +140,11 @@
 	<div class="modal hide fade" id="passwordModal">
 			
 		<div class="modal-body">
-		<div class="control-group" style="color:red;">
-					<s:actionerror />
-					<s:fielderror />
-				</div>	
+			
 			<div id="errorMessage"></div>
 			<a class="close" data-dismiss="modal">X</a>
 			<p style="font-size:16px;font-weight:bold;"></p>
-			 <form class="form-horizontal" name='personalInfoForm' action='changePasswordAction.action' method='post' >
+			 <form class="form-horizontal" name='changePwdForm' action='changePasswordAction.action' method='post' >
 				<legend>Change Password</legend>
 				<div class="control-group">
 					<label class="control-label" for="passward">Enter Password</label>
@@ -165,10 +161,14 @@
 				</div>
 				
 				<div class="control-group">
-					<label class="control-label" for="conformPassword" >Conform Password</label>
+					<label class="control-label" for="conformPassword" >Confirm Password</label>
 					<div class="controls">
-						<input type="password" id="conformPassword" placeholder="Conform password" name='conformPassword'>
+						<input type="password" id="conformPassword" placeholder="Conform password" name='confirmPassword'>
 					</div>
+				</div>
+				<div class="control-group" style="color:red;">
+					<s:actionerror />
+					<s:fielderror />
 				</div>
 				<div id="loginStatusDiv"></div>				
 			
@@ -361,6 +361,37 @@ $(function(){
 			},
     });
 
+});
+
+$(function(){
+			
+	     $('[name="changePwdForm"]').validate({
+	      onfocusout: function(e) {
+          this.element(e);
+      }, onkeyup: false,
+	  rules: {
+		userName: {	
+			required: true
+			},
+		password: {
+		    required :true
+			}
+	  },	
+	  messages: {
+		origninalpassword: {
+			required: " Enter Old Password" 
+			},
+		newpassword: {
+			required: " Enter New Password"
+		    },
+		confirmPassword: {
+			required: " Confirm password"
+		    }
+	  },
+	  success: function(element) {
+	      element.text('ok').addClass('valid');
+			},
+	});
 });
 
 </script>
