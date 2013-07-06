@@ -310,7 +310,7 @@ function buildProblemsDetailsDataTable(results,jsObj) {
 
 	var myPanel = new YAHOO.widget.Dialog("problemsByStatusPanelDiv", {
 
-		width : "620px",
+		width : "650px",
 		fixedcenter : false,
 		visible : true,
 		constraintoviewport : true,
