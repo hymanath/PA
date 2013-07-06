@@ -220,10 +220,7 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
     public List<Object[]> getLocalbodyBoothIdsForElectionAndByIds(Long constituencyId,List<Long> lclBodyIds, List<Long> electionIds,String type,List<String> partNos);
     
     public List<Object[]> findBoothResultsForBoothsAndElectionAndParties(List<Long> boothslist, Long electionId,List<Long> partIds);
-
-
-
-
-
+    
+	public List<Object[]> findBoothResultsForBoothsAndElectionAndAllParties(List<Long> boothslist, Long electionId,List<Long> partIds);
 
 }

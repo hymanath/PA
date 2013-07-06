@@ -1400,7 +1400,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		list = nominationDAO.findAllMptcAndZptcElectionsInfoByelectionId(electionId,tehsilIds);	*/
 			
 		if(!(eletype.equalsIgnoreCase("ZPTC") || eletype.equalsIgnoreCase("MPTC")))
-		list = candidateBoothResultDAO.findBoothResultsForBoothsAndElectionAndParties(boothIdList,electionId,staticParties);
+		//list = candidateBoothResultDAO.findBoothResultsForBoothsAndElectionAndParties(boothIdList,electionId,staticParties);
+			list = candidateBoothResultDAO.findBoothResultsForBoothsAndElectionAndAllParties(boothIdList,electionId,staticParties);
 		else
 		list = nominationDAO.findAllMptcAndZptcElectionsInfoByelectionId(electionId,tehsilIds,staticParties);	
 		List<PartyVotesEarnedVO> partyResults = new ArrayList<PartyVotesEarnedVO>();
