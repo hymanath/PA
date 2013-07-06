@@ -13,12 +13,12 @@ public class MailsTemplateService implements IMailsTemplateService{
 		return header;
 	}
 	public String getFooter(){
-		String sendMail="mailto:info@partyanalyst.com";
+		String sendMail="mailto:info@electrolconnect.com";
 		String footer = "<div style='line-height: 1.8em;margin-left: 45px; margin-top: -26px; margin-right: 3px;'>" +
 				"<br>Thanks," +
-				"<br>Party Analyst Team<br>" +
-				"<a href='http://www.partyanalyst.com/homePage.action'>www.partyanalyst.com</a><br>" +
-				"<div><p><b>PS:&nbsp;</b>Please add this email to your address book so that the emails from us don\'t end up in your junk folder.For suggestions or support contact us at <b><a href="+sendMail+">info@partyanalyst.com</a></p></div></div>";
+				"<br>Electrol Connect Team<br>" +
+				"<a href='http://www.electrolconnect.com/homePage.action'>www.electrolconnect.com</a><br>" +
+				"<div><p><b>PS:&nbsp;</b>Please add this email to your address book so that the emails from us don\'t end up in your junk folder.For suggestions or support contact us at <b><a href="+sendMail+">info@electrolconnect.com</a></p></div></div>";
 		return footer;
 	}
 }

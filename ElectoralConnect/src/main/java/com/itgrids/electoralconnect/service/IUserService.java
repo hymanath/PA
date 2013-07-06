@@ -7,6 +7,7 @@ import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
 import com.itgrids.electoralconnect.dto.ResultStatus;
+import com.itgrids.electoralconnect.dto.UserVO;
 
 public interface IUserService {
 	
@@ -30,5 +31,5 @@ public interface IUserService {
 	
 	public List<CommentVO> getAllComments(int startIndex,int maxIndex);
 	
-	public ResultStatus abuseCommentService(Long commentId);
+	public UserVO abuseCommentService(Long commentId);
 }

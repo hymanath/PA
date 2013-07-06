@@ -30,6 +30,7 @@ import com.itgrids.electoralconnect.service.IUserService;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
 import com.itgrids.electoralconnect.dto.ResultCodeMapper;
 import com.itgrids.electoralconnect.dto.ResultStatus;
+import com.itgrids.electoralconnect.dto.UserVO;
 
 
 public class UserService implements IUserService{
@@ -523,29 +524,61 @@ public class UserService implements IUserService{
 		/**
 		 * This Service  is used to Abuse the comment
 		 * @param Long commentId
-		 * @return ResultStatus
+		 * @return UserVO
 		 * @date  03-07-2013
 		 */
-		public ResultStatus abuseCommentService(Long commentId)
+		public UserVO abuseCommentService(Long commentId)
 		{
-			ResultStatus resultStatus = new ResultStatus();
+			UserVO userVO = new UserVO();
 			try 
 			{
 				LOG.debug("Entered into abuseCommentService() method in UserService Service");
 				int aduseState = commentDAO.abuseTheComment(commentId);
-				if(aduseState == 1)
+				Comment comment = commentDAO.get(commentId);
+				if(comment != null)
 				{
-					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					if(comment.getUser() != null)
+					{
+						userVO.setFirstname(comment.getUser().getUserProfile().getFirstName());
+						userVO.setLastname(comment.getUser().getUserProfile().getLastName());
+						userVO.setEmailId(comment.getUser().getUserProfile().getEmailId());
+						userVO.setPwd(comment.getUser().getUserLogin().getPassword());
+						userVO.setDescription(comment.getComment());
+						if(aduseState == 1)
+						{
+							userVO.setResultCode(ResultCodeMapper.SUCCESS);
+						}
+						else
+						{
+							userVO.setResultCode(ResultCodeMapper.FAILURE);
+						}
+						
+					}
 				}
-				else
-				{
-					resultStatus.setResultCode(ResultCodeMapper.FAILURE);	
-				}
+				
 			} catch (Exception e) 
 			{
-				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				userVO.setResultCode(ResultCodeMapper.FAILURE);
 				LOG.error("Exception Raised in abuseCommentService() method in UserService Service",e);
 			}
-			return resultStatus;
+			return userVO;
+		}
+		
+		/**
+		 * This Service is used to remove the Special charactes in the Text
+		 * @param String textValue
+		 * @return  String
+		 * @date 06-07-2013
+		 */
+		public static String removeSpecialCharsFromAString(String textValue){
+			if(textValue != null){
+				/*String[] j=IConstants.SPECIALCHARS;
+				for(int i=0;i<j.length;i++){
+					textValue=textValue.replace(j[i], "");
+				}*/
+				textValue = textValue.replaceAll("\uFFFD", "");
+				textValue = textValue.replaceAll("&#65533;", "");
+			}
+			return textValue;
 		}
 }

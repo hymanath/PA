@@ -14,7 +14,10 @@ import org.json.JSONObject;
 
 import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
+import com.itgrids.electoralconnect.dto.UserVO;
+import com.itgrids.electoralconnect.service.IMailService;
 import com.itgrids.electoralconnect.service.IUserService;
+import com.itgrids.electoralconnect.util.IConstants;
 import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,6 +32,8 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	private IUserService userService;
 	private List<CommentVO> commentVO;
 	private ResultStatus resultStatus;
+	private UserVO userVO;
+	private IMailService mailService;
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request  = request;
@@ -72,6 +77,25 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+	
+	public UserVO getUserVO() {
+		return userVO;
+	}
+
+
+	public void setUserVO(UserVO userVO) {
+		this.userVO = userVO;
+	}
+
+
+	public IMailService getMailService() {
+		return mailService;
+	}
+
+
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
 	}
 
 
@@ -125,9 +149,24 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	{
 		try {
 			LOG.debug("Entered into abuseComment() method in AdminPageAction Action");
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return Action.ERROR;
 			jobj = new JSONObject(getTask());
 			Long commentId = jobj.getLong("id");
-			resultStatus = userService.abuseCommentService(commentId);
+			userVO = userService.abuseCommentService(commentId);
+			if(userVO.getResultCode() == 0)
+			{
+				String requestURL= request.getRequestURL().toString();
+				String requestFrom = "";
+				if(requestURL.contains("www.partyanalyst.com"))
+					requestFrom = IConstants.SERVER;
+				else
+					requestFrom = IConstants.LOCALHOST;
+				resultStatus = mailService.sendMailToUserAboutAbuseComment(userVO,requestFrom);
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised in  abuseComment() method in AdminPageAction Action",e);
 		}
