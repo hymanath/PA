@@ -62,6 +62,14 @@
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 
 
+<!-- jQuery dataTable dependecny files start-->
+
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+
+<!-- jQuery dataTable dependecny files end-->
+
+
 <style type="text/css">
 
 .selectWidth

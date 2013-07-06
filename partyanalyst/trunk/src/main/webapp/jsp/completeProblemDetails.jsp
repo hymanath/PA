@@ -410,7 +410,7 @@ var problemDetailsInEdit = null;
 	//str += '<div><span style="margin-right: 8px;">Documents And Images<font color="red">*</font></span>';
 	str += '<div><span style="margin-right: 8px;">Upload Images<font color="red">*</font></span>';
 	str += '<input type="hidden" name="problemHistoryId" value="${completeProblemDetailsVO.problemId}">';
-	str += '<span><input type="file" name="userImage" id="userImage" accept="image/x-png, image/gif, image/jpeg" /></span></div>';
+	str += '<span><input type="file" name="userImage" id="userImage" /></span></div>';
 	str += ' <div style="margin-top: 20px; width: 120px; margin-left: 375px;"><input type="button" style="float:none;padding: 2px;" class="button" value="Upload" onclick="postFilesAndImages()" ></div>';
 	
 	str += '</div>';
@@ -467,6 +467,14 @@ var problemDetailsInEdit = null;
 		str +='File is Required.';
 		eFlag = true; 
 		}
+
+	
+            //This is to check weather the uploading file is an image or not
+			if(userImgVal !='')
+            if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(userImgVal)) {
+             str +='Upload Only Images.';
+			 eFlag = true; 
+            }
 	
 	if(eFlag)
 	{

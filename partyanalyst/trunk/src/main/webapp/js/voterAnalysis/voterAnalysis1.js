@@ -9440,9 +9440,9 @@ function buildCasteVotersChart(cs,tv,mv,fv,cp)
             legend: {
                 layout: 'vertical',
                 align: 'left',
-                x: 600,
+                x: 0,
                 verticalAlign: 'top',
-                y: 40,
+                y: -10,
                 floating: true,
                 backgroundColor: '#FFFFFF'
             },

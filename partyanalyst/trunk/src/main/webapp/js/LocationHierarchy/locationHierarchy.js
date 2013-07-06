@@ -77,7 +77,7 @@ function callAjaxForLocations(jsObj,url)
 							myResults = YAHOO.lang.JSON.parse(o.responseText);	
 							if(jsObj.task == "getBoothsCompleteDetails")	
 							{
-								buildBoothsTable(myResults);
+								buildBoothsTable(myResults,jsObj);
 								hideBusyImgWithId("ajaxImgId");
 								//buildBoothCompleteDetailsPanel(myResults);
 							} else {
@@ -400,7 +400,8 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 		{				
 			boothIds: boothIdsStr,
 			task: 'getBoothsCompleteDetails',
-			areaType: areaType 
+			areaType: areaType,
+			boothSelectEl:boothSelectEl	 
 			
 		}
 	
@@ -410,8 +411,88 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 	}
 	
 }
+function buildBoothsTable(results,jsObj)
+{
+	var selectedValue = 0;
+
+   if(jsObj != undefined && jsObj != ""){
+
+	if($('#'+jsObj.boothSelectEl).val() != "0")
+		selectedValue = $('#'+jsObj.boothSelectEl).val() ;
+
+   }
+
+   var str="";
+		str+="<table border='1' id='boothTable'>";
+		str+="<thead>";
+			str+="<tr>"
+				str+="<th>Select</th>";
+				str+="<th>Booth Part No</th>";
+				str+="<th>Booth Location</th>";
+				str+="<th>Villages Covered</th>";
+				str+="<th>Mandal/Muncipal/Corp/GMC</th>";
+			str+="</tr>";
+		str+="</thead>";
+		str+='<tbody>';
+
+   var selectedRecord = 0;
+    for(var i in results)
+	{
+       
+	   if(selectedValue == results[i].boothId){
+		   selectedRecord = i;
+		str+="<tr style='background-color:yellow;'>";
+	   	str+="<td> <input type='radio' name='booth' checked  id="+results[i].boothId+" value="+results[i].boothId+"></td>";
+	   }
+	   else{
+		str+='<tr>';
+	   	str+="<td> <input type='radio' name='booth' id="+results[i].boothId+" value="+results[i].boothId+"></td>";
+	   }
+
+		str+="<td>"+results[i].partNo+"</td>";
+		str+="<td>"+ results[i].location +"</td>";
+		str+="<td>"+results[i].villagesCovered +"</td>";
+		str+="<td>"+results[i].mandalName + "</td>";
+	   str+="</tr>";
+	}
+		str+='</tbody>';
+
+	str+="</table>";
+
+
+	$("#boothDetailsPopup").html(str);
+	var table =  $("#boothTable").dataTable({
+       "sPaginationType": "full_numbers"
+});
+$('.next').hide();
+
+		if(selectedValue != 0){
+			var defaultPageNo = Math.floor(selectedRecord / 10) ;
+			table.fnPageChange(defaultPageNo,true);
+		}
+
+
+        $("#boothDetailsPopup").dialog({
+			
+           modal:true,
+		   title:'Booth Complete Details',
+			   show:'blind',
+			   hide:'explode',
+			   
+		   width:800,
+			 buttons: { "Add": function() {$('#'+jsObj.boothSelectEl).val($('input:radio[name=booth]:checked').val());
+		   $('#boothField_s').val($('input:radio[name=booth]:checked').val());
+		   $("#boothField").val($('input:radio[name=booth]:checked').val());  $(this).dialog("close");},
+			   "Close": function() { $(this).dialog("close"); }
+			   } 
+
+		});
+
+		//$('#'+selectedValue).closest('tr').css('color','red');
+
+}
 	
-	function buildBoothsTable(results)
+	function buildBoothsTable1(results)
 	{
 			var partN0 = $("#boothField :selected").text();
 			var ptNoForSmeAdr = $("#pboothField :selected").text();

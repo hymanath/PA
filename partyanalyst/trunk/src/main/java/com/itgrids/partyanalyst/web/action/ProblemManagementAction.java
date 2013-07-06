@@ -806,12 +806,13 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		if(user==null)
 			return ERROR;
 		
-		if(user.getParentUserId() == null)
+		/*if(user.getParentUserId() == null)
 			userId = user.getRegistrationID();
 		else
-			userId = user.getMainAccountId();
+			userId = user.getMainAccountId();*/
 		
-		problemManagementChartVO = problemManagementService.getOverallProblemsCountInDifferentLifeCycleStagesPostedByUser(userId);
+		//problemManagementChartVO = problemManagementService.getOverallProblemsCountInDifferentLifeCycleStagesPostedByUser(userId);
+		problemManagementChartVO = problemManagementService.getOverallProblemsCountInDifferentLifeCycleStagesPostedByUser(user.getRegistrationID());
 		return Action.SUCCESS;
 	}
 	
