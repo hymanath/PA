@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -85,7 +86,6 @@ import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CastLocationVO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -7758,20 +7758,110 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 										
 										partyVotesEarnedVO.setTotalVotes(0l);
 									}
-									List<PartyVotesEarnedVO> votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsilforPreviousEle(boothIdStr,(Long)params[0],elecType,tehsilIds);
+									
+									List<PartyVotesEarnedVO> votesEarnedVOs  = new ArrayList<PartyVotesEarnedVO>();
+									List nominationResult = null;
+									if(elecType.equalsIgnoreCase("Assembly") && type.equalsIgnoreCase("constituency"))
+									{
+									  votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsilforPreviousEle(boothIdStr,(Long)params[0],elecType,tehsilIds);
+									
+										
+										
+										 nominationResult = nominationDAO
+												.getCandidatesInfoForTheGivenConstituency(
+														constituencyId.toString(), electionObj.getElectionYear(),
+														"Assembly");	
+										
+										if(nominationResult != null && nominationResult.size() >0)
+										{
+											for(Object obj:nominationResult)
+											{
+												Object[] result = (Object[])obj;
+												
+												PartyVotesEarnedVO vo = new PartyVotesEarnedVO();
+												
+												vo.setPartyId((Long)result[5]);
+												vo.setPartyName(result[8].toString());
+												
+												Double d  =(Double)result[2];
+												vo.setVotesEarned(Math.round(d));	
+												
+												if(result[4].toString().equalsIgnoreCase("1"))
+													vo.setWonStatus(true);
+												else
+													vo.setWonStatus(false);
+													
+												
+												votesEarnedVOs.add(vo);
+											}
+										}
+										
+										if(nominationResult != null && nominationResult.size() >0){
+										
+											Object[] obj =(Object[]) nominationResult.get(0);
+											
+											Double d  =(Double)obj[13];
+										   partyVotesEarnedVO.setTotalVotes(Math.round(d));
+										}
+										
+										
+										Long indVotes = 0L;
+										for(int i=0;i<votesEarnedVOs.size();i++)
+										{
+											
+											if(votesEarnedVOs.get(i).getPartyName().equalsIgnoreCase("IND"))
+												indVotes += votesEarnedVOs.get(i).getVotesEarned();
+											
+										}
+										
+										for(int i=0;i<votesEarnedVOs.size();i++)
+										{
+											
+											if(votesEarnedVOs.get(i).getPartyName().equalsIgnoreCase("IND"))
+												votesEarnedVOs.get(i).setVotesEarned(indVotes);
+											
+										}
+										
+									/*List<String> staticParties = Arrays.asList("INC","PRP","TDP","TRS","YSRC","CPI","CPM","AIMIM","BJP");
+									
+									for(int i=0;i<votesEarnedVOs.size();i++)
+										
+										if(!staticParties.contains(votesEarnedVOs.get(i).getPartyName()))
+											votesEarnedVOs.remove(i);
+																		*/
+									}else									
+										votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsilforPreviousEle(boothIdStr,(Long)params[0],elecType,tehsilIds);
+
+									
+									
 									
 									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
 									{
 										if(!partiesList.contains(partyVoters.getPartyName()))
 											partiesList.add(partyVoters.getPartyName());
 									}
+								
+									
 									partyVotesEarnedVO.setPartyVotesEarnedVOs(votesEarnedVOs);
 									partyVotesEarnedVOList.add(partyVotesEarnedVO);
 									
 									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
 										polledVotes += partyVoters.getVotesEarned();
 									
-									partyVotesEarnedVO.setPolledVotes(polledVotes);
+									if(elecType.equalsIgnoreCase("Assembly") && type.equalsIgnoreCase("constituency"))
+									{
+										
+										if(nominationResult != null && nominationResult.size() >0)
+										{
+											
+											Object[] obj = (Object[])nominationResult.get(0);
+											Double d  =(Double)obj[14];
+										  partyVotesEarnedVO.setPolledVotes(Math.round(d));
+										}
+										
+									}else
+										  partyVotesEarnedVO.setPolledVotes(polledVotes);
+
 								}
 								Collections.sort(partiesList);
 								for(PartyVotesEarnedVO  votesEarnedVO : partyVotesEarnedVOList)
@@ -7799,6 +7889,21 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									votesEarnedVO.setPartyVotesEarnedVOs(resultList);
 								}
 								}
+							
+							if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))								
+							for(PartyVotesEarnedVO  votesEarnedVO : partyVotesEarnedVOList)
+							{
+								String constType = votesEarnedVO.getReqType();
+								String electionYear = votesEarnedVO.getElectionYear(); 
+								Long totalVotes = votesEarnedVO.getTotalVotes();
+								
+								if(constType.equalsIgnoreCase("Parliament"))								
+									for(PartyVotesEarnedVO  vo : partyVotesEarnedVOList)
+										if(vo.getElectionYear().equalsIgnoreCase(electionYear) && vo.getReqType().equalsIgnoreCase("Assembly"))
+											votesEarnedVO.setTotalVotes(vo.getTotalVotes());
+										
+								
+							}
 								
 
 							return partyVotesEarnedVOList;
