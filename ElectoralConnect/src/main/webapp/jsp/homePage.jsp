@@ -31,7 +31,7 @@
 			.title p{margin-top:-9px;}
 			.date h2{font-size:9px; line-height:15px;padding:2px 15px 2px 2px;color:#2DCFFE; float:left;}
 			#totalCommentsModal{width:600px;}
-			.indiCommentId{margin:5px;}
+			.indiCommentId{margin:10px;}
 			
 			/*----------5-july---------*/
 			.bigsblock{position:relative; display: table;width:100%;background:#ffffff;border:5px solid #2DCFFE; }

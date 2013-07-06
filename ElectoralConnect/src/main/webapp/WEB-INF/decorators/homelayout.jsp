@@ -77,21 +77,20 @@
 									<li><a href="#" title="About Us">About US</a></li>
 									<li><a href="#" title="Contact Us">Contact Us</a></li>-->
 									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'out'}">
-									<li><a title="Home" id='loginId'>Login</a></li>|
+									<li><a title="Home" id='loginId'>Login</a></li> |
 									<!--<li><a title="Admin" id='adminId' onClick="openAdminPage();">Admin</a></li>-->
-									<li><a title="About Us" id='registerId'>Register</a></li>|
+									<li><a title="About Us" id='registerId'>Register</a></li> |
 									</c:if>
 									
 									<c:if test="${sessionScope.loginStatus == 'in'}">
-									<li style="color: white;"><c:out value="Welcome, ${sessionScope.USER.firstName} ${sessionScope.USER.lastName}|"/></li>
+									<li style="color: white;"><c:out value="Welcome, ${sessionScope.USER.firstName} ${sessionScope.USER.lastName} |"/></li>
 									</c:if>
 									<c:if test="${sessionScope.USER.isAdmin == 'true' && sessionScope.loginStatus == 'in'}">
-									<li><a title="Admin" id='adminId'>Admin</a></li>|
+									<li><a title="Admin" id='adminId'>Admin</a></li> |
 									</c:if>
 									<c:if test="${sessionScope.loginStatus == 'in'}">
-									<li><a title="Logout" id='logoutId' href="logoutAction.action">Logout</a></li>|
+									<li><a title="Logout" id='logoutId' href="logoutAction.action">Logout</a></li> 
 									</c:if>
-									<li><a href="homePage.action" title="Home">Home</a></li>
 																	
 								</ul>
 							</nav>
