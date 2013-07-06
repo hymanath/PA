@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
+import com.itgrids.electoralconnect.dto.ResultCodeMapper;
 import com.itgrids.electoralconnect.dto.UserVO;
 import com.itgrids.electoralconnect.service.IMailService;
 import com.itgrids.electoralconnect.service.IUserService;
@@ -165,6 +166,10 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 				else
 					requestFrom = IConstants.LOCALHOST;
 				resultStatus = mailService.sendMailToUserAboutAbuseComment(userVO,requestFrom);
+			}
+			else
+			{
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			}
 			
 		} catch (Exception e) {
