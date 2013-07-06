@@ -2752,7 +2752,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 			list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
 			
-		}else if(type.equalsIgnoreCase("hamlet"))
+		}else if(type.equalsIgnoreCase("hamlet") && !buildType.equalsIgnoreCase("panchayatHamlet"))
 		{
 			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
 
@@ -2763,7 +2763,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		  	list = boothPublicationVoterDAO.getVoterDetailsForCustomWard(id, publicationDateId, userId, casteStateId);
 		else if(type.equalsIgnoreCase("wardbooth") && buildType.equalsIgnoreCase("muncipalityCustomWard"))
 			list = userVoterDetailsDAO.getVoterDetailsForCustomWardByBooth(id,publicationDateId, userId, casteStateId);
-		else if(type.equalsIgnoreCase("panchayat") && buildType.equalsIgnoreCase("booth"))
+		else if(type.equalsIgnoreCase("hamlet") && buildType.equalsIgnoreCase("panchayatHamlet"))
 			 list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForHamlet(id,publicationDateId,casteStateId,userId,constituencyId);
 		else
 		{
