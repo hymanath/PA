@@ -711,17 +711,10 @@
 		str+="<li>";
 	
 		
-		if(results[i].announcementType == 1)
-		{
-			str+="<span class='icon-list-alt' title='Notification'></span>";
-		}
-		else
-		{
-			str+= "<span class='icon-tag' title='Press Release'></span>";
-		}
+		
 		str +='<article class=" notifications">';
-							
-	str +='<div  class=" thumbnail title span8" id="announcemtsDiv'+results[i].announcementId+'">';
+			str +='<div  class="thumbnail title span8" id="announcemtsDiv'+results[i].announcementId+'">';				
+	
 	str+= "<div style='float:right; margin-right: 17px;margin-top: 7px;'><a class='icon-pencil' onClick='editAnnouncement("+results[i].announcementFileId+")' style='cursor: pointer; margin-right: 7px;'></a>";
 		str+= "<a class='icon-remove' onClick='deleteAnnouncement("+results[i].announcementId+")' style='cursor: pointer;'></a></div>";
 		
