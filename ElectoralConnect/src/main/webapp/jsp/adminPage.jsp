@@ -580,7 +580,10 @@
 	
 	function abuseComment(id)
 	{
-		var jsObj =
+	  var r=confirm("Are you sure you want to delete?");
+	  if (r==true)
+	  {
+        var jsObj =
 		{  	
 			id   : id,
 			task : "abuseComment"
@@ -588,6 +591,7 @@
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "abuseCommentAction.action?"+rparam;
 		callAjaxForAdmin(jsObj, url);
+	  }
 	}
 	function callAjaxForAdmin(jsObj,url){
 		 var myResults;
@@ -616,6 +620,7 @@
 									{
 										$("#abusedStatus"+jsObj.id+"").html("<b style='color:green'>Abused Successfull..</b>");
 										$("#commentsDIv"+jsObj.id+"").hide();
+										getAllCommentsPagination(0);
 									}
 									
 								} 
@@ -632,7 +637,9 @@
 									if(myResults.resultCode == 0)
 									{
 										$('#statusMsg'+jsObj.announcementId+'').html('<b style="color:green">Deleted Successfully</b>');
-										$('#announcemtsDiv'+jsObj.announcementId+'').hide();										
+										$('#announcemtsDiv'+jsObj.announcementId+'').hide();
+										getPaginationForData(0);
+																			
 									}
 									else
 									{
@@ -722,6 +729,10 @@
 
 	function deleteAnnouncement(announcementId)
 	{
+	  var r=confirm("Are you sure you want to delete?");
+	  if (r==true)
+	  {
+			
 		var jsObj =
 			{  	
 				announcementId : announcementId,
@@ -730,6 +741,7 @@
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 			var url = "deleteAnnouncementAction.action?"+rparam;
 			callAjaxForAdmin(jsObj, url);
+	  }
 	}
 	$(document).ready(function(){
 
