@@ -632,7 +632,7 @@
 									if(myResults.resultCode == 0)
 									{
 										$('#statusMsg'+jsObj.announcementId+'').html('<b style="color:green">Deleted Successfully</b>');
-										//$('#announcemtsDiv'+jsObj.announcementId+'').hide();										
+										$('#announcemtsDiv'+jsObj.announcementId+'').hide();										
 									}
 									else
 									{

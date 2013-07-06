@@ -93,22 +93,33 @@ public class AnnouncementService implements IAnnouncementService{
 			try {
 				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					public void doInTransactionWithoutResult(TransactionStatus status) {
-						File file=new File();
-						AnnouncementFiles announcementFiles=new AnnouncementFiles();
-						Announcements announcements=new Announcements();
-						
+						File file = null;
+						AnnouncementFiles announcementFiles = null;
+						Announcements announcements = null;
+						if(announcementVO.getFileId() != null && announcementVO.getFileId() > 0)
+						{
+							file = fileDAO.get(announcementVO.getFileId());
+						}
+						else
+						{
+							file = new File();
+						}
 						file.setTitle(announcementVO.getFileTitle());
 						file.setDescription(announcementVO.getFileDescription());
 						file.setFilePath(announcementVO.getFilePath());
 						file.setFileName(announcementVO.getFileName());
 						file.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						file.setUpdatedBy(userDAO.get(user.getRegistrationID()));
-						if(announcementVO.getFileId() != null && announcementVO.getFileId() > 0)
-						{
-							file.setFileId(announcementVO.getFileId());
-						}
-						file=fileDAO.save(file);
 						
+						file=fileDAO.save(file);
+						if(announcementVO.getAnnouncementId() != null && announcementVO.getAnnouncementId() > 0)
+						{
+							announcements = announcementsDAO.get(announcementVO.getAnnouncementId());
+						}
+						else
+						{
+							announcements = new Announcements();
+						}
 						announcements.setTitle(announcementVO.getName());
 						announcements.setDescription(announcementVO.getDescription());
 						announcements.setDate(announcementVO.getUpdatedDate());
@@ -116,18 +127,19 @@ public class AnnouncementService implements IAnnouncementService{
 						announcements.setAnnouncementType(announcementTypeDAO.get(announcementVO.getAnnouncementType()));
 						announcements.setUpdatedBy(userDAO.get(user.getRegistrationID()));
 						announcements.setIsDeleted("NO");
-						if(announcementVO.getAnnouncementId() != null && announcementVO.getAnnouncementId() > 0)
-						{
-							announcements.setAnnouncementId(announcementVO.getAnnouncementId());
-						}
-						announcements=announcementsDAO.save(announcements);
 						
-						announcementFiles.setAnnouncements(announcements);
-						announcementFiles.setFile(file);
+						announcements=announcementsDAO.save(announcements);
 						if(announcementVO.getAnnouncementFileId() != null && announcementVO.getAnnouncementFileId() > 0)
 						{
-							announcementFiles.setAnnouncementFilesId(announcementVO.getAnnouncementFileId());
+							announcementFiles = announcementFilesDAO.get(announcementVO.getAnnouncementFileId());
 						}
+						else
+						{
+							announcementFiles = new AnnouncementFiles();
+						}
+						announcementFiles.setAnnouncements(announcements);
+						announcementFiles.setFile(file);
+						
 						announcementFiles=announcementFilesDAO.save(announcementFiles);
 					}
 				});
