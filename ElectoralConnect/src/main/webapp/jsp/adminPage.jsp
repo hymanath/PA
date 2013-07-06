@@ -301,6 +301,8 @@
 	
 	$('.commentsBlock').click(function(){
 			var value=$('input:radio[name=comment]:checked').val();
+			$("#pagedCommentsId").html('');
+			$("#paginationAnnouncementId").html('');
 			if(value=="all"){
 				getAllCommentsPagination(0);
 			}
@@ -417,8 +419,7 @@
   function buildAllCommentsList(myResults,jsObj)
 	{
 		//alert('in123');
-		$("#totalCommentsBtDates").css("display","block");
-		$("#totalCommentsBtDates").html('');
+		
 		if(myResults != null)
 		{
 			totalCount = myResults[0].total ;
@@ -523,6 +524,7 @@
 	
 	function buildTotalCommentsListBetweenDates(myResults,jsObj)
 	{
+		$("#btDatesMainDiv").show();
 		if(myResults != null)
 		{
 			totalCount = myResults[0].total;
@@ -562,7 +564,7 @@
 			cssStyle: 'light-theme',
 			onPageClick: function(pageNumber, event) {
 				var num=(pageNumber-1)*10;
-				getAllCommentsPagination(num);
+				getCommentsSelectdDates(num);
 				
 			}
 		});
