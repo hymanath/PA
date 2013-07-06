@@ -2727,19 +2727,20 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		String queryStr = null;
 		List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
 		List<Voter> list = null;
+		List<Object[]> listVal = null;
 		//List<Voter> list = boothPublicationVoterDAO.getVoterDetailsByCaste(id, publicationDateId, caste);
 		try{
 		if(type.equalsIgnoreCase("boothHamlet"))
 		{
-		 list = userVoterDetailsDAO.getVoterIdsForuserinHamletByBoothsandByCasteId(userId,hamletId,casteStateId,id.longValue(),publicationDateId.longValue());
+			listVal = userVoterDetailsDAO.getVoterIdsForuserinHamletByBoothsandByCasteId(userId,hamletId,casteStateId,id.longValue(),publicationDateId.longValue());
 		}else
 		if(type.equalsIgnoreCase("booth") && !buildType.equalsIgnoreCase("customWardBooths"))
 		{
-		 list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId,userId,constituencyId);
+			listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId,userId,constituencyId);
 			
 		}
 		else if(type.equalsIgnoreCase("booth") && buildType.equalsIgnoreCase("customWardBooths"))
-			list = boothPublicationVoterDAO.getVoterDetailsForCustomWardBooths(hamletId, id, userId, publicationDateId, casteStateId);
+			listVal = boothPublicationVoterDAO.getVoterDetailsForCustomWardBooths(hamletId, id, userId, publicationDateId, casteStateId);
 		
 		else if(type.equalsIgnoreCase("hamletLocality") || type.equalsIgnoreCase("wardLocality"))
 		{
@@ -2750,31 +2751,31 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			
 			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsByLocalityForUser(id,hamletId,userId,casteStateId,queryStr);
 			
-			list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
+			listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
 			
 		}else if(type.equalsIgnoreCase("hamlet") && !buildType.equalsIgnoreCase("panchayatHamlet"))
 		{
 			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
 
-		    list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
+			listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
 			}
 		
 		else if(type.equalsIgnoreCase("ward") && buildType.equalsIgnoreCase("muncipalityCustomWard"))
-		  	list = boothPublicationVoterDAO.getVoterDetailsForCustomWard(id, publicationDateId, userId, casteStateId);
+			listVal = boothPublicationVoterDAO.getVoterDetailsForCustomWard(id, publicationDateId, userId, casteStateId);
 		else if(type.equalsIgnoreCase("wardbooth") && buildType.equalsIgnoreCase("muncipalityCustomWard"))
-			list = userVoterDetailsDAO.getVoterDetailsForCustomWardByBooth(id,publicationDateId, userId, casteStateId);
+			listVal = userVoterDetailsDAO.getVoterDetailsForCustomWardByBooth(id,publicationDateId, userId, casteStateId);
 		else if(type.equalsIgnoreCase("hamlet") && buildType.equalsIgnoreCase("panchayatHamlet"))
-			 list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForHamlet(id,publicationDateId,casteStateId,userId,constituencyId);
+			listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForHamlet(id,publicationDateId,casteStateId,userId,constituencyId);
 		else
 		{
 			
 			if(buildType.equalsIgnoreCase("booth"))
-		      list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayat(id,publicationDateId,casteStateId,userId);
+				listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayat(id,publicationDateId,casteStateId,userId);
 			else{	
 				
 				List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
 
-			    list = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
+				listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
 			  
 			}
 
@@ -2782,12 +2783,16 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		}
 		VoterHouseInfoVO voterHouseInfoVO = null;
 		long sno = 1;
-		if(list != null && list.size() > 0)
+		if(listVal != null && listVal.size() > 0)
 		{
-			for(Voter voter : list)
+			
+			for(Object[] voter1 : listVal)
 			{
+				if(voter1[0] != null)
+				{
+				Voter voter = (Voter)voter1[0];
 				voterHouseInfoVO = new VoterHouseInfoVO();
-				voterHouseInfoVO.setBoothId(id);
+				voterHouseInfoVO.setBoothId((Long)voter1[1]);
 				voterHouseInfoVO.setVoterId(voter.getVoterId());
 				voterHouseInfoVO.setsNo(sno);
 				//voterHouseInfoVO.setName(voter.getFirstName()+" "+voter.getLastName());
@@ -2802,6 +2807,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : "N/A");
 				votersList.add(voterHouseInfoVO);
 				sno = sno + 1;
+			}
 			}
 		}
 			return votersList;

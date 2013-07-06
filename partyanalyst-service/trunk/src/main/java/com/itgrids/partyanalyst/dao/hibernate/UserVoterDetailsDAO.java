@@ -757,10 +757,10 @@ IUserVoterDetailsDAO{
 				
 				return query.list();
 			}
-			public List<Voter> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId , long publicationId)
+			public List<Object[]> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId , long publicationId)
 			{ 
 				
-				Query query = getSession().createQuery("select model.voter from UserVoterDetails model, " +
+				Query query = getSession().createQuery("select model.voter,model1.booth.boothId from UserVoterDetails model, " +
 						"BoothPublicationVoter model1 join model1.booth"+	
 						" where model.voter.voterId = model1.voter.voterId " +
 						"and  model.user.userId = :userId " +
@@ -1583,10 +1583,10 @@ IUserVoterDetailsDAO{
 	}
 
 	//get voter details in a caste by caste stateId and boothId and publicationId
-	public List<Voter> getVoterDetailsForCustomWardByBooth(Long boothId,Long publicationDateId,Long userId,Long casteStateId)
+	public List<Object[]> getVoterDetailsForCustomWardByBooth(Long boothId,Long publicationDateId,Long userId,Long casteStateId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.voter from BoothPublicationVoter model,UserVoterDetails model2 ");
+		str.append("select distinct model.voter,model.booth.boothId from BoothPublicationVoter model,UserVoterDetails model2 ");
 		str.append(" where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and model2.casteState.casteStateId =:casteStateId and");
 		str.append(" model.booth.boothId = :boothId ");
 		Query query = getSession().createQuery(str.toString());

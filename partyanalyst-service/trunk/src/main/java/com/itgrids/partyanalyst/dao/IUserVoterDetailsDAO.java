@@ -88,7 +88,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	 public List<Long> getUserHamletsByBoothId(Long userId , Long boothId , Long pubId);
 	 public List<Object[]> getTotalVotersCountInABoothForHamlet(Long userId ,Long id,Long publicationDateId,String type,Long constituencyId);
 	 public List<Long> getUserBoothsByHamletId(Long userId , Long hamletId , Long pubId , String condition);
-	 public List<Voter> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId,long publicationId);
+	 public List<Object[]> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId,long publicationId);
 	 public List<Object[]> getAgeDataForBoothByHamlets(Long userId,Long publicationDateId,Long boothId,String type );
 	 public List<Long> getHamletsExistedInABoothForUser(Long userId,Long  id,Long  publicationDateId,Long  constituencyId);
 	 
@@ -152,7 +152,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 
 	public List<Object[]> getCountDetailsInSelectdCustomWard(List<Long> boothIds,Long userId,Long publicationDateId);
 	
-	public List<Voter> getVoterDetailsForCustomWardByBooth(Long boothId,Long publicationDateId,Long userId,Long casteStateId);
+	public List<Object[]> getVoterDetailsForCustomWardByBooth(Long boothId,Long publicationDateId,Long userId,Long casteStateId);
 	
 	public List<Object[]> getcasteForVoter(List<Long> voterIds,Long userId);
 	
