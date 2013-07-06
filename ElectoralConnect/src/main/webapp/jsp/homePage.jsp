@@ -40,6 +40,7 @@
 			 #registerVoter,#armiNriVote,#cancelVote,#modifyVote,#modifyVote,#transferVote,#duplicateVoter{display:none;}
 			.closeBtn{margin-left: 54px;bottom: 0px; position: absolute;}
 			.closeBtn:hover{box-shadow:0px 0px 10px #c0c0c0;}
+			.newsReleaseId{width:550px;background:#FFFFFF;margin:2px;padding:8px;display:inline-block;}
 </style>
 <div>
 <!--<div id="bodyId">Hello Welcome to Electoral Connect </div>
@@ -127,32 +128,32 @@
 				<div class="row sblockRowBg">
 					<div class="container m_top10">
 						<div id="specialBlockDIV" class="row-fluid">	
-							<div class="span2 widget">
+							<div class="span2 widget" onclick="hideMainMenu('registerVoter')">
 							  <img src="image/register_vote.png" />
 							  <h3>Register VOTE</h3>
 							  <a href="javascript:{}" onclick="hideMainMenu('registerVoter')" class="morebtn"></a>
 							</div>
-							<div class="span2 widget">
+							<div class="span2 widget" onclick="hideMainMenu('duplicateVoter')">
 							  <img src="image/dublicate_vote.png" />
 							  <h3>Duplication VOTE</h3>
 							  <a href="javascript:{}" onclick="hideMainMenu('duplicateVoter')" class="morebtn"></a>
 							</div>
-							<div class="span2 widget">
+							<div class="span2 widget" onclick="hideMainMenu('transferVote')">
 								<img src="image/Transceive_vote.png" />
 								<h3>Transfer VOTE</h3>
 								<a href="javascript:{}" onclick="hideMainMenu('transferVote')"  class="morebtn"></a>
 							</div>
-							<div class="span2 widget">
+							<div class="span2 widget" onclick="hideMainMenu('modifyVote')">
 								<img src="image/modify_vote.png" />
 								<h3>Modify VOTE</h3>
 								<a href="javascript:{}" onclick="hideMainMenu('modifyVote')"  class="morebtn"></a>
 							</div>
-							<div class="span2 widget">
+							<div class="span2 widget" onclick="hideMainMenu('cancelVote')">
 								<img src="image/cancel_vote.png" />
 								<h3>Cancel VOTE</h3>
 								<a href="javascript:{}" onclick="hideMainMenu('cancelVote')"  class="morebtn"></a>
 							</div>
-							<div class="span2 widget">
+							<div class="span2 widget" onclick="hideMainMenu('armiNriVote')">
 								<img src="image/NRI_vote.png" />
 								<h3>Army & NRI VOTE</h3>
 								<a href="javascript:{}" onclick="hideMainMenu('armiNriVote')"  class="morebtn"></a>
@@ -160,7 +161,7 @@
 						</div>
 						
 						<!---Big Speshal Box 1---Register VOTE--->
-						<div id="registerVoter" class="row-fluid bigsblock registerBlock">
+						<div id="registerVoter" class="row-fluid bigsblock registerBlock" onclick="showMainMenu('registerVoter')">
 							<section class="span10 offset1 text-center">
 								<img src="image/register_vote.png" />
 								 <h4>Register VOTE</h4>
@@ -173,7 +174,7 @@
 								<a href="javascript:{}" onclick="showMainMenu('registerVoter')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 1 ---Register VOTE---END--->
 						<!---Big Speshal Box 2---Duplicate Vote--->
-						<div id="duplicateVoter" class="row-fluid bigsblock">
+						<div id="duplicateVoter" class="row-fluid bigsblock" onclick="showMainMenu('duplicateVoter')">
 							<section class="span10 offset1 text-center">
 								<img src="image/dublicate_vote.png" />
 								 <h4>Duplicate Voter Id</h4>
@@ -187,7 +188,7 @@
 							<a href="javascript:{}" onclick="showMainMenu('duplicateVoter')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 2---Duplicate Vote--- END--->
 						<!---Big Speshal Box 3---Transfer Vote--->
-						<div id="transferVote" class="row-fluid bigsblock">
+						<div id="transferVote" class="row-fluid bigsblock" onclick="showMainMenu('transferVote')">
 							<section class="span10 offset1 text-center">
 								<img src="image/Transceive_vote.png" />
 								 <h4>Transfer VOTE</h4>
@@ -199,7 +200,7 @@
 							<a href="javascript:{}" onclick="showMainMenu('transferVote')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 3---Transfer Vote--- END--->
 						<!---Big Speshal Box 4---Modify  Vote--->
-						<div id="modifyVote" class="row-fluid bigsblock">
+						<div id="modifyVote" class="row-fluid bigsblock" onclick="showMainMenu('modifyVote')">
 							<section class="span10 offset1 text-center">
 								<img src="image/modify_vote.png" />
 								 <h4>Modify VOTE </h4>
@@ -211,7 +212,7 @@
 							<a href="javascript:{}" onclick="showMainMenu('modifyVote')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 4---Modify  Vote--- END--->
 						<!---Big Speshal Box 5---Cancel   Vote--->
-						<div id="cancelVote" class="row-fluid bigsblock">
+						<div id="cancelVote" class="row-fluid bigsblock" onclick="showMainMenu('cancelVote')">
 							<section class="span10 offset1 text-center">
 								<img src="image/cancel_vote.png" />
 								 <h4>Cancel VOTE </h4>
@@ -227,7 +228,7 @@
 							<a href="javascript:{}" onclick="showMainMenu('cancelVote')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 5---Cancel   Vote--- END--->
 						<!---Big Speshal Box 6---Army & NRI Vote--->
-						<div id="armiNriVote" class="row-fluid bigsblock">
+						<div id="armiNriVote" class="row-fluid bigsblock" onclick="showMainMenu('armiNriVote')">
 							<section class="span10 offset1 text-center">
 								<img src="image/NRI_vote.png" />
 								 <h4>Army & NRI VOTE</h4>
@@ -466,10 +467,10 @@ function buildTopAnnouncements(myResults)
 			nstr += '<article class="row-fluid notifications">';
 			
 			if(myResults[0].notificationsList[i].count>0){
-			nstr += '<a style="cursor: pointer;" class="date span2" onClick="getAllComments('+myResults[0].notificationsList[i].id+',0,5)"><h2>'+myResults[0].notificationsList[i].date+'</h2>';
+			nstr += '<a style="cursor: pointer;" class="date span2" onClick="getAllComments('+myResults[0].notificationsList[i].id+',0,5)"><h2>'+myResults[0].notificationsList[i].dateString+'</h2>';
 			}
 			else{
-			nstr += '<a class="date span2"><h2>'+myResults[0].notificationsList[i].date+'</h2>';
+			nstr += '<a class="date span2"><h2>'+myResults[0].notificationsList[i].dateString+'</h2>';
 			}
 			
 			nstr += '<span class="text-center label"><i class="icon-comment"></i><br/><small>'+myResults[0].notificationsList[i].count+'</small></span></a>';
@@ -483,20 +484,22 @@ function buildTopAnnouncements(myResults)
 		var pstr = "";
 			pstr +=  '<article>';
 			pstr +=	 '<h4>Press Releases</h4>';
-			pstr +=	 '<table class="table table-bordered table-hover table-condensed"><tbody>';
+			pstr += '<div>';
+			//pstr +=	 '<table class="table table-bordered table-hover table-condensed"><tbody>';
 		for(var i in myResults[0].pressReleasesList)
 		{
 			id =  myResults[0].pressReleasesList[i].id;
-			pstr +=	 '<tr><td><a style="cursor: pointer;text-decoration:none;" class=" title" onClick="getSelectedAnnouncement('+myResults[0].pressReleasesList[i].id+');"><i class="downarrow-icon"></i>'+myResults[0].pressReleasesList[i].title+'</a><span class="pull-right label">';
+			pstr +=	 '<span class="thumbnail newsReleaseId"><a style="cursor: pointer;text-decoration:none;" class=" title" onClick="getSelectedAnnouncement('+myResults[0].pressReleasesList[i].id+');"><i class="downarrow-icon"></i>'+myResults[0].pressReleasesList[i].title+'</a><span class="pull-right label">';
 			
 			if(myResults[0].pressReleasesList[i].count>0){
-			pstr +=	'<a style="cursor: pointer;" onClick="getAllComments('+myResults[0].pressReleasesList[i].id+',0,5)"><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></td></tr>';
+			pstr +=	'<a style="cursor: pointer;" onClick="getAllComments('+myResults[0].pressReleasesList[i].id+',0,5)"><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></span>';
 			}
 			else{
-			pstr +='<a><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></td></tr>';
+			pstr +='<a><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></span>';
 			}
 		}
-		pstr +=	'</table>';
+		//pstr +=	'</table>';
+		pstr +='</div>';
 			pstr += '</article>';
 		$('#pressReleaseDiv').html(pstr);
 		

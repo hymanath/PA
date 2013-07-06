@@ -95,7 +95,7 @@
 								</ul>
 							</nav>
 						</div>
-						<div class="span10 " style="margin-top: -10px;"><a class="btn btn-inverse pull-left" href=""><i class="icon-home icon-white" style="height:20px;"></i></a></div>
+						<div class="span10 " style="margin-top: -10px;"><a class="btn btn-inverse pull-left" href="homePage.action"><i class="icon-home icon-white" style="height:20px;"></i></a></div>
 
 					</div>
 				</div><!---header Container---->
@@ -126,14 +126,15 @@
 					</div>
 				</div>
 				<div id="loginStatusDiv"></div>	
-				<div class="pull-right btn btn-mini"><span id="forgetPassword">Forget Password</span></div>
+				<button class="btn btn-primary pull-right" type="submit" id="loginNow">Login</button>
+				
 			
 		</div>
 		<div class="modal-footer">
 			<div id="successMsg" style="float:left;"></div>
 			<div id="errorMsg" style="float:left;"></div>
-			<button class="btn btn-primary" type="submit" id="loginNow">Login</button>
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<div class="btn btn-info"><span id="forgetPassword">Forget Password</span></div>
+			<button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Close</button>
 		</div>
 		</form>
 	</div>

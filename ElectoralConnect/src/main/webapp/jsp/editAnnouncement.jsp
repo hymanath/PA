@@ -47,7 +47,7 @@ if(myResults != null)
 	str += '<div class="controls">';
 	if(myResults[0].announcementType == 1)
 	{
-		str += '<input type="radio" name="announcementType" value="1" checked="checked">Notification</input>';
+		str += '<input type="radio" name="announcementType" value="1" checked="checked">Electoral Update</input>';
 		str += '<input type="radio" name="announcementType" value="2">Press Release</input>';
 	}
 	else if(myResults[0].announcementType == 2)

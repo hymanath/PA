@@ -211,6 +211,12 @@ public class AnnouncementService implements IAnnouncementService{
 						notificationVO.setTitle(removeSpecialCharsFromAString(announcement.getTitle()));
 						notificationVO.setDescription(removeSpecialCharsFromAString(announcement.getDescription()));
 						notificationVO.setDate(dateFormate.format(announcement.getDate()));
+						
+						DateFormat df = new SimpleDateFormat("MMM dd yyyy");
+						String reportDate = df.format(announcement.getDate());
+						
+						notificationVO.setDateString(reportDate);
+						
 						notificationVO.setCount(commentDAO.getTotalCommentsCountByAnnouncementId(announcement.getAnnouncementId()));
 						notificationList.add(notificationVO);
 					}
@@ -225,6 +231,11 @@ public class AnnouncementService implements IAnnouncementService{
 						pressReleaseVO.setTitle(removeSpecialCharsFromAString(announcement.getTitle()));
 						pressReleaseVO.setDescription(removeSpecialCharsFromAString(announcement.getDescription()));
 						pressReleaseVO.setDate(dateFormate.format(announcement.getDate()));
+						DateFormat df = new SimpleDateFormat("MMM dd yyyy");
+						String reportDate = df.format(announcement.getDate());
+						
+						pressReleaseVO.setDateString(reportDate);
+						
 						pressReleaseVO.setCount(commentDAO.getTotalCommentsCountByAnnouncementId(announcement.getAnnouncementId()));
 						pressReleaseList.add(pressReleaseVO);
 					}
