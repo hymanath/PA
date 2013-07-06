@@ -669,13 +669,19 @@
 	});
 	
 	function buildAllAnnouncements(results,jsObj){
-	
 	var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
 	  str +='<div class="comment_sec span7" id="announcemtsDiv'+results[i].announcementId+'">';
 		str+="<li>";
-		
+		if(results[i].announcementType == 1)
+		{
+			str+="<span class='icon-file'title='Notification'></span>";
+		}
+		else
+		{
+			str+= "<span class='icon-tag' title='Press Release'></span>";
+		}
 		str+="<span class='title_sec1' >"+results[i].name+"</span>";
 		str+= "<div style='float:right;'><a class='icon-pencil' onClick='editAnnouncement("+results[i].announcementFileId+")' style='cursor: pointer; margin-right: 7px;'></a>";
 		str+= "<a class='icon-remove-sign' onClick='deleteAnnouncement("+results[i].announcementId+")' style='cursor: pointer;'></a></div>";
