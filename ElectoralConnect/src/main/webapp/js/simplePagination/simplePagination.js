@@ -26,8 +26,8 @@
 				cssStyle: 'light-theme',
 				selectOnClick: true,
 				onPageClick: function(pageNumber, event) {
-					var num=(pageNumber-1)*10;
-					getPaginationForData(num);
+					//var num=(pageNumber-1)*10;
+					//getPaginationForData(num);
 					// Callback triggered when a page is clicked
 					// Page number is given as an optional parameter
 				},

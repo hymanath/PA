@@ -16,20 +16,18 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 
 	
 	@SuppressWarnings("unchecked")
-	public List<AnnouncementFiles> getAllAnnouncements(int startRecord,int maxRecord,Long userId){
-		Query queryObject=getSession().createQuery("select model from AnnouncementFiles model where model.announcements.updatedBy.userId=:userId");
+	public List<AnnouncementFiles> getAllAnnouncements(int startRecord,int maxRecord){
+		Query queryObject=getSession().createQuery("select model from AnnouncementFiles model where model.announcements.isDeleted='NO'");
 		
-		queryObject.setParameter("userId", userId);
 		queryObject.setFirstResult(startRecord);
 		queryObject.setMaxResults(maxRecord);
 		
 		return queryObject.list();
 	}
 	
-	public int getAllAnnouncementsCountOfUser(Long userId){
-		Query queryObject=getSession().createQuery("select count(model.announcementFilesId) from AnnouncementFiles model where model.announcements.updatedBy.userId=:userId");
+	public int getAllAnnouncementsCountOfUser(){
+		Query queryObject=getSession().createQuery("select count(model.announcementFilesId) from AnnouncementFiles model where model.announcements.isDeleted='NO'");
 		
-		queryObject.setParameter("userId", userId);
 		return ((Long)queryObject.uniqueResult()).intValue();
 	}
 	
@@ -77,4 +75,6 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 			return query.list();
 		}
 
+
+	
 }

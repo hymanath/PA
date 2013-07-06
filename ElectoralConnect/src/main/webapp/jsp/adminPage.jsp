@@ -47,6 +47,7 @@
 	.posted_sec{ font-family: Verdana;font-size: 16px;font-weight: bold;margin-left: 6px;text-align: left;}
 	.AnnouncementForm{ margin-top: 5px;padding: 7px; border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
 	.getallcomment{margin-top: 8px;padding: 7px;display: none;background-color:#fff;border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
+	#totalCommentsBtDates{display:inline-block;}
 
 
 </style>
@@ -177,10 +178,10 @@
 	</div>
 			</div>
 	<div id="commentsDiv">
-	<div id="BOX-3" class="getallcomment">
-		<div class="t_align_sec">
-			<input type="radio" name="comment" onClick="getAllComments(0,5,'getTotalComments');">All</input>
-			<input type="radio" name="comment" onClick="getCommentsBetweenDates();">Between Dates</input>
+	<div id="BOX-3" class="getallcommentsBlock" style="display:none;">
+		<div class="t_align_sec" style="display:inline-table;">
+			<input type="radio" name="comment" value="all" id="forCommentsAllId" checked="checked" class="commentsBlock">All</input>
+			<input type="radio" name="comment" value="betweenDates" class="commentsBlock">Between Dates</input>
 		</div></br>
 		<div id="btDatesMainDiv">
 			<div id="betweenDatesDiv"></div></br>
@@ -188,6 +189,12 @@
 		</div>
 		<div id="totalCommentsMainDiv" style="display:inline-table" >
 			<div id="totalCommentsList"></div>
+		</div>
+		<div id="pagedCommentsId" style="display:inline-block"></div>
+						<!----pagination Div----->
+			<div class="span12 text-center">
+				<div id="paginationAnnouncementId"></div>
+			</div>
 		</div>
 	</div>
 	</div>
@@ -286,8 +293,22 @@
 	var stIndex    = 0;
 	var enIndex    = 5;
 	var announcementData = "";
+	
+	getAllComments(0,5,'getTotalComments');
+	
+	$('.commentsBlock').click(function(){
+			var value=$('input:radio[name=comment]:checked').val();
+			if(value=="all"){
+				getAllComments(0,5,'getTotalComments');
+			}
+			else{
+				getCommentsBetweenDates();
+			}
+			
+	});
+	
 	$(function(){	
-	$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+		$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
 	});
 	
 	$('#createAnnouncementId').click(function(){
@@ -317,11 +338,6 @@
 	
 	$('#allannoun').click(function(){getPaginationForData(1)});
 		
-	
-		
-	
-	
-	
 	function getAllComments(stIndex,enIndex,task)
 	{
 		$('#btDatesMainDiv').hide();
@@ -354,10 +370,27 @@
 		 str +='</form>';
 		 str +='</div>';
    		 $('#betweenDatesDiv').html(str);
-		 $('.calender').datepicker({ 
-		  
-			dateFormat: 'yy-mm-dd' 
-		});
+		 
+		  $( "#startDate" ).datepicker({
+			defaultDate: "+1w",
+			changeMonth: true,
+			numberOfMonths: 1,
+			dateFormat: 'yy-mm-dd',
+			onClose: function( selectedDate ) {
+			$( "#endDate" ).datepicker( "option", "minDate", selectedDate );
+			}
+		   });
+			
+		 $( "#endDate" ).datepicker({
+			defaultDate: "+1w",
+			changeMonth: true,
+			numberOfMonths: 1,
+			dateFormat: 'yy-mm-dd',
+			onClose: function( selectedDate ) {
+				$( "#startDate" ).datepicker( "option", "maxDate", selectedDate );
+				}
+			});
+		
 	}
 
 	function getCommentsSelectdDates(startIndex,maxIndex,task)
@@ -379,6 +412,7 @@
 	
 	function buildTotalCommentsListBtDates(myResults)
 	{
+		alert('in');
 		if(myResults != null)
 		{
 			totalCount = myResults[0].total ;
@@ -429,7 +463,7 @@
 		getCommentsSelectdDates(startIndex,maxIndex,"commentsBetweenDates");
 	}
 	
-	function buildTotalCommentsList(myResults)
+	function buildTotalCommentsList(myResults,id,startRecord)
 	{
 		if(myResults != null)
 		{
@@ -459,22 +493,37 @@
 			str += '<a id="moreButton" style="display:none;margin-top:5px;" class="btn btn-primary pull-right" onClick="getRemaingTotalCommentsList();">More</a>'
 
 			}
-			$('#totalCommentsList').append(str);
-			if(stIndex <=  totalCount)
-			{
-				stIndex   = stIndex + enIndex;
-				enIndex   =  enIndex;
-				$('#moreButton').show();
+			
+			if(id=="totalCommentsList"){
+				$('#pagedCommentsId').html(str);
 			}
-			else
-			{
-				$('#moreButton').hide();
+			else{
+				$('#pagedCommentsId').html(str);
 			}
 		}
-		else
-		{
-			$('#moreButton').hide();
+		
+		debugger;
+		if(startRecord==0){
+		$("#paginationAnnouncementId").pagination({
+			items: totalCount,
+			itemsOnPage: 5,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*5;
+				if(id=="totalCommentsList"){
+					$('#pagedCommentsId').html(str);
+				}
+				else{
+					$('#pagedCommentsId').html(str);
+				}
+				//getPaginationForData(num);
+				// Callback triggered when a page is clicked
+				// Page number is given as an optional parameter
+			}
+		});
+		
 		}
+		
 		
 	}
 	function getRemaingTotalCommentsList()
@@ -503,11 +552,11 @@
 								
 								if(jsObj.task =="commentsBetweenDates")
 								{
-									buildTotalCommentsListBtDates(myResults);
+									buildTotalCommentsList(myResults,"totalCommentsBtDates",0);
 								}
 								else if(jsObj.task =="getTotalComments")
 								{
-									buildTotalCommentsList(myResults);
+									buildTotalCommentsList(myResults,"totalCommentsList",0);
 								}
 								else if(jsObj.task =="getAllAnnouncements")
 								{
@@ -535,8 +584,7 @@
 									if(myResults.resultCode == 0)
 									{
 										$('#statusMsg'+jsObj.announcementId+'').html('<b style="color:green">Deleted Successfully</b>');
-										alert(jsObj.announcementId);
-										$('#announcemtsDiv'+jsObj.announcementId+'').hide();										
+										//$('#announcemtsDiv'+jsObj.announcementId+'').hide();										
 									}
 									else
 									{
@@ -566,9 +614,8 @@
 	});
 	
 	function buildAllAnnouncements(results,jsObj){
-	//console.log(results);
 	
-		var str="";
+	var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
 	  str +='<div class="comment_sec span7" id="announcemtsDiv'+results[i].announcementId+'">';
@@ -598,13 +645,18 @@
 	var maxResults=jsObj.maxRecord;
 	str+="</ul>";
 	$("#pagedAnnouncementsId").html(str);
-	
 	if(jsObj.startRecord==1){
 		$("#paginationId").pagination({
 			items: itemsCount,
 			itemsOnPage: maxResults,
-			cssStyle: 'light-theme'
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*10;
+				getPaginationForData(num);
+				
+			}
 		});
+		
 	}
 	}
 
@@ -631,7 +683,7 @@
 			var url = "deleteAnnouncementAction.action?"+rparam;
 			callAjaxForAdmin(jsObj, url);
 	}
-$(document).ready(function(){
+	$(document).ready(function(){
 
 					var type = '${type}';
 					if(type == 1)

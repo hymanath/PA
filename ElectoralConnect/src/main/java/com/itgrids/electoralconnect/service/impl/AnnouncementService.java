@@ -146,8 +146,8 @@ public class AnnouncementService implements IAnnouncementService{
 			AnnouncementVO announcementVO=null;
 			List<AnnouncementVO> announcementVOsList=new ArrayList<AnnouncementVO>();
 			try{
-				List<AnnouncementFiles> announcementFiles=announcementFilesDAO.getAllAnnouncements(startRecord, maxRecord, userId);
-				int allannouncementFilesCount=announcementFilesDAO.getAllAnnouncementsCountOfUser(userId);
+				List<AnnouncementFiles> announcementFiles=announcementFilesDAO.getAllAnnouncements(startRecord, maxRecord);
+				int allannouncementFilesCount=announcementFilesDAO.getAllAnnouncementsCountOfUser();
 				for(AnnouncementFiles files:announcementFiles){
 					announcementVO=new AnnouncementVO();
 					announcementVO.setAnnouncementFileId(files.getAnnouncementFilesId());
