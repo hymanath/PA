@@ -228,8 +228,8 @@
 				<div class="control-group">
 					<label class="control-label" for="date">Date</label>
 					<div class="controls">
-						<input type="text" id="datepicker" name="date" readonly="true"/>
-					</div>
+						<input type="text" id="datepicker" name="date" readonly="true" onChange="validateDate();"/>
+					<div style="display: none; float: right; margin-right: 295px; margin-top: 6px;" id="dateErrorMessge"><b style="color:red">Please Enter Valid Date</b></div></div>
 				</div>
 				
 				<div class="control-group">
@@ -296,7 +296,28 @@
 			getAllCommentsPagination(0);
 	});
 
-	
+	function validateDate()
+	{
+		
+		var date = $('#datepicker').val();
+		var flag = false;
+		if(date != null && date.length > 0)
+		{
+			flag = true;
+			$('#dateErrorMessge').hide();
+		}
+		else
+		{
+			$('#dateErrorMessge').show();
+		}
+		return flag;
+		
+	}
+	$('#saveAnnouncement').click(function(){
+		    $('[name="AnnouncementForm"]').validate();
+		    if ( $('[name="AnnouncementForm"]').valid() && validateDate())
+		    document.AnnouncementForm.submit();
+			});
 	$('.commentsBlock').click(function(){
 			var value=$('input:radio[name=comment]:checked').val();
 			$("#pagedCommentsId").html('');
@@ -318,11 +339,7 @@
 		$('#announcementForm').css('display','block');
 	});
 	
-	$('#saveAnnouncement').click(function(){
-		 $('[name="AnnouncementForm"]').validate();
-		if ( $('[name="AnnouncementForm"]').valid())
-		document.AnnouncementForm.submit();
-	});
+	
 	
 	$('input[name=attachFile]:checked').click(function(){
 		$('#forFileId').toggle('fast');
