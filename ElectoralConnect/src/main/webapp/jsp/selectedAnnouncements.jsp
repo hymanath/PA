@@ -28,6 +28,9 @@
 <div id="notificationDiv"></div>
 <div id="commentDis">
 <h3>Comments</h3>
+<div class="span3">
+<div id="errorMsg"></div>
+</div>
 <div>
 <textarea rows="4" placeholder="Post your comment here..." cols="50" style="width:598px; margin-left:71px;" id="commentText">
 </textarea>
@@ -35,12 +38,15 @@
 <div class="span9">
 <input type="button"  class="btn btn-success pull-right" value="Post Comment" onClick="saveComment();"></input>
 </div>
-<div class="span3">
+<!-- <div class="span3">
 <div id="errorMsg"></div>
-</div>
+</div> -->
 </div>
 <div class="commentblockinsected">
-<div id="totalComments"></div>
+<div>
+  <div id="totalComments"></div>
+  <a id="moreId"></a>
+</div>
 <div><a class="btn btn-primary pull-right allblockinsected" onClick="getAllAnnoncements();">View All</a></div>
 <div id="allNotificationDiv" align="center" ></div>
 </div>
@@ -122,7 +128,14 @@ function buildAllAnnouncements(myResults)
 }
 function saveComment()
 {
-	var comment = $('#commentText').val();
+	$("#errorMsg").html('');
+	var comment = $.trim($('#commentText').val());
+     
+	if(comment.length == 0)
+	{
+	  $("#errorMsg").html('Please Enter Comment.').css("color","red");
+	 return;
+	}
 	var jsObj =
 		{  	
 			id       : id,
@@ -133,24 +146,31 @@ function saveComment()
 		var url = "commentSaveAction.action?"+rparam;
 		callAjaxForComments(jsObj, url);
 }
-function getTop5Comments(id,startIndex,maxIndex,task)
+function getTop5Comments(id,startIndex,maxIndex,task,showMore)
 {
 	var jsObj =
 		{  	
 			id          : id,
 			startIndex  : startIndex,
 			maxIndex    : maxIndex,
-			task        : task
+			task        : task,
+			showMore    :showMore
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "getCommentsAction.action?"+rparam;
 		callAjaxForComments(jsObj, url);
 }
-function buildTotalCommentsList(myResults)
+function buildTotalCommentsList(myResults,jsObj)
 {
+
+	if(!jsObj.showMore)
+	 $('#totalComments').html('');
+
 	if(myResults != null)
 	{
 		totalCount = myResults[0].total;
+		var recordsPerPage=5;
+
 		var str = "";
 			for(var i in myResults)
 			{
@@ -163,27 +183,30 @@ function buildTotalCommentsList(myResults)
 			}
 			str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
 			$('#totalComments').append(str);
-		if(startIndex < totalCount)
+
+		if(recordsPerPage+startIndex < totalCount)
 		{
-		    
+			$('#moreId').html('<a class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>');
 			startIndex = startIndex + maxIndex;
 			maxIndex   =  maxIndex;
-			$('#moreButton').show();
+			$('#moreId').css('display','block');
 		}
 		else
 		{
-			$('#moreButton').hide();
+			$('#moreId').css('display','none');
+			startIndex=0;
 		}
 	}
 	else
 	{
-		$('#moreButton').hide();
+		$('#moreId').css('display','none');
+		startIndex=0;
 	}
 	
 }
 function getRemaingCommentsList()
 {
-	getTop5Comments(id,startIndex,maxIndex,"getTotalComments");
+	getTop5Comments(id,startIndex,maxIndex,"getTotalComments",true);
 }
 function callAjaxForComments(jsObj,url)
 {
@@ -199,10 +222,13 @@ function callAjaxForComments(jsObj,url)
 			}
 			else if(jsObj.task =="commentSave")
 			{
+
 				if(myResults.resultCode == 0)
 				{
+					$("#commentText").val('');
 					$('#errorMsg').html('<b style="color:green">Comment Saved Successfully..</b>');
-					getTop5Comments(id,startIndex,maxIndex,"getTotalComments");
+					window.location.reload();  
+					//getTop5Comments(id,0,maxIndex,"getTotalComments");
 				}
 				else if(myResults == 'notLogged')
 				{
@@ -216,7 +242,7 @@ function callAjaxForComments(jsObj,url)
 			}
 			else if(jsObj.task =="getTotalComments")
 			{
-				buildTotalCommentsList(myResults);
+				buildTotalCommentsList(myResults,jsObj);
 			}
 			}catch (e) {
 			 
@@ -230,7 +256,7 @@ function callAjaxForComments(jsObj,url)
 
 	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
-getTop5Comments(id,startIndex,maxIndex,"getTotalComments");
+getTop5Comments(id,startIndex,maxIndex,"getTotalComments",false);
 </script>
 </body>
 </html>
