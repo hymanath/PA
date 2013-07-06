@@ -60,8 +60,8 @@ if(myResults != null)
 	str += '<div class="control-group">';
 	str += '<label class="control-label" for="date">Date</label>';
 	str += '<div class="controls">';
-	str += '<input type="text" id="datepicker" name="date" value='+myResults[0].dateString+' readonly="true">';
-	str += '</div></div>';
+	str += '<input type="text" id="datepicker" name="date" value='+myResults[0].dateString+' readonly="true" onChange="validateDate();">';
+	str += '<div style="display: none; float: right; margin-right: 295px; margin-top: 6px;" id="dateErrorMessge"><b style="color:red">Please Enter Valid Date</b></div></div></div>';
 	str += '<div class="control-group">';
 	str += '<label class="control-label" for="docs"></label>';
 	str += '<div class="controls">';
@@ -122,9 +122,26 @@ function getFileDetailsDiv()
 		$('#forFileId').hide();
 	}
 }
+function validateDate()
+{
+	
+	var date = $('#datepicker').val();
+	var flag = false;
+	if(date != null && date.length > 0)
+	{
+		flag = true;
+		$('#dateErrorMessge').hide();
+	}
+	else
+	{
+		$('#dateErrorMessge').show();
+	}
+	return flag;
+	
+}
 $('#saveAnnouncement').click(function(){
 	$('[name="AnnouncementForm"]').validate();
-	if ( $('[name="AnnouncementForm"]').valid())
+	if ( $('[name="AnnouncementForm"]').valid() && validateDate())
 	document.AnnouncementForm.submit();
 });
 $(function(){	
