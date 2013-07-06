@@ -561,10 +561,11 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0){
 	$("#votersBasicInfoSubChartDiv_head").css("display","inline-block");
 	$("#votersBasicInfoSubDiv_head").css("display","inline-block");
-	}
+	
 	  $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
 	  $("#votersBasicInfoSubHeading").html(votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Voters Information in '+mainname+'');
+	  }
 	  $("#ajaxImageDiv").css('display','none');
 	//var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
 	//hideAjaxImgDiv('ajaxImageDiv');
@@ -596,6 +597,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 			$("#votersBasicInfoMsgDiv").html("<span id='votersBasicInfoDivSub' style='font-weight:bold;'>No Data Found</span>");
 		 return;
 	}
+	
 	if(votersbasicinfo != null && votersbasicinfo.datapresent)
 	{
 		
@@ -765,6 +767,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	
 	else
 	{
+		
 		$("#votersTitle").html("Voters Information of "+jsObj.typename+" in "+jsObj.year+" ");
 		//$("#votersTitle").html(jsObj.typename);
 
