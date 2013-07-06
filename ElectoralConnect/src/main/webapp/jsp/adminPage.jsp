@@ -19,7 +19,8 @@
 <style>
 	#mainBodyId{width:800px;margin-left:auto;margin-right:auto;}
 	input[type="radio"],#attachFileId{margin-bottom:5px;margin-right:5px;}
-	
+	.t_align_sec{text-align:center;padding:5px;}
+	.font_desc{font-size:15px;font-family:helvetica;line-height:21px;}
 	#saveAnnouncement{margin-left:300px;margin-bottom:10px;margin-top:10px;}
 	.AnnouncementForm{ margin-top: 5px;}
 	.widget{background:#fcfcfc;  height:100px;border:1px solid #2DCFFE;}
@@ -35,12 +36,12 @@
     font-size: 25px;
     font-weight: bold;
     text-align: center;}
-	.align{ margin-left: 90px;
+	.align{ width:595px;margin-left: 90px;
    margin-top:7px;}
 	.t_align{text-align:center;}
-	#forFileId{width:661px;margin-bottom:10px;}
+	#forFileId{width:595px;margin-bottom:10px;}
 	#statusMessage{margin:10px;}
-	.comment_sec{ border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left: 29px;padding: 12px;}
+	.comment_sec{border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left:75px;padding: 12px;}
 	.label1 {background: none repeat scroll 0 0 #3A87AD;color:#fff;font-weight:bold;padding:1px;}
 	.title_sec{font-family: icon;font-size: 15px;font-weight: bold;}
 	.title_sec1{color: #0989C9; font-size: 14px;font-weight: bold;text-transform: uppercase;}
@@ -48,11 +49,27 @@
 	.AnnouncementForm{ margin-top: 5px;padding: 7px; border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
 	.getallcomment{margin-top: 8px;padding: 7px;display: none;background-color:#fff;border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
 	#totalCommentsBtDates{display:inline-block;}
+	.getallcommentsBlock{margin-top: 8px;padding: 7px;background-color:#fff;border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
+    
+	.notifications a{color:#1a1a1a; text-decoration:none;}
+			
+			
+			.hero-unit{height:60px;}
+			
+			.notifications a{color:#1a1a1a; text-decoration:none;}
+			
+			.title h1{font-size:14px; line-height:18px;color:1a1a1a; padding:5px;background:#fff; border-bottom:1px solid #c0c0c0;}
+			.title p{font-size:12px; line-height:21px;padding:5px;background:#fff;min-height:40px;}
+			
+			.title{ margin-left: 65px !important;margin-top: 13px;}
+			.title p{margin-top:-9px;}
+			.date {font-size:12px;font-weight:bold;color:#2DCFFE; float:left;}
+			
 
 
 </style>
 
-<div id="mainBodyId" class="well">
+<div id="mainBodyId" class="container well">
 	<!--<div>
 		<div><a href="registerUser.action?userType=admin">Create User</a></div>
 		<div><a href="#" id="createAnnouncementId">Create Announcement</a></div>
@@ -175,9 +192,9 @@
 	
 	</div>
 			</div>
-	<div id="commentsDiv">
+	<div id="commentsDiv" >
 	<div id="BOX-3" class="getallcommentsBlock" style="display:none;">
-		<div class="t_align_sec" style="display:inline-table;">
+		<div class="t_align_sec">
 			<input type="radio" name="comment" value="all" id="forCommentsAllId" checked="checked" class="commentsBlock">All</input>
 			<input type="radio" name="comment" value="betweenDates" class="commentsBlock">Between Dates</input>
 		</div></br>
@@ -195,7 +212,7 @@
 			</div>
 		</div>
 	</div>
-	</div>
+	
 	<div id="announcementForm" >
 	<div id="BOX-2" style="display: none;background-color:#fff;">
 		<form class="form-horizontal AnnouncementForm" name="AnnouncementForm" action="createAnnouncementAction.action?fromForm=announcement"  method="post" enctype="multipart/form-data">
@@ -274,7 +291,7 @@
 	</div>
 			</div>
 			<div id="BOX-4" style="display: none">
-			<div id="pagedAnnouncementsId"  class="getallcomment" style="display:inline-block"></div>
+			<div id="pagedAnnouncementsId"  class="getallcomment" style="display: inline-block; width: 785px;"></div>
 						<!----pagination Div----->
 						<div class="span12 text-center">
 							<div id="paginationId"></div>
@@ -283,7 +300,7 @@
 			
 		</div>
 
-
+</div>
 
 <script>
 	var startIndex = 0;
@@ -449,7 +466,7 @@
 			}
 			str +='<span class="title_sec">TITLE:</span><span class="title_sec1">'+myResults[i].announcement+'</span>';
 			str +='<hr style="margin-top:0px;">';
-			str +='<span style="font-size: 15px;">'+myResults[i].comment+'</span>';
+			str +='<span class="font_desc">'+myResults[i].comment+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +=' <span class="label1 label-info">Posted By:</span>';
 			str +='<span class="posted_sec">'+myResults[i].name+'</span>';
@@ -688,9 +705,12 @@
 	function buildAllAnnouncements(results,jsObj){
 	var str="";
 	str+="<ul class='unstyled pad10'>";
+	str+='<legend>Get All Announcement</legend>';
 	for(var i in results){
-	  str +='<div class="comment_sec span7" id="announcemtsDiv'+results[i].announcementId+'">';
+	  
 		str+="<li>";
+	
+		
 		if(results[i].announcementType == 1)
 		{
 			str+="<span class='icon-list-alt' title='Notification'></span>";
@@ -699,24 +719,22 @@
 		{
 			str+= "<span class='icon-tag' title='Press Release'></span>";
 		}
-		str+="<span class='title_sec1' >"+results[i].name+"</span>";
-		str+= "<div style='float:right;'><a class='icon-pencil' onClick='editAnnouncement("+results[i].announcementFileId+")' style='cursor: pointer; margin-right: 7px;'></a>";
-		str+= "<a class='icon-remove-sign' onClick='deleteAnnouncement("+results[i].announcementId+")' style='cursor: pointer;'></a></div>";
-		  str +='<hr style="margin-top:0px;">';
-		str+="<div class='row-fluid'>";
-		<!--str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
-		<!--str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";-->
-		str+="<span style='font-size: 15px;'>"+results[i].description+"</p>";
-		  str +='<hr style="margin-top:0px;">';
-		str+="</div>";
-		str+="<span class='text-error'>Date: "+results[i].dateString+"</span>";
-		<!--str+="<div class='span2'>"+results[i].announcementTypeName+"</div></li>";-->
-		str+="<span class='pull-right'>"+results[i].updatedBy+"</span>";
-		str += "<div id='statusMsg"+results[i].announcementId+"'></div>";
-		 str +='</div>';
+		str +='<article class=" notifications">';
+							
+	str +='<div  class=" thumbnail title span8" id="announcemtsDiv'+results[i].announcementId+'">';
+	str+= "<div style='float:right; margin-right: 17px;margin-top: 7px;'><a class='icon-pencil' onClick='editAnnouncement("+results[i].announcementFileId+")' style='cursor: pointer; margin-right: 7px;'></a>";
+		str+= "<a class='icon-remove' onClick='deleteAnnouncement("+results[i].announcementId+")' style='cursor: pointer;'></a></div>";
 		
+	str +='<h1>'+results[i].name+'</h1>';
+	
+   str +='<p>'+results[i].description+'</p>';
+	str +='<div class="date span2">'+results[i].dateString+'</div>';
+	str +='<div class=" span1 date pull-right">'+results[i].updatedBy+'</div>';
+	str += "<div id='statusMsg"+results[i].announcementId+"'></div>";
+	str +='</div>';	
+	str +='</article>';
 		str+="</li>";
-		 str +='</div>';
+		
 	}
 	
 	var itemsCount=results[0].allAnnouncementsCount;
@@ -785,7 +803,7 @@
 						   $("#user").addClass("selected");
 						   
 						}else{
-						  $("#BOX-1").hide();
+						 
 						  $("#user").removeClass("selected");
 						}
 						 $("#BOX-2").hide();
@@ -803,7 +821,7 @@
 						   $("#announ").addClass("selected");
 						   
 						}else{
-						  $("#BOX-2").hide();
+						 
 						   $("#announ").removeClass("selected");
 						}
 						 $("#BOX-1").hide();
@@ -820,7 +838,7 @@
 						   $("#BOX-3").show();
 						   $("#comment").addClass("selected");
 						}else{
-						  $("#BOX-3").hide();
+						 
 						   $("#comment").removeClass("selected");
 						}
 						 $("#BOX-1").hide();
@@ -838,7 +856,7 @@
 						   $("#allannoun").addClass("selected");
 						    
 						}else{
-						  $("#BOX-4").hide();
+						 
 						  $("#allannoun").removeClass("selected");
 						}
 						 $("#BOX-1").hide();
