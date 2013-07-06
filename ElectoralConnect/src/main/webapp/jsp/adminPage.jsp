@@ -535,7 +535,8 @@
 									if(myResults.resultCode == 0)
 									{
 										$('#statusMsg'+jsObj.announcementId+'').html('<b style="color:green">Deleted Successfully</b>');
-										//$('#announcemtsDiv'+jsObj.announcementId+'').hide();										
+										alert(jsObj.announcementId);
+										$('#announcemtsDiv'+jsObj.announcementId+'').hide();										
 									}
 									else
 									{
