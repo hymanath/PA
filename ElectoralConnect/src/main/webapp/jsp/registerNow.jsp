@@ -26,13 +26,14 @@
 		  display: inline-block;
 		  text-indent: -9999px;  
 		}
-		label.error {
+		label.error,.errorMessageDivCls {
 		  font-weight: bold; 
 		  color: red;
 		  background: url(img/error.png) no-repeat left center;
 		  padding: 1px 16px;
 		  display: inline-block;
 		}
+		.errorMessageDivCls{margin-left: -33px;}
 </style>
 
 <div id="formDivId">
@@ -60,6 +61,7 @@
 					<label class="control-label requ" for="emailid">Email-Id</label>
 					<div class="controls ">
 						<input type="text" id="emailId" name="emailId" placeholder="Email-Id">
+						 <span class="help-inline" id="errorMessageDiv"></span>
 					</div>
 				</div>
 				
@@ -83,7 +85,8 @@
 			</form>
 			
 		
-			<button class="btn btn-primary" id="saveUser">Save changes</button>
+			<!-- <button class="btn btn-primary" id="saveUser">Save changes</button> -->
+			<input type="button" value="Save changes" class="btn btn-primary" id="saveUser"/>
 		
 	
 		
@@ -95,11 +98,18 @@
 	</div>
 		<script>
 	
+	var emailExist = false;
 	$('#saveUser').click(function(){
+		$("#errorMessageDiv").html("");
 		//document.userDetailsForm.submit();
 		$(".form-horizontal").validate();
 		
-		if ($('.form-horizontal').valid()){
+		if(emailExist)
+		{
+		  //$(".control-group").find('.errorMessage').html('');
+		  $("#errorMessageDiv").addClass("errorMessageDivCls").html("Email Already Available").css("color","red");
+		}
+		if ($('.form-horizontal').valid() && !emailExist){
 			document.userDetailsForm.submit();
 		}
 	});
@@ -147,6 +157,8 @@
 $("#emailId").live("blur",function()
 {
 	checkemail();
+	$("#errorMessageDiv").html('');
+	$("#errorMessageDiv").removeClass('errorMessageDivCls');
 });
 	function checkemail(){	
 		var emailId = $("#emailId").val();
@@ -241,12 +253,13 @@ $("#emailId").live("blur",function()
 			//$('#errorImgId').css('display','inline-block');	
 			$("#emailId").text('ok').html("Email Already Available").addClass('valid');
 			$("#emailId").closest('div').find('.error').html("Email Already Available");
+			emailExist = true;
 		}
 		else{
 			//alert("hhjgj");
 		$("#emailId").text('ok').html("").removeClass('valid');
 			//$("#emailId").css('display','inline-block');
-			
+			emailExist = false;
 		}
 	}	
 	 function openChagePasswordModel()
