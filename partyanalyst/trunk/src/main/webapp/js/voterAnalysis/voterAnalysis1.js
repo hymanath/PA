@@ -893,7 +893,10 @@ function addToPolitician(voterId,name)
     // jQuery is loaded => print the version
     alert(jQuery.fn.jquery);
     } */
-
+	    if(maintype == 'customWard')
+          $("#votersCountVaryDiv").hide();
+		else
+          $("#votersCountVaryDiv").show();
 	    $("#categoriesValuesDiv").html("");
 		var str = "";
 		str += '<a id ="InfluencingDetails"><span class="btn">0</span></a><span class="help-inline f2"> Influencing People</span>';
