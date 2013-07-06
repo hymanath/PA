@@ -104,8 +104,8 @@ public class AnnouncementService implements IAnnouncementService{
 						{
 							file = new File();
 						}
-						file.setTitle(announcementVO.getFileTitle());
-						file.setDescription(announcementVO.getFileDescription());
+						file.setTitle(removeSpecialCharsFromAString(announcementVO.getFileTitle()));
+						file.setDescription(removeSpecialCharsFromAString(announcementVO.getFileDescription()));
 						file.setFilePath(announcementVO.getFilePath());
 						file.setFileName(announcementVO.getFileName());
 						file.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -120,8 +120,8 @@ public class AnnouncementService implements IAnnouncementService{
 						{
 							announcements = new Announcements();
 						}
-						announcements.setTitle(announcementVO.getName());
-						announcements.setDescription(announcementVO.getDescription());
+						announcements.setTitle(removeSpecialCharsFromAString(announcementVO.getName()));
+						announcements.setDescription(removeSpecialCharsFromAString(announcementVO.getDescription()));
 						announcements.setDate(announcementVO.getUpdatedDate());
 						announcements.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						announcements.setAnnouncementType(announcementTypeDAO.get(announcementVO.getAnnouncementType()));
@@ -165,8 +165,8 @@ public class AnnouncementService implements IAnnouncementService{
 					announcementVO.setAnnouncementFileId(files.getAnnouncementFilesId());
 					announcementVO.setAnnouncementId(files.getAnnouncements().getAnnouncementId());
 					announcementVO.setAnnouncementTypeName(files.getAnnouncements().getAnnouncementType().getName());
-					announcementVO.setName(files.getAnnouncements().getTitle());
-					announcementVO.setDescription(files.getAnnouncements().getDescription());
+					announcementVO.setName(removeSpecialCharsFromAString(files.getAnnouncements().getTitle()));
+					announcementVO.setDescription(removeSpecialCharsFromAString(files.getAnnouncements().getDescription()));
 					//announcementVO.setUpdatedDate(files.getAnnouncements().getDate());
 					String updatedBy=files.getAnnouncements().getUpdatedBy().getUserProfile().getFirstName()+""+
 							files.getAnnouncements().getUpdatedBy().getUserProfile().getLastName();
@@ -207,22 +207,22 @@ public class AnnouncementService implements IAnnouncementService{
 					for (Announcements announcement : notificationsList) {
 						NotificationVO notificationVO = new NotificationVO();
 						notificationVO.setId(announcement.getAnnouncementId());
-						notificationVO.setTitle(announcement.getTitle());
-						notificationVO.setDescription(announcement.getDescription());
+						notificationVO.setTitle(removeSpecialCharsFromAString(announcement.getTitle()));
+						notificationVO.setDescription(removeSpecialCharsFromAString(announcement.getDescription()));
 						notificationVO.setDate(dateFormate.format(announcement.getDate()));
 						notificationVO.setCount(commentDAO.getTotalCommentsCountByAnnouncementId(announcement.getAnnouncementId()));
 						notificationList.add(notificationVO);
 					}
 				}
-				List<Announcements> pressReleasesList = announcementsDAO.getTopAnnouncements(2l, 0, 5);
+				List<Announcements> pressReleasesList = announcementsDAO.getTopAnnouncements(2l, 0, 10);
 				if(pressReleasesList != null)
 				{
 					pressReleaseList = new ArrayList<PressReleaseVO>();
 					for (Announcements announcement : pressReleasesList) {
 						PressReleaseVO pressReleaseVO = new PressReleaseVO();
 						pressReleaseVO.setId(announcement.getAnnouncementId());
-						pressReleaseVO.setTitle(announcement.getTitle());
-						pressReleaseVO.setDescription(announcement.getDescription());
+						pressReleaseVO.setTitle(removeSpecialCharsFromAString(announcement.getTitle()));
+						pressReleaseVO.setDescription(removeSpecialCharsFromAString(announcement.getDescription()));
 						pressReleaseVO.setDate(dateFormate.format(announcement.getDate()));
 						pressReleaseVO.setCount(commentDAO.getTotalCommentsCountByAnnouncementId(announcement.getAnnouncementId()));
 						pressReleaseList.add(pressReleaseVO);
@@ -329,12 +329,12 @@ public class AnnouncementService implements IAnnouncementService{
 						announcementVO.setAnnouncementFileId(announcementFileId);
 						announcementVO.setId(announcements.getAnnouncementId());
 						announcementVO.setAnnouncementType(announcements.getAnnouncementType() != null ? announcements.getAnnouncementType().getAnnouncementTypeId():0l);
-						announcementVO.setTitle(announcements.getTitle()!= null ? announcements.getTitle() : "");
-						announcementVO.setDescription(announcements.getDescription() != null ? announcements.getDescription() : "");
+						announcementVO.setTitle(announcements.getTitle()!= null ? removeSpecialCharsFromAString(announcements.getTitle()) : "");
+						announcementVO.setDescription(announcements.getDescription() != null ? removeSpecialCharsFromAString(announcements.getDescription()) : "");
 						announcementVO.setDateString(dateFormate.format(announcements.getDate()));
 						announcementVO.setFileDate(file.getUpdatedTime() != null ? dateFormate.format(file.getUpdatedTime()).toString():"");
-						announcementVO.setFileTitle(file.getTitle() != null ? file.getTitle() : "");
-						announcementVO.setFileDescription(file.getDescription() != null ? file.getDescription() : "");
+						announcementVO.setFileTitle(file.getTitle() != null ? removeSpecialCharsFromAString(file.getTitle()) : "");
+						announcementVO.setFileDescription(file.getDescription() != null ? removeSpecialCharsFromAString(file.getDescription()) : "");
 						announcementVO.setFilePath(file.getFilePath() != null ? file.getFilePath() : "");
 						announcementVO.setName(announcements.getUpdatedBy() != null ?announcements.getUpdatedBy().getUserProfile().getFirstName() :"");
 						announcementVO.setAnnouncementName(announcements.getAnnouncementType() != null ?announcements.getAnnouncementType().getName() :"");
@@ -375,5 +375,22 @@ public class AnnouncementService implements IAnnouncementService{
 			}
 			
 			return resultStatus;
+		}
+		/**
+		 * This Service is used to remove the Special charactes in the Text
+		 * @param String textValue
+		 * @return  String
+		 * @date 06-07-2013
+		 */
+		public static String removeSpecialCharsFromAString(String textValue){
+			if(textValue != null){
+				/*String[] j=IConstants.SPECIALCHARS;
+				for(int i=0;i<j.length;i++){
+					textValue=textValue.replace(j[i], "");
+				}*/
+				textValue = textValue.replaceAll("\uFFFD", "");
+				textValue = textValue.replaceAll("&#65533;", "");
+			}
+			return textValue;
 		}
 }
