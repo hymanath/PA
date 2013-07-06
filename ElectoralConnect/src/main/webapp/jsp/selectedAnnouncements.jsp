@@ -7,17 +7,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Announcemts</title>
 </head>
+<style>
+.align_div{width:800px;margin-left:auto;margin-right:auto;}
+
+.comment_sec{ border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left:100px;padding: 12px;}
+	.title_sec2{font-family: icon;font-size: 15px;font-weight: bold;}
+	.title_sec3{font-family: icon;font-size: 15px;font-weight: bold;}
+	.title_sec4{ font-family: Helvetica;font-size: 13px;}
+	.title_sec1{color: #0989C9; font-size: 14px;font-weight: bold;text-transform: uppercase;}
+	.getallcomment1{margin-top: 8px;padding: 7px;background-color:#fff;border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;line-height: 24px;}
+	a:hover{color:red;}
+	.link{color:#548BD4;font-weight:bold;}
+		.indiCommentId{margin:5px;}
+		.commentblockinsected{  margin-left: 63px;margin-right: 0;margin-top: 58px;}
+		.allblockinsected{margin-right: 108px;margin-top:-29px;}
+		.description_font{font-family: Helvetica;}
+</style>
 <body>
-<div id="notificationDiv" align="center"></div>
+<div class="well align_div getallcomment1">
+<div id="notificationDiv"></div>
 <div id="commentDis">
-<span>Comment : </span><textarea rows="4" cols="50" style="width: 252px; height: 56px; margin-left: 10px;" id="commentText">
+<h3>Comments</h3>
+<div>
+<textarea rows="4" placeholder="Post your comment here..." cols="50" style="width:598px; margin-left:71px;" id="commentText">
 </textarea>
-<input type="button" class="btn btn-primary" value="Comment" onClick="saveComment();"></input>
+</div>
+<div class="span9">
+<input type="button"  class="btn btn-success pull-right" value="Post Comment" onClick="saveComment();"></input>
+</div>
+<div class="span3">
 <div id="errorMsg"></div>
 </div>
+</div>
+<div class="commentblockinsected">
 <div id="totalComments"></div>
-<div><a class="btn btn-primary" onClick="getAllAnnoncements();">View All</a></div>
-<div id="allNotificationDiv" align="center" style="overflow-y: scroll; height: 300px;"></div>
+<div><a class="btn btn-primary pull-right allblockinsected" onClick="getAllAnnoncements();">View All</a></div>
+<div id="allNotificationDiv" align="center" ></div>
+</div>
+</div>
 <script>
 var myResults = window.opener.result;
 var startIndex = 0;
@@ -33,21 +60,29 @@ if(myResults != null)
 	{
 		id = myResults[i].id;
 		announcenentTypeId = myResults[i].announcementType;
-		str += '<div></br>';
-		str += '<b>Title : </b><span>'+myResults[i].title+'</span></br>';
-		str += '<b>Description : </b><span>'+myResults[i].description+'</span></br>';
-		str += '<b>Date : </b><span>'+myResults[i].dateString+'</span></br>';
-		str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';
-		if(myResults[i].filePath != null && myResults[i].filePath != "")
-		{
-			str += '<b>File Title : </b><s:a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileName+'</span></s:a></br>';
-			str += '<b>File Description : </b><span>'+myResults[i].fileDescription+'</span></br>';
-			str += '<b>File Date : </b><span>'+myResults[i].fileDate+'</span></br>';
-		}
-		str += '</div>';
+		str +='<div class="comment_sec" style="width:550px;">';
+			
+			str +='<div class=" title_sec1">'+myResults[i].title+'</div>';
+			str +='<div class="title_sec4">'+myResults[i].description+'</div>';
+	        str +='<div ><span class="title_sec2">Date Posted:</span><span>'+myResults[i].dateString+' </span></div>';
+			<!--str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';-->
+			if(myResults[i].filePath != null && myResults[i].filePath != "")
+			{
+			   str +='<div ><span class="title_sec3">Releted Document:</span><s:a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileName+'</span></s:a></div>';
+				
+				<!--str += '<b>File Description : </b><span>'+myResults[i].fileDescription+'</span></br>';-->
+				<!--str += '<b>File Date : </b><span>'+myResults[i].fileDate+'</span></br>';-->
+			}
+			
+			str +='</div>';
 	}
 	$('#notificationDiv').html(str);
 }
+
+<!--
+
+
+-->
 
 function getAllAnnoncements()
 {
@@ -119,17 +154,18 @@ function buildTotalCommentsList(myResults)
 		var str = "";
 			for(var i in myResults)
 			{
-				str += '<div class="span10 widget"  style="border-radius: 4px 4px 4px 4px; border: 1px solid blue; margin-bottom: 10px;">';
-				str +='<span><b>Comment : </b></span><span>'+myResults[i].comment+'</span></br>';
-				str +='<span style="float:left;"><b>Commented By : <b>'+myResults[i].name+'</span>';
-				
-				str +='<span style="float:right"><b>Date : </b>'+myResults[i].date+'</span></br>';
+				str += '<div class="thumbnail indiCommentId" style="width:609px;">';
+				str +='<span class="description_font">'+myResults[i].comment+'</span></br></br>';
+				str +='<span class="pull-left label label-important">'+myResults[i].name+'</span>';
+				str +='<span class="pull-right ">'+myResults[i].commentedTime+'</span></br>';
 				str += '</div>';
-				str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
+				
 			}
+			str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
 			$('#totalComments').append(str);
 		if(startIndex < totalCount)
 		{
+		    
 			startIndex = startIndex + maxIndex;
 			maxIndex   =  maxIndex;
 			$('#moreButton').show();
