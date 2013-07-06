@@ -115,6 +115,7 @@ public class AnnouncementService implements IAnnouncementService{
 						announcements.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						announcements.setAnnouncementType(announcementTypeDAO.get(announcementVO.getAnnouncementType()));
 						announcements.setUpdatedBy(userDAO.get(user.getRegistrationID()));
+						announcements.setIsDeleted("NO");
 						if(announcementVO.getAnnouncementId() != null && announcementVO.getAnnouncementId() > 0)
 						{
 							announcements.setAnnouncementId(announcementVO.getAnnouncementId());
@@ -337,6 +338,12 @@ public class AnnouncementService implements IAnnouncementService{
 			return returnList;
 		}
 		
+		/**
+		 * This Service is used to delete the Selected Annoncement
+		 * @param Long announcementid
+		 * @return ResultStatus
+		 * @dare 05-07-2013 
+		 */
 		public ResultStatus deleteSelctedAnnoncement(Long announcementid)
 		{
 			ResultStatus resultStatus = new ResultStatus();

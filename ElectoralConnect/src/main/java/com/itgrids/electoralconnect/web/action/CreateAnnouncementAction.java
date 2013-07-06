@@ -226,7 +226,7 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 		 }
 		 else if(request.getRequestURL().toString().contains(IConstants.LOCALHOST))
 		 {
-			 filePath = context.getRealPath("/")+"Uploaded_Documents\\"; 
+			 filePath = context.getRealPath("/")+"Uploaded_Documents"+pathSeperator; 
 		 }
 		
         filePath=filePath+subFolder+pathSeperator;

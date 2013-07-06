@@ -62,6 +62,12 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 			return query.list();
 		}
 		
+		/**
+		 * This DAO is used to get Announcements By Announcement File Id
+		 * @param Long announcementFileId
+		 * @return List<Object[]>
+		 * @date 05-07-2013
+		 */
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getAnnouncementsByAnnouncementFileId(Long announcementFileId)
 		{

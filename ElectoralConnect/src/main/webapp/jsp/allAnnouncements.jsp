@@ -24,32 +24,33 @@
 </div>
 <script>
 var myResults = window.opener.allAnnouncements;
+if(myResults != null)
+{
+	var str = "";
+	 str +='	<legend>All Notifications</legend>';
+	for(var i in myResults)
 	{
-	    var str = "";
-		 str +='	<legend>All Notifications</legend>';
-		for(var i in myResults)
+	   
+		str +='<div class="comment_sec" style="width:550px;">';
+		
+		str +='<div class=" title_sec1">'+myResults[i].title+'</div>';
+		str +='<div class="title_sec4">'+myResults[i].description+'</div>';
+		str +='<div ><span class="title_sec2">Date Posted:</span><span>'+myResults[i].dateString+' </span></div>';
+		<!--str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';-->
+		if(myResults[i].filePath != null && myResults[i].filePath != "")
 		{
-		   
-			str +='<div class="comment_sec" style="width:550px;">';
+		   str +='<div ><span class="title_sec3">Releted Document:</span><a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileName+'</span></a></div>';
 			
-			str +='<div class=" title_sec1">'+myResults[i].title+'</div>';
-			str +='<div class="title_sec4">'+myResults[i].description+'</div>';
-	        str +='<div ><span class="title_sec2">Date Posted:</span><span>'+myResults[i].dateString+' </span></div>';
-			<!--str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';-->
-			if(myResults[i].filePath =! null && myResults[i].filePath != "")
-			{
-			   str +='<div ><span class="title_sec3">Releted Document:</span><a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileName+'</span></a></div>';
-				
-				<!--str += '<b>File Description : </b><span>'+myResults[i].fileDescription+'</span></br>';-->
-				<!--str += '<b>File Date : </b><span>'+myResults[i].fileDate+'</span></br>';-->
-			}
-			
-			str +='</div>';
-			
-	   } 
+			<!--str += '<b>File Description : </b><span>'+myResults[i].fileDescription+'</span></br>';-->
+			<!--str += '<b>File Date : </b><span>'+myResults[i].fileDate+'</span></br>';-->
+		}
+		
+		str +='</div>';
+		
+   } 
 
-	  $('#allNotificationDiv').html(str);
-	}
+  $('#allNotificationDiv').html(str);
+}
 	
 
 
