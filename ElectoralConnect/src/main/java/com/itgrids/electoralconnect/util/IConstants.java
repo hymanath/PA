@@ -636,7 +636,7 @@ public interface IConstants {
     
     
     public static final int FILE_RANDOM_NO = 10000000;
-    public static final String UPLOADED_DOCS = "Uploaded_Docuements";
+    public static final String UPLOADED_DOCS = "Uploaded_Documents";
     
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     

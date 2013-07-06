@@ -11,7 +11,6 @@
 </head>
 <body>
 <link rel="stylesheet" type="text/css" href="css/dataPicker.css"/>
-<script type="text/javascript"  src="js/RegisterFormValidation.js"></script>
 <script type="text/javascript"  src="js/AnnouncementFormValidation.js"></script>
 <style>
 .AnnouncementForm{ margin-top: 5px;padding: 7px; border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
