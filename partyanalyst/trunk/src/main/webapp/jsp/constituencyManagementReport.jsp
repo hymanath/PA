@@ -811,7 +811,7 @@
 					<div style="text-align:right;padding:15px;background:#ffffff;">
 						<a class="linkButton" href="javascript:{}" onclick="openAddNewProblemWindow()">Add New Problem</a>						
 						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT">Manage Problems</a>
-						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=CONSTITUENCY_MANAGEMENT">View Detailed Statistics</a>
+						<!--  <a class="linkButton" href="constituencyManagementAction.action?cmTask=CONSTITUENCY_MANAGEMENT">View Detailed Statistics</a> -->
 					</div>
 					<div id="problems_outline_Div" style="background:#ffffff;"></div>
 					<DIV id="problems_Options" style="background:#ffffff;"></DIV>
