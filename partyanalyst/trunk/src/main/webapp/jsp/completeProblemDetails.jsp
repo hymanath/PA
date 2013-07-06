@@ -258,7 +258,7 @@ var problemDetailsInEdit = null;
       }
       else{
       
-      str+= '<a rel="photo_gallery" href="'+result[i].file+'" title="'+result[i].description+'"><img alt="" src="'+result[i].file+'" height="100px" width="135px" /></a>';
+      str+= '<a rel="photo_gallery" href="'+result[i].file+'" title=""><img alt="'+result[i].description+'" src="'+result[i].file+'" height="100px" width="135px" /></a>';
       
       }
 	  
@@ -345,7 +345,7 @@ var problemDetailsInEdit = null;
       }
       else{
       str+= '<td><table><tr><td>';
-      str+= '<a rel="more_photo_gallery" href="'+result[i].file+'" title="'+result[i].description+'"><img alt="" src="'+result[i].file+'" height="100px" width="135px" /></a></td>';
+      str+= '<a rel="more_photo_gallery" href="'+result[i].file+'" title=""><img alt="'+result[i].description+'" src="'+result[i].file+'" height="100px" width="135px" /></a></td>';
       str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td></tr>';
 	  if(result[i].updatable == 'true' || result[i].updatable == true)
 		 {

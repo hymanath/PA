@@ -2150,7 +2150,7 @@ function showSubLevelWiseCensusReport(result,jsObj)
 		if(jsObj.type == "constituency")
 			name += " Constituency";
 		var str = '';
-		str +='<h3>Mandal/Muncipality Wise Census Information in '+name+'</h3>';
+		str +='<h3>Mandal Wise Census Information in '+name+'</h3>';
 		str +='<table id="censusTab" class="table table-bordered table-striped table-hover">';
 		str +='<tr>';
 		str +='<th>Mandal</th>';
