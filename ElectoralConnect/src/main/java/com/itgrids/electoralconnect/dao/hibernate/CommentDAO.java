@@ -62,7 +62,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	public Long getTotalCommentsCountByAnnouncementId(Long id)
 	{
 		Query query = getSession().createQuery("select count(*) from Comment model " +
-				" where model.announcements.announcementId = :id");
+				" where model.announcements.announcementId = :id and model.isDelete='NO'");
 		query.setParameter("id", id);
 		return (Long) query.uniqueResult();
 	}
@@ -102,7 +102,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	public Long getCommentsCountBetweenSelectedDates(Date startDate,Date endDate)
 	{
 		Query query = getSession().createQuery("select count(*) from Comment model where " +
-				" Date(model.time) between :startDate and :endDate");
+				" Date(model.time) between :startDate and :endDate and model.isDelete='NO'");
 		//query.setParameter("announcementId", announcementId);
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -133,7 +133,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	 */
 	public Long getTotalComments()
 	{
-		Query query = getSession().createQuery("select count(*) from Comment model");
+		Query query = getSession().createQuery("select count(*) from Comment model where model.isDelete = 'NO'");
 		
 		return (Long) query.uniqueResult();
 	}

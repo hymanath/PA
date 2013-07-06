@@ -12,9 +12,9 @@ public interface IAnnouncementFilesDAO  extends GenericDao<AnnouncementFiles, Lo
 	
 	public List<Object[]> getAnnoncementById(Long announcementId);
 	
-	public List<AnnouncementFiles> getAllAnnouncements(int startRecord,int maxRecord,Long userId);
+	public List<AnnouncementFiles> getAllAnnouncements(int startRecord,int maxRecord);
 	
-	public int getAllAnnouncementsCountOfUser(Long userId);
+	public int getAllAnnouncementsCountOfUser();
 	
 	public List<Object[]> getAllAnnoncement(Long announcementTypeId);
 	

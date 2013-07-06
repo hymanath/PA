@@ -45,14 +45,14 @@ public class CommentDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(commentDAO.getTotalCommentsCountByAnnouncementId(1l));
 	}*/
 	
-	/*public void testCount()
+	public void testCount()
 	{
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		 Date startDate = null;
 		 Date endDate = null   ;
 		try {
-			startDate = df.parse("2013-06-12");
-			endDate   = df.parse("2013-07-03");
+			startDate = df.parse("2013-06-04");
+			endDate   = df.parse("2013-07-05");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,7 +64,7 @@ public class CommentDAOHibernateTest extends BaseDaoTestCase{
 		}
 		
 		//System.out.println(commentDAO.getCommentsCountBetweenSelectedDates(startDate , endDate));
-	}*/
+	}
 	
 	/*public void testCount()
 	{
@@ -88,8 +88,8 @@ public class CommentDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testCount()
+	/*public void testCount()
 	{
 		System.out.println(commentDAO.getTotalCommentsCountByAnnouncementId(1l));
-	}
+	}*/
 }
