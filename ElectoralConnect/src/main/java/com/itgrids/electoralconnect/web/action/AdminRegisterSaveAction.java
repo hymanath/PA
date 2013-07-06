@@ -31,6 +31,7 @@ public class AdminRegisterSaveAction extends ActionSupport implements ServletReq
 	private IMailService mailService;
 	private String userType;
 	private Long type;
+	private String resultStr;
 	public String getFirstName() {
 		return firstName;
 	}
@@ -100,6 +101,14 @@ public class AdminRegisterSaveAction extends ActionSupport implements ServletReq
 	public void setType(Long type) {
 		this.type = type;
 	}
+	
+	public String getResultStr() {
+		return resultStr;
+	}
+
+	public void setResultStr(String resultStr) {
+		this.resultStr = resultStr;
+	}
 
 	public String execute()
 	{
@@ -113,14 +122,23 @@ public class AdminRegisterSaveAction extends ActionSupport implements ServletReq
 			userProfileVO.setEpicId(epicId);
 			userProfileVO.setUserType(userType);
 			RegistrationVO  regVO = userService.registerUser(userProfileVO);
-			String requestURL= request.getRequestURL().toString();
-			String requestFrom = "";
-			if(requestURL.contains("www.partyanalyst.com"))
-				requestFrom = IConstants.SERVER;
+			if(regVO != null)
+			{
+				resultStr= "SUCCESS";
+				String requestURL= request.getRequestURL().toString();
+				String requestFrom = "";
+				if(requestURL.contains("www.partyanalyst.com"))
+					requestFrom = IConstants.SERVER;
+				else
+					requestFrom = IConstants.LOCALHOST;
+				
+				ResultStatus rs = mailService.sendRegistrationNotification(regVO,requestFrom);
+			}
 			else
-				requestFrom = IConstants.LOCALHOST;
+			{
+				resultStr= "FAILURE";
+			}
 			
-			ResultStatus rs = mailService.sendRegistrationNotification(regVO,requestFrom);
 		} catch (Exception e) {
 			LOG.error("Exception raised in execute() method in AdminRegisterSaveAction Action", e);
 		}

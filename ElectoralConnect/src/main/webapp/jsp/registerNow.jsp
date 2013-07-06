@@ -79,14 +79,14 @@
 				
 				<div id="userType"><input type="hidden" id="userType" name="userType" value="${userType}"></input></div>
 				
-				${resultStr}
+				<div id="successMsg" style="margin-left: 77px;"></div>
 			</form>
 			
 		
 			<button class="btn btn-primary" id="saveUser">Save changes</button>
 		
 	
-		<div id="successMsg"></div>
+		
 		
 		<span style="float:right;display:none;"><a class="btn btn-primary" id="changePassword" >Change Password</a><span>
 		
@@ -255,11 +255,19 @@ $("#emailId").live("blur",function()
 		$('#passwordModal').modal('show');
 	} 
 	
-		<c:if test="${sessionScope.USER != null && sessionScope.USER.registrationID != null}">
+	/* <c:if test="${sessionScope.USER != null && sessionScope.USER.registrationID != null}">
 			$('#successMsg').html('<b style="color:green">User Registerd Successfully...</b>');
 			
 
-		</c:if>
+	</c:if> */
+	<c:if test="${resultStr=='SUCCESS'}">
+		$('#successMsg').html("Registered SuccessFully");
+		$('#successMsg').css("color","green");
+	</c:if>
+	<c:if test="${resultStr=='FAILURE'}">
+		$('#successMsg').html("Error Occured While Register..");
+		$('#successMsg').css("color","red");
+	</c:if>
 	</script>
 </body>
 </html>

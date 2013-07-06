@@ -163,6 +163,7 @@ public class AnnouncementService implements IAnnouncementService{
 				for(AnnouncementFiles files:announcementFiles){
 					announcementVO=new AnnouncementVO();
 					announcementVO.setAnnouncementFileId(files.getAnnouncementFilesId());
+					announcementVO.setAnnouncementType(files.getAnnouncements().getAnnouncementType().getAnnouncementTypeId());
 					announcementVO.setAnnouncementId(files.getAnnouncements().getAnnouncementId());
 					announcementVO.setAnnouncementTypeName(files.getAnnouncements().getAnnouncementType().getName());
 					announcementVO.setName(removeSpecialCharsFromAString(files.getAnnouncements().getTitle()));

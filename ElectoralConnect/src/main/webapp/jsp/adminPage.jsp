@@ -162,14 +162,12 @@
 				
 			<!--	<div id="userType"><input type="hidden" id="userType" name="userType" value="${userType}"></input></div>-->
 				
-				${resultStr}
+				<div id="successMsg" style="margin-left: 77px;"></div>
 			</form>
 			
 		
 			<button class="btn btn-primary" id="saveUser">Save changes</button>
 		
-	
-		<div id="successMsg"></div>
 		
 		<span style="float:right;display:none;"><a class="btn btn-primary" id="changePassword" >Change Password</a><span>
 		
@@ -678,7 +676,7 @@
 		str+="<li>";
 		if(results[i].announcementType == 1)
 		{
-			str+="<span class='icon-file'title='Notification'></span>";
+			str+="<span class='icon-list-alt' title='Notification'></span>";
 		}
 		else
 		{
@@ -866,7 +864,15 @@
 						 $("#allannoun").removeClass("selected");
 			}		
 				
-				
+	
+	<c:if test="${resultStr=='SUCCESS'}">
+		$('#successMsg').html("Registered SuccessFully");
+		$('#successMsg').css("color","green");
+	</c:if>
+	<c:if test="${resultStr=='FAILURE'}">
+		$('#successMsg').html("Error Occured While Register..");
+		$('#successMsg').css("color","red");
+	</c:if>
 </script>
 </body>
 </html>
