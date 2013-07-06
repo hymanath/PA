@@ -983,6 +983,15 @@ function getVotersInACaste(id,publicationDateId,caste,type,Name,casteStateId,cas
 	var updateBrowser = window.open(urlStr,"allVoterDetailsInAcaste"+casteStateId,"scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();
 }
+function getVotersInACasteForPanchayatHamlet(id,publicationDateId,caste,type,Name,casteStateId,casteCategory)
+{
+	var year=publicationYear;	
+	var mainId = 0;
+	var urlStr="allVotersInAcasteAction.action?hamletId="+id+"&mainId="+mainId+"&publicationDateId="+publicationDateId+"&caste="+caste+"&type="+type+"&Name="+Name+"&casteStateId="+casteStateId+"&typename=&casteCategory="+casteCategory+"&typename=&year="+year+"&buildTypes=panchayatHamlet&constituencyId="+constituencyId+" ";
+	var updateBrowser = window.open(urlStr,"allVoterDetailsInAcaste"+casteStateId,"scrollbars=yes,height=600,width=700,left=200,top=200");	
+	updateBrowser.focus();
+}
+
 function callAjax(jsObj,url)
 {
 			 var myResults;
@@ -3152,7 +3161,8 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 		}
 		else if(type =="panchayat" && buildType == "hamlet")
 		{
-		str+='<td><a href="javascript:{}" onclick="getVotersInACaste('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'panchayat\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
+		
+	str+='<td><a href="javascript:{}" onclick="getVotersInACasteForPanchayatHamlet('+constMgmtMainObj.castStatssubArray[i].locationId+','+publicationDateId+',\''+constMgmtMainObj.castStatssubArray[i].caste+'\',\'hamlet\',\'boothNo - '+constMgmtMainObj.castStatssubArray[i].mandal+'\',\''+constMgmtMainObj.castStatssubArray[i].castStateId+'\',\''+constMgmtMainObj.castStatssubArray[i].casteCategory+'\')">'+constMgmtMainObj.castStatssubArray[i].caste+'</a></td>';
 		}
 		else if(type =="hamlet")
 		{
