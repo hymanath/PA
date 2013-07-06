@@ -1097,7 +1097,9 @@ function buildDataTableForLocalPoliticalChanges(results)
 		sortable : true
 	}, {
 		key : "sourceOfInformation",
-		label : "Information Source",
+		//label : "Information Source",
+		label : "Source",
+		width:50,
 		sortable : true
 	}, {
 		key : "editDetails",
