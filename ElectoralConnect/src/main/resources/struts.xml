@@ -65,7 +65,7 @@
 			<result>/jsp/adminPage.jsp</result>
 			
 			<interceptor-ref name="fileUpload">
-				<param name="maximumSize">2097152</param>
+				<param name="maximumSize">20971520</param>
 				<param name="allowedExtensions">
 					.png,.gif,.jpeg,.pjpeg,.html,.txt,.xls,.pdf,.zip,.xlsx,.doc,.docx,.jpg
                 </param>
@@ -163,7 +163,7 @@
 			<result>/jsp/editAnnouncement.jsp</result>
 			
 			<interceptor-ref name="fileUpload">
-				<param name="maximumSize">2097152</param>
+				<param name="maximumSize">20971520</param>
 				<param name="allowedExtensions">
 					.png,.gif,.jpeg,.pjpeg,.html,.txt,.xls,.pdf,.zip,.xlsx,.doc,.docx,.jpg
                 </param>

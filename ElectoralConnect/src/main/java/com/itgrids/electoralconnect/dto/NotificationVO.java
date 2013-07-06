@@ -12,6 +12,8 @@ public class NotificationVO implements Serializable{
 	private String date;
 	private String updatedBy;
 	private Long count;
+	private String dateString;
+	
 	public Long getId() {
 		return id;
 	}
@@ -47,6 +49,12 @@ public class NotificationVO implements Serializable{
 	}
 	public void setCount(Long count) {
 		this.count = count;
+	}
+	public String getDateString() {
+		return dateString;
+	}
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
 	}
 	
 	
