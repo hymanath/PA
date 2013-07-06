@@ -157,7 +157,7 @@ $("#emailId").live("blur",function()
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "validateEmailAction.action?"+rparam;
-		callAjax(jsObj, url);
+		callAjax1(jsObj, url);
 	
 	}
 	function isValidEmailAddress(emailAddress) {
@@ -210,7 +210,7 @@ $("#emailId").live("blur",function()
 		return flag;
 		$('#errorMessage').html(str);
 	} */
-	function callAjax(jsObj,url){
+	function callAjax1(jsObj,url){
 		 var myResults;
 			 var callback = {			
  		               success : function( o ) {
@@ -240,6 +240,7 @@ $("#emailId").live("blur",function()
 		if(myResults=="FAILED"){
 			//$('#errorImgId').css('display','inline-block');	
 			$("#emailId").text('ok').html("Email Already Available").addClass('valid');
+			$("#emailId").closest('div').find('.error').html("Email Already Available");
 		}
 		else{
 			//alert("hhjgj");
