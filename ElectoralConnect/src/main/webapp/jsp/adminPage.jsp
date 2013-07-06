@@ -94,7 +94,7 @@
 		<img src="image/06.jpg" style="width: 79px;"  />
 		</div>
 		<div class="span6">
-		<h3 class="comment">Get All Comments</h3>
+		<h3 class="comment getCmmnts">Get All Comments</h3>
 		</div>
 		</div>
 		</a>
@@ -294,12 +294,15 @@
 	var enIndex    = 5;
 	var announcementData = "";
 	
-	getAllComments(0,5,'getTotalComments');
+	$('.getCmmnts').click(function(){
+			getAllCommentsPagination(0);
+	});
+
 	
 	$('.commentsBlock').click(function(){
 			var value=$('input:radio[name=comment]:checked').val();
 			if(value=="all"){
-				getAllComments(0,5,'getTotalComments');
+				getAllCommentsPagination(0);
 			}
 			else{
 				getCommentsBetweenDates();
@@ -336,17 +339,17 @@
 		callAjaxForAdmin(jsObj, url);
 	}
 	
-	$('#allannoun').click(function(){getPaginationForData(1)});
+	$('#allannoun').click(function(){getPaginationForData(0)});
 		
-	function getAllComments(stIndex,enIndex,task)
+	function getAllCommentsPagination(stIndex)
 	{
 		$('#btDatesMainDiv').hide();
 		$('#totalCommentsMainDiv').show();
 		var jsObj =
 		{  	
 			startIndex  : stIndex,
-			maxIndex    : enIndex,
-			task        : task
+			maxIndex    : 10,
+			task        : "getTotalComments"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "getCommentsByAdminAction.action?"+rparam;
@@ -365,7 +368,7 @@
 		 str +='<label>End Date:&nbsp;&nbsp;</label>';
 		 str += '<input type="text" id="endDate" class="calender input-medium"></input>';
 		 str +='<span style="margin-left:5px">';
-		 str += '<a class="btn btn-primary" onClick="getCommentsSelectdDates(startIndex,maxIndex,\'commentsBetweenDates\');">View</a>';
+		 str += '<a class="btn btn-primary" onClick="getCommentsSelectdDates(0);">View</a>';
 		 str +='</span>';
 		 str +='</form>';
 		 str +='</div>';
@@ -393,7 +396,7 @@
 		
 	}
 
-	function getCommentsSelectdDates(startIndex,maxIndex,task)
+	function getCommentsSelectdDates(startIndex)
 	{
 		var startDate = $('#startDate').val();
 		var endDate   = $('#endDate').val();
@@ -402,14 +405,69 @@
 			statrtDate  : startDate,
 			endDate     : endDate,
 			startIndex  : startIndex,
-			maxIndex    : maxIndex,
-			task        : task
+			maxIndex    : 10,
+			task        : "commentsBetweenDates"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "getCommentsByAdminAction.action?"+rparam;
 		callAjaxForAdmin(jsObj, url);
 	}
 	
+
+  function buildAllCommentsList(myResults,jsObj)
+	{
+		//alert('in123');
+		$("#totalCommentsBtDates").css("display","block");
+		$("#totalCommentsBtDates").html('');
+		if(myResults != null)
+		{
+			totalCount = myResults[0].total ;
+			var str = "";
+			for(var i in myResults)
+			{
+			str += '<div id="commentsDIv'+myResults[i].commentId+'">';
+			str +='<div class="comment_sec span7">';
+			if(myResults[i].abused.toLowerCase() == "no")
+			{
+			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
+			}
+			str +='<span class="title_sec">TITLE:</span><span class="title_sec1">'+myResults[i].announcement+'</span>';
+			str +='<hr style="margin-top:0px;">';
+			str +='<span style="font-size: 15px;">'+myResults[i].comment+'</span>';
+			str +='<hr style="margin-top:0px;">';
+			str +=' <span class="label1 label-info">Posted By:</span>';
+			str +='<span class="posted_sec">'+myResults[i].name+'</span>';
+			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].date+'</span></div>';
+
+
+			str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
+
+			str +='</div>';
+			str +='</div>';
+			str += '<a id="moreButton" style="display:none;margin-top:5px;" class="btn btn-primary pull-right" onClick="getRemaingTotalCommentsList();">More</a>'
+
+			}
+		  var itemsCount=totalCount;
+		  var maxResults=jsObj.maxIndex;
+	     str+="</ul>";
+	    $("#pagedCommentsId").html(str);
+	    if(jsObj.startIndex==0){
+		  $("#paginationAnnouncementId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*10;
+				getAllCommentsPagination(num);
+				
+			}
+		});
+		
+	  }	
+  
+	}
+ }
+
 	function buildTotalCommentsListBtDates(myResults)
 	{
 		alert('in');
@@ -460,10 +518,10 @@
 	}
 	function getRemaingCommentsList()
 	{
-		getCommentsSelectdDates(startIndex,maxIndex,"commentsBetweenDates");
+		getCommentsSelectdDates(startIndex);
 	}
 	
-	function buildTotalCommentsList(myResults,id,startRecord)
+	function buildTotalCommentsListBetweenDates(myResults,jsObj)
 	{
 		if(myResults != null)
 		{
@@ -483,7 +541,7 @@
 			str +='<hr style="margin-top:0px;">';
 			str +=' <span class="label1 label-info">Posted By:</span>';
 			str +='<span class="posted_sec">'+myResults[i].name+'</span>';
-			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].date+'</span></div>';
+			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].commentedTime+'</span></div>';
 
 
 			str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
@@ -493,42 +551,31 @@
 			str += '<a id="moreButton" style="display:none;margin-top:5px;" class="btn btn-primary pull-right" onClick="getRemaingTotalCommentsList();">More</a>'
 
 			}
-			
-			if(id=="totalCommentsList"){
-				$('#pagedCommentsId').html(str);
-			}
-			else{
-				$('#pagedCommentsId').html(str);
-			}
-		}
-		
-		debugger;
-		if(startRecord==0){
-		$("#paginationAnnouncementId").pagination({
-			items: totalCount,
-			itemsOnPage: 5,
+		var itemsCount=totalCount;
+	    var maxResults=jsObj.maxIndex;
+	    str+="</ul>";
+	    $("#pagedCommentsId").html(str);
+	     if(jsObj.startIndex==0){
+		   $("#paginationAnnouncementId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
 			cssStyle: 'light-theme',
 			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*5;
-				if(id=="totalCommentsList"){
-					$('#pagedCommentsId').html(str);
-				}
-				else{
-					$('#pagedCommentsId').html(str);
-				}
-				//getPaginationForData(num);
-				// Callback triggered when a page is clicked
-				// Page number is given as an optional parameter
+				var num=(pageNumber-1)*10;
+				getAllCommentsPagination(num);
+				
 			}
 		});
 		
-		}
+	  }
+
+   	}
 		
 		
 	}
 	function getRemaingTotalCommentsList()
 	{
-		getAllComments(stIndex,enIndex,'getTotalComments');
+		getAllCommentsPagination(stIndex);
 	}
 	
 	function abuseComment(id)
@@ -552,11 +599,12 @@
 								
 								if(jsObj.task =="commentsBetweenDates")
 								{
-									buildTotalCommentsList(myResults,"totalCommentsBtDates",0);
+									buildTotalCommentsListBetweenDates(myResults,jsObj);
 								}
 								else if(jsObj.task =="getTotalComments")
 								{
-									buildTotalCommentsList(myResults,"totalCommentsList",0);
+									//buildTotalCommentsList(myResults,"totalCommentsList",0);
+									buildAllCommentsList(myResults,jsObj);
 								}
 								else if(jsObj.task =="getAllAnnouncements")
 								{
@@ -645,7 +693,7 @@
 	var maxResults=jsObj.maxRecord;
 	str+="</ul>";
 	$("#pagedAnnouncementsId").html(str);
-	if(jsObj.startRecord==1){
+	if(jsObj.startRecord==0){
 		$("#paginationId").pagination({
 			items: itemsCount,
 			itemsOnPage: maxResults,
