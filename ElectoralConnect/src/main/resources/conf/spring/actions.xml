@@ -34,6 +34,7 @@
 	 
 	 <bean id="adminPageAction" class="com.itgrids.electoralconnect.web.action.AdminPageAction" singleton="false">
 	 	<property name="userService" ref="userService"/>
+	 	<property name="mailService" ref="mailService"/>
 	 </bean>
 	 
 	 	 

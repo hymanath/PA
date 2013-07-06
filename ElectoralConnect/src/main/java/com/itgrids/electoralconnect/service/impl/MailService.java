@@ -1,6 +1,5 @@
 package com.itgrids.electoralconnect.service.impl;
 
-import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -497,6 +496,49 @@ public class MailService implements IMailService{
 		
 	}
 	*/
+	/**
+	 * This Service is used to seng email to the user about the abused comment status
+	 * @param UserVO userVO
+	 * @param String requestFrom
+	 * @return ResultStatus
+	 * @date 06-07-2013
+	 */
+	public ResultStatus sendMailToUserAboutAbuseComment(UserVO userVO,String requestFrom)
+	{
+		QuickRequestVO quickRequestVO = new QuickRequestVO();
+    	ResultStatus rs = new ResultStatus();
+    	String subject;
+		String text;
+    	subject = "";
+    	subject = "Mail From www.electoralconnect.com";
+    	
+    	text = "";
+    	text = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" 
+    			+"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'>Hi <b>"+userVO.getFirstname()+" "+userVO.getLastname()+",</b></div>" +
+    			"<div style='margin-left:45px;margin-bottom:40px;line-height: 1.5em;'>Here are the Comment details .<br>";
+    	text += "Your Comment : " + " " +userVO.getDescription()+"<br>";
+    	text += "User Name is : " + " " +userVO.getEmailId()+"<br>";
+    	if(userVO.getPwd() != null)
+    		text += "Your comment is abused beacuse your comment is not good it may hurt some one thats why we deleted your comment</br>";
+    		
+    	//text += "Your Password is :" +"  <b>"+ regVO.getPassword()+"</b>";
+    	text +="</div><div style='margin: -17px 3px 0px 19px; padding-bottom: 18px;'>"+mailsTemplateService.getFooter()+"</div></div>";
+    	quickRequestVO.setToEmailId(userVO.getEmailId());
+    	quickRequestVO.setSubject(subject);
+    	quickRequestVO.setText(text);
+    	
+    	 if(requestFrom.equalsIgnoreCase(IConstants.LOCALHOST)){
+            	quickRequestVO.setFromEmailId(IConstants.LOCALFROMEMAILID);
+            rs=sendMailFromLocalHost(quickRequestVO);
+            }
+            else if(requestFrom.equalsIgnoreCase(IConstants.SERVER))
+            {
+            	quickRequestVO.setFromEmailId(IConstants.FROMEMAILID);
+            	rs = sendMailFromServer(quickRequestVO);
+            }
+
+    	return rs;
+	}
 	
 }
 

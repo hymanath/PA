@@ -17,6 +17,8 @@ private String epicId;
 private Long profileId;
 private Long loginId;
 private Long userId;
+private String description;
+private int resultCode;
 public String getUsername() {
 	return username;
 }
@@ -76,6 +78,18 @@ public Long getUserId() {
 }
 public void setUserId(Long userId) {
 	this.userId = userId;
+}
+public String getDescription() {
+	return description;
+}
+public void setDescription(String description) {
+	this.description = description;
+}
+public int getResultCode() {
+	return resultCode;
+}
+public void setResultCode(int resultCode) {
+	this.resultCode = resultCode;
 }
 
 

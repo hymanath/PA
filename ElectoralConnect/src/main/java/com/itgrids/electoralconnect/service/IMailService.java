@@ -18,5 +18,7 @@ public interface IMailService {
 	public ResultStatus sendRegistrationNotification(RegistrationVO userVO,String requestFrom);
 	  
 	public  ResultStatus sendMailFromServer(QuickRequestVO quickRequestVO);
+	
+	public ResultStatus sendMailToUserAboutAbuseComment(UserVO userVO,String requestFrom);
 		
 }
