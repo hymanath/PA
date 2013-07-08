@@ -50,7 +50,7 @@
 <div id="allNotificationDiv" align="center" ></div>
 </div>
 </div>
-<div><a class="btn btn-primary pull-right allblockinsected" onClick="getAllAnnoncements();">View All ${name}</a></div>
+<div><a class="btn btn-primary pull-right allblockinsected" onClick="getAllAnnoncements('${name}');">View All ${name}</a></div>
 <script>
 var myResults = window.opener.result;
 var startIndex = 0;
@@ -59,6 +59,7 @@ var totalCount = "";
 var id = "";
 var allAnnouncements = "";
 var announcenentTypeId = "";
+var announcementsJsObj ="";
 if(myResults != null)
 {
 	var str = "";
@@ -90,22 +91,25 @@ if(myResults != null)
 
 -->
 
-function getAllAnnoncements()
+function getAllAnnoncements(name)
 {
 	var jsObj =
 		{  	
 			announcenentTypeId : announcenentTypeId,
+			announcementName   : name,
 			task               : "getAllAnnouncements"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "getTopAnnouncementsAction.action?"+rparam;
 		callAjaxForComments(jsObj, url);
 }
-function buildAllAnnouncements(myResults)
+function buildAllAnnouncements(myResults,jsObj)
 {
 	if(myResults != null)
 	{
 		allAnnouncements = myResults;
+		announcementsJsObj=jsObj;
+		
 		window.open('allAnnouncementsDisplayAction.action');
 		/* var str = "";
 		for(var i in myResults)
@@ -218,7 +222,7 @@ function callAjaxForComments(jsObj,url)
 			myResults = YAHOO.lang.JSON.parse(o.responseText);
 			if(jsObj.task =="getAllAnnouncements")
 			{
-				buildAllAnnouncements(myResults);
+				buildAllAnnouncements(myResults,jsObj);
 			}
 			else if(jsObj.task =="commentSave")
 			{
