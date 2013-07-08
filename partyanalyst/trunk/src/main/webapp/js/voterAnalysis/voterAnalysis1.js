@@ -1105,7 +1105,7 @@ function addToPolitician(voterId,name)
 			  $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 
 		 }
-	   if(type == "panchayat" || type == "booth" || type == "hamlet" || type=="customWard" ){
+	    if(type == "panchayat" || type == "booth" || type == "hamlet" || type=="customWard" ){
 	      $("#votersInfoMoreShowHide").show();
 		 }else{
 		  $("#votersInfoMoreShowHide").hide();
@@ -5576,7 +5576,10 @@ function getPreviousElectionVotingTrends(id,publicationId,type)
 	var data = new Array();
 function showPreviousEleVotingTrends(results,jsObj)
 {
-   
+   if(results == null)
+	$("#previousEleVotingTrendsDiv1").css("display","none");
+   if(results != null)
+	{
     if(jsObj.type == "customWard")
 	{
 		$("#previousEleVotingTrendsDiv1").css("display","none");
@@ -5666,6 +5669,7 @@ function showPreviousEleVotingTrends(results,jsObj)
 		 }
 	 }
 	
+	}
 	}
 }
 
@@ -6120,8 +6124,6 @@ var jsObj=
 
 	 $("#reportLevelCountDiv1").html(str);
 	}
-
-
 function buildPreviousVotersDetails(myResults,jsObj){
 
 
