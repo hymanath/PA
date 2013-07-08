@@ -1121,7 +1121,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			return constituency.getName();
 		}else if(infScope.equalsIgnoreCase(IConstants.BOOTH)){
 			Booth booth = boothDAO.get(new Long(regionId));
-			return booth.getPartNo().toString()+" Booth";
+			return booth.getPartNo().toString()+" Booth ("+booth.getConstituency().getName()+")";
 		}
 	 return null;
 	}
