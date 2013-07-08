@@ -41,7 +41,7 @@
 	.t_align{text-align:center;}
 	#forFileId{width:630px;margin-bottom:10px;}
 	#statusMessage{margin:10px;}
-	.comment_sec{border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left:75px;padding: 12px;}
+	.comment_sec{border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left:15px;padding: 12px;}
 	.label1 {background: none repeat scroll 0 0 #3A87AD;color:#fff;font-weight:bold;padding:1px;}
 	.title_sec{font-family: icon;font-size: 15px;font-weight: bold;}
 	.title_sec1{color: #0989C9; font-size: 14px;font-weight: bold;text-transform: uppercase;}
@@ -65,7 +65,9 @@
 			.title p{margin-top:-9px;}
 			.date {font-size:12px;font-weight:bold;color:#2DCFFE; float:left;}
 			
-
+		.indiComment{margin:4px;padding:10px;}
+		#indiCommentName{margin:2px;}
+		#indiCommentDate{margin:2px;color:#28B0D6;}
 
 </style>
 
@@ -447,8 +449,8 @@
 	{
 		var startDate = $('#startDate').val();
 		var endDate   = $('#endDate').val();
-		alert(startDate);
-		alert(endDate);
+		//alert(startDate);
+		//alert(endDate);
 		if(startDate != "" && endDate != "")
 		{
 			var jsObj =
@@ -482,18 +484,18 @@
 			for(var i in myResults)
 			{
 			str += '<div id="commentsDIv'+myResults[i].commentId+'">';
-			str +='<div class="comment_sec span7">';
+			str +='<div class="comment_sec span9">';
 			if(myResults[i].abused.toLowerCase() == "no")
 			{
 			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
 			}
-			str +='<span class="title_sec">TITLE:</span><span class="title_sec1">'+myResults[i].announcement+'</span>';
+			str +='<span class="title_sec"></span><span class="title_sec1">'+myResults[i].announcement+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +='<span class="font_desc">'+myResults[i].comment+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +=' <span class="label1 label-info">Posted By:</span>';
 			str +='<span class="posted_sec">'+myResults[i].name+'</span>';
-			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].date+'</span></div>';
+			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].commentedTime+'</span></div>';
 
 
 			str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
@@ -586,12 +588,12 @@
 			for(var i in myResults)
 			{
 			str += '<div id="commentsDIv'+myResults[i].commentId+'">';
-			str +='<div class="comment_sec span7">';
+			str +='<div class="comment_sec span9">';
 			if(myResults[i].abused.toLowerCase() == "no")
 			{
 			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
 			}
-			str +='<span class="title_sec">TITLE:</span><span class="title_sec1">'+myResults[i].announcement+'</span>';
+			str +='<span class="title_sec"></span><span class="title_sec1">'+myResults[i].announcement+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +='<span style="font-size: 15px;">'+myResults[i].comment+'</span>';
 			str +='<hr style="margin-top:0px;">';
@@ -818,10 +820,10 @@
 			var date="";
 				for(var i in myResults)
 				{
-					str += '<div class="thumbnail indiCommentId">';
-					str +='<span>'+myResults[i].comment+'</span></br>';
-					str +='<span class="pull-left label label-important">'+myResults[i].name+'</span>';
-					str +='<span class="pull-right ">'+myResults[i].commentedTime+'</span></br>';
+					str += '<div class="thumbnail indiComment">';
+					str +='<span id="indiCommentId">'+myResults[i].comment+'</span></br>';
+					str +='<span class="pull-left label label-important" id="indiCommentName">'+myResults[i].name+'</span>';
+					str +='<span class="pull-right " id="indiCommentDate">'+myResults[i].commentedTime+'</span></br>';
 					str += '</div>';
 				}
 				<!--str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList('+announcementId+');">More</a>';-->

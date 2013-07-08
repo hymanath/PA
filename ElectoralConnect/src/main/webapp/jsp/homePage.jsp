@@ -31,7 +31,6 @@
 			.title p{margin-top:-9px;}
 			.date h2{font-size:9px; line-height:15px;padding:2px 15px 2px 2px;color:#2DCFFE; float:left;}
 			#totalCommentsModal{width:600px;}
-			.indiCommentId{margin:10px;}
 			
 			/*----------5-july---------*/
 			.bigsblock{position:relative; display: table;width:100%;background:#ffffff;border:5px solid #2DCFFE; }
@@ -41,6 +40,9 @@
 			.closeBtn{margin-left: 54px;bottom: 0px; position: absolute;}
 			.closeBtn:hover{box-shadow:0px 0px 10px #c0c0c0;}
 			.newsReleaseId{width:550px;background:#FFFFFF;margin:2px;padding:8px;display:inline-block;}
+			.indiComment{margin:4px;padding:10px;}
+			#indiCommentName{margin:2px;}
+			#indiCommentDate{margin:2px;color:#28B0D6;}
 </style>
 <div>
 <!--<div id="bodyId">Hello Welcome to Electoral Connect </div>
@@ -370,10 +372,10 @@ function buildTotalCommentsList(myResults,jsObj)
 		var date="";
 			for(var i in myResults)
 			{
-				str += '<div class="thumbnail indiCommentId">';
-				str +='<span>'+myResults[i].comment+'</span></br>';
-				str +='<span class="pull-left label label-important">'+myResults[i].name+'</span>';
-				str +='<span class="pull-right ">'+myResults[i].commentedTime+'</span></br>';
+				str += '<div class="thumbnail indiComment">';
+				str +='<span id="indiCommentId">'+myResults[i].comment+'</span></br>';
+				str +='<span class="pull-left label label-info" id="indiCommentName">'+myResults[i].name+'</span>';
+				str +='<span class="pull-right" id="indiCommentDate">'+myResults[i].commentedTime+'</span></br>';
 				str += '</div>';
 			}
 			<!--str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList('+announcementId+');">More</a>';-->
