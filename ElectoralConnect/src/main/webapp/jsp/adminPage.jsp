@@ -416,6 +416,7 @@
 		 str +='<span style="margin-left:5px">';
 		 str += '<a class="btn btn-primary" onClick="getCommentsSelectdDates(0);">View</a>';
 		 str +='</span>';
+		 str +='<div style="margin-top: 10px;" id="dateErrMsg"></div>';
 		 str +='</form>';
 		 str +='</div>';
    		 $('#betweenDatesDiv').html(str);
@@ -446,17 +447,27 @@
 	{
 		var startDate = $('#startDate').val();
 		var endDate   = $('#endDate').val();
-		var jsObj =
-		{  	
-			statrtDate  : startDate,
-			endDate     : endDate,
-			startIndex  : startIndex,
-			maxIndex    : 10,
-			task        : "commentsBetweenDates"
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-		var url = "getCommentsByAdminAction.action?"+rparam;
-		callAjaxForAdmin(jsObj, url);
+		alert(startDate);
+		alert(endDate);
+		if(startDate != "" && endDate != "")
+		{
+			var jsObj =
+			{  	
+				statrtDate  : startDate,
+				endDate     : endDate,
+				startIndex  : startIndex,
+				maxIndex    : 10,
+				task        : "commentsBetweenDates"
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "getCommentsByAdminAction.action?"+rparam;
+			callAjaxForAdmin(jsObj, url);
+		}
+		else
+		{
+			$('#dateErrMsg').html('<b style="color:red">Please Select Date Fields</b>');
+		}
+		
 	}
 	
 
@@ -515,7 +526,6 @@
 
 	function buildTotalCommentsListBtDates(myResults)
 	{
-		alert('in');
 		if(myResults != null)
 		{
 			totalCount = myResults[0].total ;
@@ -616,7 +626,10 @@
 	  }
 
    	}
-		
+	else
+	{
+		$('#dateErrMsg').html('<b style="color:red">No Data Avaliable</b>');
+	}	
 		
 	}
 	function getRemaingTotalCommentsList()
