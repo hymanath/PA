@@ -36,10 +36,10 @@
     font-size: 25px;
     font-weight: bold;
     text-align: center;}
-	.align{ width:595px;margin-left: 90px;
+	.align{ width:630px;margin-left: 90px;
    margin-top:7px;}
 	.t_align{text-align:center;}
-	#forFileId{width:595px;margin-bottom:10px;}
+	#forFileId{width:630px;margin-bottom:10px;}
 	#statusMessage{margin:10px;}
 	.comment_sec{border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left:75px;padding: 12px;}
 	.label1 {background: none repeat scroll 0 0 #3A87AD;color:#fff;font-weight:bold;padding:1px;}
