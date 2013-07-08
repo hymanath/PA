@@ -306,16 +306,19 @@ function buildProblemsDetailsDataTable(results,jsObj) {
 	caption = "Problems in " + jsObj.status + " Status";
 
 	var contentStr = '';
-	contentStr += '<div id="problems_Datatable"></div>';
+	contentStr += '<div id="problems_Datatable" style="width:850px"></div>';
 
 	var myPanel = new YAHOO.widget.Dialog("problemsByStatusPanelDiv", {
 
-		width : "650px",
+		width : "800px",
+		x:120,
 		fixedcenter : false,
 		visible : true,
 		constraintoviewport : true,
 		iframe : true,
 		modal : true,
+		draggable: true,
+		zindex:10,
 		hideaftersubmit : true,
 		close : true
 	});
@@ -328,10 +331,10 @@ function buildProblemsDetailsDataTable(results,jsObj) {
 		
 		for(var i in results){
 			var problem = {
-					problem:results[i].problem, 
+					problem:'<a href="completeProblemDetailsAction.action?problemId='+results[i].problemId+'" target="_blank">'+results[i].problem+'</a>', 
 				  	description:results[i].description,
 					existingFrom:results[i].existingFrom,
-					
+					postedDate: results[i].postedDate,
 					location : results[i].problemLocation,
 					status:results[i].status,
 					};
@@ -366,12 +369,12 @@ function initializeResultsTable(divId, problemDetails, caption) {
 		key : "description",
 		label : localizationObj.description
 	}, {
-		key : "existingFrom",
-		label : localizationObj.existingFrom
+		key : "postedDate",
+		label : "Posted Date"
 		},
 		{
 		key : "existingFrom",
-		label : localizationObj.existingFrom
+		label : "Existing From (Date)"
 		},
 		
 			 {
@@ -379,12 +382,10 @@ function initializeResultsTable(divId, problemDetails, caption) {
 		label : localizationObj.status,
 		sortable : true
 	} ];
-
 	var probDTDataSource = new YAHOO.util.DataSource(problemDetails);
 	probDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	probDTDataSource.responseSchema = {
-		fields : [ "problem", "description", "existingFrom",
-				 
+		fields : [ "problem", "description","postedDate", "existingFrom",				 
 				"status" ]
 	};
 
