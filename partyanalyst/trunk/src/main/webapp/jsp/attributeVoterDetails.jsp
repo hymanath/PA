@@ -67,12 +67,16 @@
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <script type="text/javascript" src="js/commonVoterDetails.js"></script>
 <title>Voters Details</title>
-
+<style>
+ #votersByLocationTabContentDiv_body{
+ 	overflow-x: scroll;
+  }
+</style>
 </head>
 <body>
-<div id="headingDiv" align="center" >Voter Details</div>
+<div id="headingDiv" align="center" ><h3 style="color: rgb(255, 255, 255); border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px; height: 28px; font-family: arial; font-size: 16px; background: none repeat scroll 0px 0px rgb(73, 175, 205); padding: 5px 5px 15px;">Voter Details</h3></div>
 <div id="ajaxImageDiv" align="center" style="margin-top: 50px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
-<div id="mainDiv">
+<div id="mainDiv" style="margin-left: 22px;">
 <div id="votersCountId"> </div>
 <div id="hamletAndBoothCount"></div>
 <div id="voterTypeId"></div>
@@ -124,7 +128,7 @@
     margin-left: 16px;"/>
 <div id="errorMessageDiv"></div>
 </div>
-<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable yui-dt table table-bordered table-striped table-hover" style="display:none;">
+<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable yui-dt table table-bordered table-striped table-hover" style="display:none;width: 990px; clear: both;">
 </div></div>
 
 <div id="influencyPopupDiv"></div>
