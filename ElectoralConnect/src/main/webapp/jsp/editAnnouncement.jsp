@@ -19,9 +19,13 @@
 
 <script>
 var myResults = window.opener.announcementData;
-//console.log(myResults);
+var resultString = '${resultString}';
 if(myResults != null)
 {
+	var title = htmlspecialchars(myResults[0].title);
+	var description = htmlspecialchars(myResults[0].description);
+	var filetitle = htmlspecialchars(myResults[0].fileTitle);
+	var fileDescription = htmlspecialchars(myResults[0].fileDescription);
 	var str = "";
 	str += '<div id="BOX-2" style="background-color:#fff;">';
 	str += '<form class="form-horizontal AnnouncementForm" name="AnnouncementForm" action="editUpdateAnnouncementAction.action?fromForm=announcement"  method="post" enctype="multipart/form-data">';
@@ -35,12 +39,12 @@ if(myResults != null)
 	str += '<div class="control-group">';
 	str += '<label class="control-label requ" for="Title">Title</label>';
 	str += '<div class="controls ">';
-	str += '<input type="text" name="title" id="titleId" placeholder="Title" value='+myResults[0].title+'> ';
+	str += '<input type="text" name="title" id="titleId"></input> ';
 	str += '</div></div>';
 	str += '<div class="control-group ">';
 	str += '<label class="control-label requ" for="Description">Description</label>';
 	str += '<div class="controls">';
-	str += '<textarea rows="4" id="descriptionId" name="description" placeholder="Description">'+myResults[0].description+'</textarea>';
+	str += '<textarea rows="4" id="descriptionId" name="description" placeholder="Description"></textarea>';
 	str += '</div></div>';
 	str += '<div class="control-group ">';
 	str += '<label class="control-label requ" for="announcementType">Announcement Type</label>';
@@ -74,12 +78,12 @@ if(myResults != null)
 	str += '<div class="control-group">';
 	str += '<label class="control-label requ" for="FileTitle">Title</label>';
 	str += '<div class="controls ">';
-	str += '<input type="text" name="filetitle" id="fileTitleId" placeholder="File Title" value='+myResults[0].fileTitle+'> ';
+	str += '<input type="text" name="filetitle" id="fileTitleId" placeholder="File Title"> ';
 	str += '</div></div>';
 	str += '<div class="control-group ">';
 	str += '<label class="control-label requ" for="FileDescription">Description</label>';
 	str += '<div class="controls">';
-	str += '<textarea rows="2" id="fileDescriptionId" name="fileDescription" placeholder="File Description">'+myResults[0].fileDescription+'</textarea></div></div>';
+	str += '<textarea rows="2" id="fileDescriptionId" name="fileDescription" placeholder="File Description"></textarea></div></div>';
 	str += '<div class="control-group">';
 	str += '<label class="control-label" for="docs">Related Documents</label>';
 	str += '<div class="controls">';
@@ -110,7 +114,23 @@ if(myResults != null)
 	str += '<input type="submit" class="btn btn-primary " id="saveAnnouncement" value="Update"></input>';
 	str += '</form></div></div>';
 	$('#announcementForm').html(str);
+	if(resultString == '')
+	{
+		$('#titleId').val(title);
+		$('#fileTitleId').val(filetitle);
+		$('#fileDescriptionId').val(fileDescription);
+		$('#descriptionId').val(description);
+	}
+	else
+	{
+		$('#titleId').val('');
+		$('#fileTitleId').val('');
+		$('#fileDescriptionId').val('');
+		$('#descriptionId').val('');
+	}
+	
 }
+
 function getFileDetailsDiv()
 {
 	if($('#attachFileId').is(":checked") == true)
@@ -147,7 +167,17 @@ $('#saveAnnouncement').click(function(){
 $(function(){	
 	$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
 });
-	
+
+function htmlspecialchars(str) {
+     if (typeof(str) == "string") {
+      str = str.replace(/&/g, "&amp;"); /* must do &amp; first */
+      str = str.replace(/"/g, "&quot;");
+      str = str.replace(/'/g, "&#039;");
+      str = str.replace(/</g, "&lt;");
+      str = str.replace(/>/g, "&gt;");
+      }
+     return str;
+     }
 <c:if test="${fromForm=='announcement'}">
 		<c:if test="${resultString=='SUCCESS'}">
 			$('#statusMessage').html("Uploaded SuccessFully");

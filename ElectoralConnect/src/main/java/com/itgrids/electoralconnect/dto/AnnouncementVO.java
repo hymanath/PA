@@ -31,6 +31,7 @@ public class AnnouncementVO implements Serializable{
 	private String dateString;
 	private String title;
 	private Long id;
+	private Long commentsCount;
 	public String getName() {
 		return name;
 	}
@@ -162,6 +163,12 @@ public class AnnouncementVO implements Serializable{
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Long getCommentsCount() {
+		return commentsCount;
+	}
+	public void setCommentsCount(Long commentsCount) {
+		this.commentsCount = commentsCount;
 	}
 		
 	

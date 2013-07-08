@@ -300,6 +300,18 @@
 			
 		</div>
 
+		<div id="totalCommentsModal" class="modal hide fade">
+		<div class="modal-body">
+			<a class="close" data-dismiss="modal">X</a>
+			<legend>Comments On this Announcement</legend>
+			<div id="totalComments"></div>
+			<a id="moreId"></a>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+		</form>
+</div>
 </div>
 
 <script>
@@ -641,9 +653,21 @@
 								}
 								else if(jsObj.task =="getTotalComments")
 								{
+									if(jsObj.showMore == true)
+									{
+										buildTotalCommentsList(myResults,jsObj)
+									}
+									else
+									{
+										//buildTotalCommentsList(myResults,"totalCommentsList",0);
+										buildAllCommentsList(myResults,jsObj);
+									}								
+								}
+								/* else if(jsObj.task =="getTotalComments" )
+								{
 									//buildTotalCommentsList(myResults,"totalCommentsList",0);
 									buildAllCommentsList(myResults,jsObj);
-								}
+								} */
 								else if(jsObj.task =="getAllAnnouncements")
 								{
 									buildAllAnnouncements(myResults,jsObj);
@@ -680,6 +704,7 @@
 										$('#statusMsg'+jsObj.announcementId+'').html('<b style="color:red">Error Occured While Deleteing The Announcement</b>');
 									}
 								}
+								
 								}catch (e) {
 							     
 								}  
@@ -716,8 +741,8 @@
 			str +='<div  class="thumbnail title span8" id="announcemtsDiv'+results[i].announcementId+'">';				
 	
 	str+= "<div style='float:right; margin-right: 17px;margin-top: 7px;'><a class='icon-pencil' onClick='editAnnouncement("+results[i].announcementFileId+")' style='cursor: pointer; margin-right: 7px;'></a>";
-		str+= "<a class='icon-remove' onClick='deleteAnnouncement("+results[i].announcementId+")' style='cursor: pointer;'></a></div>";
-		
+	str+= "<a class='icon-remove' onClick='deleteAnnouncement("+results[i].announcementId+")' style='cursor: pointer;'></a>";
+	str += "<span class='pull-right label' style='margin-left: 10px;'><a style='cursor: pointer;' onClick='getComments("+results[i].announcementId+",startIndex,maxIndex,true);'><i class='icon-comment'></i></a><small>"+results[i].commentsCount+"</small></span></div>";	
 	str +='<h1>'+results[i].name+'</h1>';
 	
    str +='<p>'+results[i].description+'</p>';
@@ -748,7 +773,70 @@
 		
 	}
 	}
-
+	function getComments(id,startIndex,maxIndex,showMore)
+	{
+		/**
+			The showMore is used in callback function to append the results to existing div..else we clear the div
+		**/
+		var jsObj =
+			{  	
+				id          : id,
+				startIndex  : startIndex,
+				maxIndex    : maxIndex,
+				task        : "getTotalComments",
+				showMore    : showMore
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "getCommentsAction.action?"+rparam;
+			callAjaxForAdmin(jsObj, url);
+	}
+	function buildTotalCommentsList(myResults,jsObj)
+	{
+		var announcementId=jsObj.id;
+		
+		if(!jsObj.showMore)
+		$('#totalComments').html("");
+		
+		if(myResults != null)
+		{
+			totalCount = myResults[0].total;
+			var recordsPerPage=5;
+			var str = "";
+			var date="";
+				for(var i in myResults)
+				{
+					str += '<div class="thumbnail indiCommentId">';
+					str +='<span>'+myResults[i].comment+'</span></br>';
+					str +='<span class="pull-left label label-important">'+myResults[i].name+'</span>';
+					str +='<span class="pull-right ">'+myResults[i].commentedTime+'</span></br>';
+					str += '</div>';
+				}
+				<!--str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList('+announcementId+');">More</a>';-->
+				$('#totalComments').append(str);
+			if(recordsPerPage+startIndex < totalCount)
+			{
+				$('#moreId').html('<a class="btn btn-primary" onClick="getRemaingCommentsList('+announcementId+');">More</a>');
+				startIndex = startIndex + maxIndex;
+				maxIndex   =  maxIndex;
+				$('#moreId').css('display','block');
+			}
+			else
+			{
+				$('#moreId').css('display','none');
+				startIndex=0;
+			}
+		}
+		else
+		{
+			$('#moreId').css('display','none');
+			startIndex=0;
+		}
+		$('#totalCommentsModal').modal('show');
+	}
+	function getRemaingCommentsList(announcementId)
+	{
+		getComments(announcementId,startIndex,maxIndex,true);
+	}
 	function editAnnouncement(announcementId)
 	{
 		var jsObj =
