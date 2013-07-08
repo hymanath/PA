@@ -293,7 +293,14 @@
 	</div>
 			</div>
 			<div id="BOX-4" style="display: none">
-			<div id="pagedAnnouncementsId"  class="getallcomment" style="display: inline-block; width: 785px;"></div>
+			<div><input type="radio" name="announcement" value="all" id="forAnnouncementAllId" checked="checked" class="annoncementsBlock" onClick='getPaginationForData(0,"all");'>All</input>
+			<input type="radio" name="announcement" value="btDates" class="annoncementsBlock" onClick=''>Between Dates</input>
+			<input type="radio" name="announcement" value="type" class="annoncementsBlock">Type</input></div>
+			<div id='btAnnouncementsDiv'></div>
+			<div id='typeAnnouncementsDiv'></div>
+			<div id="pagedAnnouncementsId"  class="getallcomment" style="display: inline-block; width: 785px;">
+			
+			</div>
 						<!----pagination Div----->
 						<div class="span12 text-center">
 							<div id="paginationId"></div>
@@ -361,6 +368,62 @@
 			}
 			
 	});
+	$('.annoncementsBlock').click(function(){
+			var name = $(this).val();
+			$("#paginationId").html('');
+		//	$("#pagedAnnouncementsId").html('');
+			if(name == "all"){
+				getPaginationForData(0,name);
+				$('#btAnnouncementsDiv').html('');
+			//	$("#paginationId").html('');
+				$('#typeAnnouncementsDiv').html('');
+			}
+			else if(name == "type"){
+				var str = '';
+				str += '<span>Select Type : </span>';
+				str += '<select id="selType" class="calender input-medium">';
+				str += '<option value=0>Select Type</option>';
+				str += '<option value=1>Electoral Updates</option>';
+				str += '<option value=2>Press Releases</option>';
+				str += '</select>';
+				str += '<a class="btn btn-primary"  onClick="getPaginationForData(0,\''+name+'\')">Find</a>';
+				$('#btAnnouncementsDiv').html('');
+			//	$("#paginationId").html('');
+				$('#typeAnnouncementsDiv').html(str);
+			}
+			else if(name == "btDates")
+			{
+				var str = '';
+				str += '<span>Start Date : </span>';
+				str += '<input type="text" name="startDateName" id="startDateName" class="calender input-medium"></input>';
+				str += '<span>End Date : </span>';
+				str += '<input type="text" name="endDateName" id="endDateName" class="calender input-medium"></input>';
+				str += '<a class="btn btn-primary" onClick="getPaginationForData(0,\''+name+'\')">Find</a>';
+				$('#btAnnouncementsDiv').html(str);
+				$('#typeAnnouncementsDiv').html('');
+			//	$("#paginationId").html('');
+				$( "#startDateName" ).datepicker({
+					defaultDate: "+1w",
+					changeMonth: true,
+					numberOfMonths: 1,
+					dateFormat: 'yy-mm-dd',
+					onClose: function( selectedDate ) {
+					$( "#endDateName" ).datepicker( "option", "minDate", selectedDate );
+					}
+				   });
+					
+				$( "#endDateName" ).datepicker({
+					defaultDate: "+1w",
+					changeMonth: true,
+					numberOfMonths: 1,
+					dateFormat: 'yy-mm-dd',
+					onClose: function( selectedDate ) {
+						$( "#startDateName" ).datepicker( "option", "maxDate", selectedDate );
+						}
+					});
+				}
+			
+	});
 	
 	$(function(){	
 		$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
@@ -376,18 +439,54 @@
 		$('#forFileId').toggle('fast');
 	});
 	
-	function getPaginationForData(pageNo){
-	var jsObj={
-			startRecord:pageNo,
-			maxRecord:10,
-			task:"getAllAnnouncements"
+	function getPaginationForData(pageNo,type)
+	{
+		if(type == 'all')
+		{
+			var jsObj=
+			{
+				startRecord : pageNo,
+				maxRecord   : 10,
+				type        : type,
+				task        : "getAllAnnouncements"
+			}
+			
 		}
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-		var url = "getAllAnnouncementsForAdmin.action?"+rparam;
-		callAjaxForAdmin(jsObj, url);
+		else if(type == 'btDates')
+		{
+			var startDate = $('#startDateName').val();
+			var endDate   = $('#endDateName').val();
+			var jsObj=
+			{
+				startDate  : startDate,
+				endDate    : endDate,
+				type       : type,
+				startIndex : pageNo,
+				maxIndex   : 10,
+				task       : "getAllAnnouncementsBtdates"
+			}
+		}
+		else if(type == 'type')
+		{
+			var type = $('#selType option:selected').val();
+			var jsObj=
+			{
+				type       : type,
+				startIndex : pageNo,
+				maxIndex   : 10,
+				type       : type,
+				task       : "getAllAnnouncementsSelType"
+			}
+			
+		}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getAllAnnouncementsForAdmin.action?"+rparam;
+	callAjaxForAdmin(jsObj, url);
 	}
 	
-	$('#allannoun').click(function(){getPaginationForData(0)});
+	
+	
+	$('#allannoun').click(function(){getPaginationForData(0,'all')});
 		
 	function getAllCommentsPagination(stIndex)
 	{
@@ -449,8 +548,6 @@
 	{
 		var startDate = $('#startDate').val();
 		var endDate   = $('#endDate').val();
-		//alert(startDate);
-		//alert(endDate);
 		if(startDate != "" && endDate != "")
 		{
 			var jsObj =
@@ -683,7 +780,8 @@
 									//buildTotalCommentsList(myResults,"totalCommentsList",0);
 									buildAllCommentsList(myResults,jsObj);
 								} */
-								else if(jsObj.task =="getAllAnnouncements")
+								else if(jsObj.task =="getAllAnnouncements" || jsObj.task == "getAllAnnouncementsBtdates" ||
+								jsObj.task == "getAllAnnouncementsSelType" )
 								{
 									buildAllAnnouncements(myResults,jsObj);
 								}
@@ -774,14 +872,14 @@
 	var maxResults=jsObj.maxRecord;
 	str+="</ul>";
 	$("#pagedAnnouncementsId").html(str);
-	if(jsObj.startRecord==0){
+	if(jsObj.startRecord==0 || jsObj.startIndex == 0){
 		$("#paginationId").pagination({
 			items: itemsCount,
 			itemsOnPage: maxResults,
 			cssStyle: 'light-theme',
 			onPageClick: function(pageNumber, event) {
 				var num=(pageNumber-1)*10;
-				getPaginationForData(num);
+				getPaginationForData(num,jsObj.type);
 				
 			}
 		});

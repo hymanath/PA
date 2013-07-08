@@ -1,5 +1,6 @@
 package com.itgrids.electoralconnect.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -19,4 +20,12 @@ public interface IAnnouncementFilesDAO  extends GenericDao<AnnouncementFiles, Lo
 	public List<Object[]> getAllAnnoncement(Long announcementTypeId);
 	
 	public List<Object[]> getAnnouncementsByAnnouncementFileId(Long announcementFileId);
+	
+	public List<AnnouncementFiles> getAnnouncemetsBtSelDates(Date startDate,Date endDate,int startIndex,int maxIndex);
+	
+	public int getSelBtDatesAnnouncementsCountOfUser(Date startDate,Date endDate);
+	
+	public List<AnnouncementFiles> getAllAnnouncemetsForSelectedType(Long typeId,int startIndex,int maxIndex);
+	
+	public Long getCountForSelAnnouncemetType(Long typeId);
 }

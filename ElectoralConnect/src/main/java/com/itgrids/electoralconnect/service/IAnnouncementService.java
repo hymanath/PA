@@ -21,4 +21,8 @@ public interface IAnnouncementService {
 	public List<AnnouncementVO> getAnnouncementByAnnouncementFileId(Long announcemetFileId);
 	
 	public ResultStatus deleteSelctedAnnoncement(Long announcementid);
+	
+	public List<AnnouncementVO> getAllAnnouncementsBtSelDates(String startDate,String endDate,int startIndex,int maxIndex);
+	
+	public List<AnnouncementVO> getAllAnnouncementsForSelType(Long typeId,int startIndex,int maxIndex);
 }
