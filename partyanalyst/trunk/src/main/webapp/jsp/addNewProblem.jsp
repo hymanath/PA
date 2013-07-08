@@ -53,6 +53,9 @@
 	<!-- YUI Skin Sam -->
 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+
+   <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 	<style>
 		#warningMsgs{
 			margin-left:auto;
@@ -627,6 +630,8 @@ function displayCal()
 </head>
 <body onload="executeOnload()" class="bodyStyle">
 <CENTER>
+
+<div id="boothDetailsPopup"></div>
 <TABLE border="0" cellpadding="0" cellspacing="0">
 	<TR>
 		<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
