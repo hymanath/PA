@@ -617,13 +617,19 @@ function getCadresResults(btnType)
 	        nameSelectedRadioValue = nameSelectedRadioEle[i].value;
     }
 	var name = $('#cadreNameText').val();
-
+	var memberShipNumber = $('#memberShipNoText').val();
     if(/[^a-z A-Z]/.test(name)){
 
 	elmt.innerHTML = 'Name Accepts only Characters';
 	return false;
 
 	}
+
+	if(/[^a-z A-Z 0-9]/.test(memberShipNumber)){
+		elmt.innerHTML = 'Membership No Accepts only Characters and Numbers';
+		return false;
+	}
+
 	if(REPORTLEVEL == '') 
 	{
 		elmt.innerHTML = 'Please Select Range';
@@ -1545,6 +1551,11 @@ function handleSubmit()
 	if(txtElmtValue == '')
 	{
 		elmt.innerHTML = '<font color="red">Enter Text Message...</font>';
+
+		  $('html, body').animate({
+         scrollTop: $("#headerImageCenterDiv").offset().top
+     }, 1000);
+
 		return;
 	}
 	else

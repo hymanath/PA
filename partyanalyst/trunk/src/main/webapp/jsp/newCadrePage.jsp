@@ -840,6 +840,15 @@
 			}
 		}
 		}
+
+		if($('#memberShipNo').val() != "")
+		{
+             if(/[^a-z A-Z 0-9]/.test($('#memberShipNo').val())){
+		$('#errorDiv').html('Membership No Accepts only Characters and Numbers');
+		return false;
+	}
+		}
+
 			if(!$('#sameAsCA').is(':checked')){
 				 var stateId = $('#pstateField').val();
 				 var districtId = $('#pdistrictField').val();
