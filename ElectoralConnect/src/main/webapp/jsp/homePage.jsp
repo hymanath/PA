@@ -131,32 +131,32 @@
 							<div class="span2 widget" onclick="hideMainMenu('registerVoter')">
 							  <img src="image/register_vote.png" />
 							  <h3>Register VOTE</h3>
-							  <a href="javascript:{}" onclick="hideMainMenu('registerVoter')" class="morebtn"></a>
+							  <a href="javascript:{}" class="morebtn"></a>
 							</div>
 							<div class="span2 widget" onclick="hideMainMenu('duplicateVoter')">
 							  <img src="image/dublicate_vote.png" />
 							  <h3>Duplication VOTE</h3>
-							  <a href="javascript:{}" onclick="hideMainMenu('duplicateVoter')" class="morebtn"></a>
+							  <a href="javascript:{}" class="morebtn"></a>
 							</div>
 							<div class="span2 widget" onclick="hideMainMenu('transferVote')">
 								<img src="image/Transceive_vote.png" />
 								<h3>Transfer VOTE</h3>
-								<a href="javascript:{}" onclick="hideMainMenu('transferVote')"  class="morebtn"></a>
+								<a href="javascript:{}"  class="morebtn"></a>
 							</div>
 							<div class="span2 widget" onclick="hideMainMenu('modifyVote')">
 								<img src="image/modify_vote.png" />
 								<h3>Modify VOTE</h3>
-								<a href="javascript:{}" onclick="hideMainMenu('modifyVote')"  class="morebtn"></a>
+								<a href="javascript:{}"  class="morebtn"></a>
 							</div>
 							<div class="span2 widget" onclick="hideMainMenu('cancelVote')">
 								<img src="image/cancel_vote.png" />
 								<h3>Cancel VOTE</h3>
-								<a href="javascript:{}" onclick="hideMainMenu('cancelVote')"  class="morebtn"></a>
+								<a href="javascript:{}"  class="morebtn"></a>
 							</div>
 							<div class="span2 widget" onclick="hideMainMenu('armiNriVote')">
 								<img src="image/NRI_vote.png" />
 								<h3>Army & NRI VOTE</h3>
-								<a href="javascript:{}" onclick="hideMainMenu('armiNriVote')"  class="morebtn"></a>
+								<a href="javascript:{}" class="morebtn"></a>
 							</div>
 						</div>
 						
@@ -171,7 +171,7 @@
 							        <a class="inline link btn-inverse btn " style="position:relative;bottom:0px;right:0px;margin-top:10px;margin-bottom:10px;" target="_blank" href="image/votersInfo/Form 6 - Application for inclusion of name in electoral roll.pdf" title="Click here to know How?, Where?, When? ,Who? file the Form-6 ( For Registering in the Electoral roll )">How to File Form-6 </a>
 						</div>
 							</section>	
-								<a href="javascript:{}" onclick="showMainMenu('registerVoter')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
+								<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 1 ---Register VOTE---END--->
 						<!---Big Speshal Box 2---Duplicate Vote--->
 						<div id="duplicateVoter" class="row-fluid bigsblock" onclick="showMainMenu('duplicateVoter')">
@@ -185,7 +185,7 @@
 									
 								</div>	
 							</section>	
-							<a href="javascript:{}" onclick="showMainMenu('duplicateVoter')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
+							<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 2---Duplicate Vote--- END--->
 						<!---Big Speshal Box 3---Transfer Vote--->
 						<div id="transferVote" class="row-fluid bigsblock" onclick="showMainMenu('transferVote')">
@@ -197,7 +197,7 @@
 									<a  class="inline link btn-inverse btn" target="_blank" href="image/votersInfo/FORM8.pdf" title="Click here to View Form-8 ( For modifiying the particulars in the registered roll )Application">How to File Form No.8</a>
 								</div>
 							</section>	
-							<a href="javascript:{}" onclick="showMainMenu('transferVote')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
+							<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 3---Transfer Vote--- END--->
 						<!---Big Speshal Box 4---Modify  Vote--->
 						<div id="modifyVote" class="row-fluid bigsblock" onclick="showMainMenu('modifyVote')">
@@ -209,7 +209,7 @@
 									<a target="_blank" href="image/votersInfo/Form 8A - Application for transposition of entry in electoral roll.pdf" title="Click here to know How?, Where?, When? ,Who? file the Form-8A ( For Transporting the roll )" class="inline link btn-inverse btn ">How to File Form No.8A</a>
 								</div>
 							</section>
-							<a href="javascript:{}" onclick="showMainMenu('modifyVote')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
+							<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 4---Modify  Vote--- END--->
 						<!---Big Speshal Box 5---Cancel   Vote--->
 						<div id="cancelVote" class="row-fluid bigsblock" onclick="showMainMenu('cancelVote')">
@@ -225,7 +225,7 @@
 									
 								</div>
 							</section>		
-							<a href="javascript:{}" onclick="showMainMenu('cancelVote')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
+							<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 5---Cancel   Vote--- END--->
 						<!---Big Speshal Box 6---Army & NRI Vote--->
 						<div id="armiNriVote" class="row-fluid bigsblock" onclick="showMainMenu('armiNriVote')">
@@ -245,7 +245,7 @@
 									
 								</div>
 							</section>	
-							<a href="javascript:{}" onclick="showMainMenu('armiNriVote')" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
+							<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 6---Army & NRI Vote--- END--->
 						
 					</div>
