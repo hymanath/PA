@@ -10,11 +10,11 @@
 <style>
 .align_div{width:800px;margin-left:auto;margin-right:auto;}
 
-.comment_sec{ border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left:100px;padding: 12px;}
-	.title_sec2{font-family: icon;font-size: 15px;font-weight: bold;}
-	.title_sec3{font-family: icon;font-size: 15px;font-weight: bold;}
-	.title_sec4{ font-family: Helvetica;font-size: 13px;}
-	.title_sec1{color: #0989C9; font-size: 14px;font-weight: bold;text-transform: uppercase;}
+.comment_sec{ border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left:60px;padding: 12px;width:650px;}
+	.title_sec2{font-family: icon;font-size: 15px;font-weight: bold;padding:20px;}
+	.title_sec3{font-family: icon;font-size: 15px;font-weight: bold;padding:20px;}
+	.title_sec4{ font-family: Helvetica;font-size: 13px;padding:20px;}
+	.title_sec1{color: #0989C9; font-size: 14px;font-weight: bold;text-transform: uppercase;padding:20px;border-bottom:1px solid #ccc;}
 	.getallcomment1{margin-top: 8px;padding: 7px;background-color:#fff;border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;line-height: 24px;}
 	a:hover{color:red;}
 	.link{color:#548BD4;font-weight:bold;}
@@ -66,7 +66,7 @@ if(myResults != null)
 	{
 		id = myResults[i].id;
 		announcenentTypeId = myResults[i].announcementType;
-		str +='<div class="comment_sec" style="width:550px;">';
+		str +='<div class="comment_sec">';
 			
 			str +='<div class=" title_sec1">'+myResults[i].title+'</div>';
 			str +='<div class="title_sec4">'+myResults[i].description+'</div>';
