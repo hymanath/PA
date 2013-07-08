@@ -813,11 +813,12 @@
 						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT">Manage Problems</a>
 						<!--  <a class="linkButton" href="constituencyManagementAction.action?cmTask=CONSTITUENCY_MANAGEMENT">View Detailed Statistics</a> -->
 					</div>
+					<DIV class="yui-skin-sam"><DIV id="problemsByStatusPanelDiv"></DIV> </DIV>
 					<div id="problems_outline_Div" style="background:#ffffff;"></div>
 					<DIV id="problems_Options" style="background:#ffffff;"></DIV>
 					<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>
 					
-					<DIV class="yui-skin-sam"><DIV id="problemsByStatusPanelDiv"></DIV></DIV>
+					</DIV>
 				</div>
 			</div>
 
