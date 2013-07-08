@@ -507,6 +507,13 @@ public class UserService implements IUserService{
 						announcements = (Announcements) parms[4];
 						commentVO.setName(user.getUserProfile().getFirstName());
 						commentVO.setDate((Date) parms[3]);
+						DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+						
+						String reportDate="";
+						if(parms[3]!=null){
+							reportDate = df.format(parms[3]);
+						}
+						commentVO.setCommentedTime(reportDate);
 						commentVO.setAnnouncement(announcements.getTitle());
 						commentVO.setAbused(parms[5].toString());
 						commentVO.setTotal(totalCount);
