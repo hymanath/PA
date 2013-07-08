@@ -4202,6 +4202,8 @@ function buildCastInfoBasedOnOptions1(option)
 
 function buildCastWiseChart(temp)
 {
+//this is to set the slider value as 1 bydefault when ever we searched
+$( "#slider" ).slider({ value: 1 });
 var myResults_slctd=temp.result;
 var jsObj_slctd=temp.jsobj;
 	$("#castErrorDiv").html('');
