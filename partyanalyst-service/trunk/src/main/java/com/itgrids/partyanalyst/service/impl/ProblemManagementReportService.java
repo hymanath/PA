@@ -1665,6 +1665,8 @@ public class ProblemManagementReportService implements
 						problemBean.setProblem(params[3].toString());
 						problemBean.setDescription(params[7].toString());
 						//problemBean.setExistingFrom(params[4].toString());
+						problemBean.setProblemId((Long)params[5]);						
+						problemBean.setPostedDate(dateFormater.format((Date)params[2]).toString());
 						problemBean.setExistingFrom(dateFormater.format((Date)params[4]).toString());
 						problemBean.setStatus(params[0].toString());
 						problemBean.setProblemLocation(getProblemLocation(Long.parseLong(params[1].toString()),Long.parseLong(params[11].toString())));
