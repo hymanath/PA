@@ -25,7 +25,7 @@
 	.AnnouncementForm{ margin-top: 5px;}
 	.widget{background:#fcfcfc;  height:100px;border:1px solid #2DCFFE;}
 	.widget:hover{box-shadow:0px 0px 15px #c0c0c0;}
-	 h3{font-family: 'Open Sans';font-size:15px;line-height:20px;text-align: center;font-weight:bold;}
+	 h3{font-family: 'Open Sans';font-size:15px;line-height:20px;text-align: center;font-weight:bold;color:#6B6265;}
 	 .user{margin-left: -26px; margin-top:40px;}
 	 .announ{margin-left: -34px; margin-top: 29px;}
 	 .comment{margin-left: -18px; margin-top: 30px;}
@@ -50,7 +50,7 @@
 	.getallcomment{margin-top: 8px;padding: 7px;display: none;background-color:#fff;border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
 	#totalCommentsBtDates{display:inline-block;}
 	.getallcommentsBlock{margin-top: 8px;padding: 7px;background-color:#fff;border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
-    
+   
 	.notifications a{color:#1a1a1a; text-decoration:none;}
 			
 			
@@ -65,20 +65,84 @@
 			.title p{margin-top:-9px;}
 			.date {font-size:12px;font-weight:bold;color:#2DCFFE; float:left;}
 			
-		.indiComment{margin:4px;padding:10px;}
+			.menu:hover>a>h3{color:#ffffff;}
+			.menu:hover>a{text-decoration:none;}
+			.menu:hover{background:#41B7D8;}
+			.active{background:#41B7D8;color:#ffffff;}
+			.active>a>h3{color:#ffffff;}
+			.indiComment{margin:4px;padding:10px;}
 		#indiCommentName{margin:2px;}
 		#indiCommentDate{margin:2px;color:#28B0D6;}
-
+			
+	
 </style>
 
 <div id="mainBodyId" class="container well">
-	<!--<div>
-		<div><a href="registerUser.action?userType=admin">Create User</a></div>
-		<div><a href="#" id="createAnnouncementId">Create Announcement</a></div>
-		<div><a href="">Show Comment</a></div>
-	</div>-->
 	
-	 <div class="row-fluid">
+	<!--<div class="row-fluid">
+        <div class=" white-panel no-padding bar">
+            <ul class="nav nav-tabs" class="">
+                <li class="span3"><a class="gc-icon agency-icon" data-toggle="tab" href="#home"><i class="icon-search"></i>Create User</a></li>
+                <li class=" span3 "><a class="gc-icon enterprise-icon" data-toggle="tab" href="#profile"><i class="icon-search"></i>Create Announcement</a></li>
+                <li class="span3"><a class="gc-icon higher-ed-icon" data-toggle="tab" href="#messages"><i class="icon-search"></i>Create Announcement</a></li>
+                <li class="span3"><a class="gc-icon gov-icon" data-toggle="tab" href="#settings"><i class="icon-search"></i>Get All Comments</a></li>
+            </ul> <!-- End tabs
+
+        
+        </div>
+
+
+
+
+    </div>-->
+	
+	   <div class="row-fluid">
+	      <div class="span12">
+		   <div class="span3 breadcrumb  thumbnail menu active"  id="user">
+		  
+		    <a id="CareId1" href="javascript:{};">
+			
+		    <img src="image/cancel_vote.png" style="width: 90px; margin-right: 0px; margin-left: 40px;" />
+			
+			
+			<h3>Create User</h3>
+			</a>
+             		
+		   </div>
+		   
+		   <div class="span3 breadcrumb thumbnail menu " id="announ">
+		<a id="CareId2" href="javascript:{};">
+		    <img src="image/cancel_vote.png"  style="width: 90px; margin-right: 0px; margin-left: 40px;"/>
+	
+			
+		<h3>Create Announcement</h3>
+			</a>
+            	
+		   </div>
+		   
+		   <div class="span3 breadcrumb thumbnail menu" id="comment">
+		<a id="CareId3" href="javascript:{};">
+		    <img src="image/cancel_vote.png" style="width: 90px; margin-right: 0px; margin-left: 40px;" />
+			
+			
+		<h3>Get All Comments</h3>
+			
+             </a>	
+		   </div>
+		   <div class="span3 breadcrumb thumbnail menu" id="allannoun">
+		 <a id="CareId4" href="javascript:{};">
+		    <img src="image/cancel_vote.png" style="width: 90px; margin-right: 0px; margin-left: 40px;" />
+			
+			
+		<h3>Get All Announcement</h3>
+			</a>
+             	
+		   </div>
+		  </div>
+	   
+	   </div>
+	
+	 <!--<div class="row-fluid">
 	<div class="span12">
 	    <div class="span3 widget active" id="user" >
 		<div class="row-fluid">
@@ -133,17 +197,18 @@
 		 
 		</div>
 	</div>
-	</div>
+	</div>--->
 	<div id="BOX-1" style="display: show" >
-			<div id="formDivId">
+			<div id="formDivId" class=" getallcommentsBlock"  >
 			<div class="control-group" style="color:red;">
 					<s:actionerror />
 					<s:fielderror />
 				</div>
-		   <form class="form-horizontal" name='userDetailsForm' action="adminRegisterSaveAction.action" method="post">
+		   <form class="form-horizontal" name='userDetailsForm' action="adminRegisterSaveAction.action" method="post" >
 				<legend>Personal Information</legend>
 				<input type="hidden" value="admin" name="userType"></input>
 				<input type="hidden" value="1" name="type"></input>
+				<div class="persol_align thumbnail">
 				<div class="control-group">
 					<label class="control-label requ" for="firstName">First Name</label>
 					<div class="controls ">
@@ -178,7 +243,7 @@
 						<input type="text" id="epicNoId" name="epicId" placeholder="EPIC Number">
 					</div>
 				</div>
-				
+				</div>
 			<!--	<div id="userType"><input type="hidden" id="userType" name="userType" value="${userType}"></input></div>-->
 				
 				<div id="successMsg" style="margin-left: 77px;"></div>
@@ -333,6 +398,11 @@
 	$('.getCmmnts').click(function(){
 			getAllCommentsPagination(0);
 	});
+	
+	$('.menu').click(function(){
+    $('.menu').removeClass("active");
+    $(this).addClass("active");
+});
 
 	function validateDate()
 	{
@@ -581,12 +651,12 @@
 			for(var i in myResults)
 			{
 			str += '<div id="commentsDIv'+myResults[i].commentId+'">';
-			str +='<div class="comment_sec span9">';
+			str +='<div class="comment_sec span7">';
 			if(myResults[i].abused.toLowerCase() == "no")
 			{
 			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
 			}
-			str +='<span class="title_sec"></span><span class="title_sec1">'+myResults[i].announcement+'</span>';
+			str +='<span class="title_sec">TITLE:</span><span class="title_sec1">'+myResults[i].announcement+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +='<span class="font_desc">'+myResults[i].comment+'</span>';
 			str +='<hr style="margin-top:0px;">';
