@@ -7824,6 +7824,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 										
 									}else									
 										votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsilforPreviousEle(boothIdStr,(Long)params[0],elecType,tehsilIds);
+									
+									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
+										polledVotes += partyVoters.getVotesEarned();
+									
 
 	              List<String> staticParties = Arrays.asList("INC","PRP","TDP","TRS","YSRC","CPI","CPM","AIMIM","BJP");
 									
@@ -7832,7 +7836,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 	                                for(int i=0;i<votesEarnedVOs.size();i++)
 	                                	if(staticParties.contains(votesEarnedVOs.get(i).getPartyName()))
 	                                		votesEarnedVOs1.add(votesEarnedVOs.get(i));
-									
+								
 	                                votesEarnedVOs = votesEarnedVOs1;
 									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
 									{
@@ -7844,8 +7848,6 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 									partyVotesEarnedVO.setPartyVotesEarnedVOs(votesEarnedVOs);
 									partyVotesEarnedVOList.add(partyVotesEarnedVO);
 									
-									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
-										polledVotes += partyVoters.getVotesEarned();
 									
 									if(elecType.equalsIgnoreCase("Assembly") && type.equalsIgnoreCase("constituency"))
 									{
