@@ -67,21 +67,40 @@ public class AnnouncementsAction extends ActionSupport implements ServletRequest
 	{
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		try{
+		try
+		{
+			LOG.debug("Enterd into execute() method in AnnouncementsAction Action");
 			jobj=new JSONObject(getTask());
-			
-		}catch (Exception e) {
-			// TODO: handle exception
+			if(user.getIsAdmin()){
+				if(jobj.getString("task").equalsIgnoreCase("getAllAnnouncements"))
+				{
+					int startRecord  = jobj.getInt("startRecord");
+					int maxRecord    = jobj.getInt("maxRecord");
+					Long userId      = user.getRegistrationID();
+					announcementVOs  = announcementService.getAllAnnouncementsForAdmin(startRecord, maxRecord, userId);
+				}
+				else if(jobj.getString("task").equalsIgnoreCase("getAllAnnouncementsBtdates"))
+				{
+					String startDate = jobj.getString("startDate");
+					String endDate   = jobj.getString("endDate");
+					int startIndex   = jobj.getInt("startIndex");
+					int maxIndex     = jobj.getInt("maxIndex");
+					announcementVOs  = announcementService.getAllAnnouncementsBtSelDates(startDate, endDate, startIndex, maxIndex);
+				}
+				else if(jobj.getString("task").equalsIgnoreCase("getAllAnnouncementsSelType"))
+				{
+					Long typeId      = jobj.getLong("type");
+					int startIndex   = jobj.getInt("startIndex");
+					int maxIndex     = jobj.getInt("maxIndex");
+					announcementVOs  = announcementService.getAllAnnouncementsForSelType(typeId, startIndex, maxIndex);
+				}
+				
+				
+			}
 		}
-		if(user.getIsAdmin()){
-			int startRecord=jobj.getInt("startRecord");
-			int maxRecord=jobj.getInt("maxRecord");
-			Long userId=user.getRegistrationID();
-			
-			announcementVOs=new ArrayList<AnnouncementVO>();
-			
-			announcementVOs=announcementService.getAllAnnouncementsForAdmin(startRecord, maxRecord, userId);
-			
+		catch (Exception e) 
+		{
+			LOG.debug("Exception raised in execute() method in AnnouncementsAction Action",e);
 		}
 		return SUCCESS;
 	}

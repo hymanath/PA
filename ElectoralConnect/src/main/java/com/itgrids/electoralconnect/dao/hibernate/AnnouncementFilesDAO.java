@@ -1,5 +1,6 @@
 package com.itgrids.electoralconnect.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -10,26 +11,34 @@ import com.itgrids.electoralconnect.model.AnnouncementFiles;
 
 public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles, Long> implements IAnnouncementFilesDAO{
 
-	public AnnouncementFilesDAO() {
-		super(AnnouncementFiles.class);
-	}
+		public AnnouncementFilesDAO() {
+			super(AnnouncementFiles.class);
+		}
 
-	
-	@SuppressWarnings("unchecked")
-	public List<AnnouncementFiles> getAllAnnouncements(int startRecord,int maxRecord){
-		Query queryObject=getSession().createQuery("select model from AnnouncementFiles model where model.announcements.isDeleted='NO'");
-		
-		queryObject.setFirstResult(startRecord);
-		queryObject.setMaxResults(maxRecord);
-		
-		return queryObject.list();
-	}
-	
-	public int getAllAnnouncementsCountOfUser(){
-		Query queryObject=getSession().createQuery("select count(model.announcementFilesId) from AnnouncementFiles model where model.announcements.isDeleted='NO'");
-		
-		return ((Long)queryObject.uniqueResult()).intValue();
-	}
+		/**
+		 * This DAO is used to get All announcemets
+		 * @param int startRecord
+		 * @param int maxRecord
+		 * @return List<AnnouncementFiles>
+		 */
+		@SuppressWarnings("unchecked")
+		public List<AnnouncementFiles> getAllAnnouncements(int startRecord,int maxRecord){
+			Query queryObject=getSession().createQuery("select model from AnnouncementFiles model where model.announcements.isDeleted='NO'");
+			
+			queryObject.setFirstResult(startRecord);
+			queryObject.setMaxResults(maxRecord);
+			
+			return queryObject.list();
+		}
+		/**
+		 * This DAO is used To get The Count For All Announcements
+		 * @return int
+		 */
+		public int getAllAnnouncementsCountOfUser(){
+			Query queryObject=getSession().createQuery("select count(model.announcementFilesId) from AnnouncementFiles model where model.announcements.isDeleted='NO'");
+			
+			return ((Long)queryObject.uniqueResult()).intValue();
+		}
 	
 		/**
 		 * This DAO is used to get the Annoncement by annoncement id
@@ -73,6 +82,71 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 					" where model.announcementFilesId = :announcementFileId");
 			query.setParameter("announcementFileId", announcementFileId);
 			return query.list();
+		}
+		/**
+		 * This DAO is used to get the announcements between the selectd dates
+		 * @param Date startDate
+		 * @param Date endDate
+		 * @param int startIndex
+		 * @param int maxIndex
+		 * @return List<AnnouncementFiles>
+		 * @date 08-07-2013
+		 */
+		@SuppressWarnings("unchecked")
+		public List<AnnouncementFiles> getAnnouncemetsBtSelDates(Date startDate,Date endDate,int startIndex,int maxIndex)
+		{
+			Query query = getSession().createQuery("select model from AnnouncementFiles model " +
+					" where Date(model.announcements.updatedTime) between :startDate and :endDate  and model.announcements.isDeleted='NO'");
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+			query.setFirstResult(startIndex);
+			query.setMaxResults(maxIndex);
+			return query.list();
+		}
+		/**
+		 * This DAO is Used To get The Count of Announcemets For Selected Between dates
+		 * @param Date startDate
+		 * @param Date endDate
+		 * @return int
+		 * @date 08-07-2013
+		 */
+		public int getSelBtDatesAnnouncementsCountOfUser(Date startDate,Date endDate){
+			Query query=getSession().createQuery("select count(model.announcementFilesId) from AnnouncementFiles model where model.announcements.isDeleted='NO'" +
+					" and Date(model.announcements.updatedTime) between :startDate and :endDate  and model.announcements.isDeleted='NO'");
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+			return ((Long)query.uniqueResult()).intValue();
+		}
+		/**
+		 * This DAO is used to get all the Announcemetes for selected announcemet type
+		 * @param Long typeId
+		 * @param int startIndex
+		 * @param int maxIndex
+		 * @return List<AnnouncementFiles>
+		 * @date 08-07-2013
+		 */
+		@SuppressWarnings("unchecked")
+		public List<AnnouncementFiles> getAllAnnouncemetsForSelectedType(Long typeId,int startIndex,int maxIndex)
+		{
+			Query query = getSession().createQuery("select model from AnnouncementFiles model " +
+					" where model.announcements.announcementType.announcementTypeId = :typeId  and model.announcements.isDeleted='NO'");
+			query.setParameter("typeId", typeId);
+			query.setFirstResult(startIndex);
+			query.setMaxResults(maxIndex);
+			return query.list();
+		}
+		/**
+		 * This DAO is used to get count for seleted announcenet type
+		 * @param Long typeId
+		 * @return Long
+		 * @date 08-07-2013
+		 */
+		public Long getCountForSelAnnouncemetType(Long typeId)
+		{
+			Query query = getSession().createQuery("select count(model.announcementFilesId) from AnnouncementFiles model " +
+					" where model.announcements.announcementType.announcementTypeId = :typeId and model.announcements.isDeleted='NO'");
+			query.setParameter("typeId", typeId);
+			return (Long) query.uniqueResult();
 		}
 
 

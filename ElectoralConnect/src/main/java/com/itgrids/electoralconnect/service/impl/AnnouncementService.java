@@ -3,6 +3,7 @@ package com.itgrids.electoralconnect.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -153,6 +154,13 @@ public class AnnouncementService implements IAnnouncementService{
 			}
 			
 		}
+		/**
+		 * This Service is used to get All Announcemts
+		 * @param int startRecord
+		 * @param int maxRecord
+		 * @param Long userId
+		 * @return List<AnnouncementVO>
+		 */
 		public List<AnnouncementVO> getAllAnnouncementsForAdmin(int startRecord,int maxRecord,Long userId){
 			Log.debug("Entered into getAllAnnouncementsForAdmin of Announcement Service");
 			AnnouncementVO announcementVO=null;
@@ -160,34 +168,101 @@ public class AnnouncementService implements IAnnouncementService{
 			try{
 				List<AnnouncementFiles> announcementFiles=announcementFilesDAO.getAllAnnouncements(startRecord, maxRecord);
 				int allannouncementFilesCount=announcementFilesDAO.getAllAnnouncementsCountOfUser();
-				for(AnnouncementFiles files:announcementFiles){
-					announcementVO=new AnnouncementVO();
-					announcementVO.setAnnouncementFileId(files.getAnnouncementFilesId());
-					announcementVO.setAnnouncementType(files.getAnnouncements().getAnnouncementType().getAnnouncementTypeId());
-					announcementVO.setAnnouncementId(files.getAnnouncements().getAnnouncementId());
-					announcementVO.setAnnouncementTypeName(files.getAnnouncements().getAnnouncementType().getName());
-					announcementVO.setName(removeSpecialCharsFromAString(files.getAnnouncements().getTitle()));
-					announcementVO.setDescription(removeSpecialCharsFromAString(files.getAnnouncements().getDescription()));
-					//announcementVO.setUpdatedDate(files.getAnnouncements().getDate());
-					String updatedBy=files.getAnnouncements().getUpdatedBy().getUserProfile().getFirstName()+""+
-							files.getAnnouncements().getUpdatedBy().getUserProfile().getLastName();
-					announcementVO.setUpdatedBy(updatedBy);
-					
-					DateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-					String reportDate = df.format(files.getAnnouncements().getDate());
-					announcementVO.setDateString(reportDate);
-					announcementVO.setCommentsCount(commentDAO.getTotalCommentsCountByAnnouncementId(files.getAnnouncements().getAnnouncementId()));
-					announcementVO.setAllAnnouncementsCount(allannouncementFilesCount);
-					announcementVOsList.add(announcementVO);
-				}
-				
+				announcementVOsList = fillAllAnnouncemntDataIntoVos(announcementFiles,allannouncementFilesCount);
 			}catch (Exception e) {
 				Log.debug("Exception Raised in into getAllAnnouncementsForAdmin of Announcement Service"+e);
 			}
 			
 			return announcementVOsList;
 		}
-		
+		/**
+		 *  This Service is used to get All Announcements For Selected Dates
+		 * @param String startDate
+		 * @param String endDate
+		 * @param int startIndex
+		 * @param int maxIndex
+		 * @return List<AnnouncementVO>
+		 * @date 08-07-2013
+		 */
+		public List<AnnouncementVO> getAllAnnouncementsBtSelDates(String sdate,String eDate,int startIndex,int maxIndex)
+		{
+			List<AnnouncementVO> returnList = new ArrayList<AnnouncementVO>();
+			try {
+				LOG.debug("Enterd into getAllAnnouncementsBtSelDates() method in AnnouncementService Service");
+				DateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+				String startYear       = sdate.substring(0, 4);
+				String startMonth      = sdate.substring(5, 7);
+				String startDay        = sdate.substring(8, 10);
+				String endYear         = eDate.substring(0, 4);
+				String endMonth        = eDate.substring(5, 7);
+				String endDay          = eDate.substring(8, 10);
+				Date startDate         = dateFormate.parse(startYear +"-"+ startMonth +"-"+ startDay);
+				Date endDate           = dateFormate.parse(endYear +"-"+ endMonth +"-"+ endDay);
+				List<AnnouncementFiles> announcementFilsList = announcementFilesDAO.getAnnouncemetsBtSelDates(startDate, endDate, startIndex, maxIndex);
+				int allannouncementFilesCount = announcementFilesDAO.getSelBtDatesAnnouncementsCountOfUser(startDate, endDate);
+				returnList = fillAllAnnouncemntDataIntoVos(announcementFilsList,allannouncementFilesCount);
+			} catch (Exception e) {
+				LOG.error("Exception raised in getAllAnnouncementsBtSelDates() method in AnnouncementService Service",e);
+			}
+			return returnList;
+		}
+		/**
+		 * This service is used to get All announcements For Selected type
+		 * @param Long typeId
+		 * @param int startIndex
+		 * @param int maxIndex
+		 * @return List<AnnouncementVO>
+		 * @date 08-07-2013
+		 */
+		public List<AnnouncementVO> getAllAnnouncementsForSelType(Long typeId,int startIndex,int maxIndex)
+		{
+			List<AnnouncementVO> returnList = new ArrayList<AnnouncementVO>();
+			try {
+				LOG.debug("Enterd into getAllAnnouncementsForSelType() method in AnnouncementService Service");
+				List<AnnouncementFiles> announcementFilsList = announcementFilesDAO.getAllAnnouncemetsForSelectedType(typeId, startIndex, maxIndex);
+				Long allannouncementFilesCount = announcementFilesDAO.getCountForSelAnnouncemetType(typeId);
+				returnList = fillAllAnnouncemntDataIntoVos(announcementFilsList,allannouncementFilesCount.intValue());
+			} catch (Exception e) {
+				LOG.error("Exception raised in getAllAnnouncementsForSelType() method in AnnouncementService Service",e);
+			}
+			return returnList;
+		}
+		/**
+		 * This Service is used to fill the announcements data into single VO
+		 * @param List<AnnouncementFiles> announcementsList
+		 * @param int allannouncementFilesCount
+		 * @return List<AnnouncementVO>
+		 * @date 06-07-2013
+		 */
+		public List<AnnouncementVO> fillAllAnnouncemntDataIntoVos(List<AnnouncementFiles> announcementsList,int allannouncementFilesCount)
+		{
+			List<AnnouncementVO> returnList = new ArrayList<AnnouncementVO>();
+			if(announcementsList != null && announcementsList.size() > 0)
+			{
+					for(AnnouncementFiles files:announcementsList){
+						AnnouncementVO announcementVO=new AnnouncementVO();
+						announcementVO.setAnnouncementFileId(files.getAnnouncementFilesId());
+						announcementVO.setAnnouncementType(files.getAnnouncements().getAnnouncementType().getAnnouncementTypeId());
+						announcementVO.setAnnouncementId(files.getAnnouncements().getAnnouncementId());
+						announcementVO.setAnnouncementTypeName(files.getAnnouncements().getAnnouncementType().getName());
+						announcementVO.setName(removeSpecialCharsFromAString(files.getAnnouncements().getTitle()));
+						announcementVO.setDescription(removeSpecialCharsFromAString(files.getAnnouncements().getDescription()));
+						//announcementVO.setUpdatedDate(files.getAnnouncements().getDate());
+						String updatedBy=files.getAnnouncements().getUpdatedBy().getUserProfile().getFirstName()+""+
+								files.getAnnouncements().getUpdatedBy().getUserProfile().getLastName();
+						announcementVO.setUpdatedBy(updatedBy);
+						
+						DateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+						String reportDate = df.format(files.getAnnouncements().getDate());
+						announcementVO.setDateString(reportDate);
+						announcementVO.setCommentsCount(commentDAO.getTotalCommentsCountByAnnouncementId(files.getAnnouncements().getAnnouncementId()));
+						announcementVO.setAllAnnouncementsCount(allannouncementFilesCount);
+						returnList.add(announcementVO);
+					
+				}
+			}
+			return returnList;
+		}
 		/**
 		 * This Service is used to get Top 5 Notifications And Press Releases
 		 * @return List<AnnouncementVO>
