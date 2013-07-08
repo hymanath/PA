@@ -37,6 +37,7 @@
     	<pattern>/allAnnouncementsDisplayAction*</pattern>
     	<pattern>/editAnnouncementAction*</pattern>
     	<pattern>/editUpdateAnnouncementAction*</pattern>
+    	<pattern>/exception*</pattern>
     </decorator>
 
 </decorators>

@@ -176,7 +176,7 @@ public class AnnouncementService implements IAnnouncementService{
 					DateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
 					String reportDate = df.format(files.getAnnouncements().getDate());
 					announcementVO.setDateString(reportDate);
-					
+					announcementVO.setCommentsCount(commentDAO.getTotalCommentsCountByAnnouncementId(files.getAnnouncements().getAnnouncementId()));
 					announcementVO.setAllAnnouncementsCount(allannouncementFilesCount);
 					announcementVOsList.add(announcementVO);
 				}

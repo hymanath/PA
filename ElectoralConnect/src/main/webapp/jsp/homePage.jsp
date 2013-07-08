@@ -431,11 +431,12 @@ function getTopAnnouncements()
 		callAjaxForComments(jsObj, url);
 }
 
-function getSelectedAnnouncement(id)
+function getSelectedAnnouncement(id,name)
 {
 	var jsObj =
 		{  	
 			announcementId : id,
+			name           : name,
 			task           : "getAnnouncementForSelected"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -474,7 +475,7 @@ function buildTopAnnouncements(myResults)
 			}
 			
 			nstr += '<span class="text-center label"><i class="icon-comment"></i><br/><small>'+myResults[0].notificationsList[i].count+'</small></span></a>';
-			nstr +='<a style="cursor: pointer;" class=" title span10" onClick="getSelectedAnnouncement('+myResults[0].notificationsList[i].id+');"><h1>'+myResults[0].notificationsList[i].title+'</h1><p>'+myResults[0].notificationsList[i].description+'</p></a>';
+			nstr +='<a style="cursor: pointer;" class=" title span10" onClick="getSelectedAnnouncement('+myResults[0].notificationsList[i].id+',\'Electoral Updates\');"><h1>'+myResults[0].notificationsList[i].title+'</h1><p>'+myResults[0].notificationsList[i].description+'</p></a>';
 			nstr +='	</article>';
 		}
 		$('#topFiveNotifications').html(nstr);
@@ -489,7 +490,7 @@ function buildTopAnnouncements(myResults)
 		for(var i in myResults[0].pressReleasesList)
 		{
 			id =  myResults[0].pressReleasesList[i].id;
-			pstr +=	 '<span class="thumbnail newsReleaseId"><a style="cursor: pointer;text-decoration:none;" class=" title" onClick="getSelectedAnnouncement('+myResults[0].pressReleasesList[i].id+');"><i class="downarrow-icon"></i>'+myResults[0].pressReleasesList[i].title+'</a><span class="pull-right label">';
+			pstr +=	 '<span class="thumbnail newsReleaseId"><a style="cursor: pointer;text-decoration:none;" class=" title" onClick="getSelectedAnnouncement('+myResults[0].pressReleasesList[i].id+',\'Press Releases\');"><i class="downarrow-icon"></i>'+myResults[0].pressReleasesList[i].title+'</a><span class="pull-right label">';
 			
 			if(myResults[0].pressReleasesList[i].count>0){
 			pstr +=	'<a style="cursor: pointer;" onClick="getAllComments('+myResults[0].pressReleasesList[i].id+',0,5)"><i class="icon-comment"></i></a><small>'+myResults[0].pressReleasesList[i].count+'</small></span></span>';
@@ -506,12 +507,12 @@ function buildTopAnnouncements(myResults)
 	}
 }
 var result = "";
-function buildAnnouncementForSelected(myResults)
+function buildAnnouncementForSelected(myResults,name)
 {
 	if(myResults != null)
 	{
 		result = myResults;
-		window.open('selectedAnnouncementsAction.action');
+		window.open('selectedAnnouncementsAction.action?name='+name+'');
 	}
 }
 
@@ -552,7 +553,7 @@ function callAjaxForComments(jsObj,url){
 								} 
 								else if(jsObj.task =="getAnnouncementForSelected")
 								{
-									buildAnnouncementForSelected(myResults);
+									buildAnnouncementForSelected(myResults,jsObj.name);
 								}
 								/* else if(jsObj.task =="getAllAnnouncements")
 								{

@@ -50,7 +50,7 @@
 <div id="allNotificationDiv" align="center" ></div>
 </div>
 </div>
-<div><a class="btn btn-primary pull-right allblockinsected" onClick="getAllAnnoncements();">View All Announcements</a></div>
+<div><a class="btn btn-primary pull-right allblockinsected" onClick="getAllAnnoncements();">View All ${name}</a></div>
 <script>
 var myResults = window.opener.result;
 var startIndex = 0;
