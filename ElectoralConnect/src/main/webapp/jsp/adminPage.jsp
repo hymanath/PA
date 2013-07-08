@@ -750,6 +750,7 @@
 		$("#btDatesMainDiv").show();
 		if(myResults != null)
 		{
+			$('#dateErrMsg').html('');
 			totalCount = myResults[0].total;
 			var str = "";
 			for(var i in myResults)
@@ -797,6 +798,8 @@
    	}
 	else
 	{
+		$('#pagedCommentsId').html('');
+		$('#paginationAnnouncementId').html('');
 		$('#dateErrMsg').html('<b style="color:red">No Data Avaliable</b>');
 	}	
 		
