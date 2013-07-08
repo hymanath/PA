@@ -8,7 +8,7 @@
 </head>
 <style>
 #allNotificationDiv{width:800px;margin-left:auto;margin-right:auto;}
-.comment_sec{ border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left:100px;padding: 12px;}
+.comment_sec{ border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;box-shadow: 1px 1px 1px -1px;margin-bottom: 10px;margin-left:60px;padding: 12px;}
 	.title_sec2{font-family: icon;font-size: 15px;font-weight: bold;}
 	.title_sec3{font-family: icon;font-size: 15px;font-weight: bold;}
 	.title_sec4{ font-family: Helvetica;font-size: 13px;}
@@ -17,6 +17,8 @@
 	a:hover{color:red;}
 	.link{color:#548BD4;font-weight:bold;}
 	
+	h3{display:inline-block;}
+	#announceHead{text-align:center;border-bottom:1px solid #ccc;margin-bottom:2px;}
 	
 </style>
 <body>
@@ -24,14 +26,16 @@
 </div>
 <script>
 var myResults = window.opener.allAnnouncements;
+var myjsobj= window.opener.announcementsJsObj;
+
 if(myResults != null)
 {
 	var str = "";
-	 str +='	<legend>All Notifications</legend>';
+	 str +='<div id="announceHead"><h3> All '+myjsobj.announcementName+'</h3></div>';
 	for(var i in myResults)
 	{
 	   
-		str +='<div class="comment_sec" style="width:550px;">';
+		str +='<div class="comment_sec" style="width:650px;">';
 		
 		str +='<div class=" title_sec1">'+myResults[i].title+'</div>';
 		str +='<div class="title_sec4">'+myResults[i].description+'</div>';
