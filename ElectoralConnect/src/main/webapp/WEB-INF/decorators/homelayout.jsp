@@ -54,6 +54,18 @@
 		  padding: 1px 16px;
 		  display: inline-block;
 		}
+		
+		.mainMenu nav .changePassword ul li  a:hover{padding:3px 20px;width:auto;height:auto;}
+		.mainMenu .dropdown-menu{position:absolute;}
+		
+		
+		ul.nav li.dropdown:hover > ul.dropdown-menu{
+			display: block;    
+		}
+		
+		a.menu:after, .dropdown-toggle:after {
+			content: none;
+		}
 </style>
 <!---  Header ---->
 		<header>
@@ -70,7 +82,7 @@
 							</h1>
 						</div>
 						
-						<div class="span6">
+						<div class="span6 mainMenu">
 							<nav>
 								<ul class="inline pull-right">
 									<!--<li><a href="#" title="Home">Home</a></li>
@@ -83,6 +95,15 @@
 									</c:if>
 									
 									<c:if test="${sessionScope.loginStatus == 'in'}">
+									 <!-- <div class="btn-group changePassword">
+    <a class="btn dropdown-toggle " data-toggle="dropdown" href="#">
+    <i class="icon-user"></i>
+    <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+		<li id="changePassword"><a>Change Password</a></li>
+    </ul>
+    </div>-->
 									<li style="color: white;"><c:out value="Welcome, ${sessionScope.USER.firstName} ${sessionScope.USER.lastName} |"/></li>
 									</c:if>
 									<c:if test="${sessionScope.USER.isAdmin == 'true' && sessionScope.loginStatus == 'in'}">
@@ -91,7 +112,8 @@
 									<c:if test="${sessionScope.loginStatus == 'in'}">
 									<li><a title="Logout" id='logoutId' href="logoutAction.action">Logout</a></li> 
 									</c:if>
-																	
+									  							
+	
 								</ul>
 							</nav>
 						</div>
@@ -394,6 +416,10 @@ $(function(){
 	      element.text('ok').addClass('valid');
 			},
 	});
+});
+
+$('#changePassword').click(function(){
+	$('#passwordModal').modal('show');
 });
 
 </script>
