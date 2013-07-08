@@ -7,7 +7,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<c:if test="${problemBeanVO.problem == null}">
 <title>Add New Problem</title>
+</c:if>
+<c:if test="${problemBeanVO.problem != null}">
+<title>Update Problem</title>
+</c:if>
 <SCRIPT type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
