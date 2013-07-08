@@ -675,7 +675,7 @@ function buildTableForImpFamilesMandal(impFamilesData,name,type)
   
   var impFamilesColumnDefs = [
     {key:"name", label: ""+reqtytle+"", sortable: true},
-	{key:"totalVoters", label:"Total",sortable: true},
+	{key:"totalVoters", label:"Total Voters",sortable: true},
 	{key:"totalMaleVoters", label:"Male Voters",sortable: true},
 	{key:"totalFemaleVoters", label:"Female Voters",sortable: true},
     {key:"below3", label: "<3", formatter:"number", sortable: true},
@@ -713,14 +713,14 @@ function impFamilesVariableDescription()
 { 
  $('#descriptionDiv').html('');
   var div = $('<div class="descriptionInnerDiv"></div>');
-  div.append('<span> <b>3 -</b> Families Below 3 Voters</span>');
-  div.append('<span> <b>3% -</b> Families Below 3% Voters</span>');
-  div.append('<span> <b>4 to 6 -</b> Families Between 4 to 6 Voters</span>');
-  div.append('<span> <b>4 to 6 % -</b> Families Between 4-6 % Voters</span>');
-  div.append('<span> <b>7 to 10 -</b> Families Between 7 to 10 Voters</span>');
-  div.append('<span> <b>7 to 10 % -</b> Families Between 7-10 % Voters</span>');
-  div.append('<span> <b>10 - </b> Families Above 10 Voters</span>');
-  div.append('<span> <b>10% -</b> Families Above 10% Voters</span>');
+  div.append('<span> <b> < 3 -</b> No Of Families Below 3 Voters</span><br>');
+  div.append('<span> <b>3% -</b> No Of Families Below 3 Voters In Percent</span><br>');
+  div.append('<span> <b>4 to 6 -</b> No Of Families Having  Between 4 to 6 Voters</span><br>');
+  div.append('<span> <b>4 to 6 % -</b>No Of Families Having  Between 4 to 6 Voters In Percent</span><br>');
+  div.append('<span> <b>7 to 10 -</b> No Of Families Between Having  7 to 10 Voters</span><br>');
+  div.append('<span> <b>7 to 10 % -</b> No Of Families Between Having  7 to 10 Voters In Percent</span><br>');
+  div.append('<span> <b>10 - </b> No Of Families Having Above 10 Voters</span><br>');
+  div.append('<span> <b>10% -</b> No Of Families Having Above 10 Voters In Percent</span><br>');
   $("#descriptionDiv").append(div).css("display","block");
 
 }
