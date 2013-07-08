@@ -17,9 +17,9 @@ $(document).ready(function(){
 		    required :true
 			
 			},
-		date: {
+		/* date: {
 		    required: true
-			},
+			}, */
 		filetitle: {
 			required:{ 
 				depends: function(element) {
@@ -61,9 +61,9 @@ $(document).ready(function(){
 		   required: "Please enter the Description"
 			
 		   },
-		date:{
+		/*date:{
 			required: "Please select the Date"
-			},
+			},*/
 		filetitle: {
 			required: "Enter the File title"
 			},
