@@ -152,6 +152,7 @@
 							    }
 								if(jsObj.task == "checkPartyPerformance")
 							    {
+							    	$('#partySelectAjaxImgIds').css("display","none");	
 									var errorMsg = document.getElementById("errorsDiv");
 									errorMsg.innerHTML = '';								
 									if(!resultVO)	
@@ -159,6 +160,7 @@
 									else {	
 											document.performanceReport.submit();
 										}
+									$('#partyPerformanceReport_partyPerformanceReport').attr('disabled', false);	
 							    }
 						}catch (e)  {   
 							//alert("Invalid JSON result" + e);   
@@ -568,6 +570,8 @@
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);		
 		var url = "<%=request.getContextPath()%>/partyPerformanceReportAction.action?"+rparam;	
+		$('#partyPerformanceReport_partyPerformanceReport').attr('disabled', true);
+		$('#partySelectAjaxImgIds').css("display","block");
 		callAjax(jsObj,url);
 	}
 	
@@ -675,6 +679,7 @@
 				<td colspan="2" align="center"><s:submit theme="simple" action="partyPerformanceReport" type="submit" value="View Report" /></td>
 			</tr>
 		</table>
+		<div class="ajaxImageStyle"><img id="partySelectAjaxImgIds" class="ajaxImgClass" style="margin-top: -10px; margin-left: 150px;display:none;" src="images/icons/search.gif"></div>
    </s:form>
  </div>
 
