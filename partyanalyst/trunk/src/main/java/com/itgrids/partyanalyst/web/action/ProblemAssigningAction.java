@@ -663,6 +663,8 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 				
 				if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
 					filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator + "Problem_Files" + pathSeperator;
+				else if("tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST))
+					filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator + "Problem_Files" + pathSeperator;
 				else
 					filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator + IWebConstants.PROBLEM_FILES + pathSeperator;
 				
