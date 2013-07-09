@@ -49,12 +49,29 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return x;
 	}
 	
-	
+	/**
+	 * This DAO is used to get the user details by username
+	 * @param String username
+	 * @return User
+	 */
 	public User getUserDetailsByUserName(String username)
 	{
 		Query query = getSession().createQuery("select model from User model where " +
 				" model.userLogin.userName = :username");
 		query.setParameter("username", username);
 		return (User) query.uniqueResult();
+	}
+	/**
+	 * This DAO is used to get the password details by user id
+	 * @param Long userId
+	 * @return String
+	 * @date 09-07-2013
+	 */
+	public String getPasswordByUser(Long userId)
+	{
+		Query query = getSession().createQuery("select model.userLogin.password from User model where " +
+				" model.userId = :userId");
+		query.setParameter("userId", userId);
+		return (String) query.uniqueResult();
 	}
 }

@@ -95,15 +95,15 @@
 									</c:if>
 									
 									<c:if test="${sessionScope.loginStatus == 'in'}">
-									 <!-- <div class="btn-group changePassword">
-    <a class="btn dropdown-toggle " data-toggle="dropdown" href="#">
-    <i class="icon-user"></i>
-    <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-		<li id="changePassword"><a>Change Password</a></li>
-    </ul>
-    </div>-->
+									 <div class="btn-group changePassword">
+										<a class="btn dropdown-toggle " data-toggle="dropdown" href="#">
+										<i class="icon-user"></i>
+										<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu">
+											<li id="changePassword"><a>Change Password</a></li>
+										</ul>
+									</div>
 									<li style="color: white;"><c:out value="Welcome, ${sessionScope.USER.firstName} ${sessionScope.USER.lastName} |"/></li>
 									</c:if>
 									<c:if test="${sessionScope.USER.isAdmin == 'true' && sessionScope.loginStatus == 'in'}">
@@ -187,7 +187,7 @@
 				<div class="control-group">
 					<label class="control-label" for="conformPassword" >Confirm Password</label>
 					<div class="controls">
-						<input type="password" id="conformPassword" placeholder="Conform password" name='confirmPassword'>
+						<input type="password" id="conformPassword" placeholder="Conform password" name='conformPassword'>
 					</div>
 				</div>
 				<div class="control-group" style="color:red;">
