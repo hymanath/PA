@@ -73,6 +73,8 @@
 			.indiComment{margin:4px;padding:10px;}
 		#indiCommentName{margin:2px;}
 		#indiCommentDate{margin:2px;color:#28B0D6;}
+		
+		#announcementsFilterId{text-align:center;}
 			
 	
 </style>
@@ -120,7 +122,7 @@
             	
 		   </div>
 		   
-		   <div class="span3 breadcrumb thumbnail menu" id="comment">
+		   <div class="span3 breadcrumb thumbnail menu getCmmnts" id="comment">
 		<a id="CareId3" href="javascript:{};">
 		    <img src="image/cancel_vote.png" style="width: 90px; margin-right: 0px; margin-left: 40px;" />
 			
@@ -357,19 +359,22 @@
 			</form>
 	</div>
 			</div>
-			<div id="BOX-4" style="display: none">
-			<div><input type="radio" name="announcement" value="all" id="forAnnouncementAllId" checked="checked" class="annoncementsBlock" onClick='getPaginationForData(0,"all");'>All</input>
-			<input type="radio" name="announcement" value="btDates" class="annoncementsBlock" onClick=''>Between Dates</input>
-			<input type="radio" name="announcement" value="type" class="annoncementsBlock">Type</input></div>
-			<div id='btAnnouncementsDiv'></div>
-			<div id='typeAnnouncementsDiv'></div>
-			<div id="pagedAnnouncementsId"  class="getallcomment" style="display: inline-block; width: 785px;">
-			
+			<div id="BOX-4" style="display: none" class="getallcomment">
+				<div id="announcementsFilterId" class="breadcrumb">
+					<div>
+						<input type="radio" name="announcement" value="all" id="forAnnouncementAllId" checked="checked" class="annoncementsBlock" onClick='getPaginationForData(0,"all");'>All</input>
+						<input type="radio" name="announcement" value="btDates" class="annoncementsBlock" onClick=''>Between Dates</input>
+						<input type="radio" name="announcement" value="type" class="annoncementsBlock">Type</input>
+					</div>
+					<div id='btAnnouncementsDiv'></div>
+					<div id='typeAnnouncementsDiv'></div>
+				</div>
+				<div id="pagedAnnouncementsId"   style="display: inline-block; width: 785px;">
 			</div>
 						<!----pagination Div----->
-						<div class="span12 text-center">
-							<div id="paginationId"></div>
-						</div>
+			<div class="span12 text-center">
+				<div id="paginationId"></div>
+			</div>
 			</div>
 			
 		</div>
@@ -642,8 +647,6 @@
 
   function buildAllCommentsList(myResults,jsObj)
 	{
-		//alert('in123');
-		
 		if(myResults != null)
 		{
 			totalCount = myResults[0].total ;
@@ -651,12 +654,12 @@
 			for(var i in myResults)
 			{
 			str += '<div id="commentsDIv'+myResults[i].commentId+'">';
-			str +='<div class="comment_sec span7">';
+			str +='<div class="comment_sec span9">';
 			if(myResults[i].abused.toLowerCase() == "no")
 			{
 			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
 			}
-			str +='<span class="title_sec">TITLE:</span><span class="title_sec1">'+myResults[i].announcement+'</span>';
+			str +='<span class="title_sec"></span><span class="title_sec1">'+myResults[i].announcement+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +='<span class="font_desc">'+myResults[i].comment+'</span>';
 			str +='<hr style="margin-top:0px;">';
