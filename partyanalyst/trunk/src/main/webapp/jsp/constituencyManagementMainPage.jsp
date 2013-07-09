@@ -7,8 +7,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Constituency Management</title>
-
+	<c:if test="${reportResult == 'PROBLEMS_MANAGEMENT'}">
+		<title>Problem Management</title>
+	</c:if>
+	<c:if test="${reportResult == 'CONSTITUENCY_MANAGEMENT'}">
+		<title>Constituency Management</title>
+	</c:if>
+		
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
