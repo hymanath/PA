@@ -206,7 +206,7 @@ margin:-1px 0px 0px 0px ;
 								<li><a href="electionResultsAnalysisAction.action"><span>Election Results Analysis Report</span></a></li>
 								
 								<li><a href="censusReportAction.action"><span>Elections vs Demographics</span></a></li>
-								<li><a href="partyStrengthAction.action"><span>Party Strenths/Weakness</span></a></li>
+								<li><a href="partyStrengthAction.action"><span>Party Strengths/Weakness</span></a></li>
 								<li><a href="electionLiveResultsAnalysisAction.action"><span>Live & Previous Results Comparison</span></a></li>
 							</ul>
 						</div>
