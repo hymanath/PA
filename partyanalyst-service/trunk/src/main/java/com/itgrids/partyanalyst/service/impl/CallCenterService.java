@@ -104,7 +104,8 @@ public class CallCenterService implements ICallCenterService{
 		 {
 			 StringBuilder subUserIdAndparentIds = new StringBuilder();
 			 subUserIdAndparentIds.append(userId.toString());
-			 hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+subUserIdAndparentIds+")";
+			// hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+subUserIdAndparentIds+")";
+			 hbQuery+=" and model.problemLocation.problemAndProblemSource.user.userId in("+subUserIdAndparentIds+")";
 		 }
 		 //checking for empty fields and executing query
 		if(!name.equalsIgnoreCase("") ||!mobileNum.equalsIgnoreCase("") ||!refNum.equalsIgnoreCase("")||!emailId.equalsIgnoreCase("")||fromDate!=null || toDate!=null){
