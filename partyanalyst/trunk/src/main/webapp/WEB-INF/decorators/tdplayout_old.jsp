@@ -113,6 +113,7 @@ margin:-1px 0px 0px 0px ;
     width: 992px;
 }
 #header-main{background:#ffdc2d !important;}
+.tdp-text-error{color: #B94A48;}
 
 </style>
 <decorator:head/>

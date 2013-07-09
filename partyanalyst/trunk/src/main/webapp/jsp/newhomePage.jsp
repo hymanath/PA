@@ -428,6 +428,10 @@ Quick Links</h2>
 				</div>
 			
 			<!--sasi photo gallary END-->
+			<div id="multipleRestrictionDiv" style="display:none;">
+			<div id="multipleRestrictionContentDiv">You have been logged out because by using your credentials some one is logged from somewhere else</div>
+			</div>
+			<!-- vedio gal Start -->
 				<div class="widget yellow" style="padding-bottom:5px;">
 				<h2><span><i class="icon-facetime-video icon-black"id="icon_leftsec"></i><span>
 				Latest Video Galleries</h2>
@@ -712,10 +716,9 @@ Opinion Poll</h2>
 	}
 	
 }
-
-
-
-
+	<c:if test="${(sessionScope.loginStatus == null || sessionScope.loginStatus == 'in') && action == 'multipleAccess' }">
+	buildMultipleRestrictionDialogue();
+	</c:if>
 initializeNewHomePage();
 getProblemDetails();
 
@@ -806,6 +809,31 @@ $(document).ready(function(){
 	
 	});
 	hideUnhideSelectBox('assembly_radio', 'constituency')
-</script>
+	
+	function buildMultipleRestrictionDialogue()
+	{
+	$("#multipleRestrictionDiv").css("display","block");
+	$("#multipleRestrictionDiv").dialog({ 
+	                            title:'LogOut',
+	                            height: 'auto',
+								width: 500,
+								closeOnEscape: false,
+								position:"center",
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 600,
+								top:0,
+								overlay: { opacity: 0.5, background: 'black'},
+	                             buttons: {
+							   "Close":function() {$(this).dialog("close")}
+								   },
+								  
+								});
+			$("#multipleRestrictionDiv").dialog();
+			$(".ui-dialog .ui-dialog-buttonpane button").addClass("btn btn-info");
+			
+	}
+	</script>
 	<script type="text/javascript" src="styles/engine3/wowslider.js"></script>
 	<script type="text/javascript" src="styles/engine3/script.js"></script>
