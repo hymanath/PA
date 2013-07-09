@@ -3548,8 +3548,12 @@ var YDataObjectTemp = new Object();
   if(innerResults[i].totalVotersFor18To25 != null){
 	str+='<tr>';
 
-	if(type == "constituency")
-	 str+='<td><a href="javaScript:{}"  onclick="openCompleteInfoForm('+innerResults[i].id+',\''+innerResults[i].tehsilName+'\',\''+innerResults[i].areaType+'\')">'+innerResults[i].tehsilName+'</a></td>';
+	if(type == "constituency"){
+		if(innerResults[i].areaType != 'localElec' )
+			str+='<td><a href="javaScript:{}"  onclick="openCompleteInfoForm('+innerResults[i].id+',\''+innerResults[i].tehsilName+'\',\''+innerResults[i].areaType+'\')">'+innerResults[i].tehsilName+'</a></td>';
+		else 
+			str+='<td>'+innerResults[i].tehsilName+'</td>';
+	}
 	else if(type == "mandal")
 	 str+='<td><a href="javaScript:{}"  onclick="openCompleteInfoForm('+innerResults[i].id+',\''+innerResults[i].panchayatname+'\',\''+innerResults[i].areaType+'\')">'+innerResults[i].panchayatname+'</a></td>';
 	else if(type == "panchayat")
