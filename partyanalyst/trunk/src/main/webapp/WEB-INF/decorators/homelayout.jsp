@@ -222,7 +222,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 								<li><a href="electionResultsAnalysisAction.action"><span>Election Results Analysis Report</span></a></li>
 								<li><a href="biElectionAction.action"><span>Telengana Bye-Elections 2010</span></a></li>
 								<li><a href="censusReportAction.action"><span>Elections vs Demographics</span></a></li>
-								<li><a href="partyStrengthAction.action"><span>Party Strenths/Weakness</span></a></li>
+								<li><a href="partyStrengthAction.action"><span>Party Strengths/Weakness</span></a></li>
 							</ul>
 						</div>
                 </li>
