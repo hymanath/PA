@@ -462,6 +462,7 @@
 				str += '<option value=2>Press Releases</option>';
 				str += '</select>';
 				str += '<a class="btn btn-primary"  onClick="getPaginationForData(0,\''+name+'\')">Find</a>';
+				str += '<div id="dateErrorAnnDiv"><div>';
 				$('#btAnnouncementsDiv').html('');
 			//	$("#paginationId").html('');
 				$('#typeAnnouncementsDiv').html(str);
@@ -474,6 +475,7 @@
 				str += '<span>End Date : </span>';
 				str += '<input type="text" name="endDateName" id="endDateName" class="calender input-medium"></input>';
 				str += '<a class="btn btn-primary" onClick="getPaginationForData(0,\''+name+'\')">Find</a>';
+				str += '<div id="dateErrorAnnDiv"><div>';
 				$('#btAnnouncementsDiv').html(str);
 				$('#typeAnnouncementsDiv').html('');
 			//	$("#paginationId").html('');
@@ -529,8 +531,11 @@
 		}
 		else if(type == 'btDates')
 		{
-			var startDate = $('#startDateName').val();
-			var endDate   = $('#endDateName').val();
+		var startDate = $('#startDateName').val();
+		var endDate   = $('#endDateName').val();
+		if(startDate != "" && endDate != "")
+		{
+			
 			var jsObj=
 			{
 				startDate  : startDate,
@@ -541,17 +546,31 @@
 				task       : "getAllAnnouncementsBtdates"
 			}
 		}
+		else
+		{
+			$('#dateErrorAnnDiv').html('<b style="color:red">Please Select Date Fields</b>');
+		}
+			
+		}
 		else if(type == 'type')
 		{
 			var type = $('#selType option:selected').val();
-			var jsObj=
+			if(type != null && type > 0)
 			{
-				type       : type,
-				startRecord : pageNo,
-				maxRecord   : 10,
-				type       : type,
-				task       : "getAllAnnouncementsSelType"
+				var jsObj=
+				{
+					type       : type,
+					startRecord : pageNo,
+					maxRecord   : 10,
+					type       : type,
+					task       : "getAllAnnouncementsSelType"
+				}
 			}
+			else
+			{
+				$('#dateErrorAnnDiv').html('<b style="color:red">Please Select Type</b>');
+			}
+			
 			
 		}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -917,50 +936,58 @@
 	});
 	
 	function buildAllAnnouncements(results,jsObj){
-	var str="";
-	str+="<ul class='unstyled pad10'>";
-	str+='<legend>Get All Announcement</legend>';
-	for(var i in results){
-	  
-		str+="<li>";
-	
+	if(results != null && results.length > 0)
+	{
+		var str="";
+		str+="<ul class='unstyled pad10'>";
+		str+='<legend>Get All Announcement</legend>';
+		for(var i in results){
+		  
+			str+="<li>";
 		
+			
+			
+			str +='<article class=" notifications">';
+				str +='<div  class="thumbnail title span8" id="announcemtsDiv'+results[i].announcementId+'">';				
 		
-		str +='<article class=" notifications">';
-			str +='<div  class="thumbnail title span8" id="announcemtsDiv'+results[i].announcementId+'">';				
-	
-	str+= "<div style='float:right; margin-right: 17px;margin-top: 7px;'><a class='icon-pencil' onClick='editAnnouncement("+results[i].announcementFileId+")' style='cursor: pointer; margin-right: 7px;'></a>";
-	str+= "<a class='icon-remove' onClick='deleteAnnouncement("+results[i].announcementId+")' style='cursor: pointer;'></a>";
-	str += "<span class='pull-right label' style='margin-left: 10px;'><a style='cursor: pointer;' onClick='getComments("+results[i].announcementId+",startIndex,maxIndex,true);'><i class='icon-comment'></i></a><small>"+results[i].commentsCount+"</small></span></div>";	
-	str +='<h1>'+results[i].name+'</h1>';
-	
-   str +='<p>'+results[i].description+'</p>';
-	str +='<div class="date span2">'+results[i].dateString+'</div>';
-	str +='<div class=" span1 date pull-right">'+results[i].updatedBy+'</div>';
-	str += "<div id='statusMsg"+results[i].announcementId+"'></div>";
-	str +='</div>';	
-	str +='</article>';
-		str+="</li>";
+		str+= "<div style='float:right; margin-right: 17px;margin-top: 7px;'><a class='icon-pencil' onClick='editAnnouncement("+results[i].announcementFileId+")' style='cursor: pointer; margin-right: 7px;'></a>";
+		str+= "<a class='icon-remove' onClick='deleteAnnouncement("+results[i].announcementId+")' style='cursor: pointer;'></a>";
+		str += "<span class='pull-right label' style='margin-left: 10px;'><a style='cursor: pointer;' onClick='getComments("+results[i].announcementId+",startIndex,maxIndex,true);'><i class='icon-comment'></i></a><small>"+results[i].commentsCount+"</small></span></div>";	
+		str +='<h1>'+results[i].name+'</h1>';
 		
+	   str +='<p>'+results[i].description+'</p>';
+		str +='<div class="date span2">'+results[i].dateString+'</div>';
+		str +='<div class=" span1 date pull-right">'+results[i].updatedBy+'</div>';
+		str += "<div id='statusMsg"+results[i].announcementId+"'></div>";
+		str +='</div>';	
+		str +='</article>';
+			str+="</li>";
+			
+		}
+		
+		var itemsCount=results[0].allAnnouncementsCount;
+		var maxResults=jsObj.maxRecord;
+		str+="</ul>";
+		$("#pagedAnnouncementsId").html(str);
+		if(jsObj.startRecord==0 || jsObj.startIndex == 0){
+			$("#paginationId").pagination({
+				items: itemsCount,
+				itemsOnPage: maxResults,
+				cssStyle: 'light-theme',
+				onPageClick: function(pageNumber, event) {
+					var num=(pageNumber-1)*10;
+					getPaginationForData(num,jsObj.type);
+					
+				}
+			});
+			
+		}
+	}
+	else
+	{
+		$('#dateErrorAnnDiv').html('<b style="color:red">No Data Avaliable</b>');
 	}
 	
-	var itemsCount=results[0].allAnnouncementsCount;
-	var maxResults=jsObj.maxRecord;
-	str+="</ul>";
-	$("#pagedAnnouncementsId").html(str);
-	if(jsObj.startRecord==0 || jsObj.startIndex == 0){
-		$("#paginationId").pagination({
-			items: itemsCount,
-			itemsOnPage: maxResults,
-			cssStyle: 'light-theme',
-			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*10;
-				getPaginationForData(num,jsObj.type);
-				
-			}
-		});
-		
-	}
 	}
 	function getComments(id,startIndex,maxIndex,showMore)
 	{
