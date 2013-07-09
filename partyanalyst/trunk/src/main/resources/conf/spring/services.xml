@@ -260,6 +260,8 @@
 		<property name="userAccessIpAddressDAO" ref="userAccessIpAddressDAO" />
 	    <property name="mailService" ref="mailService"/>
 		<property name="velocityEngine" ref="velocityEngine" />
+		<property name="userLoginSessionDAO" ref="userLoginSessionDAO" />
+		
 	  </bean>
 	
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
@@ -1621,7 +1623,7 @@
      <property name="surveyAnswerDAO" ref="surveyAnswerDAO" />
      <property name="surveyAnswerInfoDAO" ref="surveyAnswerInfoDAO" />
      <property name="townshipDAO" ref="townshipDAO"></property>
-     <property name="casteStateDAO" ref="casteStateDAO" />
+	 <property name="casteStateDAO" ref="casteStateDAO" />
     </bean>
       
     <bean name="surveyDetailsService" class="com.itgrids.partyanalyst.service.impl.SurveyDetailsService">
@@ -1630,6 +1632,6 @@
 		<property name="surveyAccessUsersDAO" ref="surveyAccessUsersDAO"></property>
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="updationDetailsDAO" ref="updationDetailsDAO"></property>
-    </bean>
+	</bean>
 </beans>		
 	

@@ -1241,5 +1241,8 @@
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	<bean id="sessionHandlerAction" class="com.itgrids.partyanalyst.web.action.SessionHandlerAction" singleton="false">
+		<property name="loginService" ref="loginService" />
+	</bean>
 </beans>	
 	

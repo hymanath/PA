@@ -45,19 +45,19 @@ public class LogoutAction extends ActionSupport implements ServletContextAware, 
 	
 	public String execute()
 	{
-		session = request.getSession();
+		/*session = request.getSession();
 		
 		UserTrackingVO userTrackingVO = new UserTrackingVO();
 		userTrackingVO.setSessionId(session.getId());
 		userTrackingVO.setStatus(IWebConstants.LOGOUT);
 		loginService.saveUserSessionDetails(userTrackingVO);
 		
-		session.invalidate();
+		session.invalidate();*/
 		
-		try{
+		/*try{
 			response.sendRedirect("homePage.action");
 		}catch (Exception e) {
-		}
+		}*/
 		return SUCCESS;
 	}
 
