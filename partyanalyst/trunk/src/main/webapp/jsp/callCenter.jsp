@@ -318,7 +318,7 @@ function showAddedResult(result){
  var obj = document.getElementById("showCallAddedResult");
     
     if(result[0].status ==1){
-       obj.innerHTML='<font color="green">CallDetails Added Successfully</font>';
+       obj.innerHTML='<font color="green">Call Details Added Successfully</font>';
 	  setTimeout('hideMessage()',15000);
 	}
 }
