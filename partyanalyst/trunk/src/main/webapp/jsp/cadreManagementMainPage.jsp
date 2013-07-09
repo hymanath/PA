@@ -323,29 +323,21 @@ function callAjax(jsObj,url)
 								}
 								else if(jsObj.task=="createImpDateEvent")
 								{
-									//var selectedDate = jsObj.startDate.split('/')[1]+'/'+jsObj.startDate.split('/')[0]+'/'+jsObj.startDate.split('/')[2];
-									//  datesRenderArr.push(selectedDate);
-									// renderStack()
-
-             /* var ob =
-					{
-						importantDateId:myResults[0].importantDateId,
-						title:myResults[0].title,
-						impDate:myResults[0].impDate,
-						importance:myResults[0].importance,
-						eventType:myResults[0].eventType
-					};
-
-					impDates.push(ob);
-
-					impDates.sort(compare);*/
-
-
-
-                                    // impDates.push(myResults);
-									//showInitialImpEventsAndDates(impDates,'impDates',"");
-
-
+									/* var selectedDate = jsObj.startDate.split('/')[1]+'/'+jsObj.startDate.split('/')[0]+'/'+jsObj.startDate.split('/')[2];
+									datesRenderArr.push(selectedDate);
+									renderStack()
+									var ob =
+									{
+										importantDateId:myResults[0].importantDateId,
+										title:myResults[0].title,
+										impDate:myResults[0].impDate,
+										importance:myResults[0].importance,
+										eventType:myResults[0].eventType
+									};
+									impDates.push(ob);
+									impDates.sort(compare);
+									impDates.push(myResults);
+									showInitialImpEventsAndDates(impDates,'impDates',""); */
 									alert("Important Date created successfully");
 
 
@@ -364,7 +356,7 @@ function callAjax(jsObj,url)
 						// BY SAMBA END
 									$('#newImpDateDiv').dialog('close');
 									//var date = new Date();
-									var str=jsObj.startDate;
+									/*  var str=jsObj.startDate;
 									var dateVal=str.split("/"); 
 									var selMonth = dateVal[1];
 									var selYear = dateVal[2];
@@ -375,7 +367,7 @@ function callAjax(jsObj,url)
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
 									var url = "<%=request.getContextPath()%>/getNextMonthDatesEvents.action?"+rparam;	
-									callAjax(jsObj1,url);
+									callAjax(jsObj1,url);  */
 								}
 								else if(jsObj.task=="subscribe")
 								{									
@@ -430,7 +422,7 @@ function callAjax(jsObj,url)
 								else if(jsObj.task=="updateCreateEvent" || jsObj.task=="updateImpDateEvent")
 								{		
 									alert("Updated Successfully");
-									var date = new Date();
+									/* var date = new Date();
 									var str=jsObj.startDate;
 									var dateVal=str.split("/"); 
 									var selMonth = dateVal[1];
@@ -442,7 +434,7 @@ function callAjax(jsObj,url)
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
 									var url = "<%=request.getContextPath()%>/getNextMonthDatesEvents.action?"+rparam;	
-									callAjax(jsObj1,url);
+									callAjax(jsObj1,url); */
 									
                                  getUpdatedEvents();
 									
