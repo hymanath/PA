@@ -392,33 +392,35 @@ $(function(){
 	     $('[name="changePwdForm"]').validate({
 	      onfocusout: function(e) {
           this.element(e);
-      }, onkeyup: false,
-	  rules: {
-		orginalpassword: {	
-			required: true
-			},
-		newPassword: {
-		    required :true
-			},
-		conformPassword: {
-		    required :true
-			}
-	  },	
-	  messages: {
-		orginalpassword: {
-			required: " Enter Old Password" 
-			},
-		newPassword: {
-			required: " Enter New Password"
-		    },
-		conformPassword: {
-			required: "Enter Confirm password"
-		    }
-	  },
-	  success: function(element) {
-	      element.text('ok').addClass('valid');
-			},
-	});
+			  }, onkeyup: false,
+			  rules: {
+				orginalpassword: {	
+					required: true
+					},
+				newPassword: {
+					required :true
+					},
+				conformPassword: {
+					required :true,
+					equalTo: "#newPassword"
+					}
+			  },	
+			  messages: {
+				orginalpassword: {
+					required: " Enter Old Password" 
+					},
+				newPassword: {
+					required: " Enter New Password"
+					},
+				conformPassword: {
+					required: "Enter Confirm password",
+					equalTo  : "Enter Same Passwords For both new and conform passwords"
+					}
+			  },
+			  success: function(element) {
+				  element.text('ok').addClass('valid');
+					},
+			});
 });
 
 $('#changePassword').click(function(){
