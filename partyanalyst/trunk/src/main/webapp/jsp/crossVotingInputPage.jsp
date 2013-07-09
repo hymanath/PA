@@ -849,7 +849,7 @@ $(document).ready(function(){
 						<s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year" onchange="getParliament('','','')"></s:select>
 					</td>
 					<td><img id="ajaxImg1" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
-				
+					<td></td>
 					<td align="left" class="tdStyle" style="padding-left:10px;"><label theme="simple" for="parliamentField" id="parliamentLabel">Parliament Constituency<font color="red">*</font></label></td>
 					<td align="left"> 
 						<!--<select class="selectstyle" id="parliamentField" onchange="getAssembly('','')">
@@ -866,9 +866,10 @@ $(document).ready(function(){
 							<option value="-1">Select</option>
 						</select>-->
 						<s:select cssClass="selectstyle" theme="simple" id="AssemblySelect" name="AssemblySelect" list="aConstituencyList" listKey="id" listValue="name"  onchange="getParty('')"></s:select>
-						<input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" onclick="forGetCrossVoting()"/><span id="checkBoxStyle">Include Aliance Parties</span>
+						</td>
+						<td><img id="ajaxImg3" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
+						<td><input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" onclick="forGetCrossVoting()"/><span id="checkBoxStyle">Include Aliance Parties</span>
 					</td>
-					<td><img id="ajaxImg3" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 					
 					<td align="left" class="tdStyle" style="padding-left:10px;">Party<font color="red">*</font></td>
 					<td align="left">
@@ -877,7 +878,7 @@ $(document).ready(function(){
 							</select>	-->
 							<s:select cssClass="selectstyle" theme="simple" id="PartySelect" name="PartySelect" list="partysList" listKey="id" listValue="name"  onchange="forGetCrossVoting()"></s:select>							
 					</td>
-					
+					<td></td>
 				</tr>
 				<tr>
 					<td colspan="4">
