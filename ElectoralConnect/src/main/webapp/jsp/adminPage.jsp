@@ -549,6 +549,7 @@
 		else
 		{
 			$('#dateErrorAnnDiv').html('<b style="color:red">Please Select Date Fields</b>');
+			$('#pagedAnnouncementsId').html('');
 		}
 			
 		}
@@ -569,6 +570,7 @@
 			else
 			{
 				$('#dateErrorAnnDiv').html('<b style="color:red">Please Select Type</b>');
+				$('#pagedAnnouncementsId').html('');
 			}
 			
 			
@@ -938,6 +940,7 @@
 	function buildAllAnnouncements(results,jsObj){
 	if(results != null && results.length > 0)
 	{
+		$('#dateErrorAnnDiv').html('');
 		var str="";
 		str+="<ul class='unstyled pad10'>";
 		str+='<legend>Get All Announcement</legend>';
@@ -986,6 +989,7 @@
 	else
 	{
 		$('#dateErrorAnnDiv').html('<b style="color:red">No Data Avaliable</b>');
+		$('#pagedAnnouncementsId').html('');
 	}
 	
 	}
