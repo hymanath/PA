@@ -171,7 +171,7 @@
 			 <form class="form-horizontal" name='changePwdForm' action='changePasswordAction.action' method='post' >
 				<legend>Change Password</legend>
 				<div class="control-group">
-					<label class="control-label" for="passward">Enter Password</label>
+					<label class="control-label" for="orginalpassword">Enter Password</label>
 					<div class="controls">
 						<input type="password" id="orginalpassword" placeholder="Enter Password" name='orginalpassword' onChange="">
 					</div>
@@ -394,10 +394,10 @@ $(function(){
           this.element(e);
       }, onkeyup: false,
 	  rules: {
-		origninalpassword: {	
+		orginalpassword: {	
 			required: true
 			},
-		newpassword: {
+		newPassword: {
 		    required :true
 			},
 		conformPassword: {
@@ -405,10 +405,10 @@ $(function(){
 			}
 	  },	
 	  messages: {
-		origninalpassword: {
+		orginalpassword: {
 			required: " Enter Old Password" 
 			},
-		newpassword: {
+		newPassword: {
 			required: " Enter New Password"
 		    },
 		conformPassword: {
