@@ -46,5 +46,10 @@ public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, L
 		return getHibernateTemplate().find("select model.urlName from UserTracking model where (model.time =(select max (model2.time) from UserTracking model2 where model2.sessionId = ?)) or " +
 				" (model.time =(select min (model3.time) from UserTracking model3 where model3.sessionId = ? )) order by model.time desc " ,params);
 	}
+	public List<String> getAllActiveUsersSessionIds(Long userId)
+	{
+		return getHibernateTemplate().find("select distinct model.sessionId from UserLoginDetails model where model.loginTime is not null and model.logoutTime is null and model.userId = ? order by model.loginTime desc",userId);
+		
+	}
 	
 }
