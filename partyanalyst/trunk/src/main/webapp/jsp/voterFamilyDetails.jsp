@@ -713,14 +713,14 @@ function impFamilesVariableDescription()
 { 
  $('#descriptionDiv').html('');
   var div = $('<div class="descriptionInnerDiv"></div>');
-  div.append('<span> <b> < 3 -</b> No Of Families Below 3 Voters</span><br>');
-  div.append('<span> <b>3% -</b> No Of Families Below 3 Voters In Percent</span><br>');
-  div.append('<span> <b>4 to 6 -</b> No Of Families Having  Between 4 to 6 Voters</span><br>');
-  div.append('<span> <b>4 to 6 % -</b>No Of Families Having  Between 4 to 6 Voters In Percent</span><br>');
-  div.append('<span> <b>7 to 10 -</b> No Of Families Between Having  7 to 10 Voters</span><br>');
-  div.append('<span> <b>7 to 10 % -</b> No Of Families Between Having  7 to 10 Voters In Percent</span><br>');
-  div.append('<span> <b>10 - </b> No Of Families Having Above 10 Voters</span><br>');
-  div.append('<span> <b>10% -</b> No Of Families Having Above 10 Voters In Percent</span><br>');
+  div.append('<span> <b> < 3 -</b> No Of Families Having Below 3 Voters</span><br>');
+  div.append('<span> <b><3 % -</b> No Of Families Having Below 3 Voters In Percent</span><br>');
+  div.append('<span> <b>4 to 6 -</b> No Of Families Having 4 to 6 Voters</span><br>');
+  div.append('<span> <b>4 to 6 % -</b>No Of Families Having 4 to 6 Voters In Percent</span><br>');
+  div.append('<span> <b>7 to 10 -</b> No Of Families Having 7 to 10 Voters</span><br>');
+  div.append('<span> <b>7 to 10 % -</b> No Of Families Having 7 to 10 Voters In Percent</span><br>');
+  div.append('<span> <b>>10 - </b> No Of Families Having Above 10 Voters</span><br>');
+  div.append('<span> <b>>10 % -</b> No Of Families Having Above 10 Voters In Percent</span><br>');
   $("#descriptionDiv").append(div).css("display","block");
 
 }

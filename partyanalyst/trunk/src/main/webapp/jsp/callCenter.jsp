@@ -374,7 +374,6 @@ function showCallTrackingEditWindow(result){
 	str +=    '<td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="mobile1"/></td>';
 	str +=   '<td>';
 	str +=      '<select style="width:175px;" class="textFieldStyle" style="height:23px;" id="problemPurpose1" >';
-    str +=        '<option>All</option>';
 	str += 		  '<option value="Appointment Cancellation">Appointment Cancellation</option>';
 	str += 		  '<option value="Appointment Fixing">Appointment Fixing</option>';
 	str += 		  '<option value="For Information">For Information</option>';	
@@ -978,7 +977,7 @@ function showCurrentDayProblems(result){
 							{key:"problemPurpose", label: "Call Purpose", sortable: true},
 		    				{key:"problemAddedDate", label: "Problem Added Date",sortable:true},
 							{key:"villageOrTown", label: "Action Taken", sortable: true},
-							{key:"Edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit},
+							{key:"Edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit}
 							//{key:"AddProblem", label: "Add Problem",formatter:YAHOO.widget.DataTable.add}
 							
 		    	        ]; 
@@ -1153,7 +1152,6 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
 	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px; width: 150px;" id="mobile" onBlur="validatePhoneNo(this.id)"/></td>
 	   <td>
 	       <select style="width:190px; margin-top: -10px; height: 31px;" class="textFieldStyle" id="problemPurpose" >
-	         <option>All</option>
 			 <option>Appointment Cancellation</option>
 			 <option>Appointment Fixing</option>
 			 <option>For Information</option>
@@ -1321,7 +1319,7 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
                     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
                         <td width="44%" height="30">&nbsp;</td>
-                        <td width="56%" valign="bottom"><a href="#"><img src="images/search_button.jpg" onclick="getProblemDetails();" width="71" height="26" border="0" /></a></td>
+                        <td width="56%" valign="bottom"><a href="javascript:{}"><img src="images/search_button.jpg" onclick="getProblemDetails();" width="71" height="26" border="0" /></a></td>
                       </tr>
                     </table></td>
                   </tr>

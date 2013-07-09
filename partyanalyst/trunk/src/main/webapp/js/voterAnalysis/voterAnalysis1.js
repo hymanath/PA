@@ -6153,10 +6153,10 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			 str+='<thead class="info"><tr>';
 			  str+='<th>Year</th>';
 			 if(jsObj.type != "booth" && jsObj.type != "hamlet" &&  jsObj.type != "customWard")
-			  str+='<th>Booths</th>';
-		      str+='<th>Total</th>';
-		 	  str+='<th>Male</th>';
-		 	  str+='<th>Female</th>';
+			  str+='<th>Total Booths</th>';
+		      str+='<th>Total Voters</th>';
+		 	  str+='<th>Male Voters</th>';
+		 	  str+='<th>Female Voters</th>';
 			  str+='<th>Total Difference</td>';
 			  str+='<th>Male Difference</td>';
 		  	  str+='<th>Female Difference</td>';
