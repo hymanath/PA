@@ -503,7 +503,11 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			
 			status = "success";
 			session.setAttribute("status", status);
+			if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+			return "dashBoard";
+			else
 			return "connect";
+			
 		}
 			
 			
