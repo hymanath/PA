@@ -59,6 +59,7 @@
 		#partyPerformanceReport_11,#partyPerformanceReport_12
 		{
 			margin-right: 3px;
+			margin-top: auto;
 		}
 		.marginClass{
 
@@ -625,8 +626,8 @@
 				<tr>
 					<th align="left"><%=electionType%></th>
 					<td>
-						<input id="assemblyRadio" type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);" style="margin-right: 3px;"/>Assembly
-					<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="doAjax(this.value);" style="margin-right: 3px;"/>Parliament
+						<input id="assemblyRadio" type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);" style="margin-right: 3px;margin-top: auto;"/>Assembly
+					<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="doAjax(this.value);" style="margin-right: 3px;margin-top: auto;"/>Parliament
 					</td>
 				</tr>
 				<!-- <tr>
