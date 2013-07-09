@@ -98,8 +98,8 @@ public class VoterHouseInfoVO {
 	private boolean muncipality;
 	private Long groupLocationValue;
 	private boolean constituency;
-
-
+    private Long mandalId;
+    private Long localEleBodyId;
 
 
 	public String getInfluencePartyName() {
@@ -992,5 +992,23 @@ public class VoterHouseInfoVO {
 	public void setVoterGroup(String voterGroup) {
 		this.voterGroup = voterGroup;
 	}
+
+	public Long getMandalId() {
+		return mandalId;
+	}
+
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+
+	public Long getLocalEleBodyId() {
+		return localEleBodyId;
+	}
+
+	public void setLocalEleBodyId(Long localEleBodyId) {
+		this.localEleBodyId = localEleBodyId;
+	}
+	
+	
 	
 }
