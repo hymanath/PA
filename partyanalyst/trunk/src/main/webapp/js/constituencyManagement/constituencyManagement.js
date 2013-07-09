@@ -69,6 +69,7 @@ function buildPoliticalChanges() {
 
 function showProblemsStatusCount(results) {
 	
+	var fixedProblems = 0;
 	var problemStats_bodyEl = document.getElementById("problems_outline_Div");
 	var chartName = results.problemsStatusChartName;
 	var barChartName = results.lineChartPath;
@@ -90,7 +91,10 @@ function showProblemsStatusCount(results) {
 	problemStats_bodyElContent += '							<TR>';
 	for ( var i in results.problemsCountByStatus) {
 		if (results.problemsCountByStatus[i].status == 'FIXED')
+		{
+			fixedProblems = fixedProblems+results.problemsCountByStatus[i].count;
 			continue;
+		}
 		problemStats_bodyElContent += '								<TD align="left">'
 				+ results.problemsCountByStatus[i].status
 				+ '</TD><TD align="left"><DIV class="'
@@ -115,7 +119,7 @@ function showProblemsStatusCount(results) {
 	problemStats_bodyElContent += '							<TR>';
 	problemStats_bodyElContent += '								<TH>Fixed Problems:</TH>';
 	if(results.problemsCountByStatus.length != 0){
-		problemStats_bodyElContent += '								<TD>' + results.problemsCountByStatus[i].count + '</TD>';
+		problemStats_bodyElContent += '								<TD>' + fixedProblems + '</TD>';
 	}else{
 		problemStats_bodyElContent += '								<TD>0</TD>';
 	}		
