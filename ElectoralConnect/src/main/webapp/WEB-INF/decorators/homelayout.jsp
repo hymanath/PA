@@ -394,10 +394,13 @@ $(function(){
           this.element(e);
       }, onkeyup: false,
 	  rules: {
-		userName: {	
+		origninalpassword: {	
 			required: true
 			},
-		password: {
+		newpassword: {
+		    required :true
+			},
+		conformPassword: {
 		    required :true
 			}
 	  },	
@@ -408,8 +411,8 @@ $(function(){
 		newpassword: {
 			required: " Enter New Password"
 		    },
-		confirmPassword: {
-			required: " Confirm password"
+		conformPassword: {
+			required: "Enter Confirm password"
 		    }
 	  },
 	  success: function(element) {
