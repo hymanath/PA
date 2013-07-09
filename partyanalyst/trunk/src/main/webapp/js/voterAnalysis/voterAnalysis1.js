@@ -6877,7 +6877,7 @@ scrollToNewsDiv();
 			 astr += "<div id='tabsForLocal'  class='thumbnail1' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>";
              astr += "<div id='sse2' style='display:none' >";
              astr += "<div id='sses2'>";
-             astr += "<ul>";
+             astr += "<ul  style='margin-left: 102px;'>";
 			   astr += "<li><a class='votersInfoLi2 votersInfoCls' href='javascript:{getvotersBasicInfo1(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletBooth\")}'>Booth Wise Voters Info of "+mainname+"</a></li>";
             astr += "<li id='myli' style='display:none;'><a class='votersInfoLi2' href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"hamletLocal\")}'>LocalArea Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
