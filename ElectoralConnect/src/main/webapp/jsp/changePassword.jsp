@@ -19,10 +19,15 @@ $(document).ready(function () {
 			window.location.href = "homePage.action";
 			
 		}
-		else 
+		else if(status == "nomatch")
 		{
 			$('#passwordModal').modal('show');
-			//$('#errorMessage').html('<b style="color:red">Please Enter Valid Paaword</b>');
+			$('#errorMessage').html('<b style="color:red">Please enter same passwords for both new and conform passwords</b>');
+		}
+		else
+		{
+			$('#passwordModal').modal('show');
+			$('#errorMessage').html('<b style="color:red">Please Enter Correct Password</b>');
 		}
 		
 	});

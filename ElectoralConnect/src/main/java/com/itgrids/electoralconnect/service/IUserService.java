@@ -32,4 +32,6 @@ public interface IUserService {
 	public List<CommentVO> getAllComments(int startIndex,int maxIndex);
 	
 	public UserVO abuseCommentService(Long commentId);
+	
+	public String getPasswordByUserId(Long userId);
 }

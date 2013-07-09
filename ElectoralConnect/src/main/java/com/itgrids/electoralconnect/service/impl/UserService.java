@@ -588,4 +588,20 @@ public class UserService implements IUserService{
 			}
 			return textValue;
 		}
+		
+		/**
+		 * This Service is used to get the password of the user
+		 * @param Long userId
+		 * @return String
+		 * @date 09-07-2013
+		 */
+		public String getPasswordByUserId(Long userId)
+		{
+			String password = null;
+			if(userId != null && userId > 0)
+			{
+				password = userDAO.getPasswordByUser(userId);
+			}
+			return password;
+		}
 }

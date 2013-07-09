@@ -13,4 +13,6 @@ public interface IUserDAO  extends GenericDao<User, Long> {
 	public int updatePassword(String password,Long userId);
 	
 	public User getUserDetailsByUserName(String username);
+	
+	public String getPasswordByUser(Long userId);
 }

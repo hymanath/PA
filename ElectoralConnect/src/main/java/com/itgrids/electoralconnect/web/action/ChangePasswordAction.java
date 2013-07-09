@@ -76,24 +76,38 @@ public class ChangePasswordAction extends ActionSupport implements ServletReques
 		HttpSession session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
-		if(orginalpassword.equals(regVO.getPassword()) && conformPassword.equals(newPassword))
+		String password = userService.getPasswordByUserId(userId);
+		if(password != null)
 		{
-			ResultStatus resultStatus = userService.updateUserPassword(newPassword, userId);
-			if(resultStatus.getResultCode() == 0)
+			if(orginalpassword.equals(password) && conformPassword.equals(newPassword))
 			{
-				status = "success";
+				ResultStatus  resultStatus = userService.updateUserPassword(newPassword, userId);
+				if(resultStatus.getResultCode() == 0)
+				{
+					status = "success";
+				}
+				else
+				{
+					status = "failure";
+					return ERROR;
+				}
 			}
 			else
 			{
-				status = "failure";
-				return ERROR;
+				if(!orginalpassword.equals(password))
+				{
+					status = "failure";
+					return ERROR;
+				}
+				else
+				{
+					status = "nomatch";
+					return ERROR;
+				}
+				
 			}
 		}
-		else
-		{
-			status = "failure";
-			return ERROR;
-		}
+		
 		
 		return SUCCESS;
 	}
