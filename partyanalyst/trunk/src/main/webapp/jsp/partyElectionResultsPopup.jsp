@@ -694,7 +694,8 @@ function backtopage() {
             loctnId=locationId;
 		}
         // changes made
-		
+		if(stateId == "")
+			stateId =loctnId; 
 		var jsObj= 
 		{			
 			partyId: partyId,
