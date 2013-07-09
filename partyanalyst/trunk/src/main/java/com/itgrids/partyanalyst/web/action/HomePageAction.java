@@ -88,7 +88,17 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private List<SpecialPageVO> specialPageVOList;
 	private ISpecialPageService specialPageService;
 	private String homePageLoadingFirstTime;
+	private String timeOut;
+	private String action;
 	
+	public String getTimeOut() {
+		return timeOut;
+	}
+	public void setTimeOut(String timeOut) {
+		this.timeOut = timeOut;
+	}
+
+
 	private Long onlineRegId;
 	
 	public List<SelectOptionVO> getStates() {
@@ -108,6 +118,12 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	}
 	
 	
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
 	public OpinionPollVO getOpinionPollVO() {
 		return opinionPollVO;
 	}

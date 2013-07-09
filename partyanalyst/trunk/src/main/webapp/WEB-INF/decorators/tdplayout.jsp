@@ -105,6 +105,7 @@ margin-top:10px;
 #menu ul.menu li{z-index: 999;}
 .header{height:120px;}
 #header-main{background:#ffdc2d !important;}
+.tdp-text-error{color: #B94A48;}
 
 </style>
 <decorator:head/>
