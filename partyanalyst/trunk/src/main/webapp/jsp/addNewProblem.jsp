@@ -299,10 +299,12 @@ function limitText(limitField, limitCount, limitNum)
       
 function addAnotherProblem(divName){
 		
+		$('#dynamicDiv').css("display","block");
+		$('#addMoreId').closest('#addMoreId').remove();
+		$('#firstAddMoreId').hide();
 		var newdiv = document.createElement('div');
 		var str	= "";
-		str+="<hr>";
-		str += "<table>"
+		str += "<table id='uploadsTable' style='margin-top:15px;padding-top: 5px;'>"
 		str += "<tr>"
 		str += '<td width="100px;">Title<font class="requiredFont">*</font></td>';
 		str += '<td style="padding-left: 15px;"><input type="text" id="titleField" name="fileTitle" class="titleClass" size="33"/></td>'
@@ -313,25 +315,42 @@ function addAnotherProblem(divName){
 		str += "</tr>";
 		str += "<tr>"
 		str += '<td width="100px;" style="padding-left:0px;">Documents And Images <font class="requiredFont">*</font></td>'
-		str += '<td style="padding-left:15px;"> <input type="file" name="userImage" class="imageClass" id="userImage"/></td>'
-		str += '<td><a href="javascript:{}" class="closeBtn" style="padding-left: 27px;"><font color="green"><b>Close Document</b></font></a></td>'
+		str += '<td style="padding-left:15px;"> <input type="file" name="userImage" class="imageClass" id="userImage"/></td>';
+		str += '<td><a href="javascript:{}" class="closeBtn" style="padding-left: 27px;"><font color="green"><b>Close Document</b></font></a></td>';
 		str += '</tr>'
 		str += "<tr>";
-		
 		str += "</table>";
-		str +="<hr>";
-        newdiv.innerHTML = str;
-		document.getElementById(divName).appendChild(newdiv);
+		str +='<div id="addMoreId"  style="margin-bottom: 5px;"> <a href="javascript:{}"  onclick="addAnotherProblem(\'problemDetailDiv\')"  style="margin-left:350px;"><font color="green"><b style="margin-left: 5px;">  Add More Documents</b></font></a> </div>';
+		$('#problemDetailDiv').append(str);
+        //newdiv.innerHTML = str;
+		//document.getElementById(divName).appendChild(newdiv);
 }
 
+
 $(".closeBtn").live("click",function(){
-	$(this).closest('div').remove();
+	var isConfirm = confirm('are you sure want to delete it?');
+	if(isConfirm == true){
+			$(this).closest('#uploadsTable').remove();
+	}
 });
 
-
+var count=0;
 function showOrHideProblemFilesDiv()
 {
 var problemDetailDivEle = document.getElementById("problemDetailDiv");
+$('#addMoreUploads').css("display","block");
+
+if(count == 0){
+	count = count+1;
+	$('#hideUpload').css("display","block");
+	$('#showUpload').css("display","none");	
+}
+else{
+	count = count-1;
+	$('#hideUpload').css("display","none");
+	$('#showUpload').css("display","block");	
+}
+
 if(problemDetailDivEle.style.display =='none'){
 	problemDetailDivEle.style.display = 'block';
 	validateProb=true;
@@ -654,7 +673,7 @@ function displayCal()
 	</TR>
 </TABLE>
 </CENTER>
-<DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
+<DIV align="center"><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
 <s:form action="addNewProblemSubmitAction" enctype="multipart/form-data" method="POST" theme="simple" name="form" onSubmit="return checkValidations()" >
 
  
@@ -697,7 +716,7 @@ function displayCal()
 			<div id="">
 				<div id="warningMsgs"></div>
 			</div>
-			<DIV style="width:500px;">
+			<DIV>
 				<FIELDSET>
 					<LEGEND>Problem Details</LEGEND>
 					<TABLE class="problemDetailsTable">
@@ -873,11 +892,12 @@ function displayCal()
 				<c:if test="${windowTask != 'update_existing'}">
 				<tr>
 					<td ><%=uploadMater%></td>		 
-                    <td style="padding-left:15px;"><a href="javascript:{}"  onclick="showOrHideProblemFilesDiv()"><font color="green"><b>Click Here</b></font></a></td>
+                    <td style="padding-left:15px;"><span id="showUpload"><a href="javascript:{}"  onclick="showOrHideProblemFilesDiv()"><font color="green"><b>Click Here to Upload</b></font></a></span>
+					<span id="hideUpload" style="display:none;"><a href="javascript:{}"  onclick="showOrHideProblemFilesDiv()"><font color="green"><b>Hide Uploads</b></font></a></span></td>
 				</tr>
 		
 		
-		          <table id="problemDetailDiv" style="display:none">
+		          <table id="problemDetailDiv" style="display:none;width:505px;border:medium solid #CFD6DF;">
 					<tr style="height:30px;">
 						<th align="left" colspan="2"><img src="images/icons/file_upload_icon.png">&nbsp;&nbsp;<u><font color="blue">Upload Documents and Images</font></u></th>
 					</tr>
@@ -899,7 +919,7 @@ function displayCal()
 						<td width="100px;" style="padding-left:0px;"><s:label   value="Documents And Images" /></td>
 						<td style="padding-left:15px;"> <s:file name="path[%{#stat.index}]" id="userImage"/></td>
 						
-						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;"><font color="green"><b>  More Documents</b></font></a></td></tr>
+						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;margin-left: -35px;"><font color="green"><b>  Add More Documents</b></font></a></td></tr>
 					</s:iterator>
 					</s:if>
 					<s:else>
@@ -916,7 +936,7 @@ function displayCal()
 						<td width="100px;" style="padding-left:0px;"><s:label value="Documents And Images" /><span style="color:red;">*</span></td>
 						<td style="padding-left:15px;"> <s:file  class="imageClass" name="userImage" id="userImage"/></td>
 						
-						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;"><font color="green"><b>  More Documents</b></font></a></td></tr>
+						<td><a id="firstAddMoreId" href="javascript:{}"  onclick='addAnotherProblem("problemDetailDiv")'  style="padding-left: 27px;margin-left: -35px;"><font color="green"><b>  Add More Documents</b></font></a></td></tr>
 			       
 					</table>
 					</s:else>
