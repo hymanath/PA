@@ -161,7 +161,7 @@
 <div style="margin-top:10px;margin-bottom:10px;text-align: center;clear:both;">
 <input type="button" style="position: absolute:top: 50%;" value="Get Hamlet Assigned Info" class="btn btn-success" onclick="getSubLevelInfo();" />
 
-<input type="button" value="check voters Data" id="votersBasicInfoId" class="btn btn-success"/>
+<input type="button" value="Check Voters Data" id="votersBasicInfoId" class="btn btn-success"/>
 
 </div>
 <br>
