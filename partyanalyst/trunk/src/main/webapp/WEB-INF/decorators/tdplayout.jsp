@@ -174,7 +174,7 @@ margin-top:10px;
 		</div>
 	
     <div class="span8 " style="margin-bottom:10px;">
-<img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:79.5px;left:50%;margin-left:215px;margin-top:10px;">
+<img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:79.5px;left:50%;margin-left:215px;margin-top:10px;cursor: default;">
 
 
     </div>
