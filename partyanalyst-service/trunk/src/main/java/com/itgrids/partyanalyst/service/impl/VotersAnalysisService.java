@@ -6582,7 +6582,14 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					query.append(" and model.booth.panchayat.panchayatId = :id ");
 				}else if(type.equalsIgnoreCase("ward")){
 					query.append(" and model.booth.localBodyWard.constituencyId = :id ");
-				}else if(type.equalsIgnoreCase("hamlet")){
+				}
+			    
+			    //For Custom Ward
+				else if(type != null && type.equalsIgnoreCase(IConstants.CUSTOMWARD)){
+					 query.append(" and model2.ward.constituencyId =:id ");
+				}
+				
+				else if(type.equalsIgnoreCase("hamlet")){
 					//i know this is worst but for code reusability
 				List<Object> ids=	hamletBoothPublicationDAO.getBoothsIds(id, searchInfo.getPublicationId());
 					StringBuffer s= new StringBuffer();
@@ -6688,12 +6695,28 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			        	searchInfo.setSortEle(sortEle);
 			        }
 			    }*/
+			    
+			    if(type != null && type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+			    {
+			    	List<Long> countList = userVoterDetailsDAO.getVotersCountBySearchCriteria(searchInfo.getPublicationId(), id, query.toString());
+			    	if(countList != null && countList.get(0) != null && ((Long)countList.get(0)).longValue() > 0l){
+				    	 returnValue.setTotalHousesCount((Long)countList.get(0));
+				    	  List<Object[]> votersData = userVoterDetailsDAO.getVotersDetailsBySearchCriteria(searchInfo.getPublicationId(),id,searchInfo.getStartIndex(),searchInfo.getMaxIndex(),query.toString());
+				    	  populateVotersDataToVoForSearch(votersData,votersList,categories,searchInfo);
+				     }
+			    	
+			    }
+			    else{
+			    
 			    List<Long> countList = boothPublicationVoterDAO.getVotersCountBySearchCriteria(searchInfo.getPublicationId(),id,query.toString());
 			     if(countList != null && countList.get(0) != null && ((Long)countList.get(0)).longValue() > 0l){
 			    	 returnValue.setTotalHousesCount((Long)countList.get(0));
 			    	  List<Object[]> votersData = boothPublicationVoterDAO.getVotersDetailsBySearchCriteria(searchInfo.getPublicationId(),id,searchInfo.getStartIndex(),searchInfo.getMaxIndex(),query.toString());
 			    	  populateVotersDataToVoForSearch(votersData,votersList,categories,searchInfo);
 			     }
+			    }
+			     
+			     
 		 }catch(Exception e){
 			 log.error("Exception rised in getVotersInfoBySearchCriteria ",e);
 		 }
@@ -17091,4 +17114,72 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		}	
 	 return mandalNames;
  }
+ 
+ public List<SelectOptionVO> getMandalOrMuncipalityList(Long constituencyId,String tempVar)
+ {
+	 try{
+		 List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		 if(tempVar != null && tempVar.equalsIgnoreCase("mandalList"))
+		 {
+		   selectOptionVOList = regionServiceDataImp.getSubRegionsInConstituency(new Long(constituencyId), IConstants.PRESENT_YEAR, null);
+		   selectOptionVOList.add(0, new SelectOptionVO(0L,"Select Mandal"));
+		 }
+		 else
+		 {
+			List<Object[]> list = assemblylocalElectionBodyDAO.geLocalElectionBodyListForVotersAnalysis(constituencyId);
+			if(list != null && list.size()> 0 )
+			 for(Object[] params : list)
+				 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null?params[1].toString():""));
+			selectOptionVOList.add(0, new SelectOptionVO(0L,"Select Muncipality"));
+		 }
+		return selectOptionVOList; 
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error(" Exception Occured in getMandalOrMuncipalityList() method, Exception - "+e);
+	  return null;
+	}
+ }
+ 
+ public String getElectionTypeForMuncipalityByConstituencyId(Long constituencyId,Long localEleBodyId)
+ {
+	 try{
+		 if(localEleBodyId != null)
+		  return assemblylocalElectionBodyDAO.getElectionTypeForMuncipality(constituencyId, localEleBodyId);
+       
+		 return null;		
+	 }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getElectionTypeForMuncipalityByConstituencyId() method, Exception - "+e);
+		return null;
+	}
+ }
+ 
+ 
+ public List<SelectOptionVO> getWardsListForMuncipality(Long constituencyId,Long localEleBodyId,Long publicationDateId,Long userId)
+ {
+	 try{
+		 List<Object[]> list = null;
+		 List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		 String electionType = getElectionTypeForMuncipalityByConstituencyId(constituencyId, localEleBodyId);
+		 if(electionType != null && electionType.equalsIgnoreCase(IConstants.GHMC))
+		   list = boothDAO.getBoothsForLocalEleBodyByCOnstituencyId(constituencyId, localEleBodyId,publicationDateId);  
+		 else
+		   list = userVoterDetailsDAO.getWardsForMuncByConsIdAndUserId(constituencyId, localEleBodyId, publicationDateId, userId);
+		 
+		 if(list != null && list.size() > 0)
+		  for(Object[] params : list)
+		   selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null ?params[1].toString():" "));
+		 
+		 if(selectOptionVOList != null && selectOptionVOList.size() > 0)
+			 Collections.sort(selectOptionVOList,wardsSort);
+		 
+		 return selectOptionVOList;
+	 }catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in getWardsListForMuncipality() method, Exception - "+e);
+		 return null;
+	}
+ }
+ 
+ 
 }

@@ -292,4 +292,12 @@ public interface IVotersAnalysisService {
 	 public SelectOptionVO getConstiInfo(List<Long> constiIds);
 	 
 	 public List<SelectOptionVO> getMandalsInConstituencys(List<SelectOptionVO> constituencyList);
+	 
+	 public List<SelectOptionVO> getMandalOrMuncipalityList(Long constituencyId,String tempVar);
+	 
+	 public List<SelectOptionVO> getWardsListForMuncipality(Long constituencyId,Long localEleBodyId,Long publicationDateId,Long userId);
+	 
+	 public String getElectionTypeForMuncipalityByConstituencyId(Long constituencyId,Long localEleBodyId);
+	 
+	 
 }
