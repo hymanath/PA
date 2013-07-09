@@ -2122,4 +2122,43 @@ return Action.SUCCESS;
 	}
 	
 	
+	public String getMandalOrMuncipalityListForVotersAnalysis()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		try{
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("getMandalOrMuncipalityList"))
+			 namesList = votersAnalysisService.getMandalOrMuncipalityList(jObj.getLong("constituencyId"),jObj.getString("tempVar"));
+			
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in getMandalOrMuncipalityListForVotersAnalysis() method,Exception - "+e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	
+	
+	public String getWardsListForMuncipality()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		Long userId = user.getRegistrationID();
+		try{
+		 jObj = new JSONObject(getTask());
+		  resultData = votersAnalysisService.getWardsListForMuncipality(jObj.getLong("constituencyId"),jObj.getLong("localEleBodyId"),jObj.getLong("publicationDateId"),userId);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			 log.error("Exception Occured in getWardsListForMuncipality() method,Exception - "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

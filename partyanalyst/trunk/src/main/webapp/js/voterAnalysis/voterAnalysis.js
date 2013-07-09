@@ -242,6 +242,8 @@ function showReportLevel(value)
 		}
 		else if(value == 2)
 		{
+			$("#mandalSpan").html('Select Mandal');
+			$("#mandalField").css({ "margin-left" : "60px"} );
 			document.getElementById('ConstituencyDiv').style.display = 'block';
 			document.getElementById('mandalDiv').style.display = 'block';
 			document.getElementById('panchayatDiv').style.display = 'none';
@@ -278,6 +280,8 @@ function showReportLevel(value)
 		}
 		else if(value == 5)
 		{
+			$("#mandalSpan").html('Select Muncipality');
+			$("#mandalField").css({ "margin-left" : "33px"} );
 			document.getElementById('ConstituencyDiv').style.display = 'block';
 			document.getElementById('mandalDiv').style.display = 'block';
 			document.getElementById('panchayatDiv').style.display = 'none';
@@ -693,6 +697,104 @@ function showImportantFamiliesDiv()
 		
 	}
 	}
+
+
+	function getPanchayatOrWardsList(checkedele,selectedEle)
+	{
+      showNewsDetails();
+		var constituencyId = $("#constituencyList").val();
+		var reportLevel = $("#reportLevel").val();
+		var mandalId=document.getElementById("mandalField");
+		var value1 = '';
+		if(mandalId.selectedIndex != -1 && mandalId != 0)
+		{
+			var name=mandalId.options[mandalId.selectedIndex].name;
+			var value1=mandalId.options[mandalId.selectedIndex].value;
+		}
+		var type = "mandal";
+		if(value1.charAt(0) =="1"){
+		 type = "muncipality";
+		}
+		var value = value1.substring(1);
+		var publicationValue = $('#publicationDateList').val();
+		var alertEl = document.getElementById("AlertMsg");
+		alertEl.innerHTML = '';
+		if(mandalId.selectedIndex != -1 && mandalId != 0)
+		{
+			var selectname = mandalId.options[mandalId.selectedIndex].text;
+			var flag= selectname.search("MUNCIPALITY");
+		}
+		if(flag == -1){
+		if(mandalId.selectedIndex != -1 && mandalId != 0)
+		{
+			var selectname = mandalId.options[mandalId.selectedIndex].text;
+			var flag= selectname.search("Corp");
+		}
+		}
+		 if(value1 !='' && value1 == 0)
+		{
+			alertEl.innerHTML ='<P>Please Select Mandal</P>';
+			return;
+		}
+		if(flag != -1 && checkedele == "panchayat")
+		{
+		document.getElementById('panchayatDiv').style.display='none';
+		}
+		else if(flag != -1 && checkedele == "pollingstationByPublication" && reportLevel == 4)
+		{
+		 flag = -1;
+		 document.getElementById('panchayatDiv').style.display='none';
+		}
+		if(flag == -1 && checkedele != "ward" && reportLevel != 5 )
+		{
+		var jsObj=
+			{
+					
+				selected:value,
+				checkedele:checkedele,
+				selectedEle:selectedEle,
+				constituencyId:$("#constituencyList").val(),
+				flag:flag,
+				type:type,
+				publicationValue : publicationValue,
+				task:"getPanchayat"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getPanchayatByConstituencyAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		
+	}else
+	if(checkedele == "ward" && reportLevel == 5 )
+		{
+		document.getElementById('panchayatDiv').style.display='none';
+		 
+			document.getElementById('pollingStationDiv').style.display = 'none';
+			//getPanchayatList('pollingstationByPublication','pollingStationField');
+			document.getElementById('wardDiv').style.display = 'block';
+			document.getElementById('hamletDiv').style.display = 'none';
+			document.getElementById('localityDiv').style.display = 'none';
+		var localELeId = $("#mandalField").val();
+
+		var jsObj=
+			{
+				constituencyId:constituencyId,	
+				localEleBodyId:localELeId,
+				checkedele:checkedele,
+				selectedEle:selectedEle,
+				flag:flag,
+				type:type,
+				publicationDateId : publicationValue,
+				task:"getWardsListForMuncipality"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getWardsListForMuncipalityAction.action?"+rparam;								
+		callAjax(jsObj,url);
+		
+	}
+
+	}
 	
 	
 	function getPublicationDate()
@@ -724,7 +826,7 @@ function showImportantFamiliesDiv()
  		               success : function( o ) {
 							try {												
 									myResults = YAHOO.lang.JSON.parse(o.responseText);					
-									if(jsObj.task == "getMandalList")
+									if(jsObj.task == "getMandalList" || jsObj.task == "getMandalOrMuncipalityList")
 								{     
 										buildMandalList(myResults,jsObj);
 										
@@ -820,7 +922,7 @@ function showImportantFamiliesDiv()
                                 else if(jsObj.task == "getVotersInAFamilySearch")
 								{
 								    buildVotersInFamilySearch(myResults,jsObj.hno);
-								}	else if(jsObj.task == "getWards")
+								}	else if(jsObj.task == "getWards" || jsObj.task == "getWardsListForMuncipality")
 								{
 								   buildWardsList(myResults,jsObj);
 								}	

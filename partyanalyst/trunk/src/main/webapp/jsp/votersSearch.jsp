@@ -229,6 +229,9 @@ var confTrue = false;
 var totalReq = 1000;
 var selectedVotersArr = new Array();
 var RlocationLvl;var RlId;var RpublicationDateId;var RvoterCardId;var RvoterName;var RvoterNameType;var RguardianName;var Rgender;var RstartAge;var RendAge;var Rreqfields;var RreqfieldsArr;
+var RconstituencyId;
+var RLocalEleBodyId;
+
 var RQueryType = "and";var RfromSno;var RtoSno;var RHouseNo;
  $(document).ready(function(){
 
@@ -625,7 +628,13 @@ $("#pageUpBtn").live("click",function(){
 	}else {
 	   queryType = 'or';
 	}
-	buildVotersByLocBoothDataTable(type,id,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr,queryType,houseNo,fromSno,toSno);
+
+	var constituencyId = $("#constituencyList").val();
+	var mandalId = 0;
+
+	if($("#reportLevel").val() == 5)
+	 mandalId = $("#mandalField").val();
+	buildVotersByLocBoothDataTable(type,id,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr,queryType,houseNo,fromSno,toSno,constituencyId,mandalId);
 	   //alert(reqfieldsArr);
 	
 	}else{
@@ -634,9 +643,12 @@ $("#pageUpBtn").live("click",function(){
   }
   function showNewsDetails(){
   }
-  function buildVotersByLocBoothDataTable(locationLvl,lId,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr,queryType,houseNo,fromSno,toSno)
+  function buildVotersByLocBoothDataTable(locationLvl,lId,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr,queryType,houseNo,fromSno,toSno,constituencyId,mandalId)
 	{var x = 1;
 	RlocationLvl=locationLvl;RlId=lId;RpublicationDateId=publicationDateId;RvoterCardId=voterCardId;RvoterName=voterName;RvoterNameType=voterNameType;RguardianName=guardianName;Rgender=gender;RstartAge=startAge;RendAge=endAge;Rreqfields=reqfields;RreqfieldsArr=reqfieldsArr;RQueryType=queryType;RHouseNo=houseNo;RfromSno=fromSno;RtoSno=toSno;
+	
+	RconstituencyId = constituencyId;
+    RLocalEleBodyId = mandalId;
     
           /* $("#topButtons").html('<div><input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input><input class="btn" type="button" value="Edit Voter\'s Basic Info" style="margin-bottom:15px;margin-left: 10px;" onClick="getAllVoterFamiliesForEditWithSelection1();"></input><img alt="Processing Image" id="imgDiv" style="display:none;margin-left: 37px;margin-bottom: 12px;"src="./images/icons/search.gif"></div>');*/
 		 $("#topButtons").html('<input type="button" style="margin-bottom: 14px;margin-left: 20px;" class="btn" value="Edit all selected voters" onclick="getAllVoterFamiliesForEditWithSelection();"/><input class="btn" type="button" value="Select All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="selectAllCheckBoxesForEdit();"></input><input class="btn" type="button" value="UnSelect All" style="width:100px; margin-bottom:15px;margin-left: 10px;"onClick="unselectAllCheckBoxes();"></input>');
@@ -836,7 +848,7 @@ $("#pageUpBtn").live("click",function(){
 					votersByLocBoothColumnDefs.push(obj);
 					
 		 }
-		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVotersInfoBySearchAction.action?locationLvl="+locationLvl+"&publicationDateId="+publicationDateId+"&voterCardId="+voterCardId+"&voterName="+voterName+"&voterNameType="+voterNameType+"&guardianName="+guardianName+"&gender="+gender+"&queryType="+queryType+"&fromSno="+fromSno+"&toSno="+toSno+"&houseNo="+houseNo+"&startAge="+startAge+"&endAge="+endAge+"&id="+lId+"&selIds="+reqfields+"&task=votersData&save=&");
+		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVotersInfoBySearchAction.action?locationLvl="+locationLvl+"&publicationDateId="+publicationDateId+"&voterCardId="+voterCardId+"&voterName="+voterName+"&voterNameType="+voterNameType+"&guardianName="+guardianName+"&gender="+gender+"&queryType="+queryType+"&fromSno="+fromSno+"&toSno="+toSno+"&houseNo="+houseNo+"&startAge="+startAge+"&endAge="+endAge+"&id="+lId+"&selIds="+reqfields+"&task=votersData&save=&constituencyId="+RconstituencyId+"&localEleBodyId="+RLocalEleBodyId+"&");
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
 		resultsList: "votersList",
@@ -1350,7 +1362,7 @@ function callAjaxForCandSearch(jsObj,url)
 									   confTrue = true;
 									  $("#votersEditSaveAjaxImg").hide();
                                       $("#votersEditSaveButtnImg").removeAttr("disabled");
-									  buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno);
+									  buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno,RconstituencyId,RLocalEleBodyId);
 									  alert("Updated Successfully");
 									  
 									  
@@ -1366,7 +1378,7 @@ function callAjaxForCandSearch(jsObj,url)
 									  confTrue = true;
 									  $("#votersEditSaveAjaxImg").hide();
                                       $("#votersEditSaveButtnImg").removeAttr("disabled");
-									  buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno)
+									  buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno,RconstituencyId,RLocalEleBodyId)
 									  alert("Updated Successfully");
 									  
 								    }
@@ -1598,7 +1610,7 @@ function callAjaxForCandSearch(jsObj,url)
 	        confTrue = true;
 		    $("#votersEditSaveAjaxImg").hide();
             $("#votersEditSaveButtnImg").removeAttr("disabled");
-		    buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno);
+		    buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno,RconstituencyId,RLocalEleBodyId);
 		    alert("Updated Successfully");
 	 }
 	 
@@ -1688,7 +1700,7 @@ function callAjaxForCandSearch(jsObj,url)
 	    confTrue = true;
 		$("#votersEditSaveAjaxImg").hide();
         $("#votersEditSaveButtnImg").removeAttr("disabled");
-		buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno)
+		buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno,RconstituencyId,RLocalEleBodyId)
 		alert("Updated Successfully");
 	 }
 	 function buildVotersInFamilyForSelectedEdit(results){
@@ -2559,7 +2571,7 @@ function getHamletsOrWards(){
 }
 function refreshingchildWindowWindow()
 {
-	buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno);
+	buildVotersByLocBoothDataTable(RlocationLvl,RlId,RpublicationDateId,RvoterCardId,RvoterName,RvoterNameType,RguardianName,Rgender,RstartAge,RendAge,Rreqfields,RreqfieldsArr,RQueryType,RHouseNo,RfromSno,RtoSno,RconstituencyId,RLocalEleBodyId);
 }
 
 function getAllVoterFamiliesForEditWithSelection1(){
@@ -2967,14 +2979,23 @@ function showAlert()
 	
 	
 	  <div id="ConstituencyDiv" class="selectDiv">
-	     Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalList(\'mandalField\');getPublicationDate();"/> &nbsp;&nbsp;	
+	     <!-- Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalList(\'mandalField\');getPublicationDate();"/> -->
+		 
+		 Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();"/>
+		 
+		 &nbsp;&nbsp;	
 	     Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:180px;" name="publicationDateList" >
 		</select>  <span style='display:none;float: right;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>		
 	  </div>
 	  
-	  <div id="mandalDiv" class="selectDiv" style="display:none;">
+	 <!--  <div id="mandalDiv" class="selectDiv" style="display:none;">
 	     Select Mandal<font class="requiredFont">*</font>
 		 <select id="mandalField" class="selectWidth" name="state" onchange="clearErrDiv(),getPanchayatList('panchayat','panchayatField');getPanchayatList('pollingstationByPublication','pollingStationField');getPanchayatList('ward','wardField')" style="margin-left:60px;width:165px;"></select>
+	  </div> -->
+
+	<div id="mandalDiv" class="selectDiv" style="display:none;">
+	     <span id="mandalSpan">Select Mandal</span><font class="requiredFont">*</font>
+		 <select id="mandalField" class="selectWidth" name="state" onchange="clearErrDiv(),getPanchayatOrWardsList('panchayat','panchayatField');getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');getPanchayatOrWardsList('ward','wardField')" style="margin-left:60px;width:165px;"></select>
 	  </div>
 	   <div id="wardDiv" class="selectDiv" style="display:none;">
 	    Select Ward<font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:70px;width:165px;"></select> 
@@ -3450,6 +3471,56 @@ function getAllSelectedVotersDetails1()
 
 
 }
+
+
+function getMandalOrMuncipalityList()
+{
+    var tempVar = "mandalList";
+    var selectElmt = "mandalField";
+    var reportLevelValue = $("#reportLevel").val();
+	var constituencyId = $("#constituencyList").val(); 
+
+	if(reportLevelValue == 5)
+     tempVar = "muncipalityList";
+			
+		var jsObj=
+			{
+				constituencyId:constituencyId,
+				tempVar:tempVar,
+				selectElmt:selectElmt,
+				task:"getMandalOrMuncipalityList"
+					
+			};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getMandalOrMuncipalityListForVotersAnalysisAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		
+}
+
+function getWardsForMuncipality()
+{
+  var constituencyId = $("#constituencyList").val();
+  var localEleBodyId = $("#mandalField").val();
+  var publicationDateId = $("#publicationDateList").val();
+  
+  var jsObj=
+			{
+				constituencyId:constituencyId,
+				localEleBodyId:localEleBodyId,
+				publicationDateId:publicationDateId,
+				selectElmt:"wardField",
+				task:"getWardsListForMuncipality"
+					
+			};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getWardsListForMuncipalityAction.action?"+rparam;						
+		callAjax(jsObj,url);
+  
+}
+
+
 </script>
 <!--CHANGE BY SAMBA END-->
 </body>

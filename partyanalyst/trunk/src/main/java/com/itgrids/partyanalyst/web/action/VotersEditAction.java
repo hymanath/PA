@@ -807,6 +807,8 @@ public String saveLocality()
 		    HttpSession session = request.getSession();
 			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 			Long userId = null;
+			String locationType = request.getParameter("locationLvl");
+			
 			if(user != null && user.getRegistrationID() != null)
 				if(user.getParentUserId()!=null)
 					userId=user.getMainAccountId();
@@ -868,7 +870,22 @@ public String saveLocality()
 			    	}
 			    }
 			} 
-			voterHouseInfoVO1 = votersAnalysisService.getVotersInfoBySearchCriteria(searchInfo,request.getParameter("locationLvl"),Long.parseLong(request.getParameter("id")),categories);
+			if(Long.parseLong(request.getParameter("constituencyId")) > 0)
+			  searchInfo.setConstituencyId(Long.parseLong(request.getParameter("constituencyId")));
+			if(Long.parseLong(request.getParameter("localEleBodyId")) > 0)
+			  searchInfo.setLocalEleBodyId(Long.parseLong(request.getParameter("localEleBodyId")));
+			
+			//For customWard
+			
+			if(locationType != null && locationType.equalsIgnoreCase("ward"))
+			{
+			  String electionType = votersAnalysisService.getElectionTypeForMuncipalityByConstituencyId(searchInfo.getConstituencyId(), searchInfo.getLocalEleBodyId());
+			  if(electionType != null && !electionType.equalsIgnoreCase(IConstants.GHMC))
+				  locationType = IConstants.CUSTOMWARD;
+			}
+			
+			  
+			voterHouseInfoVO1 = votersAnalysisService.getVotersInfoBySearchCriteria(searchInfo,locationType,Long.parseLong(request.getParameter("id")),categories);
 		  }else{
 			  voterHouseInfoVO1 = votersAnalysisService.getUserVoterCategories(userId);
 		  }
