@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -255,7 +256,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return mandalNames;			
 		String areaType = constituency.getAreaType();
 				
-		if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+		if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
 		{
 			mandalNames = getLocalElectionBodies(constituencyID, IConstants.PRESENT_ELECTION_YEAR);
 		}
@@ -264,10 +265,20 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			objVO.setId(tehsil.getTehsilId());
 			objVO.setName(tehsil.getTehsilName());
 			mandalNames.add(objVO);
-		}		
+		}
+		if(mandalNames != null && mandalNames.size() > 0)
+			Collections.sort(mandalNames,sortByName);
 				
 		return mandalNames;
 	}
+	
+	public static Comparator<SelectOptionVO> sortByName = new Comparator<SelectOptionVO>()
+			{	  
+					  public int compare(SelectOptionVO arg1,SelectOptionVO arg2)
+						{
+						  return arg1.getName().trim().toUpperCase().compareTo(arg2.getName().trim().toUpperCase());
+						}
+			};	
 	
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getStateDistrictByConstituencyID(Long constituencyID){
