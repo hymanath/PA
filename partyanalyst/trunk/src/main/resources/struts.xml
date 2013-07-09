@@ -20,7 +20,7 @@
         <interceptor name="userTrack" class="com.itgrids.partyanalyst.web.interceptor.UserTrackingInterceptor" />
           
         <interceptor-stack name="userTrackStack">  
-             <interceptor-ref name="userTrack"/>
+		 <interceptor-ref name="userTrack"/>
 			 <interceptor-ref name="defaultStack"/>
 		</interceptor-stack> 
          
@@ -34,7 +34,8 @@
 	<!--  <default-action-ref name="homePage"></default-action-ref> -->
 	 <default-action-ref name="homePage"/>   
 	<global-results>
-        <result name="exception">jsp/globalError.jsp</result>
+    <result name="multipleAccess" type="redirect">homePage.action?action=multipleAccess</result>
+	<result name="exception">jsp/globalError.jsp</result>
     </global-results>
 
     <global-exception-mappings>
@@ -420,7 +421,7 @@
 		<action name="partyPerformanceDistrict" class="partyPerformanceAction" method="getDistrictsList" >
 			<result type="json" name="success">
 				<param name="root">districts</param>
-			</result> 
+			</result>                          
 		</action>
 		
 		<action name="partyPerformanceDistricts" class="partyPerformanceAction" method="getNominatedDistrictsByState" >
@@ -1827,6 +1828,7 @@
 		    <result name="failure">/jsp/partyAnalystErrorPage.jsp</result>
 		     <!-- <result type="redirect" name="connect">connectPeopleAction.action</result> -->
 		     <result type="redirect" name="connect">userProfile.action</result>
+		     <result type="redirect" name="dashBoard">dashBoardAction.action</result>
 		     <result type="redirect" name="CHANGE_PASSWORD_PAGE">changePasswordAction.action</result> 
 			 <!-- Problem Management Flow From Different Pages -->
 			<result name="error">/jsp/anonymousUserRegistration.jsp</result>	
@@ -5449,7 +5451,6 @@
 				<param name="root">surveyDetails</param>
 		 	</result>
 		</action>
-
 		<action name="newhomePageAction" class="newhomePageAction">
 	       <result>/jsp/TdphomePage.jsp</result>
 	     </action>
@@ -5532,5 +5533,9 @@
 		  <param name="root">resultData</param>
 		 </result>
 		</action>
+		<action name="sessionHandlerAction" class="sessionHandlerAction">
+			<result name="success">/jsp/userSessionStorage.jsp</result>
+		</action>
+		
 		</package>
 </struts>      
