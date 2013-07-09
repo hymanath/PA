@@ -260,17 +260,32 @@ function sendSMS()
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
 		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
 		var label = $("<label class='messageLabel'></label>");
-		var textarea = $("<textarea id='connectMessageText' style='background:white;' placeholder='Enter Your Message Here..'></textarea><br>");
-		var button = $("<input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser()'/>");
+		var textarea = $("<textarea id='connectMessageText' style='background:white;' placeholder='Enter Your Message Here..' maxlength='300' onkeyup=\"limitText('connectMessageText','maxcount',300)\" ></textarea><br>");
+		var span = $("<div id='limitDiv' align='center' style='font-size: 16px;'><span id='maxcount' style='font-weight:bold'>300</span><span style='font-weight:normal'>chars remaining... </span><span style='font-weight: normal;'>Should not exceed 300 chars</span></div>");
+		var button = $("<input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send'   onclick='sendMessageToConnectedUser()'/>");
 		
 		div.append(errorDiv);
 		div.append(label);
 		div.append(textarea);
+		div.append(span);
 		div.append(button);
 		$('#allConnectedUsersDisplay_main').append(div);
 		
 }
+function limitText(limitField, limitCount, limitNum)
+{	
+	var limitFieldElmt = document.getElementById(limitField);
+	var limitCountElmt = document.getElementById(limitCount);
 
+	if (limitFieldElmt.value.length > limitNum) 
+	{
+		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+	}
+	else
+	{			
+		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+	}
+}
 function sendMessageToConnectedUser(){
 	var contentText = $("#connectMessageText").val();
 	if(contentText == ""){
@@ -845,9 +860,12 @@ var callback = {
 			 }
 			else if(jsObj.task =="sendSMSForCallCenter"){
 				selectedPhoneNosArr = new Array();
-			    $("#ErrorMsgDivId").html("<span>Message sent successfully to "+myResults.totalSmsSent+" person(s)</span>").css("color","green");
+			    $("#ErrorMsgDivId").html('<span>Message sent successfully to '+myResults.totalSmsSent+' person(s)</span>').css("color","green");
 			
-			setTimeout($('#connectPeoplePopup').dialog('close'), 1000);	
+			setTimeout(function(){
+$('#connectPeoplePopup').dialog('close');
+}, 3000);
+	
 	$("#unSelectAllBtn").trigger("click");
 			 }
 		}catch (e) {   		
@@ -961,7 +979,7 @@ function showCurrentDayProblems(result){
 		    				{key:"problemAddedDate", label: "Problem Added Date",sortable:true},
 							{key:"villageOrTown", label: "Action Taken", sortable: true},
 							{key:"Edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit},
-							{key:"AddProblem", label: "Add Problem",formatter:YAHOO.widget.DataTable.add}
+							//{key:"AddProblem", label: "Add Problem",formatter:YAHOO.widget.DataTable.add}
 							
 		    	        ]; 
 	var CallTrackingResultDataSource = new YAHOO.util.DataSource(result); 
