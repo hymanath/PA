@@ -19,7 +19,7 @@ h1, h2, h3, h4, h5, h6 {
 text-shadow: 0px 0.5px 0.2px #ffffff;
 }
 
-body{border-top:4px solid #2dcfff;font-family: 'Open Sans', sans-serif;}
+body{border-top:4px solid #2dcfff;font-family: 'Open Sans', sans-serif;overflow-x:hidden;}
 .m_top10{margin-top:10px;}
 .m_top20{margin-top:20px;}
 
