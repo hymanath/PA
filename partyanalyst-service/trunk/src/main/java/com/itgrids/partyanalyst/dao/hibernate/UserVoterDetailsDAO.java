@@ -1737,4 +1737,45 @@ IUserVoterDetailsDAO{
 		queryObj.setParameter("userId", userId);
 		return queryObj.list();
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getWardsForMuncByConsIdAndUserId(Long constituencyId,Long localEleBodyId,Long publicationDateId,Long userId)
+	{
+	  Query query = getSession().createQuery(" select distinct model.ward.constituencyId,model.ward.name from UserVoterDetails model,BoothPublicationVoter model2 " +
+	  	" where model.voter.voterId = model2.voter.voterId and model2.booth.constituency.constituencyId =:constituencyId and model.user.userId =:userId and model2.booth.publicationDate.publicationDateId =:publicationDateId " +
+	  	"  and model.ward.localElectionBody.localElectionBodyId =:localElectionBodyId and model.ward is not null order by model.ward.name ");
+	  
+	  query.setParameter("constituencyId", constituencyId);
+	  query.setParameter("userId", userId);
+	  query.setParameter("publicationDateId", publicationDateId);
+	  query.setParameter("localElectionBodyId", localEleBodyId);
+	  
+	  return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getVotersCountBySearchCriteria(Long publicationDateId,Long id,String queryString) {
+		
+		 Query query = getSession().createQuery("select count(model.voter.voterId) from BoothPublicationVoter model,UserVoterDetails model2 where " +
+		 		" model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
+			  query.setParameter("publicationDateId", publicationDateId);
+			 if(id != 0l)
+			  query.setParameter("id", id);
+			return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVotersDetailsBySearchCriteria(Long publicationDateId,Long id,Integer startRecord,Integer maxRecords,String queryString) {
+		
+		 Query query = getSession().createQuery("select model.voter,model.booth.boothId,model.booth.partNo,model.serialNo from BoothPublicationVoter model,UserVoterDetails model2 where " +
+		 		" model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
+			  query.setParameter("publicationDateId", publicationDateId);
+			 if(id != 0l)
+			  query.setParameter("id", id);
+			query.setFirstResult(startRecord);
+			query.setMaxResults(maxRecords);
+			return query.list();
+	}
+	
 }

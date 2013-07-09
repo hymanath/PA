@@ -248,12 +248,13 @@ for (Object[] objects : list) {
 			}
 		}*/
 		
-	/*	public void testgetDistinctWardsOfLocalElectionBodyId(){
+		public void testgetDistinctWardsOfLocalElectionBodyId(){
 			List<Object> result=userVoterDetailsDAO.getDistinctWardsOfLocalElectionBodyId(83l, 8l, 1l);
 			System.out.println(result);
+			
 		}
 		
-		public void testGetAgeWiseDetailsInSelectdCustomWard()
+		/*public void testGetAgeWiseDetailsInSelectdCustomWard()
 		{
 			List<Long> boothids = new ArrayList<Long>();
 			boothids.add(122826l);
@@ -324,11 +325,17 @@ for (Object[] objects : list) {
 				 System.out.println(params[1]+" "+params[2]);
 		}*/
 		
-		public void testgetLocalityByCustomWardId()
+		/*public void testgetLocalityByCustomWardId()
 		{
 			List<String> locality = userVoterDetailsDAO.getLocalityByCustomWardId(207L, 8L, 30638L,1L, "customWardLocalArea");
 			System.out.println(locality.size());
 			for(String name:locality)
 			 System.out.println(name);
+		}*/
+		
+		public void testGetWardsForMuncByConsIdAndUserId()
+		{
+			List<Object[]> list = userVoterDetailsDAO.getWardsForMuncByConsIdAndUserId(232l, 83l, 8l, 1l);
+			System.out.println(list.size());
 		}
 }

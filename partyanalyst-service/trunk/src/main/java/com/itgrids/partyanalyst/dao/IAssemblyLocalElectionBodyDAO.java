@@ -50,4 +50,9 @@ public interface IAssemblyLocalElectionBodyDAO  extends GenericDao<AssemblyLocal
 	public List getAssemblyLocalElectionBodyIdsList(Long localElectionBodyId,Long constituencyId);
 	
 	public List<Object[]> getTehsilsForUrbanConstituency(List<Long> constituencyIds,String year);
+	
+	public List<Object[]> geLocalElectionBodyListForVotersAnalysis(Long constituencyId);
+	
+	public String getElectionTypeForMuncipality(Long constituencyId,Long localEleBodyId);
+	
 }
