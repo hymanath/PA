@@ -83,15 +83,15 @@ public class AnnouncementsAction extends ActionSupport implements ServletRequest
 				{
 					String startDate = jobj.getString("startDate");
 					String endDate   = jobj.getString("endDate");
-					int startIndex   = jobj.getInt("startIndex");
-					int maxIndex     = jobj.getInt("maxIndex");
+					int startIndex   = jobj.getInt("startRecord");
+					int maxIndex     = jobj.getInt("maxRecord");
 					announcementVOs  = announcementService.getAllAnnouncementsBtSelDates(startDate, endDate, startIndex, maxIndex);
 				}
 				else if(jobj.getString("task").equalsIgnoreCase("getAllAnnouncementsSelType"))
 				{
 					Long typeId      = jobj.getLong("type");
-					int startIndex   = jobj.getInt("startIndex");
-					int maxIndex     = jobj.getInt("maxIndex");
+					int startIndex   = jobj.getInt("startRecord");
+					int maxIndex     = jobj.getInt("maxRecord");
 					announcementVOs  = announcementService.getAllAnnouncementsForSelType(typeId, startIndex, maxIndex);
 				}
 				
