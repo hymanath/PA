@@ -17,6 +17,9 @@
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 
 <style>
+.whitegloss {
+    background: linear-gradient(to bottom, #EEEEEE 0%, #FFFFFF 49%, #FFFFFF 100%) repeat scroll 0 0 transparent;
+}
 	#mainBodyId{width:800px;margin-left:auto;margin-right:auto;}
 	input[type="radio"],#attachFileId{margin-bottom:5px;margin-right:5px;}
 	.t_align_sec{text-align:center;padding:5px;}
@@ -26,12 +29,7 @@
 	.widget{background:#fcfcfc;  height:100px;border:1px solid #2DCFFE;}
 	.widget:hover{box-shadow:0px 0px 15px #c0c0c0;}
 	 h3{font-family: 'Open Sans';font-size:15px;line-height:20px;text-align: center;font-weight:bold;color:#6B6265;}
-	 .user{margin-left: -26px; margin-top:40px;}
-	 .announ{margin-left: -34px; margin-top: 29px;}
-	 .comment{margin-left: -18px; margin-top: 30px;}
-	     .allannoun{margin-left: -32px; margin-top: 29px;}
-		 .row_border{ border-bottom: 1px solid #c0c0c0;
-    margin-left: 0}
+	 
 	.header{ font-family: open sans;
     font-size: 25px;
     font-weight: bold;
@@ -65,11 +63,12 @@
 			.title p{margin-top:-9px;}
 			.date {font-size:12px;font-weight:bold;color:#2DCFFE; float:left;}
 			
-			.menu:hover>a>h3{color:#ffffff;}
-			.menu:hover>a{text-decoration:none;}
+		.menu:hover a h3{color:#ffffff;}
+			.menu:hover>a{text-decoration:none;color:#ffffff;}
 			.menu:hover{background:#41B7D8;}
-			.active{background:#41B7D8;color:#ffffff;}
-			.active>a>h3{color:#ffffff;}
+			.activeNow{background:#41B7D8;color:#ffffff;}
+			.activeNow a h3{color:#ffffff;}
+			
 			.indiComment{margin:4px;padding:10px;}
 		#indiCommentName{margin:2px;}
 		#indiCommentDate{margin:2px;color:#28B0D6;}
@@ -81,125 +80,71 @@
 
 <div id="mainBodyId" class="container well">
 	
-	<!--<div class="row-fluid">
-        <div class=" white-panel no-padding bar">
-            <ul class="nav nav-tabs" class="">
-                <li class="span3"><a class="gc-icon agency-icon" data-toggle="tab" href="#home"><i class="icon-search"></i>Create User</a></li>
-                <li class=" span3 "><a class="gc-icon enterprise-icon" data-toggle="tab" href="#profile"><i class="icon-search"></i>Create Announcement</a></li>
-                <li class="span3"><a class="gc-icon higher-ed-icon" data-toggle="tab" href="#messages"><i class="icon-search"></i>Create Announcement</a></li>
-                <li class="span3"><a class="gc-icon gov-icon" data-toggle="tab" href="#settings"><i class="icon-search"></i>Get All Comments</a></li>
-            </ul> <!-- End tabs
+				<div class="row-fluid">
+			<div class="span12">
+			<div class="span3 btn menu activeNow" id="user" style="height:66px;">
 
-        
-        </div>
+			<a id="CareId1" href="javascript:{};">
+			<div class="row-fluid d">
+			<div class="span4">
+			<img src="image/Creat-User.png" />
+			</div>
+			<div class="span8  " style="margin-left: -18px; margin-top: 5px;">
 
-
-
-
-    </div>-->
-	
-	   <div class="row-fluid">
-	      <div class="span12">
-		   <div class="span3 breadcrumb  thumbnail menu active"  id="user">
-		  
-		    <a id="CareId1" href="javascript:{};">
-			
-		    <img src="image/cancel_vote.png" style="width: 90px; margin-right: 0px; margin-left: 40px;" />
-			
-			
-			<h3>Create User</h3>
+			<h3 class='heading'>Create User</h3>
+			</div>
+			</div>
 			</a>
-             		
-		   </div>
-		   
-		   <div class="span3 breadcrumb thumbnail menu " id="announ">
-		<a id="CareId2" href="javascript:{};">
-		    <img src="image/cancel_vote.png"  style="width: 90px; margin-right: 0px; margin-left: 40px;"/>
-	
-			
-		<h3>Create Announcement</h3>
+
+			</div>
+
+			<div class="span3 btn menu " id="announ">
+			<a id="CareId2" href="javascript:{};">
+			<div class="row-fluid ">
+			<div class="span4">
+			<img src="image/Creat-Announce-ment.png" />
+			</div>
+			<div class="span8 ">
+
+			<h3>Create Announcement</h3>
+			</div>
+			</div>
 			</a>
-            	
-		   </div>
-		   
-		   <div class="span3 breadcrumb thumbnail menu getCmmnts" id="comment">
-		<a id="CareId3" href="javascript:{};">
-		    <img src="image/cancel_vote.png" style="width: 90px; margin-right: 0px; margin-left: 40px;" />
-			
-			
-		<h3>Get All Comments</h3>
-			
-             </a>	
-		   </div>
-		   <div class="span3 breadcrumb thumbnail menu" id="allannoun">
-		 <a id="CareId4" href="javascript:{};">
-		    <img src="image/cancel_vote.png" style="width: 90px; margin-right: 0px; margin-left: 40px;" />
-			
-			
-		<h3>Get All Announcement</h3>
+
+			</div>
+
+			<div class="span3 btn menu getCmmnts" id="comment" >
+			<a id="CareId3" href="javascript:{};">
+			<div class="row-fluid ">
+			<div class="span4">
+			<img src="image/Get-All-Coments.png" />
+			</div>
+			<div class="span6 menu_alignment" >
+
+			<h3>Get All Comments</h3>
+			</div>
+			</div>
 			</a>
-             	
-		   </div>
-		  </div>
-	   
-	   </div>
-	
-	 <!--<div class="row-fluid">
-	<div class="span12">
-	    <div class="span3 widget active" id="user" >
-		<div class="row-fluid">
-		<a id="CareId1" href="javascript:{};">
-		<div class="span6">
-		<img src="image/06.jpg" style="width: 79px;"  />
-		</div>
-		<div class="span6">
-		<h3 class="user">Create User</h3>
-		</div>
-		</div>
-		</a>
-		 
-		</div>
-	      <div class="span3 widget" id="announ" >
-		<div class="row-fluid">
-		<a id="CareId2" href="javascript:{};">
-		<div class="span6">
-		<img src="image/06.jpg" style="width: 79px;"  />
-		</div>
-		<div class="span6">
-		<h3 class="announ">Create Announcement</h3>
-		</div>
-		</div>
-		</a>
-		 
-		</div>
-	   <div class="span3 widget" id="comment">
-		<div class="row-fluid">
-		<a id="CareId3" href="javascript:{};">
-		<div class="span6">
-		<img src="image/06.jpg" style="width: 79px;"  />
-		</div>
-		<div class="span6">
-		<h3 class="comment getCmmnts">Get All Comments</h3>
-		</div>
-		</div>
-		</a>
-		 
-		</div>
-		   <div class="span3 widget" id="allannoun" >
-		<div class="row-fluid">
-		<a id="CareId4" href="javascript:{};">
-		<div class="span6">
-		<img src="image/06.jpg" style="width: 79px;"  />
-		</div>
-		<div class="span6">
-		<h3 class="allannoun">Get All Announcement</h3>
-		</div>
-		</div>
-		</a>
-		 
-		</div>
-	</div>
-	</div>--->
+			</div>
+			<div class="span3 btn menu" id="allannoun">
+			<a id="CareId4" href="javascript:{};">
+			<div class="row-fluid " >
+			<div class="span4">
+			<img src="image/get-all-anouncements.png" />
+			</div>
+			<div class="span8 menu_alignment" >
+
+			<h3>Get All Announcement</h3>
+			</div>
+			</div>
+			</a>
+
+			</div>
+			</div>
+
+			</div>
+				
+	 
 	<div id="BOX-1" style="display: show" >
 			<div id="formDivId" class=" getallcommentsBlock"  >
 			<div class="control-group" style="color:red;">
@@ -210,7 +155,7 @@
 				<legend>Personal Information</legend>
 				<input type="hidden" value="admin" name="userType"></input>
 				<input type="hidden" value="1" name="type"></input>
-				<div class="persol_align thumbnail">
+				<div class="persol_align whitegloss">
 				<div class="control-group">
 					<label class="control-label requ" for="firstName">First Name</label>
 					<div class="controls ">
@@ -288,7 +233,7 @@
 				<input type="hidden" value="admin" name="isAdmin"></input>
 				<input type="hidden" value="2" name="type"></input>
 				<legend>Announcement Form</legend>
-				<div class="align thumbnail">
+				<div class="align thumbnail whitegloss">
 				<div class="control-group">
 					<label class="control-label requ" for="Title">Title</label>
 					<div class="controls ">
@@ -326,7 +271,7 @@
 				</div>
 				</div>
 				
-				<div id="forFileId" class=" thumbnail align">
+				<div id="forFileId" class=" thumbnail align whitegloss">
 					<div class="control-group">
 						<label class="control-label requ" for="FileTitle">Title</label>
 						<div class="controls ">
@@ -405,9 +350,9 @@
 	});
 	
 	$('.menu').click(function(){
-    $('.menu').removeClass("active");
-    $(this).addClass("active");
-});
+		$('.menu').removeClass("activeNow");
+		$(this).addClass("activeNow");
+	});
 
 	function validateDate()
 	{
@@ -461,7 +406,7 @@
 				str += '<option value=1>Electoral Updates</option>';
 				str += '<option value=2>Press Releases</option>';
 				str += '</select>';
-				str += '<a class="btn btn-primary"  onClick="getPaginationForData(0,\''+name+'\')">Find</a>';
+				str += '<span style="margin-left:5px;margin-top:3px;"><a class="btn btn-primary"  onClick="getPaginationForData(0,\''+name+'\')">Find</a></span>';
 				str += '<div id="dateErrorAnnDiv"><div>';
 				$('#btAnnouncementsDiv').html('');
 			//	$("#paginationId").html('');
@@ -474,7 +419,7 @@
 				str += '<input type="text" name="startDateName" id="startDateName" class="calender input-medium"></input>';
 				str += '<span>End Date : </span>';
 				str += '<input type="text" name="endDateName" id="endDateName" class="calender input-medium"></input>';
-				str += '<a class="btn btn-primary" onClick="getPaginationForData(0,\''+name+'\')">Find</a>';
+				str += '<span style="margin-left:5px;"><a class="btn btn-primary" onClick="getPaginationForData(0,\''+name+'\')">Find</a></span>';
 				str += '<div id="dateErrorAnnDiv"><div>';
 				$('#btAnnouncementsDiv').html(str);
 				$('#typeAnnouncementsDiv').html('');
@@ -680,7 +625,7 @@
 			{
 			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
 			}
-			str +='<span class="title_sec"></span><span class="title_sec1">'+myResults[i].announcement+'</span>';
+			str +='<span class="title_sec1">'+myResults[i].announcement+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +='<span class="font_desc">'+myResults[i].comment+'</span>';
 			str +='<hr style="margin-top:0px;">';
@@ -731,7 +676,7 @@
 			{
 			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
 			}
-			str +='<span class="title_sec">TITLE:</span><span class="title_sec1">'+myResults[i].announcement+'</span>';
+			str +='<span class="title_sec1">'+myResults[i].announcement+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +='<span style="font-size: 15px;">'+myResults[i].comment+'</span>';
 			str +='<hr style="margin-top:0px;">';
