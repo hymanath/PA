@@ -1496,7 +1496,8 @@ function getElectionData()
      
 	    for(var i in myResults[0]){
 	      if(linechartDataArr.indexOf(myResults[0][i].constituencyName) == -1){
-				linechartDataArr.push(myResults[0][i].constituencyName);
+			/* commented by srishailam
+				linechartDataArr.push(myResults[0][i].constituencyName); */
 				 //  $("#selId3").append('<option value="' +myResults[0][i].constituencyName+'">' +myResults[0][i].constituencyName+ '</option>');	 
 		}
 		 if (myArray != null  )
@@ -1504,6 +1505,11 @@ function getElectionData()
 		 { 
 		 if(myResults[0][i].constituencyName.toUpperCase().trim() == myArray[j].toUpperCase().trim() ){
 		//alert( myResults[0][i].constituencyName.toUpperCase());
+		 <!-- Start by srishailam -->
+				if(linechartDataArr.indexOf(myResults[0][i].constituencyName) == -1){
+					linechartDataArr.push(myResults[0][i].constituencyName);
+				}
+		<!-- end by srishailam -->
 		 var pname = myResults[0][i].partyName ;
           var aryObj = newResults[pname];
           if(aryObj)
