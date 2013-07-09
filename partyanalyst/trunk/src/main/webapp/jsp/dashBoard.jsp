@@ -1488,7 +1488,9 @@ function showChangePwdStatus(results)
 	if(results==121)
 	{
 	  result.html('<div style="color:green">Password changed successfully, Window Closing...</div>');
-      setTimeout("closewdw()",3000);
+      setTimeout(function(){
+$('#connectPeoplePopup').dialog('close');
+}, 3000);
 	  return;
 	}	
     else if(results==0)
