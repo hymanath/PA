@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
+import com.itgrids.partyanalyst.dao.IUserLoginSessionDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.DailyUpdatesVO;
@@ -52,6 +53,7 @@ import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
+import com.itgrids.partyanalyst.model.UserLoginSession;
 import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.security.EncryptDecrypt;
 import com.itgrids.partyanalyst.service.ILoginService;
@@ -81,10 +83,20 @@ public class LoginService implements ILoginService{
 	private IUserDAO userDAO;
 	private IUserAccessIpAddressDAO userAccessIpAddressDAO;
 	private VelocityEngine velocityEngine;
+	private IUserLoginSessionDAO userLoginSessionDAO;
+	
 
 	private IMailService mailService;
 	
 	
+	public IUserLoginSessionDAO getUserLoginSessionDAO() {
+		return userLoginSessionDAO;
+	}
+
+	public void setUserLoginSessionDAO(IUserLoginSessionDAO userLoginSessionDAO) {
+		this.userLoginSessionDAO = userLoginSessionDAO;
+	}
+
 	public VelocityEngine getVelocityEngine() {
 		return velocityEngine;
 	}
@@ -301,7 +313,7 @@ public class LoginService implements ILoginService{
 				regVO.setSubscribePartyImpDate(user.getIncludePartyImpDateStatus());
 				regVO.setParentUserId(user.getParentUser() != null?user.getParentUser().getUserId():null);
 				regVO.setMainAccountId(user.getMainAccountUser() != null ? user.getMainAccountUser().getUserId() : null);
-							
+				regVO.setMultipleAccessRestriction(Boolean.valueOf(user.getMultipleAccessRestriction().toString()));			
 				if(user.getParty() != null){
 					regVO.setParty(user.getParty().getPartyId());
 					regVO.setPartyShortName(user.getParty().getShortName());
@@ -808,5 +820,28 @@ public class LoginService implements ILoginService{
 			log.error("Exception Rised in sendMailToAdmin : ", e);
 		}
 		}
+	
+	
+	public List<String> deActivateAllOtherSimultaneousSessions(Long userId)
+	{
+	List<String> sessionIds = null;
+	try{	
+		if(userId != null && userId > 0)
+		 sessionIds = userLoginDetailsDAO.getAllActiveUsersSessionIds(userId);
+		if(sessionIds != null && sessionIds.size() > 0)
+		{
+			for(String sessionId : sessionIds)
+			{
+			UserLoginSession userLoginSession = new UserLoginSession();
+			userLoginSession.setSessionId(sessionId);
+			userLoginSessionDAO.save(userLoginSession);
+			}
+		}
+	}
+	catch (Exception e) {
+		log.error("Exception Rised in getActiveUsersSessionIds : ", e);
+	}
+	return sessionIds;
+	}
 	
 }

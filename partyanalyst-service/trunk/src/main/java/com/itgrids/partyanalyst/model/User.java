@@ -117,6 +117,7 @@ public class User extends BaseModel implements Serializable{
 	
 	private String passwdHashTxt;
 	private String hashKeyTxt;
+	private String multipleAccessRestriction;
 	private Set<UpdationDetails> createdBy = new HashSet<UpdationDetails>(0);
 	private Set<UpdationDetails> updatedBy = new HashSet<UpdationDetails>(0);
 	private Set<SurveyAccessUsers> surveyAccessUsers = new HashSet<SurveyAccessUsers>(0);
@@ -979,5 +980,14 @@ public class User extends BaseModel implements Serializable{
 	public void setSurveyAccessUsers(Set<SurveyAccessUsers> surveyAccessUsers) {
 		this.surveyAccessUsers = surveyAccessUsers;
 	}
+	@Column(name="multiple_access_restriction",length = 10)
+	public String getMultipleAccessRestriction() {
+		return multipleAccessRestriction;
+	}
+
+	public void setMultipleAccessRestriction(String multipleAccessRestriction) {
+		this.multipleAccessRestriction = multipleAccessRestriction;
+	}
+	
 	
 }

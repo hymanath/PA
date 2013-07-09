@@ -66,7 +66,16 @@ public class RegistrationVO extends BaseDTO{
 	private Long cadreOnlineRegId;
 	private String cadreOnlineRegFor;
 	private Long cadreRegiserForId;
+	private boolean multipleAccessRestriction;
 	
+	public boolean isMultipleAccessRestriction() {
+		return multipleAccessRestriction;
+	}
+
+	public void setMultipleAccessRestriction(boolean multipleAccessRestriction) {
+		this.multipleAccessRestriction = multipleAccessRestriction;
+	}
+
 	public String getLoginRestriction() {
 		return loginRestriction;
 	}
