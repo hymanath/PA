@@ -33,4 +33,6 @@ public interface ILoginService {
 	
 	public void sendMailToAdminGroup(final RegistrationVO registrationVO ,final String ipAddress);
 	
+	public List<String> deActivateAllOtherSimultaneousSessions(Long userId);
+	
 }
