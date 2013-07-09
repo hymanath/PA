@@ -39,7 +39,7 @@
 			 #registerVoter,#armiNriVote,#cancelVote,#modifyVote,#modifyVote,#transferVote,#duplicateVoter{display:none;}
 			.closeBtn{margin-left: 54px;bottom: 0px; position: absolute;}
 			.closeBtn:hover{box-shadow:0px 0px 10px #c0c0c0;}
-			.newsReleaseId{width:550px;background:#FFFFFF;margin:2px;padding:8px;display:inline-block;}
+			.newsReleaseId{width:500px;background:#FFFFFF;margin:2px;padding:8px;display:inline-block;}
 			.indiComment{margin:4px;padding:10px;}
 			#indiCommentName{margin:2px;}
 			#indiCommentDate{margin:2px;color:#28B0D6;}
@@ -147,12 +147,12 @@
 							</div>
 							<div class="span2 widget" onclick="hideMainMenu('modifyVote')">
 								<img src="image/modify_vote.png" />
-								<h3>Modify VOTE</h3>
+								<h3>Modify <br>VOTE</h3>
 								<a href="javascript:{}"  class="morebtn"></a>
 							</div>
 							<div class="span2 widget" onclick="hideMainMenu('cancelVote')">
 								<img src="image/cancel_vote.png" />
-								<h3>Cancel VOTE</h3>
+								<h3>Cancel<br> VOTE</h3>
 								<a href="javascript:{}"  class="morebtn"></a>
 							</div>
 							<div class="span2 widget" onclick="hideMainMenu('armiNriVote')">
@@ -262,7 +262,7 @@
 						<div class="span5 well well-small" id="topFiveNotifications">
 						</div>
 						
-						<div class="span7" id="pressReleaseDiv">
+						<div class="span7 well well-small" id="pressReleaseDiv">
 						</div>
 					</div>
 					

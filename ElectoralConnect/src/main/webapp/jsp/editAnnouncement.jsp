@@ -13,9 +13,15 @@
 <link rel="stylesheet" type="text/css" href="css/dataPicker.css"/>
 <script type="text/javascript"  src="js/AnnouncementFormValidation.js"></script>
 <style>
-.AnnouncementForm{ margin-top: 5px;padding: 7px; border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
+.align{ width:630px;margin-left: 90px;
+   margin-top:7px;}
+.whitegloss {
+    background: linear-gradient(to bottom, #EEEEEE 0%, #FFFFFF 49%, #FFFFFF 100%) repeat scroll 0 0 transparent;
+}
+.AnnouncementForm{width:800px;margin-left:auto;margin-right:auto;}
+.AnnouncementForm1{ margin-top: 5px;padding: 7px; border: 1px solid #C3C3C3;border-radius: 5px 5px 5px 5px;}
 </style>
-<div id="announcementForm" ></div>
+<div id="announcementForm" class="AnnouncementForm" ></div>
 
 <script>
 var myResults = window.opener.announcementData;
@@ -28,14 +34,14 @@ if(myResults != null)
 	var fileDescription = htmlspecialchars(myResults[0].fileDescription);
 	var str = "";
 	str += '<div id="BOX-2" style="background-color:#fff;">';
-	str += '<form class="form-horizontal AnnouncementForm" name="AnnouncementForm" action="editUpdateAnnouncementAction.action?fromForm=announcement"  method="post" enctype="multipart/form-data">';
+	str += '<form class="form-horizontal AnnouncementForm1" name="AnnouncementForm" action="editUpdateAnnouncementAction.action?fromForm=announcement"  method="post" enctype="multipart/form-data">';
 	str += '<input type="hidden" value="admin" name="isAdmin"></input>';
 	str += '<input type="hidden" value="2" name="type"></input>';
 	str += '<input type="hidden" name="announcementId" value='+myResults[0].id+'></input>';
 	str += '<input type="hidden" name="announcementFileId" value='+myResults[0].announcementFileId+'></input>';
 	str += '<input type="hidden" name="fileId" value='+myResults[0].fileId+'></input>';
 	str += '<legend>Announcement Form</legend>';
-	str += '<div class="align thumbnail">';
+	str += '<div class="align thumbnail whitegloss">';
 	str += '<div class="control-group">';
 	str += '<label class="control-label requ" for="Title">Title</label>';
 	str += '<div class="controls ">';
