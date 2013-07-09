@@ -5521,5 +5521,16 @@
 				<param name="root">parliamentList</param>				
 			</result>
 		</action>
+		<action name="getMandalOrMuncipalityListForVotersAnalysisAction" class="votersAnalysisAction" method="getMandalOrMuncipalityListForVotersAnalysis">
+		  <result type="json" name="success">
+		   <param name="root">namesList</param>
+		  </result>
+		</action>
+		
+		<action name="getWardsListForMuncipalityAction" class="votersAnalysisAction" method="getWardsListForMuncipality">
+		 <result type="json" name="success">
+		  <param name="root">resultData</param>
+		 </result>
+		</action>
 		</package>
 </struts>      
