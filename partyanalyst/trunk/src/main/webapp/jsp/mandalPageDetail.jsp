@@ -30,16 +30,18 @@
 
 function checkForFormSubmit()
 {
+	$('#partyAjaxImg').show();
 	if(document.mandalVotingTrends.partyField.value != 0)
 	{
 			getMandalVotingReport();
 	}
+	$('#partyAjaxImg').hide();
 }
 function getList(name,value)
 { 
-	var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
-	ajaxImgElmt.style.display = "block";
-
+	//var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+	//ajaxImgElmt.style.display = "block";
+	$('#mandalAjaxImg').show();
 	var jsObj=
 	{
 		type:name,
@@ -57,8 +59,8 @@ function callAjax(jsObj,url,name){
 	   success : function( o ) {
 		try {
 
-			var img1=document.getElementById('ajaxLoadDiv');
-						img1.style.display='none';
+			//var img1=document.getElementById('ajaxLoadDiv');
+					//	img1.style.display='none';
 
 
 			myResults = YAHOO.lang.JSON.parse(o.responseText);
@@ -206,6 +208,8 @@ if(elmt)
 	var myDataTable = new YAHOO.widget.DataTable("mandalVotingResultsDivBody",resultsColumnDefs, resultsDataSource,{});  
 else
 	alert('No div elmt found to render datatable');
+	
+$('#reportAjaxImg').hide();
 }
 
 function buildSelectOption(results,selectedValue)
@@ -261,13 +265,13 @@ function buildSelectOption(results,selectedValue)
 			selectedElmt.add(opElmt); // IE only
 		}			
 	}
+	$('#mandalAjaxImg').hide();
 }
 
 function getMandalVotingReport()
 {
-	var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
-	ajaxImgElmt.style.display = "block";
-
+	//var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+	//ajaxImgElmt.style.display = "block";
 	var stateElmt = document.getElementById("stateField");
 	var districtElmt = document.getElementById("districtField");
 	var constituencyElmt = document.getElementById("constituencyField");
@@ -286,6 +290,7 @@ function getMandalVotingReport()
 	if(stateValue == "0" || districtValue == "0" || constituencyValue == "0" || mandalValue == "0" || partyValue == "0")
 		return;
 	
+	$('#reportAjaxImg').show();
 	var jsObj={
 			state:stateValue,
 			district:districtValue,
@@ -302,6 +307,7 @@ function getMandalVotingReport()
 
 function getDistrictsList()
 {
+	$('#districtAjaxImg').show();
 	var stateId = $('#stateField option:selected').val();
 	var jsObj =
 		{  	
@@ -315,6 +321,7 @@ function getDistrictsList()
 
 function getConstituencsList()
 {
+	$('#constituencyAjaxImg').show();
 	var districtId = $('#districtField option:selected').val();
 	var jsObj =
 		{  	
@@ -339,6 +346,7 @@ function buildDistricts(myResults)
 		}
 		$('#districtField').html(str);
 	}
+	$('#districtAjaxImg').hide();
 }
 
 function buildConstituency(myResults)
@@ -354,6 +362,7 @@ function buildConstituency(myResults)
 		}
 		$('#constituencyField').html(str);
 	}
+	$('#constituencyAjaxImg').hide();;
 }
 
 </script>
@@ -476,7 +485,7 @@ function buildConstituency(myResults)
 					<tr>
 						<th align="left"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /></th>
 						<td align="left">
-							<s:select id="stateField" name="state" list="states" listKey="id" listValue="name" onchange="getDistrictsList();" cssClass="mySelectBox"></s:select>					
+							<s:select id="stateField" name="state" list="states" listKey="id" listValue="name" onchange="getDistrictsList();" cssClass="mySelectBox"></s:select><img  id='districtAjaxImg'class="ajaxImgClass" src='images/icons/search.gif' style="display:none;"></img>					
 						</td>
 
 						
@@ -485,7 +494,7 @@ function buildConstituency(myResults)
 						<td align="left">
 							<select class="mySelectBox" id="districtField" name="district" onchange="getConstituencsList();">
 								<option value="0">Select District</option>
-							</select>					
+							</select> <img  id="constituencyAjaxImg" class="ajaxImgClass" src='images/icons/search.gif' style="display:none;"></img>	
 						</td>
 					</tr>
 					<tr>
@@ -493,7 +502,7 @@ function buildConstituency(myResults)
 						<td align="left">
 							<select class="mySelectBox" id="constituencyField" name="constituency" onchange="getList('CONSTITUENCY',this.options[this.selectedIndex].value)">
 								<option value="0">Select Constituency</option>
-							</select> 
+							</select><img  id="mandalAjaxImg" class="ajaxImgClass" src='images/icons/search.gif' style="display:none;"></img>
 						</td>
 					
 						
@@ -502,13 +511,13 @@ function buildConstituency(myResults)
 							<select class="mySelectBox" id="mandalField" name="mandal" onchange= "checkForFormSubmit()">
 								<option value="0">Select Mandal</option>
 							</select>	
-							
+							<img  id="partyAjaxImg" class="ajaxImgClass" src='images/icons/search.gif' style="display:none;"></img>
 						</td>							
 					</tr>
 					<tr>
 						<th align="left"><s:label for="partyField" id="mandalLabel"  value="%{getText('PARTY')}" /></th>
 						<td align="left">
-							<s:select cssClass="mySelectBox" id="partyField" name="party" list="partyList" listKey="id" listValue="name" onchange="getMandalVotingReport()"></s:select>	
+							<s:select cssClass="mySelectBox" id="partyField" name="party" list="partyList" listKey="id" listValue="name" onchange="getMandalVotingReport()"></s:select>	<img  id="reportAjaxImg" class="ajaxImgClass" src='images/icons/search.gif' style="display:none;"></img>
 						</td>
 					</tr>
 				</table>
