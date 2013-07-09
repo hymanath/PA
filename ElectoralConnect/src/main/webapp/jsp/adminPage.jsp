@@ -531,8 +531,8 @@
 				startDate  : startDate,
 				endDate    : endDate,
 				type       : type,
-				startIndex : pageNo,
-				maxIndex   : 10,
+				startRecord : pageNo,
+				maxRecord   : 10,
 				task       : "getAllAnnouncementsBtdates"
 			}
 		}
@@ -542,8 +542,8 @@
 			var jsObj=
 			{
 				type       : type,
-				startIndex : pageNo,
-				maxIndex   : 10,
+				startRecord : pageNo,
+				maxRecord   : 10,
 				type       : type,
 				task       : "getAllAnnouncementsSelType"
 			}
