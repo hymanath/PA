@@ -1098,6 +1098,7 @@
 	
 	<bean name="callCenterService" class="com.itgrids.partyanalyst.service.impl.CallCenterService">
 		<property name="problemHistoryDAO" ref="problemHistoryDAO" />
+		<property name="userProblemDAO" ref="userProblemDAO" />
 	</bean>
 	
 	<bean name="callTrackingService" class="com.itgrids.partyanalyst.service.impl.CallTrackingService">
@@ -1634,6 +1635,7 @@
 		<property name="surveyAccessUsersDAO" ref="surveyAccessUsersDAO"></property>
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="updationDetailsDAO" ref="updationDetailsDAO"></property>
-	</bean>
+		
+    </bean>
 </beans>		
 	
