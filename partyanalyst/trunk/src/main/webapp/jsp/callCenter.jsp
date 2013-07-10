@@ -7,26 +7,25 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 
-<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js">
-</script> 
-<script
-	src="js/jQuery/jquery-ui.min.js">
-</script>
-<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
-	<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
-<link
-	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
-	rel="stylesheet" type="text/css" />
-	<link type="text/css" rel="stylesheet" href="styles/jQuery/datepicker/jquery-ui-1.8.14.custom.css" />
-<link type="text/css" rel="stylesheet" href="styles/jQuery/datepicker/demos.css" />
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"> </script> 
+<script src="js/jQuery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
+  rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet"   
+  href="styles/jQuery/datepicker/jquery-ui-1.8.14.custom.css" />
+<link type="text/css" rel="stylesheet"  
+  href="styles/jQuery/datepicker/jquery-ui-1.8.14.custom.css" />
 <link rel="stylesheet" type="text/css" href="styles/mandalPage/mandalPage.css">
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link type="text/css" rel="stylesheet"  
+  href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link type="text/css" rel="stylesheet"     
+  href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+
 <!-- JQuery files (End) -->
 <title>Call Center</title>
 <style type="text/css">
-
 .ui-widget-header {
     background: url("images/ui-bg_highlight-soft_75_cccccc_1x100.png") repeat-x scroll 50% 50% #CCCCCC;
     border: 1px solid #AAAAAA;
@@ -225,7 +224,12 @@ width: 42px;
 #selectAndUnselectDiv{margin-left: 132px; clear: both; width: 220px; margin-top: -32px;}
 </style>
 </head>
-
+<body>
+<script>
+  function scrollToproblem(){
+	  $('html').animate({scrollTop: $("#problemDetails_body").offset().top}, 1000);
+ }
+</script>
 <script type="text/javascript">	
 var timeST = new Date().getTime();
 var selectedPhoneNosArr = new Array();
@@ -772,6 +776,7 @@ function showTextInTextBoxes(id){
 }
 
 function getProblemDetails(){
+	scrollToproblem();
     var name;
     var refNum;
     var mobileNum;
@@ -783,7 +788,7 @@ function getProblemDetails(){
      if($("#nameId").val() =="Name"){
 		name = '';
 	  } 
-	  else{
+	 else{
 		if(!($("#nameId").val().match(exp))){
 			$('#warningMsgs').css("display","block");
 			return false;
@@ -1382,8 +1387,8 @@ $(function() {
 	});
 </script>
 <script>
-	$(function() {
-		$( "#fromDate" ).datepicker({
+
+			$("#fromDate" ).datepicker({
 			changeMonth: true,
 			changeYear: true,
 			maxDate:new Date(),
@@ -1398,7 +1403,7 @@ $(function() {
 			dateFormat:"yy-mm-dd"
         });
 		
-	});
+	
 
 	</script>
 
@@ -1411,8 +1416,5 @@ $("#unSelectAllBtn").live("click",function(){
 	$(".checkBoxCls").attr('checked',false);
 });
 </script>
-
-
 </body>
-
 </html>
