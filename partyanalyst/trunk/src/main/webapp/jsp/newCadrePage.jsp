@@ -925,6 +925,11 @@ $(document).ready(function(){
 	{
 		refreshingParentWindow();
 	}
+	
+	$('#removeButtonId').click(function()
+	{
+		$('#uploadFileId').val('');	
+	});
 });
 function refreshingParentWindow()
  {
@@ -1208,12 +1213,17 @@ function refreshingParentWindow()
 
 		<tr>
 			<td><s:label for="uploadFileId" id="uploadImageLabel" value="Upload Photo" /></td>
-			<td colspan="3"><s:file  id="uploadFileId" name="uploadImage" label="Upload" accept="image/*"/>(Hint: Image should be .jpeg or .jpg or .png or .gif formats only )</td>
+			<td colspan="3"><s:file  id="uploadFileId" name="uploadImage" label="Upload" accept="image/*"/><a title="Click here to Remove Image"><i class=" icon-remove" id="removeButtonId"  style="cursor: pointer;"></i></a></td>
+		</tr>
+		<tr><td></td>
+		<td style="width: 420px;">
+		(Hint: Image should be .jpeg or .jpg or .png or .gif formats only)
+		</td>
 		</tr>
 
 		<tr>
 			<th width="165px"><u><s:label for="currAddField" id="currAddLabel"  value="Family Members Details" /></u></th>
-			<td align="left"><div id="editDiv" onclick="showFamilyDetailsTable()" style="width:25px;"><b><u>Edit</u></b></div></td>
+			<td align="left"><div id="editDiv" onclick="showFamilyDetailsTable()" style="width:25px;color:#0A0B39;"><b><u>Edit</u></b></div></td>
 		</tr>
 	<table id="familyDetailsTableId" class="cadreDetailsTable" width="100%" style="display:none;">	
 		
