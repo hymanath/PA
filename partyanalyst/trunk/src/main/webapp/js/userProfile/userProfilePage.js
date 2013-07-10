@@ -649,7 +649,7 @@ $("#allConnectedUsersDisplay_main").children().remove();
 
 	str += '<tr>';
 	str += '<td>';
-	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width:430px;"/>';
+	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width:430px;" accept="image/*"/>';
 	str += '</td>';
 	str += '</tr>';
 	
@@ -721,7 +721,7 @@ $("#allConnectedUsersDisplay_main").children().remove();
 
 	str += '<tr>';
 	str += '<td>';
-	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width:430px;"/>';
+	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width:430px;" accept="image/*"/>';
 	str += '</td>';
 	str += '</tr>';
 	
