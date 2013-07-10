@@ -5537,5 +5537,10 @@
 			<result name="success">/jsp/userSessionStorage.jsp</result>
 		</action>
 		
+		<action name="getCasteAssignedAndNotAssignedVotersCountAction" class="validationToolsAction" method="getCasteAssignedVotersInfo">
+		 <result type="json" name="success">
+		  <param name="root">dataValidationVOList</param>
+		 </result>
+		</action>
 		</package>
 </struts>      

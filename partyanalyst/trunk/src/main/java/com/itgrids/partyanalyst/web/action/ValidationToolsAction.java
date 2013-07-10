@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.DataMappingVerificationVO;
@@ -19,6 +20,7 @@ import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IDataValidationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ValidationToolsAction extends ActionSupport implements ServletRequestAware{
@@ -33,7 +35,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private IVotersAnalysisService votersAnalysisService;
 	private IDataValidationService dataValidationService;
-	private List<DataValidationVO> resultList;
+	private List<DataValidationVO> resultList,dataValidationVOList;
 	private EntitlementsHelper entitlementsHelper;
 	private  DataVerificationVO dataVerificationVO;
 	private ElectionResultsVerificationVO electionResultsVerificationVO;
@@ -171,6 +173,13 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 	public void setUnMappedBoothsList(List<DataValidationVO> unMappedBoothsList) {
 		this.unMappedBoothsList = unMappedBoothsList;
 	}
+	
+	public List<DataValidationVO> getDataValidationVOList() {
+		return dataValidationVOList;
+	}
+	public void setDataValidationVOList(List<DataValidationVO> dataValidationVOList) {
+		this.dataValidationVOList = dataValidationVOList;
+	}
 	public String execute()
 	{
 		HttpSession session = request.getSession();
@@ -239,6 +248,31 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 		
 		return SUCCESS;
 		
+	}
+	
+	public String getCasteAssignedVotersInfo()
+	{
+		try{
+		Long userId = null;
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+		if(user != null && user.getRegistrationID() != null){
+			if(user.getParentUserId() != null)
+				userId = user.getMainAccountId();
+			else
+			 userId = user.getRegistrationID();
+		}
+		else
+		 return ERROR;
+		jObj = new JSONObject(getTask());
+		if(jObj.getString("task").equalsIgnoreCase("getVotersCasteDetails"))
+		 dataValidationVOList = dataValidationService.getCasteAssignedAndNotAssignedVotersCount(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),jObj.getString("type"));
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error(" Exception Occured in getVoterCasteInfo() method, Exception - "+e);
+		}
+	  return Action.SUCCESS;
 	}
 	
 
