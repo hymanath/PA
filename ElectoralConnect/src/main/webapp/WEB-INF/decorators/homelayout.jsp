@@ -110,8 +110,9 @@
 									<li><a title="Admin" id='adminId'>Admin</a></li> |
 									</c:if>
 									<c:if test="${sessionScope.loginStatus == 'in'}">
-									<li><a title="Logout" id='logoutId' href="logoutAction.action">Logout</a></li> 
+									<li><a title="Logout" id='logoutId' href="logoutAction.action">Logout</a></li> |
 									</c:if>
+									<li><a title="Search Now" id='SearchId' href="searchPageAction.action">Search</a></li> 
 									  							
 	
 								</ul>
