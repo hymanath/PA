@@ -6223,7 +6223,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			str+='</tbody></table>';
 
 			str+='<div class="breadcrumb pull-left" style="margin: 3px 0;"><font style="color:red;">Note</font> :<span class="help-inline f2"><b>P</b>- Publication</span><span class="help-inline f2"><b>E</b>- Election</span>';
-			str+='<span class="help-inline f2"><img class="imageSize" src="images/uparrow.png" /> -Voters Increased</span> <span class="help-inline f2"><img class="imageSize" src="images/downarrow.png" /> - Voters Decrease</span></div>';
+			str+='<span class="help-inline f2"><img class="imageSize" src="images/uparrow.png" /> -Voters Increased</span> <span class="help-inline f2"><img class="imageSize" src="images/downarrow.png" /> - Voters Decreased</span></div>';
 
 
 			$('#votersBasicInfoDiv1').html(str);
