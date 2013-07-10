@@ -1385,5 +1385,26 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getProblemDetailsByBetweenDates(String query,Date fromDate,Date toDate)
+	{
+		Query queryObj = getSession().createQuery("select model.problem.title,model.problem.description,model.problem.problemStatus.status,model.problem.identifiedOn,model.problem.informationSource.informationSource,model.problem.regionScopes.scope,model.userProblemId from UserProblem model where "+query+" and (model.problem.isDelete is null or model.problem.isDelete = '"+IConstants.FALSE+"') group by model.problem.problemId");
+	
+		if(fromDate !=null && toDate!=null){
+			queryObj.setParameter(0, fromDate);
+			queryObj.setParameter(1, toDate);
+		}
+		else
+		{
+			if(fromDate!=null){
+				queryObj.setParameter(0, fromDate);
+			}
+			if(toDate!=null){
+				queryObj.setParameter(0, toDate);
+			}
+		}
+		return queryObj.list(); 
+	}
+	
 	
 }
