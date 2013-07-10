@@ -126,7 +126,7 @@ hr
 </head>
 <body>
 <center>
-<div style="background:#fff;width: 950px;margin-top:12px;">
+<div style="background:#fff;width: 950px;margin-top:12px;min-height:375px;">
 <span id="mainHeading" style="color:#990099;font-weight:bold;font-size:20px;margin:10px;">Live Election Results Analysis</span>
 
 <c:if test="${host != 'tdpserver'}">
