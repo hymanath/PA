@@ -9565,7 +9565,7 @@ $(document).ready(function(){
 		str +='<th>Population</th>';
 		str +='<th>SC Population</th>';
 		str +='<th>ST Population</th>';
-		str +='<th>Literate Populations</th>';
+		str +='<th>Literate Population</th>';
 		str +='<th>Illiterate Population</th>';
 		str +='<th>Working Population</th>';
 		str +='</tr>';
