@@ -141,6 +141,7 @@
 #casteAssignedRadioDiv{margin-top: 16px; margin-bottom: 12px;}
 .casteAssignedRadioCls{margin-right: 3px;}
 #casteAssignedBtn{margin-left: 25px;}
+#totalVotersDiv{margin-bottom: 18px;margin-top: 24px; text-align: center;}
 </style>
 </head>
 
@@ -309,6 +310,7 @@
    <div id="casteAssignedRadioDiv">
      <input type="radio" name="casteAssignedRadio" class="casteAssignedRadioCls" value="booth" checked="true" style="margin-top: 0px;"/> Booth 
 	 <input type="radio" name="casteAssignedRadio" class="casteAssignedRadioCls" value="panchayat" style="margin-top: 0px;"/> Panchayat
+	 <input type="radio" name="casteAssignedRadio" class="casteAssignedRadioCls" value="ward" style="margin-top: 0px;"/> Ward
      <input type="button" id="casteAssignedBtn" value="Get Caste Assigned Info" class="btn btn-info" onclick="getCasteAssignedInfo();" />
    </div>
   
@@ -1904,19 +1906,29 @@ function buildCasteAssignedVoters(results,jsObj)
 {
 	$("#CasteAjaxImgId").css("display","none");
   $("#casteAssignedVotersInnerDiv").html('');
-  if(results == null)
+  if(results == null || results.length == 0)
   {
 	$("#casteAssignedVotersInnerDiv").html('No data found.');
 	return;
   }
   $("#casteAssignedVotersHideAndShow").css("display","inline-block");
   var str = '';
+  str +='<div id="totalVotersDiv">';
+  str +='<span><b>Total Voters : </b> '+results[0].totalVotersCount+'</span>';
+  str +='<span style="margin-left: 15px; margin-right: 36px;"><b>Caste Assigned Voters : </b> '+results[0].casteAssignedTotVoters+'</span>';
+  str +='<span><b>Caste Not Assigned Voters : </b> '+results[0].casteNotAssignedTotVoters+'</span>';
+  str +='</div>';
   str +='<table id="casteAssignedVoters" class="table table-bordered table-striped table-hover">';
   str +='<tr>';
   if(jsObj.type == "booth")
   {
    str +='<th>Panchayat</th>';
    str +='<th>Booth</th>';
+  }
+  else if(jsObj.type == "ward")
+  {
+   str +='<th>Muncipality</th>';
+   str +='<th>Ward</th>';
   }
   else
   {
@@ -2047,13 +2059,13 @@ $(document).ready(function(){
 	$("#casteAssignedVotersHideMenu").live("click",function(){
 	  $("#casteAssignedVotersInnerDiv").css("display","none");
 	  
-	  $("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+	  $("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersShowMenu" class="btn"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
 		
 	});
 
 	$("#casteAssignedVotersShowMenu").live("click",function(){
 		$("#casteAssignedVotersInnerDiv").css("display","block");
-		$("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
+		$("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersHideMenu" class="btn"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
 
 
