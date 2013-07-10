@@ -89,7 +89,7 @@
 }
 .voterInfoDiv{margin-top: 10px;}
 
-#votersBasicInfoInnerDiv table th ,#votersInfoDiv table th,#voterFamilyInfoDiv table th,#voterAgeInfoDiv table th,#voterModificationDiv table th,#constituencyVotesTab th,#mandalTab th,#panchayatMappingInnerDiv table th,#boothMappingInnerDiv table th,#unMappedBoothsInnerDiv table th{
+#votersBasicInfoInnerDiv table th ,#votersInfoDiv table th,#voterFamilyInfoDiv table th,#voterAgeInfoDiv table th,#voterModificationDiv table th,#constituencyVotesTab th,#mandalTab th,#panchayatMappingInnerDiv table th,#boothMappingInnerDiv table th,#unMappedBoothsInnerDiv table th,#casteAssignedVoters th{
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -97,7 +97,7 @@
     padding: 10px;
     text-align: left;
 }
-#votersBasicInfoInnerDiv table td ,#votersInfoDiv table td,#voterFamilyInfoDiv table td,#voterAgeInfoDiv table td,#voterModificationDiv table td,#mandalTab td,#constituencyVotesTab td,#panchayatMappingInnerDiv table td,#boothMappingInnerDiv table td,#unMappedBoothsInnerDiv table td{
+#votersBasicInfoInnerDiv table td ,#votersInfoDiv table td,#voterFamilyInfoDiv table td,#voterAgeInfoDiv table td,#voterModificationDiv table td,#mandalTab td,#constituencyVotesTab td,#panchayatMappingInnerDiv table td,#boothMappingInnerDiv table td,#unMappedBoothsInnerDiv table td,#casteAssignedVoters td{
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
@@ -130,13 +130,17 @@
 }
 #panchayatSelectDiv,#unMappedBoothsInnerDiv{margin-top: 15px;}
 #panchayatMappingInnerDiv{margin-top: 25px;}
-#panchayatErrorMsgDiv,#errorMessageDiv{color:red;}
+#panchayatErrorMsgDiv,#errorMessageDiv,#casteErrorMsgDiv{color:red;}
 #panchayatHideAndShow{margin-bottom: -13px;margin-left: 25px;}
 #eleResHideAndShow{margin-bottom: -6px;margin-left: 34px;}
 #boothHideAndShow{margin-bottom: -12px;margin-left: 14px;}
 #unMappedBoothsHeading{margin-bottom: 15px;}
 #unMappedBoothHideAndShow{ margin-bottom: -9px;}
 .spanCls{line-height: 1.9em;width: 100px;}
+#casteAssignedDiv{padding-bottom: 20px;}
+#casteAssignedRadioDiv{margin-top: 16px; margin-bottom: 12px;}
+.casteAssignedRadioCls{margin-right: 3px;}
+#casteAssignedBtn{margin-left: 25px;}
 </style>
 </head>
 
@@ -281,6 +285,39 @@
 	</div>
 
  <!-- unMapped Booths Div End -->
+
+
+ <!-- caste Assigned/Not Assigned Div Start -->
+
+ <div id="casteAssignedDiv" class="widget blue">
+  <h4>Caste Assigned Voter Details in Booth or Panchayat</h4>
+  <div id="casteErrorMsgDiv"></div>
+    <div id="casteConstituencyDiv" class="selectDiv" style="margin-top:10px;">
+	 Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="casteConstituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDateForCaste();"/> &nbsp;&nbsp;
+
+		
+	 Publication Date<font class="requiredFont">*</font> <select id="castePublicationDateList" class="selectWidth" style="width:172px;height:25px;">
+		</select>
+	
+	<img src="./images/icons/search.gif" alt="Processing Image" id="CasteAjaxImgId" style="display:none;" />
+	
+	<span style="display: none;" id="casteAssignedVotersHideAndShow"><a id="casteAssignedVotersHideMenu" class="btn" href="javascript:{}">Hide<i class="icon-chevron-up"></i></a></span>
+
+	</div>
+    
+	
+   <div id="casteAssignedRadioDiv">
+     <input type="radio" name="casteAssignedRadio" class="casteAssignedRadioCls" value="booth" checked="true" style="margin-top: 0px;"/> Booth 
+	 <input type="radio" name="casteAssignedRadio" class="casteAssignedRadioCls" value="panchayat" style="margin-top: 0px;"/> Panchayat
+     <input type="button" id="casteAssignedBtn" value="Get Caste Assigned Info" class="btn btn-info" onclick="getCasteAssignedInfo();" />
+   </div>
+  
+  <div id="casteAssignedVotersInnerDiv"></div>
+
+</div>
+ <!-- caste Assigned/Not Assigned Div End -->
+
+
 </div>
 
 <script type="text/javascript">
@@ -320,6 +357,7 @@ function callAjax(jsObj,url)
 								
 									buildPublicationDateList(myResults);
 									buildPublicationDateListForPanchayat(myResults);
+									buildCastePublicationDateList(myResults);
 
 								}
 
@@ -361,6 +399,8 @@ function callAjax(jsObj,url)
 								 showConstituencyWisePanchayatData(myResults,jsObj);
 								else if(jsObj.task == "getunMappedBooths")
 								 showUnMappedBooths(myResults);
+								else if(jsObj.task == "getVotersCasteDetails")
+								 buildCasteAssignedVoters(myResults,jsObj);
 
 							}catch (e) {
 							    //alert(Exception);
@@ -460,6 +500,45 @@ function buildPublicationDateListForPanchayat(results)
 	//$('#publicationDateList').trigger("change");
 
 }
+
+
+function buildCastePublicationDateList(results)
+	{
+	
+	var selectedElmt=document.getElementById("castePublicationDateList");
+	//var selectElmt =jsObj.selectElmt;
+	removeSelectElements(selectedElmt);
+
+	var  publicationIdsArray = new Array();
+
+	for(var val in results)
+	{	
+	publicationIdsArray.push(results[val].id);
+
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}
+		
+
+	}
+
+	//var largest = Math.max.apply(Math, publicationIdsArray);
+
+	//$('#publicationDateList').val(largest);
+	//$('#publicationDateList').trigger("change");
+
+}
+
+
 
 function buildPublicationDates()
 {
@@ -1771,6 +1850,97 @@ function showVoterModificationAgeData(myResults,jsObj)
 	$("#voterModificationAgeDiv").html(str);
 }
 
+function getPublicationDateForCaste()
+	{
+	var constituencyID = $("#casteConstituencyList").val();
+	
+	var jsObj=
+	{
+		selected:constituencyID,
+		task:"getPublicationDate"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "voterAnalysisAjaxAction.action?"+rparam;	
+
+	
+	callAjax(jsObj,url);
+}
+
+function getCasteAssignedInfo()
+{
+  $("#casteErrorMsgDiv").html('');
+  var constituencyId = $("#casteConstituencyList").val();
+  var publicationId = $("#castePublicationDateList").val();
+  
+  if(constituencyId == 0)
+  {
+	$("#casteErrorMsgDiv").html('Please Select Constituency.');
+	return;
+  }
+  if(publicationId == 0)
+  {
+	$("#casteErrorMsgDiv").html('Please Select Publication Date.');
+	return;
+  }
+  var type = $("input[name='casteAssignedRadio']:checked").val();
+  
+  $("#CasteAjaxImgId").css("display","inline-block");
+  
+  var jsObj=
+  {
+	constituencyId:constituencyId,
+	publicationId:publicationId,
+    type:type,
+	task:"getVotersCasteDetails"
+  }
+
+  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+  var url = "getCasteAssignedAndNotAssignedVotersCountAction.action?"+rparam;	
+  callAjax(jsObj,url);
+
+}
+
+function buildCasteAssignedVoters(results,jsObj)
+{
+	$("#CasteAjaxImgId").css("display","none");
+  $("#casteAssignedVotersInnerDiv").html('');
+  if(results == null)
+  {
+	$("#casteAssignedVotersInnerDiv").html('No data found.');
+	return;
+  }
+  $("#casteAssignedVotersHideAndShow").css("display","inline-block");
+  var str = '';
+  str +='<table id="casteAssignedVoters" class="table table-bordered table-striped table-hover">';
+  str +='<tr>';
+  if(jsObj.type == "booth")
+  {
+   str +='<th>Panchayat</th>';
+   str +='<th>Booth</th>';
+  }
+  else
+  {
+   str +='<th>Mandal</th>';
+   str +='<th>Panchayat</th>';
+  }
+  str +='<th>Total Voters</th>';
+  str +='<th>Caste Assigned Voters</th>';
+  str +='<th>Caste Not Assigned Voters</th>';
+  str +='</tr>';
+  for(var i in results)
+  {
+	 str +='<tr>';
+	 str +='<td>'+results[i].panchayatName+'</td>';
+	 str +='<td>'+results[i].partNO+'</td>';
+	 str +='<td>'+results[i].totalVoters+'</td>';
+	 str +='<td>'+results[i].hamletAssignedVoters+'</td>';
+	 str +='<td>'+results[i].hamletsNotAssignedVoters+'</td>';
+	 str +='</tr>';
+  }
+  str +='</table>';
+ $("#casteAssignedVotersInnerDiv").html(str);
+}
+
 
 buildEleYears();
 
@@ -1872,6 +2042,22 @@ $(document).ready(function(){
 		$("#unMappedBoothsInnerDiv").css("display","block");
 		$("#unMappedBoothHideAndShow").html('<a id="unMappedBoothHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
 	});
+
+
+	$("#casteAssignedVotersHideMenu").live("click",function(){
+	  $("#casteAssignedVotersInnerDiv").css("display","none");
+	  
+	  $("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersShowMenu" class="btn pull-right"  href="javascript:{}">show<i class="icon-chevron-down"></i></a>');
+		
+	});
+
+	$("#casteAssignedVotersShowMenu").live("click",function(){
+		$("#casteAssignedVotersInnerDiv").css("display","block");
+		$("#casteAssignedVotersHideAndShow").html('<a id="casteAssignedVotersHideMenu" class="btn pull-right"  href="javascript:{}">Hide<i class="icon-chevron-up"></i></a>');
+	});
+
+
+	
 	
 });
 </script>

@@ -1559,6 +1559,7 @@
 	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	    <property name="constituencyPageService" ref="constituencyPageService" />
 	    <property name="boothLocalBodyWardDAO" ref="boothLocalBodyWardDAO" />
+	    <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
     </bean>
     
     
