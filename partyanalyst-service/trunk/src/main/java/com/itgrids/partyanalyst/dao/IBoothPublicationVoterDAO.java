@@ -390,5 +390,7 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public List<Object[]> getBoothWiseTotalVotersInALocalEleBody(Long constituencyId,Long publicationId);
 	  
+	  public List<Object[]> getWardWiseTotalVotersCount(Long constituencyId,Long publicationDateId,Long localEleBodyId);
+	  
 	  
 }

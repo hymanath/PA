@@ -333,10 +333,18 @@ for (Object[] objects : list) {
 			System.out.println(list.size());
 		}*/
 		
-		public void testgetCasteAssignedVotersList()
+		/*public void testgetCasteAssignedVotersList()
 		{
 			List<Object[]> list = userVoterDetailsDAO.getCasteAssignedVotersList(232l, 8l, IConstants.BOOTH);
 			System.out.println(list.size());
 					
+		}*/
+		
+		public void testgetWardWiseTotalVotersCount()
+		{
+			List<Object[]> list = userVoterDetailsDAO.getWardWiseTotalVotersCount(232l, 8l, 83l, null);
+			System.out.println(list.size());
+			for(Object[] params : list)
+			 System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]);
 		}
 }

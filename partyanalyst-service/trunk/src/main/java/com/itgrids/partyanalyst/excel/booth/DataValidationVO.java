@@ -25,6 +25,9 @@ public class DataValidationVO {
 	private Long unMappedBoothsCount;
 	private String partNO;
 	private Long boothId;
+	private Long totalVotersCount = 0L;
+	private Long casteAssignedTotVoters = 0L;
+	private Long casteNotAssignedTotVoters = 0L;
 	
 	
 	public List<Long> getAssignedHamletsIdsList() {
@@ -171,7 +174,30 @@ public class DataValidationVO {
 	public void setBoothId(Long boothId) {
 		this.boothId = boothId;
 	}
-	
+
+	public Long getTotalVotersCount() {
+		return totalVotersCount;
+	}
+
+	public void setTotalVotersCount(Long totalVotersCount) {
+		this.totalVotersCount = totalVotersCount;
+	}
+
+	public Long getCasteAssignedTotVoters() {
+		return casteAssignedTotVoters;
+	}
+
+	public void setCasteAssignedTotVoters(Long casteAssignedTotVoters) {
+		this.casteAssignedTotVoters = casteAssignedTotVoters;
+	}
+
+	public Long getCasteNotAssignedTotVoters() {
+		return casteNotAssignedTotVoters;
+	}
+
+	public void setCasteNotAssignedTotVoters(Long casteNotAssignedTotVoters) {
+		this.casteNotAssignedTotVoters = casteNotAssignedTotVoters;
+	}
 	
 	
 	

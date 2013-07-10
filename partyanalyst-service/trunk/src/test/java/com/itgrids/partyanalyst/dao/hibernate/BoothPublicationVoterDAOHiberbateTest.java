@@ -679,12 +679,19 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		 System.out.println(params[0]);
 	}*/
 	
-	public void testGetTotalVotersForBooth()
+	/*public void testGetTotalVotersForBooth()
 	{
 		List<Object[]> list = boothPublicationVoterDAO.getBoothWiseTotalVoters(232l, 8l, IConstants.BOOTH);
 		System.out.println(list.size());
 		for(Object[] params:list)
 		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
+	}*/
+	
+	public void testgetWardWiseTotalVotersCount()
+	{
+	  List<Object[]> list = boothPublicationVoterDAO.getWardWiseTotalVotersCount(232l, 8l, 83l);
+	  System.out.println(list.size());
+		
 	}
 	
 }

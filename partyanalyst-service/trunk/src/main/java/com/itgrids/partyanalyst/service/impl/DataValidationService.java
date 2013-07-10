@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothLocalBodyWardDAO;
@@ -67,6 +68,7 @@ public class DataValidationService implements IDataValidationService{
 	private IConstituencyPageService constituencyPageService;
 	private IBoothLocalBodyWardDAO boothLocalBodyWardDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
@@ -262,6 +264,15 @@ public class DataValidationService implements IDataValidationService{
 	public void setBoothPublicationVoterDAO(
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
 
 
@@ -2199,24 +2210,11 @@ public class DataValidationService implements IDataValidationService{
 	 List<DataValidationVO> dataValidationVOList = new ArrayList<DataValidationVO>(0);
 	 try{
 		 
+	if(type != null && (type.equalsIgnoreCase(IConstants.BOOTH) || type.equalsIgnoreCase(IConstants.PANCHAYAT)))
+	{
 		List<Object[]> totalVotersList = boothPublicationVoterDAO.getBoothWiseTotalVoters(constituencyId, publicationId, type);
-		
 		if(totalVotersList != null && totalVotersList.size() > 0)
-		{
-		  for(Object[] params : totalVotersList)
-		  {
-			DataValidationVO dataValidationVO = new DataValidationVO();
-			dataValidationVO.setBoothId((Long)params[0]);
-			if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
-			 dataValidationVO.setPartNO(params[1] != null ?" Booth - "+params[1].toString():" ");
-			else
-			 dataValidationVO.setPartNO(params[1] != null ?params[1].toString():" ");
-			dataValidationVO.setTotalVoters((Long)params[2]);
-			dataValidationVO.setPanchayatName(params[3]!= null?params[3].toString():"");
-			dataValidationVOList.add(dataValidationVO);
-				
-			}
-		}
+		  setVotersDataInDataValidationVO(totalVotersList, dataValidationVOList, type);
 		
 		//Muncipality Booths
 		if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
@@ -2235,26 +2233,115 @@ public class DataValidationService implements IDataValidationService{
 			 } 
 		  }
 		}
-		
-		List<Object[]> casteAssignedList = userVoterDetailsDAO.getCasteAssignedVotersList(constituencyId, publicationId, type);
-		if(casteAssignedList != null && casteAssignedList.size() > 0 && dataValidationVOList != null && dataValidationVOList.size() > 0)
-		{
-		  DataValidationVO dataValidationVO = null;
-		   for(Object[] params : casteAssignedList)
-		   {
-		     dataValidationVO = getDataValidationVO((Long)params[0],dataValidationVOList);
-		     if(dataValidationVO != null)
-		      dataValidationVO.setHamletAssignedVoters((Long)params[1]); 
-		   }
-			for(DataValidationVO validationVO:dataValidationVOList)
-			 validationVO.setHamletsNotAssignedVoters(validationVO.getTotalVoters()-validationVO.getHamletAssignedVoters());
-		}
-		
+	  
+		 List<Object[]> casteAssignedList = userVoterDetailsDAO.getCasteAssignedVotersList(constituencyId, publicationId, type);
+		 if(casteAssignedList != null && casteAssignedList.size() > 0 && dataValidationVOList != null && dataValidationVOList.size() > 0)
+		  setCasteAssignedVotersCount(casteAssignedList, dataValidationVOList);
+	 }
+	 else if(type.equalsIgnoreCase(IConstants.WARD))
+	  getWardWiseCasteAssignedOrNotAssignedVoters(constituencyId, publicationId, type, dataValidationVOList); 
+	
+	 if(dataValidationVOList != null && dataValidationVOList.size() > 0)
+	 {
+	   Long totalVotersCount = 0L;
+	   Long casteAssignedTotVoters = 0L;
+	   Long casteNotAssignedTotVoters = 0L;
+	   for(DataValidationVO validationVO:dataValidationVOList)
+	   {
+		 totalVotersCount += validationVO.getTotalVoters();
+		 casteAssignedTotVoters += validationVO.getHamletAssignedVoters();
+		 casteNotAssignedTotVoters += validationVO.getHamletsNotAssignedVoters();
+	   }
+	   dataValidationVOList.get(0).setTotalVotersCount(totalVotersCount);
+	   dataValidationVOList.get(0).setCasteAssignedTotVoters(casteAssignedTotVoters);
+	   dataValidationVOList.get(0).setCasteNotAssignedTotVoters(casteNotAssignedTotVoters);
+	 }
+	
+	
 		 return dataValidationVOList; 
 	 }catch (Exception e) {
 	  e.printStackTrace();
 	  LOG.error("Exception Occured in getVotersCasteDetails() method, Exception - "+e);
 	  return dataValidationVOList;
+	}
+  }
+  
+  
+  public void getWardWiseCasteAssignedOrNotAssignedVoters(Long constituencyId,Long publicationDateId,String type,List<DataValidationVO> resultList)
+  {
+	 try{
+	 List<Long> localEleBodyIdsList = assemblyLocalElectionBodyDAO.getLocalEleBodyIdsListByConstituencyId(constituencyId, publicationDateId);
+	 if(localEleBodyIdsList != null && localEleBodyIdsList.size() > 0)
+	 {
+		for(Long localEleBodyId:localEleBodyIdsList)
+		{
+			List<Object[]> totalVotersList = null;
+		  String electionType = votersAnalysisService.getElectionTypeForMuncipalityByConstituencyId(constituencyId, localEleBodyId);
+		  if(electionType != null && !electionType.equalsIgnoreCase(IConstants.GHMC))
+			 totalVotersList = userVoterDetailsDAO.getWardWiseTotalVotersCount(constituencyId, publicationDateId, localEleBodyId, electionType);
+		  else
+			totalVotersList = boothPublicationVoterDAO.getWardWiseTotalVotersCount(constituencyId, publicationDateId, localEleBodyId);
+		   
+		  if(totalVotersList != null && totalVotersList.size() > 0)
+			setVotersDataInDataValidationVO(totalVotersList, resultList, electionType);
+		}
+		
+		//casteAssigned Voters List
+		for(Long localEleBodyId:localEleBodyIdsList)
+		{
+		  List<Object[]> casteAssignedList = userVoterDetailsDAO.getWardWiseTotalVotersCount(constituencyId, publicationDateId, localEleBodyId, "casteAssignedVoters");
+		  if(casteAssignedList != null && casteAssignedList.size() > 0)
+			 setCasteAssignedVotersCount(casteAssignedList, resultList); 
+		}
+		
+	 }
+		
+	 }catch (Exception e) {
+      e.printStackTrace();
+      LOG.error(" Exception Occured in getWardWiseCasteAssignedOrNotAssignedVoters() method, Exception - "+e);
+	 }
+  }
+  
+  
+  public void setVotersDataInDataValidationVO(List<Object[]> list,List<DataValidationVO> resultList,String type)
+  {
+	  try{
+		  for(Object[] params : list)
+			 {
+			   DataValidationVO dataValidationVO = new DataValidationVO();
+				dataValidationVO.setBoothId((Long)params[0]);
+				if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
+				 dataValidationVO.setPartNO(params[1] != null ?" Booth - "+params[1].toString():" ");
+				else
+				 dataValidationVO.setPartNO(params[1] != null ?params[1].toString():" ");
+				dataValidationVO.setTotalVoters((Long)params[2]);
+				dataValidationVO.setPanchayatName(params[3]!= null?params[3].toString():"");
+				resultList.add(dataValidationVO);
+			 } 
+		  
+	  }catch (Exception e) {
+		e.printStackTrace();
+		LOG.error("Exception Occured in setVotersDataInDataValidationVO() method, Exception - "+e);
+	}
+  }
+  
+  
+  public void setCasteAssignedVotersCount(List<Object[]> casteAssignedList,List<DataValidationVO> resultList)
+  {
+	try{
+		DataValidationVO dataValidationVO = null;
+		   for(Object[] params : casteAssignedList)
+		   {
+		     dataValidationVO = getDataValidationVO((Long)params[0],resultList);
+		     if(dataValidationVO != null)
+		      dataValidationVO.setHamletAssignedVoters((Long)params[1]); 
+		   }
+		for(DataValidationVO validationVO:resultList)
+		 validationVO.setHamletsNotAssignedVoters(validationVO.getTotalVoters()-validationVO.getHamletAssignedVoters());
+		
+	}catch (Exception e) {
+	 e.printStackTrace();
+	 LOG.error("Exception Occured in setCasteAssignedVotersCount() method, Exception - "+e);
 	}
   }
   
