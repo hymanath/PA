@@ -699,8 +699,21 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		if(castesSlctdList == null|| (castesSlctdList != null && castesSlctdList.indexOf(constMgmtMainObj.castStatssubArray[i].caste)!= -1))
 		{
 		str+='<tr>';
+		if(type == "mandal"){
+			if(jsObj.id.substring(0,1) == "1"){
+				var muncipalType = myresults.castVosList[0].muncipalityType;
+				
+                if( muncipalType == "MUNCIPALITY" || muncipalType == "CORPORATION")
+				 	str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
+				else
+					str+='<td>'+parseInt((constMgmtMainObj.castStatssubArray[i].mandal).replace('WARD-',''))+'</td>';
+			}
+			else
+		  	str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
+		}
+		else
+		  	str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
 		
-		str+='<td>'+constMgmtMainObj.castStatssubArray[i].mandal+'</td>';
 		castTemp.push(constMgmtMainObj.castStatssubArray[i].caste);
 		hamletTemp.push(constMgmtMainObj.castStatssubArray[i].mandal);
 
