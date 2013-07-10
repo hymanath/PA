@@ -1957,6 +1957,12 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 <title><c:out value='PANCHAYAT'/> WISE VOTERS INFORMATION</title>
 </c:if>
 </c:if>
+<c:if test="${type == 'panchayat' && buildType == 'booth'}">
+<title><c:out value='BOOTH'/> WISE VOTERS INFORMATION</title>
+</c:if>
+<c:if test="${type == 'panchayat' && buildType == 'hamlet'}">
+<title><c:out value='HAMLET'/> WISE VOTERS INFORMATION</title>
+</c:if>
 <c:if test="${type == 'panchayat'}">
 <title><c:out value='BOOTH'/> WISE VOTERS INFORMATION</title>
 </c:if>
