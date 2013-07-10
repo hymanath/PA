@@ -84,4 +84,7 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getWardsInALocalElectionBodyByID(Long assemblyLocalBody);
 	
 	public List<SelectOptionVO> getMandals(List<SelectOptionVO> list);
+	
+	public List<SelectOptionVO> getMandalsAndMuncipalitiesByConstituencyID(Long constituencyID);
+	
 }
