@@ -194,6 +194,12 @@ border: 1px solid #CCCCCC;
 
 #imagesdisplaydiv > p {display: table-cell;}
 .problemFileIconsCls{cursor:pointer;}
+
+#fancybox-title-over {
+    background-image:none;
+    display: block;
+    padding: 10px;
+}
 </style>
 
 <script type="text/javascript">
