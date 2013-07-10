@@ -371,7 +371,7 @@ function showCallTrackingEditWindow(result){
     str +=  '</tr>';
 	str +=  '<tr>';
 	str +=    '<td><input type="text" size="15" class="textFieldStyle"  style="height:23px;" id="name2"/></td>';
-	str +=    '<td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="mobile1"/></td>';
+	str +=    '<td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="mobile1" maxlength="10"/></td>';
 	str +=   '<td>';
 	str +=      '<select style="width:175px;" class="textFieldStyle" style="height:23px;" id="problemPurpose1" >';
 	str += 		  '<option value="Appointment Cancellation">Appointment Cancellation</option>';
@@ -410,11 +410,17 @@ populateDataToEditCallTracking(result);
 	   var villageTown = document.getElementById("villageTown1").value;
 	   var problemPurposeEle = document.getElementById("problemPurpose1");
 	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
+	  var exp = /^[A-Za-z\s]+$/;
        if(name.length == 0)
 	{
 		document.getElementById("errorNameDiv1").innerHTML ='<font color="red">Name is Required</font>';
 		val = 1;
 	}
+	else if(!name.match(exp)){
+	  $('#errorNameDiv1').html('<font color="red">Name should contains only Charactors</font>');
+	  val = 1;
+	  }
+		
 	if(mobile.length == 0)
 	{
 		document.getElementById("errorMobileDiv1").innerHTML = '<font color="red">MobileNo is Required</font>';
@@ -532,6 +538,7 @@ function validate(){
 	   document.getElementById("errorProblemPurposeDiv").innerHTML='';
 	   document.getElementById("errorRefDiv").innerHTML='';
 	   document.getElementById("errorVillageDiv").innerHTML='';
+	   var exp=/^[A-Za-z\s]+$/; 
        var name = document.getElementById("name1").value;
 	   var mobile = document.getElementById("mobile").value;
 	   var problemPurposeEle = document.getElementById("problemPurpose");
@@ -542,6 +549,9 @@ function validate(){
 	{
 		document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name is Required</font>';
 		val = 1;
+	}
+	else if(!(name.match(exp))){
+	document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name should contains only Charactors</font>';
 	}
 	if(mobile.length == 0)
 	{
@@ -768,13 +778,19 @@ function getProblemDetails(){
     var emailId;
     var fromDate;
 	var endDate;
-
+	var exp = /^[A-Za-z\s]+$/;
+	$('#warningMsgs').css("display","none");
      if($("#nameId").val() =="Name"){
 		name = '';
 	  } 
-	  else
-	  name = $("#nameId").val();
-	  
+	  else{
+		if(!($("#nameId").val().match(exp))){
+			$('#warningMsgs').css("display","block");
+			return false;
+		}
+		else 
+			name = $("#nameId").val();		
+	  }
 	  if($("#refId").val() =="Problem Reference"){
 		refNum ='';
 	  }
@@ -1149,7 +1165,7 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
      </tr>
 	 <tr>
 	   <td><input type="text" size="15" class="textFieldStyle"  style="height: 23px; width: 150px;" id="name1"/></td>
-	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px; width: 150px;" id="mobile" onBlur="validatePhoneNo(this.id)"/></td>
+	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px; width: 150px;" id="mobile" onBlur="validatePhoneNo(this.id)" maxlength="10"/></td>
 	   <td>
 	       <select style="width:190px; margin-top: -10px; height: 31px;" class="textFieldStyle" id="problemPurpose" >
 			 <option>Appointment Cancellation</option>
@@ -1165,7 +1181,7 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
 	   
      </tr>
 	 <tr>
-	   <td><div id="errorNameDiv"></div></td>
+	   <td style="width: 150px;"><div id="errorNameDiv"></div></td>
 	   <td><div id="errorMobileDiv"></div></td>
 	   <td><div id="errorProblemPurposeDiv"></div></td>
 	   <td><div id="errorRefDiv"></div></td>
@@ -1278,11 +1294,12 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
                         <table width="100%">
 						<tr>
 						<td><s:textfield name="byName" value="Name" id="nameId" cssClass="formbg" onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
+						<div id="warningMsgs" style="width: 200px;display:none;"><font color="red">Name should contains only Charactors</font></div>
 						</td>
 						</tr>
 <tr>
  <td>
-<s:textfield name="byMobileNum" value="Mobile Number" id="mobileNumId" cssClass="formbg_1" onClick="removeTextInTextBoxes(this.id)" onBlur=" numbersonly(this.id);showTextInTextBoxes(this.id);" theme="simple"/>
+<s:textfield name="byMobileNum" value="Mobile Number" id="mobileNumId" cssClass="formbg_1" onClick="removeTextInTextBoxes(this.id)" onBlur=" numbersonly(this.id);showTextInTextBoxes(this.id);" theme="simple" maxlength="10"/>
 <span style="font-family:verdana; float:left; font-size:11px; color:#FF0000; padding:18px 0px 0px 5px;" id="errMsg"></span>
  </td>
 </tr>
