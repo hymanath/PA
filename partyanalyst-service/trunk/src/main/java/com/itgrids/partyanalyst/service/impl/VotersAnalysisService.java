@@ -6347,91 +6347,53 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 
 	 }
 	 
-	 public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId, Long constituencyId ,Long userId){
+	 public List<SelectOptionVO> getWardsMunicipality(Long lclElecBodyId,Long publicationDateId, Long constituencyId ,Long userId)
+	 {
 		 List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
-		
 		 try{
-				//18111
-		 //	List<Object> listId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(lclElecBodyId);
-		//List<Object[]> wards =  constituencyDAO.getWardsInMuncipality(lclElecBodyId);
-	//List<Object[]> wards = wardDAO.findByWardsByAssemblyLocalElectionBodyId(lclElecBodyId, publicationDateId);
-	   // get type of election based on id of local election 
-		  Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(lclElecBodyId).get(0);
-			 String type=	localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(lid);
+			 Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(lclElecBodyId).get(0);
+			 String type =	localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(lid);
 			 List<Object[]> wards = null;
-	 if(type.equalsIgnoreCase(IConstants.GHMC))
-	{
-		int y=0;
-	
-			 wards = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(lclElecBodyId, publicationDateId,constituencyId);		 
-	}else //if(type.equalsIgnoreCase("MUNCIPALITY") || type.equalsIgnoreCase("CORPORATION") )
-	{
-		
-		wards = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(lid, publicationDateId, userId);
-		
-	}
-	 
-			 for(Object[] ward:wards){
-		 SelectOptionVO  selectOptionVO = new SelectOptionVO();
-		 selectOptionVO.setType(type);
-		 selectOptionVO.setId((Long)ward[0]);
-		 selectOptionVO.setName(ward[1]!=null? ward[1].toString():"");
-		
-		 selectOptionVO.setValue(ward[1].toString());
-		 if(type.equalsIgnoreCase("Greater Municipal Corp")){
-		 List<SelectOptionVO> list2=	getBoothForWard((Long)ward[0],publicationDateId);
-			if(list2 != null && list2.size()>0)
-				selectOptionVO.setSelectOptionsList(list2);
-		 }
-				 list.add(selectOptionVO);
-	 }
-			/* List<Object[]> wards = boothDAO.getWardsInMuncipality(lclElecBodyId, publicationDateId);
-		 SelectOptionVO selectOptionVO = null;
-		 for(Object[] ward:wards){
-			 selectOptionVO = new SelectOptionVO();
-			
-			 selectOptionVO.setId((Long)ward[0]);
-			 if((Long)ward[0] != null && (Long)ward[0] !=0){
-			List<Object> name	=  localElectionBodyWardDAO.findWardName((Long)ward[0]);
-			    if(name.size()>0){
-			String wardName =(String) name.get(0);
-			           
-			 selectOptionVO.setName(ward[1]!=null? wardName!=null? wardName+"("+ward[1].toString()+")" : ward[1].toString() : "");
-			    }
-			 else
-				 selectOptionVO.setName(ward[1]!=null? ward[1].toString():"");
-			    }else
-			 selectOptionVO.setName(ward[1]!=null? ward[1].toString():"");
 			 
-			 selectOptionVO.setValue(ward[1].toString());
-		//List<SelectOptionVO>	allbooths= getBoothsInMunicipality(lclElecBodyId, publicationDateId);
-		 List<SelectOptionVO> list2=	getBoothForWard((Long)ward[0],publicationDateId);
-		if(list2 != null && list2.size()>0)
-			selectOptionVO.setSelectOptionsList(list2);
-		
-			 list.add(selectOptionVO);
-		 }
-		 Collections.sort(list,arraySort1);
-		*/
-			 Collections.sort(list,wardsSort);
+			 if(type.equalsIgnoreCase(IConstants.GHMC))
+				 wards = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(lclElecBodyId, publicationDateId,constituencyId);		 
+			 else
+				 wards = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(lid, publicationDateId, userId);
+	 
+			 for(Object[] ward:wards)
+			 {
+				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				 selectOptionVO.setType(type);
+				 selectOptionVO.setId((Long)ward[0]);
+				 selectOptionVO.setName(ward[1]!=null? ward[1].toString():"");
+				 selectOptionVO.setValue(ward[1].toString());
+				 
+				 if(type.equalsIgnoreCase("Greater Municipal Corp"))
+				 {
+					 List<SelectOptionVO> list2 = getBoothForWard((Long)ward[0],publicationDateId);
+					 if(list2 != null && list2.size()>0)
+					 selectOptionVO.setSelectOptionsList(list2);
+				 }
+				 list.add(selectOptionVO);
+			 }
+			Collections.sort(list,wardsSort);
 		 }catch(Exception e){
 			log.error("Exception rised in getwardsInMunicipality ",e);
 		}
 		 return list;
-		 
 	 }
-	 public static Comparator<SelectOptionVO> wardsSort = new Comparator<SelectOptionVO>()
-				{	  
-						  public int compare(SelectOptionVO arg1,SelectOptionVO arg2)
-							{  
-							  String first = arg1.getName().trim().toUpperCase();
-							  String last = arg2.getName().trim().toUpperCase();
-							  if(first.indexOf("WARD-") != 0)
-								  return 0;
-								return new Integer(Integer.parseInt(first.substring(first.indexOf("-")+1))).compareTo(Integer.parseInt(last.substring(last.indexOf("-")+1)));
-							
-							}
-				};
+	 
+	public static Comparator<SelectOptionVO> wardsSort = new Comparator<SelectOptionVO>()
+	{	  
+		public int compare(SelectOptionVO arg1,SelectOptionVO arg2)
+		{  
+			String first = arg1.getName().trim().toUpperCase();
+			String last = arg2.getName().trim().toUpperCase();
+		 	if(first.indexOf("WARD-") != 0)
+			  return 0;
+			return new Integer(Integer.parseInt(first.substring(first.indexOf("-")+1))).compareTo(Integer.parseInt(last.substring(last.indexOf("-")+1)));
+		}
+	};
 	 
 	 
 	 /*
@@ -7221,96 +7183,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								type = "localElectionBody";
 							}
 						}
-					 /* if(type.equalsIgnoreCase("constituency"))
-					 {      int totalHamlets = 0;
-								namesList = regionServiceDataImp.getSubRegionsInConstituency(id, IConstants.PRESENT_YEAR, null);
-								mandalList = getMandals(namesList);
-								muncipalityList = getMuncipalities(namesList);
-							 	if(mandalList != null && mandalList.size() > 0)
-								{
-									votersDetailsVO.setMandalList(mandalList);
-									votersDetailsVO.setTotalmandals(new Long(mandalList.size()));
-									//each Mandal PanchayatList
-								for(SelectOptionVO mandals: mandalList)
-								{
-									panchayatList1= staticDataService.getPanchayatiesByMandalIdAndConstId(constituencyId,new Long(mandals.getId().toString().substring(1)),publicationDateId);
-									if(panchayatList1 != null && panchayatList1.size() > 0)
-									{
-									mandals.setSelectOptionsList(panchayatList1);
-									mandals.setValue(new Long(panchayatList1.size()).toString());
-									}
-									else
-									{
-										mandals.setValue("0");
-									}
-									//each panchayat boothList
-									if(panchayatList1!=null && panchayatList1.size() > 0){
-										
-									for(SelectOptionVO panchayats : panchayatList1)
-									{   
-										hamlets= getHamletsForPanchayat((Long)panchayats.getId(), publicationDateId);
-										 boothsList1 = getBoothsByPanchayatIdandConstituencyId((Long)panchayats.getId(),publicationDateId,constituencyId,type,new Long(mandals.getId().toString().substring(1)));
-										 if(hamlets  != null && hamlets.size() >0)
-										 {
-											    panchayats.setSelectOptionsList1(hamlets);	
-											    totalHamlets = totalHamlets +hamlets.size();
-												panchayats.setValue(new Long(hamlets.size()).toString()); 
-											 
-										 }										 
-										 if(boothsList1 != null && boothsList1.size() > 0)
-										 {
-										 panchayats.setSelectOptionsList(boothsList1);	
-										 panchayats.setValue(new Long(boothsList1.size()).toString());
-										 }
-										 else
-											 panchayats.setValue("0");
-									 }if(totalHamlets>0)
-											votersDetailsVO.setTotalNoOfHamlets(totalHamlets);
-								}
-									
-									
-								}
-						}
-							 	//each Muncipality boothList
-								if(muncipalityList != null && muncipalityList.size() > 0){
-									int totalWards=0;
-								for(SelectOptionVO localbody : muncipalityList)
-								{
-									localbody1 = getWardsMunicipality(new Long(localbody.getId().toString().substring(1)),publicationDateId, constituencyId , userId);
-									if(localbody1 ==null ||localbody1.size()<=0  )
-									localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
-									else {
-									if(!localbody1.get(0).getType().equalsIgnoreCase("Greater Municipal Corp") )
-										localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
-									
-									if(localbody1!= null && localbody1.size() > 0)
-									{
-									   for(SelectOptionVO customWardId : localbody1)
-									   {
-										   customWardBooths = getCustomWardBooths(customWardId.getId(), constituencyId, userId, publicationDateId);
-										   if(customWardBooths != null && customWardBooths.size() > 0)
-											   customWardId.setSelectOptionsList(customWardBooths);
-									   }
-									}
-									localbody.setSelectOptionsList(localbody1);	
-									totalWards = totalWards +localbody1.size();
-									localbody.setValue(new Long(localbody1.size()).toString());
-									localbody.setType(localbody1.get(0).getType());
-									}
-									if(localbody2!= null && localbody2.size() > 0){
-										localbody.setSelectOptionsList1(localbody2);
-									 localbody.setValue(new Long(localbody2.size()).toString()); }
-									else
-										localbody.setValue("0");
-									
-								 }if(totalWards>0)
-								votersDetailsVO.setTotalNoOfWards(totalWards);
-								}
-								
-				 } */
 					 
 					 if(type.equalsIgnoreCase("constituency"))
-					 {      
+					 {  
+					  try{	 
 						 int totalHamlets = 0;
 						namesList = regionServiceDataImp.getSubRegionsInConstituency(id, IConstants.PRESENT_YEAR, null);
 						mandalList = getMandals(namesList);
@@ -7378,41 +7254,45 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						}
 						
 					 	//each Muncipality boothList
-						if(muncipalityList != null && muncipalityList.size() > 0){
-							int totalWards=0;
-						for(SelectOptionVO localbody : muncipalityList)
+						if(muncipalityList != null && muncipalityList.size() > 0)
 						{
-							localbody1 = getWardsMunicipality(new Long(localbody.getId().toString().substring(1)),publicationDateId, constituencyId , userId);
-							if(localbody1 ==null ||localbody1.size()<=0  )
-							localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
-							else {
-							if(!localbody1.get(0).getType().equalsIgnoreCase("Greater Municipal Corp") )
-								localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
+							int totalWards=0;
 							
-							if(localbody1!= null && localbody1.size() > 0)
+							for(SelectOptionVO localbody : muncipalityList)
 							{
-							   for(SelectOptionVO customWardId : localbody1)
-							   {
-								   customWardBooths = getCustomWardBooths(customWardId.getId(), constituencyId, userId, publicationDateId);
-								   if(customWardBooths != null && customWardBooths.size() > 0)
-									   customWardId.setSelectOptionsList(customWardBooths);
-							   }
-							}
-							localbody.setSelectOptionsList(localbody1);	
-							totalWards = totalWards +localbody1.size();
-							localbody.setValue(new Long(localbody1.size()).toString());
-							localbody.setType(localbody1.get(0).getType());
-							}
-							if(localbody2!= null && localbody2.size() > 0){
-								localbody.setSelectOptionsList1(localbody2);
-							 localbody.setValue(new Long(localbody2.size()).toString()); }
-							else
-								localbody.setValue("0");
-							
-						 }if(totalWards>0)
-						votersDetailsVO.setTotalNoOfWards(totalWards);
-						}
+							try{
+								localbody1 = getWardsMunicipality(new Long(localbody.getId().toString().substring(1)),publicationDateId, constituencyId , userId);
 								
+								if(localbody1 == null ||localbody1.size() <= 0)
+									localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
+								else 
+								{
+									if(!localbody1.get(0).getType().equalsIgnoreCase("Greater Municipal Corp") )
+										localbody2 = getBoothsInMunicipality(new Long(localbody.getId().toString().substring(1)), publicationDateId,constituencyId);
+									
+									if(localbody1!= null && localbody1.size() > 0)
+										localbody1 = getBoothsInCustomWardsOfALocalElectionBody(localbody1, constituencyId, publicationDateId, userId);
+									
+									localbody.setSelectOptionsList(localbody1);	
+									totalWards = totalWards +localbody1.size();
+									localbody.setValue(new Long(localbody1.size()).toString());
+									localbody.setType(localbody1.get(0).getType());
+								}
+								
+								if(localbody2!= null && localbody2.size() > 0)
+								{
+									localbody.setSelectOptionsList1(localbody2);
+									localbody.setValue(new Long(localbody2.size()).toString()); 
+								}
+								else
+									localbody.setValue("0");
+								}catch(Exception e){}
+							 }
+							
+							if(totalWards > 0)
+								votersDetailsVO.setTotalNoOfWards(totalWards);
+						}
+					  }catch(Exception e){}			
 				 }
 					 if(!type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("localElectionBody") && !type.equalsIgnoreCase("ward") && !type.equalsIgnoreCase("hamlet") && !type.equalsIgnoreCase(IConstants.CUSTOMWARD))
 					 {
@@ -7521,7 +7401,43 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					}
 					
 			}
-		 
+				 
+				 public List<SelectOptionVO> getBoothsInCustomWardsOfALocalElectionBody(List<SelectOptionVO> wardsList, Long constituencyId, Long publicationDateId, Long userId)
+				 {
+					 try{
+						List<Long> wardIdsList = new ArrayList<Long>(0);
+						if(wardsList == null || wardsList.size() == 0)
+						 return wardsList;
+						
+						for(SelectOptionVO ward : wardsList)
+							wardIdsList.add(ward.getId());
+						
+						List<Object[]> list = userVoterDetailsDAO.getBoothsForCustomWardIdsList(wardIdsList, constituencyId, publicationDateId, userId);
+						
+						if(list != null && list.size() > 0)
+						{
+							for(Object[] params : list)
+							{
+								try{
+								SelectOptionVO wradRef = staticDataService.getSelectOptionVOFromResultList(wardsList, (Long)params[0]);
+								if(wradRef != null)
+								{
+									List<SelectOptionVO> boothsList = wradRef.getSelectOptionsList();
+									boothsList.add(new SelectOptionVO((Long)params[1],params[2].toString()));
+									wradRef.setSelectOptionsList(boothsList);
+								}
+									
+								}catch (Exception e) {}
+							}
+						}
+						
+						return wardsList;
+					 }catch(Exception e)
+					 {
+						 return wardsList;
+					 }
+				 }
+				 
 				 public List<SelectOptionVO> getCustomWardBooths(Long wardId,Long constituencyId, Long userId,Long publicationDateId)
 				 {
 					 List<SelectOptionVO> selectOptionVOList = null;
