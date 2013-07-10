@@ -314,13 +314,13 @@ function addAnotherProblem(divName){
 		str += '<td style="padding-left: 15px;"><textarea name="fileDescription" cols="25" rows="3" class="descClass" /></textarea></td>'
 		str += "</tr>";
 		str += "<tr>"
-		str += '<td width="100px;" style="padding-left:0px;">Documents And Images <font class="requiredFont">*</font></td>'
-		str += '<td style="padding-left:15px;"> <input type="file" name="userImage" class="imageClass" id="userImage"/></td>';
-		str += '<td><a href="javascript:{}" class="closeBtn" style="padding-left: 27px;"><font color="green"><b>Close Document</b></font></a></td>';
+		str += '<td width="100px;" style="padding-left:0px;">Images <font class="requiredFont">*</font></td>'
+		str += '<td style="padding-left:15px;"> <input type="file" name="userImage" class="imageClass" id="userImage" accept="image/*"/></td>';
+		str += '<td><a href="javascript:{}" class="closeBtn" style="padding-left: 27px;"><font color="green"><b>Delete Image</b></font></a></td>';
 		str += '</tr>'
 		str += "<tr>";
 		str += "</table>";
-		str +='<div id="addMoreId"  style="margin-bottom: 5px;"> <a href="javascript:{}"  onclick="addAnotherProblem(\'problemDetailDiv\')"  style="margin-left:350px;"><font color="green"><b style="margin-left: 5px;">  Add More Documents</b></font></a> </div>';
+		str +='<div id="addMoreId"  style="margin-bottom: 5px;"> <a href="javascript:{}"  onclick="addAnotherProblem(\'problemDetailDiv\')"  style="margin-left:350px;"><font color="green"><b style="margin-left: 5px;">  Add More Images</b></font></a> </div>';
 		$('#problemDetailDiv').append(str);
         //newdiv.innerHTML = str;
 		//document.getElementById(divName).appendChild(newdiv);
@@ -899,7 +899,7 @@ function displayCal()
 		
 		          <table id="problemDetailDiv" style="display:none;width:505px;border:medium solid #CFD6DF;">
 					<tr style="height:30px;">
-						<th align="left" colspan="2"><img src="images/icons/file_upload_icon.png">&nbsp;&nbsp;<u><font color="blue">Upload Documents and Images</font></u></th>
+						<th align="left" colspan="2"><img src="images/icons/file_upload_icon.png">&nbsp;&nbsp;<u><font color="blue">Upload Related Images</font></u></th>
 					</tr>
 					<s:if test="{userImage.size >0}">
 					<s:iterator value="fileTitle" status="stat">
@@ -916,10 +916,10 @@ function displayCal()
 					</tr>
 					
 					<tr>
-						<td width="100px;" style="padding-left:0px;"><s:label   value="Documents And Images" /></td>
-						<td style="padding-left:15px;"> <s:file name="path[%{#stat.index}]" id="userImage"/></td>
+						<td width="100px;" style="padding-left:0px;"><s:label   value="Images" /></td>
+						<td style="padding-left:15px;"> <s:file name="path[%{#stat.index}]" id="userImage" accept="image/*"/></td>
 						
-						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;margin-left: -35px;"><font color="green"><b>  Add More Documents</b></font></a></td></tr>
+						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;margin-left: -35px;"><font color="green"><b>  Add More Images</b></font></a></td></tr>
 					</s:iterator>
 					</s:if>
 					<s:else>
@@ -933,10 +933,10 @@ function displayCal()
 						<td style="padding-left: 15px;"><s:textarea class="descClass" name="fileDescription" cols="25" rows="3" /></td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:0px;"><s:label value="Documents And Images" /><span style="color:red;">*</span></td>
-						<td style="padding-left:15px;"> <s:file  class="imageClass" name="userImage" id="userImage"/></td>
+						<td width="100px;" style="padding-left:0px;"><s:label value="Images" /><span style="color:red;">*</span></td>
+						<td style="padding-left:15px;"> <s:file  class="imageClass" name="userImage" id="userImage" accept="image/*"/></td>
 						
-						<td><a id="firstAddMoreId" href="javascript:{}"  onclick='addAnotherProblem("problemDetailDiv")'  style="padding-left: 27px;margin-left: -35px;"><font color="green"><b>  Add More Documents</b></font></a></td></tr>
+						<td><a id="firstAddMoreId" href="javascript:{}"  onclick='addAnotherProblem("problemDetailDiv")'  style="padding-left: 27px;margin-left: -35px;"><font color="green"><b>  Add More Images</b></font></a></td></tr>
 			       
 					</table>
 					</s:else>
