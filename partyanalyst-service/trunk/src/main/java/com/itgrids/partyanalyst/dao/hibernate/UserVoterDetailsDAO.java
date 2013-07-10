@@ -1108,7 +1108,7 @@ IUserVoterDetailsDAO{
 		query.append(" SUM( CASE WHEN model.voter.age > :AGE"+ages[ages.length-1]+" THEN 1 ELSE 0 END) as ageC ");
 		return query.toString();
 	}
-	 public List<Object[]> getWardsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId)
+	 /*public List<Object[]> getWardsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId)
 	 {
 		 Query query = getSession().createQuery("select distinct model.ward.constituencyId , model.ward.name " +
 					" from UserVoterDetails model," +
@@ -1123,6 +1123,20 @@ IUserVoterDetailsDAO{
 		 
 		 return query.list();
 		 
+	 }*/
+	 
+	@SuppressWarnings("unchecked")
+	 public List<Object[]> getWardsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId)
+	 {
+		 Query query = getSession().createQuery(" select distinct UVD.ward.constituencyId, UVD.ward.name from UserVoterDetails UVD, BoothPublicationVoter BPV where " +
+		 		" UVD.voter.voterId = BPV.voter.voterId and BPV.booth.localBody.localElectionBodyId = :localElectionBodyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+		 		" UVD.user.userId = :userId order by UVD.ward.constituencyId ");
+		 
+		 query.setParameter("publicationDateId", publicationId);
+		 query.setParameter("localElectionBodyId", id);
+		 query.setParameter("userId", userId);
+		 
+		 return query.list();
 	 }
 	 
 	 public List<?> getVoterIdsBYLocalElectionBodyId(Long id , Long publicationId ,Long userId ,String type)
@@ -1267,6 +1281,21 @@ IUserVoterDetailsDAO{
 				" and BPV.booth.constituency.constituencyId =:constituencyId order by BPV.booth.partNo ");
 		
 		queryObj.setParameter("wardId", wardId);
+		queryObj.setParameter("constituencyId", constituencyId);
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("userId", userId);
+		
+		return queryObj.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getBoothsForCustomWardIdsList(List<Long> wardIdsList,Long constituencyId,Long publicationDateId,Long userId)
+	{
+		Query queryObj = getSession().createQuery("select UVD.ward.constituencyId, BPV.booth.boothId,BPV.booth.partNo from BoothPublicationVoter BPV , UserVoterDetails UVD where " +
+				" BPV.voter.voterId = UVD.voter.voterId and UVD.ward.constituencyId in(:wardIdsList) and UVD.user.userId =:userId and BPV.booth.publicationDate.publicationDateId =:publicationDateId " +
+				" and BPV.booth.constituency.constituencyId =:constituencyId group by UVD.ward.constituencyId, BPV.booth.boothId order by BPV.booth.boothId ");
+		
+		queryObj.setParameterList("wardIdsList", wardIdsList);
 		queryObj.setParameter("constituencyId", constituencyId);
 		queryObj.setParameter("publicationDateId", publicationDateId);
 		queryObj.setParameter("userId", userId);
