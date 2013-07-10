@@ -499,7 +499,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 	      myChart=[];
 		  castTemp=[];
 		//$("#voterCasteAjaxImg").css("display","none");
-		
+		 $("#errorMsgDiv").hide();
       	var type = '${type}';
 		//$("#voterCasteAjaxImg").css("display","none");
 		if((type =="hamlet" && buildType == "hamlet") || (type == "booth" && buildType == "hamlet") || (type =="panchayat" && buildType == "hamlet") || (type =="mandal" && resultFor == "muncipalityCustomWard"))
@@ -579,8 +579,12 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		constMgmtMainObj.castStatssubArray =subLevelcastInfo;
 
 		if(constMgmtMainObj.castStatssubArray == null || constMgmtMainObj.castStatssubArray.length == 0){
-		  $("#localCastStatsTabContent_subbody").html("<b style='margin-left: 350px;'>No Data Available</b>");
+		  $("#errorMsgDiv").show();
+		  $("#errorMsgDiv").html("<b style='margin-left: 350px;color:red;'>No Data Available</b>");
 		  $("#getLatestCastsSubcategoryWise").css("display","none");
+		  $('#casteSelectDiv').css("display","none");
+		  $('#rangeSliderDiv').css("display","none");
+		  $('#showHideButtons').html("");
 		  return;
 		}  
 		//if(type != 'booth')
@@ -1445,6 +1449,7 @@ $('#castAllRadio').live("click",function(){
 
 </script>
 <body>
+<div id="errorMsgDiv"  style="margin-top: 244px; font-size: 18px; font-family: verdana; display: none;"></div>
 <div id="voterCasteAjaxImg" style=" display:block;margin-top:100px;margin-left:300px;margin-right:auto;"><img  src="./images/icons/goldAjaxLoad.gif" /></div>
 <div id="casteSelectDiv"></div>
 
@@ -1458,7 +1463,7 @@ $('#castAllRadio').live("click",function(){
 </div>
 <div id="castGrid1" style="height: 500px; display: block; overflow-x: auto;"></div>	
 
-  <div style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
+  <div id="showHideButtons" style="margin-left:auto;margin-right:auto;width:200px;margin-bottom:10px;">
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_show">Show All </span>
 	<span class="label label-info btn btn-info" style="padding:5px;" id="show_hide_hide">Hide All </span>
 </div>
