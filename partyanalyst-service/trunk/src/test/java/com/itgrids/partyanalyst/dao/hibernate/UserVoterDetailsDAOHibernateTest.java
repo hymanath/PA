@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.org.apache.bcel.internal.generic.ICONST;
 
 public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 	
@@ -248,11 +249,11 @@ for (Object[] objects : list) {
 			}
 		}*/
 		
-		public void testgetDistinctWardsOfLocalElectionBodyId(){
+		/*public void testgetDistinctWardsOfLocalElectionBodyId(){
 			List<Object> result=userVoterDetailsDAO.getDistinctWardsOfLocalElectionBodyId(83l, 8l, 1l);
 			System.out.println(result);
 			
-		}
+		}*/
 		
 		/*public void testGetAgeWiseDetailsInSelectdCustomWard()
 		{
@@ -333,9 +334,16 @@ for (Object[] objects : list) {
 			 System.out.println(name);
 		}*/
 		
-		public void testGetWardsForMuncByConsIdAndUserId()
+		/*public void testGetWardsForMuncByConsIdAndUserId()
 		{
 			List<Object[]> list = userVoterDetailsDAO.getWardsForMuncByConsIdAndUserId(232l, 83l, 8l, 1l);
 			System.out.println(list.size());
+		}*/
+		
+		public void testgetCasteAssignedVotersList()
+		{
+			List<Object[]> list = userVoterDetailsDAO.getCasteAssignedVotersList(232l, 8l, IConstants.BOOTH);
+			System.out.println(list.size());
+					
 		}
 }

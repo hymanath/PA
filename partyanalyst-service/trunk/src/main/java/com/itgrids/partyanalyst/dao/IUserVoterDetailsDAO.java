@@ -176,5 +176,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<Object[]> getVotersDetailsBySearchCriteria(Long publicationDateId,Long id,Integer startRecord,Integer maxRecords,String queryString);
 	
+	public List<Object[]> getCasteAssignedVotersList(Long constituencyId,Long publicationId,String type);
+	
 	
 }

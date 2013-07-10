@@ -4219,4 +4219,37 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				
 		}
 		
+		public List<Object[]> getBoothWiseTotalVoters(Long constituencyId,Long publicationId,String type)
+		{
+			StringBuilder str = new StringBuilder();
+			if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
+			 str.append(" select model.booth.boothId,model.booth.partNo,count(distinct model.voter.voterId),model.booth.panchayat.panchayatName ");
+			else if(type!= null && type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			 str.append(" select model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName,count(distinct model.voter.voterId),model.booth.tehsil.tehsilName  ");
+			
+			str.append(" from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId ");
+			
+			if(type.equalsIgnoreCase(IConstants.BOOTH))
+			 str.append(" and model.booth.localBody is null group by model.booth.boothId order by model.booth.boothId ");
+			else if(type!= null && type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			  str.append(" group by model.booth.panchayat.panchayatId order by model.booth.tehsil.tehsilName,model.booth.panchayat.panchayatName ");
+			
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			return query.list();
+		}
+		
+		public List<Object[]> getBoothWiseTotalVotersInALocalEleBody(Long constituencyId,Long publicationId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append(" select model.booth.boothId,model.booth.partNo,count(distinct model.voter.voterId) from BoothPublicationVoter model ");
+			str.append(" where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model.booth.localBody is not null ");
+			str.append(" group by model.booth.boothId order by model.booth.partNo,model.booth.localBody.name ");
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			return query.list();
+		}
+		
 }

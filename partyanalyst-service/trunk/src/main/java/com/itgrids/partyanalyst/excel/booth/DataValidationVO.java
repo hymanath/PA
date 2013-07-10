@@ -23,7 +23,10 @@ public class DataValidationVO {
 	private Long constituencyId;
 	private List<SelectOptionVO> boothList = new ArrayList<SelectOptionVO>(0);
 	private Long unMappedBoothsCount;
-
+	private String partNO;
+	private Long boothId;
+	
+	
 	public List<Long> getAssignedHamletsIdsList() {
 		return assignedHamletsIdsList;
 	}
@@ -151,6 +154,22 @@ public class DataValidationVO {
 
 	public void setUnMappedBoothsCount(Long unMappedBoothsCount) {
 		this.unMappedBoothsCount = unMappedBoothsCount;
+	}
+
+	public String getPartNO() {
+		return partNO;
+	}
+
+	public void setPartNO(String partNO) {
+		this.partNO = partNO;
+	}
+
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
 	}
 	
 	

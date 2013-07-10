@@ -385,4 +385,10 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Cadre> getCadreDataByCategoryAndCaste(Long categoryValueId,Long casteId,Long locationId,Long publicationId,String locationType,Long userId,String gender,String type,Integer startIndex,Integer maxIndex,String order,String columnName);
 	  
 	  public List<Object[]> getVoterDetailsByCasteStateForHamlet(Long hamletId,Long publicationDateId,Long casteStateId,Long userId,Long constituencyId);
+	  
+	  public List<Object[]> getBoothWiseTotalVoters(Long constituencyId,Long publicationId,String type);
+	  
+	  public List<Object[]> getBoothWiseTotalVotersInALocalEleBody(Long constituencyId,Long publicationId);
+	  
+	  
 }
