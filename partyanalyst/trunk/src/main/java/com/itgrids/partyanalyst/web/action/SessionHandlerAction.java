@@ -79,6 +79,7 @@ public class SessionHandlerAction implements HttpSessionListener,ServletContextA
 				  loginService.saveUserSessionDetails(userTrackingVO);
 			  }
 			  destroyedEvent.getSession().invalidate();
+			  redirect();
 		  }catch (Exception e) 
 		  {
 			  
