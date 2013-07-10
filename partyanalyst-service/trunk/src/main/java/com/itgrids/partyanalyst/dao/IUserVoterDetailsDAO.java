@@ -178,5 +178,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<Object[]> getCasteAssignedVotersList(Long constituencyId,Long publicationId,String type);
 	
+	public List<Object[]> getWardWiseTotalVotersCount(Long constituencyId,Long publicationDateId,Long localEleBodyId,String type);
+	
 	
 }

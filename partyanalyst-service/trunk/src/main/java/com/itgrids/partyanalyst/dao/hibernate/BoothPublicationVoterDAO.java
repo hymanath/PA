@@ -4252,4 +4252,17 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return query.list();
 		}
 		
+		public List<Object[]> getWardWiseTotalVotersCount(Long constituencyId,Long publicationDateId,Long localEleBodyId)
+		{
+			Query query = getSession().createQuery(" select model.booth.localBodyWard.constituencyId,model.booth.localBodyWard.name, count (distinct model.voter.voterId),model.booth.localBody.name " +
+					" from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and " +
+					" model.booth.localBody.localElectionBodyId =:localElectionBodyId group by model.booth.localBodyWard.constituencyId order by model.booth.localBody.name,model.booth.localBodyWard.name ");
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("localElectionBodyId", localEleBodyId);
+			
+			return query.list();
+		}
+		
 }

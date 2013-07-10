@@ -1800,5 +1800,29 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getWardWiseTotalVotersCount(Long constituencyId,Long publicationDateId,Long localEleBodyId,String type)
+	{
+	  StringBuilder str = new StringBuilder();
+	  if(type != null && type.equalsIgnoreCase("casteAssignedVoters"))
+		  str.append(" select model.ward.constituencyId,count (distinct model.voter.voterId)  ");
+	  else
+	   str.append(" select model.ward.constituencyId, model.ward.name,count (distinct model.voter.voterId),model2.booth.localBody.name  ");
+	  
+	  str.append(" from UserVoterDetails model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and  ");
+	  str.append(" model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId =:publicationDateId and model2.booth.localBody.localElectionBodyId =:localElectionBodyId ");
+	  
+	  if(type != null && type.equalsIgnoreCase("casteAssignedVoters"))
+	   str.append(" and model.casteState.caste is not null ");
+	  
+	  str.append(" group by model.ward.constituencyId order by model2.booth.localBody.name,model.ward.name ");
+	  
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("constituencyId", constituencyId);
+	  query.setParameter("publicationDateId", publicationDateId);
+	  query.setParameter("localElectionBodyId", localEleBodyId);
+	  
+	  return query.list();
+	}
 	
 }
