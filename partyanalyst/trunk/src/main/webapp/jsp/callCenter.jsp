@@ -1312,6 +1312,16 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
 						<s:textfield name="byRefNum" value="Problem Reference" id="refId" cssClass="formbg"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)"  theme="simple"/>
 						</td>
 						</tr>
+						<tr>
+							<td>
+							<s:textfield name="fromDate" value="From Date" id="fromDate"  cssClass="formbg12" onClick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
+							</td>
+						</tr>
+						<tr>
+							<td style="height: 50px;">
+							<s:textfield name="endDate" value="To Date" id="endDate" cssClass="formbg13" style="margin-left: 20px;" onClick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
+							</td>
+						</tr>
 						</table>
 
 
@@ -1319,7 +1329,7 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
                       </tr>
                     </table></td>
                   </tr>
-                  <tr>
+    <!--          <tr>
                     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
                         <td width="15">&nbsp;</td>
@@ -1331,7 +1341,7 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
 						</td>
                       </tr>
                     </table></td>
-                  </tr>
+                  </tr> -->
                   <tr>
                     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
