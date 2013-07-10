@@ -374,7 +374,7 @@ margin:-1px 0px 0px 0px ;
 </tr>
 <tr><td style="background:#f7f8f9;">
 <!--FOOTER SECTION START-->
-<div class="mainwrapper" > 
+<div class="mainwrapper" style="background:#f7f8f9;width:auto;"> 
   
   
   
