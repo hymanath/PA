@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothLocalBodyWardDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -65,6 +66,7 @@ public class DataValidationService implements IDataValidationService{
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IConstituencyPageService constituencyPageService;
 	private IBoothLocalBodyWardDAO boothLocalBodyWardDAO;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
@@ -251,6 +253,15 @@ public class DataValidationService implements IDataValidationService{
 	public void setBoothLocalBodyWardDAO(
 			IBoothLocalBodyWardDAO boothLocalBodyWardDAO) {
 		this.boothLocalBodyWardDAO = boothLocalBodyWardDAO;
+	}
+
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
 	}
 
 
@@ -2182,6 +2193,86 @@ public class DataValidationService implements IDataValidationService{
     		return null;
 		}
    }
-	
+
+  public List<DataValidationVO> getCasteAssignedAndNotAssignedVotersCount(Long constituencyId,Long publicationId,String type)
+  {
+	 List<DataValidationVO> dataValidationVOList = new ArrayList<DataValidationVO>(0);
+	 try{
+		 
+		List<Object[]> totalVotersList = boothPublicationVoterDAO.getBoothWiseTotalVoters(constituencyId, publicationId, type);
+		
+		if(totalVotersList != null && totalVotersList.size() > 0)
+		{
+		  for(Object[] params : totalVotersList)
+		  {
+			DataValidationVO dataValidationVO = new DataValidationVO();
+			dataValidationVO.setBoothId((Long)params[0]);
+			if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
+			 dataValidationVO.setPartNO(params[1] != null ?" Booth - "+params[1].toString():" ");
+			else
+			 dataValidationVO.setPartNO(params[1] != null ?params[1].toString():" ");
+			dataValidationVO.setTotalVoters((Long)params[2]);
+			dataValidationVO.setPanchayatName(params[3]!= null?params[3].toString():"");
+			dataValidationVOList.add(dataValidationVO);
+				
+			}
+		}
+		
+		//Muncipality Booths
+		if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
+		{	
+		  List<Object[]> muncipalityBooths = boothPublicationVoterDAO.getBoothWiseTotalVotersInALocalEleBody(constituencyId, publicationId);
+		  if(muncipalityBooths != null && muncipalityBooths.size() > 0)
+		  {
+			 for(Object[] params : muncipalityBooths)
+			 {
+				DataValidationVO dataValidationVO = new DataValidationVO();
+				dataValidationVO.setBoothId((Long)params[0]);
+				dataValidationVO.setPartNO(params[1] != null ?" Booth - "+params[1].toString():" ");
+				dataValidationVO.setTotalVoters((Long)params[2]);
+				dataValidationVO.setPanchayatName("-");
+				dataValidationVOList.add(dataValidationVO);
+			 } 
+		  }
+		}
+		
+		List<Object[]> casteAssignedList = userVoterDetailsDAO.getCasteAssignedVotersList(constituencyId, publicationId, type);
+		if(casteAssignedList != null && casteAssignedList.size() > 0 && dataValidationVOList != null && dataValidationVOList.size() > 0)
+		{
+		  DataValidationVO dataValidationVO = null;
+		   for(Object[] params : casteAssignedList)
+		   {
+		     dataValidationVO = getDataValidationVO((Long)params[0],dataValidationVOList);
+		     if(dataValidationVO != null)
+		      dataValidationVO.setHamletAssignedVoters((Long)params[1]); 
+		   }
+			for(DataValidationVO validationVO:dataValidationVOList)
+			 validationVO.setHamletsNotAssignedVoters(validationVO.getTotalVoters()-validationVO.getHamletAssignedVoters());
+		}
+		
+		 return dataValidationVOList; 
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  LOG.error("Exception Occured in getVotersCasteDetails() method, Exception - "+e);
+	  return dataValidationVOList;
+	}
+  }
+  
+  public DataValidationVO getDataValidationVO(Long id , List<DataValidationVO> list)
+  {
+	  try{
+		  if(list == null || list.size() == 0)
+			return null;
+		  for(DataValidationVO validationVO:list)
+			if(validationVO.getBoothId().equals(id))
+			return validationVO;
+		  return null;
+	  }catch (Exception e) {
+		e.printStackTrace();
+		LOG.error(" Exception Occured in getDataValidationVO() method, Exception - "+e);
+		return null;
+	}
+  }
+  
     
 }

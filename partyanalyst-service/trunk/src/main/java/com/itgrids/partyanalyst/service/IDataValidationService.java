@@ -25,5 +25,7 @@ public interface IDataValidationService {
 	 public List<DataMappingVerificationVO> validatePanchayatData(Long constituencyId, Long electionId,Long eleYear);
 	
 	 public List<DataValidationVO> getUnMappedBoothsList(Long electionId);
+	 
+	 public List<DataValidationVO> getCasteAssignedAndNotAssignedVotersCount(Long constituencyId,Long publicationId,String type);
 
 }

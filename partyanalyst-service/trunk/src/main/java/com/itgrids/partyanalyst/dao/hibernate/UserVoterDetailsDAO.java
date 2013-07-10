@@ -1778,4 +1778,27 @@ IUserVoterDetailsDAO{
 			return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCasteAssignedVotersList(Long constituencyId,Long publicationId,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
+			str.append(" select model2.booth.boothId,count (distinct model.voter.voterId) ");
+		else
+			str.append(" select model2.booth.panchayat.panchayatId,count (distinct model.voter.voterId) ");
+		
+		str.append(" from UserVoterDetails model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId ");
+		str.append(" and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId =:publicationDateId ");
+		if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
+		 str.append(" group by model2.booth.boothId ");
+		else
+			str.append(" group by model2.booth.panchayat.panchayatId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationId);
+		return query.list();
+	}
+	
+	
 }
