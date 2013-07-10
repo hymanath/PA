@@ -266,8 +266,8 @@ $('#castesAsPerLocId').click(function(){
 </head>
 <body>
 
-<div id="localAreaWiseVoterInfoMainDiv">
 
+<div id="localAreaWiseVoterInfoMainDiv">
 <div id="ajaxImageDiv" style="margin-top:30px;margin-left:50px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 
 	<div id="votersBasicInfoMainDiv">
@@ -346,7 +346,7 @@ $('#castesAsPerLocId').click(function(){
 	
 	<div id="ageWiseDetailsDiv" class="yui-skin-sam yui-dt-sortable"></div></div></div>
 </div>
-
+<div id="errorMsg" align="center" style="margin-top: 244px; font-size: 18px; font-family: verdana;"></div>
 <script type="text/javascript">
 var temp = '${resultFor}';
 function getDetailsForSelectedWard()
@@ -514,6 +514,9 @@ function buildAgewiseDetails(myResults,jsObj)
 
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 { 
+	if(votersbasicinfo.votersInfoForMandalVOList != '')
+	{
+		$('#errorMsg').html('');
 		$("#votersBasicInfoSubHeading").html(''+votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Voters Information in '+typename+'');
       $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
@@ -719,7 +722,15 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		
 	}
 }
-
+	else
+	{
+		$('#localAreaWiseVoterInfoMainDiv').html('');
+		$('#errorMsg').html('<b style="color:red;">No Data Avaliable</b>');
+		//$('#assAndUnass').html('');
+		//$('#votersBasicInfoMainDiv').html('');
+		//alert("No Data Avaliable");
+	}
+}
 function buildVotersChart(chartInfo,reqTitle)
 {
 
