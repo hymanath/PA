@@ -1,18 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
-import com.itgrids.partyanalyst.model.Cadre;
-import com.itgrids.partyanalyst.model.Candidate;
-import com.itgrids.partyanalyst.model.InfluencingPeople;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.sun.org.apache.bcel.internal.generic.ICONST;
 
 public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 	
