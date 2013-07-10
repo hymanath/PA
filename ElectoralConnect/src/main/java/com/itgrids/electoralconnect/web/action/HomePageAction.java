@@ -177,4 +177,7 @@ public String deleteAnnouncement()
 	}
 	return Action.SUCCESS;
 }
+public String searchPage(){
+	return Action.SUCCESS;
+}
 }

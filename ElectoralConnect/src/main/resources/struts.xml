@@ -180,5 +180,10 @@
 				<param name="root">resultStatus</param>				
 			</result>
 		</action>
-		</package>
+		
+		<action name="searchPageAction" class="HomePageAction" method="searchPage">
+			<result>/jsp/searchPage.jsp</result>
+		</action>
+		
+	</package>
 </struts>      

@@ -38,6 +38,7 @@
     	<pattern>/editAnnouncementAction*</pattern>
     	<pattern>/editUpdateAnnouncementAction*</pattern>
     	<pattern>/exception*</pattern>
+    	<pattern>/searchPageAction*</pattern>
     </decorator>
 
 </decorators>
