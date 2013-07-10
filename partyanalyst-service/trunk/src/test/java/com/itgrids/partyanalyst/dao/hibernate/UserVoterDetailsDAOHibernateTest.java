@@ -340,11 +340,17 @@ for (Object[] objects : list) {
 					
 		}*/
 		
-		public void testgetWardWiseTotalVotersCount()
+		/*public void testgetWardWiseTotalVotersCount()
 		{
 			List<Object[]> list = userVoterDetailsDAO.getWardWiseTotalVotersCount(232l, 8l, 83l, null);
 			System.out.println(list.size());
 			for(Object[] params : list)
 			 System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]);
+		}*/
+		
+		public void testGetWardsBYLocalElectionBodyId()
+		{
+			List<Object[]> list = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(83l,8l,1l);
+			System.out.println(list.size());
 		}
 }
