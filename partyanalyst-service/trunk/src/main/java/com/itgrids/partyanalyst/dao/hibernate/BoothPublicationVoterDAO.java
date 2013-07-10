@@ -1943,7 +1943,7 @@ public List<Object[]> getVotersCountForHamlet(Long hamletId, Long userId , Long 
 
 public List<Long> getTotalVotersCountForHamletByVoterIds(List<Long> voterIds,Long publicationDateId)
 {
-  Query query = getSession().createQuery("select count(model.voter.voterId) from BoothPublicationVoter model " +
+  Query query = getSession().createQuery("select count(distinct model.voter.voterId) from BoothPublicationVoter model " +
   		"where model.voter.voterId in(:voterIds) and model.booth.publicationDate.publicationDateId = :publicationDateId");	
 
   query.setParameter("publicationDateId", publicationDateId);
