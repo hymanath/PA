@@ -2205,7 +2205,7 @@ public class DataValidationService implements IDataValidationService{
 		}
    }
 
-  public List<DataValidationVO> getCasteAssignedAndNotAssignedVotersCount(Long constituencyId,Long publicationId,String type)
+  public List<DataValidationVO> getCasteAssignedAndNotAssignedVotersCount(Long constituencyId,Long publicationId,String type,Long userId)
   {
 	 List<DataValidationVO> dataValidationVOList = new ArrayList<DataValidationVO>(0);
 	 try{
@@ -2234,12 +2234,12 @@ public class DataValidationService implements IDataValidationService{
 		  }
 		}
 	  
-		 List<Object[]> casteAssignedList = userVoterDetailsDAO.getCasteAssignedVotersList(constituencyId, publicationId, type);
+		 List<Object[]> casteAssignedList = userVoterDetailsDAO.getCasteAssignedVotersList(constituencyId, publicationId, type,userId);
 		 if(casteAssignedList != null && casteAssignedList.size() > 0 && dataValidationVOList != null && dataValidationVOList.size() > 0)
 		  setCasteAssignedVotersCount(casteAssignedList, dataValidationVOList);
 	 }
 	 else if(type.equalsIgnoreCase(IConstants.WARD))
-	  getWardWiseCasteAssignedOrNotAssignedVoters(constituencyId, publicationId, type, dataValidationVOList); 
+	  getWardWiseCasteAssignedOrNotAssignedVoters(constituencyId, publicationId, type, dataValidationVOList,userId); 
 	
 	 if(dataValidationVOList != null && dataValidationVOList.size() > 0)
 	 {
@@ -2267,7 +2267,7 @@ public class DataValidationService implements IDataValidationService{
   }
   
   
-  public void getWardWiseCasteAssignedOrNotAssignedVoters(Long constituencyId,Long publicationDateId,String type,List<DataValidationVO> resultList)
+  public void getWardWiseCasteAssignedOrNotAssignedVoters(Long constituencyId,Long publicationDateId,String type,List<DataValidationVO> resultList,Long userId)
   {
 	 try{
 	 List<Long> localEleBodyIdsList = assemblyLocalElectionBodyDAO.getLocalEleBodyIdsListByConstituencyId(constituencyId, publicationDateId);
@@ -2278,7 +2278,7 @@ public class DataValidationService implements IDataValidationService{
 			List<Object[]> totalVotersList = null;
 		  String electionType = votersAnalysisService.getElectionTypeForMuncipalityByConstituencyId(constituencyId, localEleBodyId);
 		  if(electionType != null && !electionType.equalsIgnoreCase(IConstants.GHMC))
-			 totalVotersList = userVoterDetailsDAO.getWardWiseTotalVotersCount(constituencyId, publicationDateId, localEleBodyId, electionType);
+			 totalVotersList = userVoterDetailsDAO.getWardWiseTotalVotersCount(constituencyId, publicationDateId, localEleBodyId, electionType,userId);
 		  else
 			totalVotersList = boothPublicationVoterDAO.getWardWiseTotalVotersCount(constituencyId, publicationDateId, localEleBodyId);
 		   
@@ -2289,7 +2289,7 @@ public class DataValidationService implements IDataValidationService{
 		//casteAssigned Voters List
 		for(Long localEleBodyId:localEleBodyIdsList)
 		{
-		  List<Object[]> casteAssignedList = userVoterDetailsDAO.getWardWiseTotalVotersCount(constituencyId, publicationDateId, localEleBodyId, "casteAssignedVoters");
+		  List<Object[]> casteAssignedList = userVoterDetailsDAO.getWardWiseTotalVotersCount(constituencyId, publicationDateId, localEleBodyId, "casteAssignedVoters",userId);
 		  if(casteAssignedList != null && casteAssignedList.size() > 0)
 			 setCasteAssignedVotersCount(casteAssignedList, resultList); 
 		}

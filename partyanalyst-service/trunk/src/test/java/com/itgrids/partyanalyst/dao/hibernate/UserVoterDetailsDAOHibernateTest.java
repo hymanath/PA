@@ -342,7 +342,7 @@ for (Object[] objects : list) {
 		
 		/*public void testgetWardWiseTotalVotersCount()
 		{
-			List<Object[]> list = userVoterDetailsDAO.getWardWiseTotalVotersCount(232l, 8l, 83l, null);
+			List<Object[]> list = userVoterDetailsDAO.getWardWiseTotalVotersCount(232l, 8l, 83l, null,1L);
 			System.out.println(list.size());
 			for(Object[] params : list)
 			 System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]);

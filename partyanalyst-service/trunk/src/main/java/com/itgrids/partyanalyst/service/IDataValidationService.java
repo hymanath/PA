@@ -26,6 +26,6 @@ public interface IDataValidationService {
 	
 	 public List<DataValidationVO> getUnMappedBoothsList(Long electionId);
 	 
-	 public List<DataValidationVO> getCasteAssignedAndNotAssignedVotersCount(Long constituencyId,Long publicationId,String type);
+	 public List<DataValidationVO> getCasteAssignedAndNotAssignedVotersCount(Long constituencyId,Long publicationId,String type,Long userId);
 
 }

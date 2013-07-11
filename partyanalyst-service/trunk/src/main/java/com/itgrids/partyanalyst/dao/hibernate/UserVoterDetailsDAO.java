@@ -1808,7 +1808,7 @@ IUserVoterDetailsDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getCasteAssignedVotersList(Long constituencyId,Long publicationId,String type)
+	public List<Object[]> getCasteAssignedVotersList(Long constituencyId,Long publicationId,String type,Long userId)
 	{
 		StringBuilder str = new StringBuilder();
 		if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
@@ -1817,7 +1817,7 @@ IUserVoterDetailsDAO{
 			str.append(" select model2.booth.panchayat.panchayatId,count (distinct model.voter.voterId) ");
 		
 		str.append(" from UserVoterDetails model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId ");
-		str.append(" and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId =:publicationDateId and model.casteState.caste is not null ");
+		str.append(" and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId =:publicationDateId and model.casteState.caste is not null and model.user.userId =:userId ");
 		if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
 		 str.append(" group by model2.booth.boothId ");
 		else
@@ -1826,11 +1826,12 @@ IUserVoterDetailsDAO{
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationDateId", publicationId);
+		query.setParameter("userId", userId);
 		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getWardWiseTotalVotersCount(Long constituencyId,Long publicationDateId,Long localEleBodyId,String type)
+	public List<Object[]> getWardWiseTotalVotersCount(Long constituencyId,Long publicationDateId,Long localEleBodyId,String type,Long userId)
 	{
 	  StringBuilder str = new StringBuilder();
 	  if(type != null && type.equalsIgnoreCase("casteAssignedVoters"))
@@ -1840,7 +1841,7 @@ IUserVoterDetailsDAO{
 	  
 	  str.append(" from UserVoterDetails model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and  ");
 	  str.append(" model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId =:publicationDateId and model2.booth.localBody.localElectionBodyId =:localElectionBodyId ");
-	  
+	  str.append(" and model.user.userId =:userId ");
 	  if(type != null && type.equalsIgnoreCase("casteAssignedVoters"))
 	   str.append(" and model.casteState.caste is not null ");
 	  
@@ -1850,7 +1851,7 @@ IUserVoterDetailsDAO{
 	  query.setParameter("constituencyId", constituencyId);
 	  query.setParameter("publicationDateId", publicationDateId);
 	  query.setParameter("localElectionBodyId", localEleBodyId);
-	  
+	  query.setParameter("userId", userId);
 	  return query.list();
 	}
 	
