@@ -1278,7 +1278,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	}*/
 	
 	
-	public void testGetMuncipalityCandidateDetails()
+	/*public void testGetMuncipalityCandidateDetails()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(31805l);
@@ -1287,6 +1287,24 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	 for(Object[] params : (List<Object[]>)list)
 	 {
 		System.out.println(params[1]+" "+params[2]); 
+	 }
+	}*/
+	
+	public void test()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(72l);
+		ids.add(514l);
+		ids.add(662l);
+		ids.add(872l);
+		ids.add(886l);
+		ids.add(1117l);
+		ids.add(163l);
+		ids.add(362l);
+	 List<Object[]> list = nominationDAO.getParties(ids,"Assembly");
+	 for(Object[] params : list)
+	 {
+		 System.out.println(params[1]);
 	 }
 	}
 }	

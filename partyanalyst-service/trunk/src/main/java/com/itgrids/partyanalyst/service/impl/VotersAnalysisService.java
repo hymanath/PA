@@ -2074,10 +2074,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId,String buildType,String queryType)
 		
 		{
+			List<VoterCastInfoVO> mandalCasts = new ArrayList<VoterCastInfoVO>();
+			try{
 			VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
 			SelectOptionVO selectOptionVO = null;
 			List<SelectOptionVO> booths1 = new ArrayList<SelectOptionVO>();
-			List<VoterCastInfoVO> mandalCasts = new ArrayList<VoterCastInfoVO>();
+			
+			List<Long> values = new ArrayList<Long>();
 			if(type.equalsIgnoreCase("constituency"))
 			{
 				List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(id,IConstants.PRESENT_YEAR, null);
@@ -2277,9 +2280,30 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				}
 				
 			}
+			
+			 Collections.sort(mandalCasts,wardslistSort);
+			 
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				log.error(" Exception Occured in getVotersCastDetailsForSubLevels() Method, Exception - "+e);
+			}
 			return mandalCasts;
 			
 		}
+		 public static Comparator<VoterCastInfoVO> wardslistSort = new Comparator<VoterCastInfoVO>()
+					{	  
+							  public int compare(VoterCastInfoVO arg1,VoterCastInfoVO arg2)
+								{  
+								  String first = arg1.getMandalName().trim().toUpperCase();
+								  String last = arg2.getMandalName().trim().toUpperCase();
+								  if(first.indexOf("WARD-") != 0)
+									  return 0;
+									return new Integer(Integer.parseInt(first.substring(first.indexOf("-")+1))).compareTo(Integer.parseInt(last.substring(last.indexOf("-")+1)));
+								
+								}
+					};
 		
 		/**
 		 * @author Sravanthi

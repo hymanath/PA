@@ -576,4 +576,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Party> findDistinctPartiesByConstituencyAndElection(Long constituencyId, String electionYear);
 		
 	public List<Object[]> getLatestElectionDetails(List<Long> constiIds);
+	
+	public List<Object[]> getParties(List<Long> partyIds,String electionType);
 }

@@ -49,4 +49,5 @@ public interface IPartyStrengthService extends Serializable {
 	
 	public ElectionInfoVO getRequiredMatchingConstituencies(Long selectedNoOfYears,String electionType,Long stateId,String searchType,String searchText);
 	
+ 	public List<SelectOptionVO> getAllPartiesData1(Long stateId,String electionType);
 }
