@@ -1106,7 +1106,7 @@ $('.castDivs').hover(
 </script>
 </head>
 <body>
-
+<div style="min-height: 385px;">
 <div id="problemOuterDiv">
 <div id="problemInnerDiv">
 </div>
@@ -1817,6 +1817,7 @@ for  body3 start    result  -->
 <form id="getAllVoterFamiliesInfoForEditForm" method="post" action="getMultipleFamilesInfoForEditAction.action" name="getAllVoterFamiliesInfoForEditForm">
 	   <input type="hidden" name="task" id="getAllVoterFamiliesInfoForEditFormValues" />
 </form>
+</div>
 <script type="text/javascript">
 //Created by sasi to open new window
 	$('#detailModifiedVoters').click(function(){
