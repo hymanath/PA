@@ -556,6 +556,7 @@ function validate(){
 	}
 	else if(!(name.match(exp))){
 	document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name should contains only Charactors</font>';
+	val = 1;
 	}
 	if(mobile.length == 0)
 	{
