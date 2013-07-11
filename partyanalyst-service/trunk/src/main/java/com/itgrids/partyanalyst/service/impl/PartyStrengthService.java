@@ -336,10 +336,17 @@ public class PartyStrengthService implements IPartyStrengthService {
  		List<Long> selectedParties = new ArrayList<Long>(0);
  		List result = new ArrayList();
 		List allianceData = new ArrayList(0);
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
  		try{
  			partiesStrenghInfoVO = segregateAllConstituencies(selectedNoOfYears,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId);
  			requiredConstituencies = partiesStrenghInfoVO.getRequiredConstituencies();
- 			selectedParties = staticDataService.getStaticPartiesAsList(stateId);
+ 			//selectedParties = staticDataService.getStaticPartiesAsList(stateId);
+ 			parties	= getAllPartiesData(stateId);
+ 			if(parties != null && parties.size() > 0)
+ 			{
+ 				for(SelectOptionVO partyId : parties)
+ 				selectedParties.add(partyId.getId());
+ 			}
  			resultVo.setAllPartiesDetails(getPartyStrengthsAndWeaknessDetails(electionType,stateId,0l,selectedNoOfYears,allianceData,requiredConstituencies));
  			if(requiredConstituencies.size()!=0){
  				result =  nominationDAO.getAllPartyResultsBasedOnMatchingCriteria(stateId,requiredConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN,electionType,searchText,searchType);
