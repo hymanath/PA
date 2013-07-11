@@ -86,36 +86,96 @@
 							  <li data-slide-to="0" data-target="#myCarousel" class="active"></li>
 							  <li data-slide-to="1" data-target="#myCarousel" ></li>
 							  <li data-slide-to="2" data-target="#myCarousel"></li>
+							  <li data-slide-to="3" data-target="#myCarousel" ></li>
+							  <li data-slide-to="4" data-target="#myCarousel"></li>
+							  <li data-slide-to="5" data-target="#myCarousel" ></li>
+							  <li data-slide-to="6" data-target="#myCarousel"></li>
+							  <li data-slide-to="7" data-target="#myCarousel"></li>
+							  <li data-slide-to="8" data-target="#myCarousel"></li>
 							</ol>
 							<div class="carousel-inner">
-							  
 							  <div class="item active">
 								<div class="hero-unit small ">
+									<h1>Know Latest Updates and Press Releases from Election Commission of AndhraPradesh</h1>
+									<h2>- Register Now with Us.</h2>
+									<!--<ul class="pager">
+										<li class="next"><a href="#">Know More &rarr;</a></li>
+									</ul>-->
+								</div>
+							  </div>
+							   <div class="item">
+								<div class="hero-unit small ">
+									<h1>Share Your Views on the Latest Updates</h1>
+									<h2>- Comment Now on the Updates.</h2>
+									<!--<ul class="pager">
+										<li class="next"><a href="#">Know More &rarr;</a></li>
+									</ul>-->
+								</div>
+							  </div>
+							  <div class="item ">
+								<div class="hero-unit small ">
+									<h1>Know your Particulars ?</h1>
+									<h2>- Search now with your Name/House No/Voter Id.</h2>
+								<!--	<ul class="pager">
+										<li class="next"><a href="#">Know More &rarr;</a></li>
+									</ul>-->
+								</div>
+							  </div>
+							  <div class="item ">
+								<div class="hero-unit small ">
 									<h1>Are you eligible for voting? But, still don't have vote?</h1>
 									<h2>- See how to register your vote.</h2>
-									<ul class="pager">
+								<!--	<ul class="pager">
 										<li class="next"><a href="#">Know More &rarr;</a></li>
-									</ul>
+									</ul>-->
 								</div>
 							  </div>
 							  <div class="item">
 								<div class="hero-unit small ">
-									<h1>Are you eligible for voting? But, still don't have vote?</h1>
-									<h2>- See how to register your vote.</h2>
-									<ul class="pager">
+									<h1>Lost your Voter Id ?</h1>
+									<h2>- See how to get Duplicate your vote.</h2>
+									<!--<ul class="pager">
 										<li class="next"><a href="#">Know More &rarr;</a></li>
-									</ul>
+									</ul>-->
 								</div>
 							  </div>
 							  <div class="item">
 								<div class="hero-unit small ">
-									<h1>Are you eligible for voting? But, still don't have vote?</h1>
-									<h2>- See how to register your vote.</h2>
-									<ul class="pager">
+									<h1>Unable to Vote where you had Registered?</h1>
+									<h2>- See how to Transfer your vote.</h2>
+									<!--<ul class="pager">
 										<li class="next"><a href="#">Know More &rarr;</a></li>
-									</ul>
+									</ul>-->
 								</div>
 							  </div>
+							   <div class="item">
+								<div class="hero-unit small ">
+									<h1>Any wrong particulars in your Voter Id ?</h1>
+									<h2>- See how to Modify your details.</h2>
+									<!--<ul class="pager">
+										<li class="next"><a href="#">Know More &rarr;</a></li>
+									</ul>-->
+								</div>
+							  </div>
+							   <div class="item">
+								<div class="hero-unit small ">
+									<h1>Are you Army/NRI Personnel? Do you know how to Vote?</h1>
+									<h2>- See Army/NRI Personnel Voting.</h2>
+									<!--<ul class="pager">
+										<li class="next"><a href="#">Know More &rarr;</a></li>
+									</ul>-->
+								</div>
+							  </div>
+							  <div class="item">
+								<div class="hero-unit small ">
+									<h1>Do you/Some other having More than one Vote?</h1>
+									<h2>- See how to Cancel Voter Id.</h2>
+									<!--<ul class="pager">
+										<li class="next"><a href="#">Know More &rarr;</a></li>
+									</ul>-->
+								</div>
+							  </div>
+							   
 							</div>
 							<!---<a data-slide="prev" href="#myCarousel" class="left carousel-control">&lsaquo;</a>
 							<a data-slide="next" href="#myCarousel" class="right carousel-control">&rsaquo;</a>---->
@@ -575,7 +635,7 @@ function callAjaxForComments(jsObj,url){
  	}
 	
 	$('.carousel').carousel({  
-		interval: 10000 // in milliseconds  
+		interval: 5000 // in milliseconds  
 	})
 	getTopAnnouncements();
 	//getSelectedAnnouncement(1);
@@ -585,10 +645,10 @@ function callAjaxForComments(jsObj,url){
 	
 	$(".carousel-indicators li:eq(0)").trigger("click");
 	});
-	/*------*/
+	/*------
 	$('.carousel').carousel({  
-	interval: 10000 // in milliseconds  
-	})  
+		interval: 100 // in milliseconds  
+	})  */
 	function hideMainMenu(subBoxId){
 	  $('#specialBlockDIV').toggle('slow');
 	  showSubBoxes(subBoxId);
