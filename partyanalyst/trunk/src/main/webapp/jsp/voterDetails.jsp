@@ -194,7 +194,7 @@
     margin-left: 16px;"/>
 <div id="errorMessageDiv"></div>
 </div>
-<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable yui-dt table table-bordered table-striped table-hover" style="display:none;">
+<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable yui-dt table table-bordered table-striped table-hover" style="display:none;float: left;overflow-x: scroll;">
 </div></div>
 
 <div id="influencyPopupDiv"></div>
@@ -1934,22 +1934,34 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		};
 
 		
+		var initialPageNumber = 1;
+		if($('.yui-pg-current-page').html() != undefined)
+			initialPageNumber = $('.yui-pg-current-page').html();	
 //end
-		var myConfigs = {
-		initialRequest: "sort=initial&dir=asc&startIndex=0&results=100", // Initial request for first page of data
-		dynamicData: true, // Enables dynamic server-driven data
-		sortedBy : {key:"serialNo", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
-		   paginator : new YAHOO.widget.Paginator({ 
-						rowsPerPage    : limit 
-						})  // Enables pagination
-		};
+		if($('.yui-dt-paginator').hasClass('yui-pg-container') == true)
+		{
+			var myConfigs = {
+			initialRequest: "sort=initial&dir=asc&startIndex=1&results=100", // Initial request for first page of data
+			dynamicData: true, // Enables dynamic server-driven data
+			sortedBy : {key:"serialNo", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+			   paginator : new YAHOO.widget.Paginator({ 
+							rowsPerPage    : limit 
+							})  // Enables pagination
+			};
+		}
 		if(confTrue){
 		 var stindx = 0;
 		 try{
+		 if(initialPageNumber == 1){		 
+		  stindx = 0;
+		  }
+		  else
 		  stindx =  (parseInt($.trim($('.yui-pg-current-page').html()))-1)*100;
+		  
 		  myConfigs["paginator"] = new YAHOO.widget.Paginator({ 
 						rowsPerPage    : limit ,
-						initialPage:$('.yui-pg-current-page').html(),
+						//initialPage:$('.yui-pg-current-page').html(),
+						initialPage:initialPageNumber,
 						totalRecords:totalReq
 						}) 
 		  }catch(e){}
