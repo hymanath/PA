@@ -1305,6 +1305,30 @@ public class PartyStrengthService implements IPartyStrengthService {
  		return 	staticParties;
  	}
 
+ 	public List<SelectOptionVO> getAllPartiesData1(Long stateId,String electionType){
+ 		List<Party> parties = null;
+ 		List<SelectOptionVO> staticParties = new ArrayList<SelectOptionVO>();
+ 		List<SelectOptionVO> participatedParties = new ArrayList<SelectOptionVO>();
+ 		List<Long> party = new ArrayList<Long>();
+ 		try{
+ 			staticParties = staticDataService.getStaticPartiesListForAState(stateId);
+ 			for(SelectOptionVO value:staticParties){
+ 				party.add(value.getId());
+ 			}
+ 			List<Object[]> participatedPartiesValues = nominationDAO.getParties(party,electionType);
+ 			for(Object[] value:participatedPartiesValues){
+ 				SelectOptionVO selectOptionVO = new SelectOptionVO();
+ 				selectOptionVO.setId((Long)value[0]);
+ 				selectOptionVO.setName(value[1].toString());
+ 				participatedParties.add(selectOptionVO);
+ 			}
+ 		return participatedParties;
+ 		}catch(Exception e){
+ 			e.printStackTrace();
+ 		}
+ 		return 	staticParties;
+ 	}
+ 	
  	public List<Long> getElectionIds(Long stateId,String electionType,String elecSubType,Long electionYears){ 		
 		List<Long> requiredList = new ArrayList<Long>(0);
 		try{
