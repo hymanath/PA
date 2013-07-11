@@ -71,6 +71,9 @@
 	<listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+ <!--      <listener>
+          <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+   </listener> --> 
     
     <!-- TilesIntegration -->
     <listener> <listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class> </listener> 
@@ -82,5 +85,55 @@
     	<servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
     	<load-on-startup>5</load-on-startup>
     </servlet>
+    
+    <servlet>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<servlet-class>
+		com.sun.jersey.spi.spring.container.servlet.SpringServlet 
+           	</servlet-class>
+		<init-param>
+			<param-name> com.sun.jersey.config.property.packages </param-name>
+			<param-value>package com.itgrids.electoralconnect.service
+               </param-value>
+		</init-param>
+		 <init-param>
+		  <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+		  <param-value>true</param-value>
+	    </init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+ 
+	<servlet-mapping>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<url-pattern>/EC/*</url-pattern>
+	</servlet-mapping>
+	   <security-constraint>
+        <display-name>authenticate</display-name>
+        <web-resource-collection>
+            <web-resource-name>loginValidate</web-resource-name>
+            <description/>
+            <url-pattern>/EC/notifications/allAnnouncements/*</url-pattern>
+			 <http-method>GET</http-method>
+			  <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>anils</role-name>
+        </auth-constraint>
+    </security-constraint>
+   <login-config>
+       <!-- <auth-method>FORM</auth-method>
+        <realm-name>file</realm-name>
+        <form-login-config>
+            <form-login-page>/WEB-INF/jsp/login.jsp</form-login-page>
+            <form-error-page>/WEB-INF/jsp/login-error.jsp</form-error-page>
+        </form-login-config> !-->
+		
+        <auth-method>BASIC</auth-method>  
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>anils</role-name>
+    </security-role>
    
 </web-app>
