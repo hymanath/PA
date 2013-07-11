@@ -227,10 +227,10 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 		}catch (Exception e){
 			e.printStackTrace();
 		}	
-		if(jObj.getString("task").equalsIgnoreCase("getSubLevelInfo"))
+		/*if(jObj.getString("task").equalsIgnoreCase("getSubLevelInfo"))
 		{
 			resultList = dataValidationService.getHamletsAssignedValidation(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),userId);
-		}
+		}*/
 		if(jObj.getString("task").equalsIgnoreCase("checkVotersBasicInfo"))
 			dataVerificationVO = dataValidationService.validateVotersBasicInfo(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),userId);
 		else if(jObj.getString("task").equalsIgnoreCase("validateEleResults"))
@@ -250,7 +250,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 		
 	}
 	
-	public String getCasteAssignedVotersInfo()
+	/*public String getCasteAssignedVotersInfo()
 	{
 		try{
 		Long userId = null;
@@ -273,7 +273,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 			Log.error(" Exception Occured in getVoterCasteInfo() method, Exception - "+e);
 		}
 	  return Action.SUCCESS;
-	}
+	}*/
 	
 
 }
