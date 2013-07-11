@@ -1244,5 +1244,10 @@
 	<bean id="sessionHandlerAction" class="com.itgrids.partyanalyst.web.action.SessionHandlerAction" singleton="false">
 		<property name="loginService" ref="loginService" />
 	</bean>
+	<bean id="voterDataToolsAction" class="com.itgrids.partyanalyst.web.action.VoterDataToolsAction" singleton="false">
+	  <property name="dataValidationService" ref="dataValidationService" />
+	  <property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+	  <property name="votersAnalysisService" ref="votersAnalysisService" />
+	</bean>
 </beans>	
 	

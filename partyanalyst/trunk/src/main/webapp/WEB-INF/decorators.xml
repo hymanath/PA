@@ -248,6 +248,7 @@
 		<pattern>/surveyFormAction*</pattern>
 		<pattern>/surveyFormSaveAction*</pattern>
 		<pattern>/surveyorProfileSaveAction*</pattern>
+		<pattern>/voterDataToolsAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">

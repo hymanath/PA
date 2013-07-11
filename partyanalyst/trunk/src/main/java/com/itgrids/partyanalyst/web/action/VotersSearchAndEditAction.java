@@ -32,6 +32,7 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 	
 	private EntitlementsHelper entitlementsHelper;
 	private String isAdmin ;
+	private Boolean isVoterDataTools = false;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -123,6 +124,13 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 	public void setIsAdmin(String isAdmin) {
 		this.isAdmin = isAdmin;
 	}
+	public Boolean getIsVoterDataTools() {
+		return isVoterDataTools;
+	}
+
+	public void setIsVoterDataTools(Boolean isVoterDataTools) {
+		this.isVoterDataTools = isVoterDataTools;
+	}
 
 	public String execute() throws Exception
 	{
@@ -138,6 +146,9 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 		
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
 				isAdmin = "true";
+		
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute("USER"), IConstants.VOTER_DATA_TOOLS))
+		 isVoterDataTools = true;
 			
 		constituencyList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){

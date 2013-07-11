@@ -137,11 +137,8 @@
 #unMappedBoothsHeading{margin-bottom: 15px;}
 #unMappedBoothHideAndShow{ margin-bottom: -9px;}
 .spanCls{line-height: 1.9em;width: 100px;}
-#casteAssignedDiv{padding-bottom: 20px;}
-#casteAssignedRadioDiv{margin-top: 16px; margin-bottom: 12px;}
-.casteAssignedRadioCls{margin-right: 3px;}
-#casteAssignedBtn{margin-left: 25px;}
-#totalVotersDiv{margin-bottom: 18px;margin-top: 24px; text-align: center;}
+
+
 </style>
 </head>
 
@@ -164,7 +161,8 @@
 <div id="ajaxImgId" style="display:none;margin-right:427px;float:right;"><img src="./images/icons/search.gif" alt="Processing Image"/></div>
 
 <div style="margin-top:10px;margin-bottom:10px;text-align: center;clear:both;">
-<input type="button" style="position: absolute:top: 50%;" value="Get Hamlet Assigned Info" class="btn btn-success" onclick="getSubLevelInfo();" />
+
+<!-- <input type="button" style="position: absolute:top: 50%;" value="Get Hamlet Assigned Info" class="btn btn-success" onclick="getSubLevelInfo();" /> -->
 
 <input type="button" value="Check Voters Data" id="votersBasicInfoId" class="btn btn-success"/>
 
@@ -288,38 +286,6 @@
  <!-- unMapped Booths Div End -->
 
 
- <!-- caste Assigned/Not Assigned Div Start -->
-
- <div id="casteAssignedDiv" class="widget blue">
-  <h4>Caste Assigned Voter Details in Booth or Panchayat</h4>
-  <div id="casteErrorMsgDiv"></div>
-    <div id="casteConstituencyDiv" class="selectDiv" style="margin-top:10px;">
-	 Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="casteConstituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDateForCaste();"/> &nbsp;&nbsp;
-
-		
-	 Publication Date<font class="requiredFont">*</font> <select id="castePublicationDateList" class="selectWidth" style="width:172px;height:25px;">
-		</select>
-	
-	<img src="./images/icons/search.gif" alt="Processing Image" id="CasteAjaxImgId" style="display:none;" />
-	
-	<span style="display: none;" id="casteAssignedVotersHideAndShow"><a id="casteAssignedVotersHideMenu" class="btn" href="javascript:{}">Hide<i class="icon-chevron-up"></i></a></span>
-
-	</div>
-    
-	
-   <div id="casteAssignedRadioDiv">
-     <input type="radio" name="casteAssignedRadio" class="casteAssignedRadioCls" value="booth" checked="true" style="margin-top: 0px;"/> Booth 
-	 <input type="radio" name="casteAssignedRadio" class="casteAssignedRadioCls" value="panchayat" style="margin-top: 0px;"/> Panchayat
-	 <input type="radio" name="casteAssignedRadio" class="casteAssignedRadioCls" value="ward" style="margin-top: 0px;"/> Ward
-     <input type="button" id="casteAssignedBtn" value="Get Caste Assigned Info" class="btn btn-info" onclick="getCasteAssignedInfo();" />
-   </div>
-  
-  <div id="casteAssignedVotersInnerDiv"></div>
-
-</div>
- <!-- caste Assigned/Not Assigned Div End -->
-
-
 </div>
 
 <script type="text/javascript">
@@ -357,9 +323,9 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "getPublicationDate")
 								{
 								
-									buildPublicationDateList(myResults);
-									buildPublicationDateListForPanchayat(myResults);
-									buildCastePublicationDateList(myResults);
+									buildPublicationDateList(myResults,jsObj);
+									//buildPublicationDateListForPanchayat(myResults);
+									//buildCastePublicationDateList(myResults);
 
 								}
 
@@ -401,8 +367,7 @@ function callAjax(jsObj,url)
 								 showConstituencyWisePanchayatData(myResults,jsObj);
 								else if(jsObj.task == "getunMappedBooths")
 								 showUnMappedBooths(myResults);
-								else if(jsObj.task == "getVotersCasteDetails")
-								 buildCasteAssignedVoters(myResults,jsObj);
+								
 
 							}catch (e) {
 							    //alert(Exception);
@@ -420,10 +385,12 @@ function callAjax(jsObj,url)
  function getPublicationDate()
 	{
 	var constituencyID = $("#constituencyList").val();
-	
+	if(constituencyID == 0)
+	 return;
 	var jsObj=
 	{
 		selected:constituencyID,
+        selectedEle:"publicationDateList",
 		task:"getPublicationDate"
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -433,10 +400,10 @@ function callAjax(jsObj,url)
 	callAjax(jsObj,url);
 }
 var publicationDatesList;
-function buildPublicationDateList(results)
+function buildPublicationDateList(results,jsObj)
 	{
 	publicationDatesList=results;
-	var selectedElmt=document.getElementById("publicationDateList");
+	var selectedElmt=document.getElementById(""+jsObj.selectedEle+"");
 	//var selectElmt =jsObj.selectElmt;
 	removeSelectElements(selectedElmt);
 
@@ -461,9 +428,12 @@ function buildPublicationDateList(results)
 	}
 
 	var largest = Math.max.apply(Math, publicationIdsArray);
-
-	$('#publicationDateList').val(largest);
-	$('#publicationDateList').trigger("change");
+    
+	if(jsObj.selectedEle == "publicationDateList")
+	{
+	 $('#publicationDateList').val(largest);
+	 $('#publicationDateList').trigger("change");
+	}
 
 }
 
@@ -545,10 +515,12 @@ function buildCastePublicationDateList(results)
 function buildPublicationDates()
 {
   var constituencyID = $("#constituencyList1").val();
-	
+	if(constituencyID == 0)
+	 return;
 	var jsObj=
 	{
 		selected:constituencyID,
+		selectedEle:"publicationList",
 		task:"getPublicationDate"
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1850,107 +1822,6 @@ function showVoterModificationAgeData(myResults,jsObj)
 	}
 		
 	$("#voterModificationAgeDiv").html(str);
-}
-
-function getPublicationDateForCaste()
-	{
-	var constituencyID = $("#casteConstituencyList").val();
-	
-	var jsObj=
-	{
-		selected:constituencyID,
-		task:"getPublicationDate"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "voterAnalysisAjaxAction.action?"+rparam;	
-
-	
-	callAjax(jsObj,url);
-}
-
-function getCasteAssignedInfo()
-{
-  $("#casteErrorMsgDiv").html('');
-  var constituencyId = $("#casteConstituencyList").val();
-  var publicationId = $("#castePublicationDateList").val();
-  
-  if(constituencyId == 0)
-  {
-	$("#casteErrorMsgDiv").html('Please Select Constituency.');
-	return;
-  }
-  if(publicationId == 0)
-  {
-	$("#casteErrorMsgDiv").html('Please Select Publication Date.');
-	return;
-  }
-  var type = $("input[name='casteAssignedRadio']:checked").val();
-  
-  $("#CasteAjaxImgId").css("display","inline-block");
-  
-  var jsObj=
-  {
-	constituencyId:constituencyId,
-	publicationId:publicationId,
-    type:type,
-	task:"getVotersCasteDetails"
-  }
-
-  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-  var url = "getCasteAssignedAndNotAssignedVotersCountAction.action?"+rparam;	
-  callAjax(jsObj,url);
-
-}
-
-function buildCasteAssignedVoters(results,jsObj)
-{
-	$("#CasteAjaxImgId").css("display","none");
-  $("#casteAssignedVotersInnerDiv").html('');
-  if(results == null || results.length == 0)
-  {
-	$("#casteAssignedVotersInnerDiv").html('No data found.');
-	return;
-  }
-  $("#casteAssignedVotersHideAndShow").css("display","inline-block");
-  var str = '';
-  str +='<div id="totalVotersDiv">';
-  str +='<span><b>Total Voters : </b> '+results[0].totalVotersCount+'</span>';
-  str +='<span style="margin-left: 15px; margin-right: 36px;"><b>Caste Assigned Voters : </b> '+results[0].casteAssignedTotVoters+'</span>';
-  str +='<span><b>Caste Not Assigned Voters : </b> '+results[0].casteNotAssignedTotVoters+'</span>';
-  str +='</div>';
-  str +='<table id="casteAssignedVoters" class="table table-bordered table-striped table-hover">';
-  str +='<tr>';
-  if(jsObj.type == "booth")
-  {
-   str +='<th>Panchayat</th>';
-   str +='<th>Booth</th>';
-  }
-  else if(jsObj.type == "ward")
-  {
-   str +='<th>Muncipality</th>';
-   str +='<th>Ward</th>';
-  }
-  else
-  {
-   str +='<th>Mandal</th>';
-   str +='<th>Panchayat</th>';
-  }
-  str +='<th>Total Voters</th>';
-  str +='<th>Caste Assigned Voters</th>';
-  str +='<th>Caste Not Assigned Voters</th>';
-  str +='</tr>';
-  for(var i in results)
-  {
-	 str +='<tr>';
-	 str +='<td>'+results[i].panchayatName+'</td>';
-	 str +='<td>'+results[i].partNO+'</td>';
-	 str +='<td>'+results[i].totalVoters+'</td>';
-	 str +='<td>'+results[i].hamletAssignedVoters+'</td>';
-	 str +='<td>'+results[i].hamletsNotAssignedVoters+'</td>';
-	 str +='</tr>';
-  }
-  str +='</table>';
- $("#casteAssignedVotersInnerDiv").html(str);
 }
 
 

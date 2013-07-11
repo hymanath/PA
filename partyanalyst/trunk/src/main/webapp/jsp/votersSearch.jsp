@@ -2944,6 +2944,11 @@ function showAlert()
  </div>
 
       <div class="titleHeading">VOTERS SEARCH</div>
+     
+	 <c:if test="${isVoterDataTools != null && isVoterDataTools == true}">
+	  <div style="margin-left: auto; margin-bottom: -12px; width: 200px;"><a href="voterDataToolsAction.action?" class="btn btn-info">Voter Data Tools</a></div>
+	 </c:if>
+
 	  <fieldset id="mainFieldset">
       <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;height: 40px;"></div>
