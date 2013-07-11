@@ -627,5 +627,7 @@ public interface IConstants {
 	 * localhost for development environment
     */	
     public final static String DEPLOYED_HOST = "localhost";
+    
+    public final static String VOTER_DATA_TOOLS = "VOTER_DATA_TOOLS";
 	
 }
