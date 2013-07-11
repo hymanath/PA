@@ -17,7 +17,7 @@
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 
 <style>
-.whitegloss {
+.whiteglosss  {
     background: linear-gradient(to bottom, #EEEEEE 0%, #FFFFFF 49%, #FFFFFF 100%) repeat scroll 0 0 transparent;
 }
 	#mainBodyId{width:800px;margin-left:auto;margin-right:auto;}
