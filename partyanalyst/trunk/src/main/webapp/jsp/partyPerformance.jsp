@@ -59,7 +59,7 @@
 		#partyPerformanceReport_11,#partyPerformanceReport_12
 		{
 			margin-right: 3px;
-			margin-top: auto;
+			margin-top: -4px;
 		}
 		.marginClass{
 
@@ -673,7 +673,7 @@
 			<tr id="allianceRow">
 				<th align="left"><%=alliances%></th>
 				<td>
-					<s:checkbox theme="simple" id="alliances" disabled="false" name="alliances" value="hasAllianceParties"></s:checkbox><%=inclAlliances%>
+					<s:checkbox theme="simple" id="alliances" disabled="false" name="alliances" value="hasAllianceParties" style="margin-top: auto;"></s:checkbox><%=inclAlliances%>
 				</td>
 			</tr>
 			<tr>

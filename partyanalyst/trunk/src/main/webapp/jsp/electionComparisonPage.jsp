@@ -408,7 +408,7 @@ var yearsPopulation={
 			</tr>
 			<tr>
 				<th align="left"><%=alliances%></th>
-				<td align="left"><s:checkbox theme="simple" id="allianceCheck" name="allianceCheck" value="hasAllianceParties"></s:checkbox><%=inclAlliances%></td>
+				<td align="left"><s:checkbox theme="simple" id="allianceCheck" name="allianceCheck" value="hasAllianceParties" style="margin-top: auto;"></s:checkbox><%=inclAlliances%></td>
 	 		</tr>
 	 		<tr>
 				<th colspan="2" align="center">
