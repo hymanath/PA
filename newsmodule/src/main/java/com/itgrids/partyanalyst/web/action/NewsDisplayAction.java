@@ -472,6 +472,8 @@ public class NewsDisplayAction implements ServletRequestAware{
 		   
 		   if(jObj.getString("queryType").trim().equalsIgnoreCase("getAllNews"))
 		   {
+			   fileVO.setFromDateStr(jObj.getString("fromDate"));
+			   fileVO.setToDateStr(jObj.getString("toDate"));
 			   returnVal = newsMonitoringService.getNewsForAuser(fileVO);
 			}
 		   

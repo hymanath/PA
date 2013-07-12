@@ -329,6 +329,7 @@ padding: 0 20px;
 #responseNewsTitlesSelectList{margin-left: 30px;}
 #assignNewsbtn{margin-left: 137px; margin-top: 8px;}
 #errorMessageDiv{text-align: center; color: red; margin-top: -10px; margin-bottom: 17px;}
+#dateSelectDiv{text-align: center; margin-bottom: 21px; margin-top: 26px;}
 </style>
 </head>
 <script type="text/javascript">
@@ -347,7 +348,7 @@ document.getElementById("profileManagementMainOuterDiv2").style.display = 'none'
 document.getElementById("profileManagementMainOuterDiv1").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
-
+$("#dateSelectDiv").css("display","none");
 /*$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -1769,6 +1770,7 @@ function showNewsGallaey()
 
   //buildCreateNewsCategory();
 
+  $("#dateSelectDiv").css("display","none");
   buildUploadNewsForMultipleUsers();
   }
 }
@@ -2744,7 +2746,7 @@ $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
 $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#newsEditId").css({"background":"none repeat scroll 0 0 #0063DC"});*/
 
-
+$("#dateSelectDiv").css("display","none");
 buildCreateVideoGallaryDiv();
 
 }
@@ -3778,6 +3780,15 @@ function updatePhoto(fileId,fileGallaryId)
 
 
 <!-- for  body 4  result  start -->
+
+<div id="dateSelectDiv" style="display:none;">
+
+ <span style="margin-right:30px;"><b>Start Date:<font class="requiredFont">*</font></b><input type="text" name="fromDate" class="inputClass dateField" id="newsFromDateId" readonly="true"/></span>
+ <span><b>End Date:<font class="requiredFont">*</font></b><input type="text" name="toDate" readonly="true" class="inputClass dateField" id="newsToDateId"/></span>
+ <input type="button" value="submit" onclick="buildNewsDetails()" class="btn btn-info"/>
+
+</div>
+
 <div id='profileManagementMainOuterDiv4' style="display:none">
 	<div id='profileManagementHeaderDiv4' class="row-fluid">
 
@@ -4320,16 +4331,26 @@ function showTheNewsToUpdate()
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#newsEditId").css({"background":"none repeat scroll 0 0 #F61D50"});*/
+  
+  $("#dateSelectDiv").css("display","block");
+  $("#newsFromDateId").val('');
+  $("#newsToDateId").val('');
   buildNewsDetails();
 
 }
 function buildNewsDetails()
 {
 	$('#ajaxImg').show();
+	var fromDate = $("#newsFromDateId").val();
+	var toDate = $("#newsToDateId").val();
+    
 
     var jsObj = {
 			queryType: 'getAllNews',
-			task: 'getAllNews'
+			task: 'getAllNews',
+			fromDate:fromDate,
+			toDate:toDate
+
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "getAllNewsForAUser.action?"+rparam;
@@ -6643,7 +6664,8 @@ function assignNewsToCandidate()
   $("#profileManagementMainOuterDiv3").css("display","block");
   $("#profileManagementHeaderDiv3").css("display","none");
   $("#videoGallaryDiv").css("display","none");
-
+  $("#dateSelectDiv").css("display","none");
+  
   var str = '';
   str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
   str +='<h2 style="text-align: center;">Assign News</h2>';
