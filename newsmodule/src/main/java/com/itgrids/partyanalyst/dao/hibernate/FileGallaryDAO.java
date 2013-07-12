@@ -2957,15 +2957,29 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	 }
 	
 	 
-	 public List<Object[]> getAllTheNewsForAUser(Long userId)
+	 public List<Object[]> getAllTheNewsForAUser(Long userId,Date fromDate,Date toDate)
 	 {
-		 Query query = getSession().createQuery("select model.fileGallaryId ,model.file,model.isPrivate,model.gallary.gallaryId," +
-		 		"model.gallary.name from FileGallary model  where model.isDelete = :isDelete and model.file.fileId " +
-		 		" in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId != 0  and model1.file.user.userId = :userId) " +
-		 		"and model.file.user.userId = :userId");
+		 StringBuilder str = new StringBuilder();
+		 str.append("select model.fileGallaryId ,model.file,model.isPrivate,model.gallary.gallaryId, model.gallary.name from FileGallary model  where model.isDelete = :isDelete ");
+		 str.append(" and model.file.fileId in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId != 0  and model1.file.user.userId = :userId) and model.file.user.userId = :userId ");
+		 
+		 if(fromDate != null)
+		  str.append(" and date(model.file.fileDate) >= :fromDate ");
+		 if(toDate != null)
+		  str.append(" and date(model.file.fileDate) <= :toDate ");
+		 
+		 str.append(" order by model.file.fileDate desc ");
+		 Query query = getSession().createQuery(str.toString());
 		 
 		 query.setParameter("userId", userId);
 		 query.setParameter("isDelete", "false");
+		 if(fromDate != null)
+		  query.setParameter("fromDate", fromDate);
+		 if(toDate != null)
+		  query.setParameter("toDate", toDate);
+		 
+		 query.setFirstResult(0);
+		 query.setMaxResults(300);
 		 
 		 return query.list();
 		 
