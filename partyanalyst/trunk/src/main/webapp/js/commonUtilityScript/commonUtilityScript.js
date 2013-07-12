@@ -243,12 +243,12 @@ function getMonth(num)
 // For Calendar
  function focusCalTextElmt(id){
 	 id1="#"+id;
-	$(id1).datepick();
+	$(id1).datepicker();
 	document.getElementById(id).focus();
 }
 function showCalendar(id){
 	id1="#"+id;
-	$(id1).datepick();
+	$(id1).datepicker();
 }
 function showBusyImgWithId(elmtId)
 {		
