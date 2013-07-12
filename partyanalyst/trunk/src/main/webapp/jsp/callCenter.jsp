@@ -415,7 +415,7 @@ populateDataToEditCallTracking(result);
 	   var problemPurposeEle = document.getElementById("problemPurpose1");
 	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
 	  var exp = /^[A-Za-z\s]+$/;
-       if(name.length == 0)
+	  if(name.length == 0 || $.trim(name)== "")
 	{
 		document.getElementById("errorNameDiv1").innerHTML ='<font color="red">Name is Required</font>';
 		val = 1;
@@ -549,7 +549,7 @@ function validate(){
 	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
 	   var referenceNo = document.getElementById("referenceNo").value;
 	   var villageTown = document.getElementById("villageTown").value;
-       if(name.length == 0)
+	   if(name.length == 0 || $.trim(name)== "")
 	{
 		document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name is Required</font>';
 		val = 1;
@@ -598,7 +598,7 @@ function validateForAddProblem(){
 	   var problemPurposeEle = document.getElementById("problemPurpose");
 	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
 	   var villageTown = document.getElementById("villageTown").value;
-       if(name.length == 0)
+	   if(name.length == 0 || $.trim(name)== "")
 	{
 		document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name is Required</font>';
 		val = 1;
