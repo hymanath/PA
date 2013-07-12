@@ -20,7 +20,8 @@ public class CandidateNewsResponseDAO extends GenericDaoHibernate<CandidateNewsR
 	{
 		Query query = getSession().createQuery(" select distinct CNR.responseFileGallary.fileGallaryId,CRN.candidate.candidateId " +
 				" from CandidateNewsResponse CNR, CandidateRealatedNews CRN where CNR.responseFileGallary.fileGallaryId = CRN.fileGallary.fileGallaryId " +
-				"  and CNR.fileGallary.fileGallaryId =:fileGallaryId ");
+				"  and CNR.fileGallary.fileGallaryId =:fileGallaryId and CNR.responseFileGallary.isDelete = 'false' and CNR.responseFileGallary.isPrivate = 'false' " +
+				" and CNR.responseFileGallary.gallary.isDelete = 'false' and CNR.responseFileGallary.gallary.isPrivate = 'false' ");
 		
 		query.setParameter("fileGallaryId", fileGallaryId);
 		if(startIndex != null)
