@@ -538,7 +538,7 @@ $(document).ready(function(){
 						<div class="span12 errorDiv"></div>
 						</div>
 
-						<!-- <div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&"><input type="button" value="generateCandidateReport" class="btn btn-info"/></a></div>-->
+						<div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&"><input type="button" value="generateCandidateReport" class="btn btn-info"/></a></div>
 					</div>
 				</div>
 				<!-----View your Constituency News End------>
