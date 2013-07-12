@@ -19,6 +19,8 @@ public class PartyGalleryDAOHibernateTest extends BaseDaoTestCase {
 		
 		List<Object[]> items =partyGalleryDAO.getGallariesByPartyId(872L,"VideoGallary");
 		System.out.println(items.size());
+		
+		List<Object[]> items1 = partyGalleryDAO.getAllNewsDetailsForState(872l, 0, 100, "", 1l, 2l);
 	}
 	
 }
