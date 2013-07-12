@@ -286,6 +286,7 @@ public interface IConstants {
     public static final String VOTER_SEARCH_AND_EDIT = "VOTER_SEARCH_AND_EDIT";
     public static final String VOTER_ANALYSIS = "VOTER_ANALYSIS";
     public static final String CADRE_PARLIAMENT_WISE = "CADRE_PARLIAMENT_WISE";
+    public final static String VOTER_DATA_TOOLS = "VOTER_DATA_TOOLS";
     
     
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
@@ -617,6 +618,7 @@ public interface IConstants {
 	public final static String AREA_TYPE_URBAN = "URBAN";
 	public final static String AREA_TYPE_RURAL = "RURAL";
 	public final static String AREA_TYPE_RURAL_URBAN = "RURAL-URBAN";
+	public final static String MULTIPLE_ACCESS = "multipleAccess";
 	
 	public final static String LOCAL_HOST = "localhost";
 	public final static String PROJECT_TYPE = "PARTY";
@@ -628,6 +630,6 @@ public interface IConstants {
     */	
     public final static String DEPLOYED_HOST = "localhost";
     
-    public final static String VOTER_DATA_TOOLS = "VOTER_DATA_TOOLS";
+    
 	
 }
