@@ -1446,8 +1446,6 @@ function sendCadreSMS()
 		$('#smsStatusTextSpan1').html('<font style="color:red;margin-left:75px;">Atleast One cadre need to selected to send SMS</font>');
 		return;
 	}
-
-	
 	for(var i=0; i<elements.length; i++)
 	{
 		if(elements[i].checked == false)
@@ -1455,6 +1453,11 @@ function sendCadreSMS()
 		
 		var cId  = elements[i].value.substring(0,elements[i].value.indexOf('_'));
 		var cMobile = elements[i].value.substring(elements[i].value.indexOf('_')+1,elements[i].value.lastIndexOf('_'));
+		if(cMobile == "")
+		{
+		$('#smsStatusTextSpan1').html('<font style="color:red;margin-left:75px;">message will send only to the people ,who have mobile No.</font>');
+		return;
+		}
 		var cName = elements[i].value.substring(elements[i].value.lastIndexOf('_')+1,elements[i].value.length);
 		var obj = {
 					cadreId:cId,
@@ -1472,6 +1475,7 @@ function sendCadreSMS()
 		$('#smsStatusTextSpan1').html('<font style="color:red;margin-left:75px;">Atleast One cadre need to selected to send SMS</font>');
 		return;
 	}
+	
 	else
 		errorSpanElmt.innerHTML = '';
 	
@@ -1537,6 +1541,7 @@ function buildSmsTextDialog()
 
 function handleSubmit()
 {	
+	
 	var elmt;
 	
 	if(CLICKTYPE == "Sms")
@@ -1555,9 +1560,10 @@ function handleSubmit()
 		  $('html, body').animate({
          scrollTop: $("#headerImageCenterDiv").offset().top
      }, 1000);
-
+	
 		return;
 	}
+	
 	else
 		elmt.innerHTML = '';
 
