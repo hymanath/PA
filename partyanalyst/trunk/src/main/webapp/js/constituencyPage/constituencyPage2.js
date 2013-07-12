@@ -1426,7 +1426,7 @@ function buildZptcResults(results){
 		document.getElementById('zptcCandidateLink').innerHTML='';;
 		return;
 	}
-	var linkRef = '<a href="javascript:{}" title="Click here to View '+constituencyName+' '+consticType+' Constituency ZPTC Candidates Election Results" onclick="redirectZptcCandidateLink()" style="text-decoration:none;float:right" class="candidateDetailsStyle" >Show Results</a>';
+	var linkRef = '<a href="javascript:{}" title="Click here to View '+constituencyName+' '+consticType+' Constituency ZPTC Candidates Election Results" onclick="redirectZptcCandidateLink()" style="text-decoration:none;float:right" class="btn btn-info">Show Results</a>';
 	candLink.innerHTML = linkRef;
 	totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
 	for(var i in results)
@@ -1466,7 +1466,7 @@ function buildMptcResults(results){
 	var candLink = document.getElementById("mptcCandidateLink");
 	if(candLink == null)
 		return;
-	var linkRef = '<a href="javascript:{}" title="Click here to View '+constituencyName+' '+consticType+' Constituency MPTC Candidates Election Results" onclick="redirectMptcCandidateLink()" style="text-decoration:none;float:right" class="candidateDetailsStyle" >Show Results</a>';
+	var linkRef = '<a href="javascript:{}" title="Click here to View '+constituencyName+' '+consticType+' Constituency MPTC Candidates Election Results" onclick="redirectMptcCandidateLink()" style="text-decoration:none;float:right" class="btn btn-info" >Show Results</a>';
 	candLink.innerHTML = linkRef;
 	  totalMptcSeats = results[0].totalSeats;
 	for(var i in results)
@@ -1649,7 +1649,7 @@ function getAllZptcYears()
 		var selectDiv = document.getElementById("zptcElectionIdsSelectDiv");
 		var electionYearSelect="";
 		electionYearSelect+="<b>Select a Election Year :&nbsp;&nbsp;&nbsp;</b>";
-		electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="zptcYears" onchange="funChangeReq();getZptcPartyDetails(this.options[this.selectedIndex].value)">';
+		electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" style="width:70px;" name="zptcYears" onchange="funChangeReq();getZptcPartyDetails(this.options[this.selectedIndex].value)">';
 		for(var i in tehsilElections.zptcElectionYears)
 		{
 			electionYearSelect+='<option value='+tehsilElections.zptcElectionYears[i].id+'>'+tehsilElections.zptcElectionYears[i].value+'</option>';
@@ -1672,7 +1672,7 @@ function getAllMptcYears()
 		var selectDiv = document.getElementById("mptcElectionIdsSelectDiv");
 		var electionYearSelect="";
 		electionYearSelect+="<b>Select a Election Year :&nbsp;&nbsp;&nbsp; </b>";
-		electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="mptcYears" onchange="funChangeReq();getMptcPartyDetails(this.options[this.selectedIndex].value)">';	   
+		electionYearSelect+='<select class="selectWidth" style="width:70px;" id="staticGrpSelectBox" name="mptcYears" onchange="funChangeReq();getMptcPartyDetails(this.options[this.selectedIndex].value)">';	   
 
 		for(var i in tehsilElections.zptcElectionYears)
 		{			   

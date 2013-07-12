@@ -653,8 +653,8 @@ $("#panchayats").live("change",function(){
   </div>
 </div>
  <div id="mainDev" class="widget blue" style="display:none;">
-  <div id="sublevelHeading"><h4> Analysis Based On Votes Percentage Difference</h4></div>
-  <a id="ShowConstMenu" class="btn pull-right btn-primary" style="margin-top:-30px;margin-right: 30px; width: 46px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a>
+  <div id="sublevelHeading"><h3> Analysis Based On Votes Percentage Difference</h3></div>
+  <a id="ShowConstMenu" class="btn pull-right btn-primary" style="margin-top:-20px;margin-right: 30px; width: 46px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a>
   <a id="ShowConstMenu1" class="btn pull-right btn-primary" style="margin-top:-30px;margin-right: 30px;display:none;" href="javascript:{}" >Show<i class="icon-chevron-down"></i></a>
   <div id="dataDiv">
   <div align="center" id = "subDev1">

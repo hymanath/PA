@@ -15,13 +15,13 @@
   rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet"   
   href="styles/jQuery/datepicker/jquery-ui-1.8.14.custom.css" />
-<link type="text/css" rel="stylesheet"  
-  href="styles/jQuery/datepicker/jquery-ui-1.8.14.custom.css" />
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 <link rel="stylesheet" type="text/css" href="styles/mandalPage/mandalPage.css">
 <link type="text/css" rel="stylesheet"  
   href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet"     
   href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+  <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 
 <!-- JQuery files (End) -->
 <title>Call Center</title>
@@ -1320,12 +1320,12 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
 						</tr>
 						<tr>
 							<td>
-							<s:textfield name="fromDate" value="From Date" id="fromDate"  cssClass="formbg12" onClick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
+							<s:textfield name="fromDate" value="From Date" id="fromDate"  cssClass="formbg12" onClick="fromDateCal()" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
 							</td>
 						</tr>
 						<tr>
 							<td style="height: 50px;">
-							<s:textfield name="endDate" value="To Date" id="endDate" cssClass="formbg13" style="margin-left: 20px;" onClick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
+							<s:textfield name="endDate" value="To Date" id="endDate" cssClass="formbg13" style="margin-left: 20px;" onClick="endDateCal()" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
 							</td>
 						</tr>
 						</table>
@@ -1389,22 +1389,26 @@ $(function() {
 </script>
 <script>
 
+function fromDateCal()
+{
 			$("#fromDate" ).datepicker({
 			changeMonth: true,
 			changeYear: true,
 			maxDate:new Date(),
 			dateFormat:"yy-mm-dd"
-		});
-
+		}).datepicker("show");
+}
+function endDateCal()
+{
 		$( "#endDate" ).datepicker({
 			changeMonth: true,
 			changeYear: true,
 			yearRange:"c-10",
 			maxDate:new Date(),
 			dateFormat:"yy-mm-dd"
-        });
+        }).datepicker("show");
 		
-	
+}
 
 	</script>
 
