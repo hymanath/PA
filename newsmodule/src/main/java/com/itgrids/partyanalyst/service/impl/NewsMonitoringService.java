@@ -3106,9 +3106,19 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 	    		Map<Long , Long> notesCountMap = new HashMap<Long, Long>();
 	    		List<Object[]> countList = new ArrayList<Object[]>();
 	    		List<Object[]> notesCountList = new ArrayList<Object[]>();
+	    		Date fromDate = null;
+	    		Date toDate = null;
+	    		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 	    		
 	    	 // List<Object[]> fileList = fileGallaryDAO.getNewsForRegisterUsers1(inputs);
-	    		 List<Object[]> fileList = fileGallaryDAO.getAllTheNewsForAUser(inputs.getUserId());
+	    		
+	    		if(inputs.getFromDateStr() != null && !inputs.getFromDateStr().equalsIgnoreCase(""))
+	    		 fromDate = format.parse(inputs.getFromDateStr());
+	    		
+	    		if(inputs.getToDateStr() != null && !inputs.getToDateStr().equalsIgnoreCase(""))
+		    	 toDate = format.parse(inputs.getToDateStr());
+	    		
+	    		 List<Object[]> fileList = fileGallaryDAO.getAllTheNewsForAUser(inputs.getUserId(),fromDate,toDate);
 	    	  
 	    	  for(Object[] obj:fileList)	    		  
 	    		  contentIds.add((Long)obj[0]);
@@ -3956,19 +3966,19 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 	}
   }
 	
-  public void setSelectOptionVOList(List<Object[]> list, List<SelectOptionVO> selectOptionVOList)
-  {
-	 try{
-		 if(list != null && list.size() > 0)
-		 {
-		  
-		 }
-		 
-	 }catch (Exception e) {
-		e.printStackTrace();
-		log.error("Exception Occured in setSelectOptionVOList() method, Exception - "+e);
-	}
-  }
+	  public void setSelectOptionVOList(List<Object[]> list, List<SelectOptionVO> selectOptionVOList)
+	  {
+		 try{
+			 if(list != null && list.size() > 0)
+			 {
+			  
+			 }
+			 
+		 }catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in setSelectOptionVOList() method, Exception - "+e);
+		}
+	  }
 
 
   public List<FileVO> getNewsDetailsForAParty(NewsDetailsVO vo)
@@ -4109,7 +4119,6 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		return fileVOList;
 	}
   }
-	
 	
 	
 }

@@ -74,7 +74,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private int multipleSource = 0;
 	private int multipleNews = 0;
 	private String existingDateFrom;
-	private String identifiedDateOn;
+	private String identifiedDateOn,fromDateStr,toDateStr;
 	private Date reqFileDate;
 	private Long regionValue;
 	private FileVO fileVOForDiaplyImage;
@@ -1100,5 +1100,23 @@ public class FileVO extends ResultStatus implements Serializable {
 	public void setPageNo(Long pageNo) {
 		this.pageNo = pageNo;
 	}
+
+	public String getFromDateStr() {
+		return fromDateStr;
+	}
+
+	public void setFromDateStr(String fromDateStr) {
+		this.fromDateStr = fromDateStr;
+	}
+
+	public String getToDateStr() {
+		return toDateStr;
+	}
+
+	public void setToDateStr(String toDateStr) {
+		this.toDateStr = toDateStr;
+	}
+	
+	
 
 }
