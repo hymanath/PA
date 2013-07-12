@@ -844,7 +844,8 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 				parties = staticDataService.getAllNationalParties();
 			Collections.sort(parties);}
 			else{
-			    parties = staticDataService.getStaticPartiesListForAState(stateID);
+				//parties = staticDataService.getStaticPartiesListForAState(stateID);
+			    parties = staticDataService.getStaticPartiesListByStateAndElection(stateID,electionType);
 			Collections.sort(parties);
 		}
 		}
