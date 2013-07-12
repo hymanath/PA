@@ -343,7 +343,7 @@
 				<value>com.itgrids.partyanalyst.model.SurveyAnswer</value>
 				<value>com.itgrids.partyanalyst.model.QuestionOptions</value>
 				<value>com.itgrids.partyanalyst.model.SurveyAnswerInfo</value>
-				<value>com.itgrids.partyanalyst.model.UserLoginSession</value>
+				<value>com.itgrids.partyanalyst.model.AccessRestrictedSession</value>
 			</list>
 			
 		</property>
