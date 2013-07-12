@@ -66,7 +66,7 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 
-<title>Voters Details</title>
+<title></title>
 
 </head>
 <style>
@@ -1993,4 +1993,7 @@ getCountOfHamletsAndBoothsInPanchayat();
 	}  
    
 </script>
+<script>
+ document.title = '${name} Voter Details';
+ </script>
 </body>
