@@ -260,7 +260,7 @@
 		<property name="userAccessIpAddressDAO" ref="userAccessIpAddressDAO" />
 	    <property name="mailService" ref="mailService"/>
 		<property name="velocityEngine" ref="velocityEngine" />
-		<property name="userLoginSessionDAO" ref="userLoginSessionDAO" />
+		<property name="accessRestrictedSessionDAO" ref="accessRestrictedSessionDAO" />
 		
 	  </bean>
 	
