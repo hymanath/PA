@@ -19,6 +19,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import com.itgrids.partyanalyst.dao.IAccessRestrictedSessionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -33,16 +34,14 @@ import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
-import com.itgrids.partyanalyst.dao.IUserLoginSessionDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
-import com.itgrids.partyanalyst.dto.DailyUpdatesVO;
-import com.itgrids.partyanalyst.dto.EmailNotificationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserTrackingVO;
+import com.itgrids.partyanalyst.model.AccessRestrictedSession;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.District;
@@ -53,7 +52,6 @@ import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
-import com.itgrids.partyanalyst.model.UserLoginSession;
 import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.security.EncryptDecrypt;
 import com.itgrids.partyanalyst.service.ILoginService;
@@ -83,18 +81,16 @@ public class LoginService implements ILoginService{
 	private IUserDAO userDAO;
 	private IUserAccessIpAddressDAO userAccessIpAddressDAO;
 	private VelocityEngine velocityEngine;
-	private IUserLoginSessionDAO userLoginSessionDAO;
-	
-
+	private IAccessRestrictedSessionDAO accessRestrictedSessionDAO;
 	private IMailService mailService;
 	
-	
-	public IUserLoginSessionDAO getUserLoginSessionDAO() {
-		return userLoginSessionDAO;
+	public IAccessRestrictedSessionDAO getAccessRestrictedSessionDAO() {
+		return accessRestrictedSessionDAO;
 	}
 
-	public void setUserLoginSessionDAO(IUserLoginSessionDAO userLoginSessionDAO) {
-		this.userLoginSessionDAO = userLoginSessionDAO;
+	public void setAccessRestrictedSessionDAO(
+			IAccessRestrictedSessionDAO accessRestrictedSessionDAO) {
+		this.accessRestrictedSessionDAO = accessRestrictedSessionDAO;
 	}
 
 	public VelocityEngine getVelocityEngine() {
@@ -832,9 +828,9 @@ public class LoginService implements ILoginService{
 		{
 			for(String sessionId : sessionIds)
 			{
-			UserLoginSession userLoginSession = new UserLoginSession();
-			userLoginSession.setSessionId(sessionId);
-			userLoginSessionDAO.save(userLoginSession);
+			AccessRestrictedSession accessRestrictedSession = new AccessRestrictedSession();
+			accessRestrictedSession.setSessionId(sessionId);
+			accessRestrictedSessionDAO.save(accessRestrictedSession);
 			}
 		}
 	}
