@@ -6,22 +6,38 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.service.impl.LoginService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.ActionSupport;
 
-public class SessionHandlerAction implements HttpSessionListener,ServletContextAware,ServletRequestAware,ServletResponseAware{
-	private ILoginService loginService;
+public class SessionHandlerAction extends ActionSupport implements HttpSessionListener,ServletContextAware,ServletRequestAware,ServletResponseAware{
+	
+	private static final long serialVersionUID = -666303609399379455L;
 	private HttpServletResponse response;
 	private HttpServletRequest request;
 	private ServletContext context;
+	private static final Logger LOG = Logger.getLogger(SessionHandlerAction.class);
+	private ILoginService loginService;
 	
+	public ILoginService getLoginService() {
+		return loginService;
+	}
+
+	public void setLoginService(ILoginService loginService) {
+		this.loginService = loginService;
+	}
+
 	public HttpServletResponse getResponse() {
 		return response;
 	}
@@ -38,17 +54,8 @@ public class SessionHandlerAction implements HttpSessionListener,ServletContextA
 		this.request = request;
 	}
 
-	public ILoginService getLoginService() {
-		return loginService;
-	}
-
-	public void setLoginService(ILoginService loginService) {
-		this.loginService = loginService;
-	}
-
 	public void setServletResponse(HttpServletResponse response) {
-	this.response = response;
-		
+		this.response = response;
 	}
 
 	public void setServletRequest(HttpServletRequest request) {
@@ -71,28 +78,25 @@ public class SessionHandlerAction implements HttpSessionListener,ServletContextA
 		  try{ 
 			  RegistrationVO regvo = (RegistrationVO) destroyedEvent.getSession().getAttribute(IConstants.USER);
 			  
-			  if(regvo.getRegistrationID() != null)
+			  if(regvo != null && regvo.getRegistrationID() != null)
 			  {
 				  UserTrackingVO userTrackingVO = new UserTrackingVO();
 				  userTrackingVO.setSessionId(destroyedEvent.getSession().getId());
 				  userTrackingVO.setStatus(IWebConstants.LOGOUT);
+				  
+				  if(loginService == null)
+				  {
+					  ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(destroyedEvent.getSession().getServletContext());
+					  loginService = (LoginService)ctx.getBean("loginService");
+				  }
 				  loginService.saveUserSessionDetails(userTrackingVO);
 			  }
-			  destroyedEvent.getSession().invalidate();
-			  redirect();
+			  
 		  }catch (Exception e) 
 		  {
-			  
+			  LOG.error(e); 
 		  }
 		
 	  }
-
-		public void redirect()
-		{
-			 try{
-				 
-			response.sendRedirect("homePage.action");
-		}catch (Exception e) {
-		}
-}
+		
 }
