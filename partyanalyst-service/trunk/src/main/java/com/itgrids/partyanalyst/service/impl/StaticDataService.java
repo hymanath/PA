@@ -7395,7 +7395,7 @@ public class StaticDataService implements IStaticDataService {
 	 * @return selectedParties
 	 */
 	public List<SelectOptionVO> getStaticPartiesListForAState(Long stateId) {
-
+		
 		List<SelectOptionVO> selectedParties = new ArrayList<SelectOptionVO>();
 		List<SelectOptionVO> staticParties = new ArrayList<SelectOptionVO>();
 
@@ -8901,5 +8901,41 @@ public class StaticDataService implements IStaticDataService {
 			
 		}
 	}
-
+	
+public List<SelectOptionVO> getStaticPartiesListByStateAndElection(Long stateId,String electionType) {
+	List<SelectOptionVO> selectedParties = new ArrayList<SelectOptionVO>();
+	List<SelectOptionVO> staticParties = new ArrayList<SelectOptionVO>();	
+	try{
+		
+		List<Long> partyIds = new ArrayList<Long>();
+		// State Parties
+		selectedParties.addAll(getStaticStateParties(stateId));
+		// National Parties
+		selectedParties.addAll(getStaticNationalParties());
+        // For state Parties From IConstants
+		selectedParties.addAll(getSelectedStateParties(stateId));
+			if(selectedParties != null && selectedParties.size() > 0)
+			{
+			for(SelectOptionVO partyId : selectedParties)
+				partyIds.add(partyId.getId());
+			}
+			if(partyIds != null && partyIds.size() > 0)
+			{
+			List<Object[]> list = nominationDAO.getParties(partyIds,electionType);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					staticParties.add(new SelectOptionVO((Long) params[0],params[1].toString()));	
+				}
+			}
+			Collections.sort(staticParties);
+			}
+			}
+		catch (Exception e) {
+			log.error("Exception Occured in getStaticPartiesListByStateAndElection() method in staticDataService - ",e);
+			
+		}
+		return staticParties;
+	}
 }
