@@ -257,10 +257,15 @@ public class AttributeWiseElectionResultComparisonService implements
 				if(locationIds.size() > 0){
 				    List<Object[]> list = hamletBoothElectionDAO.getPanchayatBoothDetailsByPanchayat(locationIds,electionIds);//Object[electionId,panchayatId,panchayatName,boothId,partNo]
 				
-					Map<Long,Long> boothIds = new HashMap<Long,Long>();//Map<boothId,panchayatId>
+					Map<Long,List<Long>> boothIds = new HashMap<Long,List<Long>>();//Map<boothId,List<panchayatId>>
 					
 					for(Object[] boothsData:list){
-						boothIds.put((Long)boothsData[3],(Long)boothsData[1]);
+						List<Long> panchayatIds = boothIds.get((Long)boothsData[3]);
+						if(panchayatIds == null){
+							panchayatIds = new ArrayList<Long>();
+							boothIds.put((Long)boothsData[3], panchayatIds);
+						}
+						panchayatIds.add((Long)boothsData[1]);
 						locationNames.put((Long)boothsData[1], boothsData[2].toString());//Map<panchayatId,panchayatName>
 						Map<Long,Long> elecMap = totalVotersMap.get((Long)boothsData[0]);
 						if(elecMap == null){
@@ -279,7 +284,7 @@ public class AttributeWiseElectionResultComparisonService implements
 					if(boothIds.size() > 0){
 						List<Object[]> results =  candidateBoothResultDAO.findBoothResultsForMultipleBoothsAndElectionsForParties(boothIds.keySet(),electionIds,partyIds);
 						 List<Object[]> resultsCount = candidateBoothResultDAO.findBoothCountForMultipleBoothsAndElectionsForParties(boothIds.keySet(),electionIds);
-						populateDataToVos(electionCount,results,resultsCount,electionResultsMap,electionNames,partyNames,boothIds,true);
+						 populateDataToVosForPanchayat(electionCount,results,resultsCount,electionResultsMap,electionNames,partyNames,boothIds,true);
 					}
 				}
 			}
@@ -555,6 +560,64 @@ public class AttributeWiseElectionResultComparisonService implements
 				locationCount.put(id, (Long)resultCount[2]);
 			}else{
 				locationCount.put(id, count+(Long)resultCount[2]);
+			}
+		}
+	}
+	
+	public void populateDataToVosForPanchayat(Map<Long,Map<Long,Long>> electionCount,List<Object[]> results,List<Object[]> resultsCount,Map<Long,Map<Long,Map<Long,PartyResultsVO>>> electionResultsMap,Map<Long,String> electionNames,Map<Long,String> partyNames,Map<Long,List<Long>> locationIds,boolean fromLocationIdsReq){
+		Map<Long,Map<Long,PartyResultsVO>> partiesMap = null;//Map<partyId,Map<panchayatId,PartyResultsVO>>
+		Map<Long,PartyResultsVO> locationResultMap = null;//Map<panchayatId,PartyResultsVO>
+		Map<Long,Long> locationCount = null;//Map<panchayatId,totalvoters>
+		for(Object[] result:results){
+			
+			partiesMap = electionResultsMap.get((Long)result[0]);
+			
+			if(partiesMap == null){
+				electionNames.put((Long)result[0], result[6].toString()+" "+result[5].toString());
+				partiesMap = new HashMap<Long,Map<Long,PartyResultsVO>>();
+				electionResultsMap.put((Long)result[0], partiesMap);
+			}
+			locationResultMap = partiesMap.get((Long)result[2]);
+			
+			if(locationResultMap == null){
+				locationResultMap = new HashMap<Long,PartyResultsVO>();
+				partiesMap.put((Long)result[2], locationResultMap);
+				partyNames.put((Long)result[2], result[3].toString());
+			}
+			PartyResultsVO location = null;
+			List<Long> panchayatIds = locationIds.get(new Long(result[1].toString().trim()));
+			for(Long panchayatId:panchayatIds){
+				location = locationResultMap.get(panchayatId);
+				 if(location == null){
+					location = new PartyResultsVO();
+					locationResultMap.put(panchayatId, location);
+					location.setPartyId(panchayatId);
+				 }
+				 if(location.getVotesEarned() != null){
+					  location.setVotesEarned(location.getVotesEarned()+(Long)result[4]);
+				  }else{
+					  location.setVotesEarned((Long)result[4]);
+				  }
+			}
+			
+		}
+		
+		for(Object[] resultCount:resultsCount){
+			locationCount = electionCount.get((Long)resultCount[0]);
+			if(locationCount == null){
+				locationCount = new HashMap<Long,Long>();
+				electionCount.put((Long)resultCount[0], locationCount);
+			}
+			
+			
+			List<Long> panchayatIds = locationIds.get(new Long(resultCount[1].toString().trim()));
+			for(Long panchayatId:panchayatIds){	
+				Long count = locationCount.get(panchayatId);
+				if(count == null){
+					locationCount.put(panchayatId, (Long)resultCount[2]);
+				}else{
+					locationCount.put(panchayatId, count+(Long)resultCount[2]);
+				}
 			}
 		}
 	}
