@@ -663,168 +663,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 List<FileVO> vedioresultList = new ArrayList<FileVO>();
 		 List<FileVO> newsresultList = new ArrayList<FileVO>();
 		 
-	/*	 
-		 List<Long> latestgalIds =  fileGallaryDAO.getRecentlyUploadedGallaries(startIndex, maxResults);
-		 if(latestgalIds != null)
-		 {
-			for(Long value :latestgalIds)
-			{
-				photoGallaryresultList = fileGallaryDAO.getStartingRecordInGallaries(value);
-					
-				List<FileVO> result = setToFileVO(photoGallaryresultList,"Photos");
-				
-				if(!result.isEmpty())
-				resultList.add(result.get(0));		
-			}
-			resultMap.put("photogallary", resultList);
-		 }
-		 
-		 List<FileGallary> latestPhotoGalleryList  = fileGallaryDAO.getRecentlyUploadedGallaries(startIndex, 400);
-		 
-		 Map<Long,Long> photoGallaryIds = new HashMap<Long,Long>();
-		 Map<Long,Long> photoFileIds = new HashMap<Long,Long>();
-		 Long photoFileId = null;
-		 Long photoGallaryId= null;
-		 int photoCount = 0;
-		 
-		 for(FileGallary fileGallary:latestPhotoGalleryList){
-			 photoFileId = fileGallary.getFile().getFileId();
-			 photoGallaryId = fileGallary.getGallary().getGallaryId();
-			 if(photoFileId != null && photoFileIds.get(photoFileId) == null){
-				 if(photoGallaryId != null && photoGallaryIds.get(photoGallaryId) == null){
-					 
-					 photoFileIds.put(photoFileId,photoFileId);
-					 photoGallaryIds.put(photoGallaryId,photoGallaryId);
-					 singleVodeosGallaryresultList = new ArrayList<FileGallary>();				 
-					 singleVodeosGallaryresultList.add(fileGallary);
-					 List<FileVO> photosList =setToFileVO(singleVodeosGallaryresultList , "Photos");
-					 if(!photosList.isEmpty()){
-						 resultList.add(photosList.get(0));
-						 photoCount =photoCount+1;
-					 }
-				 }
-			 }
-			 if(photoCount >= maxResults){
-					break;
-				}
-		 }
-		 
-		 resultMap.put("photogallary", resultList);
-		 
-		 String queryStr2 = "where model.gallary.contentType.contentType = 'Video Gallary'";
-			 List<Long> videosList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr2);
-			 videoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(videosList);
-			 List<Long> latestVedioGalIds = fileGallaryDAO.getRecentlyUploadedVedioGallaryIds(startIndex, maxResults, queryStr2);
-			 if(latestVedioGalIds != null)
-			 {
-				 for(Long vediogalId : latestVedioGalIds)
-				 {
-					 videoGallaryresultList=  fileGallaryDAO.getStartingRecordInGallaries(vediogalId);
-					 List<FileVO> vedioresult = setToFileVO(videoGallaryresultList,"Videos");
-					 if(!vedioresult.isEmpty())
-					vedioresultList.add(vedioresult.get(0));		
-					 
-				 	}
-				 resultMap.put("VideoGallary", vedioresultList);
-			 }
-		 
-		 
-		 List<FileGallary> latestVedioGalList = fileGallaryDAO.getRecentlyUploadedVedioGallaryIds(startIndex, 400, queryStr2);
-		 Map<Long,Long> videoGallaryIds = new HashMap<Long,Long>();
-		 Map<Long,Long> videoFileIds = new HashMap<Long,Long>();
-		 Long videoFileId = null;
-		 Long vodeoGallaryId= null;
-		 int videoCount = 0;
-		 
-		 for(FileGallary fileGallary:latestVedioGalList){
-			 videoFileId = fileGallary.getFile().getFileId();
-			 vodeoGallaryId = fileGallary.getGallary().getGallaryId();
-			 if(videoFileId != null && videoFileIds.get(videoFileId) == null){
-				 if(vodeoGallaryId != null && videoGallaryIds.get(vodeoGallaryId) == null){
-					 
-					 videoFileIds.put(videoFileId,videoFileId);
-					 videoGallaryIds.put(vodeoGallaryId,vodeoGallaryId);
-					 singleVodeosGallaryresultList = new ArrayList<FileGallary>();				 
-					 singleVodeosGallaryresultList.add(fileGallary);
-					 List<FileVO> vodeosList =setToFileVO(singleVodeosGallaryresultList , "Videos");
-					 if(!vodeosList.isEmpty()){
-						 vedioresultList.add(vodeosList.get(0));
-						 videoCount =videoCount+1;
-					 }
-				 }
-			 }
-			 if(videoCount >= maxResults){
-					break;
-				}
-		 }
-		 
-		 resultMap.put("VideoGallary", vedioresultList);
-		 
-		
-		// photoGallaryresultList=fileGallaryDAO.getStartingRecordInGallaries(latestgalIds);
-	 	 List<Long> photosList = fileGallaryDAO.getRecentlyUploadedPhotoIds(startIndex, maxResults);
-	 	   photoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(photosList);
-		   // String queryStr1 = "where model.gallary.contentType.contentType = 'News Gallary'";
-		   //List<Long> newsList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr1);
-		   //newsGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsListForNews(newsList);
-			 
-			 
-			 String queryStr3 = "where model.gallary.contentType.contentType = 'News Gallary' and  model.file.regionScopes.regionScopesId < 4 ";
-			// List<Long> newsGalIds = fileGallaryDAO.getRecentlyUploadedNewsGallaryIds(startIndex, 150, queryStr3);
-			 Map<Long,Long> gallaryIds = new HashMap<Long,Long>();
-			 Map<Long,Long> fileIds = new HashMap<Long,Long>();
-			 Long fileId = null;
-			 Long gallaryId = null;
-			 int count = 0;
-			 if(newsGalIds != null)
-			 {
-				 for(Long newsgalIds : newsGalIds)
-				 {
-					if(gallaryIds.get(newsgalIds) == null){
-						
-						gallaryIds.put(newsgalIds,newsgalIds);
-					 newsGallaryresultList =fileGallaryDAO.getStartingRecordInNewsGallaries(newsgalIds);
-					if(!newsGallaryresultList.isEmpty()){
-						Long fileId = newsGallaryresultList.get(0).getFile().getFileId();
-					if(fileIds.get(fileId) == null){
-						count =count+1;
-						fileIds.put(fileId,fileId);
-						singleNewsGallaryresultList = new ArrayList<FileGallary>();
-						singleNewsGallaryresultList.add(newsGallaryresultList.get(0));
-					   List<FileVO> newsList =setToFileVO(singleNewsGallaryresultList);
-					   if(!newsList.isEmpty())
-						newsresultList.add(newsList.get(0));	
-					   }
-					  }
-					}
-					if(count >= maxResults){
-						break;
-					}
-				 }
-			  }
-				 List<FileGallary>  fileGallaryList =  fileGallaryDAO.getRecentlyUploadedNewsFileIds(startIndex, 400, queryStr3);
-				 for(FileGallary fileGallary:fileGallaryList){
-					 fileId = fileGallary.getFile().getFileId();
-					 gallaryId = fileGallary.getGallary().getGallaryId();
-					 if(fileId != null && fileIds.get(fileId) == null){
-						 if(gallaryId != null && gallaryIds.get(gallaryId) == null){
-							 
-							 fileIds.put(fileId,fileId);
-							 gallaryIds.put(gallaryId,gallaryId);
-							 singleNewsGallaryresultList = new ArrayList<FileGallary>();
-							 singleNewsGallaryresultList.add(fileGallary);
-							 List<FileVO> newsList =setToFileVO(singleNewsGallaryresultList , "News");
-							 if(!newsList.isEmpty()){
-								newsresultList.add(newsList.get(0));
-								count =count+1;
-							 }
-						 }
-					 }
-					 if(count >= maxResults){
-							break;
-						}
-					
-				 }*/
+
 		 		List<FileVO> nl;
 		 		if(level.equalsIgnoreCase("state")||level.equalsIgnoreCase(""))
 		 		{ 
@@ -5512,7 +5351,10 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			
 			for(FileGallary fileGallary : fileGallaryList)
 			 {
-				 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			/*	int count =candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size();
+				if(count>0)
+					return;*/
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					if(fileGallary.getFile() == null)
 						continue;
 					
@@ -5535,6 +5377,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				fileVO.setLocationId(fileGallary.getFile().getLocationValue());
 				
 				fileVO.setFilePath1(fileGallary.getFile().getFilePath());
+				
 				fileVO.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size());
 				Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
 				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
