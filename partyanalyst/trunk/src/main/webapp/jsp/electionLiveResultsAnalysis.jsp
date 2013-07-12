@@ -144,10 +144,10 @@ hr
 	 <input type="radio" value="1" name="electionTypeRadio" id="parliamentId" onclick="getStates(this.value)" >
 	 Parliament</span>
 </div>
-<div>Select State :
+<div><span id="stateDiv">Select State :
 <select  id="stateId" onchange="getElectionYears()" style="width:150px;">
 <option value="0">Select State</option>
-</select>
+</select></span>
 &nbsp;&nbsp;&nbsp;&nbsp;Select Election Year : 
 <select id="electionYearId" onchange="getOverViewCount();getPartiesGainAndLossInfo();getConstituencyWiseCandidatesStatus();getWonOrLeadcandidates()" style="width:150px;">
 <option value="0">Select Election Year</option>
@@ -1004,7 +1004,15 @@ function getConstituenciesCount()
 	callAjaxForElectionResultPage(url,jObj);
 }
 function getStates(electionTypeId,stateId,elecId)
- {	
+ {
+	$("#parliamentId").live("click",function() {
+	    $("#stateDiv").hide();
+		getElectionYears();
+    });
+	$("#assemblyId").live('click',function()
+	{
+	    $("#stateDiv").show();		
+    });
 	var jObj=
 		{
 			electionTypeId:electionTypeId,
