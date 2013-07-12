@@ -363,7 +363,7 @@
 				<value>com.itgrids.partyanalyst.model.SurveyAnswer</value>
 				<value>com.itgrids.partyanalyst.model.QuestionOptions</value>
 				<value>com.itgrids.partyanalyst.model.SurveyAnswerInfo</value>
-				<value>com.itgrids.partyanalyst.model.UserLoginSession</value>
+				<value>com.itgrids.partyanalyst.model.AccessRestrictedSession</value>
 			</list>
 		</property>
 	</bean>
@@ -1871,7 +1871,7 @@
 	<bean id="surveyAnswerInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyAnswerInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
-	<bean id="userLoginSessionDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserLoginSessionDAO">
+	<bean id="accessRestrictedSessionDAO" class="com.itgrids.partyanalyst.dao.hibernate.AccessRestrictedSessionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 </beans>
