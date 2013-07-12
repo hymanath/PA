@@ -200,6 +200,9 @@ border: 1px solid #CCCCCC;
     display: block;
     padding: 10px;
 }
+textarea {
+  resize: none;
+}
 </style>
 
 <script type="text/javascript">
@@ -2189,7 +2192,7 @@ function displayDateText(type, args, obj) {
 			<div id="errormsgdiv" class="errorClass" style="display:none;"></div>
 		<h3>Comments:</h3>
 		 <div class="commentSection">
-		 <textarea class="textareaid" id="commenttext" style="width:100%;"></textarea></div><a href="javascript:{}" onclick="postCommentForProblem()" class="pull-right btn btn-info" style="margin-top:4px;margin-bottom:4px;">Post</a>
+		 <textarea class="textareaid" id="commenttext" rows="4" cols="210" style="width:100%;"></textarea></div><a href="javascript:{}" onclick="postCommentForProblem()" class="pull-right btn btn-info" style="margin-top:4px;margin-bottom:4px;">Post</a>
 		 <div id="abusedErrorDiv" style="padding-top: 0px; margin-left: 290px; margin-top: 36px; margin-bottom: -29px;"></div>
          <div id="postedcomments" style="display:none;"></div>	
 		</div>
