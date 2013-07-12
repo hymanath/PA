@@ -281,7 +281,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public Long getVideosCountIntheGallary(Long galleryId,String queryType);
 	
 	
-	public List<Object[]> getAllTheNewsForAUser(Long userId);
+	public List<Object[]> getAllTheNewsForAUser(Long userId,Date fromDate,Date toDate);
 	public List<FileGallary> getFileGallariesByFileId(Long fileId);
 	public void deleteFile(Long fileId);
 	
