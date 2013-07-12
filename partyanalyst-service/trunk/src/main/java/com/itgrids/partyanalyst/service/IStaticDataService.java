@@ -398,6 +398,6 @@ public interface IStaticDataService {
 		public Long getdistrictForAConstituency(Long constituencyId);
 		public List<SelectOptionVO> getElectionYearsByConstituencyIds(List<Long> constituencyIds);
 		public List<SelectOptionVO> getConstitunciesByElectionIdAndConstituenciyIds(List<Long> assemblyIds  , Long electionId);
-
+		public List<SelectOptionVO> getStaticPartiesListByStateAndElection(Long stateId,String electionType);
 		
 }
