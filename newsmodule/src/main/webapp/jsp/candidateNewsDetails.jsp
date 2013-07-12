@@ -790,13 +790,13 @@ function  showPartyWiseNewsCount(results)
 	  return;
   var str = '';
   str +='<div>';
-  str +='<span><b>Total News :</b>'+results.totalNewsCount+'</span>';
+  //str +='<span><b>Total News :</b>'+results.totalNewsCount+'</span>';
   if(results.responseNewsCount > 0)
-   str +='<span><b>Respond News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0)">'+results.responseNewsCount+'</a></span>';
+   str +='<span><b> TDP Candidates Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0)">'+results.responseNewsCount+'</a></span> <span style="width:1px;padding-right:10px;"></span>';
   else
-	str +='<span><b>Respond News :</b><a href="javascript:{}">'+results.responseNewsCount+'</a></span>';
+	str +='<span><b> Not Responded News  :</b><a href="javascript:{}">'+results.responseNewsCount+'</a></span>  ';
   if(results.notResponseNewsCount > 0)
-   str +='<span><b>NotRespond News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0)">'+results.notResponseNewsCount+'</a></span>';
+   str +='<span><b>Not Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0)">'+results.notResponseNewsCount+'</a></span>';
    else
 	str +='<span><b>NotRespond News :</b><a href="javascript:{}">'+results.notResponseNewsCount+'</a></span>';
 
