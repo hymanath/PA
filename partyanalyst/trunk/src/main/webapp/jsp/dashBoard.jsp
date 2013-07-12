@@ -428,12 +428,12 @@ lable{line-height:40px;}
 				</div>    					
 			</div>
 			
-			<div class="span6 widget">
+			<div class="span6 widget" style="min-height: 197px;">
 				<h2>Election Results Analysis Report</h2>
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Election Results Analysis Report.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
-						<p>Now you can analyse and view the reasons of analysed constituencies for winning/lossing in an Election
+						<p style="margin-bottom: 43px;">Now you can analyse and view the reasons of analysed constituencies for winning/lossing in an Election
 						</p>
 						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('electionResReport');" style="float:right;"></input>
 					</div>
@@ -455,12 +455,12 @@ lable{line-height:40px;}
 				</div>       
 					
 			</div>       
-		   <div class="span6 widget">
+		   <div class="span6 widget" style="min-height: 179px;">
 			  <h2>Party Strengths & Weakness</h2>
 				<div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Strengths & Weakness.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
-						<p>To Know where your party Strong or Weak to improve your Party Performance in coming Elections.
+						<p style="margin-bottom: 25px;">To Know where your party Strong or Weak to improve your Party Performance in coming Elections.
 
 						</p>
 						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('partystrweak');" style="float:right;"></input>
@@ -711,12 +711,12 @@ lable{line-height:40px;}
 				    </div>
 				</div>    					
 			</div>
-			<div class="span6 widget">
+			<div class="span6 widget" style="min-height: 180px;">
 			  <h2>Cadre Mangement </h2>
 			  <div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Cadre Mangement.png"style="width: 64px; height: 64px;"></img>
 				<div class="media-body">
-				<p>You can create your Cadre, then you can connect with your Cadre via SMS, emails</p>
+				<p style="margin-bottom: 27px;">You can create your Cadre, then you can connect with your Cadre via SMS, emails</p>
 					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('cadremgmt');" style="float:right;"></input>
 				</div>
 		   </div>	
@@ -734,12 +734,12 @@ lable{line-height:40px;}
 				</div> 
 			</div> 
 			
-		   <div class="span6 widget">
+		   <div class="span6 widget" style="min-height: 163px;">
 			  <h2>Call Center</h2>
 			  <div class="media">
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Call Center.png"style="width: 64px; height: 64px;"></img>
 				<div class="media-body">
-					<p>Now you can know the Problems, Appointments given by your Call Center</p>
+					<p style="margin-bottom: 27px;">Now you can know the Problems, Appointments given by your Call Center</p>
 					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('callcenter');" style="float:right;"></input>
 				</div>
 			  </div>						
