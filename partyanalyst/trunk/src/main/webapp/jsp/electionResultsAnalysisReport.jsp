@@ -645,7 +645,7 @@ function openPartyPerformanceWindow(electionTypeId)
 
 	<!--<DIV id="page_layout_main" class="yui-skin-sam" style="background:#ffffff; margin-left:auto;margin-right:auto;float:none;"></DIV>-->
 	<div align="center">
-	<div  style="width:980px;">
+	<div  style="width:980px;min-height:400px;">
 	<DIV id="page_layout_center" style="width:980px;">
 		<h3 style="background: none repeat scroll 0% 0% rgb(5, 168, 233); color: rgb(255, 255, 255); padding: 5px; border-radius: 5px 5px 5px 5px; text-align: center; margin: 8px; width: 945px; height: 32px;">Election Results Analysis Report</h3>
 	
