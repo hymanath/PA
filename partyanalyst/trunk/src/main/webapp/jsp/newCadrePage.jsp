@@ -1216,7 +1216,7 @@ function refreshingParentWindow()
 			<td colspan="3"><s:file  id="uploadFileId" name="uploadImage" label="Upload" accept="image/*"/><a title="Click here to Remove Image"><i class=" icon-remove" id="removeButtonId"  style="cursor: pointer;"></i></a></td>
 		</tr>
 		<tr><td></td>
-		<td style="width: 420px;">
+		<td colspan="3" style="width: 420px;">
 		(Hint: Image should be .jpeg or .jpg or .png or .gif formats only)
 		</td>
 		</tr>
