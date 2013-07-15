@@ -127,6 +127,7 @@ var electionType = '${electionType}';
 var electionYear = '${electionYear}';
 var status = '${status}'
 var hidden=1;
+var stateId = '${stateId}';
 
 function incrementHidden()
 {
@@ -327,6 +328,7 @@ browser2.focus();
 
 function getCommentsClassifications(rank)
 	{ 
+	    var stateId = '${stateId}';
 		var jsObj={
 				rank: rank,
 				stateId:stateId,
@@ -338,6 +340,7 @@ function getCommentsClassifications(rank)
 	}
 	function showExistingComments(id,candidateName,category, constituencyId,constituencyName,partyName)
 	{
+	    var stateId = '${stateId}';
 		var candidateId;
 		var constituencyId;
 		if(category == "candidate")
