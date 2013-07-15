@@ -244,7 +244,6 @@ function sendSMS()
 			   selectedPhoneNosArr.push(obj);
 			}
 	});
-	console.log(selectedPhoneNosArr);
 	if(selectedPhoneNosArr.length==0){
 	alert("Please select numbers");
 	return;
@@ -425,13 +424,13 @@ populateDataToEditCallTracking(result);
 	  val = 1;
 	  }
 		
-	if(mobile.length == 0)
+	if($.trim(mobile).length == 0)
 	{
 		document.getElementById("errorMobileDiv1").innerHTML = '<font color="red">MobileNo is Required</font>';
 		val = 1;
 	}
-	if(mobile.length != 0){
-       if(isNaN(mobile) || mobile.length<10 || mobile.length>10 || !(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")){
+	if($.trim(mobile).length != 0){
+       if(isNaN($.trim(mobile)) || $.trim(mobile).length<10 || $.trim(mobile).length>10 || !($.trim(mobile).charAt(0)=="9" || $.trim(mobile).charAt(0)=="8" || $.trim(mobile).charAt(0)=="7")){
 		document.getElementById("errorMobileDiv1").innerHTML = '<font color="red">Please enter valid Mobile <br /> Number</font>';
 		val = 1;
 	    }
@@ -492,7 +491,7 @@ function searchCallTrackingProblem(){
 	  if(name.length<=0)
          name ='';
 	  var mobile = document.getElementById("mobile").value;
-	  if(mobile.length<=0)
+	  if($.trim(mobile).length<=0)
          mobile ='';
 	  var problemPurposeEle = document.getElementById("problemPurpose");
 	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
@@ -522,13 +521,13 @@ function searchCallTrackingProblem(){
 function validatePhoneNo(){
   document.getElementById("errorMobileDiv").innerHTML='';
   var mobile = document.getElementById("mobile").value;
-  if(mobile.length == 0)
+  if($.trim(mobile).length == 0)
 	{
 		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">MobileNo is Required</font>';
 		val = 1;
 	}
-	if(mobile.length != 0){
-       if(isNaN(mobile) || mobile.length<10 || mobile.length>10 || !(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")){
+	if($.trim(mobile).length != 0){
+       if(isNaN($.trim(mobile)) || $.trim(mobile).length<10 || $.trim(mobile).length>10 || !($.trim(mobile).charAt(0)=="9" || $.trim(mobile).charAt(0)=="8" || $.trim(mobile).charAt(0)=="7")){
 		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please enter valid Mobile <br /> Number</font>';
 		val = 1;
 	    }
@@ -558,13 +557,13 @@ function validate(){
 	document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name should contains only Charactors</font>';
 	val = 1;
 	}
-	if(mobile.length == 0)
+	if($.trim(mobile).length == 0)
 	{
 		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Mobile No is Required</font>';
 		val = 1;
 	}
-	if(mobile.length != 0){
-       if(isNaN(mobile) || mobile.length<10 || mobile.length>10 || !(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")){
+	if($.trim(mobile).length != 0){
+       if(isNaN($.trim(mobile)) || $.trim(mobile).length<10 || $.trim(mobile).length>10 || !($.trim(mobile).charAt(0)=="9" || $.trim(mobile).charAt(0)=="8" || $.trim(mobile).charAt(0)=="7")){
 		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please Enter Valid Mobile<br /> Number</font>';
 		val = 1;
 	    }
@@ -575,7 +574,7 @@ function validate(){
 	}
 	if(problemPurpose=="Problem Reporting"){
 	
-	    if(referenceNo.length == 0)
+	    if($.trim(referenceNo).length == 0)
 	    {
 		 document.getElementById("errorRefDiv").innerHTML = '<font color="red">ReferenceNo is Required</font><BR/>';
 		val = 1;
@@ -603,13 +602,13 @@ function validateForAddProblem(){
 		document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name is Required</font>';
 		val = 1;
 	}
-	if(mobile.length == 0)
+	if($.trim(mobile).length == 0)
 	{
 		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Mobile No is Required</font>';
 		val = 1;
 	}
-	if(mobile.length != 0){
-       if(isNaN(mobile) || mobile.length<10 || mobile.length>10 || !(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")){
+	if($.trim(mobile).length != 0){
+       if(isNaN($.trim(mobile)) || $.trim(mobile).length<10 || $.trim(mobile).length>10 || !($.trim(mobile).charAt(0)=="9" || $.trim(mobile).charAt(0)=="8" || $.trim(mobile).charAt(0)=="7")){
 		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please Enter valid Mobile<br /> Number</font>';
 		val = 1;
 	    }
@@ -719,6 +718,7 @@ function validateEmail(id){
 	if(email!="" && email!="Email Id"){
 		if(!emailFilter.test(email)){
 			document.getElementById("emailErrMsg").innerHTML = 'Please enter valid Email';
+			
 		}
 	else{
 		document.getElementById("emailErrMsg").innerHTML ='';
@@ -728,11 +728,32 @@ function validateEmail(id){
 		document.getElementById("emailErrMsg").innerHTML ='';
 		}
 }
+function validateEmail1(id){
+	var invalid = false;
+	var email=document.getElementById("emailId").value;
+	var emailFilter=/^.+@.+\..{2,3}$/
+	if(email!="" && email!="Email Id"){
+		if(!emailFilter.test(email)){
+			document.getElementById("emailErrMsg").innerHTML = 'Please enter valid Email';
+			var invalid = true;
+		}
+	else{
+		document.getElementById("emailErrMsg").innerHTML ='';
+		}
+	}
+	else{
+		document.getElementById("emailErrMsg").innerHTML ='';
+		}
+		
+		return invalid;
+}
 function numbersonly(id){
 	var num = document.getElementById(id).value;
-	if(num !=''&& num!="Mobile Number"){
-	 if(isNaN(num) || num.length<10){
+	
+	if($.trim(num) !=''&& num!="Mobile Number"){
+	 if(isNaN($.trim(num)) || $.trim(num).length<10){
 		document.getElementById("errMsg").innerHTML ='Please Enter Valid Mobile No';
+		
 	}
 	else{
 		document.getElementById("errMsg").innerHTML ='';
@@ -741,6 +762,25 @@ function numbersonly(id){
 	else{
 		document.getElementById("errMsg").innerHTML ='';
 	}
+	
+}
+
+function numbersonly1(id){
+	var num = document.getElementById(id).value;
+	var invalid = false;
+	if($.trim(num) !=''&& num!="Mobile Number"){
+	 if(isNaN($.trim(num)) || $.trim(num).length<10){
+		document.getElementById("errMsg").innerHTML ='Please Enter Valid Mobile No';
+		invalid = true;
+	}
+	else{
+		document.getElementById("errMsg").innerHTML ='';
+	}
+	}
+	else{
+		document.getElementById("errMsg").innerHTML ='';
+	}
+	return invalid;
 }
 function removeTextInTextBoxes(id){
 
@@ -777,7 +817,7 @@ function showTextInTextBoxes(id){
 }
 
 function getProblemDetails(){
-	scrollToproblem();
+	
     var name;
     var refNum;
     var mobileNum;
@@ -806,15 +846,20 @@ function getProblemDetails(){
 	  if($("#mobileNumId").val() =="Mobile Number"){
 		 mobileNum ='';
 	  }
-	  else
+	  else{
 	     mobileNum = $("#mobileNumId").val();
-	  
+		 if(numbersonly1("mobileNumId"))
+		   return;
+		 
+	  }
 	  if($("#emailId").val() =="Email Id"){
 		 emailId ='';
 	  }
-	  else
+	  else{
 	     emailId = $("#emailId").val();
-	  
+		 if(validateEmail1("emailId"))
+		   return;
+	  }
 	 if($("#fromDate").val() =="From Date"){
 		 fromDate ='';
 	 }
@@ -827,7 +872,7 @@ function getProblemDetails(){
 	 else
 	    endDate = $("#endDate").val();
 	 
-	 
+	 scrollToproblem();
 
 	  var jsObj = {
 		name:name,
@@ -1091,7 +1136,7 @@ myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 function openProblemWindow(pHistoryId){
 
 var browser2 = 
-window.open("problemDetailsAndStatusAction.action?pHistoryId="+pHistoryId+"&&requestFrom=callCenter","problemWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
+window.open("completeProblemDetailsAction.action?problemId="+pHistoryId);
 						 
 		 browser2.focus();
 
@@ -1297,7 +1342,7 @@ window.open("<s:url action="completeProblemDetailsSearchAction.action"/>","Manag
                       <tr>
                         <td width="12">&nbsp;</td>
                         <td>
-                        <table width="100%">
+                        <table width="78%" style="margin-left:104px;">
 						<tr>
 						<td><s:textfield name="byName" value="Name" id="nameId" cssClass="formbg" onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
 						<div id="warningMsgs" style="width: 200px;display:none;"><font color="red">Name should contains only Charactors</font></div>
