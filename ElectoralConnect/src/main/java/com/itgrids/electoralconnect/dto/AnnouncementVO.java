@@ -32,6 +32,8 @@ public class AnnouncementVO implements Serializable{
 	private String title;
 	private Long id;
 	private Long commentsCount;
+	private List<CommentVO> cmmntsLstOfAnncmnt;
+	
 	public String getName() {
 		return name;
 	}
@@ -170,7 +172,11 @@ public class AnnouncementVO implements Serializable{
 	public void setCommentsCount(Long commentsCount) {
 		this.commentsCount = commentsCount;
 	}
-		
-	
+	public List<CommentVO> getCmmntsLstOfAnncmnt() {
+		return cmmntsLstOfAnncmnt;
+	}
+	public void setCmmntsLstOfAnncmnt(List<CommentVO> cmmntsLstOfAnncmnt) {
+		this.cmmntsLstOfAnncmnt = cmmntsLstOfAnncmnt;
+	}
 	
 }

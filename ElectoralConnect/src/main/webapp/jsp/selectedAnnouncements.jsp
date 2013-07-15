@@ -86,10 +86,6 @@ if(myResults != null)
 	$('#notificationDiv').html(str);
 }
 
-<!--
-
-
--->
 
 function getAllAnnoncements(name)
 {

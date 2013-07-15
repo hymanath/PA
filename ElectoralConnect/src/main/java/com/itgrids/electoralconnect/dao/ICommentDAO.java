@@ -30,4 +30,6 @@ public interface ICommentDAO  extends GenericDao<Comment, Long> {
 	//public List<Object[]> getTop5PressReleases(int startIndex,int maxIndex);
 	
 	//public Long getCommentCountByAnnouncementId(Long announcementId);
+	
+	public List<Object[]> getAllComments(Long announcementid);
 }

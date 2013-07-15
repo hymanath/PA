@@ -28,4 +28,6 @@ public interface IAnnouncementFilesDAO  extends GenericDao<AnnouncementFiles, Lo
 	public List<AnnouncementFiles> getAllAnnouncemetsForSelectedType(Long typeId,int startIndex,int maxIndex);
 	
 	public Long getCountForSelAnnouncemetType(Long typeId);
+	
+	public List<Object[]> getLatest50Annoncements(Long announcementTypeId);
 }

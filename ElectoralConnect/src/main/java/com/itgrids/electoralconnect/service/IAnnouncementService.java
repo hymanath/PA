@@ -25,4 +25,6 @@ public interface IAnnouncementService {
 	public List<AnnouncementVO> getAllAnnouncementsBtSelDates(String startDate,String endDate,int startIndex,int maxIndex);
 	
 	public List<AnnouncementVO> getAllAnnouncementsForSelType(Long typeId,int startIndex,int maxIndex);
+	
+	public List<AnnouncementVO> getLatest50Announcements(Long announcemetTypeId);
 }

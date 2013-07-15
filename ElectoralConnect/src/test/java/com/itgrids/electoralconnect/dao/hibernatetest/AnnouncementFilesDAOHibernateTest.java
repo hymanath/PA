@@ -10,6 +10,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 
 import com.itgrids.electoralconnect.dao.hibernate.AnnouncementFilesDAO;
+import com.itgrids.electoralconnect.dto.AnnouncementVO;
 import com.itgrids.electoralconnect.model.AnnouncementFiles;
 
 
@@ -48,12 +49,12 @@ public class AnnouncementFilesDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(valuse.size());
 	}*/
 	
-	public void testgetSelBtDatesAnnouncementsCountOfUser() throws ParseException
+	/*public void testgetSelBtDatesAnnouncementsCountOfUser() throws ParseException
 	{
 		SimpleDateFormat formate = new SimpleDateFormat("yyyy-mm-dd");
 		int count = announcementFilesDAO.getSelBtDatesAnnouncementsCountOfUser(formate.parse("2013-07-01"), formate.parse("2013-07-05"));
 		System.out.println(count);
-	}
+	}*/
 	
 	/*public void testgetAllAnnouncemetsForSelectedType ()
 	{
@@ -66,4 +67,10 @@ public class AnnouncementFilesDAOHibernateTest extends BaseDaoTestCase{
 		Long count = announcementFilesDAO.getCountForSelAnnouncemetType(1l);
 		System.out.println(count);
 	}*/
+	
+	public void testtop50announcements()
+	{
+		List<Object[]> an=announcementFilesDAO.getLatest50Annoncements(2l);
+		System.out.println(an.size());
+	}
 }
