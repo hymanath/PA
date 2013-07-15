@@ -1879,7 +1879,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	{
 		if(jsObj.type == "constituency"){
 		/* sublevelHeading updated by srishailam */
-		$('#sublevelHeading').html('<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+'/Muncipality Wise Party Performance Analysis in Different Elections of '+jsObj.typename+' Constituency</h4>');	
+		$('#sublevelHeading').html('<h3> '+votersbasicinfo.votersInfoForMandalVOList[0].type+'/Muncipality Wise Party Performance Analysis in Different Elections of '+jsObj.typename+' Constituency</h3>');	
 			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Voters Information in "+jsObj.typename+" Constituency";
 			heading = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Analysis of "+jsObj.typename+" ";
 			casteChartHeading = '<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+'/Muncipality Wise Caste Analysis in '+jsObj.typename+' Constituency</h4>';
@@ -2163,7 +2163,7 @@ function showSubLevelWiseCensusReport(result,jsObj)
 		str +='<th>Population</th>';
 		str +='<th>SC Population</th>';
 		str +='<th>ST Population</th>';
-		str +='<th>Literate Populations</th>';
+		str +='<th>Literate Population</th>';
 		str +='<th>Illiterate Population</th>';
 		str +='<th>Working Population</th>';
 		str +='</tr>';
