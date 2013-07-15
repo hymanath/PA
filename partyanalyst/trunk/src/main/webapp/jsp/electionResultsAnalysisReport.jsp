@@ -53,7 +53,52 @@
 
 	<!-- YUI Dependency files (End) -->
 
-
+<style>
+.sideHeading1 {
+    background-color: #05A8E9;
+    border-image: none;
+    border-left: 0 solid #AEE2FF;
+    border-radius: 4px 4px 4px 4px;
+    border-top: 0 solid #AEE2FF;
+    color: #FFFFFF;
+    font-family: MS Sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    height: 22px;
+    margin-left: -7px;
+    padding: 5px;
+    text-align: center;
+    width: 226px;
+}
+.headingClass
+{
+	background-color: #05A8E9;
+    border-radius: 4px 4px 4px 4px;
+    color: white;
+    font-family: verdana;
+    font-size: 12px;
+	font-weight: bold;
+    height: 27px;
+    margin-left: -2px;
+    padding-top: 7px;
+    width: 650px;
+}
+.wonLostPosHeading1 {
+    background-color: slategrey;
+    border-radius: 4px 4px 4px 4px;
+    color: #FBAD2B;
+    font-family: MS Sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    height: 22px;
+    margin-bottom: 2px;
+    margin-left: -11px;
+    margin-top: 12px;
+    padding: 5px;
+    text-align: center;
+    width: 657px;
+}
+</style>
 <SCRIPT>
 function callAjax(param,jsObj,url){
 	var myResults;
@@ -597,28 +642,13 @@ function openPartyPerformanceWindow(electionTypeId)
 </HEAD>
 
 <BODY>
-<center>
+
 	<!--<DIV id="page_layout_main" class="yui-skin-sam" style="background:#ffffff; margin-left:auto;margin-right:auto;float:none;"></DIV>-->
-	<div class="container" style="width:980px;">
+	<div align="center">
+	<div  style="width:980px;">
+	<DIV id="page_layout_center" style="width:980px;">
+		<h3 style="background: none repeat scroll 0% 0% rgb(5, 168, 233); color: rgb(255, 255, 255); padding: 5px; border-radius: 5px 5px 5px 5px; text-align: center; margin: 8px; width: 945px; height: 32px;">Election Results Analysis Report</h3>
 	
-	<DIV id="page_layout_right" style="width:260px;margin:0px;" class="pull-right">
-		<DIV id="sideHeader" style="margin-top: 0px;"></DIV>
-		<DIV id="toolsDiv" style="background:#FFF;"></DIV>
-		
-	</DIV>
-	<DIV id="page_layout_center" style=";width:712px;" class="pull-left">
-	<h3 style="background:#05A8E9;color:#fff;padding:5px;text-align:center;
-	border-radius:5px;margin:2px;">Election Results Analysis Report</h3>
-		<!--<DIV id="pageHeading" >
-			<TABLE cellspacing="0" cellpadding="0" border="0" width="90%">
-				<TR>
-					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/first.png" border="none" style="margin-left:-1px;"/></TD>
-					<TD valign="top"><DIV class="mainHeading" style="width:674px;margin-left:-1px;">Election Results Analysis Report</DIV></TD>
-					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/second.png" border="none"/></TD>
-				</TR>
-			</TABLE>
-		</DIV>	-->
-		<div style="margin-top: 10px;padding-top: 15px;background:#FFF;">
 		<DIV id="errorsDiv" style="color:red;font-weight:bold;font-size:12px;"></DIV>
 		<DIV id="inputsTags" style="border:2px solid #DBDCDB;margin-left:15px;margin-right:15px;">
 				<TABLE width="100%" class="inputsTable">
@@ -650,21 +680,37 @@ function openPartyPerformanceWindow(electionTypeId)
 				</TABLE>			
 		</DIV>
 		<DIV id="electionPageAjaxImgDiv" style="display:none;height:80px;">
-			<DIV>Please Wait..</DIV>
-			<IMG src="images/icons/barloader.gif"/>
+		<DIV>Please Wait..</DIV>
+		<IMG src="images/icons/barloader.gif"/>
 		</DIV>
-		<DIV id="resultInfoDiv" style="margin-bottom: 15px;">
-		<DIV id="basicDetailsHead" style="margin-top:10px;"></DIV>
+	</DIV>
+	
+		<!--<DIV id="pageHeading" >
+			<TABLE cellspacing="0" cellpadding="0" border="0" width="90%">
+				<TR>
+					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/first.png" border="none" style="margin-left:-1px;"/></TD>
+					<TD valign="top"><DIV class="mainHeading" style="width:674px;margin-left:-1px;">Election Results Analysis Report</DIV></TD>
+					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/second.png" border="none"/></TD>
+				</TR>
+			</TABLE>
+		</DIV>	-->
+		<DIV id="page_layout_right" style="float: right; width: 260px; margin-right: 26px; margin-top: -2px;">
+		<DIV id="sideHeader" style="border-radius: 4px 4px 4px 4px; width: 224px;"></DIV>
+		<DIV id="toolsDiv" style="background:#FFF;"></DIV>
+		
+		</DIV>		
+		<DIV id="resultInfoDiv" style="float: left; margin-top: 11px; margin-left: 17px; width: 676px;">
+		<DIV id="basicDetailsHead" ></DIV>
 		<DIV id="basicDetails" class="yui-skin-sam"></DIV>
-		<DIV id="analysisDetails" class="analysisDetails">		
-		<DIV id="tablerDetails"></DIV>
+		<DIV id="analysisDetails">		
+		<DIV id="tablerDetails1"></DIV>
 		</DIV>
 		<DIV id="lostPosAnalisisDetails" class="analysisDetails"></DIV>
 		<DIV id="wonPosAnalisisDetails" class="analysisDetails">		
 		</DIV>						
 		</DIV>			
-	</DIV></DIV>
-	</center>
+	</div>
+	</div>
 <SCRIPT>
 initializePage();
 </SCRIPT>
