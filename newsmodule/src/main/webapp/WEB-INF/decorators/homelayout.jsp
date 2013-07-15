@@ -57,6 +57,8 @@ margin:-1px 0px 0px 0px ;
 .header-right-sec{width:750px;}
 .lr-sec{padding:14px 5px 5px;}
 #menu ul.menu li{z-index: 999;}
+.memberArea li a{font-weight:bold;}
+.navMenu li a{font-weight:bold;}
 
 </style>
 <decorator:head/>
@@ -75,7 +77,7 @@ margin:-1px 0px 0px 0px ;
 		<div class="row">
 			<!----Logo----->
 			<div class="span4">
-				<img src="images/Logo.png" alt="Telugudhesam party logo" />		
+				<a href="homePage.action"><img src="images/Logo.png" alt="Telugudhesam party logo" />		</a>
 			</div>
 			<!-----Nav main div---->
 			<div class="span8">

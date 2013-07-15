@@ -93,6 +93,9 @@
 #districtList,#categoryList,#galleryList{margin-left: 12px;width:200px;}
 #respondNotRespondNewsCountDiv{margin-top: 11px; margin-bottom: 25px;}
 #respondNotRespondNewsCountDiv table{margin-top: 10px;}
+.newsCount{cursor:pointer;}
+
+#candidateNewsCountDiv table td, #respondNotRespondNewsCountDiv table td{color:#005580;}
 </style>
 <script type="text/javascript">
 var fromDate = '${fromDate}';
@@ -324,8 +327,10 @@ function callAjax(jsObj,url)
 
 function buildCandidateNews(results,jsObj)
 {
+
   $("#ajaxImg").css("display","none");
   $("#candidateNewsCountDiv").html('');
+  
   if(results == null)
   {
 	$("#candidateNewsCountDiv").html('No Data Found');
@@ -365,27 +370,27 @@ function buildCandidateNews(results,jsObj)
   {
    
    if(results[i].stateNewsCount > 0)
-    str +='<td><a href="javascript:{}" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'STATE\')">'+results[i].stateNewsCount+'</a></td>';
+    str +='<td class="newsCount" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'STATE\')">'+results[i].stateNewsCount+'</td>';
 	else
-	 str +='<td><a href="javascript:{}">'+results[i].stateNewsCount+'</a></td>';
+	 str +='<td>'+results[i].stateNewsCount+'</td>';
   }
 
    if(results[i].districtNewsCount > 0)
-   str +='<td><a href="javascript:{}" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'DISTRICT\')">'+results[i].districtNewsCount+'</a></td>';
+   str +='<td class="newsCount" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'DISTRICT\')">'+results[i].districtNewsCount+'</td>';
    else
-	str +='<td><a href="javascript:{}">'+results[i].districtNewsCount+'</a></td>';
+	str +='<td>'+results[i].districtNewsCount+'</td>';
 
   if(jsObj.locationScope != "DISTRICT")
   {
    if(results[i].constituencyNewsCount > 0)
-    str +='<td><a href="javascript:{}" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'CONSTITUENCY\')">'+results[i].constituencyNewsCount+'</a></td>';
+    str +='<td  class="newsCount" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'CONSTITUENCY\')">'+results[i].constituencyNewsCount+'</td>';
    else
-	str +='<td><a href="javascript:{}">'+results[i].constituencyNewsCount+'</a></td>';
+	str +='<td>'+results[i].constituencyNewsCount+'</td>';
 
    if(results[i].mandalNewsCount >0)
-    str +='<td><a href="javascript:{}" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'MANDAL\')">'+results[i].mandalNewsCount+'</a></td>';
+    str +='<td class="newsCount" onclick="getLocationWiseNewsDetails(\''+results[i].id+'\',\'MANDAL\')">'+results[i].mandalNewsCount+'</a></td>';
    else
-	str +='<td><a href="javascript:{}">'+results[i].mandalNewsCount+'</a></td>';
+	str +='<td>'+results[i].mandalNewsCount+'</td>';
   }
    /* str +='<td>'+results[i].villageNewsCount+'</td>';
    str +='<td>'+results[i].localEleBodyNewsCount+'</td>';
@@ -400,12 +405,14 @@ function buildCandidateNews(results,jsObj)
 
  if(jsObj.locationScope != "DISTRICT")
  {
+ 
    $('#newsCountTab').dataTable({
 		"aaSorting": [[ 1, "asc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
 		  "aoColumns": [null,null,null,null,null] 
+		//  "aoColumns": [{ "sType": null }, { "sType": "numeric" }, { "sType": "numeric" },        { "sType": "numeric" }, { "sType": "numeric" }]
 		});
  }
  else

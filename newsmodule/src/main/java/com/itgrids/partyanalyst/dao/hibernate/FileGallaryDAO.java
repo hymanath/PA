@@ -3003,7 +3003,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			 queryObject.append(" and model.file.category.categoryId = :categoryId ");
 		 if(!newsType.equalsIgnoreCase(""))
 			 queryObject.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false' ");
-		 queryObject.append(" group by model.file.fileId ");
+		 queryObject.append(" group by model.file.fileId order by model.updateddate desc");
 		 Query query = getSession().createQuery(queryObject.toString());
    	 query.setParameterList("gallaryIdsList",gallaryIdsList);
    	 if(categoryId != 0)
