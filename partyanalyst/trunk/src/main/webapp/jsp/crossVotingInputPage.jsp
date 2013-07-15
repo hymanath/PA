@@ -460,7 +460,7 @@ function getAssembly(assemblyId,partyId)
 					str+='<tr>';
 					str+='<th>Name : </th>';
 					str+='<td style="width: 230px;"><a href="candidateElectionResultsAction.action?candidateId='+result.acCandidateData.candidateId+'">'+result.acCandidateData.candidateName+'</a></td>';
-				    str+='<td rowspan="3"><img height="90" width="90" onerror="setDefaultImage(this)" src="images/candidates/'+result.acCandidateData.candidateName+'.jpg"></td>';
+				    str+='<td rowspan="3"><img style="width:90px;height:90px" onerror="setDefaultImage(this)" src="images/candidates/'+result.acCandidateData.candidateName+'.jpg"></td>';
 					//str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
 					str+='</tr>';
 					str+='<tr><th>Rank : </th><td>'+result.acCandidateData.rank+' &nbsp;&nbsp;&nbsp; <b>Party:</b> '+ result.acCandidateData.party +'</td></tr>';
@@ -474,7 +474,7 @@ function getAssembly(assemblyId,partyId)
 					str+='<tr><th colspan="2"><u>Parliament Candidate Details..</u></th></tr>';
 					str+='<tr><th>Name: </th>';
 					str+='<td style="width: 230px;"> <a href="candidateElectionResultsAction.action?candidateId='+result.pcCandidateData.candidateId+'">'+result.pcCandidateData.candidateName+'</a></td>';
-					str+='<td rowspan="3"><img height="90" width="90" onerror="setDefaultImage(this)" src="images/candidates/'+result.pcCandidateData.candidateName+'.jpg"></td>';
+					str+='<td rowspan="3"><img style="width:90px;height:90px" onerror="setDefaultImage(this)" src="images/candidates/'+result.pcCandidateData.candidateName+'.jpg"></td>';
 				    str+='</tr>';
 					str+='<tr><th>Rank : </th><td>'+result.pcCandidateData.rank+' &nbsp;&nbsp;&nbsp;<b>Party:</b> '+ result.pcCandidateData.party+'</td></tr>';
 
