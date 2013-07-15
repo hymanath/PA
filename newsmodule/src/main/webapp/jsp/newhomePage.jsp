@@ -462,35 +462,11 @@ $(document).ready(function(){
 				<!---View your Constituency News Div--->
 				<div class="span3" style="height:555px">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Constituency Wise News</h4></div>
-						<div class="span12">						
-						<table style="margin-top:15px;">
-							<tr id="tableRowS">
-								<td id="tdWidth" style="padding-right: 32px;">
-									Location:<font id="requiredValue" class="requiredFont">*</font> 
-								</td>
-								<td>
-									<select id="listValue" onchange="populateLocations(this.options[this.selectedIndex].value)">
-									<option value="0"> Select Location </option>
-									<option value="District"> District </option>
-									<option value="Constituency" selected="selected"> Constituency </option>
-									<!--<option value="Mandal"> Mandal / Muncipality </option>
-									<option value="Panchayat"> Panchayath / Ward </option>
-									<option value="Booth"> Booth </option> -->
-									</select>
-								</td>
-							</tr>
-						</table>
-						<div id="showScopeSubsD" style="margin-bottom: 10px;" style="margin-top:15px;"></div>
-						<table  id="showScopeSubsC">	
-								<tr>
-								<td class="tdWidth1">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>
-								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
-								</select></td>	 
-							</tr>
-						</table>
 						
-						<button id="sendButton" class="btn btn-warning btn-mini" onclick="addCssStyle(),handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
+						
+						<div class="span12 boxHeading"><h4 id="headingDiiv">Get Report</h4></div>
+						<div class="span12">
+						<div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&"><input type="button" value="generateCandidateReport" class="btn btn-info" style="margin:10px;"/></a></div>
 						</div>
 						<!--Created By sasi for Candidate News-->
 						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Candidate News</h4></div>
@@ -538,8 +514,44 @@ $(document).ready(function(){
 						<div class="span12 errorDiv"></div>
 						</div>
 
-						<div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&"><input type="button" value="generateCandidateReport" class="btn btn-info"/></a></div>
+						
+						
+						<!--DIV for Constituency Select Filter-->
+						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Constituency Wise News</h4></div>
+						<div class="span12">						
+						<table style="margin-top:15px;">
+							<tr id="tableRowS">
+								<td id="tdWidth" style="padding-right: 32px;">
+									Location:<font id="requiredValue" class="requiredFont">*</font> 
+								</td>
+								<td>
+									<select id="listValue" onchange="populateLocations(this.options[this.selectedIndex].value)">
+									<option value="0"> Select Location </option>
+									<option value="District"> District </option>
+									<option value="Constituency" selected="selected"> Constituency </option>
+									<!--<option value="Mandal"> Mandal / Muncipality </option>
+									<option value="Panchayat"> Panchayath / Ward </option>
+									<option value="Booth"> Booth </option> -->
+									</select>
+								</td>
+							</tr>
+						</table>
+						<div id="showScopeSubsD" style="margin-bottom: 10px;" style="margin-top:15px;"></div>
+						<table  id="showScopeSubsC">	
+								<tr>
+								<td class="tdWidth1">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>
+								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
+								</select></td>	 
+							</tr>
+						</table>
+						
+						<button id="sendButton" class="btn btn-warning btn-mini" onclick="addCssStyle(),handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
+						</div>
+						
 					</div>
+					
+					
+					
 				</div>
 				<!-----View your Constituency News End------>
 				<!-----Top view News DIv------>
@@ -680,6 +692,12 @@ $(document).ready(function(){
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	
 <script>
+$(function(){
+$('#myCarousel').carousel({ interval: 4000});
+$('#myCarousel2').carousel( {interval: 5000});
+});
+
+
 var responseFilesList = [];
 <c:forEach var="status"  items="${responseFilesList}" >
 	var ob={
