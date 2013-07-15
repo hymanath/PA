@@ -51,17 +51,22 @@ function populateElectionTypeDropdown(results)
 	for(var i in results)
 	{
 		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-		try
+		if(results[i].id == 0 || results[i].id == 1 || results[i].id == 2)
+		{
+			opElmt.value=results[i].id;
+			opElmt.text=results[i].name;
+			try
 			{
 			electionTypesEl.add(opElmt,null); // standards compliant
 			}
-		catch(ex)
+			catch(ex)
 			{
 			electionTypesEl.add(opElmt); // IE only
 			}
+		}
+		
+	
+		
 	}
 }
 function populateElectionYearDropdown(results,from)
@@ -135,7 +140,7 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 	stateId = jsObj.stateId;
     
 	var basicDetailsDivEl = document.getElementById("basicDetails");
-	var tablerDetailsEl = document.getElementById("tablerDetails");
+	var tablerDetails1El = document.getElementById("tablerDetails1");
 	var alliancePartiesBasicDetails = results.alliancPartiesBasicAnalysisVO;
 	var basicDetailsHeadDivEl = document.getElementById("basicDetailsHead");	
 	var analysisChartName = results.partyBasicAnalysisVO.analysisChart;
@@ -144,24 +149,14 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 	if(electionType != "Parliament")
 	{
 		headStr+='';
-		headStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
-		headStr+='<TR>';
-		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png" style="margin-left:2px;"></TD>';
-		headStr+='<TD><H3 id="headingDiv" style="margin-left:-1px;width:677px;">'+stateName+' '+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</H3></TD>';
-		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png" style="margin-left:0px;"></TD>';
-		headStr+='</TR>';
-		headStr+='</TABLE>';
+		headStr+='<div class="headingClass"  style="margin-left: -2px; width: 644px;">'+stateName+' '+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</div>';
 		
 	} if(electionType == "Parliament")
 	{
 		headStr+='';
-		headStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
-		headStr+='<TR>';
-		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-		headStr+='<TD><H3>'+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</H3></TD>';
-		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png" style="margin-left:1px;"></TD>';
-		headStr+='</TR>';
-		headStr+='</TABLE>';
+		
+		headStr+='<div class="headingClass"  style="margin-left: -2px; width: 644px;">'+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</div>';
+		
 	}	
 	basicDetailsHeadDivEl.innerHTML = headStr;
 	var str='';	
@@ -198,14 +193,9 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 		buildGraphsCarousel("basicDetails");
 	}	
 	var tablerDataStr = '';
-	tablerDataStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
-	tablerDataStr+='<TR>';
-	tablerDataStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-	tablerDataStr+='<TD><H3 id="headingDiv" style="width:675px;">Analysis Details</H3></TD>';
-	tablerDataStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
-	tablerDataStr+='</TR>';
-	tablerDataStr+='</TABLE>';	
-	tablerDataStr+='<TABLE style="width:679px;" cellpadding="0" cellspacing="0" class="analysisDetailsTable" >';
+	
+	tablerDataStr+='<div  class="headingClass" style="border-radius: 4px 4px 4px 4px; margin-bottom: 11px; width: 663px;">Analysis Details</H3></div>';
+	tablerDataStr+='<TABLE style="width:665px;" cellpadding="0" cellspacing="0" class="analysisDetailsTable" >';
 	tablerDataStr+='<TR>';
 	tablerDataStr+='<TH class="head">Party</TH>';
 	tablerDataStr+='<TH class="head">Participated</TH>';
@@ -249,7 +239,7 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 	if(alliancePartiesBasicDetails != null && alliancePartiesBasicDetails.length != 0)
 	{
 		tablerDataStr+='<TR>';
-		tablerDataStr+='<TD colspan="6"><H3 style="width:625px;">Alliance Parties Analysis</H3></TD>';
+		tablerDataStr+='<TD colspan="6"><div style="width: 668px; margin-bottom: 10px; margin-top: 10px;" class="headingClass" style="width:625px;padding-left: 11px;">Alliance Parties Analysis</div></TD>';
 		tablerDataStr+='</TR>';
 		for(var j in alliancePartiesBasicDetails)
 		{
@@ -288,7 +278,7 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 		}
 	}			
 	tablerDataStr+='</TABLE>';
-	tablerDetailsEl.innerHTML =tablerDataStr; 
+	tablerDetails1El.innerHTML =tablerDataStr; 
 	//mycode -raghav
 	if(tools == 'toolsTrue')
 	{	
@@ -296,9 +286,7 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 		var sideHeadContentStr='';
 		sideHeadContentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 		sideHeadContentStr+='<TR>';
-		sideHeadContentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/1.png"></TD>';
-		sideHeadContentStr+='<TD><DIV class="sideHeading">Analysis Tools</DIV></TD>';
-		sideHeadContentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/3.png"></TD>';
+		sideHeadContentStr+='<TD><DIV class="sideHeading1">Analysis Tools</DIV></TD>';
 		sideHeadContentStr+='</TR>';
 		sideHeadContentStr+='</TABLE>';
 		sideHeaderDivEl.innerHTML = sideHeadContentStr;
@@ -471,7 +459,7 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 			toolsDivElContent+='</TD>';
 			toolsDivElContent+='</TR>';	
 			toolsDivElContent+='<TR>';	
-			toolsDivElContent+='<TD colspan="2"><INPUT type="checkbox" id="pprCheckBox" value="hasAllianceParties" name="alliances"/>Include Alliances</TD>';
+			toolsDivElContent+='<TD colspan="2"><INPUT style="width: 26px; margin-bottom: 6px;" type="checkbox" id="pprCheckBox" value="hasAllianceParties" name="alliances"/>Include Alliances</TD>';
 			toolsDivElContent+='</TR>';							
 			toolsDivElContent+='</TABLE>';
 			toolsDivElContent+='<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openPartyPerformanceWindow('+electionTypeId+')" /></A></DIV>';		 
@@ -511,29 +499,21 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='<div id="lostPositionAnalysisHead">';
 	contentStr+='	<TABLE border="0" cellpadding="0" cellspacing="0">';
 	contentStr+='	<TR>';
-	contentStr+='		<TD><IMG src="images/icons/electionResultsAnalysisReport/1.png"></TD>';
-	contentStr+='		<TD><DIV class="wonLostPosHeading" style="width:663px;">Analysis in Party Lost Positions</DIV></TD>';
-	contentStr+='		<TD><IMG src="images/icons/electionResultsAnalysisReport/3.png"></TD>';
+	contentStr+='		<TD><DIV class="wonLostPosHeading1" style="">Analysis in Party Lost Positions</DIV></TD>';
 	contentStr+='	</TR>';
 	contentStr+='	</TABLE>';	
 	contentStr+='</div>';
 
-	contentStr+='<div id="lostPositionAnalysisBody" class="positionAnalysisBodyClass" style="margin-left:20px;">';
+	contentStr+='<div id="lostPositionAnalysisBody" class="positionAnalysisBodyClass" style="">';
 		contentStr+='<table width="100%" style="width:50%">';
 		contentStr+='<tr>';
 		contentStr+='<td style="vertical-align:top;">';
 		contentStr+='<div id="lostPositionAnalysis_BasicData">';
 		contentStr+='	<div id="lostPositionAnalysis_reasonsAnalysis_head">';
-			contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
-			contentStr+='<TR>';
-			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-			contentStr+='<TD><H3 id="headingDiv" style="width:270px;">Analysis Data </H3></TD>';
-			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
-			contentStr+='</TR>';
-			contentStr+='</TABLE>';	
+		contentStr+='<div class="headingClass" style="width:296px;padding-left: 11px;">Analysis Data </div></>';	
 		contentStr+='</div>';
 		contentStr+='<div class="analysisCategoryBody" style="height:180px;">';
-		contentStr+='<TABLE class="wonLostPosTable">';
+		contentStr+='<TABLE class=" table table-border table-hover">';
 		contentStr+='<TR>';
 		contentStr+='<TD style="width:50%">Seats Lost</TD>';
 		contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'0\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+results.resultTypeValue+'</a></TD>';
@@ -556,16 +536,10 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='<td style="vertical-align:top;">';
 	contentStr+='<div id="lostPositionAnalysis_multipleReasons">';
 	contentStr+='	<div id="lostPositionAnalysis_multipleReasons_head">';
-			contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
-			contentStr+='<TR>';
-			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-			contentStr+='<TD><H3 id="headingDiv" style="width:270px;">Constituencies with Multiple Reasons</H3></TD>';
-			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
-			contentStr+='</TR>';
-			contentStr+='</TABLE>';
+	contentStr+='<div class="headingClass" style="width:296px;padding-left: 11px;">Constituencies with Multiple Reasons</div>';
 		contentStr+='</div>';
 	contentStr+='	<div id="lostPositionAnalysis_multipleReasons_body" class="analysisCategoryBody" style="height:180px;">';
-	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="95%"  class="multipleClassificationsTable">';
+	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="95%"  class=" table table-border table-hover">';
 	contentStr+='	<TR>';
 	contentStr+='		<TH width="30%" style="background-color:#DFE2E5">Analysis Reasons</TH>';
 	contentStr+='		<TH width="30%" style="background-color:#DFE2E5">Constituencies</TH>';
@@ -591,16 +565,10 @@ function showAnalysisDetailsInPartyLostPositions(results)
 		contentStr+='<td style="vertical-align:top;">';
 		contentStr+='<div id="lostPositionAnalysis_reasonsAnalysis">';
 		contentStr+='	<div id="lostPositionAnalysis_reasonsAnalysis_head">';
-			contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
-			contentStr+='<TR>';
-			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-			contentStr+='<TD><H3 id="headingDiv" style="width:270px;">Reasons Analysis</H3></TD>';
-			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
-			contentStr+='</TR>';
-			contentStr+='</TABLE>';	
+		contentStr+='<div class="headingClass" style="width:296px;padding-left: 11px;">Reasons Analysis</div>';
 		contentStr+='</div>';
 		contentStr+='	<div id="lostPositionAnalysis_reasonsAnalysis_body" class="analysisCategoryBody" style="height:280px;">';		
-		contentStr+='<table width="95%" class="reasonsAnalysis">';		
+		contentStr+='<table width="95%" class=" table table-border table-hover">';		
 		contentStr+='<tr>';
 		contentStr+='<th></th>';
 		contentStr+='<th>Comment</th>';		
@@ -624,13 +592,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='<td style="vertical-align:top;">';
 	contentStr+='<div id="lostPositionAnalysis_votesMargin">';
 	contentStr+='	<div id="lostPositionAnalysis_votesMargin_head">';
-		contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
-		contentStr+='<TR>';
-		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-		contentStr+='<TD><div id="votesMarginLost_Head"><H3 id="headingDiv" style="width:270px;">Analysis Based On Votes Margin</H3></div></TD>';
-		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
-		contentStr+='</TR>';
-		contentStr+='</TABLE>';	
+	contentStr+='<div id="votesMarginLost_Head"><div class="headingClass" style="width:296px;padding-left: 11px;">Analysis Based On Votes Margin</div></div>';
 	contentStr+='	</div>';
 	contentStr+='	<div id="lostPositionAnalysis_votesMargin_body" class="analysisCategoryBody" style="height:280px;"></div>';
 	contentStr+='</div>';
@@ -659,31 +621,25 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	var divEl = document.getElementById("wonPosAnalisisDetails");
 	var contentStr='';
 	contentStr+='<div id="wonPositionAnalysisHead">';
-		contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+		contentStr+='<TABLE class=" table table-border table-hover" border="0" cellpadding="0" cellspacing="0">';
 		contentStr+='<TR>';
-		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/1.png"></TD>';
-		contentStr+='<TD><DIV class="wonLostPosHeading" style="width:663px;">Analysis in Party Won Positions</DIV></TD>';
-		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/3.png"></TD>';
+		contentStr+='<TD><DIV class="wonLostPosHeading1" style="">Analysis in Party Won Positions</DIV></TD>';
 		contentStr+='</TR>';
 		contentStr+='</TABLE>';	
 	contentStr+='</div>';
 
-	contentStr+='<div id="wonPositionAnalysisBody" style="margin-left:-7px;">';
-		contentStr+='<table>';
+	contentStr+='<div id="wonPositionAnalysisBody" style="">';
+		contentStr+='<table class=" table table-border table-hover">';
 		contentStr+='<tr>';
 		contentStr+='	<td style="vertical-align:top;">';
 		contentStr+='		<div id="wonPositionAnalysis_BasicData">';
 		contentStr+='			<div id="wonPositionAnalysis_BasicData_head">';
-		contentStr+='			<TABLE border="0" cellpadding="0" cellspacing="0">';
-		contentStr+='			<TR>';
-		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-		contentStr+='			<TD><H3 id="headingDiv" style="width:270px;">Analysis Data </H3></TD>';
-		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
-		contentStr+='			</TR>';
-		contentStr+='			</TABLE>';	
+		
+		contentStr+='<div class="headingClass" style="width:300px;padding-left: 11px;">Analysis Data </div>';
+			
 		contentStr+='			</div>';
 		contentStr+='			<div id="wonPositionAnalysis_BasicData_body" class="analysisCategoryBody" style="height:180px;">';
-		contentStr+='				<TABLE class="wonLostPosTable" width="95%">';
+		contentStr+='				<TABLE class=" table table-border table-hover" width="95%">';
 		contentStr+='				<TR>';
 		contentStr+='					<TD style="width:50%">Seats Won</TD>';
 		contentStr+='					<TD style="width:30%"><a href="javascript:{}" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'1\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+results.resultTypeValue+'</a></TD>';
@@ -707,16 +663,10 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='	<td style="vertical-align:top;">';
 		contentStr+='		<div id="wonPositionAnalysis_multipleReasons">';
 		contentStr+='			<div id="wonPositionAnalysis_multipleReasons_head">';
-		contentStr+='			<TABLE border="0" cellpadding="0" cellspacing="0">';
-		contentStr+='			<TR>';
-		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-		contentStr+='			<TD><H3 id="headingDiv" style="width:270px;">Constituencies with Multiple Reasons</H3></TD>';
-		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
-		contentStr+='			</TR>';
-		contentStr+='			</TABLE>';	
-		contentStr+='			</div>';
-		contentStr+='			<div id="wonPositionAnalysis_multipleReasons_body" class="analysisCategoryBody" style="height:180px;">';
-		contentStr+='				<TABLE  cellpadding="0" cellspacing="0" width="95%"  class="multipleClassificationsTable">';
+		contentStr+='<div class="headingClass" style="width:300px;padding-left: 11px;">Constituencies with Multiple Reasons</div>';	
+		contentStr+='</div>';
+		contentStr+='<div id="wonPositionAnalysis_multipleReasons_body" class="analysisCategoryBody" style="height:180px;">';
+		contentStr+='				<TABLE  cellpadding="0" cellspacing="0" width="95%"  class=" table table-border table-hover">';
 		contentStr+='				<TR>';
 		contentStr+='				<TH width="30%" style="background-color:#DFE2E5">Analysis Reasons</TH>';
 		contentStr+='				<TH width="30%" style="background-color:#DFE2E5">Constituencies</TH>';
@@ -743,16 +693,10 @@ function showAnalysisDetailsInPartyWonPositions(results)
 			contentStr+='	<td style="vertical-align:top;">';
 			contentStr+='	<div id="wonPositionAnalysis_reasonsAnalysis">';
 			contentStr+='			<div id="wonPositionAnalysis_reasonsAnalysis_head">';
-			contentStr+='				<TABLE border="0" cellpadding="0" cellspacing="0">';
-			contentStr+='				<TR>';
-			contentStr+='				<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-			contentStr+='				<TD><H3 id="headingDiv" style="width:270px;">Reasons Analysis</H3></TD>';
-			contentStr+='				<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
-			contentStr+='				</TR>';
-			contentStr+='				</TABLE>';	
-			contentStr+='			</div>';
-			contentStr+='			<div id="wonPositionAnalysis_reasonsAnalysis_body" class="analysisCategoryBody" style="height:280px;">';
-			contentStr+='			<TABLE class="wonLostPosTable" width="95%">';			
+			contentStr+='<div class="headingClass" style="width:300px;padding-left: 11px;">Reasons Analysis</div>';
+			contentStr+='</div>';
+			contentStr+='<div id="wonPositionAnalysis_reasonsAnalysis_body" class="analysisCategoryBody">';
+			contentStr+='<TABLE class="table table-border table-hover" width="95%">';			
 			contentStr+='<tr>';
 			contentStr+='<th></th>';
 			contentStr+='<th>Comment</th>';		
@@ -777,13 +721,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='	<td style="vertical-align:top;">';
 		contentStr+='		<div id="wonPositionAnalysis_votesMargin">';
 		contentStr+='			<div id="wonPositionAnalysis_votesMargin_head">';
-		contentStr+='			<TABLE border="0" cellpadding="0" cellspacing="0">';
-		contentStr+='			<TR>';
-		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-		contentStr+='			<TD><div id="votesMarginWon_Head"><H3 id="headingDiv" style="width:270px;">Analysis Based On Votes Margin</H3></div></TD>';
-		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
-		contentStr+='			</TR>';
-		contentStr+='			</TABLE>';
+		contentStr+='<div id="votesMarginWon_Head"><div class="headingClass" style="width:300px;padding-left: 11px;">Analysis Based On Votes Margin</div></div>';
 		contentStr+='			</div>';
 		contentStr+='			<div id="wonPositionAnalysis_votesMargin_body" class="analysisCategoryBody" style="height:280px;">';
 		contentStr+='			</div>';
@@ -832,7 +770,7 @@ function buildVotesMarginInfoContent(jsObj,results)
 		electionAnalysisObj.marginVotesInfoWon = results;
 	}
 	
-	str += '<table width="100%" style="width:100%" class="votesMarginTable" border="0">';
+	str += '<table width="100%" style="width:100%" class=" table table-border table-hover" border="0">';
 	str += '<tr>';
 	str += '<th style="background-color:#DFE2E5;"></th>';
 	str += '<th align="left" style="background-color:#DFE2E5;">Votes Margin</th>';
@@ -864,7 +802,7 @@ function buildVotesMarginInfoContent(jsObj,results)
 			str+= '<tr id="marginInfo_'+jsObj.status+'_row_'+i+'" style="display:none;">';
 			str+= '<td colspan="4">';
 			str+= '<div class="marginBodyDivClass">';
-			str+= '<table width="95%" border="0" class="votesMarginDataTable">';
+			str+= '<table width="95%" border="0" class=" table table-border table-hover">';
 			for(var j in results[i].analysisCategoryBasicVO)
 			{
 				var dt = results[i].analysisCategoryBasicVO[j];				
