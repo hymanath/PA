@@ -114,6 +114,9 @@ margin:-1px 0px 0px 0px ;
 }
 #header-main{background:#ffdc2d !important;}
 .tdp-text-error{color: #B94A48;}
+a.tdp-text-error:hover {
+    color: #953b39;
+}
 
 </style>
 <decorator:head/>
