@@ -170,7 +170,7 @@ lable{line-height:40px;}
 <div class="row">
 
 		<div class="dashboard-header m-top5">
-			<img Src="./images/dashboard/DashBoard_Page_Header.jpg"></img>
+			<img style="cursor:default;" src="./images/dashboard/DashBoard_Page_Header.jpg"></img>
 		</div>
 
 <div class="row-fluid m-top10" >
