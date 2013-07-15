@@ -3679,6 +3679,11 @@ cursor:text !important;
 										<div>
 											<table width="100%">
 												<tr>
+												<td>
+												<div id="errorMesgsDIV"></div>
+												</td>
+												</tr>
+												<tr>
 													<th width="88%">
 														<div id="problemsDataDiv_head_label" style="color:#4B74C6;  font-family: Comic Sans MS; font-size: 14px;">Select Options To Filter Results</div>
 													</th>
@@ -3690,22 +3695,21 @@ cursor:text !important;
 										</div>
 										<div id="problemFilterOptions" style="display:none;"> 
 											<table width="100%" class="problemFilterOptions_table">									
-												<tr>
-													<th align="center">DATE </th>
+												<tr>										
 													<td colspan="2">
 														<table>
 														<tr>															
 															<!--<td><font class="requiredFont"> * </font></td>	-->
-															<td>
-																<input type="text" value=""  READONLY="READONLY" name ="occuredDate" id="identifiedFromText" size="15"/>
+															<td>From Date: </td><td>
+																<input type="text" value=""  READONLY="READONLY" name ="occuredDate" id="identifiedFromText" size="15" style="margin-top: 10px;"/>
 																<div id="identifiedFromText_Div" class="tinyDateCal"></div>
 															</td>
 															<td>
 															</td>				
 															
 															<!-- <td><font class="requiredFont"> * </font></td>-->
-															<td>
-																<input type="text" READONLY="READONLY" name ="reportedDate" id="reportedFromText" size="15"/>
+															<td> To Date: </td><td>
+																<input type="text" READONLY="READONLY" name ="reportedDate" id="reportedFromText" size="15" style="margin-top: 10px;"/>
 																<div id="reportedFromText_Div" class="tinyDateCal"></div></div>
 															</td>				
 															<td>
@@ -3716,12 +3720,12 @@ cursor:text !important;
 													</td>
 												</tr>
 												<tr>
-													<th align="center">STATUS </th>
+													<td style="width: 58px;">Status: </td>
 													<td colspan="2">
-													<s:select theme="simple" id="statusSelectElmt" list="problemStatus" headerKey="0" headerValue="All" listKey="id" listValue="name"/>								</td>
-													
+													<s:select theme="simple" id="statusSelectElmt" list="problemStatus" headerKey="0" headerValue="All" listKey="id" listValue="name" style="width: 220px;"/>
+													</td>
 													<td>
-														<input type="button" class="buttonClass btn btn-primary" value="view" onclick="pMgmt_Obj.getAllProblemsByFilter()">
+														<input type="button" class="buttonClass btn btn-primary" value="view" onclick="isDatesValid();">
 														
 													</td>
 												</tr>
@@ -3790,6 +3794,30 @@ cursor:text !important;
 </div>
 <script type="text/javascript">
 
+function isDatesValid()
+	{
+	$('#errorMesgsDIV').html('');
+	startDate = $('#identifiedFromText').val();
+	endDate = $('#reportedFromText').val();
+	  var yr1  = parseInt(startDate.substring(0,4),10);
+      var mon1 = parseInt(startDate.substring(5,7),10);
+      var dt1  = parseInt(startDate.substring(8,10),10);
+      var yr2  = parseInt(endDate.substring(0,4),10);
+      var mon2 = parseInt(endDate.substring(5,7),10);
+      var dt2  = parseInt(endDate.substring(8,10),10);
+      var date1 = new Date(yr1, mon1, dt1);
+      var date2 = new Date(yr2, mon2, dt2);
+
+	 if(date2 < date1)
+		{ 
+		 $('#errorMesgsDIV').html("<b><font color='red'>Start Date should be Less than To Date</font></b>");
+		 return true;
+		}
+	else {
+	pMgmt_Obj.getAllProblemsByFilter();
+	}
+	
+}
 /* New Layout (Start)
 =====================
 */
