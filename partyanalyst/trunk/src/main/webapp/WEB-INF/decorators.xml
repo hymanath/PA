@@ -138,7 +138,6 @@
 		<!--<pattern>/partyPerformanceMain*</pattern>-->
 		<pattern>/partyResultsCriteriaAction*</pattern>
 		<pattern>/partyResultsAction*</pattern>
-		<pattern>/electionResultsAnalysisAction*</pattern>
 		<pattern>/ministersPageAction*</pattern>
 		<pattern>/userTrackingReportAction*</pattern>
 		<pattern>/newsMonitoringService*</pattern>
@@ -249,6 +248,7 @@
 		<pattern>/surveyFormSaveAction*</pattern>
 		<pattern>/surveyorProfileSaveAction*</pattern>
 		<pattern>/voterDataToolsAction*</pattern>
+		<pattern>/electionResultsAnalysisAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
