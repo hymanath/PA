@@ -522,7 +522,8 @@ function buildChart(results,jsObj)
 	
         $('#candidateNewsGraphDiv').highcharts({
             chart: {
-                type: 'column'
+                type: 'column',
+				height:700
             },
             title: {
                 text: 'Regionwise News Count'
@@ -530,12 +531,13 @@ function buildChart(results,jsObj)
             
             xAxis: {
                 categories: xaxis,
-					labels: {
+				labels: {
 				rotation: -70,
 				align: 'right',
 				style: {
-				fontSize: '13px',
-				fontFamily: 'Verdana, sans-serif'
+				fontSize: '14px',
+				fontFamily: 'arial, sans-serif',
+				color:'#202B35'
 				}
 
 				}
