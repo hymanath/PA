@@ -57,7 +57,7 @@
     margin-left: auto;
 	margin-right:auto;
 	background: none repeat scroll 0 0 #FFFFFF;
-	width: 900px;
+	width: 943px;
     margin:20px;
 }
 #labelspan
@@ -78,7 +78,7 @@
 }
 #candidateDetailsDiv
 {
-	padding-left: 10px;
+	
 }
 #assemblyCandidateDiv
 {
@@ -102,7 +102,7 @@
     border: 2px solid #D3D3D3;
     margin-top: 30px;
 	width: 950px;
-	margin-left:-11px;
+	
 }
 .detailsTable td
 {
@@ -148,7 +148,7 @@
     border: 2px solid #D3D3D3;
     margin-top: 36px;
     padding: 5px;
-	margin-left:-5px;
+	
 }
 #constDetailsHead
 {
@@ -203,7 +203,7 @@
     padding: 6px;
     position: absolute;
     text-align: center;
-    width: 900px;
+    width: 940px;
 }
 h4.headStyle
 {
@@ -245,7 +245,7 @@ td.tdStyle{
     margin-right: 3px;
     margin-top: 0;
 	}
-.crossVotingInputTable{margin-left: 5px; margin-top: 5px;}
+.crossVotingInputTable{margin-left:49px; margin-top: 5px;}
 #electionYearLabel,#parliamentLabel{font-weight:bold;}
 </style>
 <script type="text/javascript">
@@ -826,7 +826,7 @@ $(document).ready(function(){
 </head>
 <body>
 
-<div id="MainBodyWrapper">
+<div id="MainBodyWrapper" style="min-height:390px;">
     <div style="background:#fff; display:table;">
  	<div id= "headDivStyle">
 	<table border="0" cellpadding="0" cellspacing="0">          
