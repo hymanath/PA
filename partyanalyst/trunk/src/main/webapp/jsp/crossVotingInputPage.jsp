@@ -58,7 +58,7 @@
 	margin-right:auto;
 	background: none repeat scroll 0 0 #FFFFFF;
 	width: 943px;
-    margin:20px;
+    margin:20px 20px 0px 20px;
 }
 #labelspan
 {
@@ -86,15 +86,11 @@
     border: 2px solid #D3D3D3;
     float: left;
     height: 198px;
-   
-    width: 435px;
 }
 #parliamentCandidateDiv
 {background-color: #FFFFFF;
     border: 2px solid #D3D3D3;
     height: 197px;
-    left: 107px;
-    margin-top: 276px;
 }
 #treeDiv
 {
@@ -456,36 +452,36 @@ function getAssembly(assemblyId,partyId)
 		{
 			var str='';
 			str+='<div id="headingDiv"><h3 class="span"> <u>Cross Voting Details for <a href="partyPageAction.action?partyId ='+obj.partyValue+'">'+ partyValue +' </a> Party in '+ electionValue +' <a href="constituencyPageAction.action?constituencyId ='+obj.assemblyValue+'">'+ assemblyValue +'</a> Assembly Constituency</u></h3></div>';
-			str+='<div id="candidateDetailsDiv">';
-				str+='<div id="assemblyCandidateDiv">';
-					str+='<table id="assemblyTable" class="detailsTable" style="width:auto;" >';
+			str+='<table style="width:100%;"> <tr><td style="width:50%;"><div id="candidateDetailsDiv">';
+				str+='<div id="assemblyCandidateDiv" style="width: 470px;">';
+					str+='<table id="assemblyTable" class="detailsTable"  >';
 					str+='<tr><th colspan="2"><u>Assembly Candidate Details..</u></th>';		
 					str+='</tr>';
 					str+='<tr>';
-					str+='<th>Name</th>';
-					str+='<td><a href="candidateElectionResultsAction.action?candidateId='+result.acCandidateData.candidateId+'">'+result.acCandidateData.candidateName+'</a></td>';
+					str+='<th>Name : </th>';
+					str+='<td style="width: 230px;"><a href="candidateElectionResultsAction.action?candidateId='+result.acCandidateData.candidateId+'">'+result.acCandidateData.candidateName+'</a></td>';
 				    str+='<td rowspan="3"><img height="90" width="90" onerror="setDefaultImage(this)" src="images/candidates/'+result.acCandidateData.candidateName+'.jpg"></td>';
 					//str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
 					str+='</tr>';
-					str+='<tr><th>Rank</th><td>'+result.acCandidateData.rank+' &nbsp;&nbsp;&nbsp; <b>Party:</b> '+ result.acCandidateData.party +'</td></tr>';
+					str+='<tr><th>Rank : </th><td>'+result.acCandidateData.rank+' &nbsp;&nbsp;&nbsp; <b>Party:</b> '+ result.acCandidateData.party +'</td></tr>';
 					
-					str+='<tr><th>Votes Gained</th><td>'+result.acCandidateData.votesEarned+' ('+result.acCandidateData.votesPercentage+' %)</td></tr>';
-					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters (AC<font color="red">*</font>) :</th><td>'+result.totalVotersInAC+' </td><th>Total Polled Votes</th><td>'+ result.acCandidateData.polledVotes +'</td></tr></table></td></tr>';
+					str+='<tr><th>Votes Gained : </th><td>'+result.acCandidateData.votesEarned+' ('+result.acCandidateData.votesPercentage+' %)</td></tr>';
+					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters (AC<font color="red">*</font>) :</th><td>'+result.totalVotersInAC+' </td><th>Total Polled Votes : </th><td>'+ result.acCandidateData.polledVotes +'</td></tr></table></td></tr>';
 					str+='</table>';		
-				str+='</div>';
-				str+='<div id="parliamentCandidateDiv">';
-					str+='<table id="parliamentTable" class="detailsTable" style="width:auto;">';
+				str+='</div></td>';
+				str+='<td style="width:50%;"><div id="parliamentCandidateDiv" style="width: 470px;">';
+					str+='<table id="parliamentTable" class="detailsTable" >';
 					str+='<tr><th colspan="2"><u>Parliament Candidate Details..</u></th></tr>';
-					str+='<tr><th>Name</th>';
-					str+='<td> <a href="candidateElectionResultsAction.action?candidateId='+result.pcCandidateData.candidateId+'">'+result.pcCandidateData.candidateName+'</a></td>';
+					str+='<tr><th>Name: </th>';
+					str+='<td style="width: 230px;"> <a href="candidateElectionResultsAction.action?candidateId='+result.pcCandidateData.candidateId+'">'+result.pcCandidateData.candidateName+'</a></td>';
 					str+='<td rowspan="3"><img height="90" width="90" onerror="setDefaultImage(this)" src="images/candidates/'+result.pcCandidateData.candidateName+'.jpg"></td>';
 				    str+='</tr>';
-					str+='<tr><th>Rank</th><td>'+result.pcCandidateData.rank+' &nbsp;&nbsp;&nbsp;<b>Party:</b> '+ result.pcCandidateData.party+'</td></tr>';
+					str+='<tr><th>Rank : </th><td>'+result.pcCandidateData.rank+' &nbsp;&nbsp;&nbsp;<b>Party:</b> '+ result.pcCandidateData.party+'</td></tr>';
 
-					str+='<tr><th>Votes Gained</th><td>'+result.pcCandidateData.votesEarned+' ('+result.pcCandidateData.votesPercentage+' %)</td></tr>';
+					str+='<tr><th>Votes Gained : </th><td>'+result.pcCandidateData.votesEarned+' ('+result.pcCandidateData.votesPercentage+' %)</td></tr>';
 					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters (PC<font color="red">*</font>) :</th><td>'+result.totalVotersInPC+' </td><th>Total Polled Votes</th><td>'+ result.pcCandidateData.polledVotes +'</td></tr></table></td></tr>';
 					str+='</table>';	
-				str+='</div>';		
+				str+='</div></td></tr></table>';		
 				str+='<div style="margin-top:5px; font-weight:bold;">NOTE: Votes Gained & Total Polled Votes = Boothwise Votes Polled In An Assembly Constituency</div>';
 				str+='<div id="constDetails">';
 					str+='<div id="constDetailsHead">Cross Voting & Impact Details </div>'
