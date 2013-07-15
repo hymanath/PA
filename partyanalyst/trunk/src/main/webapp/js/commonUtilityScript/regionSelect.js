@@ -1453,9 +1453,12 @@ function sendCadreSMS()
 		
 		var cId  = elements[i].value.substring(0,elements[i].value.indexOf('_'));
 		var cMobile = elements[i].value.substring(elements[i].value.indexOf('_')+1,elements[i].value.lastIndexOf('_'));
-		if(cMobile == "")
+		if($.trim(cMobile).length == 0)
 		{
-		$('#smsStatusTextSpan1').html('<font style="color:red;margin-left:75px;">message will send only to the people ,who have mobile No.</font>');
+		$('#smsStatusTextSpan').html("<font style='color:red;margin-left:75px;font-size: 12px;'>Sms cannot be send to cadres who didn't have mobile numbers. Please unselect them to send sms to other cadres.</font>");
+		 $('html, body').animate({
+	         scrollTop: $("#smsStatusTextSpan").offset().top
+	     }, 1000);
 		return;
 		}
 		var cName = elements[i].value.substring(elements[i].value.lastIndexOf('_')+1,elements[i].value.length);
@@ -1471,8 +1474,11 @@ function sendCadreSMS()
 	
 	if(selectedCadresArray.length == 0)
 	{
-		errorSpanElmt.innerHTML = 'Atleast One cadre need to selected to send SMS';
+		errorSpanElmt.innerHTML = '<span style="font-size: 12px;">Atleast One cadre need to selected to send SMS</span>';
 		$('#smsStatusTextSpan1').html('<font style="color:red;margin-left:75px;">Atleast One cadre need to selected to send SMS</font>');
+		 $('html, body').animate({
+	         scrollTop: $("#smsStatusTextSpan").offset().top
+	     }, 1000);
 		return;
 	}
 	
