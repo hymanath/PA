@@ -847,16 +847,17 @@ function handleSubmit(type)
 		 else if(descVal != null)
 		{
 				var iChars = "!`#$%^*<()>+=-[]\\\,/{}|\":?~";  
-				
+				var errorReqLoc = false;
 		            for (var i = 0; i < descVal.length; i++)
                 {      
                     if (iChars.indexOf(descVal.charAt(i)) != -1)
                     {
 					
 				     errorReq = true;
+				     errorReqLoc = true;
                     } 
 				}
-				if(errorReq){
+				if(errorReqLoc){
 					 str += "Description should not contain special characters.";
 				}
 		}
@@ -1133,7 +1134,6 @@ function handleSubmit(type)
 			<option>57</option>
 			<option>58</option>
 			<option>59</option>
-			<option>60</option>
 			</select>
 	</div><br/>
 	<div>
@@ -1206,7 +1206,6 @@ function handleSubmit(type)
 				<option>57</option>
 				<option>58</option>
 				<option>59</option>
-				<option>60</option>
 				</select>
 		
 	</div>
