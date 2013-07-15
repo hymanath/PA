@@ -202,4 +202,20 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 		
 		return (Long) query.uniqueResult();
 	}*/
+	
+	/**
+	 * This DAO is Used to get all comments of a Particular Announcement
+	 * @param Long announcementid
+	 * @return List<Object[]>
+	 * @date 13-07-2013
+	 * @author sasi
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllComments(Long announcementid)
+	{
+		Query query = getSession().createQuery("select model.commentId,model.comment,model.user,model.time from Comment model " +
+				" where model.announcements.announcementId = :announcementid and  model.isDelete = 'NO' order by model.commentId desc");
+		query.setParameter("announcementid", announcementid);
+		return query.list();
+	}
 }

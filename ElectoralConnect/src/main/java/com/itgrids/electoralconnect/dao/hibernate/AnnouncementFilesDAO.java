@@ -69,6 +69,25 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 			return query.list();
 		}
 		
+
+		/**
+		 * This DAO is used to get Latest Annoncements used in webservice
+		 * @return List<Object[]>
+		 * @date 13-07-2013
+		 * @author sasi
+		 */
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getLatest50Annoncements(Long announcementTypeId)
+		{
+			Query query = getSession().createQuery("select model.announcementFilesId,model.announcements,model.file from AnnouncementFiles model " +
+					" where model.announcements.announcementType.announcementTypeId = :announcementTypeId" );
+			query.setParameter("announcementTypeId", announcementTypeId);
+			query.setFirstResult(0);
+			query.setMaxResults(50);
+			return query.list();
+		}
+		
+		
 		/**
 		 * This DAO is used to get Announcements By Announcement File Id
 		 * @param Long announcementFileId

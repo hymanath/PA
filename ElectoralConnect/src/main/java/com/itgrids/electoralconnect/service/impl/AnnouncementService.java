@@ -19,6 +19,7 @@ import com.itgrids.electoralconnect.dao.ICommentDAO;
 import com.itgrids.electoralconnect.dao.IFileDAO;
 import com.itgrids.electoralconnect.dao.IUserDAO;
 import com.itgrids.electoralconnect.dto.AnnouncementVO;
+import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.NotificationVO;
 import com.itgrids.electoralconnect.dto.PressReleaseVO;
 import com.itgrids.electoralconnect.dto.RegistrationVO;
@@ -26,6 +27,7 @@ import com.itgrids.electoralconnect.dto.ResultStatus;
 import com.itgrids.electoralconnect.model.AnnouncementFiles;
 import com.itgrids.electoralconnect.model.Announcements;
 import com.itgrids.electoralconnect.model.File;
+import com.itgrids.electoralconnect.model.User;
 import com.itgrids.electoralconnect.service.IAnnouncementService;
 import com.itgrids.electoralconnect.dto.ResultCodeMapper;
 
@@ -427,6 +429,8 @@ public class AnnouncementService implements IAnnouncementService{
 						announcementVO.setAnnouncementName(announcements.getAnnouncementType() != null ?announcements.getAnnouncementType().getName() :"");
 						announcementVO.setFileId(file.getFileId()!= null ?file.getFileId() :0l);
 						announcementVO.setFileName(file.getFileName() != null ?file.getFileName() :"");
+						announcementVO.setCommentsCount(commentDAO.getTotalCommentsCountByAnnouncementId(announcements.getAnnouncementId()));
+						announcementVO.setCmmntsLstOfAnncmnt(getCommentsOfThisAnnouncement(announcements.getAnnouncementId()));
 						returnList.add(announcementVO);
 					}
 				}
@@ -435,6 +439,45 @@ public class AnnouncementService implements IAnnouncementService{
 			}
 			
 			return returnList;
+		}
+		
+		public List<CommentVO> getCommentsOfThisAnnouncement(Long announcementId){
+			List<CommentVO> returnList = null;
+			try{
+				List<Object[]> commentsList=commentDAO.getAllComments(announcementId);
+				User user = new User();
+				Long totalCount = commentDAO.getTotalCommentsCountByAnnouncementId(announcementId);
+				
+				if(commentsList != null && commentsList.size() > 0)
+				{
+					returnList = new ArrayList<CommentVO>();
+					for (Object[] parms : commentsList) {
+						CommentVO commentVO = new CommentVO();
+						commentVO.setCommentId((Long)parms[0]);
+						commentVO.setComment(parms[1].toString());
+						user          = (User) parms[2];
+						commentVO.setName(user.getUserProfile().getFirstName());
+						
+						DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+						
+						String reportDate="";
+						if(parms[3]!=null){
+							reportDate = df.format(parms[3]);
+						}
+						
+						//commentVO.setDate((Date) parms[3]);
+						commentVO.setCommentedTime(reportDate);
+						commentVO.setTotal(totalCount);
+						returnList.add(commentVO);
+					}
+				}
+				
+			}catch (Exception e) {
+				returnList = new ArrayList<CommentVO>();
+				LOG.error("Exception Raised in getAllCommentsCommentedByUser() method in UserService Service",e);
+			}
+			return returnList;
+			
 		}
 		
 		/**
@@ -479,5 +522,29 @@ public class AnnouncementService implements IAnnouncementService{
 				textValue = textValue.replaceAll("&#65533;", "");
 			}
 			return textValue;
+		}
+		
+		/**
+		 * This Service is used to get Latest 50 announcements by type,
+		 * this is used in Web Service for Mobile Application
+		 * @param Long announcement type
+		 * @return List<AnnouncementVO>
+		 * @date 13-07-2013
+		 * @author sasi
+		 */
+		public List<AnnouncementVO> getLatest50Announcements(Long announcemetTypeId)
+		{
+			List<AnnouncementVO> returnList = new ArrayList<AnnouncementVO>();
+			try {
+				LOG.debug("Enterd into getAnnouncementById() method in AnnouncementService Service");
+				List<Object[]> announcementsList = announcementFilesDAO.getLatest50Annoncements(announcemetTypeId);
+				if(announcementsList != null && announcementsList.size() >0)
+				{
+					returnList = fillAnnouncementVO(announcementsList);
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised in getAllAnnouncements() method in AnnouncementService Service",e);
+			}
+			return returnList;
 		}
 }

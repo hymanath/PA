@@ -45,11 +45,12 @@ public class NotificationComponent {
 	
 	@GET
   //  @RolesAllowed("anils")
-	@Path("/top5Announcements")
+	@Path("/top50Announcements/{announcementTypeId}")
 	@Produces(MediaType.APPLICATION_JSON)
-   public List<AnnouncementVO>  getTop5Announcements() {
+	public List<AnnouncementVO>  getTop50Announcements(@PathParam("announcementTypeId")  long announcementTypeId) {
     	
-		  return  announcementService.getTop5Announcements();
+		  //return  announcementService.getTop5Announcements();
+		return announcementService.getLatest50Announcements(announcementTypeId);
  
 	}
 	@GET
