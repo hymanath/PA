@@ -64,5 +64,6 @@ public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNe
 
 	public List<Object[]> getNotResponseCountPerfect(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId);
 
+	public List<Object[]> getRespondNewsPartyDetailsForCandidateTable(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId);
 
 }
