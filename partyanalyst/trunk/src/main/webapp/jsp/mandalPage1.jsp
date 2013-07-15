@@ -1122,7 +1122,7 @@ function getElectionYearsInMandal(id,name){
 			for(var i in resultVO.partiesResultsInVillages[k].revenueVillagesInfo)
 			{			
 				rvStr += '<tr>';
-				rvStr += '<td><a href="javascript:{}">'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationName+'</a></td>';
+				rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationName+'</td>';
 				rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].population+'</td>';
 				rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].votesPolled+'</td>';
 				rvStr += '<td>';
