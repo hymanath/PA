@@ -125,8 +125,8 @@ function getNewsForPagination(startIndex)
 	
 	  var jsObj={
 		candidateId:candidateId,
-		fromDate:"",
-		toDate:"",
+		fromDate:fromDate,
+		toDate:toDate,
 		locationScope:locationScope,
 		firstResult:startIndex,
 	    maxResult:10,
