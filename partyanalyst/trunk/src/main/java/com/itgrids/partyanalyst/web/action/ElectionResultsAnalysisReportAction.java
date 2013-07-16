@@ -657,7 +657,9 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		
 		Long stateID = new Long(jObj.getString("stateId"));
 		if(!stateID.equals(0L))
-		partiesList = staticDataService.getStaticPartiesListForAState(stateID);
+		//partiesList = staticDataService.getStaticPartiesListForAState(stateID);
+		partiesList = staticDataService.getStaticPartiesListByStateAndElection(stateID, jObj.getString("electionType"));
+	
 		Collections.sort(partiesList);
 		partiesList.add(0, new SelectOptionVO(0L,"Select Party"));
 	
