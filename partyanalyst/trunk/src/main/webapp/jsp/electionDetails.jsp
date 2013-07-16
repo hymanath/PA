@@ -1771,9 +1771,9 @@ function showPartywiseDetailsDataTable(results)
 			str +='	<tr>';
 			str +='		<th style="background-color:#C4DEFF">'+results.electionBasicVotersData[1].partyName+'</th>';
 			str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalSeatsParticipated+'</td>';
-		    str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].generalCount+'</td>';
-		    str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].scCoutn+'</td>';
-		    str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].stCount+'</td>';			
+		    str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].generalCount+'</td>';
+		    str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].scCoutn+'</td>';
+		    str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].stCount+'</td>';			
 			str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalVotesForState+'</td>';
 			str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalPolledVotesForState+'</td>';
 			str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalVotingPercentageForState+'%</td>';
