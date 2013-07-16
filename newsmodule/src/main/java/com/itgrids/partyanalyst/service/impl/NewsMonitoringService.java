@@ -3898,6 +3898,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		  List<Object[]>  listFromNamination1 = null;
 		  List<Object[]>  listFromCandidateParty1 = null;
 			 Map<Long , Object[]> utilMap  = new HashMap<Long,Object[]>();
+			 Map<Long , Object[]> utilMap1  = new HashMap<Long,Object[]>();
 
 		 
 			// List<Object[]> list = candidateRelatedNewsDAO.getRespondNewsPartyDetails(responseNewsFileGalleryIds);
@@ -3981,7 +3982,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 			  while(  list3.hasNext())
 			 {
 				 Object [] newob = list3.next();
-				 utilMap.put((Long)newob[2], newob);
+				 utilMap1.put((Long)newob[2], newob);
 				 
 			  }
 			  // second loop for to add party ids
@@ -3989,17 +3990,17 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 			 while(  list4.hasNext())
 			 {
 				 Object [] newob = list4.next();
-				 Object [] exObj= utilMap.get((Long)newob[2]);
+				 Object [] exObj= utilMap1.get((Long)newob[2]);
 				 if(exObj != null)
 					 exObj[0]=(Long)exObj[0]+(Long)newob[0];
 				 else 
-					 utilMap.put((Long)newob[2], newob);
+					 utilMap1.put((Long)newob[2], newob);
 
 			 }
 			
-			Iterator<Long > itr1 = utilMap.keySet().iterator();
+			Iterator<Long > itr1 = utilMap1.keySet().iterator();
 			             while(itr1.hasNext()){
-					  Object[] params  =  utilMap.get((Long)itr1.next());
+					  Object[] params  =  utilMap1.get((Long)itr1.next());
 					  SelectOptionVO optionVO2 = new SelectOptionVO();
 					  optionVO2.setId((Long)params[2]);
 					  optionVO2.setPopulateId((Long)params[0]);
