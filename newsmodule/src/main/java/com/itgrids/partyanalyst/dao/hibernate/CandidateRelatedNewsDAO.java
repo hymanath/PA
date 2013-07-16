@@ -660,7 +660,7 @@ ICandidateRelatedNewsDAO {
 				"and model3.constituencyElection.election.electionScope.electionType.electionTypeId in(1,2)) ");
 	  str.append(" and model.fileGallary.isDelete ='false' and model.fileGallary.isPrivate = 'false' and model.fileGallary.gallary.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false'");
 	  str.append(" and model2.isDelete ='false' and model2.isPrivate = 'false' and model.fileGallary.gallary.contentType.contentType =:contentType");
-	 str.append(" and model3.party.partyId !=:partyId and model.fileGallary.fileGallaryId != cn.fileGallary.fileGallaryId ");
+	 str.append(" and model3.party.partyId !=:partyId and model.fileGallary.fileGallaryId not in (select cn1.fileGallary.fileGallaryId from CandidateNewsResponse cn1) ");
 	 
 	  //get Selected Party fileGalleryIds other then TDP
 	  if(selectedPartyId != null && selectedPartyId > 0)
@@ -1224,9 +1224,266 @@ ICandidateRelatedNewsDAO {
 				
 	}
 	
+	public List<Long> getResponseForPartyForPartyCandidate(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId)
+	{
+	  StringBuilder str = new StringBuilder();
+	  str.append(" select distinct cn.fileGallary.fileGallaryId from CandidateNewsResponse cn, " +
+	  		"CandidateRealatedNews model,PartyGallery model2,CandidateParty model3" +	  	
+	  		"  where  model.fileGallary.fileGallaryId = cn.fileGallary.fileGallaryId and " +	  		
+	  		"  model.candidate.candidateId = model3.candidate.candidateId " +
+	  		"and cn.fileGallary.gallary.gallaryId = model2.gallery.gallaryId ");// +
+	  		//"and model3.partyId != :partyId" );
+	  
+	  //get FileGallery Ids For Selected Party
+	  if(selectedPartyId != null && selectedPartyId > 0)
+	   str.append(" and model3.party.partyId = :selectedPartyId ");
+	  
+	  str.append(" and model.fileGallary.isDelete ='false' and model.fileGallary.isPrivate = 'false' and model.fileGallary.gallary.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false'");
+	  str.append(" and model2.isDelete ='false' and model2.isPrivate = 'false' and model.fileGallary.gallary.contentType.contentType =:contentType");
+	  
+	  //str.append(" and ( model.candidate.party.partyId =:partyId or model4.party.partyId =:partyId )   ");
+	  if(fromDate != null)
+		str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+	  if(toDate != null)
+		str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
+	  
+	  if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+	   str.append(" and model3.party.partyId =:partyId ");
+	  
+	  if(categoryIdsList != null && categoryIdsList.size() > 0)
+	   str.append(" and model.fileGallary.file.category.categoryId in (:categoryIdsList) ");
+	  if(galleryIdsList != null && galleryIdsList.size() > 0)
+	   str.append(" and model.fileGallary.gallary.gallaryId in (:galleryIdsList) ");
+	  
+	  if(locationScopeId != null && locationScopeId > 0)
+	   str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
+	  if(locationIdsList != null && locationIdsList.size() > 0)
+	   str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
+	  
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
+	  //query.setParameter("partyId", partyId);
+	  
+	  if(fromDate != null)
+	   query.setParameter("fromDate", fromDate);
+	  if(toDate != null)
+	   query.setParameter("toDate", toDate);
+	  if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+		query.setParameter("partyId", partyId);
+	  if(categoryIdsList != null && categoryIdsList.size() > 0)
+		 query.setParameterList("categoryIdsList", categoryIdsList);
+	  if(galleryIdsList != null && galleryIdsList.size() > 0)
+		  query.setParameterList("galleryIdsList", galleryIdsList);
+	  if(locationScopeId != null && locationScopeId > 0)
+		query.setParameter("locationScopeId", locationScopeId);
+	  if(locationIdsList != null && locationIdsList.size() > 0)
+		  query.setParameterList("locationIdsList", locationIdsList);
+	  if(startIndex != null)
+		  query.setFirstResult(startIndex);
+	  if(maxIndex != null)
+		  query.setMaxResults(maxIndex);
+	  
+	  if(selectedPartyId != null && selectedPartyId > 0)
+		query.setParameter("selectedPartyId", selectedPartyId);
+	  
+	  return query.list();
+				
+	}
+	public List<Object[]> getRespondNewsIdsForCandidateParty(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId)
+	{
+	  StringBuilder str = new StringBuilder();
+	  str.append(" select distinct model5.fileGallary.fileGallaryId,model6.party.shortName ,model6.party.partyId,model5.candidate.candidateId ,model6.candidate.candidateId  " +   //,model.candidate.candidateId ,model3.candidate.candidateId ,model3.party.partyId
+	  		" from CandidateNewsResponse cn, " +
+	  		" CandidateRealatedNews model,PartyGallery model2,CandidateParty model3,CandidateRealatedNews model5 , CandidateParty model6 " +
+
+	  		"where  model.fileGallary.fileGallaryId = cn.responseFileGallary.fileGallaryId and cn.fileGallary.fileGallaryId = model5.fileGallary.fileGallaryId " +
+	  		"and model5.candidate.candidateId = model6.candidate.candidateId " +
+	  		"and model.candidate.candidateId = model3.candidate.candidateId " +
+	  		"and model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId  " +
+	  		"and  model6.partyId != :partyId  ");
+	  
+	  //get FileGallery Ids For Selected Party
+	  if(selectedPartyId != null && selectedPartyId > 0)
+	   str.append(" and model3.party.partyId = :selectedPartyId ");
+	  
+	  str.append(" and model.fileGallary.isDelete ='false' and model.fileGallary.isPrivate = 'false' and model.fileGallary.gallary.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false'");
+	  str.append(" and model2.isDelete ='false' and model2.isPrivate = 'false' and model.fileGallary.gallary.contentType.contentType =:contentType");
+	  
+	  //str.append(" and ( model.candidate.party.partyId =:partyId or model4.party.partyId =:partyId )   ");
+	  if(fromDate != null)
+		str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+	  if(toDate != null)
+		str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
+	  
+	  if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+	   str.append(" and model3.party.partyId =:partyId ");
+	  
+	  if(categoryIdsList != null && categoryIdsList.size() > 0)
+	   str.append(" and model.fileGallary.file.category.categoryId in (:categoryIdsList) ");
+	  if(galleryIdsList != null && galleryIdsList.size() > 0)
+	   str.append(" and model.fileGallary.gallary.gallaryId in (:galleryIdsList) ");
+	  
+	  if(locationScopeId != null && locationScopeId > 0)
+	   str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
+	  if(locationIdsList != null && locationIdsList.size() > 0)
+	   str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
+	// str.append(" group by model6.party.partyId ");
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
+	  //query.setParameter("partyId", partyId);
+	  
+	  if(fromDate != null)
+	   query.setParameter("fromDate", fromDate);
+	  if(toDate != null)
+	   query.setParameter("toDate", toDate);
+	  if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+		query.setParameter("partyId", partyId);
+	  if(categoryIdsList != null && categoryIdsList.size() > 0)
+		 query.setParameterList("categoryIdsList", categoryIdsList);
+	  if(galleryIdsList != null && galleryIdsList.size() > 0)
+		  query.setParameterList("galleryIdsList", galleryIdsList);
+	  if(locationScopeId != null && locationScopeId > 0)
+		query.setParameter("locationScopeId", locationScopeId);
+	  if(locationIdsList != null && locationIdsList.size() > 0)
+		  query.setParameterList("locationIdsList", locationIdsList);
+	  if(startIndex != null)
+		  query.setFirstResult(startIndex);
+	  if(maxIndex != null)
+		  query.setMaxResults(maxIndex);
+	  
+	  if(selectedPartyId != null && selectedPartyId > 0)
+		query.setParameter("selectedPartyId", selectedPartyId);
+	  
+	  return query.list();
+				
+	}
 	
-	//NewsCountForACandidate From CandidateParty table
+	public List<Object[]> getNotResponseCountForCandidateParty(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId)
+	{
+	  StringBuilder str = new StringBuilder();
+	  str.append(" select count(distinct model.fileGallary.fileGallaryId) ,model3.party.shortName ,model3.party.partyId,model.candidate.candidateId ,model3.candidate.candidateId  "+
+	  		"  from CandidateRealatedNews model,CandidateNewsResponse cn, PartyGallery model2,CandidateParty model3  where  " +
+	  		" model.candidate.candidateId = model3.candidate.candidateId and model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId ");
+	/*  str.append("and  model3.constituencyElection.election.electionDate in(select max(model4.constituencyElection.election.electionDate) from " +
+				"Nomination model4 where model4.candidate.candidateId = model3.candidate.candidateId " +
+				"and model3.constituencyElection.election.electionScope.electionType.electionTypeId in(1,2)) ");*/
+	  str.append(" and model.fileGallary.isDelete ='false' and model.fileGallary.isPrivate = 'false' and model.fileGallary.gallary.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false'");
+	  str.append(" and model2.isDelete ='false' and model2.isPrivate = 'false' and model.fileGallary.gallary.contentType.contentType =:contentType");
+	 str.append(" and model3.party.partyId !=:partyId  and model2.party.partyId =:partyId and model.fileGallary.fileGallaryId  not in (select cn1.fileGallary.fileGallaryId from CandidateNewsResponse cn1) ");
+	 
+	  //get Selected Party fileGalleryIds other then TDP
+	  if(selectedPartyId != null && selectedPartyId > 0)
+	   str.append(" and model3.party.partyId =:selectedPartyId ");
+	  
+	  if(fromDate != null)
+		str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+	  if(toDate != null)
+		str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
+	  
+	  if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+	   str.append(" and model2.party.partyId =:partyId ");
+	  
+	  if(categoryIdsList != null && categoryIdsList.size() > 0)
+	   str.append(" and model.fileGallary.file.category.categoryId in (:categoryIdsList) ");
+	  if(galleryIdsList != null && galleryIdsList.size() > 0)
+	   str.append(" and model.fileGallary.gallary.gallaryId in (:galleryIdsList) ");
+	  
+	  if(locationScopeId != null && locationScopeId > 0)
+	   str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
+	  if(locationIdsList != null && locationIdsList.size() > 0)
+	   str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
+	  str.append(" group by model3.party.partyId ");
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
+	  query.setParameter("partyId", partyId);
+	  if(fromDate != null)
+	   query.setParameter("fromDate", fromDate);
+	  if(toDate != null)
+	   query.setParameter("toDate", toDate);
+	  if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+		query.setParameter("partyId", partyId);
+	  if(categoryIdsList != null && categoryIdsList.size() > 0)
+		 query.setParameterList("categoryIdsList", categoryIdsList);
+	  if(galleryIdsList != null && galleryIdsList.size() > 0)
+		  query.setParameterList("galleryIdsList", galleryIdsList);
+	  if(locationScopeId != null && locationScopeId > 0)
+		query.setParameter("locationScopeId", locationScopeId);
+	  if(locationIdsList != null && locationIdsList.size() > 0)
+		  query.setParameterList("locationIdsList", locationIdsList);
+	  
+	  if(selectedPartyId != null && selectedPartyId > 0)
+	   query.setParameter("selectedPartyId", selectedPartyId);
+	  if(startIndex != null)
+		query.setFirstResult(startIndex);
+	  if(maxIndex != null)
+		 query.setMaxResults(maxIndex);
+	  
+	  return query.list();
+				
+	}
 	
+	public List<?> getNotResponseCountBasedTotalNewsCountForCandidateParty(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId)
+	{
+	  StringBuilder str = new StringBuilder();
+	  str.append(" select distinct model.fileGallary.fileGallaryId "+       //,model.candidate.candidateId ,model3.candidate.candidateId ,model3.party.partyId " +
+	  		"  from CandidateRealatedNews model,CandidateNewsResponse cn, PartyGallery model2,CandidateParty model3  where  " +
+	  		" model.candidate.candidateId = model3.candidate.candidateId and model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId ");
+	 
+	  str.append(" and model.fileGallary.isDelete ='false' and model.fileGallary.isPrivate = 'false' and model.fileGallary.gallary.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false'");
+	  str.append(" and model2.isDelete ='false' and model2.isPrivate = 'false' and model.fileGallary.gallary.contentType.contentType =:contentType");
+	  str.append(" and model3.party.partyId !=:partyId and model.fileGallary.fileGallaryId not in (select cn1.fileGallary.fileGallaryId from CandidateNewsResponse cn1)");
+	 
+	  //get Selected Party fileGalleryIds other then TDP
+	  if(selectedPartyId != null && selectedPartyId > 0)
+	   str.append(" and model3.party.partyId =:selectedPartyId ");
+	  
+	  if(fromDate != null)
+		str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+	  if(toDate != null)
+		str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
+	  
+	  if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+	   str.append(" and model2.party.partyId =:partyId ");
+	  
+	  if(categoryIdsList != null && categoryIdsList.size() > 0)
+	   str.append(" and model.fileGallary.file.category.categoryId in (:categoryIdsList) ");
+	  if(galleryIdsList != null && galleryIdsList.size() > 0)
+	   str.append(" and model.fileGallary.gallary.gallaryId in (:galleryIdsList) ");
+	  
+	  if(locationScopeId != null && locationScopeId > 0)
+	   str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
+	  if(locationIdsList != null && locationIdsList.size() > 0)
+	   str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
+	  
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
+	  query.setParameter("partyId", partyId);
+	  if(fromDate != null)
+	   query.setParameter("fromDate", fromDate);
+	  if(toDate != null)
+	   query.setParameter("toDate", toDate);
+	  if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+		query.setParameter("partyId", partyId);
+	  if(categoryIdsList != null && categoryIdsList.size() > 0)
+		 query.setParameterList("categoryIdsList", categoryIdsList);
+	  if(galleryIdsList != null && galleryIdsList.size() > 0)
+		  query.setParameterList("galleryIdsList", galleryIdsList);
+	  if(locationScopeId != null && locationScopeId > 0)
+		query.setParameter("locationScopeId", locationScopeId);
+	  if(locationIdsList != null && locationIdsList.size() > 0)
+		  query.setParameterList("locationIdsList", locationIdsList);
+	  
+	  if(selectedPartyId != null && selectedPartyId > 0)
+	   query.setParameter("selectedPartyId", selectedPartyId);
+	  if(startIndex != null)
+		query.setFirstResult(startIndex);
+	  if(maxIndex != null)
+		 query.setMaxResults(maxIndex);
+	  
+	  return query.list();
+				
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getNewsCountForACandidateFromCandidateParty(Date fromDate, Date toDate,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar, Long partyId)
 	{

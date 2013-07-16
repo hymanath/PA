@@ -3848,7 +3848,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		  
 		  
 		  // total news count 
-		  List<Long> totalNewsIdsListFromCandidateRElatedNews = candidateRelatedNewsDAO.getTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar,null,null,0L);
+		/*  List<Long> totalNewsIdsListFromCandidateRElatedNews = candidateRelatedNewsDAO.getTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar,null,null,0L);
 		  
 		  List<Long> totalNewsIdsListFroCandidateParty = candidateRelatedNewsDAO.getTotalNewsCountCustom(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar);
 		  if(totalNewsIdsListFromCandidateRElatedNews != null && totalNewsIdsListFromCandidateRElatedNews.size() > 0)
@@ -3861,7 +3861,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 				  totalNewsIdsList.add(fileGalleryId); 
 		  }
 		  
-		  newsCountVO.setTotalNewsCount((long)totalNewsIdsList.size());
+		  newsCountVO.setTotalNewsCount((long)totalNewsIdsList.size());*/
 		  // response news count 
 		  
 		  
@@ -3888,17 +3888,18 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		  
 		  // not respondent news count 
 		 // List<Long> notRespondFileGalleryIds = candidateRelatedNewsDAO.getNotRespondFileGalleryIds(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, responseNewsFileGalleryIds);
-		 List<Long> notRespondFileGalleryIds = (List<Long>)candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar,null,null,0L);
-		long count2=0;
+		// List<Long> notRespondFileGalleryIds = (List<Long>)candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar,null,null,0L);
+	    //	long count2=0;
 		  //response table 
 		  SelectOptionVO optionVO = new SelectOptionVO();
 		  List<Object[]> list = null;
 		  List<Object[]>  listFromNamination = null;
 		  List<Object[]>  listFromCandidateParty = null;
+		  List<Object[]>  listFromNamination1 = null;
+		  List<Object[]>  listFromCandidateParty1 = null;
 			 Map<Long , Object[]> utilMap  = new HashMap<Long,Object[]>();
 
-		  if(totalNewsIdsListFromCandidateRElatedNews != null && totalNewsIdsListFromCandidateRElatedNews.size() > 0)
-		  {
+		 
 			// List<Object[]> list = candidateRelatedNewsDAO.getRespondNewsPartyDetails(responseNewsFileGalleryIds);
 			// List<Object[]> list1 = candidateRelatedNewsDAO.getRespondNewsPartyDetailsCustom(responseNewsFileGalleryIds);
 			   listFromNamination = candidateRelatedNewsDAO.getRespondNewsPartyDetails(fromDate, toDate, 872l, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar, null, null, null);
@@ -3923,7 +3924,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 				 Object [] newob = list2.next();
 				 Object [] exObj= utilMap.get((Long)newob[2]);
 				 if(exObj != null)
-					 exObj[0]=(Long)exObj[0]+(Long)newob[2];
+					 exObj[0]=(Long)exObj[0]+(Long)newob[0];
 				 else 
 					 utilMap.put((Long)newob[2], newob);
 
@@ -3945,7 +3946,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 				  optionVO.setSelectOptionsList(responseNewsCountList);
 			  
 			  newsCountVO.setResponseNewsCount(count);
-			  count2 =count;
+			  //count2 =count;
 			/* if(list1 != null && list1.size() > 0)
 			  {
 				  for(Object[] params : list1)
@@ -3959,45 +3960,58 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 					//responseNewsCountList.add(new SelectOptionVO((Long)params[0],params[1]!=null?params[1].toString():""));
 				  optionVO.setSelectOptionsList(responseNewsCountList);
 			  }*/
-		  }
-		  
+		
+
 		  //not response table
-		  if(totalNewsIdsListFromCandidateRElatedNews != null && totalNewsIdsListFromCandidateRElatedNews.size() > 0)
-		  {
-			  List<Object[]> list1 = candidateRelatedNewsDAO.getNotResponseCount(fromDate, toDate,872l,null,null,null,null,tempVar,null,null,null);
-				// List<Object[]> list1 = candidateRelatedNewsDAO.getRespondNewsPartyDetailsCustom(notRespondFileGalleryIds);
-			  List<SelectOptionVO> notResponseNewsCountList = new ArrayList<SelectOptionVO>(0);; 
+		
 			  long count1 = 0l;
 
-			  if(list1 != null && list1.size() > 0)
-			  {    // list1.removeAll(list);
-				  for(Object[] params : list1)
-				  {
+			  listFromNamination1= candidateRelatedNewsDAO.getNotResponseCount(fromDate, toDate,872l,null,null,null,null,tempVar,null,null,null);
+				// List<Object[]> list1 = candidateRelatedNewsDAO.getRespondNewsPartyDetailsCustom(notRespondFileGalleryIds);
+			  listFromCandidateParty1  =  candidateRelatedNewsDAO.getNotResponseCountForCandidateParty(fromDate, toDate,872l,null,null,null,null,tempVar,null,null,null);
+			  List<SelectOptionVO> notResponseNewsCountList = new ArrayList<SelectOptionVO>(0);; 
+
+		       if(listFromNamination1 == null || listFromNamination1.size()== 0)
+			    	 //return    listFromCandidateParty;
+			    	   System.out.println("anil");
+			
+			       // iterate first loop  for partyids 
+			       
+			       Iterator<Object[]> list3=   listFromNamination1.iterator();
+			  while(  list3.hasNext())
+			 {
+				 Object [] newob = list3.next();
+				 utilMap.put((Long)newob[2], newob);
+				 
+			  }
+			  // second loop for to add party ids
+			 Iterator<Object[]> list4 =  listFromCandidateParty1.iterator();
+			 while(  list4.hasNext())
+			 {
+				 Object [] newob = list4.next();
+				 Object [] exObj= utilMap.get((Long)newob[2]);
+				 if(exObj != null)
+					 exObj[0]=(Long)exObj[0]+(Long)newob[0];
+				 else 
+					 utilMap.put((Long)newob[2], newob);
+
+			 }
+			
+			Iterator<Long > itr1 = utilMap.keySet().iterator();
+			             while(itr1.hasNext()){
+					  Object[] params  =  utilMap.get((Long)itr1.next());
 					  SelectOptionVO optionVO2 = new SelectOptionVO();
 					  optionVO2.setId((Long)params[2]);
 					  optionVO2.setPopulateId((Long)params[0]);
 					  optionVO2.setName(params[1]!=null?params[1].toString():"");
 					  notResponseNewsCountList.add(optionVO2);
 					  count1+=((Long)params[0]).longValue();
-				  }
-				  optionVO.setSelectOptionsList1(notResponseNewsCountList);
-			  }
-			  newsCountVO.setNotResponseNewsCount(count1);
-		/*	  if(list1 != null && list1.size() > 0)
-			  {
-				  notResponseNewsCountList = new ArrayList<SelectOptionVO>(0);
-				  for(Object[] params : list1)
-				  {
-					  SelectOptionVO optionVO3 = new SelectOptionVO();
-					  optionVO3.setId((Long)params[2]);
-					  optionVO3.setPopulateId((Long)params[0]);
-					  optionVO3.setName(params[1]!=null?params[1].toString():"");
-					  notResponseNewsCountList.add(optionVO3);
-				  
-				  }
-				  optionVO.setSelectOptionsList1(notResponseNewsCountList);
-			  }*/
 		  }
+				  optionVO.setSelectOptionsList1(notResponseNewsCountList);
+			  
+			  newsCountVO.setNotResponseNewsCount(count1);
+		
+		
 		  
 		  newsCountVO.setSelectOptionVO(optionVO);
 		  return newsCountVO;
@@ -4080,13 +4094,26 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		 
 		else if(vo.getNewsType() != null && vo.getNewsType().equalsIgnoreCase("responded")){
 		// fileGalleryIdsList = candidateRelatedNewsDAO.getResponseCountBasedTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, vo.getTempVar(),vo.getStartIndex(),vo.getMaxIndex(),vo.getSelectedPartyId());
-			if(!vo.getSelectedPartyId().equals(0l))
-			fileGalleryIdsList = candidateRelatedNewsDAO.getResponseForParty(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId,null,vo.getStartIndex(),vo.getMaxIndex(),vo.getSelectedPartyId());
-			else
+			if(!vo.getSelectedPartyId().equals(0l)){
+			fileGalleryIdsList = candidateRelatedNewsDAO.getResponseForParty(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId,null,null,null,vo.getSelectedPartyId());
+			List<Long> items =     candidateRelatedNewsDAO.getResponseForPartyForPartyCandidate(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId,null,null,null,vo.getSelectedPartyId());
+        for(Long id : items)
+        {   if(fileGalleryIdsList == null ||fileGalleryIdsList.size() == 0  )
+        	fileGalleryIdsList =  new ArrayList<Long>();
+        
+        	fileGalleryIdsList.add(id);
+        }
+			
+			}else
 			{
-				  List<Object[]> list = candidateRelatedNewsDAO.getRespondNewsIds(fromDate, toDate, 872l, null, null, null, null,  "all", vo.getStartIndex(),vo.getMaxIndex(), null);
+				  List<Object[]> list = candidateRelatedNewsDAO.getRespondNewsIds(fromDate, toDate, 872l, null, null, null, null,  "all",null,null, null);
+				 
 				  fileGalleryIdsList = new ArrayList<Long>();
-
+                  
+					List<Object[]> items =     candidateRelatedNewsDAO.getRespondNewsIdsForCandidateParty(fromDate, toDate,872l,null,null,null,null,"all",null,null,null);
+					  for(Object[]  id : items)
+				        {    fileGalleryIdsList.add((Long)id[0]);
+				        }
 				  if(list != null && list.size() > 0)
 				  {
 					  for(Object[] params : list)
@@ -4103,26 +4130,60 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		}
 		else if(vo.getNewsType() != null && vo.getNewsType().equalsIgnoreCase("notResponded")){
 			if(!vo.getSelectedPartyId().equals(0l)){
-			List <Long> fileGalleryIdsList1 =(List<Long>) candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId,"all",vo.getStartIndex(),vo.getMaxIndex(),vo.getSelectedPartyId());
-			{ 				  fileGalleryIdsList = new ArrayList<Long>();
-
-			for(Long obj:fileGalleryIdsList1 )
+				fileGalleryIdsList = new ArrayList<Long>();
+			List <Long> fileGalleryIdsList1 =(List<Long>) candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId,"all",null,null,vo.getSelectedPartyId());
+		    List<Long> items =  (List<Long>)candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCountForCandidateParty(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId,"all",null,null,vo.getSelectedPartyId());//.getNotResponseCountBasedTotalNewsCount(null,null,872,null,null,null,null,null,null,null,null);
+		//this if future reference for how to avoid slow data 
+		    if(fileGalleryIdsList1 !=null && fileGalleryIdsList1.size()>0)
+			{ 				 
+				
+		    	fileGalleryIdsList = fileGalleryIdsList1;
+		    	
+			/*for(Long obj:fileGalleryIdsList1 )
 			{
 				int count =candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(obj).size();
 				
 				if(count == 0)
 
 					fileGalleryIdsList.add(obj);
-				}
+				}*/
                				
 			}
+		    for(Long id : items)
+	        {   if(fileGalleryIdsList == null ||fileGalleryIdsList.size() == 0  )
+	        	fileGalleryIdsList =  new ArrayList<Long>();
+	        
+	        	fileGalleryIdsList.add(id);
+	        }
 			}
 			else
 			{
-				 List<Long> list = (List<Long>)candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId,"all",vo.getStartIndex(),vo.getMaxIndex(),0L);
+				 List<Long> list = (List<Long>)candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId,"all",null,null,0L);
 				  fileGalleryIdsList = new ArrayList<Long>();
- 
-				  if(list != null && list.size() > 0)
+				  List<Long> items =  (List<Long>)candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCountForCandidateParty(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId,"all",null,null,vo.getSelectedPartyId());//.getNotResponseCountBasedTotalNewsCount(null,null,872,null,null,null,null,null,null,null,null);
+					//this if future reference for how to avoid slow data 
+					    if(list !=null && list.size()>0)
+						{ 				 
+							
+					    	fileGalleryIdsList = list;
+					    	
+						/*for(Long obj:fileGalleryIdsList1 )
+						{
+							int count =candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(obj).size();
+							
+							if(count == 0)
+
+								fileGalleryIdsList.add(obj);
+							}*/
+			               				
+						}
+					    for(Long id : items)
+				        {   if(fileGalleryIdsList == null ||fileGalleryIdsList.size() == 0  )
+				        	fileGalleryIdsList =  new ArrayList<Long>();
+				        
+				        	fileGalleryIdsList.add(id);
+				        }
+				/*  if(list != null && list.size() > 0)
 				  {
 					  for(Object params : list)
 					  { int count =candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)params).size();
@@ -4135,23 +4196,23 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 					
 						//responseNewsCountList.add(new SelectOptionVO((Long)params[0],params[1]!=null?params[1].toString():""));
 					
-				  }
+				  }*/
 			}
 			
 			}
 		if(fileGalleryIdsList != null && fileGalleryIdsList.size() > 0)
 		{
-		 List<FileGallary> fileGallaries = fileGallaryDAO.getFileGallariesByFileGallaryIdsList(fileGalleryIdsList);
+		 List<FileGallary> fileGallaries = fileGallaryDAO.getFileGallariesByFileGallaryIdsList(fileGalleryIdsList.subList(vo.getStartIndex() ,(vo.getMaxIndex()+vo.getStartIndex()) > fileGalleryIdsList.size() ? fileGalleryIdsList.size() : (vo.getMaxIndex()+vo.getStartIndex())));
 		 candidateDetailsService.setfileGallaryDetails(fileGallaries, fileVOList);
 		 
 		 if(vo.getNewsType() != null && vo.getNewsType().equalsIgnoreCase("total"))
 		   fileVOList.get(0).setCount(candidateRelatedNewsDAO.getTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, vo.getTempVar(),null,null,vo.getSelectedPartyId()).size());
 		 
 		 else if(vo.getNewsType() != null && vo.getNewsType().equalsIgnoreCase("responded"))
-		  fileVOList.get(0).setCount(candidateRelatedNewsDAO.getResponseCountBasedTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, vo.getTempVar(),null,null,vo.getSelectedPartyId()).size());
+		  fileVOList.get(0).setCount(fileGalleryIdsList.size());
 		 
 		 else if(vo.getNewsType() != null && vo.getNewsType().equalsIgnoreCase("notResponded"))
-		   fileVOList.get(0).setCount(candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCount(fromDate, toDate, 872L, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, vo.getTempVar(),null,null,vo.getSelectedPartyId()).size());
+		   fileVOList.get(0).setCount(fileGalleryIdsList.size());
 		 
 		}
 		
