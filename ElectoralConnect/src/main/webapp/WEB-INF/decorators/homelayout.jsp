@@ -66,6 +66,7 @@
 		a.menu:after, .dropdown-toggle:after {
 			content: none;
 		}
+		nav ul li a{cursor:pointer;}
 </style>
 <!---  Header ---->
 		<header>
@@ -89,9 +90,9 @@
 									<li><a href="#" title="About Us">About US</a></li>
 									<li><a href="#" title="Contact Us">Contact Us</a></li>-->
 									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'out'}">
-									<li><a title="Home" id='loginId'>Login</a></li> |
+									<li><a title="Login" id='loginId'>Login</a></li> |
 									<!--<li><a title="Admin" id='adminId' onClick="openAdminPage();">Admin</a></li>-->
-									<li><a title="About Us" id='registerId'>Register</a></li> |
+									<li><a title="Register" id='registerId'>Register</a></li> |
 									</c:if>
 									
 									<c:if test="${sessionScope.loginStatus == 'in'}">
