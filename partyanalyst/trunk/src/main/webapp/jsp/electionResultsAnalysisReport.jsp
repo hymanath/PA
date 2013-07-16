@@ -291,7 +291,7 @@ function getStaticParties(id)
 	var elmt = document.getElementById("errorsDiv");
     elmt.innerHTML='';
 
-    //validating input
+   
 	if(id == 0)
 	{
 		var str='';
@@ -313,17 +313,23 @@ function getStaticParties(id)
 	clearOptionsListForSelectElmtId("electionYearSelectEl");
 	clearOptionsListForSelectElmtId("partySelectEl");
 
-	
+	var electionType = "";
+	var electionId = $("#electionTypeSelectEl").val();
+	if(electionId == 2)
+	electionType = "Assembly";
+	else
+	electionType = "Parliament";
+
 	if(elmt.style.display == 'none')
 	elmt.style.display = 'block';
-	var jsObj= 
-	{		
-		stateId:stateId,
-		task:"getStaticParties"		
+	var jsObj=
+	{
+	stateId:stateId,
+	electionType:electionType,
+	task:"getStaticParties"
 	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/partiesAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
+
+
 }
 function getBasicAnalysisDetails()
 {
