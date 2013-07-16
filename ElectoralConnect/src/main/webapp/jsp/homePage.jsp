@@ -43,6 +43,7 @@
 			.indiComment{margin:4px;padding:10px;}
 			#indiCommentName{margin:2px;}
 			#indiCommentDate{margin:2px;color:#28B0D6;}
+			#specialBlockDIV >div,.bigsblock{cursor:pointer;}
 </style>
 <div>
 <!--<div id="bodyId">Hello Welcome to Electoral Connect </div>
@@ -190,32 +191,32 @@
 				<div class="row sblockRowBg">
 					<div class="container m_top10">
 						<div id="specialBlockDIV" class="row-fluid">	
-							<div class="span2 widget" onclick="hideMainMenu('registerVoter')">
+							<div class="span2 widget" onclick="hideMainMenu('registerVoter')" title="Know how to Register Vote. ">
 							  <img src="image/register_vote.png" />
 							  <h3>Register VOTE</h3>
 							  <a href="javascript:{}" class="morebtn"></a>
 							</div>
-							<div class="span2 widget" onclick="hideMainMenu('duplicateVoter')">
+							<div class="span2 widget" onclick="hideMainMenu('duplicateVoter')" title="Know how to get Duplicate Vote. ">
 							  <img src="image/dublicate_vote.png" />
 							  <h3>Duplication VOTE</h3>
 							  <a href="javascript:{}" class="morebtn"></a>
 							</div>
-							<div class="span2 widget" onclick="hideMainMenu('transferVote')">
+							<div class="span2 widget" onclick="hideMainMenu('transferVote')" title="Know how to Transfer Vote. ">
 								<img src="image/Transceive_vote.png" />
 								<h3>Transfer VOTE</h3>
 								<a href="javascript:{}"  class="morebtn"></a>
 							</div>
-							<div class="span2 widget" onclick="hideMainMenu('modifyVote')">
+							<div class="span2 widget" onclick="hideMainMenu('modifyVote')" title="Know how to Modify your Entries. ">
 								<img src="image/modify_vote.png" />
 								<h3>Modify <br>VOTE</h3>
 								<a href="javascript:{}"  class="morebtn"></a>
 							</div>
-							<div class="span2 widget" onclick="hideMainMenu('cancelVote')">
+							<div class="span2 widget" onclick="hideMainMenu('cancelVote')" title="Know how to Cancel Vote. ">
 								<img src="image/cancel_vote.png" />
 								<h3>Cancel<br> VOTE</h3>
 								<a href="javascript:{}"  class="morebtn"></a>
 							</div>
-							<div class="span2 widget" onclick="hideMainMenu('armiNriVote')">
+							<div class="span2 widget" onclick="hideMainMenu('armiNriVote')" title="Know How to Vote if you are Army/NRI Personnel. ">
 								<img src="image/NRI_vote.png" />
 								<h3>Army & NRI VOTE</h3>
 								<a href="javascript:{}" class="morebtn"></a>
@@ -223,7 +224,7 @@
 						</div>
 						
 						<!---Big Speshal Box 1---Register VOTE--->
-						<div id="registerVoter" class="row-fluid bigsblock registerBlock" onclick="showMainMenu('registerVoter')">
+						<div id="registerVoter" class="row-fluid bigsblock registerBlock" onclick="showMainMenu('registerVoter')" title="Click on to close..and get back to Home Page">
 							<section class="span10 offset1 text-center">
 								<img src="image/register_vote.png" />
 								 <h4>Register VOTE</h4>
@@ -236,21 +237,21 @@
 								<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 1 ---Register VOTE---END--->
 						<!---Big Speshal Box 2---Duplicate Vote--->
-						<div id="duplicateVoter" class="row-fluid bigsblock" onclick="showMainMenu('duplicateVoter')">
+						<div id="duplicateVoter" class="row-fluid bigsblock" onclick="showMainMenu('duplicateVoter')" title="Click on to close..and get back to Home Page">
 							<section class="span10 offset1 text-center">
 								<img src="image/dublicate_vote.png" />
 								 <h4>Duplicate Voter Id</h4>
 								 <div class="borderTop">
-									<p>By filling in Form 002, the individual applies for a duplicate Voters ID Cards in case he has lost it. But before filling in the form, the individual must first file an FIR in the local police station. After filing an FIR the individual needs to take a copy of the FIR. Along with the form 002 the copy of the FIR must be attached.</p>
+									<p>By filling in <a class="inline link " style="position:relative;bottom:0px;right:0px;" target="_blank" href="image/votersInfo/Form002.pdf" title="Click here to View Form 002 ( For getting duplicate Electoral roll ) Application">Form 002</a>, the individual applies for a duplicate Voters ID Cards in case he has lost it. But before filling in the form, the individual must first file an FIR in the local police station. After filing an FIR the individual needs to take a copy of the FIR. Along with the <a class="inline link " style="position:relative;bottom:0px;right:0px;" target="_blank" href="image/votersInfo/Form002.pdf" title="Click here to View Form 002 ( For getting duplicate Electoral roll ) Application">form 002</a> the copy of the FIR must be attached.</p>
 									<p>One needs to submit Rs. 25 to the local Electoral Registration Office as penalty. </p>
-									<a class="inline link btn-inverse btn" style="position:relative;bottom:0px;right:0px;" target="_blank" href="image/votersInfo/Form002.pdf"  title="Click here to View Form 002 ( For getting Duplicate Voter Id ) Application">form 002</a>
+									<a class="inline link btn-inverse btn" style="position:relative;bottom:0px;right:0px;" target="_blank" href="image/votersInfo/Form002.pdf"  title="Click here to View Form 002 ( For getting Duplicate Voter Id ) Application">Form 002</a>
 									
 								</div>	
 							</section>	
 							<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 2---Duplicate Vote--- END--->
 						<!---Big Speshal Box 3---Transfer Vote--->
-						<div id="transferVote" class="row-fluid bigsblock" onclick="showMainMenu('transferVote')">
+						<div id="transferVote" class="row-fluid bigsblock" onclick="showMainMenu('transferVote')" title="Click on to close..and get back to Home Page">
 							<section class="span10 offset1 text-center">
 								<img src="image/Transceive_vote.png" />
 								 <h4>Transfer VOTE</h4>
@@ -262,7 +263,7 @@
 							<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 3---Transfer Vote--- END--->
 						<!---Big Speshal Box 4---Modify  Vote--->
-						<div id="modifyVote" class="row-fluid bigsblock" onclick="showMainMenu('modifyVote')">
+						<div id="modifyVote" class="row-fluid bigsblock" onclick="showMainMenu('modifyVote')" title="Click on to close..and get back to Home Page">
 							<section class="span10 offset1 text-center">
 								<img src="image/modify_vote.png" />
 								 <h4>Modify VOTE </h4>
@@ -274,7 +275,7 @@
 							<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 4---Modify  Vote--- END--->
 						<!---Big Speshal Box 5---Cancel   Vote--->
-						<div id="cancelVote" class="row-fluid bigsblock" onclick="showMainMenu('cancelVote')">
+						<div id="cancelVote" class="row-fluid bigsblock" onclick="showMainMenu('cancelVote')" title="Click on to close..and get back to Home Page">
 							<section class="span10 offset1 text-center">
 								<img src="image/cancel_vote.png" />
 								 <h4>Cancel VOTE </h4>
@@ -290,7 +291,7 @@
 							<a href="javascript:{}" class="closeBtn float-right"><img src="image/close_btn.png"/></a>
 						</div><!---Big Speshal Box 5---Cancel   Vote--- END--->
 						<!---Big Speshal Box 6---Army & NRI Vote--->
-						<div id="armiNriVote" class="row-fluid bigsblock" onclick="showMainMenu('armiNriVote')">
+						<div id="armiNriVote" class="row-fluid bigsblock" onclick="showMainMenu('armiNriVote')" title="Click on to close..and get back to Home Page">
 							<section class="span10 offset1 text-center">
 								<img src="image/NRI_vote.png" />
 								 <h4>Army & NRI VOTE</h4>

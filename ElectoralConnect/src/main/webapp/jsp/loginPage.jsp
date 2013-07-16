@@ -26,7 +26,7 @@ $(document).ready(function () {
 		else if(loginStatus == "failure")
 		{
 			$('#loginModal').modal('show');
-			$('#errorMsg').html('<b style="color:red">Please Enter Valid User Name and Paaword</b>');
+			$('#errorMsg').html('<b style="color:red">Please Enter Valid User Name and Password</b>');
 		}
 		
 		/* if(passwordChanged == "NO")
