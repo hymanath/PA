@@ -54,6 +54,7 @@
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+<script type="text/javascript" src="js/bootstrap.js"></script>
 
 <style type="text/css">
 #candidateNewsCountDiv table,#respondNotRespondNewsCountDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
@@ -91,11 +92,14 @@
 #categoryGallary{margin-left: 12px; margin-right: 4px; margin-top: 0px;}
 #errorMsgDiv{text-align: center; font-size: 13px; margin-bottom: 10px;}
 #districtList,#categoryList,#galleryList{margin-left: 12px;width:200px;}
-#respondNotRespondNewsCountDiv{margin-top: 11px; margin-bottom: 25px;}
+#respondNotRespondNewsCountDiv{margin-top: 11px; margin-bottom: 25px;margin-left:100px;width:800px;}
 #respondNotRespondNewsCountDiv table{margin-top: 10px;}
 .newsCount{cursor:pointer;}
 
 #candidateNewsCountDiv table td, #respondNotRespondNewsCountDiv table td{color:#005580;}
+.filter2{display:none;}
+#candidateNewsCountDiv{width:800px;margin-left:75px;}
+.nav > li > a{font-weight:bold;}
 </style>
 <script type="text/javascript">
 var fromDate = '${fromDate}';
@@ -107,26 +111,39 @@ var toDate = '${toDate}';
 <body>
 
 <div id="candidateNewsMainDiv">
- <div>
-  <h4><span id="headingSpan">Candidate News Details</span></h4>
+	<div style="width:800px;margin-left:auto;margin-right:auto;text-align:center;">
+		<!--<span id="getCandidatesNewsIds" class="btn btn-success">
+		Get Candidate News Details</span>
+		<span id="criticsIds" class="btn btn-success">Get Critics Information</span>-->
+		
+		<ul id="myTab" class="nav nav-tabs">
+			<li><a data-toggle="tab" id="getCandidatesNewsId">Get Candidate News Details</a></li>
+			<li><a data-toggle="tab" id="criticsId">Get Critics Information</a></li>
+		</ul>
+	</div>
+	
+	
  
    <div id="errorMsgDiv"></div>
     <div id="selectNewsDiv">
-     <div id="selectNewsInnerDiv">
+     <div id="selectNewsInnerDiv" style="display:none;">
 	  <table id="selectRadioBtnTable">
 	   <tr>
-		 <td>
-			<div id="radioBtnDiv"><input type="radio" value="all" name="candidateNewsRadio" class="candidateNewsRadioCls" id="allRadio" checked="true"/><b>All</b>
-			<input type="radio" value="byDate" name="candidateNewsRadio" class="candidateNewsRadioCls" id="byDateRadio"/><b>By Date</b></div>
+		  <td>
+			<div id="radioBtnDiv">
+				<input type="radio" value="all" name="candidateNewsRadio" class="candidateNewsRadioCls" id="allRadio" checked="true"/><b>All</b>
+				<input type="radio" value="byDate" name="candidateNewsRadio" class="candidateNewsRadioCls" id="byDateRadio"/><b>By Date</b>
+			</div>
 	      </td>
+		  
 		  <td>
-		   <div id="galleryRadioDiv"><input type="checkbox" value="byGallery" class="galleryCheckBoxCls" id="galleryCheckBoxId"/><b>By Gallery</b></div>
+		   <div id="galleryRadioDiv" class="filter2"><input type="checkbox" value="byGallery" class="galleryCheckBoxCls" id="galleryCheckBoxId"/><b>By Gallery</b></div>
 		  </td>
 		  <td>
-		   <div id="categoryRadioDiv"><input type="checkbox" value="byCategory" id="categoryCheckBoxId"/><b>By Category</b></div>
+		   <div id="categoryRadioDiv" class="filter2"><input type="checkbox" value="byCategory" id="categoryCheckBoxId"/><b>By Category</b></div>
 		  </td>
 		  <td>
-		    <div id="districtCheckboxDiv"><input type="checkbox" value="byDistrict" id="districtCheckboxId"><b>By District</b></div>
+		    <div id="districtCheckboxDiv" class="filter2"><input type="checkbox" value="byDistrict" id="districtCheckboxId"><b>By District</b></div>
 		  </td>
 		 </tr> 
 		</table>
@@ -158,19 +175,55 @@ var toDate = '${toDate}';
 	  </table>
 			
 	 <div style="text-align:center;"><input type="button" value="submit" id="newsDetailsBtn" class="btn btn-info"/> <img src="images/search.jpg" id="ajaxImg" style="display:none;"/></div>
+	 
 	     
 
   </div>
-  <div id="respondNotRespondNewsCountDiv"></div>
+  <hr>
+	<div id="respondNotRespondNewsCountDiv" style="display:none;"></div>
 
- <div id="candidateNewsCountDiv"></div>
+	<div id="candidateNewsCountDiv" style="display:none;"></div>
 </div>
-
-<div id="candidateNewsGraphDiv"></div>
+	<div id="graphOuterId" style="display:none;">
+		<div id="candidateNewsGraphDiv"></div>
+	</div>
 </div>
 
 
 <script type="text/javascript">
+
+$('#myTab a').click(function(e) {
+    e.preventDefault();
+    $(this).tab('show');
+});
+$(function(){
+$('#myTab a:first').tab('show');
+$('#myTab a:first').trigger('click',function(){
+	hideWhenCandiNewsClcked();
+});
+});
+
+
+
+
+$('#getCandidatesNewsId').click(function(){
+	hideWhenCandiNewsClcked();
+});
+function hideWhenCandiNewsClcked(){
+	$('#candidateNewsCountDiv').css('display','block');
+	$('#graphOuterId').css('display','block');
+	$('#selectNewsInnerDiv').css('display','block');
+	$('#respondNotRespondNewsCountDiv').css('display','none');
+	$('.filter2').css('display','block');
+}
+
+$('#criticsId').click(function(){
+	$('#candidateNewsCountDiv').css('display','none');
+	$('#graphOuterId').css('display','none');
+	$('#selectNewsInnerDiv').css('display','block');
+	$('#respondNotRespondNewsCountDiv').css('display','block');
+	$('.filter2').css('display','none');
+});
 
 function getCandidateNewsCount()
 {
