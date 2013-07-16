@@ -403,6 +403,17 @@ function buildContentDetails()
 			 str+='</td>';
 			 str+='</tr>';
 			 str+='</table>';
+			  str+='<table class="tableCls">';
+             str +='<tr>';
+			 if(result.relatedGalleries[0].filesList[i].locationName != null && result.relatedGalleries[0].filesList[i].locationName != "")
+			  str +='<td><b>Location </b>: <font color="#FF4500"><span> '+result.relatedGalleries[0].filesList[i].locationName+'</font></span></td>';
+             
+			 if(result.relatedGalleries[0].filesList[i].candidateName != null && result.relatedGalleries[0].filesList[i].candidateName != "")
+			  str +='<td><b style="margin-left: 15px;">Candidate </b>: <font color="#FF4500"><span> '+result.relatedGalleries[0].filesList[i].candidateName+'</font></span></td>';
+
+			 str +='</tr>';
+
+			 str+='</table>';
 		str +='<div id="imgDiv" class="popupcontainer"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="max-width:600px;max-length:800px;" src="'+pathStr+'" /></div>';
 		str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="width:950px;height:850px;" src="'+pathStr+'" /></div>';
 		if(source == "Eenadu Telugu")

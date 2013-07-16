@@ -1538,4 +1538,13 @@ ICandidateRelatedNewsDAO {
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidateNameByFileGalleryIdsList(List<Long> fileGalleryIdsList)
+	{
+		Query query = getSession().createQuery(" select model.fileGallary.fileGallaryId, model.candidate.lastname from CandidateRealatedNews model where model.fileGallary.fileGallaryId in (:fileGalleryIdsList) ");
+		query.setParameterList("fileGalleryIdsList", fileGalleryIdsList);
+		return query.list();
+	}
+	
 }
