@@ -460,12 +460,12 @@ function buildCandidateNews(results,jsObj)
  {
  
    $('#newsCountTab').dataTable({
-		"aaSorting": [[ 1, "asc" ]],
+		
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
 		  "aoColumns": [null,null,null,null,null] 
-		//  "aoColumns": [{ "sType": null }, { "sType": "numeric" }, { "sType": "numeric" },        { "sType": "numeric" }, { "sType": "numeric" }]
+		
 		});
  }
  else

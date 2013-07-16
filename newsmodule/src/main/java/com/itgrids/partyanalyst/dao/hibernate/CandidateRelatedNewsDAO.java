@@ -176,13 +176,17 @@ ICandidateRelatedNewsDAO {
 	public List<Object[]> getNewsCountForACandidate(Date fromDate, Date toDate,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar, Long partyId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append(" select count(distinct model.fileGallary.fileGallaryId),model.candidate.candidateId, model.candidate.lastname,model.fileGallary.file.regionScopes.regionScopesId from CandidateRealatedNews model,PartyGallery model2 ");
-		str.append(" where model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId and model.fileGallary.isDelete = 'false' and model.fileGallary.isPrivate = 'false' ");
+		str.append(" select count(distinct model.fileGallary.fileGallaryId),model.candidate.candidateId, model.candidate.lastname,model.fileGallary.file.regionScopes.regionScopesId from CandidateRealatedNews model,PartyGallery model2,Nomination model3 ");
+		str.append(" where model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId and model3.candidate.candidateId = model.candidate.candidateId and model.fileGallary.isDelete = 'false' and model.fileGallary.isPrivate = 'false' ");
 		str.append(" and model2.isDelete = 'false' and model2.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false' and model.fileGallary.gallary.isPrivate = 'false' ");
 		str.append(" and model.fileGallary.file.fileId is not null ");
 		
+		str.append(" and model3.constituencyElection.election.electionDate in(select max(model4.constituencyElection.election.electionDate) from " +
+					"Nomination model4 where model4.candidate.candidateId = model.candidate.candidateId " +
+					"and model4.constituencyElection.election.electionScope.electionType.electionTypeId in(1,2))");
+		
 		if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
-		 str.append(" and model2.party.partyId =:partyId ");
+		 str.append(" and ( model3.party.partyId =:partyId )");
 		
 		if(categoryIdsList != null && categoryIdsList.size() > 0 )
 		 str.append(" and model.fileGallary.file.category.categoryId in (:categoryIdsList) ");
@@ -1218,5 +1222,63 @@ ICandidateRelatedNewsDAO {
 	  
 	  return query.list();
 				
+	}
+	
+	
+	//NewsCountForACandidate From CandidateParty table
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getNewsCountForACandidateFromCandidateParty(Date fromDate, Date toDate,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar, Long partyId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.fileGallary.fileGallaryId),model.candidate.candidateId, model.candidate.lastname,model.fileGallary.file.regionScopes.regionScopesId from CandidateRealatedNews model,PartyGallery model2,CandidateParty model3 ");
+		str.append(" where model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId and model3.candidate.candidateId = model.candidate.candidateId and model.fileGallary.isDelete = 'false' and model.fileGallary.isPrivate = 'false' ");
+		str.append(" and model2.isDelete = 'false' and model2.isPrivate = 'false' and model.fileGallary.gallary.isDelete = 'false' and model.fileGallary.gallary.isPrivate = 'false' ");
+		str.append(" and model.fileGallary.file.fileId is not null ");
+		
+		
+		if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+		 str.append(" and ( model3.party.partyId =:partyId )");
+		
+		if(categoryIdsList != null && categoryIdsList.size() > 0 )
+		 str.append(" and model.fileGallary.file.category.categoryId in (:categoryIdsList) ");
+		if(galleryIdsList != null && galleryIdsList.size() > 0)
+		 str.append(" and model.fileGallary.gallary.gallaryId in (:galleryIdsList) ");
+		
+		if(locationScopeId != null && locationScopeId > 0)
+		 str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
+		
+		if(locationIdsList != null && locationIdsList.size() > 0)
+		 str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
+		
+		if(fromDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+		if(toDate != null)
+		 str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
+		
+		str.append(" group by model.fileGallary.file.regionScopes.regionScopesId ,model.candidate.candidateId order by model.candidate.lastname  ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+		 query.setParameter("partyId", partyId);
+		
+		if(fromDate != null)
+		 query.setParameter("fromDate", fromDate);
+		if(toDate != null)
+		 query.setParameter("toDate", toDate);
+		
+		if(categoryIdsList != null && categoryIdsList.size() > 0)
+		 query.setParameterList("categoryIdsList", categoryIdsList);
+		if(galleryIdsList != null && galleryIdsList.size() > 0)
+		 query.setParameterList("galleryIdsList", galleryIdsList);
+		
+		if(locationScopeId != null && locationScopeId > 0)
+		 query.setParameter("locationScopeId", locationScopeId);
+		
+		if(locationIdsList != null && locationIdsList.size() > 0)
+		 query.setParameterList("locationIdsList", locationIdsList);
+		
+		return query.list();
 	}
 }
