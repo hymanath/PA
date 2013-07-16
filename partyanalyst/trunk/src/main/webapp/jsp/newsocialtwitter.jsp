@@ -3,18 +3,16 @@
 
 <link rel="stylesheet" type="text/css" href="styles/socialnetwork/newdemo.css" />
 <link rel="stylesheet" type="text/css" href="styles/socialnetwork/jScrollPane.css" />
-<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
-<script type="text/javascript" src="js/socialNetwork/scrollpane_js/jquery.mousewheel.js"></script>
 
-<script type="text/javascript" src="js/socialNetwork/script.js"></script>
-<script type="text/javascript" src="js/socialNetwork/scrollpane_js/jquery.jscrollpane.js"></script>
 	<!-- styles specific to demo site -->
 		<!-- styles needed by jScrollPane - include in your own sites -->
-		<link type="text/css" href="styles/socialnetwork/scrollpane_style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
-		<!-- For UserSocialNetworkSite.jsp-->
+<link type="text/css" href="styles/socialnetwork/scrollpane_style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
+<!-- For UserSocialNetworkSite.jsp-->
 		
  <script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
  <script type="text/javascript" src="js/UserSocialNetworkSite.js"></script>
+ <script type="text/javascript" src="js/socialNetwork/newTwitterAPI.js?1000"></script>
+<!-- <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>-->
  <!--End UserSocialNetworkSite.jsp-->
 <style type="text/css" id="page-css">
 			/* Styles specific to this particular page */
@@ -39,39 +37,8 @@
 	</style>
 			
 	
-<script>
-			$(function()
-			{
-			$(".scroll-pane").jScrollPane();
-			});
-		</script>
 
 <script type="text/javascript">
-function scrollpanenew()
-{
-
-var api = $(".scroll-pane").data('jsp');
-	var throttleTimeout;
-	if ($.browser.msie) {
-						// IE fires multiple resize events while you are dragging the browser window which
-						// causes it to crash if you try to update the scrollpane on every one. So we need
-						// to throttle it to fire a maximum of once every 50 milliseconds...
-						if (!throttleTimeout) {
-							throttleTimeout = setTimeout(
-								function()
-								{
-									api.reinitialise();
-									throttleTimeout = null;
-								},
-								50
-							);
-						}
-					} else {
-						api.reinitialise();
-					}
-}
-
-
  $(function(){
 
 			$('#politician').parent().hide();
@@ -116,9 +83,9 @@ function getPartyName()
 	{
 	partyRadio=politicianRadioele.value;
 		task="getCandidateNames";
-	}else if(allRadioele.checked){
+	}/*else if(allRadioele.checked){
 		task="getNames";
-	}
+	}*/
 		var jsObj=
 		{
 				elmtId:partyRadio,
@@ -147,10 +114,10 @@ function callNewHomePageAjax(jsObj,url)
 							{
 								getCandidateNames(myResults);
 							}
-							else if(jsObj.task=="getNames")
+							/*else if(jsObj.task=="getNames")
 							{
 							getAllTweets(myResults);
-							}
+							}*/
 						}catch(e)
 						{   
 							alert("Invalid JSON result" + e);   
@@ -253,8 +220,36 @@ function getPartyNames(result)
 }
 
 setTimeout("getPartyName()",1000);
- 
-    </script>
+
+function setTweetUsers(ids){
+$('#TwitterDiv').html('');
+//var id = '357110592005369856'; // tdp
+//var id = '357143208817467392'; // partyanalyst
+var id = ids;
+var str='';
+	str+='<a class="twitter-timeline" data-widget-id="'+id+'"> Please Wait ...</a>';
+	//str+='<a class="twitter-timeline" data-widget-id="357123072467283970"> Tweets By User</a>';
+	$('#TwitterDiv').html(str);
+createDiv();
+//setTimeout("createDiv()",1000);
+}
+
+function createDiv(){
+!function(d,s,id){ 
+var js;
+var fjs=d.getElementsByTagName(s)[0];
+var p=/^http:/.test(d.location)?'http':'https';
+//if(!d.getElementById(id)){
+js=d.createElement(s);
+js.id=id;
+js.src=p+"://platform.twitter.com/widgets.js";
+fjs.parentNode.insertBefore(js,fjs);
+//}
+}(document,"script","twitter-wjs");
+}
+
+</script>
+
 
 <div id="main">
  <div id="twitter-ticker">
@@ -269,21 +264,21 @@ setTimeout("getPartyName()",1000);
     <label class="radio inline">
     <input name="party" value="party" type="radio" id="rpolitician" onclick="getPartyName()">Leader
     </label>
-    <label class="radio inline">
+  <!--  <label class="radio inline">
 	<input name="party" value="party" type="radio" id="rall"  checked="true" onclick="getPartyName()">All 
-    </label>
+    </label> -->
 </div>	
 
 <div class="row-fluid span10">
 <div class="input-prepend span12 inline">
               <span class="add-on">Party Name:</span>
-             <select name="party" onChange="setTweetUser(this.options[this.selectedIndex].value)"
+             <select name="party" onChange="setTweetUsers(this.options[this.selectedIndex].value)"
  id="party" class="span6"></select>
             </div>
 			
 			<div class="input-prepend span12 inline">
               <span class="add-on">Leader Name:</span>
-             <select name="poliician" onChange="setTweetUser(this.options[this.selectedIndex].value)" id="politician"  class="span8" >
+             <select name="poliician" onChange="setTweetUsers(this.options[this.selectedIndex].value)" id="politician"  class="span8" >
 			 </select>
             </div>
 </div>			
@@ -292,8 +287,10 @@ setTimeout("getPartyName()",1000);
 </form>
 </div>
  </div>
- <div class="scroll-pane">
-        <div id="tweet-container"><img id="loading" src="img/loading.gif" width="16" height="11"/></div>
+ 
+<div id="TwitterDiv" > 
+<a class="twitter-timeline" data-widget-id="357110592005369856"></a>
+
 </div>
 
 
