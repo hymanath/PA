@@ -2700,7 +2700,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 
 	public List<Object[]> getVoterAttributeDetails(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId){
 		StringBuilder queryString = new StringBuilder();
-		queryString.append("select count(*),UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
+		queryString.append("select count(BPV.voter.voterId),UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender,UVCV.categoryValue from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
 				"BoothPublicationVoter BPV where VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId and  " +
 				" VCV.voter.voterId = BPV.voter.voterId  and UVCV.userVoterCategory.userVoterCategoryId in (:attributeIds)  " +
 				" and VCV.user.userId = :userId and UVCV.user.userId = :userId and BPV.booth.publicationDate.publicationDateId = :publicationId and ");
