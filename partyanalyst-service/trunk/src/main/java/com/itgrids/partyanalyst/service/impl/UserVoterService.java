@@ -346,7 +346,7 @@ public class UserVoterService implements IUserVoterService{
 				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,46l,60l);
 				 if(votersList != null && votersList.size() > 0)
 				  getVoterDetails(categoryValues,category,votersList,"46-60",totalVoters);
-				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,61l,150l);
+				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,61l,170l);
 				 if(votersList != null && votersList.size() > 0)
 				  getVoterDetails(categoryValues,category,votersList,"60",totalVoters); 
 			 }
