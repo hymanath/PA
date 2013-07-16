@@ -326,7 +326,7 @@ public class UserVoterService implements IUserVoterService{
 			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,46l,60l);
 			 if(votersList != null && votersList.size() > 0)
 			  getVoterDetails(categoryValues,category,votersList,"46-60",totalVoters);
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,60l,150l);
+			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,61l,150l);
 			 if(votersList != null && votersList.size() > 0)
 			  getVoterDetails(categoryValues,category,votersList,"60",totalVoters);
 			 }
@@ -346,7 +346,7 @@ public class UserVoterService implements IUserVoterService{
 				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,46l,60l);
 				 if(votersList != null && votersList.size() > 0)
 				  getVoterDetails(categoryValues,category,votersList,"46-60",totalVoters);
-				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,60l,150l);
+				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,61l,150l);
 				 if(votersList != null && votersList.size() > 0)
 				  getVoterDetails(categoryValues,category,votersList,"60",totalVoters); 
 			 }
@@ -455,10 +455,7 @@ public class UserVoterService implements IUserVoterService{
 					}
 				}
 			}
-		
-		
-		
-	}
+		}
 		
 	@SuppressWarnings({ "unused", "unchecked" })
 	public List<VoterVO> getCategoryWiseVoterData(VoterDataVO voterDataVO , Long userId , List<Long> categories)
