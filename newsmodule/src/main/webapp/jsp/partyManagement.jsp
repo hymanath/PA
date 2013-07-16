@@ -4525,12 +4525,12 @@ else{
 		    str+='<td>'+results[i].categoryType+'</td>';
 	        str+='<td>'+results[i].gallaryName+'</td>';
 	        str+='<td>'+results[i].source+'</td>';
-			if(results[i].source == "Eenadu Telugu")
+			if(results[i].source.indexOf("Eenadu Telugu") != -1)
 		     str+='<td><span class="enadu">'+results[i].fileTitle1+'</span></td>';
 			else
 	         str+='<td>'+results[i].fileTitle1+'</td>';
 
-			if(results[i].source == "Eenadu Telugu")
+			if(results[i].source.indexOf("Eenadu Telugu") != -1)
 		     str+='<td><span class="enadu">'+results[i].description+'</span></td>';
 			else
 			 str+='<td>'+results[i].description+'</td>';
