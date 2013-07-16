@@ -340,7 +340,7 @@ function buildCasteWiseWiseDetails(result,jobj)
 		 str  +='<tr>';
 		 str+="<th rowspan=3>"+result[i].name+"</th>";
 		 str+=" <th colspan=3>18-25</th>";
-		 str+=" <th colspan=3>25-36</th>";
+		 str+=" <th colspan=3>26-35</th>";
 		 str+=" <th colspan=3>36-45</th>";
 		 str+=" <th colspan=3>46-60</th>";
 		 str+=" <th colspan=3>60-Above</th>";
