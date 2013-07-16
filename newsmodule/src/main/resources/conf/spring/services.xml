@@ -1627,7 +1627,11 @@
 		<property name="candidateDAO" ref="candidateDAO" />
 		<property name="newsDetailsDAO" ref="newsDetailsDAO" />
 		<property name="candidateRelatedNewsDAO" ref="candidateRelatedNewsDAO" />
-		<property name="boothDAO" ref="boothDAO" />		
+		<property name="boothDAO" ref="boothDAO" />	
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />	
 	</bean>
 	
 	

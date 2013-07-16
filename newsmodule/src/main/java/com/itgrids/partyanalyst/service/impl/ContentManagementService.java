@@ -16,11 +16,15 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.INewsDetailsDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -47,6 +51,11 @@ public class ContentManagementService implements IContentManagementService{
 	private INewsDetailsDAO newsDetailsDAO;
 	private ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
 	private IBoothDAO boothDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITehsilDAO tehsilDAO;
+	 
 	
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
@@ -139,6 +148,37 @@ public class ContentManagementService implements IContentManagementService{
 	public void setNewsDetailsDAO(INewsDetailsDAO newsDetailsDAO) {
 		this.newsDetailsDAO = newsDetailsDAO;
 	}
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
 
 	/**
 	 * This Method will give the Selected File Details, their related files and Other Galleries Details
@@ -159,6 +199,7 @@ public class ContentManagementService implements IContentManagementService{
 			List<Long> gallaryIds = null;
 			String contentType = null;
 			Long falseContentIdForPhotoGal = 1l;
+			List<Long> fileGalleryIdsList = new ArrayList<Long>(0);
 			
 			fileId = (Long)fileGallaryDAO.getFileIdByFileGallaryId(contentId);
 			
@@ -305,7 +346,10 @@ public class ContentManagementService implements IContentManagementService{
 					fileVO.setContentId(fileGallary.getFileGallaryId());
 					fileVO.setGallaryName(fileGallary.getGallary().getName());
 					fileVO.setNewsDescription(fileGallary.getFile().getNewsDescription() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getNewsDescription())):"");
-
+                    
+					Long locationScopeId = fileGallary.getFile().getRegionScopes().getRegionScopesId();
+					fileVO.setLocationId(locationScopeId);
+					fileVO.setLocationName(getLocationBasedOnScopeId(locationScopeId, fileGallary.getFile().getLocationValue()));
 					
 					List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 					Set<FileSourceLanguage> fileSourceLanguageSet = fileGallary.getFile().getFileSourceLanguage();
@@ -358,7 +402,25 @@ public class ContentManagementService implements IContentManagementService{
 						sdf.format(fileGallary.getFile().getFileDate()));
 					 fileVO.setReqFileDate(fileGallary.getFile().getFileDate());
 					filesList.add(fileVO);
+					fileGalleryIdsList.add(fileGallary.getFileGallaryId());
+					
 				  }
+				
+				Map<Long,String> candidateMap = new HashMap<Long, String>(0);
+				 if(fileGalleryIdsList != null && fileGalleryIdsList.size() > 0)
+				 {
+				  List<Object[]> candidateNamesList = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileGalleryIdsList);
+				  if(candidateNamesList != null && candidateNamesList.size() > 0)
+				   for(Object[] params:candidateNamesList)
+					candidateMap.put((Long)params[0], params[1] != null?params[1].toString():"");
+				 }
+				 if(candidateMap != null && candidateMap.size() > 0)
+				 {
+				   for(FileVO fileVO2:filesList)
+					 fileVO2.setCandidateName(candidateMap.get(fileVO2.getContentId()));
+				 }
+				 
+					
 				}
 				Collections.sort(filesList,date_comparator);				
 				relatedGallary.setFilesList(filesList);
@@ -1001,5 +1063,22 @@ public class ContentManagementService implements IContentManagementService{
 			return gallaryVO;
 		}
 	}
+	
+	
+	public String getLocationBasedOnScopeId(Long scopeId,Long locationId){
+		 String locationName = "";
+		 if(scopeId==2){
+			 locationName = stateDAO.get(locationId).getStateName();
+		 }
+		if(scopeId == 3)
+			locationName = districtDAO.get(locationId).getDistrictName();
+		if(scopeId == 4)
+			locationName = constituencyDAO.get(locationId).getName();
+		if(scopeId == 5)
+			locationName = tehsilDAO.get(locationId).getTehsilName();
+		
+		return locationName;
+		 
+	 }
 			
 }

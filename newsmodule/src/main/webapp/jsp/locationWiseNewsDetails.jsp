@@ -215,7 +215,7 @@ function buildPaginatedNews(results,jsObj)
 		str +='</p></td>';
 		str +='<td style="vertical-align: top;"><p style="width: 110px;"><span  class="text-error" style="font-weight:bold;">Date : </span> '+results[i].fileDate+'</p></td>';
 		str +='<td style="vertical-align: top;"><p style="width: 122px;"><span class="text-error" style="font-weight:bold;">Response Count: </span>'+results[i].responseCount+'</p></td>';
-		str +='<td style="vertical-align: top;"><p style="width: 150px;"><span class="text-error" style="font-weight:bold;">Location Name:</span> '+results[i].locationName+'</p></td>';
+		str +='<td style="vertical-align: top;"><p style="width: 150px;"><span class="text-error" style="font-weight:bold;">Location :</span> '+results[i].locationName+'</p></td>';
 		str +='</tr>';
 		
 		str +='</table>';

@@ -68,7 +68,7 @@ public class CandidateRelatedNewsDAOHibernateTest extends BaseDaoTestCase{
 	    System.out.println(list.size());
 	}*/
 	
-	public void testgetNewsCountForACandidateFromCandidateParty()
+	/*public void testgetNewsCountForACandidateFromCandidateParty()
 	{ 
 		List<Long> categoryIdsList = new ArrayList<Long>(0);
 		List<Long> galleryIdsList = new ArrayList<Long>(0);
@@ -77,5 +77,16 @@ public class CandidateRelatedNewsDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 		for(Object[] params:list)
 		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
+	}*/
+	
+	public void testgetCandidateNameByFileGalleryIdsList()
+	{
+		List<Long> fileGalleryIdsList = new ArrayList<Long>(0);
+		fileGalleryIdsList.add(412L);
+		List<Object[]> list = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileGalleryIdsList);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		 System.out.println(params[0]+" "+params[1]);
+		
 		  }
 }

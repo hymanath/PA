@@ -212,9 +212,9 @@ function buildPaginatedNews(results,jsObj)
 		
 		str+="</div>";
 
-		str+="<div class='span9' style='width:550px;'>";
-		str +='<table><tr><td style="width:240px;">';
-		str +='<p style="margin-right: 12px;"><span class="text-error" style="font-weight:bold;">Source : </span>';
+		str+="<div class='span9' style='width:550px; margin-top: 9px;'>";
+		str +='<table><tr><td style="width: 170px; vertical-align: top;">';
+		str +='<p style="margin-right: 5px;"><span class="text-error" style="font-weight:bold;">Source : </span>';
 		var length = results[i].fileVOList.length;
 
 		for(var j in results[i].fileVOList)
@@ -223,14 +223,22 @@ function buildPaginatedNews(results,jsObj)
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
+		str +='</p></td><td style="vertical-align: top;"><p style="width: 108px;"><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
 		if(results[i].responseCount > 0)
-		str+='<td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;padding-left: 20px;">Response Count : </span > '+results[i].responseCount+'</p></td>';
+		str+='<td style="vertical-align: top;"><p style="width: 145px;"><span class="text-error" style="font-weight:bold;padding-left: 20px;">Response Count : </span > '+results[i].responseCount+'</p></td>';
+
+		str +='<td style="vertical-align: top;"><p style="width: 150px;"><span class="text-error" style="font-weight:bold;">Location :</span> '+results[i].locationName+'</p></td>';
 		
 		str +='</tr></table>';
 		str +='</div>';
 		
-		str+="<br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
+		str+="<br><div class='span4 pull-right' style='clear:both;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a>";
+
+		if(results[i].responseCount > 0)
+		{
+		  str +="<a style='font-size: 13px; margin-left: 54px; font-weight: bold;' type='button' class='btn btn-mini btn-info' href='javascript:{}' onclick='getNewsTrackDetails("+results[i].contentId+")'>Track</a>";
+		}
+		str +='</div></li>';
 	}
 	
 	var itemsCount=results[0].count;
@@ -286,6 +294,17 @@ function getSelectedNewsDetails()
     var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
     browser1.focus();
 }
+
+function getNewsTrackDetails(contentId)
+{
+   
+  var urlstr = "showNewsResponseAction.action?responseContentId ="+contentId+"&";
+		
+     var browser1 = window.open(urlstr,"newsTrackDetails"+contentId+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+
+}
+
   $(".dateField").live("click", function(){
  $(this).datepicker({
 		dateFormat: "dd/mm/yy",
