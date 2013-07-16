@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -3602,6 +3603,8 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		 List<CandidateNewsCountVO> candidateNewsCountVOList = new ArrayList<CandidateNewsCountVO>(0);
 		 Date fromDate = null;
 		 Date toDate = null;
+		 List<Object[]> list = new ArrayList<Object[]>(0);
+		 
 		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		 if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
 		  fromDate = format.parse(fromDateStr);
@@ -3612,7 +3615,14 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		  if(!locationScope.equalsIgnoreCase("null") && !locationScope.equalsIgnoreCase(""))
 		   locationScopeId = regionScopesDAO.getRegionScopeIdByScope(locationScope);
 		 
-		 List<Object[]> list = candidateRelatedNewsDAO.getNewsCountForACandidate(fromDate,toDate,categoryIdsList,galleryIdsList,locationIdsList,locationScopeId,tempVar,872L);
+		 List<Object[]> fromNominationList = candidateRelatedNewsDAO.getNewsCountForACandidate(fromDate,toDate,categoryIdsList,galleryIdsList,locationIdsList,locationScopeId,tempVar,872L);
+		 if(fromNominationList != null && fromNominationList.size() > 0)
+		  list.addAll(fromNominationList);
+		 
+		 List<Object[]> fromCandidatePartyList = candidateRelatedNewsDAO.getNewsCountForACandidateFromCandidateParty(fromDate,toDate,categoryIdsList,galleryIdsList,locationIdsList,locationScopeId,tempVar,872L);
+		 if(fromCandidatePartyList != null && fromCandidatePartyList.size() > 0)
+		  list.addAll(fromCandidatePartyList);
+		 
 		 if(list != null && list.size() > 0)
 		 {
 			CandidateNewsCountVO candidateNewsCountVO = null;
@@ -3644,6 +3654,8 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 				candidateNewsCountVO.setBoothNewsCount((Long)params[0]);
 				
 			}
+			
+			Collections.sort(candidateNewsCountVOList,sortCandidateNames);
 		 }
 		List<Long> stateList = new ArrayList<Long>();
 		List<Long> districtList = new ArrayList<Long>();
@@ -4151,6 +4163,16 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		return fileVOList;
 	}
   }
+  
+  public static Comparator<CandidateNewsCountVO> sortCandidateNames = new Comparator<CandidateNewsCountVO>()
+			{
+				  
+			  public int compare(CandidateNewsCountVO newsCountVO, CandidateNewsCountVO newsCountVO2)
+				{
+				   return (newsCountVO.getName()).compareTo(newsCountVO2.getName());
+				}
+		  };
+  
 	
 	
 }
