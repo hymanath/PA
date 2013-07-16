@@ -15,9 +15,6 @@
 <link rel="stylesheet" type="text/css" href="jquerySlider.css" />
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-<script type="text/javascript" src="js/socialNetwork/jquery.mousewheel.js"></script>
-<script type="text/javascript" src="js/socialNetwork/jScrollPane-1.2.3.min.js"></script>
-<script type="text/javascript" src="js/socialNetwork/script.js"></script>
 
 <style>
 .jScrollPaneContainer{
