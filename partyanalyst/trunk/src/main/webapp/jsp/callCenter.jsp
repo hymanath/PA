@@ -613,8 +613,8 @@ function validateForAddProblem(){
 		val = 1;
 	    }
 	 }
-	if(problemPurpose =="All"){
-		 document.getElementById("errorProblemPurposeDiv").innerHTML= '<font color="red">Please Select Call Purpose</font>';
+	if(problemPurpose !="Problem Reporting"){
+		 document.getElementById("errorProblemPurposeDiv").innerHTML= '<font color="red">Call Purpose Must Be Problem Reporting</font>';
 		 val = 1;
 	}
 	
@@ -627,9 +627,10 @@ window.open("addNewProblemAction.action?callTrackingProblemId="+problemId,"addCa
 }
 function addCallTrackingProb(){
     var refNo = document.getElementById("referenceNo").value;
+    refNo = $.trim(refNo);
 	document.getElementById("errorRefDiv").innerHTML='';
 	if(refNo.length != 0){
-	document.getElementById("errorRefDiv").innerHTML='<font color="red">ReferenceNo must be empty</font>';
+	document.getElementById("errorRefDiv").innerHTML='<font color="red">Reference No must be empty</font>';
 	}
 if(refNo.length <= 0){
   if(validateForAddProblem()!=1){
@@ -1080,7 +1081,13 @@ YAHOO.widget.DataTable.problemLink = function(elLiner, oRecord, oColumn, oData)
 		elLiner.innerHTML ="<a href='javascript:{}' onClick='openProblemWindow("+phId+")'>"+problem+"</a>";
 			
 	};
-var resultsColumnDefs = [ 	
+var resultsColumnDefs = [
+     {
+		key : "name",
+		label : "Name",
+		sortable : true,
+		formatter:YAHOO.widget.DataTable.problemLink
+	},  	
 	 {
 		key : "problem",
 		label : "Problem",
@@ -1125,7 +1132,7 @@ var resultsColumnDefs = [
 		var myDataSource = new YAHOO.util.DataSource(result);
 myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "problem","description" , "reportedDate" ,"impactLevel"]
+						 fields : [ "problem","description" , "reportedDate" ,"impactLevel","name"]
 					};
 
 				
