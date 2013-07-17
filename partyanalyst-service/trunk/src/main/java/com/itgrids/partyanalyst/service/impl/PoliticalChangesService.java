@@ -11,15 +11,20 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
@@ -49,8 +54,9 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 	private ITownshipDAO townshipDAO;
 	private IHamletDAO hamletDAO;
 	private IInformationSourceDAO informationSourceDAO;
-	
-	
+	private IBoothDAO boothDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -147,13 +153,38 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 	public void setInformationSourceDAO(IInformationSourceDAO informationSourceDAO) {
 		this.informationSourceDAO = informationSourceDAO;
 	}
-
 	
+	
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
 	/**
 	 * This method get the Data from the User and saves the data into database.
 	 * 
 	 */
-	public ResultStatus savePoliticalChangeDataReceivedFromUser(PoliticalChangesVO politicalChangesVo, final String task){
+	public ResultStatus savePoliticalChangeDataReceivedFromUser(final PoliticalChangesVO politicalChangesVo, final String task){
 		politicalChangesVO = politicalChangesVo;
 		ResultStatus resultStatus = new ResultStatus();
 		try{
@@ -162,7 +193,15 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 			}					
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
-					PoliticalChanges politicalChanges = new PoliticalChanges();
+				PoliticalChanges politicalChanges = null;
+					if(politicalChangesVo.getLocalPoliticalChangeId() != null && politicalChangesVo.getLocalPoliticalChangeId() > 0)
+					{
+						politicalChanges = politicalChangesDAO.get(politicalChangesVo.getLocalPoliticalChangeId());
+					}
+					else
+					{
+						politicalChanges = new PoliticalChanges();
+					}
 					politicalChanges.setTitle(politicalChangesVO.getTitle());
 					if(politicalChangesVO.getDescription()!=null){
 						politicalChanges.setDescription(politicalChangesVO.getDescription());	
@@ -208,12 +247,12 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 					politicalChanges.setPoliticalChangesInformationSource(informationSource);
 					politicalChanges = politicalChangesDAO.save(politicalChanges);
 					
-					if(task.equalsIgnoreCase(IConstants.EDIT)){
+					/*if(task.equalsIgnoreCase(IConstants.EDIT)){
 						PoliticalChanges editPoliticalChanges = new PoliticalChanges();						
-						editPoliticalChanges = politicalChangesDAO.get(politicalChangesVO.getLocalPoliticalChangeId());
+						//editPoliticalChanges = politicalChangesDAO.get(politicalChangesVO.getLocalPoliticalChangeId());
 						editPoliticalChanges.setIsDelete(IConstants.TRUE);
 						editPoliticalChanges = politicalChangesDAO.save(editPoliticalChanges);
-					}
+					}*/
 			}});
 			resultStatus.setResultPartial(false);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -274,6 +313,19 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 						locationName = townshipDAO.get(locationId).getTownshipName();
 					}else if(parms[11].toString().equalsIgnoreCase(IConstants.HAMLET_LEVEL)){
 						locationName = hamletDAO.get(locationId).getHamletName();
+					}
+					else if(parms[11].toString().equalsIgnoreCase(IConstants.BOOTH))
+					{
+						locationName = "BOOTH - "+ boothDAO.get(locationId).getPartNo();
+					}
+					else if(parms[11].toString().equalsIgnoreCase(IConstants.WARD))
+					{
+						locationName = constituencyDAO.get(locationId).getName();
+					}
+					else if(parms[11].toString().equalsIgnoreCase(IConstants.MUNICIPAL_CORP_GMC))
+					{
+						Long localBodyId = assemblyLocalElectionBodyDAO.get(locationId).getLocalElectionBody().getLocalElectionBodyId();
+						locationName = localElectionBodyDAO.get(localBodyId).getName() + "Muncipality";
 					}
 				}
 				politicalChangesVO.setLocationName(locationName);
@@ -375,23 +427,35 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 				rangeId = new Long(parms[7].toString());
 								
 				if(range.equalsIgnoreCase(IConstants.STATE_LEVEL)){
-					politicalChangesVO.setEffectRange("1");
+					politicalChangesVO.setEffectRange("2");
 					politicalChangesVO.setLocationName(stateDAO.get(rangeId).getStateName());
 				}else if(range.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
-					politicalChangesVO.setEffectRange("2");
+					politicalChangesVO.setEffectRange("3");
 					politicalChangesVO.setLocationName(districtDAO.get(rangeId).getDistrictName());
 				}else if(range.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
-					politicalChangesVO.setEffectRange("3");
+					politicalChangesVO.setEffectRange("4");
 					politicalChangesVO.setLocationName(constituencyDAO.get(rangeId).getName());
 				}else if(range.equalsIgnoreCase(IConstants.TEHSIL)){
-					politicalChangesVO.setEffectRange("4");
+					politicalChangesVO.setEffectRange("5");
 					politicalChangesVO.setLocationName(tehsilDAO.get(rangeId).getTehsilName());
 				}else if(range.equalsIgnoreCase(IConstants.VILLAGE)){
-					politicalChangesVO.setEffectRange("5");
-					politicalChangesVO.setLocationName(townshipDAO.get(rangeId).getTownshipName());
-				}else if(range.equalsIgnoreCase(IConstants.HAMLET_LEVEL)){
 					politicalChangesVO.setEffectRange("6");
-					politicalChangesVO.setLocationName(hamletDAO.get(rangeId).getHamletName());
+					politicalChangesVO.setLocationName(townshipDAO.get(rangeId).getTownshipName());
+				}else if(range.equalsIgnoreCase(IConstants.MUNICIPAL_CORP_GMC)){
+					politicalChangesVO.setEffectRange("7");
+					Long localBodyId = assemblyLocalElectionBodyDAO.get(rangeId).getLocalElectionBody().getLocalElectionBodyId();
+					politicalChangesVO.setLocationName(localElectionBodyDAO.get(localBodyId).getName() + "Muncipality");
+					
+				}
+				else if(range.equalsIgnoreCase(IConstants.WARD))
+				{
+					politicalChangesVO.setEffectRange("8");
+					politicalChangesVO.setLocationName(constituencyDAO.get(rangeId).getName());
+				}
+				else if(range.equalsIgnoreCase(IConstants.BOOTH))
+				{
+					politicalChangesVO.setEffectRange("9");
+					politicalChangesVO.setLocationName("BOOTH - "+ boothDAO.get(rangeId).getPartNo());
 				}
 				
 				politicalChangesVO.setRange(parms[6]!=null?parms[6].toString():"");

@@ -74,11 +74,11 @@ public class PoliticalChangesDAO extends GenericDaoHibernate<PoliticalChanges, L
 	
 	@SuppressWarnings("unchecked")
 	public List getAllPoliticalChangesByPoliticalChangeId(Long politicalChangeId) {
-		return getHibernateTemplate().find("select model.title,model.description,model.occuredDate," +
-				" model.identifiedDate,model.politicalChangesInformationSource.informationSource," +
-				" model.party.shortName,model.effectedRange,model.effectedLocation," +
-				" model.politicalChangesInformationSource.informationSourceId from PoliticalChanges model " +
-				" where model.politicalChangesId = ?", politicalChangeId);
+		return getHibernateTemplate().find("select model.title,model.description,model.identifiedDate,model.occuredDate," +
+				"  model.politicalChangesInformationSource.informationSource," +
+				"  model.party.shortName,model.effectedRange,model.effectedLocation," +
+				"  model.politicalChangesInformationSource.informationSourceId from PoliticalChanges model " +
+				"  where model.politicalChangesId = ?", politicalChangeId);
 	}
 		
 }
