@@ -151,7 +151,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	 */
 	 public List<Object[]> getNewsCountForMandalLevel(List<Long> candidateIds,
 				Long tehsilScopeId, List<Long> tehsilIdsList,
-				Long panchayatScopeId, List<Long> panchayatIdsList);
+				Long panchayatScopeId, List<Long> panchayatIdsList,Date fromdDate,Date toDate);
 	 /*
 	public List<File> getNewsCountForALocationByCategoryAndImportance(
 				List<Long> candidateIds,Long categoryId ,Long locationScopeId ,List<Long> locationValuesList,Long hamletScopeId ,
@@ -202,7 +202,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public List<FileGallary> getNewsDetailsForConstituencyWithMuncipalityAndWards(NewsCountVO newsCountVO);
 	*/
 	public List<Object[]> getNewsCountForMuncipality(
-			List<Long> candidateIds ,Long muncipalityScopeId ,List<Long> muncipalityValuesList);
+			List<Long> candidateIds ,Long muncipalityScopeId ,List<Long> muncipalityValuesList,Date fromDate,Date toDate);
 	/*
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForMuncipality(
 			Long categoryId , NewsCountVO newsCountVO);
@@ -211,7 +211,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	
 	public List<FileGallary> getFilegallaryDetailsForPanchayat(NewsCountVO newsCountVO);
 	*/
-	public List<Object[]> getNewsCountForMuncipalityWithWards(NewsCountVO newsCountVO);
+	public List<Object[]> getNewsCountForMuncipalityWithWards(NewsCountVO newsCountVO,Date fromDate,Date toDate);
 	/*
 	public List<Object[]> getNewsByForMuncipalityWithWards(NewsCountVO newsCountVO);
 	
@@ -221,7 +221,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCountVO newsCountVO);
 	*/
 	public List<Object[]> getNewsCountForWards(List<Long> candidateIds,
-			Long wardScopeId, List<Long> wardValuesList);
+			Long wardScopeId, List<Long> wardValuesList,Date fromDate,Date toDate);
 	/*
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForWard(
             Long categoryId , NewsCountVO newsCountVO);
@@ -231,7 +231,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	public List<Object[]> getNewsByWard(NewsCountVO newsCountVO);
 	*/
 	public List<Object[]> getNewsCountForHamlets(List<Long> candidateIds,
-			Long hamletScopeId, List<Long> hamletIds);
+			Long hamletScopeId, List<Long> hamletIds,Date fromDate,Date toDate);
 	/*
 	public List<Object[]> getNewsCountForALocationByCategoryAndImportanceForHamlet( Long categoryId , NewsCountVO newsCountVO);
 	
@@ -249,7 +249,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	 public List<?> getPartyWiseAllNewsDetailsInLocation(List<Long> partyId, Long districtScopeId, List<Long> districtIds, Long constituencyScopeId, List<Long> constituencyVal,
 				Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
 				List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds,Long 
-				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult,String type);
+				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult,String type,Date fromDate,Date toDate);
 	 
 	public List<Object[]> getAllVideoFilesOfInGallaries(int startIndex , int endIndex,String type);
 	
@@ -287,9 +287,9 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	
 	public List<FileGallary> getFileGallariesByFileGallaryIdsList(List<Long> fileGallaryIdsList);
 	
-    public List<FileGallary> getFilesOfGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex,String newsType,Long categoryId);
+    public List<FileGallary> getFilesOfGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex,String newsType,Long categoryId,Date fromDate,Date toDate);
     
-    public List<Long> getAllRecordsCountInGallary(Long gallaryId,String newsType,Long categoryId);
+    public List<Long> getAllRecordsCountInGallary(Long gallaryId,String newsType,Long categoryId,Date fromDate,Date toDate);
     
     public List<FileGallary> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType);
     public List<Object[]> getGalleriesByCategoryIds(List<Long> categoryIdsList,Long partyId,Long candidateId);

@@ -188,7 +188,9 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 		 if(regVO.getUserAccessType()!=null)
 			 if(regVO.getUserAccessType().equals("Admin"))
 				 queryType = "";
-		newsCountByCategoryList = partyDetailsService.getNewsCountForALocation(partyId,locationType,locationId,startRecord,maxRecord,queryType);
+		 String fromDate = jObj.getString("fromDate");
+		 String toDate = jObj.getString("toDate");
+		newsCountByCategoryList = partyDetailsService.getNewsCountForALocation(partyId,locationType,locationId,startRecord,maxRecord,queryType,fromDate,toDate);
 
 		return Action.SUCCESS;
 	}

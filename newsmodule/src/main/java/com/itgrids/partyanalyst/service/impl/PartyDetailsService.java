@@ -1964,7 +1964,7 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 	}
 
 	public List<FileVO>getNewsCountForALocation(Long partyId,String locationType,Long locationValue,Long startRecord,
-			Long maxRecord,String queryType){
+			Long maxRecord,String queryType,String fromDateStr,String toDateStr){
 	 
 		List<Long> partyIds = new ArrayList<Long>();
 		partyIds.add(partyId);
@@ -1975,19 +1975,27 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 		int maxRecords = Integer.parseInt(maxRecord.toString());
 	 
 	 try{
-	 
+		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		 Date fromDate = null;
+		 Date toDate = null;
+		 
+	     if(fromDateStr!= null && !fromDateStr.equalsIgnoreCase(""))
+	    	 fromDate = format.parse(fromDateStr);
+	     if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+	       toDate = format.parse(toDateStr);
+	    	 
 	     if(locationId.longValue() == 5)
-	    	 filesList =  getNewsCountForMandalLevel(partyIds , locationId , locationValue,queryType,startRecords,maxRecords);		    	 
+	    	 filesList =  getNewsCountForMandalLevel(partyIds , locationId , locationValue,queryType,startRecords,maxRecords,fromDate,toDate);		    	 
 	     else if(locationId.longValue() == 3)
-	    	 filesList = getNewsCountDetailsByDistrict(partyIds , locationValue,queryType,startRecords,maxRecords);	    	
+	    	 filesList = getNewsCountDetailsByDistrict(partyIds , locationValue,queryType,startRecords,maxRecords,fromDate,toDate);	    	
 	     else if(locationId.longValue() == 4)
-	    	 filesList =  getNewsCountDetailsByConstituencyLevel(partyIds , locationId , locationValue,queryType,startRecords,maxRecords);
+	    	 filesList =  getNewsCountDetailsByConstituencyLevel(partyIds , locationId , locationValue,queryType,startRecords,maxRecords,fromDate,toDate);
 	     else if(locationId.longValue() == 7)
-	    	 filesList =  getNewsCountDetailsForMuncipality(partyIds , locationId , locationValue,queryType,startRecords,maxRecords);
+	    	 filesList =  getNewsCountDetailsForMuncipality(partyIds , locationId , locationValue,queryType,startRecords,maxRecords,fromDate,toDate);
 	     else if(locationId.longValue() == 8)
-	    	 filesList =  getNewsCountDetailsForWard(partyIds , locationId , locationValue,queryType,startRecords,maxRecords);
+	    	 filesList =  getNewsCountDetailsForWard(partyIds , locationId , locationValue,queryType,startRecords,maxRecords,fromDate,toDate);
 	     else if(locationId.longValue() == 6)
-	    	 filesList =  getNewsCountForAHamlet(partyIds , locationId , locationValue,queryType,startRecords,maxRecords);
+	    	 filesList =  getNewsCountForAHamlet(partyIds , locationId , locationValue,queryType,startRecords,maxRecords,fromDate,toDate);
 	    	 
 	 }catch(Exception e){
 		 e.printStackTrace();			 
@@ -1995,7 +2003,7 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 	 
 	 return filesList;
  }
-	public  List<FileVO> getNewsCountForMandalLevel(List<Long> partyIds ,Long  locationId ,Long locationValue,String queryType,int startRecord,int maxRecord){
+	public  List<FileVO> getNewsCountForMandalLevel(List<Long> partyIds ,Long  locationId ,Long locationValue,String queryType,int startRecord,int maxRecord,Date fromdDate,Date toDate){
         log.debug("Entered into the getNewsCountForMandalLevel service method");
         List<FileVO> filesList = null;
         Long totalNewsCount = 0L;
@@ -2016,7 +2024,7 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 			}				
 			
 			 countByCategoryList =	fileGallaryDAO.getNewsCountForMandalLevel(
-					 partyIds,locationId,locationValuesList,hamletScopeId,hamletIds);
+					 partyIds,locationId,locationValuesList,hamletScopeId,hamletIds,fromdDate,toDate);
 
 			// filesList = new ArrayList<FileVO>();
 
@@ -2030,7 +2038,7 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 }
 	
 	@SuppressWarnings("unchecked")
-	public List<FileVO> getNewsCountDetailsByDistrict(List<Long> partyIds ,Long  locationValue,String queryType,int startRecord,int maxRecord){
+	public List<FileVO> getNewsCountDetailsByDistrict(List<Long> partyIds ,Long  locationValue,String queryType,int startRecord,int maxRecord,Date fromDate,Date toDate){
 
 		log.debug("Entered into the getNewsCountDetailsByDistrict service method");	
 	    List<FileVO> filesList =null;
@@ -2103,11 +2111,11 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 				 
 				  countByCategoryList =	(List<Object[]>) fileGallaryDAO.getPartyWiseAllNewsDetailsInLocation(
 							 partyIds,districtScopeId,districtIds,constituencyScopeId,constituencyIds,tehsilScopeId,
-								tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId ,localElectionBodyIds,wardScopeId,wardIds,queryType,startRecord,maxRecord,"");
+								tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId ,localElectionBodyIds,wardScopeId,wardIds,queryType,startRecord,maxRecord,"",fromDate,toDate);
 				 @SuppressWarnings("unchecked")
 				List<Long> countList = (List<Long>) fileGallaryDAO.getPartyWiseAllNewsDetailsInLocation(
 							 partyIds,districtScopeId,districtIds,constituencyScopeId,constituencyIds,tehsilScopeId,
-								tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId ,localElectionBodyIds,wardScopeId,wardIds,queryType,startRecord,maxRecord,"count");
+								tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId ,localElectionBodyIds,wardScopeId,wardIds,queryType,startRecord,maxRecord,"count",fromDate,toDate);
 				if(countList!=null && countList.size()>0)
 				 {
 					totalNewsCount = countList.get(0);
@@ -2140,7 +2148,7 @@ public List<FileVO> getNewsCountDetailsByPanchayat(List<Long> partyIds ,Long  lo
 			 hamletIds =  panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIdsList);
 		
 		    countByCategoryList =	fileGallaryDAO.getNewsCountForMandalLevel(
-		    		partyIds,null,null,hamletScopeId,hamletIds);
+		    		partyIds,null,null,hamletScopeId,hamletIds,null,null);
 		    
 		    //filesList = new ArrayList<FileVO>();
 
@@ -2155,7 +2163,7 @@ public List<FileVO> getNewsCountDetailsByPanchayat(List<Long> partyIds ,Long  lo
 }
 
 public List<FileVO> getNewsCountForAHamlet(
-	      List<Long> partyIds ,Long locationId ,Long locationValue,String queryType,int startRecord,int maxRecord)
+	      List<Long> partyIds ,Long locationId ,Long locationValue,String queryType,int startRecord,int maxRecord,Date fromDate,Date toDate)
 {
 	log.debug("Entered into  getNewsCountForAHamlet service method");
 	 List<FileVO> filesList = null;
@@ -2167,7 +2175,7 @@ public List<FileVO> getNewsCountForAHamlet(
 	 try
 	 {
 		 locationValuesList.add(locationValue); 
-		 countByCategoryList =  fileGallaryDAO.getNewsCountForHamlets(partyIds,hamletScopeId,locationValuesList);
+		 countByCategoryList =  fileGallaryDAO.getNewsCountForHamlets(partyIds,hamletScopeId,locationValuesList,fromDate,toDate);
 		 filesList = generateNewsDetails(countByCategoryList,totalNewsCount);
 		 
 	 }catch(Exception e)
@@ -2182,7 +2190,7 @@ public List<FileVO> getNewsCountForAHamlet(
 }
 
 public List<FileVO> getNewsCountDetailsForWard(
-	      List<Long> partyIds ,Long locationId ,Long locationValue,String queryType,int startRecord,int maxRecord){
+	      List<Long> partyIds ,Long locationId ,Long locationValue,String queryType,int startRecord,int maxRecord,Date fromDate,Date toDate){
 	
 	 List<FileVO> filesList = null;
 	 List<Long> locationValuesList = new ArrayList<Long>();
@@ -2193,7 +2201,7 @@ public List<FileVO> getNewsCountDetailsForWard(
 		 
 		 locationValuesList.add(locationValue);
 		 
-		 countByCategoryList = 	fileGallaryDAO.getNewsCountForWards(partyIds,wardScopeId,locationValuesList);
+		 countByCategoryList = 	fileGallaryDAO.getNewsCountForWards(partyIds,wardScopeId,locationValuesList,fromDate,toDate);
 		 
 		 //filesList = new ArrayList<FileVO>();
 		 filesList = generateNewsDetails(countByCategoryList,totalNewsCount);
@@ -2210,7 +2218,7 @@ public List<FileVO> getNewsCountDetailsForWard(
 }
 
 public List<FileVO> getNewsCountDetailsForMuncipality(
-		      List<Long> partyIds ,Long locationId ,Long locationValue,String queryType,int startRecord,int maxRecord){
+		      List<Long> partyIds ,Long locationId ,Long locationValue,String queryType,int startRecord,int maxRecord,Date fromDate,Date toDate){
 	 List<FileVO> filesList = null;
 	 List<Long> locationValuesList = null;
 	 List<Object[]> countByCategoryList = null;
@@ -2240,11 +2248,11 @@ public List<FileVO> getNewsCountDetailsForMuncipality(
     		newsCountVO.setWardIdsList(wardIds);
         	newsCountVO.setWardScopeId(8L);
         	
-    	 countByCategoryList = 	fileGallaryDAO.getNewsCountForMuncipalityWithWards(newsCountVO);
+    	 countByCategoryList = 	fileGallaryDAO.getNewsCountForMuncipalityWithWards(newsCountVO,fromDate,toDate);
     	}
     	else
     	 countByCategoryList = fileGallaryDAO.getNewsCountForMuncipality(
-    			 partyIds ,locationId ,locationValuesList);
+    			 partyIds ,locationId ,locationValuesList,fromDate,toDate);
    	
     	//filesList = new ArrayList<FileVO>();
     	 filesList = generateNewsDetails(countByCategoryList,totalNewsCount);
@@ -2259,7 +2267,7 @@ public List<FileVO> getNewsCountDetailsForMuncipality(
 
 @SuppressWarnings("unchecked")
 public List<FileVO> getNewsCountDetailsByConstituencyLevel(
-		List<Long> partyIds, Long locationId, Long locationValue,String queryType,int startRecord,int maxRecord) {	
+		List<Long> partyIds, Long locationId, Long locationValue,String queryType,int startRecord,int maxRecord,Date fromDate,Date toDate) {	
 	
 	log.debug("Entered into the getNewsCountDetailsByConstituencyLevel service method");	
     List<FileVO> filesList =null;
@@ -2315,11 +2323,11 @@ public List<FileVO> getNewsCountDetailsByConstituencyLevel(
 		
 		countByCategoryList =	(List<Object[]>) fileGallaryDAO.getPartyWiseAllNewsDetailsInLocation(
 					 partyIds,null,null,constituencyScopeId,constituencyIds,tehsilScopeId,
-						tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId ,localElectionBodyIds,wardScopeId,wardIds,queryType,startRecord,maxRecord,"");
+						tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId ,localElectionBodyIds,wardScopeId,wardIds,queryType,startRecord,maxRecord,"",fromDate,toDate);
 		 @SuppressWarnings("unchecked")
 			List<Long> countList = (List<Long>) fileGallaryDAO.getPartyWiseAllNewsDetailsInLocation(
 						 partyIds,null,null,constituencyScopeId,constituencyIds,tehsilScopeId,
-							tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId ,localElectionBodyIds,wardScopeId,wardIds,queryType,startRecord,maxRecord,"count");
+							tehsilIds,hamletScopeId,hamletIds,muncipalityScopeId ,localElectionBodyIds,wardScopeId,wardIds,queryType,startRecord,maxRecord,"count",fromDate,toDate);
 			if(countList!=null && countList.size()>0)
 			 {
 				totalNewsCount = countList.get(0);

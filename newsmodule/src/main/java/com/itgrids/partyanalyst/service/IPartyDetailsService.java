@@ -96,5 +96,5 @@ public interface IPartyDetailsService {
 	public FileVO getAllTheGallariesForCategory(Long partyId , int startIndex , int endIndex,Long categoryId,String newsType);
 	
 	public List<FileVO>getNewsCountForALocation(Long partyId,String locationType,Long locationValue,Long startRecord,
-			Long maxRecord,String queryType);
+			Long maxRecord,String queryType,String fromDateStr,String toDateStr);
 }

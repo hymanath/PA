@@ -5175,17 +5175,25 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 }
 */
  
- public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType,Long categoryId){
+ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType,Long categoryId,String fromDateStr,String toDateStr){
 		
 		List<FileVO> returnList = new ArrayList<FileVO>();
 		
 		List<Long> gallaryIdsList = new ArrayList<Long>();
 		gallaryIdsList.add(gallaryId);
+	 try{
+		Date fromDate = null;
+		Date toDate = null;
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+		 fromDate = format.parse(fromDateStr);
+		if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+			toDate = format.parse(toDateStr);
 		
 		List<FileGallary> fileGallaryList = fileGallaryDAO
-				.getFilesOfGallaries(gallaryIdsList,startIndex,endIndex,newsType,categoryId);
+				.getFilesOfGallaries(gallaryIdsList,startIndex,endIndex,newsType,categoryId,fromDate,toDate);
 		
-		Long count = fileGallaryDAO.getAllRecordsCountInGallary(gallaryId,newsType,categoryId).get(0);
+		Long count = fileGallaryDAO.getAllRecordsCountInGallary(gallaryId,newsType,categoryId,fromDate,toDate).get(0);
 		
 		for(FileGallary fileGallary : fileGallaryList){
 			if(fileGallary.getFile() !=null){
@@ -5219,6 +5227,10 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 									returnList.get(0).setTotalResultsCount(count);
 			}
 		}
+	 }catch (Exception e) {
+		 e.printStackTrace();
+		 log.error(" Exception Occured in getFilesOfAGallary() method, Exception - "+e);
+	}
 		
 		return returnList;		
 	}
@@ -5440,7 +5452,10 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			}
 			
 			if(fileVOsList != null && fileVOsList.size() > 0)
+			{
 			 Collections.sort(fileVOsList,dateSort);
+			 Collections.reverse(fileVOsList);
+			}
 			
 		}catch (Exception e) {
 			e.printStackTrace();
