@@ -3903,8 +3903,8 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		 
 			// List<Object[]> list = candidateRelatedNewsDAO.getRespondNewsPartyDetails(responseNewsFileGalleryIds);
 			// List<Object[]> list1 = candidateRelatedNewsDAO.getRespondNewsPartyDetailsCustom(responseNewsFileGalleryIds);
-			   listFromNamination = candidateRelatedNewsDAO.getRespondNewsPartyDetails(fromDate, toDate, 872l, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar, null, null, null);
-			   listFromCandidateParty = candidateRelatedNewsDAO.getRespondNewsPartyDetailsForCandidateTable(fromDate, toDate, 872l, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar, null, null, null);
+			   listFromNamination = candidateRelatedNewsDAO.getRespondNewsPartyDetails(fromDate, toDate, 872l, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar, null, null, null,"partyDetails");
+			   listFromCandidateParty = candidateRelatedNewsDAO.getRespondNewsPartyDetailsForCandidateTable(fromDate, toDate, 872l, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar, null, null, null,"partyDetails");
 			       if(listFromNamination == null || listFromNamination.size()== 0)
 			    	 //return    listFromCandidateParty;
 			    	   System.out.println("anil");
@@ -4234,7 +4234,76 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 				   return (newsCountVO.getName()).compareTo(newsCountVO2.getName());
 				}
 		  };
+		  
+		  
+		  public List<CandidateNewsCountVO> getCandidateCritiesNewsDetails(String fromDateStr,String toDateStr)
+		  {
+		 	 try{
+		 		 Date fromDate = null;
+		 		 Date toDate = null;
+		 		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		 		 if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+		 		  fromDate = format.parse(fromDateStr);
+		 		 
+		 		if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+			 	 toDate = format.parse(toDateStr);
+		 		 
+		 		 List<Object[]> responseNewsList = new ArrayList<Object[]>(0);
+		 		 
+		 		 List<CandidateNewsCountVO> candidateNewsCountVOList = new ArrayList<CandidateNewsCountVO>(0);
+		 		 
+		 		 List<Object[]> responseNewsListFromNamination = candidateRelatedNewsDAO.getRespondNewsPartyDetails(fromDate, toDate, 872l, null, null, null, 0L, null, null, null, null,"candidateDetails");
+		 		 List<Object[]> responseNewsListFromCandidateParty = candidateRelatedNewsDAO.getRespondNewsPartyDetailsForCandidateTable(fromDate, toDate, 872l, null, null, null, 0L, null, null, null, null,"candidateDetails");
+		 		 
+		 		 if(responseNewsListFromNamination != null && responseNewsListFromNamination.size() > 0)
+		 			responseNewsList.addAll(responseNewsListFromNamination);
+		 		 
+		 		if(responseNewsListFromCandidateParty != null && responseNewsListFromCandidateParty.size() > 0)
+		 		 responseNewsList.addAll(responseNewsListFromCandidateParty);
+		 		
+		 		 if(responseNewsList != null && responseNewsList.size() > 0)
+		 		 {
+		 			
+		 		  for(Object[] params:responseNewsList)
+		 		  {
+		 			 CandidateNewsCountVO newsCountVO = new CandidateNewsCountVO();
+		 			 newsCountVO.setId((Long)params[4]);
+		 			 newsCountVO.setName(params[5] != null?params[5].toString():" ");
+		 			 newsCountVO.setResponseNewsCount((Long)params[0]);
+		 			 candidateNewsCountVOList.add(newsCountVO);
+		 		  }
+		 		 }
+		 		 if(candidateNewsCountVOList != null && candidateNewsCountVOList.size() > 0)
+		 		 {
+		 		   for(CandidateNewsCountVO countVO:candidateNewsCountVOList)
+		 			  countVO.setTotalNewsCount(countVO.getResponseNewsCount()+countVO.getNotResponseNewsCount()); 
+		 		 }
+		 		 
+		 		 return candidateNewsCountVOList;
+		 		 
+		 	 }catch (Exception e) {
+		 	  e.printStackTrace();
+		 	  log.error("Exception Occured in getCandidateCritiesNewsDetails() method, Exception - "+e);
+		 	  return null;
+		 	}
+		  }
   
-	
+	/*public CandidateNewsCountVO checkCandidateNewsCountVOExist(Long candidateId,List<CandidateNewsCountVO> list)
+	{
+		try{
+		if(list == null || list.size() == 0)
+			return null;
+		
+		for(CandidateNewsCountVO countVO:list)
+		 if(countVO.getId().equals(candidateId))
+		  return countVO;
+		return null;
+		
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in checkCandidateNewsCountVOExist() method, Exception - "+e);
+		 return null;
+		}
+	}*/
 	
 }

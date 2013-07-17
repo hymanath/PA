@@ -574,6 +574,25 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	  
 	return Action.SUCCESS;
   }
+  
+  
+  public String getCandidateCritiesNewsDetails()
+  {
+	  try{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+		 return ERROR;
+		
+		jObj = new JSONObject(getTask());
+		newsCountVOsList = newsMonitoringService.getCandidateCritiesNewsDetails(jObj.getString("fromDate"), jObj.getString("toDate"));
+		  
+	  }catch (Exception e) {
+		  e.printStackTrace();
+		  Log.error(" Exception Occured in getCandidateCritiesNewsDetails() method, Exception - "+e);
+	}
+	  return Action.SUCCESS;
+  }
    
    
 }

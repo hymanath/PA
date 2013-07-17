@@ -20,7 +20,10 @@ public class CandidateNewsCountVO implements Serializable{
    private List<Long> districtCounts;
    private List<Long> constituencyCounts;
    private List<Long> mandalCounts;
-  
+   private Long totalNewsCount = 0L;
+   private Long responseNewsCount = 0L;
+   private Long notResponseNewsCount = 0L;
+   
 	public List<Long> getConstituencyCounts() {
 	return constituencyCounts;
 	}
@@ -111,6 +114,24 @@ public class CandidateNewsCountVO implements Serializable{
 	}
 	public void setBoothNewsCount(Long boothNewsCount) {
 		this.boothNewsCount = boothNewsCount;
+	}
+	public Long getTotalNewsCount() {
+		return totalNewsCount;
+	}
+	public void setTotalNewsCount(Long totalNewsCount) {
+		this.totalNewsCount = totalNewsCount;
+	}
+	public Long getResponseNewsCount() {
+		return responseNewsCount;
+	}
+	public void setResponseNewsCount(Long responseNewsCount) {
+		this.responseNewsCount = responseNewsCount;
+	}
+	public Long getNotResponseNewsCount() {
+		return notResponseNewsCount;
+	}
+	public void setNotResponseNewsCount(Long notResponseNewsCount) {
+		this.notResponseNewsCount = notResponseNewsCount;
 	}
 	
   

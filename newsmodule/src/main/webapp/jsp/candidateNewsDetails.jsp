@@ -57,11 +57,11 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 
 <style type="text/css">
-#candidateNewsCountDiv table,#respondNotRespondNewsCountDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#candidateNewsCountDiv table,#respondNotRespondNewsCountDiv table,#candidateCritiesNewsDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 
-#candidateNewsCountDiv table tr:nth-child(even),#respondNotRespondNewsCountDiv table tr:nth-child(even){background:#EdF5FF;}
-#candidateNewsCountDiv table td,#respondNotRespondNewsCountDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
-#candidateNewsCountDiv table th{
+#candidateNewsCountDiv table tr:nth-child(even),#respondNotRespondNewsCountDiv table tr:nth-child(even),#candidateCritiesNewsDiv table tr:nth-child(even){background:#EdF5FF;}
+#candidateNewsCountDiv table td,#respondNotRespondNewsCountDiv table td,#candidateCritiesNewsDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#candidateNewsCountDiv table th,##candidateCritiesNewsDiv table th{
 	background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -183,6 +183,8 @@ var toDate = '${toDate}';
 	<div id="respondNotRespondNewsCountDiv" style="display:none;"></div>
 
 	<div id="candidateNewsCountDiv" style="display:none;"></div>
+    <div id="candidateCritiesNewsDiv" style="display:none;"></div>
+
 </div>
 	<div id="graphOuterId" style="display:none;">
 		<div id="candidateNewsGraphDiv"></div>
@@ -362,6 +364,11 @@ function callAjax(jsObj,url)
 			{ 
 			    $("#ajaxImg").css("display","none");
 			      showPartyWiseNewsCount(myResults);
+			}
+
+			else if(jsObj.task == "getCandidateCritiesNewsDetails")
+			{
+			  buildCriticsCandidates(myResults);
 			}
 
 			}catch (e)
@@ -1008,6 +1015,68 @@ function getResponseNewsDetails(newsType,partyId)
 }
 
 
+function getCandidateCritiesNewsDetails()
+{
+  
+
+  var jsObj={
+		fromDate:"",
+		toDate:"",
+		task:'getCandidateCritiesNewsDetails'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidateCritiesNewsDetailsAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function buildCriticsCandidates(results)
+{
+	$("#candidateCritiesNewsDiv").css("display","block");
+   var str = '';
+  str +='<table id="candidateCritiesNewsTab">';
+  str +='<thead>';
+  str +='<tr>';
+ 
+  str +='<th>Candidate Name</th>';
+  
+   str +='<th>Response News</th>';
+  str +='<th>Not Response News</th>';
+   str +='<th>Total News</th>';
+ 
+  
+  str +='</tr>';
+  str +='</thead>';
+  str+='<tbody>';
+  for(var i in results)
+  {
+   str +='<tr>';
+   
+   str +='<td>'+results[i].name+'</td>';
+   str +='<td>'+results[i].responseNewsCount+'</td>';
+   str +='<td>'+results[i].notResponseNewsCount+'</td>';
+   str +='<td>'+results[i].totalNewsCount+'</td>';
+  
+   
+   str +='</tr>';
+  }
+  str+='</tbody>';
+ str +='</table>';
+ $("#candidateCritiesNewsDiv").html(str);
+
+ 
+ 
+   $('#candidateCritiesNewsTab').dataTable({
+		"aaSorting": [[ 0, "asc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null] 
+		
+		});
+ 
+}
+
+
 getCandidateNewsCount();
 getSelectedNewsDetails();
 getResponseNewsCountNewsCount();
@@ -1048,7 +1117,10 @@ $(document).ready(function(){
  $("#newsDetailsBtn").click(function(){
   var a = $("#candidateNewsMainDiv > div > ul > li[class='active']  > a").attr('id');
   if( /criticsId/i.test(a))
-	 getResponseNewsCountNewsCount();
+  {
+    getResponseNewsCountNewsCount();
+	getCandidateCritiesNewsDetails();
+  }
 	 else
      getCandidateNewsCount();
 	 
