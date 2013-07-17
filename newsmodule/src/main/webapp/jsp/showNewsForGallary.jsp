@@ -42,6 +42,7 @@ font-size:20px;
 
 #existingFromText,#existingToText{width:155px;cursor: text;}
 #errorMsgDiv{font-size:12px;}
+#responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
 </style>
 <script>
 
@@ -201,7 +202,7 @@ var totalPages = Math.ceil(results[0].totalResultsCount / 10);
 				str+='<div class="span9" style="width:550px;">';
 					str+='<table><tr><td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">'+results[i].fileType+'</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+results[i].fileDate+'</span></p></td>';
 			if(results[i].responseCount > 0)
-				str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">'+results[i].responseCount+'</span></p></td>';
+				str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" ><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /><span style="font-weight:normal;color:black;">'+results[i].responseCount+'</span></p></td>';
 				
 				str+='</tr></table></div>';
 				str+='<br><div class="span2" style="float:right;">';

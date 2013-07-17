@@ -102,6 +102,7 @@
 	#gallaryCategoryDiv{margin-top: 4px; line-height: 1.9em;}
 	.errorDiv{color:red;}
 	#categoryGallary{margin: 0px 5px 0px 0px;}
+	#responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
 	</style>
 </head>
 <body>
@@ -312,7 +313,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		}
 		str +='</p></td><td><p><span class="text-error" style="margin-left: 45px;font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td>';
 	if(results[i].responseCount > 0)
-		str+='<td><p><span class="text-error" style="font-weight: bold; margin-left: 15px;">Response Count: </span>'+results[i].responseCount+'</p></td>';
+		str+='<td><p><span class="text-error" style="font-weight: bold; margin-left: 15px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span>'+results[i].responseCount+'</p></td>';
 		
 		str +='</tr></table>';
 		str +='</div>';

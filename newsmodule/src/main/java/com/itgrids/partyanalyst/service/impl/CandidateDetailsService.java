@@ -5349,6 +5349,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	{
 		try{
 			
+			List<Long> fileGalleryIdsList = new ArrayList<Long>(0);
 			for(FileGallary fileGallary : fileGallaryList)
 			 {
 			/*	int count =candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size();
@@ -5357,6 +5358,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					if(fileGallary.getFile() == null)
 						continue;
+					
+				fileGalleryIdsList.add(fileGallary.getFileGallaryId());
 					
 				FileVO fileVO = new FileVO(); 
 				fileVO.setContentId(fileGallary.getFileGallaryId());
@@ -5423,6 +5426,21 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				 
 				fileVOsList.add(fileVO);
 			 }
+			if(fileGalleryIdsList != null && fileGalleryIdsList.size() > 0)
+			{
+			 Map<Long,String> candidateNamesMap = new HashMap<Long, String>(0);
+			 List<Object[]> list = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileGalleryIdsList);
+			 if(list != null && list.size() > 0)
+			  for(Object[] params:list)
+				 candidateNamesMap.put((Long)params[0], params[1] != null?params[1].toString():" ");
+			 
+			 for(FileVO fileVO:fileVOsList)
+			  fileVO.setCandidateName(candidateNamesMap.get(fileVO.getContentId()));
+			 
+			}
+			
+			if(fileVOsList != null && fileVOsList.size() > 0)
+			 Collections.sort(fileVOsList,dateSort);
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -6102,6 +6120,15 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 return fileVOsList;
 		}
 }
+   
+   public static Comparator<FileVO> dateSort = new Comparator<FileVO>()
+			{
+								  
+			  public int compare(FileVO fileVO, FileVO fileVO2)
+				{
+				  return (fileVO.getFileDate()).compareTo(fileVO2.getFileDate());
+				}
+			 };
 	
 		
 }
