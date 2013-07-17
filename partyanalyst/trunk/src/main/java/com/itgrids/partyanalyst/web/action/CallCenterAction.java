@@ -192,11 +192,15 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				Date fromDate = null ;
 				Date toDate = null;
-				if(!frmDate.equalsIgnoreCase("")){
-					 fromDate =dateFormat.parse(frmDate);
-				}
-				if(!endDate.equalsIgnoreCase("")){
-				 toDate =dateFormat.parse(endDate);
+				try{
+					if(!frmDate.equalsIgnoreCase("")){
+						 fromDate =dateFormat.parse(frmDate);
+					}
+					if(!endDate.equalsIgnoreCase("")){
+					 toDate =dateFormat.parse(endDate);
+					}
+				}catch(Exception e){
+					
 				}
 				CallCenterVO callCenterVO = new CallCenterVO();
 				callCenterVO.setName(name);
