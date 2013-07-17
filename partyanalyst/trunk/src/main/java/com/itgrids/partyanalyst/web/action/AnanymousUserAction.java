@@ -444,4 +444,21 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		//session.setAttribute("districts", districts);
 		session.setAttribute("constituencies", constituencies);
     }
+    
+    public String removeCadreImage(){
+    	log.debug("entered into removeCadreImage() business method in AnanymousUserAction class");
+    	session = request.getSession();
+    	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+    	String param = null;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);
+			if(jObj.getString("task").equalsIgnoreCase("removeCadreImage"))
+				prepopulate = staticDataService.removeCadreImage(jObj.getLong("cadreId"),regVO.getRegistrationID());
+		}catch(Exception e){
+			log.debug("error occured in removeCadreImage() business method in AnanymousUserAction class");
+			e.printStackTrace();			
+		}
+    	return Action.SUCCESS;
+    }
 }
