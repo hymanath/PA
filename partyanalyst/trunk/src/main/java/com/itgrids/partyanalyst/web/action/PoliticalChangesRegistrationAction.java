@@ -5,10 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+
 import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IPoliticalChangesService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -34,7 +34,7 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 	private String title,description,occuredDate,reportedDate,party,effectRange,localPoliticalChangeId;
 	private String type,externalPerson,name,mobile,telephoneNo,email,address,informationSource,range,rangeId;
 	private int resultStatus = 3;
-	
+	private String successMsg;
 	private IPoliticalChangesService politicalChangesService;
 	
 	
@@ -225,6 +225,14 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 		this.request = request;		
 	}	
 	
+	public String getSuccessMsg() {
+		return successMsg;
+	}
+
+	public void setSuccessMsg(String successMsg) {
+		this.successMsg = successMsg;
+	}
+
 	public String execute() throws Exception
 	{
 		session = request.getSession();
@@ -237,7 +245,11 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 		ResultStatus result = politicalChangesService.savePoliticalChangeDataReceivedFromUser(politicalChangesVO, type);
 		resultStatus = result.getResultCode();
 		if(resultStatus == 0)
+		{
 			politicalChangesVO = new PoliticalChangesVO();
+			successMsg = "success";
+		}
+			
 		else if(resultStatus == 1)
 			return "fail";
 		
