@@ -3072,21 +3072,26 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	}
 	
 	@SuppressWarnings("unchecked")
-    public List<FileGallary> getFilesOfGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex,String newsType,Long categoryId,Date fromDate,Date toDate)
+    public List<FileGallary> getFilesOfGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex,String newsType,Long categoryId,Date fromDate,Date toDate,String requestFor)
     {
 		 StringBuffer queryObject = new StringBuffer();
-		 queryObject.append("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and " );
+		 queryObject.append("select model from FileGallary model,CandidateNewsResponse model1 where model.gallary.gallaryId in(:gallaryIdsList) and " );
 		 queryObject.append(" model.isDelete = 'false' and model.gallary.isDelete = 'false' ");
 		 if(categoryId != 0)
 			 queryObject.append(" and model.file.category.categoryId = :categoryId ");
 		 if(!newsType.equalsIgnoreCase(""))
 			 queryObject.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false' ");
 		 
-		 if(fromDate != null)
-		  queryObject.append(" and date(model.file.fileDate) >= :fromDate ");
+		 if(!requestFor.equalsIgnoreCase("null")){
+			 queryObject.append(" and model.fileGallaryId= model1.fileGallary.fileGallaryId ");
+		 }
 		 
+		 if(fromDate != null)
+			  queryObject.append(" and date(model.file.fileDate) >= :fromDate ");
+			 
 		 if(toDate != null)
-		  queryObject.append(" and date(model.file.fileDate) <= :toDate ");
+		      queryObject.append(" and date(model.file.fileDate) <= :toDate ");
+				 
 			 
 		 queryObject.append(" group by model.file.fileId order by model.updateddate desc");
 		 Query query = getSession().createQuery(queryObject.toString());

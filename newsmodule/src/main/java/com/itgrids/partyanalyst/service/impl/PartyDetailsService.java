@@ -1902,6 +1902,7 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 		List<Object[]> newsList = partyGalleryDAO.getPartyGallaryDetail(partyId, IConstants.NEWS_GALLARY,startIndex,endIndex);
 		
 		Map<String , Long > map = new HashMap<String ,Long>();	
+		Map<String , Long > respondedFilesCount=new HashMap<String, Long>();
 		List<Long> gallaryIds = new ArrayList<Long>();
 		
 		
@@ -1909,10 +1910,14 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 			gallaryIds.add((Long)obj[0]);
 		
 		List<Object[]> filesCount = partyGalleryDAO.getNewsCountDetailsForGallaries(gallaryIds);
-		
+		List<Object[]> responsedFileCountList=partyGalleryDAO.getRespondedFilesCount(gallaryIds,0l);
 		
 		for(Object[] obj:filesCount)
 			map.put(obj[0].toString(), (Long)obj[1]);
+		
+		for(Object[] obj1:responsedFileCountList){
+			respondedFilesCount.put(obj1[0].toString(),(Long)obj1[1]);
+		}
 		
 		
 		
@@ -1926,7 +1931,7 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 			file.setGallaryCreatedDate(obj[3].toString());
 			file.setGallaryUpdatedDate(obj[4].toString());
 			file.setTotalResultsCount(map.get(obj[0].toString()));
-			
+			file.setRespondedFilesCountInGall(respondedFilesCount.get(obj[0].toString()));
 			fileVos.add(file);
 		}
 		
@@ -1942,9 +1947,19 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 	{  	FileVO fileVo =  new FileVO();
 	
 	
-	List<FileVO> fileVos = new ArrayList<FileVO>();
-	
+		List<FileVO> fileVos = new ArrayList<FileVO>();
 		List<Object[]> filesCount = partyGalleryDAO.getGalleriesForCategories(IConstants.TDPID, startIndex, endIndex, newsType, categoryId);
+		List<Long> gallaryIds = new ArrayList<Long>();
+		Map<String , Long > respondedFilesCount=new HashMap<String, Long>();
+		
+		for(Object[] obj:filesCount)
+			gallaryIds.add((Long)obj[0]);
+		
+		List<Object[]> responsedFileCountList=partyGalleryDAO.getRespondedFilesCount(gallaryIds,categoryId);
+		for(Object[] obj1:responsedFileCountList){
+			respondedFilesCount.put(obj1[0].toString(),(Long)obj1[1]);
+		}
+		
       for(Object[]  obj:filesCount){
 			
 			FileVO file = new FileVO();
@@ -1955,6 +1970,7 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 			file.setGallaryCreatedDate(obj[3].toString());
 			file.setGallaryUpdatedDate(obj[4].toString());
 			file.setTotalResultsCount((Long)obj[5]);
+			file.setRespondedFilesCountInGall(respondedFilesCount.get(obj[0].toString()));
 			
 			fileVos.add(file);
 		}

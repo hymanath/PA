@@ -72,5 +72,7 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	
 	public List<FileGallary> getLatestNewsResPonses(Integer startIndex, Integer maxIndex);
 	
+	public List<Object[]> getRespondedFilesCount(List<Long> gallaryIds,Long categoryId);
+	
 	
 }

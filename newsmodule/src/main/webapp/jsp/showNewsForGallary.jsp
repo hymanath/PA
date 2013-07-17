@@ -129,9 +129,10 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 
 <script>
 
-showAllFilesofAGallry(0,10,galalryId,1);
+var requestedFor = '${requestFor}';
+showAllFilesofAGallry(0,10,galalryId,1,requestedFor);
 
-function showAllFilesofAGallry(startIndex , endIndex , gallaryId,selectedvalue)
+function showAllFilesofAGallry(startIndex , endIndex , gallaryId,selectedvalue,requestedFor)
 {
 $('#imageForMail').css("display","block");
    $.ajaxSetup({
@@ -143,7 +144,7 @@ $('#imageForMail').css("display","block");
 	  type:'POST',
 	  url: 'getFilesInAGallary.action',
 	  dataType: 'json',
-	 data: {startIndex:startIndex,endIndex:endIndex,gallaryId:gallaryId,categoryId:categoryId,fromDate:"",toDate:""},
+	 data: {startIndex:startIndex,endIndex:endIndex,gallaryId:gallaryId,categoryId:categoryId,requestedFor:requestedFor,fromDate:"",toDate:""},
 		 
 	  success: function(results){ 
 		   buildFilesInGallaryDetails(results,selectedvalue);
@@ -156,18 +157,23 @@ $('#imageForMail').css("display","block");
 
 
 function buildFilesInGallaryDetails(results,selectedvalue)
-{  
-  $('#imageForMail').css("display","none");
-  $("#newsDisplayDiv").html('');
+{   
+	var totalPages;
+	$('#imageForMail').css("display","none");
+	$("#newsDisplayDiv").html('');
   if(results == null || results.length == 0)
   {
     $("#light-pagination").html('');
     $("#newsDisplayDiv").html('No Data Found.');
 	return;
   }
-
 	
-var totalPages = Math.ceil(results[0].totalResultsCount / 10);
+	if(requestedFor=="respondedNews"){
+		totalPages = Math.ceil(results[0].respondedFilesCountInGall / 10);
+	}
+	else{
+		totalPages = Math.ceil(results[0].totalResultsCount / 10);
+	}
   $('#light-pagination').pagination({
 	pages:totalPages,
 	currentPage:selectedvalue,	 
@@ -244,10 +250,10 @@ function callAjaxToGetTheResults(selectedvalue)
 		startIndex = 0;
 	else{
 		selectedvalue1 = selectedvalue - 1;
-		startIndex = selectedvalue1*10+1;
+		startIndex = selectedvalue1*10;
 	}
 
-showAllFilesofAGallry(startIndex,endIndex,galalryId,selectedvalue)
+	showAllFilesofAGallry(startIndex,endIndex,galalryId,selectedvalue,requestedFor)
 }
 
 
