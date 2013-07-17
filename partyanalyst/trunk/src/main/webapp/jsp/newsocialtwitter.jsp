@@ -42,7 +42,7 @@
  $(function(){
 
 			$('#politician').parent().hide();
-			$('#party').parent().hide();
+			//$('#party').parent().hide();
      $('input:radio').bind('change', function(){
      $('#party').attr('disabled', !$("#rparty").is(":checked"));
 	 $('#politician').attr('disabled', !$("#rpolitician").is(":checked"));
@@ -181,6 +181,7 @@ var elmt = document.getElementById('politician');
 	}
 	
 }
+var flag = false;
 function getPartyNames(result)
 {
 
@@ -217,11 +218,16 @@ function getPartyNames(result)
 		elmt.add(option);
 	}
 	}
+	if(!flag){
+	flag = true;
+	$('#party').val('357110592005369856');
+	}
 }
 
 setTimeout("getPartyName()",1000);
 
 function setTweetUsers(ids){
+if(ids > 0){
 $('#TwitterDiv').html('');
 //var id = '357110592005369856'; // tdp
 //var id = '357143208817467392'; // partyanalyst
@@ -232,6 +238,7 @@ var str='';
 	$('#TwitterDiv').html(str);
 createDiv();
 //setTimeout("createDiv()",1000);
+}
 }
 
 function createDiv(){
@@ -259,10 +266,10 @@ fjs.parentNode.insertBefore(js,fjs);
 <img src="images/socialNetwork/twitter_64.png" width="48" height="48" alt="Twitter icon" class="thumbnail pull-left"/>
 <div class="span10">
     <label class="radio inline">
-    <input name="party" value="party" type="radio" id="rparty"  onclick="getPartyName()" > Party
+    <input name="party" value="party" type="radio" id="rparty"  onclick="getPartyName()" checked="true"/> Party
     </label>
     <label class="radio inline">
-    <input name="party" value="party" type="radio" id="rpolitician" onclick="getPartyName()">Leader
+    <input name="party" value="party" type="radio" id="rpolitician" onclick="getPartyName()"/>Leader
     </label>
   <!--  <label class="radio inline">
 	<input name="party" value="party" type="radio" id="rall"  checked="true" onclick="getPartyName()">All 
@@ -290,7 +297,6 @@ fjs.parentNode.insertBefore(js,fjs);
  
 <div id="TwitterDiv" > 
 <a class="twitter-timeline" data-widget-id="357110592005369856"></a>
-
 </div>
 
 
