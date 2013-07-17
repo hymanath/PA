@@ -2369,7 +2369,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	
 	public List<Object[]> getNewsCountForMandalLevel(List<Long> candidateIds,
 			Long tehsilScopeId, List<Long> tehsilIdsList,
-			Long panchayatScopeId, List<Long> panchayatIdsList) {
+			Long panchayatScopeId, List<Long> panchayatIdsList,Date fromdDate,Date toDate) {
 		
 		
 		StringBuffer queryStr = new StringBuffer();
@@ -2397,6 +2397,12 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 				    " model.file.locationValue in( :panchayatIdsList))");
 		}
 		
+		if(fromdDate != null)
+		 queryStr.append(" and date(model.file.fileDate) >= :fromDate");
+		
+		if(toDate != null)
+		 queryStr.append(" and date(model.file.fileDate) <= :toDate ");	
+		
 		queryStr.append(" group by model.file.category.categoryId");
 
 		Query query = getSession().createQuery(queryStr.toString());
@@ -2415,6 +2421,11 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			query.setParameterList("panchayatIdsList", panchayatIdsList);
 		}
 		
+		if(fromdDate != null)
+		 query.setParameter("fromDate", fromdDate);
+		if(toDate != null)
+		 query.setParameter("toDate", toDate);
+			
 		return query.list();
 		
 	}
@@ -2530,18 +2541,33 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	
 	
 	public List<Object[]> getNewsCountForMuncipality(
-			List<Long> candidateIds ,Long muncipalityScopeId ,List<Long> muncipalityValuesList){
+			List<Long> candidateIds ,Long muncipalityScopeId ,List<Long> muncipalityValuesList,Date fromDate,Date toDate){
+
 		
 		
-		Query query = getSession().createQuery("select model.file.category.categoryType,count(*)," +
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.file.category.categoryType,count(*)," +
 					"model.file.category.categoryId from FileGallary model " +
 					" where model.gallary.candidate.candidateId in(:candidateIds) " +
 					" and model.file.regionScopes.regionScopesId =:muncipalityScopeId and" +
-					" model.file.locationValue in( :muncipalityValuesList) group by model.file.category.categoryId");
+					" model.file.locationValue in( :muncipalityValuesList) ");
+		
+		
+		if(fromDate != null)
+		 str.append(" and date(model.file.fileDate) >= :fromDate ");
+		if(toDate != null)
+		 str.append(" and date(model.file.fileDate) <= :toDate ");	
+			
+		str.append(" group by model.file.category.categoryId ");
+		Query query = getSession().createQuery(str.toString());
 		
 		query.setParameterList("candidateIds", candidateIds);
 		query.setParameter("muncipalityScopeId", muncipalityScopeId);
 		query.setParameterList("muncipalityValuesList", muncipalityValuesList);
+		if(fromDate != null)
+		 query.setParameter("fromDate",fromDate);
+		if(toDate != null)
+		 query.setParameter("toDate",toDate);	
 		
 		return query.list();
 		
@@ -2549,42 +2575,70 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	}
 	
 	
-	public List<Object[]> getNewsCountForMuncipalityWithWards(NewsCountVO newsCountVO){
+	public List<Object[]> getNewsCountForMuncipalityWithWards(NewsCountVO newsCountVO,Date fromDate,Date toDate){
 		
-		Query query = getSession().createQuery("select model.file.category.categoryType,count(*)," +
+		StringBuilder str = new StringBuilder();
+		str.append("select model.file.category.categoryType,count(*)," +
 				"model.file.category.categoryId from FileGallary model " +
 				" where model.gallary.candidate.candidateId in(:candidateIds) " +
 				" and (( model.file.regionScopes.regionScopesId =:muncipalityScopeId and" +
 				" model.file.locationValue in( :muncipalityValuesList) " +
 				" or "+
 				" model.file.regionScopes.regionScopesId =:wardScopeId and" +
-				" model.file.locationValue in( :wardIds))) " +
-				"group by model.file.category.categoryId");
+				" model.file.locationValue in( :wardIds))) ");
 		
+		if(fromDate != null)
+		 str.append(" and date(model.file.fileDate) >= :fromDate ");
+		
+		if(toDate != null)
+		 str.append(" and date(model.file.fileDate) <= :toDate ");
+		
+		str.append(" group by model.file.category.categoryId ");
 	
+		Query query = getSession().createQuery(str.toString());
+		
 		query.setParameterList("candidateIds", newsCountVO.getCandidateIds());
 		query.setParameter("muncipalityScopeId", newsCountVO.getMuncipalityScopeId());
 		query.setParameterList("muncipalityValuesList", newsCountVO.getMuncipalityValuesList());
 		query.setParameter("wardScopeId", newsCountVO.getWardScopeId());
 		query.setParameterList("wardIds",newsCountVO.getWardIdsList());
-	
+	    
+		if(fromDate != null)
+		 query.setParameter("fromDate",fromDate);
+			
+		if(toDate != null)
+		 query.setParameter("toDate",toDate);
+			
 	    return query.list();
 		
 	}
 	
 	
 	public List<Object[]> getNewsCountForWards(List<Long> candidateIds,
-			Long wardScopeId, List<Long> wardValuesList) {
+			Long wardScopeId, List<Long> wardValuesList,Date fromDate,Date toDate) {
 		
-		Query query = getSession().createQuery("select model.file.category.categoryType,count(*)," +
+	
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.file.category.categoryType,count(*)," +
 				"model.file.category.categoryId from FileGallary model " +
 				" where model.gallary.candidate.candidateId in(:candidateIds) " +
 				" and model.file.regionScopes.regionScopesId =:wardScopeId and" +
-				" model.file.locationValue in( :wartdIds) group by model.file.category.categoryId");
-	
+				" model.file.locationValue in( :wartdIds) ");
+		if(fromDate != null)
+		 str.append(" and date(model.file.fileDate) >= :fromDate ");
+		if(toDate != null)
+		 str.append(" and date(model.file.fileDate) <= :toDate ");
+		
+		str.append(" group by model.file.category.categoryId" );
+		
+	Query query = getSession().createQuery(str.toString());
 	query.setParameterList("candidateIds", candidateIds);
 	query.setParameter("wardScopeId", wardScopeId);
 	query.setParameterList("wartdIds", wardValuesList);
+	if(fromDate != null)
+	 query.setParameter("fromDate",fromDate);
+	if(toDate != null)
+	 query.setParameter("toDate",toDate);
 	
 	return query.list();
 		
@@ -2593,17 +2647,31 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	
 	
 	public List<Object[]> getNewsCountForHamlets(List<Long> candidateIds,
-			Long hamletScopeId, List<Long> hamletIds)
+			Long hamletScopeId, List<Long> hamletIds,Date fromDate,Date toDate)
 	{
-		Query query = getSession().createQuery("select model.file.category.categoryType,count(*)," +
+		
+		
+	StringBuilder str = new StringBuilder();
+	str.append(" select model.file.category.categoryType,count(*)," +
 				"model.file.category.categoryId from FileGallary model " +
 				" where model.gallary.candidate.candidateId in(:candidateIds) " +
 				" and model.file.regionScopes.regionScopesId =:hamletScopeId and" +
-				" model.file.locationValue in( :hamletIds) group by model.file.category.categoryId");
+				" model.file.locationValue in( :hamletIds) ");
+	if(fromDate != null)
+	 str.append(" and date(model.file.fileDate) >= :fromDate ");
+	if(toDate != null)
+	 str.append(" and date(model.file.fileDate) <= :toDate ");
 	
+	str.append(" group by model.file.category.categoryId ");
+	Query query = getSession().createQuery(str.toString());
 	query.setParameterList("candidateIds", candidateIds);
 	query.setParameter("hamletScopeId", hamletScopeId);
 	query.setParameterList("hamletIds", hamletIds);
+	
+	if(fromDate != null)
+	 query.setParameter("fromDate",fromDate);
+	if(toDate != null)
+	 query.setParameter("toDate",toDate);
 	
 	return query.list();
 		
@@ -2827,7 +2895,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	 public List<?> getPartyWiseAllNewsDetailsInLocation(List<Long> partyId, Long districtScopeId, List<Long> districtIds, Long constituencyScopeId, List<Long> constituencyVal,
 				Long tehsilScopeId, List<Long> tehsilIds, Long hamletScopeId,
 				List<Long> hamletIds,Long muncipalityScopeId ,List<Long> localElectionBodyIds,Long 
-				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult,String type){
+				wardScopeId,List<Long> wardIdsList,String queryType,int firstResult,int maxResult,String type,Date fromDate,Date toDate){
 			StringBuilder query = new StringBuilder();
 			if(type.equalsIgnoreCase("count"))
 			{
@@ -2841,6 +2909,11 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 						" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId and model2.party.partyId in (:partyId) "+
 						" and model2.gallery.contentType.contentType= :type and model.isDelete = :isDelete ");
 			}
+			
+			if(fromDate != null)
+			 query.append(" and date(model.file.fileDate) >= :fromDate ");
+			if(toDate != null)
+			 query.append(" and date(model.file.fileDate) <= :toDate ");
 			
 			if(queryType.equalsIgnoreCase("Public"))
 					query.append(" and model.isPrivate = :isPrivate  and model.gallary.isPrivate='false' and model.isPrivate ='false' ");
@@ -2908,8 +2981,13 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 				queryObject.setFirstResult(firstResult);
 				queryObject.setMaxResults(maxResult);
 			}
-
-
+			
+			if(fromDate != null)
+			 queryObject.setParameter("fromDate", fromDate);
+			
+			if(toDate != null)
+			 queryObject.setParameter("toDate", toDate);
+			
 			return queryObject.list();
 			}
 	
@@ -2988,13 +3066,13 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	@SuppressWarnings("unchecked")
 	public List<FileGallary> getFileGallariesByFileGallaryIdsList(List<Long> fileGallaryIdsList)
 	{
-		Query query = getSession().createQuery(" select model from FileGallary model where model.fileGallaryId in(:fileGallaryIdsList) ");
+		Query query = getSession().createQuery(" select model from FileGallary model where model.fileGallaryId in(:fileGallaryIdsList) order by model.file.fileDate desc ");
 		query.setParameterList("fileGallaryIdsList", fileGallaryIdsList);
 		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-    public List<FileGallary> getFilesOfGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex,String newsType,Long categoryId)
+    public List<FileGallary> getFilesOfGallaries(List<Long> gallaryIdsList , int startIndex  , int endIndex,String newsType,Long categoryId,Date fromDate,Date toDate)
     {
 		 StringBuffer queryObject = new StringBuffer();
 		 queryObject.append("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and " );
@@ -3003,18 +3081,32 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			 queryObject.append(" and model.file.category.categoryId = :categoryId ");
 		 if(!newsType.equalsIgnoreCase(""))
 			 queryObject.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false' ");
+		 
+		 if(fromDate != null)
+		  queryObject.append(" and date(model.file.fileDate) >= :fromDate ");
+		 
+		 if(toDate != null)
+		  queryObject.append(" and date(model.file.fileDate) <= :toDate ");
+			 
 		 queryObject.append(" group by model.file.fileId order by model.updateddate desc");
 		 Query query = getSession().createQuery(queryObject.toString());
    	 query.setParameterList("gallaryIdsList",gallaryIdsList);
    	 if(categoryId != 0)
    		 query.setParameter("categoryId", categoryId);
+   	 
+   	if(fromDate != null)
+   		query.setParameter("fromDate",fromDate);
+		 
+	if(toDate != null)
+	 query.setParameter("toDate",toDate);
+   	 
    	 query.setFirstResult(startIndex);
    	 query.setMaxResults(endIndex);
    	 return query.list();
     }
 	
 	 @SuppressWarnings("unchecked")
-		public List<Long> getAllRecordsCountInGallary(Long gallaryId,String newsType,Long categoryId){
+		public List<Long> getAllRecordsCountInGallary(Long gallaryId,String newsType,Long categoryId,Date fromDate,Date toDate){
 		 StringBuffer queryObject = new StringBuffer();
 		 queryObject.append("select count(*) from FileGallary model where model.gallary.gallaryId = :gallaryId " +
 		 		"and model.isDelete = :isDelete ");
@@ -3023,13 +3115,26 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		 if(!newsType.equalsIgnoreCase(""))
 			 queryObject.append(" and model.isPrivate = :isPrivate ");
 		
+		 if(fromDate != null)
+		  queryObject.append(" and date(model.file.fileDate) >= :fromDate ");
+		 
+		 if(toDate != null)
+		  queryObject.append(" and date(model.file.fileDate) <= :toDate ");
+		 
 		 Query query = getSession().createQuery(queryObject.toString());
 		 query.setParameter("gallaryId",gallaryId);
 		 query.setParameter("isDelete","false");
 		 if(categoryId != 0)
 			 query.setParameter("categoryId",categoryId);
 		 if(!newsType.equalsIgnoreCase(""))
-			 query.setParameter("isPrivate","false");				
+			 query.setParameter("isPrivate","false");
+		 
+		 if(fromDate != null)
+		  query.setParameter("fromDate",fromDate);
+			 
+		if(toDate != null)
+		 query.setParameter("toDate",toDate);
+		 
 		return query.list(); 
 		}
 	 

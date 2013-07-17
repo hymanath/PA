@@ -51,6 +51,9 @@ $( document ).ready(function() {
 	
 
  });
+
+ var galalryId = '${gallaryId}';
+var categoryId = '${category}';
 </script>
 
 </head>
@@ -125,8 +128,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
     <script type="text/javascript" src="pagination/jquery.simplePagination.js"></script>
 
 <script>
-var galalryId = '${gallaryId}';
-var categoryId = '${category}';
+
 showAllFilesofAGallry(0,10,galalryId,1);
 
 function showAllFilesofAGallry(startIndex , endIndex , gallaryId,selectedvalue)
@@ -141,7 +143,7 @@ $('#imageForMail').css("display","block");
 	  type:'POST',
 	  url: 'getFilesInAGallary.action',
 	  dataType: 'json',
-	 data: {startIndex:startIndex,endIndex:endIndex,gallaryId:gallaryId,categoryId:categoryId,},
+	 data: {startIndex:startIndex,endIndex:endIndex,gallaryId:gallaryId,categoryId:categoryId,fromDate:"",toDate:""},
 		 
 	  success: function(results){ 
 		   buildFilesInGallaryDetails(results,selectedvalue);
@@ -154,8 +156,17 @@ $('#imageForMail').css("display","block");
 
 
 function buildFilesInGallaryDetails(results,selectedvalue)
-{   
-	$('#imageForMail').css("display","none");
+{  
+  $('#imageForMail').css("display","none");
+  $("#newsDisplayDiv").html('');
+  if(results == null || results.length == 0)
+  {
+    $("#light-pagination").html('');
+    $("#newsDisplayDiv").html('No Data Found.');
+	return;
+  }
+
+	
 var totalPages = Math.ceil(results[0].totalResultsCount / 10);
   $('#light-pagination').pagination({
 	pages:totalPages,
@@ -267,10 +278,31 @@ function getSelectedNewsDetails()
 	}  */
 
 	
-	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
+	/* var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
 	
     var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-    browser1.focus();
+    browser1.focus();*/
+
+	$('#imageForMail').css("display","block");
+   $.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	});
+
+	$.ajax({
+	  type:'POST',
+	  url: 'getFilesInAGallary.action',
+	  dataType: 'json',
+	 data: {startIndex:0,endIndex:10,gallaryId:galalryId,categoryId:categoryId,fromDate:fromDate,toDate:toDate},
+		 
+	  success: function(results){ 
+		   buildFilesInGallaryDetails(results,1);
+	 },
+	  error:function() { 
+	  }
+	});
+
+
 }
   $(".dateField").live("click", function(){
  $(this).datepicker({

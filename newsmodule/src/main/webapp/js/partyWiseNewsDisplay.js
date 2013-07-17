@@ -474,6 +474,8 @@ function getNewsForPagination(num)
 				startRecord:num,
 			    maxRecord:10,
 				queryType:queryType,
+				fromDate:"",
+				toDate:"",
 				task:"getPartyWiseNewsToDisplay"
 		    };
 	 
@@ -529,6 +531,15 @@ function getNewsForPagination(num)
 }
 var maxResults;
 function showTotalNews(myResult,jsObj){	
+	$("#newsDispalyId").html('');
+	if(myResult == null || myResult.length == 0)
+	{
+	 $("#newsDispalyId").html('No Data Found.');
+     $("#paginationId").html('');
+	 return;
+	}
+
+	
 	var str='';
 	str+='<ul class="unstyled">';
 	for(var i in myResult){	

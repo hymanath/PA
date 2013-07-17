@@ -2567,10 +2567,13 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			int endIndex = Integer.parseInt(request.getParameter("endIndex"));
 			Long  categoryId = Long.parseLong(request.getParameter("categoryId"));
 			String newsType = "Public";
+			String fromDate = request.getParameter("fromDate");
+			String toDate = request.getParameter("toDate");
+			
 			if(user.getUserAccessType()!=null)
 				 if(user.getUserAccessType().equals("Admin"))
 					 newsType = "";   			
-			fileVO = candidateDetailsService.getFilesOfAGallary(gallaryId,startIndex,endIndex,newsType,categoryId);
+			fileVO = candidateDetailsService.getFilesOfAGallary(gallaryId,startIndex,endIndex,newsType,categoryId,fromDate,toDate);
 			
 			return Action.SUCCESS;
 				

@@ -196,6 +196,8 @@ function hideDivs(){
 
 function getNewsForLocation()
  {
+	 $("#existingFromText").val('');
+	 $("#existingToText").val('');
 	var scopes = scope;
 			if(scopes == "District"){				
 				scopeIdVal = document.getElementById("userAccessDistrictList").value;	
@@ -218,6 +220,8 @@ function getNewsForLocation()
 				startRecord:0,
 			    maxRecord:10,
 				queryType:queryType,
+				fromDate:"",
+				toDate:"",
 				task:"getPartyWiseNewsToDisplay"
 		    };
 	 
@@ -255,10 +259,30 @@ function getNewsForLocation()
 	}  */
 
 	
-	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
+	/* var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
 	
     var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-    browser1.focus();
+    browser1.focus(); */
+
+	var queryType='Public';
+        var jsObj =
+		    {   
+				locationType:scope,
+				locationId:locationValue,
+				partyId:partyId,
+				startRecord:0,
+			    maxRecord:10,
+				queryType:queryType,
+				fromDate:fromDate,
+				toDate:toDate,
+				task:"getPartyWiseNewsToDisplay"
+		    };
+	 
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartyWiseNewsDetailsForALocation.action?"+rparam;						
+	callsAjax(jsObj,url);   
+	
+
 }
   $(".dateField").live("click", function(){
  $(this).datepicker({

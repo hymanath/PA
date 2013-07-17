@@ -16,7 +16,7 @@ import com.itgrids.partyanalyst.model.FileGallary;
 public interface ICandidateDetailsService {
 	
 	
-	public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType,Long categoryId);
+	public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType,Long categoryId,String fromDateStr,String toDateStr);
 	
 	public List<SelectOptionVO> getLatestgallaries();
 	
