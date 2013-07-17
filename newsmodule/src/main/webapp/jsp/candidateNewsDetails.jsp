@@ -460,7 +460,7 @@ function buildCandidateNews(results,jsObj)
  {
  
    $('#newsCountTab').dataTable({
-		
+		"aaSorting": [[ 1, "desc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
@@ -471,7 +471,7 @@ function buildCandidateNews(results,jsObj)
  else
  {
 	$('#newsCountTab').dataTable({
-		"aaSorting": [[ 1, "asc" ]],
+		"aaSorting": [[ 1, "desc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false

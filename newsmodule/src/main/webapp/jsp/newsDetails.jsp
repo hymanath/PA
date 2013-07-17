@@ -45,6 +45,7 @@ font-size:20px;
 #existingFromText,#existingToText{width:155px; cursor: text;}
 #errorMsgDiv{font-size:12px;}
 .fontStyle{color:#000;font-size:21px;}
+#responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
 </style>
 <title>Insert title here</title>
 
@@ -180,6 +181,14 @@ function callAjax(jsObj,url)
 
 function buildPaginatedNews(results,jsObj)
 {
+   $("#latestNewsDiv").html('');
+   if(results == null || results.length == 0)
+	{
+     $("#latestNewsDiv").html('No Data Found.');
+     $("#paginationId").html('');
+	 return;
+	}
+
 	var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
@@ -213,7 +222,7 @@ function buildPaginatedNews(results,jsObj)
 		str+="</div>";
 
 		str+="<div class='span9' style='width:550px; margin-top: 9px;'>";
-		str +='<table><tr><td style="width: 170px; vertical-align: top;">';
+		str +='<table><tr><td style="width: 200px; vertical-align: top;">';
 		str +='<p style="margin-right: 5px;"><span class="text-error" style="font-weight:bold;">Source : </span>';
 		var length = results[i].fileVOList.length;
 
@@ -225,9 +234,13 @@ function buildPaginatedNews(results,jsObj)
 		}
 		str +='</p></td><td style="vertical-align: top;"><p style="width: 108px;"><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
 		if(results[i].responseCount > 0)
-		str+='<td style="vertical-align: top;"><p style="width: 145px;"><span class="text-error" style="font-weight:bold;padding-left: 20px;">Response Count : </span > '+results[i].responseCount+'</p></td>';
-
-		str +='<td style="vertical-align: top;"><p style="width: 150px;"><span class="text-error" style="font-weight:bold;">Location :</span> '+results[i].locationName+'</p></td>';
+		str+='<td style="vertical-align: top;"><p style="width: 80px;"><span class="text-error" style="font-weight:bold;padding-left: 20px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span > '+results[i].responseCount+'</p></td>';
+		
+		if(results[i].candidateName != null)
+		{
+		 str +='<td style="vertical-align: top;"><p style="width: 130px;"><span class="text-error" style="font-weight:bold;">Candidate :</span> '+results[i].candidateName+'</p></td>';
+		}
+		str +='<td style="vertical-align: top;"><p style="width: 145px;"><span class="text-error" style="font-weight:bold;">Location :</span> '+results[i].locationName+'</p></td>';
 		
 		str +='</tr></table>';
 		str +='</div>';
@@ -289,10 +302,31 @@ function getSelectedNewsDetails()
 	}  */
 
 	
-	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
+	/* var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
 	
     var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-    browser1.focus();
+    browser1.focus();*/
+
+  var jObj=
+	{
+		
+	  firstResult:0,
+	  maxResult:10,
+      newsType:newsType,
+      partyId :partyId,
+      categoryIds:categoryIds,
+	  galleryIds:galleryIds,
+      locationIdsList :locationIdsList,
+      locationScope :locationScope,
+      fromDate:fromDate,
+      toDate :toDate,
+      tempVar :tempVar,
+	  task:"getNewsDetails"
+
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getNewsDetailsForAPartyAction.action?"+rparam;
+	callAjax(jObj,url);
 }
 
 function getNewsTrackDetails(contentId)

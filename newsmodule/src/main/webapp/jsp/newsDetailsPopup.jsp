@@ -206,6 +206,7 @@ font-size:20px;
     font-weight: bold;margin-right: 2px;}
 #newsPageNOSpan,#newsChangeEdition{margin-left: 15px;}
 #imgDiv{text-align: center;}
+#responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
 </style>
 </head>
 <body>
@@ -642,7 +643,7 @@ function showResponseGallaryDetails(result,jsObj)
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></td><td style="vertical-align: top;"><p style="width: 130px;"><span class="text-error">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;"><p style="width: 301px;"><span class="text-error">candidate Name :</span> '+results[i].candidateName+'</td><td style="vertical-align: top;"><p style="width: 132px; margin-left: 13px;"><span class="text-error">Response count :</span> '+results[i].count+'</p></td></tr>';
+		str +='</p></td><td style="vertical-align: top;"><p style="width: 130px;"><span class="text-error">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;"><p style="width: 301px;"><span class="text-error">candidate Name :</span> '+results[i].candidateName+'</td><td style="vertical-align: top;"><p style="width: 132px; margin-left: 13px;"><span class="text-error"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span> '+results[i].count+'</p></td></tr>';
 		
 		str +='</table>';
 		str +='</div>';

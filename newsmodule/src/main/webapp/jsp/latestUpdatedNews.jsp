@@ -45,6 +45,7 @@ font-size:20px;
 #existingFromText,#existingToText{width:155px; cursor: text;}
 #errorMsgDiv{font-size:12px;}
 .fontStyle{color:#000;font-size:21px;}
+#responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
 </style>
 <title>Insert title here</title>
 </head>
@@ -202,7 +203,7 @@ function buildPaginatedNews(results,jsObj)
 		}
 		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
 		if(results[i].responseCount > 0)
-		str+='<td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;padding-left: 20px;">Response Count : </span > '+results[i].responseCount+'</p></td>';
+		str+='<td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;padding-left: 20px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span > '+results[i].responseCount+'</p></td>';
 		
 		str +='</tr></table>';
 		str +='</div>';
