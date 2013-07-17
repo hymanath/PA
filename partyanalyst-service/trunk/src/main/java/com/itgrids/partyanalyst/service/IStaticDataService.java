@@ -400,4 +400,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getConstitunciesByElectionIdAndConstituenciyIds(List<Long> assemblyIds  , Long electionId);
 		public List<SelectOptionVO> getStaticPartiesListByStateAndElection(Long stateId,String electionType);
 		
+		public boolean removeCadreImage(Long cadreId,Long userId);
+		
 }
