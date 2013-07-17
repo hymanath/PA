@@ -69,6 +69,9 @@ public interface INewsMonitoringService {/*
 	
 	public List<FileVO> getNewsDetailsForAParty(NewsDetailsVO newsDetailsVO);
 	
+	public List<CandidateNewsCountVO> getCandidateCritiesNewsDetails(String fromDateStr,String toDateStr);
+	
+	
 }
 
 

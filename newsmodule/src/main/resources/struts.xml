@@ -5604,6 +5604,12 @@
 		     <param name="root">fileVOsList</param>
 		   </result>
 		 </action>
+		 
+		 <action name="getCandidateCritiesNewsDetailsAction" class="newsDetailsAction" method="getCandidateCritiesNewsDetails">
+		   <result name="success" type="json">
+		     <param name="root">newsCountVOsList</param>
+		   </result>
+		 </action>
 		</package>
 		
 		
