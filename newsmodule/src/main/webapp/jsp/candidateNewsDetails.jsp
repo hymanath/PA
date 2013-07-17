@@ -117,8 +117,8 @@ var toDate = '${toDate}';
 		<span id="criticsIds" class="btn btn-success">Get Critics Information</span>-->
 		
 		<ul id="myTab" class="nav nav-tabs">
-			<li><a data-toggle="tab" id="getCandidatesNewsId">Get Candidate News Details</a></li>
-			<li><a data-toggle="tab" id="criticsId">Get Critics Information</a></li>
+			<li><a data-toggle="tab" id="getCandidatesNewsId"> Candidate News Report</a></li>
+			<li><a data-toggle="tab" id="criticsId"> Critics Report</a></li>
 		</ul>
 	</div>
 	
@@ -357,10 +357,11 @@ function callAjax(jsObj,url)
 			{
 			  clearOptionsListForSelectElmtId('districtList');
 			  createOptionsForSelectElmtId('districtList',myResults);
-			}
+			} //18111
 			else if(jsObj.task == "getRespondedAndNotRespondedNewsCount")
-			{
-			 showPartyWiseNewsCount(myResults);
+			{ 
+			    $("#ajaxImg").css("display","none");
+			      showPartyWiseNewsCount(myResults);
 			}
 
 			}catch (e)
@@ -1043,9 +1044,12 @@ $(document).ready(function(){
  }
 		
  });
-
+//18111
  $("#newsDetailsBtn").click(function(){
+  var a = $("#candidateNewsMainDiv > div > ul > li[class='active']  > a").attr('id');
+  if( /criticsId/i.test(a))
 	 getResponseNewsCountNewsCount();
+	 else
      getCandidateNewsCount();
 	 
  });
@@ -1165,6 +1169,12 @@ $("#districtList").live("click",function(){
  $("#galleryListShowHideTb").css("display","none");
 	
 });
+
+//$("#criticsId").live("click",function(){
+// var a= $("#candidateNewsMainDiv > div > ul > li[class='active']  > a").attr('id');
+// alert(/criticsId/i.test(a));
+ 
+//});
 
 });//End OF Ready
 </script>
