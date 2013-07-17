@@ -36,6 +36,7 @@
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="userAddressDAO" ref="userAddressDAO"></property>
+		<property name="voterBasicInfoDAO" ref="voterBasicInfoDAO"/>
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
