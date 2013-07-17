@@ -73,5 +73,6 @@ public interface ICandidateRelatedNewsDAO extends GenericDao<CandidateRealatedNe
 	
 	public List<Object[]> getCandidateNameByFileGalleryIdsList(List<Long> fileGalleryIdsList);
 	
+	public List<?> getNotResponseCountForCandidatePartyByCandidate(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId);
 
 }
