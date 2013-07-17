@@ -54,6 +54,28 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		
 	}
 	
+	public List<Object[]> getRespondedFilesCount(List<Long> gallaryIds,Long categoryId){
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select model1.fileGallary.gallary.gallaryId," +
+				" count( distinct model1.fileGallary.file.fileId) from CandidateNewsResponse model1," +
+				"FileGallary model where model1.fileGallary.fileGallaryId=model.fileGallaryId");
+		if(categoryId!=null && categoryId!=0){
+			query.append(" and model1.fileGallary.file.category.categoryId= :categoryId ");
+		}
+		query.append(" and model1.fileGallary.gallary.gallaryId in (:gallaryIds) and model.isDelete='false' group by model1.fileGallary.gallary.gallaryId ");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		/*Query query=getSession().createQuery("select model1.fileGallary.gallary.gallaryId," +
+				" count( distinct model1.fileGallary.file.fileId) from CandidateNewsResponse model1," +
+				"FileGallary model where model1.fileGallary.fileGallaryId=model.fileGallaryId " +
+				"and model1.fileGallary.gallary.gallaryId in (:gallaryIds) and model.isDelete='false' group by model1.fileGallary.gallary.gallaryId ");*/
+		if(categoryId!=null && categoryId!=0){
+			queryObject.setParameter("categoryId", categoryId);
+		}
+		queryObject.setParameterList("gallaryIds", gallaryIds);
+		return queryObject.list();
+	}
 	
 
 	public List<Object[]> getFirstFourNewsToDisplay(Long partyId,int firstResult,int maxResult,String queryType)
@@ -101,6 +123,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		return query.list(); 
 		
 	}
+	
 	
 	
 	public List<Object[]> getNewsByScope(Long partyId,Long scopeType,int startIndex,int maxResults,String queryType , String sourceStr , String languageStr)

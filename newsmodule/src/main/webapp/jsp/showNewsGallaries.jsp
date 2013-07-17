@@ -80,8 +80,9 @@ function getAllGallaries()
 
 
 function getAllFilesOfAGallary(gallaryId){		
+	var requestFor="null";
 	
-	   var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"&category="+categoryId+"";
+	 var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"&category="+categoryId+"&requestFor="+requestFor+"";
 		
      var browser1 = window.open(urlstr,"showAllFilesOfAGallary","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
@@ -92,16 +93,45 @@ function buildGallariesDetails(results)
 	var str='';
  	for(var i in results)
   	{	
-		str+='<div class="span3 thumbnail" style=" background: none repeat scroll 0% 0% palegoldenrod;height:100px;margin:4px;">';
-	    str+='<h6><a href="javascript:{getAllFilesOfAGallary('+results[i].gallaryId+')}" style="text-transform: capitalize">'+results[i].gallaryName+'</a></h6>';
-		str+='<span>'+results[i].gallaryDescription+'</span><br>';
+		str+='<div class="span3 thumbnail galleriesListClass" style=" background: none repeat scroll 0% 0% palegoldenrod;height:100px;margin:4px;">';
+	    str+='<h6><a href="javascript:{getAllFilesOfAGallary('+results[i].gallaryId+')}" style="text-transform: capitalize" class="galName" title="'+results[i].gallaryName+'">'+results[i].gallaryName+'</a></h6>';
+		str+='<span class="galDesc" title="'+results[i].gallaryDescription+'">'+results[i].gallaryDescription+'</span><br>';
 		str+='<span class="badge badge-info pull-right" style="margin-top:10px;"> NEWS COUNT:'+results[i].totalResultsCount+'</span>';
+		
+		if(results[i].respondedFilesCountInGall!=null){
+		str+='<span class="badge badge-important pull-left" style="margin-top:10px;cursor:pointer;" onclick="getRespondedNewsDetails('+results[i].gallaryId+')" title="Click to know the Responded News"> <i class="icon-comment icon-white"></i> :'+results[i].respondedFilesCountInGall+'</span>';
+		}
 		str+='</div>';
 		
 	}
   document.getElementById("gallarysId").innerHTML =str;
+  
+  $('.galleriesListClass .galDesc,.galName').each(function(index,value) {
+        ellipsetext=".."
+        var showChar = 27;
+        var content = $(this).html();
+        if(content.length > showChar) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+            var html = c + ellipsetext;
+            $(this).html(html);
+        }
+ 
+    });
 
 }
+
+function getRespondedNewsDetails(gallaryId){
+	var requestFor="respondedNews";
+
+	 var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"&category="+categoryId+"&requestFor="+requestFor+"";
+		
+     var browser1 = window.open(urlstr,"showAllFilesOfAGallary","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+}
+
+	
 </script>
 
 </body>

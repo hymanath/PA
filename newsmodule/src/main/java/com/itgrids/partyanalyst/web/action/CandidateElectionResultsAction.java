@@ -155,7 +155,19 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<String> responseFileIds;
 	private List<Long> filesList;
 	private String newsDescription;
+	private String requestFor;
 	
+
+	
+	public String getRequestFor() {
+		return requestFor;
+	}
+
+
+	public void setRequestFor(String requestFor) {
+		this.requestFor = requestFor;
+	}
+
 
 	public String getNewsDescription() {
 		return newsDescription;
@@ -2566,6 +2578,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			int startIndex = Integer.parseInt(request.getParameter("startIndex"));
 			int endIndex = Integer.parseInt(request.getParameter("endIndex"));
 			Long  categoryId = Long.parseLong(request.getParameter("categoryId"));
+			String requestedFor=request.getParameter("requestedFor");
 			String newsType = "Public";
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
@@ -2573,7 +2586,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			if(user.getUserAccessType()!=null)
 				 if(user.getUserAccessType().equals("Admin"))
 					 newsType = "";   			
-			fileVO = candidateDetailsService.getFilesOfAGallary(gallaryId,startIndex,endIndex,newsType,categoryId,fromDate,toDate);
+			fileVO = candidateDetailsService.getFilesOfAGallary(gallaryId,startIndex,endIndex,newsType,categoryId,fromDate,toDate,requestedFor);
 			
 			return Action.SUCCESS;
 				

@@ -130,7 +130,17 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long pageNo;
 	private boolean latest;
 	private boolean eenadu;
+	private Long respondedFilesCountInGall;
 	
+	
+	public Long getRespondedFilesCountInGall() {
+		return respondedFilesCountInGall;
+	}
+
+	public void setRespondedFilesCountInGall(Long respondedFilesCountInGall) {
+		this.respondedFilesCountInGall = respondedFilesCountInGall;
+	}
+
 	public boolean isEenadu() {
 		return eenadu;
 	}

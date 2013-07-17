@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -22,5 +23,18 @@ public class PartyGalleryDAOHibernateTest extends BaseDaoTestCase {
 		
 		List<Object[]> items1 = partyGalleryDAO.getAllNewsDetailsForState(872l, 0, 100, "", 1l, 2l);
 	}
+	
+	/*public void testGallerisCount(){
+		List<Long> gallaryIds=new ArrayList<Long>();
+		gallaryIds.add(1l);
+		gallaryIds.add(24l);
+		gallaryIds.add(25l);
+		gallaryIds.add(26l);
+		gallaryIds.add(31l);
+		
+		List<Object[]> items =partyGalleryDAO.getRespondedFilesCount(gallaryIds,3l);
+				System.out.println(items);
+		
+	}*/
 	
 }

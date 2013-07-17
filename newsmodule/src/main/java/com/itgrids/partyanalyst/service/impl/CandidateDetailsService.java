@@ -5175,7 +5175,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 }
 */
  
- public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType,Long categoryId,String fromDateStr,String toDateStr){
+ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType,Long categoryId,String fromDateStr,String toDateStr,String requestFor){
 		
 		List<FileVO> returnList = new ArrayList<FileVO>();
 		
@@ -5191,7 +5191,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 			toDate = format.parse(toDateStr);
 		
 		List<FileGallary> fileGallaryList = fileGallaryDAO
-				.getFilesOfGallaries(gallaryIdsList,startIndex,endIndex,newsType,categoryId,fromDate,toDate);
+				.getFilesOfGallaries(gallaryIdsList,startIndex,endIndex,newsType,categoryId,fromDate,toDate,requestFor);
 		
 		Long count = fileGallaryDAO.getAllRecordsCountInGallary(gallaryId,newsType,categoryId,fromDate,toDate).get(0);
 		
