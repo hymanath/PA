@@ -1674,7 +1674,11 @@ function callAjaxForRegionSelect(jsObj,url)
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
 								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
 							}
-							
+							else if(jsObj.task == "removeCadreImage"){
+								alert("Cadre image Deleted successfully.");
+								//window.location.reload();
+								getCadresResults('search');
+							}
 
 						}
 						catch(e)
