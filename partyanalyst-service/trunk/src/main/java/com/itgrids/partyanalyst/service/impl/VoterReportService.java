@@ -3053,7 +3053,7 @@ public class VoterReportService implements IVoterReportService{
 					votersInfoForMandalVO.setTotalBooths(data.getTotalBooths());
 					votersInfoForMandalVO.setTotalVoters(data.getTotVoters().toString());
 					votersInfoForMandalVO.setMaleVoters(new Long(data.getTotalMaleVoters()));
-					votersInfoForMandalVO.setFemaleVoters(new Long(data.getTotalMaleVoters()));
+					votersInfoForMandalVO.setFemaleVoters(new Long(data.getTotalFemaleVoters()));
 					votersInfoForMandalVO.setTotalVotersDiff(data.getTotalVotersDiff());
 					votersInfoForMandalVO.setFemaleVotersDiff(data.getFemaleVotersDiff());
 					votersInfoForMandalVO.setMaleVotersDiff(data.getMaleVotersDiff());
@@ -3088,8 +3088,8 @@ public class VoterReportService implements IVoterReportService{
 					voterBasicInfo.setType("Election");	
 					voterBasicInfo.setBooths(votersInfoForMandalVO.getTotalBooths());
 					voterBasicInfo.setTotalVoters(new Long(votersInfoForMandalVO.getTotalVoters()));
-					voterBasicInfo.setMaleVoters(new Long(votersInfoForMandalVO.getTotalMaleVoters()));
-					voterBasicInfo.setFemaleVoters(new Long(votersInfoForMandalVO.getFemaleVoters()));
+					voterBasicInfo.setMaleVoters(votersInfoForMandalVO.getMaleVoters());
+					voterBasicInfo.setFemaleVoters(votersInfoForMandalVO.getFemaleVoters());
 					voterBasicInfo.setTotalDiff(votersInfoForMandalVO.getTotalVotersDiff());
 					voterBasicInfo.setMaleDiff(votersInfoForMandalVO.getMaleVotersDiff());
 					voterBasicInfo.setFemaleDiff(votersInfoForMandalVO.getFemaleVotersDiff());
@@ -3102,6 +3102,7 @@ public class VoterReportService implements IVoterReportService{
 			  }
 			catch(Exception e)
 			{
+				e.printStackTrace();
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				return resultStatus;
 			}
