@@ -1193,4 +1193,16 @@
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 	
+	<bean id="voterBasicInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterBasicInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="votingTrendzDAO" class="com.itgrids.partyanalyst.dao.hibernate.VotingTrendzDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="votingTrendzPartiesResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.VotingTrendzPartiesResultDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
 </beans>		
