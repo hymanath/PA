@@ -623,21 +623,36 @@ function getUpdatedData(){
 	<script type="text/javascript">	
 		expandFilterOptions();
 
-		$('document').ready(function(){
-				$(".toggleDiv").click(function(){
-					$(".toggleDiv").hide();
-					$(".toggleDiv1").show();
-				$(".fullSaintDesc").toggle();
-				return false;
-			 });  
-
-			 $(".toggleDiv1").click(function(){
-					$(".toggleDiv1").hide();
-					$(".toggleDiv").show();
-				$(".fullSaintDesc").toggle();
-				return false;
-			 });  
-		});
+	$('document').ready(function()
+	{
+		$(".toggleDiv").click(function(){
+			$(".toggleDiv").hide();
+			$(".toggleDiv1").show();
+			$(".fullSaintDesc").toggle();
+		  return false;
+		});  
+		
+		$(".toggleDiv1").click(function(){
+			$(".toggleDiv1").hide();
+			$(".toggleDiv").show();
+			$(".fullSaintDesc").toggle();
+		 return false;
+		});  
+			 
+		$('.removePictureLink').live("click",function(){
+			var isVerified = confirm("Are you want to remove Cadre Image?");
+			if(isVerified){
+			   var cadreID = $(this).attr("id");
+				var jsobj = {			
+				cadreId:cadreID,
+				task:"removeCadreImage"				
+			 };
+			  var rparam = "task="+YAHOO.lang.JSON.stringify(jsobj);
+			  var url = "removeCadreImageAction.action?"+rparam;	 
+			  callAjaxForRegionSelect(jsobj,url);				
+			}				
+		 });
+	});
 
 		 <%
 		
@@ -741,7 +756,12 @@ function buildCadreSearchResultDataTable(rparam)
 
   YAHOO.widget.DataTable.image = function(elLiner, oRecord, oColumn, oData) 
   {
-	elLiner.innerHTML ="<img height='85px' width='85px' src='images/cadre_images/"+oData+"'/>";
+	var cadreId= oRecord.getData("cadreId");
+	
+	if(oData != "human.jpg")
+		elLiner.innerHTML ="<img height='85px' width='85px' src='images/cadre_images/"+oData+"'/><a id='"+cadreId+"' class='removePictureLink' ><img src='images/crossout.jpg' style='text-decoration: none; border: 0px none;margin-left: 40px;' title=' Click Here to Delete Image '></a>";
+	else
+		elLiner.innerHTML ="<img height='85px' width='85px' src='images/cadre_images/"+oData+"'/>";
   };
   
   var CadreSearchResultColumnDefs = [ 
