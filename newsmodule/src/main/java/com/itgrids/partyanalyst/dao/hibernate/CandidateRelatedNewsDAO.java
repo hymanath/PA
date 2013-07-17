@@ -877,10 +877,10 @@ ICandidateRelatedNewsDAO {
 	}
 	// responce table query
 	
-	public List<Object[]> getRespondNewsPartyDetails(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId)
+	public List<Object[]> getRespondNewsPartyDetails(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId,String tempVarForParty)
 	{
 	  StringBuilder str = new StringBuilder();
-	  str.append(" select distinct count(model5.fileGallary.fileGallaryId),model6.party.shortName ,model6.party.partyId,model5.candidate.candidateId ,model6.candidate.candidateId  " +   //,model.candidate.candidateId ,model3.candidate.candidateId ,model3.party.partyId
+	  str.append(" select distinct count(model5.fileGallary.fileGallaryId),model6.party.shortName ,model6.party.partyId,model5.candidate.candidateId ,model6.candidate.candidateId,model6.candidate.lastname  " +   //,model.candidate.candidateId ,model3.candidate.candidateId ,model3.party.partyId
 	  		" from CandidateNewsResponse cn, " +
 	  		" CandidateRealatedNews model,PartyGallery model2,Nomination model3,CandidateRealatedNews model5 , Nomination model6 " +
 
@@ -921,7 +921,12 @@ ICandidateRelatedNewsDAO {
 	   str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
 	  if(locationIdsList != null && locationIdsList.size() > 0)
 	   str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
-	 str.append(" group by model6.party.partyId ");
+	 
+	  if(tempVarForParty != null && tempVarForParty.equalsIgnoreCase("partyDetails"))
+	   str.append(" group by model6.party.partyId ");
+	  else 
+		  str.append(" group by model6.candidate.candidateId ");
+	  
 	  Query query = getSession().createQuery(str.toString());
 	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
 	  //query.setParameter("partyId", partyId);
@@ -1153,10 +1158,10 @@ ICandidateRelatedNewsDAO {
 	  return query.list();
 				
 	}
-	public List<Object[]> getRespondNewsPartyDetailsForCandidateTable(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId)
+	public List<Object[]> getRespondNewsPartyDetailsForCandidateTable(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId,String tempVarForParty)
 	{
 	  StringBuilder str = new StringBuilder();
-	  str.append(" select distinct count(model5.fileGallary.fileGallaryId),model6.party.shortName ,model6.party.partyId,model5.candidate.candidateId ,model6.candidate.candidateId  " +   //,model.candidate.candidateId ,model3.candidate.candidateId ,model3.party.partyId
+	  str.append(" select distinct count(model5.fileGallary.fileGallaryId),model6.party.shortName ,model6.party.partyId,model5.candidate.candidateId ,model6.candidate.candidateId,model6.candidate.lastname  " +   //,model.candidate.candidateId ,model3.candidate.candidateId ,model3.party.partyId
 	  		" from CandidateNewsResponse cn, " +
 	  		" CandidateRealatedNews model,PartyGallery model2,CandidateParty model3,CandidateRealatedNews model5 , CandidateParty model6 " +
 
@@ -1193,10 +1198,15 @@ ICandidateRelatedNewsDAO {
 	   str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
 	  if(locationIdsList != null && locationIdsList.size() > 0)
 	   str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
-	 str.append(" group by model6.party.partyId ");
+	 
+	  if(tempVarForParty != null && tempVarForParty.equalsIgnoreCase("partyDetails"))
+	   str.append(" group by model6.party.partyId ");
+	  else
+	   str.append(" group by model6.candidate.candidateId ");
+	  
 	  Query query = getSession().createQuery(str.toString());
 	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
-	  //query.setParameter("partyId", partyId);
+	  query.setParameter("partyId", partyId);
 	  
 	  if(fromDate != null)
 	   query.setParameter("fromDate", fromDate);
