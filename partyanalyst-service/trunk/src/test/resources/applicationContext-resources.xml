@@ -350,7 +350,6 @@
 				<value>com.itgrids.partyanalyst.model.AreaType</value>
 				<value>com.itgrids.partyanalyst.model.CustomVoter</value>
 				<value>com.itgrids.partyanalyst.model.CustomVoterGroup</value>
-				
 				<value>com.itgrids.partyanalyst.model.UpdationDetails</value>
 				<value>com.itgrids.partyanalyst.model.Survey</value>
 				<value>com.itgrids.partyanalyst.model.SurveyAccessUsers</value>
@@ -364,6 +363,9 @@
 				<value>com.itgrids.partyanalyst.model.QuestionOptions</value>
 				<value>com.itgrids.partyanalyst.model.SurveyAnswerInfo</value>
 				<value>com.itgrids.partyanalyst.model.AccessRestrictedSession</value>
+				<value>com.itgrids.partyanalyst.model.VoterBasicInfo</value>
+				<value>com.itgrids.partyanalyst.model.VotingTrendz</value>
+				<value>com.itgrids.partyanalyst.model.VotingTrendzPartiesResult</value>
 			</list>
 		</property>
 	</bean>
@@ -1868,10 +1870,25 @@
 	<bean id="questionOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.QuestionOptionsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
+	
 	<bean id="surveyAnswerInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyAnswerInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
+	
 	<bean id="accessRestrictedSessionDAO" class="com.itgrids.partyanalyst.dao.hibernate.AccessRestrictedSessionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
+	
+	<bean id="voterBasicInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterBasicInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="votingTrendzDAO" class="com.itgrids.partyanalyst.dao.hibernate.VotingTrendzDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="votingTrendzPartiesResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.VotingTrendzPartiesResultDAO">
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
 </beans>
