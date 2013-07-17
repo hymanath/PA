@@ -52,17 +52,15 @@ public class CallCenterService implements ICallCenterService{
 			/*hbQuery= "model.problemLocation.problemAndProblemSource.problemExternalSource.name like '%"+name+"%' or " +
 					"model.problemHistoryId in (from CadreProblemDetails model1 where model1.cadre.firstName like '%"+name+"%' " +
 							"or  model1.cadre.middleName like '%"+name+"%' or model1.cadre.lastName like '%"+name+"%')" ;*/
-			hbQuery="model.problem.externalSource.name like '%"+name+"%' " ;
+			hbQuery=" and model.problem.externalSource.name like '%"+name+"%' " ;
 		}				
 		
 		//checking empty field for mobile 
 		if(!mobileNum.equalsIgnoreCase("")){
-			if(name.equalsIgnoreCase("")){
 				/*hbQuery = "model.problemLocation.problemAndProblemSource.problemExternalSource.mobile ="+mobileNum+""+
 						" or model.problemHistoryId in (from CadreProblemDetails model1 where model1.cadre.mobile ="+mobileNum+")";*/
-				hbQuery = "model.problem.externalSource.mobile ="+mobileNum+"";
+				hbQuery = "and model.problem.externalSource.mobile ="+mobileNum+"";
 						
-			}
 			/*else{
 				hbQuery += "and model.problemLocation.problemAndProblemSource.problemExternalSource.mobile ="+mobileNum+""+
 						" or model.problemHistoryId in (from CadreProblemDetails model1 where model1.cadre.mobile ="+mobileNum+")";
@@ -72,23 +70,18 @@ public class CallCenterService implements ICallCenterService{
 		}
 		//checking empty field for referenceId
 		 if(!refNum.equalsIgnoreCase("")){
-			 if(name.equalsIgnoreCase("")&& mobileNum.equalsIgnoreCase("")){
-				// hbQuery = "model.problemLocation.problemAndProblemSource.problem.referenceNo='"+refNum+"'";
-				 hbQuery = "model.problem.referenceNo='"+refNum+"'";
-			 }
-			 else {
+			 
 				 //hbQuery += "and model.problemLocation.problemAndProblemSource.problem.referenceNo='"+refNum+"'";
-				 hbQuery += "and model.problem.referenceNo='"+refNum+"'";
-			 }
+				 hbQuery += " and model.problem.referenceNo='"+refNum+"'";
 		}
 		 //checking empty field for EmailId
 		 if(!emailId.equalsIgnoreCase("")){
-			 if(name.equalsIgnoreCase("")&& mobileNum.equalsIgnoreCase("")&&refNum.equalsIgnoreCase("")){
+			
 				/* hbQuery = "model.problemLocation.problemAndProblemSource.problemExternalSource.email ='"+emailId+"' or" +
 				 		" model.problemHistoryId in (from CadreProblemDetails model1 where model1.cadre.email ='"+emailId+"')"; */
 				 hbQuery = "model.problem.externalSource.email ='"+emailId+"'";
 					 		
-			 }
+			 
 			/* else{
 				 hbQuery += " and model.problemLocation.problemAndProblemSource.problemExternalSource.email ='"+emailId+"' or" +
 				 		" model.problemHistoryId in (from CadreProblemDetails model1 where model1.cadre.email ='"+emailId+"')"; 
@@ -97,33 +90,17 @@ public class CallCenterService implements ICallCenterService{
 			 }*/
 		 }
 		 if(fromDate!=null && toDate !=null){
-			 if(name.equalsIgnoreCase("")&& mobileNum.equalsIgnoreCase("") && refNum.equalsIgnoreCase("") && 
-					 emailId.equalsIgnoreCase("")){
-				 
-				 hbQuery ="date(model.updatedTime) >=? and date(model.updatedTime) <=?";
-						
-					}
-			 else{
+			 
 				 hbQuery +=" and date(model.updatedTime) >=? and date(model.updatedTime) <=?";
-			 }
+			
 		 }
 		else{
-			if(name.equalsIgnoreCase("")&& mobileNum.equalsIgnoreCase("") && refNum.equalsIgnoreCase("") && 
-					 emailId.equalsIgnoreCase("")){			
+					
 			if(fromDate != null)
-				hbQuery = "date(model.updatedTime) =?";
+				hbQuery = " and date(model.updatedTime) =?";
 			if(toDate != null)
-				hbQuery ="date(model.updatedTime) =?";
-				
-			 }
-			else {
-				if(fromDate != null)
-					//hbQuery += " and date(model.dateUpdated) =? ";
-					hbQuery += " and date(model.updatedTime) = ? ";
-				if(toDate != null)
-					//hbQuery +=" and date(model.dateUpdated) =?";
-					hbQuery +=" and date(model.updatedTime)=?";
-			}
+				hbQuery =" and date(model.updatedTime) =?";
+			
 		 }
 		 if(userId != null)
 		 {
@@ -150,6 +127,7 @@ public class CallCenterService implements ICallCenterService{
 			problemBeanVO.setProblemPostedBy(params[4].toString());
 			problemBeanVO.setImpactLevel(params[5].toString());
 			problemBeanVO.setProblemHistoryId(new Long(params[6].toString()));
+			problemBeanVO.setName(params[7].toString());
 			problemBeanVOList.add(problemBeanVO);
 		}
 		return problemBeanVOList;
