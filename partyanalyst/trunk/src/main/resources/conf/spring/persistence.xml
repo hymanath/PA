@@ -344,6 +344,9 @@
 				<value>com.itgrids.partyanalyst.model.QuestionOptions</value>
 				<value>com.itgrids.partyanalyst.model.SurveyAnswerInfo</value>
 				<value>com.itgrids.partyanalyst.model.AccessRestrictedSession</value>
+				<value>com.itgrids.partyanalyst.model.VoterBasicInfo</value>
+				<value>com.itgrids.partyanalyst.model.VotingTrendz</value>
+				<value>com.itgrids.partyanalyst.model.VotingTrendzPartiesResult</value>
 			</list>
 			
 		</property>
