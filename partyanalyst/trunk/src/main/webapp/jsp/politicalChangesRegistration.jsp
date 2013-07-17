@@ -8,9 +8,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Political Changes Registration</title>
-<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<link rel="stylesheet" href="/resources/demos/style.css" />
 	<!-- YUI Dependency files (Start) -->
 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
@@ -34,7 +35,7 @@
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
-		
+	
 	
 <style type="text/css">
 	.selectBoxWidth
@@ -79,7 +80,7 @@
 	String STATE = rb.getString("STATE");
 	String DISTRICT = rb.getString("DISTRICT");
 	String CONSTITUENCY = rb.getString("CONSTITUENCY");
-	String MANDAL  = rb.getString("MANDAL");
+	String MANDAL  = rb.getString("TEHSIL");
 	String VILLAGE = rb.getString("VILLAGE");
 	String HAMLET   = rb.getString("HAMLET");
 	String title   = rb.getString("title");
@@ -95,7 +96,10 @@
 	String email = rb.getString("email");
 	String address = rb.getString("address");  
 	String selectParty = rb.getString("selectParty");	
-	String mandatoryFields = rb.getString("mandatoryFields");	
+	String mandatoryFields = rb.getString("mandatoryFields");
+	String MUNICIPAL = rb.getString("MUNICIPAL");
+	String WARD = rb.getString("WARD");
+	String BOOTH = rb.getString("BOOTH");
  %> 
  var localizationObj = {
 			STATE : '<%=STATE%>',
@@ -103,7 +107,9 @@
 			CONSTITUENCY : '<%=CONSTITUENCY%>',
 			MANDAL  : '<%=MANDAL%>',
 			VILLAGE : '<%=VILLAGE%>',
-			HAMLET  : '<%=HAMLET%>',
+			MUNICIPAL : '<%=MUNICIPAL%>',
+			WARD : '<%=WARD%>',
+			BOOTH : '<%=BOOTH%>',
 			title	:	'<%=title%>',
 			description	:	'<%=description%>',
 			moreDetails	:	'<%=moreDetails%>',
@@ -128,18 +134,69 @@
 // Variable Declaration Ends here
 	//Ajax Calls Starts from here..
 
-	function getSelectOptionVOListForPoliticalChanges(id, task)
-	{	
+	function getSelectOptionVOListForPoliticalChanges(id,task,name)
+	{
+		rangeId = id;
 		if(id == 0)
 		{	
 			alert("Select Valid Location");
 			return;
-		}	
-		rangeId = id;
+		}
+		if(name == "township")
+		{
+			if(level == 9)
+			{
+				rangeId = id;
+				getBooths();
+			}
+			else
+			{
+				getRespectiveDetails(id,task);
+			}
+		}
+		else if(name == "constituency")
+		{
+			if(level == 7 || level == 8)
+			{
+				getConstituencyes();
+			}
+			else
+			{
+				getRespectiveDetails(id,task);
+			}
+		}
+		else if(name == "mandal")
+		{
+			if(level == 7 || level == 8)
+			{
+				rangeId = id.substr(1);
+				getMuncipaliteys();
+			}
+			else
+			{
+				getRespectiveDetails(id,task);
+			}
+		}
+		else if(name == "wards")
+		{
+			rangeId = id.substr(1);
+			getWards();
+		}
+		else if(name == "booths")
+		{
+			rangeId = id.substr(1);
+		}
+		
+		else
+		{
+			getRespectiveDetails(id,task);
+		}
 		var rangeIdDIv= document.getElementById("rangeId");
-		rangeIdDIv.value = rangeId
-		
-		
+		rangeIdDIv.value = rangeId;
+	}
+
+	function getRespectiveDetails(id, task)
+	{
 		var jsObj=
 			{
 					locationId:id,
@@ -149,7 +206,6 @@
 			var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;	
 			callAjax(rparam,jsObj,url);
 	}
-
 	function checkRequestType()
 	{
 		document.getElementById("titleTextField").focus();
@@ -182,36 +238,57 @@
 										getAllPoliticalChangesForTheUser();
 									}														
 									
-									if(jsObj.task == "getStates")
+									else if(jsObj.task == "getStates")
 									{
 										clearOptionsListForSelectElmtId("stateId");
 										createOptionsForSelectElmtId("stateId",myResults);
 									}
-									if(jsObj.task == "getDistricts")
+									else if(jsObj.task == "getDistricts")
 									{
 										clearOptionsListForSelectElmtId("districtField");
 										createOptionsForSelectElmtId("districtField",myResults);	
 									}	
-									if(jsObj.task == "getConstituencies")
+									else if(jsObj.task == "getConstituencies")
 									{
 										clearOptionsListForSelectElmtId("constituencyField");
 										createOptionsForSelectElmtId("constituencyField",myResults);
+										
 									}		
-									if(jsObj.task == "getMandals")
+									else if(jsObj.task == "getMandals")
 									{
 										clearOptionsListForSelectElmtId("mandalField");
 										createOptionsForSelectElmtId("mandalField",myResults);
 									}		
-									if(jsObj.task == "getTowhships")
+									else if(jsObj.task == "getTowhships")
 									{
 										clearOptionsListForSelectElmtId("villageField");
 										createOptionsForSelectElmtId("villageField",myResults);
 									}
-									if(jsObj.task == "getVillages")
+									else if(jsObj.task == "getVillages")
 									{
 										clearOptionsListForSelectElmtId("hamletField");
 										createOptionsForSelectElmtId("hamletField",myResults);
-									}		
+									}
+									else if(jsObj.task == "subRegionsInConstituency")
+									{
+										clearOptionsListForSelectElmtId("muncipalField");
+										createOptionsForSelectElmtId("muncipalField",myResults);
+									}
+									else if(jsObj.task == "hamletsOrWardsInRegion")
+									{
+										clearOptionsListForSelectElmtId("wardField");
+										createOptionsForSelectElmtId("wardField",myResults);
+									}
+									else if(jsObj.task == "boothsInTehsilOrMunicipality")
+									{
+										clearOptionsListForSelectElmtId("boothField");
+										createOptionsForSelectElmtId("boothField",myResults);
+									}
+									else if (jsObj.task == "getConstNotInGivenAreaType")
+									{
+										clearOptionsListForSelectElmtId("constituencyField");
+										createOptionsForSelectElmtId("constituencyField",myResults);
+									}
 																
 								}     
 							catch (e)
@@ -230,10 +307,27 @@
 
 function validateFunction()
 {
+	
 	var title = $('#titleTextField').val();
 	var partyNameId = $('#selectedPartyBox :selected').val();
 	var scopeId = $('#effectedRange :selected').val();
 	var infoScopeId = $('#userTypeSelectBox :selected').val();
+	/* var fromDate = $('#identifiedFromText').val();
+	var todate = $('#datetext').val();
+	 var dt1  = parseInt(fromDate.substring(0,2),10);
+      var mon1 = parseInt(fromDate.substring(3,5),10);
+      var yr1  = parseInt(fromDate.substring(6,10),10);
+      var dt2  = parseInt(todate.substring(0,2),10);
+      var mon2 = parseInt(todate.substring(3,5),10);
+      var yr2  = parseInt(todate.substring(6,10),10);
+      var date1 = new Date(yr1, mon1, dt1);
+      var date2 = new Date(yr2, mon2, dt2);
+	
+	 if(date2 < date1)
+	{ 
+		$('#errMsgDiv').append("Please Enter a valid Date");
+		return false;
+	} */
 	if(scopeId == 0)
 	{
 		$('#errMsgDiv').append("Please Enter Effective Scope");
@@ -257,9 +351,10 @@ function validateFunction()
 	}
 	
 }
+var level = "";
 function populateLocations(val,source)
 {	
-	var row1El = document.getElementById("row1");
+	/* var row1El = document.getElementById("row1");
 	var row2El = document.getElementById("row2");
 	var row3El = document.getElementById("row3");
 	var row4El = document.getElementById("row4");
@@ -317,13 +412,85 @@ function populateLocations(val,source)
 		}
 		range = localizationObj.HAMLET;
 		rangeId = value;
+	} */
+	$('#row1').hide();
+	$('#row2').hide();
+	$('#row3').hide();
+	$('#row4').hide();
+	$('#row5').hide();
+	$('#row6').hide();
+	$('#row7').hide();
+	$('#row8').hide();
+	level = $('#effectedRange option:selected').val();
+	if(val == 'null')
+	{
+		val = $('#effectedRange option:selected').val();
 	}
-	
-
+	if(val == 2)
+	{
+		$('#row1').show();
+		range = localizationObj.STATE;
+	}
+	else if(val == 3)
+	{
+		$('#row1').show();
+		$('#row2').show();
+		range = localizationObj.DISTRICT;
+	}
+	else if(val == 4)
+	{
+		$('#row1').show();
+		$('#row2').show();
+		$('#row3').show();
+		range = localizationObj.CONSTITUENCY;
+	}
+	else if(val == 5)
+	{
+		$('#row1').show();
+		$('#row2').show();
+		$('#row3').show();	
+		$('#row4').show();
+		range = localizationObj.MANDAL;		
+	}
+	else if(val == 6)
+	{
+		$('#row1').show();
+		$('#row2').show();
+		$('#row3').show();	
+		$('#row4').show();	
+		$('#row5').show();
+		range = localizationObj.VILLAGE;
+	}
+	else if(val == 7)
+	{
+		$('#row1').show();
+		$('#row2').show();
+		$('#row3').show();
+		$('#row6').show();
+		range = localizationObj.MUNICIPAL;
+	}
+	else if(val == 8)
+	{
+		$('#row1').show();
+		$('#row2').show();
+		$('#row3').show();
+		$('#row6').show();
+		$('#row7').show();
+		range = localizationObj.WARD;
+	}
+	else if(val == 9)
+	{
+		$('#row1').show();
+		$('#row2').show();
+		$('#row3').show();	
+		$('#row4').show();
+		$('#row8').show();
+		range = localizationObj.BOOTH;
+	}
 	var rangeDIv= document.getElementById("range");
 	rangeDIv.value = range;
 	if(source == 'checkBox')
-		getSelectOptionVOListForPoliticalChanges(1,"getStates");	
+		getSelectOptionVOListForPoliticalChanges(1,"getStates","state");	
 	 
 }
 
@@ -388,10 +555,108 @@ if (document.getElementById('datetext').value == ''){
 document.getElementById('datetext').value = day + '/' + month + '/' + year;
 }
 }
+
+$(document).ready(function() {
+  var name = $("#userTypeSelectBox option:selected").text();
+  getOtherPersonDetails(name);
+  
+  $('#identifiedFromText').datepicker({ 
+	dateFormat: 'dd/m/yy'
+	});
+	var successMsg  = '${successMsg}';
+	if(successMsg.trim().length > 0)
+	{
+		window.opener.getAllPoliticalChangesForTheUser();
+	}
+});
+
+function getMuncipaliteys()
+{
+	var selectedId = $('#constituencyField option:selected').val();
+	var jsObj=
+	{				
+		id: selectedId,
+		task: "subRegionsInConstituency",
+		taskType:"cadreReg",
+		selectElementId: "mandalField_s" ,
+		address: "cadreLevel",
+		areaType: "URBAN",
+		constId: "null",
+		isParliament : "null"
+		
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/locationsHierarchiesAjaxAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);
+}
+
+function getWards()
+{
+	var selectedId = $('#muncipalField option:selected').val();
+	var jsObj=
+		{				
+			id: selectedId,
+			task: "hamletsOrWardsInRegion",
+			taskType:"cadreReg",
+			selectElementId: "hamletField_s" ,
+			address: "cadreLevel",
+			areaType: "null",
+			constId: "null",
+			isParliament : "null"
+			
+		}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/locationsHierarchiesAjaxAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);
+}
+
+function getBooths()
+{
+	var selectedId = '2' + $('#mandalField option:selected').val();
+	var constituencyId = $('#constituencyField option:selected').val();
+	var jsObj=
+		{				
+			id: selectedId,
+			task: "boothsInTehsilOrMunicipality",
+			taskType:"cadreReg",
+			selectElementId: "boothField_s" ,
+			address: "cadreLevel",
+			areaType: "null",
+			constId: constituencyId,
+			isParliament : "null"
+			
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/locationsHierarchiesAjaxAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);
+}
+
+function getConstituencyes()
+{
+	var selectedId = $('#districtField option:selected').val();
+	var jsObj=
+		{				
+			id: selectedId,
+			task: "getConstNotInGivenAreaType",
+			taskType:"cadreReg",
+			selectElementId: "constituencyField_s" ,
+			address: "cadreLevel",
+			areaType: "RURAL",
+			constId: "null",
+			isParliament : "null"
+			
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/locationsHierarchiesAjaxAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);
+}
+
 	</script>
 </head>
 
-<body  onunload="doUnload()" onload="addDate();" style="background-color:#f2f2f2;">	
+<body  onload="addDate();" style="background-color:#f2f2f2;">	
 <c:if test="${type == 'new'}">
 <DIV id="headingDiv" class="headingStyle" align="center">New Political Change</div>
 </c:if>
@@ -442,9 +707,9 @@ document.getElementById('datetext').value = day + '/' + month + '/' + year;
 						<s:textfield  READONLY="READONLY" name ="occuredDate" id="identifiedFromText" style="margin-top:0px;" size="25"/>
 						<div class="yui-skin-sam"><div id="identifiedFromText_Div" class="tinyDateCal"></div></div>
 					</td>					
-					<td valign="top">
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('identifiedFromText_Div','identifiedFromText','1/2011')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
-					</td>
+					<!--<td valign="top">
+						<a href="javascript:{}" title="Click To Select A Date" ><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
+					</td>-->
 				</tr>	
 				<tr>		
 					<td style="width:140px;"><%=reportedDate%></td>
@@ -478,27 +743,35 @@ document.getElementById('datetext').value = day + '/' + month + '/' + year;
 		 <table>
 				<tr id="row1" style="display:none;">
 					<td style="width:140px;"><%=STATE%><font class="requiredFont"> * </font></td>
-					<td><s:select id="stateId" name="state" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select State" cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getDistricts\')" /></td>
+					<td><s:select id="stateId" name="state" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select State" cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getDistricts\',\'district\')" /></td>
 				</tr>
 				<tr id="row2" style="display:none;">
 					<td style="width:140px;"><%=DISTRICT%><font class="requiredFont"> * </font></td>
-					<td><s:select id="districtField" name="district" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select District"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getConstituencies\')" /></td>
+					<td><s:select id="districtField" name="district" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select District"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getConstituencies\',\'constituency\')" /></td>
 				</tr>
 				<tr id="row3" style="display:none;">
 					<td style="width:140px;"><%=CONSTITUENCY%><font class="requiredFont"> * </font></td>
-					<td><s:select id="constituencyField" name="constituency" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getMandals\')" /></td>
+					<td><s:select id="constituencyField" name="constituency" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getMandals\',\'mandal\')" /></td>
 				</tr>				
 				<tr id="row4" style="display:none;">
 					<td style="width:140px;"><%=MANDAL%><font class="requiredFont"> * </font></td>
-					<td><s:select id="mandalField" name="mandal" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Mandal"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getTowhships\')" /></td>
+					<td><s:select id="mandalField" name="mandal" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Mandal"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getTowhships\',\'township\')" /></td>
 				</tr>
 				<tr id="row5" style="display:none;">
 					<td style="width:140px;"><%=VILLAGE%><font class="requiredFont"> * </font></td>
-					<td><s:select id="villageField" name="village" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getVillages\')" /></td>
+					<td><s:select id="villageField" name="village" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,'','')" /></td>
 				</tr>
 				<tr id="row6" style="display:none;">
-					<td style="width:140px;"><%=HAMLET%><font class="requiredFont"> * </font></td>
-					<td><s:select id="hamletField" name="hamlet" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Hamlet"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getHamletIdAndRange\')"/></td>
+					<td style="width:140px;"><%=MUNICIPAL%><font class="requiredFont"> * </font></td>
+					<td><s:select id="muncipalField" name="muncipality" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Muncipality"  cssClass="selectBoxWidth" onChange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,'',\'wards\')"/></td>
+				</tr>
+				<tr id="row7" style="display:none;">
+					<td style="width:140px;"><%=WARD%><font class="requiredFont"> * </font></td>
+					<td><s:select id="wardField" name="ward" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Ward"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,'',\'booths\')"/></td>
+				</tr>
+				<tr id="row8" style="display:none;">
+					<td style="width:140px;"><%=BOOTH%><font class="requiredFont"> * </font></td>
+					<td><s:select id="boothField" name="booth" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select booth"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,'','')"/></td>
 				</tr>
 		</table>
 		 </div>
@@ -547,7 +820,7 @@ document.getElementById('datetext').value = day + '/' + month + '/' + year;
 	<div id="saveDiv" align="center">
 		<table>
 		<tr>
-			<td><s:submit cssClass="button" value="Save" name="Save"></s:submit></td>
+			<td><s:submit cssClass="button" value="Save"  onClick="politicalChangeStatus();" name="Save" ></s:submit></td>
 			<td><input type="button" value="Exit" class="button" onclick="doUnload()"/></td>
 		</tr>
 		</table>

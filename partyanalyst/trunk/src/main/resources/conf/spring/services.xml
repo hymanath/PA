@@ -929,7 +929,10 @@
 		<property name="townshipDAO" ref="townshipDAO" />
     	<property name="hamletDAO" ref="hamletDAO" />
     	<property name="informationSourceDAO" ref="informationSourceDAO" />    
-    	<property name="userDAO" ref="userDAO" />    		
+    	<property name="userDAO" ref="userDAO" />   
+    	<property name="boothDAO" ref="boothDAO" /> 
+    	<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" /> 
+    	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" /> 		
 	</bean>  
 	
 	<bean name="biElectionPageService" class="com.itgrids.partyanalyst.service.impl.BiElectionPageService" >
