@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
+import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
@@ -114,6 +115,7 @@ import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.AreaType;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
@@ -215,9 +217,17 @@ public class StaticDataService implements IStaticDataService {
 	private IRegionServiceData regionServiceDataImp;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	private IAreaTypeDAO areaTypeDAO;
-	
+	private ICadreDAO cadreDAO;
 
 	
+	public ICadreDAO getCadreDAO() {
+		return cadreDAO;
+	}
+
+	public void setCadreDAO(ICadreDAO cadreDAO) {
+		this.cadreDAO = cadreDAO;
+	}
+
 	public IAreaTypeDAO getAreaTypeDAO() {
 		return areaTypeDAO;
 	}
@@ -8938,4 +8948,23 @@ public List<SelectOptionVO> getStaticPartiesListByStateAndElection(Long stateId,
 		}
 		return staticParties;
 	}
+
+public boolean removeCadreImage(Long cadreId,Long userId){
+	boolean resultStatus = false;
+	Cadre cadre = null;
+	try{
+		Long cadreUserId = cadreDAO.get(cadreId).getUser().getUserId();
+		String image = "human.jpg";
+			if(cadreUserId.equals(userId)){
+				cadre = cadreDAO.get(cadreId);
+				cadre.setImage(image);
+				cadreDAO.save(cadre);
+				resultStatus = true;
+			}
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	return resultStatus;
+	
+}
 }
