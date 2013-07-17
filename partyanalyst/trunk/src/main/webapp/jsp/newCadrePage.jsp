@@ -678,6 +678,16 @@
 		var memberTypeActive = $('#memberTypeActive').is(":checked");
 		var windowTask = '${windowTask}';
 		var voterId = '${voterId}';
+		var imgName = $('#uploadFileId').val();
+		if(imgName != '')
+		{
+			if (!(/\.(gif|jpg|jpeg|png)$/i).test(imgName))
+			{ 
+			  $('#errorDiv').html('<div>Upload Images with gif,jpg,jpeg and png formets only.</div>')
+			  return false;
+            }
+		}
+		
 		if(fname == '')
 		{
 			$('#errorDiv').html('<div>Please enter the first name</div>')
