@@ -120,4 +120,9 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List getAllPostedCommentsOfUserForANomination(Long electionId,
 			Long constituencyId, Long candidateId,Long userId);
 	
+	public List getCommentsResultsForAPartyInAnElection1(Long electionId,
+			Long partyId, String category,Long stateId,List<Long> constituencyIds);
+	
+	public List getCommentsResultsForAPartyInAnElection1(Long electionId,
+			Long partyId, String category, Long categoryTypeId,Long stateId,List<Long> constituencyIds);
 }
