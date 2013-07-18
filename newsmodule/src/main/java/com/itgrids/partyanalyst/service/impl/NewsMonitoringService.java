@@ -3967,9 +3967,9 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		
 			  long count1 = 0l;
 
-			  listFromNamination1= candidateRelatedNewsDAO.getNotResponseCount(fromDate, toDate,872l,null,null,null,null,tempVar,null,null,null);
+			  listFromNamination1= candidateRelatedNewsDAO.getNotResponseCount(fromDate, toDate,872l,null,null,null,null,tempVar,null,null,null,"partyDetails");
 				// List<Object[]> list1 = candidateRelatedNewsDAO.getRespondNewsPartyDetailsCustom(notRespondFileGalleryIds);
-			  listFromCandidateParty1  =  candidateRelatedNewsDAO.getNotResponseCountForCandidateParty(fromDate, toDate,872l,null,null,null,null,tempVar,null,null,null);
+			  listFromCandidateParty1  =  candidateRelatedNewsDAO.getNotResponseCountForCandidateParty(fromDate, toDate,872l,null,null,null,null,tempVar,null,null,null,"partyDetails");
 			  List<SelectOptionVO> notResponseNewsCountList = new ArrayList<SelectOptionVO>(0);; 
 
 		       if(listFromNamination1 == null || listFromNamination1.size()== 0)
@@ -4236,7 +4236,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		  };
 		  
 		  
-		  public List<CandidateNewsCountVO> getCandidateCritiesNewsDetails(String fromDateStr,String toDateStr)
+		  public List<CandidateNewsCountVO> getCandidateCritiesNewsDetails(String fromDateStr,String toDateStr,String tempVar)
 		  {
 		 	 try{
 		 		 Date fromDate = null;
@@ -4249,11 +4249,12 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 			 	 toDate = format.parse(toDateStr);
 		 		 
 		 		 List<Object[]> responseNewsList = new ArrayList<Object[]>(0);
+		 		 List<Object[]> notResponseNewsList = new ArrayList<Object[]>(0);
 		 		 
 		 		 List<CandidateNewsCountVO> candidateNewsCountVOList = new ArrayList<CandidateNewsCountVO>(0);
 		 		 
-		 		 List<Object[]> responseNewsListFromNamination = candidateRelatedNewsDAO.getRespondNewsPartyDetails(fromDate, toDate, 872l, null, null, null, 0L, null, null, null, null,"candidateDetails");
-		 		 List<Object[]> responseNewsListFromCandidateParty = candidateRelatedNewsDAO.getRespondNewsPartyDetailsForCandidateTable(fromDate, toDate, 872l, null, null, null, 0L, null, null, null, null,"candidateDetails");
+		 		 List<Object[]> responseNewsListFromNamination = candidateRelatedNewsDAO.getRespondNewsPartyDetails(fromDate, toDate, 872l, null, null, null, 0L, tempVar, null, null, null,"candidateDetails");
+		 		 List<Object[]> responseNewsListFromCandidateParty = candidateRelatedNewsDAO.getRespondNewsPartyDetailsForCandidateTable(fromDate, toDate, 872l, null, null, null, 0L, tempVar, null, null, null,"candidateDetails");
 		 		 
 		 		 if(responseNewsListFromNamination != null && responseNewsListFromNamination.size() > 0)
 		 			responseNewsList.addAll(responseNewsListFromNamination);
@@ -4273,6 +4274,34 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		 			 candidateNewsCountVOList.add(newsCountVO);
 		 		  }
 		 		 }
+		 		 
+		 		List<Object[]> notResponseListFromNamination= candidateRelatedNewsDAO.getNotResponseCount(fromDate, toDate,872l,null,null,null,null,tempVar,null,null,null,"candidateDetails");
+		 		List<Object[]> notResponseListFromCandidateParty  =  candidateRelatedNewsDAO.getNotResponseCountForCandidateParty(fromDate, toDate,872l,null,null,null,null,tempVar,null,null,null,"candidateDetails");
+		 		if(notResponseListFromNamination != null && notResponseListFromNamination.size() > 0)
+		 			notResponseNewsList.addAll(notResponseListFromNamination);
+		 		
+		 		if(notResponseListFromCandidateParty != null && notResponseListFromCandidateParty.size() > 0)
+		 			notResponseNewsList.addAll(notResponseListFromCandidateParty);
+		 		
+		 		if(notResponseNewsList != null && notResponseNewsList.size() > 0)
+		 		{
+		 			CandidateNewsCountVO newsCountVO = null;
+		 			for(Object[] params:notResponseNewsList)
+		 			{
+		 				newsCountVO = checkCandidateNewsCountVOExist((Long)params[4], candidateNewsCountVOList);
+		 				if(newsCountVO == null)
+		 				{
+		 				 newsCountVO = new CandidateNewsCountVO();
+		 				 newsCountVO.setId((Long)params[4]);
+		 				 newsCountVO.setName(params[5] != null?params[5].toString():" ");
+		 				 candidateNewsCountVOList.add(newsCountVO);
+		 				}
+		 				newsCountVO.setNotResponseNewsCount((Long)params[0]);
+			 			
+		 				
+		 			}
+		 		}
+		 		 
 		 		 if(candidateNewsCountVOList != null && candidateNewsCountVOList.size() > 0)
 		 		 {
 		 		   for(CandidateNewsCountVO countVO:candidateNewsCountVOList)
