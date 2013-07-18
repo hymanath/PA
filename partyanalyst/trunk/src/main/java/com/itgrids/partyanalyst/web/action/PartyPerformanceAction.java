@@ -29,6 +29,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 import org.springframework.util.StringUtils;
 
+import com.google.gdata.model.atompub.Accept;
 import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
@@ -47,6 +48,7 @@ import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.sun.net.httpserver.Authenticator.Success;
 
 public class PartyPerformanceAction extends ActionSupport implements ServletRequestAware, ServletResponseAware, ServletContextAware {
 
@@ -843,6 +845,10 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE) && "3".equalsIgnoreCase(reportLevel)){
 				parties = staticDataService.getAllNationalParties();
 			Collections.sort(parties);}
+			else if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+			{
+				parties = staticDataService.getPartitesList(stateID,electionType);
+			}
 			else{
 				//parties = staticDataService.getStaticPartiesListForAState(stateID);
 			    parties = staticDataService.getStaticPartiesListByStateAndElection(stateID,electionType);
@@ -868,5 +874,18 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		return SUCCESS;
 	}
 	
+	public String getStatesList()
+	{
+		try {
+			log.debug("Entered into getStatesList() Method in PartyPerformanceAction Action");
+			jObj = new JSONObject(getTask());
+			Long electionTypeId = jObj.getLong("electionTypeId");
+			states = getStaticDataService().getParticipatedStatesForAnElectionType(electionTypeId);
+			//states.add(new SelectOptionVO(0l,"Select State"));
+		} catch (Exception e) {
+			log.error("Exception Occured in getStatesList() Method, Exception is - "+e);
+		}
+		return SUCCESS;
+	}
 	
 }

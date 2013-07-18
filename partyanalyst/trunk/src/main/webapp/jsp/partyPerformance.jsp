@@ -145,24 +145,37 @@
 									hidePartySelectAjaxImage("party");
 																		
 								}		
-								if(jsObj.task == "getStatesListAjax")
+								else if(jsObj.task == "getStatesListAjax")
 							    {
                                    clearOptionsListForSelectElmtId(jsObj.elmtId);
 								   fillPartiesInState(jsObj.elmtId, resultVO);
 								   hidePartySelectAjaxImage("state");
 							    }
-								if(jsObj.task == "checkPartyPerformance")
+								else if(jsObj.task == "checkPartyPerformance")
 							    {
 							    	$('#partySelectAjaxImgIds').css("display","none");	
 									var errorMsg = document.getElementById("errorsDiv");
-									errorMsg.innerHTML = '';								
+									errorMsg.innerHTML = '';
 									if(!resultVO)	
 										errorMsg.innerHTML ='<span style="font-size: 13px;">'+ partyName+' party doesnot have any seats,So we cannot analyse on this view </span>';
 									else {	
-											document.performanceReport.submit();
+										document.performanceReport.submit();
 										}
 									$('#partyPerformanceReport_partyPerformanceReport').attr('disabled', false);	
 							    }
+								else if(jsObj.task ==  "getStatesList")
+								{
+									$('#stateList option').remove();
+									if(resultVO != null)
+									{
+										$('#stateList').append('<option value=0>Select State</option>');
+										for(var i in resultVO)
+										{
+											$('#stateList').append('<option value='+resultVO[i].id+'>'+resultVO[i].name+'</option>');
+										}
+										 
+									}
+								}
 						}catch (e)  {   
 							//alert("Invalid JSON result" + e);   
 						}  
@@ -289,7 +302,6 @@
 		var distElmt = document.getElementById("districtList").disabled = true;
 
 		var str='';
-		
 		str+='<input type="radio" id="stateRadio" checked="checked" name="1" value="'+results[0].id+'" onclick="getDistricts(this.value);">'+results[0].name+'</input>';
 		str+='<input type="radio" id="countryRadio"" name="1" value="'+results[1].id+'" onclick="getDistricts(this.value);">'+results[1].name+'</input>';
 				
@@ -520,7 +532,6 @@
 	
 	var partyName = '';
 	function checkPartyPerformanceDetails(){
-		
 		var flag = false;
 		var electionType='';
 		var reportLevel=3;
@@ -607,6 +618,19 @@
 		 }
 		
 	}
+	
+	function getStatesList(id)
+	{
+		var jsObj={
+			electionTypeId : id,
+		    task           :"getStatesList"						
+			};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);		
+		var url = "<%=request.getContextPath()%>/getStatesListAction.action?"+rparam;
+		callAjax(jsObj,url);
+	}
+	
 	window.history.forward(1);	
   </script>
 </head> 
@@ -626,8 +650,8 @@
 				<tr>
 					<th align="left"><%=electionType%></th>
 					<td>
-						<input id="assemblyRadio" type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);" style="margin-right: 3px;margin-top: auto;"/>Assembly
-					<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="doAjax(this.value);" style="margin-right: 3px;margin-top: auto;"/>Parliament
+						<input id="assemblyRadio" type="radio" name="electionType" value="2" checked="checked" onclick="getStatesList(2);doAjax(this.value);" style="margin-right: 3px;margin-top: auto;"/>Assembly
+					<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="getStatesList(1);doAjax(this.value);" style="margin-right: 3px;margin-top: auto;"/>Parliament
 					</td>
 				</tr>
 				<!-- <tr>
