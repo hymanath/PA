@@ -5570,6 +5570,10 @@
 			</result>		
 		</action>
 		
-		
+		<action name="getStatesListAction" class="partyPerformanceAction" method="getStatesList">
+		 <result type="json" name="success">
+		  <param name="root">states</param>
+		 </result>
+		</action>
 		</package>
 </struts>      
