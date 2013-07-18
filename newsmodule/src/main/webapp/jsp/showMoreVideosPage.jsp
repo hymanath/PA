@@ -21,7 +21,7 @@
 </head>
 <body>
 <style>
-.currentTab
+.currentTab1
 {
  background-color:yellowgreen;
  border-radius:8px;
@@ -44,7 +44,7 @@
 
 $(document).ready(function(){
 
-	$('#videosTabId').addClass('currentTab');
+	$('#videosTabId').addClass('menuActive');
 });
 
 </script>
