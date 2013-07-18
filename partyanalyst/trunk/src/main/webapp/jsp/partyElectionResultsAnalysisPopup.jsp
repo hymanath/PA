@@ -178,7 +178,7 @@ function callAjax(param,jsObj,url){
 								}
 								else if(jsObj.task == "getMainPartyMultipleReasonsComments")
 								{									
-									//showAnalysisDetails(jsObj,myResults);
+									showAnalysisDetails(jsObj,myResults);
 								}
 								else if(jsObj.task == "getAnalyzedConstituencyStatusAnalysisForVotesMarginWindow")
 								{
@@ -289,17 +289,20 @@ function getMainPartyCategoryComments()
 
 function getMainPartyMultipleReasonComments()
 {
-	
+	var constituencyIds=[];
+	constituencyIds ='${constituencyIds}';
 	var status = '${status}';
 	var stateId = '${stateId}';
 	var position = '${position}';
 	var reasonCount= '${reasonCount}';
 	var constituencyCount = '${constituencyCount}';
 	var url = '';
-	
+	var array = eval(constituencyIds);
+
 	var jsObj= 
 	{
-		
+		constituencyId:array,
+		categoryId:0,
 	 	electionId: electionId,
 	 	partyId: partyId,		
 		status:status,
