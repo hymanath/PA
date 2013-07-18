@@ -925,7 +925,7 @@ ICandidateRelatedNewsDAO {
 	  if(tempVarForParty != null && tempVarForParty.equalsIgnoreCase("partyDetails"))
 	   str.append(" group by model6.party.partyId ");
 	  else 
-		  str.append(" group by model6.candidate.candidateId ");
+		  str.append(" and model6.party.partyId != :TDPPartyId group by model6.candidate.candidateId ");
 	  
 	  Query query = getSession().createQuery(str.toString());
 	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
@@ -952,6 +952,9 @@ ICandidateRelatedNewsDAO {
 	  
 	  if(selectedPartyId != null && selectedPartyId > 0)
 		query.setParameter("selectedPartyId", selectedPartyId);
+	  
+	  if(tempVarForParty != null && !tempVarForParty.equalsIgnoreCase("partyDetails"))
+	   query.setParameter("TDPPartyId", 872L);
 	  
 	  return query.list();
 				
@@ -1202,7 +1205,7 @@ ICandidateRelatedNewsDAO {
 	  if(tempVarForParty != null && tempVarForParty.equalsIgnoreCase("partyDetails"))
 	   str.append(" group by model6.party.partyId ");
 	  else
-	   str.append(" group by model6.candidate.candidateId ");
+	   str.append(" and model6.party.partyId != :TDPPartyId  group by model6.candidate.candidateId ");
 	  
 	  Query query = getSession().createQuery(str.toString());
 	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
@@ -1229,6 +1232,9 @@ ICandidateRelatedNewsDAO {
 	  
 	  if(selectedPartyId != null && selectedPartyId > 0)
 		query.setParameter("selectedPartyId", selectedPartyId);
+	  
+	  if(tempVarForParty != null && !tempVarForParty.equalsIgnoreCase("partyDetails"))
+	   query.setParameter("TDPPartyId", 872L);
 	  
 	  return query.list();
 				
