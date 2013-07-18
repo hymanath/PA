@@ -60,6 +60,14 @@ margin:-1px 0px 0px 0px ;
 .memberArea li a{font-weight:bold;}
 .navMenu li a{font-weight:bold;}
 
+
+.nav1 li {float:left;list-style-type:none;margin:0.4px;}
+.nav1 li a{color:#000;font-weight:bold;display:block;padding:23px;font-family:verdana,arial;font-size:14px;}
+.nav1 li:hover a{color:red;background:#FFFF00;text-decoration:none;}
+.nav1 li:hover{background:#FFFF00;border-bottom:4px solid red;}
+
+.menuActive{border-bottom:4px solid red;box-shadow:0px 0px 2px #ccc;border-radius:2px;}
+
 </style>
 <decorator:head/>
 </head>
@@ -84,7 +92,7 @@ margin:-1px 0px 0px 0px ;
 				<div class="row-fluid">
 					<!----Member Area Div---->
 					<div class="span12">
-						<ul class="nav nav-pills pull-right memberArea">
+						<ul class="nav nav-pills pull-right memberArea ">
 						 <c:if test="${sessionScope.USER == null}">
 						  <li><a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a></li>
 						  <li class="selected"><a href="userRegistration.action">Register</a></li>
@@ -99,20 +107,20 @@ margin:-1px 0px 0px 0px ;
 						</ul>
 					</div>
 					<!------Menu div-------->
-					<div class="span10">
-						<ul class="nav nav-pills navMenu pull-right">
+					<div class="span10" style="margin-top:-15px;height:80px;">
+						<ul class="nav1 nav-pills1 navMen pull-right headerMenu">
 
 						<c:if test="${sessionScope.USER != null}">
 						 <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
-						  <li class=""><a id="homeTabId" href="homePage.action">Home</a></li>
+						  <li class="" id="homeTabId"><a  href="homePage.action">Home</a></li>
 						<!--  <li class=""><a href="aboutUs.action">About Us</a></li>-->
-						  <li class="">
-						  <a href="newsDetailsAction.action" id="newsTabId">News</a></li>
-						  <li class="">
-						  <a href="showMoreVideos.action" style="cursor: pointer;" id="videosTabId">Videos</a></li>
+						  <li class="" id="newsTabId">
+						  <a href="newsDetailsAction.action" >News</a></li>
+						  <li class="" id="videosTabId">
+						  <a href="showMoreVideos.action" >Videos</a></li>
 						 
 						  
-						      <li class=""><a href="partyManagementAction.action" id="partyManagementTabId">Manage Party Profile</a></li>
+						      <li class="" id="partyManagementTabId"><a href="partyManagementAction.action" >Manage Party Profile</a></li>
 						   
 						  
 						  <!--<li class=""><a href="contactUs.action">Contact Us</a></li>-->
@@ -198,6 +206,13 @@ function showMoreVideoGallaries(){
      browser1.focus();
 }
 */
+
+
+$('.headerMenu li a').click(function() {
+	$('.headerMenu li.menuActive').removeClass('menuActive');
+	$(this).closest('li').addClass('menuActive');
+});
+
 </script>
 </body>
 </html>
