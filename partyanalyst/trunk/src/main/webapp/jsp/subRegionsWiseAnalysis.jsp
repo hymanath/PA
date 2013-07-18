@@ -3234,7 +3234,11 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList,lgndItemSlctd
 	//}
 	
 		if(lgndItemSlctd==null)
-			buildHamletWiseCastResultsGraph(null,null);
+		{
+			 var percentage = $( "#slider" ).slider( "value" );
+			 buildHamletWiseCastResultsGraph(null,percentage);
+		}
+			
 	}
 	
 $('#castesAsPerLocId').click(function(){
@@ -4213,7 +4217,7 @@ function buildCastInfoBasedOnOptions1(option)
 function buildCastWiseChart(temp)
 {
 //this is to set the slider value as 1 bydefault when ever we searched
-$( "#slider" ).slider({ value: 1 });
+//$( "#slider" ).slider({ value: 1 });
 var myResults_slctd=temp.result;
 var jsObj_slctd=temp.jsobj;
 	$("#castErrorDiv").html('');
@@ -4232,7 +4236,8 @@ var jsObj_slctd=temp.jsobj;
 		return;
 	}
 	//console.log(selectedCastArray);
-	  buildHamletWiseCastResultsGraph(selectedCastArray,null);
+	  var percentage = $( "#slider" ).slider( "value" );
+	  buildHamletWiseCastResultsGraph(selectedCastArray,percentage);
 	  buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,selectedCastArray,null);
 }
 function buildCastWiseChart1(temp)
@@ -4256,9 +4261,9 @@ var jsObj_slctd=temp.jsobj;
 	}
 	  //console.log(selectedCastArray);
 	  //buildHamletWiseCastResultsGraph(selectedCastArray,null);
-	  
+	  var percentage = $( "#slider1" ).slider( "value" );
 	  buildCastInfoForSubLevels(myResults_slctd,jsObj_slctd,selectedCastArray,'');
-	  buildCastGrid2(selectedCastArray,null)
+	  buildCastGrid2(selectedCastArray,percentage)
 	  
 	  
 }
