@@ -57,11 +57,24 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 
 <style type="text/css">
-#candidateNewsCountDiv table,#respondNotRespondNewsCountDiv table,#candidateCritiesNewsDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+/* #respondNotRespondNewsCountDiv table*/
+#candidateNewsCountDiv table,#candidateCritiesNewsDiv table{
+border:1px solid #d3d3d3;
+border-collapse:collapse;
+padding:10px;
+margin-left:auto;
+margin-right:auto;width:100%;
+} 
+#respondNotRespondNewsCountDiv table
+{
+border:1px solid #d3d3d3;
+border-collapse:collapse;
 
+
+}
 #candidateNewsCountDiv table tr:nth-child(even),#respondNotRespondNewsCountDiv table tr:nth-child(even),#candidateCritiesNewsDiv table tr:nth-child(even){background:#EdF5FF;}
 #candidateNewsCountDiv table td,#respondNotRespondNewsCountDiv table td,#candidateCritiesNewsDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
-#candidateNewsCountDiv table th,##candidateCritiesNewsDiv table th{
+#candidateNewsCountDiv table th,#candidateCritiesNewsDiv table th{
 	background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -71,6 +84,11 @@
     padding-top: 10px;
     text-align: left;
 	color:#333333;
+	}
+	#respondNotRespondNewsCountDiv table th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+	
 	}
 #candidateNewsMainDiv{margin-left: auto; margin-right: auto; float: none; width: 950px; padding-top: 20px; padding-bottom: 20px;}
 
@@ -859,22 +877,27 @@ function  showPartyWiseNewsCount(results)
   if(results == null)
 	  return;
   var str = '';
-  str +='<div>';
+  str +='<div class="thumbnail">';
   //str +='<span><b>Total News :</b>'+results.totalNewsCount+'</span>';
-  if(results.responseNewsCount > 0)
-   str +='<span><b> TDP Candidates Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0)">'+results.responseNewsCount+'</a></span> <span style="width:1px;padding-right:10px;"></span>';
+   if(results.totalNewsCount>0)
+   str +='<span class ="span3"><b> TOTAL CRITICS :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'total\',0)"><span class="btn btn-info">'+results.totalNewsCount+'</span></a></span>';
   else
-	str +='<span><b> Not Responded News  :</b><a href="javascript:{}">'+results.responseNewsCount+'</a></span>  ';
+     str +='<span class ="span4" ><b>Total News :</b>'+results.totalNewsCount+'</span>';
+  if(results.responseNewsCount > 0)
+   str +='<span class ="span3" ><b>  Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0)"><span class="btn btn-info">'+results.responseNewsCount+'</span></a></span> ';
+  else
+	str +='<span class ="span3" ><b> Not Responded News  :</b><a href="javascript:{}">'+results.responseNewsCount+'</a></span>  ';
   if(results.notResponseNewsCount > 0)
-   str +='<span><b>Not Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0)">'+results.notResponseNewsCount+'</a></span>';
+   str +='<span class ="span3" ><b>Not Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0)"><span class="btn btn-info">'+results.notResponseNewsCount+'</span></a></span>';
    else
-	str +='<span><b>NotRespond News :</b><a href="javascript:{}">'+results.notResponseNewsCount+'</a></span>';
-
-  str +='</div>';
-  
+	str +='<span class ="span3" ><b>NotRespond News :</b><a href="javascript:{}">'+results.notResponseNewsCount+'</a></span>';
+     str+='</br>';
+  // str +='</div>';
+  // str +='<hr/>';
   str +='<div class="row-fluid">';
-  str +='<div class="span3">';
-    str +='<table>';
+  
+  str +='<div  class="span6">';
+    str +='<table class="table table-hover">';
     str +='<tr>';
     str +='<th>Party</th>';
     str +='<th>Responde News</th>';
@@ -894,10 +917,10 @@ function  showPartyWiseNewsCount(results)
      str +='</table>';
 	 str +='</div>';
 
-    str +='<div class="span4">';
-    str +='<table>';
-    str +='<tr>';
-    str +='<th>Party</th>';
+    str +='<div class="span6">';
+    str +='<table class="table table-hover" >';
+    str +='<tr class="success" >';
+    str +='<th >Party</th>';
     str +='<th>Not Responde News</th>';
     str +='</tr>';
 
@@ -911,6 +934,7 @@ function  showPartyWiseNewsCount(results)
        str +='</tr>';
     }
      str +='</table>';
+	 str +='</div>';
 	 str +='</div>';
 
     str +='</div>';
