@@ -143,6 +143,24 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			return Action.SUCCESS;
 		}
 		
+		public String insertVotersBasicInfoToIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+				return null;
+			
+			resultStatus = voterReportService.insertVotersBasicInfoToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+			return Action.SUCCESS;
+		}
+		
 		public String insertVotersCasteDataToIntermediateTables()
 		{
 			try{
