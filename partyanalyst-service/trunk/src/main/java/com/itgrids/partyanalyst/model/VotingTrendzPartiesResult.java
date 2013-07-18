@@ -75,7 +75,7 @@ public class VotingTrendzPartiesResult extends BaseModel implements Serializable
 	public void setParty(Party party) {
 		this.party = party;
 	}
-
+	@JoinColumn(name="votes_gained")
 	public Long getVotesGained() {
 		return votesGained;
 	}
