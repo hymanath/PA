@@ -770,7 +770,8 @@
     <bean id="censusReportAction" class="com.itgrids.partyanalyst.web.action.CensusReportAction" singleton="false">
     	<property name="staticDataService" ref="staticDataService" />
     	<property name="electionService" ref="electionService" />
-    	<property name="entitlementsHelper" ref="entitlementsHelper" />		    
+    	<property name="entitlementsHelper" ref="entitlementsHelper" />		
+    	<property name="partyStrengthService" ref="partyStrengthService" />
     </bean>    
       
       <bean id="userFeedbackAction" class="com.itgrids.partyanalyst.web.action.UserFeedbackAction" singleton="false">
