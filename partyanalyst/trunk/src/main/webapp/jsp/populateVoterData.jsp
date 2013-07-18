@@ -768,12 +768,12 @@ function callAjax(jsObj,url)
 		
 		if(result.resultCode == 0)
 		{
-			$("#errorMsgDiv").html("Voters Basic Info Inserted Successfully.").css("color","green");
+			$("#basicInfoErrorMsgDiv").html("Voters Basic Info Inserted Successfully.").css("color","green");
 				return;
 		}
 		else
 		{
-			$("#errorMsgDiv").html("Error Occured try Again.").css("color","red");
+			$("#basicInfoErrorMsgDiv").html("Error Occured try Again.").css("color","red");
 				return;
 		}
 	}
