@@ -178,6 +178,9 @@ border-collapse:collapse;
 .criticsNewsCls{float: right; margin-top: -54px;}
 #latestNewsDiv{display:table;margin-top: -58px;}
 #paginationId{margin-left: 21px; margin-top: 30px; margin-bottom: 20px;}
+.unstyled.pad10 > li {
+    display: table;
+}
 </style>
 <script type="text/javascript">
 var fromDate = '${fromDate}';
@@ -959,22 +962,22 @@ function  showPartyWiseNewsCount(results)
   str+='<div class="headingDivCls"><h4>Party Wise Critics</h4></div>';
   str +='<div >';
    if(results.totalNewsCount>0)
-   str +='<span class ="span10" style="text-align:center" ><b  > TOTAL CRITICS :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'total\',0)"><span class="badge badge-info">'+results.totalNewsCount+'</span></a></span>';
+   str +='<span class ="span10" style="text-align:center" ><b> TOTAL CRITICS : </b><a href="javascript:{}" onclick="getResponseNewsDetails(\'total\',0,\'partyDetails\',0)"><span class="badge badge-info">'+results.totalNewsCount+'</span></a></span>';
   else
-     str +='<span class ="span10"  style="text-align:center"><b>Total News :</b>'+results.totalNewsCount+'</span>';
+     str +='<span class ="span10"  style="text-align:center"><b>Total News : </b>'+results.totalNewsCount+'</span>';
 	  str +='</div>';
 	   str +='</br>';
   str +='<div class="thumbnail" style="margin-top:8px;">';
   //str +='<span><b>Total News :</b>'+results.totalNewsCount+'</span>';
    str +='<div >';
   if(results.responseNewsCount > 0)
-   str +='<span class ="span5" ><b>  Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0)"><span class="badge badge-info">'+results.responseNewsCount+'</span></a></span> ';
+   str +='<span class ="span5" ><b>  Responded News : </b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0,\'partyDetails\',0)"><span class="badge badge-info">'+results.responseNewsCount+'</span></a></span> ';
   else
-	str +='<span class ="span5" ><b> Not Responded News  :</b><a href="javascript:{}">'+results.responseNewsCount+'</a></span>  ';
+	str +='<span class ="span5" ><b> Not Responded News  : </b><a href="javascript:{}">'+results.responseNewsCount+'</a></span>  ';
   if(results.notResponseNewsCount > 0)
-   str +='<span class ="span4" ><b>Not Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0)"><span class="badge badge-info">'+results.notResponseNewsCount+'</span></a></span>';
+   str +='<span class ="span4" ><b>Not Responded News : </b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0,\'partyDetails\',0)"><span class="badge badge-info">'+results.notResponseNewsCount+'</span></a></span>';
    else
-	str +='<span class ="span4" ><b>NotRespond News :</b><a href="javascript:{}">'+results.notResponseNewsCount+'</a></span>';
+	str +='<span class ="span4" ><b>NotRespond News : </b><a href="javascript:{}">'+results.notResponseNewsCount+'</a></span>';
      str+='</br>';
       str +='</div>';
   // str +='<hr/>';
@@ -995,7 +998,7 @@ function  showPartyWiseNewsCount(results)
        str +='<td>'+selectOptionVo.selectOptionsList[i].name+'</td>';
 
 
-       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded \','+selectOptionVo.selectOptionsList[i].id+')">'+selectOptionVo.selectOptionsList[i].populateId+'<a></td>';
+       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded \','+selectOptionVo.selectOptionsList[i].id+',\'partyDetails\',0)">'+selectOptionVo.selectOptionsList[i].populateId+'<a></td>';
     
        str +='</tr>';
     }
@@ -1014,7 +1017,7 @@ function  showPartyWiseNewsCount(results)
      {
        str +='<tr>';
        str +='<td>'+selectOptionVo.selectOptionsList1[i].name+'</td>';
-       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \','+selectOptionVo.selectOptionsList1[i].id+')">'+selectOptionVo.selectOptionsList1[i].populateId+'</a></td>';
+       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \','+selectOptionVo.selectOptionsList1[i].id+',\'partyDetails\',0)">'+selectOptionVo.selectOptionsList1[i].populateId+'</a></td>';
     
        str +='</tr>';
     }
@@ -1292,8 +1295,8 @@ function buildPaginatedNews(results,jsObj)
 		
 		str+="</div>";
 
-		str+="<div class='span9' style='width:550px; margin-top: 9px;'>";
-		str +='<table><tr><td style="width: 200px; vertical-align: top;">';
+		str+="<div class='span11' style='margin-top: 9px;'>";
+		str +='<table><tr><td style="width: 300px; vertical-align: top;">';
 		str +='<p style="margin-right: 5px;"><span class="text-error" style="font-weight:bold;">Source : </span>';
 		var length = results[i].fileVOList.length;
 
@@ -1303,25 +1306,30 @@ function buildPaginatedNews(results,jsObj)
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></td><td style="vertical-align: top;"><p style="width: 108px;"><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
+		str +='</p></td><td style="vertical-align: top;"><p style="width: 110px;margin-right: 5px;"><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
 		if(results[i].responseCount > 0)
-		str+='<td style="vertical-align: top;"><p style="width: 80px;"><span class="text-error" style="font-weight:bold;padding-left: 20px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span > '+results[i].responseCount+'</p></td>';
+		str+='<td style="vertical-align: top;"><p style="width: 75px;margin-right: 5px;"><span class="text-error" style="font-weight:bold;padding-left: 20px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span > '+results[i].responseCount+'</p></td>';
 		
 		if(results[i].candidateName != null)
 		{
-		 str +='<td style="vertical-align: top;"><p style="width: 130px;"><span class="text-error" style="font-weight:bold;">Candidate :</span> '+results[i].candidateName+'</p></td>';
+		 str +='<td style="vertical-align: top;"><p style="width: 200px;margin-right: 5px;"><span class="text-error" style="font-weight:bold;">Candidate :</span> '+results[i].candidateName+'</p></td>';
 		}
-		str +='<td style="vertical-align: top;"><p style="width: 145px;"><span class="text-error" style="font-weight:bold;">Location :</span> '+results[i].locationName+'</p></td>';
+		str +='<td style="vertical-align: top;"><p style="width: 190px;margin-right: 5px;"><span class="text-error" style="font-weight:bold;">Location :</span> '+results[i].locationName+'</p></td>';
 		
+		str +='<td style="vertical-align: top;"><a onclick="getNewsDetailsByContentId('+results[i].contentId+')" class="btn btn-mini btn-info pull-right" type="button">Details...</a></td>';
+		if(results[i].responseCount > 0)
+		{
+		 str +='<td style="vertical-align: top;"><a style="clear:both;font-weight: bold; margin-left: 8px;" onclick="getNewsDetailsByContentId('+results[i].contentId+')" class="btn btn-mini btn-info pull-right" type="button">Track</a></td>';
+		}
 		str +='</tr></table>';
 		str +='</div>';
 		
-		str+="<br><div class='span4 pull-right' style='clear:both;font-weight: bold;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a>";
+		/* str+="<br><div class='span4 pull-right' style='clear:both;font-weight: bold;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a>";
 
 		if(results[i].responseCount > 0)
 		{
 		  str +="<a style='font-size: 13px; margin-left: 185px; font-weight: bold;' type='button' class='btn btn-mini btn-info' href='javascript:{}' onclick='getNewsTrackDetails("+results[i].contentId+")'>Track</a>";
-		}
+		}*/
 		
 		str +='</div></li>';
 
