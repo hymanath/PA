@@ -3251,10 +3251,27 @@ public class VoterReportService implements IVoterReportService{
 					}
 					
 				}	
-			  
-			  
-			  
-			  
-			
-		
+			  public ResultStatus deletePreviousEleVotingIntoIntermediateTables(Long constituencyId)
+			  {
+				  ResultStatus resultStatus = new ResultStatus();
+				  try{
+					if(constituencyId != null && constituencyId > 0)  
+					{
+					 List<Long> votingTrendzIds = votingTrendzPartiesResultDAO.getVotingTrendzIds(constituencyId);
+					 if(votingTrendzIds != null && votingTrendzIds.size() > 0)
+						votingTrendzPartiesResultDAO.deletePartyResultByConstituencyId(votingTrendzIds);
+						votingTrendzDAO.deleteVotingTrendzByConstituencyId(constituencyId);
+						resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					}
+					else
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				  }
+				  catch(Exception e)
+				  {
+					  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					  e.printStackTrace();
+				  }
+				return resultStatus;
+				
+			  }
 }

@@ -5,4 +5,6 @@ import com.itgrids.partyanalyst.model.VotingTrendz;
 
 public interface IVotingTrendzDAO extends GenericDao<VotingTrendz,Long>{
 
+	public Integer deleteVotingTrendzByConstituencyId(Long constituenyId);
+
 }
