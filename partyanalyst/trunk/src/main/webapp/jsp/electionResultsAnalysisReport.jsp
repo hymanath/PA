@@ -418,16 +418,16 @@ function openMainPartyElectionResultsAnalysisCategoryWindow(electionId, partyId,
 }
 
 
-function openMainPartyMultipleReasonsAnalysisWindow(electionId, partyId,status,partyName,electionType,stateName,electionYear,position,reasonCount,constituencyCount)
+function openMainPartyMultipleReasonsAnalysisWindow(electionId, partyId,status,partyName,electionType,stateName,electionYear,position,reasonCount,constituencyCount,constituencyIds)
 {
 	var stateSelectEl = document.getElementById("stateSelectEl");
 	var stateId =stateSelectEl.value;	
 
 	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
-	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&reasonCount="+reasonCount+"&constituencyCount="+constituencyCount+"&windowTask=multipleReasonAnalysisPopup";
-	/*var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&reasonCount="+reasonCount+"&constituencyCount="+constituencyCount+"&constituencyIds="+constituencyIds+"&windowTask=multipleReasonAnalysisPopup";
+	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
-	browser2.focus();*/
+	browser2.focus();
 }
 
 function getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId,stateId){
