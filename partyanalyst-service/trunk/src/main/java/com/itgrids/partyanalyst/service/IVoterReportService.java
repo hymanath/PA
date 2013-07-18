@@ -82,4 +82,8 @@ public interface IVoterReportService {
 	 public List<VoterVO> storeCandidateDetails(List<Candidate> candidateDetails,String type,Long id,Long totalRecords);
 	 
 	 public ResultStatus insertVotersBasicInfoToIntermediateTables(Long reportLevelValue,Long publicationDateId);
+	 
+	  public ResultStatus deleteVotersBasicInfoFromIntermediateTables(Long constituencyId);
+	  
+	  public ResultStatus insertVotingTrendzToIntermediateTables(final Long reportLevelValue,Long publicationDateId);
 }
