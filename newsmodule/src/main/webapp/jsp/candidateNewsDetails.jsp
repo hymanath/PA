@@ -56,11 +56,31 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 <script type="text/javascript" src="js/bootstrap.js"></script>
 
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/>
+
 <style type="text/css">
 .table td {
    text-align: center;   
 }
 /* #respondNotRespondNewsCountDiv table*/
+@font-face
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
+
+@font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
+@font-face {
+    font-family: "eFont";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
+}
 #candidateNewsCountDiv table,#candidateCritiesNewsDiv table{
 border:1px solid #d3d3d3;
 border-collapse:collapse;
@@ -122,6 +142,42 @@ border-collapse:collapse;
 .filter2{display:none;}
 #candidateNewsCountDiv{width:800px;margin-left:75px;}
 .nav > li > a{font-weight:bold;}
+
+.blue:before {
+    background: none repeat scroll 0 0 #548BD4;
+    content: " ";
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: -5px;
+    width: 45px;
+}
+.blue {
+    color: #2A4F97;
+}
+.widget {
+    background: none repeat scroll 0 0 #FAFAFA;
+    border-top: 5px solid #000000;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    margin: 10px 0 20px;
+    position: relative;
+}
+.widget h4, h2 {
+    border-bottom: 1px solid #C0C0C0;
+    color: #000000;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+    padding-left: 10px;
+    text-rendering: optimizelegibility;
+    text-transform: uppercase;
+}
+.widget h4, h2 {
+    font-family: arial;
+}
+.criticsNewsCls{float: right; margin-top: -54px;}
+#latestNewsDiv{display:table;margin-top: -58px;}
+#paginationId{margin-left: 21px; margin-top: 30px; margin-bottom: 20px;}
 </style>
 <script type="text/javascript">
 var fromDate = '${fromDate}';
@@ -169,7 +225,6 @@ var toDate = '${toDate}';
 		  </td>
 		 </tr> 
 		</table>
-		<div id="forHide">
 		<table>
 		 <tr>
 	      <td style="vertical-align: top;">
@@ -196,7 +251,6 @@ var toDate = '${toDate}';
 		</tr>
 		
 	  </table>
-			</div>
 			
 	 <div style="text-align:center;"><input type="button" value="submit" id="newsDetailsBtn" class="btn btn-info"/> <img src="images/search.jpg" id="ajaxImg" style="display:none;"/></div>
 	 
@@ -204,8 +258,18 @@ var toDate = '${toDate}';
 
   </div>
   <hr>
-  
 	<div id="respondNotRespondNewsCountDiv" style="display:none;"></div>
+    
+	<div>
+	 <div id="partyWiseCriticsNewsMainDiv" style="display:none;" class="widget blue">
+	  <h4>Party Wise Critics </h4>
+	  <span id="hideAndShowCriticsSpan"><a class="btn btn-info criticsNewsCls" href="javascript:{}" id="hideCriticsId">Hide</a></span>
+      <div id="hideAndShowLatestNewsDiv">
+	   <div id="latestNewsDiv"></div>
+	   <div id="paginationId"></div>
+	  </div>
+	 </div>
+	</div>
 
 	<div id="candidateNewsCountDiv" style="display:none;"></div>
     <div id="candidateCritiesNewsDiv" style="display:none;"></div>
@@ -242,12 +306,7 @@ function hideWhenCandiNewsClcked(){
 	$('#selectNewsInnerDiv').css('display','block');
 	$('#respondNotRespondNewsCountDiv').css('display','none');
 	$('.filter2').css('display','block');
-	$('#candidateCritiesNewsDiv').css('display','none');
-	//$('#galleryListShowHideTb').css('display','block');
-	//$('#categoryShowAndHideTb').css('display','block');
-	//$('#districtShowAndHideDiv').css('display','block');
-	
-	 $("#errorMsgDiv").html('');
+	$("#partyWiseCriticsNewsMainDiv").css('display','none');
 
 }
 
@@ -257,13 +316,8 @@ $('#criticsId').click(function(){
 	$('#selectNewsInnerDiv').css('display','block');
 	$('#respondNotRespondNewsCountDiv').css('display','block');
 	$('.filter2').css('display','none');
-	$('#candidateCritiesNewsDiv').css('display','block');
-	$('#galleryListShowHideTb').css('display','none');
-	$('#categoryShowAndHideTb').css('display','none');
-	$('#districtShowAndHideDiv').css('display','none');
+	getPartyWiseCriticsNews(0);
 	getCandidateCritiesNewsDetails();
-	 $("#errorMsgDiv").html('');
-
 });
 
 function getCandidateNewsCount()
@@ -408,6 +462,10 @@ function callAjax(jsObj,url)
 			else if(jsObj.task == "getCandidateCritiesNewsDetails")
 			{
 			  buildCriticsCandidates(myResults);
+			}
+			else if(jsObj.task == "getNewsDetails")
+			{
+				buildPaginatedNews(myResults,jsObj);
 			}
 
 			}catch (e)
@@ -891,14 +949,15 @@ function getResponseNewsCountNewsCount()
 	var url = "getRespondedAndNotRespondedNewsCountAction.action?"+rparam;
 	callAjax(jsObj, url);
 }
-//18111
+
 function  showPartyWiseNewsCount(results)
 {
   $("#respondNotRespondNewsCountDiv").html('');
   if(results == null)
 	  return;
   var str = '';
-  str +='<div>';
+  str+='<div class="headingDivCls"><h4>Party Wise Critics</h4></div>';
+  str +='<div >';
    if(results.totalNewsCount>0)
    str +='<span class ="span10" style="text-align:center" ><b  > TOTAL CRITICS :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'total\',0)"><span class="badge badge-info">'+results.totalNewsCount+'</span></a></span>';
   else
@@ -1085,6 +1144,7 @@ function buildCriticsCandidates(results)
 {
 	$("#candidateCritiesNewsDiv").css("display","block");
    var str = '';
+   str +='<div><h4>Candidate Wise Critics</h4></div>';
   str +='<table id="candidateCritiesNewsTab">';
   str +='<thead>';
   str +='<tr>';
@@ -1130,6 +1190,172 @@ function buildCriticsCandidates(results)
 }
 
 
+function getPartyWiseCriticsNews(startIndex)
+ {
+   var fromDate = '';
+   var toDate = '';
+   var galleryIdsArray = new Array();
+   var categoryIdsArray = new Array();
+   var locationIdsList = new Array();
+   var radioVal = $("input:radio[name=candidateNewsRadio]:checked").val();
+   var tempVar = "all";
+   if(radioVal == "byDate")
+   {
+	 $("#showAndHideDateSelectDiv").css("display","inline-block");
+	 fromDate = $("#existingFromText").val();
+     toDate = $("#existingToText").val();
+	 if(fromDate == '' && toDate =='')
+	 {
+	  $("#errorMsgDiv").html('Please Select From And To Dates.');
+	  return;
+	 }
+	 if(fromDate == '')
+	 {
+	  $("#errorMsgDiv").html('Please Select From Date.');
+	  return;
+	 }
+	 if(toDate =='')
+	 {
+	  $("#errorMsgDiv").html('Please Select To Date.');
+	  return;
+	 }
+	 tempVar = "byDate";
+
+   }
+   
+
+ var jObj=
+	{
+		
+	  firstResult:startIndex,
+	  maxResult:10,
+      newsType:"total",
+      partyId :0,
+      categoryIds:"",
+	  galleryIds:"",
+      locationIdsList :"",
+      locationScope :"",
+      fromDate:fromDate,
+      toDate :toDate,
+      tempVar :tempVar,
+	  tempVarForParty:"partyDetails",
+      candidateId:0,
+	  task:"getNewsDetails"
+
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getNewsDetailsForAPartyAction.action?"+rparam;
+	callAjax(jObj,url);
+}
+
+function buildPaginatedNews(results,jsObj)
+{
+   $("#partyWiseCriticsNewsMainDiv").css("display","block");
+   $("#latestNewsDiv").html('');
+   if(results == null || results.length == 0)
+	{
+     $("#latestNewsDiv").html('No Data Found.');
+     $("#paginationId").html('');
+	 return;
+	}
+
+	var str="";
+	str+="<ul class='unstyled pad10'>";
+	var temp = results.length; 
+	for(var i in results){
+		str+="<li style='margin-top: 35px;'>";
+		var source = results[i].fileVOList[0].source.trim();
+		if(source == "Eenadu Telugu")
+		{
+			str+="<span class='enadu fontStyle' style='font-weight:bold;'><a href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].title+"</a></span>";
+		}
+		else
+		{
+			str+="<h3 style='text-transform: capitalize;color: #005580;font-size:14px;'><a  href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].title+"</a></h3>";
+		}
+		
+		str+="<div class='row-fluid'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
+		
+		var path = results[i].filePath1;
+		var source = results[i].fileVOList[0].source;
+		
+		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
+		if(source == "Eenadu Telugu")
+		{
+			str+="<p class='span8 enadu fontStyle'>"+results[i].description+"</p>";
+		}
+		else
+		{
+			str+="<p class='span8'>"+results[i].description+"</p>";
+		}
+		
+		str+="</div>";
+
+		str+="<div class='span9' style='width:550px; margin-top: 9px;'>";
+		str +='<table><tr><td style="width: 200px; vertical-align: top;">';
+		str +='<p style="margin-right: 5px;"><span class="text-error" style="font-weight:bold;">Source : </span>';
+		var length = results[i].fileVOList.length;
+
+		for(var j in results[i].fileVOList)
+		{
+		  str +=''+results[i].fileVOList[j].source+'';
+		  if(length-1 != j)
+			str +=',';
+		}
+		str +='</p></td><td style="vertical-align: top;"><p style="width: 108px;"><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
+		if(results[i].responseCount > 0)
+		str+='<td style="vertical-align: top;"><p style="width: 80px;"><span class="text-error" style="font-weight:bold;padding-left: 20px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span > '+results[i].responseCount+'</p></td>';
+		
+		if(results[i].candidateName != null)
+		{
+		 str +='<td style="vertical-align: top;"><p style="width: 130px;"><span class="text-error" style="font-weight:bold;">Candidate :</span> '+results[i].candidateName+'</p></td>';
+		}
+		str +='<td style="vertical-align: top;"><p style="width: 145px;"><span class="text-error" style="font-weight:bold;">Location :</span> '+results[i].locationName+'</p></td>';
+		
+		str +='</tr></table>';
+		str +='</div>';
+		
+		str+="<br><div class='span4 pull-right' style='clear:both;font-weight: bold;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a>";
+
+		if(results[i].responseCount > 0)
+		{
+		  str +="<a style='font-size: 13px; margin-left: 185px; font-weight: bold;' type='button' class='btn btn-mini btn-info' href='javascript:{}' onclick='getNewsTrackDetails("+results[i].contentId+")'>Track</a>";
+		}
+		
+		str +='</div></li>';
+
+		
+
+	}
+	
+	var itemsCount=results[0].count;
+	
+	var maxResults=jsObj.maxResult;
+	str+="</ul>";
+
+	$("#latestNewsDiv").html(str);
+	
+	if(jsObj.firstResult==0){
+		$("#paginationId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*10;
+				getPartyWiseCriticsNews(num);
+				
+			}
+
+		});
+	}
+}
+function imgError(image) {
+    image.onerror = "";
+    image.src = "images/TDP.PNG";
+    return true;
+}
+
 getCandidateNewsCount();
 getSelectedNewsDetails();
 getResponseNewsCountNewsCount();
@@ -1173,6 +1399,7 @@ $(document).ready(function(){
   {
     getResponseNewsCountNewsCount();
 	getCandidateCritiesNewsDetails();
+	getPartyWiseCriticsNews(0);
   }
 	 else
      getCandidateNewsCount();
@@ -1300,6 +1527,19 @@ $("#districtList").live("click",function(){
 // alert(/criticsId/i.test(a));
  
 //});
+
+$("#hideCriticsId").live("click",function(){
+	
+ $("#hideAndShowLatestNewsDiv").css("display","none");
+ $("#hideAndShowCriticsSpan").html("<a class='btn btn-info criticsNewsCls' href='javascript:{}' id='showCriticsId'>Show</a>");
+
+});
+
+$("#showCriticsId").live("click",function(){
+ $("#hideAndShowLatestNewsDiv").css("display","block");
+ $("#hideAndShowCriticsSpan").html("<a class='btn btn-info criticsNewsCls' href='javascript:{}' id='hideCriticsId'>Hide</a>");
+
+});
 
 });//End OF Ready
 </script>
