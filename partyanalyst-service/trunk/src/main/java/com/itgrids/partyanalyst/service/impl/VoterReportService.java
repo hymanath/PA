@@ -3205,7 +3205,7 @@ public class VoterReportService implements IVoterReportService{
 												votingTrendz.setVoterReportLevel(voterReportLevelDAO.get(3l));
 												votingTrendz.setReportLevelValue(panchayatId);
 												
-												if(partyVotesEarnedVO.getReqType().contains("parliament"))
+												if(partyVotesEarnedVO.getReqType().contains("Parliament"))
 													votingTrendz.setElectionType(electionTypeDAO.get(1l));
 												else
 													votingTrendz.setElectionType(electionTypeDAO.get(2l));
