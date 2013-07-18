@@ -5488,7 +5488,7 @@
 				<param name="root">pConstituencyList</param>
 		 	</result>
 		</action>
-		
+	
 		<action name="getConstiAndDistrict" class="staticDataAction" method="getDistrictsAndConstituencysList1">
 			<result type="json" name="success">
 				<param name="root">returnList</param>
@@ -5563,17 +5563,26 @@
 		  <param name="root">dataValidationVOList</param>
 		 </result>
 		</action>
+		<action name="insertVotersBasicInfoToIntermediateTablesAction" class="populateVoterDataAction" method="insertPreviousEleVotingIntoIntermediateTables">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
 		
 		<action name="removeCadreImageAction" class="anonymousUserAction" method="removeCadreImage">
 			<result type="json" name="success">
 				<param name="root">prepopulate</param>				
 			</result>		
 		</action>
-		
 		<action name="getStatesListAction" class="partyPerformanceAction" method="getStatesList">
 		 <result type="json" name="success">
 		  <param name="root">states</param>
 		 </result>
+		</action>
+		<action name="deleteVoterBasicInfoFromIntermediateTablesAction" class="populateVoterDataAction" method="deleteVotersBasicInfoFromIntermediateTables">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
 		</action>
 		</package>
 </struts>      
