@@ -139,7 +139,7 @@ fieldset{
 	</div>
  </fieldset>
 </div>	
-
+<div id="voterDataOuterDiv">
 <div class="headingDiv" style="width:500px;">Populate Voters Basic Info Data To Intermediate Tables</div>
  <fieldset>
     <div id="basicInfoErrorMsgDiv"></div>
@@ -158,7 +158,26 @@ fieldset{
 	</div>
  </fieldset>
 </div>	
+<!-- End voters Basic Info Div -->
+<div id="voterDataOuterDiv">
+<div class="headingDiv" style="width:500px;">Populate Voting Trendz Info Data To Intermediate Tables</div>
+ <fieldset>
+    <div id="votingTrendzErrorMsgDiv"></div>
+	<div id="votingTrendzConstituencyDiv" class="selectDiv">
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="votingTrendzConstituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
 
+		Select Publication Date<font class="requiredFont">*</font> <select id="votingTrendzPublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		</select>
+		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="votingTrendzAjaxLoad"><img src="images/icons/search.gif" /></span>
+
+		<div id="voterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="votingTrendzInsertBtn" />
+			<input type="button" class="btn btn-info" value="Delete Existing Data" id="votingTrendzDeleteBtn"  onclick="deleteVotingTendzInfo();"/>
+			<img src="./images/icons/search.gif" style="display:none;" id="votingTrendzAjaxImage" />
+		</div>
+	</div>
+ </fieldset>
+</div>	
 <!-- voters Caste Div -->
 <div id="voterDataOuterDiv">
 <div class="headingDiv" style="width:413px;">Populate Caste Voters Data To Intermediate Tables</div>
@@ -295,6 +314,28 @@ $(document).ready(function(){
 		
 
 	});
+	
+	$('#votingTrendzConstituencyList').change(function(){
+	var id = $("#votingTrendzConstituencyList").val();
+	 var selectElmt = "votingTrendzPublicationDateList";
+	  if(id == 0)
+	  {
+	   $('#votingTrendzErrorMsgDiv').html('Please Select Constituency.');
+		return;
+	  }
+	
+	 $('#votingTrendzAjaxLoad').css('display','block');
+	 var jsObj=
+	 {
+		selected:id,
+		selectElmt:selectElmt,
+		task:"getPublicationDateForVotingTrendz"
+	 };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 callAjax(jsObj,url);
+	});
+
 
 
 
@@ -439,6 +480,35 @@ $(document).ready(function(){
 		};
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		 var url = "insertVotersBasicInfoToIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+
+	});
+	$("#votingTrendzInsertBtn").click(function(){
+
+		var constituencyId = $("#votingTrendzConstituencyList").val(); 
+		var publicationDateId = $("#votingTrendzPublicationDateList").val();
+		if(constituencyId == 0)
+		{
+			$("#votingTrendzErrorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(publicationDateId == 0 || publicationDateId == null)
+		{
+		  $("#votingTrendzErrorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		$("#votingTrendzInsertBtn").attr("disabled", "disabled");
+		$("#votingTrendzAjaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :constituencyId,
+		  publicationDateId : publicationDateId,
+		  task:"insertvotingTrendzInfo"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "insertVotingTrendzToIntermediateTablesAction.action?"+rparam;	
 		 callAjax(jsObj,url);
 
 	});
@@ -670,6 +740,7 @@ function callAjax(jsObj,url)
 									
 									buildPublicationDateList1(myResults,jsObj.selectElmt);
 								}
+								
 								else if(jsObj.task == "getPublicationDateForParty")
 								{
 									buildPublicationDateList1(myResults,jsObj.selectElmt);
@@ -687,7 +758,10 @@ function callAjax(jsObj,url)
 								{
 									showInsertVotersBasicInfoStatus(myResults);
 								}
-
+								else if(jsObj.task == "insertvotingTrendzInfo")
+								{
+								showInsertVotingTrendzInfoStatus(myResults);
+								}
 								else if(jsObj.task == "insertCastVotersData")
 								{
 									showinsertCastVotersDataStatus(myResults);
@@ -724,10 +798,21 @@ function callAjax(jsObj,url)
 									else
 										buildPublicationList(myResults);
 								}
+								
 								else if(jsObj.task == "deleteVoterBasicInfo")
 								{
 									showStatusForVoterBasicInfo(myResults);
 								}
+								else if(jsObj.task == "deletevotingTrendzInfo")
+								{
+								showStatusForVotingTendzInfo(myResults);
+								}
+								else if(jsObj.task == "getPublicationDateForVotingTrendz")
+								{
+									
+									buildPublicationListForvotingTrendzInfo(myResults,jsObj.selectElmt);
+								}
+								
 							}
 								catch (e) {
 							     //$("#votersEditSaveAjaxImg").hide();
@@ -774,6 +859,22 @@ function callAjax(jsObj,url)
 		else
 		{
 			$("#basicInfoErrorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
+	}
+	function showInsertVotingTrendzInfoStatus(result)
+	{
+		$("#votingTrendzAjaxImage").css("display","none");
+		$("#votingTrendzInsertBtn").removeAttr("disabled");
+		
+		if(result.resultCode == 0)
+		{
+			$("#votingTrendzErrorMsgDiv").html("Voters Basic Info Inserted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#votingTrendzErrorMsgDiv").html("Error Occured try Again.").css("color","red");
 				return;
 		}
 	}
@@ -936,7 +1037,28 @@ function buildPublicationListForBasicInfo(results)
 		}	
 	}
 }
+function buildPublicationListForvotingTrendzInfo(results)
+{
 
+	$('#votingTrendzAjaxLoad').css('display','none');
+	var selectedElmt = document.getElementById("votingTrendzPublicationDateList");
+	removeSelectElements(selectedElmt);
+	for(var val in results)
+	{
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}
+}
 function showVoterModificationDataStatus(result)
 {
 	$("#votermodificationerrorMsgDiv").html('');
@@ -979,6 +1101,34 @@ $("#basicInfoErrorMsgDiv").html('Voter Basic Data Deleted successufully').css("c
 	}
 else
 $("#basicInfoErrorMsgDiv").html('Error Occured try Again.').css("color","red");
+}
+
+function deleteVotingTendzInfo()
+{
+	$("#votingTrendzErrorMsgDiv").html("");
+	var constiId = $("#votingTrendzConstituencyList").val();
+	if(constiId == 0)
+		{
+			$("#votingTrendzErrorMsgDiv").html('Please Select Constituency.').css("color","red");
+			return;
+		}
+	var jsObj=
+		{
+		  id:constiId,
+		  task : "deletevotingTrendzInfo"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "deleteVotingTrendzFromIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+}
+function showStatusForVotingTendzInfo(result)
+{
+if(result.resultCode == 0)
+	{
+$("#votingTrendzErrorMsgDiv").html('Data Deleted successufully').css("color","green");
+	}
+else
+$("#votingTrendzErrorMsgDiv").html('Error Occured try Again.').css("color","red");
 }
 </script>
 </body>

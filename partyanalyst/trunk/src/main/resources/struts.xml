@@ -24,7 +24,7 @@
 			 <interceptor-ref name="defaultStack"/>
 		</interceptor-stack> 
          
-    </interceptors>  
+    </interceptors> 
   <default-interceptor-ref name="userTrackStack"></default-interceptor-ref>
     
 	
@@ -36,7 +36,7 @@
 	<global-results>
     <result name="multipleAccess" type="redirect">homePage.action?action=multipleAccess</result>
 	<result name="exception">jsp/globalError.jsp</result>
-    </global-results>
+	</global-results>
 
     <global-exception-mappings>
         <exception-mapping exception="java.lang.Exception"
@@ -5488,6 +5488,7 @@
 				<param name="root">pConstituencyList</param>
 		 	</result>
 		</action>
+		
 	
 		<action name="getConstiAndDistrict" class="staticDataAction" method="getDistrictsAndConstituencysList1">
 			<result type="json" name="success">
@@ -5563,7 +5564,7 @@
 		  <param name="root">dataValidationVOList</param>
 		 </result>
 		</action>
-		<action name="insertVotersBasicInfoToIntermediateTablesAction" class="populateVoterDataAction" method="insertPreviousEleVotingIntoIntermediateTables">
+		<action name="insertVotersBasicInfoToIntermediateTablesAction" class="populateVoterDataAction" method="insertVotersBasicInfoToIntermediateTables">
 		<result type="json" name="success">
            		<param name="root">resultStatus</param>
         	</result>
@@ -5580,6 +5581,16 @@
 		 </result>
 		</action>
 		<action name="deleteVoterBasicInfoFromIntermediateTablesAction" class="populateVoterDataAction" method="deleteVotersBasicInfoFromIntermediateTables">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
+		<action name="insertVotingTrendzToIntermediateTablesAction" class="populateVoterDataAction" method="insertPreviousEleVotingIntoIntermediateTables">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
+		<action name="deleteVotingTrendzFromIntermediateTablesAction" class="populateVoterDataAction" method="deletePreviousEleVotingIntoIntermediateTables">
 		<result type="json" name="success">
            		<param name="root">resultStatus</param>
         	</result>
