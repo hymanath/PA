@@ -152,7 +152,7 @@ fieldset{
 
 		<div id="voterDataInsertDiv">
 			<input type="button" class="btn btn-info" value="Submit" id="voterBasicInfoInsertBtn" />
-			<input type="button" class="btn btn-info" value="Delete Existing Data" id="voterDataDeleteBtn" />
+			<input type="button" class="btn btn-info" value="Delete Existing Data" id="voterDataDeleteBtn"  onclick="deleteVoterBasicInfo();"/>
 			<img src="./images/icons/search.gif" style="display:none;" id="basicInfoAjaxImage" />
 		</div>
 	</div>
@@ -724,6 +724,10 @@ function callAjax(jsObj,url)
 									else
 										buildPublicationList(myResults);
 								}
+								else if(jsObj.task == "deleteVoterBasicInfo")
+								{
+									showStatusForVoterBasicInfo(myResults);
+								}
 							}
 								catch (e) {
 							     //$("#votersEditSaveAjaxImg").hide();
@@ -948,6 +952,33 @@ function showVoterModificationDataStatus(result)
 			$("#votermodificationerrorMsgDiv").html("Error Occured try Again.").css("color","red");
 				return;
 		}
+}
+function deleteVoterBasicInfo()
+{
+	$("#basicInfoErrorMsgDiv").html("");
+	var constiId = $("#basicInfoConstituencyList").val();
+	if(constiId == 0)
+		{
+			$("#basicInfoErrorMsgDiv").html('Please Select Constituency.').css("color","red");
+			return;
+		}
+	var jsObj=
+		{
+		  id:constiId,
+		  task : "deleteVoterBasicInfo"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "deleteVoterBasicInfoFromIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+}
+function showStatusForVoterBasicInfo(result)
+{
+if(result.resultCode == 0)
+	{
+$("#basicInfoErrorMsgDiv").html('Voter Basic Data Deleted successufully').css("color","green");
+	}
+else
+$("#basicInfoErrorMsgDiv").html('Error Occured try Again.').css("color","red");
 }
 </script>
 </body>
