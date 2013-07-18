@@ -235,6 +235,7 @@ function hideWhenCandiNewsClcked(){
 	$('#selectNewsInnerDiv').css('display','block');
 	$('#respondNotRespondNewsCountDiv').css('display','none');
 	$('.filter2').css('display','block');
+	$("#candidateCritiesNewsDiv").css('display','none');
 }
 
 $('#criticsId').click(function(){
@@ -243,6 +244,7 @@ $('#criticsId').click(function(){
 	$('#selectNewsInnerDiv').css('display','block');
 	$('#respondNotRespondNewsCountDiv').css('display','block');
 	$('.filter2').css('display','none');
+    getCandidateCritiesNewsDetails();
 });
 
 function getCandidateNewsCount()
@@ -884,11 +886,11 @@ function  showPartyWiseNewsCount(results)
   else
      str +='<span class ="span4" ><b>Total News :</b>'+results.totalNewsCount+'</span>';
   if(results.responseNewsCount > 0)
-   str +='<span class ="span3" ><b>  Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0)"><span class="btn btn-info">'+results.responseNewsCount+'</span></a></span> ';
+   str +='<span class ="span3" ><b>  Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0,\'partyDetails\',0)"><span class="btn btn-info">'+results.responseNewsCount+'</span></a></span>';
   else
 	str +='<span class ="span3" ><b> Not Responded News  :</b><a href="javascript:{}">'+results.responseNewsCount+'</a></span>  ';
   if(results.notResponseNewsCount > 0)
-   str +='<span class ="span3" ><b>Not Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0)"><span class="btn btn-info">'+results.notResponseNewsCount+'</span></a></span>';
+   str +='<span class ="span3" ><b>Not Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0,\'partyDetails\',0)"><span class="btn btn-info">'+results.notResponseNewsCount+'</span></a></span>';
    else
 	str +='<span class ="span3" ><b>NotRespond News :</b><a href="javascript:{}">'+results.notResponseNewsCount+'</a></span>';
      str+='</br>';
@@ -910,7 +912,7 @@ function  showPartyWiseNewsCount(results)
        str +='<td>'+selectOptionVo.selectOptionsList[i].name+'</td>';
 
 
-       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded \','+selectOptionVo.selectOptionsList[i].id+')">'+selectOptionVo.selectOptionsList[i].populateId+'<a></td>';
+       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded \','+selectOptionVo.selectOptionsList[i].id+',\'partyDetails\',0)">'+selectOptionVo.selectOptionsList[i].populateId+'<a></td>';
     
        str +='</tr>';
     }
@@ -929,7 +931,7 @@ function  showPartyWiseNewsCount(results)
      {
        str +='<tr>';
        str +='<td>'+selectOptionVo.selectOptionsList1[i].name+'</td>';
-       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \','+selectOptionVo.selectOptionsList1[i].id+')">'+selectOptionVo.selectOptionsList1[i].populateId+'</a></td>';
+       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \','+selectOptionVo.selectOptionsList1[i].id+',\'partyDetails\',0)">'+selectOptionVo.selectOptionsList1[i].populateId+'</a></td>';
     
        str +='</tr>';
     }
@@ -944,7 +946,7 @@ function  showPartyWiseNewsCount(results)
 
 
 //
-function getResponseNewsDetails(newsType,partyId)
+function getResponseNewsDetails(newsType,partyId,tempVarForParty,candidateId)
 {
  
  var radioVal = $("input:radio[name=candidateNewsRadio]:checked").val();
@@ -1033,7 +1035,7 @@ function getResponseNewsDetails(newsType,partyId)
 	   locationScope = "DISTRICT";
 	}
 
-  var urlstr = "getNewsDetailsAction.action?newsType="+newsType+"&partyId="+partyId+"&categoryIds="+categoryIdsArray+"&galleryIds="+galleryIdsArray+"&locationIdsList="+locationIdsList+"&locationScope="+locationScope+"&fromDate="+fromDate+"&toDate="+toDate+"&";
+  var urlstr = "getNewsDetailsAction.action?newsType="+newsType+"&partyId="+partyId+"&categoryIds="+categoryIdsArray+"&galleryIds="+galleryIdsArray+"&locationIdsList="+locationIdsList+"&locationScope="+locationScope+"&fromDate="+fromDate+"&toDate="+toDate+"&tempVarForParty="+tempVarForParty+"&candidateId="+candidateId+"&";
   var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
@@ -1064,10 +1066,10 @@ function buildCriticsCandidates(results)
   str +='<tr>';
  
   str +='<th>Candidate Name</th>';
-  
-   str +='<th>Response News</th>';
+  str +='<th>Party Name</th>';
+  str +='<th>Total News</th>';
+  str +='<th>Response News</th>';
   str +='<th>Not Response News</th>';
-   str +='<th>Total News</th>';
  
   
   str +='</tr>';
@@ -1078,9 +1080,10 @@ function buildCriticsCandidates(results)
    str +='<tr>';
    
    str +='<td>'+results[i].name+'</td>';
-   str +='<td>'+results[i].responseNewsCount+'</td>';
-   str +='<td>'+results[i].notResponseNewsCount+'</td>';
-   str +='<td>'+results[i].totalNewsCount+'</td>';
+   str +='<td>'+results[i].partyName+'</td>';
+   str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'total\',0,\'candidateDetails\','+results[i].id+')">'+results[i].totalNewsCount+'</a></td>';
+   str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0,\'candidateDetails\','+results[i].id+')">'+results[i].responseNewsCount+'</a></td>';
+   str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded\',0,\'candidateDetails\','+results[i].id+')">'+results[i].notResponseNewsCount+'</a></td>';
   
    
    str +='</tr>';
@@ -1092,11 +1095,11 @@ function buildCriticsCandidates(results)
  
  
    $('#candidateCritiesNewsTab').dataTable({
-		"aaSorting": [[ 0, "asc" ]],
+		"aaSorting": [[ 2, "desc" ]],
 		"iDisplayLength": 15,
 		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
 		//"bFilter": false,"bInfo": false
-		  "aoColumns": [null,null,null,null] 
+		  "aoColumns": [null,null,null,null,null] 
 		
 		});
  

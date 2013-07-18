@@ -17,6 +17,8 @@ public class NewsDetailsVO implements Serializable{
 	private String locationIdsList;
 	private Integer startIndex;
 	private Integer maxIndex;
+	private Long candidateId;
+	private String tempVarForParty;
 	
 	public Long getId() {
 		return id;
@@ -97,6 +99,18 @@ public class NewsDetailsVO implements Serializable{
 	}
 	public void setMaxIndex(Integer maxIndex) {
 		this.maxIndex = maxIndex;
+	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+	public String getTempVarForParty() {
+		return tempVarForParty;
+	}
+	public void setTempVarForParty(String tempVarForParty) {
+		this.tempVarForParty = tempVarForParty;
 	}
 	
 	
