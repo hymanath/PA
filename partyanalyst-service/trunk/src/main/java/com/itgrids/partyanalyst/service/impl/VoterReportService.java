@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -46,10 +47,14 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterPartyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
+import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
+import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ElectionTypeDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -81,6 +86,8 @@ import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
 import com.itgrids.partyanalyst.model.VoterPartyInfo;
 import com.itgrids.partyanalyst.model.VoterReportLevel;
+import com.itgrids.partyanalyst.model.VotingTrendz;
+import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -123,7 +130,38 @@ public class VoterReportService implements IVoterReportService{
 	private IUserAddressDAO userAddressDAO;
 	private IVoterBasicInfoDAO voterBasicInfoDAO;
 	
+	private IElectionTypeDAO electionTypeDAO;
+	private IVotingTrendzDAO votingTrendzDAO;
 	
+	private IVotingTrendzPartiesResultDAO votingTrendzPartiesResultDAO;
+	
+	
+	
+	public IVotingTrendzPartiesResultDAO getVotingTrendzPartiesResultDAO() {
+		return votingTrendzPartiesResultDAO;
+	}
+
+	public void setVotingTrendzPartiesResultDAO(
+			IVotingTrendzPartiesResultDAO votingTrendzPartiesResultDAO) {
+		this.votingTrendzPartiesResultDAO = votingTrendzPartiesResultDAO;
+	}
+
+	public IVotingTrendzDAO getVotingTrendzDAO() {
+		return votingTrendzDAO;
+	}
+
+	public void setVotingTrendzDAO(IVotingTrendzDAO votingTrendzDAO) {
+		this.votingTrendzDAO = votingTrendzDAO;
+	}
+
+	public IElectionTypeDAO getElectionTypeDAO() {
+		return electionTypeDAO;
+	}
+
+	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
+		this.electionTypeDAO = electionTypeDAO;
+	}
+
 	public IVoterBasicInfoDAO getVoterBasicInfoDAO() {
 		return voterBasicInfoDAO;
 	}
@@ -3101,5 +3139,122 @@ public class VoterReportService implements IVoterReportService{
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				return resultStatus;
 			}
-		}
+		}  
+			  public ResultStatus deleteVotersBasicInfoFromIntermediateTables(Long constituencyId)
+			  {
+				  ResultStatus resultStatus = new ResultStatus();
+				  try{
+						  if(constituencyId != null && constituencyId > 0)
+						  {
+						  voterBasicInfoDAO.deleteVoterBasicInfoByConstituencyId(constituencyId);
+						  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						  }
+						  else
+						  resultStatus.setResultCode(ResultCodeMapper.FAILURE);  
+				  	}
+				  catch (Exception e) {
+					  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					  e.printStackTrace();
+					
+				  }
+				return resultStatus;
+			}
+	
+			  public ResultStatus insertVotingTrendzToIntermediateTables(final Long reportLevelValue,Long publicationDateId)
+				{
+					ResultStatus resultStatus = new ResultStatus();
+					try{
+						  List<Long> mandalIdsList = new ArrayList<Long>(0);
+						  List<Long> panchayatIdsList = new ArrayList<Long>(0);
+						 
+						  List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(reportLevelValue,IConstants.PRESENT_YEAR, null);
+						  
+						  if(mandalsList == null || mandalsList.size() == 0)
+							  return null;
+						  for(SelectOptionVO selectOptionVO : mandalsList)
+						  {
+							  if(selectOptionVO.getId().toString().substring(0,1).equalsIgnoreCase(IConstants.RURAL_TYPE))
+								  mandalIdsList.add(new Long(selectOptionVO.getId().toString().substring(1)));
+						  }
+						  
+						  List<Object[]>list = panchayatDAO.getPanchayatIdsByMandalIdsList(mandalIdsList);
+						  
+						  if(list != null && list.size() > 0)
+						  {
+							
+							  for(Object[] params : list)
+								  panchayatIdsList.add((Long)params[0]);
+							  
+							  for(final Long panchayatId : panchayatIdsList)
+							  {
+							 List<PartyVotesEarnedVO> resultList = votersAnalysisService.getPreviousElectionVotingTrends(panchayatId, 8l, reportLevelValue,"panchayat");
+								
+								  if(resultList != null && resultList.size() >0)
+								  {
+									  final int orderNo = 0;
+									
+									  for(final PartyVotesEarnedVO  partyVotesEarnedVO : resultList)
+									  {
+									  try{
+											transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+											protected void doInTransactionWithoutResult(TransactionStatus status) 
+											{
+												 
+												VotingTrendz votingTrendz = new VotingTrendz();
+												votingTrendz.setConstituency(constituencyDAO.get(reportLevelValue));
+												votingTrendz.setVoterReportLevel(voterReportLevelDAO.get(3l));
+												votingTrendz.setReportLevelValue(panchayatId);
+												
+												if(partyVotesEarnedVO.getReqType().contains("parliament"))
+													votingTrendz.setElectionType(electionTypeDAO.get(1l));
+												else
+													votingTrendz.setElectionType(electionTypeDAO.get(2l));
+												
+												votingTrendz.setYear(new Long(partyVotesEarnedVO.getElectionYear()));
+												votingTrendz.setTotalBooths(new Long(partyVotesEarnedVO.getTotalBooths()));
+												votingTrendz.setTotalVotes(partyVotesEarnedVO.getTotalVotes());
+												votingTrendz.setVotesPolled(partyVotesEarnedVO.getPolledVotes());
+												votingTrendz.setOrderNo(orderNo);
+												votingTrendz = votingTrendzDAO.save(votingTrendz);
+												
+												List<PartyVotesEarnedVO> partyList = partyVotesEarnedVO.getPartyVotesEarnedVOs();
+												
+												if(partyList != null && partyList.size() > 0)
+												for(PartyVotesEarnedVO party : partyList)
+												{
+													VotingTrendzPartiesResult votingTrendzPartiesResult = new VotingTrendzPartiesResult();
+													votingTrendzPartiesResult.setVotingTrendz(votingTrendz);
+													Party party1 = partyDAO.getPartyByShortName(party.getPartyName());
+													votingTrendzPartiesResult.setParty(partyDAO.get(party1.getPartyId()));
+													votingTrendzPartiesResult.setVotesGained(party.getVotesEarned());
+													votingTrendzPartiesResultDAO.save(votingTrendzPartiesResult);
+												}
+											}
+											});
+											
+										  }
+										catch(Exception e)
+										{
+											e.printStackTrace();
+										}
+									  }
+								  }
+							  }
+						  }
+						 
+						  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						  return resultStatus;
+					}
+					catch (Exception e) {
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						return resultStatus;
+					}
+					
+				}	
+			  
+			  
+			  
+			  
+			
+		
 }
