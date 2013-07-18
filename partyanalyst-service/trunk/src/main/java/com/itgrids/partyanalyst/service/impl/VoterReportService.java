@@ -2990,8 +2990,14 @@ public class VoterReportService implements IVoterReportService{
 					  if(!boothIdsList.contains(selectOptionVO.getId()))
 						  boothIdsList.add(selectOptionVO.getId());
 				  
-				  for(Long boothId :boothIdsList)
-				  {
+				 List<Object[]> allBoothsList = boothDAO.getBoothsInAConstituencyByPublication(reportLevelValue, publicationDateId);
+				 
+				 if(allBoothsList != null && allBoothsList.size() > 0)
+					 for(Object[] params : allBoothsList)
+						 calculateAndInsertVoterBasicInfoForALocation(IConstants.BOOTH,(Long)params[0],0L,reportLevelValue);
+				 
+				 /*for(Long boothId :boothIdsList)
+				 {
 					  SelectOptionVO selectOptionVO = null;
 					  for(SelectOptionVO optionVO : boothsList)
 						  if(optionVO.getId().equals(boothId))
@@ -2999,8 +3005,9 @@ public class VoterReportService implements IVoterReportService{
 							  selectOptionVO = optionVO;
 							  break;
 						  }
-					  calculateAndInsertVoterBasicInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),new Long(selectOptionVO.getName()),reportLevelValue);
-				  }
+					  //calculateAndInsertVoterBasicInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),new Long(selectOptionVO.getName()),reportLevelValue);
+				 }*/
+				 
 				  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				  return resultStatus;
 			}
@@ -3021,7 +3028,7 @@ public class VoterReportService implements IVoterReportService{
 				if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, 0l,0l ,locationType);
 				else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
-					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,locationValue, 0l,0l ,locationType);
+					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,Long.valueOf(IConstants.RURAL_TYPE+locationValue.toString()), 0l,0l ,locationType);
 				else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, locationValue,0l ,locationType);
 				else if(locationType.equalsIgnoreCase(IConstants.WARD) || locationType.equalsIgnoreCase(IConstants.BOOTH))
