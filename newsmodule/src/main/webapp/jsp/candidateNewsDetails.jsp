@@ -57,6 +57,9 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 
 <style type="text/css">
+.table td {
+   text-align: center;   
+}
 /* #respondNotRespondNewsCountDiv table*/
 #candidateNewsCountDiv table,#candidateCritiesNewsDiv table{
 border:1px solid #d3d3d3;
@@ -82,12 +85,13 @@ border-collapse:collapse;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
-    text-align: left;
+    text-align: center;
 	color:#333333;
 	}
 	#respondNotRespondNewsCountDiv table th{
 	background-color: #CDE6FC;
     font-size: 13px;
+	  text-align: center;
 	
 	}
 #candidateNewsMainDiv{margin-left: auto; margin-right: auto; float: none; width: 950px; padding-top: 20px; padding-bottom: 20px;}
@@ -235,7 +239,6 @@ function hideWhenCandiNewsClcked(){
 	$('#selectNewsInnerDiv').css('display','block');
 	$('#respondNotRespondNewsCountDiv').css('display','none');
 	$('.filter2').css('display','block');
-	$("#candidateCritiesNewsDiv").css('display','none');
 }
 
 $('#criticsId').click(function(){
@@ -244,7 +247,6 @@ $('#criticsId').click(function(){
 	$('#selectNewsInnerDiv').css('display','block');
 	$('#respondNotRespondNewsCountDiv').css('display','block');
 	$('.filter2').css('display','none');
-    getCandidateCritiesNewsDetails();
 });
 
 function getCandidateNewsCount()
@@ -879,23 +881,28 @@ function  showPartyWiseNewsCount(results)
   if(results == null)
 	  return;
   var str = '';
-  str +='<div class="thumbnail">';
-  //str +='<span><b>Total News :</b>'+results.totalNewsCount+'</span>';
+  str +='<div >';
    if(results.totalNewsCount>0)
-   str +='<span class ="span3"><b> TOTAL CRITICS :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'total\',0,\'partyDetails\',0)"><span class="btn btn-info">'+results.totalNewsCount+'</span></a></span>';
+   str +='<span class ="span10" style="text-align:center" ><b  > TOTAL CRITICS :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'total\',0)"><span class="badge badge-info">'+results.totalNewsCount+'</span></a></span>';
   else
-     str +='<span class ="span4" ><b>Total News :</b>'+results.totalNewsCount+'</span>';
+     str +='<span class ="span10"  style="text-align:center"><b>Total News :</b>'+results.totalNewsCount+'</span>';
+	  str +='</div>';
+	   str +='</br>';
+  str +='<div class="thumbnail" style="margin-top:8px;">';
+  //str +='<span><b>Total News :</b>'+results.totalNewsCount+'</span>';
+   str +='<div >';
   if(results.responseNewsCount > 0)
-   str +='<span class ="span3" ><b>  Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0,\'partyDetails\',0)"><span class="btn btn-info">'+results.responseNewsCount+'</span></a></span>';
+   str +='<span class ="span5" ><b>  Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded\',0)"><span class="badge badge-info">'+results.responseNewsCount+'</span></a></span> ';
   else
-	str +='<span class ="span3" ><b> Not Responded News  :</b><a href="javascript:{}">'+results.responseNewsCount+'</a></span>  ';
+	str +='<span class ="span5" ><b> Not Responded News  :</b><a href="javascript:{}">'+results.responseNewsCount+'</a></span>  ';
   if(results.notResponseNewsCount > 0)
-   str +='<span class ="span3" ><b>Not Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0,\'partyDetails\',0)"><span class="btn btn-info">'+results.notResponseNewsCount+'</span></a></span>';
+   str +='<span class ="span4" ><b>Not Responded News :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \',0)"><span class="badge badge-info">'+results.notResponseNewsCount+'</span></a></span>';
    else
-	str +='<span class ="span3" ><b>NotRespond News :</b><a href="javascript:{}">'+results.notResponseNewsCount+'</a></span>';
+	str +='<span class ="span4" ><b>NotRespond News :</b><a href="javascript:{}">'+results.notResponseNewsCount+'</a></span>';
      str+='</br>';
-  // str +='</div>';
+      str +='</div>';
   // str +='<hr/>';
+  str +='<div>';
   str +='<div class="row-fluid">';
   
   str +='<div  class="span6">';
@@ -912,7 +919,7 @@ function  showPartyWiseNewsCount(results)
        str +='<td>'+selectOptionVo.selectOptionsList[i].name+'</td>';
 
 
-       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded \','+selectOptionVo.selectOptionsList[i].id+',\'partyDetails\',0)">'+selectOptionVo.selectOptionsList[i].populateId+'<a></td>';
+       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'responded \','+selectOptionVo.selectOptionsList[i].id+')">'+selectOptionVo.selectOptionsList[i].populateId+'<a></td>';
     
        str +='</tr>';
     }
@@ -931,14 +938,14 @@ function  showPartyWiseNewsCount(results)
      {
        str +='<tr>';
        str +='<td>'+selectOptionVo.selectOptionsList1[i].name+'</td>';
-       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \','+selectOptionVo.selectOptionsList1[i].id+',\'partyDetails\',0)">'+selectOptionVo.selectOptionsList1[i].populateId+'</a></td>';
+       str +='<td><a href="javascript:{}" onclick="getResponseNewsDetails(\'notResponded \','+selectOptionVo.selectOptionsList1[i].id+')">'+selectOptionVo.selectOptionsList1[i].populateId+'</a></td>';
     
        str +='</tr>';
     }
      str +='</table>';
 	 str +='</div>';
 	 str +='</div>';
-
+       str +='</div>';  
     str +='</div>';
 
   $("#respondNotRespondNewsCountDiv").html(str);
