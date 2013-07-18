@@ -563,4 +563,46 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				"model.nomination.constituencyElection.election.electionId = ? and model.nomination.constituencyElection.constituency.constituencyId = ? " +
 				"and model.nomination.candidate.candidateId = ? and model.user.userId = ?", params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCommentsResultsForAPartyInAnElection1(Long electionId,
+			Long partyId, String category,Long stateId,List<Long> constituencyIds) {
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select model.nomination.constituencyElection.constituency.constituencyId,");
+		queryString.append("model.nomination.constituencyElection.constituency.name,model.nomination.candidate.candidateId,");
+		queryString.append("model.nomination.candidate.lastname,model.commentData.commentDesc,model.commentData.commentBy,");
+		queryString.append("model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,");
+		queryString.append("model.nomination.candidateResult.rank, model.nomination.nominationId from CommentCategoryCandidate model");
+		queryString.append(" where model.nomination.constituencyElection.election.electionId = :electionId and model.nomination.party.partyId = :partyId");
+		queryString.append(" and model.commentData.commentDataCategory.commentClassification = :category and model.nomination.constituencyElection.constituency.state.stateId = :stateId");
+		queryString.append(" and model.nomination.constituencyElection.constituency.constituencyId in (:constituencyIds) order by model.nomination.constituencyElection.constituency.constituencyId");
+		Query queryObj = getSession().createQuery(queryString.toString());
+		queryObj.setParameter("electionId", electionId);
+		queryObj.setParameter("partyId",partyId);
+		queryObj.setParameter("category", category);
+		queryObj.setParameter("stateId", stateId);
+		queryObj.setParameterList("constituencyIds", constituencyIds);
+		return queryObj.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCommentsResultsForAPartyInAnElection1(Long electionId,
+			Long partyId, String category, Long categoryTypeId,Long stateId,List<Long> constituencyIds) {
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select model.nomination.constituencyElection.constituency.constituencyId,model.nomination.constituencyElection.constituency.name,");
+		queryString.append("model.nomination.candidate.candidateId,model.nomination.candidate.lastname,");
+		queryString.append("model.commentData.commentDesc,model.commentData.commentBy,");
+		queryString.append("model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank, model.nomination.nominationId ");
+		queryString.append("from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? ");
+		queryString.append("and model.nomination.party.partyId = ? and model.commentData.commentDataCategory.commentClassification = ? ");
+		queryString.append("and model.commentData.commentDataCategory.commentDataCategoryId = ? and model.nomination.constituencyElection.constituency.state.stateId = ? ");
+		queryString.append("and model.nomination.constituencyElection.constituency.constituencyId in ? order by model.nomination.constituencyElection.constituency.constituencyId");
+		Query queryObj = getSession().createQuery(queryString.toString());
+		queryObj.setParameter("electionId", electionId);
+		queryObj.setParameter("partyId",partyId);
+		queryObj.setParameter("category", category);
+		queryObj.setParameter("stateId", stateId);
+		queryObj.setParameterList("constituencyIds", constituencyIds);
+		return queryObj.list();
+	}
 }
