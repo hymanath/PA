@@ -1035,10 +1035,10 @@ ICandidateRelatedNewsDAO {
 				
 	}
 	
-	public List<Object[]> getNotResponseCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId)
+	public List<Object[]> getNotResponseCount(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId,String tempVarForParty)
 	{
 	  StringBuilder str = new StringBuilder();
-	  str.append(" select count(distinct model.fileGallary.fileGallaryId) ,model3.party.shortName ,model3.party.partyId,model.candidate.candidateId ,model3.candidate.candidateId  "+
+	  str.append(" select count(distinct model.fileGallary.fileGallaryId) ,model3.party.shortName ,model3.party.partyId,model.candidate.candidateId ,model3.candidate.candidateId,model3.candidate.lastname  "+
 	  		"  from CandidateRealatedNews model,CandidateNewsResponse cn, PartyGallery model2,Nomination model3  where  " +
 	  		" model.candidate.candidateId = model3.candidate.candidateId and model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId ");
 	  str.append("and  model3.constituencyElection.election.electionDate in(select max(model4.constituencyElection.election.electionDate) from " +
@@ -1069,7 +1069,12 @@ ICandidateRelatedNewsDAO {
 	   str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
 	  if(locationIdsList != null && locationIdsList.size() > 0)
 	   str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
-	  str.append(" group by model3.party.partyId ");
+	  
+	  if(tempVarForParty != null && tempVarForParty.equalsIgnoreCase("candidateDetails"))
+		str.append(" group by model3.candidate.candidateId ");  
+	  else  
+	   str.append(" group by model3.party.partyId ");
+	  
 	  Query query = getSession().createQuery(str.toString());
 	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
 	  query.setParameter("partyId", partyId);
@@ -1374,10 +1379,10 @@ ICandidateRelatedNewsDAO {
 				
 	}
 	
-	public List<Object[]> getNotResponseCountForCandidateParty(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId)
+	public List<Object[]> getNotResponseCountForCandidateParty(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar,Integer startIndex,Integer maxIndex,Long selectedPartyId,String tempVarForParty)
 	{
 	  StringBuilder str = new StringBuilder();
-	  str.append(" select count(distinct model.fileGallary.fileGallaryId) ,model3.party.shortName ,model3.party.partyId,model.candidate.candidateId ,model3.candidate.candidateId  "+
+	  str.append(" select count(distinct model.fileGallary.fileGallaryId) ,model3.party.shortName ,model3.party.partyId,model.candidate.candidateId ,model3.candidate.candidateId,model3.candidate.lastname  "+
 	  		"  from CandidateRealatedNews model,CandidateNewsResponse cn, PartyGallery model2,CandidateParty model3  where  " +
 	  		" model.candidate.candidateId = model3.candidate.candidateId and model.fileGallary.gallary.gallaryId = model2.gallery.gallaryId ");
 	/*  str.append("and  model3.constituencyElection.election.electionDate in(select max(model4.constituencyElection.election.electionDate) from " +
@@ -1408,7 +1413,12 @@ ICandidateRelatedNewsDAO {
 	   str.append(" and model.fileGallary.file.regionScopes.regionScopesId =:locationScopeId ");
 	  if(locationIdsList != null && locationIdsList.size() > 0)
 	   str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
-	  str.append(" group by model3.party.partyId ");
+	  
+	  if(tempVarForParty != null && tempVarForParty.equalsIgnoreCase("candidateDetails"))
+	   str.append(" group by model3.candidate.candidateId ");
+	  else
+	   str.append(" group by model3.party.partyId ");
+	  
 	  Query query = getSession().createQuery(str.toString());
 	  query.setParameter("contentType", IConstants.NEWS_GALLARY);
 	  query.setParameter("partyId", partyId);

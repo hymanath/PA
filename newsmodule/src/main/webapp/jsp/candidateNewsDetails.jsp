@@ -1018,10 +1018,12 @@ function getResponseNewsDetails(newsType,partyId)
 function getCandidateCritiesNewsDetails()
 {
   
-
+var fromDate = $("#existingFromText").val();
+var toDate = $("#existingToText").val();
   var jsObj={
-		fromDate:"",
-		toDate:"",
+		fromDate:fromDate,
+		toDate:toDate,
+		tempVar:"all",
 		task:'getCandidateCritiesNewsDetails'
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				

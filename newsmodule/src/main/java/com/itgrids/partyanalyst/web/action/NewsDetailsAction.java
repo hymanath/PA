@@ -585,7 +585,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 return ERROR;
 		
 		jObj = new JSONObject(getTask());
-		newsCountVOsList = newsMonitoringService.getCandidateCritiesNewsDetails(jObj.getString("fromDate"), jObj.getString("toDate"));
+		newsCountVOsList = newsMonitoringService.getCandidateCritiesNewsDetails(jObj.getString("fromDate"), jObj.getString("toDate"),jObj.getString("tempVar"));
 		  
 	  }catch (Exception e) {
 		  e.printStackTrace();
