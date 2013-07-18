@@ -78,7 +78,16 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private ElectionGoverningBodyVO electionGoverningBodyVO;
     private ICandidateDetailsService candidateDetailsService;
 	private List<PartyElectionResultsVO> wonCandidateResults;
+	private String partyorPartyanalyst;
 	
+	public String getPartyorPartyanalyst() {
+		return partyorPartyanalyst;
+	}
+
+	public void setPartyorPartyanalyst(String partyorPartyanalyst) {
+		this.partyorPartyanalyst = partyorPartyanalyst;
+	}
+
 	public ElectionGoverningBodyVO getElectionGoverningBodyVO() {
 		return electionGoverningBodyVO;
 	}
@@ -338,7 +347,9 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		
 		electionYears = new ArrayList<SelectOptionVO>();
 		partiesList = new ArrayList<SelectOptionVO>();
-
+		
+		request.setAttribute("host", IConstants.DEPLOYED_HOST);
+		
 		if (electionType != null
 				&& electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE)
 				|| electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)) {
