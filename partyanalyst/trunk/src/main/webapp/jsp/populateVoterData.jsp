@@ -57,7 +57,7 @@ margin-left:auto;
 margin-right:auto;
 width:980px;
 }
-#MainDiv{margin-bottom: 200px; margin-top: 60px;}
+#MainDiv{margin-bottom: 20px; margin-top: 60px;}
 fieldset{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
@@ -136,9 +136,28 @@ fieldset{
 			<img src="./images/icons/search.gif" style="display:none;" id="ajaxImage" />
 		</div>
 	</div>
+	</div>
  </fieldset>
 </div>	
 
+<div class="headingDiv" style="width:500px;">Populate Voters Basic Info Data To Intermediate Tables</div>
+ <fieldset>
+    <div id="basicInfoErrorMsgDiv"></div>
+	<div id="basicInfoConstituencyDiv" class="selectDiv">
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="basicInfoConstituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
+
+		Select Publication Date<font class="requiredFont">*</font> <select id="basicInfoPublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		</select>
+		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="basicInfoAjaxLoad"><img src="images/icons/search.gif" /></span>
+
+		<div id="voterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="voterBasicInfoInsertBtn" />
+			<input type="button" class="btn btn-info" value="Delete Existing Data" id="voterDataDeleteBtn" />
+			<img src="./images/icons/search.gif" style="display:none;" id="basicInfoAjaxImage" />
+		</div>
+	</div>
+ </fieldset>
+</div>	
 
 <!-- voters Caste Div -->
 <div id="voterDataOuterDiv">
@@ -208,12 +227,6 @@ fieldset{
 </div>	
 
 
-<!-- End -->
-
-
-
-
-
 </div>
 
 <script type="text/javascript">
@@ -258,6 +271,31 @@ $(document).ready(function(){
 		
 
 	});
+
+	$('#basicInfoConstituencyList').change(function(){
+
+	   var constituencyId = $('#basicInfoConstituencyList').val();
+	   if(constituencyId == 0)
+	   {
+		 $('#basicInfoErrorMsgDiv').html('Please Select Constituency.');
+		 return;
+	   }
+	   $('#basicInfoAjaxLoad').css('display','block');
+	  var jsObj=
+		{
+				
+			id:constituencyId,
+			task:"getPublicationList",
+			subtask : "voterBasicInfo",
+		}
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getPublicationListForVoterDataAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		
+
+	});
+
 
 
   $("#constituencyList").change(function(){
@@ -371,6 +409,36 @@ $(document).ready(function(){
 		};
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		 var url = "insertVotersDataToIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+
+	});
+
+	$("#voterBasicInfoInsertBtn").click(function(){
+
+		var constituencyId = $("#basicInfoConstituencyList").val(); 
+		var publicationDateId = $("#basicInfoPublicationDateList").val();
+		if(constituencyId == 0)
+		{
+			$("#basicInfoErrorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(publicationDateId == 0 || publicationDateId == null)
+		{
+		  $("#basicInfoErrorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		$("#voterBasicInfoInsertBtn").attr("disabled", "disabled");
+		$("#basicInfoAjaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :constituencyId,
+		  publicationDateId : publicationDateId,
+		  task:"insertVotersBasicInfo"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "insertVotersBasicInfoToIntermediateTablesAction.action?"+rparam;	
 		 callAjax(jsObj,url);
 
 	});
@@ -615,6 +683,11 @@ function callAjax(jsObj,url)
 									showInsertVoterDataStatus(myResults);
 								}
 
+								else if(jsObj.task == "insertVotersBasicInfo")
+								{
+									showInsertVotersBasicInfoStatus(myResults);
+								}
+
 								else if(jsObj.task == "insertCastVotersData")
 								{
 									showinsertCastVotersDataStatus(myResults);
@@ -644,7 +717,13 @@ function callAjax(jsObj,url)
 								}
 
 								else if(jsObj.task == "getPublicationList")
-									buildPublicationList(myResults);
+								{
+									if(jsObj.subtask != null && 
+										jsObj.subtask == 'voterBasicInfo')
+										buildPublicationListForBasicInfo(myResults);
+									else
+										buildPublicationList(myResults);
+								}
 							}
 								catch (e) {
 							     //$("#votersEditSaveAjaxImg").hide();
@@ -678,6 +757,24 @@ function callAjax(jsObj,url)
 		}
 	}
 
+	function showInsertVotersBasicInfoStatus(result)
+	{
+		$("#basicInfoAjaxImage").css("display","none");
+		$("#voterBasicInfoInsertBtn").removeAttr("disabled");
+		
+		if(result.resultCode == 0)
+		{
+			$("#errorMsgDiv").html("Voters Basic Info Inserted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#errorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
+	}
+
+	
 function showinsertCastVotersDataStatus(result)
 {
 $("#castajaxImage").css("display","none");
@@ -796,6 +893,28 @@ function buildPublicationList(results)
 {
 	$('#ajaxLoad').css('display','none');
 	var selectedElmt = document.getElementById("publicationDateList");
+	removeSelectElements(selectedElmt);
+	for(var val in results)
+	{
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}
+}
+
+function buildPublicationListForBasicInfo(results)
+{
+	$('#basicInfoAjaxLoad').css('display','none');
+	var selectedElmt = document.getElementById("basicInfoPublicationDateList");
 	removeSelectElements(selectedElmt);
 	for(var val in results)
 	{
