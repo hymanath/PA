@@ -32,8 +32,11 @@ public interface IUserVoterService {
 	
 	public List<VotersDetailsVO> getCasteWiseUserVoterCategory(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
 	
+	 public ResultStatus saveCustomVoterGroup1(Long userId,Long constituencyId,Long locationValue,String name);
+	
 	 public ResultStatus saveCustomVoterGroup(Long userId,Long constituencyId,Long locationValue,String name);
-
+      
+	
 	
 	
 }
