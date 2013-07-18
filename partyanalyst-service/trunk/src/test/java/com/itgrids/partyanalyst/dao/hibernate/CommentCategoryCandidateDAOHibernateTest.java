@@ -263,11 +263,11 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testGetAllCommentsByUserAndCategoryForANomination()
+/*	public void testGetAllCommentsByUserAndCategoryForANomination()
 	{
 		List result = commentCategoryCandidateDAO.getAllCommentsAndCategoryForANomination(81145l);
 		System.out.println(result.size());
-	}
+	}*/
 	
 	/*public void test()
 	{
@@ -313,5 +313,14 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
+	public void testgetCommentsResultsForAPartyInAnElection1(){
+		List<Long> list = new ArrayList<Long>(0);
+		list.add(30l);
+		list.add(40l);
+		List list1 = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection1(38l,362l,"LOST",1l,list);
+		System.out.println(list1.get(0));
+		System.out.println(list1.get(1));
+		System.out.println(list1.size());
+	}
 	
 }
