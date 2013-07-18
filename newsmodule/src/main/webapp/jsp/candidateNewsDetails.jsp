@@ -169,6 +169,7 @@ var toDate = '${toDate}';
 		  </td>
 		 </tr> 
 		</table>
+		<div id="forHide">
 		<table>
 		 <tr>
 	      <td style="vertical-align: top;">
@@ -195,6 +196,7 @@ var toDate = '${toDate}';
 		</tr>
 		
 	  </table>
+			</div>
 			
 	 <div style="text-align:center;"><input type="button" value="submit" id="newsDetailsBtn" class="btn btn-info"/> <img src="images/search.jpg" id="ajaxImg" style="display:none;"/></div>
 	 
@@ -202,6 +204,7 @@ var toDate = '${toDate}';
 
   </div>
   <hr>
+  
 	<div id="respondNotRespondNewsCountDiv" style="display:none;"></div>
 
 	<div id="candidateNewsCountDiv" style="display:none;"></div>
@@ -239,6 +242,13 @@ function hideWhenCandiNewsClcked(){
 	$('#selectNewsInnerDiv').css('display','block');
 	$('#respondNotRespondNewsCountDiv').css('display','none');
 	$('.filter2').css('display','block');
+	$('#candidateCritiesNewsDiv').css('display','none');
+	//$('#galleryListShowHideTb').css('display','block');
+	//$('#categoryShowAndHideTb').css('display','block');
+	//$('#districtShowAndHideDiv').css('display','block');
+	
+	 $("#errorMsgDiv").html('');
+
 }
 
 $('#criticsId').click(function(){
@@ -247,6 +257,13 @@ $('#criticsId').click(function(){
 	$('#selectNewsInnerDiv').css('display','block');
 	$('#respondNotRespondNewsCountDiv').css('display','block');
 	$('.filter2').css('display','none');
+	$('#candidateCritiesNewsDiv').css('display','block');
+	$('#galleryListShowHideTb').css('display','none');
+	$('#categoryShowAndHideTb').css('display','none');
+	$('#districtShowAndHideDiv').css('display','none');
+	getCandidateCritiesNewsDetails();
+	 $("#errorMsgDiv").html('');
+
 });
 
 function getCandidateNewsCount()
@@ -874,14 +891,14 @@ function getResponseNewsCountNewsCount()
 	var url = "getRespondedAndNotRespondedNewsCountAction.action?"+rparam;
 	callAjax(jsObj, url);
 }
-
+//18111
 function  showPartyWiseNewsCount(results)
 {
   $("#respondNotRespondNewsCountDiv").html('');
   if(results == null)
 	  return;
   var str = '';
-  str +='<div >';
+  str +='<div>';
    if(results.totalNewsCount>0)
    str +='<span class ="span10" style="text-align:center" ><b  > TOTAL CRITICS :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'total\',0)"><span class="badge badge-info">'+results.totalNewsCount+'</span></a></span>';
   else
