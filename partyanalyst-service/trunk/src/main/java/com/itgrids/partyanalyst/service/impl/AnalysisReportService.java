@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
@@ -66,8 +67,16 @@ public class AnalysisReportService implements IAnalysisReportService {
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO; 
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
 	private IElectionTypeDAO electionTypeDAO;
+	private IConstituencyDAO constituencyDAO;
 	
-	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 	public IElectionTypeDAO getElectionTypeDAO() {
 		return electionTypeDAO;
 	}
@@ -592,7 +601,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 		if(electionId != null && partyId != null && includeAllianc == false){
 			multipleCategories = new ArrayList<SelectOptionVO>();
 			multipleCategoryMap = new HashMap<Long,Long>();
-			
+			Map<Long,List<Long>> commentCountConstis = new HashMap<Long,List<Long>>();
 			List multipleCategoryComments = commentCategoryCandidateDAO.getCommentsCommentCategoryCountGroupedByConstituencyForAParty(electionId,partyId,analysisCategory);
 			
 			log.debug("MultipleCategoryComments Size :" + multipleCategoryComments.size());
@@ -602,15 +611,21 @@ public class AnalysisReportService implements IAnalysisReportService {
 					Long commentsCount = (Long)params[0];
 					if(multipleCategoryMap.isEmpty() || !multipleCategoryMap.containsKey(commentsCount)){
 						multipleCategoryMap.put(commentsCount, new Long(1));
+						List<Long> constiIds = new ArrayList<Long>();
+						constiIds.add((Long)params[1]);
+						commentCountConstis.put(commentsCount, constiIds);
 					}
 					else if(multipleCategoryMap.containsKey(commentsCount)){
+						List<Long> constiIds = commentCountConstis.get(commentsCount);
 						Long countVal = multipleCategoryMap.get(commentsCount);
 						multipleCategoryMap.put(commentsCount, ++countVal);
+						constiIds.add((Long)params[1]);
 					}
 				}
 				
 				if(!multipleCategoryMap.isEmpty()){
 					Long nthCount = new Long(0);
+					List<Long> nthConstis = new ArrayList<Long>();
 					Set entries = multipleCategoryMap.entrySet();
 					Iterator iterator = entries.iterator();
 					while(iterator.hasNext()){
@@ -623,12 +638,14 @@ public class AnalysisReportService implements IAnalysisReportService {
 					
 					if(commentsCat > new Long(4)){
 						nthCount+=constiCount;
+						if(commentCountConstis.get(commentsCat) != null)
+						nthConstis.addAll(commentCountConstis.get(commentsCat));
 					}
 					else{
 						SelectOptionVO mulCategory = new SelectOptionVO();
 						mulCategory.setId(commentsCat);
 						mulCategory.setName(constiCount.toString());
-						
+						mulCategory.setLocationValuesList(commentCountConstis.get(commentsCat));
 						multipleCategories.add(mulCategory);
 					}
 					}
@@ -637,7 +654,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 					SelectOptionVO mulCategory = new SelectOptionVO();
 					mulCategory.setId(new Long(0));
 					mulCategory.setName(nthCount.toString());
-					
+					mulCategory.setLocationValuesList(nthConstis);
 					multipleCategories.add(mulCategory);
 					}
 				}
@@ -714,7 +731,12 @@ public class AnalysisReportService implements IAnalysisReportService {
 			candidateElectionResultVO.setTotalValidVotes(nomination.getConstituencyElection().getConstituencyElectionResult().getValidVotes().longValue());
 			candidateElectionResultVO.setRank(nomination.getCandidateResult().getRank());
 			candidateElectionResultVO.setVotesPercentage(nomination.getCandidateResult().getVotesPercengate());
-			
+				if(candidateElectionResultVO.getConstituencyName().contains("WARD-")){
+					String constName = constituencyDAO.getConstituencyNameByConstituencyIdInWards(candidateElectionResultVO.getConstituencyId());
+					String name=candidateElectionResultVO.getConstituencyName()+"("+constName+")";
+					candidateElectionResultVO.setConstituencyName(name);
+				}
+				
 		}
 	 return candidateElectionResultVO;
 	}
@@ -1407,6 +1429,79 @@ public class AnalysisReportService implements IAnalysisReportService {
 	  return electionBasicCommentsVOList;
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection1(
+			Long electionId, Long partyId, String category,Long categoryTypeId,Long stateId,List<Long> constituencyIds) {
+		
+        log.debug("Inside getCandidateCommentDetailsInAnElection Method..... ");
+		
+		Map<Long,List<CandidateCommentsVO>> commentsDataMap = null;
+		List<ElectionBasicCommentsVO> electionBasicCommentsVO = null;
+		ResultStatus resultStatus = new ResultStatus();
+		
+		try{
+			if(electionId != null && partyId != null){
+				electionBasicCommentsVO = new ArrayList<ElectionBasicCommentsVO>();
+				commentsDataMap = new HashMap<Long,List<CandidateCommentsVO>>();
+				List commentsDetails = null;
+				
+				//List commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId);
+				if(categoryTypeId == null || categoryTypeId.equals(new Long(0)))
+				    commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection1(electionId, partyId,category,stateId,constituencyIds);
+				else 
+					commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection1(electionId, partyId,category,categoryTypeId,stateId,constituencyIds);	
+				
+				Party party = partyDAO.get(partyId);
+				
+				if(commentsDetails != null && commentsDetails.size() > 0){
+					for(int i=0;i<commentsDetails.size();i++){
+					 	Object[] results = (Object[])commentsDetails.get(i);
+						Long constituencyId = (Long)results[0];
+						if(commentsDataMap.isEmpty() || !commentsDataMap.containsKey(constituencyId)){
+							List<CandidateCommentsVO> candidateCommentsList = new ArrayList<CandidateCommentsVO>();
+							CandidateCommentsVO candidComments = getCandidateCommentsProcessedToMap(results);
+							candidateCommentsList.add(candidComments);
+							commentsDataMap.put(constituencyId, candidateCommentsList);
+						}
+						else if(commentsDataMap.containsKey(constituencyId)){
+							List<CandidateCommentsVO> candidateCommentsList = commentsDataMap.get(constituencyId);
+							CandidateCommentsVO candidComments = getCandidateCommentsProcessedToMap(results);
+							candidateCommentsList.add(candidComments);
+							commentsDataMap.put(constituencyId, candidateCommentsList);
+						}
+					}
+				}
+				
+				//Processing the Map and set the Data to VO
+				if(!commentsDataMap.isEmpty()){
+					Set entries = commentsDataMap.entrySet();
+					Iterator iterator = entries.iterator();
+					while(iterator.hasNext()){
+					Map.Entry entry = (Map.Entry)iterator.next();
+					List<CandidateCommentsVO> commentsList = (List<CandidateCommentsVO>)entry.getValue();
+					Long constituencyId = (Long)entry.getKey();
+					ElectionBasicCommentsVO elecBasicComments = new ElectionBasicCommentsVO();
+					elecBasicComments.setConstituencyId(constituencyId);
+					elecBasicComments.setConstituencyName(commentsList.get(0).getConstituencyName());
+					elecBasicComments.setNominationId(commentsList.get(0).getNominationId());
+					elecBasicComments.setPartyId(partyId);
+					elecBasicComments.setPartyName(party.getShortName());
+					elecBasicComments.setCandidateComments(commentsList);
+					
+					electionBasicCommentsVO.add(elecBasicComments);
+					}
+				}
+			}
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			ElectionBasicCommentsVO electionBasicCommentsErrVO = new ElectionBasicCommentsVO();
+			electionBasicCommentsErrVO.setResultStatus(resultStatus);
+			electionBasicCommentsVO.add(electionBasicCommentsErrVO);
+		}
+	 return electionBasicCommentsVO;
+	}
 
 }
