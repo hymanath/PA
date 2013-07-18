@@ -22,7 +22,9 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionService;
+import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.impl.PartyStrengthService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 import com.opensymphony.xwork2.Action;
@@ -44,7 +46,16 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 	String chartName = null;
 	private EntitlementsHelper entitlementsHelper;
 	private	List<SelectOptionVO> yearList;
+	private IPartyStrengthService partyStrengthService;
 	
+	public IPartyStrengthService getPartyStrengthService() {
+		return partyStrengthService;
+	}
+
+	public void setPartyStrengthService(IPartyStrengthService partyStrengthService) {
+		this.partyStrengthService = partyStrengthService;
+	}
+
 	public List<SelectOptionVO> getYearList() {
 		return yearList;
 	}
@@ -239,7 +250,8 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		if("getPartiesByState".equalsIgnoreCase(jObj.getString("task"))){
 			electionDataVO = new ElectionDataVO();
 			Long stateId = jObj.getLong("stateId");
-			List<SelectOptionVO> parties = staticDataService.getStaticPartiesListForAState(stateId);
+			//List<SelectOptionVO> parties = staticDataService.getStaticPartiesListForAState(stateId);
+			List<SelectOptionVO> parties = partyStrengthService.getAllPartiesData1(stateId,"Assembly");
 			//List<SelectOptionVO> parties = staticDataService.getAllPartiesParticapatedInMainElectionsService(stateId);
 			Collections.sort(parties, new SelectOptionVOComparator());
 			electionDataVO.setParties(new LinkedHashSet<SelectOptionVO>(parties));
