@@ -629,7 +629,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	contentStr+='</div>';
 
 	contentStr+='<div id="wonPositionAnalysisBody" style="">';
-		contentStr+='<table class=" table table-border table-hover">';
+		contentStr+='<table>';
 		contentStr+='<tr>';
 		contentStr+='	<td style="vertical-align:top;">';
 		contentStr+='		<div id="wonPositionAnalysis_BasicData">';
