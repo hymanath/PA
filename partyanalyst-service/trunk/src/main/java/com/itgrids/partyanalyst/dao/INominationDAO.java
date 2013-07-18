@@ -578,4 +578,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Object[]> getLatestElectionDetails(List<Long> constiIds);
 	
 	public List<Object[]> getParties(List<Long> partyIds,String electionType);
+	
+	public List<Object[]> getPartiesList(Long stateId,List<Long> partyIds,String electionType);
 }
