@@ -5004,7 +5004,11 @@ public class StaticDataService implements IStaticDataService {
 					Double votesMargin = new BigDecimal(Double.parseDouble(oppCandVotesPercnt)- Double.parseDouble((String) params[6])).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 							candElecResult.setVotesMargin(votesMargin.toString());
 						}
-
+						if (candElecResult.getConstituencyName().contains("WARD-")) {
+							String constName = constituencyDAO.getConstituencyNameByConstituencyIdInWards(candElecResult.getConstituencyId());
+							String name=candElecResult.getConstituencyName()+"("+constName+")";
+							candElecResult.setConstituencyName(name);
+						}
 		List candComments = commentCategoryCandidateDAO.getCommentsCountForACandidateInAConstituencyInAnELection(electionId, (Long) params[0],(Long) params[2]);
 				
 		
