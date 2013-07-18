@@ -164,8 +164,8 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 	{
 		basicDetailsDivEl.innerHTML = '';
 		str+='<TABLE width="100%" border="1" cellspacing="0" cellpadding="0">';
-		str+='<TR><TD width="50%" align="center"><IMG src="charts/'+analysisChartName+'" border="none"/></TD>';
-		str+='<TD width="50%" align="center"><IMG src="charts/'+resultsChartName+'" border="none"/></TD></TR>';	
+		str+='<TR><TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+analysisChartName+'" border="none"/></TD>';
+		str+='<TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+resultsChartName+'" border="none"/></TD></TR>';	
 		str+='</TABLE>';
 		basicDetailsDivEl.innerHTML = str;
 	}
@@ -175,16 +175,16 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 		str+='<UL>';
 		str+='<LI>';
 		str+='<TABLE width="100%" border="1" cellspacing="0" cellpadding="0">';
-		str+='<TR><TD width="50%" align="center"><IMG src="charts/'+analysisChartName+'" border="none"/></TD>';
-		str+='<TD width="50%" align="center"><IMG src="charts/'+resultsChartName+'" border="none"/></TD></TR>';	
+		str+='<TR><TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+analysisChartName+'" border="none"/></TD>';
+		str+='<TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+resultsChartName+'" border="none"/></TD></TR>';	
 		str+='</TABLE>';
 		str+='</LI>';		
 		for(var i in alliancePartiesBasicDetails)
 		{
 			str+='<LI>';
 			str+='<TABLE width="100%" border="1" cellspacing="0" cellpadding="0">';
-			str+='<TR><TD width="50%" align="center"><IMG src="charts/'+alliancePartiesBasicDetails[i].analysisChart+'" border="none"/></TD>';
-			str+='<TD width="50%" align="center"><IMG src="charts/'+alliancePartiesBasicDetails[i].resultsChart+'" border="none"/></TD></TR>';	
+			str+='<TR><TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+alliancePartiesBasicDetails[i].analysisChart+'" border="none"/></TD>';
+			str+='<TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+alliancePartiesBasicDetails[i].resultsChart+'" border="none"/></TD></TR>';	
 			str+='</TABLE>';
 			str+='</LI>';			
 		}
@@ -551,7 +551,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 			contentStr+='		<TH width="5%">N</TH>';
 		else
 			contentStr+='		<TH width="5%">'+results.multipleCategories[i].id+'</TH>';
-		contentStr+='<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}" onclick="openMainPartyMultipleReasonsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.multipleCategories[i].id+','+results.multipleCategories[i].name+')">'+results.multipleCategories[i].name+'</A></TD>';
+		contentStr+='<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}" onclick="openMainPartyMultipleReasonsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.multipleCategories[i].id+','+results.multipleCategories[i].name+',['+results.multipleCategories[i].locationValuesList+'])">'+results.multipleCategories[i].name+'</A></TD>';
 		contentStr+='	</TR>';
 	}	
 	contentStr+='	</table>';	
@@ -678,7 +678,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 				contentStr+='		<TH width="5%">N</TH>';
 			else
 				contentStr+='		<TH width="5%">'+results.multipleCategories[i].id+'</TH>';
-			contentStr+='			<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}" onclick="openMainPartyMultipleReasonsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Won\','+results.multipleCategories[i].id+','+results.multipleCategories[i].name+')">'+results.multipleCategories[i].name+'</A></TD>';
+			contentStr+='			<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}" onclick="openMainPartyMultipleReasonsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Won\','+results.multipleCategories[i].id+','+results.multipleCategories[i].name+',['+results.multipleCategories[i].locationValuesList+'])">'+results.multipleCategories[i].name+'</A></TD>';
 			contentStr+='			</TR>';
 		}	
 		contentStr+='				</table>';	
