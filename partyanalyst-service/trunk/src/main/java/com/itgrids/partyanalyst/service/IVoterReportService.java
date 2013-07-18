@@ -86,4 +86,6 @@ public interface IVoterReportService {
 	  public ResultStatus deleteVotersBasicInfoFromIntermediateTables(Long constituencyId);
 	  
 	  public ResultStatus insertVotingTrendzToIntermediateTables(final Long reportLevelValue,Long publicationDateId);
+	  
+	  public ResultStatus deletePreviousEleVotingIntoIntermediateTables(Long constituencyId);
 }
