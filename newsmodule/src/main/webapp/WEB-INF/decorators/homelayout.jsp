@@ -107,7 +107,7 @@ margin:-1px 0px 0px 0px ;
 						</ul>
 					</div>
 					<!------Menu div-------->
-					<div class="span10" style="margin-top:-15px;height:80px;">
+					<div class="span10" style="margin-top:-15px;height:80px;width:600px;">
 						<ul class="nav1 nav-pills1 navMen pull-right headerMenu">
 
 						<c:if test="${sessionScope.USER != null}">
