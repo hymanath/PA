@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.model.JobRunDetails;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsTemplateService;
 import com.itgrids.partyanalyst.service.IPartyCandidateSpecialPageScheduleService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.IJobConstants;
@@ -1160,8 +1161,8 @@ public class PartyCandidateSpecialPageScheduleService implements
 		
 		 data.setFileGallaryId(result.getFileGallaryId());
 	     data.setGallaryName(result.getGallary().getName());
-	     data.setTitle(result.getFile().getFileTitle());
-	     data.setDescription(result.getFile().getFileDescription());
+	     data.setTitle(CommonStringUtils.removeSpecialCharsFromAString(result.getFile().getFileTitle()));
+	     data.setDescription(CommonStringUtils.removeSpecialCharsFromAString(result.getFile().getFileDescription()));
 		 Set<FileSourceLanguage> fileSourceLanguageSet = result.getFile().getFileSourceLanguage();
 		 String filePath = null;
 		 StringBuilder source = new StringBuilder();
@@ -1198,8 +1199,8 @@ public class PartyCandidateSpecialPageScheduleService implements
 		
 		 data.setFileGallaryId(result.getFileGallaryId());
 	     data.setGallaryName(result.getGallary().getName());
-	     data.setTitle(result.getFile().getFileTitle());
-	     data.setDescription(result.getFile().getFileDescription());
+	     data.setTitle(CommonStringUtils.removeSpecialCharsFromAString(result.getFile().getFileTitle()));
+	     data.setDescription(CommonStringUtils.removeSpecialCharsFromAString(result.getFile().getFileDescription()));
 	     File file = result.getFile();
 		 Set<FileSourceLanguage> fileSourceLanguageSet = result.getFile().getFileSourceLanguage();
 		 StringBuilder source = new StringBuilder();
