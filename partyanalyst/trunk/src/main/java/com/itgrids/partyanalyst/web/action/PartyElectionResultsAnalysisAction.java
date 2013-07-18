@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAnalysisReportService;
 import com.itgrids.partyanalyst.service.ICommentsDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -60,8 +61,16 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	
 	private ICommentsDataService commentsDataService;
 	private List<CandidateCommentsVO> candidateComments;
+	private List<?> constituencyIds;
 	
-	
+
+	public List<?> getConstituencyIds() {
+		return constituencyIds;
+	}
+
+	public void setConstituencyIds(List<?> constituencyIds) {
+		this.constituencyIds = constituencyIds;
+	}
 
 	public HttpSession getSession() {
 		return session;
@@ -452,21 +461,29 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+		List<Long> constituencyIds=new ArrayList<Long>();
 		Long electionId = new Long(jObj.getString("electionId"));
 		Long partyId = new Long(jObj.getString("partyId"));
 		Long stateId = new Long(jObj.getString("stateId"));
 		String position = jObj.getString("position");
 		Long categoryTypeId = new Long(jObj.getString("categoryId"));
-		
+		JSONArray jsonArray = jObj.getJSONArray("constituencyId");
+		if(jsonArray != null && jsonArray.length() > 0)
+			for(int i = 0 ; i < jsonArray.length() ; i++)
+			{
+				if(jsonArray.get(i) != null)
+				{
+					constituencyIds.add(new Long(jsonArray.get(i).toString()));
+				}
+			}
 		String category = null;
 		if(position.equals("Won"))
 			category = IConstants.CANDIDATE_COMMENTS_WON;
 		else if(position.equals("Lost"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		
-		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,categoryTypeId,stateId);
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection1(electionId, partyId,category,categoryTypeId,stateId,constituencyIds);
+		//electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,categoryTypeId,stateId);
 		return Action.SUCCESS;
 	
 	}
