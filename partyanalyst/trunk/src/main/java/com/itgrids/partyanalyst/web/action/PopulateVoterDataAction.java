@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,14 +14,17 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class PopulateVoterDataAction extends ActionSupport implements ServletRequestAware{
 	
+	private static final long serialVersionUID = -2193964229664094993L;
 	private static final Logger Log = Logger.getLogger(PopulateVoterDataAction.class);
 	private HttpServletRequest request;
 	private ConstituencyManagementVO constituencyManagementVO;
@@ -28,11 +32,17 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> constituencyList;
 	private ResultStatus resultStatus;
 	private IVoterModificationService voterModificationService;
-
+    private List<SelectOptionVO> allConstituenciesList = new ArrayList<SelectOptionVO>(0);
 	private IVoterReportService voterReportService;
 	private List<SelectOptionVO> publicationNamesList;
+	private IStaticDataService staticDataService;
 	
-	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
 	public IVoterReportService getVoterReportService() {
 		return voterReportService;
 	}
@@ -112,6 +122,12 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 		}
 		public void setPublicationNamesList(List<SelectOptionVO> publicationNamesList) {
 			this.publicationNamesList = publicationNamesList;
+		}
+		public List<SelectOptionVO> getAllConstituenciesList() {
+			return allConstituenciesList;
+		}
+		public void setAllConstituenciesList(List<SelectOptionVO> allConstituenciesList) {
+			this.allConstituenciesList = allConstituenciesList;
 		}
 		public String execute()
 		{
@@ -350,4 +366,42 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			
 			return Action.SUCCESS;
 		}
+		
+		public String deleteVotersBasicInfoFromIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				Log.error("Exception Occured in deleteVotersBasicInfoFromIntermediateTables() method, Exception - "+e);	
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if(regVo == null)
+				return null;
+			Long userId = regVo.getRegistrationID();
+			resultStatus = voterReportService.deleteVotersBasicInfoFromIntermediateTables(jObj.getLong("id"));
+			return Action.SUCCESS;
+		}
+		
+		public String insertPreviousEleVotingIntoIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+				return null;
+			
+			resultStatus = voterReportService.insertVotingTrendzToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+			return Action.SUCCESS;
+		}
+		
 }
