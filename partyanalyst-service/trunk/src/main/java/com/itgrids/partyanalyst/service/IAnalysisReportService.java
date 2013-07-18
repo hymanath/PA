@@ -42,4 +42,6 @@ public interface IAnalysisReportService {
  	public List<ElectionBasicCommentsVO> getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin(Long electionId,Long partyId,String category,Long position,Long categoryTypeId);
  	
  	public Map<Long,List<Long>> getNominationsIdsForAPartyInAnElection(Long electionId,Long partyId,String category,Long stateId,Long districtId);
+ 	
+	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection1(Long electionId, Long partyId, String category,Long categoryTypeId,Long stateId,List<Long> constituencyIds);
 } 
