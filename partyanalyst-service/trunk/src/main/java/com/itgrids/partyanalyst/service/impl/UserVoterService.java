@@ -966,6 +966,7 @@ public class UserVoterService implements IUserVoterService{
 		            return 0;
 		        }
 	 };
+	
 	 /** This method is used to save groupName and details in custom Voter Group */
 	 public ResultStatus saveCustomVoterGroup(Long userId,Long constituencyId,Long locationValue,String name)
 	 {
@@ -1023,4 +1024,64 @@ public class UserVoterService implements IUserVoterService{
 		
 	 }
 
+	 
+	 
+	 public ResultStatus saveCustomVoterGroup1(Long userId,Long constituencyId,Long locationValue,String name)
+	 {
+		    ResultStatus resultStatus = new ResultStatus();
+			CustomVoterGroup customVoterGroup = null;
+			Long localbody = 0l;
+			Long mandalId = 0l;
+			List<Object[]> list = null;
+			String areaType=null;
+			//Constituency constituency =constituencyDAO.get(constituencyId);
+			//String areaType = constituency.getAreaType();
+			if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("1"))
+			{
+			localbody = assemblyLocalElectionBodyDAO.get(new Long(locationValue.toString().substring(1))).getLocalElectionBody().getLocalElectionBodyId();
+			list = customVoterGroupDAO.checkDuplicateGroupName(userId,localbody,name);
+			areaType="URBAN";
+			}
+			if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+			{
+			mandalId = new Long(locationValue.toString().substring(1));
+			list = customVoterGroupDAO.checkDuplicateGroupName(userId,mandalId,name);
+			areaType="RURAL";
+			}
+			
+			if(list != null && list.size() > 0)
+			{
+				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+				return resultStatus;
+			}
+			try{
+				customVoterGroup = new CustomVoterGroup();
+				customVoterGroup.setName(name);
+				customVoterGroup.setUser(userDAO.get(userId));
+				if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("1"))
+				customVoterGroup.setLocationValue(localbody);
+				else
+				customVoterGroup.setLocationValue(mandalId);
+				
+				customVoterGroup.setConstituency(constituencyDAO.get(constituencyId));
+				if(areaType.equalsIgnoreCase("RURAL"))
+				customVoterGroup.setAreaType(areaTypeDAO.get(2l));
+				else if(areaType.equalsIgnoreCase("URBAN"))
+				customVoterGroup.setAreaType(areaTypeDAO.get(1l));
+				//else
+				//customVoterGroup.setAreaType(areaTypeDAO.get(3l));	
+				customVoterGroupDAO.save(customVoterGroup);	
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				}	
+			
+			catch(Exception e)
+			{
+				LOG.error("error occured in the saveCustomVoterGroup1() method " , e) ;	
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+			return resultStatus;
+			
+		 }
+	 
 }
