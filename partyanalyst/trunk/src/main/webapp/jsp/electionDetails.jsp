@@ -3696,6 +3696,7 @@ function removeOptionSelected()
 </div>
 <div class="clear"></div>
 
+<c:if test="${host != 'tdpserver'}">
 <c:if test="${loginStatus ==null && sessionScope.USER == null}">
 <div id="registerDiv" style="position:fixed;width:159px;z-index:9999;margin-top:-93px;margin-left:152px;background-color:#F9F9F9;color:#000;padding:5px;cursor:pointer;border:2px solid #06ABEA">
 <a href="javaScript:hideRegisterDiv();" style="float: right;"><b>(X)</b></a>
@@ -3714,7 +3715,7 @@ wise etc.
 
 </div>
 </c:if>
-
+</c:if>
 <script>
 function hideRegisterDiv(){
 	$('#registerDiv').hide('slow');
