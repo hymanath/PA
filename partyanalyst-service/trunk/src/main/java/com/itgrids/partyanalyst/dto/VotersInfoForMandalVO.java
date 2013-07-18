@@ -46,10 +46,14 @@ public class VotersInfoForMandalVO {
 	private Long assignedVotersForLocalBodies;
 	private Long unassignedVotersForLocalBodies;
 	private long publicationVoters;
+	private Integer orderNo;
 	
-	
-		
-	
+	public Integer getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Integer orderNo) {
+		this.orderNo = orderNo;
+	}
 	public long getPublicationVoters() {
 		return publicationVoters;
 	}
