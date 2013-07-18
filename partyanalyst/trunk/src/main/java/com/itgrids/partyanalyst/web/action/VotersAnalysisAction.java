@@ -626,7 +626,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getPublicationDate") || jObj.getString("task").equalsIgnoreCase("getPublicationDateForCast")
 				||jObj.getString("task").equalsIgnoreCase("getPublicationDateForParty")
-				||jObj.getString("task").equalsIgnoreCase("getPublicationDateForModification"))
+				||jObj.getString("task").equalsIgnoreCase("getPublicationDateForModification") || jObj.getString("task").equalsIgnoreCase("getPublicationDateForVotingTrendz"))
 		{
 			Long selectedId = jObj.getLong("selected");
 			namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(selectedId);
