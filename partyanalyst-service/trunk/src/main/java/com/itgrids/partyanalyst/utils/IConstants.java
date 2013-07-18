@@ -592,9 +592,8 @@ public interface IConstants {
 	public static final long LOCALELECTIONBODY_REPORT_LEVEL_ID = 5L;
 	public static final long WARD_REPORT_LEVEL_ID = 6L;
 	
-	
-	
-	
+	public static final String PUBLICATION = "Publication";
+	public static final String ELECTION = "Election";
 	
 	public static final String GALLARY_PDF_FILES= "gallary_pdf_files";
 	public static final String AGE18to25  = "18-25";
