@@ -1447,7 +1447,7 @@ public String saveLocality()
 					return "error";
 			   Long userId = user.getRegistrationID();
 			   jObj = new JSONObject(getTask());
-			   resultStatus = userVoterService.saveCustomVoterGroup(userId,jObj.getLong("constituencyId"),jObj.getLong("locationValue"),jObj.getString("groupName"));
+			   resultStatus = userVoterService.saveCustomVoterGroup1(userId,jObj.getLong("constituencyId"),jObj.getLong("locationValue"),jObj.getString("groupName"));
 		   }
 		   catch(Exception e)
 		   {
