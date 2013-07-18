@@ -4288,22 +4288,5 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		 	}
 		  }
   
-	/*public CandidateNewsCountVO checkCandidateNewsCountVOExist(Long candidateId,List<CandidateNewsCountVO> list)
-	{
-		try{
-		if(list == null || list.size() == 0)
-			return null;
-		
-		for(CandidateNewsCountVO countVO:list)
-		 if(countVO.getId().equals(candidateId))
-		  return countVO;
-		return null;
-		
-		}catch (Exception e) {
-		 e.printStackTrace();
-		 log.error("Exception Occured in checkCandidateNewsCountVOExist() method, Exception - "+e);
-		 return null;
-		}
-	}*/
 	
 }
