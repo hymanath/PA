@@ -404,4 +404,24 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			return Action.SUCCESS;
 		}
 		
+		public String deletePreviousEleVotingIntoIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				Log.error("Exception Occured in deletePreviousEleVotingIntoIntermediateTables() method, Exception - "+e);	
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if(regVo == null)
+				return null;
+			Long userId = regVo.getRegistrationID();
+			resultStatus = voterReportService.deletePreviousEleVotingIntoIntermediateTables(jObj.getLong("id"));
+			return Action.SUCCESS;
+		}
+		
+		
 }
