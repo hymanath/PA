@@ -60,6 +60,10 @@
 <!-- Local script and css files (End)-->
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <style>
+.ui-datepicker
+{ 
+z-index: 9999 !important;
+}
 #impheaders{
 	float: left;
     font-family: sans-serif,verdana;
