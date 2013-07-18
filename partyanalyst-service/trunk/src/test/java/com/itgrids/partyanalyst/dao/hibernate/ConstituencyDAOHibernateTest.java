@@ -403,7 +403,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void test()
+/*	public void test()
 	{
 		List<Long> constIds = new ArrayList<Long>();
 		constIds.add(232l);
@@ -413,5 +413,9 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+ parms[1]);
 		}
+	}*/
+	public void testgetConstituencyNameByConstituencyIdInWards(){
+		String name = constituencyDAO.getConstituencyNameByConstituencyIdInWards(40032l);
+		System.out.println(name);
 	}
 }
