@@ -882,7 +882,7 @@ function  showPartyWiseNewsCount(results)
   str +='<div class="thumbnail">';
   //str +='<span><b>Total News :</b>'+results.totalNewsCount+'</span>';
    if(results.totalNewsCount>0)
-   str +='<span class ="span3"><b> TOTAL CRITICS :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'total\',0)"><span class="btn btn-info">'+results.totalNewsCount+'</span></a></span>';
+   str +='<span class ="span3"><b> TOTAL CRITICS :</b><a href="javascript:{}" onclick="getResponseNewsDetails(\'total\',0,\'partyDetails\',0)"><span class="btn btn-info">'+results.totalNewsCount+'</span></a></span>';
   else
      str +='<span class ="span4" ><b>Total News :</b>'+results.totalNewsCount+'</span>';
   if(results.responseNewsCount > 0)
