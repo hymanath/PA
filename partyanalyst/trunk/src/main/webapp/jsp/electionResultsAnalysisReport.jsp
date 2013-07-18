@@ -328,7 +328,9 @@ function getStaticParties(id)
 	electionType:electionType,
 	task:"getStaticParties"
 	}
-
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/partiesAjaxAction.action?"+param;
+	callAjax(param,jsObj,url);
 
 }
 function getBasicAnalysisDetails()
