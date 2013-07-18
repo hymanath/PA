@@ -60,6 +60,8 @@ font-size:20px;
  var fromDate = '${fromDate}';
  var toDate = '${toDate}';
  var tempVar = '${tempVar}';
+ var candidateId = '${candidateId}';
+ var tempVarForParty = '${tempVarForParty}';
 
 </script>
 </head>
@@ -143,6 +145,8 @@ var jObj=
       fromDate:fromDate,
       toDate :toDate,
       tempVar :tempVar,
+	  tempVarForParty:tempVarForParty,
+      candidateId:candidateId,
 	  task:"getNewsDetails"
 
 	};
@@ -321,6 +325,8 @@ function getSelectedNewsDetails()
       fromDate:fromDate,
       toDate :toDate,
       tempVar :tempVar,
+	  tempVarForParty:tempVarForParty,
+      candidateId:candidateId,
 	  task:"getNewsDetails"
 
 	};

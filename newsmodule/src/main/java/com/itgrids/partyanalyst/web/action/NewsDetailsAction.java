@@ -58,6 +58,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private String locationIdsList;
 	private Long partyId;
 	private String newsType;
+	private String tempVarForParty;
 	
 	public Long getResponseContentId() {
 		return responseContentId;
@@ -246,6 +247,13 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	}
 	public void setNewsType(String newsType) {
 		this.newsType = newsType;
+	}
+	
+	public String getTempVarForParty() {
+		return tempVarForParty;
+	}
+	public void setTempVarForParty(String tempVarForParty) {
+		this.tempVarForParty = tempVarForParty;
 	}
 	public String execute()
 	{	
@@ -564,6 +572,8 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 newsDetailsVO.setLocationIdsList(jObj.getString("locationIdsList"));
 		 newsDetailsVO.setStartIndex(jObj.getInt("firstResult"));
 		 newsDetailsVO.setMaxIndex(jObj.getInt("maxResult"));
+		 newsDetailsVO.setCandidateId(jObj.getLong("candidateId"));
+		 newsDetailsVO.setTempVarForParty(jObj.getString("tempVarForParty"));
 		 
 		 fileVOsList = newsMonitoringService.getNewsDetailsForAParty(newsDetailsVO);
 		  

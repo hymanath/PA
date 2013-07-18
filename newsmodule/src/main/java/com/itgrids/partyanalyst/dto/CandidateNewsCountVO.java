@@ -23,6 +23,7 @@ public class CandidateNewsCountVO implements Serializable{
    private Long totalNewsCount = 0L;
    private Long responseNewsCount = 0L;
    private Long notResponseNewsCount = 0L;
+   private String partyName;
    
 	public List<Long> getConstituencyCounts() {
 	return constituencyCounts;
@@ -132,6 +133,12 @@ public class CandidateNewsCountVO implements Serializable{
 	}
 	public void setNotResponseNewsCount(Long notResponseNewsCount) {
 		this.notResponseNewsCount = notResponseNewsCount;
+	}
+	public String getPartyName() {
+		return partyName;
+	}
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
 	}
 	
   
