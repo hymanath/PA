@@ -36,7 +36,7 @@ font-size:20px;
     src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
 }
 
-.currentTab
+.currentTab1
 {
  background-color:yellowgreen;
  border-radius:8px;
@@ -119,7 +119,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 
 $(document).ready(function(){
 
-	$('#newsTabId').addClass('currentTab');
+	$('#newsTabId').addClass('menuActive');
 });
 </script>
 

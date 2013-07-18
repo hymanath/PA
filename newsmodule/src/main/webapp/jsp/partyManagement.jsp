@@ -56,7 +56,7 @@ cursor: text;
 #Err4Numer,#Err4Numer1{
 color:red;
 }
-.currentTab
+.currentTab1
 {
  background-color:yellowgreen;
  border-radius:8px;
@@ -3824,7 +3824,7 @@ $(document).ready(function() {
 
 $(document).ready(function(){
 
-	$('#partyManagementTabId').addClass('currentTab');
+	$('#partyManagementTabId').addClass('menuActive');
 });
 
 

@@ -58,7 +58,7 @@
     src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
 }
 
-.currentTab
+.currentTab1
 {
  background-color:yellowgreen;
  border-radius:8px;
@@ -174,7 +174,7 @@ width: 92px;
 <script>
 $(document).ready(function(){
 
-	$('#homeTabId').addClass('currentTab');
+	$('#homeTabId').addClass('menuActive');
 });
 </script>
 </head>
