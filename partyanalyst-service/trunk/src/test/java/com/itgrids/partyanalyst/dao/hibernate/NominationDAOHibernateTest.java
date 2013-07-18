@@ -1290,7 +1290,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	 }
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(72l);
@@ -1306,6 +1306,16 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	 {
 		 System.out.println(params[1]);
 	 }
+	}*/
+	
+	public void testParties()
+	{
+		List<Long> list = new ArrayList<Long>();
+		list.add(390l);list.add(391l);list.add(392l);list.add(455l);list.add(476l);list.add(482l);list.add(483l);list.add(1662l);list.add(1664l);list.add(163l);list.add(239l);list.add(265l);list.add(269l);list.add(362l);
+		List<Object[]> values = nominationDAO.getPartiesList(12l, list, "Assembly");
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1]);
+		}
 	}
 }	
 	

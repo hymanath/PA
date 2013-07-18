@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.ElectionScope;
@@ -55,5 +56,7 @@ public interface IElectionScopeDAO extends GenericDao<ElectionScope, Long>{
 	public List getAllStatesAndTheirIds(String electionType);
 	
 	public List<ElectionScope> findByTypeIdStateId(Long typeId,Long stateID);
+	
+	public List<Object[]> getDistinctStatesFromElectionScope();
 
 }

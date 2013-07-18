@@ -21,6 +21,7 @@ import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.mapping.Array;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -986,6 +987,22 @@ public class StaticDataService implements IStaticDataService {
 
 				stateList.add(option);
 			}
+		}
+		if(electionType == 2)
+		{
+			List<SelectOptionVO> statesList =  new ArrayList<SelectOptionVO>();
+			List<Object[]> values = electionScopeDAO.getDistinctStatesFromElectionScope();
+			if(values != null && values.size() > 0)
+			{
+				
+				for (Object[] parms : values) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					statesList.add(selectOptionVO);
+				}
+			}
+			stateList.retainAll(statesList);
 		}
 		Collections.sort(stateList);
 		
@@ -8967,4 +8984,34 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 	return resultStatus;
 	
 }
+	public List<SelectOptionVO> getPartitesList(Long stateId,String electionType)
+	{
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> staticParties = new ArrayList<SelectOptionVO>();	
+		
+			List<Long> partyIds = new ArrayList<Long>();
+			// State Parties
+			staticParties.addAll(getStaticStateParties(stateId));
+			// National Parties
+			staticParties.addAll(getStaticNationalParties());
+	        // For state Parties From IConstants
+			staticParties.addAll(getSelectedStateParties(stateId));
+				if(staticParties != null && staticParties.size() > 0)
+				{
+				for(SelectOptionVO partyId : staticParties)
+					partyIds.add(partyId.getId());
+				}
+			if(partyIds != null && partyIds.size() > 0)
+			{
+				List<Object[]> partiesList = nominationDAO.getPartiesList(stateId,partyIds,electionType);
+				if(partiesList != null && partiesList.size() > 0)
+				{
+					for (Object[] parms : partiesList) {
+						returnList.add(new SelectOptionVO((Long) parms[0],parms[1].toString()));
+					}
+				}
+			}
+			Collections.sort(returnList);
+		return returnList;
+	}
 }

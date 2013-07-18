@@ -402,4 +402,6 @@ public interface IStaticDataService {
 		
 		public boolean removeCadreImage(Long cadreId,Long userId);
 		
+		public List<SelectOptionVO> getPartitesList(Long stateId,String electionType);
+		
 }
