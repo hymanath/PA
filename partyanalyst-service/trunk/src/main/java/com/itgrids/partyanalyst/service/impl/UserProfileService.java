@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.service.IUserProfileService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -243,8 +244,8 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 			 userProfileVO.setFileLink("specialPageAction.action?specialPageId="+userProfileVO.getId()+"&contentId="+fileGallary.getFileGallaryId());
 			 
 		 }
-		 userProfileVO.setTitle(fileGallary.getFile().getFileTitle());
-		 userProfileVO.setDescription(fileGallary.getFile().getFileDescription());
+		 userProfileVO.setTitle(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle()));
+		 userProfileVO.setDescription(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription()));
 		 
 		 userProfileVO.setFileGallaryId(fileGallary.getFileGallaryId());
 		
