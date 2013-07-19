@@ -183,6 +183,20 @@ border-collapse:collapse;
 }
 #errorMsgDivForCritics{color:red;}
 #showAndHideDateCriticsDiv{ margin-bottom: 12px;margin-top: 20px;}
+#radioBtnDivForCritics{margin-top: 10px;}
+#showAndHideDateCriticsDiv{ margin-top: 2px;}
+#criticsBtnDiv{margin-left: 43px; margin-top: 8px;}
+#selectNewsInnerDiv{margin-top: 25px;}
+#hideCriticsId,#showCriticsId{ margin-right: 15px;margin-top: -56px;}
+#partyWiseCriticsNewsMainDiv h4{margin-top: 10px; margin-bottom: 20px; padding-bottom: 11px;}
+#candidateCritiesNewsDiv h4,.headingDivCls h4{background:  #06ABEA; color: #FFF; border-radius: 5px 5px 5px 5px; margin-left: auto; margin-right: auto; float: none; width: 401px; padding: 5px 21px;}
+
+#candidateCritiesNewsTab_wrapper{ padding: 28px 17px;border:1px solid #d3d3d3;border-radius:2px;}
+#candidateCritiesNewsDiv{margin-top: 35px;}
+#partyWiseCriticsNewsMainDiv{ margin-left: auto;
+    margin-right: auto;
+    width: 950px;}
+#getCandidatesNewsId,#criticsId{cursor:pointer;}
 </style>
 <script type="text/javascript">
 var fromDate = '${fromDate}';
@@ -201,7 +215,7 @@ var toDate = '${toDate}';
 		
 		<ul id="myTab" class="nav nav-tabs">
 			<li><a data-toggle="tab" id="getCandidatesNewsId"> Candidate News Report</a></li>
-			<li><a data-toggle="tab" id="criticsId"> Critics Report</a></li>
+			<li><a data-toggle="tab" id="criticsId">Opponent Party Critics Report</a></li>
 		</ul>
 	</div>
 	
@@ -226,6 +240,12 @@ var toDate = '${toDate}';
 
 	      </td>
 		  
+		  <td><div id="showAndHideDateCriticsDiv" style="display:none;">
+			 <label style="float:left;"><b>From Date: </b><input type="text" id="criticsExistingFromText" class="dateField" readonly="true" name="fileDate" size="20"></label>
+			 <label style="float: left; margin-left: 11px;"><b>To Date: </b><input type="text" id="criticsExistingToText" class="dateField" readonly="true" name="fileDate" size="20"></label>
+			</div></td>
+			<td><div style="text-align:center;" style='display:none;' id="criticsBtnDiv"><input type="button" value="submit"  id="criticsNewsDetailsBtn" class="btn btn-info"/> <img src="images/search.jpg" id="ajaxImg" style="display:none;"/></div></td>
+
 		  <td>
 		   <div id="galleryRadioDiv" class="filter2"><input type="checkbox" value="byGallery" class="galleryCheckBoxCls" id="galleryCheckBoxId"/><b>By Gallery</b></div>
 		  </td>
@@ -245,10 +265,10 @@ var toDate = '${toDate}';
 			 <label style="float: left; margin-left: 11px;"><b>To Date: </b><input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"></label>
 			</div>
 
-			<div id="showAndHideDateCriticsDiv" style="display:none;">
+			<!-- <div id="showAndHideDateCriticsDiv" style="display:none;">
 			 <label style="float:left;"><b>From Date: </b><input type="text" id="criticsExistingFromText" class="dateField" readonly="true" name="fileDate" size="20"></label>
 			 <label style="float: left; margin-left: 11px;"><b>To Date: </b><input type="text" id="criticsExistingToText" class="dateField" readonly="true" name="fileDate" size="20"></label>
-			</div>
+			</div> -->
 
 	      </td>
 		 </tr>
@@ -271,8 +291,6 @@ var toDate = '${toDate}';
 	  </table>
 			
 	 <div style="text-align:center;"><input type="button" value="submit" id="newsDetailsBtn" class="btn btn-info"/> <img src="images/search.jpg" id="ajaxImg" style="display:none;"/></div>
-	 
-	     
 
   </div>
   <hr>
@@ -317,6 +335,8 @@ $('#myTab a:first').trigger('click',function(){
 
 $('#getCandidatesNewsId').click(function(){
 	hideWhenCandiNewsClcked();
+	$("#newsDetailsBtn").css("display","inline-block");
+	$("#criticsBtnDiv").css("display","none");
 });
 function hideWhenCandiNewsClcked(){
 	$('#candidateNewsCountDiv').css('display','block');
@@ -359,6 +379,10 @@ function hideWhenCandiNewsClcked(){
 }
 
 $('#criticsId').click(function(){
+
+	$("#newsDetailsBtn").css("display","none");
+	$("#criticsBtnDiv").css("display","inline-block");
+
 	$('#candidateNewsCountDiv').css('display','none');
 	$('#graphOuterId').css('display','none');
 	$('#selectNewsInnerDiv').css('display','block');
@@ -1386,7 +1410,7 @@ function buildPaginatedNews(results,jsObj)
 		}
 		str +='<td style="vertical-align: top;"><p style="width: 190px;margin-right: 5px;"><span class="text-error" style="font-weight:bold;">Location :</span> '+results[i].locationName+'</p></td>';
 		
-		str +='<td style="vertical-align: top;"><a onclick="getNewsDetailsByContentId('+results[i].contentId+')" class="btn btn-mini btn-info pull-right" type="button">Details...</a></td>';
+		str +='<td style="vertical-align: top;font-weight:bold;"><a onclick="getNewsDetailsByContentId('+results[i].contentId+')" class="btn btn-mini btn-info pull-right" type="button">Details...</a></td>';
 		if(results[i].responseCount > 0)
 		{
 		 str +='<td style="vertical-align: top;"><a style="clear:both;font-weight: bold; margin-left: 8px;" onclick="getNewsDetailsByContentId('+results[i].contentId+')" class="btn btn-mini btn-info pull-right" type="button">Track</a></td>';
@@ -1471,17 +1495,30 @@ $(document).ready(function(){
 		
  });
 //18111
- $("#newsDetailsBtn").click(function(){
+ 
+ /* $("#newsDetailsBtn").click(function(){
   var a = $("#candidateNewsMainDiv > div > ul > li[class='active']  > a").attr('id');
   if( /criticsId/i.test(a))
   {
+	getResponseNewsCountNewsCount();
+	getCandidateCritiesNewsDetails();
+	getPartyWiseCriticsNews(0);
+
+  }
+else
+  getCandidateNewsCount();
+	 
+	 
+ });*/
+
+ $("#newsDetailsBtn").click(function(){
+  getCandidateNewsCount();
+ });
+
+ $("#criticsNewsDetailsBtn").click(function(){
     getResponseNewsCountNewsCount();
 	getCandidateCritiesNewsDetails();
 	getPartyWiseCriticsNews(0);
-  }
-	 else
-     getCandidateNewsCount();
-	 
  });
 
  $(".dateField").live("click", function(){
