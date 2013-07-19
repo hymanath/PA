@@ -118,11 +118,11 @@ border-collapse:collapse;
 
 
 #allRadio{margin-top: 0px; margin-right: 4px;}
-#byDateRadio{margin-top: 0px; margin-left: 15px; margin-right: 4px;}
-#existingFromText,#existingToText{width: 130px;}
+#byDateRadio,#CriticsbyDateRadio{margin-top: 0px; margin-left: 15px; margin-right: 4px;}
+#existingFromText,#existingToText,#criticsExistingFromText,#criticsExistingToText{width: 130px;}
 #radioBtnDiv{margin-bottom: 20px;}
 #selectNewsInnerDiv{margin-left: 149px;}
-#showAndHideDateSelectDiv{margin-left: 17px;}
+#showAndHideDateSelectDiv,#showAndHideDateCriticsDiv{margin-left: 17px;}
 #newsDetailsBtn{margin-top: -7px; margin-left: 16px;}
 #candidateNewsGraphDiv{clear:both;}
 #selectRadioBtnTable td{vertical-align: top;}
@@ -132,7 +132,7 @@ border-collapse:collapse;
 #candidateNewsMainDiv h4{text-align: center; margin-bottom: 20px;}
 #headingSpan{padding: 5px 68px; border-radius: 5px;}
 #categoryGallary{margin-left: 12px; margin-right: 4px; margin-top: 0px;}
-#errorMsgDiv{text-align: center; font-size: 13px; margin-bottom: 10px;}
+#errorMsgDiv,#errorMsgDivForCritics{text-align: center; font-size: 13px; margin-bottom: 10px;}
 #districtList,#categoryList,#galleryList{margin-left: 12px;width:200px;}
 #respondNotRespondNewsCountDiv{margin-top: 11px; margin-bottom: 25px;margin-left:100px;width:800px;}
 #respondNotRespondNewsCountDiv table{margin-top: 10px;}
@@ -181,6 +181,8 @@ border-collapse:collapse;
 .unstyled.pad10 > li {
     display: table;
 }
+#errorMsgDivForCritics{color:red;}
+#showAndHideDateCriticsDiv{ margin-bottom: 12px;margin-top: 20px;}
 </style>
 <script type="text/javascript">
 var fromDate = '${fromDate}';
@@ -206,6 +208,7 @@ var toDate = '${toDate}';
 	
  
    <div id="errorMsgDiv"></div>
+   <div id="errorMsgDivForCritics"></div>
     <div id="selectNewsDiv">
      <div id="selectNewsInnerDiv" style="display:none;">
 	  <table id="selectRadioBtnTable">
@@ -215,6 +218,12 @@ var toDate = '${toDate}';
 				<input type="radio" value="all" name="candidateNewsRadio" class="candidateNewsRadioCls" id="allRadio" checked="true"/><b>All</b>
 				<input type="radio" value="byDate" name="candidateNewsRadio" class="candidateNewsRadioCls" id="byDateRadio"/><b>By Date</b>
 			</div>
+
+			<div id="radioBtnDivForCritics" style="display:none;">
+				<input type="radio" value="all" name="candidateCriticsNewsRadio" class="candidateCriticsNewsRadioCls" id="allRadio" checked="true"/><b>All</b>
+				<input type="radio" value="byDate" name="candidateCriticsNewsRadio" class="candidateCriticsNewsRadioCls" id="CriticsbyDateRadio"/><b>By Date</b>
+			</div>
+
 	      </td>
 		  
 		  <td>
@@ -235,6 +244,12 @@ var toDate = '${toDate}';
 			 <label style="float:left;"><b>From Date: </b><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"></label>
 			 <label style="float: left; margin-left: 11px;"><b>To Date: </b><input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"></label>
 			</div>
+
+			<div id="showAndHideDateCriticsDiv" style="display:none;">
+			 <label style="float:left;"><b>From Date: </b><input type="text" id="criticsExistingFromText" class="dateField" readonly="true" name="fileDate" size="20"></label>
+			 <label style="float: left; margin-left: 11px;"><b>To Date: </b><input type="text" id="criticsExistingToText" class="dateField" readonly="true" name="fileDate" size="20"></label>
+			</div>
+
 	      </td>
 		 </tr>
 		 <tr>
@@ -265,7 +280,7 @@ var toDate = '${toDate}';
     
 	<div>
 	 <div id="partyWiseCriticsNewsMainDiv" style="display:none;" class="widget blue">
-	  <h4>Party Wise Critics </h4>
+	  <h4>Total Critics </h4>
 	  <span id="hideAndShowCriticsSpan"><a class="btn btn-info criticsNewsCls" href="javascript:{}" id="hideCriticsId">Hide</a></span>
       <div id="hideAndShowLatestNewsDiv">
 	   <div id="latestNewsDiv"></div>
@@ -311,6 +326,36 @@ function hideWhenCandiNewsClcked(){
 	$('.filter2').css('display','block');
 	$("#partyWiseCriticsNewsMainDiv").css('display','none');
 
+	if($("#galleryCheckBoxId").is(":checked"))
+	 $("#galleryListShowHideTb").css('display','inline-block');
+
+	if($("#categoryCheckBoxId").is(":checked"))
+	 $("#categoryShowAndHideTb").css('display','inline-block');
+
+	if($("#categoryGallary").is(":checked"))
+     $("#galleryListShowHideTb").css('display','inline-block');
+
+	if($("#districtCheckboxId").is(":checked"))
+     $("#districtShowAndHideDiv").css('display','inline-block');
+
+	$("#candidateCritiesNewsDiv").css('display','none');
+	$("#partyWiseCriticsNewsMainDiv").css('display','none');
+
+	$("#radioBtnDiv").css('display','inline-block');
+	$("#radioBtnDivForCritics").css('display','none');
+
+	
+	$("#showAndHideDateCriticsDiv").css('display','none');
+    
+    
+	var radio = $("input:radio[name=candidateNewsRadio]:checked").val();
+	if(radio == "byDate")
+	 $("#showAndHideDateSelectDiv").css('display','inline-block');
+	else
+	 $("#showAndHideDateSelectDiv").css('display','none');
+	$("#errorMsgDiv").html('');
+	$("#errorMsgDivForCritics").html('');
+
 }
 
 $('#criticsId').click(function(){
@@ -321,6 +366,28 @@ $('#criticsId').click(function(){
 	$('.filter2').css('display','none');
 	getPartyWiseCriticsNews(0);
 	getCandidateCritiesNewsDetails();
+
+	$("#galleryListShowHideTb").css('display','none');
+	$("#categoryShowAndHideTb").css('display','none');
+	$("#galleryListShowHideTb").css('display','none');
+	$("#districtShowAndHideDiv").css('display','none');
+
+    $("#radioBtnDiv").css('display','none');
+	$("#radioBtnDivForCritics").css('display','block');
+
+	
+	$("#showAndHideDateSelectDiv").css('display','none');
+	
+    var radio = $("input:radio[name=candidateCriticsNewsRadio]:checked").val();
+	if(radio == "byDate")
+	 $("#showAndHideDateCriticsDiv").css('display','inline-block');
+	else
+	 $("#showAndHideDateCriticsDiv").css('display','none');
+	
+
+    $("#errorMsgDiv").html('');
+	$("#errorMsgDivForCritics").html('');
+
 });
 
 function getCandidateNewsCount()
@@ -851,7 +918,8 @@ function getDistrictList()
 function getResponseNewsCountNewsCount()
 {
    $("#errorMsgDiv").html('');
-   var radioVal = $("input:radio[name=candidateNewsRadio]:checked").val();
+   $("#errorMsgDivForCritics").html('');
+   var radioVal = $("input:radio[name=candidateCriticsNewsRadio]:checked").val();
    var fromDate = '';
    var toDate = '';
    var galleryIdsArray = new Array();
@@ -863,22 +931,22 @@ function getResponseNewsCountNewsCount()
 
    if(radioVal == "byDate")
    {
-	 $("#showAndHideDateSelectDiv").css("display","inline-block");
-	 fromDate = $("#existingFromText").val();
-     toDate = $("#existingToText").val();
+	 $("#showAndHideDateCriticsDiv").css("display","inline-block");
+	 fromDate = $("#criticsExistingFromText").val();
+     toDate = $("#criticsExistingToText").val();
 	 if(fromDate == '' && toDate =='')
 	 {
-	  $("#errorMsgDiv").html('Please Select From And To Dates.');
+	  $("#errorMsgDivForCritics").html('Please Select From And To Dates.');
 	  return;
 	 }
 	 if(fromDate == '')
 	 {
-	  $("#errorMsgDiv").html('Please Select From Date.');
+	  $("#errorMsgDivForCritics").html('Please Select From Date.');
 	  return;
 	 }
 	 if(toDate =='')
 	 {
-	  $("#errorMsgDiv").html('Please Select To Date.');
+	  $("#errorMsgDivForCritics").html('Please Select To Date.');
 	  return;
 	 }
 	 tempVar = "byDate";
@@ -886,7 +954,7 @@ function getResponseNewsCountNewsCount()
    }
    else
    {
-    $("#showAndHideDateSelectDiv").css("display","none");
+    $("#showAndHideDateCriticsDiv").css("display","none");
     tempVar = "all";
 	
    }
@@ -1129,9 +1197,9 @@ function getResponseNewsDetails(newsType,partyId,tempVarForParty,candidateId)
 
 function getCandidateCritiesNewsDetails()
 {
-  
-var fromDate = $("#existingFromText").val();
-var toDate = $("#existingToText").val();
+
+var fromDate = $("#criticsExistingFromText").val();
+var toDate = $("#criticsExistingToText").val();
   var jsObj={
 		fromDate:fromDate,
 		toDate:toDate,
@@ -1200,26 +1268,28 @@ function getPartyWiseCriticsNews(startIndex)
    var galleryIdsArray = new Array();
    var categoryIdsArray = new Array();
    var locationIdsList = new Array();
-   var radioVal = $("input:radio[name=candidateNewsRadio]:checked").val();
+   var radioVal = $("input:radio[name=candidateCriticsNewsRadio]:checked").val();
    var tempVar = "all";
+   $("#errorMsgDiv").html('');
+   $("#errorMsgDivForCritics").html('');
    if(radioVal == "byDate")
    {
-	 $("#showAndHideDateSelectDiv").css("display","inline-block");
-	 fromDate = $("#existingFromText").val();
-     toDate = $("#existingToText").val();
+	 $("#showAndHideDateCriticsDiv").css("display","inline-block");
+	 fromDate = $("#criticsExistingFromText").val();
+     toDate = $("#criticsExistingToText").val();
 	 if(fromDate == '' && toDate =='')
 	 {
-	  $("#errorMsgDiv").html('Please Select From And To Dates.');
+	  $("#errorMsgDivForCritics").html('Please Select From And To Dates.');
 	  return;
 	 }
 	 if(fromDate == '')
 	 {
-	  $("#errorMsgDiv").html('Please Select From Date.');
+	  $("#errorMsgDivForCritics").html('Please Select From Date.');
 	  return;
 	 }
 	 if(toDate =='')
 	 {
-	  $("#errorMsgDiv").html('Please Select To Date.');
+	  $("#errorMsgDivForCritics").html('Please Select To Date.');
 	  return;
 	 }
 	 tempVar = "byDate";
@@ -1439,7 +1509,6 @@ $('#errorMsgDiv').html('');
   $("#galleryListShowHideTb").css("display","inline-block");
   $("#categoryShowAndHideTb").css("display","none");
   
- 
 
   getGalleriesList();
  }
@@ -1548,6 +1617,26 @@ $("#showCriticsId").live("click",function(){
  $("#hideAndShowCriticsSpan").html("<a class='btn btn-info criticsNewsCls' href='javascript:{}' id='hideCriticsId'>Hide</a>");
 
 });
+
+
+$(".candidateCriticsNewsRadioCls").click(function(){
+
+ $("#criticsExistingFromText").val('');
+ $("#criticsExistingToText").val('');
+ var radioVal = $("input:radio[name=candidateCriticsNewsRadio]:checked").val();
+
+ if(radioVal == "byDate")
+ {
+	$("#showAndHideDateCriticsDiv").css("display","inline-block");
+
+
+ }
+ else
+ {
+  $("#showAndHideDateCriticsDiv").css("display","none");
+ }
+		
+ });
 
 });//End OF Ready
 </script>
