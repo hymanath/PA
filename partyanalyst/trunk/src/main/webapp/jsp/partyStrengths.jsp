@@ -669,7 +669,7 @@
 			str += '	</table>';			
 			str += '	<div style="display:none;" id="'+partiesDetails[k].partyName+'_AlliancesPartiesData"></div>';	
 			str += '	<div id="'+partiesDetails[k].partyName+'DATA_DIV">';		
-			str += '	<table>';				
+			str += '	<table class="table table-bordered">';				
 			str +='		<tr>';
 			str += '		<td class="headerStyle">Total No of Times Won </td>';
 			str += '		<td class="headerStyle">Constituencies Count </td>';	
@@ -1275,6 +1275,7 @@
 		$('#searchByConstituencyData').val('');
 		$('#districtErrDiv').html('');
 		$('#ConstituencyErrDiv').html('');
+		var party = $("#partySelect").val();
 		var name = $('#searchByDistrictData').val();
 		
 		if(name.length >0){
@@ -1297,7 +1298,8 @@
 				searchType : "DISTRICT",
 				searchText : enteredText,
 				stateId : selectedStateElmts,
-				electionType :electionType,		
+				electionType :electionType,	
+				party:party,
 				task:"getConstituenciesByDistrictMatchingCriteria"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1311,7 +1313,9 @@
 		$('#searchByDistrictData').val('');
 		$('#districtErrDiv').html('');
 		$('#ConstituencyErrDiv').html('');
+
 		var name = $('#searchByConstituencyData').val();
+		var party = $("#partySelect").val();
 		if(name.length >0){
 			if(/[^a-zA-Z]/.test(name)){
 			$('#ConstituencyErrDiv').html('Search By Constituency Accepts only Characters');
@@ -1332,7 +1336,8 @@
 				searchType : "CONSTITUENCY",
 				searchText : enteredText,
 				stateId : selectedStateElmts,
-				electionType :electionType,		
+				electionType :electionType,
+				party:party,
 				task:"getConstituenciesMatchingCriteria"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
