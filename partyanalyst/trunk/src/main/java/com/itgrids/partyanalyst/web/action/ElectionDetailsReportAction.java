@@ -348,7 +348,6 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		electionYears = new ArrayList<SelectOptionVO>();
 		partiesList = new ArrayList<SelectOptionVO>();
 		
-		request.setAttribute("host", IConstants.DEPLOYED_HOST);
 		
 		if (electionType != null
 				&& electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE)
@@ -381,6 +380,8 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 						.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
 			}
 		}
+		request.setAttribute("host", IConstants.DEPLOYED_HOST);
+		
 		try{
 		  if(electionTypeId != null && electionTypeId.longValue() == 1 || electionTypeId.longValue() == 2)
 		    wonCandidateResults = electionReportService.getAllWonCandidates(new Long(electionId),electionTypeId);
