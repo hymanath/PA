@@ -869,7 +869,7 @@ function callAjax(jsObj,url)
 		
 		if(result.resultCode == 0)
 		{
-			$("#votingTrendzErrorMsgDiv").html("Voters Basic Info Inserted Successfully.").css("color","green");
+			$("#votingTrendzErrorMsgDiv").html("VotingTrendz Info Inserted Successfully.").css("color","green");
 				return;
 		}
 		else
