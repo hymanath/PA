@@ -5,6 +5,7 @@
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -67,7 +68,9 @@ margin:-1px 0px 0px 0px ;
 .nav1 li:hover{background:#FFFF00;border-bottom:4px solid red;}
 
 .menuActive{border-bottom:4px solid red;box-shadow:0px 0px 2px #ccc;border-radius:2px;}
-
+.requiredFont{color:red;}
+#changePasswordInnerDiv{font-size:13px;}
+#errorMsgDiv{margin-top: 5px; margin-bottom: -10px; margin-left: 134px;}
 </style>
 <decorator:head/>
 </head>
@@ -78,7 +81,9 @@ margin:-1px 0px 0px 0px ;
 <td>
 
   <div class="container-fluid headerBg" style="padding-left: 0px; padding-right: 0px;">
-  
+  <div id="changePasswordDiv">
+  <div id="changePasswordInnerDiv"></div>
+  </div>
 
 		<!---Header----->
 		<div class="container">	
@@ -92,6 +97,26 @@ margin:-1px 0px 0px 0px ;
 				<div class="row-fluid">
 					<!----Member Area Div---->
 					<div class="span12">
+					
+					 <c:if test="${sessionScope.USER != null}">
+					   <c:set var="urlString" value="${pageContext.request.requestURI}" />
+					   
+						<c:if test="${fn:contains(urlString, 'homePage')}">
+   						
+						 <div class="btn-group" id="changePasswordTab" style="margin-left: 264px; margin-top: 5px;" >
+								 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                 <img src="images/userSettings.png" />
+                                 <span class="caret"></span>
+                                 </a>
+                             <ul class="dropdown-menu">
+								<li><a tabindex="-1" id="changePasswordId" href="javascript:{}">Change Password</a></li>
+								
+							</ul>
+						 </div>
+					</c:if>
+
+					 </c:if>
+
 						<ul class="nav nav-pills pull-right memberArea ">
 						 <c:if test="${sessionScope.USER == null}">
 						  <li><a href="javascript:{}" onClick="openDialogForLoginWindow()">Login</a></li>
@@ -213,7 +238,125 @@ $('.headerMenu li a').click(function() {
 	$(this).closest('li').addClass('menuActive');
 });
 
+$(document).ready(function(){
+$("#changePasswordId").click(function(){
+
+  var str = "";
+  str +='<div id="errorMsgDiv"></div>';
+  str +='<table style="margin-left: 35px; margin-top: 18px;">';
+  str +='<tr>';
+  str +='<td>Current Password <font class="requiredFont">*</font></td>';
+  str +='<td><input type="password" id="currentPWD"></td>';
+  str +='</tr>';
+  str +='<tr>';
+  str +='<td>New Password <font class="requiredFont">*</font></td>';
+  str +='<td><input type="password" id="newPWD"></td>';
+  str +='</tr>';
+  str +='<tr>';
+  str +='<td>Confirm Password <font class="requiredFont">*</font></td>';
+  str +='<td><input type="password" id="ConfirmPWD"></td>';
+  str +='</tr>';
+  
+  str +='</table>';
+  str +='<input type="button" class="btn btn-info" value="submit" id="changePasswordBtn" style="margin-left: 225px; margin-top: 13px;"/>';
+  $("#changePasswordInnerDiv").html(str);
+
+
+
+  $("#changePasswordDiv").dialog({
+   width: 500,
+   height: 280,
+   modal: true,
+   title:"Change Password"
+  
+  });
+
+$("#changePasswordDiv").dialog();	
+	
+});
+
+
+$("#changePasswordBtn").live("click",function(){
+ $("#errorMsgDiv").html('');	
+ var currentPWD = $.trim($("#currentPWD").val());
+ var newPWD = $.trim($("#newPWD").val());
+ var confirmPWD = $.trim($("#ConfirmPWD").val());
+
+ if(currentPWD.length == 0)
+ {
+   $("#errorMsgDiv").html('Please Enter Current Password.').css("color","red");
+   return;
+ }
+
+ else if(newPWD.length==0)
+ {
+  $("#errorMsgDiv").html('Please Enter New Password.').css("color","red");
+   return;
+ }
+ else if(newPWD.length >0 && newPWD.length < 8)
+ {
+  $("#errorMsgDiv").html('New Password Minimum Of 8 Characters.').css("color","red");
+   return;
+ }
+ else if(confirmPWD.length==0)
+ {
+  $("#errorMsgDiv").html('Please Enter Confirm Password.').css("color","red");
+   return;
+ }
+
+ 
+ else if(currentPWD == newPWD)
+ {
+  $("#errorMsgDiv").html('Your new password is same as existing one').css("color","red");
+   return;
+ }
+ else if(newPWD != confirmPWD)
+ {
+  $("#errorMsgDiv").html('New and confirm passwords are not same.').css("color","red");
+   return;
+ }
+
+$.ajax({
+      url: "changePasswordAction.action?",
+      type: "post",
+      data: {currentPWD:currentPWD,newPWD:newPWD,confirmPWD:confirmPWD},
+      success: function(results){
+       showPasswordChangeStatus(results);   
+      },
+      error:function(results){
+       showPasswordChangeStatus(results);     
+      }   
+    }); 
+
+	
+});
+
+});
+
+function showPasswordChangeStatus(results)
+{
+ 
+ $("#errorMsgDiv").html('');
+
+ if(results == null)
+  $("#errorMsgDiv").html('Error Occured Try Again !').css("color","red");
+
+ else if(results.resultCode == 1 && results.message != null)
+  $("#errorMsgDiv").html(''+results.message+'').css("color","red");
+
+ else
+ {
+  $("#currentPWD").val('');
+  $("#newPWD").val('');
+  $("#ConfirmPWD").val('');
+  $("#errorMsgDiv").html('PassWord Changed Successfully.').css("color","green");
+
+ }
+
+}
+
 </script>
+
 </body>
 </html>
 

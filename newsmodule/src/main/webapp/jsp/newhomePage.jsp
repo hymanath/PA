@@ -49,6 +49,7 @@
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
 
 	<script src="js/partyWiseNewsDisplay.js"></script>
+	<script type="text/javascript" src="js/bootstrap.js"></script>
 <style type="text/css">
 @font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
 @font-face {
@@ -466,7 +467,7 @@ $(document).ready(function(){
 						
 						<div class="span12 boxHeading"><h4 id="headingDiiv">Get Report</h4></div>
 						<div class="span12">
-						<div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&"><input type="button" value="News Report" class="btn btn-info" style="margin:10px;"/></a></div>
+						<div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&"><input type="button" value="View News Report" class="btn btn-info" style="margin:10px;"/></a></div>
 						</div>
 						<!--Created By sasi for Candidate News-->
 						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Candidate News</h4></div>

@@ -603,6 +603,24 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	}
 	  return Action.SUCCESS;
   }
+  
+  public String changePassword()
+  {
+	  try{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		if(regVO == null)
+		 return ERROR;
+		 String currentPwd = request.getParameter("currentPWD");
+		 String newPassword = request.getParameter("newPWD");
+		 resultStatus = newsMonitoringService.changePassword(currentPwd,newPassword,regVO.getRegistrationID());
+		 
+	  }catch (Exception e) {
+		  e.printStackTrace();
+		  Log.error("Exception Occured in changePassword() method, Exception - "+e);
+	}
+	  return Action.SUCCESS;
+  }
    
    
 }
