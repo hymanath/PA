@@ -1412,7 +1412,7 @@
 		if(results.partyName == "All Parties"){
 			countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies Present in the last '+ results.selectedYearsCount +' election years</a></span>';
 		}else{
-			countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies present in any of last '+ results.selectedYearsCount +' election years and won by <b style="font-weight:bold;color:red;">'+ results.partyName +'</b> party in any election </a></span>';
+			countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Current constituencies present in any of last '+ results.selectedYearsCount +' election years and won by <b style="font-weight:bold;color:red;">'+ results.partyName +'</b> party in any election </a></span>';
 		}
 		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> : '+results.requiredConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
