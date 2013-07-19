@@ -2385,7 +2385,7 @@ try{
 	<div id="showContentDivInnerDiv"></div>
 	<div id="showContentDivInnerDiv"></div>
  </div>
-	<div id="videoGallaryPopUpDiv"></div>
+	<div id="videoGallaryPopUpDiv" style="display:none;"></div>
 	<div id="emailAlertDiv"></div>
 	<div id="sendMessageDiv">
     <div id="constituencySelectDiv"/>
