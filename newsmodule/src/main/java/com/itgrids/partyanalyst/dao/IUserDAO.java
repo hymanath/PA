@@ -108,4 +108,7 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public Long checkForUserNameAndPasswordAvaliablity(String userName,String password);
 	public User getUserByUserNameAndPassword(String userName,String password);
 	public List<Object[]> chechForUserType(Long userId);
+	
+	public String checkCurrentPasswordExist(String password,Long userId);
+	
 }

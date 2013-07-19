@@ -36,7 +36,7 @@
 		<table class="table table-hover table-bordered">
 		<tr>
 		<td>
-		<a  class="btn btn-info" href="userRegistration.action">Registraion Form</a>
+		<a  class="btn btn-info" href="userRegistration.action">Registration Form</a>
 		</td><td><a  class="btn btn-info" href="javascript:{}" onClick="createNewSource();">Create New Source</a></td>
 		<td><a  class="btn btn-info" href="javascript:{uploadMLCCandidateDetails();}">Upload Party Candidates </a></td>
 		</tr>

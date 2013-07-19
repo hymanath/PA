@@ -5610,6 +5610,12 @@
 		     <param name="root">newsCountVOsList</param>
 		   </result>
 		 </action>
+		 
+		 <action name="changePasswordAction" class="newsDetailsAction" method="changePassword">
+		 <result name="success" type="json">
+		 <param name="root">resultStatus</param>
+		 </result>
+		 </action>
 		</package>
 		
 		

@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.model.NewsFlag;
 import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
@@ -4382,4 +4383,30 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
         }
 	return fileGalleryIdsList;
   }
+  
+  public ResultStatus changePassword(String currentPWD,String newPWD,Long userId)
+  {
+	  ResultStatus resultStatus = new ResultStatus();
+	  try{
+		  
+		String password = userDAO.checkCurrentPasswordExist(currentPWD.trim(), userId);  
+		if(password == null)
+		{
+		  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		  resultStatus.setMessage(" Invalid Current Password ");
+		  return resultStatus;
+		}
+		 User user = userDAO.get(userId);
+		 user.setPassword(newPWD.trim());
+		 userDAO.save(user);
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  return resultStatus;
+	  }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in changePassword() method , Exception - "+e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+	}
+  }
+  
 }

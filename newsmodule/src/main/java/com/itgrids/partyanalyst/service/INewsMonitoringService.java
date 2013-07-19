@@ -71,6 +71,7 @@ public interface INewsMonitoringService {/*
 	
 	public List<CandidateNewsCountVO> getCandidateCritiesNewsDetails(String fromDateStr,String toDateStr);//,String tempVar);
 	
+	public ResultStatus changePassword(String currentPWD,String newPWD,Long userId);
 	
 }
 

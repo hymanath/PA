@@ -488,4 +488,13 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return query.list();
 	}
 	
+	public String checkCurrentPasswordExist(String password,Long userId)
+	{
+		Query query = getSession().createQuery(" select model.password from User model where model.userId =:userId and model.password =:password  ");
+		query.setParameter("userId", userId);
+		query.setParameter("password", password);
+		
+		return (String) query.uniqueResult();
+	}
+	
 }
