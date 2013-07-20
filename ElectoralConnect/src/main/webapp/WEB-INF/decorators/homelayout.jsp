@@ -320,7 +320,7 @@
 								else
 								{
 									//alert("Please Enter Correct Username?");
-									$('#errorDiv').html('<b style="color:red">Please Enter Correct Username?</b>');
+									$('#errorDiv').html('<b style="color:red">Please Enter Correct Username </b>');
 								}
 								
 							}

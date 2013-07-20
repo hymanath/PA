@@ -228,6 +228,9 @@ public class CreateAnnouncementAction extends ActionSupport implements ServletRe
 		 {
 			 filePath = context.getRealPath("/")+"Uploaded_Documents"+pathSeperator; 
 		 }
+		 else{
+			 filePath = context.getRealPath("/")+"Uploaded_Documents"+pathSeperator; 
+		 }
 		
         filePath=filePath+subFolder+pathSeperator;
         System.out.println(filePath);

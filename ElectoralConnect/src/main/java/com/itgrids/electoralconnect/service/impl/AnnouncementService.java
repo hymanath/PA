@@ -359,12 +359,12 @@ public class AnnouncementService implements IAnnouncementService{
 		 * @return List<AnnouncementVO>
 		 * @date 04-07-2013
 		 */
-		public List<AnnouncementVO> getAllAnnouncements(Long announcemetTypeId)
+		public List<AnnouncementVO> getAllAnnouncements(Long announcemetTypeId,int startRecord,int maxRecord)
 		{
 			List<AnnouncementVO> returnList = new ArrayList<AnnouncementVO>();
 			try {
 				LOG.debug("Enterd into getAnnouncementById() method in AnnouncementService Service");
-				List<Object[]> announcementsList = announcementFilesDAO.getAllAnnoncement(announcemetTypeId);
+				List<Object[]> announcementsList = announcementFilesDAO.getAllAnnoncement(announcemetTypeId,startRecord,maxRecord);
 				if(announcementsList != null && announcementsList.size() >0)
 				{
 					returnList = fillAnnouncementVO(announcementsList);
@@ -408,7 +408,17 @@ public class AnnouncementService implements IAnnouncementService{
 				LOG.debug("Enterd into fillAnnouncementVO() method in AnnouncementService Service");
 				if(announcementsList != null && announcementsList.size() >0)
 				{
+					
 					Announcements announcements = new Announcements();
+					
+					//This to get All announcements Count
+					Object[] prms=announcementsList.get(0);
+					Announcements announcemnt=new Announcements();
+					announcemnt=(Announcements) prms[1];
+					Long anncmntType=announcemnt.getAnnouncementType().getAnnouncementTypeId();
+					int announcementsCount=announcementFilesDAO.getAllAnnoncementCountForPaging(anncmntType);
+					
+					
 					File file = new File();
 					for (Object[] parms : announcementsList) {
 						AnnouncementVO announcementVO = new AnnouncementVO();
@@ -431,6 +441,7 @@ public class AnnouncementService implements IAnnouncementService{
 						announcementVO.setFileName(file.getFileName() != null ?file.getFileName() :"");
 						announcementVO.setCommentsCount(commentDAO.getTotalCommentsCountByAnnouncementId(announcements.getAnnouncementId()));
 						announcementVO.setCmmntsLstOfAnncmnt(getCommentsOfThisAnnouncement(announcements.getAnnouncementId()));
+						announcementVO.setAllAnnouncementsCount(announcementsCount);
 						returnList.add(announcementVO);
 					}
 				}

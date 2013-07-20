@@ -234,6 +234,9 @@
 				<input type="hidden" value="2" name="type"></input>
 				<legend>Announcement Form</legend>
 				<div class="align thumbnail whitegloss">
+				<div class="controls" style="margin-top:10px;margin-bottom:10px;">
+					<span id="statusMessage">${resultString}</span>
+				</div>
 				<div class="control-group">
 					<label class="control-label requ" for="Title">Title</label>
 					<div class="controls ">
@@ -295,9 +298,7 @@
 				</div>
 				<div class="control-group">
 						
-						<div class="controls">
-							<span id="statusMessage">${resultString}</span>
-						</div>
+						
 				
 				<input type="submit" class="btn btn-primary " id="saveAnnouncement" value="submit"></input>
 						
@@ -352,6 +353,10 @@
 	$('.menu').click(function(){
 		$('.menu').removeClass("activeNow");
 		$(this).addClass("activeNow");
+	});
+	
+	$('#announ').click(function(){
+		$('#statusMessage').html('');
 	});
 
 	function validateDate()

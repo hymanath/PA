@@ -23,7 +23,7 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 		 */
 		@SuppressWarnings("unchecked")
 		public List<AnnouncementFiles> getAllAnnouncements(int startRecord,int maxRecord){
-			Query queryObject=getSession().createQuery("select model from AnnouncementFiles model where model.announcements.isDeleted='NO'");
+			Query queryObject=getSession().createQuery("select model from AnnouncementFiles model where model.announcements.isDeleted='NO' order by model.announcements.date desc");
 			
 			queryObject.setFirstResult(startRecord);
 			queryObject.setMaxResults(maxRecord);
@@ -61,12 +61,29 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 		 * @date 04-07-2013
 		 */
 		@SuppressWarnings("unchecked")
-		public List<Object[]> getAllAnnoncement(Long announcementTypeId)
+		public List<Object[]> getAllAnnoncement(Long announcementTypeId,int startRecord,int maxRecord)
 		{
 			Query query = getSession().createQuery("select model.announcementFilesId,model.announcements,model.file from AnnouncementFiles model " +
-					" where model.announcements.announcementType.announcementTypeId = :announcementTypeId" );
+					" where model.announcements.announcementType.announcementTypeId = :announcementTypeId and model.announcements.isDeleted='NO' order by model.announcements.date desc" );
 			query.setParameter("announcementTypeId", announcementTypeId);
+			query.setFirstResult(startRecord);
+			query.setMaxResults(maxRecord);
 			return query.list();
+		}
+		
+		/**
+		 * This DAO is used to get All Annoncements Count for Paging
+		 * @return integer
+		 * @date 20-07-2013
+		 * @author sasi
+		 */
+		@SuppressWarnings("unchecked")
+		public int getAllAnnoncementCountForPaging(Long announcementTypeId)
+		{
+			Query query = getSession().createQuery("select count(*) from AnnouncementFiles model " +
+					" where model.announcements.announcementType.announcementTypeId = :announcementTypeId and model.announcements.isDeleted='NO' order by model.announcements.date desc" );
+			query.setParameter("announcementTypeId", announcementTypeId);
+			return ((Long)query.uniqueResult()).intValue();
 		}
 		
 
@@ -115,7 +132,7 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 		public List<AnnouncementFiles> getAnnouncemetsBtSelDates(Date startDate,Date endDate,int startIndex,int maxIndex)
 		{
 			Query query = getSession().createQuery("select model from AnnouncementFiles model " +
-					" where Date(model.announcements.updatedTime) between :startDate and :endDate  and model.announcements.isDeleted='NO'");
+					" where Date(model.announcements.updatedTime) between :startDate and :endDate  and model.announcements.isDeleted='NO' order by model.announcements.date desc");
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
 			query.setFirstResult(startIndex);
@@ -148,7 +165,7 @@ public class AnnouncementFilesDAO extends GenericDaoHibernate<AnnouncementFiles,
 		public List<AnnouncementFiles> getAllAnnouncemetsForSelectedType(Long typeId,int startIndex,int maxIndex)
 		{
 			Query query = getSession().createQuery("select model from AnnouncementFiles model " +
-					" where model.announcements.announcementType.announcementTypeId = :typeId  and model.announcements.isDeleted='NO'");
+					" where model.announcements.announcementType.announcementTypeId = :typeId  and model.announcements.isDeleted='NO' order by model.announcements.date desc");
 			query.setParameter("typeId", typeId);
 			query.setFirstResult(startIndex);
 			query.setMaxResults(maxIndex);

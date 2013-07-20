@@ -1,31 +1,27 @@
 package com.itgrids.electoralconnect.service.webServices;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 
 
 import com.itgrids.electoralconnect.dto.AnnouncementVO;
 import com.itgrids.electoralconnect.service.IAnnouncementService;
-import com.sun.jersey.api.core.InjectParam;
-import com.sun.jersey.api.spring.Autowire;
 //
-@Path("/notifications")
+@Path("/commentNow")
 @Component
 //@Scope("request")
-public class NotificationComponent {
+public class CommentComponent {
 
 	@Autowired
 	private IAnnouncementService announcementService ;
@@ -45,25 +41,23 @@ public class NotificationComponent {
 	
 	@GET
 	//@RolesAllowed("anils")
-	@Path("/top50Announcements/{announcementTypeId}")
+	@Path("/createComment")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<AnnouncementVO>  getTop50Announcements(@PathParam("announcementTypeId")  long announcementTypeId) {
-    	
-		  //return  announcementService.getTop5Announcements();
-		return announcementService.getLatest50Announcements(announcementTypeId);
- 
-	}
-	@GET
+	public List<AnnouncementVO>  getTop50Announcements() {
+ 		//return  announcementService.getTop5Announcements();
+		//return announcementService.getLatest50Announcements(announcementTypeId);
+		return null;
+ 	}
+	/*@GET
     @RolesAllowed("anils")
 	@Path("/allAnnouncements/{announcemetTypeId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	
 	 public List<AnnouncementVO>  getAllAnnouncements(@PathParam("announcemetTypeId")  long announcemetTypeId) {
 	    	
-		//return  announcementService.getAllAnnouncements(announcemetTypeId);
-		return null;
+		return  announcementService.getAllAnnouncements(announcemetTypeId);
 
 
-	}
+	}*/
 
 }

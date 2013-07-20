@@ -16,7 +16,7 @@ public interface IAnnouncementService {
 	
 	public List<AnnouncementVO> getAnnouncementById(Long announcementId);
 	
-	public List<AnnouncementVO> getAllAnnouncements(Long announcemetTypeId);
+	public List<AnnouncementVO> getAllAnnouncements(Long announcemetTypeId,int startRecord,int maxRecord);
 	
 	public List<AnnouncementVO> getAnnouncementByAnnouncementFileId(Long announcemetFileId);
 	

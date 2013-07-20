@@ -19,15 +19,23 @@
 	
 	h3{display:inline-block;}
 	#announceHead{text-align:center;border-bottom:1px solid #ccc;margin-bottom:2px;}
+	#paginationId{width:250px;margin-left:auto;margin-right:auto;margin-top:4px;}
 	
 </style>
 <body>
-<div id="allNotificationDiv" class="well getallcomment1" style="">
+<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+
+<div id="allNotificationDiv" class="getallcomment1" style="">
 </div>
+<div id="paginationId"></div>
 <script>
 var myResults = window.opener.allAnnouncements;
 var myjsobj= window.opener.announcementsJsObj;
 
+buildAllAnnouncementsWithPaging(myResults,myjsobj);
+function buildAllAnnouncementsWithPaging(myResults,jsObj){
+startRecord=jsObj.startRecord;
 if(myResults != null)
 {
 	var str = "";
@@ -40,23 +48,76 @@ if(myResults != null)
 		str +='<div class=" title_sec1">'+myResults[i].title+'</div>';
 		str +='<div class="title_sec4">'+myResults[i].description+'</div>';
 		str +='<div ><span class="title_sec2">Date Posted:</span><span>'+myResults[i].dateString+' </span></div>';
-		<!--str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';-->
+		
 		if(myResults[i].filePath != null && myResults[i].filePath != "")
 		{
 		   str +='<div ><span class="title_sec3">Releted Document:</span><a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileName+'</span></a></div>';
-			
-			<!--str += '<b>File Description : </b><span>'+myResults[i].fileDescription+'</span></br>';-->
-			<!--str += '<b>File Date : </b><span>'+myResults[i].fileDate+'</span></br>';-->
 		}
 		
 		str +='</div>';
 		
    } 
-
+   
   $('#allNotificationDiv').html(str);
+		var itemsCount=myResults.allAnnouncementsCount;
+		var maxRecord=myjsobj.maxRecord;
+		if(startRecord==0){
+			$("#paginationId").pagination({
+				items: itemsCount,
+				itemsOnPage: maxRecord,
+				cssStyle: 'light-theme',
+				onPageClick: function(pageNumber, event) {
+					var num=(pageNumber-1)*10;
+					getAllAnnoncementPaging(myjsobj.announcementName,num,10);
+				}
+			});
+			
+		}
 }
-	
+}
 
+
+function getAllAnnoncementPaging(name,startRecord,maxRecord)
+{
+var announcenentTypeId=myjsobj.announcenentTypeId;
+	var jsObj =
+		{  	
+			announcenentTypeId : announcenentTypeId,
+			announcementName   : name,
+			task               : "getAllAnnouncementsForPaging",
+			startRecord :startRecord,
+			maxRecord:maxRecord
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getTopAnnouncementsAction.action?"+rparam;
+		callAjaxForPaging(jsObj, url);
+}
+
+function callAjaxForPaging(jsObj,url){
+		 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+								myResults = YAHOO.lang.JSON.parse(o.responseText);					
+								
+								if(jsObj.task =="getAllAnnouncementsForPaging")
+								{
+									buildAllAnnouncementsWithPaging(myResults,jsObj);
+								}
+								
+								}catch (e) {
+									console.log(e);
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                		
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+ 	}
 
 </script>
 </body>

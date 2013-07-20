@@ -17,7 +17,7 @@ public interface IAnnouncementFilesDAO  extends GenericDao<AnnouncementFiles, Lo
 	
 	public int getAllAnnouncementsCountOfUser();
 	
-	public List<Object[]> getAllAnnoncement(Long announcementTypeId);
+	public List<Object[]> getAllAnnoncement(Long announcementTypeId,int startRecord,int maxRecord);
 	
 	public List<Object[]> getAnnouncementsByAnnouncementFileId(Long announcementFileId);
 	
@@ -30,4 +30,6 @@ public interface IAnnouncementFilesDAO  extends GenericDao<AnnouncementFiles, Lo
 	public Long getCountForSelAnnouncemetType(Long typeId);
 	
 	public List<Object[]> getLatest50Annoncements(Long announcementTypeId);
+	
+	public int getAllAnnoncementCountForPaging(Long announcementTypeId);
 }
