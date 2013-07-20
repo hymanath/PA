@@ -116,6 +116,13 @@
 			 <http-method>GET</http-method>
 			  <http-method>POST</http-method>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>commentNow</web-resource-name>
+            <description/>
+            <url-pattern>/EC/commentNow/*</url-pattern>
+			 <http-method>GET</http-method>
+			  <http-method>POST</http-method>
+        </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>anils</role-name>

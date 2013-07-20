@@ -147,10 +147,13 @@ public String getTopAnnouncements()
 			Long announcementId = jobj.getLong("announcementId");
 			announcementsList = announcementService.getAnnouncementById(announcementId);
 		}
-		else if(jobj.getString("task").equalsIgnoreCase("getAllAnnouncements"))
+		else if(jobj.getString("task").equalsIgnoreCase("getAllAnnouncements")||jobj.getString("task").equalsIgnoreCase("getAllAnnouncementsForPaging"))
 		{
 			Long announcemetId = jobj.getLong("announcenentTypeId");
-			announcementsList = announcementService.getAllAnnouncements(announcemetId);
+			int startRecord=jobj.getInt("startRecord");
+			int maxRecord=jobj.getInt("maxRecord");
+			
+			announcementsList = announcementService.getAllAnnouncements(announcemetId,startRecord,maxRecord);
 		}
 		
 		else if(jobj.getString("task").equalsIgnoreCase("getAllAnnouncementsByAnnounFileId"))

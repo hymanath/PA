@@ -26,6 +26,11 @@
 <script>
 var myResults = window.opener.announcementData;
 var resultString = '${resultString}';
+
+$('#announ').click(function(){
+	$('#statusMessage').html('');
+});
+
 if(myResults != null)
 {
 	var title = htmlspecialchars(myResults[0].title);
@@ -41,6 +46,9 @@ if(myResults != null)
 	str += '<input type="hidden" name="announcementFileId" value='+myResults[0].announcementFileId+'></input>';
 	str += '<input type="hidden" name="fileId" value='+myResults[0].fileId+'></input>';
 	str += '<legend>Announcement Form</legend>';
+	str += '<div class="controls" style="margin-top:10px;margin-bottom:10px;">';
+	str += '<span id="statusMessage">${resultString}</span>';
+	str += '</div>';
 	str += '<div class="align thumbnail whitegloss">';
 	str += '<div class="control-group">';
 	str += '<label class="control-label requ" for="Title">Title</label>';
@@ -114,9 +122,6 @@ if(myResults != null)
 	str += '<input type="file" id="docs" class="thumbnail" name="docs"></div>	</div></div>';
 	}
 	str += '<div class="control-group">';
-	str += '<div class="controls">';
-	str += '<span id="statusMessage">${resultString}</span>';
-	str += '</div>';
 	str += '<input type="submit" class="btn btn-primary " id="saveAnnouncement" value="Update"></input>';
 	str += '</form></div></div>';
 	$('#announcementForm').html(str);

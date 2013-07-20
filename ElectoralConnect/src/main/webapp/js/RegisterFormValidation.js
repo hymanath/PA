@@ -25,15 +25,15 @@ $(document).ready(function(){
 		firstName: {	
 			required: true,
 		    onlychar: true,
-			minlength: 2,
-			maxlength: 8
+			minlength: 1,
+			maxlength: 16
 			
 			},
 		lastName: {
 		    required :true,
 			onlychar: true,
-			minlength: 2,
-			maxlength: 8
+			minlength: 1,
+			maxlength: 16
 			},
 		emailId: {
 			required: true,
@@ -50,15 +50,15 @@ $(document).ready(function(){
 		firstName: {
 			required: "Please enter your firstname",
 		    onlychar: "Please enter valid firstname",
-            minlength: "Please enter atleast 2 characters",
-			maxlength: "Enter only maximum of 8 characters"
+            minlength: "Please enter atleast 1 characters",
+			maxlength: "Enter only maximum of 16 characters"
 			
 			},
 		lastName: {
 		   required: "Please enter your lastname",
 			onlychar:"Please enter valid lastname",
-		    minlength: "Please enter atleast 2 characters",
-			maxlength: "Enter only maximum of 8 characters"
+		    minlength: "Please enter atleast 1 characters",
+			maxlength: "Enter only maximum of 16 characters"
 		   },
 		emailId:{
 		    required: "Please provide the Email ID",

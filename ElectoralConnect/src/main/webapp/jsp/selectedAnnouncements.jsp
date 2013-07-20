@@ -50,7 +50,7 @@
 <div id="allNotificationDiv" align="center" ></div>
 </div>
 </div>
-<div><a class="btn btn-primary pull-right allblockinsected" onClick="getAllAnnoncements('${name}');">View All ${name}</a></div>
+<div><a class="btn btn-primary pull-right allblockinsected" onClick="getAllAnnoncements('${name}',0,10);">View All ${name}</a></div>
 <script>
 var myResults = window.opener.result;
 var startIndex = 0;
@@ -87,13 +87,15 @@ if(myResults != null)
 }
 
 
-function getAllAnnoncements(name)
+function getAllAnnoncements(name,startRecord,maxRecord)
 {
 	var jsObj =
 		{  	
 			announcenentTypeId : announcenentTypeId,
 			announcementName   : name,
-			task               : "getAllAnnouncements"
+			task               : "getAllAnnouncements",
+			startRecord :startRecord,
+			maxRecord:maxRecord
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "getTopAnnouncementsAction.action?"+rparam;
@@ -107,22 +109,6 @@ function buildAllAnnouncements(myResults,jsObj)
 		announcementsJsObj=jsObj;
 		
 		window.open('allAnnouncementsDisplayAction.action');
-		/* var str = "";
-		for(var i in myResults)
-		{
-			str += '<div></br>';
-			str += '<b>Title : </b><span>'+myResults[i].title+'</span></br>';
-			str += '<b>Description : </b><span>'+myResults[i].description+'</span></br>';
-			str += '<b>Date : </b><span>'+myResults[i].dateString+'</span></br>';
-			str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';
-			if(myResults[i].filePath =! null && myResults[i].filePath != "")
-			{
-				str += '<b>File Title : </b><a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileTitle+'</span></a></br>';
-				str += '<b>File Description : </b><span>'+myResults[i].fileDescription+'</span></br>';
-				str += '<b>File Date : </b><span>'+myResults[i].fileDate+'</span></br>';
-			}
-		   str += '</div>';
-	   } */
 	}
 	//$('#allNotificationDiv').html(str);
 }

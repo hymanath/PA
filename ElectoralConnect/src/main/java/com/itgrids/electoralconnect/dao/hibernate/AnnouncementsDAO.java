@@ -31,7 +31,7 @@ public class AnnouncementsDAO extends GenericDaoHibernate<Announcements, Long> i
 	public List<Announcements> getTopAnnouncements(Long announcementTypeId,int startIndex,int maxIndex)
 	{
 		Query query = getSession().createQuery("from Announcements model where " +
-				" model.announcementType.announcementTypeId = :announcementTypeId " +
+				" model.announcementType.announcementTypeId = :announcementTypeId and model.isDeleted='NO' " +
 				" order by model.announcementId desc");
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxIndex);
