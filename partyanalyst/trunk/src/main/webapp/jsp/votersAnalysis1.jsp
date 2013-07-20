@@ -1368,7 +1368,7 @@ for  body3 start    result  -->
 	<img src="./images/icons/search.gif" alt="Processing Image" id="basicDetailsAjax" style="display:none;position:absolute;top:20px;right:20px;"/>
 	<div id="votersBasicInfoDiv1"></div>
 	<div id="votersBasicInfoDiv"></div>
-	<div id="votersInfoMoreShowHide" style="display:none;"><span class="btn btn-info pull-right" href="javaScript:{};" onclick="getVotersDetails();" style="margin-top:5px;">Click here for voters details</span></div>
+	<div id="votersInfoMoreShowHide" style="display:none;"><span class="btn btn-info pull-right" href="javaScript:{};" onclick="getVotersDetails();" style="margin-top:5px;">Click here for Voters Details</span></div>
 
 
 
@@ -1566,7 +1566,7 @@ for  body3 start    result  -->
 <div id="tableDiv1"></div>
 <input id="ageLinkForHamletBooths1" type="button" value="View Booth Wise Age Details" onclick="showAllAgewiseDetailsForHamlet();" class="btn btn-info" style="display:none;float:right;margin-left:10px;" />
 <span id="ageLinkForHamletBooths" style="display:none;float:right;margin-top:10px;margin-left:3px;"><a href="javaScript:{showAllAgewiseDetailsForHamlet()}"  class="btn btn-info">View Booth Wise Age Details</a></span>
-<span id="ageLink" style="display:none;float:right;margin-top:10px;"><a href="javaScript:{showAllAgewiseDetails()}"  class="btn btn-info">View more details</a></span>
+<span id="ageLink" style="display:none;float:right;margin-top:10px;"><a href="javaScript:{showAllAgewiseDetails()}"  class="btn btn-info">View More Details</a></span>
 <span id="customGroupAgeLink" style="display:none;float:right;margin-top:10px;"><a href="javaScript:{getcustomGroupAgeInfo()}"  class="btn btn-info">View Voter Group Wise Age Details</a></span>
 
 <div style="display:none;"> <!-- HIDING THE POPUP -->
