@@ -3008,23 +3008,39 @@ public class VoterReportService implements IVoterReportService{
 					  for(Long localbodyId: localBodiesList)
 					  
 						  calculateAndInsertVoterBasicInfoForALocation(IConstants.LOCALELECTIONBODY,localbodyId,reportLevelValue,reportLevelValue,userId);
-					  
-					  List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(assemblylocalBodiesList, publicationDateId,reportLevelValue);
+				  }
+				  if(assemblylocalBodiesList != null && assemblylocalBodiesList.size() > 0)
+				  {
+					 List<Long> localElebodyIds = new ArrayList<Long>();
+					 List<Long> localElebodyIds1 = new ArrayList<Long>();
+					 List<Object[]> wards = null;
+					 List<Object[]> localEleIds = localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(assemblylocalBodiesList);
+					  if(localEleIds != null && localEleIds.size() > 0)
+					  {
+						  for(Object[] params : localEleIds)
+						  {
+							  if(params[0].toString().equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || (params[0].toString().equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE)))
+									localElebodyIds.add((Long) params[1]);
+							  else
+								  localElebodyIds1.add((Long)params[1]); 
+						  }
+					  }
+					  if(localElebodyIds1 != null && localElebodyIds1.size() > 0)
+					 wards = boothDAO.getWardsByLocalElecBodyIds(localElebodyIds1, publicationDateId,reportLevelValue);
+					  if(localElebodyIds != null && localElebodyIds.size() > 0)
+					 wards = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(localElebodyIds, publicationDateId,userId);  
 					  if(wards != null && wards.size() >0)
 					  {
 						  for(Object[] ward:wards)
 							  if(ward[0] != null)
 								  wardsList.add(new SelectOptionVO((Long)ward[0],ward[1].toString()));
-					  }
+					 }
 					  
 				  }
 				  
-				 if(localBodiesList.size() > 0)
+				 if(assemblylocalBodiesList.size() > 0)
 				  {
-					  /*for(Long localBodyId : localBodiesList)
-						  calculateAndInsertVoterBasicInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,reportLevelValue,reportLevelValue);*/
-					  
-					  List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(assemblylocalBodiesList,publicationDateId,reportLevelValue);
+					List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(assemblylocalBodiesList,publicationDateId,reportLevelValue);
 					  
 					  if(list3 != null && list3.size() > 0)
 					  {
@@ -3035,7 +3051,7 @@ public class VoterReportService implements IVoterReportService{
 				  }
 	              
 				 for(SelectOptionVO selectOptionVO:wardsList)
-	            	   calculateAndInsertVoterBasicInfoForALocation(IConstants.WARD,selectOptionVO.getId(),new Long(selectOptionVO.getName()),reportLevelValue,userId);
+	            	   calculateAndInsertVoterBasicInfoForALocation(IConstants.WARD,selectOptionVO.getId(),0l,reportLevelValue,userId);
 				  
 				 for(SelectOptionVO selectOptionVO : boothsList)
 					  if(!boothIdsList.contains(selectOptionVO.getId()))
@@ -3087,7 +3103,7 @@ public class VoterReportService implements IVoterReportService{
 				else if(locationType.equalsIgnoreCase(IConstants.BOOTH))
 					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, 0l,locationValue ,locationType);
 				else if(locationType.equalsIgnoreCase(IConstants.WARD))
-					result = votersAnalysisService.getPreviousVotersCountDetailsForHamlet(constituencyId,0l,0l,0l ,0l,userId ,IConstants.CUSTOMWARD);
+					result = votersAnalysisService.getPreviousVotersCountDetailsForHamlet(constituencyId,0l,0l,0l ,locationValue,userId ,IConstants.CUSTOMWARD);
 				
 				if(result != null && result.size() > 0)
 				{	

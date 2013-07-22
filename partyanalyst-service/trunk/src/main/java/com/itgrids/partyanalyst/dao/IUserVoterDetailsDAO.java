@@ -182,5 +182,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<Object[]> getBoothsForCustomWardIdsList(List<Long> wardIdsList,Long constituencyId,Long publicationDateId,Long userId);
 	
+	 public List<Object[]> getWardsBYLocalElectionBodyId(List<Long> ids , Long publicationId ,Long userId);
+	
 	
 }
