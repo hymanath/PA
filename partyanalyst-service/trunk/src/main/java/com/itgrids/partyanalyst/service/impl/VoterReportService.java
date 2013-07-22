@@ -2970,8 +2970,10 @@ public class VoterReportService implements IVoterReportService{
 					  if(selectOptionVO.getId().toString().substring(0,1).equalsIgnoreCase(IConstants.RURAL_TYPE))
 						  mandalIdsList.add(new Long(selectOptionVO.getId().toString().substring(1)));
 					  else
+					  {
 						  assemblylocalBodiesList.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0));
 						  localBodiesList.add(new Long(selectOptionVO.getId()));
+					  }
 					  
 				  }
 				  
