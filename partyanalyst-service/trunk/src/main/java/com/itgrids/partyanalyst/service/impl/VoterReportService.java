@@ -2955,6 +2955,7 @@ public class VoterReportService implements IVoterReportService{
 				  List<SelectOptionVO> wardsList = new ArrayList<SelectOptionVO>(0);
 				  List<Long>panchayatIdsList = new ArrayList<Long>(0);
 				  List<Long> localBodiesList = new ArrayList<Long>(0);
+				  List<Long> assemblylocalBodiesList = new ArrayList<Long>(0);
 				  List<Long> boothIdsList = new ArrayList<Long>(0);
 				  List<Object[]> list = null;
 				  List<Object[]> list2 = null;
@@ -2969,9 +2970,9 @@ public class VoterReportService implements IVoterReportService{
 					  if(selectOptionVO.getId().toString().substring(0,1).equalsIgnoreCase(IConstants.RURAL_TYPE))
 						  mandalIdsList.add(new Long(selectOptionVO.getId().toString().substring(1)));
 					  else
-						  //localBodiesList.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0));
+						  assemblylocalBodiesList.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0));
 						  localBodiesList.add(new Long(selectOptionVO.getId()));
-						  
+					  
 				  }
 				  
 				  for(Long mandalId : mandalIdsList)
@@ -3006,7 +3007,7 @@ public class VoterReportService implements IVoterReportService{
 					  
 						  calculateAndInsertVoterBasicInfoForALocation(IConstants.LOCALELECTIONBODY,localbodyId,reportLevelValue,reportLevelValue,userId);
 					  
-					  List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(localBodiesList, publicationDateId,reportLevelValue);
+					  List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(assemblylocalBodiesList, publicationDateId,reportLevelValue);
 					  if(wards != null && wards.size() >0)
 					  {
 						  for(Object[] ward:wards)
@@ -3021,7 +3022,7 @@ public class VoterReportService implements IVoterReportService{
 					  /*for(Long localBodyId : localBodiesList)
 						  calculateAndInsertVoterBasicInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,reportLevelValue,reportLevelValue);*/
 					  
-					  List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(localBodiesList,publicationDateId,reportLevelValue);
+					  List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(assemblylocalBodiesList,publicationDateId,reportLevelValue);
 					  
 					  if(list3 != null && list3.size() > 0)
 					  {
