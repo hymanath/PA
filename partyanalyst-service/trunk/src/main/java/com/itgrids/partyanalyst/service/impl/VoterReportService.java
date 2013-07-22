@@ -2945,7 +2945,7 @@ public class VoterReportService implements IVoterReportService{
 			}
 		}
 		
-		public ResultStatus insertVotersBasicInfoToIntermediateTables(Long reportLevelValue,Long publicationDateId)
+		public ResultStatus insertVotersBasicInfoToIntermediateTables(Long reportLevelValue,Long publicationDateId,Long userId)
 		{
 			ResultStatus resultStatus = new ResultStatus();
 			try{
@@ -2960,7 +2960,7 @@ public class VoterReportService implements IVoterReportService{
 				  List<Object[]> list2 = null;
 				  
 				  List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(reportLevelValue,IConstants.PRESENT_YEAR, null);
-				  calculateAndInsertVoterBasicInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,null,reportLevelValue);
+				  calculateAndInsertVoterBasicInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,null,reportLevelValue,userId);
 				  
 				  if(mandalsList == null || mandalsList.size() == 0)
 					  return null;
@@ -2969,11 +2969,13 @@ public class VoterReportService implements IVoterReportService{
 					  if(selectOptionVO.getId().toString().substring(0,1).equalsIgnoreCase(IConstants.RURAL_TYPE))
 						  mandalIdsList.add(new Long(selectOptionVO.getId().toString().substring(1)));
 					  else
-						  localBodiesList.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0));
+						  //localBodiesList.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0));
+						  localBodiesList.add(new Long(selectOptionVO.getId()));
+						  
 				  }
 				  
 				  for(Long mandalId : mandalIdsList)
-					  calculateAndInsertVoterBasicInfoForALocation(IConstants.MANDAL,mandalId,reportLevelValue,reportLevelValue);
+					  calculateAndInsertVoterBasicInfoForALocation(IConstants.MANDAL,mandalId,reportLevelValue,reportLevelValue,userId);
 				  
 				  if(mandalIdsList != null && mandalIdsList.size() >0)
 					   list = panchayatDAO.getPanchayatIdsByMandalIdsList(mandalIdsList);
@@ -2985,7 +2987,7 @@ public class VoterReportService implements IVoterReportService{
 				  }
 				  
 				  for(SelectOptionVO selectOptionVO : panchayatsList)
-					  calculateAndInsertVoterBasicInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),new Long(selectOptionVO.getName()),reportLevelValue);  
+					  calculateAndInsertVoterBasicInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),new Long(selectOptionVO.getName()),reportLevelValue,userId);  
 				  
 				  if(panchayatIdsList.size() > 0)
 					  list2 = boothDAO.getBoothIdsByPanchayatIdsInAPublication(panchayatIdsList, publicationDateId);
@@ -2993,9 +2995,17 @@ public class VoterReportService implements IVoterReportService{
 				  if(list2 != null && list2.size() > 0)
 					  for(Object[] params : list2)
 						  boothsList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
-				  
+				  // panchayat booths
+				  if(boothsList != null && boothsList.size() > 0)
+					  for(SelectOptionVO boothId : boothsList)
+						  calculateAndInsertVoterBasicInfoForALocation(IConstants.BOOTH,boothId.getId(),new Long(boothId.getName()),reportLevelValue,userId);
+				  //localBody Data
 				  if(localBodiesList != null && localBodiesList.size() >0)
 				  {
+					  for(Long localbodyId: localBodiesList)
+					  
+						  calculateAndInsertVoterBasicInfoForALocation(IConstants.LOCALELECTIONBODY,localbodyId,reportLevelValue,reportLevelValue,userId);
+					  
 					  List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(localBodiesList, publicationDateId,reportLevelValue);
 					  if(wards != null && wards.size() >0)
 					  {
@@ -3008,8 +3018,8 @@ public class VoterReportService implements IVoterReportService{
 				  
 				 if(localBodiesList.size() > 0)
 				  {
-					  for(Long localBodyId : localBodiesList)
-						  calculateAndInsertVoterBasicInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,reportLevelValue,reportLevelValue);
+					  /*for(Long localBodyId : localBodiesList)
+						  calculateAndInsertVoterBasicInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,reportLevelValue,reportLevelValue);*/
 					  
 					  List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(localBodiesList,publicationDateId,reportLevelValue);
 					  
@@ -3022,7 +3032,7 @@ public class VoterReportService implements IVoterReportService{
 				  }
 	              
 				 for(SelectOptionVO selectOptionVO:wardsList)
-	            	   calculateAndInsertVoterBasicInfoForALocation(IConstants.WARD,selectOptionVO.getId(),new Long(selectOptionVO.getName()),reportLevelValue);
+	            	   calculateAndInsertVoterBasicInfoForALocation(IConstants.WARD,selectOptionVO.getId(),new Long(selectOptionVO.getName()),reportLevelValue,userId);
 				  
 				 for(SelectOptionVO selectOptionVO : boothsList)
 					  if(!boothIdsList.contains(selectOptionVO.getId()))
@@ -3032,7 +3042,7 @@ public class VoterReportService implements IVoterReportService{
 				 
 				 if(allBoothsList != null && allBoothsList.size() > 0)
 					 for(Object[] params : allBoothsList)
-						 calculateAndInsertVoterBasicInfoForALocation(IConstants.BOOTH,(Long)params[0],0L,reportLevelValue);
+						 calculateAndInsertVoterBasicInfoForALocation(IConstants.BOOTH,(Long)params[0],0L,reportLevelValue,userId);
 				 
 				 /*for(Long boothId :boothIdsList)
 				 {
@@ -3057,7 +3067,7 @@ public class VoterReportService implements IVoterReportService{
 		}
 		
 		
-		public ResultStatus calculateAndInsertVoterBasicInfoForALocation(String locationType,Long locationValue,Long parentLocationId,Long constituencyId)
+		public ResultStatus calculateAndInsertVoterBasicInfoForALocation(String locationType,Long locationValue,Long parentLocationId,Long constituencyId,Long userId)
 		{
 			 ResultStatus resultStatus = new ResultStatus();
 			 List<VotersInfoForMandalVO> result = null;
@@ -3067,10 +3077,14 @@ public class VoterReportService implements IVoterReportService{
 					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, 0l,0l ,locationType);
 				else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
 					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,Long.valueOf(IConstants.RURAL_TYPE+locationValue.toString()), 0l,0l ,locationType);
+				else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,locationValue, 0l,0l ,IConstants.MANDAL);
 				else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, locationValue,0l ,locationType);
-				else if(locationType.equalsIgnoreCase(IConstants.WARD) || locationType.equalsIgnoreCase(IConstants.BOOTH))
+				else if(locationType.equalsIgnoreCase(IConstants.BOOTH))
 					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, 0l,locationValue ,locationType);
+				else if(locationType.equalsIgnoreCase(IConstants.WARD))
+					result = votersAnalysisService.getPreviousVotersCountDetailsForHamlet(constituencyId,0l,0l,0l ,0l,userId ,IConstants.CUSTOMWARD);
 				
 				if(result != null && result.size() > 0)
 				{	
@@ -3080,8 +3094,12 @@ public class VoterReportService implements IVoterReportService{
 						try{
 							votersInfoForMandalVO = new VotersInfoForMandalVO();
 							votersInfoForMandalVO.setConstituencyId(constituencyId);
+							
 							votersInfoForMandalVO.setReportLevelId(votersAnalysisService.getReportLevelId(locationType));
+							if(!locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
 							votersInfoForMandalVO.setReportLevelValue(locationValue);
+							else
+								votersInfoForMandalVO.setReportLevelValue((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationValue.toString().substring(1))).get(0));
 							votersInfoForMandalVO.setElectinYear(data.getElectinYear());
 							votersInfoForMandalVO.setIsPublication(data.getIsPublication());
 							votersInfoForMandalVO.setTotalBooths(data.getTotalBooths());
