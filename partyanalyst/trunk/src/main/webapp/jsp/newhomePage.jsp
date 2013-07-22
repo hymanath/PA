@@ -513,34 +513,34 @@ Quick Links</h2>
 					<h2><span><i class="icon-bookmark "id="icon_leftsec"></i><span>
  Tweets From Parties and Leaders </h2>
 						<div class="widget-block">
-							<jsp:include page="newsocialtwitter.jsp" /> 
+						<!--	<jsp:include page="newsocialtwitter.jsp" /> -->  
 						</div>
 				</div>
 				<!-- Close Center DIV -->			
 			</div>
 		<!--------Right div------>
-			<div class="span4">
+			<div class="span4" style="margin-left: 9px; width: 225px;">
 			
 				<div class="widget yellow explore-info">
-				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
-				<img src="images/RightPlace.gif"><a href="viewFeaturesAction.action" class="btn btn-small btn-warning pull-right inline" style="  bottom: 6px;position: absolute; right: 10px;" alt="Explore About PartyAnalyst Image">Explore!</a>
+				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;width: 225px;">
+				<img src="images/RightPlace.gif" style="width: 225px";><a href="viewFeaturesAction.action" class="btn btn-small btn-warning pull-right inline" style="  bottom: 6px;position: absolute; right: 10px;" alt="Explore About PartyAnalyst Image">Explore!</a>
 				
 				</div></div>
 				
 				<div class="widget green voters-pulse-home">
-				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
-				<img src="images/voters_pulse.gif" alt="voters pulse Image">
+				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;width: 225px;">
+				<img src="images/voters_pulse.gif" alt="voters pulse Image" style="width: 225px;">
 				<a class="btn btn-success btn-small" href="VotersPulse.action">View Now</a></div>
 				</div>
 				<div class="widget red explore-info">
-				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;">
-				<img src="images/RIT_Act_Tham.gif" style="opacity: 0.8;"><a href="righttoinformation.action" class="btn btn-small btn-primary pull-right inline" style="  bottom: 6px;position: absolute; right: 10px;" alt="Right To Information  Image">R T I</a>
+				<div class="widget-block" style="padding: 0px; display: inline-block; margin-top: 0px; margin-bottom: 0px;background:#fafafa;width:225px">
+				<img src="images/RIT_Act_Tham.gif" style="opacity:0.8;width=225px"><a href="righttoinformation.action" class="btn btn-small btn-primary pull-right inline" style="  bottom: 6px;position: absolute; right: 10px;" alt="Right To Information  Image">R T I</a>
 				
 				</div></div>
-					<div class="widget blue videogallery">
+					<div class="widget blue videogallery" >
 				<h2 style="font-size:14px;">PartyAnalyst-2.0 Services</h2>
 				<a  href="specialPageAction.action?specialPageId=1&contentId=31753" rel="KeN4RHwpVAc" >
-				<img width="236px;" class="thumbnail" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; border: 1px solid #ccc;margin-top:7px; " title="Explaining the Indian Election System " src="http://img.youtube.com/vi/KeN4RHwpVAc/1.jpg"></a>
+				<img  class="thumbnail" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; border: 1px solid #ccc;margin-top:7px;width: 185px; " title="Explaining the Indian Election System " src="http://img.youtube.com/vi/KeN4RHwpVAc/1.jpg"></a>
 				</div> 
 				
 				<!-----------Hot Topics--------------->
