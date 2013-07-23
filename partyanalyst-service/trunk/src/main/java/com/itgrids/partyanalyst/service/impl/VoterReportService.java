@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PanchayatHamletDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
@@ -134,9 +135,18 @@ public class VoterReportService implements IVoterReportService{
 	private IVotingTrendzDAO votingTrendzDAO;
 	
 	private IVotingTrendzPartiesResultDAO votingTrendzPartiesResultDAO;
+	private PanchayatHamletDAO panchayatHamletDAO;
 	
 	
 	
+	public PanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+	public void setPanchayatHamletDAO(PanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
+	}
+
 	public IVotingTrendzPartiesResultDAO getVotingTrendzPartiesResultDAO() {
 		return votingTrendzPartiesResultDAO;
 	}
@@ -2959,6 +2969,7 @@ public class VoterReportService implements IVoterReportService{
 				  List<Long> boothIdsList = new ArrayList<Long>(0);
 				  List<Object[]> list = null;
 				  List<Object[]> list2 = null;
+				  List<Long> hamlets = new ArrayList<Long>();
 				  
 				  List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(reportLevelValue,IConstants.PRESENT_YEAR, null);
 				  calculateAndInsertVoterBasicInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,null,reportLevelValue,userId);
@@ -2990,11 +3001,15 @@ public class VoterReportService implements IVoterReportService{
 				  }
 				  
 				  for(SelectOptionVO selectOptionVO : panchayatsList)
-					  calculateAndInsertVoterBasicInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),new Long(selectOptionVO.getName()),reportLevelValue,userId);  
-				  
+				  {
+				  calculateAndInsertVoterBasicInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),new Long(selectOptionVO.getName()),reportLevelValue,userId);  
+				  panchayatIdsList.add(selectOptionVO.getId());
+				  }
 				  if(panchayatIdsList.size() > 0)
-					  list2 = boothDAO.getBoothIdsByPanchayatIdsInAPublication(panchayatIdsList, publicationDateId);
-				  
+				  {
+				  list2 = boothDAO.getBoothIdsByPanchayatIdsInAPublication(panchayatIdsList, publicationDateId);
+				  hamlets =panchayatHamletDAO.getHamletsOfPanchayitis(panchayatIdsList);
+				  }
 				  if(list2 != null && list2.size() > 0)
 					  for(Object[] params : list2)
 						  boothsList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
@@ -3063,6 +3078,9 @@ public class VoterReportService implements IVoterReportService{
 					 for(Object[] params : allBoothsList)
 						 calculateAndInsertVoterBasicInfoForALocation(IConstants.BOOTH,(Long)params[0],0L,reportLevelValue,userId);
 				 
+				if(hamlets != null && hamlets.size() > 0)
+					for(Long hamletId : hamlets)
+					calculateAndInsertVoterBasicInfoForALocation(IConstants.HAMLET,hamletId,0L,reportLevelValue,userId);
 				 /*for(Long boothId :boothIdsList)
 				 {
 					  SelectOptionVO selectOptionVO = null;
@@ -3104,7 +3122,8 @@ public class VoterReportService implements IVoterReportService{
 					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, 0l,locationValue ,locationType);
 				else if(locationType.equalsIgnoreCase(IConstants.WARD))
 					result = votersAnalysisService.getPreviousVotersCountDetailsForHamlet(constituencyId,0l,0l,0l ,locationValue,userId ,IConstants.CUSTOMWARD);
-				
+				else if(locationType.equalsIgnoreCase(IConstants.HAMLET))
+					result = votersAnalysisService.getPreviousVotersCountDetailsForHamlet(constituencyId,0l,0l,0l ,locationValue,userId ,IConstants.HAMLET);
 				if(result != null && result.size() > 0)
 				{	
 					int orderNo = result.size();
