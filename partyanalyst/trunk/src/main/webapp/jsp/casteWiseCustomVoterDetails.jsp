@@ -119,7 +119,7 @@ function getCasteWiseCustomVoters()
   $("#ajaxImg").css("display","block");
   var jsObj=
   {
-	customVoterGroupId:1,
+	customVoterGroupId:customVoterGroupId,
 	casteStateId:casteStateId,
 	casteId:casteId,
 	task:"getCasteWiseCustomVoters"

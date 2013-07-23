@@ -105,6 +105,9 @@
 		<pattern>/attributeWiseVoterDeatils.action*</pattern>		
 		<pattern>/createNewQuestionAction*</pattern>
 		<pattern>/surveyDetailsAction.action*</pattern>
+		<pattern>/getCustomVoterGroupsFamilyDetailsAction*</pattern>
+		<pattern>/customVoterGroupAnalysisAction*</pattern>
+		
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -239,7 +242,6 @@
 		<pattern>/casteAndElectionResultsComparisonAction*</pattern>
 		<pattern>/validationToolsAction*</pattern>
 		<pattern>/cadreOnlineRegisterPageAction*</pattern>
-		<pattern>/customVoterGroupAnalysisAction*</pattern>
 		<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
 		<pattern>/getCustomPageFamilyDetailsAction*</pattern>
 		<pattern>/surveyAnalysisAction*</pattern>
@@ -248,7 +250,8 @@
 		<pattern>/surveyFormSaveAction*</pattern>
 		<pattern>/surveyorProfileSaveAction*</pattern>
 		<pattern>/voterDataToolsAction*</pattern>
-		<pattern>/electionResultsAnalysisAction*</pattern>
+		<pattern>/electionResultsAnalysisAction*</pattern>	
+
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">

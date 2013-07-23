@@ -5595,5 +5595,29 @@
            		<param name="root">resultStatus</param>
         	</result>
 		</action>
+		
+		<action name="getCustomVoterGroupsAction" class="customVoterGroupAnalysisAction" method="getCustomVoterGroups">
+		<result type="json" name="success">
+		   <param name="root">groupsList</param>
+		  </result>
+		</action>
+		
+		<action name="getVotersCountInfoActionForCustomVoterGroup" class="customVoterGroupAnalysisAction"  method="getVotersCountInfoActionForCustomVoterGroup">
+		<result type="json" name="success">
+		   <param name="root">votersInfoForMandalVO</param>
+		 </result>	
+		 </action>	
+		 
+		 <action name="getCustomVoterFamilyDetailsForMandalOrMuncipality" class="customVoterGroupAnalysisAction" method="getCustomVoterFamilyDetailsForMandalOrMuncipality">
+		 <result type="json" name="success">
+		   <param name="root">importantFamiliesDetails</param>
+		 </result>	
+		 </action>
+		 
+		 <action name="getCustomVoterGroupsFamilyDetailsAction" class="customVoterGroupAnalysisAction"  method="getCustomVoterGroupsFamilyDetails" >
+		  <result name="success">/jsp/customGroupWiseFamilyDetails.jsp</result>
+		 <result name="error">/jsp/loginForm.jsp</result>
+		 </action>
+	
 		</package>
 </struts>      

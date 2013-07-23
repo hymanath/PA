@@ -36,6 +36,7 @@
 <script type="text/javascript" src="js/myCustChart.js"></script>
 <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+<link href="styles/assets/css/bootstrap.css" rel="stylesheet" />
 
 <title>Party Analyst</title>
 <style type="text/css">
@@ -77,6 +78,10 @@ table.dataTable td {
     font-weight: normal;
     padding: 3px 10px;
 }
+
+.table-bordered th, .table-bordered td{text-align:center;color:#000000;font-size:14px;}
+	.table-bordered th{background:#D9EDF7;}
+	
 #customVoterAgeMainDiv{ margin-top: 40px;margin-bottom: 60px;}
 #groupWiseAgeAndGenderTbl{width:100%;}
 /* #customGroupAgeAndGenderDiv,#customGroupGenderDiv{margin-top: 28px;}*/
@@ -105,31 +110,43 @@ var locationName = "${locationName}";
 </script>
 </head>
 <body>
+
+<h4 style="text-align:center;margin-top:10px;font-size:18px;" class="breadcrumb">Age Wise Voter Groups Details In <s:property value="groupName"/></h4>
 <div id="customVoterAgeMainDiv">
 
 <div id="ajaxImageDiv" align="center" style="margin-top: 100px;display:none;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 
 <div id="customGroupAgeGraphDiv"></div>
 
- <div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv thumbnail breadcrumb" style="text-align:center;"></div>
- <div class="thumbnail" style="margin:15px 10px;">
+ <!--<div id="voterAgeAngGenderwiseDetailsNote" class="noteDiv thumbnail breadcrumb" style="text-align:center;"></div>-->
+ <div class="" style="margin:15px 10px;">
      <div id="customGroupAgeDiv"></div>
  </div>
- <div class="thumbnail" style="margin:15px 10px;">
+ <div class="" style="margin:15px 10px;">
    <div id="customGroupAgeAndGenderDiv"></div>
  </div>
- <div class="thumbnail" style="margin:15px 10px;">
+ <div class="" style="margin:15px 10px;">
    <div id="customGroupGenderDiv"></div>
  </div>
 </div>
 
 <script type="text/javascript">
 
+var constituencyId = '${constituencyId}';
+var publicationDateId = '${publicationDateId}';
+var locationValue = '${locationValue}';
+var areaType = '${areaType}';
+var locationName = '${groupName}';
+
 function getCustomVoterAgeDetails()
 {
    $("#ajaxImageDiv").css("display","block");
    var jsObj=
    {
+	  //constituencyId:constituencyId,
+	  //publicationDateId:publicationDateId,
+	 // id:locationValue,
+	 // areaType:areaType,
 	  constituencyId:constituencyId,
 	  publicationDateId:publicationDateId,
 	  id:locationValue,
@@ -182,7 +199,7 @@ function buildCustomGroupAgeDetails(results,jsObj)
 	return;
   }
   var str = '';
-   str +='<table class="ageTable table table-bordered table-hover dataTable tableCls">';
+   str +='<table class="table table-bordered">';
    str +='<tr>';
    str +='<th rowspan="2">Group Name</th>';
    str +='<th rowspan="2">Total Voters</th>';
@@ -235,7 +252,7 @@ function buildCustomGroupAgeWiseGenderDetails(results,jsObj)
 	return;
   }
   var str = '';
-   str +='<table id="groupWiseAgeAndGenderTbl" class="ageTable table table-bordered table-hover dataTable tableCls">';
+   str +='<table id="groupWiseAgeAndGenderTbl" class="table table-bordered">';
    str +='<tr>';
    str +='<th rowspan="2">Group Name</th>';
    str +='<th colspan="2">18-25</th>';
@@ -285,7 +302,7 @@ function buildCustomGroupAgeWisePercentageDetails(results,jsObj)
   
   $("#voterAgeAngGenderwiseDetailsNote").html('');
   
-  $("#voterAgeAngGenderwiseDetailsNote").html('<h4 id="headingId">Age wise voter groups details in '+locationName+'</h4>');
+ 
   $("#customGroupGenderDiv").html('');
   if(results == null || results.length == 0)
   {
@@ -293,7 +310,7 @@ function buildCustomGroupAgeWisePercentageDetails(results,jsObj)
 	return;
   }
    var str = '';
-   str +='<table class="ageTable table table-bordered table-hover dataTable tableCls">';
+   str +='<table class="table table-bordered">';
    str +='<tr>';
    str +='<th rowspan="2">Group Name</th>';
    str +='<th colspan="3">18-25</th>';

@@ -6,7 +6,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> 
 
+ 
+ <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/tabview/assets/skins/sam/tabview.css"> 
+	 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+
+   <script type="text/javascript" src="js/blockui.js"></script>
+  <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
  <%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>--%>
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 	<script type="text/javascript" src="js/customVoterGroupAnalysis.js"></script>
@@ -67,18 +76,24 @@
 
    <style type="text/css">
     #customVotersMainDiv{float: none;margin: 20px auto;width: 980px;}
-	#casteWiseVotersCountInnerDiv table td{
-    color: #676A67;
+	#casteWiseVotersCountInnerDiv table td , #casteWiseVotersCountInnerDiv table th{
+   /* color: #676A67;
     font: small-caption;
-    padding: 8px 8px 8px 10px;
-	}
-	#casteWiseVotersCountInnerDiv table th{background-color: #CDE6FC;
+    padding: 8px 8px 8px 10px;*/
+	text-align:center;
+	color:#000000;
+	font-size:14px;
+	}	
+	
+
+	#casteWiseVotersCountInnerDiv table th{background-color: #D9EDF7;
     color: #333333;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: bold;
     padding: 10px;
     text-align: left;
     }
+
 	#casteWiseVotersCountInnerDiv{margin-top: 16px;}
 	#amount {
     text-align: center;
@@ -147,7 +162,17 @@ margin-top: 17px;
    </script>
 </head>
 <body>
-<div id="ageWiseInGroupDiv" class="widget blue whitegloss"></div>
+<div id="headingDiv" style="text-align:center;font-weight:bold;font-size:20px;margin-top:20px;"><span><s:property value="groupName"/> GROUP DETAILS</span></div>
+
+<div>
+<div class="whitegloss">
+<div id="ageWiseInGroupDiv" class="widget blue"></div>
+
+
+</div>
+
+</div>
+
 <div id="customVotersMainDiv">
  <div id="casteWiseVotersCountDiv" class="widget blue">
   <h4>Caste Wise Custom Voters Count</h4>
@@ -182,13 +207,16 @@ margin-top: 17px;
 </div>
 </div>
 <script  type="text/javascript">
+
+var customVoterGroupId = '${customVoterGroupId}';
+var publicationDateId = '${publicationDateId}';
 getVotersCountForPartyByCustomGroupId();
 getCasteWiseCustomVotersCount();
  getAgeWiseCustomVotersInGroup();
 function getAgeWiseCustomVotersInGroup(){
 	var jsObj={
-			customGroupId:2,
-			publicationDateId:8,
+			customGroupId:customVoterGroupId,
+			publicationDateId:publicationDateId,
 			task:'getAgeWiseCustomVotersInGroup'
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -278,6 +306,8 @@ function buildAgeWiseInGroupTable(result){
 	
 	str+='</tbody>';
 	str+='</table>';
+
+	str+='<a class="btn" href="javascript:{openVoterDetails()}" style="margin-left:748px;">Click Here For Voter Details</a>';
 	$('#ageWiseInGroupDiv').html(str);
 }
 function checkForNull(val){
@@ -300,6 +330,14 @@ function getFamilies(){
 				callAjax(jsObj1,url1);
 }
 getFamilies();
+
+function openVoterDetails()
+{
+	var urlStr="getVoterDetailsForACustomGroup.action?customVoterGroupId="+customVoterGroupId+"&type=customVoterGroup&publicationDateId=8";
+	var updateBrowser1 = window.open(urlStr,"Voters Details","scrollbars=yes,height=600,width=850,left=200,top=200");	
+	updateBrowser1.focus();	
+	
+}
 </script>
 </body>
 </html>

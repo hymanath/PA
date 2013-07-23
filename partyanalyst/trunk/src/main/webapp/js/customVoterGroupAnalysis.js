@@ -498,7 +498,7 @@ var castesArr=[];
 		for(var i in results)
 		{
 		  str +='<tr>';
-		  str +='<td><a href="javascript:{}" onclick="getCasteWiseCustomVoters('+results[i].casteStateId+','+results[i].casteId+',\''+results[i].castName+'\',\''+results[i].casteCategoryName+'\')">'+results[i].castName+'</a></td>';
+		  str +='<td><a style="font-weight:bold;" href="javascript:{}" onclick="getCasteWiseCustomVoters('+results[i].casteStateId+','+results[i].casteId+',\''+results[i].castName+'\',\''+results[i].casteCategoryName+'\')">'+results[i].castName+'</a></td>';
 		  str +='<td>'+results[i].casteCategoryName+'</td>';
 		  str +='<td>'+results[i].maleVoters+'</td>';
 		  str +='<td>'+results[i].femaleVoters+'</td>';
@@ -792,8 +792,10 @@ function CustomVoterImpFamiliesTable(myresults,jsObj){
   function buildVotersCountForPartyByCustomGroup(myResults){
 
 		var data = myResults.partyWisevoterCastInfoVOList;
-		if(data == null || data.length == 0)
+		if(data == null || data.length == 0){
+          $("#partyWiseVotersDiv").html("<font style='font-weight:bold;'>NO DATA AVAILABLE</font>");
 			    return;
+		}
 
 		var str1 = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;">';
 		str1 += '<span>Party Assigned Voters : '+myResults.partyWiseAssignedVoters+'</span>';

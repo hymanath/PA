@@ -131,7 +131,8 @@ var locationValue = "${locationValue}";
 <body>
 <dir id="customVotersMainDiv">
 <div id="ajaxImg" style="display:none;"><img src="./images/icons/goldAjaxLoad.gif"></div>
-<div id ="localCastStatsVotersTitle" ></div>
+<div id ="localCastStatsVotersTitle" ><h4 style="text-align:center;margin-top:10px;font-size:18px;" class="breadcrumb">Caste Wise Custom Voter Groups Details in <s:property value="groupName"/></h4>
+</div>
 <div id="casteSelectDiv"></div>
 <div id="localCastStatsTabContent_subbody1" class="yui-skin-sam yui-dt-sortable"></div>
 <div id="castContainerChartInner" style="border:1px solid;">
@@ -148,13 +149,19 @@ var locationValue = "${locationValue}";
 </div>
  </div>
 <script type="text/javascript">
+
+var areaType = '${areaType}';
+var customVoterGroupId = '${customVoterGroupId}';
+var locationValue = '${locationValue}';
+var locationName = '${groupName}';
+
 function getCasteWiseCustomGroupVoters()
 {
   $("#ajaxImg").css("display","block");
   var jsObj=
   {
-	areaType:"Rural",
-	locationValue:1,
+	areaType:areaType,
+    locationValue:locationValue,
 	task:"getCustomGroupWiseCasteVoters"
   };
 
@@ -333,7 +340,7 @@ function buildGraphForCustomVotersGroup(results,jsObj)
    var str = '';
    str +='<div>';
    str +='<div id="casteErrorMsgDiv"></div>';
-   str +='<h4>Select Options To View Caste Wise Voter Analysis</h4>';
+   str +='<h4>Select Options To View Caste Wise Voter Analysis '+locationName+'</h4>';
    str +='<input type="radio" checked="true" name="castTypeRadio" id="castSelectRadio" value="All" onclick="buildCastInfoBasedOnOptions(\'all\')" /><b>All</b>';
 
    str +='<input type="radio" id="castAllRadio" name="castTypeRadio" value="castWise" onclick="buildCastInfoBasedOnOptions(\'selected\')" /><b>Caste Wise</b>';
