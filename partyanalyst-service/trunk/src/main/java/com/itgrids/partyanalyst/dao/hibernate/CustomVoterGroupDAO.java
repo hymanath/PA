@@ -56,11 +56,12 @@ public class CustomVoterGroupDAO extends GenericDaoHibernate<CustomVoterGroup,Lo
 		
 		Query query  = getSession().createQuery("select model.customVoterGroupId,model.name from CustomVoterGroup model " +
 				"where model.user.userId = :userId  and model.locationValue in(:locationValues) and " +
-				"model.constituency.constituencyId = :constituencyId");
+				"model.constituency.constituencyId = :constituencyId and model.areaType.type = :areaType");
 		
 		query.setParameter("userId", userId);
 		query.setParameterList("locationValues", locationValues);
 		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("areaType", areaType);
 		
 		return query.list();
 		

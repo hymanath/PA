@@ -57,4 +57,11 @@ public interface ICustomVoterDAO extends GenericDao<CustomVoter,Long>{
 	 public List<Long> getImpFamiles(Long customVoterGroupId,Long publicationDateId,String queryString);
 	 public List<Object[]> getVotersInfoBycustomVoterGroupId1(Long customVoterGroupId,Long userId,Integer startIndex,
 				Integer maxRecords, String order, String columnName,Long publicationDateId);	
+	 
+	public List<Object[]> getCustomVoterDetailsByGroupWise(Long areaTypeId , Long locationId ,Long userId);
+	
+	public List<Object[]> getCustomVoterFamilyDetailsForMandalOrMuncipality(Long locationValue , Long areaTypeId ,Long userId );
+
+	
+
 }

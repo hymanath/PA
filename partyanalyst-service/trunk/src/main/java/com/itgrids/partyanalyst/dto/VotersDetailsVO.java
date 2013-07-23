@@ -130,6 +130,8 @@ public class VotersDetailsVO implements Serializable{
 	private int totalVotersCount;
 	private String categoryName;
 	
+	private String totalVotersPrcnt;
+	
 	public String getCategoryName() {
 		return categoryName;
 	}
@@ -692,7 +694,12 @@ public class VotersDetailsVO implements Serializable{
 	public void setCastId(Long castId) {
 		this.castId = castId;
 	}
-	
-	
+
+	public String getTotalVotersPrcnt() {
+		return totalVotersPrcnt;
+	}
+	public void setTotalVotersPrcnt(String totalVotersPrcnt) {
+		this.totalVotersPrcnt = totalVotersPrcnt;
+	}
 	
 }

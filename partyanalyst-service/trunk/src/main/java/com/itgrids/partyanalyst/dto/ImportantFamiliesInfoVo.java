@@ -43,10 +43,17 @@ public class ImportantFamiliesInfoVo implements Serializable{
 	private Long unassignedVotersByUser;
 	private Long assignedVotersForLocalBodies;
 	private Long unassignedVotersForLocalBodies;
+	private Long customVoterGroupId;
 	
 	
 	
 	
+	public Long getCustomVoterGroupId() {
+		return customVoterGroupId;
+	}
+	public void setCustomVoterGroupId(Long customVoterGroupId) {
+		this.customVoterGroupId = customVoterGroupId;
+	}
 	public Long getAssignedVotersForLocalBodies() {
 		return assignedVotersForLocalBodies;
 	}

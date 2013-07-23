@@ -1,10 +1,11 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VotersInfoForMandalVO {
+public class VotersInfoForMandalVO implements Serializable, Comparable<VotersInfoForMandalVO> {
 	
 	private String mandalId;
 	private String mandalName;
@@ -381,6 +382,15 @@ public class VotersInfoForMandalVO {
 	}
 	public void setTotPercent(BigDecimal totPercent) {
 		this.totPercent = totPercent;
+	}
+	
+	public int compareTo(VotersInfoForMandalVO obj) {
+		if(obj instanceof VotersInfoForMandalVO){
+			VotersInfoForMandalVO vo = (VotersInfoForMandalVO) obj;
+			return name.compareToIgnoreCase(vo.getName());
+		}
+		else
+			return 0;
 	}
 	
 	
