@@ -400,7 +400,7 @@ Quick Links</h2>
 			
 			<!--sasi photo gallary END-->
 				<div class="widget yellow" style="padding-bottom:5px;">
-				<h2><span><i class="icon-facetime-video icon-black"id="icon_leftsec"></i><span>
+				<h2><span><i class="icon-facetime-video icon-black"id="icon_leftsec"></i></span>
 				Latest Video Galleries</h2>
 				<!--video gallary-->
 				<div id="my-jqCarousel-3" class="jqCarousel module v-gallary">
@@ -461,7 +461,7 @@ Quick Links</h2>
 				
 				<!-----------Hot Topics--------------->
 				<div class="widget red hottopics">
-					<h2><span><i class="icon-fire  "id="icon_leftsec"></i><span>
+					<h2><span><i class="icon-fire  "id="icon_leftsec"></i></span>
 Hot Topics</h2>
 					<c:forEach var="specialPages" items="${specialPageVOList}">
 					<div class="media media_hr widget-block">
