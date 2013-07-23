@@ -1603,6 +1603,8 @@
 	<property name="cadreDAO" ref="cadreDAO" />	
 	<property name="voterReportService" ref="voterReportService"/>
 	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+	<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"></property>
+	
     </bean>
     
     <bean name="surveyAnalysisService" class="com.itgrids.partyanalyst.service.impl.SurveyAnalysisService">

@@ -30,6 +30,9 @@ var isMuncipalityExist = "false";
 var muncipalityBooths = "false";
 var muncipalityType   = "" ;
 var myCorpType ="";
+var muncipalId = 0;
+var forGroup = false;
+var forGroupInMuncipality = false;
 
 function populate(id,boothId,publicationId,houseNo){
 
@@ -72,10 +75,8 @@ function populateForHamlets(id,hamletId ,boothId,publicationId,houseNo){
 	       if(impFamiliesEditForHamletArray[i].boothId == boothId && impFamiliesEditForHamletArray[i].publicationId == publicationId && impFamiliesEditForHamletArray[i].houseNo == houseNo){
 		      impFamiliesEditForHamletArray.splice(i, 1);
 		   }
-	   }
-	 
+	   }	 
 	 }
-
 }
 
 function editSelectedFamiliesForHamlet(){
@@ -893,6 +894,8 @@ function addToPolitician(voterId,name)
     // jQuery is loaded => print the version
     alert(jQuery.fn.jquery);
     } */
+		$('.cutomVoterGroup').hide();
+
 	    if(maintype == 'customWard')
           $("#votersCountVaryDiv").hide();
 		else
@@ -1055,6 +1058,7 @@ function addToPolitician(voterId,name)
 	   $("#castPopupShowBtn").attr("value","Locality Wise Caste Info");
 	   }
 	   else if(type == "mandal" && mainreqid.substring(0,1) == "2"){
+		   $('.cutomVoterGroup').show();
 	      $("#impFamiliesMoreInfoButn").attr("value","View Panchayat Wise Family Details");
 		  $("#castPopupShowBtn").attr("value","Panchayat Wise Caste Info");
 	   }else if(type=="panchayat"){
@@ -1206,11 +1210,9 @@ function addToPolitician(voterId,name)
 		  $("#impFamiliesMoreInfoButn").show();
 		  $("#castPartyPopupShowBtn").show();
 		} 
+
+		 
 	   
-         /* if(type == "mandal")
-		  $("#customGroupAgeLink").css("display","block");
-		 else 
-		   $("#customGroupAgeLink").css("display","none");*/
 
 		  if(type == "mandal" && mainreqid.substring(0,1) == "1")
 		  {
@@ -1923,6 +1925,16 @@ function addToPolitician(voterId,name)
 								{
 									showCensusReportInALocation(myResults,jsObj);
 								}
+								else if(jsObj.task == "getCustomVoterGroupsForMuncipality"){
+							    $('#voterGroupMuncipalityAjaxImage').hide();
+
+									buildCustomVoterGroups(myResults,jsObj);
+								}
+								else if(jsObj.task == "getCustomVoterGroupsForMandal"){
+									buildCustomVoterGroups1(myResults,jsObj);								
+	                                 $('#voterGroupMandalAjaxImage').hide();
+								}
+
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -5969,18 +5981,18 @@ document.getElementById('reportLevelCountDiv').style.display = 'inline-block';
 	}
 	str+='</ul>';*/
     if(results[0].totalmandals !=null && results[0].totalmandals!=0 )
-	str +='<span class="btn btn-success btn-small" style="cursor:default;">'+results[0].totalmandals+'</span><span class="help-inline f2">Mandals</span>';
+	str +='<span class="btn btn-success btn-small">'+results[0].totalmandals+'</span><span class="help-inline f2">Mandals</span>';
 	if(results[0].noOfLocalBodies !=null && results[0].noOfLocalBodies!=0 )
-	str +='<span class="btn btn-info btn-small" style="cursor:default;">'+results[0].noOfLocalBodies+'</span><span class="help-inline f2">Muncipalities</span>';
+	str +='<span class="btn btn-info btn-small">'+results[0].noOfLocalBodies+'</span><span class="help-inline f2">Muncipalities</span>';
 	if(results[0].totalPanchayats !=null && results[0].totalPanchayats!=0 ){
-	str +='<span class="btn btn-info btn-small" style="cursor:default;">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+	str +='<span class="btn btn-info btn-small">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
 	}
 	 if(results[0].totalNoOfWards !=null && results[0].totalNoOfWards!=0 )
-	str +='<span class="btn btn-info btn-small" style="cursor:default;">'+results[0].totalNoOfWards+'</span><span class="help-inline f2">Wards</span>';
+	str +='<span class="btn btn-info btn-small">'+results[0].totalNoOfWards+'</span><span class="help-inline f2">Wards</span>';
 	 if(results[0].totalBooths !=null && results[0].totalBooths!=0 )
-	str +='<span class="btn btn-info btn-small" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info btn-small">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	if(results[0].totalPanchayats !=null && results[0].totalPanchayats!=0 ){
-	str +='<span class="btn btn-info btn-small" style="cursor:default;">'+results[0].totalNoOfHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	str +='<span class="btn btn-info btn-small">'+results[0].totalNoOfHamlets+'</span><span class="help-inline f2">Hamlets</span>';
 	}
    
 str+='</div>';
@@ -6049,8 +6061,8 @@ var jsObj=
 		results[0].totalPanchayats = 0;
 		if(results[0].totalBooths == null)
 		results[0].totalBooths = 0;
-	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
-	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info">'+results[0].totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if( jsObj.type == "mandal" && type == "muncipality")
 
@@ -6058,8 +6070,8 @@ var jsObj=
 			if(results[0].totalBooths == null)
 			results[0].totalBooths = 0;
 			if(results[0].totalNoOfWards !=null && results[0].totalNoOfWards!=0 )
-	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalNoOfWards+'</span><span class="help-inline f2">Wards</span>';
-	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info">'+results[0].totalNoOfWards+'</span><span class="help-inline f2">Wards</span>';
+	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if(jsObj.type == "panchayat")
 
@@ -6067,23 +6079,22 @@ var jsObj=
 		if(results[0].totalBooths == null)
 			results[0].totalBooths = 0;
 	
-	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalNoOfHamlets+'</span><span class="help-inline f2">Hamlets</span>';
-	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info">'+results[0].totalNoOfHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if(jsObj.type == "ward")
 
 	{
 		if(results[0].totalBooths == null)
 			results[0].totalBooths = 0;
-	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
-	
 	if(jsObj.type == "customWard")
 
 	{
 		if(results[0].totalBooths == null)
 			results[0].totalBooths = 0;
-	str +='<span class="btn btn-info" style="cursor:default;">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	str +='<span class="btn btn-info">'+results[0].totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	str+='</div>';
 
@@ -6099,26 +6110,26 @@ var jsObj=
 	  str +='<div>';
 	  if(jsObj.type == "mandal" && mainreqid.charAt(0) =="2")
 	  {
-	    str +='<span class="btn btn-info" style="cursor:default;">'+results.totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
-	    str +='<span class="btn btn-info" style="cursor:default;">'+results.totalHamlets+'</span><span class="help-inline f2">Hamlets</span>';
-	    str +='<span class="btn btn-info" style="cursor:default;">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	    str +='<span class="btn btn-info">'+results.totalPanchayats+'</span><span class="help-inline f2">Panchayats</span>';
+	    str +='<span class="btn btn-info">'+results.totalHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	    str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	  }
 	 if(jsObj.type == "mandal" && mainreqid.charAt(0) =="1")
 	 {
-	   str +='<span class="btn btn-info" style="cursor:default;">'+results.totalWards+'</span><span class="help-inline f2">Wards</span>';
-	   str +='<span class="btn btn-info" style="cursor:default;">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	   str +='<span class="btn btn-info">'+results.totalWards+'</span><span class="help-inline f2">Wards</span>';
+	   str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	 }
 	if(jsObj.type == "panchayat")
 	{
-	  str +='<span class="btn btn-info" style="cursor:default;">'+results.totalHamlets+'</span><span class="help-inline f2">Hamlets</span>';
-	  str +='<span class="btn btn-info" style="cursor:default;">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	  str +='<span class="btn btn-info">'+results.totalHamlets+'</span><span class="help-inline f2">Hamlets</span>';
+	  str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	}
 	if(jsObj.type == "ward")
-	  str +='<span class="btn btn-info" style="cursor:default;">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+	  str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	
 	
 	if(jsObj.type == "customWard")
-     str +='<span class="btn btn-info" style="cursor:default;">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
+     str +='<span class="btn btn-info">'+results.totalBooths+'</span><span class="help-inline f2">Booths</span>';
 	
 	str+='</div>';
 
@@ -6616,15 +6627,52 @@ $("#tabpage_2").css({ display: "none" });
 $("#tabContainer").css({ display: "none" });
 //$("#forHide").css({ display: "none" });
 
-$("#leftNav-Mandals-list a").live("click",function(){
+$("#leftNav-Mandals-list a").live("click",function(){  
+
+	 $('#middleNav-CustomGroups-list').addClass('disableClass');
+     $('#middleNav-Panchayats-listt').removeClass('disableClass');
+	
+		//$('#'+id).css('background-color','red');
+		$('#'+id).addClass('disableClass');
+
+	callAjaxToGetCustomVotergroups($(this).attr("data-mandalid"));
+
+ $('#customGroupsDiv').hide();
+ $('#tabContainer1').hide();
+  $('#customGroupsDiv').show();
+
+
 $(".leftNav li").removeClass("active");
 $(this).closest("li").addClass("active");//.siblings().removeClass("active");
 
 $("#middleNav-Panchayats-list").customMenu(resultDataForNav,2,$(this).attr("data-mandalid"));
 hideMyTabs();
 });
+$(document).on("click",'.middleNav-CustomGroups ul li',function(){
+	$(".middleNav-CustomGroups ul li").removeClass('active');
+	$(this).addClass('active');
+
+});
+
+$(document).on("click",'#votersShareBtnsForCstmVtrGrp',function(){
+	var urlStr="voterBasicInfoAction.action?id="+mainreqid+"&type=customVoterGroup&typename="+mainname;
+	var updateBrowser = window.open(urlStr,"votersInfo","scrollbars=yes,height=600,width=850,left=200,top=200");	
+	updateBrowser.focus();	
+});
+
 
 $("#leftNav-Municipalities-list a").live("click",function(){
+
+		$('#tabHeader_4').show();
+
+$('#tabHeader_3').trigger('click');
+
+	muncipalId = $(this).attr("data-municipalityid");
+
+$('#customGroupsDiv').show();
+$('#tabContainer1').show();
+$('#customGroupsDiv').hide();
+
 $(".leftNav li").removeClass("active");
 $("#tabContainer").css({ display: "none" });
 //$(this).closest("li").addClass("active").siblings().removeClass("active");
@@ -6648,6 +6696,8 @@ var dest=$(this).attr("dest-atr");
 
 
 $("#middleNav-Panchayats-list a").live("click",function(){
+$('#customGroupsDiv').hide();
+
 $(this).closest("li").addClass("active").siblings().removeClass("active");
 $("#rightNav-Booths-list1").customMenu(resultDataForNav,3,$(this).attr("data-mandalid"),$(this).attr("data-panchayatid"));
 //$("#tabHeader_1").trigger('change');
@@ -6656,6 +6706,10 @@ showMyTabs();
 });
 
 $("#middleNav-Wards-list a").live("click",function(){
+	
+   $('#tabHeader_4').hide();
+
+	$('#tabHeader_3').trigger('click');
 $(this).closest("li").addClass("active").siblings().removeClass("active");
 if(typeofMuncipality=="GHMC Greater Municipal Corp")
 	$("#rightNav-Booths-list").customMenu(resultDataForNav,6,$(this).attr("name-muncipal"),$(this).attr("data-wardid"),$(this).attr("data-municipalityid"));
@@ -6671,8 +6725,18 @@ $(this).addClass("btn-primary").closest("li").siblings().find("a").removeClass("
 
 // BUILD PAGE FUNCTIONS CALLING BASED ON THE RADIO BUTTON SELECTED
 
+
+$("#middleNav-CustomGroups-list a .checkbox").live("click",function(){
+	showVotersGroupsDetails($(this).closest("a").attr("data-groupid"));
+});
+
+$("#rightNav-votergroups-list a .checkbox").live("click",function(){
+	showVotersGroupsDetails($(this).closest("a").attr("data-customgroupid"));
+});
+
 // Mandals CLICKED
 $("#leftNav-Mandals-list a .checkbox").live("click",function(){
+	$('#customGroupsDiv').show();
 $("#constituencyResults").trigger('click');
 $(this).find("input").attr("checked",true);
 var levelId =2;
@@ -6695,6 +6759,8 @@ showHideNewsProblems();
 
 //// Municipalities CLICKED
 $("#leftNav-Municipalities-list a .checkbox").live("click",function(){
+
+
 $(this).find("input").attr("checked",true);
 var municipalityid=$(this).closest("a").attr("data-municipalityid");
  myCorpType= $(this).closest("a").attr("data-type");
@@ -6715,6 +6781,8 @@ showHideNewsProblems();
 
 //Panchayats CLICKED
 $("#middleNav-Panchayats-list a .checkbox").live("click",function(){
+	$('#customGroupsDiv').hide();
+
 showMyTabs();
 $(this).find("input").attr("checked",true);
 var mandalid=$(this).closest("a").attr("data-mandalid");
@@ -6771,7 +6839,7 @@ var boothid=$(this).closest("a").attr("data-boothid");
 mainreqid = boothid;
 mainpublicationId = $("#publicationDateList").val();
 maintype = 'booth';
-mainname = "Booth - " +$(this).closest("a").attr("name-booth");
+var boothid=$(this).closest("a").attr("data-boothid");
 scrollToNewsDiv();
 getAllTabs(boothid,$("#publicationDateList").val(),'booth');
 //alert("SHOW BOOOTH DATA");
@@ -6896,7 +6964,7 @@ getAllTabs(boothid,mainpublicationId,maintype);
 
 function buildBtnForCustomWard(Obj)
 {
-	
+	$('#cnstHeading2').show();	
 scrollToNewsDiv();
 
 mainpublicationId = $("#publicationDateList").val();
@@ -7902,7 +7970,7 @@ function buildInfluencingPeopleCount(results,jsObj)
 }
 function getInfluencingPeopleVotersDetails(locationValue,typeValue,publicationDateId,btnName)
 {
-var reqBrowser = window.open("cadreDisplayWindowAction.action?locationValue="+locationValue+"&typeValue="+typeValue+"&publicationDateId="+publicationDateId+"&name="+mainname+"&btnName="+btnName+"&mainreqid="+mainreqid+"&maintype="+maintype+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+var reqBrowser = window.open("cadreDisplayWindowAction.action?locationValue="+locationValue+"&typeValue="+typeValue+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&mainreqid="+mainreqid+"&maintype="+maintype+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 reqBrowser.focus();
 
 /*
@@ -9144,6 +9212,12 @@ var urlstr = "voterFamilyInfoAction.action?type=booth&id="+selectedId+"&publicat
 		}
 
 		function showCastPartyWindow(){
+
+
+			if(forGroupInMuncipality == true) {
+	               showCasteWiseDetailsForCustomVoterGroup();
+	         return false;
+             }
 		
 			publicationDateId = $("#publicationDateList").val();
 			constituencyId = $("#constituencyList").val();
@@ -9519,6 +9593,61 @@ buildCasteVotersChart(castesArr,totalVotersArr,maleVotersArr,femaleVotersArr,cas
 }
 
 $(document).ready(function(){
+
+
+$(document).on('click','#middleNav-CustomGroups-list  ',function(){
+   $('#middleNav-CustomGroups-list  li').removeClass("active");
+	$(this).closest("li").addClass("active");
+});
+
+$(document).on('click','.muncipalitytabs ul li',function(){
+    $(".muncipalitytabs ul li").removeClass("tabActiveHeader");
+    $(this).addClass("tabActiveHeader");
+});
+
+$(document).on('click','#tabHeader_3',function(){
+
+	$('#forHide').show();
+    $('.rightNav-cutomGroups').hide();
+	 $('.rightNav-Booths').show();
+	 forGroupInMuncipality = false;
+
+	 if( maintype == "mandal" ){
+$("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Wise Age Details</a>');
+
+$("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
+//$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span></div>");
+	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");
+	$("#castPopupShowBtn").attr("value","Booth  Wise Caste Info");
+ }
+    
+});
+
+
+$(document).on('click','#tabHeader_4',function(){
+
+	  forGroupInMuncipality = true;
+	  $('#voterGroupsDiv').show();
+
+   $('.rightNav-Booths').hide();
+   $('.rightNav-cutomGroups').show();
+
+   if( maintype == "mandal" ){
+	 $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">Custom Voter Group Wise Wise Age Details</a>');
+
+$("#impFamiliesMoreInfoButn").attr("value","View Custom Voter Group Wise Family Details");
+//$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span></div>");
+	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");
+	$("#castPopupShowBtn").attr("value","Custom Voter Group  Wise Caste Info");
+ }
+    
+   callAjaxToGetCustomVotergroups(muncipalId);
+
+});
+
+
+
+
     $('#hideshow').live('click', function(event) {        
          $('#castContainerChartInner').toggle('show');
 		 //$(this).val(if($((this).val()))
@@ -9612,7 +9741,7 @@ $(document).ready(function(){
 
 	function buildBtnForLocalEleBody(Obj)
 	{
-	
+	$('#cnstHeading2').show();
 	scrollToNewsDiv();
 
 	mainpublicationId = $("#publicationDateList").val();
@@ -9624,7 +9753,7 @@ $(document).ready(function(){
 			 astr += "<div id='tabsForWardLocal' class='thumbnail1' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>";
              astr += "<div id='sse2' style='display:none'>";
              astr += "<div id='sses2'>";
-             astr += "<ul style='margin-left: 50px;'>";
+             astr += "<ul>";
 			 astr += "<li><a class='votersInfoLi2 votersInfoCls' href='javascript:{}' id='votersShareBtnss'>Booth Wise Voters Info of "+mainname+"</a></li>";
             astr += "<li id='myli'><a class='votersInfoLi2 mylicls' href='javascript:{getvotersBasicInfo(\"voters\","+mainreqid+","+mainpublicationId+",\"muncipalityLocal\")}'>Ward Wise Voters Info of "+mainname+"</a></li>";
             astr += "</ul>";
@@ -9665,4 +9794,117 @@ function getcustomGroupAgeInfo()
   browser1.focus();
 
  return;
+}
+
+function callAjaxToGetCustomVotergroups(mandalId)
+{
+
+	var groupType ="";
+	var mainreqid = mandalId;
+
+	if(mainreqid.substring(0,1) == "1"){
+		groupType = "muncipality";
+		task = "getCustomVoterGroupsForMuncipality"; 
+		$('#voterGroupMuncipalityAjaxImage').show();
+	}
+	else if(mainreqid.substring(0,1) == "2"){
+		groupType = "mandal";
+		task = "getCustomVoterGroupsForMandal";
+		$('#voterGroupMandalAjaxImage').show();
+		$('.middleNav-CustomGroups').hide();
+	}
+
+	  var jsObj=
+	  {
+		groupType:groupType,
+        constituencyId:$('#constituencyList').val(),
+        id: mainreqid.substring(1),
+		task:task
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCustomVoterGroupsAction.action?"+rparam;
+
+	callAjax(jsObj,url);
+		
+}
+
+function buildCustomVoterGroups1(myResults,jsObj)
+{
+	$('#middleNav-CustomGroups-list').empty();
+	$('#voterGroupsDiv ,#forHide').hide();
+	if(myResults.length == 0)
+	{
+		$('.middleNav-CustomGroups').hide();
+		$('#customGroupCasteInfo , #cutomVoterGroupAgeWise , #customVoterGroupFamilyDtls ,#cnstHeading2').hide();
+		return false;
+	}
+	$('.middleNav-CustomGroups').show();
+			$('#customGroupCasteInfo , #cutomVoterGroupAgeWise , #customVoterGroupFamilyDtls , #cnstHeading2').show();
+	
+
+	var items = [];
+
+    for(var i in myResults)
+	{
+
+		items.push('<li class=""><a name-group="'+myResults[i].name+' GROUP" data-groupid="'+myResults[i].id+'" onclick=""><span class="checkbox" style="background-position: center 0px;"><input type="radio" name="menugroup" style="margin-top: -2px; margin-right: 4px;" id="Chk-'+myResults[i].id+'" data-groupid="'+myResults[i].id+'"></span></i> '+myResults[i].name+' </a></li>');
+	}
+
+	$('#middleNav-CustomGroups-list').append(items);
+
+
+}
+
+function buildCustomVoterGroups(myResults,jsObj)
+{ 
+	$('#rightNav-votergroups-list').empty();
+    var items = [];
+	if(myResults.length == 0)
+	{
+		items.push('<li>No Voter Groups Are Avialable</li>');
+		$('#rightNav-votergroups-list').append(items);
+        $('#cnstHeading2').hide();
+
+		return false;
+	}
+
+	$('#cnstHeading2').show();
+    for(var i in myResults)
+	 items.push('<li class="nav nav-pills"> <a class="btn wid " data-customgroupid="'+myResults[i].id+'"href="javascript:{}" style="width:44px;padding:4px 22px 4px 2px;"><span class="checkbox marg"><input type="radio" data-groupid="'+myResults[i].id+'" id="Chk-'+myResults[i].id+'" style="margin-top: -2px; margin-right: 4px;" name="menugroup" ></span><span class="marg1">'+myResults[i].name+'</span></a></li>');
+	
+	$('#rightNav-votergroups-list').append(items);
+
+}
+
+
+function showHideVoterGroupsDetails(id)
+{
+	$('#middleNav-Panchayats-list  ,#middleNav-CustomGroups-list').removeClass('disableClass');
+
+	$('#'+id).addClass('disableClass');
+
+	if(id == "middleNav-Panchayats-list")
+	{
+		forGroup = true;
+		$('#castPopupShowBtn').attr('value','Voter Group wise Caste Info');
+
+		$('#ageLink').html('<a href="javaScript:{showAllAgewiseDetails()}" class="btn btn-info">View Voter Group Wise Age Details</a>');
+		$('#impFamiliesMoreInfoButn').attr('value','View Voter Group Wise Family Details');
+	}else{
+		forGroup = false;
+	
+		$('#castPopupShowBtn').val('Panchayat wise Caste Info');
+		$('#ageLink').html('<a href="javaScript:{showAllAgewiseDetails()}" class="btn btn-info">View Panchayat Wise Age Details</a>');
+		$('#impFamiliesMoreInfoButn').attr('value','View Panchayat Wise Family Details');
+	}
+}
+
+
+function showVotersGroupsDetails(votergroupid)
+{
+ //alert(votergroupid);
+
+var urlStr="customVoterGroupAnalysisAction.action?customVoterGroupId="+votergroupid+"&type=customVoterGroup&publicationDateId=8";
+	var updateBrowser = window.open(urlStr,"votersInfo","scrollbars=yes,height=600,width=850,left=200,top=200");	
+	updateBrowser.focus();	
 }

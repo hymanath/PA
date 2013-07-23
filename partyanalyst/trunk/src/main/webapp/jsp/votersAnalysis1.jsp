@@ -71,6 +71,15 @@
 
 
 <style type="text/css">
+
+/*.disableClass{
+background-color:#AED1DB;
+opacity:0.66;
+}*/
+.error{
+	color:red;
+}
+
 #amount{width:90%;text-align:center;}
 
 #casteDivs li>a {
@@ -733,7 +742,7 @@ h5{font-family : Arial;}
     position: relative;
 }
 
-#cnstHeading,#votersTitle{
+#cnstHeading,#votersTitle ,#cnstHeading2{
 	background:#E6E6E6;
     border-radius: 6px 6px 6px 6px;
     color: #000000;
@@ -850,13 +859,44 @@ float: right;
 .tabs{
 	height:30px;
 }
+.muncipalitytabs{
+height:30px;
+}
 
 .tabs > ul{
 	font-size: 1em;
 	list-style:none;
 }
+.muncipalitytabs > ul{
+	font-size: 1em;
+	list-style:none;
+}
 
 .tabs > ul > li{
+	margin:0 2px 0 0;
+	padding:7px 10px;
+	display:block;
+	float:left;
+	color:#FFF;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	border-top-left-radius:4px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px; 
+	background: #C9C9C9; /* old browsers */
+	background: -moz-linear-gradient(top, #0C91EC 0%, #257AB6 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, 
+		color-stop(0%,#0C91EC), color-stop(100%,#257AB6)); /* webkit */
+}
+
+
+.muncipalitytabs > ul > li{
 	margin:0 2px 0 0;
 	padding:7px 10px;
 	display:block;
@@ -885,12 +925,27 @@ float: right;
 	cursor:pointer;
 	color: #333;
 }
+
+.muncipalitytabs > ul > li:hover{
+	background: #FFFFFF; /* old browsers */
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(10%,#F3F3F3), color-stop(50%,#F3F3F3), color-stop(100%,#FFFFFF)); /* webkit */
+	cursor:pointer;
+	color: #333;
+}
 #tabHeader_1
 {
 margin-left:10px;
 }
 
 .tabs > ul > li.tabActiveHeader{
+	 background: #FFFFFF; /* old browsers */
+	/*background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(10%,#F3F3F3), color-stop(50%,#F3F3F3), color-stop(100%,#FFFFFF)); */ /* webkit */
+     	cursor:pointer;
+	color: #333;
+}
+.muncipalitytabs > ul > li.tabActiveHeader{
 	 background: #FFFFFF; /* old browsers */
 	/*background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 10%, #F3F3F3 50%, #FFFFFF 100%); /* firefox */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(10%,#F3F3F3), color-stop(50%,#F3F3F3), color-stop(100%,#FFFFFF)); */ /* webkit */
@@ -1211,9 +1266,26 @@ for  body3 start    result  -->
 	</div>
 	<div class="middleNav-Wards">
 		<h5 class="breadcrumb" style="margin-bottom:0px;">Ward(s)</h5>
-		<ul id="middleNav-Wards-list" class="nav nav-list bs-docs-sidenav nav-stacked"></ul>
+		<ul id="middleNav-Wards-list" class="nav nav-list bs-docs-sidenav nav-stacked">	
+		
+		
+		</ul>
 	</div>
 </div>
+<!-- Middle End-->
+
+
+<!-- Middle Nav -->
+<div class="span3" style="margin-left:10px;box-shadow:0px 1px 2px #aaa;background:#fff;border-radius:2px;" id="customGroupsDiv">
+	<div class="middleNav-Panchayats middleNav-CustomGroups">
+		<h5 class="breadcrumb" style="margin-bottom:0px;">Custom Voter Group (s)</h5>
+		<ul id="middleNav-CustomGroups-list" class="nav nav-list bs-docs-sidenav nav-stacked disableClass">		
+		
+		 </ul>
+	</div>
+	
+</div>
+<img src="./images/icons/search.gif" id="voterGroupMandalAjaxImage" style="display:none;"/>
 <!-- Middle End-->
 
 
@@ -1249,12 +1321,49 @@ for  body3 start    result  -->
  <!--<div class="span6 rightNav" id="tabpage_3">
  <ul id="rightNav-Booths-list"></ul>
  </div> -->
- <div class="span6 rightNav" id="forHide">
+
+ <!-- MODIFIED BY SAMBA START -->
+ <!--<div class="span6 rightNav" id="forHide">
 	<div class="rightNav-Booths">
 			<h5 class="breadcrumb" style="margin-bottom:0px;">Booth(s)</h5>
 			<ul id="rightNav-Booths-list"></ul>
 	</div>
+	
+</div>-->
+
+<div id="tabContainer1"  style="display:none;">
+  <div class="muncipalitytabs">
+      <ul>
+	     <li id="tabHeader_3" style="margin-left:10px;" class="tabActiveHeader">           
+			<p>Booth(s)</p>	  
+	  <li id="tabHeader_4">      
+		  <p>Custom Voter Group(s)</p>	
+	  </li>
+     </ul>
+	 <img src="./images/icons/search.gif" id="voterGroupMuncipalityAjaxImage" style="display:none;"/>
+  </div>
 </div>
+
+<div class="span6 rightNav" id="forHide">
+	<div class="rightNav-Booths">
+			<!--<h5 class="breadcrumb" style="margin-bottom:0px;">Booth(s)</h5>-->
+			<ul id="rightNav-Booths-list"></ul>
+	</div>
+	
+</div>
+
+<div class="span6 rightNav" id="voterGroupsDiv">
+	<div class="rightNav-cutomGroups" style="display:none;">
+			<!--<h5 class="breadcrumb" style="margin-bottom:0px;">Booth(s)</h5>-->
+			<ul id="rightNav-votergroups-list">
+			</ul>
+	</div>
+	
+</div>
+
+ <!-- MODIFIED BY SAMBA END -->
+
+
 <!-- RIGHT End-->
 
 </div><!-- Menu End-->
@@ -1271,6 +1380,13 @@ for  body3 start    result  -->
 <div id="votersBasicInfoBtnDiv"> 
 	<span></span>
 	<span value="Mandal Wise Voters Info" id="votersShareBtn1"></span>
+
+	<span value="Mandal Wise Voters Info" id="votersShareBtnForCstmVtrGrp">
+	</div>
+
+	<div style="margin:7px;">
+	<div id="cnstHeading2" class="cutomVoterGroup thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:center;position:relative;display:none;">Custom Voter Group Wise Voters Info<span id="votersShareBtnsForCstmVtrGrp" class="btn" title="Click Here to know Custom Voter Group Wise Voters Info " style="margin-left: 15px;font-weight:bold;">Show</span></div>
+	</span>
 	
 </div>  
 <div id='votersMainOuterDiv3' class="" style="display:none;border-top:none;">
@@ -1471,6 +1587,12 @@ for  body3 start    result  -->
 	<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:20px;">	</div>
 	<div id='castTab'></div>
 	<div id='localityTab'></div>
+
+	<span id="" class="cutomVoterGroup" style="display:none;"><input id="customGroupCasteInfo" type="button" class="btn btn-info" value="Custom Voter Group Wise Caste Info " style="margin-top:7px;margin-bottom:5px;margin-left:429px;float:left;" onclick="showCasteWiseDetailsForCustomVoterGroup();"/></span>
+
+
+
+
 <span id="castPartyPopupShowBtn"><input id="castPopupShowBtn" type="button" class="btn btn-info" value="View More Details About Caste Statistics and Party Wise Voters Details" style="float:right;margin-top:7px;margin-bottom:5px;" onclick="showCastPartyWindow();"/></span>
 	</div>
 	</div>
@@ -1566,6 +1688,8 @@ for  body3 start    result  -->
 <div id="tableDiv1"></div>
 <input id="ageLinkForHamletBooths1" type="button" value="View Booth Wise Age Details" onclick="showAllAgewiseDetailsForHamlet();" class="btn btn-info" style="display:none;float:right;margin-left:10px;" />
 <span id="ageLinkForHamletBooths" style="display:none;float:right;margin-top:10px;margin-left:3px;"><a href="javaScript:{showAllAgewiseDetailsForHamlet()}"  class="btn btn-info">View Booth Wise Age Details</a></span>
+
+<span id="cutomVoterGroupAgeWise" class="cutomVoterGroup" style="margin-left:426px;diaplay:none;float:left;"><a href="javaScript:{showAllAgewiseDetailsForCustomVoterGroup()}"  style="margin-top:10px;" class="btn btn-info">Custom Voter Group Wise Age Details</a></span>
 <span id="ageLink" style="display:none;float:right;margin-top:10px;"><a href="javaScript:{showAllAgewiseDetails()}"  class="btn btn-info">View More Details</a></span>
 <span id="customGroupAgeLink" style="display:none;float:right;margin-top:10px;"><a href="javaScript:{getcustomGroupAgeInfo()}"  class="btn btn-info">View Voter Group Wise Age Details</a></span>
 
@@ -1651,7 +1775,8 @@ for  body3 start    result  -->
 	
 	<input id="impFamiliesForBooths" type="button" value="View Booth Wise Family Details" onclick="getImpFamiliesVotersForBooth1();" class="btn btn-info" style="display:none;float:right;margin-left:3px;" />
 	
-	<input id="impFamiliesMoreInfoButn" type="button" value="View More Details" onclick="getImpFamiliesVoters();" class="btn btn-info" style="float:right;"/>
+	<input id="customVoterGroupFamilyDtls" type="button" value="Custom Voter Group Wise Family Details" onclick="showFamilyWiseDetailsForCustomVoterGroup();" class="btn btn-info cutomVoterGroup" style="margin-left:400px;display:none;"/>
+     <input id="impFamiliesMoreInfoButn" type="button" value="View More Details" onclick="getImpFamiliesVoters();" class="btn btn-info" style="float:right;"/>
 	  <!-- <input id="" type="button" value="Test" onclick="impFamilesAllInfoForHamletPopUp();" class="btn btn-info" style="float:right;"/> -->
 	   
 	   
@@ -1940,6 +2065,12 @@ function showBasicAgewiseDetails(){
 
 
 function showAllAgewiseDetails(){
+
+
+ if(forGroupInMuncipality == true) {
+	 showAllAgewiseDetailsForCustomVoterGroup();
+	 return false;
+ }
    //callCorrespondingAjaxCall('all');
    constituencyId = $("#constituencyList").val();
    publicationYear = publicationYear;
@@ -1952,8 +2083,18 @@ function showAllAgewiseDetails(){
    {
 		var startNumber = mainreqid.substring(0,1);
 		mandalId = mainreqid.substring(1);
+
+		if(startNumber == "1" && forGroupInMuncipality == true)
+ 	    {
+			var reqBrowser = 
+		 window.open("getCustomVoterGroupAgeDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&locationValue="+mandalId+"&locationName=fdfdsfsd&areaType=URBAN","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+			 reqBrowser.focus();
+
+		}else{
+
 		var reqBrowser = window.open("ageWiseVoterDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&publicationYear="+publicationYear+"&mandalId="+mandalId+"&name="+mainname+"&retrieveType='all'&&startNumber="+startNumber+"&type='mandal'","newBrowser"+maintype,"width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	   reqBrowser.focus();
+		}
    }
    else if(maintype == "panchayat")
    {
@@ -2064,19 +2205,26 @@ function scrollToMandals(){
  $('html,body').animate({scrollTop: 250}, 2000);
 }
 function getImpFamiliesVoters()
-	{
-	var mainreqid = $("#constituencyList").val()
-var urlstr = "voterFamilyInfoAction.action?buildType="+buildType+"&publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type="+impFamltype+"&typename="+impFamltypename+"&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+" "
+{
+	var mainreqid = $("#constituencyList").val();
 
-	var browser1 = window.open(urlstr,"familyWiseDetail"+impFamlId,"scrollbars=yes,height=600,width=700,left=200,top=200");	
+    if(forGroupInMuncipality == false) 
+	{
+		var urlstr = "voterFamilyInfoAction.action?buildType="+buildType+"&publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type="+impFamltype+"&typename="+impFamltypename+"&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+" "
+
+		var browser1 = window.open(urlstr,"familyWiseDetail"+impFamlId,"scrollbars=yes,height=600,width=700,left=200,top=200");
+		
 		browser1.focus();
-	}
+
+	}else
+	showFamilyWiseDetailsForCustomVoterGroup();
+}
 
 
-	function getImpFamiliesVotersForBooth()
-	{
+function getImpFamiliesVotersForBooth()
+{
 	
-var mainreqid = $("#constituencyList").val()
+var mainreqid = $("#constituencyList").val();
 var urlstr = "voterFamilyInfoAction.action?publicationDateId="+impFamlpublicationDateId+"&id="+impFamlId+"&type=hamlet&maintype="+maintype+"&constituencyId="+mainreqid+"&publicationYear="+publicationYear+"&buildType="+buildType+" "
 var browser1 = window.open(urlstr,"familyWiseDetail"+impFamlId,"scrollbars=yes,height=600,width=700,left=200,top=200");	
 browser1.focus();
@@ -2287,6 +2435,48 @@ function getAgewiseInfoForVoterCategory(){
 		
 		}
 	});
+
+function showAllAgewiseDetailsForCustomVoterGroup()
+{
+    var areaType = "RURAL";
+	if(mainreqid.substring(0,1) == "1")
+		areaType = "URBAN";
+
+	var locationValue = mainreqid.substring(1);
+		var reqBrowser = 
+		// window.open("getCustomVoterGroupAgeDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&locationValue="+mandalId+"&locationName=fdfdsfsd&areaType=URBAN","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+
+	window.open("getCustomVoterGroupAgeDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&locationValue="+locationValue+"&locationName=&areaType="+areaType+"&groupName="+mainname+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+			 reqBrowser.focus();
+}
+
+
+function showCasteWiseDetailsForCustomVoterGroup()
+{
+	var areaType = "RURAL";
+	if(mainreqid.substring(0,1) == "1")
+		areaType = "URBAN";
+
+	var locationValue = mainreqid.substring(1);
+	var reqBrowser = 
+		// window.open("customGroupWiseCasteVotersDetails.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&locationValue="+mandalId+"&locationName=fdfdsfsd&areaType=URBAN","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+
+
+	window.open("customGroupWiseCasteVotersDetails.action?locationValue="+locationValue+"&areaType="+areaType+"&groupName="+mainname+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+
+	 reqBrowser.focus();
+	
+}
+
+function showFamilyWiseDetailsForCustomVoterGroup()
+{
+	var reqBrowser = 
+		// window.open("getCustomVoterGroupsFamilyDetailsAction.action?constituencyId="+constituencyId+"&publicationDateId="+mainpublicationId+"&locationValue="+mandalId+"&locationName=fdfdsfsd&areaType=URBAN","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+
+	 window.open("getCustomVoterGroupsFamilyDetailsAction.action?constituencyId="+constituencyId+"&locationValue="+mandalId+"&groupName="+mainname+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+			 reqBrowser.focus();
+	
+}
 </script>
 </body>
 </html>

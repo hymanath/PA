@@ -16,15 +16,16 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
-import com.itgrids.partyanalyst.dto.VotersDetailsVO;
-import com.itgrids.partyanalyst.service.impl.CustomVoterGroupAnalysisService;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.ICustomVoterGroupAnalysisService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -65,6 +66,29 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	private String gender;
 	private Long categoryValueId;
 	
+	private VotersInfoForMandalVO votersInfoForMandalVO;
+	
+	private  ImportantFamiliesInfoVo importantFamiliesDetails;
+	
+
+
+	public VotersInfoForMandalVO getVotersInfoForMandalVO() {
+		return votersInfoForMandalVO;
+	}
+
+	public void setVotersInfoForMandalVO(VotersInfoForMandalVO votersInfoForMandalVO) {
+		this.votersInfoForMandalVO = votersInfoForMandalVO;
+	}
+
+	public ImportantFamiliesInfoVo getImportantFamiliesDetails() {
+		return importantFamiliesDetails;
+	}
+
+	public void setImportantFamiliesDetails(
+			ImportantFamiliesInfoVo importantFamiliesDetails) {
+		this.importantFamiliesDetails = importantFamiliesDetails;
+	}
+
 	public Long getCategoryValueId() {
 		return categoryValueId;
 	}
@@ -88,7 +112,28 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+	
+	private IVotersAnalysisService votersAnalysisService;
+	private List<SelectOptionVO> groupsList;
 
+	public List<SelectOptionVO> getGroupsList() {
+		return groupsList;
+	}
+
+	public void setGroupsList(List<SelectOptionVO> groupsList) {
+		this.groupsList = groupsList;
+	}
+	
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+	
 	public ImportantFamiliesInfoVo getImportantFamiliesInfoVo() {
 		return importantFamiliesInfoVo;
 	}
@@ -411,7 +456,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		constituencyManagementVO = new ConstituencyManagementVO();
 		Long customerGroupId = request.getParameter("customvoterGroupId") != null ? Long.parseLong(request.getParameter("customvoterGroupId")):0l;
 		Long publicationId = request.getParameter("publicationId") != null ? Long.parseLong(request.getParameter("publicationId")):0l;
-		votersList = customVoterGroupAnalysisService.getVoterDetailsForCustomVoterGroup(1l,startIndex,
+		votersList = customVoterGroupAnalysisService.getVoterDetailsForCustomVoterGroup(customerGroupId,startIndex,
 				maxRecords, order, columnName,userId,publicationId);
 		constituencyManagementVO.setVoterDetails(votersList);
 		if(votersList != null && votersList.size() > 0)
@@ -771,6 +816,94 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		}
 		
 	}
+	public String getCustomVoterGroups()
+	{
+		
+		String param = null;
+		param = getTask();
+		try {
+			jobj = new JSONObject(param);
+			System.out.println(jobj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		
+		Long constituencyId = jobj.getLong("constituencyId");
+		Long id = jobj.getLong("id");
+		String groupType = jobj.getString("groupType");
+		Long userId = user.getRegistrationID();
+		
+		groupsList = customVoterGroupAnalysisService.getCustomVoterGroups(constituencyId,id,groupType,userId);
+		
+		return Action.SUCCESS;
+		
+	}
 	
+	public String getVotersCountInfoActionForCustomVoterGroup()
+	{
+		
+		try
+		{
+			String param = null;
+			param = getTask();
+				jobj = new JSONObject(param);
+				
+				HttpSession session = request.getSession();
+				RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				if(user == null)
+					return ERROR;
+			
+				votersInfoForMandalVO = customVoterGroupAnalysisService.getCustomGroupWiseVoterDetailsForAMAndalOrMuncipality(jobj.getLong("id") , user.getRegistrationID());
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String showNewsGallariesAction()
+	{
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getCustomVoterFamilyDetailsForMandalOrMuncipality()
+	{
+		try
+		{
+			String param = null;
+			param = getTask();
+				jobj = new JSONObject(param);
+				
+				HttpSession session = request.getSession();
+				RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				if(user == null)
+					return ERROR;
+		
+				importantFamiliesDetails = customVoterGroupAnalysisService
+				.getCustomVoterFamilyDetailsForMandalOrMuncipality(jobj.getLong("locationValue"), user.getRegistrationID());
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getCustomVoterGroupsFamilyDetails()
+	{
+		
+		return Action.SUCCESS;
+	}
 	
 }

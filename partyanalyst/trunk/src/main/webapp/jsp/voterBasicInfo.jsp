@@ -208,7 +208,7 @@ table.gridtable1 td {
 	height: 25px;
 }	
 
-#votersBasicInfoSubDiv{
+#votersBasicInfoSubDiv , #votersBasicInfoSubDiv1{
   margin-left: 0px;
   padding:10px;
   font-family : arial;
@@ -305,16 +305,16 @@ p {
  padding-bottom:40px;
 
 }
-#partyWiseJqTable, #impfamilydatatable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table,#impFamilesBasicSubDetailsForHamlet table,#impFamilesnfoForHamletByBooth table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#partyWiseJqTable, #impfamilydatatable,#votersBasicInfoSubDivForAgeWiseDetls table,#votersBasicInfoSubDivForLclCastSts table,#votersBasicInfoSubDivForImpFam table,#impFamilesBasicSubDetails table,#impFamDtls table,#votersBasicInfoSubDiv table,#localCastStatsTabContent_body table,#localCastStatsTabContent_subbody1 table,#impFamilesBasicSubDetailsForHamlet table,#impFamilesnfoForHamletByBooth table,#votersBasicInfoSubDiv1 table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 
 #votersByLocationTabContentDiv_body table,#InfluencingPeopleDetailsDiv table{border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 
-#partyWiseJqTable tr:nth-child(even),#impfamilydatatable tr:nth-child(even),#votersBasicInfoSubDivForAgeWiseDetls table tr:nth-child(even),#votersBasicInfoSubDivForLclCastSts table tr:nth-child(even),#votersBasicInfoSubDivForImpFam table tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#localCastStatsTabContent_subbody1 table tr:nth-child(even),#votersByLocationTabContentDiv_body table tr:nth-child(even),#InfluencingPeopleDetailsDiv table tr:nth-child(even),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(even),#impfamilydatatable1 table
+#partyWiseJqTable tr:nth-child(even),#impfamilydatatable tr:nth-child(even),#votersBasicInfoSubDivForAgeWiseDetls table tr:nth-child(even),#votersBasicInfoSubDivForLclCastSts table tr:nth-child(even),#votersBasicInfoSubDivForImpFam table tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#votersBasicInfoSubDiv1 table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#localCastStatsTabContent_subbody1 table tr:nth-child(even),#votersByLocationTabContentDiv_body table tr:nth-child(even),#InfluencingPeopleDetailsDiv table tr:nth-child(even),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(even),#impfamilydatatable1 table
 tr:nth-child(even),#impFamilesnfoForHamletByBooth  table tr:nth-child(even){background:#EdF5FF;}
 
-#partyWiseJqTable td,#impfamilydatatable td,#impfamilydatatable1 td,#votersBasicInfoSubDivForAgeWiseDetls table td,#votersBasicInfoSubDivForLclCastSts table td,#votersBasicInfoSubDivForImpFam table td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#impFamilesnfoForHamletByBooth td , #votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td,#localCastStatsTabContent_subbody1 table td,#votersByLocationTabContentDiv_body table td,#InfluencingPeopleDetailsDiv table td,#impFamilesBasicSubDetailsForHamlet table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#partyWiseJqTable td,#impfamilydatatable td,#impfamilydatatable1 td,#votersBasicInfoSubDivForAgeWiseDetls table td,#votersBasicInfoSubDivForLclCastSts table td,#votersBasicInfoSubDivForImpFam table td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#impFamilesnfoForHamletByBooth td , #votersBasicInfoSubDiv table td,#votersBasicInfoSubDiv1 table td,#localCastStatsTabContent_body table td,#localCastStatsTabContent_subbody1 table td,#votersByLocationTabContentDiv_body table td,#InfluencingPeopleDetailsDiv table td,#impFamilesBasicSubDetailsForHamlet table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 
-#partyWiseJqTable th,#impfamilydatatable th,#impfamilydatatable1 th,#votersBasicInfoSubDivForAgeWiseDetls table th,#votersBasicInfoSubDivForLclCastSts table th,#votersBasicInfoSubDivForImpFam table th,#impFamDtls table th,#impFamilesBasicSubDetails table th,#impFamilesnfoForHamletByBooth table th , #votersBasicInfoSubDiv table th,#localCastStatsTabContent_body table th,#localCastStatsTabContent_subbody1 table th,#votersByLocationTabContentDiv_body table th,#votersByPanchayatTabContentDiv_body table th,#InfluencingPeopleDetailsDiv table th,#impFamilesBasicSubDetailsForHamlet table th{
+#partyWiseJqTable th,#impfamilydatatable th,#impfamilydatatable1 th,#votersBasicInfoSubDivForAgeWiseDetls table th,#votersBasicInfoSubDivForLclCastSts table th,#votersBasicInfoSubDivForImpFam table th,#impFamDtls table th,#impFamilesBasicSubDetails table th,#impFamilesnfoForHamletByBooth table th , #votersBasicInfoSubDiv table th,#votersBasicInfoSubDiv1 table th,#localCastStatsTabContent_body table th,#localCastStatsTabContent_subbody1 table th,#votersByLocationTabContentDiv_body table th,#votersByPanchayatTabContentDiv_body table th,#InfluencingPeopleDetailsDiv table th,#impFamilesBasicSubDetailsForHamlet table th{
 	background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -326,7 +326,7 @@ tr:nth-child(even),#impFamilesnfoForHamletByBooth  table tr:nth-child(even){back
 	color:#333333;
 	}
 
-#votersBasicInfoSubDivForAgeWiseDetls table th a,#votersBasicInfoSubDivForLclCastSts table th a,#votersBasicInfoSubDivForImpFam table th a,#impFamDtls table th a,#impFamilesBasicSubDetails table th a,#impFamilesnfoForHamletByBooth table th a ,#votersBasicInfoSubDiv table th a,#localCastStatsTabContent_body table th a,#localCastStatsTabContent_subbody1 table th a,#votersByLocationTabContentDiv_body table th a,#votersByPanchayatTabContentDiv_body table th a,#InfluencingPeopleDetailsDiv table th a,{
+#votersBasicInfoSubDivForAgeWiseDetls table th a,#votersBasicInfoSubDivForLclCastSts table th a,#votersBasicInfoSubDivForImpFam table th a,#impFamDtls table th a,#impFamilesBasicSubDetails table th a,#impFamilesnfoForHamletByBooth table th a ,#votersBasicInfoSubDiv table th a,#votersBasicInfoSubDiv1 table th a,#localCastStatsTabContent_body table th a,#localCastStatsTabContent_subbody1 table th a,#votersByLocationTabContentDiv_body table th a,#votersByPanchayatTabContentDiv_body table th a,#InfluencingPeopleDetailsDiv table th a,{
 color:#333333;
 }
 
@@ -532,6 +532,8 @@ function callAjax(jsObj,url)
 									buildCastSubLevelsDiv1(myResults,jsObj);
 									//buildCasteData(myResults,jsObj);
 								}
+								else if(jsObj.task == "votersbasicinfoForCustomVoterGroup")
+								buildVotersInfoForCustomVoterGroups(myResults,jsObj);
 								
 								}catch (e) {
 								//console.log(e);
@@ -1975,6 +1977,7 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 <c:if test="${type == 'wardBooth'}">
 <title><c:out value='BOOTH'/> WISE VOTERS INFORMATION</title>
 </c:if>
+
 </head>
 <body>
 <div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
@@ -1989,9 +1992,20 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 	<div id="votersBasicInfoSubChartDiv_head" class="widget green whitegloss" style="display: none; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
 	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="votersBasicInfoSubChartHeading"></h4>
 	<div id="votersBasicInfoSubChartDiv" style="margin-top: 67px;">
-	</div></div></div>
+	</div></div>
+
+
+	<div id="votersBasicInfoSubChartDiv_head1" class="widget green whitegloss" style="display: none; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
+	<h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="votersBasicInfoSubChartHeading"></h4>
+	<div id="votersBasicInfoSubChartDiv1" style="margin-top: 67px;">
+	</div></div>
+	
+	
+	</div>
 
 	</br>
+
+	</div>
 	
 	<div id="assAndUnass"></div>
 	
@@ -1999,6 +2013,10 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 	<div id="votersBasicInfoSubDiv_head" class="widget blue whitegloss" style="display: none; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
 	<h4 class="headingClass" id="votersBasicInfoSubHeading" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable table table-bordered table-striped table-hover" ></div>	</div></div>
+
+	<div id="votersBasicInfoSubDiv_head1" class="widget blue whitegloss" style=" color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
+	<h4 class="headingClass" id="votersBasicInfoSubHeading1" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
+	<div id="votersBasicInfoSubDiv1" class="yui-skin-sam yui-dt-sortable table table-bordered table-striped table-hover" ></div>	</div></div>
 	
 </div>
 <div align="center">
@@ -2061,14 +2079,140 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 	<div id="ageWiseDetailsDiv" class="yui-skin-sam yui-dt-sortable"></div></div></div>
 <script type="text/javascript">
 
-getvotersBasicInfo("voters",id,publicationId,type);
+
+if(type != "customVoterGroup")
+  getvotersBasicInfo("voters",id,publicationId,type);
+ else
+ getvoterBasicInfoForCustomVoterGroup();
 if(type == "wardBooth")
 {
 getCasteInfoForCustomWard();
 
 }
+
+function getvoterBasicInfoForCustomVoterGroup()
+{  
+	 document.title = 'CUSTOM VOTER GROUP WISE VOTERS INFORMATION IN ${typename}';
+
+	var jsObj=
+			{
+				id:id,
+				task:"votersbasicinfoForCustomVoterGroup"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVotersCountInfoActionForCustomVoterGroup.action?"+rparam;	
+   
+		callAjax(jsObj,url);
+	
+}
+
+
+function buildVotersInfoForCustomVoterGroups(myResults,jsObj)
+{
+	  $("#ajaxImageDiv").css('display','none');
+
+
+	if(myResults.votersInfoForMandalVOList.length == 0)
+	{
+		$("#votersBasicInfoTitleDiv , #votersBasicInfoSubChartDiv_head1 , #votersBasicInfoSubDiv_head1").html('');
+
+		$("#votersBasicInfoTitleDiv , #votersBasicInfoSubChartDiv_head1 , #votersBasicInfoSubDiv_head1").hide();
+
+        $("#votersBasicInfoSubChartDiv_head1").show();
+		$("#votersBasicInfoSubChartDiv_head1").html("NO DATA AVIALABLE");
+
+		return false;
+
+	}
+
+	$("#votersBasicInfoTitleDiv").append('<h3 style="color: rgb(255, 255, 255); border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px; height: 28px; font-family: arial; font-size: 16px; background: none repeat scroll 0px 0px rgb(73, 175, 205); padding: 5px 5px 15px;">Custom Voter Group Wise Voter Details In ${typename}</h3>');
+
+	if(myResults.votersInfoForMandalVOList.length > 0 ){
+
+		   $("#votersBasicInfoSubHeading1").html('Custom Voter Group Wise Voters Information in ${typename}');
+
+           buildVotersChartForCustomVoterGroups(myResults.votersInfoForMandalVOList,mainname);
+           $('#votersBasicInfoSubChartDiv_head1').show();
+	}else
+           $('#votersBasicInfoSubChartDiv_head1').hide();
+
+	 YAHOO.widget.DataTable.maleVoters = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var maleVoters= oRecord.getData("totalMaleVoters");
+
+	if(maleVoters == null)
+		 elLiner.innerHTML = "0";
+	else
+		elLiner.innerHTML = maleVoters;
+
+		
+  };
+
+  YAHOO.widget.DataTable.femaleVoters = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var femaleVoters= oRecord.getData("totalFemaleVoters");
+
+	if(femaleVoters == null)
+		 elLiner.innerHTML = "0";
+	else
+		elLiner.innerHTML = femaleVoters;
+		
+  };
+
+	var votersResultColumnDefs = [ 		    	             
+		    	            
+							{key:"name", label: "Custom Group Name", sortable: true},
+		    	           	//{key:"totalMaleVoters", label: "Male Voters", sortable: true},
+							{key:"totalMaleVoters", label: "Male Voters",
+								formatter:YAHOO.widget.DataTable.maleVoters, sortable: true, resizeable:true},
+							
+							//{key:"totalFemaleVoters", label: "Female Voters", sortable: true},
+							{key:"totalFemaleVoters", label: "Female Voters",
+								formatter:YAHOO.widget.DataTable.femaleVoters, sortable: true, resizeable:true},
+		    				{key:"totalVoters", label: "Total Voters",sortable:true},
+							{key:"percent", label:" % Share", sortable: true}
+		    	        ]; 
+		var myConfigs = {};
+
+		var myDataSource = new YAHOO.util.DataSource(myResults.votersInfoForMandalVOList);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "name","totalMaleVoters","totalFemaleVoters","totalVoters","percent"]
+					};
+
+
+		var impFamliesResultDataSource = new YAHOO.widget.DataTable('votersBasicInfoSubDiv1', votersResultColumnDefs,myDataSource, myConfigs);
+
+}
+function buildVotersChartForCustomVoterGroups(chartInfo,reqTitle)
+{
+		$('#votersBasicInfoSubChartHeading').html('Custom Voter Group Wise Voters Information Chart In ${typename}');
+ // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'type');
+        data.addColumn('number', 'value');
+		data.addRows(chartInfo.length);
+
+		for(var i = 0 ; i< chartInfo.length ; i++){		
+		var name = chartInfo[i].name;
+		var val = parseFloat(chartInfo[i].percent);
+		  data.setValue(i,0,name);
+		  data.setValue(i,1,val);
+		}	
+        // Set chart options
+		var title = 'Custom Voter Group Wise Voters % Share in ${typename}'; 
+        var options = {'title':title,
+                       'width':800,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('votersBasicInfoSubChartDiv1'));
+        chart.draw(data, options);
+
+}
+
 </script>
 </body>
-
-
 </html>
