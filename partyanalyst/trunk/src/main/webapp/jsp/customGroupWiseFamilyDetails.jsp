@@ -201,10 +201,10 @@ function callAjaxForFamiliesDetails(jsObj,url)
 
  function buildCustomVoterGroupsFamilyDetails(myResults)
  {
-
-	 if(myResults == null || myResults.length == 0)
+	 if(myResults == null || myResults.subList.length == 1)
 	 {
 		 $('#descriptionsDiv').hide();
+		 $('#impFamiliesDetailsForCustomVoterGroups').html('<font style="font-weight:bold;">NO DATA AVIALABLE</font>');
 		 return false;
 	 }
 
