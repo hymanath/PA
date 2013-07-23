@@ -17,7 +17,53 @@ public class PartyVotesEarnedVO {
 	private Long polledVotes;
 	private String reqType;
 	private Integer totalBooths = 0;
+	private Integer orderNo;
+	private Long reportLevelId;
+	private Long reportLevelValue;
+	private Long publicationDateId;
 	
+	private Long constituencyId;
+	
+	public Long getReportLevelId() {
+		return reportLevelId;
+	}
+
+	public void setReportLevelId(Long reportLevelId) {
+		this.reportLevelId = reportLevelId;
+	}
+
+	public Long getReportLevelValue() {
+		return reportLevelValue;
+	}
+
+	public void setReportLevelValue(Long reportLevelValue) {
+		this.reportLevelValue = reportLevelValue;
+	}
+
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public Integer getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Integer orderNo) {
+		this.orderNo = orderNo;
+	}
+
 	private boolean wonStatus = false;	
 
 	public boolean isWonStatus() {
