@@ -40,7 +40,7 @@
 		<property name="electionTypeDAO" ref="electionTypeDAO"/>
 		<property name="votingTrendzDAO" ref="votingTrendzDAO"/>
 		<property name="votingTrendzPartiesResultDAO" ref="votingTrendzPartiesResultDAO"/>
-		
+		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
 		
 	</bean>
 	
