@@ -134,6 +134,7 @@ var locationValue = "${locationValue}";
 <div id ="localCastStatsVotersTitle" ><h4 style="text-align:center;margin-top:10px;font-size:18px;" class="breadcrumb">Caste Wise Custom Voter Groups Details in <s:property value="groupName"/></h4>
 </div>
 <div id="casteSelectDiv"></div>
+<div id="noResults"></div>
 <div id="localCastStatsTabContent_subbody1" class="yui-skin-sam yui-dt-sortable"></div>
 <div id="castContainerChartInner" style="border:1px solid;">
 		<!-- <div id="rangeSliderDiv">
@@ -198,6 +199,14 @@ function callAjax(jsObj,url)
 function buildCustomGroupWiseCasteVoters(results,jsObj)
 {
 	$("#ajaxImg").css("display","none");
+	if(results == null || results.length == 0);
+	{
+		$('#casteGroupWiseVotersGrapDiv').hide();
+        $('#noResults').html('<font style="font-weight:bold;">NO DATA ARE AVIALABLE</font>');
+		return false;
+	}
+	$('#casteGroupWiseVotersGrapDiv').show();
+	
 	var votersDetails = [
 				   {key: "name", label: "Group Name", sortable: true},
 				   {key: "castName", label: "Caste", sortable: true},
