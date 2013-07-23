@@ -399,8 +399,8 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 			if(regVO == null)
 				return null;
-			
-			resultStatus = voterReportService.insertVotingTrendzToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+			Long userId = regVO.getRegistrationID();
+			resultStatus = voterReportService.insertVotingTrendzToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
 			return Action.SUCCESS;
 		}
 		
