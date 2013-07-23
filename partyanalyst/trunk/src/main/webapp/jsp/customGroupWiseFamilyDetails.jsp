@@ -72,6 +72,8 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 
 <style>
+.descriptionInnerDiv{margin-left: 6px; font-size: 13px; line-height: 1.7em;}
+.descriptionInnerDiv span{margin-right: 5px;}
 .yuiTableCss table{
 	border:1px solid #d3d3d3;
 	border-collapse:collapse;
@@ -142,6 +144,17 @@ google.load("visualization", "1", {packages:["corechart"]});
 <div id="impFamiliesDetailsForCustomVoterGroups" class="yuiTableCss"></div>
 </div>
 
+<div class="descriptionInnerDiv" id="descriptionsDiv" style="margin-left:23px;display:none;">
+	<span> <b> &lt; 3 -</b> No Of Families Having Below 3 Voters</span><br>
+	<span> <b>&lt;3 % -</b> No Of Families Having Below 3 Voters In Percent</span><br>
+	<span> <b>4 to 6 -</b> No Of Families Having 4 to 6 Voters</span><br>
+	<span> <b>4 to 6 % -</b>No Of Families Having 4 to 6 Voters In Percent</span><br>
+	<span> <b>7 to 10 -</b> No Of Families Having 7 to 10 Voters</span><br>
+	<span> <b>7 to 10 % -</b> No Of Families Having 7 to 10 Voters In Percent</span><br>
+	<span> <b>&gt;10 - </b> No Of Families Having Above 10 Voters</span><br>
+	<span> <b>&gt;10 % -</b> No Of Families Having Above 10 Voters In Percent</span><br>
+</div>
+
 <script>
 getCustomVoterGroupsFamiliesDetails();
 
@@ -188,6 +201,15 @@ function callAjaxForFamiliesDetails(jsObj,url)
 
  function buildCustomVoterGroupsFamilyDetails(myResults)
  {
+
+	 if(myResults == null || myResults.length == 0)
+	 {
+		 $('#descriptionsDiv').hide();
+		 return false;
+	 }
+
+	 $('#descriptionsDiv').show();
+
 	 var impFamilesColumnDefs = [
     {key:"name", label: "Custom Voter Group Name", sortable: true},
 	{key:"totalVoters", label:"Total",sortable: true},
