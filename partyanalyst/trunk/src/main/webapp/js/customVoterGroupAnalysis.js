@@ -453,7 +453,8 @@ var myResults;
 			 				 buildCasteWiseCustomVotersCount(myResults,jsObj);
 			 			else if(jsObj.task=="getAgeWiseCustomVotersInGroup"){
 			 					 buildAgeWiseInGroupTable(myResults);
-						}else if(jsObj.task=="CustomVoterImpFamilies"){		CustomVoterImpFamiliesTable(myResults,jsObj);
+						}else if(jsObj.task=="CustomVoterImpFamilies"){	
+							CustomVoterImpFamiliesTable(myResults,jsObj);
 						}
 					}catch (e) {
 
@@ -478,11 +479,11 @@ var castesArr=[];
 		
 	function buildCasteWiseCustomVotersCount(results,jsObj)
 	{
-		
 		$("#casteWiseVotersCountInnerDiv").html('');
 		if(results == null || results.length == 0)
 		{
-			$("#casteWiseVotersCountInnerDiv").html('No Data Found.');
+			$("#casteWiseVotersCountInnerDiv").html('<font style="font-weight:bold;">NO DATA AVIALABLE</font>');
+			$('#castContainerChartInner').hide();
 			return;
 		}
 		var str = '';
@@ -712,6 +713,13 @@ function buildGraphBySlide(castArray,casteRange)
 }
 
 function CustomVoterImpFamiliesTable(myresults,jsObj){
+
+	if(myresults == null || myresults.totalVoters == 0)
+	{
+		$("#impFamilesBasicDetails").html('<font style="font-weight:bold;">NO DATA AVIALABLE</font>');
+		return false;
+	}
+
 	var value=0;
 	var str='';
 	var type = jsObj.type;	
