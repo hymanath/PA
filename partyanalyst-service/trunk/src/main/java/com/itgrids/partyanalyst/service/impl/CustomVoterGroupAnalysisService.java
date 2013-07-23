@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,10 +9,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -22,20 +25,23 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
+import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.model.VoterAgeInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.ICustomVoterGroupAnalysisService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
-import com.itgrids.partyanalyst.model.Voter;
 
 public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysisService {
 	
@@ -51,6 +57,16 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 	
 	private ICustomVoterGroupDAO customVoterGroupDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+    private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+    
+    
+    public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	  }
 	
 	public IVoterReportService getVoterReportService() {
 		return voterReportService;
@@ -204,6 +220,10 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
     	Map<Long,Long> groupMap = new HashMap<Long, Long>();
     	
     	try{
+    		
+    		if(areaType.equalsIgnoreCase(IConstants.URBAN))
+    			locationValue = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByassemblyLocalElectionBodyId(locationValue);
+    			
     		List<Object[]> list = customVoterDAO.getCustomGroupWiseVotersDetailsForCaste(userId,areaType,locationValue);
     		
     		if(list != null && list.size() > 0)
@@ -1025,6 +1045,11 @@ public List<VotersDetailsVO> getCustomVotersAgeDetails(Long constituencyId, Long
 	List<VotersDetailsVO> votersDetailsVOsList = new ArrayList<VotersDetailsVO>(0);
 	try{
 		List<Object[]> list = null;
+		
+		if(areaType.equalsIgnoreCase(IConstants.URBAN))
+			locationId = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByassemblyLocalElectionBodyId(locationId);
+
+			
 		 list = boothPublicationVoterDAO.getAgeWiseCustomVoterDetails(constituencyId, locationId, publicationDateId, areaType, userId,AGE1);
 		 setCustomVoterAgeDetails(AGE1,list,votersDetailsVOsList);
 		
@@ -1378,4 +1403,272 @@ public InfluencingPeopleBeanVO getInfluencingPeopleCountByCategoryAndCaste(Long 
 	}
 	return influencingPeopleBeanVO;
 }
+
+public List<SelectOptionVO> getCustomVoterGroups(Long constituencyId,Long id,String groupType,Long userId)
+	{
+	List<SelectOptionVO>  customVoterGroupslist = new ArrayList<SelectOptionVO>();
+	
+	try
+	{
+	List<Long> locationValuesList = new ArrayList<Long>(); 
+	List<Object[]> customVoterGroups = null;
+	 if(groupType.equalsIgnoreCase("muncipality")){
+		Long lid = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(id).get(0); 
+	
+		 locationValuesList.add(lid);
+		 customVoterGroups =  customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(userId ,locationValuesList,IConstants.AREA_TYPE_URBAN,constituencyId );
+	 }			 
+	 else if(groupType.equalsIgnoreCase("mandal")){
+		 locationValuesList.add(id);
+		 customVoterGroups =  customVoterGroupDAO.getCustomVoterGroupsByLocationValueAndAreaTypeAndConstituencyId(userId ,locationValuesList,IConstants.AREA_TYPE_RURAL,constituencyId );		 
+	 }
+	 
+	 
+	 for(Object[] obj:customVoterGroups){
+		 SelectOptionVO vo  =new SelectOptionVO();
+		 vo.setId((Long)obj[0]);
+		 vo.setName(obj[1].toString());
+		 customVoterGroupslist.add(vo);
+	 }
+	 
+	}catch(Exception e){
+	 e.printStackTrace();		 
+	}
+	return customVoterGroupslist;
+	
+	}
+
+
+/**
+ * This method will get custom voters details by group wise in a mandal
+ * @param id
+ * @param userId
+ * @return VotersInfoForMandalVO
+ */
+public VotersInfoForMandalVO  getCustomGroupWiseVoterDetailsForAMAndalOrMuncipality(Long id , Long userId)
+{
+   Log.debug("Entered into the getCustomGroupWiseVoterDetails service method");
+   VotersInfoForMandalVO resultVO = new VotersInfoForMandalVO();
+   List<VotersInfoForMandalVO>  list = new ArrayList<VotersInfoForMandalVO>();
+	
+  try
+  {	
+	  List<Object[]> customVoterGroupsList = null;
+	  
+	  if(id.toString().substring(0, 1).equalsIgnoreCase("1"))
+	  {
+		  id = assemblyLocalElectionBodyDAO
+					.getLocalElectionBodyIdByassemblyLocalElectionBodyId(Long
+							.parseLong(id.toString().substring(1)));
+		  
+		  customVoterGroupsList = customVoterDAO
+					.getCustomVoterDetailsByGroupWise(1L, id , userId);
+		  
+	  }else{
+		  
+			 customVoterGroupsList = customVoterDAO
+					.getCustomVoterDetailsByGroupWise(
+							Long.parseLong(id.toString().substring(0, 1)),
+							Long.parseLong(id.toString().substring(1)), userId);
+	  }
+			
+			Map<String , VotersInfoForMandalVO> map = new HashMap<String, VotersInfoForMandalVO>();
+			
+			//here setting all the male and female voters details 
+			for(Object[] obj:customVoterGroupsList)
+			{
+				VotersInfoForMandalVO vo = null;
+				
+				if(map.get(obj[1].toString()) != null)
+					vo = map.get(obj[1].toString()); // if vo is already exist for a custom voter group in map
+				else{
+					vo = new VotersInfoForMandalVO();
+					map.put(obj[1].toString(), vo);
+				}
+				
+				if(obj[0].toString().equalsIgnoreCase("M"))
+					vo.setTotalMaleVoters(obj[3].toString());
+				else if(obj[0].toString().equalsIgnoreCase("F"))
+					vo.setTotalFemaleVoters(obj[3].toString());
+				
+				vo.setName(obj[2].toString());				
+			}
+			
+			
+			//here calculating total number of voters in all groups
+			Long totalVtersInAllGroups = 0L;
+			for(Entry<String , VotersInfoForMandalVO> entry:map.entrySet())	
+			{
+				VotersInfoForMandalVO votersInfoForMandalVO = (VotersInfoForMandalVO)entry.getValue();
+				
+				list.add(votersInfoForMandalVO);
+				
+				Long maleVoters = 0L;
+				Long femaleVoters = 0L;
+				
+				if(votersInfoForMandalVO.getTotalMaleVoters() != null)
+					maleVoters = Long.parseLong(votersInfoForMandalVO.getTotalMaleVoters());
+				
+				if(votersInfoForMandalVO.getTotalFemaleVoters() != null)
+					femaleVoters = Long.parseLong(votersInfoForMandalVO.getTotalFemaleVoters());
+					
+				totalVtersInAllGroups = totalVtersInAllGroups + maleVoters +femaleVoters ; 
+			}
+			
+			Collections.sort(list);
+			
+			//here calculation the percent for all custom voter groups
+			for(VotersInfoForMandalVO vo :list){
+				
+				Long maleVoters = 0L;
+				Long femaleVoters = 0L;
+				
+				if(vo.getTotalMaleVoters() != null)
+					maleVoters = Long.parseLong(vo.getTotalMaleVoters());
+				
+				if(vo.getTotalFemaleVoters() != null)
+					femaleVoters = Long.parseLong(vo.getTotalFemaleVoters());
+				
+				Long totalVoters = maleVoters + femaleVoters ;
+				vo.setTotalVoters(totalVoters.toString());
+				
+				vo.setPercent(new BigDecimal((new Double(totalVoters)*100)/totalVtersInAllGroups).setScale(2, BigDecimal.ROUND_HALF_UP).toString());	
+			}
+			
+			resultVO.setVotersInfoForMandalVOList(list);
+			
+			
+	  
+  }catch(Exception e)
+  {
+	  e.printStackTrace();
+	  Log.error("Exception raised in getCustomGroupWiseVoterDetails service method");
+	  return null;
+  }  
+  return resultVO;
+}
+
+public ImportantFamiliesInfoVo getCustomVoterFamilyDetailsForMandalOrMuncipality(Long locationValue ,Long userId)
+{
+	ImportantFamiliesInfoVo mainVO = new ImportantFamiliesInfoVo();
+	
+	List<ImportantFamiliesInfoVo> impFamiliesList = new ArrayList<ImportantFamiliesInfoVo>();
+	
+	Log.debug("Entered into the getCustomVoterFamilyDetailsForMandalOrMuncipality method");
+	try
+	{
+		Long areaType = 1L;
+		
+		if(locationValue.toString().substring(0,1).equalsIgnoreCase("2"))
+			areaType = 2L;
+		
+		if(areaType == 1L)
+				locationValue = assemblyLocalElectionBodyDAO
+						.getLocalElectionBodyIdByassemblyLocalElectionBodyId(Long
+								.parseLong(locationValue.toString().substring(1)));
+		else
+			locationValue = Long.parseLong(locationValue.toString().substring(1));
+		
+			List<Object[]> familyDetailsList = customVoterDAO
+					.getCustomVoterFamilyDetailsForMandalOrMuncipality(Long
+							.parseLong(locationValue.toString()),
+							areaType, userId);
+		
+		Map<Long , ImportantFamiliesInfoVo> map = new HashMap<Long, ImportantFamiliesInfoVo>();
+		
+		for(Object[] obj:familyDetailsList)
+		{
+			ImportantFamiliesInfoVo vo = null;
+			
+		  if(map.get((Long)obj[2]) != null)
+			  vo = map.get(obj[2]);
+		  else
+		  {
+			  vo = new ImportantFamiliesInfoVo();
+			  vo.setBelow3(0L);
+			  vo.setBetwn4to6(0L);
+			  vo.setBetwn7to10(0L);
+			  vo.setAbove10(0L);
+			  vo.setTotalMaleVoters("0");
+			  vo.setTotalFemaleVoters("0");
+			  map.put((Long)obj[2], vo);
+		  }
+		  
+		  vo.setCustomVoterGroupId((Long)obj[2]);
+		  vo.setName(obj[4].toString());
+		  
+		  Long votersCount = (Long)obj[0];
+		  
+		  if(votersCount.longValue() <=3)
+			  vo.setBelow3(vo.getBelow3() + votersCount);
+		  else if(votersCount.longValue() >=4 && votersCount.longValue() <=6)
+			  vo.setBetwn4to6(vo.getBetwn4to6() + votersCount);
+	      else if(votersCount.longValue() >=7 && votersCount.longValue() <=10)
+	    	  vo.setBetwn7to10(vo.getBetwn7to10() + votersCount);
+	      else 
+	    	  vo.setAbove10(vo.getAbove10() + votersCount);
+		  
+		  if(obj[3].toString().equalsIgnoreCase("M"))
+		  {
+			  Long maleVoters = Long.parseLong(vo.getTotalMaleVoters()) + (Long) obj[0];			  
+			  vo.setTotalMaleVoters(maleVoters.toString());
+		  }
+			 // vo.setTotalMaleVoters();
+		  else if(obj[3].toString().equalsIgnoreCase("F"))
+		  {
+			  Long femaleVoters = Long.parseLong(vo.getTotalFemaleVoters()) + (Long) obj[0];
+			  vo.setTotalFemaleVoters(femaleVoters.toString());
+		  }
+			
+		  vo.setTotalVoters(Long.parseLong(vo.getTotalMaleVoters()) + Long.parseLong(vo.getTotalFemaleVoters()));
+		}
+		
+		for(Entry<Long ,ImportantFamiliesInfoVo> entry: map.entrySet())		
+			impFamiliesList.add(entry.getValue());
+		
+		for(ImportantFamiliesInfoVo voDtls:impFamiliesList)
+		{	 
+			 voDtls.setBelow3perc(Double.parseDouble(new BigDecimal((new Double(voDtls.getBelow3())*100)/voDtls.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+			 voDtls.setBetwn4to6perc(Double.parseDouble(new BigDecimal((new Double(voDtls.getBetwn4to6())*100)/voDtls.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+			 voDtls.setBetwn7to10perc(Double.parseDouble(new BigDecimal((new Double(voDtls.getBetwn7to10())*100)/voDtls.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+			 voDtls.setAbove10perc(Double.parseDouble(new BigDecimal((new Double(voDtls.getAbove10())*100)/voDtls.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+			 
+		}
+		
+		Long totalVotersBelow3 = 0L;
+		Long totalVotersBetween4to6 = 0L;
+		Long totalVotersBetween7to10 = 0L;
+		Long totalVotersAbove10 = 0L;
+		Long totalVoters = 0L;
+		
+		for(ImportantFamiliesInfoVo voDtls:impFamiliesList)
+		{	
+			totalVotersBelow3 += voDtls.getBelow3();
+			totalVotersBetween4to6 += voDtls.getBetwn4to6();
+			totalVotersBetween7to10 += voDtls.getBetwn7to10();
+			totalVotersAbove10 += voDtls.getAbove10();
+			
+			totalVoters = totalVoters + totalVotersBelow3 + totalVotersBetween4to6 + totalVotersBetween7to10 + totalVotersAbove10;
+			 
+		}
+		
+		mainVO.setBelow3perc(Double.parseDouble(new BigDecimal((new Double(totalVotersBelow3)*100)/totalVoters).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+		mainVO.setBetwn4to6perc(Double.parseDouble(new BigDecimal((new Double(totalVotersBetween4to6)*100)/totalVoters).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+		mainVO.setBetwn7to10perc(Double.parseDouble(new BigDecimal((new Double(totalVotersBetween7to10)*100)/totalVoters).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+		mainVO.setAbove10perc(Double.parseDouble(new BigDecimal((new Double(totalVotersAbove10)*100)/totalVoters).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+
+		
+		mainVO.setSubList(impFamiliesList);
+		
+	}catch(Exception e)
+	{
+		Log.error("");
+		e.printStackTrace();
+		return null;
+		
+	}
+	
+	return mainVO;
+}
+
 }

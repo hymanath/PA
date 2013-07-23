@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.VoterInfo;
-import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 
 public interface ICustomVoterGroupAnalysisService {
 	
@@ -41,9 +43,10 @@ public interface ICustomVoterGroupAnalysisService {
 	 public List<VoterVO> showVoterDetailsForSelcetedType(Long userId,Long customVoterGroupId,Long publicationDateId,String btnName,Integer startIndex,Integer maxRecords,String order,String columnName);
 	 
 	 public ImportantFamiliesInfoVo getCustomVoterImpFamilyDetails(Long customVoterGroupId,Long publicationDateId,Long userId);
-	 
 	 public List<VotersDetailsVO> getCustomVotersAgeDetails(Long constituencyId, Long locationId, Long publicationDateId,String areaType, Long userId);
-	 
+
+	 public List<SelectOptionVO> getCustomVoterGroups(Long constituencyId,Long id,String groupType,Long userId);
+
 	 public List<VoterVO> getVoterDetailsForAttribute(Long userVoterCategoryValueId,Long casteId,String gender,Integer startIndex,Integer maxIndex,String order,String columnName,Long userId,String locationType,Long locationId,Long publicationId);
 	 
 	 public List<VoterVO> getVoterDataForAttribute(VoterDataVO voterDataVO,Long userId,List<Long> categories);
@@ -53,4 +56,8 @@ public interface ICustomVoterGroupAnalysisService {
 	 
 	 public List<VoterVO> showVoterDetailsForSelcetedTypeByCasteAndCategoryId(Long userId,VoterDataVO voterDataVO,String btnName);
 	 
+	 public VotersInfoForMandalVO  getCustomGroupWiseVoterDetailsForAMAndalOrMuncipality(Long id , Long userId);
+	 
+	 public ImportantFamiliesInfoVo getCustomVoterFamilyDetailsForMandalOrMuncipality(Long locationValue ,Long userId);
+ 
 }

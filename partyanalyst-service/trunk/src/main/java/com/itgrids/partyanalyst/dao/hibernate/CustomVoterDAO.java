@@ -463,4 +463,42 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 		queryObj.setParameter("publicationDateId", publicationDateId);
 		return queryObj.list();
 		}
+	
+	
+	public List<Object[]> getCustomVoterDetailsByGroupWise(Long areaTypeId , Long locationId ,Long userId)
+	{
+		
+		Query query = getSession().createQuery("select model.voter.gender  ," +
+				" model.customVoterGroup.customVoterGroupId ,model.customVoterGroup.name , " +
+				" count(model.voter.voterId) from CustomVoter model " +
+				" where model.customVoterGroup.user.userId = ? and model.customVoterGroup.locationValue = ? " +
+				" and model.customVoterGroup.areaType.areaTypeId = ? group by model.voter.gender  ," +
+				" model.customVoterGroup.customVoterGroupId ");
+		
+		query.setParameter(0, userId);
+		query.setParameter(1, locationId);
+		query.setParameter(2, areaTypeId);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getCustomVoterFamilyDetailsForMandalOrMuncipality(Long locationValue , Long areaTypeId ,Long userId)
+	{
+		
+		Query query = getSession().createQuery("select count(model.voter.voterId) ,model.voter.houseNo , " +
+				" model.customVoterGroup.customVoterGroupId , model.voter.gender , model.customVoterGroup.name from CustomVoter model where " +
+				" model.customVoterGroup.locationValue = ? and model.customVoterGroup.areaType.areaTypeId = ? " +
+				" and model.customVoterGroup.user.userId = ?  " +
+				" group by model.voter.houseNo , model.customVoterGroup.customVoterGroupId ,  model.voter.gender");
+		
+		query.setParameter(0, locationValue);
+		query.setParameter(1, areaTypeId);
+		query.setParameter(2, userId);
+		
+		return query.list();
+		
+		
+	}
+	
 }
