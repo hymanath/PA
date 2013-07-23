@@ -3216,7 +3216,250 @@ public class VoterReportService implements IVoterReportService{
 				return resultStatus;
 			}
 	
-			  public ResultStatus insertVotingTrendzToIntermediateTables(final Long reportLevelValue,Long publicationDateId)
+			  public ResultStatus insertVotingTrendzToIntermediateTables(Long reportLevelValue,Long publicationDateId,Long userId)
+				{
+				  ResultStatus resultStatus = new ResultStatus();
+					try{
+						  List<Long> mandalIdsList = new ArrayList<Long>(0);
+						  List<SelectOptionVO> panchayatsList = new ArrayList<SelectOptionVO>(0);
+						  List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>(0);
+						  List<SelectOptionVO> wardsList = new ArrayList<SelectOptionVO>(0);
+						  List<Long>panchayatIdsList = new ArrayList<Long>(0);
+						  List<Long> localBodiesList = new ArrayList<Long>(0);
+						  List<Long> assemblylocalBodiesList = new ArrayList<Long>(0);
+						  List<Long> boothIdsList = new ArrayList<Long>(0);
+						  List<Object[]> list = null;
+						  List<Object[]> list2 = null;
+						  List<Long> hamlets = new ArrayList<Long>();
+						  
+						  List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(reportLevelValue,IConstants.PRESENT_YEAR, null);
+						  calculateAndInsertVotingTrendzInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,null,reportLevelValue,publicationDateId);
+						  
+						  if(mandalsList == null || mandalsList.size() == 0)
+							  return null;
+						  for(SelectOptionVO selectOptionVO : mandalsList)
+						  {
+							  if(selectOptionVO.getId().toString().substring(0,1).equalsIgnoreCase(IConstants.RURAL_TYPE))
+								  mandalIdsList.add(new Long(selectOptionVO.getId().toString().substring(1)));
+							  else
+							  {
+								  assemblylocalBodiesList.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(selectOptionVO.getId().toString().substring(1))).get(0));
+								  localBodiesList.add(new Long(selectOptionVO.getId()));
+							  }
+							  
+						  }
+						  
+						  for(Long mandalId : mandalIdsList)
+							  calculateAndInsertVotingTrendzInfoForALocation(IConstants.MANDAL,mandalId,reportLevelValue,reportLevelValue,publicationDateId);
+						  
+						  if(mandalIdsList != null && mandalIdsList.size() >0)
+							   list = panchayatDAO.getPanchayatIdsByMandalIdsList(mandalIdsList);
+						  
+						  if(list != null && list.size() > 0)
+						  {
+							  for(Object[] params : list)
+								  panchayatsList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+						  }
+						  
+						  for(SelectOptionVO selectOptionVO : panchayatsList)
+						  {
+						  calculateAndInsertVotingTrendzInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),new Long(selectOptionVO.getName()),reportLevelValue,publicationDateId);  
+						  panchayatIdsList.add(selectOptionVO.getId());
+						  }
+						  if(panchayatIdsList.size() > 0)
+						  {
+						  list2 = boothDAO.getBoothIdsByPanchayatIdsInAPublication(panchayatIdsList, publicationDateId);
+						 // hamlets =panchayatHamletDAO.getHamletsOfPanchayitis(panchayatIdsList);
+						  }
+						  if(list2 != null && list2.size() > 0)
+							  for(Object[] params : list2)
+								  boothsList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+						  // panchayat booths
+						  if(boothsList != null && boothsList.size() > 0)
+							  for(SelectOptionVO boothId : boothsList)
+								  calculateAndInsertVotingTrendzInfoForALocation(IConstants.BOOTH,boothId.getId(),new Long(boothId.getName()),reportLevelValue,publicationDateId);
+						  //localBody Data
+						  if(localBodiesList != null && localBodiesList.size() >0)
+						  {
+							  for(Long localbodyId: localBodiesList)
+							  
+								  calculateAndInsertVotingTrendzInfoForALocation(IConstants.LOCALELECTIONBODY,localbodyId,reportLevelValue,reportLevelValue,publicationDateId);
+						  }
+						 /* if(assemblylocalBodiesList != null && assemblylocalBodiesList.size() > 0)
+						  {
+							 List<Long> localElebodyIds = new ArrayList<Long>();
+							 List<Long> localElebodyIds1 = new ArrayList<Long>();
+							 List<Object[]> wards = null;
+							 List<Object[]> localEleIds = localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(assemblylocalBodiesList);
+							  if(localEleIds != null && localEleIds.size() > 0)
+							  {
+								  for(Object[] params : localEleIds)
+								  {
+									  if(params[0].toString().equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || (params[0].toString().equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE)))
+											localElebodyIds.add((Long) params[1]);
+									  else
+										  localElebodyIds1.add((Long)params[1]); 
+								  }
+							  }
+							  if(localElebodyIds1 != null && localElebodyIds1.size() > 0)
+							 wards = boothDAO.getWardsByLocalElecBodyIds(localElebodyIds1, publicationDateId,reportLevelValue);
+							  if(localElebodyIds != null && localElebodyIds.size() > 0)
+							 wards = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(localElebodyIds, publicationDateId,userId);  
+							  if(wards != null && wards.size() >0)
+							  {
+								  for(Object[] ward:wards)
+									  if(ward[0] != null)
+										  wardsList.add(new SelectOptionVO((Long)ward[0],ward[1].toString()));
+							 }
+							  
+						  }*/
+						  
+						 if(assemblylocalBodiesList.size() > 0)
+						  {
+							List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(assemblylocalBodiesList,publicationDateId,reportLevelValue);
+							  
+							  if(list3 != null && list3.size() > 0)
+							  {
+								  for(Object[] params : list3)
+									  boothsList.add(new SelectOptionVO((Long)params[0],params[1].toString())); 
+							  }
+							  
+						  }
+			              
+						/* for(SelectOptionVO selectOptionVO:wardsList)
+							 calculateAndInsertVotingTrendzInfoForALocation(IConstants.WARD,selectOptionVO.getId(),0l,reportLevelValue,userId);*/
+						  
+						 for(SelectOptionVO selectOptionVO : boothsList)
+							  if(!boothIdsList.contains(selectOptionVO.getId()))
+								  boothIdsList.add(selectOptionVO.getId());
+						  
+						 List<Object[]> allBoothsList = boothDAO.getBoothsInAConstituencyByPublication(reportLevelValue, publicationDateId);
+						 
+						 if(allBoothsList != null && allBoothsList.size() > 0)
+							 for(Object[] params : allBoothsList)
+								 calculateAndInsertVotingTrendzInfoForALocation(IConstants.BOOTH,(Long)params[0],0L,reportLevelValue,publicationDateId);
+						 
+						/*if(hamlets != null && hamlets.size() > 0)
+							for(Long hamletId : hamlets)
+								calculateAndInsertVotingTrendzInfoForALocation(IConstants.HAMLET,hamletId,0L,reportLevelValue,userId);*/
+						 
+						  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						  return resultStatus;
+					}
+					catch (Exception e) {
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						return resultStatus;
+					}
+					
+					
+				}	
+			 
+			  public ResultStatus calculateAndInsertVotingTrendzInfoForALocation(String locationType,Long locationValue,Long parentLocationId,Long constituencyId,Long publicationId)
+				{
+					 ResultStatus resultStatus = new ResultStatus();
+					 List<PartyVotesEarnedVO> result = null;
+					 PartyVotesEarnedVO partyVotesEarnedVO = null;
+					try{
+						if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+							result = votersAnalysisService.getPreviousElectionVotingTrends(locationValue, publicationId, constituencyId,locationType);
+						else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+							result = votersAnalysisService.getPreviousElectionVotingTrends(Long.valueOf(IConstants.RURAL_TYPE+locationValue.toString()),publicationId,constituencyId ,locationType);
+						else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+							result = votersAnalysisService.getPreviousElectionVotingTrends(locationValue, publicationId,constituencyId ,IConstants.MANDAL);
+						else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT) || locationType.equalsIgnoreCase(IConstants.BOOTH))
+							result = votersAnalysisService.getPreviousElectionVotingTrends(locationValue,publicationId, constituencyId,locationType);
+					
+						
+						
+						if(result != null && result.size() > 0)
+						{	
+							int orderNo = result.size();
+							for(PartyVotesEarnedVO data :result)
+							{
+								try{
+									partyVotesEarnedVO = new PartyVotesEarnedVO();
+									partyVotesEarnedVO.setConstituencyId(constituencyId);
+									
+									partyVotesEarnedVO.setReportLevelId(votersAnalysisService.getReportLevelId(locationType));
+									if(!locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+										partyVotesEarnedVO.setReportLevelValue(locationValue);
+									else
+										partyVotesEarnedVO.setReportLevelValue((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationValue.toString().substring(1))).get(0));
+									partyVotesEarnedVO.setElectionYear(data.getElectionYear().toString());;
+									partyVotesEarnedVO.setTotalBooths(data.getTotalBooths());
+									partyVotesEarnedVO.setReqType(data.getReqType());
+									partyVotesEarnedVO.setTotalVotes(data.getTotalVotes());
+									partyVotesEarnedVO.setPolledVotes(data.getPolledVotes());
+									partyVotesEarnedVO.setPartyVotesEarnedVOs(data.getPartyVotesEarnedVOs());
+									partyVotesEarnedVO.setOrderNo(orderNo--);
+									saveVotingTrendzInfoIntermediateTable(partyVotesEarnedVO);
+								}catch(Exception e){
+									LOG.error("Exception Occured - ",e);
+								}
+							}
+						}
+					}
+					catch (Exception e) {
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					}
+					return resultStatus;
+				}
+			  public ResultStatus saveVotingTrendzInfoIntermediateTable(final PartyVotesEarnedVO  partyVotesEarnedVO)
+			  {
+				  ResultStatus resultStatus = new ResultStatus();
+			  try{
+					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					protected void doInTransactionWithoutResult(TransactionStatus status) 
+					{
+						 
+						VotingTrendz votingTrendz = new VotingTrendz();
+						votingTrendz.setConstituency(constituencyDAO.get(partyVotesEarnedVO.getConstituencyId()));
+						votingTrendz.setVoterReportLevel(voterReportLevelDAO.get(partyVotesEarnedVO.getReportLevelId()));
+						votingTrendz.setReportLevelValue(partyVotesEarnedVO.getReportLevelValue());
+						
+						if(partyVotesEarnedVO.getReqType().contains("Parliament"))
+							votingTrendz.setElectionType(electionTypeDAO.get(1l));
+						else if(partyVotesEarnedVO.getReqType().contains("Assembly"))
+							votingTrendz.setElectionType(electionTypeDAO.get(2l));
+						else if(partyVotesEarnedVO.getReqType().contains("MPTC"))
+							votingTrendz.setElectionType(electionTypeDAO.get(3l));
+						else if(partyVotesEarnedVO.getReqType().contains("ZPTC"))
+							votingTrendz.setElectionType(electionTypeDAO.get(4l));
+						else if(partyVotesEarnedVO.getReqType().contains("MUNCIPALITY"))
+							votingTrendz.setElectionType(electionTypeDAO.get(5l));
+						votingTrendz.setYear(new Long(partyVotesEarnedVO.getElectionYear()));
+						votingTrendz.setTotalBooths(new Long(partyVotesEarnedVO.getTotalBooths()));
+						votingTrendz.setTotalVotes(partyVotesEarnedVO.getTotalVotes());
+						votingTrendz.setVotesPolled(partyVotesEarnedVO.getPolledVotes());
+						votingTrendz.setOrderNo(partyVotesEarnedVO.getOrderNo());
+						votingTrendz = votingTrendzDAO.save(votingTrendz);
+						
+						List<PartyVotesEarnedVO> partyList = partyVotesEarnedVO.getPartyVotesEarnedVOs();
+						
+						if(partyList != null && partyList.size() > 0)
+						for(PartyVotesEarnedVO party : partyList)
+						{
+							VotingTrendzPartiesResult votingTrendzPartiesResult = new VotingTrendzPartiesResult();
+							votingTrendzPartiesResult.setVotingTrendz(votingTrendz);
+							Party party1 = partyDAO.getPartyByShortName(party.getPartyName());
+							votingTrendzPartiesResult.setParty(partyDAO.get(party1.getPartyId()));
+							votingTrendzPartiesResult.setVotesGained(party.getVotesEarned());
+							votingTrendzPartiesResultDAO.save(votingTrendzPartiesResult);
+						}
+					}
+					});
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				  }
+				catch(Exception e)
+				{
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				  
+					e.printStackTrace();
+				}
+			return resultStatus;
+			  }
+			 
+			  public ResultStatus insertVotingTrendzPanchayatInfoToIntermediateTables(final Long reportLevelValue,Long publicationDateId)
 				{
 					ResultStatus resultStatus = new ResultStatus();
 					try{
@@ -3329,5 +3572,6 @@ public class VoterReportService implements IVoterReportService{
 				  }
 				return resultStatus;
 				
-			  }
+			  } 
+			 
 }
