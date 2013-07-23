@@ -186,7 +186,7 @@ a.tdp-text-error:hover {
 		</div>
 	
     <div class="span8 " style="margin-bottom:10px;">
-<img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:79.5px;left:50%;margin-left:215px;margin-top:10px;">
+<img class="text-center" src="./images/TDP/TDP LOGO.jpg" style="margin-left:79.5px;left:50%;margin-left:215px;margin-top:10px;"/>
 
 
     </div>
@@ -251,7 +251,6 @@ a.tdp-text-error:hover {
 					<li><a href="cadreManagementAction.action" id="cadreId"><span>Cadre Management</span></a></li>
 					<li><a href="callCenterAction.action"><span>Call Center</span></a></li>
 					
-					</span></a></li>
 				</ul>
 			</div>
 		</li>
@@ -378,6 +377,7 @@ a.tdp-text-error:hover {
 <tr><td style="background:#f7f8f9;">
 <!--FOOTER SECTION START-->
 <div class="mainwrapper" style="background:#f7f8f9;width:auto;"> 
+</div>  
   
   
   
@@ -533,7 +533,7 @@ a.tdp-text-error:hover {
 								
 		<tr>
 		<td><select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 200px;"
-		onchange="checkElectionType(this.options[this.selectedIndex].value)"/>
+		onchange="checkElectionType(this.options[this.selectedIndex].value)">
 		<option value="0">Select Type</option>
 		<option value="2">Assembly</option>
 		<option value="1">Parliament</option>
