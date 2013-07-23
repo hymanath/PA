@@ -168,15 +168,8 @@
     	<pattern>/missingVotersSearchAction*</pattern>
     	<pattern>/districtPageAction*</pattern>
     	<pattern>/sendUpdatesBySMSAction*</pattern>
-    	<pattern>/voterFamilyInfoAction*</pattern>
     	<pattern>/boothWiseModifiedVoterInfoAction*</pattern>
-    	<pattern>/voterFamilyEditAction*</pattern>
-    	<pattern>/ageWiseVoterDetailsActionForCast*</pattern>
-		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
-		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
-		<pattern>/voterBasicInfoAction*</pattern>
-		<pattern>/boothWiseModificationsCompleteInfo*</pattern>
-		<pattern>/cadreDisplayWindowAction*</pattern>		
+		<pattern>/boothWiseModificationsCompleteInfo*</pattern>	
 		<pattern>/userGroupAction*</pattern>
 		<pattern>/setUserRestrictionAction*</pattern>
 		<pattern>/assignSubUserAction*</pattern>
@@ -184,12 +177,14 @@
 		<pattern>/validationToolsAction*</pattern>
 		<pattern>/cadreOnlineRegisterPageAction*</pattern>
 		<pattern>/customVoterGroupAnalysisAction*</pattern>
-		<pattern>/influencingCadrePoliticianDisplayWindowAction*</pattern>
 		<pattern>/getCustomPageFamilyDetailsAction*</pattern>
 		<pattern>/surveyAnalysisAction*</pattern>
 		<pattern>/assigningSurveyToUserAction*</pattern>		
 		<pattern>/surveyFormAction*</pattern>
 		<pattern>/surveyFormSaveAction*</pattern>
+		<pattern>/surveyorProfileSaveAction*</pattern>
+		<pattern>/voterDataToolsAction*</pattern>
+		<pattern>/electionResultsAnalysisAction*</pattern>
        </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
@@ -212,9 +207,8 @@
 		<pattern>/searchPartyAnalystAction*</pattern>
 		<pattern>/districtWisePartyPerformanceAction*</pattern>
 		<!--<pattern>/partyPerformanceMain*</pattern>-->
-		<pattern>/partyResultsCriteriaAction*</pattern>
 		<pattern>/partyResultsAction*</pattern>
-		<pattern>/electionResultsAnalysisAction*</pattern>
+		
 		<pattern>/ministersPageAction*</pattern>
 		<pattern>/userTrackingReportAction*</pattern>
 		<pattern>/newsMonitoringService*</pattern>
@@ -239,11 +233,8 @@
 		<pattern>/partyPerformanceReport*</pattern>
 		<pattern>/abuseCommentaction*</pattern>
 		<pattern>/partyManagementAction*</pattern>
-		<pattern>/cadreManagementAction*</pattern>
 		<pattern>/cadreReportAction*</pattern>
 		<pattern>/completeProblemDetailsSearchAction*</pattern>
-		<pattern>/partyStrengthAction*</pattern>
-		 <pattern>/partyStrengthAction*</pattern>
 		<!-- <pattern>/crossVotingReportInputAction*</pattern> -->
 		<pattern>/biElectionAction*</pattern>
 		<pattern>/mandalPageElectionInfoAction*</pattern>
@@ -253,7 +244,6 @@
 		<pattern>/generatePdfForGallaryAction*</pattern>
 		<pattern>/sendUpdatesByemailAction*</pattern>
 		<!-- <pattern>/missingVotersSearchAction*</pattern> -->
-		<pattern>/assigningCandidatesToVoterAction*</pattern>
 		<pattern>/sitemapAction*</pattern>
 		<pattern>/newsZoneAction*</pattern>
 		<pattern>/partyPerformanceJasper*</pattern>
