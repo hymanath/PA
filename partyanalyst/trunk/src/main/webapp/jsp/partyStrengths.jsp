@@ -1162,15 +1162,16 @@
 	function getParties(selectedParty)
 	{
 		selectedPartyId = selectedParty;
-		var jsObj=
+		/*var jsObj=
 		{		
 				stateId : selectedStateElmts,
-				electionType :electionType,		
+				electionType :electionType,	
+					test:'tst3',
 				task:"getAllPartiesData"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getAllPartiesMatchingCriteria.action?"+rparam;						
-		callAjax(jsObj,url);
+		callAjax(jsObj,url);*/
 
 		validateAndForwardToAction();
 	}
@@ -1589,7 +1590,7 @@
 		var stateSelect = document.getElementById("stateSelect").value;
 		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
 		var partySelect = document.getElementById("partySelect").value;
-		
+	
 		getElectionDetailsForSelectedCriteria(electionTypeSelect,stateSelect,electionYearsSelect,partySelect);	
 	}
 
