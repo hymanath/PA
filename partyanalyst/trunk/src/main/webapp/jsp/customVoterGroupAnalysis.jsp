@@ -253,6 +253,11 @@ function getAgeWiseCustomVotersInGroup(){
  	}*/
 
 function buildAgeWiseInGroupTable(result){
+
+	if(result.totalVoters == 0){
+      $('#ageWiseInGroupDiv').html('<font style="font-weight:bold;">NO DATA AVIALABLE</font>');
+	  return false;
+	}
 	var str="";
 	str+='<h4>Age Wise Voters Information</h4>';
 	str+='<table class="table table-bordered" id="ageWiseInGroupTable">';
