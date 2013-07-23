@@ -1071,7 +1071,7 @@ public class CommentsDataService implements ICommentsDataService {
 			commentsByUser = commentCategoryCandidateDAO.getAllCommentsAndCategoryForANomination((Long)values[4]);
 			
 			for(Object[] commentInfo:(List<Object[]>)commentsByUser){
-				comments = userwiseComments.get(commentInfo[0]);
+				comments = userwiseComments.get(commentInfo[0].toString());
 				if(comments == null)
 					comments = new ArrayList<Object[]>();
 				comments.add(commentInfo);
