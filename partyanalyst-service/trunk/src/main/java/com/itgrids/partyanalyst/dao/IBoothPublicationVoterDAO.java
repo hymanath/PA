@@ -392,5 +392,11 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public List<Object[]> getWardWiseTotalVotersCount(Long constituencyId,Long publicationDateId,Long localEleBodyId);
 	  
+	  public List<Object[]> getPanchayatsCountByMandalIdsList(List<Long> mandalIdsList,Long constituencyId,Long publicationId,String type);
+	  
+	  public List<Object[]> getBoothsCountByPanchayatIdsList(List<Long> panchayatIdsList,Long constituencyId,Long publicationId,String type);
+	  
+	  public List<Object[]> getMuncipalityWardsCount(Long constituencyId,Long publicationDateId,List<Long> muncipalityIdsList);
+	  
 	  
 }

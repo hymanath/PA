@@ -183,6 +183,24 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getBoothsForCustomWardIdsList(List<Long> wardIdsList,Long constituencyId,Long publicationDateId,Long userId);
 	
 	 public List<Object[]> getWardsBYLocalElectionBodyId(List<Long> ids , Long publicationId ,Long userId);
+		
+	public List<Object[]> getVoterIdAndMobileNoByLocalityForUser(Long localityId,Long hamletId,Long userId,Long casteStateId,String queryStr);
+	
+	public List<Object[]> getVoterIdAndMobileNoForuserByHamletIdsByCaste(Long userId ,Long hamletId,Long casteStateId);
+	
+	public List<Object[]> getVoterIdAndMobileNoByVoterIdsList(List<Long> voterIdsList,Long userId);
+	
+	public List<Long> getHamletIdsListByUserIdAndConstituencyId(Long constituencyId,Long publicationDateId,Long userId);
+	
+	public List<Long> getWardIdsByLocalEleBodyId(Long constituencyId,Long userId,Long publicationDateId,Long localEleBodyId);
+	
+	public List<Object[]> getHamletIdsListByMandalIdsList(Long constituencyId,Long publicationDateId,Long userId,List<Long> locationValuesList,String type);
+	
+	public List<Object[]> getBoothsCountByWardIdsList(List<Long> locationIdsList,Long constituencyId,Long publicationId,Long userId,String type);
+	
+	public List<Object[]> getWardsCountByBoothIdsList(List<Long> boothIdsList,Long constituencyId,Long publicationId,Long userId);
+	
+	public List<Object[]> getWardsCountByMuncipalityIdsList(List<Long> muncipalityIdsList,Long constituencyId,Long publicationId,Long userId);
 	
 	
 }
