@@ -233,10 +233,11 @@ function buildSubLevelInfluencePeople(jsObj,data)
 	var str = '';
 	for(var i=0; i<results.length; i++)
 	{
+		availableLength++;
 		if(results[i].countValue == 0)
 			continue;
 		
-		availableLength++;
+		
 		var availableRegions = new Array();
 		var zeroRegions = new Array();
 
