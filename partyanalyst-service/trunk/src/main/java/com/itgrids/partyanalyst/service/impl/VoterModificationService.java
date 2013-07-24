@@ -15,10 +15,12 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyHierarchyInfoDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationAgeInfoDAO;
@@ -26,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
+import com.itgrids.partyanalyst.dto.ConstituencyHierarchyInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -34,6 +37,7 @@ import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.ConstituencyHierarchyInfo;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.model.VoterModificationAgeInfo;
@@ -64,6 +68,9 @@ public class VoterModificationService implements IVoterModificationService{
 	private IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private IVoterStatusDAO voterStatusDAO;
+	private IUserVoterDetailsDAO userVoterDetailsDAO;
+	private IRegionServiceData regionServiceDataImp;
+	private IConstituencyHierarchyInfoDAO constituencyHierarchyInfoDAO;
 	
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
@@ -216,6 +223,31 @@ public class VoterModificationService implements IVoterModificationService{
 	public void setVoterModificationAgeInfoDAO(
 			IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO) {
 		this.voterModificationAgeInfoDAO = voterModificationAgeInfoDAO;
+	}
+
+	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
+		return userVoterDetailsDAO;
+	}
+
+	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
+		this.userVoterDetailsDAO = userVoterDetailsDAO;
+	}
+
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
+	public IConstituencyHierarchyInfoDAO getConstituencyHierarchyInfoDAO() {
+		return constituencyHierarchyInfoDAO;
+	}
+
+	public void setConstituencyHierarchyInfoDAO(
+			IConstituencyHierarchyInfoDAO constituencyHierarchyInfoDAO) {
+		this.constituencyHierarchyInfoDAO = constituencyHierarchyInfoDAO;
 	}
 
 	/**
@@ -2470,5 +2502,506 @@ public class VoterModificationService implements IVoterModificationService{
 			LOG.error("Exception Occured in getMovedOrRelocatedVoters() method, Exception - "+e);
 		}
 	 }
+	 
+	 
+	 public ResultStatus insertConstituencyBasicData(Long constituencyId,Long publicationId,Long userId)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+			 ConstituencyHierarchyInfoVO constituencyHierarchyInfoVO = new ConstituencyHierarchyInfoVO();
+			 List<Long> mandalIdsList = new ArrayList<Long>(0);
+			 List<Long> muncipalityIdsList = new ArrayList<Long>(0);
+			 
+			 String areatype =  constituencyDAO.get(constituencyId).getAreaType();
+			 
+			List<SelectOptionVO> mundalsAndMuncipalityList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+			 if(mundalsAndMuncipalityList != null && mundalsAndMuncipalityList.size() > 0)
+			 {
+				for(SelectOptionVO optionVO:mundalsAndMuncipalityList)
+				{
+				 if(optionVO.getId().toString().substring(0,1).equalsIgnoreCase("2"))
+					 mandalIdsList.add(new Long(optionVO.getId().toString().substring(1)));
+				 else
+				  muncipalityIdsList.add(optionVO.getId());
+				}
+			 }
+			 
+			 constituencyHierarchyInfoVO.setMandalIdsList(mandalIdsList);
+			 constituencyHierarchyInfoVO.setMuncipalityIdsList(muncipalityIdsList);
+			 
+			 if(areatype.equalsIgnoreCase(IConstants.RURAL) || areatype.equalsIgnoreCase(IConstants.RURALURBAN))
+			  constituencyHierarchyInfoVO.setPanchayatIdsList(boothDAO.getPanchayatsListByConstituencyId(constituencyId, publicationId)); 
+			
+			 constituencyHierarchyInfoVO.setBoothIdsList(boothDAO.getBoothsListByConstituencyId(constituencyId, publicationId));
+			 constituencyHierarchyInfoVO.setHamletIdsList(userVoterDetailsDAO.getHamletIdsListByUserIdAndConstituencyId(constituencyId,publicationId,userId));
+			 
+			 if(muncipalityIdsList != null && muncipalityIdsList.size() > 0)
+			  constituencyHierarchyInfoVO.setWardIdsList(getWardIdsList(muncipalityIdsList, userId, constituencyId, publicationId));
+			 
+			 constituencyHierarchyInfoVO.setUserId(userId);
+			 constituencyHierarchyInfoVO.setConstituencyId(constituencyId);
+			 constituencyHierarchyInfoVO.setPublicationDateId(publicationId);
+			 
+			 //constituency 
+			 constituencyHierarchyInfoVO.setReportLevelId(voterReportLevelDAO.getReportLevelIdByType(IConstants.CONSTITUENCY));
+			 constituencyHierarchyInfoVO.setReportLevelValue(constituencyId);
+			 setConstituencyBasicInformation(constituencyHierarchyInfoVO);
+			 
+			 setConstituencyMandalData(constituencyHierarchyInfoVO,IConstants.MANDAL);
+			 setConstituencyPanchayatData(constituencyHierarchyInfoVO,IConstants.PANCHAYAT);
+			 setConstituencyBoothData(constituencyHierarchyInfoVO,IConstants.BOOTH);
+			 setConstituencyWardData(constituencyHierarchyInfoVO,IConstants.WARD);
+			 setConstituencyHamletData(constituencyHierarchyInfoVO,IConstants.HAMLET);
+			 setConstituencyMuncipalityData(constituencyHierarchyInfoVO,IConstants.LOCALELECTIONBODY);
+			 
+			 
+		 return resultStatus;
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error(" Exception Occured in insertConstituencyBasicData() method, Exception - "+e);
+			 
+			 return resultStatus;
+		}
+	 }
+	 
+	 
+	 public List<Long> getWardIdsList(List<Long> muncipalityIdsList,Long userId,Long constituencyId,Long publicationId)
+	 {
+		 List<Long> wardIdsList = new ArrayList<Long>(0);
+		 try{
+			
+			 if(muncipalityIdsList != null && muncipalityIdsList.size() > 0)
+				{
+				  for(Long id : muncipalityIdsList)
+				  {
+					List<Long> wardIds = null;
+					List<Object> list2 = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().trim().substring(1)));
+	  				id = (Long)list2.get(0);
+	  			    String electionType = localElectionBodyDAO.get(id).getElectionType().getElectionType();
+	  			    if(electionType != null && electionType.equalsIgnoreCase(IConstants.GHMC))
+	  			     wardIds = boothDAO.getWardIdsByLocalEleBodyId(id, publicationId, constituencyId);
+	  			    else
+	  			     wardIds = userVoterDetailsDAO.getWardIdsByLocalEleBodyId(constituencyId, userId, publicationId, id);
+	  			    if(wardIds != null && wardIds.size() > 0)
+	  			    	wardIdsList.addAll(wardIds);
+				  }
+				} 
+			 return wardIdsList;
+		 }catch (Exception e) {
+		  e.printStackTrace();
+		  LOG.error(" Exception Occured in getWardIdsList() method, Exception - "+e);
+		  return wardIdsList;	 
+		}
+	 }
+	 
+	 
+	 public ResultStatus setConstituencyMandalData(ConstituencyHierarchyInfoVO hierarchyInfoVO,String type)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+			try{
+			List<Long> mandalIdsList = hierarchyInfoVO.getMandalIdsList();
+			if(mandalIdsList == null || mandalIdsList.size() == 0)
+			{
+			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			  return resultStatus;
+			}
+			
+			List<ConstituencyHierarchyInfoVO> constituencyHierarchyInfoVOList = new ArrayList<ConstituencyHierarchyInfoVO>(0);
+			Long reportLevelId = voterReportLevelDAO.getReportLevelIdByType(type);
+			
+			//Panchayats Count By MandalIdsList
+			List<Object[]> panchayatsCountList = boothPublicationVoterDAO.getPanchayatsCountByMandalIdsList(mandalIdsList, hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(),"panchayatsCount");
+			if(panchayatsCountList != null && panchayatsCountList.size() > 0)
+			 setConstituencyHieraryData(panchayatsCountList, constituencyHierarchyInfoVOList, "panchayatsCount");
+			
+			//booths Count by MandalIdsList
+			List<Object[]> boothsCountList = boothPublicationVoterDAO.getPanchayatsCountByMandalIdsList(mandalIdsList, hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(),"boothsCount");
+			if(boothsCountList != null && boothsCountList.size() > 0)
+			 setConstituencyHieraryData(boothsCountList, constituencyHierarchyInfoVOList, "boothsCount");
+			
+			//hamlets Count by mandalIds List
+			List<Object[]> hamletsCount = userVoterDetailsDAO.getHamletIdsListByMandalIdsList(hierarchyInfoVO.getConstituencyId(),  hierarchyInfoVO.getPublicationDateId(),  hierarchyInfoVO.getUserId(), mandalIdsList,"mandalHamlets");
+			if(hamletsCount != null && hamletsCount.size() > 0)
+			 setConstituencyHieraryData(hamletsCount, constituencyHierarchyInfoVOList, "hamletsCount");
+			
+			if(constituencyHierarchyInfoVOList != null && constituencyHierarchyInfoVOList.size() > 0)
+			 saveConstituencyInfoData(constituencyHierarchyInfoVOList,hierarchyInfoVO,reportLevelId);
+			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+			}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error(" Exception Occured in setConstituencyMandalData() method, Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+	 }
+	 
+	 public ResultStatus setConstituencyPanchayatData(ConstituencyHierarchyInfoVO hierarchyInfoVO,String type)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+		 List<Long> PanchayatIdsList = hierarchyInfoVO.getPanchayatIdsList();
+		 if(PanchayatIdsList == null || PanchayatIdsList.size() == 0)
+		 {
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		 }
+			
+		 List<ConstituencyHierarchyInfoVO> constituencyHierarchyInfoVOList = new ArrayList<ConstituencyHierarchyInfoVO>(0);
+		 Long reportLevelId = voterReportLevelDAO.getReportLevelIdByType(type);
+		 
+		 //booths Count by panchayatIdsList
+		 List<Object[]> boothsCount = boothPublicationVoterDAO.getBoothsCountByPanchayatIdsList(PanchayatIdsList, hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), "panchayatBooths");
+		 if(boothsCount != null && boothsCount.size() > 0)
+			setConstituencyHieraryData(boothsCount, constituencyHierarchyInfoVOList, "boothsCount");
+		 
+		 //hamlets Count by panchayat Ids
+		 List<Object[]> hamletsCount = userVoterDetailsDAO.getHamletIdsListByMandalIdsList(hierarchyInfoVO.getConstituencyId(),  hierarchyInfoVO.getPublicationDateId(),  hierarchyInfoVO.getUserId(), PanchayatIdsList,"panchayatHamlets");
+		  if(hamletsCount != null && hamletsCount.size() > 0)
+			setConstituencyHieraryData(hamletsCount, constituencyHierarchyInfoVOList, "hamletsCount");
+		  
+		  if(constituencyHierarchyInfoVOList != null && constituencyHierarchyInfoVOList.size() > 0)
+			saveConstituencyInfoData(constituencyHierarchyInfoVOList,hierarchyInfoVO,reportLevelId);
+		 
+		  
+		  
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		 return resultStatus;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error(" Exception Occured in setConstituencyMandalData() method, Exception - "+e);
+		 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 return resultStatus;
+		} 
+	 }
+	 
+	 public ResultStatus setConstituencyBoothData(ConstituencyHierarchyInfoVO hierarchyInfoVO,String type)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+		 List<Long> boothIdsList = hierarchyInfoVO.getBoothIdsList();
+		 if(boothIdsList == null || boothIdsList.size() == 0)
+		 {
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		 }
+			
+		 List<ConstituencyHierarchyInfoVO> constituencyHierarchyInfoVOList = new ArrayList<ConstituencyHierarchyInfoVO>(0);
+		 Long reportLevelId = voterReportLevelDAO.getReportLevelIdByType(type);
+		 
+		 //hamlets Count By boothIdsList
+		 List<Object[]> hamletsCount = userVoterDetailsDAO.getHamletIdsListByMandalIdsList(hierarchyInfoVO.getConstituencyId(),hierarchyInfoVO.getPublicationDateId(), hierarchyInfoVO.getUserId(), boothIdsList,"boothHamlets");
+		 if(hamletsCount != null && hamletsCount.size() > 0)
+		  setConstituencyHieraryData(hamletsCount, constituencyHierarchyInfoVOList, "hamletsCount");
+		 
+		 //wards Count by BoothIdsList
+		  List<Object[]> wardsCount = userVoterDetailsDAO.getWardsCountByBoothIdsList(boothIdsList, hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), hierarchyInfoVO.getUserId()); 
+		  if(wardsCount != null && wardsCount.size() > 0)
+			setConstituencyHieraryData(wardsCount, constituencyHierarchyInfoVOList, "wardsCount");
+		 
+		 if(constituencyHierarchyInfoVOList != null && constituencyHierarchyInfoVOList.size() > 0)
+			saveConstituencyInfoData(constituencyHierarchyInfoVOList,hierarchyInfoVO,reportLevelId);
+		 
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		 return resultStatus;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error(" Exception Occured in setConstituencyBoothData() method, Exception - "+e);
+		 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 return resultStatus;
+		} 
+	 }
+	 
+	 public ResultStatus setConstituencyWardData(ConstituencyHierarchyInfoVO hierarchyInfoVO,String type)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+		 List<Long> wardIdsList = hierarchyInfoVO.getWardIdsList();
+		 if(wardIdsList == null || wardIdsList.size() == 0)
+		 {
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		 }
+		 Long localEleBodyId = hierarchyInfoVO.getMuncipalityIdsList().get(0);
+		 
+		 List<ConstituencyHierarchyInfoVO> constituencyHierarchyInfoVOList = new ArrayList<ConstituencyHierarchyInfoVO>(0);
+		 Long reportLevelId = voterReportLevelDAO.getReportLevelIdByType(type);
+		 
+		 
+			List<Object> list2 = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(localEleBodyId.toString().trim().substring(1)));
+			localEleBodyId = (Long)list2.get(0);
+			String electionType = localElectionBodyDAO.get(localEleBodyId).getElectionType().getElectionType();
+			
+			List<Object[]> boothsCount = null;
+			if(electionType != null && electionType.equalsIgnoreCase(IConstants.GHMC))
+			 boothsCount = boothPublicationVoterDAO.getBoothsCountByPanchayatIdsList(wardIdsList, hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), "wardBooths");
+			else
+			 boothsCount = userVoterDetailsDAO.getBoothsCountByWardIdsList(wardIdsList, hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), hierarchyInfoVO.getUserId(),"wardBooths");
+			
+			if(boothsCount != null && boothsCount.size() > 0)
+			 setConstituencyHieraryData(boothsCount, constituencyHierarchyInfoVOList, "boothsCount"); 
+			
+			if(constituencyHierarchyInfoVOList != null && constituencyHierarchyInfoVOList.size() > 0)
+			 saveConstituencyInfoData(constituencyHierarchyInfoVOList,hierarchyInfoVO,reportLevelId);
+		 
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		 return resultStatus;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error(" Exception Occured in setConstituencyBoothData() method, Exception - "+e);
+		 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 return resultStatus;
+		} 
+	 }
+	 
+	 
+	 public ResultStatus setConstituencyHamletData(ConstituencyHierarchyInfoVO hierarchyInfoVO,String type)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+		 List<Long> hamletIdsList = hierarchyInfoVO.getHamletIdsList();
+		 if(hamletIdsList == null || hamletIdsList.size() == 0)
+		 {
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		 }
+		 
+		 List<ConstituencyHierarchyInfoVO> constituencyHierarchyInfoVOList = new ArrayList<ConstituencyHierarchyInfoVO>(0);
+		 Long reportLevelId = voterReportLevelDAO.getReportLevelIdByType(type);
+		 
+		List<Object[]> boothsCount = userVoterDetailsDAO.getBoothsCountByWardIdsList(hamletIdsList, hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), hierarchyInfoVO.getUserId(),"hamletBooths");
+		if(boothsCount != null && boothsCount.size() > 0)
+		 setConstituencyHieraryData(boothsCount, constituencyHierarchyInfoVOList, "boothsCount");
+		 
+		 if(constituencyHierarchyInfoVOList != null && constituencyHierarchyInfoVOList.size() > 0)
+			 saveConstituencyInfoData(constituencyHierarchyInfoVOList,hierarchyInfoVO,reportLevelId);
+		 
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		 return resultStatus;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error(" Exception Occured in setConstituencyHamletData() method, Exception - "+e);
+		 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 return resultStatus;
+		} 
+		  
+	 }
+	 
+	 
+	 public ResultStatus setConstituencyMuncipalityData(ConstituencyHierarchyInfoVO hierarchyInfoVO,String type)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+		 List<Long> muncipalityIdsList = hierarchyInfoVO.getMuncipalityIdsList();
+		 if(muncipalityIdsList == null || muncipalityIdsList.size() == 0)
+		 {
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		 }
+		 List<Long> localElectionBodyIdsList = new ArrayList<Long>(0);
+		 for(Long id:muncipalityIdsList)
+		 {
+		  List<Object> list2 = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id.toString().trim().substring(1)));
+		  localElectionBodyIdsList.add((Long)list2.get(0));
+		 }
+		 
+		 List<ConstituencyHierarchyInfoVO> constituencyHierarchyInfoVOList = new ArrayList<ConstituencyHierarchyInfoVO>(0);
+		 Long reportLevelId = voterReportLevelDAO.getReportLevelIdByType(type);
+		 
+		 if(localElectionBodyIdsList != null && localElectionBodyIdsList.size() > 0)
+		 {
+		  //get booths COunt 
+		  List<Object[]> boothsCount = boothPublicationVoterDAO.getBoothsCountByPanchayatIdsList(localElectionBodyIdsList, hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), "muncipalityBooths");
+		  if(boothsCount != null && boothsCount.size() > 0)
+			setConstituencyHieraryData(boothsCount, constituencyHierarchyInfoVOList, "boothsCount");
+		  
+		  //wards Count
+		  List<Object[]> wardsList = null;
+		  String electionType = localElectionBodyDAO.get(localElectionBodyIdsList.get(0)).getElectionType().getElectionType();
+		  if(electionType != null && electionType.equalsIgnoreCase(IConstants.GHMC))
+		   wardsList = boothPublicationVoterDAO.getMuncipalityWardsCount(hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), muncipalityIdsList);	
+		  else
+		   wardsList = userVoterDetailsDAO.getWardsCountByMuncipalityIdsList(localElectionBodyIdsList, hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), hierarchyInfoVO.getUserId());
+			  
+		  if(wardsList != null && wardsList.size() > 0)
+		   setConstituencyHieraryData(wardsList, constituencyHierarchyInfoVOList, "wardsCount");
+		 
+		 }
+		 
+		 if(constituencyHierarchyInfoVOList != null && constituencyHierarchyInfoVOList.size() > 0)
+			 saveConstituencyInfoData(constituencyHierarchyInfoVOList,hierarchyInfoVO,reportLevelId);
+		 
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		 return resultStatus;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error(" Exception Occured in setConstituencyHamletData() method, Exception - "+e);
+		 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 return resultStatus;
+		} 
+	 }
+	 
+	 public ConstituencyHierarchyInfoVO checkConstituencyHierachyVOExist(Long reportLevelvalue,List<ConstituencyHierarchyInfoVO> list)
+	 {
+		try{
+		if(list == null || list.size() == 0)
+			return null;
+		for(ConstituencyHierarchyInfoVO vo:list)
+		 if(vo.getReportLevelValue().equals(reportLevelvalue))
+			 return vo;
+			
+			return null;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error("Exception Occured in checkConstituencyHierachyVOExist() method, Exception - "+e);
+		 return null;
+		}
+	 }
+	 
+	 public void setConstituencyHieraryData(List<Object[]> list,List<ConstituencyHierarchyInfoVO> constituencyHierarchyInfoVOList,String type)
+	 {
+		 try{
+			 ConstituencyHierarchyInfoVO infoVO = null;
+			 if(list != null && list.size() > 0)
+				{
+				  for(Object[] params:list)
+				  {
+					 infoVO = checkConstituencyHierachyVOExist((Long)params[0],constituencyHierarchyInfoVOList);
+					 if(infoVO == null)
+					 {
+						infoVO = new ConstituencyHierarchyInfoVO();
+						infoVO.setReportLevelValue((Long)params[0]); 
+						constituencyHierarchyInfoVOList.add(infoVO);
+					 }
+					 if(type != null && type.equalsIgnoreCase("panchayatsCount"))
+					  infoVO.setTotalPanchayats((Long)params[1]); 
+					 else if(type != null && type.equalsIgnoreCase("boothsCount"))
+					  infoVO.setTotalBooths((Long)params[1]); 
+					 else if(type != null && type.equalsIgnoreCase("hamletsCount"))
+					  infoVO.setTotalHamlets((Long)params[1]);  
+					 else if(type != null && type.equalsIgnoreCase("wardsCount"))
+					  infoVO.setTotalWards((Long)params[1]);
+					 
+				  }
+				}
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in setConstituencyHieraryData() method, Exception - "+e);
+			}
+	 }
+	 
+	 
+	 public ResultStatus saveConstituencyInfoData(List<ConstituencyHierarchyInfoVO> list,ConstituencyHierarchyInfoVO hierarchyInfoVO,Long reportLevelId)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+		
+			 if(list != null && list.size() > 0)
+				{
+				 for(ConstituencyHierarchyInfoVO infoVO:list)
+				 {
+					 infoVO.setReportLevelId(reportLevelId);
+					 infoVO.setConstituencyId(hierarchyInfoVO.getConstituencyId());
+					 infoVO.setPublicationDateId(hierarchyInfoVO.getPublicationDateId());
+					 infoVO.setUserId(hierarchyInfoVO.getUserId());
+				 }
+				 
+				 for(ConstituencyHierarchyInfoVO infoVO : list)
+				  saveConstituencyBasicInformation(infoVO);
+				 
+				} 
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			 return resultStatus;
+		 }catch (Exception e) {
+		  e.printStackTrace();
+		  LOG.error(" Exception Occured in saveConstituencyInfoData() method, Exception - "+e);
+		  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		  return resultStatus;
+		}
+	 }
+	 
+	 public ResultStatus setConstituencyBasicInformation(ConstituencyHierarchyInfoVO hierarchyInfoVO)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 	
+		try{	
+		ConstituencyHierarchyInfoVO ConstituencyHierarchyInfo = new ConstituencyHierarchyInfoVO();
+		
+		ConstituencyHierarchyInfo.setReportLevelId(hierarchyInfoVO.getReportLevelId());
+		ConstituencyHierarchyInfo.setReportLevelValue(hierarchyInfoVO.getReportLevelValue());
+		ConstituencyHierarchyInfo.setConstituencyId(hierarchyInfoVO.getConstituencyId());
+		ConstituencyHierarchyInfo.setUserId(hierarchyInfoVO.getUserId());
+		ConstituencyHierarchyInfo.setPublicationDateId(hierarchyInfoVO.getPublicationDateId());
+		ConstituencyHierarchyInfo.setTotalMandals(hierarchyInfoVO.getMandalIdsList()!= null?(long)hierarchyInfoVO.getMandalIdsList().size():0L);
+		ConstituencyHierarchyInfo.setTotalPanchayats(hierarchyInfoVO.getPanchayatIdsList() != null?(long)hierarchyInfoVO.getPanchayatIdsList().size():0L);
+		ConstituencyHierarchyInfo.setTotalMuncipalities(hierarchyInfoVO.getMuncipalityIdsList()!= null?(long)hierarchyInfoVO.getMuncipalityIdsList().size():0L);
+		ConstituencyHierarchyInfo.setTotalBooths(hierarchyInfoVO.getBoothIdsList()!= null?(long)hierarchyInfoVO.getBoothIdsList().size():0L);
+		ConstituencyHierarchyInfo.setTotalHamlets(hierarchyInfoVO.getHamletIdsList()!= null?(long)hierarchyInfoVO.getHamletIdsList().size():0L);
+		ConstituencyHierarchyInfo.setTotalWards(hierarchyInfoVO.getWardIdsList() != null?(long)hierarchyInfoVO.getWardIdsList().size():0L);
+		
+		saveConstituencyBasicInformation(ConstituencyHierarchyInfo);
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  return resultStatus;
+	  }catch (Exception e) {
+		  e.printStackTrace();
+		  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		  return resultStatus;
+	}
+	 }
+	 
+	 public ResultStatus saveConstituencyBasicInformation(final ConstituencyHierarchyInfoVO hierarchyInfoVO)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					protected void doInTransactionWithoutResult(TransactionStatus status) 
+			{	
+			
+		ConstituencyHierarchyInfo ConstituencyHierarchyInfo = new ConstituencyHierarchyInfo();
+		
+		ConstituencyHierarchyInfo.setReportLevelId(hierarchyInfoVO.getReportLevelId());
+		ConstituencyHierarchyInfo.setReportLevelValue(hierarchyInfoVO.getReportLevelValue());
+		ConstituencyHierarchyInfo.setConstituencyId(hierarchyInfoVO.getConstituencyId());
+		ConstituencyHierarchyInfo.setUserId(hierarchyInfoVO.getUserId());
+		ConstituencyHierarchyInfo.setPublicationDateId(hierarchyInfoVO.getPublicationDateId());
+		ConstituencyHierarchyInfo.setMandals(hierarchyInfoVO.getTotalMandals());
+		ConstituencyHierarchyInfo.setPanchayats(hierarchyInfoVO.getTotalPanchayats());
+		ConstituencyHierarchyInfo.setMunicipalities(hierarchyInfoVO.getTotalMuncipalities());
+		ConstituencyHierarchyInfo.setBooths(hierarchyInfoVO.getTotalBooths());
+		ConstituencyHierarchyInfo.setHamlets(hierarchyInfoVO.getTotalHamlets());
+		ConstituencyHierarchyInfo.setWards(hierarchyInfoVO.getTotalWards());
+		
+		constituencyHierarchyInfoDAO.save(ConstituencyHierarchyInfo);
+					}
+				});
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  return resultStatus;
+	  }catch (Exception e) {
+		  e.printStackTrace();
+		  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		  return resultStatus;
+	}
+	 }
+	 
+	 public ResultStatus deleteConstituencyBasicData(Long constituencyId,Long publicationDateId,Long userId)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+		
+			constituencyHierarchyInfoDAO.deleteConstituencyBasicInfo(constituencyId, publicationDateId, userId);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+			 
+		 }catch (Exception e) {
+			e.printStackTrace();
+			LOG.error(" Exception Occured in deleteConstituencyBasicData() method, Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		 }
+		 
+	 }
+	 
 	 
 }
