@@ -1496,6 +1496,9 @@
 		<property name="voterModificationAgeInfoDAO" ref="voterModificationAgeInfoDAO"></property>
 		<property name="voterStatusDAO" ref="voterStatusDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="constituencyHierarchyInfoDAO" ref="constituencyHierarchyInfoDAO" />
 	</bean>
 	
 	<bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
