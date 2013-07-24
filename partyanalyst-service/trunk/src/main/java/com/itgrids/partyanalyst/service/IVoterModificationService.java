@@ -50,4 +50,8 @@ public interface IVoterModificationService {
 	 
 	 public List<VoterModificationVO> getBoothWiseModificationsCompleteDetails(Long constituencyId, Long locationValue, Long publicationDateId, String locationType);
 	 
+	 public ResultStatus insertConstituencyBasicData(Long constituencyId,Long publicationId,Long userId);
+	 
+	 public ResultStatus deleteConstituencyBasicData(Long constituencyId,Long publicationDateId,Long userId);
+	 
 }
