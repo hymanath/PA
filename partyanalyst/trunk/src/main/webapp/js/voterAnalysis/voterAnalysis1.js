@@ -888,6 +888,10 @@ function addToPolitician(voterId,name)
 	}*/
 	
 	function getAllTabs(id,publicationId,type){
+
+
+       if(type == "constituency")
+	      $('#tabContainer1').hide();
        // alert(type +'---'+muncipalityType+'----'+myCorpType);
 		
 		/* if (typeof jQuery != 'undefined') {  
