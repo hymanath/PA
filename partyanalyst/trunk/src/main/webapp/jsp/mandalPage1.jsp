@@ -1022,7 +1022,7 @@ function getElectionYearsInMandal(id,name){
 				rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].votesPolled+'</td>';
 				rvStr += '<td>';
 				for(var j in resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths)
-				{
+				{ 
 					if(j%3 == 0 && j!=0)
 						rvStr += '<br>';
 					rvStr += '<a href="javascript:{}" onclick="getBoothPageInfo('+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].id+')">'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].name+',';
@@ -1133,7 +1133,14 @@ function getElectionYearsInMandal(id,name){
 					
 					if(j%3 == 0 && j!=0)
 						rvStr += '<br>';
-					rvStr += '<a href="javascript:{}" onclick="getBoothPageInfo('+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].id+')">'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].name+',';
+
+					  rvStr += '<a href="javascript:{}" onclick="getBoothPageInfo('+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].id+')">'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].name;
+					  
+					  if( j !=resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths.length - 1)
+					   rvStr +=',';
+					
+
+
 				}
 				rvStr += '</td>';
 				rvStr += '<td>';
