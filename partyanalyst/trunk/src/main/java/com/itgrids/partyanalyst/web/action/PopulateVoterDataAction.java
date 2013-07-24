@@ -424,4 +424,28 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 		}
 		
 		
+		public String insertConstituencyBasicData()
+		{
+			try{
+				
+			 HttpSession session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO) session.getAttribute(IConstants.USER);
+				if(regVo == null)
+					return null;
+			 Long userId = regVo.getRegistrationID();
+			 jObj = new JSONObject(getTask());
+			 if(jObj.getString("task").equalsIgnoreCase("insertConstituencyBasicData"))
+			  resultStatus = voterModificationService.insertConstituencyBasicData(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),userId);
+			
+			 else if(jObj.getString("task").equalsIgnoreCase("deleteConstituencyBasicData"))
+				 resultStatus = voterModificationService.deleteConstituencyBasicData(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),userId);
+				
+			}catch (Exception e) {
+			 e.printStackTrace();
+			 Log.error(" Exception Occured in insertConstituencyBasicData() method, Exception - "+e);
+			}
+			return Action.SUCCESS;
+		}
+		
+		
 }

@@ -244,7 +244,31 @@ fieldset{
 	</div>
  </fieldset>
 </div>	
+<!-- voters Modification Info Div End -->
 
+<!-- ConstituencyHierarchyInfo Div Start -->
+
+<div id="voterDataOuterDiv">
+<div class="headingDiv" style="width:450px;">Constituency Hierarchy Info</div>
+ <fieldset>
+    <div id="conHierErrorMsgDiv"></div>
+	<div id="ConstituencyDiv" class="selectDiv">
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyHierarchyId" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
+
+		Select Publication Date<font class="requiredFont">*</font> <select id="consHierarchyPublicationList" class="selectWidth" style="width:172px;height:25px;" name="consHierarchyPublicationList" >
+		</select>
+		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="votermodificationajaxLoad"><img src="images/icons/search.gif" /></span>
+
+		<div id="voterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="conHierDataInsertBtn" />
+			<input type="button" class="btn btn-info" value="Delete Existing Data" id="conHierDataDeleteBtn" />
+			<img src="./images/icons/search.gif" style="display:none;margin-left: 10px;" id="votermodificationajaxImage" />
+		</div>
+	</div>
+ </fieldset>
+</div>	
+
+<!-- ConstituencyHierarchyInfo Div End -->
 
 </div>
 
@@ -722,6 +746,67 @@ $("#voterDataDeleteBtn").click(function(){
 
 });
 
+
+$("#constituencyHierarchyId").change(function(){
+    
+	 $("#conHierErrorMsgDiv").html('');
+	var id = $("#constituencyHierarchyId").val();
+	 var selectElmt = "consHierarchyPublicationList";
+	  if(id == 0)
+	  {
+	   $("#conHierErrorMsgDiv").html('Please Select Constituency.');
+		return;
+	  }
+	
+	 $("#votermodificationajaxLoad").css('display','block');
+	 var jsObj=
+	 {
+		selected:id,
+		selectElmt:selectElmt,
+		task:"getPublicationDateForModification"
+	 };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 callAjax(jsObj,url);
+
+   });
+
+
+   $("#conHierDataInsertBtn").click(function(){
+	   
+	  var constituencyId = $("#constituencyHierarchyId").val();
+	  var publicationId = $("#consHierarchyPublicationList").val();
+      var jsObj=
+	 {
+		constituencyId:constituencyId,
+		publicationId:publicationId,
+		task:"insertConstituencyBasicData"
+	 };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "insertConstituencyBasicDataAction.action?"+rparam;	
+	 callAjax(jsObj,url);
+
+	   
+   });
+
+   $("#conHierDataDeleteBtn").click(function(){
+	   
+	  var constituencyId = $("#constituencyHierarchyId").val();
+	  var publicationId = $("#consHierarchyPublicationList").val();
+      var jsObj=
+	 {
+		constituencyId:constituencyId,
+		publicationId:publicationId,
+		task:"deleteConstituencyBasicData"
+	 };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "deleteConstituencyBasicDataAction.action?"+rparam;	
+	 callAjax(jsObj,url);
+	 
+   });
+
+
+
 function callAjax(jsObj,url)
 		{
 			 var myResults;
@@ -812,6 +897,14 @@ function callAjax(jsObj,url)
 									
 									buildPublicationListForvotingTrendzInfo(myResults,jsObj.selectElmt);
 								}
+
+								else if(jsObj.task == "insertConstituencyBasicData")
+								 showConstituencyHierarchyInsertDataStatus(myResults);
+
+								else if(jsObj.task == "deleteConstituencyBasicData")
+								 showConstituencyHierarchyDeleteDataStatus(myResults);
+
+								
 								
 							}
 								catch (e) {
@@ -1130,6 +1223,26 @@ $("#votingTrendzErrorMsgDiv").html('Data Deleted successufully').css("color","gr
 else
 $("#votingTrendzErrorMsgDiv").html('Error Occured try Again.').css("color","red");
 }
+
+
+function showConstituencyHierarchyInsertDataStatus(result)
+{
+	$("#conHierErrorMsgDiv").html('');
+  if(result.resultCode == 0)
+	$("#conHierErrorMsgDiv").html('Data inserted successufully').css("color","green");
+  else
+	$("#conHierErrorMsgDiv").html('Error Occured try Again.').css("color","red");
+}
+
+function showConstituencyHierarchyDeleteDataStatus(result)
+{
+	$("#conHierErrorMsgDiv").html('');
+  if(result.resultCode == 0)
+	$("#conHierErrorMsgDiv").html('Data deleted successufully').css("color","green");
+  else
+	$("#conHierErrorMsgDiv").html('Error Occured try Again.').css("color","red");
+}
+
 </script>
 </body>
 </html>

@@ -5619,5 +5619,18 @@
 		 <result name="error">/jsp/loginForm.jsp</result>
 		 </action>
 	
+
+		
+		<action name="insertConstituencyBasicDataAction" class="populateVoterDataAction" method="insertConstituencyBasicData">
+		 <result type="json" name="success">
+		  <param name="root">resultStatus</param>
+		 </result>
+		</action>
+		
+		<action name="deleteConstituencyBasicDataAction" class="populateVoterDataAction" method="insertConstituencyBasicData">
+		 <result type="json" name="success">
+		  <param name="root">resultStatus</param>
+		 </result>
+		</action>
 		</package>
 </struts>      
