@@ -4265,4 +4265,71 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return query.list();
 		}
 		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getPanchayatsCountByMandalIdsList(List<Long> mandalIdsList,Long constituencyId,Long publicationId,String type)
+		{
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.booth.tehsil.tehsilId, ");
+			if(type != null && type.equalsIgnoreCase("panchayatsCount"))
+			str.append(" count(distinct model.booth.panchayat.panchayatId) ");
+			else
+			 str.append(" count(distinct model.booth.boothId) ");
+			
+			str.append(" from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model.booth.tehsil.tehsilId in (:mandalIdsList) group by model.booth.tehsil.tehsilId ");
+						
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			query.setParameterList("mandalIdsList", mandalIdsList);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getBoothsCountByPanchayatIdsList(List<Long> locationValuesList,Long constituencyId,Long publicationId,String type)
+		{
+			StringBuilder str = new StringBuilder();
+			
+			if(type != null && type.equalsIgnoreCase("panchayatBooths"))
+			 str.append(" select model.booth.panchayat.panchayatId, ");
+			
+			else if(type != null && type.equalsIgnoreCase("wardBooths"))
+			 str.append(" select model.booth.localBodyWard.constituencyId, ");
+			
+			else if(type != null && type.equalsIgnoreCase("muncipalityBooths"))
+			 str.append(" select model.booth.localBody.localElectionBodyId, ");
+			
+			str.append(" count(distinct model.booth.boothId) ");
+			
+			str.append(" from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId  ");
+			
+			if(type != null && type.equalsIgnoreCase("panchayatBooths"))
+			 str.append(" and model.booth.panchayat.panchayatId in (:locationValuesList) group by model.booth.panchayat.panchayatId ");
+			
+			else if(type != null && type.equalsIgnoreCase("wardBooths"))
+			 str.append(" and model.booth.localBodyWard.constituencyId in (:locationValuesList) group by model.booth.localBodyWard.constituencyId ");
+						
+			else if(type != null && type.equalsIgnoreCase("muncipalityBooths"))
+			 str.append(" and model.booth.localBody.localElectionBodyId in (:locationValuesList) group by model.booth.localBody.localElectionBodyId ");
+			
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationId);
+			query.setParameterList("locationValuesList", locationValuesList);
+			return query.list();
+		}
+		
+		
+		public List<Object[]> getMuncipalityWardsCount(Long constituencyId,Long publicationDateId,List<Long> muncipalityIdsList)
+		{
+		  Query query = getSession().createQuery(" select model.booth.localBody.localElectionBodyId, count(distinct model.booth.localBodyWard.constituencyId) from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and " +
+		  		" model.booth.publicationDate.publicationDateId =:publicationDateId and model.booth.localBody.localElectionBodyId in(:muncipalityIdsList) group by model.booth.localBody.localElectionBodyId ");
+		  
+		  query.setParameter("constituencyId", constituencyId);
+		  query.setParameter("publicationDateId", publicationDateId);
+		  query.setParameterList("muncipalityIdsList", muncipalityIdsList);
+		  return query.list();
+		}
+		
+		
 }
