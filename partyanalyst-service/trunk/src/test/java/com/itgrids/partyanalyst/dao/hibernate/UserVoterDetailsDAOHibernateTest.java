@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -348,9 +349,29 @@ for (Object[] objects : list) {
 			 System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]);
 		}*/
 		
-		public void testGetWardsBYLocalElectionBodyId()
+		/*public void testGetWardsBYLocalElectionBodyId()
 		{
 			List<Object[]> list = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(83l,8l,1l);
 			System.out.println(list.size());
+		}*/
+		
+		/*public void testgetHamletIdsListByUserIdAndConstituencyId()
+		{
+			List<Long> list = userVoterDetailsDAO.getHamletIdsListByUserIdAndConstituencyId(232l,8l, 1l);
+			System.out.println(list.size());
+			for(Long id:list)
+			System.out.println("Hamlet_id --- "+id);
+		}*/
+		
+		public void testgetHamletIdsListByMandalIdsList()
+		{
+			List<Long> mandalIdsList = new ArrayList<Long>(0);
+			mandalIdsList.add(844l);
+			mandalIdsList.add(836l);
+			List<Object[]> list = userVoterDetailsDAO.getHamletIdsListByMandalIdsList(232l,8l, 1l,mandalIdsList,"mandalHamlets");
+			System.out.println(list.size());
+			if(list != null && list.size() > 0)
+			 for(Object[] params:list)
+		    	System.out.println(params[0]+" "+params[1]);
 		}
 }
