@@ -1000,7 +1000,7 @@
 			</div>
 			<!-- New Layout (End)-->
 
-			<div id="voters_stats_main" style="margin-bottom:10px;margin-left:15px;background:#ffffff;">
+			<div id="voters_stats_main" style="margin-bottom:10px;margin-left:15px;background:#ffffff;width:943px;">
 				<div id="voters_stats_head">
 					<table cellspacing="0" cellpadding="0"  width="100%">
 						<tr>
