@@ -7,9 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBoothDAO{
@@ -1241,6 +1239,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 			return query.list();
 		}
+
 		
 		@SuppressWarnings("unchecked")
 		public List<Long> getWardIdsByLocalEleBodyId(Long localEleBodyId,Long publicationDateId,Long constituencyId)
@@ -1261,5 +1260,20 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			Query queryObj = getSession().createQuery("select model.totalVoters from Booth model where model.boothId =:boothId ");
 			queryObj.setParameter("boothId", boothId);
 			return (Long) queryObj.uniqueResult();
+		}
+		
+		/**
+		 * This DAO is used to get all constituencys List From Constituences By BoothIds
+		 * @param List<Long> boothIds
+		 * @return List<Object[]>
+		 * @date 19-07-2013
+		 */
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getConstityencysByBooths(List<Long> Ids)
+		{
+			Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name from Booth model where " +
+					"  model.boothId in (:Ids)");
+			query.setParameterList("Ids", Ids);
+			return query.list();
 		}
 }

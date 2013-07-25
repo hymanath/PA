@@ -1,12 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
-import javax.persistence.Query;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.appfuse.dao.jpa.GenericDaoJpa;
+import org.hibernate.Query;
 
-import com.itgrids.partyanalyst.dao.ITownshipDAO; 
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.TownshipColumnNames;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.Township;
@@ -94,5 +93,13 @@ public class TownshipDAO extends GenericDaoHibernate<Township, Long> implements 
 	public List findTownshipsByTehsilId(Long tehsilId) {
 		
 		return getHibernateTemplate().find("select model.townshipId,model.townshipName from Township model where model.tehsil.tehsilId = ?",tehsilId);
+	}
+	
+	public List<String> getTehsilIdsByTownShip(List<Long> townShipIds)
+	{
+		Query query = getSession().createQuery("select distinct cast(model.tehsil.tehsilId,string) from Township model" +
+				" where model.townshipId in (:townShipIds)");
+		query.setParameterList("townShipIds", townShipIds);
+		return query.list();
 	}
 }

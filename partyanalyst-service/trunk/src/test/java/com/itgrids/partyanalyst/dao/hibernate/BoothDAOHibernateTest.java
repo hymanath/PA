@@ -629,10 +629,19 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetBoothsForLocalEleBodyByCOnstituencyId()
+	/*public void testgetBoothsForLocalEleBodyByCOnstituencyId()
 	{
 		List<Object[]> list = boothDAO.getBoothsForLocalEleBodyByCOnstituencyId(292l, 122l, 8l);
 		System.out.println(list.size());
-	}
+	}*/
+	/*public void testConstituencys()
+	{
+		List<Long> list = new ArrayList<Long>();
+		list.add(2655l);list.add(2655l);list.add(2655l);list.add(2655l);list.add(2655l);list.add(29880l);list.add(29880l);list.add(29880l);list.add(30088l);list.add(30088l);list.add(30087l);list.add(30087l);list.add(30087l);list.add(29886l);list.add(30086l);list.add(30086l);list.add(30086l);list.add(30010l);list.add(29975l);list.add(29877l);list.add(29877l);list.add(29877l);list.add(30068l);list.add(30068l);list.add(30007l);list.add(29976l);list.add(29976l);list.add(29976l);list.add(29885l);list.add(29885l);list.add(30103l);list.add(30103l);list.add(30103l);list.add(30103l);list.add(30103l);list.add(30102l);list.add(30102l);list.add(30102l);list.add(30102l);list.add(30102l);list.add(80222l);list.add(80222l);list.add(80224l);list.add(80226l);list.add(80226l);list.add(80232l);list.add(80232l);list.add(80236l);list.add(80318l);list.add(80318l);list.add(80318l);list.add(80318l);list.add(80318l);list.add(80318l);list.add(80245l);list.add(80245l);list.add(80245l);list.add(80245l);list.add(80246l);list.add(80246l);list.add(80246l);list.add(29922l);list.add(29922l);list.add(29922l);list.add(29922l);list.add(29922l);list.add(29923l);list.add(29923l);list.add(29923l);list.add(29924l);list.add(29924l);list.add(29924l);list.add(29924l);list.add(29924l);list.add(29926l);list.add(29926l);list.add(29926l);list.add(29926l);list.add(29929l);list.add(29929l);list.add(29933l);list.add(29935l);list.add(29935l);list.add(29935l);list.add(29936l);list.add(29936l);list.add(29936l);list.add(29938l);list.add(29938l);list.add(29940l);list.add(29941l);list.add(29941l);list.add(29941l);list.add(29956l);list.add(29956l);list.add(29956l);list.add(29958l);list.add(29942l);list.add(29942l);list.add(29954l);list.add(29954l);list.add(29954l);list.add(29954l);list.add(29955l);list.add(29955l);list.add(29934l);list.add(29934l);list.add(29934l);list.add(29934l);list.add(29934l);list.add(29934l);list.add(29934l);list.add(29970l);list.add(29968l);list.add(29970l);list.add(29969l);list.add(29969l);list.add(29969l);list.add(29947l);list.add(29946l);list.add(29946l);list.add(29945l);list.add(29945l);list.add(29945l);list.add(29945l);list.add(29944l);list.add(29948l);list.add(29948l);list.add(29948l);list.add(29948l);list.add(29948l);list.add(29948l);list.add(29949l);list.add(29949l);list.add(29949l);list.add(29949l);list.add(29962l);list.add(29962l);list.add(29962l);list.add(29962l);list.add(29967l);list.add(29967l);list.add(29967l);list.add(29967l);list.add(29967l);list.add(29967l);list.add(29967l);list.add(29967l);
+		List<Object[]> values = boothDAO.getConstityencysByBooths(list,IConstants.TEHSIL);
+		for (Object[] objects : values) {
+			System.out.println(objects[0] +":"+ objects[1]);
+		}
+	}*/
 	
 }

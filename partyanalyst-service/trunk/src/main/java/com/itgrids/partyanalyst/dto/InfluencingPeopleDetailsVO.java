@@ -25,7 +25,7 @@ public class InfluencingPeopleDetailsVO extends ResultStatus implements
 	private Long regionId;
 	private String regionName;
 	private String regionType;
-	
+	private Long count;
 	private List<InfluencingPeopleBeanVO> influencingPeopleDetails;
 
 	public Long getRegionId() {
@@ -61,4 +61,12 @@ public class InfluencingPeopleDetailsVO extends ResultStatus implements
 		this.influencingPeopleDetails = influencingPeopleDetails;
 	}
 
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	
 }

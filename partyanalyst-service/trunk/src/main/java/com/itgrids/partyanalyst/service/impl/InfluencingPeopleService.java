@@ -20,9 +20,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeoplePositionDAO;
@@ -38,11 +40,11 @@ import com.itgrids.partyanalyst.dao.IStaticUserDesignationDAO;
 import com.itgrids.partyanalyst.dao.IStaticUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUsersDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
-import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementDataVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeDetailsVO;
@@ -79,9 +81,11 @@ import com.itgrids.partyanalyst.model.StaticUsers;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class InfluencingPeopleService implements IInfluencingPeopleService{
@@ -117,8 +121,11 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private ILocalGroupRegionDAO localGroupRegionDAO;
 	private IStaticUserDesignationDAO staticUserDesignationDAO;
 	private IVoterDAO voterDAO;
-	
-	
+	private ICasteDAO casteDAO;
+	private ICrossVotingEstimationService crossVotingEstimationService;
+	private IVotersAnalysisService votersAnalysisService;
+	private ITownshipDAO townshipDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	public IVoterDAO getVoterDAO() {
 		return voterDAO;
 	}
@@ -354,6 +361,49 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 	public void setBoothDAO(IBoothDAO boothDAO) {
 		this.boothDAO = boothDAO;
+	}
+	
+	public ICasteDAO getCasteDAO() {
+		return casteDAO;
+	}
+
+	public void setCasteDAO(ICasteDAO casteDAO) {
+		this.casteDAO = casteDAO;
+	}
+	
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
+	}
+
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+	
+	public ITownshipDAO getTownshipDAO() {
+		return townshipDAO;
+	}
+
+	public void setTownshipDAO(ITownshipDAO townshipDAO) {
+		this.townshipDAO = townshipDAO;
+	}
+	
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
 	}
 
 	public Long saveInfluencePeople(InfluencingPeopleVO infPeopleVO){
@@ -709,7 +759,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				else if(influRange.equalsIgnoreCase(IConstants.BOOTH)){
 					influencingPeopleBeanVO.setInfluencingRange("9");
 					influencingPeopleBeanVO.setInfluencingScopeValue(boothDAO.get(new Long(influScopeValue)).getBoothId().toString());
-					influencingPeopleBeanVO.setInfluencingRangeScope(boothDAO.get(new Long(influScopeValue)).getPartName());
+					influencingPeopleBeanVO.setInfluencingRangeScope("Booth -" + boothDAO.get(new Long(influScopeValue)).getPartNo());
 				}
 				
 				if(userAddress.getLocalElectionBody() != null )
@@ -1569,7 +1619,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.STATE,IConstants.DISTRICT,0L,"","");	
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.STATE,IConstants.DISTRICT,0L,"","",0l);	
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.DISTRICT)){
 				
@@ -1579,7 +1629,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.DISTRICT,IConstants.CONSTITUENCY,0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.DISTRICT,IConstants.CONSTITUENCY,0L,"","",0l);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.MP_CONSTITUENCY)){
 				
@@ -1592,7 +1642,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.MP_CONSTITUENCY,IConstants.CONSTITUENCY,0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.MP_CONSTITUENCY,IConstants.CONSTITUENCY,0L,"","",0l);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				
@@ -1604,7 +1654,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 					//Process and set details to VO
 					if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.CONSTITUENCY,IConstants.TEHSIL,0L,"","");
+						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.CONSTITUENCY,IConstants.TEHSIL,0L,"","",0l);
 				}
 				else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN)){
 				 influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInConstituencyByLocalBody(userId, constituency.getConstituencyId());
@@ -1612,7 +1662,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					
 					//Process and set details to VO
 					if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.CONSTITUENCY,IConstants.LOCAL_BODY_ELECTION,0L,"","");
+						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.CONSTITUENCY,IConstants.LOCAL_BODY_ELECTION,0L,"","",0l);
 				}
 				else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN)){
 					
@@ -1622,14 +1672,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					
 					//Process and set details to VO
 					if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.CONSTITUENCY,IConstants.TEHSIL,0L,"","");
+						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.CONSTITUENCY,IConstants.TEHSIL,0L,"","",0l);
 					
 					//for urban
                     List influencingPeopleList1 = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInConstituencyByLocalBody(userId, constituency.getConstituencyId());
 					List influencingPeopleAddress1 = influencingPeopleDAO.getTotalInfluencingPeopleAddressInConstituencyByLocalBody(userId, constituency.getConstituencyId());
 					//Process and set details to VO
 					if(influencingPeopleList1 != null && influencingPeopleList1.size() > 0){
-						List<InfluencingPeopleDetailsVO> influencingPeopleDetailsList1 = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList1,influencingPeopleAddress1,IConstants.CONSTITUENCY,IConstants.LOCAL_BODY_ELECTION,0L,"","");
+						List<InfluencingPeopleDetailsVO> influencingPeopleDetailsList1 = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList1,influencingPeopleAddress1,IConstants.CONSTITUENCY,IConstants.LOCAL_BODY_ELECTION,0L,"","",0l);
 						influencingPeopleDetailsList.addAll(influencingPeopleDetailsList1);
 					}
 				}
@@ -1645,7 +1695,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.LOCAL_BODY_ELECTION,IConstants.WARD,0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.LOCAL_BODY_ELECTION,IConstants.WARD,0L,"","",0l);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.MANDAL) || regionType.equalsIgnoreCase(IConstants.TEHSIL)){
 				
@@ -1655,7 +1705,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.TEHSIL,IConstants.VILLAGE,0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.TEHSIL,IConstants.VILLAGE,0L,"","",0l);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.VILLAGE) || regionType.equalsIgnoreCase(IConstants.HAMLET)){
 				
@@ -1665,7 +1715,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.HAMLET,"",0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.HAMLET,"",0L,"","",0l);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.WARD)){
 				
@@ -1675,7 +1725,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.WARD,"",0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.WARD,"",0L,"","",0l);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.BOOTH)){
 				
@@ -1685,7 +1735,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.WARD,"",0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.WARD,"",0L,"","",0l);
 				
 			}
 			
@@ -1707,7 +1757,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 * Processed Influencing People Results To VO
 	 */
 	@SuppressWarnings("unchecked")
-	public List<InfluencingPeopleDetailsVO> getProcessedInfluencingPeopleDetailsToVO(List influencingPeopleList,List influencingPeopleAddress,String regionType,String subRegionType,Long id,String scopeRegion,String scopeType){
+	public List<InfluencingPeopleDetailsVO> getProcessedInfluencingPeopleDetailsToVO(List influencingPeopleList,List influencingPeopleAddress,String regionType,String subRegionType,Long id,String scopeRegion,String scopeType,Long count){
 		
 		List<InfluencingPeopleDetailsVO> influencingPeopleDetailsVO = null;
 		Map<Long,InfluencingPeopleDetailsVO> influencePeopleMap = new HashMap<Long,InfluencingPeopleDetailsVO>();
@@ -1796,7 +1846,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				InfluencingPeopleDetailsVO infPeopleDetailsVO = new InfluencingPeopleDetailsVO();
 				List<InfluencingPeopleBeanVO> infPeopleDetails = new ArrayList<InfluencingPeopleBeanVO>();
-				
+				if(count != null &&count > 0)
+				{
+					infPeopleDetailsVO.setCount(count);
+				}
 				if(subRegionType.equalsIgnoreCase(IConstants.DISTRICT)){
 					
 					Long districtId = district.getDistrictId();
@@ -1907,6 +1960,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					}
 				}
 				
+				
 			}
 			
 			//Process The Map And Set to List
@@ -1914,6 +1968,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			for(Long regId:keys){
 				influencingPeopleDetailsVO.add(influencePeopleMap.get(regId));
 			}
+			
 		}
 		
 	 return influencingPeopleDetailsVO;
@@ -1946,7 +2001,44 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			}
 			
 			if(influencingPeopleList != null && influencingPeopleList.size() > 0){
-				influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddrList,"","",regionId,regionName,scopeType);
+				influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddrList,"","",regionId,regionName,scopeType,0l);
+			}
+		}catch(Exception ex){
+			log.error("Exception Raised In Influencing People Details Retrieval :" + ex);
+			ex.printStackTrace();
+			InfluencingPeopleDetailsVO rs = new InfluencingPeopleDetailsVO();
+			rs.setExceptionEncountered(ex);
+			rs.setExceptionMsg(ex.getMessage());
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+			
+			influencingPeopleDetailsList.add(rs);
+		}
+		
+	 return influencingPeopleDetailsList;
+	}
+	
+	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsBySelScope(Long userId,
+			Long regionId, String regionType,int startIndex,int maxIndex) {
+		
+		log.debug("Getting Influencing People Details Scope Wise ...");
+		List<InfluencingPeopleDetailsVO> influencingPeopleDetailsList = new ArrayList<InfluencingPeopleDetailsVO>();
+		try{
+			List influencingPeopleList = null;
+			List influencingPeopleAddrList = null;
+			String regionName = "";
+			String scopeType = getRegionTypeMatchingString(regionType);
+			
+			if(regionId.equals(0L)){
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsByInfluencingSelScope(userId, scopeType,startIndex,maxIndex);
+				influencingPeopleAddrList = influencingPeopleDAO.getTotalInfluencingPeopleAddressByInfluencingSelScope(userId, scopeType,startIndex,maxIndex);
+			}else{
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsByInfluencingSelScope(userId, scopeType,regionId.toString(),startIndex,maxIndex);
+				influencingPeopleAddrList = influencingPeopleDAO.getTotalInfluencingPeopleAddressByInfluencingSelScope(userId, scopeType,regionId.toString(),startIndex,maxIndex);
+				regionName = getRegionNameBasedOnScope(regionType,regionId.toString());
+			}
+			Long influencingPeopleCount = influencingPeopleDAO.getTotalCountForInfluencingPeople(userId,scopeType);
+			if(influencingPeopleList != null && influencingPeopleList.size() > 0){
+				influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddrList,"","",regionId,regionName,scopeType,influencingPeopleCount);
 			}
 		}catch(Exception ex){
 			log.error("Exception Raised In Influencing People Details Retrieval :" + ex);
@@ -3888,6 +3980,144 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 		return selectOptionVOs;
 		 
+	 }
+	 /**
+	  * This Service is used to get all influencing people based on user and type
+	  * @param Long userId
+	  * @param String type
+	  * @return List<InfluencingPeopleVO>
+	  * @date 18-07-2013
+	  */
+	 public List<InfluencingPeopleVO> getAllInfluencingPeopleBasedOnUserAndType(Long userId,String type)
+	 {
+		 List<InfluencingPeopleVO> returnList = null;
+		 try {
+			 log.debug("Entered into getAllInfluencingPeopleBasedOnUserAndType() method in InfluencingPeople Service");
+			 List<InfluencingPeople> influencingPeopleList = influencingPeopleDAO.getInfluencingPeopleByUserAndAccessType(userId,type);
+			 if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+			 {
+				 returnList = new ArrayList<InfluencingPeopleVO>();
+				 for (InfluencingPeople influencingPeople : influencingPeopleList) {
+					 InfluencingPeopleVO influencingPeopleVO = new InfluencingPeopleVO();
+					 influencingPeopleVO.setInfluencePersonId(influencingPeople.getInfluencingPeopleId());
+					 influencingPeopleVO.setFirstName(influencingPeople.getFirstName());
+					 influencingPeopleVO.setLastName(influencingPeople.getLastName());
+					 influencingPeopleVO.setEmail(influencingPeople.getEmail());
+					 influencingPeopleVO.setMobileNo(influencingPeople.getPhoneNo());
+					 influencingPeopleVO.setGender(influencingPeople.getGender());
+					 Long casteId = Long.valueOf(influencingPeople.getCaste());
+					 if(casteId != null && casteId > 0)
+					 {
+						 influencingPeopleVO.setCast(casteDAO.get(casteId).getCasteName()); 
+					 }
+					 if(influencingPeople.getUserAddress() != null)
+					 {
+						 influencingPeopleVO.setConstituency(influencingPeople.getUserAddress().getConstituency().getName());
+						 influencingPeopleVO.setState(influencingPeople.getUserAddress().getState().getStateName());
+						 influencingPeopleVO.setDistrict(influencingPeople.getUserAddress().getDistrict().getDistrictName()); 
+					 }
+					 
+					 returnList.add(influencingPeopleVO);
+				}
+			 }
+		} catch (Exception e) {
+			returnList = new ArrayList<InfluencingPeopleVO>();
+			log.error("Exception raised in getAllInfluencingPeopleBasedOnUserAndType() method in InfluencingPeople Service", e);
+		}
+		 
+		 return returnList ;
+	 }
+	 /**
+	  * This Service is used to get constituencys For User Having Influencing people
+	  * @param Long userId
+	  * @param Long electionYear
+	  * @param Long Long electionTypeId
+	  * @return List<SelectOptionVO>
+	  * @date 19-07-2013
+	  */
+	 public List<SelectOptionVO> getUserAccessConstituencyes(Long userId,Long electionYear,Long electionTypeId,String type)
+	 {
+		 List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>();
+		 List<SelectOptionVO> selConstiList = new ArrayList<SelectOptionVO>();
+		 try {
+			 log.debug("Entered into getUserAccessConstituencyes() method in InfluencingPeople Service");
+			 List<SelectOptionVO> userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
+			 constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+			 if(type.equalsIgnoreCase(IConstants.BOOTH))
+			 {
+				 List<String> boothsList = influencingPeopleDAO.getSelInfluencingScopeValues(userId,IConstants.BOOTH);
+				 List<Long> boothIds = null;
+				 if(boothsList != null && boothsList.size() > 0)
+				 {
+					 boothIds  = getSelectedTypeIds(boothsList);
+					 List<Object[]> selConstituencyList = boothDAO.getConstityencysByBooths(boothIds); 
+					 if(selConstituencyList != null && selConstituencyList.size()> 0)
+					 {
+						 selConstiList = fillSelectOptionVO(selConstituencyList);
+					 }
+				 } 
+				 
+			 }
+			 else if(type.equalsIgnoreCase(IConstants.VILLAGE))
+			 {
+				 List<String> villagesList = influencingPeopleDAO.getSelInfluencingScopeValues(userId,IConstants.VILLAGE);
+				 List<Long> villageIds = getSelectedTypeIds(villagesList);
+				 if(villageIds != null && villageIds.size() > 0)
+				 {
+					 List<String> tehsilList = hamletDAO.getTehsilIdsByHamlets(villageIds);
+					 if(tehsilList != null && tehsilList.size() > 0)
+					 {
+						 List<Long> tehsilIds = getSelectedTypeIds(tehsilList);
+						 List<Object[]> selConstituencyList = delimitationConstituencyMandalDAO.getConstituencyByMandals(tehsilIds); 
+						 if(selConstituencyList != null && selConstituencyList.size()> 0)
+						 {
+							 selConstiList = fillSelectOptionVO(selConstituencyList);
+						 }
+ 					 }
+				 }
+			 }
+			 else if(type.equalsIgnoreCase(IConstants.WARD))
+			 {
+				 List<String> wardsList = influencingPeopleDAO.getSelInfluencingScopeValues(userId,IConstants.WARD); 
+				 List<Long> wardIds = getSelectedTypeIds(wardsList);
+				 List<Object[]> selConstituencyList = constituencyDAO.getConstityencyByConstituencyids(wardIds);
+				 if(selConstituencyList != null && selConstituencyList.size()> 0)
+				 {
+					 selConstiList = fillSelectOptionVO(selConstituencyList);
+				 }
+			 }
+			 selConstiList.retainAll(constituencyList);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised in getUserAccessConstituencyes() method in InfluencingPeople Service", e);
+		}
+		 
+		 return selConstiList;
+	 }
+	 
+	 public List<Long> getSelectedTypeIds(List<String> selList)
+	 {
+		 List<Long> ids = new ArrayList<Long>();
+		 if(selList != null && selList.size() > 0)
+		 {
+			 for (String value : selList) {
+				Long id = Long.valueOf(value);
+				ids.add(id);
+			}
+		 }
+		 return ids;
+	 }
+	 
+	 public List<SelectOptionVO> fillSelectOptionVO(List<Object[]> list)
+	 {
+		 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		 for (Object[] parms : list) {
+			 SelectOptionVO selectOptionVO = new SelectOptionVO();
+			 selectOptionVO.setId((Long)parms[0]);
+			 selectOptionVO.setName(parms[1].toString());
+			 returnList.add(selectOptionVO);
+		}
+		 return returnList;
 	 }
 }
 

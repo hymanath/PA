@@ -30,12 +30,14 @@ public class InfluencingPeopleVO implements Serializable{
 	private Long hamletId;
 	private Long boothId;
 	private Long voterId;
-	
+	private String mobileNo;
 	private String fatherOrSpouceName;
 	private Long userId;
 	private String firstName;
 	private Long influencePersonId;
-	
+	private String constituency = "";
+	private String district = "";
+	private String state= "";
 	private Long stateId;
 	private Long districtId;
 	private Long constituencyId;
@@ -315,6 +317,46 @@ public class InfluencingPeopleVO implements Serializable{
 
 	public void setBoothId(Long boothId) {
 		this.boothId = boothId;
+	}
+
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+
+	public String getConstituency() {
+		return constituency;
+	}
+
+
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+
+
+	public String getDistrict() {
+		return district;
+	}
+
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+
+	public String getState() {
+		return state;
+	}
+
+
+	public void setState(String state) {
+		this.state = state;
 	}
 	
 	

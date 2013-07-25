@@ -1,23 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
-import junit.framework.Assert;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
-import com.itgrids.partyanalyst.model.ElectionScope;
-import com.itgrids.partyanalyst.model.State;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
@@ -414,8 +402,19 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(parms[0] +":"+ parms[1]);
 		}
 	}*/
-	public void testgetConstituencyNameByConstituencyIdInWards(){
+/*	public void testgetConstituencyNameByConstituencyIdInWards(){
 		String name = constituencyDAO.getConstituencyNameByConstituencyIdInWards(40032l);
 		System.out.println(name);
-	}
+	}*/
+	
+	/*public void testConstituencys()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(232l);
+		ids.add(347l);
+		List<Object[]> values = constituencyDAO.getConstityencyByConstituencyids(ids);
+		for (Object[] objects : values) {
+			System.out.println(objects[0] +":"+ objects[1]);
+		}
+	}*/
 }
