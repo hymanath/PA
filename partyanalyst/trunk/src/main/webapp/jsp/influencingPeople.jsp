@@ -291,6 +291,9 @@ function cleanOptionsList(string)
 }
 function populateLocations(val,source)
 {	
+	<c:if test="${windowTask == 'edit' && !empty voterId}">
+	$('#influencingScopeLevels').show();
+	</c:if>
 	var row1El = document.getElementById("row1");
 	var row2El = document.getElementById("row2");
 	var row3El = document.getElementById("row3");
@@ -937,7 +940,7 @@ function refreshingParentWindow()
 				<s:select id="scopeLevel" list="#session.influenceRange" listKey="id" listValue="name" value="defaultInfluenceRange" name="influencingRange" cssClass="regionSelect" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"/> 
 			</td>			
 		</tr>
-		<c:if test="${windowTask == 'edit'}">
+		<c:if test="${windowTask == 'edit' && empty voterId}">
 		<tr id="scopeRow">
 		<td>Influencing Scope</td>
 		<td><span>${scopeValue}</span>
