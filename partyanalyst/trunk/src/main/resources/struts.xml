@@ -5657,5 +5657,12 @@
 		  <param name="root">resultStatus</param>
 		 </result>
 		</action>
+		
+		<action name="getPartyPerformanceAction" class="suggestiveModelAction" method="getPartyPerformanceForSelectedLocation">
+		 <result type="json" name="success">
+		  <param name="root">optionVO</param>
+		 </result>
+		</action>
+		
 		</package>
 </struts>      

@@ -1658,5 +1658,11 @@
 		<property name="updationDetailsDAO" ref="updationDetailsDAO"></property>
 		
     </bean>
+    
+    <bean name="suggestiveModelService" class="com.itgrids.partyanalyst.service.impl.SuggestiveModelService">
+      <property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
+      <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+    </bean>
+    
 </beans>		
 	
