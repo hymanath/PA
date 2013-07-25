@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -1307,8 +1308,8 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		 System.out.println(params[1]);
 	 }
 	}*/
-	
-	public void testParties()
+
+/*	public void testParties()
 	{
 		List<Long> list = new ArrayList<Long>();
 		list.add(390l);list.add(391l);list.add(392l);list.add(455l);list.add(476l);list.add(482l);list.add(483l);list.add(1662l);list.add(1664l);list.add(163l);list.add(239l);list.add(265l);list.add(269l);list.add(362l);
@@ -1316,6 +1317,46 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+ parms[1]);
 		}
+	}*/
+	
+/*	public void testParties()
+	{
+		List elections = nominationDAO.findByPartyId(1117l);
+		System.out.println(elections.size());
+		System.out.println(elections);
+		for (int i = 0; i < elections.size(); i++) {
+			Object[] parms = (Object[]) elections.get(i);
+			System.out.println(parms[0].toString());
+			System.out.println(parms[1].toString());
+		}
+		
+		
+	}
+	*/
+	/*public void testParties()
+	{
+		
+		List<Object[]> values = nominationDAO.getConstituenciesByParties(1l,"2011",1117l);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[0]);
+			System.out.println(parms[0] +":"+ parms[1]);
+		}
+		
+		
+	}*/
+	
+
+			
+	public void testParties()
+	{
+		List  values = nominationDAO.findByElectionScopeIdAndPartyIds(2l,1117l);
+		System.out.println(values);
+		for (Object objects : values) {
+		Object[] a = (Object[])objects;
+		System.out.println(a[0]);
+		System.out.println(a[1]);
+		}
+			
 	}
 }	
 	
