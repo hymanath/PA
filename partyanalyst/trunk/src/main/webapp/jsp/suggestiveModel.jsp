@@ -1,0 +1,404 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title> Party Analyst - Suggestive Model</title>
+ <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css" />
+<style type="text/css">	
+	select {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 150px;
+	}
+	select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input{
+		border-radius: 4px 4px 4px 4px;
+		color: #000000;
+		display: inline-block;
+		font-size: 13px;
+		line-height: 18px;
+		padding: 4px;
+	}
+	input, button, select {
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		 border: 1px solid lightBlue;
+	}
+	.tdWidth1,#tdWidth{
+	width: 150px;
+	}
+
+	
+	#requiredValue{
+	color:red;
+	font-size:large;
+	}	
+	#mainDiv{
+	font-family: serif verdana sans-serif;
+	border: 1px lightBlue solid ;
+	width: 920px; 
+	margin-left: 70px;
+	margin-bottom: 15px;
+	background-color:white;
+	font-weight:bold;
+	font-size:15px;
+	border-radius: 5px 5px 5px 5px;
+	}	
+
+	#tableRowS,#tableRowC,#tableRowM,#tableRowP,#tableRowB{
+	margin-left: -10px;
+	}
+
+	#titleHeading{
+	font-family: verdana sans-serif serif;
+	margin-top: 30px;
+	height: 25px;
+	width: 920px; 
+	margin-left: 73px;
+	color:white;
+	background:none repeat scroll 0 0 #06ABEA;
+	margin-top: 30px; 
+	margin-bottom: 5px;
+	font-weight:bold;
+	font-size:18px;
+	border-radius: 5px 5px 5px 5px;
+	}
+	#errorMsgDiv{
+	color: red; 
+	float: left; 
+	font-weight:normal;
+	font-size:15px;
+	width: 775px;
+	height: 25px;
+	padding-top: 5px;
+	}
+
+
+	</style>
+<script type="text/javascript" >
+
+$(document).ready(function(){
+getStaticParties();
+});
+function getStaticParties(){
+
+	var jsObj=
+	{
+		stateId:1,
+		task:"getStaticParties"
+	};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/partiesAjaxAction.action?"+param;
+	callAjax(param,jsObj,url);
+
+}
+function getElectionYears(id){
+	$('#errorMsgDiv').html('');
+	$("#partySelectEl").css("border","1px solid lightBlue");
+	$("#electionYearSelectEl").css("border","1px solid lightBlue");
+	$("#listConstituencyNames").css("border","1px solid lightBlue");
+	$('#urban_areasDiv').css("display","none");
+	$('#rural_urban_areasDiv').css("display","none");	
+	var listConstituencyelmt = document.getElementById('listConstituencyNames');
+	var electionYearelmt = document.getElementById('electionYearSelectEl');
+	
+	removeSelectElements(listConstituencyelmt);
+	removeSelectElements(electionYearelmt);
+	
+	if(id == 0){
+	$('#errorMsgDiv').html('Please Select Party Name');	
+	$("#partySelectEl").css("border","1px solid IndianRed");	
+	addDefaultSelectValues(listConstituencyelmt);
+	addDefaultSelectValues(electionYearelmt);
+		return;
+	}
+	var jsObj=
+	{     
+		elmtId:"yearList",
+		partyId:id,
+		elecTypeId:"Assembly",
+		stateId:1,
+		task:"getElectionYears"						
+	};			
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getElectionYearsByPartyAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);
+}
+function getConstituencyList(){
+	$('#errorMsgDiv').html('');	
+	$("#electionYearSelectEl").css("border","1px solid lightBlue");
+	$('#urban_areasDiv').css("display","none");
+	$('#rural_urban_areasDiv').css("display","none");
+	var listConstituencyelmt = document.getElementById('listConstituencyNames');
+	removeSelectElements(listConstituencyelmt);
+	var electionYear = document.getElementById('electionYearSelectEl').value;
+	var partyId = document.getElementById('partySelectEl').value;
+		if(electionYear == 0){
+		$('#errorMsgDiv').html('Please Select Election Year');
+		$("#electionYearSelectEl").css("border","1px solid IndianRed");		
+		addDefaultSelectValues(listConstituencyelmt);
+			return;
+		}
+	var jsObj= 
+	{	
+		electionYear : electionYear,
+		electionType : 2,
+		partyId:partyId,		
+		stateId:1,	
+		task:"getConstituencies"		
+	};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getConstituenciesByPartyNYearAction.action?"+param;
+	callAjax(param,jsObj,url);
+
+}
+
+function getDetails(id){
+	$('#urban_areasDiv').css("display","none");
+	$('#rural_urban_areasDiv').css("display","none");
+	$(".areasClass").val(0);
+	$("#listConstituencyNames").css("border","1px solid lightBlue");
+	$('#errorMsgDiv').html('');	
+		if(id == 0){	
+		$("#listConstituencyNames").css("border","1px solid IndianRed");
+		$('#errorMsgDiv').html('Please Select Constituency');	
+			return;
+		}
+		
+		var jsObj={
+		publicationId:8,
+		constituencyId:$("#listConstituencyNames").val(),
+		task:"getConstituencyType"	
+		};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getReportLevelDetails.action?"+param;
+	callAjax(param,jsObj,url);
+	
+}
+
+function getLevelWiseDetails(id){
+	$(".areasClass").css("border","1px solid lightBlue");
+	$('#errorMsgDiv').html('');	
+	if(id == 0){	
+	$(".areasClass").css("border","1px solid IndianRed");
+	$('#errorMsgDiv').html('Please Select Level ');	
+		return;
+	}
+}
+function callAjax(param,jsObj,url){
+	var myResults;
+					
+		var callback = {			
+		               success : function( o ) {
+						try {												
+								if(o.responseText)
+									myResults = YAHOO.lang.JSON.parse(o.responseText);
+								
+								if(jsObj.task == "getElectionYears")
+								{
+									populateElectionYearDropdown(myResults);
+								}
+								else if(jsObj.task == "getStaticParties")
+								{	
+									populatePartiesDropdown(myResults);
+								}								
+								else if(jsObj.task == "getConstituencies")
+								{	
+									populateConstituencyListDropdown(myResults);
+								}
+								else if(jsObj.task == "getConstituencyType")
+								{
+									if(myResults[0].name == 'URBAN'){
+										$('#urban_areasDiv').css("display","block");
+									}
+									else{
+										$('#rural_urban_areasDiv').css("display","block");
+									}
+								}
+							}catch (e) {   
+								   	//alert("Invalid JSON result" + e);   
+							}  
+			               },
+			               scope : this,
+			               failure : function( o ) {
+			                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+			                         }
+			               };
+
+			YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}	
+	
+function populatePartiesDropdown(results)
+{
+	var partySelectEl = document.getElementById("partySelectEl");
+	for(var i in results)
+	{
+		var opElmt=document.createElement('option');
+		opElmt.value=results[i].id;
+		opElmt.text=results[i].name;
+		addOptions(partySelectEl,opElmt);	
+	}	
+}
+
+function populateElectionYearDropdown(results)
+{
+	var electionYearsEl = null;
+		electionYearsEl = document.getElementById("electionYearSelectEl");
+		removeSelectElements(electionYearsEl);
+	var opElmt=document.createElement('option');
+			var opElmt=document.createElement('option');
+			opElmt.value='0';
+			opElmt.text='Select Year';
+			addOptions(electionYearsEl,opElmt);
+	if(results!=null)
+		for(var i in results)
+		{	
+			var opElmt=document.createElement('option');
+			opElmt.value=results[i].id;
+			opElmt.text=results[i].name;
+			addOptions(electionYearsEl,opElmt);
+		}
+}
+
+function populateConstituencyListDropdown(results){
+
+	var ConstituencyList = document.getElementById("listConstituencyNames");
+	removeSelectElements(ConstituencyList);
+	var opElmt=document.createElement('option');
+			opElmt.value='0';
+			opElmt.text='Select Constituency';
+	
+			addOptions(ConstituencyList,opElmt);
+	if(results!=null)
+		for(var i in results)
+		{
+			var opElmt=document.createElement('option');
+			opElmt.value=results[i].id;
+			opElmt.text=results[i].name;
+			addOptions(ConstituencyList,opElmt);
+			
+		}	
+
+}
+
+function addOptions(list,opElmt){
+	try
+		{
+		list.add(opElmt,null); // standards compliant
+		}
+	catch(ex)
+		{
+		list.add(opElmt); // IE only
+		}
+}
+
+function removeSelectElements(elmt)
+{
+	if(!elmt)
+		return;
+
+	var len=elmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		elmt.remove(i);
+	}	
+
+}
+
+function addDefaultSelectValues(elmt){
+	var opElmt=document.createElement('option');
+		opElmt.value='0';
+		opElmt.text='Select ';	
+	addOptions(elmt,opElmt);
+}
+
+</script>
+</head>
+<body>
+<div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>
+<div id="mainDiv" align="center" >
+<div id="errorMsgDiv" >&nbsp;</div><br><br>
+<div>
+	<table>
+		<tr id="tableRowS">
+			<td id="tdWidth">
+				Party Name:<font id="requiredValue" class="requiredFont">*</font> 
+			</td>
+			<td>
+				<select id="partySelectEl" onchange="getElectionYears(this.options[this.selectedIndex].value)">
+				</select>
+			</td>
+			<td></td><td></td>
+			<td id="tdWidth">
+				Election Year :<font id="requiredValue" class="requiredFont">*</font> 
+			</td>		
+			<td>
+				<select id="electionYearSelectEl" onchange="getConstituencyList();">
+				<option value="0"> Select Year </option>
+				</select>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div style="width: 500px; margin-left: -318px;">
+	<table>
+		<tr id="tableRowS">
+			<td id="tdWidth">
+				Constituenct Name :<font id="requiredValue" class="requiredFont">*</font> 
+			</td>
+			<td>
+				<select id="listConstituencyNames" onchange="getDetails(this.options[this.selectedIndex].value);">
+				<option value="0"> Select Constituency </option>
+				</select>
+			</td>		
+		</tr>
+	</table>
+</div>
+
+<div style="width: 500px; margin-left: -318px; display:none;" id="rural_urban_areasDiv">
+	<table>
+		<tr id="tableRowS">
+			<td id="tdWidth">
+				Election Level :<font id="requiredValue" class="requiredFont">*</font> 
+			</td>
+			<td>
+				<select class="areasClass" id="rural_urban_listLevels" onchange="getLevelWiseDetails(this.options[this.selectedIndex].value);">
+				<option value="0"> Select Level </option>
+				<option value="1"> Constituency </option>
+				<option value="2"> Mandal </option>
+				<option value="3"> Panchayat </option>
+				</select>
+			</td>			
+		</tr>
+	</table>
+</div>
+<div style="width: 500px; margin-left: -318px;display:none;" id="urban_areasDiv">
+	<table>
+		<tr id="tableRowS">
+			<td id="tdWidth">
+				Election Level :<font id="requiredValue" class="requiredFont">*</font> 
+			</td>
+			<td>
+				<select class="areasClass" id="urban_listLevels" onchange="getLevelWiseDetails(this.options[this.selectedIndex].value);">
+				<option value="0"> Select Level </option>
+				<option value="1"> Constituency </option>
+				<option value="2"> Ward </option>
+				</select>
+			</td>			
+		</tr>
+	</table>
+</div>
+
+<input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;margin-left: -250px"/>
+
+</div>
+</body>
+</html>
