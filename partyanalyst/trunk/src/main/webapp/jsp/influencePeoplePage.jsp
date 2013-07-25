@@ -88,7 +88,6 @@ else
 			margin:0;
 			padding:0;
 		}
-
 		#influencePeopleData_main
 		{
 			padding:40px;
@@ -115,6 +114,8 @@ else
 		{
 			border:1px solid #DBD8D4;
 			margin-top:20px;
+			overflow-x: scroll;
+			margin-left: -34px;
 		}
 
 		.elbutton
@@ -175,7 +176,7 @@ else
 			</c:forEach>
 
 		}
-
+		var regionType = '${regionType}';
 		function buildYUIDTTable(tableId,divId)
 		{
 				var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
@@ -203,7 +204,13 @@ else
 						key : "districtName"
 					}, {
 						key : "stateName"
-					},{
+					}, 
+					<c:if test="${regionType == 'BOOTH' || regionType == 'VILLAGE' ||regionType == 'MANDAL'}">
+					{
+						key : "influencingScopeValue"
+					} ,
+					</c:if>
+					{
 						key : "moreDetails"
 					},{
 						key : "edit"
@@ -254,7 +261,15 @@ else
 					key : "stateName",
 					label : "State",
 					sortable : true
-				},{
+				}, 
+				<c:if test="${regionType == 'BOOTH' || regionType == 'VILLAGE' ||regionType == 'MANDAL'}">
+				{
+					key : "influencingScopeValue",
+					label : "Scope",
+					sortable : true
+				},
+				</c:if>
+				{
 					key : "moreDetails",
 					label : "More Details",
 					sortable : false
@@ -660,6 +675,8 @@ else
 									<td>${people.constituency}</td>
 									<td>${people.district}</td>
 									<td>${people.state}</td>
+									<c:if test="${regionType == 'BOOTH' || regionType == 'VILLAGE' ||regionType == 'MANDAL'}">
+									str += '	<td>${people.influencingScopeValue}</td>';</c:if>
 									<td><a href="javascript:{}" onclick="getPersonDetails(${people.influencingPersonId})">More Details</a></td>
 									<td>
 										<a href="javascript:{}" onclick="editPersonDetails(${people.influencingPersonId})">

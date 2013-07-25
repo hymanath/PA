@@ -2121,6 +2121,16 @@
 			<result name="success">/jsp/influencePeoplePage.jsp</result>			
 		</action>
 		
+		<action name="influencingPeopleDataAjaxAction" class="constituencyManagementAction" method="getInfluencingPeopleDetails">
+			<result type="json" name="success">
+				<param name="root">influencingPeopleDetailsObj</param>
+			</result>			
+		</action>
+		
+		<action name="influencingPeopleDetailsAction" class="constituencyManagementAction" method="getInfluencingPeopleData">
+			<result name="success">/jsp/influencePeopleDetails.jsp</result>			
+		</action>
+		
 		<action name="localGroupsPeopleDataAction" class="constituencyManagementAction" method="getlocalGroupsPeopleData">
 			<result name="success">/jsp/localGroupsPeoplePage.jsp</result>			
 		</action>	
@@ -5618,7 +5628,22 @@
 		  <result name="success">/jsp/customGroupWiseFamilyDetails.jsp</result>
 		 <result name="error">/jsp/loginForm.jsp</result>
 		 </action>
-	
+			
+		<action name="inflencingPeopleWindowAction" class="inflencingPeopleWindowAction">
+			<result name="success">/jsp/inflencingPeopleWindow.jsp</result>
+		</action>
+		
+		<action name="getInfluencingPeopleListAction" class="inflencingPeopleWindowAction" method="getInfluencingPeopleList">
+			<result name="success" type="json">
+				<param name="root">influencingPeopleVO</param>
+			</result>
+		</action>
+		
+		<action name="getUserConstituencesListAction" class="inflencingPeopleWindowAction" method="getUserConstituencesList">
+			<result name="success" type="json">
+				<param name="root">constituencyesList</param>
+			</result>
+		</action>
 
 		
 		<action name="insertConstituencyBasicDataAction" class="populateVoterDataAction" method="insertConstituencyBasicData">

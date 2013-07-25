@@ -140,7 +140,6 @@ function buildScopeWiseOverViewData(data,divId)
 	var elmt = document.getElementById(divId);
 	if(!elmt)
 		return;
-	
 	var str = '';
 	str += '<div id="influencePeopleScopeWiseOverView_head">';
 	str += '<table cellspacing="0" cellpadding="0" border="0" width="100%" style="width: 100%;">';
@@ -166,12 +165,12 @@ function buildScopeWiseOverViewData(data,divId)
 			str += '<table width="100%" class="scopeWise_head_table">';
 			str += '<tr>';
 			str += '<td><img width="16" height="16" src="images/icons/system_grps.png"></td>';
-			str += '<td align="left">'+data[i].influenceScope+' level scope - <a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\'0\',\'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].countValue+'</a></td>';
+			str += '<td align="left">'+data[i].influenceScope+' level scope - <a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup1(\'0\',\'0\',\'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].countValue+'</a></td>';
 			str += '</tr>';
 			str += '</table>';
 			str += '</div>';
 			str += '<div class="scopeWise_body">';
-			str += '<table class="region_available_head" width="100%">';		
+			/* str += '<table class="region_available_head" width="100%">';		
 			for(var j=0 ; j<data[i].influenceScopeDetails.length; j++)
 			{
 				str += '<tr>';
@@ -180,7 +179,7 @@ function buildScopeWiseOverViewData(data,divId)
 				str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\''+data[i].influenceScopeDetails[j].influenceScopeRegionId+'\',\''+data[i].influenceScopeDetails[j].influenceScopeRegion+'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].influenceScopeDetails[j].countValue+'</a></td>';			
 				str += '</tr>';
 			}
-			str += '</table>';
+			str += '</table>'; */
 			str += '</div>';
 			str += '</div>';
 		}
@@ -378,6 +377,12 @@ function getSubLevelInfluenceDataLabel(elmt)
 function openCandidatesPopup(parentRegionId,regionId,regionName,regionType,scopeType)
 {
 	var urlStr = "influencingPeopleDataAction.action?windowTask=influencingPersonInfoPopup&parentRegionId="+parentRegionId+"&regionId="+regionId+"&regionName="+regionName+"&regionType="+regionType+"&scopeType="+scopeType;
+	var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=1300,left=200,top=50");	
+	browser2.focus();
+}
+function openCandidatesPopup1(parentRegionId,regionId,regionName,regionType,scopeType)
+{
+	var urlStr = "influencingPeopleDetailsAction.action?windowTask=influencingPersonInfoPopup&parentRegionId="+parentRegionId+"&regionId="+regionId+"&regionName="+regionName+"&regionType="+regionType+"&scopeType="+scopeType;
 	var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=1300,left=200,top=50");	
 	browser2.focus();
 }

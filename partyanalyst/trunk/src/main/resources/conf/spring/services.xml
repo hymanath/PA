@@ -246,6 +246,11 @@
 		<property name="staticUserDesignationDAO" ref="staticUserDesignationDAO" />
 		<property name="userDAO" ref="userDAO" />
 		<property name="voterDAO" ref="voterDAO" />
+		<property name="casteDAO" ref="casteDAO"></property>
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService"></property>
+		<property name="votersAnalysisService" ref="votersAnalysisService"></property>
+		<property name="townshipDAO" ref="townshipDAO"></property>
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"></property>
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
