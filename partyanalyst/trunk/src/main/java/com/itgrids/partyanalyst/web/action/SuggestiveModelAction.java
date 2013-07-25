@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -9,7 +10,12 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.OptionVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
 public class SuggestiveModelAction  implements ServletRequestAware {
@@ -20,6 +26,10 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private String task;
 	JSONObject jObj;
 	private OptionVO optionVO;
+	private List<SelectOptionVO> constituencies;
+	private List<SelectOptionVO> electionsYears;
+	private IStaticDataService staticDataService;
+	private ICrossVotingEstimationService crossVotingEstimationService;
 	
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	
@@ -75,7 +85,31 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	public void setOptionVO(OptionVO optionVO) {
 		this.optionVO = optionVO;
 	}
-
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
+	}
+	public List<SelectOptionVO> getConstituencies() {
+		return constituencies;
+	}
+	public void setConstituencies(List<SelectOptionVO> constituencies) {
+		this.constituencies = constituencies;
+	}		
+	public List<SelectOptionVO> getElectionsYears() {
+		return electionsYears;
+	}
+	public void setElectionsYears(List<SelectOptionVO> electionsYears) {
+		this.electionsYears = electionsYears;
+	}
 	public String execute(){
 		
 		return Action.SUCCESS;
@@ -96,4 +130,47 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
+	public String getConstituenciesList(){
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute(IConstants.USER);
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Long electionYear= jObj.getLong("electionYear");
+		Long electionTypeId = jObj.getLong("electionType");
+		Long partyId = jObj.getLong("partyId");
+		Long stateId = jObj.getLong("stateId");
+		constituencies =  crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccessByStateId(electionTypeId,stateId,regVO.getRegistrationID(),electionYear);	
+		return Action.SUCCESS;
+	}
+	
+	public String getElectionYears(){
+
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			String elecType = jObj.getString("elecTypeId");
+			Long partyId = new Long(jObj.getString("partyId"));
+			Long stateId = new Long(jObj.getString("stateId"));
+			
+			Long countryId = 1l;
+			String electionType = null;
+			List<SelectOptionVO> yearsList = null;
+			if(elecType.equalsIgnoreCase("Parliament"))
+				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			else 
+				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			
+			Long electionScope = staticDataService.getElectionScopeForAElection(stateId, electionType, countryId);
+			if(electionScope != null)
+				electionsYears = staticDataService.getElectionIdsAndYearsByElectionScopeId(electionScope,partyId);
+
+		return Action.SUCCESS;
+	}
 }
