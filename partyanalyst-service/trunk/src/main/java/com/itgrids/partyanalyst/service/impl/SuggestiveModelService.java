@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
@@ -17,13 +20,13 @@ import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import org.apache.log4j.Logger;
 
 public class SuggestiveModelService implements ISuggestiveModelService {
 	
 	private static final Logger LOG = Logger.getLogger(SuggestiveModelService.class);
 	private IHamletBoothElectionDAO hamletBoothElectionDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IElectionDAO electionDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
@@ -106,6 +109,15 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	public void setBoothConstituencyElectionDAO(
 			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
 		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
+	}	
+
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
 	}
 
 	public OptionVO getPartyPerformanceForSelectedLocation(Long constituencyId,Long electionId,Long partyId,Long locationId,String type)
@@ -239,6 +251,20 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		}
 	}
 	
+     public void getVotersGroupDetails(List<SelectOptionVO> groupVos,Long constituencyId,Long locationId,String type){
+		 Long publicationId = 8l;
+		 List<Long> publicationIds = new ArrayList<Long>();
+		 publicationIds.add(publicationId);
+    	 for(SelectOptionVO group : groupVos){
+			if("panchayat".equalsIgnoreCase(type)){
+				List<Long> boothIDs = boothDAO.getBoothIdsByLocalValuesList("panchayat", locationId, constituencyId, publicationIds);
+				if(boothIDs != null && boothIDs.size() > 0){
+					List<Object[]> votersCount = boothPublicationVoterDAO.getVotersCountAgeWise(group.getId(), group.getPopulateId(), boothIDs);
+				}
+				
+			}
+		}
+	}
 	
 	public OptionVO getPartyPerformantForSelectedConstituency(Long constituencyId,Long electionId,Long partyId)
 	{
@@ -252,7 +278,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 List<SelectOptionVO> booths = null;
 			 if(constituencyType.equalsIgnoreCase(IConstants.RURAL) || constituencyType.equalsIgnoreCase(IConstants.RURALURBAN))
 			 {
-				 List<Object[]> tehsilsList = delimitationConstituencyMandalDAO.getMandalIdsByConstituencyId(constituencyId,electionYear);
+				 List<Object[]> tehsilsList = null;//delimitationConstituencyMandalDAO.getMandalIdsByConstituencyId(constituencyId,electionYear);
 				 if(tehsilsList != null && tehsilsList.size() > 0)
 				 {
 					mandals = new ArrayList<SelectOptionVO>();
@@ -262,7 +288,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 else if(constituencyType.equalsIgnoreCase(IConstants.RURALURBAN))
 			 {
 				 Long localBodyId = assemblyLocalElectionBodyDAO.getLocalBodyIdBasedOnConstituencyId(constituencyId);
-				 List<Object[]> tehsilsList = localElectionBodyDAO.getTehsilsByLocalBody(localBodyId);
+				 List<Object[]> tehsilsList =  null;//localElectionBodyDAO.getTehsilsByLocalBody(localBodyId);
 				 if(tehsilsList != null && tehsilsList.size() > 0)
 				 {
 					 mandals = new ArrayList<SelectOptionVO>();
@@ -295,14 +321,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 {
 					List<Long> boothIds = new ArrayList<Long>();
 					for (Long tehsilId : tehsilIds) {
-						List<Long> boothsList = boothDAO.getboothsByTehsilId(tehsilId);
+						List<Long> boothsList =  null;//boothDAO.getboothsByTehsilId(tehsilId);
 						if(boothsList != null && boothsList.size() > 0)
 						{
 						  for (Long boothId : boothsList) {
 						  boothIds.add(boothId);
 						  }
 						}
-						List<Object[]> partyWiseVotesList = candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(constituencyId,electionId,boothIds);
+						List<Object[]> partyWiseVotesList =  null;//candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(constituencyId,electionId,boothIds);
 						 if(partyWiseVotesList != null && partyWiseVotesList.size() > 0)
 						 {
 							 optionVO =  processOptionVO(partyWiseVotesList,partyId,tehsilId); 
@@ -322,14 +348,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					
 					for (Long wardId : wardIds) {
 						List<Long> boothIds = new ArrayList<Long>();
-						List<Long> boothsList = boothDAO.getboothsByWardId(wardId);
+						List<Long> boothsList =  null;//boothDAO.getboothsByWardId(wardId);
 						if(boothsList != null && boothsList.size() > 0)
 						{
 						  for (Long boothId : boothsList) {
 						  boothIds.add(boothId);
 						  }
 						}
-						List<Object[]> partyWiseVotesList = candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(constituencyId,electionId,boothIds);
+						List<Object[]> partyWiseVotesList =  null;//candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(constituencyId,electionId,boothIds);
 						 if(partyWiseVotesList != null && partyWiseVotesList.size() > 0)
 						 {
 							 optionVO =  processOptionVO(partyWiseVotesList,partyId,wardId);
@@ -351,7 +377,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		try {
 			LOG.debug("Enterd Into getPartyPerformantForSelectedWard() method in SuggestiveModelService Class ");
 			List<Long> boothIds = new ArrayList<Long>();
-			List<Long> boothsList = boothDAO.getboothsByWardId(wardId);
+			List<Long> boothsList =  null;//boothDAO.getboothsByWardId(wardId);
 			if(boothsList != null && boothsList.size() > 0)
 			{
 			  for (Long boothId : boothsList)
@@ -359,7 +385,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			     boothIds.add(boothId);
 			  }
 			}
-		   List<Object[]> partyWiseVotesList = candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(constituencyId,electionId,boothIds);
+		   List<Object[]> partyWiseVotesList =  null;//candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(constituencyId,electionId,boothIds);
 		   if(partyWiseVotesList != null && partyWiseVotesList.size() > 0)
 			{
 			 optionVO =  processOptionVO(partyWiseVotesList,partyId,wardId);

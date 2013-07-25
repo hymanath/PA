@@ -398,5 +398,7 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public List<Object[]> getMuncipalityWardsCount(Long constituencyId,Long publicationDateId,List<Long> muncipalityIdsList);
 	  
+	  public List<Object[]> getVotersCountAgeWise(Long fromAge,Long toAge,List<Long> boothIds);
 	  
+	  public List<Object[]> getVotersCasteDetailsForAgeRange(Long fromAge,Long toAge,List<Long> boothIds);
 }
