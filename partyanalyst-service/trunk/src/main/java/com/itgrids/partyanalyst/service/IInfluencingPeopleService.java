@@ -92,5 +92,12 @@ public interface IInfluencingPeopleService {
     public Integer deleteGroupData(Long id);
     
     public List<SelectOptionVO> getGroupNamesBasedOnCategoeryId(Long categoeryId , Long UserId);
+    
+    public List<InfluencingPeopleVO> getAllInfluencingPeopleBasedOnUserAndType(Long userId,String type);
+    
+    public List<SelectOptionVO> getUserAccessConstituencyes(Long userId,Long electionYear,Long electionTypeId,String type);
+    
+    public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsBySelScope(Long userId,
+			Long regionId, String regionType,int startIndex,int maxIndex);
 	
 }

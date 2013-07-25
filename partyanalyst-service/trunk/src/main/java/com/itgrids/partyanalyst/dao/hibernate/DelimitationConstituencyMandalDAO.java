@@ -206,4 +206,14 @@ IDelimitationConstituencyMandalDAO {
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyByMandals(List<Long> mandalIds)
+	{
+		Query query = getSession().createQuery("select distinct model.delimitationConstituency.constituency.constituencyId , model.delimitationConstituency.constituency.name " +
+				" from DelimitationConstituencyMandal model where " +
+				" model.tehsil.tehsilId in (:mandalIds)");
+		query.setParameterList("mandalIds", mandalIds);
+		return query.list();
+	}
 }

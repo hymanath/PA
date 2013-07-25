@@ -60,4 +60,6 @@ public interface ITownshipDAO extends GenericDao<Township, Long>{
 	public List findTownshipsByTehsilId(Long tehsilId);
 	
 	public List<Panchayat> getPanchayathies(Long mandalID);
+	
+	public List<String> getTehsilIdsByTownShip(List<Long> townShipIds);
 }

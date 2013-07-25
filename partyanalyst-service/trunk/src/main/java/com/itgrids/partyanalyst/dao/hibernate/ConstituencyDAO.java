@@ -10,12 +10,11 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.ConstituencyColumnNames;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		implements IConstituencyDAO {
@@ -629,5 +628,20 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		Query queryBuilder = getSession().createQuery(query);
 		queryBuilder.setParameter("constituencyId", constituencyId);
 		return (String) queryBuilder.uniqueResult();
+	}
+	/**
+	 * This DAO is used to get all constituencys List From Constituences By ConstituencyIds
+	 * @param List<Long> constituencyIds
+	 * @return List<Object[]>
+	 * @date 19-07-2013
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstityencyByConstituencyids(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery("select distinct model.constituencyId,model.name from Constituency model" +
+				" where model.constituencyId in (:constituencyIds)");
+		
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
 	}
 }

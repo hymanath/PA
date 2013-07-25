@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -108,6 +109,21 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 	/*	List<String> val=influencingPeopleDAO.getPartyIdUsingVoterId(locationValue);
 		System.out.println(val.get(0));
 		System.out.println(val.get(1));
+	}*/
+	
+	/*public void testInfluencingPeople()
+	{
+		List<InfluencingPeople> values = influencingPeopleDAO.getInfluencingPeopleByUserAndAccessType(1l,"state");
+		System.out.println(values.size());
+	}*/
+	
+	/*public void testConstituencyes()
+	{
+		List<String> values = influencingPeopleDAO.getConstituencyValues(1l,IConstants.CONSTITUENCY);
+		System.out.println(values.size());
+		for (String string : values) {
+			System.out.println(string);
+		}
 	}*/
 	
 }

@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -8,7 +7,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -446,6 +444,22 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 				"model.user.userId = ? and model.influencingScope = ? and model.influencingScopeValue = ? order by model.influencingScope",params);
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsByInfluencingSelScope(Long userId,
+			String influencingScope, String scopeValueId,int startIndex,int maxIndex) {
+		Object[] params = {userId,influencingScope,scopeValueId};
+		Query query = getSession().createQuery("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
+				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.user.userId = :userId and model.influencingScope = :influencingScope and model.influencingScopeValue = :scopeValueId order by model.influencingScope");
+		query.setParameter("userId", userId);
+		query.setParameter("influencingScope", influencingScope);
+		query.setParameter("scopeValueId", scopeValueId);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		return query.list();
+	}
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressByInfluencingScope(Long userId,
 			String influencingScope, String scopeValueId) {
@@ -453,6 +467,21 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.user.userId = ? and model.influencingScope = ? and model.influencingScopeValue = ? order by model.influencingScope",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressByInfluencingSelScope(Long userId,
+			String influencingScope, String scopeValueId,int startIndex,int maxIndex) {
+		Object[] params = {userId,influencingScope,scopeValueId};
+		Query query = getSession().createQuery("select model.userAddress from InfluencingPeople model where "+
+				"model.user.userId = :userId and model.influencingScope = :influencingScope and model.influencingScopeValue = :scopeValueId order by model.influencingScope");
+		query.setParameter("userId", userId);
+		query.setParameter("influencingScope", influencingScope);
+		query.setParameter("scopeValueId", scopeValueId);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		return query.list();
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsByInfluencingScope(Long userId,
@@ -464,6 +493,21 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 				"model.user.userId = ? and model.influencingScope = ? order by model.influencingScope",params);
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsByInfluencingSelScope(Long userId,
+			String influencingScope,int startIndex,int maxindex) {
+		Query query = getSession().createQuery("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
+				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.user.userId = :userId and model.influencingScope = :influencingScope order by model.influencingScope");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxindex);
+		query.setParameter("userId", userId);
+		query.setParameter("influencingScope", influencingScope);
+		return query.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressByInfluencingScope(Long userId,
 			String influencingScope) {
@@ -472,6 +516,17 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 				"model.user.userId = ? and model.influencingScope = ? order by model.influencingScope",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressByInfluencingSelScope(Long userId,
+			String influencingScope,int startIndex,int maxIndex) {
+		Query query = getSession().createQuery("select model.userAddress from InfluencingPeople model where "+
+				"model.user.userId = :userId and model.influencingScope = :influencingScope order by model.influencingScope");
+		query.setParameter("userId", userId);
+		query.setParameter("influencingScope", influencingScope);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		return query.list();
+	}
 	@SuppressWarnings("unchecked")
 	public List getInfluencingPeopleNameAndMobileNOByIds(List<Long> infIds) {
 		Query queryObject = getSession().createQuery("select model.firstName,model.lastName,model.phoneNo from InfluencingPeople model where model.influencingPeopleId in (:infIds)");
@@ -708,6 +763,49 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Query query = getSession().createQuery("select model.party.shortName from InfluencingPeople model where model.voter.voterId = :voterId)");
 		query.setParameter("voterId", voterId);
 			return  (String) query.uniqueResult();
+	}
+	
+	/**
+	 * This DAO is used to get the influencing people based on user and type
+	 * @param Long userId
+	 * @param String type
+	 * @return List<InfluencingPeople>
+	 * @date 18-07-2013
+	 */
+	public List<InfluencingPeople> getInfluencingPeopleByUserAndAccessType(Long userId,String type)
+	{
+		StringBuffer  queryString = new StringBuffer();
+		queryString.append("from InfluencingPeople model where model.user.userId = :userId " +
+				"  and model.influencingScope = :type");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("userId", userId);
+		query.setParameter("type", type);
+		return query.list();
+	}
+	
+	/**
+	 * This DAO is used to get the constituenceys List 
+	 * @param String type
+	 * @param Long userId
+	 * @return List<String>
+	 * @date 19-07-2013
+	 */
+	@SuppressWarnings("unchecked")
+	public List<String> getSelInfluencingScopeValues(Long userId ,String type)
+	{
+		Object[] parms = {userId,type};
+		return getHibernateTemplate().find("select distinct model.influencingScopeValue from InfluencingPeople model " +
+				" where model.user.userId = ? and  model.influencingScope = ? ",parms);
+	}
+	
+	public Long getTotalCountForInfluencingPeople(Long userId,String scope)
+	{
+		Query query = getSession().createQuery("select count(*) from InfluencingPeople model where " +
+				" model.user.userId = :userId and  model.influencingScope = :scope ");
+		query.setParameter("userId", userId);
+		query.setParameter("scope", scope);
+		return (Long)query.uniqueResult();
 	}
 
 }

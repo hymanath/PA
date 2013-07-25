@@ -5,9 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
-import com.itgrids.partyanalyst.model.Voter;
 
 public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Long> {
 	
@@ -156,4 +154,19 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 			Integer maxRecords,String columnName,String order);
 	
 	public String getPartyIdUsingVoterId(Long voterId);
+	
+	public List<InfluencingPeople> getInfluencingPeopleByUserAndAccessType(Long userId,String type);
+	
+	public List<String> getSelInfluencingScopeValues(Long userId,String type);
+	
+	public List getTotalInfluencingPeopleDetailsByInfluencingSelScope(Long userId,String influencingScope,String scopeValueId,int startIndex,int maxIndex);
+	
+	public List getTotalInfluencingPeopleAddressByInfluencingSelScope(Long userId,String influencingScope, String scopeValueId,int startIndex,int maxIndex);
+	
+	public List getTotalInfluencingPeopleDetailsByInfluencingSelScope(Long userId,String influencingScope,int startIndex,int maxIndex);
+	
+	public List getTotalInfluencingPeopleAddressByInfluencingSelScope(Long userId,String influencingScope,int startIndex,int maxIndex);
+	
+	public Long getTotalCountForInfluencingPeople(Long userId,String scope);
 }
+
