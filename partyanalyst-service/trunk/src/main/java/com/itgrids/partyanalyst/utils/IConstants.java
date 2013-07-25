@@ -629,6 +629,12 @@ public interface IConstants {
     */	
     public final static String DEPLOYED_HOST = "localhost";
     
+    public final static Double GOOD = 40.00;
+    public final static Double VERY_GOOD = 20.00;
+    public final static Double BAD = 50.00;
+    public final static Double VERY_BAD = 60.00;
+    public final static Double AVERAGE = 45.00;
+    
     
 	
 }
