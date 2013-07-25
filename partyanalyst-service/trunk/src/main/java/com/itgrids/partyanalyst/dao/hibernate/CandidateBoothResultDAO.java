@@ -1481,4 +1481,35 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 		return query.list();
 	}
 	
+	
+	public List<Object[]> getVotesEarnedForSelectedbooth(Long constituencyId, Long electionId,Long boothId){
+		Query query = getSession().createQuery("select sum(model.votesEarned) ,model.nomination.party.partyId "+
+				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId and model.boothConstituencyElection.booth.boothId =:boothId and " +
+				" model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId group by model.nomination.party.partyId order by sum(model.votesEarned) desc ");
+		
+		query.setParameter("electionId",electionId);
+		query.setParameter("boothId",boothId);
+		query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getVotesEarnedForSelectedLocation(Long constituencyId, Long electionId,Long locationId,String type){
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select sum(model.votesEarned), model.nomination.party.partyId from CandidateBoothResult model where model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId ");
+		str.append(" and model.boothConstituencyElection.constituencyElection.election.electionId =:electionId ");
+		if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
+		 str.append(" and model.boothConstituencyElection.booth.boothId =:locationId ");
+		else if(type != null && type.equalsIgnoreCase(IConstants.PANCHAYAT))
+		 str.append(" and model.boothConstituencyElection.booth.panchayat.panchayatId =:locationId ");
+		
+		str.append(" group by model.nomination.party.partyId order by sum(model.votesEarned) desc ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("locationId", locationId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("electionId", electionId);
+		return query.list();
+	}
+	
 }
