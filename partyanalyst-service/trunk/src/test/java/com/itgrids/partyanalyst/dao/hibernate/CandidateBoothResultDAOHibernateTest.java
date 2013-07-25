@@ -524,10 +524,18 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testgetPartyIdsListByEleIdAndYearAndConstId()
+	/*public void testgetPartyIdsListByEleIdAndYearAndConstId()
 	{
 		List<Long> list = candidateBoothResultDAO.getPartyIdsListByEleIdAndYearAndConstId(232l, 38l, "2009");
 		
 				System.out.println(list);
+	}*/
+	
+	
+	public void testgetVotesEarnedForSelectedbooth()
+	{
+		List<Object[]> list = candidateBoothResultDAO.getVotesEarnedForSelectedbooth(232l, 38l, 207l);
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
 	}
 }
