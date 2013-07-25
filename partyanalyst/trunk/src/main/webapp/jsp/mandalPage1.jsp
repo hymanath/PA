@@ -1025,7 +1025,9 @@ function getElectionYearsInMandal(id,name){
 				{ 
 					if(j%3 == 0 && j!=0)
 						rvStr += '<br>';
-					rvStr += '<a href="javascript:{}" onclick="getBoothPageInfo('+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].id+')">'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].name+',';
+					rvStr += '<a href="javascript:{}" onclick="getBoothPageInfo('+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].id+')">'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].name;
+					if(resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths.length-1 != j)
+						rvStr +=',';
 				}
 				rvStr += '</td>';
 				rvStr += '<td>';
