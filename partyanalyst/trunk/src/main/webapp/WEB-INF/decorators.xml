@@ -107,7 +107,7 @@
 		<pattern>/surveyDetailsAction.action*</pattern>
 		<pattern>/getCustomVoterGroupsFamilyDetailsAction*</pattern>
 		<pattern>/customVoterGroupAnalysisAction*</pattern>
-		
+		<pattern>/influencingPeopleDetailsAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -250,8 +250,7 @@
 		<pattern>/surveyFormSaveAction*</pattern>
 		<pattern>/surveyorProfileSaveAction*</pattern>
 		<pattern>/voterDataToolsAction*</pattern>
-		<pattern>/electionResultsAnalysisAction*</pattern>	
-
+		<pattern>/inflencingPeopleWindowAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">

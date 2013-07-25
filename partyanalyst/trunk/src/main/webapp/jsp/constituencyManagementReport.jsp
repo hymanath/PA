@@ -1034,10 +1034,19 @@
 			<div>						
 		</div>
 		</div>
+		
+		<!-- <div>
+		<a class="btn btn-info btn-success" onCLick="openNewWindoeForInfluencingPeople();">GET</a>
+		</div> -->
 	</div>
 	
 
 	<script type="text/javascript">
+	
+	/* function openNewWindoeForInfluencingPeople()
+	{
+		window.open("inflencingPeopleWindowAction.action");
+	} */
 	function buildConstituencyData(data)
 	{
 		var results = data.regionWiseOverview;

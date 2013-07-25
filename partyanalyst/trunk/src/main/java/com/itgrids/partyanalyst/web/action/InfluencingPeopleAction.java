@@ -74,6 +74,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	private String name;
 	private String successMsg;
 	private IVotersAnalysisService votersAnalysisService;
+	private String scopeValue;
 	public String getMessage() {
 		return message;
 	}
@@ -349,6 +350,13 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	public void setSuccessMsg(String successMsg) {
 		this.successMsg = successMsg;
 	}
+	
+	public String getScopeValue() {
+		return scopeValue;
+	}
+	public void setScopeValue(String scopeValue) {
+		this.scopeValue = scopeValue;
+	}
 	public String execute() throws Exception {
 		
 		session = request.getSession();
@@ -397,9 +405,9 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			constituencyList.add(list.get(2));
 			mandalList = regionServiceDataImp.getSubRegionsInConstituency(accessValue, IConstants.PRESENT_YEAR, null);
 			mandalList.add(0,new SelectOptionVO(0l,"Select Location"));
-			setDefaultState(list.get(0).getId());
+			/*setDefaultState(list.get(0).getId());
 			setDefaultDistrict(list.get(1).getId());
-			setDefaultConstituency(list.get(2).getId());
+			setDefaultConstituency(list.get(2).getId());*/
 			setDefaultInfluenceRange(4l);
 			if(windowTask.equalsIgnoreCase("edit"))
 			{
@@ -420,6 +428,8 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 			pConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
 			setPConstituencyId(accessValue);
+			influenceRange.remove(2);
+			influenceRange.add(1,new SelectOptionVO(3l,IConstants.PARLIAMENT_CONSTITUENCY_LEVEL));
 			setDefaultInfluenceRange(4l);
 			if(windowTask.equalsIgnoreCase("edit"))
 			{
@@ -452,7 +462,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			SelectOptionVO obj2 = new SelectOptionVO();
 			obj2.setId(accessValue);
 			obj2.setName(name);
-			setDefaultState(accessValue);
+			//setDefaultState(accessValue);
 			stateList.add(obj2);
 			districtList = staticDataService.getDistricts(accessValue);
 			districtList.add(0,new SelectOptionVO(0l,"Select District"));
@@ -464,13 +474,13 @@ public class InfluencingPeopleAction extends ActionSupport implements
 				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(influencingPeopleBeanVO.getMandal()), IConstants.PRESENT_YEAR);
 				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(influencingPeopleBeanVO.getMandal()),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(influencingPeopleBeanVO.getConstituency()));
 				setDefaultInfluenceRange(new Long(influencingPeopleBeanVO.getInfluencingRange()));
-				setDefaultConstituency(new Long(influencingPeopleBeanVO.getConstituency()));
+				/*setDefaultConstituency(new Long(influencingPeopleBeanVO.getConstituency()));
 				setDefaultMandal(new Long(influencingPeopleBeanVO.getMandal()));
 				setDefaultDistrict(new Long(influencingPeopleBeanVO.getDistrict()));
 				if(influencingPeopleBeanVO.getWardOrHamlet() != null)
 				setDefaultWardOrHamlet(new Long(influencingPeopleBeanVO.getWardOrHamlet()));
 				if(influencingPeopleBeanVO.getBooth()!=null)
-				setDefaultBooth(new Long(influencingPeopleBeanVO.getBooth()));
+				setDefaultBooth(new Long(influencingPeopleBeanVO.getBooth()));*/
 			}
 			
 		}
@@ -484,8 +494,8 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
 			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 			setDefaultInfluenceRange(3l);
-			setDefaultState(list.get(0).getId());
-			setDefaultDistrict(list.get(1).getId());
+			/*setDefaultState(list.get(0).getId());
+			setDefaultDistrict(list.get(1).getId());*/
 			
 			if(windowTask.equalsIgnoreCase("edit"))
 			{
@@ -520,7 +530,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		session.setAttribute(ISessionConstants.SOCIALCATEGORIES,socialStatus);
 		session.setAttribute(ISessionConstants.OCCUPATIONS, occupationsList);
 		session.setAttribute(ISessionConstants.GENDERS, gender);
-	
+		scopeValue = influencingPeopleBeanVO.getInfluencingRangeScope();
 		successMsg = request.getParameter("successMsg");
 		request.setAttribute("successMsg", "saved successfully");
 		return Action.SUCCESS;

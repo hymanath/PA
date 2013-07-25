@@ -87,14 +87,22 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> problemStatus;
 	private List<SelectOptionVO> groupList;
 	private String host = IConstants.DEPLOYED_HOST;
-	
-	
+	private Long regionId;
+	private InfluencingPeopleDetailsVO influencingPeopleDetailsObj;
 	public String getHost() {
 		return host;
 	}
 
 	public void setHost(String host) {
 		this.host = host;
+	}
+	
+	public Long getRegionId() {
+		return regionId;
+	}
+
+	public void setRegionId(Long regionId) {
+		this.regionId = regionId;
 	}
 
 	public List<SelectOptionVO> getGroupList() {
@@ -450,6 +458,16 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		this.remainingSms = remainingSms;
 	}
 
+	
+	public InfluencingPeopleDetailsVO getInfluencingPeopleDetailsObj() {
+		return influencingPeopleDetailsObj;
+	}
+
+	public void setInfluencingPeopleDetailsObj(
+			InfluencingPeopleDetailsVO influencingPeopleDetailsObj) {
+		this.influencingPeopleDetailsObj = influencingPeopleDetailsObj;
+	}
+
 	public String execute() throws Exception{
 		
 		log.debug("In execute of Constituency Management Action ********");
@@ -670,6 +688,24 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		return Action.SUCCESS;
 	}
 	
+	public String getInfluencingPeopleDetails()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
+		//Long parentRegionId = new Long(request.getParameter("parentRegionId"));
+		Long regionId = new Long(request.getParameter("regionId"));
+		regionType = request.getParameter("regionType");
+		int startIndex = Integer.valueOf(request.getParameter("startIndex"));
+		int maxIndex = Integer.valueOf(request.getParameter("results"));
+		//if(scopeType.equalsIgnoreCase("region"))
+		//	influencingPeopleDetailsVO = influencingPeopleService.getInfluencingPeopleDetailsByRegion(userId,regionId,regionType,parentRegionId);
+		//else if(scopeType.equalsIgnoreCase("scope"))
+			influencingPeopleDetailsVO = influencingPeopleService.getInfluencingPeopleDetailsBySelScope(userId,regionId,regionType,startIndex,maxIndex);
+			influencingPeopleDetailsObj = influencingPeopleDetailsVO.get(0);
+		return Action.SUCCESS;
+	}
 	public String sendSMSToInfluencePeople()
 	{
 		session = request.getSession();

@@ -1251,5 +1251,9 @@
 	  <property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	  <property name="votersAnalysisService" ref="votersAnalysisService" />
 	</bean>
+	
+	<bean id="inflencingPeopleWindowAction" class="com.itgrids.partyanalyst.web.action.InflencingPeopleWindowAction" singleton="false">
+	<property name="influencingPeopleService" ref="influencingPeopleService"></property>
+	</bean>
 </beans>	
 	
