@@ -1257,7 +1257,10 @@
 	</bean>
 	
 	<bean id="suggestiveModelAction" class="com.itgrids.partyanalyst.web.action.SuggestiveModelAction" singleton="false">
-	  <property name="suggestiveModelService" ref="suggestiveModelService" />
+	  	<property name="suggestiveModelService" ref="suggestiveModelService" />
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>
+	
 </beans>	
 	
