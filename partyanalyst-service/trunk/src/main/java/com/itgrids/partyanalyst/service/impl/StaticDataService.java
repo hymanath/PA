@@ -9018,4 +9018,26 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 			Collections.sort(returnList);
 		return returnList;
 	}
+	
+	/**
+	 * This method returns a list of Objects that contains all (main and bye) electionIds and
+	 * election years based on the Election-Scopes Ids and Party Id.
+	 */
+	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId) {
+		List<SelectOptionVO> electionYearslist;
+		List elections;
+		try {
+			electionYearslist = new ArrayList<SelectOptionVO>();
+			elections = nominationDAO.findByElectionScopeIdAndPartyIds(
+					electionScopeId,partyId);
+			for (int i = 0; i < elections.size(); i++) {
+				Object[] parms = (Object[]) elections.get(i);
+				electionYearslist.add(new SelectOptionVO(Long.parseLong(parms[0].toString()), parms[1].toString()));
+			}
+			return electionYearslist;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
