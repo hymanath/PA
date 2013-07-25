@@ -16,6 +16,16 @@ public class OptionVO implements Serializable,Comparable<OptionVO> {
 	private List<OptionVO> subOptionList = new ArrayList<OptionVO>(0);
 	private String question;
 	private Long questionId;
+	private Long goodBoothCount =0L;
+	private Long veryGoodBoothCount = 0L;
+	private Long badBoothCount = 0L;
+	private Long veryBadBoothCount = 0L;
+	private Long averageBoothCount = 0L;
+	private List<Long> goodBoothIdsList;
+	private List<Long> veryGoodBoothIdsList;
+	private List<Long> badBoothIdsList;
+	private List<Long> veryBadBoothIdsList;
+	private List<Long> averageBoothIdsList;
 
 	public OptionVO() {
 	}
@@ -128,6 +138,86 @@ public class OptionVO implements Serializable,Comparable<OptionVO> {
 			return option.compareToIgnoreCase(vo.getOption());
 		}
 		return 0;
+	}
+
+	public Long getGoodBoothCount() {
+		return goodBoothCount;
+	}
+
+	public void setGoodBoothCount(Long goodBoothCount) {
+		this.goodBoothCount = goodBoothCount;
+	}
+
+	public Long getVeryGoodBoothCount() {
+		return veryGoodBoothCount;
+	}
+
+	public void setVeryGoodBoothCount(Long veryGoodBoothCount) {
+		this.veryGoodBoothCount = veryGoodBoothCount;
+	}
+
+	public Long getBadBoothCount() {
+		return badBoothCount;
+	}
+
+	public void setBadBoothCount(Long badBoothCount) {
+		this.badBoothCount = badBoothCount;
+	}
+
+	public Long getVeryBadBoothCount() {
+		return veryBadBoothCount;
+	}
+
+	public void setVeryBadBoothCount(Long veryBadBoothCount) {
+		this.veryBadBoothCount = veryBadBoothCount;
+	}
+
+	public Long getAverageBoothCount() {
+		return averageBoothCount;
+	}
+
+	public void setAverageBoothCount(Long averageBoothCount) {
+		this.averageBoothCount = averageBoothCount;
+	}
+
+	public List<Long> getGoodBoothIdsList() {
+		return goodBoothIdsList;
+	}
+
+	public void setGoodBoothIdsList(List<Long> goodBoothIdsList) {
+		this.goodBoothIdsList = goodBoothIdsList;
+	}
+
+	public List<Long> getVeryGoodBoothIdsList() {
+		return veryGoodBoothIdsList;
+	}
+
+	public void setVeryGoodBoothIdsList(List<Long> veryGoodBoothIdsList) {
+		this.veryGoodBoothIdsList = veryGoodBoothIdsList;
+	}
+
+	public List<Long> getBadBoothIdsList() {
+		return badBoothIdsList;
+	}
+
+	public void setBadBoothIdsList(List<Long> badBoothIdsList) {
+		this.badBoothIdsList = badBoothIdsList;
+	}
+
+	public List<Long> getVeryBadBoothIdsList() {
+		return veryBadBoothIdsList;
+	}
+
+	public void setVeryBadBoothIdsList(List<Long> veryBadBoothIdsList) {
+		this.veryBadBoothIdsList = veryBadBoothIdsList;
+	}
+
+	public List<Long> getAverageBoothIdsList() {
+		return averageBoothIdsList;
+	}
+
+	public void setAverageBoothIdsList(List<Long> averageBoothIdsList) {
+		this.averageBoothIdsList = averageBoothIdsList;
 	}
 	
 		
