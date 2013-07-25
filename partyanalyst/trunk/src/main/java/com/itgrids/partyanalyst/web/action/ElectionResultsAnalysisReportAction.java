@@ -617,27 +617,26 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	}
 	
     public String getElectionYearsForAnElectionTypeAndState(){
-
+    	Long partyId = 0L;
+    	Long electionScope = 0L;
    	if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
 				System.out.println("Result From JSON:"+jObj);
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			
-			String elecType = jObj.getString("elecTypeId");
-			Long partyId = new Long(jObj.getString("partyId"));
+				 partyId = new Long(jObj.getString("partyId"));
 			Long stateId = new Long(jObj.getString("stateId"));
-			
+			String elecType = jObj.getString("elecTypeId");
 			Long countryId = 1l;
 						
-			Long electionScope = staticDataService.getElectionScopeForAElection(stateId, elecType, countryId);
+			electionScope = staticDataService.getElectionScopeForAElection(stateId, elecType, countryId);
 			if(electionScope != null){
 				electionYears = staticDataService.getElectionIdsAndYearsByElectionScope(electionScope,partyId);
 			}
+			
+			}catch(Exception e){
+				electionYears = staticDataService.getElectionIdsAndYearsByElectionScopeId(electionScope,partyId);
+			}
 			electionYears.add(0,new SelectOptionVO(0L,"Select Year"));
-						
 		}
 		return Action.SUCCESS;
 	}
