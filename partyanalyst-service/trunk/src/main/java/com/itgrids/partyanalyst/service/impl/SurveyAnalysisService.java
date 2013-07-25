@@ -731,6 +731,16 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 	{
 		List<VoterVO> voterList = null;
 		Voter voter = voterDAO.getVoterByVoterIDCardNo(VoterCardId);
+		List<Long> voterIdsList = new ArrayList<Long>(0);
+		Map<Long,String> mobileNosList = new HashMap<Long,String>(0);
+		
+		if(voter != null)
+		 voterIdsList.add(voter.getVoterId());
+		
+		List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(null, userId);
+		if(list != null && list.size() > 0)
+		 for(Object[] params:list)
+		  mobileNosList.put((Long)params[0], params[1] != null?params[1].toString():"N/A");
 		
 		if(voter != null)
 		{	
@@ -750,7 +760,10 @@ public class SurveyAnalysisService implements ISurveyAnalysisService {
 				voterVO.setGender("Female");
 			}
 			voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
-			voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :" ");
+			if(mobileNosList.get(voter.getVoterId()) != null)
+			 voterVO.setMobileNo(mobileNosList.get(voter.getVoterId()));
+			else
+				voterVO.setMobileNo("N/A");
 			
 			List<Object[]> voterCasteData = userVoterDetailsDAO.getVoterDetailsForSurveyForm(voterId,userId);
 			if(voterCasteData != null && voterCasteData.size() > 0)
