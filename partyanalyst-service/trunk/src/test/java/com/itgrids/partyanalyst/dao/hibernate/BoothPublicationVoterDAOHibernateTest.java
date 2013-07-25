@@ -25,14 +25,14 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		List<Object[]> count = boothPublicationVoterDAO.getVotersCountByPublicationId("constituency", 12l, 1l);
 		System.out.println(count.size());
 	}
-	*/
+	
 	public void testGetVotersCountForPanchayatByPublicationId(){
 		 boothPublicationVoterDAO.getPublicationUserCount(1l,8l,29l,IConstants.HAMLET);
 		//stem.out.println(count.size());
 		//System.out.println(count.get(0)+" ");
 		//System.out.println(count);
 	}
-	
+	*/
 	
 	/*public void testGetVotersDetailsForPanchayatByPublicationId(){
 		
@@ -80,4 +80,38 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	//}
 	
 	//}
+	
+		public void testGetVotersCasteDetailsForAgeRange(){
+			Long starttime = System.currentTimeMillis();
+			List<Long> list = new ArrayList<Long>();
+			list.add(122978l);list.add(
+					122979l);list.add(
+					122980l);list.add(
+					122981l);list.add(
+					122982l);list.add(
+					122983l);list.add(
+					122984l);list.add(
+					122985l);list.add(
+					122986l);list.add(
+					122987l);list.add(
+					122988l);list.add(
+					122989l);list.add(
+					122990l);list.add(
+					122991l);list.add(
+					122992l);list.add(
+					122993l);list.add(
+					122994l);list.add(
+					122995l);
+					
+					
+			List<Object[]> castInfo = boothPublicationVoterDAO.getVotersCasteDetailsForAgeRange(23l, 30l, list);
+			Long endtime = System.currentTimeMillis();
+			System.out.println((endtime-starttime)/1000);
+			for(Object[] caste : castInfo){
+				for(Object value : caste){
+					System.out.print(value+"  ");
+				}
+				System.out.println("");
+			}
+		}
 	}
