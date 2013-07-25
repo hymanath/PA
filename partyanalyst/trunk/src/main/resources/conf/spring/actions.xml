@@ -1255,5 +1255,9 @@
 	<bean id="inflencingPeopleWindowAction" class="com.itgrids.partyanalyst.web.action.InflencingPeopleWindowAction" singleton="false">
 	<property name="influencingPeopleService" ref="influencingPeopleService"></property>
 	</bean>
+	
+	<bean id="suggestiveModelAction" class="com.itgrids.partyanalyst.web.action.SuggestiveModelAction" singleton="false">
+	  <property name="suggestiveModelService" ref="suggestiveModelService" />
+	</bean>
 </beans>	
 	
