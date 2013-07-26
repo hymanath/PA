@@ -1493,22 +1493,26 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 		return query.list();
 	}
 	
-	public List<Object[]> getVotesEarnedForSelectedLocation(Long constituencyId, Long electionId,Long locationId,String type){
+ public List<Object[]> findBoothResultsForMultipleBoothsAndElectionId(Set<Long> boothslist, Long electionId,Long constituencyId){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.booth.boothId,model.nomination.party.partyId, sum(model.votesEarned) "+
+				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId  " +
+				"  and model.boothConstituencyElection.booth.boothId in(:boothslist) and model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId " +
+				"  group by model.boothConstituencyElection.booth.boothId, model.nomination.party.partyId order by sum(model.votesEarned) desc ");
 		
-		StringBuilder str = new StringBuilder();
-		str.append(" select sum(model.votesEarned), model.nomination.party.partyId from CandidateBoothResult model where model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId ");
-		str.append(" and model.boothConstituencyElection.constituencyElection.election.electionId =:electionId ");
-		if(type != null && type.equalsIgnoreCase(IConstants.BOOTH))
-		 str.append(" and model.boothConstituencyElection.booth.boothId =:locationId ");
-		else if(type != null && type.equalsIgnoreCase(IConstants.PANCHAYAT))
-		 str.append(" and model.boothConstituencyElection.booth.panchayat.panchayatId =:locationId ");
-		
-		str.append(" group by model.nomination.party.partyId order by sum(model.votesEarned) desc ");
-		
-		Query query = getSession().createQuery(str.toString());
-		query.setParameter("locationId", locationId);
+		query.setParameter("electionId",electionId);
+		query.setParameterList("boothslist",boothslist);
 		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("electionId", electionId);
+		return query.list();
+	}
+   
+   public List<Object[]> getVotesEarnedByBoothIdsList(Long constituencyId, Long electionId,List<Long> boothIdsList){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.booth.boothId, model.nomination.party.partyId, sum(model.votesEarned)  "+
+				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId and model.boothConstituencyElection.booth.boothId in(:boothIdsList) and " +
+				" model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId group by model.boothConstituencyElection.booth.boothId,model.nomination.party.partyId order by sum(model.votesEarned) desc ");
+		
+		query.setParameter("electionId",electionId);
+		query.setParameterList("boothIdsList",boothIdsList);
+		query.setParameter("constituencyId",constituencyId);
 		return query.list();
 	}
 	
