@@ -10,6 +10,7 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.OptionVO;
+import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -29,6 +30,8 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private List<SelectOptionVO> electionsYears;
 	private List<SelectOptionVO> partyList;
 	private IStaticDataService staticDataService;
+	private List<PartyPositionVO> partyPositionVOList;
+	
 	
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	
@@ -112,6 +115,15 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	public void setElectionsYears(List<SelectOptionVO> electionsYears) {
 		this.electionsYears = electionsYears;
 	}
+	
+	public List<PartyPositionVO> getPartyPositionVOList() {
+		return partyPositionVOList;
+	}
+
+	public void setPartyPositionVOList(List<PartyPositionVO> partyPositionVOList) {
+		this.partyPositionVOList = partyPositionVOList;
+	}
+
 	public String execute(){
 		
 		return Action.SUCCESS;
@@ -123,7 +135,8 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		session = request.getSession();
 		jObj = new JSONObject(getTask());
 		
-		optionVO = suggestiveModelService.getPartyPerformanceForSelectedLocation(jObj.getLong("constituencyId"),jObj.getLong("electionId"),jObj.getLong("partyId"),jObj.getLong("locationId"),jObj.getString("locationType"));	
+		 if(jObj.getString("task").equalsIgnoreCase("getPartyPerformanceReport"))
+		 partyPositionVOList = suggestiveModelService.getPartyPerformenceReport(jObj.getLong("constituencyId"),jObj.getLong("partyId"),jObj.getLong("locationId"),jObj.getString("locationType"),jObj.getLong("electionId"),jObj.getString("tempVar"));
 			
 		}catch (Exception e) {
 		 e.printStackTrace();
