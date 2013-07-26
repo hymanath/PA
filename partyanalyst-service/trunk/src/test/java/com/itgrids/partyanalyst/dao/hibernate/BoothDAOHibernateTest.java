@@ -644,4 +644,15 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
+	/*public void testgetboothsByTehsilIds()
+	{
+		List<Long> mandalsList = new ArrayList<Long>(0);
+		mandalsList.add(1l);
+		mandalsList.add(2l);
+		List<Object[]> values = boothDAO.getboothsByTehsilIds(mandalsList);
+		for (Object[] objects : values) {
+			System.out.println(objects[0] +":"+ objects[1]);
+		}
+	}*/
+	
 }

@@ -65,12 +65,12 @@ public class TownshipDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(269l);
 		ids.add(268l);
 		List<String> values = townshipDAO.getTehsilIdsByTownShip(ids);
 		System.out.println(values.size());
-	}
+	}*/
 }

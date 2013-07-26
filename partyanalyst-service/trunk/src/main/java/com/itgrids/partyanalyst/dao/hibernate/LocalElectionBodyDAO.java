@@ -125,4 +125,12 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 		queryObj.setParameterList("localEleBodyIds", localEleBodyIds);
 		return queryObj.list();	
 	}
+	
+	public List<Object[]> getTehsilsByLocalBody(Long localBodyId)
+	{
+		Query query = getSession().createQuery("select model.tehsil.tehsilId,model.tehsil.tehsilName from LocalElectionBody model" +
+				"  where model.localElectionBodyId = :localBodyId");
+		query.setParameter("localBodyId", localBodyId);
+		return query.list();
+	}
 }

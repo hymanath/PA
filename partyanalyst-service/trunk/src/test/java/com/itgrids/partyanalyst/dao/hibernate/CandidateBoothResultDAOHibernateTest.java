@@ -536,6 +536,6 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	{
 		List<Object[]> list = candidateBoothResultDAO.getVotesEarnedForSelectedbooth(232l, 38l, 207l);
 		for(Object[] params:list)
-		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
+		 System.out.println(params[0]+":"+params[1]);
 	}
 }
