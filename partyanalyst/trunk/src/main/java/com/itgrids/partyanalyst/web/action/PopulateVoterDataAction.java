@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
@@ -36,7 +37,15 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 	private IVoterReportService voterReportService;
 	private List<SelectOptionVO> publicationNamesList;
 	private IStaticDataService staticDataService;
+	private ICrossVotingEstimationService crossVotingEstimationService;
 	
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
+	}
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -136,6 +145,13 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			if(user == null)
 			return ERROR;
+			allConstituenciesList = user.getUserAccessVoterConstituencies();
+			if(constituencyList == null || constituencyList.isEmpty()){
+				Long userID = user.getRegistrationID();
+				Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+				Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+				allConstituenciesList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+			}
 			constituencyList = votersAnalysisService.getConstituenciesFromBoothPublicationVoter();
 			constituencyList.add(0,new SelectOptionVO(0L,"Select Constituency"));
 			return SUCCESS;

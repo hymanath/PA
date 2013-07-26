@@ -1073,6 +1073,7 @@
 		<property name="voterReportService" ref="voterReportService" />
 		<property name="voterModificationService" ref="voterModificationService" />
 		<property name="staticDataService" ref="staticDataService" />
+			<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>
 	<bean id="missingVotersSearchAction" class="com.itgrids.partyanalyst.web.action.MissingVotersAction">
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />

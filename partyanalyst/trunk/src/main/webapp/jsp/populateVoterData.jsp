@@ -144,7 +144,7 @@ fieldset{
  <fieldset>
     <div id="basicInfoErrorMsgDiv"></div>
 	<div id="basicInfoConstituencyDiv" class="selectDiv">
-		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="basicInfoConstituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="basicInfoConstituencyList" list="allConstituenciesList" listKey="id" listValue="name"/> &nbsp;&nbsp;
 
 		Select Publication Date<font class="requiredFont">*</font> <select id="basicInfoPublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
@@ -164,7 +164,7 @@ fieldset{
  <fieldset>
     <div id="votingTrendzErrorMsgDiv"></div>
 	<div id="votingTrendzConstituencyDiv" class="selectDiv">
-		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="votingTrendzConstituencyList" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="votingTrendzConstituencyList" list="allConstituenciesList" listKey="id" listValue="name"/> &nbsp;&nbsp;
 
 		Select Publication Date<font class="requiredFont">*</font> <select id="votingTrendzPublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
