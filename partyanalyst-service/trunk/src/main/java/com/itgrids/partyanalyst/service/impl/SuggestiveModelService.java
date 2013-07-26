@@ -16,6 +16,8 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
@@ -34,6 +36,27 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IBoothDAO boothDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
+	private INominationDAO nominationDAO;
+	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	
+		
+	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
+		return userConstituencyAccessInfoDAO;
+	}
+
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+	}
+
+	public INominationDAO getNominationDAO() {
+		return nominationDAO;
+	}
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
+
 	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
 		return hamletBoothElectionDAO;
 	}
@@ -506,4 +529,73 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 return optionVO;
 	}
    
+	
+	 @SuppressWarnings("unchecked")
+		public List<SelectOptionVO> getConstituenciesForUserAccessByStateId(Long electionScope,Long stateId,Long userId)
+		{
+			try{				
+				List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>(0);
+
+				List<Object[]> conList = (List<Object[]>)userConstituencyAccessInfoDAO.getNonUrbanConsituenciesByUserIdElectIdStateId(electionScope,userId,stateId);
+								
+				if(conList != null && conList.size() > 0)
+				{
+					if(electionScope.intValue() == 1)
+					{
+						
+					}
+					
+					else if(electionScope.intValue() == 2)
+					{
+						for(Object[] consList : conList)
+						{
+							constituenciesList.add(new SelectOptionVO((Long)consList[0],consList[1].toString()));
+							
+						}
+					}
+				}
+							
+				return constituenciesList;
+			}catch(Exception e){
+				return null;
+			}
+		}
+	 public List<SelectOptionVO> getPartyDetailsByMandal(Long tehsilId){
+		 List<SelectOptionVO> nominatedPartiesLists = null;
+		 try{
+			 List<Object[]> partyList= hamletBoothElectionDAO.getParticipatedPartiesByEleIdNTehsilId(tehsilId);
+			 nominatedPartiesLists = new ArrayList<SelectOptionVO>();
+				if(partyList !=null && partyList.size()>0)
+					for (Object[] parms : partyList) {
+						nominatedPartiesLists.add(new SelectOptionVO(Long.valueOf(parms[0].toString()),parms[1].toString()));
+					}
+			 return nominatedPartiesLists;
+		 }catch(Exception e){
+			 e.printStackTrace();
+		 return null;
+		}			
+	}	
+	 
+	 public List<SelectOptionVO> getElectionIdsAndYearsBytehsilId(List<Long> electionScope,Long partyId,Long tehsilId){
+		 List<SelectOptionVO> electionYearslist;
+			List elections;
+			try {
+				electionYearslist = new ArrayList<SelectOptionVO>();
+				if(electionScope !=null && electionScope.size()>0){
+					for (Long scopeId : electionScope) {
+						elections = nominationDAO.findByPartyIdAndTehsilId(scopeId,partyId,tehsilId);
+						for (int i = 0; i < elections.size(); i++) {
+							Object[] parms = (Object[]) elections.get(i);
+							electionYearslist.add(new SelectOptionVO(Long.parseLong(parms[0].toString()), parms[1].toString().concat("("+parms[2].toString()+")")));
+						}						
+					}					
+				}				
+			return electionYearslist;
+			} catch (Exception e) {
+				e.printStackTrace();
+			return null;
+			}
+
+	 }
+
 }
