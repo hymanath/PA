@@ -348,6 +348,7 @@
 				<value>com.itgrids.partyanalyst.model.VotingTrendz</value>
 				<value>com.itgrids.partyanalyst.model.VotingTrendzPartiesResult</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyHierarchyInfo</value>
+				<value>com.itgrids.partyanalyst.model.SuggestiveRange</value>
 			</list>
 			
 		</property>

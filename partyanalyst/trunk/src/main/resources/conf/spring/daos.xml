@@ -1209,4 +1209,8 @@
 	  <property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
 	
+	<bean id="suggestiveRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SuggestiveRangeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
