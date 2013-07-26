@@ -79,8 +79,27 @@
 	height: 25px;
 	padding-top: 5px;
 	}
-
-
+#partyPerformanceInnerDiv table th{
+    background-color: #CDE6FC;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+}
+#partyPerformanceInnerDiv table td{
+    color: #676A67;
+    font: small-caption;
+    padding: 8px 8px 8px 10px;
+}
+#partyPerformanceMainDiv{float: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 960px;}
+#partyPerformanceBtnDiv{float: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;}
 	</style>
 <script type="text/javascript" >
 
@@ -205,6 +224,10 @@ function callAjax(param,jsObj,url){
 									{
 											buildReportLevelData(myResults,jsObj);
 									}
+							
+							   else if(jsObj.task == "getPartyPerformanceReport")
+								showPartyPerformanceReport(myResults,jsObj);
+
 							}catch (e) {   
 								   	//alert("Invalid JSON result" + e);   
 							}  
@@ -379,7 +402,72 @@ function addDefaultSelectValues(elmt){
 	</table>
 </div>
 <input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;"/>
-
 </div>
+<div id="partyPerformanceBtnDiv"><input type="button" value="submit" id="getPartyPer" class="btn btn-info"></div>
+</div>
+
+<div id="partyPerformanceMainDiv">
+ <div id="partyPerformanceInnerDiv"></div>
+</div>
+</div>
+
+<script>
+$(document).ready(function(){
+
+$("#getPartyPer").click(function(){
+	  
+	var jsObj = {
+	        constituencyId:232,
+			electionId:0,
+			partyId:362,
+			locationId:2844,
+			locationType:"mandal",
+			tempVar:"all",
+			task:"getPartyPerformanceReport"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getPartyPerformanceAction.action?"+rparam;
+		callAjax(rparam,jsObj,url);
+		
+  });
+
+});
+
+function showPartyPerformanceReport(result,jsObj)
+{
+	$("#partyPerformanceInnerDiv").html('');
+  if(result == null || result.size == 0)
+	{
+     $("#partyPerformanceInnerDiv").html('No Data Found');
+	 return;
+	}
+	var str = '';
+	str +='<h4>Party Performance Report</h4>';
+	str +='<table class="table table-bordered table-striped table-hover">';
+    str +='<tr>';
+	str +='<th></th>';
+	for(var i in result)
+	 str +='<th>'+result[i].name+'</th>';
+	str +='</tr>';
+    var length = result[0].partyPositionVOList.length;
+	for(var j=0;j<length;j++){
+		str +='<tr>';
+		str +='<td>'+result[0].partyPositionVOList[j].name+'</td>';
+		for(var i in result)
+		{
+		  str +='<td>'
+		  for(var k in result[i].partyPositionVOList[j].partyPositionVOList)
+		    str +=''+result[i].partyPositionVOList[j].partyPositionVOList[k].name+',';
+		  
+		  str +='</td>'
+		}
+		str +='</tr>';
+    }
+	str +='</table>';
+	$("#partyPerformanceInnerDiv").html(str);
+}
+
+
+</script>
 </body>
 </html>
