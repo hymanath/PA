@@ -22,6 +22,13 @@ import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.ISuggestiveRangeDAO;
+import com.itgrids.partyanalyst.dto.PartyPositionVO;
+import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.SuggestiveRange;
+import java.util.Map;
+import java.util.HashMap;
 
 public class SuggestiveModelService implements ISuggestiveModelService {
 	
@@ -38,8 +45,10 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private INominationDAO nominationDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private ISuggestiveRangeDAO suggestiveRangeDAO;
+	private IPanchayatDAO panchayatDAO;
+
 	
-		
 	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
 		return userConstituencyAccessInfoDAO;
 	}
@@ -56,7 +65,6 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
 	}
-
 	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
 		return hamletBoothElectionDAO;
 	}
@@ -142,136 +150,21 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
 	}
+	
+	public ISuggestiveRangeDAO getSuggestiveRangeDAO() {
+		return suggestiveRangeDAO;
+	}
 
-	public OptionVO getPartyPerformanceForSelectedLocation(Long constituencyId,Long electionId,Long partyId,Long locationId,String type)
-	{
-		OptionVO optionVO = null;
-		List<Long> locationIdsList = null;
-		try{
-		if(type != null && type.equalsIgnoreCase("panchayat"))
-		 locationIdsList = hamletBoothElectionDAO.getBoothIdsByPanchayatId(locationId, electionId); 	
-		
-		/*else if(type != null && type.equalsIgnoreCase("mandal"))
-		 locationIdsList = hamletBoothElectionDAO.getPanchayatIdsByTehsilIdAndElectionId(locationId, electionId);*/
-		
-	    if(locationIdsList != null && locationIdsList.size() > 0)
-	    {
-	      optionVO = new OptionVO();
-	      
-	      Long goodBoothCount = 0L;
-	      Long veryGoodBoothCount = 0L;
-	      Long badBoothCount = 0L;
-	      Long veryBadBoothCount =0L;
-	      Long averageBoothCount = 0L;
-	      
-	     List<Long> goodBoothIdsList = new ArrayList<Long>(0);
-	  	 List<Long> veryGoodBoothIdsList = new ArrayList<Long>(0);
-	  	 List<Long> badBoothIdsList = new ArrayList<Long>(0);
-	     List<Long> veryBadBoothIdsList = new ArrayList<Long>(0);
-	  	 List<Long> averageBoothIdsList = new ArrayList<Long>(0);
-	      
-	      for(Long id:locationIdsList)
-	      {
-	    	  Long totalVoters = 0L;
-	    	  List<Object[]> list = null;
-	    	  
-	    	  /*if(type != null && type.equalsIgnoreCase("panchayat")) 
-	    	   list = candidateBoothResultDAO.getVotesEarnedForSelectedLocation(constituencyId, electionId, id,IConstants.BOOTH);
-	    	  else if(type != null && type.equalsIgnoreCase("mandal")) 
-	    	   list = candidateBoothResultDAO.getVotesEarnedForSelectedLocation(constituencyId, electionId, id,IConstants.PANCHAYAT);*/
-	    	  
-	    	  list = candidateBoothResultDAO.getVotesEarnedForSelectedbooth(constituencyId, electionId, id);
-	    	  
-	    	  if(list != null && list.size() > 0)
-		      {
-	    		Long selectedPartyTotal = 0L;
-	    		Long comparePartyTotal = 0L;
-	    		boolean tempVar = false;
-	    		
-	    		 for(Object[] params:list)
-	    		 {
-	    		  if(params[1].equals(partyId))
-	    			selectedPartyTotal = (Long)params[0];
-	    		  
-	    		  totalVoters += (Long)params[0];
-	    		  
-	    		 }
-	    		 if(list.get(0)[1].equals(partyId))
-	    			tempVar = true;
-	    		 
-		    	 for(Object[] params :list)
-		    	 {
-		    		if(!params[1].equals(partyId))
-		    		{
-		    		 comparePartyTotal = (Long)params[0];
-		    		 break;
-		    		}
-		    	 }
-		    	 double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100/totalVoters)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-		    	 double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100/totalVoters)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-		    	 
-		    	 double difference = 0.00;
-		    	 
-		    	 if(tempVar)
-		    	  difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-		    	 else
-		    	  difference = new BigDecimal(comparePartyTotalPercent - selectedPartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-		    	 
-		    	if(tempVar)
-		    	{
-		    	   if(difference <= IConstants.VERY_GOOD)
-		    	   {
-		    	    veryGoodBoothCount +=1;
-		    	    veryGoodBoothIdsList.add(id);
-		    	   }
-		    	 
-		    	   else if(difference <= IConstants.GOOD)
-		    	   {
-		    		  goodBoothCount +=1;
-		    		  goodBoothIdsList.add(id);
-		    	   }
-		    	   else if(difference <= IConstants.AVERAGE)
-		    	   {
-			         averageBoothCount += 1;
-			         averageBoothIdsList.add(id);
-		    	   }
-		    	}
-		    	else
-		    	{
-		    	   
-		    	   if(difference <= IConstants.BAD)
-		    	   {
-		    	    badBoothCount += 1;
-		    	    badBoothIdsList.add(id);
-		    	   }
-		    	 
-		    	   else
-		    	   {
-		    	    veryBadBoothCount +=1;
-		    	    veryBadBoothIdsList.add(id);
-		    	   }
-		    	}
-		      }  
-	      }
-	         optionVO.setGoodBoothCount(goodBoothCount);
-	    	 optionVO.setVeryGoodBoothCount(veryGoodBoothCount);
-	    	 optionVO.setVeryBadBoothCount(veryBadBoothCount);
-	    	 optionVO.setBadBoothCount(badBoothCount);
-	    	 optionVO.setAverageBoothCount(averageBoothCount); 
-	    	 optionVO.setVeryGoodBoothIdsList(veryGoodBoothIdsList);
-	    	 optionVO.setVeryBadBoothIdsList(veryBadBoothIdsList);
-	    	 optionVO.setGoodBoothIdsList(goodBoothIdsList);
-	    	 optionVO.setBadBoothIdsList(badBoothIdsList);
-	    	 optionVO.setAverageBoothIdsList(averageBoothIdsList);
-	    	
-	    }
-		
-		
-		  return optionVO;
-		}catch (Exception e) {
-		 e.printStackTrace();
-		 return optionVO;
-		}
+	public void setSuggestiveRangeDAO(ISuggestiveRangeDAO suggestiveRangeDAO) {
+		this.suggestiveRangeDAO = suggestiveRangeDAO;
+	}
+
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
 	}
 	
      public void getVotersGroupDetails(List<SelectOptionVO> groupVos,Long constituencyId,Long locationId,String type){
@@ -528,7 +421,361 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		}
 		 return optionVO;
 	}
-   
+	public void getPartyPerformanceForlocation(Map<Long,Map<Long,Long>> resultMap,OptionVO optionVO, Long selectedpartyId)
+	{
+		try{
+			
+		 for(Long id:resultMap.keySet())
+		 {
+			boolean tempVar = false;
+			Map<Long,Long> partyMap = resultMap.get(id);
+			Long totalVotes = 0L;
+				 
+			for(Long partysId:partyMap.keySet())
+			  totalVotes += partyMap.get(partysId); 
+				 
+			Long selectedPartyTotal = partyMap.get(selectedpartyId);
+			Long comparePartyTotal = 0L;
+				 
+			  for(Long partysId:partyMap.keySet())
+			  {
+			    if(!partysId.equals(selectedpartyId) && comparePartyTotal < partyMap.get(partysId))
+				 comparePartyTotal = partyMap.get(partysId);
+				  
+			  }
+		   if(selectedPartyTotal > comparePartyTotal)
+			tempVar = true;
+			     
+		  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	    	 
+	    	 double difference = 0.00;
+	    	 
+	    	 if(tempVar)
+	    	  difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	    	 else
+	    	  difference = new BigDecimal(comparePartyTotalPercent - selectedPartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	    	 
+	    	if(tempVar)
+	    	{
+	    	   if(difference >= IConstants.VERY_GOOD)
+	    	   {
+	    		optionVO.setVeryGoodBoothCount(optionVO.getVeryGoodBoothCount()+1);
+	    	    optionVO.getVeryGoodBoothIdsList().add(id);
+	    	   }
+	    	 
+	    	   else if(difference >= IConstants.GOOD)
+	    	   {
+	    		  optionVO.setGoodBoothCount(optionVO.getGoodBoothCount()+1);
+	    		  optionVO.getGoodBoothIdsList().add(id);
+	    	   }
+	    	   else if(difference >= IConstants.AVERAGE)
+	    	   {
+		         optionVO.setAverageBoothCount(optionVO.getAverageBoothCount()+1);
+		         optionVO.getAverageBoothIdsList().add(id);
+	    	   }
+	    	}
+	    	else
+	    	{
+	    	  if(difference <= IConstants.AVERAGE)
+		      {
+			       optionVO.setAverageBoothCount(optionVO.getAverageBoothCount()+1);
+			       optionVO.getAverageBoothIdsList().add(id);
+		      }
+	    		else if(difference <= IConstants.BAD)
+	    	   {
+	    	    optionVO.setBadBoothCount(optionVO.getBadBoothCount()+1);
+	    	    optionVO.getBadBoothIdsList().add(id);
+	    	   }
+	    	 
+	    	   else
+	    	   {
+	    	    optionVO.setVeryBadBoothCount(optionVO.getVeryBadBoothCount()+1);
+	    	    optionVO.getVeryBadBoothIdsList().add(id);
+	    	   }
+	    	}
+		}
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error(" Exception Occured in getPartyPerformanceForSelectedlocation() method, Exception - "+e);
+		}
+	}
+	
+	
+	
+	//All ELection Years
+	
+	public List<PartyPositionVO> getPartyPerformenceReport(Long constituencyId,Long partyId,Long locationId,String locationType,Long electionId,String tempVar)
+	{
+		List<PartyPositionVO> resultList = null;
+		try{
+		List<Long> constituencyIdsList = new ArrayList<Long>(0);
+		constituencyIdsList.add(constituencyId);
+		List<Long> assemblyEleIdsList = new ArrayList<Long>(0);
+		List<Object[]> electionList = null;
+		
+		if(locationType != null && locationType.equalsIgnoreCase(IConstants.MANDAL))
+		{
+		  if(locationId.toString().substring(0,1).equalsIgnoreCase("2"))
+		  {
+		   locationId = new Long(locationId.toString().substring(1));
+		   if(tempVar != null && tempVar.equalsIgnoreCase("all"))
+		    electionList = hamletBoothElectionDAO.findAllElectionsHappendInAMandal(locationId,constituencyIdsList); 
+		  
+		   locationType = IConstants.MANDAL;
+		  }
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+		{
+		  if(tempVar != null && tempVar.equalsIgnoreCase("all"))
+			electionList = hamletBoothElectionDAO.findAllElectionsHappendInAPanchayat(locationId); 
+		}
+		
+		if(electionList != null && electionList.size() > 0)
+		{
+		   for(Object[] params:electionList)
+		   {
+			   String electionType = electionDAO.get((Long)params[0]).getElectionScope().getElectionType().getElectionType();
+			  if(electionType.equalsIgnoreCase("Assembly"))
+				assemblyEleIdsList.add((Long)params[0]);
+		   } 	
+		}
+		else
+		 assemblyEleIdsList.add(electionId);
+		
+		
+		if(assemblyEleIdsList != null && assemblyEleIdsList.size() > 0)
+		{
+			resultList = new ArrayList<PartyPositionVO>(0);
+			  List<SuggestiveRange> suggestiveRangeList = suggestiveRangeDAO.getSuggestiveRangeList();
+				  
+			  PartyPositionVO partyPositionVO = null;
+			  for(Long eleId :assemblyEleIdsList)
+			  {
+				Election election = electionDAO.get(eleId);
+				partyPositionVO = new PartyPositionVO();
+				List<PartyPositionVO> rangeList = new ArrayList<PartyPositionVO>();
+				
+				PartyPositionVO range = null;
+				for(SuggestiveRange suggestiveRange:suggestiveRangeList)
+				  {
+					range = new PartyPositionVO();
+					range.setName(suggestiveRange.getName());
+					range.setMinValue(suggestiveRange.getMinValue());
+					range.setMaxValue(suggestiveRange.getMaxValue());
+					rangeList.add(range);
+				  }
+				partyPositionVO.setPartyPositionVOList(rangeList);
+				partyPositionVO.setName(election.getElectionYear() != null?election.getElectionYear():" ");
+				
+				if(locationType != null && locationType.equalsIgnoreCase(IConstants.MANDAL))
+				 getMandalWisePartyPerformanceReport(constituencyId, locationId, eleId, partyPositionVO, partyId);
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+				 getPanchayatWisePartyPerformance(constituencyId, locationId, eleId, partyPositionVO, partyId);
+				
+				resultList.add(partyPositionVO);
+			  }
+		}
+		
+			
+		 return resultList;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error(" Exception Occured in getPartyPerformenceReportForAllElections() method, Exception-"+e);
+		 return resultList;
+		}
+	}
+	
+	public void getPanchayatWisePartyPerformance(Long constituencyId,Long panchayatId, Long electionId,PartyPositionVO partyPositionVO, Long partyId)
+	{
+		try{
+			Map<Long,Map<Long,Long>> resultMap = new HashMap<Long, Map<Long,Long>>(0);//Map<boothId,Map<partyId,votesEarned>>
+			List<Long> boothIdsList = hamletBoothElectionDAO.getBoothIdsByPanchayatId(panchayatId, electionId);
+				if(boothIdsList != null && boothIdsList.size() > 0)
+				{
+				  List<Object[]> list = candidateBoothResultDAO.getVotesEarnedByBoothIdsList(constituencyId, electionId, boothIdsList);
+				  if(list != null && list.size() > 0)
+				  {
+					  Map<Long,Long> partyMap = null;
+					  for(Object[] params:list)
+					  {
+						  partyMap = resultMap.get((Long)params[0]);
+						  if(partyMap == null)
+						  {
+							  partyMap = new HashMap<Long, Long>(0);
+							  resultMap.put((Long)params[0], partyMap);
+						  }
+						 Long votesEarned = partyMap.get((Long)params[1]);
+						 if(votesEarned == null)
+						  partyMap.put((Long)params[1], (Long)params[2]);
+						 else
+						  partyMap.put((Long)params[1], (Long)params[2]+votesEarned);
+					  }
+				  }
+				}
+				
+				if(resultMap != null && resultMap.size() > 0)
+					getPartyPerformance(resultMap,partyPositionVO, partyId,"booth");	
+			
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("ExceptionOccured in getPanchayatWisePartyPerformance() method, Exception - "+e);
+		}
+	}
+	
+	
+	public void getMandalWisePartyPerformanceReport(Long constituencyId,Long locationId,Long electionId,PartyPositionVO partyPositionVO,Long partyId)
+	{
+		try{
+		Map<Long,List<Long>> boothIds = new HashMap<Long, List<Long>>();//Map<boothId,List<panchayatId>>
+		Map<Long,Map<Long,Long>> resultMap = new HashMap<Long, Map<Long,Long>>(0);//Map<panchayatId,Map<partyId,totalvoters>>
+		
+		
+		List<Long> panchaytIdsList = hamletBoothElectionDAO.getPanchayatIdsByTehsilIdAndElectionId(locationId, electionId);
+		
+		if(panchaytIdsList != null && panchaytIdsList.size() > 0)
+		{
+		  List<Object[]> list = hamletBoothElectionDAO.getPanchayatBoothDetailsByPanchayatIdsList(panchaytIdsList, electionId); 
+		  if(list != null && list.size() > 0)
+		  {
+			  for(Object[] params:list)
+			  {
+				  List<Long> panchayatIds = boothIds.get((Long)params[1]);
+				  if(panchayatIds == null)
+				  {
+				   panchayatIds = new ArrayList<Long>(0);
+				   boothIds.put((Long)params[1], panchayatIds);
+				  }
+				  if(!panchayatIds.contains((Long)params[0]))
+				   panchayatIds.add((Long)params[0]);
+			  }
+			  
+			  List<Object[]> resultList = candidateBoothResultDAO.findBoothResultsForMultipleBoothsAndElectionId(boothIds.keySet(), electionId, constituencyId);
+			  if(resultList != null && resultList.size() > 0)
+			  {
+				 for(Object[] params:resultList)
+				 {
+				   List<Long> panchayatIdsList = boothIds.get((Long)params[0]);
+				   if(panchayatIdsList != null && panchayatIdsList.size() > 0)
+				   {
+					 Map<Long,Long> partyMap = null;//Map<PartyId,totalvotes>
+					 for(Long panchayatId :panchayatIdsList)
+					 {
+						 partyMap = resultMap.get(panchayatId);
+						 if(partyMap == null)
+						 {
+							 partyMap = new HashMap<Long, Long>(0);
+							 resultMap.put(panchayatId, partyMap);
+						 }
+						 Long votesEarned = partyMap.get((Long)params[1]);
+						 if(votesEarned == null)
+						  partyMap.put((Long)params[1],(Long)params[2]);
+						 else
+						  partyMap.put((Long)params[1], votesEarned+(Long)params[2]);
+					 }
+				   }
+				   
+				 }
+			  }
+			  
+		  }
+		}
+		if(resultMap != null && resultMap.size() > 0)
+			getPartyPerformance(resultMap,partyPositionVO, partyId,"panchayat"); 
+		
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error(" Exception Occured in getMandalWisePartyPerformanceReport() method, Exception - "+e);
+		  }
+	}
+	
+	public void getPartyPerformance(Map<Long,Map<Long,Long>> resultMap,PartyPositionVO partyPositionVO, Long selectedpartyId,String locationType)
+	{
+		try{
+			
+		 for(Long id:resultMap.keySet())
+		 {
+			Map<Long,Long> partyMap = resultMap.get(id);
+			Long totalVotes = 0L;
+				 
+			for(Long partysId:partyMap.keySet())
+			  totalVotes += partyMap.get(partysId); 
+				 
+			Long selectedPartyTotal = partyMap.get(selectedpartyId);
+			Long comparePartyTotal = 0L;
+				 
+			  for(Long partysId:partyMap.keySet())
+			  {
+			    if(!partysId.equals(selectedpartyId) && comparePartyTotal < partyMap.get(partysId))
+				 comparePartyTotal = partyMap.get(partysId);
+				  
+			  }
+		   
+			     
+		  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	      
+	      double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	      
+	    	
+	      String locationName = "";
+	      if(locationType != null && locationType.equalsIgnoreCase("panchayat"))
+	    	 locationName = panchayatDAO.getPanchayatNameById(id); 
+	      else if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
+	    	 locationName = boothDAO.getBoothPartNoByBoothId(id);
+	      
+	      List<PartyPositionVO> partyPositionVOList = partyPositionVO.getPartyPositionVOList();
+	      for(PartyPositionVO positionVO :partyPositionVOList)
+	      {
+	    	if(difference >= positionVO.getMinValue() && difference <= positionVO.getMaxValue())
+	    	{
+	    	 PartyPositionVO locationVO = null;
+	    	 List<PartyPositionVO> locationList = positionVO.getPartyPositionVOList();
+	    	 if(locationList == null || locationList.size() == 0)
+	    		locationList = new ArrayList<PartyPositionVO>(0);
+	    	 
+	    	 locationVO = checkPartyPositionVOExist(id,locationList);
+	    	 if(locationVO == null)
+	    	 {
+	    		 locationVO = new PartyPositionVO();
+	    		 locationVO.setId(id);
+	    		 locationVO.setName(locationName != null?locationName:" ");
+	    		 locationList.add(locationVO);
+	    		 positionVO.setPartyPositionVOList(locationList);
+	    		 
+	    	 }
+	    	 
+	    	}
+	      }
+	    	
+		}
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error(" Exception Occured in getPartyPerformanceForSelectedlocation() method, Exception - "+e);
+		}
+	}
+	
+	public PartyPositionVO checkPartyPositionVOExist(Long locationId,List<PartyPositionVO> list)
+	{
+		try{
+		if(list == null)
+		 return null;
+		for(PartyPositionVO positionVO:list)
+		 if(positionVO.equals(locationId))
+		  return positionVO;
+			
+		 return null;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 LOG.error(" ExceptionOccured in checkPartyPositionVOExist() method, Exception - "+e);
+		 return null;
+		}
+	}
+	
+	
 	
 	 @SuppressWarnings("unchecked")
 		public List<SelectOptionVO> getConstituenciesForUserAccessByStateId(Long electionScope,Long stateId,Long userId)
