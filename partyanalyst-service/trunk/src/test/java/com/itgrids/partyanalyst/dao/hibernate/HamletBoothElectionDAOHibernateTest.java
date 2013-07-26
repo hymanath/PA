@@ -71,13 +71,13 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(data[0]+"\t"+data[1]+"\t"+data[2]+"\t"+data[3]);
 		}
 	}*/	
-	/*public void testGetBoothIdsByPanchayatId()
+	public void testGetBoothIdsByPanchayatId()
 	{
-		List<Long> list = hamletBoothElectionDAO.getBoothIdsByPanchayatId(1l, 116l);
+		List<Long> list = hamletBoothElectionDAO.getBoothIdsByPanchayatId(106l, 38l);
 		System.out.println(list.size());
 		if(list != null && list.size() > 0)
 			System.out.println(list);
-	}*/
+	}
 	
 	/*public void testFindElectionsHappendInAPanchayat()
 	{
@@ -160,10 +160,30 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		List<Long> list = hamletBoothElectionDAO.getPanchayatIdsByEleIdAndMandalIdsList(mandalIdsList, 83l);
 	}*/
 	
-	public void testGetBoothIds()
+	/*public void testGetBoothIds()
 	{
 		List<Long> list = hamletBoothElectionDAO.getBoothIdsByElectionId(38l);
 		System.out.println(list.size());
-	}
+	}*/
 	
+	/*public void testgetPanchayatIdsByTehsilIdAndElectionId()
+	{
+		List<Long> list = hamletBoothElectionDAO.getPanchayatIdsByTehsilIdAndElectionId(836L, 38L);
+		System.out.println(list.size());
+		
+		
+		for(Long id:list)
+		
+			System.out.println("panchayat Id - "+id);
+	}
+	*/
+	
+	
+	public void testgetBoothIdsListByTehsilIdAndElectionId()
+	{
+		List<Object[]> list = null;//hamletBoothElectionDAO.getBoothIdsListByTehsilIdAndElectionId(836l, 38L);
+		System.out.println(list.size());
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]);
+	}
 }
