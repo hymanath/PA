@@ -145,4 +145,13 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 	{
 		return getHibernateTemplate().find("select model.constituency.state.stateId,model.constituency.state.stateName from UserConstituencyAccessInfo model where model.user.userId = ? ",userId);
 	}
+	
+	public List getNonUrbanConsituenciesByUserIdElectIdStateId(Long electionScope,Long userId,Long stateId){
+		   Object[] parameters = {userId,electionScope,stateId};
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name " +
+				"from UserConstituencyAccessInfo model where model.user.userId = ?"+
+				" and model.constituency.electionScope.electionScopeId = ? " +
+				"  and model.constituency.state.stateId = ? and (model.constituency.areaType = 'RURAL' " +
+				" or model.constituency.areaType = 'RURAL-URBAN') ", parameters);
+	}
 }

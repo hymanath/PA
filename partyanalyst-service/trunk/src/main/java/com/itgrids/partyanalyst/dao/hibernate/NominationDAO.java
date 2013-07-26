@@ -3876,4 +3876,19 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("select distinct model.constituencyElection.election.electionId,model.constituencyElection.election.electionYear from Nomination model where model.constituencyElection.election.electionScope.electionScopeId = ? " +
 				"and model.party.partyId = ? and model.constituencyElection.election.isPartial is null order by model.constituencyElection.election.electionYear desc", params);
 	}
+	public List<Object[]> findByPartyIdAndTehsilId(Long electionTypeId,Long partyId,Long tehsilId){
+		
+		Query query = getSession().createQuery("select distinct model1.constituencyElection.election.electionId, model1.constituencyElection.election.electionYear,model1.constituencyElection.election.electionScope.electionType.electionType " +
+				" from Party model,Nomination model1 where model1.party.partyId =:partyId" +
+				" and model.partyId = model1.party.partyId and " +
+				" model1.constituencyElection.election.electionScope.electionType.electionTypeId =:electionTypeId" +
+				" and model1.constituencyElection.constituency.tehsil.tehsilId = :tehsilId " +
+				" order by model1.constituencyElection.election.electionYear desc");
+		
+		query.setParameter("tehsilId", tehsilId);
+		query.setParameter("partyId", partyId);
+		query.setParameter("electionTypeId", electionTypeId);
+
+		return query.list();
+	}
 }
