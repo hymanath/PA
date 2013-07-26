@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -87,9 +88,17 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(83l));
 	}*/
 	
-	public void testgetMuncipalityNameById()
+	/*public void testgetMuncipalityNameById()
 	{
 		System.out.println(localElectionBodyDAO.getMuncipalityNameById(83l));
 	}
+	*/
 	
+	public void testgetTehsilsByLocalBody()
+	{
+		List<Object[]> values = localElectionBodyDAO.getTehsilsByLocalBody(83l);
+		for (Object[] objects : values) {
+			System.out.println(objects[0] +":"+ objects[1]);
+		}
+	}
 }
