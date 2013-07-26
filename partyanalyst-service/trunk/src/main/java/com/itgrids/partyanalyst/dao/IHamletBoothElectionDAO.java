@@ -69,4 +69,5 @@ public interface IHamletBoothElectionDAO extends GenericDao<HamletBoothElection,
 	
 	public List<Long> getPanchayatIdsByTehsilIdAndElectionId(Long tehsilId,Long electionId);
 
+	public List<Object[]> getParticipatedPartiesByEleIdNTehsilId(Long tehsilId);
 }
