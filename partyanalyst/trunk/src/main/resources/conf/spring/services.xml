@@ -1672,6 +1672,8 @@
       <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
       <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" /> 
 	  <property name="nominationDAO" ref="nominationDAO" />   
+      <property name="suggestiveRangeDAO" ref="suggestiveRangeDAO" />
+      <property name="panchayatDAO" ref="panchayatDAO" />
     </bean>
     
 </beans>		
