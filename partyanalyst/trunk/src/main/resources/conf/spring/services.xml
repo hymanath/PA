@@ -1670,6 +1670,8 @@
       <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
       <property name="boothDAO" ref="boothDAO" />
       <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+      <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" /> 
+	  <property name="nominationDAO" ref="nominationDAO" />   
     </bean>
     
 </beans>		
