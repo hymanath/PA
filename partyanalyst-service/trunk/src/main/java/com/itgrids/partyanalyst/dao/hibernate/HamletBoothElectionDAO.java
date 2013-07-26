@@ -329,4 +329,13 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getParticipatedPartiesByEleIdNTehsilId(Long tehsilId)
+	{
+		Query query = getSession().createQuery("select distinct CBR.nomination.party.partyId, CBR.nomination.party.shortName from CandidateBoothResult CBR, HamletBoothElection HBE, PanchayatHamlet PH " +
+				" where CBR.boothConstituencyElection.booth.boothId = HBE.boothConstituencyElection.booth.boothId and HBE.hamlet.hamletId = PH.hamlet.hamletId and PH.panchayat.tehsil.tehsilId =:tehsilId " +
+				" order by CBR.nomination.party.shortName ");
+		query.setParameter("tehsilId", tehsilId);
+		return query.list();
+	}
 }
