@@ -75,7 +75,7 @@
 	float: left; 
 	font-weight:normal;
 	font-size:15px;
-	width: 775px;
+	width: 730px;
 	height: 25px;
 	padding-top: 5px;
 	}
@@ -117,10 +117,6 @@ function getConstituencyList(){
 
 var jsObj= 
 	{	
-		electionYear : 2011,
-		electionType : 2,
-		partyId:823,		
-		stateId:1,	
 		task:"getConstituencies"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -129,7 +125,26 @@ var jsObj=
 
 }
 function getMandals(){
-		var value =  $("#listConstituencyNames option:selected").val();
+	var value =  $("#listConstituencyNames option:selected").val();
+	var list = document.getElementById("listMandalNames");
+	var partyElmts = document.getElementById('partySelectEl')
+	var electionyrElmt1 = document.getElementById('electionYearSelectEl1')
+	var electionyrElmt2 = document.getElementById('electionYearSelectEl2')
+	$("#listConstituencyNames").css("border","1px solid lightBlue");
+	removeSelectElements(partyElmts);
+	removeSelectElements(electionyrElmt1);
+	removeSelectElements(electionyrElmt2);
+	removeSelectElements(list);
+	addDefaultSelectValues(partyElmts);
+	addDefaultSelectValues(electionyrElmt2);
+	addDefaultSelectValues(electionyrElmt1);
+	addDefaultSelectValues(list);
+	$('#errorMsgDiv').html('');
+		if(value == 0){
+		$("#listConstituencyNames").css("border","1px solid IndianRed");
+		$('#errorMsgDiv').html('Please Select Constituency');
+		return;
+		}
 		var jsObj=
 			{
 					
@@ -144,7 +159,24 @@ function getMandals(){
 		callAjax(rparam,jsObj,url)
 	}
 function getPartyDetails(mandalId){
-
+	
+	var list = document.getElementById("partySelectEl");
+	var electionyrElmt1 = document.getElementById('electionYearSelectEl1');
+	var electionyrElmt2 = document.getElementById('electionYearSelectEl2');
+	$("#listMandalNames").css("border","1px solid lightBlue");
+	removeSelectElements(electionyrElmt1);
+	removeSelectElements(electionyrElmt2);
+	removeSelectElements(list);
+	
+	addDefaultSelectValues(electionyrElmt2);
+	addDefaultSelectValues(electionyrElmt1);
+	addDefaultSelectValues(list);
+	$('#errorMsgDiv').html('');
+	if(mandalId == 0){
+		$("#listMandalNames").css("border","1px solid IndianRed");
+		$('#errorMsgDiv').html('Please Select Mandal');
+		return;
+	}
 	var jsObj = 
 	{
 	mandalId : mandalId.slice(1),
@@ -155,26 +187,22 @@ function getPartyDetails(mandalId){
 	callAjax(param,jsObj,url);
 
 }
-function getElectionYears222(partyId){
 
-		var task;
-		if(name == 'panchayat')
-			task = 'getElectionYearsForPanchayat';
-		else
-			task = 'getElectionYears';
-		var jsObj=
-			{
-					electionTypeId:2,
-					task:"getElectionYearsForPanchayat"			
-			};
-		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/getElectionYearsAjaxAction.action?"+rparam;						
-			callAjax(rparam,jsObj,url);
-	}
-	
 	function getElectionYears(id){
+	$('#errorMsgDiv').html('');
+	var electionyrElmt1 = document.getElementById('electionYearSelectEl1');
+	var electionyrElmt2 = document.getElementById('electionYearSelectEl2');
+	$("#partySelectEl").css("border","1px solid lightBlue");
+	removeSelectElements(electionyrElmt1);
+	removeSelectElements(electionyrElmt2);
+	addDefaultSelectValues(electionyrElmt2);
+	addDefaultSelectValues(electionyrElmt1);
 		var mandalId = $('#listMandalNames').val();
+		if(id == 0){
+		$("#partySelectEl").css("border","1px solid IndianRed");
+		$('#errorMsgDiv').html('Please Select Party Name');
+		return;
+		}
 		var jsObj=
 			{
 					electionTypeId:2,
@@ -187,69 +215,74 @@ function getElectionYears222(partyId){
 			var url = "<%=request.getContextPath()%>/getElectionYearsForMandalAjaxAction.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
 	}
+function validateYear1(yearId){
+	$('#errorMsgDiv').html('');
+		$("#electionYearSelectEl1").css("border","1px solid lightBlue");
+	if(yearId == 0){
+		$("#electionYearSelectEl1").css("border","1px solid IndianRed");
+		$('#errorMsgDiv').html('Please Select Election Years');
+		return;
+	}
+	
+}
 
+function validateYear2(yearId){
+	$('#errorMsgDiv').html('');
+		$("#electionYearSelectEl2").css("border","1px solid lightBlue");
+	if(yearId == 0){
+		$("#electionYearSelectEl2").css("border","1px solid IndianRed");
+		$('#errorMsgDiv').html('Please Select Election Years');
+		return;
+	}	
+}
 function callAjax(param,jsObj,url){
-	var myResults;
-					
+	var myResults;					
 		var callback = {			
-		               success : function( o ) {
-						try {												
-								if(o.responseText)
-									myResults = YAHOO.lang.JSON.parse(o.responseText);
-								
-								if(jsObj.task == "getElectionYearsInPanchayat")
-								{
-									populateElectionYearDropdown(myResults);
-								}
-								else if(jsObj.task == "getPartyDetails")
-								{	
-									populatePartiesDropdown(myResults);
-								}								
-								else if(jsObj.task == "getConstituencies")
-								{	
-									populateConstituencyListDropdown(myResults);
-								}
-								else if(jsObj.task == "getConstituencyType")
-								{
-									constituencyType = myResults[0].name;
-									if(myResults[0].name == 'URBAN'){
-										$('#urban_areasDiv').css("display","block");
-									}
-									else{
-										$('#rural_urban_areasDiv').css("display","block");
-									}
-								}
-								else if(jsObj.task == "getAllWards")
-									{
-											buildAllMandals(myResults,jsObj,'ward');
-									}
-								else if(jsObj.task == "getMandalList")
-									{
-											buildMandalList(myResults);
-									}
-									else if(jsObj.task == "getReportLevelDetails")
-									{
-											buildReportLevelData(myResults,jsObj);
-									}
-							
-							   else if(jsObj.task == "getPartyPerformanceReport")
-								showPartyPerformanceReport(myResults,jsObj);
-
-							}catch (e) {   
-								   	//alert("Invalid JSON result" + e);   
-							}  
-			               },
-			               scope : this,
-			               failure : function( o ) {
-			                			//alert( "Failed to load result" + o.status + " " + o.statusText);
-			                         }
-			               };
-
-			YAHOO.util.Connect.asyncRequest('GET', url, callback);
+				success : function( o ) {
+					try 
+					{												
+						if(o.responseText)
+							myResults = YAHOO.lang.JSON.parse(o.responseText);
+						
+						if(jsObj.task == "getElectionYearsInPanchayat")
+						{
+							populateElectionYearDropdown(myResults);
+						}
+						else if(jsObj.task == "getPartyDetails")
+						{
+							populatePartiesDropdown(myResults);
+						}								
+						else if(jsObj.task == "getConstituencies")
+						{	
+							populateConstituencyListDropdown(myResults);
+						}
+						else if(jsObj.task == "getMandalList")
+						{
+							buildMandalList(myResults);
+						}
+						else if(jsObj.task == "getPartyPerformanceReport")
+						{
+							showPartyPerformanceReport(myResults,jsObj);
+						}
+					}catch (e){
+					//alert("Invalid JSON result" + e);   
+					}  
+				},
+			       scope : this,
+			       failure : function( o ) {
+			        			//alert( "Failed to load result" + o.status + " " + o.statusText);
+			        }
+			    };
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}	
 function populatePartiesDropdown(results)
 {
 	var partySelectEl = document.getElementById("partySelectEl");
+	removeSelectElements(partySelectEl);
+	var opElmt=document.createElement('option');
+		opElmt.value='0';
+		opElmt.text='Select Party';
+		addOptions(partySelectEl,opElmt);
 	for(var i in results)
 	{
 		var opElmt=document.createElement('option');
@@ -297,22 +330,15 @@ function populateConstituencyListDropdown(results){
 
 	var list = document.getElementById("listConstituencyNames");
 	removeSelectElements(list);
-	var opElmt=document.createElement('option');
-			opElmt.value='0';
-			opElmt.text='Select Constituency';
-		addOptions(list,opElmt);
 	if(results!=null)
 		for(var i in results)
 		{
 			var opElmt=document.createElement('option');
 			opElmt.value=results[i].id;
 			opElmt.text=results[i].name;
-			addOptions(list,opElmt);
-			
+			addOptions(list,opElmt);			
 		}	
-
 }
-
 
 function addOptions(list,opElmt){
 	try
@@ -389,20 +415,20 @@ function addDefaultSelectValues(elmt){
 			</tr>
 </table>
 </div>
-<div style="margin-left: -150px;">
+<div>
 <table>
 		<tr>
 			<td id="tdWidth">
 				Election Year :<font id="requiredValue" class="requiredFont">*</font> 
 			</td>		
 			<td>
-				<select id="electionYearSelectEl1">
+				<select id="electionYearSelectEl1" onchange="validateYear1(this.options[this.selectedIndex].value)">
 				<option value="0"> Select Year </option>
 				</select>
 			</td>
-			<td></td><td></td>
+			<td></td><td id="tdWidth"></td>
 			<td>
-				<select id="electionYearSelectEl2">
+				<select id="electionYearSelectEl2" onchange="validateYear2(this.options[this.selectedIndex].value)">
 				<option value="0"> Select Year </option>
 				</select>
 			</td>
@@ -418,6 +444,7 @@ function addDefaultSelectValues(elmt){
    <div id="partyPerformanceInnerDiv"></div>
   </div>
 </div>
+
 
 <script>
 $(document).ready(function(){
