@@ -4360,4 +4360,12 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 			return query.list();
 		}
+		
+		public Long getTotalVoters(Long boothId)
+		{
+			 Query query = getSession().createQuery("select count(*) from BoothPublicationVoter model " +
+						" where model.booth.boothId = :boothId");
+			 query.setParameter("boothId", boothId);
+			 return (Long) query.uniqueResult();
+		}
 }

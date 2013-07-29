@@ -42,4 +42,21 @@ public class VoterCastBasicInfoDAO extends GenericDaoHibernate<VoterCastBasicInf
     public void saveAllObjects(List<VoterCastBasicInfo> voterCastBasicInfos){
     	getHibernateTemplate().saveOrUpdateAll(voterCastBasicInfos);
     }
+    
+    @SuppressWarnings("unchecked")
+	public List<Object[]> getToatlVotersForSelectedLevl(List<Long> levelValues,Long userId,Long publicationId,Long levelId,Long constituencyId)
+    {
+    	
+    	Query query = getSession().createQuery("select model.reportLevelValue , model.casteAssignedVoters from VoterCastBasicInfo model " +
+    			" where model.voterReportLevel.voterReportLevelId = :levelId and " +
+    			" model.reportLevelValue in (:levelValues) and model.constituency.constituencyId = :constituencyId " +
+    			" and model.publicationDateId = :publicationId " +
+    			" and model.userId = :userId order by model.model.reportLevelValue desc");
+    	query.setParameter("userId", userId);
+    	query.setParameter("publicationId", publicationId);
+    	query.setParameterList("levelValues", levelValues);
+    	query.setParameter("constituencyId", constituencyId);
+    	query.setParameter("levelId", levelId);
+    	return query.list();
+    }
 }

@@ -705,7 +705,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		 System.out.println(params[0]+" "+params[1]);
 	}*/
 	
-	public void testgetBoothsCountByPanchayatIdsList()
+	/*public void testgetBoothsCountByPanchayatIdsList()
 	{
 		List<Long> panchayatIdsList = new ArrayList<Long>(0);
 		panchayatIdsList.add(5152L);
@@ -713,6 +713,12 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		
 		for(Object[] params:list)
 		 System.out.println(params[0]+" "+params[1]);
+	}*/
+	
+	public void testgetTotalVoters()
+	{
+		Long count = boothPublicationVoterDAO.getTotalVoters(122992l);
+		System.out.println(count);
 	}
 	
 }
