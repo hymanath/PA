@@ -183,7 +183,7 @@
 		<pattern>/sitemapAction*</pattern>
 		<pattern>/newsZoneAction*</pattern>
 		<pattern>/partyPerformanceJasper*</pattern>
-		<pattern>/suggestiveModelAction*</pattern>
+		<!-- <pattern>/suggestiveModelAction*</pattern> -->
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
@@ -252,6 +252,7 @@
 		<pattern>/surveyorProfileSaveAction*</pattern>
 		<pattern>/voterDataToolsAction*</pattern>
 		<pattern>/inflencingPeopleWindowAction*</pattern>
+		<pattern>/suggestiveModelAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
