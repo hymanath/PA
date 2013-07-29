@@ -55,8 +55,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private ISuggestiveRangeDAO suggestiveRangeDAO;
 	private IPanchayatDAO panchayatDAO;
 	private IVoterInfoDAO voterInfoDAO;
+	private IVoterCastBasicInfoDAO voterCastBasicInfoDAO;
+	private IVoterCastInfoDAO voterCastInfoDAO;
+	private IUserVoterDetailsDAO userVoterDetailsDAO;
+	private IPublicationDateDAO publicationDateDAO;
 	
-		
+	
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
 	}
@@ -64,11 +68,6 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
 		this.voterInfoDAO = voterInfoDAO;
 	}
-
-	private IVoterCastBasicInfoDAO voterCastBasicInfoDAO;
-	private IVoterCastInfoDAO voterCastInfoDAO;
-	private IUserVoterDetailsDAO userVoterDetailsDAO;
-	private IPublicationDateDAO publicationDateDAO;
 	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
 		return userConstituencyAccessInfoDAO;
 	}
