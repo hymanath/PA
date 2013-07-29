@@ -1674,6 +1674,7 @@
 	  <property name="nominationDAO" ref="nominationDAO" />   
       <property name="suggestiveRangeDAO" ref="suggestiveRangeDAO" />
       <property name="panchayatDAO" ref="panchayatDAO" />
+      <property name="voterInfoDAO" ref="voterInfoDAO" />
     </bean>
     
 </beans>		
