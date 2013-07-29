@@ -8,7 +8,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface ISuggestiveModelService {
 	
-	public List<SelectOptionVO> getConstituenciesForUserAccessByStateId(Long electionScope,Long stateId,Long userId);
+	public List<SelectOptionVO> getConstituenciesForUserAccessByStateId(List<SelectOptionVO> ConstituenciesForUserAccessed,Long electionId,Long electionYear);
 	
 	public List<SelectOptionVO> getPartyDetailsByMandal(Long mandalId);
 	
