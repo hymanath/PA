@@ -92,14 +92,21 @@
     font: small-caption;
     padding: 8px 8px 8px 10px;
 }
-#partyPerformanceMainDiv{float: none;
+/* #partyPerformanceMainDiv{float: none;
     margin-left: auto;
     margin-right: auto;
     width: 960px;}
 #partyPerformanceBtnDiv{float: none;
     margin-left: auto;
     margin-right: auto;
-    width: 200px;}
+    width: 200px;} */
+
+
+
+#suggestiveMainDiv{float: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 990px;margin-top:20px;margin-bottom:20px;}
 	</style>
 <script type="text/javascript" >
 
@@ -341,10 +348,11 @@ function addDefaultSelectValues(elmt){
 </script>
 </head>
 <body>
-<div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>
-<div id="mainDiv" align="center" >
-<div id="errorMsgDiv" >&nbsp;</div><br><br>
-<div>
+<div id="suggestiveMainDiv">
+  <div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>
+   <div id="mainDiv" align="center" >
+     <div id="errorMsgDiv" >&nbsp;</div><br><br>
+     <div>
 		<table>
 			<tr id="tableRowS">
 				<td id="tdWidth">
@@ -404,11 +412,11 @@ function addDefaultSelectValues(elmt){
 <input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;"/>
 </div>
 <div id="partyPerformanceBtnDiv"><input type="button" value="submit" id="getPartyPer" class="btn btn-info"></div>
-</div>
 
-<div id="partyPerformanceMainDiv">
- <div id="partyPerformanceInnerDiv"></div>
-</div>
+
+  <div id="partyPerformanceMainDiv">
+   <div id="partyPerformanceInnerDiv"></div>
+  </div>
 </div>
 
 <script>
@@ -436,13 +444,13 @@ $("#getPartyPer").click(function(){
 function showPartyPerformanceReport(result,jsObj)
 {
 	$("#partyPerformanceInnerDiv").html('');
-  if(result == null || result.size == 0)
+  if(result == null || result.length == 0)
 	{
      $("#partyPerformanceInnerDiv").html('No Data Found');
 	 return;
 	}
 	var str = '';
-	str +='<h4>Party Performance Report</h4>';
+	str +='<h4>Panchayat Wise INC Party Performance Report</h4>';
 	str +='<table class="table table-bordered table-striped table-hover">';
     str +='<tr>';
 	str +='<th></th>';
@@ -457,7 +465,13 @@ function showPartyPerformanceReport(result,jsObj)
 		{
 		  str +='<td>'
 		  for(var k in result[i].partyPositionVOList[j].partyPositionVOList)
-		    str +=''+result[i].partyPositionVOList[j].partyPositionVOList[k].name+',';
+		  {
+			var tempVar = result[i].partyPositionVOList[j].partyPositionVOList.length-1;
+			str +=''+result[i].partyPositionVOList[j].partyPositionVOList[k].name+'';
+		    
+			if(k != tempVar)
+			 str +=',';
+		  }
 		  
 		  str +='</td>'
 		}
