@@ -28,4 +28,6 @@ public interface IVoterCastInfoDAO extends GenericDao<VoterCastInfo,Long>{
 	public List<Object[]> getCastAndPartyForSelectedLevel(Long userId,Long reportId ,List<Long> ids,Long publicationId);
 	
 	public List<Object[]> getAllCasteInfoByUserId(Long userId);
+	
+	public List<Object[]> getTopThreeCasteFoeSelctedLevel(Long id,Long reportId,Long publicationId,Long userId);
 }

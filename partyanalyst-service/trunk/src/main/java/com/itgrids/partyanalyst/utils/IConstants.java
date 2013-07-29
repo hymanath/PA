@@ -635,6 +635,8 @@ public interface IConstants {
     public final static Double VERY_BAD = 60.00;
     public final static Double AVERAGE = 45.00;
     
+    public final static int MAX_LEVEL = 3;
+    
     
 	
 }

@@ -363,7 +363,7 @@ for (Object[] objects : list) {
 			System.out.println("Hamlet_id --- "+id);
 		}*/
 		
-		public void testgetHamletIdsListByMandalIdsList()
+		/*public void testgetHamletIdsListByMandalIdsList()
 		{
 			List<Long> mandalIdsList = new ArrayList<Long>(0);
 			mandalIdsList.add(844l);
@@ -373,5 +373,13 @@ for (Object[] objects : list) {
 			if(list != null && list.size() > 0)
 			 for(Object[] params:list)
 		    	System.out.println(params[0]+" "+params[1]);
+		}*/
+		
+		public void testgetCasteDetailsOfVoterByBoothId()
+		{
+			List<Object[]> values = userVoterDetailsDAO.getCasteDetailsOfVoterByBoothId(122993l,8l,1l);
+			for (Object[] objects : values) {
+				System.out.println(objects[0] +":"+ objects[1] );
+			}
 		}
 }

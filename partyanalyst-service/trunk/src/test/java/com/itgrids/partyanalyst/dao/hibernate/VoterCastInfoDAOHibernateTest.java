@@ -25,7 +25,7 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 		
 	}*/
-	public void test()
+	/*public void test()
 	{
 		
 		List<Object[]> values = voterCastInfoDAO.getAllCasteInfoByUserId(1l);
@@ -33,5 +33,27 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(parms[0] +":"+ parms[1]);
 		}
 		
-	}
+	}*/
+	
+	/*public void test()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(11l);
+		ids.add(12l);
+		ids.add(1l);
+		ids.add(7l);
+		ids.add(4l);
+		ids.add(13l);
+		ids.add(10l);
+		ids.add(6l);
+		ids.add(9l);
+		ids.add(8l);
+		ids.add(3l);
+		ids.add(2l);
+		ids.add(5l);
+		List<Object[]> values = voterCastInfoDAO.getTopThreeCasteFoeSelctedLevel(ids,3l,8l,1l);
+		for (Object[] parms : values) {
+			System.out.println(parms[0]  +":"+ parms[1] +":"+ parms[2] +":"+ parms[3]);
+		}
+	}*/
 }
