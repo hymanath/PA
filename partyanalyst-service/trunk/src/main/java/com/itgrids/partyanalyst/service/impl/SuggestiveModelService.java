@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
@@ -47,8 +48,17 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private ISuggestiveRangeDAO suggestiveRangeDAO;
 	private IPanchayatDAO panchayatDAO;
-
+	private IVoterInfoDAO voterInfoDAO;
 	
+		
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+
+	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
+		this.voterInfoDAO = voterInfoDAO;
+	}
+
 	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
 		return userConstituencyAccessInfoDAO;
 	}
@@ -778,34 +788,25 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	
 	
 	 @SuppressWarnings("unchecked")
-		public List<SelectOptionVO> getConstituenciesForUserAccessByStateId(Long electionScope,Long stateId,Long userId)
+		public List<SelectOptionVO> getConstituenciesForUserAccessByStateId(List<SelectOptionVO> ConstituenciesForUserAccessed,Long electionId,Long electionYear)
 		{
-			try{				
-				List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>(0);
-
-				List<Object[]> conList = (List<Object[]>)userConstituencyAccessInfoDAO.getNonUrbanConsituenciesByUserIdElectIdStateId(electionScope,userId,stateId);
-								
-				if(conList != null && conList.size() > 0)
+		 List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>(0);;
+		try{
+			List<Long> constituencyIds =  voterInfoDAO.getNONURBANConstituencyIds(electionId,electionYear,1L);
+			if(ConstituenciesForUserAccessed != null && ConstituenciesForUserAccessed.size() > 0 && constituencyIds != null)
+			{
+				for(SelectOptionVO selectOptionVO : ConstituenciesForUserAccessed)
 				{
-					if(electionScope.intValue() == 1)
-					{
-						
-					}
-					
-					else if(electionScope.intValue() == 2)
-					{
-						for(Object[] consList : conList)
-						{
-							constituenciesList.add(new SelectOptionVO((Long)consList[0],consList[1].toString()));
-							
-						}
-					}
+					if(constituencyIds.contains(selectOptionVO.getId()))
+						constituencyList.add(selectOptionVO);
 				}
-							
-				return constituenciesList;
-			}catch(Exception e){
-				return null;
 			}
+			
+			return constituencyList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return constituencyList;
+		}
 		}
 	 public List<SelectOptionVO> getPartyDetailsByMandal(Long tehsilId){
 		 List<SelectOptionVO> nominatedPartiesLists = null;
