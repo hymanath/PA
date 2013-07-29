@@ -13,8 +13,10 @@ import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
@@ -31,6 +33,9 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private List<SelectOptionVO> partyList;
 	private IStaticDataService staticDataService;
 	private List<PartyPositionVO> partyPositionVOList;
+	private ICrossVotingEstimationService crossVotingEstimationService;
+	private List userAccessConstituencyList;
+	
 	
 	
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
@@ -123,6 +128,23 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	public void setPartyPositionVOList(List<PartyPositionVO> partyPositionVOList) {
 		this.partyPositionVOList = partyPositionVOList;
 	}
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
+	}
+
+	public List getUserAccessConstituencyList() {
+		return userAccessConstituencyList;
+	}
+
+	public void setUserAccessConstituencyList(List userAccessConstituencyList) {
+		this.userAccessConstituencyList = userAccessConstituencyList;
+	}
+
 
 	public String execute(){
 		
@@ -153,14 +175,14 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Long electionYear= jObj.getLong("electionYear");
-		Long electionTypeId = jObj.getLong("electionType");
-		Long partyId = jObj.getLong("partyId");
-		Long stateId = jObj.getLong("stateId");
-		constituencies =  suggestiveModelService.getConstituenciesForUserAccessByStateId(
-								electionTypeId,stateId,regVO.getRegistrationID());	
+		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
+		constituencies = suggestiveModelService.getConstituenciesForUserAccessByStateId(userAccessConstituencyList,electionTypeId,electionYear);
+		constituencies.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		return Action.SUCCESS;
 	}
+	
 	
 	public String getPartyDetails(){
 		try{
