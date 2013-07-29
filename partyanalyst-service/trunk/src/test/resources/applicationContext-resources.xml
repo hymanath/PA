@@ -366,6 +366,7 @@
 				<value>com.itgrids.partyanalyst.model.VoterBasicInfo</value>
 				<value>com.itgrids.partyanalyst.model.VotingTrendz</value>
 				<value>com.itgrids.partyanalyst.model.VotingTrendzPartiesResult</value>
+				<value>com.itgrids.partyanalyst.model.SuggestiveRange</value>
 			</list>
 		</property>
 	</bean>
@@ -1889,6 +1890,10 @@
 	
 	<bean id="votingTrendzPartiesResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.VotingTrendzPartiesResultDAO">
 		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="suggestiveRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SuggestiveRangeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
 </beans>
