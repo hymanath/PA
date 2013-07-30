@@ -116,7 +116,6 @@ th {
 
 $(document).ready(function(){
 getConstituencyList();
-getLeadersList();
 });
 function getConstituencyList(){
 
@@ -241,9 +240,13 @@ function validateYear2(yearId){
 	}	
 }
 function getLeadersList(){
+var mandalId = $('#listMandalNames option:selected').val();
+var constituencyId = $('#listConstituencyNames option:selected').val();
 var jsObj= 
 	{	
-		task:"getLeadersList"		
+		mandalId       : mandalId.slice(1),
+		constituencyId : constituencyId,
+		task           : "getLeadersList"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/getLeadersDataAction.action?"+param;
@@ -510,7 +513,7 @@ function buildLeadersTable(results)
 		</tr>
 	</table>
 </div>
-<input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;"/>
+<input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="getLeadersList();"/>
 
 <div id="leadersTable"></div>
 <div id="partyPerformanceBtnDiv"><input type="button" value="submit" id="getPartyPer" class="btn btn-info"></div>
