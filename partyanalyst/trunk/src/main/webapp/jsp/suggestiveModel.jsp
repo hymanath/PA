@@ -79,7 +79,7 @@
 	height: 25px;
 	padding-top: 5px;
 	}
-#partyPerformanceInnerDiv table th{
+#partyPerformanceInnerDiv table th,#weakPollingPercentageDiv table th,#strongPollingPercentageDiv table th{
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -87,7 +87,7 @@
     padding: 10px;
     text-align: left;
 }
-#partyPerformanceInnerDiv table td{
+#partyPerformanceInnerDiv table td,#weakPollingPercentageDiv table td,#strongPollingPercentageDiv table td{
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
@@ -111,6 +111,10 @@ th {
     background: none repeat scroll 0 0 #D9EDF7;
     color: #454545;
 }
+
+.headingCls{ color: #005580;
+    font-size: 15px;
+    margin-bottom: 10px;}
 	</style>
 <script type="text/javascript" >
 
@@ -281,6 +285,7 @@ function callAjax(param,jsObj,url){
 						else if(jsObj.task == "getPartyPerformanceReport")
 						{
 							showPartyPerformanceReport(myResults,jsObj);
+							showStrongAndWeakPollingPercentage(myResults,jsObj);
 						}
 						else if(jsObj.task == "getLeadersList")
 						{
@@ -522,6 +527,13 @@ function buildLeadersTable(results)
   <div id="partyPerformanceMainDiv">
    <div id="partyPerformanceInnerDiv"></div>
   </div>
+  
+  <div id="strongAndWeakPollingPerDiv" class="row-fluid">
+    <div id="strongPollingPercentageDiv" class="span6"></div>
+    <div id="weakPollingPercentageDiv" class="span6"></div>
+  </div>
+
+
 </div>
 
 
@@ -585,6 +597,92 @@ function showPartyPerformanceReport(result,jsObj)
     }
 	str +='</table>';
 	$("#partyPerformanceInnerDiv").html(str);
+
+}
+
+function showStrongAndWeakPollingPercentage(result,jsObj)
+{
+  if(result == null || result.length == 0)
+  {
+     $("#strongPollingPercentageDiv").html('');
+	 $("#weakPollingPercentageDiv").html('');
+	 return;
+  }
+ 
+  var StrongPollingPerList = result[0].strongPollingPercentVOList;
+  var weakPollingPerList = result[0].weakPollingPercentVOList;
+  var locationtype = "";
+  
+  if(jsObj.locationType == "mandal")
+   locationtype = "Panchayat";
+
+  else if(jsObj.locationType == "panchayat")
+   locationtype = "Booth";
+
+
+  var str = '';
+  var temp = '';
+  str +='<h4 class="headingCls">Low Voting % in Strong '+locationtype+'s</h4>'; 
+  temp +='<h4 class="headingCls">High Voting % in Weak '+locationtype+'s</h4>'; 
+
+  if(StrongPollingPerList == null || StrongPollingPerList.length == 0)
+  {
+	$("#strongPollingPercentageDiv").css('display','none');
+	$("#strongPollingPercentageDiv").html(''); 
+  }
+  if(weakPollingPerList == null || weakPollingPerList.length == 0)
+  {
+    $("#weakPollingPercentageDiv").css('display','none');
+	$("#weakPollingPercentageDiv").html(''); 
+  }
+  
+  //Strong
+  if(StrongPollingPerList != null && StrongPollingPerList.length > 0)
+  {
+	
+    str+='<table class="table table-bordered table-striped table-hover">';
+    str += '<tr>';
+    str +='<th>'+locationtype+' Name</th>';
+    str +='<th>Party %</th>';
+    str += '<th>Polling %</th>';
+    str +='</tr>';
+    for(var j in weakPollingPerList)
+    {
+	 str += '<tr>';
+	 str += '<td>'+weakPollingPerList[j].name+'</td>';
+	 str += '<td>'+weakPollingPerList[j].partyPercentage+'</td>';
+	 str += '<td>'+weakPollingPerList[j].pollingPercentage+'</td>';
+	 str += '</tr>';
+    }
+
+    str+='</table>';
+	$("#strongPollingPercentageDiv").html(str); 
+   }
+
+
+  //weak
+ if(weakPollingPerList != null && weakPollingPerList.length > 0)
+ {
+   
+   temp+='<table class="table table-bordered table-striped table-hover">';
+   temp += '<tr>';
+   temp +='<th>'+locationtype+' Name</th>';
+   temp +='<th>Party %</th>';
+   temp += '<th>Polling %</th>';
+   temp +='</tr>';
+   for(var j in weakPollingPerList)
+   {
+	temp += '<tr>';
+	temp += '<td>'+weakPollingPerList[j].name+'</td>';
+	temp += '<td>'+weakPollingPerList[j].partyPercentage+'</td>';
+	temp += '<td>'+weakPollingPerList[j].pollingPercentage+'</td>';
+	temp += '</tr>';
+   }
+
+   temp+='</table>';
+   $("#weakPollingPercentageDiv").html(temp); 
+ }
+
 }
 
 
