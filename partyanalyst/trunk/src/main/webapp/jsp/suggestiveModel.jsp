@@ -286,6 +286,7 @@ function callAjax(param,jsObj,url){
 						{
 							showPartyPerformanceReport(myResults,jsObj);
 							showStrongAndWeakPollingPercentage(myResults,jsObj);
+							showSuggestedLocations(myResults,jsObj);
 						}
 						else if(jsObj.task == "getLeadersList")
 						{
@@ -457,6 +458,25 @@ function buildLeadersTable(results)
 	}
 	
 }
+
+function showSuggestedLocations(myResults,jsObj){
+ var str ='';
+ if(myResults != null && myResults.length > 0 && myResults[0].suggestedLocations != null && myResults[0].suggestedLocations.length > 0){
+    str+='<h4>Order OF Priority to Target Geographically</h4>';
+	str+='<table  class="table table-bordered table-striped table-hover">';
+	str+='  <tr>';
+	str+='    <th>Panchayat Name</th>';
+	str+='  </tr>';
+	 for(var i in myResults[0].suggestedLocations){
+	   str+='<tr>';
+	   str+='  <td>'+myResults[0].suggestedLocations[i].name+'</td>';
+	   str+='</tr>';
+	 }
+	str+='</table>';
+ }
+ $("#suggestedLocationsDiv").html(str);
+}
+
 </script>
 </head>
 <body>
@@ -529,6 +549,9 @@ function buildLeadersTable(results)
 
   <div id="partyPerformanceMainDiv">
    <div id="partyPerformanceInnerDiv"></div>
+  </div>
+  
+  <div id="suggestedLocationsDiv">
   </div>
   
   <div id="strongAndWeakPollingPerDiv" class="row-fluid">
