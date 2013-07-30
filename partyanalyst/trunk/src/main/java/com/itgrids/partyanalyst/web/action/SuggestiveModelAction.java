@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
@@ -33,6 +34,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private List<SelectOptionVO> partyList;
 	private IStaticDataService staticDataService;
 	private List<PartyPositionVO> partyPositionVOList;
+	private List<YouthLeaderSelectionVO> LeaderSelectionList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private List userAccessConstituencyList;
 	
@@ -128,6 +130,15 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	public void setPartyPositionVOList(List<PartyPositionVO> partyPositionVOList) {
 		this.partyPositionVOList = partyPositionVOList;
 	}
+	
+	public List<YouthLeaderSelectionVO> getLeaderSelectionList() {
+		return LeaderSelectionList;
+	}
+
+	public void setLeaderSelectionList(
+			List<YouthLeaderSelectionVO> leaderSelectionList) {
+		LeaderSelectionList = leaderSelectionList;
+	}
 	public ICrossVotingEstimationService getCrossVotingEstimationService() {
 		return crossVotingEstimationService;
 	}
@@ -140,7 +151,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	public List getUserAccessConstituencyList() {
 		return userAccessConstituencyList;
 	}
-
+	
 	public void setUserAccessConstituencyList(List userAccessConstituencyList) {
 		this.userAccessConstituencyList = userAccessConstituencyList;
 	}
@@ -192,6 +203,17 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		}
 		Long tehsilId= jObj.getLong("mandalId");
 		partyList = suggestiveModelService.getPartyDetailsByMandal(tehsilId);
+		return Action.SUCCESS;
+	}
+	public String getLeadersData()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(844l,1l,232l);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		return Action.SUCCESS;
 	}
 }
