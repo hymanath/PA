@@ -209,7 +209,16 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	{
 		try{
 			jObj = new JSONObject(getTask());
-			LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(844l,1l,232l);
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute(IConstants.USER);
+			if(regVO == null)
+			{
+				return Action.ERROR;
+			}
+			Long userId         = regVO.getRegistrationID();
+			Long mandalId       = jObj.getLong("mandalId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(mandalId,userId,constituencyId);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
