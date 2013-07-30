@@ -18,6 +18,7 @@ public class PartyPositionVO implements Serializable{
 	private Double pollingPercentage = 0.00;
 	private Double partyPercentage = 0.00;
 	private Long totalValidVotes = 0L;
+	List<PartyPositionVO> suggestedLocations;
 	
 	public String getName() {
 		return Name;
@@ -49,6 +50,12 @@ public class PartyPositionVO implements Serializable{
 	}
 	public void setMaxValue(Double maxValue) {
 		this.maxValue = maxValue;
+	}
+	public List<PartyPositionVO> getSuggestedLocations() {
+		return suggestedLocations;
+	}
+	public void setSuggestedLocations(List<PartyPositionVO> suggestedLocations) {
+		this.suggestedLocations = suggestedLocations;
 	}
 	
 	public Double getPollingPercentage() {
