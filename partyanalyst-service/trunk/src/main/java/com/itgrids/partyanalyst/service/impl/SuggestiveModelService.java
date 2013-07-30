@@ -589,6 +589,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		constituencyIdsList.add(constituencyId);
 		List<Long> assemblyEleIdsList = new ArrayList<Long>(0);
 		List<Object[]> electionList = null;
+		String tempLocationName = "";
 		
 		if(locationType != null && locationType.equalsIgnoreCase(IConstants.MANDAL))
 		{
@@ -599,12 +600,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		    electionList = hamletBoothElectionDAO.findAllElectionsHappendInAMandal(locationId,constituencyIdsList); 
 		  
 		   locationType = IConstants.MANDAL;
+		   tempLocationName = IConstants.PANCHAYAT;
 		  }
 		}
 		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 		{
 		  if(tempVar != null && tempVar.equalsIgnoreCase("all"))
-			electionList = hamletBoothElectionDAO.findAllElectionsHappendInAPanchayat(locationId); 
+			electionList = hamletBoothElectionDAO.findAllElectionsHappendInAPanchayat(locationId);
+		  tempLocationName = IConstants.BOOTH;
 		}
 		
 		if(electionList != null && electionList.size() > 0)
@@ -643,6 +646,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				  }
 				partyPositionVO.setPartyPositionVOList(rangeList);
 				partyPositionVO.setName(election.getElectionYear() != null?election.getElectionYear():" ");
+				partyPositionVO.setId(eleId);
 				
 				if(locationType != null && locationType.equalsIgnoreCase(IConstants.MANDAL))
 				 getMandalWisePartyPerformanceReport(constituencyId, locationId, eleId, partyPositionVO, partyId);
@@ -653,7 +657,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			  }
 		}
 		
-			
+
+		//For PollingPercentage Panchayats
+		if(resultList != null && resultList.size() > 0)
+			getPollingPercentageForALocation(resultList.get(0),tempLocationName,constituencyId);
+
 		 return resultList;
 		}catch (Exception e) {
 		 e.printStackTrace();
@@ -661,6 +669,175 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 return resultList;
 		}
 	}
+	
+	
+  public void getPollingPercentageForALocation(PartyPositionVO partyPositionVO,String locationType,Long constituencyId)
+  {
+	try{
+	List<Long> weakLocationIdsList = new ArrayList<Long>(0);//<electionId,PanchayatIdsList>
+	List<Long> strongLocationIdsList = new ArrayList<Long>(0);//<electionId,panchayatIdsList
+	List<Long> totalLocationIdsList = new ArrayList<Long>(0); 
+	
+	   List<PartyPositionVO> partyPositionVOList = partyPositionVO.getPartyPositionVOList();
+	   if(partyPositionVOList != null && partyPositionVOList.size() > 0)
+	   {
+		   for(PartyPositionVO positionVO :partyPositionVOList)
+		   {
+			  if(positionVO.getMinValue() < 0)
+			  {
+			    if(positionVO.getPartyPositionVOList() != null && positionVO.getPartyPositionVOList().size() > 0)
+			    {
+				   for(PartyPositionVO positionVO2 :positionVO.getPartyPositionVOList())
+				    if(!weakLocationIdsList.contains(positionVO2.getId()))
+				     weakLocationIdsList.add(positionVO2.getId());
+			     }
+			   }
+			   else if(positionVO.getMinValue() > 0)
+			   {
+			     if(positionVO.getPartyPositionVOList() != null && positionVO.getPartyPositionVOList().size() > 0)
+				 {
+					for(PartyPositionVO positionVO2 :positionVO.getPartyPositionVOList())
+					 if(!strongLocationIdsList.contains(positionVO2.getId()))
+					  strongLocationIdsList.add(positionVO2.getId());
+				  }
+			   }
+			  
+			  if(positionVO.getPartyPositionVOList() != null && positionVO.getPartyPositionVOList().size() > 0)
+			  {
+				for(PartyPositionVO positionVO2 :positionVO.getPartyPositionVOList())
+				 if(!totalLocationIdsList.contains(positionVO2.getId()))
+					 totalLocationIdsList.add(positionVO2.getId());
+			  }
+			  
+			 }
+		   }
+	   if(strongLocationIdsList != null && strongLocationIdsList.size() > 0)
+		 getPollingPercentage(locationType,constituencyId,strongLocationIdsList,partyPositionVO.getId(),partyPositionVO,"strongLocations",totalLocationIdsList);
+	   
+	   if(weakLocationIdsList != null && weakLocationIdsList.size() > 0)
+		 getPollingPercentage(locationType,constituencyId,weakLocationIdsList,partyPositionVO.getId(),partyPositionVO,"weakLocations",totalLocationIdsList);  
+	   
+	 
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error(" Exception Occured in getPollingPercentageForALocation() method, Exception - "+e);
+			
+		}
+	}
+  
+  
+  
+  
+  public void getPollingPercentage(String locationType,Long constituencyId,List<Long> locationIdsList,Long electionId,PartyPositionVO partyPositionVO,String tempVar,List<Long> totalLocationIdsList)
+  {
+	try{
+		
+		Map<Long,Double> resultMap = new HashMap<Long, Double>(0);//locationId,PollingPercentage
+		Map<Long,Double> partyPercentage = new HashMap<Long, Double>(0);//locationId,selectedPartyPercentage
+		Map<Long,String> locationNameMap = new HashMap<Long, String>(0);//locationId,locationName
+		
+		Map<Long,List<Long>> locationIdsMap = new HashMap<Long, List<Long>>(0);//Map<PanchayatId,List<BoothIds>>
+		Map<Long,Long> totalVotesMap = new HashMap<Long, Long>(0);//Map<panchayatId,totalvotes
+		Map<Long,Long> validvotesMap = new HashMap<Long, Long>(0);//Map<panchayatId,validvotes
+		
+		
+		if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+		{
+		  List<Object[]> list = hamletBoothElectionDAO.getPanchayatBoothDetailsByPanchayatIdsList(locationIdsList, electionId);
+		  if(list != null && list.size() > 0)
+		  {
+			for(Object[] params:list)
+			{
+				 List<Long> boothList = locationIdsMap.get((Long)params[0]);
+				 if(boothList == null)
+				 {
+					 boothList = new ArrayList<Long>(0);
+					 locationIdsMap.put((Long)params[0], boothList);
+				 }
+				  if(!boothList.contains((Long)params[1]))
+					  boothList.add((Long)params[1]);
+			 }
+		  }
+		 }
+		
+		
+		if(locationType.equalsIgnoreCase(IConstants.BOOTH) && locationIdsList != null && locationIdsList.size() > 0)
+		{
+		   for(Long boothId : locationIdsList)
+		   {
+			   List<Long> boothIds = new ArrayList<Long>(0);
+			   boothIds.add(boothId);
+			   locationIdsMap.put(boothId, boothIds);
+		   }
+		}
+		
+		if(locationIdsMap != null && locationIdsMap.size() > 0)
+		{
+		  for(Long locationId : locationIdsMap.keySet())
+		  {
+			 List<Long> boothIdList = locationIdsMap.get(locationId);
+			 Long totalVotes = boothDAO.getTotalVotesForBooth(boothIdList, constituencyId);
+			 totalVotesMap.put(locationId, totalVotes);
+		  }
+		}
+		
+		if(partyPositionVO.getPartyPositionVOList() != null && partyPositionVO.getPartyPositionVOList().size() > 0)
+		{
+		  for(PartyPositionVO positionVO:partyPositionVO.getPartyPositionVOList())
+		  {
+			  if(positionVO.getPartyPositionVOList() != null && positionVO.getPartyPositionVOList().size() > 0)
+			  {
+			   for(PartyPositionVO locationVO:positionVO.getPartyPositionVOList())
+			   {
+			     partyPercentage.put(locationVO.getId(), locationVO.getPartyPercentage());
+			     locationNameMap.put(locationVO.getId(), locationVO.getName());
+			     validvotesMap.put(locationVO.getId(), locationVO.getTotalValidVotes());
+			   }
+			  }
+		  }
+		}
+		  		  
+		if(totalVotesMap != null && totalVotesMap.size() > 0)
+		{
+		  for(Long id : totalVotesMap.keySet())
+		  {
+			double difference =  new BigDecimal((validvotesMap.get(id)*100/totalVotesMap.get(id))).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			if(tempVar != null && tempVar.equalsIgnoreCase("strongLocations")) 
+			{
+			 if(difference < IConstants.LOW_VOTING_PERCENTAGE_IN_STRONG_LOCATIONS) 
+			   resultMap.put(id, difference);
+			}
+			else{
+			 if(difference > IConstants.HIGH_VOTING_PERCENTAGE_IN_WEEK_LOCATIONS) 
+				resultMap.put(id, difference);	
+			}
+		  }
+		}
+	if(resultMap != null && resultMap.size() > 0)
+	{
+		List<PartyPositionVO> pollingPercentageVOList = new ArrayList<PartyPositionVO>(0);
+		for(Long locationId:resultMap.keySet())
+		{
+			PartyPositionVO positionVO = new PartyPositionVO();
+			positionVO.setId(locationId);
+			positionVO.setName(locationNameMap.get(locationId));
+			positionVO.setPartyPercentage(partyPercentage.get(locationId));
+			positionVO.setPollingPercentage(resultMap.get(locationId));
+			pollingPercentageVOList.add(positionVO);
+			
+		}
+		if(tempVar != null && tempVar.equalsIgnoreCase("strongLocations"))
+		 partyPositionVO.setStrongPollingPercentVOList(pollingPercentageVOList);
+		else
+			partyPositionVO.setWeakPollingPercentVOList(pollingPercentageVOList);
+		  
+	  }
+		  
+	}catch (Exception e) {
+	 e.printStackTrace();
+	 LOG.error(" Exception Occured in getPollingPercentage method, Exception - "+e);
+	}
+  }
 	
 	public void getPanchayatWisePartyPerformance(Long constituencyId,Long panchayatId, Long electionId,PartyPositionVO partyPositionVO, Long partyId)
 	{
@@ -771,7 +948,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	public void getPartyPerformance(Map<Long,Map<Long,Long>> resultMap,PartyPositionVO partyPositionVO, Long selectedpartyId,String locationType)
 	{
 		try{
-			
+		
 		 for(Long id:resultMap.keySet())
 		 {
 			Map<Long,Long> partyMap = resultMap.get(id);
@@ -819,6 +996,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	    		 locationVO = new PartyPositionVO();
 	    		 locationVO.setId(id);
 	    		 locationVO.setName(locationName != null?locationName:" ");
+	    		 locationVO.setPartyPercentage(selectedPartyTotalPercent);
+	    		 locationVO.setTotalValidVotes(totalVotes);
 	    		 locationList.add(locationVO);
 	    		 positionVO.setPartyPositionVOList(locationList);
 	    		 
