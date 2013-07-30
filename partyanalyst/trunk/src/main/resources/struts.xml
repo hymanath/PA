@@ -5686,6 +5686,11 @@
 		   <param name="root">electionsYears</param>
 		 </result>	
 		 </action>
+		  <action name="getDeletedVotersInfoByPanchayatIdsAction" class="suggestiveModelAction" method="getDeletedVotersInfoByPanchayats">
+		  <result type="json" name="success">
+		   <param name="root">deletedVoters</param>
+		 </result>	
+		 </action>
 		 
 		 <action name="getLeadersDataAction" class="suggestiveModelAction" method="getLeadersData">
 		  <result type="json" name="success">
