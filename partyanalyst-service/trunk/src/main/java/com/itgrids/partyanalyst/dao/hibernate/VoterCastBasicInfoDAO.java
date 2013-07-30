@@ -47,11 +47,11 @@ public class VoterCastBasicInfoDAO extends GenericDaoHibernate<VoterCastBasicInf
 	public List<Object[]> getToatlVotersForSelectedLevl(List<Long> levelValues,Long userId,Long publicationId,Long levelId,Long constituencyId)
     {
     	
-    	Query query = getSession().createQuery("select model.reportLevelValue , model.casteAssignedVoters from VoterCastBasicInfo model " +
+    	Query query = getSession().createQuery("select model.reportLevelValue,model.casteAssignedVoters,model.casteNotAssignedVoters from VoterCastBasicInfo model " +
     			" where model.voterReportLevel.voterReportLevelId = :levelId and " +
     			" model.reportLevelValue in (:levelValues) and model.constituency.constituencyId = :constituencyId " +
     			" and model.publicationDateId = :publicationId " +
-    			" and model.userId = :userId order by model.model.reportLevelValue desc");
+    			" and model.userId = :userId order by model.reportLevelValue desc");
     	query.setParameter("userId", userId);
     	query.setParameter("publicationId", publicationId);
     	query.setParameterList("levelValues", levelValues);

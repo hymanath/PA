@@ -25,6 +25,8 @@ public class YouthLeaderSelectionVO implements Serializable{
 	private String panchayatName;
 	private String boothName;
 	private List<YouthLeaderSelectionVO> boothLevelLeadersList;
+	private List<YouthLeaderSelectionVO> panchayatLevelLeadersList;
+	private YouthLeaderSelectionVO youthLeaderSelectionVO;
 	public Long getMandalId() {
 		return mandalId;
 	}
@@ -97,6 +99,20 @@ public class YouthLeaderSelectionVO implements Serializable{
 	public void setBoothLevelLeadersList(
 			List<YouthLeaderSelectionVO> boothLevelLeadersList) {
 		this.boothLevelLeadersList = boothLevelLeadersList;
+	}
+	public List<YouthLeaderSelectionVO> getPanchayatLevelLeadersList() {
+		return panchayatLevelLeadersList;
+	}
+	public void setPanchayatLevelLeadersList(
+			List<YouthLeaderSelectionVO> panchayatLevelLeadersList) {
+		this.panchayatLevelLeadersList = panchayatLevelLeadersList;
+	}
+	public YouthLeaderSelectionVO getYouthLeaderSelectionVO() {
+		return youthLeaderSelectionVO;
+	}
+	public void setYouthLeaderSelectionVO(
+			YouthLeaderSelectionVO youthLeaderSelectionVO) {
+		this.youthLeaderSelectionVO = youthLeaderSelectionVO;
 	}
 	
 	
