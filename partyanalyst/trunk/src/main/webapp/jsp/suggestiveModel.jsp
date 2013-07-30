@@ -107,6 +107,10 @@
     margin-left: auto;
     margin-right: auto;
     width: 990px;margin-top:20px;margin-bottom:20px;}
+th {
+    background: none repeat scroll 0 0 #D9EDF7;
+    color: #454545;
+}
 	</style>
 <script type="text/javascript" >
 
