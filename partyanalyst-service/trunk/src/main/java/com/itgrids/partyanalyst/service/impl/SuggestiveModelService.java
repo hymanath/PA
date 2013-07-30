@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.OptionVO;
@@ -32,6 +33,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ISuggestiveRangeDAO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.SuggestiveRange;
 import java.util.Map;
@@ -60,7 +62,19 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IPublicationDateDAO publicationDateDAO;
 	
+	private IVoterModificationInfoDAO voterModificationInfoDAO;
 	
+	
+	public IVoterModificationInfoDAO getVoterModificationInfoDAO() {
+		return voterModificationInfoDAO;
+	}
+
+	public void setVoterModificationInfoDAO(
+			IVoterModificationInfoDAO voterModificationInfoDAO) {
+		this.voterModificationInfoDAO = voterModificationInfoDAO;
+	}
+
+
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
 	}
@@ -1041,5 +1055,32 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			
 		return returnList;
 	}
+	 
+	 public List<VoterVO> getDeletedVoterInfo(List<Long> panchayatIds)
+	 {
+		 List<VoterVO> result = new ArrayList<VoterVO>(0);
+		 VoterVO voterVO = null;
+		try{
+			if(panchayatIds != null && panchayatIds.size() > 0)
+			{
+				Long publicationId = publicationDateDAO.getLatestPublicationId();
+				List<Object[]> deletedVoters = voterModificationInfoDAO.getDeletedVotersByPanchayats(panchayatIds,publicationId);
+				if(deletedVoters != null && deletedVoters.size() > 0)
+				{
+					for(Object[] params : deletedVoters)
+					{
+						voterVO = new VoterVO();
+						voterVO.setPanchayatName(panchayatDAO.getPanchayatNameById((Long)params[1]).toString());
+						voterVO.setTotalVoters((Long)params[0]);
+						result.add(voterVO);
+					}
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	 }
 		
 }
