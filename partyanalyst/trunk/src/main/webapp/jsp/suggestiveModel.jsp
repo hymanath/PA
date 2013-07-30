@@ -409,7 +409,7 @@ function buildLeadersTable(results)
 		var mandalName = $('#listMandalNames option:selected').text();
 		var str = "";
 		str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">'+mandalName+' Booth Level Caste Details </h4>';
-		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; font-weight: lighter;">';
+		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
 		str += '<tr>';
 		str += '<th>Mandal</th>';
 		str += '<th>Panchayat</th>';
@@ -465,7 +465,7 @@ function showSuggestedLocations(myResults,jsObj){
  var str ='';
  if(myResults != null && myResults.length > 0 && myResults[0].suggestedLocations != null && myResults[0].suggestedLocations.length > 0){
     str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">Order OF Priority to Target Geographically </h4>';
-	str+='<table  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter;">';
+	str+='<table  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
 	str+='  <tr>';
 	str+='    <th>Panchayat Name</th>';
 	str+='  </tr>';
