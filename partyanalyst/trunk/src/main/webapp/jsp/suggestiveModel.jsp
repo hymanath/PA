@@ -112,6 +112,7 @@
 
 $(document).ready(function(){
 getConstituencyList();
+getLeadersList();
 });
 function getConstituencyList(){
 
@@ -235,6 +236,16 @@ function validateYear2(yearId){
 		return;
 	}	
 }
+function getLeadersList(){
+var jsObj= 
+	{	
+		task:"getLeadersList"		
+	};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getLeadersDataAction.action?"+param;
+	callAjax(param,jsObj,url);
+
+}
 function callAjax(param,jsObj,url){
 	var myResults;					
 		var callback = {			
@@ -263,6 +274,10 @@ function callAjax(param,jsObj,url){
 						else if(jsObj.task == "getPartyPerformanceReport")
 						{
 							showPartyPerformanceReport(myResults,jsObj);
+						}
+						else if(jsObj.task == "getLeadersList")
+						{
+							buildLeadersTable(myResults);
 						}
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
@@ -371,6 +386,62 @@ function addDefaultSelectValues(elmt){
 	addOptions(elmt,opElmt);
 }
 
+function buildLeadersTable(results)
+{
+	if(results != null && results.length > 0)
+	{
+		var str = "";
+		str += '<table class="table table-hover table-bordered">';
+		str += '<tr>';
+		str += '<th>Mandal</th>';
+		str += '<th>Panchayat</th>';
+		str += '<th>Total Voters</th>';
+		str += '<th>Major Castes</th>';
+		str += '<th>Booth</th>';
+		str += '<th>Total Voters</th>';
+		str += '<th>Major Castes</th>';
+		str += '</tr>';
+		for(var i in results)
+		{
+			str += '<tr>';
+			var rowLength = results[i].boothLevelLeadersList.length;
+			str += '<td rowspan='+rowLength+'>'+results[i].mandalName+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].panchayatName+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].panchayatTotalVoters+'</td>'; 
+			str += '<td rowspan='+rowLength+' >';
+			for(var j in results[i].panchayatLevelLeadersList)
+			{
+				str += ''+results[i].panchayatLevelLeadersList[j].casteName +'('+results[i].panchayatLevelLeadersList[j].casteVotersPerc+')  '; 
+			}
+			str += '</td>';
+			
+			for(var k in results[i].boothLevelLeadersList)
+			{
+			
+				if(k > 0)
+				{
+					str += '<tr>';
+				}
+				str += '<td>'+results[i].boothLevelLeadersList[k].boothName+'</td>'; 
+				str += '<td>'+results[i].boothLevelLeadersList[k].boothTotalVoters+'</td>';
+				str += '<td>';
+				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
+				{
+					str += ''+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+'('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
+				}
+				str += '</td>';
+				if(k > 0)
+				{
+					str += '</tr>';
+				}
+			}
+			str += '</tr>';
+		}
+		str += '</table>';
+		$('#leadersTable').html(str);
+	}
+	
+}
 </script>
 </head>
 <body>
@@ -436,9 +507,10 @@ function addDefaultSelectValues(elmt){
 	</table>
 </div>
 <input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;"/>
-</div>
-<div id="partyPerformanceBtnDiv"><input type="button" value="submit" id="getPartyPer" class="btn btn-info"></div>
 
+<div id="leadersTable"></div>
+<div id="partyPerformanceBtnDiv"><input type="button" value="submit" id="getPartyPer" class="btn btn-info"></div>
+</div>
 
   <div id="partyPerformanceMainDiv">
    <div id="partyPerformanceInnerDiv"></div>
