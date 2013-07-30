@@ -291,6 +291,9 @@ function callAjax(param,jsObj,url){
 						{
 							buildLeadersTable(myResults);
 						}
+						else if(jsObj.task == "getDeletedVotersInfo")
+						
+						buildDeletedVotersInfo(myResults);
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
 					}  
@@ -533,7 +536,12 @@ function buildLeadersTable(results)
     <div id="weakPollingPercentageDiv" class="span6"></div>
   </div>
 
+  
+<!--<div id="deletedVotersInfo">
 
+</div>-->
+
+ 
 </div>
 
 
@@ -685,6 +693,41 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
 
 }
 
+function getDeletedVotersInfo()
+{
+var panchayats = [];
+panchayats.push(1392,1393,1394,1395);
+var jsObj = {
+			panchayats:panchayats,
+			task:"getDeletedVotersInfo"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getDeletedVotersInfoByPanchayatIdsAction.action?"+rparam;
+		callAjax(rparam,jsObj,url);
+}
+
+function buildDeletedVotersInfo(results)
+{
+var divEle = document.getElementById("deletedVotersInfo");
+if(results != null)
+var str='';
+str+='<h4 style="margin-left:10px;">Deleted Voters</h4>';
+str+='<table class="table table-bordered table-striped table-hover">';
+str+='<tr>';
+str+='<th> PanchayatName</th>';
+str+='<th> Deleted Voters</th>';
+str+='</tr>';
+for(var i in results)
+{
+str+='<tr>';
+str+='<td>'+results[i].panchayatName+'</td>';
+str+='<td>'+results[i].totalVoters+'</td>';
+str+='</tr>';
+}
+str+='</table>';
+divEle.innerHTML = str;
+}
+//getDeletedVotersInfo();
 
 </script>
 </body>

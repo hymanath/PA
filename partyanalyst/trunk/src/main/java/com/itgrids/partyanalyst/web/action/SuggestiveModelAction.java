@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.jfree.util.Log;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.OptionVO;
@@ -14,6 +16,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
@@ -37,12 +40,16 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private List<YouthLeaderSelectionVO> LeaderSelectionList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private List userAccessConstituencyList;
-	
-	
-	
+	private List<VoterVO> deletedVoters;
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
-	
-	
+	public List<VoterVO> getDeletedVoters() {
+		return deletedVoters;
+	}
+
+	public void setDeletedVoters(List<VoterVO> deletedVoters) {
+		this.deletedVoters = deletedVoters;
+	}
+
 	public List<SelectOptionVO> getPartyList() {
 		return partyList;
 	}
@@ -225,4 +232,24 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		
 		return Action.SUCCESS;
 	}
+	public String getDeletedVotersInfoByPanchayats()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> panchayatIds = new ArrayList<Long>(0);
+			JSONArray arr = jObj.getJSONArray("panchayats");
+			if(arr != null && arr.length() > 0)
+				for(int i=0 ;i< arr.length() ; i++)
+				{
+				 panchayatIds.add(new Long(arr.get(i).toString()));
+				}
+			deletedVoters = suggestiveModelService.getDeletedVoterInfo(panchayatIds);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+
 }
