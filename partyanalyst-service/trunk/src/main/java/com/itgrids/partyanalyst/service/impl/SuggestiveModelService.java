@@ -657,6 +657,10 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			  }
 		}
 		
+		if(resultList != null && resultList.size() == 2){
+		  List<PartyPositionVO> suggestedLocations = getSuggestiveLocationsForAParty(resultList);
+		  resultList.get(0).setSuggestedLocations(suggestedLocations);
+		}	
 
 		//For PollingPercentage Panchayats
 		if(resultList != null && resultList.size() > 0)
@@ -1299,4 +1303,61 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		return result;
 	 }
 		
+	 public List<PartyPositionVO> getSuggestiveLocationsForAParty(List<PartyPositionVO> partyPositions){
+		 List<PartyPositionVO> returnValues = new ArrayList<PartyPositionVO>(); 
+	    try{
+		 if(partyPositions.size() == 2){
+			 List<PartyPositionVO> latestElec =  partyPositions.get(0).getPartyPositionVOList();
+			 List<PartyPositionVO> prevElec =  partyPositions.get(1).getPartyPositionVOList();
+			 int x = -1;
+				for(int j = latestElec.size()-1;j>0;j--){//2009
+					x = x+1;
+					List<PartyPositionVO> panchayaties = latestElec.get(j).getPartyPositionVOList();
+					if(panchayaties != null && panchayaties.size() >0){	
+						for(int i = 0;i< (prevElec.size()-1-x);i++)
+						{//2004
+							List<PartyPositionVO> prevPanchayaties = prevElec.get(i).getPartyPositionVOList();
+							if(prevPanchayaties != null && prevPanchayaties.size() >0){	
+								populateMachedValues(panchayaties,prevPanchayaties,returnValues);
+							}
+						}
+					}
+				}
+				 x = -1;
+				
+				for(int j = prevElec.size()-1;j>0;j--){//2004
+					x = x+1;
+					List<PartyPositionVO> prevPanchayaties = prevElec.get(j).getPartyPositionVOList();
+					if(prevPanchayaties != null && prevPanchayaties.size() >0){	
+						for(int i = 0;i< (latestElec.size()-1-x);i++)
+						{//2009
+							List<PartyPositionVO> panchayaties = latestElec.get(i).getPartyPositionVOList();
+							if(panchayaties != null && panchayaties.size() >0){	
+								populateMachedValues(panchayaties,prevPanchayaties,returnValues);
+							}
+						}
+					}
+				}
+				 
+				for(int i = 0;i<latestElec.size();i++){
+					List<PartyPositionVO> panchayaties = latestElec.get(i).getPartyPositionVOList();
+					List<PartyPositionVO> prevPanchayaties = prevElec.get(i).getPartyPositionVOList();
+					populateMachedValues(panchayaties,prevPanchayaties,returnValues);
+				}
+		 }
+	    }catch(Exception e){
+		  
+	    }
+	    return returnValues;
+	 }
+	 
+	 public void populateMachedValues(List<PartyPositionVO> panchayaties,List<PartyPositionVO> prevPanchayaties,List<PartyPositionVO> returnValues){
+		 for(PartyPositionVO prev:prevPanchayaties){
+		    for(PartyPositionVO current:panchayaties){
+			   if(current.getId().longValue() == prev.getId().longValue()){
+				  returnValues.add(current);
+				}
+			}
+		 }
+	 }
 }
