@@ -44,7 +44,7 @@
 	font-family: serif verdana sans-serif;
 	border: 1px lightBlue solid ;
 	width: 920px; 
-	margin-left: 70px;
+	margin-left: 15px;
 	margin-bottom: 15px;
 	background-color:white;
 	font-weight:bold;
@@ -61,7 +61,7 @@
 	margin-top: 30px;
 	height: 25px;
 	width: 920px; 
-	margin-left: 73px;
+	margin-left: 15px;
 	color:white;
 	background:none repeat scroll 0 0 #06ABEA;
 	margin-top: 30px; 
@@ -406,7 +406,9 @@ function buildLeadersTable(results)
 {
 	if(results != null && results.length > 0)
 	{
+		var mandalName = $('#listMandalNames option:selected').text();
 		var str = "";
+		str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">'+mandalName+' Booth Level Caste Details </h4>';
 		str += '<table class="table table-hover table-bordered">';
 		str += '<tr>';
 		str += '<th>Mandal</th>';
@@ -462,7 +464,7 @@ function buildLeadersTable(results)
 function showSuggestedLocations(myResults,jsObj){
  var str ='';
  if(myResults != null && myResults.length > 0 && myResults[0].suggestedLocations != null && myResults[0].suggestedLocations.length > 0){
-    str+='<h4>Order OF Priority to Target Geographically</h4>';
+    str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">Order OF Priority to Target Geographically </h4>';
 	str+='<table  class="table table-bordered table-striped table-hover">';
 	str+='  <tr>';
 	str+='    <th>Panchayat Name</th>';
@@ -480,7 +482,7 @@ function showSuggestedLocations(myResults,jsObj){
 </script>
 </head>
 <body>
-<div id="suggestiveMainDiv">
+<div id="suggestiveMainDiv" align="center">
   <div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>
    <div id="mainDiv" align="center" >
      <div id="errorMsgDiv" >&nbsp;</div><br><br>
@@ -544,6 +546,7 @@ function showSuggestedLocations(myResults,jsObj){
 <input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="getLeadersList();"/>
 
 <div id="leadersTable"></div>
+<div id="suggestedLocationsDiv"></div>
 <div id="partyPerformanceBtnDiv"><input type="button" value="submit" id="getPartyPer" class="btn btn-info"></div>
 </div>
 
@@ -551,8 +554,7 @@ function showSuggestedLocations(myResults,jsObj){
    <div id="partyPerformanceInnerDiv"></div>
   </div>
   
-  <div id="suggestedLocationsDiv">
-  </div>
+  
   
   <div id="strongAndWeakPollingPerDiv" class="row-fluid">
     <div id="strongPollingPercentageDiv" class="span6"></div>
@@ -574,10 +576,10 @@ $(document).ready(function(){
 $("#getPartyPer").click(function(){
 	  
 	var jsObj = {
-	        constituencyId:232,
+	        constituencyId:221,
 			electionId:0,
 			partyId:362,
-			locationId:2844,
+			locationId:2779,
 			locationType:"mandal",
 			tempVar:"all",
 			task:"getPartyPerformanceReport"
