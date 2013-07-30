@@ -459,7 +459,7 @@ function buildConstituency(myResults)
 		}
 		.mySelectBox
 		{
-			width:150px;
+			width:180px;
 			padding:2px;
 			color:#334C72;
 		}
@@ -508,7 +508,7 @@ function buildConstituency(myResults)
 						
 						<th align="left" class="tdLeftBorder" style="padding-left:30px;"><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /></th>
 						<td align="left">
-							<select class="mySelectBox" id="mandalField" name="mandal" onchange= "checkForFormSubmit()">
+							<select class="mySelectBox" id="mandalField" name="mandal" onchange= "checkForFormSubmit()" >
 								<option value="0">Select Mandal</option>
 							</select>	
 							<img  id="partyAjaxImg" class="ajaxImgClass" src='images/icons/search.gif' style="display:none;"></img>
