@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -931,6 +932,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				List<YouthLeaderSelectionVO> panchayatLevelList = null;
 				YouthLeaderSelectionVO boothyouthSelectionVO  = null;
 				List<YouthLeaderSelectionVO> botthDetailsList = null;
+				 DecimalFormat df = new DecimalFormat("#.##");
 				publicationId = publicationDateDAO.getLatestPublicationId();
 				List<Object[]> panchayatsList = panchayatDAO.getPanchayatsByTehsilId(mandalId);
 				if(panchayatsList != null && panchayatsList.size() > 0)
@@ -1012,7 +1014,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 								basicVO.setId(boothId);
 								basicVO.setCount((Long)parms[1]);
 								basicVO.setName(parms[0].toString());
-								basicVO.setPerc(new BigDecimal(((Long)parms[1]*100/totalVoter)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+								
+								basicVO.setPerc(Double.valueOf(df.format((Long)parms[1]*100/totalVoter.floatValue())));
 								basicVOListForBooth.add(basicVO);
 								
 							}
