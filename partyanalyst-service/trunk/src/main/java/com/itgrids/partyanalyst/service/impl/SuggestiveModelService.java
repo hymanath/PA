@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
@@ -61,7 +62,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private IVoterCastInfoDAO voterCastInfoDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IPublicationDateDAO publicationDateDAO;
-	
+	private ITehsilDAO tehsilDAO;
 	private IVoterModificationInfoDAO voterModificationInfoDAO;
 	
 	
@@ -231,6 +232,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 
 	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
 		this.publicationDateDAO = publicationDateDAO;
+	}
+	
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
 	}
 
 	public void getVotersGroupDetails(List<SelectOptionVO> groupVos,Long constituencyId,Long locationId,String type){
@@ -916,7 +925,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				Map<Long,List<BasicVO>> casteMapForPanchayat = new HashMap<Long, List<BasicVO>>();//Map<panchayatid,catseDetails>
 				Map<Long,List<BasicVO>> casteMapForBooth = new HashMap<Long, List<BasicVO>>();//Map<booyhid,catseDetails>
 				Long publicationId = 0l;
-				List<BasicVO> basicVOList = new ArrayList<BasicVO>();
+				List<BasicVO> basicVOListForPanchayat = null;
+				List<BasicVO> basicVOListForBooth = null;
+				List<YouthLeaderSelectionVO> botthLevelList = null;
+				List<YouthLeaderSelectionVO> panchayatLevelList = null;
+				YouthLeaderSelectionVO boothyouthSelectionVO  = null;
+				List<YouthLeaderSelectionVO> botthDetailsList = null;
 				publicationId = publicationDateDAO.getLatestPublicationId();
 				List<Object[]> panchayatsList = panchayatDAO.getPanchayatsByTehsilId(mandalId);
 				if(panchayatsList != null && panchayatsList.size() > 0)
@@ -938,13 +952,15 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					if(panchaytVotersCount != null && panchaytVotersCount.size() > 0)
 					{
 						for (Object[] parms : panchaytVotersCount) {
-							totalVotersInPanchayat.put((Long)parms[0], (Long)parms[1]);
+							Long total = ((Long)parms[1] + (Long)parms[2]);
+							totalVotersInPanchayat.put((Long)parms[0], total);
 						}
 					}
 					for (Long panchayatId : panchayaIds) {
 						List<Object[]> boothsList = boothDAO.getBoothsByPanchayat(panchayatId,publicationId);
 						if(boothsList != null && boothsList.size() > 0)
 						{
+							basicVOListForPanchayat = new ArrayList<BasicVO>();
 							for (Object[] parms : boothsList) {
 								SelectOptionVO selectOptionVO = new SelectOptionVO();	
 								selectOptionVO.setId((Long)parms[0]);
@@ -966,8 +982,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 									basicVO.setCount((Long)parms[2]);
 									basicVO.setName(parms[1].toString());
 									basicVO.setPerc((Double)parms[3]);
-									basicVOList.add(basicVO);
-									casteMapForPanchayat.put(panchayatId, basicVOList);
+									basicVOListForPanchayat.add(basicVO);
+									
 								}
 								else
 								{
@@ -976,7 +992,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 								count ++;
 							}
 						}
-	 				}
+						casteMapForPanchayat.put(panchayatId, basicVOListForPanchayat);
+					}
 					
 					
 				}
@@ -987,6 +1004,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						List<Object[]> casteDetails = userVoterDetailsDAO.getCasteDetailsOfVoterByBoothId(boothId,publicationId,userid);
 						totalVotersInBooth.put(boothId, totalVoter);
 						int count = 0;
+						basicVOListForBooth = new ArrayList<BasicVO>();
 						for (Object[] parms : casteDetails) {
 							if(IConstants.MAX_LEVEL > count)
 							{
@@ -995,15 +1013,17 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 								basicVO.setCount((Long)parms[1]);
 								basicVO.setName(parms[0].toString());
 								basicVO.setPerc(new BigDecimal(((Long)parms[1]*100/totalVoter)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-								basicVOList.add(basicVO);
-								casteMapForBooth.put(boothId, basicVOList);
+								basicVOListForBooth.add(basicVO);
+								
 							}
 							else
 							{
 								break;
 							}
 							count ++;
+						
 						}
+						casteMapForBooth.put(boothId, basicVOListForBooth);
 					}
 					
 				}
@@ -1013,38 +1033,52 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						YouthLeaderSelectionVO youthLeaderSelectionVO = new YouthLeaderSelectionVO();
 						 List<BasicVO> panchayatDetails = casteMapForPanchayat.get(panchayatid);
 						 Long panchayatTotalVoters = totalVotersInPanchayat.get(panchayatid);
-						 
+						 panchayatLevelList = new ArrayList<YouthLeaderSelectionVO>();
 						 if(panchayatDetails != null && panchayatDetails.size() > 0)
 						 {
 							 for (BasicVO basicVO : panchayatDetails) {
-								 youthLeaderSelectionVO.setPanchayatTotalVoters(panchayatTotalVoters);
-								 youthLeaderSelectionVO.setCasteName(basicVO.getName());
-								 youthLeaderSelectionVO.setCasteVoters(basicVO.getCount());
-								 youthLeaderSelectionVO.setCasteVotersPerc(basicVO.getPerc());
+								 YouthLeaderSelectionVO youthLeaderSelection = new YouthLeaderSelectionVO();
+								 youthLeaderSelection.setCasteName(basicVO.getName());
+								 youthLeaderSelection.setCasteVoters(basicVO.getCount());
+								 youthLeaderSelection.setCasteVotersPerc(basicVO.getPerc());
+								 panchayatLevelList.add(youthLeaderSelection);
 							}
 						 }
 						List<Long> boothList = boothDAO.getBoothsByPanchayatId(panchayatid,publicationId);
 						if(boothList != null && boothList.size() > 0)
 						{
+							botthDetailsList = new ArrayList<YouthLeaderSelectionVO>();
 							for (Long boothId : boothList) {
+								boothyouthSelectionVO = new YouthLeaderSelectionVO();
+								
 								List<BasicVO> boothCasteDate = casteMapForBooth.get(boothId);
 								if(boothCasteDate != null && boothCasteDate.size() > 0)
 								{
-									List<YouthLeaderSelectionVO> botthLevelList = new ArrayList<YouthLeaderSelectionVO>();
+									botthLevelList = new ArrayList<YouthLeaderSelectionVO>();
 									for (BasicVO basicVO : boothCasteDate) {
-										
-										YouthLeaderSelectionVO youthSelectionVO = new YouthLeaderSelectionVO();
-										youthSelectionVO.setBoothTotalVoters(totalVotersInBooth.get(boothId));
+										YouthLeaderSelectionVO youthSelectionVO = new YouthLeaderSelectionVO();										
 										youthSelectionVO.setCasteName(basicVO.getName());
 										youthSelectionVO.setCasteVoters(basicVO.getCount());
 										youthSelectionVO.setCasteVotersPerc(basicVO.getPerc());
 										botthLevelList.add(youthSelectionVO);
-										
 									}
-									youthLeaderSelectionVO.setBoothLevelLeadersList(botthLevelList);
+									
 								}
+								boothyouthSelectionVO.setBoothId(boothId);
+								boothyouthSelectionVO.setBoothName(boothDAO.get(boothId).getPartNo());
+								boothyouthSelectionVO.setBoothTotalVoters(totalVotersInBooth.get(boothId));
+								boothyouthSelectionVO.setBoothLevelLeadersList(botthLevelList);
+								botthDetailsList.add(boothyouthSelectionVO);
+								
 							}
+							
+							youthLeaderSelectionVO.setBoothLevelLeadersList(botthDetailsList);
 						}
+						youthLeaderSelectionVO.setPanchayatTotalVoters(panchayatTotalVoters);
+						youthLeaderSelectionVO.setPanchayatId(panchayatid);
+						youthLeaderSelectionVO.setMandalName(tehsilDAO.get(mandalId).getTehsilName());
+						youthLeaderSelectionVO.setPanchayatName(panchayatDAO.get(panchayatid).getPanchayatName());
+						youthLeaderSelectionVO.setPanchayatLevelLeadersList(panchayatLevelList);
 						returnList.add(youthLeaderSelectionVO);
 					}
 				}
