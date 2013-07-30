@@ -532,10 +532,31 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testgetVotesEarnedForSelectedbooth()
+	/*public void testgetVotesEarnedForSelectedbooth()
 	{
 		List<Object[]> list = candidateBoothResultDAO.getVotesEarnedForSelectedbooth(232l, 38l, 207l);
 		for(Object[] params:list)
 		 System.out.println(params[0]+":"+params[1]);
+	}*/
+	
+	/*public void testGetTotalValidVotes()
+	{
+		List<Long> boothIdsList = new ArrayList<Long>(0);
+		long[] array = new long[]{203, 201, 202, 206, 207, 210, 204, 205, 208, 209, 223, 224, 220, 221, 222, 225, 227, 228, 226, 229, 230, 231, 218, 213, 214, 215, 216, 211, 212, 217, 219, 243, 242, 240, 237, 238, 239, 235, 236, 232, 233, 234, 241};
+		for(int i=0;i<array.length;i++)
+			boothIdsList.add(array[i]);
+		
+		System.out.println(candidateBoothResultDAO.getTotalValidVotes(boothIdsList, 38l, 232L));
+	}*/
+	
+	public void testGetValidVotesForMultipleBooths()
+	{
+		List<Long> boothIdsList = new ArrayList<Long>(0);
+		long[] array = new long[]{203, 201, 202, 206, 207, 210, 204, 205, 208, 209, 223, 224, 220, 221, 222, 225, 227, 228, 226, 229, 230, 231, 218, 213, 214, 215, 216, 211, 212, 217, 219, 243, 242, 240, 237, 238, 239, 235, 236, 232, 233, 234, 241};
+		//for(int i=0;i<array.length;i++)
+			boothIdsList.add(241l);
+			List<Object[]> results = candidateBoothResultDAO.getValidVotesForMultipleBooths(boothIdsList, 38l, 232L);
+			Object[] value= results.get(0);
+			System.out.println(value[0].toString()+" "+value[1].toString());
 	}
 }
