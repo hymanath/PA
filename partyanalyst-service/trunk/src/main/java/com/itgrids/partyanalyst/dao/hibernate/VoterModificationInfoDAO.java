@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.model.VoterModificationInfo;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificationInfo, Long> implements IVoterModificationInfoDAO{
 
@@ -153,6 +154,16 @@ public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificat
 		Query query = getSession().createQuery("select distinct model.reportLevelValue, model.voterReportLevel.voterReportLevelId from VoterModificationInfo model " +
 				" where model.voterModificationInfoId in (:modificationIdsList) order by model.voterReportLevel.voterReportLevelId ");
 		query.setParameterList("modificationIdsList", modificationIdsList);
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDeletedVotersByPanchayats(List<Long> panchayatIds,Long publicationId)
+	{
+		Query query = getSession().createQuery("select model.totalVoters, model.reportLevelValue from VoterModificationInfo model where model.publicationDate.publicationDateId =:publicationId and model.reportLevelValue in (:panchayatIds) and " +
+				"model.voterStatus.status = '"+IConstants.STATUS_DELETED+"' and  model.totalVoters > 0 and model.voterReportLevel.voterReportLevelId =:reportLevelId order by model.totalVoters asc");
+		query.setParameter("publicationId", publicationId);
+		query.setParameterList("panchayatIds", panchayatIds);
+		query.setParameter("reportLevelId", IConstants.PANCHAYAT_REPORT_LEVEL_ID);
 		return query.list();
 	}
 	
