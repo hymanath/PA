@@ -33,5 +33,7 @@ public interface IVoterModificationInfoDAO extends GenericDao<VoterModificationI
 	
 	public List<Object[]> getVoterModificationDetailsByModificationIdsList(List<Long> modificationIdsList);
 	
+	public List<Object[]> getDeletedVotersByPanchayats(List<Long> panchayatIds,Long publicationId);
+	
 
 }
