@@ -5132,7 +5132,7 @@ public class StaticDataService implements IStaticDataService {
 					.toString()));
 			allMuncipalitiesVO.setTotalWards(Long.parseLong(parmss[2]
 					.toString()));
-			allMuncipalitiesVO.setTotalVoters((Double) parmss[3]);
+			//allMuncipalitiesVO.setTotalVoters((Double) parmss[3]);
 			
 			if (parmss.length == 6) {
 				allMuncipalitiesVO.setStateId(Long.parseLong(parmss[4]
@@ -5174,6 +5174,14 @@ public class StaticDataService implements IStaticDataService {
 				totalValidVotes += Float.parseFloat(parms[2].toString());
 			}
 			allMuncipalitiesVO.setTotalPolledVotes(totalValidVotes);
+			Double totalVoters = 0d;
+			List totalConstiValidVotes = constituencyElectionDAO.getConstituencyValidVotesForLocalBodyElection(Long.valueOf(muncipalityId.toString()),latestMuncipalElectionYear);
+			if(totalConstiValidVotes != null){
+				Object[] params = (Object[])totalConstiValidVotes.get(0);
+				if(params[2].toString() !=null)
+					totalVoters = Double.parseDouble(params[2].toString());
+			}
+			allMuncipalitiesVO.setTotalVoters(totalVoters);
 			List<TeshilPartyInfoVO> teshilPartyInfoVO = new ArrayList<TeshilPartyInfoVO>(
 					0);
 			for (int i = 0; i < allPartyInfo.size(); i++) {
