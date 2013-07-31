@@ -26,6 +26,7 @@ public class PartyPositionVO implements Serializable{
 	private List<PartyPositionVO> addedVoterDetails;
 	private Long addedVotersCount;
 	private String tempVar;
+	private boolean addedVotersPresent;
 	
 	public String getName() {
 		return Name;
@@ -114,6 +115,12 @@ public class PartyPositionVO implements Serializable{
 	}
 	public void setTempVar(String tempVar) {
 		this.tempVar = tempVar;
+	}
+	public boolean isAddedVotersPresent() {
+		return addedVotersPresent;
+	}
+	public void setAddedVotersPresent(boolean addedVotersPresent) {
+		this.addedVotersPresent = addedVotersPresent;
 	}
 	
 	
