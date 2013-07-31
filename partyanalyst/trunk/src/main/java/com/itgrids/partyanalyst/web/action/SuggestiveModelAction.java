@@ -176,7 +176,16 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		jObj = new JSONObject(getTask());
 		
 		 if(jObj.getString("task").equalsIgnoreCase("getPartyPerformanceReport"))
-		 partyPositionVOList = suggestiveModelService.getPartyPerformenceReport(jObj.getLong("constituencyId"),jObj.getLong("partyId"),jObj.getLong("locationId"),jObj.getString("locationType"),jObj.getLong("electionId"),jObj.getString("tempVar"));
+		 {
+			 List<Long> electionIds = new ArrayList<Long>();
+			 JSONArray jArray = jObj.getJSONArray("electionId");
+			 for(int i = 0 ; i < jArray.length() ; i++)
+			 {
+				 electionIds.add(Long.valueOf(jArray.getString(i)));
+			 }
+			 partyPositionVOList = suggestiveModelService.getPartyPerformenceReport(jObj.getLong("constituencyId"),jObj.getLong("partyId"),jObj.getLong("locationId"),jObj.getString("locationType"),electionIds,jObj.getString("tempVar")); 
+		 }
+		
 			
 		}catch (Exception e) {
 		 e.printStackTrace();
