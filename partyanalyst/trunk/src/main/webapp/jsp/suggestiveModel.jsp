@@ -413,7 +413,7 @@ function buildLeadersTable(results)
 		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
 		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+mandalName+' BOOTH LEVEL CASTE DETAILS </h4>';
 		//str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;"></h4>';
-		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
+		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
 		str += '<tr>';
 		str += '<th>Mandal</th>';
 		str += '<th>Panchayat</th>';
@@ -618,7 +618,7 @@ $("#getPartyPer").click(function(){
 	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
 	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">PANCHAYAT WISE INC PARTY PERFORMANCE REPORT</h4>';
 	//str +='<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">PANCHAYAT WISE INC PARTY PERFORMANCE REPORT</h4>';
-	str +='<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
+	str +='<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
     str +='<tr>';
 	str +='<th></th>';
 	for(var i in result)
@@ -759,7 +759,7 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
 	str+='<td valign="top" style="padding-left:10px;"><div class="widget blue">';
 	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
 	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:450px;color: black;" class="">'+StrongPollingPerList[i].name+ ' AND POLLING % IS LESS</h4>';
-	str += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
+	str += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
 	str += '<tr>';
 	str += '<th>PANCHAYAT</th>';
 	str += '<th>POLLING PERCENTAGE</th>';
@@ -803,7 +803,7 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
 	wstr+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
 	wstr+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:450px;color: black;" class="">'+weakPollingPerList[m].name+ ' AND POLLING % IS MORE </h4>';
 	//wstr += '<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">'+weakPollingPerList[m].name+ ' AND POLLING % IS MORE </h4>';
-	wstr += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
+	wstr += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
 	wstr += '<tr>';
 	wstr += '<th>PANCHAYAT</th>';
 	wstr += '<th>POLLING PERCENTAGE</th>';
