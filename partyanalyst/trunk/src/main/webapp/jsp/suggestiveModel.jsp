@@ -495,7 +495,7 @@ function showSuggestedLocations(myResults,jsObj){
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
    <div id="mainDiv" align="center" >
      <div id="errorMsgDiv" >&nbsp;</div><br><br>
-     <div style="margin-left: -7px;">
+     <div style="margin-left: -7px;margin-bottom: 4px;">
 		<table>
 			<tr id="tableRowS">
 				<td id="tdWidth">
@@ -518,7 +518,7 @@ function showSuggestedLocations(myResults,jsObj){
 			</tr>
 	</table>		
 </div>
-<div style="width: 500px; margin-left: -340px;">
+<div style="width: 500px; margin-left: -340px;margin-bottom: 4px;">
 	<table>
 		<tr id="tableRowS">
 			<td id="tdWidth">
@@ -532,7 +532,7 @@ function showSuggestedLocations(myResults,jsObj){
 			</tr>
 </table>
 </div>
-<div>
+<div style="margin-bottom: 4px;"">
 <table>
 		<tr>
 			<td id="tdWidth">
@@ -553,7 +553,7 @@ function showSuggestedLocations(myResults,jsObj){
 	</table>
 </div>
 <!--<input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" />-->
-<div id="partyPerformanceBtnDiv"><input type="button" value="submit" id="getPartyPer" class="btn btn-success" onclick="getLeadersList();"></div>
+<div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;"><input type="button" value="submit" id="getPartyPer" class="btn btn-success" onclick="getLeadersList();"></div>
 </div>
 </div></div>
 <div>
