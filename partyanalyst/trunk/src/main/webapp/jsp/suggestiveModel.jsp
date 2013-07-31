@@ -562,21 +562,12 @@ function showSuggestedLocations(myResults,jsObj){
 <div id="partyPerformanceMainDiv">
    <div id="partyPerformanceInnerDiv"></div>
 </div>
-<div id="strongAndWeakPollingPerDiv" class="row-fluid">
+<div id="strongPollingPerDiv" class="row-fluid">
     <div id="strongPollingPercentageDiv" class="span6"></div>
-    <div id="weakPollingPercentageDiv" class="span6"></div>
 </div>
-
-
-
-
-  
-  
-  
-  
-  
-
-  
+<div id="weakPollingPerDiv" class="row-fluid">
+<div id="weakPollingPercentageDiv" class="span6"></div>
+</div>
 <!--<div id="deletedVotersInfo">
 
 </div>-->
@@ -756,10 +747,16 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
   var StrongPollingPerList = result[0].strongPollingPercentVOList;
  
   var str = '';
+  
+	str += '<table >';
+	var z = 0;
   for(var i in StrongPollingPerList)
   {
-	//str += '<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">'+StrongPollingPerList[i].name+ ' AND POLLING % IS LESS</h4>';
-	str+='<div class="widget blue">';
+	if(z%2 == 0)
+	{
+		str += '<tr>';
+	}
+	str+='<td valign="top" style="padding-left:10px;"><div class="widget blue">';
 	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
 	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:414px;color: black;" class="">'+StrongPollingPerList[i].name+ ' AND POLLING % IS LESS</h4>';
 	str += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
@@ -779,14 +776,30 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
 	
 	str += '</table>';
 	str += '</div>';
-	str += '</div>';	
+	str += '</div></td>';
+	if((z-1)%2 == 0)
+	{
+		str += '</tr>';
+	}
+	z++;
   }
+  if(z%2 == 0)
+  {
+	str += '</tr>';
+  }
+  str += '</table>'
   $("#strongPollingPercentageDiv").html(str);
   var weakPollingPerList = result[0].weakPollingPercentVOList;
   var wstr = '';
+  wstr += '<table >';
+  var v = 0;
   for(var m in weakPollingPerList)
   {
-	wstr+='<div class="widget blue">';
+	if(v%2 == 0)
+	{
+		wstr += '<tr>';
+	}
+	wstr+='<td valign="top" style="padding-left:10px;"><div class="widget blue">';
 	wstr+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
 	wstr+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:414px;color: black;" class="">'+weakPollingPerList[m].name+ ' AND POLLING % IS MORE </h4>';
 	//wstr += '<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">'+weakPollingPerList[m].name+ ' AND POLLING % IS MORE </h4>';
@@ -807,8 +820,18 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
 	
 	wstr += '</table>';
 	wstr += '</div>';
-	wstr += '</div>';
+	wstr += '</div><td>';
+	if((v-1)%2 == 0)
+	{
+		wstr += '</tr>';
+	}
+	v++;
   }
+  if(v%2 == 0)
+  {
+	wstr += '</tr>';
+  }
+  wstr += '</table>'
   $("#weakPollingPercentageDiv").html(wstr);
 }
 function getDeletedVotersInfo()
