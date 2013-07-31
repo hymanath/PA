@@ -613,16 +613,17 @@ $("#getPartyPer").click(function(){
      $("#partyPerformanceInnerDiv").html('No Data Found');
 	 return;
 	}
+	var partyName = $('#partySelectEl option:selected').text();
 	var str = '';
 	str+='<div class="widget green">';
 	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
-	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">PANCHAYAT WISE INC PARTY PERFORMANCE REPORT</h4>';
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">PANCHAYAT WISE '+partyName+' PARTY PERFORMANCE REPORT</h4>';
 	//str +='<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">PANCHAYAT WISE INC PARTY PERFORMANCE REPORT</h4>';
 	str +='<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
     str +='<tr>';
-	str +='<th></th>';
+	str +='<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">Type</th>';
 	for(var i in result)
-	 str +='<th>'+result[i].name+'</th>';
+	 str +='<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">'+result[i].name+'</th>';
 	str +='</tr>';
     var length = result[0].partyPositionVOList.length;
 	for(var j=0;j<length;j++){
@@ -761,8 +762,8 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
 	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:450px;color: black;" class="">'+StrongPollingPerList[i].name+ ' AND POLLING % IS LESS</h4>';
 	str += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
 	str += '<tr>';
-	str += '<th>PANCHAYAT</th>';
-	str += '<th>POLLING PERCENTAGE</th>';
+	str += '<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">PANCHAYAT</th>';
+	str += '<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">POLLING PERCENTAGE</th>';
 	str += '</tr>';
 	
 	for(var j in StrongPollingPerList[i].partyPositionVOList)
@@ -805,8 +806,8 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
 	//wstr += '<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">'+weakPollingPerList[m].name+ ' AND POLLING % IS MORE </h4>';
 	wstr += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
 	wstr += '<tr>';
-	wstr += '<th>PANCHAYAT</th>';
-	wstr += '<th>POLLING PERCENTAGE</th>';
+	wstr += '<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">PANCHAYAT</th>';
+	wstr += '<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">POLLING PERCENTAGE</th>';
 	wstr += '</tr>';
 	
 	for(var n in weakPollingPerList[m].partyPositionVOList)
@@ -855,8 +856,8 @@ var str='';
 str+='<h4 style="margin-left:10px;">Deleted Voters</h4>';
 str+='<table class="table table-bordered table-striped table-hover">';
 str+='<tr>';
-str+='<th> PanchayatName</th>';
-str+='<th> Deleted Voters</th>';
+str+='<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;"> PanchayatName</th>';
+str+='<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;"> Deleted Voters</th>';
 str+='</tr>';
 for(var i in results)
 {
