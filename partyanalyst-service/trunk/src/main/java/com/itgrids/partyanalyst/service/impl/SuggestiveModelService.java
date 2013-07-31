@@ -663,9 +663,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		}	
 
 		//For PollingPercentage Panchayats
-		if(resultList != null && resultList.size() > 0)
+		if(resultList != null && resultList.size() > 0){
 			getPollingPercentageForALocation(resultList.get(0),tempLocationName,constituencyId);
-
+			List<PartyPositionVO>  panchayatVos = getMoreVotersAddedLocDetailsWherePartyIsPoor(resultList.get(0).getPartyPositionVOList());
+			resultList.get(0).setAddedVoterDetails(panchayatVos);
+		}
 		 return resultList;
 		}catch (Exception e) {
 		 e.printStackTrace();
@@ -1332,31 +1334,42 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		return returnList;
 	}
 	 
-	 public List<VoterVO> getDeletedVoterInfo(List<Long> panchayatIds)
+	 public List<PartyPositionVO> getMoreVotersAddedLocDetailsWherePartyIsPoor(List<PartyPositionVO> partyPositions){
+		 List<PartyPositionVO> returnVal = new ArrayList<PartyPositionVO>();
+		 Map<Long,PartyPositionVO> panchatayats = new HashMap<Long,PartyPositionVO>();
+		 for(PartyPositionVO positionVo:partyPositions){
+			 if(positionVo.getMinValue() < 0 && positionVo.getPartyPositionVOList() != null && positionVo.getPartyPositionVOList().size() >0){
+				 returnVal.add(positionVo);
+				 for(PartyPositionVO panchayat:positionVo.getPartyPositionVOList()){
+					 panchatayats.put(panchayat.getId(), panchayat);
+				 }
+			 }
+		 }
+		 return returnVal;
+	 }
+	 
+	 public void getDeletedVoterInfo(Map<Long,PartyPositionVO> panchatayats)
 	 {
-		 List<VoterVO> result = new ArrayList<VoterVO>(0);
-		 VoterVO voterVO = null;
+		 PartyPositionVO vo = null;
 		try{
-			if(panchayatIds != null && panchayatIds.size() > 0)
-			{
+			
 				Long publicationId = publicationDateDAO.getLatestPublicationId();
-				List<Object[]> deletedVoters = voterModificationInfoDAO.getDeletedVotersByPanchayats(panchayatIds,publicationId);
+				List<Object[]> deletedVoters = voterModificationInfoDAO.getDeletedVotersByPanchayats(new ArrayList<Long>(panchatayats.keySet()),publicationId);
 				if(deletedVoters != null && deletedVoters.size() > 0)
 				{
 					for(Object[] params : deletedVoters)
 					{
-						voterVO = new VoterVO();
-						voterVO.setPanchayatName(panchayatDAO.getPanchayatNameById((Long)params[1]).toString());
-						voterVO.setTotalVoters((Long)params[0]);
-						result.add(voterVO);
+						vo = panchatayats.get((Long)params[1]);
+						vo.setAddedVotersCount((Long)params[0]);
+						
 					}
 				}
-			}
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		
 	 }
 		
 	 public List<PartyPositionVO> getSuggestiveLocationsForAParty(List<PartyPositionVO> partyPositions){
