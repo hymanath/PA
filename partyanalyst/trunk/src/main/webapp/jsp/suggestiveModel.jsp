@@ -286,7 +286,7 @@ function callAjax(param,jsObj,url){
 						{
 							showPartyPerformanceReport(myResults,jsObj);
 							showStrongAndWeakPollingPercentage(myResults,jsObj);
-							showSuggestedLocations(myResults,jsObj);
+							//showSuggestedLocations(myResults,jsObj);
 						}
 						else if(jsObj.task == "getLeadersList")
 						{
@@ -621,7 +621,7 @@ function showPartyPerformanceReport(result,jsObj)
 			str +=''+result[i].partyPositionVOList[j].partyPositionVOList[k].name+'';
 		    
 			if(k != tempVar)
-			 str +=',';
+			 str +=', ';
 		  }
 		  
 		  str +='</td>'
