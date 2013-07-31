@@ -13,6 +13,7 @@
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css" />
+<link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
 <style type="text/css">	
 	select {
     background-color: #FFFFFF;
@@ -40,7 +41,7 @@
 	color:red;
 	font-size:large;
 	}	
-	#mainDiv{
+	/*#mainDiv{
 	font-family: serif verdana sans-serif;
 	border: 1px lightBlue solid ;
 	width: 920px; 
@@ -78,8 +79,8 @@
 	width: 730px;
 	height: 25px;
 	padding-top: 5px;
-	}
-#partyPerformanceInnerDiv table th,#weakPollingPercentageDiv table th,#strongPollingPercentageDiv table th{
+	}*/
+/*#partyPerformanceInnerDiv table th,#weakPollingPercentageDiv table th,#strongPollingPercentageDiv table th{
     background-color: #CDE6FC;
     color: #333333;
     font-size: 13px;
@@ -91,7 +92,7 @@
     color: #676A67;
     font: small-caption;
     padding: 8px 8px 8px 10px;
-}
+}*/
 /* #partyPerformanceMainDiv{float: none;
     margin-left: auto;
     margin-right: auto;
@@ -406,9 +407,12 @@ function buildLeadersTable(results)
 {
 	if(results != null && results.length > 0)
 	{
-		var mandalName = $('#listMandalNames option:selected').text();
+		var mandalName = $('#listMandalNames option:selected').text().toUpperCase();
 		var str = "";
-		str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">'+mandalName+' Booth Level Caste Details </h4>';
+		str+='<div class="widget blue">';
+		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+mandalName+' BOOTH LEVEL CASTE DETAILS </h4>';
+		//str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;"></h4>';
 		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
 		str += '<tr>';
 		str += '<th>Mandal</th>';
@@ -456,6 +460,8 @@ function buildLeadersTable(results)
 			str += '</tr>';
 		}
 		str += '</table>';
+		str += '</div>';
+		str += '</div>';
 		$('#leadersTable').html(str);
 	}
 	
@@ -483,10 +489,13 @@ function showSuggestedLocations(myResults,jsObj){
 </head>
 <body>
 <div id="suggestiveMainDiv" align="center">
-  <div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>
+  <!--<div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>-->
+  <div class="widget blue">
+  <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">
+  <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
    <div id="mainDiv" align="center" >
      <div id="errorMsgDiv" >&nbsp;</div><br><br>
-     <div>
+     <div style="margin-left: -7px;">
 		<table>
 			<tr id="tableRowS">
 				<td id="tdWidth">
@@ -543,23 +552,29 @@ function showSuggestedLocations(myResults,jsObj){
 		</tr>
 	</table>
 </div>
-<input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="getLeadersList();"/>
-
+<!--<input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" />-->
+<div id="partyPerformanceBtnDiv"><input type="button" value="submit" id="getPartyPer" class="btn btn-success" onclick="getLeadersList();"></div>
+</div>
+</div></div>
+<div>
 <div id="leadersTable"></div>
 <div id="suggestedLocationsDiv"></div>
-<div id="partyPerformanceBtnDiv"><input type="button" value="submit" id="getPartyPer" class="btn btn-info"></div>
-</div>
-
-  <div id="partyPerformanceMainDiv">
+<div id="partyPerformanceMainDiv">
    <div id="partyPerformanceInnerDiv"></div>
-  </div>
-  
-  
-  
-  <div id="strongAndWeakPollingPerDiv" class="row-fluid">
+</div>
+<div id="strongAndWeakPollingPerDiv" class="row-fluid">
     <div id="strongPollingPercentageDiv" class="span6"></div>
     <div id="weakPollingPercentageDiv" class="span6"></div>
-  </div>
+</div>
+
+
+
+
+  
+  
+  
+  
+  
 
   
 <!--<div id="deletedVotersInfo">
@@ -574,14 +589,21 @@ function showSuggestedLocations(myResults,jsObj){
 $(document).ready(function(){
 
 $("#getPartyPer").click(function(){
-	  
+	  var constituencyId = $('#listConstituencyNames option:selected').val();
+	  var mandalId = $('#listMandalNames option:selected').val();
+	  var partyId = $('#partySelectEl option:selected').val();
+	  var eleId1 = $('#electionYearSelectEl1 option:selected').val();
+	  var eleId2 = $('#electionYearSelectEl2 option:selected').val();
+	  var eleIds = new Array();
+	  eleIds.push(eleId1);
+	  eleIds.push(eleId2);
 	var jsObj = {
-	        constituencyId:221,
-			electionId:0,
-			partyId:362,
-			locationId:2779,
+	        constituencyId:constituencyId,
+			electionId:eleIds,
+			partyId:partyId,
+			locationId:mandalId,
 			locationType:"mandal",
-			tempVar:"all",
+			tempVar:"",
 			task:"getPartyPerformanceReport"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -592,7 +614,7 @@ $("#getPartyPer").click(function(){
 
 });
 
-function showPartyPerformanceReport(result,jsObj)
+ function showPartyPerformanceReport(result,jsObj)
 {
 	$("#partyPerformanceInnerDiv").html('');
   if(result == null || result.length == 0)
@@ -601,8 +623,11 @@ function showPartyPerformanceReport(result,jsObj)
 	 return;
 	}
 	var str = '';
-	str +='<h4>Panchayat Wise INC Party Performance Report</h4>';
-	str +='<table class="table table-bordered table-striped table-hover">';
+	str+='<div class="widget green">';
+	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">PANCHAYAT WISE INC PARTY PERFORMANCE REPORT</h4>';
+	//str +='<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">PANCHAYAT WISE INC PARTY PERFORMANCE REPORT</h4>';
+	str +='<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
     str +='<tr>';
 	str +='<th></th>';
 	for(var i in result)
@@ -629,11 +654,13 @@ function showPartyPerformanceReport(result,jsObj)
 		str +='</tr>';
     }
 	str +='</table>';
+	str += '</div>';
+	str += '</div>';
 	$("#partyPerformanceInnerDiv").html(str);
 
 }
 
-function showStrongAndWeakPollingPercentage(result,jsObj)
+/* function showStrongAndWeakPollingPercentage(result,jsObj)
 {
   if(result == null || result.length == 0)
   {
@@ -641,11 +668,11 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
 	 $("#weakPollingPercentageDiv").html('');
 	 return;
   }
- 
   var StrongPollingPerList = result[0].strongPollingPercentVOList;
   var weakPollingPerList = result[0].weakPollingPercentVOList;
   var locationtype = "";
-  
+  alert(StrongPollingPerList);
+  alert(weakPollingPerList);
   if(jsObj.locationType == "mandal")
    locationtype = "Panchayat";
 
@@ -716,8 +743,74 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
    $("#weakPollingPercentageDiv").html(temp); 
  }
 
+} */
+ 
+function showStrongAndWeakPollingPercentage(result,jsObj)
+{
+  if(result == null || result.length == 0)
+  {
+     $("#strongPollingPercentageDiv").html('');
+	 $("#weakPollingPercentageDiv").html('');
+	 return;
+  }
+  var StrongPollingPerList = result[0].strongPollingPercentVOList;
+ 
+  var str = '';
+  for(var i in StrongPollingPerList)
+  {
+	//str += '<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">'+StrongPollingPerList[i].name+ ' AND POLLING % IS LESS</h4>';
+	str+='<div class="widget blue">';
+	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:414px;color: black;" class="">'+StrongPollingPerList[i].name+ ' AND POLLING % IS LESS</h4>';
+	str += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
+	str += '<tr>';
+	str += '<th>PANCHAYAT</th>';
+	str += '<th>POLLING PERCENTAGE</th>';
+	str += '</tr>';
+	
+	for(var j in StrongPollingPerList[i].partyPositionVOList)
+	{
+		str += '<tr>';
+		str += '<td>'+StrongPollingPerList[i].partyPositionVOList[j].name+'</td>';
+		str += '<td>'+StrongPollingPerList[i].partyPositionVOList[j].pollingPercentage+'</td>';
+		str += '</tr>';
+	}
+	
+	
+	str += '</table>';
+	str += '</div>';
+	str += '</div>';	
+  }
+  $("#strongPollingPercentageDiv").html(str);
+  var weakPollingPerList = result[0].weakPollingPercentVOList;
+  var wstr = '';
+  for(var m in weakPollingPerList)
+  {
+	wstr+='<div class="widget blue">';
+	wstr+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
+	wstr+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:414px;color: black;" class="">'+weakPollingPerList[m].name+ ' AND POLLING % IS MORE </h4>';
+	//wstr += '<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">'+weakPollingPerList[m].name+ ' AND POLLING % IS MORE </h4>';
+	wstr += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
+	wstr += '<tr>';
+	wstr += '<th>PANCHAYAT</th>';
+	wstr += '<th>POLLING PERCENTAGE</th>';
+	wstr += '</tr>';
+	
+	for(var n in weakPollingPerList[m].partyPositionVOList)
+	{
+		wstr += '<tr>';
+		wstr += '<td>'+weakPollingPerList[m].partyPositionVOList[n].name+'</td>';
+		wstr += '<td>'+weakPollingPerList[m].partyPositionVOList[n].pollingPercentage+'</td>';
+		wstr += '</tr>';
+	}
+	
+	
+	wstr += '</table>';
+	wstr += '</div>';
+	wstr += '</div>';
+  }
+  $("#weakPollingPercentageDiv").html(wstr);
 }
-
 function getDeletedVotersInfo()
 {
 var panchayats = [];
