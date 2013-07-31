@@ -6,6 +6,10 @@ import java.util.List;
 
 public class PartyPositionVO implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -669421025147252419L;
 	private String Name;
 	private Long id;
 	List<PartyPositionVO> partyPositionVOList = new ArrayList<PartyPositionVO>(0);
@@ -18,7 +22,10 @@ public class PartyPositionVO implements Serializable{
 	private Double pollingPercentage = 0.00;
 	private Double partyPercentage = 0.00;
 	private Long totalValidVotes = 0L;
-	List<PartyPositionVO> suggestedLocations;
+	private List<PartyPositionVO> suggestedLocations;
+	private List<PartyPositionVO> addedVoterDetails;
+	private Long addedVotersCount;
+	private String tempVar;
 	
 	public String getName() {
 		return Name;
@@ -89,6 +96,24 @@ public class PartyPositionVO implements Serializable{
 	}
 	public void setTotalValidVotes(Long totalValidVotes) {
 		this.totalValidVotes = totalValidVotes;
+	}
+	public List<PartyPositionVO> getAddedVoterDetails() {
+		return addedVoterDetails;
+	}
+	public void setAddedVoterDetails(List<PartyPositionVO> addedVoterDetails) {
+		this.addedVoterDetails = addedVoterDetails;
+	}
+	public Long getAddedVotersCount() {
+		return addedVotersCount;
+	}
+	public void setAddedVotersCount(Long addedVotersCount) {
+		this.addedVotersCount = addedVotersCount;
+	}
+	public String getTempVar() {
+		return tempVar;
+	}
+	public void setTempVar(String tempVar) {
+		this.tempVar = tempVar;
 	}
 	
 	
