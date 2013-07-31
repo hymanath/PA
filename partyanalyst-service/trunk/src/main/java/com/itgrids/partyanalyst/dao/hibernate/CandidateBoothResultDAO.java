@@ -1561,5 +1561,16 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 		query.setParameter("constituencyId", constituencyId);
 	   return (Long) query.uniqueResult();
    }
+   
+   public List<Object[]> findBoothResultsForMultipleBoothsAndElectionIdForSelElection(Set<Long> boothslist, Long electionId){
+		Query query = getSession().createQuery("select model.boothConstituencyElection.booth.boothId,model.nomination.party.partyId, sum(model.votesEarned) "+
+				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId  " +
+				"  and model.boothConstituencyElection.booth.boothId in(:boothslist)  " +
+				"  group by model.boothConstituencyElection.booth.boothId, model.nomination.party.partyId order by sum(model.votesEarned) desc ");
+		
+		query.setParameter("electionId",electionId);
+		query.setParameterList("boothslist",boothslist);
+		return query.list();
+	}
 	
 }

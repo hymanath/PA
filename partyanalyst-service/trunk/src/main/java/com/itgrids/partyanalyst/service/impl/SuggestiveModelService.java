@@ -581,7 +581,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	
 	//All ELection Years
 	
-	public List<PartyPositionVO> getPartyPerformenceReport(Long constituencyId,Long partyId,Long locationId,String locationType,Long electionId,String tempVar)
+	public List<PartyPositionVO> getPartyPerformenceReport(Long constituencyId,Long partyId,Long locationId,String locationType,List<Long> electionIds,String tempVar)
 	{
 		List<PartyPositionVO> resultList = null;
 		try{
@@ -591,6 +591,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		List<Object[]> electionList = null;
 		String tempLocationName = "";
 		
+		if(electionIds != null && electionIds.size()> 0)
+		{
+			electionList = new ArrayList<Object[]>();
+			for (Long eleId : electionIds) {
+				Object[] eleIds = {eleId};
+				 electionList.add(eleIds);
+			}
+		}
 		if(locationType != null && locationType.equalsIgnoreCase(IConstants.MANDAL))
 		{
 		  if(locationId.toString().substring(0,1).equalsIgnoreCase("2"))
@@ -619,8 +627,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				assemblyEleIdsList.add((Long)params[0]);
 		   } 	
 		}
-		else
-		 assemblyEleIdsList.add(electionId);
+		
 		
 		
 		if(assemblyEleIdsList != null && assemblyEleIdsList.size() > 0)
@@ -967,7 +974,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				   panchayatIds.add((Long)params[0]);
 			  }
 			  
-			  List<Object[]> resultList = candidateBoothResultDAO.findBoothResultsForMultipleBoothsAndElectionId(boothIds.keySet(), electionId, constituencyId);
+			  List<Object[]> resultList = candidateBoothResultDAO.findBoothResultsForMultipleBoothsAndElectionIdForSelElection(boothIds.keySet(), electionId);
 			  if(resultList != null && resultList.size() > 0)
 			  {
 				 for(Object[] params:resultList)
