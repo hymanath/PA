@@ -758,7 +758,7 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
 	}
 	str+='<td valign="top" style="padding-left:10px;"><div class="widget blue">';
 	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
-	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:414px;color: black;" class="">'+StrongPollingPerList[i].name+ ' AND POLLING % IS LESS</h4>';
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:450px;color: black;" class="">'+StrongPollingPerList[i].name+ ' AND POLLING % IS LESS</h4>';
 	str += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
 	str += '<tr>';
 	str += '<th>PANCHAYAT</th>';
@@ -801,7 +801,7 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
 	}
 	wstr+='<td valign="top" style="padding-left:10px;"><div class="widget blue">';
 	wstr+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
-	wstr+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:414px;color: black;" class="">'+weakPollingPerList[m].name+ ' AND POLLING % IS MORE </h4>';
+	wstr+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:450px;color: black;" class="">'+weakPollingPerList[m].name+ ' AND POLLING % IS MORE </h4>';
 	//wstr += '<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">'+weakPollingPerList[m].name+ ' AND POLLING % IS MORE </h4>';
 	wstr += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
 	wstr += '<tr>';
