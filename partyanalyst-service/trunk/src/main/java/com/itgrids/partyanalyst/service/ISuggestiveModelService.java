@@ -19,6 +19,5 @@ public interface ISuggestiveModelService {
 	
 	public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevel(Long mandalId,Long userid,Long constituencyId);
 	
-	 public List<VoterVO> getDeletedVoterInfo(List<Long> panchayatIds);
 
 }
