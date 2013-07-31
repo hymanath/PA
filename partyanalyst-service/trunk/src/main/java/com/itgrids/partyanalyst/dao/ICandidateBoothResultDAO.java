@@ -237,6 +237,8 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List<Object[]> getValidVotesForMultipleBooths(List<Long> boothslist, Long electionId,Long constituencyId);
 	
 	 public Long getTotalValidVotes(List<Long> boothIdsList,Long electionId,Long constituencyId);
+	 
+	 public List<Object[]> findBoothResultsForMultipleBoothsAndElectionIdForSelElection(Set<Long> boothslist, Long electionId);
 	
 
 }

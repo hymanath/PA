@@ -15,7 +15,7 @@ public interface ISuggestiveModelService {
 	
 	public List<SelectOptionVO> getElectionIdsAndYearsBytehsilId(List<Long> electionScope,Long partyId,Long tehsilId);
 	
-	public List<PartyPositionVO> getPartyPerformenceReport(Long constituencyId,Long partyId,Long locationId,String locationType,Long electionId,String tempVar);
+	public List<PartyPositionVO> getPartyPerformenceReport(Long constituencyId,Long partyId,Long locationId,String locationType,List<Long> electionId,String tempVar);
 	
 	public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevel(Long mandalId,Long userid,Long constituencyId);
 	
