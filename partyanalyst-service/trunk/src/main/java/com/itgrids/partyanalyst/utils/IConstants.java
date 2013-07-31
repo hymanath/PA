@@ -640,6 +640,6 @@ public interface IConstants {
     public final static Double LOW_VOTING_PERCENTAGE_IN_STRONG_LOCATIONS = 80.00;
     public final static Double HIGH_VOTING_PERCENTAGE_IN_WEEK_LOCATIONS = 80.00;
     
-    
+    public final static long MIN_ADDED_VOTERS = 50l;
 	
 }

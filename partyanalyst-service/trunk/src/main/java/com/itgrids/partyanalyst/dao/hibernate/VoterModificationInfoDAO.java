@@ -157,10 +157,10 @@ public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificat
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getDeletedVotersByPanchayats(List<Long> panchayatIds,Long publicationId)
+	public List<Object[]> getAddedVotersByPanchayats(List<Long> panchayatIds,Long publicationId)
 	{
 		Query query = getSession().createQuery("select model.totalVoters, model.reportLevelValue from VoterModificationInfo model where model.publicationDate.publicationDateId =:publicationId and model.reportLevelValue in (:panchayatIds) and " +
-				"model.voterStatus.status = '"+IConstants.STATUS_DELETED+"' and  model.totalVoters > 0 and model.voterReportLevel.voterReportLevelId =:reportLevelId order by model.totalVoters asc");
+				"model.voterStatus.status = '"+IConstants.STATUS_ADDED+"' and  model.totalVoters > 0 and model.voterReportLevel.voterReportLevelId =:reportLevelId order by model.totalVoters asc");
 		query.setParameter("publicationId", publicationId);
 		query.setParameterList("panchayatIds", panchayatIds);
 		query.setParameter("reportLevelId", IConstants.PANCHAYAT_REPORT_LEVEL_ID);

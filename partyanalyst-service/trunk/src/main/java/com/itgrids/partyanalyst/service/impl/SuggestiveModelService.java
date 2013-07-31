@@ -1344,31 +1344,39 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	 public List<PartyPositionVO> getMoreVotersAddedLocDetailsWherePartyIsPoor(List<PartyPositionVO> partyPositions){
 		 List<PartyPositionVO> returnVal = new ArrayList<PartyPositionVO>();
 		 Map<Long,PartyPositionVO> panchatayats = new HashMap<Long,PartyPositionVO>();
+		 Map<Long,PartyPositionVO> suggestions = new HashMap<Long,PartyPositionVO>();
 		 for(PartyPositionVO positionVo:partyPositions){
 			 if(positionVo.getMinValue() < 0 && positionVo.getPartyPositionVOList() != null && positionVo.getPartyPositionVOList().size() >0){
 				 returnVal.add(positionVo);
 				 for(PartyPositionVO panchayat:positionVo.getPartyPositionVOList()){
 					 panchatayats.put(panchayat.getId(), panchayat);
+					 suggestions.put(panchayat.getId(), positionVo);
 				 }
 			 }
 		 }
+		 getAddedVoterInfo(panchatayats,suggestions);
 		 return returnVal;
 	 }
 	 
-	 public void getDeletedVoterInfo(Map<Long,PartyPositionVO> panchatayats)
+	 public void getAddedVoterInfo(Map<Long,PartyPositionVO> panchatayats,Map<Long,PartyPositionVO> suggestions)
 	 {
 		 PartyPositionVO vo = null;
 		try{
 			
 				Long publicationId = publicationDateDAO.getLatestPublicationId();
-				List<Object[]> deletedVoters = voterModificationInfoDAO.getDeletedVotersByPanchayats(new ArrayList<Long>(panchatayats.keySet()),publicationId);
+				List<Object[]> deletedVoters = voterModificationInfoDAO.getAddedVotersByPanchayats(new ArrayList<Long>(panchatayats.keySet()),publicationId);
 				if(deletedVoters != null && deletedVoters.size() > 0)
 				{
 					for(Object[] params : deletedVoters)
 					{
+					  if(params[0] != null && ((Long)params[0]).longValue() >= IConstants.MIN_ADDED_VOTERS){
 						vo = panchatayats.get((Long)params[1]);
 						vo.setAddedVotersCount((Long)params[0]);
-						
+						PartyPositionVO suggestion = suggestions.get((Long)params[1]);
+						if(suggestion != null){
+							suggestion.setAddedVotersPresent(true);
+						}
+					  }
 					}
 				}
 			
