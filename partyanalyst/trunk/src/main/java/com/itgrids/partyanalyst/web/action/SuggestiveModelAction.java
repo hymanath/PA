@@ -243,7 +243,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				{
 				 panchayatIds.add(new Long(arr.get(i).toString()));
 				}
-			deletedVoters = suggestiveModelService.getDeletedVoterInfo(panchayatIds);
+			//deletedVoters = suggestiveModelService.getDeletedVoterInfo(panchayatIds);
 		}
 		catch(Exception e)
 		{
