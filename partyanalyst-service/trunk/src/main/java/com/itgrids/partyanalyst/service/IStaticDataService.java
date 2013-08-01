@@ -404,5 +404,5 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getPartitesList(Long stateId,String electionType);
 			
-		public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId);
+		public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId,Long constituencyId);
 }
