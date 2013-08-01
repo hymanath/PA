@@ -222,22 +222,23 @@ function getPartyDetails(mandalId){
 	removeSelectElements(electionyrElmt2);
 	addDefaultSelectValues(electionyrElmt2);
 	addDefaultSelectValues(electionyrElmt1);
-		var mandalId = $('#listMandalNames').val();
+		var constituencyId = $('#listConstituencyNames').val();
 		if(id == 0){
 		$("#partySelectEl").css("border","1px solid IndianRed");
 		$('#errorMsgDiv').html('Please Select Party Name');
 		return;
 		}
+
 		var jsObj=
 			{
-					electionTypeId:2,
-					mandalId : mandalId.slice(1),
-					task:"getElectionYearsInPanchayat"
-                    					
+				electionScopeId:2,
+				partyId:id,
+				constituencyId:constituencyId,
+				task:"getElectionYears"						
 			};
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/getElectionYearsForMandalAjaxAction.action?"+rparam;						
+			var url = "<%=request.getContextPath()%>/getElectionsYearsForParties.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
 	}
 function validateYear1(yearId){
@@ -283,7 +284,7 @@ function callAjax(param,jsObj,url){
 						if(o.responseText)
 							myResults = YAHOO.lang.JSON.parse(o.responseText);
 						
-						if(jsObj.task == "getElectionYearsInPanchayat")
+						if(jsObj.task == "getElectionYears")
 						{
 							populateElectionYearDropdown(myResults);
 						}
@@ -352,7 +353,14 @@ function populateElectionYearDropdown(results)
 
 		removeSelectElements(electionYearsEl1);
 		removeSelectElements(electionYearsEl2);
-
+	var opElmt1=document.createElement('option');
+	var opElmt2=document.createElement('option');
+		opElmt1.value='0';
+		opElmt2.value='0';
+		opElmt1.text='Select Party';
+		opElmt2.text='Select Party';
+		addOptions(electionYearsEl1,opElmt1);
+		addOptions(electionYearsEl2,opElmt2);
 	if(results!=null)
 		for(var i in results)
 		{	
@@ -517,22 +525,22 @@ function showSuggestedLocations(myResults,jsObj){
 <div id="suggestiveMainDiv" align="center">
   <!--<div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>-->
   <div class="widget blue">
-  <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">
+  <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 250px;" class="widget-block">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
-   <div id="mainDiv" align="center" >
+   <div id="mainDiv" align="center" style="margin-left: 100px;">
      <div id="errorMsgDiv" >&nbsp;</div><br><br>
-     <div style="margin-left: -7px;margin-bottom: 4px;">
+     <div style="width: 500px; float: left;margin-bottom: 5px;">
 		<table>
 			<tr id="tableRowS">
 				<td id="tdWidth">
 					Constituency Name :<font id="requiredValue" class="requiredFont">*</font> 
 				</td>
 				<td>
-					<select id="listConstituencyNames" onchange="getMandals(this.options[this.selectedIndex].value);">
+					<select id="listConstituencyNames" onchange="getPartyDetails(this.options[this.selectedIndex].value);">
 					<option value="0"> Select Constituency </option>
 					</select>
 				</td>		
-			
+		<!--	
 			<td id="tdWidth">
 					Mandal Name :<font id="requiredValue" class="requiredFont">*</font> 
 				</td>
@@ -541,10 +549,12 @@ function showSuggestedLocations(myResults,jsObj){
 					<option value="0"> Select Mandal </option>
 					</select>
 				</td>	
+		-->
 			</tr>
 	</table>		
 </div>
-<div style="width: 500px; margin-left: -340px;margin-bottom: 4px;">
+<br><br>
+<div style="width: 500px; float: left;margin-bottom: 5px;">
 	<table>
 		<tr id="tableRowS">
 			<td id="tdWidth">
@@ -558,7 +568,8 @@ function showSuggestedLocations(myResults,jsObj){
 			</tr>
 </table>
 </div>
-<div style="margin-bottom: 4px;"">
+<br><br>
+<div style=" margin-bottom: 5px;float: left; margin-left: 82px;">
 <table>
 		<tr>
 			<td id="tdWidth">
@@ -569,8 +580,7 @@ function showSuggestedLocations(myResults,jsObj){
 				<option value="0"> Select Year </option>
 				</select>
 			</td>
-			<td></td><td id="tdWidth"></td>
-			<td>
+			<td Style="padding-left: 15px;">
 				<select id="electionYearSelectEl2" onchange="validateYear2(this.options[this.selectedIndex].value)">
 				<option value="0"> Select Year </option>
 				</select>
@@ -578,8 +588,10 @@ function showSuggestedLocations(myResults,jsObj){
 		</tr>
 	</table>
 </div>
-<!--<input type="button" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" />-->
-<div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;"><input type="button" value="submit" id="getPartyPer" class="btn btn-success" onclick="getLeadersList();"></div>
+<div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;float: left; width: 980px;">
+<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="getLeadersList();"/>
+</div>
+
 </div>
 </div></div>
 <div>
