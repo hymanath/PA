@@ -5,17 +5,20 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 	public class BoothPublicationVoterDAOHibernateTest  extends BaseDaoTestCase{
 	  private IBoothPublicationVoterDAO boothPublicationVoterDAO;
-	
+	private IBoothDAO boothDAO;
 	public void setBoothPublicationVoterDAO(
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
 	}
-	
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
 	/*public void test()
 	{
 		boothPublicationVoterDAO.getAll();
@@ -81,6 +84,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	
 	//}
 	
+		
 		public void testGetVotersCasteDetailsForAgeRange(){
 			Long starttime = System.currentTimeMillis();
 			List<Long> list = new ArrayList<Long>();
@@ -113,5 +117,41 @@ import com.itgrids.partyanalyst.utils.IConstants;
 				}
 				System.out.println("");
 			}
+		}
+		public void testGetVotersCasteDetailsForDiffAgeRange(){
+			List<Long> pancIds = new ArrayList<Long>();
+			pancIds.add(1l);
+			pancIds.add(2l);
+			pancIds.add(3l);
+			pancIds.add(4l);
+			pancIds.add(5l);
+			pancIds.add(6l);
+			pancIds.add(7l);
+			pancIds.add(8l);
+			pancIds.add(9l);
+			pancIds.add(10l);
+			pancIds.add(11l);
+			pancIds.add(12l);
+			pancIds.add(13l);
+			
+			Long mainstarttime = System.currentTimeMillis();
+			for(Long pancId:pancIds){
+			Long starttime = System.currentTimeMillis();
+			System.out.println("Start: "+starttime);
+			List<Long> publicIds = new ArrayList<Long>();
+			publicIds.add(8l);
+			List<Object[]> castInfo = null;//boothPublicationVoterDAO.getVotersCasteDetailsForAgeRange(23l, 30l, boothDAO.getBoothIdsByLocalValuesList("panchayat", pancId, 232l, publicIds));
+			Long endtime = System.currentTimeMillis();
+			System.out.println("End: "+endtime);
+			System.out.println((endtime-starttime)/1000);
+			/*for(Object[] caste : castInfo){
+				for(Object value : caste){
+					System.out.print(value+"  ");
+				}
+				System.out.println("");
+			}*/
+		  }
+			Long mainendtime = System.currentTimeMillis();
+			System.out.println("mainDiff: "+(mainendtime-mainstarttime)/1000);
 		}
 	}

@@ -393,12 +393,42 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testCreateHashKeyAndValueForAPassword()
+	/*public void testCreateHashKeyAndValueForAPassword()
 	{
 		String secretKey = EncryptDecrypt.getSecretKey();
 		EncryptDecrypt phash = new EncryptDecrypt(secretKey);
 		String encryptedPassword = phash.encryptText("guest@pa");
 		System.out.println(secretKey);
 		System.out.println(encryptedPassword);
+	}*/
+	public void testCheckSuggestionOrder(){
+		List<String> ids = new ArrayList<String>();
+		ids.add("VERY STRONG");
+		ids.add("STRONG");
+		ids.add("OK");
+		ids.add("POOR");
+		ids.add("VERY POOR");
+		ids.add("WOREST");
+		int x = -1;
+		for(int j = ids.size()-1;j>0;j--){//2009
+				x = x+1;
+			for(int i = 0;i< (ids.size()-1-x);i++)
+			{//2004
+				System.out.println(ids.get(i)+","+ids.get(j));
+			}
+		}
+		 x = -1;
+		 System.out.println("-------------------");
+		for(int j = ids.size()-1;j>0;j--){//2004
+				x = x+1;
+			for(int i = 0;i< (ids.size()-1-x);i++)
+			{//2009
+				System.out.println(ids.get(j)+","+ids.get(i));
+			}
+		}
+		 System.out.println("-------------------");
+		for(int i = 0;i<ids.size();i++){
+			System.out.println(ids.get(i)+","+ids.get(i));
+		}
 	}
 }
