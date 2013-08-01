@@ -655,6 +655,14 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
+	
+	/*public void testPanchyatsList(){
+		List<Object[]> list= boothDAO.getPanchayatsListByTehsilId(844l,8l);
+		for(Object[] li:list){
+			System.out.println(li[0]+":"+li[1]);
+		}
+	}*/
+	
 	/*public void testVoters()
 	{
 		List<Object[]> values = boothDAO.getBoothsByPanchayat(11l,8l);
@@ -669,5 +677,6 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		boothIdsList.add(241L);
 		System.out.println(boothDAO.getTotalVotesForBooth(boothIdsList, 232l));
 	}
+	
 	
 }

@@ -104,7 +104,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 					122995l);
 					
 					
-			List<Object[]> castInfo = boothPublicationVoterDAO.getVotersCasteDetailsForAgeRange(23l, 30l, list);
+			List<Object[]> castInfo = boothPublicationVoterDAO.getVotersCasteDetailsForAgeRange(23l, 30l, list,1l);
 			Long endtime = System.currentTimeMillis();
 			System.out.println((endtime-starttime)/1000);
 			for(Object[] caste : castInfo){
