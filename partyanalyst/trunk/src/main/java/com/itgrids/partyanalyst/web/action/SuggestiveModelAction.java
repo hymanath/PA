@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.OptionVO;
+import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -37,6 +38,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private List<SelectOptionVO> partyList;
 	private IStaticDataService staticDataService;
 	private List<PartyPositionVO> partyPositionVOList;
+	private List<PanchayatVO> panchayatVOs;
 	private List<YouthLeaderSelectionVO> LeaderSelectionList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private List userAccessConstituencyList;
@@ -48,6 +50,14 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 
 	public void setDeletedVoters(List<VoterVO> deletedVoters) {
 		this.deletedVoters = deletedVoters;
+	}
+
+	public List<PanchayatVO> getPanchayatVOs() {
+		return panchayatVOs;
+	}
+
+	public void setPanchayatVOs(List<PanchayatVO> panchayatVOs) {
+		this.panchayatVOs = panchayatVOs;
 	}
 
 	public List<SelectOptionVO> getPartyList() {
@@ -221,6 +231,39 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		partyList = suggestiveModelService.getPartyDetailsByMandal(tehsilId);
 		return Action.SUCCESS;
 	}
+	public String getAgeWiseGroupReport(){
+		session=request.getSession();
+		RegistrationVO regVO=(RegistrationVO)session.getAttribute(IConstants.USER);
+		try{
+			jObj = new JSONObject(getTask());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		String task=jObj.getString("task");
+		JSONArray agesArr = jObj.getJSONArray("agesList");
+		Long constiId=jObj.getLong("constituencyId");
+		Long loctnId=jObj.getLong("locationId");
+		String loctnType=jObj.getString("locationType");
+		Long electionId=jObj.getLong("electionId");
+		
+		List<SelectOptionVO> groups=new ArrayList<SelectOptionVO>();
+		
+		SelectOptionVO select;
+		for (int i = 0; i < agesArr.length(); i++) {
+			select=new SelectOptionVO();
+			if(i%2==0){
+				select.setId(Long.valueOf(agesArr.getInt(i)));
+				select.setPopulateId(Long.valueOf(agesArr.getInt(i+1)));
+				groups.add(select);
+			}
+			
+		}
+		
+		panchayatVOs=suggestiveModelService.getVotersGroupDetails(groups,constiId,loctnId,loctnType,electionId,regVO.getRegistrationID());
+		
+		return Action.SUCCESS;
+	}
+	
 	public String getLeadersData()
 	{
 		try{
