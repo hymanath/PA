@@ -603,7 +603,7 @@ function showSuggestedLocations(myResults,jsObj){
 
  
 </div>
-
+<div align="center" style="width:600px;">
 <div id="ageGroupWiseId">
 	<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
 		<div class="fromDiv">
@@ -614,18 +614,22 @@ function showSuggestedLocations(myResults,jsObj){
 			To
 			<div class="inputDiv"><input type="text" id="toTxt" class="toInput"/></div>
 		</div>
-		<div class="closeImgDiv"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
+		<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
 	</div>
 </div>
-<span id="addMoreBtn" class="btn btn-info">Add More</span>
-<span id="getAgeGroupWiseResults" class="btn btn-info">Get Results</span>
-
-<span id="errorMsg"></span>
+</div>
+<div style="clear:both;">
+	<span id="errorMsg"></span>
+</div>
+<div style="clear:both;margin-top:10px;">
+	<span id="addMoreBtn" class="btn btn-info" >Add More</span>
+	<span id="getAgeGroupWiseResults" class="btn btn-info">Get Results</span>
+</div>
 
 <div class="span12">
-	<div id="ageGroupTableId1"></div>
-	<div id="ageGroupTableId2"></div>
-	<div id="ageGroupTableId3"></div>
+	<div id="ageGroupTableId1" style="margin:20px;"></div>
+	<div id="ageGroupTableId2" style="margin:20px;"></div>
+	<div id="ageGroupTableId3" style="margin:20px;"></div>
 
 
 <script>
@@ -1013,7 +1017,11 @@ var count=0;
 	var valuesArr;
 	$('#getAgeGroupWiseResults').click(function(){
 		
-		validateAndPush();
+		var k=validateAndPush();
+		if(k!=0){
+			$('#errorMsg').css('display','inline-block');
+			return;
+		}
 		var agesArr=[];
 		
 		if(valuesArr.length==1){
@@ -1060,6 +1068,7 @@ var count=0;
 		
 	
 	function validateAndPush(){
+	var errorFree=0;
 	valuesArr=[];
 	$( ".fromToDivClass" ).each(function (i) {	
 			
@@ -1070,24 +1079,28 @@ var count=0;
 			 var from=valuesList['from'];
 			 var to=valuesList['to'];
 			 
+			 
 			 if($.isNumeric(from) && $.isNumeric(to)){
-				if(!(parseInt(from)>=18 && parseInt(from)<=120) || !(parseInt(to)>=18 && parseInt(to)<=120)){
-					$('#errorMsg').html('Age should be between 18 & 120');
+				if(!(parseInt(from)>17 && parseInt(from)<=140) || !(parseInt(to)>17 && parseInt(to)<=140)){
+					$('#errorMsg').html('Age should be between 18 & 140');
+					errorFree=1;
 					return;
 				}
 			 	if(parseInt(from) >= parseInt(to)){
 					$('#errorMsg').html('Invalid Input..From Age > To Age');
+					errorFree=1;
 					return;
 				}else{
 					valuesArr.push(valuesList);
 					$('#errorMsg').html('');
-					
 				}
 			 }else{
 					$('#errorMsg').html('Invalid Input..Please Enter only Numerics');
+					errorFree=1;
 					return;
 			 }
 		});
+		return errorFree;
 	}
 	
 	
@@ -1104,8 +1117,8 @@ var count=0;
 				$('#errorMsg').html('');
 			}
 			
-			if(!(parseInt(value)>18 && parseInt(value)<120)){
-				$('#errorMsg').html('Age should be between 18 & 120');
+			if(!(parseInt(value)>17 && parseInt(value)<140)){
+				$('#errorMsg').html('Age should be between 18 & 140');
 				return;
 			}
 		});
