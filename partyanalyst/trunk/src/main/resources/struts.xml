@@ -5696,7 +5696,7 @@
 		  <result type="json" name="success">
 		   <param name="root">LeaderSelectionList</param>
 		 </result>
-		 </action></action>
+		 </action>
 		 
 		 <action name="getAgeGroupWiseReportAction" class="suggestiveModelAction" method="getAgeWiseGroupReport">
 		 	 <result type="json" name="success">
