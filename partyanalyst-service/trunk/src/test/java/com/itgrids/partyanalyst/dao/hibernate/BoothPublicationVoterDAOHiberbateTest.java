@@ -154,13 +154,17 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 	 * "constituency", 232l, 6l); System.out.println(list.size()); }
 	 */
 
-	/*
-	 * public void testGetCastWiseCount()
-	 * 
-	 * { List<Object[]> list = boothPublicationVoterDAO.getCastWiseCount(1l,
-	 * "panchayat", 1l, 7l); System.out.println(list.size()); for(Object[]
-	 * data:list){ System.out.println(data[0]+" "+data[1]); } }
-	 */
+	
+	 /*public void testGetCastWiseCount()
+	  
+	  {
+		List<Object[]> list = boothPublicationVoterDAO.getCastWiseCount(1l,"panchayat", 1l, 7l,232l); 
+	  	System.out.println(list.size());
+	  	for(Object[] data:list){
+	  		System.out.println(data[0]+" "+data[1]); 
+	  	} 
+	  }*/
+	 
 
 	/*
 	 * public void testGetPartyWiseCount() { List<Object[]> list =
@@ -714,7 +718,32 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		for(Object[] params:list)
 		 System.out.println(params[0]+" "+params[1]);
 	}*/
-	
+	/*public void testgetVotersCountAgeWise(){
+		
+		List<Long> boothIdsList = new ArrayList<Long>(0);
+		boothIdsList.add(122992L);
+		List<Object[]> list= boothPublicationVoterDAO.getVotersCountAgeWise(90l, 105l, boothIdsList);
+	}*/
+	/*public void testa(){
+		List<Long> boothIds = new ArrayList<Long>(0);
+		boothIds.add(122992L);
+		boothIds.add(122993L);
+		List<Object[]> list=boothPublicationVoterDAO.getVotersCountAgeWiseForPanchayat(18l, 25l, boothIds);
+		List<Object[]> list1=boothPublicationVoterDAO.getVotersCasteDetailsForAgeRange(18l, 25l, boothIds,1l);
+		for(Object[] l:list){
+			for(Object o:l){
+				System.out.print(o.toString()+" ");
+			}
+			System.out.println();
+		}
+		System.out.println("--------");
+		for(Object[] l:list1){
+			for(Object o:l){
+				System.out.print(o.toString()+" ");
+			}
+			System.out.println();
+		}
+	}*/
 	public void testgetTotalVoters()
 	{
 		Long count = boothPublicationVoterDAO.getTotalVoters(122992l);
