@@ -227,8 +227,9 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		Long tehsilId= jObj.getLong("mandalId");
-		partyList = suggestiveModelService.getPartyDetailsByMandal(tehsilId);
+		//Long tehsilId= jObj.getLong("mandalId");
+		//partyList = suggestiveModelService.getPartyDetailsByMandal(tehsilId);
+		partyList = staticDataService.getStaticParties();
 		return Action.SUCCESS;
 	}
 	public String getAgeWiseGroupReport(){
@@ -304,4 +305,21 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 
+		public String getElectionYears(){
+			if(task != null){
+				try{
+					jObj = new JSONObject(getTask());
+					System.out.println("Result From JSON:"+jObj);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				if(jObj.getString("task").equals("getElectionYears")){
+					electionsYears = staticDataService.getElectionIdsAndYearsByElectionScopeId(jObj.getLong("electionScopeId"),jObj.getLong("partyId"),jObj.getLong("constituencyId"));
+					log.debug("getElectionScopes......"+electionsYears.size());
+				}
+			}
+			
+			return Action.SUCCESS;
+		}
 }
