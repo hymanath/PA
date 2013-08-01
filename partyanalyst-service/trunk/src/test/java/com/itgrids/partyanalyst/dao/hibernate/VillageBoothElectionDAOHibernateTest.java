@@ -26,7 +26,7 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]);
 	}*/
 	
-	public void testFindElectionsForElectionType(){
+	/*public void testFindElectionsForElectionType(){
 		List list = villageBoothElectionDAO.findElectionsForElectionType(1l);
 		System.out.println(list.size());
 		if(list != null && list.size() > 0)
@@ -35,7 +35,7 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(params[0]+" "+params[1]);
 		}
 		
-	}
+	}*/
 	/*public void testGetAll(){
 		List<VillageBoothElection> list = villageBoothElectionDAO.getAll();
 		assertEquals(list.size() >= 0, true);
@@ -94,5 +94,8 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 			for(Object[] year:list)
 			System.out.println(year[0].toString()+" "+year[1].toString());
 	}*/
-	
+	public void testFindElectionsForElectionTypeInAtehsil(){
+		List list = villageBoothElectionDAO.findElectionsForElectionTypeInAtehsil(1l,712l);
+		
+	}
 }
