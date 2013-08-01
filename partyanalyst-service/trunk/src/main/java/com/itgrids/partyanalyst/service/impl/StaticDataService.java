@@ -21,7 +21,6 @@ import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.mapping.Array;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -9031,13 +9030,13 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 	 * This method returns a list of Objects that contains all (main and bye) electionIds and
 	 * election years based on the Election-Scopes Ids and Party Id.
 	 */
-	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId) {
+	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId,Long constituencyId) {
 		List<SelectOptionVO> electionYearslist;
 		List elections;
 		try {
 			electionYearslist = new ArrayList<SelectOptionVO>();
-			elections = nominationDAO.findByElectionScopeIdAndPartyIds(
-					electionScopeId,partyId);
+			elections = nominationDAO.getElectionYearsByScopeNPartyNconstiId(
+					electionScopeId,partyId,constituencyId);
 			for (int i = 0; i < elections.size(); i++) {
 				Object[] parms = (Object[]) elections.get(i);
 				electionYearslist.add(new SelectOptionVO(Long.parseLong(parms[0].toString()), parms[1].toString()));
