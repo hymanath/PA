@@ -9,10 +9,12 @@
 <head>
 <title> Party Analyst - Suggestive Model</title>
  <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+ <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.min.js"></script>
+  <!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>-->
 <link rel="stylesheet" href="/resources/demos/style.css" />
+<link rel="stylesheet" href="styles/jqueryDataTable/css/datatable.css" />
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
 <style type="text/css">	
 	select {
@@ -116,12 +118,26 @@ th {
 .headingCls{ color: #005580;
     font-size: 15px;
     margin-bottom: 10px;}
-	</style>
-<script type="text/javascript" >
 
+.fromDiv,.toDiv{float:left;margin:10px;}
+.inputDiv{float:right;margin-left:10px;}
+#errorMsg{color:red;}
+.table thead th{text-align:center;}
+.ageGroupTable .table th, .table td{text-align:center;}
+
+#tableageGroupTableId1,#tableageGroupTableId2,#tableageGroupTableId3{border:1px solid #ccc;}
+#ageGroupTableId1,#ageGroupTableId2,#ageGroupTableId3{clear:both;}
+.table-bordered th, .table-bordered td{font-family:verdana;}
+.table th, .table td{font-family:verdana;}
+.table thead th{vertical-align:middle;}
+</style>
+
+
+<script type="text/javascript" >
 $(document).ready(function(){
 getConstituencyList();
 });
+
 function getConstituencyList(){
 
 var jsObj= 
@@ -295,8 +311,12 @@ function callAjax(param,jsObj,url){
 							buildLeadersTable(myResults);
 						}
 						else if(jsObj.task == "getDeletedVotersInfo")
-						
-						buildDeletedVotersInfo(myResults);
+						{
+							buildDeletedVotersInfo(myResults);
+						}
+						else if(jsObj.task == "getAgeGroupWiseReport"){
+									buildAgeGroupWiseTable(myResults,jsObj);
+								}
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
 					}  
@@ -583,6 +603,29 @@ function showSuggestedLocations(myResults,jsObj){
 
  
 </div>
+
+<div id="ageGroupWiseId">
+	<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
+		<div class="fromDiv">
+			From
+			<div class="inputDiv"><input type="text" id="fromTxt" class="fromInput" /></div>
+		</div>
+		<div class="toDiv">
+			To
+			<div class="inputDiv"><input type="text" id="toTxt" class="toInput"/></div>
+		</div>
+		<div class="closeImgDiv"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
+	</div>
+</div>
+<span id="addMoreBtn" class="btn btn-info">Add More</span>
+<span id="getAgeGroupWiseResults" class="btn btn-info">Get Results</span>
+
+<span id="errorMsg"></span>
+
+<div class="span12">
+	<div id="ageGroupTableId1"></div>
+	<div id="ageGroupTableId2"></div>
+	<div id="ageGroupTableId3"></div>
 
 
 <script>
@@ -937,6 +980,196 @@ divEle.innerHTML = str;
 }
 //getDeletedVotersInfo();
 
+var count=0;
+	$('#addMoreBtn').click(function(){
+		
+		if($('.fromToDivClass').length==2){
+			$('#addMoreBtn').css('display','none');
+		}
+		var template=$('.fromToDivTemplateClass');
+		var templateClone=template.clone();
+		
+		count=count+1;
+		templateClone.removeClass('fromToDivTemplateClass');
+		templateClone.attr('id','fromToDivId'+count);
+		
+		
+		templateClone.find('.fromDiv').html('From <div class="inputDiv"><input type="text" id="fromTxt" class="fromInput"/></div>');
+		templateClone.find('.toDiv').html('To <div class="inputDiv"><input type="text" id="toTxt" class="toInput"/></div>');
+		templateClone.find('.closeImgDiv').html('<img src="images/close.png" height="25px" width="25px"/>');
+		
+		templateClone.appendTo('#ageGroupWiseId');
+		
+	});
+	
+	$('.closeImgDiv').live('click',function(){
+		$(this).closest('.fromToDivClass').remove();
+		if($('.fromToDivClass').length<=2){
+			$('#addMoreBtn').css('display','inline-block');
+		}
+	});
+	
+	
+	var valuesArr;
+	$('#getAgeGroupWiseResults').click(function(){
+		
+		validateAndPush();
+		var agesArr=[];
+		
+		if(valuesArr.length==1){
+			var val1=valuesArr[0]['from'];
+			var val2=valuesArr[0]['to'];
+			agesArr.push(val1);
+			agesArr.push(val2);
+		}
+		if(valuesArr.length>1){
+			var val1=valuesArr[0]['from'];
+			var val2=valuesArr[0]['to'];
+			var val3=valuesArr[1]['from'];
+			var val4=valuesArr[1]['to'];
+			agesArr.push(val1);
+			agesArr.push(val2);
+			agesArr.push(val3);
+			agesArr.push(val4);
+		}
+		if(valuesArr.length>2){
+			var val5=valuesArr[2]['from'];
+			var val6=valuesArr[2]['to'];
+			agesArr.push(val5);
+			agesArr.push(val6);
+		}
+		
+		
+		var jsObj = {
+	        constituencyId:232,
+			electionId:0,
+			partyId:362,
+			locationId:844,
+			locationType:"panchayat",
+			tempVar:"all",
+			task:"getAgeGroupWiseReport",
+			agesList:agesArr
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getAgeGroupWiseReportAction.action?"+rparam;
+		callAjax(rparam,jsObj,url);
+		
+  });
+		
+		
+		
+	
+	function validateAndPush(){
+	valuesArr=[];
+	$( ".fromToDivClass" ).each(function (i) {	
+			
+			var valuesList={
+                 from:$(this).find('.fromInput').val(),
+			     to:$(this).find('.toInput').val()
+             };
+			 var from=valuesList['from'];
+			 var to=valuesList['to'];
+			 
+			 if($.isNumeric(from) && $.isNumeric(to)){
+				if(!(parseInt(from)>=18 && parseInt(from)<=120) || !(parseInt(to)>=18 && parseInt(to)<=120)){
+					$('#errorMsg').html('Age should be between 18 & 120');
+					return;
+				}
+			 	if(parseInt(from) >= parseInt(to)){
+					$('#errorMsg').html('Invalid Input..From Age > To Age');
+					return;
+				}else{
+					valuesArr.push(valuesList);
+					$('#errorMsg').html('');
+					
+				}
+			 }else{
+					$('#errorMsg').html('Invalid Input..Please Enter only Numerics');
+					return;
+			 }
+		});
+	}
+	
+	
+		 $(".fromToDivClass input").live('blur',function(){
+			var value=$(this).val();
+			
+			var numStatus=$.isNumeric(value);
+			
+			if(numStatus==false){
+				$('#errorMsg').html('Invalid Input..Please Enter only Numerics');
+				return;
+			}
+			else{
+				$('#errorMsg').html('');
+			}
+			
+			if(!(parseInt(value)>18 && parseInt(value)<120)){
+				$('#errorMsg').html('Age should be between 18 & 120');
+				return;
+			}
+		});
+	
+	function buildAgeGroupWiseTable(myResults,jsObj){
+		$('#ageGroupTableId1').html('');
+		$('#ageGroupTableId2').html('');
+		$('#ageGroupTableId3').html('');
+		buildHeadBodyForTable(myResults,jsObj);
+		
+	}
+	
+	function buildHeadBodyForTable(myResults,jsObj){
+		var tablesCount=myResults.length;
+		
+		if(tablesCount==1){
+			createTable(myResults[0],'ageGroupTableId1');
+		}
+		else if(tablesCount==2){
+			for(var i=0;i<tablesCount;i++){
+				var num=i+1;
+				createTable(myResults[i],'ageGroupTableId'+num);
+			}
+		}
+		else{
+			for(var i=0;i<tablesCount;i++){
+				var num=i+1;
+				createTable(myResults[i],'ageGroupTableId'+num);
+			}
+		}
+	}
+	function createTable(result,tableId){
+		var str='';
+		str+='<table class="table table-bordered" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead><tr><th rowspan=2>Panchayat</th><th rowspan=2>Total Voters In Panchayat</th><th colspan=4>'+result.ageRange+'</th><th rowspan=2>Top Castes</th></tr>';
+		str+='<tr><th>Total Voters</th><th>Male Voters</th><th>Female Voters</th>	<th>Percentage</th></tr></thead>';
+		str+='<tbody>';
+		var res=result.panchayatList;
+		for(var i in result.panchayatList){
+		str+='<tr>';
+		str+='<td>'+result.panchayatList[i].panchayatName+'</td>';
+		str+='<td>'+result.panchayatList[i].totalPanchayatVoters+'</td>';
+		str+='<td>'+result.panchayatList[i].totalVoters+'</td>';
+		str+='<td>'+result.panchayatList[i].maleVoters+'</td>';
+		str+='<td>'+result.panchayatList[i].femaleVoters+'</td>';
+		str+='<td>'+result.panchayatList[i].percentage+'</td>';
+		str+='<td>';
+		var topCastesLength=result.panchayatList[i].topCastes.length;
+		for(var j in result.panchayatList[i].topCastes){
+		str+=result.panchayatList[i].topCastes[j].castName+"("+result.panchayatList[i].topCastes[j].castCount+")";
+			 if(topCastesLength>j){
+				str+=", ";
+			}
+		}
+		str+='</td>';
+		str+='</tr>';
+		}
+		str+='</tbody></table>';
+		
+		$('#'+tableId).html(str);
+		$('#table'+tableId).dataTable({
+			"iDisplayLength": 15,
+			"aLengthMenu": [[15, 30, -1], [15, 30, "All"]]
+		});
+	}
 </script>
 </body>
 </html>
