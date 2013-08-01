@@ -287,6 +287,7 @@ function callAjax(param,jsObj,url){
 						{
 							showPartyPerformanceReport(myResults,jsObj);
 							showStrongAndWeakPollingPercentage(myResults,jsObj);
+							buildAddedVotersDetails(myResults);
 							//showSuggestedLocations(myResults,jsObj);
 						}
 						else if(jsObj.task == "getLeadersList")
@@ -470,8 +471,11 @@ function buildLeadersTable(results)
 function showSuggestedLocations(myResults,jsObj){
  var str ='';
  if(myResults != null && myResults.length > 0 && myResults[0].suggestedLocations != null && myResults[0].suggestedLocations.length > 0){
-    str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">Order OF Priority to Target Geographically </h4>';
-	str+='<table  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; font-weight: lighter; color: black;">';
+	str+='<div class="widget blue">';
+	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">Order OF Priority to Target Geographically </h4>';
+    //str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">Order OF Priority to Target Geographically </h4>';
+	str+='<table  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
 	str+='  <tr>';
 	str+='    <th>Panchayat Name</th>';
 	str+='  </tr>';
@@ -481,6 +485,8 @@ function showSuggestedLocations(myResults,jsObj){
 	   str+='</tr>';
 	 }
 	str+='</table>';
+	str+= '</div>';
+	str+= '</div>';
  }
  $("#suggestedLocationsDiv").html(str);
 }
@@ -567,6 +573,9 @@ function showSuggestedLocations(myResults,jsObj){
 </div>
 <div id="weakPollingPerDiv" class="row-fluid">
 <div id="weakPollingPercentageDiv" class="span6"></div>
+</div>
+<div id="addedVotesDib" class="row-fluid">
+<div id="addedVoterDetailsDiv" class="span6"></div>
 </div>
 <!--<div id="deletedVotersInfo">
 
@@ -747,7 +756,7 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
   }
   var StrongPollingPerList = result[0].strongPollingPercentVOList;
  
-  var str = '';
+	var str = '';
   
 	str += '<table >';
 	var z = 0;
@@ -834,6 +843,63 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
   }
   wstr += '</table>'
   $("#weakPollingPercentageDiv").html(wstr);
+}
+function buildAddedVotersDetails(result)
+{
+	var z = 0;
+	var str = "";
+	var myResult = new Array();
+	var addedVoterDetails = result[0].addedVoterDetails;
+	for(var i in addedVoterDetails)
+	{
+		if(addedVoterDetails[i].addedVotersPresent == true)
+		{
+			myResult.push(addedVoterDetails[i]);
+		}
+	}
+		if(myResult != null && myResult.length > 0)
+		{
+			str += '<table >';
+			for(var j in myResult)
+			{
+				if(z%2 == 0)
+				{
+					str += '<tr>';
+				}
+				str+='<td valign="top" style="padding-left:10px;"><div class="widget blue">';
+				str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
+				str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:450px;color: black;" class="">'+myResult[j].name+ ' AND ADDED VOTERS ARE MORE</h4>';
+				str += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
+				str += '<tr>';
+				str += '<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">PANCHAYAT</th>';
+				str += '<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">ADDED VOTERS</th>';
+				str += '<tr>';
+				for(var m in myResult[j].partyPositionVOList)
+				{
+					if(myResult[j].partyPositionVOList[m].addedVotersCount != null && myResult[j].partyPositionVOList[m].addedVotersCount > 0)
+					{
+							str += '<tr>';
+							str += '<td>'+myResult[j].partyPositionVOList[m].name+'</td>';
+							str += '<td>'+myResult[j].partyPositionVOList[m].addedVotersCount+'</td>';
+							str += '</tr>'; 
+					}
+				}
+				str += '</table>';
+				str += '</div>';
+				str += '</div><td>';
+				if((z-1)%2 == 0)
+				{
+					str += '<tr>';
+				}
+				z++;
+			}
+			if(z%2 == 0)
+			{ 
+				str += '</tr>';
+			}
+			str += '</table>';
+		}
+	$('#addedVoterDetailsDiv').html(str);
 }
 function getDeletedVotersInfo()
 {
