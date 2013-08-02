@@ -497,12 +497,12 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	/*public void testGetWardsListByConstituencyId()
+	public void testGetWardsListByConstituencyId()
 	{
 		List<Long> list = boothDAO.getWardsListByConstituencyId(347l, 8l);
 		System.out.println(list.size());
 		
-	}*/
+	}
 	
 	/*public void testgetBoothsByBoothIdsList()
 	{
@@ -671,12 +671,21 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetTotalVotesForBooth()
+	/*public void testgetTotalVotesForBooth()
 	{
 		List<Long> boothIdsList = new ArrayList<Long>(0);
 		boothIdsList.add(241L);
 		System.out.println(boothDAO.getTotalVotesForBooth(boothIdsList, 232l));
-	}
+	}*/
+	
+	/*public void testGetPanchayatsListByConstituencyId()
+	{
+		List<Object[]> list = boothDAO.getPanchayatsNamesListByConstituencyId(232l, 8l);
+		for(Object[] param:list){
+			System.out.println(param[0]+":"+param[1]);
+		}
+		
+	}*/
 	
 	
 }

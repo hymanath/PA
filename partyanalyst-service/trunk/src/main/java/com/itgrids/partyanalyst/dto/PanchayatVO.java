@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.model.AddressType;
 
@@ -17,10 +18,12 @@ public class PanchayatVO implements Serializable {
 	private int maleVoters;
 	private int femaleVoters;
 	private String ageRange;
-	private List<PanchayatVO> panchayatList;
+	private List<PanchayatVO> panchayatList,boothsList;
 	private float percentage;
 	private int totalPanchayatVoters;
 	private List<CastVO> topCastes;
+	private List<String> muncipalities;
+	private Map<String,List<PanchayatVO>> municipalitesBoothsMap;
 	
 	public Long getPanchayatId() {
 		return panchayatId;
@@ -82,7 +85,24 @@ public class PanchayatVO implements Serializable {
 	public void setTopCastes(List<CastVO> topCastes) {
 		this.topCastes = topCastes;
 	}
-	
-	
-	
+	public List<PanchayatVO> getBoothsList() {
+		return boothsList;
+	}
+	public void setBoothsList(List<PanchayatVO> boothsList) {
+		this.boothsList = boothsList;
+	}
+	public List<String> getMuncipalities() {
+		return muncipalities;
+	}
+	public void setMuncipalities(List<String> muncipalities) {
+		this.muncipalities = muncipalities;
+	}
+	public Map<String, List<PanchayatVO>> getMunicipalitesBoothsMap() {
+		return municipalitesBoothsMap;
+	}
+	public void setMunicipalitesBoothsMap(
+			Map<String, List<PanchayatVO>> municipalitesBoothsMap) {
+		this.municipalitesBoothsMap = municipalitesBoothsMap;
+	}
+		
 }
