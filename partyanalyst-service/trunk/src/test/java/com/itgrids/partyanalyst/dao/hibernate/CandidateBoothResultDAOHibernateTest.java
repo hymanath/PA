@@ -549,7 +549,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(candidateBoothResultDAO.getTotalValidVotes(boothIdsList, 38l, 232L));
 	}*/
 	
-	public void testGetValidVotesForMultipleBooths()
+	/*public void testGetValidVotesForMultipleBooths()
 	{
 		List<Long> boothIdsList = new ArrayList<Long>(0);
 		long[] array = new long[]{203, 201, 202, 206, 207, 210, 204, 205, 208, 209, 223, 224, 220, 221, 222, 225, 227, 228, 226, 229, 230, 231, 218, 213, 214, 215, 216, 211, 212, 217, 219, 243, 242, 240, 237, 238, 239, 235, 236, 232, 233, 234, 241};
@@ -558,5 +558,10 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			List<Object[]> results = candidateBoothResultDAO.getValidVotesForMultipleBooths(boothIdsList, 38l, 232L);
 			Object[] value= results.get(0);
 			System.out.println(value[0].toString()+" "+value[1].toString());
+	}*/
+	
+	public void testGetConstituencyTotalVotes()
+	{
+	  System.out.println(candidateBoothResultDAO.getConstituencyTotalVotes(232l, 38l));
 	}
 }
