@@ -16,6 +16,50 @@
 <link rel="stylesheet" href="/resources/demos/style.css" />
 <link rel="stylesheet" href="styles/jqueryDataTable/css/datatable.css" />
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
+ <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+ <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+
+<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
+
+	<!-- YUI Dependency files (End) -->
+
+
+<script type="text/javaScript" >
+google.load("visualization", "1", {packages:["corechart"]});
+</script>
 <style type="text/css">	
 	select {
     background-color: #FFFFFF;
@@ -130,6 +174,8 @@ th {
 .table-bordered th, .table-bordered td{font-family:verdana;}
 .table th, .table td{font-family:verdana;}
 .table thead th{vertical-align:middle;}
+#panchayatWisePollingPercentageDiv{padding-top: 9px; padding-bottom: 21px;}
+
 </style>
 
 
@@ -305,6 +351,7 @@ function callAjax(param,jsObj,url){
 							showPartyPerformanceReport(myResults,jsObj);
 							showStrongAndWeakPollingPercentage(myResults,jsObj);
 							buildAddedVotersDetails(myResults);
+							showPartyPerformancePieChart(myResults,jsObj);
 							//showSuggestedLocations(myResults,jsObj);
 						}
 						else if(jsObj.task == "getLeadersList")
@@ -609,6 +656,10 @@ function showSuggestedLocations(myResults,jsObj){
 <div id="addedVotesDib" class="row-fluid">
 <div id="addedVoterDetailsDiv" class="span6"></div>
 </div>
+<div class="widget green" id="panchayatWisePollingPercMainDiv" style="display:none;">
+  <div id="panchayatWisePollingPercHeadingDiv"></div>
+  <div id="panchayatWisePollingPercentageDiv" class="row-fluid"></div>
+</div>
 <!--<div id="deletedVotersInfo">
 
 </div>-->
@@ -660,7 +711,7 @@ $("#getPartyPer").click(function(){
 	        constituencyId:constituencyId,
 			electionId:eleIds,
 			partyId:partyId,
-			locationId:mandalId,
+			locationId:2844,
 			locationType:"mandal",
 			tempVar:"",
 			task:"getPartyPerformanceReport"
@@ -994,6 +1045,52 @@ str+='</tr>';
 str+='</table>';
 divEle.innerHTML = str;
 }
+
+function showPartyPerformancePieChart(result,jsObj)
+{
+  
+  $('#panchayatWisePollingPercentageDiv').html('');
+  $('#panchayatWisePollingPercHeadingDiv').html('');
+  if(result == null || result.length == 0)
+   return;
+  $("#panchayatWisePollingPercMainDiv").css("display","block");
+  var partyName = $('#partySelectEl option:selected').text();
+
+  $('#panchayatWisePollingPercHeadingDiv').html('<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">PANCHAYAT WISE '+partyName+' PARTY PERFORMANCE REPORT</h4>');
+
+  for(var i in result)
+  {
+   var divEle = '<div id="partyPerformance'+i+'" class="span6"></div>'; 
+    $("#panchayatWisePollingPercentageDiv").append(divEle);
+     
+   
+   var results = result[0].partyPositionVOList;
+   var data = new google.visualization.DataTable();
+        data.addColumn('string', 'name');
+        data.addColumn('number', 'value');
+      
+		data.addRows(results.length);
+
+		for(var j = 0 ; j< results.length ; j++){		
+		var name = results[j].name;
+		var val = parseFloat(results[j].rangePercentage);
+		  data.setValue(j,0,name);
+		  data.setValue(j,1,val);
+		}
+        // Set chart options
+		var title = ''+result[i].name+' PANCHAYAT WISE '+partyName+' PARTY PERFORMANCE'; 
+        var options = {'title':title,
+                       'width':450,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('partyPerformance'+i));
+        chart.draw(data, options);
+	       
+  }
+       
+}
+
 //getDeletedVotersInfo();
 
 var count=0;
