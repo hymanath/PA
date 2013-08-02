@@ -758,4 +758,12 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	{
 	return getHibernateTemplate().find("select model.electionId,model.elecSubtype,model.electionYear,model.electionScope.electionType.electionType from Election model where model.electionScope.electionType.electionTypeId in (3,4) and model.electionScope.state.stateId = ? ",stateId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getSortedElectionIds(List<Long> electionIdsList)
+	{
+		Query query = getSession().createQuery(" select model.electionId from Election model where model.electionId in (:electionIdsList) order by model.electionDate desc ");
+		query.setParameterList("electionIdsList", electionIdsList);
+		return query.list();
+	}
 }

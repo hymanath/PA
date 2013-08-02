@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.hibernate.mapping.Array;
 
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.model.Election;
@@ -367,9 +369,19 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(electionIDs.toString());
 		
 	}*/
-	public void testFindElection(){
+	/*public void testFindElection(){
 		List<Election> election = electionDAO.findByElectionTypeYearAndState(new Long(2), "2009", new Long(1), new Long(1));
 		System.out.println("Election ::"  + election.get(0).getElectionId());
+	}*/
+	
+	public void testGetSortedElectionIds()
+	{
+		List<Long> electionIdList = new ArrayList<Long>(0);
+		electionIdList.add(38L);
+		electionIdList.add(3l);
+		List<Long> electionIdsList = electionDAO.getSortedElectionIds(electionIdList);
+		for(Long id:electionIdsList)
+		 System.out.println(id);
 	}
 }
 
