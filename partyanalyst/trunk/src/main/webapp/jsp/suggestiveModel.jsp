@@ -1064,7 +1064,7 @@ function showPartyPerformancePieChart(result,jsObj)
     $("#panchayatWisePollingPercentageDiv").append(divEle);
      
    
-   var results = result[0].partyPositionVOList;
+   var results = result[i].partyPositionVOList;
    var data = new google.visualization.DataTable();
         data.addColumn('string', 'name');
         data.addColumn('number', 'value');
