@@ -156,10 +156,21 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 	
 	public List<Object[]> getPanchaytsForConstituencyList(List<Long> maldalIds)
 	{
-		Query query = getSession().createQuery("select model.panchayatId,model.panchayatName from Panchayat model " +
+		Query query = getSession().createQuery("select model.panchayatId,model.panchayatName,model.tehsil.tehsilName from Panchayat model " +
 				" where  model.tehsil.tehsilId in (:maldalIds)");
 		query.setParameterList("maldalIds", maldalIds);
 		
 		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPanchayatsByMangals(List<Long> tehsilIds)
+	{
+		Query query = getSession().createQuery("select distinct model.panchayatId from Panchayat model " +
+				" where  model.tehsil.tehsilId in (:tehsilIds)");
+		query.setParameterList("tehsilIds", tehsilIds);
+		
+		return query.list();
+				
 	}
 } 
