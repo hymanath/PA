@@ -276,9 +276,9 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				return Action.ERROR;
 			}
 			Long userId         = regVO.getRegistrationID();
-			Long mandalId       = jObj.getLong("mandalId");
+			//Long mandalId       = jObj.getLong("mandalId");
 			Long constituencyId = jObj.getLong("constituencyId");
-			LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(mandalId,userId,constituencyId);
+			LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
