@@ -9032,16 +9032,25 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 	 */
 	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId,Long constituencyId) {
 		List<SelectOptionVO> electionYearslist;
-		List elections;
+		List<SelectOptionVO> reteurnList = new ArrayList<SelectOptionVO>();
 		try {
 			electionYearslist = new ArrayList<SelectOptionVO>();
-			elections = nominationDAO.getElectionYearsByScopeNPartyNconstiId(
+			List<Long> electionIds = nominationDAO.getElectionYearsByScopeNPartyNconstiId(
 					electionScopeId,partyId,constituencyId);
-			for (int i = 0; i < elections.size(); i++) {
-				Object[] parms = (Object[]) elections.get(i);
-				electionYearslist.add(new SelectOptionVO(Long.parseLong(parms[0].toString()), parms[1].toString()));
+			if(electionIds != null && electionIds.size() > 0)
+			{
+				for (Long electionId : electionIds) {
+					List<Long> booths = boothConstituencyElectionDAO.getBoothIdsByConstituencyId(constituencyId,electionId);
+					if(booths != null && booths.size() > 0)
+					{
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId(electionId);
+						selectOptionVO.setName(electionDAO.get(electionId).getElectionYear());
+						reteurnList.add(selectOptionVO);
+					}
+				}
 			}
-			return electionYearslist;
+			return reteurnList;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
