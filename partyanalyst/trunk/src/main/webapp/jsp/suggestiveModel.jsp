@@ -176,6 +176,8 @@ th {
 .table thead th{vertical-align:middle;}
 #panchayatWisePollingPercentageDiv{padding-top: 9px; padding-bottom: 21px;}
 
+html{overflow-x: hidden;}
+
 </style>
 
 
