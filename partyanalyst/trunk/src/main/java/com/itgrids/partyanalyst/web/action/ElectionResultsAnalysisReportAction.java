@@ -634,7 +634,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			}
 			
 			}catch(Exception e){
-				electionYears = staticDataService.getElectionIdsAndYearsByElectionScopeId(electionScope,partyId);
+				//electionYears = staticDataService.getElectionIdsAndYearsByElectionScopeId(electionScope,partyId);
 			}
 			electionYears.add(0,new SelectOptionVO(0L,"Select Year"));
 		}
