@@ -9,12 +9,15 @@
 <head>
 <title> Party Analyst - Suggestive Model</title>
  <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
- <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.min.js"></script>
+ <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.js"></script>
+ <!--<script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.min.js"></script>-->
   <!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>-->
 <link rel="stylesheet" href="/resources/demos/style.css" />
-<link rel="stylesheet" href="styles/jqueryDataTable/css/datatable.css" />
+<!--<link rel="stylesheet" href="styles/jqueryDataTable/css/datatable.css" />-->
+<link rel="stylesheet" href="styles/jQ_datatables/css/demo_page.css" />
+<link rel="stylesheet" href="styles/jQ_datatables/css/demo_table.css" />
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
@@ -170,10 +173,14 @@ th {
 .ageGroupTable .table th, .table td{text-align:center;}
 
 #tableageGroupTableId1,#tableageGroupTableId2,#tableageGroupTableId3{border:1px solid #ccc;}
-#ageGroupTableId1,#ageGroupTableId2,#ageGroupTableId3{clear:both;}
+#ageGroupTableId1,#ageGroupTableId2,#ageGroupTableId3,#ageGroupBoothTableId1,ageGroupBoothTableId2,ageGroupBoothTableId3{clear:both;}
 .table-bordered th, .table-bordered td{font-family:verdana;}
 .table th, .table td{font-family:verdana;}
 .table thead th{vertical-align:middle;}
+tr.even td.sorting_1{background-color:#ffffff;}
+
+#titleageGroupBoothTableId1,#titleageGroupTableId1,#titleageGroupBoothTableId2,#titleageGroupTableId2,#titleageGroupBoothTableId3,#titleageGroupTableId3{clear:both;padding:15px;background:#9CE7FC;border:1px solid #cccccc;display:none;margin-top:80px;color:#000000;}
+
 #panchayatWisePollingPercentageDiv{padding-top: 9px; padding-bottom: 21px;}
 
 html{overflow-x: hidden;}
@@ -366,8 +373,9 @@ function callAjax(param,jsObj,url){
 							buildDeletedVotersInfo(myResults);
 						}
 						else if(jsObj.task == "getAgeGroupWiseReport"){
-									buildAgeGroupWiseTable(myResults,jsObj);
-								}
+							$('#ajaxLoaderImg').css('display','none');
+							buildAgeGroupWiseTable(myResults,jsObj);
+						}
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
 					}  
@@ -575,7 +583,7 @@ function showSuggestedLocations(myResults,jsObj){
 <div id="suggestiveMainDiv" align="center">
   <!--<div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>-->
   <div class="widget blue">
-  <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 250px;" class="widget-block">
+  <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 450px;" class="widget-block">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
    <div id="mainDiv" align="center" style="margin-left: 100px;">
      <div id="errorMsgDiv" >&nbsp;</div><br><br>
@@ -638,10 +646,43 @@ function showSuggestedLocations(myResults,jsObj){
 		</tr>
 	</table>
 </div>
+
+<div style="margin-left:80px;margin-top:70px;">
+<div id="ageGroupWiseId">
+	<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
+		<div class="pull-left" style="margin:10px;font-weight:bold;">Young Voters -</div><div class="fromDiv">
+			From
+			<div class="inputDiv"><input type="text" id="fromTxt" class="fromInput" style="width:80px;" value="18"/></div>
+		</div>
+		<div class="toDiv">
+			To
+			<div class="inputDiv"><input type="text" id="toTxt" class="toInput" style="width:80px;" value="23"/></div>
+		</div>
+		<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
+	</div>
+	<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
+		<div class="pull-left" style="margin:10px;font-weight:bold;">Old Voters     -</div><div class="fromDiv" style="margin-left:30px;">
+			From
+			<div class="inputDiv"><input type="text" id="fromTxt" class="fromInput" style="width:80px;" value="60"/></div>
+		</div>
+		<div class="toDiv">
+			To
+			<div class="inputDiv"><input type="text" id="toTxt" class="toInput" style="width:80px;" value="120"/></div>
+		</div>
+		<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
+	</div>
+</div>
+</div>
+<div style="clear:both;">
+	<span id="errorMsg"></span>
+</div>
+
+
 <div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;float: left; width: 980px;">
-<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="getLeadersList();"/>
+<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="getLeadersList(),getAgeGroupWiseResults()"/>
 
 <img src="images/icons/search.gif" id="ajaxImg" style="display:none;"/>
+<img src="images/icons/loading.gif" id="ajaxLoaderImg" height="25px" width="25px;" style="display:none;"/>
 </div>
 
 </div>
@@ -671,34 +712,21 @@ function showSuggestedLocations(myResults,jsObj){
 
  
 </div>
-<div align="center" style="width:600px;">
-<div id="ageGroupWiseId">
-	<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
-		<div class="fromDiv">
-			From
-			<div class="inputDiv"><input type="text" id="fromTxt" class="fromInput" /></div>
-		</div>
-		<div class="toDiv">
-			To
-			<div class="inputDiv"><input type="text" id="toTxt" class="toInput"/></div>
-		</div>
-		<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
-	</div>
-</div>
-</div>
-<div style="clear:both;">
-	<span id="errorMsg"></span>
-</div>
-<div style="clear:both;margin-top:10px;">
+
+<!--<div style="clear:both;margin-top:10px;">
 	<span id="addMoreBtn" class="btn btn-info" >Add More</span>
 	<span id="getAgeGroupWiseResults" class="btn btn-info">Get Results</span>
+	<span id="ajaxLoaderImg" style="display:none;"><img src="images/icons/loading.gif" height="30px" width="30px;"/></span>
+</div>-->
+
+<div style="background:#fff;">
+	<div><div id="titleageGroupTableId1" ></div><div id="ageGroupTableId1"  style="margin:20px;"></div></div>
+	<div><div id="titleageGroupBoothTableId1"></div><div id="ageGroupBoothTableId1" style="margin-top:10px;"></div></div>
+	<div><div id="titleageGroupTableId2"></div><div id="ageGroupTableId2" style="margin-top:10px;"></div></div>
+	<div><div id="titleageGroupBoothTableId2"></div><div id="ageGroupBoothTableId2" style="margin-top:10px;"></div></div>
+	<div><div id="titleageGroupTableId3"></div><div id="ageGroupTableId3" style="margin-top:10px;"></div></div>
+	<div><div id="titleageGroupBoothTableId3"></div><div id="ageGroupBoothTableId3" style="margin-top:10px;"></div></div>
 </div>
-
-<div class="span12">
-	<div id="ageGroupTableId1" style="margin:20px;"></div>
-	<div id="ageGroupTableId2" style="margin:20px;"></div>
-	<div id="ageGroupTableId3" style="margin:20px;"></div>
-
 
 <script>
 $(document).ready(function(){
@@ -1131,13 +1159,18 @@ var count=0;
 	
 	
 	var valuesArr;
-	$('#getAgeGroupWiseResults').click(function(){
-		
+	<!--$('#getAgeGroupWiseResults').click(function(){
+		function getAgeGroupWiseResults(){
 		var k=validateAndPush();
+		
 		if(k!=0){
+			if($('#errorMsg').html()==""){
+				$('#errorMsg').html('Invalid Input..Please Give valid Input');
+			}
 			$('#errorMsg').css('display','inline-block');
 			return;
 		}
+		$('#ajaxLoaderImg').css('display','inline-block');
 		var agesArr=[];
 		
 		if(valuesArr.length==1){
@@ -1163,12 +1196,17 @@ var count=0;
 			agesArr.push(val6);
 		}
 		
+		var constituencyId = $('#listConstituencyNames option:selected').val();
+		if(constituencyId==0){
+		$('#errorMsg').html('Please Select the Constituency');
+		}
 		
 		var jsObj = {
-	        constituencyId:232,
+			
+	        constituencyId:constituencyId,
 			electionId:0,
-			partyId:362,
-			locationId:844,
+			partyId:0,
+			locationId:0,
 			locationType:"panchayat",
 			tempVar:"all",
 			task:"getAgeGroupWiseReport",
@@ -1177,8 +1215,8 @@ var count=0;
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "<%=request.getContextPath()%>/getAgeGroupWiseReportAction.action?"+rparam;
 		callAjax(rparam,jsObj,url);
-		
-  });
+	}	
+  
 		
 		
 		
@@ -1196,6 +1234,13 @@ var count=0;
 			 var to=valuesList['to'];
 			 
 			 
+			 var constituencyId = $('#listConstituencyNames option:selected').val();
+				if(constituencyId==0){
+					$('#errorMsg').html('Please Select the Constituency');
+					errorFree=1;
+					return;
+				}
+			 
 			 if($.isNumeric(from) && $.isNumeric(to)){
 				if(!(parseInt(from)>17 && parseInt(from)<=140) || !(parseInt(to)>17 && parseInt(to)<=140)){
 					$('#errorMsg').html('Age should be between 18 & 140');
@@ -1211,9 +1256,16 @@ var count=0;
 					$('#errorMsg').html('');
 				}
 			 }else{
-					$('#errorMsg').html('Invalid Input..Please Enter only Numerics');
-					errorFree=1;
-					return;
+					if(constituencyId==0){
+						$('#errorMsg').html('Please Select the Constituency');
+						errorFree=1;
+						return;
+					}
+					else{
+						$('#errorMsg').html('Invalid Input..Please Enter only Numerics');
+						errorFree=1;
+						return;
+					}
 			 }
 		});
 		return errorFree;
@@ -1243,6 +1295,9 @@ var count=0;
 		$('#ageGroupTableId1').html('');
 		$('#ageGroupTableId2').html('');
 		$('#ageGroupTableId3').html('');
+		$('#ageGroupBoothTableId1').html('');
+		$('#ageGroupBoothTableId2').html('');
+		$('#ageGroupBoothTableId3').html('');
 		buildHeadBodyForTable(myResults,jsObj);
 		
 	}
@@ -1252,23 +1307,43 @@ var count=0;
 		
 		if(tablesCount==1){
 			createTable(myResults[0],'ageGroupTableId1');
+			
+			$.each(myResults[0].municipalitesBoothsMap, function(key, value){
+				createBoothsTable(value,'ageGroupBoothTableId1',key);
+			}); 
+			
 		}
 		else if(tablesCount==2){
 			for(var i=0;i<tablesCount;i++){
 				var num=i+1;
 				createTable(myResults[i],'ageGroupTableId'+num);
+				
+				$.each(myResults[i].municipalitesBoothsMap, function(key, value){
+					createBoothsTable(value,'ageGroupBoothTableId'+num,key);
+				});
 			}
+			
+						
 		}
 		else{
 			for(var i=0;i<tablesCount;i++){
 				var num=i+1;
 				createTable(myResults[i],'ageGroupTableId'+num);
+				
+				$.each(myResults[i].municipalitesBoothsMap, function(key, value){
+					createBoothsTable(value,'ageGroupBoothTableId'+num,key);
+				});
 			}
 		}
 	}
+	
+	
 	function createTable(result,tableId){
+	$('#title'+tableId).css('display','block');
+	$('#title'+tableId).html('<h4>Panchayat Wise Voters Analysis of Age Range - '+result.ageRange+'</h4>');
 		var str='';
-		str+='<table class="table table-bordered" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead><tr><th rowspan=2>Panchayat</th><th rowspan=2>Total Voters In Panchayat</th><th colspan=4>'+result.ageRange+'</th><th rowspan=2>Top Castes</th></tr>';
+		<!--str+='<div style="width:800px" align="center"><h4>Panchayat Wise Voters Analysis of Age Range - +'+result.ageRange+'</h4></div>'-->
+		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead><tr><th rowspan=2>Panchayat</th><th rowspan=2>Total Voters In Panchayat</th><th colspan=4>'+result.ageRange+'</th><th rowspan=2>Top Castes</th></tr>';
 		str+='<tr><th>Total Voters</th><th>Male Voters</th><th>Female Voters</th>	<th>Percentage</th></tr></thead>';
 		str+='<tbody>';
 		var res=result.panchayatList;
@@ -1299,6 +1374,47 @@ var count=0;
 			"aLengthMenu": [[15, 30, -1], [15, 30, "All"]]
 		});
 	}
+	
+	function createBoothsTable(result,tableId,mncplName){
+	$('#title'+tableId).css('display','block');
+	$('#title'+tableId).html('<h4>'+mncplName+'- Booth Wise Voters Analysis of Age Range - '+result[0].ageRange+'</h4>');
+		var str='';
+		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead><tr><th rowspan=2>Booths</th><th rowspan=2>Total Voters In Booth</th><th colspan=4>'+result[0].ageRange+'</th><th rowspan=2>Top Castes</th></tr>';
+		str+='<tr><th>Total Voters</th><th>Male Voters</th><th>Female Voters</th>	<th>Percentage</th></tr></thead>';
+		str+='<tbody>';
+		for(var i in result){
+		var vstr="";
+		vstr+='<tr>';
+		vstr+='<td>'+result[i].panchayatName+'</td>';
+		vstr+='<td>'+result[i].totalPanchayatVoters+'</td>';
+		vstr+='<td>'+result[i].totalVoters+'</td>';
+		vstr+='<td>'+result[i].maleVoters+'</td>';
+		vstr+='<td>'+result[i].femaleVoters+'</td>';
+		vstr+='<td>'+result[i].percentage+'</td>';
+		vstr+='<td>';
+		var topCastesLength=result[i].topCastes.length;
+		for(var j in result[i].topCastes){
+		vstr+=result[i].topCastes[j].castName+"("+result[i].topCastes[j].castCount+")";
+			 if(topCastesLength>j){
+				vstr+=", ";
+			}
+		}
+		vstr+='</td>';
+		vstr+='</tr>';
+		
+		str+=vstr;
+		}
+		str+='</tbody></table>';
+		
+		$('#'+tableId).html(str);
+		$('#table'+tableId).dataTable({
+			"iDisplayLength": 15,
+			"aLengthMenu": [[15, 30, -1], [15, 30, "All"]]
+		});
+	}
+	
+	 
+		 
 </script>
 </body>
 </html>
