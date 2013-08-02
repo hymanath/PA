@@ -406,5 +406,11 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public Long getTotalVoters(Long boothId);
 	  
+	  public List<Object[]> getVotersCasteDetailsForAgeRangeInBooth(Long fromAge,Long toAge,Long boothId,Long userId);
+	  
+	  public List<Object[]> getVotersCountAgeWiseInBooth(Long fromAge,Long toAge,Long boothIds);
+	  
+	  public List<Long> getVotersCountForBooths(Long ids,Long publicationDateId);
+	  
 	  public List<Object[]> getTotalVotersByBooths(List<Long> boothIds);
 }

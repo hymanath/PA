@@ -255,15 +255,42 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 List<Long> panchayatsList=new ArrayList<Long>();
 		 Map<Long,String> panchayatsMap=new HashMap<Long, String>();
 		 List<PanchayatVO> panchayatVOs=null;
+		 List<PanchayatVO> boothsVO=null;
 		 List<PanchayatVO> panchayatVOList=new ArrayList<PanchayatVO>();
+		 List<Object[]> panchayats=null;
 		 publicationIds.add(publicationId);
+		 List<Object[]> boothsList=null;
+		 List<Long> boothIdsList=null;
+		 Map<Long,String> boothsMap=new HashMap<Long, String>();
+		 List<Object[]> muncipalitiesList=null;
+		 Map<String,List<PanchayatVO>> MuncipalBoothsMap=null;
 		 
-		 List<Object[]> panchayats=boothDAO.getPanchayatsListByTehsilId(locationId, publicationId);
+		 List<Object[]> constituencyType=constituencyDAO.getConstituencyType(constituencyId);
+		 String constAreaType=constituencyType.get(0)[1].toString();
+				 
+		 if(constAreaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN)){
+			 
+		 }
+		 else if(constAreaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL)){
+			  panchayats=boothDAO.getPanchayatsNamesListByConstituencyId(constituencyId, publicationId);
+		 }
+		 else{
+			  panchayats=boothDAO.getPanchayatsNamesListByConstituencyId(constituencyId, publicationId);
+			 muncipalitiesList=boothDAO.getMuncipalitiesListNamesByConstituencyId(constituencyId, publicationId);
+			 
+			/* for(Object[] param:muncipalitiesList){
+				 List<Object[]> booths=boothDAO.getAllBoothsInAMuncipality(Long.valueOf(param[0].toString()), publicationId);
+				 boothsList.addAll(booths);
+			 }*/
+		 }
+		//  panchayats=boothDAO.getPanchayatsNamesListByConstituencyId(constituencyId, publicationId);
+		// List<Object[]> panchayats=boothDAO.getPanchayatsListByTehsilId(locationId, publicationId);
 		 for(Object[] list:panchayats){
 			 panchayatsList.add(Long.valueOf(list[0].toString()));
 			 panchayatsMap.put(Long.valueOf(list[0].toString()), list[1].toString());
 			//System.out.println(list[0]+":"+list[1]);
 		 }
+		
 		 
 		 
 		 	 for(SelectOptionVO group : groupVos){
@@ -271,6 +298,70 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 PanchayatVO pnchytVO1 =new PanchayatVO();
 				 String ageRange=group.getId()+"> & <"+group.getPopulateId();
 				 pnchytVO1.setAgeRange(ageRange);
+				 boothsVO=new ArrayList<PanchayatVO>();
+				 MuncipalBoothsMap=new HashMap<String, List<PanchayatVO>>();
+				 
+				 if(muncipalitiesList!=null){
+				 for(Object[] param:muncipalitiesList){
+					 
+					 List<Object[]> booths=boothDAO.getAllBoothsInAMuncipality(Long.valueOf(param[0].toString()), publicationId);
+					 boothsList=new ArrayList<Object[]>();
+					 boothIdsList=new ArrayList<Long>();
+					 boothsList.addAll(booths);
+					 if(boothsList!=null){
+						 for(Object[] list:boothsList){
+							 boothIdsList.add(Long.valueOf(list[0].toString()));
+							 boothsMap.put(Long.valueOf(list[0].toString()), "Booth-"+list[1].toString());
+						 }
+					 }
+				 if(boothIdsList!=null){
+					 for(Long boothId:boothIdsList){
+						 List li=boothPublicationVoterDAO.getVotersCountForBooths(boothId, publicationId);
+						 int totalVotersInBooth=Integer.parseInt((li.get(0)).toString());
+						 
+						 List<Object[]> castesInBooths=boothPublicationVoterDAO.getVotersCasteDetailsForAgeRangeInBooth(group.getId(), group.getPopulateId(), boothId, userId);
+						 List<CastVO> top3CstsListInBooth=new ArrayList<CastVO>();
+						 top3CstsListInBooth=getTopCastes(castesInBooths);
+						 
+						 List<Object[]> votersCount = boothPublicationVoterDAO.getVotersCountAgeWiseInBooth(group.getId(), group.getPopulateId(), boothId);
+						 int maleVotersInBooth=0;
+						 int femaleVotersInBooth=0;
+						 int totalVoters=0;
+						 int totalMales=0;
+						 int totalFemales=0;
+						 
+						 for(Object[] param1:votersCount){
+							 if((param1[1].toString()).equalsIgnoreCase("F")){
+								 femaleVotersInBooth=Integer.parseInt(param1[0].toString());
+								 totalFemales=totalFemales+femaleVotersInBooth;
+							 }else{
+								 maleVotersInBooth=Integer.parseInt(param1[0].toString());
+								 totalMales=totalMales+maleVotersInBooth;
+							 }
+							 totalVoters=totalFemales+totalMales;
+						 }
+						 
+						 PanchayatVO pnchytVO=new PanchayatVO();
+						 pnchytVO.setPanchayatId(boothId);
+						 pnchytVO.setAgeRange(ageRange);
+						 pnchytVO.setPanchayatName(boothsMap.get(boothId));
+						 pnchytVO.setMaleVoters(totalMales);
+						 pnchytVO.setFemaleVoters(totalFemales);
+						 pnchytVO.setTotalVoters(totalVoters);
+						 float percentage=(totalVoters*100)/totalVotersInBooth;
+						 pnchytVO.setPercentage(percentage);
+						 pnchytVO.setTotalPanchayatVoters(totalVotersInBooth);
+						 pnchytVO.setTopCastes(top3CstsListInBooth);
+						 
+						 boothsVO.add(pnchytVO);
+					 }
+				 	}
+				 MuncipalBoothsMap.put(param[1].toString(), boothsVO);
+				 }
+				 }
+				 
+				 
+				 if(panchayatsList!=null){
 				 for(Long panchayathId:panchayatsList){
 				 if("panchayat".equalsIgnoreCase(type)){
 					 List li=boothPublicationVoterDAO.getVotersCountForPanchayat(panchayathId, publicationId);
@@ -279,42 +370,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					 
 					 //Getting Castes and Selecting top 3 Castes of a Panchayat
 					 List<Object[]> castes=boothPublicationVoterDAO.getVotersCasteDetailsForAgeRange(group.getId(), group.getPopulateId(), boothIDs, userId);
-					 Map<Long,CastVO> castesMap= new HashMap<Long, CastVO>();
-					 
-					 for(Object[] param:castes){
-						 CastVO value=castesMap.get(Long.valueOf(param[2].toString()));
-						 if(value!=null){
-							 Long count=value.getCastCount();
-							 count=count+Long.valueOf(param[0].toString());
-							 value.setCastCount(count);
-							 
-							 castesMap.put(Long.valueOf(param[2].toString()), value);
-						 }
-						 else{
-							 CastVO castVO=new CastVO();
-							 castVO.setCastName(param[1].toString());
-							 castVO.setCastCount(Long.valueOf(param[0].toString()));
-							 castVO.setCastStateId(Long.valueOf(param[2].toString()));
-							 castesMap.put(Long.valueOf(param[2].toString()), castVO);
-						 }
-					 }
-					 List<CastVO> cstVOList=new ArrayList<CastVO>(castesMap.values());
-					 Collections.sort(cstVOList,sourceSort);
-					 Collections.reverse(cstVOList);
 					 List<CastVO> top3CstsList=new ArrayList<CastVO>();
-					 int length=0;
-					 if(cstVOList.size()>=3){
-						 length=3;
-					 }else{
-						 length=cstVOList.size();
-					 }
-					 
-					 for(int i=0;i<length;i++){
-						 if(cstVOList.get(i)!=null){
-							 top3CstsList.add(cstVOList.get(i));
-						 }
-					 }
-					 
+					 top3CstsList=getTopCastes(castes);
 					 
 					 if(boothIDs != null && boothIDs.size() > 0){
 						 int maleVotersInBooth=0;
@@ -322,7 +379,9 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						 int totalVoters=0;
 						 int totalMales=0;
 						 int totalFemales=0;
+						 
 						 List<Object[]> votersCount = boothPublicationVoterDAO.getVotersCountAgeWiseForPanchayat(group.getId(), group.getPopulateId(), boothIDs);
+						 
 						 for(Object[] param:votersCount){
 							 if((param[1].toString()).equalsIgnoreCase("F")){
 								 femaleVotersInBooth=Integer.parseInt(param[0].toString());
@@ -351,11 +410,53 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 }
 				
 			 }
+				 }
 			 pnchytVO1.setPanchayatList(panchayatVOs);
+			 pnchytVO1.setBoothsList(boothsVO);
+			 pnchytVO1.setMunicipalitesBoothsMap(MuncipalBoothsMap);
 			 panchayatVOList.add(pnchytVO1);
 		 }
 		 return panchayatVOList;
 	}
+	
+	public List<CastVO> getTopCastes(List<Object[]> castes){
+		Map<Long,CastVO> castesMap= new HashMap<Long, CastVO>();
+		 
+		 for(Object[] param:castes){
+			 CastVO value=castesMap.get(Long.valueOf(param[2].toString()));
+			 if(value!=null){
+				 Long count=value.getCastCount();
+				 count=count+Long.valueOf(param[0].toString());
+				 value.setCastCount(count);
+				 
+				 castesMap.put(Long.valueOf(param[2].toString()), value);
+			 }
+			 else{
+				 CastVO castVO=new CastVO();
+				 castVO.setCastName(param[1].toString());
+				 castVO.setCastCount(Long.valueOf(param[0].toString()));
+				 castVO.setCastStateId(Long.valueOf(param[2].toString()));
+				 castesMap.put(Long.valueOf(param[2].toString()), castVO);
+			 }
+		 }
+		 List<CastVO> cstVOList=new ArrayList<CastVO>(castesMap.values());
+		 Collections.sort(cstVOList,sourceSort);
+		 Collections.reverse(cstVOList);
+		 List<CastVO> top3CstsList=new ArrayList<CastVO>();
+		 int length=0;
+		 if(cstVOList.size()>=3){
+			 length=3;
+		 }else{
+			 length=cstVOList.size();
+		 }
+		 
+		 for(int i=0;i<length;i++){
+			 if(cstVOList.get(i)!=null){
+				 top3CstsList.add(cstVOList.get(i));
+			 }
+		 }
+		 return top3CstsList;
+	} 
 	 public static Comparator<CastVO> sourceSort = new Comparator<CastVO>()
 				{
 					  

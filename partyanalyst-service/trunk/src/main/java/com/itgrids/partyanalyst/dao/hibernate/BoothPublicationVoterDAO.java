@@ -1289,6 +1289,15 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		queryObj.setParameterList("id", ids);
 		return queryObj.list();
 	}
+	public List<Long> getVotersCountForBooths(Long ids,Long publicationDateId){
+		StringBuilder query = new StringBuilder();
+		query.append("select count(*) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		query.append(" model.booth.boothId =:ids ");
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameter("ids", ids);
+		return queryObj.list();
+	}
 	
 	public List<Object[]> getGenderWiseVotersCountForWard(Long wardId,Long publicationDateId){
 		StringBuilder query = new StringBuilder();
@@ -4345,6 +4354,20 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 			return query.list();
 		}
+		public List<Object[]> getVotersCountAgeWiseInBooth(Long fromAge,Long toAge,Long boothIds){
+			String qyeryString = "select count(*),model.voter.gender from BoothPublicationVoter " +
+					"model where model.booth.boothId =:boothIds " +
+					"and model.voter.age >= :fromAge and model.voter.age<= :toAge group by model.voter.gender";
+			
+			Query query = getSession().createQuery(qyeryString);
+			
+			
+			query.setParameter("boothIds", boothIds);
+			query.setParameter("fromAge", fromAge);
+			query.setParameter("toAge", toAge);
+			
+			return query.list();
+		}
 		
 		public List<Object[]> getVotersCountAgeWiseForPanchayat(Long fromAge,Long toAge,List<Long> boothIds){
 			String qyeryString = "select count(*),model.voter.gender from BoothPublicationVoter " +
@@ -4370,6 +4393,22 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 			
 			query.setParameterList("boothIds", boothIds);
+			query.setParameter("fromAge", fromAge);
+			query.setParameter("toAge", toAge);
+			query.setParameter("userId", userId);
+			
+			return query.list();
+		}
+		
+		public List<Object[]> getVotersCasteDetailsForAgeRangeInBooth(Long fromAge,Long toAge,Long boothId,Long userId){
+			String qyeryString = "select count(*),uvd.casteState.caste.casteName,uvd.casteState.casteStateId from BoothPublicationVoter " +
+					" model,UserVoterDetails uvd where model.booth.boothId =:boothIds  " +
+					"and model.voter.age >= :fromAge and model.voter.age<= :toAge and model.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId group by uvd.casteState.casteStateId ";
+			
+			Query query = getSession().createQuery(qyeryString);
+			
+			
+			query.setParameter("boothIds", boothId);
 			query.setParameter("fromAge", fromAge);
 			query.setParameter("toAge", toAge);
 			query.setParameter("userId", userId);
