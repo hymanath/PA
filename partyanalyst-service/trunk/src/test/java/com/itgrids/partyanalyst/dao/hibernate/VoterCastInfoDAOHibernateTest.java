@@ -35,7 +35,7 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	/*public void test()
+	public void test()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(11l);
@@ -51,9 +51,9 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		ids.add(3l);
 		ids.add(2l);
 		ids.add(5l);
-		List<Object[]> values = voterCastInfoDAO.getTopThreeCasteFoeSelctedLevel(ids,3l,8l,1l);
+		List<Object[]> values = voterCastInfoDAO.getTopCasteFoeSelctedLevel(ids,3l,8l,1l);
 		for (Object[] parms : values) {
 			System.out.println(parms[0]  +":"+ parms[1] +":"+ parms[2] +":"+ parms[3]);
 		}
-	}*/
+	}
 }

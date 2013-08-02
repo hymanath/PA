@@ -377,9 +377,15 @@ for (Object[] objects : list) {
 		
 		public void testgetCasteDetailsOfVoterByBoothId()
 		{
-			List<Object[]> values = userVoterDetailsDAO.getCasteDetailsOfVoterByBoothId(122993l,8l,1l);
+			List<Long> boothIds = new ArrayList<Long>();
+			boothIds.add(122992l);
+			boothIds.add(122993l);
+			boothIds.add(122993l);
+			boothIds.add(122994l);
+			boothIds.add(123077l);
+			List<Object[]> values = userVoterDetailsDAO.getCasteDetailsOfVoterByBooths(boothIds,8l,1l);
 			for (Object[] objects : values) {
-				System.out.println(objects[0] +":"+ objects[1] );
+				System.out.println(objects[0] +":"+ objects[1] +":"+ objects[2]);
 			}
 		}
 }

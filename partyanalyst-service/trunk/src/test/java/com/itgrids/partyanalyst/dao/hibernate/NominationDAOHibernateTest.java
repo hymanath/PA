@@ -1347,7 +1347,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	
 
 			
-	public void testParties()
+	/*public void testParties()
 	{
 		List  values = nominationDAO.findByElectionScopeIdAndPartyIds(2l,1117l);
 		System.out.println(values);
@@ -1357,6 +1357,6 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(a[1]);
 		}
 			
-	}
+	}*/
 }	
 	

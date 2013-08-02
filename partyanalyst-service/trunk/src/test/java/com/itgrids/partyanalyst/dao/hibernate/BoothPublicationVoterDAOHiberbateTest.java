@@ -746,8 +746,15 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 	}*/
 	public void testgetTotalVoters()
 	{
-		Long count = boothPublicationVoterDAO.getTotalVoters(122992l);
-		System.out.println(count);
+		List<Long> boothIds = new ArrayList<Long>();
+		boothIds.add(123074l);
+		boothIds.add(123075l);
+		boothIds.add(123076l);
+		boothIds.add(123077l);
+		List<Object[]> values = boothPublicationVoterDAO.getTotalVotersByBooths(boothIds);
+		for (Object[] params : values) {
+			 System.out.println(params[0]+" "+params[1]);
+		}
 	}
 	
 }

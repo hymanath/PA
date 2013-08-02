@@ -405,4 +405,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVotersCountAgeWiseForPanchayat(Long fromAge,Long toAge,List<Long> boothIds);
 	  
 	  public Long getTotalVoters(Long boothId);
+	  
+	  public List<Object[]> getTotalVotersByBooths(List<Long> boothIds);
 }
