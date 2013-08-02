@@ -262,11 +262,11 @@ function validateYear2(yearId){
 	}	
 }
 function getLeadersList(){
-var mandalId = $('#listMandalNames option:selected').val();
+//var mandalId = $('#listMandalNames option:selected').val();
 var constituencyId = $('#listConstituencyNames option:selected').val();
 var jsObj= 
 	{	
-		mandalId       : mandalId.slice(1),
+		//mandalId       : mandalId.slice(1),
 		constituencyId : constituencyId,
 		task           : "getLeadersList"		
 	};
@@ -436,11 +436,11 @@ function buildLeadersTable(results)
 {
 	if(results != null && results.length > 0)
 	{
-		var mandalName = $('#listMandalNames option:selected').text().toUpperCase();
+		var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
 		var str = "";
 		str+='<div class="widget blue">';
 		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
-		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+mandalName+' BOOTH LEVEL CASTE DETAILS </h4>';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY BOOTH LEVEL CASTE DETAILS </h4>';
 		//str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;"></h4>';
 		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
 		str += '<tr>';
