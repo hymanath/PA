@@ -348,7 +348,8 @@ function callAjax(param,jsObj,url){
 						}
 						else if(jsObj.task == "getPartyPerformanceReport")
 						{
-							showPartyPerformanceReport(myResults,jsObj);
+						    $("#ajaxImg").css("display","none");
+					        showPartyPerformanceReport(myResults,jsObj);
 							showStrongAndWeakPollingPercentage(myResults,jsObj);
 							buildAddedVotersDetails(myResults);
 							showPartyPerformancePieChart(myResults,jsObj);
@@ -637,6 +638,8 @@ function showSuggestedLocations(myResults,jsObj){
 </div>
 <div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;float: left; width: 980px;">
 <input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="getLeadersList();"/>
+
+<img src="images/icons/search.gif" id="ajaxImg" style="display:none;"/>
 </div>
 
 </div>
@@ -707,6 +710,8 @@ $("#getPartyPer").click(function(){
 	  var eleIds = new Array();
 	  eleIds.push(eleId1);
 	  eleIds.push(eleId2);
+    $("#ajaxImg").css("display","inline-block");
+
 	var jsObj = {
 	        constituencyId:constituencyId,
 			electionId:eleIds,
