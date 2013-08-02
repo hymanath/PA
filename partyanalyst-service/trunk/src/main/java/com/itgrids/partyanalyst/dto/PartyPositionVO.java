@@ -27,6 +27,7 @@ public class PartyPositionVO implements Serializable{
 	private Long addedVotersCount;
 	private String tempVar;
 	private boolean addedVotersPresent;
+	private double rangePercentage = 0.00;
 	
 	public String getName() {
 		return Name;
@@ -122,6 +123,13 @@ public class PartyPositionVO implements Serializable{
 	public void setAddedVotersPresent(boolean addedVotersPresent) {
 		this.addedVotersPresent = addedVotersPresent;
 	}
+	public double getRangePercentage() {
+		return rangePercentage;
+	}
+	public void setRangePercentage(double rangePercentage) {
+		this.rangePercentage = rangePercentage;
+	}
+	
 	
 	
 }
