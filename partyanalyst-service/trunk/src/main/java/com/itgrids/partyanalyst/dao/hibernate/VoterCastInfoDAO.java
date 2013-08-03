@@ -31,7 +31,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		
 		Query query = getSession().createQuery("from VoterCastInfo model where model.voterReportLevel.voterReportLevelId = :levelId and " +
 				"model.reportLevelValue = :levelValue and model.constituency.constituencyId = :constituencyId and model.publicationDateId = :publicationId " +
-				" and model.userId = :userId order by model.casteState.caste.casteName asc");
+				" and model.userId = :userId order by model.casteVoters desc");
 		
 		query.setParameter("levelId", levelId);
 		query.setParameter("levelValue", levelValue);
@@ -141,7 +141,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getTopCasteFoeSelctedLevel(List<Long> ids,Long reportId,Long publicationId,Long userId)
 	{
-		Query query = getSession().createQuery("select model.reportLevelValue, model.casteState.caste.casteName,model.casteVoters,model.castePercentage " +
+		Query query = getSession().createQuery("select distinct model.reportLevelValue, model.casteState.caste.casteName,model.casteVoters,model.castePercentage " +
     	 		" from VoterCastInfo model where model.userId = :userId and model.voterReportLevel.voterReportLevelId = :reportId " +
     	 		" and model.reportLevelValue in (:ids) and model.publicationDateId = :publicationId " +
     	 		" order by model.reportLevelValue,model.casteVoters desc  ");
