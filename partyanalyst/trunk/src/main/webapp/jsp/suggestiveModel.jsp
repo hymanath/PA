@@ -366,7 +366,7 @@ function callAjax(param,jsObj,url){
 							showPartyPerformanceReportForBooth(myResults,jsObj);
 							showStrongAndWeakPollingPercentage(myResults,jsObj);
 							buildAddedVotersDetails(myResults);
-							showPartyPerformancePieChart(myResults,jsObj);
+							//showPartyPerformancePieChart(myResults,jsObj);
 							//showSuggestedLocations(myResults,jsObj);
 						}
 						else if(jsObj.task == "getLeadersList")
@@ -702,10 +702,10 @@ function showSuggestedLocations(myResults,jsObj){
    <div id="partyPerformanceInnerDiv"></div>
    <div id="partyPerformanceBoothDiv" style="display:none;"></div>
 </div>
-<div id="strongPollingPerDiv" class="row-fluid">
+<div id="strongPollingPerDiv" class="row-fluid" style="display:none;">
     <div id="strongPollingPercentageDiv" class="span6"></div>
 </div>
-<div id="weakPollingPerDiv" class="row-fluid">
+<div id="weakPollingPerDiv" class="row-fluid" style="display:none;">
 <div id="weakPollingPercentageDiv" class="span6"></div>
 </div>
 <div id="addedVotesDib" class="row-fluid">
@@ -793,7 +793,7 @@ function showPartyPerformanceReport(result,jsObj)
 	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
 	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">PANCHAYAT WISE '+partyName+' PARTY PERFORMANCE REPORT</h4>';
 	
-	str +='<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
+	str +='<div style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
     str +='<tr>';
 	str +='<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">Type</th>';
 	
@@ -942,6 +942,7 @@ function showPartyPerformanceReport(result,jsObj)
 	str += ' </table>';
 	str += '</div>';
 	str += '</div>';
+	str += '</div>';
 	$("#partyPerformanceInnerDiv").html(str);
 
 }
@@ -1084,6 +1085,7 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
   }
   str += '</table>'
   $("#strongPollingPercentageDiv").html(str);
+  $("#strongPollingPerDiv").show();
   var weakPollingPerList = result[0].weakPollingPercentVOList;
   var wstr = '';
   wstr += '<table >';
@@ -1128,6 +1130,7 @@ function showStrongAndWeakPollingPercentage(result,jsObj)
   }
   wstr += '</table>'
   $("#weakPollingPercentageDiv").html(wstr);
+  $("#weakPollingPerDiv").show();
 }
 function buildAddedVotersDetails(result)
 {
