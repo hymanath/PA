@@ -15,8 +15,9 @@ public class PartyPositionVO implements Serializable{
 	List<PartyPositionVO> partyPositionVOList = new ArrayList<PartyPositionVO>(0);
 	List<PartyPositionVO> weakPollingPercentVOList = new ArrayList<PartyPositionVO>(0);
 	List<PartyPositionVO> StrongPollingPercentVOList = new ArrayList<PartyPositionVO>(0);
-	
-	
+	List<PartyPositionVO> boothwisePartyPositionVOList = new ArrayList<PartyPositionVO>(0);
+	List<PartyPositionVO> localbodyList = new ArrayList<PartyPositionVO>(0);
+	private String localbodyName;
 	private Double minValue;
 	private Double maxValue;
 	private Double pollingPercentage = 0.00;
@@ -34,6 +35,25 @@ public class PartyPositionVO implements Serializable{
 	private double percentage = 0.00;
 	private double margin = 0.00;
 	
+	public List<PartyPositionVO> getLocalbodyList() {
+		return localbodyList;
+	}
+	public void setLocalbodyList(List<PartyPositionVO> localbodyList) {
+		this.localbodyList = localbodyList;
+	}
+	public String getLocalbodyName() {
+		return localbodyName;
+	}
+	public void setLocalbodyName(String localbodyName) {
+		this.localbodyName = localbodyName;
+	}
+	public List<PartyPositionVO> getBoothwisePartyPositionVOList() {
+		return boothwisePartyPositionVOList;
+	}
+	public void setBoothwisePartyPositionVOList(
+			List<PartyPositionVO> boothwisePartyPositionVOList) {
+		this.boothwisePartyPositionVOList = boothwisePartyPositionVOList;
+	}
 	public String getName() {
 		return Name;
 	}
