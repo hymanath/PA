@@ -179,13 +179,14 @@ th {
 .table thead th{vertical-align:middle;}
 tr.even td.sorting_1{background-color:#ffffff;}
 
-#titleageGroupBoothTableId1,#titleageGroupTableId1,#titleageGroupBoothTableId2,#titleageGroupTableId2,#titleageGroupBoothTableId3,#titleageGroupTableId3{clear:both;padding:15px;background:#9CE7FC;border:1px solid #cccccc;display:none;margin-top:80px;color:#000000;}
+#titleageGroupBoothTableId1,#titleageGroupTableId1,#titleageGroupBoothTableId2,#titleageGroupTableId2,#titleageGroupBoothTableId3,#titleageGroupTableId3{clear:both;padding:15px;background:#9CE7FC;border:1px solid #cccccc;display:none;margin-top:25px;color:#000000;}
 
 #panchayatWisePollingPercentageDiv{padding-top: 9px; padding-bottom: 21px;}
 
 html{overflow-x: hidden;}
 .spanCls{padding: 3px 5px; border-radius: 3px;}
 #panchayatTab th,#panchayatTab1 th{background:#D9EDF7;color: #454545;}
+.dataTables_info {text-align:left;}
 </style>
 
 
@@ -689,7 +690,7 @@ function showSuggestedLocations(myResults,jsObj){
 <input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="getLeadersList(),getAgeGroupWiseResults(),getPanchayatWiseResultsForAllPartiesOfAConstituency();"/>
 
 <img src="images/icons/search.gif" id="ajaxImg" style="display:none;"/>
-<img src="images/icons/loading.gif" id="ajaxLoaderImg" height="25px" width="25px;" style="display:none;"/>
+<!--<img src="images/icons/loading.gif" id="ajaxLoaderImg" height="25px" width="25px;" style="display:none;"/>-->
 </div>
 
 </div>
@@ -728,12 +729,13 @@ function showSuggestedLocations(myResults,jsObj){
 </div>-->
 
 <div style="background:#fff;">
-	<div><div id="titleageGroupTableId1" ></div><div id="ageGroupTableId1"  style="margin:20px;"></div></div>
-	<div><div id="titleageGroupBoothTableId1"></div><div id="ageGroupBoothTableId1" style="margin-top:10px;"></div></div>
-	<div><div id="titleageGroupTableId2"></div><div id="ageGroupTableId2" style="margin-top:10px;"></div></div>
-	<div><div id="titleageGroupBoothTableId2"></div><div id="ageGroupBoothTableId2" style="margin-top:10px;"></div></div>
-	<div><div id="titleageGroupTableId3"></div><div id="ageGroupTableId3" style="margin-top:10px;"></div></div>
-	<div><div id="titleageGroupBoothTableId3"></div><div id="ageGroupBoothTableId3" style="margin-top:10px;"></div></div>
+	<span id="ajaxLoaderImg" style="display:none;background:#ECECEC;"><img src="images/icons/goldAjaxLoad.gif"/></span>
+	<div class="titleageGroupTableId1Cls"><div id="titleageGroupTableId1" ></div><div id="ageGroupTableId1"  style="margin:20px;"></div></div>
+	<div class="titleageGroupBoothTableId1Cls"><div id="titleageGroupBoothTableId1"></div><div id="ageGroupBoothTableId1" style="margin-top:10px;"></div></div>
+	<div class="titleageGroupTableId2Cls"><div id="titleageGroupTableId2"></div><div id="ageGroupTableId2" style="margin-top:10px;"></div></div>
+	<div class="titleageGroupBoothTableId2Cls"><div id="titleageGroupBoothTableId2"></div><div id="ageGroupBoothTableId2" style="margin-top:10px;"></div></div>
+	<div class="titleageGroupTableId3Cls"><div id="titleageGroupTableId3"></div><div id="ageGroupTableId3" style="margin-top:10px;"></div></div>
+	<div class="titleageGroupBoothTableId3Cls"><div id="titleageGroupBoothTableId3"></div><div id="ageGroupBoothTableId3" style="margin-top:10px;"></div></div>
 </div>
 
 
@@ -1525,6 +1527,12 @@ var count=0;
 			"iDisplayLength": 15,
 			"aLengthMenu": [[15, 30, -1], [15, 30, "All"]]
 		});
+		
+		$("."+tableId+"Cls").css({
+			'padding' : '25px',
+			'margin' : '5px',
+			'border':'1px solid #cccccc'
+		});
 	}
 	
 	function createBoothsTable(result,tableId,mncplName){
@@ -1577,6 +1585,13 @@ var count=0;
 			"iDisplayLength": 15,
 			"aLengthMenu": [[15, 30, -1], [15, 30, "All"]]
 		});
+		
+		$("."+tableId+"Cls").css({
+			'padding' : '25px',
+			'margin' : '5px',
+			'border':'1px solid #cccccc'
+		});
+		
 	}
 
 function getPanchayatWiseResultsForAllPartiesOfAConstituency(){
