@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -21,7 +22,6 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
-import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
@@ -43,7 +43,27 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private List userAccessConstituencyList;
 	private List<VoterVO> deletedVoters;
+	private List<SelectOptionVO> castesList;
+	private List<YouthLeaderSelectionVO> LeaderSelectionLists;
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
+	
+	public List<YouthLeaderSelectionVO> getLeaderSelectionLists() {
+		return LeaderSelectionLists;
+	}
+
+	public void setLeaderSelectionLists(
+			List<YouthLeaderSelectionVO> leaderSelectionLists) {
+		LeaderSelectionLists = leaderSelectionLists;
+	}
+
+	public List<SelectOptionVO> getCastesList() {
+		return castesList;
+	}
+
+	public void setCastesList(List<SelectOptionVO> castesList) {
+		this.castesList = castesList;
+	}
+
 	public List<VoterVO> getDeletedVoters() {
 		return deletedVoters;
 	}
@@ -318,6 +338,27 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 					electionsYears = staticDataService.getElectionIdsAndYearsByElectionScopeId(jObj.getLong("electionScopeId"),jObj.getLong("partyId"),jObj.getLong("constituencyId"));
 					log.debug("getElectionScopes......"+electionsYears.size());
 				}
+			}
+			
+			return Action.SUCCESS;
+		}
+
+		public String getLeadersListInRuralUrbans()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+				session = request.getSession();
+				RegistrationVO regVO = (RegistrationVO)session.getAttribute(IConstants.USER);
+				if(regVO == null)
+				{
+					return Action.ERROR;
+				}
+				Long userId         = regVO.getRegistrationID();
+				//Long mandalId       = jObj.getLong("mandalId");
+				Long constituencyId = jObj.getLong("constituencyId");
+				LeaderSelectionLists = suggestiveModelService.findingBoothInchargesForBoothLevelForMincipality(userId,constituencyId);
+			}catch(Exception e){
+				e.printStackTrace();
 			}
 			
 			return Action.SUCCESS;
