@@ -687,5 +687,18 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	
+	public void testgetTotalVotesForBooth()
+	{
+		/*List<Long> boothIdsList = new ArrayList<Long>(0);
+		boothIdsList.add(241L);
+		System.out.println(boothDAO.getTotalVotesForBooth(boothIdsList, 232l))*/;
+		List<Booth> list = boothDAO.getboothsDetailsByTehsilId(83l,6l);
+		
+		System.out.println(list.size());
+		for (Booth booth : list) {
+			System.out.println(booth.getBoothId());
+			System.out.println(booth.getPartNo());
+		}
+
+	}
 }

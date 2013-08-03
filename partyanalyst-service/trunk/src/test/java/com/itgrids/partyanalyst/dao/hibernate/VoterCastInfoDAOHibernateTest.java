@@ -6,6 +6,8 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.model.VoterCastInfo;
 
 public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 
@@ -35,7 +37,7 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(11l);
@@ -54,6 +56,20 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		List<Object[]> values = voterCastInfoDAO.getTopCasteFoeSelctedLevel(ids,3l,8l,1l);
 		for (Object[] parms : values) {
 			System.out.println(parms[0]  +":"+ parms[1] +":"+ parms[2] +":"+ parms[3]);
+		}
+	}*/
+	public void test()
+	{
+		List ids = new ArrayList<Long>();
+		ids.add(835l);
+
+		List<VoterCastInfo> values = voterCastInfoDAO.getVotersCastInfo(5l,83l,232l,8l,1l);
+		System.out.println(values.size());
+		for(VoterCastInfo voterCastInfo:values)
+		{
+			System.out.println(voterCastInfo.getCasteState().getCaste().getCasteName());
+			System.out.println(voterCastInfo.getCasteVoters());
+			System.out.println(voterCastInfo.getCastePercentage().toString());
 		}
 	}
 }
