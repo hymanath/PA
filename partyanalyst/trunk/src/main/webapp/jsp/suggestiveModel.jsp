@@ -772,6 +772,21 @@ function showSuggestedLocations(myResults,jsObj){
 	</table>
 </div>
 
+<div style=" margin-bottom: 5px;float: left; margin-left: 82px;">
+	<table>
+		<tr>
+			<td id="tdWidth">
+				Caste Names :<font id="requiredValue" class="requiredFont">*</font> 
+			</td>		
+			<td>
+				<select id="candidateCastes" >
+				<option value="0"> Select Caste </option>
+				</select>
+			</td>			
+		</tr>
+	</table>
+</div>
+
 <div style="margin-left:80px;margin-top:70px;">
 <div id="ageGroupWiseId">
 	<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
