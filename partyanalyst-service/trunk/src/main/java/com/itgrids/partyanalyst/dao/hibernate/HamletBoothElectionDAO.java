@@ -364,6 +364,30 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPanchayatsByConstituencyId(Long constituencyId, Long electionId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("select distinct(model.boothConstituencyElection.booth.panchayat.panchayatId) from HamletBoothElection model,PanchayatHamlet model2");
+		stringBuilder.append(" where model.hamlet.hamletId = model2.hamlet.hamletId ");
+		stringBuilder.append(" and model.boothConstituencyElection.constituencyElection.election.electionId = :electionId ");
+		stringBuilder.append("and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("electionId", electionId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getBoothsByLocalBodyNElectionId(List<Long> localElectionBodyIds, Long electionId)
+	{
+		Query query = getSession().createQuery("select distinct(model.booth.boothId), model.booth.localBody.name from BoothConstituencyElection model where " +
+				" model.booth.localBody.localElectionBodyId in( :localElectionBodyIds) and model.constituencyElection.election.electionId = :electionId ");
+		query.setParameterList("localElectionBodyIds", localElectionBodyIds);
+		query.setParameter("electionId", electionId);
+		return query.list();
+	}
 	
 	
 }
