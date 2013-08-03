@@ -34,7 +34,6 @@ public class UserVoterDetails implements java.io.Serializable{
 	private Locality locality;
 	
 	private Hamlet hamlet;
-	private String mobileNo;
 	
 	public UserVoterDetails(){
 	}
@@ -134,15 +133,6 @@ public class UserVoterDetails implements java.io.Serializable{
 		this.ward = ward;
 	}
 
-	@Column(name="mobile_no",length=15)
-	public String getMobileNo() {
-		return mobileNo;
-	}
-
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
-	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="constituency_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
