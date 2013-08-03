@@ -1343,7 +1343,8 @@ var count=0;
 			locationType:"panchayat",
 			tempVar:"all",
 			task:"getAgeGroupWiseReport",
-			agesList:agesArr
+			agesList:agesArr,
+			castesSelcted:[211,189,285,290,292]
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 		var url = "<%=request.getContextPath()%>/getAgeGroupWiseReportAction.action?"+rparam;
@@ -1476,7 +1477,7 @@ var count=0;
 	$('#title'+tableId).html('<h4>Panchayat Wise Voters Analysis of Age Range - '+result.ageRange+'</h4>');
 		var str='';
 		<!--str+='<div style="width:800px" align="center"><h4>Panchayat Wise Voters Analysis of Age Range - +'+result.ageRange+'</h4></div>'-->
-		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead><tr><th rowspan=2>Panchayat</th><th rowspan=2>Total Voters In Panchayat</th><th colspan=4>'+result.ageRange+'</th><th rowspan=2>Top Castes</th></tr>';
+		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead><tr><th rowspan=2>Panchayat</th><th rowspan=2>Total Voters In Panchayat</th><th colspan=4>'+result.ageRange+'</th><th rowspan=2>Top Castes</th><th rowspan=2>Selected Castes</th></tr>';
 		str+='<tr><th>Total Voters</th><th>Male Voters</th><th>Female Voters</th>	<th>Percentage</th></tr></thead>';
 		str+='<tbody>';
 		var res=result.panchayatList;
@@ -1497,6 +1498,19 @@ var count=0;
 			}
 		}
 		str+='</td>';
+		str+='<td>';
+			var slctdCastesLength=result.panchayatList[i].selectedCastes.length;
+			if(slctdCastesLength>0){
+		for(var j in result.panchayatList[i].selectedCastes){
+		str+=result.panchayatList[i].selectedCastes[j].castName+"("+result.panchayatList[i].selectedCastes[j].castCount+")";
+			 if(slctdCastesLength>j){
+				str+=", ";
+			}
+		}}
+		else{
+			str+="-";
+		}
+		str+='</td>'
 		str+='</tr>';
 		}
 		str+='</tbody></table>';
@@ -1512,7 +1526,7 @@ var count=0;
 	$('#title'+tableId).css('display','block');
 	$('#title'+tableId).html('<h4>'+mncplName+'- Booth Wise Voters Analysis of Age Range - '+result[0].ageRange+'</h4>');
 		var str='';
-		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead><tr><th rowspan=2>Booths</th><th rowspan=2>Total Voters In Booth</th><th colspan=4>'+result[0].ageRange+'</th><th rowspan=2>Top Castes</th></tr>';
+		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead><tr><th rowspan=2>Booths</th><th rowspan=2>Total Voters In Booth</th><th colspan=4>'+result[0].ageRange+'</th><th rowspan=2>Top Castes</th><th rowspan=2>Selected Castes</th></tr>';
 		str+='<tr><th>Total Voters</th><th>Male Voters</th><th>Female Voters</th>	<th>Percentage</th></tr></thead>';
 		str+='<tbody>';
 		for(var i in result){
@@ -1531,6 +1545,20 @@ var count=0;
 			 if(topCastesLength>j){
 				vstr+=", ";
 			}
+		}
+		vstr+='</td>';
+		vstr+='<td>';
+		var slctedCastesLength=result[i].selectedCastes.length;
+		if(slctedCastesLength>0){
+		for(var j in result[i].selectedCastes){
+		vstr+=result[i].selectedCastes[j].castName+"("+result[i].selectedCastes[j].castCount+")";
+			 if(slctedCastesLength>j){
+				vstr+=", ";
+			}
+		}
+		}
+		else{
+			vstr+="-";
 		}
 		vstr+='</td>';
 		vstr+='</tr>';
