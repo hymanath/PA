@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
+import com.itgrids.partyanalyst.dto.PartyImpactVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -45,7 +47,22 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private List<VoterVO> deletedVoters;
 	private List<SelectOptionVO> castesList;
 	private List<YouthLeaderSelectionVO> LeaderSelectionLists;
+	private Map<String,Map<String,PartyImpactVO>> resultMap;
+
+
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
+	
+	
+
+	public Map<String, Map<String, PartyImpactVO>> getResultMap() {
+		return resultMap;
+	}
+
+	public void setResultMap(Map<String, Map<String, PartyImpactVO>> resultMap) {
+		this.resultMap = resultMap;
+	}
+	
+	
 	
 	public List<YouthLeaderSelectionVO> getLeaderSelectionLists() {
 		return LeaderSelectionLists;
@@ -376,6 +393,22 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 					castesList = suggestiveModelService.getUserAssignedVotersCasteDetailsByConstId(jObj.getLong("constituencyId"),regVO.getRegistrationID());
 				}
 			}
+			
+			return Action.SUCCESS;
+			
+		}
+		
+		public String getEffectOfNewPartyOnTraditionalParties()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			//newPartyImpactDetails = constituencyPageService.findPanchayatsWiseResultsInElectionsOfMandalForSuggestiveModel(jObj.getLong("constituencyId"));
+			
+			resultMap = suggestiveModelService.getElectionResultsForSelectedElectionsForAConsttituency(jObj.getLong("constituencyId"));
 			
 			return Action.SUCCESS;
 			

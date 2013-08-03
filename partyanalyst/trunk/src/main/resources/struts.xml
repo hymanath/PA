@@ -5721,5 +5721,11 @@
 		   	<param name="root">LeaderSelectionLists</param>
 		 	</result>		 
 		</action>
+		
+		  <action name="getEffectOfNewPartyOnTraditionalParties" class="suggestiveModelAction" method="getEffectOfNewPartyOnTraditionalParties">
+		  <result type="json" name="success">
+		   <param name="root">resultMap</param>
+		 </result>	
+		 </action>
 		</package>
 </struts>      
