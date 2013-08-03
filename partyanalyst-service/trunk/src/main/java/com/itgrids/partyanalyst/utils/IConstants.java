@@ -641,5 +641,8 @@ public interface IConstants {
     public final static Double HIGH_VOTING_PERCENTAGE_IN_WEEK_LOCATIONS = 80.00;
     
     public final static long MIN_ADDED_VOTERS = 50l;
+    
+    public final static String PRESENT_ASSEMBLY_ELECTION_ID = "38";
+    public final static String PREVIOUS_ASSEMBLY_ELECTION_ID = "3";
 	
 }

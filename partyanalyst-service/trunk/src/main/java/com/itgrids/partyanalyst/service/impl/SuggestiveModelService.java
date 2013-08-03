@@ -2,12 +2,18 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -36,6 +42,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
+import com.itgrids.partyanalyst.dto.PartyImpactVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
@@ -2192,5 +2199,347 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 return null;
 			 } 
 		 }
+		 
+		 
+			
+		 /**
+		  * This method will get  the election results by panchayat in a constituency for 
+		  * present and previous elections
+		  * @param Long constituencyId 
+		  * @return Map<String ,Map<String,PartyImpactVO>>
+		  */
+		 public Map<String ,Map<String,PartyImpactVO>> getElectionResultsForSelectedElectionsForAConsttituency(Long constituencyId)
+		 {	
+			 
+			 LOG.debug("Entered into the getElectionResultsForSelectedElectionsForAConsttituency service method");
+			 
+			Map<String ,Map<String,PartyImpactVO>> resultMap = new LinkedHashMap<String, Map<String,PartyImpactVO>>();
 
+			Set<String> totalParties = new HashSet<String>();
+			List<Object[]> panchayatResultsList = new ArrayList<Object[]>();
+
+			 try
+			 {	
+				 //Here we are considering present and previous assembly elections
+				 List<Long> elections = new ArrayList<Long>();
+				 elections.add(Long.parseLong(IConstants.PREVIOUS_ASSEMBLY_ELECTION_ID));
+				 elections.add(Long.parseLong(IConstants.PRESENT_ASSEMBLY_ELECTION_ID));
+				 
+				 List<Long> tehsilIds = new ArrayList<Long>();			
+				 
+				List<Object[]> tehsilsList = delimitationConstituencyMandalDAO
+						.getMandalIdsByConstituencyId(constituencyId,
+								Long.parseLong(IConstants.PRESENT_ELECTION_YEAR));
+				
+				 for(Object[] obj:tehsilsList)
+					 tehsilIds.add((Long)obj[0]);
+
+				 
+				  getAllPanchayatWiseVotersDetailsForPartyAndElectionWise(tehsilIds,elections,panchayatResultsList);
+				  
+				  //panchayatResultsList contains the details in the form of
+				  
+				  // 0 - votes earned , 1 - panchayat-id , 2 - election-id , 3 - party-id , 4 - party name , 5 - panchayat- name
+				 
+				 Map<String , Long> votersCountMap = new HashMap<String, Long>();
+
+				 //this method will set all the voter details 
+				setAlltheVotersDetaiulsForPresentAndPreviousElections(resultMap,panchayatResultsList,totalParties ,votersCountMap);
+				 
+				List<String> partiesList = new ArrayList<String>(totalParties);
+				Collections.sort(partiesList);
+				
+				//this method will set all the voters details in percent
+				processTheResultsToConvertFromVotesToPercent(resultMap , votersCountMap,partiesList);
+				
+				//this method will calculate and set the difference in voters percent in present and previous elections
+				calculateTheDifferenceBetweenpresentAndPreviousElection(resultMap ,partiesList);
+			
+				
+		 }catch(Exception e)
+		 {
+			 e.printStackTrace();		 
+			 LOG.error("Exception raised getElectionResultsForSelectedElectionsForAConsttituency service method");
+			 return resultMap;
+		  }
+			 return resultMap;
+		 }
+		 
+		 /**
+		  * This method will get all parties gained votes details for a constituency by panchayat
+		  * @param tehsilIds
+		  * @param elections
+		  * @param panchayatResultsList
+		  */
+		 
+		public void getAllPanchayatWiseVotersDetailsForPartyAndElectionWise(
+				List<Long> tehsilIds, List<Long> elections,
+				List<Object[]> panchayatResultsList)	 
+		{
+			LOG.debug("Entered into getAllPanchayatWiseVotersDetailsForPartyAndElectionWise service method");
+			
+			try
+			{
+			
+			 for(Long electionId:elections)			 
+				 for(Long tehsilId:tehsilIds)
+				 {
+			 
+				    List<Object[]> panchayatBoothsDetails = hamletBoothElectionDAO.getPanchayatWiseBoothDetails(tehsilId , electionId);
+				 			 
+				    Map<Long , List<Long>> map = new HashMap<Long, List<Long>>();//contains panchayatId as key and booths in that panchayat as value
+				 
+					 for(Object[] obj:panchayatBoothsDetails)
+					 {
+						 List<Long> booths = null;
+						 if(map.get((Long)obj[2]) != null)
+						 {
+							 booths = map.get((Long)obj[2]);
+							 booths.add((Long)obj[6]);
+							 
+						 }else
+						 {
+							 booths = new ArrayList<Long>();
+							 booths.add((Long)obj[6]);
+							 map.put((Long)obj[2], booths);						 
+						 }				 
+					 }
+					 
+					 for(Entry<Long,List<Long>> entryForBooths:map.entrySet())
+					 {
+						List<Object[]> list = candidateBoothResultDAO
+								.findBoothResultsForBoothsAndElection(entryForBooths.getValue(),
+										electionId);
+						
+						for(Object[] obj:list)
+						{
+							Object[] newObj = new Object[6]; 
+							newObj[0] = obj[2];                    // no of voters
+							newObj[1] = entryForBooths.getKey();   // panchayat id
+							newObj[2] = electionId;                //election id
+							newObj[3] = obj[0];                    //party id  
+							newObj[4] = obj[1];                    //party name
+							
+							newObj[5] = panchayatDAO.getPanchayatNameById(entryForBooths.getKey()); // panchayat name
+							
+							panchayatResultsList.add(newObj);
+							
+						}
+						
+					 }
+				 }
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				LOG.debug("Exception raised in  getAllPanchayatWiseVotersDetailsForPartyAndElectionWise service method");
+
+			}
+		 }
+		
+		/**
+		 * This method will set all the voter details of panchayitis in a constituency
+		 * @param resultMap
+		 * @param panchayatResultsList
+		 * @param totalParties
+		 * @param votersCountMap
+		 */
+		public void setAlltheVotersDetaiulsForPresentAndPreviousElections(Map<String ,Map<String,PartyImpactVO>> resultMap,List<Object[]> panchayatResultsList,Set<String> totalParties , Map<String , Long> votersCountMap)
+		{
+			LOG.debug("Entered into the setAlltheVotersDetaiulsForPresentAndPreviousElections service method");
+			try
+			{
+				for(Object[] obj:panchayatResultsList){
+					totalParties.add(obj[4].toString());
+					
+					if(votersCountMap.get(obj[5].toString()+obj[2].toString()) != null)
+					{
+						Long voters = votersCountMap.get(obj[5].toString()+obj[2].toString()) ;
+						votersCountMap.put(obj[5].toString()+obj[2].toString(), voters + (Long)obj[0]);
+						
+					}else
+						votersCountMap.put(obj[5].toString()+obj[2].toString() , (Long)obj[0]);
+			
+					Map<String,PartyImpactVO> map = null;
+					if(resultMap.get(obj[5].toString()) != null)
+					{
+						
+						map = resultMap.get(obj[5].toString());
+		                  
+						if(map.get(obj[4].toString()) != null)
+						{
+							PartyImpactVO vo = map.get(obj[4].toString());
+							
+							if(obj[2].toString().equalsIgnoreCase(IConstants.PREVIOUS_ASSEMBLY_ELECTION_ID))						
+									vo.setPreviousElectionVotesPercent(obj[0].toString());							
+							else 
+								vo.setPresentElectionVotesPercent(obj[0].toString());
+							
+						}else
+						{
+							PartyImpactVO vo = new PartyImpactVO();
+							vo.setPartyName(obj[4].toString());
+							
+							if(obj[2].toString().equalsIgnoreCase(IConstants.PREVIOUS_ASSEMBLY_ELECTION_ID))
+								vo.setPreviousElectionVotesPercent(obj[0].toString());
+							else 
+								vo.setPresentElectionVotesPercent(obj[0].toString());
+							
+							map.put(obj[4].toString(), vo);
+						}
+						
+					}else
+					{
+						map = new HashMap<String, PartyImpactVO>();
+						
+						PartyImpactVO vo = new PartyImpactVO();
+						vo.setPartyName(obj[4].toString());
+						
+						if(obj[2].toString().equalsIgnoreCase(IConstants.PREVIOUS_ASSEMBLY_ELECTION_ID))
+							vo.setPreviousElectionVotesPercent(obj[0].toString());
+						else 
+							vo.setPresentElectionVotesPercent(obj[0].toString());
+						map.put(obj[4].toString(),vo );
+						
+						resultMap.put(obj[5].toString(), map);					
+					}
+					
+					resultMap.put(obj[5].toString(), map);
+				}
+				
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				LOG.debug("Exception raised in   setAlltheVotersDetaiulsForPresentAndPreviousElections service method");
+				
+			}
+		}
+		/**
+		 * This method will set all the details to the as percent from total voters
+		 * @param resultMap
+		 * @param votersCountMap
+		 * @param partiesList
+		 */
+		public void processTheResultsToConvertFromVotesToPercent(Map<String ,Map<String,PartyImpactVO>> resultMap, Map<String,Long> votersCountMap, List<String> partiesList)
+		{
+			LOG.debug("Entered into processTheResultsToConvertFromVotesToPercent service method");
+			try
+			{
+				for(Entry<String ,Map<String,PartyImpactVO>> entry:resultMap.entrySet())
+				{
+					Map<String,PartyImpactVO> map = entry.getValue();
+					
+					for(Entry<String,PartyImpactVO> party:map.entrySet())
+					{
+						//if party participated in  previous and present elections
+						if(party.getValue().getPreviousElectionVotesPercent() != null && party.getValue().getPresentElectionVotesPercent() != null)
+						{		
+							 Long votersInPanchayat = votersCountMap.get(entry.getKey()+IConstants.PREVIOUS_ASSEMBLY_ELECTION_ID);
+							 Float votersInPanchayatInFloat = votersInPanchayat.floatValue();
+							
+							 Long previousVotes=  Long.parseLong(party.getValue().getPreviousElectionVotesPercent());
+							 Float previousVotesInFloat  = previousVotes.floatValue();
+							 
+							 party.getValue().setPreviousElectionVotesPercent(roundTo2DigitsFloatValue((previousVotesInFloat/votersInPanchayatInFloat)*100));
+			
+								Long votersInPanchayat1 = votersCountMap.get(entry.getKey()+IConstants.PRESENT_ASSEMBLY_ELECTION_ID);
+								Float votersInPanchayatInFloat1 = votersInPanchayat1.floatValue();
+							 
+							 Long presentVotes=  Long.parseLong(party.getValue().getPresentElectionVotesPercent());
+							 Float presentVotesInFloat  = presentVotes.floatValue();
+							 
+							 party.getValue().setPresentElectionVotesPercent(roundTo2DigitsFloatValue((presentVotesInFloat/votersInPanchayatInFloat1)*100));
+							
+						}//if party participated in  previous election only
+						else if(party.getValue().getPreviousElectionVotesPercent() != null)
+						{
+							Long votersInPanchayat = votersCountMap.get(entry.getKey()+IConstants.PREVIOUS_ASSEMBLY_ELECTION_ID);
+							Float votersInPanchayatInFloat = votersInPanchayat.floatValue();
+			
+							 Long previousVotes=  Long.parseLong(party.getValue().getPreviousElectionVotesPercent());
+							 Float previousVotesInFloat  = previousVotes.floatValue();
+							 
+							 party.getValue().setPreviousElectionVotesPercent(roundTo2DigitsFloatValue((previousVotesInFloat/votersInPanchayatInFloat)*100));
+							
+						}//if party participated in  present election only
+						else if(party.getValue().getPresentElectionVotesPercent() != null)
+						{
+							Long votersInPanchayat = votersCountMap.get(entry.getKey()+IConstants.PRESENT_ASSEMBLY_ELECTION_ID);
+							Float votersInPanchayatInFloat = votersInPanchayat.floatValue();
+							 
+							 Long presentVotes=  Long.parseLong(party.getValue().getPresentElectionVotesPercent());
+							 Float presentVotesInFloat  = presentVotes.floatValue();
+							 
+							 party.getValue().setPresentElectionVotesPercent(roundTo2DigitsFloatValue((presentVotesInFloat/votersInPanchayatInFloat)*100));
+							
+						}
+							
+						party.getValue().setConsiderableParties(partiesList);
+					}
+				}
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				LOG.error("Exception raised in processTheResultsToConvertFromVotesToPercent service method");
+			}
+		}
+		
+		/**
+		 * This method will calculate and set the difference in voters percent
+		 * between present and previous elections
+		 * @param resultMap
+		 * @param partiesList
+		 */
+		public void calculateTheDifferenceBetweenpresentAndPreviousElection(Map<String ,Map<String,PartyImpactVO>> resultMap, List<String> partiesList)
+		{
+			LOG.debug("Entered into the calculateTheDifferenceBetweenpresentAndPreviousElection service method");
+			try
+			{
+				for(Entry<String ,Map<String,PartyImpactVO>> entry:resultMap.entrySet())
+				{
+					
+					Map<String,PartyImpactVO> map = entry.getValue();
+					
+					for(Entry<String,PartyImpactVO> party:map.entrySet()){
+						
+						//if party participated in  present election only
+						if(party.getValue().getPreviousElectionVotesPercent() == null && party.getValue().getPresentElectionVotesPercent() != null)
+						{						
+							party.getValue().setPreviousElectionVotesPercent("--");
+							party.getValue().setDifference(party.getValue().getPresentElectionVotesPercent());
+							
+						}//if party participated in  previous election only
+						else if(party.getValue().getPreviousElectionVotesPercent() != null && party.getValue().getPresentElectionVotesPercent() == null)
+						{
+							party.getValue().setPresentElectionVotesPercent("--");
+							party.getValue().setDifference("--");
+						}//if party participated in  previous and present elections
+						else{
+							Float diff = Float.parseFloat(party.getValue().getPresentElectionVotesPercent()) - Float.parseFloat(party.getValue().getPreviousElectionVotesPercent());
+							party.getValue().setDifference(diff.toString());
+						}
+							
+						party.getValue().setConsiderableParties(partiesList);
+					}
+						
+				}
+				
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				LOG.error("Exception raised in  calculateTheDifferenceBetweenpresentAndPreviousElection service method");
+
+				
+			}
+		}
+		 
+		 public String roundTo2DigitsFloatValue(Float number){
+				
+				NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+				f.setMaximumFractionDigits(2);  
+				f.setMinimumFractionDigits(2);
+				
+				return f.format(number);
+				
+			}
+		 
 }
