@@ -2,12 +2,13 @@ package com.itgrids.partyanalyst.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.PanchayatVO;
+import com.itgrids.partyanalyst.dto.PartyImpactVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
 public interface ISuggestiveModelService {
 	
 	public List<SelectOptionVO> getConstituenciesForUserAccessByStateId(List<SelectOptionVO> ConstituenciesForUserAccessed,Long electionId,Long electionYear);
@@ -25,5 +26,7 @@ public interface ISuggestiveModelService {
 	public List<SelectOptionVO> getUserAssignedVotersCasteDetailsByConstId(Long constituencyId,Long userId);
 	
 	public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevelForMincipality(Long userId,Long constituencyId);
+	 public Map<String ,Map<String,PartyImpactVO>> getElectionResultsForSelectedElectionsForAConsttituency(Long constituencyId);
+
 
 }
