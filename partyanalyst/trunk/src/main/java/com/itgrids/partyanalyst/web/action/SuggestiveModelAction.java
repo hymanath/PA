@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 
@@ -9,10 +10,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.jfree.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyImpactVO;
@@ -230,13 +231,14 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			 {
 				 electionIds.add(Long.valueOf(jArray.getString(i)));
 			 }
-			 partyPositionVOList = suggestiveModelService.getPartyPerformenceReport(jObj.getLong("constituencyId"),jObj.getLong("partyId"),jObj.getLong("locationId"),jObj.getString("locationType"),electionIds,jObj.getString("tempVar")); 
+			// partyPositionVOList = suggestiveModelService.getPartyPerformenceReport(jObj.getLong("constituencyId"),jObj.getLong("partyId"),jObj.getLong("locationId"),jObj.getString("locationType"),electionIds,jObj.getString("tempVar"));
+			 partyPositionVOList = suggestiveModelService.getPartyPerformenceReport1(jObj.getLong("constituencyId"),jObj.getLong("partyId"),electionIds,jObj.getString("tempVar"));
 		 }
 		
 			
 		}catch (Exception e) {
 		 e.printStackTrace();
-		 Log.error(" Exception Occured in getPartyPerformanceForSelectedLocation() method, Exception - "+e);
+		// Log.error(" Exception Occured in getPartyPerformanceForSelectedLocation() method, Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}

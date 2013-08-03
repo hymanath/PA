@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css">
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
-
+ <script type="text/javascript" src="js/suggestiveModel.js"></script>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -359,7 +359,10 @@ function callAjax(param,jsObj,url){
 						else if(jsObj.task == "getPartyPerformanceReport")
 						{
 						    $("#ajaxImg").css("display","none");
-					        showPartyPerformanceReport(myResults,jsObj);
+					      if(myResults[0].partyPositionVOList.length > 0)
+							showPartyPerformanceReport(myResults,jsObj);
+							if(myResults[0].boothwisePartyPositionVOList.length > 0)
+							showPartyPerformanceReportForBooth(myResults,jsObj);
 							showStrongAndWeakPollingPercentage(myResults,jsObj);
 							buildAddedVotersDetails(myResults);
 							showPartyPerformancePieChart(myResults,jsObj);
@@ -696,6 +699,7 @@ function showSuggestedLocations(myResults,jsObj){
 <div id="suggestedLocationsDiv"></div>
 <div id="partyPerformanceMainDiv">
    <div id="partyPerformanceInnerDiv"></div>
+   <div id="partyPerformanceBoothDiv" style="display:none;"></div>
 </div>
 <div id="strongPollingPerDiv" class="row-fluid">
     <div id="strongPollingPercentageDiv" class="span6"></div>
