@@ -733,8 +733,9 @@ function showSuggestedLocations(myResults,jsObj){
 </div>
 
 
-
-
+<div id="titleDiv" style="display:none;">
+<h4>PANCHAYAT WISE ELECTION RESULTS COMPARISION</h4>
+</div>
 <div id="newPartyDiv">
 </div>
 <img src="images/icons/loading.gif" id="ajaxLoaderImgForNewPartyDiv" height="25px" width="25px;" style="display:none;"/>
@@ -1591,6 +1592,8 @@ $('#ajaxLoaderImgForNewPartyDiv').show();
 }
 function buildnewPartyEffectResults(results)
 {
+			$('#titleDiv').show();
+
 	$('#ajaxLoaderImgForNewPartyDiv').hide();
   var parties = new Array();
 	parties.push("INC");
