@@ -2060,4 +2060,15 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
+	public List<Object[]> getUserAssignedVotersCastesByCosntiId(Long constituencyId,Long userId){
+		Query query = getSession().createQuery(" select model.casteId ,model.casteName from Caste model where model.casteId in " +
+				" ( select distinct model1.caste.casteId from CasteState model1  where model1.casteStateId in " +
+				" ( select distinct model2.casteState.casteStateId from UserVoterDetails model2 where model2.user.userId = :userId and model2.voter.voterId in " +
+				" (	select distinct model3.voter.voterId from BoothPublicationVoter model3 where model3.booth.boothId in " +
+				" ( select distinct model4.boothId from Booth model4 where model4.constituency.constituencyId = :constituencyId )))) " +
+				" order by model.casteName asc");
+		query.setParameter("userId",userId);
+		query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
 }
