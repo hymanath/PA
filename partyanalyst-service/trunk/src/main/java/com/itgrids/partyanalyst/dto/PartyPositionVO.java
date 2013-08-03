@@ -28,6 +28,11 @@ public class PartyPositionVO implements Serializable{
 	private String tempVar;
 	private boolean addedVotersPresent;
 	private double rangePercentage = 0.00;
+	private Long selectedPartyTotalVoters;
+	private Long constituencyId;
+	private Long totalVoters = 0L;
+	private double percentage = 0.00;
+	private double margin = 0.00;
 	
 	public String getName() {
 		return Name;
@@ -128,6 +133,36 @@ public class PartyPositionVO implements Serializable{
 	}
 	public void setRangePercentage(double rangePercentage) {
 		this.rangePercentage = rangePercentage;
+	}
+	public Long getSelectedPartyTotalVoters() {
+		return selectedPartyTotalVoters;
+	}
+	public void setSelectedPartyTotalVoters(Long selectedPartyTotalVoters) {
+		this.selectedPartyTotalVoters = selectedPartyTotalVoters;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
+	}
+	public double getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(double percentage) {
+		this.percentage = percentage;
+	}
+	public double getMargin() {
+		return margin;
+	}
+	public void setMargin(double margin) {
+		this.margin = margin;
 	}
 	
 	
