@@ -6643,7 +6643,7 @@ $("#leftNav-Mandals-list a").live("click",function(){
 
  $('#customGroupsDiv').hide();
  $('#tabContainer1').hide();
-  $('#customGroupsDiv').show();
+  $('#voterGroupMandalAjaxImage').hide();
 
 
 $(".leftNav li").removeClass("active");
@@ -9855,8 +9855,10 @@ function buildCustomVoterGroups1(myResults,jsObj)
 	}
 
 	$('#middleNav-CustomGroups-list').append(items);
-
-
+	if(! $("#middleNav-CustomGroups-list").is(':empty'))
+    { 
+	    $('#customGroupsDiv').show();		
+    }
 }
 
 function buildCustomVoterGroups(myResults,jsObj)
