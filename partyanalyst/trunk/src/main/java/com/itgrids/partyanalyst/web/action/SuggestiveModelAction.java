@@ -283,7 +283,15 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		Long loctnId=jObj.getLong("locationId");
 		String loctnType=jObj.getString("locationType");
 		Long electionId=jObj.getLong("electionId");
+		JSONArray castesSelected=jObj.getJSONArray("castesSelcted");
 		
+		List<Long> casteIds=new ArrayList<Long>();
+		if(castesSelected.length()!=0){
+			for(int i=0;i<castesSelected.length();i++){
+				casteIds.add(Long.valueOf(castesSelected.getInt(i)));
+			}
+		}
+				
 		List<SelectOptionVO> groups=new ArrayList<SelectOptionVO>();
 		
 		SelectOptionVO select;
@@ -297,7 +305,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			
 		}
 		
-		panchayatVOs=suggestiveModelService.getVotersGroupDetails(groups,constiId,loctnId,loctnType,electionId,regVO.getRegistrationID());
+		panchayatVOs=suggestiveModelService.getVotersGroupDetails(groups,constiId,loctnId,loctnType,electionId,regVO.getRegistrationID(),casteIds);
 		
 		return Action.SUCCESS;
 	}
