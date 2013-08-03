@@ -4400,6 +4400,24 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return query.list();
 		}
 		
+		public List<Object[]> getVotersCasteDetailsForAgeRangeForSelectedCastes(Long fromAge,Long toAge,List<Long> boothIds,Long userId,List<Long> casteIds){
+			String qyeryString = "select count(*),uvd.casteState.caste.casteName,uvd.casteState.casteStateId from BoothPublicationVoter " +
+					" model,UserVoterDetails uvd where model.booth.boothId in(:boothIds) " +
+					"and model.voter.age >= :fromAge and model.voter.age<= :toAge and model.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId " +
+					" and uvd.casteState.casteStateId in (:casteIds) group by uvd.casteState.casteStateId ";
+			
+			Query query = getSession().createQuery(qyeryString);
+			
+			query.setParameterList("casteIds", casteIds);
+			query.setParameterList("boothIds", boothIds);
+			query.setParameter("fromAge", fromAge);
+			query.setParameter("toAge", toAge);
+			query.setParameter("userId", userId);
+			
+			return query.list();
+		}
+		
+		
 		public List<Object[]> getVotersCasteDetailsForAgeRangeInBooth(Long fromAge,Long toAge,Long boothId,Long userId){
 			String qyeryString = "select count(*),uvd.casteState.caste.casteName,uvd.casteState.casteStateId from BoothPublicationVoter " +
 					" model,UserVoterDetails uvd where model.booth.boothId =:boothIds  " +
@@ -4408,6 +4426,22 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			Query query = getSession().createQuery(qyeryString);
 			
 			
+			query.setParameter("boothIds", boothId);
+			query.setParameter("fromAge", fromAge);
+			query.setParameter("toAge", toAge);
+			query.setParameter("userId", userId);
+			
+			return query.list();
+		}
+		public List<Object[]> getVotersCasteDetailsForAgeRangeInBoothForSelectedCastes(Long fromAge,Long toAge,Long boothId,Long userId,List<Long> casteIds){
+			String qyeryString = "select count(*),uvd.casteState.caste.casteName,uvd.casteState.casteStateId from BoothPublicationVoter " +
+					" model,UserVoterDetails uvd where model.booth.boothId =:boothIds  " +
+					"and model.voter.age >= :fromAge and model.voter.age<= :toAge and model.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId " +
+					" and uvd.casteState.casteStateId in(:casteIds) group by uvd.casteState.casteStateId";
+			
+			Query query = getSession().createQuery(qyeryString);
+			
+			query.setParameterList("casteIds", casteIds);
 			query.setParameter("boothIds", boothId);
 			query.setParameter("fromAge", fromAge);
 			query.setParameter("toAge", toAge);
