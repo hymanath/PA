@@ -866,6 +866,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				partyPositionVO.setPartyPositionVOList(rangeList);
 				partyPositionVO.setName(election.getElectionYear() != null?election.getElectionYear():" ");
 				partyPositionVO.setId(eleId);
+				partyPositionVO.setConstituencyId(constituencyId);
 				
 				if(locationType != null && locationType.equalsIgnoreCase(IConstants.MANDAL))
 				 getMandalWisePartyPerformanceReport(constituencyId, locationId, eleId, partyPositionVO, partyId);
@@ -1052,7 +1053,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		  for(Long locationId : locationIdsMap.keySet())
 		  {
 			 List<Long> boothIdList = locationIdsMap.get(locationId);
-			 Long totalVotes = boothDAO.getTotalVotesForBooth(boothIdList, constituencyId);
+			 Long totalVotes = boothDAO.getTotalVotesByBoothIdsList(boothIdList);
 			 totalVotesMap.put(locationId, totalVotes);
 		  }
 		}
@@ -1282,6 +1283,52 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	{
 		try{
 		
+			//resultMap -- Map<panchayatId,Map<partyId,totalvoters>>
+			
+			Map<Long,List<Long>> boothIdsMap = new HashMap<Long, List<Long>>(0);//<panchayatId,List<boothIds>>
+			Map<Long,Long> panchayatTotalVotersMap = new HashMap<Long, Long>(0);//<locationId,totalVoters>
+			
+			if(locationType != null && locationType.equalsIgnoreCase("panchayat"))
+			{
+				List<Long> panchayatIdsList = new ArrayList<Long>(resultMap.keySet());
+			  List<Object[]> boothList = hamletBoothElectionDAO.getPanchayatBoothDetailsByPanchayatIdsList(panchayatIdsList, partyPositionVO.getId());
+			  if(boothList != null && boothList.size() > 0)
+			  {
+				  for(Object[] params:boothList)
+				  {
+					  List<Long> boothIdsList = boothIdsMap.get((Long)params[0]);
+					  if(boothIdsList == null)
+					  {
+						boothIdsList = new ArrayList<Long>(0);
+						boothIdsMap.put((Long)params[0], boothIdsList);  
+					  }
+					  if(!boothIdsList.contains((Long)params[1]))
+						  boothIdsList.add((Long)params[1]);  
+				  }
+				  
+			  }
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
+			{
+				for(Long id:resultMap.keySet())
+				 {
+					List<Long> boothIdsList = boothIdsMap.get(id);
+					if(boothIdsList == null)
+					{
+					  boothIdsList = new ArrayList<Long>(0);
+					  boothIdsMap.put(id, boothIdsList);
+					}
+					if(!boothIdsList.contains(id))
+						boothIdsList.add(id);
+				 }
+			}
+			
+		if(boothIdsMap != null && boothIdsMap.size() > 0)
+		{
+		  for(Long id : boothIdsMap.keySet())
+			panchayatTotalVotersMap.put(id, boothDAO.getTotalVotesByBoothIdsList(boothIdsMap.get(id)));
+		}
+			
 		 for(Long id:resultMap.keySet())
 		 {
 			Map<Long,Long> partyMap = resultMap.get(id);
@@ -1330,7 +1377,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	    		 locationVO.setId(id);
 	    		 locationVO.setName(locationName != null?locationName:" ");
 	    		 locationVO.setPartyPercentage(selectedPartyTotalPercent);
+	    		 locationVO.setSelectedPartyTotalVoters(selectedPartyTotal);
 	    		 locationVO.setTotalValidVotes(totalVotes);
+	    		 locationVO.setTotalVoters(panchayatTotalVotersMap.get(id));
+	    		 locationVO.setPercentage(new BigDecimal((totalVotes*100/panchayatTotalVotersMap.get(id))).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+	    		 locationVO.setMargin(difference);
+	    		 
 	    		 locationList.add(locationVO);
 	    		 positionVO.setPartyPositionVOList(locationList);
 	    		 
