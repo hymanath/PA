@@ -184,7 +184,8 @@ tr.even td.sorting_1{background-color:#ffffff;}
 #panchayatWisePollingPercentageDiv{padding-top: 9px; padding-bottom: 21px;}
 
 html{overflow-x: hidden;}
-
+.spanCls{padding: 3px 5px; border-radius: 3px;}
+#panchayatTab th,#panchayatTab1 th{background:#D9EDF7;color: #454545;}
 </style>
 
 
@@ -478,8 +479,8 @@ function populateElectionYearDropdown(results)
 	var opElmt2=document.createElement('option');
 		opElmt1.value='0';
 		opElmt2.value='0';
-		opElmt1.text='Select Party';
-		opElmt2.text='Select Party';
+		opElmt1.text='Select Year';
+		opElmt2.text='Select Year';
 		addOptions(electionYearsEl1,opElmt1);
 		addOptions(electionYearsEl2,opElmt2);
 	if(results!=null)
@@ -900,47 +901,167 @@ $("#getPartyPer").click(function(){
 
 });
 
- function showPartyPerformanceReport(result,jsObj)
+function showPartyPerformanceReport(result,jsObj)
 {
-	$("#partyPerformanceInnerDiv").html('');
-  if(result == null || result.length == 0)
-	{
+  $("#partyPerformanceInnerDiv").html('');
+   if(result == null || result.length == 0)
+   {
      $("#partyPerformanceInnerDiv").html('No Data Found');
 	 return;
-	}
+   }
 	var partyName = $('#partySelectEl option:selected').text();
 	var str = '';
 	str+='<div class="widget green">';
 	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
 	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">PANCHAYAT WISE '+partyName+' PARTY PERFORMANCE REPORT</h4>';
-	//str +='<h4 style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">PANCHAYAT WISE INC PARTY PERFORMANCE REPORT</h4>';
+	
 	str +='<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
     str +='<tr>';
 	str +='<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">Type</th>';
+	
 	for(var i in result)
-	 str +='<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">'+result[i].name+'</th>';
+	  str +='<th style="background: none repeat scroll 0 0 #D9EDF7;color: #454545;">'+result[i].name+'</th>';
+	
 	str +='</tr>';
+
     var length = result[0].partyPositionVOList.length;
-	for(var j=0;j<length;j++){
-		str +='<tr>';
-		str +='<td>'+result[0].partyPositionVOList[j].name+'</td>';
-		for(var i in result)
-		{
-		  str +='<td>'
-		  for(var k in result[i].partyPositionVOList[j].partyPositionVOList)
-		  {
-			var tempVar = result[i].partyPositionVOList[j].partyPositionVOList.length-1;
-			str +=''+result[i].partyPositionVOList[j].partyPositionVOList[k].name+'';
+
+	
+   for(var j=0;j<length;j++)
+   {
+     str +='<tr>';
+	 str +='<td>'+result[0].partyPositionVOList[j].name+'</td>';
+      
+	 var panchayatIdsArray = new Array();
+
+     str +='<td>';
+	  
+	  if(result[0].partyPositionVOList[j].partyPositionVOList.length > 0)
+	  {
+		 str +='<table id="panchayatTab" style="width:100%">';
+
+		 str +='<tr>';
+		 str +='<th>Panchayat</th>';
+         str +='<th>Total Votes</th>';
+		 str +='<th>Votes Polled</th>';
+		 str +='<th>polling %</th>';
+    	 str +='<th>Margin</th>';
+		  str +='<th> Votes Gained('+partyName+')</th>';
+		 str +='</tr>';
+		   
+		 for(var k in result[0].partyPositionVOList[j].partyPositionVOList)
+		 {
+		   panchayatIdsArray.push(result[0].partyPositionVOList[j].partyPositionVOList[k].id);
+
+		   str +='<tr>';
+		   str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[k].name+'</td>';
+		   str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[k].totalVoters+'</td>';
+		   str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[k].totalValidVotes+'</td>';
+		   str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[k].percentage+'</td>';
+           
+		   if(result[0].partyPositionVOList[j].name == "VERY STRONG")
+			 str +='<td><span style="background:red;color:#fff;" class="spanCls">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+
+		   else if(result[0].partyPositionVOList[j].name == "STRONG")
+			 str +='<td><span class="spanCls" style="background:#FF00FF;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+
+		   else if(result[0].partyPositionVOList[j].name == "OK")
+			 str +='<td><span class="spanCls" style="background:#FF0000;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+
+		   else if(result[0].partyPositionVOList[j].name == "POOR")
+			 str +='<td><span class="spanCls" style="background:#0000FF;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+
+           else if(result[0].partyPositionVOList[j].name == "VERY POOR")
+			 str +='<td><span class="spanCls" style="background:#00FFFF;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+
+		   else if(result[0].partyPositionVOList[j].name == "WOREST")
+			 str +='<td><span class="spanCls" style="background:#C0C0C0;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+
+		  str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[k].selectedPartyTotalVoters+'</td>';
 		    
-			if(k != tempVar)
-			 str +=', ';
+			str +='</tr>';
 		  }
-		  
-		  str +='</td>'
+
+		   str +='</table>';
 		}
-		str +='</tr>';
-    }
-	str +='</table>';
+
+	  str +='</td>';
+
+	if(result.length > 1)
+	{
+	  str +='<td>';
+      var t = 0;
+	  for(var n=0;n<panchayatIdsArray.length;n++)
+		for(var k=0;k<result[1].partyPositionVOList.length;k++)
+		  for(var m=0;m<result[1].partyPositionVOList[k].partyPositionVOList.length;m++)
+			if(panchayatIdsArray[n] == result[1].partyPositionVOList[k].partyPositionVOList[m].id)
+			  t ++;
+
+	  
+      if(t > 0)
+	  {
+	  	 str +='<table id="panchayatTab1">';
+		 str +='<tr>';
+		 str +='<th>Panchayat</th>';
+         str +='<th>Total Votes</th>';
+		 str +='<th>Votes Polled</th>';
+		 str +='<th>polling %</th>';
+    	 str +='<th>Margin</th>';
+		 str +='<th>Votes Gained ('+partyName+')</th>';
+		 str +='</tr>';
+		 
+		 
+		 for(var n=0;n<panchayatIdsArray.length;n++)
+		 {
+		  
+          for(var k=0;k<result[1].partyPositionVOList.length;k++)
+		  {
+			for(var m=0;m<result[1].partyPositionVOList[k].partyPositionVOList.length;m++)
+			{
+			  str +='<tr>';
+              if(panchayatIdsArray[n] == result[1].partyPositionVOList[k].partyPositionVOList[m].id)
+			  {
+				str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].name+'</td>';
+				str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].totalVoters+'</td>';
+				str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].totalValidVotes+'</td>';
+				str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].percentage+'</td>';
+				
+				if(result[1].partyPositionVOList[k].name == "VERY STRONG")
+				   str +='<td><span style="background:red;color:#fff;" class="spanCls">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+
+				else if(result[1].partyPositionVOList[k].name == "STRONG")
+				   str +='<td><span class="spanCls" style="background:#FF00FF;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+
+				else if(result[1].partyPositionVOList[k].name == "OK")
+				   str +='<td><span class="spanCls" style="background:#FF0000;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+
+				else if(result[1].partyPositionVOList[k].name == "POOR")
+				   str +='<td><span class="spanCls" style="background:#0000FF;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+
+				else if(result[1].partyPositionVOList[k].name == "VERY POOR")
+				  str +='<td><span class="spanCls" style="background:#00FFFF;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+
+				else if(result[1].partyPositionVOList[k].name == "WOREST")
+				  str +='<td><span class="spanCls" style="background:#C0C0C0;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+
+				 str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].selectedPartyTotalVoters+'</td>';
+			  }
+
+
+			  str +='</tr>';
+			}
+		  }
+          
+		 }
+		   
+	  str +='</table>';
+	  }
+      str +='</td>'; 
+	}
+		
+	str += '</tr>';
+  }
+	str += ' </table>';
 	str += '</div>';
 	str += '</div>';
 	$("#partyPerformanceInnerDiv").html(str);
