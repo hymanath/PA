@@ -19,11 +19,12 @@ public class PanchayatVO implements Serializable {
 	private int femaleVoters;
 	private String ageRange;
 	private List<PanchayatVO> panchayatList,boothsList;
-	private float percentage;
+	private String percentage;
 	private int totalPanchayatVoters;
 	private List<CastVO> topCastes;
 	private List<String> muncipalities;
 	private Map<String,List<PanchayatVO>> municipalitesBoothsMap;
+	private List<CastVO> selectedCastes;
 	
 	public Long getPanchayatId() {
 		return panchayatId;
@@ -67,10 +68,10 @@ public class PanchayatVO implements Serializable {
 	public void setPanchayatList(List<PanchayatVO> panchayatList) {
 		this.panchayatList = panchayatList;
 	}
-	public float getPercentage() {
+	public String getPercentage() {
 		return percentage;
 	}
-	public void setPercentage(float percentage) {
+	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
 	public int getTotalPanchayatVoters() {
@@ -104,5 +105,12 @@ public class PanchayatVO implements Serializable {
 			Map<String, List<PanchayatVO>> municipalitesBoothsMap) {
 		this.municipalitesBoothsMap = municipalitesBoothsMap;
 	}
+	public List<CastVO> getSelectedCastes() {
+		return selectedCastes;
+	}
+	public void setSelectedCastes(List<CastVO> selectedCastes) {
+		this.selectedCastes = selectedCastes;
+	}
+	
 		
 }
