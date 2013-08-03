@@ -3,11 +3,11 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -22,31 +22,30 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
+import com.itgrids.partyanalyst.dao.ISuggestiveRangeDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
-import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
+import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
-import com.itgrids.partyanalyst.service.ISuggestiveModelService;
-import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.dao.IPanchayatDAO;
-import com.itgrids.partyanalyst.dao.ISuggestiveRangeDAO;
-import com.itgrids.partyanalyst.dto.PartyPositionVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.SuggestiveRange;
-import java.util.Map;
-import java.util.HashMap;
+import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.VoterCastInfo;
+import com.itgrids.partyanalyst.service.ISuggestiveModelService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SuggestiveModelService implements ISuggestiveModelService {
 	
@@ -1992,4 +1991,133 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			}
 		 }
 	 }
+	 
+	 	
+		 public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevelForMincipality(Long userId,Long constituencyId){
+			 List<YouthLeaderSelectionVO> returnList = new ArrayList<YouthLeaderSelectionVO>();
+			 List<SelectOptionVO> booths= null;
+			 List<Long> boothIds= null;
+			 List<BasicVO> basicVOListForBooth = null;
+			 DecimalFormat deciamlFormat = new DecimalFormat("#.##");
+			 Long publicationId = 0L;
+			 YouthLeaderSelectionVO boothyouthSelectionVO  = null;
+			 List<YouthLeaderSelectionVO> botthDetailsList = null;
+			 List<YouthLeaderSelectionVO> botthLevelList = null;
+			 Map<Long,Long> totalVotersInBooth = new HashMap<Long, Long>(); //Map<id,totalVoters>
+			 Map<Long,List<BasicVO>> casteMapForBooth = new HashMap<Long, List<BasicVO>>();//Map<booyhid,catseDetails>
+			 Long boothTotalVoters = 0L;
+			 List<YouthLeaderSelectionVO> topCasteList = null;
+
+			 try{
+				 publicationId = publicationDateDAO.getLatestPublicationId();
+				 List<Long> list = assemblyLocalElectionBodyDAO.getLocalEleBodyIdsListByConstituencyId(constituencyId, publicationId);
+				 Tehsil tehsilDetails = localElectionBodyDAO.get(list.get(0)).getTehsil();
+				 List<Booth> boothIdsList = boothDAO.getboothsDetailsByTehsilId(list.get(0),publicationId);			 
+				if(boothIdsList != null && boothIdsList.size()>0){
+					booths = new ArrayList<SelectOptionVO>();
+			 		boothIds = new ArrayList<Long>();
+					 
+			 		for (Booth booth : boothIdsList) {
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+				 		selectOptionVO.setId(booth.getBoothId());
+				 		selectOptionVO.setName(booth.getPartNo());
+				 		booths.add(selectOptionVO);
+				 		boothIds.add(selectOptionVO.getId());
+					}	
+			 		
+			 		if(boothIds != null && boothIds.size() > 0)
+					{
+						for (Long boothId : boothIds) {
+							Long totalVoter = boothPublicationVoterDAO.getTotalVoters(boothId);
+							List<Object[]> casteDetails = userVoterDetailsDAO.getCasteDetailsOfVoterByBoothId(boothId,publicationId,userId);
+							boothTotalVoters = boothTotalVoters + totalVoter;
+							totalVotersInBooth.put(boothId, totalVoter);
+							int count = 0;
+							basicVOListForBooth = new ArrayList<BasicVO>();
+							if(casteDetails != null && casteDetails.size() >0){
+							for (Object[] parms : casteDetails) {
+								
+								
+								if(IConstants.MAX_LEVEL > count)
+								{
+									BasicVO basicVO = new BasicVO();
+									basicVO.setId(boothId);
+									basicVO.setCount((Long)parms[1]);
+									basicVO.setName(parms[0].toString());
+								
+									basicVO.setPerc(Double.valueOf(deciamlFormat.format((Long)parms[1]*100/totalVoter.floatValue())));
+									basicVOListForBooth.add(basicVO);
+								}
+								else
+								{
+									break;
+								}
+								count ++;
+							}
+						}
+							casteMapForBooth.put(boothId, basicVOListForBooth);
+						}
+					}
+			 		
+			 		botthDetailsList = new ArrayList<YouthLeaderSelectionVO>();
+					YouthLeaderSelectionVO youthLeaderSelectionVO = new YouthLeaderSelectionVO();
+					for (Long boothId : boothIds) {
+						boothyouthSelectionVO = new YouthLeaderSelectionVO();
+						
+						List<BasicVO> boothCasteDate = casteMapForBooth.get(boothId);
+						if(boothCasteDate != null && boothCasteDate.size() > 0)
+						{
+							botthLevelList = new ArrayList<YouthLeaderSelectionVO>();
+							for (BasicVO basicVO : boothCasteDate) {
+								YouthLeaderSelectionVO youthSelectionVO = new YouthLeaderSelectionVO();										
+								youthSelectionVO.setCasteName(basicVO.getName());
+								youthSelectionVO.setCasteVoters(basicVO.getCount());
+								youthSelectionVO.setCasteVotersPerc(basicVO.getPerc());
+								botthLevelList.add(youthSelectionVO);
+							}
+							
+						}
+						boothyouthSelectionVO.setBoothId(boothId);
+						boothyouthSelectionVO.setBoothName(boothDAO.get(boothId).getPartNo());
+						boothyouthSelectionVO.setBoothTotalVoters(totalVotersInBooth.get(boothId));
+						boothyouthSelectionVO.setBoothLevelLeadersList(botthLevelList);
+						botthDetailsList.add(boothyouthSelectionVO);
+						
+					}
+					
+					List<VoterCastInfo> tehsilCastDetails = voterCastInfoDAO.getVotersCastInfo(5l,list.get(0),constituencyId,publicationId,userId);
+					
+						if(tehsilCastDetails != null && tehsilCastDetails.size()>0){
+							int count =0;
+							topCasteList = new ArrayList<YouthLeaderSelectionVO>();
+							for (VoterCastInfo parms : tehsilCastDetails) {
+								
+								if(count<3){
+									
+									YouthLeaderSelectionVO youthLeaderSelectionVO1 = new YouthLeaderSelectionVO();
+									youthLeaderSelectionVO1.setCasteName(parms.getCasteState().getCaste().getCasteName());
+									youthLeaderSelectionVO1.setCasteVotersPerc(parms.getCastePercentage());
+									topCasteList.add(youthLeaderSelectionVO1);
+								}
+								else
+									break;
+								count++;
+							}												
+						}
+					youthLeaderSelectionVO.setBoothLevelLeadersList(botthDetailsList);
+					youthLeaderSelectionVO.setBoothTotalVoters(boothTotalVoters);
+					youthLeaderSelectionVO.setMandalId(tehsilDetails.getTehsilId());
+					youthLeaderSelectionVO.setMandalName(tehsilDetails.getTehsilName());
+					youthLeaderSelectionVO.setPanchayatLevelLeadersList(topCasteList);
+					
+					returnList.add(youthLeaderSelectionVO);
+				}
+
+			 }catch(Exception e){
+				 e.printStackTrace();
+			 }
+			 return returnList;		 
+		 }
+
+
 }
