@@ -5708,7 +5708,18 @@
 		  <result type="json" name="success">
 		   <param name="root">electionsYears</param>
 		 </result>
-		 
-		 </action>
+		</action>
+		
+		<action name="getUserAssignedVoterCastesAction" class="suggestiveModelAction" method="getUserAssignedVotersCastes">
+		  	<result type="json" name="success">
+		   	<param name="root">castesList</param>
+		 	</result>		 
+		</action>
+		
+		<action name="getLeadersListInRuralUrbansAction" class="suggestiveModelAction" method="getLeadersListInRuralUrbans">
+		  	<result type="json" name="success">
+		   	<param name="root">LeaderSelectionLists</param>
+		 	</result>		 
+		</action>
 		</package>
 </struts>      
