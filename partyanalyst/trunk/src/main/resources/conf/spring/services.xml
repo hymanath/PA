@@ -1681,7 +1681,7 @@
       <property name="tehsilDAO" ref="tehsilDAO" />
       <property name="voterInfoDAO" ref="voterInfoDAO" />
       <property name="voterModificationInfoDAO" ref="voterModificationInfoDAO"/>
-    
+    <property name="regionServiceDataImp" ref="regionServiceDataImp" />
     </bean>
     
 </beans>		
