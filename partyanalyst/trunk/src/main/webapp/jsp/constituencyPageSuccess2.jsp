@@ -934,7 +934,6 @@ var queryString='';
         
         </div>
 <!-- Opinion Poll Start-->
-			
 						<div id="pollsWidgetMain" style="margin:10px 0px 10px 0px;clear:both;">
 									<div id="pollsWidgetHeader">
 										<!--<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -957,12 +956,15 @@ var queryString='';
                                      <div style="height:15px;padding-bottom:5px;">
                                      <div id="alreadyVotedDivId"></div>
 									 </div>
-									<div id="pollsWidgetBody">
-								
-									</div>
-									<div id="pollsWidgetFooter">
-										
-									</div>
+									 <s:if test="pollWidget == true ">
+                                         <div id="pollsWidgetBody" style="display:none;"></div>
+                                     </s:if>
+                                     <s:else>
+                                         <div id="pollsWidgetBody"></div>
+                                     </s:else>
+                   
+									  <div id="pollsWidgetFooter">					
+									  </div>
 								</div>
 							<!-- Opinion Poll End-->
 
