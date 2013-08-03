@@ -2118,6 +2118,27 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 }
 			 return returnList;		 
 		 }
-
+		 public List<SelectOptionVO> getUserAssignedVotersCasteDetailsByConstId(Long constituencyId,Long userId){
+			 
+			 List<SelectOptionVO> casteList = null;
+			 List castes;
+			 try{
+				 if(constituencyId !=null){
+					 casteList = new ArrayList<SelectOptionVO>();
+					 castes = userVoterDetailsDAO.getUserAssignedVotersCastesByCosntiId(constituencyId,userId);
+					 
+					 if(castes != null && castes.size() >0){
+						 for (Object param : castes) {
+							 Object[] caste = (Object[]) param;
+							casteList.add(new SelectOptionVO((Long) caste[0],caste[1].toString()));
+						}
+					 }
+				 }
+				return casteList;	 
+			 }catch(Exception e){
+				 e.printStackTrace();
+				 return null;
+			 } 
+		 }
 
 }
