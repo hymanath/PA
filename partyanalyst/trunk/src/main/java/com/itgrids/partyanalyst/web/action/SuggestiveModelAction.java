@@ -363,4 +363,21 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			
 			return Action.SUCCESS;
 		}
+		
+		public String getUserAssignedVotersCastes(){
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(task != null){				
+				try{
+					jObj = new JSONObject(getTask());
+				}catch(Exception e){}
+				
+				if(jObj.getString("task").equals("getUserAssignedVoterCastes")){
+					castesList = suggestiveModelService.getUserAssignedVotersCasteDetailsByConstId(jObj.getLong("constituencyId"),regVO.getRegistrationID());
+				}
+			}
+			
+			return Action.SUCCESS;
+			
+		}
 }
