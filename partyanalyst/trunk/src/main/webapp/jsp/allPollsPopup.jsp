@@ -81,7 +81,7 @@
 	}
 	
 	.span8-cuswidth{width:940px;}
-	.span4-cuswidth{width:270px;height:auto;margin-top:3px;display:table-cell;}
+	.span4-cuswidth{width:270px;height:360px;margin-top:3px;display:table-cell;}
 	/*.pollquestion{width:100%;padding:5px;margin:0px 5px 0px 0px;background:#fff;}*/
 	</style>
 <script type="text/javascript">
@@ -158,7 +158,7 @@ margin-bottom:2px;
 .resultdisplay a{display:inline-block;text-decoration:none;}
 .resultdisplay .previouslink{ float:left;}
 .resultdisplay .nextlink{ float:right;}
-.opinionpoll>li:nth-child(4n+4){clear:left;}
+/*.opinionpoll>li:nth-child(4n+4){clear:left;}*/
 .opinionpoll>li:nth-child(even){background: rgb(255,255,255); /* Old browsers */
 background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(243,243,243,1) 50%, rgba(237,237,237,1) 51%, rgba(255,255,255,1) 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(50%,rgba(243,243,243,1)), color-stop(51%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
