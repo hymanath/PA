@@ -816,7 +816,7 @@ function showPartyPerformanceReport(result,jsObj)
 		 str +='<th>Panchayat</th>';
          str +='<th>Total Votes</th>';
 		 str +='<th>Votes Polled</th>';
-		 str +='<th>polling %</th>';
+		 str +='<th>Polling %</th>';
     	 str +='<th>Margin</th>';
 		  str +='<th> Votes Gained('+partyName+')</th>';
 		 str +='</tr>';
@@ -832,22 +832,22 @@ function showPartyPerformanceReport(result,jsObj)
 		   str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[k].percentage+'</td>';
            
 		   if(result[0].partyPositionVOList[j].name == "VERY STRONG")
-			 str +='<td><span style="background:red;color:#fff;" class="spanCls">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+			 str +='<td><span style="background:#009900;color:#fff;" class="spanCls">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
 
 		   else if(result[0].partyPositionVOList[j].name == "STRONG")
-			 str +='<td><span class="spanCls" style="background:#FF00FF;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+			 str +='<td><span class="spanCls" style="background:#3399FF;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
 
 		   else if(result[0].partyPositionVOList[j].name == "OK")
 			 str +='<td><span class="spanCls" style="background:#FF0000;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
 
 		   else if(result[0].partyPositionVOList[j].name == "POOR")
-			 str +='<td><span class="spanCls" style="background:#0000FF;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+			 str +='<td><span class="spanCls" style="background:#FFFF00;color:#000;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
 
            else if(result[0].partyPositionVOList[j].name == "VERY POOR")
-			 str +='<td><span class="spanCls" style="background:#00FFFF;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+			 str +='<td><span class="spanCls" style="background:#FF9966;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
 
 		   else if(result[0].partyPositionVOList[j].name == "WOREST")
-			 str +='<td><span class="spanCls" style="background:#C0C0C0;color:#fff;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
+			 str +='<td><span class="spanCls" style="background:#C0C0C0;;color:#000;">'+result[0].partyPositionVOList[j].partyPositionVOList[k].margin+'</span></td>';
 
 		  str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[k].selectedPartyTotalVoters+'</td>';
 		    
@@ -899,22 +899,22 @@ function showPartyPerformanceReport(result,jsObj)
 				str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].percentage+'</td>';
 				
 				if(result[1].partyPositionVOList[k].name == "VERY STRONG")
-				   str +='<td><span style="background:red;color:#fff;" class="spanCls">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+				   str +='<td><span style="background:#009900;color:#fff;" class="spanCls">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
 
 				else if(result[1].partyPositionVOList[k].name == "STRONG")
-				   str +='<td><span class="spanCls" style="background:#FF00FF;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+				   str +='<td><span class="spanCls" style="background:#3399FF;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
 
 				else if(result[1].partyPositionVOList[k].name == "OK")
 				   str +='<td><span class="spanCls" style="background:#FF0000;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
 
 				else if(result[1].partyPositionVOList[k].name == "POOR")
-				   str +='<td><span class="spanCls" style="background:#0000FF;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+				   str +='<td><span class="spanCls" style="background:#FFFF00;color:#000;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
 
 				else if(result[1].partyPositionVOList[k].name == "VERY POOR")
-				  str +='<td><span class="spanCls" style="background:#00FFFF;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+				  str +='<td><span class="spanCls" style="background:#FF9966;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
 
 				else if(result[1].partyPositionVOList[k].name == "WOREST")
-				  str +='<td><span class="spanCls" style="background:#C0C0C0;color:#fff;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+				  str +='<td><span class="spanCls" style="background:#C0C0C0;;color:#000;">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
 
 				 str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].selectedPartyTotalVoters+'</td>';
 			  }
