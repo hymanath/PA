@@ -154,6 +154,7 @@ public class ConstituencyPageAction extends ActionSupport implements
     private IConstituencyManagementService constituencyManagementService;
     private ResultStatus result;
     private Long parliamentCinstiId;
+    private Boolean pollWidget;
     
     public ResultStatus getResult() {
 		return result;
@@ -700,12 +701,23 @@ public class ConstituencyPageAction extends ActionSupport implements
 			ConstituencyNominationsVO constituencyAssetsVO) {
 		this.constituencyAssetsVO = constituencyAssetsVO;
 	}
+	public Boolean getpollWidget() {
+		return pollWidget;
+	}
+	public void setpollWidget(Boolean pollWidget) {
+		this.pollWidget = pollWidget;
+	}
+	
 	public String execute() throws Exception{
        
 		String url = request.getRequestURL().toString();
 		String substr = url.substring(7);
 		String path = substr.substring(0, substr.indexOf('/')) ;
 		String userStatusType = null;
+		session = request.getSession();
+		request.setAttribute("host", IConstants.DEPLOYED_HOST);
+		if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+			pollWidget = true;
 		if(path.equalsIgnoreCase("partyanalyst.com"))
 			mapKey = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRScRx3TrvnxStTkM4udVhaLbRJhbBQtQ6p3f6vU6rRwFFw_2yEXM9Af3g&sensor=true";
 		else 
