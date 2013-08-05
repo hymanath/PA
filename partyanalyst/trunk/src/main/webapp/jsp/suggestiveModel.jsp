@@ -584,7 +584,7 @@ function buildLeadersTable(results)
 		var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
 		var str = "";
 		str+='<div class="widget blue">';
-		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
+		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
 		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY BOOTH LEVEL CASTE DETAILS </h4>';
 		//str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;"></h4>';
 		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
@@ -593,9 +593,11 @@ function buildLeadersTable(results)
 		str += '<th>Panchayat</th>';
 		str += '<th>Total Voters</th>';
 		str += '<th>Major Castes</th>';
+		str += '<th>Selected Castes</th>';
 		str += '<th>Booth</th>';
 		str += '<th>Total Voters</th>';
 		str += '<th>Major Castes</th>';
+		str += '<th>Selected Castes</th>';
 		str += '</tr>';
 		for(var i in results)
 		{
@@ -607,9 +609,21 @@ function buildLeadersTable(results)
 			str += '<td rowspan='+rowLength+' >';
 			for(var j in results[i].panchayatLevelLeadersList)
 			{
+				if(j<3)
 				str += ''+results[i].panchayatLevelLeadersList[j].casteName +'('+results[i].panchayatLevelLeadersList[j].casteVotersPerc+')  '; 
 			}
 			str += '</td>';
+			str += '<td rowspan='+rowLength+'>';
+			
+			for(var j in results[i].panchayatLevelLeadersList)
+			{
+				if(j>=3)
+				str += ' '+results[i].panchayatLevelLeadersList[j].casteName +' ('+results[i].panchayatLevelLeadersList[j].casteVotersPerc+')  '; 
+			}
+			str +='</td>';
+			
+			
+			
 			for(var k in results[i].boothLevelLeadersList)
 			{
 			
@@ -622,9 +636,18 @@ function buildLeadersTable(results)
 				str += '<td>';
 				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
 				{
-					str += ''+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+'('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
+					if(m<3)
+					str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+' ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
 				}
 				str += '</td>';
+				str += '<td>';
+				
+				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
+				{
+					if(m>=3)
+					str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+'  ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')'; 
+				}
+				str +='</td>';
 				if(k > 0)
 				{
 					str += '</tr>';
@@ -647,7 +670,7 @@ if(results != null && results.length > 0)
 		var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
 		var str = "";
 		str+='<div class="widget blue">';
-		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
+		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
 		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' MUNCIPALITY BOOTH LEVEL CASTE DETAILS </h4>';
 		//str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;"></h4>';
 		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
@@ -655,9 +678,11 @@ if(results != null && results.length > 0)
 		str += '<th>Mandal</th>';
 		str += '<th>Total Voters</th>';
 		str += '<th>Major Castes</th>';
+		str += '<th>Selected Castes</th>';
 		str += '<th>Booth</th>';
 		str += '<th>Total Voters</th>';
 		str += '<th>Major Castes</th>';
+		str += '<th>Selected Castes</th>';
 		str += '</tr>';
 		for(var i in results)
 		{
@@ -668,9 +693,18 @@ if(results != null && results.length > 0)
 			str += '<td rowspan='+rowLength+' >';
 			for(var j in results[i].panchayatLevelLeadersList)
 			{
-				str += ''+results[i].panchayatLevelLeadersList[j].casteName +'('+results[i].panchayatLevelLeadersList[j].casteVotersPerc+')  '; 
+				if(j < 3)
+				str += ' '+results[i].panchayatLevelLeadersList[j].casteName +' ('+results[i].panchayatLevelLeadersList[j].casteVotersPerc+')  '; 
 			}
 			str += '</td>';
+			str += '<td rowspan='+rowLength+'> ';
+			
+			for(var j in results[i].areaWiseCasteList)
+			{
+				str += ''+results[i].areaWiseCasteList[j].casteName +'('+results[i].areaWiseCasteList[j].casteVotersPerc+')  '; 
+			}
+			
+			str +='</td>';
 			for(var k in results[i].boothLevelLeadersList)
 			{
 			
@@ -683,9 +717,17 @@ if(results != null && results.length > 0)
 				str += '<td>';
 				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
 				{
-					str += ''+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+'('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
+					if(m<3)
+						str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+' ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
 				}
 				str += '</td>';
+				str += '<td>';
+				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
+				{
+					if(m>=3)
+						str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+' ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
+				}
+				str +='</td>';
 				if(k > 0)
 				{
 					str += '</tr>';

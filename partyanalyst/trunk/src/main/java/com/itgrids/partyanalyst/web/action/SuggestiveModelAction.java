@@ -325,7 +325,12 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			Long userId         = regVO.getRegistrationID();
 			//Long mandalId       = jObj.getLong("mandalId");
 			Long constituencyId = jObj.getLong("constituencyId");
-			LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId);
+			String casteIds = jObj.getString("casteIds");
+			String[] strArray = casteIds.split(",");
+			List<Long> castesIdsList = new ArrayList<Long>();
+			for(String casteId:strArray)
+				castesIdsList.add(Long.parseLong(casteId));
+			LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId,castesIdsList);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -382,8 +387,15 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				}
 				Long userId         = regVO.getRegistrationID();
 				//Long mandalId       = jObj.getLong("mandalId");
+				String casteIds = jObj.getString("casteIds");
 				Long constituencyId = jObj.getLong("constituencyId");
-				LeaderSelectionLists = suggestiveModelService.findingBoothInchargesForBoothLevelForMincipality(userId,constituencyId);
+				String[] strArray = casteIds.split(",");
+				List<Long> castesIdsList = new ArrayList<Long>();
+
+				for(String casteId:strArray)
+					castesIdsList.add(Long.parseLong(casteId));
+
+				LeaderSelectionLists = suggestiveModelService.findingBoothInchargesForBoothLevelForMincipality(userId,constituencyId,castesIdsList);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
