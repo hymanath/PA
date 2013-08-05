@@ -320,12 +320,12 @@ p {
 
 #votersByLocationTabContentDiv_body table,#InfluencingPeopleDetailsDiv table{border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 
-#partyWiseJqTable tr:nth-child(even),#subLevelTable tr:nth-child(even),#impfamilydatatable tr:nth-child(even),#votersBasicInfoSubDivForAgeWiseDetls table tr:nth-child(even),#votersBasicInfoSubDivForLclCastSts table tr:nth-child(even),#votersBasicInfoSubDivForImpFam table tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#localCastStatsTabContent_subbody1 table tr:nth-child(even),#votersByLocationTabContentDiv_body table tr:nth-child(even),#InfluencingPeopleDetailsDiv table tr:nth-child(even),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(even),#impfamilydatatable1 table
+#partyWiseJqTable tr:nth-child(even),#subLevelTable tr:nth-child(even),#impfamilydatatable tr:nth-child(even),#votersBasicInfoSubDivForAgeWiseDetls table tr:nth-child(even),#votersBasicInfoSubDivForLclCastSts table tr:nth-child(even),#votersBasicInfoSubDivForImpFam table tr:nth-child(even),#censusReportDiv table tr:nth-child(even),#impFamDtls table tr:nth-child(even),#impFamilesBasicSubDetails table tr:nth-child(even),#votersBasicInfoSubDiv table tr:nth-child(even),#localCastStatsTabContent_body table  tr:nth-child(even),#localCastStatsTabContent_subbody1 table tr:nth-child(even),#votersByLocationTabContentDiv_body table tr:nth-child(even),#InfluencingPeopleDetailsDiv table tr:nth-child(even),#impFamilesBasicSubDetailsForHamlet table tr:nth-child(even),#impfamilydatatable1 table
 tr:nth-child(even),#impFamilesnfoForHamletByBooth  table tr:nth-child(even){background:#EdF5FF;}
 
-#partyWiseJqTable td,#subLevelTable td,#impfamilydatatable td,#impfamilydatatable1 td,#votersBasicInfoSubDivForAgeWiseDetls table td,#votersBasicInfoSubDivForLclCastSts table td,#votersBasicInfoSubDivForImpFam table td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#impFamilesnfoForHamletByBooth td , #votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td,#localCastStatsTabContent_subbody1 table td,#votersByLocationTabContentDiv_body table td,#InfluencingPeopleDetailsDiv table td,#impFamilesBasicSubDetailsForHamlet table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#partyWiseJqTable td,#subLevelTable td,#impfamilydatatable td,#impfamilydatatable1 td,#votersBasicInfoSubDivForAgeWiseDetls table td,#votersBasicInfoSubDivForLclCastSts table td,#votersBasicInfoSubDivForImpFam table td,#impFamDtls table td,#impFamilesBasicSubDetails table td,#impFamilesnfoForHamletByBooth td ,#censusReportDiv table td, #votersBasicInfoSubDiv table td,#localCastStatsTabContent_body table td,#localCastStatsTabContent_subbody1 table td,#votersByLocationTabContentDiv_body table td,#InfluencingPeopleDetailsDiv table td,#impFamilesBasicSubDetailsForHamlet table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 
-#partyWiseJqTable th,#subLevelTable th,#impfamilydatatable th,#impfamilydatatable1 th,#votersBasicInfoSubDivForAgeWiseDetls table th,#votersBasicInfoSubDivForLclCastSts table th,#votersBasicInfoSubDivForImpFam table th,#impFamDtls table th,#impFamilesBasicSubDetails table th,#impFamilesnfoForHamletByBooth table th , #votersBasicInfoSubDiv table th,#localCastStatsTabContent_body table th,#localCastStatsTabContent_subbody1 table th,#votersByLocationTabContentDiv_body table th,#votersByPanchayatTabContentDiv_body table th,#InfluencingPeopleDetailsDiv table th,#impFamilesBasicSubDetailsForHamlet table th{
+#partyWiseJqTable th,#subLevelTable th,#impfamilydatatable th,#impfamilydatatable1 th,#votersBasicInfoSubDivForAgeWiseDetls table th,#votersBasicInfoSubDivForLclCastSts table th,#votersBasicInfoSubDivForImpFam table th,#impFamDtls table th,#impFamilesBasicSubDetails table th,#impFamilesnfoForHamletByBooth table th , #censusReportDiv table th,#votersBasicInfoSubDiv table th,#localCastStatsTabContent_body table th,#localCastStatsTabContent_subbody1 table th,#votersByLocationTabContentDiv_body table th,#votersByPanchayatTabContentDiv_body table th,#InfluencingPeopleDetailsDiv table th,#impFamilesBasicSubDetailsForHamlet table th{
 	background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -337,7 +337,7 @@ tr:nth-child(even),#impFamilesnfoForHamletByBooth  table tr:nth-child(even){back
 	color:#333333;
 	}
 
-#votersBasicInfoSubDivForAgeWiseDetls table th a,#votersBasicInfoSubDivForLclCastSts table th a,#votersBasicInfoSubDivForImpFam table th a,#impFamDtls table th a,#impFamilesBasicSubDetails table th a,#impFamilesnfoForHamletByBooth table th a ,#votersBasicInfoSubDiv table th a,#localCastStatsTabContent_body table th a,#localCastStatsTabContent_subbody1 table th a,#votersByLocationTabContentDiv_body table th a,#votersByPanchayatTabContentDiv_body table th a,#InfluencingPeopleDetailsDiv table th a,{
+#censusReportDiv table th a,#votersBasicInfoSubDivForAgeWiseDetls table th a,#votersBasicInfoSubDivForLclCastSts table th a,#votersBasicInfoSubDivForImpFam table th a,#impFamDtls table th a,#impFamilesBasicSubDetails table th a,#impFamilesnfoForHamletByBooth table th a ,#votersBasicInfoSubDiv table th a,#localCastStatsTabContent_body table th a,#localCastStatsTabContent_subbody1 table th a,#votersByLocationTabContentDiv_body table th a,#votersByPanchayatTabContentDiv_body table th a,#InfluencingPeopleDetailsDiv table th a,{
 color:#333333;
 }
 
@@ -356,8 +356,8 @@ color:#333333;
     width:100%;
 }
 #censusTab{width:98%;}
-#censusTab th{background:#cde6fc; color:#454545;}
-#censusTab td{color:#000;}
+/*#censusTab th{background:#cde6fc; color:#454545;}
+#censusTab td{color:#000;}*/
 label{display:inline-block;}
 		input[type="radio"], input[type="checkbox"] {margin:5px;}
 		.hero-unit{padding:22px;color:black;font-size:15px;margin-bottom: 5px;margin-top: 10px;}
@@ -421,6 +421,7 @@ table.dataTable thead th {
  color:#62C462;
  
  }
+ h3{text-transform:uppercase;font-size:13px;}
 </style>
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -1879,10 +1880,10 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	{
 		if(jsObj.type == "constituency"){
 		/* sublevelHeading updated by srishailam */
-		$('#sublevelHeading').html('<h3> '+votersbasicinfo.votersInfoForMandalVOList[0].type+'/Muncipality Wise Party Performance Analysis in Different Elections of '+jsObj.typename+' Constituency</h3>');	
-			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Voters Information in "+jsObj.typename+" Constituency";
+		$('#sublevelHeading').html('<h3> '+votersbasicinfo.votersInfoForMandalVOList[0].type+'/Muncipality Wise Party Performance Analysis In Different Elections Of '+jsObj.typename+' Constituency</h3>');	
+			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Voters Information In "+jsObj.typename+" Constituency";
 			heading = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Analysis of "+jsObj.typename+" ";
-			casteChartHeading = '<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+'/Muncipality Wise Caste Analysis in '+jsObj.typename+' Constituency</h4>';
+			casteChartHeading = '<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+'/Muncipality Wise Caste Analysis In '+jsObj.typename+' Constituency</h4>';
 		$("#votersBasicInfoTitleDiv").append('<h3>'+title+'</h3>');
 		$("#headingDiv1").append('<h3>'+heading+'</h3>');
 		}
@@ -1890,7 +1891,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		$('#sublevelHeading').html('<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Party Performance Analysis in Different Elections of '+jsObj.typename+'</h4>');	
 		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" Wise Voters Information in "+jsObj.typename+" ";
 		 heading = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" Wise Analysis of "+jsObj.typename+" ";
-		 casteChartHeading = '<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Caste Analysis in '+jsObj.typename+'</h4>';
+		 casteChartHeading = '<h4> '+votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Caste Analysis In '+jsObj.typename+'</h4>';
 		 $("#votersBasicInfoTitleDiv").append('<h3>'+title+'</h3>');
 		 $("#headingDiv1").append('<h3>'+heading+'</h3>');
 		}
@@ -2156,8 +2157,8 @@ function showSubLevelWiseCensusReport(result,jsObj)
 		if(jsObj.type == "constituency")
 			name += " Constituency";
 		var str = '';
-		str +='<h3>Mandal Wise Census Information in '+name+'</h3>';
-		str +='<table id="censusTab" class="table table-bordered table-striped table-hover">';
+		str +='<h3 style="text-transform:uppercase;">Mandal Wise Census Information In '+name+'</h3>';
+		str +='<table id="censusTab">';
 		str +='<tr>';
 		str +='<th>Mandal</th>';
 		str +='<th>Population</th>';
@@ -3452,41 +3453,41 @@ function buildAgewiseDetails(results , obj){
    var noteString;
 	if(type == "constituency"){
 		innerResults = results.mandalsVotersDetails;
-		noteString = "Mandal/Muncipality Wise voters age details";
+		noteString = "Mandal/Muncipality Wise Voters Age Details";
 	}
 	else if(type == "mandal"){
 		innerResults = results.panchayatVotersDetails;
-			noteString = "Panchayat Wise voters age details";
+			noteString = "Panchayat Wise Voters Age Details";
 	}
 	else if(type == "panchayat"){
 		innerResults = results.boothVotersDetails;
 		if(buildType == "hamlet")
-		noteString = "Hamlet Wise voters age details";
+		noteString = "Hamlet Wise Voters Age Details";
 		else
-	  	noteString = "Booth Wise voters age details";
+	  	noteString = "Booth Wise Voters Age Details";
 	}
 	else if(type == "localElectionBody"){
 		innerResults = results.boothVotersDetails;
 		if( results.boothVotersDetails[0].muncipalityType == "Greater Municipal Corp")
-		   noteString = "Ward Wise voter age details";
+		   noteString = "Ward Wise Voter Age Details";
 		else
-			 noteString = "Booth Wise voter age details";
+			 noteString = "Booth Wise Voter Age Details";
 	}
    else if(type == "ward"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth Wise voter age details" ;
+		noteString = "Booth Wise Voter Age Details" ;
 	}
 	else if(type="hamlet" && obj.type == "hamletLocalArea"){
 		innerResults = results.boothVotersDetails;
-		noteString = "LocalArea Wise voter age details" ;
+		noteString = "LocalArea Wise Voter Age Details" ;
 	}
 	else if( (type="hamlet" && obj.type == "hamletBooths") || obj.type == "wardBooths"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Booth Wise voter age details";
+		noteString = "Booth Wise Voter Age Details";
 	}
 	else if( type="booth" && obj.type == "boothHamlets"){
 		innerResults = results.boothVotersDetails;
-		noteString = "Hamlet Wise voter age details";
+		noteString = "Hamlet Wise Voter Age Details";
 	}
 
 	if(innerResults.length == 0){
