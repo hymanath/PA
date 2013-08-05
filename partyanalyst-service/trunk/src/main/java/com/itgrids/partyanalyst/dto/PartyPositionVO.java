@@ -34,6 +34,7 @@ public class PartyPositionVO implements Serializable{
 	private Long totalVoters = 0L;
 	private double percentage = 0.00;
 	private double margin = 0.00;
+	private int priorityOrder = 0;
 	
 	public List<PartyPositionVO> getLocalbodyList() {
 		return localbodyList;
@@ -183,6 +184,12 @@ public class PartyPositionVO implements Serializable{
 	}
 	public void setMargin(double margin) {
 		this.margin = margin;
+	}
+	public int getPriorityOrder() {
+		return priorityOrder;
+	}
+	public void setPriorityOrder(int priorityOrder) {
+		this.priorityOrder = priorityOrder;
 	}
 	
 	

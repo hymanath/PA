@@ -2030,46 +2030,74 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	 }
 		
 	 public List<PartyPositionVO> getSuggestiveLocationsForAParty(List<PartyPositionVO> partyPositions){
+		 
+		   /* List<String> ids = new ArrayList<String>();
+			ids.add("WOREST");
+			ids.add("VERY POOR");
+			ids.add("POOR");
+			ids.add("OK");
+			ids.add("STRONG");
+			ids.add("VERY STRONG");
+		    int z = 1;
+		     for(z = 1;z<ids.size();z++){
+			  for(int j = 0;j<z;j++){//2009
+					for(int i = ids.size()-z+j;i>=ids.size()-z+j;i--)
+					{//2004
+						System.out.println(ids.get(j)+","+ids.get(i)+","+z);
+					}
+				}
+			  }
+		    z = z-1;
+		    System.out.println("-----------------");
+		    for(int y = 2;y<=ids.size()-1;y++){
+			  for(int j = y-2;j<y;j++){
+				  z++;
+				  System.out.println(ids.get(y-1)+","+ids.get(j)+","+z);
+					for(int i = j,l=y;i>0&&l<ids.size()-1;i--,l++)
+					{
+						System.out.println(ids.get(l)+","+ids.get(i-1)+","+z);
+					}
+				}
+			  } 
+		    */
 		 List<PartyPositionVO> returnValues = new ArrayList<PartyPositionVO>(); 
 	    try{
 		 if(partyPositions.size() == 2){
 			 List<PartyPositionVO> latestElec =  partyPositions.get(0).getPartyPositionVOList();
 			 List<PartyPositionVO> prevElec =  partyPositions.get(1).getPartyPositionVOList();
-			 int x = -1;
-				for(int j = latestElec.size()-1;j>0;j--){//2009
-					x = x+1;
-					List<PartyPositionVO> panchayaties = latestElec.get(j).getPartyPositionVOList();
-					if(panchayaties != null && panchayaties.size() >0){	
-						for(int i = 0;i< (prevElec.size()-1-x);i++)
+			 Collections.reverse(latestElec);
+			 Collections.reverse(prevElec);
+			 int z = 1;
+			 for(z = 1;z<latestElec.size();z++){
+				  for(int j = 0;j<z;j++){//2009
+					  List<PartyPositionVO> panchayaties = latestElec.get(j).getPartyPositionVOList();
+					  if(panchayaties != null && panchayaties.size() >0){	
+						for(int i = prevElec.size()-z+j;i>=prevElec.size()-z+j;i--)
 						{//2004
 							List<PartyPositionVO> prevPanchayaties = prevElec.get(i).getPartyPositionVOList();
 							if(prevPanchayaties != null && prevPanchayaties.size() >0){	
-								populateMachedValues(panchayaties,prevPanchayaties,returnValues);
+								populateMachedValues(panchayaties,prevPanchayaties,returnValues,z);
 							}
 						}
+					  }
 					}
-				}
-				 x = -1;
-				
-				for(int j = prevElec.size()-1;j>0;j--){//2004
-					x = x+1;
-					List<PartyPositionVO> prevPanchayaties = prevElec.get(j).getPartyPositionVOList();
-					if(prevPanchayaties != null && prevPanchayaties.size() >0){	
-						for(int i = 0;i< (latestElec.size()-1-x);i++)
-						{//2009
-							List<PartyPositionVO> panchayaties = latestElec.get(i).getPartyPositionVOList();
-							if(panchayaties != null && panchayaties.size() >0){	
-								populateMachedValues(panchayaties,prevPanchayaties,returnValues);
-							}
+				  }
+			 z = z-1;
+			    for(int y = 2;y<=latestElec.size()-1;y++){
+				  for(int j = y-2;j<y;j++){
+					  z++;
+					  List<PartyPositionVO> latestPanchayaties = latestElec.get(y-1).getPartyPositionVOList();
+					  List<PartyPositionVO> prevPanchayaties = prevElec.get(j).getPartyPositionVOList();
+					  populateMachedValues(latestPanchayaties,prevPanchayaties,returnValues,z);
+						for(int i = j,l=y;i>0&&l<latestElec.size()-1;i--,l++)
+						{   latestPanchayaties = latestElec.get(l).getPartyPositionVOList();
+						    prevPanchayaties = prevElec.get(i-1).getPartyPositionVOList();
+						    populateMachedValues(latestPanchayaties,prevPanchayaties,returnValues,z);
 						}
 					}
-				}
-				 
-				for(int i = 0;i<latestElec.size();i++){
-					List<PartyPositionVO> panchayaties = latestElec.get(i).getPartyPositionVOList();
-					List<PartyPositionVO> prevPanchayaties = prevElec.get(i).getPartyPositionVOList();
-					populateMachedValues(panchayaties,prevPanchayaties,returnValues);
-				}
+				  } 
+			     Collections.reverse(latestElec);
+				 Collections.reverse(prevElec);
 		 }
 	    }catch(Exception e){
 		  
@@ -2077,14 +2105,19 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	    return returnValues;
 	 }
 	 
-	 public void populateMachedValues(List<PartyPositionVO> panchayaties,List<PartyPositionVO> prevPanchayaties,List<PartyPositionVO> returnValues){
-		 for(PartyPositionVO prev:prevPanchayaties){
-		    for(PartyPositionVO current:panchayaties){
-			   if(current.getId().longValue() == prev.getId().longValue()){
-				  returnValues.add(current);
-				}
-			}
-		 }
+	 public void populateMachedValues(List<PartyPositionVO> panchayaties,List<PartyPositionVO> prevPanchayaties,List<PartyPositionVO> returnValues,int priorityOrder){
+		if(prevPanchayaties != null && prevPanchayaties.size() > 0){
+			 for(PartyPositionVO prev:prevPanchayaties){
+				  if(panchayaties != null && panchayaties.size() > 0){ 
+					    for(PartyPositionVO current:panchayaties){
+						   if(current.getId().longValue() == prev.getId().longValue()){
+							   current.setPriorityOrder(priorityOrder);
+							  returnValues.add(current);
+							}
+						}
+				  }
+			 }
+	    }
 	 }
 	 
 	 	
