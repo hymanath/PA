@@ -1423,7 +1423,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	    		 locationVO.setSelectedPartyTotalVoters(selectedPartyTotal);
 	    		 locationVO.setTotalValidVotes(totalVotes);
 	    		 locationVO.setTotalVoters(panchayatTotalVotersMap.get(id));
-	    		 locationVO.setPercentage(new BigDecimal((totalVotes*100/panchayatTotalVotersMap.get(id))).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+	    		 locationVO.setPercentage(new BigDecimal((totalVotes*100.0/panchayatTotalVotersMap.get(id))).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 	    		 locationVO.setMargin(difference);
 	    		 
 	    		 locationList.add(locationVO);
@@ -2722,6 +2722,54 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					List<PartyPositionVO>  panchayatVos = getMoreVotersAddedLocDetailsWherePartyIsPoor(resultList.get(0).getPartyPositionVOList());
 					resultList.get(0).setAddedVoterDetails(panchayatVos);
 				}
+				
+				//Percentage
+				Map<Long,Map<String,Long>> map = new HashMap<Long, Map<String,Long>>(0);//<electionId,Map<strong,totalValidVotes>>
+				for(PartyPositionVO partyPositionVO1:resultList)
+				{
+				   Map<String,Long> map2 = map.get(partyPositionVO1.getId());
+				   if(map2 == null)
+				   {
+					  map2 = new HashMap<String, Long>(0);
+					  map.put(partyPositionVO1.getId(), map2);
+				   }
+				   if(partyPositionVO1.getPartyPositionVOList() != null && partyPositionVO1.getPartyPositionVOList().size() > 0)
+				   {
+					 for(PartyPositionVO partyPositionVO2:partyPositionVO1.getPartyPositionVOList())
+					 {
+						 if(partyPositionVO2.getPartyPositionVOList() != null && partyPositionVO2.getPartyPositionVOList().size() > 0)
+						 {
+							for(PartyPositionVO partyPositionVO3:partyPositionVO2.getPartyPositionVOList())
+							{
+							  Long total = map2.get(partyPositionVO2.getName());
+							   if(total == null)
+								 map2.put(partyPositionVO2.getName(), partyPositionVO3.getTotalValidVotes());
+							   else
+								map2.put(partyPositionVO2.getName(), total+partyPositionVO3.getTotalValidVotes());
+							}
+						 }
+					 }
+				   }
+				}
+				
+				for(PartyPositionVO partyPositionVO1:resultList)
+				{
+				  Long totalVotes = candidateBoothResultDAO.getConstituencyTotalVotes(constituencyId, partyPositionVO1.getId());
+				  
+				  Map<String, Long> totalVotesMap = map.get(partyPositionVO1.getId());
+				  
+				  if(partyPositionVO1.getPartyPositionVOList() != null && partyPositionVO1.getPartyPositionVOList().size() > 0)
+				   {
+					 for(PartyPositionVO partyPositionVO2:partyPositionVO1.getPartyPositionVOList())
+					 {
+						 if(partyPositionVO2.getPartyPositionVOList() != null && partyPositionVO2.getPartyPositionVOList().size() > 0)
+						 {
+							  double percentage =  new BigDecimal((totalVotesMap.get(partyPositionVO2.getName())*100.0/totalVotes)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+							  partyPositionVO2.setRangePercentage(percentage);
+						 }
+					 }
+				   }
+				}
 
 				 return resultList;
 				}catch (Exception e) {
@@ -2834,8 +2882,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					  }
 				   
 				   
-				  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      
 			      double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      
@@ -2998,8 +3046,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					  }
 				   
 					     
-				  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      
 			      double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      
@@ -3030,7 +3078,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			    		 locationVO.setSelectedPartyTotalVoters(selectedPartyTotal);
 			    		 locationVO.setTotalValidVotes(totalVotes);
 			    		 locationVO.setTotalVoters(panchayatTotalVotersMap.get(id));
-			    		 locationVO.setPercentage(new BigDecimal((totalVotes*100/panchayatTotalVotersMap.get(id))).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			    		 locationVO.setPercentage(new BigDecimal((totalVotes*100.0/panchayatTotalVotersMap.get(id))).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			    		 locationVO.setMargin(difference);
 			    		 
 			    		 locationList.add(locationVO);
