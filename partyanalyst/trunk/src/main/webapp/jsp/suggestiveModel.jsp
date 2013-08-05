@@ -421,7 +421,7 @@ function callAjax(param,jsObj,url){
 							showStrongAndWeakPollingPercentage(myResults,jsObj);
 							buildAddedVotersDetails(myResults);
 							showPartyPerformancePieChart(myResults,jsObj);
-							//showSuggestedLocations(myResults,jsObj);
+							showSuggestedLocations(myResults,jsObj);
 						}
 						else if(jsObj.task == "getLeadersList")
 						{
@@ -711,10 +711,12 @@ function showSuggestedLocations(myResults,jsObj){
 	str+='<table  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
 	str+='  <tr>';
 	str+='    <th>Panchayat Name</th>';
+	str+='    <th>Priority</th>';
 	str+='  </tr>';
 	 for(var i in myResults[0].suggestedLocations){
 	   str+='<tr>';
 	   str+='  <td>'+myResults[0].suggestedLocations[i].name+'</td>';
+	   str+='  <td>'+myResults[0].suggestedLocations[i].priorityOrder+'</td>';
 	   str+='</tr>';
 	 }
 	str+='</table>';
@@ -1050,7 +1052,7 @@ function showPartyPerformanceReport(result,jsObj)
 		 str +='<th>Votes Polled</th>';
 		 str +='<th>polling %</th>';
     	 str +='<th>Margin</th>';
-		 str +='<th>Votes Gained ('+partyName+')</th>';
+		 str +='<th>Votes Gained('+partyName+')</th>';
 		 str +='</tr>';
 		 
 		 
