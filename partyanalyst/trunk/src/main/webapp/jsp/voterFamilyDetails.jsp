@@ -1527,9 +1527,9 @@ function buildTableForImpFamilesForHamletByBooth(impFamilesData,name,type)
 		  if(type == 'customWard')
 			type="";
 		  if(requestFor=="booth")
-		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Booth Wise voters family analysis of "+name+" "+type+" in "+publicationYear+"</b>");
+		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<h4>Booth Wise voters family analysis of "+name+" "+type+" in "+publicationYear+"</h4>");
 		  else
-		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<b>Hamlet Wise voters family analysis of "+name+" in "+publicationYear+"</b>");
+		  $("#impFamilesBasicSubDetailsForHamletByBoothTitle").html("<h4>Hamlet Wise voters family analysis of "+name+" in "+publicationYear+"</h4>");
 		  var impFamilesColumnDefs = [
 		    {key:"name", label: ""+reqtytle+"", sortable: true},
 			{key:"totalVoters", label:"Total",sortable: true},

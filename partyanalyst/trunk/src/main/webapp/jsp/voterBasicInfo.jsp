@@ -576,16 +576,16 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	  //$("#votersBasicInfoSubDiv").removeAttr('style');
 
 	var str = '<div id="votersBasicInfoDivSub">';
-	var title = " Voters Basic Information of "+jsObj.typename+" in "+jsObj.year+"";
+	var title = " Voters Basic Information of "+jsObj.typename+" In "+jsObj.year+"";
 	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0)
 	{
 		if(jsObj.type == "constituency"){
 			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Voters Information in "+jsObj.typename+" Constituency";
-		$("#votersBasicInfoTitleDiv").append('<h3 style="color: rgb(255, 255, 255); border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px; height: 28px; font-family: arial; font-size: 16px; background: none repeat scroll 0px 0px rgb(73, 175, 205); padding: 5px 5px 15px;">'+title+'</h3>');
+		$("#votersBasicInfoTitleDiv").append('<h4 style="color: rgb(255, 255, 255);text-transform:uppercase; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px; height: 28px; font-family: arial; font-size: 16px; background: none repeat scroll 0px 0px rgb(73, 175, 205); padding: 5px 5px 15px;">'+title+'</h4>');
 		}
 		else{
 		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" Wise Voters Information in "+jsObj.typename+" ";
-		 $("#votersBasicInfoTitleDiv").append('<h3 style="color: rgb(255, 255, 255); border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px; height: 28px; font-family: arial; font-size: 16px; background: none repeat scroll 0px 0px rgb(73, 175, 205); padding: 5px 5px 15px;">'+title+'</h3>');
+		 $("#votersBasicInfoTitleDiv").append('<h4 style="color: rgb(255, 255, 255); border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px; height: 28px; font-family: arial; font-size: 16px; background: none repeat scroll 0px 0px rgb(73, 175, 205); padding: 5px 5px 15px;">'+title+'</h4>');
 		}
 	}
 
@@ -794,7 +794,7 @@ function buildVotersChart(chartInfo,reqTitle)
 		  data.setValue(i,1,val);
 		}
         // Set chart options
-		var title = chartInfo[0].type+' Wise Voters % Share in '+reqTitle; 
+		var title = chartInfo[0].type+' Wise Voters % Share In '+reqTitle; 
         var options = {'title':title,
                        'width':800,
                        'height':300};

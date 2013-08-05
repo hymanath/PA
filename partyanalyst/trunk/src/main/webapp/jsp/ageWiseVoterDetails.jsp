@@ -70,6 +70,7 @@
     margin-left: 4px;
     padding-top: 11px;
     width: auto;
+	text-transform: uppercase;
 }
 table.dataTable tr.odd {
     background-color: #ffffff;
