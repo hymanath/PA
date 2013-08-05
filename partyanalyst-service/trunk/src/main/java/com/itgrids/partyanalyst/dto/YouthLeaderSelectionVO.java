@@ -27,6 +27,22 @@ public class YouthLeaderSelectionVO implements Serializable{
 	private List<YouthLeaderSelectionVO> boothLevelLeadersList;
 	private List<YouthLeaderSelectionVO> panchayatLevelLeadersList;
 	private YouthLeaderSelectionVO youthLeaderSelectionVO;
+	private List<?> selectedCastesList;
+	private List<YouthLeaderSelectionVO> areaWiseCasteList;
+		
+	
+	public List<YouthLeaderSelectionVO> getAreaWiseCasteList() {
+		return areaWiseCasteList;
+	}
+	public void setAreaWiseCasteList(List<YouthLeaderSelectionVO> areaWiseCasteList) {
+		this.areaWiseCasteList = areaWiseCasteList;
+	}
+	public List<?> getSelectedCastesList() {
+		return selectedCastesList;
+	}
+	public void setSelectedCastesList(List<?> selectedCastesList) {
+		this.selectedCastesList = selectedCastesList;
+	}
 	public Long getMandalId() {
 		return mandalId;
 	}
