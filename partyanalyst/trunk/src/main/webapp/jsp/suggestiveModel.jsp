@@ -366,7 +366,7 @@ function callAjax(param,jsObj,url){
 							showPartyPerformanceReportForBooth(myResults,jsObj);
 							showStrongAndWeakPollingPercentage(myResults,jsObj);
 							buildAddedVotersDetails(myResults);
-							//showPartyPerformancePieChart(myResults,jsObj);
+							showPartyPerformancePieChart(myResults,jsObj);
 							//showSuggestedLocations(myResults,jsObj);
 						}
 						else if(jsObj.task == "getLeadersList")
