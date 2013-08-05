@@ -14,6 +14,7 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -162,6 +163,8 @@ public class CadreManagementService {
 	private IBloodGroupDAO bloodGroupDAO;
 	private IVoterDAO voterDAO;
 	private IRegionScopesDAO regionScopesDAO;
+	private TaskExecutor taskExecutor;
+	
 	public ICadreOnlineRegistrationDAO getCadreOnlineRegistrationDAO() {
 		return cadreOnlineRegistrationDAO;
 	}
@@ -462,6 +465,15 @@ public class CadreManagementService {
 	public void setCadreRoleDAO(ICadreRoleDAO cadreRoleDAO) {
 		this.cadreRoleDAO = cadreRoleDAO;
 	}
+
+	public TaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+
+	public void setTaskExecutor(TaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
+	}
+
 
 	public ResultStatus saveCader(CadreInfo cadreInfoToSave, List<Long> skills, String task) {
 		
@@ -3912,10 +3924,12 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 								smsCountNos = smsCountNos+1;
 						}
 						if (cadreMobileNos != null && cadreMobileNos.length > 0)
-							smsSentStatus = smsCountrySmsService
-									.sendSms(message, isText, userId,
-											IConstants.Cadre_Management,
-											cadreMobileNos);
+							//smsSentStatus = smsCountrySmsService
+									//.sendSms(message, isText, userId,
+											//IConstants.Cadre_Management,
+											//cadreMobileNos);
+							taskExecutor.execute(sendSMSForCader(message, isText, userId, IConstants.Cadre_Management, cadreMobileNos));
+							
 					} else {
 						// to do ICONSTANTS.SMS_DEAR
 						for (SmsVO mobiles : cadreList) {
@@ -3931,9 +3945,11 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 							 * String[] mobileNOs = new String[1]; mobileNOs[1]
 							 * = mobile;
 							 */
-							smsSentStatus = smsCountrySmsService.sendSms(
-									cadreMessage.toString(), isText, userId,
-									IConstants.Cadre_Management, mobile);
+							//smsSentStatus = smsCountrySmsService.sendSms(
+									//cadreMessage.toString(), isText, userId,
+									//IConstants.Cadre_Management, mobile);
+							
+							taskExecutor.execute(sendSMSForCader(cadreMessage.toString(), isText, userId, IConstants.Cadre_Management, mobile));
 						}
 					}
 
@@ -3963,6 +3979,20 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		}
 
 		return smsResult;
+	}
+	
+	
+	public Runnable sendSMSForCader(String message, boolean isEnglish,Long userId,String moduleName,
+			String... phoneNumbers)
+	{
+		try{
+			smsCountrySmsService.sendSms(message, isEnglish, userId,IConstants.Cadre_Management,phoneNumbers);
+			return new Thread();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new Thread();
+		}
 	}
 
 	public final String getExceptionMessage(String expClass) {
