@@ -82,7 +82,9 @@
     font-size: 14px;
     margin-top: 8px;
     padding: 4px;
-    width: 550px;}
+    width: 550px;
+	text-transform: uppercase;
+	}
 
 
 	.localCastStatsVotersTitle{background:#06ABEA;}

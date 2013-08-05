@@ -1191,7 +1191,7 @@ $('.castDivs').hover(
 <div id="votersouterDiv" class="widget green">
 <!--<fieldset>-->
 
-<div id='MainHeading'><h3 style="font-size: 19.5px;font-family:verdana;">Get your Constituency's Complete Information up to Booth Level.</h3><h4 style="font-weight:normal;border:0px;text-transform:none;">Please select your Constituency and Publication Date to view Constituency Wise Analysis.</h4></div>
+<div id='MainHeading'><h3 style="font-size: 19.5px;font-family:verdana;">GET YOUR CONSTITUENCY'S COMPLETE INFORMATION UP TO BOOTH LEVEL.</h3><h4 style="font-weight:normal;border:0px;text-transform:none;">Please select your Constituency and Publication Date to view Constituency Wise Analysis.</h4></div>
 
 <div id="categoeryCreationDiv" style="float:right;">
 	
@@ -1385,7 +1385,7 @@ for  body3 start    result  -->
 	</div>
 
 	<div style="margin:7px;">
-	<div id="cnstHeading2" class="cutomVoterGroup thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:center;position:relative;display:none;">Custom Voter Group Wise Voters Info<span id="votersShareBtnsForCstmVtrGrp" class="btn" title="Click Here to know Custom Voter Group Wise Voters Info " style="margin-left: 15px;font-weight:bold;">Show</span></div>
+	<div id="cnstHeading2" class="cutomVoterGroup thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:center;position:relative;display:none;">CUSTOM VOTER GROUP WISE VOTERS INFO<span id="votersShareBtnsForCstmVtrGrp" class="btn" title="Click Here to know Custom Voter Group Wise Voters Info " style="margin-left: 15px;font-weight:bold;">Show</span></div>
 	</span>
 	
 </div>  
