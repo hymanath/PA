@@ -1004,7 +1004,7 @@ function addToPolitician(voterId,name)
 	   if(type == "constituency"){
 		var area='';
 		  $("#votersBasicInfoBtnDiv").show();
-		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span id='areaId'>"+area+"</span> Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
+		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span id='areaId' style='text-transform: uppercase;'>"+area+"</span> WISE VOTERS INFO OF "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Mandal Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");	
 		  $("#votersShareBtn1").css('display','none');
 		  checkForLocalBodyElection();
 		  $("#castPopupShowBtn").attr("value","Mandal/Muncipality Wise Caste Info");
@@ -1016,7 +1016,7 @@ function addToPolitician(voterId,name)
 			$("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 			$("#votersBasicInfoBtnDiv").show();
 			
-		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>BOOTH WISE VOTERS INFO OF "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 	   $("#castPopupShowBtn").attr("value","Booth Wise Caste Info");
 	   
 	   }
@@ -1037,7 +1037,7 @@ function addToPolitician(voterId,name)
 		  $("#ageLink").css("display","block");
 		  $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
 		  $("#votersShareBtn1").css("display","block");
-		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		  $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>HAMLET WISE VOTERS INFO OF "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 		  $("#castPopupShowBtn").attr("value","Hamlet Wise Caste Info");
 		  $("#impFamiliesForHamletsByBooth").css("display","block");
 		 }
@@ -1094,7 +1094,7 @@ function addToPolitician(voterId,name)
 	   if(type == "mandal" && mainreqid.substring(0,1) == "2"){
 
 		$("#votersBasicInfoBtnDiv").show();
-		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Panchayat Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Panchayat Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='margin-left:5px;'><input style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' onclick='getAllSubDetails();' type='button' value='Complete Info' class='btn btn-success'/></span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+		$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>PANCHAYAT WISE VOTERS INFO OF <span style='text-transform: uppercase;'>"+mainname+"</span><span id='votersShareBtnss' class='btn' title='Click Here to know Panchayat Wise Voters Info of  "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='margin-left:5px;'><input style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' onclick='getAllSubDetails();' type='button' value='Complete Info' class='btn btn-success'/></span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 
 	   $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Panchayat Wise Age Details</a>');
 	     getElectionYearsAjaxAction();
@@ -1124,9 +1124,9 @@ function addToPolitician(voterId,name)
 		 {
 			$("#votersBasicInfoBtnDiv").show();
 			if(muncipalityType == 'Greater Municipal Corp')
-			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Ward Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Ward Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>WARD WISE VOTERS INFO OF "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Ward Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 			else 
-			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
+			$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>BOOTH WISE VOTERS INFO OF "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
 			
 		 }
 		 if(type != "hamlet" )
@@ -2083,7 +2083,7 @@ function addToPolitician(voterId,name)
 		var str='';
 		
 		//str+='<div id="cnstHeading" class="thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:left;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a></div>';
-		str+='<div id="cnstHeading" class="thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:left;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a></div>';
+		str+='<div id="cnstHeading" class="thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:left;"><span style="font-size:16.5px;text-transform:uppercase;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency </span><a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a></div>';
 		str+='<div id="constituencyResultsInner" style="padding-bottom:25px;display:none;">';
 		str+='<table class="table table-bordered table-hover"><thead><tr class="" style="background:#E6E6E6;"><th>Election Year</th><th>Won Candidate</th><th>Majority</th><th>Lost Candidate</th></tr></thead>';
         for(var i in results){
@@ -5764,7 +5764,7 @@ function PreviousEleVotingTrendsHighChat(results,jsObj){
                 type: 'line'
             },
             title: {
-                text: 'Election Voting Trendz in ' +jsObj.name
+                text: 'Election Voting Trendz In ' +jsObj.name
             },
             subtitle: {
                 text: ''
@@ -6877,7 +6877,7 @@ buildType="hamlet";
 	 
 	  $("#impFamiliesMoreInfoButn").attr("value","View Hamlet Wise Family Details");
        //$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span></div>");
-	          $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Hamlet Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span></div>");
+	          $("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>HAMLET WISE VOTERS INFO OF "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Hamlet Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span></div>");
 
        $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Hamlet Wise Age Details</a>');
 	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");
@@ -6892,7 +6892,7 @@ buildType="booth";
 	 $("#ageLink").html('<a class="btn btn-info" href="javaScript:{showAllAgewiseDetails()}">View Booth Wise Age Details</a>');
 
 $("#impFamiliesMoreInfoButn").attr("value","View Booth Wise Family Details");
-$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>Booth Wise Voters Info of "+mainname+"<span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span></div>");
+$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'>BOOTH WISE VOTERS INFO OF<span style='text-transform: uppercase;'> "+mainname+"</span><span id='votersShareBtnss' class='btn' title='Click Here to know Booth Wise Voters Info of "+mainname+ "' style='margin-left: 15px;'>Show</span><span style='display:none;' id='votersInfoAjaxImg'><img src='./images/icons/search.gif' /></span><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span></div>");
 //$("#votersShareBtn1").html("<div id='cnstHeading'  class='thumbnail' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;'><span style='margin-left:5px;'><input id='sublvl1' style='padding-bottom: 5px;padding-top: 5px;font-weight: bold;' id='sublvl2' type='button' value='Complete Info' onclick='getAllSubDetails();' class='btn btn-success'/></span></div>");
 	// getvotersBasicInfo("impFamilies",mainreqid,mainpublicationId,"panchayat");
 	$("#castPopupShowBtn").attr("value","Booth Wise Caste Info");
