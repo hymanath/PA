@@ -267,6 +267,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			this.tehsilDAO = tehsilDAO;
 		}
 	public List<PanchayatVO> getVotersGroupDetails(List<SelectOptionVO> groupVos,Long constituencyId,Long locationId,String type,Long electionId,Long userId,List<Long> casteIds){
+		
+		 List<PanchayatVO> panchayatVOList=new ArrayList<PanchayatVO>();
+
+		try
+		{
 
 		Long publicationId = 8l;
 		 List<Long> publicationIds = new ArrayList<Long>();
@@ -274,7 +279,6 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 Map<Long,String> panchayatsMap=new HashMap<Long, String>();
 		 List<PanchayatVO> panchayatVOs=null;
 		 List<PanchayatVO> boothsVO=null;
-		 List<PanchayatVO> panchayatVOList=new ArrayList<PanchayatVO>();
 		 List<Object[]> panchayats=null;
 		 publicationIds.add(publicationId);
 		 List<Object[]> boothsList=null;
@@ -375,8 +379,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						 pnchytVO.setFemaleVoters(totalFemales);
 						 pnchytVO.setTotalVoters(totalVoters);
 						// float percentage=(totalVoters*100)/totalVotersInBooth;
-						 Double percentage= Double.valueOf(df.format(Long.valueOf(totalVoters)*100/(float)totalVotersInBooth));
-						 pnchytVO.setPercentage(percentage.toString());
+						 
+						 if(totalVotersInBooth != 0 )
+						 {
+						    Double percentage= Double.valueOf(df.format(Long.valueOf(totalVoters)*100/(float)totalVotersInBooth));
+						    pnchytVO.setPercentage(percentage.toString());
+
+						 }else
+							 pnchytVO.setPercentage("0.00");
 						 pnchytVO.setTotalPanchayatVoters(totalVotersInBooth);
 						 pnchytVO.setTopCastes(top3CstsListInBooth);
 						 pnchytVO.setSelectedCastes(slctedCstsList);
@@ -390,11 +400,32 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 
 				 
 				 if(panchayatsList!=null){
+					 
+					 Map<Long ,List<Long>> panchayatBoothsMap = new HashMap<Long, List<Long>>();
+					 
+						List<Object[]> boothsDetails = boothDAO.getBoothIdsByPanchayatIds(panchayatsList, constituencyId, publicationIds);
+						
+						for(Object[] obj:boothsDetails)
+						{
+							List<Long> boothsForPanchayat = null;
+							if(panchayatBoothsMap.get((Long)obj[1]) != null)
+								panchayatBoothsMap.get((Long)obj[1]).add((Long)obj[0]);
+							else
+							{
+								boothsForPanchayat = new ArrayList<Long>();
+								boothsForPanchayat.add((Long)obj[0]);
+								panchayatBoothsMap.put((Long)obj[1], boothsForPanchayat);
+
+							}
+						}
 				 for(Long panchayathId:panchayatsList){
 				 if("panchayat".equalsIgnoreCase(type)){
 					 List li=boothPublicationVoterDAO.getVotersCountForPanchayat(panchayathId, publicationId);
 					 int totalVotersInPanchayat=Integer.parseInt((li.get(0)).toString());
-					 List<Long> boothIDs = boothDAO.getBoothIdsByLocalValuesList("panchayat", panchayathId, constituencyId, publicationIds);
+					 
+					// List<Long> boothIDs = boothDAO.getBoothIdsByLocalValuesList("panchayat", panchayathId, constituencyId, publicationIds);
+					 
+					 List<Long> boothIDs  = panchayatBoothsMap.get(panchayathId);
 					 
 					 //Getting Castes and Selecting top 3 Castes of a Panchayat
 					 List<Object[]> castes=boothPublicationVoterDAO.getVotersCasteDetailsForAgeRange(group.getId(), group.getPopulateId(), boothIDs, userId);
@@ -453,6 +484,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 pnchytVO1.setMunicipalitesBoothsMap(MuncipalBoothsMap);
 			 panchayatVOList.add(pnchytVO1);
 		 }
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
 		 return panchayatVOList;
 	}
 	
