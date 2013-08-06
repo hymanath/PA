@@ -582,8 +582,9 @@ function buildCandidateNews(results,jsObj)
 
   $("#ajaxImg").css("display","none");
   $("#candidateNewsCountDiv").html('');
-  
-  if(results == null)
+  $("#candidateNewsGraphDiv").html('');
+
+  if(results == null || results.length == 0)
   {
 	$("#candidateNewsCountDiv").html('No Data Found');
 	return;
