@@ -408,10 +408,11 @@
 	var partyId = 872;
 	function handleSubmit()
 	{		
+		$('#errorMsgDiv').html('');
 		var scope = document.getElementById('listValue').value;
-	
+	  
 		if(scope == '0'){
-			$('#errorMsgDiv').html('<span style="margin-left: -165px;"> Please Select Scope Value </span>');
+			$('#errorMsgDiv').html('<span style="margin-left: -100px;"> Please Select Scope Value </span>');
 			$('#listValue').css("border","1px solid IndianRed");
 			return false;
 		}
@@ -455,6 +456,16 @@
 				scopeIdVal = document.getElementById("userAccessConstituencyList").value;	
 				locationName = $('#userAccessConstituencyList option:selected').text();
 			}
+			if(scopeIdVal == '0' || scopeIdVal == 0)
+		    {
+			 if(scope == "District")
+			  $('#errorMsgDiv').html('<span style="margin-left: -100px;"> Please Select District. </span>');
+			 else
+			  $('#errorMsgDiv').html('<span style="margin-left: -100px;"> Please Select Constituency. </span>');
+
+			 return;
+
+		    }
 			if(scopeIdVal != '0'){			
 			var urlStr="partyWiseNewsPopupAction.action?scope="+scope+"&locationName="+locationName+"&locationValue="+scopeIdVal+"&partyName="+PartyName+"&partyId="+partyId;			
 			var updatedBrowser = window.open(urlStr,'_blank');	

@@ -385,7 +385,7 @@ $(document).ready(function(){
 													</tr></table>
 													</div></br>
 													<div class="span2 " style="float:right"><br>
-														<a href="newsPaginationAction.action?level=state">
+														<a href="newsPaginationAction.action?level=district">
 															<button class="btn btn-mini pull-right" type="button"  style="margin-top: -20px; margin-bottom: 15px;margin-right: 25px;">More...</button>
 														</a>
 													</div>
@@ -519,7 +519,8 @@ $(document).ready(function(){
 						
 						<!--DIV for Constituency Select Filter-->
 						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Constituency Wise News</h4></div>
-						<div class="span12">						
+						<div class="span12">
+						<div id="errorMsgDiv"></div>
 						<table style="margin-top:15px;">
 							<tr id="tableRowS">
 								<td id="tdWidth" style="padding-right: 32px;">
@@ -731,7 +732,7 @@ getCandidates();
 
 function showFilesInGallary(gallaryId)
 {
- var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"&category=0";
+ var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"&category=0&requestFor=null";
 		
      var browser1 = window.open(urlstr,"showAllFilesOfAGallary","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
