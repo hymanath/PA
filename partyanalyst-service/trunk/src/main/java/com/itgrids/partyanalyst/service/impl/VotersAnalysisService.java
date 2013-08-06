@@ -4551,7 +4551,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				above10 = above10+1;
 				above10Count = count + above10Count;
 			}
-			else if(count.longValue() < 10 && count.longValue() >= 7){
+			else if(count.longValue() <= 10 && count.longValue() >= 7){
 				between7To10 = between7To10+1;
 				between7T10Count = count + between7T10Count;
 			}
@@ -4559,7 +4559,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 				between4To6 = between4To6 + 1;
 				between4To6Count = count + between4To6Count;	
 			}
-			else{
+			else if(count <= 3){
 				below3 = below3 + 1;
 				below3Count = count + below3Count;
 			}
