@@ -7898,13 +7898,13 @@ function getPreAndPresentPublicationDtaeList()
 			selectedElmt.add(opElmt); // IE only
 		}	
 	}
-
+	var presentList = new Array();
 	for(var val in publicationDatesList)
 	{
 		var opElmt = document.createElement('option');
 		opElmt.value=publicationDatesList[val].id;
 		opElmt.text=publicationDatesList[val].name;
-
+		presentList.push(publicationDatesList[val].id);
 		try
 		{
 			prespublicationDateIdsList.add(opElmt,null); // standards compliant
@@ -7914,6 +7914,10 @@ function getPreAndPresentPublicationDtaeList()
 			prespublicationDateIdsList.add(opElmt); // IE only
 		}	
 	}
+	var largest = Math.max.apply(Math, presentList);
+	$('#prespublicationDateIdsList').val(largest);
+	$('#prevpublicationDateIdsList  option:last-child').attr('selected', 'selected');
+	
 }
 
 
