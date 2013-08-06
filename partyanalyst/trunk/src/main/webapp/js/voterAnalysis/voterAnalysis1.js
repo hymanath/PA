@@ -7882,9 +7882,11 @@ function getPreAndPresentPublicationDtaeList()
 
 	removeSelectElements(selectedElmt);
 	removeSelectElements(presentPublicationList);
-
+	var previoustList = new Array();
 	for(var val in publicationDatesList)
 	{
+		if(publicationDatesList[val].id != 0)
+		previoustList.push(publicationDatesList[val].id);
 		var opElmt = document.createElement('option');
 		opElmt.value=publicationDatesList[val].id;
 		opElmt.text=publicationDatesList[val].name;
@@ -7915,8 +7917,10 @@ function getPreAndPresentPublicationDtaeList()
 		}	
 	}
 	var largest = Math.max.apply(Math, presentList);
+	var smallest = Math.min.apply(Math, previoustList);
 	$('#prespublicationDateIdsList').val(largest);
-	$('#prevpublicationDateIdsList  option:last-child').attr('selected', 'selected');
+	$('#prevpublicationDateIdsList').val(smallest);
+	//$('#prevpublicationDateIdsList  option:last-child').attr('selected', 'selected');
 	
 }
 
