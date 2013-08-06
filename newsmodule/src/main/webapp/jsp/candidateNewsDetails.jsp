@@ -1128,7 +1128,7 @@ function  showPartyWiseNewsCount(results)
 function getResponseNewsDetails(newsType,partyId,tempVarForParty,candidateId)
 {
  
- var radioVal = $("input:radio[name=candidateNewsRadio]:checked").val();
+ var radioVal = $("input:radio[name=candidateCriticsNewsRadio]:checked").val();
    var fromDate = '';
    var toDate = '';
    var galleryIdsArray = new Array();
@@ -1141,8 +1141,8 @@ function getResponseNewsDetails(newsType,partyId,tempVarForParty,candidateId)
    if(radioVal == "byDate")
    {
 	 $("#showAndHideDateSelectDiv").css("display","inline-block");
-	 fromDate = $("#existingFromText").val();
-     toDate = $("#existingToText").val();
+	 fromDate = $("#criticsExistingFromText").val();
+     toDate = $("#criticsExistingToText").val();
 	 if(fromDate == '' && toDate =='')
 	 {
 	  $("#errorMsgDiv").html('Please Select From And To Dates.');
