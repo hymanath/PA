@@ -1769,7 +1769,8 @@ function showNewsGallaey()
   $("#newsEditId").css({"background":"none repeat scroll 0 0 #0063DC"});*/
 
   //buildCreateNewsCategory();
-
+  
+  $("#profileManagementHeaderDiv3").css("display","block");
   $("#dateSelectDiv").css("display","none");
   buildUploadNewsForMultipleUsers();
   }
