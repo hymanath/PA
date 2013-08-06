@@ -3093,7 +3093,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		      queryObject.append(" and date(model.file.fileDate) <= :toDate ");
 				 
 			 
-		 queryObject.append(" group by model.file.fileId order by model.updateddate desc");
+		 queryObject.append(" group by model.file.fileId order by model.file.fileDate desc, model.updateddate desc");
 		 Query query = getSession().createQuery(queryObject.toString());
    	 query.setParameterList("gallaryIdsList",gallaryIdsList);
    	 if(categoryId != 0)
