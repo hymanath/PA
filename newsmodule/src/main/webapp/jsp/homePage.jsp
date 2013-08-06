@@ -221,6 +221,7 @@ str +='<div id="LoginErrorMessageDiv"></div>';
 str +='<input type="text" id="userName1" placeholder="Email address" class="input-block-level" />';
 str +='<input type="password" placeholder="Password" class="input-block-level" id="passWord_Id1" />';
 str+='<input type="button" class="btn btn-success" id="signin" value="Sign In" onclick="ajaxCallForLoginPopup();" class="btn btn-large btn-primary" style="width: 75px; height: 35px;"/>';
+str+='<img src="images/icons/loading.gif" id="ajaxcallimage" style="padding-left:10px;display:none;" height="25px" width="25px"/>';
 
 str +='</div>';
 str +='</ul></div>';
@@ -231,6 +232,7 @@ $('#userName1').focus().val('');
 
 function ajaxCallForLoginPopup(){
 
+$('#ajaxcallimage').css('display','inline-block');
 var validInd=handleErrorMessageForpopup();
 
 if(!validInd)
@@ -303,7 +305,7 @@ function handleErrorMessageForpopup()
 							
 							if(jsObj.task == "validateUserForLogin")
 							{	
-								
+								$('#ajaxcallimage').css('display','none');
 								if(myResults.resultCode == 2){
 
 									$("#ajaxcallimage").show();

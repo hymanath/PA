@@ -1759,6 +1759,7 @@ function showNewsGallaey()
   document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv3").style.display = 'block';
+  $("#profileManagementHeaderDiv3").css('display','block');
   document.getElementById("videoGallaryDiv").innerHTML=''; 
   document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
 
@@ -1911,7 +1912,14 @@ function buildUploadNewsForMultipleUsers()
 	
 	str += '</TD>';
 	str += '</TR>';
-	
+	str	+= '<tr>';
+	str += '       <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="source" name="fileSourceId" ><option value="0">Select Source</option></select></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" ><option value="0">Select Language</option></select></td>';
+	str += '   </tr>';
 	str += '   </tr>';
 	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
@@ -3673,7 +3681,7 @@ function updatePhoto(fileId,fileGallaryId)
 		</table>-->
 		
 	
-	    <ul class="nav nav-tabs" style="margin-left:Auto;margin-right:Auto;width:808px;">
+	    <ul class="nav nav-tabs" style="margin-left:Auto;margin-right:Auto;width:940px;">
     <!--<li>
     <a value="Photo Gallery" id="photoGalleryId" onClick="showPhotoGallary1()" style="cursor:pointer">Photo Gallery</a>
     </li>-->
@@ -3766,11 +3774,15 @@ function updatePhoto(fileId,fileGallaryId)
 				   </td>
 			 </tr>
 		</table>-->
-	<div class="span10 offset1 text-center alert">
+	<div class="span11 offset1 text-center alert" style="margin-left:30px;">
 	<input type="button" class="btn btn-success highlight" value="Create News Category" onclick="createNewsCategory()">
 	<input type="button" class="btn btn-success highlight" value="Create News Gallary" onclick="buildCreateNewsCategory()">
 	<input type="button" class="btn btn-success highlight" value="Upload News" onclick="buildUploadNews()">
 	<input type="button" class="btn btn-success highlight" value="Upload News For Multiple Users" onclick="buildUploadNewsForMultipleUsers()">
+	<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+		<input type="button" class="btn btn-success highlight" value="Create New Source" onclick="createNewSource()">
+	</c:if>
+	<!--<a  class="btn btn-info" href="javascript:{}" onClick="createNewSource();">Create New Source</a>-->
 	</div>
 </div>
 		<div id='newsGallaryDiv' class="divInfo">
@@ -6855,7 +6867,70 @@ function isDatesValid1()
 		}
 	}
 }
+function saveNewSourceDetails()
+{
+	$('#errorDiv').html('');
+	var sourceName =  $.trim($('#sourceName').val());
+	if(sourceName.length <=0){
+		$('#errorDiv').html('Source Name Should not be empty');
+		$('#errorDiv').css('color','red')
+		return false;
+	}
+	var jsObj=
+	{
+		name  : sourceName,
+		task  : "storeSource"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "storeSourceDetails.action?"+rparam;	
 
+	callAjax(jsObj,url);
+}
+function callAjax(jsObj,url)
+{
+	 var myResults;
+	 var callback = {			
+	success : function( o ) {
+		try {												
+				myResults = YAHOO.lang.JSON.parse(o.responseText);	
+			
+				if(jsObj.task == "storeSource")
+				{
+					if(myResults.message=="exist"){
+						$('#errorDiv').html('<span>Source Already Exist</span>');
+						$('#errorDiv').css('color','red');
+					}else{
+						$('#errorDiv').html('<span>Created Successfully</span>');
+						$('#errorDiv').css('color','green');
+					}
+				}
+				
+				
+			}catch (e) {
+			
+			}  
+   },
+   scope : this,
+   failure : function( o ) {
+				//alert( "Failed to load result" + o.status + " " + o.statusText);
+			 }
+   };
+YAHOO.util.Connect.asyncRequest('POST', url, callback);
+}
+function createNewSource()
+{
+	//$('#sourceDetails').show();
+	var str = "";
+	str+='<div id="sourceDetails"  style="width: 400px; border: 1px solid #CCCCCC; border-radius: 4px 4px 4px 4px; padding: 4px;margin-left: 298px;">';
+	str +=  '<span>Source Name : </span><input type="text" id="sourceName"></input></br>';
+	str += "<div id='errorDiv' style='color:red'> </div>";
+	str +=  '<input type="button" value="create new Source" onClick="saveNewSourceDetails();" class="btn btn-info" style="margin-left: 244px;"></input>';
+	
+	str+='</div>';
+	$('#newsGallaryDiv').html(str);
+	
+	
+}
 
 
 </script>
