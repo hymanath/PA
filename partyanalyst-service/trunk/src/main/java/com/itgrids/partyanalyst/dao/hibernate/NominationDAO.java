@@ -1931,7 +1931,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"model.constituencyElection.constituency.district.districtName from Nomination model where " +
 				"model.constituencyElection.election.electionYear =? " +
 				"and model.constituencyElection.constituency.constituencyId in (:constituencyIds) "+query+
-				" order by model.constituencyElection.constituency.district.districtName");
+				" and model.constituencyElection.election.elecSubtype = '"+IConstants.ELECTION_SUBTYPE_MAIN+"' order by model.constituencyElection.constituency.district.districtName");
 		queryObject.setParameter(0,electionYear);
 		queryObject.setParameterList("constituencyIds",constituencyIds);
 		if(partyIds.size() > 0 && districtIds.size() > 0){
@@ -1945,6 +1945,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return queryObject.list();
 
 	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List findWinningCandidatesDetailsInContituencies(
