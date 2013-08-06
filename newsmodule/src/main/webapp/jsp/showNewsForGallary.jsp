@@ -189,7 +189,7 @@ function buildFilesInGallaryDetails(results,selectedvalue)
 	//alert(results[i].fileType.trim());
 	str+='<div class="">';
 	var source = results[i].fileType.trim();
-	if(source == "Eenadu Telugu")
+	if(source.indexOf("Eenadu Telugu") != -1)
 	{
 		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}">'+results[i].fileName1+'</a></h4>';
 	}
@@ -205,7 +205,7 @@ function buildFilesInGallaryDetails(results,selectedvalue)
                   else
 					  str+='<img style="width:100%"src="/TDP/images/TDP.PNG" >';
 				str+='</a>';
-				if(source == "Eenadu Telugu")
+				if(source.indexOf("Eenadu Telugu") != -1)
 				{
 					str+='<p class="span8 enadu">'+results[i].fileDescription1+'</p>';
 				}
