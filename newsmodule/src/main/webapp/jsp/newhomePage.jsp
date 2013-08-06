@@ -1137,11 +1137,19 @@ function getCandidatesNews(){
 	      $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select To Date</span>');
 		  return;
 	    }
-	    /* else if (Date.parse(fromDate) > Date.parse(toDate))
+	    else
 	    {
-          $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Invalid Date Selection.</span>');
-          return;
-	    } */
+		  var fromArrayprev = fromDate.split("/");
+		  var datefrom=new Date(fromArrayprev[2], fromArrayprev[1]-1, fromArrayprev[0]);
+		  var toArraypres = toDate.split("/");
+		  var dateto=new Date(toArraypres[2], toArraypres[1]-1, toArraypres[0]);
+		  
+		  if (datefrom > dateto)
+		  {
+            $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Invalid Date Selection.</span>');
+            return;
+		  }
+	    }
 
 	 }
 	 var selectedGallaryIds = "";
