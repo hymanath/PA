@@ -3561,17 +3561,24 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		try {
 			resultStatus = new ResultStatus();
 			 log.debug("Enter into storeSourceDetails Method of NewsMonitoringService ");
-			 Source source = new Source();
-			 source.setSource(value);
-			 sourceDAO.save(source);
-			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			 
+			 List<Object> sourceId=sourceDAO.getSourceIdBySource(value);
+			 
+			 if(sourceId.size()<=0){
+				 Source source = new Source();
+				 source.setSource(value);
+				 sourceDAO.save(source);
+				 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			 }else{
+				 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				 resultStatus.setMessage("exist");
+			 }
 		} catch (Exception e) {
 			log.error("Exception rised in storeSourceDetails Method of NewsMonitoringService ",e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		}
 		return resultStatus;
 	}
-	
 	
 	public List<SelectOptionVO> getCandidatesByRemovingDots(){
 		List<SelectOptionVO> candidates=new ArrayList<SelectOptionVO>();
