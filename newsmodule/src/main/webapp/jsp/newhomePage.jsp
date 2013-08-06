@@ -615,7 +615,7 @@ $(document).ready(function(){
 									 </s:iterator>
 									</c:if>
 
-									<a class=" btn btn-mini pull-right" href="newsDetailsAction.action" style="margin-top: -10px;">More...</a>
+									<a class=" btn btn-mini pull-right" href="newsDetailsAction.action" style="margin-bottom: 8px;">More...</a>
 								</ul>
 							</div>
 						</div>
