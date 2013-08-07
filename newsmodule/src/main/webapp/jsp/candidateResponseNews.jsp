@@ -56,13 +56,13 @@ font-size:20px;
 		<div class="container">
 		<!--------- Row-1 -------->
 			<div class="row m_top10">
-				<div class="span2">
+				<!-- <div class="span2">
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>News</h4></div>
-					</div>
+					</div> -->
 				</div>
 				<!---View your Constituency News Div--->
-				<div class="span7">
+				<div class="span8">
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading" style="text-transform: capitalize;"><h4>News Details </h4></div>
 							<div id="latestNewsDiv"></div>
