@@ -67,6 +67,7 @@ margin:-1px 0px 0px 0px ;
 
 .nav1 li.outerLi:hover a.innerA{color:red;background:#FFFF00;text-decoration:none;}
 .nav1 li.outerLi:hover{background:#FFFF00;border-bottom:4px solid red;}
+.nav1 li.outerLi a{outline:0;text-decoration:none;}
 
 
 .nav1 li.outerLi ul{display:none;}
