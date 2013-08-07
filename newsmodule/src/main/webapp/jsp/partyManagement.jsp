@@ -1922,14 +1922,7 @@ function buildUploadNewsForMultipleUsers()
 	
 	str += '</TD>';
 	str += '</TR>';
-	str	+= '<tr>';
-	str += '       <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="source" name="fileSourceId" ><option value="0">Select Source</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" ><option value="0">Select Language</option></select></td>';
-	str += '   </tr>';
+	
 	str += '   </tr>';
 	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
@@ -6231,7 +6224,14 @@ function  buildUploadNews()
 	//str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	str += '</TD>';
 	str += '</TR>';
-	
+	str	+= '<tr>';
+	str += '       <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="source" name="fileSourceId" ><option value="0">Select Source</option></select></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" ><option value="0">Select Language</option></select></td>';
+	str += '   </tr>';
 	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
 	str += '   </tr>';

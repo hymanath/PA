@@ -69,14 +69,15 @@ margin:-1px 0px 0px 0px ;
 .nav1 li.outerLi:hover{background:#FFFF00;border-bottom:4px solid red;}
 .nav1 li.outerLi a{outline:0;text-decoration:none;}
 
-
 .nav1 li.outerLi ul{display:none;}
+
 .nav1 li.outerLi:hover ul{display:inline-block;}
 .nav1 li.outerLi ul{position: absolute;
-      top:62px;left:-27px;}
-.nav1 li.outerLi:hover ul a{color:red;text-decoration:none;}
-.nav1 li.outerLi:hover ul li{padding:10px;margin:2px;list-style-type:none;background:#ccc;width:200px;}
+      top:62px;left:-27px;z-index:100;}
+.nav1 li.outerLi:hover ul a{color:#ffffff;text-decoration:none;}
+.nav1 li.outerLi:hover ul li{padding:10px;margin:2px;list-style-type:none;background:#7FC67F;width:200px;}
 .nav1 li.outerLi:hover ul li:hover{background:#FFFF00;color:red;border:1px solid #ccc;}
+.nav1 li.outerLi:hover ul li:hover a{color:red;}
 
 
 .menuActive{border-bottom:4px solid red;box-shadow:0px 0px 2px #ccc;border-radius:2px;}
