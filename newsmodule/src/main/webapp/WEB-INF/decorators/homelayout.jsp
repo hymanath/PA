@@ -62,10 +62,21 @@ margin:-1px 0px 0px 0px ;
 .navMenu li a{font-weight:bold;}
 
 
-.nav1 li {float:left;list-style-type:none;margin:0.4px;}
-.nav1 li a{color:#000;font-weight:bold;display:block;padding:23px;font-family:verdana,arial;font-size:14px;}
-.nav1 li:hover a{color:red;background:#FFFF00;text-decoration:none;}
-.nav1 li:hover{background:#FFFF00;border-bottom:4px solid red;}
+.nav1 li.outerLi{float:left;list-style-type:none;margin:0.4px;position:relative;}
+.nav1 li a.innerA{color:#000;font-weight:bold;display:block;padding:23px;font-family:verdana,arial;font-size:14px;}
+
+.nav1 li.outerLi:hover a.innerA{color:red;background:#FFFF00;text-decoration:none;}
+.nav1 li.outerLi:hover{background:#FFFF00;border-bottom:4px solid red;}
+
+
+.nav1 li.outerLi ul{display:none;}
+.nav1 li.outerLi:hover ul{display:inline-block;}
+.nav1 li.outerLi ul{position: absolute;
+      top:62px;left:-27px;}
+.nav1 li.outerLi:hover ul a{color:red;text-decoration:none;}
+.nav1 li.outerLi:hover ul li{padding:10px;margin:2px;list-style-type:none;background:#ccc;width:200px;}
+.nav1 li.outerLi:hover ul li:hover{background:#FFFF00;color:red;border:1px solid #ccc;}
+
 
 .menuActive{border-bottom:4px solid red;box-shadow:0px 0px 2px #ccc;border-radius:2px;}
 .requiredFont{color:red;}
@@ -132,20 +143,29 @@ margin:-1px 0px 0px 0px ;
 						</ul>
 					</div>
 					<!------Menu div-------->
-					<div class="span10" style="margin-top:-15px;height:80px;width:600px;">
+					<div class="span10" style="margin-top:-15px;height:80px;width:625px;">
 						<ul class="nav1 nav-pills1 navMen pull-right headerMenu">
 
 						<c:if test="${sessionScope.USER != null}">
 						 <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
-						  <li class="" id="homeTabId"><a  href="homePage.action">Home</a></li>
+						  <li class="outerLi" id="homeTabId"><a  href="homePage.action" class="innerA">Home</a></li>
 						<!--  <li class=""><a href="aboutUs.action">About Us</a></li>-->
-						  <li class="" id="newsTabId">
-						  <a href="newsDetailsAction.action" >News</a></li>
-						  <li class="" id="videosTabId">
-						  <a href="showMoreVideos.action" >Videos</a></li>
+						 <li class="outerLi" id="newsTabId">
+						  <a href="newsDetailsAction.action" class="innerA">News</a></li>
+						  <li class="outerLi" id="videosTabId">
+						  <a href="showMoreVideos.action" class="innerA">Videos</a></li>
 						 
-						  
-						      <li class="" id="partyManagementTabId"><a href="partyManagementAction.action" >Manage Party Profile</a></li>
+						   <li class="outerLi" id="reportsTabId">
+								<a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate" class="innerA">Reports</a>
+									<ul>
+										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate"><span>Candidate News Report</span></a></li>
+										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=opponent"><span>Opponent Party Critics Report</span></a></li>
+									</ul>
+							</li>
+							  
+						      <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage Party Profile</a></li>
+							  
+							 
 						   
 						  
 						  <!--<li class=""><a href="contactUs.action">Contact Us</a></li>-->

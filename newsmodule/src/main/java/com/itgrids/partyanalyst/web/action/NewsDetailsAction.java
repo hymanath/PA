@@ -59,7 +59,16 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private Long partyId;
 	private String newsType;
 	private String tempVarForParty;
+	private String requestFor;
 	
+	
+	
+	public String getRequestFor() {
+		return requestFor;
+	}
+	public void setRequestFor(String requestFor) {
+		this.requestFor = requestFor;
+	}
 	public Long getResponseContentId() {
 		return responseContentId;
 	}

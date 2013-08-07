@@ -201,6 +201,10 @@ border-collapse:collapse;
 <script type="text/javascript">
 var fromDate = '${fromDate}';
 var toDate = '${toDate}';
+
+var requestFor = '${requestFor}';
+
+
 </script>
 
 </head>
@@ -1677,6 +1681,22 @@ $(".candidateCriticsNewsRadioCls").click(function(){
  });
 
 });//End OF Ready
+
+$(function(){
+	if(requestFor=="candidate"){
+		$('#getCandidatesNewsId').trigger('click');
+		$('#reportsTabId').addClass('menuActive');
+	}
+	else if(requestFor="opponent"){
+		$('#criticsId').trigger('click');
+		$('#reportsTabId').addClass('menuActive');
+	}
+	else{
+		$('#getCandidatesNewsId').trigger('click');
+		$('#reportsTabId').addClass('menuActive');
+	}
+});
+
 </script>
 </body>
 </html>

@@ -467,7 +467,7 @@ $(document).ready(function(){
 						
 						<div class="span12 boxHeading"><h4 id="headingDiiv">Get Report</h4></div>
 						<div class="span12">
-						<div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&"><span class="btn btn-info">Generate Candidate Report</span></a></div>
+						<div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate"><span class="btn btn-info">Generate Candidate Report</span></a></div>
 						</div>
 						<!--Created By sasi for Candidate News-->
 						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Candidate News</h4></div>
