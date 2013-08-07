@@ -1506,7 +1506,7 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 	}
    
    public List<Object[]> getVotesEarnedByBoothIdsList(Long constituencyId, Long electionId,List<Long> boothIdsList){
-		Query query = getSession().createQuery("select model.boothConstituencyElection.booth.boothId, model.nomination.party.partyId, sum(model.votesEarned)  "+
+		Query query = getSession().createQuery("select model.boothConstituencyElection.booth.boothId, model.nomination.party.partyId, sum(model.votesEarned), model.boothConstituencyElection.booth.localBody.name  "+
 				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId and model.boothConstituencyElection.booth.boothId in(:boothIdsList) and " +
 				" model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId group by model.boothConstituencyElection.booth.boothId,model.nomination.party.partyId order by sum(model.votesEarned) desc ");
 		
