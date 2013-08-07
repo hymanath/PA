@@ -376,7 +376,7 @@ public class PartyStrengthAction extends ActionSupport implements
 			Long totalElectionYears = new Long(jObj.getString("elecYears"));	
 			Long  electionId = jObj.getLong("electionId"); 
 			String partyName = jObj.getString("partyName");
-			includingAlliance = partyStrengthService.getIncludingAllianceDetailsForAParty(electionType,stateId,partyId,totalElectionYears,electionId,partyName);
+			includingAlliance = partyStrengthService.getIncludingAllianceDetailsForAParty1(electionType,stateId,partyId,totalElectionYears,electionId,partyName);
 			//includingAlliance = partyStrengthService.getPartiesData(electionType,stateId,totalElectionYears,partyId,IConstants.TRUE,electionId,partyName);
 			
 			}catch(Exception e){
@@ -445,8 +445,8 @@ public class PartyStrengthAction extends ActionSupport implements
 			Long stateId = jObj.getLong("stateId");
 			String searchType = jObj.getString("searchType");			
 			String searchText = jObj.getString("searchText");
-			
-			details = partyStrengthService.getRequiredMatchingConstituencies(selectedNoOfYears,electionType,stateId,searchType,searchText);			
+			Long partyId = jObj.getLong("party");
+			details = partyStrengthService.getRequiredMatchingConstituencies(selectedNoOfYears,electionType,stateId,searchType,searchText,partyId);			
 		}catch(Exception e){
 			e.printStackTrace();			
 		}		

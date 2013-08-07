@@ -132,7 +132,8 @@ public class CandidateStrenthsAction extends ActionSupport implements
 			else
 				requiredConstituencyDetails = partyStrengthService.getAllCandidatesDetailsForAllianceData(electionType,selectedStateElmts,partyId,elecYears,elecId,partyName,columnId);				
 		else
-			requiredConstituencyDetails = partyStrengthService.getWeaknessConstituenceisDetails(electionType,selectedStateElmts,type,partyId,columnId,elecYears,elecId,partyName);
+			//requiredConstituencyDetails = partyStrengthService.getWeaknessConstituenceisDetails(electionType,selectedStateElmts,type,partyId,columnId,elecYears,elecId,partyName);
+			requiredConstituencyDetails = partyStrengthService.getWeaknessConstituenceisDetails1(electionType,selectedStateElmts,type,partyId,columnId,elecYears,elecId,partyName);
 		////getWeaknessConstituenceisDetails(String electionType,Long stateId,String type,Long partyId,Long colId,Long totalElectionYears,Long electionId,String partyName)
 		return Action.SUCCESS;
 	}
