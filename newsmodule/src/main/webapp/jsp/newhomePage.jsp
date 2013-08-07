@@ -465,12 +465,12 @@ $(document).ready(function(){
 					<div class="row-fluid widget">
 						
 						
-						<div class="span12 boxHeading"><h4 id="headingDiiv">Get Report</h4></div>
+						<div class="span12 boxHeading"><h4 id="headingDiv">Get Report</h4></div>
 						<div class="span12">
 						<div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate"><span class="btn btn-info">Generate Candidate Report</span></a></div>
 						</div>
 						<!--Created By sasi for Candidate News-->
-						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Candidate News</h4></div>
+						<div class="span12 boxHeading"><h4 id="headingDiv1">View  Candidate News</h4></div>
 						<div class="span12">
 						
 						<div id="cadidateRadioDiv">
@@ -527,7 +527,9 @@ $(document).ready(function(){
 									Location:<font id="requiredValue" class="requiredFont">*</font> 
 								</td>
 								<td>
-									<select id="listValue" onchange="populateLocations(this.options[this.selectedIndex].value)">
+									 <!--<select id="listValue" onchange="populateLocations(this.options[this.selectedIndex].value)"> -->
+
+									<select id="listValue" onchange="getLocationList()">
 									<option value="0"> Select Location </option>
 									<option value="District"> District </option>
 									<option value="Constituency" selected="selected"> Constituency </option>
@@ -727,7 +729,7 @@ function showMoreVideoGallaries(){
      browser1.focus();
 }
 */
-getAllConstituenciesInStateByType(2, 1, 'constituency');
+//getAllConstituenciesInStateByType(2, 1, 'constituency');
 getCandidates();
 
 function showFilesInGallary(gallaryId)
@@ -916,6 +918,12 @@ function callHomePageAjax11(jsObj,url){
 								{
 								  clearOptionsListForSelectElmtId('categoryGallarySelect');
 								 createOptionsForSelectElmtId('categoryGallarySelect',myResults);
+								}
+								else if(jsObj.task == "getLocationsList")
+								{
+								  clearOptionsListForSelectElmtId(''+jsObj.divEle+'');
+								  createOptionsForSelectElmtId(''+jsObj.divEle+'',myResults);	
+								 
 								}
 
 								}catch (e) {
@@ -1462,6 +1470,98 @@ var urlStr="candidateResponseNews.action";
 	updateBrowser.focus();
 }
 
+function getLocationList()
+{
+ var scope = $("#listValue").val();
+ var divEle = "";
+ if(scope == "District")
+  divEle = "userAccessDistrictList";
+
+ else if(scope == "Constituency")
+  divEle = "userAccessConstituencyList";
+
+  var value = scope;
+	if(value == 'District')
+		{	
+			$('#headingDiiv').html('View District Wise News');
+			$('#showScopeSubsC').css("display","none");
+			var str =''; 
+			str +='<table style="margin-top:5px">';
+			str +='<tr id="tableRowD">';
+			str +='<td class="tdWidth1">District:<font id="requiredValue" class="requiredFont">*</font></td>';
+			//str+='<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="getAllConstituenciesInStateByType(2,1,this.options[this.selectedIndex].value);">';
+			str+='<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="addCssStyle();">';
+			str+='</select></td>';	 
+			str +='</tr>';
+			str +='</table>';
+			document.getElementById("showScopeSubsD").innerHTML = str;
+			$('#showScopeSubsD').css("display","block");
+			//getAllConstituenciesInDistrictByType(1);
+		}
+		if(value=="Constituency" || value=="Mandal" || value=="Panchayat" || value=="Booth")
+		{	
+			$('#headingDiiv').html('View Constituency Wise News');
+			$('#showScopeSubsD').css("display","none");
+			var str =''; 
+			str +='<table style="margin-top:5px">';
+			str +='<tr id="tableRowC">';
+			str +='<td class="tdWidth1" style="padding-bottom: 15px;">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>';
+			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();" >';
+			//onchange="getMandalList(this.options[this.selectedIndex].value);">';
+			str+='</select></td>';	 
+			str +='</tr>';
+			str +='</table>';
+			document.getElementById("showScopeSubsC").innerHTML = str;
+			$('#showScopeSubsC').css("display","block");
+			//getAllConstituenciesInStateByType(2, 1, 'constituency');
+		} 
+
+
+ var jsObj={
+		scope:scope,
+		divEle:divEle,
+		task:'getLocationsList'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getLocationsListAction.action?"+rparam;
+	callAjax(jsObj, url);
+	
+}
+
+var flag1= false;
+function createOptions(jsObj,myResults)
+{
+  var elmt = jsObj.divEle;
+  if( !elmt || myResults == null)
+		return;
+  
+
+  for(var i in myResults)
+	{
+		var option = document.createElement('option');
+		option.value=myResults[i].id;
+		option.text=myResults[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+		 if(myResults[i].name == locationName ){
+			flag1=true;
+			$('#userAccessConstituencyList').val(option.value);
+			$('#userAccessDistrictList').val(option.value);
+		}
+		else if((myResults[i].name == 'Kuppam' || myResults[i].name == 'KUPPAM') && !flag1){
+			flag1=true;
+			$('#userAccessConstituencyList').val(option.value);
+		}
+	}
+
+}
+getLocationList();
 </script>
 </body>
 

@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -6144,6 +6145,38 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				  return (fileVO.getFileDate()).compareTo(fileVO2.getFileDate());
 				}
 			 };
-	
+			 
+			 
+ public List<SelectOptionVO> getLocationValuesByRegionScope(String regionScope, String queryType)
+ {
+	 List<SelectOptionVO> selectOptionVOList = null;
+	 try{
+		 List<Object[]> locationList = null;
+		 Long regionScopeId = regionScopesDAO.getRegionScopeIdByScope(regionScope);
+		 List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId(regionScopeId,queryType);
+		 if(locationValuesList != null && locationValuesList.size() > 0)
+		 {
+		  if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			locationList = constituencyDAO.getConstituencyNameByConstituencyIdsList(locationValuesList);
+		  else if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.DISTRICT))
+			locationList = districtDAO.getDistrictNamesByDistrictIdsList(locationValuesList); 
+			  
+		 }
+		 
+		 if(locationList != null && locationList.size() > 0)
+		 {
+			selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+			selectOptionVOList.add(new SelectOptionVO(0L,"Select"));
+			for(Object[] params: locationList)
+			 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null?WordUtils.capitalize(params[1].toString().toLowerCase()):" "));
+		 }
+		 
+		 return selectOptionVOList;
+	 }catch (Exception e) {
+      e.printStackTrace();
+      log.error("Exception Occured in getLocationValuesByRegionScope() method, Exception - "+e);
+      return null;
+	 }
+ }
 		
 }

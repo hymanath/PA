@@ -551,4 +551,27 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
        }
 	}
 	
+	public String ajaxHandler()
+	{
+		try{
+			session = request.getSession();
+	        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+	        if(user == null)
+	         return ERROR;
+	        
+	        String queryType = "Public"; 
+			 if(user.getUserAccessType()!=null)
+				 if(user.getUserAccessType().equals("Admin"))
+					 queryType = "";     
+			 
+	        jObj = new JSONObject(getTask());
+	        candidatesList = candidateDetailsService.getLocationValuesByRegionScope(jObj.getString("scope"),queryType); 
+	        
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error(" Exception Occured in ajaxHandler() method, Exception - "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

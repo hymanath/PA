@@ -522,4 +522,12 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		queryBuilder.setParameter("constituencyId", constituencyId);
 		return (String) queryBuilder.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyNameByConstituencyIdsList(List<Long> constituencyIdsList)
+	{
+		Query query = getSession().createQuery(" select model.constituencyId, model.name from Constituency model where model.constituencyId in (:constituencyIdsList) ");
+		query.setParameterList("constituencyIdsList", constituencyIdsList);
+		return query.list();
+	}
 }

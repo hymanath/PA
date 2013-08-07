@@ -3239,5 +3239,21 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		query.setParameter("gallaryId", gallaryId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getLocationValuesByRegionScopeId(Long regionScopeId, String queryType)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.file.locationValue from FileGallary model where model.file.regionScopes.regionScopesId =:regionScopesId ");
+		str.append(" and model.isDelete = 'false' and model.gallary.isDelete = 'false' ");
+		if(queryType != null && queryType.equalsIgnoreCase("public"))
+		 str.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false' ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("regionScopesId", regionScopeId);
+		
+		return query.list();
+	}
 	 
 }

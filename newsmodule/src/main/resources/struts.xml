@@ -5616,6 +5616,13 @@
 		 <param name="root">resultStatus</param>
 		 </result>
 		 </action>
+		 
+		 <action name="getLocationsListAction" class="homePageAction" method="ajaxHandler">
+		  <result name="success" type="json">
+		 	<param name="root">candidatesList</param>
+		 </result>
+		 </action>
+		 
 		</package>
 		
 		

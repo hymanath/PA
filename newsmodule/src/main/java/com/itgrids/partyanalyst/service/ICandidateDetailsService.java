@@ -270,4 +270,7 @@ public interface ICandidateDetailsService {
 	
 	public void setfileGallaryDetails(List<FileGallary> fileGallaryList,List<FileVO> fileVOsList);
 	
+	public List<SelectOptionVO> getLocationValuesByRegionScope(String regionScope, String queryType);
+	
+	
 }
