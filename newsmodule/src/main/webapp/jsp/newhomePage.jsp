@@ -144,10 +144,10 @@ border-radius:3px;
 width: 92px;
 }
 
-#candidatesListId,#candidateCategoryId,#categoryGallarySelect{width:220px;}
+#candidatesListId,#candidateCategoryId,#categoryGallarySelect{width:190px;}
 
 #existingFromText, #existingToText {
-    width: 73px;
+    width: 90px;
 	cursor: text;
 }
 #byAllRadio{margin-right: 4px;margin-top: 0;}
@@ -462,47 +462,48 @@ $(document).ready(function(){
 				</div>
 				<!---View your Constituency News Div--->
 				<div class="span3" style="height:555px">
-					<div class="row-fluid widget">
-						
-						
-						<div class="span12 boxHeading"><h4 id="headingDiv">Get Report</h4></div>
+					<div class="row-fluid widget acco">
+						<!--<div class="span12 boxHeading"><h4 id="headingDiiv">Get Report</h4></div>
 						<div class="span12">
 						<div id="generateReportDiv"><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate"><span class="btn btn-info">Generate Candidate Report</span></a></div>
-						</div>
+						</div>-->
 						<!--Created By sasi for Candidate News-->
-						<div class="span12 boxHeading"><h4 id="headingDiv1">View  Candidate News</h4></div>
-						<div class="span12">
+						<h4 id="" style="text-align:center;font-weight:bold;background:#F9F9F9;color:#337DEB;">View  Candidate News</h4>
+						<div class="">
 						
 						<div id="cadidateRadioDiv">
+						<div style="clear:both;">
 						 <input type="radio" id="byAllRadio" value="byAll" name="candidateNewsRadio" class="candidateRadioCls" checked="true"/>All
-						 <input type="radio" id="byDateRadio" value="byDate" name="candidateNewsRadio" class="candidateRadioCls"/>By Date
+						 <input type="radio" id="byDateRadio" value="byDate" name="candidateNewsRadio" class="candidateRadioCls"/>By Date<br>
 						 <!-- <input type="radio" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" onclick="getCandidateGallaries()"/>By Gallary -->
-
-						 <input type="checkbox" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" />By Gallery
-						  <div id="categoryCheckBoxDiv">
-						    <input type="checkbox" value="categoryCheckBox" id="categoryCheckBoxId" class="categoryCheckBoxCls" />By Category
-						  </div>
+						</div>
+						
+						<div style="clear:both;width:232px;margin-left:-36px;">
+							<input type="checkbox" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio"/>By Gallery
+						
+							<input type="checkbox" value="categoryCheckBox" id="categoryCheckBoxId" class="categoryCheckBoxCls" style="margin-left:18px;" />By Category
+						 </div>
 						 </div>
 						
-						<div id="candidateNewsShowHideDatesDiv" style="display:none;">
-						  From:<input type="text" size="20" name="fileDate" readonly="true" class="dateField" id="existingFromText" />
-						  To:<input type="text" size="20" name="fileDate" readonly="true" class="dateField" id="existingToText" />
+						<div id="candidateNewsShowHideDatesDiv" style="display:none;width:220px;margin-left:-24px;">
+						 <input type="text" size="20" name="fileDate" readonly="true" class="dateField pull-left" id="existingFromText" placeholder="From"/>
+						 <input type="text" size="20" name="fileDate" readonly="true" class="dateField pull-right" id="existingToText" placeholder="To"/>
 						</div>
 
 						<table style="margin-top:15px;">
 							<tr id="tableRowS">
-								<td id="tdWidth" style="padding-right: 32px;">
+								<td id="tdWidth">
 									<s:select theme="simple" label="Candidates" name="candidates" id="candidatesListId" list="candidatesList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Candidate"/> 
 								</td>
 							</tr>
 						</table>
 
 						<div id="gallaryShowHideDiv" style="display:none;">
-						  <select id="gallaryId" multiple="multiple"></select>
+						  <select id="gallaryId" multiple="multiple" style="width:190px;"></select>
 						</div>
 						 
 						 <div id="categoryShowHideDiv" style="display:none;">
-						   <select id="candidateCategoryId" multiple="multiple"></select>
+						   <select id="candidateCategoryId" multiple="multiple"></select><br>
 
 						     <input type="checkbox" value="categoryGallaries" id="categoryGallary"/>Gallery 
 
@@ -511,21 +512,21 @@ $(document).ready(function(){
 						 <select id="categoryGallarySelect" multiple="multiple"></select>
 						</div>
 
-						<button id="sendButton" class="btn btn-warning btn-mini" onclick="getCandidatesNews()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
-						<div class="span12 errorDiv"></div>
+						<button id="sendButton" class="btn btn-warning btn-mini" onclick="getCandidatesNews()" style="margin-bottom: 15px; margin-left: 35px;font-weight:bold;" > View News</button> 
+						<div class="errorDiv"></div>
 						</div>
 
 						
 						
 						<!--DIV for Constituency Select Filter-->
-						<div class="span12 boxHeading"><h4 id="headingDiiv">View  Constituency Wise News</h4></div>
-						<div class="span12">
+						<h4 id="headingDiiv" style="text-align:center;font-weight:bold;background:#F9F9F9;color:#337DEB;">View  Constituency News</h4>
+						<div class="">
 						<div id="errorMsgDiv"></div>
 						<table style="margin-top:15px;">
 							<tr id="tableRowS">
-								<td id="tdWidth" style="padding-right: 32px;">
-									Location:<font id="requiredValue" class="requiredFont">*</font> 
-								</td>
+								<!--<td id="tdWidth" style="padding-right: 32px;">
+								<!--	Location:<font id="requiredValue" class="requiredFont">*</font>
+								</td>-->
 								<td>
 									 <!--<select id="listValue" onchange="populateLocations(this.options[this.selectedIndex].value)"> -->
 
@@ -541,15 +542,14 @@ $(document).ready(function(){
 							</tr>
 						</table>
 						<div id="showScopeSubsD" style="margin-bottom: 10px;" style="margin-top:15px;"></div>
-						<table  id="showScopeSubsC">	
+						<table  id="showScopeSubsC" style="margin-left:-20px;">	
 								<tr>
-								<td class="tdWidth1">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>
-								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
+								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();" style="margin-left:20px;" ><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
 								</select></td>	 
 							</tr>
 						</table>
 						
-						<button id="sendButton" class="btn btn-warning btn-mini" onclick="addCssStyle(),handleSubmit()" style="margin-bottom: 15px; margin-left: 75px;font-weight:bold;" > View News</button> 
+						<button id="sendButton" class="btn btn-warning btn-mini" onclick="addCssStyle(),handleSubmit()" style="margin-bottom: 15px; margin-left: 35px;font-weight:bold;" > View News</button> 
 						</div>
 						
 					</div>
@@ -699,6 +699,11 @@ $(document).ready(function(){
 $(function(){
 $('#myCarousel').carousel({ interval: 4000});
 $('#myCarousel2').carousel( {interval: 5000});
+
+	$('.acco').accordion({
+		autoHeight: false,
+		clearStyle: true
+	});
 });
 
 
@@ -1118,7 +1123,7 @@ function getCandidatesNews(){
 	var candidateId=$('#candidatesListId option:selected').val();
 	 $(".errorDiv").html('');
 	if(candidateId==0){
-		$('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate</span>');
+		$('.errorDiv').html('<span class="text-error">Please Select Candidate</span>');
 		return;
 	}
      var fromDate = "";
@@ -1420,7 +1425,7 @@ $("#categoryGallary").click(function(){
 
 	 if(candidateId == 0)
 	 {
-       $('.errorDiv').html('<span class="text-error" style="margin-left:20px;">Please Select Candidate.</span>');
+       $('.errorDiv').html('<span class="text-error" style="margin-left:0px;">Please Select Candidate.</span>');
 		return;
 	 }
 	 var categoryIdsArray = new Array();
