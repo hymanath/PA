@@ -692,6 +692,16 @@ function getSource(selectOptionId){
               clearOptionsListForSelectElmtId('candidatesLists');
 			  createOptionsForSelectElement('candidatesLists',myResults);
 			}
+			else if(jsObj.task == "storeSource")
+				{
+					if(myResults.message=="exist"){
+						$('#errorDiv').html('<span>Source Already Exist</span>');
+						$('#errorDiv').css('color','red');
+					}else{
+						$('#errorDiv').html('<span>Created Successfully</span>');
+						$('#errorDiv').css('color','green');
+					}
+				}
 
 		
      	}
@@ -6221,15 +6231,7 @@ function  buildUploadNews()
 	//str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	str += '</TD>';
 	str += '</TR>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="source" name="fileSourceId" ><option value="0">Select Source</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" ><option value="0">Select Language</option></select></td>';
-	str += '   </tr>';
-	str += '   </tr>';
+	
 	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
 	str += '   </tr>';
@@ -6886,37 +6888,7 @@ function saveNewSourceDetails()
 
 	callAjax(jsObj,url);
 }
-function callAjax(jsObj,url)
-{
-	 var myResults;
-	 var callback = {			
-	success : function( o ) {
-		try {												
-				myResults = YAHOO.lang.JSON.parse(o.responseText);	
-			
-				if(jsObj.task == "storeSource")
-				{
-					if(myResults.message=="exist"){
-						$('#errorDiv').html('<span>Source Already Exist</span>');
-						$('#errorDiv').css('color','red');
-					}else{
-						$('#errorDiv').html('<span>Created Successfully</span>');
-						$('#errorDiv').css('color','green');
-					}
-				}
-				
-				
-			}catch (e) {
-			
-			}  
-   },
-   scope : this,
-   failure : function( o ) {
-				//alert( "Failed to load result" + o.status + " " + o.statusText);
-			 }
-   };
-YAHOO.util.Connect.asyncRequest('POST', url, callback);
-}
+
 function createNewSource()
 {
 	//$('#sourceDetails').show();
