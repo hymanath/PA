@@ -85,5 +85,18 @@ IElectionAllianceDAO {
 				"model.election.electionYear=? and model.election.electionScope.electionType.electionTypeId=? ",params); 
 	}
 	
-	
+	public List getAllAllianceElectionYearsForAPartyByElectionIds(Long partyId,List<Long> eleIds,Long stateId){
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.election.electionYear,model.election.electionId,model.election.electionScope.electionType.electionTypeId");
+		query.append(" from ElectionAlliance model where ");
+		query.append(" model.group.groupId in (select model2.group.groupId from AllianceGroup model2 where model2.party.partyId =:partyId)");	
+		query.append(" and model.election.electionId in (:eleIds) and model.state.stateId =:stateId");
+		query.append(" order by model.election.electionYear desc");	
+					
+		Query queryObject = getSession().createQuery(query.toString());	
+		queryObject.setParameter("partyId",partyId);		
+		queryObject.setParameterList("eleIds",eleIds);	
+		queryObject.setParameter("stateId",stateId);	
+		return queryObject.list();	
+	}
 }

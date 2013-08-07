@@ -46,8 +46,10 @@ public interface IPartyStrengthService extends Serializable {
 	
 	
 	public ElectionInfoVO getIncludingAllianceDetailsForAParty(String electionType,Long stateId,Long partyId,Long totalElectionYears,Long electionId,String partyName);
-	
-	public ElectionInfoVO getRequiredMatchingConstituencies(Long selectedNoOfYears,String electionType,Long stateId,String searchType,String searchText);
-	
- 	public List<SelectOptionVO> getAllPartiesData1(Long stateId,String electionType);
+	public List<SelectOptionVO> getAllPartiesData1(Long stateId,String electionType);
+ 	public ElectionInfoVO getRequiredMatchingConstituencies(Long selectedNoOfYears,String electionType,Long stateId,String searchType,String searchText,Long party);
+ 	
+ 	public ElectionInfoVO getIncludingAllianceDetailsForAParty1(String electionType,Long stateId,Long partyId,Long totalElectionYears,Long electionId,String partyName);
+ 	
+ 	public List<PartiesDetailsVO> getWeaknessConstituenceisDetails1(String electionType,Long stateId,String type,Long partyId,Long colId,Long totalElectionYears,Long electionId,String partyName);
 }
