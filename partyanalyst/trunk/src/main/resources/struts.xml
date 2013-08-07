@@ -167,6 +167,7 @@
 			<result type="redirect" name="VOTER_SEARCH_AND_EDIT">votersSearchAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			<result type="redirect" name="populateVoterDataAction">populateVoterDataAction.action</result>
+			<result type="redirect" name="suggestiveModelAction">suggestiveModelAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5665,8 +5666,9 @@
 		</action>
 		
 		<action name="suggestiveModelAction" class="suggestiveModelAction">
-		  <result name="success">/jsp/suggestiveModel.jsp</result>
-		 <result name="error">/jsp/loginForm.jsp</result>
+		 <result name="input">/jsp/loginForm.jsp?src=suggestiveModelAction</result>
+		 <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		 <result name="success">/jsp/suggestiveModel.jsp</result>	
 		 </action>
 		 
 		 <action name="getPartyForSuggestiveAction" class="suggestiveModelAction" method="getPartyDetails">
