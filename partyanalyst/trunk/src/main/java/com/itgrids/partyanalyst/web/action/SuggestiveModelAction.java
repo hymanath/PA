@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
@@ -49,12 +50,21 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private List<SelectOptionVO> castesList;
 	private List<YouthLeaderSelectionVO> LeaderSelectionLists;
 	private Map<String,Map<String,PartyImpactVO>> resultMap;
+	private EntitlementsHelper entitlementsHelper;
+	
 
 
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
 
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+	
 	public Map<String, Map<String, PartyImpactVO>> getResultMap() {
 		return resultMap;
 	}
@@ -213,8 +223,14 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 
 
 	public String execute(){
-		
-		return Action.SUCCESS;
+		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
+			return Action.INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
+			return Action.ERROR;
+		else
+			return Action.SUCCESS;
 	}
 	
 	public String getPartyPerformanceForSelectedLocation()
