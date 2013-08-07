@@ -288,7 +288,9 @@ function handleErrorMessageForpopup()
 
 	
 	                if(eFlag){
+						$('#ajaxcallimage').css('display','none');
 		                return false;
+					
 					}
 					return true;	
 				}
