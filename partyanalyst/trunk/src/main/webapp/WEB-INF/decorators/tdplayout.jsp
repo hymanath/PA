@@ -248,7 +248,7 @@ margin-top:10px;
 		<li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
 			<div  style="z-index:8;text-align:left;" >
 			<ul>
-				<li><a href="#" class="parent"><span>South India</span></a>
+				<li><a onmousedown="return false;" class="parent"><span>South India</span></a>
 					<div style="z-index:1;text-align:left;">
 						<ul>
 							<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>
@@ -260,7 +260,7 @@ margin-top:10px;
 						</ul>
 					</div>
 				</li>
-				<li><a href="#" class="parent"><span>North India</span></a>
+				<li><a onmousedown="return false;" class="parent"><span>North India</span></a>
 					<div style="z-index:1;text-align:left;">
 						<ul>
 							<li><a href="statePageAction.action?stateId=3"><span>Assam</span>
@@ -286,7 +286,7 @@ margin-top:10px;
 						</ul>
 					</div>
 				</li>
-				<li><a href="#" class="parent"><span>Union Territories</span></a>
+				<li><a onmousedown="return false;" class="parent"><span>Union Territories</span></a>
 					<div style="z-index:1;text-align:left;">
 						<ul>
 							<li><a href="statePageAction.action?stateId=35"><span>Puducherry</span>
