@@ -1260,7 +1260,8 @@
 	<bean id="suggestiveModelAction" class="com.itgrids.partyanalyst.web.action.SuggestiveModelAction" singleton="false">
 	  	<property name="suggestiveModelService" ref="suggestiveModelService" />
 		<property name="staticDataService" ref="staticDataService" />
-		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />		
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	</bean>
 	
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
