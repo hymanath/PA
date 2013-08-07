@@ -18,6 +18,7 @@ public class ContenetTransferVO {
 	private Long wonRecently;
 	private Long lostRecently;
 	private Map<Long,Map<Long,List<Long>>>  allDetails;
+	private List<Long> constituencyIds;
 	
 	//constructor(s)
 	
@@ -41,6 +42,14 @@ public class ContenetTransferVO {
 	public Map<Long, PartiesDetailsVO> getPartyOverview() {
 		return partyOverview;
 	}
+	public List<Long> getConstituencyIds() {
+		return constituencyIds;
+	}
+
+	public void setConstituencyIds(List<Long> constituencyIds) {
+		this.constituencyIds = constituencyIds;
+	}
+
 	public Map<Long, Map<Long, List<Long>>> getAllDetails() {
 		return allDetails;
 	}

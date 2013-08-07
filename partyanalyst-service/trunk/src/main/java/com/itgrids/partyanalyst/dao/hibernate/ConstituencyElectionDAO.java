@@ -674,7 +674,35 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		
 	}
 	
+	public List<Long> getLatestConstituenciesByElectionIds(Long stateId,List<Long> elecIds)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select distinct model.constituency.constituencyId from ConstituencyElection model");			
+		query.append(" where model.constituency.state.stateId = ? and model.election.electionId in (:elecIds)");	
+		query.append(" and model.constituency.startDate is not null ");
+		query.append(" and model.constituency.deformDate is null");	
+		
+		Query queryObject = getSession().createQuery(query.toString());		
+		
+		queryObject.setLong(0,stateId);			
+		queryObject.setParameterList("elecIds", elecIds);
+		return queryObject.list();		
+	}
 	
+	public List<Long> getLatestConstituenciesByElectionIds(Long stateId,List<Long> elecIds,List<Long> partyIds)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select distinct model.constituency.constituencyId from ConstituencyElection model");			
+		query.append(" where model.constituency.state.stateId = ? and model.election.electionId in (:elecIds)");	
+		query.append(" and model.constituency.startDate is not null ");
+		query.append(" and model.constituency.deformDate is null");	
+		
+		Query queryObject = getSession().createQuery(query.toString());		
+		
+		queryObject.setLong(0,stateId);			
+		queryObject.setParameterList("elecIds", elecIds);
+		return queryObject.list();		
+	}
 	
 	
 }

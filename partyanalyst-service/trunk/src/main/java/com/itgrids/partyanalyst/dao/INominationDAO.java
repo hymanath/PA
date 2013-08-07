@@ -584,4 +584,19 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Long> getElectionYearsByScopeNPartyNconstiId(Long electionScopeId,Long partyId,Long constituencyId);
 	
 	public List<Object[]> findByPartyIdAndTehsilId(Long electionScope,Long partyId,Long tehsilId);
+	
+	public List getPartyResultsForAPartyAndConstitunecyIds(List<Long> constituencyIds,Long partyId,String electionSubType,Long electionIds,String type);
+	
+	public List getAllPartyResultsByElectionIds(List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type,List<Long> electionIds);
+	
+	public List getAllPartyResultsBasedOnMatchingCriteriaByElectionIds(Long stateId,List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String electionType,String searchText,String searchType,List<Long> electionIds);
+	
+	public List getPartyResultsForAPartybyEleIds(List<Long> constituencyIds,Long partyId,String electionSubType,List<Long> electionIds,String type);
+	
+	public List getAllCandidateDetailsForAConstituencyByElectionIds(List<Long> constIds,Long partyId,String electionSubType,List<Long> elecIds,String type);
+	
+	public List getAllPartyStrengthsResultsByEleIds(List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type,String electionType,Long stateId,List<Long> electionIds);
+	
+	public List getPartyResultsForAPartybyEleIdsAndAllConstituencies(List<Long> constituencyIds,Long partyId,String electionSubType,List<Long> electionIds,String type);
+
 }

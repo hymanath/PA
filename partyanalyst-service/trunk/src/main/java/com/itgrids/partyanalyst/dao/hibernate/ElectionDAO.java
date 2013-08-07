@@ -760,6 +760,32 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Long> getElectionIdsByElectionYearsCount(Long stateId,String electionType,String elecSubType,Long electionyearsCount){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.electionId from Election model ");
+		sb.append(" where model.electionScope.electionType.electionType = ? and model.elecSubtype = ? ");
+		
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			sb.append(" and model.electionScope.state.stateId = ?");
+		}
+		sb.append("  and model.isPartial is null or model.isPartial = ? order by model.electionYear desc");
+
+		Query queryObject = getSession().createQuery(sb.toString());
+		queryObject.setString(0,electionType);
+		queryObject.setString(1,elecSubType);
+		
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			queryObject.setLong(2,stateId);
+			queryObject.setString(3,"0");
+		}
+		else
+			queryObject.setString(2,"0");
+		queryObject.setFirstResult(0);
+		queryObject.setMaxResults(electionyearsCount.intValue());
+		return queryObject.list();
+	}
+
+	@SuppressWarnings("unchecked")
 	public List<Long> getSortedElectionIds(List<Long> electionIdsList)
 	{
 		Query query = getSession().createQuery(" select model.electionId from Election model where model.electionId in (:electionIdsList) order by model.electionDate desc ");

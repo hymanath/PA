@@ -26,7 +26,10 @@ public class OptionVO implements Serializable,Comparable<OptionVO> {
 	private List<Long> badBoothIdsList;
 	private List<Long> veryBadBoothIdsList;
 	private List<Long> averageBoothIdsList;
-
+	private Long locationId;
+	private String locationName;
+	private Long total;
+	private List<String> optionsList = new ArrayList<String>(0);
 	public OptionVO() {
 	}
 
@@ -43,6 +46,39 @@ public class OptionVO implements Serializable,Comparable<OptionVO> {
 
 	
 	
+
+	public List<String> getOptionsList() {
+		return optionsList;
+	}
+
+	public void setOptionsList(List<String> optionsList) {
+		this.optionsList = optionsList;
+	}
+
+	public Long getTotal() {
+		return total;
+	}
+
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
 	public Long getQuestionId() {
 		return questionId;
 	}
