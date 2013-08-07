@@ -1493,9 +1493,8 @@ function getLocationList()
 			var str =''; 
 			str +='<table style="margin-top:5px">';
 			str +='<tr id="tableRowD">';
-			str +='<td class="tdWidth1">District:<font id="requiredValue" class="requiredFont">*</font></td>';
 			//str+='<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="getAllConstituenciesInStateByType(2,1,this.options[this.selectedIndex].value);">';
-			str+='<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="addCssStyle();">';
+			str+='<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="addCssStyle();" >';
 			str+='</select></td>';	 
 			str +='</tr>';
 			str +='</table>';
@@ -1510,8 +1509,7 @@ function getLocationList()
 			var str =''; 
 			str +='<table style="margin-top:5px">';
 			str +='<tr id="tableRowC">';
-			str +='<td class="tdWidth1" style="padding-bottom: 15px;">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>';
-			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();" >';
+			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();" style="margin-left:20px;">';
 			//onchange="getMandalList(this.options[this.selectedIndex].value);">';
 			str+='</select></td>';	 
 			str +='</tr>';
