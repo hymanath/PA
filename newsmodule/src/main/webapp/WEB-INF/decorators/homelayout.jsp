@@ -39,7 +39,6 @@
 	
 	<style>
 	body{color:#5B5B5B;}
-	
 .background
 {
 background:#ffffff;
