@@ -2823,6 +2823,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 
 				//For PollingPercentage Panchayats
 				if(resultList != null && resultList.size() > 0){
+					tempLocationName = IConstants.PANCHAYAT;
 					getPollingPercentageForALocation(resultList.get(0),tempLocationName,constituencyId);
 					List<PartyPositionVO>  panchayatVos = getMoreVotersAddedLocDetailsWherePartyIsPoor(resultList.get(0).getPartyPositionVOList());
 					resultList.get(0).setAddedVoterDetails(panchayatVos);
