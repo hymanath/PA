@@ -6153,7 +6153,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 try{
 		 List<Object[]> locationList = null;
 		 Long regionScopeId = regionScopesDAO.getRegionScopeIdByScope(regionScope);
-		 List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId(regionScopeId,queryType);
+		 List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId(regionScopeId,queryType,872L);
 		 if(locationValuesList != null && locationValuesList.size() > 0)
 		 {
 		  if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.CONSTITUENCY))

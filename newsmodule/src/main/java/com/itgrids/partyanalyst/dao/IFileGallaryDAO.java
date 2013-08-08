@@ -300,7 +300,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
     
     public List<Long> getFileGallaryIdsListByGallaryId(Long gallaryId);
     
-    public List<Long> getLocationValuesByRegionScopeId(Long regionScopeId, String queryType);
+    public List<Long> getLocationValuesByRegionScopeId(Long regionScopeId, String queryType,Long partyId);
     
 }
 
