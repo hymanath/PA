@@ -2070,4 +2070,16 @@ IUserVoterDetailsDAO{
 		query.setParameter("constituencyId",constituencyId);
 		return query.list();
 	}
+	
+	public List<Object[]> getUserAssignedCasteCountByBoothIdAndPublication(List<Long> boothIds,Long publicationId,Long userId)
+	{
+		Query query = getSession().createQuery("select BPV.booth.boothId,count(UVD.casteState.caste.casteId)" +
+				" from UserVoterDetails UVD,BoothPublicationVoter BPV where BPV.voter.voterId = UVD.voter.voterId " +
+				" and BPV.booth.boothId in(:boothIds) and UVD.user.userId = :userId " +
+				"and BPV.booth.publicationDate.publicationDateId = :publicationId group by BPV.booth.boothId");
+		query.setParameterList("boothIds", boothIds);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }
