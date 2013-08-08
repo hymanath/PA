@@ -5191,8 +5191,11 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 		if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
 			toDate = format.parse(toDateStr);
 		
+		/*List<FileGallary> fileGallaryList = fileGallaryDAO
+				.getFilesOfGallaries(gallaryIdsList,startIndex,endIndex,newsType,categoryId,fromDate,toDate,requestFor);*/
+		
 		List<FileGallary> fileGallaryList = fileGallaryDAO
-				.getFilesOfGallaries(gallaryIdsList,startIndex,endIndex,newsType,categoryId,fromDate,toDate,requestFor);
+				.getFilesByGalleryIdsList(gallaryIdsList,startIndex,endIndex,newsType,categoryId,fromDate,toDate,requestFor);
 		
 		Long count = fileGallaryDAO.getAllRecordsCountInGallary(gallaryId,newsType,categoryId,fromDate,toDate).get(0);
 		
