@@ -1571,7 +1571,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 List<YouthLeaderSelectionVO> topCasteList = null;
 		 List<YouthLeaderSelectionVO> topCastesListInTotalMuncipality = null;
 		 List<BasicVO> selectedCastesinBooths = null;
-
+		
 		 try{
 			 publicationId = publicationDateDAO.getLatestPublicationId();
 			 List<Long> list = assemblyLocalElectionBodyDAO.getLocalEleBodyIdsListByConstituencyId(constituencyId, publicationId);
@@ -1591,8 +1591,21 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 		
 		 		if(boothIds != null && boothIds.size() > 0)
 				{
+		 			 Map<Long,Long> totalAssignedCastesMap = new HashMap<Long, Long>();
+		 			List<Object[]> totalAssignedCastes = userVoterDetailsDAO.getUserAssignedCasteCountByBoothIdAndPublication(boothIds,publicationId,userId);
+		 			if(totalAssignedCastes != null && totalAssignedCastes.size() > 0)
+		 			for(Object[] params : totalAssignedCastes)
+		 			{
+		 			Long total = totalAssignedCastesMap.get((Long)params[0]);
+		 			if(total == null)
+		 			{
+		 				total =(Long)params[1];  
+		 			}
+		 			totalAssignedCastesMap.put((Long)params[0], total);
+		 			}
 					for (Long boothId : boothIds) {
 						Long totalVoter = boothPublicationVoterDAO.getTotalVoters(boothId);
+						Long totalCastes = totalAssignedCastesMap.get(boothId);
 						List<Object[]> casteDetails = userVoterDetailsDAO.getCasteDetailsOfVoterByBoothId(boothId,publicationId,userId);
 						boothTotalVoters = boothTotalVoters + totalVoter;
 						totalVotersInBooth.put(boothId, totalVoter);
@@ -1610,7 +1623,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 								basicVO.setCount((Long)parms[1]);
 								basicVO.setName(parms[0].toString());
 							
-								basicVO.setPerc(Double.valueOf(deciamlFormat.format((Long)parms[1]*100/totalVoter.floatValue())));
+								basicVO.setPerc(Double.valueOf(deciamlFormat.format((Long)parms[1]*100/totalCastes.floatValue())));
 								
 								basicVOListForBooth.add(basicVO);
 							}
@@ -1620,7 +1633,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 								basicVO1.setId(boothId);
 								basicVO1.setCount((Long)parms[1]);
 								basicVO1.setName(parms[0].toString());
-								basicVO1.setPerc(Double.valueOf(deciamlFormat.format((Long) parms[1]*100/totalVoter.floatValue())));
+								basicVO1.setPerc(Double.valueOf(deciamlFormat.format((Long) parms[1]*100/totalCastes.floatValue())));
 								
 								selectedCastesinBooths.add(basicVO1);
 							}
