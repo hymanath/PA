@@ -3168,10 +3168,13 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 	    		  
 	    		  fileVO.setContentId((Long)obj[0]);
 	    		  fileVO.setKeywords(file.getKeywords()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getKeywords())):"");
-	    		  fileVO.setFileDate(file.getFileDate().toString());
+	    		  fileVO.setFileDate(file.getFileDate() != null?file.getFileDate().toString():" ");
 	    		  
-	    		  String dateString =file.getFileDate().getDate()+"/"+(file.getFileDate().getMonth()+1)+"/"+(file.getFileDate().getYear()+1900);
-	    		  fileVO.setFileDateAsString(dateString);
+	    		  if(file.getFileDate() != null)
+	    		  {
+	    		   String dateString =file.getFileDate().getDate()+"/"+(file.getFileDate().getMonth()+1)+"/"+(file.getFileDate().getYear()+1900);
+	    		   fileVO.setFileDateAsString(dateString);
+	    		  }
 	    		  fileVO.setComments(file.getComment());
 	    		  
 	    		  fileVO.setDisplayImagePath(file.getFilePath());
@@ -3422,7 +3425,7 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 			 NewsImportance newsImportance = newsImportanceDAO.get(fileVO.getNewsImportanceId());
 			 file.setFileTitle(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getTitle())));
 			 file.setFileDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getDescription())));
-			// file.setNewsDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getNewsDescription())));
+			 file.setNewsDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(fileVO.getNewsDescription())));
 
 			 file.setCategory(category);
 			 file.setNewsImportance(newsImportance);

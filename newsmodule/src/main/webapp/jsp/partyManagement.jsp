@@ -4625,6 +4625,11 @@ function editNewsDetails(fileId,source){
 	  str+='</div>';
 
 	str+='<div>';*/
+
+	str+='<form id="updateNewsDetailsForm" method="post" action="updateDeleteNewsAction.action" name="updateNewsDetailsForm">';
+	str+='<input type="hidden" name="task" id="updateNewsDetailsId" />';
+    str+='</form>';
+
 	str += '<fieldset>';
 	
 	str += '<table><tr><td><div id="uploadNewsFileErrorDiv"/></td></tr></table>';
@@ -5521,8 +5526,8 @@ return false;
    fileDate = document.getElementById("existingFromText").value;
    locationScopeId = document.getElementById("scopeDivForEdit").value;
    fileGallaryId = $('#fileGallaryId').val();
-   /*newsDescription = $('#newsfileDescriptionForEdit').val();
-   newsDescription = htmlEntity(newsDescription);*/
+   newsDescription = $('#newsfileDescriptionForEdit').val();
+   newsDescription = htmlEntity(newsDescription);
 
    try
   {
@@ -5608,11 +5613,32 @@ try{
 		  visibility        :visibility,
 		  flagInd          :false,
 		  fileGallaryId:fileGallaryId,
-         /* newsDescription:newsDescription */
+          newsDescription:newsDescription 
      }
+
+ if(task == "Update")
+ {
+   $("#updateNewsDetailsId").val(YAHOO.lang.JSON.stringify(jsObj));
+			var uploadHandler = {
+			   success : function( o ) {
+						  var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+						  //console.log(uploadResult);
+						 buildUpdateStatus(uploadResult);
+					}									
+		   };
+
+	
+	YAHOO.util.Connect.setForm('updateNewsDetailsForm',false);
+	YAHOO.util.Connect.asyncRequest('POST','updateDeleteNewsAction.action?',uploadHandler);
+
+ }
+  else
+  {
+	
 	  var rparam ="task="+encodeURIComponent(unescape(YAHOO.lang.JSON.stringify(jsObj)));
       var url = "updateDeleteNewsAction.action?"+rparam;	//18111
   callnewAjax(jsObj,url);
+  }
  
  }
 
@@ -6902,6 +6928,14 @@ function createNewSource()
 	$('#newsGallaryDiv').html(str);
 	
 	
+}
+
+function buildUpdateStatus(result)
+{
+	
+	$('#newsSuccessDiv').html("<font style='font-weight:bold;color:green;margin-left:50px;'>News Updated Successfully.</font>");
+       setTimeout(hideDialog,3000);
+    buildNewsDetails();
 }
 
 
