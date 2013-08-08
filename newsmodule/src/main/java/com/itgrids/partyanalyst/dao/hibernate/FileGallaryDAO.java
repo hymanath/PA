@@ -3241,17 +3241,19 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Long> getLocationValuesByRegionScopeId(Long regionScopeId, String queryType)
+	public List<Long> getLocationValuesByRegionScopeId(Long regionScopeId, String queryType,Long partyId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append(" select distinct model.file.locationValue from FileGallary model where model.file.regionScopes.regionScopesId =:regionScopesId ");
-		str.append(" and model.isDelete = 'false' and model.gallary.isDelete = 'false' ");
+		str.append(" select distinct model.file.locationValue from FileGallary model, PartyGallery model2 where model.gallary.gallaryId = model2.gallery.gallaryId and model.file.regionScopes.regionScopesId =:regionScopesId ");
+		str.append(" and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType and model.isDelete = 'false' and model.gallary.isDelete = 'false' ");
 		if(queryType != null && queryType.equalsIgnoreCase("public"))
 		 str.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false' ");
 		
 		Query query = getSession().createQuery(str.toString());
 		
 		query.setParameter("regionScopesId", regionScopeId);
+		query.setParameter("partyId", partyId);
+		query.setParameter("contentType", IConstants.NEWS_GALLARY);
 		
 		return query.list();
 	}

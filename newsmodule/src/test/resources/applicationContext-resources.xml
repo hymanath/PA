@@ -138,5 +138,9 @@
 	<bean id="userDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserDAO">
 	 <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="delimitationConstituencyMandalDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDAO">
+	 <property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
 	<!--End Add new DAOs here -->
 </beans>
