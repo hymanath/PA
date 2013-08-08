@@ -924,12 +924,6 @@ function callHomePageAjax11(jsObj,url){
 								  clearOptionsListForSelectElmtId('categoryGallarySelect');
 								 createOptionsForSelectElmtId('categoryGallarySelect',myResults);
 								}
-								else if(jsObj.task == "getLocationsList")
-								{
-								  clearOptionsListForSelectElmtId(''+jsObj.divEle+'');
-								  createOptionsForSelectElmtId(''+jsObj.divEle+'',myResults);	
-								 
-								}
 
 								}catch (e) {
 							     
@@ -1519,51 +1513,10 @@ function getLocationList()
 			//getAllConstituenciesInStateByType(2, 1, 'constituency');
 		} 
 
-
- var jsObj={
-		scope:scope,
-		divEle:divEle,
-		task:'getLocationsList'
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "getLocationsListAction.action?"+rparam;
-	callAjax(jsObj, url);
+getLocationWiseNewsDetails(scope,divEle);
 	
 }
 
-var flag1= false;
-function createOptions(jsObj,myResults)
-{
-  var elmt = jsObj.divEle;
-  if( !elmt || myResults == null)
-		return;
-  
-
-  for(var i in myResults)
-	{
-		var option = document.createElement('option');
-		option.value=myResults[i].id;
-		option.text=myResults[i].name;
-		try
-		{
-			elmt.add(option,null); // standards compliant
-		}
-		catch(ex)
-		{
-			elmt.add(option); // IE only
-		}
-		 if(myResults[i].name == locationName ){
-			flag1=true;
-			$('#userAccessConstituencyList').val(option.value);
-			$('#userAccessDistrictList').val(option.value);
-		}
-		else if((myResults[i].name == 'Kuppam' || myResults[i].name == 'KUPPAM') && !flag1){
-			flag1=true;
-			$('#userAccessConstituencyList').val(option.value);
-		}
-	}
-
-}
 getLocationList();
 </script>
 </body>

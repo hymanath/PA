@@ -185,12 +185,16 @@ function hideDivs(){
 	if(scope == "District"){
 		$('#showScopeSubsD').css("display","block");
 		$('#showScopeSubsC').css("display","none");
-		getAllConstituenciesInDistrictByType(1);
+		//getAllConstituenciesInDistrictByType(1);
+
+		getLocationWiseNewsDetails(scope,"userAccessDistrictList");
 	}
 	if(scope == "Constituency"){
 		$('#showScopeSubsC').css("display","block");
 		$('#showScopeSubsD').css("display","none");
-		getAllConstituenciesInStateByType(2, 1, 'constituency');
+
+		//getAllConstituenciesInStateByType(2, 1, 'constituency');
+		getLocationWiseNewsDetails(scope,"userAccessConstituencyList");
 	}
 }
 
