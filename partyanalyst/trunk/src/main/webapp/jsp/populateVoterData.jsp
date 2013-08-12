@@ -191,11 +191,11 @@ fieldset{
 		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="castajaxLoad"><img src="images/icons/search.gif" /></span>
 		<span style="width:40px;">
 		
-		  <input type="checkbox" id="HamletChecked" value="Hamlet"> Hamlet
+		  <input type="checkbox" id="HamletChecked" value="Hamlet" style="margin-top:-5px;"> Hamlet
 	
 	</span>&nbsp;&nbsp;	<span>
 			
-				  <input type="checkbox" id="BoothChecked" value="Booth"> Booth
+				  <input type="checkbox" id="BoothChecked" value="Booth" style="margin-top:-5px;"> Booth
 				</span>
 		<div id="voterDataInsertDiv">
 			<input type="button" class="btn btn-info" value="Submit" id="castvoterDataInsertBtn" />
