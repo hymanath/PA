@@ -105,5 +105,16 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 		
 		return query.list();
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getHamletDetailsByPanchayatIds(List<Long> panchayatIds,Long publicationId,Long userId){
+		Query query = getSession().createQuery("select distinct ph.panchayat.panchayatId,ph.panchayat.panchayatName,ph.hamlet.hamletId,ph.hamlet.hamletName,count(uvd.voter.voterId) "+
+				"from UserVoterDetails uvd,PanchayatHamlet ph,BoothPublicationVoter bpv where uvd.user.userId = :userId and"+
+				"  uvd.hamlet.hamletId = ph.hamlet.hamletId and ph.panchayat.panchayatId in( :panchayatIds) and uvd.voter.voterId = bpv.voter.voterId and  bpv.booth.publicationDate.publicationDateId = :publicationId "+
+				"  group by uvd.hamlet.hamletId");
+		query.setParameterList("panchayatIds", panchayatIds);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }
