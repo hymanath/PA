@@ -5498,6 +5498,24 @@
 		  </result>
 		</action>
 		
+		<action name="getAllNewsCategoryAction" class="newsDetailsAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		   <param name="root">categoriesList</param>
+		  </result>
+		</action>
+		
+		<action name="updateNewsCategoryAction" class="newsDetailsAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		   <param name="root">resultStatus</param>
+		  </result>
+		</action>
+		
+		<action name="deleteOrAcceptCategoryAction" class="newsDetailsAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		   <param name="root">resultStatus</param>
+		  </result>
+		</action>
+		
 		<action name="getCandidateRelatedGallariesAction" class="newsDetailsAction" method="ajaxHandler">
 		  <result type="json" name="success">
 		    <param name="root">selectOptionVOList</param>

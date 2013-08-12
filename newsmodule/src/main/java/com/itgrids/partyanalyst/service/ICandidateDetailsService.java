@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.CategoryVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -271,6 +272,12 @@ public interface ICandidateDetailsService {
 	public void setfileGallaryDetails(List<FileGallary> fileGallaryList,List<FileVO> fileVOsList);
 	
 	public List<SelectOptionVO> getLocationValuesByRegionScope(String regionScope, String queryType);
+	
+	public List<CategoryVO> getAllCategoriesOfUser(Long userId);
+	
+	public ResultStatus updateCategory(final Long userId,final Long categoryId,final String cateName,final String visibility);
+	
+	public ResultStatus updateCategoryStatus(Long userId,Long categoryId,String name);
 	
 	
 }

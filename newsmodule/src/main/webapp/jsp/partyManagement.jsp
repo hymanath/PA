@@ -2041,6 +2041,10 @@ function createNewsCategory()
 	str += '<table class="aligncenter"><tr><td><label class="radio"><input type="radio" value="public" name="visibility" id="categoryPublicRadio" checked="true"><b><font>Visible to Public Also</font></b></input></label></td></tr>';
 	str += '<tr><td><label class="radio"><input type="radio" value="private" name="visibility" id="categoryPrivateRadio"><b><font>Make This Private</font></b></input></label></td></tr></table>';
 	str += '<table class="aligncenter"><tr><td><input type="button" class="btn btn-success highlight" value="Create Category" style="background-color:#57B731" onClick="createUserNewsCategory()"></td><td><input type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
+	
+	str +='<div class="btn btn-inverse" id="updateCategoryId" style="margin-left:250px;margin-top:20px;">Update Category</div>';
+	str +='<div id="categoriesTable">';
+	str +='</div>';
 	str +='</div>';
 	$("#newsGallaryDiv").html(str);
 
@@ -3700,6 +3704,22 @@ function updatePhoto(fileId,fileGallaryId)
 </div>
 </div>
 
+<div id="dialog" title="Update Category">
+<div>
+	<div style="clear:both;"><span>Name</span>: <input type="text" id="categoryNameId"/></div>
+	<div style="clear:both;"><span>Visibility</span>: 
+				<input type="radio"  name="visibility" value="public" checked="checked" style="margin-top:0px;margin-left:4px;">Public
+				<input type="radio"  name="visibility" value="private" style="margin-top:0px;margin-left:4px;">Private</div>
+				<input id="idVal" type="hidden" value="" />
+				
+	<div id="errMsg" style="margin:5px;"></div>
+	
+	<span class="btn btn-mini pull-right btn-inverse" id="updateCategoryId">Update</span>
+</div>
+</div>
+<!--<button id="opener">Open Dialog</button>-->
+
+
 <!-- for  body 1 start    result  -->
 <HR>
 <div id='profileManagementMainOuterDiv1' style="display:none">
@@ -5026,14 +5046,39 @@ var callback = {
 			 {
 				buildFlagedAndNotedData(myResults,jsObj);
 			 }
-			 else if(jsObj.task == "createUserNewsCategory")
+			 else if(jsObj.task == "createUserNewsCategory"){
 			  showUserNewsCategoryStatus(myResults);
-			
+			}
 			else if(jsObj.task == "assignResToCandidateOrAGallary")
 			{
               showAssignNewsStatus(myResults);
 			}
-			 
+			else if(jsObj.task == "getAllCategories")
+			{
+				buildCategoriesOfUser(myResults,jsObj);
+			} else if(jsObj.task =="updateCategory"){
+				if(myResults.resultCode==1){
+					$('#errMsg').html(myResults.message);
+					$('#errMsg').css('color','red');
+				}else{
+					$('#errMsg').html("Updated Successfully");
+					$('#errMsg').css('color','green');
+				}
+			}
+			else if(jsObj.task == "onOroffCategory")
+			{
+				if(myResults.resultCode==0){
+					if(jsObj.name="delete"){
+						alert('Category Disabled Successfully..');
+					}else{
+						alert('Category Enabled Successfully..');
+					}
+					
+					$('#updateCategoryId').trigger('click');
+				}else{
+					alert('Sorry Unable to Process the request..Please try again later');
+				}
+			}
 			}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
 		}  
@@ -6929,6 +6974,119 @@ function createNewSource()
 	
 	
 }
+
+$('#updateCategoryId').live('click',function(){
+	var jsObj=
+	{
+		task  : "getAllCategories"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllNewsCategoryAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+});
+function buildCategoriesOfUser(results,jsObj){
+var visibility="";
+var sno=0;
+	var str='';
+	str+='<table class="table table-bordered" id="categoriesDT">';
+	str+='<thead>';
+		str+='<tr>';
+			str+='<th>S.No';
+			str+='</th>';
+			
+			str+='<th>Category';
+			str+='</th>';
+			
+			str+='<th>Access Type';
+			str+='</th>';
+			
+			str+='<th>Is Deleted';
+			str+='</th>';
+			
+			str+='<th>Update';
+			str+='</th>';
+			
+		str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
+		for(var i in results){
+		sno=sno+1;
+			str+='<tr>';
+				str+='<td>'+sno+'</td>';
+			
+				str+='<td>'+results[i].name+'</td>';
+			
+			if(results[i].visibility=="false"||results[i].visibility=="public"){
+				visibility="public";
+			}else{
+				visibility="private";
+			}
+			
+				str+='<td>'+visibility+'</td>';
+			
+				if(results[i].isDeleted=="false"){
+					str+='<td onclick="onCategory('+results[i].id+',\'delete\')" title="Delete Category"><img src="images/icons/delete.png"/></td>';
+				}else{
+					str+='<td onclick="onCategory('+results[i].id+',\'accept\')" title="Enable this Category"><img src="images/icons/accept.png"/></td>';
+				}
+				str+='<td onclick="editCategory('+results[i].id+',\''+results[i].name+'\',\''+visibility+'\')"><img src="images/icons/edit.png"/></td>';
+			
+			str+='</tr>';
+		}
+	str+='</tbody>';
+	str+='</table>';
+	$('#categoriesTable').html(str);
+	
+	$('#categoriesDT').dataTable({
+		   "iDisplayLength": 15,
+			"aLengthMenu": [[15, 30, -1], [15, 30, "All"]]
+	});
+}
+ $(function() {
+	$( "#dialog" ).dialog({
+		autoOpen: false,
+	});
+});
+
+function onCategory(id,name){
+$('#errMsg').html('');
+ var jsObj=
+	{
+		idVal:id,
+		name :name,
+		task : "onOroffCategory"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "deleteOrAcceptCategoryAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+ 
+}
+
+function editCategory(id,name,visibility){
+	$('#errMsg').html('');
+	$( "#dialog" ).dialog( "open" );
+	$('#categoryNameId').val(name);
+	$('input[name=visibility][value='+visibility+']').prop("checked",true);
+	$('#idVal').val(id);
+	
+}
+
+$('#updateCategoryId').click(function(){
+	var categoryName=$('#categoryNameId').val();
+	var visibility = $('input:radio[name=visibility]:checked').val();
+	var idVal=$('#idVal').val();
+	
+	var jsObj=
+	{
+		category:categoryName,
+		visibility:visibility,
+		idVal:idVal,
+		task  : "updateCategory"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateNewsCategoryAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+});
 
 function buildUpdateStatus(result)
 {
