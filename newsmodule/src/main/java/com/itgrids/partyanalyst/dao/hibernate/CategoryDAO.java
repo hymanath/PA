@@ -25,6 +25,13 @@ public class CategoryDAO extends GenericDaoHibernate<Category, Long> implements 
 		return query.list();
 	}
 	
+	public List<Object[]> checkCategoryNameIdExist(String name)
+	{
+		Query query = getSession().createQuery(" select model.categoryType,model.categoryId from Category model where model.categoryType =:categoryType ");
+		query.setParameter("categoryType", name);
+		return query.list();
+	}
+	
 	public Long getMaxOrderNo()
 	{
 		Query query = getSession().createQuery(" select max(model.orderNo) from Category model ");
