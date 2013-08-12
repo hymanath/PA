@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ISuggestiveRangeDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -81,7 +82,16 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private ITehsilDAO tehsilDAO;
 	private IVoterModificationInfoDAO voterModificationInfoDAO;
 	private IRegionServiceData regionServiceDataImp;
-	
+	private IPanchayatHamletDAO panchayatHamletDAO ;
+
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
+	}
+
 	
 	
 	public IRegionServiceData getRegionServiceDataImp() {
@@ -3216,5 +3226,164 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 LOG.error(" Exception Occured in getPartyPerformanceForSelectedlocation() method, Exception - "+e);
 				}
 			}
+			
+			 
+			 
+			 public List<BasicVO> getHamletDetailsByPanchayatIds(Long constituencyId,Long publicationId,Long userId,List<Long> candidateCastes){
+				 
+				 List<BasicVO> hamletDetails = new ArrayList<BasicVO>();
+				 List<BasicVO> panchayatList =null;
+				 List<Long> hamletIds = new ArrayList<Long>();
+				 Map<Long,List<Long>> hamletIdsList = null;
+				 BasicVO basicVO =null;
+				 Map<Long,String> panchayatName = new HashMap<Long, String>(0);//<panchayatId,PanchayatName
+				 Map<Long,Long> panchayatVotersCount = new HashMap<Long, Long>(0);//<panchayatId,PanchayatVotersCount
+				 List<SelectOptionVO> panchayats = new ArrayList<SelectOptionVO>();
+				 List<Long> panchayaIds = new ArrayList<Long>();
+				 List<Long> tehsilIds = boothDAO.getTehsildByConstituency(constituencyId,publicationId);
+				 if(tehsilIds != null && tehsilIds.size() > 0)
+					{
+						for (Long mandalId : tehsilIds) {
+							List<Object[]> panchayatsList = panchayatDAO.getPanchayatsByTehsilId(mandalId);
+							if(panchayatsList != null && panchayatsList.size() > 0)
+							{
+								panchayats = new ArrayList<SelectOptionVO>();
+								panchayaIds = new ArrayList<Long>();
+								for (Object[] parms : panchayatsList) {
+									SelectOptionVO selectOptionVO = new SelectOptionVO();	
+									selectOptionVO.setId((Long)parms[0]);
+									selectOptionVO.setName(parms[1].toString());
+									panchayats.add(selectOptionVO);
+									panchayaIds.add(selectOptionVO.getId());
+								}
+							}
+				 
+				 List<Object[]> values = panchayatHamletDAO.getHamletDetailsByPanchayatIds(panchayaIds,publicationId,userId);
+				 hamletIdsList = new HashMap<Long, List<Long>>();//<panchayatId,List<hamletIds>
+				
+				 for(Object[] params:values){
+					hamletIds = hamletIdsList.get((Long)params[0]);
+					 
+					 if(hamletIds == null)
+					 {
+						 hamletIds = new ArrayList<Long>();
+						 hamletIdsList.put((Long)params[0], hamletIds);
+					 }
+					 if(!hamletIds.contains((Long)params[2])){
+						 hamletIds.add((Long)params[2]);
+					 }
+					 
+					 String panchayat = panchayatName.get((Long)params[0]);
+					 if(panchayat == null){
+						 panchayatName.put((Long)params[0], params[1] != null?params[1].toString():" ");
+					 }
+				 } 
+				 for(Long panchayatId :hamletIdsList.keySet())
+				 {
+					 BasicVO basicVO2 = new BasicVO();
+					 List<Object[]> panchayatVoterCount = voterCastInfoDAO.getTopThreeCasteForPanchayat(panchayatId,3l,publicationId,1l);
+					 int j=0;
+					 panchayatList = new ArrayList<BasicVO>();
+					 
+					 for(Object[] panchayat:panchayatVoterCount){
+						 j++;
+						 basicVO = new BasicVO();
+						
+						 basicVO.setCount((Long)panchayat[1]);
+						 basicVO.setPersent(panchayat[2].toString());
+						 basicVO.setCasteName(panchayat[0].toString());
+						 
+						 if(candidateCastes.contains(panchayat[3])){
+							 BasicVO selectedCastevo = new BasicVO();
+							 selectedCastevo.setCount((Long)panchayat[1]);
+							 selectedCastevo.setPersent(panchayat[2].toString());
+							 selectedCastevo.setCasteName(panchayat[0].toString());
+							 basicVO2.getSelectedCasteDetails().add(selectedCastevo);
+							}
+						 if(j <= 3)
+							 panchayatList.add(basicVO);
+						 		
+					 }
+					 
+					 basicVO2.setId(panchayatId);
+					 basicVO2.setName(panchayatName.get(panchayatId));
+					 List<Object[]> voterCount = userVoterDetailsDAO.getVoterCountByHamlet(hamletIdsList.get(panchayatId),userId,publicationId);
+					 List<Object[]> casteCount = userVoterDetailsDAO.getCasteInHamlet(hamletIdsList.get(panchayatId),userId,publicationId);
 					
+					 List<BasicVO> basicVOList = new ArrayList<BasicVO>(0);
+					 if(voterCount != null && voterCount.size() > 0)
+					 {
+						for(Object[] params:voterCount)
+						{
+							 Long totalVotersCount = panchayatVotersCount.get(panchayatId);
+							BasicVO basicVO3 = new BasicVO();
+							basicVO3.setId((Long)params[0]);
+							basicVO3.setName(params[1] != null ?params[1].toString():" ");
+							basicVO3.setCount((Long)params[2]);
+							 
+							 if(totalVotersCount == null)
+								 panchayatVotersCount.put(panchayatId, (Long)params[2]);
+							 else
+								 panchayatVotersCount.put(panchayatId, totalVotersCount+(Long)params[2]);
+			
+							basicVOList.add(basicVO3);
+						}
+					 }
+					
+					 if(casteCount != null && casteCount.size() > 0)
+					 {
+						 BasicVO basicVO3 = null;
+						for(Object[] params:casteCount)
+						{
+							basicVO3 = checkBasicVOExist((Long)params[0], basicVOList);
+							if(basicVO3 == null)
+							{
+								basicVO3 = new BasicVO();
+								basicVO3.setId((Long)params[0]);
+								basicVOList.add(basicVO3);
+							}
+							BasicVO topThreeCaste = new BasicVO();
+							topThreeCaste.setName(params[2] != null ?params[2].toString():" ");
+							topThreeCaste.setCount((Long)params[1]);
+							topThreeCaste.setPersent(new BigDecimal(((Long)params[1]*100.0)/(Long)basicVO3.getCount()).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+							List<BasicVO> basicVOsList = basicVO3.getHamletCasteInfo();
+							if(candidateCastes.contains(params[3])){
+								basicVO3.getSelectedCasteDetails().add(topThreeCaste);
+							}
+							
+							 if(basicVOList == null)
+								 basicVOsList = new ArrayList<BasicVO>(0); 
+							
+							 if(basicVOsList.size() < 3)
+							   basicVOsList.add(topThreeCaste);
+						}
+					 }
+					 
+					 basicVO2.setMandalName(tehsilDAO.get(mandalId).getTehsilName());
+					 basicVO2.setCount(panchayatVotersCount.get(panchayatId));
+					 basicVO2.setHamletVoterInfo(basicVOList);
+					 basicVO2.setPanchayatVoterInfo(panchayatList);
+					 hamletDetails.add(basicVO2);
+				 }
+				}
+			}
+				 return hamletDetails;
+			 }
+			 
+			 public BasicVO checkBasicVOExist(Long hamletId,List<BasicVO> list)
+			 {
+				 try{
+					if(list == null || list.size() == 0)
+						 return null;
+					for(BasicVO basicVO : list)
+					 if(basicVO.getId().equals(hamletId))
+						 return basicVO;
+					 
+					 return null;
+				 }catch (Exception e) {
+					 e.printStackTrace();
+					 return null;
+				}
+			 }
+			 		
 }
