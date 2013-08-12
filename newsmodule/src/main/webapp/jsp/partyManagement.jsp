@@ -5064,6 +5064,7 @@ var callback = {
 					$('#errMsg').html("Updated Successfully");
 					$('#errMsg').css('color','green');
 				}
+				$('#updateCategoryId').trigger('click');
 			}
 			else if(jsObj.task == "onOroffCategory")
 			{
