@@ -13,4 +13,6 @@ public interface ICategoryDAO extends GenericDao<Category, Long>{
 	
 	public Long getMaxOrderNo();
 	
+	public List<Object[]> checkCategoryNameIdExist(String name);
+
 }
