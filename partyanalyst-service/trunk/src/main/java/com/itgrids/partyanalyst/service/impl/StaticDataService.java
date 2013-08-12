@@ -5614,6 +5614,16 @@ public class StaticDataService implements IStaticDataService {
 					pcs.add(new SelectOptionVO((Long) values[0], values[1]
 							.toString()));
 			}
+			else
+			{
+				List<Object[]> value = tehsilDAO.getLatestAssemblyConstitueciesOfTehsil1(locationId);
+				if(value != null && value.size() > 0)
+					for(Object[] params : value)
+					{
+					state = new SelectOptionVO((Long) params[0],params[1].toString());
+					districts.add(new SelectOptionVO((Long) params[2],params[3].toString()));
+					}
+			}
 		}
 		if (locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)) {
 			State stateObj = districtDAO.get(locationId).getState();
