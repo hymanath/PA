@@ -637,7 +637,7 @@ public class VoterReportService implements IVoterReportService{
 		  }
 		 
 		 
-		 public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId)
+		 public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean boothChecked)
 			{
 				
 				  ResultStatus resultStatus = new ResultStatus();
@@ -648,11 +648,17 @@ public class VoterReportService implements IVoterReportService{
 					  Map<Long,Long> localBodiesList = new HashMap<Long,Long>(0);
 					  Set<Long> boothIdsList = new HashSet<Long>(0);
 					  Map<Long,Long> constituencyIds = new HashMap<Long,Long>();
+					  List<Long> panchayatIds = new ArrayList<Long>();
+					  List<Object[]> list2 = null;
+					  List<Object[]> list3 = null;
+					  Map<Long,Long> hamletIds =new HashMap<Long, Long>(0);
+					  List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>(0);
 					  constituencyIds.put(reportLevelValue,1l);
 					  saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.CONSTITUENCY,constituencyIds,publicationDateId,reportLevelValue);
 					  //InsertVoterCasteBasicInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,publicationDateId,reportLevelValue,userId);
 					  List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(reportLevelValue,IConstants.PRESENT_YEAR, null);
-					  
+					  Map<Long,Long> boothIds = new HashMap<Long, Long>(0);
+					  Map<Long,Long> localbodyboothIds = new HashMap<Long, Long>(0);
 					  if(mandalsList == null || mandalsList.size() == 0)
 						  return null;
 					  Long totalVoters = voterCastInfoDAO.getVotersCastCount(votersAnalysisService.getReportLevelId(IConstants.CONSTITUENCY), reportLevelValue, reportLevelValue, publicationDateId, userId);
@@ -677,6 +683,7 @@ public class VoterReportService implements IVoterReportService{
 					  }
 					 if(list != null && list.size() > 0)
 					  {
+						  
 						 Map<Long,Long> mandalTotalVotersMap = new HashMap<Long,Long>();
 						 for(Object[] params : list){
 							 Long total = mandalTotalVotersMap.get((Long)params[1]);
@@ -687,24 +694,72 @@ public class VoterReportService implements IVoterReportService{
 						    	mandalTotalVotersMap.put((Long)params[1],total);
 						    }
 						   panchayatIdsList.put((Long)params[0],total);
+						   panchayatIds.add((Long)params[0]);
 						 }
+						
 					  }
 					 
 					  
 					  
 					  if(panchayatIdsList != null && panchayatIdsList.size() > 0)
 					     saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.PANCHAYAT,panchayatIdsList,publicationDateId,reportLevelValue);
-					 /* List<Object[]> list2 = null;
+					
+					  
+					  
 					  if(panchayatIdsList.size() > 0)
-						  list2 = boothDAO.getBoothIdsByPanchayatIdsInAPublication(panchayatIdsList, publicationDateId);
-					  
-					  if(list2 != null && list2.size() > 0)
 					  {
-						  for(Object[] params : list2)
-							  boothIdsList.add((Long)params[0]);
-					  }*/
+					  list3 =panchayatHamletDAO.getHamletsOfPanchayats(panchayatIds); 
+					  list2 = boothDAO.getBoothIdsByPanchayatIdsInAPublication(panchayatIds, publicationDateId);
+					  }
 					  
-					   // List<Long> wardsList = new ArrayList<Long>();
+					  // booths 
+					  if(boothChecked)
+					  {
+					if(list2 != null && list2.size() > 0)
+					{
+						Map<Long,Long> boothTotalVotersMap = new HashMap<Long, Long>();
+						for(Object[] params1 : list2)
+						{
+							Long total = boothTotalVotersMap.get((Long)params1[1]);
+							if(total == null)
+							{
+								total = voterCastInfoDAO.getVotersCastCount(votersAnalysisService.getReportLevelId(IConstants.PANCHAYAT), (Long)params1[1], reportLevelValue, publicationDateId, userId);
+					    	if(total == null)
+					    		total = 0l;	
+					    	boothTotalVotersMap.put((Long)params1[1], total);
+							}
+					    	boothIds.put((Long)params1[0], total);
+						}
+						
+					}
+					
+					
+					  if(boothIds != null && boothIds.size() > 0)
+					  saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.BOOTH,boothIds,publicationDateId,reportLevelValue);
+					  }
+					   // hamlets 
+					  if(hamletChecked)
+					  {
+					  if(list3 != null && list3.size() > 0)
+					  {
+						  Map<Long,Long> hamletTotalVotersMap = new HashMap<Long, Long>(); 
+						  for(Object[] params2 : list3)
+							{
+								Long total = hamletTotalVotersMap.get((Long)params2[1]);
+								if(total == null)
+								{
+									total = voterCastInfoDAO.getVotersCastCount(votersAnalysisService.getReportLevelId(IConstants.PANCHAYAT), (Long)params2[1], reportLevelValue, publicationDateId, userId);
+						    	if(total == null)
+						    		total = 0l;	
+						    	hamletTotalVotersMap.put((Long)params2[1], total);
+								}
+						    	hamletIds.put((Long)params2[0], total);
+							}
+						  
+					  }
+					  if(hamletIds != null && hamletIds.size() > 0)
+						  saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.HAMLET,hamletIds,publicationDateId,reportLevelValue);
+					  }
 					  if(localBodiesList != null && localBodiesList.size() >0){
 						  List<Long> ids = new ArrayList<Long>();
 						  ids.addAll(localBodiesList.keySet());
@@ -728,18 +783,44 @@ public class VoterReportService implements IVoterReportService{
 						}
 						  
 					  }
+					  List<Object[]> list4 = null;
 					 if(localBodiesList.size() > 0)
 					  {
 						  saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.LOCALELECTIONBODY,localBodiesList,publicationDateId,reportLevelValue);
-						 /* List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(localBodiesList,publicationDateId,reportLevelValue);
-						  
-						  if(list3 != null && list3.size() > 0)
+						  List<Long> localbodyids = new ArrayList<Long>();
+						  localbodyids.addAll(localBodiesList.keySet());
+						  list4 = boothDAO.getBoothIdsInLocalBodiesForAPublication(localbodyids,publicationDateId,reportLevelValue);
+						   if(list4 != null && list4.size() > 0)
 						  {
 							  for(Object[] params : list3)
-								  boothIdsList.add((Long)params[0]); 
-						  }*/
-						  
-					  }
+								  boothsList.add(new SelectOptionVO((Long)params[0],params[1].toString())); 
+						  }
+						   
+						  }
+					 
+					 // localbody booths
+					 if(boothChecked)
+					 {
+					 if(boothsList != null && boothsList.size() > 0)
+					 {
+						 Map<Long,Long> localBodyboothTotalVotersMap = new HashMap<Long, Long>();
+							for(Object[] params4 : list4)
+							{
+								Long total = localBodyboothTotalVotersMap.get((Long)params4[1]);
+								if(total == null)
+								{
+									total = voterCastInfoDAO.getVotersCastCount(votersAnalysisService.getReportLevelId("localElectionBody"), (Long)params4[1], reportLevelValue, publicationDateId, userId);
+						    	if(total == null)
+						    		total = 0l;	
+						    	localBodyboothTotalVotersMap.put((Long)params4[1], total);
+								}
+								localbodyboothIds.put((Long)params4[0], total);
+							} 
+					 }
+					 if(localbodyboothIds != null && localbodyboothIds.size() > 0)
+						  saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.BOOTH,localbodyboothIds,publicationDateId,reportLevelValue);
+					 
+					 }
 		              if(wardsList != null && wardsList.size() > 0){
 						  
 		            	  saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.WARD,wardsList,publicationDateId,reportLevelValue);
