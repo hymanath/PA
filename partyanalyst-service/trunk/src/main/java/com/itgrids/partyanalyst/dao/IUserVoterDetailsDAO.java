@@ -209,4 +209,8 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getUserAssignedVotersCastesByCosntiId(Long constituencyId,Long userId);
 	
 	public List<Object[]> getUserAssignedCasteCountByBoothIdAndPublication(List<Long> boothIds,Long publicationId,Long userId);
+
+	public List<Object[]> getCasteInHamlet(List<Long> hamletIds,Long userId,Long publicationId);
+
+	public List<Object[]> getVoterCountByHamlet(List<Long> hamletIds,Long userId,Long publicationId);
 }
