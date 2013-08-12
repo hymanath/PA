@@ -1519,7 +1519,7 @@ var constituencyName = $('#listConstituencyNames option:selected').text().toUppe
 	if(results != null && results.length > 0)
 	{
 		var str = "";
-		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' MUNCIPALITY HAMLET LEVEL CASTE DETAILS </h4>';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY HAMLET LEVEL CASTE DETAILS </h4>';
 		str += '<table class="table table-hover table-bordered" style="color: black; font-family: verdana; font-size: 12px; font-weight: lighter; margin-top: 15px;">';
 		str += '<tr>';
 		str += '<th>Mandal</th>';
