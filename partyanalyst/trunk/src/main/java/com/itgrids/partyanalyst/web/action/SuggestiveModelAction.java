@@ -14,6 +14,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.apache.log4j.Logger;
+
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyImpactVO;
@@ -50,13 +52,18 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private List<SelectOptionVO> castesList;
 	private List<YouthLeaderSelectionVO> LeaderSelectionLists;
 	private Map<String,Map<String,PartyImpactVO>> resultMap;
+	private List<BasicVO> hamletDetails;
 	private EntitlementsHelper entitlementsHelper;
 	
-
-
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	
-	
+	public List<BasicVO> getHamletDetails() {
+		return hamletDetails;
+	}
+
+	public void setHamletDetails(List<BasicVO> hamletDetails) {
+		this.hamletDetails = hamletDetails;
+	}
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -459,5 +466,34 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			
 			return Action.SUCCESS;
 			
+		}
+		
+		public String getCasteDetails(){
+			try{
+				jObj = new JSONObject(getTask());
+				session = request.getSession();
+				RegistrationVO regVO = (RegistrationVO)session.getAttribute(IConstants.USER);
+				if(regVO == null)
+				{
+					return Action.ERROR;
+				}
+				Long userId         = regVO.getRegistrationID();
+			
+				List<Long> candidateCastes = new ArrayList<Long>(0);
+			Long publicationId= jObj.getLong("publicationId");
+			JSONArray arr = jObj.getJSONArray("candidateCastes");
+			if(arr != null && arr.length() > 0)
+				for(int i=0 ;i< arr.length() ; i++)
+				{
+					candidateCastes.add(new Long(arr.get(i).toString()));
+				}
+			
+			//Long candidateCastes= jObj.getLong("candidateCastes");
+			Long constituencyId = jObj.getLong("constituencyId");
+			hamletDetails = suggestiveModelService.getHamletDetailsByPanchayatIds(constituencyId,publicationId,userId,candidateCastes);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return Action.SUCCESS;
 		}
 }
