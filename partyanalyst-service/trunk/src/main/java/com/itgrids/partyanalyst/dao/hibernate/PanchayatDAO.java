@@ -173,4 +173,11 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 		return query.list();
 				
 	}
+	
+	public List<Object[]> getCasteInPanchayat(List<Long> panchayatIds){
+		Query query = getSession().createQuery("select model1.panchayat.panchayatId,model1.panchayat.panchayatName,count(model.voter.voterId),model.casteState.caste.casteName from UserVoterDetails model,PanchayatHamlet model1  "+
+				"where  model1.hamlet.hamletId = model.hamlet.hamletId and model1.panchayat.panchayatId in (:panchayatIds) group by model.casteState.caste.casteId order by model.hamlet.hamletId,count(model.voter.voterId) desc");
+		query.setParameterList("panchayatIds", panchayatIds);
+		return query.list();
+	}
 } 

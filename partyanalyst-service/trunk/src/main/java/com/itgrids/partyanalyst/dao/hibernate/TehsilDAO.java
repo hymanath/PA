@@ -165,4 +165,10 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		return (String) query.uniqueResult();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLatestAssemblyConstitueciesOfTehsil1(Long tehsilId){
+		return getHibernateTemplate().find("Select model.district.state.stateId,model.district.state.stateName," +
+				" model.district.districtId,model.district.districtName" +
+				" from Tehsil model where model.tehsilId = ? ",tehsilId);
+	}
 }
