@@ -23,15 +23,17 @@ public class SuggestiveRange extends BaseModel implements Serializable{
     private String range;
     private Double minValue;
     private Double maxValue;
+    private String color;
     
     public SuggestiveRange(){}
     
-    public SuggestiveRange(String name,String range,Double minValue,Double maxValue){
+    public SuggestiveRange(String name,String range,Double minValue,Double maxValue,String color){
     
     	this.name = name;
     	this.range = range;
     	this.minValue = minValue;
     	this.maxValue = maxValue;
+    	this.color = color;
    
     }
     
@@ -81,7 +83,17 @@ public class SuggestiveRange extends BaseModel implements Serializable{
 	public void setMaxValue(Double maxValue) {
 		this.maxValue = maxValue;
 	}
+	
+	@Column(name = "color")	
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
     
+
     
 	
 }
