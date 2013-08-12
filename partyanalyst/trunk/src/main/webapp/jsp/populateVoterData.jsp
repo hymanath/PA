@@ -189,7 +189,14 @@ fieldset{
 		Select Publication Date<font class="requiredFont">*</font> <select id="castpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
 		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="castajaxLoad"><img src="images/icons/search.gif" /></span>
-
+		<span style="width:40px;">
+		
+		  <input type="checkbox" id="HamletChecked" value="Hamlet"> Hamlet
+	
+	</span>&nbsp;&nbsp;	<span>
+			
+				  <input type="checkbox" id="BoothChecked" value="Booth"> Booth
+				</span>
 		<div id="voterDataInsertDiv">
 			<input type="button" class="btn btn-info" value="Submit" id="castvoterDataInsertBtn" />
 			<input type="button" class="btn btn-info" value="Delete Existing Data" id="castvoterDataDeleteBtn" />
@@ -540,6 +547,11 @@ $(document).ready(function(){
 $("#castvoterDataInsertBtn").click(function(){
 	
 var castconstituencyId = $("#castconstituencyList").val(); 
+
+var checked = $('input[type=checkbox]').is(':checked')
+var hamletChecked= $("#HamletChecked").is(':checked');
+var boothChecked= $("#BoothChecked").is(':checked');
+
 		var castpublicationDateId = $("#castpublicationDateList").val();
 		if(castconstituencyId == 0)
 		{
@@ -559,6 +571,8 @@ var castconstituencyId = $("#castconstituencyList").val();
 		{
 		  id				  :castconstituencyId,
 		  publicationDateId : castpublicationDateId,
+		  hamletChecked:hamletChecked,
+		  boothChecked:boothChecked,
 		  task:"insertCastVotersData"
 		};
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
