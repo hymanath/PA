@@ -22,7 +22,7 @@ public interface IVoterReportService {
 	
 	public ResultStatus deletevotermodificationFromIntermediateTables(Long constituencyId,Long publicationId);
 	
-	public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId);
+	public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean boothChecked);
 	
 	 public ResultStatus deleteVoterModifiedData(Long constituencyId,Long publicationDateId);
 	 
