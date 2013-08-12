@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
+import com.itgrids.partyanalyst.dto.CategoryVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
@@ -60,6 +61,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private String newsType;
 	private String tempVarForParty;
 	private String requestFor;
+	private List<CategoryVO> categoriesList;
 	
 	
 	
@@ -264,6 +266,14 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	public void setTempVarForParty(String tempVarForParty) {
 		this.tempVarForParty = tempVarForParty;
 	}
+	public List<CategoryVO> getCategoriesList() {
+		return categoriesList;
+	}
+	public void setCategoriesList(List<CategoryVO> categoriesList) {
+		this.categoriesList = categoriesList;
+	}
+	
+	
 	public String execute()
 	{	
 		session = request.getSession();
@@ -329,6 +339,17 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			 for(int i=0;i<categoryIds.length();i++)
 			  categoryIdsList.add(new Long(categoryIds.get(i).toString()));
 			 galleriesList = candidateDetailsService.getGallariesForSelectedCategories(categoryIdsList,jObj.getLong("candidateId"));
+		 }else if(jObj.getString("task").equalsIgnoreCase("getAllCategories")){
+			 categoriesList = candidateDetailsService.getAllCategoriesOfUser(userId);
+		 }else if(jObj.getString("task").equalsIgnoreCase("updateCategory")){
+			 Long categoryId=jObj.getLong("idVal");
+			 String categoryName=jObj.getString("category");
+			 String visibility=jObj.getString("visibility");
+			 resultStatus = candidateDetailsService.updateCategory(userId,categoryId,categoryName,visibility);
+		 }else if(jObj.getString("task").equalsIgnoreCase("onOroffCategory")){
+			 Long categoryId=jObj.getLong("idVal");
+			 String name=jObj.getString("name");
+			 resultStatus = candidateDetailsService.updateCategoryStatus(userId,categoryId,name);
 		 }
 			 
 			 

@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -53,6 +54,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserNewsCategoryDAO;
+import com.itgrids.partyanalyst.dto.CategoryVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -72,6 +74,7 @@ import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserNewsCategory;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.util.IConstants;
@@ -5868,6 +5871,86 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			}
 	
 }
+		
+		public List<CategoryVO> getAllCategoriesOfUser(Long userId){
+			List<CategoryVO> categoriesList=new ArrayList<CategoryVO>();
+			try{
+				List<Object[]> categories=userNewsCategoryDAO.allCategoriesOfUser(userId);
+				if(categories.size()>0){
+					for(Object[] param:categories){
+						CategoryVO co=new CategoryVO();
+						co.setId(Long.valueOf(param[0].toString()).longValue());
+						co.setName(param[1].toString());
+						co.setIsDeleted(param[2].toString());
+						co.setVisibility(param[3].toString());
+						categoriesList.add(co);
+					}
+				}
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in getAllCategoriesOfUser() ,Exception-"+e);
+			}
+			
+			
+			return categoriesList;
+			
+		}
+		public ResultStatus updateCategory(final Long userId,final Long categoryId,final String cateName,final String visibility){
+				
+			
+				ResultStatus resultStatus = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					ResultStatus rs=new ResultStatus();
+					
+					List<Object[]> list = categoryDAO.checkCategoryNameIdExist(cateName.trim());
+					if(list != null && list.size() > 0)
+					{
+						for(Object[] param:list){
+							Long id=Long.valueOf(param[1].toString()).longValue();
+							if(id!=categoryId){
+								rs.setResultCode(ResultCodeMapper.FAILURE);
+								rs.setMessage("News Category is Already Exists.");
+								return rs;
+							}
+						}
+						
+					}
+					
+					int updated=userNewsCategoryDAO.updateCategory(userId, categoryId, cateName, visibility);
+				
+					int updateNow=userNewsCategoryDAO.updateCategoryName(userId, categoryId, cateName);
+					if(updated>0){
+						rs.setResultCode(ResultCodeMapper.SUCCESS);
+					}else{
+						rs.setResultCode(ResultCodeMapper.FAILURE);
+						rs.setExceptionMsg("Exception Raised..Please Try again later");
+					}
+					return rs;
+					}
+					
+				});
+				return resultStatus;
+				
+		}
+		public ResultStatus updateCategoryStatus(Long userId,Long categoryId,String name){
+			ResultStatus res=new ResultStatus();
+			String status="";
+			if(name.equalsIgnoreCase("delete")){
+				 status="true";
+			}else{
+				status="false";
+			}
+				try{
+					int del=userNewsCategoryDAO.updateCategoryStatus(userId, categoryId, status);
+				}catch (Exception e) {
+						System.out.println(e);
+						res.setResultCode(ResultCodeMapper.FAILURE);
+						res.setExceptionMsg("Exception Raised..Please Try again later");
+				}
+			res.setResultCode(ResultCodeMapper.SUCCESS);
+			return res;
+		}
 		
 		public List<SelectOptionVO> getNewsForCandidate(Long candidateId , Date fromDate , Date toDate)
 		 {
