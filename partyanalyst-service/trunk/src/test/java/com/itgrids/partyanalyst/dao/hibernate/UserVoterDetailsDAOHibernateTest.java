@@ -1,21 +1,26 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
-import com.itgrids.partyanalyst.utils.IConstants;
+
+
+
+
 
 public class UserVoterDetailsDAOHibernateTest extends BaseDaoTestCase  {
 	
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 
-		public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
+	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
 		this.userVoterDetailsDAO = userVoterDetailsDAO;
 	}
 
+	
 	/*public void testgetUserVoterDetails()
 	{
 		Object object=userVoterDetailsDAO.getUserVoterDetails(5105l,5l);
@@ -375,7 +380,7 @@ for (Object[] objects : list) {
 		    	System.out.println(params[0]+" "+params[1]);
 		}*/
 		
-		public void testgetCasteDetailsOfVoterByBoothId()
+	/*	public void testgetCasteDetailsOfVoterByBoothId()
 		{
 			List<Long> boothIds = new ArrayList<Long>();
 			boothIds.add(122992l);
@@ -387,5 +392,26 @@ for (Object[] objects : list) {
 			for (Object[] objects : values) {
 				System.out.println(objects[0] +":"+ objects[1] +":"+ objects[2]);
 			}
+		}*/
+	
+	/*public void testgetCasteInHamlet(){
+	List<Long> panchayatIds = new ArrayList<Long>();
+	panchayatIds.add(28666l);
+	panchayatIds.add(28667l);
+	List<Object[]> values = panchayatDAO.getCasteInHamlet(panchayatIds);
+	for (Object[] parms : values) {
+		System.out.println(parms[0] +":"+ parms[1]+":"+ parms[2]);
+	}
+	
+}*/
+	
+	public void testgetVoterCountByHamlet(){
+		List<Long> panchayatIds = new ArrayList<Long>();
+		panchayatIds.add(28666l);
+		panchayatIds.add(28667l);
+		List<Object[]> values = userVoterDetailsDAO.getVoterCountByHamlet(panchayatIds,8l,1l);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[2]);
 		}
+	}
 }

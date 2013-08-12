@@ -72,4 +72,14 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(voterCastInfo.getCastePercentage().toString());
 		}
 	}
+	
+	/*public void testgetTopThreeCasteForPanchayat(){
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(11l);
+		
+		List<Object[]> values = voterCastInfoDAO.getTopThreeCasteForPanchayat(ids,3l,8l,1l);
+		for (Object[] parms : values) {
+			System.out.println(parms[0]  +":"+ parms[1] +":"+ parms[2] );
+		}
+	}*/
 }
