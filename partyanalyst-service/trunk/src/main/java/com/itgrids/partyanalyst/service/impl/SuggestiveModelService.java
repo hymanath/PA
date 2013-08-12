@@ -266,7 +266,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 			this.tehsilDAO = tehsilDAO;
 		}
-	public List<PanchayatVO> getVotersGroupDetails(List<SelectOptionVO> groupVos,Long constituencyId,Long locationId,String type,Long electionId,Long userId,List<Long> casteIds){
+	public List<PanchayatVO> getVotersGroupDetails(List<SelectOptionVO> groupVos,Long constituencyId,Long locationId,String type,List<Long> electionIds,Long userId,List<Long> casteIds){
 		
 		 List<PanchayatVO> panchayatVOList=new ArrayList<PanchayatVO>();
 
@@ -2758,10 +2758,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							range.setName(suggestiveRange.getName());
 							range.setMinValue(suggestiveRange.getMinValue());
 							range.setMaxValue(suggestiveRange.getMaxValue());
+							range.setTempVar(suggestiveRange.getColor());							
 							newRange = new PartyPositionVO();
 							newRange.setName(suggestiveRange.getName());
 							newRange.setMinValue(suggestiveRange.getMinValue());
 							newRange.setMaxValue(suggestiveRange.getMaxValue());
+							newRange.setTempVar(suggestiveRange.getColor());
 							rangeList.add(range);
 							rangeList1.add(newRange);
 							
