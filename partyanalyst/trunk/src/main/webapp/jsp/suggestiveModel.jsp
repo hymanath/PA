@@ -423,6 +423,10 @@ function callAjax(param,jsObj,url){
 						if(o.responseText)
 							myResults = YAHOO.lang.JSON.parse(o.responseText);
 						
+						if(jsObj.task == "getCasteDetails")
+						{
+							buildCasteDetails(myResults);
+						}
 						if(jsObj.task == "getElectionYears")
 						{
 							populateElectionYearDropdown(myResults);
@@ -923,7 +927,7 @@ function showSuggestedLocations(myResults,jsObj){
 
 
 <div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;float: left; width: 980px;">
-<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();"/>
+<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();"/>
 
 <img src="images/icons/search.gif" id="ajaxImg" style="display:none;"/>
 <!--<img src="images/icons/loading.gif" id="ajaxLoaderImg" height="25px" width="25px;" style="display:none;"/>-->
@@ -934,6 +938,9 @@ function showSuggestedLocations(myResults,jsObj){
 
 <div id="leadersTable"></div>
 <div id="leadersTable1"></div>
+<div class="widget blue">
+<div id="leadersTable2" class="widget-block" style="background: none repeat scroll 0% 0% white; overflow: scroll; width: 950px;"></div>
+</div>
 <div id="suggestedLocationsDiv"></div>
 <div id="partyPerformanceMainDiv">
    <div id="partyPerformanceInnerDiv"></div>
@@ -1492,6 +1499,95 @@ function showPartyPerformancePieChart(result,jsObj)
 }
 
 //getDeletedVotersInfo();
+function casteDetailsByPanchayatId(){
+	var constituencyId = $('#listConstituencyNames option:selected').val();
+	var candidateCastes = $('#candidateCastes').val();
+	 
+var jsObj= 
+	{	
+		constituencyId:constituencyId,
+		candidateCastes:candidateCastes,
+		publicationId:8,
+		task:"getCasteDetails"		
+	};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getCasteDetailsByPanchayatAction.action?"+param;
+	callAjax(param,jsObj,url);
+}
+function buildCasteDetails(results){
+var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
+	if(results != null && results.length > 0)
+	{
+		var str = "";
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' MUNCIPALITY HAMLET LEVEL CASTE DETAILS </h4>';
+		str += '<table class="table table-hover table-bordered" style="color: black; font-family: verdana; font-size: 12px; font-weight: lighter; margin-top: 15px;">';
+		str += '<tr>';
+		str += '<th>Mandal</th>';
+		str += '<th>Panchayat</th>';
+		str += '<th>Total Voters</th>';
+		str += '<th>Major Castes</th>';
+		str += '<th>Selected Castes</th>';
+		str += '<th>Hamlet</th>';
+		str += '<th>Total Voters</th>';
+		str += '<th>Major Castes</th>';
+		str += '<th>Selected Castes</th>';
+		str += '</tr>';
+		for(var i in results)
+		{
+			
+			str += '<tr>';
+			var rowLength = results[i].hamletVoterInfo.length;
+			str += '<td rowspan='+rowLength+'>'+results[i].mandalName+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].name+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].count+'</td>'; 
+			str += '<td rowspan='+rowLength+' >';
+			for(var j in results[i].panchayatVoterInfo)
+			{
+				str += ''+results[i].panchayatVoterInfo[j].casteName +'('+results[i].panchayatVoterInfo[j].persent+')  '; 
+			}
+			str += '</td>';
+
+			str += '<td rowspan='+rowLength+' >';
+			for(var j in results[i].selectedCasteDetails)
+			{
+				str += ''+results[i].selectedCasteDetails[j].casteName +'('+results[i].selectedCasteDetails[j].persent+')  '; 
+			}
+			str += '</td>';
+
+			for(var k in results[i].hamletVoterInfo)
+			{
+				if(k > 0)
+				{
+					str += '<tr>';
+				}
+				str += '<td>'+results[i].hamletVoterInfo[k].name+'</td>';
+				str += '<td>'+results[i].hamletVoterInfo[k].count+'</td>';
+				str += '<td>';
+				for(var m in results[i].hamletVoterInfo[k].hamletCasteInfo)
+				{
+					str += ''+results[i].hamletVoterInfo[k].hamletCasteInfo[m].name+'('+results[i].hamletVoterInfo[k].hamletCasteInfo[m].persent+')  '; 
+				}
+					str += '</td>';
+
+				str += '<td>';
+				for(var m in results[i].hamletVoterInfo[k].selectedCasteDetails)
+				{
+					str += ''+results[i].hamletVoterInfo[k].selectedCasteDetails[m].name+'('+results[i].hamletVoterInfo[k].selectedCasteDetails[m].persent+')  '; 
+				}
+					str += '</td>';
+
+				if(k > 0)
+				{
+					str += '</tr>';
+				}
+			}
+			str += '</tr>';
+		}
+		str += '</table>';
+		$('#leadersTable2').html(str);
+	}
+}
+//casteDetailsByPanchayatId();
 
 var count=0;
 	$('#addMoreBtn').click(function(){
