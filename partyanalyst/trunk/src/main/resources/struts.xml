@@ -5729,5 +5729,12 @@
 		   <param name="root">resultMap</param>
 		 </result>	
 		 </action>
+		 
+		 <action name="getCasteDetailsByPanchayatAction" class="suggestiveModelAction" method="getCasteDetails">
+		  <result type="json" name="success">
+		   <param name="root">hamletDetails</param>
+		 </result>	
+		 </action>
+		 
 		</package>
 </struts>      
