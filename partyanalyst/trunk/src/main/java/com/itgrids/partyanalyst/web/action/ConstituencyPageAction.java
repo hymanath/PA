@@ -1,5 +1,6 @@
 /* 
  * Copyright (c) 2009 IT Grids.
+
  * All Rights Reserved.
  *
  * IT Grids Confidential Information.
@@ -779,7 +780,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		String[] extraInfo = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
 		String cPath = request.getContextPath();
 		int i=0;
-		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
+	/*	for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
 			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+".png";
 			//For Charts
 			if(cPath.contains("PartyAnalyst"))
@@ -809,7 +810,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		}
 		
 		constituencyVO.setPieChartNames(chartNames);
-		constituencyVO.setExtraInfo(extraInfo);
+		constituencyVO.setExtraInfo(extraInfo);*/
 		candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId);
 		
 		List<Long> listOfConstituencies = new ArrayList<Long>();
@@ -829,8 +830,8 @@ public class ConstituencyPageAction extends ActionSupport implements
 			System.out.println("Inside trendz service call ....");
 			electionTrendzReportVO = electionTrendzService.getVotingTrendzForAConstituency(electionBasicInfoVO.getElectionId(),electionBasicInfoVO.
 					getElectionTypeId(),electionBasicInfoVO.getElectionYear(),constituencyId,IConstants.MALETRENDZ,IConstants.FEMALETRENDZ);
-			if(electionTrendzReportVO != null)
-			getMapsForVotingTrendz(electionTrendzReportVO);
+			/*if(electionTrendzReportVO != null)
+			getMapsForVotingTrendz(electionTrendzReportVO);*/
 			electionTrendzReportVO.setPrevElectionYearsInfo(electionTrendzService.getPreviousElectionsInfoForAConstituency(electionBasicInfoVO.
 					getElectionYear(), constituencyId));
            }
@@ -1385,7 +1386,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		
 		log.debug("Creating Charts For " + candName);
 		
-		String wonCandChartIdNew = candName.concat("VotingTrendz").concat("PieChart");
+		/*String wonCandChartIdNew = candName.concat("VotingTrendz").concat("PieChart");
  		String wonCandChartNameNew = "candOverallVotesPercentChart_" + wonCandChartIdNew + session.getId() +".png";
  		
  		String wonCandChartPathNew;
@@ -1412,14 +1413,14 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	 	else 
 	 		wonCandVotesChartPath = IWebConstants.CHART_URL_IN_SERVER + wonCandVotesChartName;
 	 	
-	 	   ChartProducer.createPieChart("", createPieDataSetForCandidateVotes(maleLabelForVoting,femaleLabelForVotingPercent,maleOrFemaleLabelForVotingPercent,candTotPercent,maleVotesPercentInConstiVotes,femaleVotesPercentInConstiVotes,maleOrFemaleVotesPercentInConstiVotes), wonCandVotesChartPath);
+	 	  // ChartProducer.createPieChart("", createPieDataSetForCandidateVotes(maleLabelForVoting,femaleLabelForVotingPercent,maleOrFemaleLabelForVotingPercent,candTotPercent,maleVotesPercentInConstiVotes,femaleVotesPercentInConstiVotes,maleOrFemaleVotesPercentInConstiVotes), wonCandVotesChartPath);
            request.setAttribute("wonCandVotesChartName", wonCandVotesChartName);
 	       session.setAttribute("wonCandVotesChartName", wonCandVotesChartName);
 	       
 	       candidateVotingTrendzCharts = new CandidateVotingTrendzCharts();
 	       
 	       candidateVotingTrendzCharts.setCandOverallVotesPercent(wonCandVotesChartName);
-	       candidateVotingTrendzCharts.setCandVotingTrendz(wonCandChartNameNew);
+	       candidateVotingTrendzCharts.setCandVotingTrendz(wonCandChartNameNew);*/
 		
 		return Action.SUCCESS;
   }
@@ -1443,8 +1444,8 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			System.out.println("Inside trendz service call ....");
 			electionTrendzReportVO = electionTrendzService.getVotingTrendzForAConstituency(electionBasicInfoVO.getElectionId(),electionBasicInfoVO.getElectionTypeId(),electionBasicInfoVO.getElectionYear(),new Long(232),IConstants.MALETRENDZ,IConstants.FEMALETRENDZ);
 			
-			if(electionTrendzReportVO != null)
-				getMapsForVotingTrendz(electionTrendzReportVO);
+			/*if(electionTrendzReportVO != null)
+				getMapsForVotingTrendz(electionTrendzReportVO);*/
 		}
 		return Action.SUCCESS;
   }
@@ -1476,14 +1477,14 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			if(jObj.getString("task").equalsIgnoreCase("getZptcElectionResults")){
 				try{
 					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE,jObj.getString("constituencyType"));
-					createPieChartForElectionTypeNElectionYear(constituencyWiseAllPartyTrends,jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE);
+					//createPieChartForElectionTypeNElectionYear(constituencyWiseAllPartyTrends,jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE);
 					}catch(Exception ex){
 					log.debug("No data is available...");
 				}
 			}else if(jObj.getString("task").equalsIgnoreCase("getMptcElectionResults")){
 				try{
 					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.MPTC_ELECTION_TYPE,jObj.getString("constituencyType"));
-					createPieChartForElectionTypeNElectionYear(constituencyWiseAllPartyTrends,jObj.getString("electionYear"),IConstants.MPTC_ELECTION_TYPE);
+					//createPieChartForElectionTypeNElectionYear(constituencyWiseAllPartyTrends,jObj.getString("electionYear"),IConstants.MPTC_ELECTION_TYPE);
 					}catch(Exception ex){
 					log.debug("No data is available...");
 				}
@@ -1719,7 +1720,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 				, jObj.getString("electionYear"),new Boolean(includeOthers));
 		if(constituencyRevenueVillagesVO != null && constituencyRevenueVillagesVO.getCandidateNamePartyAndStatus() != null && constituencyRevenueVillagesVO.getCandidateNamePartyAndStatus().size() > 0 &&
 				constituencyRevenueVillagesVO.getConstituencyOrMandalWiseElectionVO() != null && constituencyRevenueVillagesVO.getConstituencyOrMandalWiseElectionVO().size() > 0){
-		if(constituencyRevenueVillagesVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+		/*if(constituencyRevenueVillagesVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			chartName = "partyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 			chartTitle = "Mandal Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
 			domainAxisName = "Mandals";
@@ -1757,7 +1758,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 
         constituencyRevenueVillagesVO.setDetailedChartPath(detailedChartName);
         partiesInChart = new LinkedHashSet<String>();
-        ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),true);   
+        ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),true); */  
 		}
 		
 	  return SUCCESS;
