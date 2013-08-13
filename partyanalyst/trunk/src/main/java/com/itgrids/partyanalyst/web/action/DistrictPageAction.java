@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.awt.Color;
+
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -8,7 +9,10 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -598,22 +602,22 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		}else{
 			type = jObj.getString("electionType");
 		}
-		String chartName = "allPartiesDistrictWisePerformanceIn"+type+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
+		/*String chartName = "allPartiesDistrictWisePerformanceIn"+type+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
 		if(cPath.contains("PartyAnalyst"))
 			chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		else
 		    chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
-        districtWisePartyResultVO.setChartPath(chartName);
+        districtWisePartyResultVO.setChartPath(chartName);*/
         String electionType = jObj.getString("electionType");
         //Set<Color> colorsSet = null;
         
         if(electionType.equalsIgnoreCase("Select Election Type"))
         	electionType = "All ";
         //colorsSet = new LinkedHashSet<Color>();
-        ChartColorsAndDataSetVO chartColorsAndDataSetVO1 = createDataset(allElectionResults);
+       /* ChartColorsAndDataSetVO chartColorsAndDataSetVO1 = createDataset(allElectionResults);
          
-        ChartProducer.createLineChart("All Parties Performance In "+electionType+" Elections Of "+jObj.getString("districtName")
+       ChartProducer.createLineChart("All Parties Performance In "+electionType+" Elections Of "+jObj.getString("districtName")
         		+" District", "Elections", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO1.getDataSet(), chartPath, 260, 700, new ArrayList<Color>(chartColorsAndDataSetVO1.getColorsSet()),false);	
 		
 		//For Detailed Chart
@@ -624,15 +628,15 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         else
             detailedChartPath = IWebConstants.CHART_URL_IN_SERVER + detailedChartName;
         
-        districtWisePartyResultVO.setDetailedChartPath(detailedChartName);
+        districtWisePartyResultVO.setDetailedChartPath(detailedChartName);*/
         String detailedChartElectionType = jObj.getString("electionType").toUpperCase();
         if(detailedChartElectionType.equalsIgnoreCase("Select Election Type"))
         	detailedChartElectionType = "All ";
         //colorsSet = new LinkedHashSet<Color>();
-        ChartColorsAndDataSetVO chartColorsAndDataSetVO2 = createDataset(allElectionResults);
+    /*    ChartColorsAndDataSetVO chartColorsAndDataSetVO2 = createDataset(allElectionResults);
         ChartProducer.createLineChart("All Parties Performance In "+detailedChartElectionType+" Elections Of "+jObj.getString("districtName")
         		+" District", "Elections", "Percentages", (DefaultCategoryDataset) chartColorsAndDataSetVO2.getDataSet(), detailedChartPath, 600, 800, new ArrayList<Color>(chartColorsAndDataSetVO2.getColorsSet()),false);	
-
+*/
         
 		
         return SUCCESS;
@@ -835,6 +839,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         allPartiesPositionsInElection.setPasitionsChart(chartName);
         ChartProducer.createLineChart("All Parties Positions In "+jObj.getString("electionTypeYear")+" Of "+jObj.getString("districtName")
         		+" District", "Positions", "No. Of Seats", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath, 260, 400, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),false);
+	
 		return SUCCESS;
 	}
 
