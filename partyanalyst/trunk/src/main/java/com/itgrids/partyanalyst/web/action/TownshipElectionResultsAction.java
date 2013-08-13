@@ -235,7 +235,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 			allElectionYears.add(0, selectOptionVO);
 		}
 		for(ConstituencyRevenueVillagesVO constituencyObj:townshipWiseElectionResults){
-			String chartName = null;
+			/*String chartName = null;
 			String chartPath = "";
 			
 			if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
@@ -246,10 +246,10 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 			if(cPath.contains("PartyAnalyst"))
 				chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			else
-				chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
+				chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;*/
 	        Set<String> partiesInChart = new LinkedHashSet<String>();
 	        
-	        if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
+	      /*  if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
 	        	ChartProducer.createLineChartWithThickness("All Parties Performance In "+electionType+" "+electionYear + 
 		        		" In "+constituencyObj.getConstituencyName()+" Constituency By Panchayats In "+mandalName+" ", 
 		        		"Panchayats", "Percentages", createDataset(constituencyObj, partiesInChart), chartPath,600,1000, ChartUtils.getLineChartColors(partiesInChart),true);
@@ -258,7 +258,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	        		" In "+constituencyObj.getConstituencyName()+" Constituency By Revenue Villages In "+mandalName+" ", 
 	        		"Revenue Villages", "Percentages", createDataset(constituencyObj, partiesInChart), chartPath,600,1000, ChartUtils.getLineChartColors(partiesInChart),true);
 	        
-	        constituencyObj.setChartPath(chartName);
+	        constituencyObj.setChartPath(chartName);*/
 		}
 		
 		
@@ -267,7 +267,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		else
 			townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionId.toString());		
 		
-		createPieChartsForTownshipVotingTrends(new Long(tehsilId),electionId.toString());	
+		//createPieChartsForTownshipVotingTrends(new Long(tehsilId),electionId.toString());	
 		return SUCCESS;
 	}
 	
