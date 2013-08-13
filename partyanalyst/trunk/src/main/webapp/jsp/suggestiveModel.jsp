@@ -268,7 +268,7 @@ function clearAll(){
 	$('#titleageGroupBoothTableId1').css("display","none");
 	$('#titleageGroupTableId1').css("display","none");
 	$('#panchayatWisePollingPercMainDiv').css("display","none");
-	
+	$('#leadersTable2').css("display","none");
 
 }
 function getPartyDetails(mandalId){
@@ -329,7 +329,7 @@ function getPartyDetails(mandalId){
 			var url = "<%=request.getContextPath()%>/getElectionsYearsForParties.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
 	}
-function validateYear1(yearId){
+function validateYear1(yearId,yearValue){
 	$('#errorMsgDiv').html('');
 		$("#electionYearSelectEl1").css("border","1px solid lightBlue");
 	if(yearId == 0){
@@ -337,7 +337,26 @@ function validateYear1(yearId){
 		$('#errorMsgDiv').html('Please Select Election Years');
 		return;
 	}
-	
+
+var select = new Array();
+$('#electionYearSelectEl2 option').each(function(){
+	if(yearValue > $(this).text())
+		{
+		 var obj = {
+			 id : $(this).val(),
+			 name : $(this).text()
+		}
+	select.push(obj);
+	}
+});
+
+	$('#electionYearSelectEl2').children().remove();
+	$('<option>').val(0).text('Select Year').appendTo('#electionYearSelectEl2');
+
+for(var i=0;i<select.length;i++)
+	{	 					$('<option>').val(''+select[i].id+'').text(''+select[i].name+'').appendTo('#electionYearSelectEl2');
+	}
+
 }
 
 function validateYear2(yearId){
@@ -867,7 +886,7 @@ function showSuggestedLocations(myResults,jsObj){
 				Election Year :<font id="requiredValue" class="requiredFont">*</font> 
 			</td>		
 			<td>
-				<select id="electionYearSelectEl1" onchange="validateYear1(this.options[this.selectedIndex].value)">
+				<select id="electionYearSelectEl1" onchange="validateYear1(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);">
 				<option value="0"> Select Year </option>
 				</select>
 			</td>
@@ -904,7 +923,7 @@ function showSuggestedLocations(myResults,jsObj){
 		</div>
 		<div class="toDiv">
 			To
-			<div class="inputDiv"><input type="text" id="toTxt" class="toInput" style="width:80px;" value="23"/></div>
+			<div class="inputDiv"><input type="text" id="toTxt" class="toInput" style="width:80px;" value="22"/></div>
 		</div>
 		<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
 	</div>
@@ -938,9 +957,9 @@ function showSuggestedLocations(myResults,jsObj){
 
 <div id="leadersTable"></div>
 <div id="leadersTable1"></div>
-<div class="widget blue">
-<div id="leadersTable2" class="widget-block" style="background: none repeat scroll 0% 0% white; overflow: scroll; width: 950px;"></div>
-</div>
+
+<div id="leadersTable2"></div>
+
 <div id="suggestedLocationsDiv"></div>
 <div id="partyPerformanceMainDiv">
    <div id="partyPerformanceInnerDiv"></div>
@@ -1518,7 +1537,10 @@ function buildCasteDetails(results){
 var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
 	if(results != null && results.length > 0)
 	{
+		$("#leadersTable2").css("display","block");
 		var str = "";
+		str+='<div class="widget blue">';
+		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
 		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY HAMLET LEVEL CASTE DETAILS </h4>';
 		str += '<table class="table table-hover table-bordered" style="color: black; font-family: verdana; font-size: 12px; font-weight: lighter; margin-top: 15px;">';
 		str += '<tr>';
@@ -1584,6 +1606,8 @@ var constituencyName = $('#listConstituencyNames option:selected').text().toUppe
 			str += '</tr>';
 		}
 		str += '</table>';
+		str += '</div>';
+		str += '</div>';
 		$('#leadersTable2').html(str);
 	}
 }
