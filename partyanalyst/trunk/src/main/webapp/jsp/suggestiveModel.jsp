@@ -473,6 +473,7 @@ function callAjax(param,jsObj,url){
 							buildAddedVotersDetails(myResults);
 							showPartyPerformancePieChart(myResults,jsObj);
 							showSuggestedLocations(myResults,jsObj);
+							panchayatMatrx(myResults);
 						}
 						else if(jsObj.task == "getLeadersList")
 						{
@@ -829,6 +830,69 @@ function showSuggestedLocations(myResults,jsObj){
  $("#suggestedLocationsDiv").html(str);
 }
 
+function panchayatMatrx(result)
+{
+	//alert(123);
+	debugger;
+	var latestYearDetails = result[0].partyPositionVOList.reverse();
+	//console.log(latestYearDetails);
+	var preYearDetails = result[1].partyPositionVOList.reverse();
+	//console.log(preYearDetails);
+	var pachayatIds = new Array();
+	var partyName = $('#partySelectEl option:selected').text();
+	var str = '';
+	str+='<div class="widget green">';
+	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">PANCHAYAT WISE '+partyName+' PARTY PERFORMANCE REPORT</h4>';
+	str += '<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
+	str += '<tr>';
+	str += '<th>';
+	var year = '';
+	for(var x in result)
+	{
+		year += result[x].name + '/';
+		
+	}
+	str += ''+year.slice(0,-1)+'</th>';
+	for(var a in latestYearDetails)
+	{
+		str += '<th style="background: none repeat scroll 0% 0% '+latestYearDetails[a].tempVar+';">'+latestYearDetails[a].name+'</th>';	
+	}
+	str += '</tr>';
+
+	for(var i in latestYearDetails)
+	{
+		str += '<tr>';
+		str += '<td style="background: none repeat scroll 0% 0% '+latestYearDetails[i].tempVar+';">'+latestYearDetails[i].name+'</td>';
+		var latestYearPanchayatData = latestYearDetails[i].partyPositionVOList;
+		for(var j in preYearDetails)
+		{
+			str += '<td>';
+			var preYearPanchayatData = preYearDetails[j].partyPositionVOList;
+			for(var m in latestYearPanchayatData)
+			{
+				
+				for(var n in preYearPanchayatData)
+				{
+					if(latestYearPanchayatData[m].id == preYearPanchayatData[n].id)
+					{
+						str += latestYearPanchayatData[m].name +'</br>';
+					}
+				}
+				
+			}
+			str += '</td>';
+		} 
+		str += '</tr>';
+	}
+	str += '</table>';
+	str += '</div>';
+	str += '</div>';
+	//alert(str);
+	$('#matrixDiv').html(str);
+	//console.log(pachayatIds);
+	//alert(pachayatIds);
+}
 </script>
 </head>
 <body>
@@ -960,11 +1024,17 @@ function showSuggestedLocations(myResults,jsObj){
 
 <div id="leadersTable2"></div>
 
+<div id="matrixDiv"></div>
 <div id="suggestedLocationsDiv"></div>
+<div class="widget green" id="panchayatWisePollingPercMainDiv" style="display:none;">
+  <div id="panchayatWisePollingPercHeadingDiv"></div>
+  <div id="panchayatWisePollingPercentageDiv" class="row-fluid"></div>
+</div>
 <div id="partyPerformanceMainDiv">
    <div id="partyPerformanceInnerDiv"></div>
    <div id="partyPerformanceBoothDiv" style="display:none;"></div>
 </div>
+
 <div id="strongPollingPerDiv" class="row-fluid" style="display:none;">
     <div id="strongPollingPercentageDiv" class="span6"></div>
 </div>
@@ -974,10 +1044,7 @@ function showSuggestedLocations(myResults,jsObj){
 <div id="addedVotesDib" class="row-fluid">
 <div id="addedVoterDetailsDiv" class="span6"></div>
 </div>
-<div class="widget green" id="panchayatWisePollingPercMainDiv" style="display:none;">
-  <div id="panchayatWisePollingPercHeadingDiv"></div>
-  <div id="panchayatWisePollingPercentageDiv" class="row-fluid"></div>
-</div>
+
 <!--<div id="deletedVotersInfo">
 
 </div>-->
