@@ -2309,8 +2309,8 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 			
 		}else if(locationType.equalsIgnoreCase("hamlet")){
 			
-			str.append("model.booth.hamlet.hamletId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
-			str.append(" model2.hamlet.hamletId  in (:locationId)  group by model.booth.hamlet.hamletId,");
+			str.append("model2.hamlet.hamletId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			str.append(" model2.hamlet.hamletId  in (:locationId)  group by model2.hamlet.hamletId,");
 		}
 		str.append("  model2.casteState.caste.casteId,model.voter.gender order by model2.casteState.caste.casteName ");
 		
