@@ -8376,7 +8376,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			}
 		 } 
 	  
-	  public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId)
+	  public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked)
 	  {
 		  log.info(" Entered into insertVotersDataInIntermediateTables() Method, with Values - Report Level Value - "+reportLevelValue+" and Publicarion Date Id - "+publicationDateId);
 		  ResultStatus resultStatus = new ResultStatus();
@@ -8389,9 +8389,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  List<Long> localBodiesList = new ArrayList<Long>(0);
 			  List<Long> boothIdsList = new ArrayList<Long>(0);
 			  
-			  calculateAndInsertVoterInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,null,publicationDateId,reportLevelValue);
-			  calculateAndInsertVoterFamilyInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,publicationDateId,reportLevelValue);
-			  calculateAndInsertVoterAgeInfoForALocation(IConstants.CONSTITUENCY, reportLevelValue, publicationDateId,reportLevelValue);
+			  calculateAndInsertVoterInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,null,publicationDateId,reportLevelValue,userId);
+			  calculateAndInsertVoterFamilyInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,publicationDateId,reportLevelValue,userId);
+			  calculateAndInsertVoterAgeInfoForALocation(IConstants.CONSTITUENCY, reportLevelValue, publicationDateId,reportLevelValue,userId);
 			  List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(reportLevelValue,IConstants.PRESENT_YEAR, null);
 			  
 			  if(mandalsList == null || mandalsList.size() == 0)
@@ -8416,16 +8416,16 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			 
 			  for(Long mandalId : mandalIdsList)
 			  {
-				  calculateAndInsertVoterInfoForALocation(IConstants.MANDAL,mandalId,reportLevelValue, publicationDateId,reportLevelValue);
-				  calculateAndInsertVoterFamilyInfoForALocation(IConstants.MANDAL,mandalId,publicationDateId,reportLevelValue);
-				  calculateAndInsertVoterAgeInfoForALocation(IConstants.MANDAL,mandalId,publicationDateId,reportLevelValue);
+				  calculateAndInsertVoterInfoForALocation(IConstants.MANDAL,mandalId,reportLevelValue, publicationDateId,reportLevelValue,userId);
+				  calculateAndInsertVoterFamilyInfoForALocation(IConstants.MANDAL,mandalId,publicationDateId,reportLevelValue,userId);
+				  calculateAndInsertVoterAgeInfoForALocation(IConstants.MANDAL,mandalId,publicationDateId,reportLevelValue,userId);
 			  }
 			  
 			  for(SelectOptionVO selectOptionVO : panchayatsList)
 			  {
-				  calculateAndInsertVoterInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue);
-				  calculateAndInsertVoterFamilyInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),publicationDateId,reportLevelValue);
-				  calculateAndInsertVoterAgeInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),publicationDateId,reportLevelValue);
+				  calculateAndInsertVoterInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue,userId);
+				  calculateAndInsertVoterFamilyInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),publicationDateId,reportLevelValue,userId);
+				  calculateAndInsertVoterAgeInfoForALocation(IConstants.PANCHAYAT,selectOptionVO.getId(),publicationDateId,reportLevelValue,userId);
 				  panchayatIdsList.add(selectOptionVO.getId());
 			  }
 			  
@@ -8463,9 +8463,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  {
 				  for(Long localBodyId : localBodiesList)
 				  {
-					  calculateAndInsertVoterInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,reportLevelValue, publicationDateId,reportLevelValue);
-					  calculateAndInsertVoterFamilyInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,publicationDateId,reportLevelValue);
-					  calculateAndInsertVoterAgeInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,publicationDateId,reportLevelValue);
+					  calculateAndInsertVoterInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,reportLevelValue, publicationDateId,reportLevelValue,userId);
+					  calculateAndInsertVoterFamilyInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,publicationDateId,reportLevelValue,userId);
+					  calculateAndInsertVoterAgeInfoForALocation(IConstants.LOCALELECTIONBODY,localBodyId,publicationDateId,reportLevelValue,userId);
 				  }
 				  List<Object[]> list3 = boothDAO.getBoothIdsInLocalBodiesForAPublication(localBodiesList,publicationDateId,reportLevelValue);
 				  
@@ -8479,9 +8479,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
                for(SelectOptionVO selectOptionVO:wardsList){
 				  
 				  calculateAndInsertVoterInfoForALocation(
-						  IConstants.WARD,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue);
-				  calculateAndInsertVoterFamilyInfoForALocation(IConstants.WARD,new Long(selectOptionVO.getId()),publicationDateId,reportLevelValue);
-				  calculateAndInsertVoterAgeInfoForALocation(IConstants.WARD,new Long(selectOptionVO.getId()),publicationDateId,reportLevelValue);
+						  IConstants.WARD,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue,userId);
+				  calculateAndInsertVoterFamilyInfoForALocation(IConstants.WARD,new Long(selectOptionVO.getId()),publicationDateId,reportLevelValue,userId);
+				  calculateAndInsertVoterAgeInfoForALocation(IConstants.WARD,new Long(selectOptionVO.getId()),publicationDateId,reportLevelValue,userId);
 			 
   
 				  
@@ -8499,9 +8499,31 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					  selectOptionVO = optionVO;
 					  break;
 				  }
-				  calculateAndInsertVoterInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue);
-				  calculateAndInsertVoterFamilyInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),publicationDateId,reportLevelValue);
-				  calculateAndInsertVoterAgeInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),publicationDateId,reportLevelValue);
+				  calculateAndInsertVoterInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),new Long(selectOptionVO.getName()), publicationDateId,reportLevelValue,userId);
+				  calculateAndInsertVoterFamilyInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),publicationDateId,reportLevelValue,userId);
+				  calculateAndInsertVoterAgeInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),publicationDateId,reportLevelValue,userId);
+			  }
+			  List<Object[]> hamlets = null;
+			  List<SelectOptionVO> hamletList = new ArrayList<SelectOptionVO>();
+			  if(hamletChecked)
+			  {
+			  if(panchayatIdsList.size() > 0)
+			  {
+				  hamlets =panchayatHamletDAO.getHamletsOfPanchayats(panchayatIdsList); 
+			  }
+			  
+			  if(hamlets != null && hamlets.size() > 0)
+			  {
+				  for(Object[] params :hamlets)
+					  hamletList.add(new SelectOptionVO((Long)params[0],params[1].toString())); 
+				  if(hamletList != null && hamletList.size() > 0)
+					  for(SelectOptionVO option : hamletList)
+					  {
+				  calculateAndInsertVoterInfoForALocation(IConstants.HAMLET,option.getId(),new Long(option.getName()), publicationDateId,reportLevelValue,userId);
+				  calculateAndInsertVoterFamilyInfoForALocation(IConstants.HAMLET,option.getId(),publicationDateId,reportLevelValue,userId);
+				  calculateAndInsertVoterAgeInfoForALocation(IConstants.HAMLET,option.getId(),publicationDateId,reportLevelValue,userId);
+					  }
+			  }
 			  }
 			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			  return resultStatus;
@@ -8512,13 +8534,16 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		  }
 	  }
 	  
-	  public ResultStatus calculateAndInsertVoterInfoForALocation(String locationType, Long locationValue, Long parentLocationId, Long publicationDateId,Long constituencyId)
+	  public ResultStatus calculateAndInsertVoterInfoForALocation(String locationType, Long locationValue, Long parentLocationId, Long publicationDateId,Long constituencyId,Long userId)
 	  {
 		  log.info(" Entered into calculateAndInsertVoterInfoForALocation() Method, with Values - Location Type - "+locationType+" - Location Value - "+locationValue+", Parent Location Id - "+parentLocationId+" and Publicarion Date Id - "+publicationDateId);
 		  ResultStatus resultStatus = new ResultStatus();
+		  List<Object[]> resultList = null;
 		  try{
-			  List<Object[]> resultList = boothPublicationVoterDAO.findVotersGenderWiseCountByPublicationIdInALocation(locationType,locationValue, publicationDateId,constituencyId);
-			  
+			  if(!locationType.equalsIgnoreCase(IConstants.HAMLET))
+			  resultList = boothPublicationVoterDAO.findVotersGenderWiseCountByPublicationIdInALocation(locationType,locationValue, publicationDateId,constituencyId);
+			  else
+				resultList = boothPublicationVoterDAO.getVotersCountForHamlet(locationValue,userId,publicationDateId);
 			  if(resultList != null && resultList.size() > 0)
 			  {
 				  VotersInfoForMandalVO votersInfo = new VotersInfoForMandalVO();
@@ -8534,7 +8559,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				  votersInfo.setTotalVoters(totalVoters.toString());
 				  votersInfo.setTotalMalePercentage(new BigDecimal((new Double(votersInfo.getTotalMaleVoters())*100)/totalVoters).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				  votersInfo.setTotalFemalePercentage(new BigDecimal((new Double(votersInfo.getTotalFemaleVoters())*100)/totalVoters).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				  votersInfo.setTotalFamilies(getFamiliesCountInALocation(locationType,locationValue,publicationDateId));
+				  votersInfo.setTotalFamilies(getFamiliesCountInALocation(locationType,locationValue,publicationDateId,userId));
 				  votersInfo.setConstituencyId(constituencyId);
 				  
 				  if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
@@ -8578,6 +8603,13 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					  Long parentTotalfamilies = voterInfoDAO.getFamiliesCountInALocation(getReportLevelId(lType), parentLocationId, publicationDateId,constituencyId);
 					  votersInfo.setTotalFamilyPercentage(new BigDecimal((new Double(votersInfo.getTotalFamilies())*100)/parentTotalfamilies).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				  }
+				  else if(locationType.equalsIgnoreCase(IConstants.HAMLET))
+				  {
+					  Long parentTotalVoters = voterInfoDAO.getVotersCountInALocation(getReportLevelId(IConstants.PANCHAYAT),parentLocationId,publicationDateId,constituencyId);
+					  votersInfo.setTotalVotersPercentage(new BigDecimal((new Double(votersInfo.getTotalVoters())*100)/parentTotalVoters).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					  Long parentTotalfamilies = voterInfoDAO.getFamiliesCountInALocation(getReportLevelId(IConstants.PANCHAYAT), parentLocationId, publicationDateId,constituencyId);
+					  votersInfo.setTotalFamilyPercentage(new BigDecimal((new Double(votersInfo.getTotalFamilies())*100)/parentTotalfamilies).setScale(2, BigDecimal.ROUND_HALF_UP).toString());  
+				  }
 				  saveVotersDataInVoterInfoTable(votersInfo);
 			  }
 			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -8590,12 +8622,17 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		  }
 	  }
 	  
-	  public Long getFamiliesCountInALocation(String locationType, Long locationValue,  Long publicationDateId)
+	  public Long getFamiliesCountInALocation(String locationType, Long locationValue,  Long publicationDateId,Long userId)
 	  {
 		  log.info("Entered into getFamiliesCountInALocation method with Values, Location Type - "+locationType+" - Location Value - "+locationValue+" and Publicarion Date Id - "+publicationDateId);
 		  Long familiesCount = 0L;
+		  List<Long> familiesCountList = null;
 		  try{
-			  List<Long> familiesCountList = boothPublicationVoterDAO.findFamiliesCountByPublicationIdInALocation(locationType,locationValue,publicationDateId);
+			  if(!locationType.equalsIgnoreCase(IConstants.HAMLET))
+			  familiesCountList = boothPublicationVoterDAO.findFamiliesCountByPublicationIdInALocation(locationType,locationValue,publicationDateId);
+			  else
+				  familiesCountList = boothPublicationVoterDAO.findFamiliesCountByPublicationIdInAHamlet(locationValue,publicationDateId,userId);
+			  if(familiesCountList != null && familiesCountList.size() > 0)
 			  for(Long fCount : familiesCountList)
 				  familiesCount = familiesCount + fCount;
 			  return familiesCount;
@@ -8644,10 +8681,11 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 	  
 	  /** -- Voter Family Info --**/
 	  
-	  public ResultStatus calculateAndInsertVoterFamilyInfoForALocation(String locationType, Long locationValue,  Long publicationDateId, Long constituencyId)
+	  public ResultStatus calculateAndInsertVoterFamilyInfoForALocation(String locationType, Long locationValue,  Long publicationDateId, Long constituencyId,Long userId)
 	  {
 		  log.info("Entered into calculateAndInsertVoterFamilyInfoForALocation method with Values, Location Type - "+locationType+" - Location Value - "+locationValue+" and Publicarion Date Id - "+publicationDateId);
 		  ResultStatus resultStatus = new ResultStatus();
+		  List<Long> list = new ArrayList<Long>(0);
 		  try{
 			  ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
 			  
@@ -8655,8 +8693,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  importantFamiliesInfoVo.setReportLevelValue(locationValue);
 			  importantFamiliesInfoVo.setPublicationDateId(publicationDateId);
 			  importantFamiliesInfoVo.setConstituencyId(constituencyId);
-			  
-			  List<Long> list = boothPublicationVoterDAO.getAllImpFamilesCount(locationType, locationValue, publicationDateId,constituencyId);
+			  if(!locationType.equalsIgnoreCase(IConstants.HAMLET))
+			 list = boothPublicationVoterDAO.getAllImpFamilesCount(locationType, locationValue, publicationDateId,constituencyId);
+			  else
+			 list = boothPublicationVoterDAO.getAllImpFamilesCountForHamlet(locationValue, publicationDateId,userId);  
 			  
 			  if(list == null || list.size() == 0)
 				  return null;
@@ -8739,13 +8779,16 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		}
 	  }
 	  
-	  public ResultStatus calculateAndInsertVoterAgeInfoForALocation(String locationType, Long locationValue,  Long publicationDateId, Long constituencyId)
+	  public ResultStatus calculateAndInsertVoterAgeInfoForALocation(String locationType, Long locationValue,  Long publicationDateId, Long constituencyId,Long userId)
 	  {
 		  log.info("Entered into calculateAndInsertVoterAgeInfoTable Method with locationType - "+locationType+" locationValue - "+locationValue+" publicationDateId - "+publicationDateId);
 		  ResultStatus resultStatus = new ResultStatus();
+		  Long totalVoters = 0l;
 		  try{
-			  Long totalVoters = voterInfoDAO.getTotalVotersByReportLevelValue(getReportLevelId(locationType),locationValue, publicationDateId,constituencyId);
-			  
+			  if(!locationType.equalsIgnoreCase(IConstants.HAMLET))
+			  totalVoters = voterInfoDAO.getTotalVotersByReportLevelValue(getReportLevelId(locationType),locationValue, publicationDateId,constituencyId);
+			  else
+				  totalVoters = boothPublicationVoterDAO.getTotalVotersCountForHamlet(userId,locationValue,publicationDateId,locationType); 
 			  if(totalVoters == null || totalVoters.longValue() == 0)
 				  return null;
 			  VoterAgeRangeVO voterAgeRangeVO = new VoterAgeRangeVO();
@@ -8756,19 +8799,19 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  voterAgeRangeVO.setTotalVoters(totalVoters);
 			  voterAgeRangeVO.setConstituencyId(constituencyId);
 			  
-			  voterAgeRangeVO = getVoterAgeInfoForAPerticularRange(voterAgeRangeVO,"18-25",18l,25l,constituencyId);
+			  voterAgeRangeVO = getVoterAgeInfoForAPerticularRange(voterAgeRangeVO,"18-25",18l,25l,constituencyId,userId);
 			  saveVotersDataInVoterAgeInfoTable(voterAgeRangeVO);
 			  
-			  voterAgeRangeVO = getVoterAgeInfoForAPerticularRange(voterAgeRangeVO,"26-35",26l,35l,constituencyId);
+			  voterAgeRangeVO = getVoterAgeInfoForAPerticularRange(voterAgeRangeVO,"26-35",26l,35l,constituencyId,userId);
 			  saveVotersDataInVoterAgeInfoTable(voterAgeRangeVO);
 			  
-			  voterAgeRangeVO = getVoterAgeInfoForAPerticularRange(voterAgeRangeVO,"36-45",36l,45l,constituencyId);
+			  voterAgeRangeVO = getVoterAgeInfoForAPerticularRange(voterAgeRangeVO,"36-45",36l,45l,constituencyId,userId);
 			  saveVotersDataInVoterAgeInfoTable(voterAgeRangeVO);
 			  
-			  voterAgeRangeVO = getVoterAgeInfoForAPerticularRange(voterAgeRangeVO,"46-60",46l,60l,constituencyId);
+			  voterAgeRangeVO = getVoterAgeInfoForAPerticularRange(voterAgeRangeVO,"46-60",46l,60l,constituencyId,userId);
 			  saveVotersDataInVoterAgeInfoTable(voterAgeRangeVO);
 			  
-			  voterAgeRangeVO = getVoterAgeInfoForAPerticularRange(voterAgeRangeVO,"60-Above",60l,null,constituencyId);
+			  voterAgeRangeVO = getVoterAgeInfoForAPerticularRange(voterAgeRangeVO,"60-Above",60l,null,constituencyId,userId);
 			  saveVotersDataInVoterAgeInfoTable(voterAgeRangeVO);
 			  
 			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -8814,14 +8857,20 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		}
 	  }
 	  
-	  public VoterAgeRangeVO getVoterAgeInfoForAPerticularRange(VoterAgeRangeVO voterAgeRangeVO, String range,Long ageFrom,Long ageTo,Long constituencyId)
+	  public VoterAgeRangeVO getVoterAgeInfoForAPerticularRange(VoterAgeRangeVO voterAgeRangeVO, String range,Long ageFrom,Long ageTo,Long constituencyId,Long userId)
 	  {
 		  log.info("Entered into getVoterAgeInfoForAPerticularRange()");
 		  try{
 			  voterAgeRangeVO.setAgeRangeId(getVoterAgeRangeId(range));
+			  if(!voterAgeRangeVO.getReportLevel().equals(IConstants.HAMLET))
 			  voterAgeRangeVO.setTotalVotersInARange(boothPublicationVoterDAO.getVotersCountInAAgeRange(voterAgeRangeVO.getReportLevel(), voterAgeRangeVO.getReportLevelValue(), voterAgeRangeVO.getPublicationDateId(),ageFrom,ageTo,null,constituencyId));
+			  else
+				  voterAgeRangeVO.setTotalVotersInARange(boothPublicationVoterDAO.getVotersCountInAAgeRangeByHamlet(voterAgeRangeVO.getReportLevelValue(), voterAgeRangeVO.getPublicationDateId(),userId,ageFrom,ageTo,null));  
 			  voterAgeRangeVO.setPercentage(new BigDecimal((voterAgeRangeVO.getTotalVotersInARange().doubleValue()*100)/voterAgeRangeVO.getTotalVoters().doubleValue()).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+			  if(!voterAgeRangeVO.getReportLevel().equals(IConstants.HAMLET))
 			  voterAgeRangeVO.setMaleVoters(boothPublicationVoterDAO.getVotersCountInAAgeRange(voterAgeRangeVO.getReportLevel(), voterAgeRangeVO.getReportLevelValue(), voterAgeRangeVO.getPublicationDateId(),ageFrom,ageTo,IConstants.MALE,constituencyId));
+			  else
+				  voterAgeRangeVO.setMaleVoters(boothPublicationVoterDAO.getVotersCountInAAgeRangeByHamlet(voterAgeRangeVO.getReportLevelValue(), voterAgeRangeVO.getPublicationDateId(),userId,ageFrom,ageTo,IConstants.MALE));  
 			  voterAgeRangeVO.setFemaleVoters(voterAgeRangeVO.getTotalVotersInARange()-voterAgeRangeVO.getMaleVoters());
 			  voterAgeRangeVO.setMalePercentage(new BigDecimal((voterAgeRangeVO.getMaleVoters().doubleValue()*100)/voterAgeRangeVO.getTotalVotersInARange().doubleValue()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
 			  voterAgeRangeVO.setFemalePercentage(new BigDecimal((voterAgeRangeVO.getFemaleVoters().doubleValue()*100)/voterAgeRangeVO.getTotalVotersInARange().doubleValue()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());

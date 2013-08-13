@@ -4465,4 +4465,53 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			 query.setParameterList("boothIds", boothIds);
 			 return query.list();
 		}
+		
+		
+		public List<Long> findFamiliesCountByPublicationIdInAHamlet(Long locationValue,Long publicationDateId,Long userId)
+		{
+			Query query = getSession().createQuery("select count(distinct model.voter.houseNo) from UserVoterDetails model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and model.user.userId = :userId" +
+					" and model2.booth.publicationDate.publicationDateId = :publicationDateId and model.hamlet.hamletId = :locationValue group by model.hamlet.hamletId");
+			query.setParameter("locationValue", locationValue);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("userId", userId);
+			return query.list();
+			
+		}
+		public List<Long> getAllImpFamilesCountForHamlet(Long locationValue,Long publicationDateId,Long userId)
+		{
+			Query query = getSession().createQuery("select count(model.voter.houseNo) from UserVoterDetails model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and model.user.userId = :userId" +
+					" and model2.booth.publicationDate.publicationDateId = :publicationDateId and model.hamlet.hamletId = :locationValue group by model.hamlet.hamletId,model.voter.houseNo");
+			query.setParameter("locationValue", locationValue);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("userId", userId);
+			
+			return query.list();
+			
+		}
+		
+		public Long getVotersCountInAAgeRangeByHamlet(Long hamletId,Long publicationDateId,Long userId,Long ageFrom, Long ageTo,String gender)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select count(distinct model.voter.voterId) from UserVoterDetails model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and model.user.userId = :userId" +
+					" and model2.booth.publicationDate.publicationDateId = :publicationDateId and model.hamlet.hamletId = :hamletId");
+			if(ageTo != null)
+				str.append(" and model.voter.age between :ageFrom and :ageTo ");
+			else
+				str.append(" and model.voter.age > :ageFrom ");
+			
+			if(gender != null)
+				str.append(" and model.voter.gender = :gender ");
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("hamletId", hamletId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("userId", userId);
+			
+			query.setParameter("ageFrom",ageFrom);
+			if(ageTo != null)
+			query.setParameter("ageTo",ageTo);
+			if(gender != null)
+			query.setParameter("gender",gender);
+			return (Long) query.uniqueResult();	
+		}
+		
 }

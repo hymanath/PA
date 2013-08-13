@@ -417,4 +417,10 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVotersCasteDetailsForAgeRangeInBoothForSelectedCastes(Long fromAge,Long toAge,Long boothId,Long userId,List<Long> casteIds);
 	  
 	  public List<Object[]> getVotersCasteDetailsForAgeRangeForSelectedCastes(Long fromAge,Long toAge,List<Long> boothIds,Long userId,List<Long> casteIds);
+	  
+	  public List<Long> findFamiliesCountByPublicationIdInAHamlet(Long locationValue,Long publicationDateId,Long userId);
+	  
+	  public List<Long> getAllImpFamilesCountForHamlet(Long locationValue,Long publicationDateId,Long userId);
+	  
+	  public Long getVotersCountInAAgeRangeByHamlet(Long hamletId,Long publicationDateId,Long userId,Long ageFrom, Long ageTo,String gender);
 }
