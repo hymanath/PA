@@ -498,6 +498,10 @@ function callMethodToGetData(){
    getAgewiseInfoForVoterCategory();
    callMethodToGetData();
    getCastewiseInfoForVoterCategory();
+
+   $(".paginate_enabled_previous").live("click",function(){
+    $('html,body').animate({scrollTop: $(document).height()-600},1000);
+   });
 </script>
 </body>
 </html>
