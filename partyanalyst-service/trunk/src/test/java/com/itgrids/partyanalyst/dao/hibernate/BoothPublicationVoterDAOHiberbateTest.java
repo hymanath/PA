@@ -736,14 +736,14 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		casteIds.add(290L);
 		casteIds.add(292L);
 			
-		List<Object[]> list=boothPublicationVoterDAO.getVotersCasteDetailsForAgeRangeForSelectedCastes(18l, 25l, boothIds,1l,casteIds);
+		//List<Object[]> list=boothPublicationVoterDAO.getVotersCasteDetailsForAgeRangeForSelectedCastes(18l, 25l, boothIds,1l,casteIds);
 		List<Object[]> list1=boothPublicationVoterDAO.getVotersCasteDetailsForAgeRange(18l, 25l, boothIds,1l);
-		for(Object[] l:list){
+		/*for(Object[] l:list){
 			for(Object o:l){
 				System.out.print(o.toString()+" ");
 			}
 			System.out.println();
-		}
+		}*/
 		System.out.println("--------");
 		for(Object[] l:list1){
 			for(Object o:l){
