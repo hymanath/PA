@@ -38,5 +38,8 @@ public interface IElectionTypeDAO extends GenericDao<ElectionType, Long>{
 	public List<ElectionType> findByScope(Object scope);
 	
 	public String getElectionTypeByTypeId(Long electionTypeId);
+	
+	public List<ElectionType> getElectionTypeList();
+	
 
 }
