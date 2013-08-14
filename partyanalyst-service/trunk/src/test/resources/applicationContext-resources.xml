@@ -367,6 +367,7 @@
 				<value>com.itgrids.partyanalyst.model.VotingTrendz</value>
 				<value>com.itgrids.partyanalyst.model.VotingTrendzPartiesResult</value>
 				<value>com.itgrids.partyanalyst.model.SuggestiveRange</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyHierarchyInfo</value>
 			</list>
 		</property>
 	</bean>
@@ -1896,4 +1897,7 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="constituencyHierarchyInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyHierarchyInfoDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>

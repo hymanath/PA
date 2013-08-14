@@ -714,6 +714,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		List<Long> votersIdsList = new ArrayList<Long>(0);
 		Map<Long, Long> serialNoMap = new HashMap<Long, Long>(0);
 		List<Object[]> serialNosList = new ArrayList<Object[]>(0);
+		List<Object[]> mobileNosList = null;
+		Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+		
 		try {  
 			
 			if(columnName != null && columnName.equalsIgnoreCase("firstName"))
@@ -768,6 +771,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				}
 				if(votersIdsList != null && votersIdsList.size() > 0)
 					serialNosList = boothPublicationVoterDAO.getSerialNoByVoterIdsList(votersIdsList);
+				
+				if(votersIdsList != null && votersIdsList.size() > 0)
+				 mobileNosList = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(votersIdsList,userId);
+				
+				if(mobileNosList != null && mobileNosList.size() > 0)
+				 for(Object[] params :mobileNosList)
+				  mobileNosMap.put((Long)params[0], params[1] != null?params[1].toString():"N/A"); 
+				
 				if(serialNosList != null && serialNosList.size() > 0)
 				{
 					for(Object[] param : serialNosList)
@@ -792,10 +803,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 					voterVO.setRelativeFirstName(voter.getRelativeName());
 					voterVO.setRelationshipType(voter.getRelationshipType());
 					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
-					voterVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() :" ");
-					
-					
-					
+					if(mobileNosMap.get(voter.getVoterId()) != null)
+					 voterVO.setMobileNo(mobileNosMap.get(voter.getVoterId()));
+					else
+						voterVO.setMobileNo("N/A");
 					if(!(hamletId != null && hamletId.longValue() != 0))
 					{
 						voterVO.setPartNo(Long.valueOf(voterDetails[1].toString()));
@@ -2555,12 +2566,25 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		
 	}
 	
-	public List<VoterHouseInfoVO> getFamilyInfo(Long boothId, Long publicationDateId,String houseNo)
+	public List<VoterHouseInfoVO> getFamilyInfo(Long boothId, Long publicationDateId,String houseNo,Long userId)
 	{
 		List<VoterHouseInfoVO> voterHouseInfoVOList = new ArrayList<VoterHouseInfoVO>();
 		VoterHouseInfoVO voterHouseInfoVO = null;
 		List<Voter> votersInfoList = boothPublicationVoterDAO.findFamiliesInfo(boothId, publicationDateId, houseNo);
-	    long sno = 1;
+	    
+		List<Long> voterIdsList = new ArrayList<Long>(0);
+		Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+		if(votersInfoList != null && votersInfoList.size() > 0)
+		{
+		  for(Voter voter:votersInfoList)
+		   voterIdsList.add(voter.getVoterId());
+		  
+		  List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+		 if(list != null && list.size() > 0)
+			for(Object[] params:list)
+			 mobileNosMap.put((Long)params[0], params[1]!= null?params[1].toString():"N/A");
+		}
+		long sno = 1;
 		for(Voter voter : votersInfoList){
 	    	voterHouseInfoVO = new VoterHouseInfoVO();
 	    	voterHouseInfoVO.setsNo(sno);
@@ -2575,7 +2599,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	    	
 	    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 	    	voterHouseInfoVO.setBoothId(boothId);
-	    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : " ");
+	    	if(mobileNosMap.get(voter.getVoterId()) != null)
+	    	 voterHouseInfoVO.setMobileNo(mobileNosMap.get(voter.getVoterId()));
+	    	else
+	    	 voterHouseInfoVO.setMobileNo("N/A");
 	    	voterHouseInfoVOList.add(voterHouseInfoVO);
 	    	sno = sno+1;
 	    }
@@ -2599,7 +2626,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		log.debug("Entered into the getFamilyInformation method");
 		
 		List<VoterHouseInfoVO> voterHouseInfoVOList = new ArrayList<VoterHouseInfoVO>();		
-		
+		Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
 		try{
 		
 			VoterHouseInfoVO voterHouseInfoVO = null;
@@ -2609,6 +2636,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		    List<Long> voterIds = new ArrayList<Long>();
 		    for(Voter voter : votersInfoList)
 		    	voterIds.add(voter.getVoterId());
+		    
+		    if(voterIds != null && voterIds.size() > 0)
+		    {
+		      List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIds, userId);
+		      for(Object[] params:list)
+		    	  mobileNosMap.put((Long)params[0], params[1] != null?params[1].toString():"N/A");
+		    }
 		    
 		    List<Object[]> votersCategoriesList = 
 					 voterCategoryValueDAO.getVoterCategoryValuesForVoters(userId,voterIds);
@@ -2628,7 +2662,10 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		    	
 		    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 		    	voterHouseInfoVO.setBoothId(boothId);
-		    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : " ");
+		    	if(mobileNosMap.get(voter.getVoterId()) != null)
+		    	 voterHouseInfoVO.setMobileNo(mobileNosMap.get(voter.getVoterId()));
+		    	else
+		    	 voterHouseInfoVO.setMobileNo("N/A");
 		    	voterHouseInfoVO.setBoothName(boothDAO.getPartNoByBoothId(voterHouseInfoVO.getBoothId()).get(0).toString());
 		    	VoterHouseInfoVO voterCastPartyVO = voterCastePartyDetails.get(voter.getVoterId());
 		    	
@@ -2752,19 +2789,27 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
 		List<Voter> list = null;
 		List<Object[]> listVal = null;
+		List<Object[]> voterIdAndMobileNosList = null;
+		Map<Long,String> hashMap = null;
+		String mobileNoExist = null;
+		
 		//List<Voter> list = boothPublicationVoterDAO.getVoterDetailsByCaste(id, publicationDateId, caste);
 		try{
 		if(type.equalsIgnoreCase("boothHamlet"))
 		{
 			listVal = userVoterDetailsDAO.getVoterIdsForuserinHamletByBoothsandByCasteId(userId,hamletId,casteStateId,id.longValue(),publicationDateId.longValue());
+			mobileNoExist = "true";
 		}else
 		if(type.equalsIgnoreCase("booth") && !buildType.equalsIgnoreCase("customWardBooths"))
 		{
 			listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForBooth(id,publicationDateId,casteStateId,userId,constituencyId);
-			
+			mobileNoExist = "true";
 		}
 		else if(type.equalsIgnoreCase("booth") && buildType.equalsIgnoreCase("customWardBooths"))
+		{
 			listVal = boothPublicationVoterDAO.getVoterDetailsForCustomWardBooths(hamletId, id, userId, publicationDateId, casteStateId);
+			mobileNoExist = "true";
+		}
 		
 		else if(type.equalsIgnoreCase("hamletLocality") || type.equalsIgnoreCase("wardLocality"))
 		{
@@ -2773,23 +2818,67 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			else if(type.equalsIgnoreCase("wardLocality"))
 				queryStr = " model.ward.constituencyId = :id ";
 			
-			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsByLocalityForUser(id,hamletId,userId,casteStateId,queryStr);
+			/*List<Long> voterIds = userVoterDetailsDAO.getVoterIdsByLocalityForUser(id,hamletId,userId,casteStateId,queryStr);
 			
-			listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
+			listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);*/
 			
+			voterIdAndMobileNosList = userVoterDetailsDAO.getVoterIdAndMobileNoByLocalityForUser(id,hamletId,userId,casteStateId,queryStr);
+			
+			if(voterIdAndMobileNosList != null && voterIdAndMobileNosList.size() > 0)
+			{
+			  hashMap = new HashMap<Long, String>(0);
+			  for(Object[] params:voterIdAndMobileNosList)
+				hashMap.put((Long)params[0], params[1] != null?params[1].toString():"N/A");
+			  /*for(Object[] params:voterIdAndMobileNosList)
+			  {
+				  String mobileNo = "N/A";
+				  if(params[1] != null)
+					  mobileNo =  params[1].toString(); 
+				hashMap.put((Long)params[0], mobileNo);
+			  }*/
+			
+			   List<Long> voterIdsList = new ArrayList<Long>(hashMap.keySet());
+			
+			   listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIdsList,publicationDateId);
+			}
+			
+			mobileNoExist = null;
+		
 		}else if(type.equalsIgnoreCase("hamlet") && !buildType.equalsIgnoreCase("panchayatHamlet"))
 		{
-			List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
+			/*List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
 
-			listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
+			listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);*/
+			voterIdAndMobileNosList = userVoterDetailsDAO.getVoterIdAndMobileNoForuserByHamletIdsByCaste(userId , id,casteStateId);
+			if(voterIdAndMobileNosList != null && voterIdAndMobileNosList.size() > 0)
+			{
+			  hashMap = new HashMap<Long, String>(0);
+			  for(Object[] params:voterIdAndMobileNosList)
+				hashMap.put((Long)params[0], params[1] != null?params[1].toString():"N/A");
+			
+			   List<Long> voterIdsList = new ArrayList<Long>(hashMap.keySet());
+			
+			   listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIdsList,publicationDateId);
 			}
+			mobileNoExist = null;
+			
+		}
 		
 		else if(type.equalsIgnoreCase("ward") && buildType.equalsIgnoreCase("muncipalityCustomWard"))
+		{
 			listVal = boothPublicationVoterDAO.getVoterDetailsForCustomWard(id, publicationDateId, userId, casteStateId);
+			mobileNoExist = "true";
+		}
 		else if(type.equalsIgnoreCase("wardbooth") && buildType.equalsIgnoreCase("muncipalityCustomWard"))
+		{
 			listVal = userVoterDetailsDAO.getVoterDetailsForCustomWardByBooth(id,publicationDateId, userId, casteStateId);
+			mobileNoExist = "true";
+		}
 		else if(type.equalsIgnoreCase("hamlet") && buildType.equalsIgnoreCase("panchayatHamlet"))
+		{
 			listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForHamlet(id,publicationDateId,casteStateId,userId,constituencyId);
+			mobileNoExist = "true";
+		}
 		else
 		{
 			
@@ -2797,12 +2886,24 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayat(id,publicationDateId,casteStateId,userId);
 			else{	
 				
-				List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
+				/*List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
 
-				listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);
+				listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);*/
+				
+				voterIdAndMobileNosList = userVoterDetailsDAO.getVoterIdAndMobileNoForuserByHamletIdsByCaste(userId , id,casteStateId);
+				if(voterIdAndMobileNosList != null && voterIdAndMobileNosList.size() > 0)
+				{
+				  hashMap = new HashMap<Long, String>(0);
+				  for(Object[] params:voterIdAndMobileNosList)
+					hashMap.put((Long)params[0], params[1] != null?params[1].toString():"N/A");
+				
+				   List<Long> voterIdsList = new ArrayList<Long>(hashMap.keySet());
+				
+				   listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIdsList,publicationDateId);
+				}
 			  
 			}
-
+			mobileNoExist = null;
 				
 		}
 		VoterHouseInfoVO voterHouseInfoVO = null;
@@ -2828,7 +2929,12 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				voterHouseInfoVO.setGaurdian(voter.getRelativeName());
 				voterHouseInfoVO.setRelationship(voter.getRelationshipType());
 				voterHouseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo());
-				voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : "N/A");
+				
+				if(mobileNoExist != null && mobileNoExist.equalsIgnoreCase("true"))
+				 voterHouseInfoVO.setMobileNo(voter1[2]!=null ? voter1[2].toString() : "N/A");
+				else
+				 voterHouseInfoVO.setMobileNo(hashMap.get(voter.getVoterId()));
+				
 				votersList.add(voterHouseInfoVO);
 				sno = sno + 1;
 			}
@@ -5123,7 +5229,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	   defaultSelectOptionVO.setId(0l);
 	   defaultSelectOptionVO.setName("Select");
 	
-	   getVoterBasicInfo(voterHouseInfoVO,voterId);
+	   getVoterBasicInfo(voterHouseInfoVO,voterId,userId);
 	   
 	   getPartiesAndCastsInVotersState(voterHouseInfoVO,voterId,userId,defaultSelectOptionVO);
 	   
@@ -5168,7 +5274,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	 	    	
 	 	     voterHouseInfoVO = new VoterHouseInfoVO();
 	 	     
-	 	     getVoterBasicInfo(voterHouseInfoVO,voter.getVoterId());
+	 	     getVoterBasicInfo(voterHouseInfoVO,voter.getVoterId(),userId);
 	 	   
 	 	     
 	 	    voterByHouseNoMap = boothMap.get(voter.getBoothId());
@@ -5224,7 +5330,17 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	  
   }
   
-  public void getVoterBasicInfo(VoterHouseInfoVO voterHouseInfoVO,Long voterId){
+  public void getVoterBasicInfo(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long userId){
+	  
+	List<Long> voterIdsList = new ArrayList<Long>(0);
+	Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+	 voterIdsList.add(voterId);
+	 
+	 List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+	  if(list != null && list.size() > 0)
+		for(Object[] params:list)
+		 mobileNosMap.put((Long)params[0], params[1]!= null?params[1].toString():"N/A");
+	
 	List<Voter> voterDetails = voterDAO.getVoterPersonalDetailsByVoterId(voterId);
 	if(voterDetails != null && voterDetails.size() >0)
 	{
@@ -5237,8 +5353,10 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	 voterHouseInfoVO.setGaurdian(voterInfo.getRelativeName());
 	 voterHouseInfoVO.setRelationship(voterInfo.getRelationshipType());
 	
-		
-	 voterHouseInfoVO.setMobileNo(voterInfo.getMobileNo()!=null ? voterInfo.getMobileNo() : " ");
+	 if(mobileNosMap.get(voterInfo.getVoterId()) != null)	
+	  voterHouseInfoVO.setMobileNo(mobileNosMap.get(voterInfo.getVoterId()));
+	 else
+		 voterHouseInfoVO.setMobileNo("N/A");
 	 
 	 //voterHouseInfoVO.setCast(voterInfo.getCast());
 	 
@@ -5251,9 +5369,19 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	
   }
   
-  public void getVoterBasicInfo1(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long publicationDateId){
+  public void getVoterBasicInfo1(VoterHouseInfoVO voterHouseInfoVO,Long voterId,Long publicationDateId,Long userId){
 		//List<Voter> voterDetails = voterDAO.getVoterPersonalDetailsByVoterId(voterId);
 		  List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterPersonalDetailsByVoterIdAndPuclicationId(voterId, publicationDateId);
+		
+		  List<Long> voterIdsList = new ArrayList<Long>(0);
+		  Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+		  voterIdsList.add(voterId);
+		  List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+		  if(list != null && list.size() > 0)
+		  	for(Object[] params:list)
+		  	 mobileNosMap.put((Long)params[0], params[1]!= null?params[1].toString():"N/A");
+		  				
+		  
 		if(voterDetails != null && voterDetails.size() >0)
 		{
 			Voter voterInfo =(Voter) voterDetails.get(0)[0];
@@ -5267,7 +5395,11 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 		 voterHouseInfoVO.setGaurdian(voterInfo.getRelativeName());
 		 voterHouseInfoVO.setRelationship(voterInfo.getRelationshipType());
 		 voterHouseInfoVO.setFromSno(serialNo);
-		 voterHouseInfoVO.setMobileNo(voterInfo.getMobileNo());
+		 if(mobileNosMap.get(voterInfo.getVoterId()) != null)
+		  voterHouseInfoVO.setMobileNo(mobileNosMap.get(voterInfo.getVoterId()));
+		 else
+		  voterHouseInfoVO.setMobileNo("N/A");
+		 
 		}
 		
 	  }
@@ -5460,7 +5592,8 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 				{
 				String mobileNo = voterHouseInfoVO.getMobileNo();
 				
-				voterDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
+				//voterDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
+				userVoterDetailsDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
 				}
 		if(voterHouseInfoVO.getCategoriesList() != null && voterHouseInfoVO.getCategoriesList().size() >0){
 			for(VoterHouseInfoVO category : voterHouseInfoVO.getCategoriesList()){
@@ -6518,10 +6651,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 return null;
 	 }
 	 
-	 public List<VoterHouseInfoVO> getMultipleFamiliesInfo(List<VoterHouseInfoVO> familiesList){
+	 public List<VoterHouseInfoVO> getMultipleFamiliesInfo(List<VoterHouseInfoVO> familiesList,Long userId){
 		 List<VoterHouseInfoVO> votersInfo = new ArrayList<VoterHouseInfoVO>();
 		 for(VoterHouseInfoVO family : familiesList){
-			 votersInfo.addAll(getFamilyInfo(family.getBoothId(),family.getPublicationId(),family.getHouseNo()));
+			 votersInfo.addAll(getFamilyInfo(family.getBoothId(),family.getPublicationId(),family.getHouseNo(),userId));
 		 }
 		 for(int i =0; i<votersInfo.size();i++){
 			 VoterHouseInfoVO voter = votersInfo.get(i);
@@ -6541,7 +6674,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 return null;
 	 }
 	 
-	 public VoterHouseInfoVO getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id,List<Long> categories){
+	 public VoterHouseInfoVO getVotersInfoBySearchCriteria(VoterHouseInfoVO searchInfo,String type,Long id,List<Long> categories,Long userId){
 		 VoterHouseInfoVO returnValue = new VoterHouseInfoVO();
 		 List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
 		 returnValue.setVotersList(votersList);
@@ -6688,7 +6821,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			    	if(countList != null && countList.get(0) != null && ((Long)countList.get(0)).longValue() > 0l){
 				    	 returnValue.setTotalHousesCount((Long)countList.get(0));
 				    	  List<Object[]> votersData = userVoterDetailsDAO.getVotersDetailsBySearchCriteria(searchInfo.getPublicationId(),id,searchInfo.getStartIndex(),searchInfo.getMaxIndex(),query.toString());
-				    	  populateVotersDataToVoForSearch(votersData,votersList,categories,searchInfo);
+				    	  populateVotersDataToVoForSearch(votersData,votersList,categories,searchInfo,userId);
 				     }
 			    	
 			    }
@@ -6698,7 +6831,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			     if(countList != null && countList.get(0) != null && ((Long)countList.get(0)).longValue() > 0l){
 			    	 returnValue.setTotalHousesCount((Long)countList.get(0));
 			    	  List<Object[]> votersData = boothPublicationVoterDAO.getVotersDetailsBySearchCriteria(searchInfo.getPublicationId(),id,searchInfo.getStartIndex(),searchInfo.getMaxIndex(),query.toString());
-			    	  populateVotersDataToVoForSearch(votersData,votersList,categories,searchInfo);
+			    	  populateVotersDataToVoForSearch(votersData,votersList,categories,searchInfo,userId);
 			     }
 			    }
 			     
@@ -6710,10 +6843,25 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 return returnValue;
 	 }
 	 
-	 public void populateVotersDataToVoForSearch(List<Object[]> votersData,List<VoterHouseInfoVO> votersList,List<Long> categories,VoterHouseInfoVO searchInfo){
+	 public void populateVotersDataToVoForSearch(List<Object[]> votersData,List<VoterHouseInfoVO> votersList,List<Long> categories,VoterHouseInfoVO searchInfo,Long userId){
 		 VoterHouseInfoVO voterHouseInfoVO = null;
 		 Map<Long,VoterHouseInfoVO> votersMap = new HashMap<Long,VoterHouseInfoVO>();
 		 List<Long> voterIds = new ArrayList<Long>();
+		 Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+		 if(votersData != null && votersData.size() > 0)
+		 {
+		  for(Object[] params:votersData)
+		  {
+			Voter voter = (Voter)params[0];
+			 voterIds.add(voter.getVoterId());
+		  }
+		  
+		  List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIds, userId);
+		  if(list != null && list.size() > 0)
+		   for(Object[] params:list)
+			 mobileNosMap.put((Long)params[0], params[1]!=null?params[1].toString():"N/A");
+		  
+		 }
 		 for(Object[] voters : votersData){
 			    Voter voter = (Voter)voters[0];
 		    	voterHouseInfoVO = new VoterHouseInfoVO();
@@ -6725,9 +6873,13 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		    	//voterHouseInfoVO.setGaurdian(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
 		    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
 		    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
-		    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ?voter.getMobileNo():"");
+		    	if(mobileNosMap.get(voter.getVoterId())!= null)
+		    	 voterHouseInfoVO.setMobileNo(mobileNosMap.get(voter.getVoterId()));
+		    	else
+		    	 voterHouseInfoVO.setMobileNo("N/A");
+		    	
 		    	voterHouseInfoVO.setVoterId(voter.getVoterId());
-		    	voterIds.add(voter.getVoterId());
+		    	//voterIds.add(voter.getVoterId());
 		    	voterHouseInfoVO.setBoothId((Long)voters[1]);
 		    	voterHouseInfoVO.setBoothName(voters[2]!=null?voters[2].toString():"");
 		    	voterHouseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo());
@@ -8156,7 +8308,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 	  }
 	 
 	
-	  public VoterHouseInfoVO getSelectedCategoryOptionsForIndividual(List<VoterHouseInfoVO> voterIds,VoterHouseInfoVO parameters){
+	  public VoterHouseInfoVO getSelectedCategoryOptionsForIndividual(List<VoterHouseInfoVO> voterIds,VoterHouseInfoVO parameters,Long userId){
 		  VoterHouseInfoVO votersHouseInfoVO = parameters;
 		 
 		  
@@ -8231,7 +8383,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 	     if(groupDetailsMap.get(voter.getVoterId()) != null)
 		 	    	voterHouseInfoVO.setCustomGroupId(groupDetailsMap.get(voter.getVoterId()));
 		 	     
-		 	     getVoterBasicInfo1(voterHouseInfoVO,voter.getVoterId(),parameters.getPublicationId());
+		 	     getVoterBasicInfo1(voterHouseInfoVO,voter.getVoterId(),parameters.getPublicationId(),userId);
 		 	   
 		 	     
 		 	    voterByHouseNoMap = boothMap.get(voter.getBoothId());
@@ -11240,6 +11392,15 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 				influencingPeopleVO.setInfluencingRange("0");
 				List<Voter> voters = new ArrayList<Voter>();
 				
+				List<Long> voterIdsList = new ArrayList<Long>(0);
+				Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+				voterIdsList.add(voterId);
+				List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+				if(list != null && list.size() > 0)
+				 for(Object[] params:list)
+					 mobileNosMap.put((Long)params[0], params[1]!= null?params[1].toString():"N/A");
+				
+				
 				voters = voterDAO.findVoterDetailsBasedOnVoterId(voterId);
 					if(voters != null && voters.size() > 0)
 					{
@@ -11261,7 +11422,10 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 							{
 								influencingPeopleVO.setGender("Male");
 							}
-							influencingPeopleVO.setMobile(voter.getMobileNo());
+							if(mobileNosMap.get(voter.getVoterId()) != null)
+							 influencingPeopleVO.setMobile(mobileNosMap.get(voter.getVoterId()));
+							else
+								influencingPeopleVO.setMobile("N/A");
 							
 					}
 					
@@ -11392,13 +11556,21 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 		 * @param  Long voterId
 		 * @return CadreInfo
 		 */
-		public CadreInfo getCadreDetailsByVoterId(Long voterId) {
+		public CadreInfo getCadreDetailsByVoterId(Long voterId,Long userId) {
 			try {
 				log.info("Entered into getCadreDetailsByVoterId Method...");
 				CadreInfo cadreInfo = new CadreInfo();
 				SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 				List<Voter> voters = new ArrayList<Voter>();
 				voters = voterDAO.findVoterDetailsBasedOnVoterId(voterId);
+				List<Long> voterIdsList = new ArrayList<Long>(0);
+				Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+				voterIdsList.add(voterId);
+				List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+				if(list != null && list.size() > 0)
+				 for(Object[] params:list)
+					 mobileNosMap.put((Long)params[0], params[1]!= null?params[1].toString():"N/A");
+				
 				if(voters != null && voters.size() > 0)
 				{
 					Voter voter = voters.get(0);
@@ -11411,7 +11583,10 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 					else
 					gender = "Female";
 					cadreInfo.setGender(gender);
-					cadreInfo.setMobile(voter.getMobileNo());
+					if(mobileNosMap.get(voter.getVoterId())!= null)
+					 cadreInfo.setMobile(mobileNosMap.get(voter.getVoterId()));
+					else
+						cadreInfo.setMobile("N/A");
 					//cadreInfo.setDateOfBirth(sdf.format(dob));
 					Long age = voter.getAge();
 					Date today = new Date();
@@ -12720,7 +12895,7 @@ try{
 	 if(buttonName.equalsIgnoreCase("Cadre"))
 		 voters =  getCadrePeopleDetails(userId,cadreLevelValues,type,startIndex,maxRecords,name,columnName,order);
 	 if(buttonName.equalsIgnoreCase("Politician"))
-		 voters = getPoliticianDetails(politicianValues, type, startIndex,maxRecords,name,publicationId,columnName,order);
+		 voters = getPoliticianDetails(politicianValues, type, startIndex,maxRecords,name,publicationId,columnName,order,userId);
 		
 }
 
@@ -12834,6 +13009,18 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					
 				}
 				//Influencing people voter Details (VoterIds avilable) 
+				Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+				if(params.getVoter() != null)
+				{
+				  List<Long> voterIdsList = new ArrayList<Long>(0);
+				  
+				  voterIdsList.add(params.getVoter().getVoterId());
+					List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+					if(list != null && list.size() > 0)
+					 for(Object[] obj:list)
+				        mobileNosMap.put((Long)obj[0], obj[1]!= null?obj[1].toString():"");
+				}
+				
 				if(params.getVoter() != null)
 				{
 					voterVO.setVoterIds(params.getVoter().getVoterId());
@@ -12850,9 +13037,10 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					}else{
 						  voterVO.setPartyName("");
 					}
+					if(mobileNosMap.get(params.getVoter().getVoterId()) != null)
+					 voterVO.setMobileNo(mobileNosMap.get(params.getVoter().getVoterId()));
 					
-					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
-					if(voterVO.getMobileNo().length()==0){
+					if(voterVO.getMobileNo() == null || voterVO.getMobileNo().length()==0){
 						voterVO.setMobileNo(params.getPhoneNo()!=null?params.getPhoneNo():"");
 					}
 					
@@ -13056,7 +13244,20 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 					
 						
 				}
-				//Influencing people voter Details (VoterIds avilable) 
+				//Influencing people voter Details (VoterIds avilable)
+				
+				Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+				if(params.getVoter() != null)
+				{
+				  List<Long> voterIdsList = new ArrayList<Long>(0);
+				  
+				  voterIdsList.add(params.getVoter().getVoterId());
+					List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+					if(list != null && list.size() > 0)
+					 for(Object[] obj:list)
+				        mobileNosMap.put((Long)obj[0], obj[1]!= null?obj[1].toString():"");
+				}
+				
 				if(params.getVoter() != null)
 				{
 					voterVO.setVoterIds(params.getVoter().getVoterId());
@@ -13072,8 +13273,10 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 					if(params.getCasteCategory()!=null){
 					//voterVO.setCast(params.getCasteCategory().getCategory());
 					}
-					voterVO.setMobileNo(params.getVoter().getMobileNo()!=null ? params.getVoter().getMobileNo() :" ");
-					if(voterVO.getMobileNo().length()==0){
+					if(mobileNosMap.get(params.getVoter().getVoterId()) != null)
+					 voterVO.setMobileNo(mobileNosMap.get(params.getVoter().getVoterId()));
+					
+					if(voterVO.getMobileNo()== null || voterVO.getMobileNo().length()==0){
 						voterVO.setMobileNo(params.getMobile()!=null?params.getMobile():"");
 					}
 					
@@ -13135,7 +13338,7 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 	
 }
 
-public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,Integer startIndex,Integer maxRecords,String name,Long publicationId,String columnName,String order)
+public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,Integer startIndex,Integer maxRecords,String name,Long publicationId,String columnName,String order,Long userId)
 {
 	List<VoterVO> voters = new ArrayList<VoterVO>();
 	List<Voter> votersList = new ArrayList<Voter>();;
@@ -13159,6 +13362,20 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		Long count = new Long(startIndex);
 		if(type.equalsIgnoreCase("booth"))
 			name ="Booth - " + boothDAO.get(Id).getPartNo();
+		
+		Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+		if(politicianDetails != null && politicianDetails.size() > 0)
+		{
+		 List<Long> voterIdsList = new ArrayList<Long>(0);
+		  for(Object[] params:politicianDetails)
+			  voterIdsList.add((Long)params[1]);
+		  
+		  List<Object[]> mobileNosList = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+		  if(mobileNosList != null && mobileNosList.size() > 0)
+			for(Object[] params:mobileNosList)
+				mobileNosMap.put((Long)params[0], params[1]!= null?params[1].toString():"N/A");
+		}
+		
 		if(politicianDetails != null)
 		{
 			
@@ -13183,7 +13400,11 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					//voterVO.setCast(params[9]!=null ? params[9].toString() : " ");
 					//voterVO.setCastCatagery(params[10]!=null ? params[10].toString() : " ");
 					voterVO.setVoterIDCardNo(params[8]!=null ? params[8].toString() : " ");
-					voterVO.setMobileNo(params[3]!=null ? params[3].toString() :" ");
+					if(mobileNosMap.get((Long)params[1]) != null)
+					 voterVO.setMobileNo(mobileNosMap.get((Long)params[1]));
+					else
+					 voterVO.setMobileNo("N/A");
+					
 					voterVO.setCandidateId((Long) params[9]);
 						voterVO.setLocalArea(name);	
 					voters.add(voterVO);
@@ -15183,7 +15404,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			List<VoterHouseInfoVO> voterHouseInfoVOList = new ArrayList<VoterHouseInfoVO>();		
 			
 			try{
-			
+			   
 				VoterHouseInfoVO voterHouseInfoVO = null;
 				List<Voter> votersInfoList = boothPublicationVoterDAO.findFamiliesInfoBypartNo(partNo.toString(), publicationDateId, houseNo,constituencyId);
 			    long sno = 1;
@@ -15191,6 +15412,15 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			    List<Long> voterIds = new ArrayList<Long>();
 			    for(Voter voter : votersInfoList)
 			    	voterIds.add(voter.getVoterId());
+			    
+			    Map<Long,String> mobileMap = new HashMap<Long, String>(0);
+			    if(voterIds != null && voterIds.size() > 0)
+			    {
+			      List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIds, userId);
+			      if(list != null && list.size() > 0)
+			       for(Object[] params:list)
+			    	   mobileMap.put((Long)params[0], params[1] != null?params[1].toString():"N/A");
+			    }
 			    
 			    List<Object[]> votersCategoriesList = 
 						 voterCategoryValueDAO.getVoterCategoryValuesForVoters(userId,voterIds);
@@ -15210,7 +15440,11 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			    	
 			    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 			    	voterHouseInfoVO.setBoothId((Long)boothDAO.getBoothIdByPartNo(partNo.toString()).get(0));
-			    	voterHouseInfoVO.setMobileNo(voter.getMobileNo()!=null ? voter.getMobileNo() : " ");
+			    	if(mobileMap.get(voter.getVoterId())!= null)
+			    	 voterHouseInfoVO.setMobileNo(mobileMap.get(voter.getVoterId()));
+			    	else
+			    	 voterHouseInfoVO.setMobileNo("N/A");	 
+			    	
 			    	voterHouseInfoVO.setBoothName(partNo.toString());
 			    	VoterHouseInfoVO voterCastPartyVO = voterCastePartyDetails.get(voter.getVoterId());
 			    	
@@ -15661,7 +15895,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		}
 	}
 	
-	 public VoterHouseInfoVO getSelectedVotersDetails(List<VoterHouseInfoVO> votersDetails , VoterHouseInfoVO parameters)
+	 public VoterHouseInfoVO getSelectedVotersDetails(List<VoterHouseInfoVO> votersDetails , VoterHouseInfoVO parameters,Long userId)
 	 { 
 		 log.debug("Entered into the getSelectedVotersDetails service method");
 		 
@@ -15790,7 +16024,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					 
 				 voterVOs.add(voterHouseInfoVO);*/
 				 
-				 getVoterBasicInfo1(voterHouseInfoVO,voter.getVoterId(),parameters.getPublicationId());
+				 getVoterBasicInfo1(voterHouseInfoVO,voter.getVoterId(),parameters.getPublicationId(),userId);
 			 	   
 			 	    voterByHouseNoMap = boothMap.get(voter.getBoothId());
 					if( voterByHouseNoMap == null){
@@ -16242,6 +16476,20 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				 totalCount=new Long(voters.size());
 			}
 			
+			List<Long> voterIdsList = new ArrayList<Long>(0);
+			Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+			if(voters != null && voters.size() > 0)
+			 for(Object[] params:voters)
+			 {
+				Voter voter = (Voter)params[0];
+				voterIdsList.add(voter.getVoterId());
+			 }
+			if(voterIdsList != null && voterIdsList.size() > 0)
+			{
+			  List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+			  for(Object[] params:list)
+				mobileNosMap.put((Long)params[0], params[1] != null?params[1].toString():"N/A");
+			}
 			
 			if(voters != null && voters.size() > 0)
 			{
@@ -16254,7 +16502,10 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					voterVO.setGender(voterInfo.getGender());
 					voterVO.setAge(voterInfo.getAge());
 					voterVO.setHouseNo(voterInfo.getHouseNo());
-					voterVO.setMobileNo(voterInfo.getMobileNo());
+					if(mobileNosMap.get(voterInfo.getVoterId()) != null)
+					 voterVO.setMobileNo(mobileNosMap.get(voterInfo.getVoterId()));
+					else
+						voterVO.setMobileNo("N/A");
 					voterVO.setRelativeFirstName(voterInfo.getRelativeName());
 					voterVO.setPartNo(Long.valueOf(voterDetails[1].toString()));
 					voterVO.setTotalVoters(totalCount);

@@ -38,7 +38,7 @@ public interface IVoterReportService {
 	
 	public VoterVO saveVoterDetailsList(List<VoterVO> voterIds,Long userId,Long boothId);
 	  
-	public List<VoterHouseInfoVO> getVoterInfoByBIdandVId(List<VoterHouseInfoVO> votersList,Long publicationDateId);
+	public List<VoterHouseInfoVO> getVoterInfoByBIdandVId(List<VoterHouseInfoVO> votersList,Long publicationDateId,Long userId);
 	  
 	public VoterVO saveVoterSearchDetailsList(List<VoterVO> voterIds,Long userId);
 		
@@ -79,7 +79,7 @@ public interface IVoterReportService {
 	 public List<SelectOptionVO> getTotalWardsInLocalBody(Long constituencyId);
 	 public List<VoterVO> storeInfluencingPeopleDetails(List<InfluencingPeople> influencingData,String type,Long id,Long totalRecords,Long userId);
 	 public List<VoterVO> storeCadrePeopleDetails(List<Cadre> cadreDetails,String type,Long id,Long totalRecords,Long userId);
-	 public List<VoterVO> storeCandidateDetails(List<Candidate> candidateDetails,String type,Long id,Long totalRecords);
+	 public List<VoterVO> storeCandidateDetails(List<Candidate> candidateDetails,String type,Long id,Long totalRecords,Long userId);
 	 
 	 public ResultStatus insertVotersBasicInfoToIntermediateTables(Long reportLevelValue,Long publicationDateId,Long userId);
 	 
