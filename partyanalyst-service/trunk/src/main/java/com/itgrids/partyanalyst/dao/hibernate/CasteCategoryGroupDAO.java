@@ -49,5 +49,11 @@ Query query=getSession().createQuery("select model.casteCategoryGroupId from Cas
 query.setParameter(0,casteCategoryId);
 return (Long)query.uniqueResult();
 }
+
+ @SuppressWarnings("unchecked")
+ public List<CasteCategoryGroup> getCasteCategoryGroupList()
+ {
+	return getHibernateTemplate().find(" from CasteCategoryGroup model ");
+ }
 	
 }
