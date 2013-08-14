@@ -51,6 +51,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	private Long voterId;
 	JSONObject jObj = null;
 	private EntitlementsHelper entitlementsHelper;
+	private String fromParent;
 	
 	public List<SelectOptionVO> getBloodGroupList() {
 		return bloodGroupList;
@@ -234,6 +235,16 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 
 	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
 		this.entitlementsHelper = entitlementsHelper;
+	}
+	
+	
+
+	public String getFromParent() {
+		return fromParent;
+	}
+
+	public void setFromParent(String fromParent) {
+		this.fromParent = fromParent;
 	}
 
 	public String execute() throws Exception

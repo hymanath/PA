@@ -1270,9 +1270,16 @@
       <property name="queueCapacity" value="25" />
     </bean>
     
-    <bean id="mobileDataAction" class="com.itgrids.partyanalyst.web.action.MobileDataAction" singleton="false">
+     <bean id="mobileDataAction" class="com.itgrids.partyanalyst.web.action.MobileDataAction" singleton="false">
       <property name="mobileService" ref="mobileService" />
     </bean>
+    
+    <bean id="messageCenterAction" class="com.itgrids.partyanalyst.web.action.MessageCenterAction" singleton="false">
+    	<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+    	<property name="influencingPeopleService" ref="influencingPeopleService" />
+    	<property name="staticDataService" ref="staticDataService"/>
+    </bean>
+    
    
 </beans>	
 	

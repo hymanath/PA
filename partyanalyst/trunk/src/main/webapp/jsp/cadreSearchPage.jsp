@@ -605,16 +605,23 @@ function getUpdatedData(){
 	</div>
 	</center>
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
+
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
 		<div id="searchResultsDiv_head"></div>
 
 		<span id="smsStatusTextSpan1"></span>
-
+	
 		<div id="resultsCount" style="margin-left:30px;color:#707070;font-weight:bold;font-size:13px;text-align:center;"></div>
 		<div id="searchResultsDiv_body">
 			<div id="smsResult"></div>
 			<div id="searchResult"></div>
 		</div>
+		
+			<div id="msgCenterId" style="display:none;">
+			<c:if test="${fromParent == 'messageCenter'}">
+				<input type="button" value="Add This Contacts"/>
+			</c:if>
+			</div>
 		<div id="searchResultsDiv_footer" style="text-align:center;"></div>
 		<div id="cadreProblemSelectErrorDiv" style="text-align:center;"><span id="addSelectedCadreErrorMsg"></span></div>
 		<div id="cadreProblemSelectDiv" style="text-align:center;"></div>
@@ -838,6 +845,10 @@ function showCadreSearchResults(searchCount)
 	var bodySearchElmt = document.getElementById("searchResult");
 	var footerElmt = document.getElementById("searchResultsDiv_footer");
 	var resultsCountEl = document.getElementById("resultsCount");
+	
+	
+	$('#msgCenterId').css('display','block');
+	
 	
 	if(!headElmt || !bodySearchElmt || !footerElmt)
 		return;
