@@ -5588,13 +5588,12 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 							
 				Voter voter =  voterDAO.get(voterHouseInfoVO.getVoterId());
 				User user =  userDAO.get(voterHouseInfoVO.getUserId());
-				if(voterHouseInfoVO.isMobileNoPresent())
+				/*if(voterHouseInfoVO.isMobileNoPresent())
 				{
 				String mobileNo = voterHouseInfoVO.getMobileNo();
-				
-				//voterDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
 				userVoterDetailsDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
-				}
+				voterDAO.updateVoterMobileNo(voterHouseInfoVO.getMobileNo(),voterHouseInfoVO.getVoterId());
+				}*/
 		if(voterHouseInfoVO.getCategoriesList() != null && voterHouseInfoVO.getCategoriesList().size() >0){
 			for(VoterHouseInfoVO category : voterHouseInfoVO.getCategoriesList()){
 				
@@ -5608,7 +5607,7 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 					   voterCategoryVal = categoryValuesIds.get(0);
 					   voterCategoryVal.setUser(user);
 						  voterCategoryVal.setVoter(voter);
- 						  voterCategoryVal.setUserVoterCategoryValue(userVoterCategoryValue);
+						  voterCategoryVal.setUserVoterCategoryValue(userVoterCategoryValue);
 						  voterCategoryValueDAO.save(voterCategoryVal);
 				  }else if(userVoterCategoryValue != null){
 					  voterCategoryVal = new VoterCategoryValue();
@@ -5627,19 +5626,22 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 			Long casteStateId = voterHouseInfoVO.getCasteStateId();
 			Long localitityId =voterHouseInfoVO.getLocalitityId();
 			Long hamletId =voterHouseInfoVO.getHamletId();
+			String mobileNmbr = voterHouseInfoVO.getMobileNo();			
 			if(partyId != null &&  partyId.longValue() == 0l)
 				partyId = null;
 			if(casteStateId != null &&  casteStateId.longValue() == 0l)
 				casteStateId = null;
 			if(hamletId != null &&  hamletId.longValue() == 0l)
 				hamletId = null;
+			if(mobileNmbr != null && mobileNmbr.trim().length()==0)
+				mobileNmbr = null;
 			if(userVoterDetailsList != null && userVoterDetailsList.size() > 0){
 			   if(partyCast.equalsIgnoreCase("all")){
 				   
 				   if(voterHouseInfoVO.getSelType().equalsIgnoreCase("muncipality"))
-					 userVoterDetailsDAO.updateUserVoterDetailsWithWard(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId,localitityId,hamletId);
+					 userVoterDetailsDAO.updateUserVoterDetailsWithWard(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId,localitityId,hamletId,mobileNmbr);
 				   else
-				     userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId,localitityId,hamletId);
+				     userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId,localitityId,hamletId,mobileNmbr);
 			   }
 		   else if(partyCast.equalsIgnoreCase("partyCast"))
 		       userVoterDetailsDAO.updateUserVoterDetails(voterHouseInfoVO.getVoterId(),voterHouseInfoVO.getUserId(),partyId,casteStateId);
@@ -5682,7 +5684,7 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 				 }
 				    
 				    
-				if(casteStateId != null || partyId != null || voterHouseInfoVO.getLocalitityId()!= null || voterHouseInfoVO.getHamletId()!=null || ward !=null ){
+				if(casteStateId != null || partyId != null || voterHouseInfoVO.getLocalitityId()!= null || voterHouseInfoVO.getHamletId()!=null || ward !=null || mobileNmbr != null ){
 				 UserVoterDetails userVoterDtls = new UserVoterDetails();
 				 userVoterDtls.setUser(user);
 				 userVoterDtls.setVoter(voter);
@@ -5697,6 +5699,8 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 				 
 				 if(ward !=null)
 					 userVoterDtls.setWard(constituencyDAO.get(ward));
+				 if(mobileNmbr!=null)
+					 userVoterDtls.setMobileNo(mobileNmbr);
 				 
 				 
 				 userVoterDetailsDAO.save(userVoterDtls);
@@ -16113,7 +16117,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		  try
 		  {
 			   Voter voter = voterDAO.get(votersDetails.getVoterId());
-			   voter.setMobileNo(votersDetails.getMobileNo());
+			   //voter.setMobileNo(votersDetails.getMobileNo());
 			   voterDAO.save(voter);
 			   User user = userDAO.get(votersDetails.getUserId());
 			   
@@ -16131,6 +16135,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					
 					userVoterDetails.setVoter(voter);
 					userVoterDetails.setUser(user);
+					userVoterDetails.setMobileNo(votersDetails.getMobileNo());
 					
 					if(votersDetails.getCasteStateId() != null && votersDetails.getCasteStateId().longValue() != 0)
 					 userVoterDetails.setCasteState(casteStateDAO.get(votersDetails.getCasteStateId()));
