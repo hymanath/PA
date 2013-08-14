@@ -216,4 +216,9 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public Integer updateVoterMobileNo(String mobileNo, Long voterId);
 	
+	public List<Object[]> getCasteDetailsOfVoterByLocationId(Long panchayatId,Long publicationId,Long userid,String locationType);
+	
+	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long hamletId,String mobileNo);
+	
+	public void updateUserVoterDetailsWithWard(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long wardId,String mobileNo);
 }
