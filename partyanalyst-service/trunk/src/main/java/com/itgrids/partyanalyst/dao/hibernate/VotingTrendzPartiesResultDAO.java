@@ -29,4 +29,11 @@ public class VotingTrendzPartiesResultDAO extends GenericDaoHibernate<VotingTren
 		return query.executeUpdate();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<VotingTrendzPartiesResult> getVotingTrendzPartiesResultList()
+	{
+		Query query = getSession().createQuery(" from VotingTrendzPartiesResult model ");
+		return query.list();
+	}
 }

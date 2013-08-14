@@ -110,4 +110,12 @@ public class VoterFamilyInfoDAO extends GenericDaoHibernate<VoterFamilyInfo, Lon
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<VoterFamilyInfo> getVoterFamilyInfoList(Long constituencyId)
+	{
+		Query query = getSession().createQuery(" from VoterFamilyInfo model where model.constituencyId =:constituencyId ");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
 }

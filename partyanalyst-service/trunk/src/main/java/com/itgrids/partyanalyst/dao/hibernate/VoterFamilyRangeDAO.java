@@ -28,4 +28,10 @@ public class VoterFamilyRangeDAO extends GenericDaoHibernate<VoterFamilyRange, L
 		return getHibernateTemplate().find("select count(model.voterFamilyRangeId) from VoterFamilyRange model");
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<VoterFamilyRange> getVoterFamilyRangeList()
+	{
+		return getHibernateTemplate().find(" from VoterFamilyRange model ");
+	}
+	
 }
