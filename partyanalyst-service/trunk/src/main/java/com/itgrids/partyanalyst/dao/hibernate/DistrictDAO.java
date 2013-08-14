@@ -143,4 +143,10 @@ public List<Object[]> findByPartyNominationDetails(Long stateId,Long partyId,Lis
 	return queryObject.list();
 }
 
+@SuppressWarnings("unchecked")
+public List<Object[]> getDistrictList()
+{
+	return getHibernateTemplate().find("select model.districtId,model.districtName,model.state.stateId from District model ");
+}
+
 }

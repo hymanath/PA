@@ -40,5 +40,11 @@ public class ElectionTypeDAO extends GenericDaoHibernate<ElectionType, Long> imp
 		queryObject.setParameter(0,electionTypeId);	
 		return (String) queryObject.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ElectionType> getElectionTypeList()
+	{
+		return getHibernateTemplate().find(" from ElectionType model ");
+	}
  
 }

@@ -20,4 +20,10 @@ public class EducationalQualificationsDAO extends GenericDaoHibernate<Educationa
 		
 		return getHibernateTemplate().find("from EducationalQualifications model where model.qualification like '%"+qualificationType+"%'");
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<EducationalQualifications> getEducationalQualificationsList()
+	{
+		return getHibernateTemplate().find(" from EducationalQualifications model ");
+	}
 }
