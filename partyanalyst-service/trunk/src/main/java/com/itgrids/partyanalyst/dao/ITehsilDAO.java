@@ -75,4 +75,7 @@ public List<Object[]> getAllTehsilInfoDetails();
 	public String getTehsilNameById(Long tehsilId);
 	
 	public List<Object[]> getLatestAssemblyConstitueciesOfTehsil1(Long tehsilId);
+	
+	public List<Object[]> getTehsilList();
+	
 }

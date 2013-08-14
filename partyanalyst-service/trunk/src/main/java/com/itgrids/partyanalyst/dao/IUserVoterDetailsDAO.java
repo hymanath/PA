@@ -213,4 +213,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getCasteInHamlet(List<Long> hamletIds,Long userId,Long publicationId);
 
 	public List<Object[]> getVoterCountByHamlet(List<Long> hamletIds,Long userId,Long publicationId);
+	
+	public Integer updateVoterMobileNo(String mobileNo, Long voterId);
+	
 }
