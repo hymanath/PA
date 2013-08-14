@@ -10,5 +10,7 @@ public interface IUserAddressDAO extends GenericDao<UserAddress, Long>  {
 	
 	public Integer deleteInfluencingPeopleById(Long userAddressId);
 	
+	public List<UserAddress> getUserAddressList();
+	
 	
 }
