@@ -14,4 +14,7 @@ public interface ICasteCategoryGroupDAO extends GenericDao<CasteCategoryGroup,Lo
 	public List<Object[]> getAllCasteCategoryGroupDetails(Long casteCategoryId);
 	public Long getCasteNamesOfCategories(Long casteCategoryId);
 	public List<Object[]> getAllCasteCategoryGroupInfoDetails();
+	
+	public List<CasteCategoryGroup> getCasteCategoryGroupList();
+	
 }
