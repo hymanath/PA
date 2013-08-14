@@ -10,4 +10,7 @@ public interface ICasteCategoryDAO extends GenericDao<CasteCategory, Long>{
 	
 	public List<Object[]> getCasteCategoryDetails();
 	public List<Object[]> getAllCasteCategoryDetails();
+	
+	public List<CasteCategory> getCasteCategoryList();
+	
 }

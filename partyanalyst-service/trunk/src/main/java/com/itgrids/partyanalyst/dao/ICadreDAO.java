@@ -207,4 +207,7 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List findCadreSizeBoothwiseForMultipleUsers(List<Long> userIds);
 	
 	public List findCadreSizeHamletWise(List<Long> userIds);
+	
+	public List<Cadre> getCadreList();
+	
 }
