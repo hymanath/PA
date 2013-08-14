@@ -9,4 +9,7 @@ import com.itgrids.partyanalyst.model.Occupation;
 public interface IOccupationDAO extends GenericDao<Occupation, Long> {
 
 	public List<Occupation> getOccupationDetailsByOccupationType(String occupationType);
+	
+	public List<Occupation> getOccupationList();
+	
 }
