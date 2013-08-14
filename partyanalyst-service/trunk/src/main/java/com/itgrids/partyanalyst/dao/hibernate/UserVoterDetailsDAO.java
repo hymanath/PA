@@ -760,7 +760,7 @@ IUserVoterDetailsDAO{
 			public List<Object[]> getVoterIdsForuserinHamletByBoothsandByCasteId(Long userId ,Long hamletId,Long casteStateId ,long boothId , long publicationId)
 			{ 
 				
-				Query query = getSession().createQuery("select model.voter,model1.booth.boothId from UserVoterDetails model, " +
+				Query query = getSession().createQuery("select model.voter,model1.booth.boothId,model.mobileNo from UserVoterDetails model, " +
 						"BoothPublicationVoter model1 join model1.booth"+	
 						" where model.voter.voterId = model1.voter.voterId " +
 						"and  model.user.userId = :userId " +
@@ -1615,7 +1615,7 @@ IUserVoterDetailsDAO{
 	public List<Object[]> getVoterDetailsForCustomWardByBooth(Long boothId,Long publicationDateId,Long userId,Long casteStateId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.voter,model.booth.boothId from BoothPublicationVoter model,UserVoterDetails model2 ");
+		str.append("select distinct model.voter,model.booth.boothId,model2.mobileNo from BoothPublicationVoter model,UserVoterDetails model2 ");
 		str.append(" where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and model2.casteState.casteStateId =:casteStateId and");
 		str.append(" model.booth.boothId = :boothId ");
 		Query query = getSession().createQuery(str.toString());
@@ -2101,5 +2101,14 @@ IUserVoterDetailsDAO{
 		query.setParameter("publicationId", publicationId);
 		query.setParameter("userId", userId);
 		return query.list();
+	}
+	
+	public Integer updateVoterMobileNo(String mobileNo, Long voterId)
+	{
+		Query query = getSession().createQuery(" update UserVoterDetails model set model.mobileNo = :mobileNo where model.voterId = :voterId ");
+		
+		query.setParameter("mobileNo",mobileNo);
+		query.setParameter("voterId",voterId);
+		return query.executeUpdate();
 	}
 }

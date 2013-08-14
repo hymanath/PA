@@ -131,26 +131,26 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 		{
 	
 			
-			query = getSession().createQuery("select CV.voter.voterId, CV.voter.name,CV.voter.gender,CV.voter.age,CV.voter.voterIDCardNo,CV.voter.houseNo,CV.voter.relativeName,BPV.serialNo,BPV.booth.partNo,CV.voter.mobileNo from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
+			query = getSession().createQuery("select CV.voter.voterId, CV.voter.name,CV.voter.gender,CV.voter.age,CV.voter.voterIDCardNo,CV.voter.houseNo,CV.voter.relativeName,BPV.serialNo,BPV.booth.partNo,CV.voter.name from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and BPV.voter.voterId = CV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by cast(BPV.booth.partNo , int),BPV.serialNo,BPV.voter.houseNo") ;
 		}
 		else if(columnName.equalsIgnoreCase("serialNo"))
 		{
 
-			query = getSession().createQuery("select CV.voter.voterId, CV.voter.name,CV.voter.gender,CV.voter.age,CV.voter.voterIDCardNo,CV.voter.houseNo,CV.voter.relativeName,BPV.serialNo,BPV.booth.partNo,CV.voter.mobileNo from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
+			query = getSession().createQuery("select CV.voter.voterId, CV.voter.name,CV.voter.gender,CV.voter.age,CV.voter.voterIDCardNo,CV.voter.houseNo,CV.voter.relativeName,BPV.serialNo,BPV.booth.partNo,CV.voter.name from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and BPV.voter.voterId = CV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by BPV.serialNo  "+order) ; 
 		 
 		}
 		else if(columnName.equalsIgnoreCase("partNo"))
 		{
 
-			query = getSession().createQuery("select CV.voter.voterId, CV.voter.name,CV.voter.gender,CV.voter.age,CV.voter.voterIDCardNo,CV.voter.houseNo,CV.voter.relativeName,BPV.serialNo,BPV.booth.partNo,CV.voter.mobileNo from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
+			query = getSession().createQuery("select CV.voter.voterId, CV.voter.name,CV.voter.gender,CV.voter.age,CV.voter.voterIDCardNo,CV.voter.houseNo,CV.voter.relativeName,BPV.serialNo,BPV.booth.partNo,CV.voter.name from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and BPV.voter.voterId = CV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by cast(BPV.booth.partNo , int) "+order) ; 
 		 
 		}
 		else
 		{
-			query = getSession().createQuery("select CV.voter.voterId, CV.voter.name,CV.voter.gender,CV.voter.age,CV.voter.voterIDCardNo,CV.voter.houseNo,CV.voter.relativeName,BPV.serialNo,BPV.booth.partNo,CV.voter.mobileNo from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
+			query = getSession().createQuery("select CV.voter.voterId, CV.voter.name,CV.voter.gender,CV.voter.age,CV.voter.voterIDCardNo,CV.voter.houseNo,CV.voter.relativeName,BPV.serialNo,BPV.booth.partNo,CV.voter.name from BoothPublicationVoter BPV,CustomVoter CV where CV.customVoterGroup.customVoterGroupId = :customVoterGroupId and" +
 					" CV.customVoterGroup.user.userId = :userId and BPV.voter.voterId = CV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by CV.voter."+columnName+" "+order);
 		
 		}
@@ -390,9 +390,9 @@ public class CustomVoterDAO extends GenericDaoHibernate<CustomVoter,Long> implem
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Voter> getCasteWiseCustomVoterDetails(Long casteStateId,Long casteId,Long customVoterGroupId,Long userId)
+	public List<Object[]> getCasteWiseCustomVoterDetails(Long casteStateId,Long casteId,Long customVoterGroupId,Long userId)
 	{
-		Query query = getSession().createQuery("select CV.voter from CustomVoter CV,UserVoterDetails UVD where UVD.voter.voterId = CV.voter.voterId and UVD.user.userId =:userId and " +
+		Query query = getSession().createQuery("select CV.voter,UVD.mobileNo from CustomVoter CV,UserVoterDetails UVD where UVD.voter.voterId = CV.voter.voterId and UVD.user.userId =:userId and " +
 				" CV.customVoterGroup.customVoterGroupId =:customVoterGroupId and UVD.casteState.caste.casteId =:casteId and UVD.casteState.casteStateId =:casteStateId order by CV.voter.name ");
 		
 		query.setParameter("casteStateId", casteStateId);

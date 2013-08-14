@@ -977,7 +977,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	//get voter details By caste_state ID
 		public List<Object[]> getVoterDetailsByCasteStateForBooth(Long boothid,Long publicationDateId,Long casteStateId,Long userId,Long constituencyId)
 		{
-			Query query = getSession().createQuery("select distinct model.voter,model.booth.boothId from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.boothId=:boothid and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.casteState.casteStateId =:casteStateId and model2.user.userId=:userId and model.booth.constituency.constituencyId=:constituencyId");
+			Query query = getSession().createQuery("select distinct model.voter,model.booth.boothId,model2.mobileNo from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.boothId=:boothid and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.casteState.casteStateId =:casteStateId and model2.user.userId=:userId and model.booth.constituency.constituencyId=:constituencyId");
 		
 			query.setParameter("boothid", boothid);
 			query.setParameter("publicationDateId", publicationDateId);
@@ -991,7 +991,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		public List<Object[]> getVoterDetailsByCasteStateForPanchayat(Long panchayatId,Long publicationDateId,Long casteStateId,Long userId)
 		{
 			Object[] params={panchayatId,publicationDateId,casteStateId,userId};
-		return getHibernateTemplate().find("select distinct model.voter,model.booth.boothId from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.panchayat.panchayatId=? and model.booth.publicationDate.publicationDateId = ? and model2.casteState.casteStateId =? and model2.user.userId = ?",params);
+		return getHibernateTemplate().find("select distinct model.voter,model.booth.boothId,model2.mobileNo from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.panchayat.panchayatId=? and model.booth.publicationDate.publicationDateId = ? and model2.casteState.casteStateId =? and model2.user.userId = ?",params);
 		
 		}
 		
@@ -1643,7 +1643,7 @@ public List<Object[]> getPoliticianDetails(List<Long> locationValue,Long publica
 	}
 	StringBuilder query = new StringBuilder();
 	
-	query.append("select model.voter.name,model.voter.voterId,model.voter.gender,model.voter.mobileNo,model.voter.relativeName,model.voter.age,model.voter.houseNo,model.voter.relationshipType,model.voter.voterIDCardNo,model2.candidateId from BoothPublicationVoter model,Candidate model2"); 
+	query.append("select model.voter.name,model.voter.voterId,model.voter.gender,model.voter.name,model.voter.relativeName,model.voter.age,model.voter.houseNo,model.voter.relationshipType,model.voter.voterIDCardNo,model2.candidateId from BoothPublicationVoter model,Candidate model2"); 
 	if(type.equalsIgnoreCase("CONSTITUENCY"))
 	query.append(" where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId in (:locationValue)");
 	else if(type.equalsIgnoreCase("MANDAL"))
@@ -2099,8 +2099,8 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 	{	
 		StringBuilder query = new StringBuilder();
 		
-		query.append("select distinct(model1.voter.mobileNo) from BoothPublicationVoter model1 ,UserVoterDetails model2 " +
-					 "where model2.user.userId = :userId and model1.voter.mobileNo !='' and " +
+		query.append("select distinct(model2.mobileNo) from BoothPublicationVoter model1 ,UserVoterDetails model2 " +
+					 "where model2.user.userId = :userId and model2.mobileNo !='' and " +
 					 "model2.voter.voterId = model1.voter.voterId "); 
 		if(scope.equalsIgnoreCase("Constituency"))
 			query.append(" and model1.booth.constituency.constituencyId = :scopeId ");
@@ -3203,7 +3203,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	  
 	  public List<Object[]> getVoterDetailsForCustomWard(Long wardId, Long publicationDateId, Long userId,Long casteStateId)
 	  {
-		  Query query = getSession().createQuery("select distinct BPV.voter,BPV.booth.boothId from BoothPublicationVoter BPV , UserVoterDetails UVD where BPV.voter.voterId = UVD.voter.voterId and " +
+		  Query query = getSession().createQuery("select distinct BPV.voter,BPV.booth.boothId,UVD.mobileNo from BoothPublicationVoter BPV , UserVoterDetails UVD where BPV.voter.voterId = UVD.voter.voterId and " +
 		  		"  BPV.booth.publicationDate.publicationDateId =:publicationDateId and UVD.user.userId =:userId and " +
 		  		" UVD.casteState.casteStateId =:casteStateId and UVD.ward.constituencyId =:wardId ");
 		  
@@ -3217,7 +3217,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	  
 	  public List<Object[]> getVoterDetailsForCustomWardBooths(Long customWardId,Long boothId,Long userId,Long publicationDateId,Long casteStateId)
 	  {
-		  Query queryObj = getSession().createQuery("select distinct BPV.voter,BPV.booth.boothId from BoothPublicationVoter BPV, UserVoterDetails UVD where BPV.voter.voterId = UVD.voter.voterId and " +
+		  Query queryObj = getSession().createQuery("select distinct BPV.voter,BPV.booth.boothId,UVD.mobileNo from BoothPublicationVoter BPV, UserVoterDetails UVD where BPV.voter.voterId = UVD.voter.voterId and " +
 		  		" BPV.booth.publicationDate.publicationDateId =:publicationDateId and UVD.user.userId =:userId and UVD.casteState.casteStateId =:casteStateId and UVD.ward.constituencyId =:wardId " +
 		  		" and BPV.booth.boothId =:boothId ");
 		  
@@ -4224,7 +4224,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		public List<Object[]> getVoterDetailsByCasteStateForHamlet(Long hamletId,Long publicationDateId,Long casteStateId,Long userId,Long constituencyId)
 		{
 				Object[] params={hamletId,publicationDateId,casteStateId,userId,constituencyId};
-				return getHibernateTemplate().find("select distinct model.voter,model.booth.boothId from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model2.hamlet.hamletId =? and model.booth.publicationDate.publicationDateId = ? and model2.casteState.casteStateId =? and model2.user.userId = ? and model.booth.constituency.constituencyId=?",params);
+				return getHibernateTemplate().find("select distinct model.voter,model.booth.boothId,model2.mobileNo from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model2.hamlet.hamletId =? and model.booth.publicationDate.publicationDateId = ? and model2.casteState.casteStateId =? and model2.user.userId = ? and model.booth.constituency.constituencyId=?",params);
 				
 		}
 		
