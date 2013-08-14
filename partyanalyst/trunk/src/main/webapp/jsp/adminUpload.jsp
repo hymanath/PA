@@ -541,6 +541,17 @@
 									</span><br>
 									</fieldset></td>
 								</tr>
+								<tr>
+								<td>
+								<fieldset class="f2">
+									<legend class="l2">Mobile Data</legend>
+									<span class="fontStyle">
+										Create SqlLight DB For A Constituency:&nbsp;
+										<a class="alinkstyle" href="<s:url action="mobileDataAction"/>"> Create
+										</a>
+									</span><br>
+									</fieldset></td>
+								</tr>
 								<td></td>
 								</tr>
 						</table>

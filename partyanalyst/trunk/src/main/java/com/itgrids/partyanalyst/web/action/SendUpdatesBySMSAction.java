@@ -285,6 +285,12 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = null;
+		if(regVO != null)
+			userId = regVO.getRegistrationID();
+		
 	 if(jObj.getString("task").equalsIgnoreCase("getPanchayat"))
 		{
 			String selectedVal=jObj.getString("selected");
@@ -366,7 +372,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 				voterHouseInfoVO.setBoothId(jSONObject.getLong("boothId"));
 				votersList.add(voterHouseInfoVO);
 			}
-			voterHouseInfoVOList = voterReportService.getVoterInfoByBIdandVId(votersList,jObj.getLong("publicationId"));
+			voterHouseInfoVOList = voterReportService.getVoterInfoByBIdandVId(votersList,jObj.getLong("publicationId"),userId);
 		}
 	
 	 return SUCCESS;

@@ -691,7 +691,7 @@ public String saveLocality()
 					voterHouseInfoVO.setBoothId(jSONObject.getLong("boothId"));
 					familiesList.add(voterHouseInfoVO);
 				}
-				//votersFamilyInfo = votersAnalysisService.getMultipleFamiliesInfo(familiesList);
+				//votersFamilyInfo = votersAnalysisService.getMultipleFamiliesInfo(familiesList,userId);
 				votersFamilyInfo = votersAnalysisService.getMultipleFamiliesInformation(familiesList,userId);
 			
 		}catch (Exception e) {
@@ -885,7 +885,7 @@ public String saveLocality()
 			}
 			
 			  
-			voterHouseInfoVO1 = votersAnalysisService.getVotersInfoBySearchCriteria(searchInfo,locationType,Long.parseLong(request.getParameter("id")),categories);
+			voterHouseInfoVO1 = votersAnalysisService.getVotersInfoBySearchCriteria(searchInfo,locationType,Long.parseLong(request.getParameter("id")),categories,userId);
 		  }else{
 			  voterHouseInfoVO1 = votersAnalysisService.getUserVoterCategories(userId);
 		  }
@@ -1019,7 +1019,7 @@ public String saveLocality()
 				votersList.add(voterHouseInfoVO);
 			}
 			//voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptionsForIndividual(votersList,parameters);
-			voterHouseInfoVO1 = votersAnalysisService.getSelectedVotersDetails(votersList , parameters);
+			voterHouseInfoVO1 = votersAnalysisService.getSelectedVotersDetails(votersList , parameters,userId);
 	    
 			 
 		 }catch(Exception e)
@@ -1124,7 +1124,7 @@ public String saveLocality()
 						        catch(Exception e){					    		
 						        	 parameters.setSelTypeId(0L);
 						    	}
-							voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptionsForIndividual(votersList,parameters);
+							voterHouseInfoVO1 = votersAnalysisService.getSelectedCategoryOptionsForIndividual(votersList,parameters,userId);
 					    }else{   
 					    	parameters.setVoterId(jObj.getLong("voterId"));
 					    	
