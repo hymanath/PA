@@ -712,6 +712,13 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	}
 
 	public void prepare() throws Exception {
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = 0L;
+		if(regVO != null)
+		 userId = regVO.getRegistrationID();
+		
 		cadreId = request.getParameter("cadreId");
 		if(request.getParameter("voterId") != null)
 		voterId = Long.parseLong(request.getParameter("voterId"));
@@ -727,7 +734,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
         }  
         else if(voterId != 0)
         {
-        	cadreInfo = votersAnalysisService.getCadreDetailsByVoterId(voterId);
+        	cadreInfo = votersAnalysisService.getCadreDetailsByVoterId(voterId,userId);
         	prepopulateLocations(cadreInfo);
         }
         if(onlineRegId != null)

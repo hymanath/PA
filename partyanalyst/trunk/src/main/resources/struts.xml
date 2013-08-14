@@ -5736,5 +5736,16 @@
 		 </result>	
 		 </action>
 		 
+		 <action name="mobileDataAction" class="mobileDataAction">
+		  <result name="success">/jsp/mobileData.jsp</result>
+		  <result name="error">/jsp/loginForm.jsp</result>
+		 </action>
+		 
+		 <action name="createDataDumpAction" class="mobileDataAction" method="ajaxHandler">
+		   <result type="json" name="success">
+		     <param name="root">resultStatus</param>
+		   </result>
+		 </action>
+		 
 		</package>
 </struts>      

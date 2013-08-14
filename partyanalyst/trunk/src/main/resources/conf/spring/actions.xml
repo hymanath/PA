@@ -1270,6 +1270,9 @@
       <property name="queueCapacity" value="25" />
     </bean>
     
+    <bean id="mobileDataAction" class="com.itgrids.partyanalyst.web.action.MobileDataAction" singleton="false">
+      <property name="mobileService" ref="mobileService" />
+    </bean>
    
 </beans>	
 	

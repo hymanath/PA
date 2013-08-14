@@ -253,6 +253,7 @@
 		<pattern>/voterDataToolsAction*</pattern>
 		<pattern>/inflencingPeopleWindowAction*</pattern>
 		<pattern>/suggestiveModelAction*</pattern>
+		<pattern>/mobileDataAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">

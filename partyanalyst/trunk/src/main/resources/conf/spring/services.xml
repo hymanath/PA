@@ -1687,5 +1687,36 @@
       <property name="regionServiceDataImp" ref="regionServiceDataImp" />
     </bean>
     
+    <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">
+     <property name="bloodGroupDAO" ref="bloodGroupDAO" />
+     <property name="cadreLevelDAO" ref="cadreLevelDAO" />
+     <property name="casteCategoryDAO" ref="casteCategoryDAO" />
+     <property name="casteCategoryGroupDAO" ref="casteCategoryGroupDAO" />
+     <property name="districtDAO" ref="districtDAO" />
+     <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
+     <property name="electionTypeDAO" ref="electionTypeDAO" />
+     <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+     <property name="occupationDAO" ref="occupationDAO" />
+     <property name="partyDAO" ref="partyDAO" />
+     <property name="stateDAO" ref="stateDAO" />
+     <property name="tehsilDAO" ref="tehsilDAO" />
+     <property name="voterAgeRangeDAO" ref="voterAgeRangeDAO" />
+     <property name="voterFamilyRangeDAO" ref="voterFamilyRangeDAO" />
+     <property name="voterReportLevelDAO" ref="voterReportLevelDAO" />
+     <property name="voterInfoDAO" ref="voterInfoDAO" />
+     <property name="constituencyDAO" ref="constituencyDAO" />
+     <property name="boothDAO" ref="boothDAO" />
+     <property name="casteStateDAO" ref="casteStateDAO" />
+     <property name="panchayatDAO" ref="panchayatDAO" />
+     <property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
+     <property name="voterBasicInfoDAO" ref="voterBasicInfoDAO" />
+     <property name="voterCastInfoDAO" ref="voterCastInfoDAO" />
+     <property name="voterCastBasicInfoDAO" ref="voterCastBasicInfoDAO" />
+     <property name="voterFamilyInfoDAO" ref="voterFamilyInfoDAO" />
+     <property name="votingTrendzDAO" ref="votingTrendzDAO" />
+     <property name="votingTrendzPartiesResultDAO" ref="votingTrendzPartiesResultDAO" />
+     <property name="casteDAO" ref="casteDAO" />
+     <property name="constituencyHierarchyInfoDAO" ref="constituencyHierarchyInfoDAO" />
+    </bean>
 </beans>		
 	
