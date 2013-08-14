@@ -2345,11 +2345,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 
 			 List<SelectOptionVO> casteList = null;
 			 List castes;
+			 List<Long> constituencyIds = new ArrayList<Long>();
+			 constituencyIds.add(constituencyId);
+			 Long publicationId = publicationDateDAO.getLatestPublicationId();
 			 try{
 				 if(constituencyId !=null){
 					 casteList = new ArrayList<SelectOptionVO>();
-					 castes = userVoterDetailsDAO.getUserAssignedVotersCastesByCosntiId(constituencyId,userId);
-					 
+					//castes = userVoterDetailsDAO.getUserAssignedVotersCastesByCosntiId(constituencyId,userId);
+					 castes = voterCastInfoDAO.getCastAndPartyForSelectedLevel(userId,1l,constituencyIds,publicationId);
 					 if(castes != null && castes.size() >0){
 						 for (Object param : castes) {
 							 Object[] caste = (Object[]) param;
