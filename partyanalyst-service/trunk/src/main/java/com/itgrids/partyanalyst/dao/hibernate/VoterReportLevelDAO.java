@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -35,4 +37,11 @@ public class VoterReportLevelDAO extends GenericDaoHibernate<VoterReportLevel, L
 		return (String) queryObj.uniqueResult();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<VoterReportLevel> getVoterReportLevelList()
+	{
+		return getHibernateTemplate().find(" from VoterReportLevel model ");
+	}
+	
+ 	
 }
