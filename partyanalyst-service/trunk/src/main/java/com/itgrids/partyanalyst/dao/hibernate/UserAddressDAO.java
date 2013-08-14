@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -15,5 +17,11 @@ public class UserAddressDAO extends GenericDaoHibernate<UserAddress, Long> imple
 		Query queryObject = getSession().createQuery("delete from UserAddress model where model.userAddressId = ?");
 		queryObject.setParameter(0, userAddressId);
 		return queryObject.executeUpdate();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserAddress> getUserAddressList()
+	{
+		return getHibernateTemplate().find(" from UserAddress model ");
 	}
 }

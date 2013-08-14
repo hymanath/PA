@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -19,5 +21,13 @@ public class VoterBasicInfoDAO extends GenericDaoHibernate<VoterBasicInfo,Long> 
 	query.setParameter("constituencyId", constituencyId);
 	return query.executeUpdate();
 	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<VoterBasicInfo> getVoterBasicInfoList(Long constituencyId)
+	{
+		Query query = getSession().createQuery(" from VoterBasicInfo model where model.constituency.constituencyId =:constituencyId ");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
 	}
 }
