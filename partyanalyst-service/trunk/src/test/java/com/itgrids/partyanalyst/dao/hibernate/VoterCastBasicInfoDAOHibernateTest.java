@@ -28,4 +28,9 @@ public class VoterCastBasicInfoDAOHibernateTest extends BaseDaoTestCase{
 		List<Long> values = voterCastBasicInfoDAO.getToatlVotersForSelectedLevl(levelValues,1l,8l,3l,232l);
 		System.out.println(values);
 	}*/
+	
+	public void testgetVoterCastBasicInfoList()
+	{
+		voterCastBasicInfoDAO.getVoterCastBasicInfoList(232l, 1l);
+	}
 }

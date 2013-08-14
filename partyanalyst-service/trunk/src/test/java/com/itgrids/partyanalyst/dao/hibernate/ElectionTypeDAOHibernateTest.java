@@ -17,11 +17,16 @@ public class ElectionTypeDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 	
-	public void testFindByElectionType(){
+	/*public void testFindByElectionType(){
 		List<ElectionType> electionTypes=electionTypeDAO.findByElectionType("Assembly");
 		if(electionTypes!=null){
 			
 		}
 		Assert.assertNotNull(electionTypes);
+	}*/
+	
+	public void testgetElectionTypeList()
+	{
+		electionTypeDAO.getElectionTypeList();
 	}
 }

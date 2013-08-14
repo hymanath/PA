@@ -48,7 +48,7 @@ public class DistrictDAOHibernateTest  extends BaseDaoTestCase{
 		System.out.println(object.toString());
 //	}*/
 	
-	public void testfindByPartyNomination()
+	/*public void testfindByPartyNomination()
 	{
 		List ids = new ArrayList();
 		ids.add(17l);
@@ -62,5 +62,10 @@ public class DistrictDAOHibernateTest  extends BaseDaoTestCase{
 			System.out.println(district[1]);
 		}
 		
+	}*/
+	
+	public void testgetDistrictList()
+	{
+		districtDAO.getDistrictList();
 	}
 }

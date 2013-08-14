@@ -28,7 +28,7 @@ List<Object[]> obj=	casteCategoryGroupDAO.getCasteCategoryGroupNames((long)1);
 		}
 */
 	
-	public void testGetAllCasteCategoryGroupInfoDetails()
+	/*public void testGetAllCasteCategoryGroupInfoDetails()
 	{
 		List<Object[]> list = casteCategoryGroupDAO.getAllCasteCategoryGroupInfoDetails();
 		if(list != null && list.size() > 0)
@@ -36,5 +36,10 @@ List<Object[]> obj=	casteCategoryGroupDAO.getCasteCategoryGroupNames((long)1);
 			for(Object[] params : list)
 				System.out.println(params[0]+" "+params[1]);
 		}
+	}*/
+	
+	public void testgetCasteCategoryGroupList()
+	{
+		casteCategoryGroupDAO.getCasteCategoryGroupList();
 	}
 }

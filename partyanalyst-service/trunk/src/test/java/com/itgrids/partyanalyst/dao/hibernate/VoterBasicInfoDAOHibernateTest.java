@@ -12,8 +12,13 @@ public class VoterBasicInfoDAOHibernateTest extends BaseDaoTestCase{
 		this.voterBasicInfoDAO = voterBasicInfoDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		voterBasicInfoDAO.getAll();
+	}*/
+	
+	public void testgetVoterBasicInfoList()
+	{
+		voterBasicInfoDAO.getVoterBasicInfoList(232l);
 	}
 }

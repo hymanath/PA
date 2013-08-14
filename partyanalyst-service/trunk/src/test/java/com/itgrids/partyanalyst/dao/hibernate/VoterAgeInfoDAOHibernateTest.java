@@ -66,13 +66,18 @@ public class VoterAgeInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetVoterAgeDetails()
+	/*public void testgetVoterAgeDetails()
 	{
 		List<Object[]> list = voterAgeInfoDAO.getVoterAgeDetails(232l, 8l, 2l);
 		System.out.println(list.size()); 
 		for(Object[] params : list)
 			System.out.println(params[0] +" "+params[1]);
 		
+	}*/
+	
+	public void testgetVoterAgeInfoList()
+	{
+		voterAgeInfoDAO.getVoterAgeInfoList(232l);
 	}
 
 }

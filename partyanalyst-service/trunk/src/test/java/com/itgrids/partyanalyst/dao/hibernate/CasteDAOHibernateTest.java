@@ -47,12 +47,17 @@ public class CasteDAOHibernateTest extends BaseDaoTestCase{
 	
 	
 	
-	public void testgetCasteByCastName()
+	/*public void testgetCasteByCastName()
 	{
 		Caste caste = casteDAO.getCasteByCastName("OC");
 		System.out.println(caste);
 		if(caste != null)
 			System.out.println(caste.getCasteName());
+	}*/
+	
+	public void testgetCasteList()
+	{
+		casteDAO.getCasteList();
 	}
 
 }

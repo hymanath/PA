@@ -94,9 +94,14 @@ public class TehsilDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(tehsilDAO.getTehsilNameById(833l));
 	}*/
 	
-	public void testgetLatestAssemblyConstitueciesOfTehsil1(){
+	/*public void testgetLatestAssemblyConstitueciesOfTehsil1(){
 		List<Object[]> tehsil = tehsilDAO.getLatestAssemblyConstitueciesOfTehsil1(1710l);
 		for (Object[] parms : tehsil) 
 			System.out.println(parms[0]+" "+parms[1]);
+	}*/
+	
+	public void testgetTehsilList()
+	{
+		tehsilDAO.getTehsilList();
 	}
 }

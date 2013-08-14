@@ -417,4 +417,9 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(objects[0] +":"+ objects[1]);
 		}
 	}*/
+	
+	public void testgetConstituencyDetails()
+	{
+		constituencyDAO.getConstituencyDetails();
+	}
 }
