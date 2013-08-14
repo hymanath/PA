@@ -171,4 +171,11 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 				" model.district.districtId,model.district.districtName" +
 				" from Tehsil model where model.tehsilId = ? ",tehsilId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTehsilList()
+	{
+		return getHibernateTemplate().find(" select model.tehsilId,model.tehsilName,model.district.districtId from Tehsil model ");
+		
+	}
 }
