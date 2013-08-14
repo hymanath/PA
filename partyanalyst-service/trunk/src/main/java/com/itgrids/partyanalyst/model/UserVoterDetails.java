@@ -32,17 +32,19 @@ public class UserVoterDetails implements java.io.Serializable{
 	private Constituency ward;
 	private Constituency constituency;
 	private Locality locality;
+	private String mobileNo;
 	
 	private Hamlet hamlet;
 	
 	public UserVoterDetails(){
 	}
 	
-	public UserVoterDetails(Long userVoterDetailsId,User user,Voter voter,Party party){
+	public UserVoterDetails(Long userVoterDetailsId,User user,Voter voter,Party party,String mobileNo){
 		this.userVoterDetailsId=userVoterDetailsId;
 		this.user=user;
 		this.voter=voter;
 		this.party=party;
+		this.mobileNo = mobileNo;
 	}
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -145,7 +147,13 @@ public class UserVoterDetails implements java.io.Serializable{
 		this.constituency = constituency;
 	}
 	
-	
-	
-	
+	@Column(name="mobile_no",length = 15)
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+    
 }
