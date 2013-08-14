@@ -9,4 +9,7 @@ import com.itgrids.partyanalyst.model.EducationalQualifications;
 public interface IEducationalQualificationsDAO extends GenericDao<EducationalQualifications, Long> {
 
 	public List<EducationalQualifications> getEducationalQualificationsByQualificationType(String qualificationType);
+	
+	public List<EducationalQualifications> getEducationalQualificationsList();
+	
 }
