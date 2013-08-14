@@ -25,4 +25,6 @@ public interface IVoterFamilyInfoDAO extends GenericDao<VoterFamilyInfo, Long>{
 	
 	public List<Object[]> getVoterReportLevelValueByConstituencyId(Long constituencyId, Long publicationDateId,Long voterReportLevel);
 	
+	public List<VoterFamilyInfo> getVoterFamilyInfoList(Long constituencyId);
+	
 }
