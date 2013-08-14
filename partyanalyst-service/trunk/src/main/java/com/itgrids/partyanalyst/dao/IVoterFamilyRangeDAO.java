@@ -11,5 +11,7 @@ public interface IVoterFamilyRangeDAO extends GenericDao<VoterFamilyRange, Long>
 	public Long getVoterFamilyRangeIdByFamilyRange(String familyRange);
 	
 	public List<Long> getVoterFamilyRangeDetails();
+	
+	public List<VoterFamilyRange> getVoterFamilyRangeList();
 
 }

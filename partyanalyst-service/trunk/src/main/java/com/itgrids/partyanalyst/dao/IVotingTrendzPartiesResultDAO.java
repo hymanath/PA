@@ -8,4 +8,6 @@ import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
 public interface IVotingTrendzPartiesResultDAO extends GenericDao<VotingTrendzPartiesResult,Long>{
 	public List<Long> getVotingTrendzIds(Long constituenyId);
 	public Integer deletePartyResultByConstituencyId(List<Long> votingTrendzIds);
+	
+	public List<VotingTrendzPartiesResult> getVotingTrendzPartiesResultList();
 }
