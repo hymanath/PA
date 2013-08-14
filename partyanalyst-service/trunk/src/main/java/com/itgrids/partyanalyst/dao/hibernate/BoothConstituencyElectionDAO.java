@@ -714,4 +714,15 @@ public List<Object[]> getBoothsByConstituency(Long constituencyId,Long electionI
 	 query.setParameter("electionId", electionId);
 	 return query.list();
   }
+
+public List<Long> getElectionsByMandals(List<Long> mandalIds,Long partyId,Long electionTypeId)
+{
+	Query query = getSession().createQuery("select distinct model.constituencyElection.election.electionId from BoothConstituencyElection model " +
+			" where model.booth.tehsil.tehsilId in (:mandalIds) and " +
+			" model.constituencyElection.election.electionScope.electionType.electionTypeId = :electionTypeId " );
+	//query.setParameter("partyId", partyId);
+	query.setParameter("electionTypeId", electionTypeId);
+	query.setParameterList("mandalIds", mandalIds);
+	return query.list();
+}
 }
