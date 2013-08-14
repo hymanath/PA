@@ -64,6 +64,7 @@ import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultWithAllianceDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
+import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -218,7 +219,7 @@ public class StaticDataService implements IStaticDataService {
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	private IAreaTypeDAO areaTypeDAO;
 	private ICadreDAO cadreDAO;
-
+	private IPublicationDateDAO publicationDateDAO;
 	
 	public ICadreDAO getCadreDAO() {
 		return cadreDAO;
@@ -625,6 +626,16 @@ public class StaticDataService implements IStaticDataService {
 	public void setInformationSourceDAO(
 			IInformationSourceDAO informationSourceDAO) {
 		this.informationSourceDAO = informationSourceDAO;
+	}
+	
+	
+
+	public IPublicationDateDAO getPublicationDateDAO() {
+		return publicationDateDAO;
+	}
+
+	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
+		this.publicationDateDAO = publicationDateDAO;
 	}
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -9042,12 +9053,30 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 	 */
 	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId,Long constituencyId) {
 		List<SelectOptionVO> electionYearslist;
+		List<Long> mandalIds;
+		List<Long> eleIds;
 		List<SelectOptionVO> reteurnList = new ArrayList<SelectOptionVO>();
 		try {
 			electionYearslist = new ArrayList<SelectOptionVO>();
-			List<Long> electionIds = nominationDAO.getElectionYearsByScopeNPartyNconstiId(
-					electionScopeId,partyId,constituencyId);
-			if(electionIds != null && electionIds.size() > 0)
+			/*List<Long> electionIds = nominationDAO.getElectionYearsByScopeNPartyNconstiId(
+					electionScopeId,partyId,constituencyId);*/
+			 Long publicationId = publicationDateDAO.getLatestPublicationId();
+			 mandalIds = boothDAO.getTehsildByConstituency(constituencyId, publicationId);
+			 List<Long> electionIds = boothConstituencyElectionDAO.getElectionsByMandals(mandalIds,partyId,electionScopeId);
+			 if(electionIds != null && electionIds.size() > 0)
+			 {
+				List<Object[]> electionYearsList = nominationDAO.getElectionyearsByElection(electionIds,partyId);
+				if(electionYearsList != null && electionYearsList.size() > 0)
+				{
+					for (Object[] parms : electionYearsList) {
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long) parms[0]);
+						selectOptionVO.setName( parms[1].toString());
+						reteurnList.add(selectOptionVO);
+					}
+				}
+			 }
+			/*if(electionIds != null && electionIds.size() > 0)
 			{
 				for (Long electionId : electionIds) {
 					List<Long> booths = boothConstituencyElectionDAO.getBoothIdsByConstituencyId(constituencyId,electionId);
@@ -9059,7 +9088,7 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 						reteurnList.add(selectOptionVO);
 					}
 				}
-			}
+			}*/
 			return reteurnList;
 		} catch (Exception e) {
 			e.printStackTrace();

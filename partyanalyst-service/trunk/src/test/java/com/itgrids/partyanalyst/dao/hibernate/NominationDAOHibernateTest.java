@@ -1358,5 +1358,16 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 			
 	}*/
+	
+	public void testgetElectionyearsByElection()
+	{
+		List<Long> eleIds = new ArrayList<Long>();
+		eleIds.add(3l);
+		eleIds.add(38l);
+		List<Object[]> values = nominationDAO.getElectionyearsByElection(eleIds,872l);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1]);
+		}
+	}
 }	
 	
