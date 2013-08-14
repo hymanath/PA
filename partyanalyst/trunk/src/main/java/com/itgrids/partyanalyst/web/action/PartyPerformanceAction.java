@@ -550,12 +550,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		else
 			chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
+		// jfree chart code comment ...............
 		//ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
-        if(reportVO.getPartyPositionsVO() != null && reportVO.getPartyPositionsVO().size() > 0)
+      /*  if(reportVO.getPartyPositionsVO() != null && reportVO.getPartyPositionsVO().size() > 0)
         ChartProducer.createBarChart("Party Positions", "Party", "Seats", createDataset(reportVO.getPartyPositionsVO()), chartPath);
-		request.setAttribute("chartName", chartName);
+		request.setAttribute("chartName", chartName);*/
 		session.setAttribute("reportVO", reportVO);
-		session.setAttribute("chartName", chartName);
+		//session.setAttribute("chartName", chartName);
 		}
 		catch(Exception ex){
 			ex.printStackTrace();
@@ -563,7 +564,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		    try{
 			session = request.getSession();
-			String chartId = country.concat(party).concat(electionType).concat(state).concat(district).concat(year).concat("LineChart");
+			/*String chartId = country.concat(party).concat(electionType).concat(state).concat(district).concat(year).concat("LineChart");
 			String lineChartName = "partyElectionResultsChart_" + chartId + session.getId()+".png";
 			String chartPath = "";
 			
@@ -571,20 +572,26 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			if(cPath.contains("PartyAnalyst"))
 				chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
 			else
-				chartPath = IWebConstants.CHART_URL_IN_SERVER + lineChartName;
+				chartPath = IWebConstants.CHART_URL_IN_SERVER + lineChartName;*/
 			
 			//ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
 	         if(reportVO.getTotalSeatsWon() != 0 && reportVO.getPrevYearTotalSeatsWon() != 0 && reportVO.getTotalPercentageOfVotesWon() != null && reportVO.getPrevYeartotalPercentageOfVotesWon() != null){
 	        	//ChartProducer.createBarChart("Results In Elections", "Years", "Seats", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), chartPath);
-	        	ChartProducer.createALineChart("Election Result", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), "Years", "Seats", chartPath);
-	        	request.setAttribute("lineChartName", lineChartName);
+	        	//ChartProducer.createALineChart("Election Result", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), "Years", "Seats", chartPath);
+	        	//request.setAttribute("lineChartName", lineChartName);
 				session.setAttribute("reportVO", reportVO);
-				session.setAttribute("lineChartName", lineChartName);
+				//session.setAttribute("lineChartName", lineChartName);
+				session.setAttribute("totalSeatsWon", reportVO.getTotalSeatsWon());
+				session.setAttribute("prevYearTotalSeatsWon", reportVO.getPrevYearTotalSeatsWon());
+				session.setAttribute("year", reportVO.getYear());
+				session.setAttribute("prevYear", reportVO.getPrevYear());
 	         }
 	         else if(reportVO.getTotalSeatsWon() != 0 || reportVO.getTotalPercentageOfVotesWon() != null){
-	        	 ChartProducer.createALineChart("Election Result", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), "Years", "Seats", chartPath);	        	 request.setAttribute("lineChartName", lineChartName);
+	        	// ChartProducer.createALineChart("Election Result", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), "Years", "Seats", chartPath);	        	 request.setAttribute("lineChartName", lineChartName);
 				 session.setAttribute("reportVO", reportVO);
-				 session.setAttribute("lineChartName", lineChartName);
+				// session.setAttribute("lineChartName", lineChartName);
+				 session.setAttribute("totalSeatsWon", reportVO.getTotalSeatsWon());
+				 session.setAttribute("prevYearTotalSeatsWon", reportVO.getPrevYearTotalSeatsWon());
 	         }
 	        
 	       	}
