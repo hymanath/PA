@@ -205,6 +205,7 @@
 		<property name="areaTypeDAO" ref="areaTypeDAO" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="cadreDAO" ref="cadreDAO" />	
+		<property name="publicationDateDAO" ref="publicationDateDAO"/>
 	</bean>
 	
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
