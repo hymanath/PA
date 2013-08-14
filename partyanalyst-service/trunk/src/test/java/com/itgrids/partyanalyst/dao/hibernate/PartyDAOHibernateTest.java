@@ -88,7 +88,7 @@ public class PartyDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println();
 	}*/
 	
-	public void testgetParticipatedPartiesInMandal()
+	/*public void testgetParticipatedPartiesInMandal()
 	{
 		List<Object[]> list=partyDAO.getParticipatedPartiesInMandal(844l);
 		System.out.println(list.size());
@@ -97,5 +97,13 @@ public class PartyDAOHibernateTest extends BaseDaoTestCase{
 			System.out.print(params[0]);
 			System.out.println(params[1]);
 		}
+	}*/
+	/*public void testgetPartyList()
+	{
+		partyDAO.getPartyList();
+	}*/
+	public void testgetPartyShortName()
+	{
+		partyDAO.getPartyShortName();
 	}
 }

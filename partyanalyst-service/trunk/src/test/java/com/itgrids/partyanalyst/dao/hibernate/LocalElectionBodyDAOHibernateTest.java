@@ -94,11 +94,16 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 	}
 	*/
 	
-	public void testgetTehsilsByLocalBody()
+	/*public void testgetTehsilsByLocalBody()
 	{
 		List<Object[]> values = localElectionBodyDAO.getTehsilsByLocalBody(83l);
 		for (Object[] objects : values) {
 			System.out.println(objects[0] +":"+ objects[1]);
 		}
+	}*/
+	
+	public void testgetLocationElectionBodyList()
+	{
+		localElectionBodyDAO.getLocationElectionBodyList();
 	}
 }

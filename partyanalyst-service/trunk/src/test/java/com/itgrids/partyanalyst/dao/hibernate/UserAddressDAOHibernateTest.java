@@ -20,12 +20,15 @@ public class UserAddressDAOHibernateTest extends BaseDaoTestCase {
 		return userAddressDAO;
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void test(){
 		Integer i = userAddressDAO.deleteInfluencingPeopleById(17l);
 		System.out.println("=============="+i);
 		
-	}
+	}*/
 
-
+   public void testgetUserAddressList()
+   {
+	   userAddressDAO.getUserAddressList();
+   }
 }

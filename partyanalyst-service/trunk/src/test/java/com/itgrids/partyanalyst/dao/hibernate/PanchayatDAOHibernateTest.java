@@ -146,4 +146,9 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(parms[0] +":"+ parms[1]+":"+ parms[2]);
 		}
 	}*/
+	
+	public void testgetPanchayatDetails()
+	{
+		panchayatDAO.getPanchayatDetails();
+	}
 }
