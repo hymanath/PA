@@ -113,4 +113,16 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 		return (Party) query.uniqueResult();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Party> getPartyList()
+	{
+		return getHibernateTemplate().find(" from Party model ");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartyShortName()
+	{
+		return getHibernateTemplate().find(" select model.partyId,model.shortName from Party model ");
+	}
 }
