@@ -6,712 +6,210 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Influence Person Page</title>
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
+<style type="text/css">
 
-<!-- YUI Dependency files (Start) -->
+	
+	body
+	{
+		direction:ltr;
+		font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+		font-size:11px;
+	}
 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+	#influencingPeopleDetails_main
+	{
+		padding:20px;
+	}
 
-	<!-- YUI Skin Sam -->
+	#influencingPeopleDetails_head
+	{
+		color:#8E320A;
+		font-size:17px;
+		font-weight:bold;
+		text-align:center;
+		text-decoration:underline;
+		padding:5px;
+		margin-top:10px;
+	}
 
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+	.influencePersonInfoTable th
+	{
+		color:#652D2D;
+		padding:4px;
+		text-align:left;
+	}
 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
-    
-<!-- YUI Dependency files (End) -->
+	.influencePersonInfoTable td
+	{
+		color:#31383C;
+		padding:4px;
+		text-align:left;
+	}
+	
+	fieldset {
+		border:4px solid #CFD6DF;
+		margin-bottom:10px;
+		padding:10px;		
+	}
+	legend {
+		background-color:#567AAF;
+		color:#FFFFFF;
+		font-size:12px;
+		padding:5px;
+		font-weight:bold;
+	}
 
+</style>
 
-<link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">	
-<title>Influence People Details</title>
-<script>
-
- $(document).ready(function() {
-	 $('th input:checkbox').live("click",function(e) {
-	var table = $(e.target).closest('table');
-	$('td input:checkbox', table).attr('checked', e.target.checked);
-	});
-
-$('td input:checkbox').live("click",function(){
-	var unCheck = false;
-	$(this).closest('table').find('input:checkbox').not(':first').each(function(){
-	if(!$(this).is(':checked'))
-         unCheck = true;
-});
-if(unCheck)
-	$(this).closest('table').find('input:checkbox:first').attr('checked',false);
-else
-	$(this).closest('table').find('input:checkbox:first').attr('checked',true);
-
-})
-});
-</script>
-	<style type="text/css">
-
-		body
-		{			
-			direction:ltr;
-			font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
-			font-size:11px;
-			margin:0;
-			padding:0;
-		}
-		#influencePeopleData_main
-		{
-			padding:40px;
-			text-align:left;
-			color:#FFFFFF;
-		}
-		
-		#influencePeopleData_body .yui-pg-container 
-		{
-			margin:6px 450px;
-			text-align:right;
-		}
-
-		#influencePeopleData_head
-		{
-			color:#764916;
-			font-size:17px;
-			font-weight:bold;
-			padding:5px;
-			text-decoration:underline;
-		}
-
-		.peopleDataMain
-		{
-			border:1px solid #DBD8D4;
-			margin-top:20px;
-			overflow-x: scroll;
-			margin-left: -34px;
-		}
-
-		.elbutton
-		{   
-			
-			color:#FFFAF0; 
-	        font: bold small 'trebuchet ms',helvetica,sans-serif; 
-			background-color:#483D8B;
-	  
-			
-	} 
-			
-		}
-
-		/*#buttoneleId
-		{
-			 cursor:pointer;
-			 cursor:hand;
-		}*/
-		/*.elbutton
-		{
-		
-		
-		}*/
-
-		#smsStatus
-		{
-			text-align:center;
-		}
-
-		#messageBox_mask
-		{
-			background-color:#A3B4BF;
-			opacity:0.5;
-			filter:alpha(opacity=50)
-		}
-
-		#messageBox_outer .yui-panel .bd, #messageBox_outer .yui-panel .ft 
-		{
-			background-color:#FFFFFF;
-		}
-
-		#messageBox_outer .yui-panel .hd 
-		{
-			padding:2px 2px 2px 10px;
-		}
-	</style>
-
-
-	<script type="text/javascript">
-		
-		function buildDataTable()
-		{
-			<c:forEach var="region" items="${influencingPeopleDetailsVO}" varStatus ="status">
-
-				buildYUIDTTable("peopleDataTable_${status.index}","peopleRegion_body_ ${status.index}");				
-
-			</c:forEach>
-
-		}
-		var regionType = '${regionType}';
-		function buildYUIDTTable(tableId,divId)
-		{
-				var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-				.get(tableId));
-				resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
-				resultsDataSource.responseSchema = {
-					fields : [
-					{
-						key : ""
-					},{
-						key : "firstName"
-					}, {
-						key : "lastName"
-					}, {
-						key : "email"
-					}, {
-						key : "mobile",parser:"number"
-					}, {
-						key : "gender"
-					}, {
-						key : "cast"
-					} , {
-						key : "constituencyName"
-					}, {
-						key : "districtName"
-					}, {
-						key : "stateName"
-					}, 
-					<c:if test="${regionType == 'BOOTH' || regionType == 'VILLAGE' ||regionType == 'MANDAL'}">
-					{
-						key : "influencingScopeValue"
-					} ,
-					</c:if>
-					{
-						key : "moreDetails"
-					},{
-						key : "edit"
-					},{
-						key : "delete"
-					} ]
-				};
-
-				var resultsColumnDefs = [{
-					key : "",
-					label : "All <input type='checkbox' name='regionHeaderCheckBox' onclick='selectAllPeopleInRegion(${region.regionId})'></input>",
-					sortable : false
-				},
-				{
-					key : "firstName",
-					label : "First Name",
-					sortable : true
-				}, {
-					key : "lastName",
-					label : "Second Name",
-					sortable : true
-				}, {
-					key : "email",
-					label : "Email",
-					sortable : true
-				}, {
-					key : "mobile",
-					parser:"number",
-					label : "Mobile",
-					sortable : true
-				}, {
-					key : "gender",
-					label : "Gender",
-					sortable : true
-				}, {
-					key : "cast",
-					label : "Caste",
-					sortable : true
-				}, {
-					key : "constituencyName",
-					label : "Constituency",
-					sortable : true
-				} , {
-					key : "districtName",
-					label : "District / Parliament",
-					sortable : true
-				} , {
-					key : "stateName",
-					label : "State",
-					sortable : true
-				}, 
-				<c:if test="${regionType == 'BOOTH' || regionType == 'VILLAGE' ||regionType == 'MANDAL'}">
-				{
-					key : "influencingScopeValue",
-					label : "Scope",
-					sortable : true
-				},
-				</c:if>
-				{
-					key : "moreDetails",
-					label : "More Details",
-					sortable : false
-				} ,{
-					key : "edit",
-					label : "Edit",
-					sortable : false
-				},{
-					key : "delete",
-					label : "Delete",
-					sortable : false
-				}];
-
-				var myConfigs = {
-				paginator : new YAHOO.widget.Paginator({
-					rowsPerPage: 50
-				})
-			};
-
-
-			var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,myConfigs); 
-		}
-
-
-		function selectAllPeopleInRegion(id)
-		{
-			var name = "influencePeopleCheck_"+id;
-			var elmts = document.getElementsByName(name);
-
-			if(elmts.length == 0)
-				return;
-
-			for(var i=0; i<elmts.length; i++)
-			{
-				if(!elmts[i].checked)
-					elmts[i].checked = true;
-				else
-					elmts[i].checked = false;
-			}	
-
-		}
-		
-		function selectAllPeople()
-		{
-			var elmts = document.getElementsByTagName('input');
-
-			if(elmts.length == 0)
-				return;
-
-			for(var i=0; i<elmts.length; i++)
-			{
-				if(elmts[i].type == "checkbox" && !elmts[i].checked)
-					elmts[i].checked = true;
-			}
-		}
-
-		function DeSelectAllPeople()
-		{
-			var elmts = document.getElementsByTagName('input');
-
-			if(elmts.length == 0)
-				return;
-
-			for(var i=0; i<elmts.length; i++)
-			{
-				if(elmts[i].type == "checkbox" && elmts[i].checked)
-					elmts[i].checked = false;
-			}
-		}
-		
-		function limitText(limitField, limitCount, limitNum)
-		{		
-			var limitFieldElmt = document.getElementById(limitField);
-			var limitCountElmt = document.getElementById(limitCount);
-
-			if (limitFieldElmt.value.length > limitNum) 
-			{
-				limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
-			}
-			else
-			{			
-				limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
-			}
-		}
-		
-		function sendSMSToSelectedPeople()
-		{
-				var str = '';	
-				str += '<table width="100%">';
-				str += '<tr>';
-				str += '<th>SMS Text :</th>';
-				str += '<td>';
-				str += '<textarea id="influencePeopleMsg" onkeyup="limitText(\'influencePeopleMsg\',\'maxcount\',200)" rows="3" cols="38"></textarea>';
-				str +='<div id="limitDiv">';
-				str +='<table style="width:100%;"><tr>';
-				str +='<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
-				str +='<td align="right" style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
-				str +='</tr></table>';
-				str +='</div>';	
-				str += '</td>';
-				str += '</tr>';
-
-				str += '<tr>';
-				str += '<td></td>';
-				str += '<td><input id="smsIncludeUserName" type="checkbox" name="smsIncludeUserName"></input> Include user name</td>';				
-				str += '</tr>';
-
-				str += '<tr>';
-				str += '<td></td>';
-				str += '<td><input id="smsIncludeSenderName" type="checkbox" onclick="enableSenderName()" name="smsIncludeUserName"></input> Include sender name ';
-				str += '<input type="text" id="senderNameText" disabled="disabled" value="${sessionScope.UserName}" />';
-				str += '</td>';				
-				str += '</tr>';				
-				
-				str += '</table>';
-				str	+= '<div id="smsStatus"></div>';
-				
-				var connectPopupPanel = new YAHOO.widget.Dialog("messageBox", {      
-							 width:'500px',
-							 fixedcenter : true, 
-							 visible : true,
-							 constraintoviewport : true, 
-							 iframe :true,
-							 modal :true,
-							 hideaftersubmit:true,
-							 close:true,
-							 draggable:true,
-							 buttons: [ { text:"Send", handler:handleYes, isDefault:true }] 
-				   });	 
-				
-				connectPopupPanel.setHeader("Send Message");
-				connectPopupPanel.setBody(str);
-				connectPopupPanel.render();
-		}
-		
-		function enableSenderName()
-		{
-			var elmt = document.getElementById("senderNameText");
-			if(elmt.disabled == true)
-				elmt.disabled = false;
-			else
-				elmt.disabled = true;
-		}
-
-		function handleYes()
-		{
-			var messageElmt = document.getElementById("influencePeopleMsg");
-			var statusElmt = document.getElementById("smsStatus");
-			var includeElmt = document.getElementById("smsIncludeUserName");
-			var includeSenderElmtCheck = document.getElementById("smsIncludeSenderName");
-			var senderNameTextElmt = document.getElementById("senderNameText");
-			
-			var message = messageElmt.value;
-			var includeName = false;
-			var senderName = '';
-
-			if(includeElmt.checked == true)
-				includeName = true;
-			
-			if(includeSenderElmtCheck.checked == true)
-				senderName = senderNameTextElmt.value;
-
-			if(message == "")
-			{
-				statusElmt.innerHTML = '<font color="red"> Message Content Is Empty .. </font>';
-				return;
-			}
-			else
-				statusElmt.innerHTML = '';
-
-		
-			var elmts = document.getElementsByTagName('input');
-			
-			var checkedIds = '';
-
-			if(elmts.length == 0)
-				return;
-			
-			for(var i=0; i<elmts.length; i++)
-			{
-				if(elmts[i].type == "checkbox" && elmts[i].name != "regionHeaderCheckBox" && elmts[i].name != "smsIncludeUserName" && elmts[i].checked)
-				{
-					checkedIds += elmts[i].value;
-					checkedIds += ',';
-				}
-			}
-
-			checkedIds = checkedIds.substring(0,checkedIds.length-1);
-			
-			if(checkedIds == '' || checkedIds == null)
-			{
-				statusElmt.innerHTML = '<font color="red"> No people selected to send message.. </font>';
-				return;
-			}
-			else
-				statusElmt.innerHTML = '';
-			
-			var jsObj= 
-			{	
-				checkedIdString : checkedIds,
-				smsMessage : message,
-				includeName : includeName,
-				senderName : senderName,
-				task: "sendSMSToInfluencePeople"				
-			};
-			
-			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "sendSMSToInfluencePeopleAction.action?"+param;
-			
-			callAjax(jsObj,url);	
-		}
-
-		function callAjax(jsObj,url)
-		{
-			var myResults;
-	 					
-	 		var callback = {			
-	 		               success : function( o ) 
-							  {
-								try {												
-										if(o.responseText)
-											myResults = YAHOO.lang.JSON.parse(o.responseText);
-											
-										if(jsObj.task == "sendSMSToInfluencePeople")
-										{
-											var statusElmt = document.getElementById("smsStatus");
-
-											if(myResults.resultStatus == null)
-												statusElmt.innerHTML = '<font color="green">SMS has been sent successfully to '+myResults.totalSmsSent+' people .. </font>';
-											else
-												statusElmt.innerHTML = '<font color="red">SMS cannot be sent to the selected people due to some technical difficulty.. </font>';
-										}
-										if(jsObj.task == "deleteInfluencingPerson"){
-											alert("Succesfully Deleted");
-											//window.opener.document.location.reload(true);
-											//window.location.reload(true);
-											location.reload();
-											window.opener.getRefreshCurrentChanges();
-										}
-									}
-								catch (e)
-									{   
-									   	//alert("Invalid JSON result" + e);   
-									}	  
-					              },
-					               scope : this,
-					               failure : function( o ) {
-					                			//alert( "Failed to load result" + o.status + " " + o.statusText);
-					                         }
-					               };
-
-					YAHOO.util.Connect.asyncRequest('GET', url, callback);
-			}
-			
-			function getPersonDetails(id)
-			{
-				var urlStr = "getInfluencingPersonDetailsAction.action?windowTask=getInfluencingPersonDetailsPopup&personId="+id;
-				var browser2 = window.open(urlStr,"influencingPersonDetailPopup","scrollbars=yes,height=570,width=600,left=200,top=50");	
-				browser2.focus();
-			}
-			
-			function editPersonDetails(id)
-			{
-				var type='edit';
-				var browser2 = window.open("<s:url action="influencingPeopleAction.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
-			    browser2.focus();
-				//window.opener.location.reload(true);
-			}
-
-			function deletePersonDetails(id)
-			{
-				/*var isChecked = $('#checkBoxId').is(":checked");
-				alert(isChecked);
-					if(isChecked == false)
-					{
-						alert("Please select the Candidate to Delete");
-					}
-					else
-					{*/
-					 var ask = confirm("Do You want to delete");
-						  if (ask ==  true)
-						  {
-							var jsObj= 
-							{		
-								influencingPeopleId :id,		  			
-								task: "deleteInfluencingPerson"		
-							};
-							
-							var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-							var url = "<%=request.getContextPath()%>/deleteInfluencingPeopleAjaxAction.action?"+param;
-							callAjax(jsObj,url);
-							//window.opener.document.location.reload(true);
-							//window.location.reload(true);
-						  }	
-						
-						  else
-						  {
-							return;	
-						  }	
-					 
-			}
-			
-			function showAllPeopleRecords()
-			{
-				var elmt = document.getElementById("influencePeopleMainDataDiv");
-				var str = '';
-				str += '<table id="allPeopleDataTable">';	
-				<c:forEach var="region" items="${influencingPeopleDetailsVO}" varStatus ="status">
-					<c:forEach var="people" items="${region.influencingPeopleDetails}" varStatus ="status">
-						str += '<tr>';
-						str += '	<td><input type="checkbox" name="influencePeopleCheck_${region.regionId}" value="${people.influencingPersonId}" id="checkBoxId"></input></td>';
-						str += '	<td>${people.firstName}</td>';
-						str += '	<td>${people.lastName}</td>';
-						str += '	<td>${people.email}</td>';
-						str += '	<td>${people.mobile}</td>';
-						str += '	<td>${people.gender}</td>';
-						str += '	<td>${people.cast}</td>';
-						str += '	<td>${people.constituency}</td>';
-						str += '	<td>${people.district}</td>';
-						str += '	<td>${people.state}</td>';
-						str += '	<td><a href="javascript:{}" onclick="getPersonDetails(${people.influencingPersonId})">More Details</a></td>';
-						str += '	<td>';
-						str += '		<a href="javascript:{}" onclick="editPersonDetails(${people.influencingPersonId})">';
-						str += '			<img style="text-decoration: none; border: 0px none;" src="images/icons/edit.png">';
-						str += '		</a>';
-						str += '	</td>';
-						str += '	<td>';
-						str += '		<a href="javascript:{}" onclick="deletePersonDetails(${people.influencingPersonId})">';
-						str += '			<img style="text-decoration: none; border: 0px none;" src="images/icons/delete.png">';
-						str += '		</a>';
-						str += '	</td>';
-						str += '</tr>';							
-					</c:forEach>
-				</c:forEach>
-				str += '</table>';
-
-				elmt.innerHTML = str;
-
-				buildYUIDTTable("allPeopleDataTable","influencePeopleMainDataDiv");
-			}
-
-			function tabHighLightForViewResults(){
-				$("#viewResultsId").css({"background":"none repeat scroll 0 0 #487aea"});
-				$("#showResultsId").css({"background":"none repeat scroll 0 0 #483D8B"});
-		
-			}
-			
-			function tabHighLightForShowResults(){
-				$("#viewResultsId").css({"background":"none repeat scroll 0 0 #483D8B"});
-				$("#showResultsId").css({"background":"none repeat scroll 0 0 #487aea"});
-		
-			}
-			//window.opener.location.reload(true);
-	</script>
 </head>
 <body>
+	
+	<div id="influencingPeopleDetails_main">
 
-	<div id="messageBox_outer" class="yui-skin-sam"><div id="messageBox"></div></div>
-	<div id="influencePeopleData_main">		
-		<div id="influencePeopleData_head">
-			
-			<center style="text-transform:uppercase;"> Influencing People in ${regionName}</center>
+		<div id="influencingPeopleDetails_head">
+			 ${influencingPersonVO.firstName} Complete Profile
 		</div>
-		<div id="influencePeopleData_body" class="yui-skin-sam">		
-			<div id="selectButtonsDiv" class="selectButtonsDiv">
+
+		<div id="influencingPeopleDetails_body">
 				<table width="100%">
 					<tr>
-						<td align="left">
-							<input type="button" class="elbutton" id="viewResultsId" value="View Results By Regions" onclick="javascript:{window.location.reload();};tabHighLightForViewResults();"></input> </div>
-							<input type="button" id="showResultsId" class="elbutton" value="Show All Results" onclick="showAllPeopleRecords();tabHighLightForShowResults();"></input>
+						<td>
+							<div id="personalDetailsDiv">
+								<fieldset>
+									<legend> Personal Details</legend>
+									<table class="influencePersonInfoTable" width="100%">
+										<tr>
+											<th> First Name</th>
+											<td> ${influencingPersonVO.firstName} </td>
+											<td rowspan="4"><img height="100px" width="110px" src="images/icons/indexPage/human.jpg"></td>
+										</tr>
+										<tr>
+											<th> Last Name</th>
+											<td> ${influencingPersonVO.lastName} </td>
+										</tr>								
+										<tr>
+											<th> Gender</th>
+											<td> ${influencingPersonVO.gender} </td>
+										</tr>
+										<tr>
+											<th> Father/Spouse Name</th>
+											<td> ${influencingPersonVO.fatherOrSpouseName} </td>
+										</tr>									
+									</table>
+								</fieldset>
+							<div>
 						</td>
-						<td align="right">
-							<input type="button" class="elbutton" value="select All" onclick="selectAllPeople()"></input>
 						
-							<input type="button" class="elbutton" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
-							<input type="button"  class="elbutton"value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
+					</tr>	
+					<tr>
+						<td colspan="2">
+							<div id="contactDetails">
+								<fieldset>
+									<legend> Contact Details</legend>
+									<table class="influencePersonInfoTable" width="100%">
+										<tr>
+											<th> Email</th>
+											<td> ${influencingPersonVO.email} </td>
+
+											<th> Mobile</th>
+											<td> ${influencingPersonVO.mobile} </td>
+										</tr>
+										
+										<tr>
+											<c:if test="${influencingPersonVO.houseNo != null && influencingPersonVO.houseNo != ''}">
+												<th> House No</th>
+												<td> ${influencingPersonVO.houseNo} </td>
+											</c:if>	
+											<c:if test="${influencingPersonVO.streetName != null && influencingPersonVO.streetName != ''}">
+												<th> Street</th>
+												<td> ${influencingPersonVO.streetName} </td>
+											</c:if>	
+										</tr>
+
+										<tr>
+											<th> State</th>
+											<td> ${influencingPersonVO.state} </td>
+
+											<th> District</th>
+											<td> ${influencingPersonVO.district} </td>
+										</tr>
+										<tr>
+											<th> Constituency</th>
+											<td> ${influencingPersonVO.constituency} </td>
+											
+											<c:if test="${influencingPersonVO.mandal != null && influencingPersonVO.mandal != ''}">
+												<th> Mandal/Municipality/Corporation</th>
+												<td> ${influencingPersonVO.mandal} </td>
+											</c:if>	
+										</tr>
+
+										<c:if test="${influencingPersonVO.wardOrHamlet != null && influencingPersonVO.wardOrHamlet != ''}">
+										<tr>
+											<th> Ward/Village</th>
+											<td> ${influencingPersonVO.wardOrHamlet} </td>											
+										</tr>
+										</c:if>
+
+										<tr>
+											<c:if test="${influencingPersonVO.booth != null && influencingPersonVO.booth != ''}">
+												<th> Booth</th>
+												<td> ${influencingPersonVO.booth} </td>
+											</c:if>
+
+											<c:if test="${influencingPersonVO.pincode != null && influencingPersonVO.pincode != ''}">
+												<th> Pincode</th>
+												<td> ${influencingPersonVO.pincode} </td>
+											</c:if>
+										</tr>
+									</table>	
+								</fieldset>
+							</div>
 						</td>
 					</tr>
-				</table>
-				
-			</div>
-			
-			<div id="influencePeopleMainDataDiv" style="width:28.28cm;">
-			<c:forEach var="region" items="${influencingPeopleDetailsVO}" varStatus ="status">
-				<div id="peopleRegion_main_ ${status.index}" class="peopleDataMain">
-					<div id="peopleRegion_head_ ${status.index}" class="scopeWise_head">
-						<table>
-							<tr>
-								<td><img src="images/icons/system_grps.png"></td>
-								<td>${region.regionName} ${region.regionType}</td>
-							</tr>
-						</table>
-					</div>
-					<div id="peopleRegion_body_ ${status.index}">
-						<table id="peopleDataTable_${status.index}">						
-							<c:forEach var="people" items="${region.influencingPeopleDetails}" varStatus ="status">
-								<tr>
-									<td><input type="checkbox" name="influencePeopleCheck_${region.regionId}" value="${people.influencingPersonId}"></input></td>
-									<td>${people.firstName}</td>
-									<td>${people.lastName}</td>
-									<td>${people.email}</td>
-									<td>${people.mobile}</td>
-									<td>${people.gender}</td>
-									<td>${people.cast}</td>
-									<td>${people.constituency}</td>
-									<td>${people.district}</td>
-									<td>${people.state}</td>
-									<c:if test="${regionType == 'BOOTH' || regionType == 'VILLAGE' ||regionType == 'MANDAL'}">
-									str += '	<td>${people.influencingScopeValue}</td>';</c:if>
-									<td><a href="javascript:{}" onclick="getPersonDetails(${people.influencingPersonId})">More Details</a></td>
-									<td>
-										<a href="javascript:{}" onclick="editPersonDetails(${people.influencingPersonId})">
-											<img style="text-decoration: none; border: 0px none;" src="images/icons/edit.png">
-										</a>
-									</td>
-									<td>
-										<a href="javascript:{}" onclick="deletePersonDetails(${people.influencingPersonId})">
-											<img style="text-decoration: none; border: 0px none;" src="images/icons/delete.png">
-										</a>
-									</td>
-								</tr>							
-							</c:forEach>
-						</table>
-					</div>
-				</div>
-			</c:forEach>
-			</div>
+					<tr>
+						<td colspan="2">
+							<div>
+								<fieldset>
+									<legend> Social Status</legend>
+									<table class="influencePersonInfoTable" width="100%">
+										<tr>
+											<th> Cast</th>
+											<td> ${influencingPersonVO.cast} </td>
+										</tr>
+										<tr>
+											<th> Occupation</th>
+											<td> ${influencingPersonVO.occupation} </td>
+										</tr>
+										<tr>
+											<th> Party</th>
+											<td> ${influencingPersonVO.party} </td>
+										</tr>
+										<tr>
+											<th> Position</th>
+											<td> ${influencingPersonVO.position} </td>
+										</tr>
+										
+										<tr>
+											<th> Influence Range</th>
+											<td> ${influencingPersonVO.influencingRangeScope} </td>
+										</tr>
+										
+										<tr>
+											<th> Influence Region</th>
+											<td> ${influencingPersonVO.influencingScopeValue} </td>
+										</tr>
+										
+									</table>
+								</fieldset>
+							</div>
+						</td>
+					</tr>
+				</table>			
 		</div>
-			<div id="msgCenterId" style="display:block;">
-			<c:if test="${fromParent == 'messageCenter'}">
-				<input type="button" value="Add This Contacts"/>
-			</c:if>
-			</div>	
+	
 	</div>
-		
-	<script type="text/javascript">
-		tabHighLightForViewResults();
-		buildDataTable();
-		function refreshingchildWindowWindow()
-		{
-			location.reload();
-		}
-	</script>
+
 </body>
 </html>
