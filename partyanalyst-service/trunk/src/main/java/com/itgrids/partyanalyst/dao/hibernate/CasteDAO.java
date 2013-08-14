@@ -102,4 +102,10 @@ public class CasteDAO extends GenericDaoHibernate<Caste, Long> implements ICaste
 		query.setParameter("casteName",casteName);
 		return (Caste) query.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Caste> getCasteList()
+	{
+		return getHibernateTemplate().find(" from Caste model ");
+	}
 } 
