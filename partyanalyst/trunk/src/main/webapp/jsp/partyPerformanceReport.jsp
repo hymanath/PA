@@ -22,15 +22,17 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/container-min.js"></script>	
+
+	<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+  	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <!-- YUI Skin Sam -->    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
    <LINK rel="stylesheet" type="text/css" href="styles/ElectionResultsAnalysisReport/electionResultsAnalysisReport.css">
-   
 
 <script type="text/javaScript">
-
+	google.load("visualization", "1", {packages:["corechart"]});
 var partyId = '';
 var partyName = '${partyNameHidden}';
 var stateId = '${state}';
@@ -41,6 +43,7 @@ var electionId = '${stateData.electionId}';
 var electionType = '${electionTypeLiteral}';
 var reportLevel = '${stateData.reportLevel}';
 var districtId = '${stateData.districtId}';
+
 var labelResources = { <%		
 	ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
 	String electionYear = rb.getString("electionYear");
@@ -102,6 +105,76 @@ var labelResources = { <%
 	String mv = pprRb.getString("mv");
 	String mvDef = pprRb.getString("mvDef");
 %> }
+var partyPositionsVOArr = new Array();
+//var partyPositionsVO = '${sessionScope.reportVO.partyPositionsVO}';
+<c:forEach var="list" items ="${sessionScope.reportVO.partyPositionsVO}">
+var obj={
+	totalSeatsWon :${list.totalSeatsWon},
+	secondPosWon :${list.secondPosWon},
+	thirdPosWon:${list.thirdPosWon}
+
+	};
+	partyPositionsVOArr.push(obj);
+</c:forEach>
+
+ function drawPieChart() {
+	 var result = partyPositionsVOArr;
+	 
+	var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Pos');
+		data.addColumn('number', '2ndPos');
+		data.addRows([
+          ['SeatsWon', result[0].totalSeatsWon],
+          ['2ndPos', result[0].secondPosWon],
+          ['3rdPos', result[0].thirdPosWon]
+        
+        ]);
+ // Set chart options
+        var options = {
+			 vAxis: {title: 'Seats'},
+			'width':400,
+            'height':300,
+		    colors: ['#18F618','#FFB9B9','#F5F51B']
+				};
+ 
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('partyResultsChart'));
+        chart.draw(data, options);
+
+      }
+
+	function drawLineChart() {
+	 
+	var totalSeatsWon = ${sessionScope.reportVO.totalSeatsWon};
+	var prevYearTotalSeatsWon =${sessionScope.reportVO.prevYearTotalSeatsWon}; 
+	var totalPercentageOfVotesWon =${sessionScope.reportVO.totalPercentageOfVotesWon};
+	var prevYeartotalPercentageOfVotesWon =${sessionScope.reportVO.prevYeartotalPercentageOfVotesWon};
+	var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Year');
+		data.addColumn('number', 'Seats Won');
+		 data.addColumn('number', 'Percentage of Votes');
+		data.addRows([
+		  [' ${sessionScope.reportVO.prevYear}', prevYearTotalSeatsWon,prevYeartotalPercentageOfVotesWon],
+          [' ${sessionScope.reportVO.year}', totalSeatsWon,totalPercentageOfVotesWon]
+         
+		 
+       ]);
+
+ // Set chart options
+        var options = {
+			 vAxis: {title: 'Seats'},
+			hAxis: {title: 'Year'},
+						'width':400,
+                       'height':300
+					 
+				};
+ 
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.LineChart(document.getElementById('partyPosChart'));
+        chart.draw(data, options);
+
+      }
+
 function showBand(divtag)
 { 
 	var divElmt=document.getElementById(divtag);
@@ -1858,7 +1931,9 @@ partyObj.rebelsPerformanceArray.push(rebelPerformanceObj);
 <script language="javascript">
 viewResizeablePanel();
 viewPartyBasicResults();
-
+drawPieChart();
+drawLineChart();
+ 
 </script>
 </div>
 </body>
