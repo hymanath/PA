@@ -1413,4 +1413,12 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		}
 		
 		
+		@SuppressWarnings("unchecked")
+		public List<Booth> getBoothsListByConstituencyId(Long constituencyId)
+		{
+			Query query = getSession().createQuery(" from Booth model where model.constituency.constituencyId =:constituencyId ");
+			query.setParameter("constituencyId", constituencyId);
+			return query.list();
+		}
+		
 }

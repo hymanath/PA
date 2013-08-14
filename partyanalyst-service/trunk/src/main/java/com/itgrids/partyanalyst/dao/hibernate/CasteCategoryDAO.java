@@ -30,5 +30,11 @@ ICasteCategoryDAO{
 		
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<CasteCategory> getCasteCategoryList()
+	{
+		return getHibernateTemplate().find(" from CasteCategory model ");
+	}
 
 }

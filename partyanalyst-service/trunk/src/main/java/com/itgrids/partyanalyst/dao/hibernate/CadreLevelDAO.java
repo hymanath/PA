@@ -19,5 +19,11 @@ public class CadreLevelDAO extends GenericDaoHibernate<CadreLevel , Long> implem
 		
 		return getHibernateTemplate().find("from CadreLevel model where model.level = ?",cadreLevel);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<CadreLevel> getCadreLevelList()
+	{
+		return getHibernateTemplate().find(" from CadreLevel model ");
+	}
 
 }

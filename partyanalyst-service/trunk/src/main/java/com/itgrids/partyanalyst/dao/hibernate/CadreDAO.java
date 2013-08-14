@@ -1083,4 +1083,9 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return query.list();
 		
 	}
+	
+	public List<Cadre> getCadreList()
+	{
+		return getHibernateTemplate().find(" from Cadre model ");
+	}
 }
