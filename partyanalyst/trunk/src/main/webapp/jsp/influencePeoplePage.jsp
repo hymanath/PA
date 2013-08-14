@@ -695,7 +695,13 @@ else
 				</div>
 			</c:forEach>
 			</div>
-		</div>		
+			
+		</div>	
+			<div id="msgCenterId" style="display:block;">
+				<c:if test="${fromParent == 'messageCenter'}">
+					<input type="button" value="Add This Contacts"/>
+				</c:if>
+			</div>		
 	</div>
 		
 	<script type="text/javascript">
