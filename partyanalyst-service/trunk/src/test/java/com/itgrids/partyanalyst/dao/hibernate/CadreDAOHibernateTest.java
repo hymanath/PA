@@ -500,7 +500,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-	public void testgetInfluencingPeopleCount() 
+	/*public void testgetInfluencingPeopleCount() 
 	{
 		List<Long> locationValue = new ArrayList<Long>(0);
 		locationValue.add(232l);
@@ -510,7 +510,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		for (Cadre cadre : values) {
 			System.out.println(cadre.getFirstName());
 		}
-	}
+	}*/
 	
 	/*public void testGetCadreCountInALocation()
 	{
@@ -518,6 +518,11 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		locationValue.add(738l);
 		System.out.println(cadreDAO.getCadreCountInALocation(1l, locationValue, "mandal"));
 	}*/
+	
+	public void testGetCadreList()
+	{
+	  cadreDAO.getCadreList();	
+	}
 }
 	
 

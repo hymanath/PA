@@ -14,7 +14,7 @@ public class CasteCategoryDAOHibernateTest  extends BaseDaoTestCase{
 		this.casteCategoryDAO = casteCategoryDAO;
 	}
 	
-public void testgetCasteCategoryDetails()
+/*public void testgetCasteCategoryDetails()
 {
  List<Object[]> result = casteCategoryDAO.getCasteCategoryDetails();
  System.out.println(result.size());
@@ -22,5 +22,10 @@ public void testgetCasteCategoryDetails()
  {
 	 System.out.println(params[1].toString());
  }
-}
+}*/
+	
+	public void testgetCasteCategoryList()
+	{
+		casteCategoryDAO.getCasteCategoryList();
+	}
 }

@@ -54,7 +54,7 @@ public class VoterFamilyInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetVoterReportLevelValueByConstituencyId()
+	/*public void testgetVoterReportLevelValueByConstituencyId()
 	{
 		
 		List<Object[]> list = voterFamilyInfoDAO.getVoterReportLevelValueByConstituencyId(232l, 8l, 2l);
@@ -62,12 +62,17 @@ public class VoterFamilyInfoDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[0]+" "+params[1]); 
 			
 		System.out.println(list.size());
-	}
+	}*/
 	
 	/*public void testgetVoterFamilyDetailsByConstituencyId()
 	{
 		List<Object[]> list = voterFamilyInfoDAO.getVoterFamilyDetailsByConstituencyId(232l, 8l, 3l);
 		System.out.println(list.size());
 	}*/
+	
+	public void testgetVoterFamilyInfoList()
+	{
+		voterFamilyInfoDAO.getVoterFamilyInfoList(232l);
+	}
 	
 }

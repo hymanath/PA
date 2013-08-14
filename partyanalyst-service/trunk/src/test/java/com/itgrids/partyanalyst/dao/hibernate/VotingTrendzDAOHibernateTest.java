@@ -11,8 +11,13 @@ public class VotingTrendzDAOHibernateTest extends BaseDaoTestCase{
 		this.votingTrendzDAO = votingTrendzDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		votingTrendzDAO.getAll();
+	}*/
+	
+	public void testgetVotingTrendzList()
+	{
+		votingTrendzDAO.getVotingTrendzList(232l);
 	}
 }
