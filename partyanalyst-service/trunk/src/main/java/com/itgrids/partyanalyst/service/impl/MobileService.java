@@ -425,7 +425,7 @@ public List<SelectOptionVO> getConstituencyList()
 	{
 	 for(CadreLevel cadreLevel:cadreLevelList)
 	 {
-	  str.append(" INSERT INTO CadreLevel(cadre_level_id,level,order_no) VALUES ('"+cadreLevel.getCadreLevelID()+"','"+cadreLevel.getLevel()+"',");
+	  str.append(" INSERT INTO cadre_level(cadre_level_id,level,order_no) VALUES ('"+cadreLevel.getCadreLevelID()+"','"+cadreLevel.getLevel()+"',");
 	  if(cadreLevel.getOrderNo() != null)
 	   str.append("'"+cadreLevel.getOrderNo()+"') ");
 	  else
@@ -565,7 +565,7 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	str.append("\n\n");
 	
-	List<Object[]> panchayatList = panchayatDAO.getPanchayatDetails();
+	/*List<Object[]> panchayatList = panchayatDAO.getPanchayatDetails();
 	if(panchayatList != null && panchayatList.size() > 0)
 	{
 	  for(Object[] params:panchayatList)
@@ -575,7 +575,7 @@ public List<SelectOptionVO> getConstituencyList()
 	  }
 	}
 	
-	str.append("\n\n");
+	str.append("\n\n");*/
 	
 	List<Object[]> partyList = partyDAO.getPartyShortName();
 	if(partyList != null && partyList.size() > 0)
