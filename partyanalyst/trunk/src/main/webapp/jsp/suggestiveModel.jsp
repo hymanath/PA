@@ -339,8 +339,8 @@ function validateYear1(yearId,yearValue){
 	}
 
 var select = new Array();
-$('#electionYearSelectEl2 option').each(function(){
-	if(yearValue > $(this).text())
+$('#electionYearSelectEl1 option').each(function(){
+	if(!(yearValue == $(this).text()|| yearValue < $(this).text()))
 		{
 		 var obj = {
 			 id : $(this).val(),
