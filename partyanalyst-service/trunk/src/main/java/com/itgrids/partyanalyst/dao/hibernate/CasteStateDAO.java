@@ -93,4 +93,11 @@ public List<Object[]> getAllCasteInfoDetails(){
 		query.setParameter("casteId", casteId);
 		return (CasteState)query.uniqueResult();
 	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCasteStateList()
+	{
+		return getHibernateTemplate().find(" select model.casteStateId,model.state.stateId,model.casteCategoryGroup.casteCategoryGroupId, " +
+				" model.caste.casteId from CasteState model ");
+	}
 }
