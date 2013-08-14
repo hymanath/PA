@@ -19,5 +19,10 @@ public class OccupationDAO extends GenericDaoHibernate<Occupation, Long> impleme
 		
 		return getHibernateTemplate().find("from Occupation model where model.occupation = ?",occupationType);
 	}
+	@SuppressWarnings("unchecked")
+	public List<Occupation> getOccupationList()
+	{
+		return getHibernateTemplate().find(" from Occupation model ");
+	}
 
 }

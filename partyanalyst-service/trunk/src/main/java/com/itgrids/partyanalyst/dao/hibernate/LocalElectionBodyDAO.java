@@ -144,4 +144,11 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 		
 		
 	}
+  @SuppressWarnings("unchecked")
+  public List<Object[]> getLocationElectionBodyList()
+  {
+	  return getHibernateTemplate().find(" select model.localElectionBodyId,model.name,model.electionType.electionTypeId" +
+	  		",model.tehsil.tehsilId,model.district.districtId,model.noOfWards from LocalElectionBody model ");
+  }
+
 }
