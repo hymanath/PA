@@ -2046,7 +2046,36 @@ IUserVoterDetailsDAO{
 		query.setParameter("userId", userId);
 		return query.list();
 	}
-	
+	public List<Object[]> getCasteDetailsOfVoterByLocationId(Long locationId,Long publicationId,Long userId,String locationType)
+	{
+		StringBuffer queryString = new StringBuffer();
+		queryString = queryString.append("select UVD.casteState.caste.casteName,count(UVD.casteState.caste.casteName), UVD.casteState.caste.casteId " +
+				" from UserVoterDetails UVD,BoothPublicationVoter BPV where BPV.voter.voterId = UVD.voter.voterId ");
+		if(locationType.equalsIgnoreCase("panchayat")){
+			queryString.append(" and BPV.booth.panchayat.panchayatId = :panchayatId ");
+		}
+		else if(locationType.equalsIgnoreCase("booth")){
+			queryString.append(" and BPV.booth.boothId = :boothId ");
+		}
+		else if(locationType.equalsIgnoreCase("constituency")){
+			queryString.append(" and BPV.booth.constituency.constituencyId = :constituencyId ");
+		}
+		queryString = queryString.append("and UVD.user.userId = :userId " +
+				"and BPV.booth.publicationDate.publicationDateId = :publicationId " +
+				" group by UVD.casteState.caste.casteName order by count(UVD.casteState.caste.casteName) desc");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		if(locationType.equalsIgnoreCase("panchayat"))
+			query.setParameter("panchayatId", locationId);
+		else if(locationType.equalsIgnoreCase("booth"))
+			query.setParameter("boothId", locationId);
+		else if(locationType.equalsIgnoreCase("constituency"))
+			query.setParameter("constituencyId", locationId);		
+		
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 	public List<Object[]> getCasteDetailsOfVoterByBooths(List<Long> boothIds,Long publicationId,Long userId)
 	{
 		Query query = getSession().createQuery("select UVD.casteState.caste.casteName,count(BPV.voter.voterId),BPV.booth.boothId " +
@@ -2111,4 +2140,34 @@ IUserVoterDetailsDAO{
 		query.setParameter("voterId",voterId);
 		return query.executeUpdate();
 	}
+	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long hamletId,String mobileNo){
+		Query query = getSession().createQuery("update UserVoterDetails model set model.party.partyId = :partyId,model.casteState.casteStateId = :castStateId,model.locality.localityId = :localityId,model.hamlet.hamletId = :hamletId,model.mobileNo = :mobileNo where model.voter.voterId = :voterId and model.user.userId = :userId");
+		query.setParameter("voterId",voterId);
+		query.setParameter("userId",userId);
+		query.setParameter("partyId",partyId);
+		query.setParameter("castStateId",castStateId);
+		query.setParameter("localityId",localitityId);
+		query.setParameter("hamletId",hamletId);
+		query.setParameter("mobileNo",mobileNo);
+
+		
+		query.executeUpdate();
+		
+	}
+	
+	public void updateUserVoterDetailsWithWard(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long wardId,String mobileNo)
+		{
+			
+			Query query = getSession().createQuery("update UserVoterDetails model set " +
+					"model.party.partyId = :partyId,model.casteState.casteStateId = :castStateId,model.locality.localityId = :localityId,model.ward.constituencyId = :wardId,model.mobileNo = :mobileNo where model.voter.voterId = :voterId and model.user.userId = :userId");
+			query.setParameter("voterId",voterId);
+			query.setParameter("userId",userId);
+			query.setParameter("partyId",partyId);
+			query.setParameter("castStateId",castStateId);
+			query.setParameter("localityId",localitityId);
+			query.setParameter("wardId",wardId);
+			query.setParameter("mobileNo",mobileNo);
+			
+			query.executeUpdate();
+		}
 }
