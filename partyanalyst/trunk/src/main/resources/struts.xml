@@ -5730,6 +5730,7 @@
 		 </result>	
 		 </action>
 		 
+		 
 		 <action name="getCasteDetailsByPanchayatAction" class="suggestiveModelAction" method="getCasteDetails">
 		  <result type="json" name="success">
 		   <param name="root">hamletDetails</param>
@@ -5745,6 +5746,31 @@
 		   <result type="json" name="success">
 		     <param name="root">resultStatus</param>
 		   </result>
+		 </action>
+		 
+		 
+		 <action name="messageCenterAction" class="messageCenterAction">
+		  	<result name="success">/jsp/messageCenter.jsp</result>
+		  	<result name="error">/jsp/messageCenter.jsp</result>	
+		 </action>
+		 
+		 <action name="getSublevelsOfMessageCenterAction" class="messageCenterAction" method="getSublevels">
+		 	 <result type="json" name="districts">
+		   		<param name="root">districtList</param>
+		 	 </result>
+		 	 <result type="json" name="constituencies">
+		   		<param name="root">constituenciesList</param>
+		 	 </result>
+		 	 <result type="json" name="subRegionsOfConstituency">
+		   		<param name="root">subRegions</param>
+		 	 </result>
+		 	 <result type="json" name="booths">
+		   		<param name="root">booths</param>
+		 	 </result>
+		 	 <result type="json" name="hamletsOrWards">
+		   		<param name="root">hamletsOrWards</param>
+		 	 </result>
+		 	 
 		 </action>
 		 
 		</package>

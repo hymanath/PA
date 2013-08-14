@@ -89,6 +89,8 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private String host = IConstants.DEPLOYED_HOST;
 	private Long regionId;
 	private InfluencingPeopleDetailsVO influencingPeopleDetailsObj;
+	private String fromParent;
+	
 	public String getHost() {
 		return host;
 	}
@@ -467,6 +469,14 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			InfluencingPeopleDetailsVO influencingPeopleDetailsObj) {
 		this.influencingPeopleDetailsObj = influencingPeopleDetailsObj;
 	}
+	
+	public String getFromParent() {
+		return fromParent;
+	}
+
+	public void setFromParent(String fromParent) {
+		this.fromParent = fromParent;
+	}
 
 	public String execute() throws Exception{
 		
@@ -679,6 +689,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		regionName = request.getParameter("regionName");
 		regionType = request.getParameter("regionType");
 		scopeType = request.getParameter("scopeType");
+		fromParent= request.getParameter("fromParent");
 		
 		if(scopeType.equalsIgnoreCase("region"))
 			influencingPeopleDetailsVO = influencingPeopleService.getInfluencingPeopleDetailsByRegion(userId,regionId,regionType,parentRegionId);

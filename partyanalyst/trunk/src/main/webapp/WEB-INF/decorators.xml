@@ -254,6 +254,7 @@
 		<pattern>/inflencingPeopleWindowAction*</pattern>
 		<pattern>/suggestiveModelAction*</pattern>
 		<pattern>/mobileDataAction*</pattern>
+		<pattern>/messageCenterAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
