@@ -485,6 +485,8 @@ function buildRegionWiseInfluencePeopleForDistrictAndContsi(data,jsObj){
 				str+=""+availableRegions[j].subRegionName+"--";
 				str+='<a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\''+results[i].regionId+'\',\''+availableRegions[j].subRegionId+'\',\''+availableRegions[j].subRegionName+'\',\''+availableRegions[j].subRegionType+'\',\'region\')">'+availableRegions[j].countValue+'</a><br>';
 			}
+		}else{
+		str+='<tr><td>No data Avialable'	
 		}
 		
 	}
