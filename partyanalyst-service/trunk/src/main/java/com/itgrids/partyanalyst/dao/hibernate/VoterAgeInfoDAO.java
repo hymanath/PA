@@ -121,4 +121,12 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<VoterAgeInfo> getVoterAgeInfoList(Long constituencyId)
+	{
+		Query query = getSession().createQuery(" from VoterAgeInfo model where model.constituencyId=:constituencyId ");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
 }

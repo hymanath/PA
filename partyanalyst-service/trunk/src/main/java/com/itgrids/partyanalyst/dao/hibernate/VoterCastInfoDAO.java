@@ -163,4 +163,13 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<VoterCastInfo> getVoterCasteInfoList(Long constituencyId,Long userId)
+	{
+		Query query = getSession().createQuery(" from VoterCastInfo model where model.constituency.constituencyId =:constituencyId and model.userId =:userId and model.subLeveCastePercentage is null");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }
