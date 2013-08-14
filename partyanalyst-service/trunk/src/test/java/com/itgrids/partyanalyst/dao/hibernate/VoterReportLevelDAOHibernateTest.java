@@ -26,9 +26,14 @@ import com.itgrids.partyanalyst.utils.IConstants;
 	}*/
 	
 	
-	public void testgetReportLevelTypeById()
+	/*public void testgetReportLevelTypeById()
 	{
 		System.out.println(voterReportLevelDAO.getReportLevelTypeById(1l));
+	}*/
+	
+	public void testgetVoterReportLevelList()
+	{
+		voterReportLevelDAO.getVoterReportLevelList();
 	}
 	
 }
