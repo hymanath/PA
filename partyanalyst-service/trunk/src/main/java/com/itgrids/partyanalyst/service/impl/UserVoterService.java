@@ -488,7 +488,6 @@ public class UserVoterService implements IUserVoterService{
 					voterVO.setGender(voterInfo.getGender());
 					voterVO.setAge(voterInfo.getAge());
 					voterVO.setHouseNo(voterInfo.getHouseNo());
-					voterVO.setMobileNo(voterInfo.getMobileNo());
 					voterVO.setRelativeFirstName(voterInfo.getRelativeName());
 					voterVO.setPartNo(new Long(voterDetails[2].toString()));
 					voterVO.setTotalVoters(totalCount);
@@ -499,6 +498,20 @@ public class UserVoterService implements IUserVoterService{
 					voterVO.setSerialNo((Long)(voterDetails[1]));
 					
 				}
+			
+			   Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+			   List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIds, userId);
+			   if(list != null && list.size() > 0)
+			   for(Object[] params:list)
+				mobileNosMap.put((Long)params[0], params[1]!=null?params[1].toString():"N/A");
+			
+			   for(VoterVO voter:voterData)
+			   {
+				if(mobileNosMap.get(voter.getVoterId()) != null)
+				 voter.setMobileNo(mobileNosMap.get(voter.getVoterId()));
+				else
+					voter.setMobileNo("N/A");
+			   }
 			}
 			
 			List<Long> influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIds,userId);

@@ -339,12 +339,13 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 		List<VoterHouseInfoVO> houseInfoVOsList = new ArrayList<VoterHouseInfoVO>(0);
 		try{
 		
-		 List<Voter> votersList = customVoterDAO.getCasteWiseCustomVoterDetails(casteStateId, casteId, customVoterGroupId, userId);
+		 List<Object[]> votersList = customVoterDAO.getCasteWiseCustomVoterDetails(casteStateId, casteId, customVoterGroupId, userId);
 		 
 		 if(votersList != null && votersList.size() > 0)
 		 {
-			for(Voter voter:votersList)
+			for(Object[] params:votersList)
 			{
+			  Voter voter = (Voter)params[0];
 			  VoterHouseInfoVO houseInfoVO = new VoterHouseInfoVO();
 			  houseInfoVO.setVoterId(voter.getVoterId());
 			  houseInfoVO.setName(voter.getName() != null ? voter.getName() :" ");
@@ -354,7 +355,7 @@ public class CustomVoterGroupAnalysisService implements ICustomVoterGroupAnalysi
 			  houseInfoVO.setRelationship(voter.getRelationshipType()!= null ?voter.getRelationshipType():" ");
 			  houseInfoVO.setGaurdian(voter.getRelativeName() != null ?voter.getRelativeName():" ");
 			  houseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo() != null ?voter.getVoterIDCardNo():" ");
-			  houseInfoVO.setMobileNo(voter.getMobileNo() != null?voter.getMobileNo():"N/A");
+			  houseInfoVO.setMobileNo(params[1] != null?params[1].toString():"N/A");
 			  houseInfoVOsList.add(houseInfoVO);
 			}
 		 }
@@ -692,7 +693,7 @@ public static final String AGE5="60Above";
 		    	politician = customVoterDAO.getPoliticianCountByCustomVoter(userId, publicationDateId, customVoterGroupId);
 		    	if(politician != null && politician.size() > 0)
 		        politicainCount = politician.get(0).longValue();
-		    	result = voterReportService.storeCandidateDetails(candidateData,"mandal",null,politicainCount);
+		    	result = voterReportService.storeCandidateDetails(candidateData,"mandal",null,politicainCount,userId);
 		    	
 		    }
 		    	
@@ -747,7 +748,7 @@ public static final String AGE5="60Above";
 		        politicainCount = politician.get(0).longValue();
 		    	//result= setValuesToVOterVOForAttribute(list,btnName,politicainCount,userId);
 		    	candidateData = boothPublicationVoterDAO.getPoliticianDataByCategoryAndCaste(voterDataVO.getCategoryId(),voterDataVO.getCasteId(),voterDataVO.getId(),voterDataVO.getPublicationId(),voterDataVO.getBuildType(),userId,voterDataVO.getGender(),"Politician",voterDataVO.getStartIndex().intValue(),voterDataVO.getMaxIndex().intValue(),voterDataVO.getDir(),voterDataVO.getSort());
-		    	result = voterReportService.storeCandidateDetails(candidateData,voterDataVO.getBuildType(),voterDataVO.getId(),politicainCount);
+		    	result = voterReportService.storeCandidateDetails(candidateData,voterDataVO.getBuildType(),voterDataVO.getId(),politicainCount,userId);
 		    }
 		    	
 		    }
@@ -827,7 +828,24 @@ public static final String AGE5="60Above";
 		    	VoterVO voterVO = null;
 		    	Map<Long,VoterVO> casteMap = new HashMap<Long, VoterVO>();
 		    	
+		    	List<Long> voterIdsList = new ArrayList<Long>(0);
+		    	Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+		    					
 		    	try{
+		    		if(list != null && list.size() > 0)
+			    	{
+			    	  for(Object[] params : list)
+			    	  {
+			    		Voter voter = (Voter)params[0];
+			    		voterIdsList.add(voter.getVoterId());
+			    	  }
+			    	 List<Object[]> list1 = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+  					if(list1 != null && list1.size() > 0)
+  					 for(Object[] params:list1)
+  					  mobileNosMap.put((Long)params[0], params[1]!= null?params[1].toString():"N/A");
+			    	  
+			    	}
+		    		
 		    	Long count = 1l;
 		    	if(list != null && list.size() > 0)
 		    	{
@@ -842,7 +860,10 @@ public static final String AGE5="60Above";
 						voterVO.setAge(voter.getAge());
 						voterVO.setHouseNo(voter.getHouseNo()!=null?voter.getHouseNo().toString():" ");
 						voterVO.setRelativeFirstName(voter.getRelativeName()!=null?voter.getRelativeName().toString():" ");
-						voterVO.setMobileNo(voter.getMobileNo()!=null ?voter.getMobileNo().toString(): " ");
+						if(mobileNosMap.get(voter.getVoterId()) != null)
+						 voterVO.setMobileNo(mobileNosMap.get(voter.getVoterId()));
+						else
+						 voterVO.setMobileNo("N/A");
 						voterVO.setLocalArea(params[1].toString()+" "+ params[2].toString());
 						voterVO.setTotalVoters(total);
 						casteMap.put(voter.getVoterId(), voterVO);
@@ -1194,6 +1215,8 @@ public List<VoterVO> setDataToVoterVo(List<Object[]> voterData,Long userId,Voter
 	VoterVO voterVO = null;
 	Map<Long,VoterVO> voterMap = new HashMap<Long, VoterVO>();
 	List<Long> voterIds = new ArrayList<Long>();
+	Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+	
 	try{
 		if(voterData != null && voterData.size() > 0)
 	    	for(Object[] params : voterData)
@@ -1201,6 +1224,14 @@ public List<VoterVO> setDataToVoterVo(List<Object[]> voterData,Long userId,Voter
 	    	Voter voter = (Voter) params[0];
 	    	voterIds.add(voter.getVoterId());
 	    	}
+		if(voterIds != null && voterIds.size() > 0)
+		{
+		  List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIds, userId);
+		  if(list != null && list.size() > 0)
+		   for(Object[] params :list)
+		    mobileNosMap.put((Long)params[0], params[1]!= null?params[1].toString():"N/A");
+		}
+	  
 		if(voterData != null && voterData.size() > 0)
     	{
     		for(Object[] params : voterData)
@@ -1217,7 +1248,10 @@ public List<VoterVO> setDataToVoterVo(List<Object[]> voterData,Long userId,Voter
     		voterVO.setRelativeFirstName(voter.getRelativeName());
     		voterVO.setSerialNo((Long)params[2]);
     		voterVO.setPartNo(new Long(params[1].toString()));
-    		voterVO.setMobileNo(voter.getMobileNo()!= null?voter.getMobileNo() : " ");
+    		if(mobileNosMap.get(voter.getVoterId()) != null)
+    		 voterVO.setMobileNo(mobileNosMap.get(voter.getVoterId()));
+    		else
+    			voterVO.setMobileNo("N/A");
     		voterMap.put((Long)voter.getVoterId(), voterVO);
     		result.add(voterVO);
     		}
