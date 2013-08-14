@@ -689,6 +689,7 @@ function updateAllSelectedVotersDetails1()
 		 obj["casteId"] = $('#caste'+selectedVotersToUpdate[i]).val();
 		 obj["groupId"] = $('#group'+selectedVotersToUpdate[i]).val();
 		 obj["voterId"] = selectedVotersToUpdate[i];
+		 obj["mobileId"] = $('#mobileNo'+selectedVotersToUpdate[i]).val();
 		 
 		 
 		 if ($('#locality'+selectedVotersToUpdate[i]).length )
