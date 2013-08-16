@@ -791,7 +791,16 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		{
 			//fetch the wards in a municipal/corporation/greater corp region if it is partial
 			//List wardsList = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(id, year);
-			List wardsList = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(id, year);
+			List wardsList = null;
+			String  constituencyType = assemblyLocalElectionBodyDAO.get(id).getConstituency().getAreaType();
+			if(constituencyType.equalsIgnoreCase(IConstants.URBAN))
+			{
+				wardsList = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(id, year);
+			}
+			else if(constituencyType.equalsIgnoreCase(IConstants.RURALURBAN))
+			{
+				wardsList = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(id, year);
+			}
 			if(wardsList.size() == 0)
 			{	
 				// fetch the local election body id to retrieve wards from the constituency table
