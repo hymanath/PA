@@ -405,13 +405,22 @@ for (Object[] objects : list) {
 	
 }*/
 	
-	public void testgetVoterCountByHamlet(){
+	/*public void testgetVoterCountByHamlet(){
 		List<Long> panchayatIds = new ArrayList<Long>();
 		panchayatIds.add(28666l);
 		panchayatIds.add(28667l);
 		List<Object[]> values = userVoterDetailsDAO.getVoterCountByHamlet(panchayatIds,8l,1l);
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+ parms[2]);
+		}
+	}*/
+	
+	public void testgetCasteDetailsOfVoterByBoothId()
+	{
+
+		List<Object[]> values = userVoterDetailsDAO.getCasteDetailsOfVoterByLocationId(399l,8l,1l,"panchayat");
+		for (Object[] objects : values) {
+			System.out.println(objects[0] +"\n"+ objects[1] +"\n"+ objects[2]+"\n"+ objects[3]);
 		}
 	}
 }
