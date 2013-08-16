@@ -686,7 +686,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 
 	/**
 	 * This method retrieves all hamlets if the location is of type Rural and all wards if the location is of type Urban 
-	 */
+	 *//*
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getHamletsOrWards(Long locationId, String year) {
 		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
@@ -730,7 +730,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			
 			//fetch the wards in a municipal/corporation/greater corp region if it is partial
 			//List wardsList = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(id, year);
-			/*List wardsList = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(id, year);
+			List wardsList = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(id, year);
 			if(wardsList.size() == 0)
 			{	
 				// fetch the local election body id to retrieve wards from the constituency table
@@ -758,7 +758,68 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					
 					regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+ obj[0].toString()),WordUtils.capitalize(wardName.toLowerCase())));
 				}
-			}*/
+			}
+			
+		} else if(areaFlag.equalsIgnoreCase(IConstants.RURAL_TYPE))
+		{
+			List resultsList = hamletDAO.findHamletsByTehsilId(id);
+			
+			//If hamlets data is not available then go with townships
+			if(resultsList == null || resultsList.size() == 0){
+				resultsList = townshipDAO.findTownshipsByTehsilId(id);
+			}
+			
+			for(int i = 0; i<resultsList.size();i++)
+			{
+				Object[] obj = (Object[])resultsList.get(i);
+				regionsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+obj[0].toString()),WordUtils.capitalize(obj[1].toString().toLowerCase())));				
+			}
+		}
+		return regionsList;
+	}*/
+
+	/**
+	 * This method retrieves all hamlets if the location is of type Rural and all wards if the location is of type Urban 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getHamletsOrWards(Long locationId, String year) {
+		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
+		String areaFlag = locationId.toString().substring(0,1);
+		Long id = new Long(locationId.toString().substring(1));
+		
+		if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE))
+		{
+			//fetch the wards in a municipal/corporation/greater corp region if it is partial
+			//List wardsList = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(id, year);
+			List wardsList = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(id, year);
+			if(wardsList.size() == 0)
+			{	
+				// fetch the local election body id to retrieve wards from the constituency table
+				List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(id);
+				if(localElectionBodies.size() != 0)
+				{
+					Object obj = (Object)localElectionBodies.get(0);
+					Long localElectionBodyId = (Long)obj; 
+					List<Constituency> wards = constituencyDAO.findWardsAndIdsInMuncipality(localElectionBodyId);
+					for(Constituency constituency:wards)
+					{
+						regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+constituency.getConstituencyId()),WordUtils.capitalize(constituency.getName().toLowerCase())));
+					}
+				}								
+			}
+			//fetch the wards in a municipal/corporation/greater corp region if it is not partial
+			else if(wardsList.size()>0)
+			{
+				for(int j=0;j<wardsList.size();j++)
+				{
+					Object[] obj = (Object[])wardsList.get(j);
+					Constituency constituency = (Constituency)obj[1];
+					String wardName = constituency.getLocalElectionBodyWard() != null?constituency.getLocalElectionBodyWard().getWardName().
+							concat("( ").concat(constituency.getName().toUpperCase()).concat(" )"):constituency.getName().toUpperCase();
+					
+					regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+ obj[0].toString()),WordUtils.capitalize(wardName.toLowerCase())));
+				}
+			}
 			
 		} else if(areaFlag.equalsIgnoreCase(IConstants.RURAL_TYPE))
 		{
