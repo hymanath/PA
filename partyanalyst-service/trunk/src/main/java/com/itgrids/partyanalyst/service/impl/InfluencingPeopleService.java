@@ -1960,7 +1960,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					}
 				}
 				
-				
+				i++;
 			}
 			
 			//Process The Map And Set to List
