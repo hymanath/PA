@@ -18,7 +18,7 @@ public class PartyImpactVO {
 	private List<String>  electionYears = new ArrayList<String>();
 	private List<String> considerableParties;
 	private List<String> conclusionStatements;
-	
+	private String fromPrpVoters;
 	
 	public List<String> getConclusionStatements() {
 		return conclusionStatements;
@@ -92,4 +92,11 @@ public class PartyImpactVO {
 	public void setPartiesList(List<PartyImpactVO> partiesList) {
 		this.partiesList = partiesList;
 	}
+	public String getFromPrpVoters() {
+		return fromPrpVoters;
+	}
+	public void setFromPrpVoters(String fromPrpVoters) {
+		this.fromPrpVoters = fromPrpVoters;
+	}
+	
 }
