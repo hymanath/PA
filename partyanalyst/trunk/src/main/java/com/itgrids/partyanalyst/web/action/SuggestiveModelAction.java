@@ -462,7 +462,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			
 			//newPartyImpactDetails = constituencyPageService.findPanchayatsWiseResultsInElectionsOfMandalForSuggestiveModel(jObj.getLong("constituencyId"));
 			
-			resultMap = suggestiveModelService.getElectionResultsForSelectedElectionsForAConsttituency(jObj.getLong("constituencyId"));
+			resultMap = suggestiveModelService.getElectionResultsForSelectedElectionsForAConsttituency(jObj.getLong("constituencyId"),jObj.getString("partyName"));
 			
 			return Action.SUCCESS;
 			
