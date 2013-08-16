@@ -251,6 +251,7 @@
 		<pattern>/surveyFormSaveAction*</pattern>
 		<pattern>/surveyorProfileSaveAction*</pattern>
 		<pattern>/voterDataToolsAction*</pattern>
+		<pattern>/electionResultsAnalysisAction*</pattern>	
 		<pattern>/inflencingPeopleWindowAction*</pattern>
 		<pattern>/suggestiveModelAction*</pattern>
 		<pattern>/mobileDataAction*</pattern>
