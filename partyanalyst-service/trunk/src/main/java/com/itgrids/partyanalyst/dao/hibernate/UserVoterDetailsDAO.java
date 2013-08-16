@@ -2036,7 +2036,7 @@ IUserVoterDetailsDAO{
 	
 	public List<Object[]> getCasteDetailsOfVoterByBoothId(Long boothId,Long publicationId,Long userId)
 	{
-		Query query = getSession().createQuery("select UVD.casteState.caste.casteName,count(UVD.casteState.caste.casteName), UVD.casteState.caste.casteId " +
+		Query query = getSession().createQuery("select UVD.casteState.caste.casteName,count(UVD.casteState.caste.casteName), UVD.casteState.casteStateId " +
 				" from UserVoterDetails UVD,BoothPublicationVoter BPV where BPV.voter.voterId = UVD.voter.voterId " +
 				" and BPV.booth.boothId = :boothId and UVD.user.userId = :userId " +
 				"and BPV.booth.publicationDate.publicationDateId = :publicationId " +
@@ -2114,7 +2114,7 @@ IUserVoterDetailsDAO{
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCasteInHamlet(List<Long> hamletIds,Long userId,Long publicationId){
-		Query query = getSession().createQuery("select uvd.hamlet.hamletId,count(uvd.voter.voterId),uvd.casteState.caste.casteName,uvd.casteState.caste.casteId,uvd.casteState.casteStateId from UserVoterDetails uvd,BoothPublicationVoter bpv  "+
+		Query query = getSession().createQuery("select uvd.hamlet.hamletId,count(uvd.voter.voterId),uvd.casteState.caste.casteName,uvd.casteState.casteStateId,uvd.casteState.casteStateId from UserVoterDetails uvd,BoothPublicationVoter bpv  "+
 				"where  uvd.hamlet.hamletId in (:hamletIds) and uvd.user.userId = :userId and bpv.voter.voterId =  uvd.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationId group by uvd.hamlet.hamletId,uvd.casteState.caste.casteId order by uvd.hamlet.hamletId,count(uvd.voter.voterId) desc");
 		query.setParameterList("hamletIds", hamletIds);
 		query.setParameter("publicationId", publicationId);
