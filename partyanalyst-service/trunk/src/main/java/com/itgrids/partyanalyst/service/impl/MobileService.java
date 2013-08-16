@@ -731,7 +731,7 @@ public List<SelectOptionVO> getConstituencyList()
 	{
 	  for(VoterReportLevel reportLevel:reportLevelList)
 	  {
-		str.append(" INSERT INTO voter_report_leve(voter_report_level_id,report_leve,order_no) VALUES ('"+reportLevel.getVoterReportLevelId()+"','"+reportLevel.getReportLevel()+"','"+reportLevel.getOrderNo()+"')");
+		str.append(" INSERT INTO voter_report_level(voter_report_level_id,report_leve,order_no) VALUES ('"+reportLevel.getVoterReportLevelId()+"','"+reportLevel.getReportLevel()+"','"+reportLevel.getOrderNo()+"')");
 		str.append("\n");  
 	  }
 	}
