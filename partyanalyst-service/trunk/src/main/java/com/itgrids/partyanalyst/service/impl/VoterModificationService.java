@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyHierarchyInfoDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -71,6 +72,7 @@ public class VoterModificationService implements IVoterModificationService{
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IRegionServiceData regionServiceDataImp;
 	private IConstituencyHierarchyInfoDAO constituencyHierarchyInfoDAO;
+	private IPanchayatHamletDAO panchayatHamletDAO;
 	
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
@@ -248,6 +250,13 @@ public class VoterModificationService implements IVoterModificationService{
 	public void setConstituencyHierarchyInfoDAO(
 			IConstituencyHierarchyInfoDAO constituencyHierarchyInfoDAO) {
 		this.constituencyHierarchyInfoDAO = constituencyHierarchyInfoDAO;
+	}
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
 	}
 
 	/**
@@ -2533,7 +2542,8 @@ public class VoterModificationService implements IVoterModificationService{
 			  constituencyHierarchyInfoVO.setPanchayatIdsList(boothDAO.getPanchayatsListByConstituencyId(constituencyId, publicationId)); 
 			
 			 constituencyHierarchyInfoVO.setBoothIdsList(boothDAO.getBoothsListByConstituencyId(constituencyId, publicationId));
-			 constituencyHierarchyInfoVO.setHamletIdsList(userVoterDetailsDAO.getHamletIdsListByUserIdAndConstituencyId(constituencyId,publicationId,userId));
+			 //constituencyHierarchyInfoVO.setHamletIdsList(userVoterDetailsDAO.getHamletIdsListByUserIdAndConstituencyId(constituencyId,publicationId,userId));
+			 constituencyHierarchyInfoVO.setHamletIdsList(boothDAO.getHamletIdsListByConstituencyId(constituencyId, publicationId));
 			 
 			 if(muncipalityIdsList != null && muncipalityIdsList.size() > 0)
 			  constituencyHierarchyInfoVO.setWardIdsList(getWardIdsList(muncipalityIdsList, userId, constituencyId, publicationId));
@@ -2620,7 +2630,8 @@ public class VoterModificationService implements IVoterModificationService{
 			 setConstituencyHieraryData(boothsCountList, constituencyHierarchyInfoVOList, "boothsCount");
 			
 			//hamlets Count by mandalIds List
-			List<Object[]> hamletsCount = userVoterDetailsDAO.getHamletIdsListByMandalIdsList(hierarchyInfoVO.getConstituencyId(),  hierarchyInfoVO.getPublicationDateId(),  hierarchyInfoVO.getUserId(), mandalIdsList,"mandalHamlets");
+			//List<Object[]> hamletsCount = userVoterDetailsDAO.getHamletIdsListByMandalIdsList(hierarchyInfoVO.getConstituencyId(),  hierarchyInfoVO.getPublicationDateId(),  hierarchyInfoVO.getUserId(), mandalIdsList,"mandalHamlets");
+			List<Object[]> hamletsCount = panchayatHamletDAO.getHamletCount(mandalIdsList,"mandalHamlets");
 			if(hamletsCount != null && hamletsCount.size() > 0)
 			 setConstituencyHieraryData(hamletsCount, constituencyHierarchyInfoVOList, "hamletsCount");
 			
@@ -2657,8 +2668,9 @@ public class VoterModificationService implements IVoterModificationService{
 			setConstituencyHieraryData(boothsCount, constituencyHierarchyInfoVOList, "boothsCount");
 		 
 		 //hamlets Count by panchayat Ids
-		 List<Object[]> hamletsCount = userVoterDetailsDAO.getHamletIdsListByMandalIdsList(hierarchyInfoVO.getConstituencyId(),  hierarchyInfoVO.getPublicationDateId(),  hierarchyInfoVO.getUserId(), PanchayatIdsList,"panchayatHamlets");
-		  if(hamletsCount != null && hamletsCount.size() > 0)
+		 //List<Object[]> hamletsCount = userVoterDetailsDAO.getHamletIdsListByMandalIdsList(hierarchyInfoVO.getConstituencyId(),  hierarchyInfoVO.getPublicationDateId(),  hierarchyInfoVO.getUserId(), PanchayatIdsList,"panchayatHamlets");
+		 List<Object[]> hamletsCount = panchayatHamletDAO.getHamletCount(PanchayatIdsList, "panchayatHamlets");
+		 if(hamletsCount != null && hamletsCount.size() > 0)
 			setConstituencyHieraryData(hamletsCount, constituencyHierarchyInfoVOList, "hamletsCount");
 		  
 		  if(constituencyHierarchyInfoVOList != null && constituencyHierarchyInfoVOList.size() > 0)

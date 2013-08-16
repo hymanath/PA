@@ -127,4 +127,26 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getHamletCount(List<Long> locationIdsList,String tempVar)
+	{
+		StringBuilder str = new StringBuilder();
+		if(tempVar != null && tempVar.equalsIgnoreCase("mandalHamlets"))
+		 str.append(" select model.panchayat.tehsil.tehsilId, ");
+		else if(tempVar != null && tempVar.equalsIgnoreCase("panchayatHamlets"))
+		 str.append(" select model.panchayat.panchayatId, ");
+		
+		str.append(" count(distinct model.hamlet.hamletId) from PanchayatHamlet model where ");
+		
+		if(tempVar != null && tempVar.equalsIgnoreCase("mandalHamlets"))
+		 str.append(" model.panchayat.tehsil.tehsilId in(:locationIdsList) group by model.panchayat.tehsil.tehsilId ");
+		else if(tempVar != null && tempVar.equalsIgnoreCase("panchayatHamlets"))
+			str.append(" model.panchayat.panchayatId in(:locationIdsList) group by model.panchayat.panchayatId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("locationIdsList", locationIdsList);
+		return query.list();
+	}
+	
 }

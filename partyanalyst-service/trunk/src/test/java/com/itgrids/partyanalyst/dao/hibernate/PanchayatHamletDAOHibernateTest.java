@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 public class PanchayatHamletDAOHibernateTest extends BaseDaoTestCase{
 
@@ -77,7 +78,7 @@ public class PanchayatHamletDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(parms[2] +":"+ parms[3]);
 		}
 	}*/
-	
+	/*
 	public void testgetHamletDetailsByPanchayatIds(){
 	List<Long> panchayatIds = new ArrayList<Long>();
 	panchayatIds.add(5344l);
@@ -87,5 +88,15 @@ public class PanchayatHamletDAOHibernateTest extends BaseDaoTestCase{
 	for (Object[] parms : values) {
 		System.out.println(parms[2] +":"+ parms[4]);
 	}
-}
+}*/
+	
+ public void testgetHamletCount()
+ {
+	 List<Long> locationIdsList = new ArrayList<Long>(0);
+	 locationIdsList.add(1L);
+	 List<Object[]> list = panchayatHamletDAO.getHamletCount(locationIdsList, "panchayatHamlets");
+	 System.out.println(list.size());
+	 for(Object[] params:list)
+	  System.out.println(params[0]+" "+params[1]);
+ }
 }
