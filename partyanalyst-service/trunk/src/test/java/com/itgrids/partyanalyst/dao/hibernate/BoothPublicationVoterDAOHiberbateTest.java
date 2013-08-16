@@ -743,7 +743,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 				System.out.print(o.toString()+" ");
 			}
 			System.out.println();
-		}*/
+		}
 		System.out.println("--------");
 		for(Object[] l:list1){
 			for(Object o:l){
