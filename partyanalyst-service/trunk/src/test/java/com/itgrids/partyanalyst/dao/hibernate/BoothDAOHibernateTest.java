@@ -497,12 +497,12 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testGetWardsListByConstituencyId()
+	/*public void testGetWardsListByConstituencyId()
 	{
 		List<Long> list = boothDAO.getWardsListByConstituencyId(347l, 8l);
 		System.out.println(list.size());
 		
-	}
+	}*/
 	
 	/*public void testgetBoothsByBoothIdsList()
 	{
@@ -702,8 +702,14 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 
 	}*/
 	
-	public void testgetBoothListByConstituencyId()
+	/*public void testgetBoothListByConstituencyId()
 	{
 		boothDAO.getBoothsListByConstituencyId(232L);
+	}*/
+	public void testgetConstituencyHamletCount()
+	{
+		System.out.println(boothDAO.getHamletIdsListByConstituencyId(232l, 8l));
 	}
+	
+	
 }
