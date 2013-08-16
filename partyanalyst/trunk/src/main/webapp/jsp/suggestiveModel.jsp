@@ -2024,6 +2024,7 @@ $('#ajaxLoaderImgForNewPartyDiv').show();
      var jsObj= 
 	{	
         constituencyId:$('#listConstituencyNames').val(),
+		partyName : $('#partySelectEl option:selected').text(),
 		task:"getEffectOfNewParty"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -2033,9 +2034,9 @@ $('#ajaxLoaderImgForNewPartyDiv').show();
 }
 function buildnewPartyEffectResults(results)
 {
-			$('#titleDiv').show();
-
-	$('#ajaxLoaderImgForNewPartyDiv').hide();
+	$('#titleDiv').show();
+    $('#ajaxLoaderImgForNewPartyDiv').hide();
+	var party = $('#partySelectEl option:selected').text();
   var parties = new Array();
 	parties.push("INC");
 	parties.push("TDP");
@@ -2061,18 +2062,23 @@ function buildnewPartyEffectResults(results)
   //THIS IS FOR HEADING START
    str+='<tr>';
     
-	str+='<th rowspan="2">Panchayat Name</th>';
+	str+='<th rowspan="2">PANCHAYAT NAME</th>';
 
    for(var i in parties)
    {
      str+='<th colspan="3">'+parties[i]+'</th>';
    }
+   str+='<th rowspan="2">PRP EFFECT ON '+party+' PARTY</th>';
    str+='</tr>';
    for(var i in parties)
    {
      str+='<th>2004</th>';
 	 str+='<th>2009</th>';
 	 str+='<th>DIFF</th>';
+	 /* if(parties[i] == 'PRP')
+	 {
+		str+='<th>Votes</th>';
+	 } */
    }
    str+='</tr>';
 
@@ -2100,6 +2106,15 @@ function buildnewPartyEffectResults(results)
 				  str+='<td>'+parseFloat(value[parties[i]].difference).toFixed(2)+'</td>';
 				else
 					 str+='<td>--</td>';
+				if(parties[i] == 'PRP')
+				{
+					var value = parseFloat(value[parties[i]].fromPrpVoters).toFixed(2)
+					if(value == 'NaN')
+					str+='<td>--</td>';
+					else
+					str+='<td>'+value+'</td>';
+					
+				}
 			   }
 
 		   }
