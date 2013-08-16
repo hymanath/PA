@@ -127,7 +127,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getTopThreeCasteFoeSelctedLevel(Long id,Long reportId,Long publicationId,Long userId)
 	{
-		Query query = getSession().createQuery("select model.reportLevelValue, model.casteState.caste.casteName,model.casteVoters,model.castePercentage ,model.casteState.caste.casteId" +
+		Query query = getSession().createQuery("select model.reportLevelValue, model.casteState.caste.casteName,model.casteVoters,model.castePercentage ,model.casteState.casteStateId" +
     	 		" from VoterCastInfo model where model.userId = :userId and model.voterReportLevel.voterReportLevelId = :reportId " +
     	 		" and model.reportLevelValue = :id and model.publicationDateId = :publicationId " +
     	 		" order by model.reportLevelValue,model.casteVoters desc  ");
@@ -153,7 +153,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 	}
 	
 	public List<Object[]> getTopThreeCasteForPanchayat(Long panchayatId,Long reportId,Long publicationId,Long userId){
-		Query query = getSession().createQuery("select model.casteState.caste.casteName,model.casteVoters,model.castePercentage,model.casteState.caste.casteId from VoterCastInfo model where model.voterReportLevel.voterReportLevelId = :reportId "+
+		Query query = getSession().createQuery("select model.casteState.caste.casteName,model.casteVoters,model.castePercentage,model.casteState.casteStateId from VoterCastInfo model where model.voterReportLevel.voterReportLevelId = :reportId "+
 				"and model.userId = :userId and model.reportLevelValue = :panchayatId and model.publicationDateId = :publicationId " +
     	 		" order by model.reportLevelValue,model.casteVoters desc ");
 		query.setParameter("reportId", reportId);
