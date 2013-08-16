@@ -247,6 +247,7 @@ function getMandals(){
 function clearAll(){
  	$('#leadersTable').html('');
  	$('#leadersTable1').html('');
+ 	$('#leadersTable2').html('');
  	$('#addedVoterDetailsDiv').html('');
  	$('#panchayatWisePollingPercentageDiv').html('');
  	$('#panchayatWisePollingPercHeadingDiv').html('');
@@ -665,16 +666,14 @@ function buildLeadersTable(results)
 			str += '<td rowspan='+rowLength+' >';
 			for(var j in results[i].panchayatLevelLeadersList)
 			{
-				if(j<3)
 				str += ''+results[i].panchayatLevelLeadersList[j].casteName +'('+results[i].panchayatLevelLeadersList[j].casteVotersPerc+')  '; 
 			}
 			str += '</td>';
 			str += '<td rowspan='+rowLength+'>';
 			
-			for(var j in results[i].panchayatLevelLeadersList)
+			for(var j in results[i].selectedCastesList)
 			{
-				if(j>=3)
-				str += ' '+results[i].panchayatLevelLeadersList[j].casteName +' ('+results[i].panchayatLevelLeadersList[j].casteVotersPerc+')  '; 
+				str += ' '+results[i].selectedCastesList[j].casteName +' ('+results[i].selectedCastesList[j].casteVotersPerc+')  '; 
 			}
 			str +='</td>';
 			
@@ -691,16 +690,14 @@ function buildLeadersTable(results)
 				str += '<td>';
 				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
 				{
-					if(m<3)
 					str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+' ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
 				}
 				str += '</td>';
 				str += '<td>';
 				
-				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
+				for(var m in results[i].boothLevelLeadersList[k].selectedCastesList)
 				{
-					if(m>=3)
-					str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+'  ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')'; 
+					str += ' '+results[i].boothLevelLeadersList[k].selectedCastesList[m].casteName+'  ('+results[i].boothLevelLeadersList[k].selectedCastesList[m].casteVotersPerc+')'; 
 				}
 				str +='</td>';
 				if(k > 0)
@@ -755,15 +752,14 @@ if(results != null && results.length > 0)
 			str += '<td rowspan='+rowLength+' >';
 			for(var j in results[i].panchayatLevelLeadersList)
 			{
-				if(j < 3)
 				str += ' '+results[i].panchayatLevelLeadersList[j].casteName +' ('+results[i].panchayatLevelLeadersList[j].casteVotersPerc+')  '; 
 			}
 			str += '</td>';
 			str += '<td rowspan='+rowLength+'> ';
 			
-			for(var j in results[i].areaWiseCasteList)
+			for(var j in results[i].selectedCastesList)
 			{
-				str += ''+results[i].areaWiseCasteList[j].casteName +'('+results[i].areaWiseCasteList[j].casteVotersPerc+')  '; 
+				str += ''+results[i].selectedCastesList[j].casteName +'('+results[i].selectedCastesList[j].casteVotersPerc+')  '; 
 			}
 			
 			str +='</td>';
@@ -779,15 +775,13 @@ if(results != null && results.length > 0)
 				str += '<td>';
 				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
 				{
-					if(m<3)
-						str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+' ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
+					str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+' ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  ';
 				}
 				str += '</td>';
 				str += '<td>';
-				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
+				for(var m in results[i].boothLevelLeadersList[k].selectedCastesList)
 				{
-					if(m>=3)
-						str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+' ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
+					str += ' '+results[i].boothLevelLeadersList[k].selectedCastesList[m].casteName+' ('+results[i].boothLevelLeadersList[k].selectedCastesList[m].casteVotersPerc+')  '; 
 				}
 				str +='</td>';
 				if(k > 0)
@@ -1010,7 +1004,7 @@ function panchayatMatrx(result)
 
 
 <div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;float: left; width: 980px;">
-<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();"/>
+<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();"/>
 
 <img src="images/icons/search.gif" id="ajaxImg" style="display:none;"/>
 <!--<img src="images/icons/loading.gif" id="ajaxLoaderImg" height="25px" width="25px;" style="display:none;"/>-->
