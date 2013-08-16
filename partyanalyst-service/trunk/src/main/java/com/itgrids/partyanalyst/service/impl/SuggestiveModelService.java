@@ -2372,7 +2372,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		  * @param Long constituencyId 
 		  * @return Map<String ,Map<String,PartyImpactVO>>
 		  */
-		 public Map<String ,Map<String,PartyImpactVO>> getElectionResultsForSelectedElectionsForAConsttituency(Long constituencyId)
+		 public Map<String ,Map<String,PartyImpactVO>> getElectionResultsForSelectedElectionsForAConsttituency(Long constituencyId,String partyName)
 		 {	
 			 
 			 LOG.debug("Entered into the getElectionResultsForSelectedElectionsForAConsttituency service method");
@@ -2417,7 +2417,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				processTheResultsToConvertFromVotesToPercent(resultMap , votersCountMap,partiesList);
 				
 				//this method will calculate and set the difference in voters percent in present and previous elections
-				calculateTheDifferenceBetweenpresentAndPreviousElection(resultMap ,partiesList);
+				calculateTheDifferenceBetweenpresentAndPreviousElection(resultMap ,partiesList,partyName);
 			
 				
 		 }catch(Exception e)
@@ -2435,7 +2435,6 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		  * @param elections
 		  * @param panchayatResultsList
 		  */
-		 
 		public void getAllPanchayatWiseVotersDetailsForPartyAndElectionWise(
 				List<Long> tehsilIds, List<Long> elections,
 				List<Object[]> panchayatResultsList)	 
@@ -2653,18 +2652,19 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 * @param resultMap
 		 * @param partiesList
 		 */
-		public void calculateTheDifferenceBetweenpresentAndPreviousElection(Map<String ,Map<String,PartyImpactVO>> resultMap, List<String> partiesList)
+		public void calculateTheDifferenceBetweenpresentAndPreviousElection(Map<String ,Map<String,PartyImpactVO>> resultMap, List<String> partiesList,String partyName)
 		{
 			LOG.debug("Entered into the calculateTheDifferenceBetweenpresentAndPreviousElection service method");
 			try
 			{
 				for(Entry<String ,Map<String,PartyImpactVO>> entry:resultMap.entrySet())
 				{
-					
+					Float selPartyDiff = 0.0f;
+					Float prpPartyDiff = 0.0f;
+					PartyImpactVO prpParty = null;
 					Map<String,PartyImpactVO> map = entry.getValue();
 					
 					for(Entry<String,PartyImpactVO> party:map.entrySet()){
-						
 						//if party participated in  present election only
 						if(party.getValue().getPreviousElectionVotesPercent() == null && party.getValue().getPresentElectionVotesPercent() != null)
 						{						
@@ -2678,13 +2678,37 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							party.getValue().setDifference("--");
 						}//if party participated in  previous and present elections
 						else{
+							
 							Float diff = Float.parseFloat(party.getValue().getPresentElectionVotesPercent()) - Float.parseFloat(party.getValue().getPreviousElectionVotesPercent());
-							party.getValue().setDifference(diff.toString());
+							party.getValue().setDifference(diff.toString());	
+						}
+						if(party.getKey().equalsIgnoreCase(partyName))
+						{
+							selPartyDiff = Float.valueOf(party.getValue().getDifference());
+						}
+						if(party.getKey().equalsIgnoreCase("PRP"))
+						{
+							prpParty = party.getValue();
+							prpPartyDiff = Float.valueOf(party.getValue().getDifference());
 						}
 							
 						party.getValue().setConsiderableParties(partiesList);
 					}
-						
+					if(prpParty != null)
+					{
+						if(selPartyDiff != null && selPartyDiff < 0)
+						{
+							selPartyDiff = -selPartyDiff;
+							Float parVotestoGain = Math.min(selPartyDiff, prpPartyDiff);
+							prpParty.setFromPrpVoters(parVotestoGain.toString());
+						}
+						else
+						{
+							prpParty.setFromPrpVoters("");
+						}
+					}
+					
+					
 				}
 				
 			}catch(Exception e)
