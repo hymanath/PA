@@ -513,7 +513,7 @@ Quick Links</h2>
 					<h2><span><i class="icon-bookmark "id="icon_leftsec"></i><span>
  Tweets From Parties and Leaders </h2>
 						<div class="widget-block">
-						<!--	<jsp:include page="newsocialtwitter.jsp" /> -->  
+						<jsp:include page="newsocialtwitter.jsp" />
 						</div>
 				</div>
 				<!-- Close Center DIV -->			
