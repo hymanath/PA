@@ -58,7 +58,6 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.utils.VoterCastInfoVOComparator;
 
 public class SuggestiveModelService implements ISuggestiveModelService {
 	
