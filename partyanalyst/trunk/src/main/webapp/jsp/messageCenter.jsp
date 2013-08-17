@@ -79,19 +79,64 @@ $(document).ready(function() {
 textarea{
 	background-color:#fff;
 }
+
+.mainContainer{width:980px;}
+#mobilesId{
+border:1px solid #ccc;height:800px;overflow-y:scroll;overflow-x:hidden;font-family:arial;font-size:13px;padding:15px;
+}
+
 </style>
 
 </head>
 <body>
 
 <!--Sending Voice Sms Block Start-->
+<div class="mainContainer">
+	<div class="span12 row filter" align="center" style="padding:10px;">
+		<h3 class="alert alert-info" id="cnstHeading"  style="background:#f0f0f0;border-radius:0px;text-align:center;clear:both;">Message Center</h3>
+		<div id="radioSelectionId">
+			<input type="radio" class="typeRadio" name="type" value="cadre" />Cadre
+			<input type="radio" class="typeRadio" name="type" value="ipeople" selected="selected"/>Influencing People
+		</div>
+	<div style="margin:10px;" id="sublevels"><span style="font-size:14px;">Select Level</span> -<s:select theme="simple" list="sublevelsList" name="sublevels" listKey="id" listValue="name" headerKey="0"headerValue="Select Level" id="subLevelsId" onchange="getScopes()"/></div>
+		
+		<div class="selectBoxes">
+		<s:select theme="simple" list="statesList" name="state" listKey="id" listValue="name" headerKey="0"headerValue="Select State" onchange="getDistricts()" id="stateField_s"/>
+		
+		<s:select theme="simple" list="districtList" name="district" listKey="id" listValue="name" headerKey="0" headerValue="Select District" id="districtField_s" onChange="getConstituencies()"/>
+		
+		<select id="constituencyField_s" onchange="getSubRegions()"></select>
+		<select id="mandalField_s" onchange="getSubRegionsInMandal()"></select>
+		<select id="hamletField_s"></select>
+		<select id="wardField"></select>
+		<select id="muncipalField" onchange="getSubRegionsInMuncipal()"></select>
+		<select id="boothField_s"></select>
+		</div>
+	</div>
+	
+	<div class="span11 row-fluid" style="margin-bottom:20px;">
+	<!-- Left Container -->
+	
+	<div class="span5 left_container" style="margin-top:40px;">
+		<div id="tableDiv" style="margin:10px;"></div>
+	</div>
+	
+	
+	
+	<!-- Right Container -->
+	<div class="span5 right_container">
+		<h4 style="padding:15px;text-align:center;">Contacts for Sending SMS</h4>
+		<div id="mobilesId">
+		</div>
+	</div>
+</div>
 
-<div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>SEND VOICE SMS</h4></div>
-<div class="thumbinal" style="margin-top:62px;">
+<div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;clear:both;'><h4>SEND VOICE SMS</h4></div>
+<div class="thumbnail">
 
  <div style="text-align:center;"><span>Enter Mobile Numbers To Send Voice Sms:</span><textarea id="mobileNumber"></textarea></div>
 
-  <div style="text-align:center;margin-top:41px;margin-left:110px;"><span>Enter Description:</span><textarea id="smsDescription"></textarea></div>
+  <div style="text-align:center;margin-left:110px;margin-top:5px;"><span>Enter Description:</span><textarea id="smsDescription"></textarea></div>
 
 <div class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;margin-top:12px;'><h4>AUDIO FILES AVAILABLE</h4></div>
  <div id="audioFilesDiv"></div>
@@ -116,8 +161,8 @@ textarea{
  </div>
 </div>
 
-
-
+</div>
+</div>
 
 <!--Sending Voice Sms Block End-->
 
@@ -229,7 +274,7 @@ $("input:radio[name=type]").click(function() {
 	
 	if(value=="ipeople"){
 		
-		$('.selectBoxes,#subLevelsId').css('display','block');
+		$('.selectBoxes,#sublevels').css('display','block');
 	
 		for(var i=0;i<=9;i++){
 			if(i>4){
@@ -246,7 +291,7 @@ $("input:radio[name=type]").click(function() {
 		});
 		$("#subLevelsId").html(str);
 		
-		$('.selectBoxes,#subLevelsId').css('display','none');
+		$('.selectBoxes,#sublevels').css('display','none');
 		
 		buildSearchPagePopup("Search");
 	}
@@ -539,16 +584,24 @@ function callAjax(param,jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+var mobileNoArr=[];
+var contactNos=[];
 function buildMobileNos(results,jsObj){
 	var str="";
 	//str+='<h4 style="padding:15px;">Contacts for Sending SMS</h4>';
+	
 	for(var i in results){
-	str+='<div class="span12 row-fluid mainClass thumbnail" id="removeThis'+i+'">';
+	if($.inArray(results[i].mobileNO,mobileNoArr)==-1){
+	str+='<div class="span12 row-fluid mainClass thumbnail" id="removeThis'+i+'" style="margin:1px;">';
 	//str+='<span class="btn bnt-mini">'+results[i].mobileNO+'<span></span></span>';	
 	str+='<div class="span6">'+results[i].cadreName+'</div><div class="span4">'+results[i].mobileNO+'</div><div class="span1"><img src="images/icons/delete.png"  style="margin:5px;height:12px;width:12px;" onclick="removeThis('+i+')"/></div></div>';
+	mobileNoArr.push(results[i].mobileNO);
+	contactNos.push('+91'+results[i].mobileNO)
 	}
-	
+	}
 	$('#mobilesId').append(str);
+	$('#mobileNumber').val(contactNos);
+	
 }
 
 function removeThis(val){
@@ -697,15 +750,20 @@ window.receiveFromChild = function(data) {
 
 window.receiveFromCadreChild = function(data) {
 	var str='';
+	console.log(mobileNoArr);
 	//str+='<h4 style="padding:15px;">Contacts for Sending SMS</h4>';
 	for( var i=0, l=data.length; i<l; i++ ) {
-		console.log( data[i] );
-		str+='<div class="span12 row-fluid mainClass" id="removeThis'+i+'">';
+	if($.inArray(data[i].mobileNO,mobileNoArr)==-1){
+		str+='<div class="span12 row-fluid mainClass thumbnail" id="removeThis'+i+'" style="margin:1px;">';
 		
 		str+='<div class="span6">'+data[i].cadreName+'</div><div class="span4">'+data[i].cadreMobile+'</div><div class="span1"><img src="images/icons/delete.png"  style="margin:5px;height:12px;width:12px;" onclick="removeThis('+i+')"/></div></div>';
-		
+		mobileNoArr.push(data[i].mobileNO);
+		contactNos.push('+91'+data[i].mobileNO)
+		}
 	}
+	console.log(mobileNoArr);
 	$('#mobilesId').append(str);
+	$('#mobileNumber').val(contactNos);
 }
 </script>
 
