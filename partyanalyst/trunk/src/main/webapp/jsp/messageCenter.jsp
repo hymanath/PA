@@ -13,6 +13,8 @@
 <script type="text/javascript" src="js/messageCenter.js"></script>
   <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
   <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
+ 
 
 <script>
 $(document).ready(function() {
@@ -85,6 +87,19 @@ textarea{
 border:1px solid #ccc;height:800px;overflow-y:scroll;overflow-x:hidden;font-family:arial;font-size:13px;padding:15px;
 }
 
+#ConstituencyDiv{margin-top: 12px; }
+.selectDiv {
+    color: #333333;
+    font-family: verdana;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 80%;
+}
+.requiredFont{color:red;}
 </style>
 
 </head>
@@ -97,6 +112,8 @@ border:1px solid #ccc;height:800px;overflow-y:scroll;overflow-x:hidden;font-fami
 		<div id="radioSelectionId">
 			<input type="radio" class="typeRadio" name="type" value="cadre" />Cadre
 			<input type="radio" class="typeRadio" name="type" value="ipeople" selected="selected"/>Influencing People
+			<input type="radio" class="typeRadio" name="type" value="voterSearch" selected="selected"/>Voter Search
+
 		</div>
 	<div style="margin:10px;" id="sublevels"><span style="font-size:14px;">Select Level</span> -<s:select theme="simple" list="sublevelsList" name="sublevels" listKey="id" listValue="name" headerKey="0"headerValue="Select Level" id="subLevelsId" onchange="getScopes()"/></div>
 		
@@ -112,6 +129,58 @@ border:1px solid #ccc;height:800px;overflow-y:scroll;overflow-x:hidden;font-fami
 		<select id="muncipalField" onchange="getSubRegionsInMuncipal()"></select>
 		<select id="boothField_s"></select>
 		</div>
+
+     <!-- voter Search Start !-->
+<div id="voterSearchDiv" style="display:none;">
+ 
+  
+      <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
+	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;height: 40px;"></div>
+     
+	  <div id="reportLevelDiv" class="selectDiv">Select Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:76px;width:165px;" name="constituencyList" onchange="clearFieldsData(),showReportLevel(this.options[this.selectedIndex].value);">
+		<option value=1>Constituency</option>
+		<option value=2>Mandal</option>
+		<option value=5>Ward</option>
+		<option value=3>Panchayat</option>
+	    <option value=6>Hamlets</option>
+        <option value=4>PollingStation</option>
+		</select>
+      </div>
+       <div id="ConstituencyDiv" class="selectDiv">
+	     	 
+		 Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();"/>
+		 
+		 &nbsp;&nbsp;	
+	     Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:180px;" name="publicationDateList" >
+		</select>  <span style='display:none;float: right;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>		
+	  </div>
+	  <div id="mandalDiv" class="selectDiv" style="display:none;">
+	     <span id="mandalSpan">Select Mandal</span><font class="requiredFont">*</font>
+		 <select id="mandalField" class="selectWidth" name="state" onchange="clearErrDiv(),getPanchayatOrWardsList('panchayat','panchayatField');getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');getPanchayatOrWardsList('ward','wardField')" style="margin-left:60px;width:165px;"></select>
+	  </div>
+	   <div id="wardDiv" class="selectDiv" style="display:none;">
+	    Select Ward<font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:70px;width:165px;"></select> 
+	  </div>
+		
+	  <div id="panchayatDiv" class="selectDiv" style="display:none;">
+	    Select Panchayat<font class="requiredFont">*</font> 	
+	    <select id="panchayatField" class="selectWidth" name="state" onchange="clearErrDiv(),getHamletsList('hamlet','hamletField');" style="margin-left:39px;width:165px;"></select>
+	  </div>
+	   <div id="hamletDiv" class="selectDiv" style="display:none;">
+	    Select Hamlet<font class="requiredFont">*</font> <select id="hamletField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select> 
+	 </div>
+	
+	  <div id="pollingStationDiv" class="selectDiv" style="display:none;">
+	    Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:20px;width:165px;" onchange="clearErrDiv();"></select>
+	  </div>
+	  <div id="localityDiv" class="selectDiv" style="display:none;">
+	   Select Locality<font class="requiredFont">*</font> <select id="localityField" class="selectWidth" name="state" onchange="getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select> 
+	  </div>
+	
+   <div><input type="button" value="voter Search" id="voterSearchBtn" class="btn btn-info" onclick="voterDetailsValidation()"/></div>
+</div>
+<!-- voter Search End !-->
+
 	</div>
 	
 	<div class="span11 row-fluid" style="margin-bottom:20px;">
@@ -186,7 +255,7 @@ function ajaxToGetRecordingDetails(){
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getAllTheRecordedFilesOfAUser.action?"+rparam;	
-			callAjax(rparam,jsObj,url);
+			callAjax1(rparam,jsObj,url);
 }
 function getVerifiedNumbersOfUser(){
 	var jsObj=
@@ -195,7 +264,7 @@ function getVerifiedNumbersOfUser(){
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getVerifiedNumbersOfUser.action?"+rparam;	
-			callAjax(rparam,jsObj,url);
+			callAjax1(rparam,jsObj,url);
 }
 function getVoiceSmsHistoryOfUser(){
 	var jsObj=
@@ -204,7 +273,7 @@ function getVoiceSmsHistoryOfUser(){
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getVoiceSmsHistoryForAuser.action?"+rparam;	
-			callAjax(rparam,jsObj,url);
+			callAjax1(rparam,jsObj,url);
 }
 function showMessageResponseDetails(responseCode){
 	var jsObj=
@@ -327,13 +396,22 @@ $("input:radio[name=type]").click(function() {
 	if(value=="ipeople"){
 		
 		$('.selectBoxes,#sublevels').css('display','block');
+		$("#voterSearchDiv").css("display","none");
 	
 		for(var i=0;i<=9;i++){
 			if(i>4){
 				$("#subLevelsId option[value="+i+"]").remove();
 			}
 		}
-	}else{
+	}
+	else if(value=="voterSearch")
+	{
+	  $('.selectBoxes,#sublevels').css('display','none');
+      $("#voterSearchDiv").css("display","block");
+	}
+
+	else{
+		$("#voterSearchDiv").css("display","none");
 		$("#subLevelsId").html('');
 		var str='';
 		$.each(sublevelArr, function(idx, obj){ 
@@ -435,7 +513,7 @@ function getDistrictsOfState(stateId){
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getSublevelsOfMessageCenterAction.action?"+rparam;	
-			callAjax(rparam,jsObj,url);
+			callAjax1(rparam,jsObj,url);
 }
 function getConstituenciesOfDistrict(districtId){
 	if(scopeSelected == 'WARD' || scopeSelected == 'MUNICIPAL-CORP-GMC')
@@ -451,7 +529,7 @@ function getConstituenciesOfDistrict(districtId){
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getSublevelsOfMessageCenterAction.action?"+rparam;	
-			callAjax(rparam,jsObj,url);
+			callAjax1(rparam,jsObj,url);
 }
 function getSubRegionsOfConsti(constId){
 	var task="subRegionsInConstituency";
@@ -473,7 +551,7 @@ function getSubRegionsOfConsti(constId){
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getSublevelsOfMessageCenterAction.action?"+rparam;	
-			callAjax(rparam,jsObj,url);
+			callAjax1(rparam,jsObj,url);
 }
 function getSubRegionsOfLocalBody(localId,name,constId){
 	var task ="";
@@ -502,7 +580,7 @@ function getSubRegionsOfLocalBody(localId,name,constId){
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getSublevelsOfMessageCenterAction.action?"+rparam;	
-			callAjax(rparam,jsObj,url);
+			callAjax1(rparam,jsObj,url);
 	
 }
 
@@ -549,11 +627,11 @@ function getSubLevelInfluenceData(regionId,regionName,regionType,areaType,region
 			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/subLevelInfluenceAction.action?"+param;
 			
-			callAjax(param,jsObj,url);		
+			callAjax1(param,jsObj,url);		
 		}
 	
 
-function callAjax(param,jsObj,url){
+function callAjax1(param,jsObj,url){
 	var myResults;	
 	var callback = {			
 	    success : function( o ) {
@@ -674,7 +752,7 @@ function reGetInfluencingPeopleInAConstituency(regionType,regionId,region)
 			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/influencingPeopleInConstituencyAction.action?"+param;
 			
-			callAjax(param,jsObj,url);	
+			callAjax1(param,jsObj,url);	
 		}
 		
 function buildRegionWiseInfluencePeople(data,jsObj){
@@ -797,7 +875,7 @@ window.receiveFromChild = function(data) {
 			
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getMobileNumbersOfSelectedId.action?"+param;
-		callAjax(param,jsObj,url);
+		callAjax1(param,jsObj,url);
 };
 
 window.receiveFromCadreChild = function(data) {
@@ -943,6 +1021,213 @@ function buildResponseDetails(results)
 			}
 	});
 }
+
+//voter search
+
+function clearErrDiv(){
+	$("#errorMsgAlert").html("");
+	}
+
+function getMandalOrMuncipalityList()
+{
+    var tempVar = "mandalList";
+    var selectElmt = "mandalField";
+    var reportLevelValue = $("#reportLevel").val();
+	var constituencyId = $("#constituencyList").val(); 
+
+	if(reportLevelValue == 5)
+     tempVar = "muncipalityList";
+			
+		var jsObj=
+			{
+				constituencyId:constituencyId,
+				tempVar:tempVar,
+				selectElmt:selectElmt,
+				task:"getMandalOrMuncipalityList"
+					
+			};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getMandalOrMuncipalityListForVotersAnalysisAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		
+}
+
+function clearFieldsData(){
+		$("#errorMsgAlert").html("");
+		var mandalId=document.getElementById("mandalField");
+		var publicationDateId=document.getElementById("publicationDateList");
+		var panchayatFieldId=document.getElementById("panchayatField");
+		var wardFieldId=document.getElementById("wardField");
+		var hamletFieldId=document.getElementById("hamletField");
+		var pollingStationFieldId=document.getElementById("pollingStationField");
+		removeSelectElements(pollingStationFieldId);
+		removeSelectElements(hamletFieldId);
+		removeSelectElements(mandalId);
+		removeSelectElements(wardFieldId);
+		removeSelectElements(publicationDateId);
+		removeSelectElements(panchayatFieldId);
+		$('#constituencyList').val(0);
+	}
+
+function showNewsDetails(){
+  }
+
+function voterDetailsValidation()
+{
+  var id7 = $("#mandalField").val();
+	       		  
+				if(type !=  "ward" && id7.charAt(0) !="1"){
+                  ColType1 = "Hamlet";
+				}else{
+                 ColType1 = "Ward";
+				 muniId = $("#mandalField").val().substring(1);
+				}
+		
+	isMuncipality=false;	
+	$('#errorMessageDiv').hide();
+    $("#multipleVoterFamiliesEditDiv").html("");
+	$("#errorMsgAlert").html("");
+    var level = $("#reportLevel").val();
+	 selectedLevel=level;
+	var type = '';
+	var id='';
+	var publicationDateId ='';
+	
+	var str ='';
+	id = $("#constituencyList").val();
+	if(id == 0 ||id == null)
+	{
+		str +='<div>Please Select Constituency</div>';
+		$("#errorMsgAlert").html(str);
+		return;
+	}
+	if(level == 1){
+		type = 'constituency';
+		selectedType=type;
+		selectedTypeId=id;	
+	}
+	if(level == 2 || level == 3 || level == 4 || level == 5 || level == 6 ){
+	id = $("#mandalField").val();
+			if(id == 0 || id == null)
+			{
+				str +='<div>Please Select Mandal</div>';
+				$("#errorMsgAlert").html(str);
+				return;
+			}	
+    }
+    if(level == 3 || level == 6){
+	  id = $("#panchayatField").val();
+		if(id == 0 || id == null)
+		{
+			str +='<div>Please Select Panchayat</div>';
+			$("#errorMsgAlert").html(str);
+			return;
+		}
+	}
+	if(level == 4){
+	  id = $("#pollingStationField").val();
+        if(id == 0 || id == null)
+		{
+			str +='<div>Please Select Polling Station</div>';
+			$("#errorMsgAlert").html(str);
+			return;
+		}
+	}
+	if(level == 5){		
+		 id = $("#wardField").val();
+			if(id == 0 || id == null)
+			{
+				str +='<div>Please Select Ward</div>';
+				$("#errorMsgAlert").html(str);
+				return;
+			}		
+    }
+	if(level == 6){
+		id = $("#hamletField").val();
+        if(id == 0 || id == null)
+		{
+			str +='<div>Please Select Hamlet</div>';
+			$("#errorMsgAlert").html(str);
+			return;
+		}
+	}
+	
+	publicationDateId = $("#publicationDateList").val();
+	publicationId=publicationDateId;
+	if(publicationDateId == 0 || publicationDateId == null){
+	    str +='<div>Please Select Publication Date</div>';
+		$("#errorMsgAlert").html(str);
+		return;
+	}
+	
+	var locationName = "";
+	if(level == 1){
+		type = 'constituency';
+		id = $("#constituencyList").val();
+		selectedType=type;
+		selectedTypeId=id;
+		locationName = $("#constituencyList option:selected").text();
+	}
+	else if(level == 2){
+		type = 'mandal';
+		id = $("#mandalField").val();
+			if(id.slice(0,1)==1){
+				isMuncipality=true;
+			}
+		selectedType=type;
+		selectedTypeId=id.substring(1);
+			if(id.charAt(0) =="1"){
+				 selectedType = "muncipality";
+				madalType = "muncipality";
+			}
+	 locationName = $('#mandalField option:selected').text();
+   }
+   else if(level == 3){
+	  type = 'panchayat';
+	  id = $("#panchayatField").val();
+	  selectedType=type;
+	  selectedTypeId=id;
+	  locationName = $('#panchayatField option:selected').text();
+	}
+	else if(level == 4){
+		 type = 'booth';
+		 id = $("#pollingStationField").val();
+		 selectedType=type;
+	     selectedTypeId=id;
+		 locationName = $('#pollingStationField option:selected').text();
+	}
+	else if(level == 5){
+		 type = 'ward';
+		 id = $("#wardField").val();
+		 selectedType=type;	
+		 locationName = $('#wardField option:selected').text();
+	}
+	else if(level == 6){
+		 type = 'hamlet';
+		 id = $("#hamletField").val();
+		 selectedType=type;
+	     selectedTypeId=id;
+		 locationName = $('#hamletField option:selected').text();
+	}
+
+  var constituencyId = $("#constituencyList").val();
+     
+
+  getVoterDetails(constituencyId,publicationId,id,selectedType,locationName);
+}
+
+
+
+function getVoterDetails(constituencyId,publicationId,id,selectedType,locationName)
+{
+ 
+  var urlStr = "messageCenterVoterSearchAction.action?constituencyId="+constituencyId+"&publicationDateId="+publicationId+"&locationValue="+id+"&locationType="+selectedType+"&locationName="+locationName+"&";
+  var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=1300,left=200,top=50");	
+  browser2.focus();  
+}
+
+//voter search
 ajaxToGetRecordingDetails();
 getVerifiedNumbersOfUser();
 getVoiceSmsHistoryOfUser();
