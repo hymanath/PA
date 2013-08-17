@@ -34,6 +34,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+	<script type="text/javascript" src="js/messageCenter.js"></script>
 
 	<!-- YUI Skin Sam -->
 
@@ -191,8 +192,6 @@ else
 					}, {
 						key : "lastName"
 					}, {
-						key : "email"
-					}, {
 						key : "mobile",parser:"number"
 					}, {
 						key : "gender"
@@ -202,21 +201,13 @@ else
 						key : "constituencyName"
 					}, {
 						key : "districtName"
-					}, {
-						key : "stateName"
-					}, 
+					} 
 					<c:if test="${regionType == 'BOOTH' || regionType == 'VILLAGE' ||regionType == 'MANDAL'}">
 					{
 						key : "influencingScopeValue"
 					} ,
 					</c:if>
-					{
-						key : "moreDetails"
-					},{
-						key : "edit"
-					},{
-						key : "delete"
-					} ]
+					 ]
 				};
 
 				var resultsColumnDefs = [{
@@ -232,11 +223,7 @@ else
 					key : "lastName",
 					label : "Second Name",
 					sortable : true
-				}, {
-					key : "email",
-					label : "Email",
-					sortable : true
-				}, {
+				},  {
 					key : "mobile",
 					parser:"number",
 					label : "Mobile",
@@ -257,11 +244,7 @@ else
 					key : "districtName",
 					label : "District / Parliament",
 					sortable : true
-				} , {
-					key : "stateName",
-					label : "State",
-					sortable : true
-				}, 
+				}   
 				<c:if test="${regionType == 'BOOTH' || regionType == 'VILLAGE' ||regionType == 'MANDAL'}">
 				{
 					key : "influencingScopeValue",
@@ -269,19 +252,7 @@ else
 					sortable : true
 				},
 				</c:if>
-				{
-					key : "moreDetails",
-					label : "More Details",
-					sortable : false
-				} ,{
-					key : "edit",
-					label : "Edit",
-					sortable : false
-				},{
-					key : "delete",
-					label : "Delete",
-					sortable : false
-				}];
+				];
 
 				var myConfigs = {
 				paginator : new YAHOO.widget.Paginator({
@@ -583,24 +554,12 @@ else
 						str += '	<td><input type="checkbox" name="influencePeopleCheck_${region.regionId}" value="${people.influencingPersonId}" id="checkBoxId"></input></td>';
 						str += '	<td>${people.firstName}</td>';
 						str += '	<td>${people.lastName}</td>';
-						str += '	<td>${people.email}</td>';
+						
 						str += '	<td>${people.mobile}</td>';
 						str += '	<td>${people.gender}</td>';
 						str += '	<td>${people.cast}</td>';
 						str += '	<td>${people.constituency}</td>';
 						str += '	<td>${people.district}</td>';
-						str += '	<td>${people.state}</td>';
-						str += '	<td><a href="javascript:{}" onclick="getPersonDetails(${people.influencingPersonId})">More Details</a></td>';
-						str += '	<td>';
-						str += '		<a href="javascript:{}" onclick="editPersonDetails(${people.influencingPersonId})">';
-						str += '			<img style="text-decoration: none; border: 0px none;" src="images/icons/edit.png">';
-						str += '		</a>';
-						str += '	</td>';
-						str += '	<td>';
-						str += '		<a href="javascript:{}" onclick="deletePersonDetails(${people.influencingPersonId})">';
-						str += '			<img style="text-decoration: none; border: 0px none;" src="images/icons/delete.png">';
-						str += '		</a>';
-						str += '	</td>';
 						str += '</tr>';							
 					</c:forEach>
 				</c:forEach>
@@ -668,26 +627,17 @@ else
 									<td><input type="checkbox" name="influencePeopleCheck_${region.regionId}" value="${people.influencingPersonId}"></input></td>
 									<td>${people.firstName}</td>
 									<td>${people.lastName}</td>
-									<td>${people.email}</td>
+									
 									<td>${people.mobile}</td>
 									<td>${people.gender}</td>
 									<td>${people.cast}</td>
 									<td>${people.constituency}</td>
 									<td>${people.district}</td>
-									<td>${people.state}</td>
+									
 									<c:if test="${regionType == 'BOOTH' || regionType == 'VILLAGE' ||regionType == 'MANDAL'}">
 									str += '	<td>${people.influencingScopeValue}</td>';</c:if>
 									<td><a href="javascript:{}" onclick="getPersonDetails(${people.influencingPersonId})">More Details</a></td>
-									<td>
-										<a href="javascript:{}" onclick="editPersonDetails(${people.influencingPersonId})">
-											<img style="text-decoration: none; border: 0px none;" src="images/icons/edit.png">
-										</a>
-									</td>
-									<td>
-										<a href="javascript:{}" onclick="deletePersonDetails(${people.influencingPersonId})">
-											<img style="text-decoration: none; border: 0px none;" src="images/icons/delete.png">
-										</a>
-									</td>
+									
 								</tr>							
 							</c:forEach>
 						</table>
@@ -711,37 +661,6 @@ else
 		{
 			location.reload();
 		}
-		
-		function addThisContacts(){
-			var elmts = document.getElementsByTagName('input');
-			
-			var checkedIds = '';
-
-			if(elmts.length == 0)
-				return;
-			
-			for(var i=0; i<elmts.length; i++)
-			{
-				if(elmts[i].type == "checkbox" && elmts[i].name != "regionHeaderCheckBox" && elmts[i].name != "smsIncludeUserName" && elmts[i].checked)
-				{
-					checkedIds += elmts[i].value;
-					checkedIds += ',';
-				}
-			}
-
-			checkedIds = checkedIds.substring(0,checkedIds.length-1);
-			alert(checkedIds);
-			window.opener.receiveFromChild ( checkedIds );
-			
-						
-			/*if(checkedIds == '' || checkedIds == null)
-			{
-				statusElmt.innerHTML = '<font color="red"> No people selected to send message.. </font>';
-				return;
-			}*/
-		}
-		
-		
 		
 	</script>
 </body>

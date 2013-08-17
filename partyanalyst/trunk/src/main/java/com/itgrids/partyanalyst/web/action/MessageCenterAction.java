@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.service.impl.InfluencingPeopleService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.service.impl.StaticDataService;
@@ -38,6 +39,7 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	booths,hamletsOrWards;
 	private InfluencingPeopleService influencingPeopleService;
 	private StaticDataService staticDataService;
+	private List<SmsVO> mobileNOs;
 	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -201,6 +203,18 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	public void setHamletsOrWards(List<SelectOptionVO> hamletsOrWards) {
 		this.hamletsOrWards = hamletsOrWards;
 	}
+	
+	
+
+
+	public List<SmsVO> getMobileNOs() {
+		return mobileNOs;
+	}
+
+
+	public void setMobileNOs(List<SmsVO> mobileNOs) {
+		this.mobileNOs = mobileNOs;
+	}
 
 
 	@SuppressWarnings("unused")
@@ -286,6 +300,18 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		
 		
 		return nameReturned;
+	}
+	public String getMobileNumbers(){
+		String param=getTask();
+		try{
+			jObj=new JSONObject(param);
+			String ids=jObj.getString("ids");
+			mobileNOs=influencingPeopleService.getMobileNumbersOfIds(ids);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
 	}
 		
 	

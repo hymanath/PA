@@ -1662,6 +1662,9 @@
 		<action name="cadreSearchAction" class="cadreSearchAction">
 			<result name="success">/jsp/cadreSearchPage.jsp</result>			
 		</action>
+		<action name="cadreSearchActionForMessageCenter" class="cadreSearchAction">
+			<result name="success">/jsp/cadreSearchPageForMessageCenter.jsp</result>			
+		</action>
 		<action name="getStatesForACountryAjaxAction" class="cadreSearchAjaxAction" method="getStatesForACountry"> 
               <result type="json" name="success">
            		<param name="root">statesListForACountry</param>
@@ -2120,6 +2123,10 @@
                 
         <action name="influencingPeopleDataAction" class="constituencyManagementAction" method="getInfluencingPeopleData">
 			<result name="success">/jsp/influencePeoplePage.jsp</result>			
+		</action>
+		
+		<action name="influencingPeopleDataActionForMessageCenter" class="constituencyManagementAction" method="getInfluencingPeopleData">
+			<result name="success">/jsp/influencePeoplePageForMessageCenter.jsp</result>			
 		</action>
 		
 		<action name="influencingPeopleDataAjaxAction" class="constituencyManagementAction" method="getInfluencingPeopleDetails">
@@ -5770,7 +5777,12 @@
 		 	 <result type="json" name="hamletsOrWards">
 		   		<param name="root">hamletsOrWards</param>
 		 	 </result>
-		 	 
+		 </action>
+		 
+		 <action name="getMobileNumbersOfSelectedId" class="messageCenterAction" method="getMobileNumbers">
+		  	<result type="json" name="success">
+		     <param name="root">mobileNOs</param>
+		   </result>
 		 </action>
 		 
 		</package>
