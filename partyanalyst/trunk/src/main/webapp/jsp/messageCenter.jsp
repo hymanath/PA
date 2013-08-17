@@ -111,6 +111,11 @@ textarea{
  <div id="smsHistory"></div>
 </div>
 
+<div id="responseDetailsDiv">
+ <div id="responseDetailsInnerDiv">
+ </div>
+</div>
+
 
 
 
@@ -147,6 +152,16 @@ function getVoiceSmsHistoryOfUser(){
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getVoiceSmsHistoryForAuser.action?"+rparam;	
+			callAjax(rparam,jsObj,url);
+}
+function showMessageResponseDetails(responseCode){
+	var jsObj=
+			{
+				task:"getResponseDetails",
+                messageResponseCode:responseCode
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getResponseDetailsForSms.action?"+rparam;	
 			callAjax(rparam,jsObj,url);
 }
 </script>
@@ -483,6 +498,8 @@ function callAjax(param,jsObj,url){
 						 buildVerifiedNumbersForUser(myResults);
 					else if(jsObj.task == "getVoiceSmsHistoryForAuser")
 						buildVoiceSmsHistory(myResults);
+					else if(jsObj.task == "getResponseDetails")
+						buildResponseDetails(myResults);
 					
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
@@ -749,13 +766,28 @@ function buildVoiceSmsHistory(results)
 $('#smsHistory').html(str);
 
 $('#smsHistory').hide();
-
 }
 
-function showMessageResponseDetails(responseCode)
+function buildResponseDetails(results)
 {
 
-alert(responseCode);
+	var str='';
+
+	$.each(results,function(key,value){
+
+		str+=key+"-"+value;
+
+	});
+
+	$('#responseDetailsInnerDiv').html(str);
+	$('#responseDetailsDiv').dialog({
+		title:"Response Details" ,
+		buttons: {
+				
+				"Ok":function(){$(this).dialog("close");} 
+			}
+	});
+
 }
 
 ajaxToGetRecordingDetails();
