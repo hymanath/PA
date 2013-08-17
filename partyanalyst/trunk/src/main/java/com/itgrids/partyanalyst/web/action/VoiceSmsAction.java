@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
@@ -31,9 +32,38 @@ public class VoiceSmsAction implements ServletRequestAware{
 	private String userId;
 	private String status;
 	private List<VoiceSmsResponseDetailsVO> voiceSmsResponseDetails;
+	
 	private List<Long> verifiedNumbers;
 	private Map<String ,Map<String,Integer>> resultMap ;
+	private JSONObject jObj;
+	private String task;
+	private  Map<String ,Integer> responseMap;
 	
+	
+	public Map<String, Integer> getResponseMap() {
+		return responseMap;
+	}
+
+	public void setResponseMap(Map<String, Integer> responseMap) {
+		this.responseMap = responseMap;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public JSONObject getjObj() {
+		return jObj;
+	}
+
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+
 	
 	public Map<String, Map<String, Integer>> getResultMap() {
 		return resultMap;
@@ -251,9 +281,11 @@ public class VoiceSmsAction implements ServletRequestAware{
 			else
 				audioFilePath.append("http://122.169.253.134:8080/PartyAnalyst/voice_recordings/"+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
 
-
+			 jObj = new JSONObject(getTask());
 			
-			status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,request.getParameter("mobileNumbers"),Long.parseLong(request.getParameter("senderMobileNumber")),request.getParameter("description"));
+			 status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),jObj.getLong("senderMobileNumber"),jObj.getString("description"));
+			 
+			//status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,request.getParameter("mobileNumbers"),Long.parseLong(request.getParameter("senderMobileNumber")),request.getParameter("description"));
 		}
 		catch(Exception e)
 		{
@@ -325,6 +357,24 @@ public class VoiceSmsAction implements ServletRequestAware{
 		{
 			e.printStackTrace();
 		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getResponseDetailsForSms()
+	{
+		try
+		{
+			 jObj = new JSONObject(getTask());
+			 
+			 responseMap = voiceSmsService.getResponseDetailsByResponseCode(jObj.getString("messageResponseCode"));
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		
 		return Action.SUCCESS;
 		
 	}

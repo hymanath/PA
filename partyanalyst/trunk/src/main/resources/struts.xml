@@ -5792,7 +5792,7 @@
 				<param name="allowedExtensions">.mp3,.WAV</param>
 			</interceptor-ref>
 			<interceptor-ref name="defaultStack"></interceptor-ref>
-          <result name="success">/voiceTest/index.jsp</result>
+          <result name="success">/voiceSms/index.jsp</result>
 		 </action>
 		 
 		  
@@ -5803,7 +5803,7 @@
 		 </action>
 		 
 		 <action name="voiceSMS" class="voiceSmsAction">
-		 <result>/voiceTest/voiceSMS.jsp</result>
+		 <result>/voiceSms/voiceSMS.jsp</result>
 		 </action>
 		 
 		 
@@ -5834,5 +5834,12 @@
 		   <param name="root">resultMap</param>
 		  </result>
 		 </action>
+		 
+		 <action name="getResponseDetailsForSms" class="voiceSmsAction" method="getResponseDetailsForSms">
+		 <result type="json" name="success">
+		   <param name="root">responseMap</param>
+		  </result>
+		 </action>
+		 
 		</package>
 </struts>      
