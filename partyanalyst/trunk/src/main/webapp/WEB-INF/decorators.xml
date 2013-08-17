@@ -110,10 +110,7 @@
 		<pattern>/influencingPeopleDetailsAction*</pattern>
 		<pattern>/cadreSearchActionForMessageCenter*</pattern>		
 		<pattern>/voiceTest/index.jsp</pattern>
-		<pattern>/voiceTest/voiceSMS.jsp</pattern>
-		<!--<pattern>/jsp/voiceSMS.jsp</pattern>
 		<pattern>/voiceSMS.jsp</pattern>-->
-		<pattern>/voiceTest/uploadAudioFile*</pattern>
 		<pattern>/voiceSMS*</pattern>
 	</excludes>  
 	
@@ -190,7 +187,6 @@
 		<pattern>/sitemapAction*</pattern>
 		<pattern>/newsZoneAction*</pattern>
 		<pattern>/partyPerformanceJasper*</pattern>
-		<pattern>/voiceSmsReportAction*</pattern>
 		<!-- <pattern>/suggestiveModelAction*</pattern> -->
     </decorator>
     
@@ -264,6 +260,8 @@
 		<pattern>/suggestiveModelAction*</pattern>
 		<pattern>/mobileDataAction*</pattern>
 		<pattern>/messageCenterAction*</pattern>
+		<pattern>/uploadAudioFile*</pattern>
+		<pattern>/voiceSmsReportAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
