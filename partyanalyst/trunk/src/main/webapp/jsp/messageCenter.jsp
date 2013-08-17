@@ -138,11 +138,11 @@ border:1px solid #ccc;height:800px;overflow-y:scroll;overflow-x:hidden;font-fami
 
   <div style="text-align:center;margin-left:110px;margin-top:5px;"><span>Enter Description:</span><textarea id="smsDescription"></textarea></div>
 
-<div class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;margin-top:12px;'><h4>AUDIO FILES AVAILABLE</h4></div>
+<div style="margin:27px 0px 0px 264px;color:#3A87AD;"><u><h4>AUDIO FILES AVAILABLE</h4></u></div>
  <div id="audioFilesDiv"></div>
 
-<div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>VERIFIED NUMBERS TO SEND VOICE SMS</h4></div>
-<div class="thumbinal" style="margin-top:56px;"> 
+<div style="margin:27px 0 0 264px;color:#3A87AD;"><u><h4>VERIFIED NUMBERS TO SEND VOICE SMS</h4></u></div>
+<div class="thumbinal" style="margin-top:16px;"> 
  <div id="verifiedNumbersDiv"></div>
 </div>
 
@@ -770,8 +770,13 @@ window.receiveFromCadreChild = function(data) {
 <script>
 function buildResultForAudioFiles(results)
 {
+	var count = 0;
+   $.each(results,function(key,value){
 
-	if(results == null || results.length == 0)
+		  count++;
+	});
+	
+	if(count == 0)
 	{
 		$('#audioFilesDiv').html("No Files Exist");
 		return false;
@@ -780,7 +785,7 @@ function buildResultForAudioFiles(results)
 	str+='<l><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="float:right;padding:5px;"/></a></div>';
 
 
-	str+='<div style="margin:54px 0px 0px 265px;">';
+	str+='<div style="margin:13px 0px 0px 265px;">';
 
 
       var i=0;
