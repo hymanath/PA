@@ -856,11 +856,29 @@ function buildResponseDetails(results)
 
 	var str='';
 
-	$.each(results,function(key,value){
+   str+='<div class="datagrid">';
+	str+='<table>';
+	str+='<thead>';
+	 str+='<tr>';
+	  str+='<th>S No</th>'
+	  str+='<th>Mobile Number</th>'
+	  str+='<th>Status</th>';
+	 str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
 
-		str+=key+"-"+value;
+	$.each(results,function(index,value){
+       var sNo = index +1;
+        str+='<tr>';
+		str+='<td>'+sNo+'</td>';
+		 str+='<td>'+value.numbers+'</td>';
+	     str+='<td>'+value.sentStatus+'</td>';
+        str+='</tr>';
 
 	});
+	str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
 
 	$('#responseDetailsInnerDiv').html(str);
 	$('#responseDetailsDiv').dialog({
