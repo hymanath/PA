@@ -21,6 +21,9 @@ import com.itgrids.partyanalyst.service.impl.StaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 
 public class MessageCenterAction  extends ActionSupport implements ServletRequestAware {
 	/**
@@ -40,17 +43,23 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	private InfluencingPeopleService influencingPeopleService;
 	private StaticDataService staticDataService;
 	private List<SmsVO> mobileNOs;
+	private List<SelectOptionVO> constituencyList, userAccessConstituencyList;
+	private ICrossVotingEstimationService crossVotingEstimationService;
+	private IVotersAnalysisService votersAnalysisService;
+	private VoterHouseInfoVO voterHouseInfoVO;
+	private Long publicationDateId;
+	private Long constituencyId;
+	private Long locationValue;
+	private String locationType;
+	private String locationName;
 	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
 
-
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
-
-
 	
 	public String getTask() {
 		return task;
@@ -71,19 +80,15 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	public void setSession(HttpSession session) {
 		this.session = session;
 	}
-	
-
 
 	public HttpServletRequest getRequest() {
 		return request;
 	}
-
-
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
 	}
 
-	@Override
+	//@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request=request;
 		
@@ -216,6 +221,109 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		this.mobileNOs = mobileNOs;
 	}
 
+	public JSONObject getjObj() {
+		return jObj;
+	}
+
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+
+	public List<SelectOptionVO> getConstituencyList() {
+		return constituencyList;
+	}
+
+
+	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+
+
+	public List<SelectOptionVO> getUserAccessConstituencyList() {
+		return userAccessConstituencyList;
+	}
+
+
+	public void setUserAccessConstituencyList(
+			List<SelectOptionVO> userAccessConstituencyList) {
+		this.userAccessConstituencyList = userAccessConstituencyList;
+	}
+
+
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+
+
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
+	}
+
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+	
+	public VoterHouseInfoVO getVoterHouseInfoVO() {
+		return voterHouseInfoVO;
+	}
+	public void setVoterHouseInfoVO(VoterHouseInfoVO voterHouseInfoVO) {
+		this.voterHouseInfoVO = voterHouseInfoVO;
+	}
+	
+
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+
+	public Long getLocationValue() {
+		return locationValue;
+	}
+
+
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+
+
+	public String getLocationType() {
+		return locationType;
+	}
+
+
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
 
 	@SuppressWarnings("unused")
 	public String execute()throws Exception
@@ -236,10 +344,18 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 			return ERROR;
 		}
 		
+		Long userId = registrationVO.getRegistrationID();
 		sublevelsList=influencingPeopleService.getInfluenceRange();
 		statesList=regionServiceDataImp.getUserStateList(accessType, accessValue);
 		
 		districtList = regionServiceDataImp.getDistrictsByStateID(statesList.get(0).getId());
+		
+		
+		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
+		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		
 		return Action.SUCCESS;
 		
@@ -314,6 +430,37 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		return SUCCESS;
 	}
 		
-	
+	public String ajaxHandler()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		try{
+		if(user == null)
+		 return ERROR;
+		jObj=new JSONObject(getTask());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	 Long userId = user.getRegistrationID();
+	 
+	 	 
+	 if(jObj.getString("task").equalsIgnoreCase("getVoterDetails"))
+	 {
+		 VoterHouseInfoVO houseInfoVO = new VoterHouseInfoVO();
+		 houseInfoVO.setConstituencyId(jObj.getLong("constituencyId"));
+		 houseInfoVO.setLocation(jObj.getString("locationType"));
+		 houseInfoVO.setUserId(userId);
+		 houseInfoVO.setStartIndex(jObj.getInt("startIndex"));
+		 houseInfoVO.setMaxIndex(jObj.getInt("results"));
+		 houseInfoVO.setPublicationId(jObj.getLong("publicationDateId"));
+		 
+		 Long locationValue = jObj.getLong("id");
+		 
+		 voterHouseInfoVO = votersAnalysisService.getVoterDetailsForSelectedLocation(houseInfoVO,locationValue);
+	 }
+	 
+		
+		return Action.SUCCESS;
+	}
 
 }
