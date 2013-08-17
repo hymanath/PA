@@ -5778,6 +5778,14 @@
 		   		<param name="root">hamletsOrWards</param>
 		 	 </result>
 		 </action>
+		 <action name="getVoterDetailsAction" class="messageCenterAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		   <param name="root">voterHouseInfoVO</param>
+		  </result>
+		 </action>
+		 <action name="messageCenterVoterSearchAction" class="messageCenterAction">
+		    <result name="success">/jsp/messageCenterVoterSearch.jsp</result>
+		 </action>
 		 
 		 <action name="getMobileNumbersOfSelectedId" class="messageCenterAction" method="getMobileNumbers">
 		  	<result type="json" name="success">

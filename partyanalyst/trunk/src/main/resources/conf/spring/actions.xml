@@ -1278,6 +1278,8 @@
     	<property name="regionServiceDataImp" ref="regionServiceDataImp" />
     	<property name="influencingPeopleService" ref="influencingPeopleService" />
     	<property name="staticDataService" ref="staticDataService"/>
+    	<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+    	<property name="votersAnalysisService" ref="votersAnalysisService" />
     </bean>
      <bean id="voiceSmsAction" class="com.itgrids.partyanalyst.web.action.VoiceSmsAction" singleton="false">
 		<property name="voiceSmsService" ref="voiceSmsService" />	
