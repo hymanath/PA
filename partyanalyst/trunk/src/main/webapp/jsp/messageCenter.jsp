@@ -75,28 +75,32 @@ textarea{
 
 <!--Sending Voice Sms Block Start-->
 
+<div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>SEND VOICE SMS</h4></div>
 <div class="breadcrumb" style="margin-top:40px;">
 
  <div style="text-align:center;"><span>Enter Mobile Numbers To Send Voice Sms:</span><textarea></textarea></div>
 
   <div style="text-align:center;margin-top:41px;margin-left:110px;"><span>Enter Description:</span><textarea></textarea></div>
-</div>
 
-<div class="breadcrumb" style="margin-top:40px;"> 
+<div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;margin-top:12px;'><h4>AUDIO FILES AVAILABLE</h4></div>
  <div id="audioFilesDiv"></div>
-</div>
 
-
+<div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>VERIFIED NUMBERS TO SEND VOICE SMS</h4></div>
 <div class="breadcrumb" style="margin-top:40px;"> 
  <div id="verifiedNumbersDiv"></div>
 </div>
+
+
+<input type="button" class="btn" style="margin-right:212px;margin-top:10px;" value="Send Voice Sms" onClick="ajaxToSendSms()"/>
+
+<div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>SHOW / HIDE SMS HISTORY</h4></div>
 
 <div class="breadcrumb" style="margin-top:40px;"> 
  <div id="smsHistory"></div>
 </div>
 
 
-<input type="button" class="btn pull-right" style="margin-right:212px;margin-top:10px;" value="Send Voice Sms" onClick="ajaxToSendSms()"/>
+
 
 <!--Sending Voice Sms Block End-->
 
