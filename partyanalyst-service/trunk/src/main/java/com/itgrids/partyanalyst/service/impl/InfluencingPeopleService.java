@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
+import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -4118,6 +4119,22 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			 returnList.add(selectOptionVO);
 		}
 		 return returnList;
+	 }
+	 public List<SmsVO> getMobileNumbersOfIds(String ids){
+		 List inflencinfPeopleList = null;
+		 inflencinfPeopleList = influencingPeopleDAO.getInfluencingPeopleNameAndMobileNOByIds(ids);
+		List<SmsVO> mobilesList=new ArrayList<SmsVO>();
+		for(Object li:inflencinfPeopleList){
+			SmsVO smsVO=new SmsVO();
+			Object[] arr=(Object[]) li;
+			String fname=arr[0].toString();
+			String lname=arr[1].toString();
+			smsVO.setCadreName(fname+" "+lname);
+			smsVO.setMobileNO(arr[2].toString());
+			mobilesList.add(smsVO);
+		}
+		return mobilesList;
+		 
 	 }
 }
 

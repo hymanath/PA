@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.RegionSelectOptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
+import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 
 public interface IInfluencingPeopleService {
@@ -99,5 +100,7 @@ public interface IInfluencingPeopleService {
     
     public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsBySelScope(Long userId,
 			Long regionId, String regionType,int startIndex,int maxIndex);
+    
+    public List<SmsVO> getMobileNumbersOfIds(String ids);
 	
 }
