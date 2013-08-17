@@ -1279,6 +1279,9 @@
     	<property name="influencingPeopleService" ref="influencingPeopleService" />
     	<property name="staticDataService" ref="staticDataService"/>
     </bean>
+     <bean id="voiceSmsAction" class="com.itgrids.partyanalyst.web.action.VoiceSmsAction" singleton="false">
+		<property name="voiceSmsService" ref="voiceSmsService" />	
+	</bean>
     
    
 </beans>	
