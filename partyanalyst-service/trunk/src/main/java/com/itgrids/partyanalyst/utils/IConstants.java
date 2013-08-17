@@ -644,5 +644,14 @@ public interface IConstants {
     
     public final static String PRESENT_ASSEMBLY_ELECTION_ID = "38";
     public final static String PREVIOUS_ASSEMBLY_ELECTION_ID = "3";
+    
+    
+    /* VOICE SMS START*/
+    public static final String VERIFICATION_NUMBER_NOT_EXIST = "Verification Number Not Exist";
+    public static final String ERROR_IN_VOICE_SMS = "Error Occureds While Sending Voice Sms.Please Try again.....";
+    public static final String VOICE_SMS_SUCCESSFULLY_SENT = "Successfully Sent..";
+    public static final String VOICE_SMS_USER_NAME = "karthik1";
+    public static final String VOICE_SMS_PASS_WORD = "184314";
+    /* VOICE SMS END*/
 	
 }
