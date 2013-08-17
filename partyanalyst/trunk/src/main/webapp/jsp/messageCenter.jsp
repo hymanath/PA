@@ -33,6 +33,7 @@ $(document).ready(function() {
   }
   .datagrid table td, .datagrid table th {
 	  padding: 3px 10px;
+	  text-align:center;
   }
   .datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );#006699;
 	  background-color:#006699; 
@@ -689,7 +690,7 @@ function buildResultForAudioFiles(results)
 		   str+='<label><input name="audio" type="radio" value="'+i+'" id="'+key+'"/><a href="javascript:{showAudio(\''+key+'\','+i+')}" title="'+value+'">'+key+'</a> -- '+value+'</label>';
                   i++;
 	});
-str+='<label><a href="voiceTest/index.jsp" target="blank" style="margin:0px 0px 0px 300px;"><b>Click Here To Record Audio And To Upload Audio</b></a></label>';
+str+='<label><a href="uploadAudioFile.action" target="blank" style="margin:0px 0px 0px 300px;"><b>Click Here To Record Audio And To Upload Audio</b></a></label>';
 	str+='</div>';
 
 	$('#audioFilesDiv').html(str);
@@ -735,9 +736,9 @@ function buildVoiceSmsHistory(results)
 	 str+='<tr>';
 	  str+='<td>'+value.responseCode+'</td>';
 	  str+='<td>'+value.dateSent+'</td>';
-	 // str+='<td>'+value.numbers+'</td>';
 	  str+='<td>'+value.numbers+'</td>';
-	    str+='<td><a href="http://dnd.smschilly.com/api/check_voice_dlr.php?user=voicedemo1&password=abcd1234&msgid='+value.responseCode+'" target="blank">'+value.responseCode+'</a></td>';
+	  str+='<td><a href="javascript:{showMessageResponseDetails('+value.responseCode+');}">Click here For Details</a></td>';
+	   // str+='<td><a href="http://dnd.smschilly.com/api/check_voice_dlr.php?user=voicedemo1&password=abcd1234&msgid='+value.responseCode+'" target="blank">'+value.responseCode+'</a></td>';
 		 str+='<td>'+value.description+'</td>';
 	 str+='</tr>';
 	});
@@ -749,8 +750,12 @@ $('#smsHistory').html(str);
 
 $('#smsHistory').hide();
 
+}
 
+function showMessageResponseDetails(responseCode)
+{
 
+alert(responseCode);
 }
 
 ajaxToGetRecordingDetails();
