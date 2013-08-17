@@ -281,7 +281,7 @@ function showMessageResponseDetails(responseCode){
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getResponseDetailsForSms.action?"+rparam;	
-			callAjax(rparam,jsObj,url);
+			callAjax1(rparam,jsObj,url);
 }
 
 function validateFieldsForSendingSms()
