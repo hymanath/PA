@@ -220,7 +220,7 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
 <div id="errorDiv" style="color:red;font-family:verdana;font-size:12px;margin:20px 0 0 268px;"></div>
 
 
-<div style="margin:14px 15px 13px 827px;">
+<div style="margin:14px 15px 13px 631px;">
 <input type="button" class="btn btn-success" value="Send Voice Sms" onClick="validateFieldsForSendingSms()"/>
 </div>
 
@@ -984,11 +984,29 @@ function buildResponseDetails(results)
 
 	var str='';
 
-	$.each(results,function(key,value){
+   str+='<div class="datagrid">';
+	str+='<table>';
+	str+='<thead>';
+	 str+='<tr>';
+	  str+='<th>S No</th>'
+	  str+='<th>Mobile Number</th>'
+	  str+='<th>Status</th>';
+	 str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
 
-		str+=key+"-"+value;
+	$.each(results,function(index,value){
+       var sNo = index +1;
+        str+='<tr>';
+		str+='<td>'+sNo+'</td>';
+		 str+='<td>'+value.numbers+'</td>';
+	     str+='<td>'+value.sentStatus+'</td>';
+        str+='</tr>';
 
 	});
+	str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
 
 	$('#responseDetailsInnerDiv').html(str);
 	$('#responseDetailsDiv').dialog({
