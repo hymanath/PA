@@ -19,50 +19,66 @@
 	#radioSelectionId{font-family:verdana;font-size:15px;margin:15px;}
 	.selectBoxes{padding-left:80px;}
 	.filter{border:1px solid #cccccc;background:#f3f3f3;}
+
+textarea{
+	background-color:#fff;
+}
 </style>
 
 </head>
 <body>
-<div class="mainContainer">
-<div class="span12 row filter" align="center">
-		<h3>Message Center</h3>
-		<div id="radioSelectionId">
-			<input type="radio" class="typeRadio" name="type" value="cadre" />Cadre
-			<input type="radio" class="typeRadio" name="type" value="ipeople" selected="selected"/>Influencing People
-		</div>
-	<div style="margin:10px;"><span style="font-size:14px;">Select Level</span> -<s:select theme="simple" list="sublevelsList" name="sublevels" listKey="id" listValue="name" headerKey="0"headerValue="Select Level" id="subLevelsId" onchange="getScopes()"/></div>
-		
-		<div class="selectBoxes">
-		<s:select theme="simple" list="statesList" name="state" listKey="id" listValue="name" headerKey="0"headerValue="Select State" onchange="getDistricts()" id="stateField_s"/>
-		
-		<s:select theme="simple" list="districtList" name="district" listKey="id" listValue="name" headerKey="0" headerValue="Select District" id="districtField_s" onChange="getConstituencies()"/>
-		
-		<select id="constituencyField_s" onchange="getSubRegions()"></select>
-		<select id="mandalField_s" onchange="getSubRegionsInMandal()"></select>
-		<select id="hamletField_s"></select>
-		<select id="wardField"></select>
-		<select id="muncipalField" onchange="getSubRegionsInMuncipal()"></select>
-		<select id="boothField_s"></select>
-		</div>
-	</div>
-<div class="span11 row">
-	<!-- Left Container -->
-	
-	<div class="span5 left_container" style="margin-top:40px;">
-		<div id="tableDiv" style="margin:10px;"></div>
-	</div>
-	
-	
-	
-	<!-- Right Container -->
-	<div class="span5 right_container">
-		<h4 style="padding:15px;">Contacts for Sending SMS</h4>
-		<div style="border:1px solid #ccc;height:800px;overflow-y:scroll;overflow-x:hidden;font-family:arial;font-size:13px;" id="mobilesId">
-			
-		</div>
-	</div>
+
+<!--Sending Voice Sms Block Start-->
+
+<div class="breadcrumb" style="margin-top:40px;">
+
+ <div style="text-align:center;"><span>Enter Mobile Numbers To Send Voice Sms:</span><textarea></textarea></div>
+
+  <div style="text-align:center;margin-top:41px;margin-left:110px;"><span>Enter Description:</span><textarea></textarea></div>
 </div>
+
+<div class="breadcrumb" style="margin-top:40px;"> 
+ <div id="audioFilesDiv"></div>
 </div>
+
+
+<div class="breadcrumb" style="margin-top:40px;"> 
+ <div id="verifiedNumbersDiv"></div>
+</div>
+
+
+<input type="button" class="btn pull-right" style="margin-right:212px;margin-top:10px;" value="Send Voice Sms" onClick="ajaxToSendSms()"/>
+
+<!--Sending Voice Sms Block End-->
+
+<!--<input type="button" onClick="ajaxToGetRecordingDetails();" value="GET AUDIOS"/>
+<input type="button" onClick="getVerifiedNumbersOfUser();" value="GET VERIFIED NUMBERS"/>-->
+
+
+
+<script>
+function ajaxToGetRecordingDetails(){
+	var jsObj=
+			{
+				task:"getRecordingsOfUser",
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getAllTheRecordedFilesOfAUser.action?"+rparam;	
+			callAjax(rparam,jsObj,url);
+}
+function getVerifiedNumbersOfUser(){
+	var jsObj=
+			{
+				task:"getVerifiedNumbersOfUser",
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVerifiedNumbersOfUser.action?"+rparam;	
+			callAjax(rparam,jsObj,url);
+}
+</script>
+
+
+
 <script>
 $('#mobilesId').html("");
 
@@ -387,7 +403,10 @@ function callAjax(param,jsObj,url){
 						buildRegionWiseInfluencePeopleForDistrictAndContsi(myResults,jsObj)
 					}else if(jsObj.task=="getMobileNumbersOfSelectedId"){
 						buildMobileNos(myResults,jsObj);
-					}
+					}else if(jsObj.task == "getRecordingsOfUser")
+				        buildResultForAudioFiles(myResults);
+					else if(jsObj.task == "getVerifiedNumbersOfUser")
+						 buildVerifiedNumbersForUser(myResults);
 					
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
@@ -571,5 +590,61 @@ window.receiveFromCadreChild = function(data) {
 	$('#mobilesId').append(str);
 }
 </script>
+
+<script>
+function buildResultForAudioFiles(results)
+{
+
+	if(results == null || results.length == 0)
+	{
+		$('#audioFilesDiv').html("No Files Exist");
+		return false;
+	}
+	var str='';
+	str+='<l><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Refresh Recordings Data" style="float:right;padding:5px;"/></a></div>';
+
+
+	str+='<div style="margin:9px 0px 0px 265px;">';
+
+	str+='<h4>Recordings  Avaialable In Server</h4><br>';
+
+      var i=0;
+	
+	$.each(results,function(key,value){
+
+		   str+='<label><input name="audio" type="radio" value="'+i+'" id="'+key+'"/><a href="javascript:{showAudio(\''+key+'\','+i+')}" title="'+value+'">'+key+'</a> -- '+value+'</label>';
+                  i++;
+	});
+str+='<label><a href="voiceTest/index.jsp" target="blank" style="margin:0px 0px 0px 300px;"><b>Click Here To Record Audio And To Upload Audio</b></a></label>';
+	str+='</div>';
+
+	$('#audioFilesDiv').html(str);
+}
+function buildVerifiedNumbersForUser(results)
+{ 
+	var str='';
+
+	  if(results == null || results.length == 0)
+	  {
+		  str +='<b>You Dont Have Any Verified Numbers.Please Contact Us To verify Mobile Number.</b>';
+		  	$('#verifiedNumbersDiv').html(str);
+
+		  return false;
+					  
+	  }
+	 str +='<h5>You Have The Following Verified Numbers.If You Want To Send Voice Sms From A New Number Contact Us To Verify Other Number..</h5>';
+
+    str+='<div style="text-align:center;">';
+	$.each(results,function(index,value){
+		str+='<label style="font-weight:bold;"><input type="radio" name="senderNumber" value="'+value+'"/>'+value+'</label>';
+	});
+	str+='</div>';
+	$('#verifiedNumbersDiv').html(str);
+}
+
+ajaxToGetRecordingDetails();
+getVerifiedNumbersOfUser();
+</script>
+
 </body>
 </html>
