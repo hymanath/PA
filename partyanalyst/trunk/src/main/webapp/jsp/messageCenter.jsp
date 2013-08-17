@@ -89,9 +89,9 @@ textarea{
 <div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>SEND VOICE SMS</h4></div>
 <div class="thumbinal" style="margin-top:62px;">
 
- <div style="text-align:center;"><span>Enter Mobile Numbers To Send Voice Sms:</span><textarea></textarea></div>
+ <div style="text-align:center;"><span>Enter Mobile Numbers To Send Voice Sms:</span><textarea id="mobileNumber"></textarea></div>
 
-  <div style="text-align:center;margin-top:41px;margin-left:110px;"><span>Enter Description:</span><textarea></textarea></div>
+  <div style="text-align:center;margin-top:41px;margin-left:110px;"><span>Enter Description:</span><textarea id="smsDescription"></textarea></div>
 
 <div class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;margin-top:12px;'><h4>AUDIO FILES AVAILABLE</h4></div>
  <div id="audioFilesDiv"></div>
@@ -164,6 +164,29 @@ function showMessageResponseDetails(responseCode){
 			var url = "getResponseDetailsForSms.action?"+rparam;	
 			callAjax(rparam,jsObj,url);
 }
+
+function ajaxToSendSms(){
+
+	var audioFileName = $("input:radio[name=audio]:checked").attr('id');
+    var senderNumber = $("input:radio[name=senderNumber]:checked").val();
+	var mobileNumbers = $('#mobileNumber').val();
+	var description = $('#smsDescription').val();
+
+
+	var jsObj=
+			{
+				task:"sendVoiceSms",
+                audioFileName:audioFileName,
+                mobileNumbers:mobileNumbers,
+                senderMobileNumber:senderNumber,
+				description:description
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "sendVoiceSMS.action?"+rparam;	
+			callAjax(rparam,jsObj,url);
+}
+
+
 </script>
 
 
@@ -500,6 +523,8 @@ function callAjax(param,jsObj,url){
 						buildVoiceSmsHistory(myResults);
 					else if(jsObj.task == "getResponseDetails")
 						buildResponseDetails(myResults);
+					else if(jsObj.task == "sendVoiceSms")
+						alert(myResults);
 					
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
@@ -787,9 +812,7 @@ function buildResponseDetails(results)
 				"Ok":function(){$(this).dialog("close");} 
 			}
 	});
-
 }
-
 ajaxToGetRecordingDetails();
 getVerifiedNumbersOfUser();
 getVoiceSmsHistoryOfUser();
