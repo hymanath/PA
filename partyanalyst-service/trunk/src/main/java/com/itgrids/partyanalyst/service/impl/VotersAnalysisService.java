@@ -17427,4 +17427,94 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
  }
  
  
+ public VoterHouseInfoVO getVoterDetailsForSelectedLocation(VoterHouseInfoVO houseInfoVO,Long locationValue)
+ {
+	 VoterHouseInfoVO voterHouseInfoVO = null;
+	try{
+		
+		String locationType = houseInfoVO.getLocation();
+		StringBuilder queryStr = new StringBuilder();
+		if(locationType != null && locationType.equalsIgnoreCase("constituency"))
+		  queryStr.append(" and model.booth.constituency.constituencyId =:locationValue ");
+		else if(locationType != null && locationType.equalsIgnoreCase("mandal"))
+		{
+		  if(locationValue.toString().trim().substring(0, 1).equalsIgnoreCase("2"))
+		  {
+			queryStr.append(" and model.booth.tehsil.tehsilId =:locationValue and model.booth.localBody is null ");
+		    locationValue = new Long(locationValue.toString().trim().substring(1));
+		  }
+		  else
+		  {
+			 
+			 List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationValue.toString().trim().substring(1)));
+			 queryStr.append(" and model.booth.localBody.localElectionBodyId = :locationValue ");
+			 locationValue = (Long) list.get(0);  
+		  }
+		}
+		else if(locationType !=null && locationType.equalsIgnoreCase("panchayat"))
+		  queryStr.append(" and model.booth.panchayat.panchayatId =:locationValue ");
+		else if(locationType != null && locationType.equalsIgnoreCase("booth"))
+		  queryStr.append(" and model.booth.boothId =:locationValue ");
+		
+		else if(locationType != null && locationType.equalsIgnoreCase("ward"))
+		  queryStr.append(" and model.booth.localBodyWard.constituencyId =:locationValue ");
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.CUSTOMWARD))
+		  queryStr.append(" and model2.ward.constituencyId =:locationValue ");
+		else if(locationType != null && locationType.equalsIgnoreCase("hamlet"))
+		  queryStr.append(" and model2.hamlet.hamletId =:locationValue ");
+		
+		List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsForMessageCenter(houseInfoVO.getConstituencyId(), houseInfoVO.getPublicationId(), locationValue, queryStr.toString(), houseInfoVO.getStartIndex(), houseInfoVO.getMaxIndex(), houseInfoVO.getUserId());
+		if(list != null && list.size() > 0)
+		{
+		  List<Long> voterIdsList = new ArrayList<Long>(0);
+		  voterHouseInfoVO = new VoterHouseInfoVO();
+		  List<VoterHouseInfoVO> resultList = new ArrayList<VoterHouseInfoVO>(0);
+		  Map<Long,String> locationMap = new HashMap<Long, String>(0);
+		  for(Object[] params:list)
+		   voterIdsList.add(((Voter) params[0]).getVoterId());
+		  
+		  
+		  
+		  for(Object[] params:list)
+		  {
+			  VoterHouseInfoVO infoVO = new VoterHouseInfoVO();
+			  Voter voter = (Voter)params[0];
+			  infoVO.setVoterId(voter.getVoterId());
+			  infoVO.setName(voter.getName() != null ?voter.getName():" ");
+			  infoVO.setHouseNo(voter.getHouseNo());
+			  infoVO.setMobileNo(params[1]!= null ?params[1].toString():" ");
+			  infoVO.setBoothId((Long)params[2]);
+			  infoVO.setPartNo(params[3] != null?params[3].toString():" ");
+			  resultList.add(infoVO);
+			  
+		  }
+		  voterHouseInfoVO.setVotersList(resultList);
+		  voterHouseInfoVO.setTotalHousesCount((long)boothPublicationVoterDAO.getVoterDetailsForMessageCenter(houseInfoVO.getConstituencyId(), houseInfoVO.getPublicationId(), locationValue, queryStr.toString(), null, null, houseInfoVO.getUserId()).size());
+		}
+		
+	 return voterHouseInfoVO;
+	}catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getVoterDetailsForSelectedLocation() method, Exception - "+e);
+		return voterHouseInfoVO;
+	}
+ }
+ 
+ public void getLocationName(Map<Long,String> locationMap,List<Long> voterIdsList,String locationType)
+ {
+	 try{
+	
+		 if(locationType != null && locationType.equalsIgnoreCase("mandal"))
+		 {
+			 
+		 }
+		 
+		 
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error("Exception Occured in getLocationName() method, Exception- "+e);
+	}
+ }
+ 
+ 
 }

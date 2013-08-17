@@ -765,7 +765,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testFamilesCount()
+	/*public void testFamilesCount()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(127l);
@@ -773,6 +773,12 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		for (Object[] objects : values) {
 			System.out.println(objects[0] +":"+ objects[1]);
 		}
+	}*/
+	
+	public void testgetVoterDetailsForMessageCenter()
+	{
+		String queryStr = "";
+		List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsForMessageCenter(232l, 8l, 2844l, queryStr, null, null, 1l);
 	}
 	
 }

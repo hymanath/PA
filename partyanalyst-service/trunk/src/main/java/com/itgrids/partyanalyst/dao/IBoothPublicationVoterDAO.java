@@ -423,4 +423,8 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Long> getAllImpFamilesCountForHamlet(Long locationValue,Long publicationDateId,Long userId);
 	  
 	  public Long getVotersCountInAAgeRangeByHamlet(Long hamletId,Long publicationDateId,Long userId,Long ageFrom, Long ageTo,String gender);
+	  
+	  public List<Object[]> getVoterDetailsForMessageCenter(Long constituencyId,Long publicationDateId,Long locationValue,String queryStr,Integer startIndex, Integer maxIndex,Long userId);
+	  
+	  
 }

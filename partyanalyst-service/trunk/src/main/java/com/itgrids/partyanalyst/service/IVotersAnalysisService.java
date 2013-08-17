@@ -299,5 +299,7 @@ public interface IVotersAnalysisService {
 	 
 	 public String getElectionTypeForMuncipalityByConstituencyId(Long constituencyId,Long localEleBodyId);
 	 
+	 public VoterHouseInfoVO getVoterDetailsForSelectedLocation(VoterHouseInfoVO voterHouseInfoVO,Long locationValue);
+	 
 	 
 }
