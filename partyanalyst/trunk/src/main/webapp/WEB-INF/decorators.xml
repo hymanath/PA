@@ -108,6 +108,7 @@
 		<pattern>/getCustomVoterGroupsFamilyDetailsAction*</pattern>
 		<pattern>/customVoterGroupAnalysisAction*</pattern>
 		<pattern>/influencingPeopleDetailsAction*</pattern>
+		<pattern>/cadreSearchActionForMessageCenter*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">

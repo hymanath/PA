@@ -10,23 +10,27 @@
 <title>Message Center</title>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+<script type="text/javascript" src="js/messageCenter.js"></script>
 <style>
 	.left_container{padding:10px;font-family:arial;font-size:14px;}
 	input[type="radio"], input[type="checkbox"] {cursor: pointer;line-height: normal;margin: 4px;;}
 	.typeRadio{clear:both;}
+	.mainContainer{width:950px;}
+	#radioSelectionId{font-family:verdana;font-size:15px;margin:15px;}
+	.selectBoxes{padding-left:80px;}
+	.filter{border:1px solid #cccccc;background:#f3f3f3;}
 </style>
 
 </head>
 <body>
-<div class="span11 row">
-	<!-- Left Container -->
-	<div class="span5 left_container">
+<div class="mainContainer">
+<div class="span12 row filter" align="center">
+		<h3>Message Center</h3>
 		<div id="radioSelectionId">
 			<input type="radio" class="typeRadio" name="type" value="cadre" />Cadre
 			<input type="radio" class="typeRadio" name="type" value="ipeople" selected="selected"/>Influencing People
 		</div>
-		
-		<s:select theme="simple" list="sublevelsList" name="sublevels" listKey="id" listValue="name" headerKey="0"headerValue="Select Level" id="subLevelsId" onchange="getScopes()"/>
+	<div style="margin:10px;"><span style="font-size:14px;">Select Level</span> -<s:select theme="simple" list="sublevelsList" name="sublevels" listKey="id" listValue="name" headerKey="0"headerValue="Select Level" id="subLevelsId" onchange="getScopes()"/></div>
 		
 		<div class="selectBoxes">
 		<s:select theme="simple" list="statesList" name="state" listKey="id" listValue="name" headerKey="0"headerValue="Select State" onchange="getDistricts()" id="stateField_s"/>
@@ -40,18 +44,27 @@
 		<select id="muncipalField" onchange="getSubRegionsInMuncipal()"></select>
 		<select id="boothField_s"></select>
 		</div>
-		<div id="tableDiv"></div>
+	</div>
+<div class="span11 row">
+	<!-- Left Container -->
+	
+	<div class="span5 left_container" style="margin-top:40px;">
+		<div id="tableDiv" style="margin:10px;"></div>
 	</div>
 	
 	
 	
 	<!-- Right Container -->
 	<div class="span5 right_container">
-		
+		<h4 style="padding:15px;">Contacts for Sending SMS</h4>
+		<div style="border:1px solid #ccc;height:800px;overflow-y:scroll;overflow-x:hidden;font-family:arial;font-size:13px;" id="mobilesId">
+			
+		</div>
 	</div>
 </div>
+</div>
 <script>
-
+$('#mobilesId').html("");
 
 $('input[name=type][value=ipeople]').prop("checked",true);
 removeOptions();
@@ -372,6 +385,8 @@ function callAjax(param,jsObj,url){
 						//getSubLevelInfluenceData(jsObj.regionId,jsObj.region,regionType,"VILLAGE/WARD","",0,true);
 						
 						buildRegionWiseInfluencePeopleForDistrictAndContsi(myResults,jsObj)
+					}else if(jsObj.task=="getMobileNumbersOfSelectedId"){
+						buildMobileNos(myResults,jsObj);
 					}
 					
 			}catch (e) {   		
@@ -385,6 +400,22 @@ function callAjax(param,jsObj,url){
 	    };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function buildMobileNos(results,jsObj){
+	var str="";
+	//str+='<h4 style="padding:15px;">Contacts for Sending SMS</h4>';
+	for(var i in results){
+	str+='<div class="span12 row-fluid mainClass thumbnail" id="removeThis'+i+'">';
+	//str+='<span class="btn bnt-mini">'+results[i].mobileNO+'<span></span></span>';	
+	str+='<div class="span6">'+results[i].cadreName+'</div><div class="span4">'+results[i].mobileNO+'</div><div class="span1"><img src="images/icons/delete.png"  style="margin:5px;height:12px;width:12px;" onclick="removeThis('+i+')"/></div></div>';
+	}
+	
+	$('#mobilesId').append(str);
+}
+
+function removeThis(val){
+	$('#removeThis'+i).html('');
 }
 
 function reGetInfluencingPeopleInAConstituency(regionType,regionId,region)
@@ -496,24 +527,48 @@ function buildRegionWiseInfluencePeopleForDistrictAndContsi(data,jsObj){
 	$('#tableDiv').html(str);
 
 }
+
 function openCandidatesPopup(parentRegionId,regionId,regionName,regionType,scopeType)
 {
 	var fromParent="messageCenter";
-	var urlStr = "influencingPeopleDataAction.action?windowTask=influencingPersonInfoPopup&parentRegionId="+parentRegionId+"&regionId="+regionId+"&regionName="+regionName+"&regionType="+regionType+"&scopeType="+scopeType+"&fromParent="+fromParent;
-	var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=1300,left=200,top=50");	
+	var urlStr = "influencingPeopleDataActionForMessageCenter.action?windowTask=influencingPersonInfoPopup&parentRegionId="+parentRegionId+"&regionId="+regionId+"&regionName="+regionName+"&regionType="+regionType+"&scopeType="+scopeType+"&fromParent="+fromParent;
+	var browser2 = window.open(urlStr,"influencingPersonInfoPopup2","scrollbars=yes,height=570,width=1300,left=200,top=50");	
 	browser2.focus();
 }
-
-
-
 
 function buildSearchPagePopup(type)
 {	
 	var fromParent="messageCenter";
-	var urlStr = "cadreSearchAction.action?windowTask="+type+"&fromParent="+fromParent;
-	var browser2 = window.open(urlStr,"cadreSearchAndSMSPopup","scrollbars=yes,height=650,width=1100,left=150,top=100");	
+	var urlStr = "cadreSearchActionForMessageCenter.action?windowTask="+type+"&fromParent="+fromParent;
+	var browser2 = window.open(urlStr,"cadreSearchAndSMSPopup2","scrollbars=yes,height=650,width=1100,left=150,top=100");	
 	browser2.focus();
 
+}
+
+window.receiveFromChild = function(data) {
+
+	var jsObj= 
+		{	
+			ids:data,
+			task: "getMobileNumbersOfSelectedId"
+		};
+			
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getMobileNumbersOfSelectedId.action?"+param;
+		callAjax(param,jsObj,url);
+};
+
+window.receiveFromCadreChild = function(data) {
+	var str='';
+	//str+='<h4 style="padding:15px;">Contacts for Sending SMS</h4>';
+	for( var i=0, l=data.length; i<l; i++ ) {
+		console.log( data[i] );
+		str+='<div class="span12 row-fluid mainClass" id="removeThis'+i+'">';
+		
+		str+='<div class="span6">'+data[i].cadreName+'</div><div class="span4">'+data[i].cadreMobile+'</div><div class="span1"><img src="images/icons/delete.png"  style="margin:5px;height:12px;width:12px;" onclick="removeThis('+i+')"/></div></div>';
+		
+	}
+	$('#mobilesId').append(str);
 }
 </script>
 </body>
