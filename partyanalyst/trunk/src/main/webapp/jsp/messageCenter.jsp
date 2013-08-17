@@ -82,7 +82,7 @@ textarea{
 
 .mainContainer{width:980px;}
 #mobilesId{
-border:1px solid #ccc;height:800px;overflow-y:scroll;overflow-x:hidden;font-family:arial;font-size:13px;padding:15px;
+border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-family:arial;font-size:13px;padding:15px;
 }
 
 </style>
@@ -598,7 +598,7 @@ function buildMobileNos(results,jsObj){
 	//str+='<span class="btn bnt-mini">'+results[i].mobileNO+'<span></span></span>';	
 	str+='<div class="span6">'+results[i].cadreName+'</div><div class="span4">'+results[i].mobileNO+'</div><div class="span1"><img src="images/icons/delete.png"  style="margin:5px;height:12px;width:12px;" onclick="removeThis('+i+')"/></div></div>';
 	mobileNoArr.push(results[i].mobileNO);
-	contactNos.push('+91'+results[i].mobileNO)
+	contactNos.push('91'+results[i].mobileNO)
 	}
 	}
 	$('#mobilesId').append(str);
@@ -760,7 +760,7 @@ window.receiveFromCadreChild = function(data) {
 		
 		str+='<div class="span6">'+data[i].cadreName+'</div><div class="span4">'+data[i].cadreMobile+'</div><div class="span1"><img src="images/icons/delete.png"  style="margin:5px;height:12px;width:12px;" onclick="removeThis('+i+')"/></div></div>';
 		mobileNoArr.push(data[i].cadreMobile);
-		contactNos.push('+91'+data[i].cadreMobile)
+		contactNos.push('91'+data[i].cadreMobile)
 		}
 	}
 	console.log(mobileNoArr);
@@ -829,7 +829,7 @@ function buildVoiceSmsHistory(results)
 	str+='<tr>';
 	 str+='<th>Messagee Id</th>';
  	 str+='<th>Date Sent</th>';
- 	 //str+='<th>Mobile Numbers</th>';
+ 	 str+='<th>Mobile Numbers</th>';
 	 str+='<th>Check details</th>';
      str+='<th>Description</th>';
 	str+='</tr>';
@@ -840,7 +840,7 @@ function buildVoiceSmsHistory(results)
 	 str+='<tr>';
 	  str+='<td>'+value.responseCode+'</td>';
 	  str+='<td>'+value.dateSent+'</td>';
-	  //str+='<td>'+value.numbers+'</td>';
+	  str+='<td>'+value.numbers+'</td>';
 	  str+='<td><a href="javascript:{showMessageResponseDetails('+value.responseCode+');}">Click here For Details</a></td>';
 	   // str+='<td><a href="http://dnd.smschilly.com/api/check_voice_dlr.php?user=voicedemo1&password=abcd1234&msgid='+value.responseCode+'" target="blank">'+value.responseCode+'</a></td>';
 		 str+='<td>'+value.description+'</td>';
