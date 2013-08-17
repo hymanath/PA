@@ -13,6 +13,6 @@ public interface IVoiceSmsService {
 	public List<VoiceSmsResponseDetailsVO> getVoiceSmsHistoryForAuser(Long userId);
 	public List<Long> getVerifiedNumbersOfUser(Long userId);
 	public Map<String,Map<String,Integer>> generateVoiceSmsReport();
-
+	public Map<String ,Integer> getResponseDetailsByResponseCode(String code);
 
 }
