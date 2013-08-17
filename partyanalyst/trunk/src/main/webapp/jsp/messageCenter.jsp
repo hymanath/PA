@@ -86,12 +86,12 @@ textarea{
  <div id="audioFilesDiv"></div>
 
 <div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>VERIFIED NUMBERS TO SEND VOICE SMS</h4></div>
-<div class="breadcrumb" style="margin-top:40px;"> 
+<div class="thumbinal" style="margin-top:56px;"> 
  <div id="verifiedNumbersDiv"></div>
 </div>
 
 
-<input type="button" class="btn" style="margin-right:212px;margin-top:10px;" value="Send Voice Sms" onClick="ajaxToSendSms()"/>
+<input type="button" class="btn" value="Send Voice Sms" onClick="ajaxToSendSms()"/>
 
 <div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>SHOW / HIDE SMS HISTORY</h4></div>
 
@@ -665,7 +665,7 @@ function buildResultForAudioFiles(results)
 		return false;
 	}
 	var str='';
-	str+='<l><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Refresh Recordings Data" style="float:right;padding:5px;"/></a></div>';
+	str+='<l><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="float:right;padding:5px;"/></a></div>';
 
 
 	str+='<div style="margin:54px 0px 0px 265px;">';
@@ -696,7 +696,7 @@ function buildVerifiedNumbersForUser(results)
 					  
 	  }
 
-    str+='<div style="margin:10px 0px 0px 250px;">';
+    str+='<div style="margin:10px 0px 0px 265px;">';
 	$.each(results,function(index,value){
 		str+='<label style="font-weight:bold;"><input type="radio" name="senderNumber" value="'+value+'"/>'+value+'</label>';
 	});
