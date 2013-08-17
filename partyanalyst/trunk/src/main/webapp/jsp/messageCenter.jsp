@@ -11,6 +11,16 @@
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/messageCenter.js"></script>
+  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+  <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+
+<script>
+$(document).ready(function() {
+	$('#historyHeading').live("click",function(){
+		$('#smsHistory').slideToggle();
+	});
+});
+</script>
 
  <style>
   .datagrid table {
@@ -90,10 +100,11 @@ textarea{
  <div id="verifiedNumbersDiv"></div>
 </div>
 
+<div style="margin:14px 15px 13px 827px;">
+<input type="button" class="btn btn-success" value="Send Voice Sms" onClick="ajaxToSendSms()"/>
+</div>
 
-<input type="button" class="btn" value="Send Voice Sms" onClick="ajaxToSendSms()"/>
-
-<div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>SHOW / HIDE SMS HISTORY</h4></div>
+<div id='historyHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><a href="javascript:{}"><h4>SHOW / HIDE SMS HISTORY</h4></a></div>
 
 <div class="breadcrumb" style="margin-top:40px;"> 
  <div id="smsHistory"></div>
@@ -735,6 +746,10 @@ function buildVoiceSmsHistory(results)
 	str+='</div>';
 
 $('#smsHistory').html(str);
+
+$('#smsHistory').hide();
+
+
 
 }
 
