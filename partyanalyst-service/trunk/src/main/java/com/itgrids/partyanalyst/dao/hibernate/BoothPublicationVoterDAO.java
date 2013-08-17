@@ -4514,4 +4514,45 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return (Long) query.uniqueResult();	
 		}
 		
+		
+		public List<Object[]> getVoterDetailsForMessageCenter(Long constituencyId,Long publicationDateId,Long locationValue,String queryStr,Integer startIndex, Integer maxIndex,Long userId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append(" select model.voter,model2.mobileNo,model.booth.boothId,model.booth.partNo from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId ");
+			str.append(" and model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId =:userId and model2.mobileNo is not null ");
+			str.append( queryStr);
+			str.append(" order by model.voter.name ");
+			
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("locationValue", locationValue);
+			query.setParameter("userId", userId);
+			
+			if(startIndex != null)
+			 query.setFirstResult(startIndex);
+			if(maxIndex != null)
+			 query.setMaxResults(maxIndex);
+			
+			return query.list();
+		}
+		
+		public List<Object[]> getLocationNameForVoter(List<Long> voterIdsList,String locationType)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append(" select model2.voter.voterId, ");
+			if(locationType != null && locationType.equalsIgnoreCase("mandal"))
+			 str.append(" model.booth.tehsil.tehsilName ");
+			else if(locationType != null && locationType.equalsIgnoreCase("muncipality"))
+			 str.append(" model.booth.localBody.name ");
+			else if(locationType != null && locationType.equalsIgnoreCase("panchayat"))
+			 str.append(" model.booth.panchayat.panchayatName ");
+			else if(locationType != null && locationType.equalsIgnoreCase("booth"))
+			 str.append(" model.booth.partNo ");
+			//else if(locationType != null && locationType.equalsIgnoreCase("booth"))
+			 
+			
+			Query query = getSession().createQuery(str.toString());
+			return query.list();
+		}
 }
