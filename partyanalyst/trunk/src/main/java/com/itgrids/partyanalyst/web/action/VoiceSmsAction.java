@@ -37,15 +37,18 @@ public class VoiceSmsAction implements ServletRequestAware{
 	private Map<String ,Map<String,Integer>> resultMap ;
 	private JSONObject jObj;
 	private String task;
-	private  Map<String ,Integer> responseMap;
+	private  List<VoiceSmsResponseDetailsVO> responseDetailsList;
 	
 	
-	public Map<String, Integer> getResponseMap() {
-		return responseMap;
+	
+
+	public List<VoiceSmsResponseDetailsVO> getResponseDetailsList() {
+		return responseDetailsList;
 	}
 
-	public void setResponseMap(Map<String, Integer> responseMap) {
-		this.responseMap = responseMap;
+	public void setResponseDetailsList(
+			List<VoiceSmsResponseDetailsVO> responseDetailsList) {
+		this.responseDetailsList = responseDetailsList;
 	}
 
 	public String getTask() {
@@ -199,11 +202,15 @@ public class VoiceSmsAction implements ServletRequestAware{
 	{
 		try
 		{
+			  HttpSession session = request.getSession();			
+			  RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			  
+			  if(user == null)
+				  return Action.INPUT;
+			
+			
 			if(recordedVoiceContentType == null)
 				return Action.SUCCESS;
-			
-            HttpSession session = request.getSession();			
-			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 			
 		
 			String recordingName = "";
@@ -221,7 +228,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 			FileUtils.copyFile(recordedVoice, fileToCreate);
 			
 			
-			if(user != null)			
+					
 				voiceSmsService.saveUploadedAudioFileDetails(recordingName,user.getRegistrationID(),voiceDescription);
 			
 			
@@ -367,7 +374,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 		{
 			 jObj = new JSONObject(getTask());
 			 
-			 responseMap = voiceSmsService.getResponseDetailsByResponseCode(jObj.getString("messageResponseCode"));
+			 responseDetailsList = voiceSmsService.getResponseDetailsByResponseCode(jObj.getString("messageResponseCode"));
 			
 		}catch(Exception e)
 		{
