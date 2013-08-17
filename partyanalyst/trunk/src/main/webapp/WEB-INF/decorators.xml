@@ -108,7 +108,13 @@
 		<pattern>/getCustomVoterGroupsFamilyDetailsAction*</pattern>
 		<pattern>/customVoterGroupAnalysisAction*</pattern>
 		<pattern>/influencingPeopleDetailsAction*</pattern>
-		<pattern>/cadreSearchActionForMessageCenter*</pattern>
+		<pattern>/cadreSearchActionForMessageCenter*</pattern>		
+		<pattern>/voiceTest/index.jsp</pattern>
+		<pattern>/voiceTest/voiceSMS.jsp</pattern>
+		<!--<pattern>/jsp/voiceSMS.jsp</pattern>
+		<pattern>/voiceSMS.jsp</pattern>-->
+		<pattern>/voiceTest/uploadAudioFile*</pattern>
+		<pattern>/voiceSMS*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -184,6 +190,7 @@
 		<pattern>/sitemapAction*</pattern>
 		<pattern>/newsZoneAction*</pattern>
 		<pattern>/partyPerformanceJasper*</pattern>
+		<pattern>/voiceSmsReportAction*</pattern>
 		<!-- <pattern>/suggestiveModelAction*</pattern> -->
     </decorator>
     
