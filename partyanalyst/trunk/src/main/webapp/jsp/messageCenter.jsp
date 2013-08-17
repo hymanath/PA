@@ -753,12 +753,12 @@ window.receiveFromCadreChild = function(data) {
 	console.log(mobileNoArr);
 	//str+='<h4 style="padding:15px;">Contacts for Sending SMS</h4>';
 	for( var i=0, l=data.length; i<l; i++ ) {
-	if($.inArray(data[i].mobileNO,mobileNoArr)==-1){
+	if($.inArray(data[i].cadreMobile,mobileNoArr)==-1){
 		str+='<div class="span12 row-fluid mainClass thumbnail" id="removeThis'+i+'" style="margin:1px;">';
 		
 		str+='<div class="span6">'+data[i].cadreName+'</div><div class="span4">'+data[i].cadreMobile+'</div><div class="span1"><img src="images/icons/delete.png"  style="margin:5px;height:12px;width:12px;" onclick="removeThis('+i+')"/></div></div>';
-		mobileNoArr.push(data[i].mobileNO);
-		contactNos.push('+91'+data[i].mobileNO)
+		mobileNoArr.push(data[i].cadreMobile);
+		contactNos.push('+91'+data[i].cadreMobile)
 		}
 	}
 	console.log(mobileNoArr);
