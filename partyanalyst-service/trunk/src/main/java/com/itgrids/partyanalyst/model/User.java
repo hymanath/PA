@@ -107,6 +107,11 @@ public class User extends BaseModel implements Serializable{
 	private Set<VoterCategoryValue> voterCategoryValue = new HashSet<VoterCategoryValue>(0);
 	private Set<UserVoterCategory> userVoterCategory = new HashSet<UserVoterCategory>(0);
 	private Set<UserVoterCategoryValue> userVoterCategoryValue = new HashSet<UserVoterCategoryValue>(0);
+	private Set<VoiceRecordingDetails> recordingDetails = new HashSet<VoiceRecordingDetails>(0);
+	private Set<VoiceSmsResponseDetails> voiceSmsResponseDetails = new HashSet<VoiceSmsResponseDetails>(0);
+	private Set<VoiceSmsVerifiedNumbers>  voioceSmsVerifiedNumbers = new HashSet<VoiceSmsVerifiedNumbers>(0);
+
+	
 	
 	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
 	
@@ -989,5 +994,37 @@ public class User extends BaseModel implements Serializable{
 		this.multipleAccessRestriction = multipleAccessRestriction;
 	}
 	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<VoiceRecordingDetails> getRecordingDetails() {
+		return recordingDetails;
+	}
+
+	public void setRecordingDetails(Set<VoiceRecordingDetails> recordingDetails) {
+		this.recordingDetails = recordingDetails;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<VoiceSmsResponseDetails> getVoiceSmsResponseDetails() {
+		return voiceSmsResponseDetails;
+	}
+
+	public void setVoiceSmsResponseDetails(
+			Set<VoiceSmsResponseDetails> voiceSmsResponseDetails) {
+		this.voiceSmsResponseDetails = voiceSmsResponseDetails;
+	}
+	
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<VoiceSmsVerifiedNumbers> getVoioceSmsVerifiedNumbers() {
+		return voioceSmsVerifiedNumbers;
+	}
+
+	public void setVoioceSmsVerifiedNumbers(
+			Set<VoiceSmsVerifiedNumbers> voioceSmsVerifiedNumbers) {
+		this.voioceSmsVerifiedNumbers = voioceSmsVerifiedNumbers;
+	}
 	
 }
