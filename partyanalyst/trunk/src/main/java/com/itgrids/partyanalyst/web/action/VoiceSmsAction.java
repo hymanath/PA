@@ -1,0 +1,331 @@
+package com.itgrids.partyanalyst.web.action;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.ServletRequestAware;
+
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.service.IVoiceSmsService;
+import com.itgrids.partyanalyst.util.IWebConstants;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
+
+public class VoiceSmsAction implements ServletRequestAware{
+	
+	private static final Logger log = Logger.getLogger(VoiceSmsAction.class);
+
+	private HttpServletRequest request;
+	private File recordedVoice;
+	private String recordedVoiceContentType;
+	private String recordedVoiceFileName;
+	private String voiceFileName;
+	private String voiceDescription;
+	private String userId;
+	private String status;
+	private List<VoiceSmsResponseDetailsVO> voiceSmsResponseDetails;
+	private List<Long> verifiedNumbers;
+	private Map<String ,Map<String,Integer>> resultMap ;
+	
+	
+	public Map<String, Map<String, Integer>> getResultMap() {
+		return resultMap;
+	}
+
+	public void setResultMap(Map<String, Map<String, Integer>> resultMap) {
+		this.resultMap = resultMap;
+	}
+
+	public List<Long> getVerifiedNumbers() {
+		return verifiedNumbers;
+	}
+
+	public void setVerifiedNumbers(List<Long> verifiedNumbers) {
+		this.verifiedNumbers = verifiedNumbers;
+	}
+
+	public List<VoiceSmsResponseDetailsVO> getVoiceSmsResponseDetails() {
+		return voiceSmsResponseDetails;
+	}
+
+	public void setVoiceSmsResponseDetails(
+			List<VoiceSmsResponseDetailsVO> voiceSmsResponseDetails) {
+		this.voiceSmsResponseDetails = voiceSmsResponseDetails;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	private Map<String , String> recordingsDetailsMap;
+	
+	public Map<String, String> getRecordingsDetailsMap() {
+		return recordingsDetailsMap;
+	}
+
+	public void setRecordingsDetailsMap(Map<String, String> recordingsDetailsMap) {
+		this.recordingsDetailsMap = recordingsDetailsMap;
+	}
+
+	public String getVoiceDescription() {
+		return voiceDescription;
+	}
+
+	public void setVoiceDescription(String voiceDescription) {
+		this.voiceDescription = voiceDescription;
+	}
+
+	private IVoiceSmsService voiceSmsService;
+	
+	
+
+	public IVoiceSmsService getVoiceSmsService() {
+		return voiceSmsService;
+	}
+
+	public void setVoiceSmsService(IVoiceSmsService voiceSmsService) {
+		this.voiceSmsService = voiceSmsService;
+	}
+
+	public String getVoiceFileName() {
+		return voiceFileName;
+	}
+
+	public void setVoiceFileName(String voiceFileName) {
+		this.voiceFileName = voiceFileName;
+	}
+
+	public File getRecordedVoice() {
+		return recordedVoice;
+	}
+
+	public void setRecordedVoice(File recordedVoice) {
+		this.recordedVoice = recordedVoice;
+	}
+
+	public String getRecordedVoiceContentType() {
+		return recordedVoiceContentType;
+	}
+
+	public void setRecordedVoiceContentType(String recordedVoiceContentType) {
+		this.recordedVoiceContentType = recordedVoiceContentType;
+	}
+
+	public String getRecordedVoiceFileName() {
+		return recordedVoiceFileName;
+	}
+
+	public void setRecordedVoiceFileName(String recordedVoiceFileName) {
+		this.recordedVoiceFileName = recordedVoiceFileName;
+	}
+
+	
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+	
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+	
+	public String execute()
+	{
+		 HttpSession session = request.getSession();			
+		 RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		 
+		 if(user == null)
+			 return Action.ERROR;
+		 
+		userId = user.getRegistrationID().toString();
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	public String uploadAudioFile() throws Exception
+	{
+		try
+		{
+			if(recordedVoiceContentType == null)
+				return Action.SUCCESS;
+			
+            HttpSession session = request.getSession();			
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			
+		
+			String recordingName = "";
+			
+			if(recordedVoiceContentType.contains("mp3"))
+				recordingName = voiceFileName +".mp3";
+			else
+				recordingName = voiceFileName +".wav";				
+		
+		    String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);			
+		    String filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "voice_recordings" + pathSeperator + user.getRegistrationID()+ pathSeperator;
+	
+
+			File fileToCreate = new File(filePath, recordingName);
+			FileUtils.copyFile(recordedVoice, fileToCreate);
+			
+			
+			if(user != null)			
+				voiceSmsService.saveUploadedAudioFileDetails(recordingName,user.getRegistrationID(),voiceDescription);
+			
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			status = "Error Occured While Uploading Audio File.Please Try Again.....";	
+			return Action.ERROR;
+		}
+		status = "Audio Uploaded Successfully...";			
+		return Action.SUCCESS;
+	}
+	
+	public String getAllTheRecordedFilesOfAUser()
+	{
+		try
+		{
+			
+			HttpSession session = request.getSession();
+			
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			
+			if(user != null)			
+			    recordingsDetailsMap = voiceSmsService.getAllTheRecordedFilesOfAUser(user.getRegistrationID());
+			
+			else
+				return Action.ERROR;
+		
+		    
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return Action.ERROR;
+
+			
+		}
+		return Action.SUCCESS;		
+		
+	}
+	
+	public String sendVoiceSms()
+	{
+		try
+		{
+			HttpSession session = request.getSession();			
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			String requestURL = request.getRequestURL().toString();	
+			
+			StringBuffer audioFilePath =  new StringBuffer();
+			
+			if(requestURL.contains(".com"))
+				audioFilePath.append("http://www.partyanalyst.com/voice_recordings/"+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
+			else
+				audioFilePath.append("http://122.169.253.134:8080/PartyAnalyst/voice_recordings/"+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
+
+
+			
+			status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,request.getParameter("mobileNumbers"),Long.parseLong(request.getParameter("senderMobileNumber")),request.getParameter("description"));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getVoiceSmsHistoryForAuser()
+	{
+		try
+		{
+			HttpSession session = request.getSession();			
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			voiceSmsResponseDetails = voiceSmsService.getVoiceSmsHistoryForAuser(user.getRegistrationID());
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getVerifiedNumbersOfUser()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			verifiedNumbers = voiceSmsService.getVerifiedNumbersOfUser(user.getRegistrationID());;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+
+	public String voiceSmsReport()
+	{
+		return Action.SUCCESS;
+	}
+	
+	
+	public String generateVoiceSmsReport()
+	{
+		
+		try
+		{
+			resultMap = voiceSmsService.generateVoiceSmsReport();	
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+	}
+}

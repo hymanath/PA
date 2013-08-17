@@ -1213,4 +1213,17 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="voiceRecordingDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoiceRecordingDetailsDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voiceSmsResponseDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoiceSmsResponseDetailsDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	<bean id="voiceSmsVerifiedNumbersDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoiceSmsVerifiedNumbersDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		

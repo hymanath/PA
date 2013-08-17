@@ -1720,5 +1720,12 @@
      <property name="casteDAO" ref="casteDAO" />
      <property name="constituencyHierarchyInfoDAO" ref="constituencyHierarchyInfoDAO" />
     </bean>
+    
+     <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
+     <property name="voiceRecordingDetailsDAO" ref="voiceRecordingDetailsDAO"/>
+     <property name="userDAO" ref="userDAO" />
+     <property name="voiceSmsResponseDetailsDAO" ref="voiceSmsResponseDetailsDAO"/> 
+     <property name="voiceSmsVerifiedNumbersDAO" ref="voiceSmsVerifiedNumbersDAO"/>   
+    </bean>
 </beans>		
 	

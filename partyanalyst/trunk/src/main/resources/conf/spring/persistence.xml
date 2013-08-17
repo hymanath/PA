@@ -349,6 +349,9 @@
 				<value>com.itgrids.partyanalyst.model.VotingTrendzPartiesResult</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyHierarchyInfo</value>
 				<value>com.itgrids.partyanalyst.model.SuggestiveRange</value>
+				<value>com.itgrids.partyanalyst.model.VoiceRecordingDetails</value>
+				<value>com.itgrids.partyanalyst.model.VoiceSmsResponseDetails</value>
+				<value>com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers</value>		
 			</list>
 			
 		</property>
