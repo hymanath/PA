@@ -829,7 +829,7 @@ function buildVoiceSmsHistory(results)
 	str+='<tr>';
 	 str+='<th>Messagee Id</th>';
  	 str+='<th>Date Sent</th>';
- 	 str+='<th>Mobile Numbers</th>';
+ 	 //str+='<th>Mobile Numbers</th>';
 	 str+='<th>Check details</th>';
      str+='<th>Description</th>';
 	str+='</tr>';
@@ -840,7 +840,7 @@ function buildVoiceSmsHistory(results)
 	 str+='<tr>';
 	  str+='<td>'+value.responseCode+'</td>';
 	  str+='<td>'+value.dateSent+'</td>';
-	  str+='<td>'+value.numbers+'</td>';
+	  //str+='<td>'+value.numbers+'</td>';
 	  str+='<td><a href="javascript:{showMessageResponseDetails('+value.responseCode+');}">Click here For Details</a></td>';
 	   // str+='<td><a href="http://dnd.smschilly.com/api/check_voice_dlr.php?user=voicedemo1&password=abcd1234&msgid='+value.responseCode+'" target="blank">'+value.responseCode+'</a></td>';
 		 str+='<td>'+value.description+'</td>';
