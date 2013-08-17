@@ -112,6 +112,7 @@
 		<pattern>/voiceTest/index.jsp</pattern>
 		<pattern>/voiceSMS.jsp</pattern>-->
 		<pattern>/voiceSMS*</pattern>
+		<pattern>/messageCenterVoterSearchAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
