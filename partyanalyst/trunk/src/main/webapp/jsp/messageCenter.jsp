@@ -82,7 +82,7 @@ textarea{
 
 .mainContainer{width:980px;}
 #mobilesId{
-border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-family:arial;font-size:13px;padding:15px;
+border:1px solid #ccc;height:800px;overflow-y:scroll;overflow-x:hidden;font-family:arial;font-size:13px;padding:15px;
 }
 
 </style>
@@ -132,11 +132,13 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
 </div>
 
 <div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;clear:both;'><h4>SEND VOICE SMS</h4></div>
-<div class="thumbnail">
 
- <div style="text-align:center;"><span>Enter Mobile Numbers To Send Voice Sms:</span><textarea id="mobileNumber"></textarea></div>
+<div class="thumbnail" style="width:849px;padding:17px;margin:33px;">
 
-  <div style="text-align:center;margin-left:110px;margin-top:5px;"><span>Enter Description:</span><textarea id="smsDescription"></textarea></div>
+
+ <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice Sms:</label><textarea id="mobileNumber"></textarea></div>
+
+  <div style="text-align:center;margin-top:5px;"><label>Enter Description:</label><textarea id="smsDescription"></textarea></div>
 
 <div style="margin:27px 0px 0px 264px;color:#3A87AD;"><u><h4>AUDIO FILES AVAILABLE<a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="padding:5px;"/></a></h4></u>
 
@@ -148,8 +150,11 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
  <div id="verifiedNumbersDiv"></div>
 </div>
 
+<div id="errorDiv" style="color:red;font-family:verdana;font-size:12px;margin:20px 0 0 268px;"></div>
+
+
 <div style="margin:14px 15px 13px 827px;">
-<input type="button" class="btn btn-success" value="Send Voice Sms" onClick="ajaxToSendSms()"/>
+<input type="button" class="btn btn-success" value="Send Voice Sms" onClick="validateFieldsForSendingSms()"/>
 </div>
 
 <div id='historyHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><a href="javascript:{}"><h4>SHOW / HIDE SMS HISTORY</h4></a></div>
@@ -210,6 +215,51 @@ function showMessageResponseDetails(responseCode){
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getResponseDetailsForSms.action?"+rparam;	
 			callAjax(rparam,jsObj,url);
+}
+
+function validateFieldsForSendingSms()
+{
+
+	var audioFileName = $("input:radio[name=audio]:checked").attr('id');
+    var senderNumber = $("input:radio[name=senderNumber]:checked").val();
+
+
+	var error = false;
+	$('#errorDiv').html('');
+
+	var str='';
+
+	if($('#mobileNumber').val() == ""){
+		str+='<b>Atlease One Mobile Number Is Required To Send Sms</b></br>';
+		error = true;
+	}
+
+	if($('#smsDescription').val() == ""){
+		str+='<b>Description Is Required</b></br>';
+		error = true;
+	}
+
+	if(audioFileName == undefined)
+	{
+		str+='<b>Select An Audio To Send</b></br>';
+		error = true;
+	}
+
+	if(senderNumber == undefined)
+	{
+		str+='<b>Select A Sender Number To Sent Sms</b></br>';
+		error = true;
+	}
+
+	if(error == true)
+	{
+		$('#errorDiv').html(str);
+		return false;
+	}
+	else
+		ajaxToSendSms();
+
+
 }
 
 function ajaxToSendSms(){
@@ -598,7 +648,7 @@ function buildMobileNos(results,jsObj){
 	//str+='<span class="btn bnt-mini">'+results[i].mobileNO+'<span></span></span>';	
 	str+='<div class="span6">'+results[i].cadreName+'</div><div class="span4">'+results[i].mobileNO+'</div><div class="span1"><img src="images/icons/delete.png"  style="margin:5px;height:12px;width:12px;" onclick="removeThis('+i+')"/></div></div>';
 	mobileNoArr.push(results[i].mobileNO);
-	contactNos.push('91'+results[i].mobileNO)
+	contactNos.push('+91'+results[i].mobileNO)
 	}
 	}
 	$('#mobilesId').append(str);
@@ -760,7 +810,7 @@ window.receiveFromCadreChild = function(data) {
 		
 		str+='<div class="span6">'+data[i].cadreName+'</div><div class="span4">'+data[i].cadreMobile+'</div><div class="span1"><img src="images/icons/delete.png"  style="margin:5px;height:12px;width:12px;" onclick="removeThis('+i+')"/></div></div>';
 		mobileNoArr.push(data[i].cadreMobile);
-		contactNos.push('91'+data[i].cadreMobile)
+		contactNos.push('+91'+data[i].cadreMobile)
 		}
 	}
 	console.log(mobileNoArr);
@@ -829,7 +879,7 @@ function buildVoiceSmsHistory(results)
 	str+='<tr>';
 	 str+='<th>Messagee Id</th>';
  	 str+='<th>Date Sent</th>';
- 	 str+='<th>Mobile Numbers</th>';
+ 	 //str+='<th>Mobile Numbers</th>';
 	 str+='<th>Check details</th>';
      str+='<th>Description</th>';
 	str+='</tr>';
@@ -840,7 +890,7 @@ function buildVoiceSmsHistory(results)
 	 str+='<tr>';
 	  str+='<td>'+value.responseCode+'</td>';
 	  str+='<td>'+value.dateSent+'</td>';
-	  str+='<td>'+value.numbers+'</td>';
+	  //str+='<td>'+value.numbers+'</td>';
 	  str+='<td><a href="javascript:{showMessageResponseDetails('+value.responseCode+');}">Click here For Details</a></td>';
 	   // str+='<td><a href="http://dnd.smschilly.com/api/check_voice_dlr.php?user=voicedemo1&password=abcd1234&msgid='+value.responseCode+'" target="blank">'+value.responseCode+'</a></td>';
 		 str+='<td>'+value.description+'</td>';
