@@ -138,7 +138,9 @@ border:1px solid #ccc;height:800px;overflow-y:scroll;overflow-x:hidden;font-fami
 
   <div style="text-align:center;margin-left:110px;margin-top:5px;"><span>Enter Description:</span><textarea id="smsDescription"></textarea></div>
 
-<div style="margin:27px 0px 0px 264px;color:#3A87AD;"><u><h4>AUDIO FILES AVAILABLE</h4></u></div>
+<div style="margin:27px 0px 0px 264px;color:#3A87AD;"><u><h4>AUDIO FILES AVAILABLE<a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="padding:5px;"/></a></h4></u>
+
+</div>
  <div id="audioFilesDiv"></div>
 
 <div style="margin:27px 0 0 264px;color:#3A87AD;"><u><h4>VERIFIED NUMBERS TO SEND VOICE SMS</h4></u></div>
@@ -782,11 +784,8 @@ function buildResultForAudioFiles(results)
 		return false;
 	}
 	var str='';
-	str+='<l><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="float:right;padding:5px;"/></a></div>';
-
 
 	str+='<div style="margin:13px 0px 0px 265px;">';
-
 
       var i=0;
 	
@@ -795,7 +794,7 @@ function buildResultForAudioFiles(results)
 		   str+='<label><input name="audio" type="radio" value="'+i+'" id="'+key+'"/><a href="javascript:{showAudio(\''+key+'\','+i+')}" title="'+value+'">'+key+'</a> -- '+value+'</label>';
                   i++;
 	});
-str+='<label><a href="uploadAudioFile.action" target="blank" style="margin:0px 0px 0px 300px;"><b>Click Here To Record Audio And To Upload Audio</b></a></label>';
+str+='<label><a href="uploadAudioFile.action" target="blank"><b>Click Here To Record Audio And To Upload Audio</b></a></label>';
 	str+='</div>';
 
 	$('#audioFilesDiv').html(str);
