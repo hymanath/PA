@@ -11,6 +11,51 @@
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/messageCenter.js"></script>
+
+ <style>
+  .datagrid table {
+	  border-collapse: collapse; 
+	  text-align: left; 
+	  width: 100%;
+   } 
+   .datagrid {
+	   font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;
+  }
+  .datagrid table td, .datagrid table th {
+	  padding: 3px 10px;
+  }
+  .datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );#006699;
+	  background-color:#006699; 
+	  color:#FFFFFF; 
+	  font-size: 15px;
+	  font-weight: bold;
+	  border-left: 1px solid #0070A8;
+  } 
+  .datagrid table thead th:first-child {
+	  border: none; 
+  }
+  .datagrid table tbody td {
+	  color: #00496B; 
+	  border-left: 1px solid #E1EEF4;
+	  font-size: 12px;
+	  font-weight: normal;
+   }
+   .datagrid table tbody .alt td {
+	   background: #E1EEF4;
+	   color: #00496B;
+	}
+	.datagrid table tbody td:first-child {
+		border-left: none;
+	}
+	.datagrid table tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	.datagrid table tr:nth-child(even) {background: #E1EEF4}
+    .datagrid table tr:nth-child(odd) {background: #FFF}
+
+	
+  </style>
 <style>
 	.left_container{padding:10px;font-family:arial;font-size:14px;}
 	input[type="radio"], input[type="checkbox"] {cursor: pointer;line-height: normal;margin: 4px;;}
@@ -46,6 +91,10 @@ textarea{
  <div id="verifiedNumbersDiv"></div>
 </div>
 
+<div class="breadcrumb" style="margin-top:40px;"> 
+ <div id="smsHistory"></div>
+</div>
+
 
 <input type="button" class="btn pull-right" style="margin-right:212px;margin-top:10px;" value="Send Voice Sms" onClick="ajaxToSendSms()"/>
 
@@ -73,6 +122,15 @@ function getVerifiedNumbersOfUser(){
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getVerifiedNumbersOfUser.action?"+rparam;	
+			callAjax(rparam,jsObj,url);
+}
+function getVoiceSmsHistoryOfUser(){
+	var jsObj=
+			{
+				task:"getVoiceSmsHistoryForAuser",
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVoiceSmsHistoryForAuser.action?"+rparam;	
 			callAjax(rparam,jsObj,url);
 }
 </script>
@@ -407,6 +465,8 @@ function callAjax(param,jsObj,url){
 				        buildResultForAudioFiles(myResults);
 					else if(jsObj.task == "getVerifiedNumbersOfUser")
 						 buildVerifiedNumbersForUser(myResults);
+					else if(jsObj.task == "getVoiceSmsHistoryForAuser")
+						buildVoiceSmsHistory(myResults);
 					
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
@@ -642,8 +702,43 @@ function buildVerifiedNumbersForUser(results)
 	$('#verifiedNumbersDiv').html(str);
 }
 
+function buildVoiceSmsHistory(results)
+{
+	var str='';
+    str+='<div class="datagrid">';
+    str+='<table border="1">';
+	str+='<thead>'; 
+	str+='<tr>';
+	 str+='<th>Messagee Id</th>';
+ 	 str+='<th>Date Sent</th>';
+ 	 str+='<th>Mobile Numbers</th>';
+	 str+='<th>Check details</th>';
+     str+='<th>Description</th>';
+	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
+	$.each(results,function(index,value){
+
+	 str+='<tr>';
+	  str+='<td>'+value.responseCode+'</td>';
+	  str+='<td>'+value.dateSent+'</td>';
+	 // str+='<td>'+value.numbers+'</td>';
+	  str+='<td>'+value.numbers+'</td>';
+	    str+='<td><a href="http://dnd.smschilly.com/api/check_voice_dlr.php?user=voicedemo1&password=abcd1234&msgid='+value.responseCode+'" target="blank">'+value.responseCode+'</a></td>';
+		 str+='<td>'+value.description+'</td>';
+	 str+='</tr>';
+	});
+	str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+
+$('#smsHistory').html(str);
+
+}
+
 ajaxToGetRecordingDetails();
 getVerifiedNumbersOfUser();
+getVoiceSmsHistoryOfUser();
 </script>
 
 </body>
