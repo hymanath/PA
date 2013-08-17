@@ -76,13 +76,13 @@ textarea{
 <!--Sending Voice Sms Block Start-->
 
 <div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>SEND VOICE SMS</h4></div>
-<div class="breadcrumb" style="margin-top:40px;">
+<div class="thumbinal" style="margin-top:62px;">
 
  <div style="text-align:center;"><span>Enter Mobile Numbers To Send Voice Sms:</span><textarea></textarea></div>
 
   <div style="text-align:center;margin-top:41px;margin-left:110px;"><span>Enter Description:</span><textarea></textarea></div>
 
-<div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;margin-top:12px;'><h4>AUDIO FILES AVAILABLE</h4></div>
+<div class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;margin-top:12px;'><h4>AUDIO FILES AVAILABLE</h4></div>
  <div id="audioFilesDiv"></div>
 
 <div id='cnstHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><h4>VERIFIED NUMBERS TO SEND VOICE SMS</h4></div>
@@ -668,9 +668,8 @@ function buildResultForAudioFiles(results)
 	str+='<l><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Refresh Recordings Data" style="float:right;padding:5px;"/></a></div>';
 
 
-	str+='<div style="margin:9px 0px 0px 265px;">';
+	str+='<div style="margin:54px 0px 0px 265px;">';
 
-	str+='<h4>Recordings  Avaialable In Server</h4><br>';
 
       var i=0;
 	
@@ -696,9 +695,8 @@ function buildVerifiedNumbersForUser(results)
 		  return false;
 					  
 	  }
-	 str +='<h5>You Have The Following Verified Numbers.If You Want To Send Voice Sms From A New Number Contact Us To Verify Other Number..</h5>';
 
-    str+='<div style="text-align:center;">';
+    str+='<div style="margin:10px 0px 0px 250px;">';
 	$.each(results,function(index,value){
 		str+='<label style="font-weight:bold;"><input type="radio" name="senderNumber" value="'+value+'"/>'+value+'</label>';
 	});
