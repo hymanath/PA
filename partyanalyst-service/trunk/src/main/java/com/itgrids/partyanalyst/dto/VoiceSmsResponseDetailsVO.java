@@ -11,6 +11,21 @@ public class VoiceSmsResponseDetailsVO implements Serializable{
 	private String responseCode;
 	private String dateSent;
 	private String numbers;
+	private String description;
+	private String sentStatus;
+	
+	public String getSentStatus() {
+		return sentStatus;
+	}
+	public void setSentStatus(String sentStatus) {
+		this.sentStatus = sentStatus;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Long getResponseId() {
 		return responseId;
 	}

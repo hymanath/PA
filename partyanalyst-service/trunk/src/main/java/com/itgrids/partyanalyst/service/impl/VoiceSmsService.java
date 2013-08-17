@@ -204,6 +204,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 				responseVO.setResponseCode(vo.getResponseCode());
 				responseVO.setNumbers(vo.getMobileNumbers());
 				responseVO.setDateSent(vo.getSentDate().toString());
+				responseVO.setDescription(vo.getSmsDescription());
 				resultList.add(responseVO);
 				
 			}
@@ -251,8 +252,46 @@ public class VoiceSmsService implements IVoiceSmsService {
 			{
 				List<String> responseCodesList = voiceSmsResponseDetailsDAO.getResponseCodesForAnUser((Long)obj[2]);
 				
-				for(String code:responseCodesList)					
-					map = 	getResponseDetailsByResponseCode(code);
+				map = new HashMap<String, Integer>();
+				for(String code:responseCodesList)
+				{					
+					URL url = new URL("http://control.msg91.com/api/check_voice_dlr.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&msgid="+code);
+
+				    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+					conn.setRequestMethod("GET");
+					conn.setDoOutput(true);
+					conn.setDoInput(true);
+					conn.setUseCaches(false);
+					conn.connect();
+					BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+					String line;
+					StringBuffer buffer = new StringBuffer();
+					while ((line = rd.readLine()) != null)
+					{
+					  buffer.append(line).append("\n");
+					}
+					
+					String resultString = buffer.toString();
+					
+					for(int i = 1;i < resultString.split("<br />").length-1;i++)
+					{
+						String row = resultString.split("<br />")[i];
+						
+						String status =row.split("\\|")[5];
+						
+						if(map.get(status) != null)
+						{
+							int count = map.get(status);
+							count++;
+							map.put(status,count);
+							
+						}else
+						{
+							map.put(status,1);
+							
+						}					
+					}				
+				}
 				
 				resultMap.put(obj[0].toString()+"-"+obj[1].toString()+"-"+obj[2].toString(), map);
 			}
@@ -268,12 +307,12 @@ public class VoiceSmsService implements IVoiceSmsService {
 	}
 	
 	
-	public Map<String ,Integer> getResponseDetailsByResponseCode(String code)
+	public List<VoiceSmsResponseDetailsVO> getResponseDetailsByResponseCode(String code)
 	{
 		
 		log.debug("Entered into the getResponseDetailsByResponseCode service method");
 		
-		  HashMap<String, Integer> map = new HashMap<String, Integer>();
+		List<VoiceSmsResponseDetailsVO> resultList = new ArrayList<VoiceSmsResponseDetailsVO>();
 		
 		try
 		{
@@ -297,21 +336,17 @@ public class VoiceSmsService implements IVoiceSmsService {
 			
 			for(int i = 1;i < resultString.split("<br />").length-1;i++)
 			{
+				VoiceSmsResponseDetailsVO vo = new VoiceSmsResponseDetailsVO();
+				
 				String row = resultString.split("<br />")[i];
 				
 				String status =row.split("\\|")[5];
 				
-				if(map.get(status) != null)
-				{
-					int count = map.get(status);
-					count++;
-					map.put(status,count);
-					
-				}else
-				{
-					map.put(status,1);
-					
-				}					
+				vo.setNumbers(row.split("\\|")[1]);
+				vo.setSentStatus(status);
+				
+				resultList.add(vo);
+								
 			}
 		
 		}
@@ -322,7 +357,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			
 		}
 		
-		return map;
+		return resultList;
 		
 	}
 }
