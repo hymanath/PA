@@ -5845,7 +5845,7 @@
 		 
 		 <action name="getResponseDetailsForSms" class="voiceSmsAction" method="getResponseDetailsForSms">
 		 <result type="json" name="success">
-		   <param name="root">responseMap</param>
+		   <param name="root">responseDetailsList</param>
 		  </result>
 		 </action>
 		 
