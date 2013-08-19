@@ -17,8 +17,8 @@ public class VoiceRecordingDetailsDAO extends GenericDaoHibernate<VoiceRecording
 		
 		public List<Object[]> getAllTheRecordingDetailsOfUser(Long userId)
 		{
-			Query query = getSession().createQuery("select model.recordingName , model.recordingDescription from VoiceRecordingDetails model" +
-					" where model.user.userId = :userId");
+			Query query = getSession().createQuery("select model.recordingName , model.recordingDescription  , model.user.userId " +
+					" from VoiceRecordingDetails model where model.user.userId = :userId");
 			
 			query.setParameter("userId", userId);
 			

@@ -11,6 +11,8 @@ public interface IVoiceSmsResponseDetailsDAO extends GenericDao<VoiceSmsResponse
 	public List<VoiceSmsResponseDetails> getVoiceSmsHistoryForAuser(Long userId);
 	public List<Object[]> getVoiceSmsSentUserDetails();
 	public List<String> getResponseCodesForAnUser(Long userId);
+	public List<VoiceSmsResponseDetails> getVoiceSmsHistoryForAllSubUsers(List<Long> userIds);
+
 
 
 

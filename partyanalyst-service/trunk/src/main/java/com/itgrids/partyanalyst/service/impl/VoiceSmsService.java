@@ -102,7 +102,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			
 			
 			for(Object[] obj:detailsList)
-				resultMap.put(obj[0].toString(), obj[1].toString());
+				resultMap.put(obj[0].toString(), obj[1].toString()+"--"+obj[2].toString());
 				
 			
 		}catch(Exception e)
@@ -194,17 +194,31 @@ public class VoiceSmsService implements IVoiceSmsService {
 		List<VoiceSmsResponseDetailsVO> resultList = new ArrayList<VoiceSmsResponseDetailsVO>();
 		try
 		{
-			List<VoiceSmsResponseDetails> responseDetailsList = voiceSmsResponseDetailsDAO.getVoiceSmsHistoryForAuser(userId);
+			List<Long> subUserIdsList = new ArrayList<Long>();
 			
-			for(VoiceSmsResponseDetails vo:responseDetailsList)
+			subUserIdsList.add(userId);
+			
+			List<Object[]> userIds = userDAO.getSubusersByParentUserId(userId);
+			
+			for(Object[] obj:userIds)
+				subUserIdsList.add((Long)obj[1]);
+				
+			
+			
+			//List<VoiceSmsResponseDetails> responseDetailsList = voiceSmsResponseDetailsDAO.getVoiceSmsHistoryForAuser(userId);
+			
+			List<VoiceSmsResponseDetails> responseDetailsList = voiceSmsResponseDetailsDAO.getVoiceSmsHistoryForAllSubUsers(subUserIdsList);
+			
+			for(VoiceSmsResponseDetails details:responseDetailsList)
 			{
 				VoiceSmsResponseDetailsVO responseVO = new VoiceSmsResponseDetailsVO();
 				
-				responseVO.setResponseId(vo.getVoiceSmsResponseDetailsId());
-				responseVO.setResponseCode(vo.getResponseCode());
-				responseVO.setNumbers(vo.getMobileNumbers());
-				responseVO.setDateSent(vo.getSentDate().toString());
-				responseVO.setDescription(vo.getSmsDescription());
+				responseVO.setResponseId(details.getVoiceSmsResponseDetailsId());
+				responseVO.setResponseCode(details.getResponseCode());
+				responseVO.setNumbers(details.getMobileNumbers());
+				responseVO.setDateSent(details.getSentDate().toString());
+				responseVO.setDescription(details.getSmsDescription());
+				responseVO.setUserName(details.getUser().getFirstName()+" "+details.getUser().getLastName());
 				resultList.add(responseVO);
 				
 			}
