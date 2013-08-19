@@ -136,7 +136,7 @@ function buildVoiceSmsReport(results)
 
 <p>To Date: <input type="text" id="toDateId" /></p>
 
-<input type="button" value="Get Details" onClick="ajaxToGetRecordingDetails()();" class="btn"/>
+<input type="button" value="Get Details" onClick="ajaxToGetRecordingDetails()" class="btn"/>
 
 </div>
 
