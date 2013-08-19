@@ -139,8 +139,11 @@ $(document).ready(function() {
 
 	
 
-	$('#mobileNumbersDiv ,#tableDiv').hide();
-	$('#influencePelpleDiv').show();
+	$('#mobileNumbersDiv').hide();
+	$('.subTab ,#tableDiv,#influenceDiv').hide();
+
+	//$('#influencePelpleDiv').show();
+	$('#voterSearchDiv').show();
 
 	$('#historyHeading').live("click",function(){
 		$('#smsHistory').slideToggle();
@@ -256,12 +259,12 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
 <div style="margin:58px;">
  <div class="tabs" style="margin:25px 0px 0px 59px;float:left;">
           
-		     <div id="tab_menu_1" class="tab selected">
-                  <div class="link">Influencing People Search</div>
-             </div>
-		     <div id="tab_menu_2" class="tab ">
+		      <div id="tab_menu_2" class="tab selected">
                   <div class="link">Voters Search</div>
              </div>
+		     <div id="tab_menu_1" class="tab">
+                  <div class="link">Influencing People Search</div>
+             </div>		    
 		     <div id="tab_menu_3" class="tab">
                   <div class="link">Cadre Search</div>
              </div>	 
@@ -338,7 +341,7 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
 	   <span>Select Locality</span><font class="requiredFont">*</font> <select id="localityField" class="selectWidth" name="state" onchange="getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select> 
 	  </div>
 	
-   <div style="float:right;"><input type="button" value="voter Search" id="voterSearchBtn" class="btn btn-info" onclick="voterDetailsValidation()"/></div>
+   <div style="text-align:center;margin-left:140px;"><input type="button" value="Voter Search" id="voterSearchBtn" class="btn" onclick="voterDetailsValidation()"/></div>
 		
  </div>
 
@@ -473,7 +476,7 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
 
 
 <div style="margin:14px 0px 13px 536px">
-<input type="button" class="btn btn-success" value="Send Voice Sms" onClick="validateFieldsForSendingSms()"/>
+<input type="button" class="btn" value="Send Voice Sms" onClick="validateFieldsForSendingSms()"/>
 </div>
 
 <div id='historyHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><a href="javascript:{}"><h4>SHOW / HIDE SMS HISTORY</h4></a></div>
@@ -1167,7 +1170,7 @@ function buildResultForAudioFiles(results)
 	str+='<l><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="float:right;padding:5px;"/></a></div>';
 
 
-	str+='<div style="margin:5px 0px 0px 124px;border:1px solid #3A87AD;padding:4px;">';
+	str+='<div style="margin:5px 0px 0px 124px;border:1px solid #3A87AD;padding:4px;border-radius:4px;">';
 
 
       var i=0;
@@ -1195,9 +1198,13 @@ function buildVerifiedNumbersForUser(results)
 					  
 	  }
 
-    str+='<div style="margin:5px 0px 0px 119px;border:1px solid #3A87AD;padding:4px;">';
+    str+='<div style="margin:5px 0px 0px 119px;border:1px solid #3A87AD;padding:4px;border-radius:4px;">';
 	$.each(results,function(index,value){
-		str+='<label style="font-weight:bold;"><input type="radio" name="senderNumber" value="'+value+'"/>'+value+'</label>';
+
+		if(index == 0)
+		 str+='<label style="font-weight:bold;"><input type="radio" checked name="senderNumber" value="'+value+'"/>'+value+'</label>';
+		else
+			str+='<label style="font-weight:bold;"><input type="radio" name="senderNumber" value="'+value+'"/>'+value+'</label>';
 	});
 	str+='</div>';
 	$('#verifiedNumbersDiv').html(str);
