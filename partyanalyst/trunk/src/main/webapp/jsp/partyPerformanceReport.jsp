@@ -1570,7 +1570,7 @@ function callMarginVotes(partyId)
 		<td style="vertical-align:top">
 			<div id="partyResultsChartOuter" >
 				<div id="partyResultsChart" style="width:100%">
-					 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="350" HEIGHT="250">
+					<!-- <IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="350" HEIGHT="250">-->
 				</div>
                        <c:if test="${(stateData.totalSeatsWon==0)&&(stateData.prevYearTotalSeatsWon==0)}">
                        	<script type="text/javascript">
@@ -1583,7 +1583,7 @@ function callMarginVotes(partyId)
 		<td style="vertical-align:top">
 			<div id="partyPosChartOuter"  style="width:400px;">
 				<div id="partyPosChart" style="width:100%">
-					 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("lineChartName")%>" WIDTH="350" HEIGHT="250">
+					<!-- <IMG id="chartImg" SRC="charts/<%=request.getAttribute("lineChartName")%>" WIDTH="350" HEIGHT="250">-->
 				</div>
 			</div>
 		</td>
