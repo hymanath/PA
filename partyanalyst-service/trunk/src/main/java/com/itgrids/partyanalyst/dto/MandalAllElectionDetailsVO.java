@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MandalAllElectionDetailsVO implements Serializable {
@@ -44,7 +45,21 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private List<MandalAllElectionDetailsVO> allVotersDetails;
 	private List<SelectOptionVO> partyInfo;
 	private ResultStatus resultStatus;
+	private List<String> electionYears = new ArrayList<String>();
+	private List<String> electionTypes = new ArrayList<String>();
 	
+	public List<String> getElectionYears() {
+		return electionYears;
+	}
+	public void setElectionYears(List<String> electionYears) {
+		this.electionYears = electionYears;
+	}
+	public List<String> getElectionTypes() {
+		return electionTypes;
+	}
+	public void setElectionTypes(List<String> electionTypes) {
+		this.electionTypes = electionTypes;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
