@@ -80,6 +80,7 @@
     margin-right: auto;
     margin-top: 15px;
     width: 800px;}
+#btnDiv{text-align: center; margin-top: 4px;}
 </style>
 
 <script type="text/javascript">
@@ -94,7 +95,7 @@
 
 <div id="voterDetailsDiv"></div>
 <div id="paginationDivId"></div>
-<div id="btnDiv"><input type="button" class="btn btn-info" value="submit" id="phoneNoBtn"/></div>
+<div id="btnDiv" style="display:none;"><input type="button" class="btn btn-info" value="Add This Contacts" id="phoneNoBtn" onclick="getPhoneNos()" /></div>
 
 </div>
 
@@ -161,7 +162,7 @@ function buildVoterDetails(results,jsObj)
    $('#paginationDivId').html('');
    return;
   }
-
+  $("#btnDiv").css('display','block');
   var result = results.votersList;
   var str = '';
   str +='<table class="dataTable">';
@@ -175,7 +176,7 @@ function buildVoterDetails(results,jsObj)
   for(var i in result)
   {
     str +='<tr>';
-    str +='<td><input type="checkbox" name="check" value="'+result[i].voterId+'" /></td>';
+    str +='<td><input type="checkbox" name="check" value="'+result[i].mobileNo+'" /></td>';
     str +='<td>'+result[i].name+'</td>';
     str +='<td>'+result[i].houseNo+'</td>';
     str +='<td>'+result[i].mobileNo+'</td>';
@@ -203,16 +204,24 @@ function buildVoterDetails(results,jsObj)
 }
 getWardsForMuncipality(0);
 
-$(document).ready(function(){
-	
- $("#phoneNoBtn").click(function(){
-  
-  var phoneNoArray = new Array();
-  
 
- });
+function getPhoneNos()
+{
+  var tempArray =[];
+  $('input:checkbox[name="check"]').each(function() {
+        if (this.checked) {
+			
+          tempArray.push(this.value);
+      }
+  });
 
-});
+ 
+  if(tempArray == null || tempArray.length == 0)
+	 return;
+
+  window.opener.receiveFromVoterSearchChild ( tempArray );
+
+}
 </script>
 </body>
 </html>
