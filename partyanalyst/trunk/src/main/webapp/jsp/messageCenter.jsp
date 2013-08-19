@@ -475,6 +475,10 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
 <div id="errorDiv" style="color:red;font-family:verdana;font-size:12px;margin:20px 0 0 125px;"></div>
 
 
+<div id="audioOuter">
+	 <div id="audioInner"></div>
+</div>
+
 <div style="margin:14px 0px 13px 536px">
 <input type="button" class="btn" value="Send Voice Sms" onClick="validateFieldsForSendingSms()"/>
 </div>
@@ -537,6 +541,17 @@ function showMessageResponseDetails(responseCode){
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getResponseDetailsForSms.action?"+rparam;	
 			callAjax1(rparam,jsObj,url);
+
+			$('#responseDetailsInnerDiv').html("<img style='margin-left:170px;' src='./images/icons/search.gif' />");
+				
+
+					     $('#responseDetailsDiv').dialog({
+						    title:"Response Details" ,
+						    buttons: {
+								
+								"Ok":function(){$(this).dialog("close");} 
+							}
+	       });
 }
 
 function validateFieldsForSendingSms()
@@ -954,6 +969,7 @@ function callAjax1(param,jsObj,url){
 						buildVoiceSmsHistory(myResults);
 					else if(jsObj.task == "getResponseDetails")
 						buildResponseDetails(myResults);
+
 					else if(jsObj.task == "sendVoiceSms")
 				    {
 						 $.unblockUI();
@@ -1177,13 +1193,34 @@ function buildResultForAudioFiles(results)
 	
 	$.each(results,function(key,value){
 
-		   str+='<label><input name="audio" type="radio" value="'+i+'" id="'+key+'"/><a href="javascript:{showAudio(\''+key+'\','+i+')}" title="'+value+'">'+key+'</a> -- '+value+'</label>';
+		   str+='<label><input name="audio" type="radio" value="'+i+'" id="'+key+'"/><a href="javascript:{showAudio(\''+key+'\','+i+','+value.split("--")[1]+')}" title="'+value.split("--")[0]+'">'+key+'</a> -- '+value.split("--")[0]+'</label>';
                   i++;
 	});
 str+='<label><a href="uploadAudioFile.action" target="blank"><b>Click Here To Record Audio And To Upload Audio</b></a></label>';
 	str+='</div>';
 
 	$('#audioFilesDiv').html(str);
+}
+function showAudio(path,i,userId)
+{
+	var str='';
+	//$('#audioOuter').dialog();
+	 str+='<embed src="voice_recordings/'+userId+'/'+path+'"  autostart=true loop=false>';
+
+	 $('#audioInner').html(str);
+	 	    $( "#audioOuter" ).dialog({
+				title:'Play Audio',
+				width:'auto',
+				height:'auto',
+				buttons: {
+					"Select To Send SMS":function() {
+
+						$("input:radio[value="+i+"]").attr("checked","checked");
+						$(this).dialog("close");
+						},
+                    "Exit":function(){$(this).dialog("close");} 
+				}
+			});
 }
 function buildVerifiedNumbersForUser(results)
 { 
@@ -1220,8 +1257,8 @@ function buildVoiceSmsHistory(results)
 	 str+='<th>Messagee Id</th>';
  	 str+='<th>Date Sent</th>';
  	 //str+='<th>Mobile Numbers</th>';
+	 str+='<th>Description</th>';
 	 str+='<th>Check details</th>';
-     str+='<th>Description</th>';
 	str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
@@ -1230,10 +1267,13 @@ function buildVoiceSmsHistory(results)
 	 str+='<tr>';
 	  str+='<td>'+value.responseCode+'</td>';
 	  str+='<td>'+value.dateSent+'</td>';
+	  str+='<td>'+value.description+'</td>';
+
 	  //str+='<td>'+value.numbers+'</td>';
-	  str+='<td><a href="javascript:{showMessageResponseDetails('+value.responseCode+');}">Click here For Details</a></td>';
+	  //str+='<td><a href="javascript:{showMessageResponseDetails('+value.responseCode+');}">Click here For Details</a></td>';
+
+	  str+='<td><a title="Click Here to See Details" href="javascript:{showMessageResponseDetails('+value.responseCode+');}"><img src="./images/icons/details.png"/></a></td>';
 	   // str+='<td><a href="http://dnd.smschilly.com/api/check_voice_dlr.php?user=voicedemo1&password=abcd1234&msgid='+value.responseCode+'" target="blank">'+value.responseCode+'</a></td>';
-		 str+='<td>'+value.description+'</td>';
 	 str+='</tr>';
 	});
 	str+='</tbody>';
@@ -1275,13 +1315,7 @@ function buildResponseDetails(results)
 	str+='</div>';
 
 	$('#responseDetailsInnerDiv').html(str);
-	$('#responseDetailsDiv').dialog({
-		title:"Response Details" ,
-		buttons: {
-				
-				"Ok":function(){$(this).dialog("close");} 
-			}
-	});
+	
 }
 
 //voter search
