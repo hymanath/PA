@@ -541,7 +541,7 @@ function populateLocations(val,source)
 		var url = "<%=request.getContextPath()%>/removeSessionVariablesForPoliticalChangesRegistrationAjaxAction.action?"+rparam;	
 		callAjax(rparam,jsObj,url);
 		incrementHidden();
-		window.opener.document.location.reload(true);
+		//window.opener.document.location.reload(true);
 		window.close();
 	}
 
@@ -820,7 +820,7 @@ function getConstituencyes()
 	<div id="saveDiv" align="center">
 		<table>
 		<tr>
-			<td><s:submit cssClass="button" value="Save"  onClick="politicalChangeStatus();" name="Save" ></s:submit></td>
+			<td><s:submit cssClass="button" value="Save" name="Save" ></s:submit></td>
 			<td><input type="button" value="Exit" class="button" onclick="doUnload()"/></td>
 		</tr>
 		</table>
