@@ -25,9 +25,11 @@
 <script type="text/javascript" src="js/json/json-min.js"></script>
 
 <!-- YUI files dependencies (end) --> 
-
+<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+ <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+<script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 <script type="text/javascript">
-
+	
 function checkForFormSubmit()
 {
 	$('#partyAjaxImg').show();
@@ -141,10 +143,61 @@ function buildMandalVoting(myResult)
 	
 	if(elmtBody)
 		elmtBody.innerHTML=str;
-				
+	var result1 =  myResult.mandalAllElectionDetailsVO1;
+		buildColumnChart(result1);		
 	buildMandalDataTable();
 }
-
+function buildColumnChart(result)
+{
+	var arr = new Array();
+	for(var i in result[0].zptcMandalAllElectionDetailsVO)
+	{
+		var doubleArr = new Array();
+				for (var j = 0; j < result[0].zptcMandalAllElectionDetailsVO[i].electionTypes.length; j++) {
+				
+				doubleArr.push(parseFloat(result[0].zptcMandalAllElectionDetailsVO[i].electionTypes[j]));
+				}
+		var obj = {
+			name: result[0].zptcMandalAllElectionDetailsVO[i].electionYear,
+			data:doubleArr
+		}
+			arr.push(obj);
+	}
+	
+	$('#mandalVotingResultsDivGraph').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Monthly Average Rainfall'
+            },
+           
+            xAxis: {
+                categories: result[0].electionTypes
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Votes Percentage '
+                }
+            },
+           tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} %</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+           series: arr
+        });
+ }
 function buildMandalDataTable()
 {			
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
@@ -532,7 +585,7 @@ function buildConstituency(myResults)
 
 	<div id="mandalVotingResultsDiv" style="position:relative;">
 		<div id="mandalVotingResultsDivHead"></div>
-		<div id="mandalVotingResultsDivGraph"></div>
+		<div id="mandalVotingResultsDivGraph" style="minwidth:310px;height:400px;margin:0 auto;"></div>
 		<div id="mandalVotingResultsDivBody" class="yui-skin-sam"></div>
 	</div>
 	</div>

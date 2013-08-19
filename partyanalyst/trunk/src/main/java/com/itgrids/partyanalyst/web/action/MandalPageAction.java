@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -238,18 +241,133 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		String partyId = jsonObj.getString("party");
 		String alliance = "true";//jsonObj.getString("alliance");
 		
-		String chartName = "mandalWisePartyPerformance_"+mandalId+"_"+partyId+".png";
+		/*String chartName = "mandalWisePartyPerformance_"+mandalId+"_"+partyId+".png";
          if(cPath.contains("PartyAnalyst"))
         	 chartPath = context.getRealPath("/")+ "charts\\" + chartName;
          else
 		  chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
-         
+        */
+     	List<String> xaxisList =new ArrayList<String>(0);
+     	List<String> electionYears =new ArrayList<String>(0);
+     	Map<String,Map<String,Double>> resultMap = new HashMap<String, Map<String,Double>>();
         mandalDataWithChartVO = new MandalDataWithChartVO();
 		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = partyBoothWiseResultsService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
+		if(mandalAllElectionDetailsVO != null && mandalAllElectionDetailsVO.size() > 0)
+		{
+		for(MandalAllElectionDetailsVO list : mandalAllElectionDetailsVO)
+			{
+			if(!electionYears.contains(list.getElectionYear().toString()))
+			electionYears.add(list.getElectionYear().toString());
+			if(!xaxisList.contains(list.getElectionType().toString()))
+			xaxisList.add(list.getElectionType().toString());
+			
+			Map<String,Double> yearVotesMap = resultMap.get(list.getElectionType().toString());
+			if(yearVotesMap == null)
+			{
+				yearVotesMap = new HashMap<String, Double>();
+				resultMap.put(list.getElectionType().toString(), yearVotesMap);
+			}
+			
+			Double percentage = yearVotesMap.get(list.getElectionYear());
+			if(percentage == null)
+			{
+				Double val = Double.parseDouble(list.getPartyVotesPercentage().toString());
+				yearVotesMap.put(list.getElectionYear(), val);
+			}
+			
+	}
+		}
+		List<MandalAllElectionDetailsVO> result = new ArrayList<MandalAllElectionDetailsVO>();
+		MandalAllElectionDetailsVO MandalAllElectionDetailsVO1 = null;
+	if(xaxisList != null && xaxisList.size() > 0)
+	{
+	for(String electionType : xaxisList)
+	{
+		for(String electionType1 : resultMap.keySet())
+		{
+			if(electionType.toString().equalsIgnoreCase(electionType1.toString()))
+			{
+			MandalAllElectionDetailsVO1 = new MandalAllElectionDetailsVO();
+			MandalAllElectionDetailsVO1.setElectionType(electionType);	
+			Map<String,Double> yearVotesMap = resultMap.get(electionType);
+			List<MandalAllElectionDetailsVO> subList = new ArrayList<MandalAllElectionDetailsVO>();
+			MandalAllElectionDetailsVO MandalAllElectionDetailsVO2 = null;
+			boolean flag=false;
+			for(String electionYear : electionYears)
+			{
+			MandalAllElectionDetailsVO2 = new MandalAllElectionDetailsVO();
+			for(String eleYear : yearVotesMap.keySet())
+			{
+				if(electionYear.toString().equalsIgnoreCase(eleYear.toString()))
+				{
+					Double percentage1 = yearVotesMap.get(eleYear);
+					yearVotesMap.put(eleYear, percentage1);
+					MandalAllElectionDetailsVO2.setPartyVotesPercentage(String.valueOf(percentage1));
+					MandalAllElectionDetailsVO2.setElectionYear(eleYear);
+					flag=true;
+				}
+				
+			}
+			if(flag==false)
+			{
+				Double percentage = 0.0;
+				yearVotesMap.put(electionYear,percentage);
+				MandalAllElectionDetailsVO2.setPartyVotesPercentage(String.valueOf(percentage));
+				MandalAllElectionDetailsVO2.setElectionYear(electionYear);
+			}
+				else
+				flag=false;
+			
+			subList.add(MandalAllElectionDetailsVO2);
+		}
+			MandalAllElectionDetailsVO1.setMptcMandalAllElectionDetailsVO(subList);
+			result.add(MandalAllElectionDetailsVO1);
+	}
+	 }
+		
+ }
+}
+	Map<String,List<String>> mapData=new HashMap<String, List<String>>();
+	if(result != null && result.size() > 0)
+	{
+		for(MandalAllElectionDetailsVO vo : result)
+		{
+			for(MandalAllElectionDetailsVO subvo : vo.getMptcMandalAllElectionDetailsVO())
+			{
+				List<String> valuesList = mapData.get(subvo.getElectionYear().toString());
+				if(valuesList == null)
+				{
+				valuesList = new ArrayList<String>();
+				
+				valuesList.add(subvo.getPartyVotesPercentage().toString());
+				mapData.put(subvo.getElectionYear().toString(),valuesList);
+				}
+				else
+					valuesList.add(subvo.getPartyVotesPercentage().toString());	
+			}
+		}
+	}
+		List<MandalAllElectionDetailsVO> result1 = new ArrayList<MandalAllElectionDetailsVO>();
+		for(String key :mapData.keySet())
+		{
+			MandalAllElectionDetailsVO graphData = new MandalAllElectionDetailsVO();
+			graphData.setElectionYear(key);
+			List<String> valuesList = mapData.get(key.toString());
+			
+			graphData.setElectionTypes(valuesList);
+			result1.add(graphData);
+		}
+		if(electionYears != null && electionYears.size() > 0)
+		result.get(0).setElectionYears(electionYears);
+		if(xaxisList != null && xaxisList.size() > 0)
+		result.get(0).setElectionTypes(xaxisList);
+		if(result1 != null && result1.size() > 0)
+		result.get(0).setZptcMandalAllElectionDetailsVO(result1);
+		mandalDataWithChartVO.setMandalAllElectionDetailsVO1(result);
 		mandalDataWithChartVO.setMandalAllElectionDetailsVO(mandalAllElectionDetailsVO);
-		mandalDataWithChartVO.setChart(chartName);
-	 	
-        ChartProducer.createBarChart("Party Results - Year Vs Votes Percentage", "Years", "Votes Percentage", createDataset(mandalAllElectionDetailsVO), chartPath);
+		//mandalDataWithChartVO.setChart(chartName);
+	// jfree charts are not useing
+        //ChartProducer.createBarChart("Party Results - Year Vs Votes Percentage", "Years", "Votes Percentage", createDataset(mandalAllElectionDetailsVO), chartPath);
 	   if(mandalAllElectionDetailsVO!=null)				
 			return Action.SUCCESS;
 		else
