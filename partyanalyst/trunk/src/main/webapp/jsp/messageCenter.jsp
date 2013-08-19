@@ -295,7 +295,7 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
         
 		   
 		   <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
-	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;"></div>
+	  <div id="errorMsgAlert" style="font-family: verdana;font-size:13px;color:red;margin-left:100px;margin-bottom: 12px; margin-top: 3px;"></div>
      
 	  <div id="reportLevelDiv"><span>Select Level</span><font class="requiredFont">*</font>
 	  
@@ -991,6 +991,9 @@ function callAjax1(param,jsObj,url){
 
 var mobileNoArr=[];
 var contactNos=[];
+var phoneNosArr=[];
+var voterSearchPhoneNo=[];
+
 function buildMobileNos(results,jsObj){
 	var str="";
 	//str+='<h4 style="padding:15px;">Contacts for Sending SMS</h4>';
@@ -1171,6 +1174,17 @@ window.receiveFromCadreChild = function(data) {
 	$('#mobilesId').append(str);
 	$('#mobileNumber').val(contactNos);
 }
+
+window.receiveFromVoterSearchChild = function(data) {
+	
+	
+	for( var i=0; i<data.length; i++ ) {
+	  voterSearchPhoneNo.push('91'+data[i])
+	}
+	
+	$('#mobileNumber').val(voterSearchPhoneNo);
+}
+
 </script>
 
 <script>
@@ -1371,14 +1385,14 @@ function showNewsDetails(){
 
 function voterDetailsValidation()
 {
-  var id7 = $("#mandalField").val();
+  /* var id7 = $("#mandalField").val();
 	       		  
 				if(type !=  "ward" && id7.charAt(0) !="1"){
                   ColType1 = "Hamlet";
 				}else{
                  ColType1 = "Ward";
 				 muniId = $("#mandalField").val().substring(1);
-				}
+				}*/
 		
 	isMuncipality=false;	
 	$('#errorMessageDiv').hide();
@@ -1519,7 +1533,7 @@ function getVoterDetails(constituencyId,publicationId,id,selectedType,locationNa
 {
  
   var urlStr = "messageCenterVoterSearchAction.action?constituencyId="+constituencyId+"&publicationDateId="+publicationId+"&locationValue="+id+"&locationType="+selectedType+"&locationName="+locationName+"&";
-  var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=1300,left=200,top=50");	
+  var browser2 = window.open(urlStr,"messageCenterVoterSearch","scrollbars=yes,height=570,width=1300,left=200,top=50");	
   browser2.focus();  
 }
 
