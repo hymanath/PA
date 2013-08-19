@@ -207,6 +207,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 /** Favorite Link End**/
 #zptcElectionYears,#mptcElectionYears{width:95px}
 #mptcInfoDivBody,#zptcInfoDivBody{margin-right: 10px;}
+a:focus{
+outline:medium none;
+}
 </style>
 <!--[if IE]>
 <style>
