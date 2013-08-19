@@ -98,6 +98,9 @@
     text-align: center;
     width: 657px;
 }
+.yui-skin-sam .yui-carousel-nav select {
+    width: 124px;
+}
 </style>
 <SCRIPT>
 function callAjax(param,jsObj,url){
