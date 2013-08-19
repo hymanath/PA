@@ -65,7 +65,7 @@ div.tabscontainer div.curvedContainer .tabcontent{
 div.tabs div.tab{
     display: block;
     height: 45px;
-    background: #005555;
+    background: #3A87AD;
     border: #d6d6d2 solid 1px;
     border-top: none;
     position: relative;
@@ -85,7 +85,7 @@ div.tabs div.link{
 
  div.tabs div.tab.selected{
     color: #000000;
-    background-color: #5FD367;
+    background-color: #E1EEF4;
 }
 
 
