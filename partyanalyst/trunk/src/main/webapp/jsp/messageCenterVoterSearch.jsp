@@ -167,7 +167,7 @@ function buildVoterDetails(results,jsObj)
   var str = '';
   str +='<table class="dataTable">';
   str +='<tr>';
-  str +='<th>Select</th>';
+  str +='<th>All <input type="checkbox" id="selectAll" name="selectAll" /></th>';
   str +='<th>Name</th>';
   str +='<th>House No</th>';
   str +='<th>Mobile No</th>';
@@ -176,7 +176,7 @@ function buildVoterDetails(results,jsObj)
   for(var i in result)
   {
     str +='<tr>';
-    str +='<td><input type="checkbox" name="check" value="'+result[i].mobileNo+'" /></td>';
+    str +='<td><input type="checkbox" class="checkboxCls" name="check" value="'+result[i].mobileNo+'" /></td>';
     str +='<td>'+result[i].name+'</td>';
     str +='<td>'+result[i].houseNo+'</td>';
     str +='<td>'+result[i].mobileNo+'</td>';
@@ -222,6 +222,23 @@ function getPhoneNos()
   window.opener.receiveFromVoterSearchChild ( tempArray );
 
 }
+
+$(document).ready(function(){
+  
+  $("#selectAll").live("click",function(){
+	
+   if(this.checked)
+	 $(".checkboxCls").attr('checked', true);
+   else
+    $(".checkboxCls").attr('checked', false);
+
+	  
+  });
+
+  
+
+});
+
 </script>
 </body>
 </html>
