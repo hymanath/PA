@@ -554,6 +554,20 @@
 								</tr>
 								<td></td>
 								</tr>
+
+								<tr>
+								<td>
+								<fieldset class="f2">
+									<legend class="l2">Voice Sms Report</legend>
+									<span class="fontStyle">
+										Click Here To Get Report:&nbsp;
+										<a class="alinkstyle" href="<s:url action="voiceSmsReportAction"/>"> Get
+										</a>
+									</span><br>
+									</fieldset></td>
+								</tr>
+								<td></td>
+								</tr>
 						</table>
 				</fieldset>
 			</td>
