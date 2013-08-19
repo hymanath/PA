@@ -373,6 +373,8 @@ function getLeadersList(){
 //var mandalId = $('#listMandalNames option:selected').val();
 var constituencyId = $('#listConstituencyNames option:selected').val();
 var casteIds=0;
+ if(constituencyId == 0)
+	return;
 $('#candidateCastes :selected').each(function(i, selected){ 
 	   casteIds+=','+$(this).val();
 });
@@ -419,9 +421,10 @@ function getCandidateCastes(constituencyIds){
 }
 
 function getConstituencyType()
-	{		
+	{
 		var constituencyId = $("#listConstituencyNames option:selected").val();
-
+		if(constituencyId == 0)
+		return;
 		var jsObj=
 				{
 					constituencyId : constituencyId,
@@ -1002,6 +1005,16 @@ function panchayatMatrx(result)
 	<span id="errorMsg"></span>
 </div>
 
+<div id="scrollBtnDiv">
+	<div style="position: fixed; left :0px; top: 190px;z-index:1;">
+	   <img src="images/up_Arrow .png" id="pageUpBtn" width="30" title="click here to scroll up page"/>
+	</div>
+	<div style="position: fixed; left :0px; top: 240px;z-index:1;">
+		<img src="images/down_Arrow.png" id="pageDownBtn" width="30" title="click here to scroll down page"/>
+	</div>
+
+ </div>
+
 
 <div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;float: left; width: 980px;">
 <input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();"/>
@@ -1071,7 +1084,7 @@ function panchayatMatrx(result)
 <img src="images/icons/loading.gif" id="ajaxLoaderImgForNewPartyDiv" height="25px" width="25px;" style="display:none;"/>
 
 <div id="conclusionStatements" style="margin-left:177px;margin-top:34px;"></div>
-
+</div>
 <!--
 <div id="titleDiv" style="display:none;">
 <h4>PANCHAYAT WISE ELECTION RESULTS COMPARISION</h4>
@@ -1083,7 +1096,80 @@ function panchayatMatrx(result)
 <div id="conclusionStatements" style="margin-left:177px;margin-top:34px;"></div>
 -->
 <script>
+var noOfClicks = 0;
 $(document).ready(function(){
+
+$("#pageUpBtn").live("click",function(){
+	if(noOfClicks < 0 || noOfClicks > 10)
+		noOfClicks = 10;
+		if(noOfClicks == 0)
+			window.scroll(0,findPos(document.getElementById("leadersTable")));
+		else if(noOfClicks == 1)
+			window.scroll(0,findPos(document.getElementById("leadersTable")));
+		else if(noOfClicks == 2)
+			window.scroll(0,findPos(document.getElementById("leadersTable1")));
+		else if(noOfClicks == 3)
+			window.scroll(0,findPos(document.getElementById("leadersTable2")));
+		else if(noOfClicks == 4)
+			window.scroll(0,findPos(document.getElementById("matrixDiv")));
+		else if(noOfClicks == 5)
+			window.scroll(0,findPos(document.getElementById("suggestedLocationsDiv")));
+		else if(noOfClicks == 6)
+			window.scroll(0,findPos(document.getElementById("panchayatWisePollingPercMainDiv")));
+		else if(noOfClicks == 7)
+			window.scroll(0,findPos(document.getElementById("weakPollingPerDiv")));
+		else if(noOfClicks == 8)
+			window.scroll(0,findPos(document.getElementById("addedVotesDib")));
+		else if(noOfClicks == 9)
+			window.scroll(0,findPos(document.getElementById("titleageGroupTableId1")));
+		else if(noOfClicks == 10)
+			window.scroll(0,findPos(document.getElementById("titleDiv")));
+		else
+			window.scroll(0,findPos(document.getElementById("leadersTable")));
+			
+		noOfClicks = noOfClicks-1;
+
+});
+
+$("#pageDownBtn").live("click",function(){
+		if(noOfClicks < 0 || noOfClicks > 9)
+		noOfClicks = 0;
+		if(noOfClicks == 0)
+			window.scroll(0,findPos(document.getElementById("leadersTable")));
+		else if(noOfClicks == 1)
+			window.scroll(0,findPos(document.getElementById("leadersTable1")));
+		else if(noOfClicks == 2)
+			window.scroll(0,findPos(document.getElementById("leadersTable2")));
+		else if(noOfClicks == 3)
+			window.scroll(0,findPos(document.getElementById("matrixDiv")));
+		else if(noOfClicks == 4)
+			window.scroll(0,findPos(document.getElementById("suggestedLocationsDiv")));
+		else if(noOfClicks == 5)
+			window.scroll(0,findPos(document.getElementById("panchayatWisePollingPercMainDiv")));
+		else if(noOfClicks == 6)
+			window.scroll(0,findPos(document.getElementById("weakPollingPerDiv")));
+		else if(noOfClicks == 7)
+			window.scroll(0,findPos(document.getElementById("addedVotesDib")));
+		else if(noOfClicks == 8)
+			window.scroll(0,findPos(document.getElementById("titleageGroupTableId1")));
+		else if(noOfClicks == 9)
+			window.scroll(0,findPos(document.getElementById("titleDiv")));
+		else
+			window.scroll(0,findPos(document.getElementById("titleDiv")));
+
+	noOfClicks = noOfClicks+1;
+});
+
+function findPos(obj) {
+    var curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+    return [curtop];
+    }
+}
+
 
 $("#getPartyPer").click(function(){
 	  var constituencyId = $('#listConstituencyNames option:selected').val();
@@ -1094,6 +1180,8 @@ $("#getPartyPer").click(function(){
 	  var eleIds = new Array();
 	  eleIds.push(eleId1);
 	  eleIds.push(eleId2);
+	  if(constituencyId == 0)
+	  return;
     $("#ajaxImg").css("display","inline-block");
 
 	var jsObj = {
@@ -1583,6 +1671,8 @@ function casteDetailsByPanchayatId(){
 	var constituencyId = $('#listConstituencyNames option:selected').val();
 	var candidateCastes = $('#candidateCastes').val();
 	 
+	if(constituencyId == 0)
+	 return ;	 
 var jsObj= 
 	{	
 		constituencyId:constituencyId,
