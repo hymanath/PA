@@ -149,4 +149,11 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> gethamletsInAState(Long stateId)
+	{
+		Query query = getSession().createQuery("select model.hamlet.hamletId, model.panchayat.panchayatId from PanchayatHamlet model where model.hamlet.township.tehsil.district.state.stateId = :stateId ");
+		query.setParameter("stateId",stateId);
+		return query.list();
+	}
 }
