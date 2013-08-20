@@ -542,8 +542,9 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		var locationId=cast[i].locationId;
 		else
 		locationId = 0;
-		//var totalVoters=subLevelcastData.totalVoters;
-		var totalVoters=subLevelcastData.totalCastKnownVoters;
+		var totalVoters=subLevelcastData.totalVoters;
+		
+		//var totalVoters=subLevelcastData.totalCastKnownVoters;
 		var cast1 =subLevelcastData.castVOs;
 			var castData = new Object();
 			for(var k in cast1)
@@ -785,6 +786,7 @@ function buildCastInfoForSubLevels(myresults,jsObj,castesSlctdList)
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].caste+'</td>';
 		}
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].casteCategory+'</td>';
+		
 		str +='<td>'+constMgmtMainObj.castStatssubArray[i].totalVoters+'</td>';
 		str+='<td>'+constMgmtMainObj.castStatssubArray[i].castePopulation+'</td>';
 		if(constMgmtMainObj.castStatssubArray[i].malePopulation ==null)
