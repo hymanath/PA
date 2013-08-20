@@ -455,6 +455,7 @@ function callAjax(param,jsObj,url){
 										if(myResults.electionResultsInDistricts.allPartiesResults != null &&
 											myResults.electionResultsInDistricts.allPartiesResults.length > 0)
 										{
+											$("#analysisToolsDataDiv").css("display","none");
 											showDistrictWiseResultsLineGraph(myResults);
 										    <c:if test="${hasDeatiledAnalysis}">
 											buildAllDistrictResultsDataTable(myResults);
@@ -466,6 +467,7 @@ function callAjax(param,jsObj,url){
 											var toolsDiv = document.getElementById("analysisToolsDataDiv");
 											var subRegionsDiv = document.getElementById("subRegionWiseDetailsDiv");
                                             toolsDiv.innerHTML='';
+											$("#analysisToolsDataDiv").css("display","none");
 											subRegionsDiv.innerHTML='';
 										}
 										</c:if>
