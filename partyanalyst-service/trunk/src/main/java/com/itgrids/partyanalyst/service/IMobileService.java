@@ -7,7 +7,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IMobileService {
 	
- public ResultStatus createDataDumpFileForSelectedConstituency(Long constituencyId);
+ public ResultStatus createDataDumpFileForSelectedConstituency(Long constituencyId,String path);
  
  public List<SelectOptionVO> getConstituencyList();
 
