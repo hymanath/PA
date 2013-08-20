@@ -35,6 +35,6 @@ public interface IVoterCastInfoDAO extends GenericDao<VoterCastInfo,Long>{
 	
 	public List<Object[]> getTopThreeCasteForPanchayat(Long panchayatId,Long reportId,Long publicationId,Long userId);
 	
-	public List<VoterCastInfo> getVoterCasteInfoList(Long constituencyId,Long userId);
+	public List<VoterCastInfo> getVoterCasteInfoList(Long constituencyId,Long publicationDateId,Long userId);
 	
 }
