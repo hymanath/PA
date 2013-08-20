@@ -85,7 +85,7 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetVoterCasteInfoList()
 	{
-		List<VoterCastInfo> list = voterCastInfoDAO.getVoterCasteInfoList(232l, 1l);
+		List<VoterCastInfo> list = voterCastInfoDAO.getVoterCasteInfoList(232l,8l,1l);
 		System.out.println(list.size());
 		StringBuilder str = new StringBuilder();
 		for(VoterCastInfo vCastInfo:list)
