@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -27,7 +28,16 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private ResultStatus resultStatus;
 	public static final Logger LOG = Logger.getLogger(MobileDataAction.class);
 	private List<SelectOptionVO> constituencyList;
+	private String filePath;
 	
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
 	public String getTask() {
 		return task;
 	}
@@ -98,6 +108,11 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
         if(user == null)
     	  return ERROR;
 		
+        if(request.getRequestURL().toString().contains("localhost"))
+        	filePath = "/PartyAnalyst/sqlite_dump.sql";
+        else
+        	filePath = "/sqlite_dump.sql";
+        
         constituencyList = mobileService.getConstituencyList();
         if(constituencyList != null)
          constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
@@ -115,7 +130,10 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		 jObj = new JSONObject(getTask());
 		 
 		 if(jObj.getString("task").equalsIgnoreCase("createDataDump"))
-		  resultStatus = mobileService.createDataDumpFileForSelectedConstituency(jObj.getLong("constituencyId"));
+		 {
+			 String path = IWebConstants.STATIC_CONTENT_FOLDER_URL+"/sqlite_dump.sql";
+			 resultStatus = mobileService.createDataDumpFileForSelectedConstituency(jObj.getLong("constituencyId"),path);
+		 }
 			
 		}catch (Exception e) {
 		 e.printStackTrace();
