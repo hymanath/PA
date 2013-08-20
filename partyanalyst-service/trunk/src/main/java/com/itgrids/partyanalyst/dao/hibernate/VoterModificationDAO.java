@@ -647,7 +647,15 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		queryObj.setParameterList("partNosList", partNosList);
 		
 		return queryObj.list();
-		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterModificationDetailsOfAConstituencyForAPublication(Long constituencyId, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select model.voterModificationId,model.voter.voterId, model.status, model.partNo, model.constituency.constituencyId,model.publicationDate.publicationDateId,model.voterStatus.voterStatusId from VoterModification model, BoothPublicationVoter model2 where " +
+				" model.voter.voterId = model2.voter.voterId and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
 }
