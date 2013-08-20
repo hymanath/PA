@@ -2020,7 +2020,7 @@ function buildSelectedDateEventPopup(results,jsObj)
 		divChild.innerHTML=eventStr;
 
 		elmt.appendChild(divChild);
-
+		$('#repeatFreqSelectUpdate').val(results[0].frequency);
 		/*if(eventDateDialog)
 			eventDateDialog.destroy();
 
@@ -3826,7 +3826,7 @@ function checkDate()
 		  var date1 = new Date(yr1, mon1, dt1);
 		  var date2 = new Date(yr2, mon2, dt2);
 		
-		 if(date2 < date1)
+		 if($('#repeatFreqSelect').val() != 'No Repeat' && (date2 < date1))
 			{ 
 			 $('#errorMesgDIV').html("<b><font color='red'>Please Enter a valid Date</font></b>");
 			 return true;
