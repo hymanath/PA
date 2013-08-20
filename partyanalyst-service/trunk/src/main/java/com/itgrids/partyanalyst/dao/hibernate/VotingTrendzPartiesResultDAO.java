@@ -31,9 +31,16 @@ public class VotingTrendzPartiesResultDAO extends GenericDaoHibernate<VotingTren
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<VotingTrendzPartiesResult> getVotingTrendzPartiesResultList()
+	public List<VotingTrendzPartiesResult> getVotingTrendzPartiesResultList(Long constituencyId)
 	{
-		Query query = getSession().createQuery(" from VotingTrendzPartiesResult model ");
+		Query query = getSession().createQuery(" from VotingTrendzPartiesResult model where model.votingTrendz.constituency.constituencyId = :constituencyId ");
+		query.setParameter("constituencyId",constituencyId);
 		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getpartiesListForVotingTrendz(Long constituencyId)
+	{
+		return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from VotingTrendzPartiesResult model where model.votingTrendz.constituency.constituencyId = ? order by model.party.shortName ",constituencyId);
 	}
 }
