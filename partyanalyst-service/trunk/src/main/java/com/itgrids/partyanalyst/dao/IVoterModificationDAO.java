@@ -67,4 +67,5 @@ public interface IVoterModificationDAO extends GenericDao<VoterModification,Long
 	
 	public List<Object[]> getMovedOrRelocatedVoterDetails(Long constituencyId, Long publicationDateId, List<Long> partNosList);
 	
+	public List<Object[]> getVoterModificationDetailsOfAConstituencyForAPublication(Long constituencyId, Long publicationDateId);
 }
