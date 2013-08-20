@@ -209,7 +209,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getUserAssignedVotersCastesByCosntiId(Long constituencyId,Long userId);
 	
 	public List<Object[]> getUserAssignedCasteCountByBoothIdAndPublication(List<Long> boothIds,Long publicationId,Long userId);
-
+	
 	public List<Object[]> getCasteInHamlet(List<Long> hamletIds,Long userId,Long publicationId);
 
 	public List<Object[]> getVoterCountByHamlet(List<Long> hamletIds,Long userId,Long publicationId);
@@ -221,4 +221,11 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long hamletId,String mobileNo);
 	
 	public void updateUserVoterDetailsWithWard(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long wardId,String mobileNo);
+	
+	public List<Object[]> getCaste3();
+	
+	public List<Object[]> getPanchayatWiseCasteAssigned();
+	
+	public List<UserVoterDetails> getUserVoterDetailsOfAConstituencyForAPublication(Long constituencyId, Long publicationDateId, Long userId);
+	
 }
