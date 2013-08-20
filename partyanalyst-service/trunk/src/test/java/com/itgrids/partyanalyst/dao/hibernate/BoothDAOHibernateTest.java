@@ -706,10 +706,30 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 	{
 		boothDAO.getBoothsListByConstituencyId(232L);
 	}*/
-	public void testgetConstituencyHamletCount()
+	
+	/*public void testGetLatestPublicationDateIdForAConstituency()
+	{
+		System.out.println(boothDAO.getLatestPublicationDateIdForAConstituency(232l));
+	}*/
+	/*public void testGetTehsilsForAConstituencyForAPublication()
+	{
+		List<Object[]> list = boothDAO.getTehsilsForAConstituencyForAPublication(232l,8l);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetPanchayatsForAConstituencyForAPublication()
+	{
+		List<Object[]> list = boothDAO.getPanchayatsForAConstituencyForAPublication(232l,8l);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testgetConstituencyHamletCount()
 	{
 		System.out.println(boothDAO.getHamletIdsListByConstituencyId(232l, 8l));
+	}*/
+	public void testGetHamletsForAConstituencyForAPublication()
+	{
+		List<Object[]> list = boothDAO.getHamletsForAConstituencyForAPublication(232l,8l);
+		System.out.println(list.size());
 	}
-	
-	
 }
