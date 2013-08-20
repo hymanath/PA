@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Analyst - Know, Analyse, Act</title>
-<link rel="stylesheet" type="text/css" href="style.css"/> 
+<!-- <link rel="stylesheet" type="text/css" href="style.css"/>  -->
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap.min.css" rel="stylesheet" />
 		<link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />

@@ -35,7 +35,7 @@
 		
 		<!--<link type="text/css" href="styles/assets/css/bootstrap-responsive.min.css" rel="stylesheet" />-->
 		 		 
-		<link rel="stylesheet" type="text/css" href="style.css"/> 
+		<!-- <link rel="stylesheet" type="text/css" href="style.css"/>  -->
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
 		<link href="styles/rating/jquery.rating.css" rel="stylesheet" type="text/css">
@@ -43,7 +43,7 @@
 		<script src="js/rating/jquery.MetaData.js" type="text/javascript"></script>
 		<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
 			
-	      <script src="js/slides.min.jquery.js"></script>
+	     <!-- <script src="js/slides.min.jquery.js"></script> -->
 		  <script type="text/javascript" src="js/jquery.carousel.js"></script>
 		  <script type="text/javascript" src="js/homePage/newHomePage.js"> </script>
 		  <script type="text/javascript" src="js/homePage/newHomePage_inner.js"> </script>

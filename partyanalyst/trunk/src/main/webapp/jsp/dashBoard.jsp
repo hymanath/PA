@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>DashBoard</title>			 
-	<link rel="stylesheet" type="text/css" href="style.css"/> 
+	<!-- <link rel="stylesheet" type="text/css" href="style.css"/>  -->
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
 	<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
