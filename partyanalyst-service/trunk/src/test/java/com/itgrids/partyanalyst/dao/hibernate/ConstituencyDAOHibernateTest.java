@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.model.Constituency;
 
 
 public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
@@ -418,8 +419,9 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testgetConstituencyDetails()
+	public void testGetConstituencyDetails()
 	{
-		constituencyDAO.getConstituencyDetails();
+		List<Constituency> list = constituencyDAO.getConstituencyDetails();
+		System.out.println(list.size());
 	}
 }
