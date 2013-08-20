@@ -4555,4 +4555,22 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			Query query = getSession().createQuery(str.toString());
 			return query.list();
 		}
+		
+		public List<Object[]> getRecordsFromBoothPublicationVoter(Long constituencyId, Long publicationDateId)
+		{
+			Query query = getSession().createQuery(" select model.boothPublicationVoterId, model.booth.boothId, model.voter.voterId, model.serialNo from BoothPublicationVoter model where model.booth.constituency.constituencyId = :constituencyId and model.booth.publicationDate.publicationDateId = :publicationDateId ");
+			query.setParameter("publicationDateId",publicationDateId);
+			query.setParameter("constituencyId",constituencyId);
+			return query.list();
+		}
+		
+		public List<Object[]> getVoterDetailsOfAConstituency(Long constituencyId, Long publicationDateId, Long userId)
+		{
+			Query query = getSession().createQuery("select model.voter.voterId, model.voter.houseNo, model.voter.name,model.voter.relationshipType,model.voter.relativeName,model.voter.gender,model.voter.age,model.voter.voterIDCardNo,model2.mobileNo  from BoothPublicationVoter model, UserVoterDetails model2 where " +
+					" model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId = :constituencyId and model.booth.publicationDate.publicationDateId = :publicationDateId and model2.user.userId = :userId ");
+			query.setParameter("constituencyId",constituencyId);
+			query.setParameter("publicationDateId",publicationDateId);
+			query.setParameter("userId",userId);
+			return query.list();
+		}
 }
