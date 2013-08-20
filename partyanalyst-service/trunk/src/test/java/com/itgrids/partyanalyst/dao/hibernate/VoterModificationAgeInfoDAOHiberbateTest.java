@@ -33,11 +33,17 @@ public class VoterModificationAgeInfoDAOHiberbateTest extends BaseDaoTestCase{
 		voterModificationAgeInfoDAO.getGenderWiseVoterModificationsBetweenPublications(1l,2l,3l,ids1,ids2);
 	}*/
 	
-	public void testgetVoterModificationIds()
+	/*public void testgetVoterModificationIds()
 	{
 		List<Long> modificationIdsList = new ArrayList<Long>(0);
 		modificationIdsList.add(413l);
 		modificationIdsList.add(414l);
 		System.out.println(voterModificationAgeInfoDAO.getVoterModificationIds(modificationIdsList).size());
+	}*/
+	
+	public void testGetVoterModificationAgeInfoDetailsOfAConstituencyForAPublication()
+	{
+		List<Object[]> list = voterModificationAgeInfoDAO.getVoterModificationAgeInfoDetailsOfAConstituencyForAPublication(232l,8l);
+		System.out.println(list.size());
 	}
 }
