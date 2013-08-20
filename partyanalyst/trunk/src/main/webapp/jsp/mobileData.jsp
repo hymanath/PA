@@ -82,7 +82,7 @@
      Constituency<s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" /> 
   
     <input type="button" class="btn btn-info" value="create Dump File" id="createTempFile"/>
-    <a style="margin-left: 11px;" href="/PartyAnalyst/sqlTempFile.sql" class="btn btn-info" download>Download link</a>
+    <a style="margin-left: 11px;" href="${filePath}" class="btn btn-info" download>Download link</a>
 	</div>
   </div>
 
