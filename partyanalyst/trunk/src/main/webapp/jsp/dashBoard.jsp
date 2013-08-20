@@ -755,6 +755,9 @@ lable{line-height:40px;}
 
 <script>
  $(document).ready(function(){
+	$('.active').removeClass(); 
+	$('#dashBoardBtn').css("background-color","red"); 
+	
 	 $('#electionYearsId').val($("#electionYearsId option:eq(1)").val());
 	 constituencyOptions("default");
 
