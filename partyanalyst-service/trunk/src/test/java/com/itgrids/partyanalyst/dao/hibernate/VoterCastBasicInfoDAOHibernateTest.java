@@ -31,6 +31,6 @@ public class VoterCastBasicInfoDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetVoterCastBasicInfoList()
 	{
-		voterCastBasicInfoDAO.getVoterCastBasicInfoList(232l, 1l);
+		voterCastBasicInfoDAO.getVoterCastBasicInfoList(232l,8l,1l);
 	}
 }
