@@ -2586,7 +2586,7 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 	chartResultDiv.innerHTML = chart;
 	
 	detailsDIV += '<table><tr>';
-	detailsDIV += '<td><div><a href="javascript:{}" title="Click here to view All Parties performance in different elections of ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency" style="background:none repeat scroll 0 0 #335291;color:#FFFFFF;font-size:13px;margin-left:432px;padding:5px;width:113px;" onclick="showDetailedChart(\''+enlargedChartName+'\')" value="Detailed Chart">Detailed Chart</a></div></td>';
+	//detailsDIV += '<td><div><a href="javascript:{}" title="Click here to view All Parties performance in different elections of ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency" style="background:none repeat scroll 0 0 #335291;color:#FFFFFF;font-size:13px;margin-left:432px;padding:5px;width:113px;" onclick="showDetailedChart(\''+enlargedChartName+'\')" value="Detailed Chart">Detailed Chart</a></div></td>';
 	
 	details.innerHTML = detailsDIV;
 	document.getElementById('constituencyPageElectionInfoDiv_Body').style.display='none';
