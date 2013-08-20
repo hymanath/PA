@@ -113,4 +113,12 @@ public class HamletDAO extends GenericDaoHibernate<Hamlet, Long> implements IHam
 		query.setParameterList("hamletIds", hamletIds);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> gethamletsInAState(Long stateId)
+	{
+		Query query = getSession().createQuery("select model.hamletId, model.hamletName,model.township.tehsil.tehsilId from Hamlet model where model.township.tehsil.district.state.stateId = :stateId ");
+		query.setParameter("stateId",stateId);
+		return query.list();
+	}
 }
