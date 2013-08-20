@@ -20,12 +20,12 @@ public class HamletDAOHibernateTest extends BaseDaoTestCase{
 	}
 	
 	
-	public void testFindByTehsilTownshipAndHamletName(){
+	/*public void testFindByTehsilTownshipAndHamletName(){
 		List<Hamlet> list = hamletDAO.findByTehsilTownshipAndHamletName(new Long(298), "Sangam", "SANGAM");
 		//assertEquals(2, list.size());
 		
 		System.out.println(list.size());
-	}
+	}*/
 	
 	/*public void testFindByHamletNameAndTownshipId(){
 		List list = hamletDAO.findByHamletNameAndTownshipId(21818l, "GOGULAPALLI");
@@ -50,12 +50,18 @@ public class HamletDAOHibernateTest extends BaseDaoTestCase{
 	}
 	
 	*/
-	public void testGetAllHamletsForGivenTehsils(){
+	/*public void testGetAllHamletsForGivenTehsils(){
 		List<Long> list = new ArrayList<Long>();
 		list.add(new Long(1));
 		list.add(new Long(2));
 		List  result = hamletDAO.findHamletsByTehsilIds(list);
 		System.out.println(result);
+	}*/
+	
+	public void testGethamletsInAState()
+	{
+		List<Object[]> list = hamletDAO.gethamletsInAState(1l);
+		System.out.println(list.size());
 	}
 	
 }
