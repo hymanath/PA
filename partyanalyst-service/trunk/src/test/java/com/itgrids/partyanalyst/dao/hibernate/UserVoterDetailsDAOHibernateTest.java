@@ -1,12 +1,17 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.UserVoterDetails;
 
 
 
@@ -414,13 +419,74 @@ for (Object[] objects : list) {
 			System.out.println(parms[0] +":"+ parms[2]);
 		}
 	}*/
+	/*public void testForCaste()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getCaste3();
+		List<Object[]> list2 = userVoterDetailsDAO.getPanchayatWiseCasteAssigned();
+		
+		System.out.println(list.size());
+		
+		Map<String,List<SelectOptionVO>> map = new LinkedHashMap<String, List<SelectOptionVO>>(0);
+		Map<String,Long> map2 = new LinkedHashMap<String,Long>();
+		
+		for(Object[] params : list2)
+		{
+			map2.put(params[0].toString(),(Long)params[1]);
+		}
+		
+		for(Object[] params : list)
+		{
+			List<SelectOptionVO> selist = null;
+			if(!map.containsKey(params[0].toString()))
+				map.put(params[0].toString(),null);
+			
+			selist = map.get(params[0].toString());
+			if(selist == null)
+			{
+				selist = new ArrayList<SelectOptionVO>(0);
+			}
+			if(selist.size() < 6)
+			{
+				SelectOptionVO vo = new SelectOptionVO();
+				vo.setId((Long)params[2]);
+				vo.setName(params[1].toString());
+				Long casteCount = map2.get(params[0].toString());
+				if(casteCount != null)
+				{
+					vo.setValue((new BigDecimal(vo.getId().doubleValue()*100/casteCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+				}
+				selist.add(vo);
+				map.put(params[0].toString(),selist);
+			}
+		}
+		
+		for(Map.Entry<String,List<SelectOptionVO>> entry : map.entrySet())
+		{
+			System.out.print(entry.getKey()+"\t");
+			List<SelectOptionVO> castInf = entry.getValue();
+			String str = "";
+			for(SelectOptionVO so : castInf)
+			{
+				str += " "+so.getName()+"("+so.getId()+" - "+so.getValue()+"),";
+			}
+			str = str.substring(0, str.length()-1);
+			System.out.println(str);
+		}
+			
+	}*/
 	
-	public void testgetCasteDetailsOfVoterByBoothId()
+	/*public void testgetCasteDetailsOfVoterByBoothId()
 	{
 
 		List<Object[]> values = userVoterDetailsDAO.getCasteDetailsOfVoterByLocationId(399l,8l,1l,"panchayat");
 		for (Object[] objects : values) {
 			System.out.println(objects[0] +"\n"+ objects[1] +"\n"+ objects[2]+"\n"+ objects[3]);
 		}
+	}*/
+	
+	public void testGetUserVoterDetailsOfAConstituencyForAPublication()
+	{
+		List<UserVoterDetails> list = userVoterDetailsDAO.getUserVoterDetailsOfAConstituencyForAPublication(221l, 8l, 1l);
+		System.out.println(list.size()); 
 	}
 }
