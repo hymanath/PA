@@ -835,9 +835,9 @@ public class ConstituencyPageAction extends ActionSupport implements
 			electionTrendzReportVO.setPrevElectionYearsInfo(electionTrendzService.getPreviousElectionsInfoForAConstituency(electionBasicInfoVO.
 					getElectionYear(), constituencyId));
            }
-           	
-        chartName = "allPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
-        String chartPath;
+           	// jfree chart code
+       /* chartName = "allPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
+      String chartPath;
         if(cPath.contains("PartyAnalyst"))
             chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         else
@@ -856,7 +856,7 @@ public class ConstituencyPageAction extends ActionSupport implements
         
         partiesInChart = new LinkedHashSet<String>();
    		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
-   				createDataset(constituencyElectionResultsVO, partiesInChart), enlargedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart) ,true);
+   				createDataset(constituencyElectionResultsVO, partiesInChart), enlargedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart) ,true);*/
    		List<Long> constituencyIds = new ArrayList<Long>();
    		if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
    			constituencyIds.add(constituencyId);
