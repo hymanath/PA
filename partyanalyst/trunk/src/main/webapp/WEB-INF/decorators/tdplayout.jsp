@@ -221,7 +221,7 @@ margin-top:10px;
 		</div>
 		</li>
         
-		<li><a href="initailConstituencyManagementAction.action" class="parent"><span>MANAGEMENT TOOLS</span></a>
+		<li id="mangntId"><a href="initailConstituencyManagementAction.action" class="parent"><span>MANAGEMENT TOOLS</span></a>
             <div  style="z-index:1;text-align:left;">
 				<ul>
 					<li><a href="#" class="parent"><span>Problem Management</span></a>
@@ -315,7 +315,7 @@ margin-top:10px;
 		
 		
 	
-		<li>
+		<li id="dashBoardBtn">
 			<a href="dashBoardAction.action"><span>DASHBOARD</span></a> 
 		</li>
 					
