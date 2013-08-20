@@ -165,10 +165,11 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<VoterCastInfo> getVoterCasteInfoList(Long constituencyId,Long userId)
+	public List<VoterCastInfo> getVoterCasteInfoList(Long constituencyId,Long publicationDateId,Long userId)
 	{
-		Query query = getSession().createQuery(" from VoterCastInfo model where model.constituency.constituencyId =:constituencyId and model.userId =:userId ");
+		Query query = getSession().createQuery(" from VoterCastInfo model where model.constituency.constituencyId =:constituencyId and model.publicationDateId = :publicationDateId and model.userId =:userId ");
 		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
 		query.setParameter("userId", userId);
 		return query.list();
 	}
