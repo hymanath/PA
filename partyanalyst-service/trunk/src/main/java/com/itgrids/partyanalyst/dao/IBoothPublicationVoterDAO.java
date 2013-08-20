@@ -427,4 +427,8 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVoterDetailsForMessageCenter(Long constituencyId,Long publicationDateId,Long locationValue,String queryStr,Integer startIndex, Integer maxIndex,Long userId);
 	  
 	  
+	  
+	  public List<Object[]> getRecordsFromBoothPublicationVoter(Long constituencyId, Long publicationDateId);
+	  
+	  public List<Object[]> getVoterDetailsOfAConstituency(Long constituencyId, Long publicationDateId, Long userId);
 }
