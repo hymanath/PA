@@ -265,7 +265,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
         
 <div id="menu">
     <ul class="menu">
-        <li><a href="homePage.action"><span><i class="icon-home icon-white"></i></span></a>
+        <li class="active"><a href="homePage.action"><span><i class="icon-home icon-white"></i></span></a>
 <c:if test="${sessionScope.loginStatus == null || !sessionScope.hasPartyAnalystUserRole}">
           <li><a href="#" ><span>ANALYSIS</span></a>
             <div style="z-index:1;text-align:left;"><ul>
@@ -458,7 +458,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
         </li>	
 
 		<c:if test="${sessionScope.loginStatus == 'out'}">  
-							<li> 
+							<li id="dashBoardBtn"> 
 						<c:choose>
 							<c:when test="${sessionScope.hasPartyAnalystUserRole == true}"> 
 							<a id="dashBoardId" href="<c:out value="${pageContext.request.contextPath}" />/userProfile.action" >
