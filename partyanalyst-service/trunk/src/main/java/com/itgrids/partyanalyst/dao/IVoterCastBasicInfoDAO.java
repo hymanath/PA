@@ -16,6 +16,6 @@ public interface IVoterCastBasicInfoDAO extends GenericDao<VoterCastBasicInfo, L
 	
 	public List<Object[]> getToatlVotersForSelectedLevl(List<Long> levelValues,Long userId,Long publicationId,Long levelId,Long constituencyId);
 	
-	public List<VoterCastBasicInfo> getVoterCastBasicInfoList(Long constituencyId,Long userId);
+	public List<VoterCastBasicInfo> getVoterCastBasicInfoList(Long constituencyId,Long publicationDateId, Long userId);
 	
 }
