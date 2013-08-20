@@ -1433,4 +1433,55 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			 return query.list();
 		}
 		
+		public Long getLatestPublicationDateIdForAConstituency(Long constituencyId)
+		{
+			Long id = null;
+			Query query = getSession().createQuery("select model.publicationDate.publicationDateId from Booth model where model.constituency.constituencyId = :constituencyId order by model.publicationDate.date DESC");
+			query.setParameter("constituencyId",constituencyId);
+			query.setFirstResult(0);
+			query.setMaxResults(1);
+			try{
+				id = (Long) query.list().get(0);
+			}catch(Exception e){
+				id = 0L;
+			}
+			 return id;
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getTehsilsForAConstituencyForAPublication(Long constituencyId, Long publicationDateId)
+		{
+			Query query = getSession().createQuery("select distinct model.panchayat.tehsil.tehsilId,model.panchayat.tehsil.tehsilName,model.panchayat.tehsil.district.districtId from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId ");
+			query.setParameter("constituencyId",constituencyId);
+			query.setParameter("publicationDateId",publicationDateId);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getPanchayatsForAConstituencyForAPublication(Long constituencyId, Long publicationDateId)
+		{
+			Query query = getSession().createQuery("select distinct model.panchayat.panchayatId,model.panchayat.panchayatName,model.panchayat.tehsil.tehsilId from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId ");
+			query.setParameter("constituencyId",constituencyId);
+			query.setParameter("publicationDateId",publicationDateId);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getHamletsForAConstituencyForAPublication(Long constituencyId, Long publicationDateId)
+		{
+			Query query = getSession().createQuery("select distinct model.hamlet.hamletId, model.hamlet.hamletName, model.panchayat.panchayatId,model.panchayat.tehsil.tehsilId from PanchayatHamlet model,Booth model2 where " +
+					" model.panchayat.panchayatId = model2.panchayat.panchayatId and model2.constituency.constituencyId = :constituencyId and model2.publicationDate.publicationDateId = :publicationDateId ");
+			query.setParameter("constituencyId",constituencyId);
+			query.setParameter("publicationDateId",publicationDateId);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Booth> getBoothOfAConstituencyInAPublication(Long constituencyId, Long publicationDateId)
+		{
+			Query query = getSession().createQuery("select model from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId ");
+			query.setParameter("constituencyId",constituencyId);
+			query.setParameter("publicationDateId",publicationDateId);
+			return query.list();
+		}
 }
