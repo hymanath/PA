@@ -84,7 +84,7 @@ public class VoterModificationInfoDAOHibernateTest extends BaseDaoTestCase{
 	
 	}*/
 	
-	public void testGetVoterModificationDetailsByModificationIdsList()
+	/*public void testGetVoterModificationDetailsByModificationIdsList()
 	{
 		List<Long> modificationIdsList = new ArrayList<Long>(0);
 		modificationIdsList.add(1l);
@@ -96,5 +96,11 @@ public class VoterModificationInfoDAOHibernateTest extends BaseDaoTestCase{
 		for(Object[] params : list)
 			System.out.println(params[0]+" "+params[1]);
 		
+	}*/
+	
+	public void testGetVoterModificationInfoOfAConstituencyForAPublication()
+	{
+		List<Object[]> list = voterModificationInfoDAO.getVoterModificationInfoOfAConstituencyForAPublication(232l,8l);
+		System.out.println(list.size());
 	}
 }
