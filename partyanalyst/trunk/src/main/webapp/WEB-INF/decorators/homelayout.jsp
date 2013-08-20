@@ -399,7 +399,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
         </li>	
 
 		<c:if test="${sessionScope.loginStatus == 'out'}">  
-			<li> 
+			<li id="dashBoardBtn"> 
 				<c:choose>
 				<c:when test="${sessionScope.hasPartyAnalystUserRole == true}"> 
 		<a href="<c:out value="${pageContext.request.contextPath}" />/userProfile.action" >
