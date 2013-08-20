@@ -246,7 +246,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testGetMovedOrRelocatedVoterDetails()
+	/*public void testGetMovedOrRelocatedVoterDetails()
 	{
 		List<Long> partNosList = new ArrayList<Long>(0);
 		partNosList.add(93l);
@@ -254,6 +254,12 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		List<Object[]> list = voterModificationDAO.getMovedOrRelocatedVoterDetails(232l, 8l, partNosList);
 		System.out.println(list.size());
 		
+	}*/
+	
+	public void testGetVoterModificationDetailsOfAConstituencyForAPublication()
+	{
+		List<Object[]> list = voterModificationDAO.getVoterModificationDetailsOfAConstituencyForAPublication(232l, 8l);
+		System.out.println(list.size());
 	}
 	
 	
