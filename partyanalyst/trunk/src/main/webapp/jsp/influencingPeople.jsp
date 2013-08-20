@@ -1018,20 +1018,20 @@ function refreshingParentWindow()
 		<c:if test="${ !empty voterId}">
 			<div id="saveDiv" align="center">
 			<s:submit cssClass="button" value="Save" name="Save" ></s:submit>
-			<input type="button" value="Exit" class="button" />
+			<input type="button" value="Exit" class="button" onclick="window.close();"/>
 			</div>
 		</c:if>
 		<c:if test="${ empty voterId}">
 		<div id="saveDiv" align="center">
 		<s:submit cssClass="button" value="Save" name="Save"></s:submit>
-		<input type="button" value="Exit" class="button" />
+		<input type="button" value="Exit" class="button" onclick="window.close();"/>
 		</div>
 		</c:if>
 	</c:if>
 	<c:if test="${windowTask == 'new'}">
 		<div id="saveDiv" align="center">
 		<s:submit cssClass="button" value="Save" name="Save"></s:submit>
-		<input type="button" value="Exit" class="button"/>
+		<input type="button" value="Exit" class="button" onclick="window.close();"/>
 		</div>
 	</c:if>
 
