@@ -169,7 +169,7 @@ function buildColumnChart(result)
                 type: 'column'
             },
             title: {
-                text: 'Monthly Average Rainfall'
+                text: ''
             },
            
             xAxis: {
