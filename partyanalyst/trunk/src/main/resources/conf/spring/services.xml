@@ -1719,6 +1719,13 @@
      <property name="votingTrendzPartiesResultDAO" ref="votingTrendzPartiesResultDAO" />
      <property name="casteDAO" ref="casteDAO" />
      <property name="constituencyHierarchyInfoDAO" ref="constituencyHierarchyInfoDAO" />
+     <property name="hamletDAO" ref="hamletDAO" />
+     <property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
+     <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+     <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
+     <property name="voterModificationDAO" ref="voterModificationDAO" />
+     <property name="voterModificationInfoDAO" ref="voterModificationInfoDAO" />
+     <property name="voterModificationAgeInfoDAO" ref="voterModificationAgeInfoDAO" />
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
