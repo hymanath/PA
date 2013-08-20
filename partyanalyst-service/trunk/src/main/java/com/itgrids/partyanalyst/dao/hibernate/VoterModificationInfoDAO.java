@@ -167,4 +167,14 @@ public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificat
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterModificationInfoOfAConstituencyForAPublication(Long constituencyId, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select model.voterModificationInfoId,model.voterReportLevel.voterReportLevelId,model.reportLevelValue,model.publicationDate.publicationDateId,model.constituencyId, model.voterStatus.voterStatusId, " +
+				" model.totalVoters, model.maleVoters, model.femaleVoters from VoterModificationInfo model where model.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
+	
 }
