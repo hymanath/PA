@@ -78,8 +78,8 @@ public class PanchayatHamletDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(parms[2] +":"+ parms[3]);
 		}
 	}*/
-	/*
-	public void testgetHamletDetailsByPanchayatIds(){
+	
+	/*public void testgetHamletDetailsByPanchayatIds(){
 	List<Long> panchayatIds = new ArrayList<Long>();
 	panchayatIds.add(5344l);
 	
@@ -90,13 +90,19 @@ public class PanchayatHamletDAOHibernateTest extends BaseDaoTestCase{
 	}
 }*/
 	
- public void testgetHamletCount()
- {
-	 List<Long> locationIdsList = new ArrayList<Long>(0);
-	 locationIdsList.add(1L);
-	 List<Object[]> list = panchayatHamletDAO.getHamletCount(locationIdsList, "panchayatHamlets");
-	 System.out.println(list.size());
-	 for(Object[] params:list)
-	  System.out.println(params[0]+" "+params[1]);
- }
+	/*public void testgetHamletCount()
+	 {
+		 List<Long> locationIdsList = new ArrayList<Long>(0);
+		 locationIdsList.add(1L);
+		 List<Object[]> list = panchayatHamletDAO.getHamletCount(locationIdsList, "panchayatHamlets");
+		 System.out.println(list.size());
+		 for(Object[] params:list)
+		  System.out.println(params[0]+" "+params[1]);
+	 }*/
+	
+	public void testGethamletsInAState()
+	{
+		List<Object[]> list = panchayatHamletDAO.gethamletsInAState(1l);
+		System.out.println(list.size());
+	}
 }
