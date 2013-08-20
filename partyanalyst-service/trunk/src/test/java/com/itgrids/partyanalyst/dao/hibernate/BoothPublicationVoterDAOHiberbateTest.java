@@ -743,8 +743,8 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 				System.out.print(o.toString()+" ");
 			}
 			System.out.println();
-		}
-		System.out.println("--------");
+		}*/
+		/*System.out.println("--------");
 		for(Object[] l:list1){
 			for(Object o:l){
 				System.out.print(o.toString()+" ");
@@ -775,10 +775,23 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testgetVoterDetailsForMessageCenter()
+	/*public void testGetRecordsFromBoothPublicationVoter()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(232l,8l);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testgetVoterDetailsForMessageCenter()
 	{
 		String queryStr = "";
 		List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsForMessageCenter(232l, 8l, 2844l, queryStr, null, null, 1l);
+	}*/
+	
+	public void testGetVoterDetailsOfAConstituency()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsOfAConstituency(232l,8l,1l);
+		System.out.println(list.size());
 	}
+	
 	
 }
