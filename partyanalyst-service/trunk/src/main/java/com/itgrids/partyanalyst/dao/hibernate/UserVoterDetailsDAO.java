@@ -2170,4 +2170,34 @@ IUserVoterDetailsDAO{
 			
 			query.executeUpdate();
 		}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPanchayatWiseCasteAssigned()
+	{
+		Query query = getSession().createQuery("select BPV.booth.panchayat.panchayatName,count(UVD.voter.voterId) from UserVoterDetails UVD,BoothPublicationVoter BPV where " +
+				" UVD.voter.voterId = BPV.voter.voterId and BPV.booth.constituency.constituencyId = 282 and BPV.booth.publicationDate.publicationDateId = 8 and UVD.casteState.casteStateId is not null " +
+				" group by BPV.booth.panchayat.panchayatId "+
+				" order by BPV.booth.tehsil.tehsilName,BPV.booth.panchayat.panchayatName");
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCaste3()
+	{
+		Query query = getSession().createQuery("select BPV.booth.panchayat.panchayatName,UVD.casteState.caste.casteName,count(UVD.voter.voterId) from UserVoterDetails UVD,BoothPublicationVoter BPV where " +
+				" UVD.voter.voterId = BPV.voter.voterId and BPV.booth.constituency.constituencyId = 282 and BPV.booth.publicationDate.publicationDateId = 8 group by BPV.booth.panchayat.panchayatId, UVD.casteState.casteStateId " +
+				" order by BPV.booth.tehsil.tehsilName,BPV.booth.panchayat.panchayatName, count(UVD.voter.voterId) desc");
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserVoterDetails> getUserVoterDetailsOfAConstituencyForAPublication(Long constituencyId, Long publicationDateId, Long userId)
+	{
+		Query query = getSession().createQuery("select model from UserVoterDetails model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and " +
+				" model.user.userId = :userId and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("userId",userId);
+		return query.list();
+	}
 }
