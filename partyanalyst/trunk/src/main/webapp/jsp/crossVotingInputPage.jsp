@@ -876,12 +876,12 @@ $(document).ready(function(){
 					</td>
 					<td></td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td colspan="4">
 							<br><b>
 							Note: <b><font color="red">*</font></b>&nbsp;Indicates mandatory field
 					</b></td>
-				</tr>
+				</tr> -->
 				<tr>
 					<td colspan="4" align="center">
 						<div id="ajaxLoadDiv" style="display:none;padding-top:20px;">
