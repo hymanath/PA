@@ -2906,7 +2906,7 @@ function getPeopleYouMayKnowDetails()
 
 function buildPeopleYouMayKnowBlock(results)
 {
-	
+	$('#dashBoardBtn').css("background-color","red"); 
 	$(".peopleYouMayKnowULClass").children().remove();
 	$(".peopleYouMayKnowInnerDiv").html('');
 
