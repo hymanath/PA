@@ -484,7 +484,14 @@
 		var tempStr ='';
 		tempStr+='	<table>';
 		tempStr+='		<tr>';
+		if(results.partyName =="")
+		{
 		tempStr+='			<td>All Parties Strengths and Weakness Details in <td>';
+		}
+		else
+		{
+		tempStr+='			<td>'+results.partyName+' Strengths and Weakness Details in <td>';
+		}
 		tempStr+='			<td> <b style="color:red;">'+results.totalNumberOfConstituencies+'</b> Constituencies<td>';
 		tempStr+='		</tr>';
 		tempStr+='	</table>';
@@ -1754,7 +1761,7 @@
 									</tr>
 								</table>
 							</div>
-							<div id="noDataDiv" style="display:none;font-weight:bold;font-size:13px;border: 2px solid #CFD6DF;color:red;"><span style="margin-left:40px"> No Data Avaialable </span></div>
+							<div id="noDataDiv" style="display:none;font-weight:bold;font-size:13px;border: 2px solid #CFD6DF;color:red;"><span style="margin-left:40px"> No Data Available </span></div>
 							<div id="required_const_body">
 									<div id="newConstAncSpan" class="mandalNamesDiv">		
 									<table>		
