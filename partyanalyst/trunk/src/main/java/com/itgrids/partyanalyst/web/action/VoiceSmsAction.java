@@ -319,8 +319,9 @@ public class VoiceSmsAction implements ServletRequestAware{
 			
 			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);	
 			if(requestURL.contains(".com"))
-			//	audioFilePath.append("http://www.partyanalyst.com/voice_recordings/"+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
-				audioFilePath.append(IWebConstants.VOICE_RECORDINGS_FOLDER_URL+pathSeperator+user.getRegistrationID()+pathSeperator+request.getParameter("audioFileName"));
+				
+			//	audioFilePath.append(""+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
+				audioFilePath.append(IWebConstants.LIVE_VOICE_RECORDINGS_URL+"/"+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
 			else
 				audioFilePath.append("http://122.169.253.134:8080/TDP/voice_recording/test6.wav");
 
