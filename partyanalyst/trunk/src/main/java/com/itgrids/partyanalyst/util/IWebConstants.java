@@ -31,6 +31,7 @@ public interface IWebConstants {
 	
 	public static final String PARTY_ANALYST_USER_ROLE = "hasPartyAnalystUserRole";
 	public static final String FREE_USER_ROLE = "hasFreeUserRole";
+	public static final String LIVE_VOICE_RECORDINGS_URL = "http://www.partyanalyst.com/voice_recordings/";
 	
 	public static final String CHART_URL_IN_SERVER = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\charts\\";
 	public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
