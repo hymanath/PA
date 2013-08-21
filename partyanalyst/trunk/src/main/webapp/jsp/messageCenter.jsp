@@ -401,6 +401,7 @@ $(document).ready(function() {
 
 <div id="influenceDiv">
 	<h5 style="color:#3A87AD;text-align:center;clear:both;">Available Influencing People</h5>
+	<div style="text-align:center;"><b>NOTE</b>:Click on the number to get corresponding influence pelple details.</div>
 
 		<div id="tableDiv"  class="datagrid" style="margin:10px;clear:both;"></div>
 
@@ -1560,5 +1561,4 @@ function showTermsAndConditiond()
 
 </script>
  </body>
- 
  </html>
