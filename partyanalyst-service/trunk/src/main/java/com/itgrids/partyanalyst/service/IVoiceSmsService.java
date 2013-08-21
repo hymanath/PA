@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public interface IVoiceSmsService {
 	public String sendVoiceSMS(String audioPath ,Long userId , String mobileNumbers,Long senderMobileNumber,String description);
 	public List<VoiceSmsResponseDetailsVO> getVoiceSmsHistoryForAuser(Long userId);
 	public List<Long> getVerifiedNumbersOfUser(Long userId);
-	public Map<String,Map<String,Integer>> generateVoiceSmsReport();
+	public Map<String,Map<String,Integer>> generateVoiceSmsReport(Date fromDate,Date toDate);
 	public List<VoiceSmsResponseDetailsVO> getResponseDetailsByResponseCode(String code);
 	public int getVerifiedNumbersCountOfUser(Long userId);
 

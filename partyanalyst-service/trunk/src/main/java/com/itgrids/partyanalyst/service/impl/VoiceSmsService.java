@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -251,7 +252,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		
 	}
 	
-	public Map<String,Map<String,Integer>> generateVoiceSmsReport()
+	public Map<String,Map<String,Integer>> generateVoiceSmsReport(Date fromDate,Date toDate)
 	{
 		log.debug("Entered into the generateVoiceSmsReport service method");
 		Map<String ,Map<String,Integer>> resultMap = new HashMap<String, Map<String,Integer>>();
@@ -259,7 +260,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		
 		try
 		{
-			List<Object[]> userDetailsList = voiceSmsResponseDetailsDAO.getVoiceSmsSentUserDetails();
+			List<Object[]> userDetailsList = voiceSmsResponseDetailsDAO.getVoiceSmsSentUserDetails( fromDate, toDate);
 			
 			
 			for(Object[] obj:userDetailsList)

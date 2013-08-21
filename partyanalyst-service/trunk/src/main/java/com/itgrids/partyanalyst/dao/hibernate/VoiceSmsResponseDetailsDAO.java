@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -34,10 +35,13 @@ public class VoiceSmsResponseDetailsDAO  extends GenericDaoHibernate<VoiceSmsRes
 		return query.list();
 	}
 	
-	public List<Object[]> getVoiceSmsSentUserDetails()
+	public List<Object[]> getVoiceSmsSentUserDetails(Date fromDate,Date toDate)
 	{
+		
 		Query query = getSession().createQuery("select distinct model.user.firstName , model.user.lastName , model.user.userId " +
-				"from  VoiceSmsResponseDetails model ");
+				"from  VoiceSmsResponseDetails model where  model.sentDate between date(:fromDate) and date(:toDate)");
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
 		
 		return query.list();
 	}
