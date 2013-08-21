@@ -286,7 +286,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 			if(requestURL.contains(".com"))
 				audioFilePath.append("http://www.partyanalyst.com/voice_recordings/"+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
 			else
-				audioFilePath.append("http://122.169.253.134:8080/PartyAnalyst/voice_recordings/"+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
+				audioFilePath.append("http://122.169.253.134:8080/TDP/voice_recording/test6.wav");
 
 			 jObj = new JSONObject(getTask());
 			

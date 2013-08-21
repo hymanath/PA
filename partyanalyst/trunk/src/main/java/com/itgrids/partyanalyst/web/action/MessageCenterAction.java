@@ -23,6 +23,7 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 
 public class MessageCenterAction  extends ActionSupport implements ServletRequestAware {
@@ -52,7 +53,27 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	private Long locationValue;
 	private String locationType;
 	private String locationName;
+	private int verifiedNumbersCount;
+	private IVoiceSmsService voiceSmsService;
 	
+
+	public IVoiceSmsService getVoiceSmsService() {
+		return voiceSmsService;
+	}
+
+	public void setVoiceSmsService(IVoiceSmsService voiceSmsService) {
+		this.voiceSmsService = voiceSmsService;
+	}
+
+	
+	public int getVerifiedNumbersCount() {
+		return verifiedNumbersCount;
+	}
+
+	public void setVerifiedNumbersCount(int verifiedNumbersCount) {
+		this.verifiedNumbersCount = verifiedNumbersCount;
+	}
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -347,6 +368,8 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		Long userId = registrationVO.getRegistrationID();
 		sublevelsList=influencingPeopleService.getInfluenceRange();
 		statesList=regionServiceDataImp.getUserStateList(accessType, accessValue);
+		
+		verifiedNumbersCount = voiceSmsService.getVerifiedNumbersCountOfUser(userId);
 		
 		districtList = regionServiceDataImp.getDistrictsByStateID(statesList.get(0).getId());
 		
