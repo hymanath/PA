@@ -249,8 +249,14 @@ function problemDetails(result,divId)
 	for(var i=0; i<result.length; i++)
 	{
 		data.setValue(i,0,result[i].date);
-		data.setValue(i,1,result[i].count);
-		//data.setValue(i,2,result[i].status);
+		if(result[i].status == "NEW")
+		{
+			data.setValue(i,1,result[i].count);
+		}
+		else
+		{
+			data.setValue(i,2,result[i].count);
+		}
 	}
 	var chart = new google.visualization.ColumnChart(document.getElementById(divId));
 	chart.draw(data,{width: 550, height: 250,legend:'bottom', 
