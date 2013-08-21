@@ -337,7 +337,7 @@ $(document).ready(function() {
 	  <div id="reportLevelDiv"><span style="margin-left: 5px;">Select Level</span><font class="requiredFont">*</font>
 	  
 	  <select id="reportLevel" class="selectWidth" style="margin-left:70px;width:165px;" name="constituencyList" onchange="clearFieldsData(),showReportLevel(this.options[this.selectedIndex].value);">
-		<option value=1>Constituency</option>
+		<!--<option value=1>Constituency</option>-->
 		<option value=2>Mandal</option>
 		<option value=5>Ward</option>
 		<option value=3>Panchayat</option>
@@ -355,7 +355,7 @@ $(document).ready(function() {
 		</select>  <span style='display:none;float: right;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>	
 		</div>
 	  </div>
-	  <div id="mandalDiv" style="display:none;" class="selectDivs">
+	  <div id="mandalDiv" class="selectDivs">
 	     <span id="mandalSpan">Select Mandal</span><font class="requiredFont">*</font>
 		 <select id="mandalField" class="selectWidth" name="state" onchange="clearErrDiv(),getPanchayatOrWardsList('panchayat','panchayatField');getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');getPanchayatOrWardsList('ward','wardField')" style="margin-left:60px;width:165px;"></select>
 	  </div>
