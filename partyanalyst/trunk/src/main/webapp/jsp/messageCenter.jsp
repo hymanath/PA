@@ -17,6 +17,25 @@
 
 
 <style>
+
+select {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 200px;
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,#fromDate,#toDate {
+    border-radius: 4px 4px 4px 4px;
+	color: #000000;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 18px;
+    padding: 4px;
+}
+input, button, select, textarea {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
 ul li {list-style-type:square;}
 
    .textAreaClass{
@@ -309,15 +328,15 @@ $(document).ready(function() {
 
  <!--tabs end -->
 
-<div class="widget whitegloss span5"  id="voterSearchDiv" style="float:left;border:1px solid #06ABEA;">
+<div class="widget whitegloss span5"  id="voterSearchDiv" style="float:left;border:1px solid #06ABEA; color: #2A4F97;">
         
 		   
 		   <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:13px;color:red;margin-left:100px;margin-bottom: 12px; margin-top: 3px;"></div>
      
-	  <div id="reportLevelDiv"><span>Select Level</span><font class="requiredFont">*</font>
+	  <div id="reportLevelDiv"><span style="margin-left: 5px;">Select Level</span><font class="requiredFont">*</font>
 	  
-	  <select id="reportLevel" class="selectWidth" style="margin-left:75px;width:165px;" name="constituencyList" onchange="clearFieldsData(),showReportLevel(this.options[this.selectedIndex].value);">
+	  <select id="reportLevel" class="selectWidth" style="margin-left:70px;width:165px;" name="constituencyList" onchange="clearFieldsData(),showReportLevel(this.options[this.selectedIndex].value);">
 		<option value=1>Constituency</option>
 		<option value=2>Mandal</option>
 		<option value=5>Ward</option>
@@ -370,13 +389,18 @@ $(document).ready(function() {
  <div class="widget blue whitegloss  span5" style="float:left;display:none;border:1px solid #06ABEA;height:142px;" id="influencePelpleDiv">
         
 		   
-		    <div style="margin:10px;" id="sublevels"><span style="font-size:12px;">Select Level</span>  <s:select theme="simple" list="sublevelsList" name="sublevels" listKey="id" listValue="name" headerKey="0"headerValue="Select Level" id="subLevelsId" onchange="getScopes()"/></div>
-		
-		<div class="selectBoxes">
-<s:select theme="simple" list="statesList" name="state" listKey="id" listValue="name" headerKey="0"headerValue="Select State" onchange="getDistricts()" id="stateField_s"/>
-		
-		<s:select theme="simple" list="districtList" name="district" listKey="id" listValue="name" headerKey="0" headerValue="Select District" id="districtField_s" onChange="getConstituencies()"/>
-		
+<div id="sublevels" style="margin-top: 10px;"><span style="font-size:12px;">Select Level<font class="requiredFont">*</font> </span><span style="margin-left: 50px;">:  </span>  <s:select theme="simple" list="sublevelsList" name="sublevels" listKey="id" listValue="name" headerKey="0"headerValue="Select Level" id="subLevelsId" onchange="getScopes()"/></div>
+
+<div id="Shead"style="margin-top: 10px;"> <span> Select State<font class="requiredFont">*</font>  </span><span style="margin-left: 58px;">: </span></div>
+<div class="selectBoxes" style="margin-left: 132px; margin-top: -21px; position: absolute;">
+<s:select theme="simple" list="statesList" name="state" listKey="id" listValue="name" headerKey="0" headerValue="Select State" onchange="getDistricts()" id="stateField_s"/>
+</div>	
+<div id="Dhead" style="margin-top: 20px;display:none;"> <span> Select District<font class="requiredFont">*</font>  </span><span style="margin-left: 46px;">: </span></div>
+<div class="selectBoxes"  style="margin-left: 132px; margin-top: -21px; position: absolute;"> 	
+<s:select theme="simple" list="districtList" name="district" listKey="id" listValue="name" headerKey="0" headerValue="Select District" id="districtField_s" onChange="getConstituencies()" />
+</div>	
+<div id="Chead" style="margin-top: 20px;display:none;"> <span> Select Constituency<font class="requiredFont">*</font>  </span><span style="margin-left: 18px;">: </span></div>
+<div class="selectBoxes" style="margin-left: 132px; margin-top: -21px; position: absolute;"> 	
 		<select id="constituencyField_s" onchange="getSubRegions()"></select>
 		<select id="mandalField_s" onchange="getSubRegionsInMandal()"></select>
 		<select id="hamletField_s"></select>
@@ -725,17 +749,30 @@ $('.selectBoxes > :not(#stateField_s)').hide();
 var scopeSelected='';
 function getScopes(){
 scopeSelected=$('#subLevelsId option:selected').text();
+$('#Shead').css("display","none");
+$('#Dhead').css("display","none");
+$('#Chead').css("display","none");
+$('.selectBoxes').show();
+if(scopeSelected =="Select Level"){
+$('.selectBoxes').hide();
+}
 if(scopeSelected=="STATE"){
 	$('.selectBoxes > select').show();
 	$('.selectBoxes > :not(#stateField_s)').hide();
+	$('#Shead').css("display","block");
 }
 if(scopeSelected=="DISTRICT"){
 	$('.selectBoxes > select').show();
 	$('.selectBoxes > :not(#stateField_s,#districtField_s)').hide();
+	$('#Shead').css("display","block");
+	$('#Dhead').css("display","block");
 }
 if(scopeSelected=="CONSTITUENCY"){
 	$('.selectBoxes > select').show();
 	$('.selectBoxes > :not(#stateField_s,#districtField_s,#constituencyField_s)').hide();
+	$('#Shead').css("display","block");
+	$('#Dhead').css("display","block");
+	$('#Chead').css("display","block");
 }
 if(scopeSelected=="MANDAL"){
 	$('.selectBoxes > select').show();
