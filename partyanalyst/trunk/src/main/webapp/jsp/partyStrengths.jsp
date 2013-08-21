@@ -335,6 +335,7 @@
 	
 	function buildExcludingAllianceData(results)
 	{
+	
 		var partyName = results.partyName;	
 		var partyId = results.partyId;	
 		var partyDiv = document.getElementById(partyName+"DATA_DIV");
@@ -728,6 +729,7 @@
 	}
 	
 	function getData(partyName,columnId){
+		
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId,"excludingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
@@ -1470,7 +1472,7 @@
 		{	
 				stateId : '1',
 				electionType : 'Assembly',	
-				electionYears : '7',
+				electionYears : '8',
 				party : 0,
 				task:"getDefaultDetails"				
 		};
