@@ -649,7 +649,7 @@ else
 		</div>	
 			<div id="msgCenterId" style="display:block;">
 				<c:if test="${fromParent == 'messageCenter'}">
-					<input type="button" value="Add This Contacts" onclick="addThisContacts()"/>
+					<input type="button" value="Add  Contacts To Send Voice SMS" onclick="addThisContacts()" class="elbutton"/>
 				</c:if>
 			</div>		
 	</div>
