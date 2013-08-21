@@ -401,7 +401,8 @@ $(document).ready(function() {
 
 <div id="influenceDiv">
 	<h5 style="color:#3A87AD;text-align:center;clear:both;">Available Influencing People</h5>
-	<div style="text-align:center;"><b>NOTE</b>:Click on the number to get corresponding influence pelple details.</div>
+
+	<div style="text-align:center;"><b>NOTE</b>:Click on the number to get corresponding influence pelple details</div>
 
 		<div id="tableDiv"  class="datagrid" style="margin:10px;clear:both;"></div>
 
@@ -453,7 +454,7 @@ $(document).ready(function() {
 </div>
 
 
-<div id="termsAndConditions" style="display:none;">
+<div id="termsAndConditionsDialog" style="display:none;">
 <jsp:include page="termsAndConditions.jsp" />
 </div>
 
@@ -1548,11 +1549,12 @@ function openCadreWindow()
 
 function showTermsAndConditiond()
 {
-  $('#termsAndConditions').dialog({
+  $('#termsAndConditionsDialog').dialog({
 	  title:'Terms And Conditions',
       width:550,
-	  buttons: {								
-		"Ok":function(){$(this).dialog("close");} 
+	  buttons: {
+		"Accept":function(){$('#termsAndConditions').attr('checked',true);$(this).dialog("close");} ,
+		"Exit":function(){$(this).dialog("close");} 
 	}
   });
 }
@@ -1561,4 +1563,5 @@ function showTermsAndConditiond()
 
 </script>
  </body>
+ 
  </html>
