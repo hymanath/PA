@@ -424,7 +424,7 @@ $(document).ready(function() {
 </div>
 
 <div id="influenceDiv">
-	<h5 style="color:#3A87AD;text-align:center;clear:both;">Available Influencing People</h5>
+	<h4 style="background:#06ABEA;padding:7px;text-align:center;clear:both;color:#fff;">AVAILABLE INFLUENCING PEOPLE</h4>
 
 	<div style="text-align:center;"><b>NOTE</b>:Click on the number to get corresponding influence pelple details</div>
 
@@ -455,7 +455,7 @@ $(document).ready(function() {
 </div>
 
 
- <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice SMS:<font style="color:red;">*</font></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
+ <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice SMS(Add country code before mobile number):<font style="color:red;">*</font></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 
   <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
 
