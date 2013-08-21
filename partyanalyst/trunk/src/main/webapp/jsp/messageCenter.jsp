@@ -420,7 +420,7 @@ $(document).ready(function() {
   <li>Enter new mobile numbers or search from voters , cadre , influencing people from the above search feature provided and add their mobile numbers.</li>
   <li>Enter the description specifying the purpose of the voice SMS.</li>
   <li>Please install flash player to listen to the audio files sent previously or uploaded to the server by you.</li>
-  <li>You can send already existing audio files in the server or select an audio file from your computer and upload to the server or record your own new voice message<a href="uploadAudioFile.action" target="blank"><b>Upload/ Record</b></a></li>.
+  <li>You can send already existing audio files in the server or select an audio file from your computer and upload to the server or record your own new voice message<a href="uploadAudioFile.action" target="_blank"><b>Upload/ Record</b></a></li>.
   <li>You can not send promotional audios.</li>
   <li>If you want to send voice SMS from a new mobile number which doesn't exist in the verified numbers list, please contact us to get your new number approved by us.</li>
 
@@ -1184,10 +1184,16 @@ window.receiveFromVoterSearchChild = function(data) {
 <script>
 function buildResultForAudioFiles(results)
 {
+   var noOfAudios = 0;
+	$.each(results,function(key,value){
 
-	if(results == null || results.length == 0)
+		 noOfAudios++;
+	});
+
+
+	if(noOfAudios == 0)
 	{
-		$('#audioFilesDiv').html("No Files Exist");
+		$('#audioFilesDiv').html("<h5 style='color:#06ABEA;;text-align:center;'>No Audio Files Exist.To Upload Audio <a href='uploadAudioFile.action' target='_blank'>Click here</a></h5>");
 		return false;
 	}
 	var str='';
