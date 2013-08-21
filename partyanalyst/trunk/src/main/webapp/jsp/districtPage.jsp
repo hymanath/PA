@@ -58,6 +58,9 @@
 	
  <link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
 <link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" /> 
+<script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+<script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
+
 
 	<style type="text/css">
 	.membercard{
@@ -207,8 +210,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 /** Favorite Link End**/
 #zptcElectionYears,#mptcElectionYears{width:95px}
 #mptcInfoDivBody,#zptcInfoDivBody{margin-right: 10px;}
-a:focus{
-outline:medium none;
+
+#alliancePartiesCarousel .yui-carousel-element li {
+    height: 487px !important;
+   
 }
 </style>
 <!--[if IE]>
@@ -568,7 +573,10 @@ outline:medium none;
 					{		
 						var imgEl = document.getElementById("ajaxImageEl");	
 						imgEl.style.display='none';							
-						buildElectionTypesAndYearsGraph(results);
+						//buildElectionTypesAndYearsGraph(results);
+						buildElectionTypesAndYearsGraph1(results,jsObj);
+
+
 					}if(jsObj.task == "getAllElectionScopes")
 					{										
 						buildElectionTypesSelect(results);
@@ -1029,6 +1037,70 @@ outline:medium none;
 		str+='<img	src="charts/'+results.pasitionsChart+'"/>';
 		elmt.innerHTML=str;
 	}
+
+   function buildElectionTypesAndYearsGraph1(results,jObj)
+   {
+     
+	 $('#partyPositionsDiv').html('');
+	 if(results == null || results.length == 0)
+	  return;
+		
+     var result = results.partiesPositionsInElection;
+     if(result == null || result.length == 0)
+	  return;
+
+	 var yAxisData = new Array();
+	 for(var i in result)
+	 {
+	   var obj = {
+		 name:result[i].partyName,
+		 data:[result[i].totalSeatsWon,result[i].secondPosWon,result[i].thirdPosWon,result[i].fourthPosWon]
+	   };
+
+	   yAxisData.push(obj);
+	 }
+
+	  
+        $('#partyPositionsDiv').highcharts({
+            title: {
+                text: "All Parties Positions In "+jObj.electionTypeYear+" Of "+jObj.districtName+" District ",
+                x: -20 //center
+            },
+            subtitle: {
+                text: '',
+                x: -20
+            },
+            xAxis: {
+                categories: ['Seats Won', '2nd Pos', '3rd Pos', '4th Pos']
+            },
+            yAxis: {
+					 min: 0,
+                title: {
+                    text: 'No. Of Seats'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valueSuffix: ''
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: yAxisData
+        });
+      
+
+   }
+
+
+
 		function buildElectionTypesAndYears(results)
 		{
 		var elmt = document.getElementById("electionHirarchiDiv");
