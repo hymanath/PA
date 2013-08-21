@@ -285,7 +285,7 @@ $(document).ready(function() {
     <div class="main-mbg">Voice SMS Center</div>
  </div>
 
- <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 30px;" class="span12" >
+ <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 31px;" class="span12" >
 
 
 <!-- Complete options start -->
