@@ -369,7 +369,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					</c:if>
 
                      <c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
-					<li><a onclick="clearDivs()" href="messageCenterAction.action" class="accessNewsArticles" target="_blank"></i><i class="icon-chevron-right"></i> Send Voice Sms</a></li>
+					<li><a onclick="clearDivs()" href="messageCenterAction.action" class="accessNewsArticles" target="_blank"></i><i class="icon-chevron-right"></i> Send Voice SMS</a></li>
 					</c:if>
 					
 					</ul>
