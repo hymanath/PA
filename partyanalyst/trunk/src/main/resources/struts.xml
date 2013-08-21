@@ -5848,6 +5848,10 @@
 		   <param name="root">responseDetailsList</param>
 		  </result>
 		 </action>
+
+		  <action name="getvoiceSmsReportAction" class="voiceSmsAction" method="voiceSmsReport">
+               <result name="success">/jsp/voiceSmsReport.jsp</result>
+          </action>
 		 
 		</package>
 </struts>      
