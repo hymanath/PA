@@ -262,7 +262,7 @@
 		<pattern>/mobileDataAction*</pattern>
 		<pattern>/messageCenterAction*</pattern>
 		<pattern>/uploadAudioFile*</pattern>
-		<pattern>/voiceSmsReportAction*</pattern>
+		<pattern>/getvoiceSmsReportAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
