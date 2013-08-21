@@ -826,8 +826,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		//Set<Color> colorsSet = new LinkedHashSet<Color>();
 	
 		allPartiesPositionsInElection = staticDataService.getAllPartiesPositionsInDistrictElection(jObj.getLong("electionId"), jObj.getLong("districtId"));
-		
-		List<PartyPositionsVO> partyPositions = allPartiesPositionsInElection.getPartiesPositionsInElection();
+		//jfree chart
+		/*List<PartyPositionsVO> partyPositions = allPartiesPositionsInElection.getPartiesPositionsInElection();
 		String chartName = "allPartiesDistrictWisePositionsInElection_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionId")+".png";
 		
 		if(cPath.contains("PartyAnalyst"))
@@ -838,7 +838,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDatasetForPartyPositions(partyPositions);
         allPartiesPositionsInElection.setPasitionsChart(chartName);
         ChartProducer.createLineChart("All Parties Positions In "+jObj.getString("electionTypeYear")+" Of "+jObj.getString("districtName")
-        		+" District", "Positions", "No. Of Seats", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath, 260, 400, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),false);
+        		+" District", "Positions", "No. Of Seats", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath, 260, 400, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),false);*/
 	
 		return SUCCESS;
 	}
