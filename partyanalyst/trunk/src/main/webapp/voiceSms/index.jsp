@@ -4,37 +4,124 @@
 		<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 		<%@ page import="java.util.ResourceBundle;" %>
 		<html xmlns="http://www.w3.org/1999/xhtml">
+
+
 <head>
 <title>Record And Upload Audio File</title>
 
+<style>
+ul li {list-style-type:square;}
+
+	.requiredFont{
+		color:red;
+	}
+	.main-title-sec {
+  background-color:#06ABEA;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+  display:table;
+  height:36px;
+  margin:21px 0px 0px 31px;
+  width:942px;
+}
+
+.main-mbg {
+  color:#FFFFFF;
+  display:table-cell;
+  font-family:'Trebuchet MS', Arial, Helvetica, sans-serif;
+  font-size:20px;
+  font-style:normal;
+  font-variant:normal;
+  font-weight:bold;
+  height:25px;
+  line-height:normal;
+  padding-left:10px;
+  text-transform:uppercase;
+ text-align:center;
+  padding-top:9px;
+  padding-left:31px;
+}
+.widget{
+  background-attachment:scroll;
+  background-color:#FAFAFA;
+  background-image:none;
+  background-position:0 0;
+  background-repeat:repeat repeat;
+  border-top-color:#000000;
+  border-top-style:solid;
+  border-top-width:5px;
+  box-shadow:rgba(0, 0, 0, 0.298039) 0 0 1px;
+  padding:8px;
+}
+	</style>
 </head>
 <body>
 
 
-<div class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;margin-top:12px;'><h4>UPLOAD AUDIO FILES TO SERVER</h4></div>
+ <div class="main-title-sec">
+    <div class="main-mbg">UPLOAD AUDIO FILES</div>
+ </div>
+  <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 31px;" class="span12">
+
+  
+<div class="widget whitegloss">
+<h5 style="margin:7px 0px 0px 199px;">Instructions To Upload Audio</h5>
+ <ul style="margin:7px 0px 0px 199px;"> 
+  <li>You can upload existing audio files from your computer or you can record a new voice message now and upload it to the server.(<a href="javascript:{showRecordDiv();}">Click here to record now</a>)</li>
+  <li>Upload only .wav , .mp3 files only.</li>
+  <li>You can not upload promotional audios.</li>
+  <li>File name should not contain any special characters, spaces except underscore.</li>
+ </ul>
+</div>
+
+
+<div id="recordingDiv" style="display:none;">
+
+
+
+<div class="widget whitegloss">
+<h5  style="margin:7px 0px 0px 199px;">Instructions To Record Voice</h5>
+
+<ul  style="margin:7px 0px 0px 199px;">
+ <li>Please install the java latest version to record your voice.<a href="http://java.com/en/download/index.jsp" target="_blank"><b>Install</b></a></li>
+ <li>To record your voice message, click on 'Record' button and speak using microphone.</li>
+ <li>Click on 'Stop' button when you are done with the voice message and then click on 'Save' button to save the file to your computer with .wav extension.</li>
+</ul>
+
+
+</div>
+</div>
+
+<!--<div class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;margin-top:12px;'><h4>UPLOAD AUDIO FILES TO SERVER</h4></div>-->
+
 
 
 <div>
-<div style="width:583px;margin:90px 0 0 205px;" class="breadcrumb">
+<div style="" class=""><!--
 <h5>Instructions To Upload Audio</h5>
-<label> .You Can Upload Existing Audio Files Or You Can Record Now.(<a href="javascript:{showRecordDiv();}">Click here To Record Now</a>)</label>
-<label> .Upload Only .wav , .mp3 Files Only.</label>
-<label> .You Can Not Upload Promotional Audios.</label>
-<label> .File Name Must Not Include Any Special Characters ,Spaces Except Underscore.</label>
-</div>
+<label> .You can upload existing audio files or you can record now.(<a href="javascript:{showRecordDiv();}">Click here to record now</a>)</label>
+<label> .Upload only .wav , .mp3 files only.</label>
+<label> .You can not upload promotional audios.</label>
+<label> .File name must not include any special characters ,spaces except underscore.</label>
+</div>-->
 
-<div id="recordingDiv" style="margin-top:15px;display:none;">
+<div id="recordingDiv1" style="margin-top:15px;display:none;">
 
-<div style="width:583px;margin:10px 0 0 205px;" class="breadcrumb">
+<div>
 <h5>Instructions To Record Voice</h5>
-<label> .Please Install The Java Latest Version To Record Your Voice.</label>
+<label> .Please install the java latest version to record your voice.<a href="http://java.com/en/download/index.jsp" target="_blank"><b>Install</b></a></label>
+
 
 </div>
 </div>
 <div style="text-align:center;display:none;margin:5px;" id="recordingMenuDiv">
 <applet
   code="AudioApplet.class"
-  archive="voice.jar"
+  archive="voice-sms.jar"
   permissions="all-permissions"
   width="550" height="50">
 </applet>
@@ -44,17 +131,25 @@
 <div style="background-color:#fff;padding:5px;">
 <div style="text-align:center;color:green;"><s:property value="status"/></div>
 
-<form action="uploadAudioFile.action" method="POST" enctype="multipart/form-data">
+<form action="uploadAudioFile.action" method="POST" enctype="multipart/form-data" onSubmit="return validateForm();">
 
-<div style="width:439px;margin:0 0 0 227px;padding:50px;border:2px solid #e5e5e5">
-	<div class="alert alert-info" style=";">
+<div>
+
+<div id="errorDiv" style="color:red;font-weight:bold;margin:5px;"></div>
+	<div class="widget">
 	 <h4 style="text-align:center;">Upload Audio</h4>
-	   <div style="margin:15px;">Enter File Name : <input type="text" name="voiceFileName"/></div>
-	   <div style="margin:15px;">Enter File Description: <textarea  name="voiceDescription" style="width:300px;background-color:#fff;"></textarea></div>
 
-	   <div style="margin:15px;"><input type="file" name="recordedVoice"  style="margin-top:8px;"/></div>
+	 <div style="width:auto;text-align:center;margin-left:-66px;">
+	   <div style="margin:15px 0 0 50px;"><span>Enter File Name : <font style="color:red;">*</font></span><input type="text" name="voiceFileName" id="fileName" style="margin-left:44px;"/></div>
+	   <div style="margin: 15px 0px 0px 114px;"><span>Enter File Description:<font style="color:red;">*</font></span> <textarea  name="voiceDescription" style="width:300px;background-color:#fff;margin-left:38px;" id="description"></textarea></div>
 
-	   <div style="margin:0px 0px 10px 193px;"><input class="btn" type="submit" value="Upload To Server"/></div>
+	   <div style="margin:16px 0 0 129px;"><span>Select File:<font style="color:red;">*</font></span><input type="file" name="recordedVoice"  style="margin-top: 8px; margin-left: 45px;" id="audioFile"/></div>
+
+	   <div style="margin:0px 0px 0px 456px;"><input class="btn btn-info" type="submit" value="Upload To Server"/></div>
+
+
+
+  </div>
 
 	</div>
 </div>
@@ -66,6 +161,43 @@ function showRecordDiv()
 {
  $('#recordingDiv , #recordingMenuDiv').slideToggle('slow');
 
+}
+
+function validateForm()
+{
+	 var errorDiv = document.getElementById("errorDiv");
+	 errorDiv.innerHTML="";
+
+	var error = false;
+	var str='';
+
+   if($('#fileName').val() == "")
+   {
+	   str+='File name is required</br>';
+	   error = true;
+
+   }
+
+   if($('#description').val() == "")
+   {
+	   str+='File description is required</br>';
+	   error = true;
+
+   }
+
+   if($('#audioFile').val() =="")
+   {
+	   str+='File  is required</br>';
+	   error = true;
+
+   }
+
+  errorDiv.innerHTML = str;
+  
+  if(error == true)
+	  return false;
+  else
+	  return true;
 }
 </script>
 </body>
