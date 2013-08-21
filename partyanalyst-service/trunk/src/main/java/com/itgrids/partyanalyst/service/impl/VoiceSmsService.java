@@ -133,7 +133,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			//URL url = new URL("http://voice.dial4sms.com/send_voice_mail.php?user=samba&password=564396&sender=919985420156&mobile_no="+mobileNumbers+"&url_file_name=			http://122.169.253.134:8080/PartyAnalyst/voice_recordings/1/test2.wav");
 			//URL url = new URL("http://control.msg91.com/send_voice_mail.php?user=karthik1&password=184314&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name="+audioPath);
 			
-			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name=http://122.169.253.134:8080/TDP/voice_recording/test6.wav");
+			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name="+audioPath);
 
 
 		    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -372,6 +372,21 @@ public class VoiceSmsService implements IVoiceSmsService {
 		}
 		
 		return resultList;
+		
+	}
+	
+	
+	public int getVerifiedNumbersCountOfUser(Long userId)
+	{
+		try
+		{
+		return voiceSmsVerifiedNumbersDAO.getVerifiedNumbersOfUser(userId).size();
+			
+		}catch(Exception e)
+		{
+          e.printStackTrace();	
+          return 0;
+		}
 		
 	}
 }
