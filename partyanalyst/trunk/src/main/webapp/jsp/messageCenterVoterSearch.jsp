@@ -95,7 +95,7 @@
 
 <div id="voterDetailsDiv"></div>
 <div id="paginationDivId"></div>
-<div id="btnDiv" style="display:none;"><input type="button" class="btn btn-info" value="Add This Contacts" id="phoneNoBtn" onclick="getPhoneNos()" /></div>
+<div id="btnDiv" style="display:none;"><input type="button" class="btn btn-info" value="Add  Contacts To Send Voice SMS" id="phoneNoBtn" onclick="getPhoneNos()" /></div>
 
 </div>
 
