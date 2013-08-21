@@ -620,7 +620,7 @@ function getUpdatedData(){
 		
 			<div id="msgCenterId" style="display:none;">
 			<c:if test="${fromParent == 'messageCenter'}">
-				<input type="button" value="Add This Contacts" onclick="addThisCadresToContacts()"/>
+				<input type="button" value="Add  Contacts To Send Voice SMS" onclick="addThisCadresToContacts()" class="btnClass"/>
 			</c:if>
 			</div>
 		<div id="searchResultsDiv_footer" style="text-align:center;"></div>
