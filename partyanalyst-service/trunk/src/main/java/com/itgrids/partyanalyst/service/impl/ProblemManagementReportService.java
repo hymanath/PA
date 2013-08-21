@@ -1595,7 +1595,7 @@ public class ProblemManagementReportService implements
 				//problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(tehsilIds, "1,6");
 				/*problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(userId,"1,6");*/
 				
-				problemsByStatusAndDateRawList = userProblemDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(userId, "1,6");
+				problemsByStatusAndDateRawList = userProblemDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(userId, "1,4");
 				for(Object[] values:(List<Object[]>)problemsByStatusAndDateRawList){
 					date = dateFormater.format((Date)values[1]);
 					status = values[3].toString();
