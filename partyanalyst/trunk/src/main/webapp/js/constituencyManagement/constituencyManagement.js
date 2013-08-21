@@ -68,7 +68,6 @@ function buildPoliticalChanges() {
 }
 
 function showProblemsStatusCount(results) {
-	
 	var fixedProblems = 0;
 	var problemStats_bodyEl = document.getElementById("problems_outline_Div");
 	var chartName = results.problemsStatusChartName;
@@ -77,17 +76,18 @@ function showProblemsStatusCount(results) {
 	var problemStats_bodyElContent = '';
 	problemStats_bodyElContent += '<TABLE class="problemsStatsTable" cellspacing="10" cellpadding="10" border="2" width="98%">';
 	problemStats_bodyElContent += '	<TR>';
-	problemStats_bodyElContent += '		<TD halign="center" valign="top" width="35%">';
-	problemStats_bodyElContent += '			<TABLE border="0">';
-	problemStats_bodyElContent += '				<TR>';
-	problemStats_bodyElContent += '					<TD colspan="2"><DIV class="widgetHeaders">Current Problems and their Status</DIV></TD>';
-	problemStats_bodyElContent += '				</TR>';
-	problemStats_bodyElContent += '				<TR>';
-	problemStats_bodyElContent += '					<TD> <IMG src="charts/'+chartName+'" border="0" width="250"/></TD>';
-	problemStats_bodyElContent += '				</TR>';
-	problemStats_bodyElContent += '				<TR>';
-	problemStats_bodyElContent += '					<TD align="center" style="border:1px solid #000000;">';
-	problemStats_bodyElContent += '						<TABLE class="problemsStatsTable" border="0" cellpadding="3" cellspacing="3">';
+	problemStats_bodyElContent += '	<TD halign="center" valign="top" width="35%">';
+	problemStats_bodyElContent += '	<TABLE border="0">';
+	problemStats_bodyElContent += '	<TR>';
+	problemStats_bodyElContent += '	<TD colspan="2"><DIV class="widgetHeaders">Current Problems and their Status</DIV></TD>';
+	problemStats_bodyElContent += '	</TR>';
+	problemStats_bodyElContent += '	<TR>';
+	//problemStats_bodyElContent += '	<TD> <IMG src="charts/'+chartName+'" border="0" width="250"/></TD>';
+	problemStats_bodyElContent += '	<TD id="problemsCountDIv"> </TD>';
+	problemStats_bodyElContent += '	</TR>';
+	problemStats_bodyElContent += '	<TR>';
+	problemStats_bodyElContent += '	<TD align="center" style="border:1px solid #000000;">';
+	problemStats_bodyElContent += '	<TABLE class="problemsStatsTable" border="0" cellpadding="3" cellspacing="3">';
 	problemStats_bodyElContent += '							<TR>';
 	for ( var i in results.problemsCountByStatus) {
 		if (results.problemsCountByStatus[i].status == 'FIXED')
@@ -95,50 +95,52 @@ function showProblemsStatusCount(results) {
 			fixedProblems = fixedProblems+results.problemsCountByStatus[i].count;
 			continue;
 		}
-		problemStats_bodyElContent += '								<TD align="left">'
+		problemStats_bodyElContent += '<TD align="left" >'
 				+ results.problemsCountByStatus[i].status
-				+ '</TD><TD align="left"><DIV class="'
-				+ results.problemsCountByStatus[i].status
-				+ '"></DIV></TD><TD align="left"><A href="javascript:{}" onclick="getProblemsByStatusInLocations(\''
+				+ '</TD><TD align="left"><DIV></DIV></TD><TD align="left"><A href="javascript:{}" onclick="getProblemsByStatusInLocations(\''
 				+ results.problemsCountByStatus[i].statusId + '\')">'
 				+ results.problemsCountByStatus[i].count + '</A></TD>';
 		if (i != 0 && i % 2 == 0)
 			problemStats_bodyElContent += '</tr><tr>';
 	}
-	problemStats_bodyElContent += '							</TR>';
-	problemStats_bodyElContent += '						</TABLE>';
-	problemStats_bodyElContent += '					</TD>';
-	problemStats_bodyElContent += '				</TR>';
-	problemStats_bodyElContent += '				<TR>';
-	problemStats_bodyElContent += '					<TD>';
-	problemStats_bodyElContent += '						<TABLE class="probStatsCountTable">';
-	problemStats_bodyElContent += '							<TR>';
-	problemStats_bodyElContent += '								<TH>Total Problems:</TH>';
-	problemStats_bodyElContent += '								<TD>' + results.totalProblemsCount + '</TD>';
-	problemStats_bodyElContent += '							</TR>';
-	problemStats_bodyElContent += '							<TR>';
-	problemStats_bodyElContent += '								<TH>Fixed Problems:</TH>';
+	problemStats_bodyElContent += '	</TR>';
+	problemStats_bodyElContent += '	</TABLE>';
+	problemStats_bodyElContent += '	</TD>';
+	problemStats_bodyElContent += '	</TR>';
+	problemStats_bodyElContent += '	<TR>';
+	problemStats_bodyElContent += '	<TD>';
+	problemStats_bodyElContent += '	<TABLE class="probStatsCountTable">';
+	problemStats_bodyElContent += '	<TR>';
+	problemStats_bodyElContent += '	<TH>Total Problems:</TH>';
+	problemStats_bodyElContent += '	<TD>' + results.totalProblemsCount + '</TD>';
+	problemStats_bodyElContent += '	</TR>';
+	problemStats_bodyElContent += '	<TR>';
+	problemStats_bodyElContent += '	<TH>Fixed Problems:</TH>';
 	if(results.problemsCountByStatus.length != 0){
-		problemStats_bodyElContent += '								<TD>' + fixedProblems + '</TD>';
+		problemStats_bodyElContent += '	<TD>' + fixedProblems + '</TD>';
 	}else{
 		problemStats_bodyElContent += '								<TD>0</TD>';
 	}		
-	problemStats_bodyElContent += '							</TR>';
-	problemStats_bodyElContent += '						</TABLE>';
-	problemStats_bodyElContent += '					</TD>';
-	problemStats_bodyElContent += '				</TR>';
-	problemStats_bodyElContent += '			</TABLE>';
-	problemStats_bodyElContent += '		</TD>';
-	problemStats_bodyElContent += '		<TD align="center" valign="top" width="65%">';
-	problemStats_bodyElContent += '			<TABLE>';
-	problemStats_bodyElContent += '				<TR>';
-	problemStats_bodyElContent += '					<TD><div><IMG src="charts/'+barChartName+'" border="0" width="550"/></div></TD>';
-	problemStats_bodyElContent += '				</TR>';
-	problemStats_bodyElContent += '			</TABLE>';
-	problemStats_bodyElContent += '		</TD>';
+	problemStats_bodyElContent += '	</TR>';
+	problemStats_bodyElContent += '	</TABLE>';
+	problemStats_bodyElContent += '	</TD>';
+	problemStats_bodyElContent += '	</TR>';
+	problemStats_bodyElContent += '	</TABLE>';
+	problemStats_bodyElContent += '	</TD>';
+	problemStats_bodyElContent += '<TD align="center" valign="top" width="65%">';
+	problemStats_bodyElContent += '<TABLE>';
+	problemStats_bodyElContent += '	<TR>';
+	//problemStats_bodyElContent += '	<TD><div><IMG src="charts/'+barChartName+'" border="0" width="550"/></div></TD>';
+	problemStats_bodyElContent += '	<TD  id="problemDetailsDiv"></TD>';
+	$('#problems_outline_Div').append(problemStats_bodyElContent);
+	problemCountWithStatus(results.problemsCountByStatus,"problemsCountDIv");
+	problemDetails(results.problemsCountByStatusForChart,"problemDetailsDiv");
+	problemStats_bodyElContent += '	</TR>';
+	problemStats_bodyElContent += '	</TABLE>';
+	problemStats_bodyElContent += '	</TD>';
 	problemStats_bodyElContent += '</TR>';
 	problemStats_bodyElContent += '</TABLE>';
-	problemStats_bodyEl.innerHTML = problemStats_bodyElContent;
+	//problemStats_bodyEl.innerHTML = problemStats_bodyElContent;
 
 	var problems_OptionsContent = '';
 	problems_OptionsContent += '<table class="betweenDates" cellspacing="10" cellpadding="10" border="1">';
@@ -219,6 +221,41 @@ function showProblemsStatusCount(results) {
 	buildProblemsDetailsDT(problemMgmtObj.initialProblems);
 }
 
+function problemCountWithStatus(result,divId)
+{
+	var data = new google.visualization.DataTable();
+	data.addColumn('string','Status');
+	data.addColumn('number','New');
+	data.addColumn('number','Progress');
+	data.addColumn('number','Pending');
+	data.addRows(result.length);
+	for(var i=0; i<result.length; i++)
+	{
+		data.setValue(i,0,result[i].status);
+		data.setValue(i,1,result[i].count);
+	}
+	var chart = new google.visualization.PieChart(document.getElementById(divId));
+	chart.draw(data,{width: 200, height: 200,legend:'bottom', 
+	legendTextStyle:{fontSize:12},title:'',titleTextStyle:{fontName:'verdana',fontSize:9}});
+}
+function problemDetails(result,divId)
+{
+	var data = new google.visualization.DataTable();
+
+	data.addColumn('string','Date');
+	data.addColumn('number','New');
+	data.addColumn('number','Fixed');
+	data.addRows(result.length);
+	for(var i=0; i<result.length; i++)
+	{
+		data.setValue(i,0,result[i].date);
+		data.setValue(i,1,result[i].count);
+		//data.setValue(i,2,result[i].status);
+	}
+	var chart = new google.visualization.ColumnChart(document.getElementById(divId));
+	chart.draw(data,{width: 550, height: 250,legend:'bottom', 
+	legendTextStyle:{fontSize:12},title:'',titleTextStyle:{fontName:'verdana',fontSize:8}});
+}
 function showDateCal() {
 	var id = document.getElementById("existingFromText_Div");
 	if (dateCalendar)

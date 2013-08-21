@@ -52,7 +52,11 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 	<!-- YUI Dependency files (End) -->
+	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <SCRIPT type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]});
 	var stateId = '${stateId}';
 	var electionType = '${electionType}';
 	var electionYear = '${electionYear}';

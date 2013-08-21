@@ -22,11 +22,9 @@ import com.itgrids.partyanalyst.dto.PartyPositionAnalysisResultVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
-import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.AnalysisReportService;
-import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -301,8 +299,8 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 				}
 			}			
 			
-			if(partyAnalysisReportVO != null)
-				createChartForAnalysisResults(partyAnalysisReportVO);
+			/*if(partyAnalysisReportVO != null)
+				createChartForAnalysisResults(partyAnalysisReportVO);*/
 			
 		}
 		
@@ -310,7 +308,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	}
 	
 	//Method To Create Chart for Analysis Results
-	public void createChartForAnalysisResults(PartyAnalysisReportVO partyAnalysisReportVO){
+	/*public void createChartForAnalysisResults(PartyAnalysisReportVO partyAnalysisReportVO){
 		
 		log.debug("Inside createChartForAnalysisResults Method....");
 		session = request.getSession();
@@ -394,7 +392,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 				log.debug("Exception Raised :" + ex);
 			}
 		}
-	}
+	}*/
 	
 	private CategoryDataset createDatasetForPartyAnalysisResults(PartyAnalysisBasicVO partyBasicAnalysisVO) {
 		

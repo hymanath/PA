@@ -11,19 +11,14 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.PartyAnalysisBasicVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionAnalysisResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
-import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.AnalysisReportService;
-import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -228,14 +223,14 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 			List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
 			Long electionId = jObj.getLong("electionId");
 			partyAnalysisReportVO = analysisReportService.getAnalysisReportForAPartyInAnElection(electionType, electionYear,stateId, partyId,electionId);
-			if(partyAnalysisReportVO != null)
-				createChartForAnalysisResults(partyAnalysisReportVO);
+			/*if(partyAnalysisReportVO != null)
+				createChartForAnalysisResults(partyAnalysisReportVO);*/
 			
 		}
 		return Action.SUCCESS;
 	}
 	
-	//Method To Create Chart for Analysis Results
+	/*//Method To Create Chart for Analysis Results
 	public void createChartForAnalysisResults(PartyAnalysisReportVO partyAnalysisReportVO){
 		
 		log.debug("Inside createChartForAnalysisResults Method....");
@@ -317,9 +312,9 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 				log.debug("Exception Raised :" + ex);
 			}
 		}
-	}
+	}*/
 	
-	private CategoryDataset createDatasetForPartyAnalysisResults(PartyAnalysisBasicVO partyBasicAnalysisVO) {
+	/*private CategoryDataset createDatasetForPartyAnalysisResults(PartyAnalysisBasicVO partyBasicAnalysisVO) {
 		
 		  log.debug("Inside createDatasetForPartyAnalysisResults Method....");
 		  String analVal = partyBasicAnalysisVO.getAnalyzedConsti().toString();
@@ -351,7 +346,7 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 	      	dataset.addValue(partyBasicAnalysisVO.getSeatsLost(), category2, series);
 	      	      	
 	 return dataset;
- }
+ }*/
 	public String getAnalysisCategoryResults() throws Exception
 	{
 		String param = null;
