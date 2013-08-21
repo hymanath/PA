@@ -368,6 +368,9 @@
 				<value>com.itgrids.partyanalyst.model.VotingTrendzPartiesResult</value>
 				<value>com.itgrids.partyanalyst.model.SuggestiveRange</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyHierarchyInfo</value>
+				<value>com.itgrids.partyanalyst.model.VoiceRecordingDetails</value>
+				<value>com.itgrids.partyanalyst.model.VoiceSmsResponseDetails</value>
+				<value>com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers</value>		
 			</list>
 		</property>
 	</bean>
@@ -1898,6 +1901,18 @@
 	</bean>
 	
 	<bean id="constituencyHierarchyInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyHierarchyInfoDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="voiceRecordingDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoiceRecordingDetailsDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voiceSmsResponseDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoiceSmsResponseDetailsDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	<bean id="voiceSmsVerifiedNumbersDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoiceSmsVerifiedNumbersDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
