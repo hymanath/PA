@@ -8,15 +8,98 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Message Center</title>
-<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
-<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
-<script type="text/javascript" src="js/messageCenter.js"></script>
-  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
-  <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
-<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
- <script type="text/javascript" src="js/blockui.js"></script>
- 
- <style>
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+	<script type="text/javascript" src="js/messageCenter.js"></script>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script> <script type="text/javascript" src="js/blockui.js"></script>
+
+
+<style>
+   .textAreaClass{
+	   background-color:#fff;
+   }
+  .datagrid table {
+	  border-collapse: collapse; 
+	  text-align: left; 
+	  width: 100%;
+   } 
+   .datagrid {
+	   font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;
+  }
+  .datagrid table td, .datagrid table th {
+	  padding: 3px 10px;
+	  text-align:center;
+  }
+  .datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );#006699;
+	  background-color:#006699; 
+	  color:#FFFFFF; 
+	  font-size: 15px;
+	  font-weight: bold;
+	  border-left: 1px solid #0070A8;
+  } 
+  .datagrid table thead th:first-child {
+	  border: none; 
+  }
+  .datagrid table tbody td {
+	  color: #00496B; 
+	  border-left: 1px solid #E1EEF4;
+	  font-size: 12px;
+	  font-weight: normal;
+   }
+   .datagrid table tbody .alt td {
+	   background: #E1EEF4;
+	   color: #00496B;
+	}
+	.datagrid table tbody td:first-child {
+		border-left: none;
+	}
+	.datagrid table tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	.datagrid table tr:nth-child(even) {background: #E1EEF4}
+    .datagrid table tr:nth-child(odd) {background: #FFF}
+
+	
+  </style>
+	<style>
+	.requiredFont{
+		color:red;
+	}
+	.main-title-sec {
+  background-color:#06ABEA;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+  display:table;
+  height:36px;
+  margin:21px 0px 0px 31px;
+  width:942px;
+}
+
+.main-mbg {
+  color:#FFFFFF;
+  display:table-cell;
+  font-family:'Trebuchet MS', Arial, Helvetica, sans-serif;
+  font-size:20px;
+  font-style:normal;
+  font-variant:normal;
+  font-weight:bold;
+  height:25px;
+  line-height:normal;
+  padding-left:10px;
+  text-transform:uppercase;
+ text-align:center;
+  padding-top:9px;
+  padding-left:31px;
+}
+	</style>
+	<style>
  .selectDivs{
 	 margin:5px;
  }
@@ -65,7 +148,7 @@ div.tabscontainer div.curvedContainer .tabcontent{
 div.tabs div.tab{
     display: block;
     height: 45px;
-    background: #3A87AD;
+    background: #06ABEA;
     border: #d6d6d2 solid 1px;
     border-top: none;
     position: relative;
@@ -84,8 +167,7 @@ div.tabs div.link{
 }
 
  div.tabs div.tab.selected{
-    color: #000000;
-    background-color: #E1EEF4;
+    background-color: #4B7ED4;
 }
 
 
@@ -130,10 +212,17 @@ div.tabs div.tab.selected div.arrow{
    -moz-border-radius-bottomright:15px;
    -webkit-border-radius: 0px 10px 10px 0px;
  }
-
+.widget {
+    margin-bottom: 10px;
+	background: none repeat scroll 0 0 #FAFAFA;
+    border-top: 5px solid #000000;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    margin: 5px 0 20px;
+    padding: 0 20px 20px;
+    position: relative;
+}
 
 </style>
-
 <script>
 $(document).ready(function() {
 
@@ -155,109 +244,39 @@ $(document).ready(function() {
 	});
 
 	$('#tab_menu_1').click(function(){
-		$('.subTab').hide();
+		//$('.subTab').hide();
+        $('#voterSearchDiv , #cadreDiv').hide();
 		$('#influencePelpleDiv,#tableDiv,#influenceDiv').show();
 
 	});
 
 	$('#tab_menu_2').click(function(){
-		$('.subTab ,#tableDiv,#influenceDiv').hide();
+		$('#tableDiv,#influenceDiv,#influencePelpleDiv,#cadreDiv').hide();
 		$('#voterSearchDiv').show();
 	});
 
 	$('#tab_menu_3').click(function(){
-		$('.subTab,#influenceDiv').hide();
+		$('#influenceDiv,#influencePelpleDiv,#cadreDiv,#voterSearchDiv').hide();
 		$('#cadreDiv').show();
 	});
 });
 </script>
+ </head>
+ <body>
 
- <style>
-  .datagrid table {
-	  border-collapse: collapse; 
-	  text-align: left; 
-	  width: 100%;
-   } 
-   .datagrid {
-	   font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;
-  }
-  .datagrid table td, .datagrid table th {
-	  padding: 3px 10px;
-	  text-align:center;
-  }
-  .datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );#006699;
-	  background-color:#006699; 
-	  color:#FFFFFF; 
-	  font-size: 15px;
-	  font-weight: bold;
-	  border-left: 1px solid #0070A8;
-  } 
-  .datagrid table thead th:first-child {
-	  border: none; 
-  }
-  .datagrid table tbody td {
-	  color: #00496B; 
-	  border-left: 1px solid #E1EEF4;
-	  font-size: 12px;
-	  font-weight: normal;
-   }
-   .datagrid table tbody .alt td {
-	   background: #E1EEF4;
-	   color: #00496B;
-	}
-	.datagrid table tbody td:first-child {
-		border-left: none;
-	}
-	.datagrid table tbody tr:last-child td {
-		border-bottom: none;
-	}
+ <div class="main-title-sec">
+    <div class="main-mbg">Voice SMS Center</div>
+ </div>
 
-	.datagrid table tr:nth-child(even) {background: #E1EEF4}
-    .datagrid table tr:nth-child(odd) {background: #FFF}
-
-	
-  </style>
-<style>
-	.left_container{padding:10px;font-family:arial;font-size:14px;}
-	input[type="radio"], input[type="checkbox"] {cursor: pointer;line-height: normal;margin: 4px;;}
-	.typeRadio{clear:both;}
-	.mainContainer{width:950px;}
-	#radioSelectionId{font-family:verdana;font-size:15px;margin:15px;}
-	.selectBoxes{padding-left:84px;}
-	.filter{border:1px solid #cccccc;background:#f3f3f3;}
-
-textarea{
-	background-color:#fff;
-}
-
-.mainContainer{width:980px;}
-#mobilesId{
-border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-family:arial;font-size:13px;padding:15px;
-}
-
-#ConstituencyDiv{margin-top: 12px; }
-.selectDiv {
-    color: #333333;
-    font-family: verdana;
-    font-size: 12px;
-    font-weight: bold;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    width: 80%;
-}
-.requiredFont{color:red;}
-</style>
-
-</head>
-<body>
-
-<h3 class="alert alert-info" id="cnstHeading"  style="background:#f0f0f0;border-radius:0px;text-align:center;clear:both;">Message Center</h3>
+ <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 30px;" class="span12">
 
 
-<div style="margin:58px;">
- <div class="tabs" style="margin:25px 0px 0px 59px;float:left;">
+<!-- Complete options start -->
+<div style="margin:7px 0px 0px 100px;padding:10px;">
+
+<!-- tabs start-->
+
+ <div class="tabs" style="margin:10px;float:left;">
           
 		      <div id="tab_menu_2" class="tab selected">
                   <div class="link">Voters Search</div>
@@ -271,27 +290,9 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
 		
  </div>
 
-  <div class="subTab" style="float:left;display:none;width:549px;height:136px;border:1px solid #e3e3e3;border-radius:4px;margin-top:25px;text-align:center;" id="influencePelpleDiv">
-        
-		   
-		    <div style="margin:10px;" id="sublevels"><span style="font-size:14px;">Select Level</span> -<s:select theme="simple" list="sublevelsList" name="sublevels" listKey="id" listValue="name" headerKey="0"headerValue="Select Level" id="subLevelsId" onchange="getScopes()"/></div>
-		
-		<div class="selectBoxes">
-		<s:select theme="simple" list="statesList" name="state" listKey="id" listValue="name" headerKey="0"headerValue="Select State" onchange="getDistricts()" id="stateField_s"/>
-		
-		<s:select theme="simple" list="districtList" name="district" listKey="id" listValue="name" headerKey="0" headerValue="Select District" id="districtField_s" onChange="getConstituencies()"/>
-		
-		<select id="constituencyField_s" onchange="getSubRegions()"></select>
-		<select id="mandalField_s" onchange="getSubRegionsInMandal()"></select>
-		<select id="hamletField_s"></select>
-		<select id="wardField"></select>
-		<select id="muncipalField" onchange="getSubRegionsInMuncipal()"></select>
-		<select id="boothField_s"></select>
-		</div>
-		
- </div>
+ <!--tabs end -->
 
- <div class="subTab" style="float:left;display:none;width:553px;border:1px solid #e3e3e3;padding:6px;text-align:center;margin:14px 0px 0px 0px;border-radius:4px;" id="voterSearchDiv">
+<div class="widget blue whitegloss span5"  id="voterSearchDiv" style="float:left;border:1px solid #06ABEA;">
         
 		   
 		   <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
@@ -299,7 +300,7 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
      
 	  <div id="reportLevelDiv"><span>Select Level</span><font class="requiredFont">*</font>
 	  
-	  <select id="reportLevel" class="selectWidth" style="margin-left:71px;width:165px;" name="constituencyList" onchange="clearFieldsData(),showReportLevel(this.options[this.selectedIndex].value);">
+	  <select id="reportLevel" class="selectWidth" style="margin-left:75px;width:165px;" name="constituencyList" onchange="clearFieldsData(),showReportLevel(this.options[this.selectedIndex].value);">
 		<option value=1>Constituency</option>
 		<option value=2>Mandal</option>
 		<option value=5>Ward</option>
@@ -345,31 +346,17 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
 		
  </div>
 
- <div class="subTab" style="float:left;display:none;width:553px;border:1px solid #e3e3e3;padding:6px;text-align:center;margin:24px 0px 0px 0px;border-radius:4px;height:127px;" id="cadreDiv">
+
+
+
+
+ <div class="widget blue whitegloss  span5" style="float:left;display:none;border:1px solid #06ABEA;height:142px;" id="influencePelpleDiv">
         
 		   
-		   <a class="btn" style="margin:47px 0px 0px 0px;" href="javascript:{openCadreWindow()}">Click Here To Add Cadre</a>
-		
- </div>
-
-</div>
-
-
-<!--Sending Voice Sms Block Start-->
-<!--
-<div class="mainContainer">
-	<div class="span12 row filter" align="center" style="padding:10px;">
-		<h3 class="alert alert-info" id="cnstHeading"  style="background:#f0f0f0;border-radius:0px;text-align:center;clear:both;">Message Center</h3>
-		<div id="radioSelectionId">
-			<input type="radio" class="typeRadio" name="type" value="cadre" />Cadre
-			<input type="radio" class="typeRadio" name="type" value="ipeople" selected="selected"/>Influencing People
-			<input type="radio" class="typeRadio" name="type" value="voterSearch" selected="selected"/>Voter Search
-
-		</div>-->
-	<!--<div style="margin:10px;" id="sublevels"><span style="font-size:14px;">Select Level</span> -<s:select theme="simple" list="sublevelsList" name="sublevels" listKey="id" listValue="name" headerKey="0"headerValue="Select Level" id="subLevelsId" onchange="getScopes()"/></div>
+		    <div style="margin:10px;" id="sublevels"><span style="font-size:12px;">Select Level</span>  <s:select theme="simple" list="sublevelsList" name="sublevels" listKey="id" listValue="name" headerKey="0"headerValue="Select Level" id="subLevelsId" onchange="getScopes()"/></div>
 		
 		<div class="selectBoxes">
-		<s:select theme="simple" list="statesList" name="state" listKey="id" listValue="name" headerKey="0"headerValue="Select State" onchange="getDistricts()" id="stateField_s"/>
+<s:select theme="simple" list="statesList" name="state" listKey="id" listValue="name" headerKey="0"headerValue="Select State" onchange="getDistricts()" id="stateField_s"/>
 		
 		<s:select theme="simple" list="districtList" name="district" listKey="id" listValue="name" headerKey="0" headerValue="Select District" id="districtField_s" onChange="getConstituencies()"/>
 		
@@ -379,99 +366,49 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
 		<select id="wardField"></select>
 		<select id="muncipalField" onchange="getSubRegionsInMuncipal()"></select>
 		<select id="boothField_s"></select>
-		</div>-->
-
-     <!-- voter Search Start !-->
-<div id="voterSearchDiv1" style="display:none;">
- 
-  
-      <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
-	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;height: 40px;"></div>
-     
-	  <div id="reportLevelDiv" class="selectDiv">Select Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:76px;width:165px;" name="constituencyList" onchange="clearFieldsData(),showReportLevel(this.options[this.selectedIndex].value);">
-		<option value=1>Constituency</option>
-		<option value=2>Mandal</option>
-		<option value=5>Ward</option>
-		<option value=3>Panchayat</option>
-	    <option value=6>Hamlets</option>
-        <option value=4>PollingStation</option>
-		</select>
-      </div>
-       <div id="ConstituencyDiv" class="selectDiv">
-	     	 
-		 Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:32px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();"/>
-		 
-	     Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:165px;;" name="publicationDateList" >
-		</select>  <span style='display:none;float: right;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>		
-	  </div>
-	  <div id="mandalDiv" class="selectDiv" style="display:none;">
-	     <span id="mandalSpan">Select Mandal</span><font class="requiredFont">*</font>
-		 <select id="mandalField" class="selectWidth" name="state" onchange="clearErrDiv(),getPanchayatOrWardsList('panchayat','panchayatField');getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');getPanchayatOrWardsList('ward','wardField')" style="margin-left:60px;width:165px;"></select>
-	  </div>
-	   <div id="wardDiv" class="selectDiv" style="display:none;">
-	    Select Ward<font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:70px;width:165px;"></select> 
-	  </div>
-		
-	  <div id="panchayatDiv" class="selectDiv" style="display:none;">
-	    Select Panchayat<font class="requiredFont">*</font> 	
-	    <select id="panchayatField" class="selectWidth" name="state" onchange="clearErrDiv(),getHamletsList('hamlet','hamletField');" style="margin-left:41px;width:165px;"></select>
-	  </div>
-	   <div id="hamletDiv" class="selectDiv" style="display:none;">
-	    Select Hamlet<font class="requiredFont">*</font> <select id="hamletField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select> 
-	 </div>
-	
-	  <div id="pollingStationDiv" class="selectDiv" style="display:none;">
-	    Select PollingStation<font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:20px;width:165px;" onchange="clearErrDiv();"></select>
-	  </div>
-	  <div id="localityDiv" class="selectDiv" style="display:none;">
-	   Select Locality<font class="requiredFont">*</font> <select id="localityField" class="selectWidth" name="state" onchange="getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"></select> 
-	  </div>
-	
-   <div><input type="button" value="voter Search" id="voterSearchBtn" class="btn btn-info" onclick="voterDetailsValidation()"/></div>
-</div>
-<!-- voter Search End !-->
-
-	</div>
-
-
-
-
-	
-	<div class="span11 row-fluid" style="margin-bottom:20px;">
-	<!-- Left Container -->
-	
-	<div class="span5 left_container" style="margin-top:40px;margin-left:108px;border:1px solid #DDDDDD;width:702px;border-radius:5px;" id="influenceDiv">
-	<h5 style="color:#3A87AD;text-align:center;">Available Influencing People</h5>
-		<div id="tableDiv"  class="datagrid" style="margin:10px;"></div>
-	</div>
-	
-	
-	
-	<!-- Right Container -->
-	<div class="span5 right_container" id="mobileNumbersDiv">
-		<h4 style="padding:15px;text-align:center;">Contacts for Sending SMS</h4>
-		<div id="mobilesId">
 		</div>
-	</div>
+		
+ </div>
+
+
+
+ <div class="widget blue whitegloss span5" style="float:left;display:none;border:1px solid #06ABEA;height:142px;text-align:center;" id="cadreDiv">
+        
+		   
+		   <a class="btn" style="margin:47px 0px 0px 0px;" href="javascript:{openCadreWindow()}">Click Here To Add Cadre</a>
+		
+ </div>
+
+
 </div>
 
-<div style='clear:both;'></div>
+<div id="influenceDiv">
+	<h5 style="color:#3A87AD;text-align:center;clear:both;">Available Influencing People</h5>
 
-<div class="thumbnail" style="width:666px;padding:17px;margin:1px 0 0 130px;">
+		<div id="tableDiv"  class="datagrid" style="margin:10px;clear:both;"></div>
 
-<h4 style="color:#3A87AD;text-align:center;"><u>SEND VOICE SMS</u></h4>
- <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice Sms:<font style="color:red;">*</font></label><textarea id="mobileNumber"></textarea></div>
-
-  <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="smsDescription"></textarea></div>
-
-<h4 style="color:#3A87AD;margin:40px 0px 0px 128px;"><u>AUDIO FILES AVAILABLE</u><font style="color:red;">*</font></h4>
- <div id="audioFilesDiv"></div>
-
-<h4 style="color:#3A87AD;margin:40px 0px 0px 124px;"><u>VERIFIED NUMBERS TO SEND VOICE SMS</u><font style="color:red;">*</font></h4>
-<div class="thumbinal" style="margin-top:14px;"> 
- <div id="verifiedNumbersDiv"></div>
 </div>
 
+
+<!-- SEND VOICE SMS START-->
+<div style="clear:both;">
+
+<h4 style="color:#FFF;text-align:center;background:#06ABEA;padding:7px;">SEND VOICE SMS</h4>
+
+
+ <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice Sms:<font style="color:red;">*</font></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
+
+  <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
+
+
+  <h4 style="color:#3A87AD;margin:40px 0px 0px 128px;"><u>AUDIO FILES AVAILABLE</u><font style="color:red;">*</font></h4>
+  <div id="audioFilesDiv"></div>
+
+  <h4 style="color:#3A87AD;margin:40px 0px 0px 124px;"><u>VERIFIED NUMBERS TO SEND VOICE SMS</u><font style="color:red;">*</font></h4>
+   <div id="verifiedNumbersDiv"></div>
+
+
+   
 <div id="errorDiv" style="color:red;font-family:verdana;font-size:12px;margin:20px 0 0 125px;"></div>
 
 
@@ -479,28 +416,40 @@ border:1px solid #ccc;max-height:800px;overflow-y:scroll;overflow-x:hidden;font-
 	 <div id="audioInner"></div>
 </div>
 
-<div style="margin:14px 0px 13px 536px">
-<input type="button" class="btn" value="Send Voice Sms" onClick="validateFieldsForSendingSms()"/>
+<div style="margin:2px;">
+<input type="button" class="btn btn-info" value="Send Voice Sms" style="margin-left:750px;" onClick="validateFieldsForSendingSms()"/>
 </div>
 
-<div id='historyHeading'  class='alert alert-info' style='background:#f0f0f0;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;'><a href="javascript:{}"><h4>SHOW / HIDE SMS HISTORY</h4></a></div>
+<div id='historyHeading'  style='background:#06ABEA;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;padding:7px;color:#fff;'><a href="javascript:{}"><h4 style="color:#fff;margin-left:101px;">SHOW / HIDE SMS HISTORY</h4></a></div>
+
 
 <div class="breadcrumb" style="margin-top:40px;"> 
  <div id="smsHistory"></div>
 </div>
 
+
 <div id="responseDetailsDiv">
  <div id="responseDetailsInnerDiv">
+</div>
+
+
+</div>
+<!-- SEND VOICE SMS END-->
+
+
+
+
+</div>
+
+<!-- Complete options  end -->
+
+
+
+
+ 
  </div>
-</div>
 
-</div>
-</div>
 
-<!--Sending Voice Sms Block End-->
-
-<!--<input type="button" onClick="ajaxToGetRecordingDetails();" value="GET AUDIOS"/>
-<input type="button" onClick="getVerifiedNumbersOfUser();" value="GET VERIFIED NUMBERS"/>-->
 
 
 
@@ -542,7 +491,7 @@ function showMessageResponseDetails(responseCode){
 			var url = "getResponseDetailsForSms.action?"+rparam;	
 			callAjax1(rparam,jsObj,url);
 
-			$('#responseDetailsInnerDiv').html("<img style='margin-left:170px;' src='./images/icons/search.gif' />");
+			$('#responseDetailsInnerDiv').html("<img style='margin-left:130px;' src='./images/icons/search.gif' />");
 				
 
 					     $('#responseDetailsDiv').dialog({
@@ -1200,7 +1149,7 @@ function buildResultForAudioFiles(results)
 	str+='<l><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="float:right;padding:5px;"/></a></div>';
 
 
-	str+='<div style="margin:5px 0px 0px 124px;border:1px solid #3A87AD;padding:4px;border-radius:4px;">';
+	str+='<div style="margin:5px 6px 0px 124px;border:1px solid #06ABEA;padding:4px;border-radius:4px;" class="widget blue whitegloss">';
 
 
       var i=0;
@@ -1249,7 +1198,7 @@ function buildVerifiedNumbersForUser(results)
 					  
 	  }
 
-    str+='<div style="margin:5px 0px 0px 119px;border:1px solid #3A87AD;padding:4px;border-radius:4px;">';
+    str+='<div style="margin:5px 6px 0px 119px;border:1px solid #06ABEA;padding:4px;border-radius:4px;" class="widget blue whitegloss">';
 	$.each(results,function(index,value){
 
 		if(index == 0)
@@ -1557,6 +1506,6 @@ ajaxToGetRecordingDetails();
 getVerifiedNumbersOfUser();
 getVoiceSmsHistoryOfUser();
 </script>
-
-</body>
-</html>
+ </body>
+ 
+ </html>
