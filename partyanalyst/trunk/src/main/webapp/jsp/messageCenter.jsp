@@ -208,8 +208,8 @@ div.tabs div.tab.first{
 }
 
 div.tabs div.tab div.arrow{
-    
-    background: url(images/pmpimages/homeSelArrow.png) no-repeat;
+
+    background: url(./images/homeSelArrow.png) no-repeat;
     height: 58px;
     width: 17px;
 	position:relative;
@@ -297,6 +297,7 @@ $(document).ready(function() {
  </head>
  <body>
 
+
 <div id="noVerificationNumbers" style="text-align:center;margin:5px;"></div>
 <div id="mainDiv" style="height:auto;">
 
@@ -316,12 +317,18 @@ $(document).ready(function() {
           
 		      <div id="tab_menu_2" class="tab selected">
                   <div class="link">Voters Search</div>
+				  <div class="arrow" style="margin: -32px 0 0;"></div>
+
              </div>
 		     <div id="tab_menu_1" class="tab">
                   <div class="link">Influencing People Search</div>
+				  <div class="arrow" style="margin: -46px 0 0;"></div>
+
              </div>		    
 		     <div id="tab_menu_3" class="tab">
                   <div class="link">Cadre Search</div>
+				  <div class="arrow" style="margin: -32px 0 0;"></div>
+
              </div>	 
 		
  </div>
