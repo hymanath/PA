@@ -1332,7 +1332,7 @@ function buildVoiceSmsHistory(results)
 	  //str+='<td><a href="javascript:{showMessageResponseDetails('+value.responseCode+');}">Click here For Details</a></td>';
 
 	  str+='<td><a title="Click Here to See Details" href="javascript:{showMessageResponseDetails('+value.responseCode+');}"><img src="./images/icons/details.png"/></a></td>';
-	   // str+='<td><a href="http://dnd.smschilly.com/api/check_voice_dlr.php?user=voicedemo1&password=abcd1234&msgid='+value.responseCode+'" target="blank">'+value.responseCode+'</a></td>';
+	  
 	 str+='</tr>';
 	});
 	str+='</tbody>';
