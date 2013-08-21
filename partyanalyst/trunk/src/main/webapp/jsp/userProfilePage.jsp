@@ -367,6 +367,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					
 					<li><a onclick="clearDivs()" href="generatePdfForGallaryAction.action" class="accessNewsArticles" target="_blank"><i class="icon-film"></i><i class="icon-chevron-right"></i> Generate Pdf For Gallery</a></li>
 					</c:if>
+
+                     <c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
+					<li><a onclick="clearDivs()" href="messageCenterAction.action" class="accessNewsArticles" target="_blank"></i><i class="icon-chevron-right"></i> Send Voice Sms</a></li>
+					</c:if>
 					
 					</ul>
 				</div>

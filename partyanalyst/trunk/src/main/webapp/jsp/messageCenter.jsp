@@ -17,6 +17,8 @@
 
 
 <style>
+ul li {list-style-type:square;}
+
    .textAreaClass{
 	   background-color:#fff;
    }
@@ -227,7 +229,19 @@ div.tabs div.tab.selected div.arrow{
 $(document).ready(function() {
 
 	
+		if('${verifiedNumbersCount}' == 0)
+		{
+			$('#mainDiv').hide();
+			$('#noVerificationNumbers').html('<h5>You Do not have any verified mobile numbers.Please contact us to get your mobile number approved by us<h5>');
+			return false;
+		}else
+	    {
+			ajaxToGetRecordingDetails();
+            getVerifiedNumbersOfUser();
+            getVoiceSmsHistoryOfUser();
+			getSubLevelInfluenceData(1,"Andhra Pradesh","STATE","VILLAGE/WARD","",0,true);
 
+		}
 	$('#mobileNumbersDiv').hide();
 	$('.subTab ,#tableDiv,#influenceDiv').hide();
 
@@ -264,11 +278,14 @@ $(document).ready(function() {
  </head>
  <body>
 
+<div id="noVerificationNumbers" style="text-align:center;margin:5px;"></div>
+<div id="mainDiv" style="height:auto;">
+
  <div class="main-title-sec">
     <div class="main-mbg">Voice SMS Center</div>
  </div>
 
- <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 30px;" class="span12">
+ <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 30px;" class="span12" >
 
 
 <!-- Complete options start -->
@@ -292,7 +309,7 @@ $(document).ready(function() {
 
  <!--tabs end -->
 
-<div class="widget blue whitegloss span5"  id="voterSearchDiv" style="float:left;border:1px solid #06ABEA;">
+<div class="widget whitegloss span5"  id="voterSearchDiv" style="float:left;border:1px solid #06ABEA;">
         
 		   
 		   <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
@@ -395,8 +412,24 @@ $(document).ready(function() {
 
 <h4 style="color:#FFF;text-align:center;background:#06ABEA;padding:7px;">SEND VOICE SMS</h4>
 
+<div class="widget whitegloss" style="margin:0px 0px 20px 0px;">
+<h5 style="margin:8px 0px 0px 92px;">Instructions To Send Voice SMS</h5>
+ <ul style="margin:8px 0px 0px 92px;"> 
+  <li>Enter new mobile numbers or search from voters , cadre , influencing people from the above search feature provided and add their mobile numbers.</li>
+  <li>Enter the description specifying the purpose of the voice SMS.</li>
+  <li>Please install flash player to listen to the audio files sent previously or uploaded to the server by you.</li>
+  <li>You can send already existing audio files in the server or select an audio file from your computer and upload to the server or record your own new voice message<a href="uploadAudioFile.action" target="blank"><b>Upload/ Record</b></a></li>.
+  <li>You can not send promotional audios.</li>
+  <li>If you want to send voice SMS from a new mobile number which doesn't exist in the verified numbers list, please contact us to get your new number approved by us.</li>
 
- <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice Sms:<font style="color:red;">*</font></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
+
+
+
+ </ul>
+</div>
+
+
+ <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice SMS:<font style="color:red;">*</font></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 
   <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
 
@@ -417,10 +450,10 @@ $(document).ready(function() {
 </div>
 
 <div style="margin:2px;">
-<input type="button" class="btn btn-info" value="Send Voice Sms" style="margin-left:750px;" onClick="validateFieldsForSendingSms()"/>
+<input type="button" class="btn btn-info" value="Send Voice SMS" style="margin-left:750px;" onClick="validateFieldsForSendingSms()"/>
 </div>
 
-<div id='historyHeading'  style='background:#06ABEA;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;padding:7px;color:#fff;'><a href="javascript:{}"><h4 style="color:#fff;margin-left:101px;">SHOW / HIDE SMS HISTORY</h4></a></div>
+<div id='historyHeading'  style='background:#06ABEA;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;padding:7px;color:#fff;'><a href="javascript:{}"><h4 style="color:#fff;margin-left:25px;">SHOW / HIDE SMS HISTORY</h4></a></div>
 
 
 <div class="breadcrumb" style="margin-top:40px;"> 
@@ -442,11 +475,9 @@ $(document).ready(function() {
 </div>
 
 <!-- Complete options  end -->
-
-
-
-
  
+ </div>
+
  </div>
 
 
@@ -516,24 +547,24 @@ function validateFieldsForSendingSms()
 	var str='';
 
 	if($('#mobileNumber').val() == ""){
-		str+='<b>Atlease One Mobile Number Is Required To Send Sms</b></br>';
+		str+='<b>Atlease one mobile number is required to send sms</b></br>';
 		error = true;
 	}
 
 	if($('#smsDescription').val() == ""){
-		str+='<b>Description Is Required</b></br>';
+		str+='<b>Description is required</b></br>';
 		error = true;
 	}
 
 	if(audioFileName == undefined)
 	{
-		str+='<b>Select An Audio To Send</b></br>';
+		str+='<b>Select an audio to send</b></br>';
 		error = true;
 	}
 
 	if(senderNumber == undefined)
 	{
-		str+='<b>Select A Sender Number To Sent Sms</b></br>';
+		str+='<b>Select a sender number to sent sms</b></br>';
 		error = true;
 	}
 
@@ -811,7 +842,6 @@ $('#stateField_s').change(function(){
 	getSubLevelInfluenceData(stateId,state,"STATE","VILLAGE/WARD","",0,true);
 });
 
-getSubLevelInfluenceData(1,"Andhra Pradesh","STATE","VILLAGE/WARD","",0,true);
 
 
 $('#districtField_s').change(function(){
@@ -1146,10 +1176,11 @@ function buildResultForAudioFiles(results)
 		return false;
 	}
 	var str='';
-	str+='<l><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="float:right;padding:5px;"/></a></div>';
+	
 
 
 	str+='<div style="margin:5px 6px 0px 124px;border:1px solid #06ABEA;padding:4px;border-radius:4px;" class="widget blue whitegloss">';
+	str+='<a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="float:right;padding:5px;"/></a>';
 
 
       var i=0;
@@ -1159,7 +1190,7 @@ function buildResultForAudioFiles(results)
 		   str+='<label><input name="audio" type="radio" value="'+i+'" id="'+key+'"/><a href="javascript:{showAudio(\''+key+'\','+i+','+value.split("--")[1]+')}" title="'+value.split("--")[0]+'">'+key+'</a> -- '+value.split("--")[0]+'</label>';
                   i++;
 	});
-str+='<label><a href="uploadAudioFile.action" target="blank"><b>Click Here To Record Audio And To Upload Audio</b></a></label>';
+
 	str+='</div>';
 
 	$('#audioFilesDiv').html(str);
@@ -1221,7 +1252,7 @@ function buildVoiceSmsHistory(results)
  	 str+='<th>Date Sent</th>';
  	 //str+='<th>Mobile Numbers</th>';
 	 str+='<th>Description</th>';
-	 str+='<th>Check details</th>';
+	 str+='<th>Check Details</th>';
 	str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
@@ -1502,9 +1533,7 @@ function openCadreWindow()
 }
 
 //voter search
-ajaxToGetRecordingDetails();
-getVerifiedNumbersOfUser();
-getVoiceSmsHistoryOfUser();
+
 </script>
  </body>
  
