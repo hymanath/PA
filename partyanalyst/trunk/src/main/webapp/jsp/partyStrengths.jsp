@@ -167,7 +167,7 @@
 
 	var electionType='Assembly';
 	var selectedStateElmts=1;
-	var selectedPartyId=7;
+	var selectedPartyId=8;
 	var selectedPartyName;
 	var partyId;
 	var selectedElecId=0;
