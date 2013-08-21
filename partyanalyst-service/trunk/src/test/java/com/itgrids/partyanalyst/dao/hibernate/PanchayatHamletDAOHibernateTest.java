@@ -6,7 +6,6 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 public class PanchayatHamletDAOHibernateTest extends BaseDaoTestCase{
 
