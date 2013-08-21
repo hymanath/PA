@@ -438,7 +438,9 @@ $(document).ready(function() {
   <div id="audioFilesDiv"></div>
 
   <h4 style="color:#3A87AD;margin:40px 0px 0px 124px;"><u>VERIFIED NUMBERS TO SEND VOICE SMS</u><font style="color:red;">*</font></h4>
-   <div id="verifiedNumbersDiv"></div>
+  <div id="verifiedNumbersDiv"></div>
+
+  <div style="margin:14px 0px 0px 116px"><label><input type="checkbox" style="margin:0px;" id="termsAndConditions"/><span style="margin:0px 0px 0px 7px;">I have read and agree to the <a href="javascript:{showTermsAndConditiond();}">Terms and Conditions</a></span></label></div>
 
 
    
@@ -448,6 +450,13 @@ $(document).ready(function() {
 <div id="audioOuter">
 	 <div id="audioInner"></div>
 </div>
+
+
+<div id="termsAndConditions" style="display:none;">
+<jsp:include page="termsAndConditions.jsp" />
+</div>
+
+
 
 <div style="margin:2px;">
 <input type="button" class="btn btn-info" value="Send Voice SMS" style="margin-left:750px;" onClick="validateFieldsForSendingSms()"/>
@@ -527,8 +536,7 @@ function showMessageResponseDetails(responseCode){
 
 					     $('#responseDetailsDiv').dialog({
 						    title:"Response Details" ,
-						    buttons: {
-								
+						    buttons: {								
 								"Ok":function(){$(this).dialog("close");} 
 							}
 	       });
@@ -568,6 +576,11 @@ function validateFieldsForSendingSms()
 		error = true;
 	}
 
+	if(!$("#termsAndConditions").prop('checked') == true){
+       
+		str+='<b>You need to accept our terms and conditions.</b></br>';
+		error = true;
+    }
 	if(error == true)
 	{
 		$('#errorDiv').html(str);
@@ -1530,6 +1543,17 @@ function openCadreWindow()
 		$('.selectBoxes,#sublevels').css('display','none');
 		
 		buildSearchPagePopup("Search");
+}
+
+function showTermsAndConditiond()
+{
+  $('#termsAndConditions').dialog({
+	  title:'Terms And Conditions',
+      width:550,
+	  buttons: {								
+		"Ok":function(){$(this).dialog("close");} 
+	}
+  });
 }
 
 //voter search

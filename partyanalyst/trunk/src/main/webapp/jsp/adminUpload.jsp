@@ -561,7 +561,7 @@
 									<legend class="l2">Voice Sms Report</legend>
 									<span class="fontStyle">
 										Click Here To Get Report:&nbsp;
-										<a class="alinkstyle" href="<s:url action="voiceSmsReportAction"/>"> Get
+										<a class="alinkstyle" target="_blank" href="<s:url action="getvoiceSmsReportAction.action"/>"> Get
 										</a>
 									</span><br>
 									</fieldset></td>

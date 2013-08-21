@@ -6,7 +6,6 @@
 <html>
 <head>
 <title>Send Voice Sms</title>
-
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -60,18 +59,25 @@
   </style>
 <script>
 function ajaxToGetRecordingDetails()
-{
+{			 $('#ajaxImage').show();
+
    $.ajaxSetup({
 	   jsonp: null,
 	   jsonpCallback: null
 	});
 	    $.ajax({
-		  type:'POST',
+		  type:'GET',
 		  url: 'generateVoiceSmsReport.action',
 		  dataType: 'json',
-		  data: {},			 
+		  data: {
+		  fromDate:document.getElementById("fromDateId").value,
+		  toDate:document.getElementById("toDateId").value
+		   
+		  },			 
 		  success: function(data){ 
 			 buildVoiceSmsReport(data);
+ 			 $('#ajaxImage').hide();
+
 		 },
 		  error:function() { 
 			 			console.log('error', arguments);
@@ -83,8 +89,20 @@ function ajaxToGetRecordingDetails()
 
 function buildVoiceSmsReport(results)
 {
+	var noOfRecords = 0;
+  $.map( results, function(value,index) {
+	  noOfRecords++;
+		
+     });
 
-	var str='';
+	 if(noOfRecords == 0){
+		  $('#reportDiv').html("<h5 style='text-align:center;color:red;'>No records are available.</h5>");
+		  return false;
+	 }
+
+	 
+	 
+	 var str='';
     str+='<div class="datagrid" style="margin-top:57px;">';
 	str+='<table>';
 	str+='<thead>';
@@ -122,21 +140,48 @@ function buildVoiceSmsReport(results)
 }
 </script>
  <script>
+ var arr=[];
   $(function() {
-    $( "#fromDateId , #toDateId" ).datepicker();
-  });
-  </script>
+    $( "#fromDateId" ).datepicker({
+		
+	        changeMonth: true,
+            changeYear: true,
+			dateFormat: 'dd-mm-yy',
+			maxDate: new Date(),
+			onSelect: function() {  
+				                    
+			                        var selectedDate=document.getElementById("fromDateId").value;
+									var arr=selectedDate.split('-'); 
+						            arr[0]=parseInt(arr[0],10)+parseInt(1);	
+									$( "#toDateId" ).datepicker( "option", "minDate", arr.join('-'));
+									
+                                  } 
+    });	                              
+								
+
+   $("#toDateId" ).datepicker({
+		  
+	        changeMonth: true,
+            changeYear: true,
+			dateFormat: 'dd-mm-yy',
+			maxDate: new Date()
+	
+	 });		                         
+});			
+
+ </script>
 
 </head>
 <body>
 
 <div  style="text-align:center;margin:113px 0 0 250px;border:1px solid #f4f4f4;width:429px;padding:27px;background-color:#F5F5F5;">
 
-<p>From Date: <input type="text" id="fromDateId" /></p>
+<p>From Date: <input type="text" id="fromDateId" readonly/></p>
 
-<p>To Date: <input type="text" id="toDateId" /></p>
+<p>To Date: <input type="text" id="toDateId"  readonly style="margin-right: -14px;" /></p>
+<input type="button" value="Get Details" onClick="ajaxToGetRecordingDetails();" class="btn"/>
 
-<input type="button" value="Get Details" onClick="ajaxToGetRecordingDetails()" class="btn"/>
+<img src='./images/icons/search.gif' id="ajaxImage" style="display:none;"/>
 
 </div>
 
