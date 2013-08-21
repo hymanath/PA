@@ -7,49 +7,11 @@
 <%@ page import="java.util.ResourceBundle;" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>
 <div><c:out value="${selectedPartyShortName}"/>  Party Results for  <c:out value="${selectedLocationName}"/>   <c:out value="${reportLevel}"/> <c:out value="${selectedElectionTypeName}"/> Elections
 		</div></title>
-
-<script type="text/javascript">
-var labelResources = { <%		
-		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
-		String electionYear = rb.getString("electionYear");
-		String party = rb.getString("party");
-		String participatedConsts = rb.getString("participatedConsts");
-		String seatsWon = rb.getString("seatsWon");
-		String votesPercentage = rb.getString("votesPercentage");
-		String oppPartyRes = rb.getString("oppPartyRes");
-		String oppParty = rb.getString("oppParty");
-		ResourceBundle pprRb = ResourceBundle.getBundle("ppr_Labels");
-		
-		String mainParty = pprRb.getString("mainParty");
-		String allianceParty = pprRb.getString("allianceParty");
-%>}
-function showOppostionDeatils(year)
-	{	
-		var id = year+"_opposition";
-
-		tr=document.getElementsByTagName('tr')
-
-		for (i=0;i<tr.length;i++)
-		{			
-			if (tr[i].id && tr[i].id==id)
-			{				
-				if ( tr[i].style.display=='none' )
-				{
-					tr[i].style.display = '';
-				}
-				else
-				{
-					tr[i].style.display = 'none';
-				}
-			}
-		}		
-	}
-
-</script>
 <style type="text/css">
 table.searchresultsTable {
     border-collapse: collapse;
@@ -81,18 +43,79 @@ table.searchresultsTable td {
     width: 960px;
     font-size: 14px;
 }
-#imageDiv
-{
-	background: none repeat scroll 0 0 #FFFFFF;
-    border-radius: 5px 5px 5px 5px;
-    height: 450px;
-    margin-left: 220px;
-    width: 550px;
-}
+
 
 </style>
+<script type="text/javascript">
+var labelResources = { <%		
+		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
+		String electionYear = rb.getString("electionYear");
+		String party = rb.getString("party");
+		String participatedConsts = rb.getString("participatedConsts");
+		String seatsWon = rb.getString("seatsWon");
+		String votesPercentage = rb.getString("votesPercentage");
+		String oppPartyRes = rb.getString("oppPartyRes");
+		String oppParty = rb.getString("oppParty");
+		ResourceBundle pprRb = ResourceBundle.getBundle("ppr_Labels");
+		
+		String mainParty = pprRb.getString("mainParty");
+		String allianceParty = pprRb.getString("allianceParty");
+%>}
+google.load("visualization", "1", {packages:["corechart"]});
+function showOppostionDeatils(year)
+	{	
+		var id = year+"_opposition";
+
+		tr=document.getElementsByTagName('tr')
+
+		for (i=0;i<tr.length;i++)
+		{			
+			if (tr[i].id && tr[i].id==id)
+			{				
+				if ( tr[i].style.display=='none' )
+				{
+					tr[i].style.display = '';
+				}
+				else
+				{
+					tr[i].style.display = 'none';
+				}
+			}
+		}		
+	}
+
+function createNumberCoulmnChart()
+{
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Year');
+	data.addColumn('number', 'Seats Participated');
+	data.addColumn('number', 'Seats Won');
+	data.addColumn('number', 'Seats Won');
+	var length = 0;
+	<c:forEach var="partyResultInfoVO" items="${partyResultInfoVOs}" >	
+	length++;
+	</c:forEach>
+	data.addRows(length);
+	var count = 0;
+	<c:forEach var="partyResultInfoVO" items="${partyResultInfoVOs}" >	
+		 
+			data.setValue(count, 0, '${partyResultInfoVO.partyInfoVO.electionYear}');
+			data.setValue(count, 1,  ${partyResultInfoVO.partyInfoVO.seatsParticipated});
+			data.setValue(count, 2,  ${partyResultInfoVO.partyInfoVO.seatsWin});
+			data.setValue(count, 3,  ${partyResultInfoVO.partyInfoVO.percentageOfVotes});	
+		count++;
+	 </c:forEach>
+	var chart = new google.visualization.ColumnChart(document.getElementById('imageDiv'));
+		chart.draw(data, {width: 1000, height: 310,legend:'bottom',legendTextStyle:{fontSize:10}, title: "",
+				  hAxis: {}
+				 });
+}
+
+</script>
+
 </head>
 <body>
+<div align="center">
 	<div id="partyResultsMainDiv" style="margin-left: auto; margin-right: auto; float: none; width: auto;">
 	
 		<div id="headingDiv" style="background:#06ABEA;margin-left: 12px;">
@@ -124,8 +147,8 @@ table.searchresultsTable td {
 			</c:if>
 	</div>
 	
-	<div id="imageDiv" style="margin-top:20px;" align="center">
-		<img width="450" height="400" id="chartImg" src="charts/<%= request.getAttribute("chartName")%>" style="margin-top:20px;"/> 
+	<div id="imageDiv" style="margin-top: 20px; position: relative; width: 1000px; margin-left: 10px;">
+		
     </div>
 
 	<div id="partyResultsDiv" style="padding:5px;">
@@ -223,5 +246,10 @@ table.searchresultsTable td {
 </div>
 
 </div>
+</div>
+<script>
+createNumberCoulmnChart();
+</script>
 </body>
+
 </html>

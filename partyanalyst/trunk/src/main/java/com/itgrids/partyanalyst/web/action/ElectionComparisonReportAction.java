@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import org.json.JSONObject;
 import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ComparedReportVO;
-import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionComparisonReportVO;
 import com.itgrids.partyanalyst.dto.ElectionComparisonResultVO;
 import com.itgrids.partyanalyst.dto.ElectionsComparisonVO;
@@ -26,7 +24,6 @@ import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsPercentageVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionComparisonReportService;
 import com.itgrids.partyanalyst.service.IElectionsComparisonService;
@@ -310,81 +307,81 @@ public class ElectionComparisonReportAction extends ActionSupport implements
         
         	session = request.getSession();
         	
-        	String sPath = (String)session.getAttribute("chartPath");
+        	//String sPath = (String)session.getAttribute("chartPath");
         	
-        	logger.warn("Path To Save Charts :" + sPath);
+        	//logger.warn("Path To Save Charts :" + sPath);
         	
-        	String seatsLineChartPath = "";
-        	String totalPercentLineChartPath = "";
-    		String chartId = party.concat(electionType).concat(yearOne).concat("Comparing_with").concat(yearTwo).concat("_BarChart");
-    		String barChartName = "electionsComparisonChart_" + chartId + session.getId()+".png";
+        	//String seatsLineChartPath = "";
+        	//String totalPercentLineChartPath = "";
+    		//String chartId = party.concat(electionType).concat(yearOne).concat("Comparing_with").concat(yearTwo).concat("_BarChart");
+    		//String barChartName = "electionsComparisonChart_" + chartId + session.getId()+".png";
             //String chartPath = context.getRealPath("/") + "charts\\" + barChartName;
-    		String chartPath = "";
+    		//String chartPath = "";
     		
-    		if(sPath != null)
-    			chartPath = sPath + barChartName;
-    		else
-    			chartPath = context.getRealPath("/") + "charts\\" + barChartName;    			
+    		//if(sPath != null)
+    		//	chartPath = sPath + barChartName;
+    		//else
+    		//	chartPath = context.getRealPath("/") + "charts\\" + barChartName;    			
             
-            String percentageChartId = party.concat(electionType).concat(yearOne).concat("Comparing_with").concat(yearTwo).concat("LineChart");
-            String lineChartName = "electionsComparisonChart_" + percentageChartId + session.getId()+".png";
+            //String percentageChartId = party.concat(electionType).concat(yearOne).concat("Comparing_with").concat(yearTwo).concat("LineChart");
+           // String lineChartName = "electionsComparisonChart_" + percentageChartId + session.getId()+".png";
             //String lineChartPath = context.getRealPath("/") + "charts\\" + lineChartName;
-            String lineChartPath = "";
+            //String lineChartPath = "";
             
-            if(sPath != null)
+           /* if(sPath != null)
             	lineChartPath = sPath + lineChartName;
             else
             	lineChartPath = context.getRealPath("/") + "charts\\" + lineChartName;
+            */
+           // String seatsChartId = party.concat(electionType).concat(yearOne).concat("Comparing_with").concat(yearTwo).concat("LineChartSeatsWon");
+            //String seatsLineChartName = "electionsComparisonChart_" + seatsChartId + session.getId()+".png";
             
-            String seatsChartId = party.concat(electionType).concat(yearOne).concat("Comparing_with").concat(yearTwo).concat("LineChartSeatsWon");
-            String seatsLineChartName = "electionsComparisonChart_" + seatsChartId + session.getId()+".png";
-            
-            if(sPath != null)
+           /* if(sPath != null)
             	seatsLineChartPath = sPath + seatsLineChartName;
             else
             	seatsLineChartPath = context.getRealPath("/") + "charts\\" + seatsLineChartName;
             
             logger.warn("Created Seats Line Chart Path :" + seatsLineChartPath);
-                       
-            String totalPercentChartId = party.concat(electionType).concat(yearOne).concat("Comparing_with").concat(yearTwo).concat("LineChartTotalPercent");
-            String totalPercentLineChartName = "electionsComparisonChart_" + totalPercentChartId + session.getId()+".png";
+                     */  
+            //String totalPercentChartId = party.concat(electionType).concat(yearOne).concat("Comparing_with").concat(yearTwo).concat("LineChartTotalPercent");
+            //String totalPercentLineChartName = "electionsComparisonChart_" + totalPercentChartId + session.getId()+".png";
             
-            if(sPath != null)
-            	totalPercentLineChartPath = sPath + totalPercentLineChartName;
-            else
-            	 totalPercentLineChartPath = context.getRealPath("/") + "charts\\" + totalPercentLineChartName;
+            //if(sPath != null)
+            //	totalPercentLineChartPath = sPath + totalPercentLineChartName;
+            //else
+            //	 totalPercentLineChartPath = context.getRealPath("/") + "charts\\" + totalPercentLineChartName;
             
-            logger.warn("Created Percentage Line Chart Path :" + totalPercentLineChartPath);
+           // logger.warn("Created Percentage Line Chart Path :" + totalPercentLineChartPath);
                       
-            if(electionComparisonReportVO.getPositionsForYearOne() != null && electionComparisonReportVO.getPositionsForYearTwo() != null){
-            	if(hasAlliances==false){
-            		PartyPositionsVO partyPositionsVOYear1 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearOne(),Long.parseLong(getParty()));
-                	PartyPositionsVO partyPositionsVOYear2 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearTwo(),Long.parseLong(getParty()));
-                	String label = partyPositionsVOYear1.getPartyName();
-                	label = label.concat("  Results").concat("  Graph");
-                	ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraph(yearOne, yearTwo, partyPositionsVOYear1,partyPositionsVOYear2), chartPath);
-            	}else{
-            		String label = selectedPartyName;
-                	label = label.concat("  Results").concat("  Graph");
-                	ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraphConsideringAlliance(yearOne, yearTwo, electionComparisonReportVO.getPositionsForYearOne(),electionComparisonReportVO.getPositionsForYearTwo()), chartPath);
-            	}
+         //   if(electionComparisonReportVO.getPositionsForYearOne() != null && electionComparisonReportVO.getPositionsForYearTwo() != null){
+            //	if(hasAlliances==false){
+            //		PartyPositionsVO partyPositionsVOYear1 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearOne(),Long.parseLong(getParty()));
+              //  	PartyPositionsVO partyPositionsVOYear2 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearTwo(),Long.parseLong(getParty()));
+              //  	String label = partyPositionsVOYear1.getPartyName();
+              //  	label = label.concat("  Results").concat("  Graph");
+                	//ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraph(yearOne, yearTwo, partyPositionsVOYear1,partyPositionsVOYear2), chartPath);
+            //	}else{
+            		//String label = selectedPartyName;
+                	//label = label.concat("  Results").concat("  Graph");
+                	//ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraphConsideringAlliance(yearOne, yearTwo, electionComparisonReportVO.getPositionsForYearOne(),electionComparisonReportVO.getPositionsForYearTwo()), chartPath);
+            	//}
             	
-            	request.setAttribute("barChartName", barChartName);
-    			session.setAttribute("barChartName", barChartName);
-            }
+            	//request.setAttribute("barChartName", barChartName);
+    			//session.setAttribute("barChartName", barChartName);
+           // }
             
-            String xaxis;
-            if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType))
-            	xaxis = "Districts";
-            else
-            	xaxis = "States";
+          //  String xaxis;
+           // if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType))
+           // 	xaxis = "Districts";
+         //   else
+            //	xaxis = "States";
             
-            ChartProducer.createLineChart("", xaxis, "Votes Percentage", createDatasetForLineChart(electionComparisonReportVO), lineChartPath,300,880, null,true );
-            ChartProducer.createLineChart("", xaxis, "Votes Percentage", createDatasetTotalPercentForLineChart(electionComparisonReportVO), totalPercentLineChartPath,300,880, null,true );
-            ChartProducer.createLineChart("", xaxis, "Seats Won", createDatasetForSeatsLineChart(electionComparisonReportVO), seatsLineChartPath,300,880, null,true );
-            electionComparisonReportVO.setPercentageChart(lineChartName);
-            electionComparisonReportVO.setSeatsWonChart(seatsLineChartName);
-            electionComparisonReportVO.setTotalPercentChart(totalPercentLineChartName);
+           // ChartProducer.createLineChart("", xaxis, "Votes Percentage", createDatasetForLineChart(electionComparisonReportVO), lineChartPath,300,880, null,true );
+           // ChartProducer.createLineChart("", xaxis, "Votes Percentage", createDatasetTotalPercentForLineChart(electionComparisonReportVO), totalPercentLineChartPath,300,880, null,true );
+            //ChartProducer.createLineChart("", xaxis, "Seats Won", createDatasetForSeatsLineChart(electionComparisonReportVO), seatsLineChartPath,300,880, null,true );
+           // electionComparisonReportVO.setPercentageChart(lineChartName);
+           // electionComparisonReportVO.setSeatsWonChart(seatsLineChartName);
+            //electionComparisonReportVO.setTotalPercentChart(totalPercentLineChartName);
         }
 		catch(Exception ex){
 			ex.printStackTrace();
@@ -396,7 +393,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	
 	}
 	
-	private CategoryDataset createDatasetForSeatsLineChart(
+	/*private CategoryDataset createDatasetForSeatsLineChart(
 			ElectionComparisonReportVO electionComparisonReportVO2) {
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		List<DistrictWisePartyResultVO> districtWisePartyResultsForYearOne = electionComparisonReportVO.getDistrictWisePartyResultsForYearOne();
@@ -440,7 +437,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 					dist2.getDistrictName());
 		
 		return dataset;
-	}
+	}*/
       			
 	public PartyPositionsVO getMainPartyPositions(List<PartyPositionsVO> positions,Long party){
 		PartyPositionsVO partyPositions = null;
@@ -488,7 +485,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	return dataset;
 	}
 	
-	private CategoryDataset createDatasetForBarGraph(String yearOne,String yearTwo,PartyPositionsVO positionsForYearOne,PartyPositionsVO positionsForYearTwo){
+	/*private CategoryDataset createDatasetForBarGraph(String yearOne,String yearTwo,PartyPositionsVO positionsForYearOne,PartyPositionsVO positionsForYearTwo){
 		  // row keys...
 		 final String category1 =  "Seats Won";
 	     final String category2 = "2nd Pos";
@@ -508,7 +505,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		 dataset.addValue(positionsForYearOne.getFourthPosWon(), category4, yearTwo);
 		 
 	return dataset;
-	}
+	}*/
 	
 	public String getComparedElectionResults(){
 		

@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -11,20 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.apache.struts2.components.ActionError;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
 
-import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
-import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.impl.PartyResultService;
-import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
@@ -249,20 +241,20 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	
 		session = request.getSession();
 		String cPath = request.getContextPath();
-		 String chartPath="";
-		String chartName = "partyResultsChart_" + chartId.toString() + session.getId() + ".png";
+		// String chartPath="";
+		//String chartName = "partyResultsChart_" + chartId.toString() + session.getId() + ".png";
 		
-		if(cPath.contains("PartyAnalyst"))
-           chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		else
-		   chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
+		//if(cPath.contains("PartyAnalyst"))
+          // chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		//else
+		   //chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
-        request.setAttribute("chartName", chartName);
-        List<CategoryDataset> dataset = new ArrayList<CategoryDataset>();
+      // request.setAttribute("chartName", chartName);
+       // List<CategoryDataset> dataset = new ArrayList<CategoryDataset>();
         
-        dataset.add(createDataset(partyResultInfoVOList, ChartType.yearVsSeats));
-        dataset.add(createDataset(partyResultInfoVOList, ChartType.yearVsVotesPerc));
-        ChartProducer.createLineChart("Party Results - Year Vs Participated Seats & Year Vs Seats Won", dataset, "Year", "No. of Seats", chartPath);
+        //dataset.add(createDataset(partyResultInfoVOList, ChartType.yearVsSeats));
+        //dataset.add(createDataset(partyResultInfoVOList, ChartType.yearVsVotesPerc));
+       //ChartProducer.createLineChart("Party Results - Year Vs Participated Seats & Year Vs Seats Won", dataset, "Year", "No. of Seats", chartPath);
 		//ChartProducer.createLineChart("Party Results - Year Vs Participated Seats & Year Vs Seats Won", yearVsSeatsDataset, "Year", "No. of Seats", yearVsSeatsChart);
 		//ChartProducer.createLineChart("Party Results - Year Vs Votes Percentage", yearVsVotesPercDataset, "Year", "Percentage of Votes", yearVsVotesPercChart);
         
@@ -279,7 +271,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	}
 
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	private CategoryDataset createDataset(List<PartyResultInfoVO> partyResultInfoVOList, ChartType chartType) {
         
         // row keys...
@@ -303,7 +295,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
      
         return dataset;
         
-    }
+    }*/
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;

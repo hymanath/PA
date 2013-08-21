@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.awt.Color;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
@@ -27,14 +25,12 @@ import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.dto.ProblemsCountByStatus;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -599,27 +595,27 @@ public class ProblemManagementReportAction extends ActionSupport implements
 					
 			List<ProblemsCountByStatus> problemsCountbyStatus = locationwiseProblemStatusInfoVO.getProblemsCountByStatusForChart();
 			
-			String chartName = "allProblemsInfoByStatusAndDate_"+accessType+"_"+accessValue+".png";
-			String chartPath = "";
+			//String chartName = "allProblemsInfoByStatusAndDate_"+accessType+"_"+accessValue+".png";
+			//String chartPath = "";
 			
-			if(cPath.contains("PartyAnalyst"))
-				chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-			else
-				chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
-			ChartProducer.createLineChart("Problems That Are Fixed And Posted From Last Few Days", "Days", "No. Of Problems",createDataset(problemsCountbyStatus), chartPath,260,550, null,false );
+			//if(cPath.contains("PartyAnalyst"))
+				//chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			//else
+				//chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
+			//ChartProducer.createLineChart("Problems That Are Fixed And Posted From Last Few Days", "Days", "No. Of Problems",createDataset(problemsCountbyStatus), chartPath,260,550, null,false );
 					
-			locationwiseProblemStatusInfoVO.setLineChartPath(chartName);
+			//locationwiseProblemStatusInfoVO.setLineChartPath(chartName);
 		}	
 		if(locationwiseProblemStatusInfoVO.getProblemsCountByStatus() != null && locationwiseProblemStatusInfoVO.getProblemsCountByStatus().size()>0)
 		{
-			String problemsStatusPieChartName = createProblemsPieChart(locationwiseProblemStatusInfoVO.getLocationId(),locationwiseProblemStatusInfoVO.getTotalProblemsCount(),locationwiseProblemStatusInfoVO.getProblemsCountByStatus());
-			locationwiseProblemStatusInfoVO.setProblemsStatusChartName(problemsStatusPieChartName);
+			//String problemsStatusPieChartName = createProblemsPieChart(locationwiseProblemStatusInfoVO.getLocationId(),locationwiseProblemStatusInfoVO.getTotalProblemsCount(),locationwiseProblemStatusInfoVO.getProblemsCountByStatus());
+			//locationwiseProblemStatusInfoVO.setProblemsStatusChartName(problemsStatusPieChartName);
 		}
 		
 		return SUCCESS;
 	}
 	
-	public String createProblemsPieChart(Long locationId, int totalProblemsCount, List<ProblemsCountByStatus>problemsStatusList)	
+	/*public String createProblemsPieChart(Long locationId, int totalProblemsCount, List<ProblemsCountByStatus>problemsStatusList)	
 	{
 		String cPath = request.getContextPath();
 		log.debug("Entered in to createProblemsPieChart method in ProblemManagementReportAction");
@@ -656,7 +652,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		log.debug("size::::::::::::::::::::::::::::::::::::"+problemsStatusList.size());
 		ChartProducer.createProblemsPieChart("", dataset, chartPath , colors,false,250,220);
 		return chartName ;
-	}
+	}*/
 	
 	public String problemsByDateBasedOnStatusAction()
 	{

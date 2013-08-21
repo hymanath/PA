@@ -142,7 +142,8 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 	var basicDetailsDivEl = document.getElementById("basicDetails");
 	var tablerDetails1El = document.getElementById("tablerDetails1");
 	var alliancePartiesBasicDetails = results.alliancPartiesBasicAnalysisVO;
-	var basicDetailsHeadDivEl = document.getElementById("basicDetailsHead");	
+	var basicDetailsHeadDivEl = document.getElementById("basicDetailsHead");
+		
 	var analysisChartName = results.partyBasicAnalysisVO.analysisChart;
 	var resultsChartName = results.partyBasicAnalysisVO.resultsChart;
 	var headStr='';
@@ -163,11 +164,18 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 	if(alliancePartiesBasicDetails == null || alliancePartiesBasicDetails.length == 0)
 	{
 		basicDetailsDivEl.innerHTML = '';
+		str+=' <div id="partyResultsDiv">';
+		str+='<UL>';
+		str+='<LI>';
 		str+='<TABLE width="100%" border="1" cellspacing="0" cellpadding="0">';
-		str+='<TR><TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+analysisChartName+'" border="none"/></TD>';
-		str+='<TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+resultsChartName+'" border="none"/></TD></TR>';	
+		str+='<TR><TD  width="50%" align="center" height= "215px;"><div id="electionAnalysisDiv"></div></TD>';
+		str+='<TD  width="50%" align="center" height= "215px;"><div id="partyAnalysisDiv"></div></TD></TR>';	
 		str+='</TABLE>';
-		basicDetailsDivEl.innerHTML = str;
+		str+='</LI>';	
+		str+=' </div>';
+		$('#basicDetails').append(str);
+		electionAnalysisDetails(results.partyBasicAnalysisVO,"electionAnalysisDiv");
+		partyAnalysisDetails(results.partyBasicAnalysisVO,"partyAnalysisDiv");	
 	}
 	if(alliancePartiesBasicDetails != null && alliancePartiesBasicDetails.length > 0)
 	{
@@ -175,22 +183,30 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 		str+='<UL>';
 		str+='<LI>';
 		str+='<TABLE width="100%" border="1" cellspacing="0" cellpadding="0">';
-		str+='<TR><TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+analysisChartName+'" border="none"/></TD>';
-		str+='<TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+resultsChartName+'" border="none"/></TD></TR>';	
+		str+='<TR><TD  width="50%" align="center" height= "215px;"><div id="electionAnalysisDiv"></div></TD>';
+		str+='<TD  width="50%" align="center" height= "215px;"><div id="partyAnalysisDiv"></div></TD></TR>';	
 		str+='</TABLE>';
-		str+='</LI>';		
+		str+='</LI>';	
+		$('#basicDetails').append(str);
+		electionAnalysisDetails(results.partyBasicAnalysisVO,"electionAnalysisDiv");
+		partyAnalysisDetails(results.partyBasicAnalysisVO,"partyAnalysisDiv");	
 		for(var i in alliancePartiesBasicDetails)
 		{
+			var str = "";
 			str+='<LI>';
 			str+='<TABLE width="100%" border="1" cellspacing="0" cellpadding="0">';
-			str+='<TR><TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+alliancePartiesBasicDetails[i].analysisChart+'" border="none"/></TD>';
-			str+='<TD width="50%" align="center" height= "215px;"><IMG style="height:200px;" src="charts/'+alliancePartiesBasicDetails[i].resultsChart+'" border="none"/></TD></TR>';	
+			str+='<TR><TD  width="50%" align="center" height= "215px;"><div id="electionDiv'+i+'"></TD>';
+			str+='<TD  width="50%" align="center" height= "215px;"><div id="partyDiv'+i+'"></div></TD></TR>';	
 			str+='</TABLE>';
-			str+='</LI>';			
+			str+='</LI>';
+			$('#basicDetails').append(str);			
+			electionAnalysisDetails(alliancePartiesBasicDetails[i],"electionDiv"+i);
+			partyAnalysisDetails(alliancePartiesBasicDetails[i],"partyDiv"+i);
+			
 		}
 		str+='</UL>';
-		basicDetailsDivEl.innerHTML = str;
-		buildGraphsCarousel("basicDetails");
+		//basicDetailsDivEl.innerHTML = str;
+		//buildGraphsCarousel("basicDetails");
 	}	
 	var tablerDataStr = '';
 	
@@ -472,6 +488,39 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 	//myCode end raghav
 	getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId,jsObj.stateId);
 	getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electionId,partyId,jsObj.stateId);
+}
+
+function partyAnalysisDetails(result,divId)
+{
+	var data = new google.visualization.DataTable();
+	var title = result.partyName   +  "  Analysis Details";
+	data.addColumn('string', 'Party');
+	data.addColumn('number', 'Analyzed');
+	data.addColumn('number', 'Not Analyzed');
+	data.addRows(1);
+	data.setValue(0, 0,  result.partyName);
+	data.setValue(0, 1,  result.analyzedConsti);
+	data.setValue(0, 2,  result.notAnalyzedConsti);
+	var chart = new google.visualization.ColumnChart(document.getElementById(divId));
+	chart.draw(data, {width: 200, height: 200,legend:'bottom',legendTextStyle:{fontSize:10}, title: title,
+	hAxis: {}
+	}); 
+}
+function electionAnalysisDetails(result,divId)
+{
+	var data = new google.visualization.DataTable();
+	var title = result.partyName   +  "  Election Results";
+	data.addColumn('string', 'Party');
+	data.addColumn('number', 'Win');
+	data.addColumn('number', 'Lost');
+	data.addRows(1);
+	data.setValue(0, 0, result.partyName);
+	data.setValue(0, 1, result.seatsWon);
+	data.setValue(0, 2, result.seatsLost);
+	var chart = new google.visualization.ColumnChart(document.getElementById(divId));
+	chart.draw(data, {width: 200, height: 200,legend:'bottom',legendTextStyle:{fontSize:10}, title: title,
+	hAxis: {}
+	 });
 }
 function buildGraphsCarousel(divId)
 {

@@ -538,7 +538,7 @@ var electionObject=	{
 		elecIdYearOne:'${electionComparisonReportVO.elecIdYearOne}',
 		elecIdYearTwo:'${electionComparisonReportVO.elecIdYearTwo}'
 };
-
+google.load("visualization", "1", {packages:["corechart"]});
 function buildDataForTwoElectionYears()
 {		
 	//Data For Election Year One...	
@@ -1888,6 +1888,131 @@ function createCoulmnChart()
 
 }
 
+function createPercentageCoulmnChart()
+{
+	var title = "";
+	<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
+	title = "Percentage Gained By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections"
+	</c:if>
+	<c:if test="${electionComparisonReportVO.electionType != 'Parliament'}">										
+	title = "Percentage Gained By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections"
+	</c:if>
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'District');
+	data.addColumn('number', '${electionComparisonReportVO.yearOne}');
+	data.addColumn('number', '${electionComparisonReportVO.yearTwo}');
+	var length = 0;
+	<c:forEach var="partyPositions" items="${electionComparisonReportVO.districtWisePartyResultsForYearOne}">
+	length++;
+	</c:forEach>
+	data.addRows(length);
+	
+	<c:if test="${allianceCheck == 'true'}">
+		
+		 var count = 0;
+		 <c:forEach var="partyPositions" items="${electionComparisonReportVO.districtWisePartyResultsForYearOne}">
+			data.setValue(count, 0, '${partyPositions.districtName}');
+			data.setValue(count, 1,  ${partyPositions.votesPercent});
+			 <c:forEach var="partyPosition" items="${electionComparisonReportVO.districtWisePartyResultsForYearTwo}">
+				if('${partyPositions.districtName}' === '${partyPosition.districtName}')
+				{
+				data.setValue(count, 2,  ${partyPosition.votesPercent});
+				
+				}
+			
+		 </c:forEach>
+		 count++;
+		 </c:forEach>
+		 
+	</c:if>
+	<c:if test="${allianceCheck == 'false' || allianceCheck == ''}">
+		 var count = 0;
+		 <c:forEach var="partyPositions" items="${electionComparisonReportVO.districtWisePartyResultsForYearOne}">
+			data.setValue(count, 0, '${partyPositions.districtName}');
+			data.setValue(count, 1,  ${partyPositions.votesPercent});
+			 <c:forEach var="partyPosition" items="${electionComparisonReportVO.districtWisePartyResultsForYearTwo}">
+				if('${partyPositions.districtName}' === '${partyPosition.districtName}')
+				{
+				data.setValue(count, 2,  ${partyPosition.votesPercent});
+				
+				}
+			
+		 </c:forEach>
+		 count++;
+		 </c:forEach>
+		  
+		  
+	</c:if>
+	
+	var chart = new google.visualization.ColumnChart(document.getElementById('percentageChartDiv'));
+		chart.draw(data, {width: 1000, height: 310,legend:'bottom',legendTextStyle:{fontSize:10}, title: title,
+				  hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:45, titleTextStyle: {color: 'red'}}
+				 });
+
+}
+function createNumberCoulmnChart()
+{
+	var title = "";
+	<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
+	title = "Percentage Gained By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections"
+	</c:if>
+	<c:if test="${electionComparisonReportVO.electionType != 'Parliament'}">										
+	title = "Percentage Gained By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections"
+	</c:if>
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'District');
+	data.addColumn('number', '${electionComparisonReportVO.yearOne}');
+	data.addColumn('number', '${electionComparisonReportVO.yearTwo}');
+	var length = 0;
+	<c:forEach var="partyPositions" items="${electionComparisonReportVO.districtWisePartyResultsForYearOne}">
+	length++;
+	</c:forEach>
+	data.addRows(length);
+	
+	<c:if test="${allianceCheck == 'true'}">
+		
+		 var count = 0;
+		 <c:forEach var="partyPositions" items="${electionComparisonReportVO.districtWisePartyResultsForYearOne}">
+			data.setValue(count, 0, '${partyPositions.districtName}');
+			data.setValue(count, 1,  ${partyPositions.seatsWon});
+			 <c:forEach var="partyPosition" items="${electionComparisonReportVO.districtWisePartyResultsForYearTwo}">
+				if('${partyPositions.districtName}' === '${partyPosition.districtName}')
+				{
+				data.setValue(count, 2,  ${partyPosition.seatsWon});
+				}
+			
+		 </c:forEach>
+		 count++;
+		 </c:forEach>
+	</c:if>
+	<c:if test="${allianceCheck == 'false' || allianceCheck == ''}">
+		 var count = 0;
+		 <c:forEach var="partyPositions" items="${electionComparisonReportVO.districtWisePartyResultsForYearOne}">
+			data.setValue(count, 0, '${partyPositions.districtName}');
+			data.setValue(count, 1,  ${partyPositions.seatsWon});
+			 <c:forEach var="partyPosition" items="${electionComparisonReportVO.districtWisePartyResultsForYearTwo}">
+				if('${partyPositions.districtName}' === '${partyPosition.districtName}')
+				{
+				data.setValue(count, 2,  ${partyPosition.seatsWon});
+				}
+			
+		 </c:forEach>
+		 count++;
+		 </c:forEach>
+		  
+		  
+	</c:if>
+	
+	var chart = new google.visualization.ColumnChart(document.getElementById('seatsWonChart'));
+		chart.draw(data, {width: 1000, height: 310,legend:'bottom',legendTextStyle:{fontSize:10}, title: title,
+				  hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:45, titleTextStyle: {color: 'red'}}
+				 });
+
+}
+
+ 
+
+//createPercentageCoulmnChart();
 </script>
 </head>
 <body>
@@ -2016,27 +2141,27 @@ function createCoulmnChart()
 		<div id="electionComparisonGraphCarousel" class="yui-skin-sam"> 
 			<ul>
 				<li>
-					<div id="percentageChartDiv">	
-						<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
+					<div id="percentageChartDiv" style="position: relative; float: left;">	
+						<!--<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
 							<div id="percentageChartDiv_head" class="graphHeader" style="background:#ffffff;">Percentage Gained By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections</div>
 						</c:if>
 						<c:if test="${electionComparisonReportVO.electionType != 'Parliament'}">										
 							<div id="percentageChartDiv_head" class="graphHeader" style="background:#ffffff;">Percentage Gained By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections</div>
 						</c:if>	
-						<div id="percentageChartDiv_img" style="background:#ffffff;"><img src="charts/${electionComparisonReportVO.percentageChart}"/></div>
+						<div id="percentageChartDiv_img" style="background:#ffffff;"><img src="charts/${electionComparisonReportVO.percentageChart}"/></div>-->
 						
 					</div>
 				</li>
 				<li>
-					<div id="seatsWonChart" >
-						<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
+					<div id="seatsWonChart" style="position: relative; float: left;">
+						<!--<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
 							<div id="seatsWonChart_head" class="graphHeader" style="background:#ffffff">Seats Won By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections</div>
 						</c:if>
 						<c:if test="${electionComparisonReportVO.electionType != 'Parliament'}">
 							<div id="seatsWonChart_head" class="graphHeader" style="background:#ffffff">Seats Won By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections</div>
 						</c:if>
 							
-							<div id="seatsWonChart_img" style="background:#ffffff;"><img src="charts/${electionComparisonReportVO.seatsWonChart}"/></div>
+							<div id="seatsWonChart_img" style="background:#ffffff;"><img src="charts/${electionComparisonReportVO.seatsWonChart}"/></div>-->
 							
 					</div>
 				</li>
@@ -2079,10 +2204,12 @@ function createCoulmnChart()
 		overallResultsForYearOne();
 		overallResultsForYearTwo();
 		getDiffPercent();
-		google.load("visualization", "1", {packages:["corechart"]});
-		google.setOnLoadCallback(createCoulmnChart);
-
 		
+		//google.setOnLoadCallback(createCoulmnChart);
+		//buildPercentageChart();
+		createCoulmnChart();
+		createPercentageCoulmnChart();
+		createNumberCoulmnChart();
 		var allianceCarousel = new YAHOO.widget.Carousel("electionComparisonGraphCarousel",
 			{
 				carouselEl: "UL",
