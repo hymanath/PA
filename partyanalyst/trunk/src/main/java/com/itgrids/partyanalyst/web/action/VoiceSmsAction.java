@@ -1,11 +1,10 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -18,6 +17,9 @@ import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class VoiceSmsAction implements ServletRequestAware{
 	
@@ -40,7 +42,25 @@ public class VoiceSmsAction implements ServletRequestAware{
 	private  List<VoiceSmsResponseDetailsVO> responseDetailsList;
 	
 	
+    private String fromDate;
+    private String toDate;
 	
+
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
 
 	public List<VoiceSmsResponseDetailsVO> getResponseDetailsList() {
 		return responseDetailsList;
@@ -183,6 +203,20 @@ public class VoiceSmsAction implements ServletRequestAware{
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
 	}
+	
+	
+
+
+	public Date getDate(String dateStr){
+		  String[] dateArray =  dateStr.split("-");
+		  Calendar cal = Calendar.getInstance(); 
+		  cal.set(Integer.parseInt(dateArray[2]),Integer.parseInt(dateArray[1])-1, Integer.parseInt(dateArray[0]));
+		  return cal.getTime();
+	  }
+	
+	
+	
+	
 	
 	public String execute()
 	{
@@ -358,7 +392,20 @@ public class VoiceSmsAction implements ServletRequestAware{
 		
 		try
 		{
-			resultMap = voiceSmsService.generateVoiceSmsReport();	
+			 Date fromDate1 = null;
+			 Date toDate1 = null;
+			
+			  if(fromDate.trim().length() > 0)
+				   fromDate1 = getDate(fromDate.trim());
+			   if(toDate.trim().length() > 0)
+				   toDate1 = getDate(toDate.trim());
+			
+			
+			
+			
+			
+			
+			resultMap = voiceSmsService.generateVoiceSmsReport(fromDate1,toDate1);	
 		}
 		catch(Exception e)
 		{
@@ -385,4 +432,6 @@ public class VoiceSmsAction implements ServletRequestAware{
 		return Action.SUCCESS;
 		
 	}
+
+	
 }
