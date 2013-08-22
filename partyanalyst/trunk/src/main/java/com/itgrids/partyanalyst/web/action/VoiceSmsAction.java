@@ -318,14 +318,15 @@ public class VoiceSmsAction implements ServletRequestAware{
 			StringBuffer audioFilePath =  new StringBuffer();
 			
 			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);	
-			if(requestURL.contains(".com"))
-				
+			
+			 jObj = new JSONObject(getTask());
+
+			if(requestURL.contains(".com"))				
 			//	audioFilePath.append(""+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
-				audioFilePath.append(IWebConstants.LIVE_VOICE_RECORDINGS_URL+"/"+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
+				audioFilePath.append(IWebConstants.LIVE_VOICE_RECORDINGS_URL+"/"+user.getRegistrationID()+"/"+jObj.getString("audioFileName"));
 			else
 				audioFilePath.append("http://122.169.253.134:8080/TDP/voice_recording/test6.wav");
 
-			 jObj = new JSONObject(getTask());
 			
 			 status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),jObj.getLong("senderMobileNumber"),jObj.getString("description"));
 			 
