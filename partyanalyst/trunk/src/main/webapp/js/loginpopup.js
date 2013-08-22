@@ -105,10 +105,16 @@ function callHomePageAjax11(jsObj,url){
                                     $('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
                                     try
                                     {
+										var tempStr = window.location.href;
+										
                                         if(loginMode =="true")
                                         {
                                             window.location.href = "dashBoardAction.action";
                                         }
+										else if(tempStr.indexOf("homePage") != -1)
+										{
+										  window.location.href = "dashBoardAction.action";
+										}
                                         else
                                         {
                                             window.location.reload();
