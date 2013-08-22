@@ -17,8 +17,10 @@ import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceSmsResponseDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceSmsVerifiedNumbersDAO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.VoiceRecordingDetails;
 import com.itgrids.partyanalyst.model.VoiceSmsResponseDetails;
+import com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -389,5 +391,23 @@ public class VoiceSmsService implements IVoiceSmsService {
           return 0;
 		}
 		
+	}
+	
+	public String saveCustomerContactsUpdations(Long custmerId,String mobileNo){
+		User user = new User();
+		mobileNo = "91".concat(mobileNo);
+		try{
+			user = userDAO.get(custmerId);			
+				VoiceSmsVerifiedNumbers voiceSmsVerifiedNumbers = new VoiceSmsVerifiedNumbers();
+				voiceSmsVerifiedNumbers.setUser(user);
+				voiceSmsVerifiedNumbers.setSenderMobileNumber(Long.valueOf(mobileNo));
+				voiceSmsVerifiedNumbersDAO.save(voiceSmsVerifiedNumbers);
+		
+			return "success";
+		}catch(Exception e){
+			e.printStackTrace();
+		return "failur";
+		}		
+			
 	}
 }
