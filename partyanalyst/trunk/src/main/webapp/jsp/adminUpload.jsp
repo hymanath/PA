@@ -540,6 +540,15 @@
 										</a>
 									</span><br>
 									</fieldset></td>
+								<td>
+								<fieldset class="f2">
+									<legend class="l2">Customer Contacts For Voice SMS </legend>
+									<span class="fontStyle">
+										Update Customer Contacts:&nbsp;
+										<a class="alinkstyle" href="<s:url action="updateCustomerContactsAction"/>"> Add Customer Contacts
+										</a>
+									</span><br>
+									</fieldset></td>
 								</tr>
 								<tr>
 								<td>
