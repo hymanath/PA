@@ -747,7 +747,85 @@ lable{line-height:40px;}
 	
         </div>
      </div>
- 
+	
+	
+	<!-- SUGGESTIVE MODEL  START-->
+	
+	<div class="span12 well well-small" style="margin-left:0px;">
+     <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />Suggestive Model</h4></div>
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2> Panchayat wise Caste Details</h2>
+				<fieldset>
+					<lable>Select Constituency </lable>
+					<s:select cssClass="selectstyle span12" theme="simple" id="sugconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes');" name=""  style="width: 172px; margin-left: 5px;"></s:select>
+					<lable>Select Caste </lable><select id="candidateCastes" multiple="multiple" style="width: 171px; margin-left: 50px;">
+					</select>
+					<input type="button" value="View" class="btn btn-small" onCLick="getBoothLeaderDetails();" style="float:right;"></input>
+				</fieldset>
+			</div>
+			<div class="span6 widget">
+			  <h2>Party Postions Panchayat wise Based on Previous Election Results</h2>
+				<fieldset>
+					<lable>Select Constituency </lable>
+					<s:select cssClass="selectstyle span12" theme="simple" id="sugTarconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getPartyDetails();" name="" style="width: 168px; margin-left: 5px;"></s:select>
+					<lable>Select Party </lable>
+					<select id="partySelectEl" onchange="getElectionYears(this.options[this.selectedIndex].value)" style="width: 168px; margin-left: 54px;">
+					</select>
+					<lable>From</lable>
+					<select id="electionYearSelectEl1" onchange="validateYear1(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);" style="width: 97px; margin-left: 23px;">
+					<option value="0">Year</option>
+					</select>
+					<lable>To</lable>
+					<select id="electionYearSelectEl2" onchange="validateYear2(this.options[this.selectedIndex].value)" style="width: 100px; margin-left: 21px;">
+					<option value="0">Year</option>
+					</select>
+					<input type="button" value="View" class="btn btn-small" onCLick="previousElectionDetails();" style="float:right;"></input>
+				</fieldset>
+			</div>       
+							
+		</div>
+	
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2>Younger Voter Details</h2>
+				<!--<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Problem Search And Report.png"style="width: 64px; height: 64px;"></img>
+					 <div class="media-body">
+					<p>Panchayat Wise Younger (Age Between 18 - 22) Voters Analysis </p>
+						<input type="button" value="View" class="btn btn-small" onClick="getYoungerVoterDetails();" style="float:right;"></input>
+				    </div> 
+				</div> -->	
+					<fieldset>
+					<lable>Select Constituency </lable>
+					<s:select cssClass="selectstyle span12" theme="simple" id="sugYoungconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes1');" name="" style="width: 168px; margin-left: 5px;"></s:select>
+					
+					<lable>Select Caste </lable><select id="candidateCastes1" multiple="multiple" style="width: 171px; margin-left: 50px;">
+					</select>
+					<input type="button" value="View" class="btn btn-small" onCLick="getYoungerVoterDetails();" style="float:right;"></input>
+				</fieldset>				
+			</div>			
+			<div class="span6 widget">
+			  <h2>Older Voter Details</h2>
+			<!-- <div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Cadre Mangement.png"style="width: 64px; height: 64px;"></img>
+				<div class="media-body">
+				<p style="margin-bottom: 27px;">Panchayat Wise Older (Age Between 60 - 120) Voters Analysis </p>
+					<input type="button" value="View" class="btn btn-small" onClick="getOlderVoterDetails();" style="float:right;"></input>
+				</div> 
+		   </div> -->
+		   <fieldset>
+					<lable>Select Constituency </lable>
+					<s:select cssClass="selectstyle span12" theme="simple" id="sugOldTarconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes2');" name="" style="width: 168px; margin-left: 5px;"></s:select>
+					
+					<lable>Select Caste </lable><select id="candidateCastes2" multiple="multiple" style="width: 171px; margin-left: 50px;">
+					</select>
+					<input type="button" value="View" class="btn btn-small" onCLick="getOlderVoterDetails();" style="float:right;"></input>
+				</fieldset>
+		</div>
+	</div>
+   </div>
+	<!-- SUGGESTIVE MODEL END -- >
  <!--End of Management Tools Block-->
  
  
@@ -757,7 +835,10 @@ lable{line-height:40px;}
  $(document).ready(function(){
 	$('.active').removeClass(); 
 	$('#dashBoardBtn').css("background-color","red"); 
-	
+	getCasteAvaliableConstituencys();
+	$("#sugTarconstituencyId option[value=0]").remove();
+	$("#sugYoungconstituencyId option[value=0]").remove();
+	$("#sugOldTarconstituencyId option[value=0]").remove();
 	 $('#electionYearsId').val($("#electionYearsId option:eq(1)").val());
 	 constituencyOptions("default");
 
@@ -1663,6 +1744,22 @@ function callAjax(jsObj,url){
 								
 
 							    }
+								else if(jsObj.task== "getUserAssignedVoterCastes")
+								{
+									buildUserAssignedVotersCastes(myResults,jsObj.divId);
+								}
+								else if(jsObj.task == "getPartyDetails")
+								{
+									populatePartiesDropdown(myResults);
+								}
+								else if(jsObj.task == "getElectionYears")
+								{
+									populateElectionYearDropdown(myResults);
+								}
+								else if(jsObj.task == "getCasteAvaliableConstituencys")
+								{
+									populateConstituenyesList(myResults);
+								}
 								}catch (e) {
 							     
 								}  
@@ -1810,7 +1907,230 @@ function getMandalsForState(){
 
 
 </script>
+<script>
+//suuggestive model functions
 
+function getCandidateCastes(constituencyId,divId){
+	//var constituencyId = $('#sugconstituencyId').val();
+	var jsObj ={
+		constituencyId : constituencyId,
+		divId          : divId,
+		task           : "getUserAssignedVoterCastes"
+		};
+	var rparam="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url="getUserAssignedVoterCastesAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+function buildUserAssignedVotersCastes(results,divId){
+	var candidateCastesEl = document.getElementById(divId);
+	removeSelectElements(candidateCastesEl);
+	
+	for(var i in results)
+	{
+		var opElmt=document.createElement('option');
+		opElmt.value=results[i].id;
+		opElmt.text=results[i].name;
+		addOptions(candidateCastesEl,opElmt);	
+	}	
+}
+function removeSelectElements(elmt)
+{
+	if(!elmt)
+		return;
+
+	var len=elmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		elmt.remove(i);
+	}	
+
+}
+function addOptions(list,opElmt){
+	try
+		{
+		list.add(opElmt,null); // standards compliant
+		}
+	catch(ex)
+		{
+		list.add(opElmt); // IE only
+		}
+}
+function getPartyDetails(){
+	var jsObj = 
+	{
+		task:"getPartyDetails"
+	}	
+	var rparam="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url="getPartyForSuggestiveAction.action?"+rparam;
+	callAjax(jsObj,url);
+
+}
+function populatePartiesDropdown(results)
+{
+	var partySelectEl = document.getElementById("partySelectEl");
+	removeSelectElements(partySelectEl);
+	var opElmt=document.createElement('option');
+		opElmt.value='0';
+		opElmt.text='Select Party';
+		addOptions(partySelectEl,opElmt);
+	for(var i in results)
+	{
+		var opElmt=document.createElement('option');
+		opElmt.value=results[i].id;
+		opElmt.text=results[i].name;
+		addOptions(partySelectEl,opElmt);	
+	}	
+}
+function getElectionYears(id){
+		var constituencyId = $('#sugTarconstituencyId').val();
+		if(id == 0){
+		$("#partySelectEl").css("border","1px solid IndianRed");
+		$('#errorMsgDiv').html('Please Select Party Name');
+		return;
+		}
+
+		var jsObj=
+			{
+				electionScopeId:2,
+				partyId:id,
+				constituencyId:constituencyId,
+				task:"getElectionYears"						
+			};
+		
+		var rparam="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url="getElectionsYearsForParties.action?"+rparam;
+		callAjax(jsObj,url);
+}
+function populateElectionYearDropdown(results)
+{
+	var electionYearsEl1 = document.getElementById("electionYearSelectEl1");
+	var electionYearsEl2 = document.getElementById("electionYearSelectEl2");
+
+		removeSelectElements(electionYearsEl1);
+		removeSelectElements(electionYearsEl2);
+	var opElmt1=document.createElement('option');
+	var opElmt2=document.createElement('option');
+		opElmt1.value='0';
+		opElmt2.value='0';
+		opElmt1.text='Select Year';
+		opElmt2.text='Select Year';
+		addOptions(electionYearsEl1,opElmt1);
+		addOptions(electionYearsEl2,opElmt2);
+	if(results!=null)
+		for(var i in results)
+		{	
+			var opElmt1=document.createElement('option');
+			var opElmt2=document.createElement('option');
+			opElmt1.value=results[i].id;
+			opElmt1.text=results[i].name;
+			opElmt2.value=results[i].id;
+			opElmt2.text=results[i].name;
+			addOptions(electionYearsEl1,opElmt1);
+			addOptions(electionYearsEl2,opElmt2);
+		}
+}
+function validateYear1(yearId,yearValue){
+	$('#errorMsgDiv').html('');
+		$("#electionYearSelectEl1").css("border","1px solid lightBlue");
+	if(yearId == 0){
+		$("#electionYearSelectEl1").css("border","1px solid IndianRed");
+		$('#errorMsgDiv').html('Please Select Election Years');
+		return;
+	}
+
+var select = new Array();
+$('#electionYearSelectEl1 option').each(function(){
+	if(!(yearValue == $(this).text()|| yearValue < $(this).text()))
+		{
+		 var obj = {
+			 id : $(this).val(),
+			 name : $(this).text()
+		}
+	select.push(obj);
+	}
+});
+
+	$('#electionYearSelectEl2').children().remove();
+	$('<option>').val(0).text('Select Year').appendTo('#electionYearSelectEl2');
+
+for(var i=0;i<select.length;i++)
+	{	 					$('<option>').val(''+select[i].id+'').text(''+select[i].name+'').appendTo('#electionYearSelectEl2');
+	}
+
+}
+
+function validateYear2(yearId){
+	$('#errorMsgDiv').html('');
+		$("#electionYearSelectEl2").css("border","1px solid lightBlue");
+	if(yearId == 0){
+		$("#electionYearSelectEl2").css("border","1px solid IndianRed");
+		$('#errorMsgDiv').html('Please Select Election Years');
+		return;
+	}	
+}
+function getOlderVoterDetails()
+{
+	var constituencyId  = $('#sugOldTarconstituencyId').val();
+	var casteIds        =0;
+	$('#candidateCastes2 :selected').each(function(i, selected){ 
+	   casteIds+=','+$(this).val();
+   });
+	window.open("suggestiveModelAction.action?hideMainMenu=true&fromAge=60&toAge=120&constituencyId="+constituencyId+"&casteIds="+casteIds+"&oldVoters=true");
+}
+function getYoungerVoterDetails()
+{
+	var constituencyId  = $('#sugYoungconstituencyId').val();
+	var casteIds        =0;
+	$('#candidateCastes1 :selected').each(function(i, selected){ 
+	    casteIds+=','+$(this).val();
+   });
+	window.open("suggestiveModelAction.action?hideMainMenu=true&fromAge=19&toAge=22&constituencyId="+constituencyId+"&casteIds="+casteIds+"&youngVoters=true");
+}
+
+function previousElectionDetails()
+{
+	var constituencyId = $('#sugTarconstituencyId').val();
+	var partyId        = $('#partySelectEl').val();
+	var fromYear       = $('#electionYearSelectEl1').val();
+	var toYear         = $('#electionYearSelectEl2').val();
+	
+	window.open("suggestiveModelAction.action?hideMainMenu=true&constituencyId="+constituencyId+"&partyId="+partyId+"&fromYear="+fromYear+"&toYear="+toYear+"&prevElecResults=true");
+}
+
+function getBoothLeaderDetails()
+{
+	var constituencyId  = $('#sugconstituencyId').val();
+	var casteIds        =0;
+	$('#candidateCastes :selected').each(function(i, selected){ 
+	   casteIds+=','+$(this).val();
+   });
+	window.open("suggestiveModelAction.action?hideMainMenu=true&constituencyId="+constituencyId+"&casteIds="+casteIds+"&castDetails=true");
+}
+function getCasteAvaliableConstituencys()
+{
+	var jsObj= 
+	{	
+		task:"getCasteAvaliableConstituencys"		
+	};
+	var rparam="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url="getCasteAvaliableConstituencys.action?"+rparam;
+	callAjax(jsObj,url);
+}
+function populateConstituenyesList(myresults)
+{
+	if(myresults.length > 0)
+	{
+		$("#sugconstituencyId option").remove();
+		for(var i in myresults)
+		{
+			 $('#sugconstituencyId').append('<option value='+myresults[i].id+'>'+myresults[i].name+'</option>');
+		}
+	}
+	getCandidateCastes($('#sugconstituencyId option:selected').val(),"candidateCastes");
+	getCandidateCastes($('#sugYoungconstituencyId option:selected').val(),"candidateCastes1");
+	getCandidateCastes($('#sugOldTarconstituencyId option:selected').val(),"candidateCastes2");
+}
+</script>
 
 </body>
 </html>
