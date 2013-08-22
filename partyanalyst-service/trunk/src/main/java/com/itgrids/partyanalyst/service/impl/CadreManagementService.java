@@ -2415,6 +2415,8 @@ public class CadreManagementService {
 				levelValue = getWardName(new Long(id));
 			}else if ("MANDAL".equals(level)) {
 				levelValue = getMandalName(new Long(levelValueID));
+				Long stateId = tehsilDAO.getStateByTehsilId(new Long(levelValueID));
+				cadreInfo.setCadreLevelStateId(stateId);
 			} else if ("VILLAGE".equals(level)) {
 				log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+ levelValueID);
 				String type = levelValueID.substring(0, 1);
@@ -4886,8 +4888,12 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		else if(level.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL) ||
 									level.equalsIgnoreCase(IConstants.WARD) || "PARLIAMENT CONSTITUENCY".equalsIgnoreCase(level))
 			levelStr += constituencyDAO.get(Value).getName();
-		else if(level.equalsIgnoreCase(IConstants.MANDAL_LEVEL))
+		else if(level.equalsIgnoreCase(IConstants.MANDAL_LEVEL)){
+			Long stateId = tehsilDAO.getStateByTehsilId(Value);
+				if(stateId == 24 && level.equalsIgnoreCase("MANDAL"))
+				levelStr = new String("TALUK-");
 			levelStr += tehsilDAO.get(Value).getTehsilName();
+		}
 		else if(level.equalsIgnoreCase(IConstants.CENSUS_VILLAGE_LEVEL))
 			levelStr += hamletDAO.get(Value).getHamletName();
 		else if(level.equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
