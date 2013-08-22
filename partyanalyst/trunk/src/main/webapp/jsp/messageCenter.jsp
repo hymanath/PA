@@ -1313,7 +1313,7 @@ function buildVoiceSmsHistory(results)
     str+='<table border="1">';
 	str+='<thead>'; 
 	str+='<tr>';
-	 str+='<th>Messagee Id</th>';
+	 str+='<th>Message Id</th>';
  	 str+='<th>Date Sent</th>';
  	 //str+='<th>Mobile Numbers</th>';
 	 str+='<th>Description</th>';
