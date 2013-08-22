@@ -5864,5 +5864,11 @@
 		 	    <param name="root">status</param>
 		 	</result>     
 		  </action>
+		 
+		  <action name="getCasteAvaliableConstituencys" class="suggestiveModelAction" method="getCasteAvaliableConstituencys">
+		 <result type="json" name="success">
+		   <param name="root">constituencies</param>
+		  </result>
+		 </action>
 		</package>
 </struts>      
