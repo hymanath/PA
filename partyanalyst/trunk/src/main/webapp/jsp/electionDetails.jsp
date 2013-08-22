@@ -455,7 +455,7 @@ function callAjax(param,jsObj,url){
 										if(myResults.electionResultsInDistricts.allPartiesResults != null &&
 											myResults.electionResultsInDistricts.allPartiesResults.length > 0)
 										{
-											$("#analysisToolsDataDiv").css("display","none");
+										 //$("#analysisToolsDataDiv").css("display","none");
 											showDistrictWiseResultsLineGraph(myResults);
 										    <c:if test="${hasDeatiledAnalysis}">
 											buildAllDistrictResultsDataTable(myResults);
@@ -4757,6 +4757,20 @@ function hideMinisterDetailsDiv()
 	var url = "checkForMinisterData.action?"+rparam;			callAjax1(jsObj,url);
 }
 
+function hideAnalysisToolsDiv()
+{
+  var selectYearStateWise = $("#selectYearStateWise option").length;
+  var selectYearDistrictwise = $("#selectYearDistrictwise option").length;
+
+  if(selectYearStateWise == 1 && selectYearDistrictwise == 1)
+	{
+	  $("#analysisToolsDataDiv").css("display","none");
+	}
+	else 
+     $("#analysisToolsDataDiv").css("display","block");
+}
+
+hideAnalysisToolsDiv();
 </SCRIPT>
 </center>
 </BODY>

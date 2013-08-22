@@ -211,10 +211,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 #zptcElectionYears,#mptcElectionYears{width:95px}
 #mptcInfoDivBody,#zptcInfoDivBody{margin-right: 10px;}
 
-#alliancePartiesCarousel .yui-carousel-element li {
-    height: 487px !important;
-   
-}
+
+#partyPositionsDiv{height:350px;width:900px;}
+
 </style>
 <!--[if IE]>
 <style>
