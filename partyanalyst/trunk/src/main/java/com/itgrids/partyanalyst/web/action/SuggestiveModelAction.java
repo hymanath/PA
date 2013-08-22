@@ -496,4 +496,20 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			}
 			return Action.SUCCESS;
 		}
+		
+		public String getCasteAvaliableConstituencys()
+		{
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute(IConstants.USER);
+			if(regVO == null)
+			{
+				return Action.ERROR;
+			}
+			Long userId         = regVO.getRegistrationID();
+			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
+			constituencies = suggestiveModelService.getCasteAvaliableConstituencysService(userAccessConstituencyList,electionTypeId,electionYear,userId);
+			return Action.SUCCESS;
+		}
 }
