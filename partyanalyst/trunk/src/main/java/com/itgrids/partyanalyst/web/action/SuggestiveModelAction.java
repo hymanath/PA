@@ -54,6 +54,18 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private Map<String,Map<String,PartyImpactVO>> resultMap;
 	private List<BasicVO> hamletDetails;
 	private EntitlementsHelper entitlementsHelper;
+	private boolean hideMainMenu;
+	private boolean castDetails;
+	private boolean prevElecResults;
+	private boolean youngVoters;
+	private boolean oldVoters;
+	private Long constituencyId;
+	private String casteIds;
+	private Long fromYear;
+	private Long toYear;
+	private Long partyId;
+	private Long fromAge;
+	private Long toAge;
 	
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	
@@ -228,6 +240,104 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		this.userAccessConstituencyList = userAccessConstituencyList;
 	}
 
+
+	public boolean isHideMainMenu() {
+		return hideMainMenu;
+	}
+
+	public void setHideMainMenu(boolean hideMainMenu) {
+		this.hideMainMenu = hideMainMenu;
+	}
+
+	public boolean isPrevElecResults() {
+		return prevElecResults;
+	}
+
+	public void setPrevElecResults(boolean prevElecResults) {
+		this.prevElecResults = prevElecResults;
+	}
+
+	public boolean isYoungVoters() {
+		return youngVoters;
+	}
+
+	public void setYoungVoters(boolean youngVoters) {
+		this.youngVoters = youngVoters;
+	}
+
+	public boolean isOldVoters() {
+		return oldVoters;
+	}
+
+	public void setOldVoters(boolean oldVoters) {
+		this.oldVoters = oldVoters;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public String getCasteIds() {
+		return casteIds;
+	}
+
+	public void setCasteIds(String casteIds) {
+		this.casteIds = casteIds;
+	}
+
+	public Long getFromYear() {
+		return fromYear;
+	}
+
+	public void setFromYear(Long fromYear) {
+		this.fromYear = fromYear;
+	}
+
+	public Long getToYear() {
+		return toYear;
+	}
+
+	public void setToYear(Long toYear) {
+		this.toYear = toYear;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
+	public Long getFromAge() {
+		return fromAge;
+	}
+
+	public void setFromAge(Long fromAge) {
+		this.fromAge = fromAge;
+	}
+
+	public Long getToAge() {
+		return toAge;
+	}
+
+	public void setToAge(Long toAge) {
+		this.toAge = toAge;
+	}
+
+	
+
+	public boolean isCastDetails() {
+		return castDetails;
+	}
+
+	public void setCastDetails(boolean castDetails) {
+		this.castDetails = castDetails;
+	}
 
 	public String execute(){
 		session = request.getSession();
