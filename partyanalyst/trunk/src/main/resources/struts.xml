@@ -168,6 +168,7 @@
 			<result>/jsp/loginsuccess.jsp</result>
 			<result type="redirect" name="populateVoterDataAction">populateVoterDataAction.action</result>
 			<result type="redirect" name="suggestiveModelAction">suggestiveModelAction.action</result>
+			<result type="redirect" name="updateCustomerContactsAction">updateCustomerContactsAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5853,5 +5854,15 @@
                <result name="success">/jsp/voiceSmsReport.jsp</result>
           </action>
 		 
+		  <action name="updateCustomerContactsAction" class="updateCustomerContacts">
+		   	<result name="error">jsp/loginForm.jsp?src=updateCustomerContactsAction</result>
+		   	<result name="success">/jsp/updateCustomerContacts.jsp</result>  
+		  </action>
+		  
+		  <action name="saveCustomerContactUpdationAction" class="updateCustomerContacts" method="saveCustomerContactUpdations">
+		 	<result type="json" name="success">
+		 	    <param name="root">status</param>
+		 	</result>     
+		  </action>
 		</package>
 </struts>      
