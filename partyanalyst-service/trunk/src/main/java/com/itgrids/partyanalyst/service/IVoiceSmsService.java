@@ -16,6 +16,8 @@ public interface IVoiceSmsService {
 	public Map<String,Map<String,Integer>> generateVoiceSmsReport(Date fromDate,Date toDate);
 	public List<VoiceSmsResponseDetailsVO> getResponseDetailsByResponseCode(String code);
 	public int getVerifiedNumbersCountOfUser(Long userId);
+	
+	public String saveCustomerContactsUpdations(Long custmerId,String mobileNo);
 
 
 }
