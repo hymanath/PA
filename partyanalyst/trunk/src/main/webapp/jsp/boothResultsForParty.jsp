@@ -332,7 +332,7 @@ var Localization = { <%
 	    getAssemblyStates();
 	 }
 	}
-	 window.history.forward(1);
+	// window.history.forward(1);
 </script>
 </HEAD>
 <body>
