@@ -78,4 +78,5 @@ public List<Object[]> getAllTehsilInfoDetails();
 	
 	public List<Object[]> getTehsilList();
 	
+	public Long getStateByTehsilId(Long tehsilId);
 }
