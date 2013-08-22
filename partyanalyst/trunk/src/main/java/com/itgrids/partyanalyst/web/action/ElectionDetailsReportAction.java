@@ -350,8 +350,9 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		
 		
 		if (electionType != null
-				&& electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE)
-				|| electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)) {
+				&& (electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE)
+				|| electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE) || electionType.equalsIgnoreCase("MUNCIPALITY")
+				 || electionType.equalsIgnoreCase("Greater Municipal Corp"))) {
 			try {
 				electionYears = staticDataService.getElectionYearsBasedOnStateIdAndElecTypeId(
 						 new Long(stateID) ,electionTypeId);
@@ -370,6 +371,8 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 				electionYears = staticDataService
 						.getAllElectionYearsForATeshil(electionTypeId);
 				electionYears.add(0, new SelectOptionVO(0l, "Select Year"));
+				
+				
 				partiesList = staticDataService.getAllPartiesForAnElectionYear(
 						year, electionType);
 				partiesList.add(0, new SelectOptionVO(0l, "Select A Party"));
