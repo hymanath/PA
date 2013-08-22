@@ -3337,7 +3337,6 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 Map<Long,List<Long>> hamletIdsList = null;
 				 BasicVO basicVO =null;
 				 Map<Long,String> panchayatName = new HashMap<Long, String>(0);//<panchayatId,PanchayatName
-				 Map<Long,Long> panchayatVotersCount = new HashMap<Long, Long>(0);//<panchayatId,PanchayatVotersCount
 				 List<SelectOptionVO> panchayats = new ArrayList<SelectOptionVO>();
 				 List<Long> panchayaIds = new ArrayList<Long>();
 				 List<Long> tehsilIds = boothDAO.getTehsildByConstituency(constituencyId,publicationId);
@@ -3415,16 +3414,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					 {
 						for(Object[] params:voterCount)
 						{
-							 Long totalVotersCount = panchayatVotersCount.get(panchayatId);
 							BasicVO basicVO3 = new BasicVO();
 							basicVO3.setId((Long)params[0]);
 							basicVO3.setName(params[1] != null ?params[1].toString():" ");
 							basicVO3.setCount((Long)params[2]);
-							 
-							 if(totalVotersCount == null)
-								 panchayatVotersCount.put(panchayatId, (Long)params[2]);
-							 else
-								 panchayatVotersCount.put(panchayatId, totalVotersCount+(Long)params[2]);
+							basicVO3.setVoterCount((Long)params[3]);
 			
 							basicVOList.add(basicVO3);
 						}
@@ -3445,7 +3439,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							BasicVO topThreeCaste = new BasicVO();
 							topThreeCaste.setName(params[2] != null ?params[2].toString():" ");
 							topThreeCaste.setCount((Long)params[1]);
-							topThreeCaste.setPersent(new BigDecimal(((Long)params[1]*100.0)/(Long)basicVO3.getCount()).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+							topThreeCaste.setPersent(new BigDecimal(((Long)params[1]*100.0)/(Long)basicVO3.getVoterCount()).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
 							List<BasicVO> basicVOsList = basicVO3.getHamletCasteInfo();
 							if(candidateCastes.contains(params[3])){
 								basicVO3.getSelectedCasteDetails().add(topThreeCaste);
@@ -3458,9 +3452,9 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							   basicVOsList.add(topThreeCaste);
 						}
 					 }
-					 
+					 Long panchayatVotersCount = voterInfoDAO.getVotersCountInALocation(3l,panchayatId,publicationId,constituencyId);
 					 basicVO2.setMandalName(tehsilDAO.get(mandalId).getTehsilName());
-					 basicVO2.setCount(panchayatVotersCount.get(panchayatId));
+					 basicVO2.setCount(panchayatVotersCount);
 					 basicVO2.setHamletVoterInfo(basicVOList);
 					 basicVO2.setPanchayatVoterInfo(panchayatList);
 					 hamletDetails.add(basicVO2);
