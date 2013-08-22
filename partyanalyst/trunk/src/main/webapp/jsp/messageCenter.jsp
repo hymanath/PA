@@ -99,7 +99,6 @@ ul li {list-style-type:square;}
   border-top-right-radius:5px;
   display:table;
   height:36px;
-  margin:21px 0px 0px 31px;
   width:942px;
 }
 
@@ -299,13 +298,14 @@ $(document).ready(function() {
 
 
 <div id="noVerificationNumbers" style="text-align:center;margin:5px;"></div>
-<div id="mainDiv" style="height:auto;">
+<div id="mainDiv" class="container">
+<div class="row">
 
- <div class="main-title-sec">
+ <div class="main-title-sec span12">
     <div class="main-mbg">Voice SMS Center</div>
  </div>
 
- <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 31px;" class="span12" >
+ <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
 
 
 <!-- Complete options start -->
@@ -454,6 +454,7 @@ $(document).ready(function() {
   <li>You can send already existing audio files in the server or select an audio file from your computer and upload to the server or record your own new voice message<a href="uploadAudioFile.action" target="_blank"><b>Upload/ Record</b></a></li>.
   <li>You can not send promotional audios.</li>
   <li>If you want to send voice SMS from a new mobile number which doesn't exist in the verified numbers list, please contact us to get your new number approved by us.</li>
+  <li>You need to accept our terms and conditions.</li>
 
 
 
@@ -462,7 +463,7 @@ $(document).ready(function() {
 </div>
 
 
- <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice SMS(Add country code before mobile number):<font style="color:red;">*</font></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
+ <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice SMS(Add country code before mobile number):<font style="color:red;">*</font><br>Example:919885988598</label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 
   <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
 
@@ -520,6 +521,7 @@ $(document).ready(function() {
  
  </div>
 
+ </div>
  </div>
 
 
@@ -1626,4 +1628,5 @@ function showTermsAndConditiond()
 
 </script>
  </body>
+ 
  </html>
