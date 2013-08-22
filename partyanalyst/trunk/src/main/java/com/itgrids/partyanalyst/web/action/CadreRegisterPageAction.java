@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -92,6 +93,16 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private String name;
 	private Long onlineRegId;
 	//private RegistrationVO registrationVO;
+	private IConstituencyDAO constituencyDAO;
+	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 	public List<SelectOptionVO> getBloodGroupTypes() {
 		return bloodGroupTypes;
 	}
@@ -822,6 +833,13 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			List<SelectOptionVO> mandals_c=regionServiceDataImp.getSubRegionsInConstituency(new Long(cadreInfo.getConstituencyID()),IConstants.PRESENT_YEAR,null);
 			SelectOptionVO obj2 = new SelectOptionVO(0L,"Select Mandal");
 			mandals_c.add(0, obj2);
+			List stateValue = constituencyDAO.getStateForParliamentConstituency(new Long(cadreInfo.getConstituencyID()));
+			Object[] list = (Object[])stateValue.get(0);
+			if((Long)list[0] == 24){
+				for(SelectOptionVO mandalName:mandals_c){
+					mandalName.setName(mandalName.getName().replaceAll("MANDAL", "TALUK"));
+				}
+			}
 			session.setAttribute(ISessionConstants.MANDALS, mandals_c);
 			
 			//get villages
