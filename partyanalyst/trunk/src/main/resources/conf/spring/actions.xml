@@ -239,6 +239,7 @@
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 		<property name="partyStrengthService" ref="partyStrengthService" />	
+		<property name="constituencyDAO" ref="constituencyDAO" />
 	</bean>
 	
 	<bean id="cadreRegisterAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAjaxAction" singleton="false">
@@ -704,6 +705,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
 	</bean>
 	
 	<bean id="viewFeaturesAction" class="com.itgrids.partyanalyst.web.action.ViewFeaturesAction" singleton="false">
