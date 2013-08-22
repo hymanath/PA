@@ -121,10 +121,16 @@ public class CadreInfo implements Serializable{
 	private Long voterId;
 	private boolean cadreParliamentWise;
 	private Long cadreOnlineRegId;
-	
+	private Long cadreLevelStateId;
 	private String note;
 	private String memberShipNo;
 	
+	public Long getCadreLevelStateId() {
+		return cadreLevelStateId;
+	}
+	public void setCadreLevelStateId(Long cadreLevelStateId) {
+		this.cadreLevelStateId = cadreLevelStateId;
+	}
 	public String getMemberShipNo() {
 		return memberShipNo;
 	}
