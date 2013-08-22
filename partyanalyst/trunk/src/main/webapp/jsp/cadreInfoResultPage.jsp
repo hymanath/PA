@@ -319,7 +319,7 @@ function buildCadreInfo(jsObj,results)
 	str += '				</tr>';
 	str += '				</tr>';
 	}
-	str += '					<th style="width:125px">Mandal/Municipality </th>';
+	str += '					<th style="width:125px">Taluk/Mandal/Municipality </th>';
 	str += '					<th> : </th>';
 	str += '					<td>'+results.mandalName+'</td>';
 	str += '				</tr>';
@@ -379,7 +379,7 @@ function buildCadreInfo(jsObj,results)
 	str += '				</tr>';
 	}
 	str += '			<tr>';
-	str += '				<th style="width:125px">Mandal/Municipality </th>';
+	str += '				<th style="width:125px">Taluk/Mandal/Municipality </th>';
 	str += '				<th> : </th>';
 	str += '				<td>'+results.pmandalName+'</td>';
 	str += '			</tr>';
@@ -489,9 +489,13 @@ function buildCadreInfo(jsObj,results)
 	str += '		<tr>';
 	str += '			<th style="width:125px">Cadre Level</th>';
 	str += '			<th>:</th>';
+	if(results.cadreLevelStateId == "24" && results.strCadreLevel == "MANDAL"){
+	str += '			<td>TALUK-'+results.strCadreLevelValue+'</td>';
+	str += '		</tr>';
+	}else{
 	str += '			<td>'+results.strCadreLevel+'-'+results.strCadreLevelValue+'</td>';
 	str += '		</tr>';
-
+	}
 	if(results.cadreRolesStr != null && results.cadreRolesStr.length > 0)
 	{
 	str += '		<tr>';
