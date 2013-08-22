@@ -716,7 +716,9 @@ public class StaticDataService implements IStaticDataService {
 			log.debug("Entered Into getElectionYearsBasedOnStateIdAndElecTypeId()");
 			
 			
-			List<Object[]> electionYears = electionDAO.getElectionYearsBasedOnElectionTypeIdAndStateId(stateId,electionTypeId);
+			//List<Object[]> electionYears = electionDAO.getElectionYearsBasedOnElectionTypeIdAndStateId(stateId,electionTypeId);
+			List<Object[]> electionYears = electionDAO.getElectionYearsBasedOnElectionType(stateId,electionTypeId);
+			
 			if(electionYears != null && electionYears.size() > 0)
 			{
 				yearsList = new ArrayList<SelectOptionVO>(0);
@@ -3167,8 +3169,10 @@ public class StaticDataService implements IStaticDataService {
 			for (int i = result.size() - 1; i >= 0; i--) {
 				selectOptionVO = new SelectOptionVO();
 				Object[] parms = (Object[]) result.get(i);
+				
 				selectOptionVO.setValue(parms[0].toString());
-				selectOptionVO.setId(Long.parseLong(parms[1].toString()));
+				/*selectOptionVO.setId(Long.parseLong(parms[1].toString()));*/
+				selectOptionVO.setId((Long)parms[0]);
 				selectOptionVO.setName(parms[1].toString());
 				SelectOptionVO.add(selectOptionVO);
 			}
