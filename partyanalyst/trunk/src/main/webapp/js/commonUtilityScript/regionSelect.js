@@ -1853,7 +1853,7 @@ function buildRegionsSelectBoxes(jsObj,results)
 			firstValue = results.regions[i].name+'_'+results.regions[i].id;				
 		}
 	    else if(results.regions[i].name == 'MANDAL/TEHSIL'){
-		  str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="MANDAL" onclick="populateLocations(this.id,\'onChange\')"/>'+results.regions[i].name+'';
+		  str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="MANDAL" onclick="populateLocations(this.id,\'onChange\')"/>TALUK/MANDAL/TEHSIL';
 		  if(results.regions.length > 6)
 		  str+='<br/>';
 		}
