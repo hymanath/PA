@@ -1810,6 +1810,10 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 									totalVotersInPanchayat.put((Long)parms[0], total);
 								}
 							}
+							else
+							{
+								return returnList;
+							}
 							for (Long panchayatId : panchayaIds) {
 								List<Object[]> boothsList = boothDAO.getBoothsByPanchayat(panchayatId,publicationId);
 								if(boothsList != null && boothsList.size() > 0)
