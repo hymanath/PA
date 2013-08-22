@@ -193,9 +193,10 @@ html{overflow-x: hidden;}
 
 <script type="text/javascript" >
 $(document).ready(function(){
-getConstituencyList();
+ <c:if test="${!hideMainMenu}">
+  getConstituencyList();
+ </c:if>
 });
-
 function getConstituencyList(){
 
 var jsObj= 
@@ -371,6 +372,7 @@ function validateYear2(yearId){
 }
 function getLeadersList(){
 //var mandalId = $('#listMandalNames option:selected').val();
+ <c:if test="${!castDetails}">
 var constituencyId = $('#listConstituencyNames option:selected').val();
 var casteIds=0;
  if(constituencyId == 0)
@@ -378,6 +380,11 @@ var casteIds=0;
 $('#candidateCastes :selected').each(function(i, selected){ 
 	   casteIds+=','+$(this).val();
 });
+</c:if>
+<c:if test="${castDetails}">
+  var constituencyId = '${constituencyId}';
+  var casteIds = '${casteIds}';
+</c:if>
 var jsObj= 
 	{	
 		//mandalId       : mandalId.slice(1),
@@ -392,12 +399,20 @@ var jsObj=
 }
 
 function getLeadersListInRuralUrbans(){
-var constituencyId = $('#listConstituencyNames option:selected').val();
 var casteIds=0;
-
+<c:if test="${!castDetails}"> 
+var constituencyId = $('#listConstituencyNames option:selected').val();
 $('#candidateCastes :selected').each(function(i, selected){ 
 	   casteIds+=','+$(this).val();
    });
+</c:if>
+<c:if test="${castDetails}"> 
+var constituencyId = '${constituencyId}';
+casteIds = '${casteIds}';
+$("#dashBoardImgLoadingNew").show();
+</c:if>
+
+
 var jsObj= 
 	{	
 		constituencyId : constituencyId,
@@ -422,7 +437,12 @@ function getCandidateCastes(constituencyIds){
 
 function getConstituencyType()
 	{
+	    <c:if test="${!castDetails}"> 
 		var constituencyId = $("#listConstituencyNames option:selected").val();
+		</c:if>
+		<c:if test="${castDetails}"> 
+		var constituencyId = '${constituencyId}';
+		</c:if>
 		if(constituencyId == 0)
 		return;
 		var jsObj=
@@ -469,6 +489,7 @@ function callAjax(param,jsObj,url){
 						else if(jsObj.task == "getPartyPerformanceReport")
 						{
 						    $("#ajaxImg").css("display","none");
+							$("#dashBoardImgLoading").hide();
 					      if(myResults[0].partyPositionVOList.length > 0)
 							showPartyPerformanceReport(myResults,jsObj);
 							if(myResults[0].boothwisePartyPositionVOList.length > 0)
@@ -481,6 +502,7 @@ function callAjax(param,jsObj,url){
 						}
 						else if(jsObj.task == "getLeadersList")
 						{
+						     $("#dashBoardImgLoading").hide();
 							buildLeadersTable(myResults);
 						}
 						else if(jsObj.task == "getDeletedVotersInfo")
@@ -489,6 +511,7 @@ function callAjax(param,jsObj,url){
 						}
 						else if(jsObj.task == "getAgeGroupWiseReport"){
 							$('#ajaxLoaderImg').css('display','none');
+							$("#dashBoardImgLoading").hide();
 							buildAgeGroupWiseTable(myResults,jsObj);
 						}
 						else if(jsObj.task == "getEffectOfNewParty"){
@@ -502,10 +525,13 @@ function callAjax(param,jsObj,url){
 								getLeadersListInRuralUrbans();
 						}
 						else if (jsObj.task== "getLeadersListInRuralUrbans"){
+						    $("#dashBoardImgLoadingNew").hide();
 							buildLeadersTableForNONUrbanAreas(myResults);					
 						}
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
+					  $("#dashBoardImgLoading").hide();
+					  $("#dashBoardImgLoadingNew").hide();
 					}  
 				},
 			       scope : this,
@@ -895,6 +921,7 @@ function panchayatMatrx(result)
 <body>
 <div id="suggestiveMainDiv" align="center">
   <!--<div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>-->
+ <c:if test="${!hideMainMenu}"> 
   <div class="widget blue">
   <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 450px;" class="widget-block">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
@@ -1017,7 +1044,7 @@ function panchayatMatrx(result)
 
 
 <div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;float: left; width: 980px;">
-<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();"/>
+<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();getSelPartyPerformanceAction();"/>
 
 <img src="images/icons/search.gif" id="ajaxImg" style="display:none;"/>
 <!--<img src="images/icons/loading.gif" id="ajaxLoaderImg" height="25px" width="25px;" style="display:none;"/>-->
@@ -1025,8 +1052,10 @@ function panchayatMatrx(result)
 
 </div>
 </div></div>
-
+</c:if>
+<span id="dashBoardImgLoading" style="display:none;"><img src="images/icons/goldAjaxLoad.gif"/></span>
 <div id="leadersTable"></div>
+<span id="dashBoardImgLoadingNew" style="display:none;"><img style="margin-top:20px;" src="images/icons/goldAjaxLoad.gif"/></span>
 <div id="leadersTable1"></div>
 
 <div id="leadersTable2"></div>
@@ -1171,19 +1200,31 @@ function findPos(obj) {
 }
 
 
-$("#getPartyPer").click(function(){
+
+});
+
+function getSelPartyPerformanceAction(){
+   var eleIds = new Array();
+  <c:if test="${!prevElecResults}">
 	  var constituencyId = $('#listConstituencyNames option:selected').val();
 	  var mandalId = $('#listMandalNames option:selected').val();
 	  var partyId = $('#partySelectEl option:selected').val();
 	  var eleId1 = $('#electionYearSelectEl1 option:selected').val();
 	  var eleId2 = $('#electionYearSelectEl2 option:selected').val();
-	  var eleIds = new Array();
+	  
 	  eleIds.push(eleId1);
 	  eleIds.push(eleId2);
 	  if(constituencyId == 0)
 	  return;
+  
     $("#ajaxImg").css("display","inline-block");
-
+  </c:if>
+  <c:if test="${prevElecResults}">
+  var constituencyId = '${constituencyId}';
+      eleIds.push("${fromYear}");
+	  eleIds.push("${toYear}");
+	  var partyId = "${partyId}";
+  </c:if>
 	var jsObj = {
 	        constituencyId:constituencyId,
 			electionId:eleIds,
@@ -1197,10 +1238,7 @@ $("#getPartyPer").click(function(){
 		var url = "<%=request.getContextPath()%>/getPartyPerformanceAction.action?"+rparam;
 		callAjax(rparam,jsObj,url);
 		
-  });
-
-});
-
+  }
 function showPartyPerformanceReport(result,jsObj)
 {
   $("#partyPerformanceInnerDiv").html('');
@@ -1795,8 +1833,12 @@ var count=0;
 	
 	
 	var valuesArr;
-	<!--$('#getAgeGroupWiseResults').click(function(){
-		function getAgeGroupWiseResults(){
+	
+	function getAgeGroupWiseResults(){
+		var electionIds = new Array();
+		var agesArr=[];
+		var selectedCasteIds = new Array();
+		<c:if test="${!youngVoters && !oldVoters}">
 		var k=validateAndPush();
 		
 		if(k!=0){
@@ -1807,7 +1849,7 @@ var count=0;
 			return;
 		}
 		$('#ajaxLoaderImg').css('display','inline-block');
-		var agesArr=[];
+		
 		
 		if(valuesArr.length==1){
 			var val1=valuesArr[0]['from'];
@@ -1837,21 +1879,31 @@ var count=0;
 		$('#errorMsg').html('Please Select the Constituency');
 		}
 		
-		var selectedCasteIds = new Array();
+		
 		$('#candidateCastes :selected').each(function(i,selected){
 		selectedCasteIds.push($(this).val());
 		});
 		
-		var electionIds = new Array();
+		
 		
 		electionIds.push($('#electionYearSelectEl1').val());
 		electionIds.push($('#electionYearSelectEl2').val());
-		
+		partyId = $('#partySelectEl').val();
+		</c:if>
+		<c:if test="${youngVoters || oldVoters}">
+		    var constituencyId = '${constituencyId}';
+		    partyId = 1;
+		    agesArr.push('${fromAge}');
+			agesArr.push('${toAge}');
+			if('${casteIds}'.length > 0){
+			  selectedCasteIds = '${casteIds}'.split(",");
+			}
+		</c:if>
 		var jsObj = {
 			
 	        constituencyId:constituencyId,
 			electionIds:electionIds,
-			partyId:$('#partySelectEl').val(),
+			partyId:partyId,
 			locationId:0, // panchayathId
 			locationType:"panchayat",
 			tempVar:"all",
@@ -2211,7 +2263,24 @@ function buildnewPartyEffectResults(results)
 
 	$('#newPartyDiv').html(str);
 }	 
-		 
+<c:if test="${hideMainMenu}">
+  <c:if test="${castDetails}">
+    $("#dashBoardImgLoading").show();
+    getLeadersList();
+  </c:if>
+  <c:if test="${castDetails}"> 
+   
+   getConstituencyType();
+  </c:if>
+  <c:if test="${youngVoters || oldVoters}"> 
+     $("#dashBoardImgLoading").show();
+	 getAgeGroupWiseResults();
+  </c:if>	
+  <c:if test="${prevElecResults}">
+    $("#dashBoardImgLoading").show();
+    getSelPartyPerformanceAction();
+  </c:if>
+</c:if>	   
 </script>
 </body>
 </html>
