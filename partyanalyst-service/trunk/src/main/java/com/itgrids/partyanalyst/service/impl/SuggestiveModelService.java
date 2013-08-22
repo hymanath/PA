@@ -1540,6 +1540,42 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			return constituencyList;
 		}
 		}
+		public List<SelectOptionVO> getCasteAvaliableConstituencysService(List<SelectOptionVO> ConstituenciesForUserAccessed,Long electionId,Long electionYear,Long userId)
+		{
+		 List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>(0);
+		 List<SelectOptionVO> returnList = null;
+		try{
+			List<Long> constituencyIds =  voterInfoDAO.getNONURBANConstituencyIds(electionId,electionYear,1L);
+			if(ConstituenciesForUserAccessed != null && ConstituenciesForUserAccessed.size() > 0 && constituencyIds != null)
+			{
+				for(SelectOptionVO selectOptionVO : ConstituenciesForUserAccessed)
+				{
+					if(constituencyIds.contains(selectOptionVO.getId()))
+						constituencyList.add(selectOptionVO);
+				}
+			}
+			List<Long> consIds = new ArrayList<Long>();
+			for (SelectOptionVO selectOptionVO : constituencyList) {
+				Long constituencyId = selectOptionVO.getId();
+				consIds.add(constituencyId);
+			}
+			List<Object[]> constituencysList = voterCastBasicInfoDAO.getCasteAvaliableConstituencyes(consIds,userId);
+			if(constituencysList != null && constituencysList.size() > 0)
+			{
+				returnList = new ArrayList<SelectOptionVO>();
+				for (Object[] parms : constituencysList) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					returnList.add(selectOptionVO);
+				}
+			}
+			return returnList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return returnList;
+		}
+		}
 	 public List<SelectOptionVO> getPartyDetailsByMandal(Long tehsilId){
 		 List<SelectOptionVO> nominatedPartiesLists = null;
 		 try{
