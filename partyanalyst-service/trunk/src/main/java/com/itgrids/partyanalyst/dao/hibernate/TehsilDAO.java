@@ -178,4 +178,10 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		return getHibernateTemplate().find(" select model.tehsilId,model.tehsilName,model.district.districtId from Tehsil model ");
 		
 	}
+	
+	public Long getStateByTehsilId(Long tehsilId){
+		Query query = getSession().createQuery("Select model.district.state.stateId from Tehsil model where model.tehsilId = :tehsilId ");
+		query.setParameter("tehsilId", tehsilId);
+		return (Long) query.uniqueResult();
+	}
 }
