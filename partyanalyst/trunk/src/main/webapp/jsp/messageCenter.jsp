@@ -298,7 +298,7 @@ $(document).ready(function() {
 
 
 <div id="noVerificationNumbers" style="text-align:center;margin:5px;"></div>
-<div id="mainDiv" class="container">
+<div id="mainDiv" class="container" style="margin-top:12px;">
 <div class="row">
 
  <div class="main-title-sec span12">
