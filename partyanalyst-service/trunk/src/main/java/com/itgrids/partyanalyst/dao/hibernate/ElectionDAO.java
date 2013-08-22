@@ -618,6 +618,25 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.state.stateId = ? and " +
 				" model.electionScope.electionType.electionTypeId = ? and model.elecSubtype = ? order by model.electionYear desc",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getElectionYearsBasedOnElectionType(Long stateId,Long electionTypeId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId =:electionTypeId and model.elecSubtype =:elecSubtype ");
+		if(electionTypeId != null && !electionTypeId.equals(1L))
+		 str.append(" and model.electionScope.state.stateId =:stateId ");
+		str.append(" order by model.electionYear desc ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("electionTypeId", electionTypeId);
+		query.setParameter("elecSubtype", IConstants.ELECTION_SUBTYPE_MAIN);
+		if(electionTypeId != null && !electionTypeId.equals(1L))
+		 query.setParameter("stateId", stateId);
+		
+		return query.list();
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getElectionYearsBasedOnElectionTypeId(Long electionTypeId) {
@@ -792,4 +811,8 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		query.setParameterList("electionIdsList", electionIdsList);
 		return query.list();
 	}
+	
+	
+	
+	
 }
