@@ -2124,7 +2124,7 @@ IUserVoterDetailsDAO{
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVoterCountByHamlet(List<Long> hamletIds,Long userId,Long publicationId){
-		Query query = getSession().createQuery("select uvd.hamlet.hamletId,uvd.hamlet.hamletName,count(uvd.voter.voterId) from UserVoterDetails uvd,BoothPublicationVoter bpv " +
+		Query query = getSession().createQuery("select uvd.hamlet.hamletId,uvd.hamlet.hamletName,count(uvd.voter.voterId),count(uvd.casteState.casteStateId) from UserVoterDetails uvd,BoothPublicationVoter bpv " +
 					"where uvd.hamlet.hamletId in (:hamletIds)  and uvd.user.userId = :userId and bpv.voter.voterId =  uvd.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationId group by uvd.hamlet.hamletId");
 		query.setParameterList("hamletIds", hamletIds);
 		query.setParameter("publicationId", publicationId);
