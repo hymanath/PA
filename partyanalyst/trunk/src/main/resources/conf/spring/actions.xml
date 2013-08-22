@@ -1287,7 +1287,10 @@
      <bean id="voiceSmsAction" class="com.itgrids.partyanalyst.web.action.VoiceSmsAction" singleton="false">
 		<property name="voiceSmsService" ref="voiceSmsService" />	
 	</bean>
-    
+   <bean id="updateCustomerContacts" class="com.itgrids.partyanalyst.web.action.UpdateCustomerContacts" singleton="false">
+       <property name="registrationService" ref="registrationService"/>
+       <property name="voiceSmsService" ref="voiceSmsService"/>
+   </bean> 
    
 </beans>	
 	
