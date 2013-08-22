@@ -463,7 +463,7 @@ $(document).ready(function() {
 </div>
 
 
- <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice SMS(Add country code before mobile number):<font style="color:red;">*</font><br>Example:919885988598</label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
+ <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice SMS(Add country code before mobile number):<font style="color:red;">*</font><br>Example:919999999999</label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 
   <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
 
