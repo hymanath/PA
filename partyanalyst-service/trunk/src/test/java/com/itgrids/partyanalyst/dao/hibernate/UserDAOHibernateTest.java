@@ -400,7 +400,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		String encryptedPassword = phash.encryptText("guest@pa");
 		System.out.println(secretKey);
 		System.out.println(encryptedPassword);
-	}*/
+	}
 	public void testCheckSuggestionOrder(){
 		List<String> ids = new ArrayList<String>();
 		ids.add("VERY STRONG");
@@ -430,5 +430,70 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		for(int i = 0;i<ids.size();i++){
 			System.out.println(ids.get(i)+","+ids.get(i));
 		}
+	}*/
+	public void testCheckSuggestionOrderNew(){
+		List<String> ids = new ArrayList<String>();
+		ids.add("WOREST");
+		ids.add("VERY POOR");
+		ids.add("POOR");
+		ids.add("OK");
+		ids.add("STRONG");
+		ids.add("VERY STRONG");
+		
+		
+		
+		
+	 /* for(int z = ids.size()-2;z>=0;z--){
+		int x = -1;
+		for(int j = 0;j<ids.size()-z-1;j++){//2009
+			for(int i = ids.size()-1;i>=z+1;i--)
+			{//2004
+				System.out.println(ids.get(j)+","+ids.get(i));
+			}
+		}
+	  }*/
+	  int z = 1;
+	  for(z = 1;z<ids.size();z++){
+		  for(int j = 0;j<z;j++){//2009
+				for(int i = ids.size()-z+j;i>=ids.size()-z+j;i--)
+				{//2004
+					System.out.println(ids.get(j)+","+ids.get(i)+","+z);
+				}
+			}
+		  }
+	  z = z-1;
+	  System.out.println("-----------------");
+	  for(int y = 2;y<=ids.size()-1;y++){
+		  for(int j = y-2;j<y;j++){
+			  z++;
+			  System.out.println(ids.get(y-1)+","+ids.get(j)+","+z);
+				for(int i = j,l=y;i>0&&l<ids.size()-1;i--,l++)
+				{
+					System.out.println(ids.get(l)+","+ids.get(i-1)+","+z);
+				}
+			}
+		  } 
+		/* for(int z = 5;z<=ids.size()-1;z++){
+		  for(int j = z-2;j<z;j++){
+			  System.out.println(ids.get(z-1)+","+ids.get(j));
+				for(int i = j,l=z;i>0&&l<ids.size()-1;i--,l++)
+				{
+					System.out.println(ids.get(l)+","+ids.get(i-1));
+				}
+			}
+		  } 
+		int x = -1;
+		 System.out.println("-------------------");
+		for(int j = ids.size()-1;j>0;j--){//2004
+				x = x+1;
+			for(int i = 0;i< (ids.size()-1-x);i++)
+			{//2009
+				System.out.println(ids.get(j)+","+ids.get(i));
+			}
+		}
+		 System.out.println("-------------------");
+		for(int i = 0;i<ids.size();i++){
+			System.out.println(ids.get(i)+","+ids.get(i));
+		}*/
 	}
 }
