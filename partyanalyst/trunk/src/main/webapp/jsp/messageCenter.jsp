@@ -257,7 +257,7 @@ $(document).ready(function() {
 	    {
 			ajaxToGetRecordingDetails();
             getVerifiedNumbersOfUser();
-            getVoiceSmsHistoryOfUser();
+            getVoiceSmsHistoryOfUser('hide');
 			getSubLevelInfluenceData(1,"Andhra Pradesh","STATE","VILLAGE/WARD","",0,true);
 
 		}
@@ -467,7 +467,7 @@ $(document).ready(function() {
   <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
 
 
-  <h4 style="color:#3A87AD;margin:40px 0px 0px 128px;"><u>AUDIO FILES AVAILABLE</u><font style="color:red;">*</font></h4>
+  <h4 style="color:#3A87AD;margin:40px 0px 0px 128px;"><u>AUDIO FILES AVAILABLE</u><font style="color:red;">*</font><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files"/></a></h4>
   <div id="audioFilesDiv"></div>
 
   <h4 style="color:#3A87AD;margin:40px 0px 0px 124px;"><u>VERIFIED NUMBERS TO SEND VOICE SMS</u><font style="color:red;">*</font></h4>
@@ -495,7 +495,7 @@ $(document).ready(function() {
 <input type="button" class="btn btn-info" value="Send Voice SMS" style="margin-left:750px;" onClick="validateFieldsForSendingSms()"/>
 </div>
 
-<div id='historyHeading'  style='background:#06ABEA;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;padding:7px;color:#fff;'><a href="javascript:{}"><h4 style="color:#fff;margin-left:25px;">SHOW / HIDE SMS HISTORY</h4></a></div>
+<div   style='background:#06ABEA;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;padding:7px;color:#fff;'><a id='historyHeading' href="javascript:{}" style="color:#fff;"><h4 style="color:#fff;margin-left:25px;">SHOW/HIDE SMS HISTORY</a><a href="javascript:{getVoiceSmsHistoryOfUser('show')}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh SMS history" /></a></h4></div>
 
 
 <div class="breadcrumb" style="margin-top:40px;"> 
@@ -545,10 +545,11 @@ function getVerifiedNumbersOfUser(){
 			var url = "getVerifiedNumbersOfUser.action?"+rparam;	
 			callAjax1(rparam,jsObj,url);
 }
-function getVoiceSmsHistoryOfUser(){
+function getVoiceSmsHistoryOfUser(visibility){
 	var jsObj=
 			{
 				task:"getVoiceSmsHistoryForAuser",
+			    visibility:visibility		 
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "getVoiceSmsHistoryForAuser.action?"+rparam;	
@@ -1003,8 +1004,9 @@ function callAjax1(param,jsObj,url){
 				        buildResultForAudioFiles(myResults);
 					else if(jsObj.task == "getVerifiedNumbersOfUser")
 						 buildVerifiedNumbersForUser(myResults);
-					else if(jsObj.task == "getVoiceSmsHistoryForAuser")
-						buildVoiceSmsHistory(myResults);
+					else if(jsObj.task == "getVoiceSmsHistoryForAuser"){
+						buildVoiceSmsHistory(myResults,jsObj.visibility);
+					}
 					else if(jsObj.task == "getResponseDetails")
 						buildResponseDetails(myResults);
 
@@ -1245,7 +1247,7 @@ function buildResultForAudioFiles(results)
 
 
 	str+='<div style="margin:5px 6px 0px 124px;border:1px solid #06ABEA;padding:4px;border-radius:4px;" class="widget blue whitegloss">';
-	str+='<a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="float:right;padding:5px;"/></a>';
+	//str+='<a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files" style="float:right;padding:5px;"/></a>';
 
 
       var i=0;
@@ -1306,7 +1308,7 @@ function buildVerifiedNumbersForUser(results)
 	$('#verifiedNumbersDiv').html(str);
 }
 
-function buildVoiceSmsHistory(results)
+function buildVoiceSmsHistory(results,visibility)
 {
 	var str='';
     str+='<div class="datagrid">';
@@ -1341,11 +1343,22 @@ function buildVoiceSmsHistory(results)
 
 $('#smsHistory').html(str);
 
-$('#smsHistory').hide();
+if(visibility == "hide")
+  $('#smsHistory').hide();
+else
+  $('#smsHistory').show();
 }
 
 function buildResponseDetails(results)
 {
+	if(results.length == 0)
+	{
+     	$('#responseDetailsInnerDiv').html("Response is not generated.It will take some time.");
+			$('#responseDetailsInnerDiv').html(str);
+
+		return false;
+
+	}
 
 	var str='';
 
@@ -1613,5 +1626,4 @@ function showTermsAndConditiond()
 
 </script>
  </body>
- 
  </html>
