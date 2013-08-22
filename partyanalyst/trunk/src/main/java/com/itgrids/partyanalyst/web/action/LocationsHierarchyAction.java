@@ -15,6 +15,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -47,7 +49,16 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	private List<SelectOptionVO> parliamentConstituencies;
 	private List<Object> constituencies;
 	CadreManagementService cadreManagementService;
+	private IConstituencyDAO constituencyDAO;
 	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}
@@ -342,7 +353,15 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			String scope = jObj.getString("areaType");
 			List<SelectOptionVO> subRegions = getRegionServiceDataImp().getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, scope);
 			subRegions.add(0, new SelectOptionVO(0l,"Select Location"));
-			setRegionsList(subRegions);
+			List stateValue = constituencyDAO.getStateForParliamentConstituency(constituencyId);
+			Object[] list = (Object[])stateValue.get(0);
+			if((Long)list[0] == 24){
+				for(SelectOptionVO subRegion:subRegions){
+					subRegion.setName(subRegion.getName().replaceAll("MANDAL", "TALUK"));
+				}
+			}
+				setRegionsList(subRegions);
+			
 			if(jObj.getString("address").equalsIgnoreCase("OfficialAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
 			{
 				session.setAttribute(ISessionConstants.MANDALS_O, subRegions);
