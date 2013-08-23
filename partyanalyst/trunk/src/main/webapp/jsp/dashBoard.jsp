@@ -679,83 +679,7 @@ lable{line-height:40px;}
 		</div>-->
    </div><!---Constituency Level Analysis END--->
    
-   <!--Created By SASI Management Tools Block-->
-   
-  <div class="row-fluid">
-	<div class="span12 well well-small">
-     <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />  Management Tools</h4></div>
-		<div class="row-fluid">
-			<div class="span6 widget">
-				<h2> Add New Problem</h2>
-				<div class="media">
-					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Add New Problem.png"style="width: 64px; height: 64px;"></img>
-					<div class="media-body">
-						<p>Add a New Problem to solve the Problems easily and effectively</p>
-						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAddNewProblemWindow()" style="float:right;"></input>
-					</div>
-				</div>       
-			</div>       
-			<div class="span6 widget">
-			  <h2>All Problems</h2>
-				<div class="media">
-					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/All Problems.png"style="width: 64px; height: 64px;"></img>
-					<div class="media-body">
-						<p>To View All Problems and analyze the Seviority and priority of the Problems</p>
-						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('allproblems');" style="float:right;"></input></div>
-				</div>					
-			</div>					
-		</div>
-	
-		<div class="row-fluid">
-		   <div class="span6 widget">
-				<h2>Problem Search And Report</h2>
-				<div class="media">
-					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Problem Search And Report.png"style="width: 64px; height: 64px;"></img>
-					<div class="media-body">
-					<p>To View the Detailed Report of the Problems and Search for a Particular Problem you can use Problem Search and Report</p>
-						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('problemsearch');" style="float:right;"></input>
-				    </div>
-				</div>    					
-			</div>
-			<div class="span6 widget" style="min-height: 180px;">
-			  <h2>Cadre Mangement </h2>
-			  <div class="media">
-					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Cadre Mangement.png"style="width: 64px; height: 64px;"></img>
-				<div class="media-body">
-				<p style="margin-bottom: 27px;">You can create your Cadre, then you can connect with your Cadre via SMS, emails</p>
-					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('cadremgmt');" style="float:right;"></input>
-				</div>
-		   </div>	
-		</div>
-	</div>
-		<div class="row-fluid">
-			<div class="span6 widget">
-				<h2> Constituency Management </h2>
-				<div class="media">
-					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Constituency Management.png"style="width: 64px; height: 64px;"></img>
-						<div class="media-body">
-						<p>To Add/View the Influencing People, local User Groups, and analyse their impact in your Constituency</p>
-							<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('constituencymgmt');" style="float:right;"></input>
-						</div>
-				</div> 
-			</div> 
-			
-		   <div class="span6 widget" style="min-height: 163px;">
-			  <h2>Call Center</h2>
-			  <div class="media">
-					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Call Center.png"style="width: 64px; height: 64px;"></img>
-				<div class="media-body">
-					<p style="margin-bottom: 27px;">Now you can know the Problems, Appointments given by your Call Center</p>
-					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('callcenter');" style="float:right;"></input>
-				</div>
-			  </div>						
-		 </div>
-	
-        </div>
-     </div>
-	
-	
-	<!-- SUGGESTIVE MODEL  START-->
+   <!-- SUGGESTIVE MODEL  START-->
 	
 	<div class="span12 well well-small" style="margin-left:0px;">
      <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />Suggestive Model</h4></div>
@@ -833,6 +757,83 @@ lable{line-height:40px;}
 	</div>
    </div>
 	<!-- SUGGESTIVE MODEL END -- >
+   <!--Created By SASI Management Tools Block-->
+   
+  <div class="row-fluid">
+	<div class="span12 well well-small">
+     <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />  Management Tools</h4></div>
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2> Add New Problem</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Add New Problem.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+						<p>Add a New Problem to solve the Problems easily and effectively</p>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAddNewProblemWindow()" style="float:right;"></input>
+					</div>
+				</div>       
+			</div>       
+			<div class="span6 widget">
+			  <h2>All Problems</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/All Problems.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+						<p>To View All Problems and analyze the Seviority and priority of the Problems</p>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('allproblems');" style="float:right;"></input></div>
+				</div>					
+			</div>					
+		</div>
+	
+		<div class="row-fluid">
+		   <div class="span6 widget">
+				<h2>Problem Search And Report</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Problem Search And Report.png"style="width: 64px; height: 64px;"></img>
+					<div class="media-body">
+					<p>To View the Detailed Report of the Problems and Search for a Particular Problem you can use Problem Search and Report</p>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('problemsearch');" style="float:right;"></input>
+				    </div>
+				</div>    					
+			</div>
+			<div class="span6 widget" style="min-height: 180px;">
+			  <h2>Cadre Mangement </h2>
+			  <div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Cadre Mangement.png"style="width: 64px; height: 64px;"></img>
+				<div class="media-body">
+				<p style="margin-bottom: 27px;">You can create your Cadre, then you can connect with your Cadre via SMS, emails</p>
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('cadremgmt');" style="float:right;"></input>
+				</div>
+		   </div>	
+		</div>
+	</div>
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2> Constituency Management </h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Constituency Management.png"style="width: 64px; height: 64px;"></img>
+						<div class="media-body">
+						<p>To Add/View the Influencing People, local User Groups, and analyse their impact in your Constituency</p>
+							<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('constituencymgmt');" style="float:right;"></input>
+						</div>
+				</div> 
+			</div> 
+			
+		   <div class="span6 widget" style="min-height: 163px;">
+			  <h2>Call Center</h2>
+			  <div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Call Center.png"style="width: 64px; height: 64px;"></img>
+				<div class="media-body">
+					<p style="margin-bottom: 27px;">Now you can know the Problems, Appointments given by your Call Center</p>
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('callcenter');" style="float:right;"></input>
+				</div>
+			  </div>						
+		 </div>
+	
+        </div>
+     </div>
+	
+	
+	
  <!--End of Management Tools Block-->
  
  
@@ -2081,29 +2082,32 @@ function validateYear2(yearId){
 }
 function getOlderVoterDetails()
 {
-	var constituencyId  = $('#sugOldTarconstituencyId').val();
-	var casteIds        =0;
+	var constituencyId   = $('#sugOldTarconstituencyId').val();
+	var casteIds         = 0;
+	var constituencyName = $('#sugOldTarconstituencyId option:selected').text();
 	$('#candidateCastes2 :selected').each(function(i, selected){ 
 	   casteIds+=','+$(this).val();
    });
-	window.open("suggestiveModelAction.action?hideMainMenu=true&fromAge=60&toAge=120&constituencyId="+constituencyId+"&casteIds="+casteIds+"&oldVoters=true");
+	window.open("suggestiveModelAction.action?hideMainMenu=true&fromAge=60&toAge=120&constituencyId="+constituencyId+"&casteIds="+casteIds+"&oldVoters=true&constituencyName="+constituencyName+"");
 }
 function getYoungerVoterDetails()
 {
-	var constituencyId  = $('#sugYoungconstituencyId').val();
-	var casteIds        =0;
+	var constituencyId   = $('#sugYoungconstituencyId').val();
+	var casteIds         = 0;
+	var constituencyName = $('#sugYoungconstituencyId option:selected').text();
 	$('#candidateCastes1 :selected').each(function(i, selected){ 
 	    casteIds+=','+$(this).val();
    });
-	window.open("suggestiveModelAction.action?hideMainMenu=true&fromAge=19&toAge=22&constituencyId="+constituencyId+"&casteIds="+casteIds+"&youngVoters=true");
+	window.open("suggestiveModelAction.action?hideMainMenu=true&fromAge=19&toAge=22&constituencyId="+constituencyId+"&casteIds="+casteIds+"&youngVoters=true&constituencyName="+constituencyName+"");
 }
 
 function previousElectionDetails()
 {
-	var constituencyId = $('#sugTarconstituencyId').val();
-	var partyId        = $('#partySelectEl').val();
-	var fromYear       = $('#electionYearSelectEl1').val();
-	var toYear         = $('#electionYearSelectEl2').val();
+	var constituencyId   = $('#sugTarconstituencyId').val();
+	var constituencyName = $('#sugTarconstituencyId option:selected').text();
+	var partyId          = $('#partySelectEl').val();
+	var fromYear         = $('#electionYearSelectEl1').val();
+	var toYear           = $('#electionYearSelectEl2').val();
 	var flag = true;
 	var str = '';
 	if(constituencyId == 0)
@@ -2128,7 +2132,7 @@ function previousElectionDetails()
 	}
 	if(flag)
 	{
-		window.open("suggestiveModelAction.action?hideMainMenu=true&constituencyId="+constituencyId+"&partyId="+partyId+"&fromYear="+fromYear+"&toYear="+toYear+"&prevElecResults=true");
+		window.open("suggestiveModelAction.action?hideMainMenu=true&constituencyId="+constituencyId+"&partyId="+partyId+"&fromYear="+fromYear+"&toYear="+toYear+"&prevElecResults=true&constituencyName="+constituencyName+"");
 	}
 	else
 	{
@@ -2140,12 +2144,14 @@ function previousElectionDetails()
 
 function getBoothLeaderDetails()
 {
-	var constituencyId  = $('#sugconstituencyId').val();
-	var casteIds        =0;
+	var constituencyId   = $('#sugconstituencyId').val();
+	var casteIds         = 0;
+	var constituencyName = $('#sugconstituencyId option:selected').text();
+	alert(constituencyName);
 	$('#candidateCastes :selected').each(function(i, selected){ 
 	   casteIds+=','+$(this).val();
    });
-	window.open("suggestiveModelAction.action?hideMainMenu=true&constituencyId="+constituencyId+"&casteIds="+casteIds+"&castDetails=true");
+	window.open("suggestiveModelAction.action?hideMainMenu=true&constituencyId="+constituencyId+"&casteIds="+casteIds+"&castDetails=true&constituencyName="+constituencyName+"");
 }
 function getConstituencyList(){
 
