@@ -2147,7 +2147,7 @@ function getBoothLeaderDetails()
 	var constituencyId   = $('#sugconstituencyId').val();
 	var casteIds         = 0;
 	var constituencyName = $('#sugconstituencyId option:selected').text();
-	alert(constituencyName);
+	//alert(constituencyName);
 	$('#candidateCastes :selected').each(function(i, selected){ 
 	   casteIds+=','+$(this).val();
    });
