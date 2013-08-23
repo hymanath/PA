@@ -12,6 +12,10 @@
 	<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
 	<script type="text/javascript" src="js/homePage/newHomePage.js"> </script>
 	<script type="text/javascript" src="js/homePage/newHomePage_inner.js"> </script>
+	<link href="styles/tdphome_inner_styles.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="styles/newhome_styles.css">
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+	
 </head>
 <style>
 	
@@ -164,6 +168,8 @@ lable{line-height:40px;}
     background-image: url("chrome://browser/skin/newtab/noise.png"), linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));
     margin-left: 20px;
 }
+
+.btnStyle{background:#F5F5F5}
 </style>
 <div class="container">
 	
@@ -202,7 +208,7 @@ lable{line-height:40px;}
 <div class="btn btn-xlarge" style="height: 185px;">
     
     <h2 style="margin-top: 38px;">Advanced Dashboard</h2>
-    <a href="userProfile.action" class="btn btn-small btn-success"> Click <i class="icon-hand-up icon-white"></i> To View More Features </a>
+    <a href="userProfile.action" class="btn btn-small btn-success btnStyle"> Click <i class="icon-hand-up icon-white"></i> To View More Features </a>
 
             </div>
 <div class="widget quicklinks m-top15">
@@ -397,7 +403,7 @@ lable{line-height:40px;}
 					<p>To know your Party Performance in Previous Elections and Analyse where your Party
 					lost/gain with low/high Margin</p>
 					<div>
-						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('partyperformance');" style="float:right;"></input>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('partyperformance');" style="float:right;"></input>
 					</div>
 				</div> 
 				</div> 
@@ -408,7 +414,7 @@ lable{line-height:40px;}
 						<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Elections Comparison copy.png"style="width: 64px; height: 64px;"></img>
 						<div class="media-body">
 							<p>Election Comparison Report gives a glance of compared election results for a Party participated in any two elections in detailed view</p>
-							<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('electioncomparison');" style="float:right;"></input>
+							<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('electioncomparison');" style="float:right;"></input>
 						</div>
 					</div>
 			</div>	
@@ -423,7 +429,7 @@ lable{line-height:40px;}
 				<div class="media-body">
 					<p>Party Results Report gives to you, your Party Results in all previous elections compared with other parties and their/ your alliances in state/district/constituency levels.
 					</p>
-					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('partyresultsReport');" style="float:right;"></input>
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('partyresultsReport');" style="float:right;"></input>
 				</div>
 				</div>    					
 			</div>
@@ -435,7 +441,7 @@ lable{line-height:40px;}
 					<div class="media-body">
 						<p style="margin-bottom: 43px;">Now you can analyse and view the reasons of analysed constituencies for winning/lossing in an Election
 						</p>
-						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('electionResReport');" style="float:right;"></input>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('electionResReport');" style="float:right;"></input>
 					</div>
 				</div>
 			</div>	
@@ -450,7 +456,7 @@ lable{line-height:40px;}
 						<p>Now you can analyse the parties performance based on Demographics like SC Population,
 						ST Population, litarates,illitarates and etc.
 						</p>
-						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('elecdemog');" style="float:right;"></input>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('elecdemog');" style="float:right;"></input>
 					</div>
 				</div>       
 					
@@ -463,7 +469,7 @@ lable{line-height:40px;}
 						<p style="margin-bottom: 25px;">To Know where your party Strong or Weak to improve your Party Performance in coming Elections.
 
 						</p>
-						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('partystrweak');" style="float:right;"></input>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('partystrweak');" style="float:right;"></input>
 					</div>
 				</div>						
 			</div>
@@ -477,7 +483,7 @@ lable{line-height:40px;}
 					<div class="media-body">
 						<p>Now you can analyse the parties performance in newly formed Constituencies with old Constituencies.
 						</p>
-						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('distperform');" style="float:right;"></input>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('distperform');" style="float:right;"></input>
 					</div>
 				</div>       						
 			</div>
@@ -501,7 +507,7 @@ lable{line-height:40px;}
 					<lable>Select Constituency </lable>
 					<s:select cssClass="selectstyle span12" theme="simple" id="constituencyId"  list="constituencyList" listKey="id" listValue="name" ></s:select>
 				
-					<input type="button" value="View" class="btn btn-small" onCLick="openVotersAnalysts();" style="float:right;"></input>
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openVotersAnalysts();" style="float:right;"></input>
 				</fieldset>
 			</div>
 			
@@ -511,7 +517,7 @@ lable{line-height:40px;}
 				<lable>Constituency </lable>
 				<s:select cssClass="selectstyle" theme="simple" id="constituencyList"  list="constituencyList" listKey="id" listValue="name" ></s:select>
 					
-			   <input type="button" value="View" class="btn btn-small" onCLick="openCasteViseAnalysis();" style="float:right;"></input>
+			   <input type="button" value="View" class="btn btn-small btnStyle" onCLick="openCasteViseAnalysis();" style="float:right;"></input>
 				</fieldset>
 			</div>
 			
@@ -521,7 +527,7 @@ lable{line-height:40px;}
 					<img class="media-object pull-left m-top15" alt="Party Performance Report" src="./images/dashboard/Voters Search.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
 						<p>Voters Search</p>
-						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input>
 					</div>
 				</div>  
 			</div>
@@ -561,7 +567,7 @@ lable{line-height:40px;}
 				</div>
 				
 				<div>
-					<input type="button" value="View" class="btn btn-small" onClick="getCrossVotingReport();" style="float:right;"></input>
+					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getCrossVotingReport();" style="float:right;"></input>
 				</div>
 			</div>       				
 		</div>
@@ -605,7 +611,7 @@ lable{line-height:40px;}
 					</tr>
 					</table>
 					<div class="control-group" id="errorDiv" style="color:red;"></div>
-					<button class="btn btn-mini btn-small" data-dismiss="modal" aria-hidden="true" onclick="submitRes()" style="float: right; margin-top: -55px; margin-right: 201px;">SUBMIT</button>
+					<button class="btn btn-mini btn-small btnStyle" data-dismiss="modal" aria-hidden="true" onclick="submitRes()" style="float: right; margin-top: -55px; margin-right: 201px;">SUBMIT</button>
 					<!--<div class="control-group ">
 						<label class="control-label" for="electionYear">Select Year</label>
 						<div class="controls">
@@ -685,7 +691,7 @@ lable{line-height:40px;}
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Add New Problem.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
 						<p>Add a New Problem to solve the Problems easily and effectively</p>
-						<input type="button" value="View" class="btn btn-small" onCLick="openAddNewProblemWindow()" style="float:right;"></input>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAddNewProblemWindow()" style="float:right;"></input>
 					</div>
 				</div>       
 			</div>       
@@ -695,7 +701,7 @@ lable{line-height:40px;}
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/All Problems.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
 						<p>To View All Problems and analyze the Seviority and priority of the Problems</p>
-						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('allproblems');" style="float:right;"></input></div>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('allproblems');" style="float:right;"></input></div>
 				</div>					
 			</div>					
 		</div>
@@ -707,7 +713,7 @@ lable{line-height:40px;}
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Problem Search And Report.png"style="width: 64px; height: 64px;"></img>
 					<div class="media-body">
 					<p>To View the Detailed Report of the Problems and Search for a Particular Problem you can use Problem Search and Report</p>
-						<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('problemsearch');" style="float:right;"></input>
+						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('problemsearch');" style="float:right;"></input>
 				    </div>
 				</div>    					
 			</div>
@@ -717,7 +723,7 @@ lable{line-height:40px;}
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Cadre Mangement.png"style="width: 64px; height: 64px;"></img>
 				<div class="media-body">
 				<p style="margin-bottom: 27px;">You can create your Cadre, then you can connect with your Cadre via SMS, emails</p>
-					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('cadremgmt');" style="float:right;"></input>
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('cadremgmt');" style="float:right;"></input>
 				</div>
 		   </div>	
 		</div>
@@ -729,7 +735,7 @@ lable{line-height:40px;}
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Constituency Management.png"style="width: 64px; height: 64px;"></img>
 						<div class="media-body">
 						<p>To Add/View the Influencing People, local User Groups, and analyse their impact in your Constituency</p>
-							<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('constituencymgmt');" style="float:right;"></input>
+							<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('constituencymgmt');" style="float:right;"></input>
 						</div>
 				</div> 
 			</div> 
@@ -740,7 +746,7 @@ lable{line-height:40px;}
 					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Call Center.png"style="width: 64px; height: 64px;"></img>
 				<div class="media-body">
 					<p style="margin-bottom: 27px;">Now you can know the Problems, Appointments given by your Call Center</p>
-					<input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('callcenter');" style="float:right;"></input>
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('callcenter');" style="float:right;"></input>
 				</div>
 			  </div>						
 		 </div>
@@ -761,7 +767,7 @@ lable{line-height:40px;}
 					<s:select cssClass="selectstyle span12" theme="simple" id="sugconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes');" name=""  style="width: 172px; margin-left: 5px;"></s:select>
 					<lable>Select Caste </lable><select id="candidateCastes" multiple="multiple" style="width: 171px; margin-left: 50px;">
 					</select>
-					<input type="button" value="View" class="btn btn-small" onCLick="getBoothLeaderDetails();" style="float:right;"></input>
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="getBoothLeaderDetails();" style="float:right;"></input>
 				</fieldset>
 			</div>
 			<div class="span6 widget">
@@ -781,7 +787,7 @@ lable{line-height:40px;}
 					<select id="electionYearSelectEl2" onchange="validateYear2(this.options[this.selectedIndex].value)" style="width: 100px; margin-left: 21px;">
 					<option value="0">Year</option>
 					</select>
-					<input type="button" value="View" class="btn btn-small" onCLick="previousElectionDetails();" style="float:right;"></input>
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="previousElectionDetails();" style="float:right;"></input>
 				</fieldset>
 			</div>       
 							
@@ -803,7 +809,7 @@ lable{line-height:40px;}
 					
 					<lable>Select Caste </lable><select id="candidateCastes1" multiple="multiple" style="width: 171px; margin-left: 50px;">
 					</select>
-					<input type="button" value="View" class="btn btn-small" onCLick="getYoungerVoterDetails();" style="float:right;"></input>
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="getYoungerVoterDetails();" style="float:right;"></input>
 				</fieldset>				
 			</div>			
 			<div class="span6 widget">
@@ -821,7 +827,7 @@ lable{line-height:40px;}
 					
 					<lable>Select Caste </lable><select id="candidateCastes2" multiple="multiple" style="width: 171px; margin-left: 50px;">
 					</select>
-					<input type="button" value="View" class="btn btn-small" onCLick="getOlderVoterDetails();" style="float:right;"></input>
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="getOlderVoterDetails();" style="float:right;"></input>
 				</fieldset>
 		</div>
 	</div>
@@ -1358,7 +1364,7 @@ $(".changePwdLink").live("click",function(){
 		div.append('<div> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 15px;"/></div>');
 		div.append('<div> <span>New Password</span><font color="red"> *</font> <input type="password" id="newPwdId" name="newPassword" style="height: 18px; width: 160px; margin-top: 10px;margin-left: 38px;"/></div>');
 		div.append('<div> <span>Confirm Password</span><font color="red"> *</font> <input type="password" id="confirmPwdId" name="confirmPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 13px;"/></div>');
-        div.append('<div style="margin-left: auto; margin-right: auto; width: 550px;"><input class="btn-info btn-small" id="changePWDButton" type="button" value="Change Password"></input><input class="btn-info btn-small" id="cancelButtonID" type="button" value="Cancel" style="margin-left:10px;"></input></div>');
+        div.append('<div style="margin-left: auto; margin-right: auto; width: 550px;"><input class="btn-info btn-small btnStyle" id="changePWDButton" type="button" value="Change Password"></input><input class="btn-info btn-small btnStyle" id="cancelButtonID" type="button" value="Cancel" style="margin-left:10px;"></input></div>');
 
 		elmt.append(div);
 	});
@@ -1496,8 +1502,8 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	str += '<table width="100%">';
 	str += '<tr>';
 	str += '<th width="60%" valign="top"><div id="uploadPic_window_status"></div></th>';
-	str += '<td width="40%" valign="top"><input class="btn-info btn-small" type="button" value="Upload" id="uploadPicButton"/>';
-	str += '<input class="btn-info btn-small" type="button" value="Cancel" id="cancelPicButton"/>';	
+	str += '<td width="40%" valign="top"><input class="btn-info btn-small btnStyle" type="button" value="Upload" id="uploadPicButton"/>';
+	str += '<input class="btn-info btn-small btnStyle" type="button" value="Cancel" id="cancelPicButton"/>';	
 	str += '</td>';
 	str += '</tr>';
 	str += '</table>';	
