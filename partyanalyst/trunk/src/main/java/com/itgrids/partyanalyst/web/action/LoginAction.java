@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -86,7 +87,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private String resultForAjax;
     private String SUCCESS = "success";
     private String FAILURE = "failure";
-    
+    private ResultStatus resultStatus;
     
     public String getResultForAjax() {
 		return resultForAjax;
@@ -465,6 +466,14 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		this.candidateId = candidateId;
 	}
 
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
 	public String execute(){
 
 		session = request.getSession();
@@ -597,6 +606,7 @@ public String ajaxCallForLoginPopup(){
 	//String param = null;
 	//param = getTask();
 	try {
+		 resultStatus = new ResultStatus();
 		//jObj = new JSONObject(param);
 		//System.out.println(jObj);
 		if(getTask().equalsIgnoreCase("validateUserForLogin"))
@@ -615,6 +625,7 @@ public String ajaxCallForLoginPopup(){
 				//addActionError("Invalid username or password! Please try again!");
 				session.setAttribute("checkedTypeValue", userType);
 				resultForAjax=FAILURE;
+				resultStatus.setResultCode(1);
 				return Action.SUCCESS;
 			}	
 					
@@ -622,6 +633,8 @@ public String ajaxCallForLoginPopup(){
 			if(!userIpCheck(regVO))
 			{
 				resultForAjax="IPFAILURE";
+				resultStatus.setResultCode(0);
+				resultStatus.setMessage("IPFAILURE");
 				return Action.SUCCESS;
 			}
 		
@@ -663,7 +676,15 @@ public String ajaxCallForLoginPopup(){
 		}
 		 String typeOfUser= finalResultString();
 		 if(typeOfUser!=null)
+		 {
 			 resultForAjax=SUCCESS;
+			 resultStatus.setResultCode(0);
+			 if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+			   resultStatus.setMessage("PARTY_ANALYST_USER");
+			 else if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE))
+			   resultStatus.setMessage("FREE_USER");
+			 
+		 }
 		
 	} catch (Exception e) {
 		e.printStackTrace();

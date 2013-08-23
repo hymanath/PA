@@ -264,11 +264,12 @@
 		<pattern>/uploadAudioFile*</pattern>
 		<pattern>/getvoiceSmsReportAction*</pattern>
 		<pattern>/updateCustomerContactsAction*</pattern>
+		<pattern>/dashBoardAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
              <pattern>/newhomePageAction*</pattern>
-             <pattern>/dashBoardAction*</pattern>
+            <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">

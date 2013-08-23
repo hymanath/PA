@@ -101,7 +101,7 @@ function callHomePageAjax11(jsObj,url){
 							
 							if(jsObj.task == "validateUserForLogin")
 							{	
-								if(myResults=="success"){
+								/* if(myResults=="success"){
                                     $('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
                                     try
                                     {
@@ -137,7 +137,10 @@ function callHomePageAjax11(jsObj,url){
 									$("#ajaxcallimage").hide();
 
 									$("#LoginErrorMessageDiv").html('Invalid username or password! Please try again!');
-								}
+								}*/
+
+
+								showLoginStatus(myResults);
 								
 							}	
 							
@@ -157,6 +160,40 @@ function callHomePageAjax11(jsObj,url){
 
 
 
+}
+
+function showLoginStatus(results)
+{
+  if(results.resultCode == 0)
+  {
+    $('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
+    var tempStr = window.location.href;
+										
+     if(tempStr.indexOf("homePage") != -1 && results.message == "PARTY_ANALYST_USER")
+     {
+       window.location.href = "dashBoardAction.action";
+     }
+	 else if(tempStr.indexOf("homePage") != -1 && results.message == "FREE_USER")
+	 {
+		window.location.href = "userProfile.action";
+	 }
+	 else if(results.message=="IPFAILURE")
+	 {
+		$("#ajaxcallimage").hide();
+		$("#LoginErrorMessageDiv").html('You DO Not Have Permission to Access Site From This IP ');
+	 }
+     else
+     {
+		  window.location.reload();
+     }
+  }
+
+  else
+  {
+    $("#ajaxcallimage").hide();
+
+	$("#LoginErrorMessageDiv").html('Invalid username or password! Please try again!');
+  }
 }
 
 
