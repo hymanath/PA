@@ -904,7 +904,7 @@
 						if(allParties[i].name == partySelected){
 								var allColumnObj ={
 									key : allParties[i].name,
-									label : "Won Seats",
+									label : "No of Times Won",
 									sortable : true,
 									resizeable:true
 								};
@@ -1350,7 +1350,7 @@
 	   {   
 		 //  overViewStr+='		<td style="background:lightGrey;"> </td>';
 		   overViewStr+='		<td style="background:lightGrey;"><span style="color:#247CD4;font-weight:bold;font-size:12px;"> Party </span></td>';
-		   overViewStr+='<td style="background:lightGrey;"> <span style="font-weight:bold;color:darkgreen;font-size:12px;"> Won Seats </span> </td>';
+		   overViewStr+='<td style="background:lightGrey;"> <span style="font-weight:bold;color:darkgreen;font-size:12px;"> No of Times Won </span> </td>';
 	   }
 	   overViewStr+='	</tr>';
 	   overViewStr+='	<tr>';
