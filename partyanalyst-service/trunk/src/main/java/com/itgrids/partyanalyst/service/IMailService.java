@@ -28,4 +28,6 @@ public interface IMailService {
 	public ResultStatus freeUserSendingMailsToFriends(List<EmailDetailsVO> emaildtlslist,String host);
 	
 	public Session getSessionObject(String host);
+	
+	public ResultStatus sendEmailToAdminGroup(EmailDetailsVO emailDetailsVo,String requestFrom);
 }

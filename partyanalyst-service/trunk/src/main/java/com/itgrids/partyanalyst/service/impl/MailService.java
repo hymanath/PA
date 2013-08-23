@@ -12,6 +12,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
+import net.sf.cglib.core.EmitUtils;
+
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -517,7 +519,53 @@ public class MailService implements IMailService{
 		}
 		
 	}
-	
+	public ResultStatus sendEmailToAdminGroup(EmailDetailsVO emailDetailsVo,String requestFrom)
+	{
+		ResultStatus rs = new ResultStatus();
+		try{
+			String subject;
+			
+	    	subject = "";
+	    	String text = "";
+	    	subject = "Request For PartyAnalyst Demo";
+	    	text = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" ;
+	    	text += "<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Dear PartyAnalyst Team,</b></div>";
+	    	
+	    	text+="<div style='margin-left:45px;margin-bottom:40px;line-height: 1.5em;'>";
+	    	text+="An Aspirant is requested for A PartyAnalyst product Demo.please Find his/her details belowed.";
+	    
+	    	text += "<table><tr><td>Aspirant Name</td><td>:</td><td>" + emailDetailsVo.getCandidateName()+"</td></tr>";
+	        text += "<tr><td>MobileNO</td><td>:</td><td> " + emailDetailsVo.getMobile()+"</td></tr>";
+	        text += "<tr><td>Constituency</td><td>:</td><td>"+ emailDetailsVo.getConstituencyName()+"</td></tr>";
+	        text += "<tr><td>Email</td><td>:</td><td> " + emailDetailsVo.getEmail()+"</td></tr>";
+	        text+= "</table>";
+	    	text+="</div>";
+	        text+="<div style='margin: -17px 3px 0px 19px; padding-bottom: 18px;'>"+mailsTemplateService.getFooter()+"</div></div>";
+	        String emails = IConstants.adminGroupEmails;
+	        String emailArr[] = emails.split(",");
+	        emailDetailsVo.setContent(text);
+	        emailDetailsVo.setSubject(subject);
+	        for(String email : emailArr)
+	        {
+	        	emailDetailsVo.setToAddress(email.toString());
+		        if(requestFrom.equalsIgnoreCase(IConstants.LOCALHOST)){
+		        	emailDetailsVo.setFromAddress(IConstants.LOCALFROMEMAILID);
+	            rs=sendEmail(emailDetailsVo);
+	            }
+	            else if(requestFrom.equalsIgnoreCase(IConstants.SERVER))
+	            {
+	            	emailDetailsVo.setFromAddress(IConstants.FROMEMAILID);
+	            	rs = sendEmail(emailDetailsVo);
+	            }
+	        }
+	      
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return rs;
+	}
 	
 }
 
