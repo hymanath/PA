@@ -541,7 +541,7 @@ public class MailService implements IMailService{
 	        text+= "</table>";
 	    	text+="</div>";
 	        text+="<div style='margin: -17px 3px 0px 19px; padding-bottom: 18px;'>"+mailsTemplateService.getFooter()+"</div></div>";
-	        String emails = IConstants.adminGroupEmails;
+	        String emails = "a.dakavaram@gmail.com, kamalakardandu@gmail.com,srikanth.itgrids.hyd@gmail.com";
 	        String emailArr[] = emails.split(",");
 	        emailDetailsVo.setContent(text);
 	        emailDetailsVo.setSubject(subject);
