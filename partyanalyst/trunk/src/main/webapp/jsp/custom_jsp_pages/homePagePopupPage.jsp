@@ -200,8 +200,10 @@ text-shadow:0px 1px 1px #fff;
 								  </div></div>
 								  
 								  <div class="modal-footer">
+								  <div id="textMsg" style="text-align:center;display:none;font-family:verdana;"></div>
+								  <img id='AjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/loading.gif'>
 									<a href="#" class="btn btn-primary" id="sendMailToAdminGroup" onclick="validate()">Submit</a>
-									<a href="#" class="btn ">Skip</a>
+									<a href="#" class="btn " id="skipId" onclick="closeDialogue();">Skip</a>
 								  </div>
 								</div>
 </div>
@@ -228,10 +230,13 @@ if(mobileNO.length == 0)
 	$("#errorMsg").html('Mobile No is Mandatory').css("display","red");;
     return;
 	}
-	$("#errorMsg").html("");
+$("#textMsg").html('Your request is submitted successfully and we will get back to you soon..........').css({ 'display': 'block', 'color': 'green' });
+$("#AjaxImg").show();
+$("#errorMsg").html("");
 	var constituencyName = $("#constituencyName").val();
 	var name = $("#name").val();
 	var email =$("#emailId").val();
+	 $('input[type="submit"]').attr('disabled','disabled');
 	var jsObj=
 				{ 
 					constituencyName:constituencyName,
@@ -244,7 +249,13 @@ if(mobileNO.length == 0)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "sendMailtoAdminGroupAction.action?"+rparam;
 	callAjax(jsObj,url);
+	setTimeout("$.fancybox.close();",3000);
 }
+function closeDialogue()
+{
+  $.fancybox.close();
+}
+
 function callAjax(jsObj,url)
 		{
 			 var myResults;
@@ -253,6 +264,7 @@ function callAjax(jsObj,url)
  		               success : function( o ) {
 							try {												
 									myResults = YAHOO.lang.JSON.parse(o.responseText);	
+									
 									}catch (e) {
 							     
 								}  
