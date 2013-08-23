@@ -754,7 +754,7 @@ lable{line-height:40px;}
 	<div class="span12 well well-small" style="margin-left:0px;">
      <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />Suggestive Model</h4></div>
 		<div class="row-fluid">
-			<div class="span6 widget">
+			<div class="span6 widget" style="height: 235px;">
 				<h2> Panchayat wise Caste Details</h2>
 				<fieldset>
 					<lable>Select Constituency </lable>
@@ -767,6 +767,7 @@ lable{line-height:40px;}
 			<div class="span6 widget">
 			  <h2>Party Postions Panchayat wise Based on Previous Election Results</h2>
 				<fieldset>
+					<div id="errorMessage"></div>
 					<lable>Select Constituency </lable>
 					<s:select cssClass="selectstyle span12" theme="simple" id="sugTarconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getPartyDetails();" name="" style="width: 168px; margin-left: 5px;"></s:select>
 					<lable>Select Party </lable>
@@ -836,9 +837,8 @@ lable{line-height:40px;}
 	$('.active').removeClass(); 
 	$('#dashBoardBtn').css("background-color","red"); 
 	getCasteAvaliableConstituencys();
+	getConstituencyList();
 	$("#sugTarconstituencyId option[value=0]").remove();
-	$("#sugYoungconstituencyId option[value=0]").remove();
-	$("#sugOldTarconstituencyId option[value=0]").remove();
 	 $('#electionYearsId').val($("#electionYearsId option:eq(1)").val());
 	 constituencyOptions("default");
 
@@ -1760,6 +1760,10 @@ function callAjax(jsObj,url){
 								{
 									populateConstituenyesList(myResults);
 								}
+								else if(jsObj.task == "getAssgnedConstituencyes")
+								{
+									populateConstituenyes(myResults);
+								}
 								}catch (e) {
 							     
 								}  
@@ -2093,8 +2097,37 @@ function previousElectionDetails()
 	var partyId        = $('#partySelectEl').val();
 	var fromYear       = $('#electionYearSelectEl1').val();
 	var toYear         = $('#electionYearSelectEl2').val();
+	var flag = true;
+	var str = '';
+	if(constituencyId == 0)
+	{
+		str += '<b style="color:red;">Please Select Constituency</b></br>';
+		flag = false;
+	}
+	else if(partyId == 0)
+	{
+		str += '<b style="color:red;">Please Select Party</b></br>';
+		flag = false;
+	}
+	else if(fromYear == 0)
+	{
+		str += '<b style="color:red;">Please Select Year</b></br>';
+		flag = false;
+	}
+	else if(toYear == 0)
+	{
+		str += '<b style="color:red;">Please Select Year</b></br>';
+		flag = false;
+	}
+	if(flag)
+	{
+		window.open("suggestiveModelAction.action?hideMainMenu=true&constituencyId="+constituencyId+"&partyId="+partyId+"&fromYear="+fromYear+"&toYear="+toYear+"&prevElecResults=true");
+	}
+	else
+	{
+		$('#errorMessage').html(str);
+	}
 	
-	window.open("suggestiveModelAction.action?hideMainMenu=true&constituencyId="+constituencyId+"&partyId="+partyId+"&fromYear="+fromYear+"&toYear="+toYear+"&prevElecResults=true");
 }
 
 function getBoothLeaderDetails()
@@ -2105,6 +2138,16 @@ function getBoothLeaderDetails()
 	   casteIds+=','+$(this).val();
    });
 	window.open("suggestiveModelAction.action?hideMainMenu=true&constituencyId="+constituencyId+"&casteIds="+casteIds+"&castDetails=true");
+}
+function getConstituencyList(){
+
+var jsObj= 
+	{	
+		task:"getAssgnedConstituencyes"		
+	};
+	var rparam="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url="getConstituenciesByPartyNYearAction.action?"+rparam;
+	callAjax(jsObj,url);
 }
 function getCasteAvaliableConstituencys()
 {
@@ -2127,8 +2170,32 @@ function populateConstituenyesList(myresults)
 		}
 	}
 	getCandidateCastes($('#sugconstituencyId option:selected').val(),"candidateCastes");
+	//getCandidateCastes($('#sugYoungconstituencyId option:selected').val(),"candidateCastes1");
+	//getCandidateCastes($('#sugOldTarconstituencyId option:selected').val(),"candidateCastes2");
+	//getPartyDetails();
+}
+function populateConstituenyes(myresults)
+{
+	if(myresults.length > 0)
+	{
+		$("#sugTarconstituencyId option").remove();
+		$("#sugYoungconstituencyId option").remove();
+		$("#sugOldTarconstituencyId option").remove();
+		for(var i in myresults)
+		{
+			 $('#sugTarconstituencyId').append('<option value='+myresults[i].id+'>'+myresults[i].name+'</option>');
+			 $('#sugYoungconstituencyId').append('<option value='+myresults[i].id+'>'+myresults[i].name+'</option>');
+			 $('#sugOldTarconstituencyId').append('<option value='+myresults[i].id+'>'+myresults[i].name+'</option>');
+		}
+	}
+	//getCandidateCastes($('#sugTarconstituencyId option:selected').val(),"candidateCastes");
+	getPartyDetails();
 	getCandidateCastes($('#sugYoungconstituencyId option:selected').val(),"candidateCastes1");
 	getCandidateCastes($('#sugOldTarconstituencyId option:selected').val(),"candidateCastes2");
+	$("#sugTarconstituencyId option[value=0]").remove();
+	$("#sugYoungconstituencyId option[value=0]").remove();
+	$("#sugOldTarconstituencyId option[value=0]").remove();
+	
 }
 </script>
 
