@@ -66,7 +66,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private Long partyId;
 	private Long fromAge;
 	private Long toAge;
-	
+	private String constituencyName;
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	
 	public List<BasicVO> getHamletDetails() {
@@ -330,6 +330,14 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	}
 
 	
+
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
 
 	public boolean isCastDetails() {
 		return castDetails;
