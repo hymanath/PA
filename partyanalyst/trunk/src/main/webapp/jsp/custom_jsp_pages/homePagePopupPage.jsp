@@ -236,7 +236,7 @@ $("#errorMsg").html("");
 	var constituencyName = $("#constituencyName").val();
 	var name = $("#name").val();
 	var email =$("#emailId").val();
-	 $('input[type="submit"]').attr('disabled','disabled');
+	 $("#sendMailToAdminGroup").attr('disabled','disabled');
 	var jsObj=
 				{ 
 					constituencyName:constituencyName,
