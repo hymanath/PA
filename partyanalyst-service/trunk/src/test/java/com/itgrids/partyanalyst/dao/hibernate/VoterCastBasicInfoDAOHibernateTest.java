@@ -29,8 +29,18 @@ public class VoterCastBasicInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(values);
 	}*/
 	
-	public void testgetVoterCastBasicInfoList()
+	/*public void testgetVoterCastBasicInfoList()
 	{
 		voterCastBasicInfoDAO.getVoterCastBasicInfoList(232l,8l,1l);
+	}*/
+	
+	public void testData()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(232l);
+		List<Object[]> values = voterCastBasicInfoDAO.getCasteAvaliableConstituencyes(ids,1l);
+		for (Object[] objects : values) {
+			System.out.println(objects[0]);
+		}
 	}
 }

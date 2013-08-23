@@ -196,4 +196,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	 
 	 public List<Object[]> getProblemDetailsByBetweenDates(String query,Date fromDate,Date toDate);
 	 
+	 public List<Object[]> findLatestUpdateProblems(Long userid,List<Long> statusIds);
+	 
 }
