@@ -208,7 +208,7 @@ lable{line-height:40px;}
 <div class="btn btn-xlarge" style="height: 185px;">
     
     <h2 style="margin-top: 38px;">Advanced Dashboard</h2>
-    <a href="userProfile.action" class="btn btn-small btn-success btnStyle"> Click <i class="icon-hand-up icon-white"></i> To View More Features </a>
+    <a href="userProfile.action" class="btn btn-small btn-success" > Click <i class="icon-hand-up icon-white"></i> To View More Features </a>
 
             </div>
 <div class="widget quicklinks m-top15">
@@ -764,7 +764,7 @@ lable{line-height:40px;}
 				<h2> Panchayat wise Caste Details</h2>
 				<fieldset>
 					<lable>Select Constituency </lable>
-					<s:select cssClass="selectstyle span12" theme="simple" id="sugconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes');" name=""  style="width: 172px; margin-left: 5px;"></s:select>
+					<s:select cssClass="selectstyle span12" theme="simple" id="sugconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes');" name=""   style="margin-left: 1px; width: 171px;"></s:select>
 					<lable>Select Caste </lable><select id="candidateCastes" multiple="multiple" style="width: 171px; margin-left: 50px;">
 					</select>
 					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="getBoothLeaderDetails();" style="float:right;"></input>
@@ -841,7 +841,8 @@ lable{line-height:40px;}
 <script>
  $(document).ready(function(){
 	$('.active').removeClass(); 
-	$('#dashBoardBtn').css("background-color","red"); 
+	$('#dashBoardBtn').css("background-color","#0088CC"); 
+	$('#dashBoardBtn').css("border-radius","4px 4px 4px 4px");
 	getCasteAvaliableConstituencys();
 	getConstituencyList();
 	$("#sugTarconstituencyId option[value=0]").remove();
@@ -2132,6 +2133,7 @@ function previousElectionDetails()
 	else
 	{
 		$('#errorMessage').html(str);
+		$('#errorMessage').show().delay(1500).hide('');;
 	}
 	
 }
