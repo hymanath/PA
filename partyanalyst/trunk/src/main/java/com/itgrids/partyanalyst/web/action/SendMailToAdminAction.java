@@ -7,10 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.QuickRequestVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.impl.MailService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class SendMailToAdminAction extends ActionSupport implements ServletRequestAware 
@@ -135,6 +137,32 @@ public class SendMailToAdminAction extends ActionSupport implements ServletReque
 			}
 			
 		    return SUCCESS;
+		}
+		
+		public String sendMailToAdminGroup()
+		{
+			
+			try{
+				jObj = new JSONObject(getTask());
+				EmailDetailsVO emailDetailsVo= new EmailDetailsVO();
+				emailDetailsVo.setCandidateName(jObj.getString("name"));
+				emailDetailsVo.setEmail(jObj.getString("email"));
+				emailDetailsVo.setMobile(jObj.getString("mobileNO"));
+				emailDetailsVo.setConstituencyName(jObj.getString("constituencyName"));
+				String requestURL= request.getRequestURL().toString();
+				String requestFrom = "";
+				if(requestURL.contains("partyanalyst.com"))
+					requestFrom = IConstants.SERVER;
+				else
+					requestFrom = IConstants.LOCALHOST;
+				result = mailService.sendEmailToAdminGroup(emailDetailsVo,requestFrom);
+				
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();	
+			}
+			return Action.SUCCESS;
 		}
 
 		

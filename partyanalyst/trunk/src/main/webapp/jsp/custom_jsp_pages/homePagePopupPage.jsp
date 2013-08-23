@@ -9,7 +9,42 @@
  
 <script type="text/javascript" src="js/colortip-1.0/colortip-1.0-jquery.js"></script>
 <script type="text/javascript" src="js/colortip-1.0/script.js"></script>
+<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
+	<!-- YUI Dependency files (End) -->
 <style>
 .imgStyle{
 	border: medium none;
@@ -122,31 +157,31 @@ text-shadow:0px 1px 1px #fff;
 <div class="span8">
 <img src="images/new_homepage/explain.gif"/></div>
 <form class=" span4">
-										  <h2><small>For our Product</small> DEMO</h2><fieldset>
+										  <h2><small>For our Product</small> DEMO</h2><span id="errorMsg" style="display:none;color:red;font-family:verdana;"></span><fieldset>
 											<div class="control-group">
 												<label class="control-label">MLA/Aspirant Name</label>
 												<div class="controls">
-												 <input type="text" placeholder="Enter MLA/Aspirant Name...">
+												 <input type="text" placeholder="Enter MLA/Aspirant Name..." id="name">
 												</div>
 											</div>
 											
 											<div class="control-group">
 												<label class="control-label">Mobile Number</label>
 												<div class="controls">
-												 <input type="text" placeholder="Enter Mobile Number...">
+												 <input type="text" placeholder="Enter Mobile Number..." id="mobileId">
 												</div>
 											</div>
 											
 											<div class="control-group">
 												<label class="control-label">Constituency</label>
 												<div class="controls">
-												 <input type="text" placeholder="Enter Constituency...">
+												 <input type="text" placeholder="Enter Constituency..."  id="constituencyName">
 												</div>
 											</div>
 <div class="control-group">
 												<label class="control-label">Email Id</label>
 												<div class="controls">
-												 <input type="text" placeholder="Enter Email Id...">
+												 <input type="text" placeholder="Enter Email Id..." id="emailId">
 												</div>
 											</div>
 											
@@ -165,7 +200,7 @@ text-shadow:0px 1px 1px #fff;
 								  </div></div>
 								  
 								  <div class="modal-footer">
-									<a href="#" class="btn btn-primary">Submit</a>
+									<a href="#" class="btn btn-primary" id="sendMailToAdminGroup" onclick="validate()">Submit</a>
 									<a href="#" class="btn ">Skip</a>
 								  </div>
 								</div>
@@ -183,4 +218,52 @@ $("#fancybox-content").css({"width":"860px"});
 },0);
 
 });
+
+function validate()
+{
+var mobileNO = $("#mobileId").val();
+if(mobileNO.length == 0)
+	{
+	$("#errorMsg").css("display","block");
+	$("#errorMsg").html('Mobile No is Mandatory').css("display","red");;
+    return;
+	}
+	$("#errorMsg").html("");
+	var constituencyName = $("#constituencyName").val();
+	var name = $("#name").val();
+	var email =$("#emailId").val();
+	var jsObj=
+				{ 
+					constituencyName:constituencyName,
+					mobileNO:mobileNO,
+					name:name,
+					email:email,
+					task:"sendEmail"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "sendMailtoAdminGroupAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+function callAjax(jsObj,url)
+		{
+			 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+									myResults = YAHOO.lang.JSON.parse(o.responseText);	
+									}catch (e) {
+							     
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+ 	}
+	
 </script>
