@@ -526,6 +526,19 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 		}
 		
+		public List<Object[]> findLatestUpdateProblems(Long userId,List<Long> statusIds)
+		{
+			Query query = getSession().createQuery("select  count(model.userProblemId),model.updatedTime,model.problem.problemStatus.problemStatusId, " +
+					"model.problem.problemStatus.status from UserProblem model where model.user.userId = :userId " +
+					"and model.problem.problemStatus.problemStatusId in(:statusIds) and model.problem.isDelete = 'false'" +
+					" group by date(model.updatedTime),model.problem.problemStatus.problemStatusId order by model.updatedTime desc");
+			query.setParameter("userId", userId);
+			query.setParameterList("statusIds", statusIds);
+			query.setFirstResult(0);
+			query.setMaxResults(15);
+			return query.list();
+		}
+		
 		@SuppressWarnings("unchecked")
 		public List findLatestProblemsByMandals(String tehsilIds, Long statusId){		
 			return getHibernateTemplate().find("select model.problem.problemId, " +

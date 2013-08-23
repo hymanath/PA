@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -1543,6 +1544,9 @@ public class ProblemManagementReportService implements
 			List <Constituency> constituencies = null;
 			List<ProblemsCountByStatus> problemsCountByStatusAndDate = new ArrayList<ProblemsCountByStatus>();
 			Map<String, Long> probsCountByStatusAndDateMap = new HashMap<String, Long>();
+			Map<String,ProblemsCountByStatus> updatedproblemsMap = new HashMap<String, ProblemsCountByStatus>();
+			List<ProblemsCountByStatus> problemStatusList = null;
+			List<ProblemsCountByStatus> ProblemsListStatus = null;
 			int totalProbsCount = 0;
 			String date = "";
 			String status = "";
@@ -1595,8 +1599,82 @@ public class ProblemManagementReportService implements
 				//problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(tehsilIds, "1,6");
 				/*problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(userId,"1,6");*/
 				
-				problemsByStatusAndDateRawList = userProblemDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(userId, "1,4");
-				for(Object[] values:(List<Object[]>)problemsByStatusAndDateRawList){
+				//problemsByStatusAndDateRawList = userProblemDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(userId, "1,4");
+				List<Long> statusIds = new ArrayList<Long>();
+				statusIds.add(1l);
+				statusIds.add(4l);
+				List<Object[]> updatedProblemDetails = userProblemDAO.findLatestUpdateProblems(userId, statusIds);
+				for (Object[] parms : updatedProblemDetails) {
+					date = dateFormater.format((Date)parms[1]);
+					ProblemsCountByStatus problemsCountByStatus = new ProblemsCountByStatus();
+					ProblemsCountByStatus ProblemDetails = updatedproblemsMap.get(date);
+					
+					if(ProblemDetails == null)
+					{
+						ProblemDetails = new ProblemsCountByStatus();
+						updatedproblemsMap.put(date, ProblemDetails);
+					}
+					count = (Long)parms[0];
+					ProblemDetails.setDate(date);
+					if(parms[3].toString().equalsIgnoreCase(IConstants.NEW))
+					{
+						//ProblemDetails.setStatus(IConstants.NEW);
+						ProblemDetails.setNewCount(count.intValue());
+					}
+					else
+					{
+						//ProblemDetails.setStatus(IConstants.FIXED);
+						ProblemDetails.setFixedCount(count.intValue());
+					}
+				}
+				if(updatedproblemsMap != null && updatedproblemsMap.size() > 0)
+				{
+					problemStatusList = new ArrayList<ProblemsCountByStatus>();
+					Collection<String> problems = updatedproblemsMap.keySet();
+					for (String problemDate : problems) {
+						ProblemsCountByStatus ProblemsCountStatus = new ProblemsCountByStatus();
+						ProblemsCountByStatus problemData = updatedproblemsMap.get(problemDate);
+						ProblemsCountStatus.setDate(problemData.getDate());
+						ProblemsCountStatus.setFixedCount(problemData.getFixedCount());
+						ProblemsCountStatus.setNewCount(problemData.getNewCount());
+						problemStatusList.add(ProblemsCountStatus);
+					}
+				}
+				Collections.sort(problemStatusList, new ProblemsCountByStatusComparator());
+				/*if(updatedproblemsMap != null && updatedproblemsMap.size() > 0)
+				{
+					problemStatusList = new ArrayList<ProblemsCountByStatus>();
+					Collection<String> problems = updatedproblemsMap.keySet();
+					for (String problemDate : problems) {
+						ProblemsCountByStatus ProblemsCountStatus = new ProblemsCountByStatus();
+						ProblemsCountStatus.setDate(problemDate);
+						ProblemsCountByStatus problemsList = updatedproblemsMap.get(problemDate); 
+						if(problemsList != null && problemsList.size() > 0)
+						{
+							for (ProblemsCountByStatus problemsCountByStatus : problemsList) {
+								 ProblemsListStatus = new ArrayList<ProblemsCountByStatus>();
+								ProblemsCountByStatus ProblemsStatus = new ProblemsCountByStatus();
+								if(problemsCountByStatus.getStatus().equalsIgnoreCase("NEW"))
+								{
+									ProblemsStatus.setNewCount(problemsCountByStatus.getCount());
+									ProblemsStatus.setStatus(problemsCountByStatus.getStatus());
+									ProblemsStatus.setFixedCount(0);
+								}
+								else
+								{
+									ProblemsStatus.setFixedCount(problemsCountByStatus.getCount());
+									ProblemsStatus.setStatus(problemsCountByStatus.getStatus());
+									ProblemsStatus.setNewCount(0);
+								}
+								ProblemsListStatus.add(ProblemsStatus);
+							}
+						}
+						ProblemsCountStatus.setStatusList(ProblemsListStatus);
+						problemStatusList.add(ProblemsCountStatus);
+					}
+					
+				}*/
+				/*for(Object[] values:(List<Object[]>)problemsByStatusAndDateRawList){
 					date = dateFormater.format((Date)values[1]);
 					status = values[3].toString();
 					count = (Long)values[0];
@@ -1632,12 +1710,12 @@ public class ProblemManagementReportService implements
 					}
 				}
 				
-				Collections.sort(problemsCountByStatusAndDate, new ProblemsCountByStatusComparator());
+				*/
 				
 				locationwiseProblemStatusInfoVO.setLocationId(accessValue);
 				locationwiseProblemStatusInfoVO.setProblemsCountByStatus(problemsCountByStatusList);
 				locationwiseProblemStatusInfoVO.setTotalProblemsCount(totalProbsCount);
-				locationwiseProblemStatusInfoVO.setProblemsCountByStatusForChart(problemsCountByStatusAndDate);
+				locationwiseProblemStatusInfoVO.setProblemsCountByStatusForChart(problemStatusList);
 				
 			}catch(Exception ex){
 				ex.printStackTrace();

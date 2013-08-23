@@ -408,9 +408,20 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testGetLatestProblemsOfCurrentDateByFreeUser()
+	/*public void testGetLatestProblemsOfCurrentDateByFreeUser()
 	{
 		List<Object> list = userProblemDAO.getLatestProblemsOfCurrentDateByFreeUser(new Date(), new Date(), "true", "new");
 		System.out.println(list.size());
-	}
+	}*/
+	
+	public void testfindLatestUpdateProblems()
+		{
+			List<Long> ids = new ArrayList<Long>();
+			ids.add(1l);
+			ids.add(4l);
+			List<Object[]> values = userProblemDAO.findLatestUpdateProblems(1l,ids);
+			
+		}
+	
+	
 }
