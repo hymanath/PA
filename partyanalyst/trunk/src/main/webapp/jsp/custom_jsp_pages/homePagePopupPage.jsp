@@ -107,107 +107,68 @@ text-shadow:0px 1px 1px #fff;
 <!------------------------>
 </style>
 <div class="whitegloss">
-<div class="promoheader">
-<div class="pheaderleft">
-<img src="images/icons/logoPA.png" alt="logo"/></div>
-<div class="pheaderright">
-<h1><img src="images/Popup-add-600x90.gif" style="width: 601px;"></h1>
-<span style="font:bold 16px Arial;text-shadow:0px 0px 2px #d3d3d3;">CONNECT WITH PARTY ANALYST AND GET FREQUENT UPDATES.</span>
-</div>
-</div>
-
-<!--<div class="Newsmontior boxdiv" style="height:194px;">
-<h1 style="background:url('images/icons/homePage/LocationNews.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding:10px 55px;">News Monitoring Service</h1>
-<p style="margin-top:13px;line-height:18px;">
-<b>Analysis of your Media Coverage:</b> As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
-<a href="newsMonitoringService.action">Click Here to Know More</a></p>
-</div>
-
-<div class="Election2014 boxdiv" style="height:127px;">
-<h1 style="background:url('images/icons/homePage/Flag.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size:20px;">Are you Aspirant candidate for<br/>
-2014 elections in Andhra Pradesh</h1>
-<p style="margin-top:13px;line-height:18px;">
-Get the complete picture of your constituency to strategize or to understand the political picture of the constituency village wise by <font style="font-weight:bold;color:Crimson;">Constituency Profile Report</font>.</p>
-
-</div>-->
+<div>	
+								
+								  <div class="modal-header ">
+									
+									<h3>Win 2014 Election by Gaining 3% More Voters With our Product at a Very Low Price</h3>
 
 
+								  </div>
+								  
+								  <div class="modal-body "><div class="row-fluid">
+									    
 
-<div class="breadcrumb span11 free-user"  style="width:830px;">
-<h3>The New Party Analyst - Modified, Enhanced and Focused with the abilities to share, connect and spread the updates across the network.</h3>
-<div class="whitegloss" >
-  
-
-<a class=" alert alert-info span3 btn   green "   title3="You can find your constituency, district people and connect with them to share your views." ><h4 >Connect and Share</h4></a> 
-
-
-<a class="alert alert-info span3 btn green"  title3="Are you facing any social problems? Post your problems." ><h4>Post Problems</h4></a>
-
-<a class="alert alert-info span3 btn green"  title3="Get frequent updates of your favorite party or politicians and latest hot topics." ><h4>Subscriptions</h4></a>
-
-<a class="alert alert-info span3 btn green"  title3=" Stay tuned with the political trends." ><h4>Stay Tuned</h4></a>
-
-<a class="alert alert-info span3 btn green"  title3="Know public schemes, current affairs and important facts." ><h4>Awareness</h4></a>
-
-<a  class="alert alert-info span3 btn green"  title3="you may like different pages in Party Analyst, just add and view them in a single click." ><h4>Ease of Access</h4></a>
-
-<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-	<div class="alert alert-info">
-	Join Party Analyst Now and Explore, It's Free!! <a href="freeUserRegistration.action" class="btn btn-primary">Register Now</a> Already Registered, <a href="loginInputAction.action" class="btn btn-primary">Login</a> and Explore Now.
-	</div>
-</c:if>
-
- </div>
- 
- </div>
-
-
-
- 
-<table style="background:#fff;width:100%">
-<tr><td><h2 style="color: #12A3EB;margin-left: 11px;">Our Services</h2></td>
-<td colspan=4 class="breadcrumb"><h3 style="float:left;display:inline-block;">Are you Aspirant Candidate for 2014 Elections?</h3><a class="btn btn-primary" style="margin-left:10px;" href="images/PartyAnalyst_V1.0.pdf" target="_blank">Click Here To Know More</a></td>
-</tr>
-<tr>
-<td></td></tr></table>
-<div class="services-block">
-  
-				<div class="pull-left">
-				    <a  href="VotersPulse.action" >
-					<img src="images/voters_pluse_New.gif" style="  border:1px solid #ccc;" width="200px">
-					</a>
-				</div>
-				<div class="pull-left">
-				    <a   href="constituencyProfileReport.action">
-					<img src="images/Constituency_A.gif" style=" border:1px solid #ccc;" width="200px">
-					</a>
-				</div>
-				<div class="pull-left">
-				    <a  href="electionAnalysisAndManagementTool.action">
-					<img src="images/Election-Analysis-and-Management-Tool_A_1.gif" style="border:1px solid #ccc;" width="200px">
-					</a>
-				</div>
-				<div class="pull-left">
-				    <a  href="newsMonitoringService.action">
-					<img src="images/News-Monitoring-dervices.gif" style="border:1px solid #ccc;" width="200px">
-					</a>
-				</div>
-			</div>
-			
-
-<!--<div id="contactDiv"><span style="font-weight:bold;margin-top:5px;">
-To know more call us : +91  9676696760 &nbsp;(OR) <br />Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span></div>-->
-<!-- <div class="ElectionInfo boxdiv" style="height: 92px; padding-left: 10px; width: 425px; padding-right: 10px; margin-right: -15px; margin-left: 70px;">
-<h1 style="background:url('images/icons/homePage/report.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size: 20px;">Election Information</h1>
-<p style="margin:1px;"><a href="specialPageAction.action?specialPageId=13">Gujarat Elections 2012</a>
-
-<a href="specialPageAction.action?specialPageId=14" style="float: right; margin-top: -31px;">Himachal Pradesh Elections 2012</a>
-</p>
-</div>
-<div class="ElectionInfo boxdiv" style="height: 92px; width: 275px; padding-left: 0px; padding-right: 0px; margin-left: 21px;">
-<h1 style="background-size:50px 50px;padding-left: 17px;padding-top:10px;font-size: 20px;">Latest Updates</h1>
-<p style="margin:1px;"><a style="margin-left: 50px; font-weight: bold;" href="specialPageAction.action?specialPageId=12">Vastunna Meekosam</a></p>
-</div>-->
+<div class="span8">
+<img src="images/new_homepage/explain.gif"/></div>
+<form class=" span4">
+										  <h2><small>For our Product</small> DEMO</h2><fieldset>
+											<div class="control-group">
+												<label class="control-label">MLA/Aspirant Name</label>
+												<div class="controls">
+												 <input type="text" placeholder="Enter MLA/Aspirant Name...">
+												</div>
+											</div>
+											
+											<div class="control-group">
+												<label class="control-label">Mobile Number</label>
+												<div class="controls">
+												 <input type="text" placeholder="Enter Mobile Number...">
+												</div>
+											</div>
+											
+											<div class="control-group">
+												<label class="control-label">Constituency</label>
+												<div class="controls">
+												 <input type="text" placeholder="Enter Constituency...">
+												</div>
+											</div>
+<div class="control-group">
+												<label class="control-label">Email Id</label>
+												<div class="controls">
+												 <input type="text" placeholder="Enter Email Id...">
+												</div>
+											</div>
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+										  </fieldset>	
+										</form>
+								  </div></div>
+								  
+								  <div class="modal-footer">
+									<a href="#" class="btn btn-primary">Submit</a>
+									<a href="#" class="btn ">Skip</a>
+								  </div>
+								</div>
 </div>
 <script>
 $(document).ready(function(){
