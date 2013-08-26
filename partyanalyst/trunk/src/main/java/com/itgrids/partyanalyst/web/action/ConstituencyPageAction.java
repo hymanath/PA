@@ -716,6 +716,19 @@ public class ConstituencyPageAction extends ActionSupport implements
 		String path = substr.substring(0, substr.indexOf('/')) ;
 		String userStatusType = null;
 		session = request.getSession();
+		
+		if(!("tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST))){
+			if(session.getAttribute("constituencyPageLoadingFirstTime") == null)
+			{
+				session.setAttribute("constituencyPageLoadingFirstTime", "true");
+			}
+			else
+				session.setAttribute("constituencyPageLoadingFirstTime", "false");
+		}else{
+			session.setAttribute("constituencyPageLoadingFirstTime", "false");
+		}
+		
+		
 		request.setAttribute("host", IConstants.DEPLOYED_HOST);
 		if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
 			pollWidget = true;

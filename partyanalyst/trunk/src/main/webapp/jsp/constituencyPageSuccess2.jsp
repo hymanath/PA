@@ -51,7 +51,20 @@
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
+	<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+	<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+	
 	<script type="text/javascript">
+	var loadingFirstTime = '${sessionScope.constituencyPageLoadingFirstTime}';
+	
+	$(document).ready(function(){
+	if(loadingFirstTime  == 'true'){
+		$("#inline").fancybox();
+		$("#inline").trigger("click");
+		}
+	});
+	
 	var censusResultForParl = null;
 	$(document).ready(function(){
 	$("#MandalsDelimit a").click(function(){
@@ -380,6 +393,12 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	 <!--CIBSTUTYEBCT DETAILS LEFT SECTION START-->
       <body>
 
+	  <a id="inline" href="#fancydivbox" style="display:none"></a>
+<div id="promodiv" style="display:none;">
+	<div id="fancydivbox">
+	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
+	</div>
+</div>
 	
 		<div id="inner-content-mainsec">
 		<div id="logInDiv"></div>
@@ -1159,6 +1178,7 @@ var queryString='';
 		
 			</c:if>	
       <!--CIBSTUTYEBCT DETAILS RIGHT SECTION END--> 
+
 	<script type="text/javascript">
 	if('${candidateDetailsForConstituency.ispartial}' == 'true'){
 	        getcandidateAssetsAndLiabilities(constiId);
@@ -4197,6 +4217,7 @@ function hideFavouriteLink(){
 $('.favouritelink').hide();
 }
 </script>
+
  
   </body>
 </html>

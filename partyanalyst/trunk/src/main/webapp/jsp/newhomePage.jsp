@@ -54,7 +54,10 @@
 	       <link media="screen" type="text/css" href="http://fonts.googleapis.com/css?family=Abel&amp;ver=3.4.2" id="abel_google-fonts-css" rel="stylesheet">
 		   
 		   	<link rel="stylesheet" type="text/css" href="styles/engine3/style.css" />
-			
+			<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+	<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+	
 		</head>
 		<style>
 		
@@ -114,6 +117,13 @@
 .newLink:hover{color:#000000;text-decoration:none;}
 
 			</style>
+ <a id="inline" href="#fancydivbox" style="display:none"></a>
+<div id="promodiv" style="display:none;">
+	<div id="fancydivbox">
+	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
+	</div>
+</div>
+
 <div class="container m-top15">
 		<div class="row-fluid">
 			
@@ -660,6 +670,17 @@ Opinion Poll</h2>
 	</div>
 	
 	<script>
+	
+	var loadingFirstTime = '${sessionScope.homePageLoadingFirstTime}';
+	
+	$(document).ready(function(){
+	if(loadingFirstTime  == 'true'){
+		$("#inline").fancybox();
+		$("#inline").trigger("click");
+		}
+	});
+	
+	
 	var loginMode = '${loginMode}'; 
 	constituencyId = '${sessionScope.USER.constituencyId}';
 	showVotesObtainedForOpinionPoll();

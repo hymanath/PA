@@ -354,6 +354,18 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 		loginMode = "true";
 		request.setAttribute("feedback", feedback);
 		session = request.getSession();
+		
+		if(!("tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST))){
+			if(session.getAttribute("homePageLoadingFirstTime") == null)
+			{
+				session.setAttribute("homePageLoadingFirstTime", "true");
+			}
+			else
+				session.setAttribute("homePageLoadingFirstTime", "false");
+		}else{
+			session.setAttribute("homePageLoadingFirstTime", "false");
+		}
+		
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		if(session.getAttribute("homePageLoadingFirstTime")== null)
