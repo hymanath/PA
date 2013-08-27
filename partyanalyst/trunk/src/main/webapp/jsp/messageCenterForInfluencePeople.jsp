@@ -98,6 +98,7 @@ var isCasteSelected = '${isCasteSelected}';
 var isFamilySelected = '${isFamilySelected}';
 var isNameSelected = '${isNameSelected}';
 var isGenderSelected = '${isGenderSelected}';
+var searchName = '${name}';
 
 
 var startAge = '${startAge}';
