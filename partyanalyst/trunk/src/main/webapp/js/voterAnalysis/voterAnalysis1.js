@@ -4758,9 +4758,9 @@ function buildAgewiseDetails(results , obj){
 	   else if(type="hamlet" && obj.type == "hamletLocalArea")
 	   str+='<th rowspan="2">LocalArea</th>';
 	str+='<th  rowspan="2">Total Voters</th>';
-	str+='<th colspan="2">18-25</th>';
-	str+='<th colspan="2">26-35</th>';
-	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">18-22</th>';
+	str+='<th colspan="2">23-30</th>';
+	str+='<th colspan="2">31-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
@@ -4892,9 +4892,9 @@ function buildAgeAndGenderWiseDetails(results , obj){
 	    else if(type="hamlet" && obj.type == "hamletLocalArea")
 	   str+='<th rowspan="2">LocalArea</th>';
 	   
-	str+='<th colspan="2">18-25</th>';
-	str+='<th colspan="2">26-35</th>';
-	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">18-22</th>';
+	str+='<th colspan="2">23-30</th>';
+	str+='<th colspan="2">31-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
@@ -4999,9 +4999,9 @@ $('#mandalWiseAgeAndGenderTable').dataTable({
 
 	str+='<tr>';
 	str+='<th rowspan="2">Mandal Name</th>';
-	str+='<th colspan="2">18-25</th>';
-	str+='<th colspan="2">26-35</th>';
-	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">18-22</th>';
+	str+='<th colspan="2">23-30</th>';
+	str+='<th colspan="2">31-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
@@ -5113,9 +5113,9 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	       else if(type="hamlet" && obj.type == "hamletLocalArea")
 	   str+='<th rowspan="2">LocalArea</th>';
 	   
-	str+='<th colspan="3">18-25</th>';
-	str+='<th colspan="3">26-35</th>';
-	str+='<th colspan="3">36-45</th>';
+	str+='<th colspan="3">18-22</th>';
+	str+='<th colspan="3">23-30</th>';
+	str+='<th colspan="3">31-45</th>';
 	str+='<th colspan="3">46-60</th>';
 	str+='<th colspan="3">60-Above</th>';
 	str+='</tr>';
@@ -9344,9 +9344,9 @@ str+="<table class='table table-bordered table-striped table-hover' style='margi
 str+="<thead class='info'>";
 str  +='<tr>';
 str+="<th rowspan=3>"+result[i].name+"</th>";
-str+=" <th colspan=3>18-25</th>";
-str+=" <th colspan=3>25-36</th>";
-str+=" <th colspan=3>36-45</th>";
+str+=" <th colspan=3>18-22</th>";
+str+=" <th colspan=3>23-30</th>";
+str+=" <th colspan=3>31-45</th>";
 str+=" <th colspan=3>46-60</th>";
 str+=" <th colspan=3>60-Above</th>";
 str+='</tr>';

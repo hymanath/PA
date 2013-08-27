@@ -2886,9 +2886,9 @@ function buildAgewiseDetails(results , obj){
 	else if(type == "localElectionBody")
 	   str+='<th rowspan="2">Booth No</th>';
 	str+='<th  rowspan="2">Total Voters</th>';
-	str+='<th colspan="2">18-25</th>';
-	str+='<th colspan="2">26-35</th>';
-	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">18-22</th>';
+	str+='<th colspan="2">23-30</th>';
+	str+='<th colspan="2">31-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
@@ -2984,9 +2984,9 @@ function buildAgeAndGenderWiseDetails(results , obj){
 	   str+='<th rowspan="2">Booth No</th>';
 	else if(type == "localElectionBody")
 	   str+='<th rowspan="2">Booth No</th>';
-	str+='<th colspan="2">18-25</th>';
-	str+='<th colspan="2">26-35</th>';
-	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">18-22</th>';
+	str+='<th colspan="2">23-30</th>';
+	str+='<th colspan="2">31-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
@@ -3075,9 +3075,9 @@ $('#ageAndgenderWiseDetails').html(str);
 
 	str+='<tr>';
 	str+='<th rowspan="2">Mandal Name</th>';
-	str+='<th colspan="2">18-25</th>';
-	str+='<th colspan="2">26-35</th>';
-	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">18-22</th>';
+	str+='<th colspan="2">23-30</th>';
+	str+='<th colspan="2">31-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
@@ -3173,9 +3173,9 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	   str+='<th rowspan="2">Booth No</th>';
 	else if(type == "localElectionBody")
 	   str+='<th rowspan="2">Booth No</th>';
-	str+='<th colspan="3">18-25</th>';
-	str+='<th colspan="3">26-35</th>';
-	str+='<th colspan="3">36-45</th>';
+	str+='<th colspan="3">18-22</th>';
+	str+='<th colspan="3">23-30</th>';
+	str+='<th colspan="3">31-45</th>';
 	str+='<th colspan="3">46-60</th>';
 	str+='<th colspan="3">60-Above</th>';
 	str+='</tr>';
