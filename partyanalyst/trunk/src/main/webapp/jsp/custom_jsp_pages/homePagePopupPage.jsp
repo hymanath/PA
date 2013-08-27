@@ -245,7 +245,7 @@ $("#errorMsg").html("");
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "sendMailtoAdminGroupAction.action?"+rparam;
-	callAjax(jsObj,url);
+	ajaxResultInPopUpPage(jsObj,url);
 	setTimeout("$.fancybox.close();",3000);
 }
 function closeDialogue()
@@ -253,7 +253,7 @@ function closeDialogue()
   $.fancybox.close();
 }
 
-function callAjax(jsObj,url)
+function ajaxResultInPopUpPage(jsObj,url)
 		{
 			 var myResults;
 
