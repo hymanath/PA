@@ -5866,6 +5866,18 @@
 		   	<result name="error">jsp/loginForm.jsp?src=updateCustomerContactsAction</result>
 		   	<result name="success">/jsp/updateCustomerContacts.jsp</result>  
 		  </action>
+		   <action name="searchInfluencePeopleForSmsAction" class="messageCenterForInfluencePeopleAction">
+		  <result name="error">jsp/loginForm.jsp</result>
+		   	<result name="input">/jsp/messageCenterForInfluencePeople.jsp</result>
+		   	<result name="success">/jsp/messageCenterForInfluencePeople.jsp</result>
+		 </action>
+		  
+		 <action name="searchCandidatesForVoiceSmsAction" class="messageCenterForInfluencePeopleAction" method="searchCandidatesForVoiceSms">
+		  <result type="json" name="success">
+		   <param name="root">smsPeopleList</param>
+		  </result>
+		 </action>
+		  
 		  
 		  <action name="saveCustomerContactUpdationAction" class="updateCustomerContacts" method="saveCustomerContactUpdations">
 		 	<result type="json" name="success">
