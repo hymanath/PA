@@ -1,10 +1,14 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -12,14 +16,12 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 public class VoiceSmsAction implements ServletRequestAware{
 	
@@ -40,11 +42,22 @@ public class VoiceSmsAction implements ServletRequestAware{
 	private JSONObject jObj;
 	private String task;
 	private  List<VoiceSmsResponseDetailsVO> responseDetailsList;
-	
-	
-    private String fromDate;
+	private Map<Long ,String> casteMap;
+
+	private String fromDate;
     private String toDate;
+    
+    private SMSSearchCriteriaVO votersDetails; 
 	
+
+
+	public SMSSearchCriteriaVO getVotersDetails() {
+		return votersDetails;
+	}
+
+	public void setVotersDetails(SMSSearchCriteriaVO votersDetails) {
+		this.votersDetails = votersDetails;
+	}
 
 	public String getFromDate() {
 		return fromDate;
@@ -202,6 +215,14 @@ public class VoiceSmsAction implements ServletRequestAware{
 
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
+	}
+	
+    public Map<Long, String> getCasteMap() {
+		return casteMap;
+	}
+
+	public void setCasteMap(Map<Long, String> casteMap) {
+		this.casteMap = casteMap;
 	}
 	
 	
@@ -404,11 +425,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 			   if(toDate.trim().length() > 0)
 				   toDate1 = getDate(toDate.trim());
 			
-			
-			
-			
-			
-			
+		
 			resultMap = voiceSmsService.generateVoiceSmsReport(fromDate1,toDate1);	
 		}
 		catch(Exception e)
@@ -436,6 +453,159 @@ public class VoiceSmsAction implements ServletRequestAware{
 		return Action.SUCCESS;
 		
 	}
+	
+	public String voiceSmsHistory()
+	{
+		
+		HttpSession session = request.getSession();			
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(user == null)
+			return Action.INPUT;
+		
+		voiceSmsResponseDetails = voiceSmsService.getVoiceSmsHistoryForAuser(user.getRegistrationID());
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getAllTheCastesOfConstituency()
+	{
+		try
+		{
+			 jObj = new JSONObject(getTask());
+			 
+			 casteMap = voiceSmsService.getAllTheCastesOfConstituency(jObj.getLong("constituencyId"),jObj.getLong("userId") , jObj.getLong("publicationDateId"));
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getVotersDetailsBySearchToSendSMS()
+	{
+		List<SMSSearchCriteriaVO> votersDetailsList = new ArrayList<SMSSearchCriteriaVO>();
+		try
+		{
+			votersDetails = new SMSSearchCriteriaVO();	
+			HttpSession session = request.getSession();			
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			
+			Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			String order = request.getParameter("dir");
+			String columnName = request.getParameter("sort");
+			Integer maxRecords = Integer.parseInt(request.getParameter("results"));
+			
+			SMSSearchCriteriaVO searchVO = new SMSSearchCriteriaVO();
+			
+			searchVO.setAgeSelected(Boolean.valueOf(request.getParameter("isAgeSelected")));
+			searchVO.setCasteSelected(Boolean.valueOf(request.getParameter("isCasteSelected")));
+			searchVO.setFamilySelected(Boolean.valueOf(request.getParameter("isFamilySelected")));
+			searchVO.setNameSelected(Boolean.valueOf(request.getParameter("isNameSelected")));
+			searchVO.setGenderSelected(Boolean.valueOf(request.getParameter("isGenderSelected")));
+			
+			
+			if(searchVO.isAgeSelected()){
+				searchVO.setStartAge(Integer.parseInt(request.getParameter("startAge")));
+				searchVO.setEndAge(Integer.parseInt(request.getParameter("endAge")));
+			}
+			
+			if(searchVO.isFamilySelected())
+				searchVO.setHouseNo(request.getParameter("houseNo"));
+			
+			if(searchVO.isNameSelected())
+				searchVO.setName(request.getParameter("name"));
+			
+			if(searchVO.isCasteSelected())
+				searchVO.setCasteIds(request.getParameter("casteIds"));
+			
+			if(searchVO.isGenderSelected())
+				searchVO.setCasteIds(request.getParameter("gender"));
+			
+			
+			searchVO.setLocationType(request.getParameter("locationType"));
+			searchVO.setLocationValue(Long.parseLong(request.getParameter("locationValue")));
+			searchVO.setUserId(user.getRegistrationID());
+			searchVO.setPublicationDateId(Long.parseLong(request.getParameter("publicationDateId")));
+			
+			searchVO.setStartIndex(startIndex);
+			searchVO.setMaxRecords(maxRecords);
+			searchVO.setColumnName(columnName);
+			searchVO.setOrder(order);
+			
+			votersDetailsList = voiceSmsService.getVotersDetailsBySearchToSendSMS(searchVO);
+			
+			
+             votersDetails.setResultVotersList(votersDetailsList);
+             votersDetails.setTotalResultsCount(10000);
+			
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	/*
+	public String getVotersDetailsBySearchToSendSMS()
+	{
+		try
+		{
 
+			HttpSession session = request.getSession();			
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			jObj = new JSONObject(getTask());
+			
+			SMSSearchCriteriaVO searchVO = new SMSSearchCriteriaVO();
+			
+			searchVO.setAgeSelected(jObj.getBoolean("isAgeSelected"));
+			searchVO.setCasteSelected(jObj.getBoolean("isCasteSelected"));
+			searchVO.setFamilySelected(jObj.getBoolean("isFamilySelected"));
+			searchVO.setNameSelected(jObj.getBoolean("isNameSelected"));
+			
+			if(searchVO.isAgeSelected()){
+				searchVO.setStartAge(jObj.getInt("startAge"));
+				searchVO.setEndAge(jObj.getInt("endAge"));
+			}
+			
+			if(searchVO.isFamilySelected())
+				searchVO.setHouseNo(jObj.getString("houseNo"));
+			
+			if(searchVO.isNameSelected())
+				searchVO.setName(jObj.getString("name"));
+			
+			if(searchVO.isFamilySelected())
+				searchVO.setCasteIds(jObj.getString("casteIds"));
+			
+			searchVO.setLocationType(jObj.getString("locationType"));
+			searchVO.setLocationValue(jObj.getLong("locationValue"));
+			searchVO.setUserId(user.getRegistrationID());
+			searchVO.setPublicationDateId(jObj.getLong("publicationDateId"));
+			
+			
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	*/
 	
 }

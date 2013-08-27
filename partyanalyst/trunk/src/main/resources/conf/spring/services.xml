@@ -1733,7 +1733,8 @@
      <property name="voiceRecordingDetailsDAO" ref="voiceRecordingDetailsDAO"/>
      <property name="userDAO" ref="userDAO" />
      <property name="voiceSmsResponseDetailsDAO" ref="voiceSmsResponseDetailsDAO"/> 
-     <property name="voiceSmsVerifiedNumbersDAO" ref="voiceSmsVerifiedNumbersDAO"/>   
+     <property name="voiceSmsVerifiedNumbersDAO" ref="voiceSmsVerifiedNumbersDAO"/> 
+     <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO"/>
     </bean>
 </beans>		
 	

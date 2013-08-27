@@ -354,7 +354,7 @@ function getUpdatedData(){
         </table>    	
      </center></div>
 	<center>
-	<div id="CadreSearchMain">
+	<!--<div id="CadreSearchMain">
 		<div id="basicCadresSearch">
 			<table width="100%" class="cadreSearchInputTable">				
 				
@@ -589,7 +589,7 @@ function getUpdatedData(){
 				<tr>					
 					<td align="center">
 						
-						<input type="button" class="btnClass" onclick="getCadresResults('search')" value="Search"/>
+						<input type="button" class="btnClass" onclick="getCadresResults1('search')" value="Search"/>
 						
 						<c:if test="${windowTask == 'Sms'}">
 						<input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/>
@@ -603,7 +603,9 @@ function getUpdatedData(){
 				</tr>
 			</table>	
 		</div>
-	</div>
+	</div>-->
+	<input type="button" class="btnClass" onclick="getCadresResults1('search')" value="Search"/>
+
 	</center>
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
 
@@ -726,9 +728,9 @@ function getUpdatedData(){
 
 <!--  cadre search  ---> 
 
-function buildCadreSearchResultDataTable(rparam)
+function buildCadreSearchResultDataTableForSMS(rparam)
 {
- YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
+ /*YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
   {
 	var user = oData;
 	var id= oRecord.getData("cadreId");
@@ -751,18 +753,21 @@ function buildCadreSearchResultDataTable(rparam)
 	var lname= oRecord.getData("lastName");
 	elLiner.innerHTML ="<a href='javascript:{}' onclick='getCadreInfo("+id+")'>"+fname+" "+lname+" </a>";
   };
-
+*/
   YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
   {
 	var name = oData;
 	var id= oRecord.getData("cadreId");
 	var mobile= oRecord.getData("mobile");
 	var firstName= oRecord.getData("firstName");
-	elLiner.innerHTML="<input type='checkbox' onClick='getCadreId(this)' name='cadreResult_check' value='"+id+"_"+mobile+"_"+firstName+"'>";
+  if(window.opener.selectedCadreDetails[id] == undefined || mobile == "")
+      elLiner.innerHTML='<input type="checkbox"  onClick="pushIntoCadreObject(\''+id+'\',\''+mobile+'\')" name="cadreResult_check">';
+  else
+     elLiner.innerHTML='<input type="checkbox" checked onClick="pushIntoCadreObject(\''+id+'\',\''+mobile+'\')" name="cadreResult_check">';	
 				
   };
 
-  YAHOO.widget.DataTable.image = function(elLiner, oRecord, oColumn, oData) 
+  /*YAHOO.widget.DataTable.image = function(elLiner, oRecord, oColumn, oData) 
   {
 	var cadreId= oRecord.getData("cadreId");
 	
@@ -771,15 +776,15 @@ function buildCadreSearchResultDataTable(rparam)
 	else
 		elLiner.innerHTML ="<img height='85px' width='85px' src='images/cadre_images/"+oData+"'/>";
   };
-  
+  */
   var CadreSearchResultColumnDefs = [ 
 		    	            {key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
 							{key:"firstName", label: "Name",sortable: true, formatter:YAHOO.widget.DataTable.viewDetails} ,
-							{key:"image", label: "Image",formatter:YAHOO.widget.DataTable.image}, 
+							//{key:"image", label: "Image",formatter:YAHOO.widget.DataTable.image}, 
 		    	            {key:"mobile", label: "Mobile", sortable: true}, 
 		    	           	{key:"strCadreLevel", label: "Cadre Level", sortable: true},
 							//{key:"email", label: "Address"},
-		    				{key:"memberType", label: "Cadre Type",sortable:true},
+		    				//{key:"memberType", label: "Cadre Type",sortable:true},
 							{key:"educationStr", label: "Education",sortable:true},
 		    				{key:"professionStr", label: "Occupation",sortable:true},
 							//{key:"casteCategoryStr", label: "Caste Category",sortable:true},
@@ -804,10 +809,10 @@ function buildCadreSearchResultDataTable(rparam)
 
 
     var myConfigs = {
-			        initialRequest: "sort=firstName&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+			        initialRequest: "sort=firstName&dir=asc&startIndex=0&results=100", // Initial request for first page of data
 			        dynamicData: true, // Enables dynamic server-driven data
 			        sortedBy : {key:"firstName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
-			        paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
+			        paginator: new YAHOO.widget.Paginator({ rowsPerPage:100 }) // Enables pagination 
 		};
 
 		var CadreSearchResultDataTable = new YAHOO.widget.DataTable("searchResult", CadreSearchResultColumnDefs,CadreSearchResultDataSource, myConfigs);
@@ -870,9 +875,9 @@ function showCadreSearchResults(searchCount)
 	resultsCountEl.innerHTML = '<span>'+totalSearchCount+'</span> cadres found with this selection criteria';
 
 	var fStr = '';
-	fStr += '<span><input type="button" class="btnClass" onclick="selectCheckBox()" value="Select All"/></span>';
-	fStr += '<span><input type="button" class="btnClass" onclick="deSelectCheckBox()" value="DeSelect All"/></span>';
-	fStr += '<span><input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/></span><BR><BR><BR>';
+	//fStr += '<span><input type="button" class="btnClass" onclick="selectCheckBox()" value="Select All"/></span>';
+	//fStr += '<span><input type="button" class="btnClass" onclick="deSelectCheckBox()" value="DeSelect All"/></span>';
+	//fStr += '<span><input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/></span><BR><BR><BR>';
 	fStr += '<span id="smsStatusTextSpan"></span>';
 	footerElmt.innerHTML = fStr;
 	footerElmt.style.display = '';
@@ -968,6 +973,20 @@ function setCadreToVoter(){
 	}
 }
 <!--  cadre search  --- end> 
+function pushIntoCadreObject(cadreId , mobileNumber)
+{
+	if(window.opener.selectedCadreDetails[cadreId] == undefined)
+	{
+      window.opener.selectedCadreDetails[cadreId] = mobileNumber;
+	    selectedMobileNumbers.push(mobileNumber);
+	}
+	else
+	{
+		delete window.opener.selectedCadreDetails[cadreId];
+		var index = selectedMobileNumbers.indexOf(mobileNumber);
+         array.splice(index, 1);
+	}
+}
 </script>
 </body>
 </html>

@@ -56,6 +56,108 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	private int verifiedNumbersCount;
 	private IVoiceSmsService voiceSmsService;
 	
+	
+	private String isAgeSelected;
+	private String isCasteSelected;
+	private String isFamilySelected;
+	private String isNameSelected;
+	private String isGenderSelected;
+	
+	private String startAge;
+	private String endAge;
+	private String casteIds;
+	private String houseNo;
+	private String name;
+	private String gender;
+	
+
+	public String getIsAgeSelected() {
+		return isAgeSelected;
+	}
+
+	public void setIsAgeSelected(String isAgeSelected) {
+		this.isAgeSelected = isAgeSelected;
+	}
+
+	public String getIsCasteSelected() {
+		return isCasteSelected;
+	}
+
+	public void setIsCasteSelected(String isCasteSelected) {
+		this.isCasteSelected = isCasteSelected;
+	}
+
+	public String getIsFamilySelected() {
+		return isFamilySelected;
+	}
+
+	public void setIsFamilySelected(String isFamilySelected) {
+		this.isFamilySelected = isFamilySelected;
+	}
+
+	public String getIsNameSelected() {
+		return isNameSelected;
+	}
+
+	public void setIsNameSelected(String isNameSelected) {
+		this.isNameSelected = isNameSelected;
+	}
+
+	public String getIsGenderSelected() {
+		return isGenderSelected;
+	}
+
+	public void setIsGenderSelected(String isGenderSelected) {
+		this.isGenderSelected = isGenderSelected;
+	}
+
+	public String getStartAge() {
+		return startAge;
+	}
+
+	public void setStartAge(String startAge) {
+		this.startAge = startAge;
+	}
+
+	public String getEndAge() {
+		return endAge;
+	}
+
+	public void setEndAge(String endAge) {
+		this.endAge = endAge;
+	}
+
+	public String getCasteIds() {
+		return casteIds;
+	}
+
+	public void setCasteIds(String casteIds) {
+		this.casteIds = casteIds;
+	}
+
+	public String getHouseNo() {
+		return houseNo;
+	}
+
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
 	public IVoiceSmsService getVoiceSmsService() {
 		return voiceSmsService;
