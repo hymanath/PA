@@ -29,6 +29,7 @@ public class VoterAgeRange extends BaseModel implements Serializable{
 	private Set<VoterAgeInfo> voterAgeInfos = new HashSet<VoterAgeInfo>(0);
 	private Long minValue;
 	private Long maxValue;
+	private Set<Voter> voters = new HashSet<Voter>(0);
 	
 	public VoterAgeRange(){}
 	public VoterAgeRange(String ageRange,Long minValue,Long maxValue)
@@ -79,6 +80,14 @@ public class VoterAgeRange extends BaseModel implements Serializable{
 	}
 	public void setMaxValue(Long maxValue) {
 		this.maxValue = maxValue;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voterAgeRange")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<Voter> getVoters() {
+		return voters;
+	}
+	public void setVoters(Set<Voter> voters) {
+		this.voters = voters;
 	}
 	
 	

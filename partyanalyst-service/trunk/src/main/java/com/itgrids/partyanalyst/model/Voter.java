@@ -47,6 +47,7 @@ public class Voter extends BaseModel implements Serializable {
 	private String mobileNo;
 	private Set<CustomVoter> customVoters = new HashSet<CustomVoter>(0);
 	private Set<Respondent> respondent = new HashSet<Respondent>(0);
+	private VoterAgeRange voterAgeRange;
 	
 	public Voter(){
 		
@@ -60,12 +61,13 @@ public class Voter extends BaseModel implements Serializable {
 	public Voter(String houseNo,
 			String relationshipType, String gender,
 			Long age, String voterIDCardNo, 
-			Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters) {
+			Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters,VoterAgeRange voterAgeRange) {
 		this.houseNo = houseNo;
 		this.relationshipType = relationshipType;
 		this.age = age;
 		this.voterIDCardNo = voterIDCardNo;
 		this.insertionDate = insertionDate;
+		this.voterAgeRange = voterAgeRange;
 	}
 
 	@Id
@@ -189,6 +191,18 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setRespondent(Set<Respondent> respondent) {
 		this.respondent = respondent;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "voter_age_range_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoterAgeRange getVoterAgeRange() {
+		return voterAgeRange;
+	}
+
+	public void setVoterAgeRange(VoterAgeRange voterAgeRange) {
+		this.voterAgeRange = voterAgeRange;
 	}
 	
 	
