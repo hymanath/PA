@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 
 public interface IVoiceSmsService {
@@ -18,6 +19,9 @@ public interface IVoiceSmsService {
 	public int getVerifiedNumbersCountOfUser(Long userId);
 	
 	public String saveCustomerContactsUpdations(Long custmerId,String mobileNo);
+	public Map<Long,String> getAllTheCastesOfConstituency(Long constituencyId , Long userId , Long publicationDateId);
+	public List<SMSSearchCriteriaVO> getVotersDetailsBySearchToSendSMS(SMSSearchCriteriaVO searchVO );
+
 
 
 }
