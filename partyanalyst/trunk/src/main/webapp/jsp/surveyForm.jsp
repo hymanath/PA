@@ -1023,9 +1023,9 @@ function buildAgeWiseSurveyAnalysis(myResults)
 			str +='<table class="table table-bordered table-striped table-hover" background-color: transparent;border-spacing: 14px;border-collapse: separate;max-width: 564%; id="agetableId'+k+'">'
 			str +='<tr>';
 			str +='<td>Options</td>';
-			str +='<td>18-25%</td>';
-			str +='<td>26-35%</td>';
-			str +='<td>36-45%</td>';
+			str +='<td>18-22%</td>';
+			str +='<td>23-30%</td>';
+			str +='<td>31-45%</td>';
 			str +='<td>45-50%</td>';
 			str +='<td>Above60%</td>';
 			str +='</tr>';

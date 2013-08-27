@@ -449,9 +449,9 @@ function buildSurveyDetails(result)
 			str +='<table class="table table-bordered table-striped table-hover" style="background-color: transparent; width: 560px; margin-top: 15px;" id="agetableId'+k+'">'
 			str +='<tr>';
 			str +='<td>Options</td>';
-			str +='<td>18-25%</td>';
-			str +='<td>26-35%</td>';
-			str +='<td>36-45%</td>';
+			str +='<td>18-22%</td>';
+			str +='<td>23-30%</td>';
+			str +='<td>31-45%</td>';
 			str +='<td>45-50%</td>';
 			str +='<td>Above60%</td>';
 			str +='</tr>';
@@ -580,9 +580,9 @@ function buildCasteWiseSurveyAnalysis(myResults)
 				str +='<tr>';
 				str += '<thead class="info">';
 				str +='<th>Options</th>';
-				str +='<th>18-25%</th>';
-				str +='<th>26-35%</th>';
-				str +='<th>36-45%</th>';
+				str +='<th>18-22%</th>';
+				str +='<th>23-30%</th>';
+				str +='<th>31-45%</th>';
 				str +='<th>45-50%</th>';
 				str +='<th>Above60%</th>';
 				str += '</thead>';	
