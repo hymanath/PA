@@ -583,7 +583,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		}
 		if(searchVO.isGenderSelected())
 			if(!searchVO.getGender().equalsIgnoreCase("All") || !searchVO.getGender().equalsIgnoreCase(""))
-				queryString.append("and model.gender like '"+searchVO.getGender()+"' ");
+				queryString.append("and model.gender like '"+searchVO.getGender()+"%' ");
 
 		if(searchVO.getLocationType().equalsIgnoreCase("constituency"))
 		queryString.append(" and (model.influencingScope like '"+IConstants.CONSTITUENCY+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
