@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -808,4 +809,12 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return (Long)query.uniqueResult();
 	}
 
+	public List<Object[]> getInfluencingPeopleDetailsToSendSMS(String query,SMSSearchCriteriaVO searchVO){
+		Query queryObj = getSession().createQuery(query);
+	//	queryObj.setParameter("userId", searchVO.getUserId());
+		queryObj.setFirstResult(searchVO.getStartIndex());
+		queryObj.setMaxResults(searchVO.getMaxRecords());
+		
+		return queryObj.list();
+	}
 }
