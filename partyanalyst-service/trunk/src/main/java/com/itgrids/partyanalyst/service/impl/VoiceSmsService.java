@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
@@ -36,8 +39,16 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private IVoiceSmsResponseDetailsDAO voiceSmsResponseDetailsDAO;
 	private IVoiceSmsVerifiedNumbersDAO voiceSmsVerifiedNumbersDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
-	
-	
+	private IInfluencingPeopleDAO influencingPeopleDAO;
+
+	public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
+		return influencingPeopleDAO;
+	}
+
+	public void setInfluencingPeopleDAO(IInfluencingPeopleDAO influencingPeopleDAO) {
+		this.influencingPeopleDAO = influencingPeopleDAO;
+	}
+
 	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
 		return userVoterDetailsDAO;
 	}
@@ -505,7 +516,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 				
 				vo.setName(voterDetails[0].toString());
 				vo.setHouseNo(voterDetails[1].toString());
-				if(voterDetails[2] != null && !voterDetails[2].toString().equalsIgnoreCase(""))
+				if(voterDetails[2] != null && !voterDetails[2].toString().trim().equalsIgnoreCase(""))
 					vo.setMobileNumber(Long.parseLong(voterDetails[2].toString()));
 				else
 				vo.setMobileNumber(999999999L);
@@ -523,5 +534,96 @@ public class VoiceSmsService implements IVoiceSmsService {
 		
 		return resultList;
 
+	}
+	
+	public List<SMSSearchCriteriaVO> getAllInfluencingPeopleDetailsForVoiceSMS(SMSSearchCriteriaVO searchVO) {
+		log.debug("Entered into the getAllInfluencingPeopleDetailsForVoiceSMS service method");
+		List<SMSSearchCriteriaVO> resultList = new ArrayList<SMSSearchCriteriaVO>();
+
+		try
+		{
+		StringBuffer queryString = new StringBuffer();
+
+		queryString.append(" select model.firstName,model.lastName,model.phoneNo from InfluencingPeople model " +
+				"where model.user.userId =1 ");
+
+		if(searchVO.isAgeSelected())
+		queryString.append(" ");
+		if(searchVO.isNameSelected())
+		queryString.append(" and ( model.firstName like '%"+searchVO.getName()+"%' or model.lastName like '%"+searchVO.getName()+"%' )");
+		if(searchVO.isFamilySelected())
+		queryString.append("  ");
+		if(searchVO.isCasteSelected()){
+
+		String castes[] = searchVO.getCasteIds().split("-");
+
+		List<Long> casteIds = new ArrayList<Long>();
+
+		for(String caste:castes)
+		casteIds.add(Long.parseLong(caste));
+		
+		searchVO.setSelectedCastes(casteIds);
+
+		if(searchVO.getSelectedCastes().size()==1){
+			queryString.append(" and ( model.caste like '"+searchVO.getSelectedCastes().get(0).toString()+"')");
+		}
+		if(searchVO.getSelectedCastes().size()>1){
+			int count = searchVO.getSelectedCastes().size();
+			queryString.append(" and ( ");
+			for (Long parms : casteIds) {
+				if(count >1)
+					queryString.append(" model.caste like '"+parms.toString()+"' or ");
+				else
+					queryString.append(" model.caste like '"+parms.toString()+"' ");
+				count = count-1;
+			}
+			queryString.append(" ) ");
+		}
+		
+		}
+		if(searchVO.isGenderSelected())
+			if(!searchVO.getGender().equalsIgnoreCase("All") || !searchVO.getGender().equalsIgnoreCase(""))
+				queryString.append("and model.gender like '"+searchVO.getGender()+"' ");
+
+		if(searchVO.getLocationType().equalsIgnoreCase("constituency"))
+		queryString.append(" and (model.influencingScope like '"+IConstants.CONSTITUENCY+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
+		else if(searchVO.getLocationType().equalsIgnoreCase("mandal"))
+		queryString.append(" and (model.influencingScope like '"+IConstants.MANDAL+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
+		else if(searchVO.getLocationType().equalsIgnoreCase("panchayat"))
+		queryString.append(" and (model.influencingScope like '"+IConstants.PANCHAYAT+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
+		else if(searchVO.getLocationType().equalsIgnoreCase("ward"))
+		queryString.append(" and (model.influencingScope like '"+IConstants.WARD+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
+		else if(searchVO.getLocationType().equalsIgnoreCase("booth"))
+		queryString.append(" and (model.influencingScope like '"+IConstants.BOOTH+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
+		else if(searchVO.getLocationType().equalsIgnoreCase("hamlet"))
+		queryString.append(" and (model.influencingScope like '"+IConstants.BOOTH+"' and model.hamlet.hamletId like '"+searchVO.getLocationValue().toString()+"')");
+
+		queryString.append(" order by model.firstName "+ searchVO.getOrder());
+
+
+
+		List<Object[]> influencingPeopleList = influencingPeopleDAO.getInfluencingPeopleDetailsToSendSMS(queryString.toString(),searchVO);
+
+
+		for(Object[] list:influencingPeopleList)
+		{
+
+		SMSSearchCriteriaVO vo = new SMSSearchCriteriaVO();
+
+		vo.setName(list[0].toString()+" " +list[1].toString());
+		//vo.setHouseNo(list[2].toString());
+		vo.setMobileNumber(Long.valueOf(list[2].toString()));
+		//vo.setStartAge(Integer.parseInt(list[3].toString()));
+		resultList.add(vo);
+
+		}
+			
+		}catch(Exception e)
+		{
+		log.error("Exception raised in getAllInfluencingPeopleDetailsForVoiceSMS service method");
+		e.printStackTrace();
+		}
+
+		return resultList;
 	}
 }
