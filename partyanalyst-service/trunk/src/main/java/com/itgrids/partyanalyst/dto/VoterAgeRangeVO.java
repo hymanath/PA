@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class VoterAgeRangeVO implements Serializable {
 
 	private String ageRange;
-	private Long maleVoters;
-	private Long femaleVoters;
+	private Long maleVoters = 0l;
+	private Long femaleVoters = 0l;
 	private Long totalVoters;
 	private String percentage;
 	private Long reportLevelId;
