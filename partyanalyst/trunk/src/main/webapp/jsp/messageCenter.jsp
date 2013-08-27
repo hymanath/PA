@@ -249,16 +249,19 @@ div.tabs div.tab.selected div.arrow{
 $(document).ready(function() {
 
 	$('.searchType').click(function(){
-		if((this).val() == "cadre")
+		if($(this).val() == "cadre")
 		{
+			$('#houseDiv').hide();
+			$('#ageDiv').show();
 		}
-		else if((this).val() == "influencePeople")
+		else if($(this).val() == "influencePeople")
 		{
+           $('#houseDiv ,#ageDiv').hide();
 
 		}
-		else if((this).val() == "voter")
+		else if($(this).val() == "voter")
 		{
-
+           $('#houseDiv , #ageDiv').show();
 		}
 	});
 
@@ -325,6 +328,7 @@ $(document).ready(function() {
 		var wardFieldId = $("#wardField").val(); 
 		var hamletFieldId = $("#hamletField").val(); 
 		var pollingStationFieldId = $("#pollingStationField").val(); 
+		var cadreLocationId;
 
 	  var isAgeSelected = (startAge.trim() == "") && endAge.trim() == "" ? false : true;
 
@@ -342,35 +346,44 @@ $(document).ready(function() {
 		if(publicationDateId == null)
 			publicationDateId = 8;
 		if(reportLevelValue == 1){
-			areaId = $("#constituencyList").val(); 
+			areaId = $("#constituencyList").val(); 			
 			searchArea = "constituency";
+			cadreLocationId = 4;
+			
 		}
 		else if(reportLevelValue == 2){
 			areaId = $("#mandalField").val().substring(1);
 			searchArea = "mandal";
+			cadreLocationId = 5;
 		}
 		else if(reportLevelValue == 3){
 			areaId = $("#panchayatField").val(); 
 			searchArea = "panchayat";
 		}
 		 else if(reportLevelValue == 4){
-			areaId = $("#panchayatField").val(); 
+			areaId = $("#pollingStationField").val(); 
 			searchArea = "booth";
+			cadreLocationId = 9;
 		}
 		else if(reportLevelValue == 5){
 			areaId = $("#wardField").val(); 
 			searchArea = "ward";
+			cadreLocationId = 8;
 		}
 		else if(reportLevelValue == 6){
 			areaId = $("#hamletField").val(); 
 			searchArea = "hamlet";
+			cadreLocationId = 6;
 		}
 		else if(reportLevelValue == 8){
 			stateId = $("#statesList").val(); 
+			areaId = $("#statesList").val(); 
+			cadreLocationId = 2;
 		}
 		else if(reportLevelValue == 9){
 			areaId = $("#districtList").val();
 			searchArea = "district";
+			cadreLocationId = 3;
 		}
 
     var casteIds = "";
@@ -378,7 +391,6 @@ $(document).ready(function() {
 		casteIds += $(this).val();
 	});
 
-		
 	  selectedCriteria.isAgeSelected = isAgeSelected;
 	  selectedCriteria.isCasteSelected = isCasteSelected;
 	  selectedCriteria.isFamilySelected = isFamilySelected;
@@ -394,9 +406,17 @@ $(document).ready(function() {
 	  selectedCriteria.searchArea = searchArea;
 	  selectedCriteria.constituencyId = 232;
 	  selectedCriteria.searchName = searchName;
+	  selectedCriteria.cadreLocationId = cadreLocationId;
+	  selectedCriteria.socialStatus = false;
 
 
+    if($('input[name=searchFor]:checked').val() == "voter")
         getVoterSearchDetails();
+	else if ($('input[name=searchFor]:checked').val() == "cadre")
+        openCadreWindow();
+	      //getCadreSearchDetails();
+	else
+		openInfluencePeopleWindow();
 
 
 /*
@@ -557,28 +577,29 @@ var jsObj=
 	 <div class="selectDiv" id="genderDiv"style="margin-bottom: 10px;">
 	    Gender  <span style="margin-left:79px;">:</span>
 		<input type="radio" checked="true" id="all" name="gender" style=" margin-top: 0px;margin-left: 25px;" value="All"><Span style="margin-left:5px;">All </Span> 
-		<input type="radio" id="male" name="gender" style=" margin-top: 0px;margin-left: 10px;" value="male"><Span style="margin-left:5px;">Male </Span> 
-		<input type="radio" id="female" value="female" name="gender" style=" margin-top: 0px;margin-left: 10px;"> <Span style="margin-left:5px;" >Female<Span>
+		<input type="radio" id="male" name="gender" style=" margin-top: 0px;margin-left: 10px;" value="M"><Span style="margin-left:5px;">Male </Span> 
+		<input type="radio" id="female" value="F" name="gender" style=" margin-top: 0px;margin-left: 10px;"> <Span style="margin-left:5px;" >Female<Span>
 		
 	  </div>
-	<div class="selectDiv" style="margin-bottom: 10px;">
+	<div class="selectDiv" style="margin-bottom: 10px;" id="nameDiv">
 	    Name  <span style="margin-left:90px;">:</span><input type="text" id="searchName" style="width:154px;margin-left: 25px;">
 	  </div>
-	   <div class="selectDiv" style="margin-bottom: 10px;">
+	   <div class="selectDiv" style="margin-bottom: 10px;" id="casteDiv">
 	    Caste  <span style="margin-left:90px;">:</span><!--<input type="text" id="searchCaste" style="width:154px;margin-left: 25px;">-->
 		<select multiple="true" id="casteId">
 		 <option value="1">THIS IS ONE</option>
 		 <option value="2">THIS IS TWO</option>
 		</select>
 	  </div>	  
-    <div class="selectDiv" style="margin-bottom: 10px;">
+    <div class="selectDiv" style="margin-bottom: 10px;" id="houseDiv">
 	    House No  <span style="margin-left:65px;">:</span><input type="text" id="searchHouseNo" style="width:154px;margin-left: 25px;">
 	  </div>
-	<div class="selectDiv" style="margin-bottom: 10px;">
+	<div class="selectDiv" style="margin-bottom: 10px;" id="ageDiv">
 	    Between Age  <span style="margin-left:45px;">:</span><input type="text" id="age1" style="width:100px; margin-left: 25px;">
 		<input type="text" id="age2" style="width:100px;">
 	 </div>
 	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;"> Search </button> 
+
    </div>
 
   </div>

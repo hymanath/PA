@@ -604,7 +604,7 @@ function getUpdatedData(){
 			</table>	
 		</div>
 	</div>-->
-	<input type="button" class="btnClass" onclick="getCadresResults1('search')" value="Search"/>
+	<input type="button" class="btnClass" onclick="getCadresResults2('search')" value="Search"/>
 
 	</center>
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
@@ -726,7 +726,90 @@ function getUpdatedData(){
 		buildselectBoxes();
 		getLocationWiseRangeDetails();
 
+ var locationId = '${locationValue}';
+ var locationType = '${locationType}';
+
 <!--  cadre search  ---> 
+
+function getCadresResults2(btnType)
+{
+    var genderType="";
+	if(window.opener.selectedCriteria.gender == "All")
+		genderType = "allGenders";
+	else if(window.opener.selectedCriteria.gender == "M")
+		genderType = "Male";
+	else if(window.opener.selectedCriteria.gender == "F")
+		genderType = "Female";
+
+
+
+var jsObj=
+		{	extra				    :"one",
+			reportLevel				: window.opener.selectedCriteria.cadreLocationId,
+			reportLocationValue		: window.opener.selectedCriteria.reportLevelValue,
+			socialStatus			: window.opener.selectedCriteria.socialStatus,
+			socialStatusArray		: [],
+			cadreType				: "all",
+			//cadreName				: window.opener.selectedCriteria.name,
+            cadreName				: "",
+			searchType				: "location",
+			gender					: genderType,
+			searchCriteria			: "all",
+			searchCriteriaArray		: [],
+			searchCriteriaValue		: "0",
+			performSearch			: "and",
+			txtAreaValue			: "",
+			includeCadreName		: "NO",
+			bloodGroupId			: "0",
+			taskType				: "search",
+			senderName				: "",
+			nameSearchTYpe			: "StartingWith", 
+			cadreRegTypeRadioValue	: "allCadres",	
+			task					: "cadreSearch",
+		    memberShipNo            :"" ,
+	
+		}
+		
+		/*var jsObj1=
+		{	extra				:"one",
+			reportLevel				: 2,
+			reportLocationValue		: locationId,
+			socialStatus			: false,
+			socialStatusArray		: [],
+			cadreType				: "all",
+			cadreName				: "",
+			searchType				: "location",
+			gender					: "allGenders",
+			searchCriteria			: "all",
+			searchCriteriaArray		: [],
+			searchCriteriaValue		: "0",
+			performSearch			: "and",
+			txtAreaValue			: "",
+			includeCadreName		: "NO",
+			bloodGroupId			: "0",
+			taskType				: "search",
+			senderName				: "",
+			nameSearchTYpe			: "StartingWith", 
+			cadreRegTypeRadioValue	: "allCadres",	
+			task					: "cadreSearch",
+		    memberShipNo            :""  
+	
+		}*/
+	
+	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj);
+
+	if(btnType == "search")
+	{
+		var search = "forTotalCount";
+		var url = "getCadreDetailsForSMSAjaxAction.action?"+rparam1+"&windowTask=Search&sort=total&startIndex=0&results=-5";
+		callAjaxForRegionSelect(jsObj,url);
+
+		//alert(jsObj1.extra);
+		buildCadreSearchResultDataTableForSMS(rparam1);
+		//var url = "getCadresDetailsAjaxAction.action?"+rparam;
+	}
+}
+
 
 function buildCadreSearchResultDataTableForSMS(rparam)
 {
@@ -978,12 +1061,12 @@ function pushIntoCadreObject(cadreId , mobileNumber)
 	if(window.opener.selectedCadreDetails[cadreId] == undefined)
 	{
       window.opener.selectedCadreDetails[cadreId] = mobileNumber;
-	    selectedMobileNumbers.push(mobileNumber);
+	    window.opener.selectedMobileNumbers.push(mobileNumber);
 	}
 	else
 	{
 		delete window.opener.selectedCadreDetails[cadreId];
-		var index = selectedMobileNumbers.indexOf(mobileNumber);
+		var index = window.opener.selectedMobileNumbers.indexOf(mobileNumber);
          array.splice(index, 1);
 	}
 }
