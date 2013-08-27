@@ -440,17 +440,17 @@ IUserVoterDetailsDAO{
 				" SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount , " +
 				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F'  THEN 1 ELSE 0 END) as malecoun , " +
 				
-				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 25  THEN 1 ELSE 0 END) as malecoun , " +
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 22  THEN 1 ELSE 0 END) as malecoun , " +
 				
-				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as malecoun , " +
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as malecoun , " +
 				
-				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " +
-				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as malecoun , " +
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as ageCount , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as malecoun , " +
 				
 				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " +	
 				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " +
@@ -461,9 +461,9 @@ IUserVoterDetailsDAO{
 				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age >60  THEN 1 ELSE 0 END) as malecoun , " +
 				
 				
-				" SUM( CASE WHEN model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +		
-				" SUM( CASE WHEN model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCoun , " +	
-				" SUM( CASE WHEN model.voter.age BETWEEN  36 and 45 THEN 1 ELSE 0 END) as ageCou , " +
+				" SUM( CASE WHEN model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount , " +		
+				" SUM( CASE WHEN model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCoun , " +	
+				" SUM( CASE WHEN model.voter.age BETWEEN  31 and 45 THEN 1 ELSE 0 END) as ageCou , " +
 				" SUM( CASE WHEN model.voter.age BETWEEN  46 and 60 THEN 1 ELSE 0 END) as ageCo , " +
 				" SUM( CASE WHEN model.voter.age >60 THEN 1 ELSE 0 END) as ageC " +
 				
@@ -572,17 +572,17 @@ IUserVoterDetailsDAO{
 		return getHibernateTemplate().findByNamedParam("select " +
 				"count( distinct model.voter.voterId), " +
 								
-				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount1 , " +	
-				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount2 , " +	
-				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 25  THEN 1 ELSE 0 END) as malecoun , " +
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount1 , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount2 , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 22  THEN 1 ELSE 0 END) as malecoun , " +
 				
-				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount3 , " +	
-				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as malecoun4 , " +
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCount3 , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as malecoun4 , " +
 				
-				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount5 , " +	
-				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount6 , " +
-				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as malecoun11 , " +
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as ageCount5 , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as ageCount6 , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as malecoun11 , " +
 				
 				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount7 , " +	
 				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount8 , " +
@@ -593,9 +593,9 @@ IUserVoterDetailsDAO{
 				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age >60  THEN 1 ELSE 0 END) as malecoun13 , " +
 				
 				
-				" SUM( CASE WHEN model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +		
-				" SUM( CASE WHEN model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCoun , " +	
-				" SUM( CASE WHEN model.voter.age BETWEEN  36 and 45 THEN 1 ELSE 0 END) as ageCou , " +
+				" SUM( CASE WHEN model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount , " +		
+				" SUM( CASE WHEN model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCoun , " +	
+				" SUM( CASE WHEN model.voter.age BETWEEN  31 and 45 THEN 1 ELSE 0 END) as ageCou , " +
 				" SUM( CASE WHEN model.voter.age BETWEEN  46 and 60 THEN 1 ELSE 0 END) as ageCo , " +
 				" SUM( CASE WHEN model.voter.age >60 THEN 1 ELSE 0 END) as ageC " +
 				
@@ -611,17 +611,17 @@ IUserVoterDetailsDAO{
 				" SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount , " +
 				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F'  THEN 1 ELSE 0 END) as malecoun , " +
 				
-				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 25  THEN 1 ELSE 0 END) as malecoun , " +
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 22  THEN 1 ELSE 0 END) as malecoun , " +
 				
-				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as malecoun , " +
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as malecoun , " +
 				
-				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " +	
-				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " +
-				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as malecoun , " +
+				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as ageCount , " +	
+				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as ageCount , " +
+				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as malecoun , " +
 				
 				" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " +	
 				" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " +
@@ -632,9 +632,9 @@ IUserVoterDetailsDAO{
 				" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age >60  THEN 1 ELSE 0 END) as malecoun , " +
 				
 				
-				" SUM( CASE WHEN model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " +		
-				" SUM( CASE WHEN model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCoun , " +	
-				" SUM( CASE WHEN model.voter.age BETWEEN  36 and 45 THEN 1 ELSE 0 END) as ageCou , " +
+				" SUM( CASE WHEN model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount , " +		
+				" SUM( CASE WHEN model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCoun , " +	
+				" SUM( CASE WHEN model.voter.age BETWEEN  31 and 45 THEN 1 ELSE 0 END) as ageCou , " +
 				" SUM( CASE WHEN model.voter.age BETWEEN  46 and 60 THEN 1 ELSE 0 END) as ageCo , " +
 				" SUM( CASE WHEN model.voter.age >60 THEN 1 ELSE 0 END) as ageC " +
 				
@@ -790,17 +790,17 @@ IUserVoterDetailsDAO{
 				  query.append	(" SUM( CASE WHEN model.voter.gender='M' THEN 1 ELSE 0 END) as malecount , " );
 				  query.append	(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F'  THEN 1 ELSE 0 END) as malecoun , " );
 						
-				  query.append(	" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " );
-				  query.append(	" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " );
-				  query.append(	" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 25  THEN 1 ELSE 0 END) as malecoun , " );
+				  query.append(	" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount , " );
+				  query.append(	" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount , " );
+				  query.append(	" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  18 and 22  THEN 1 ELSE 0 END) as malecoun , " );
 						
-				  query.append(" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " );	
-				  query.append(" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCount , " );
-				  query.append(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as malecoun , ");
+				  query.append(" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCount , " );	
+				  query.append(" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCount , " );
+				  query.append(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as malecoun , ");
 						
-				  query.append(" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " );	
-				  query.append(" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as ageCount , " );
-				  query.append(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  36 and 45  THEN 1 ELSE 0 END) as malecoun , " );
+				  query.append(" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as ageCount , " );	
+				  query.append(" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as ageCount , " );
+				  query.append(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age BETWEEN  31 and 45  THEN 1 ELSE 0 END) as malecoun , " );
 						
 				  query.append(" SUM( CASE WHEN model.voter.gender='F' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " );	
 				  query.append(" SUM( CASE WHEN model.voter.gender='M' and model.voter.age BETWEEN  46 and 60  THEN 1 ELSE 0 END) as ageCount , " );
@@ -811,9 +811,9 @@ IUserVoterDetailsDAO{
 				  query.append(" SUM( CASE WHEN model.voter.gender != 'M' and model.voter.gender != 'F' and model.voter.age >60  THEN 1 ELSE 0 END) as malecoun , " );
 						
 						
-				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  18 and 25 THEN 1 ELSE 0 END) as ageCount , " );		
-				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  26 and 35 THEN 1 ELSE 0 END) as ageCoun , " );
-				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  36 and 45 THEN 1 ELSE 0 END) as ageCou , " );
+				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  18 and 22 THEN 1 ELSE 0 END) as ageCount , " );		
+				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  23 and 30 THEN 1 ELSE 0 END) as ageCoun , " );
+				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  31 and 45 THEN 1 ELSE 0 END) as ageCou , " );
 				  query.append(" SUM( CASE WHEN model.voter.age BETWEEN  46 and 60 THEN 1 ELSE 0 END) as ageCo , " );
 				  query.append(" SUM( CASE WHEN model.voter.age >60 THEN 1 ELSE 0 END) as ageC " );
 						
@@ -1549,7 +1549,7 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	/**
-	 * This DAO  is used For Getting Age Wise Details(18-25,26-35 ..) for Seleted custom ward in the Selected Muncipality
+	 * This DAO  is used For Getting Age Wise Details(18-22,23-30 ..) for Seleted custom ward in the Selected Muncipality
 	 * @param Long wardId
 	 * @param Long userId
 	 * @param Long publicationDateId
@@ -1693,16 +1693,16 @@ IUserVoterDetailsDAO{
 		stringBuilder.append("select distinct UVD.locality.localityId,UVD.locality.name,count(distinct UVD.voter.voterId),UVD.voter.gender from UserVoterDetails UVD,BoothPublicationVoter BPV where UVD.voter.voterId = BPV.voter.voterId ");
 		stringBuilder.append(" and UVD.ward.constituencyId =:customWardId and BPV.booth.constituency.constituencyId =:constituencyId and BPV.booth.publicationDate.publicationDateId =:publicationDateId and UVD.user.userId =:userId ");
 		
-		if(ageRange.equalsIgnoreCase(IConstants.AGE18to25))
-		  stringBuilder.append(" and UVD.voter.age >=18 and UVD.voter.age <=25 ");
-		else if(ageRange.equalsIgnoreCase(IConstants.AGE26to35))
-		  stringBuilder.append(" and UVD.voter.age >=26 and UVD.voter.age <=35 ");
-		else if(ageRange.equalsIgnoreCase(IConstants.AGE36to45))
-		  stringBuilder.append(" and UVD.voter.age >=36 and UVD.voter.age <=45 ");
-		else if(ageRange.equalsIgnoreCase(IConstants.AGE45to60))
+		if(ageRange.equalsIgnoreCase(IConstants.AGE18to22))
+		  stringBuilder.append(" and UVD.voter.age >=18 and UVD.voter.age <=22 ");
+		else if(ageRange.equalsIgnoreCase(IConstants.AGE23to30))
+		  stringBuilder.append(" and UVD.voter.age >=23 and UVD.voter.age <=30 ");
+		else if(ageRange.equalsIgnoreCase(IConstants.AGE31to45))
+		  stringBuilder.append(" and UVD.voter.age >=31 and UVD.voter.age <=45 ");
+		else if(ageRange.equalsIgnoreCase(IConstants.AGE46to60))
 		  stringBuilder.append(" and UVD.voter.age >=46 and UVD.voter.age <=60 ");
 		else if(ageRange.equalsIgnoreCase(IConstants.Above60))
-		  stringBuilder.append(" and UVD.voter.age >=60 ");
+		  stringBuilder.append(" and UVD.voter.age >60 ");
 		
 		stringBuilder.append(" group by UVD.locality.localityId,UVD.voter.gender ");
 		
@@ -2200,4 +2200,24 @@ IUserVoterDetailsDAO{
 		query.setParameter("userId",userId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterAgeDetailsForHamlet(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,Long userId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.voter.voterId),model.voter.gender,model.voterAgeRange.voterAgeRangeId,model2.hamlet.hamletId");
+		str.append(" from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and " +
+				" model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId =:userId ");
+		str.append(" and model2.hamlet.hamletId in(:locationIdsList) group by model2.hamlet.hamletId,model.voter.voterAgeRange.voterAgeRangeId,model.voter.gender ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("locationIdsList", locationIdsList);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+	
 }

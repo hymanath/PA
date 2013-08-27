@@ -228,4 +228,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<UserVoterDetails> getUserVoterDetailsOfAConstituencyForAPublication(Long constituencyId, Long publicationDateId, Long userId);
 	
+	public List<Object[]> getVoterAgeDetailsForHamlet(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,Long userId);
+
 }
