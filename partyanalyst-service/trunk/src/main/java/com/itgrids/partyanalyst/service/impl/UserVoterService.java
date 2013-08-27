@@ -312,41 +312,41 @@ public class UserVoterService implements IUserVoterService{
 			 }
 			 if(!locationType.equalsIgnoreCase("hamlet"))
 			 {
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,18l,25l);
+			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE18,IConstants.AGE22);
 			 if(votersList != null && votersList.size() > 0)
-			   getVoterDetails(categoryValues,category,votersList,"18-25",totalVoters);
+			   getVoterDetails(categoryValues,category,votersList,IConstants.AGE18to22,totalVoters);
 			 
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,26l,35l);
+			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE23,IConstants.AGE30);
 			 if(votersList != null && votersList.size() > 0)
-			   getVoterDetails(categoryValues,category,votersList,"26-35",totalVoters);
+			   getVoterDetails(categoryValues,category,votersList,IConstants.AGE23to30,totalVoters);
 			 
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,36l,45l);
+			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE31,IConstants.AGE45);
 			 if(votersList != null && votersList.size() > 0)
-			  getVoterDetails(categoryValues,category,votersList,"36-45",totalVoters);
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,46l,60l);
+			  getVoterDetails(categoryValues,category,votersList,IConstants.AGE31to45,totalVoters);
+			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE46,IConstants.AGE60);
 			 if(votersList != null && votersList.size() > 0)
-			  getVoterDetails(categoryValues,category,votersList,"46-60",totalVoters);
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,61l,150l);
+			  getVoterDetails(categoryValues,category,votersList,IConstants.AGE46to60,totalVoters);
+			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE61,IConstants.AGE160);
 			 if(votersList != null && votersList.size() > 0)
 			  getVoterDetails(categoryValues,category,votersList,"60",totalVoters);
 			 }
 			 else if(locationType.equalsIgnoreCase("hamlet"))
 			 {
-				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,18l,25l);
+				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE18,IConstants.AGE22);
 				 if(votersList != null && votersList.size() > 0)
-				   getVoterDetails(categoryValues,category,votersList,"18-25",totalVoters);
+				   getVoterDetails(categoryValues,category,votersList,IConstants.AGE18to22,totalVoters);
 				 
-				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,26l,35l);
+				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE23,IConstants.AGE30);
 				 if(votersList != null && votersList.size() > 0)
-				   getVoterDetails(categoryValues,category,votersList,"26-35",totalVoters);
+				   getVoterDetails(categoryValues,category,votersList,IConstants.AGE23to30,totalVoters);
 				 
-				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,36l,45l);
+				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE31,IConstants.AGE45);
 				 if(votersList != null && votersList.size() > 0)
-				  getVoterDetails(categoryValues,category,votersList,"36-45",totalVoters);
-				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,46l,60l);
+				  getVoterDetails(categoryValues,category,votersList,IConstants.AGE31to45,totalVoters);
+				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE46,IConstants.AGE60);
 				 if(votersList != null && votersList.size() > 0)
-				  getVoterDetails(categoryValues,category,votersList,"46-60",totalVoters);
-				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,61l,170l);
+				  getVoterDetails(categoryValues,category,votersList,IConstants.AGE46to60,totalVoters);
+				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE61,IConstants.AGE160);
 				 if(votersList != null && votersList.size() > 0)
 				  getVoterDetails(categoryValues,category,votersList,"60",totalVoters); 
 			 }
@@ -394,20 +394,20 @@ public class UserVoterService implements IUserVoterService{
 					if(votersDetailsVO != null){
 						if(params[1].toString().equalsIgnoreCase("M"))
 						{
-							if(ageRange.equalsIgnoreCase("18-25")){
+							if(ageRange.equalsIgnoreCase(IConstants.AGE18to22)){
 								
 								votersDetailsVO.setMaleVotersCountBetween18To25((Long)params[0]);
 									
-							}else if(ageRange.equalsIgnoreCase("26-35")){
+							}else if(ageRange.equalsIgnoreCase(IConstants.AGE23to30)){
 								
 								votersDetailsVO.setMaleVotersCountBetween26To35((Long)params[0]);
 									
-							}else if(ageRange.equalsIgnoreCase("36-45")){
+							}else if(ageRange.equalsIgnoreCase(IConstants.AGE31to45)){
 								
 								votersDetailsVO.setMaleVotersCountBetween36To45((Long)params[0]);
 								
 							}
-							else if(ageRange.equalsIgnoreCase("46-60")){
+							else if(ageRange.equalsIgnoreCase(IConstants.AGE46to60)){
 								
 								votersDetailsVO.setMaleVotersCountBetween46To60((Long)params[0]);
 								
@@ -420,21 +420,21 @@ public class UserVoterService implements IUserVoterService{
 						}
 						if(params[1].toString().equalsIgnoreCase("F"))
 						{
-                            if(ageRange.equalsIgnoreCase("18-25")){
+                            if(ageRange.equalsIgnoreCase(IConstants.AGE18to22)){
                             	
                             	votersDetailsVO.setFemaleVotersCountBetween18To25((Long)params[0]);
                             	
                             		
-							}else if(ageRange.equalsIgnoreCase("26-35")){
+							}else if(ageRange.equalsIgnoreCase(IConstants.AGE23to30)){
 								
 								votersDetailsVO.setFemaleVotersCountBetween26To35((Long)params[0]);
 								
-							}else if(ageRange.equalsIgnoreCase("36-45")){
+							}else if(ageRange.equalsIgnoreCase(IConstants.AGE31to45)){
 								
 								votersDetailsVO.setFemaleVotersCountBetween36To45((Long)params[0]);
 								
 							}
-							else if(ageRange.equalsIgnoreCase("46-60")){
+							else if(ageRange.equalsIgnoreCase(IConstants.AGE46to60)){
 								
 								votersDetailsVO.setFemaleVotersCountBetween46To60((Long)params[0]);
 									
