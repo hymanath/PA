@@ -1292,5 +1292,8 @@
        <property name="voiceSmsService" ref="voiceSmsService"/>
    </bean> 
    
+   <bean id="messageCenterForInfluencePeopleAction" class="com.itgrids.partyanalyst.web.action.MessageCenterForInfluencePeopleAction" singleton="false">
+       <property name="voiceSmsService" ref="voiceSmsService"/>
+   </bean> 
 </beans>	
 	
