@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceSmsResponseDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceSmsVerifiedNumbersDAO;
+import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.VoiceRecordingDetails;
@@ -32,8 +35,17 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private IUserDAO userDAO;
 	private IVoiceSmsResponseDetailsDAO voiceSmsResponseDetailsDAO;
 	private IVoiceSmsVerifiedNumbersDAO voiceSmsVerifiedNumbersDAO;
+	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	
 	
+	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
+		return userVoterDetailsDAO;
+	}
+
+	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
+		this.userVoterDetailsDAO = userVoterDetailsDAO;
+	}
+
 	public IVoiceSmsVerifiedNumbersDAO getVoiceSmsVerifiedNumbersDAO() {
 		return voiceSmsVerifiedNumbersDAO;
 	}
@@ -137,6 +149,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			//URL url = new URL("http://control.msg91.com/send_voice_mail.php?user=karthik1&password=184314&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name="+audioPath);
 			
 			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name="+audioPath);
+			//URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name=http://www.partyanalyst.com/voice_recordings//1/test.wav");
 
 
 		    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -407,7 +420,108 @@ public class VoiceSmsService implements IVoiceSmsService {
 		}catch(Exception e){
 			e.printStackTrace();
 		return "failur";
-		}		
+		}	
+	}
+	
+	public Map<Long,String> getAllTheCastesOfConstituency(Long constituencyId , Long userId , Long publicationDateId)
+	{
+		log.debug("Entered into the getAllTheCastesOfConstituency service method");
+		
+		Map<Long,String> casteDetailsMap = new HashMap<Long, String>();
+		
+		try
+		{
+			List<Object[]> casteDetailsList = userVoterDetailsDAO.getAllTheCastesOfConstituency(constituencyId, userId, publicationDateId);
 			
+			for(Object[] obj:casteDetailsList)
+				casteDetailsMap.put((Long)obj[0], obj[1].toString());
+			
+		}catch(Exception e)
+		{
+			log.error("Exception raised in getAllTheCastesOfConstituency service method");
+			e.printStackTrace();			
+
+		}		
+		return casteDetailsMap;
+	}
+	
+	public List<SMSSearchCriteriaVO> getVotersDetailsBySearchToSendSMS(SMSSearchCriteriaVO searchVO )
+	{
+		log.debug("Entered into the getVotersDetailsBySearchToSendSMS service method");
+		List<SMSSearchCriteriaVO> resultList = new ArrayList<SMSSearchCriteriaVO>();
+		
+		try
+		{
+			StringBuffer queryString = new StringBuffer();
+			
+			queryString.append("select UVD.voter.name ,UVD.voter.houseNo ,UVD.voter.mobileNo,UVD.voter.age,UVD.voter.voterIDCardNo from UserVoterDetails UVD , BoothPublicationVoter BPV " +
+					           "where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+			
+			if(searchVO.isAgeSelected())
+				queryString.append("and UVD.voter.age between "+searchVO.getStartAge()+" and "+searchVO.getEndAge());
+			if(searchVO.isNameSelected())
+				queryString.append("and UVD.voter.name like %"+searchVO.getName()+"%" );
+			if(searchVO.isFamilySelected())
+				queryString.append("and UVD.voter.houseNo = :houseNo ");
+			if(searchVO.isCasteSelected()){
+				
+				String castes[] = searchVO.getCasteIds().split("-");
+				
+				List<Long> casteIds = new ArrayList<Long>();
+				
+				for(String caste:castes)
+					casteIds.add(Long.parseLong(caste));				
+				searchVO.setSelectedCastes(casteIds);
+				
+				queryString.append("and UVD.casteState.caste.casteId in(:casteIds) ");
+			}
+			if(searchVO.isGenderSelected())
+				queryString.append("and UVD.voter.gender = :gender");
+			
+			if(searchVO.getLocationType().equalsIgnoreCase("constituency"))
+				queryString.append("and BPV.booth.constituency.constituencyId = :locationValue");
+			else if(searchVO.getLocationType().equalsIgnoreCase("mandal"))
+				queryString.append("and BPV.booth.tehsil.tehsilId = :locationValue");
+			else if(searchVO.getLocationType().equalsIgnoreCase("panchayat"))
+				queryString.append("and BPV.booth.panchayat.panchayatId = :locationValue");
+			else if(searchVO.getLocationType().equalsIgnoreCase("ward"))
+				queryString.append("and BPV.booth.localBodyWard.constituencyId = :locationValue");
+			else if(searchVO.getLocationType().equalsIgnoreCase("booth"))
+				queryString.append("and BPV.booth.boothId = :locationValue");
+			else if(searchVO.getLocationType().equalsIgnoreCase("hamlet"))
+				queryString.append("and UVD.hamlet.hamletId = :locationValue");
+			
+			queryString.append(" order by UVD.voter.name "+ searchVO.getOrder());
+			
+		
+			
+			List<Object[]> votersList = userVoterDetailsDAO.getVotersDetailsBySearchToSendSMS(queryString.toString(),searchVO);
+			
+			
+			for(Object[] voterDetails:votersList)
+			{
+				
+				SMSSearchCriteriaVO vo = new SMSSearchCriteriaVO();
+				
+				vo.setName(voterDetails[0].toString());
+				vo.setHouseNo(voterDetails[1].toString());
+				if(voterDetails[2] != null && !voterDetails[2].toString().equalsIgnoreCase(""))
+					vo.setMobileNumber(Long.parseLong(voterDetails[2].toString()));
+				else
+				vo.setMobileNumber(999999999L);
+				vo.setStartAge(Integer.parseInt(voterDetails[3].toString()));
+				vo.setVoterIdCardNo(voterDetails[4].toString());
+				resultList.add(vo);
+				
+			}
+			
+		}catch(Exception e)
+		{
+			log.error("Exception raised in getVotersDetailsBySearchToSendSMS service method");
+			e.printStackTrace();
+		}
+		
+		return resultList;
+
 	}
 }
