@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -59,6 +60,7 @@ import com.itgrids.partyanalyst.model.ConstituencyHierarchyInfo;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Occupation;
+import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
@@ -112,8 +114,17 @@ public class MobileService implements IMobileService{
  private IVoterModificationDAO voterModificationDAO;
  private IVoterModificationInfoDAO voterModificationInfoDAO;
  private IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO;
+ private IPublicationDateDAO publicationDateDAO;
  
-  public IVoterModificationAgeInfoDAO getVoterModificationAgeInfoDAO() {
+  public IPublicationDateDAO getPublicationDateDAO() {
+	return publicationDateDAO;
+}
+
+public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
+	this.publicationDateDAO = publicationDateDAO;
+}
+
+public IVoterModificationAgeInfoDAO getVoterModificationAgeInfoDAO() {
 	return voterModificationAgeInfoDAO;
 }
 
@@ -1003,6 +1014,26 @@ public List<SelectOptionVO> getConstituencyList()
 		LOG.error("Exception Occured in Parties Voting Trendz Inserts."+e);
 	}
 	
+	try{
+		List<PublicationDate> publicationsList = publicationDateDAO.getAll();
+		
+		if(publicationsList != null && publicationsList.size() > 0)
+		{
+			StringBuilder strTemp = new StringBuilder();
+			for(PublicationDate publicationDate : publicationsList)
+			{
+				try{
+					strTemp.append("INSERT INTO publication_date(publication_date_id,name,month,year) VALUES (");
+					strTemp.append(publicationDate.getPublicationDateId()+","+publicationDate.getName()+","+publicationDate.getMonth()+","+publicationDate.getYear()+");\n");
+				}catch(Exception e){	LOG.error(e);	}
+			}
+			strTemp.append("\n");
+			str.append(strTemp);
+		}
+	}catch(Exception e)
+	{
+		LOG.error("Exception Occured in Publication Date Inserts."+e);
+	}
 	outPut.write(str.toString());
 	outPut.close();
 	resultStatus.setResultCode(0);
