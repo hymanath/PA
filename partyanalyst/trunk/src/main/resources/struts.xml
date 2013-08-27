@@ -5857,6 +5857,10 @@
 		  <action name="getvoiceSmsReportAction" class="voiceSmsAction" method="voiceSmsReport">
                <result name="success">/jsp/voiceSmsReport.jsp</result>
           </action>
+          
+          <action name="voiceSmsHistory" class="voiceSmsAction" method="voiceSmsHistory">
+           <result name="success">/jsp/voiceSmsHistory.jsp</result>
+          </action>
 		 
 		  <action name="updateCustomerContactsAction" class="updateCustomerContacts">
 		   	<result name="error">jsp/loginForm.jsp?src=updateCustomerContactsAction</result>
@@ -5877,6 +5881,18 @@
 		   <action name="sendMailtoAdminGroupAction" class="sendMailToAdminAction" method="sendMailToAdminGroup">
 		 <result type="json" name="success">
 		   <param name="root">result</param>
+		  </result>
+		 </action>
+		 
+		 <action name="getAllTheCastesOfConstituency" class="voiceSmsAction" method="getAllTheCastesOfConstituency">
+		  <result type="json" name="success">
+		   <param name="root">casteMap</param>
+		  </result>
+		 </action>
+		 
+		 <action name="getVotersDetailsBySearchToSendSMS" class="voiceSmsAction" method="getVotersDetailsBySearchToSendSMS">
+		  <result type="json" name="success">
+		   <param name="root">votersDetails</param>
 		  </result>
 		 </action>
 		 

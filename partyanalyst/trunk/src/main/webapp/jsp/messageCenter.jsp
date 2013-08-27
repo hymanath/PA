@@ -244,7 +244,23 @@ div.tabs div.tab.selected div.arrow{
 
 </style>
 <script>
+	var selectedCriteria={};
+
 $(document).ready(function() {
+
+	$('.searchType').click(function(){
+		if((this).val() == "cadre")
+		{
+		}
+		else if((this).val() == "influencePeople")
+		{
+
+		}
+		else if((this).val() == "voter")
+		{
+
+		}
+	});
 
 	
 		if('${verifiedNumbersCount}' == 0)
@@ -291,7 +307,8 @@ $(document).ready(function() {
 		$('#influenceDiv,#influencePelpleDiv,#cadreDiv,#voterSearchDiv').hide();
 		$('#cadreDiv').show();
 	});
-	
+
+
 	$('#searchCandidatesId').click(function(){
 
 		var searchName=$("#searchName").val();
@@ -308,6 +325,19 @@ $(document).ready(function() {
 		var wardFieldId = $("#wardField").val(); 
 		var hamletFieldId = $("#hamletField").val(); 
 		var pollingStationFieldId = $("#pollingStationField").val(); 
+
+	  var isAgeSelected = (startAge.trim() == "") && endAge.trim() == "" ? false : true;
+
+	 // var isCasteSelected = ($("#searchHouseNo").val().trim() == "" )? false : true;
+	  var isCasteSelected = false;
+
+	  var isFamilySelected = (houseNo.trim() == "") ? false : true;
+
+	  var isNameSelected = (searchName.trim() == "") ? false : true;
+	  
+	  var isGenderSelected =  (gender == "All") ? false : true;
+
+
 		
 		if(publicationDateId == null)
 			publicationDateId = 8;
@@ -316,7 +346,7 @@ $(document).ready(function() {
 			searchArea = "constituency";
 		}
 		else if(reportLevelValue == 2){
-			areaId = $("#mandalField").val();
+			areaId = $("#mandalField").val().substring(1);
 			searchArea = "mandal";
 		}
 		else if(reportLevelValue == 3){
@@ -342,6 +372,34 @@ $(document).ready(function() {
 			areaId = $("#districtList").val();
 			searchArea = "district";
 		}
+
+    var casteIds = "";
+   $("#casteId[checked]").each(function() {
+		casteIds += $(this).val();
+	});
+
+		
+	  selectedCriteria.isAgeSelected = isAgeSelected;
+	  selectedCriteria.isCasteSelected = isCasteSelected;
+	  selectedCriteria.isFamilySelected = isFamilySelected;
+	  selectedCriteria.isNameSelected = isNameSelected;
+	  selectedCriteria.isGenderSelected = isGenderSelected;
+	  selectedCriteria.startAge = startAge;
+	  selectedCriteria.endAge = endAge;
+	  selectedCriteria.houseNo = houseNo;
+	  selectedCriteria.casteIds = casteIds;
+	  selectedCriteria.gender = gender;
+	  selectedCriteria.reportLevelValue = areaId;
+	  selectedCriteria.publicationDateId = publicationDateId;
+	  selectedCriteria.searchArea = searchArea;
+	  selectedCriteria.constituencyId = 232;
+	  selectedCriteria.searchName = searchName;
+
+
+        getVoterSearchDetails();
+
+
+/*
 		
 	var jsObj={
 		constituencyId:0,
@@ -361,8 +419,33 @@ $(document).ready(function() {
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "searchCandidatesForVoiceSmsAction.action?"+rparam;
 	callAjax1(rparam,jsObj,url);
-	});
+	});*/
 });
+});
+
+function getVoterSearchDetails()
+{
+	  
+  var urlStr = "messageCenterVoterSearchAction.action?constituencyId="+selectedCriteria.constituencyId+"&publicationDateId="+selectedCriteria.publicationDateId+"&locationValue="+selectedCriteria.reportLevelValue+"&locationType="+selectedCriteria.searchArea+"&locationName=KAVALI&";
+
+   if(selectedCriteria.isAgeSelected == true)
+	   urlStr += "startAge="+selectedCriteria.startAge+"&endAge="+selectedCriteria.endAge+"&";
+   if(selectedCriteria.isCasteSelected == true)
+	   urlStr += "casteIds="+selectedCriteria.houseNo+"&";
+   if(selectedCriteria.isFamilySelected == true)
+	   urlStr += "houseNo="+selectedCriteria.houseNo+"&";
+   if(selectedCriteria.isNameSelected == true)
+	   urlStr += "name="+selectedCriteria.searchName+"&";
+   if(selectedCriteria.isGenderSelected == true)
+	   urlStr += "gender="+selectedCriteria.gender+"&";
+
+   urlStr += "isAgeSelected="+selectedCriteria.isAgeSelected+"&isCasteSelected="+selectedCriteria.isCasteSelected+"&isFamilySelected="+selectedCriteria.isFamilySelected+"&isNameSelected="+selectedCriteria.isNameSelected+"&isGenderSelected="+selectedCriteria.isGenderSelected+"&";
+
+
+  var browser2 = window.open(urlStr,"messageCenterVoterSearch","scrollbars=yes,height=570,width=1300,left=200,top=50");	
+  browser2.focus();
+
+}
 
 function getallConstituencies(district){
 var jsObj=
@@ -459,7 +542,17 @@ var jsObj=
    <div style="text-align:center;margin-left:140px;"><input type="button" value="Voter Search" id="voterSearchBtn" class="btn" onclick="voterDetailsValidation()"/></div>
 		
  </div>
+
+
    <div class="span5" style="font-weight:bold;margin-bottom: 15px;font-size:13px;width: 400px;margin-left: 290px;">
+
+   
+	 <div>
+		<label> <input type="radio" name="searchFor" value="cadre" class="searchType"/>Cadre</label>
+		<label> <input type="radio" name="searchFor" value="influencePeople" class="searchType"/>Influencing People</label>
+		<label> <input type="radio" name="searchFor" value="voter" class="searchType"/>Voter</label>
+	 </div>
+
      
 	 <div class="selectDiv" id="genderDiv"style="margin-bottom: 10px;">
 	    Gender  <span style="margin-left:79px;">:</span>
@@ -472,7 +565,11 @@ var jsObj=
 	    Name  <span style="margin-left:90px;">:</span><input type="text" id="searchName" style="width:154px;margin-left: 25px;">
 	  </div>
 	   <div class="selectDiv" style="margin-bottom: 10px;">
-	    Caste  <span style="margin-left:90px;">:</span><input type="text" id="searchCaste" style="width:154px;margin-left: 25px;">
+	    Caste  <span style="margin-left:90px;">:</span><!--<input type="text" id="searchCaste" style="width:154px;margin-left: 25px;">-->
+		<select multiple="true" id="casteId">
+		 <option value="1">THIS IS ONE</option>
+		 <option value="2">THIS IS TWO</option>
+		</select>
 	  </div>	  
     <div class="selectDiv" style="margin-bottom: 10px;">
 	    House No  <span style="margin-left:65px;">:</span><input type="text" id="searchHouseNo" style="width:154px;margin-left: 25px;">
@@ -1720,7 +1817,7 @@ function voterDetailsValidation()
                  ColType1 = "Ward";
 				 muniId = $("#mandalField").val().substring(1);
 				}*/
-	$('#notValidContact').html('');	
+	/*$('#notValidContact').html('');	
 	$('#notValidContactSpan').css('display','none');
 		
 	isMuncipality=false;	
@@ -1852,8 +1949,9 @@ function voterDetailsValidation()
 
   var constituencyId = $("#constituencyList").val();
      
-
-  getVoterDetails(constituencyId,publicationId,id,selectedType,locationName);
+*/
+ // getVoterDetails(constituencyId,publicationId,id,selectedType,locationName);
+   getVoterDetails(232,8,122992,"booth","Booth-201");
 }
 
 
@@ -2043,6 +2141,14 @@ function showReportsLevels(value)
 		}
 	}
 //voter search
+
+
+var selectedVotersDetails = {
+};
+
+var selectedCadreDetails = {
+};
+var selectedMobileNumbers = new Array();
 
 </script>
  </body>

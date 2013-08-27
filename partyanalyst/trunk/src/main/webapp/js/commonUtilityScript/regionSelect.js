@@ -828,7 +828,6 @@ function getCadresResults(btnType)
 		taskName = "problemAdding";
 	else*/
 		taskName = "cadreSearch";
-	
 	var jsObj=
 		{		
 			reportLevel				: REPORTLEVEL,
@@ -905,7 +904,9 @@ function getCadresResults1(btnType)
 			senderName				: "",
 			nameSearchTYpe			: "StartingWith", 
 			cadreRegTypeRadioValue	: "allCadres",	
-			task					: "cadreSearch"	
+			task					: "cadreSearch",
+		    memberShipNo            :""  
+	
 		}
 	
 	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj1);
@@ -1016,7 +1017,8 @@ function buildCadreSearchResultDataTable(rparam)
 
 function buildCadreSearchResultDataTable1(rparam)
 {
-	var searchResult1 = window.opener.document.getElementById("searchResult");
+
+	var searchResult1 = document.getElementById("searchResult");
 	YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
   {
 	var user = oData;
@@ -1092,6 +1094,7 @@ function buildCadreSearchResultDataTable1(rparam)
 			        sortedBy : {key:"firstName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 			        paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
 		};
+
 
 		var CadreSearchResultDataTable = new YAHOO.widget.DataTable(searchResult1, CadreSearchResultColumnDefs,CadreSearchResultDataSource, myConfigs);
 
