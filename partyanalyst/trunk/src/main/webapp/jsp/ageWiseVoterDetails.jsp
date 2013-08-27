@@ -401,7 +401,7 @@ function buildVoterDetailsTable(result,type,retrieveType){
 }
 
 var yaxisOpt = new Array();
-var xaxisOpt =  new Array("18-25","26-35","36-45","46-60","60-Above");
+var xaxisOpt =  new Array("18-22","23-30","31-45","46-60","60-Above");
 
 var YDataObject = new Array();
 
@@ -496,9 +496,9 @@ function buildAgewiseDetails(results , obj){
 //18111	 
   
 	str+='<th  rowspan="2">Total Voters</th>';
-	str+='<th colspan="2">18-25</th>';
-	str+='<th colspan="2">26-35</th>';
-	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">18-22</th>';
+	str+='<th colspan="2">23-30</th>';
+	str+='<th colspan="2">31-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
@@ -563,9 +563,9 @@ var YDataObjectTemp = new Object();
 	   YDataObjectTemp['name'] = str2;
 	   var ageTemp = new Object();
 	 
-	   ageTemp['18-25']   =      innerResults[i].totalVotersFor18To25;
-	   ageTemp['26-35']   =      innerResults[i].totalVotersFor26To35;
-		ageTemp['36-45']  =	   innerResults[i].totalVotersFor36To45;
+	   ageTemp['18-22']   =      innerResults[i].totalVotersFor18To25;
+	   ageTemp['23-30']   =      innerResults[i].totalVotersFor26To35;
+		ageTemp['31-45']  =	   innerResults[i].totalVotersFor36To45;
 		ageTemp['46-60']   =   innerResults[i].totalVotersFor46To60;
 		ageTemp['60-Above'] =	   innerResults[i].totalVotersForAbove60;
 	   YDataObjectTemp['data'] = ageTemp;
@@ -707,9 +707,9 @@ function buildAgeAndGenderWiseDetails(results , obj){
 	if( obj.type == subType)
 	 str+='<th rowspan="2">Ward</th>';   
 	 
-	str+='<th colspan="2">18-25</th>';
-	str+='<th colspan="2">26-35</th>';
-	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">18-22</th>';
+	str+='<th colspan="2">23-30</th>';
+	str+='<th colspan="2">31-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
@@ -871,9 +871,9 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 	}else if( obj.type == subType)
 	         str+='<th rowspan="2">Ward</th>';
 	   
-	str+='<th colspan="3">18-25</th>';
-	str+='<th colspan="3">26-35</th>';
-	str+='<th colspan="3">36-45</th>';
+	str+='<th colspan="3">18-22</th>';
+	str+='<th colspan="3">23-30</th>';
+	str+='<th colspan="3">31-45</th>';
 	str+='<th colspan="3">46-60</th>';
 	str+='<th colspan="3">60-Above</th>';
 	str+='</tr>';
