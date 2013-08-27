@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 
 public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Long> {
@@ -168,5 +169,7 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getTotalInfluencingPeopleAddressByInfluencingSelScope(Long userId,String influencingScope,int startIndex,int maxIndex);
 	
 	public Long getTotalCountForInfluencingPeople(Long userId,String scope);
+	
+	public List<Object[]> getInfluencingPeopleDetailsToSendSMS(String query,SMSSearchCriteriaVO searchVO);
 }
 
