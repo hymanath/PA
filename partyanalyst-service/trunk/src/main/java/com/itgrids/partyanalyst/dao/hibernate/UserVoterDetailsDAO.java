@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
@@ -2218,6 +2219,63 @@ IUserVoterDetailsDAO{
 		query.setParameter("userId", userId);
 		
 		return query.list();
+	}
+	
+	
+	
+	public List<Long> getVoterDetailsByCaste()
+	{
+		
+		Query query = getSession().createQuery("select distinct(UVD.casteState.caste.casteId) from UserVoterDetails UVD , BoothPublicationVoter BPV " +
+				"where UVD.user.userId = 1 and UVD.voter.voterId = BPV.voter.voterId and " +
+				"BPV.booth.publicationDate.publicationDateId = 8 and BPV.booth.constituency.constituencyId = 232");
+		
+		//query.setFirstResult(1);
+		//query.setMaxResults(100);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getAllTheCastesOfConstituency(Long constituencyId , Long userId,Long publicationDateId)
+	{
+		
+		Query query = getSession().createQuery("select UVD.casteState.caste.casteId , UVD.casteState.caste.casteName from UserVoterDetails UVD " +
+				"BoothPublicationVoter BPV where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and " +
+				" BPV.booth.publicationDate.publicationDateId = :publicationDateId and BPV.booth.constituency.constituencyId = :constituencyId");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getVotersDetailsBySearchToSendSMS(String queryString,SMSSearchCriteriaVO searchVO)
+	{
+		Query query = getSession().createQuery(queryString);
+		
+		if(searchVO.isFamilySelected())
+			query.setParameter("houseNo", searchVO.getHouseNo());
+		
+		if(searchVO.isCasteSelected())
+			query.setParameterList("casteIds", searchVO.getSelectedCastes());
+		
+		if(searchVO.isGenderSelected())
+			query.setParameter("gender", searchVO.getGender());
+		
+		
+		query.setParameter("locationValue", searchVO.getLocationValue());
+		//query.setParameter("gender", searchVO.getGender());
+		query.setParameter("userId", searchVO.getUserId());
+		query.setParameter("publicationDate", searchVO.getPublicationDateId());
+		
+		query.setFirstResult(searchVO.getStartIndex());
+		query.setMaxResults(searchVO.getMaxRecords());
+		
+		return query.list();
+		
 	}
 	
 }
