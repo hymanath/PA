@@ -1726,6 +1726,7 @@
      <property name="voterModificationDAO" ref="voterModificationDAO" />
      <property name="voterModificationInfoDAO" ref="voterModificationInfoDAO" />
      <property name="voterModificationAgeInfoDAO" ref="voterModificationAgeInfoDAO" />
+     <property name="publicationDateDAO" ref="publicationDateDAO" />
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
