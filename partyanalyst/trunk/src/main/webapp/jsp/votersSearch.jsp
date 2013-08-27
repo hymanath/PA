@@ -373,13 +373,14 @@ $("#pageUpBtn").live("click",function(){
   function getVotersInfo(){
 	
   var id7 = $("#mandalField").val();
-	       		  
+	       	 if(id7!=null){    
 				if(type !=  "ward" && id7.charAt(0) !="1"){
                   ColType1 = "Hamlet";
 				}else{
                  ColType1 = "Ward";
 				 muniId = $("#mandalField").val().substring(1);
 				}
+			}
 	$("#scrollBtnDiv").css("display","block");
 
 	  if($('#reportLevel').val() == 3 || $('#reportLevel').val() == 4){		  
