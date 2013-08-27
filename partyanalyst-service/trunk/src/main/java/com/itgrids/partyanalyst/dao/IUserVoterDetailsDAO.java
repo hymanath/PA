@@ -13,6 +13,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
@@ -229,5 +230,11 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<UserVoterDetails> getUserVoterDetailsOfAConstituencyForAPublication(Long constituencyId, Long publicationDateId, Long userId);
 	
 	public List<Object[]> getVoterAgeDetailsForHamlet(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,Long userId);
+	
+    public List<Long> getVoterDetailsByCaste();
+	
+	public List<Object[]> getAllTheCastesOfConstituency(Long constituencyId , Long userId,Long publicationDateId);
+	public List<Object[]> getVotersDetailsBySearchToSendSMS(String queryString , SMSSearchCriteriaVO searchVO );
+
 
 }
