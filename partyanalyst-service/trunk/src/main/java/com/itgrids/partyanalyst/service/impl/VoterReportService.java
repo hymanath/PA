@@ -2927,7 +2927,7 @@ public class VoterReportService implements IVoterReportService{
 				boothsIds.add(booths);
 			}*/
 			
-			List<Object[]> ageDeatilsBt18To25 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,18l,25l,constituencyId);
+			List<Object[]> ageDeatilsBt18To25 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,IConstants.AGE18,IConstants.AGE22,constituencyId);
 			if(ageDeatilsBt18To25 != null && ageDeatilsBt18To25.size() >0)
 			{
 				for (Object[] parms : ageDeatilsBt18To25) {
@@ -2937,7 +2937,7 @@ public class VoterReportService implements IVoterReportService{
 						votersDetailsVO = new VotersDetailsVO();
 						ageWiseDetails.put((Long)parms[0], votersDetailsVO);
 					}
-					//votersDetailsVO.setAgeRange("18-25");
+					//votersDetailsVO.setAgeRange("18-22");
 					votersDetailsVO.setId((Long)parms[0]);
 					votersDetailsVO.setBoothName("Booth -" +parms[2]);
 					votersDetailsVO.setTotalVotersFor18To25((Long)parms[1]);
@@ -2945,7 +2945,7 @@ public class VoterReportService implements IVoterReportService{
 				}
 			}
 			
-			List<Object[]> ageDeatilsB26To35 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,26l,35l,constituencyId);
+			List<Object[]> ageDeatilsB26To35 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,IConstants.AGE23,IConstants.AGE30,constituencyId);
 			if(ageDeatilsB26To35 != null && ageDeatilsB26To35.size() >0)
 			{
 				for (Object[] parms : ageDeatilsB26To35) {
@@ -2963,7 +2963,7 @@ public class VoterReportService implements IVoterReportService{
 				}
 			}
 			
-			List<Object[]> ageDeatilsB36To45 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,36l,45l,constituencyId);
+			List<Object[]> ageDeatilsB36To45 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,IConstants.AGE31,IConstants.AGE45,constituencyId);
 			if(ageDeatilsB36To45 != null && ageDeatilsB36To45.size() >0)
 			{
 				for (Object[] parms : ageDeatilsB36To45) {
@@ -2981,7 +2981,7 @@ public class VoterReportService implements IVoterReportService{
 				}
 			}
 			
-			List<Object[]> ageDeatilsBt46To60 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,46l,60l,constituencyId);
+			List<Object[]> ageDeatilsBt46To60 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,IConstants.AGE46,IConstants.AGE60,constituencyId);
 			if(ageDeatilsBt46To60 != null && ageDeatilsBt46To60.size() >0)
 			{
 				for (Object[] parms : ageDeatilsBt46To60) {
@@ -2999,7 +2999,7 @@ public class VoterReportService implements IVoterReportService{
 				}
 			}
 			
-			List<Object[]> ageDeatilsabove60 = userVoterDetailsDAO.getAbove60AgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,61l,constituencyId);
+			List<Object[]> ageDeatilsabove60 = userVoterDetailsDAO.getAbove60AgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,IConstants.AGE61,constituencyId);
 			if(ageDeatilsabove60 != null && ageDeatilsabove60.size() >0)
 			{
 				for (Object[] parms : ageDeatilsabove60) {

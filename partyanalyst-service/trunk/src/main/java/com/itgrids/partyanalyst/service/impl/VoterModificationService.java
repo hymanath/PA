@@ -2255,11 +2255,11 @@ public class VoterModificationService implements IVoterModificationService{
 			 Long ageRangeId = voterModificationVO.getAgeRangeId();
 			 
 			 if(ageRangeId.longValue() == 1)
-				 queryStr.append("and model.voter.age >= 18 and  model.voter.age <= 25");
+				 queryStr.append("and model.voter.age >= 18 and  model.voter.age <= 22");
 			 else if(ageRangeId.longValue() == 2)
-				 queryStr.append("and model.voter.age >= 26 and  model.voter.age <= 35");
+				 queryStr.append("and model.voter.age >= 23 and  model.voter.age <= 30");
 			 else if(ageRangeId.longValue() == 3)
-				 queryStr.append("and model.voter.age >= 36 and  model.voter.age <= 45");
+				 queryStr.append("and model.voter.age >= 31 and  model.voter.age <= 45");
 			 else if(ageRangeId.longValue() == 4)
 				 queryStr.append("and model.voter.age >= 46 and  model.voter.age <= 60");
 			 else if(ageRangeId.longValue() == 5)
