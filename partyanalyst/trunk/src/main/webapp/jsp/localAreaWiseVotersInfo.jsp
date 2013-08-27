@@ -461,9 +461,9 @@ function buildAgewiseDetails(myResults,jsObj)
 	str+='<tr>';
 	str+='<th rowspan="2">LocalArea</th>';
 	str+='<th rowspan="2">Total Voters</th>';
-	str+='<th colspan="2">18-25</th>';
-	str+='<th colspan="2">26-35</th>';
-	str+='<th colspan="2">36-45</th>';
+	str+='<th colspan="2">18-22</th>';
+	str+='<th colspan="2">23-30</th>';
+	str+='<th colspan="2">31-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';

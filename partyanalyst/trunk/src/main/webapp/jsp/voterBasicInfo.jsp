@@ -830,9 +830,9 @@ function buildVotersAgeWiseInfo(myResults)
 		str += '<tr>';
 		str += '<th rowspan="2">Booth NO</th>';
 		str += '<th rowspan="2">Toatl Voters</th>';
-		str += '<th colspan="2" style="padding-left: 63px;">18-25</th>';
-		str += '<th colspan="2" style="padding-left: 63px;">26-35</th>';
-		str += '<th colspan="2" style="padding-left: 63px;">36-45</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">18-22</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">23-30</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">31-45</th>';
 		str += '<th colspan="2" style="padding-left: 63px;">46-60</th>';
 		str += '<th colspan="2" style="padding-left: 45px;">Above 60</th>';
 		str += '</tr>';
