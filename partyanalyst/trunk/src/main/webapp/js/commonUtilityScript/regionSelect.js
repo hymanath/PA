@@ -916,8 +916,9 @@ function getCadresResults1(btnType)
 		var search = "forTotalCount";
 		var url = "getCadreDetailsForSMSAjaxAction.action?"+rparam1+"&windowTask=Search&sort=total&startIndex=0&results=-5";
 		callAjaxForRegionSelect(jsObj1,url);
+
 		//alert(jsObj1.extra);
-		buildCadreSearchResultDataTable1(rparam1);
+		buildCadreSearchResultDataTableForSMS(rparam1);
 		//var url = "getCadresDetailsAjaxAction.action?"+rparam;
 	}
 }
@@ -1103,6 +1104,7 @@ function buildCadreSearchResultDataTable1(rparam)
 		        oPayload.totalRecords = oResponse.meta.totalRecords;
 		        return oPayload;
 		}
+
 		//function calling to build Result
 		return {
 			oDS: CadreSearchResultDataSource,
