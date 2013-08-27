@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 
 public interface IVoiceSmsService {
 	
@@ -22,6 +23,7 @@ public interface IVoiceSmsService {
 	public Map<Long,String> getAllTheCastesOfConstituency(Long constituencyId , Long userId , Long publicationDateId);
 	public List<SMSSearchCriteriaVO> getVotersDetailsBySearchToSendSMS(SMSSearchCriteriaVO searchVO );
 
+	public List<SMSSearchCriteriaVO> getAllInfluencingPeopleDetailsForVoiceSMS(SMSSearchCriteriaVO searchVO);
 
 
 }
