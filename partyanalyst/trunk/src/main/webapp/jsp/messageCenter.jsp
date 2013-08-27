@@ -399,7 +399,7 @@ $(document).ready(function() {
 	  selectedCriteria.startAge = startAge;
 	  selectedCriteria.endAge = endAge;
 	  selectedCriteria.houseNo = houseNo;
-	  selectedCriteria.casteIds = casteIds;
+	  selectedCriteria.casteIds = "4-5";
 	  selectedCriteria.gender = gender;
 	  selectedCriteria.reportLevelValue = areaId;
 	  selectedCriteria.publicationDateId = publicationDateId;
@@ -466,7 +466,25 @@ function getVoterSearchDetails()
   browser2.focus();
 
 }
-
+function openInfluencePeopleWindow(){
+	
+	var urlStr = "searchInfluencePeopleForSmsAction.action?locationValue="+selectedCriteria.reportLevelValue+"&locationType="+selectedCriteria.searchArea+"&";
+	
+	if(selectedCriteria.isAgeSelected == true)
+	   urlStr += "startAge="+selectedCriteria.startAge+"&endAge="+selectedCriteria.endAge+"&";
+   if(selectedCriteria.isCasteSelected == true)
+	   urlStr += "casteIds="+selectedCriteria.casteIds+"&";
+   if(selectedCriteria.isFamilySelected == true)
+	   urlStr += "houseNo="+selectedCriteria.houseNo+"&";
+   if(selectedCriteria.isNameSelected == true)
+	   urlStr += "name="+selectedCriteria.searchName+"&";
+   if(selectedCriteria.isGenderSelected == true)
+	   urlStr += "gender="+selectedCriteria.gender+"&";
+   urlStr += "isAgeSelected="+selectedCriteria.isAgeSelected+"&isCasteSelected="+selectedCriteria.isCasteSelected+"&isFamilySelected="+selectedCriteria.isFamilySelected+"&isNameSelected="+selectedCriteria.isNameSelected+"&isGenderSelected="+selectedCriteria.isGenderSelected+"&";
+  var browser3 = window.open(urlStr,"messageCenterinfluencingPeopleSearch","scrollbars=yes,height=570,width=1300,left=200,top=50");	
+  browser3.focus();
+	
+}
 function getallConstituencies(district){
 var jsObj=
 		{						
