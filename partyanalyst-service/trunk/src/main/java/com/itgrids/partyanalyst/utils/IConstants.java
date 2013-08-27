@@ -573,10 +573,10 @@ public interface IConstants {
 	public static final int LARGE_HEIGHT  = 240;
 	
 	public static final long AGE18  = 18l;
-	public static final long AGE25  = 25l;
-	public static final long AGE26  = 26l;
-	public static final long AGE35  = 35l;
-	public static final long AGE36  = 36l;
+	public static final long AGE22  = 22l;
+	public static final long AGE23  = 23l;
+	public static final long AGE30  = 30l;
+	public static final long AGE31  = 31l;
 	public static final long AGE45  = 45l;
 	public static final long AGE46  = 46l;
 	public static final long AGE60  = 60l;
@@ -596,10 +596,10 @@ public interface IConstants {
 	public static final String ELECTION = "Election";
 	
 	public static final String GALLARY_PDF_FILES= "gallary_pdf_files";
-	public static final String AGE18to25  = "18-25";
-	public static final String AGE26to35  = "26-35";
-	public static final String AGE36to45  = "36-45";
-	public static final String AGE45to60 = "46-60";
+	public static final String AGE18to22  = "18-22";
+	public static final String AGE23to30  = "23-30";
+	public static final String AGE31to45  = "31-45";
+	public static final String AGE46to60 = "46-60";
 	public static final String Above60  = "Above60";
 	
 	public final static String ASSEMBLY_CONSTITUENCY_TYPE = "Assembly";

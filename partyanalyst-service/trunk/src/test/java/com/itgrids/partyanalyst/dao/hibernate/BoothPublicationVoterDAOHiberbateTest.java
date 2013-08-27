@@ -787,11 +787,19 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsForMessageCenter(232l, 8l, 2844l, queryStr, null, null, 1l);
 	}*/
 	
-	public void testGetVoterDetailsOfAConstituency()
+	/*public void testGetVoterDetailsOfAConstituency()
 	{
 		List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsOfAConstituency(232l,8l,1l);
 		System.out.println(list.size());
-	}
+	}*/
 	
+	public void testgetVoterAgeDetailsForSelectedLocation()
+	{
+		List<Long> locationIdsList = new ArrayList<Long>(0);
+		locationIdsList.add(232l);
+		List<Object[]> list = boothPublicationVoterDAO.getVoterAgeDetailsForSelectedLocation(232l, 8l, locationIdsList, IConstants.CONSTITUENCY);
+		System.out.println(list.size());
+	}
+		
 	
 }

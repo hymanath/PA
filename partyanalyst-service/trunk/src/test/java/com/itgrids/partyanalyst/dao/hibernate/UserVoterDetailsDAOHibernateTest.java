@@ -316,7 +316,7 @@ for (Object[] objects : list) {
 		
 		/*public void testGetLocalAreaWiseAgeDetailsForCustomWard()
 		{
-			List<Object[]> list = userVoterDetailsDAO.getLocalAreaWiseAgeDetailsForCustomWard(309L, 8L, 29153L,1L, "18-25");
+			List<Object[]> list = userVoterDetailsDAO.getLocalAreaWiseAgeDetailsForCustomWard(309L, 8L, 29153L,1L, "18-22");
 			System.out.println(list.size());
 			for(Object[] params : list)
 			 System.out.println(params[1]+" "+params[2]);
