@@ -171,5 +171,7 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public Long getTotalCountForInfluencingPeople(Long userId,String scope);
 	
 	public List<Object[]> getInfluencingPeopleDetailsToSendSMS(String query,SMSSearchCriteriaVO searchVO);
+	
+	public List<Object[]> getInfluencingPeopleDetailsToSendSMS(String query,SMSSearchCriteriaVO searchVO,String count);
 }
 
