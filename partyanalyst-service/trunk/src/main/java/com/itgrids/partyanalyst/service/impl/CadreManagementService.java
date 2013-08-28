@@ -3984,6 +3984,100 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	}
 	
 	
+	/*
+	 * Method to send SMS to selected set of cadre mobile numbers
+	 */
+	public SmsResultVO sendSMSToSelectedMobileNumbers(Long userId,
+			String includeCadreName, Boolean isText, String message,
+			String smsType, List<SmsVO> cadreList) {
+
+		if (log.isDebugEnabled())
+			log.debug(" Inside sendSMSTOSelectedCadreMobileNos Method ..");
+		SmsResultVO smsResult = new SmsResultVO();
+		ResultStatus resultStatus = new ResultStatus();
+
+		try {
+			Long smsRemainingStatus = 0l;
+			Long smsSentStatus = 0l;
+			int smsCountNos = 0;
+			if (userId != null) {
+				Long remainingSMS = smsCountrySmsService
+						.getRemainingSmsLeftForUser(userId)
+						- cadreList.size();
+				smsRemainingStatus = remainingSMS;
+				if (remainingSMS < 0) {
+					smsResult.setStatus(1l);
+					smsResult.setTotalSmsSent(0l);
+					smsResult.setRemainingSmsCount(0l);
+				} else {
+					if ("NO".equals(includeCadreName)) {
+						String[] cadreMobileNos = new String[cadreList.size()];
+						int i = -1;
+						for (SmsVO mobileInfo : cadreList) {
+							cadreMobileNos[++i] = mobileInfo.getMobileNO();
+							if(mobileInfo.getMobileNO() != null && mobileInfo.getMobileNO().trim().length() >0)
+								smsCountNos = smsCountNos+1;
+						}
+						if (cadreMobileNos != null && cadreMobileNos.length > 0)
+							//smsSentStatus = smsCountrySmsService
+									//.sendSms(message, isText, userId,
+											//IConstants.Cadre_Management,
+											//cadreMobileNos);
+							taskExecutor.execute(sendSMSForCader(message, isText, userId, smsType, cadreMobileNos));
+							
+					} else {
+						// to do ICONSTANTS.SMS_DEAR
+						for (SmsVO mobiles : cadreList) {
+							String mobile = mobiles.getMobileNO();
+							if(mobile != null && mobile.trim().length() >0)
+								smsCountNos = smsCountNos+1;
+							StringBuilder cadreMessage = new StringBuilder(
+									IConstants.SMS_DEAR);
+							cadreMessage.append(IConstants.SPACE).append(
+									mobiles.getCadreName()).append(
+									IConstants.SPACE).append(message);
+							/*
+							 * String[] mobileNOs = new String[1]; mobileNOs[1]
+							 * = mobile;
+							 */
+							//smsSentStatus = smsCountrySmsService.sendSms(
+									//cadreMessage.toString(), isText, userId,
+									//IConstants.Cadre_Management, mobile);
+							
+							taskExecutor.execute(sendSMSForCader(cadreMessage.toString(), isText, userId, IConstants.Cadre_Management, mobile));
+						}
+					}
+
+				}
+
+				// sms sent failure
+				if (smsSentStatus.equals(1l)) {
+					smsResult.setStatus(1l);
+					smsResult.setTotalSmsSent(0l);
+					smsResult.setRemainingSmsCount(smsRemainingStatus);
+				} else {
+					smsResult.setStatus(0l);
+					smsResult.setTotalSmsSent(Long.parseLong(new Integer(smsCountNos).toString()));
+					smsResult.setRemainingSmsCount(remainingSMS);
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+
+			resultStatus.setExceptionClass(ex.getClass().toString());
+			resultStatus.setExceptionMsg(getExceptionMessage(ex.getClass()
+					.toString()));
+			smsResult.setResultStatus(resultStatus);
+		}
+
+		return smsResult;
+	}
+	
+	
+	
 	public Runnable sendSMSForCader(String message, boolean isEnglish,Long userId,String moduleName,
 			String... phoneNumbers)
 	{
