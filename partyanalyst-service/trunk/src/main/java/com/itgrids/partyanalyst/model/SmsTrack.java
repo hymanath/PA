@@ -38,10 +38,13 @@ public class SmsTrack extends BaseModel implements Serializable {
 	private String smsPassword;
 	private String senderId;
 	private Long userId;
+	private SmsType smsType;
+	private Long smsTypeId;
 	
 		
 	// Constructors
 
+	
 	/** default constructor */
 	public SmsTrack() {
 	}
@@ -143,6 +146,28 @@ public class SmsTrack extends BaseModel implements Serializable {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="sms_type_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SmsType getSmsType() {
+		return smsType;
+	}
+
+	public void setSmsType(SmsType smsType) {
+		this.smsType = smsType;
+	}
+	
+	@Column(name="sms_type_id")
+	public Long getSmsTypeId() {
+		return smsTypeId;
+	}
+
+	public void setSmsTypeId(Long smsTypeId) {
+		this.smsTypeId = smsTypeId;
 	}
 
 }
