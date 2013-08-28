@@ -594,8 +594,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 		{
 		StringBuffer queryString = new StringBuffer();
 
-		queryString.append(" select model.firstName,model.lastName,model.phoneNo from InfluencingPeople model " +
-				"where model.user.userId =1 ");
+		queryString.append(" model.firstName,model.lastName,model.phoneNo,model1.casteState.caste.casteName,model.influencingScope from " +
+				" InfluencingPeople model,UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId and " +
+				" model1.user.userId =:userId ");
 
 		if(searchVO.isAgeSelected())
 		queryString.append(" ");
@@ -654,7 +655,15 @@ public class VoiceSmsService implements IVoiceSmsService {
 
 		List<Object[]> influencingPeopleList = influencingPeopleDAO.getInfluencingPeopleDetailsToSendSMS(queryString.toString(),searchVO);
 
-
+		List<Object[]> totalCount = influencingPeopleDAO.getInfluencingPeopleDetailsToSendSMS(queryString.toString(),searchVO,null);
+		
+		for (Object[] prms : totalCount) {
+			SMSSearchCriteriaVO vo1 = new SMSSearchCriteriaVO();
+			int count = Integer.parseInt(prms[0].toString());
+			vo1.setTotalResultsCount(count);
+			resultList.add(vo1);
+		}
+		
 		for(Object[] list:influencingPeopleList)
 		{
 
@@ -663,6 +672,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 		vo.setName(list[0].toString()+" " +list[1].toString());
 		//vo.setHouseNo(list[2].toString());
 		vo.setMobileNumber(Long.valueOf(list[2].toString()));
+		vo.setCasteIds(list[3].toString());
+		vo.setLocationType(list[4].toString());
+		
 		//vo.setStartAge(Integer.parseInt(list[3].toString()));
 		resultList.add(vo);
 
