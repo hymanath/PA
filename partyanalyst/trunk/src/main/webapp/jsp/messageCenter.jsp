@@ -279,19 +279,19 @@ $(document).ready(function() {
 	$('.searchType').change(function(){
 		if($(this).val() == "cadre")
 		{
-			$('#houseDiv').hide();
+			$('#houseDiv,#casteDiv').hide();
 			$('#ageDiv').show();
 			buildReportLevelDiv($(this).val());
 		}
 		else if($(this).val() == "influencePeople")
 		{
-           $('#houseDiv ,#ageDiv').hide();
+           $('#houseDiv ,#ageDiv,#casteDiv').hide();
 
 			buildReportLevelDiv($(this).val());
 		}
 		else if($(this).val() == "voter")
 		{
-           $('#houseDiv , #ageDiv').show();
+           $('#houseDiv , #ageDiv,#casteDiv').show();
 		   buildReportLevelDiv($(this).val());
 		}
 	});
@@ -819,16 +819,16 @@ var jsObj=
    <div class="span5" style="font-weight:bold;margin-bottom: 15px;font-size:13px;width: 400px;margin-left: 290px;">
 
    
-	 <div>
-		<label style="width: 130px;"> <input type="radio" name="searchFor" value="cadre" class="searchType" checked="checked"/>Cadre</label>
-		<label style="width: 130px;"> <input type="radio" name="searchFor" value="influencePeople" class="searchType"/>Influencing People</label>
-		<label style="width: 130px;"> <input type="radio" name="searchFor" value="voter" class="searchType"/>Voter</label>
-	 </div>
+	 <div style="margin-left:77px;">
+		<label style="float:left;"> <input type="radio" name="searchFor" value="cadre" class="searchType" checked="checked" style="margin:0px;">&nbsp;&nbsp;&nbsp;Cadre</label>
+		<label style="float:left;" > <input type="radio" name="searchFor" value="influencePeople" class="searchType"  style="margin:0px;"/>&nbsp;&nbsp;&nbsp;Influencing People</label>
+		<label style="float:left;"> <input type="radio" name="searchFor" value="voter" class="searchType"  style="margin:0px;"/>&nbsp;&nbsp;&nbsp;Voter</label>
+	 </div><br>
 
-     
+     <br>     <br>     <br>
 	 <div class="selectDiv" id="genderDiv"style="margin-bottom: 10px;">
-	    Gender  <span style="margin-left:79px;">:</span>
-		<input type="radio" checked="true" id="all" name="gender" style=" margin-top: 0px;margin-left: 25px;" value="All"><Span style="margin-left:5px;">All </Span> 
+	  Gender  <span style="margin-left:79px;">:</span>
+		<input type="radio" checked="true" id="all" name="gender" style=" margin-top: 0px;margin-left: 25px;" value="All"></label><Span style="margin-left:5px;">All </Span> 
 		<input type="radio" id="male" name="gender" style=" margin-top: 0px;margin-left: 10px;" value="M"><Span style="margin-left:5px;">Male </Span> 
 		<input type="radio" id="female" value="F" name="gender" style=" margin-top: 0px;margin-left: 10px;"> <Span style="margin-left:5px;" >Female<Span>
 		
@@ -852,16 +852,16 @@ var jsObj=
 	 </div>
 	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;"> Search </button> 
 
-		 <a class="btn" href="javascript:{checkMobileNumbers()}">Check</a>
+	<!-- <a class="btn" href="javascript:{checkMobileNumbers()}">Check</a>-->
 
    </div>
 
   </div>
 
-<div style="text-align:center;">
+<div style="margin-left:428px;">
 
-<label>  <input type="radio" name="smsType" class="smsType" value="text"/>Text SMS</label>
-<label>  <input type="radio" name="smsType" class="smsType" value="voice"/>Voice SMS</label>
+<label style="float:left;"><input type="radio" name="smsType" class="smsType" value="text" style="margin:0px;"/>Text SMS</label>
+<label style="float:left;"><input type="radio" name="smsType" class="smsType" value="voice" style="margin:0px;"/>Voice SMS</label>
 </div>
 
 
@@ -972,8 +972,9 @@ var jsObj=
  </div>
 
  </div>
- </div>
 
+<a class="btn" href="javascript:{sendSMS();}">Send SMS </a>
+ </div>
 
 
 
@@ -1081,12 +1082,12 @@ function validateFieldsForSendingSms()
 		return false;
 	}
 	else
-		ajaxToSendSms();
+		ajaxToSendVoiceSms();
 
 
 }
 
-function ajaxToSendSms(){
+function ajaxToSendVoiceSms(){
 
 	 $.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
 
@@ -1487,6 +1488,10 @@ function callAjax1(param,jsObj,url){
 					else if(jsObj.task == "getAllTheCastesOfConstituency")
 				    {
                             alert(myResults);
+					}
+					else if(jsObj.task == "sendTextSms")
+				    {
+						alert(123);
 					}
 					
 			}catch (e) {   		
@@ -2443,11 +2448,54 @@ function showReportsLevels(value)
 		}
 	}
 //voter search
-
-
-function checkMobileNumbers()
+function sendSMS()
 {
- console.log(selectedMobileNumbers);
+	if($('input:radio[name=smsType]:checked').val() == "text")
+		sendTextSms();
+	else
+		validateFieldsForSendingSms();
+
+
+}
+
+function sendTextSms()
+{
+
+	var cadreDetails = new Array();
+	var influencePeopleDetails = new Array();
+	var votersDetails = new Array();
+
+	$.each(selectedCadreDetails, function(index, value) {
+		cadreDetails.push(value);
+    });
+
+    $.each(selectedInfluencePeopleDetails, function(index, value) {
+		influencePeopleDetails.push(value);
+    });
+
+	$.each(selectedVotersDetails, function(index, value) {
+		votersDetails.push(value);
+    });
+
+    if($('#smsDescription').val().trim() == "")
+	{
+		alert("Description is required..");
+		return false;
+	}
+	var jsObj=
+			{
+				task:"sendTextSms",
+                cadreDetails:cadreDetails,
+                influencePeopleDetails:influencePeopleDetails,
+                votersDetails:votersDetails,
+				message: $('#smsDescription').val()
+
+
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "sendTextSMS.action?"+rparam;	
+			callAjax1(rparam,jsObj,url);
+
 }
 </script>
  </body>
