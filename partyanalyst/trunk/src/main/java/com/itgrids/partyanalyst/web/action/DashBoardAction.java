@@ -450,6 +450,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 
 	public String execute()
 	{	
+	  try{
 		session = request.getSession();
 		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
@@ -634,6 +635,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		}catch(Exception e){
 			log.error("Exception is ",e);
 		}
+	  }catch(Exception e){
+		  log.error("Exception rised in execute method ",e);
+		  return "userProfile";
+	  }
 		return Action.SUCCESS;
 	}
 	
