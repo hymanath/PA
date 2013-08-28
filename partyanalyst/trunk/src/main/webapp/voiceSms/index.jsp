@@ -25,7 +25,6 @@ ul li {list-style-type:square;}
   border-top-right-radius:5px;
   display:table;
   height:36px;
-  margin:21px 0px 0px 31px;
   width:942px;
 }
 
@@ -62,10 +61,13 @@ ul li {list-style-type:square;}
 <body>
 
 
+<div class="container" style="margin-top:12px;">
+<div class="row" style="margin:0px;">
+
  <div class="main-title-sec">
     <div class="main-mbg">UPLOAD AUDIO FILES</div>
  </div>
-  <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 31px;" class="span12">
+  <div style="border:1px solid #06ABEA;margin-left:0px;" class="span12">
 
   
 <div class="widget whitegloss">
@@ -155,6 +157,8 @@ ul li {list-style-type:square;}
 </div>
 
  <form>
+</div>
+ </div>
 
 <script>
 function showRecordDiv()
