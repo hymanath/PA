@@ -333,6 +333,10 @@ var Localization = { <%
 	 }
 	}
 	// window.history.forward(1);
+	$(document).ready(function(){
+	 $("#electionType1").val(0);
+	
+	});
 </script>
 </HEAD>
 <body>
