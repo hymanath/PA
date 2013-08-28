@@ -243,6 +243,77 @@ div.tabs div.tab.selected div.arrow{
 }
 
 </style>
+
+
+<style>
+/* Main block */
+.switch_options{
+	display: block;
+	font-family: "Helvetica", Arial, Sans-serif;
+	margin-bottom: 10px;
+}
+/* Main block clearfix */
+.switch_options:before,
+.switch_options:after{
+	content:'.';
+	display:block;
+	overflow:hidden;
+	visibility:hidden;
+	font-size:0;
+	line-height:0;
+	width:0;
+	height:0;
+}
+.switch_options:after{clear:both;}
+
+/*Options*/
+.switch_options span{
+	display: inline-block;
+	float: left;
+	padding: 4px 9px;
+	margin: 0;
+	cursor: pointer;
+	font-size: 12px;
+	font-weight: 700;
+	color: #555;
+	border: 1px solid #aaa;
+	text-transform: uppercase;
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffffff 0%,#e5e5e5 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+
+}
+.switch_options span:first-of-type{
+	border-radius: 2px 0 0 2px;
+	border-right: 0;
+}
+.switch_options span:last-of-type{
+	border-radius: 0 2px 2px 0;
+	border-left: 0;
+}
+.switch_options span:hover{
+	background: #fafafa;
+}
+
+/* Active option */
+.switch_options span.selected{
+	background: #00b7ea; /* Old browsers */
+	background: -moz-linear-gradient(top,  #00b7ea 0%, #009ec3 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00b7ea), color-stop(100%,#009ec3)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #00b7ea 0%,#009ec3 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', endColorstr='#009ec3',GradientType=0 ); /* IE6-9 */
+	border-color: #0082A3;
+	color: #fff;
+}
+</style>
 <script>
 
 
@@ -258,9 +329,60 @@ var selectedInfluencePeopleDetails = {
 var selectedMobileNumbers = new Array();
 var selectedCriteria={};
 
+jQuery(document).ready(function() {
+
+	jQuery('.switch_options').each(function() {
+
+		//This object
+		var obj = jQuery(this);
+
+		var enb = obj.children('.switch_enable'); //cache first element, this is equal to ON
+		var dsb = obj.children('.switch_disable'); //cache first element, this is equal to OFF
+		var input = obj.children('input'); //cache the element where we must set the value
+		var input_val = obj.children('input').val(); //cache the element where we must set the value
+
+		/* Check selected */
+		if( 0 == input_val ){
+			dsb.addClass('selected');
+		}
+		else if( 1 == input_val ){
+			enb.addClass('selected');
+		}
+
+		//Action on user's click(ON)
+		enb.on('click', function(){
+
+          
+		   	$('#textSmsDiv').show();
+			$('#voiceSmsDiv').hide();
+
+
+
+			$(dsb).removeClass('selected'); //remove "selected" from other elements in this object class(OFF)
+			$(this).addClass('selected'); //add "selected" to the element which was just clicked in this object class(ON) 
+			//$(input).val(1).change(); //Finally change the value to 1
+			$('#switchValue').val(1);
+		});
+
+		//Action on user's click(OFF)
+		dsb.on('click', function(){
+
+	        $('#textSmsDiv').hide();
+			$('#voiceSmsDiv').show();
+
+
+			$(enb).removeClass('selected'); //remove "selected" from other elements in this object class(ON)
+			$(this).addClass('selected'); //add "selected" to the element which was just clicked in this object class(OFF) 
+			//$(input).val(0).change(); // //Finally change the value to 0
+			$('#switchValue').val(0);
+		});
+
+	});
+});
+
 $(document).ready(function() {
 
-	$('.smsType').change(function(){
+	/*$('.smsType').change(function(){
 
 		if($(this).val() == "text")
 		{
@@ -274,7 +396,7 @@ $(document).ready(function() {
 
 		}
 
-	});
+	});*/
 
 	$('.searchType').change(function(){
 		if($(this).val() == "cadre")
@@ -852,36 +974,30 @@ var jsObj=
 	 </div>
 	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;"> Search </button> 
 
-	<!-- <a class="btn" href="javascript:{checkMobileNumbers()}">Check</a>-->
 
    </div>
 
   </div>
 
-<div style="margin-left:428px;">
 
-<label style="float:left;"><input type="radio" name="smsType" class="smsType" value="text" style="margin:0px;"/>Text SMS</label>
-<label style="float:left;"><input type="radio" name="smsType" class="smsType" value="voice" style="margin:0px;"/>Voice SMS</label>
-</div>
+	<!-- Switch button script start -->
+	
+		<div class="switch_options" style="margin-left:415px;">
+
+			<span class="switch_enable"> Text SMS </span>
+			<span class="switch_disable"> Voice SMS </span>
+			<input type="hidden" class="switch_val" value="1" id="switchValue"/>
+
+		</div>
+
+	<!-- Switch button script end -->
 
 
- <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 31px;" class="span12" >
-<!--
-
-<div id="influenceDiv">
-	<h4 style="background:#06ABEA;padding:7px;text-align:center;clear:both;color:#fff;">AVAILABLE INFLUENCING PEOPLE</h4>
-
-	<div style="text-align:center;"><b>NOTE</b>:Click on the number to get corresponding influence pelple details</div>
-
-		<div id="tableDiv"  class="datagrid" style="margin:10px;clear:both;"></div>
-
-</div>
-
--->
+ <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 31px;padding:6px;" class="span12" >
 
 <div style="clear:both;" id="textSmsDiv">
 
-<div style="text-align:center;margin-top:5px;"><label>Enter Message T0 send:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
+<div style="text-align:center;margin-top:5px;"><label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
 
 </div>
 
@@ -942,17 +1058,18 @@ var jsObj=
 
 
 
-<div style="margin:2px;">
+<!--<div style="margin:2px;">
 <input type="button" class="btn btn-info" value="Send Voice SMS" style="margin-left:750px;" onClick="validateFieldsForSendingSms()"/>
-</div>
+</div>-->
 
+<!--
 <div   style='background:#06ABEA;border-radius:0px;text-align:center;position:relative;margin-bottom:-45px;padding:7px;color:#fff;'><a id='historyHeading' href="javascript:{}" style="color:#fff;"><h4 style="color:#fff;margin-left:25px;">SHOW/HIDE SMS HISTORY</a><a href="javascript:{getVoiceSmsHistoryOfUser('show')}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh SMS history" /></a></h4></div>
 
 
 <div class="breadcrumb" style="margin-top:40px;"> 
  <div id="smsHistory"></div>
 </div>
-
+-->
 
 <div id="responseDetailsDiv">
  <div id="responseDetailsInnerDiv">
@@ -973,7 +1090,7 @@ var jsObj=
 
  </div>
 
-<a class="btn" href="javascript:{sendSMS();}">Send SMS </a>
+<a class="btn pull-right" href="javascript:{sendSMS();}">Send SMS </a>
  </div>
 
 
@@ -2450,7 +2567,8 @@ function showReportsLevels(value)
 //voter search
 function sendSMS()
 {
-	if($('input:radio[name=smsType]:checked').val() == "text")
+	
+	if($('#switchValue').val() == 1)
 		sendTextSms();
 	else
 		validateFieldsForSendingSms();
