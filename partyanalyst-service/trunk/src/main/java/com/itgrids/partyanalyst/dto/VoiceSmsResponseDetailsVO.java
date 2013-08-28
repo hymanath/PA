@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class VoiceSmsResponseDetailsVO implements Serializable{
 
@@ -15,6 +16,37 @@ public class VoiceSmsResponseDetailsVO implements Serializable{
 	private String sentStatus;
 	private String userName;
 	
+	private List<Long> cadreMobileNumbers;
+	private List<Long> influencePeopleMobileNumbers;
+	private List<Long> votersMobileNumbers;
+	private List<Long> allmobileNumbers;
+	
+	
+	public List<Long> getCadreMobileNumbers() {
+		return cadreMobileNumbers;
+	}
+	public void setCadreMobileNumbers(List<Long> cadreMobileNumbers) {
+		this.cadreMobileNumbers = cadreMobileNumbers;
+	}
+	public List<Long> getInfluencePeopleMobileNumbers() {
+		return influencePeopleMobileNumbers;
+	}
+	public void setInfluencePeopleMobileNumbers(
+			List<Long> influencePeopleMobileNumbers) {
+		this.influencePeopleMobileNumbers = influencePeopleMobileNumbers;
+	}
+	public List<Long> getVotersMobileNumbers() {
+		return votersMobileNumbers;
+	}
+	public void setVotersMobileNumbers(List<Long> votersMobileNumbers) {
+		this.votersMobileNumbers = votersMobileNumbers;
+	}
+	public List<Long> getAllmobileNumbers() {
+		return allmobileNumbers;
+	}
+	public void setAllmobileNumbers(List<Long> allmobileNumbers) {
+		this.allmobileNumbers = allmobileNumbers;
+	}
 	public String getUserName() {
 		return userName;
 	}
