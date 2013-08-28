@@ -1319,14 +1319,20 @@ function navigateToConstituencyPage()
 
 function navigateToLocalBodyPage()
 {
-	var errorElmt = document.getElementById("localBodies_errorDiv");
+    var errorElmt = document.getElementById("localBodies_errorDiv");
 	var stateElmt = document.getElementById("stateList_l");		
 	var localBodySelectElmt = document.getElementById("localBodySelectElmt");
 	var radioElmts = document.getElementsByName("localBodyRadio");
 	var localBodyElectionId;
 
 	if(!stateElmt || !localBodySelectElmt || !radioElmts || radioElmts.length == 0)
+	{
+	   
+	   document.getElementById("errormsg").innerHTML="please select your locality..";
+	   
+
 		return;
+	}
 	$('#processingDivForLocality').show();
 	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
 	var localBodySelectElmtValue = localBodySelectElmt.options[localBodySelectElmt.selectedIndex].value;
@@ -1350,6 +1356,7 @@ function navigateToLocalBodyPage()
 
 function getSelectElmtForLocalBody(localBodyId)
 {
+	document.getElementById("errormsg").innerHTML=" ";
 	var statelocalEl = document.getElementById("stateList_l");
 	var stateSelectlocalElVal = statelocalEl.options[statelocalEl.selectedIndex].value;
 	
