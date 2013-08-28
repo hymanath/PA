@@ -415,14 +415,7 @@ function pushIntoInfluencePeopleObject(voterName , mobileNumber)
 {
 	if(window.opener.selectedInfluencePeopleDetails[voterName] == undefined){
        window.opener.selectedInfluencePeopleDetails[voterName] = mobileNumber;
-	   //window.opener.selectedMobileNumbers.push(mobileNumber);
-
-	   var obj = {
-					mobileNumber:mobileNumber
-				  };
-					window.opener.selectedMobileNumbers.push(obj);
-
-	}
+	   window.opener.selectedMobileNumbers.push(mobileNumber);
 	else{
 
 		delete window.opener.selectedInfluencePeopleDetails[voterName];

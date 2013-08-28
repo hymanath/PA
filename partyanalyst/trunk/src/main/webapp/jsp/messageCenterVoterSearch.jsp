@@ -126,7 +126,7 @@ var gender = '${gender}';
 
 
 <script>
-var limit = 1000;
+/*var limit = 1000;
 var totalReq = 1000;
 function getWardsForMuncipality(startIndex)
 {
@@ -147,7 +147,7 @@ function getWardsForMuncipality(startIndex)
 			var url = "getVoterDetailsAction.action?"+rparam;						
 		callAjax(jsObj,url);
  
-}
+}*/
 
  function callAjax(jsObj,url)
 		{
@@ -175,7 +175,7 @@ function getWardsForMuncipality(startIndex)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-
+/*
 
 function buildVoterDetails(results,jsObj)
 {
@@ -226,10 +226,10 @@ function buildVoterDetails(results,jsObj)
 		});
 	}
 
-}
+}*/
 //getWardsForMuncipality(0);
 
-
+/*
 function getPhoneNos()
 {
   var tempArray =[];
@@ -247,16 +247,26 @@ function getPhoneNos()
   window.opener.receiveFromVoterSearchChild ( tempArray );
 
 }
-
+*/
 $(document).ready(function(){
   
-  $("#selectAll").live("click",function(){
+  $(".allVoters").live("change",function(){
 	
-   if(this.checked)
-	 $(".checkboxCls").attr('checked', true);
-   else
-    $(".checkboxCls").attr('checked', false);
-	  
+	   if(this.checked)
+	   {
+		 $(".voter").attr('checked', true);		 
+		$('.voter').each(function(index,value){
+			var voterId = $(this).val().split("-")[0];
+			var mobileNumber = $(this).val().split("-")[1];
+
+		   if(window.opener.selectedVotersDetails[voterId] == undefined)
+					window.opener.selectedVotersDetails[voterId] = mobileNumber;
+
+
+		   if($.inArray(mobileNumber, window.opener.selectedMobileNumbers) == -1)
+				   window.opener.selectedMobileNumbers.push(mobileNumber);
+		});
+	   }
   });
 
 });
@@ -266,80 +276,24 @@ getVotersDetailsBySearchCritteria();
 function getVotersDetailsBySearchCritteria()
 {
 
-/*
-var urlstr = "getVoterDetailsInitialRequest.action?constituencyId="+constituencyId+"&name="+mainname+"&publicationId="+publicationId+"&panchaytId="+panchaytId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=panchayat";
-
-var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-browser1.focus();
-
-return;
-
-
-if(panchaytId == "0" || publicationId == "0")
-	return false;
-YAHOO.widget.DataTable.ActionLink = function(elLiner, oRecord, oColumn, oData)
-{
-var str ='';
-var id=oRecord.getData("voterIds");
-var name = oRecord.getData("firstName");
-var influencePerson=oRecord.getData("influencePerson");
-
-str += '<ul class="dd_menu">';
-str += ' <li><i class="icon-th-list"></i>';
-str += ' <ul>';
-str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\',\''+name+'\');">Create New Cadre</a>';
-str += ' </li>';
-str += ' <li>';
-str += ' <a href= "javascript:{};"  onclick="openCadreSearchWindow('+id+');">Add To Existing Cadre</a>';
-str += ' </li>';
-str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\',\''+name+'\');">Create New Influencing People</a>';
-str += ' </li>';
-str += ' <li>';
-str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
-str += ' </li>';
-str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\',\''+name+'\');">Add To Politician</a>';
-str += ' </li>';
-str += ' </ul>';
-str += ' </li>';
-str += ' </ul>';
-elLiner.innerHTML =str;
-}*/
-YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
+   YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 	{
 
 			var voterName= oRecord.getData("name");
 			var mobileNumber = oRecord.getData("mobileNumber");
 			var voterIdCardNo = oRecord.getData("voterIdCardNo");
 
-	 if(window.opener.selectedVotersDetails[voterName] == undefined)
-		var str ='<input type="checkbox" onchange="pushIntoVoterObject(\''+voterIdCardNo+'\',\''+mobileNumber+'\')"/>';
-	else
-		var str ='<input type="checkbox" checked onchange="pushIntoVoterObject(\''+voterIdCardNo+'\',\''+mobileNumber+'\')"/>';
-
-
+			 if(window.opener.selectedVotersDetails[voterName] == undefined)
+				var str ='<input type="checkbox" onchange="pushIntoVoterObject(\''+voterIdCardNo+'\',\''+mobileNumber+'\')" class="voter" value="'+voterIdCardNo+'-'+mobileNumber+'"/>';
+			else
+				var str ='<input type="checkbox" checked onchange="pushIntoVoterObject(\''+voterIdCardNo+'\',\''+mobileNumber+'\')" class="voter" value="'+voterIdCardNo+'-'+mobileNumber+'"/>';
 		
 		elLiner.innerHTML =str;
 	}
-/*YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
-	{
-	    var str='';
-		var name = oData;
-		var voterId= oRecord.getData("voterIds");
 
-
-		str+='<a href="javaScript:{getInfluencePeopleOfAnUser('+voterId+');}">Click here</a>';
-		//var boothId=oRecord.getData("boothId"); 
-		//elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+id+"'/><input type='hidden' class='selectedBoothId' value='"+boothId+"'/>";
-		//elLiner.innerHTML=id;
-		elLiner.innerHTML=str;
-					
-	};*/
 
 var votersByLocBoothColumnDefs = [
-{key:"select", label: "select", width:70,formatter:YAHOO.widget.DataTable.Type},
+{key:"select", label: "<input type='checkbox' class='allVoters'/>", width:70,formatter:YAHOO.widget.DataTable.Type},
 {key:"name", label: "Voter Name",sortable: true},
 {key:"mobileNumber",label:"Mobile Number",sortable:false},
 {key:"houseNo",label:"House Number",sortable:false},
@@ -347,8 +301,7 @@ var votersByLocBoothColumnDefs = [
 {key:"voterIdCardNo",label:"Voter Id",sortable:false}
 ];
 
-/*
-var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVotersDetailsBySearchToSendSMS.action?publicationDateId=8&isAgeSelected=true&isCasteSelected=false&isFamilySelected=false&isNameSelected=false&isGenderSelected=false&startAge=18&endAge=22&casteIds=&locationType=booth&locationValue=122992&");*/
+
 
 var urlStr = "getVotersDetailsBySearchToSendSMS.action?publicationDateId="+publicationId+"&constituencyId="+constituencyId+"&locationType="+locationType+"&locationValue="+locationId+"&";
 
@@ -410,11 +363,7 @@ function pushIntoVoterObject(voterName , mobileNumber)
 {
 	if(window.opener.selectedVotersDetails[voterName] == undefined){
       window.opener.selectedVotersDetails[voterName] = mobileNumber;
-	   //window.opener.selectedMobileNumbers.push(mobileNumber);
-	    var obj = {
-					mobileNumber:mobileNumber
-				  };
-		window.opener.selectedMobileNumbers.push(obj);
+	   window.opener.selectedMobileNumbers.push(mobileNumber);	   
 	}
 	else{
 

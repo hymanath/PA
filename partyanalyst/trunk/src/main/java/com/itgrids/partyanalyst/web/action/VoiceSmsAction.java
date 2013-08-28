@@ -17,9 +17,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
+import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -49,8 +52,19 @@ public class VoiceSmsAction implements ServletRequestAware{
     private String toDate;
     
     private SMSSearchCriteriaVO votersDetails; 
+    private CadreManagementService cadreManagementService;
+    private ResultStatus result;
 	
 
+
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
 
 	public SMSSearchCriteriaVO getVotersDetails() {
 		return votersDetails;
@@ -355,8 +369,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 			
 			for(int i=0; i<mobileNumbersArray.length(); i++)
 			{
-				JSONObject socialObj = mobileNumbersArray.getJSONObject(i);
-				Long mobileNumber = socialObj.getLong("mobileNumber");
+				Long mobileNumber =(Long) mobileNumbersArray.get(i);
 				allMobileNumbers.add(mobileNumber);
 			}
 
@@ -372,6 +385,77 @@ public class VoiceSmsAction implements ServletRequestAware{
 		}
 		return Action.SUCCESS;
 		
+	}
+	
+	
+	public String sendTextsm()
+	{
+		try
+		{
+			
+			HttpSession session = request.getSession();			
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			
+			
+			List<SmsVO> cadreMobileNumbers = new ArrayList<SmsVO>();
+			List<SmsVO> influenceMobileNumbers = new ArrayList<SmsVO>();
+			List<SmsVO> votersMobileNumbers = new ArrayList<SmsVO>();
+			
+			 jObj = new JSONObject(getTask());
+			 
+			 JSONArray cadreArray = jObj.getJSONArray("cadreDetails");
+			 JSONArray influencePeopleArray = jObj.getJSONArray("influencePeopleDetails");
+			 JSONArray votersArray = jObj.getJSONArray("votersDetails");
+			 
+			 for(int i=0; i<cadreArray.length(); i++)
+			 {
+				 SmsVO vo = new SmsVO();
+				 vo.setMobileNO(cadreArray.get(i).toString());
+				 cadreMobileNumbers.add((vo));
+					
+			 }
+			 
+			 for(int i=0; i<influencePeopleArray.length(); i++)
+			 {
+
+				 SmsVO vo = new SmsVO();
+				 vo.setMobileNO(influencePeopleArray.get(i).toString());
+				 influenceMobileNumbers.add((vo));
+					
+			 }
+			 
+			 for(int i=0; i<votersArray.length(); i++)
+			 {
+				 SmsVO vo = new SmsVO();
+				 vo.setMobileNO(votersArray.get(i).toString());
+				 votersMobileNumbers.add((vo));
+			 }
+			 
+			   cadreManagementService.sendSMSToSelectedMobileNumbers(user.getRegistrationID(),
+						"NO", true, jObj.getString("message"),
+						IConstants.Cadre_Management,cadreMobileNumbers);
+			 
+			   cadreManagementService.sendSMSToSelectedMobileNumbers(user.getRegistrationID(),
+						"NO", true, jObj.getString("message"),
+						IConstants.Influencing_People,influenceMobileNumbers);
+			 
+			   cadreManagementService.sendSMSToSelectedMobileNumbers(user.getRegistrationID(),
+						"NO", true, jObj.getString("message"),
+						IConstants.VOTER, votersMobileNumbers);
+			 
+			
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
 	}
 	
 	public String getVoiceSmsHistoryForAuser()
