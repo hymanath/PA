@@ -98,7 +98,6 @@ var isCasteSelected = '${isCasteSelected}';
 var isFamilySelected = '${isFamilySelected}';
 var isNameSelected = '${isNameSelected}';
 var isGenderSelected = '${isGenderSelected}';
-var searchName = '${name}';
 
 
 var startAge = '${startAge}';
@@ -110,15 +109,6 @@ var gender = '${gender}';
 </script>
 </head>
 <body>
-<!--
-<div id="mainDiv">
-
-<div id="voterDetailsDiv"></div>
-<div id="paginationDivId"></div>
-<div id="btnDiv" style="display:none;"><input type="button" class="btn btn-info" value="Add  Contacts To Send Voice SMS" id="phoneNoBtn" onclick="getPhoneNos()" /></div>
-
-</div>
--->
 
 <div class="span11" style="margin-left:200px;">
  <div class="row">
@@ -259,13 +249,24 @@ function getPhoneNos()
 
 $(document).ready(function(){
   
-  $("#selectAll").live("click",function(){
+  $(".selectAll").live("click",function(){
 	
-   if(this.checked)
-	 $(".checkboxCls").attr('checked', true);
-   else
-    $(".checkboxCls").attr('checked', false);
-	  
+      if(this.checked)
+	  {
+	        $(".checkbox").attr('checked', true);
+
+		$('.checkbox').each(function(index,value){
+			var name = $(this).val().split("-")[0];
+			var mobileNumber = $(this).val().split("-")[1];
+
+		   if(window.opener.selectedInfluencePeopleDetails[name] == undefined)
+					window.opener.selectedInfluencePeopleDetails[name] = mobileNumber;
+
+
+		   if($.inArray(mobileNumber, window.opener.selectedMobileNumbers) == -1)
+				   window.opener.selectedMobileNumbers.push(mobileNumber);
+		});
+	  }
   });
 
 });
@@ -275,85 +276,27 @@ getInfluencePeopleDetailsBySearchCritteria();
 function getInfluencePeopleDetailsBySearchCritteria()
 {
 
-/*
-var urlstr = "getVoterDetailsInitialRequest.action?constituencyId="+constituencyId+"&name="+mainname+"&publicationId="+publicationId+"&panchaytId="+panchaytId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=panchayat";
-
-var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-browser1.focus();
-
-return;
-
-
-if(panchaytId == "0" || publicationId == "0")
-	return false;
-YAHOO.widget.DataTable.ActionLink = function(elLiner, oRecord, oColumn, oData)
-{
-var str ='';
-var id=oRecord.getData("voterIds");
-var name = oRecord.getData("firstName");
-var influencePerson=oRecord.getData("influencePerson");
-
-str += '<ul class="dd_menu">';
-str += ' <li><i class="icon-th-list"></i>';
-str += ' <ul>';
-str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'cadre\',\''+name+'\');">Create New Cadre</a>';
-str += ' </li>';
-str += ' <li>';
-str += ' <a href= "javascript:{};"  onclick="openCadreSearchWindow('+id+');">Add To Existing Cadre</a>';
-str += ' </li>';
-str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'influencingPeople\',\''+name+'\');">Create New Influencing People</a>';
-str += ' </li>';
-str += ' <li>';
-str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Existing Influencing People</a>';
-str += ' </li>';
-str += ' <li>';
-str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\',\''+name+'\');">Add To Politician</a>';
-str += ' </li>';
-str += ' </ul>';
-str += ' </li>';
-str += ' </ul>';
-elLiner.innerHTML =str;
-}*/
 YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 	{
 
-			var voterName= oRecord.getData("name");
+			var name= oRecord.getData("name");
 			var mobileNumber = oRecord.getData("mobileNumber");
 
-	 if(window.opener.selectedVotersDetails[voterName] == undefined)
-		var str ='<input type="checkbox" onchange="pushIntoInfluencePeopleObject(\''+voterName+'\',\''+mobileNumber+'\')"/>';
+	 if(window.opener.selectedVotersDetails[name] == undefined)
+		var str ='<input type="checkbox" onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'"/>';
 	else
-		var str ='<input type="checkbox" checked onchange="pushIntoInfluencePeopleObject(\''+voterName+'\',\''+mobileNumber+'\')"/>';
+		var str ='<input type="checkbox" checked onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'"/>';
 
-
-		
 		elLiner.innerHTML =str;
 	}
-/*YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
-	{
-	    var str='';
-		var name = oData;
-		var voterId= oRecord.getData("voterIds");
 
-
-		str+='<a href="javaScript:{getInfluencePeopleOfAnUser('+voterId+');}">Click here</a>';
-		//var boothId=oRecord.getData("boothId"); 
-		//elLiner.innerHTML="<input type='checkbox' class='familyMemberCheck' value='"+id+"'/><input type='hidden' class='selectedBoothId' value='"+boothId+"'/>";
-		//elLiner.innerHTML=id;
-		elLiner.innerHTML=str;
-					
-	};*/
 
 var votersByLocBoothColumnDefs = [
-{key:"select", label: "select", width:70,formatter:YAHOO.widget.DataTable.Type},
-{key:"name", label: "Voter Name",sortable: true},
+{key:"select", label: "<input type='checkbox' class='selectAll'/>", width:70,formatter:YAHOO.widget.DataTable.Type},
+{key:"name", label: "Name",sortable: true},
 {key:"mobileNumber",label:"Mobile Number",sortable:false},
 ];
 
-/*
-var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVotersDetailsBySearchToSendSMS.action?publicationDateId=8&isAgeSelected=true&isCasteSelected=false&isFamilySelected=false&isNameSelected=false&isGenderSelected=false&startAge=18&endAge=22&casteIds=&locationType=booth&locationValue=122992&");*/
 
 var urlStr = "searchCandidatesForVoiceSmsAction.action?publicationDateId=8&locationType="+locationType+"&locationValue="+locationId+"&";
 
@@ -416,6 +359,7 @@ function pushIntoInfluencePeopleObject(voterName , mobileNumber)
 	if(window.opener.selectedInfluencePeopleDetails[voterName] == undefined){
        window.opener.selectedInfluencePeopleDetails[voterName] = mobileNumber;
 	   window.opener.selectedMobileNumbers.push(mobileNumber);
+	}
 	else{
 
 		delete window.opener.selectedInfluencePeopleDetails[voterName];
