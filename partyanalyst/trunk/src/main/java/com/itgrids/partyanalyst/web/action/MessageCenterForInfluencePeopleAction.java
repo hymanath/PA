@@ -315,9 +315,10 @@ public String searchCandidatesForVoiceSms(){
 		searchVO.setOrder(order);
 		
 		influencPeopleDetailsList = voiceSmsService.getAllInfluencingPeopleDetailsForVoiceSMS(searchVO);
-		
-		 smsPeopleList.setResultVotersList(influencPeopleDetailsList);
-		 smsPeopleList.setTotalResultsCount(10000);
+		int totalResultCount = influencPeopleDetailsList.get(0).getTotalResultsCount();
+		influencPeopleDetailsList.remove(0);
+		smsPeopleList.setResultVotersList(influencPeopleDetailsList);
+		smsPeopleList.setTotalResultsCount(totalResultCount);
 		
 		
 	}catch(Exception e)
