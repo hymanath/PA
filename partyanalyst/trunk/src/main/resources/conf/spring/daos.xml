@@ -1224,6 +1224,10 @@
 	
 	<bean id="voiceSmsVerifiedNumbersDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoiceSmsVerifiedNumbersDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
+	  </bean>
+	  
+	  <bean id="smsTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
 </beans>		

@@ -46,7 +46,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 	private JSONObject jObj;
 	private String task;
 	private  List<VoiceSmsResponseDetailsVO> responseDetailsList;
-	private Map<Long ,String> casteMap;
+	private Map<String ,String> casteMap;
 
 	private String fromDate;
     private String toDate;
@@ -232,11 +232,11 @@ public class VoiceSmsAction implements ServletRequestAware{
 		this.request = request;
 	}
 	
-    public Map<Long, String> getCasteMap() {
+    public Map<String, String> getCasteMap() {
 		return casteMap;
 	}
 
-	public void setCasteMap(Map<Long, String> casteMap) {
+	public void setCasteMap(Map<String, String> casteMap) {
 		this.casteMap = casteMap;
 	}
 	
@@ -372,9 +372,39 @@ public class VoiceSmsAction implements ServletRequestAware{
 				Long mobileNumber =(Long) mobileNumbersArray.get(i);
 				allMobileNumbers.add(mobileNumber);
 			}
+			
+			
+			
+			List<Long> cadreMobileNumbers = new ArrayList<Long>();
+			List<Long> influenceMobileNumbers = new ArrayList<Long>();
+			List<Long> votersMobileNumbers = new ArrayList<Long>();
+			
+			 
+			 JSONArray cadreArray = jObj.getJSONArray("cadreDetails");
+			 JSONArray influencePeopleArray = jObj.getJSONArray("influencePeopleDetails");
+			 JSONArray votersArray = jObj.getJSONArray("votersDetails");
+			 
+			 for(int i=0; i<cadreArray.length(); i++)
+				 cadreMobileNumbers.add((Long)cadreArray.get(i));
+					
+			 
+			 for(int i=0; i<influencePeopleArray.length(); i++)
+				 influenceMobileNumbers.add(((Long)influencePeopleArray.get(i)));
+					
+			 
+			 for(int i=0; i<votersArray.length(); i++)
+				 votersMobileNumbers.add((Long)votersArray.get(i));
+			 
+			 
+			 VoiceSmsResponseDetailsVO voiceSmsResponseDetailsVO = new VoiceSmsResponseDetailsVO();
+			 
+			 voiceSmsResponseDetailsVO.setCadreMobileNumbers(cadreMobileNumbers);
+			 voiceSmsResponseDetailsVO.setInfluencePeopleMobileNumbers(influenceMobileNumbers);
+			 voiceSmsResponseDetailsVO.setVotersMobileNumbers(votersMobileNumbers);
+			 voiceSmsResponseDetailsVO.setAllmobileNumbers(allMobileNumbers);
 
 			
-			 status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),jObj.getLong("senderMobileNumber"),jObj.getString("description"),allMobileNumbers);
+			 status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),jObj.getLong("senderMobileNumber"),jObj.getString("description"),voiceSmsResponseDetailsVO);
 			 
 			//status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,request.getParameter("mobileNumbers"),Long.parseLong(request.getParameter("senderMobileNumber")),request.getParameter("description"));
 		}
@@ -569,9 +599,15 @@ public class VoiceSmsAction implements ServletRequestAware{
 	{
 		try
 		{
+			HttpSession session = request.getSession();		
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
 			 jObj = new JSONObject(getTask());
 			 
-			 casteMap = voiceSmsService.getAllTheCastesOfConstituency(jObj.getLong("constituencyId"),jObj.getLong("userId") , jObj.getLong("publicationDateId"));
+			 casteMap = voiceSmsService.getAllTheCastesOfConstituency(jObj.getLong("constituencyId"),user.getRegistrationID() , jObj.getLong("publicationDateId"));
 			
 		}catch(Exception e)
 		{

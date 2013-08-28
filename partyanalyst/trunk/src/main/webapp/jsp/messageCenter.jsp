@@ -903,7 +903,7 @@ var jsObj=
 		<div id="ConstituencyDiv" style="display:none;"> 
 		 <div class="selectDivs" id="constiDiv" ><span>Select Constituency</span>
 		 <font class="requiredFont">*</font>
-		<select id="constituencyList" style="margin-left:24px;width:165px;" onchange="clearErrDiv(),isValidateFields(),getMandalOrMuncipalityList();getPublicationDate();"></select>
+		<select id="constituencyList" style="margin-left:24px;width:165px;" onchange="clearErrDiv(),isValidateFields(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"></select>
 		 </div>
 		 </div>
 	     <div class="selectDivs" id="publicationDateDiv" style="display:none;"><span>Select Publication Date</span><font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:165px;margin-left:13px;" name="publicationDateList" >
@@ -1521,6 +1521,8 @@ function getSubLevelInfluenceData(regionId,regionName,regionType,areaType,region
 	
 
 function callAjax1(param,jsObj,url){
+
+
 	var myResults;	
 	var callback = {			
 	    success : function( o ) {
@@ -2612,6 +2614,24 @@ function sendTextSms()
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "sendTextSMS.action?"+rparam;	
+			callAjax1(rparam,jsObj,url);
+
+}
+
+function getAllTheCastesOfConstituency(value)
+{
+	var jsObj=
+			{
+				task:"getAllTheCastesOfConstituency",
+                userId:1,
+                constituencyId:value,
+                publicationDateId:8,
+				message: $('#smsDescription').val()
+
+
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getAllTheCastesOfConstituency.action?"+rparam;	
 			callAjax1(rparam,jsObj,url);
 
 }
