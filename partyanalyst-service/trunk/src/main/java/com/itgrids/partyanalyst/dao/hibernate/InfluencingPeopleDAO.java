@@ -810,11 +810,17 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	}
 
 	public List<Object[]> getInfluencingPeopleDetailsToSendSMS(String query,SMSSearchCriteriaVO searchVO){
-		Query queryObj = getSession().createQuery(query);
-	//	queryObj.setParameter("userId", searchVO.getUserId());
+		Query queryObj = getSession().createQuery("select "+query);
+		queryObj.setParameter("userId", searchVO.getUserId());
 		queryObj.setFirstResult(searchVO.getStartIndex());
 		queryObj.setMaxResults(searchVO.getMaxRecords());
 		
+		return queryObj.list();
+	}
+	
+	public List<Object[]> getInfluencingPeopleDetailsToSendSMS(String query,SMSSearchCriteriaVO searchVO,String count){
+		Query queryObj = getSession().createQuery("select count(model), "+query);
+		queryObj.setParameter("userId", searchVO.getUserId());
 		return queryObj.list();
 	}
 }
