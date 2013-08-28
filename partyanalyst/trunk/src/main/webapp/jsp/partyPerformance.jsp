@@ -630,7 +630,9 @@
 		var url = "<%=request.getContextPath()%>/getStatesListAction.action?"+rparam;
 		callAjax(jsObj,url);
 	}
-	
+	$(document).ready(function(){
+	 $("#stateList").val(0);
+	});
 	//window.history.forward(1);	
   </script>
 </head> 
