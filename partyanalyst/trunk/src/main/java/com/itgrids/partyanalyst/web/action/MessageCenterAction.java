@@ -474,7 +474,7 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		verifiedNumbersCount = voiceSmsService.getVerifiedNumbersCountOfUser(userId);
 		
 		districtList = regionServiceDataImp.getDistrictsByStateID(statesList.get(0).getId());
-		
+		districtList.add(0, new SelectOptionVO(0L,"Select District"));
 		
 		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
