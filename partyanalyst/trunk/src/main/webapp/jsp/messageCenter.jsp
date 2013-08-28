@@ -984,8 +984,8 @@ var jsObj=
 	
 		<div class="switch_options" style="margin-left:415px;">
 
-			<span class="switch_enable"> Text SMS </span>
-			<span class="switch_disable"> Voice SMS </span>
+			<span class="switch_enable"> Send Text SMS </span>
+			<span class="switch_disable"> Send Voice SMS </span>
 			<input type="hidden" class="switch_val" value="1" id="switchValue"/>
 
 		</div>
