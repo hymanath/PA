@@ -624,11 +624,11 @@ function getUpdatedData(){
 			<div id="searchResult"></div>
 		</div>
 		
-			<div id="msgCenterId" style="display:none;">
+			<!--<div id="msgCenterId" style="display:none;">
 			<c:if test="${fromParent == 'messageCenter'}">
 				<input type="button" value="Add  Contacts To Send Voice SMS" onclick="addThisCadresToContacts()" class="btnClass"/>
 			</c:if>
-			</div>
+			</div>-->
 		<div id="searchResultsDiv_footer" style="text-align:center;"></div>
 		<div id="cadreProblemSelectErrorDiv" style="text-align:center;"><span id="addSelectedCadreErrorMsg"></span></div>
 		<div id="cadreProblemSelectDiv" style="text-align:center;"></div>
@@ -639,6 +639,27 @@ function getUpdatedData(){
 
 	$('document').ready(function()
 	{
+
+      $('.selectAllCadre').live("change",function(){
+		if($(this).is(':checked')){
+			$('.cadre').attr('checked','true');
+
+			$('.cadre').each(function(index,value){
+				var cadreId = $(this).val().split("-")[0];
+				var mobileNumber = $(this).val().split("-")[1];
+
+			   if(window.opener.selectedCadreDetails[cadreId] == undefined)
+				        window.opener.selectedCadreDetails[cadreId] = mobileNumber;
+
+
+			   if($.inArray(mobileNumber, window.opener.selectedMobileNumbers) == -1)
+                       window.opener.selectedMobileNumbers.push(mobileNumber);
+
+			});
+
+		}	
+	  });
+
        getCadresResults2('search');
 
 		$(".toggleDiv").click(function(){
@@ -747,8 +768,6 @@ function getCadresResults2(btnType)
 	else if(window.opener.selectedCriteria.gender == "F")
 		genderType = "Female";
 
-
-
 var jsObj=
 		{	extra				    :"one",
 			reportLevel				: window.opener.selectedCriteria.cadreLocationId,
@@ -756,8 +775,7 @@ var jsObj=
 			socialStatus			: window.opener.selectedCriteria.socialStatus,
 			socialStatusArray		: [],
 			cadreType				: "all",
-			//cadreName				: window.opener.selectedCriteria.name,
-            cadreName				: "",
+			cadreName				: window.opener.selectedCriteria.searchName,
 			searchType				: "location",
 			gender					: genderType,
 			searchCriteria			: "all",
@@ -776,31 +794,6 @@ var jsObj=
 	
 		}
 		
-		/*var jsObj1=
-		{	extra				:"one",
-			reportLevel				: 2,
-			reportLocationValue		: locationId,
-			socialStatus			: false,
-			socialStatusArray		: [],
-			cadreType				: "all",
-			cadreName				: "",
-			searchType				: "location",
-			gender					: "allGenders",
-			searchCriteria			: "all",
-			searchCriteriaArray		: [],
-			searchCriteriaValue		: "0",
-			performSearch			: "and",
-			txtAreaValue			: "",
-			includeCadreName		: "NO",
-			bloodGroupId			: "0",
-			taskType				: "search",
-			senderName				: "",
-			nameSearchTYpe			: "StartingWith", 
-			cadreRegTypeRadioValue	: "allCadres",	
-			task					: "cadreSearch",
-		    memberShipNo            :""  
-	
-		}*/
 	
 	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj);
 
@@ -809,40 +802,13 @@ var jsObj=
 		var search = "forTotalCount";
 		var url = "getCadreDetailsForSMSAjaxAction.action?"+rparam1+"&windowTask=Search&sort=total&startIndex=0&results=-5";
 		callAjaxForRegionSelect(jsObj,url);
-
-		//alert(jsObj1.extra);
 		buildCadreSearchResultDataTableForSMS(rparam1);
-		//var url = "getCadresDetailsAjaxAction.action?"+rparam;
 	}
 }
 
 
 function buildCadreSearchResultDataTableForSMS(rparam)
 {
- /*YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
-  {
-	var user = oData;
-	var id= oRecord.getData("cadreId");
-	elLiner.innerHTML ="<a href='javascript:{}' onclick='openRegistrationForm("+id+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
-		
-  };
-
-  YAHOO.widget.DataTable.deleteCadre = function(elLiner, oRecord, oColumn, oData) 
-  {
-	var user = oData;
-	var id= oRecord.getData("cadreId");
-	elLiner.innerHTML ="<a href='javascript:{}' onclick='deleteCadre("+id+",\"search\")'><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a>";
-		
-  };
-
-   YAHOO.widget.DataTable.viewDetails = function(elLiner, oRecord, oColumn, oData) 
-  {
-	var fname = oData;
-	var id= oRecord.getData("cadreId");
-	var lname= oRecord.getData("lastName");
-	elLiner.innerHTML ="<a href='javascript:{}' onclick='getCadreInfo("+id+")'>"+fname+" "+lname+" </a>";
-  };
-*/
   YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
   {
 	var name = oData;
@@ -850,36 +816,20 @@ function buildCadreSearchResultDataTableForSMS(rparam)
 	var mobile= oRecord.getData("mobile");
 	var firstName= oRecord.getData("firstName");
   if(window.opener.selectedCadreDetails[id] == undefined || mobile == "")
-      elLiner.innerHTML='<input type="checkbox"  onClick="pushIntoCadreObject(\''+id+'\',\''+mobile+'\')" name="cadreResult_check">';
+      elLiner.innerHTML='<input type="checkbox"  onClick="pushIntoCadreObject(\''+id+'\',\''+mobile+'\')" name="cadreResult_check" class="cadre"  value="'+id+'-'+mobile+'">';
   else
-     elLiner.innerHTML='<input type="checkbox" checked onClick="pushIntoCadreObject(\''+id+'\',\''+mobile+'\')" name="cadreResult_check">';	
+     elLiner.innerHTML='<input type="checkbox" checked onClick="pushIntoCadreObject(\''+id+'\',\''+mobile+'\')" name="cadreResult_check" class="cadre" value="'+id+'-'+mobile+'">';	
 				
   };
-
-  /*YAHOO.widget.DataTable.image = function(elLiner, oRecord, oColumn, oData) 
-  {
-	var cadreId= oRecord.getData("cadreId");
-	
-	if(oData != "human.jpg")
-		elLiner.innerHTML ="<img height='85px' width='85px' src='images/cadre_images/"+oData+"'/><a id='"+cadreId+"' class='removePictureLink' ><img src='images/crossout.jpg' style='text-decoration: none; border: 0px none;margin-left: 40px;' title=' Click Here to Delete Image '></a>";
-	else
-		elLiner.innerHTML ="<img height='85px' width='85px' src='images/cadre_images/"+oData+"'/>";
-  };
-  */
+  
   var CadreSearchResultColumnDefs = [ 
-		    	            {key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
+		    	            {key:"select", label: "<input type='checkbox' class='selectAllCadre'/>", formatter:YAHOO.widget.DataTable.select},
 							{key:"firstName", label: "Name",sortable: true, formatter:YAHOO.widget.DataTable.viewDetails} ,
-							//{key:"image", label: "Image",formatter:YAHOO.widget.DataTable.image}, 
 		    	            {key:"mobile", label: "Mobile", sortable: true}, 
 		    	           	{key:"strCadreLevel", label: "Cadre Level", sortable: true},
-							//{key:"email", label: "Address"},
-		    				//{key:"memberType", label: "Cadre Type",sortable:true},
 							{key:"educationStr", label: "Education",sortable:true},
 		    				{key:"professionStr", label: "Occupation",sortable:true},
-							//{key:"casteCategoryStr", label: "Caste Category",sortable:true},
                             {key:"casteCategoryStr", label: "Caste ",sortable:true},
-							//{key:"edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit},
-							//{key:"Delete", label: "Delete",formatter:YAHOO.widget.DataTable.deleteCadre}
 		    	        ]; 
 	var CadreSearchResultDataSource = new YAHOO.util.DataSource("getCadreDetailsForSMSAjaxAction.action?"+rparam+"&windowTask="+winTask+"&"); 
 	CadreSearchResultDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
@@ -964,9 +914,7 @@ function showCadreSearchResults(searchCount)
 	resultsCountEl.innerHTML = '<span>'+totalSearchCount+'</span> cadres found with this selection criteria';
 
 	var fStr = '';
-	//fStr += '<span><input type="button" class="btnClass" onclick="selectCheckBox()" value="Select All"/></span>';
-	//fStr += '<span><input type="button" class="btnClass" onclick="deSelectCheckBox()" value="DeSelect All"/></span>';
-	//fStr += '<span><input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/></span><BR><BR><BR>';
+	
 	fStr += '<span id="smsStatusTextSpan"></span>';
 	footerElmt.innerHTML = fStr;
 	footerElmt.style.display = '';
@@ -1067,11 +1015,7 @@ function pushIntoCadreObject(cadreId , mobileNumber)
 	if(window.opener.selectedCadreDetails[cadreId] == undefined)
 	{
       window.opener.selectedCadreDetails[cadreId] = mobileNumber;
-	    //window.opener.selectedMobileNumbers.push(mobileNumber);
-		 var obj = {
-					mobileNumber:mobileNumber
-				  };
-		window.opener.selectedMobileNumbers.push(obj);
+	    window.opener.selectedMobileNumbers.push(mobileNumber);	
 	}
 	else
 	{
