@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -347,9 +348,20 @@ public class VoiceSmsAction implements ServletRequestAware{
 				audioFilePath.append(IWebConstants.LIVE_VOICE_RECORDINGS_URL+"/"+user.getRegistrationID()+"/"+jObj.getString("audioFileName"));
 			else
 				audioFilePath.append("http://122.169.253.134:8080/TDP/voice_recording/test6.wav");
+			
+			JSONArray mobileNumbersArray = jObj.getJSONArray("selectedMobileNumbers");
+			
+			List<Long> allMobileNumbers = new ArrayList<Long>();
+			
+			for(int i=0; i<mobileNumbersArray.length(); i++)
+			{
+				JSONObject socialObj = mobileNumbersArray.getJSONObject(i);
+				Long mobileNumber = socialObj.getLong("mobileNumber");
+				allMobileNumbers.add(mobileNumber);
+			}
 
 			
-			 status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),jObj.getLong("senderMobileNumber"),jObj.getString("description"));
+			 status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),jObj.getLong("senderMobileNumber"),jObj.getString("description"),allMobileNumbers);
 			 
 			//status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,request.getParameter("mobileNumbers"),Long.parseLong(request.getParameter("senderMobileNumber")),request.getParameter("description"));
 		}
@@ -541,12 +553,12 @@ public class VoiceSmsAction implements ServletRequestAware{
 			searchVO.setColumnName(columnName);
 			searchVO.setOrder(order);
 			
-			votersDetailsList = voiceSmsService.getVotersDetailsBySearchToSendSMS(searchVO);
+			votersDetailsList = voiceSmsService.getVotersDetailsBySearchToSendSMS(searchVO,false);
 			
 			
              votersDetails.setResultVotersList(votersDetailsList);
-             votersDetails.setTotalResultsCount(10000);
-			
+             
+             votersDetails.setTotalCount(voiceSmsService.getVotersDetailsCountBySearchToSendSMS(searchVO,true));
 			
 		}catch(Exception e)
 		{

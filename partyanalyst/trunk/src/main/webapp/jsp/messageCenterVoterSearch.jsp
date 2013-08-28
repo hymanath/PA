@@ -109,16 +109,19 @@ var gender = '${gender}';
 </script>
 </head>
 <body>
-<div id="mainDiv">
+<!--<div id="mainDiv">
 
 <div id="voterDetailsDiv"></div>
 <div id="paginationDivId"></div>
 <div id="btnDiv" style="display:none;"><input type="button" class="btn btn-info" value="Add  Contacts To Send Voice SMS" id="phoneNoBtn" onclick="getPhoneNos()" /></div>
 
 </div>
+-->
+<h4 style="text-align:center;color:#06ABEA;">VOTER SEARCH RESULTS</h4>
 
-
+<div style="margin-left:150px;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+</div>
 
 
 
@@ -309,11 +312,12 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 
 			var voterName= oRecord.getData("name");
 			var mobileNumber = oRecord.getData("mobileNumber");
+			var voterIdCardNo = oRecord.getData("voterIdCardNo");
 
 	 if(window.opener.selectedVotersDetails[voterName] == undefined)
-		var str ='<input type="checkbox" onchange="pushIntoObject(\''+voterName+'\',\''+mobileNumber+'\')"/>';
+		var str ='<input type="checkbox" onchange="pushIntoVoterObject(\''+voterIdCardNo+'\',\''+mobileNumber+'\')"/>';
 	else
-		var str ='<input type="checkbox" checked onchange="pushIntoObject(\''+voterName+'\',\''+mobileNumber+'\')"/>';
+		var str ='<input type="checkbox" checked onchange="pushIntoVoterObject(\''+voterIdCardNo+'\',\''+mobileNumber+'\')"/>';
 
 
 		
@@ -374,7 +378,7 @@ fields: [
 "mobileNumber","houseNo","startAge","voterIdCardNo"],
 
 metaFields: {
-totalRecords: "totalResultsCount" // Access to value in the server response
+totalRecords: "totalCount" // Access to value in the server response
 },
 };
 
@@ -402,11 +406,15 @@ oDT: votersByLocBoothDataTable
 };
 }
 
-function pushIntoObject(voterName , mobileNumber)
+function pushIntoVoterObject(voterName , mobileNumber)
 {
 	if(window.opener.selectedVotersDetails[voterName] == undefined){
       window.opener.selectedVotersDetails[voterName] = mobileNumber;
-	   window.opener.selectedMobileNumbers.push(mobileNumber);
+	   //window.opener.selectedMobileNumbers.push(mobileNumber);
+	    var obj = {
+					mobileNumber:mobileNumber
+				  };
+		window.opener.selectedMobileNumbers.push(obj);
 	}
 	else{
 

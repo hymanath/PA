@@ -244,11 +244,39 @@ div.tabs div.tab.selected div.arrow{
 
 </style>
 <script>
-	var selectedCriteria={};
+
+
+var selectedVotersDetails = {
+};
+
+var selectedCadreDetails = {
+};
+
+var selectedInfluencePeopleDetails = {
+};
+
+var selectedMobileNumbers = new Array();
+var selectedCriteria={};
 
 $(document).ready(function() {
 
-	$('.searchType').click(function(){
+	$('.smsType').change(function(){
+
+		if($(this).val() == "text")
+		{
+			$('#textSmsDiv').show();
+			$('#voiceSmsDiv').hide();
+
+		}else if($(this).val() == "voice")
+		{
+			$('#textSmsDiv').hide();
+			$('#voiceSmsDiv').show();
+
+		}
+
+	});
+
+	$('.searchType').change(function(){
 		if($(this).val() == "cadre")
 		{
 			$('#houseDiv').hide();
@@ -314,6 +342,10 @@ $(document).ready(function() {
 
 	$('#searchCandidatesId').click(function(){
 
+        var selectedCasts = new Array();
+		if( $('#casteId').val() != null)
+		 selectedCasts = $('#casteId').val();
+
 		var searchName=$("#searchName").val();
 		var startAge =$("#age1").val();
 		var endAge =$("#age2").val();		
@@ -333,13 +365,15 @@ $(document).ready(function() {
 	  var isAgeSelected = (startAge.trim() == "") && endAge.trim() == "" ? false : true;
 
 	 // var isCasteSelected = ($("#searchHouseNo").val().trim() == "" )? false : true;
-	  var isCasteSelected = false;
+	  var isCasteSelected = (selectedCasts.length == 0) ? false : true;
 
 	  var isFamilySelected = (houseNo.trim() == "") ? false : true;
 
 	  var isNameSelected = (searchName.trim() == "") ? false : true;
 	  
 	  var isGenderSelected =  (gender == "All") ? false : true;
+
+	  
 
 
 		
@@ -536,7 +570,7 @@ var jsObj=
 		 <div class="selectDivs" id="stateDiv">
 			 <span>Select State</span>
 			 <font class="requiredFont">*</font>
-			  <s:select theme="simple" class="selectWidth" style="margin-left:65px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv()"/>
+			  <s:select theme="simple" class="selectWidth" style="margin-left:65px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv(),"/>
 		 </div>
 		 
 		 <div class="selectDivs" id="districtDiv" style="display:none;">
@@ -605,8 +639,8 @@ var jsObj=
 	   <div class="selectDiv" style="margin-bottom: 10px;" id="casteDiv">
 	    Caste  <span style="margin-left:90px;">:</span><!--<input type="text" id="searchCaste" style="width:154px;margin-left: 25px;">-->
 		<select multiple="true" id="casteId">
-		 <option value="1">THIS IS ONE</option>
-		 <option value="2">THIS IS TWO</option>
+		 <option value="292">MUSLIM</option>
+		 <option value="161">YADAVA</option>
 		</select>
 	  </div>	  
     <div class="selectDiv" style="margin-bottom: 10px;" id="houseDiv">
@@ -618,13 +652,21 @@ var jsObj=
 	 </div>
 	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;"> Search </button> 
 
+		 <a class="btn" href="javascript:{checkMobileNumbers()}">Check</a>
+
    </div>
 
   </div>
 
+<div style="text-align:center;">
+
+<label>  <input type="radio" name="smsType" class="smsType" value="text"/>Text SMS</label>
+<label>  <input type="radio" name="smsType" class="smsType" value="voice"/>Voice SMS</label>
+</div>
+
 
  <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 31px;" class="span12" >
-
+<!--
 
 <div id="influenceDiv">
 	<h4 style="background:#06ABEA;padding:7px;text-align:center;clear:both;color:#fff;">AVAILABLE INFLUENCING PEOPLE</h4>
@@ -635,9 +677,16 @@ var jsObj=
 
 </div>
 
+-->
+
+<div style="clear:both;" id="textSmsDiv">
+
+<div style="text-align:center;margin-top:5px;"><label>Enter Message T0 send:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
+
+</div>
 
 <!-- SEND VOICE SMS START-->
-<div style="clear:both;">
+<div style="clear:both;display:none;" id="voiceSmsDiv">
 
 <h4 style="color:#FFF;text-align:center;background:#06ABEA;padding:7px;">SEND VOICE SMS</h4>
 
@@ -664,10 +713,10 @@ var jsObj=
   <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
 
 <div id="invalidContactsDiv" style="float: right; margin-top: -200px; position: static; width: 200px;">
- <span id="notValidContactSpan" style="border: 1px solid rgb(156, 156, 156); width: 180px; height: 200px; font-weight: bold;"><font style="margin-left: 40px;">Invalid Contacts:</font>
+ <!--<span id="notValidContactSpan" style="border: 1px solid rgb(156, 156, 156); width: 180px; height: 200px; font-weight: bold;"><font style="margin-left: 40px;">Invalid Contacts:</font>
  
  <div id="notValidContact" style="width: 175px; margin-left: 5px; overflow: scroll; height: 182px;"></div>
- </span>
+ </span>-->
  </div>
   <h4 style="color:#3A87AD;margin:40px 0px 0px 128px;"><u>AUDIO FILES AVAILABLE</u><font style="color:red;">*</font><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files"/></a></h4>
   <div id="audioFilesDiv"></div>
@@ -801,14 +850,14 @@ function validateFieldsForSendingSms()
 		error = true;
 	}
 	
-	if(notvalidContactArr.length >0){
+/*	if(notvalidContactArr.length >0){
 		if(notvalidContactArr.length >0){
 		str+='<b>Enter all valid Mobile Numbers </b></br>';
 		error = true;
 		}
 		else
 		error = false;
-	}
+	}*/
 	if(audioFileName == undefined)
 	{
 		str+='<b>Select an audio to send</b></br>';
@@ -854,6 +903,7 @@ function ajaxToSendSms(){
                 audioFileName:audioFileName,
                 mobileNumbers:mobileNumbers,
                 senderMobileNumber:senderNumber,
+                selectedMobileNumbers:selectedMobileNumbers,
 				description:description
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1234,6 +1284,10 @@ function callAjax1(param,jsObj,url){
 				    {
 						 alert(myResults);
 				    }
+					else if(jsObj.task == "getAllTheCastesOfConstituency")
+				    {
+                            alert(myResults);
+					}
 					
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
@@ -1327,7 +1381,7 @@ function buildMobileNos(results,jsObj){
 var notvalidContactArr;
 var validContactArr;
 
-function validateContacts(personArr){
+/*function validateContacts(personArr){
 
 	notvalidContactArr = new Array();
 	validContactArr = new Array();
@@ -1359,7 +1413,7 @@ function validateContacts(personArr){
 	if(notvalidContactArr != '' && notvalidContactArr.length>0)
 	buildInvalidNumbers(notvalidContactArr);
 }
-
+*/
 var searchType ='Booth';
 function buildInvalidNumbers(notvalidContactArr){
 	$('#notValidContactSpan').css('display','block');
@@ -1584,7 +1638,7 @@ window.receiveFromCadreChild = function(data) {
 	
 	//$('#mobileNumber').val(voterSearchPhoneNo);
 	//validateContacts(voterSearchPhoneNo);
-	validateContacts(personArr);
+	//validateContacts(personArr);
 	
 	/* //str+='<h4 style="padding:15px;">Contacts for Sending SMS</h4>';
 	for( var i=0, l=data.length; i<l; i++ ) {
@@ -1627,7 +1681,7 @@ window.receiveFromVoterSearchChild = function(data) {
 	
 	//$('#mobileNumber').val(voterSearchPhoneNo);
 	//validateContacts(voterSearchPhoneNo);
-	validateContacts(personArr);
+	//validateContacts(personArr);
 }
 
 </script>
@@ -2182,13 +2236,10 @@ function showReportsLevels(value)
 //voter search
 
 
-var selectedVotersDetails = {
-};
-
-var selectedCadreDetails = {
-};
-var selectedMobileNumbers = new Array();
-
+function checkMobileNumbers()
+{
+ console.log(selectedMobileNumbers);
+}
 </script>
  </body>
  

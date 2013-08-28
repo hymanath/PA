@@ -110,6 +110,7 @@ var gender = '${gender}';
 </script>
 </head>
 <body>
+<!--
 <div id="mainDiv">
 
 <div id="voterDetailsDiv"></div>
@@ -117,9 +118,15 @@ var gender = '${gender}';
 <div id="btnDiv" style="display:none;"><input type="button" class="btn btn-info" value="Add  Contacts To Send Voice SMS" id="phoneNoBtn" onclick="getPhoneNos()" /></div>
 
 </div>
+-->
 
+<div class="span11" style="margin-left:200px;">
+ <div class="row">
+  <h4 style="text-align:center;color:#06ABEA;">INFLUENCE SEARCH RESULTS</h4>
 
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+	</div>
+</div>
 
 
 
@@ -263,9 +270,9 @@ $(document).ready(function(){
 
 });
 
-getVotersDetailsBySearchCritteria();
+getInfluencePeopleDetailsBySearchCritteria();
 
-function getVotersDetailsBySearchCritteria()
+function getInfluencePeopleDetailsBySearchCritteria()
 {
 
 /*
@@ -316,9 +323,9 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 			var mobileNumber = oRecord.getData("mobileNumber");
 
 	 if(window.opener.selectedVotersDetails[voterName] == undefined)
-		var str ='<input type="checkbox" onchange="pushIntoObject(\''+voterName+'\',\''+mobileNumber+'\')"/>';
+		var str ='<input type="checkbox" onchange="pushIntoInfluencePeopleObject(\''+voterName+'\',\''+mobileNumber+'\')"/>';
 	else
-		var str ='<input type="checkbox" checked onchange="pushIntoObject(\''+voterName+'\',\''+mobileNumber+'\')"/>';
+		var str ='<input type="checkbox" checked onchange="pushIntoInfluencePeopleObject(\''+voterName+'\',\''+mobileNumber+'\')"/>';
 
 
 		
@@ -404,15 +411,21 @@ oDT: votersByLocBoothDataTable
 };
 }
 
-function pushIntoObject(voterName , mobileNumber)
+function pushIntoInfluencePeopleObject(voterName , mobileNumber)
 {
-	if(window.opener.selectedVotersDetails[voterName] == undefined){
-      window.opener.selectedVotersDetails[voterName] = mobileNumber;
-	   window.opener.selectedMobileNumbers.push(mobileNumber);
+	if(window.opener.selectedInfluencePeopleDetails[voterName] == undefined){
+       window.opener.selectedInfluencePeopleDetails[voterName] = mobileNumber;
+	   //window.opener.selectedMobileNumbers.push(mobileNumber);
+
+	   var obj = {
+					mobileNumber:mobileNumber
+				  };
+					window.opener.selectedMobileNumbers.push(obj);
+
 	}
 	else{
 
-		delete window.opener.selectedVotersDetails[voterName];
+		delete window.opener.selectedInfluencePeopleDetails[voterName];
 
 		var index =  window.opener.selectedMobileNumbers.indexOf(mobileNumber);
          array.splice(index, 1);

@@ -331,10 +331,14 @@ function getUpdatedData(){
 }
 
 </style>
+
 </head>
 <body>
+
+
+ <h3 style="text-align:center;color:#06ABEA;">CADRE SEARCH RESULTS</h3>
 	
-	<div id="cadreSearchHeading"><center>
+	<!--<div id="cadreSearchHeading"><center>
         <table border="0" cellpadding="0" cellspacing="0">          
           <tr>
             <td><img src="images/icons/constituencyManagement/left_blue_main.png"/>
@@ -352,7 +356,7 @@ function getUpdatedData(){
             <td><img src="images/icons/constituencyManagement/right_blue_main.png"/></td>
           </tr>
         </table>    	
-     </center></div>
+     </center></div>-->
 	<center>
 	<!--<div id="CadreSearchMain">
 		<div id="basicCadresSearch">
@@ -604,13 +608,13 @@ function getUpdatedData(){
 			</table>	
 		</div>
 	</div>-->
-	<input type="button" class="btnClass" onclick="getCadresResults2('search')" value="Search"/>
+	<!--<input type="button" class="btnClass" onclick="getCadresResults2('search')" value="Search"/>-->
 
 	</center>
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
 
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
-		<div id="searchResultsDiv_head"></div>
+		<!--<div id="searchResultsDiv_head"></div>-->
 
 		<span id="smsStatusTextSpan1"></span>
 	
@@ -635,6 +639,8 @@ function getUpdatedData(){
 
 	$('document').ready(function()
 	{
+       getCadresResults2('search');
+
 		$(".toggleDiv").click(function(){
 			$(".toggleDiv").hide();
 			$(".toggleDiv1").show();
@@ -1061,7 +1067,11 @@ function pushIntoCadreObject(cadreId , mobileNumber)
 	if(window.opener.selectedCadreDetails[cadreId] == undefined)
 	{
       window.opener.selectedCadreDetails[cadreId] = mobileNumber;
-	    window.opener.selectedMobileNumbers.push(mobileNumber);
+	    //window.opener.selectedMobileNumbers.push(mobileNumber);
+		 var obj = {
+					mobileNumber:mobileNumber
+				  };
+		window.opener.selectedMobileNumbers.push(obj);
 	}
 	else
 	{
