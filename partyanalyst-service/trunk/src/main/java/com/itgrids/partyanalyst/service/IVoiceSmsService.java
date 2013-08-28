@@ -20,7 +20,7 @@ public interface IVoiceSmsService {
 	public int getVerifiedNumbersCountOfUser(Long userId);
 	
 	public String saveCustomerContactsUpdations(Long custmerId,String mobileNo);
-	public Map<Long,String> getAllTheCastesOfConstituency(Long constituencyId , Long userId , Long publicationDateId);
+	public Map<String,String> getAllTheCastesOfConstituency(Long constituencyId , Long userId , Long publicationDateId);
 	public List<SMSSearchCriteriaVO> getVotersDetailsBySearchToSendSMS(SMSSearchCriteriaVO searchVO ,boolean forCount);
 
 	public List<SMSSearchCriteriaVO> getAllInfluencingPeopleDetailsForVoiceSMS(SMSSearchCriteriaVO searchVO);

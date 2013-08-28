@@ -445,18 +445,18 @@ public class VoiceSmsService implements IVoiceSmsService {
 		}	
 	}
 	
-	public Map<Long,String> getAllTheCastesOfConstituency(Long constituencyId , Long userId , Long publicationDateId)
+	public Map<String,String> getAllTheCastesOfConstituency(Long constituencyId , Long userId , Long publicationDateId)
 	{
 		log.debug("Entered into the getAllTheCastesOfConstituency service method");
 		
-		Map<Long,String> casteDetailsMap = new HashMap<Long, String>();
+		Map<String,String> casteDetailsMap = new HashMap<String, String>();
 		
 		try
 		{
 			List<Object[]> casteDetailsList = userVoterDetailsDAO.getAllTheCastesOfConstituency(constituencyId, userId, publicationDateId);
 			
 			for(Object[] obj:casteDetailsList)
-				casteDetailsMap.put((Long)obj[0], obj[1].toString());
+				casteDetailsMap.put(obj[0].toString(), obj[1].toString());
 			
 		}catch(Exception e)
 		{
