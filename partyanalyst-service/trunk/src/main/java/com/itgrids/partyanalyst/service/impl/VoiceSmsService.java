@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.util.StringUtil;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
@@ -142,12 +143,22 @@ public class VoiceSmsService implements IVoiceSmsService {
 	}
 	
 	
-	public String sendVoiceSMS(String audioPath ,Long userId , String mobileNumbers,Long senderMobileNumber,String description)
+	public String sendVoiceSMS(String audioPath ,Long userId , String mobileNumbers,Long senderMobileNumber,String description,List<Long> allMobileNumbers)
 	{
 		log.debug("Entered into the sendVoiceSMS service method");
 		int noOfSmsSent = 1;
 		try {
 			
+			StringBuilder result = new StringBuilder();
+		    for(Long number : allMobileNumbers) {
+		        result.append(number);
+		        result.append(",");
+		    }
+		    
+		    String mobileNumbersString = "";
+		    if(result.length() >0)
+		     mobileNumbersString = result.substring(1);
+		    	
 					
 		    //Date mydate = new Date(System.currentTimeMillis());
             //String path="http://www.partyanalyst.com/uploaded_files/"+userId+"/"+audioPath;
@@ -159,7 +170,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			//URL url = new URL("http://voice.dial4sms.com/send_voice_mail.php?user=samba&password=564396&sender=919985420156&mobile_no="+mobileNumbers+"&url_file_name=			http://122.169.253.134:8080/PartyAnalyst/voice_recordings/1/test2.wav");
 			//URL url = new URL("http://control.msg91.com/send_voice_mail.php?user=karthik1&password=184314&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name="+audioPath);
 			
-			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name="+audioPath);
+			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbersString+"&url_file_name="+audioPath);
 			//URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name=http://www.partyanalyst.com/voice_recordings//1/test.wav");
 
 
@@ -456,7 +467,25 @@ public class VoiceSmsService implements IVoiceSmsService {
 		return casteDetailsMap;
 	}
 	
-	public List<SMSSearchCriteriaVO> getVotersDetailsBySearchToSendSMS(SMSSearchCriteriaVO searchVO )
+	public Long getVotersDetailsCountBySearchToSendSMS(SMSSearchCriteriaVO searchVO ,boolean forCount)
+	{
+		try
+		{
+			List<SMSSearchCriteriaVO> list = getVotersDetailsBySearchToSendSMS(searchVO ,forCount);
+			
+			if(list != null)
+				return list.get(0).getTotalCount();
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return 0L;
+		
+	}
+	
+	public List<SMSSearchCriteriaVO> getVotersDetailsBySearchToSendSMS(SMSSearchCriteriaVO searchVO ,boolean forCount)
 	{
 		log.debug("Entered into the getVotersDetailsBySearchToSendSMS service method");
 		List<SMSSearchCriteriaVO> resultList = new ArrayList<SMSSearchCriteriaVO>();
@@ -465,6 +494,13 @@ public class VoiceSmsService implements IVoiceSmsService {
 		{
 			StringBuffer queryString = new StringBuffer();
 			
+			if(forCount == true)
+			{
+				queryString.append("select count(UVD.voter.name) from UserVoterDetails UVD , BoothPublicationVoter BPV " +
+				           "where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+			
+			}
+			else
 			queryString.append("select UVD.voter.name ,UVD.voter.houseNo ,UVD.voter.mobileNo,UVD.voter.age,UVD.voter.voterIDCardNo from UserVoterDetails UVD , BoothPublicationVoter BPV " +
 					           "where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
 			
@@ -505,25 +541,39 @@ public class VoiceSmsService implements IVoiceSmsService {
 			queryString.append(" order by UVD.voter.name "+ searchVO.getOrder());
 			
 		
+			List<Object[]> votersList = new ArrayList<Object[]>();
+			Long count = 0L;
 			
-			List<Object[]> votersList = userVoterDetailsDAO.getVotersDetailsBySearchToSendSMS(queryString.toString(),searchVO);
-			
-			
-			for(Object[] voterDetails:votersList)
+			if(forCount == true)
 			{
-				
-				SMSSearchCriteriaVO vo = new SMSSearchCriteriaVO();
-				
-				vo.setName(voterDetails[0].toString());
-				vo.setHouseNo(voterDetails[1].toString());
-				if(voterDetails[2] != null && !voterDetails[2].toString().trim().equalsIgnoreCase(""))
-					vo.setMobileNumber(Long.parseLong(voterDetails[2].toString()));
-				else
-				vo.setMobileNumber(999999999L);
-				vo.setStartAge(Integer.parseInt(voterDetails[3].toString()));
-				vo.setVoterIdCardNo(voterDetails[4].toString());
-				resultList.add(vo);
-				
+				 List<Long> countList = userVoterDetailsDAO.getVotersDetailsCountBySearchToSendSMS(queryString.toString(),searchVO);
+				 count = countList.get(0);
+				 
+				 SMSSearchCriteriaVO vo = new SMSSearchCriteriaVO();
+				 
+				 vo.setTotalCount(count);
+				 resultList.add(vo);
+			}
+			else{
+			   votersList = userVoterDetailsDAO.getVotersDetailsBySearchToSendSMS(queryString.toString(),searchVO);			
+			
+			
+						for(Object[] voterDetails:votersList)
+						{
+							
+							SMSSearchCriteriaVO vo = new SMSSearchCriteriaVO();
+							
+							vo.setName(voterDetails[0].toString());
+							vo.setHouseNo(voterDetails[1].toString());
+							if(voterDetails[2] != null && !voterDetails[2].toString().trim().equalsIgnoreCase(""))
+								vo.setMobileNumber(Long.parseLong(voterDetails[2].toString()));
+							else
+							vo.setMobileNumber(999999999L);
+							vo.setStartAge(Integer.parseInt(voterDetails[3].toString()));
+							vo.setVoterIdCardNo(voterDetails[4].toString());
+							resultList.add(vo);
+							
+						}
 			}
 			
 		}catch(Exception e)

@@ -29,7 +29,14 @@ public class SMSSearchCriteriaVO {
 	private String order;
 	private String columnName;
 	private String voterIdCardNo;
+	private Long totalCount;
 	
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	public String getVoterIdCardNo() {
 		return voterIdCardNo;
 	}
