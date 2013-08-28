@@ -143,14 +143,14 @@ public class VoiceSmsService implements IVoiceSmsService {
 	}
 	
 	
-	public String sendVoiceSMS(String audioPath ,Long userId , String mobileNumbers,Long senderMobileNumber,String description,List<Long> allMobileNumbers)
+	public String sendVoiceSMS(String audioPath ,Long userId , String mobileNumbers,Long senderMobileNumber,String description,VoiceSmsResponseDetailsVO voiceSmsResponseDetailsVO )
 	{
 		log.debug("Entered into the sendVoiceSMS service method");
 		int noOfSmsSent = 1;
 		try {
 			
 			StringBuilder result = new StringBuilder();
-		    for(Long number : allMobileNumbers) {
+		    for(Long number : voiceSmsResponseDetailsVO.getAllmobileNumbers()) {
 		        result.append(number);
 		        result.append(",");
 		    }
@@ -254,7 +254,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 				responseVO.setResponseId(details.getVoiceSmsResponseDetailsId());
 				responseVO.setResponseCode(details.getResponseCode());
 				responseVO.setNumbers(details.getMobileNumbers());
-				responseVO.setDateSent(details.getSentDate().toString());
+				responseVO.setDateSent(details.getTimeSent().toString());
 				responseVO.setDescription(details.getSmsDescription());
 				responseVO.setUserName(details.getUser().getFirstName()+" "+details.getUser().getLastName());
 				resultList.add(responseVO);
