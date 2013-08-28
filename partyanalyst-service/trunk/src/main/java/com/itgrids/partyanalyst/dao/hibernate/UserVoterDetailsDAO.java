@@ -2240,7 +2240,7 @@ IUserVoterDetailsDAO{
 	public List<Object[]> getAllTheCastesOfConstituency(Long constituencyId , Long userId,Long publicationDateId)
 	{
 		
-		Query query = getSession().createQuery("select UVD.casteState.caste.casteId , UVD.casteState.caste.casteName from UserVoterDetails UVD " +
+		Query query = getSession().createQuery("select UVD.casteState.caste.casteId , UVD.casteState.caste.casteName from UserVoterDetails UVD ,  " +
 				"BoothPublicationVoter BPV where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and " +
 				" BPV.booth.publicationDate.publicationDateId = :publicationDateId and BPV.booth.constituency.constituencyId = :constituencyId");
 		
@@ -2277,5 +2277,32 @@ IUserVoterDetailsDAO{
 		return query.list();
 		
 	}
+	
+	public List<Long> getVotersDetailsCountBySearchToSendSMS(String queryString,SMSSearchCriteriaVO searchVO)
+	{
+		Query query = getSession().createQuery(queryString);
+		
+		if(searchVO.isFamilySelected())
+			query.setParameter("houseNo", searchVO.getHouseNo());
+		
+		if(searchVO.isCasteSelected())
+			query.setParameterList("casteIds", searchVO.getSelectedCastes());
+		
+		if(searchVO.isGenderSelected())
+			query.setParameter("gender", searchVO.getGender());
+		
+		
+		query.setParameter("locationValue", searchVO.getLocationValue());
+		//query.setParameter("gender", searchVO.getGender());
+		query.setParameter("userId", searchVO.getUserId());
+		query.setParameter("publicationDate", searchVO.getPublicationDateId());
+		
+		
+		return query.list();
+		
+	}
+	
+	
+	
 	
 }
