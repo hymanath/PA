@@ -37,9 +37,15 @@ public class SmsHistory extends BaseModel implements Serializable {
 	private User user;
 	private Long userId;
 	
+	private SmsType smsType;
+	private Long smsTypeId;
+	private Long smsResponseDetailsId;
+	private VoiceSmsResponseDetails voiceSmsResponseDetails;
+	
 		
 	// Constructors
 
+	
 	/** default constructor */
 	public SmsHistory() {
 	}
@@ -127,6 +133,49 @@ public class SmsHistory extends BaseModel implements Serializable {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="sms_type_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SmsType getSmsType() {
+		return smsType;
+	}
+
+	public void setSmsType(SmsType smsType) {
+		this.smsType = smsType;
+	}
+
+	@Column(name="sms_type_id")
+	public Long getSmsTypeId() {
+		return smsTypeId;
+	}
+
+	public void setSmsTypeId(Long smsTypeId) {
+		this.smsTypeId = smsTypeId;
+	}
+	
+   @Column(name="voice_sms_response_details_id")
+	public Long getSmsResponseDetailsId() {
+		return smsResponseDetailsId;
+	}
+
+	public void setSmsResponseDetailsId(Long smsResponseDetailsId) {
+		this.smsResponseDetailsId = smsResponseDetailsId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="voice_sms_response_details_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoiceSmsResponseDetails getVoiceSmsResponseDetails() {
+		return voiceSmsResponseDetails;
+	}
+
+	public void setVoiceSmsResponseDetails(
+			VoiceSmsResponseDetails voiceSmsResponseDetails) {
+		this.voiceSmsResponseDetails = voiceSmsResponseDetails;
 	}
 
 }

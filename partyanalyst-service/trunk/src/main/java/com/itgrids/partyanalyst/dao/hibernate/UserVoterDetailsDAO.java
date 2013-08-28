@@ -2240,9 +2240,18 @@ IUserVoterDetailsDAO{
 	public List<Object[]> getAllTheCastesOfConstituency(Long constituencyId , Long userId,Long publicationDateId)
 	{
 		
-		Query query = getSession().createQuery("select UVD.casteState.caste.casteId , UVD.casteState.caste.casteName from UserVoterDetails UVD ,  " +
+	/*	Query query = getSession().createQuery("select UVD.casteState.caste.casteId , UVD.casteState.caste.casteName from UserVoterDetails UVD ,  " +
 				"BoothPublicationVoter BPV where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and " +
-				" BPV.booth.publicationDate.publicationDateId = :publicationDateId and BPV.booth.constituency.constituencyId = :constituencyId");
+				" BPV.booth.publicationDate.publicationDateId = :publicationDateId and BPV.booth.constituency.constituencyId = :constituencyId");*/
+		
+		
+		/*Query query = getSession().createQuery("select UVD.casteState.casteStateId, UVD.casteState.caste.casteName from UserVoterDetails UVD ,  " +
+				"BoothPublicationVoter BPV where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and " +
+				" BPV.booth.publicationDate.publicationDateId = :publicationDateId and BPV.booth.constituency.constituencyId = :constituencyId " +
+				"group by UVD.casteState.casteStateId order by UVD.casteState.caste.casteName");
+		*/
+		Query query = getSession().createQuery("select distinct model.casteState.casteStateId , model.casteState.caste.casteName from VoterCastInfo model " +
+				"where model.userId = :userId and model.publicationDateId = :publicationDateId and model.reportLevelValue = :constituencyId and model.voterReportLevel.voterReportLevelId = 1");
 		
 		query.setParameter("userId", userId);
 		query.setParameter("constituencyId", constituencyId);

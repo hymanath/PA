@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,7 +25,7 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 @Entity
-@Table(name="voice_sms_response_details")
+@Table(name="sms_response_details")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class VoiceSmsResponseDetails extends BaseModel implements Serializable{
 
@@ -32,10 +35,15 @@ public class VoiceSmsResponseDetails extends BaseModel implements Serializable{
 	
 	private Long noOfSmsSent;
 	private String responseCode;
-	private Date sentDate; 
+	private Date timeSent; 
 	private User user;
 	private String mobileNumbers;
 	private String smsDescription;
+	private Long smsTypeId;
+	private SmsType smsType;
+	
+	private Set<SmsHistory> smsHistory = new HashSet<SmsHistory>(0);
+
 	
 
 	@Id
@@ -77,11 +85,11 @@ public class VoiceSmsResponseDetails extends BaseModel implements Serializable{
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_sent")
-	public Date getSentDate() {
-		return sentDate;
+	public Date getTimeSent() {
+		return timeSent;
 	}
-	public void setSentDate(Date sentDate) {
-		this.sentDate = sentDate;
+	public void setTimeSent(Date sentDate) {
+		this.timeSent = sentDate;
 	}
 	
 	@Column(name="mobile_numbers" , length = 500)
@@ -99,6 +107,35 @@ public class VoiceSmsResponseDetails extends BaseModel implements Serializable{
 	}
 	public void setSmsDescription(String smsDescription) {
 		this.smsDescription = smsDescription;
+	}
+	
+	@Column(name="sms_type_id")
+	public Long getSmsTypeId() {
+		return smsTypeId;
+	}
+	public void setSmsTypeId(Long smsTypeId) {
+		this.smsTypeId = smsTypeId;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "sms_type_id",insertable = false,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SmsType getSmsType() {
+		return smsType;
+	}
+	public void setSmsType(SmsType smsType) {
+		this.smsType = smsType;
+	}
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voiceSmsResponseDetails")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<SmsHistory> getSmsHistory() {
+		return smsHistory;
+	}
+	public void setSmsHistory(Set<SmsHistory> smsHistory) {
+		this.smsHistory = smsHistory;
 	}
 	
 }
