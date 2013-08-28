@@ -343,8 +343,7 @@ public class VoterDataUploadService implements IVoterDataUploadService{
 	    			gender = voterVO.getGender();
 	    			age = voterVO.getAge();
 	    			voterIDCardNo = voterVO.getVoterIDCardNo();
-	    			voter = new Voter(houseNo, relationshipType,gender, 
-	    					age, voterIDCardNo, null);
+	    			voter = new Voter();
 	    			
 	    			
 	    			
