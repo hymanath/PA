@@ -317,6 +317,7 @@ lable{line-height:40px;}
 
 	<!--View your Locality-->
 	<div class="widget-block" contentindex="3c" >
+	<div id="errormsg" style="color:red;font-weight:bold;"></div>
 <h5>View Your Locality</h5>
 <div>
 <table>								
@@ -340,7 +341,6 @@ lable{line-height:40px;}
 </div>
 </td>									
 </tr>
-
 <tr>
 <td style=""><div id="localBodiesSelectDiv_label"></div></td>
 </tr>
