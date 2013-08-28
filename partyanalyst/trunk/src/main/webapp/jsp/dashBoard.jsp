@@ -841,6 +841,7 @@ lable{line-height:40px;}
 
 <script>
  $(document).ready(function(){
+    $("#floatingDiv_relative_main").hide();
 	$('.active').removeClass(); 
 	$('#dashBoardBtn').css("background-color","#0088CC"); 
 	$('#dashBoardBtn').css("border-radius","4px 4px 4px 4px");
@@ -2211,6 +2212,19 @@ function populateConstituenyes(myresults)
 	$("#sugOldTarconstituencyId option[value=0]").remove();
 	
 }
+function checkForUserStatus()
+{
+	var status = "${sessionScope.status}";
+	if(status != null && status.trim().length > 0)
+	{
+		$('#messagediv').html('<span id="timeoutid" style="color:green;">Updated Successfully</span>');	
+		 <c:remove var="status" scope="session" />  
+         setTimeout(function(){	
+         $('#timeoutid').html('');
+		 }, 3000);
+	}
+}
+checkForUserStatus();
 </script>
 
 </body>
