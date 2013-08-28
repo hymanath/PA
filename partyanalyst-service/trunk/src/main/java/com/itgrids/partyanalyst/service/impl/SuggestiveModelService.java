@@ -3316,7 +3316,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						  
 					  }
 				   
-					     
+				  if(selectedPartyTotal == null)
+					  selectedPartyTotal = 0L;
+				  if(comparePartyTotal == null)
+					  comparePartyTotal = 0L;
+				  
 				  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      
