@@ -227,6 +227,8 @@ Quick Links</h2>
 							<!--View your Locality-->
 						
 							<div class="widget-block" contentindex="3c" >
+							<div id="errormsg" style="color:red;font-weight:bold;"></div>
+
 								<h5>View Your Locality</h5>
                    				<div>
 									<table>								
@@ -244,15 +246,13 @@ Quick Links</h2>
 											<tr>
 												<td>
 													<div id="localBodiesRadioDiv_data">
-														<input type="radio" value="5" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality <br>
-														<input type="radio" value="6" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Corporation <br>
+														<input type="radio" value="5"    onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Muncipality <br>
+														<input type="radio" value="6" onclick="  getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Corporation <br>
 														<input type="radio" value="7" onclick="getSelectElmtForLocalBody(this.value)" name="localBodyRadio"/>Greater Municipal Corp<br>
 													</div>
 												</td>									
 											</tr>
-                                            <tr>
-												<td><span id="errormsg" style="color:red;font-size:12px"></span> </td>
-											</tr>
+                                            
 											
 											<tr>
 												<td style=""><div id="localBodiesSelectDiv_label"></div></td>
