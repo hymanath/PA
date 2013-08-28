@@ -60,7 +60,8 @@
 		<class>com.itgrids.partyanalyst.model.QuestionOptions</class>
 		<class>com.itgrids.partyanalyst.model.VoiceRecordingDetails</class>
 		<class>com.itgrids.partyanalyst.model.VoiceSmsResponseDetails</class>
-		<class>com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers</class>		
+		<class>com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers</class>	
+		<class>com.itgrids.partyanalyst.model.SmsType</class>	
 		
 		
 		
