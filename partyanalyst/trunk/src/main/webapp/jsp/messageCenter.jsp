@@ -919,15 +919,9 @@ var jsObj=
     <div class="main-mbg">Message Center</div>
  </div>
 
-  <div style="height:auto;border:1px solid #06ABEA;margin:10px 10px 10px 30px;" class="span12" >
+  <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
 
 
-
-   <div class="span11" style="margin:9px 0px 10px 337px;">
-    <label>No Of Cadre Selected:<span id="cadreCount" style="font-weight:bold;">0</span>&nbsp;&nbsp;&nbsp;<a href="javascript:{removeCadre()}" title="Click here to remove selected cadre numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
-    <label>No Of Influencing People Selected:<span id="influencePeopleCount" style="font-weight:bold;">0</span>&nbsp;&nbsp;&nbsp;<a href="javascript:{removeInfluencePeople()}" title="Click here to remove selected influencing people numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
-    <label>No Of Voters Selected:<span id="voterCount" style="font-weight:bold;">0</span>&nbsp;&nbsp;&nbsp;<a href="javascript:{removeVoters();}" title="Click here to remove selected voter numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
-  </div>
 
 
 
@@ -938,7 +932,7 @@ var jsObj=
 		<label style="float:left;"> <input type="radio" name="searchFor" value="voter" class="searchType"  style="margin:0px;"/>&nbsp;&nbsp;&nbsp;Voter</label>
 	 </div>
   
-  <div class="widget whitegloss span5"  id="voterSearchDiv1" style="float:left;border:1px solid #06ABEA; color: #2A4F97;margin-left: 290px;">
+  <div class="widget whitegloss span5"  id="voterSearchDiv1" style="border:0;text-align:center;margin:6px 0px 13px 256px;">
         
 		   
 		<div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
@@ -1058,6 +1052,12 @@ var jsObj=
 	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;" onclick="isValidateFields();"> Search </button> 
 
 
+  <!-- <div class="span11" style="margin:9px 0px 10px 337px;">
+    <label>No Of Cadre Selected:<span id="cadreCount" style="font-weight:bold;">0</span>&nbsp;&nbsp;&nbsp;<a href="javascript:{removeCadre()}" title="Click here to remove selected cadre numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
+    <label>No Of Influencing People Selected:<span id="influencePeopleCount" style="font-weight:bold;">0</span>&nbsp;&nbsp;&nbsp;<a href="javascript:{removeInfluencePeople()}" title="Click here to remove selected influencing people numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
+    <label>No Of Voters Selected:<span id="voterCount" style="font-weight:bold;">0</span>&nbsp;&nbsp;&nbsp;<a href="javascript:{removeVoters();}" title="Click here to remove selected voter numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
+  </div>-->
+
 
 
    </div>
@@ -1068,7 +1068,7 @@ var jsObj=
 
 
 	
-<div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 20px 31px;padding:6px;" class="span12" >
+<div style="height:auto;border:1px solid #06ABEA;padding:6px;margin-bottom:20px;" class="span12" >
 
  <div style="text-align:center;"><label>You can enter mobile numbers manually here.(Add country code before mobile number):<font style="color:red;">*</font><br>Example:919999999999</label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 </div>
@@ -1077,23 +1077,21 @@ var jsObj=
 
 
 	<!-- Switch button script start -->
-	
-		<div class="switch_options" style="margin-left:415px;">
+	<div>
+		<div class="switch_options" style="margin-left:350px;">
 
 			<span class="switch_enable"> Send Text SMS </span>
 			<span class="switch_disable"> Send Voice SMS </span>
 			<input type="hidden" class="switch_val" value="1" id="switchValue"/>
 
 		</div>
+    </div>
 
 	<!-- Switch button script end -->
 
 
 
-
-
-
- <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 31px;padding:6px;" class="span12" >
+ <div style="height:auto;border:1px solid #06ABEA;padding:6px;" class="span12" >
 
 <div style="clear:both;" id="textSmsDiv">
 
