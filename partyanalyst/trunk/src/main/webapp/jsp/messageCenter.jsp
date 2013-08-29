@@ -20,6 +20,55 @@
   <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
   <script src="http://code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
 
+
+<style>
+
+input[type=radio], input[type=checkbox] {
+		display:none;
+	}
+
+input[type=radio] + label, input[type=checkbox] + label {
+	    font-family:calibri;
+		display:inline-block;
+		margin:-2px;
+		padding: 4px 12px;
+		margin-bottom: 0;
+		font-size: 14px;
+		line-height: 20px;
+		color: #333;
+		text-align: center;
+		text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+		vertical-align: middle;
+		cursor: pointer;
+		background-color: #ffffff;
+		background-image: -moz-linear-gradient(top,#fff,#e6e6e6);
+		background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#e6e6e6));
+		background-image: -webkit-linear-gradient(top,#fff,#e6e6e6);
+		background-image: -o-linear-gradient(top,#fff,#e6e6e6);
+		background-image: linear-gradient(to bottom,#fff,#e6e6e6);
+		background-repeat: repeat-x;
+		border: 1px solid #ccc;
+		border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+		border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+		border-bottom-color: #b3b3b3;
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe6e6e6',GradientType=0);
+		filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+		-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+		-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+		box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+	}
+
+	 input[type=radio]:checked + label, input[type=checkbox]:checked + label{
+		   background-image: none;
+		outline: 0;
+		-webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
+		-moz-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
+		box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
+			background-color:#0082A3;
+			color:#ffffff;
+	}
+</style>
+
 <script>
 var startAge = 18;
 var endAge = 68;
@@ -724,8 +773,6 @@ function isValidateFields(){
 	stattus = true;
 	getCandidatesInfo(stattus);
 }
-
-
 	
 function getCandidatesInfo(stattus){
 //alert(stattus);
@@ -919,20 +966,27 @@ var jsObj=
     <div class="main-mbg">Message Center</div>
  </div>
 
+  
+    
+
   <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
+   
+     <div style="margin:12px 0px 0px 364px;">
+		 <input type="radio" id="radio1" name="searchFor" value="cadre" class="searchType" checked>
+		   <label for="radio1">Cadre</label>
+		<input type="radio" id="radio2" name="searchFor" value="influencePeople" class="searchType" >
+		   <label for="radio2">Influence People</label>
+		<input type="radio" id="radio3" name="searchFor" value="voter" class="searchType">
+		   <label for="radio3">Voter</label>
+	 </div>
 
-
-
-
-
-
-  <div style="margin:6px 0px 20px 356px;">
+  <!--<div style="margin:6px 0px 20px 356px;">
 		<label style="float:left;"> <input type="radio" name="searchFor" value="cadre" class="searchType" checked="checked" style="margin:0px;">&nbsp;&nbsp;&nbsp;Cadre</label>
 		<label style="float:left;" > <input type="radio" name="searchFor" value="influencePeople" class="searchType"  style="margin:0px;"/>&nbsp;&nbsp;&nbsp;Influencing People</label>
 		<label style="float:left;"> <input type="radio" name="searchFor" value="voter" class="searchType"  style="margin:0px;"/>&nbsp;&nbsp;&nbsp;Voter</label>
-	 </div>
+	 </div>-->
   
-  <div class="widget whitegloss span5"  id="voterSearchDiv1" style="border:0;text-align:center;margin:6px 0px 13px 256px;">
+  <div class="widget whitegloss span5"  id="voterSearchDiv1" style="border:0;text-align:center;margin:6px 0px 13px 288px;">
         
 		   
 		<div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
@@ -1095,7 +1149,7 @@ var jsObj=
 
 <div style="clear:both;" id="textSmsDiv">
 
-<div style="text-align:center;margin-top:5px;"><label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" class="textAreaClass"></textarea></div>
+<div style="text-align:center;margin:7px;"><label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" class="textAreaClass"></textarea></div>
 
 </div>
 
@@ -3018,6 +3072,7 @@ function removeVoters()
      });
 	 $('#voterCount').html(0);
 	 		 	console.log(selectedCadreDetails);
+
 
 }
 </script>
