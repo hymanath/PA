@@ -503,10 +503,16 @@ function getCadresResults2(btnType)
 	else if(window.opener.selectedCriteria.gender == "F")
 		genderType = "Female";
 
+var locationValue;
+	if(window.opener.selectedCriteria.cadreLocationId == 5)
+		 locationValue =  window.opener.selectedCriteria.cadreReportLevelValue;
+	else
+		locationValue = window.opener.selectedCriteria.reportLevelValue
+
 var jsObj=
 		{	extra				    :"one",
 			reportLevel				: window.opener.selectedCriteria.cadreLocationId,
-			reportLocationValue		: window.opener.selectedCriteria.reportLevelValue,
+			reportLocationValue		: locationValue,
 			socialStatus			: window.opener.selectedCriteria.socialStatus,
 			socialStatusArray		: [],
 			cadreType				: "all",
