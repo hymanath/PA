@@ -15,6 +15,31 @@
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script> <script type="text/javascript" src="js/blockui.js"></script>
 
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css">
+  <style>#slider { margin: 10px; }	</style>
+  <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+  <script src="http://code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
+
+<script>
+var startAge = 18;
+var endAge = 68;
+  $(function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min: 18,
+      max: 110,
+      values: [ 18, 68 ],
+      slide: function( event, ui ) {
+       $( "#amount" ).html(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+	   startAge = ui.values[0];
+	   endAge = ui.values[1];
+      }
+    });
+    $( "#amount" ).html( $( "#slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#slider-range" ).slider( "values", 1 ) );
+	
+  });
+  </script>
 
 <style>
 
@@ -716,8 +741,8 @@ function getCandidatesData(){
 		 selectedCasts = $('#casteId').val();
 
 		var searchName=$("#searchName").val();
-		var startAge =$("#age1").val();
-		var endAge =$("#age2").val();		
+		//var startAge =$("#age1").val();
+		//var endAge =$("#age2").val();		
 		var houseNo =$("#searchHouseNo").val();
 		var caste =$("#searchCaste").val();
 		var gender=$('#genderDiv input:radio:checked').val();
@@ -731,9 +756,11 @@ function getCandidatesData(){
 		var pollingStationFieldId = $("#pollingStationField").val(); 
 		var cadreLocationId;
 	
-		var isAgeSelected = (startAge.trim() == "") && endAge.trim() == "" ? false : true;
+		//var isAgeSelected = (startAge.trim() == "") && endAge.trim() == "" ? false : true;
 
-	 // var isCasteSelected = ($("#searchHouseNo").val().trim() == "" )? false : true;
+          
+	  var isAgeSelected  = $('#ageCheckbox').is(':checked')  ? true :false;
+
 	  var isCasteSelected = (selectedCasts.length == 0) ? false : true;
 
 	  var isFamilySelected = (houseNo.trim() == "") ? false : true;
@@ -742,7 +769,7 @@ function getCandidatesData(){
 	  
 	  var isGenderSelected =  (gender == "All") ? false : true;
 
-	  
+	  var cadreReportLevelValue;
 
 
 			
@@ -756,6 +783,7 @@ function getCandidatesData(){
 			}
 			else if(reportLevelValue == 2){
 				areaId = $("#mandalField").val().substring(1);
+				cadreReportLevelValue =  $("#mandalField").val();
 				searchArea = "mandal";
 				cadreLocationId = 5;
 			}
@@ -813,7 +841,10 @@ function getCandidatesData(){
 			  selectedCriteria.constituencyId = 232;
 			  selectedCriteria.searchName = searchName;
 			  selectedCriteria.cadreLocationId = cadreLocationId;
+			  selectedCriteria.cadreReportLevelValue = cadreReportLevelValue;
+
 			  selectedCriteria.socialStatus = false;
+			  
 
 
 			if(areaId !=0 && $('input[name=searchFor]:checked').val() == "voter")
@@ -1007,11 +1038,26 @@ var jsObj=
     <div class="selectDiv" style="margin-bottom: 10px;display:none;" id="houseDiv">
 	    House No  <span style="margin-left:65px;">:</span><input type="text" id="searchHouseNo" style="width:154px;margin-left: 25px;">
 	  </div>
+	  <!--
 	<div class="selectDiv" style="margin-bottom: 10px;display:none;" id="ageDiv">
 	    Between Age  <span style="margin-left:45px;">:</span><input type="text" id="age1" style="width:100px; margin-left: 25px;">
 		<input type="text" id="age2" style="width:100px;">
 	 </div>
+	 -->
+	 <div>
+	   <div  class="selectDiv" id="ageDiv" style="float:left;">
+		 <input type="checkbox" id="ageCheckbox"/>Age range :</div>
+		 <!-- <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;width:50px;" />-->
+		 <div style="width:165px;margin-left:162px;">
+		   <div id="slider-range"></div>
+
+		   <span id="amount"></span>
+		  </div>
+
+	</div>
 	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;" onclick="isValidateFields();"> Search </button> 
+
+
 
 
    </div>
@@ -1210,24 +1256,13 @@ function validateFieldsForSendingSms()
 
 	var str='';
 
-	if($('#mobileNumber').val() == ""){
-		str+='<b>Atlease one mobile number is required to send sms</b></br>';
-		error = true;
-	}
 
 	if($('#voiceSmsDescription').val() == ""){
 		str+='<b>Description is required</b></br>';
 		error = true;
 	}
 	
-/*	if(notvalidContactArr.length >0){
-		if(notvalidContactArr.length >0){
-		str+='<b>Enter all valid Mobile Numbers </b></br>';
-		error = true;
-		}
-		else
-		error = false;
-	}*/
+
 	if(audioFileName == undefined)
 	{
 		str+='<b>Select an audio to send</b></br>';
