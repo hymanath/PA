@@ -139,16 +139,18 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getTopCasteFoeSelctedLevel(List<Long> ids,Long reportId,Long publicationId,Long userId)
+	public List<Object[]> getTopCasteFoeSelctedLevel(List<Long> ids,Long reportId,Long publicationId,Long userId,Set<Long> casteIds)
 	{
-		Query query = getSession().createQuery("select distinct model.reportLevelValue, model.casteState.caste.casteName,model.casteVoters,model.castePercentage " +
+		Query query = getSession().createQuery("select  model.casteState.casteStateId,model.casteState.caste.casteName,model.casteVoters,model.reportLevelValue" +
     	 		" from VoterCastInfo model where model.userId = :userId and model.voterReportLevel.voterReportLevelId = :reportId " +
-    	 		" and model.reportLevelValue in (:ids) and model.publicationDateId = :publicationId " +
+    	 		" and model.reportLevelValue in (:ids) and model.publicationDateId = :publicationId and " +
+    	 		" model.casteState.casteStateId in (:casteIds) group by  model.casteState.casteStateId,model.reportLevelValue" +
     	 		" order by model.reportLevelValue,model.casteVoters desc  ");
 		query.setParameter("reportId", reportId);
 		query.setParameter("publicationId", publicationId);
 		query.setParameter("userId", userId);
 		query.setParameterList("ids", ids);
+		query.setParameterList("casteIds", casteIds);
 		return query.list();
 	}
 	

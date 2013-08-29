@@ -149,6 +149,14 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetPanchayatDetails()
 	{
-		panchayatDAO.getPanchayatDetails();
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(844l);
+		ids.add(843l);
+		ids.add(835l);
+		ids.add(836l);
+		List<Object[]> values = panchayatDAO.getMandalsAnaPanchayays(ids);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1]+":"+ parms[2] +":"+ parms[3]);
+		}
 	}
 }

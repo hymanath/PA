@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ExceptCastsVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyImpactVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 public interface ISuggestiveModelService {
 	
@@ -20,7 +22,7 @@ public interface ISuggestiveModelService {
 	
 	public List<PartyPositionVO> getPartyPerformenceReport(Long constituencyId,Long partyId,Long locationId,String locationType,List<Long> electionId,String tempVar);
 	
-	public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevel(Long userid,Long constituencyId,List<Long> casteIdsList);
+	 public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevel(Long userid,Long constituencyId,List<Long> casteIdsList,Map<Long,Double> casteMap,List<ExceptCastsVO> expCaseList,boolean expCaste);
 	
 	public List<PanchayatVO> getVotersGroupDetails(List<SelectOptionVO> groupVos,Long constituencyId,Long locationId,String type,List<Long> electionIds,Long userId,List<Long> casteIds);
 	
@@ -35,4 +37,6 @@ public interface ISuggestiveModelService {
 	public List<BasicVO> getHamletDetailsByPanchayatIds(Long constituencyId,Long publicationId,Long userId,List<Long> candidateCastes);
 	
 	public List<SelectOptionVO> getCasteAvaliableConstituencysService(List<SelectOptionVO> ConstituenciesForUserAccessed,Long electionId,Long electionYear,Long userId);
+	
+	 public List<VoterDataVO> getMandalsAndPanchayats(Long constituencyId);
 }

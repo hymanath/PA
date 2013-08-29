@@ -24,7 +24,9 @@ public class BasicVO implements Serializable{
 	private Long voterCount;
 	private List casteNames;
 	private String persent;
-	
+	private Long expCount;
+	private Long levelValue;
+	private Long levelId;
 	public List<BasicVO> getSelectedCasteDetails() {
 		return selectedCasteDetails;
 	}
@@ -120,6 +122,24 @@ public class BasicVO implements Serializable{
 	}
 	public void setPerc(Double perc) {
 		this.perc = perc;
+	}
+	public Long getExpCount() {
+		return expCount;
+	}
+	public void setExpCount(Long expCount) {
+		this.expCount = expCount;
+	}
+	public Long getLevelValue() {
+		return levelValue;
+	}
+	public void setLevelValue(Long levelValue) {
+		this.levelValue = levelValue;
+	}
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
 	}
 	
 	

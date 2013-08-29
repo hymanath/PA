@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -20,4 +21,6 @@ public interface ICasteStateDAO extends GenericDao<CasteState, Long>{
 	 public CasteState getCasteStateByCasteId(Long userId, Long stateId,Long casteId, Long casteCategoryId);
 	 
 	 public List<Object[]> getCasteStateList();
+	 
+	 public List<Object[]> getCasteListByCasteIds(List<Long> casteIds);
 }
