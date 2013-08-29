@@ -145,7 +145,7 @@ text-shadow:0px 1px 1px #fff;
 <div>	
 								
 								  <div class="modal-header ">
-									<h3>Win 2014 Election by gaining 3% more votes with our product at a very low price</h3>
+									<h3>Win 2014 Election by gaining 3-5% more votes with our product at a very low price</h3>
 								  </div>
 								  
 								  <div class="modal-body "><div class="row-fluid">
