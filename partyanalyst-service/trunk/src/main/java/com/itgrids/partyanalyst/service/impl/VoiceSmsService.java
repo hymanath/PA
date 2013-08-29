@@ -11,8 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
+import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
 import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -21,6 +24,8 @@ import com.itgrids.partyanalyst.dao.IVoiceSmsResponseDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceSmsVerifiedNumbersDAO;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.model.SmsHistory;
+import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.model.SmsTrack;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.VoiceRecordingDetails;
@@ -29,6 +34,7 @@ import com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+
 
 public class VoiceSmsService implements IVoiceSmsService {
 	
@@ -42,7 +48,35 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private IInfluencingPeopleDAO influencingPeopleDAO;
 	private ISmsTrackDAO smsTrackDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
+	private TransactionTemplate transactionTemplate = null;
+	private ISmsHistoryDAO smsHistoryDAO;
+	private ISmsModuleDAO smsModuleDAO;
 
+
+
+	public ISmsModuleDAO getSmsModuleDAO() {
+		return smsModuleDAO;
+	}
+
+	public void setSmsModuleDAO(ISmsModuleDAO smsModuleDAO) {
+		this.smsModuleDAO = smsModuleDAO;
+	}
+
+	public ISmsHistoryDAO getSmsHistoryDAO() {
+		return smsHistoryDAO;
+	}
+
+	public void setSmsHistoryDAO(ISmsHistoryDAO smsHistoryDAO) {
+		this.smsHistoryDAO = smsHistoryDAO;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
 
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
@@ -161,6 +195,15 @@ public class VoiceSmsService implements IVoiceSmsService {
 	}
 	
 	
+	/**
+	 * This method will format all the mobile numbers in required format , verify the balance SMS and send SMS 
+	 * @param audioPath , audio file path to send voice SMS
+	 * @param userId 
+	 * @param mobileNumbers , these are entered by user manually
+	 * @param description , sms description
+	 * @param voiceSmsResponseDetailsVO , contains all the details of cadre , influence people ,voter mobile numbers
+	 * @return string
+	 */
 	public String sendVoiceSMS(String audioPath ,Long userId , String mobileNumbers,Long senderMobileNumber,String description,VoiceSmsResponseDetailsVO voiceSmsResponseDetailsVO )
 	{
 		log.debug("Entered into the sendVoiceSMS service method");
@@ -172,8 +215,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		        result.append(",");
 		    }
 		    
-		    String mobileNumbersString = "";
-		    
+		    String mobileNumbersString = "";    
 		    
 		    if(mobileNumbers.length() >0)
 		    	mobileNumbersString = result + mobileNumbers;
@@ -182,68 +224,48 @@ public class VoiceSmsService implements IVoiceSmsService {
 		    	if(result.length() >0)
 			    	mobileNumbersString = result.substring(0, result.length()-1);
 		    }
+		    
+		    List<Long> otherNumbers = new ArrayList<Long>();
+		    
+		    if(!mobileNumbers.equals(""))
+		    for(int i=0;i<mobileNumbers.split(",").length;i++)
+		    	otherNumbers.add(Long.parseLong(mobileNumbers.split(",")[i]));
 		    	
-		  List<SmsTrack> smsDetails =   smsTrackDAO.getUserSmsDetailsByUserIdAndSMSType(userId,IConstants.VOICE_SMS_TYPE);
-		  
-		  String userName = "";
-		  String password = "";
-		  Long count = 0L;
-		  
-		  if(smsDetails != null && smsDetails.size() >0)
-		  {
-			  userName = smsDetails.get(0).getSmsUsername();
-			  password = smsDetails.get(0).getSmsPassword();
-			  count = smsDetails.get(0).getRenewalSmsCount();
+			  List<SmsTrack> smsDetails =   smsTrackDAO.getUserSmsDetailsByUserIdAndSMSType(userId,IConstants.VOICE_SMS_TYPE);
 			  
-			  if(mobileNumbersString.split(",").length > count)
-				  return "Your account doee not have sufficient voice SMS balance.Please contact us....";
+			  String userName = "";
+			  String password = "";
+			  Long count = 0L;
 			  
-			  SmsTrack smsTrack = smsDetails.get(0);
-			  
-			  Long reaminingCount = count - mobileNumbersString.split(",").length;			  
-			  smsTrack.setRenewalSmsCount(reaminingCount);
-			  smsTrack.setRenewalDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
-			  
-			  smsTrackDAO.save(smsTrack);
-		  }
-		  
-		  
-					
-		    //Date mydate = new Date(System.currentTimeMillis());
-            //String path="http://www.partyanalyst.com/uploaded_files/"+userId+"/"+audioPath;
-		    //URL url = new URL("http://voice.dial4sms.com/send_voice_mail.php?user=samba&password=564396&sender=919985420156&mobile_no=919676696760&url_file_name=http://www.kozco.com/tech/LRMonoPhase4.wav");
-			//URL url = new URL("http://control.msg91.com/send_voice_mail.php?user=karthik1&password=184314&sender=918978236214&mobile_no=919676696760&url_file_name="+audioPath);
-			//URL url = new URL("http://dnd.smschilly.com/send_voice_mail.php?user=voicedemo1&password=abcd1234&sender=919985420156&mobile_no=919963655717&url_file_name=http://www.kozco.com/tech/LRMonoPhase4.wav");
-			//URL url = new URL("http://dnd.smschilly.com/send_voice_mail.php?user=voicedemo1&password=abcd1234&sender=919985420156&mobile_no="+mobileNumbers+"&url_file_name=http://www.kozco.com/tech/LRMonoPhase4.wav");
-			//URL url = new URL("http://voice.dial4sms.com/send_voice_mail.php?user=samba&password=564396&sender=919985420156&mobile_no="+mobileNumbers+"&url_file_name="+audioPath);
-			//URL url = new URL("http://voice.dial4sms.com/send_voice_mail.php?user=samba&password=564396&sender=919985420156&mobile_no="+mobileNumbers+"&url_file_name=			http://122.169.253.134:8080/PartyAnalyst/voice_recordings/1/test2.wav");
-			//URL url = new URL("http://control.msg91.com/send_voice_mail.php?user=karthik1&password=184314&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name="+audioPath);
-		    
-		    
-		    
+			  if(smsDetails != null && smsDetails.size() >0)
+			  {
+				  userName = smsDetails.get(0).getSmsUsername();
+				  password = smsDetails.get(0).getSmsPassword();
+				  count = smsDetails.get(0).getRenewalSmsCount();
+				  
+				  if(mobileNumbersString.split(",").length > count)
+					  return "Your account doee not have sufficient voice SMS balance.Please contact us....";
+				  
+				  SmsTrack smsTrack = smsDetails.get(0);
+				  
+				  Long reaminingCount = count - mobileNumbersString.split(",").length;			  
+				  smsTrack.setRenewalSmsCount(reaminingCount);
+				  smsTrack.setRenewalDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
+				  
+				  smsTrackDAO.save(smsTrack);
+			  }
 			
-			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+userName+"&password="+password+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbersString+"&url_file_name="+audioPath);
-			//URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name=http://www.partyanalyst.com/voice_recordings//1/test.wav");
-
-
-		    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.setDoOutput(true);
-			conn.setDoInput(true);
-			conn.setUseCaches(false);
-			conn.connect();
-			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String line;
-			StringBuffer buffer = new StringBuffer();
-			while ((line = rd.readLine()) != null)
-			{
-			  buffer.append(line).append("\n");
-			}
-			System.out.println(buffer.toString());
-			rd.close();
-			conn.disconnect();
+		 String responseCode = sendVoiceSMSUsingProvider(userName , password , senderMobileNumber.toString() ,mobileNumbersString ,audioPath);
 		
-		saveResponseDetails(buffer.toString() , userId , voiceSmsResponseDetailsVO.getAllmobileNumbers().size(),mobileNumbers,description);
+	     Long responseId = 	saveResponseDetails(responseCode , userId , voiceSmsResponseDetailsVO.getAllmobileNumbers().size(),mobileNumbers,description);
+	     
+	     
+	     saveSentSMSHistoryDetails(
+					userId,
+					voiceSmsResponseDetailsVO.getCadreMobileNumbers(),
+					voiceSmsResponseDetailsVO.getInfluencePeopleMobileNumbers(),
+					voiceSmsResponseDetailsVO.getVotersMobileNumbers(),
+					otherNumbers,responseId);	     
 		
 		}catch(Exception e)
 		{
@@ -254,27 +276,171 @@ public class VoiceSmsService implements IVoiceSmsService {
 		return IConstants.VOICE_SMS_SUCCESSFULLY_SENT;
    }
 	
-	public void saveResponseDetails(String responseCode , Long userId , int noOfSmsSent,String mobileNumbers,String description)
+	
+	/**
+	 * This method will send the SMS to mobile numbers using provider
+	 * @param userName
+	 * @param password
+	 * @param senderMobileNumber
+	 * @param mobileNumbersString
+	 * @param audioPath
+	 * @return String
+	 */
+	public String sendVoiceSMSUsingProvider(String userName , String password , String senderMobileNumber ,String mobileNumbersString ,String audioPath)
 	{
+		log.debug("Entered into the sendVoiceSMSUsingProvider service method");
+		StringBuffer buffer = new StringBuffer();
+		
+		try
+		{
+			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+userName+"&password="+password+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbersString+"&url_file_name="+audioPath);
+	
+		    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+			conn.setUseCaches(false);
+			conn.connect();
+			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line;
+			while ((line = rd.readLine()) != null)
+			{
+			  buffer.append(line).append("\n");
+			}
+			System.out.println(buffer.toString());
+			rd.close();
+			conn.disconnect();
+		
+		}catch(Exception e)
+		{
+			log.error("Exception raised in  sendVoiceSMSUsingProvider service method");
+			e.printStackTrace();
+		}
+		return buffer.toString();
+	}
+	
+	/**
+	 * This method will save the type of people whom SMS sent
+	 * @param userId
+	 * @param cadreNumbers
+	 * @param influencePeopleNumbers
+	 * @param votersNumbers
+	 * @param otherNumbers
+	 * @param responseId
+	 */
+	
+	public void  saveSentSMSHistoryDetails(Long userId ,List<Long> cadreNumbers , List<Long> influencePeopleNumbers , List<Long> votersNumbers , List<Long> otherNumbers,Long responseId)
+	{
+		log.debug("Entered into the saveSentSMSHistoryDetails service method");
+		try
+		{
+			SmsModule smsModule = null;
+			
+			if(cadreNumbers != null && cadreNumbers.size() >0)
+				for(Long cadreNumber:cadreNumbers)
+				{
+					
+					List<SmsModule> list = smsModuleDAO.findByModuleName(IConstants.Cadre_Management);
+					
+					if(list != null && list.size() > 0)
+						smsModule = list.get(0);
+					
+					saveSmsHistoryDetails(userId ,cadreNumber.toString(),smsModule,responseId );
+				}
+			
+			if(influencePeopleNumbers != null && influencePeopleNumbers.size() >0)
+				for(Long influencePeopleNumber:influencePeopleNumbers)
+				{
+                    List<SmsModule> list = smsModuleDAO.findByModuleName(IConstants.Influencing_People);
+					
+					if(list != null && list.size() > 0)
+						smsModule = list.get(0);
+					
+					saveSmsHistoryDetails(userId ,influencePeopleNumber.toString(),smsModule ,responseId);
+				}
+			
+			if(votersNumbers != null && votersNumbers.size() >0)
+				for(Long voterNumber:votersNumbers)
+				{
+                    List<SmsModule> list = smsModuleDAO.findByModuleName(IConstants.VOTER);
+					
+					if(list != null && list.size() > 0)
+						smsModule = list.get(0);
+					saveSmsHistoryDetails(userId ,voterNumber.toString(),smsModule ,responseId);
+				}
+			
+			if(otherNumbers != null && otherNumbers.size() >0)
+				for(Long otherNumber:otherNumbers)
+				{
+                   List<SmsModule> list = smsModuleDAO.findByModuleName(IConstants.VOTER);
+					
+					if(list != null && list.size() > 0)
+						smsModule = list.get(0);
+					
+					saveSmsHistoryDetails(userId ,otherNumber.toString(),smsModule,responseId );
+				}
+			
+		}catch(Exception e)
+		{
+			log.error("Exception raised in saveSentSMSHistoryDetails service method");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * This method is used to save the sms hisory details
+	 * @param userId
+	 * @param mobileNumber
+	 * @param smsModule
+	 * @param responseId
+	 */
+	public void saveSmsHistoryDetails(Long userId ,String mobileNumber,SmsModule smsModule,Long responseId )
+	{
+		log.debug("Entered into the saveSmsHistoryDetails service method");
+
+		try
+			{
+			SmsHistory smsHistory = new SmsHistory();
+			
+			smsHistory.setUserId(userId);
+			smsHistory.setMobileNumber(mobileNumber);
+			smsHistory.setSentDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
+			smsHistory.setSmsModule(smsModule);
+			smsHistory.setSmsResponseDetailsId(responseId);
+			smsHistory.setSmsTypeId(1L);
+	
+	        smsHistoryDAO.save(smsHistory);
+		}catch(Exception e)
+		{
+			log.error("Exception raised in saveSmsHistoryDetails service method");
+			e.printStackTrace();
+			
+		}
+		
+	}
+	
+	public Long saveResponseDetails(String responseCode , Long userId , int noOfSmsSent,String mobileNumbers,String description)
+	{
+		VoiceSmsResponseDetails voiceSmsResponseDetails = new VoiceSmsResponseDetails();
+
 		
 		log.debug("Entered into the saveResponseDetails service method");
 		try
 		{
-			VoiceSmsResponseDetails voiceSmsResponseDetails = new VoiceSmsResponseDetails();
-			
 			voiceSmsResponseDetails.setNoOfSmsSent(new Long(noOfSmsSent));
 			voiceSmsResponseDetails.setResponseCode(responseCode);
 			voiceSmsResponseDetails.setUser(userDAO.get(userId));
 			voiceSmsResponseDetails.setMobileNumbers(mobileNumbers);
 			voiceSmsResponseDetails.setSmsDescription(description);
 			
-			voiceSmsResponseDetailsDAO.save(voiceSmsResponseDetails);
+			voiceSmsResponseDetails = voiceSmsResponseDetailsDAO.save(voiceSmsResponseDetails);
 			
 		}catch(Exception e)
 		{
 			log.error("Exception raised in   the saveResponseDetails service method");
 			e.printStackTrace();
 		}
+		return voiceSmsResponseDetails.getVoiceSmsResponseDetailsId();
 	}
 	
 	public List<VoiceSmsResponseDetailsVO> getVoiceSmsHistoryForAuser(Long userId , Integer startIndex , Integer maxResults , boolean forCount)
