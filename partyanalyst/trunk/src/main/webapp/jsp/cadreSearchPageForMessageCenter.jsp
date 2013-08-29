@@ -762,9 +762,10 @@ function pushIntoCadreObject(cadreId , mobileNumber)
 	}
 	else
 	{
+
 		delete window.opener.selectedCadreDetails[cadreId];
 		var index = window.opener.selectedMobileNumbers.indexOf("91"+mobileNumber);
-         array.splice(index, 1);
+         window.opener.selectedMobileNumbers.splice(index, 1);
 	}
 }
 
