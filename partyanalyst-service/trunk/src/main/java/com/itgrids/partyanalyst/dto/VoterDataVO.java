@@ -28,7 +28,8 @@ public class VoterDataVO implements Serializable{
 	private String name;
 	private Long id;
 	private Long categoryId;
-	
+	private String panchayatname;
+	private String mandalName;
 	private Long customVoterGroupId;
 	private String gender;
 	private Long casteId;
@@ -172,6 +173,18 @@ public class VoterDataVO implements Serializable{
 	}
 	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
+	}
+	public String getPanchayatname() {
+		return panchayatname;
+	}
+	public void setPanchayatname(String panchayatname) {
+		this.panchayatname = panchayatname;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
 	}
 	
 	

@@ -29,7 +29,7 @@ public class YouthLeaderSelectionVO implements Serializable{
 	private YouthLeaderSelectionVO youthLeaderSelectionVO;
 	private List<YouthLeaderSelectionVO> selectedCastesList;
 	private List<YouthLeaderSelectionVO> areaWiseCasteList;
-		
+	private List<BasicVO> exceptdCateDetails ;	
 	
 	public List<YouthLeaderSelectionVO> getAreaWiseCasteList() {
 		return areaWiseCasteList;
@@ -129,6 +129,12 @@ public class YouthLeaderSelectionVO implements Serializable{
 	public void setYouthLeaderSelectionVO(
 			YouthLeaderSelectionVO youthLeaderSelectionVO) {
 		this.youthLeaderSelectionVO = youthLeaderSelectionVO;
+	}
+	public List<BasicVO> getExceptdCateDetails() {
+		return exceptdCateDetails;
+	}
+	public void setExceptdCateDetails(List<BasicVO> exceptdCateDetails) {
+		this.exceptdCateDetails = exceptdCateDetails;
 	}
 	
 	

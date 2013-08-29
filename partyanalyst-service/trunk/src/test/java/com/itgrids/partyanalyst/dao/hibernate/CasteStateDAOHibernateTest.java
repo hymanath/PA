@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -78,7 +81,16 @@ public class CasteStateDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void testgetCasteStateList()
 	{
-		casteStateDAO.getCasteStateList();
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(290l);
+		ids.add(296l);
+		ids.add(211l);
+		ids.add(244l);
+		ids.add(189l);
+		List<Object[]> values = casteStateDAO.getCasteListByCasteIds(ids);
+		for (Object[] params : values) {
+			System.out.println(params[0]+" "+params[1]);
+		}
 	}
 	
 }

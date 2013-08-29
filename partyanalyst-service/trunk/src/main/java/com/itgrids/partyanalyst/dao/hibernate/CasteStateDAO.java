@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -99,5 +100,14 @@ public List<Object[]> getAllCasteInfoDetails(){
 	{
 		return getHibernateTemplate().find(" select model.casteStateId,model.state.stateId,model.casteCategoryGroup.casteCategoryGroupId, " +
 				" model.caste.casteId from CasteState model ");
+	}
+	
+	public List<Object[]> getCasteListByCasteIds(List<Long> casteIds)
+	{
+		Query query  = getSession().createQuery("select  model.casteStateId,model.caste.casteName from CasteState model " +
+				" where model.casteStateId in (:casteIds)");
+		//query.setParameter("userId", userId);
+		query.setParameterList("casteIds", casteIds);
+		return query.list();
 	}
 }

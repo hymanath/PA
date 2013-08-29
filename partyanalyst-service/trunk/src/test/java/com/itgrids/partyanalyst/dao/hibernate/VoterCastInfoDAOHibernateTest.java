@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -37,9 +39,10 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	/*public void test()
+	public void test()
 	{
 		List<Long> ids = new ArrayList<Long>();
+		Set<Long> casteIds = new HashSet<Long>();
 		ids.add(11l);
 		ids.add(12l);
 		ids.add(1l);
@@ -53,11 +56,16 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		ids.add(3l);
 		ids.add(2l);
 		ids.add(5l);
-		List<Object[]> values = voterCastInfoDAO.getTopCasteFoeSelctedLevel(ids,3l,8l,1l);
+		casteIds.add(296l);
+		casteIds.add(290l);
+		casteIds.add(211l);
+		casteIds.add(189l);
+		casteIds.add(244l);
+		List<Object[]> values = voterCastInfoDAO.getTopCasteFoeSelctedLevel(ids,3l,8l,1l,casteIds);
 		for (Object[] parms : values) {
-			System.out.println(parms[0]  +":"+ parms[1] +":"+ parms[2] +":"+ parms[3]);
+			System.out.println(parms[0]  +":"+ parms[1] +":"+ parms[2]);
 		}
-	}*/
+	}
 	/*public void test()
 	{
 		List ids = new ArrayList<Long>();
@@ -83,7 +91,7 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetVoterCasteInfoList()
+/*	public void testgetVoterCasteInfoList()
 	{
 		List<VoterCastInfo> list = voterCastInfoDAO.getVoterCasteInfoList(232l,8l,1l);
 		System.out.println(list.size());
@@ -94,5 +102,5 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 			str.append(""+vCastInfo.getSubLeveCastePercentage()+"");
 		}
 		System.out.println(str);
-	}
+	}*/
 }
