@@ -1021,6 +1021,11 @@ var jsObj=
   </div>
 
 
+	
+<div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 20px 31px;padding:6px;" class="span12" >
+
+ <div style="text-align:center;"><label>You can enter mobile numbers manually here.(Add country code before mobile number):<font style="color:red;">*</font><br>Example:919999999999</label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
+</div>
 
 
 
@@ -1036,6 +1041,10 @@ var jsObj=
 		</div>
 
 	<!-- Switch button script end -->
+
+
+
+
 
 
  <div style="height:auto;border:1px solid #06ABEA;margin:0px 0px 0px 31px;padding:6px;" class="span12" >
@@ -1067,9 +1076,6 @@ var jsObj=
 
  </ul>
 </div>
-
-
- <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice SMS(Add country code before mobile number):<font style="color:red;">*</font><br>Example:919999999999</label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 
 
   <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="voiceSmsDescription" class="textAreaClass"></textarea></div>
@@ -2710,6 +2716,7 @@ function sendTextSms()
 	var cadreDetails = new Array();
 	var influencePeopleDetails = new Array();
 	var votersDetails = new Array();
+	var otherNumbers = new Array();
 
 	$.each(selectedCadreDetails, function(index, value) {
 		cadreDetails.push(value);
@@ -2728,13 +2735,25 @@ function sendTextSms()
 		alert("Description is required..");
 		return false;
 	}
+  if($('#mobileNumber').val().trim() != "")
+  {
+
+	  var othrNums= $('#mobileNumber').val().split(",");
+	 
+	 for(var i=0;i<othrNums.length;i++)
+		 otherNumbers.push(othrNums[i].substring(2));
+ 
+  }
+
+
 	var jsObj=
 			{
 				task:"sendTextSms",
                 cadreDetails:cadreDetails,
                 influencePeopleDetails:influencePeopleDetails,
                 votersDetails:votersDetails,
-				message: $('#smsDescription').val()
+                otherNumbers:otherNumbers,
+				message: $('#textSmsDescription').val()
 
 
 			};
@@ -2920,6 +2939,8 @@ function openSmsHistoryWindow()
 
 function removeCadre()
 {
+			 	console.log(selectedCadreDetails);
+
 	 selectedCadreDetails = {};
 
 	 $.each(selectedCadreDetails, function(index, value) {
@@ -2928,12 +2949,18 @@ function removeCadre()
      });
 
 	 $('#cadreCount').html(0);
+	 		 	console.log(selectedCadreDetails);
+
+
+
 
 
 }
 
 function removeInfluencePeople()
 {
+		 	console.log(selectedCadreDetails);
+
 	 selectedInfluencePeopleDetails = {};
 
 	 $.each(selectedInfluencePeopleDetails, function(index, value) {
@@ -2942,11 +2969,14 @@ function removeInfluencePeople()
      });
 
 	 $('#influencePeopleCount').html(0);
+	 	console.log(selectedCadreDetails);
 
 }
 
 function removeVoters()
 {
+			 	console.log(selectedCadreDetails);
+
 	selectedVotersDetails = {};
 
 	$.each(selectedVotersDetails, function(index, value) {
@@ -2954,6 +2984,8 @@ function removeVoters()
          selectedMobileNumbers.splice(numberIndex, 1);
      });
 	 $('#voterCount').html(0);
+	 		 	console.log(selectedCadreDetails);
+
 
 }
 </script>

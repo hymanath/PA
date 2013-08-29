@@ -443,12 +443,14 @@ public class VoiceSmsAction implements ServletRequestAware{
 			List<SmsVO> cadreMobileNumbers = new ArrayList<SmsVO>();
 			List<SmsVO> influenceMobileNumbers = new ArrayList<SmsVO>();
 			List<SmsVO> votersMobileNumbers = new ArrayList<SmsVO>();
+			List<SmsVO> otherMobileNumbers = new ArrayList<SmsVO>();
 			
 			 jObj = new JSONObject(getTask());
 			 
 			 JSONArray cadreArray = jObj.getJSONArray("cadreDetails");
 			 JSONArray influencePeopleArray = jObj.getJSONArray("influencePeopleDetails");
 			 JSONArray votersArray = jObj.getJSONArray("votersDetails");
+			 JSONArray otherNumbersArray = jObj.getJSONArray("votersDetails");
 			 
 			 for(int i=0; i<cadreArray.length(); i++)
 			 {
@@ -474,17 +476,31 @@ public class VoiceSmsAction implements ServletRequestAware{
 				 votersMobileNumbers.add((vo));
 			 }
 			 
+			 for(int i=0; i<otherNumbersArray.length(); i++)
+			 {
+				 SmsVO vo = new SmsVO();
+				 vo.setMobileNO(otherNumbersArray.get(i).toString());
+				 otherMobileNumbers.add((vo));
+			 }
+			 
+			 if(cadreMobileNumbers.size() > 0)
 			   cadreManagementService.sendSMSToSelectedMobileNumbers(user.getRegistrationID(),
 						"NO", true, jObj.getString("message"),
 						IConstants.Cadre_Management,cadreMobileNumbers);
 			 
+			 if(influenceMobileNumbers.size() > 0 )
 			   cadreManagementService.sendSMSToSelectedMobileNumbers(user.getRegistrationID(),
 						"NO", true, jObj.getString("message"),
 						IConstants.Influencing_People,influenceMobileNumbers);
 			 
+			 if(votersMobileNumbers.size() >0)
 			   cadreManagementService.sendSMSToSelectedMobileNumbers(user.getRegistrationID(),
 						"NO", true, jObj.getString("message"),
 						IConstants.VOTER, votersMobileNumbers);
+			  if(otherMobileNumbers.size() >0)
+			   cadreManagementService.sendSMSToSelectedMobileNumbers(user.getRegistrationID(),
+						"NO", true, jObj.getString("message"),
+						IConstants.User_Groups, otherMobileNumbers);
 			 
 			
 			
