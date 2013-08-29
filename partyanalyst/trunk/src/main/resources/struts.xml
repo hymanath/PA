@@ -5493,6 +5493,7 @@
 	     <action name="dashBoardAction" class="dashBoardAction"> 
 		    <result name="success">/jsp/dashBoard.jsp</result>
 		    <result name="input">/jsp/loginForm.jsp</result>
+		    <result name="userProfile" type="redirect">userProfile.action</result>
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
