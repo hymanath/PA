@@ -1489,10 +1489,10 @@ displayProfile();
 getFirstThreePhotoRecords();
 var loadingFirstTime = '${sessionScope.specialPageLoadingFirstTime}';
 $(document).ready(function(){
-	if(loadingFirstTime  == 'true'){
+	//if(loadingFirstTime  == 'true'){
 		$("#inline").fancybox();
 		$("#inline").trigger("click");
-		}
+	//	}
 	});
 
 

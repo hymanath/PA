@@ -772,11 +772,11 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		var loadingFirstTime = '${sessionScope.partyPageLoadingFirstTime}';
 
 $(document).ready(function(){
-	if(loadingFirstTime  == 'true'){
+	//if(loadingFirstTime  == 'true'){
 		
 		$("#inline").fancybox();
 		$("#inline").trigger("click");
-		}
+	//	}
 	});
 
 

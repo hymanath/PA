@@ -672,7 +672,7 @@ Opinion Poll</h2>
 <div>	
 								
 								  <div class="modal-header ">
-									<h3>Win 2014 Election by gaining 3% more votes with our product at a very low price</h3>
+									<h3>Win 2014 Election by gaining 3-5% more votes with our product at a very low price</h3>
 								  </div>
 								  
 								  <div class="modal-body "><div class="row-fluid">
@@ -741,10 +741,10 @@ Opinion Poll</h2>
 	var loadingFirstTime = '${sessionScope.homePageLoadingFirstTime}';
 	
 	$(document).ready(function(){
-	if(loadingFirstTime  == 'true'){
+	//if(loadingFirstTime  == 'true'){
 		$("#inline").fancybox();
 		$("#inline").trigger("click");
-		}
+	//	}
 	});
 	
 	
