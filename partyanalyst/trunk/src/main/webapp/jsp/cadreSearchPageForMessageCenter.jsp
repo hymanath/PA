@@ -336,285 +336,13 @@ function getUpdatedData(){
 <body>
 
 
- <h3 style="text-align:center;color:#06ABEA;">CADRE SEARCH RESULTS</h3>
+ <h2 style="text-align:center;color:#06ABEA;">CADRE SEARCH RESULTS TO SEND SMS</h2>
+
+<input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
 	
-	<!--<div id="cadreSearchHeading"><center>
-        <table border="0" cellpadding="0" cellspacing="0">          
-          <tr>
-            <td><img src="images/icons/constituencyManagement/left_blue_main.png"/>
-			</td>
-			<c:if test="${windowTask == 'Sms'}">
-            <td><div id="headerImageCenterDiv">
-			<span id="headerImageCenterSpan">Cadre 
-			SMS</span></div></td>
-			</c:if>
-			<c:if test="${windowTask == 'Search'}">
-            <td><div id="headerImageCenterDiv">
-			<span id="headerImageCenterSpan">Cadre 
-			Search</span></div></td>
-			</c:if>
-            <td><img src="images/icons/constituencyManagement/right_blue_main.png"/></td>
-          </tr>
-        </table>    	
-     </center></div>-->
-	<center>
-	<!--<div id="CadreSearchMain">
-		<div id="basicCadresSearch">
-			<table width="100%" class="cadreSearchInputTable">				
-				
-				<tr>
-					<td colspan="2"><div id="errorMsgDiv"></div></td>
-				</tr>
-			</table>	
-
-			<table width="100%" class="cadreSearchInputTable">	
-				<tr>
-					<th style="width:243px;padding-left:17px;">Search By Cadre Name&nbsp;&nbsp;(optional)</th>
-					<td>
-						<input type="text" id="cadreNameText" maxlength="40"/>
-						<input type="radio" value="StartingWith" checked="checked" name="nameBasedRadio">Starting With 
-						<input type="radio" value="ExactMatch" name="nameBasedRadio">Exact Match
-						<input type="radio" value="AnyWhereInName"  name="nameBasedRadio">Any Where In Name
-					</td>
-			    </tr>
-				<tr>
-					<th style="width:243px;padding-left:17px;">Search By Membership No &nbsp;&nbsp;(optional)</th>
-					<td>
-						<input type="text" id="memberShipNoText" name ="memberShipNoText" value="" maxlength="50"/>
-					</td>
-			    </tr>
-			</table>
-
-			<table width="100%" class="cadreSearchInputTable">
-				<tr>
-					<th align="left"><font color="#FF0000"> * </font> ${windowTask} Based On</th>                
-					<td align="left">
-						<input type="radio" name="searchBasedRadio" onClick="searchBased(this.value)"  checked="checked" value="location"/> Cadre Location  
-						<input type="radio" name="searchBasedRadio" onClick="searchBased(this.value)" value="level"/> Cadre Region Level
-					</td>
-				</tr>
-
-				<tr>
-					<th align="left"><font color="#FF0000"> * </font>Select Range</th>                
-					<td align="left">
-						<div id="rangeRegionsRadioElmtDiv"></div>
-						<div id="rangeRegionsSelectElmtDiv" style="width:600px;">
-						
-							<table  width="100%" style="padding-top: 10px;">
-								<tr id="row1" style="display:none;" >
-									<td style="width: 90px; padding-top: 8px; padding-bottom: 1px;"><s:label for="stateField_s" id="stateLabel" theme="simple" value="%{getText('STATE')}" /><font color="#FF0000"> * </font></td>
-									<td>
-										<s:select id="stateField_s" cssClass="regionSelect" theme="simple" list="stateList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreSearch','districtField_s','cadreSearch', 'null')"></s:select>
-									</td>
-								</tr>
-								<tr id="row2" style="display:none;">
-									<td style="width: 90px; padding-top: 8px; padding-bottom: 1px;"><s:label for="districtField_s" id="districtLabel" theme="simple" value="%{getText('DISTRICT')}" /><font color="#FF0000"> * </font></td>
-									<td>
-										<s:select id="districtField_s" cssClass="regionSelect" theme="simple" list="districtList" listKey="id" listValue="name" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'cadreSearch','constituencyField_s','cadreSearch')"></s:select>
-									</td>
-								</tr>
-								<tr id="row3" style="display:none;">
-									<td style="width: 90px; padding-top: 8px; padding-bottom: 1px;"><s:label for="constituencyField_s" id="constituencyLabel" theme="simple"  value="%{getText('CONSTITUENCY')}"/><font color="#FF0000"> * </font></td>
-									<td>
-										<s:select id="constituencyField_s" theme="simple" cssClass="regionSelect" list="constituencyList" listKey="id" listValue="name" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreSearch','mandalField_s','cadreSearch')"></s:select>
-									</td>
-								</tr>
-								
-
-								<tr id="row7" style="display:none;">
-									<td style="width: 90px; padding-top: 8px; padding-bottom: 1px;"><span>Parliament Constituency <font color="#FF0000">*</font></span></td>
-									<td  style="padding-top: 12px;"><s:select id="parliamentConstituencyField_s" theme="simple" cssClass="regionSelect" list="parliamentConstituencies" listKey="id" listValue="name"></s:select></td>
-
-								</tr>
-
-
-								<tr id="row4" style="display:none;">
-									<td style="width: 90px; padding-top: 8px; padding-bottom: 1px;"><s:label for="mandalField" id="mandalLabel" theme="simple"  value="%{getText('subRegions')}" /><font color="#FF0000"> * </font></td>
-									<td>
-										<s:select id="mandalField_s" cssClass="regionSelect" theme="simple" list="{}" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreSearch','null','cadreSearch','constituencyField_s','row6', 'row5')"></s:select>
-									</td>
-								</tr>					
-								<tr id="row5" style="display:none;">
-									<td style="width: 90px; padding-top: 8px; padding-bottom: 1px;"><s:label for="hamletField_s" id="mandalLabel" theme="simple"  value="%{getText('wardOrHamlet')}" /><font color="#FF0000"> * </font></td>
-									<td>
-										<s:select id="hamletField_s" cssClass="regionSelect" onchange="getBoothsInWard('cadreSearch','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreSearch','mandalField_s')" list="{}" theme="simple" listKey="id" listValue="name"></s:select>
-									</td>
-								</tr>
-								<tr id="row6" style="display:none;">
-									<td style="width: 90px; padding-top: 8px; padding-bottom: 1px;">Booth No<font color="#FF0000"> * </font></td>
-									<td>
-										<s:select id="boothField_s" cssClass="regionSelect" theme="simple" list="{}" listKey="id" listValue="name"></s:select>
-									</td>
-								</tr>
-							</table>
-						</div>
-				         
-					</td>
-				</tr>
-				
-				<tr>
-					<th align="left"><font color="#FF0000"> * </font> Cadre Type</th>
-					<td align="left">
-						<input type="radio" name="cadreTypeRadio" value="All" checked="checked" onClick="getCriteriaValue(this.value,'searchCriteria')"/> All
-						<input type="radio" name="cadreTypeRadio" value="Active" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Active Cadre
-						<input type="radio" name="cadreTypeRadio" value="Normal" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Normal Cadre
-					</td>
-				</tr>
-				<tr>
-					<th align="left"><font color="#FF0000"> * </font> Gender</th>
-					<td align="left">
-						<input type="radio" name="genderTypeRadio" value="allGenders" checked="checked"/> All
-						<input type="radio" name="genderTypeRadio" value="Male"/> Male
-						<input type="radio" name="genderTypeRadio" value="Female"/> Female
-					</td>
-				</tr>
-				
-				<tr>
-					<th align="left">&nbsp;&nbsp;&nbsp;<s:label for="bloodGroupId" id="bloodGroupLabel" theme="simple" value="Blood Group"/></th>
-					<td>&nbsp;&nbsp;<s:select id="bloodGroupId" cssClass="regionSelect" theme="simple" style="width:75px;" list="bloodGroupList" listKey="id" listValue="name"></s:select></td>
-				</tr>
-				<tr>
-				<th>&nbsp;&nbsp;&nbsp;<span>Select Cadre : </span></th>
-				<td><input type="radio" name="cadreRegisterTypeRadio" value="allCadres" checked="true"/>all
-				<input type="radio" name="cadreRegisterTypeRadio" value="registeredByUser"/>Registered by User
-				<input type="radio" name="cadreRegisterTypeRadio" value="registeredFromOnline" />Registered From OnLine</td>
-				</tr>
-				</table>
-			</div>
-
-			<div id="filterOptionsCadresSearch" class="fullSaintDesc" style="display:none">
-				<table width="100%" class="cadreSearchInputTable">
-				<tr>
-					<th valign="top" align="left"><font color="#FF0000"> * </font> Social Status</th>
-					<td valign="top" align="left">
-						<input type="checkbox" id="socialStatusCheck" value="socialStatus" onclick="showSocialStatus(this)"/> Include Cadre Social Status
-						<div>	
-							<table>
-								<tr>
-									<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="resevation"/> Reservation Category</td>
-									<td>
-										<select class="searchcriteriaSelect" multiple="multiple" size="3" onclick="changeSocialStatus(this)" id="socialStatus_resevation" disabled="disabled">
-											
-										</select>
-									</td>
-								</tr>						
-								<tr>
-									<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="education"/> Education</td>
-									<td>
-										<select class="searchcriteriaSelect" multiple="multiple" size="3" id="socialStatus_education" onclick="changeSocialStatus(this)" disabled="disabled">
-											
-										</select>
-									</td>
-								</tr>						
-								<tr>
-									<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="occupation"/> Occupation</td>
-									<td>
-										<select class="searchcriteriaSelect" multiple="multiple" size="3" id="socialStatus_occupation" onclick="changeSocialStatus(this)" disabled="disabled">
-											
-										</select>
-									</td>
-								</tr>
-							</table>
-						</div>
-					</td>
-				</tr>			
-				
-				<tr>
-					<th valign="top" align="left"><div id="searchCriteria_label"></div></th>
-					<td valign="top" align="left">
-						<div id="searchCriteria_data">
-							
-						</div>
-					</td>
-				</tr>
-				
-				<tr>
-					<th valign="top" align="left"><div id="searchPerform_label">Perform ${windowTask} with</div></th>
-					<td valign="top" align="left">
-						<div id="searchPerform_label">
-							<input type="radio" name="performSearch" value="and" checked="checked" onclick="javascript:{PERFORMSEARCH = this.value}">all of these words
-							<input type="radio" name="performSearch" value="or" onclick="javascript:{PERFORMSEARCH = this.value}">Any one of these words
-						</div>
-					</td>
-				</tr>
-					 
-				<tr>
-					<td colspan="2" align="center"><span id="accessRegion_button"></span></td>
-				</tr>
-				<tr>
-					<th><span id="smsTxtArea_label"></span></th>
-					<td><span id="smsTxtArea_data"></span></td>
-				</tr>			
-				<tr>
-					<th><span id="includeUserName_label"></span></th>
-					<td><span id="includeUserName_data"></span></td>
-				</tr>
-				<tr>				
-					<td colspan="2" align="center"><span id="smsSendSpan_button"></span></td>
-				</tr>				
-			</table>
-		</div>
-		<c:if test="${windowTask == 'Sms'}">
-		<div>
-			<table width="100%" class="cadreSearchInputTable">	
-			<tr>
-				<th><font color="#FF0000"> * </font> SMS Text</th>
-				<td>
-					<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="limitText('smsTextArea','maxcount',200)" ></textarea></div> 
-					<div id="limitDiv">
-					<table><tr>
-					<td style="width:50%;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>
-					<td style="width:50%;"><div>Should not exceed 200 chars</div></td>
-					</tr></table>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>Include User Name</th>
-				<td>
-					<input type="radio" id="include_user_name" onclick="javascript:{SMSINCLUDECADRENAME = this.value}" name="include_user_name" value="YES" /> Yes
-					<input type="radio" id="no_user_name" onclick="javascript:{SMSINCLUDECADRENAME = this.value}"name="include_user_name" value="NO" checked="checked"/> No    
-				</td>
-			</tr>
-			<tr>
-				<th>Add Sender Name</th>
-				<td>
-					
-					<input id="smsIncludeSenderName" type="checkbox" onclick="enableSenderName()" name="smsIncludeUserName">
-					<input type="text" id="senderNameText" disabled="disabled" value="${sessionScope.UserName}"/>
-				</td>
-			</tr>
-			</table>
-		</div>		
-		</c:if>
-		<div id="searchButtonDiv" style="margin-top: 10px;">
-			<table >
-				
-				<tr>					
-					<td align="center">
-						
-						<input type="button" class="btnClass" onclick="getCadresResults1('search')" value="Search"/>
-						
-						<c:if test="${windowTask == 'Sms'}">
-						<input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/>
-						</c:if>
-						
-					</td>
-					<td align="center">
-						<a class="toggleDiv" href="javascript:{}" />Add filter to ${windowTask}
-						<a class="toggleDiv1" style="display:none" href="javascript:{}" />Remove filter to ${windowTask}
-					</td>
-				</tr>
-			</table>	
-		</div>
-	</div>-->
-	<!--<input type="button" class="btnClass" onclick="getCadresResults2('search')" value="Search"/>-->
-
-	</center>
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
 
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
-		<!--<div id="searchResultsDiv_head"></div>-->
 
 		<span id="smsStatusTextSpan1"></span>
 	
@@ -622,13 +350,8 @@ function getUpdatedData(){
 		<div id="searchResultsDiv_body">
 			<div id="smsResult"></div>
 			<div id="searchResult"></div>
-		</div>
+		</div>		
 		
-			<!--<div id="msgCenterId" style="display:none;">
-			<c:if test="${fromParent == 'messageCenter'}">
-				<input type="button" value="Add  Contacts To Send Voice SMS" onclick="addThisCadresToContacts()" class="btnClass"/>
-			</c:if>
-			</div>-->
 		<div id="searchResultsDiv_footer" style="text-align:center;"></div>
 		<div id="cadreProblemSelectErrorDiv" style="text-align:center;"><span id="addSelectedCadreErrorMsg"></span></div>
 		<div id="cadreProblemSelectDiv" style="text-align:center;"></div>
@@ -639,6 +362,16 @@ function getUpdatedData(){
 
 	$('document').ready(function()
 	{
+       
+	    $('.cadre').live("change",function(){
+
+			if($(this).is(':checked'))
+                   window.opener.document.getElementById("cadreCount").innerHTML = parseInt(window.opener.document.getElementById("cadreCount").innerHTML) +1;
+			else{
+				window.opener.document.getElementById("cadreCount").innerHTML = parseInt(window.opener.document.getElementById("cadreCount").innerHTML) -1;
+				$('.selectAllCadre').attr('checked',false);
+			}
+		});
 
       $('.selectAllCadre').live("change",function(){
 		if($(this).is(':checked')){
@@ -648,8 +381,10 @@ function getUpdatedData(){
 				var cadreId = $(this).val().split("-")[0];
 				var mobileNumber = $(this).val().split("-")[1];
 
-			   if(window.opener.selectedCadreDetails[cadreId] == undefined)
+			   if(window.opener.selectedCadreDetails[cadreId] == undefined){
 				        window.opener.selectedCadreDetails[cadreId] = mobileNumber;
+				window.opener.document.getElementById("cadreCount").innerHTML = parseInt(window.opener.document.getElementById("cadreCount").innerHTML) +1;
+			   }
 
 
 			   if($.inArray(mobileNumber, window.opener.selectedMobileNumbers) == -1)
@@ -882,7 +617,7 @@ function openRegistrationForm(cadreId)
 	var updateBrowser = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
 	updateBrowser.focus();				
 }
-
+/*
 function showCadreSearchResults(searchCount)
  {
 	var totalSearchCount = searchCount;
@@ -946,7 +681,8 @@ function showCadreSearchResults(searchCount)
 		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setCadreToVoter()" value="Add Selected cadre"/><BR><BR></span>';
 		cadreProbDivEle.innerHTML = cadreProbStr;
 	}
-}
+}*/
+/*
 function setOrganizers(){
    var elements = document.getElementsByName("cadreResult_check");
 	var errorSpanElmt = document.getElementById("addSelectedCadreErrorMsg");
@@ -978,7 +714,8 @@ function setOrganizers(){
 		window.close();
 	}
 
-}
+}*/
+/*
 function setCadreToVoter(){
    var elements = document.getElementsByName("cadreResult_check");
 	var errorSpanElmt = document.getElementById("addSelectedCadreErrorMsg");
@@ -1008,7 +745,7 @@ function setCadreToVoter(){
 		window.opener.mapSelectedCadreToVoter(cid,cName,voterId);
 		window.close();
 	}
-}
+}*/
 <!--  cadre search  --- end> 
 function pushIntoCadreObject(cadreId , mobileNumber)
 {
@@ -1023,6 +760,11 @@ function pushIntoCadreObject(cadreId , mobileNumber)
 		var index = window.opener.selectedMobileNumbers.indexOf(mobileNumber);
          array.splice(index, 1);
 	}
+}
+
+function closeWindow()
+{
+	window.close();
 }
 </script>
 </body>
