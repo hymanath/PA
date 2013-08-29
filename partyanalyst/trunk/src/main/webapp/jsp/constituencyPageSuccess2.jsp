@@ -396,7 +396,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	  <a id="inline" href="#fancydivbox" style="display:none"></a>
 <div id="promodiv" style="display:none;">
 	<div id="fancydivbox">
-	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
+	<jsp:include page="custom_jsp_pages/homePagePopupPage1.jsp" flush="true" />
 	</div>
 </div>
 	
