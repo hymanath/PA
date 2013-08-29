@@ -378,7 +378,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 			
 			for(int i=0; i<mobileNumbersArray.length(); i++)
 			{
-				Long mobileNumber =(Long) mobileNumbersArray.get(i);
+				Long mobileNumber = Long.parseLong(mobileNumbersArray.get(i).toString());
 				allMobileNumbers.add(mobileNumber);
 			}
 			
@@ -398,11 +398,11 @@ public class VoiceSmsAction implements ServletRequestAware{
 					
 			 
 			 for(int i=0; i<influencePeopleArray.length(); i++)
-				 influenceMobileNumbers.add(((Long)influencePeopleArray.get(i)));
+				 influenceMobileNumbers.add(Long.parseLong(influencePeopleArray.get(i).toString()));
 					
 			 
 			 for(int i=0; i<votersArray.length(); i++)
-				 votersMobileNumbers.add((Long)votersArray.get(i));
+				 votersMobileNumbers.add(Long.parseLong(votersArray.get(i).toString()));
 			 
 			 
 			 VoiceSmsResponseDetailsVO voiceSmsResponseDetailsVO = new VoiceSmsResponseDetailsVO();

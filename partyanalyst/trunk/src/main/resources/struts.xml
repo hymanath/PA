@@ -5828,7 +5828,7 @@
 		 
 		 <action name="getVoiceSmsHistoryForAuser" class="voiceSmsAction" method="getVoiceSmsHistoryForAuser">
 		  <result type="json" name="success">
-		   <param name="root">voiceSmsResponseDetails</param>
+		   <param name="root">responseDtls</param>
 		  </result>
 		 </action>
 		 
@@ -5859,7 +5859,7 @@
           </action>
           
           <action name="voiceSmsHistory" class="voiceSmsAction" method="voiceSmsHistory">
-           <result name="success">/jsp/voiceSmsHistory.jsp</result>
+           <result name="success">/jsp/smsHistory.jsp</result>
           </action>
 		 
 		  <action name="updateCustomerContactsAction" class="updateCustomerContacts">
