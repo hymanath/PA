@@ -714,10 +714,10 @@ Tweet</a>
  <script type="text/javascript">
  var loadingFirstTime = '${sessionScope.candidatePageLoadingFirstTime}';
  $(document).ready(function(){
-if(loadingFirstTime == 'true'){
+//if(loadingFirstTime == 'true'){
 		$("#inline").fancybox();
 		$("#inline").trigger("click");
-		}
+//		}
 	});
    var descriptions = '${descriptions}';
    var timeST = new Date().getTime();

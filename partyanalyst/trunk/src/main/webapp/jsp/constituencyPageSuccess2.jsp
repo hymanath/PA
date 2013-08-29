@@ -59,10 +59,10 @@
 	var loadingFirstTime = '${sessionScope.constituencyPageLoadingFirstTime}';
 	
 	$(document).ready(function(){
-	if(loadingFirstTime  == 'true'){
+	//if(loadingFirstTime  == 'true'){
 		$("#inline").fancybox();
 		$("#inline").trigger("click");
-		}
+	//	}
 	});
 	
 	var censusResultForParl = null;

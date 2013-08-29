@@ -1144,10 +1144,10 @@ var emailId='${sessionScope.USER.email}';
 var changedUserName='${sessionScope.changedUserName}';
 var loadingFirstTime = '${sessionScope.homePageLoadingFirstTime}';
 $(document).ready(function(){
-if(loadingFirstTime == 'true'){
+//if(loadingFirstTime == 'true'){
 		$("#inline").fancybox();
 		$("#inline").trigger("click");
-		}
+//		}
 	});
 //buildHOmePageChartsSlider();
 	initializeHomePage();
