@@ -2777,8 +2777,11 @@ function showHideLocationOptionsForVoter()
 	   $('#ConstituencyDiv,#constiDiv').show();
    else if(selectedValue == 2)
 	   $('#ConstituencyDiv,#constiDiv,#mandalDiv').show();
-   else if(selectedValue == 4)
+   else if(selectedValue == 4){
 	   	   $('#ConstituencyDiv,#constiDiv,#mandalDiv,#pollingStationDiv').show();
+		   		   $('#mandalField').change();
+
+   }
    else if(selectedValue == 5)
 	   	   $('#ConstituencyDiv,#constiDiv,#mandalDiv,#wardDiv').show();
    else if(selectedValue == 6)
