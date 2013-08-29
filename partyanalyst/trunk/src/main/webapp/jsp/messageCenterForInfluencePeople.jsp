@@ -110,9 +110,12 @@ var gender = '${gender}';
 </head>
 <body>
 
-<div class="span11" style="margin-left:200px;">
+  <h4 style="text-align:center;color:#06ABEA;">INFLUENCE PEOPLE SEARCH RESULTS</h4>
+
+  <a class="btn" href="javascript:{window.close();}" style="float:right;margin-right:80px;">Click here to close the window</a>
+
+<div class="span11" style="margin-left:300px;">
  <div class="row">
-  <h4 style="text-align:center;color:#06ABEA;">INFLUENCE SEARCH RESULTS</h4>
 
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 	</div>
@@ -248,6 +251,19 @@ function getPhoneNos()
 }
 
 $(document).ready(function(){
+
+
+
+	 $('.checkbox').live("change",function(){
+
+			if($(this).is(':checked'))
+                   window.opener.document.getElementById("influencePeopleCount").innerHTML = parseInt(window.opener.document.getElementById("influencePeopleCount").innerHTML) +1;
+			else{
+				window.opener.document.getElementById("influencePeopleCount").innerHTML = parseInt(window.opener.document.getElementById("influencePeopleCount").innerHTML) -1;
+				$('.selectAll').attr('checked',false);
+			}
+		});
+
   
   $(".selectAll").live("click",function(){
 	
@@ -259,8 +275,11 @@ $(document).ready(function(){
 			var name = $(this).val().split("-")[0];
 			var mobileNumber = $(this).val().split("-")[1];
 
-		   if(window.opener.selectedInfluencePeopleDetails[name] == undefined)
+		   if(window.opener.selectedInfluencePeopleDetails[name] == undefined){
 					window.opener.selectedInfluencePeopleDetails[name] = mobileNumber;
+
+				window.opener.document.getElementById("influencePeopleCount").innerHTML = parseInt(window.opener.document.getElementById("influencePeopleCount").innerHTML) +1;
+		   }
 
 
 		   if($.inArray(mobileNumber, window.opener.selectedMobileNumbers) == -1)
@@ -365,7 +384,7 @@ function pushIntoInfluencePeopleObject(voterName , mobileNumber)
 		delete window.opener.selectedInfluencePeopleDetails[voterName];
 
 		var index =  window.opener.selectedMobileNumbers.indexOf(mobileNumber);
-         array.splice(index, 1);
+         selectedMobileNumbers.splice(index, 1);
 	}
 }
 </script>

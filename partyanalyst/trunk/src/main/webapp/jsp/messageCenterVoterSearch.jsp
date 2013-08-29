@@ -119,7 +119,9 @@ var gender = '${gender}';
 -->
 <h4 style="text-align:center;color:#06ABEA;">VOTER SEARCH RESULTS</h4>
 
-<div style="margin-left:150px;">
+<a class="btn" href="javascript:{window.close();}" style="float:right;margin-right:95px;">Click here to close the window</a>
+
+<div style="margin-left:320px;margin-top:75px;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 </div>
 
@@ -249,6 +251,16 @@ function getPhoneNos()
 }
 */
 $(document).ready(function(){
+
+	 $('.voter').live("change",function(){
+
+			if($(this).is(':checked'))
+                   window.opener.document.getElementById("voterCount").innerHTML = parseInt(window.opener.document.getElementById("voterCount").innerHTML) +1;
+			else{
+				window.opener.document.getElementById("voterCount").innerHTML = parseInt(window.opener.document.getElementById("voterCount").innerHTML) -1;
+				$('.allVoters').attr('checked',false);
+			}
+		});
   
   $(".allVoters").live("change",function(){
 	
@@ -259,8 +271,10 @@ $(document).ready(function(){
 			var voterId = $(this).val().split("-")[0];
 			var mobileNumber = $(this).val().split("-")[1];
 
-		   if(window.opener.selectedVotersDetails[voterId] == undefined)
+		   if(window.opener.selectedVotersDetails[voterId] == undefined){
 					window.opener.selectedVotersDetails[voterId] = mobileNumber;
+			window.opener.document.getElementById("voterCount").innerHTML = parseInt(window.opener.document.getElementById("voterCount").innerHTML) +1;
+		   }
 
 
 		   if($.inArray(mobileNumber, window.opener.selectedMobileNumbers) == -1)
@@ -283,7 +297,7 @@ function getVotersDetailsBySearchCritteria()
 			var mobileNumber = oRecord.getData("mobileNumber");
 			var voterIdCardNo = oRecord.getData("voterIdCardNo");
 
-			 if(window.opener.selectedVotersDetails[voterName] == undefined)
+			 if(window.opener.selectedVotersDetails[voterIdCardNo] == undefined)
 				var str ='<input type="checkbox" onchange="pushIntoVoterObject(\''+voterIdCardNo+'\',\''+mobileNumber+'\')" class="voter" value="'+voterIdCardNo+'-'+mobileNumber+'"/>';
 			else
 				var str ='<input type="checkbox" checked onchange="pushIntoVoterObject(\''+voterIdCardNo+'\',\''+mobileNumber+'\')" class="voter" value="'+voterIdCardNo+'-'+mobileNumber+'"/>';
@@ -302,7 +316,6 @@ var votersByLocBoothColumnDefs = [
 ];
 
 
-
 var urlStr = "getVotersDetailsBySearchToSendSMS.action?publicationDateId="+publicationId+"&constituencyId="+constituencyId+"&locationType="+locationType+"&locationValue="+locationId+"&";
 
 
@@ -311,7 +324,7 @@ urlStr += "isAgeSelected="+isAgeSelected+"&isCasteSelected="+isCasteSelected+"&i
    if(isAgeSelected == "true")
 	   urlStr += "startAge="+startAge+"&endAge="+endAge+"&";
    if(isCasteSelected == "true")
-	   urlStr += "casteIds="+houseNo+"&";
+	   urlStr += "casteIds="+casteIds+"&";
 
    if(isFamilySelected == "true")
 	   urlStr += "houseNo="+houseNo+"&";
@@ -346,6 +359,7 @@ sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initia
 
 var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body",
 votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+debugger;
 
 votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 oPayload.totalRecords = oResponse.meta.totalRecords;
