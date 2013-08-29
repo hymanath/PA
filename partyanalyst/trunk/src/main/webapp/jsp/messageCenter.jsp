@@ -1091,7 +1091,7 @@ var jsObj=
 
 
 
- <div style="height:auto;border:1px solid #06ABEA;padding:6px;" class="span12" >
+ <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
 
 <div style="clear:both;" id="textSmsDiv">
 
@@ -3018,7 +3018,6 @@ function removeVoters()
      });
 	 $('#voterCount').html(0);
 	 		 	console.log(selectedCadreDetails);
-
 
 }
 </script>
