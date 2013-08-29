@@ -12,7 +12,9 @@ public interface IVoiceSmsResponseDetailsDAO extends GenericDao<VoiceSmsResponse
 	public List<VoiceSmsResponseDetails> getVoiceSmsHistoryForAuser(Long userId);
 	public List<Object[]> getVoiceSmsSentUserDetails(Date fromDate,Date toDate);
 	public List<String> getResponseCodesForAnUser(Long userId);
-	public List<VoiceSmsResponseDetails> getVoiceSmsHistoryForAllSubUsers(List<Long> userIds);
+	public List<VoiceSmsResponseDetails> getVoiceSmsHistoryForAllSubUsers(List<Long> userIds , Integer startIndex , Integer maxResults);
+	public List<Long> getVoiceSmsHistoryCountForAllSubUsers(List<Long> userIds);
+
 
 
 

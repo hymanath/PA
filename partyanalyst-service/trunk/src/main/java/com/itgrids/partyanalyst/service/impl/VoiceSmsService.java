@@ -146,7 +146,6 @@ public class VoiceSmsService implements IVoiceSmsService {
 	public String sendVoiceSMS(String audioPath ,Long userId , String mobileNumbers,Long senderMobileNumber,String description,VoiceSmsResponseDetailsVO voiceSmsResponseDetailsVO )
 	{
 		log.debug("Entered into the sendVoiceSMS service method");
-		int noOfSmsSent = 1;
 		try {
 			
 			StringBuilder result = new StringBuilder();
@@ -191,7 +190,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			rd.close();
 			conn.disconnect();
 		
-		saveResponseDetails(buffer.toString() , userId , noOfSmsSent,mobileNumbers,description);
+		saveResponseDetails(buffer.toString() , userId , voiceSmsResponseDetailsVO.getAllmobileNumbers().size(),mobileNumbers,description);
 		
 		}catch(Exception e)
 		{
@@ -225,7 +224,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		}
 	}
 	
-	public List<VoiceSmsResponseDetailsVO> getVoiceSmsHistoryForAuser(Long userId)
+	public List<VoiceSmsResponseDetailsVO> getVoiceSmsHistoryForAuser(Long userId , Integer startIndex , Integer maxResults , boolean forCount)
 	{
 		log.debug("Entered into the getVoiceSmsHistoryForAuser service method");
 		
@@ -243,22 +242,37 @@ public class VoiceSmsService implements IVoiceSmsService {
 				
 			
 			
-			//List<VoiceSmsResponseDetails> responseDetailsList = voiceSmsResponseDetailsDAO.getVoiceSmsHistoryForAuser(userId);
+
 			
-			List<VoiceSmsResponseDetails> responseDetailsList = voiceSmsResponseDetailsDAO.getVoiceSmsHistoryForAllSubUsers(subUserIdsList);
-			
-			for(VoiceSmsResponseDetails details:responseDetailsList)
+			if(forCount == false)
 			{
-				VoiceSmsResponseDetailsVO responseVO = new VoiceSmsResponseDetailsVO();
+				List<VoiceSmsResponseDetails> responseDetailsList = voiceSmsResponseDetailsDAO.getVoiceSmsHistoryForAllSubUsers(subUserIdsList,startIndex,maxResults);
 				
-				responseVO.setResponseId(details.getVoiceSmsResponseDetailsId());
-				responseVO.setResponseCode(details.getResponseCode());
-				responseVO.setNumbers(details.getMobileNumbers());
-				responseVO.setDateSent(details.getTimeSent().toString());
-				responseVO.setDescription(details.getSmsDescription());
-				responseVO.setUserName(details.getUser().getFirstName()+" "+details.getUser().getLastName());
-				resultList.add(responseVO);
+				for(VoiceSmsResponseDetails details:responseDetailsList)
+				{
+					VoiceSmsResponseDetailsVO responseVO = new VoiceSmsResponseDetailsVO();
+					
+					responseVO.setResponseId(details.getVoiceSmsResponseDetailsId());
+					responseVO.setResponseCode(details.getResponseCode());
+					responseVO.setNumbers(details.getMobileNumbers());
+					responseVO.setDateSent(details.getTimeSent().toString());
+					responseVO.setDescription(details.getSmsDescription());
+					responseVO.setUserName(details.getUser().getFirstName()+" "+details.getUser().getLastName());
+					resultList.add(responseVO);
+					
+				}
+			}
+			else
+			{
 				
+				List<Long> countList = voiceSmsResponseDetailsDAO.getVoiceSmsHistoryCountForAllSubUsers(subUserIdsList);
+				
+				if(countList != null && countList.size() >0)
+				{
+					VoiceSmsResponseDetailsVO responseVO = new VoiceSmsResponseDetailsVO();					
+					responseVO.setResponseCount(countList.get(0));
+					resultList.add(responseVO);
+				}
 			}
 			
 		}catch(Exception e)

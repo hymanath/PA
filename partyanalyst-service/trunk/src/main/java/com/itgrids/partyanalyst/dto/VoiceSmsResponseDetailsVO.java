@@ -20,8 +20,23 @@ public class VoiceSmsResponseDetailsVO implements Serializable{
 	private List<Long> influencePeopleMobileNumbers;
 	private List<Long> votersMobileNumbers;
 	private List<Long> allmobileNumbers;
+	private List<VoiceSmsResponseDetailsVO> responseDetailsList;
+	private Long responseCount;
 	
 	
+	public Long getResponseCount() {
+		return responseCount;
+	}
+	public void setResponseCount(Long responseCount) {
+		this.responseCount = responseCount;
+	}
+	public List<VoiceSmsResponseDetailsVO> getResponseDetailsList() {
+		return responseDetailsList;
+	}
+	public void setResponseDetailsList(
+			List<VoiceSmsResponseDetailsVO> responseDetailsList) {
+		this.responseDetailsList = responseDetailsList;
+	}
 	public List<Long> getCadreMobileNumbers() {
 		return cadreMobileNumbers;
 	}
