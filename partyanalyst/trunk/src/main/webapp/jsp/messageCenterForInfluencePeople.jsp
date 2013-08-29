@@ -384,7 +384,7 @@ function pushIntoInfluencePeopleObject(voterName , mobileNumber)
 		delete window.opener.selectedInfluencePeopleDetails[voterName];
 
 		var index =  window.opener.selectedMobileNumbers.indexOf("91"+mobileNumber);
-         selectedMobileNumbers.splice(index, 1);
+         window.opener.selectedMobileNumbers.splice(index, 1);
 	}
 }
 </script>
