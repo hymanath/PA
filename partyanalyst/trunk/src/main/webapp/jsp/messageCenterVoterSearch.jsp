@@ -7,54 +7,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Message Center</title>
+<title>Message Center Cadre details</title>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
-
-   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
-<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
-<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+<!-- Javascript  start-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
-	<script src="js/yahoo/resize-min.js"></script> 
-	<script src="js/yahoo/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
-	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
- 
- <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/tabview/assets/skins/sam/tabview.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
-	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/>
-
-
+<!-- Javascript end -->
+<!-- Css styles start -->
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 <link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
 
-
-
-<title>Party Analyst</title>
+<!-- Css styles end -->
 
 <style>
  #mainDiv{margin: 20px auto; float: none; width: 980px;}
@@ -88,35 +59,28 @@
 </style>
 
 <script type="text/javascript">
- var constituencyId = '${constituencyId}';
- var publicationId = '${publicationDateId}';
- var locationId = '${locationValue}';
- var locationType = '${locationType}';
+	 var constituencyId = '${constituencyId}';
+	 var publicationId = '${publicationDateId}';
+	 var locationId = '${locationValue}';
+	 var locationType = '${locationType}';
 
-var isAgeSelected = '${isAgeSelected}';
-var isCasteSelected = '${isCasteSelected}';
-var isFamilySelected = '${isFamilySelected}';
-var isNameSelected = '${isNameSelected}';
-var isGenderSelected = '${isGenderSelected}';
+	var isAgeSelected = '${isAgeSelected}';
+	var isCasteSelected = '${isCasteSelected}';
+	var isFamilySelected = '${isFamilySelected}';
+	var isNameSelected = '${isNameSelected}';
+	var isGenderSelected = '${isGenderSelected}';
 
 
-var startAge = '${startAge}';
-var endAge = '${endAge}';
-var casteIds = '${casteIds}';
-var houseNo = '${houseNo}';
-var name = '${name}';
-var gender = '${gender}';
+	var startAge = '${startAge}';
+	var endAge = '${endAge}';
+	var casteIds = '${casteIds}';
+	var houseNo = '${houseNo}';
+	var name = '${name}';
+	var gender = '${gender}';
 </script>
 </head>
 <body>
-<!--<div id="mainDiv">
 
-<div id="voterDetailsDiv"></div>
-<div id="paginationDivId"></div>
-<div id="btnDiv" style="display:none;"><input type="button" class="btn btn-info" value="Add  Contacts To Send Voice SMS" id="phoneNoBtn" onclick="getPhoneNos()" /></div>
-
-</div>
--->
 <h4 style="text-align:center;color:#06ABEA;">VOTER SEARCH RESULTS</h4>
 
 <a class="btn" href="javascript:{window.close();}" style="float:right;margin-right:95px;">Click here to close the window</a>
@@ -126,33 +90,10 @@ var gender = '${gender}';
 </div>
 
 
-
 <script>
-/*var limit = 1000;
-var totalReq = 1000;
-function getWardsForMuncipality(startIndex)
-{
- 
-   var jsObj=
-			{
-			
-				constituencyId:constituencyId,
-				id:locationId,
-				publicationDateId:publicationId,
-				locationType:locationType,
-				startIndex:startIndex,
-				results:10,
-				task:"getVoterDetails"
-	
-			}
-	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "getVoterDetailsAction.action?"+rparam;						
-		callAjax(jsObj,url);
- 
-}*/
 
  function callAjax(jsObj,url)
-		{
+ {
 			 var myResults;
 
 			 var callback = {			
@@ -164,7 +105,7 @@ function getWardsForMuncipality(startIndex)
 								  buildVoterDetails(myResults,jsObj);
 								}
 
-}catch (e) {   		
+ }catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
 			}  
 	    },
@@ -177,79 +118,6 @@ function getWardsForMuncipality(startIndex)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-/*
-
-function buildVoterDetails(results,jsObj)
-{
-  $('#voterDetailsDiv').html('');
-  
-  if(results == null)
-  {
-   $('#voterDetailsDiv').html('No Data Found.');
-   $('#paginationDivId').html('');
-   return;
-  }
-  $("#btnDiv").css('display','block');
-  var result = results.votersList;
-  var str = '';
-  str +='<table class="dataTable">';
-  str +='<tr>';
-  str +='<th>All <input type="checkbox" id="selectAll" name="selectAll" /></th>';
-  str +='<th>Name</th>';
-  str +='<th>House No</th>';
-  str +='<th>Mobile No</th>';
-  str +='<th>Booth Name</th>';
-  str +='</tr>';
-  for(var i in result)
-  {
-    str +='<tr>';
-    str +='<td><input type="checkbox" class="checkboxCls" name="check" value="'+result[i].mobileNo+'" /></td>';
-    str +='<td>'+result[i].name+'</td>';
-    str +='<td>'+result[i].houseNo+'</td>';
-    str +='<td>'+result[i].mobileNo+'</td>';
-    str +='<td>'+result[i].partNo+'</td>';
-    str +='</tr>'; 
-  }
-  $('#voterDetailsDiv').html(str);
-
-  var itemsCount=results.totalHousesCount;
-	    var maxResults=jsObj.results;
-	   
-	     if(jsObj.startIndex==0){
-		   $("#paginationDivId").pagination({
-			items: itemsCount,
-			itemsOnPage: maxResults,
-			cssStyle: 'light-theme',
-			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*10;
-				getWardsForMuncipality(num);
-				
-			}
-		});
-	}
-
-}*/
-//getWardsForMuncipality(0);
-
-/*
-function getPhoneNos()
-{
-  var tempArray =[];
-  $('input:checkbox[name="check"]').each(function() {
-        if (this.checked) {
-			
-          tempArray.push(this.value);
-      }
-  });
-
- 
-  if(tempArray == null || tempArray.length == 0)
-	 return;
-
-  window.opener.receiveFromVoterSearchChild ( tempArray );
-
-}
-*/
 $(document).ready(function(){
 
 	 $('.voter').live("change",function(){
