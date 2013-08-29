@@ -1042,7 +1042,7 @@ var jsObj=
 
 <div style="clear:both;" id="textSmsDiv">
 
-<div style="text-align:center;margin-top:5px;"><label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
+<div style="text-align:center;margin-top:5px;"><label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" class="textAreaClass"></textarea></div>
 
 </div>
 
@@ -1071,7 +1071,8 @@ var jsObj=
 
  <div style="text-align:center;"><label>Enter Mobile Numbers To Send Voice SMS(Add country code before mobile number):<font style="color:red;">*</font><br>Example:919999999999</label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 
-  <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="smsDescription" class="textAreaClass"></textarea></div>
+
+  <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="voiceSmsDescription" class="textAreaClass"></textarea></div>
 
 <div id="invalidContactsDiv" style="float: right; margin-top: -200px; position: static; width: 200px;">
  <!--<span id="notValidContactSpan" style="border: 1px solid rgb(156, 156, 156); width: 180px; height: 200px; font-weight: bold;"><font style="margin-left: 40px;">Invalid Contacts:</font>
@@ -1208,7 +1209,7 @@ function validateFieldsForSendingSms()
 		error = true;
 	}
 
-	if($('#smsDescription').val() == ""){
+	if($('#voiceSmsDescription').val() == ""){
 		str+='<b>Description is required</b></br>';
 		error = true;
 	}
@@ -1251,13 +1252,42 @@ function validateFieldsForSendingSms()
 
 function ajaxToSendVoiceSms(){
 
-	 $.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+	 //$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+
+	 $('#responseDetailsInnerDiv').html("<img style='margin-left:130px;' src='./images/icons/search.gif' />");
+				
+
+					     $('#responseDetailsDiv').dialog({
+						    title:"Response Details" ,
+						    buttons: {								
+								"Ok":function(){$(this).dialog("close");} 
+							}
+	       });
 
 
 	var audioFileName = $("input:radio[name=audio]:checked").attr('id');
     var senderNumber = $("input:radio[name=senderNumber]:checked").val();
-	var mobileNumbers = $('#mobileNumber').val();
-	var description = $('#smsDescription').val();
+	var mobileNumbers = ($('#mobileNumber').val().trim() != "" ? $('#mobileNumber').val():"");
+	var description = $('#voiceSmsDescription').val();
+
+	
+
+	var cadreDetails = new Array();
+	var influencePeopleDetails = new Array();
+	var votersDetails = new Array();
+
+	$.each(selectedCadreDetails, function(index, value) {
+		cadreDetails.push(value);
+    });
+
+    $.each(selectedInfluencePeopleDetails, function(index, value) {
+		influencePeopleDetails.push(value);
+    });
+
+	$.each(selectedVotersDetails, function(index, value) {
+		votersDetails.push(value);
+    });
+
 
 
 	var jsObj=
@@ -1267,7 +1297,11 @@ function ajaxToSendVoiceSms(){
                 mobileNumbers:mobileNumbers,
                 senderMobileNumber:senderNumber,
                 selectedMobileNumbers:selectedMobileNumbers,
-				description:description
+				description:description,
+				cadreDetails:cadreDetails,
+				influencePeopleDetails:influencePeopleDetails,
+                votersDetails:votersDetails
+					
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "sendVoiceSMS.action?"+rparam;	
@@ -1642,8 +1676,10 @@ function callAjax1(param,jsObj,url){
 
 					else if(jsObj.task == "sendVoiceSms")
 				    {
-						 $.unblockUI();
+						// $.unblockUI();
+						$('#responseDetailsDiv').dialog('close');
 						alert(myResults);
+
 				    }
 					else if(jsObj.task == "getConstituencyNames")
 				    {
@@ -2687,7 +2723,7 @@ function sendTextSms()
 		votersDetails.push(value);
     });
 
-    if($('#smsDescription').val().trim() == "")
+    if($('#textSmsDescription').val().trim() == "")
 	{
 		alert("Description is required..");
 		return false;
