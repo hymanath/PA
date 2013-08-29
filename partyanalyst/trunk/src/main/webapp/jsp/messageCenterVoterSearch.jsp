@@ -384,7 +384,7 @@ function pushIntoVoterObject(voterName , mobileNumber)
 		delete window.opener.selectedVotersDetails[voterName];
 
 		var index =  window.opener.selectedMobileNumbers.indexOf("91"+mobileNumber);
-         array.splice(index, 1);
+         window.opener.selectedMobileNumbers.splice(index, 1);
 	}
 }
 </script>
