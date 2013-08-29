@@ -10,7 +10,6 @@
 <title>Message Center</title>
 
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
-<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
 <script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
@@ -78,7 +77,7 @@ function getVoiceSmsHistory()
 		{key:"details",label:"Details",width:70,formatter:YAHOO.widget.DataTable.Type}
 		];
 
-		var votersByLocBoothDataSource = new YAHOO.util.DataSource("voiceSmsHistory.action");
+		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoiceSmsHistoryForAuser.action?");
 
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
@@ -105,8 +104,8 @@ function getVoiceSmsHistory()
 		votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
 
 		votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-		oPayload.totalRecords = oResponse.meta.totalRecords;
-		return oPayload;
+		//oPayload.totalRecords = oResponse.meta.totalRecords;
+		//return oPayload;
 		}
 
 
