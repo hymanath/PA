@@ -1735,7 +1735,8 @@
      <property name="voiceSmsResponseDetailsDAO" ref="voiceSmsResponseDetailsDAO"/> 
      <property name="voiceSmsVerifiedNumbersDAO" ref="voiceSmsVerifiedNumbersDAO"/> 
      <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO"/>
-	  <property name="influencingPeopleDAO" ref="influencingPeopleDAO"/> 	  
+	 <property name="influencingPeopleDAO" ref="influencingPeopleDAO"/>
+     <property name="smsTrackDAO" ref="smsTrackDAO"/>
     </bean>
 </beans>		
 	
