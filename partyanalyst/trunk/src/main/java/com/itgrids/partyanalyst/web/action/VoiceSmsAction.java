@@ -40,7 +40,16 @@ public class VoiceSmsAction implements ServletRequestAware{
 	private String userId;
 	private String status;
 	private List<VoiceSmsResponseDetailsVO> voiceSmsResponseDetails;
+	private VoiceSmsResponseDetailsVO responseDtls;
 	
+	public VoiceSmsResponseDetailsVO getResponseDtls() {
+		return responseDtls;
+	}
+
+	public void setResponseDtls(VoiceSmsResponseDetailsVO responseDtls) {
+		this.responseDtls = responseDtls;
+	}
+
 	private List<Long> verifiedNumbers;
 	private Map<String ,Map<String,Integer>> resultMap ;
 	private JSONObject jObj;
@@ -385,7 +394,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 			 JSONArray votersArray = jObj.getJSONArray("votersDetails");
 			 
 			 for(int i=0; i<cadreArray.length(); i++)
-				 cadreMobileNumbers.add((Long)cadreArray.get(i));
+				 cadreMobileNumbers.add(Long.parseLong(cadreArray.get(i).toString()));
 					
 			 
 			 for(int i=0; i<influencePeopleArray.length(); i++)
@@ -498,7 +507,23 @@ public class VoiceSmsAction implements ServletRequestAware{
 			if(user == null)
 				return Action.INPUT;
 			
-			voiceSmsResponseDetails = voiceSmsService.getVoiceSmsHistoryForAuser(user.getRegistrationID());
+			//voiceSmsResponseDetails = voiceSmsService.getVoiceSmsHistoryForAuser(user.getRegistrationID());
+			
+			Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			String order = request.getParameter("dir");
+			String columnName = request.getParameter("sort");
+			Integer maxRecords = Integer.parseInt(request.getParameter("results"));
+			
+			voiceSmsResponseDetails = voiceSmsService.getVoiceSmsHistoryForAuser(user.getRegistrationID(),startIndex ,maxRecords,false );
+			
+			responseDtls = new VoiceSmsResponseDetailsVO();
+			
+			responseDtls.setResponseDetailsList(voiceSmsResponseDetails);
+
+			voiceSmsResponseDetails = voiceSmsService.getVoiceSmsHistoryForAuser(user.getRegistrationID(),0,0,true);
+			
+			if(voiceSmsResponseDetails != null && voiceSmsResponseDetails.size() >0)
+			responseDtls.setResponseCount(voiceSmsResponseDetails.get(0).getResponseCount());
 			
 		}
 		catch(Exception e)
@@ -589,7 +614,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 		if(user == null)
 			return Action.INPUT;
 		
-		voiceSmsResponseDetails = voiceSmsService.getVoiceSmsHistoryForAuser(user.getRegistrationID());
+		//voiceSmsResponseDetails = voiceSmsService.getVoiceSmsHistoryForAuser(user.getRegistrationID());
 		
 		return Action.SUCCESS;
 		
