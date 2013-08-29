@@ -7,51 +7,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Message Center</title>
+<title>Message Center Influence People Search</title>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
-
-   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
-<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
-<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+<!-- Javascript  start-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
-	<script src="js/yahoo/resize-min.js"></script> 
-	<script src="js/yahoo/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
-	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
- 
- <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/tabview/assets/skins/sam/tabview.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
-	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/>
-
-
+<!-- Javascript end -->
+<!-- Css styles start -->
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 <link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
 
+<!-- Css styles end -->
 
 
 <title>Party Analyst</title>
@@ -88,171 +62,27 @@
 </style>
 
 <script type="text/javascript">
- var constituencyId = '${constituencyId}';
- var publicationId = '${publicationDateId}';
- var locationId = '${locationValue}';
- var locationType = '${locationType}';
+	 var constituencyId = '${constituencyId}';
+	 var publicationId = '${publicationDateId}';
+	 var locationId = '${locationValue}';
+	 var locationType = '${locationType}';
 
-var isAgeSelected = '${isAgeSelected}';
-var isCasteSelected = '${isCasteSelected}';
-var isFamilySelected = '${isFamilySelected}';
-var isNameSelected = '${isNameSelected}';
-var isGenderSelected = '${isGenderSelected}';
+	var isAgeSelected = '${isAgeSelected}';
+	var isCasteSelected = '${isCasteSelected}';
+	var isFamilySelected = '${isFamilySelected}';
+	var isNameSelected = '${isNameSelected}';
+	var isGenderSelected = '${isGenderSelected}';
 
 
-var startAge = '${startAge}';
-var endAge = '${endAge}';
-var casteIds = '${casteIds}';
-var houseNo = '${houseNo}';
-var name = '${name}';
-var gender = '${gender}';
+	var startAge = '${startAge}';
+	var endAge = '${endAge}';
+	var casteIds = '${casteIds}';
+	var houseNo = '${houseNo}';
+	var name = '${name}';
+	var gender = '${gender}';
 </script>
-</head>
-<body>
-
-  <h4 style="text-align:center;color:#06ABEA;">INFLUENCE PEOPLE SEARCH RESULTS</h4>
-
-  <a class="btn" href="javascript:{window.close();}" style="float:right;margin-right:80px;">Click here to close the window</a>
-
-<div class="span11" style="margin-left:300px;">
- <div class="row">
-
-	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
-	</div>
-</div>
-
-
-
 <script>
-var limit = 1000;
-var totalReq = 1000;
-function getWardsForMuncipality(startIndex)
-{
- 
-   var jsObj=
-			{
-			
-				constituencyId:constituencyId,
-				id:locationId,
-				publicationDateId:publicationId,
-				locationType:locationType,
-				startIndex:startIndex,
-				results:10,
-				task:"getVoterDetails"
-	
-			}
-	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "getVoterDetailsAction.action?"+rparam;						
-		callAjax(jsObj,url);
- 
-}
-
- function callAjax(jsObj,url)
-		{
-			 var myResults;
-
-			 var callback = {			
- 		               success : function( o ) {
-							try {												
-								myResults = YAHOO.lang.JSON.parse(o.responseText);
-								if(jsObj.task=="getVoterDetails")
-								{
-								  buildVoterDetails(myResults,jsObj);
-								}
-
-}catch (e) {   		
-			   	//alert("Invalid JSON result" + e);   
-			}  
-	    },
-	    scope : this,
-	    failure : function( o ) {
-	     			//alert( "Failed to load result" + o.status + " " + o.statusText);
-	              }
-	    };
-
-	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}
-
-
-
-function buildVoterDetails(results,jsObj)
-{
-  $('#voterDetailsDiv').html('');
-  
-  if(results == null)
-  {
-   $('#voterDetailsDiv').html('No Data Found.');
-   $('#paginationDivId').html('');
-   return;
-  }
-  $("#btnDiv").css('display','block');
-  var result = results.votersList;
-  var str = '';
-  str +='<table class="dataTable">';
-  str +='<tr>';
-  str +='<th>All <input type="checkbox" id="selectAll" name="selectAll" /></th>';
-  str +='<th>Name</th>';
-  str +='<th>House No</th>';
-  str +='<th>Mobile No</th>';
-  str +='<th>Booth Name</th>';
-  str +='</tr>';
-  for(var i in result)
-  {
-    str +='<tr>';
-    str +='<td><input type="checkbox" class="checkboxCls" name="check" value="'+result[i].name+'" id="'+result[i].mobileNo+'" placeholder="'+result[i].partNo+'"/></td>';
-    str +='<td>'+result[i].name+'</td>';
-    str +='<td>'+result[i].houseNo+'</td>';
-    str +='<td>'+result[i].mobileNo+'</td>';
-    str +='<td>'+result[i].partNo+'</td>';
-    str +='</tr>'; 
-  }
-  $('#voterDetailsDiv').html(str);
-
-  var itemsCount=results.totalHousesCount;
-	    var maxResults=jsObj.results;
-	   
-	     if(jsObj.startIndex==0){
-		   $("#paginationDivId").pagination({
-			items: itemsCount,
-			itemsOnPage: maxResults,
-			cssStyle: 'light-theme',
-			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*10;
-				getWardsForMuncipality(num);
-				
-			}
-		});
-	}
-
-}
-//getWardsForMuncipality(0);
-
-
-function getPhoneNos()
-{
-  var tempArray =[];
-  var voter;
-  $('input:checkbox[name="check"]').each(function() {
-	voter = new Object();
-        if (this.checked) {
-			voter.name = this.value;
-			voter.mobileNo = this.id;
-			voter.boothName= this.placeholder;
-          tempArray.push(voter);
-      }
-  });
-
- 
-  if(tempArray == null || tempArray.length == 0)
-	 return;
-
-  window.opener.receiveFromVoterSearchChild ( tempArray );
-
-}
-
 $(document).ready(function(){
-
-
 
 	 $('.checkbox').live("change",function(){
 
@@ -289,6 +119,48 @@ $(document).ready(function(){
   });
 
 });
+</script>
+</head>
+<body>
+  <h4 style="text-align:center;color:#06ABEA;">INFLUENCE PEOPLE SEARCH RESULTS</h4>
+
+  <a class="btn" href="javascript:{window.close();}" style="float:right;margin-right:80px;">Click here to close the window</a>
+
+<div class="span11" style="margin-left:300px;">
+ <div class="row">
+
+	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+	</div>
+</div>
+
+
+<script>
+
+ function callAjax(jsObj,url)
+ {
+			 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+								myResults = YAHOO.lang.JSON.parse(o.responseText);
+								if(jsObj.task=="getVoterDetails")
+								{
+								  buildVoterDetails(myResults,jsObj);
+								}
+
+}catch (e) {   		
+			   	//alert("Invalid JSON result" + e);   
+			}  
+	    },
+	    scope : this,
+	    failure : function( o ) {
+	     			//alert( "Failed to load result" + o.status + " " + o.statusText);
+	              }
+	    };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
 
 getInfluencePeopleDetailsBySearchCritteria();
 
