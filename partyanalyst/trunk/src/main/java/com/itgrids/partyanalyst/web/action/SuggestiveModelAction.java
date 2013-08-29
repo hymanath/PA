@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +18,14 @@ import org.json.JSONObject;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ExceptCastsVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyImpactVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -67,6 +71,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private Long fromAge;
 	private Long toAge;
 	private String constituencyName;
+	private List<VoterDataVO> mandalPanchayatList;
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	
 	public List<BasicVO> getHamletDetails() {
@@ -346,6 +351,14 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	public void setCastDetails(boolean castDetails) {
 		this.castDetails = castDetails;
 	}
+	
+	public List<VoterDataVO> getMandalPanchayatList() {
+		return mandalPanchayatList;
+	}
+
+	public void setMandalPanchayatList(List<VoterDataVO> mandalPanchayatList) {
+		this.mandalPanchayatList = mandalPanchayatList;
+	}
 
 	public String execute(){
 		session = request.getSession();
@@ -477,10 +490,26 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			Long constituencyId = jObj.getLong("constituencyId");
 			String casteIds = jObj.getString("casteIds");
 			String[] strArray = casteIds.split(",");
+			
+			JSONArray jsonArray = jObj.getJSONArray("expCasteArray");
 			List<Long> castesIdsList = new ArrayList<Long>();
+			Boolean checkStatus = jObj.getBoolean("checkStatus");
+			Map<Long,Double> casteMap = new HashMap<Long,Double>();
+			List<ExceptCastsVO> exceptCasteList = new ArrayList<ExceptCastsVO>();
+			for (int i = 0 ; i < jsonArray.length() ; i++) {
+				JSONObject jSONObject= jsonArray.getJSONObject(i);
+				ExceptCastsVO exceptCastsVO = new ExceptCastsVO();
+				exceptCastsVO.setCasteId(jSONObject.getLong("casteId"));
+				//exceptCastsVO.setCasteName(jSONObject.getString("casteName"));
+				exceptCastsVO.setCastePerc(jSONObject.getDouble("expPerc"));
+				exceptCastsVO.setPanchayatId(jSONObject.getLong("panchayatId"));
+				//exceptCastsVO.setSelectLevelId(jSONObject.getLong("selLevel"));
+				//exceptCastsVO.setSelectLevelvalue(jSONObject.getLong("levelValue"));
+				exceptCasteList.add(exceptCastsVO);
+			}
 			for(String casteId:strArray)
 				castesIdsList.add(Long.parseLong(casteId));
-			LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId,castesIdsList);
+			LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId,castesIdsList,casteMap,exceptCasteList,checkStatus);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -628,6 +657,27 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
 			constituencies = suggestiveModelService.getCasteAvaliableConstituencysService(userAccessConstituencyList,electionTypeId,electionYear,userId);
+			return Action.SUCCESS;
+		}
+		
+		public String getMandalsAndPanchayts()
+		{
+			try {
+				jObj = new JSONObject(getTask());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute(IConstants.USER);
+			if(regVO == null)
+			{
+				return Action.ERROR;
+			}
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			mandalPanchayatList = suggestiveModelService.getMandalsAndPanchayats(constituencyId);
+			
 			return Action.SUCCESS;
 		}
 }

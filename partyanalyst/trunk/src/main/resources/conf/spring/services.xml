@@ -1687,6 +1687,7 @@
       <property name="panchayatHamletDAO" ref="panchayatHamletDAO"/>
       <property name="regionServiceDataImp" ref="regionServiceDataImp" />
       <property name="votersAnalysisService" ref="votersAnalysisService" />
+      <property name="casteStateDAO" ref="casteStateDAO" />
     </bean>
     
     <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">

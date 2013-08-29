@@ -5915,5 +5915,11 @@
 		   <param name="root">votersDetails</param>
 		  </result>
 		 </action>
+		 		 
+		  <action name="getMandalsAndPanchaytsAction" class="suggestiveModelAction" method="getMandalsAndPanchayts">
+			 <result type="json" name="success">
+			   <param name="root">mandalPanchayatList</param>
+			  </result>
+		 </action>
 		</package>
 </struts>      

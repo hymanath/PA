@@ -63,6 +63,7 @@
 
 <script type="text/javaScript" >
 google.load("visualization", "1", {packages:["corechart"]});
+
 </script>
 <style type="text/css">	
 	select {
@@ -375,6 +376,11 @@ function validateYear2(yearId){
 	}	
 }
 function getLeadersList(){
+var checkStatus = $('#expCaste').is(":checked");
+if(checkStatus == false)
+{
+	expCasteArray = new Array();
+}
 //var mandalId = $('#listMandalNames option:selected').val();
  <c:if test="${!castDetails}">
 var constituencyId = $('#listConstituencyNames option:selected').val();
@@ -392,14 +398,30 @@ $('#candidateCastes :selected').each(function(i, selected){
 var jsObj= 
 	{	
 		//mandalId       : mandalId.slice(1),
-		constituencyId : constituencyId,
-		casteIds:casteIds,
-		task           : "getLeadersList"		
+		constituencyId   : constituencyId,
+		casteIds         : casteIds,
+		expCasteArray    : expCasteArray,
+		checkStatus      : checkStatus,
+		task             : "getLeadersList"		
 	};
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/getLeadersDataAction.action?"+param;
-	callAjax(param,jsObj,url);
-
+	 $("#getAllExpCasteDetails").val(YAHOO.lang.JSON.stringify(jsObj));
+			  
+		var uploadHandler = {
+		success: function(o) {
+		var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+		 $("#dashBoardImgLoading").hide();
+		 if(checkStatus == false)
+		 {
+			buildLeadersTable(uploadResult);
+		 }
+		 else 
+		 {
+			buildLeadersTableWithExpPerc(uploadResult);
+		 }
+		}
+		};
+		YAHOO.util.Connect.setForm('exceptedCasteDetailsForm',false);
+		YAHOO.util.Connect.asyncRequest('POST','getLeadersDataAction.action',uploadHandler);
 }
 
 function getLeadersListInRuralUrbans(){
@@ -506,8 +528,8 @@ function callAjax(param,jsObj,url){
 						}
 						else if(jsObj.task == "getLeadersList")
 						{
-						     $("#dashBoardImgLoading").hide();
-							buildLeadersTable(myResults);
+						    
+							
 						}
 						else if(jsObj.task == "getDeletedVotersInfo")
 						{
@@ -532,6 +554,9 @@ function callAjax(param,jsObj,url){
 						    $("#dashBoardImgLoadingNew").hide();
 							buildLeadersTableForNONUrbanAreas(myResults);					
 						}
+						else if (jsObj.task== "getMandalsAndPanchayts"){
+							storeMandalPanchayatValues(myResults);
+						}
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
 					  $("#dashBoardImgLoading").hide();
@@ -543,7 +568,7 @@ function callAjax(param,jsObj,url){
 			        			//alert( "Failed to load result" + o.status + " " + o.statusText);
 			        }
 			    };
-		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+		YAHOO.util.Connect.asyncRequest('POST', url, callback);
 	}
 
 function buildUserAssignedVotersCastes(results){
@@ -662,98 +687,7 @@ function addDefaultSelectValues(elmt){
 	addOptions(elmt,opElmt);
 }
 
-function buildLeadersTable(results)
-{
-	$('#leadersTable').html('')
-	if(results != null && results.length > 0)
-	{
-		var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
 
-		var str = "";
-		str+='<div class="widget blue">';
-		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
-		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY BOOTH LEVEL CASTE DETAILS </h4>';
-		//str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;"></h4>';
-		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
-		str += '<tr>';
-		str += '<th>Mandal</th>';
-		str += '<th>Panchayat</th>';
-		str += '<th>Total Voters</th>';
-		str += '<th>Major Castes</th>';
-		str += '<th>Selected Castes</th>';
-		str += '<th>Booth</th>';
-		str += '<th>Total Voters</th>';
-		str += '<th>Major Castes</th>';
-		str += '<th>Selected Castes</th>';
-		str += '</tr>';
-
-		for(var i in results)
-		{
-		try{
-			str += '<tr>';
-
-			var rowLength = results[i].boothLevelLeadersList.length;
-			str += '<td rowspan='+rowLength+'>'+results[i].mandalName+'</td>'; 
-			str += '<td rowspan='+rowLength+'>'+results[i].panchayatName+'</td>'; 
-			str += '<td rowspan='+rowLength+'>'+results[i].panchayatTotalVoters+'</td>'; 
-			str += '<td rowspan='+rowLength+' >';
-			for(var j in results[i].panchayatLevelLeadersList)
-			{
-				str += ''+results[i].panchayatLevelLeadersList[j].casteName +'('+results[i].panchayatLevelLeadersList[j].casteVotersPerc+')  '; 
-			}
-			str += '</td>';
-			str += '<td rowspan='+rowLength+'>';
-			
-			for(var j in results[i].selectedCastesList)
-			{
-				str += ' '+results[i].selectedCastesList[j].casteName +' ('+results[i].selectedCastesList[j].casteVotersPerc+')  '; 
-			}
-			str +='</td>';
-			
-			
-			if(results[i].boothLevelLeadersList != null && results[i].boothLevelLeadersList.length > 0){
-			for(var k in results[i].boothLevelLeadersList)
-			{
-				if(k > 0)
-				{
-					str += '<tr>';
-				}
-				str += '<td>'+results[i].boothLevelLeadersList[k].boothName+'</td>'; 
-				str += '<td>'+results[i].boothLevelLeadersList[k].boothTotalVoters+'</td>';
-				str += '<td>';
-				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
-				{
-					str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+' ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
-				}
-				str += '</td>';
-				str += '<td>';
-				
-				for(var m in results[i].boothLevelLeadersList[k].selectedCastesList)
-				{
-					str += ' '+results[i].boothLevelLeadersList[k].selectedCastesList[m].casteName+'  ('+results[i].boothLevelLeadersList[k].selectedCastesList[m].casteVotersPerc+')'; 
-				}
-				str +='</td>';
-				if(k > 0)
-				{
-					str += '</tr>';
-				}
-			}
-			}
-			
-			str += '</tr>';
-		}catch(e){
-		//console.log(e);
-		}
-		}
-		
-		str += '</table>';
-		str += '</div>';
-		str += '</div>';
-
-		$('#leadersTable').html(str);
-	}
-	
-}
 
 function buildLeadersTableForNONUrbanAreas(results){
 
@@ -989,23 +923,29 @@ function panchayatMatrx(result)
 			</td>
 		</tr>
 	</table>
-</div>
-
+</div></br>
 <div style=" margin-bottom: 5px;float: left; margin-left: 82px;">
+	<span style="float: left; margin-left: 1px; padding-top: 13px; padding-bottom: 13px;">Please Check For Excepted Caste Details <input type="checkbox" name="expCaste" id="expCaste" value="" onclick="showExpCasteDetailsButton();"><br></span></br>
 	<table>
 		<tr>
 			<td id="tdWidth">
 				Caste Names :<font id="requiredValue" class="requiredFont">*</font> 
 			</td>		
 			<td>
-				<select id="candidateCastes" multiple="multiple">
+				<select id="candidateCastes" multiple="multiple" >
 				<option value="0"> Select Caste </option>
 				</select>
-			</td>			
+			</td>	
+			<td>
+				<input type="button" id="expCasteButton" value="CASTE PERCENTAGES" class="btn-success" onClick="ckeckForExpCasteDetails()" style="height: 29px; border-radius: 4px 4px 4px 4px; margin-left: 59px;display:none;"></input>
+			</td>
 		</tr>
 	</table>
 </div>
 
+<div id="selCastesDisplayDiv">
+<div id="sublevelSelectionDiv"></div>
+</div>
 <div style="margin-left:80px;margin-top:70px;">
 <div id="ageGroupWiseId">
 	<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
@@ -1118,6 +1058,9 @@ function panchayatMatrx(result)
 
 <div id="conclusionStatements" style="margin-left:177px;margin-top:34px;"></div>
 </div>
+
+<form id="ExceptedCasteDetailsDiv" method="post" action="getLeadersDataAction.action" name="exceptedCasteDetailsForm">
+<input type="hidden" name="task" id="getAllExpCasteDetails" /></form>
 <!--
 <div id="titleDiv" style="display:none;">
 <h4>PANCHAYAT WISE ELECTION RESULTS COMPARISION</h4>
@@ -1207,6 +1150,290 @@ function findPos(obj) {
 
 });
 
+function ckeckForExpCasteDetails()
+{
+	var checkStatus = $('#expCaste').is(":checked");
+	if(checkStatus == true)
+	{
+		getMandalsAndPanchayts();
+		
+	}
+}
+var noOfCastesSelected ;
+var selectedCastes = new Array();
+function getSelectedCastes()
+{
+	$('#selCastesDisplayDiv').html('');
+	selectedCastes = new Array();
+	var casteId ;
+	var casteName;
+	var constituencyId = $('#listConstituencyNames option:selected').val();
+	$('#candidateCastes :selected').each(function(i, selected){ 
+		var casteDetails = {};
+        casteDetails["casteId"] =  $(this).val();
+		casteDetails["casteName"] =  $(this).text();
+		selectedCastes.push(casteDetails);
+	});
+	noOfCastesSelected = selectedCastes.length;
+		var str = '';
+		for(var i in selectedCastes)
+		{
+			var casteId = selectedCastes[i].casteId;
+			var casteName = selectedCastes[i].casteName;
+			str += '<b>'+casteName+'</b>' ;
+			str += '<table class="table table-hover table-bordered expCasteDetails'+i+'">';
+			str += '<th>PANCHAYAT</th>';
+			str += '<th>MANDAL</th>';
+			str += '<th>EXCEPTED  %</th>';
+			str += '<th>ACTIONS</th>';
+			
+			for(j in madalPanchayatsArray)
+			{
+			str += '<tr>';
+				var panchayatId   = madalPanchayatsArray[j].panchayatId;
+				var panchayatName = madalPanchayatsArray[j].panchayatname;
+				var mandelId      = madalPanchayatsArray[j].mandalId;
+				var mandelName    = madalPanchayatsArray[j].mandalName;
+				
+				str += '<td><input type="hidden" value="'+panchayatId+'" id="panchayaId'+i+''+j+'" class="panchayatIdClass"></input><input id="panchayaName'+i+''+j+'" class="'+casteId+''+constituencyId+'" type="text" style="width:100px;" value="'+panchayatName+'" readonly="readonly"></input></td>';
+				str += '<td><input type="hidden" value="'+mandelId+'" id="mandalId'+i+''+j+'" class="mandalIdClass"></input><input id="mandalName'+i+''+j+'" class="'+casteId+''+mandelId+'" type="text" style="width:100px;" value="'+mandelName+'" readonly="readonly"></input></td>';
+				str += '<td><input class="expPercClass" id="expPerc'+i+''+j+'" id="" type="text" style="width:100px;"></input></td>';
+				str += '<td><span><a class="icon-ok" title ="Apply To  Mandal" onClick="applyExpCasteToSelectedMandal(\''+casteId+''+mandelId+'\','+i+','+j+',\'expPerc\');"></a></span><span> <a class=" icon-ok-sign" title = "Apply to Constituency"><i class="icon-ok" onClick="applyExpCasteToConstituency(\''+casteId+''+constituencyId+'\','+i+','+j+',\'expPerc\');"></i></a></span></td>';
+			str += '</tr>';
+			}
+			str += '</table>';
+		}
+		str += '<div><input type="button" class="btn-success" value="Get" onClick="getAllExpcetedCasteDetails(\''+constituencyId+'\');"></input></div>';
+		$('#selCastesDisplayDiv').append(str);
+		$('#selCastesDisplayDiv').dialog({
+			 width: 700,
+			 height:500
+		});
+	
+} 
+
+function applyExpCasteToSelectedMandal(value,i,j,id)
+{
+	var expPercentage = $('#'+id+''+i+''+j+'').val();
+	$('.'+value+'').each(function() {
+		$(this).closest("tr").find('.expPercClass').val(expPercentage);
+	});
+	
+}
+function applyExpCasteToConstituency(value,i,j,id)
+{
+	var expPercentage = $('#'+id+''+i+''+j+'').val();
+	$('.'+value+'').each(function() {
+		$(this).closest("tr").find('.expPercClass').val(expPercentage);
+	});
+}
+var expCasteArray = new Array();
+function getAllExpcetedCasteDetails(id)
+{
+		expCasteArray = new Array();
+		for(var i = 0 ; i < noOfCastesSelected ; i++)
+		{
+			var casteName = selectedCastes[i].casteName;
+			var casteId = selectedCastes[i].casteId;
+			$('.'+casteId+''+id+'').each(function() {
+			var casteDetails = {};
+			var mandalId = $(this).closest("tr").find('.mandalIdClass').val();
+			var panchayatId = $(this).closest("tr").find('.panchayatIdClass').val();
+			var expPerc = $(this).closest("tr").find('.expPercClass').val();
+			casteDetails["panchayatId"]  =    panchayatId,
+			casteDetails["casteId"]      =    casteId,
+			casteDetails["expPerc"]      =     expPerc
+			expCasteArray.push(casteDetails);
+			});
+		}
+}
+function getMandalsAndPanchayts()
+{
+	var constituencyId = $('#listConstituencyNames option:selected').val();
+	var jsObj = {
+	        constituencyId:constituencyId,
+			task:"getMandalsAndPanchayts"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getMandalsAndPanchaytsAction.action?"+rparam;
+		callAjax(rparam,jsObj,url);
+}
+var madalPanchayatsArray = new Array();
+function storeMandalPanchayatValues(result)
+{
+	if(result != null && result.length > 0)
+	{
+		for(var i in result)
+		{
+			var mandalPanchayatDetails = {};
+			mandalPanchayatDetails["panchayatId"]   =  result[i].panchayatId;
+			mandalPanchayatDetails["panchayatname"] =  result[i].panchayatname;
+			mandalPanchayatDetails["mandalId"]      =  result[i].mandaId;
+			mandalPanchayatDetails["mandalName"]    =  result[i].mandalName;
+			madalPanchayatsArray.push(mandalPanchayatDetails);
+		}
+		getSelectedCastes();
+	}
+}
+function showExpCasteDetailsButton()
+{
+	var checkStatus = $('#expCaste').is(":checked");
+	if(checkStatus == true)
+	{
+		$('#expCasteButton').show();
+	}
+	else
+	{
+		$('#expCasteButton').hide();
+	}
+}
+function buildLeadersTableWithExpPerc(results)
+{
+	$('#leadersTable').html('')
+	if(results != null && results.length > 0)
+	{
+		var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
+
+		var str = "";
+		str+='<div class="widget blue">';
+		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY BOOTH LEVEL CASTE DETAILS </h4>';
+		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
+		str += '<tr>';
+		str += '<th>Mandal</th>';
+		str += '<th>Panchayat</th>';
+		str += '<th>Total Voters</th>';
+		//str += '<th>Major Castes</th>';
+		
+			for(var b in results[0].exceptdCateDetails)
+			{
+				str += '<th>'+results[0].exceptdCateDetails[b].name+'</th>';
+				str += '<th>Excepted Perc</th>';
+				str += '<th>Excepted Votes</th>';
+			}
+
+		str += '</tr>';
+
+		for(var i in results)
+		{
+		try{
+			str += '<tr>';
+			str += '<td>'+results[i].mandalName+'</td>'; 
+			str += '<td>'+results[i].panchayatName+'</td>'; 
+			str += '<td>'+results[i].panchayatTotalVoters+'</td>'; 
+			for(var k in results[i].exceptdCateDetails)
+			{
+				str += '<td>'+results[i].exceptdCateDetails[k].count+'</td>';
+				str += '<td>'+results[i].exceptdCateDetails[k].perc+'</td>';
+				str += '<td>'+results[i].exceptdCateDetails[k].expCount+'</td>';
+			}
+			
+			str += '</tr>';
+			}catch(e){
+			//console.log(e);
+			}
+		}
+		
+		str += '</table>';
+		str += '</div>';
+		str += '</div>';
+
+		$('#leadersTable').html(str);
+	}
+	
+}
+function buildLeadersTable(results)
+{
+	$('#leadersTable').html('')
+	if(results != null && results.length > 0)
+	{
+		var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
+
+		var str = "";
+		str+='<div class="widget blue">';
+		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY BOOTH LEVEL CASTE DETAILS </h4>';
+
+		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
+		str += '<tr>';
+		str += '<th>Mandal</th>';
+		str += '<th>Panchayat</th>';
+		str += '<th>Total Voters</th>';
+		str += '<th>Major Castes</th>';
+		str += '<th>Selected Castes</th>';
+		str += '<th>Booth</th>';
+		str += '<th>Total Voters</th>';
+		str += '<th>Major Castes</th>';
+		str += '<th>Selected Castes</th>';
+		str += '</tr>';
+
+		for(var i in results)
+		{
+		try{
+			str += '<tr>';
+
+			var rowLength = results[i].boothLevelLeadersList.length;
+			str += '<td rowspan='+rowLength+'>'+results[i].mandalName+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].panchayatName+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].panchayatTotalVoters+'</td>'; 
+			str += '<td rowspan='+rowLength+' >';
+			for(var j in results[i].panchayatLevelLeadersList)
+			{
+				str += ''+results[i].panchayatLevelLeadersList[j].casteName +'('+results[i].panchayatLevelLeadersList[j].casteVotersPerc+')  '; 
+			}
+			str += '</td>';
+			str += '<td rowspan='+rowLength+'>';
+			
+			for(var j in results[i].selectedCastesList)
+			{
+				str += ' '+results[i].selectedCastesList[j].casteName +' ('+results[i].selectedCastesList[j].casteVotersPerc+')  '; 
+			}
+			str +='</td>';
+			
+			
+			if(results[i].boothLevelLeadersList != null && results[i].boothLevelLeadersList.length > 0){
+			for(var k in results[i].boothLevelLeadersList)
+			{
+				if(k > 0)
+				{
+					str += '<tr>';
+				}
+				str += '<td>'+results[i].boothLevelLeadersList[k].boothName+'</td>'; 
+				str += '<td>'+results[i].boothLevelLeadersList[k].boothTotalVoters+'</td>';
+				str += '<td>';
+				for(var m in results[i].boothLevelLeadersList[k].boothLevelLeadersList)
+				{
+					str += ' '+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteName+' ('+results[i].boothLevelLeadersList[k].boothLevelLeadersList[m].casteVotersPerc+')  '; 
+				}
+				str += '</td>';
+				str += '<td>';
+				
+				for(var m in results[i].boothLevelLeadersList[k].selectedCastesList)
+				{
+					str += ' '+results[i].boothLevelLeadersList[k].selectedCastesList[m].casteName+'  ('+results[i].boothLevelLeadersList[k].selectedCastesList[m].casteVotersPerc+')'; 
+				}
+				str +='</td>';
+				if(k > 0)
+				{
+					str += '</tr>';
+				}
+			}
+			}
+			
+			str += '</tr>';
+		}catch(e){
+		//console.log(e);
+		}
+		}
+		
+		str += '</table>';
+		str += '</div>';
+		str += '</div>';
+
+		$('#leadersTable').html(str);
+	}
+	
+}
 function getSelPartyPerformanceAction(){
    var eleIds = new Array();
   <c:if test="${!prevElecResults}">
@@ -1513,8 +1740,8 @@ function showPartyPerformanceReport(result,jsObj)
   var StrongPollingPerList = result[0].strongPollingPercentVOList;
   var weakPollingPerList = result[0].weakPollingPercentVOList;
   var locationtype = "";
-  alert(StrongPollingPerList);
-  alert(weakPollingPerList);
+  //alert(StrongPollingPerList);
+  //alert(weakPollingPerList);
   if(jsObj.locationType == "mandal")
    locationtype = "Panchayat";
 
