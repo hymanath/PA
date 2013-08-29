@@ -143,18 +143,16 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		List list = nominationDAO.findCandidateNamePartyByConstituencyAndElection("3382", "2009");		
 		System.out.println(list.size());
 	}*/
-	/*
+	
 	public void testFindByElectionTypeTehsilAndParty(){
-		List list = nominationDAO.findMPTCInfoByElectionTypeTehsilAndParty("MPTC", new Long(844), new Long(24));
+		List list = nominationDAO.findMPTCInfoByElectionTypeTehsilAndParty( new Long(784), new Long(872));
 		for(int i=0; i<list.size(); i++){
-			Object[] params = (Object[])list.get(0);
-			Double totalVotesPolled = (Double)params[2];
-			Double totalValidVotes = (Double)params[3];
-			Double votesEarned = (Double)params[4];
-			System.out.println("--"+totalValidVotes);
+			Object[] params = (Object[])list.get(i);
+			
+			System.out.println("--"+params[0]+" "+params[5]+" "+params[6]+" "+params[1]);
 		}
 		System.out.println("Size"+list.size());
-	}*/
+	}
 	
 	/*public void testFindValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear(){
 		List list = nominationDAO.findValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear("MPTC", "2001", new Long(844));
@@ -417,15 +415,8 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]+"\t"+values[6]+"\t"+values[7]);
 			System.out.println("____________________________________________________________________________");		
 	}
-	
+	*/
 
-	public void testFindAllMptcAndZptcElectionsInfoInMandal(){
-		List list = nominationDAO.findAllMptcAndZptcElectionsInfoInMandal(844l);
-		for(int i=0; i<list.size(); i++){
-			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]+"\t"+((Object[])list.get(i))[12]+"\t"+((Object[])list.get(i))[13]);
-		}
-	}*/
-	
 	/*public void testFindOppositionCandidateVotesPercentageInConstituencies()
 
 	{
@@ -1359,7 +1350,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			
 	}*/
 	
-	public void testgetElectionyearsByElection()
+	/*public void testgetElectionyearsByElection()
 	{
 		List<Long> eleIds = new ArrayList<Long>();
 		eleIds.add(3l);
@@ -1368,6 +1359,6 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+ parms[1]);
 		}
-	}
+	}*/
 }	
 	
