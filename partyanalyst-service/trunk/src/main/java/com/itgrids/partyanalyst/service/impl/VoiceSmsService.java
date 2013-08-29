@@ -155,8 +155,16 @@ public class VoiceSmsService implements IVoiceSmsService {
 		    }
 		    
 		    String mobileNumbersString = "";
-		    if(result.length() >0)
-		     mobileNumbersString = result.substring(1);
+		    
+		    
+		    if(mobileNumbers.length() >0)
+		    	mobileNumbersString = mobileNumbersString + mobileNumbers;
+		    else
+		    {
+		    	if(result.length() >0)
+			    	mobileNumbersString = result.substring(0, result.length()-1);
+		    }
+		    	
 		    	
 					
 		    //Date mydate = new Date(System.currentTimeMillis());
