@@ -176,8 +176,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" sum(model.candidateResult.votesEarned), model.candidate.lastname," +
 				" model.constituencyElection.constituency.electionScope.electionType.electionType" +
 				" from Nomination model where model.constituencyElection.constituency.tehsil.tehsilId = ? " +
-				" and model.party.partyId in ("+partyId+") group by model.constituencyElection.election.electionYear," +
-				" model.constituencyElection.constituency.electionScope.electionType.electionType order by model.constituencyElection.constituency.electionScope.electionType.electionType",params);
+				" and model.party.partyId in ("+partyId+") " +
+						" group by model.nominationId, model.constituencyElection.election.electionId " +
+				"  order by model.constituencyElection.constituency.electionScope.electionType.electionType",params);
 	}
 	
 	public List findCandidatesInfoByConstituencyAndElectionYear(Long constituencyId, String electionYear){
