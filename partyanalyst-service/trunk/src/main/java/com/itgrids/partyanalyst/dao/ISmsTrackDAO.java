@@ -26,4 +26,7 @@ public interface ISmsTrackDAO extends GenericDao<SmsTrack, Long> {
 	
 	public List<Object[]> getUserSmsDetailsByUserId(Long userId);
 	
+	public List<SmsTrack> getUserSmsDetailsByUserIdAndSMSType(Long userId ,String smsType);
+
+	
 }

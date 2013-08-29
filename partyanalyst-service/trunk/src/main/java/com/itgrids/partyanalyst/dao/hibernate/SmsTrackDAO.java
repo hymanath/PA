@@ -66,4 +66,15 @@ public class SmsTrackDAO extends GenericDaoHibernate<SmsTrack, Long> implements
 		return getHibernateTemplate().find("select model.smsTrackId,model.smsUsername,model.smsPassword,model.senderId,model.renewalSmsCount,model.user.firstName ,model.user.lastName from SmsTrack model where model.user.userId = ? ",userId);
 	}
 	
+	public List<SmsTrack> getUserSmsDetailsByUserIdAndSMSType(Long userId , String smsType)
+	{
+		
+		Query query = getSession().createQuery("select model from SmsTrack model where model.user.userId = :userId and model.smsType.type = :smsType ");
+		
+              query.setParameter("userId", userId);
+              query.setParameter("smsType", smsType);
+              
+              return query.list();
+	}
+	
 }

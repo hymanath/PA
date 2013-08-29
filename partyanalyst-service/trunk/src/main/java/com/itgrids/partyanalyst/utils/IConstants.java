@@ -654,5 +654,8 @@ public interface IConstants {
     public static final String VOICE_SMS_USER_NAME = "karthik1";
     public static final String VOICE_SMS_PASS_WORD = "184314";
     /* VOICE SMS END*/
+    
+    public static final String VOICE_SMS_TYPE = "Voice Sms";
+    public static final String TEXT_SMS_TYPE = "Text Sms";
 	
 }
