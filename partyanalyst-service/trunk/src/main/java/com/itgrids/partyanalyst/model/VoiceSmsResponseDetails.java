@@ -84,7 +84,7 @@ public class VoiceSmsResponseDetails extends BaseModel implements Serializable{
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="date_sent")
+	@Column(name="sent_time")
 	public Date getTimeSent() {
 		return timeSent;
 	}

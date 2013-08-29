@@ -25,12 +25,26 @@ public class VoiceSmsResponseDetailsDAO  extends GenericDaoHibernate<VoiceSmsRes
 		return query.list();
 	}
 	
-	public List<VoiceSmsResponseDetails> getVoiceSmsHistoryForAllSubUsers(List<Long> userIds)
+	public List<VoiceSmsResponseDetails> getVoiceSmsHistoryForAllSubUsers(List<Long> userIds ,Integer startIndex , Integer maxResults)
 	{
 		Query query = getSession().createQuery("select model from VoiceSmsResponseDetails model " +
 				"where model.user.userId in( :userIds)");
 		
 		query.setParameterList("userIds", userIds);
+		
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxResults);
+		
+		return query.list();
+	}
+	
+	public List<Long> getVoiceSmsHistoryCountForAllSubUsers(List<Long> userIds)
+	{
+		Query query = getSession().createQuery("select count(*) from VoiceSmsResponseDetails model " +
+				"where model.user.userId in( :userIds)");
+		
+		query.setParameterList("userIds", userIds);
+		
 		
 		return query.list();
 	}
