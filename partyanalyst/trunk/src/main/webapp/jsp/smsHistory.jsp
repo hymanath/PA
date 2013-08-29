@@ -9,47 +9,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Message Center</title>
 
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
-<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+<!-- javascript start-->
+    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
-	<script src="js/yahoo/resize-min.js"></script> 
-	<script src="js/yahoo/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
-	<script type="text/javascript" src="js/json/json-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
- 
- <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/tabview/assets/skins/sam/tabview.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+<!-- javascript end-->
+<!-- css styles start-->
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/>
-
-
-<link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
+	<link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css">
+<!-- css styles end-->
 
 </head>
 <body>
+
+
+
+<div id="responseDetailsDiv">
+ <div id="responseDetailsInnerDiv"></div>
+</div>
+
 
 <div id="voiceSmsHistoryDiv" class="yui-skin-sam yui-dt-sortable"></div>
 
@@ -74,7 +58,7 @@ function getVoiceSmsHistory()
 		{key:"responseCode", label: "Message Id",sortable: true},
 		{key:"dateSent",label:"Date Sent",sortable:false},
 		{key:"description",label:"Description",sortable:false},
-		{key:"details",label:"Details",width:70,formatter:YAHOO.widget.DataTable.Type}
+		{key:"details",label:"Details",width:70,formatter:YAHOO.widget.DataTable.details}
 		];
 
 		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoiceSmsHistoryForAuser.action?");
@@ -108,11 +92,98 @@ function getVoiceSmsHistory()
 		//return oPayload;
 		}
 
-
 		return {
 		oDS: votersByLocBoothDataSource,
 		oDT: votersByLocBoothDataTable
 		};
+}
+function showMessageResponseDetails(responseCode){
+
+	var jsObj=
+			{
+				task:"getResponseDetails",
+                messageResponseCode:responseCode
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getResponseDetailsForSms.action?"+rparam;	
+			callAjax1(rparam,jsObj,url);
+
+			$('#responseDetailsInnerDiv').html("<img style='margin-left:130px;' src='./images/icons/search.gif' />");
+				
+				 $('#responseDetailsDiv').dialog({
+						title:"Response Details" ,
+						buttons: {								
+							"Ok":function(){$(this).dialog("close");} 
+					}
+	             });
+
+}
+function buildResponseDetails(results)
+{
+	if(results.length == 0)
+	{
+     	$('#responseDetailsInnerDiv').html("Response is not generated.It will take some time.");
+			$('#responseDetailsInnerDiv').html(str);
+
+		return false;
+
+	}
+
+	var str='';
+
+   str+='<div class="datagrid">';
+	str+='<table>';
+	str+='<thead>';
+	 str+='<tr>';
+	  str+='<th>S No</th>'
+	  str+='<th>Mobile Number</th>'
+	  str+='<th>Status</th>';
+	 str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
+
+	$.each(results,function(index,value){
+       var sNo = index +1;
+        str+='<tr>';
+		str+='<td>'+sNo+'</td>';
+		 str+='<td>'+value.numbers+'</td>';
+	     str+='<td>'+value.sentStatus+'</td>';
+        str+='</tr>';
+
+	});
+	str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+
+	$('#responseDetailsInnerDiv').html(str);
+	
+}
+
+function callAjax1(param,jsObj,url){
+
+
+	var myResults;	
+	var callback = {			
+	    success : function( o ) {
+			try {	
+					if(o.responseText.length!=0){
+						myResults = YAHOO.lang.JSON.parse(o.responseText);	
+					}				
+					
+					 if(jsObj.task == "getResponseDetails")
+						buildResponseDetails(myResults);
+	
+			}catch (e) {   		
+			   	//alert("Invalid JSON result" + e);   
+			}  
+	    },
+	    scope : this,
+	    failure : function( o ) {
+	     			//alert( "Failed to load result" + o.status + " " + o.statusText);
+	              }
+	    };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 </script>
 </body>
