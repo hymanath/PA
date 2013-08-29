@@ -306,8 +306,14 @@ public class SmsCountrySmsService implements ISmsService {
 	public Long getRemainingSmsLeftForUser(Long userId)
 	{
 		try{
-			Long count = (Long)smsTrackDAO.getRemainingSMSCountForAUser(userId);
-			return count != null ? count : 0L;
+			//Long count = (Long)smsTrackDAO.getRemainingSMSCountForAUser(userId);
+			List<SmsTrack> countList = smsTrackDAO.getUserSmsDetailsByUserIdAndSMSType(userId ,IConstants.TEXT_SMS_TYPE);
+			
+			Long count =  0L;
+			if(countList != null && countList.size() >0)
+				count = countList.get(0).getRenewalSmsCount();
+				
+			return count != null? count : 0L;
 		}catch (Exception e) {
 			log.error("Error Occured - "+e);
 			return 0L;

@@ -5,18 +5,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.util.StringUtil;
 
-import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
@@ -24,11 +21,13 @@ import com.itgrids.partyanalyst.dao.IVoiceSmsResponseDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceSmsVerifiedNumbersDAO;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.model.SmsTrack;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.VoiceRecordingDetails;
 import com.itgrids.partyanalyst.model.VoiceSmsResponseDetails;
 import com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VoiceSmsService implements IVoiceSmsService {
@@ -41,6 +40,25 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private IVoiceSmsVerifiedNumbersDAO voiceSmsVerifiedNumbersDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IInfluencingPeopleDAO influencingPeopleDAO;
+	private ISmsTrackDAO smsTrackDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
+
+
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
+	public ISmsTrackDAO getSmsTrackDAO() {
+		return smsTrackDAO;
+	}
+
+	public void setSmsTrackDAO(ISmsTrackDAO smsTrackDAO) {
+		this.smsTrackDAO = smsTrackDAO;
+	}
 
 	public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
 		return influencingPeopleDAO;
@@ -158,14 +176,38 @@ public class VoiceSmsService implements IVoiceSmsService {
 		    
 		    
 		    if(mobileNumbers.length() >0)
-		    	mobileNumbersString = mobileNumbersString + mobileNumbers;
+		    	mobileNumbersString = result + mobileNumbers;
 		    else
 		    {
 		    	if(result.length() >0)
 			    	mobileNumbersString = result.substring(0, result.length()-1);
 		    }
 		    	
-		    	
+		  List<SmsTrack> smsDetails =   smsTrackDAO.getUserSmsDetailsByUserIdAndSMSType(userId,IConstants.VOICE_SMS_TYPE);
+		  
+		  String userName = "";
+		  String password = "";
+		  Long count = 0L;
+		  
+		  if(smsDetails != null && smsDetails.size() >0)
+		  {
+			  userName = smsDetails.get(0).getSmsUsername();
+			  password = smsDetails.get(0).getSmsPassword();
+			  count = smsDetails.get(0).getRenewalSmsCount();
+			  
+			  if(mobileNumbersString.split(",").length > count)
+				  return "Your account doee not have sufficient voice SMS balance.Please contact us....";
+			  
+			  SmsTrack smsTrack = smsDetails.get(0);
+			  
+			  Long reaminingCount = count - mobileNumbersString.split(",").length;			  
+			  smsTrack.setRenewalSmsCount(reaminingCount);
+			  smsTrack.setRenewalDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
+			  
+			  smsTrackDAO.save(smsTrack);
+		  }
+		  
+		  
 					
 		    //Date mydate = new Date(System.currentTimeMillis());
             //String path="http://www.partyanalyst.com/uploaded_files/"+userId+"/"+audioPath;
@@ -176,8 +218,11 @@ public class VoiceSmsService implements IVoiceSmsService {
 			//URL url = new URL("http://voice.dial4sms.com/send_voice_mail.php?user=samba&password=564396&sender=919985420156&mobile_no="+mobileNumbers+"&url_file_name="+audioPath);
 			//URL url = new URL("http://voice.dial4sms.com/send_voice_mail.php?user=samba&password=564396&sender=919985420156&mobile_no="+mobileNumbers+"&url_file_name=			http://122.169.253.134:8080/PartyAnalyst/voice_recordings/1/test2.wav");
 			//URL url = new URL("http://control.msg91.com/send_voice_mail.php?user=karthik1&password=184314&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name="+audioPath);
+		    
+		    
+		    
 			
-			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbersString+"&url_file_name="+audioPath);
+			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+userName+"&password="+password+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbersString+"&url_file_name="+audioPath);
 			//URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+IConstants.VOICE_SMS_USER_NAME+"&password="+IConstants.VOICE_SMS_PASS_WORD+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbers+"&url_file_name=http://www.partyanalyst.com/voice_recordings//1/test.wav");
 
 
