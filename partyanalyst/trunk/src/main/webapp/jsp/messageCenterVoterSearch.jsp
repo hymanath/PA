@@ -377,13 +377,13 @@ function pushIntoVoterObject(voterName , mobileNumber)
 {
 	if(window.opener.selectedVotersDetails[voterName] == undefined){
       window.opener.selectedVotersDetails[voterName] = mobileNumber;
-	   window.opener.selectedMobileNumbers.push(mobileNumber);	   
+	   window.opener.selectedMobileNumbers.push("91"+mobileNumber);	   
 	}
 	else{
 
 		delete window.opener.selectedVotersDetails[voterName];
 
-		var index =  window.opener.selectedMobileNumbers.indexOf(mobileNumber);
+		var index =  window.opener.selectedMobileNumbers.indexOf("91"+mobileNumber);
          array.splice(index, 1);
 	}
 }

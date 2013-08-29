@@ -377,13 +377,13 @@ function pushIntoInfluencePeopleObject(voterName , mobileNumber)
 {
 	if(window.opener.selectedInfluencePeopleDetails[voterName] == undefined){
        window.opener.selectedInfluencePeopleDetails[voterName] = mobileNumber;
-	   window.opener.selectedMobileNumbers.push(mobileNumber);
+	   window.opener.selectedMobileNumbers.push("91"+mobileNumber);
 	}
 	else{
 
 		delete window.opener.selectedInfluencePeopleDetails[voterName];
 
-		var index =  window.opener.selectedMobileNumbers.indexOf(mobileNumber);
+		var index =  window.opener.selectedMobileNumbers.indexOf("91"+mobileNumber);
          selectedMobileNumbers.splice(index, 1);
 	}
 }

@@ -752,12 +752,12 @@ function pushIntoCadreObject(cadreId , mobileNumber)
 	if(window.opener.selectedCadreDetails[cadreId] == undefined)
 	{
       window.opener.selectedCadreDetails[cadreId] = mobileNumber;
-	    window.opener.selectedMobileNumbers.push(mobileNumber);	
+	    window.opener.selectedMobileNumbers.push("91"+mobileNumber);	
 	}
 	else
 	{
 		delete window.opener.selectedCadreDetails[cadreId];
-		var index = window.opener.selectedMobileNumbers.indexOf(mobileNumber);
+		var index = window.opener.selectedMobileNumbers.indexOf("91"+mobileNumber);
          array.splice(index, 1);
 	}
 }
