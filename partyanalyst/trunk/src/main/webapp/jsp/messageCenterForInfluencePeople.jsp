@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Message Center Influence People Search</title>
+<title>Party Analyst - Message Center For Influence People Search</title>
 
 <!-- Javascript  start-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -205,9 +205,9 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 			var mobileNumber = oRecord.getData("mobileNumber");
 
 	 if(window.opener.selectedVotersDetails[name] == undefined)
-		var str ='<input type="checkbox" onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'"/>';
+		var str ='<input type="checkbox" onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'" style="margin-left: -1px;"/>';
 	else
-		var str ='<input type="checkbox" checked onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'"/>';
+		var str ='<input type="checkbox" checked onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'" style="margin-left: 29px;"/>';
 
 		elLiner.innerHTML =str;
 	}
@@ -216,7 +216,8 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 var votersByLocBoothColumnDefs = [
 {key:"select", label: "<input type='checkbox' class='selectAll'/>", width:70,formatter:YAHOO.widget.DataTable.Type},
 {key:"name", label: "Name",sortable: true},
-{key:"mobileNumber",label:"Mobile Number",sortable:false},
+{key:"mobileNumber",label:"Mobile Number",width:110,sortable:false},
+{key:"locationType",label:"Area Type",width:70,sortable:false}
 ];
 
 
@@ -228,12 +229,12 @@ urlStr += "isAgeSelected="+isAgeSelected+"&isCasteSelected="+isCasteSelected+"&i
    if(isAgeSelected == "true")
 	   urlStr += "startAge="+startAge+"&endAge="+endAge+"&";
    if(isCasteSelected == "true")
-	   urlStr += "casteIds=4-5&";
+	   urlStr += "casteIds=&";
 
    if(isFamilySelected == "true")
 	   urlStr += "houseNo="+houseNo+"&";
    if(isNameSelected == "true")
-	   urlStr += "name="+searchName+"&";
+	   urlStr += "name="+name+"&";
    if(isGenderSelected == "true")
 	   urlStr += "gender="+gender+"&";
 
@@ -245,7 +246,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "resultVotersList",
 fields: [
 {key:"name"},
-"mobileNumber"],
+"mobileNumber","locationType"],
 
 metaFields: {
 totalRecords: "totalResultsCount" // Access to value in the server response
