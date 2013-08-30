@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -125,5 +126,20 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(string);
 		}
 	}*/
+	
+
+	public void testConstituencyes()
+	{
+		SMSSearchCriteriaVO vo = new SMSSearchCriteriaVO();
+		List<Object[]> values = influencingPeopleDAO.getInfluencingPeopleDetailsToSendSMS(" " +
+				" model.firstName,model.lastName,model.phoneNo," +
+				" model.influencingScope from  InfluencingPeople model where " +
+				" model.user.userId =1  and " +
+				"model.userAddress.district.districtId =3  order by model.firstName asc",vo);
+		System.out.println(values.size());
+	
+	}
+	
+	
 	
 }
