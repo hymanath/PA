@@ -960,16 +960,16 @@ var jsObj=
 			 <font class="requiredFont">*</font>
 			  <s:select theme="simple" class="selectWidth" style="margin-left:65px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv(),"/>
 		 </div>
-		 <div class="" id="constiTypeDiv" style="font-weight:bold;font-size:13px;">
+		 <div class="" id="constiTypeDiv" style="font-weight:bold;font-size:13px;display:none;">
 		<div><label for="assemblyRdio"><input class="contiType" checked="true" type="radio" name="constituency" id="assemblyRdio"/> Assembly Constituency</label></div><label for="parliamentRdio"><input class="contiType" type="radio" name="constituency" id="parliamentRdio"/> Parliament Constituency</label>
 		</div>
 
-		 <div class="selectDivs" id="districtDiv">
+		 <div class="selectDivs" id="districtDiv" style="display:none;">
 			 <span>Select District</span>
 			 <font class="requiredFont">*</font>
 			 <s:select theme="simple" class="selectWidth" style="margin-left:53px;width:165px;" cssClass="selectWidth" label="Select Your State" name="districtList" id="districtList" list="districtList" listKey="id" listValue="name" onchange="clearErrDiv(),getallConstituencies(this.value);"/>
 		 </div>
-		<div class="selectDivs" id="ConstituencyDiv" style="margin-left:0px"> 
+		<div class="selectDivs" id="ConstituencyDiv" style="margin-left:0px;display:none;"> 
 		 <div class="selectDivs" id="constiDiv" ><span>Select Constituency</span>
 		 <font class="requiredFont">*</font>
 		<select id="constituencyList" style="margin-left:24px;width:165px;" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"><option value="0">Select Constituency</option></select>
@@ -1246,6 +1246,7 @@ function showMessageResponseDetails(responseCode){
 
 					     $('#responseDetailsDiv').dialog({
 						    title:"Response Details" ,
+                            modal:true,
 						    buttons: {								
 								"Ok":function(){$(this).dialog("close");} 
 							}
