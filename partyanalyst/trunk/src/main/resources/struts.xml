@@ -5927,5 +5927,48 @@
 			   <param name="root">status</param>
 			  </result>
 		 </action>
+		 
+		 <action name="demoRequestAction" class="demoRequestAction">
+		    <result name="input">jsp/loginForm.jsp</result>
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		    <result name="success">/jsp/demoRequest.jsp</result>
+		 </action>
+		 <action name="getDemoRequestDataAction" class="demoRequestAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">demoRequestVOList</param>
+		  </result>
+		 </action>
+		 <action name="demoRequestDataUpdateAction" class="demoRequestAction">
+		   <result name="success">/jsp/demoRequestDataUpdate.jsp</result>
+		 </action>
+		 
+		 <action name="getSelectedDemoRequestDataAction" class="demoRequestAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		   <param name="root">demoRequestVO</param>
+		  </result>
+		 </action>
+		 
+		 <action name="addDemoRequestActions" class="demoRequestAction">
+		  <result name="success">/jsp/addDemoRequestActions.jsp</result>
+		 </action>
+		 
+		 <action name="saveDemoRequestActionsData" class="demoRequestAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		   <param name="root">resultStatus</param>
+		  </result>
+		 </action>
+		 
+		 <action name="deleteDemoRequestAction" class="demoRequestAction" method="ajaxHandler">
+		   <result type="json" name="success">
+		     <param name="root">resultStatus</param>
+		  </result>
+		 </action>
+		 
+		 <action name="upDateDemoRequestDetailsAction" class="demoRequestAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		     <param name="root">resultStatus</param>
+		  </result>
+		 </action>
+		 
 		</package>
 </struts>      

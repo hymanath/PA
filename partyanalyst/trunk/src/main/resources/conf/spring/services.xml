@@ -1741,5 +1741,12 @@
      <property name="smsModuleDAO" ref="smsModuleDAO"></property>
      <property name="smsHistoryDAO" ref="smsHistoryDAO"></property>
     </bean>
+    
+    <bean name="marketingManagementService" class="com.itgrids.partyanalyst.service.impl.MarketingManagementService">
+      <property name="demoRequestDAO" ref="demoRequestDAO" />
+      <property name="demoRequestActionsDAO" ref="demoRequestActionsDAO" />
+      <property name="userDAO" ref="userDAO" />
+    </bean>
+    
 </beans>		
 	

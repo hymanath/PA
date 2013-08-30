@@ -373,6 +373,7 @@
 	
 	<bean id="sendMailToAdminAction" class="com.itgrids.partyanalyst.web.action.SendMailToAdminAction" singleton="false">	
 		<property name="mailService" ref="mailService"></property>	
+		<property name="marketingManagementService" ref="marketingManagementService" />
 	</bean>
 	
 	<bean id="postArticleAction" class="com.itgrids.partyanalyst.web.action.PostArticleAction" singleton="false">	
@@ -1296,5 +1297,9 @@
    <bean id="messageCenterForInfluencePeopleAction" class="com.itgrids.partyanalyst.web.action.MessageCenterForInfluencePeopleAction" singleton="false">
        <property name="voiceSmsService" ref="voiceSmsService"/>
    </bean> 
+   <bean id="demoRequestAction" class="com.itgrids.partyanalyst.web.action.DemoRequestAction">
+    <property name="marketingManagementService" ref="marketingManagementService" />
+    <property name="entitlementsHelper" ref="entitlementsHelper" />
+   </bean>
 </beans>	
 	
