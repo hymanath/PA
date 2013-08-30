@@ -488,10 +488,11 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		
 		cadreInfo = cadreManagementService.getCadreDetailsForSMS(registrationId,setPartyCadreDetails(jObj),windowTask,sortOption,order,startIndex,maxResult);
 		
+		if(cadreInfo != null && cadreInfo.size()>0){
 		searchListVO.setTotalSearchCount(new Long(cadreInfo.get(0).getPinCode()));
 		
 		if(new Long(cadreInfo.get(0).getPinCode()) !=0){
-		searchListVO.setCadreInfo(cadreInfo);
+			searchListVO.setCadreInfo(cadreInfo);
 		}
 		
 		else if(searchListVO.getCadreInfo() != null && searchListVO.getCadreInfo().size() > 0)
@@ -499,7 +500,9 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			CadreInfo cadre = searchListVO.getCadreInfo().get(0);
 			searchListVO.getCadreInfo().remove(cadre);
 		}
-		
+		}
+		else 
+			searchListVO.setTotalSearchCount(new Long(0L));
 		return SUCCESS;
 	}
 
