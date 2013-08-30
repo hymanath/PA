@@ -1214,7 +1214,6 @@ var jsObj=
  </div>
 
 
- <a class="btn" href="javascript:{sendDirectSMSToVoters();}">CHECK DIRECT VOTERS</a>
 
 
 <script>
