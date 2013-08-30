@@ -28,6 +28,10 @@
 <!-- Css styles end -->
 
 <style>
+#votersByLocationTabContentDiv_body table{
+text-align: left;
+width:100%;
+}
  #mainDiv{margin: 20px auto; float: none; width: 980px;}
  #voterDetailsDiv table {
     border: 1px solid #D3D3D3;
@@ -56,6 +60,32 @@
     margin-top: 15px;
     width: 800px;}
 #btnDiv{text-align: center; margin-top: 4px;}
+
+#votersByLocationTabContentDiv_body table th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    text-align: left;
+	color:#333333;
+	}
+	 #votersByLocationTabContentDiv_body table td{padding:2px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+	#votersByLocationTabContentDiv_body table tr:nth-child(even){background:#EdF5FF;}
+	#votersByLocationTabContentDiv_body table{ border: 1px solid #7F7F7F;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+
+.btnClass
+{
+	background-image:url(images/icons/indexPage/swasthic_body.png);
+	background-repeat:repeat-x;
+	border:1px solid #ADADAD;
+	color:#244565;
+	font-weight:bold;
+	padding:5px;
+	text-decoration:none;
+}
 </style>
 
 <script type="text/javascript">
@@ -81,11 +111,11 @@
 </head>
 <body>
 
-<h4 style="text-align:center;color:#06ABEA;">VOTER SEARCH RESULTS</h4>
+<h2 style="text-align:center;color:#06ABEA;">VOTER SEARCH RESULTS</h2>
 
-<a class="btn" href="javascript:{window.close();}" style="float:right;margin-right:95px;">Click here to close the window</a>
+<input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
 
-<div style="margin-left:320px;margin-top:75px;">
+<div style="margin-left:30px;margin-top:13px;padding:5px;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 </div>
 
