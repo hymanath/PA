@@ -31,6 +31,37 @@
 <title>Party Analyst</title>
 
 <style>
+
+.btnClass
+{
+	background-image:url(images/icons/indexPage/swasthic_body.png);
+	background-repeat:repeat-x;
+	border:1px solid #ADADAD;
+	color:#244565;
+	font-weight:bold;
+	padding:5px;
+	text-decoration:none;
+}
+#votersByLocationTabContentDiv_body table{ border: 1px solid #7F7F7F;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;margin-top: 20px;}
+#votersByLocationTabContentDiv_body table th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    text-align: left;
+	color:#333333;
+	}
+	 #votersByLocationTabContentDiv_body table td{padding:2px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+	#votersByLocationTabContentDiv_body table tr:nth-child(even){background:#EdF5FF;}
+#votersByLocationTabContentDiv_body{
+margin-left: auto; 
+margin-right: auto; 
+width: 55%;
+}
+
  #mainDiv{margin: 20px auto; float: none; width: 980px;}
  #voterDetailsDiv table {
     border: 1px solid #D3D3D3;
@@ -122,11 +153,11 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-  <h4 style="text-align:center;color:#06ABEA;">INFLUENCE PEOPLE SEARCH RESULTS</h4>
+  <h2 style="text-align:center;color:#06ABEA;">INFLUENCE PEOPLE SEARCH RESULTS</h2>
 
-  <a class="btn" href="javascript:{window.close();}" style="float:right;margin-right:80px;">Click here to close the window</a>
+<input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
 
-<div class="span11" style="margin-left:300px;">
+<div class="span11" style="margin-left:30px;">
  <div class="row">
 
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>

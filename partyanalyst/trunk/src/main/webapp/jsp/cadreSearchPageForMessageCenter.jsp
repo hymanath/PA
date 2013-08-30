@@ -45,7 +45,7 @@
 
 <link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
@@ -56,7 +56,7 @@
 
 
 <!-- YUI Dependency files (End) -->
-
+<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 
 <link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
@@ -329,7 +329,21 @@ function getUpdatedData(){
 {
 	background-color:blue;
 }
-
+#searchResult table th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    text-align: left;
+	color:#333333;
+	border:none;
+	}
+	 #searchResult table td{padding:2px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;border:none;}
+	#searchResult table tr:nth-child(even){background:#EdF5FF;}
+	#searchResult table{border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 </style>
 
 </head>
@@ -503,16 +517,10 @@ function getCadresResults2(btnType)
 	else if(window.opener.selectedCriteria.gender == "F")
 		genderType = "Female";
 
-var locationValue;
-	if(window.opener.selectedCriteria.cadreLocationId == 5)
-		 locationValue =  window.opener.selectedCriteria.cadreReportLevelValue;
-	else
-		locationValue = window.opener.selectedCriteria.reportLevelValue
-
 var jsObj=
 		{	extra				    :"one",
 			reportLevel				: window.opener.selectedCriteria.cadreLocationId,
-			reportLocationValue		: locationValue,
+			reportLocationValue		: window.opener.selectedCriteria.reportLevelValue,
 			socialStatus			: window.opener.selectedCriteria.socialStatus,
 			socialStatusArray		: [],
 			cadreType				: "all",
@@ -762,10 +770,9 @@ function pushIntoCadreObject(cadreId , mobileNumber)
 	}
 	else
 	{
-
 		delete window.opener.selectedCadreDetails[cadreId];
 		var index = window.opener.selectedMobileNumbers.indexOf("91"+mobileNumber);
-         window.opener.selectedMobileNumbers.splice(index, 1);
+         array.splice(index, 1);
 	}
 }
 
