@@ -915,7 +915,7 @@ $("input:radio[name=electionType]").click(function() {
 	$('#constiId').append('<option value="0">Select Constituency </option>');
     var value = $(this).val();
 	var stateId=1;
-	getElectionYears(stateId,value);
+	getElectionYears1(stateId,value);
 	//$('#electionYearsId').val(0);
 	$('#partyId').val(0);
 	$('#constiId').val(0);
@@ -924,7 +924,7 @@ $("input:radio[name=electionType]").click(function() {
 
 
 
-function getElectionYears(stateId,electionType){
+function getElectionYears1(stateId,electionType){
 
 var jsObj =
 		{  	
@@ -937,9 +937,21 @@ var jsObj =
 		callAjax(jsObj, url);
 }
 function constituencyOptions(type){
+	
+	var electionIdsArr = new Array();
+		$("#electionYearsId option").each(function() {
+		var val = $(this).val();
+		electionIdsArr.push(val);
+		});
+	var largest = Math.max.apply(Math, electionIdsArr);
+		
 	var stateId=1;
 	var electionType=$("input:radio[name=electionType]:checked").val();
 	var electionId=$("#electionYearsId option:selected").val();
+	
+	if($("#electionYearsId").val() == 0)
+		electionId = largest;
+
 	var jsObj =
 		{  	
 			stateId:stateId,
@@ -1173,6 +1185,9 @@ function buildElectionYears(myResult)
 		}
 	}	
 
+		var value =$('input:radio[name=electionType]:checked').val();
+		constituencyOptions(value);
+		
 }
 function buildPartiesSelectBox(myResult ,type){
 	if(myResult == null || myResult.length == 0)
