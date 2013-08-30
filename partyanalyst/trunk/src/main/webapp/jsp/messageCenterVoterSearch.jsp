@@ -114,7 +114,7 @@ width:100%;
 <h2 style="text-align:center;color:#06ABEA;">VOTER SEARCH RESULTS</h2>
 
 <input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
-
+<span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: 50px;"></span>
 <div style="margin-left:30px;margin-top:13px;padding:5px;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
 </div>
@@ -184,7 +184,7 @@ $(document).ready(function(){
 });
 
 getVotersDetailsBySearchCritteria();
-
+var count = 0;
 function getVotersDetailsBySearchCritteria()
 {
 
@@ -194,7 +194,8 @@ function getVotersDetailsBySearchCritteria()
 			var voterName= oRecord.getData("name");
 			var mobileNumber = oRecord.getData("mobileNumber");
 			var voterIdCardNo = oRecord.getData("voterIdCardNo");
-
+	count=count+1;
+	$('#peopleCount').html("Total Count : <span>"+count +"</span>");
 			 if(window.opener.selectedVotersDetails[voterIdCardNo] == undefined)
 				var str ='<input type="checkbox" onchange="pushIntoVoterObject(\''+voterIdCardNo+'\',\''+mobileNumber+'\')" class="voter" value="'+voterIdCardNo+'-'+mobileNumber+'"/>';
 			else
