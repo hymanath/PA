@@ -872,12 +872,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 		{
 		StringBuffer queryString = new StringBuffer();
 
-		queryString.append(" model.firstName,model.lastName,model.phoneNo,model1.casteState.caste.casteName,model.influencingScope from " +
-				" InfluencingPeople model,UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId and " +
-				" model1.user.userId =:userId ");
+		queryString.append(" model.firstName,model.lastName,model.phoneNo,model.influencingScope from " +
+				" InfluencingPeople model where model.user.userId =:userId ");
 
-		if(searchVO.isAgeSelected())
-		queryString.append(" ");
 		if(searchVO.isNameSelected())
 		queryString.append(" and ( model.firstName like '%"+searchVO.getName()+"%' or model.lastName like '%"+searchVO.getName()+"%' )");
 		if(searchVO.isFamilySelected())
@@ -913,8 +910,26 @@ public class VoiceSmsService implements IVoiceSmsService {
 		if(searchVO.isGenderSelected())
 			if(!searchVO.getGender().equalsIgnoreCase("All") || !searchVO.getGender().equalsIgnoreCase(""))
 				queryString.append("and model.gender like '"+searchVO.getGender()+"%' ");
-
-		if(searchVO.getLocationType().equalsIgnoreCase("constituency"))
+		//Location Based Search for Influencing People
+		if(searchVO.getLocationType().equalsIgnoreCase(IConstants.STATE))
+			queryString.append(" and model.userAddress.state.stateId =:locationId ");
+		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.DISTRICT))
+			queryString.append(" and model.userAddress.district.districtId =:locationId ");
+		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.CONSTITUENCY))
+			queryString.append(" and model.userAddress.constituency.constituencyId =:locationId ");
+		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.MANDAL))
+			queryString.append(" and model.userAddress.tehsil.tehsilId =:locationId ");
+		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
+			queryString.append(" and model.userAddress.localElectionBody.localElectionBodyId =:locationId ");
+		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.WARD))
+			queryString.append(" and model.userAddress.ward.constituencyId =:locationId ");
+		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.BOOTH))
+			queryString.append(" and model.userAddress.booth.boothId =:locationId ");
+		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.HAMLET))
+			queryString.append(" and model.userAddress.hamlet.hamletId =:locationId ");
+		
+		/*	Region Based Search for Influencing People
+		 * if(searchVO.getLocationType().equalsIgnoreCase("constituency"))
 		queryString.append(" and (model.influencingScope like '"+IConstants.CONSTITUENCY+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
 		else if(searchVO.getLocationType().equalsIgnoreCase("mandal"))
 		queryString.append(" and (model.influencingScope like '"+IConstants.MANDAL+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
@@ -926,7 +941,8 @@ public class VoiceSmsService implements IVoiceSmsService {
 		queryString.append(" and (model.influencingScope like '"+IConstants.BOOTH+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
 		else if(searchVO.getLocationType().equalsIgnoreCase("hamlet"))
 		queryString.append(" and (model.influencingScope like '"+IConstants.BOOTH+"' and model.hamlet.hamletId like '"+searchVO.getLocationValue().toString()+"')");
-
+		 */
+		
 		queryString.append(" order by model.firstName "+ searchVO.getOrder());
 
 
@@ -950,8 +966,8 @@ public class VoiceSmsService implements IVoiceSmsService {
 		vo.setName(list[0].toString()+" " +list[1].toString());
 		//vo.setHouseNo(list[2].toString());
 		vo.setMobileNumber(Long.valueOf(list[2].toString()));
-		vo.setCasteIds(list[3].toString());
-		vo.setLocationType(list[4].toString());
+		//vo.setCasteIds(list[3].toString());
+		vo.setLocationType(list[3].toString());
 		
 		//vo.setStartAge(Integer.parseInt(list[3].toString()));
 		resultList.add(vo);
