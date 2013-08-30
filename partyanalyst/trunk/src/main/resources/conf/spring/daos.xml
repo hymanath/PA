@@ -1230,4 +1230,12 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+   <bean id="demoRequestDAO" class="com.itgrids.partyanalyst.dao.hibernate.DemoRequestDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   <bean id="demoRequestActionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DemoRequestActionsDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
 </beans>		

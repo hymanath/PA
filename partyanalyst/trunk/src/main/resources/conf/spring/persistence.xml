@@ -352,7 +352,9 @@
 				<value>com.itgrids.partyanalyst.model.VoiceRecordingDetails</value>
 				<value>com.itgrids.partyanalyst.model.VoiceSmsResponseDetails</value>
 				<value>com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers</value>		
-				<value>com.itgrids.partyanalyst.model.SmsType</value>		
+				<value>com.itgrids.partyanalyst.model.SmsType</value>
+				<value>com.itgrids.partyanalyst.model.DemoRequest</value>
+				<value>com.itgrids.partyanalyst.model.DemoRequestActions</value>		
 				
 			</list>
 			
