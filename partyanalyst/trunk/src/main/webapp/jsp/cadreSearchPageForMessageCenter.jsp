@@ -59,6 +59,7 @@
 <!-- YUI Dependency files (End) -->
 
 
+<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 <link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
@@ -354,7 +355,7 @@ function getUpdatedData(){
  <h2 style="text-align:center;color:#06ABEA;">CADRE SEARCH RESULTS TO SEND SMS</h2>
 
 <input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
-	
+	<span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: 50px;"></span>
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
 
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
@@ -562,6 +563,7 @@ var jsObj=
 	}
 }
 
+var count=0;
 
 function buildCadreSearchResultDataTableForSMS(rparam)
 {
@@ -585,7 +587,8 @@ function buildCadreSearchResultDataTableForSMS(rparam)
 	var mobile= oRecord.getData("mobile");
 	var firstName= oRecord.getData("firstName");
 	var lastName= oRecord.getData("lastName");
-
+	count=count+1;
+	$('#peopleCount').html("Total Count : <span>"+count +"</span>");
   if(window.opener.selectedCadreDetails[id] == undefined || mobile == "")
       elLiner.innerHTML=firstName+' '+lastName;
   else
