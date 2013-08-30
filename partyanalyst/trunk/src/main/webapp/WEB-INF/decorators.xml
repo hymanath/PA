@@ -113,6 +113,7 @@
 		<pattern>/voiceSMS.jsp</pattern>-->
 		<pattern>/voiceSMS*</pattern>
 		<pattern>/messageCenterVoterSearchAction*</pattern>
+		<pattern>/searchInfluencePeopleForSmsAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
