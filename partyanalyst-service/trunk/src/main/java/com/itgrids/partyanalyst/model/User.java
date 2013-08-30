@@ -126,6 +126,8 @@ public class User extends BaseModel implements Serializable{
 	private Set<UpdationDetails> createdBy = new HashSet<UpdationDetails>(0);
 	private Set<UpdationDetails> updatedBy = new HashSet<UpdationDetails>(0);
 	private Set<SurveyAccessUsers> surveyAccessUsers = new HashSet<SurveyAccessUsers>(0);
+	private Set<DemoRequestActions> demoRequestActions = new HashSet<DemoRequestActions>(0);
+	
 	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -1026,5 +1028,15 @@ public class User extends BaseModel implements Serializable{
 			Set<VoiceSmsVerifiedNumbers> voioceSmsVerifiedNumbers) {
 		this.voioceSmsVerifiedNumbers = voioceSmsVerifiedNumbers;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<DemoRequestActions> getDemoRequestActions() {
+		return demoRequestActions;
+	}
+
+	public void setDemoRequestActions(Set<DemoRequestActions> demoRequestActions) {
+		this.demoRequestActions = demoRequestActions;
+	}
+	
 	
 }
