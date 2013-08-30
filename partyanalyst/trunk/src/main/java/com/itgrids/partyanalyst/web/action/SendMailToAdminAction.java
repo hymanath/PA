@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.QuickRequestVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.service.IMarketingManagementService;
 import com.itgrids.partyanalyst.service.impl.MailService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -37,6 +38,7 @@ public class SendMailToAdminAction extends ActionSupport implements ServletReque
 	    QuickRequestVO quickRequestVO=new QuickRequestVO();
 	    private  MailService mailService;
 	    ResultStatus result = new ResultStatus();
+	    private IMarketingManagementService marketingManagementService;
 
 		public String getUserName() {
 			return quickRequestVO.getUserName();
@@ -113,6 +115,16 @@ public class SendMailToAdminAction extends ActionSupport implements ServletReque
 			this.request = request;
 			
 		}
+		
+		public IMarketingManagementService getMarketingManagementService() {
+			return marketingManagementService;
+		}
+
+		public void setMarketingManagementService(
+				IMarketingManagementService marketingManagementService) {
+			this.marketingManagementService = marketingManagementService;
+		}
+
 		public String execute() throws Exception{
 			
 			try {
@@ -155,6 +167,8 @@ public class SendMailToAdminAction extends ActionSupport implements ServletReque
 					requestFrom = IConstants.SERVER;
 				else
 					requestFrom = IConstants.LOCALHOST;
+				
+				 marketingManagementService.saveDemoRequestData(emailDetailsVo);
 				result = mailService.sendEmailToAdminGroup(emailDetailsVo,requestFrom);
 				
 			}

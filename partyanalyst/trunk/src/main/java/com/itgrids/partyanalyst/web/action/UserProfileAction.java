@@ -86,6 +86,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private boolean hasSubUserEntitlement = false;
 	private boolean hasCallCenterEntitlment = false;
 	private boolean hasProfileManagement = false;
+	private Boolean hasDemoRequestView = false;
 	private Boolean logInStatus = false;
 	private String userType;
 	private String connectStatus;
@@ -121,6 +122,14 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 
 	public void setHasNewsMonitoring(boolean hasNewsMonitoring) {
 		this.hasNewsMonitoring = hasNewsMonitoring;
+	}
+
+	public Boolean getHasDemoRequestView() {
+		return hasDemoRequestView;
+	}
+
+	public void setHasDemoRequestView(Boolean hasDemoRequestView) {
+		this.hasDemoRequestView = hasDemoRequestView;
 	}
 
 	public EntitlementsHelper getEntitlementsHelper() {
@@ -523,6 +532,9 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	       }
 	       if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.PROFILE_MANAGEMENT_ENTITLEMENT))
 	    	   hasProfileManagement = true;
+	       if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.ASPIRANT_DEMO_REQUESTS_VIEW))
+	    	   hasDemoRequestView = true;
+	       
 			messageTypes = ananymousUserService.getAllMessageTypes();
 			
 			if(dataTransferVO.getDistrictId() != null)
