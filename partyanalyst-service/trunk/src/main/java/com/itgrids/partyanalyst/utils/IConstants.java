@@ -288,6 +288,7 @@ public interface IConstants {
     public static final String VOTER_ANALYSIS = "VOTER_ANALYSIS";
     public static final String CADRE_PARLIAMENT_WISE = "CADRE_PARLIAMENT_WISE";
     public final static String VOTER_DATA_TOOLS = "VOTER_DATA_TOOLS";
+    public final static String ASPIRANT_DEMO_REQUESTS_VIEW = "ASPIRANT_DEMO_REQUESTS_VIEW";
     
     
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
@@ -657,5 +658,7 @@ public interface IConstants {
     
     public static final String VOICE_SMS_TYPE = "Voice Sms";
     public static final String TEXT_SMS_TYPE = "Text Sms";
+    
+    public static final String DEMO_REQUEST_ACTIONS = "Email,Phone Call,SMS";
 	
 }

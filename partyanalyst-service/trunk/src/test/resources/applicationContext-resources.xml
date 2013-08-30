@@ -371,7 +371,9 @@
 				<value>com.itgrids.partyanalyst.model.VoiceRecordingDetails</value>
 				<value>com.itgrids.partyanalyst.model.VoiceSmsResponseDetails</value>
 				<value>com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers</value>	
-					<value>com.itgrids.partyanalyst.model.SmsType</value>		
+				<value>com.itgrids.partyanalyst.model.SmsType</value>		
+				<value>com.itgrids.partyanalyst.model.DemoRequest</value>	
+				<value>com.itgrids.partyanalyst.model.DemoRequestActions</value>
 			</list>
 		</property>
 	</bean>
@@ -1919,5 +1921,13 @@
 	  <bean id="smsTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsTypeDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
+	<bean id="demoRequestDAO" class="com.itgrids.partyanalyst.dao.hibernate.DemoRequestDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   <bean id="demoRequestActionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DemoRequestActionsDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
 </beans>
