@@ -21,10 +21,12 @@ public interface IVoiceSmsService {
 	
 	public String saveCustomerContactsUpdations(Long custmerId,String mobileNo);
 	public Map<String,String> getAllTheCastesOfConstituency(Long constituencyId , Long userId , Long publicationDateId);
-	public List<SMSSearchCriteriaVO> getVotersDetailsBySearchToSendSMS(SMSSearchCriteriaVO searchVO ,boolean forCount);
+	public List<SMSSearchCriteriaVO> getVotersDetailsBySearchToSendSMS(SMSSearchCriteriaVO searchVO ,boolean forCount , boolean directSend);
 
 	public List<SMSSearchCriteriaVO> getAllInfluencingPeopleDetailsForVoiceSMS(SMSSearchCriteriaVO searchVO);
 	public Long getVotersDetailsCountBySearchToSendSMS(SMSSearchCriteriaVO searchVO ,boolean forCount);
+	public List<Long> sendVoiceSmsDirectlyToVoters(SMSSearchCriteriaVO searchVO);
+
 
 
 

@@ -30,7 +30,23 @@ public class SMSSearchCriteriaVO {
 	private String columnName;
 	private String voterIdCardNo;
 	private Long totalCount;
+	private boolean directSent;
 	
+
+	public boolean isDirectSent() {
+		return directSent;
+	}
+	public void setDirectSent(boolean directSent) {
+		this.directSent = directSent;
+	}
+	private List<Long> mobileNumbersList;
+	
+	public List<Long> getMobileNumbersList() {
+		return mobileNumbersList;
+	}
+	public void setMobileNumbersList(List<Long> mobileNumbersList) {
+		this.mobileNumbersList = mobileNumbersList;
+	}
 	public Long getTotalCount() {
 		return totalCount;
 	}

@@ -210,6 +210,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		try {
 			
 			StringBuilder result = new StringBuilder();
+			if(voiceSmsResponseDetailsVO.getAllmobileNumbers() != null)
 		    for(Long number : voiceSmsResponseDetailsVO.getAllmobileNumbers()) {
 		        result.append(number);
 		        result.append(",");
@@ -256,6 +257,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 			  }
 			
 		 String responseCode = sendVoiceSMSUsingProvider(userName , password , senderMobileNumber.toString() ,mobileNumbersString ,audioPath);
+		 
+		 if(responseCode.equalsIgnoreCase("No Matched Mobile Numbers Found."))
+			 return "No Matched Mobile Numbers Found.";
 		
 	     Long responseId = 	saveResponseDetails(responseCode , userId , voiceSmsResponseDetailsVO.getAllmobileNumbers().size(),mobileNumbers,description);
 	     
@@ -293,6 +297,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 		
 		try
 		{
+			
+			if(mobileNumbersString.equalsIgnoreCase(""))
+				return "No Matched Mobile Numbers Found.";
 			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+userName+"&password="+password+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbersString+"&url_file_name="+audioPath);
 	
 		    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -704,7 +711,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 	{
 		try
 		{
-			List<SMSSearchCriteriaVO> list = getVotersDetailsBySearchToSendSMS(searchVO ,forCount);
+			List<SMSSearchCriteriaVO> list = getVotersDetailsBySearchToSendSMS(searchVO ,forCount,false);
 			
 			if(list != null)
 				return list.get(0).getTotalCount();
@@ -718,7 +725,26 @@ public class VoiceSmsService implements IVoiceSmsService {
 		
 	}
 	
-	public List<SMSSearchCriteriaVO> getVotersDetailsBySearchToSendSMS(SMSSearchCriteriaVO searchVO ,boolean forCount)
+	public List<Long> sendVoiceSmsDirectlyToVoters(SMSSearchCriteriaVO searchVO )
+	{
+		List<Long> mobileNumbers = new ArrayList<Long>();
+
+		try
+		{
+			List<SMSSearchCriteriaVO> votreNumbersList = getVotersDetailsBySearchToSendSMS(searchVO,false,true);
+			
+			if(votreNumbersList != null && votreNumbersList.size() >0)
+				mobileNumbers =  votreNumbersList.get(0).getMobileNumbersList();
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return mobileNumbers;
+	}
+	
+	public List<SMSSearchCriteriaVO> getVotersDetailsBySearchToSendSMS(SMSSearchCriteriaVO searchVO ,boolean forCount , boolean directSend)
 	{
 		log.debug("Entered into the getVotersDetailsBySearchToSendSMS service method");
 		List<SMSSearchCriteriaVO> resultList = new ArrayList<SMSSearchCriteriaVO>();
@@ -730,12 +756,11 @@ public class VoiceSmsService implements IVoiceSmsService {
 			if(forCount == true)
 			{
 				queryString.append("select count(UVD.voter.name) from UserVoterDetails UVD , BoothPublicationVoter BPV " +
-				           "where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
-			
+				           "where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDate and UVD.mobileNo is not null ");
 			}
 			else
-			queryString.append("select UVD.voter.name ,UVD.voter.houseNo ,UVD.voter.mobileNo,UVD.voter.age,UVD.voter.voterIDCardNo from UserVoterDetails UVD , BoothPublicationVoter BPV " +
-					           "where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+			queryString.append("select UVD.voter.name ,UVD.voter.houseNo ,UVD.mobileNo,UVD.voter.age,UVD.voter.voterIDCardNo from UserVoterDetails UVD , BoothPublicationVoter BPV " +
+					           "where UVD.user.userId = :userId and UVD.voter.voterId = BPV.voter.voterId and BPV.booth.publicationDate.publicationDateId = :publicationDate and UVD.mobileNo is not null ");
 			
 			if(searchVO.isAgeSelected())
 				queryString.append("and UVD.voter.age between "+searchVO.getStartAge()+" and "+searchVO.getEndAge());
@@ -771,7 +796,10 @@ public class VoiceSmsService implements IVoiceSmsService {
 			else if(searchVO.getLocationType().equalsIgnoreCase("hamlet"))
 				queryString.append("and UVD.hamlet.hamletId = :locationValue");
 			
-			queryString.append(" order by UVD.voter.name "+ searchVO.getOrder());
+			if(directSend != true)
+			   queryString.append(" order by UVD.voter.name "+ searchVO.getOrder());
+			
+			searchVO.setDirectSent(directSend);
 			
 		
 			List<Object[]> votersList = new ArrayList<Object[]>();
@@ -788,9 +816,13 @@ public class VoiceSmsService implements IVoiceSmsService {
 				 resultList.add(vo);
 			}
 			else{
+				
+				
 			   votersList = userVoterDetailsDAO.getVotersDetailsBySearchToSendSMS(queryString.toString(),searchVO);			
 			
 			
+			       if(directSend != true)
+			       {
 						for(Object[] voterDetails:votersList)
 						{
 							
@@ -800,13 +832,26 @@ public class VoiceSmsService implements IVoiceSmsService {
 							vo.setHouseNo(voterDetails[1].toString());
 							if(voterDetails[2] != null && !voterDetails[2].toString().trim().equalsIgnoreCase(""))
 								vo.setMobileNumber(Long.parseLong(voterDetails[2].toString()));
-							else
-							vo.setMobileNumber(999999999L);
 							vo.setStartAge(Integer.parseInt(voterDetails[3].toString()));
 							vo.setVoterIdCardNo(voterDetails[4].toString());
 							resultList.add(vo);
 							
 						}
+			       }else
+			       {
+			    	   List<Long> allVoterMobileNumbers = new ArrayList<Long>();
+			    	   
+			    	   for(Object[] voterDetails:votersList)
+							if(voterDetails[2] != null && !voterDetails[2].toString().trim().equalsIgnoreCase(""))
+			    		      allVoterMobileNumbers.add(Long.parseLong("91"+voterDetails[2].toString()));
+			    	   
+			    		SMSSearchCriteriaVO vo = new SMSSearchCriteriaVO();
+						
+					    vo.setMobileNumbersList(allVoterMobileNumbers);
+						resultList.add(vo);
+							
+			    	   
+			       }
 			}
 			
 		}catch(Exception e)

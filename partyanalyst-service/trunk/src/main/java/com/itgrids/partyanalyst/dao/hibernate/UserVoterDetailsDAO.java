@@ -2280,8 +2280,10 @@ IUserVoterDetailsDAO{
 		query.setParameter("userId", searchVO.getUserId());
 		query.setParameter("publicationDate", searchVO.getPublicationDateId());
 		
-		query.setFirstResult(searchVO.getStartIndex());
-		query.setMaxResults(searchVO.getMaxRecords());
+		if(!searchVO.isDirectSent()){
+		 query.setFirstResult(searchVO.getStartIndex());
+		 query.setMaxResults(searchVO.getMaxRecords());
+		}
 		
 		return query.list();
 		
