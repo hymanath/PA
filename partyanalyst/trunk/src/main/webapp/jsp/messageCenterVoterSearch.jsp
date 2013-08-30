@@ -257,7 +257,7 @@ sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initia
 
 var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body",
 votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
-debugger;
+//debugger;
 
 votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 oPayload.totalRecords = oResponse.meta.totalRecords;
