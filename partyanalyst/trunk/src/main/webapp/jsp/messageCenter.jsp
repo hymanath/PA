@@ -895,7 +895,7 @@ var jsObj=
 		<label style="float:left;"> <input type="radio" name="searchFor" value="voter" class="searchType"  style="margin:0px;"/>&nbsp;&nbsp;&nbsp;Voter</label>
 	 </div>-->
   
-  <div class="widget whitegloss span5"  id="voterSearchDiv1" style="border:0;text-align:center;margin:6px 0px 13px 288px;">
+  <div class="widget whitegloss span5"  id="voterSearchDiv1" style="border:0;text-align:center;margin:26px 0 13px 267px;">
         
 		   
 		<div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
@@ -986,7 +986,7 @@ var jsObj=
 	  
    
      <div class="selectDiv radioSpecial" id="genderDiv"style="margin-bottom: 10px;">
-	 <span style="margin-right:100px;">GENDER:</span>
+	 <span style="margin-right:100px;">Gender</span>:
 		 <input type="radio" id="all"  name="gender" value="All"  checked>
 		   <label for="all">All</label>
 		<input type="radio" id="male" name="gender" value="M"  >
@@ -996,7 +996,7 @@ var jsObj=
 	 </div>
 	 
 	<div class="selectDiv" style="margin-bottom: 10px;" id="nameDiv">
-	    Name  <span style="margin-left:90px;">:</span><input type="text" id="searchName" style="width:154px;margin-left: 25px;">
+	    Name  <span style="margin-left:107px;">:</span><input type="text" id="searchName" style="width:154px;margin-left: 2px;">
 	  </div>
 	   <div class="selectDiv" style="margin-bottom: 10px;display:none;" id="casteDiv">
 	    Caste  <span style="margin-left:90px;">:</span><!--<input type="text" id="searchCaste" style="width:154px;margin-left: 25px;">-->
@@ -1041,7 +1041,7 @@ var jsObj=
 	
 <div style="border:1px solid #06ABEA;" class="span12" >
 
-<h4 style="color: rgb(255, 255, 255); text-align: center; background-color: rgb(6, 171, 234); padding: 7px; background-position: initial initial; background-repeat: initial initial;">YOU CAN ENTER ENTER NUMBERS MANUALLY HERE</h4>
+<h4 style="color: rgb(255, 255, 255); text-align: center; background-color: rgb(6, 171, 234); padding: 7px; background-position: initial initial; background-repeat: initial initial;">YOU CAN ENTER  NUMBERS MANUALLY HERE</h4>
 
  <div style="text-align:center;margin:0px;" class="widget whitegloss"><label>(Add country code before mobile number):<br>Example:<b>919999999999</b></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 </div>
@@ -2862,6 +2862,7 @@ function sendDirectSMSToVotersAjax()
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "sendVoiceSMSDirectlyToVoters.action?"+rparam;	
 			callAjax1(rparam,jsObj,url);
+
 }
 </script>
  </body>
