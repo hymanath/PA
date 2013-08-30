@@ -34,6 +34,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
+<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 
 
 
@@ -45,7 +46,7 @@
 
 <link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
@@ -56,7 +57,7 @@
 
 
 <!-- YUI Dependency files (End) -->
-<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+
 
 <link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
@@ -517,10 +518,16 @@ function getCadresResults2(btnType)
 	else if(window.opener.selectedCriteria.gender == "F")
 		genderType = "Female";
 
+var locationValue;
+	if(window.opener.selectedCriteria.cadreLocationId == 5)
+		 locationValue =  window.opener.selectedCriteria.cadreReportLevelValue;
+	else
+		locationValue = window.opener.selectedCriteria.reportLevelValue
+
 var jsObj=
 		{	extra				    :"one",
 			reportLevel				: window.opener.selectedCriteria.cadreLocationId,
-			reportLocationValue		: window.opener.selectedCriteria.reportLevelValue,
+			reportLocationValue		: locationValue,
 			socialStatus			: window.opener.selectedCriteria.socialStatus,
 			socialStatusArray		: [],
 			cadreType				: "all",
@@ -770,9 +777,10 @@ function pushIntoCadreObject(cadreId , mobileNumber)
 	}
 	else
 	{
+
 		delete window.opener.selectedCadreDetails[cadreId];
 		var index = window.opener.selectedMobileNumbers.indexOf("91"+mobileNumber);
-         array.splice(index, 1);
+         window.opener.selectedMobileNumbers.splice(index, 1);
 	}
 }
 
