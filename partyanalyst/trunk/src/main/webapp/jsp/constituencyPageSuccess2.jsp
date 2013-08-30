@@ -2109,9 +2109,7 @@ partyShortName:'${constituencyElectionResults.candidateResultsVO.partyShortName}
 	}*/
 	
 	var chartResultDiv = document.getElementById("electionResultsInConstituencyDiv");
-	var chart = '';
-	chart += '<div style="margin-left:100px;"><img src="charts/'+constituencyResults.chartPath+'"/></div>';
-	chartResultDiv.innerHTML = chart;
+
 	var imgElmt = document.getElementById('AjaxImgDiv');
 	if(imgElmt.style.display == "block")
 	{
@@ -3673,8 +3671,12 @@ function removeCensusNotAvailableErrorMessage()
 
 		  for(var k in chartRows[j].partyElectionResultVOs)
 		  {
-			  var percentage = chartRows[j].partyElectionResultVOs[k].votesPercent;
-              array.push(percentage);
+			  var percentage = chartRows[j].partyElectionResultVOs[k].votesPercentage;
+			  try{
+              array.push(parseFloat($.trim(percentage)));
+			  }catch(e){
+			    array.push(0);
+			  }
 		  }
 		 
 		  data.addRow(array);
