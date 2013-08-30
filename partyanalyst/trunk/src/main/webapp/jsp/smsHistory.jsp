@@ -9,33 +9,83 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Message Center</title>
 
-<!-- javascript start-->
-    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
+<!-- Javascript  start-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-<!-- javascript end-->
-<!-- css styles start-->
-	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-	<link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.24/themes/base/jquery-ui.css">
-<!-- css styles end-->
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<!-- Javascript end -->
+<!-- Css styles start -->
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+<link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <link rel="stylesheet" href="/resources/demos/style.css" />
+<!-- Css styles end -->
 
+<style>
+
+#voiceSmsHistoryDiv table{
+ border: 1px solid #7F7F7F;
+ border-collapse:collapse;
+ padding:10px;
+ margin-left:auto;
+ margin-right:auto;
+ width:100%;
+ margin-top: 20px;
+ }
+#voiceSmsHistoryDiv table th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    text-align: left;
+	color:#333333;
+	}
+#voiceSmsHistoryDiv table td{ 
+padding:2px;
+padding-left:10px;
+font-weight:normal;
+font:small-caption;
+color: #676A67;
+}
+#voiceSmsHistoryDiv table tr:nth-child(even){
+background:#EdF5FF;
+}
+#voiceSmsHistoryDiv{
+margin-left: auto; 
+margin-right: auto; 
+width: 55%;
+}
+
+</style>
 </head>
 <body>
 
 
 
+ <h2 style="text-align:center;color:#06ABEA;"> VOICE SMS HISTORY </h2>
 <div id="responseDetailsDiv">
  <div id="responseDetailsInnerDiv"></div>
 </div>
 
+<div class="span11" style="margin-left:30px;">
+ <div class="row">
 
 <div id="voiceSmsHistoryDiv" class="yui-skin-sam yui-dt-sortable"></div>
+ </div>
+</div>
 
 <script>
 getVoiceSmsHistory();
@@ -58,6 +108,7 @@ function getVoiceSmsHistory()
 		{key:"responseCode", label: "Message Id",sortable: true},
 		{key:"dateSent",label:"Date Sent",sortable:false},
 		{key:"description",label:"Description",sortable:false},
+		{key:"userName",label:"User Name",width:110,sortable:false},
 		{key:"details",label:"Details",width:70,formatter:YAHOO.widget.DataTable.details}
 		];
 
@@ -68,7 +119,7 @@ function getVoiceSmsHistory()
 		resultsList: "responseDetailsList",
 		fields: [
 		{key:"responseCode"},
-		"dateSent","description","details"],
+		"dateSent","description","userName","details"],
 
 		metaFields: {
 		totalRecords: "responseCount" // Access to value in the server response
@@ -135,7 +186,7 @@ function buildResponseDetails(results)
 	str+='<table>';
 	str+='<thead>';
 	 str+='<tr>';
-	  str+='<th>S No</th>'
+	  str+='<th>S.No</th>'
 	  str+='<th>Mobile Number</th>'
 	  str+='<th>Status</th>';
 	 str+='</tr>';
