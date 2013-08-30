@@ -5921,5 +5921,11 @@
 			   <param name="root">mandalPanchayatList</param>
 			  </result>
 		 </action>
+		 
+		 <action name="sendVoiceSMSDirectlyToVoters" class="voiceSmsAction" method="sendVoiceSMSDirectlyToVoters">
+		  <result type="json" name="success">
+			   <param name="root">status</param>
+			  </result>
+		 </action>
 		</package>
 </struts>      
