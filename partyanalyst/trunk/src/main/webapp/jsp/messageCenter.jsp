@@ -1039,27 +1039,27 @@ var jsObj=
   </div>
 
 	
-<div style="height:auto;border:1px solid #06ABEA;padding:6px;margin-bottom:20px;" class="span12" >
+<div style="border:1px solid #06ABEA;" class="span12" >
 
- <div style="text-align:center;"><label>You can enter mobile numbers manually here.(Add country code before mobile number):<br>Example:919999999999</label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
+<h4 style="color: rgb(255, 255, 255); text-align: center; background-color: rgb(6, 171, 234); padding: 7px; background-position: initial initial; background-repeat: initial initial;">YOU CAN ENTER ENTER NUMBERS MANUALLY HERE</h4>
+
+ <div style="text-align:center;margin:0px;" class="widget whitegloss"><label>(Add country code before mobile number):<br>Example:<b>919999999999</b></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 </div>
 
 
- <div class="selectDiv radioSpecial" id="ssmTypeDiv" style="margin:0px 0px 17px 367px;">
+    <div class="selectDiv radioSpecial" id="ssmTypeDiv" style="margin:0px 0px 17px 367px;">
 		 <input type="radio" id="textSMS"  name="smsType" value="text"  class="smsType" checked>
 		   <label for="textSMS">Send Text SMS</label>
 		<input type="radio" id="voiceSMS" name="smsType" value="voice" class="smsType">
 		   <label for="voiceSMS">Send Voice SMS</label>	
 	 </div>
 
-
-
-
  <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
 
 <div style="clear:both;" id="textSmsDiv">
+<h4 style="color:#FFF;text-align:center;background:#06ABEA;padding:7px;">SEND TEXT SMS</h4>
 
-<div style="text-align:center;margin:7px;"><label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" class="textAreaClass"></textarea></div>
+<div class="widget whitegloss" style="margin:0px 0px 0px 0px;text-align:center;"><label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" class="textAreaClass"></textarea></div>
 
 </div>
 
@@ -1150,10 +1150,10 @@ var jsObj=
 
  </div>
 
-<a class="btn pull-right" href="javascript:{sendSMS();}">Send SMS </a>
+ <a class="btn pull-left" href="javascript:{openSmsHistoryWindow();}">HISTORY</a>
+ <a class="btn pull-right" href="javascript:{sendSMS();}">Send SMS </a>
  </div>
 
- <a class="btn" href="javascript:{openSmsHistoryWindow();}">HISTORY</a>
 
  <a class="btn" href="javascript:{sendDirectSMSToVoters();}">CHECK DIRECT VOTERS</a>
 
@@ -2862,7 +2862,6 @@ function sendDirectSMSToVotersAjax()
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "sendVoiceSMSDirectlyToVoters.action?"+rparam;	
 			callAjax1(rparam,jsObj,url);
-
 }
 </script>
  </body>
