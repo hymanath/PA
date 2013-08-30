@@ -366,12 +366,14 @@ $(document).ready(function() {
 			$("<option value='8'>State</option>").insertBefore($('#reportLevel option:first-child'));
 			 }
 			$("#reportLevel option[value='3']").remove();
+			if($('#reportLevel').val() == 1)
+					$('#constiTypeDiv').show();
 			mySearch ='cadre';
 		}
 		else if($(this).val() == "influencePeople")
 		{        
 			showHideLocationOptionsForOtherthanVoter();
-
+			$('#constiTypeDiv').hide();
 			if(mySearch =='voter' && $('#reportLevel').val() <= 7 ){
 			document.getElementById('ConstituencyDiv').style.display = 'block';
 			document.getElementById('districtDiv').style.display = 'block';		
@@ -390,8 +392,9 @@ $(document).ready(function() {
 		else if($(this).val() == "voter")
 		{
 			showHideLocationOptionsForVoter();
-
+			$('#constiTypeDiv').hide();
             mySearch ='voter';
+			$('#stateDiv').show();
 			$('#houseDiv , #ageDiv,#casteDiv').show();
 		   
 			document.getElementById('ConstituencyDiv').style.display = 'block';
@@ -453,6 +456,36 @@ $(document).ready(function() {
 		$('#cadreDiv').show();
 	});
 
+	$('#parliamentRdio').click(function(){
+		$('#ConstituencyDiv').show();
+		$('#districtDiv').hide();
+
+		$('#constituencyList')
+		.find('option')
+		.remove()
+		.end()
+		.append('<option value="0">Select Constituency</option>')
+		.val('');
+		cnstiType ='parliamentRdio';
+		var jsObj=
+		{		
+			stateId: $('#statesList').val(),
+			task: "getPariamentConstituencies"				
+		}
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getParliamentConstituencies.action?"+rparam					
+		callAjax1(rparam,jsObj,url)
+	});
+	
+	$('#assemblyRdio').click(function(){
+	cnstiType ='assemblyRdio';
+	$('#districtList').val(0);
+	$('#constituencyList').find('option').remove().end()
+		.append('<option value="0">Select Constituency</option>').val('');
+		$('#ConstituencyDiv').show();
+		$('#districtDiv').show();
+	});
+	
 });
 var stattus = false;
 function isValidateFields(){
@@ -504,7 +537,7 @@ function isValidateFields(){
 					stattus = false;
 					return;
 				}
-				if(($('#districtList option').length ) >0 &&  districtId == 0){
+				if(cnstiType !='parliamentRdio' && ($('#districtList option').length ) >0 &&  districtId == 0){
 					$('#AlertMsg').html('Please Select District');
 					stattus = false;
 					return;
@@ -675,6 +708,7 @@ $("#searchCandidatesId").click(function() {
 });
 }
 
+var cnstiType;
 
 var isAgeSelected = false;
 var isCasteSelected = false;
@@ -767,6 +801,10 @@ function getCandidatesData(sentType){
 				searchArea = "district";
 				cadreLocationId = 3;
 			}
+		
+			if(cnstiType =='parliamentRdio')
+				cadreLocationId = 10;
+
 
 		
 		  
@@ -920,13 +958,16 @@ var jsObj=
 			 <font class="requiredFont">*</font>
 			  <s:select theme="simple" class="selectWidth" style="margin-left:65px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv(),"/>
 		 </div>
-		 
+		 <div class="radioSpecial" id="constiTypeDiv" style="font-weight:bold;font-size:13px;">
+		<input class="contiType" checked="true" type="radio" name="constituency" id="assemblyRdio"/> <label for="assemblyRdio">Assembly Constituency</label><input class="contiType" type="radio" name="constituency" id="parliamentRdio"/> <label for="parliamentRdio">Parliament Constituency</label>
+		</div>
+
 		 <div class="selectDivs" id="districtDiv">
 			 <span>Select District</span>
 			 <font class="requiredFont">*</font>
 			 <s:select theme="simple" class="selectWidth" style="margin-left:53px;width:165px;" cssClass="selectWidth" label="Select Your State" name="districtList" id="districtList" list="districtList" listKey="id" listValue="name" onchange="clearErrDiv(),getallConstituencies(this.value);"/>
 		 </div>
-		<div class="selectDivs" id="ConstituencyDiv"> 
+		<div class="selectDivs" id="ConstituencyDiv" style="margin-left:0px"> 
 		 <div class="selectDivs" id="constiDiv" ><span>Select Constituency</span>
 		 <font class="requiredFont">*</font>
 		<select id="constituencyList" style="margin-left:24px;width:165px;" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"><option value="0">Select Constituency</option></select>
@@ -944,7 +985,7 @@ var jsObj=
 
 
 	   <div id="wardDiv" style="display:none;" class="selectDivs">
-	    <span>Select Ward</span><font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:73px;width:165px;">
+	    <span>Select Ward</span><font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:68px;width:165px;">
 		<option value="0">Select Ward</option></select> 
 	  </div>
 		
@@ -1702,8 +1743,13 @@ function callAjax1(param,jsObj,url){
 				    {
 						alert(123);
 					}
-					else if(jsObj.task == "boothsInTehsilOrMunicipality")
+					else if(jsObj.task == "boothsInTehsilOrMunicipality"){
 						buildBoothResultdForOtherthanVoter(myResults);
+					}
+					else if(jsObj.task == "getPariamentConstituencies"){
+					
+						iterateDetailsNames(myResults);
+					}
 					
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
@@ -2269,7 +2315,8 @@ function buildResponseDetails(results)
 
 function clearErrDiv(){
 	$("#errorMsgAlert").html("");
-	}
+	$("#AlertMsg").html("");	
+}
 
 function getMandalOrMuncipalityList()
 {
@@ -2503,12 +2550,16 @@ function showTermsAndConditiond()
 function showReportsLevels(value)
 {
 	$('.selectDivs').hide();
-
+	$('#constiTypeDiv').hide();
+	
 	var selectedType = $('input:radio[name=searchFor]:checked').val();
 
 	if(selectedType != "voter"){
           $('#publicationDateDiv,#panchayatDiv').hide();
-		  $('#stateDiv,#districtDiv').show();
+		  $('#stateDiv').show();
+		  if(selectedType =="cadre" && $('#reportLevel').val() == 1)
+				$('#constiTypeDiv').show();
+				
 	}else
 	{
 		if(value == 2 || value == 3 || value == 4 || value == 5 || value == 6)
@@ -2529,7 +2580,7 @@ function showReportsLevels(value)
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv,#mandalDiv,#wardDiv").show();
 	else if(value == 6){
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv,#mandalDiv,#hamletDiv").show();
-
+	getMandalOrMuncipalityList($('#constituencyList').val());
 		if(selectedType == "voter")
 		   $('#panchayatDiv').show();
 	}
@@ -2762,7 +2813,7 @@ function buildHamletsForOtherthanVoters(results)
 	$('#hamletField').find('option').remove();
 
 	$.each(results , function(index,value){
-		$('#hamletField').append('<option value="'+value.id+'">'+value.name+'</option>');
+		$('#hamletField').append('<option value='+value.id+'>'+value.name+'</option>');
 
 	});
 }
@@ -2779,7 +2830,7 @@ function openSmsHistoryWindow()
 
 function removeCadre()
 {
-			 	console.log(selectedCadreDetails);
+			 	//console.log(selectedCadreDetails);
 
 	 selectedCadreDetails = {};
 
@@ -2799,7 +2850,7 @@ function removeCadre()
 
 function removeInfluencePeople()
 {
-		 	console.log(selectedCadreDetails);
+		 	//console.log(selectedCadreDetails);
 
 	 selectedInfluencePeopleDetails = {};
 
@@ -2815,7 +2866,7 @@ function removeInfluencePeople()
 
 function removeVoters()
 {
-			 	console.log(selectedCadreDetails);
+			 	//console.log(selectedCadreDetails);
 
 	selectedVotersDetails = {};
 
@@ -2824,7 +2875,7 @@ function removeVoters()
          selectedMobileNumbers.splice(numberIndex, 1);
      });
 	 $('#voterCount').html(0);
-	 		 	console.log(selectedCadreDetails);
+	 		 	//console.log(selectedCadreDetails);
 }
 
 function sendDirectSMSToVoters()

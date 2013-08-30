@@ -362,7 +362,7 @@ function getUpdatedData(){
 		<span id="smsStatusTextSpan1"></span>
 	
 		<div id="resultsCount" style="margin-left:30px;color:#707070;font-weight:bold;font-size:13px;text-align:center;"></div>
-		<div id="searchResultsDiv_body">
+		<div id="searchResultsDiv_body" style="margin-top: 50px;">
 			<div id="smsResult"></div>
 			<div id="searchResult"></div>
 		</div>		
@@ -578,9 +578,24 @@ function buildCadreSearchResultDataTableForSMS(rparam)
 				
   };
   
+  YAHOO.widget.DataTable.fullName = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var name = oData;
+	var id= oRecord.getData("cadreId");
+	var mobile= oRecord.getData("mobile");
+	var firstName= oRecord.getData("firstName");
+	var lastName= oRecord.getData("lastName");
+
+  if(window.opener.selectedCadreDetails[id] == undefined || mobile == "")
+      elLiner.innerHTML=firstName+' '+lastName;
+  else
+     elLiner.innerHTML=firstName+' '+lastName;	
+				
+  };
+  
   var CadreSearchResultColumnDefs = [ 
 		    	            {key:"select", label: "<input type='checkbox' class='selectAllCadre'/>", formatter:YAHOO.widget.DataTable.select},
-							{key:"firstName", label: "Name",sortable: true, formatter:YAHOO.widget.DataTable.viewDetails} ,
+							{key:"firstName", label: "Name",sortable: true, formatter:YAHOO.widget.DataTable.fullName} ,
 		    	            {key:"mobile", label: "Mobile", sortable: true}, 
 		    	           	{key:"strCadreLevel", label: "Cadre Level", sortable: true},
 							{key:"educationStr", label: "Education",sortable:true},
