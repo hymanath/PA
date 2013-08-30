@@ -41,7 +41,16 @@ public class VoiceSmsAction implements ServletRequestAware{
 	private String status;
 	private List<VoiceSmsResponseDetailsVO> voiceSmsResponseDetails;
 	private VoiceSmsResponseDetailsVO responseDtls;
+	private List<Long> mobileNumbersList  ;
 	
+	public List<Long> getMobileNumbersList() {
+		return mobileNumbersList;
+	}
+
+	public void setMobileNumbersList(List<Long> mobileNumbersList) {
+		this.mobileNumbersList = mobileNumbersList;
+	}
+
 	public VoiceSmsResponseDetailsVO getResponseDtls() {
 		return responseDtls;
 	}
@@ -503,7 +512,6 @@ public class VoiceSmsAction implements ServletRequestAware{
 						IConstants.User_Groups, otherMobileNumbers);
 			 
 			
-			
 		}
 		catch(Exception e)
 		{
@@ -701,7 +709,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 				searchVO.setCasteIds(request.getParameter("casteIds"));
 			
 			if(searchVO.isGenderSelected())
-				searchVO.setCasteIds(request.getParameter("gender"));
+				searchVO.setGender(request.getParameter("gender"));
 			
 			
 			searchVO.setLocationType(request.getParameter("locationType"));
@@ -714,7 +722,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 			searchVO.setColumnName(columnName);
 			searchVO.setOrder(order);
 			
-			votersDetailsList = voiceSmsService.getVotersDetailsBySearchToSendSMS(searchVO,false);
+			votersDetailsList = voiceSmsService.getVotersDetailsBySearchToSendSMS(searchVO,false,false);
 			
 			
              votersDetails.setResultVotersList(votersDetailsList);
@@ -727,21 +735,24 @@ public class VoiceSmsAction implements ServletRequestAware{
 		}
 		
 		return Action.SUCCESS;
-		
 	}
-	/*
-	public String getVotersDetailsBySearchToSendSMS()
+	
+	
+	public String sendVoiceSMSDirectlyToVoters()
 	{
+		List<SMSSearchCriteriaVO> votersDetailsList = new ArrayList<SMSSearchCriteriaVO>();
 		try
 		{
-
+			votersDetails = new SMSSearchCriteriaVO();	
 			HttpSession session = request.getSession();			
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			
 			if(user == null)
 				return Action.INPUT;
 			
-			jObj = new JSONObject(getTask());
+			 jObj = new JSONObject(getTask());
+
+			
 			
 			SMSSearchCriteriaVO searchVO = new SMSSearchCriteriaVO();
 			
@@ -749,6 +760,8 @@ public class VoiceSmsAction implements ServletRequestAware{
 			searchVO.setCasteSelected(jObj.getBoolean("isCasteSelected"));
 			searchVO.setFamilySelected(jObj.getBoolean("isFamilySelected"));
 			searchVO.setNameSelected(jObj.getBoolean("isNameSelected"));
+			searchVO.setGenderSelected(jObj.getBoolean("isGenderSelected"));
+			
 			
 			if(searchVO.isAgeSelected()){
 				searchVO.setStartAge(jObj.getInt("startAge"));
@@ -761,8 +774,12 @@ public class VoiceSmsAction implements ServletRequestAware{
 			if(searchVO.isNameSelected())
 				searchVO.setName(jObj.getString("name"));
 			
-			if(searchVO.isFamilySelected())
+			if(searchVO.isCasteSelected())
 				searchVO.setCasteIds(jObj.getString("casteIds"));
+			
+			if(searchVO.isGenderSelected())
+				searchVO.setCasteIds(jObj.getString("gender"));
+			
 			
 			searchVO.setLocationType(jObj.getString("locationType"));
 			searchVO.setLocationValue(jObj.getLong("locationValue"));
@@ -770,6 +787,65 @@ public class VoiceSmsAction implements ServletRequestAware{
 			searchVO.setPublicationDateId(jObj.getLong("publicationDateId"));
 			
 			
+			mobileNumbersList = voiceSmsService.sendVoiceSmsDirectlyToVoters(searchVO);
+			
+			
+			if(mobileNumbersList.size() == 0)
+			{
+				status ="No Matched Mobile Numbers Found..";
+				return Action.SUCCESS;
+				
+			}
+			
+			VoiceSmsResponseDetailsVO voiceSmsResponseDetailsVO = new VoiceSmsResponseDetailsVO();
+			
+			voiceSmsResponseDetailsVO.setVotersMobileNumbers(mobileNumbersList);
+			voiceSmsResponseDetailsVO.setAllmobileNumbers(mobileNumbersList);
+			
+		
+			String requestURL = request.getRequestURL().toString();	
+			
+			
+			StringBuffer audioFilePath =  new StringBuffer();
+			
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);	
+			
+	
+			if(requestURL.contains(".com"))				
+			//	audioFilePath.append(""+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
+				audioFilePath.append(IWebConstants.LIVE_VOICE_RECORDINGS_URL+"/"+user.getRegistrationID()+"/"+jObj.getString("audioFileName"));
+			else
+				audioFilePath.append("http://122.169.253.134:8080/TDP/voice_recording/test6.wav");
+			
+			
+			/*   cadreManagementService.sendSMSToSelectedMobileNumbers(user.getRegistrationID(),
+						"NO", true, jObj.getString("message"),
+						IConstants.User_Groups, otherMobileNumbers);*/
+			
+			if(jObj.getString("smsType").equalsIgnoreCase("voice"))				
+			 status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,"",jObj.getLong("senderMobileNumber"),jObj.getString("description"),voiceSmsResponseDetailsVO);
+			else
+			{
+				List<SmsVO> votersMobileNumbers = new ArrayList<SmsVO>();
+
+ 
+				
+				for(Long number:mobileNumbersList)
+				{
+					SmsVO vo = new SmsVO();
+					vo.setMobileNO(number.toString().substring(2));
+					votersMobileNumbers.add(vo);
+					
+					
+				}
+				
+			 cadreManagementService.sendSMSToSelectedMobileNumbers(user.getRegistrationID(),
+								"NO", true, jObj.getString("message"),
+								IConstants.VOTER, votersMobileNumbers);
+				
+			}
+				
+	             
 			
 		}catch(Exception e)
 		{
@@ -777,8 +853,5 @@ public class VoiceSmsAction implements ServletRequestAware{
 		}
 		
 		return Action.SUCCESS;
-		
 	}
-	*/
-	
 }

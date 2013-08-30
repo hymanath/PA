@@ -23,11 +23,11 @@
 
 <style>
 
-input[type=radio], input[type=checkbox] {
+.radioSpecial > input[type=radio]{
 		display:none;
 	}
 
-input[type=radio] + label, input[type=checkbox] + label {
+.radioSpecial > input[type=radio] + label{
 	    font-family:calibri;
 		display:inline-block;
 		margin:-2px;
@@ -58,7 +58,7 @@ input[type=radio] + label, input[type=checkbox] + label {
 		box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
 	}
 
-	 input[type=radio]:checked + label, input[type=checkbox]:checked + label{
+.radioSpecial >	 input[type=radio]:checked + label{
 		   background-image: none;
 		outline: 0;
 		-webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
@@ -318,78 +318,7 @@ div.tabs div.tab.selected div.arrow{
 
 </style>
 
-
-<style>
-/* Main block */
-.switch_options{
-	display: block;
-	font-family: "Helvetica", Arial, Sans-serif;
-	margin-bottom: 10px;
-}
-/* Main block clearfix */
-.switch_options:before,
-.switch_options:after{
-	content:'.';
-	display:block;
-	overflow:hidden;
-	visibility:hidden;
-	font-size:0;
-	line-height:0;
-	width:0;
-	height:0;
-}
-.switch_options:after{clear:both;}
-
-/*Options*/
-.switch_options span{
-	display: inline-block;
-	float: left;
-	padding: 4px 9px;
-	margin: 0;
-	cursor: pointer;
-	font-size: 12px;
-	font-weight: 700;
-	color: #555;
-	border: 1px solid #aaa;
-	text-transform: uppercase;
-	background: #ffffff; /* Old browsers */
-	background: -moz-linear-gradient(top,  #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #ffffff 0%,#e5e5e5 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
-
-}
-.switch_options span:first-of-type{
-	border-radius: 2px 0 0 2px;
-	border-right: 0;
-}
-.switch_options span:last-of-type{
-	border-radius: 0 2px 2px 0;
-	border-left: 0;
-}
-.switch_options span:hover{
-	background: #fafafa;
-}
-
-/* Active option */
-.switch_options span.selected{
-	background: #00b7ea; /* Old browsers */
-	background: -moz-linear-gradient(top,  #00b7ea 0%, #009ec3 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00b7ea), color-stop(100%,#009ec3)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #00b7ea 0%,#009ec3 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', endColorstr='#009ec3',GradientType=0 ); /* IE6-9 */
-	border-color: #0082A3;
-	color: #fff;
-}
-</style>
 <script>
-
 
 var selectedVotersDetails = {
 };
@@ -403,58 +332,22 @@ var mySearch ='cadre';
 var selectedMobileNumbers = new Array();
 var selectedCriteria={};
 
-jQuery(document).ready(function() {
+$(document).ready(function() {
 
-	jQuery('.switch_options').each(function() {
+	$('.smsType').change(function(){
 
-		//This object
-		var obj = jQuery(this);
-
-		var enb = obj.children('.switch_enable'); //cache first element, this is equal to ON
-		var dsb = obj.children('.switch_disable'); //cache first element, this is equal to OFF
-		var input = obj.children('input'); //cache the element where we must set the value
-		var input_val = obj.children('input').val(); //cache the element where we must set the value
-
-		/* Check selected */
-		if( 0 == input_val ){
-			dsb.addClass('selected');
-		}
-		else if( 1 == input_val ){
-			enb.addClass('selected');
-		}
-
-		//Action on user's click(ON)
-		enb.on('click', function(){
-
-          
-		   	$('#textSmsDiv').show();
+		if($(this).val() == "text")
+		{
+			$('#textSmsDiv').show();
 			$('#voiceSmsDiv').hide();
 
-
-
-			$(dsb).removeClass('selected'); //remove "selected" from other elements in this object class(OFF)
-			$(this).addClass('selected'); //add "selected" to the element which was just clicked in this object class(ON) 
-			//$(input).val(1).change(); //Finally change the value to 1
-			$('#switchValue').val(1);
-		});
-
-		//Action on user's click(OFF)
-		dsb.on('click', function(){
-
-	        $('#textSmsDiv').hide();
+		}else
+		{
+			 $('#textSmsDiv').hide();
 			$('#voiceSmsDiv').show();
 
-
-			$(enb).removeClass('selected'); //remove "selected" from other elements in this object class(ON)
-			$(this).addClass('selected'); //add "selected" to the element which was just clicked in this object class(OFF) 
-			//$(input).val(0).change(); // //Finally change the value to 0
-			$('#switchValue').val(0);
-		});
-
+		}
 	});
-});
-
-$(document).ready(function() {
 
 
 	$('.searchType').change(function(){
@@ -778,25 +671,41 @@ function getCandidatesInfo(stattus){
 //alert(stattus);
 $("#searchCandidatesId").click(function() {
 	if(stattus)
-		getCandidatesData();
+		getCandidatesData("notDirect");
 });
 }
-function getCandidatesData(){
+
+
+var isAgeSelected = false;
+var isCasteSelected = false;
+var isFamilySelected = false;
+var isNameSelected = false;
+var isGenderSelected = false;
+var houseNo = "";
+var publicationDateId = "";
+var reportLevelValue = 1;
+var areaId=0;
+var searchName = "";
+var casteIds = "";
+var gender = "";
+var searchArea='constituency';
+
+function getCandidatesData(sentType){
 
         var selectedCasts = new Array();
 		if( $('#casteId').val() != null)
 		 selectedCasts = $('#casteId').val();
 
-		var searchName=$("#searchName").val();
+		 searchName=$("#searchName").val();
 		//var startAge =$("#age1").val();
 		//var endAge =$("#age2").val();		
-		var houseNo =$("#searchHouseNo").val();
+		 houseNo =$("#searchHouseNo").val();
 		var caste =$("#searchCaste").val();
-		var gender=$('#genderDiv input:radio:checked').val();
-		var reportLevelValue = $("#reportLevel").val();
-		var publicationDateId = $("#publicationDateList").val();
-		var searchArea='state';
-		var areaId=0;
+		 gender=$('#genderDiv input:radio:checked').val();
+		 reportLevelValue = $("#reportLevel").val();
+		 publicationDateId = $("#publicationDateList").val();
+	
+	
 		var panchayatFieldId = 0; 
 		var wardFieldId = $("#wardField").val(); 
 		var hamletFieldId = $("#hamletField").val(); 
@@ -806,19 +715,13 @@ function getCandidatesData(){
 		//var isAgeSelected = (startAge.trim() == "") && endAge.trim() == "" ? false : true;
 
           
-	  var isAgeSelected  = $('#ageCheckbox').is(':checked')  ? true :false;
+	   isAgeSelected  = $('#ageCheckbox').is(':checked')  ? true :false;
+	   isCasteSelected = (selectedCasts.length == 0) ? false : true;
+	   isFamilySelected = (houseNo.trim() == "") ? false : true;
+	   isNameSelected = (searchName.trim() == "") ? false : true;	  
+	   isGenderSelected =  (gender == "All") ? false : true;
 
-	  var isCasteSelected = (selectedCasts.length == 0) ? false : true;
-
-	  var isFamilySelected = (houseNo.trim() == "") ? false : true;
-
-	  var isNameSelected = (searchName.trim() == "") ? false : true;
-	  
-	  var isGenderSelected =  (gender == "All") ? false : true;
-
-	  var cadreReportLevelValue;
-
-
+	   var cadreReportLevelValue;
 			
 			if(publicationDateId == null)
 				publicationDateId = 8;
@@ -839,6 +742,7 @@ function getCandidatesData(){
 				searchArea = "panchayat";
 			}
 			 else if(reportLevelValue == 4){
+
 				areaId = $("#pollingStationField").val(); 
 				searchArea = "booth";
 				cadreLocationId = 9;
@@ -864,7 +768,7 @@ function getCandidatesData(){
 				cadreLocationId = 3;
 			}
 
-			var casteIds = "";
+		
 		  
 		   if(selectedCasts != null)
 		   for(var i in selectedCasts)
@@ -893,13 +797,18 @@ function getCandidatesData(){
 			  selectedCriteria.socialStatus = false;
 			  
 
+        if(sentType != "direct")
+	    {
 
 			if(areaId !=0 && $('input[name=searchFor]:checked').val() == "voter")
 				getVoterSearchDetails();
 			else if (areaId !=0 && $('input[name=searchFor]:checked').val() == "cadre")
 				openCadreWindow();  //getCadreSearchDetails();
 			else if(areaId !=0)
-				openInfluencePeopleWindow(); 		
+				openInfluencePeopleWindow(); 
+	   }
+	   else
+		   sendDirectSMSToVotersAjax();
 }
 function getVoterSearchDetails()
 {
@@ -971,13 +880,13 @@ var jsObj=
 
   <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
    
-     <div style="margin:12px 0px 0px 364px;">
-		 <input type="radio" id="radio1" name="searchFor" value="cadre" class="searchType" checked>
-		   <label for="radio1">Cadre</label>
-		<input type="radio" id="radio2" name="searchFor" value="influencePeople" class="searchType" >
-		   <label for="radio2">Influence People</label>
-		<input type="radio" id="radio3" name="searchFor" value="voter" class="searchType">
-		   <label for="radio3">Voter</label>
+     <div style="margin:12px 0px 0px 364px;" class="radioSpecial">
+		 <input type="radio" id="cadre" name="searchFor" value="cadre" class="searchType" checked>
+		   <label for="cadre">Cadre</label>
+		<input type="radio" id="influencePeople" name="searchFor" value="influencePeople" class="searchType" >
+		   <label for="influencePeople">Influence People</label>
+		<input type="radio" id="voter" name="searchFor" value="voter" class="searchType">
+		   <label for="voter">Voter</label>
 	 </div>
 
   <!--<div style="margin:6px 0px 20px 356px;">
@@ -1067,13 +976,25 @@ var jsObj=
    
 	 
 
-	 <div class="selectDiv" id="genderDiv"style="margin-bottom: 10px;">
+	 <!--<div class="selectDiv" id="genderDiv"style="margin-bottom: 10px;">
 	  Gender  <span style="margin-left:79px;">:</span>
 		<input type="radio" checked="true" id="all" name="gender" style=" margin-top: 0px;margin-left: 25px;" value="All"></label><Span style="margin-left:5px;">All </Span> 
 		<input type="radio" id="male" name="gender" style=" margin-top: 0px;margin-left: 10px;" value="M"><Span style="margin-left:5px;">Male </Span> 
 		<input type="radio" id="female" value="F" name="gender" style=" margin-top: 0px;margin-left: 10px;"> <Span style="margin-left:5px;" >Female<Span>
 		
-	  </div>
+	  </div>-->
+	  
+   
+     <div class="selectDiv radioSpecial" id="genderDiv"style="margin-bottom: 10px;">
+	 <span style="margin-right:100px;">GENDER:</span>
+		 <input type="radio" id="all"  name="gender" value="All"  checked>
+		   <label for="all">All</label>
+		<input type="radio" id="male" name="gender" value="M"  >
+		   <label for="male">Male</label>
+		<input type="radio" id="female" name="gender" value="F" >
+		   <label for="female">Female</label>
+	 </div>
+	 
 	<div class="selectDiv" style="margin-bottom: 10px;" id="nameDiv">
 	    Name  <span style="margin-left:90px;">:</span><input type="text" id="searchName" style="width:154px;margin-left: 25px;">
 	  </div>
@@ -1092,8 +1013,8 @@ var jsObj=
 		<input type="text" id="age2" style="width:100px;">
 	 </div>
 	 -->
-	 <div>
-	   <div  class="selectDiv" id="ageDiv" style="float:left;">
+	 <div id="ageDiv">
+	   <div  class="selectDiv"  style="float:left;">
 		 <input type="checkbox" id="ageCheckbox"/>Age range :</div>
 		 <!-- <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;width:50px;" />-->
 		 <div style="width:165px;margin-left:162px;">
@@ -1113,35 +1034,24 @@ var jsObj=
   </div>-->
 
 
-
    </div>
 
-
-
   </div>
-
 
 	
 <div style="height:auto;border:1px solid #06ABEA;padding:6px;margin-bottom:20px;" class="span12" >
 
- <div style="text-align:center;"><label>You can enter mobile numbers manually here.(Add country code before mobile number):<font style="color:red;">*</font><br>Example:919999999999</label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
+ <div style="text-align:center;"><label>You can enter mobile numbers manually here.(Add country code before mobile number):<br>Example:919999999999</label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 </div>
 
 
+ <div class="selectDiv radioSpecial" id="ssmTypeDiv" style="margin:0px 0px 17px 367px;">
+		 <input type="radio" id="textSMS"  name="smsType" value="text"  class="smsType" checked>
+		   <label for="textSMS">Send Text SMS</label>
+		<input type="radio" id="voiceSMS" name="smsType" value="voice" class="smsType">
+		   <label for="voiceSMS">Send Voice SMS</label>	
+	 </div>
 
-
-	<!-- Switch button script start -->
-	<div>
-		<div class="switch_options" style="margin-left:350px;">
-
-			<span class="switch_enable"> Send Text SMS </span>
-			<span class="switch_disable"> Send Voice SMS </span>
-			<input type="hidden" class="switch_val" value="1" id="switchValue"/>
-
-		</div>
-    </div>
-
-	<!-- Switch button script end -->
 
 
 
@@ -1244,6 +1154,8 @@ var jsObj=
  </div>
 
  <a class="btn" href="javascript:{openSmsHistoryWindow();}">HISTORY</a>
+
+ <a class="btn" href="javascript:{sendDirectSMSToVoters();}">CHECK DIRECT VOTERS</a>
 
 
 <script>
@@ -2627,169 +2539,10 @@ function showReportsLevels(value)
 		$("#stateDiv ,#districtDiv").show();
 
 }
-/*
-function showReportsLevels1(value)
-	{
-		$('#districtList').val(0);
-		if(value == 1)
-		{
-		  if(mySearch =='voter')
-			document.getElementById('publicationDateDiv').style.display = 'block';
-		   document.getElementById('districtDiv').style.display = 'block';
-		   document.getElementById('ConstituencyDiv').style.display = 'block';
-		   document.getElementById('mandalDiv').style.display = 'none';
-		   document.getElementById('panchayatDiv').style.display = 'none';
-		   document.getElementById('pollingStationDiv').style.display = 'none';
-		   document.getElementById('wardDiv').style.display = 'none';
-		   document.getElementById('hamletDiv').style.display = 'none';
-		   document.getElementById('localityDiv').style.display = 'none';
-		}
-		else if(value == 2)
-		{
-			$("#mandalSpan").html('Select Mandal');
-			$("#mandalField").css({ "margin-left" : "60px"} );
-			if(mySearch =='voter')
-			document.getElementById('publicationDateDiv').style.display = 'block';
-			document.getElementById('districtDiv').style.display = 'block';
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('mandalDiv').style.display = 'block';
-			document.getElementById('panchayatDiv').style.display = 'none';
-			document.getElementById('pollingStationDiv').style.display = 'none';
-			document.getElementById('wardDiv').style.display = 'none';
-			document.getElementById('hamletDiv').style.display = 'none';
-			document.getElementById('localityDiv').style.display = 'none';
-			getMandalList('mandalField');
-
-		}
-		else if(value == 3)
-		{
-			if(mySearch =='voter')
-			document.getElementById('publicationDateDiv').style.display = 'block';
-			document.getElementById('districtDiv').style.display = 'block';
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('mandalDiv').style.display = 'block';
-			document.getElementById('panchayatDiv').style.display = 'block';
-			document.getElementById('pollingStationDiv').style.display = 'none';
-			document.getElementById('wardDiv').style.display = 'none';
-			document.getElementById('hamletDiv').style.display = 'none';
-			document.getElementById('localityDiv').style.display = 'none';
-			getPanchayatList('panchayat','panchayatField');
-
-		}
-		else if(value == 4)
-		{
-			if(mySearch =='voter')
-			document.getElementById('publicationDateDiv').style.display = 'block';
-			document.getElementById('districtDiv').style.display = 'block';
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('mandalDiv').style.display = 'block';
-			document.getElementById('panchayatDiv').style.display = 'none';
-			document.getElementById('pollingStationDiv').style.display = 'block';
-			document.getElementById('wardDiv').style.display = 'none';
-			document.getElementById('hamletDiv').style.display = 'none';
-			document.getElementById('localityDiv').style.display = 'none';
-			getPanchayatList('pollingstationByPublication','pollingStationField');
-		}
-		else if(value == 5)
-		{
-			$("#mandalSpan").html('Select Muncipality');
-			$("#mandalSpan").css("margin-right","5px");
-			$("#mandalField").css({ "margin-left" : "33px"} );
-			if(mySearch =='voter')
-			document.getElementById('publicationDateDiv').style.display = 'block';
-			document.getElementById('districtDiv').style.display = 'block';
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('mandalDiv').style.display = 'block';
-			document.getElementById('panchayatDiv').style.display = 'none';
-			document.getElementById('wardDiv').style.display = 'block';
-			document.getElementById('pollingStationDiv').style.display = 'none';
-			document.getElementById('hamletDiv').style.display = 'none';
-            document.getElementById('localityDiv').style.display = 'none';
-           	//getWardsList('wardByPublication','wardField');
-			getPanchayatList('ward','wardField');
-		}
-		else if(value == 6)
-		{
-			if(mySearch =='voter')
-			document.getElementById('publicationDateDiv').style.display = 'block';
-			document.getElementById('districtDiv').style.display = 'block';
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('mandalDiv').style.display = 'block';
-			document.getElementById('panchayatDiv').style.display = 'block';
-			document.getElementById('pollingStationDiv').style.display = 'none';
-			//getPanchayatList('pollingstationByPublication','pollingStationField');
-			document.getElementById('wardDiv').style.display = 'none';
-			document.getElementById('hamletDiv').style.display = 'block';
-			document.getElementById('localityDiv').style.display = 'none';
-		}
-		else if(value == 7)
-		{
-			document.getElementById('districtDiv').style.display = 'block';
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('mandalDiv').style.display = 'block';
-			
-		
-			document.getElementById('pollingStationDiv').style.display = 'none';
-			//getPanchayatList('pollingstationByPublication','pollingStationField');
-			
-		
-			document.getElementById('localityDiv').style.display = 'block';
-			id = $("#mandalField").val();
-			if(id.charAt(0) =="1"){
-			document.getElementById('wardDiv').style.display = 'block';
-			document.getElementById('panchayatDiv').style.display = 'none';
-			document.getElementById('hamletDiv').style.display = 'none';}
-			else if(id.charAt(0) =="2"){ 
-				document.getElementById('wardDiv').style.display = 'none';
-				document.getElementById('panchayatDiv').style.display = 'block';
-				document.getElementById('hamletDiv').style.display = 'block';
-				getPanchayatList('panchayat','panchayatField');
-			}else{
-				document.getElementById('panchayatDiv').style.display = 'none';
-				document.getElementById('hamletDiv').style.display = 'none';
-				document.getElementById('wardDiv').style.display = 'none';
-			}
-			
-			getPanchayatList('panchayat','panchayatField');
-		}
-		
-		else if(value == 8)
-		{
-			if(mySearch =='voter')
-			document.getElementById('publicationDateDiv').style.display = 'none';
-			document.getElementById('stateDiv').style.display = 'block';
-			document.getElementById('districtDiv').style.display = 'none';
-			document.getElementById('ConstituencyDiv').style.display = 'none';
-			document.getElementById('mandalDiv').style.display = 'none';
-			document.getElementById('panchayatDiv').style.display = 'none';
-			document.getElementById('pollingStationDiv').style.display = 'none';
-			//getPanchayatList('pollingstationByPublication','pollingStationField');
-			document.getElementById('wardDiv').style.display = 'none';
-			document.getElementById('hamletDiv').style.display = 'none';
-			document.getElementById('localityDiv').style.display = 'none';
-		}
-		
-		else if(value == 9)
-		{
-			if(mySearch =='voter')
-			document.getElementById('publicationDateDiv').style.display = 'none';
-			document.getElementById('stateDiv').style.display = 'block';
-			document.getElementById('districtDiv').style.display = 'block';
-			document.getElementById('ConstituencyDiv').style.display = 'none';
-			document.getElementById('mandalDiv').style.display = 'none';
-			document.getElementById('panchayatDiv').style.display = 'none';
-			document.getElementById('pollingStationDiv').style.display = 'none';
-			//getPanchayatList('pollingstationByPublication','pollingStationField');
-			document.getElementById('wardDiv').style.display = 'none';
-			document.getElementById('hamletDiv').style.display = 'none';
-			dcument.getElementById('localityDiv').style.display = 'none';
-		}
-	}*/
-//voter search
 function sendSMS()
 {
 	
-	if($('#switchValue').val() == 1)
+	if($("input:radio[name=smsType]:checked").val() == "text")
 		sendTextSms();
 	else
 		validateFieldsForSendingSms();
@@ -3072,7 +2825,43 @@ function removeVoters()
      });
 	 $('#voterCount').html(0);
 	 		 	console.log(selectedCadreDetails);
+}
 
+function sendDirectSMSToVoters()
+{
+   getCandidatesData("direct");
+}
+
+function sendDirectSMSToVotersAjax()
+{
+	var smsType = ($('#switchValue').val() == 1) ? "text" :"voice";
+	  var jsObj=
+			{
+				 isAgeSelected:isAgeSelected,
+                 isFamilySelected:isFamilySelected,
+				 isNameSelected:isNameSelected,
+				 isGenderSelected:isGenderSelected,
+                 isCasteSelected:isCasteSelected,  
+				 startAge:startAge,
+				 endAge:endAge,
+				 houseNo:houseNo,
+                 name:searchName,
+				 casteIds:casteIds,
+				 gender:gender,
+				 locationType:searchArea,
+				 locationValue:areaId,
+				 publicationDateId:publicationDateId	,
+				 senderMobileNumber:$("input:radio[name=senderNumber]:checked").val(),
+				 audioFileName : $("input:radio[name=audio]:checked").attr('id'),
+				 description : $('#voiceSmsDescription').val(),
+                 message:$('#textSmsDescription').val(),
+                 smsType:$("input:radio[name=smsType]:checked").val()
+
+			};
+			console.log(jsObj);
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "sendVoiceSMSDirectlyToVoters.action?"+rparam;	
+			callAjax1(rparam,jsObj,url);
 
 }
 </script>
