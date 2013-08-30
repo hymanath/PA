@@ -114,6 +114,8 @@
 		<pattern>/voiceSMS*</pattern>
 		<pattern>/messageCenterVoterSearchAction*</pattern>
 		<pattern>/searchInfluencePeopleForSmsAction*</pattern>
+		<pattern>/demoRequestDataUpdateAction*</pattern>
+		<pattern>/addDemoRequestActions*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -266,6 +268,7 @@
 		<pattern>/getvoiceSmsReportAction*</pattern>
 		<pattern>/updateCustomerContactsAction*</pattern>
 		<pattern>/dashBoardAction*</pattern>
+		<pattern>/demoRequestAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">

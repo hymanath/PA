@@ -15,7 +15,7 @@
 											<div class="control-group">
 												<label class="control-label">MLA/Aspirant Name</label>
 												<div class="controls">
-												 <input type="text" placeholder="Enter MLA/Aspirant Name..." id="name">
+												 <input type="text" placeholder="Enter MLA/Aspirant Name..." id="aspirantName">
 												</div>
 											</div>
 											
@@ -35,7 +35,7 @@
 <div class="control-group">
 												<label class="control-label">Email Id</label>
 												<div class="controls">
-												 <input type="text" placeholder="Enter Email Id..." id="emailId">
+												 <input type="text" placeholder="Enter Email Id..." id="aspirantEmailId">
 												</div>
 											</div>
 											
@@ -88,9 +88,13 @@ $("#textMsg").html('Your request is submitted successfully and we will get back 
 $("#AjaxImg").show();
 $("#errorMsg").html("");
 	var constituencyName = $("#constituencyName").val();
-	var name = $("#name").val();
-	var email =$("#emailId").val();
+	var name = $("#aspirantName").val();
+	var email =$("#aspirantEmailId").val();
+
+	
 	 $("#sendMailToAdminGroup").attr('disabled','disabled');
+
+
 	var jsObj=
 				{ 
 					constituencyName:constituencyName,

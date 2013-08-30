@@ -371,6 +371,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
                      <c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
 					<li><a onclick="clearDivs()" href="messageCenterAction.action" class="accessNewsArticles" target="_blank"></i><i class="icon-chevron-right"></i> Message Center</a></li>
 					</c:if>
+
+					<c:if test="${hasDemoRequestView == true}">
+
+					<li><a onclick="clearDivs()" href="demoRequestAction.action" class="accessNewsArticles" target="_blank"></i><i class="icon-chevron-right"></i> View Demo Requests</a></li>
+					</c:if>
+
 					
 					</ul>
 				</div>
