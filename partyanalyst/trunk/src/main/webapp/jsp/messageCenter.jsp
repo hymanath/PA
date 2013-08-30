@@ -1040,13 +1040,13 @@ var jsObj=
 	    Name  <span style="margin-left:107px;">:</span><input type="text" id="searchName" style="width:154px;margin-left: 2px;">
 	  </div>
 	   <div class="selectDiv" style="margin-bottom: 10px;display:none;" id="casteDiv">
-	    Caste  <span style="margin-left:90px;">:</span><!--<input type="text" id="searchCaste" style="width:154px;margin-left: 25px;">-->
+	    Caste  <span style="margin-left:109px;">:</span><!--<input type="text" id="searchCaste" style="width:154px;margin-left: 25px;">-->
 		<select multiple="true" id="casteId">
 		
 		</select>
 	  </div>	  
     <div class="selectDiv" style="margin-bottom: 10px;display:none;" id="houseDiv">
-	    House No  <span style="margin-left:65px;">:</span><input type="text" id="searchHouseNo" style="width:154px;margin-left: 25px;">
+	    House No  <span style="margin-left:86px;">:</span><input type="text" id="searchHouseNo" style="width:154px;margin-left: 2px;">
 	  </div>
 	  <!--
 	<div class="selectDiv" style="margin-bottom: 10px;display:none;" id="ageDiv">
@@ -1055,8 +1055,9 @@ var jsObj=
 	 </div>
 	 -->
 	 <div id="ageDiv">
-	   <div  class="selectDiv"  style="float:left;">
-		 <input type="checkbox" id="ageCheckbox"/>Age range :</div>
+	  <!-- <div  class="selectDiv"  style="float:left;">
+		 <input type="checkbox" id="ageCheckbox"/>Age range :</div>-->
+		 <span>Age Range</span>
 		 <!-- <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;width:50px;" />-->
 		 <div style="width:165px;margin-left:162px;">
 		   <div id="slider-range"></div>
