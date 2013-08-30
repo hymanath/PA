@@ -490,7 +490,7 @@ $(document).ready(function() {
 var stattus = false;
 function isValidateFields(){
 
-		var cadreLocationId;
+		//var cadreLocationId;
 		var stateId;
 		var districtId;
 		var constituencyId;
@@ -802,8 +802,10 @@ function getCandidatesData(sentType){
 				cadreLocationId = 3;
 			}
 		
-			if(cnstiType =='parliamentRdio')
+			if(cnstiType =='parliamentRdio' && reportLevelValue == 1)
+            {
 				cadreLocationId = 10;
+			}
 
 
 		
@@ -958,8 +960,8 @@ var jsObj=
 			 <font class="requiredFont">*</font>
 			  <s:select theme="simple" class="selectWidth" style="margin-left:65px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv(),"/>
 		 </div>
-		 <div class="radioSpecial" id="constiTypeDiv" style="font-weight:bold;font-size:13px;">
-		<input class="contiType" checked="true" type="radio" name="constituency" id="assemblyRdio"/> <label for="assemblyRdio">Assembly Constituency</label><input class="contiType" type="radio" name="constituency" id="parliamentRdio"/> <label for="parliamentRdio">Parliament Constituency</label>
+		 <div class="" id="constiTypeDiv" style="font-weight:bold;font-size:13px;">
+		<div><label for="assemblyRdio"><input class="contiType" checked="true" type="radio" name="constituency" id="assemblyRdio"/> Assembly Constituency</label></div><label for="parliamentRdio"><input class="contiType" type="radio" name="constituency" id="parliamentRdio"/> Parliament Constituency</label>
 		</div>
 
 		 <div class="selectDivs" id="districtDiv">
