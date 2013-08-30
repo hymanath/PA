@@ -333,6 +333,7 @@ var selectedMobileNumbers = new Array();
 var selectedCriteria={};
 
 $(document).ready(function() {
+	$('#directSMSToVotersId').hide();
 
 	$('.smsType').change(function(){
 
@@ -353,6 +354,7 @@ $(document).ready(function() {
 	$('.searchType').change(function(){
 		if($(this).val() == "cadre")
 		{
+			$('#directSMSToVotersId').hide();
 			showHideLocationOptionsForOtherthanVoter();
 			$('#houseDiv,#casteDiv').hide();
 			$('#ageDiv').show();			
@@ -371,7 +373,8 @@ $(document).ready(function() {
 			mySearch ='cadre';
 		}
 		else if($(this).val() == "influencePeople")
-		{        
+		{   
+			$('#directSMSToVotersId').hide();
 			showHideLocationOptionsForOtherthanVoter();
 			$('#constiTypeDiv').hide();
 			if(mySearch =='voter' && $('#reportLevel').val() <= 7 ){
@@ -391,10 +394,12 @@ $(document).ready(function() {
 		}
 		else if($(this).val() == "voter")
 		{
+
 			showHideLocationOptionsForVoter();
 			$('#constiTypeDiv').hide();
             mySearch ='voter';
 			$('#stateDiv').show();
+			$('#directSMSToVotersId').show();
 			$('#houseDiv , #ageDiv,#casteDiv').show();
 		   
 			document.getElementById('ConstituencyDiv').style.display = 'block';
@@ -488,7 +493,7 @@ $(document).ready(function() {
 	
 });
 var stattus = false;
-function isValidateFields(){
+function isValidateFields(type){
 
 		//var cadreLocationId;
 		var stateId;
@@ -696,15 +701,22 @@ function isValidateFields(){
 					return;
 				}
 			}
-	stattus = true;
-	getCandidatesInfo(stattus);
+
+
+	if(type == 'direct')
+		sendDirectSMSToVoters();
+	else
+	{
+	 stattus = true;
+	 getCandidatesInfo(stattus);
+	}
 }
 	
 function getCandidatesInfo(stattus){
 //alert(stattus);
 $("#searchCandidatesId").click(function() {
 	if(stattus)
-		getCandidatesData("notDirect");
+		getCandidatesData("search");
 });
 }
 
@@ -1068,7 +1080,10 @@ var jsObj=
 		  </div>
 
 	</div>
-	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;" onclick="isValidateFields();"> Search </button> 
+
+          <button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> 
+
+	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;" onclick="isValidateFields('search');"> Search </button> 
 
 
   <!-- <div class="span11" style="margin:9px 0px 10px 337px;">
