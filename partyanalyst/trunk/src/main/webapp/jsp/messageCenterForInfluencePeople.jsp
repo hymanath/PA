@@ -157,7 +157,8 @@ $(document).ready(function(){
 
 <input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
 
-<div class="span11" style="margin-left:30px;">
+<div class="span11" align="center" style="margin-left:30px;">
+<span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: -178px;"></span>
  <div class="row">
 
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
@@ -194,7 +195,7 @@ $(document).ready(function(){
 }
 
 getInfluencePeopleDetailsBySearchCritteria();
-
+var count=0;
 function getInfluencePeopleDetailsBySearchCritteria()
 {
 
@@ -203,8 +204,9 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 
 			var name= oRecord.getData("name");
 			var mobileNumber = oRecord.getData("mobileNumber");
-
-	 if(window.opener.selectedVotersDetails[name] == undefined)
+	count=count+1;
+	$('#peopleCount').html("Total Count : <span>"+count +"</span>");
+			if(window.opener.selectedVotersDetails[name] == undefined)
 		var str ='<input type="checkbox" onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'" style="margin-left: -1px;"/>';
 	else
 		var str ='<input type="checkbox" checked onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'" style="margin-left: 29px;"/>';
