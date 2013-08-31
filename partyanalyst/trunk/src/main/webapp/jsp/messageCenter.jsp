@@ -1024,9 +1024,11 @@ var jsObj=
    <!--<div style="text-align:center;margin-left:140px;"><input type="button" value="Voter Search" id="voterSearchBtn" class="btn" onclick="voterDetailsValidation()"/></div>-->
 		
  </div>
+<div style="clear:both;">
+	<a href="javascript:{$('#searchOptionsDiv').toggle('slow');}" style="float:right;margin-right:252px;font-size:12px;"><b>Show/Hide Search Options</b></a>
+</div>
 
-
-   <div class="span5 widget" style="font-weight:bold;margin-bottom: 15px;font-size:13px;width: 381px;margin-left: 268px;border:0px;padding:17px 0px 0px 37px;">
+   <div class="span5 widget" style="font-weight:bold;margin-bottom: 15px;font-size:13px;width: 381px;margin-left: 268px;border:0px;padding:17px 0px 0px 37px;display:none;" id="searchOptionsDiv">
 
    
 	 
