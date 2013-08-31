@@ -357,7 +357,7 @@ $(document).ready(function() {
 			$('#directSMSToVotersId').hide();
 			showHideLocationOptionsForOtherthanVoter();
 			$('#houseDiv,#casteDiv').hide();
-			$('#ageDiv').show();			
+			$('#ageDiv').hide();			
 			if(mySearch =='voter' && $('#reportLevel').val() <= 7 ){
 			document.getElementById('ConstituencyDiv').style.display = 'block';
 			document.getElementById('districtDiv').style.display = 'block';		
