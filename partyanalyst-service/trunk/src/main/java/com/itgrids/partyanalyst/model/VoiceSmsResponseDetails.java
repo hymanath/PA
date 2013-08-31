@@ -37,7 +37,6 @@ public class VoiceSmsResponseDetails extends BaseModel implements Serializable{
 	private String responseCode;
 	private Date timeSent; 
 	private User user;
-	private String mobileNumbers;
 	private String smsDescription;
 	private Long smsTypeId;
 	private SmsType smsType;
@@ -92,13 +91,6 @@ public class VoiceSmsResponseDetails extends BaseModel implements Serializable{
 		this.timeSent = sentDate;
 	}
 	
-	@Column(name="mobile_numbers" , length = 500)
-	public String getMobileNumbers() {
-		return mobileNumbers;
-	}
-	public void setMobileNumbers(String mobileNumbers) {
-		this.mobileNumbers = mobileNumbers;
-	}
 	
 	
 	@Column(name="sms_description" , length=500)
