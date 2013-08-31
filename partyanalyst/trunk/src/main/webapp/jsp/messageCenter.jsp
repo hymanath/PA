@@ -1026,7 +1026,7 @@ var jsObj=
  </div>
 
 
-   <div class="span5" style="font-weight:bold;margin-bottom: 15px;font-size:13px;width: 400px;margin-left: 290px;">
+   <div class="span5 widget" style="font-weight:bold;margin-bottom: 15px;font-size:13px;width: 381px;margin-left: 268px;border:0px;padding:17px 0px 0px 37px;">
 
    
 	 
@@ -1088,14 +1088,15 @@ var jsObj=
    </div>
 
 
-   <div class="span4" style="margin:65px 0px 0px 0px;border:2px solid #F2F2F2;padding:8px;">
+   </div>
+
+
+    <div class="span4" style="margin:19px 0px 14px 292px;border:2px solid #F2F2F2;padding:8px;">
     <label>No Of Cadre Selected<span id="cadreCount" style="font-weight:bold;margin-left:83px;" class="badge">0</span><a class="pull-right" href="javascript:{removeCadre()}" title="Click here to remove selected cadre numbers"><img style='text-decoration: none; border: 0px none;' src='images/cross.png'></a></label>
     <label>No Of Influencing People Selected<span id="influencePeopleCount" style="font-weight:bold;margin-left:2px;" class="badge">0</span><a class="pull-right" href="javascript:{removeInfluencePeople()}" title="Click here to remove selected influencing people numbers"><img style='text-decoration: none; border: 0px none;' src='images/cross.png'></a></label>
     <label>No Of Voters Selected<span id="voterCount" style="font-weight:bold;margin-left:77px;" class="badge">0</span><a href="javascript:{removeVoters();}" title="Click here to remove selected voter numbers" class="pull-right"><img style='text-decoration: none; border: 0px none;' src='images/cross.png'></a></label>
   </div>
 
-
-   </div>
 
   </div>
 
@@ -1215,6 +1216,8 @@ var jsObj=
  </div>
 
  <a class="btn pull-left btn-primary" href="javascript:{openSmsHistoryWindow();}">Click Here To See History</a>
+
+ <span id="successMsg" style="font-weight:bold;color:green;"></span>
  <a class="btn pull-right btn-primary" href="javascript:{sendSMS();}">Send SMS </a>
  </div>
 
@@ -1758,7 +1761,7 @@ function callAjax1(param,jsObj,url){
 							 $('#cadreCount , #influencePeopleCount, #voterCount').html(0)
 
 						$('#responseDetailsDiv').dialog('close');
-						alert(myResults);
+						$('#successMsg').html(myResults);
 
 				    }
 					else if(jsObj.task == "getConstituencyNames")
