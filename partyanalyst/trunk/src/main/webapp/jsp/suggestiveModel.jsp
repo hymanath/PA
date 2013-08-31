@@ -1197,7 +1197,7 @@ function getSelectedCastes()
 	noOfCastesSelected = selectedCastes.length;
 	var str = '';
 	str += '<div id="expCasteErrorMsgDiv" style="color:red"></div></br>';
-	str += '<div> <b style="color:red;">Hint : EXCEPTED CASTE PERCENTAGE MUST BE BETWEEN 0 TO 1</b></div></br>';
+	str += '<div> <b style="color:red;">Hint : EXPECTED CASTE PERCENTAGE MUST BE BETWEEN 0 AND 1</b></div></br>';
 	for(var i in selectedCastes)
 	{
 		var casteId = selectedCastes[i].casteId;
@@ -1209,7 +1209,7 @@ function getSelectedCastes()
 			var nextCaste = selectedCastes[a].casteName;
 		} */
 		
-		str += '<div id="'+casteName+'div"><a  id="'+casteName+''+casteId+'"   onClick="showSelectedCasteFadeIn(\''+casteName+''+constituencyId+'\')" style="border-radius: 4px 4px 4px 4px; background-color: rgb(88, 172, 250); margin-left: 10px; padding: 10px 10px 11px; margin-bottom: 19px; float: left; width: 600px; cursor: pointer;" >CLICK HERE TO FILL THE <b style="color:black;">'+capsCasteName+' </b>CASTE EXCEPTED CASTE DETAILS</a>';
+		str += '<div id="'+casteName+'div"><a  id="'+casteName+''+casteId+'"   onClick="showSelectedCasteFadeIn(\''+casteName+''+constituencyId+'\')" style="border-radius: 4px 4px 4px 4px; background-color: rgb(88, 172, 250); margin-left: 10px; padding: 10px 10px 11px; margin-bottom: 19px; float: left; width: 600px; cursor: pointer;" >CLICK HERE TO FILL THE <b style="color:black;">'+capsCasteName+' </b>CASTE EXPECTED CASTE DETAILS</a>';
 		/* if(a < noOfCastesSelected)
 		{
 		str += '<input type="button" id="'+casteName+''+casteId+'" value="Click here to fill the '+nextCaste+' caste Excepeted Details" class="btn-info"  onClick="showSelectedCasteFadeIn(\''+casteName+''+constituencyId+'\')" style="width: 424px;border-radius: 4px 4px 4px 4px; margin-bottom: 10px; height: 30px;margin-left:10px;"></input>';
@@ -1218,7 +1218,7 @@ function getSelectedCastes()
 		str += '<div id="'+casteName+''+constituencyId+'" style="display: block; float: left; width: 645px;"><table class="table table-hover table-bordered expCasteDetails'+i+'" >';
 		str += '<th>PANCHAYAT</th>';
 		str += '<th>MANDAL</th>';
-		str += '<th>EXCEPTED  %</th>';
+		str += '<th>EXPECTED  %</th>';
 		str += '<th>ACTIONS</th>';
 		
 		for(var j in madalPanchayatsArray)
@@ -1319,7 +1319,9 @@ function getAllExpcetedCasteDetails(id)
 			}
 			else
 			{
-				$('#expCasteErrorMsgDiv').html('<b>PLEASE ENTER VALID EXCEPTED CASTE PERCENTAGE..</b>');
+				$('#expCasteErrorMsgDiv').show();
+				$('#expCasteErrorMsgDiv').html('<b>PLEASE ENTER VALID EXPECTED CASTE PERCENTAGE..</b>');
+				$('#expCasteErrorMsgDiv').show().delay("3000").hide('slow');
 			}
 			
 			});
@@ -1377,7 +1379,7 @@ function buildLeadersTableWithExpPercForMuncipal(results)
 		var str = "";
 		str+='<div class="widget blue">';
 		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
-		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' MUNCIPALITY EXCEPTED CASTE DETAILS </h4>';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' MUNCIPALITY EXPECTED CASTE DETAILS </h4>';
 		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
 		str += '<tr>';
 		str += '<th>Mandal</th>';
@@ -1430,7 +1432,7 @@ function buildLeadersTableWithExpPerc(results)
 		var str = "";
 		str+='<div class="widget blue">';
 		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
-		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY PANCHAYAT LEVEL EXCEPTED CASTE DETAILS </h4>';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY PANCHAYAT LEVEL EXPECTED CASTE DETAILS </h4>';
 		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
 		str += '<tr>';
 		str += '<th>Mandal</th>';
