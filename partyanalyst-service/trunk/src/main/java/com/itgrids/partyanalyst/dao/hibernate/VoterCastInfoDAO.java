@@ -175,4 +175,21 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	public List<Object[]> getCasteWiseCountDetails(Long levelId,Long levelValue,Long publicationDateId,Long constituencyId,List<Long> casteIds,Long userId)
+	{
+		Query query = getSession().createQuery("select model.casteState.casteStateId,model.casteVoters from VoterCastInfo model " +
+				" where model.voterReportLevel.voterReportLevelId = :levelId and " +
+				" model.reportLevelValue = :levelValue and model.publicationDateId = :publicationDateId and " +
+				" model.constituency.constituencyId = :constituencyId  and model.userId = :userId and " +
+				" model.casteState.casteStateId in (:casteIds)");
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("casteIds", casteIds);
+		query.setParameter("userId", userId);
+		return query.list();
+				
+	}
 }

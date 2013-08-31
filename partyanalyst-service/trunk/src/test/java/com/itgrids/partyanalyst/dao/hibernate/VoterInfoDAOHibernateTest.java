@@ -152,6 +152,7 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetVoterInfoList()
 	{
-		voterInfoDAO.getVoterInfoList(232l);
+		Long count = voterInfoDAO.getTotalVotersForSelectdLevel(5l,83l,8l,232l);
+		System.out.println(count);
 	}
 }

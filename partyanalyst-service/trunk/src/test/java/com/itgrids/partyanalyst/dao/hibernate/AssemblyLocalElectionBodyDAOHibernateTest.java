@@ -152,11 +152,17 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		System.out.println(assemblyLocalElectionBodyDAO.getElectionTypeForMuncipality(232l, 83l));
 	}*/
 	
-	public void testgetLocalEleBodyIdsListByConstituencyId()
+	/*public void testgetLocalEleBodyIdsListByConstituencyId()
 	{
 		List<Long> list = assemblyLocalElectionBodyDAO.getLocalEleBodyIdsListByConstituencyId(232l, 8l);
 		System.out.println(list.size());
 		for(Long id:list)
 		System.out.println(id);
+	}*/
+	
+	public void testgetMuncipalityDetails()
+	{
+		Object[] values = assemblyLocalElectionBodyDAO.getMuncipalityDetails(232l);
+		System.out.println(values[0] +":"+ values[1]);
 	}
 }

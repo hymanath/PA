@@ -37,4 +37,6 @@ public interface IVoterCastInfoDAO extends GenericDao<VoterCastInfo,Long>{
 	
 	public List<VoterCastInfo> getVoterCasteInfoList(Long constituencyId,Long publicationDateId,Long userId);
 	
+	public List<Object[]> getCasteWiseCountDetails(Long levelId,Long levelValue,Long publicationDateId,Long constituencyId,List<Long> casteId,Long userId);
+	
 }

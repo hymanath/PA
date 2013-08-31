@@ -39,7 +39,7 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		Set<Long> casteIds = new HashSet<Long>();
@@ -65,7 +65,7 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		for (Object[] parms : values) {
 			System.out.println(parms[0]  +":"+ parms[1] +":"+ parms[2]);
 		}
-	}
+	}*/
 	/*public void test()
 	{
 		List ids = new ArrayList<Long>();
@@ -102,5 +102,13 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 			str.append(""+vCastInfo.getSubLeveCastePercentage()+"");
 		}
 		System.out.println(str);
+	}*/
+	
+	/*public void testgetCasteWiseCountDetails()
+	{
+		List<Object[]> values = voterCastInfoDAO.getCasteWiseCountDetails(5l,83l,8l,232l,296l,1l);
+		for (Object[] parms : values) {
+			System.out.println(parms[0]  +":"+ parms[1]  );
+		}
 	}*/
 }
