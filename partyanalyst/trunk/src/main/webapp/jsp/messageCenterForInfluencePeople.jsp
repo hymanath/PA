@@ -216,7 +216,7 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 
 
 var votersByLocBoothColumnDefs = [
-{key:"select", label: "<input type='checkbox' class='selectAll'/>", width:70,formatter:YAHOO.widget.DataTable.Type},
+{key:"select", label: "<input type='checkbox' class='selectAll' style='margin-left:34px;'/>", width:70,formatter:YAHOO.widget.DataTable.Type},
 {key:"name", label: "Name",sortable: true},
 {key:"mobileNumber",label:"Mobile Number",width:110,sortable:false},
 {key:"locationType",label:"Area Type",width:70,sortable:false}
