@@ -17,6 +17,9 @@ import org.apache.velocity.app.VelocityEngine;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.itgrids.partyanalyst.dao.IAccessRestrictedSessionDAO;
@@ -83,7 +86,16 @@ public class LoginService implements ILoginService{
 	private VelocityEngine velocityEngine;
 	private IAccessRestrictedSessionDAO accessRestrictedSessionDAO;
 	private IMailService mailService;
+	private TransactionTemplate transactionTemplate = null;
 	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
 	public IAccessRestrictedSessionDAO getAccessRestrictedSessionDAO() {
 		return accessRestrictedSessionDAO;
 	}
@@ -599,19 +611,23 @@ public class LoginService implements ILoginService{
 		}
 	}*/
 	
-	public ResultStatus changePasswordOfANewUser(String crntpassword,String newpassword,String userName)
+	public ResultStatus changePasswordOfANewUser(final String crntpassword,final String newpassword,final String userName)
 	{
-		ResultStatus resultStatus = new ResultStatus();
-		try{
+		
+		ResultStatus resultStatus = (ResultStatus) transactionTemplate
+				.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						
+				ResultStatus rs = new ResultStatus();
+				try{
 			List<User> list = userDAO.getUserByUserName(userName);
-			User user = null;
+			
+			 User user = null;
 			String secretKey = null;
 			String presentEncryptedPassword = null;
 			String savedEncryptedPassword = null;
-			
-			
 			if(list != null && list.size() > 0){
-				user = list.get(0);
+				 user = list.get(0);
 				secretKey = user.getHashKeyTxt();
 				 savedEncryptedPassword = user.getPasswdHashTxt();
 				EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);
@@ -619,6 +635,7 @@ public class LoginService implements ILoginService{
 				
 			}
 			
+					
 			if(user != null && user.getUserId() > 0 && savedEncryptedPassword.equals(presentEncryptedPassword))
 			{
 				// secretKey = user.getHashKeyTxt();
@@ -630,17 +647,27 @@ public class LoginService implements ILoginService{
 				user.setIsPwdChanged(IConstants.TRUE);
 				user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 				user = userDAO.save(user);
-				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				rs.setResultCode(ResultCodeMapper.SUCCESS);
 			}
 			else
-				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			
-			return resultStatus;
-		}catch (Exception e) {
-			log.error("Exception Occured During change password of a new User - "+e);
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			return resultStatus;
-		}
+				rs.setResultCode(ResultCodeMapper.FAILURE);
+					} catch (Exception ex) {
+
+						status.setRollbackOnly();
+						ex.printStackTrace();
+						log.error("Exception Raised :" + ex);
+						rs.setExceptionEncountered(ex);
+						rs.setExceptionMsg(ex.getMessage());
+						rs.setResultCode(ResultCodeMapper.FAILURE);
+
+						return rs;
+					}
+					return rs;
+				}
+			});
+
+	return resultStatus;
+		
 	}
 	
 	//BY SAMBA

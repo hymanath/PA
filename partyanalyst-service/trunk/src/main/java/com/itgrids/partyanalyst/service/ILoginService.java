@@ -19,7 +19,7 @@ public interface ILoginService {
 	
 	public String saveUserSessionDetails(UserTrackingVO userTrackingVO);
 	
-	public ResultStatus changePasswordOfANewUser(String crntpassword,String newpassword,String userName);
+	public ResultStatus changePasswordOfANewUser(final String crntpassword,final String newpassword,final String userName);
 	
 	//public String changePasswordOfANewUser(String crntpassword,String newpassword,String userName);
 	
