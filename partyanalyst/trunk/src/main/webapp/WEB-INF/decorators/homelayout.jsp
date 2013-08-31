@@ -6,7 +6,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
 
-
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 
@@ -72,6 +72,7 @@
 		ResourceBundle resb = ResourceBundle.getBundle("global_ErrorMessages");
 		String errorMsg = resb.getString("constTypeAlert");
 %> }
+
 	</script>
 	<style>
 	body{color:#5B5B5B;}
@@ -149,7 +150,11 @@ margin:-1px 0px 0px 0px ;
 			</div>
 		</div>
         <div class="lr-sec" >
-
+		<c:set var="currentURI" value="${pageContext.request.servletPath}"/>
+	
+		<c:if test="${fn:containsIgnoreCase(currentURI, 'changePasswordAction')}">
+			<c:out value="Welcome, ${sessionScope.userFullName} |"/>
+		</c:if>
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 				<c:out value="Welcome, ${sessionScope.UserName} |"/>
 			</c:if>
@@ -164,10 +169,13 @@ margin:-1px 0px 0px 0px ;
 			
 			<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 				<!--<a href="<c:out value="${pageContext.request.contextPath}/loginInputAction.action"/>">Login</a> -->
+				<c:if test="${not fn:containsIgnoreCase(currentURI, 'changePasswordAction')}">
 				<a href="javascript:{}" onClick="openDialogForLoginWindow()" id="login">Login</a>
+				
 				<span>|</span>
 				
-				<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>
+			<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>
+			</c:if>
 			</c:if>
 									
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">

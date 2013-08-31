@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
@@ -37,7 +38,16 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 	private String confirmPassword;
 	private String invalidPassword;
 	private IMailsSendingService mailsSendingService;
+	private String userName;
 	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public String getTask() {
 		return task;
 	}
@@ -195,14 +205,36 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 		try{
 			session = request.getSession();
 			String userName = (String) session.getAttribute("userName");
+			pwdVal=loginService.checkUserCurrentPassword(currentPassword,userName);
+			if(pwdVal.equals(IConstants.YesPassword))
 			resuStatus = loginService.changePasswordOfANewUser(currentPassword,newPassword,userName);
-			if(resuStatus.getExceptionEncountered() == null && resuStatus.getResultCode() == 0)
-			{
-				session.removeAttribute("USER");
-				return "loginPage";
-			}
 			else
 			{
+				invalidPassword="Invalid Password.";
+				pwdVal = "Invalid";
+				return "changePassword";
+			}
+			if(resuStatus.getExceptionEncountered() == null && resuStatus.getResultCode() == 0)
+			{
+				
+				
+				RegistrationVO regVO = loginService.checkForValidUser(userName,newPassword);
+				//session.setAttribute("userName",regVO.getEmail());
+				//session.setAttribute("userFullName",regVO.getFirstName() + " " + regVO.getLastName());
+				session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
+				session.setAttribute("UserType", "FreeUser");
+				session.setAttribute("loginStatus", "out");
+				session.setAttribute("HiddenCount", 0);
+				session.setAttribute("UserName", regVO.getFirstName() + " " + regVO.getLastName());
+				//session.setAttribute("userName",regVO.getEmail());
+				session.setAttribute(IConstants.USER,regVO);
+				return "userProfile";
+		  }
+        	
+			
+			else
+			{
+				pwdVal = "Invalid";
 				invalidPassword="Invalid Password.";
 				return "changePassword";
 			}
