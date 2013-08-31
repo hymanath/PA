@@ -970,7 +970,7 @@ var jsObj=
 		 <div class="selectDivs" id="stateDiv">
 			 <span>Select State</span>
 			 <font class="requiredFont">*</font>
-			  <s:select theme="simple" class="selectWidth" style="margin-left:65px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv(),"/>
+			  <s:select theme="simple" class="selectWidth" style="margin-left:71px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv(),"/>
 		 </div>
 		 <div class="" id="constiTypeDiv" style="font-weight:bold;font-size:13px;display:none;margin-left:128px;">
 		<div><label for="assemblyRdio"><input class="contiType" checked="true" type="radio" name="constituency" id="assemblyRdio" style="margin:0px;"/> Assembly Constituency</label></div><label for="parliamentRdio" style="margin-left:9px;"><input class="contiType" type="radio" name="constituency" id="parliamentRdio" style="margin:0px;"/> Parliament Constituency</label>
@@ -979,41 +979,41 @@ var jsObj=
 		 <div class="selectDivs" id="districtDiv" style="display:none;">
 			 <span>Select District</span>
 			 <font class="requiredFont">*</font>
-			 <s:select theme="simple" class="selectWidth" style="margin-left:53px;width:165px;" cssClass="selectWidth" label="Select Your State" name="districtList" id="districtList" list="districtList" listKey="id" listValue="name" onchange="clearErrDiv(),getallConstituencies(this.value);"/>
+			 <s:select theme="simple" class="selectWidth" style="margin-left:60px;width:165px;" cssClass="selectWidth" label="Select Your State" name="districtList" id="districtList" list="districtList" listKey="id" listValue="name" onchange="clearErrDiv(),getallConstituencies(this.value);"/>
 		 </div>
 		<div class="selectDivs" id="ConstituencyDiv" style="margin-left:0px;display:none;"> 
 		 <div class="selectDivs" id="constiDiv" ><span>Select Constituency</span>
 		 <font class="requiredFont">*</font>
-		<select id="constituencyList" style="margin-left:24px;width:165px;" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"><option value="0">Select Constituency</option></select>
+		<select id="constituencyList" style="margin-left:37px;width:165px;" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"><option value="0">Select Constituency</option></select>
 		 </div>
 		 </div>
-	     <div class="selectDivs" id="publicationDateDiv" style="display:none;"><span>Select Publication Date</span><font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:165px;margin-left:13px;" name="publicationDateList" >
+	     <div class="selectDivs" id="publicationDateDiv" style="display:none;"><span>Select Publication Date</span><font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:165px;margin-left:20px;" name="publicationDateList" >
 		</select>  <span style='display:none;float: right;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>	
 		</div>
 	  
 	  <div id="mandalDiv" class="selectDivs" style="display:none;">
 	     <span id="mandalSpan">Select Mandal</span><font class="requiredFont">*</font>
-		 <select id="mandalField" class="selectWidth" name="state" onchange="clearErrDiv(),getBooths();" style="margin-left:60px;width:165px;">
+		 <select id="mandalField" class="selectWidth" name="state" onchange="clearErrDiv(),getBooths();" style="margin-left:68px;width:165px;">
 		 <option value="0">Select Mandal</option></select>
 	  </div>
 
 
 	   <div id="wardDiv" style="display:none;" class="selectDivs">
-	    <span>Select Ward</span><font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:68px;width:165px;">
+	    <span>Select Ward</span><font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:74px;width:165px;">
 		<option value="0">Select Ward</option></select> 
 	  </div>
 		
 	  <div id="panchayatDiv"  style="display:none;" class="selectDivs">
 	    <span>Select Panchayat</span><font class="requiredFont">*</font> 	
-	    <select id="panchayatField" class="selectWidth" name="state" onchange="clearErrDiv(),getHamletsList('hamlet','hamletField');" style="margin-left:41px;width:165px;">
+	    <select id="panchayatField" class="selectWidth" name="state" onchange="clearErrDiv(),getHamletsList('hamlet','hamletField');" style="margin-left:48px;width:165px;">
 		<option value="0">Select Panchayat</option></select>
 	  </div>
 	   <div id="hamletDiv"  style="display:none;" class="selectDivs">
-	    <span>Select Hamlet</span><font class="requiredFont">*</font> <select id="hamletField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;"><option value="0">Select Hamlet</option></select> 
+	    <span>Select Hamlet</span><font class="requiredFont">*</font> <select id="hamletField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:67px;width:165px;"><option value="0">Select Hamlet</option></select> 
 	 </div>
 	
 	  <div id="pollingStationDiv"  style="display:none;" class="selectDivs">
-	    <span>Select PollingStation</span><font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:30px;width:165px;" onchange="clearErrDiv()">
+	    <span>Select PollingStation</span><font class="requiredFont">*</font><select id="pollingStationField" class="selectWidth" name="state"  style="margin-left:37px;width:165px;" onchange="clearErrDiv()">
 		<option value="0">Select PollingStation</option></select>
 	  </div>
 	  <div id="localityDiv" class="selectDiv" style="display:none;">
