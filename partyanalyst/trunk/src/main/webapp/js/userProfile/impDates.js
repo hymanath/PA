@@ -40,9 +40,10 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 			var str='';
 			if(type == "impDates")
 			{
+				var newdate = startDayStr+'/'+startMonStr+'/'+startYearStr;
 				str+='<div id="ImpDate_'+eventsarr[i].importantDateId+'" class="eventSummaryDiv">';	
 				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+eventsarr[i].importantDateId+')"> X </span>';
-				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
+				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\',\''+newdate+'\')">';
 				str+='<img height="10" width="10" src="'+requestPath+'/images/icons/pencil.png"/> </span>';
 				
 			}
@@ -218,9 +219,9 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 	var selMonth;
 	function changePageHandler(type,args,obj)
 	{
-		
-		var current = args[1];
-		var date = new Date(current);
+		var date = new Date();
+		//var current = args[1];
+		//var date = new Date(current);
 		var month = date.getMonth();
 		var year = date.getFullYear();	
 		dateObj.dateVal = '1';
@@ -386,7 +387,7 @@ function buildNewImpDatePopup()
                 {      
                     if (iChars.indexOf(ImpeventNameValue.charAt(i)) != -1)
                     {   
-					document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
+					document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Important Date Title should not contain special characters</font>';
 					return false;
                     } 
                 }
@@ -397,11 +398,26 @@ function buildNewImpDatePopup()
 					document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
 				return;
 			}
+			else if ( ImpDescVallength != null)
+			{ 				
+				var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+				
+		            for (var i = 0; i < ImpDescValu.length; i++)
+                {      
+                    if (iChars.indexOf(ImpDescValu.charAt(i)) != -1)
+                    {   
+					document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Important Date Description should not contain special characters</font>';
+					return false;
+                    } 
+                }
+			
+			}
 		 
 		var results = YAHOO.lang.JSON.parse(jsonStr);	
 		var jsObj;
 		if(type == 'impDate')
 		{
+		var repeatType =   $('#repeatFreqSelectUpdate :selected').text();
 			var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
 			var ImpstartDateVal = document.getElementById("ImpStartDateText").value;		
 			var ImpendDateVal = document.getElementById("ImpEndDateText").value;		
@@ -413,7 +429,7 @@ function buildNewImpDatePopup()
 			selectedDateObj.startDate = ImpstartDateVal;
 			selectedDateObj.endDate = ImpendDateVal;
 			selectedDateObj.desc = ImpDescVal;
-			selectedDateObj.frequency = results[0].frequency;
+			selectedDateObj.frequency = repeatType;
 			selectedDateObj.isDeleted = "NO";
 			selectedDateObj.task="updateImpDateEvent";
 			jsObj = selectedDateObj;			
@@ -439,35 +455,88 @@ function buildNewImpDatePopup()
 		var repeatFreqElmt = document.getElementById("repeatFreqSelect");
 		repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
 		var ImpDescVallength=ImpDescVal.trim().length;
+		var errorExist = false;
+		var errorString = "";
+		var errorInLength = false;
+         if(ImpeventNameVal.length > 100)
+ 	     {
+			  errorString +="<font color='red'>Title length can not exceed 100 characters </font><br>"  ;
+			 errorInLength = true;
+		 }
+		 if(ImpDescVal.length  > 300)
+	     {
+			  errorString +="<font color='red'>Description length can not exceed 300 characters </font><br>"  ;
+			 errorInLength = true;
+		 }
+
+		 if(errorInLength == true)
+         {
+			  $('#errorMesgDIV').html(errorString);
+			 return errorInLength;
+		 }
 		    if(ImpeventNameVal == '')
 		    {
-			document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
-			return;
+			//document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
+			//return;
+             errorString +="<font color='red'><b>Please Enter Important Date Title </b></font><br>"  ;
+			errorExist = true;
 			}
 			else if ( ImpeventNameVal != null)
-			{ 				
-				var iChars = "!`@#$%^&*()+=-[]\\\';,./{}|\":<>?~";  
+			{ 	
+				var errorInSpecialChar = false;
+				var iChars = "!`@#$%^&*<()>+=-[]\\\';,./{}|\":?~";  
 				
 		            for (var i = 0; i < ImpeventNameVal.length; i++)
                 {      
                     if (iChars.indexOf(ImpeventNameVal.charAt(i)) != -1)
                     {   
-					document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
-			
-                    return false; 
+					    errorInSpecialChar = true;
                     } 
                 }
 			}
+
+			if(errorInSpecialChar == true)
+        	{
+				errorExist = true;
+				errorString +="<font color='red'> <b>Important Date Title should not contain special characters</b></font><br>"  ;
+
+			}
 			if(ImpDescVallength==0)
 			{
-			   document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
-			  return;
+			   //document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
+			 // return false;
+			  errorString +="<font color='red'><b>Please Enter Description</b></font><br>"  ;
+			 errorExist = true;
+			}
+	 if ( ImpDescVallength > 0)
+			{ 	
+				var errorInSpecialChars = false;
+				var iChars = "!`#$%^*<()>+=-[]\\\,/{}|\":?~";  
+				
+		            for (var i = 0; i < ImpDescVal.length; i++)
+                {      
+                    if (iChars.indexOf(ImpDescVal.charAt(i)) != -1)
+                    {   
+					    errorInSpecialChars = true;
+                    } 
+                }
+			}
+			if(errorInSpecialChars == true)
+        	{
+				errorExist = true;
+				errorString +="<font color='red'> <b>Important Date Description should not contain special characters</b></font><br>"  ;
+
 			}
 			 if(repeatFreqVal == "No Repeat")
 			{
 				ImpendDateVal = ImpstartDateVal;
 			}
-		
+	
+	    if(errorExist == true)
+    	{
+           $('#errorMesgDIV').html(errorString);
+		   return errorExist;
+		}
 		selectedDateObj.importantDateId="";
 		selectedDateObj.eventId="";
 		selectedDateObj.eventType="";
@@ -494,10 +563,22 @@ function buildNewImpDatePopup()
 								
 								if(jsObj.task=="createImpDateEvent")
 								{
+									//alert("Important Date created successfully");
+									$("#cadreImpDatesMainDiv").html("Important Date created successfully");
+									setTimeout(function() {
+									 $("#cadreImpDatesMainDiv").html("");
+										}, 2000);
+									var jsObj2={
+									task:'getUpdatedEvents'
+								   };
+									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+									var url = requestPath+"/getUpdatedDatesAndEvents.action?"+rparam;	
+									callAjax(jsObj2,url);
+
 								$('#newImpDateDiv').dialog("close");	
 									
-									alert("Important Date created successfully");
-									var date = new Date();
+									
+									/*var date = new Date();
 									
 									var jsObj1={
 									monthVal:selMonth,
@@ -506,7 +587,7 @@ function buildNewImpDatePopup()
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
 									var url =requestPath+'/getNextMonthDatesEvents.action?'+rparam;	
-									callAjax(jsObj1,url);
+									callAjax(jsObj1,url);*/
 								}
 																
 								else if(jsObj.task=="nextMonthEvents")
@@ -515,7 +596,7 @@ function buildNewImpDatePopup()
 								}
 								else if(jsObj.task=="deleteImpDate")
 								{
-									
+									removeDeletedElement(myResults,jsObj);
 									var date = new Date();
 									
 									var jsObj1={
@@ -525,8 +606,7 @@ function buildNewImpDatePopup()
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
 									var url =requestPath+'/getNextMonthDatesEvents.action?'+rparam;	
-									callAjax(jsObj1,url);
-									removeDeletedElement(myResults,jsObj);
+									callAjax(jsObj1,url);			
 									
 								}
 								else if(jsObj.task=="showSelectedDateEvent_nonEditable")
@@ -553,7 +633,12 @@ function buildNewImpDatePopup()
 								}
 								else if(jsObj.task=="updateImpDateEvent")
 								{	
-									var date = new Date();
+									//alert("Updated Successfully");
+									$("#cadreImpDatesMainDiv").html("Updated Successfully");
+									setTimeout(function() {
+									 $("#cadreImpDatesMainDiv").html("");
+										}, 2000);
+									/*var date = new Date();
 									
 									var jsObj1={
 									monthVal:selMonth,
@@ -562,11 +647,18 @@ function buildNewImpDatePopup()
 								   };
 									var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj1);
 									var url =requestPath+'/getNextMonthDatesEvents.action?'+rparam;	
-									callAjax(jsObj1,url);
+									callAjax(jsObj1,url);*/
+
+									getUpdatedEvents();
+								}
+								else if(jsObj.task == "getUpdatedEvents")
+								{
+                                buildUpdatedEvents(myResults ,jsObj);
+
 								}
 										
 							}catch (e) {   
-							   	alert("Invalid JSON result" + e);   
+							   	//alert("Invalid JSON result" + e);   
 							}  
  		               },
  		               scope : this,
@@ -714,7 +806,7 @@ function buildNewImpDatePopup()
 		callAjax(jsObj,url);
 	}
 	
-	function showSelectedDateEvent(elmtId,eType,taskType)
+	function showSelectedDateEvent(elmtId,eType,taskType,newdate)
 	{
 		
 		var eid = elmtId.substring((elmtId.indexOf('_')+1),elmtId.length);
@@ -730,7 +822,8 @@ function buildNewImpDatePopup()
 					currentMonth:dateObj.monthVal,
 					currentYear:dateObj.yearVal,
 					eventType:eType,	
-					taskType:taskType,					
+					taskType:taskType,	
+					newdate:newdate,
 					task:"showSelectedDateEvent"
 				  };
 		
@@ -765,7 +858,12 @@ function buildNewImpDatePopup()
 		if(jsObj.task=="deleteImpDate"){
 		
 		var elmt = document.getElementById("ImpDate_"+myResults);
-		alert("Date successfully deleted");
+		//alert("Date successfully deleted");
+		$("#cadreImpDatesMainDiv").html("Date successfully deleted");
+		setTimeout(function() {
+		 $("#cadreImpDatesMainDiv").html("");
+			}, 2000);
+		getUpdatedEvents();
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
 		}
@@ -905,14 +1003,14 @@ function buildNewImpDatePopup()
 
 			eventStr+='<th>Imp date</th>';
 			eventStr+='<td>';
-			eventStr+='<div><input type="text" id="ImpStartDateText"  name="ImpStartDateText" readonly="readonly" value="'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'" /></div>';
+			eventStr+='<div><input type="text" id="ImpStartDateText"  name="ImpStartDateText" readonly="readonly" value="'+jsObj.newdate+'" /></div>';
 			eventStr+='<div id="ImpStartDateText_new_Div" class="tinyDateCal"></div>';
 			eventStr+='</td>';			
 			eventStr+='</tr>';
 		}
 
 		eventStr+='<tr>';
-		eventStr+='<th>Description <font style="color:red; font-size: 18px;">  * </font></th>';
+		eventStr+='<th id="impheaders">Description :<font style="color:red"> *</font></th>';
 		
 		if(jsObj.taskType == "impDate")
 		{
@@ -926,21 +1024,27 @@ function buildNewImpDatePopup()
 		if(jsObj.taskType == "impDate")
 		{
 			eventStr+='<tr>';
-			eventStr+='<th>Repeat Frequency</th>';
-			if(results[0].frequency != null)
-				eventStr+='<td colspan="1"><span class="fieldSpan" onclick="changeToEditableField(this,\'select\',\'impDate\',\'frequency\')">'+results[0].frequency+'</span></td>';
+			eventStr+='<th id="impheaders">Repeat Frequency :</th>';
+			if(results[0].frequency != null){
+				eventStr+='<td>';
+				eventStr+='<select id="repeatFreqSelectUpdate" class="timeSelect" onchange="showEndDateText1(this.options[this.selectedIndex].text)">';
+				eventStr+='<option value="No Repeat">No Repeat</option>';
+				eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
+
+			}
+				//eventStr+='<td colspan="1"><span class="fieldSpan" onclick="changeToEditableField(this,\'select\',\'impDate\',\'frequency\')">'+results[0].frequency+'</span></td>';
 				
 			else
 				eventStr+='<td colspan="1"><span class="fieldSpan" onclick="changeToEditableField(this,\'select\',\'impDate\',\'frequency\')"> - </span></td>';		
 			
 			if(results[0].endDate)
 			{
-			eventStr+='<th>Repeat Until</th>';
+
+				eventStr+='<th>Repeat Until</th>';
 				eventStr+='<td>';
-				eventStr+='<div><input type="text" id="ImpEndDateText"  name="ImpEndDateText"  readonly="readonly" value="'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'" /></div>';
+				eventStr+='<div><input type="text" id="ImpEndDateText"  name="ImpEndDateText"  readonly="readonly" value="'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'" /></div>';
 				eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"  ></div>';
 				eventStr+='</td>';
-				
 			}
 			eventStr+='</tr>';
 		}
@@ -955,7 +1059,7 @@ function buildNewImpDatePopup()
 		divChild.innerHTML=eventStr;
 
 		elmt.appendChild(divChild);
-		
+		$('#repeatFreqSelectUpdate').val(results[0].frequency);
 		if(newDateDialog)
 		{
 		 newDateDialog.remove();
@@ -1112,5 +1216,39 @@ function displayDateText(type,args,obj)
 		var yStr = dt.getFullYear();
 		
 		return (dStr + "/" + mStr + "/" + yStr); 
-	} 
+	}
+	
+function getUpdatedEvents()
+{
+var jsObj2={
+	task:'getUpdatedEvents'
+};
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj2);
+var url = requestPath+"/getUpdatedDatesAndEvents.action?"+rparam;	
+			callAjax(jsObj2,url);
+
+}
+function buildUpdatedEvents(myResults ,jsObj)
+{
+	var impDates1 = new Array();
+
+ for(var i in myResults.userImpDates)
+ {
+	 var ob =
+					{
+						importantDateId:myResults.userImpDates[i].importantDateId,
+						title:myResults.userImpDates[i].title,
+						impDate:myResults.userImpDates[i].impDate,
+						importance:myResults.userImpDates[i].importance,
+						eventType:myResults.userImpDates[i].eventType
+					}
+			
+					impDates1.push(ob);
+
+ }
+		
+	showInitialImpEventsAndDates(impDates1,'impDates',"");
+	renderStack();
+
+}
 	
