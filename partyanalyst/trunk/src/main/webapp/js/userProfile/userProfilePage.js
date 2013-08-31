@@ -1607,8 +1607,8 @@ function showRequestedMessagesForAUser(results)
 	}
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
-		$(".placeholderCenterDiv").html("No messages has been sent to you.");
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6><br><div>No messages has been sent to you.</div>');
+		//$(".placeholderCenterDiv").html("No messages has been sent to you.");
 		return;
 	}
 		
@@ -3744,8 +3744,8 @@ function buildProblemDetailsByStatus(jsObj,results)
 	}
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
-		$(".placeholderCenterDiv").html("No messages has been sent to you.");
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6><br><div>No messages has been sent to you.</div>');
+	//	$(".placeholderCenterDiv").html("No messages has been sent to you.");
 		return;
 	}
 		
