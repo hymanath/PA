@@ -153,7 +153,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-  <h2 style="text-align:center;color:#06ABEA;">INFLUENCE PEOPLE SEARCH RESULTS</h2>
+  <h2 style="text-align:center;color:#06ABEA;">INFLUENCING PEOPLE SEARCH RESULTS</h2>
 
 <input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
 

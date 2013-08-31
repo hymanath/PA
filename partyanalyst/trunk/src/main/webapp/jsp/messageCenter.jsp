@@ -1039,9 +1039,7 @@ var jsObj=
    <!--<div style="text-align:center;margin-left:140px;"><input type="button" value="Voter Search" id="voterSearchBtn" class="btn" onclick="voterDetailsValidation()"/></div>-->
 		
  </div>
-<div style="clear:both;">
-	<a href="javascript:{$('#searchOptionsDiv').toggle('slow');}" style="float:right;margin-right:252px;font-size:12px;"><b>Show/Hide Search Options</b></a>
-</div>
+
 
    <div class="span5 widget" style="font-weight:bold;margin-bottom: 15px;font-size:13px;width: 381px;margin-left: 268px;border:0px;padding:17px 0px 0px 37px;display:none;" id="searchOptionsDiv">
 
@@ -1099,6 +1097,10 @@ var jsObj=
 	</div>
 
   
+   </div>
+
+   <div style="clear:both;">
+	<a href="javascript:{$('#searchOptionsDiv').toggle('slow');}" style="float:right;margin-right:252px;font-size:12px;"><b>Show/Hide Search Options</b></a>
    </div>
 
     <div style="margin:27px 0 0;text-align:center;">
@@ -1234,10 +1236,12 @@ var jsObj=
 
  </div>
 
+<div style="margin:5px;">
  <a class="btn pull-left btn-primary" href="javascript:{openSmsHistoryWindow();}">Click Here To See History</a>
 
  <span id="successMsg" style="font-weight:bold;color:green;margin-left:200px;"></span>
  <a class="btn pull-right btn-primary" href="javascript:{sendSMS();}">Send SMS </a>
+</div>
  </div>
 
  <a class="btn" href="javascript:{openSmsHistoryWindow();}">HISTORY</a>
