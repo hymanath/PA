@@ -339,13 +339,13 @@ $(document).ready(function() {
 
 		if($(this).val() == "text")
 		{
-			$('#textSmsDiv').show();
+			$('#textSmsDiv').show('slide', {direction: 'left'}, 500);
 			$('#voiceSmsDiv').hide();
 
 		}else
 		{
 			 $('#textSmsDiv').hide();
-			$('#voiceSmsDiv').show();
+			$('#voiceSmsDiv').show('slide', {direction: 'right'}, 500);
 
 		}
 	});
@@ -932,8 +932,8 @@ var jsObj=
 
   <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
    
-     <div style="margin:12px 0px 0px 364px;" class="radioSpecial">
-		 <input type="radio" id="cadre" name="searchFor" value="cadre" class="searchType" checked>
+     <div style="margin:12px 0px 0px 318px;" class="radioSpecial">
+		 <span style="font-size:13px;font-weight:bold;">Search By:</span><input type="radio" id="cadre" name="searchFor" value="cadre" class="searchType" checked>
 		   <label for="cadre">Cadre</label>
 		<input type="radio" id="influencePeople" name="searchFor" value="influencePeople" class="searchType" >
 		   <label for="influencePeople">Influence People</label>
@@ -955,9 +955,9 @@ var jsObj=
      
 	  <div id="reportLevelDiv"><span style="margin-left: 5px;">Select Level</span><font class="requiredFont">*</font>
 	  <select id="reportLevel" class="selectWidth" style="margin-left:70px;width:165px;" name="constituencyList" onchange="showReportsLevels(this.options[this.selectedIndex].value);">
-		<option value=8>State</option>
+		<option value=8  selected="true">State</option>
 		<option value=9>District</option>
-		<option value=1 selected="true">Constituency</option>
+		<option value=1>Constituency</option>
 		<option value=2>Mandal  / Muncipality</option>
 		<option value=5>Ward</option>
 	    <option value=6>Hamlets</option>
@@ -1081,16 +1081,18 @@ var jsObj=
 
 	</div>
 
+   <div style="margin:27px 0 0;">
           <button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> 
 
 	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;" onclick="isValidateFields('search');"> Search </button> 
+   </div>
 
 
-  <!-- <div class="span11" style="margin:9px 0px 10px 337px;">
-    <label>No Of Cadre Selected:<span id="cadreCount" style="font-weight:bold;">0</span>&nbsp;&nbsp;&nbsp;<a href="javascript:{removeCadre()}" title="Click here to remove selected cadre numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
-    <label>No Of Influencing People Selected:<span id="influencePeopleCount" style="font-weight:bold;">0</span>&nbsp;&nbsp;&nbsp;<a href="javascript:{removeInfluencePeople()}" title="Click here to remove selected influencing people numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
-    <label>No Of Voters Selected:<span id="voterCount" style="font-weight:bold;">0</span>&nbsp;&nbsp;&nbsp;<a href="javascript:{removeVoters();}" title="Click here to remove selected voter numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
-  </div>-->
+   <div class="span4" style="margin:65px 0px 0px 0px;border:2px solid #F2F2F2;padding:8px;">
+    <label>No Of Cadre Selected:<span id="cadreCount" style="font-weight:bold;">0</span><a class="pull-right" href="javascript:{removeCadre()}" title="Click here to remove selected cadre numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
+    <label>No Of Influencing People Selected:<span id="influencePeopleCount" style="font-weight:bold;">0</span><a class="pull-right" href="javascript:{removeInfluencePeople()}" title="Click here to remove selected influencing people numbers"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
+    <label>No Of Voters Selected:<span id="voterCount" style="font-weight:bold;">0</span><a href="javascript:{removeVoters();}" title="Click here to remove selected voter numbers" class="pull-right"><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a></label>
+  </div>
 
 
    </div>
@@ -1316,7 +1318,16 @@ function validateFieldsForSendingSms()
 
 function ajaxToSendVoiceSms(){
 
-	 //$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+	
+ selectedVotersDetails = {};
+
+ selectedCadreDetails = {};
+
+ selectedInfluencePeopleDetails = {};
+
+ selectedMobileNumbers = new Array();
+
+
 
 	 $('#responseDetailsInnerDiv').html("<img style='margin-left:130px;' src='./images/icons/search.gif' />");
 				
@@ -2903,7 +2914,6 @@ function sendDirectSMSToVoters()
 
 function sendDirectSMSToVotersAjax()
 {
-	var smsType = ($('#switchValue').val() == 1) ? "text" :"voice";
 	  var jsObj=
 			{
 				 isAgeSelected:isAgeSelected,
