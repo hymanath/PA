@@ -1,40 +1,44 @@
+<style>
+	.whitegloss{background:linear-gradient(to bottom, #EEEEEE 0%, #FFFFFF 49%, #FFFFFF 100%) repeat scroll 0 0 transparent;}
+</style>
 <div class="whitegloss">
 <div>	
 								
 								  <div class="modal-header ">
-									<h3>Win 2014 Election by gaining 3% more votes with our product at a very low price</h3>
-								  </div>
+									<h3 style="font-size:18px;color:#5B5B5B;"> Lot of New Functionalities are available as <span style="color:green;">Online</span> & <span style="color:red;">Offline</span> Application in PartyAnalyst to Earn 3%-5% more Votes</h3>
+									</div>
 								  
 								  <div class="modal-body "><div class="row-fluid">
 									    
 
 <div class="span8">
-<img src="images/new_homepage/explain.gif"/></div>
+<img src="images/new_homepage/Popup.png" height='350' width='400' style="margin-left:55px;"/></div>
 <form class=" span4">
-										  <h2><small>For our Product</small> DEMO</h2><span id="errorMsg" style="display:none;color:red;font-family:verdana;"></span><fieldset>
+										  <h2 style="font-size: 24px;line-height: 36px;"><small>For our Product</small> DEMO</h2><span id="errorMsg" style="display:none;color:red;font-family:verdana;"></span>
+										  <fieldset style="border: 1.7px solid #D1D1D1;margin-bottom: 10px;padding:8px 10px 4px;">
 											<div class="control-group">
-												<label class="control-label">MLA/Aspirant Name</label>
-												<div class="controls">
+												<label class="control-label" style="font-size:13px;line-height:18px;color:#5b5b5b">MLA/Aspirant Name</label>
+												<div class="controls" style="height:28px;">
 												 <input type="text" placeholder="Enter MLA/Aspirant Name..." id="aspirantName">
 												</div>
 											</div>
 											
 											<div class="control-group">
-												<label class="control-label">Mobile Number</label>
-												<div class="controls">
+												<label class="control-label" style="font-size:13px;line-height:18px;color:#5b5b5b">Mobile Number</label>
+												<div class="controls" style="height:28px;">
 												 <input type="text" placeholder="Enter Mobile Number..." id="mobileId">
 												</div>
 											</div>
 											
 											<div class="control-group">
-												<label class="control-label">Constituency</label>
-												<div class="controls">
+												<label class="control-label" style="font-size:13px;line-height:18px;color:#5b5b5b">Constituency</label>
+												<div class="controls" style="height:28px;">
 												 <input type="text" placeholder="Enter Constituency..."  id="constituencyName">
 												</div>
 											</div>
 <div class="control-group">
-												<label class="control-label">Email Id</label>
-												<div class="controls">
+												<label class="control-label" style="font-size:13px;line-height:18px;color:#5b5b5b">Email Id</label>
+												<div class="controls" style="height:28px;">
 												 <input type="text" placeholder="Enter Email Id..." id="aspirantEmailId">
 												</div>
 											</div>
