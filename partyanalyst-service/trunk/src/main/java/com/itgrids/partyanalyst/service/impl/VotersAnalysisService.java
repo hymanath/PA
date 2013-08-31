@@ -12031,7 +12031,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 								 voterModification.setPartNo(voterVO2.getPartNo());
 								 voterModification.setStatus(voterVO2.getStatus());
 								 voterModification.setConstituencyId(constituencyId);
-								 voterModification.setVoterStatus(voterStatusMap.get(voterVO2.getStatusId()));
+								 voterModification.setVoterStatusId(voterVO2.getStatusId());
 								 voterModificationDAO.save(voterModification);
 							 }
 						 }
@@ -16020,33 +16020,28 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 				}
 			}
 			
-			/*voterModificationDAO.updateVoterStatus(1l,add);
-			voterModificationDAO.updateVoterStatus(2l,del);
-			voterModificationDAO.updateVoterStatus(3l,mov);
-			voterModificationDAO.updateVoterStatus(4l,rel);*/
-			
 			for(Long vid :add)
 			{
 				VoterModification modification = voterModificationDAO.get(vid);
-				modification.setVoterStatus(voterStatusDAO.get(1l));
+				modification.setVoterStatusId(1l);
 				voterModificationDAO.save(modification);
 			}
 			for(Long vid :del)
 			{
 				VoterModification modification = voterModificationDAO.get(vid);
-				modification.setVoterStatus(voterStatusDAO.get(2l));
+				modification.setVoterStatusId(2l);
 				voterModificationDAO.save(modification);
 			}
 			for(Long vid :mov)
 			{
 				VoterModification modification = voterModificationDAO.get(vid);
-				modification.setVoterStatus(voterStatusDAO.get(3l));
+				modification.setVoterStatusId(3l);
 				voterModificationDAO.save(modification);
 			}
 			for(Long vid :rel)
 			{
 				VoterModification modification = voterModificationDAO.get(vid);
-				modification.setVoterStatus(voterStatusDAO.get(4l));
+				modification.setVoterStatusId(4l);
 				voterModificationDAO.save(modification);
 			}
 			
