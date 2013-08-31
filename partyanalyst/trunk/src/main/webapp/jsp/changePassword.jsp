@@ -46,7 +46,7 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 <div id="changepwdOuterDiv">
 <fieldset style="background:#FFF; margin-bottom: 3px; padding-bottom: 44px; border-radius: 6px 6px 6px 6px; padding-left: 16px; padding-top: 17px;font-family:verdana;font-size:15px;">
 <div id="changeNewUserPassword">
-		<p>Thanks <span style="font-weight:bold;"><c:out value="${sessionScope.name}" /></span>,</p>
+		<p>Thanks <span style="font-weight:bold;"><c:out value="${sessionScope.userFullName}" /></span>,</p>
 		<p>Your registration completed successfully. We sent password to your email : <b><c:out value="${sessionScope.userName}" /></b></p>
 		<p style="font-family: verdana;font-weight: bold;">Please check your email to change your password.</p>
 
@@ -67,11 +67,11 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 		<!-- <table style="margin: 7px;">
 		<tbody><tr><td colspan="2"><img src="images/icons/infoicon.png">
 		Fields marked with (<font color="red">*</font>) are mandatory</td></tr></table> -->
-		<div id="pwdErrorMsg" style="color: red; margin-left: 125px; margin-top: -8px; margin-bottom: 6px;"></div>
+		<div id="pwdErrorMsg" style="color: red; margin-left: 125px; margin-top: -8px; margin-bottom: 6px;display:none;"></div>
 		<div id="password_window_errorMsg" style="font-size: 13px; margin-left: 123px; margin-top: -3px; margin-bottom: 8px;"></div>
 		
 		<table style="font-family: verdana; font-size: 13px;margin-left: 5px;color:#000;">
-		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword" id="currentPWDId" cssclass="textFieldStyle" onBlur="getUserPassword()"></td></tr>
+		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword" id="currentPWDId" cssclass="textFieldStyle" ></td></tr>
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;New Password</td><td><input type="password" name="newPassword" id="newPWDId" cssclass="textFieldStyle">
 	    </td></tr>
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Confirm Password</td><td>  <input type="password" name="confirmPassword" id="confirmPWDId" cssclass="textFieldStyle">
@@ -81,7 +81,7 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 			<tbody><tr>
 			
 			<td align="center" width="99px">
-				<input type="submit" value="Change Password" id="changeButton" class="btn btn-primary btn-small">
+				<input type="submit" value="Change Password" id="changeButton" class="btn btn-primary btn-small" onclick="checkCurrentPwd()">
 				<a href="homePageAction.action"><input type="button" value="Skip" id="cancelButton" class="btn btn-primary btn-small"></input></a>
 			</td>
 			</tr>
@@ -383,6 +383,17 @@ else if(results==121)
 	document.getElementById("pwdErrorMsg").innerHTML = '';
 	}
 }
+function checkCurrentPwd()
+{
+
+if("${pwdVal}" =='Invalid')
+	{
+	$("#pwdErrorMsg").css("display","block");
+	$("#pwdErrorMsg").html('Invalid Current Password').css("color","red");
+	}
+
+}
+checkCurrentPwd();
 
 </script>
 </body>

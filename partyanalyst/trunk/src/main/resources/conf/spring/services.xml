@@ -274,6 +274,8 @@
 	    <property name="mailService" ref="mailService"/>
 		<property name="velocityEngine" ref="velocityEngine" />
 		<property name="accessRestrictedSessionDAO" ref="accessRestrictedSessionDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />	
+
 		
 	  </bean>
 	

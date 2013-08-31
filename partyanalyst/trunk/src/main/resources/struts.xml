@@ -3531,8 +3531,8 @@
 	    </action>
 	    
 	   	<action name="newUserChangePasswordAction" class="changePasswordAction" method="newUserChangePassword">
-	   		<result type="redirect" name="loginPage">loginInputAction.action?pwdChanged=true</result>
-	   		<result type="redirect" name="changePassword">changePasswordAction.action</result>
+	   	 <result type="redirect" name="userProfile">userProfile.action</result>
+	   	 <result type="redirect" name="changePassword">changePasswordAction.action?pwdVal=${pwdVal}</result>
 	   	</action>
 	   	
 	   	<action name="checkCurrentPasswordAction" class="changePasswordAction" method="AjaxHandler">

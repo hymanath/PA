@@ -66,6 +66,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	
 	private IAnanymousUserService ananymousUserService;
 	private IMailService mailService;
+	private String uname;
 	
 	private static final org.apache.log4j.Logger log = Logger.getLogger(AnonymousUserRegistrationAction.class);
    
@@ -83,6 +84,12 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     
     private String status;
  
+	public String getUname() {
+		return uname;
+	}
+	public void setUname(String uname) {
+		this.uname = uname;
+	}
 	public IMailService getMailService() {
 		return mailService;
 	}
@@ -469,18 +476,22 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
             	{
 					HttpSession session = request.getSession();			
 					String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
+					String userName = regVO.getFirstName() + " " + regVO.getLastName();
+					uname = regVO.getFirstName() + " " + regVO.getLastName();
 					regVO.setUserStatus(IConstants.FREE_USER);
-					
-					session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
+					session.setAttribute("userName",regVO.getEmail());
+					session.setAttribute("userFullName",userFullName);
+					/*session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
 					session.setAttribute("UserType", "FreeUser");
 					session.setAttribute("loginStatus", "out");
+					
 					session.setAttribute("HiddenCount", 0);
 					//session.removeAttribute("districts");
 					//session.removeAttribute("constituencies");
 					session.setAttribute("userName",regVO.getEmail());
-					session.setAttribute("name", userFullName);
+					*/
             	}
-            	session.setAttribute(IConstants.USER,regVO);
+            	//session.setAttribute(IConstants.USER,regVO);
 			}
 			 
 		 }
