@@ -1730,7 +1730,7 @@ function showDeleteStatus(myResult)
 		if(myResult.resultCode == 0)
 		{
 			//window.location.reload();
-			$("#mainDiv").addClass("mainDiv").html("Problem Successfully Removed.");
+			$("#mainDiv").addClass("mainDiv").html("This Problem is not Existed");
 			return;
 			//str += '<font color="green"><b>Problem Deleted Successfully.</b>';
 		}
@@ -1855,7 +1855,7 @@ function displayDateText(type, args, obj) {
 
 <div class="the-icons" style="position:absolute;top:-22px;right:5px;">
 <a onclick=" openProblemEditForm('${completeProblemDetailsVO.problemId}')" class="btn btn-mini"><i class="icon-tag"></i> Edit</a>
-<a onclick="deleteProblemDetails()" class="btn btn-mini"><i class="icon-remove"></i>Remove</a>
+<a onclick="deleteProblemDetails()" class="btn btn-mini"><i class="icon-remove"></i>Delete</a>
 </div>
 
 	<div style="width: 100px; margin-left: 499px; margin-top: 12px; padding-top: 0px; margin-bottom: 0px;">
