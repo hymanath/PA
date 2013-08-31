@@ -425,6 +425,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				<table width="100%">
 					<tr>
 						<td width="50%">
+						<div id="cadreImpDatesMainDiv"></div>
 							<div id="cadreImpDatesDiv">
 								<div id="cadreImpDatesHeadDiv">
 									<span style="float: left;">Important Dates</span>
