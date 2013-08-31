@@ -830,6 +830,23 @@ lable{line-height:40px;}
 		 </div>
 	
         </div>
+		
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2> Message Center </h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Constituency Management.png"style="width: 64px; height: 64px;"></img>
+						<div class="media-body">
+						<p>Send Voice And Text SMS To Cadre , Influencing People and Voters</p>
+							<!--<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('constituencymgmt');" style="float:right;"></input>-->
+							<a class="btn btn-small pull-right" target="_blank" href="messageCenterAction.action">View</a>
+						</div>
+				</div> 
+			</div> 
+			
+		   
+	
+        </div>
      </div>
 	
 	
