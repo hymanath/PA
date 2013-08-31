@@ -113,7 +113,7 @@ width:100%;
 
 <h2 style="text-align:center;color:#06ABEA;">VOTER SEARCH RESULTS</h2>
 
-<input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
+<input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
 <span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: 50px;"></span>
 <div style="margin-left:30px;margin-top:13px;padding:5px;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
