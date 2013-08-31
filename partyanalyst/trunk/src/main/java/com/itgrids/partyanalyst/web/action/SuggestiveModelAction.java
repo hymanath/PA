@@ -566,15 +566,25 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				}
 				Long userId         = regVO.getRegistrationID();
 				//Long mandalId       = jObj.getLong("mandalId");
+				JSONArray jsonArray = jObj.getJSONArray("expCasteArrayForMuncipality");
 				String casteIds = jObj.getString("casteIds");
 				Long constituencyId = jObj.getLong("constituencyId");
 				String[] strArray = casteIds.split(",");
 				List<Long> castesIdsList = new ArrayList<Long>();
-
+				Boolean checkStatus = jObj.getBoolean("checkStatus");
+				List<ExceptCastsVO> exceptCasteList = new ArrayList<ExceptCastsVO>();
+				for (int i = 0 ; i < jsonArray.length() ; i++) {
+					JSONObject jSONObject= jsonArray.getJSONObject(i);
+					ExceptCastsVO exceptCastsVO = new ExceptCastsVO();
+					exceptCastsVO.setCasteId(jSONObject.getLong("casteId"));
+					exceptCastsVO.setCastePerc(jSONObject.getDouble("expPerc"));
+					exceptCastsVO.setPanchayatId(jSONObject.getLong("mandalId"));
+					exceptCasteList.add(exceptCastsVO);
+				}
 				for(String casteId:strArray)
 					castesIdsList.add(Long.parseLong(casteId));
 
-				LeaderSelectionLists = suggestiveModelService.findingBoothInchargesForBoothLevelForMincipality(userId,constituencyId,castesIdsList);
+				LeaderSelectionLists = suggestiveModelService.findingBoothInchargesForBoothLevelForMincipality(userId,constituencyId,castesIdsList,exceptCasteList,checkStatus);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
