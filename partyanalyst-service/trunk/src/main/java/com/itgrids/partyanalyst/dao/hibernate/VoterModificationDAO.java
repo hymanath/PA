@@ -658,4 +658,55 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		query.setParameter("publicationDateId",publicationDateId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getAvailableConstituenciesInAPublication(Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId from VoterModification model where model.publicationDate.publicationDateId = :publicationDateId");
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getListOfVoterIdsInAPublicationBasedOnCount(Long constituencyId, Long publicationDateId, Long count)
+	{
+		Query query = getSession().createQuery("select model.voter.voterId from VoterModification model where model.constituency.constituencyId = :constituencyId and " +
+				" model.publicationDate.publicationDateId = :publicationDateId group by model.voter.voterId having count(model.voter.voterId) = :count ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("count",count);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<VoterModification> getObjectsByVoterIdsList(Long constituencyId, Long publicationDateId,List<Long> voterIdsList)
+	{
+		Query query = getSession().createQuery("Select model from VoterModification model where model.constituency.constituencyId = :constituencyId and " +
+				" model.publicationDate.publicationDateId = :publicationDateId and model.voter.voterId in (:voterIdsList) ");
+		query.setParameterList("voterIdsList", voterIdsList);
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVMVoterIdsAndStatusList(Long constituencyId, Long publicationDateId,List<Long> voterIdsList)
+	{
+		Query query = getSession().createQuery("Select model.voterModificationId,model.status from VoterModification model where model.constituency.constituencyId = :constituencyId and " +
+				" model.publicationDate.publicationDateId = :publicationDateId and model.voter.voterId in (:voterIdsList) ");
+		query.setParameterList("voterIdsList", voterIdsList);
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
+	
+	public Integer updateVoterStatus(List<Long> voterModificationIdsList, Long voterStatusId)
+	{
+		Query query = getSession().createQuery(" update VoterModification model set model.voterStatusId = :voterStatusId where model.voterModificationId in(:voterModificationIdsList) ");
+		query.setParameterList("voterModificationIdsList",voterModificationIdsList);
+		query.setParameter("voterStatusId",voterStatusId);
+		return query.executeUpdate();
+	}
+	
+	
 }
